@@ -103,22 +103,82 @@
     "all_live_disk_historical_match": true,
     "aggregate_sha256": "bed6c64bacdb03b2556ed59ef94f2586b2f2e4c95f05a3120352a527dbdf1ace",
     "ranges": [
-      {"address": "00b228b0", "length": 132, "end_exclusive": "00b22934", "sha256": "a9ace03126544434d8bd4c39a552b1b6364e0461299c6046a2ab7e808584a5e1", "matches_disk": true, "matches_historical": true},
-      {"address": "00b22940", "length": 138, "end_exclusive": "00b229ca", "sha256": "81c28ad3286174856c85ae8dff1d4ef50462dc3db81c7333de876d2c8f949506", "matches_disk": true, "matches_historical": true},
-      {"address": "00b229d0", "length": 150, "end_exclusive": "00b22a66", "sha256": "e89268357e131ecba4d7e98a743b0f1ee6dcf2d3101cb94a94c55527dd879f08", "matches_disk": true, "matches_historical": true},
-      {"address": "00b22a70", "length": 178, "end_exclusive": "00b22b22", "sha256": "f5d2b59b8edf7665919adf034712e4436fcdbc44d84f72363f8c1f46e36577f0", "matches_disk": true, "matches_historical": true}
+      {
+        "address": "00b228b0",
+        "length": 132,
+        "end_exclusive": "00b22934",
+        "sha256": "a9ace03126544434d8bd4c39a552b1b6364e0461299c6046a2ab7e808584a5e1",
+        "matches_disk": true,
+        "matches_historical": true
+      },
+      {
+        "address": "00b22940",
+        "length": 138,
+        "end_exclusive": "00b229ca",
+        "sha256": "81c28ad3286174856c85ae8dff1d4ef50462dc3db81c7333de876d2c8f949506",
+        "matches_disk": true,
+        "matches_historical": true
+      },
+      {
+        "address": "00b229d0",
+        "length": 150,
+        "end_exclusive": "00b22a66",
+        "sha256": "e89268357e131ecba4d7e98a743b0f1ee6dcf2d3101cb94a94c55527dd879f08",
+        "matches_disk": true,
+        "matches_historical": true
+      },
+      {
+        "address": "00b22a70",
+        "length": 178,
+        "end_exclusive": "00b22b22",
+        "sha256": "f5d2b59b8edf7665919adf034712e4436fcdbc44d84f72363f8c1f46e36577f0",
+        "matches_disk": true,
+        "matches_historical": true
+      }
     ],
     "full_body_hex": "Retained per range in reports/native_renderer_container_lifetime.json and local/r32_renderer_container_byte_receipt.json."
   },
   "call_rows": [
-    {"address": "00b228ce", "native": "00bf55be", "function": "00b228b0"},
-    {"address": "00b22921", "native": "00bf6989", "function": "00b228b0"},
-    {"address": "00b22960", "native": "00bf55be", "function": "00b22940"},
-    {"address": "00b229b7", "native": "00bf6989", "function": "00b22940"},
-    {"address": "00b229f2", "native": "00bf55be", "function": "00b229d0"},
-    {"address": "00b22a53", "native": "00bf6989", "function": "00b229d0"},
-    {"address": "00b22a96", "native": "00bf55be", "function": "00b22a70"},
-    {"address": "00b22b0f", "native": "00bf6989", "function": "00b22a70"}
+    {
+      "address": "00b228ce",
+      "native": "00bf55be",
+      "function": "00b228b0"
+    },
+    {
+      "address": "00b22921",
+      "native": "00bf6989",
+      "function": "00b228b0"
+    },
+    {
+      "address": "00b22960",
+      "native": "00bf55be",
+      "function": "00b22940"
+    },
+    {
+      "address": "00b229b7",
+      "native": "00bf6989",
+      "function": "00b22940"
+    },
+    {
+      "address": "00b229f2",
+      "native": "00bf55be",
+      "function": "00b229d0"
+    },
+    {
+      "address": "00b22a53",
+      "native": "00bf6989",
+      "function": "00b229d0"
+    },
+    {
+      "address": "00b22a96",
+      "native": "00bf55be",
+      "function": "00b22a70"
+    },
+    {
+      "address": "00b22b0f",
+      "native": "00bf6989",
+      "function": "00b22a70"
+    }
   ],
   "source_review": {
     "header": "Actual 0Ch header with pointer/count/capacity; signed capacity gate and request clamp retained.",
@@ -138,14 +198,38 @@
     "fixture_boundary": "Only eight rel32 allocation/free call operands are rebound to the same current source service; no original EXE address executes."
   },
   "artifact_receipts": [
-    {"path": "include/bsp/native_renderer_container_lifetime.hpp", "sha256": "680c430daa67600cb13a54e8147eac9ad402fa6e84f2f45879253a1ee40cb0d7"},
-    {"path": "src/native_renderer_container_lifetime.cpp", "sha256": "4f20fe408411e00afed498f0542bfe94be0a66024c89dc7782448de025ff9cd1"},
-    {"path": "docs/NATIVE_RENDERER_CONTAINER_LIFETIME.md", "sha256": "9f147cd36e882c8041c5ed023352d09c08ae4b9eb32cb287be128a4645042fac"},
-    {"path": "reports/native_renderer_container_lifetime.json", "sha256": "7bdc98d9e3dad507017351b48dd8a94220a371efc0a201092e7ff0d2cd6d0ac7"},
-    {"path": "cmake/startup.cmake", "sha256": "9ddeb3e8b9cbb85536114cc1f7d386fa135368818ca52955d99af5fdde06f7fd"},
-    {"path": "build/win32/Release/bsp_core.lib", "sha256": "b747dc70688d1ed461796b3984f91435b7eee5f8021ec7a6c2179d1057de3e29"},
-    {"path": "local/native_renderer_container_probe.exe", "sha256": "a73808ef2fd6b74e8bc0a3690f740d2627434cbaa2c7d0831349d3b881180143"},
-    {"path": "local/native_renderer_container_probe.obj", "sha256": "b0c6c94896aacebed31db94a27d56779ba14244d2545208bdcd697b9c0e3b05b"}
+    {
+      "path": "include/bsp/native_renderer_container_lifetime.hpp",
+      "sha256": "680c430daa67600cb13a54e8147eac9ad402fa6e84f2f45879253a1ee40cb0d7"
+    },
+    {
+      "path": "src/native_renderer_container_lifetime.cpp",
+      "sha256": "4f20fe408411e00afed498f0542bfe94be0a66024c89dc7782448de025ff9cd1"
+    },
+    {
+      "path": "docs/NATIVE_RENDERER_CONTAINER_LIFETIME.md",
+      "sha256": "9f147cd36e882c8041c5ed023352d09c08ae4b9eb32cb287be128a4645042fac"
+    },
+    {
+      "path": "reports/native_renderer_container_lifetime.json",
+      "sha256": "7bdc98d9e3dad507017351b48dd8a94220a371efc0a201092e7ff0d2cd6d0ac7"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256": "9ddeb3e8b9cbb85536114cc1f7d386fa135368818ca52955d99af5fdde06f7fd"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "sha256": "b747dc70688d1ed461796b3984f91435b7eee5f8021ec7a6c2179d1057de3e29"
+    },
+    {
+      "path": "local/native_renderer_container_probe.exe",
+      "sha256": "a73808ef2fd6b74e8bc0a3690f740d2627434cbaa2c7d0831349d3b881180143"
+    },
+    {
+      "path": "local/native_renderer_container_probe.obj",
+      "sha256": "b0c6c94896aacebed31db94a27d56779ba14244d2545208bdcd697b9c0e3b05b"
+    }
   ],
   "archive": {
     "path": "local/evidence-r32/renderer-member-cleanup-r32.zip",
@@ -154,11 +238,80 @@
     "archived_files": 19,
     "manifest": "local/evidence-r32/renderer-member-cleanup-r32/manifest.json"
   },
-  "annotation_status": "Worker performed no Ghidra mutation. All four functions already have reviewed names/comments and complete ranges; no parent listing repair is required for this subset. Parent owns any integration-era metadata append.",
+  "annotation_status": {
+    "status": "Primary appended current-main evidence to4 reviewed names under write lock; saved project and refreshed exports.",
+    "prior_annotations": [
+      {
+        "address": "00b228b0",
+        "before": {
+          "address": "00b228b0",
+          "function_name": "BSP_RendererRecords16_Reserve",
+          "comment": "[BSP reconstruction 00b228b0]\nHypothesis, not a recovered symbol. Complete actual 0Ch-header reserve body. Clamp signed request to at least one, signed capacity gate, wrapping allocation size, current source/count reloads and native per-row null-destination test. Preserve x87 FLD/FSTP versus DWORD copy layout, free current old base before publishing fresh base/capacity, and untouched count. Original/source comparisons cover signaling-NaN bytes/status, no-grow, negative capacity and real allocation failure. docs/NATIVE_RENDERER_CONTAINER_LIFETIME.md; reports/native_renderer_container_lifetime.json. Strict integrated Win32 build, two CTests and focused packet fixture passed at 6641c05f. Original whole-function ABI/FH3/SEH and gameplay compatibility remain unvalidated."
+        },
+        "after": {
+          "address": "00b228b0",
+          "name": "BSP_RendererRecords16_Reserve",
+          "evidence": "R32 reuses unchangedc1a53b187 renderer raw record reserves: current source/count reloads, exact x87 FLD/FSTP versus DWORD field masks, wrapped allocation/copy/free then publication. Fresh4-body598B live/PE/historical parity;8 directcalls pass. Retained manifested source/original fixture16 comparisons pass including x87 bytes/status, capacity clamp, negative capacity and allocation failure. Parent Astra reviewed full source/header and4 complete listings, verified worker archive and8 artifact receipts; combined main strict Win32 /MD build3 CTests pass. New source interfaces; native fault/exception/ABI/gameplay unproven. reports/native_renderer_member_cleanup_main_r32.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b22940",
+        "before": {
+          "address": "00b22940",
+          "function_name": "BSP_RendererRecords20_Reserve",
+          "comment": "[BSP reconstruction 00b22940]\nHypothesis, not a recovered symbol. Complete actual 0Ch-header reserve body. Clamp signed request to at least one, signed capacity gate, wrapping allocation size, current source/count reloads and native per-row null-destination test. Preserve x87 FLD/FSTP versus DWORD copy layout, free current old base before publishing fresh base/capacity, and untouched count. Original/source comparisons cover signaling-NaN bytes/status, no-grow, negative capacity and real allocation failure. docs/NATIVE_RENDERER_CONTAINER_LIFETIME.md; reports/native_renderer_container_lifetime.json. Strict integrated Win32 build, two CTests and focused packet fixture passed at 6641c05f. Original whole-function ABI/FH3/SEH and gameplay compatibility remain unvalidated."
+        },
+        "after": {
+          "address": "00b22940",
+          "name": "BSP_RendererRecords20_Reserve",
+          "evidence": "R32 reuses unchangedc1a53b187 renderer raw record reserves: current source/count reloads, exact x87 FLD/FSTP versus DWORD field masks, wrapped allocation/copy/free then publication. Fresh4-body598B live/PE/historical parity;8 directcalls pass. Retained manifested source/original fixture16 comparisons pass including x87 bytes/status, capacity clamp, negative capacity and allocation failure. Parent Astra reviewed full source/header and4 complete listings, verified worker archive and8 artifact receipts; combined main strict Win32 /MD build3 CTests pass. New source interfaces; native fault/exception/ABI/gameplay unproven. reports/native_renderer_member_cleanup_main_r32.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b229d0",
+        "before": {
+          "address": "00b229d0",
+          "function_name": "BSP_RendererRecords24_Reserve",
+          "comment": "[BSP reconstruction 00b229d0]\nHypothesis, not a recovered symbol. Complete actual 0Ch-header reserve body. Clamp signed request to at least one, signed capacity gate, wrapping allocation size, current source/count reloads and native per-row null-destination test. Preserve x87 FLD/FSTP versus DWORD copy layout, free current old base before publishing fresh base/capacity, and untouched count. Original/source comparisons cover signaling-NaN bytes/status, no-grow, negative capacity and real allocation failure. docs/NATIVE_RENDERER_CONTAINER_LIFETIME.md; reports/native_renderer_container_lifetime.json. Strict integrated Win32 build, two CTests and focused packet fixture passed at 6641c05f. Original whole-function ABI/FH3/SEH and gameplay compatibility remain unvalidated."
+        },
+        "after": {
+          "address": "00b229d0",
+          "name": "BSP_RendererRecords24_Reserve",
+          "evidence": "R32 reuses unchangedc1a53b187 renderer raw record reserves: current source/count reloads, exact x87 FLD/FSTP versus DWORD field masks, wrapped allocation/copy/free then publication. Fresh4-body598B live/PE/historical parity;8 directcalls pass. Retained manifested source/original fixture16 comparisons pass including x87 bytes/status, capacity clamp, negative capacity and allocation failure. Parent Astra reviewed full source/header and4 complete listings, verified worker archive and8 artifact receipts; combined main strict Win32 /MD build3 CTests pass. New source interfaces; native fault/exception/ABI/gameplay unproven. reports/native_renderer_member_cleanup_main_r32.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b22a70",
+        "before": {
+          "address": "00b22a70",
+          "function_name": "BSP_RendererRecords40_Reserve",
+          "comment": "[BSP reconstruction 00b22a70]\nHypothesis, not a recovered symbol. Complete actual 0Ch-header reserve body. Clamp signed request to at least one, signed capacity gate, wrapping allocation size, current source/count reloads and native per-row null-destination test. Preserve x87 FLD/FSTP versus DWORD copy layout, free current old base before publishing fresh base/capacity, and untouched count. Original/source comparisons cover signaling-NaN bytes/status, no-grow, negative capacity and real allocation failure. docs/NATIVE_RENDERER_CONTAINER_LIFETIME.md; reports/native_renderer_container_lifetime.json. Strict integrated Win32 build, two CTests and focused packet fixture passed at 6641c05f. Original whole-function ABI/FH3/SEH and gameplay compatibility remain unvalidated."
+        },
+        "after": {
+          "address": "00b22a70",
+          "name": "BSP_RendererRecords40_Reserve",
+          "evidence": "R32 reuses unchangedc1a53b187 renderer raw record reserves: current source/count reloads, exact x87 FLD/FSTP versus DWORD field masks, wrapped allocation/copy/free then publication. Fresh4-body598B live/PE/historical parity;8 directcalls pass. Retained manifested source/original fixture16 comparisons pass including x87 bytes/status, capacity clamp, negative capacity and allocation failure. Parent Astra reviewed full source/header and4 complete listings, verified worker archive and8 artifact receipts; combined main strict Win32 /MD build3 CTests pass. New source interfaces; native fault/exception/ABI/gameplay unproven. reports/native_renderer_member_cleanup_main_r32.json."
+        },
+        "status": "applied"
+      }
+    ]
+  },
   "limits": [
     "Source interfaces are not drop-in reproductions of original private frames, complete register ABI, FH3 or SEH identity.",
     "The differential fixture is bounded relocated-code evidence, not execution of original EXE addresses or gameplay validation.",
     "The four reserve bodies do not reconstruct their renderer destructor parent or define semantic record fields.",
     "Capability DWORD-array cleanup remains deferred until its B25940/B29B20 provider pair is integrated or separately reconstructed."
-  ]
+  ],
+  "primary_integration": {
+    "source_merge": "352d4d7aa",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "log": "local/r32_member_cleanup_integration.log",
+    "review": "Primary reviewed full new source/header and all4 complete assembly listings, including x87 masks/order; verified worker zip and all8 artifact receipt hashes.",
+    "archive_retained_in_primary": "local/evidence-r32/renderer-member-cleanup-r32.zip",
+    "archive_sha256": "91fc814ba4f86bb9529b8daf2afe8e1984ffbd6fc125272c503a2de064dc5e49"
+  }
 }
