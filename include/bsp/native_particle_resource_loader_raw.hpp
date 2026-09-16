@@ -30,7 +30,8 @@ enum class NativeParticleResourceLoaderRawPhase { fresh, running, complete, fail
 // (the existing failed VFS frames currently require process lifetime).
 class NativeParticleResourceLoaderRawAcquired final {
 public:
-    NativeParticleResourceLoaderRawAcquired();
+    // Explicit incoming parser builder+C; distinct from its nested child kind.
+    explicit NativeParticleResourceLoaderRawAcquired(std::int32_t incoming_parser_builder_kind);
     ~NativeParticleResourceLoaderRawAcquired();
     NativeParticleResourceLoaderRawAcquired(const NativeParticleResourceLoaderRawAcquired&) = delete;
     NativeParticleResourceLoaderRawAcquired& operator=(const NativeParticleResourceLoaderRawAcquired&) = delete;
