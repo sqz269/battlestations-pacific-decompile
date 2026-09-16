@@ -116,10 +116,10 @@ void read_native_particle_component_00871d00(void* component, NativeLuaObjectSto
         f.site = 0x00871d22;
         read_native_effect_component_base_00868bf0(component, definition, context.actual_crt_sse2_conversion);
         f.site = 0x00871d33;
-        native_lua_get_by_name_00b67800(definition, &f.particle, "Particle");
+        native_lua_get_by_name_protected(definition, &f.particle, "Particle");
         f.state = 0;
         f.site = 0x00871d4c;
-        auto* const under = native_lua_get_by_name_00b67800(definition, &f.value, "UnderWater");
+        auto* const under = native_lua_get_by_name_protected(definition, &f.value, "UnderWater");
         f.state = 1;
         f.site = 0x00871d58;
         const std::uint8_t underwater = native_lua_is_boolean_00b66000(*under) ? 1 : 0;

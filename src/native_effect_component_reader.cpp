@@ -29,19 +29,19 @@ void read_native_effect_component_base_00868bf0(
     NativeLuaObjectStorage distance;
     NativeLuaObjectStorage* active = nullptr;
     try {
-        auto* returned = native_lua_get_by_name_00b67800(definition, &first, "Autostart");
+        auto* returned = native_lua_get_by_name_protected(definition, &first, "Autostart");
         active = &first;
         field<std::uint8_t>(component, 0x10) = native_lua_boolean_00b66250(*returned) ? 1 : 0;
         active = nullptr;
         destroy_native_lua_object_00b67700(first);
 
-        returned = native_lua_get_by_name_00b67800(definition, &first, "Delay");
+        returned = native_lua_get_by_name_protected(definition, &first, "Delay");
         active = &first;
         field<std::int32_t>(component, 0x14) = native_lua_integer_or_00b66380(*returned, 0, conversion_mode);
         active = nullptr;
         destroy_native_lua_object_00b67700(first);
 
-        returned = native_lua_get_by_name_00b67800(definition, &distance, "NoFilterDist");
+        returned = native_lua_get_by_name_protected(definition, &distance, "NoFilterDist");
         float fallback;
         load_x87_float(static_cast<unsigned char*>(component) + 0x18, fallback);
         active = &distance;

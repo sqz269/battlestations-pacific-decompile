@@ -2,6 +2,7 @@
 #include "bsp/native_string.hpp"
 #include <cstddef>
 #include <cstdint>
+#include <exception>
 struct lua_State;
 
 namespace bsp {
@@ -58,7 +59,26 @@ NativeLuaObjectStorage* native_lua_globals_00b67980(NativeLuaStateStorage&,void*
 // all other kinds use current index08 AFTER pushing the C-string key. Output
 // is a tracked kind2 object at actual top. Unchecked slots<50/refs<5 are caller
 // contracts; lua_checkstack's return is ignored just as in the original.
+// This raw entry retains Lua's nonlocal error transfer, including calls inside
+// existing lua_pcall callbacks. It does not convert Lua errors to C++ values.
 NativeLuaObjectStorage* native_lua_get_by_name_00b67800(
+    NativeLuaObjectStorage& table,void* fresh,const char* key);
+// Source error transport for the explicit C++ reader boundary below. This is
+// a linked Lua status, not the original CRT exception or retained error value.
+struct NativeLuaOperationError final : std::exception {
+    explicit NativeLuaOperationError(int value) noexcept : status(value) {}
+    const char* what() const noexcept override { return "native Lua named lookup failed"; }
+    int status;
+};
+// Explicit C++ reader adapter: protects checkstack/push/gettable in the SAME Lua C
+// frame. On Lua error it restores the entry stack, publishes no output, and
+// throws NativeLuaOperationError after Lua restores the frame. Inherits the
+// current error handler; consumes its error value. Caller objects/interpreter
+// must remain stable, including across metamethod/error-handler execution.
+// Do not use inside a Lua C callback that expects its caller's lua_pcall to
+// receive the Lua error. It is selected only by the base/Particle C++ readers.
+// Other primitives still have their existing Lua nonlocal-transfer contract.
+NativeLuaObjectStorage* native_lua_get_by_name_protected(
     NativeLuaObjectStorage& table,void* fresh,const char* key);
 NativeLuaObjectStorage* native_lua_get_by_string_00b68100(
     NativeLuaObjectStorage& table,void* fresh,const NativeString& key);
