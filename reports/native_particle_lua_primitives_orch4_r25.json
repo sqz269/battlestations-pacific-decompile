@@ -1,0 +1,350 @@
+{
+  "packet": "native_particle_lua_primitives_r25",
+  "status": "source_build_fixture_validated_original_error_execution_open",
+  "baseline": "8482b261808f21403bbc20b75d47e298c9988f17",
+  "ghidra_mutated": false,
+  "ghidra_target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "regions": [
+    {
+      "address": "00b662b0",
+      "length": 18,
+      "sha256": "bcd71685302bdb47c3e3e9845d29825d0b867f443005f0b15bfb44e5b5619cf4",
+      "live_disk_match": true,
+      "instruction_count": 7,
+      "fs_instruction_count": 0
+    },
+    {
+      "address": "00b67080",
+      "length": 267,
+      "sha256": "da1b8268de13bf6ea4249424f652c4e6e1ee31a150b92c640fdbac82a0763a18",
+      "live_disk_match": true,
+      "instruction_count": 85,
+      "fs_instruction_count": 0
+    },
+    {
+      "address": "00b67190",
+      "length": 284,
+      "sha256": "ff14695c7df23b3a65634ceecc5e5791bde67fdc249816ea2cec5dc5e6b12a41",
+      "live_disk_match": true,
+      "instruction_count": 94,
+      "fs_instruction_count": 0
+    },
+    {
+      "address": "00a67810",
+      "length": 108,
+      "sha256": "a70738fb3e99d9c0a89d2baca0d3c59ec2a2989c0a646e96497dc1f1a8dfc995",
+      "live_disk_match": true,
+      "instruction_count": 45,
+      "fs_instruction_count": 0
+    },
+    {
+      "address": "00a683a0",
+      "length": 42,
+      "sha256": "60b1706bbcc511c6099020cc74168f3fcb5a92aa3e1bbe955f7d0cdca900f144",
+      "live_disk_match": true,
+      "instruction_count": 18,
+      "fs_instruction_count": 0
+    },
+    {
+      "address": "00a6d1e0",
+      "length": 106,
+      "sha256": "20f4a8eb01227440d5f2c691c9d352033f58586ae387e7b7ba841a59c24e7985",
+      "live_disk_match": true,
+      "instruction_count": 43,
+      "fs_instruction_count": 0
+    },
+    {
+      "address": "00a6ef60",
+      "length": 218,
+      "sha256": "80d2284d5cbbde69773d6336184ce8876f675377669b943020338886272e227e",
+      "live_disk_match": true,
+      "instruction_count": 86,
+      "fs_instruction_count": 0
+    },
+    {
+      "address": "00a6eea0",
+      "length": 186,
+      "sha256": "e6f35161ae09b1c03c9fbf3d52b6f79d4faeea447879c6bdf60af873618e7c01",
+      "live_disk_match": true,
+      "instruction_count": 77,
+      "fs_instruction_count": 0
+    }
+  ],
+  "calls": [
+    {
+      "address": "00b662bc",
+      "native": "00a67810",
+      "function": "00b662b0"
+    },
+    {
+      "address": "00b6709d",
+      "native": "00b66de0",
+      "function": "00b67080"
+    },
+    {
+      "address": "00b670bb",
+      "native": "00b66de0",
+      "function": "00b67080"
+    },
+    {
+      "address": "00b670d2",
+      "native": "00a672f0",
+      "function": "00b67080"
+    },
+    {
+      "address": "00b670dd",
+      "native": "00a679c0",
+      "function": "00b67080"
+    },
+    {
+      "address": "00b670eb",
+      "native": "00a683a0",
+      "function": "00b67080"
+    },
+    {
+      "address": "00b670fe",
+      "native": "00a673d0",
+      "function": "00b67080"
+    },
+    {
+      "address": "00b67145",
+      "native": "00a673d0",
+      "function": "00b67080"
+    },
+    {
+      "address": "00b671a9",
+      "native": "00b66de0",
+      "function": "00b67190"
+    },
+    {
+      "address": "00b671c2",
+      "native": "00a673d0",
+      "function": "00b67190"
+    },
+    {
+      "address": "00b671de",
+      "native": "00a67570",
+      "function": "00b67190"
+    },
+    {
+      "address": "00b671f2",
+      "native": "00b66de0",
+      "function": "00b67190"
+    },
+    {
+      "address": "00b67207",
+      "native": "00a683a0",
+      "function": "00b67190"
+    },
+    {
+      "address": "00b6721a",
+      "native": "00a673d0",
+      "function": "00b67190"
+    },
+    {
+      "address": "00b67269",
+      "native": "00a673d0",
+      "function": "00b67190"
+    },
+    {
+      "address": "00a6781b",
+      "native": "00a67230",
+      "function": "00a67810"
+    },
+    {
+      "address": "00a6782a",
+      "native": "00a6d1e0",
+      "function": "00a67810"
+    },
+    {
+      "address": "00a67855",
+      "native": "00a6cee0",
+      "function": "00a67810"
+    },
+    {
+      "address": "00a6785e",
+      "native": "00a67230",
+      "function": "00a67810"
+    },
+    {
+      "address": "00a683a5",
+      "native": "00a67230",
+      "function": "00a683a0"
+    },
+    {
+      "address": "00a683b5",
+      "native": "00a6ef60",
+      "function": "00a683a0"
+    },
+    {
+      "address": "00a6d20b",
+      "native": "00bf7a6a",
+      "function": "00a6d1e0"
+    },
+    {
+      "address": "00a6d231",
+      "native": "00a6fd10",
+      "function": "00a6d1e0"
+    },
+    {
+      "address": "00a6ef6d",
+      "native": "00a6eea0",
+      "function": "00a6ef60"
+    },
+    {
+      "address": "00a6eef4",
+      "native": "00a6edd0",
+      "function": "00a6eea0"
+    },
+    {
+      "address": "00a6ef07",
+      "native": "00a6bad0",
+      "function": "00a6eea0"
+    },
+    {
+      "address": "00a6ef32",
+      "native": "00a6b6d0",
+      "function": "00a6eea0"
+    }
+  ],
+  "source_sequence_checks": {
+    "native_lua_get_by_name_00b67800": true,
+    "native_lua_get_by_string_00b68100": true,
+    "native_lua_string_00b662b0": true,
+    "first_shared_sequence_matches_preimage": true,
+    "next_shared_sequence_matches_preimage": true
+  },
+  "source_sha256": {
+    "include/bsp/native_lua_objects.hpp": "3876d2556149eb202189afcf0990282b158784b3a4646a9116571960d53a4e90",
+    "src/native_lua_objects.cpp": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5",
+    "src/native_particle_component_reader_raw.cpp": "5ca91d8bc86d1b04ead7f0a6dbe608c94a4ca176bd3d878913d4cbd87783856b"
+  },
+  "original_eh": {
+    "primitive_local_fs_registrations": 0,
+    "particle_reader_schedule": "unchanged six-state source schedule documented by r24",
+    "original_error_execution": false
+  },
+  "source_boundaries": {
+    "error": "std::exception-derived NativeLuaOperationError after same-frame pinned Lua5.1.1 luaD_pcall",
+    "handler": "inherits current L->errfunc and consumes error value",
+    "string": "restore entry height; retain actual TValue, including conversion before GC/finalizer error",
+    "first": "release value/key first; protect at post-release top; retain index shifts and kind0 outputs",
+    "next": "retain completed value/key releases; protect with oldtop below detached key; consume key/error temporaries; require exclusive key/value and no alias to work-key",
+    "remaining_limits": [
+      "no rollback of Lua table/handler/finalizer/GC side effects",
+      "caller storage/interpreter/tracking domain must stay valid and stable",
+      "unchecked native slot/ref capacities and ignored checkstack result retained",
+      "no arbitrary C++ exception across Lua C frames",
+      "null string and invalid Lua API input are outside this error boundary",
+      "no retained dispatch bridge or original ABI/FH3/SEH/game claim"
+    ]
+  },
+  "annotation_proposals": [
+    {
+      "address": "00b662b0",
+      "operation": "append_comment_preserving_existing",
+      "comment": "R25 source-boundary audit: full18-byte body calls A67810 with current owner/index. Original A6D1E0 publishes string pointer/tag only after string allocation, then A67810 may execute GC; linked numeric conversion can therefore fail before or after TValue mutation. Raw API retains Lua nonlocal transfer. Explicit Particle-only native_lua_string_protected preserves actual TValue and translates returned linked Lua status after same-frame luaD_pcall. Source/build/fixture evidence only; no original error/FH3/SEH execution. See docs/NATIVE_PARTICLE_LUA_PRIMITIVES_ORCH4_R25.md."
+    },
+    {
+      "address": "00b67080",
+      "operation": "append_comment_preserving_existing",
+      "comment": "R25 source-boundary audit: full267-byte body releases value then key before ignored checkstack(2), nil push and next; pair tracking publishes only after next succeeds. Raw API retains Lua nonlocal transfer. Explicit Particle-only adapter protects post-release Lua work, retains release/index shifts and leaves both outputs unbound on Lua error; never reinstates entry top. Shared private preparation/tail preserve raw success order. No original error/FH3/SEH execution claim. See docs/NATIVE_PARTICLE_LUA_PRIMITIVES_ORCH4_R25.md."
+    },
+    {
+      "address": "00b67190",
+      "operation": "append_comment_preserving_existing",
+      "comment": "R25 source-boundary audit: full284-byte body releases value before capturing key index; top key detaches with remove0, non-top copies then removes current key; next precedes all pair publication. Raw API retains Lua nonlocal transfer. Explicit Particle-only adapter requires exclusive key/value and no alias to detached work-key, retains prior releases/index shifts and consumes only detached key/error temporaries on returned Lua error. Top/non-top linked-Lua invalid-key probes and actual Particle partial-append cleanup pass; no original error/FH3/SEH execution claim. See docs/NATIVE_PARTICLE_LUA_PRIMITIVES_ORCH4_R25.md."
+    }
+  ],
+  "validation": {
+    "live_call_rows": {
+      "log": "local/r25_calls_verify.log",
+      "sha256": "97c378d700e1b103c88c62b7747e94099469e014b14f5e42f8223fa285ebf98d",
+      "result": [
+        "reports/native_particle_lua_primitives_orch4_r25.json: 27 call rows checked, 0 failed"
+      ]
+    },
+    "seed_verification": {
+      "log": "local/r25_seed_verify.log",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "result": [
+        "8 seed regions match original PE/live Ghidra"
+      ]
+    },
+    "strict_win32_build_ctests": {
+      "log": "local/r25_build_final.log",
+      "sha256": "6e41a23983dbed6a5a50f18b6d72488771f042cce4c99ecc4fc3f878f3f99311",
+      "result": [
+        "100% tests passed, 0 tests failed out of 3"
+      ]
+    },
+    "primitive_probe": {
+      "log": "local/r25_primitive_final.log",
+      "sha256": "7ece8f4dd592699804cb774cc6f9dc4921dab8fb33575b947a30ea27a094bf0e",
+      "result": [
+        "PASS: string pre-allocation number / post-GC-error string retained; inherited handler once and same frame; first post-release OOM with tracked suffix shift; next genuine invalid-key error top/non-top with two suffix shifts; raw/protected ordinary iteration and complete tracking cleanup."
+      ]
+    },
+    "particle_reader_error_probe": {
+      "log": "local/r25_reader_final.log",
+      "sha256": "f4ebebe4e1b65a02028abc5b8379d9c258dcc596a5716d930038e2ee3a9f1990",
+      "result": [
+        "PASS: current Particle scalar/table numeric-conversion OOM, first checkstack OOM, and next invalid-key after genuine cache-hit callback table rehash; exact sites/states; root/caller stack/tracking survives cleanup; prior base writes and appended resource retained, genuine component/cache/pool drain. No original FH3/SEH execution."
+      ]
+    },
+    "copied_original_reader_ordinary_probe": {
+      "log": "local/r25_normal_final.log",
+      "sha256": "8163e650268374f42632f5e6003ca05c54b16d4cd64e432e2bee1af5251ad130",
+      "result": [
+        "PASS: complete657-byte original/source reader, real Lua scalar/table/emptytable, false-is-boolean/numeric-is-not, normalized cache hits and retain, previous entry plus growth, actual resource underwater byte, tracked stack cleanup, genuine component/cache/raw-pool teardown, replay rejected. No original child/FH3/SEH/game claim."
+      ]
+    },
+    "existing_named_handler_probe": {
+      "log": "local/r25_named_final.log",
+      "sha256": "2c4cf4d25a9724c82b618645012cbed64df6869bf4620bbc836e0b414b394602",
+      "result": [
+        "PASS: forced checkstack allocation failure status4 preserves stack/output/tracking; inherited handler once; source status2; output preimage untouched; same CallInfo/base/root; outer status0 and prior errfunc restored."
+      ]
+    },
+    "existing_lua_callback_contract_probe": {
+      "log": "local/r25_callbacks_final.log",
+      "sha256": "c26ce28b6af76c92c84712f2a5dc5e2200bcbfd044ffcbbd89f9663fd3491df5",
+      "result": [
+        "PASS: four actual Lua protected callback wrappers return false/original error text, preserve outputs and caller stack; explicit source status is std::exception compatible."
+      ]
+    }
+  },
+  "linked_lua_source_sha256": {
+    "lapi.c": "a9f0f87af50f18b4cf0483ded3a6bf41803032bc7ed575bda84359a46c993fe0",
+    "lvm.c": "03ee8d2e2a9a2eda683bdfc90cd0859acfe9eb039eba703990face2cd4168aa1",
+    "ldo.c": "a568a93a20ef4e5f0606f0d435f682ec12145e2cf05b07266b1e195b57684112",
+    "ltable.c": "ffbf34308d1c963821c44f85b5341a80a70e74d92d85f29503c532b8c69743b5",
+    "lstring.c": "0ea54549fcde9de985e24bd70e52e6458ec0d1b02c1ca3e2a16924fbc01ddb89",
+    "lgc.c": "bf6f8e6f61c00bc172c38bd1013de03635e96756b35e6f27aa0f09f26d97922b"
+  },
+  "probe_inputs_sha256": {
+    "r25_primitive_probe.cpp": "d8bb97d9e055b3b577060c7d3b08357e312aa6d70de4ced413ff30b6e54511a3",
+    "make_r25_reader_probe.py": "ee04b3c26ef4691f4e3227833eee0319eceb87031be93f56c78a9ebf8070c05a",
+    "r25_reader_probe.cpp": "719b93332a0d35fb02df765c6ece0c94c9db53d28aaeb1b0d569526c79790800",
+    "lua_unwind_normal_probe.cpp": "216681e77228108ddf48101a45e931a8163a445827d4f538853a0868a53db1cc",
+    "particle_component_original.inc": "ab17254e9985befef07205f5536f8afb277113a7dd9959e6859e078887159b0e",
+    "build_lua_unwind_probe.ps1": "2ca1413b7d655eca009edca10f5d455f8d3b0c2eb547c23896db089cbd950033",
+    "lua_named_handler_probe.cpp": "62e2e90d95ee6c115c2ca63707294dea2c79bfed2fe77a83f17037cf281ee2c3",
+    "lua_callback_contract_probe.cpp": "b3b201674f28bf45be223face0e91803060c571a9ed12d903f83216bbb752935",
+    "lua_callback_source.inc": "df393b80a1c4b002c095d58d3bdec367acd75adf454c16dfc4178adb7d068403"
+  },
+  "library_sha256": {
+    "bsp_core.lib": "d8ac0229bc4572d8f2b32a47f3f3173fa6804839a57e7eb72dea938b676a5317",
+    "bsp_lua511.lib": "694559e0e6655df98a40110c33d3729a8b1fdcd05475d12d766ee467444a668b"
+  },
+  "reproducer_archive": {
+    "path": "local/particle-lua-primitives-r25.zip",
+    "sha256": "e077d130ae71e42dae816db94bd14848e81ca8e1c293f60ab07a9f69fb1c161a",
+    "includes": "ignored probe sources, build/evidence scripts, exact byte receipts and final logs; rebuilt libraries are not archived"
+  }
+}

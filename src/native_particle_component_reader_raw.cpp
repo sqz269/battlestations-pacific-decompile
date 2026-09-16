@@ -135,13 +135,13 @@ void read_native_particle_component_00871d00(void* component, NativeLuaObjectSto
             construct_native_lua_object_00b65f50(&f.value);
             f.state = 3;
             f.site = 0x00871daa;
-            native_lua_iterate_first_00b67080(f.particle, f.key, f.value);
+            native_lua_iterate_first_protected(f.particle, f.key, f.value);
             f.site = 0x00871db8;
             if (!native_lua_is_unbound_00b66420(f.key)) {
                 void* const header = static_cast<unsigned char*>(component) + 0x28;
                 do {
                     f.site = 0x00871dd4;
-                    const char* const text = native_lua_string_00b662b0(f.value);
+                    const char* const text = native_lua_string_protected(f.value);
                     word(f.name) = 0;
                     word(f.name, 4) = 0;
                     const Word length = static_cast<Word>(std::strlen(text));
@@ -159,7 +159,7 @@ void read_native_particle_component_00871d00(void* component, NativeLuaObjectSto
                     f.return_name(data, current_length, strings, true);
                     f.append(header, resource, underwater, true);
                     f.site = 0x00871e9c;
-                    native_lua_iterate_next_00b67190(f.particle, f.key, f.value);
+                    native_lua_iterate_next_protected(f.particle, f.key, f.value);
                     f.site = 0x00871eaa;
                 } while (!native_lua_is_unbound_00b66420(f.key));
             }
@@ -171,7 +171,7 @@ void read_native_particle_component_00871d00(void* component, NativeLuaObjectSto
             destroy_native_lua_object_00b67700(f.key);
         } else {
             f.site = 0x00871edd;
-            const char* const text = native_lua_string_00b662b0(f.particle);
+            const char* const text = native_lua_string_protected(f.particle);
             f.site = 0x00871ee7;
             construct_native_string_header_0041e870(f.name, strings, text);
             f.state = 5;
