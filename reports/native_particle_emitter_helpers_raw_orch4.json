@@ -1,0 +1,1665 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "packet": "orch4_emitter_helpers_raw_o15",
+  "source": "src/native_particle_definition_loading.cpp",
+  "header": "include/bsp/native_particle_definition_loading.hpp",
+  "functions": [
+    {
+      "address": "00af9d00",
+      "name": "load_native_particle_base_parameter_00af9d00",
+      "retained_ghidra_name": "BSP_ParticleDefinition_LoadBaseParameter",
+      "old_documentation": {
+        "hash": "f66328951981ee3f84db7c9c80d81237ed4d86b06e6dfa840a9ba82f67f1e054",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af9d00",
+        "function_name": "BSP_ParticleDefinition_LoadBaseParameter",
+        "return_type": "bool",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00af9d00]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "name",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "builder",
+            "type": "void *"
+          },
+          {
+            "ordinal": 3,
+            "name": "scalar",
+            "type": "float"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "pfVar3",
+            "type": "float *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "fVar4",
+            "type": "float",
+            "storage": "(VARIABLE, 0x0, 4)"
+          },
+          {
+            "name": "bVar1",
+            "type": "bool",
+            "storage": "(register, 0x0, 1)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 47,
+            "name": "LAB_00af9d2f"
+          },
+          {
+            "relative_offset": 98,
+            "name": "LAB_00af9d62"
+          },
+          {
+            "relative_offset": 149,
+            "name": "LAB_00af9d95"
+          },
+          {
+            "relative_offset": 200,
+            "name": "LAB_00af9dc8"
+          },
+          {
+            "relative_offset": 251,
+            "name": "LAB_00af9dfb"
+          },
+          {
+            "relative_offset": 298,
+            "name": "LAB_00af9e2a"
+          },
+          {
+            "relative_offset": 345,
+            "name": "LAB_00af9e59"
+          },
+          {
+            "relative_offset": 392,
+            "name": "LAB_00af9e88"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_annotation": {
+        "address": "00af9d00",
+        "function_name": "BSP_ParticleDefinition_LoadBaseParameter",
+        "comment": "[BSP reconstruction 00af9d00]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      "bytes": 399,
+      "instructions": 135,
+      "end_exclusive": "00af9e8f",
+      "sha256": "b4b6f66b530baaf60175ac0445312105150dce28c5fee6456ab07d52a184c7cc",
+      "original_abi": "ECX actual definition; stack actual4h pooled name, actual10h builder, binary32 scalar; RET0C/AL bool",
+      "coverage": "complete raw-domain overload; existing host overload retained",
+      "status": "complete_raw_domain_overload_build_and_original_provider_fixture_checked"
+    },
+    {
+      "address": "00afa370",
+      "name": "set_native_particle_part_emission_type_00afa370",
+      "retained_ghidra_name": "BSP_ParticleDefinition_SetPartEmissionType",
+      "old_documentation": {
+        "hash": "6c93419a7bd472bd3de5b8a2c7cf8765176e41fbff39b06cffd07b1f476446a0",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00afa370",
+        "function_name": "BSP_ParticleDefinition_SetPartEmissionType",
+        "return_type": "void",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00afa370]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "text",
+            "type": "char *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "pvVar2",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffbc, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_28",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "local_2c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "local_20",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "local_24",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "local_18",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "local_1c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 85,
+            "name": "LAB_00afa3c5"
+          },
+          {
+            "relative_offset": 148,
+            "name": "LAB_00afa404"
+          },
+          {
+            "relative_offset": 183,
+            "name": "LAB_00afa427"
+          },
+          {
+            "relative_offset": 215,
+            "name": "LAB_00afa447"
+          },
+          {
+            "relative_offset": 290,
+            "name": "LAB_00afa492"
+          },
+          {
+            "relative_offset": 329,
+            "name": "LAB_00afa4b9"
+          },
+          {
+            "relative_offset": 344,
+            "name": "LAB_00afa4c8"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_annotation": {
+        "address": "00afa370",
+        "function_name": "BSP_ParticleDefinition_SetPartEmissionType",
+        "comment": "[BSP reconstruction 00afa370]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      "bytes": 365,
+      "instructions": 119,
+      "end_exclusive": "00afa4dd",
+      "sha256": "7559368150f9f892cf1e353ffd67ab151586eb108a49f9645326b4bbd856475f",
+      "original_abi": "ECX actual definition; stack nonnull C string; RET4/no result",
+      "coverage": "complete raw-domain overload; existing host overload retained",
+      "status": "complete_raw_domain_overload_build_and_original_provider_fixture_checked"
+    },
+    {
+      "address": "00afa4e0",
+      "name": "set_native_particle_emit_emission_type_00afa4e0",
+      "retained_ghidra_name": "BSP_ParticleDefinition_SetEmitEmissionType",
+      "old_documentation": {
+        "hash": "56f06cf1d2f07b008d6a04f1f84c76c37d916ffc9975ae1d0e8bfdf17d3147e6",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00afa4e0",
+        "function_name": "BSP_ParticleDefinition_SetEmitEmissionType",
+        "return_type": "void",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00afa4e0]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "text",
+            "type": "char *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "pvVar2",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffbc, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "local_2c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "local_24",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "local_28",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_1c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "local_20",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "local_18",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 85,
+            "name": "LAB_00afa535"
+          },
+          {
+            "relative_offset": 148,
+            "name": "LAB_00afa574"
+          },
+          {
+            "relative_offset": 183,
+            "name": "LAB_00afa597"
+          },
+          {
+            "relative_offset": 215,
+            "name": "LAB_00afa5b7"
+          },
+          {
+            "relative_offset": 290,
+            "name": "LAB_00afa602"
+          },
+          {
+            "relative_offset": 329,
+            "name": "LAB_00afa629"
+          },
+          {
+            "relative_offset": 344,
+            "name": "LAB_00afa638"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_annotation": {
+        "address": "00afa4e0",
+        "function_name": "BSP_ParticleDefinition_SetEmitEmissionType",
+        "comment": "[BSP reconstruction 00afa4e0]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      "bytes": 365,
+      "instructions": 119,
+      "end_exclusive": "00afa64d",
+      "sha256": "82d5b1e6731519545820dd81984d00d30a7aacd6582c60fdc620a32a8c89d783",
+      "original_abi": "ECX actual definition; stack nonnull C string; RET4/no result",
+      "coverage": "complete raw-domain overload; existing host overload retained",
+      "status": "complete_raw_domain_overload_build_and_original_provider_fixture_checked"
+    },
+    {
+      "address": "00afa650",
+      "name": "load_native_particle_definition_flag_00afa650",
+      "retained_ghidra_name": "BSP_ParticleDefinition_LoadFlag",
+      "old_documentation": {
+        "hash": "6634f003682feb3ebed5bcb940b6e13df303a090336ab6f878ee6041bbd85342",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00afa650",
+        "function_name": "BSP_ParticleDefinition_LoadFlag",
+        "return_type": "bool",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00afa650]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "line",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "char *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "pvVar8",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "pvVar7",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "uVar9",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          },
+          {
+            "name": "pcVar4",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "lVar6",
+            "type": "long",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pcVar5",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 80,
+            "name": "LAB_00afa6a0"
+          },
+          {
+            "relative_offset": 110,
+            "name": "LAB_00afa6be"
+          },
+          {
+            "relative_offset": 168,
+            "name": "LAB_00afa6f8"
+          },
+          {
+            "relative_offset": 198,
+            "name": "LAB_00afa716"
+          },
+          {
+            "relative_offset": 231,
+            "name": "LAB_00afa737"
+          },
+          {
+            "relative_offset": 240,
+            "name": "LAB_00afa740"
+          },
+          {
+            "relative_offset": 261,
+            "name": "LAB_00afa755"
+          },
+          {
+            "relative_offset": 284,
+            "name": "LAB_00afa76c"
+          },
+          {
+            "relative_offset": 336,
+            "name": "LAB_00afa7a0"
+          },
+          {
+            "relative_offset": 366,
+            "name": "LAB_00afa7be"
+          },
+          {
+            "relative_offset": 432,
+            "name": "LAB_00afa800"
+          },
+          {
+            "relative_offset": 462,
+            "name": "LAB_00afa81e"
+          },
+          {
+            "relative_offset": 503,
+            "name": "LAB_00afa847"
+          },
+          {
+            "relative_offset": 517,
+            "name": "LAB_00afa855"
+          },
+          {
+            "relative_offset": 563,
+            "name": "LAB_00afa883"
+          },
+          {
+            "relative_offset": 593,
+            "name": "LAB_00afa8a1"
+          },
+          {
+            "relative_offset": 641,
+            "name": "LAB_00afa8d1"
+          },
+          {
+            "relative_offset": 655,
+            "name": "LAB_00afa8df"
+          },
+          {
+            "relative_offset": 744,
+            "name": "LAB_00afa938"
+          },
+          {
+            "relative_offset": 835,
+            "name": "LAB_00afa993"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_annotation": {
+        "address": "00afa650",
+        "function_name": "BSP_ParticleDefinition_LoadFlag",
+        "comment": "[BSP reconstruction 00afa650]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      "bytes": 858,
+      "instructions": 295,
+      "end_exclusive": "00afa9aa",
+      "sha256": "f588d7bdd8400ec942862742938fa707eb0ea5bfd3ffdf294a7d246201fd8247",
+      "original_abi": "ECX actual definition; stack actual4h pooled suffix; RET4/AL bool",
+      "coverage": "complete raw-domain overload; existing host overload retained",
+      "status": "complete_raw_domain_overload_build_and_original_provider_fixture_checked"
+    }
+  ],
+  "byte_evidence": [
+    {
+      "start": "00af9d00",
+      "end_exclusive": "00af9e8f",
+      "length": 399,
+      "kind": "function",
+      "bytes": "56578b7c240c8b076888dbd500508bf1e8aae20f0083c40885c075138b4c2410e88b240000d95e185fb0015ec20c008b0f6840d7d00051e883e20f0083c40885c0751f8b4c2410e814220000d9442414dc0d58a3d7005fd918894620b0015ec20c008b176874dbd50052e850e20f0083c40885c0751f8b4c2410e8e1210000d9442414dc0d58a3d7005fd918894624b0015ec20c008b076864dbd50050e81de20f0083c40885c0751f8b4c2410e8ae210000d9442414dc0d58a3d7005fd918894628b0015ec20c008b0f68a469ce0051e8eae10f0083c40885c0751f8b4c2410e87b210000d9442414dc0d58a3d7005fd91889462cb0015ec20c006854dbd5008bcfe87941ffff84c0741f8b4c2410e84c210000d9442414dc0d58a3d7005fd918894630b0015ec20c006844dbd5008bcfe84a41ffff84c0741f8b4c2410e81d210000d9442414dc0d58a3d7005fd918894634b0015ec20c006834dbd5008bcfe81b41ffff84c0741f8b4c2410e8ee200000d9442414dc0d58a3d7005fd918894638b0015ec20c005f32c05ec20c00",
+      "disk_sha256": "b4b6f66b530baaf60175ac0445312105150dce28c5fee6456ab07d52a184c7cc",
+      "live_sha256": "b4b6f66b530baaf60175ac0445312105150dce28c5fee6456ab07d52a184c7cc",
+      "equal": true,
+      "instructions": 135
+    },
+    {
+      "start": "00afa370",
+      "end_exclusive": "00afa4dd",
+      "length": 365,
+      "kind": "function",
+      "bytes": "6aff6830b0cb0064a100000000506489250000000083ec24535556576a01894c241433ed6a068d4c241c896c241c896c2420e8993992ff8b7424183bf574168b44241483c0015068e8dbd50056e8bed20f0083c40c8b7c2444578d4c2420896c2440e8994492ff8d4c2414518bc8e85db893ff8ad88b4424203bc574178b4c241c6a0183c1015150e8c3f891ff8bc8e80c710d003bf5c744243cffffffff74178b4424146a0183c0015056e8a0f891ff8bc8e8e9700d0084db741c8b5424105f5e896a745d5b8b4c242464890d0000000083c430c2040068dcdbd5008d4c2430e81b4492ff8bf0578d4c2428c744244001000000e8074492ff568bc8e8cfb793ff8ad88b4424283bc574178b4c24246a0183c1015150e835f891ff8bc8e87e700d008b4c24303bcdc744243cffffffff74178b44242c6a0183c0015051e80ef891ff8bc8e857700d0084db740b8b442410c74074010000008b4c24345f5e5d5b64890d0000000083c430c20400",
+      "disk_sha256": "7559368150f9f892cf1e353ffd67ab151586eb108a49f9645326b4bbd856475f",
+      "live_sha256": "7559368150f9f892cf1e353ffd67ab151586eb108a49f9645326b4bbd856475f",
+      "equal": true,
+      "instructions": 119
+    },
+    {
+      "start": "00afa4e0",
+      "end_exclusive": "00afa64d",
+      "length": 365,
+      "kind": "function",
+      "bytes": "6aff6850b0cb0064a100000000506489250000000083ec24535556576a01894c241433ed6a068d4c241c896c241c896c2420e8293892ff8b7424183bf574168b44241483c0015068e8dbd50056e84ed10f0083c40c8b7c2444578d4c2420896c2440e8294392ff8d4c2414518bc8e8edb693ff8ad88b4424203bc574178b4c241c6a0183c1015150e853f791ff8bc8e89c6f0d003bf5c744243cffffffff74178b4424146a0183c0015056e830f791ff8bc8e8796f0d0084db741c8b5424105f5e896a785d5b8b4c242464890d0000000083c430c2040068dcdbd5008d4c2430e8ab4292ff8bf0578d4c2428c744244001000000e8974292ff568bc8e85fb693ff8ad88b4424283bc574178b4c24246a0183c1015150e8c5f691ff8bc8e80e6f0d008b4c24303bcdc744243cffffffff74178b44242c6a0183c0015051e89ef691ff8bc8e8e76e0d0084db740b8b442410c74078010000008b4c24345f5e5d5b64890d0000000083c430c20400",
+      "disk_sha256": "82d5b1e6731519545820dd81984d00d30a7aacd6582c60fdc620a32a8c89d783",
+      "live_sha256": "82d5b1e6731519545820dd81984d00d30a7aacd6582c60fdc620a32a8c89d783",
+      "equal": true,
+      "instructions": 119
+    },
+    {
+      "start": "00afa650",
+      "end_exclusive": "00afa9aa",
+      "length": 858,
+      "kind": "function",
+      "bytes": "6aff6880b0cb0064a1000000005064892500000000515355568b742420576a008d4424288be9508bcee8423dffff8b086824dcd50051e834d90f008b54242c83c40885c00f94c385d274238bc28d78018a0883c00184c975f72bc76a0183c0015052e809f691ff8bc8e8526e0d0084db8bce0f84a40000006a018d54242852e8ec3cffff8b0033ff508d4c2414897c2420e87aafffff8b5424243bd7c644241c0274238bc28d70018a0883c00184c975f72bc66a0183c0015052e8b1f591ff8bc8e8fa6d0d008b742410568bcd897c2428e84afcffff3bf7c744241cffffffff74238bc68d50018a0883c00184c975f72bc26a0183c0015056e872f591ff8bc8e8bb6d0d005f5e5db0015b8b4c240464890d0000000083c410c204006a008d44242850e8483cffff8b086810dcd50051e83ad80f008b54242c83c40885c00f94c385d274298bc28d78018d9b000000008a0883c00184c975f72bc76a0183c0015052e809f591ff8bc8e8526d0d0084db8bce0f848d0000006a018d54242852e8ec3bffff8b00508d4c2414c744242003000000e878aeffff8b54242485d2c644241c0574298bc28d70018d9b000000008a0883c00184c975f72bc66a0183c0015052e8a9f491ff8bc8e8f26c0d008b742410568bcdc744242800000000e8aefcffff85f6c744241cffffffff0f8413ffffff8bc68d50018a0883c00184c975f7e9ebfeffff6a008d44242850e85f3bffff8b086808dcd50051e851d70f008b54242c83c40885c00f94c385d274238bc28d78018a0883c00184c975f72bc76a0183c0015052e826f491ff8bc8e86f6c0d0084db8d5424248bce74346a0152e80d3bffff8b0050e85cdb0f0083c40485c00f9fc084c088451574078b4d10c64166018d4c2424e8c639ffffe976feffff6a0052e8d93affff8b0068f8dbd50050e8cbd60f0083c40885c08d4c24240f94c3e89b39ffff84db8d4c2424742b6a01518bcee8a93affff8b1052e8f8da0f0083c40485c00f9fc08d4c242488451de86d39ffffe91dfeffff6a00518bcee87e3affff8b1068f0dbd50052e870d60f0083c40885c08d4c24240f94c3e84039ffff84db742f6a018d442414508bcee84e3affff8b0851e89dda0f0083c40485c00f9fc28d4c241088551ce81239ffffe9c2fdffff8b4c24145f5e5d32c05b64890d0000000083c410c20400",
+      "disk_sha256": "f588d7bdd8400ec942862742938fa707eb0ea5bfd3ffdf294a7d246201fd8247",
+      "live_sha256": "f588d7bdd8400ec942862742938fa707eb0ea5bfd3ffdf294a7d246201fd8247",
+      "equal": true,
+      "instructions": 295
+    },
+    {
+      "start": "00cbb020",
+      "end_exclusive": "00cbb03a",
+      "length": 26,
+      "kind": "EH code",
+      "bytes": "8d4dd4e9f82c76ff8d4dece9f02c76ffb8202fdf00e909bbf3ff",
+      "disk_sha256": "1be6d6bbcac1a7b3cc1618bca901dd3f3d300f47b846891a6ca29072e66771a9",
+      "live_sha256": "1be6d6bbcac1a7b3cc1618bca901dd3f3d300f47b846891a6ca29072e66771a9",
+      "equal": true
+    },
+    {
+      "start": "00cbb040",
+      "end_exclusive": "00cbb05a",
+      "length": 26,
+      "kind": "EH code",
+      "bytes": "8d4dd4e9d82c76ff8d4dece9d02c76ffb8542fdf00e9e9baf3ff",
+      "disk_sha256": "0d211a5f7a0145406852b3c5ec5823c85b69008b7dd02bde6b71754f58ba9748",
+      "live_sha256": "0d211a5f7a0145406852b3c5ec5823c85b69008b7dd02bde6b71754f58ba9748",
+      "equal": true
+    },
+    {
+      "start": "00cbb060",
+      "end_exclusive": "00cbb08a",
+      "length": 42,
+      "kind": "EH code",
+      "bytes": "8d4d04e93832e3ff8d4df0e93032e3ff8d4d04e92832e3ff8d4df0e92032e3ffb8782fdf00e9b9baf3ff",
+      "disk_sha256": "05731a682c5423d57c2c42c53ed0c6f4286884d0af606c22178c7bdfda5bec8e",
+      "live_sha256": "05731a682c5423d57c2c42c53ed0c6f4286884d0af606c22178c7bdfda5bec8e",
+      "equal": true
+    },
+    {
+      "start": "00df2f10",
+      "end_exclusive": "00df2f44",
+      "length": 52,
+      "kind": "EH metadata",
+      "bytes": "ffffffff20b0cb00ffffffff28b0cb002205931902000000102fdf00000000000000000000000000000000000000000001000000",
+      "disk_sha256": "1aa42cc9eb109d84db87a345035a907e2b543c185d77d3059fc3832197623586",
+      "live_sha256": "1aa42cc9eb109d84db87a345035a907e2b543c185d77d3059fc3832197623586",
+      "equal": true
+    },
+    {
+      "start": "00df2f44",
+      "end_exclusive": "00df2f78",
+      "length": 52,
+      "kind": "EH metadata",
+      "bytes": "ffffffff40b0cb00ffffffff48b0cb002205931902000000442fdf00000000000000000000000000000000000000000001000000",
+      "disk_sha256": "318bdeeaf6b1f26ab58f965b64c27aa485643fa32d5de7731428b2386fbdfc44",
+      "live_sha256": "318bdeeaf6b1f26ab58f965b64c27aa485643fa32d5de7731428b2386fbdfc44",
+      "equal": true
+    },
+    {
+      "start": "00df2f78",
+      "end_exclusive": "00df2fcc",
+      "length": 84,
+      "kind": "EH metadata",
+      "bytes": "22059319060000009c2fdf00000000000000000000000000000000000000000001000000ffffffff60b0cb000000000068b0cb00ffffffff68b0cb00ffffffff70b0cb000300000078b0cb00ffffffff78b0cb00",
+      "disk_sha256": "bb78683747339fa7b82f5f79fa41608b45fcddb97eecd4cbbac76206f9b704df",
+      "live_sha256": "bb78683747339fa7b82f5f79fa41608b45fcddb97eecd4cbbac76206f9b704df",
+      "equal": true
+    },
+    {
+      "start": "00d7a358",
+      "end_exclusive": "00d7a360",
+      "length": 8,
+      "kind": "percentage scale",
+      "bytes": "00000040e17a843f",
+      "disk_sha256": "595700f5c0ba132c9ede02f9ad9a19cffe697fd8fd52890abb10fd78f47d9aa1",
+      "live_sha256": "595700f5c0ba132c9ede02f9ad9a19cffe697fd8fd52890abb10fd78f47d9aa1",
+      "equal": true
+    },
+    {
+      "start": "00d5db34",
+      "end_exclusive": "00d5dc34",
+      "length": 256,
+      "kind": "literal block",
+      "bytes": "57696e6453656e736974697669747900496e6865726974656453706565640000566572746963616c5370656564000000456d6974746572456d697373696f6e005061727469636c65456d697373696f6e00000000426f726e526174696f000000536d61727441726561456d697474657200000000537068657265456d6974746572000000436f6e65456d697474657200e030bd0050a3af008e69bf008e69bf008e69bf008e69bf005065724d6574657200000000506572536563000053746f7073000000466f6c6c6f77446972656374696f6e004c6f6f70696e6700456d6974456d697373696f6e547970650000000050617274456d697373696f6e54797065",
+      "disk_sha256": "ea68de83a02a92eaf46acfda78371f1bbf839d25e5634a59845f776084db8683",
+      "live_sha256": "ea68de83a02a92eaf46acfda78371f1bbf839d25e5634a59845f776084db8683",
+      "equal": true
+    },
+    {
+      "start": "00d0d740",
+      "end_exclusive": "00d0d749",
+      "length": 9,
+      "kind": "Lifetime",
+      "bytes": "4c69666574696d6500",
+      "disk_sha256": "169f6df22b29208a4f57de07c6439d9df18b7f44c6b9ac3ef2553400b2b69456",
+      "live_sha256": "169f6df22b29208a4f57de07c6439d9df18b7f44c6b9ac3ef2553400b2b69456",
+      "equal": true
+    },
+    {
+      "start": "00ce69a4",
+      "end_exclusive": "00ce69aa",
+      "length": 6,
+      "kind": "Speed",
+      "bytes": "537065656400",
+      "disk_sha256": "4f96553dab9e7dc93594bab8fc9fec8ab52ba9bec248b247aedd517b84ac3a86",
+      "live_sha256": "4f96553dab9e7dc93594bab8fc9fec8ab52ba9bec248b247aedd517b84ac3a86",
+      "equal": true
+    }
+  ],
+  "call_sites": [
+    {
+      "function": "00af9d00",
+      "address": "00af9d10",
+      "native": "00bf7fbf",
+      "kind": "direct"
+    },
+    {
+      "function": "00af9d00",
+      "address": "00af9d20",
+      "native": "00afc1b0",
+      "kind": "direct"
+    },
+    {
+      "function": "00af9d00",
+      "address": "00af9d37",
+      "native": "00bf7fbf",
+      "kind": "direct"
+    },
+    {
+      "function": "00af9d00",
+      "address": "00af9d47",
+      "native": "00afbf60",
+      "kind": "direct"
+    },
+    {
+      "function": "00af9d00",
+      "address": "00af9d6a",
+      "native": "00bf7fbf",
+      "kind": "direct"
+    },
+    {
+      "function": "00af9d00",
+      "address": "00af9d7a",
+      "native": "00afbf60",
+      "kind": "direct"
+    },
+    {
+      "function": "00af9d00",
+      "address": "00af9d9d",
+      "native": "00bf7fbf",
+      "kind": "direct"
+    },
+    {
+      "function": "00af9d00",
+      "address": "00af9dad",
+      "native": "00afbf60",
+      "kind": "direct"
+    },
+    {
+      "function": "00af9d00",
+      "address": "00af9dd0",
+      "native": "00bf7fbf",
+      "kind": "direct"
+    },
+    {
+      "function": "00af9d00",
+      "address": "00af9de0",
+      "native": "00afbf60",
+      "kind": "direct"
+    },
+    {
+      "function": "00af9d00",
+      "address": "00af9e02",
+      "native": "00aedf80",
+      "kind": "direct"
+    },
+    {
+      "function": "00af9d00",
+      "address": "00af9e0f",
+      "native": "00afbf60",
+      "kind": "direct"
+    },
+    {
+      "function": "00af9d00",
+      "address": "00af9e31",
+      "native": "00aedf80",
+      "kind": "direct"
+    },
+    {
+      "function": "00af9d00",
+      "address": "00af9e3e",
+      "native": "00afbf60",
+      "kind": "direct"
+    },
+    {
+      "function": "00af9d00",
+      "address": "00af9e60",
+      "native": "00aedf80",
+      "kind": "direct"
+    },
+    {
+      "function": "00af9d00",
+      "address": "00af9e6d",
+      "native": "00afbf60",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa370",
+      "address": "00afa3a2",
+      "native": "0041dd40",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa370",
+      "address": "00afa3bd",
+      "native": "00bf7680",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa370",
+      "address": "00afa3d2",
+      "native": "0041e870",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa370",
+      "address": "00afa3de",
+      "native": "00435c40",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa370",
+      "address": "00afa3f8",
+      "native": "00419cc0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa370",
+      "address": "00afa3ff",
+      "native": "00bd1510",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa370",
+      "address": "00afa41b",
+      "native": "00419cc0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa370",
+      "address": "00afa422",
+      "native": "00bd1510",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa370",
+      "address": "00afa450",
+      "native": "0041e870",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa370",
+      "address": "00afa464",
+      "native": "0041e870",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa370",
+      "address": "00afa46c",
+      "native": "00435c40",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa370",
+      "address": "00afa486",
+      "native": "00419cc0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa370",
+      "address": "00afa48d",
+      "native": "00bd1510",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa370",
+      "address": "00afa4ad",
+      "native": "00419cc0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa370",
+      "address": "00afa4b4",
+      "native": "00bd1510",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa4e0",
+      "address": "00afa512",
+      "native": "0041dd40",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa4e0",
+      "address": "00afa52d",
+      "native": "00bf7680",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa4e0",
+      "address": "00afa542",
+      "native": "0041e870",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa4e0",
+      "address": "00afa54e",
+      "native": "00435c40",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa4e0",
+      "address": "00afa568",
+      "native": "00419cc0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa4e0",
+      "address": "00afa56f",
+      "native": "00bd1510",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa4e0",
+      "address": "00afa58b",
+      "native": "00419cc0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa4e0",
+      "address": "00afa592",
+      "native": "00bd1510",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa4e0",
+      "address": "00afa5c0",
+      "native": "0041e870",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa4e0",
+      "address": "00afa5d4",
+      "native": "0041e870",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa4e0",
+      "address": "00afa5dc",
+      "native": "00435c40",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa4e0",
+      "address": "00afa5f6",
+      "native": "00419cc0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa4e0",
+      "address": "00afa5fd",
+      "native": "00bd1510",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa4e0",
+      "address": "00afa61d",
+      "native": "00419cc0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa4e0",
+      "address": "00afa624",
+      "native": "00bd1510",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa679",
+      "native": "00aee3c0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa686",
+      "native": "00bf7fbf",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa6b2",
+      "native": "00419cc0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa6b9",
+      "native": "00bd1510",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa6cf",
+      "native": "00aee3c0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa6e1",
+      "native": "00af5660",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa70a",
+      "native": "00419cc0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa711",
+      "native": "00bd1510",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa721",
+      "native": "00afa370",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa749",
+      "native": "00419cc0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa750",
+      "native": "00bd1510",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa773",
+      "native": "00aee3c0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa780",
+      "native": "00bf7fbf",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa7b2",
+      "native": "00419cc0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa7b9",
+      "native": "00bd1510",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa7cf",
+      "native": "00aee3c0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa7e3",
+      "native": "00af5660",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa812",
+      "native": "00419cc0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa819",
+      "native": "00bd1510",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa82d",
+      "native": "00afa4e0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa85c",
+      "native": "00aee3c0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa869",
+      "native": "00bf7fbf",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa895",
+      "native": "00419cc0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa89c",
+      "native": "00bd1510",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa8ae",
+      "native": "00aee3c0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa8b6",
+      "native": "00bf8417",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa8d5",
+      "native": "00aee2a0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa8e2",
+      "native": "00aee3c0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa8ef",
+      "native": "00bf7fbf",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa900",
+      "native": "00aee2a0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa912",
+      "native": "00aee3c0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa91a",
+      "native": "00bf8417",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa92e",
+      "native": "00aee2a0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa93d",
+      "native": "00aee3c0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa94a",
+      "native": "00bf7fbf",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa95b",
+      "native": "00aee2a0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa96d",
+      "native": "00aee3c0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa975",
+      "native": "00bf8417",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa650",
+      "address": "00afa989",
+      "native": "00aee2a0",
+      "kind": "direct"
+    },
+    {
+      "function": "00cbb020",
+      "address": "00cbb023",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "ownership": "true unwind funclet"
+    },
+    {
+      "function": "00cbb028",
+      "address": "00cbb02b",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "ownership": "true unwind funclet"
+    },
+    {
+      "function": "00cbb040",
+      "address": "00cbb043",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "ownership": "true unwind funclet"
+    },
+    {
+      "function": "00cbb048",
+      "address": "00cbb04b",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "ownership": "true unwind funclet"
+    },
+    {
+      "function": "00cbb060",
+      "address": "00cbb063",
+      "native": "00aee2a0",
+      "kind": "tail_jump",
+      "ownership": "true unwind funclet"
+    },
+    {
+      "function": "00cbb068",
+      "address": "00cbb06b",
+      "native": "00aee2a0",
+      "kind": "tail_jump",
+      "ownership": "true unwind funclet"
+    },
+    {
+      "function": "00cbb070",
+      "address": "00cbb073",
+      "native": "00aee2a0",
+      "kind": "tail_jump",
+      "ownership": "true unwind funclet"
+    },
+    {
+      "function": "00cbb078",
+      "address": "00cbb07b",
+      "native": "00aee2a0",
+      "kind": "tail_jump",
+      "ownership": "true unwind funclet"
+    }
+  ],
+  "raw_handler_tails": [
+    {
+      "site": "00cbb035",
+      "target": "00bf6b43",
+      "func_info": "00df2f20",
+      "reason": "Verified compiler handler bytes; not manufactured function ownership"
+    },
+    {
+      "site": "00cbb055",
+      "target": "00bf6b43",
+      "func_info": "00df2f54",
+      "reason": "Verified compiler handler bytes; not manufactured function ownership"
+    },
+    {
+      "site": "00cbb085",
+      "target": "00bf6b43",
+      "func_info": "00df2f78",
+      "reason": "Verified compiler handler bytes; not manufactured function ownership"
+    }
+  ],
+  "eh": [
+    {
+      "function": "00afa370",
+      "func_info": "00df2f20",
+      "unwind_map": "00df2f10",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "object": "first_expected",
+          "thunk": "00cbb020"
+        },
+        {
+          "state": 1,
+          "next": -1,
+          "object": "second_expected",
+          "thunk": "00cbb028"
+        }
+      ]
+    },
+    {
+      "function": "00afa4e0",
+      "func_info": "00df2f54",
+      "unwind_map": "00df2f44",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "object": "first_expected",
+          "thunk": "00cbb040"
+        },
+        {
+          "state": 1,
+          "next": -1,
+          "object": "second_expected",
+          "thunk": "00cbb048"
+        }
+      ]
+    },
+    {
+      "function": "00afa650",
+      "func_info": "00df2f78",
+      "unwind_map": "00df2f9c",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "object": "token",
+          "thunk": "00cbb060"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "object": "copy",
+          "thunk": "00cbb068"
+        },
+        {
+          "state": 2,
+          "next": -1,
+          "object": "copy",
+          "thunk": "00cbb068"
+        },
+        {
+          "state": 3,
+          "next": -1,
+          "object": "token",
+          "thunk": "00cbb070"
+        },
+        {
+          "state": 4,
+          "next": 3,
+          "object": "copy",
+          "thunk": "00cbb078"
+        },
+        {
+          "state": 5,
+          "next": -1,
+          "object": "copy",
+          "thunk": "00cbb078"
+        }
+      ]
+    }
+  ],
+  "ownership_notes": [
+    "No outer AF9D00 EH frame",
+    "Enum actual strings are unowned; only expected literals enter state0/1",
+    "AFA650 keywords and numeric tokens unowned; states2/5 drop token ownership before normal token return",
+    "Normal raw getter failures propagate; second exception during true unwind terminates"
+  ],
+  "listing_gaps": [],
+  "prior_ledger_records": {
+    "names": [
+      {
+        "address": "00af9d00",
+        "name": "BSP_ParticleDefinition_LoadBaseParameter",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      {
+        "address": "00afa370",
+        "name": "BSP_ParticleDefinition_SetPartEmissionType",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      {
+        "address": "00afa4e0",
+        "name": "BSP_ParticleDefinition_SetEmitEmissionType",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      {
+        "address": "00afa650",
+        "name": "BSP_ParticleDefinition_LoadFlag",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      }
+    ],
+    "reconstruction": [
+      {
+        "address": "00af9d00",
+        "name": "load_native_particle_base_parameter_00af9d00",
+        "source": "src/native_particle_definition_loading.cpp",
+        "header": "include/bsp/native_particle_definition_loading.hpp",
+        "native_abi": "ECX actual definition; stack pooled-name header, actual10h builder, float scalar; RET0C/AL boolean",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "status": "reconstructed_build_tested_bounded_fixture_tested",
+        "kind": "function"
+      },
+      {
+        "address": "00afa370",
+        "name": "set_native_particle_part_emission_type_00afa370",
+        "source": "src/native_particle_definition_loading.cpp",
+        "header": "include/bsp/native_particle_definition_loading.hpp",
+        "native_abi": "ECX actual definition; one stack argument; RET4; no defined return value",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "status": "reconstructed_build_tested_bounded_fixture_tested",
+        "kind": "function"
+      },
+      {
+        "address": "00afa4e0",
+        "name": "set_native_particle_emit_emission_type_00afa4e0",
+        "source": "src/native_particle_definition_loading.cpp",
+        "header": "include/bsp/native_particle_definition_loading.hpp",
+        "native_abi": "ECX actual definition; one stack argument; RET4; no defined return value",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "status": "reconstructed_build_tested_bounded_fixture_tested",
+        "kind": "function"
+      },
+      {
+        "address": "00afa650",
+        "name": "load_native_particle_definition_flag_00afa650",
+        "source": "src/native_particle_definition_loading.cpp",
+        "header": "include/bsp/native_particle_definition_loading.hpp",
+        "native_abi": "ECX actual definition; one stack argument; RET4; AL boolean, high EAX unspecified",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "status": "reconstructed_build_tested_bounded_fixture_tested",
+        "kind": "function"
+      }
+    ]
+  },
+  "validation": {
+    "status": "strict Win32 build +3 existing CTests +focused complete-original/source comparison passed",
+    "prerequisite_revision": "8ac614494",
+    "fixture_constants": [
+      {
+        "name": "backward_limit",
+        "address": "00ce3928",
+        "bytes": "000000a09999b9bf",
+        "live_disk_match": true,
+        "sha256": "8b1d35c57227e7999ce2ecf0ed34a4269573ec0d8c32e4f4c1578cf211839f57"
+      },
+      {
+        "name": "backward_clamp",
+        "address": "00ce3cb4",
+        "bytes": "cdccccbd",
+        "live_disk_match": true,
+        "sha256": "c0163c2ecd64a0a15ca02ecf8c7aef2d50721774aae0cc1fc14a092fbe999dbb"
+      },
+      {
+        "name": "forward_limit",
+        "address": "00d7a3a0",
+        "bytes": "000000a09999b93f",
+        "live_disk_match": true,
+        "sha256": "3e2a4d232d889625aa1c184b27588b7c6ebdfef18e01332502d986209f65b905"
+      },
+      {
+        "name": "forward_clamp",
+        "address": "00d7a2f0",
+        "bytes": "cdcccc3d",
+        "live_disk_match": true,
+        "sha256": "fb360f7241a770dc32cade9a1d1273c92b13bd4959b1c130931312b7fe95e63f"
+      },
+      {
+        "name": "endpoint_time",
+        "address": "00ce3d08",
+        "bytes": "0000c842",
+        "live_disk_match": true,
+        "sha256": "2238f30df488055daf5e8f362cf904e370011a172d20df193c1b7ae8e5db8e01"
+      },
+      {
+        "name": "endpoint_backward",
+        "address": "00ce65d8",
+        "bytes": "0000c8c2",
+        "live_disk_match": true,
+        "sha256": "a48bed9ee2950cc60ca91386a6c64a241a9ffd24bdc321bb15424ac7a7d3baed"
+      },
+      {
+        "name": "first_time",
+        "address": "00d7a218",
+        "bytes": "00000000",
+        "live_disk_match": true,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      },
+      {
+        "name": "last_time",
+        "address": "00d7a220",
+        "bytes": "0000000000005940",
+        "live_disk_match": true,
+        "sha256": "00754a39f7de30495780d4c6242f680316f56bf4bf735c3681b3ac1d14f1512e"
+      },
+      {
+        "name": "linear_incoming",
+        "address": "00d7a260",
+        "bytes": "000080bf",
+        "live_disk_match": true,
+        "sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b"
+      },
+      {
+        "name": "linear_outgoing",
+        "address": "00d7a24c",
+        "bytes": "0000803f",
+        "live_disk_match": true,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+      },
+      {
+        "name": "tangent_scale",
+        "address": "00cf1450",
+        "bytes": "000000605555d53f",
+        "live_disk_match": true,
+        "sha256": "fc769e0f1228015d80c297e67387e9b628941f4c465164b725acba8e688649b5"
+      },
+      {
+        "name": "default_slope",
+        "address": "00d5dca0",
+        "bytes": "54daae4a",
+        "live_disk_match": true,
+        "sha256": "ccce9affd635bd0e159eedcdbf5783be5174c2e07454e77878633247916d4d86"
+      },
+      {
+        "name": "integral_half",
+        "address": "00d7a280",
+        "bytes": "000000000000e03f",
+        "live_disk_match": true,
+        "sha256": "4cfa5b42ca669328764e67cd9a34bb8f90b16ed7ca8d85e8443783d7ccce15ed"
+      },
+      {
+        "name": "integral_quarter",
+        "address": "00d7a348",
+        "bytes": "000000000000d03f",
+        "live_disk_match": true,
+        "sha256": "272f78036db6721f7cf7444315e5f6360426d14c3d446d6ae8a89ef70d134002"
+      },
+      {
+        "name": "percentage_scale",
+        "address": "00d7a358",
+        "bytes": "00000040e17a843f",
+        "live_disk_match": true,
+        "sha256": "595700f5c0ba132c9ede02f9ad9a19cffe697fd8fd52890abb10fd78f47d9aa1"
+      }
+    ],
+    "not_claimed": [
+      "native getter/allocation failure execution",
+      "native FH3/SEH or secondary exceptions",
+      "installed CRT identity/locale",
+      "physical caller-stack aliases or drop-in register ABI",
+      "gameplay"
+    ],
+    "build": {
+      "command": "./scripts/build.ps1",
+      "existing_ctests": 3,
+      "failures": 0,
+      "log": "local/emitter_helpers_o15_build.log"
+    },
+    "seeds": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "matches_disk": true,
+      "count": 8
+    },
+    "call_verification": {
+      "command": "python tools/verify_report_calls.py reports\\native_particle_emitter_helpers_raw_orch4.json",
+      "function_owned_rows_checked": 93,
+      "failures": 0,
+      "raw_only_handler_tails": 3
+    },
+    "fixture": {
+      "command": "local/build_emitter_helpers_probe.cmd then local/emitter_helpers_probe.exe",
+      "complete_original_bytes": 1987,
+      "comparisons": 27,
+      "exit_code": 0,
+      "redirected_calls": 85,
+      "relocated_literals": 17,
+      "relocated_percentage_operands": 7,
+      "result": "PASS copied-original/source four helpers: 27 comparisons, both enum fields/all names, five flags/unknown and resource+66, eight base properties/unknown, genuine raw string+parameter pools/builder and drain, all4x87 rounding modes (down 3f9e060f up 3f9e0610), late scale alias. Native EH/failure/ABI not executed.",
+      "oracle": "Complete four original bodies retain internal branches; original flag invokes copied original enum bodies. Other calls route to the same genuine raw providers/current CRT.",
+      "providers": "Actual raw string pool+manager+gate; NativeWeakHandlePool over actual pool storage/allocator list; genuine raw builder and runtime conversion",
+      "scope": [
+        "both enum fields and PerSec/PerMeter/unknown",
+        "all five flags and unknown",
+        "Looping resource+66 including false leaves it unchanged",
+        "all eight base property names and unknown",
+        "all owner bytes, string pool bump/live/peak/recursion",
+        "runtime parameter payload including untouched slab index",
+        "real manager/pool drain",
+        "all four x87 rounding modes",
+        "deliberate relocated scale aliases slot+4 to test late volatile load"
+      ],
+      "rounding_bits": {
+        "down": "3f9e060f",
+        "up": "3f9e0610"
+      },
+      "limit": "No native getter/allocation failures, FH3/fault or secondary-unwind cases. Deliberate scale alias is a fixture condition, not the original physical constant layout. Runtime/builder original bodies were validated in prerequisite packets, not recaptured as this fixture oracle."
+    },
+    "sha256": {
+      "src/native_particle_definition_loading.cpp": "5ef289a65322a184bb8b6363880f645bd13a983798c3f7f68f4d75296901e90e",
+      "include/bsp/native_particle_definition_loading.hpp": "9825227a563c525d8e6cc5c9db67769d962c094bedb3a2ffa596f28104ebb194",
+      "local/emitter_helpers_probe.cpp": "167678529ad6fa59dcebf2eb097503f8c662a07c104d93ae35c73609794b559f",
+      "local/emitter_helpers_probe_bodies.inc": "dc581ff4f11117f0028ee92ba32f8943b7c55f8da69855e05fed4b1405d2653f",
+      "local/emitter_helpers_probe_scale.inc": "0cbeee72697f0b7eb9b82aae997436477aaff1462b919ae31209cb47f2e39320",
+      "local/emitter_helpers_probe_constants.inc": "6ae637cefdbd8dbca238e1e83411e8f20898a7628e3c2e79597a6df091cb5712",
+      "local/emitter_helpers_probe_result.log": "0d825a77d394c268542b0c2129c546309258b0d8ee9a7727bef56098a0f4b1ab",
+      "local/emitter_helpers_o15_build.log": "d00c05cdfc8765faeb2657336e1006eff4adc28fa8a48a6874863fa5f701c1a2",
+      "local/emitter_helpers_o15_seeds.log": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "local/build_emitter_helpers_probe.cmd": "d2b05054630998fdc65bcb9faeee79073963e3c782cf2778c2ef13130ad3262e"
+    }
+  }
+}

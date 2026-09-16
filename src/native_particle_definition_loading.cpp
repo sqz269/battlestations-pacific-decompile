@@ -4,9 +4,11 @@
 #include "bsp/native_pooled_text_suffix.hpp"
 #include "bsp/native_particle_definition.hpp"
 #include "bsp/native_particle_parameter_loading.hpp"
+#include "bsp/native_particle_parameter_runtime_loading.hpp"
 #include "bsp/native_pooled_text.hpp"
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_string.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 #include <cstdlib>
 #include <cstring>
 #include <stdexcept>
@@ -325,5 +327,187 @@ bool load_native_particle_sphere_definition_00b02fd0(void* p,void* text,
 bool load_native_particle_smartarea_definition_00b02210(void* p,void* text,
     NativeParticleDefinitionLoadingBindings& b) {
     return load_definition(p,text,smartarea_properties,4,false,b);
+}
+
+namespace {
+struct RawEmitterString { std::uint32_t length; char* data; };
+static_assert(sizeof(RawEmitterString)==8);
+char* raw_text_pointer(const void* header) noexcept {
+    return *static_cast<char* const volatile*>(header);
+}
+char* raw_string_pointer(const RawEmitterString& text) noexcept {
+    return *reinterpret_cast<char* const volatile*>(&text.data);
+}
+std::uint32_t raw_string_length(const RawEmitterString& text) noexcept {
+    return *static_cast<const volatile std::uint32_t*>(&text.length);
+}
+void raw_return_string(char* captured, std::uint32_t size,
+    NativeStringRawPoolContext& strings) {
+    auto* pool=native_string_pool_get_or_create_00419cc0(
+        strings.actual_published_01090aa8,strings.actual_manager_publication_01090aa0);
+    return_native_string_pool_00bd1510(pool,captured,size,
+        strings.actual_small_returns_disabled_01090aa4);
+}
+struct RawEnumUnwind {
+    NativeStringRawPoolContext& strings;
+    void* header=nullptr;
+    ~RawEnumUnwind() noexcept {
+        // DF2F10/DF2F44: state0 ->-1 first literal; state1 ->-1 second
+        // literal. Neither constructed input string has unwind ownership.
+        if(header) destroy_native_string_header_0041dd20(header,strings);
+    }
+};
+void set_raw_emission_type(void* definition,const char* value,std::uint32_t field,
+    NativeStringRawPoolContext& strings) {
+    RawEmitterString first_expected{0,nullptr}, first_actual;
+    RawEnumUnwind unwind{strings};
+    resize_native_string_header_0041dd40(&first_expected,strings,6,true);
+    char* const first_bytes=raw_string_pointer(first_expected);
+    if(first_bytes) std::memmove(first_bytes,"PerSec",raw_string_length(first_expected)+1u);
+    const char* const captured_input=value;
+    unwind.header=&first_expected;
+    void* actual=construct_native_string_header_0041e870(&first_actual,strings,captured_input);
+    const bool per_second=equal_native_string_headers_00435c40(actual,&first_expected);
+    destroy_native_string_header_0041dd20(&first_actual,strings);
+    unwind.header=nullptr; // BEFORE the captured first buffer's current length.
+    if(first_bytes) raw_return_string(first_bytes,raw_string_length(first_expected)+1u,strings);
+    if(per_second) { store<std::uint32_t>(definition,field,0); return; }
+
+    RawEmitterString second_expected, second_actual;
+    void* expected=construct_native_string_header_0041e870(&second_expected,strings,"PerMeter");
+    unwind.header=&second_expected;
+    actual=construct_native_string_header_0041e870(&second_actual,strings,captured_input);
+    const bool per_meter=equal_native_string_headers_00435c40(actual,expected);
+    destroy_native_string_header_0041dd20(&second_actual,strings);
+    char* const second_bytes=raw_string_pointer(second_expected);
+    unwind.header=nullptr;
+    if(second_bytes) raw_return_string(second_bytes,raw_string_length(second_expected)+1u,strings);
+    if(per_meter) store<std::uint32_t>(definition,field,1);
+}
+struct RawFlagUnwind {
+    NativePooledTextStorage& token;
+    NativePooledTextStorage& copied;
+    NativeStringRawPoolContext& strings;
+    int state=-1;
+    ~RawFlagUnwind() noexcept {
+        // DF2F9C: 0->-1 token,1->0 copy,2->-1 copy;
+        // 3->-1 token,4->3 copy,5->-1 copy. States2/5 discard token
+        // ownership BEFORE its normal return. Keyword/numeric tokens unowned.
+        if(state==1 || state==2 || state==4 || state==5) {
+            destroy_native_pooled_text_00aee2a0(&copied,strings);
+            if(state==1) state=0;
+            else if(state==4) state=3;
+            else state=-1;
+        }
+        if(state==0 || state==3) destroy_native_pooled_text_00aee2a0(&token,strings);
+    }
+};
+bool raw_flag_keyword(const void* line,NativePooledTextStorage& token,
+    const char* keyword,bool clear,NativeStringRawPoolContext& strings) {
+    const void* result=get_native_pooled_text_token_00aee3c0(line,&token,0,strings);
+    const bool match=_stricmp(raw_text_pointer(result),keyword)==0;
+    if(clear) destroy_native_pooled_text_00aee2a0(&token,strings);
+    else if(char* captured=raw_text_pointer(&token))
+        release_native_pooled_text_bytes_00aee1e0(captured,strings);
+    return match;
+}
+bool raw_enum_flag(void* definition,const void* line,bool emit,
+    RawFlagUnwind& unwind) {
+    auto& strings=unwind.strings;
+    const void* token=get_native_pooled_text_token_00aee3c0(line,&unwind.token,1,strings);
+    const char* const input=raw_text_pointer(token);
+    unwind.state=emit?3:0;
+    construct_native_pooled_text_00af5660(&unwind.copied,input,strings);
+    char* const token_bytes=raw_text_pointer(&unwind.token);
+    unwind.state=emit?5:2;
+    if(token_bytes) release_native_pooled_text_bytes_00aee1e0(token_bytes,strings);
+    char* const copied_bytes=raw_text_pointer(&unwind.copied);
+    unwind.token.data=nullptr;
+    if(emit) set_native_particle_emit_emission_type_00afa4e0(definition,copied_bytes,strings);
+    else set_native_particle_part_emission_type_00afa370(definition,copied_bytes,strings);
+    unwind.state=-1;
+    if(copied_bytes) release_native_pooled_text_bytes_00aee1e0(copied_bytes,strings);
+    return true;
+}
+void raw_store_first_value(void* destination,const void* builder) {
+    using First=float (__cdecl*)(const void*);
+    First const first=&first_native_particle_parameter_value_00afc1b0;
+    __asm {
+        push builder
+        call first
+        add esp,4
+        mov ecx,destination
+        fstp dword ptr[ecx]
+    }
+}
+void publish_raw_curve(void* definition,std::uint32_t field,void* builder,
+    const float* scalar,NativeParticleParameterRuntimeRawContext& runtime,
+    const volatile double* scale) {
+    void* const curve=convert_native_particle_parameter_00afbf60(builder,runtime);
+    // Retain the pointer, but load its current volatile double only here.
+    // Original stack32 scalar -> FLD32, FMUL64, direct FSTP curve+0.
+    __asm {
+        mov eax,scalar
+        fld dword ptr[eax]
+        mov ecx,scale
+        fmul qword ptr[ecx]
+        mov eax,curve
+        fstp dword ptr[eax]
+    }
+    store(definition,field,curve);
+}
+} // namespace
+
+void set_native_particle_part_emission_type_00afa370(void* p,const char* value,
+    NativeStringRawPoolContext& strings) { set_raw_emission_type(p,value,0x74,strings); }
+void set_native_particle_emit_emission_type_00afa4e0(void* p,const char* value,
+    NativeStringRawPoolContext& strings) { set_raw_emission_type(p,value,0x78,strings); }
+
+bool load_native_particle_definition_flag_00afa650(void* p,const void* line,
+    NativeStringRawPoolContext& strings) {
+    NativePooledTextStorage token,copied;
+    RawFlagUnwind unwind{token,copied,strings};
+    if(raw_flag_keyword(line,token,"PartEmissionType",false,strings))
+        return raw_enum_flag(p,line,false,unwind);
+    if(raw_flag_keyword(line,token,"EmitEmissionType",false,strings))
+        return raw_enum_flag(p,line,true,unwind);
+    if(raw_flag_keyword(line,token,"Looping",false,strings)) {
+        const void* value=get_native_pooled_text_token_00aee3c0(line,&token,1,strings);
+        const bool enabled=std::atol(raw_text_pointer(value))>0;
+        store<std::uint8_t>(p,0x15,static_cast<std::uint8_t>(enabled));
+        if(enabled) store<std::uint8_t>(load<void*>(p,0x10),0x66,1);
+        destroy_native_pooled_text_00aee2a0(&token,strings);
+        return true;
+    }
+    if(raw_flag_keyword(line,token,"FollowDirection",true,strings)) {
+        const void* value=get_native_pooled_text_token_00aee3c0(line,&token,1,strings);
+        store<std::uint8_t>(p,0x1d,static_cast<std::uint8_t>(std::atol(raw_text_pointer(value))>0));
+        destroy_native_pooled_text_00aee2a0(&token,strings);
+        return true;
+    }
+    if(raw_flag_keyword(line,token,"Stops",true,strings)) {
+        const void* value=get_native_pooled_text_token_00aee3c0(line,&copied,1,strings);
+        store<std::uint8_t>(p,0x1c,static_cast<std::uint8_t>(std::atol(raw_text_pointer(value))>0));
+        destroy_native_pooled_text_00aee2a0(&copied,strings);
+        return true;
+    }
+    return false;
+}
+
+bool load_native_particle_base_parameter_00af9d00(void* p,const void* name,
+    void* builder,float scalar,NativeParticleParameterRuntimeRawContext& runtime,
+    const volatile double* scale) {
+    if(_stricmp(raw_text_pointer(name),"BornRatio")==0) {
+        raw_store_first_value(at(p,0x18),builder);
+        return true;
+    }
+    if(_stricmp(raw_text_pointer(name),"Lifetime")==0) { publish_raw_curve(p,0x20,builder,&scalar,runtime,scale); return true; }
+    if(_stricmp(raw_text_pointer(name),"ParticleEmission")==0) { publish_raw_curve(p,0x24,builder,&scalar,runtime,scale); return true; }
+    if(_stricmp(raw_text_pointer(name),"EmitterEmission")==0) { publish_raw_curve(p,0x28,builder,&scalar,runtime,scale); return true; }
+    if(_stricmp(raw_text_pointer(name),"Speed")==0) { publish_raw_curve(p,0x2c,builder,&scalar,runtime,scale); return true; }
+    if(equal_native_pooled_text_00aedf80(name,"VerticalSpeed")) { publish_raw_curve(p,0x30,builder,&scalar,runtime,scale); return true; }
+    if(equal_native_pooled_text_00aedf80(name,"InheritedSpeed")) { publish_raw_curve(p,0x34,builder,&scalar,runtime,scale); return true; }
+    if(equal_native_pooled_text_00aedf80(name,"WindSensitivity")) { publish_raw_curve(p,0x38,builder,&scalar,runtime,scale); return true; }
+    return false;
 }
 } // namespace bsp
