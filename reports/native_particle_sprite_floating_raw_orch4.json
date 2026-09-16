@@ -1,0 +1,774 @@
+{
+  "packet": "native_particle_sprite_floating_raw_orch4",
+  "base_revision": "9f0995f9e",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "documentation": "docs/NATIVE_PARTICLE_SPRITE_FLOATING_RAW_ORCH4.md",
+  "routines": [
+    {
+      "address": "00b08ac0",
+      "body": [
+        "00b08ac0",
+        "00b08f55"
+      ],
+      "bytes": 1174,
+      "instructions": 378,
+      "coverage": "complete",
+      "source_symbol": "load_native_sprite_particle_definition_00b08ac0",
+      "original_abi": "ECX actual definition; stacked actual TextBuffer; RET4/AL true on normal return",
+      "pe_live_match": true,
+      "sha256": "b0cff7209a099856715d18743aab56145c43129c73e1e310df9852de903bc85e",
+      "saved_name": "BSP_SpriteParticleDefinition_Load"
+    },
+    {
+      "address": "00b07d60",
+      "body": [
+        "00b07d60",
+        "00b08202"
+      ],
+      "bytes": 1187,
+      "instructions": 381,
+      "coverage": "complete",
+      "source_symbol": "load_native_floating_particle_definition_00b07d60",
+      "original_abi": "ECX actual definition; stacked actual TextBuffer; RET4/AL true on normal return",
+      "pe_live_match": true,
+      "sha256": "d5cf38092cee1eb6745e40aa880b137289dab62e14f53dd915f93d0db39be699",
+      "saved_name": "BSP_FloatingParticleDefinition_Load"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b08af7",
+      "native": "00af5740",
+      "function": "00b08ac0",
+      "contract": "Existing raw TextBuffer line reader; actual shared scratch, pooled header and current cursor; RET4/AL"
+    },
+    {
+      "address": "00b08b0a",
+      "native": "00bf7fbf",
+      "function": "00b08ac0",
+      "contract": "Current CRT _stricmp; cdecl2, ADD ESP8"
+    },
+    {
+      "address": "00b08b1d",
+      "native": "00af5740",
+      "function": "00b08ac0",
+      "contract": "Existing raw TextBuffer line reader; actual shared scratch, pooled header and current cursor; RET4/AL"
+    },
+    {
+      "address": "00b08b3a",
+      "native": "00bf7fbf",
+      "function": "00b08ac0",
+      "contract": "Current CRT _stricmp; cdecl2, ADD ESP8"
+    },
+    {
+      "address": "00b08b54",
+      "native": "00bf7fbf",
+      "function": "00b08ac0",
+      "contract": "Current CRT _stricmp; cdecl2, ADD ESP8"
+    },
+    {
+      "address": "00b08b6e",
+      "native": "00aee3c0",
+      "function": "00b08ac0",
+      "contract": "Existing raw pooled-token constructor; output/index; RET8"
+    },
+    {
+      "address": "00b08b7b",
+      "native": "00bf7fbf",
+      "function": "00b08ac0",
+      "contract": "Current CRT _stricmp; cdecl2, ADD ESP8"
+    },
+    {
+      "address": "00b08ba9",
+      "native": "00419cc0",
+      "function": "00b08ac0",
+      "contract": "Existing current actual string-pool getter; caller has pushed the later return arguments"
+    },
+    {
+      "address": "00b08bb0",
+      "native": "00bd1510",
+      "function": "00b08ac0",
+      "contract": "Existing actual sized pool return; block/size/unused1; RET12"
+    },
+    {
+      "address": "00b08bce",
+      "native": "00af44c0",
+      "function": "00b08ac0",
+      "contract": "Existing raw pooled-suffix constructor; output/index; RET8"
+    },
+    {
+      "address": "00b08bdb",
+      "native": "00b015c0",
+      "function": "00b08ac0",
+      "contract": "Existing complete raw common property parser and caller-retained child; RET4/AL"
+    },
+    {
+      "address": "00b08c07",
+      "native": "00419cc0",
+      "function": "00b08ac0",
+      "contract": "Existing current actual string-pool getter; caller has pushed the later return arguments"
+    },
+    {
+      "address": "00b08c0e",
+      "native": "00bd1510",
+      "function": "00b08ac0",
+      "contract": "Existing actual sized pool return; block/size/unused1; RET12"
+    },
+    {
+      "address": "00b08c2c",
+      "native": "00aee3c0",
+      "function": "00b08ac0",
+      "contract": "Existing raw pooled-token constructor; output/index; RET8"
+    },
+    {
+      "address": "00b08c41",
+      "native": "00af44c0",
+      "function": "00b08ac0",
+      "contract": "Existing raw pooled-suffix constructor; output/index; RET8"
+    },
+    {
+      "address": "00b08c53",
+      "native": "00aee3c0",
+      "function": "00b08ac0",
+      "contract": "Existing raw pooled-token constructor; output/index; RET8"
+    },
+    {
+      "address": "00b08c5b",
+      "native": "00bfa66c",
+      "function": "00b08ac0",
+      "contract": "Current CRT atof ST0 result; cdecl1, immediate FSTP32 then ADD ESP4"
+    },
+    {
+      "address": "00b08c86",
+      "native": "00419cc0",
+      "function": "00b08ac0",
+      "contract": "Existing current actual string-pool getter; caller has pushed the later return arguments"
+    },
+    {
+      "address": "00b08c8d",
+      "native": "00bd1510",
+      "function": "00b08ac0",
+      "contract": "Existing actual sized pool return; block/size/unused1; RET12"
+    },
+    {
+      "address": "00b08cba",
+      "native": "00419cc0",
+      "function": "00b08ac0",
+      "contract": "Existing current actual string-pool getter; caller has pushed the later return arguments"
+    },
+    {
+      "address": "00b08cc1",
+      "native": "00bd1510",
+      "function": "00b08ac0",
+      "contract": "Existing actual sized pool return; block/size/unused1; RET12"
+    },
+    {
+      "address": "00b08cce",
+      "native": "00afbed0",
+      "function": "00b08ac0",
+      "contract": "Existing raw actual10h builder constructor; kind+C untouched"
+    },
+    {
+      "address": "00b08ce8",
+      "native": "00afc360",
+      "function": "00b08ac0",
+      "contract": "Existing raw builder default endpoint insertion; two float stack args; RET8"
+    },
+    {
+      "address": "00b08cf8",
+      "native": "00af44c0",
+      "function": "00b08ac0",
+      "contract": "Existing raw pooled-suffix constructor; output/index; RET8"
+    },
+    {
+      "address": "00b08d0b",
+      "native": "00af44c0",
+      "function": "00b08ac0",
+      "contract": "Existing raw pooled-suffix constructor; output/index; RET8"
+    },
+    {
+      "address": "00b08d1a",
+      "native": "00afc470",
+      "function": "00b08ac0",
+      "contract": "Existing raw curve text parser; AL ignored by these callers; RET4"
+    },
+    {
+      "address": "00b08d43",
+      "native": "00419cc0",
+      "function": "00b08ac0",
+      "contract": "Existing current actual string-pool getter; caller has pushed the later return arguments"
+    },
+    {
+      "address": "00b08d4a",
+      "native": "00bd1510",
+      "function": "00b08ac0",
+      "contract": "Existing actual sized pool return; block/size/unused1; RET12"
+    },
+    {
+      "address": "00b08d77",
+      "native": "00419cc0",
+      "function": "00b08ac0",
+      "contract": "Existing current actual string-pool getter; caller has pushed the later return arguments"
+    },
+    {
+      "address": "00b08d7e",
+      "native": "00bd1510",
+      "function": "00b08ac0",
+      "contract": "Existing actual sized pool return; block/size/unused1; RET12"
+    },
+    {
+      "address": "00b08d9b",
+      "native": "00b00980",
+      "function": "00b08ac0",
+      "contract": "Existing raw common parameter properties; name/builder/percentage; RET12"
+    },
+    {
+      "address": "00b08da9",
+      "native": "00bf6989",
+      "function": "00b08ac0",
+      "contract": "Current CRT free; cdecl1, ADD ESP4"
+    },
+    {
+      "address": "00b08de7",
+      "native": "00bf7fbf",
+      "function": "00b08ac0",
+      "contract": "Current CRT _stricmp; cdecl2, ADD ESP8"
+    },
+    {
+      "address": "00b08df7",
+      "native": "00afbf60",
+      "function": "00b08ac0",
+      "contract": "Existing actualF8D344 runtime parameter converter; EAX payload"
+    },
+    {
+      "address": "00b08e13",
+      "native": "00bf6989",
+      "function": "00b08ac0",
+      "contract": "Current CRT free; cdecl1, ADD ESP4"
+    },
+    {
+      "address": "00b08e4a",
+      "native": "00419cc0",
+      "function": "00b08ac0",
+      "contract": "Existing current actual string-pool getter; caller has pushed the later return arguments"
+    },
+    {
+      "address": "00b08e51",
+      "native": "00bd1510",
+      "function": "00b08ac0",
+      "contract": "Existing actual sized pool return; block/size/unused1; RET12"
+    },
+    {
+      "address": "00b08e66",
+      "native": "00bf7fbf",
+      "function": "00b08ac0",
+      "contract": "Current CRT _stricmp; cdecl2, ADD ESP8"
+    },
+    {
+      "address": "00b08e7a",
+      "native": "00afbf60",
+      "function": "00b08ac0",
+      "contract": "Existing actualF8D344 runtime parameter converter; EAX payload"
+    },
+    {
+      "address": "00b08e96",
+      "native": "00bf6989",
+      "function": "00b08ac0",
+      "contract": "Current CRT free; cdecl1, ADD ESP4"
+    },
+    {
+      "address": "00b08eb2",
+      "native": "00aee2a0",
+      "function": "00b08ac0",
+      "contract": "Existing raw captured-pointer pooled-text destructor and current header clear"
+    },
+    {
+      "address": "00b08ebe",
+      "native": "00af5740",
+      "function": "00b08ac0",
+      "contract": "Existing raw TextBuffer line reader; actual shared scratch, pooled header and current cursor; RET4/AL"
+    },
+    {
+      "address": "00b08ef2",
+      "native": "00419cc0",
+      "function": "00b08ac0",
+      "contract": "Existing current actual string-pool getter; caller has pushed the later return arguments"
+    },
+    {
+      "address": "00b08ef9",
+      "native": "00bd1510",
+      "function": "00b08ac0",
+      "contract": "Existing actual sized pool return; block/size/unused1; RET12"
+    },
+    {
+      "address": "00b08f1f",
+      "native": "00bf7fbf",
+      "function": "00b08ac0",
+      "contract": "Current CRT _stricmp; cdecl2, ADD ESP8"
+    },
+    {
+      "address": "00b08f33",
+      "native": "00afbf60",
+      "function": "00b08ac0",
+      "contract": "Existing actualF8D344 runtime parameter converter; EAX payload"
+    },
+    {
+      "address": "00b08f47",
+      "native": "00b08870",
+      "function": "00b08ac0",
+      "contract": "Existing raw Sprite Size setter; publish+88 then x87 bound+8C; RET4"
+    },
+    {
+      "address": "00b07d92",
+      "native": "00af5740",
+      "function": "00b07d60",
+      "contract": "Existing raw TextBuffer line reader; actual shared scratch, pooled header and current cursor; RET4/AL"
+    },
+    {
+      "address": "00b07da5",
+      "native": "00bf7fbf",
+      "function": "00b07d60",
+      "contract": "Current CRT _stricmp; cdecl2, ADD ESP8"
+    },
+    {
+      "address": "00b07db8",
+      "native": "00af5740",
+      "function": "00b07d60",
+      "contract": "Existing raw TextBuffer line reader; actual shared scratch, pooled header and current cursor; RET4/AL"
+    },
+    {
+      "address": "00b07dd0",
+      "native": "00bf7fbf",
+      "function": "00b07d60",
+      "contract": "Current CRT _stricmp; cdecl2, ADD ESP8"
+    },
+    {
+      "address": "00b07dea",
+      "native": "00bf7fbf",
+      "function": "00b07d60",
+      "contract": "Current CRT _stricmp; cdecl2, ADD ESP8"
+    },
+    {
+      "address": "00b07e04",
+      "native": "00aee3c0",
+      "function": "00b07d60",
+      "contract": "Existing raw pooled-token constructor; output/index; RET8"
+    },
+    {
+      "address": "00b07e11",
+      "native": "00bf7fbf",
+      "function": "00b07d60",
+      "contract": "Current CRT _stricmp; cdecl2, ADD ESP8"
+    },
+    {
+      "address": "00b07e42",
+      "native": "00419cc0",
+      "function": "00b07d60",
+      "contract": "Existing current actual string-pool getter; caller has pushed the later return arguments"
+    },
+    {
+      "address": "00b07e49",
+      "native": "00bd1510",
+      "function": "00b07d60",
+      "contract": "Existing actual sized pool return; block/size/unused1; RET12"
+    },
+    {
+      "address": "00b07e65",
+      "native": "00af44c0",
+      "function": "00b07d60",
+      "contract": "Existing raw pooled-suffix constructor; output/index; RET8"
+    },
+    {
+      "address": "00b07e72",
+      "native": "00b015c0",
+      "function": "00b07d60",
+      "contract": "Existing complete raw common property parser and caller-retained child; RET4/AL"
+    },
+    {
+      "address": "00b07ea2",
+      "native": "00419cc0",
+      "function": "00b07d60",
+      "contract": "Existing current actual string-pool getter; caller has pushed the later return arguments"
+    },
+    {
+      "address": "00b07ea9",
+      "native": "00bd1510",
+      "function": "00b07d60",
+      "contract": "Existing actual sized pool return; block/size/unused1; RET12"
+    },
+    {
+      "address": "00b07ec5",
+      "native": "00aee3c0",
+      "function": "00b07d60",
+      "contract": "Existing raw pooled-token constructor; output/index; RET8"
+    },
+    {
+      "address": "00b07eda",
+      "native": "00af44c0",
+      "function": "00b07d60",
+      "contract": "Existing raw pooled-suffix constructor; output/index; RET8"
+    },
+    {
+      "address": "00b07eec",
+      "native": "00aee3c0",
+      "function": "00b07d60",
+      "contract": "Existing raw pooled-token constructor; output/index; RET8"
+    },
+    {
+      "address": "00b07ef4",
+      "native": "00bfa66c",
+      "function": "00b07d60",
+      "contract": "Current CRT atof ST0 result; cdecl1, immediate FSTP32 then ADD ESP4"
+    },
+    {
+      "address": "00b07f22",
+      "native": "00419cc0",
+      "function": "00b07d60",
+      "contract": "Existing current actual string-pool getter; caller has pushed the later return arguments"
+    },
+    {
+      "address": "00b07f29",
+      "native": "00bd1510",
+      "function": "00b07d60",
+      "contract": "Existing actual sized pool return; block/size/unused1; RET12"
+    },
+    {
+      "address": "00b07f56",
+      "native": "00419cc0",
+      "function": "00b07d60",
+      "contract": "Existing current actual string-pool getter; caller has pushed the later return arguments"
+    },
+    {
+      "address": "00b07f5d",
+      "native": "00bd1510",
+      "function": "00b07d60",
+      "contract": "Existing actual sized pool return; block/size/unused1; RET12"
+    },
+    {
+      "address": "00b07f6a",
+      "native": "00afbed0",
+      "function": "00b07d60",
+      "contract": "Existing raw actual10h builder constructor; kind+C untouched"
+    },
+    {
+      "address": "00b07f84",
+      "native": "00afc360",
+      "function": "00b07d60",
+      "contract": "Existing raw builder default endpoint insertion; two float stack args; RET8"
+    },
+    {
+      "address": "00b07f94",
+      "native": "00af44c0",
+      "function": "00b07d60",
+      "contract": "Existing raw pooled-suffix constructor; output/index; RET8"
+    },
+    {
+      "address": "00b07fa7",
+      "native": "00af44c0",
+      "function": "00b07d60",
+      "contract": "Existing raw pooled-suffix constructor; output/index; RET8"
+    },
+    {
+      "address": "00b07fb6",
+      "native": "00afc470",
+      "function": "00b07d60",
+      "contract": "Existing raw curve text parser; AL ignored by these callers; RET4"
+    },
+    {
+      "address": "00b07fe2",
+      "native": "00419cc0",
+      "function": "00b07d60",
+      "contract": "Existing current actual string-pool getter; caller has pushed the later return arguments"
+    },
+    {
+      "address": "00b07fe9",
+      "native": "00bd1510",
+      "function": "00b07d60",
+      "contract": "Existing actual sized pool return; block/size/unused1; RET12"
+    },
+    {
+      "address": "00b08016",
+      "native": "00419cc0",
+      "function": "00b07d60",
+      "contract": "Existing current actual string-pool getter; caller has pushed the later return arguments"
+    },
+    {
+      "address": "00b0801d",
+      "native": "00bd1510",
+      "function": "00b07d60",
+      "contract": "Existing actual sized pool return; block/size/unused1; RET12"
+    },
+    {
+      "address": "00b0803a",
+      "native": "00b00980",
+      "function": "00b07d60",
+      "contract": "Existing raw common parameter properties; name/builder/percentage; RET12"
+    },
+    {
+      "address": "00b08048",
+      "native": "00bf6989",
+      "function": "00b07d60",
+      "contract": "Current CRT free; cdecl1, ADD ESP4"
+    },
+    {
+      "address": "00b08087",
+      "native": "00bf7fbf",
+      "function": "00b07d60",
+      "contract": "Current CRT _stricmp; cdecl2, ADD ESP8"
+    },
+    {
+      "address": "00b08097",
+      "native": "00afbf60",
+      "function": "00b07d60",
+      "contract": "Existing actualF8D344 runtime parameter converter; EAX payload"
+    },
+    {
+      "address": "00b080b3",
+      "native": "00bf6989",
+      "function": "00b07d60",
+      "contract": "Current CRT free; cdecl1, ADD ESP4"
+    },
+    {
+      "address": "00b080f2",
+      "native": "00419cc0",
+      "function": "00b07d60",
+      "contract": "Existing current actual string-pool getter; caller has pushed the later return arguments"
+    },
+    {
+      "address": "00b080f9",
+      "native": "00bd1510",
+      "function": "00b07d60",
+      "contract": "Existing actual sized pool return; block/size/unused1; RET12"
+    },
+    {
+      "address": "00b0810e",
+      "native": "00bf7fbf",
+      "function": "00b07d60",
+      "contract": "Current CRT _stricmp; cdecl2, ADD ESP8"
+    },
+    {
+      "address": "00b08122",
+      "native": "00afbf60",
+      "function": "00b07d60",
+      "contract": "Existing actualF8D344 runtime parameter converter; EAX payload"
+    },
+    {
+      "address": "00b0813e",
+      "native": "00bf6989",
+      "function": "00b07d60",
+      "contract": "Current CRT free; cdecl1, ADD ESP4"
+    },
+    {
+      "address": "00b0815b",
+      "native": "00aee2a0",
+      "function": "00b07d60",
+      "contract": "Existing raw captured-pointer pooled-text destructor and current header clear"
+    },
+    {
+      "address": "00b08169",
+      "native": "00af5740",
+      "function": "00b07d60",
+      "contract": "Existing raw TextBuffer line reader; actual shared scratch, pooled header and current cursor; RET4/AL"
+    },
+    {
+      "address": "00b081a2",
+      "native": "00419cc0",
+      "function": "00b07d60",
+      "contract": "Existing current actual string-pool getter; caller has pushed the later return arguments"
+    },
+    {
+      "address": "00b081a9",
+      "native": "00bd1510",
+      "function": "00b07d60",
+      "contract": "Existing actual sized pool return; block/size/unused1; RET12"
+    },
+    {
+      "address": "00b081ce",
+      "native": "00bf7fbf",
+      "function": "00b07d60",
+      "contract": "Current CRT _stricmp; cdecl2, ADD ESP8"
+    },
+    {
+      "address": "00b081e2",
+      "native": "00afbf60",
+      "function": "00b07d60",
+      "contract": "Existing actualF8D344 runtime parameter converter; EAX payload"
+    }
+  ],
+  "eh_maps": [
+    {
+      "address": "00df3ab8",
+      "sha256": "39d6f41a1ffbd9ff53b7a1ece2f8f46bf54029f850b34e18398e9ddf398ad97e",
+      "entries": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cbb8f0"
+        },
+        {
+          "state": 1,
+          "previous": 0,
+          "action": "00cbb8f8"
+        },
+        {
+          "state": 2,
+          "previous": 0,
+          "action": "00cbb900"
+        },
+        {
+          "state": 3,
+          "previous": 2,
+          "action": "00cbb908"
+        },
+        {
+          "state": 4,
+          "previous": 2,
+          "action": "00cbb910"
+        },
+        {
+          "state": 5,
+          "previous": 4,
+          "action": "00cbb918"
+        },
+        {
+          "state": 6,
+          "previous": 5,
+          "action": "00cbb920"
+        }
+      ]
+    },
+    {
+      "address": "00df3b6c",
+      "sha256": "e39c180c8d162adfa7f450f72ffefc7a48f9f1c1f9e2f0b3398bd162b69f6d94",
+      "entries": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cbb980"
+        },
+        {
+          "state": 1,
+          "previous": 0,
+          "action": "00cbb988"
+        },
+        {
+          "state": 2,
+          "previous": 0,
+          "action": "00cbb990"
+        },
+        {
+          "state": 3,
+          "previous": 2,
+          "action": "00cbb998"
+        },
+        {
+          "state": 4,
+          "previous": 2,
+          "action": "00cbb9a0"
+        },
+        {
+          "state": 5,
+          "previous": 4,
+          "action": "00cbb9a8"
+        },
+        {
+          "state": 6,
+          "previous": 5,
+          "action": "00cbb9b0"
+        }
+      ]
+    }
+  ],
+  "previous_ledger_records": [
+    {
+      "ledger": "reconstruction",
+      "record": {
+        "address": "00b07d60",
+        "source": "src/native_particle_type_loading.cpp",
+        "header": "include/bsp/native_particle_type_loading.hpp",
+        "evidence": "AQ reconstruction: descriptive hypothesis, not a recovered symbol. Complete installed/live-equal byte span, original register/stack inputs and RET verified. Actual native definition, pooled text, builder and parameter domains; same current globals and CRT. Curve bound kernels retain original x87 spills, comparisons and polynomial order. Sprite Size caches an upper bound rather than the value at zero. See docs/NATIVE_PARTICLE_TYPE_LOADING.md and reports/native_particle_type_loading.json. New C++ bindings, not original FH3 ABI or gameplay proof.",
+        "name": "load_native_floating_particle_definition_00b07d60",
+        "status": "reconstructed_build_tested_bounded_fixture_tested",
+        "native_abi": "ECX actual Floating definition; stack actual TextBuffer; RET4/AL",
+        "kind": "function"
+      }
+    },
+    {
+      "ledger": "reconstruction",
+      "record": {
+        "address": "00b08ac0",
+        "source": "src/native_particle_type_loading.cpp",
+        "header": "include/bsp/native_particle_type_loading.hpp",
+        "evidence": "AQ reconstruction: descriptive hypothesis, not a recovered symbol. Complete installed/live-equal byte span, original register/stack inputs and RET verified. Actual native definition, pooled text, builder and parameter domains; same current globals and CRT. Curve bound kernels retain original x87 spills, comparisons and polynomial order. Sprite Size caches an upper bound rather than the value at zero. See docs/NATIVE_PARTICLE_TYPE_LOADING.md and reports/native_particle_type_loading.json. New C++ bindings, not original FH3 ABI or gameplay proof.",
+        "name": "load_native_sprite_particle_definition_00b08ac0",
+        "status": "reconstructed_build_tested_bounded_fixture_tested",
+        "native_abi": "ECX actual Sprite definition; stack actual TextBuffer; RET4/AL",
+        "kind": "function"
+      }
+    },
+    {
+      "ledger": "names",
+      "record": {
+        "address": "00b07d60",
+        "name": "BSP_FloatingParticleDefinition_Load",
+        "evidence": "AQ reconstruction: descriptive hypothesis, not a recovered symbol. Complete installed/live-equal byte span, original register/stack inputs and RET verified. Actual native definition, pooled text, builder and parameter domains; same current globals and CRT. Curve bound kernels retain original x87 spills, comparisons and polynomial order. Sprite Size caches an upper bound rather than the value at zero. See docs/NATIVE_PARTICLE_TYPE_LOADING.md and reports/native_particle_type_loading.json. New C++ bindings, not original FH3 ABI or gameplay proof."
+      }
+    },
+    {
+      "ledger": "names",
+      "record": {
+        "address": "00b08ac0",
+        "name": "BSP_SpriteParticleDefinition_Load",
+        "evidence": "AQ reconstruction: descriptive hypothesis, not a recovered symbol. Complete installed/live-equal byte span, original register/stack inputs and RET verified. Actual native definition, pooled text, builder and parameter domains; same current globals and CRT. Curve bound kernels retain original x87 spills, comparisons and polynomial order. Sprite Size caches an upper bound rather than the value at zero. See docs/NATIVE_PARTICLE_TYPE_LOADING.md and reports/native_particle_type_loading.json. New C++ bindings, not original FH3 ABI or gameplay proof."
+      }
+    }
+  ],
+  "validation": {
+    "body_bytes": 2361,
+    "body_instructions": 759,
+    "call_rows": 93,
+    "full_pe_live_match": true,
+    "build": "PASS full scripts/build.ps1 Release MSVC Win32",
+    "fixture": "PASS: 8 copied-original/source parser pairs across 4 x87 rounding modes; 2 complete native bodies, 93 direct relocations; Const/Linear/Hermite, explicit unknown-kind residue, percentage stores, Sprite bound vs Floating size, normalized text cursor, full pool byte accounting; 2 source property failures retain child frames and unwind headers.",
+    "existing_ctests": "PASS3/3: reconstructed_math, native_math_differential, tool_tests",
+    "strict_compile": "PASS /std:c++20 /W4 /WX /EHsc /MD /O2 /fp:strict",
+    "call_validation": "93 rows checked,0failed",
+    "original_direct_relocations": 93,
+    "original_parser_pairs": 8,
+    "source_failure_cases": 2,
+    "rounding_modes": 4,
+    "native_abi_compatible": false,
+    "game_validated": false,
+    "fixture_boundary": "Two complete copied original parsers call the same genuine raw source providers via93ABI adapters; original normal parser code executes, original child bodies/CRT/FH3 transport do not. Defined output words/segments/cursor/builder residue/pool bytes compared; x87 status/EFLAGS not compared.",
+    "source_failure_boundary": "Texture branch with missing actual provider context fails explicitly; retained property child and caller header unwind verified. No failing real texture-cache acquisition fixture.",
+    "receipts": {
+      "local\\sprite_floating_probe.cpp": "62e89ff209fdd2aa99b5b3047df611c684380a07de395427d929062b8aee4923",
+      "local\\sprite_floating_originals.inc": "a46de831ad6e085f044372962a074a11c1b2436a404de714b367a0a4790aa88d",
+      "local\\sprite_floating_probe_compile.log": "14a1c7c688a9c104f70d3c40249d15180f61cdd97300aa86245a4a9504070973",
+      "local\\sprite_floating_probe_run.log": "59be6a1e1322f9756faf4dba5a50d4af0dfb977965e24a8f29de0747ce4ebe2d",
+      "local\\sprite_floating_build.log": "bbe6a6d0a69eca0e2995ecb582dd16c7a01bb7beecc9979bb6ce17cd93baa438"
+    }
+  },
+  "corrections": [
+    {
+      "was": "Existing typed host parsers could appear sufficient for actual raw property/provider composition",
+      "is": "New complete raw overloads use real raw pool/text/builder/runtime/common providers and caller-retained property children whose referenced headers survive failure",
+      "evidence": "NativeParticleSpriteFloatingRawContext/Acquired; full two-body flow and seven-state FH3 maps"
+    }
+  ],
+  "limits": [
+    "New source ABI; not original FH3/SEH/private stack alias/general-register/CRT/fault identity.",
+    "Retain caller-owned operation storage and failed provider children until existing obligations resolve.",
+    "No gameplay or installed-game execution claim."
+  ],
+  "ownership": {
+    "operation": "caller retains Acquired until failed child obligations resolved; no destructor rollback",
+    "storage": "actual headers and10h builder precede optional property child; stable through child teardown",
+    "completed_children": "optional.emplace replaces only completed earlier invocation without allocation",
+    "builder_residue": "explicit initial kind+C then reuse across lines; pointer/count/capacity clearing leaves kind untouched",
+    "normal_final_line": "state-1 before captured return; header left stale",
+    "unarmed": "key and percentage tokens have no local unwind state",
+    "scale_capture": "CURRENT percentage-scale pointer read only after actual runtime conversion"
+  }
+}
