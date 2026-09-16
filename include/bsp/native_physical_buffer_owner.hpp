@@ -11,7 +11,9 @@ namespace bsp {
 struct NativePhysicalBufferOwnerContext {
     NativeStringStorage& actual_string_storage;
     NativeResourceSupportStorage* volatile& actual_support_0108fedc;
-    SingletonLifetimeDomain& actual_lifetime_01090aa0;
+    // Raw mode borrows the same application's support and AA0 cells; existing
+    // semantic callers retain their original domain through the adapter.
+    NativeResourceSupportLifetime actual_lifetime_01090aa0;
     void* actual_index_pool_0108fda8;
     void* actual_vertex_pool_0108fde0;
 };

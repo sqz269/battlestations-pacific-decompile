@@ -33,7 +33,8 @@ void begin(NativeMeshBufferReadContext& context, NativeMeshBufferReadAcquired& a
         &s.vertices.actual_synchronization_0108d6dc == &s.mapping.actual_synchronization_0108d6dc &&
         &s.vertices.actual_physical == &s.indices.lifetime.actual_physical &&
         &s.vertices.actual_physical_profiles == &s.mapping.actual_physical_profiles &&
-        &s.vertices.actual_physical.actual_lifetime_01090aa0 == &s.mapping.actual_physical_lock.actual_lifetime_01090aa0 &&
+        s.vertices.actual_physical.actual_lifetime_01090aa0.borrows_same_domain(
+            s.mapping.actual_physical_lock.actual_lifetime_01090aa0) &&
         s.vertices.actual_renderer_profile_00d5f0a8 == s.indices.actual_renderer_profile_00d5f0a8 &&
         s.vertices.actual_type_sizes_00d61cc0 == context.graphics.declarations.declarations.type_sizes_00d61cc0 &&
         &context.graphics.declarations.strings == &context.graphics.declarations.declarations.strings,
