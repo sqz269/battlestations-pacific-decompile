@@ -52,3 +52,23 @@ gap was repaired by the parent; the prior receipt remains in the archive.
 Exact byte/call/EH receipts, fresh strict build, focused genuine raw manager
 registration/drain validation and immutable archive are recorded in
 `reports/native_frame_clock_lifetime_r36.json` when validation closes.
+
+## R36 component validation
+
+Fresh strict MSVC Win32 /MD /W4 /WX /fp:strict build and all three existing
+CTests pass. One ignored manifested probe constructs actual80h clocks through
+the real QPC/QPF initializer, registers them in real raw14h managers, and drains
+through the exact shared deletion entry. Its CRT-free observer forwards to the
+real imported free and verifies root stamping, cleared AB0, released guard and
+live manager at clock free. Eight source/copied-native scalar calls cover low
+flags bit0 with 0/1/100h/101h; compiled scalar36 matches after just two rel32
+relocations. There is no native-copy proof of the two C++ base bodies or ctor.
+
+Two scoped Win32-import observers forward actual Enter/LeaveCriticalSection,
+changing the actual publication values during entry to verify captured first
+section versus current second manager/current clock reloads. A fixture-only
+installed SDK invalid-parameter handler throws a real C++ exception during
+registration: cleanup releases the guard and stamps root, while retaining the
+published allocation and leaving derived fields untouched. This is an ordinary
+source-exception check, not original FH3/SEH or init-failure execution proof.
+All observers are restored; no production callback or owner binding is added.
