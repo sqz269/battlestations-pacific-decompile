@@ -2899,5 +2899,125 @@
     "bytes": 358508336,
     "all_entries_rehashed": true,
     "scope": "Full current source/build compiler input/output closure and actual record/registry/capability/lock fixture and native/link evidence. Seven same-process physical I386 modules; no active command runtime proof."
+  },
+  "primary_integration": {
+    "source_commit": "8f3f8111697e1904b6e2934b07ec11a0c6a249c2",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "fixture_rerun_after_integration": false,
+    "archive": "local/evidence-r62/renderer-cleanup-main-r62.zip",
+    "sha256": "17a8c4e5a1923225e19e83049012d92c40c741e563dab01a8cb21d6aff6e4f83",
+    "files": [
+      {
+        "path": "local/r62_integration.log",
+        "bytes": 2591,
+        "sha256": "3d3490d41048690599c59ccd178506123a3ce0a77f3e463f86202e655c61b14e"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 151962,
+        "sha256": "a745ebcdc45d429aa5e0801a5dc2c825de9b0bb6f3063263bd6191dfd4634482"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 231923,
+        "sha256": "9eb9ad768def2f499b6d8f5e0398b59f95294aadc5d31eb22fbf19785bf67c2a"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63789718,
+        "sha256": "256457507b5091929e467c03dd9f3d09851e286c7a7c4db2638745f3cf5eed45"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2269184,
+        "sha256": "255fce89535a8e7ad896b708e591c012240deba6c3ef188e713bbb900fcb0d47"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2408,
+        "sha256": "8309fb70c9afdf3f6087565ab396b503826cbc52ce3b9d06e710a8576ea621eb"
+      },
+      {
+        "path": "local/renderer_cleanup_r62/call_gate.log",
+        "bytes": 86,
+        "sha256": "fe19392a837602bb1ca420df36e65aa434b2cf2556564996a7dc0d8e8838980d"
+      },
+      {
+        "path": "local/renderer_cleanup_r62/annotations.log",
+        "bytes": 719,
+        "sha256": "ed3f630917d8dd4aebdaae7f4d068db41b66234b9cc5dca5416c89e832a4b2f7"
+      },
+      {
+        "path": "local/renderer_cleanup_r62/exports.log",
+        "bytes": 1299,
+        "sha256": "313432cbbc5dca8d7c2f0afda07f44314071e6f5cacb534853a5724ccc8e9325"
+      },
+      {
+        "path": "src/native_renderer_parent_member_cleanup.cpp",
+        "bytes": 2733,
+        "sha256": "8482b8f0c037b6ad58de91f443c9afc1005fc71f3c1fec2b432b581bbd6b8f8e"
+      },
+      {
+        "path": "include/bsp/native_renderer_parent_member_cleanup.hpp",
+        "bytes": 1717,
+        "sha256": "a5b26956edadf4ed62bb4c5da7f618ab7ffbc572abe427b5ba8a138c8f7184d0"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_parent_member_cleanup.obj",
+        "bytes": 6065,
+        "sha256": "b26089087a3ed292a73bb8f00467811e8d563b1f62a7bbbcc5228e8ac50737e4"
+      },
+      {
+        "path": "src/native_effect_registry_destroy.cpp",
+        "bytes": 4488,
+        "sha256": "3ff78b2e3a107a1ea7b0a7a253fdedbbc53ee4b780e4f04b4a79ac07e36d09f2"
+      },
+      {
+        "path": "include/bsp/native_effect_registry_destroy.hpp",
+        "bytes": 2868,
+        "sha256": "ac462febfb33c60167c618533c2e24673fa05c59d76cce47c641ecfa114a803a"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_effect_registry_destroy.obj",
+        "bytes": 16409,
+        "sha256": "5b4d458412b883900aa92985171569d7e38fd3c2232222e1584726c5c8062dfc"
+      },
+      {
+        "path": "src/native_material_effect_cache.cpp",
+        "bytes": 20949,
+        "sha256": "d881c76ca80e2b61142ebaeeea281c941499bc8c3273e42afb3b05d285289e98"
+      },
+      {
+        "path": "include/bsp/native_material_effect_cache.hpp",
+        "bytes": 5853,
+        "sha256": "3fe74fa562bf64176c898ea86048ed1d618df04afcb5401fa16dca54cbe914b8"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_material_effect_cache.obj",
+        "bytes": 39029,
+        "sha256": "ef65e3534c9f76083ae2013aaef1340b6bf7b6f5fa7a90379af603d03c8c1ada"
+      },
+      {
+        "path": "src/native_renderer_cache_cleanup.cpp",
+        "bytes": 7897,
+        "sha256": "3de7e55978f7f8a43b6cae152ed6d2eef7b84737b498f84ab71550d0fafe9d2f"
+      },
+      {
+        "path": "include/bsp/native_renderer_cache_cleanup.hpp",
+        "bytes": 3401,
+        "sha256": "c6f292980d073b4f3b43fc71f910f8a3a136e1660eea47289087f287f02edb7f"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_cache_cleanup.obj",
+        "bytes": 23247,
+        "sha256": "8ee76786547d5f6ffbb6c391829a92350add6a60ade2dbd127f6e479a809c568"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T185738Z.json",
+        "bytes": 30477,
+        "sha256": "0ff3dbc7dae4973b91668653e574b405413289433262f095039ff14873eb213b"
+      }
+    ]
   }
 }
