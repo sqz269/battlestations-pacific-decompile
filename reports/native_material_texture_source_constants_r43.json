@@ -1,0 +1,249 @@
+{
+  "packet": "native_material_texture_source_constants_r43",
+  "status": "complete_source_exact_machine_bytes_strict_build_scoped_alias_fixture_checked",
+  "baseline": "0fe3a50a406f740b355d433c180c39ae0a6dfd97",
+  "source_historical_commit": "a6b2884f2",
+  "historical_pair_byte_identical": true,
+  "native": {
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "spans": [
+      {
+        "address": "00c302f0",
+        "length": 19,
+        "hex": "83791400740a8b41088b49108b0481c333c0c3",
+        "sha256": "1c32489e590cada7ddfc0f1e864d830c29d5be4d29b2f72a68cd503d115e13fd"
+      },
+      {
+        "address": "00bbcc40",
+        "length": 103,
+        "hex": "8b5424088a421e3cff568b7424147428f30f1041300fb6c0c1e0048d4430040f28c8f30f1140040f57c0f30f1108f30f114008f30f11400c8a521f80faff74238d41200fb6ca8b10c1e1048d4c310489118b50048951048b50088951088b400c89410c5ec21400",
+        "sha256": "85f81b9659df77033306c5a01d0fd5b253952aa28b113e7f8f67520c5d57c2b6"
+      },
+      {
+        "address": "00bbcbd0",
+        "length": 3,
+        "hex": "c21400",
+        "sha256": "596494f50350462943d59d32bfc675a2c3e2e9a6aa0d0606422e3cbbffd86c6b"
+      }
+    ]
+  },
+  "linked_source": {
+    "pe": "local/texture_constants_r43_probe.exe",
+    "spans": [
+      {
+        "address": "00401740",
+        "length": 19,
+        "hex": "83791400740a8b41088b49108b0481c333c0c3",
+        "sha256": "1c32489e590cada7ddfc0f1e864d830c29d5be4d29b2f72a68cd503d115e13fd",
+        "native_address": "00c302f0"
+      },
+      {
+        "address": "004016c0",
+        "length": 103,
+        "hex": "8b5424088a421e3cff568b7424147428f30f1041300fb6c0c1e0048d4430040f28c8f30f1140040f57c0f30f1108f30f114008f30f11400c8a521f80faff74238d41200fb6ca8b10c1e1048d4c310489118b50048951048b50088951088b400c89410c5ec21400",
+        "sha256": "85f81b9659df77033306c5a01d0fd5b253952aa28b113e7f8f67520c5d57c2b6",
+        "native_address": "00bbcc40"
+      },
+      {
+        "address": "00401730",
+        "length": 3,
+        "hex": "c21400",
+        "sha256": "596494f50350462943d59d32bfc675a2c3e2e9a6aa0d0606422e3cbbffd86c6b",
+        "native_address": "00bbcbd0"
+      }
+    ]
+  },
+  "native_calls": 0,
+  "validation": {
+    "strict_build": true,
+    "ctests_passed": 3,
+    "linked_all_125_bytes_equal_original": true,
+    "fixture": "Copied original bodies with no relocations; direct source vs original getters and whole256B arenas, including overlappingcolor and VSindexwrite aliases. Shore genuine RET14 body checked. No permanenttests added.",
+    "getter": "Zero count avoids invalid index/array. Positive and signed-negative nonzero count both read current frame, exactly as native.",
+    "caustics": "Normal separated bank plus forward color overlap and post-scale reload of shadercolorindex. Same original store/read schedule retained.",
+    "shore": "All five original stackarguments popped; no effect on supplied arena.",
+    "original_ABI_limit": "Exact admitted function bodies only; no whole caller/object register/exception state claim."
+  },
+  "archive": {
+    "path": "local/evidence-r43/texture-source-constants-r43.zip",
+    "sha256": "5000d60d999a57d5d0d1c4366074743ef0789404d70893e8062d3b43ef3df607",
+    "files": [
+      {
+        "path": "include/bsp/native_material_texture_source_constants.hpp",
+        "bytes": 855,
+        "sha256": "e4f34abafe81f6f5da92b5bdd7a8f8455ed49a02186404df6defa220c6d574d4"
+      },
+      {
+        "path": "src/native_material_texture_source_constants.cpp",
+        "bytes": 1614,
+        "sha256": "4feee5ff7d5d435e1604369bbe77c1c1b59103c1499da160963152720ec27523"
+      },
+      {
+        "path": "docs/NATIVE_MATERIAL_TEXTURE_SOURCE_CONSTANTS_R43.md",
+        "bytes": 1290,
+        "sha256": "d29e9500dd5ad9350376e55b1bfc7ed46f008d66e1f1d069e5e624cebe695664"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 149583,
+        "sha256": "c8a13827c36f05e4235dd316467a875cc5e61baf65b7d3095be2a56f7ce9069d"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 229567,
+        "sha256": "eeb84b472efe65293d2dd8f3d4791c7b0a350fa2dbdde52dd990b631f9a48f7a"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_material_texture_source_constants.obj",
+        "bytes": 1197,
+        "sha256": "86ae68e4377895fbb99789a117226665fd3161c5491d65db2070bbb7c5aba617"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63449866,
+        "sha256": "26c22fae0552fde65718fd00307634ea96bf3c8ecbfb3335f25ec2e909e59ed5"
+      },
+      {
+        "path": "local/texture_constants_r43_probe.cpp",
+        "bytes": 4367,
+        "sha256": "2b16c0fc93bf1e2fc8449e4eb085ba6430ce8096f8ed07794c5f1194e741020b"
+      },
+      {
+        "path": "local/texture_constants_r43_probe.obj",
+        "bytes": 16178,
+        "sha256": "a4b25185930649f71710b4a463f3738d417ccd99f90cebb42c1a87b197f5a6da"
+      },
+      {
+        "path": "local/texture_constants_r43_probe.exe",
+        "bytes": 12800,
+        "sha256": "6d0047616e801f75fc261c866c7954929415965061a1e4abcbe84dfd8c732b45"
+      },
+      {
+        "path": "local/texture_constants_r43_probe.map",
+        "bytes": 30321,
+        "sha256": "8cc7dbd175189adafa7f4becb0654d253642f2b7bcf2185daf565e8d0bcab717"
+      },
+      {
+        "path": "local/texture_constants_original_r43.hpp",
+        "bytes": 617,
+        "sha256": "7e6c12ed804b2dde56ca9e0ef43d36c3b8108180b52c3571b11048af87bb867d"
+      },
+      {
+        "path": "local/build_texture_constants_r43_probe.cmd",
+        "bytes": 479,
+        "sha256": "9f2854cdcdbb1c03af76b9f1a9d79d089eacd44319a2c626f3b6917a30cde1a9"
+      },
+      {
+        "path": "local/r43_texture_constants_proto.txt",
+        "bytes": 2392,
+        "sha256": "d9fbbbbcd986ea6f960130a13f0ee97b8ffbf1010b7efa25584904f8c27ea065"
+      },
+      {
+        "path": "local/r43_texture_constants_getter_bytes.txt",
+        "bytes": 102,
+        "sha256": "48b824efa5218d64ec7dadf74f2476367574bc644e83ad293800fe6fa4c26c15"
+      },
+      {
+        "path": "local/r43_texture_constants_caustics_bytes.txt",
+        "bytes": 503,
+        "sha256": "8672709a25b0c10ec340453fb845d84a9b5169e6b58954f1d0422ebb1e09877c"
+      },
+      {
+        "path": "local/r43_texture_constants_shore_bytes.txt",
+        "bytes": 25,
+        "sha256": "fbe1c5d0d3fbd86db80a59a11846f7ef6aea6f1a8c4a5d4ece85fa138d5473d5"
+      },
+      {
+        "path": "local/r43_texture_constants_native_spans.json",
+        "bytes": 936,
+        "sha256": "b92f7424d2d146ab8f5b8c468b4908fa61101aaac0101df0d2e37cf7d6b914e6"
+      },
+      {
+        "path": "local/r43_texture_constants_linked_spans.json",
+        "bytes": 1007,
+        "sha256": "a85d1f483e3f98dcd10d7094ec52a78424a8d80fc14503e189f54cbeab1927e4"
+      },
+      {
+        "path": "local/r43_texture_constants_build.log",
+        "bytes": 2603,
+        "sha256": "9c8904855e0532a7f455a43e6bb9b6e41c2293afd429217b9197091245d48a42"
+      },
+      {
+        "path": "local/r43_texture_constants_probe_build.log",
+        "bytes": 1430,
+        "sha256": "26415539d759742b4dbc808863d3dbf4358247a32f57b8269babb177c8161819"
+      },
+      {
+        "path": "local/r43_texture_constants_probe_run.log",
+        "bytes": 127,
+        "sha256": "bfe459fc25819c76d929296c6b630f1bc4d944e94a032e2445e75797dadf6f8a"
+      },
+      {
+        "path": "local/r43_texture_constants_annotations.log",
+        "bytes": 325,
+        "sha256": "24abdc6ddbcf3caf3ab56c91c3dd79cd9b50ed9533f979f3851bbb47f3476a16"
+      },
+      {
+        "path": "local/r43_texture_constants_exports.log",
+        "bytes": 308,
+        "sha256": "2fe272cb1dde9f9d2f4b5ee510bfa6583f8889f7b717ded3945adfadc668b7bb"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T123729Z.json",
+        "bytes": 9940,
+        "sha256": "0044219834e7cb207cbca12480045076a4fd42500929b6779ed973cb1606ab4d"
+      }
+    ]
+  },
+  "annotations": {
+    "prior": [
+      {
+        "address": "00bbcbd0",
+        "before": {
+          "address": "00bbcbd0",
+          "function_name": "BSP_ShoreWaveTextureSource_IgnoreShaderConstants",
+          "comment": "[BSP reconstruction 00bbcbd0]\nHypothesis, not a recovered symbol. Actual shore-wave source D644B4 virtual30 is literal RET14 with all inputs unused. This is the recovered complete empty body. Integrated code 8b2e79df passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed.\n\n[BSP reconstruction 00bbcbd0] update\nHypothesis, not a recovered symbol. Actual shore-wave source D644B4 virtual30 is literal RET14 with all inputs unused. This is the recovered complete empty body. Integrated code 8b2e79df passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed. | Hypothesis, not a recovered symbol. Actual shore-wave source D644B4 virtual30 is literal RET14 with all inputs unused. This is the recovered complete empty body. Integrated code 7da09ce9 passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed."
+        },
+        "after": {
+          "address": "00bbcbd0",
+          "name": "BSP_ShoreWaveTextureSource_IgnoreShaderConstants",
+          "evidence": "R43 exact historical a6b2884f2 texture-source constants pair adopted. C302F0 tests count14 nonzero, reads current index08/array10, returns borrowed texture; BBCC40 preserves VSbyte1E/1F live reads, FFskip, scale store order and DWORD-by-DWORD color reload/store alias effects into same VSheader+4 bank; BBCBD0 is original RET14 no-op, not a fabricated stub. All original19/103/3B bodies fully assembly-reviewed, freshGhidra/PE125B identical. Linked source body spans in fresh probe PE are byte-identical to all125 original bytes, without relocations. Strict MSVCWin32 /MD /W4 /WX /fp:strict build/3CTests pass. Ignored focused original/source fixture covers zero/nonzero/currenttexture, fullarena normalcaustics, forward overlapping color writes, shadercolorindex mutated by earlier scale writes, and genuine shore no-op. No new owner/bank/fullrenderer activation. No full caller/object ABI, originalFH3/SEH or gameplay claim. reports/native_material_texture_source_constants_r43.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bbcc40",
+        "before": {
+          "address": "00bbcc40",
+          "function_name": "BSP_CausticsTextureSource_WriteVertexConstants",
+          "comment": "[BSP reconstruction 00bbcc40]\nHypothesis, not a recovered symbol. Actual caustics source D64478 virtual30 writes VS constants at bytes1E/1F using caller bank header+4. Preserve MOVSS replication and ordered raw color DWORDs; entry/PS/PSheader unused, RET14. Original/source provider compared on actual factory owner. Integrated code 8b2e79df passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed.\n\n[BSP reconstruction 00bbcc40] update\nHypothesis, not a recovered symbol. Actual caustics source D64478 virtual30 writes VS constants at bytes1E/1F using caller bank header+4. Preserve MOVSS replication and ordered raw color DWORDs; entry/PS/PSheader unused, RET14. Original/source provider compared on actual factory owner. Integrated code 8b2e79df passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed. | Hypothesis, not a recovered symbol. Actual caustics source D64478 virtual30 writes VS constants at bytes1E/1F using caller bank header+4. Preserve MOVSS replication and ordered raw color DWORDs; entry/PS/PSheader unused, RET14. Original/source provider compared on actual factory owner. Integrated code 7da09ce9 passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed."
+        },
+        "after": {
+          "address": "00bbcc40",
+          "name": "BSP_CausticsTextureSource_WriteVertexConstants",
+          "evidence": "R43 exact historical a6b2884f2 texture-source constants pair adopted. C302F0 tests count14 nonzero, reads current index08/array10, returns borrowed texture; BBCC40 preserves VSbyte1E/1F live reads, FFskip, scale store order and DWORD-by-DWORD color reload/store alias effects into same VSheader+4 bank; BBCBD0 is original RET14 no-op, not a fabricated stub. All original19/103/3B bodies fully assembly-reviewed, freshGhidra/PE125B identical. Linked source body spans in fresh probe PE are byte-identical to all125 original bytes, without relocations. Strict MSVCWin32 /MD /W4 /WX /fp:strict build/3CTests pass. Ignored focused original/source fixture covers zero/nonzero/currenttexture, fullarena normalcaustics, forward overlapping color writes, shadercolorindex mutated by earlier scale writes, and genuine shore no-op. No new owner/bank/fullrenderer activation. No full caller/object ABI, originalFH3/SEH or gameplay claim. reports/native_material_texture_source_constants_r43.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c302f0",
+        "before": {
+          "address": "00c302f0",
+          "function_name": "BSP_TextureSource_GetCurrentFrameTexture",
+          "comment": "[BSP reconstruction 00c302f0]\nHypothesis, not a recovered symbol. Actual animated texture source current-frame getter: zero count+14 returns null; otherwise current+10 array indexed by+08. No retain or index check. Actual BBC6F0/BBC810 source factories used in provider fixture. Integrated code 8b2e79df passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed.\n\n[BSP reconstruction 00c302f0] update\nHypothesis, not a recovered symbol. Actual animated texture source current-frame getter: zero count+14 returns null; otherwise current+10 array indexed by+08. No retain or index check. Actual BBC6F0/BBC810 source factories used in provider fixture. Integrated code 8b2e79df passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed. | Hypothesis, not a recovered symbol. Actual animated texture source current-frame getter: zero count+14 returns null; otherwise current+10 array indexed by+08. No retain or index check. Actual BBC6F0/BBC810 source factories used in provider fixture. Integrated code 7da09ce9 passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed."
+        },
+        "after": {
+          "address": "00c302f0",
+          "name": "BSP_TextureSource_GetCurrentFrameTexture",
+          "evidence": "R43 exact historical a6b2884f2 texture-source constants pair adopted. C302F0 tests count14 nonzero, reads current index08/array10, returns borrowed texture; BBCC40 preserves VSbyte1E/1F live reads, FFskip, scale store order and DWORD-by-DWORD color reload/store alias effects into same VSheader+4 bank; BBCBD0 is original RET14 no-op, not a fabricated stub. All original19/103/3B bodies fully assembly-reviewed, freshGhidra/PE125B identical. Linked source body spans in fresh probe PE are byte-identical to all125 original bytes, without relocations. Strict MSVCWin32 /MD /W4 /WX /fp:strict build/3CTests pass. Ignored focused original/source fixture covers zero/nonzero/currenttexture, fullarena normalcaustics, forward overlapping color writes, shadercolorindex mutated by earlier scale writes, and genuine shore no-op. No new owner/bank/fullrenderer activation. No full caller/object ABI, originalFH3/SEH or gameplay claim. reports/native_material_texture_source_constants_r43.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "status": "All existingnames retained and rawsource rows appended; saved and exports refreshed."
+  },
+  "limits": [
+    "Texture-source lifecycle, owning shader/material/pass and fullrenderer composition not executed.",
+    "Original FH3/SEH and gameplay not validated."
+  ]
+}
