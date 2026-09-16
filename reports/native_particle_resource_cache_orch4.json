@@ -1,6 +1,6 @@
 {
   "packet": "orch4_particle_cache_h8",
-  "status": "complete_source_waiting_for_genuine_record_dependency_build",
+  "status": "complete_source_strict_win32_and_focused_original_source_probe_passed",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
@@ -25,7 +25,7 @@
         "calls": []
       },
       "reconstructed": true,
-      "build_tested": false,
+      "build_tested": true,
       "abi_compatible": false,
       "game_validated": false
     },
@@ -58,7 +58,7 @@
         ]
       },
       "reconstructed": true,
-      "build_tested": false,
+      "build_tested": true,
       "abi_compatible": false,
       "game_validated": false
     },
@@ -91,7 +91,7 @@
         ]
       },
       "reconstructed": true,
-      "build_tested": false,
+      "build_tested": true,
       "abi_compatible": false,
       "game_validated": false
     },
@@ -118,7 +118,7 @@
         ]
       },
       "reconstructed": true,
-      "build_tested": false,
+      "build_tested": true,
       "abi_compatible": false,
       "game_validated": false
     },
@@ -151,7 +151,7 @@
         ]
       },
       "reconstructed": true,
-      "build_tested": false,
+      "build_tested": true,
       "abi_compatible": false,
       "game_validated": false
     },
@@ -190,7 +190,7 @@
         ]
       },
       "reconstructed": true,
-      "build_tested": false,
+      "build_tested": true,
       "abi_compatible": false,
       "game_validated": false
     },
@@ -223,7 +223,7 @@
         ]
       },
       "reconstructed": true,
-      "build_tested": false,
+      "build_tested": true,
       "abi_compatible": false,
       "game_validated": false
     },
@@ -250,7 +250,7 @@
         ]
       },
       "reconstructed": true,
-      "build_tested": false,
+      "build_tested": true,
       "abi_compatible": false,
       "game_validated": false
     },
@@ -283,7 +283,7 @@
         ]
       },
       "reconstructed": true,
-      "build_tested": false,
+      "build_tested": true,
       "abi_compatible": false,
       "game_validated": false
     },
@@ -340,7 +340,7 @@
         ]
       },
       "reconstructed": true,
-      "build_tested": false,
+      "build_tested": true,
       "abi_compatible": false,
       "game_validated": false
     }
@@ -1572,8 +1572,50 @@
       "indirect_rows": 10,
       "indirect_calls": "captured from bytes; verifier deliberately does not prove dynamic target identities"
     },
-    "strict_win32": "pending real record dependency integration",
-    "focused_probe": "pending",
+    "strict_win32": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "tests": [
+        {
+          "name": "reconstructed_math",
+          "passed": true
+        },
+        {
+          "name": "tool_tests",
+          "passed": true
+        }
+      ],
+      "log": "local/particle_cache_h8/strict_build.log"
+    },
+    "focused_probe": {
+      "passed": true,
+      "path": "local/particle_cache_h8/particle_cache_probe.cpp",
+      "command": "local/particle_cache_h8/build_particle_cache_probe.cmd",
+      "manifest": "/link /MANIFEST:EMBED",
+      "log": "local/particle_cache_h8/probe.log",
+      "original_executed_entries": [
+        "00871bd0",
+        "00871400",
+        "00871420",
+        "0086ba10"
+      ],
+      "checks": [
+        "Original/source guarded raw18h publication, manager registration and section recursion0 on return; fast path stable identity",
+        "Original/source atomic increment wrap7FFFFFFF->80000000; decrement1->0 reaches current resource slot0",
+        "Original/source self-key overwrites header without returning previous pointer; nonempty MiXeD copy uses real raw pool",
+        "Source resource slot0 throws after changing current cache count; genuine vector cleanup runs; outer base clears publication and stamps CE3818; original exception is preserved"
+      ],
+      "rebindings": [
+        "Original getter publication references bind fixture actual cell; manager lookup returns actual raw manager; allocation/registration use genuine source CRT/raw registration",
+        "Original atomic IAT sites bind Win32 Interlocked wrappers; original key calls bind genuine raw string resize and overlap-capable copy"
+      ],
+      "limits": [
+        "Original getter normal paths only; original FH3 handlers not invoked",
+        "No OOM/fault or second-exception execution test",
+        "Native identities are not a relocated complete callable resource-cache vtable",
+        "No whole-loader or gameplay validation"
+      ]
+    },
     "original_abi": false,
     "gameplay": false
   },
@@ -1583,5 +1625,54 @@
     "C++ source uses raw actual manager/publication/string pool and original record provider",
     "No resource loader, acquire wrapper, host map, alternate Lua owner or unresolved callback interface",
     "Original FH3/SEH identity, hardware fault cleanup, CRT domain and stack-spill alias behavior are unvalidated"
+  ],
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "dependency_integration": {
+    "records_commit": "75211eccbe5df0da1f4a9afeeb45be3d5d4e3cc7",
+    "parent_main": "92cdebd69",
+    "worker_merge": "951c48403",
+    "provider": "src/native_particle_resource_records.cpp and genuine raw alias-list overloads"
+  },
+  "artifacts": [
+    {
+      "path": "src/native_particle_resource_cache.cpp",
+      "sha256": "f2b15bbbe40ca6b69228fc73d7d8833393aab34bd41006a540e0b3db2a494b86",
+      "bytes": 6589
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "sha256": "644c5ab7be16c3bfec0d20d22f3968a319d20dbfa693074c3e911f86a26bd983",
+      "bytes": 61436836
+    },
+    {
+      "path": "build/win32/Release/bsp_game.exe",
+      "sha256": "118b38adfd99a66eb638bd914cb53b5e8c5dd7243ef7f532fac35660a1a5c0e6",
+      "bytes": 2224640
+    },
+    {
+      "path": "local/particle_cache_h8/particle_cache_probe.exe",
+      "sha256": "b869e66851a6abef42b5e11c7b8fb1de5a68bc3c11645c856b9ab61247c6812a",
+      "bytes": 29696
+    },
+    {
+      "path": "local/particle_cache_h8/particle_cache_probe.cpp",
+      "sha256": "ebe667aeac41687b48a0884f6151c97fa9fe3023c541a37d006a07df0f9e2837",
+      "bytes": 7230
+    },
+    {
+      "path": "local/particle_cache_h8/strict_build.log",
+      "sha256": "af71ff581574a1ee22b4d0548d59de285950d45fee37da2f24f44bb25b1ce3ca",
+      "bytes": 54486
+    },
+    {
+      "path": "local/particle_cache_h8/probe.log",
+      "sha256": "783040e2ac143a29b4e2d536586c51a034e14e0e21d0051ad92dd5ac8107d727",
+      "bytes": 140
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_particle_resource_cache.obj",
+      "sha256": "5a718bbed6688744ac2d2efa34053c2074271210523b2826b5adc4e6f5f410e2",
+      "bytes": 12780
+    }
   ]
 }

@@ -114,4 +114,17 @@ saved-program memory, with SHA256 retained. Source uses actual raw record/string
 and singleton providers; there is no host map, replacement Lua owner, or injected
 unimplemented loader. Strict-build and call-row results are recorded separately
 in the report. Original register ABI, callable profile relocation, exact FH3/CRT
-identity, complete cache acquisition and gameplay remain unvalidated.
+identity, complete cache acquisition and gameplay remain unvalidated. The cache
+and string contexts must borrow the same application manager publication.
+
+After integrating the genuine record prerequisite `75211eccbe5`, the plain
+`./scripts/build.ps1` passed both existing CTests (`reconstructed_math` and
+`tool_tests`). The focused temporary probe linked the resulting `bsp_core.lib`
+and passed original/source raw singleton publication and registration, section
+depth restoration, atomic wrap and zero-release dispatch, plus normal and
+self-alias key copying through the real raw string pool. A source-only exception
+case let resource slot0 change the current record count and throw; the actual
+record/vector cleanup propagated that exception and the outer base cleared
+publication and stamped CE3818. Original EH execution, OOM/fault cases and second
+exception termination were not dynamically tested. Probe source, build/run logs,
+and artifact hashes are referenced in the report; no permanent test was added.
