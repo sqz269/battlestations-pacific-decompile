@@ -151,8 +151,13 @@ void read_native_animation_channel_00b8aad0(void* item, void* handle,
         void* const destination = at(channel, 8);
         if (destination != returned_name) {
             resize_native_string_header_0041dd40(destination, context.strings, word(returned_name), true);
-            if (word(returned_name))
-                std::memcpy(pointer(word(destination, 4)), pointer(word(returned_name, 4)), word(destination));
+            if (word(returned_name)) {
+                // B8AB56/58/5B read count, source data, destination data in order.
+                const U count = word(destination);
+                const void* const source_data = pointer(word(returned_name, 4));
+                void* const destination_data = pointer(word(destination, 4));
+                std::memcpy(destination_data, source_data, count);
+            }
         }
     } catch (...) {
         try { destroy_native_string_header_0041dd20(name, context.strings); }
