@@ -105,12 +105,14 @@ are now reconstructed. See `NATIVE_PARTICLE_LAYER_READER_ORCH4.md`,
 `NATIVE_PARTICLE_PREPARATION_RAW_ORCH4.md` for their original-code comparisons
 and explicit source-interface limits.
 
-The complete AF4BA0 resource parser remains absent. Its AF9FB0 emitter factory
-and three emitter parsers still require full raw-provider composition, including
-nested B00CE0 particle construction/parsing and property/resource domains.
-Existing host-binding implementations and named functions do not close these
-contracts. The 86BA60 resource-loader body remains dependent on that whole parser;
-no placeholder stands in for either missing body.
+The complete AF4BA0 resource parser remains absent. Its AF9FB0 emitter factory,
+three emitter parsers, nested B00CE0 particle factory and all five particle
+parsers are now concrete raw compositions. Property/texture, parameter-bound,
+and Object model-resource helpers are present in the same actual domains.
+The registered emitter cycle passed strict Win32 compilation, three CTests,
+and18 complete caller-body comparisons with nested loading. See the current
+frontier in `NATIVE_PARTICLE_RESOURCE_LOADING_ORCH4.md` for source and fixture
+limits. The86BA60 loader still depends on the whole AF4BA0 parser.
 
 Both audited flow defects were repaired and saved under the write lock:
 AF5850's AF58FB..AF590C failure tail and AF5620's AF5630..AF5632 stack adjustment.
@@ -143,6 +145,11 @@ and artifact hashes are referenced in the report; no permanent test was added.
 Additional raw dependencies are now reconstructed: AFBF60 runtime conversion,
 the four emitter constructors, seven particle constructors, four emitter
 parameter/enum/flag helpers, and the shader/Layer-name helpers. Their evidence
-is linked from `NATIVE_PARTICLE_RESOURCE_LOADING_ORCH4.md`. AF4BA0 and 86BA60
-remain blocked on full nested parser/property/resource composition; completing
-these companion interfaces does not establish a runnable particle system.
+is linked from `NATIVE_PARTICLE_RESOURCE_LOADING_ORCH4.md`. AF4BA0 and86BA60
+remain to be composed. Complete acquisition/release also needs context
+threading:871420 still reaches the string-only AF4280 resource destructor,
+and Object's AF8A40 still reaches the old AF8940 model-clear overload. The
+same actual parameter pool and resource-container references must reach those
+existing raw companions. AFA100 also needs its current terminal dispatch to
+recognize all three derived emitter profiles and their existing scalar deleters.
+No runnable particle system or gameplay is claimed.

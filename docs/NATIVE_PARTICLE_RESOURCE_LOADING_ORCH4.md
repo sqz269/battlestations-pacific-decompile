@@ -76,22 +76,36 @@ all five proven particle profiles with their genuine methods and actual string
 pool; see `NATIVE_PARTICLE_PREPARATION_RAW_ORCH4.md`.
 
 The full AF4BA0 resource parser and dependent 86BA60 loader remain absent.
-AF9FB0's three emitter parser targets (B03EC0, B02FD0, B02210), nested B00CE0
-particle parsers, and property/resource ownership domains still require complete
-raw composition. The B01150 base and six derived particle constructors now have concrete raw
-companions with the actual string pool, record storage and named D3DX import;
-see `NATIVE_PARTICLE_TYPE_CONSTRUCTION_RAW_ORCH4.md`. The four emitter
-constructors are also complete through raw storage; see
-`NATIVE_PARTICLE_EMITTER_CONSTRUCTION_ORCH4.md`.
-Object resource loading must compose the existing VFS/name-resolution, resource
-manager/cache and actual renderer/model ownership domains. Generic callbacks or
-known function names do not establish those contracts or gameplay readiness.
+Their AF9FB0 emitter factory, all three emitter parser targets (B03EC0, B02FD0,
+B02210), B00CE0 particle factory and all five particle parsers now have concrete
+raw compositions. These use the actual raw constructors, strings, builder and
+parameter pools. See `NATIVE_PARTICLE_SPHERE_RAW_ORCH4.md`,
+`NATIVE_PARTICLE_CONE_RAW_ORCH4.md`, `NATIVE_PARTICLE_SMARTAREA_RAW_ORCH4.md`,
+`NATIVE_PARTICLE_EMITTER_FACTORY_RAW_ORCH4.md`, and
+`NATIVE_PARTICLE_TYPE_FACTORY_RAW_ORCH4.md`. The registered cycle passed the
+strict Win32 build, three existing CTests, and18 complete parser comparisons
+including nested emitters and Sprite. These fixtures bridge original caller
+bodies to genuine source children; they do not prove full application loading.
 
 The runtime parameter converter and the four emitter parameter/enum/flag helpers
 are now complete raw compositions; see `NATIVE_PARTICLE_PARAMETER_RUNTIME_RAW_ORCH4.md`
 and `NATIVE_PARTICLE_EMITTER_HELPERS_RAW_ORCH4.md`. The three particle shader
 setters and consumed Layer-name lookup are also complete; see
-`NATIVE_PARTICLE_SHADER_LAYER_RAW_ORCH4.md`. These do not close B01350/B015C0
-texture/property loading: raw atlas/frame-name helpers, parameter-bound helpers,
-and real texture/model services still need composition before the five nested
-particle parsers and full resource parser can be connected.
+`NATIVE_PARTICLE_SHADER_LAYER_RAW_ORCH4.md`. B01350/B015C0 texture/property
+loading, atlas/frame-name helpers, parameter-bound helpers and Object model
+resource helpers are also now concrete raw compositions. See
+`NATIVE_PARTICLE_TEXTURE_RAW_ORCH4.md`,
+`NATIVE_PARTICLE_TYPE_PROPERTY.md`, and
+`NATIVE_PARTICLE_OBJECT_RESOURCES_RAW_ORCH4.md`. Texture cache misses and
+successful Object numbered-file acquisition retain their documented fixture
+limits. Unknown particle kind still reaches an emitter record-creation slot
+with an incompatible observed stack contract; the raw factory records this
+target and stops at an explicit boundary.
+
+Three additional lifetime connections remain before complete acquisition/release
+can be claimed: cache release still reaches the string-only AF4280 overload,
+Object destruction still reaches the old AF8940 overload, and AFA100's current
+terminal dispatch omits the three derived emitter profiles. These must carry
+the same parameter pool and resource-container reference domains through the
+real lifetime chain and reach the existing derived scalar deleters. Runtime
+VFS/context installation, original FH3/SEH/ABI and gameplay remain separate work.

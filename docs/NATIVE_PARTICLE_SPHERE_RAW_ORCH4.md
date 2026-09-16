@@ -54,7 +54,8 @@ native FH3, SEH, fault, or CRT exception identity.
 
 All 2,245 body bytes, 130 action/handler bytes, and 156 FuncInfo/map bytes match
 the installed PE and live saved program. The report enumerates every direct
-call and EH tail and preserves the earlier host-composition record.
+call and EH tail. The earlier host-composition ledger record remains under its
+distinct symbol; the raw implementation adds a separate record.
 
 One ignored shared probe compares all three complete original emitter parser
 bodies with source: 18 pairs cover every common and shape-specific property,
