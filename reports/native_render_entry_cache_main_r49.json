@@ -1,0 +1,574 @@
+{
+  "status": "reviewed_historical_source_adopted_build_tested_focused_component_fixture",
+  "created_utc": "2026-09-16T13:56:43.303798+00:00",
+  "packet": "native_render_entry_cache_main_r49",
+  "source_commit": "a7fae4cf830d3f7986cb6dbc3511f665056c7d83",
+  "source_parent_baseline": "bfc176c6b",
+  "adoption": {
+    "historical_commit": "9ed3a6de77995315a41980b6941cdcee4fb4e22b",
+    "header_sha256": "827a16a594dbba5e509c8153a966bbeb1a05ebeb4ca0c933febf1633c7b192cc",
+    "source_sha256": "f53fb7e6e79cc58002dd039403c03e7ee8f690ab7cb84c062ca7553bb4aaee87",
+    "historical_header_sha256": "827a16a594dbba5e509c8153a966bbeb1a05ebeb4ca0c933febf1633c7b192cc",
+    "historical_source_sha256": "f53fb7e6e79cc58002dd039403c03e7ee8f690ab7cb84c062ca7553bb4aaee87",
+    "header_and_source_byte_identical": true,
+    "historical_report": {
+      "path": "local/native-render-entry-cache-main-r49/historical/native_render_entry_cache.json",
+      "bytes": 58643,
+      "sha256": "6fca208e821da5df662c87d365fc23e0275c2c59a206875402308a7e60745f91"
+    },
+    "historical_doc": {
+      "path": "local/native-render-entry-cache-main-r49/historical/NATIVE_RENDER_ENTRY_CACHE.md",
+      "bytes": 8964,
+      "sha256": "6c58d67de6e0449d5c4345d55dc1769bcc820a9c53cdc73e25a44cdd8ea2177b"
+    },
+    "historical_fixture_source": {
+      "path": "local/native-render-entry-cache-main-r49/historical/device_effect_probe.cpp",
+      "bytes": 42913,
+      "sha256": "ed46b286f4237b6cd3c37aba6f17157ea4de2c48a1f04a28a7fd5b67e3f8c1bb"
+    },
+    "immutable_historical_archive_verification": {
+      "archive": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\local\\checkpoints\\0ca920c7\\native-render-entry-cache",
+      "validation_sha256": "1a2fd0c640d113df03ddf7c8c133126809b76cf903c71c07f2a002ea37079895",
+      "manifest_sha256": "63845c7f7f1bedfd264449b741fa108d13fe4b0db99f3a214d37c26d88e4bb76",
+      "artifact_count": 5049,
+      "artifact_bytes": 595451380,
+      "all_frozen_artifacts_match": true
+    },
+    "historical_fixture_boundary": "retained and verified as provenance; not reported as the current focused fixture"
+  },
+  "native_evidence": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "installed_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "machine": "0x014c",
+    "total_span_bytes": 795,
+    "all_live_ghidra_bytes_equal_installed_pe": true,
+    "spans": [
+      {
+        "start": "00bebf00",
+        "length": 39,
+        "sha256": "4824475a24b6d8b067f066d519320f11ce64ca22567cd307430518200122c58c",
+        "live_equals_installed_pe": true,
+        "instruction_count": 11,
+        "calls": [],
+        "hex": "0f57c08bc133c9f30f1100f30f114014f30f10054ca2d70089480889480c894810f30f114018c3",
+        "source_symbol": "initialize_native_render_entry_00bebf00",
+        "behavior": "Initialize selected fields in one 28h record and preserve the remaining fields.",
+        "kind": "function",
+        "end_exclusive": "00bebf27"
+      },
+      {
+        "start": "00bec240",
+        "length": 10,
+        "sha256": "e74511a9ae745a98c66be3eda107a3f202c02e3527ae663903e9bd0cb60e6def",
+        "live_equals_installed_pe": true,
+        "instruction_count": 5,
+        "calls": [
+          {
+            "site": "00bec243",
+            "target": "00bf6989",
+            "operand": "0xbf6989"
+          }
+        ],
+        "hex": "8b0150e841a7000059c3",
+        "source_symbol": "destroy_native_render_entry_array_00bec240",
+        "behavior": "Free current array data and leave the raw header fields unchanged.",
+        "kind": "function",
+        "end_exclusive": "00bec24a"
+      },
+      {
+        "start": "00bec3e0",
+        "length": 154,
+        "sha256": "888ec947b5c396015b66687b838f4dd50b5c2262e51c9e86cf67b235e4ca5cbc",
+        "live_equals_installed_pe": true,
+        "instruction_count": 52,
+        "calls": [
+          {
+            "site": "00bec416",
+            "target": "00bf6989",
+            "operand": "0xbf6989"
+          },
+          {
+            "site": "00bec435",
+            "target": "00bf55be",
+            "operand": "0xbf55be"
+          },
+          {
+            "site": "00bec458",
+            "target": "00403560",
+            "operand": "0x403560"
+          }
+        ],
+        "hex": "64a1000000006aff68eb73cc005064892500000000558b6c241456578bf98b47043bc574618b0750c7470400000000c7470800000000e86ea5000083c40485ed744133c98bc5ba28000000f7e20f90c1f7d90bc851e8849100008bf083c4048974241c85f6c74424140000000074106800bfbe00556a2856e8037181ffeb0233f68937896f088b4c240c5f5e64890d000000005d83c40cc20400",
+        "source_symbol": "resize_native_render_entry_array_00bec3e0",
+        "behavior": "Compare request to used+4; rebuild on mismatch; zero retains the freed stale pointer.",
+        "kind": "function",
+        "end_exclusive": "00bec47a"
+      },
+      {
+        "start": "00bec590",
+        "length": 145,
+        "sha256": "46bb43b73455a8b62cfafafe6b7af6c56f9cc088adbac62e0f02ac62ee40ef3c",
+        "live_equals_installed_pe": true,
+        "instruction_count": 40,
+        "calls": [
+          {
+            "site": "00bec5be",
+            "target": "00415350",
+            "operand": "0x415350"
+          },
+          {
+            "site": "00bec5d7",
+            "target": null,
+            "operand": "dword ptr [0xce2218]"
+          },
+          {
+            "site": "00bec5ec",
+            "target": "00415350",
+            "operand": "0x415350"
+          },
+          {
+            "site": "00bec5fa",
+            "target": "00bd0c30",
+            "operand": "0xbd0c30"
+          },
+          {
+            "site": "00bec608",
+            "target": null,
+            "operand": "dword ptr [0xce2210]"
+          }
+        ],
+        "hex": "6aff681074cc0064a100000000506489250000000083ec0c56578bf9897c2408c744241c00000000c707bc8cd600e88d8d82ff8b701085f6c744240cfc37ce0089742410740b56ff151822ce0083461801c644241c01893d88fe0801e85f8d82ff8b0d88fe0801518bc8e83146feff85f6740b834618ff56ff151022ce008b4c24148bc75f5e64890d0000000083c418c3",
+        "source_symbol": "publish_native_render_entry_cache_base_00bec590",
+        "behavior": "Publish/register through the captured first section and reloaded manager/publication.",
+        "kind": "function",
+        "end_exclusive": "00bec621"
+      },
+      {
+        "start": "00bec630",
+        "length": 153,
+        "sha256": "0aa6d03a277e63853289c6654c4a81861c2e1c93bd289f13a09d186411945fd9",
+        "live_equals_installed_pe": true,
+        "instruction_count": 40,
+        "calls": [
+          {
+            "site": "00bec65e",
+            "target": "00415350",
+            "operand": "0x415350"
+          },
+          {
+            "site": "00bec677",
+            "target": null,
+            "operand": "dword ptr [0xce2218]"
+          },
+          {
+            "site": "00bec686",
+            "target": "00415350",
+            "operand": "0x415350"
+          },
+          {
+            "site": "00bec694",
+            "target": "00bcfca0",
+            "operand": "0xbcfca0"
+          },
+          {
+            "site": "00bec6ac",
+            "target": null,
+            "operand": "dword ptr [0xce2210]"
+          }
+        ],
+        "hex": "6aff683074cc0064a100000000506489250000000083ec0c56578bf9897c2408c707bc8cd600c744241c00000000e8ed8c82ff8b701085f6c744240cfc37ce0089742410740b56ff151822ce0083461801c644241c01e8c58c82ff8b0d88fe0801518bc8e80736feffc70588fe08010000000085f6740b834618ff56ff151022ce008b4c2414c7071838ce005f5e64890d0000000083c418c3",
+        "source_symbol": "destroy_native_render_entry_cache_base_00bec630",
+        "behavior": "Unregister current publication, clear FE88, leave captured section, destroy base.",
+        "kind": "function",
+        "end_exclusive": "00bec6c9"
+      },
+      {
+        "start": "00bec6f0",
+        "length": 30,
+        "sha256": "9457543553a38722ca67cdc17fe2db921681c5195381ffe9a2ebb91c74881317",
+        "live_equals_installed_pe": true,
+        "instruction_count": 11,
+        "calls": [
+          {
+            "site": "00bec6f3",
+            "target": "00bec630",
+            "operand": "0xbec630"
+          },
+          {
+            "site": "00bec700",
+            "target": "00bf65ac",
+            "operand": "0xbf65ac"
+          }
+        ],
+        "hex": "568bf1e838fffffff644240801740956e8a79e000083c4048bc65ec20400",
+        "source_symbol": "delete_native_render_entry_cache_base_00bec6f0",
+        "behavior": "Destroy base and free the owner when flags bit zero is set.",
+        "kind": "function",
+        "end_exclusive": "00bec70e"
+      },
+      {
+        "start": "00bec870",
+        "length": 110,
+        "sha256": "3b9fbbaa28ff660c0678b5cd5bac7cf8fba931a91016cc551aa1bedbd8cbbe34",
+        "live_equals_installed_pe": true,
+        "instruction_count": 35,
+        "calls": [
+          {
+            "site": "00bec88e",
+            "target": "00bec590",
+            "operand": "0xbec590"
+          },
+          {
+            "site": "00bec8b3",
+            "target": "00bf6989",
+            "operand": "0xbf6989"
+          },
+          {
+            "site": "00bec8c3",
+            "target": "00bd1860",
+            "operand": "0xbd1860"
+          }
+        ],
+        "hex": "6aff685374cc0064a100000000506489250000000051568bf15789742408e8fdfcffffc706c08cd6008b460833ff85c0897c2414897e0474158b460450897e08897e0ce8d1a0000083c404897e0cc644241402e8984ffeff8b4c240c8946105f8bc65e64890d0000000083c410c3",
+        "source_symbol": "construct_native_render_entry_cache_00bec870",
+        "behavior": "Publish base, capture old count before pointer clear, preserve old capacity when count is zero, allocate section last.",
+        "kind": "function",
+        "end_exclusive": "00bec8de"
+      },
+      {
+        "start": "00bec8e0",
+        "length": 37,
+        "sha256": "25a3b7c4228adb3219e27d08767abe7ced61aaf323ae0164aac0d664efe436fd",
+        "live_equals_installed_pe": true,
+        "instruction_count": 12,
+        "calls": [
+          {
+            "site": "00bec8ec",
+            "target": "0041cc80",
+            "operand": "0x41cc80"
+          },
+          {
+            "site": "00bec8f5",
+            "target": "00bf6989",
+            "operand": "0xbf6989"
+          }
+        ],
+        "hex": "568bf18d4e10c706c08cd600e88f0383ff8b460450e88fa0000083c4048bce5ee92bfdffff",
+        "source_symbol": "destroy_native_render_entry_cache_00bec8e0",
+        "behavior": "Restore derived profile, release section, free current data, then destroy base.",
+        "kind": "function",
+        "end_exclusive": "00bec905"
+      },
+      {
+        "start": "00bec910",
+        "length": 58,
+        "sha256": "da0de365558953df99d7496403df7175a6492619ca1ff1dede9599bb088f2db4",
+        "live_equals_installed_pe": true,
+        "instruction_count": 19,
+        "calls": [
+          {
+            "site": "00bec91c",
+            "target": "0041cc80",
+            "operand": "0x41cc80"
+          },
+          {
+            "site": "00bec925",
+            "target": "00bf6989",
+            "operand": "0xbf6989"
+          },
+          {
+            "site": "00bec92f",
+            "target": "00bec630",
+            "operand": "0xbec630"
+          },
+          {
+            "site": "00bec93c",
+            "target": "00bf65ac",
+            "operand": "0xbf65ac"
+          }
+        ],
+        "hex": "568bf18d4e10c706c08cd600e85f0383ff8b460450e85fa0000083c4048bcee8fcfcfffff644240801740956e86b9c000083c4048bc65ec20400",
+        "source_symbol": "delete_native_render_entry_cache_00bec910",
+        "behavior": "Derived destruction followed by optional owner free.",
+        "kind": "function",
+        "end_exclusive": "00bec94a"
+      },
+      {
+        "start": "00bed1e8",
+        "length": 59,
+        "sha256": "9f477e2b48557a26c845296d7f1db86330f520215fad06c8bf36ffe657d05780",
+        "live_equals_installed_pe": true,
+        "instruction_count": 14,
+        "calls": [
+          {
+            "site": "00bed1ea",
+            "target": "00bf681b",
+            "operand": "0xbf681b"
+          },
+          {
+            "site": "00bed203",
+            "target": "00bec870",
+            "operand": "0xbec870"
+          },
+          {
+            "site": "00bed21e",
+            "target": "00bec3e0",
+            "operand": "0xbec3e0"
+          }
+        ],
+        "hex": "6a14e82c96000083c404898424840000003bc68974246074078bc8e868f6ffff8b0d88fe0801681027000083c104c7442464ffffffffe8bdf1ffff",
+        "source_symbol": "initialize_native_window_render_entry_cache_00bed1e8_fragment",
+        "behavior": "Bounded BECEE0 fragment: allocate14h, construct, reload FE88, disarm owner cleanup, resize10000.",
+        "kind": "window_fragment",
+        "end_exclusive": "00bed223"
+      }
+    ],
+    "ghidra_mutated": false
+  },
+  "production_files": [
+    {
+      "path": "include/bsp/native_render_entry_cache.hpp",
+      "bytes": 4539,
+      "sha256": "827a16a594dbba5e509c8153a966bbeb1a05ebeb4ca0c933febf1633c7b192cc"
+    },
+    {
+      "path": "src/native_render_entry_cache.cpp",
+      "bytes": 9420,
+      "sha256": "f53fb7e6e79cc58002dd039403c03e7ee8f690ab7cb84c062ca7553bb4aaee87"
+    },
+    {
+      "path": "docs/NATIVE_RENDER_ENTRY_CACHE_MAIN_R49.md",
+      "bytes": 4562,
+      "sha256": "42c276ecdcaa3504c92fe288650aa03b501fe3c844e0045e6ac3bc291c7e1a54"
+    }
+  ],
+  "provider_compatibility": {
+    "borrowed_cells": [
+      {
+        "address": "01090aa0",
+        "meaning": "actual singleton manager publication"
+      },
+      {
+        "address": "0108fe88",
+        "meaning": "actual current render-entry cache publication"
+      },
+      {
+        "address": "00d7a24c",
+        "meaning": "actual DWORD one literal"
+      }
+    ],
+    "current_provider_receipts": [
+      {
+        "path": "include/bsp/native_singleton_publication.hpp",
+        "bytes": 2293,
+        "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+      },
+      {
+        "path": "src/native_singleton_publication.cpp",
+        "bytes": 4127,
+        "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+      },
+      {
+        "path": "include/bsp/native_singleton_removal_reorder.hpp",
+        "bytes": 1705,
+        "sha256": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee"
+      },
+      {
+        "path": "src/native_singleton_removal_reorder.cpp",
+        "bytes": 7844,
+        "sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2"
+      },
+      {
+        "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+        "bytes": 2373,
+        "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+      },
+      {
+        "path": "src/native_singleton_vector_registration_wrappers.cpp",
+        "bytes": 4283,
+        "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+      },
+      {
+        "path": "include/bsp/native_tracked_critical_section_release.hpp",
+        "bytes": 794,
+        "sha256": "18b0e5714789372271086226d298c35bfb0eb36f6045a0ee5a13befdd20af430"
+      },
+      {
+        "path": "src/native_tracked_critical_section_release.cpp",
+        "bytes": 1637,
+        "sha256": "16cf4e2d5f0e3dceeee9610a603c73af1abebe6d975d8f3283a0e2699666f38b"
+      },
+      {
+        "path": "include/bsp/native_render_service_base.hpp",
+        "bytes": 2361,
+        "sha256": "9bb9796506476fbd7f64ee5eb43588ffae142d385dfe24ba5274fdb4a0bbc82a"
+      },
+      {
+        "path": "src/native_render_service_base.cpp",
+        "bytes": 4563,
+        "sha256": "ff129b13b2e39cad4f9615b94529f8f5bf49321da4e3e935e17952ec41e2cdaf"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      }
+    ],
+    "diff_from_historical_provider_set": {
+      "path": "local/native-render-entry-cache-main-r49/provider_diff_since_historical.patch",
+      "bytes": 1452,
+      "sha256": "9c94920e735a21c474e3b6b80e7f0f3721c5fa70c85badede8fa2ada62178ac9"
+    },
+    "compatibility_result": "All called provider declarations and semantics remain compatible; the only include-set diff is additive diagnostic declarations.",
+    "production_activation_added": false,
+    "renderer_or_camera_owner_added": false
+  },
+  "preserved_contracts": [
+    "Resize compares requested with used count at raw header +4, not capacity at +8.",
+    "Zero request after mismatch frees data and deliberately retains the stale pointer while clearing used and capacity.",
+    "Derived construction captures old count before clearing pointer; old capacity survives when old count is zero.",
+    "Base publication/removal retain the first manager section while reloading manager and current publication at the original sites.",
+    "Window-fragment captured-owner cleanup is disarmed before resize10000, so resize failure retains the registered owner."
+  ],
+  "validation": {
+    "ghidra_seed_verification": "8/8 seed spans matched installed PE before build",
+    "target": "MSVC Win32 Release",
+    "required_flags": [
+      "/MD",
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "cmake_flag_receipt": {
+      "path": "local/native-render-entry-cache-main-r49/postbuild/bsp_core.vcxproj",
+      "bytes": 270477,
+      "sha256": "15eae7138cffee0aaec6e6e8e049c7682fe9c7fe7396aa291ccc047f9196b776"
+    },
+    "build_log": {
+      "path": "local/native-render-entry-cache-main-r49/strict_build_compile.log",
+      "bytes": 2988,
+      "sha256": "6d2719a6ffda58eb758795e6284e089de9384d7eb3d65cd94b8a114a09366b90"
+    },
+    "ctests": {
+      "passed": 3,
+      "failed": 0
+    },
+    "focused_fixture": {
+      "new_permanent_tests": 0,
+      "manifest_embedded": true,
+      "linked_from_rebuilt_bsp_core": true,
+      "artifacts": [
+        {
+          "path": "local/native-render-entry-cache-main-r49/native_render_entry_cache_r49_probe.cpp",
+          "bytes": 9043,
+          "sha256": "11766c97623116d51bbc21671525d21feee75bf812331d8630a8b3dace5f6aa0"
+        },
+        {
+          "path": "local/native-render-entry-cache-main-r49/native_render_entry_cache_r49_library_probe.obj",
+          "bytes": 104791,
+          "sha256": "c5afd0df786e918e02d78db4fd14726bfcbbc67c74a67f8b93e015504545b5f8"
+        },
+        {
+          "path": "local/native-render-entry-cache-main-r49/native_render_entry_cache_r49_library_probe.exe",
+          "bytes": 263680,
+          "sha256": "47b3382fd49952f96f8d46b6567362e8fc1b185b8bbb1f080a38337dbef1847c"
+        },
+        {
+          "path": "local/native-render-entry-cache-main-r49/native_render_entry_cache_r49_library_probe.map",
+          "bytes": 400191,
+          "sha256": "e22fc83fa8c963a1af9941c8c106b49c74a34601822bf8597c2a37a5ab829704"
+        },
+        {
+          "path": "local/native-render-entry-cache-main-r49/library_probe_compile.log",
+          "bytes": 28893,
+          "sha256": "4e22da8d58a0ee5bb6cd2485b6553114d56d86a541b58ebd9fa28b6e9eaa75bf"
+        },
+        {
+          "path": "local/native-render-entry-cache-main-r49/library_link.log",
+          "bytes": 14391,
+          "sha256": "43aede512598ca5a3808ba43b3ca0b421bea2f70b73fcc5b825e28d38410e809"
+        },
+        {
+          "path": "local/native-render-entry-cache-main-r49/library_probe_trace.txt",
+          "bytes": 946,
+          "sha256": "53d17de0d0423c641ba4489a98b6ca3d0dc60d3a8facfb19cbb764dcbd000bf5"
+        },
+        {
+          "path": "local/native-render-entry-cache-main-r49/library_i386_headers.txt",
+          "bytes": 265763,
+          "sha256": "8177accc397a2bb45099a5cf222a01e286742360a45bd8d8977b93035817fc3d"
+        },
+        {
+          "path": "local/native-render-entry-cache-main-r49/library_dependents.txt",
+          "bytes": 831,
+          "sha256": "b407e5f00a32dd25119c0f43ddcd3893a9399f6d1931b5a8368a34995fcdab09"
+        },
+        {
+          "path": "local/native-render-entry-cache-main-r49/postbuild/cmake_native_render_entry_cache.obj",
+          "bytes": 14632,
+          "sha256": "8237bb850226169c24b30cb70151a40d6ff1b72c017271c90e6b291a55a67773"
+        },
+        {
+          "path": "local/native-render-entry-cache-main-r49/postbuild/bsp_core.lib",
+          "bytes": 63587832,
+          "sha256": "61f49c102b6375cd5cce2fe9f2658601cd55b4d3f16bf1bf8062c3c600dec370"
+        },
+        {
+          "path": "local/native-render-entry-cache-main-r49/strict_build_compile.log",
+          "bytes": 2988,
+          "sha256": "6d2719a6ffda58eb758795e6284e089de9384d7eb3d65cd94b8a114a09366b90"
+        }
+      ],
+      "checks": [
+        "relocated original BEBF00 39-byte leaf equals source for the complete 28h record",
+        "genuine raw singleton manager registration and unregister hole",
+        "10000 initialized 28h records",
+        "request equality uses used count while capacity differs",
+        "zero mismatch retains stale freed pointer and clears used/capacity",
+        "zero old count preserves old capacity during derived construction",
+        "explicit derived scalar destruction releases section, unregisters, clears FE88 and frees owner"
+      ],
+      "loaded_modules": [
+        "MODULE machine=014C size=00043000 J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-texture-pool-process-r27\\local\\native-render-entry-cache-main-r49\\native_render_entry_cache_r49_library_probe.exe",
+        "MODULE machine=014C size=001BF000 C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+        "MODULE machine=014C size=000F0000 C:\\WINDOWS\\System32\\KERNEL32.DLL",
+        "MODULE machine=014C size=002DA000 C:\\WINDOWS\\System32\\KERNELBASE.dll",
+        "MODULE machine=014C size=00110000 C:\\WINDOWS\\System32\\ucrtbase.dll",
+        "MODULE machine=014C size=00096000 C:\\WINDOWS\\SYSTEM32\\MSVCP140.dll",
+        "MODULE machine=014C size=0001D000 C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll"
+      ],
+      "all_loaded_modules_report_i386": true,
+      "trace": {
+        "path": "local/native-render-entry-cache-main-r49/library_probe_trace.txt",
+        "bytes": 946,
+        "sha256": "53d17de0d0423c641ba4489a98b6ca3d0dc60d3a8facfb19cbb764dcbd000bf5"
+      }
+    }
+  },
+  "evidence_archive": {
+    "path": "local/evidence-r49/native-render-entry-cache-main-r49.zip",
+    "bytes": 28101373,
+    "sha256": "395e0bea83c1dc693f0ff83028f16eb7c8b56ffabe825f7702c4c0f50df8d66e",
+    "members": 80,
+    "manifest": {
+      "path": "local/native-render-entry-cache-main-r49/artifact_manifest.json",
+      "bytes": 13681,
+      "sha256": "e4c81d534c08e6644d2dbca4066eb1691bd1d81b0345301a0f7ebd90ffc21049"
+    }
+  },
+  "limits": [
+    "The C++ context interfaces are not original register/stack ABI.",
+    "The source ordinary-exception cleanup is not proof of original FH3/SEH compatibility.",
+    "Only the original BEBF00 leaf executes in the focused current fixture; original constructors, resize and teardown do not.",
+    "No failure injection, successful overflow allocation or concurrent mutation was tested.",
+    "No full BECEE0/window/device/renderer/application activation, active frame, draw, shutdown ordering or gameplay is claimed.",
+    "No production singleton owner or current-publication binding is added by R49."
+  ]
+}
