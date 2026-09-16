@@ -1,0 +1,308 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "packet": "orch4-particle-loader-r21",
+  "source": "src/native_particle_resource_loader_raw.cpp",
+  "header": "include/bsp/native_particle_resource_loader_raw.hpp",
+  "functions": [
+    {
+      "address": "0086ba60",
+      "end_exclusive": "0086bb76",
+      "bytes": 278,
+      "instructions": 85,
+      "sha256": "97d73fe3268a2474d3029ae6f4139f57935cc8f4db7d95c011bf539df76944a8",
+      "live_disk_match": true,
+      "name": "create_native_particle_resource_0086ba60",
+      "proposed_name": "BSP_ParticleResourceCache_CreateResource",
+      "coverage": "complete",
+      "status": "complete_native_storage_source_build_and_original_provider_fixture_checked",
+      "original_abi": "Incoming ECX ignored; stack actual8h name and ignored second DWORD; RET8; EAX resource. Decompiler void/one-argument signatures are incorrect.",
+      "old_documentation": {
+        "hash": "698217a04fab5350f0cfc6ebf6f0552e96bdb72c8f65475704cdf748b759be73",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "0086ba60",
+        "function_name": "BSP_ParticleResourceCache_CreateResource",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 0086ba60]\nDescriptive hypothesis; full278-byte native factory observed, source absent. Builds a90h particle resource through AF45D0; loads actual TextBuffer via AF5850; top-level AF4BA0 parse; AF5620 cleanup. All four providers source absent and audited with complete disk/live byte spans/call rows. No complete virtual surface or acquisition claim. See docs/NATIVE_PARTICLE_RESOURCE_CACHE_ORCH4.md and reports/native_particle_resource_cache_orch4.json.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_2c",
+            "type": "undefined *",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "local_28",
+            "type": "undefined1[28]"
+          },
+          {
+            "name": "local_30",
+            "type": "uint",
+            "storage": "(stack, 0xffffffffffffffd0, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffc4, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 101,
+            "name": "LAB_0086bac5"
+          },
+          {
+            "relative_offset": 163,
+            "name": "LAB_0086bb03"
+          },
+          {
+            "relative_offset": 165,
+            "name": "LAB_0086bb05"
+          },
+          {
+            "relative_offset": 183,
+            "name": "LAB_0086bb17"
+          },
+          {
+            "relative_offset": 240,
+            "name": "LAB_0086bb50"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "calls": [
+        {
+          "address": "0086ba7e",
+          "native": "00af5600",
+          "function": "0086ba60"
+        },
+        {
+          "address": "0086baa6",
+          "native": "0041dd40",
+          "function": "0086ba60"
+        },
+        {
+          "address": "0086babd",
+          "native": "00bf7680",
+          "function": "0086ba60"
+        },
+        {
+          "address": "0086bace",
+          "native": "004bcc00",
+          "function": "0086ba60"
+        },
+        {
+          "address": "0086bad8",
+          "native": "00bf681b",
+          "function": "0086ba60"
+        },
+        {
+          "address": "0086baf6",
+          "native": "00af45d0",
+          "function": "0086ba60"
+        },
+        {
+          "address": "0086bb1c",
+          "native": "00af5850",
+          "function": "0086ba60"
+        },
+        {
+          "address": "0086bb28",
+          "native": "00af4ba0",
+          "function": "0086ba60"
+        },
+        {
+          "address": "0086bb44",
+          "native": "00419cc0",
+          "function": "0086ba60"
+        },
+        {
+          "address": "0086bb4b",
+          "native": "00bd1510",
+          "function": "0086ba60"
+        },
+        {
+          "address": "0086bb5c",
+          "native": "00af5620",
+          "function": "0086ba60"
+        }
+      ],
+      "unwind_calls": [
+        {
+          "address": "00c95573",
+          "native": "00af5620",
+          "function": "00c95570",
+          "kind": "tail_jump"
+        },
+        {
+          "address": "00c9557b",
+          "native": "0041dd20",
+          "function": "00c95578",
+          "kind": "tail_jump"
+        },
+        {
+          "address": "00c95584",
+          "native": "00bf65ac",
+          "function": "00c95580"
+        }
+      ]
+    }
+  ],
+  "regions": [
+    {
+      "kind": "body",
+      "address": "0086ba60",
+      "bytes": 278,
+      "sha256": "97d73fe3268a2474d3029ae6f4139f57935cc8f4db7d95c011bf539df76944a8",
+      "live_disk_match": true
+    },
+    {
+      "kind": "eh",
+      "address": "00dc7560",
+      "bytes": 60,
+      "sha256": "7c1e5b9426ad23b1240c4d50fc1b91296442c0376e1eeafd7d1780530acd43cb",
+      "live_disk_match": true
+    },
+    {
+      "kind": "actions",
+      "address": "00c95570",
+      "bytes": 37,
+      "sha256": "9b4485cd47c1ab5dfbb22b03201ff63b57e1047100d2f9663032341e8ac916f2",
+      "live_disk_match": true
+    }
+  ],
+  "fh3": {
+    "handler": "00c9558b",
+    "func_info": "00dc7578",
+    "magic": "19930522",
+    "max_state": 3,
+    "unwind_map": "00dc7560",
+    "flags": 1,
+    "states": [
+      {
+        "state": 0,
+        "previous": -1,
+        "action": "00c95570",
+        "operation": "AF5620 text cleanup"
+      },
+      {
+        "state": 1,
+        "previous": 0,
+        "action": "00c95578",
+        "operation": "41DD20 copied-name cleanup"
+      },
+      {
+        "state": 2,
+        "previous": 1,
+        "action": "00c95580",
+        "operation": "BF65AC allocation free only"
+      }
+    ]
+  },
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "architecture": "MSVC Win32",
+      "flags": [
+        "/W4",
+        "/WX",
+        "/fp:strict",
+        "/MD"
+      ],
+      "ctests_passed": 3,
+      "log": "local/particle_loader_build.log",
+      "log_sha256": "da0d26801f3392e6d74afd35192ef9ac19199eae47531d9038e87c637dfbc4b0"
+    },
+    "live_call_rows": {
+      "checked": 14,
+      "failed": 0
+    },
+    "copied_original_probe": {
+      "exit_code": 0,
+      "output": "PASS: complete copied 278-byte 0086BA60 vs source, 3 real physical-VFS/parser cases (empty zero count, rejected header, minimal ParticleSystem), ignored ECX/second argument, RET8, lowercase resource, initialized fields, genuine cleanup/pool drain, one-shot rejection. Native EH and game ABI not tested.\n",
+      "elapsed_seconds": 0.1046414000011282,
+      "exe_sha256": "4218a1d05fb4aaa14dc20752caffccca852bdc0c00e23d4dd1ee85f5c3545df3",
+      "manifest": "embedded asInvoker",
+      "base_library": "build/win32/Release/bsp_core.lib",
+      "base_library_sha256": "88ca8b7c5d1a7d3eca40794e31e1001dfed369d2356c9776fd7676813392e52d",
+      "source_linkage": "Final fixture links this worktree bsp_core.lib; no standalone rebuilt provider objects"
+    },
+    "fixture": {
+      "source": "local/particle_loader_probe.cpp",
+      "source_sha256": "72c9ca3382e34671b2964ef64e0efe095dbb29a30ea8190575eef72a60c74754",
+      "cases": [
+        "empty file: AF5850 count0 and AF4BA0 false ignored",
+        "rejected header: nonzero count and AF4BA0 false ignored",
+        "minimal valid ParticleSystem: parser true"
+      ],
+      "actual_providers": [
+        "raw string pool",
+        "AF45D0 resource construction",
+        "AF5850 text loader",
+        "BDF4C0 name resolution",
+        "concrete VFS physical open/length/read/recycle",
+        "AF4BA0 raw resource parser",
+        "AF5620 text cleanup"
+      ],
+      "comparisons": [
+        "D0D418 profile",
+        "reference count",
+        "owned lowercase name",
+        "all constructor-initialized fields",
+        "ignored ECX and second argument",
+        "native RET8",
+        "genuine cleanup and singleton/pool drain",
+        "source one-shot rejection"
+      ],
+      "address_setup": "Existing suspended-child native RO data handoff and explicit fixture-owned1080000/1090000 publication reservations; no application data or game installation modified."
+    },
+    "boundaries": [
+      "No copied original child/provider machine-code execution",
+      "Original FH3 handler and hardware SEH not executed",
+      "No exceptional-path differential claim",
+      "No original source ABI or executable replacement claim",
+      "No gameplay validation"
+    ],
+    "source_sha256": "9c20c250623aeb6c215be6e5e435e6901bbbdf9a1d7cfd7b4c76eede53251236"
+  },
+  "semantics": {
+    "same_domains": "Caller supplies SAME raw string cells, VFS publication/bindings/name resolution, raw parser and actual F8766C empty string. GameNativeVfsRuntime::borrow_raw_services exposes existing services without lifecycle work.",
+    "acquired": "Explicit incoming parser builder+C distinct from parsercontext.child_builder_kind. Native 8h name and1Ch text precede retained VFS/parser children; one-shot, no destructor rollback, process-lifetime failed VFS obligations unchanged.",
+    "failure": "Constructor atstate2 frees allocation after inner unwind. AF5850/AF4BA0 execute state1: resource retained, copiedname then text cleaned. Count and AL ignored; nullallocation passed through to parser without recovery."
+  }
+}
