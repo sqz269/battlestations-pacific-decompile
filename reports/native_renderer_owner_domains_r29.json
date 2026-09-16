@@ -212,5 +212,24 @@
       "renderer, texture, or surface gameplay lifetime parity"
     ],
     "mutations": "No source, Ghidra, ledger, CMake, or build mutation was made for this research packet."
+  },
+  "source_audit_scope": {
+    "baseline": "Current main checkout at the reported baseline, not all unmerged worktrees/branches.",
+    "discovered_unmerged_work": {
+      "branch": "agent/orch5-20260911",
+      "observed_tip": "769bdc3e3",
+      "observed_tip_date": "2026-09-14T21:56:44-07:00",
+      "base_lifetime_source_commit": "b521b0a59",
+      "base_lifetime_validation_commit": "3c85892ea",
+      "constructor_source_commit": "00a12b5d0",
+      "constructor_branch": "agent/orch5-native-renderer-constructor",
+      "source_paths": [
+        "src/native_renderer_base_lifetime.cpp",
+        "src/native_renderer_constructor.cpp",
+        "src/native_renderer_destructor.cpp"
+      ]
+    },
+    "implication": "Main still has no concrete production renderer owner. Existing unmerged renderer ports must be reviewed for reuse and signature conflicts before new renderer-body reconstruction. Presence of those commits is not renewed validation or approval to merge another orchestrator's whole branch.",
+    "followup": "Bounded read-only native_renderer_crossbranch_reuse_r31 audit; no mutation or merge of orch5 worktrees."
   }
 }
