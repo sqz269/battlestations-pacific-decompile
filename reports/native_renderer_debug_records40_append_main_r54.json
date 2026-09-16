@@ -1309,5 +1309,95 @@
     "No retained-owner zero terminal or rollback modeled",
     "No injected exceptions/original FH3/private-frame/hardware-fault ABI proof",
     "No application/visual/gameplay validation"
-  ]
+  ],
+  "primary_integration": {
+    "source_commit": "a08d49a7c406ee878ef4bf1c96fbc6741e831e8c",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "fixture_rerun_after_integration": false,
+    "original_fixture_and_source_reviewed": true,
+    "fresh_native_spans": 11,
+    "fresh_native_bytes": 646,
+    "live_direct_call_rows": 5,
+    "ordered_x87_encodings_equal": 16,
+    "archive": "local/evidence-r54/append-main-r54-sealed.zip",
+    "sha256": "3437c52f12b0bb574a77eeea67e12d9565ecb7f768c5fc1538df0dc5684a9429",
+    "files": [
+      {
+        "path": "local/r54_integration.log",
+        "bytes": 1180,
+        "sha256": "52cf8ad972f0ab303428afb07b6acdff678c6325db3f8be81a3bfe13614034e0"
+      },
+      {
+        "path": "src/native_renderer_debug_records40_append.cpp",
+        "bytes": 5007,
+        "sha256": "c7751e7cfa089230177f91d81fb699e874cea3525a7df4b8a8b3c5e3644432e6"
+      },
+      {
+        "path": "include/bsp/native_renderer_debug_records40_append.hpp",
+        "bytes": 1810,
+        "sha256": "ffec0ebd3c99fe7a2eab4d641984bca1d5ca9cab06473e96b373f9155df1faa9"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 151002,
+        "sha256": "6d81ff42bdf70bbd949fc95f15fabac3281424109aeffab241824a0248d1dd5b"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 230922,
+        "sha256": "42c947c2ac9cc43493a3257e4ad535d07395ddb6d307eeae55c8885e954fc4ea"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_debug_records40_append.obj",
+        "bytes": 4513,
+        "sha256": "e46f4b322b46646c98f35728466690924ca06d53cff0dea8201d9bfb4219a4c4"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63649370,
+        "sha256": "d5d19e180a752b3e822380153c3f80cbfe48e6e36147927db54251def477de69"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2267136,
+        "sha256": "83019509e3272f48c03af3528f224938dbc20e8bb94d8361220485346adba1f7"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2408,
+        "sha256": "ef5379699769646d4b25ecf559f3c798646732482cd77b43aed6d5d51c9bae00"
+      },
+      {
+        "path": "local/camera_append_r54/call_gate.log",
+        "bytes": 93,
+        "sha256": "92e16107a2ef4cd735c7cc447a860342e26e2384fa1d34f1c342bacdee1a2bc9"
+      },
+      {
+        "path": "local/camera_append_r54/annotations.log",
+        "bytes": 237,
+        "sha256": "347409171292d79ef8ef9974e624970cbc61dbb141cc4c8dc00a46fcf2fda32c"
+      },
+      {
+        "path": "local/camera_append_r54/exports.log",
+        "bytes": 206,
+        "sha256": "d3b4a90149307fca95682f4583fdb85609eef07651887883e481af686ceb6042"
+      },
+      {
+        "path": "local/report_append_r54.py",
+        "bytes": 4884,
+        "sha256": "42cb953b60d9ddea04d8313cac55249d3a891f076f48c5f3093c7bb9dce81d38"
+      },
+      {
+        "path": "local/annotate_append_r54.py",
+        "bytes": 3343,
+        "sha256": "253370b479da899a52819e6909c128fe0c383792f3789fd308ddd65b154caa73"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T161146Z.json",
+        "bytes": 7935,
+        "sha256": "a566fe38ebd643ca71924af4f1ac46da3137a1fe00129507d4adb3ed2392b2ba"
+      }
+    ]
+  }
 }
