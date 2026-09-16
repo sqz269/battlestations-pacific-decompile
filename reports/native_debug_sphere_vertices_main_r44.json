@@ -372,5 +372,111 @@
     "No active/cold debug-record parent, gather, pass, model-owner or full renderer execution.",
     "No gameplay or visual validation.",
     "Frozen library and unconsumed objects are build artifacts, not loaded runtime modules."
-  ]
+  ],
+  "primary_integration": {
+    "source_merge": "5d17c641b",
+    "complete_source_and_fixture_reviewed": true,
+    "native_spans_independently_verified": 2,
+    "native_bytes": 491,
+    "worker_artifacts_verified": 5062,
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "worker_archive": "local/evidence-r44/sphere-original-r44.zip",
+    "primary_fixture_rerun": false
+  },
+  "primary_archive": {
+    "path": "local/evidence-r44/sphere-main-r44.zip",
+    "sha256": "a7bf3ddbff02f90f1484e1c840aa5bea7c6eef560a751c818dc9953486befe40",
+    "files": [
+      {
+        "path": "include/bsp/native_debug_sphere_vertices.hpp",
+        "bytes": 729,
+        "sha256": "43417bf0d280e5b6432c3221a2042ae459f0b6c3faf8c381b9ca70f9b39534ba"
+      },
+      {
+        "path": "src/native_debug_sphere_vertices.cpp",
+        "bytes": 6304,
+        "sha256": "12dc31186e890a08b27be07b4c7312bf9a1926625b5dee327008477eeb3f559d"
+      },
+      {
+        "path": "docs/NATIVE_DEBUG_SPHERE_VERTICES_R44.md",
+        "bytes": 2727,
+        "sha256": "bca55f3ed60e5332d04d3394aa066814a64cf440867b5eda34ef0bedceecb29d"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 149840,
+        "sha256": "00e5e1d371aa846c02b6bd151e0e24f01498d01e556c576e991117444a9e7a1c"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 229812,
+        "sha256": "4355a2c30926d855009e0603e00ea200a3f2909a3089c1cba697655c2396ef8a"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_debug_sphere_vertices.obj",
+        "bytes": 1268,
+        "sha256": "696b5a762780faf56bfc8016b12816e9807a0eb05d820a7badf8ce167ed4d42a"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63464320,
+        "sha256": "54b917f83e6c6d3a8520389e1700315bea040cf5360d761e9860c98212d56d64"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2267136,
+        "sha256": "a4c2318e44212a0ddef185d4716f0f964c72c1795d052c026843cc129571c8db"
+      },
+      {
+        "path": "local/r44_sphere_integration.log",
+        "bytes": 837,
+        "sha256": "2f4eae67f8522e38601a7050c317e2603099438bce80e8ff509d9f1f4b555d23"
+      },
+      {
+        "path": "local/r44_sphere_proto.txt",
+        "bytes": 819,
+        "sha256": "7d6baea026e0d4c11c1dfd338669a8abc0d5eb01728f27effe9a13624e9572c6"
+      },
+      {
+        "path": "local/r44_sphere_annotations.log",
+        "bytes": 198,
+        "sha256": "ed0fafee33cf2d1d413fbf199c33d123279f75ce495dd4067995206f84f75325"
+      },
+      {
+        "path": "local/r44_sphere_exports.log",
+        "bytes": 104,
+        "sha256": "33c7f62878625f78b801c65b5fd6b25b380b3e05c66e7c7f30e4f9037cec5f17"
+      },
+      {
+        "path": "local/r44_sphere_native_spans.json",
+        "bytes": 350,
+        "sha256": "d111c733b9c27c58749820bde7dac6aa66cd180ff548fd17c3d9458c456562cf"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T130027Z.json",
+        "bytes": 2410,
+        "sha256": "13cc1983d81ee880361828c3078b276558b1a69d277c6cc57798803765955017"
+      }
+    ]
+  },
+  "primary_annotations": {
+    "status": "Existing parent name retained, interior fragment recorded without creating an original function. Prior comments preserved, project saved, exports refreshed.",
+    "prior_annotations": [
+      {
+        "address": "00b2bb90",
+        "before": {
+          "address": "00b2bb90",
+          "function_name": "BSP_Renderer_DrawDebugSphereRecords",
+          "comment": "[BSP reconstruction 00b2bb90]\nHypothesis, not a recovered symbol. Complete1765-byte source schedule: initial count gate, cached model construction/publication before string cleanup, current raw identity setter, six-DWORD record producer layout, camera guard, a fresh actual model per active record, literal38-vertex x87 interior, fresh stream/section lookups, gather, cache increment and one current pass dispatch per active record. Distinct persistent gather/constants/pass child frames retain failures without rollback. Existing original/source fixture executed empty/skipped/negative-count parents; active/cold parent remains unexecuted. Integrated code a6b2884f passed strict MSVC Win32,2 existing CTests,8 native seeds,50 numeric rows and21 live/PE spans totaling2848 bytes. Literal38-vertex interior matches original through four x87 rounding modes. Physical runtime modules and actual CMake objects/libraries are retained. New source interfaces do not establish original ABI/private aliases, FH3/SEH, active drawing or game behavior. docs/NATIVE_RENDERER_DEBUG_RECORDS24.md; reports/native_renderer_debug_records24.json."
+        },
+        "after": {
+          "address": "00b2bb90",
+          "name": "BSP_Renderer_DrawDebugSphereRecords",
+          "evidence": "R44 isolated sphere interior B2BF60..B2C142,483B of parent B2BB90, not a separate original function. Exact historical x87 instruction schedule and live CEC730 step reads,13/12/13 rings38vertices608B plus verbatim color. New source fastcall wrapper snapshots four inputs into private scratch and borrows step pointer; parent private-stack aliases/fault/unwind ABI remain unproved. Parent complete source/header and fixture reviewed, historical body equality independently checked;5062frozen artifacts/20current receipts and2native PE spans491B independently verified. Worker and combined strict /MD Win32 build and3CTests pass; worker relocated original/source fixture8cases compares608B+8canary bytes under4rounding modes. Worker COFF audit123reachable instructions and mapped branches, only3absolute-step to borrowed-pointer substitutions. Parent did not rerun fixture. Parent renderer/gameplay unvalidated. reports/native_debug_sphere_vertices_main_r44.json."
+        },
+        "status": "applied"
+      }
+    ]
+  }
 }
