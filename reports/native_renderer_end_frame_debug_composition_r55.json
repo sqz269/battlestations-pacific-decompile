@@ -4450,5 +4450,75 @@
     "bytes": 349422983,
     "all_entries_rehashed": true,
     "scope": "Full current source/build compiler input/output closure and focused fixture/native/link evidence. No active-parent proof."
+  },
+  "primary_integration": {
+    "source_commit": "72b7604fc8f31e95379ab863feda99a711e785a5",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "fixture_rerun_after_integration": false,
+    "archive": "local/evidence-r55/end-frame-main-r55.zip",
+    "sha256": "cc8fe0a62b179ab9b7d60ae4971543b23648df4de8105f24f3686de454acff51",
+    "files": [
+      {
+        "path": "local/r55_integration.log",
+        "bytes": 1039,
+        "sha256": "b9d5e7ddde6d18eb69abaa73eefc6c78c53546c2f5bda8963cf13fd736c27b96"
+      },
+      {
+        "path": "src/native_renderer_end_frame.cpp",
+        "bytes": 11352,
+        "sha256": "6ca0a9b13ac3310487e0b718d603346bac12eea454ae9921cb3cc12f7dd69356"
+      },
+      {
+        "path": "include/bsp/native_renderer_end_frame.hpp",
+        "bytes": 5111,
+        "sha256": "4abecc3e91fea93c6cd003e45f3b9768fefebbd86540b2a7fe710554cd6bb7a6"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 230922,
+        "sha256": "42c947c2ac9cc43493a3257e4ad535d07395ddb6d307eeae55c8885e954fc4ea"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_end_frame.obj",
+        "bytes": 24779,
+        "sha256": "6996a242a22130ef522d563d1d3eefc82632531c75b0590414a9d5e31122e745"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63649708,
+        "sha256": "e9366dd87f68b110bb44ce139eed25424d836a75d1d1887687f5b6bae56c8d0a"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2267136,
+        "sha256": "91cba518d1ce4983bac2fba9c48902d8c7f69cd9350cb9f23cf97d9654e2eebb"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2408,
+        "sha256": "b6c4143f65d6036de0f45ee37b2f2263b8fea461e80f3c826f0917fed8fe5df1"
+      },
+      {
+        "path": "local/end_frame_r55/call_gate.log",
+        "bytes": 94,
+        "sha256": "02f22c6302f995f664de42d59826a346317f290258e27c740b976c4d50b65777"
+      },
+      {
+        "path": "local/end_frame_r55/annotations.log",
+        "bytes": 198,
+        "sha256": "a788c0b513896dceb0a724e377da28818b9023ac8236e3149da921d353c42fdb"
+      },
+      {
+        "path": "local/end_frame_r55/exports.log",
+        "bytes": 104,
+        "sha256": "e13b1b1b87507e354ab06fec70d127f18fd9e097942a5ff3052db0b53c38c7a9"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T162258Z.json",
+        "bytes": 9211,
+        "sha256": "aca70862a0187ca704cbb83d6520ef1a8700e2286e9b0a16f1574673bdaafd0f"
+      }
+    ]
   }
 }
