@@ -2199,5 +2199,311 @@
     "new_original_names": [],
     "requested_ghidra_changes": [],
     "reason": "New source composition layer reuses established native providers; no duplicate original body/ledger record is appropriate."
+  },
+  "primary_integration": {
+    "source_merge": "806a4efad",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "full_source_reviewed": true,
+    "native_spans_independently_verified": 6,
+    "worker_manifest_artifacts_verified": 3402,
+    "worker_archive": "local/evidence-r38/frame-clock-publication-original-r38.zip",
+    "fixture": "Fresh main relink; all genuine-storage cases pass. Fixture-only numeric mapping restriction replaced by a borrowed readonly allocation after initial reservation failure. No production change.",
+    "run_log": "local/frame_clock_publication_probe_r38_run.log"
+  },
+  "primary_archive": {
+    "path": "local/evidence-r38/frame-clock-publication-main-r38.zip",
+    "sha256": "6d8cb152ad8e744af5a399678a512e629852f819b55c01132369d784a5ce4f8e",
+    "files": [
+      {
+        "path": "include/bsp/native_frame_clock_publication.hpp",
+        "bytes": 1877,
+        "sha256": "5781316b10fc7d41027310c4ba39d34143b82eb0711d86860937456126a16a1b"
+      },
+      {
+        "path": "src/native_frame_clock_publication.cpp",
+        "bytes": 2012,
+        "sha256": "4759c3d76740d893f615ff72f3f7d3ecab251151325f119e5e452a8aac518a55"
+      },
+      {
+        "path": "include/bsp/native_frame_clock_actual.hpp",
+        "bytes": 3348,
+        "sha256": "c41caab7f31fffd54a151438fa5f50198d5a66db6c193c10db66c7e745037ba1"
+      },
+      {
+        "path": "src/native_frame_clock_actual.cpp",
+        "bytes": 12764,
+        "sha256": "77ea51332e27408544aa7c39848a6af5c562fefb08c42c9f469eb8385f9e25e6"
+      },
+      {
+        "path": "include/bsp/native_frame_clock_lifetime.hpp",
+        "bytes": 2487,
+        "sha256": "4373852fa08f86469a72840f2aeb187ff86dd4c871335f7d9fce851492a560fc"
+      },
+      {
+        "path": "src/native_frame_clock_lifetime.cpp",
+        "bytes": 5293,
+        "sha256": "3c2261b760e9a471965bbad4d475f6051d52b33fa56d6ece3b1c02c0e455a5a3"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 149318,
+        "sha256": "b8a693b849acabe74d92249f3c537bf81ab86b81c85963745bdb7d127704b6ad"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 229314,
+        "sha256": "7eb30e598c6cec989bce8ae8a39dccdae4fdc88accf7756b19e7a7a959aa3c93"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_frame_clock_publication.obj",
+        "bytes": 9859,
+        "sha256": "4a2ea8a72fed2091f579da2cfd42250cfb3209d5eae846e9e0d17449285004e7"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_frame_clock_actual.obj",
+        "bytes": 5381,
+        "sha256": "f8d63dcb4362dae77ba4ff61973a125c12db0e13920140baf2ba5d33ca2ab957"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_frame_clock_lifetime.obj",
+        "bytes": 10045,
+        "sha256": "ed70eb776ae614c67a7b7fab54c44c48e8d76ad27f99ecff51ce2c755a787ab1"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+        "bytes": 17843,
+        "sha256": "160d65639a71c16c45dc03b3021ef1d7372d392134de1f0fff7af0038ccd029e"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_control_worker.obj",
+        "bytes": 15231,
+        "sha256": "ecbbc380bf71addd829ee21ee1ed9e22f8e4e05868d637bc9fad2f3a1b78c453"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63431306,
+        "sha256": "bca385f919bfcce31dcf336f78215fe3281d20fb22d5231039d47f4ddfd76613"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "bytes": 455244,
+        "sha256": "db83167c8c7d24461ef2bf60363b96264fd2406929d0e72a8909287d79b96a17"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "bytes": 71906,
+        "sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5"
+      },
+      {
+        "path": "local/frame_clock_publication_probe_r38.cpp",
+        "bytes": 10705,
+        "sha256": "1d367253be6cc56761f1b2d3e559310e298e3a8a7df8c56ba866b8b011c4d813"
+      },
+      {
+        "path": "local/frame_clock_publication_probe_r38.cmd",
+        "bytes": 805,
+        "sha256": "1e8b753bf19f3e3e6044f8605ffa010a76ea82b2eb60576dd40a3eaef726b8a3"
+      },
+      {
+        "path": "local/frame_clock_publication_probe_r38.obj",
+        "bytes": 40063,
+        "sha256": "c1974d81c2541b985f16a64c361d45d8064c3d98c46ba6e3f65e5a7e1e7f634a"
+      },
+      {
+        "path": "local/frame_clock_publication_probe_r38.exe",
+        "bytes": 262144,
+        "sha256": "48dbb184c5d20e3415d37b02dc757aa92a7b49665d104c8941609007a48de62b"
+      },
+      {
+        "path": "local/frame_clock_publication_probe_r38.map",
+        "bytes": 386245,
+        "sha256": "81bb6e1f9a482382a1c61523d9e8af9d16235da42b56daffc8ed3bc950d5f69e"
+      },
+      {
+        "path": "local/frame_clock_publication_probe_r38_dependencies.json",
+        "bytes": 23903,
+        "sha256": "de898a1aa6b1a8a261fabab081b5d2e68712ed541bdace63cd9e71afe421bfba"
+      },
+      {
+        "path": "local/frame_clock_publication_probe_r38_build.log",
+        "bytes": 38392,
+        "sha256": "92912fc448878b2164fe055cfc46cab1d342052977be95e8fa4ddb07de6bf9b2"
+      },
+      {
+        "path": "local/frame_clock_publication_probe_r38_run.log",
+        "bytes": 722,
+        "sha256": "17ea7cb551aa8ceb477ba28f7237b0d248cda6161c3816f548501bee0768f11c"
+      },
+      {
+        "path": "local/frame_clock_publication_probe_r38_initial_fixed_mapping_failure.log",
+        "bytes": 34,
+        "sha256": "7975124e37460498398aba3c0ad9a478f4fcbb9fb0f8af2cdad491b4d18fb590"
+      },
+      {
+        "path": "local/frame_clock_publication_original_r38.hpp",
+        "bytes": 220,
+        "sha256": "e38286c16b69c2fd12dc92be45cc03ce05600ade072d6f5c4a6e342443a3221d"
+      },
+      {
+        "path": "local/run_frame_clock_publication_probe_r38.py",
+        "bytes": 2544,
+        "sha256": "6edf173d2e5c77ea5001aa28a3989268b53f9d510b223995a094d1dae9922d42"
+      },
+      {
+        "path": "local/frame_clock_publication_probe_results_r38.json",
+        "bytes": 628,
+        "sha256": "363ba884477bfdc83f50554c97a7d1e30175e4998ddeb380c93d4963ce799b98"
+      },
+      {
+        "path": "local/r38_clock_publication_integration.log",
+        "bytes": 825,
+        "sha256": "e39e0333962155e6253676be79a0d416ec0ae237af9bf0b9e677a96f5ecbe91f"
+      },
+      {
+        "path": "local/r38_clock_publication_proto.txt",
+        "bytes": 3374,
+        "sha256": "144f6aca112fd4659b77d59e12a226772539b44c973806b1e0680445c103e912"
+      },
+      {
+        "path": "local/r38_clock_publication_annotations.log",
+        "bytes": 362,
+        "sha256": "0b08f4ad9b0a03b09e6471f46a9f34e291d4398461798d958f79600b6afc172e"
+      },
+      {
+        "path": "local/r38_clock_publication_exports.log",
+        "bytes": 512,
+        "sha256": "b1ba44f0e0295f6f3e323178be4f1f731849b9035a0057392e58951c7d913c84"
+      },
+      {
+        "path": "local/r38_clock_publication_native_spans.json",
+        "bytes": 10671,
+        "sha256": "4a95c23f472c444ed8f098e12c420be4fa8b583a0ce38b85a137d46b2884632f"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T120148Z.json",
+        "bytes": 31674,
+        "sha256": "964c0a8a968f1408221b20e16c4e4d13bb43fa356fb4ad46928f504935bb7677"
+      }
+    ],
+    "loaded_modules": [
+      {
+        "resolved_path": "\\\\?\\J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\frame_clock_publication_probe_r38.exe",
+        "loaded_machine": "014c",
+        "bytes": 262144,
+        "sha256": "48dbb184c5d20e3415d37b02dc757aa92a7b49665d104c8941609007a48de62b"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+        "loaded_machine": "014c",
+        "bytes": 1822400,
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\kernel32.dll",
+        "loaded_machine": "014c",
+        "bytes": 687472,
+        "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\KernelBase.dll",
+        "loaded_machine": "014c",
+        "bytes": 2974168,
+        "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "loaded_machine": "014c",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll",
+        "loaded_machine": "014c",
+        "bytes": 618944,
+        "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "loaded_machine": "014c",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3"
+      }
+    ]
+  },
+  "primary_annotations": {
+    "status": "Existing five names retained; append adapter linkage evidence only, no duplicate source body. Prior annotations preserved, project saved, exports refreshed.",
+    "prior_annotations": [
+      {
+        "address": "00bedb20",
+        "before": {
+          "address": "00bedb20",
+          "function_name": "BSP_FrameClock_EnableFixedMilliseconds",
+          "comment": "[BSP reconstruction 00bedb20]\nECX clock, signed int32 milliseconds stack, RET4. Set+69, QPC into+78, low64(frequency+60 * signextended milliseconds)/signed1000 into+70. Startup passes50 under global00e1ae81 gate. No negative/zero validation. Typed host reports QPC failure.\n\n[BSP reconstruction 00bedb20] update\nECX clock, signed int32 milliseconds stack, RET4. Set+69, QPC into+78, low64(frequency+60 * signextended milliseconds)/signed1000 into+70. Startup passes50 under global00e1ae81 gate. No negative/zero validation. Typed host reports QPC failure. | R35 actual80h clock storage and nine raw methods672B, with existing timestamp add/subtract and complete93B BEE080 sampler reused through private adapters. Preserve current profile-slot load timing, ignored QPF/QPC BOOL and untouched local/output preimages, native count/synthetic wrap, float32 x87 spill and strict-negative/unordered branch, current/previous/interval stores and rollback. Worker14 bodies1206B/473 instructions/22 calls have zero gaps and PE/live equality. Parent reviewed entire raw source/header, verified3417 frozen artifacts and15 native report hex/hash spans against installed PE. Worker and combined main strict /MD builds and three CTests pass; primary freshly relinked unchanged fixture passes59 complete80h native/source pairs, allfour x87 rounding modes, normalized388B update plus exact disable/getter bytes, failed-query preimage replay and real QPF/QPC checks. BEE060 previously undefined getter was defined/named/saved by parent43cff61ab. No raw clock owner/publication/manager registration, application/worker binding, arbitrary partial alias/fault identity or gameplay claim. reports/native_frame_clock_actual_r35.json. Schedule: Set fixed byte before QPC into actual +78; ignore BOOL. Read signed milliseconds after QPC, frequency high before low. Increment = signed_divide(low64(frequency * sign_extend(milliseconds)),1000), low word then high store. Existing add_timestamp computes this on separate real timestamp objects; no new arithmetic provider."
+        },
+        "after": {
+          "address": "00bedb20",
+          "name": "BSP_FrameClock_EnableFixedMilliseconds",
+          "evidence": "ECX clock, signed int32 milliseconds stack, RET4. Set+69, QPC into+78, low64(frequency+60 * signextended milliseconds)/signed1000 into+70. Startup passes50 under global00e1ae81 gate. No negative/zero validation. Typed host reports QPC failure. | R35 actual80h clock storage and nine raw methods672B, with existing timestamp add/subtract and complete93B BEE080 sampler reused through private adapters. Preserve current profile-slot load timing, ignored QPF/QPC BOOL and untouched local/output preimages, native count/synthetic wrap, float32 x87 spill and strict-negative/unordered branch, current/previous/interval stores and rollback. Worker14 bodies1206B/473 instructions/22 calls have zero gaps and PE/live equality. Parent reviewed entire raw source/header, verified3417 frozen artifacts and15 native report hex/hash spans against installed PE. Worker and combined main strict /MD builds and three CTests pass; primary freshly relinked unchanged fixture passes59 complete80h native/source pairs, allfour x87 rounding modes, normalized388B update plus exact disable/getter bytes, failed-query preimage replay and real QPF/QPC checks. BEE060 previously undefined getter was defined/named/saved by parent43cff61ab. No raw clock owner/publication/manager registration, application/worker binding, arbitrary partial alias/fault identity or gameplay claim. reports/native_frame_clock_actual_r35.json. Schedule: Set fixed byte before QPC into actual +78; ignore BOOL. Read signed milliseconds after QPC, frequency high before low. Increment = signed_divide(low64(frequency * sign_extend(milliseconds)),1000), low word then high store. Existing add_timestamp computes this on separate real timestamp objects; no new arithmetic provider. | R38 current-publication adapters capture volatile AB0 once per operation, require actual live80h owner profileD68D50 and the exact borrowed slot, and invoke existing concrete update/current/interval/sample/fixed providers. No clock owner or numeric code dispatch introduced; current/interval return actual member pointers. Parent complete source reviewed, all3402worker artifacts and6PE spans594B independently verified. Worker/combined strict /MD builds and3CTests pass. Fresh primary genuine-storage fixture passes two owners in same raw manager, publication reload, one advance, real QPC output-preimage, signed/fixed input, unsupported/null rejection and both owners freed once by shared drain. Initial fixture fixed-address reservation failed before execution; only fixture profile storage changed to nonfixed borrowed readonly allocation with same verified44B table and unchanged native identity stamp. Application clock producer/consumer cutover, originalFH3/SEH and gameplay remain unproved. No duplicate original source records for these new C++ adapters. reports/native_frame_clock_publication_r38.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bedc30",
+        "before": {
+          "address": "00bedc30",
+          "function_name": "BSP_FrameClock_Update",
+          "comment": "[BSP reconstruction 00bedc30]\nECX clock, RET. Paused+68 zeros interval by self-subtraction without advancing. Otherwise increment counter, copy current to previous, read QPC or add fixed increment+70 to synthetic+78, subtract start and previous. x87 signed64 ratio spills float32; strictly negative restores previous and zero interval, unordered skips rollback. See docs/FRAME_CLOCK.md.\n\n[BSP reconstruction 00bedc30] update\nECX clock, RET. Paused+68 zeros interval by self-subtraction without advancing. Otherwise increment counter, copy current to previous, read QPC or add fixed increment+70 to synthetic+78, subtract start and previous. x87 signed64 ratio spills float32; strictly negative restores previous and zero interval, unordered skips rollback. See docs/FRAME_CLOCK.md. | R35 actual80h clock storage and nine raw methods672B, with existing timestamp add/subtract and complete93B BEE080 sampler reused through private adapters. Preserve current profile-slot load timing, ignored QPF/QPC BOOL and untouched local/output preimages, native count/synthetic wrap, float32 x87 spill and strict-negative/unordered branch, current/previous/interval stores and rollback. Worker14 bodies1206B/473 instructions/22 calls have zero gaps and PE/live equality. Parent reviewed entire raw source/header, verified3417 frozen artifacts and15 native report hex/hash spans against installed PE. Worker and combined main strict /MD builds and three CTests pass; primary freshly relinked unchanged fixture passes59 complete80h native/source pairs, allfour x87 rounding modes, normalized388B update plus exact disable/getter bytes, failed-query preimage replay and real QPF/QPC checks. BEE060 previously undefined getter was defined/named/saved by parent43cff61ab. No raw clock owner/publication/manager registration, application/worker binding, arbitrary partial alias/fault identity or gameplay claim. reports/native_frame_clock_actual_r35.json. Schedule: Paused self-subtraction clears interval ticks preserving frequency. Else increment update64, ordered current-to-previous words; QPC local8 or advance synthetic64; current = now-origin, interval=current-previous. FILD64 ticks/frequency, FDIVP, FSTP32, reload32, FLDZ, FCOMIP, FSTP. JBE keeps positive/zero/unordered; negative restores previous current and self-difference. Count/synthetic are not rolled back."
+        },
+        "after": {
+          "address": "00bedc30",
+          "name": "BSP_FrameClock_Update",
+          "evidence": "ECX clock, RET. Paused+68 zeros interval by self-subtraction without advancing. Otherwise increment counter, copy current to previous, read QPC or add fixed increment+70 to synthetic+78, subtract start and previous. x87 signed64 ratio spills float32; strictly negative restores previous and zero interval, unordered skips rollback. See docs/FRAME_CLOCK.md. | R35 actual80h clock storage and nine raw methods672B, with existing timestamp add/subtract and complete93B BEE080 sampler reused through private adapters. Preserve current profile-slot load timing, ignored QPF/QPC BOOL and untouched local/output preimages, native count/synthetic wrap, float32 x87 spill and strict-negative/unordered branch, current/previous/interval stores and rollback. Worker14 bodies1206B/473 instructions/22 calls have zero gaps and PE/live equality. Parent reviewed entire raw source/header, verified3417 frozen artifacts and15 native report hex/hash spans against installed PE. Worker and combined main strict /MD builds and three CTests pass; primary freshly relinked unchanged fixture passes59 complete80h native/source pairs, allfour x87 rounding modes, normalized388B update plus exact disable/getter bytes, failed-query preimage replay and real QPF/QPC checks. BEE060 previously undefined getter was defined/named/saved by parent43cff61ab. No raw clock owner/publication/manager registration, application/worker binding, arbitrary partial alias/fault identity or gameplay claim. reports/native_frame_clock_actual_r35.json. Schedule: Paused self-subtraction clears interval ticks preserving frequency. Else increment update64, ordered current-to-previous words; QPC local8 or advance synthetic64; current = now-origin, interval=current-previous. FILD64 ticks/frequency, FDIVP, FSTP32, reload32, FLDZ, FCOMIP, FSTP. JBE keeps positive/zero/unordered; negative restores previous current and self-difference. Count/synthetic are not rolled back. | R38 current-publication adapters capture volatile AB0 once per operation, require actual live80h owner profileD68D50 and the exact borrowed slot, and invoke existing concrete update/current/interval/sample/fixed providers. No clock owner or numeric code dispatch introduced; current/interval return actual member pointers. Parent complete source reviewed, all3402worker artifacts and6PE spans594B independently verified. Worker/combined strict /MD builds and3CTests pass. Fresh primary genuine-storage fixture passes two owners in same raw manager, publication reload, one advance, real QPC output-preimage, signed/fixed input, unsupported/null rejection and both owners freed once by shared drain. Initial fixture fixed-address reservation failed before execution; only fixture profile storage changed to nonfixed borrowed readonly allocation with same verified44B table and unchanged native identity stamp. Application clock producer/consumer cutover, originalFH3/SEH and gameplay remain unproved. No duplicate original source records for these new C++ adapters. reports/native_frame_clock_publication_r38.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bee050",
+        "before": {
+          "address": "00bee050",
+          "function_name": "BSP_FrameClock_GetCurrent",
+          "comment": "[BSP reconstruction 00bee050]\nHypothesis, not a recovered symbol. ECX=self; EAX=result; RET. D68D50 slot14; return actual timer+20h current timestamp, no sampling or mutation. Full span SHA256 dadecdeeff0b9454fd9dc08c558a9148187b2b1bec017fe8b92430570b86012a. docs/SOUND_SYSTEM_UPDATE.md. Win32, focused callback/order checks and installed FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open.\n\n[BSP reconstruction 00bee050] update\nHypothesis, not a recovered symbol. ECX=self; EAX=result; RET. D68D50 slot14; return actual timer+20h current timestamp, no sampling or mutation. Full span SHA256 dadecdeeff0b9454fd9dc08c558a9148187b2b1bec017fe8b92430570b86012a. docs/SOUND_SYSTEM_UPDATE.md. Win32, focused callback/order checks and installed FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open. | Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage with explicit existing service boundaries. Full live/disk range and original ABI reviewed; targeted native fixtures cover only documented paths. Native EH, whole render/GPU composition and gameplay remain unverified. Evidence: docs/NATIVE_TRACELINE_RENDER.md; reports/native_traceline_render.json.\n\n[BSP reconstruction 00bee050] update\nHypothesis, not a recovered symbol. ECX=self; EAX=result; RET. D68D50 slot14; return actual timer+20h current timestamp, no sampling or mutation. Full span SHA256 dadecdeeff0b9454fd9dc08c558a9148187b2b1bec017fe8b92430570b86012a. docs/SOUND_SYSTEM_UPDATE.md. Win32, focused callback/order checks and installed FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open. | Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage with explicit existing service boundaries. Full live/disk range and original ABI reviewed; targeted native fixtures cover only documented paths. Native EH, whole render/GPU composition and gameplay remain unverified. Evidence: docs/NATIVE_TRACELINE_RENDER.md; reports/native_traceline_render.json. | R35 actual80h clock storage and nine raw methods672B, with existing timestamp add/subtract and complete93B BEE080 sampler reused through private adapters. Preserve current profile-slot load timing, ignored QPF/QPC BOOL and untouched local/output preimages, native count/synthetic wrap, float32 x87 spill and strict-negative/unordered branch, current/previous/interval stores and rollback. Worker14 bodies1206B/473 instructions/22 calls have zero gaps and PE/live equality. Parent reviewed entire raw source/header, verified3417 frozen artifacts and15 native report hex/hash spans against installed PE. Worker and combined main strict /MD builds and three CTests pass; primary freshly relinked unchanged fixture passes59 complete80h native/source pairs, allfour x87 rounding modes, normalized388B update plus exact disable/getter bytes, failed-query preimage replay and real QPF/QPC checks. BEE060 previously undefined getter was defined/named/saved by parent43cff61ab. No raw clock owner/publication/manager registration, application/worker binding, arbitrary partial alias/fault identity or gameplay claim. reports/native_frame_clock_actual_r35.json. Schedule: Raw address getter. Prior main getters accept semantic FrameClock; this interface accepts the actual raw allocation."
+        },
+        "after": {
+          "address": "00bee050",
+          "name": "BSP_FrameClock_GetCurrent",
+          "evidence": "Hypothesis, not a recovered symbol. ECX=self; EAX=result; RET. D68D50 slot14; return actual timer+20h current timestamp, no sampling or mutation. Full span SHA256 dadecdeeff0b9454fd9dc08c558a9148187b2b1bec017fe8b92430570b86012a. docs/SOUND_SYSTEM_UPDATE.md. Win32, focused callback/order checks and installed FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open. | Descriptive hypothesis, not a recovered symbol. Complete normal native body over actual storage with explicit existing service boundaries. Full live/disk range and original ABI reviewed; targeted native fixtures cover only documented paths. Native EH, whole render/GPU composition and gameplay remain unverified. Evidence: docs/NATIVE_TRACELINE_RENDER.md; reports/native_traceline_render.json. | R35 actual80h clock storage and nine raw methods672B, with existing timestamp add/subtract and complete93B BEE080 sampler reused through private adapters. Preserve current profile-slot load timing, ignored QPF/QPC BOOL and untouched local/output preimages, native count/synthetic wrap, float32 x87 spill and strict-negative/unordered branch, current/previous/interval stores and rollback. Worker14 bodies1206B/473 instructions/22 calls have zero gaps and PE/live equality. Parent reviewed entire raw source/header, verified3417 frozen artifacts and15 native report hex/hash spans against installed PE. Worker and combined main strict /MD builds and three CTests pass; primary freshly relinked unchanged fixture passes59 complete80h native/source pairs, allfour x87 rounding modes, normalized388B update plus exact disable/getter bytes, failed-query preimage replay and real QPF/QPC checks. BEE060 previously undefined getter was defined/named/saved by parent43cff61ab. No raw clock owner/publication/manager registration, application/worker binding, arbitrary partial alias/fault identity or gameplay claim. reports/native_frame_clock_actual_r35.json. Schedule: Raw address getter. Prior main getters accept semantic FrameClock; this interface accepts the actual raw allocation. | R38 current-publication adapters capture volatile AB0 once per operation, require actual live80h owner profileD68D50 and the exact borrowed slot, and invoke existing concrete update/current/interval/sample/fixed providers. No clock owner or numeric code dispatch introduced; current/interval return actual member pointers. Parent complete source reviewed, all3402worker artifacts and6PE spans594B independently verified. Worker/combined strict /MD builds and3CTests pass. Fresh primary genuine-storage fixture passes two owners in same raw manager, publication reload, one advance, real QPC output-preimage, signed/fixed input, unsupported/null rejection and both owners freed once by shared drain. Initial fixture fixed-address reservation failed before execution; only fixture profile storage changed to nonfixed borrowed readonly allocation with same verified44B table and unchanged native identity stamp. Application clock producer/consumer cutover, originalFH3/SEH and gameplay remain unproved. No duplicate original source records for these new C++ adapters. reports/native_frame_clock_publication_r38.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bee070",
+        "before": {
+          "address": "00bee070",
+          "function_name": "BSP_FrameClock_GetInterval",
+          "comment": "[BSP reconstruction 00bee070]\nVerified vtable00D68D50+1C entry. Native bytes 8D4140C3: ECX FrameClock, LEA EAX,[ECX+40]; RET. Returns existing interval timestamp, no update or sampling. Previously undefined function recovered in src/system_time_constants.cpp. Evidence docs/SYSTEM_TIME_CONSTANTS.md; reports/system_time_constants_audit.json. New C++ ABI, no game validation. | Previously undefined4-byte function; vtable00D68D50+1C contains00BEE070. Returns canonical FrameClock.interval, a pair of signed64 words. No sampling or clock update occurs here. Original ABI: ECX owner; LEA EAX,[ECX+40]; RET. Evidence docs/SYSTEM_TIME_CONSTANTS.md; reports/system_time_constants_audit.json. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation.\n\n[BSP reconstruction 00bee070] update\nVerified vtable00D68D50+1C entry. Native bytes 8D4140C3: ECX FrameClock, LEA EAX,[ECX+40]; RET. Returns existing interval timestamp, no update or sampling. Previously undefined function recovered in src/system_time_constants.cpp. Evidence docs/SYSTEM_TIME_CONSTANTS.md; reports/system_time_constants_audit.json. New C++ ABI, no game validation. | Previously undefined4-byte function; vtable00D68D50+1C contains00BEE070. Returns canonical FrameClock.interval, a pair of signed64 words. No sampling or clock update occurs here. Original ABI: ECX owner; LEA EAX,[ECX+40]; RET. Evidence docs/SYSTEM_TIME_CONSTANTS.md; reports/system_time_constants_audit.json. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Hypothesis, not a recovered symbol. Raw frame-clock interval accessor returns receiver+40 using LEA/RET; function already present after restart, no new definition required. Integrated code 1bbc1662 passed strict MSVC Win32 build, eight native seeds, both CTests,47 numeric call rows and24 live/installed-PE spans totaling5157 bytes. docs/NATIVE_SYSTEM_CONSTANT_GATHER.md; reports/native_system_constant_gather.json. Explicit actual storage and providers remain caller requirements. New C++ interface is not drop-in ABI/FH3/SEH or game validation.\n\n[BSP reconstruction 00bee070] update\nVerified vtable00D68D50+1C entry. Native bytes 8D4140C3: ECX FrameClock, LEA EAX,[ECX+40]; RET. Returns existing interval timestamp, no update or sampling. Previously undefined function recovered in src/system_time_constants.cpp. Evidence docs/SYSTEM_TIME_CONSTANTS.md; reports/system_time_constants_audit.json. New C++ ABI, no game validation. | Previously undefined4-byte function; vtable00D68D50+1C contains00BEE070. Returns canonical FrameClock.interval, a pair of signed64 words. No sampling or clock update occurs here. Original ABI: ECX owner; LEA EAX,[ECX+40]; RET. Evidence docs/SYSTEM_TIME_CONSTANTS.md; reports/system_time_constants_audit.json. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | R35 actual80h clock storage and nine raw methods672B, with existing timestamp add/subtract and complete93B BEE080 sampler reused through private adapters. Preserve current profile-slot load timing, ignored QPF/QPC BOOL and untouched local/output preimages, native count/synthetic wrap, float32 x87 spill and strict-negative/unordered branch, current/previous/interval stores and rollback. Worker14 bodies1206B/473 instructions/22 calls have zero gaps and PE/live equality. Parent reviewed entire raw source/header, verified3417 frozen artifacts and15 native report hex/hash spans against installed PE. Worker and combined main strict /MD builds and three CTests pass; primary freshly relinked unchanged fixture passes59 complete80h native/source pairs, allfour x87 rounding modes, normalized388B update plus exact disable/getter bytes, failed-query preimage replay and real QPF/QPC checks. BEE060 previously undefined getter was defined/named/saved by parent43cff61ab. No raw clock owner/publication/manager registration, application/worker binding, arbitrary partial alias/fault identity or gameplay claim. reports/native_frame_clock_actual_r35.json. Schedule: Same raw interface and four-byte body as final orch5 native_system_constant_gather getter. No whole-file adoption."
+        },
+        "after": {
+          "address": "00bee070",
+          "name": "BSP_FrameClock_GetInterval",
+          "evidence": "Verified vtable00D68D50+1C entry. Native bytes 8D4140C3: ECX FrameClock, LEA EAX,[ECX+40]; RET. Returns existing interval timestamp, no update or sampling. Previously undefined function recovered in src/system_time_constants.cpp. Evidence docs/SYSTEM_TIME_CONSTANTS.md; reports/system_time_constants_audit.json. New C++ ABI, no game validation. | Previously undefined4-byte function; vtable00D68D50+1C contains00BEE070. Returns canonical FrameClock.interval, a pair of signed64 words. No sampling or clock update occurs here. Original ABI: ECX owner; LEA EAX,[ECX+40]; RET. Evidence docs/SYSTEM_TIME_CONSTANTS.md; reports/system_time_constants_audit.json. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | R35 actual80h clock storage and nine raw methods672B, with existing timestamp add/subtract and complete93B BEE080 sampler reused through private adapters. Preserve current profile-slot load timing, ignored QPF/QPC BOOL and untouched local/output preimages, native count/synthetic wrap, float32 x87 spill and strict-negative/unordered branch, current/previous/interval stores and rollback. Worker14 bodies1206B/473 instructions/22 calls have zero gaps and PE/live equality. Parent reviewed entire raw source/header, verified3417 frozen artifacts and15 native report hex/hash spans against installed PE. Worker and combined main strict /MD builds and three CTests pass; primary freshly relinked unchanged fixture passes59 complete80h native/source pairs, allfour x87 rounding modes, normalized388B update plus exact disable/getter bytes, failed-query preimage replay and real QPF/QPC checks. BEE060 previously undefined getter was defined/named/saved by parent43cff61ab. No raw clock owner/publication/manager registration, application/worker binding, arbitrary partial alias/fault identity or gameplay claim. reports/native_frame_clock_actual_r35.json. Schedule: Same raw interface and four-byte body as final orch5 native_system_constant_gather getter. No whole-file adoption. | R38 current-publication adapters capture volatile AB0 once per operation, require actual live80h owner profileD68D50 and the exact borrowed slot, and invoke existing concrete update/current/interval/sample/fixed providers. No clock owner or numeric code dispatch introduced; current/interval return actual member pointers. Parent complete source reviewed, all3402worker artifacts and6PE spans594B independently verified. Worker/combined strict /MD builds and3CTests pass. Fresh primary genuine-storage fixture passes two owners in same raw manager, publication reload, one advance, real QPC output-preimage, signed/fixed input, unsupported/null rejection and both owners freed once by shared drain. Initial fixture fixed-address reservation failed before execution; only fixture profile storage changed to nonfixed borrowed readonly allocation with same verified44B table and unchanged native identity stamp. Application clock producer/consumer cutover, originalFH3/SEH and gameplay remain unproved. No duplicate original source records for these new C++ adapters. reports/native_frame_clock_publication_r38.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bee080",
+        "before": {
+          "address": "00bee080",
+          "function_name": "BSP_FrameClock_SampleRawTimestamp",
+          "comment": "[BSP reconstruction 00bee080]\nECX clock, stack output, EAX output, RET4. Fixed mode+69 copies elapsed pair+20; normal samples absolute QPC and frequency+60, regardless of pause. Typed host reports QPC failure; native ignores it. Preserve mode-dependent timestamp meaning.\n\n[BSP reconstruction 00bee080] update\nECX clock, stack output, EAX output, RET4. Fixed mode+69 copies elapsed pair+20; normal samples absolute QPC and frequency+60, regardless of pause. Typed host reports QPC failure; native ignores it. Preserve mode-dependent timestamp meaning. | Hypothesis, not a recovered symbol. Actual 24h thread owner, actual events and raw 80h clock publication. Preserve suspended thread creation, event capture/current-owner deletion order, current clock sampling, x87 timestamp conversions, negative-zero clamp and unsigned rate correction. EndFrame remains a required substantive provider; active rendering is not validated. docs/NATIVE_RENDERER_CONTROL_WORKER.md; reports/native_renderer_control_worker.json. Strict integrated Win32 build, two CTests and focused packet fixture passed at 6641c05f. Original whole-function ABI/FH3/SEH and gameplay compatibility remain unvalidated.\n\n[BSP reconstruction 00bee080] update\nECX clock, stack output, EAX output, RET4. Fixed mode+69 copies elapsed pair+20; normal samples absolute QPC and frequency+60, regardless of pause. Typed host reports QPC failure; native ignores it. Preserve mode-dependent timestamp meaning. | R33 reuse of final orch5 control-worker source with current main providers;5 complete bodies684B, including corrected BEE080 extent93B (old91B receipt omitted RET4 immediate). Fresh12-span live/PE evidence;7 directcalls pass and19 indirect/import rows separate. Primary reviewed full source/header and native listings; retained3348+50 artifact hashes verified. Combined main strict /MD build3 CTests and freshly relinked fixture pass16 original/source timing comparisons, complete original raw-clock fixed/QPC paths and real inactive worker sample/yield/stop/idle/join/delete with immutable binding rejection. Parent repaired B33C10 CALL_RETURN gap B33C15..17; full11-instruction scalar listing now has zero gaps. Application context remains unbound; active Begin/End, accepted callback, forced QPC/thread failure, original thread/lifetime bytes, FH3/SEH and gameplay unvalidated. Stop/idle must precede renderer destruction; borrowed contexts must survive joins and failure-retained workers. reports/native_renderer_control_worker_main_r33.json."
+        },
+        "after": {
+          "address": "00bee080",
+          "name": "BSP_FrameClock_SampleRawTimestamp",
+          "evidence": "ECX clock, stack output, EAX output, RET4. Fixed mode+69 copies elapsed pair+20; normal samples absolute QPC and frequency+60, regardless of pause. Typed host reports QPC failure; native ignores it. Preserve mode-dependent timestamp meaning. | R33 reuse of final orch5 control-worker source with current main providers;5 complete bodies684B, including corrected BEE080 extent93B (old91B receipt omitted RET4 immediate). Fresh12-span live/PE evidence;7 directcalls pass and19 indirect/import rows separate. Primary reviewed full source/header and native listings; retained3348+50 artifact hashes verified. Combined main strict /MD build3 CTests and freshly relinked fixture pass16 original/source timing comparisons, complete original raw-clock fixed/QPC paths and real inactive worker sample/yield/stop/idle/join/delete with immutable binding rejection. Parent repaired B33C10 CALL_RETURN gap B33C15..17; full11-instruction scalar listing now has zero gaps. Application context remains unbound; active Begin/End, accepted callback, forced QPC/thread failure, original thread/lifetime bytes, FH3/SEH and gameplay unvalidated. Stop/idle must precede renderer destruction; borrowed contexts must survive joins and failure-retained workers. reports/native_renderer_control_worker_main_r33.json. | R38 current-publication adapters capture volatile AB0 once per operation, require actual live80h owner profileD68D50 and the exact borrowed slot, and invoke existing concrete update/current/interval/sample/fixed providers. No clock owner or numeric code dispatch introduced; current/interval return actual member pointers. Parent complete source reviewed, all3402worker artifacts and6PE spans594B independently verified. Worker/combined strict /MD builds and3CTests pass. Fresh primary genuine-storage fixture passes two owners in same raw manager, publication reload, one advance, real QPC output-preimage, signed/fixed input, unsupported/null rejection and both owners freed once by shared drain. Initial fixture fixed-address reservation failed before execution; only fixture profile storage changed to nonfixed borrowed readonly allocation with same verified44B table and unchanged native identity stamp. Application clock producer/consumer cutover, originalFH3/SEH and gameplay remain unproved. No duplicate original source records for these new C++ adapters. reports/native_frame_clock_publication_r38.json."
+        },
+        "status": "applied"
+      }
+    ]
   }
 }
