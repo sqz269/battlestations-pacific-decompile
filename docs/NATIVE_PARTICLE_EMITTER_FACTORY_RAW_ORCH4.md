@@ -90,7 +90,8 @@ PE. The report records each range hash, all call instructions, the final RET,
 prior ledger records and the prior Ghidra comment. Ghidra mutations and ledger
 integration are reserved for the primary integrator.
 
-The body/EH audit is complete. Concrete parser integration and build validation
-are pending. These are new source-level interfaces, not native FH3/SEH or
+The body/EH audit is complete. Strict MSVC Win32 compilation with `/W4 /WX`
+passes against the genuine parser declarations. Full-cycle linking and fixture
+validation are pending. These are new source-level interfaces, not native FH3/SEH or
 binary replacements; unrestricted faults, concurrent mutation and gameplay
 behavior have not been validated.

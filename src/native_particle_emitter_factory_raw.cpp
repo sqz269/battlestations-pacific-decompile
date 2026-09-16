@@ -163,6 +163,7 @@ void* create_native_particle_definition_00af9fb0(const void* kind, const void* n
         a.phase = Phase::complete;
         return a.owner;
     } catch (...) {
+        a.native_state_at_failure = a.unwind_state;
         // DF2E6C: all three factory unwind states free the captured raw block.
         // The real constructor has already completed its own cleanup here.
         if (a.unwind_state >= 0) {
