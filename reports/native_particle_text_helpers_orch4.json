@@ -1,0 +1,179 @@
+{
+  "packet": "orch4_particle_text_helpers_j10",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00aedf60",
+      "end_exclusive": "00aedf75",
+      "bytes": 21,
+      "sha256": "740e818f4ea454c9c28e439f07e40b6bcc5c3ed76c86196c75008636a609747f",
+      "live_disk_match": true,
+      "name": "parse_native_particle_token_float_00aedf60",
+      "proposed_name": "ParticleToken_ParseFloat_00AEDF60",
+      "coverage": "complete",
+      "status": "complete_native_storage_source_build_and_focused_fixture_checked",
+      "original_abi": "ECX actual token pointer cell; RET; ST0 binary32-rounded result",
+      "old_documentation": {
+        "hash": "4342a11c7f09daed77256f9ca72cb56ed08e832437306b1e878d35fb253551ed",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00aedf60",
+        "function_name": "FUN_00aedf60",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "dVar1",
+            "type": "double",
+            "storage": "(VARIABLE, 0x0, 8)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 50.0
+      },
+      "evidence": "Hypothesis, not recovered symbol. Dereference text, current CRT atof ST0 call, explicit FSTP32 and compiled FLD32 without binary64 temporary. Same-provider original/source arithmetic and flags match across four rounding modes. Original CRT parsing/locale parity is outside this provider boundary. Complete21B PE/live SHA256 740e818f4ea454c9c28e439f07e40b6bcc5c3ed76c86196c75008636a609747f. ECX actual token pointer cell; RET; ST0 binary32-rounded result. See docs/NATIVE_PARTICLE_TEXT_HELPERS_ORCH4.md and reports/native_particle_text_helpers_orch4.json. Strict Win32 build/3CTests and copied-original probe passed. New C++ interface, no original ABI/gameplay claim."
+    },
+    {
+      "address": "00af3e90",
+      "end_exclusive": "00af3eef",
+      "bytes": 95,
+      "sha256": "479faf022e7b27ef85d199ad958aacd1bc000d5c20cb07fdb6ae386c9a2eac04",
+      "live_disk_match": true,
+      "name": "count_native_particle_token_fields_00af3e90",
+      "proposed_name": "ParticleToken_CountFields_00AF3E90",
+      "coverage": "complete",
+      "status": "complete_native_storage_source_build_and_focused_fixture_checked",
+      "original_abi": "ECX actual token pointer cell; RET; EAX signed count",
+      "old_documentation": {
+        "hash": "7d14d0c15b1b24e8e775c876c13611013796500c577fdad9c5d8a83be3aff8d9",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af3e90",
+        "function_name": "FUN_00af3e90",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar5",
+            "type": "int",
+            "storage": "(register, 0xc, 4)"
+          },
+          {
+            "name": "pcVar2",
+            "type": "char *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          },
+          {
+            "name": "pcVar4",
+            "type": "char *",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 11,
+            "name": "LAB_00af3e9b"
+          },
+          {
+            "relative_offset": 22,
+            "name": "LAB_00af3ea6"
+          },
+          {
+            "relative_offset": 38,
+            "name": "LAB_00af3eb6"
+          },
+          {
+            "relative_offset": 64,
+            "name": "LAB_00af3ed0"
+          },
+          {
+            "relative_offset": 79,
+            "name": "LAB_00af3edf"
+          },
+          {
+            "relative_offset": 82,
+            "name": "LAB_00af3ee2"
+          },
+          {
+            "relative_offset": 86,
+            "name": "LAB_00af3ee6"
+          },
+          {
+            "relative_offset": 88,
+            "name": "LAB_00af3ee8"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "evidence": "Hypothesis, not recovered symbol. Null text returns0; otherwise full NUL scan then1 plus ASCII-space runs before signed byte<32 or byte127. Leading/trailing runs count, empty returns1. Preserve signed index/length comparisons and captured terminating byte without extra reread. Complete95B PE/live SHA256 479faf022e7b27ef85d199ad958aacd1bc000d5c20cb07fdb6ae386c9a2eac04. ECX actual token pointer cell; RET; EAX signed count. See docs/NATIVE_PARTICLE_TEXT_HELPERS_ORCH4.md and reports/native_particle_text_helpers_orch4.json. Strict Win32 build/3CTests and copied-original probe passed. New C++ interface, no original ABI/gameplay claim."
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00aedf64",
+      "native": "00bfa66c",
+      "function": "00aedf60"
+    }
+  ],
+  "validation": {
+    "strict_win32_build": "passed",
+    "existing_ctests": "3/3 passed",
+    "probe": {
+      "exit_code": 0,
+      "output": "PASS: 13 signed-byte field-count cases; 7 float cases x4 x87 rounding modes, exact bits and exception flags; same current CRT provider.\n",
+      "float_sha256": "740e818f4ea454c9c28e439f07e40b6bcc5c3ed76c86196c75008636a609747f",
+      "count_sha256": "479faf022e7b27ef85d199ad958aacd1bc000d5c20cb07fdb6ae386c9a2eac04",
+      "scope": "Both complete original bodies; sole atof call redirected to same current CRT used by source. No original CRT locale/parser equivalence or binary replacement ABI claim."
+    },
+    "compiled_float_schedule": "CALL current CRT at19; FSTP32 at1C; FLD32 at22; no binary64 spill",
+    "independent_review": "Counter extra volatile reread corrected; arithmetic reload confirmed in actual compiled object."
+  },
+  "artifacts": [
+    {
+      "path": "src/native_particle_text_helpers.cpp",
+      "sha256": "1830dd1654258b075910e5a555344ffb467916333976fe184c1b0ce8e42c346d"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_particle_text_helpers.obj",
+      "sha256": "2da9078dcd7e4338cb8f27a67439d28a13997327ebc3894008543d270e3fabfe"
+    },
+    {
+      "path": "local/particle_text_helpers_object_disasm.txt",
+      "sha256": "c4e8597fb5831c6e9188925637c9cdc24adf9d0aae4113f4b5abd9410ec19a14"
+    },
+    {
+      "path": "local/particle_text_helpers_probe.cpp",
+      "sha256": "fef3142ece88af25b83cf45f925051c6185a67d2f0690bb69d63f5add9ec444b"
+    },
+    {
+      "path": "local/run_particle_text_helpers_probe.py",
+      "sha256": "a157f17687c9a302d17b7246b032d1d9c1269fd026891af115ce578989b48492"
+    },
+    {
+      "path": "local/particle_text_helpers_probe_result.json",
+      "sha256": "12fbe95f60995f62ca16f34cb861f092987b1b20889c73e760d7af65a73ae1b8"
+    },
+    {
+      "path": "local/particle_text_helpers_build_j10.log",
+      "sha256": "6fb1901ebc02c9a2b66aeb3800b323ea2799e82a7a0b04bee47bee55292dc065"
+    }
+  ],
+  "boundaries": [
+    "Current CRT provider shared by probe; original CRT parsing/locale/error-state parity not established.",
+    "Valid readable NUL text required; no new safety policy.",
+    "New C++ interfaces, no binary ABI replacement or gameplay claim."
+  ]
+}
