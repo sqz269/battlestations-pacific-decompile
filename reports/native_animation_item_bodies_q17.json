@@ -1,119 +1,392 @@
 {
- "events": [
-  {
-   "recreate": "00b928b0",
-   "previous": "Function: FUN_00b928b0 at 00b928b0\nSignature: undefined FUN_00b928b0(void)\nEntry: 00b928b0\nBody: 00b928b0 - 00b92908",
-   "plate": null
-  },
-  {
-   "endpoint": "delete_function",
-   "body": {
-    "address": "00b928b0"
-   },
-   "result": {
-    "success": true,
-    "address": "00b928b0",
-    "deleted_function": "FUN_00b928b0",
-    "body_size": 89,
-    "message": "Function 'FUN_00b928b0' deleted at 00b928b0"
-   }
-  },
-  {
-   "endpoint": "disassemble_bytes",
-   "body": {
-    "start_address": "00b928b0",
-    "end_address": "00b92942"
-   },
-   "result": {
-    "success": true,
-    "start_address": "00b928b0",
-    "end_address": "00b92941",
-    "bytes_disassembled": 146,
-    "message": "Successfully disassembled 146 byte(s)"
-   }
-  },
-  {
-   "endpoint": "create_function",
-   "body": {
-    "address": "00b928b0",
-    "disassemble_first": false
-   },
-   "result": {
-    "success": true,
-    "address": "00b928b0",
-    "function_name": "FUN_00b928b0",
-    "entry_point": "00b928b0",
-    "body_size": 146,
-    "message": "Function created successfully at 00b928b0"
-   }
-  },
-  {
-   "defined": "00b928b0",
-   "end": "00b92942",
-   "name": null,
-   "after": "Function: FUN_00b928b0 at 00b928b0\nSignature: undefined FUN_00b928b0(void)\nEntry: 00b928b0\nBody: 00b928b0 - 00b92941"
-  },
-  {
-   "recreate": "00b92ec0",
-   "previous": "Function: FUN_00b92ec0 at 00b92ec0\nSignature: undefined FUN_00b92ec0(void)\nEntry: 00b92ec0\nBody: 00b92ec0 - 00b92ef9",
-   "plate": null
-  },
-  {
-   "endpoint": "delete_function",
-   "body": {
-    "address": "00b92ec0"
-   },
-   "result": {
-    "success": true,
-    "address": "00b92ec0",
-    "deleted_function": "FUN_00b92ec0",
-    "body_size": 58,
-    "message": "Function 'FUN_00b92ec0' deleted at 00b92ec0"
-   }
-  },
-  {
-   "endpoint": "disassemble_bytes",
-   "body": {
-    "start_address": "00b92ec0",
-    "end_address": "00b92f1d"
-   },
-   "result": {
-    "success": true,
-    "start_address": "00b92ec0",
-    "end_address": "00b92f1c",
-    "bytes_disassembled": 93,
-    "message": "Successfully disassembled 93 byte(s)"
-   }
-  },
-  {
-   "endpoint": "create_function",
-   "body": {
-    "address": "00b92ec0",
-    "disassemble_first": false
-   },
-   "result": {
-    "success": true,
-    "address": "00b92ec0",
-    "function_name": "FUN_00b92ec0",
-    "entry_point": "00b92ec0",
-    "body_size": 93,
-    "message": "Function created successfully at 00b92ec0"
-   }
-  },
-  {
-   "defined": "00b92ec0",
-   "end": "00b92f1d",
-   "name": null,
-   "after": "Function: FUN_00b92ec0 at 00b92ec0\nSignature: undefined FUN_00b92ec0(void)\nEntry: 00b92ec0\nBody: 00b92ec0 - 00b92f1c"
-  },
-  {
-   "endpoint": "save_program",
-   "body": {},
-   "result": {
-    "success": true,
-    "program": "battlestationspacific.exe",
-    "message": "Program saved successfully"
-   }
+  "events": [
+    {
+      "recreate": "00b928b0",
+      "previous": "Function: FUN_00b928b0 at 00b928b0\nSignature: undefined FUN_00b928b0(void)\nEntry: 00b928b0\nBody: 00b928b0 - 00b92908",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b928b0"
+      },
+      "result": {
+        "success": true,
+        "address": "00b928b0",
+        "deleted_function": "FUN_00b928b0",
+        "body_size": 89,
+        "message": "Function 'FUN_00b928b0' deleted at 00b928b0"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b928b0",
+        "end_address": "00b92942"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b928b0",
+        "end_address": "00b92941",
+        "bytes_disassembled": 146,
+        "message": "Successfully disassembled 146 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b928b0",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b928b0",
+        "function_name": "FUN_00b928b0",
+        "entry_point": "00b928b0",
+        "body_size": 146,
+        "message": "Function created successfully at 00b928b0"
+      }
+    },
+    {
+      "defined": "00b928b0",
+      "end": "00b92942",
+      "name": null,
+      "after": "Function: FUN_00b928b0 at 00b928b0\nSignature: undefined FUN_00b928b0(void)\nEntry: 00b928b0\nBody: 00b928b0 - 00b92941"
+    },
+    {
+      "recreate": "00b92ec0",
+      "previous": "Function: FUN_00b92ec0 at 00b92ec0\nSignature: undefined FUN_00b92ec0(void)\nEntry: 00b92ec0\nBody: 00b92ec0 - 00b92ef9",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00b92ec0"
+      },
+      "result": {
+        "success": true,
+        "address": "00b92ec0",
+        "deleted_function": "FUN_00b92ec0",
+        "body_size": 58,
+        "message": "Function 'FUN_00b92ec0' deleted at 00b92ec0"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b92ec0",
+        "end_address": "00b92f1d"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b92ec0",
+        "end_address": "00b92f1c",
+        "bytes_disassembled": 93,
+        "message": "Successfully disassembled 93 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b92ec0",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b92ec0",
+        "function_name": "FUN_00b92ec0",
+        "entry_point": "00b92ec0",
+        "body_size": 93,
+        "message": "Function created successfully at 00b92ec0"
+      }
+    },
+    {
+      "defined": "00b92ec0",
+      "end": "00b92f1d",
+      "name": null,
+      "after": "Function: FUN_00b92ec0 at 00b92ec0\nSignature: undefined FUN_00b92ec0(void)\nEntry: 00b92ec0\nBody: 00b92ec0 - 00b92f1c"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "independent_preflight_and_final_verification": {
+    "preflight": [
+      {
+        "address": "00b92440",
+        "end_exclusive": "00b924bf",
+        "bytes": 127,
+        "sha256": "be7e2c1e4993eac83a967470d97d08a9ff29a7b70a903970a9963a5b6c3e18d3",
+        "live_disk_match": true
+      },
+      {
+        "address": "00b928b0",
+        "end_exclusive": "00b92942",
+        "bytes": 146,
+        "sha256": "cfe90b2a4d90d9ecd688bf3cbea2fd84d32172d1e1750a8d19a4e87bad4df2bb",
+        "live_disk_match": true
+      },
+      {
+        "address": "00b92ae0",
+        "end_exclusive": "00b92bc0",
+        "bytes": 224,
+        "sha256": "2376e114acf0dd5573f45754e2476c89dc953ea588c186087155f26e40dc753a",
+        "live_disk_match": true
+      },
+      {
+        "address": "00b92ec0",
+        "end_exclusive": "00b92f1d",
+        "bytes": 93,
+        "sha256": "85c6bf5598ad56efbaed75c30a96cc06a3512ad1e48df89b32e07fa62dd30ef8",
+        "live_disk_match": true
+      }
+    ],
+    "prior_documentation": [
+      {
+        "address": "00b92440",
+        "documentation": {
+          "hash": "0d0fd0b32ecc2c31686d5dd683ba1566ad3612058a25c0f34a79ed8750f532c9",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b92440",
+          "function_name": "FUN_00b92440",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "puVar1",
+              "type": "undefined4 *",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "iVar3",
+              "type": "int",
+              "storage": "(register, 0x8, 4)"
+            },
+            {
+              "name": "iVar2",
+              "type": "int",
+              "storage": "(register, 0x4, 4)"
+            },
+            {
+              "name": "puVar5",
+              "type": "undefined4 *",
+              "storage": "(register, 0x18, 4)"
+            },
+            {
+              "name": "iVar4",
+              "type": "int",
+              "storage": "(register, 0x14, 4)"
+            },
+            {
+              "name": "puVar6",
+              "type": "undefined4 *",
+              "storage": "(register, 0x1c, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 26,
+              "name": "LAB_00b9245a"
+            },
+            {
+              "relative_offset": 64,
+              "name": "LAB_00b92480"
+            },
+            {
+              "relative_offset": 85,
+              "name": "LAB_00b92495"
+            },
+            {
+              "relative_offset": 103,
+              "name": "LAB_00b924a7"
+            },
+            {
+              "relative_offset": 121,
+              "name": "LAB_00b924b9"
+            }
+          ],
+          "completeness_score": 50.0
+        }
+      },
+      {
+        "address": "00b928b0",
+        "documentation": {
+          "hash": "f20b2e3b5198fe09abc8001a3a54aa3e2fb5d2fbd7ccdae8a88d8f539ff9523f",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b928b0",
+          "function_name": "FUN_00b928b0",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "iVar1",
+              "type": "int",
+              "storage": "(unique, 0x17200, 4)"
+            },
+            {
+              "name": "puStack_8",
+              "type": "undefined1 *",
+              "storage": "(stack, 0xfffffffffffffff8, 4)"
+            },
+            {
+              "name": "pvStack_c",
+              "type": "void *",
+              "storage": "(stack, 0xfffffffffffffff4, 4)"
+            },
+            {
+              "name": "local_4",
+              "type": "undefined4",
+              "storage": "(stack, 0xfffffffffffffffc, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 56,
+              "name": "LAB_00b928e8"
+            },
+            {
+              "relative_offset": 64,
+              "name": "LAB_00b928f0"
+            },
+            {
+              "relative_offset": 74,
+              "name": "LAB_00b928fa"
+            }
+          ],
+          "completeness_score": 50.0
+        }
+      },
+      {
+        "address": "00b92ae0",
+        "documentation": {
+          "hash": "d1e1b9252fd5d254fe76bdf80c3f75b5380663b8ea5980597405cdd0394b49f4",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b92ae0",
+          "function_name": "FUN_00b92ae0",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "iVar1",
+              "type": "int",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "iVar2",
+              "type": "int",
+              "storage": "(register, 0x1c, 4)"
+            },
+            {
+              "name": "local_c",
+              "type": "void *",
+              "storage": "(stack, 0xfffffffffffffff4, 4)"
+            },
+            {
+              "name": "puStack_8",
+              "type": "undefined1 *",
+              "storage": "(stack, 0xfffffffffffffff8, 4)"
+            },
+            {
+              "name": "local_4",
+              "type": "undefined4",
+              "storage": "(stack, 0xfffffffffffffffc, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 49,
+              "name": "LAB_00b92b11"
+            },
+            {
+              "relative_offset": 96,
+              "name": "LAB_00b92b40"
+            },
+            {
+              "relative_offset": 134,
+              "name": "LAB_00b92b66"
+            },
+            {
+              "relative_offset": 154,
+              "name": "LAB_00b92b7a"
+            },
+            {
+              "relative_offset": 163,
+              "name": "LAB_00b92b83"
+            },
+            {
+              "relative_offset": 187,
+              "name": "LAB_00b92b9b"
+            },
+            {
+              "relative_offset": 205,
+              "name": "LAB_00b92bad"
+            }
+          ],
+          "completeness_score": 50.0
+        }
+      },
+      {
+        "address": "00b92ec0",
+        "documentation": {
+          "hash": "e5ca244566a4dc627e51dbf81bebb93bf05b51b01e1872479ff796d2aa9344c3",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b92ec0",
+          "function_name": "FUN_00b92ec0",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "pvStack_c",
+              "type": "void *",
+              "storage": "(stack, 0xfffffffffffffff4, 4)"
+            },
+            {
+              "name": "puStack_8",
+              "type": "undefined1 *",
+              "storage": "(stack, 0xfffffffffffffff8, 4)"
+            },
+            {
+              "name": "local_4",
+              "type": "undefined4",
+              "storage": "(stack, 0xfffffffffffffffc, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [],
+          "completeness_score": 50.0
+        }
+      }
+    ],
+    "final_body_ends": {
+      "00b92440": "00b924be",
+      "00b928b0": "00b92941",
+      "00b92ae0": "00b92bbf",
+      "00b92ec0": "00b92f1c"
+    },
+    "zero_gap_listings": {
+      "00b928b0": 46,
+      "00b92ec0": 28
+    },
+    "saved": true,
+    "forced_exports_refreshed": [
+      "00b92440",
+      "00b928b0",
+      "00b92ae0",
+      "00b92ec0"
+    ],
+    "limits": "Listing/body repair only; no source or gameplay claim. Original names/comments preserved; worker will add reviewed hypotheses separately."
   }
- ]
 }
