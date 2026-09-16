@@ -31,6 +31,9 @@
 #include "bsp/font_registry_startup.hpp"
 #include "bsp/fingerprint_payload.hpp"
 #include "bsp/native_diagnostic_sink_lifetime.hpp"
+#include "bsp/native_frame_clock_lifetime.hpp"
+#include "bsp/native_frame_clock_publication.hpp"
+#include "bsp/game_native_readonly_data.hpp"
 #include "bsp/native_renderer_parameters.hpp"
 #include "bsp/physical_file.hpp"
 #include "bsp/renderer_startup.hpp"
@@ -768,12 +771,13 @@ bool GameFrameHost::input_action_pressed(int action) {
 
 void GameFrameHost::advance_frame_clock() {
     log_.implemented("ApplicationFrameHost::advance_frame_clock", "00bedc30");
-    update_frame_clock_00bedc30(clock_);
+    advance_published_native_frame_clock(clock_);
 }
 
 const ClockTimestamp& GameFrameHost::frame_interval() {
     log_.implemented("ApplicationFrameHost::frame_interval", "00bee070");
-    return clock_.interval;
+    std::memcpy(&interval_result_, interval_published_native_frame_clock(clock_), sizeof(interval_result_));
+    return interval_result_;
 }
 
 void GameFrameHost::game_on_move(float seconds) {
@@ -893,6 +897,111 @@ void GameLoopCallbacks::frame() {
 // GameStartupHost, 008f81f0
 // ---------------------------------------------------------------------------
 
+struct GameStartupHost::ClockServices {
+    enum class Phase { unattempted, constructing, constructed, failed, drained };
+    const NativeFrameClockActualContext methods;
+    const NativeFrameClockPublicationContext publication;
+    NativeFrameClockLifetimeContext lifetime;
+    Phase phase{Phase::unattempted};
+
+    ClockServices(GameNativeReadOnlyData& data, GameSingletonHost& singletons,
+                  void* volatile& clock)
+        : methods{static_cast<const volatile std::uint32_t*>(data.data_at(0x00d68d50, 44))},
+          publication{clock, methods},
+          lifetime{singletons.manager_publication_01090aa0(), clock, methods} {
+        // Validate before allocation/publication: raw initialization dispatches
+        // update/sample internally and must never reach unsupported slot words.
+        constexpr std::uint32_t expected[] = {
+            0x00bee110, 0x00bedbd0, 0x00bedc30, 0x00bedae0, 0x00beddc0,
+            0x00bee050, 0x00bee060, 0x00bee070, 0x00bee080, 0x00bedb20, 0x00bedb60};
+        for (std::size_t i = 0; i < std::size(expected); ++i)
+            if (methods.profile_d68d50[i] != expected[i])
+                throw std::logic_error("application clock requires the verified D68D50 profile");
+    }
+
+    void ensure() {
+        if (phase == Phase::constructed) {
+            try {
+                // A repeated local ensure skips allocation only for an admitted
+                // current publication. This does not make all startup repeatable.
+                (void)current_published_native_frame_clock(publication);
+            } catch (...) {
+                phase = Phase::failed;
+                throw;
+            }
+            return;
+        }
+        if (phase != Phase::unattempted)
+            throw std::logic_error("application clock construction cannot be retried");
+        if (publication.actual_clock_01090ab0 != nullptr) {
+            phase = Phase::failed; // ownership of this graph is not established
+            throw std::logic_error("unexpected preexisting application clock publication");
+        }
+        phase = Phase::constructing;
+        void* captured = nullptr;
+        try {
+            captured = singleton_lifetime_allocate({SingletonAllocationKind::object, 0x80, 0x80});
+        } catch (...) {
+            phase = Phase::failed; // no allocation returned; do not call free
+            throw;
+        }
+        if (!captured) {
+            phase = Phase::unattempted; // native defensive skip; no fallback clock
+            return;
+        }
+        try {
+            construct_native_frame_clock_00bedfb0(captured, lifetime);
+        } catch (...) {
+            phase = Phase::failed;
+            // Native C86A3E frees the captured allocation only. AB0 may retain
+            // stale bits; never inspect, repair or clear it here.
+            singleton_lifetime_free(captured);
+            throw;
+        }
+        phase = Phase::constructed;
+    }
+
+    const NativeFrameClockPublicationContext& require_publication() const {
+        if (phase != Phase::constructed)
+            throw std::logic_error("application clock consumers require completed construction");
+        return publication;
+    }
+};
+
+void GameStartupHost::ensure_frame_clock_0073d480() {
+    if (!clock_services_) {
+        if (!native_data_)
+            throw std::logic_error("application clock requires retained original profile data");
+        auto pending = std::make_unique<ClockServices>(*native_data_, *singletons_, clock_publication_01090ab0_);
+        // Install only a fully constructed persistent context, before the raw
+        // owner can register with the existing manager. Preserve all other fields.
+        singletons_->native_deletion_bindings().frame_clock = &pending->lifetime;
+        clock_services_ = std::move(pending);
+    }
+    clock_services_->ensure();
+}
+
+const NativeFrameClockPublicationContext& GameStartupHost::require_frame_clock_context() const {
+    if (!clock_services_)
+        throw std::logic_error("application clock context is not established");
+    return clock_services_->require_publication();
+}
+
+void GameStartupHost::exit_if_frame_clock_failed() noexcept {
+    if (!clock_services_ || (clock_services_->phase != ClockServices::Phase::failed &&
+                            clock_services_->phase != ClockServices::Phase::constructing)) return;
+    try {
+        log_.note("raw application clock construction failed; manager graph cleanup is unproved; retaining application and mapped data until process exit");
+        log_.close();
+    } catch (...) {
+        std::fputs("bsp_game: failed raw clock construction requires process exit\n", stderr);
+        std::fflush(stderr);
+    }
+    // Conservative source policy. Do not run manager/host/CRT cleanup against
+    // a potentially dangling publication; this is not native FH3 equivalence.
+    std::_Exit(1);
+}
+
 struct GameStartupHost::SoundServices {
     // Shared actual lifecycle publications. Native online construction occurs
     // at73DC7C and input backend construction at73DD8E, after sound/window.
@@ -919,7 +1028,7 @@ struct GameStartupHost::SoundServices {
               fade_00ce3dc8, &null_integer_format_01090ab4}),
           core({app.vfs_->context(), app.vfs_->search_registrations(),
               app.scripts_->files(), app.scripts_->runtime(), app.scripts_->globals(),
-              app.clock_, crt_string_storage(), platform.load_events(),
+              app.require_frame_clock_context(), crt_string_storage(), platform.load_events(),
               app.singletons_->sound_lifetime(), crt, dialog,
               [this](void* owner, float seconds) { dialog.update(owner, seconds); },
               &alternate_00f8bbcc}, selected_library_path(app.options_.fmod_dll, L"fmodex.dll"),
@@ -966,7 +1075,7 @@ struct GameStartupHost::InputServices {
     explicit InputServices(GameStartupHost& app)
         : xinput(selected_xinput_path(app.options_.xinput_dll)),
           core({{crt_string_storage(), sdk, xinput, tables, g_active_platform,
-              app.clock_publication_01090ab0_,
+              app.require_frame_clock_context(),
               {one_00d7a24c, negative_zero_00d7a208, mouse_scale_00e12fb0,
                   invert_y_00f8bc04, axis_divisor_00d7a220, unsigned_bias_00ce3978,
                   milliseconds_00ce47a0},
@@ -1030,6 +1139,7 @@ void GameStartupHost::exit_if_native_vfs_interrupted() noexcept {
 }
 
 GameStartupHost::~GameStartupHost() {
+    exit_if_frame_clock_failed();
     exit_if_native_vfs_interrupted();
     delete loop_callbacks_;
     delete frame_host_;
@@ -1039,7 +1149,10 @@ GameStartupHost::~GameStartupHost() {
     delete menu_;
     // Retain sound callbacks, DLLs, VFS/Lua and lifetime publication cells
     // through the actual raw singleton drain, including exceptional startup.
-    if (singletons_) singletons_->shutdown();
+    if (singletons_) {
+        singletons_->shutdown();
+        if (clock_services_) clock_services_->phase = ClockServices::Phase::drained;
+    }
     if (input_) {
         try { input_->core.release_sdk_after_native_drain(); }
         catch (const std::exception& error) {
@@ -1054,6 +1167,8 @@ GameStartupHost::~GameStartupHost() {
     input_.reset();
     sound_.reset();
     delete singletons_;
+    singletons_ = nullptr;
+    clock_services_.reset(); // after GameSingletonHost's fallback destructor/drain
     delete profiler_;
     delete decals_;
     delete frontend_;
@@ -1128,6 +1243,7 @@ void GameStartupHost::game_explorer_release() {
 }
 
 void GameStartupHost::exit_process(int code) {
+    exit_if_frame_clock_failed();
     exit_if_native_vfs_interrupted();
     log_.implemented("StartupHost::exit_process", "008f82f0");
     std::exit(code); // 008F82F0 calls genuine CRT exit, including atexit callbacks.
@@ -1268,9 +1384,8 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     construct_allocation_stats_00be2900(allocation_stats);
     log_.implemented("Phase 0 construct_allocation_stats", "00be2900");
 
-    construct_frame_clock_singleton_00bedfb0(clock_);
-    clock_publication_01090ab0_ = &clock_;
-    log_.implemented("Phase 0 construct_frame_clock_singleton", "00bedfb0");
+    ensure_frame_clock_0073d480();
+    log_.implemented("Phase 0 ensure_actual_frame_clock", "0073d480");
 
     install_object_handle_resolvers_006ad0d0(object_resolvers_);
     log_.implemented("Phase 0 install_object_handle_resolvers", "006ad0d0");
@@ -1359,6 +1474,8 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         renderer_capabilities_, options_.settings_personal_root);
     auto& settings_host = *settings_host_;
     load_game_settings_008d8190(settings_, settings_host);
+    if (command_line.fixed_frame_rate)
+        enable_fixed_published_native_frame_clock(require_frame_clock_context(), 50);
     log_.implemented("Phase 5 load_game_settings", "008d8190");
     summary_.options_file_present = settings_host.options_file_present();
     summary_.options_path = settings_host.options_path();
@@ -1621,7 +1738,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     summary_.screenshot_frame = options_.screenshot_frame;
 
     loop_.frames_enabled = platform_.frames_enabled;
-    frame_host_ = new GameFrameHost(log_, clock_, platform_, loop_, game_state_, profiler_,
+    frame_host_ = new GameFrameHost(log_, require_frame_clock_context(), platform_, loop_, game_state_, profiler_,
         menu_, *vfs_);
     std::function<void(IDirect3DDevice9&)> capture;
     if (!options_.screenshot_path.empty()) {
@@ -1665,6 +1782,7 @@ void GameStartupHost::release_platform_window() noexcept {
 }
 
 void GameStartupHost::application_shutdown() {
+    exit_if_frame_clock_failed();
     exit_if_native_vfs_interrupted();
     // Native00737f30's full singleton teardown remains unbound. Retained C++
     // input/locale/settings owners close later in dependency order at destruction.
@@ -1762,9 +1880,11 @@ void GameStartupHost::application_destruct() {
 }
 
 void GameStartupHost::destroy_singleton_lifetime_manager() {
+    exit_if_frame_clock_failed();
     exit_if_native_vfs_interrupted();
     log_.implemented("StartupHost::destroy_singleton_lifetime_manager", "008f8449");
     singletons_->shutdown();
+    if (clock_services_) clock_services_->phase = ClockServices::Phase::drained;
     if (input_) input_->core.release_sdk_after_native_drain();
     if (sound_) {
         const auto state = sound_->core.summary();
