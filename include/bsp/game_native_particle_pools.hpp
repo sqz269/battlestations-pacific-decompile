@@ -33,7 +33,7 @@ private:
 
     enum class StartupState { unattempted, returned, threw };
     AllocatorListDomain& list_;
-    alignas(std::max_align_t) std::byte model_storage_00f8d2d0_[0x38]{};
+    alignas(NativeWeakPoolStorage) std::byte model_storage_00f8d2d0_[0x38]{};
     NativeWeakPoolStorage parameter_storage_00f8d344_{};
     NativeWeakHandlePool parameters_;
     std::mutex startup_mutex_;
