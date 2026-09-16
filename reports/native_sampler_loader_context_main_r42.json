@@ -1,0 +1,250 @@
+{
+  "schema_version": 1,
+  "packet": "native_sampler_loader_context_main_r42",
+  "status": "source_complete_validated_archive_frozen",
+  "baseline": {
+    "main_commit": "f93acf671",
+    "source_commit": "a2e083c8cf6e37ae5c0fc762372a44a9e7ef0cda",
+    "documentation_commit": "85e73cda8"
+  },
+  "scope": "Adopt the sampler loader operation context needed by later raw consumers, reuse the established complete 004DE4B0 raw provider through a narrow persistent frame, and restore the complete 00B1B810 two-provider forwarder. No application owner, manager alias, cache entry, renderer fallback, raw-drain admission, deletion binding, ledger, or Ghidra mutation is included.",
+  "historical_provenance": {
+    "reviewed_commit": "a6b2884f2",
+    "implementation_commit": "7638b900cc0494402c9fdb97b6fe817af498cb25",
+    "report": "a6b2884f2:reports/native_sampler_loader_context.json",
+    "documentation": "a6b2884f2:docs/NATIVE_SAMPLER_LOADER_CONTEXT.md",
+    "historical_source_sha256": "477616c40fc4658735dadf9a31a2fe543f12bf507be12ce238ab379ac3feeedb",
+    "historical_header_sha256": "1597437df568ec3a493a8cd4029fbd15b28bae6ef896450bf7f1925cbd10bb42",
+    "historical_object_sha256": "82e8d3138ccb314f9ad80eec60fd87b38f32e8ad8a31ef39c02ced912f8be153",
+    "debug24_archive_manifest": {
+      "path": "J:/PROG/battlestations-pacific-decompile-orch5-native-renderer-debug-records24/local/output/debug24_validated_artifacts_v2/manifest.json",
+      "sha256": "44a4e4e1d483b9829b414101dabca8637d4051c495a6f4d76797fc1a11cbd46f"
+    },
+    "worker_manifest": {
+      "path": "J:/PROG/battlestations-pacific-decompile-orch5-native-sampler-loader-context/local/native-sampler-loader-final-manifest.json",
+      "sha256": "c0cb4d135eda7003b8076fe022e0e3aa77219e1c75a53ac724cd475b44f8e434"
+    },
+    "verification": "The frozen historical source, header and object were rehashed against the external debug24 manifest and copied into the R42 immutable archive. The historical report, documentation and both historical manifests are retained there as provenance."
+  },
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "installed_pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "machine": "014C x86",
+    "ghidra_mode": "read-only"
+  },
+  "native_routines": [
+    {
+      "address": "004DE4B0",
+      "end_inclusive": "004DE576",
+      "bytes": 199,
+      "sha256": "fa1f9c042b0a54c37c68547e0fed4dc02526fdfe6a8911e5b66e46ed9d541ec2",
+      "instruction_count": 56,
+      "original_abi": "No consumed inputs; EAX actual 1Ch owner; plain RET.",
+      "current_source": "src/native_particle_clock_singleton.cpp",
+      "r42_source_role": "The sampler loader entry is an operation-frame adapter that invokes the complete current raw provider; no second 004DE4B0 body is compiled.",
+      "live_ghidra_equal_installed_pe": true
+    },
+    {
+      "address": "00B1B810",
+      "end_inclusive": "00B1B823",
+      "bytes": 20,
+      "sha256": "8a65e02675980fa957b1a0e9d36c98b9b89afb43e7d2ee3f84189a5421809ce8",
+      "instruction_count": 6,
+      "original_abi": "Incoming ECX and second stacked options unused; first stacked actual name; EAX creator result; RET8.",
+      "current_source": "src/native_sampler_loader_context.cpp",
+      "r42_source_role": "Complete direct two-provider body with explicit borrowed manager, registry cell and qualified lookup context.",
+      "live_ghidra_equal_installed_pe": true
+    }
+  ],
+  "direct_call_receipts": [
+    {
+      "site": "004DE4D9",
+      "target": "00415350",
+      "bytes": "E8 72 6E F3 FF",
+      "sha256": "d2cd49c1155489186597e786e10d6e6d47f08359e656b4997a734e441d67ea11"
+    },
+    {
+      "site": "004DE50A",
+      "target": "00BF681B",
+      "bytes": "E8 0C 83 71 00",
+      "sha256": "4be51501656fee4642dd9c4a67cf04018574e627d9fb7884d5f008903a6343fb"
+    },
+    {
+      "site": "004DE53F",
+      "target": "00415350",
+      "bytes": "E8 0C 6E F3 FF",
+      "sha256": "8ab85a4faf4a3a6dccc29d7a6446bc907f5d6ba83709fdc0420ed57b980c90dc"
+    },
+    {
+      "site": "004DE54D",
+      "target": "00BD0C30",
+      "bytes": "E8 DE 26 6F 00",
+      "sha256": "5018307bbbda98040e1fd3ea47d446d6666d3260352e649357c785aa7e03284f"
+    },
+    {
+      "site": "00B1B810",
+      "target": "00B1B730",
+      "bytes": "E8 1B FF FF FF",
+      "sha256": "80404c8448e6fba567890e8be5a7dfcbeaa3b5a65a628f58aeb106ec4d660bcc"
+    },
+    {
+      "site": "00B1B81C",
+      "target": "00B19E90",
+      "bytes": "E8 6F E6 FF FF",
+      "sha256": "92a46b9cb36e82b593d94fdba287710c33ab3c86266799362a59ffe13a8c4652"
+    }
+  ],
+  "source_interface": {
+    "storage_view": "NativeSamplerLoaderSingletonStorage is a typed raw-layout view of the same 1Ch bytes as NativeParticleClockStorage. Static assertions require identical size, alignment and offsets for records08, word14 and payload/time18. The view creates no second owner lifetime.",
+    "getter": "NativeSamplerLoaderSingletonStorage* get_native_sampler_loader_singleton_004de4b0(void* volatile& actual_manager_01090aa0, void* volatile& actual_owner_00f8d420, NativeSamplerLoaderOperation&)",
+    "factory": "void* create_native_sampler_factory_resource_00b1b810(const void* actual_name, const void* unused_options, void* volatile& actual_manager_01090aa0, void* volatile& actual_registry_00f8d41c, const NativeResourceRegistryLookupContext&, NativeSamplerLoaderOperation&)",
+    "same_process_resolution": "When executed in the validated fixture and current static-library build, the adapter, raw getter, B1B730 registry getter, B19E90 creator and scalar cleanup providers resolve into the same executable process from the same current bsp_core.lib. No DLL, remote process, numeric host-call trampoline or alternate module provider is substituted.",
+    "abi_limit": "Both entries expose new typed C++ ABIs and are not drop-in replacements for the original no-argument/RET and ECX-plus-RET8 calling conventions."
+  },
+  "adoption_decision": {
+    "duplicate_body_rejected": "Current main already has the complete raw 004DE4B0 schedule, including captured first-manager section, real Win32 Enter/Leave, physical depth, publication recheck, current-manager registration, final reload and real 00411EE0 guard unwind. Historical monitoring fields alone did not justify compiling that native body again.",
+    "production_consumers_reviewed": [
+      "native_system_constant_gather embeds the frame and delegates the getter",
+      "native_material_descriptor_samplers embeds the frame and checks unresolved phase",
+      "native_sampler_cache_operation embeds the factory child and checks unresolved phase"
+    ],
+    "actual_field_use": "No reviewed production consumer reads historical first_manager, current_manager, allocation, registration_argument, registration flags or guard snapshots. Those fields were used only by the historical fixture.",
+    "fields_dropped": [
+      "first_manager",
+      "current_manager",
+      "allocation",
+      "registration_argument",
+      "guard",
+      "guard_armed",
+      "published",
+      "registration_started",
+      "registration_returned"
+    ],
+    "retained_boundary_state": [
+      "one-shot phase",
+      "selected function and current adapter/direct-call site",
+      "borrowed manager and owner/registry publication-cell addresses",
+      "directly observed registry, result, source name and lookup context"
+    ],
+    "receipt_limit": "The delegated getter frame records only the 004DE4B0 adapter boundary. It does not claim internal native sites or snapshots around the opaque current-provider call. B1B810 and B1B81C remain real directly executed sites in the forwarder."
+  },
+  "operation_contract": {
+    "one_shot": "Any second call with a non-fresh operation throws before invoking a provider.",
+    "complete": "Success records the returned owner or resource and marks complete.",
+    "failed": "A provider exception marks failed and propagates. The frame retains the borrowed cell identities and directly observed boundary state.",
+    "destructor": "Destroying a running or failed frame terminates.",
+    "acknowledgement": "acknowledge_diagnostic_cleanup changes only failed to diagnostic_retired after caller-owned cleanup. It frees, unregisters, retries and repairs nothing.",
+    "guard": "The current 004DE4B0 raw provider performs the real source guard unwind. The adapter adds no guard or fallback.",
+    "retention": "Manager, owner/registry cells, lookup context and retained failure storage must outlive a running or failed frame."
+  },
+  "factory_contract": {
+    "registry": "00B1B730 resolves the caller's actual F8D41C registry through the same AA0 raw manager domain.",
+    "creator": "00B19E90 uses the existing qualified D64470/D644AC/D644E8/D644F0 profile views and current creator selectors.",
+    "preserved_absences": "No retain, cache append, alternate factory map, fallback resource, null substitution, full B1A4F0/B1B4D0 route or descriptor-sampler admission is added."
+  },
+  "scalar_deletion_feasibility": {
+    "current_closure": [
+      "004DE340 flags-based scalar deletion",
+      "004DE360 secondary deleting thunk",
+      "00B1B680 complete owner destruction",
+      "004DE290/004DDA40/004DDAA0 record cleanup",
+      "004B4F10 unconditional F8D420 clear and base-profile transition"
+    ],
+    "fixture_use": "Empty cold owners are unregistered with the genuine current 00BCFCA0 provider, deleted through current 004DE340 with flags1, and followed by genuine raw-manager destruction. The manager destroy callback aborts if an owner was accidentally left registered.",
+    "production_limit": "R42 does not install a GameSingletonHost cell, application startup call, raw-drain deletion binding, or any other live owner admission. Direct scalar feasibility does not imply production ownership closure."
+  },
+  "validation": {
+    "native_seed_verification": "passed",
+    "build": "strict MSVC Win32 Release /MD passed",
+    "ctests": [
+      "reconstructed_math passed",
+      "native_math_differential passed",
+      "tool_tests passed"
+    ],
+    "object": {
+      "machine": "014C x86",
+      "runtime": "/DEFAULTLIB:MSVCRT",
+      "references": [
+        "get_native_particle_clock_singleton_004de4b0",
+        "get_native_resource_registry_00b1b730",
+        "create_native_registered_resource_00b19e90"
+      ],
+      "not_referenced": [
+        "singleton_lifetime_allocate",
+        "register_native_singleton_object_00bd0c30",
+        "destroy_native_singleton_guard_00411ee0"
+      ],
+      "conclusion": "The module object proves adapter/provider composition and contains no second raw getter algorithm."
+    },
+    "fixture": {
+      "classification": "Adapted R42 differential fixture, not an unchanged historical fixture result.",
+      "normal_result": "PASS: 84 words; copied original getter four schedules and forwarder creator/miss match the current raw getter adapter and current providers.",
+      "failure_result": "Allocator-before-publication and registration-after-publication failures retain adapter failure state, release the delegated raw section, reject replay, and accept diagnostic acknowledgement only after cleanup.",
+      "guard_result": "Abandoning a failed frame terminates with expected process exit code 77.",
+      "cleanup": "Genuine current unregister plus flags1 scalar deletion retires empty owners; genuine managers drain afterward.",
+      "registry": "Producer-layout raw tree fixture with copied original read-only factory profiles; registry constructor is not executed.",
+      "executable": "x86, /MD, embedded .rsrc manifest",
+      "limits": "Original child bodies, original native FH3 paths, arbitrary factory profiles, multithreaded races and game execution are not exercised."
+    }
+  },
+  "key_artifacts": {
+    "include/bsp/native_sampler_loader_context.hpp": {
+      "bytes": 3732,
+      "sha256": "1e00a575651470112c8b4845273d284387a45d206cd7124f09a3b00e03be9d95"
+    },
+    "src/native_sampler_loader_context.cpp": {
+      "bytes": 3119,
+      "sha256": "beaea1a0c6fa20cb1e28c683c987db4373451761a9dfc90390a80586dd58b3a3"
+    },
+    "docs/NATIVE_SAMPLER_LOADER_CONTEXT_R42.md": {
+      "bytes": 7985,
+      "sha256": "1401ed0dafb6a2e1b710cc933691a69089d817b585f67e5a8471b5ee58086e9c"
+    },
+    "native_sampler_loader_context.obj": {
+      "bytes": 11888,
+      "sha256": "2660c8adf73f3efd3492100ffe22561d2525c6c2da514c0a8a9ab70b3e82e41f"
+    },
+    "bsp_core.lib": {
+      "bytes": 63497868,
+      "sha256": "5652a3e678b4334a68b0ec522b4150146ce6782e7f673a8de0ba6d6a349afb76"
+    },
+    "native_sampler_loader_context_r42_probe.exe": {
+      "bytes": 17056768,
+      "sha256": "ec8ebb35f91ff3f5b9b833c7f695a2815278d682677dc9e5c7069c8d7e73a630"
+    }
+  },
+  "archive": {
+    "path": "local/native-sampler-loader-context-main-r42.zip",
+    "bytes": 13689488,
+    "sha256": "1ed3ab01c183e5767f27756f37acc47bfc370ce2225614d1fdcdd14c704bf4c0",
+    "manifest_sha256": "5483c71d54f646164c43733007a9093bf22af3b8a0ca7571bbc4eb9279bd53ad",
+    "members_including_manifest": 54,
+    "verified_members_excluding_manifest": 53,
+    "frozen_before_final_report": true,
+    "verification": "All ZIP member names, sizes and SHA-256 values were read back and matched the frozen directory/manifest. Three selected historical artifacts independently match the external debug24 manifest."
+  },
+  "evidence_files": [
+    "local/native_sampler_loader_context_r42_native_receipts.json",
+    "local/native_sampler_loader_context_r42_ghidra_004de4b0.txt",
+    "local/native_sampler_loader_context_r42_ghidra_00b1b810.txt",
+    "local/native_sampler_loader_context_r42_obj.txt",
+    "local/native_sampler_loader_context_r42_build.log",
+    "local/native_sampler_loader_context_r42_seeds.log",
+    "local/native_sampler_loader_context_r42_probe.cpp",
+    "local/native_sampler_loader_context_r42_probe_build_run.log",
+    "local/native_sampler_loader_context_r42_probe_obj.txt",
+    "local/native_sampler_loader_context_r42_probe_exe.txt",
+    "local/native-sampler-loader-context-main-r42/manifest.json"
+  ],
+  "boundaries": {
+    "source_vs_original": "004DE4B0 is reused through a typed adapter; 00B1B810 is reconstructed with a typed explicit context. Neither entry is binary-ABI compatible.",
+    "eh": "Ordinary source exception retention and the existing current raw guard are established; native private FH3/SEH, hardware faults and original exception identities are not reproduced.",
+    "ownership": "No application cell, host owner, eager construction, manager duplication, raw-drain deletion binding or fake terminal is added.",
+    "cache": "B1A4F0, B1B4D0, descriptor sampler composition and their platform/VFS/cache providers remain separate.",
+    "runtime": "Build, object, fixture, PE and live-Ghidra evidence do not establish renderer behavior, game execution or gameplay.",
+    "metadata": "No Ghidra, ledger, name, tag or export mutation was performed. Parent owns any later metadata update."
+  },
+  "hash_provenance": "Native bytes/calls were generated programmatically from exact installed-PE spans and accepted only after full equality with fresh guarded Ghidra reads. Current source, objects, library, fixture and logs were hashed from the exact frozen files. Historical selected artifacts were rehashed from the external immutable archive against its 44a4e4e1... manifest; no abbreviated hash was expanded manually."
+}
