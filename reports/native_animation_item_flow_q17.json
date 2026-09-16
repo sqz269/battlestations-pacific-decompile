@@ -1,0 +1,76 @@
+{
+ "repairs": [
+  {
+   "function": "00b92440",
+   "owner": "agent/orch4-20260916-animation-item-q17",
+   "when": "2026-09-16T03:08:54Z",
+   "decompile_lines_before": 40,
+   "gaps": [
+    {
+     "site": "00b924aa",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00b924af",
+     "gap_end_exclusive": "00b924b9",
+     "bytes": 10,
+     "after_call": true,
+     "sha256": "f0d2a892bb94936f17e8e780b901b1e7b196e70b62a9401277c270b7d0696b84"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00b924aa",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00b924af",
+      "gap_end_exclusive": "00b924b9",
+      "bytes": 10,
+      "after_call": true,
+      "sha256": "f0d2a892bb94936f17e8e780b901b1e7b196e70b62a9401277c270b7d0696b84"
+     },
+     "clear": "Success: Cleared flow override at 00b924aa (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 10 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 43,
+   "gaps_remaining": 0
+  },
+  {
+   "function": "00b92ae0",
+   "owner": "agent/orch4-20260916-animation-item-q17",
+   "when": "2026-09-16T03:08:54Z",
+   "decompile_lines_before": 43,
+   "gaps": [
+    {
+     "site": "00b92b9e",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00b92ba3",
+     "gap_end_exclusive": "00b92bad",
+     "bytes": 10,
+     "after_call": true,
+     "sha256": "f504c0a22c5c06a5d1327cc4c6720a99ac6e4741d712473d5eee249651938e38"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00b92b9e",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00b92ba3",
+      "gap_end_exclusive": "00b92bad",
+      "bytes": 10,
+      "after_call": true,
+      "sha256": "f504c0a22c5c06a5d1327cc4c6720a99ac6e4741d712473d5eee249651938e38"
+     },
+     "clear": "Success: Cleared flow override at 00b92b9e (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 10 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 45,
+   "gaps_remaining": 0
+  }
+ ]
+}
