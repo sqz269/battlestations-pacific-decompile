@@ -765,5 +765,240 @@
         "BED1E8..BED222 fragment and the remainder of BECEE0"
       ]
     }
+  },
+  "primary_integration": {
+    "source_merge": "94052b814",
+    "full_source_header_current_fixture_reviewed": true,
+    "historical_artifacts_rehashed": 5049,
+    "current_supplemental_artifacts_rehashed": 5311,
+    "native_spans_independently_verified": 10,
+    "native_bytes": 795,
+    "native_calls_checked": 28,
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "primary_fixture_rerun": false,
+    "original_worker_archive": "local/evidence-r49/cache-original-r49.zip",
+    "supplemental_worker_archive": "local/evidence-r49/cache-supplement-r49.zip"
+  },
+  "primary_archive": {
+    "path": "local/evidence-r49/cache-main-r49.zip",
+    "sha256": "3d44423073a31e98ee6e65c138a3f9c5c70253eed60c4bdcfca2aad88326a1de",
+    "files": [
+      {
+        "path": "include/bsp/native_render_entry_cache.hpp",
+        "bytes": 4539,
+        "sha256": "827a16a594dbba5e509c8153a966bbeb1a05ebeb4ca0c933febf1633c7b192cc"
+      },
+      {
+        "path": "src/native_render_entry_cache.cpp",
+        "bytes": 9420,
+        "sha256": "f53fb7e6e79cc58002dd039403c03e7ee8f690ab7cb84c062ca7553bb4aaee87"
+      },
+      {
+        "path": "docs/NATIVE_RENDER_ENTRY_CACHE_MAIN_R49.md",
+        "bytes": 6487,
+        "sha256": "55c411c4deff2455a47e7357e1da3cb1d580623c3981d78ec79d57d5ea01e21c"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 150605,
+        "sha256": "f21f0291b249f935d1ce61412612d27a5baa3bfaa6c2af609ea800ba09e87d84"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 230543,
+        "sha256": "848755f6d26aacb23d014e5d28d9f305530cc521769b163132e0e8298c78fcd6"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_render_entry_cache.obj",
+        "bytes": 14608,
+        "sha256": "83a9ef5d57c1a79b6e9a39717bcc9d3709a8b12da677fc8ffc82d7cfc6adf6ac"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63586856,
+        "sha256": "0623badb4000a4f94da54c93c171b94292f0b49f08dadb2de59bf758bedd8f06"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2267136,
+        "sha256": "90fd104f1cf98ed91a638a9f7899bd9bccaf9a44368a786251cdd884e653e874"
+      },
+      {
+        "path": "local/r49_integration.log",
+        "bytes": 917,
+        "sha256": "04315b2f57cee491262fec8a9ea080b6c5e0eea814206de8f502fff8e59439e0"
+      },
+      {
+        "path": "local/r49_cache_proto.txt",
+        "bytes": 7396,
+        "sha256": "fb6695a372144a89ca823e149e9c9951e6e68cf54413477958b6e02894c885ee"
+      },
+      {
+        "path": "local/r49_cache_annotations.log",
+        "bytes": 649,
+        "sha256": "cd62467f6111c0dc6197f3c4670b42089ea60bc8a3ecd5c941b6b2dbaacaa9f8"
+      },
+      {
+        "path": "local/r49_cache_exports.log",
+        "bytes": 1022,
+        "sha256": "d0a6ff3906d4b6d9890cd86350b582d09925408b0608d0a276f3cdc18bdf975b"
+      },
+      {
+        "path": "local/r49_cache_native_spans.json",
+        "bytes": 3543,
+        "sha256": "970a3f7122c463bfcc0b71c0162da81eef4055bddfe006b1276b5e01eedf53e7"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T141144Z.json",
+        "bytes": 31055,
+        "sha256": "6e2812b01a6511aaeb1231537779c4f566ef0a7a1f1b923108842fdfd49907ac"
+      }
+    ]
+  },
+  "primary_annotations": {
+    "status": "Existing descriptive names retained; nine current source rows and one bounded window fragment added, no duplicate original body credit. Parent BECEE0 evidence is bounded, not full reconstruction. Prior comments preserved, project saved, exports refreshed.",
+    "prior_annotations": [
+      {
+        "address": "00bebf00",
+        "before": {
+          "address": "00bebf00",
+          "function_name": "BSP_RenderEntry_Initialize",
+          "comment": "[BSP reconstruction 00bebf00]\nActual render-entry cache in window startup: docs/NATIVE_RENDER_ENTRY_CACHE.md; reports/native_render_entry_cache.json. SSE +0/+14 zero stores, current D7A24C capture, +8/+C/+10 zero stores, +18 captured one. Preserve +4/+1C/+20/+24. Full original39byte leaf/40outputbyte/source differential passed. Full body freshly matched live Ghidra and installed PE; strict Win32 build and bounded source fixture passed. Added context interface, not original register/FH3/SEH ABI; failure unwind unexercised, no full window startup or gameplay proof."
+        },
+        "after": {
+          "address": "00bebf00",
+          "name": "BSP_RenderEntry_Initialize",
+          "evidence": "R49 byte-identical adoption of reviewed9ed3a6de raw render-entry cache header/source, nine functions plus59B BED1E8 window fragment. Same borrowed AA0/FE88/D7A24C cells and actual14h owner/28h rows; original used-count comparison, signed initialization iteration, stale pointer after resize0, old-capacity preservation, captured manager guard and current publication reloads retained. Genuine current singleton/section/allocation providers; no replacement manager/renderer/camera owner or app activation. Parent reviewed complete source/header/current probe; independently verified historical5049 artifacts595451380B, original80-member archive,5311 supplemental current artifacts,10 live/PE spans795B and all28calls(24direct/4imports). Worker and combined strict /MD /W4 /WX /fp:strict Win32 build and3CTests pass. Current ignored fixture compares relocated original BEBF00[39] with source; genuine-manager source lifecycle covers10000 rows, used-vs-capacity, oldcapacity, stalezero and explicit scalar cleanup. Fixture repairs stale pointer before later destructor, not native behavior. Supplemental probe only relinked same proven core and freezes7 physical loaded+diskI386 modules; no primary fixture rerun. Historical device/window evidence is not current runtime proof. Original constructor/resize/FH3/SEH, generic cache deletion routing, wholewindow/renderer/app/gameplay unproved. reports/native_render_entry_cache_main_r49.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bec240",
+        "before": {
+          "address": "00bec240",
+          "function_name": "BSP_RenderEntryArray_Destroy",
+          "comment": "[BSP reconstruction 00bec240]\nActual render-entry cache in window startup: docs/NATIVE_RENDER_ENTRY_CACHE.md; reports/native_render_entry_cache.json. Free current data throughBF6989; leave all header words stale. Truncated body repaired throughBEC249. Full body freshly matched live Ghidra and installed PE; strict Win32 build and bounded source fixture passed. Added context interface, not original register/FH3/SEH ABI; failure unwind unexercised, no full window startup or gameplay proof."
+        },
+        "after": {
+          "address": "00bec240",
+          "name": "BSP_RenderEntryArray_Destroy",
+          "evidence": "R49 byte-identical adoption of reviewed9ed3a6de raw render-entry cache header/source, nine functions plus59B BED1E8 window fragment. Same borrowed AA0/FE88/D7A24C cells and actual14h owner/28h rows; original used-count comparison, signed initialization iteration, stale pointer after resize0, old-capacity preservation, captured manager guard and current publication reloads retained. Genuine current singleton/section/allocation providers; no replacement manager/renderer/camera owner or app activation. Parent reviewed complete source/header/current probe; independently verified historical5049 artifacts595451380B, original80-member archive,5311 supplemental current artifacts,10 live/PE spans795B and all28calls(24direct/4imports). Worker and combined strict /MD /W4 /WX /fp:strict Win32 build and3CTests pass. Current ignored fixture compares relocated original BEBF00[39] with source; genuine-manager source lifecycle covers10000 rows, used-vs-capacity, oldcapacity, stalezero and explicit scalar cleanup. Fixture repairs stale pointer before later destructor, not native behavior. Supplemental probe only relinked same proven core and freezes7 physical loaded+diskI386 modules; no primary fixture rerun. Historical device/window evidence is not current runtime proof. Original constructor/resize/FH3/SEH, generic cache deletion routing, wholewindow/renderer/app/gameplay unproved. reports/native_render_entry_cache_main_r49.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bec3e0",
+        "before": {
+          "address": "00bec3e0",
+          "function_name": "BSP_RenderEntryArray_ReallocateUnlessUsedCountMatches",
+          "comment": "[BSP reconstruction 00bec3e0]\nActual render-entry cache in window startup: docs/NATIVE_RENDER_ENTRY_CACHE.md; reports/native_render_entry_cache.json. Compare request to used count+4, not capacity+8. On inequality clear count/capacity, free current data, allocate saturated unsigned request*28h and initialize through signed403560 schedule; data/capacity published, count remains0. Zero request retains stale freed pointer. State0 frees captured allocation on unwind. Full body freshly matched live Ghidra and installed PE; strict Win32 build and bounded source fixture passed. Added context interface, not original register/FH3/SEH ABI; failure unwind unexercised, no full window startup or gameplay proof."
+        },
+        "after": {
+          "address": "00bec3e0",
+          "name": "BSP_RenderEntryArray_ReallocateUnlessUsedCountMatches",
+          "evidence": "R49 byte-identical adoption of reviewed9ed3a6de raw render-entry cache header/source, nine functions plus59B BED1E8 window fragment. Same borrowed AA0/FE88/D7A24C cells and actual14h owner/28h rows; original used-count comparison, signed initialization iteration, stale pointer after resize0, old-capacity preservation, captured manager guard and current publication reloads retained. Genuine current singleton/section/allocation providers; no replacement manager/renderer/camera owner or app activation. Parent reviewed complete source/header/current probe; independently verified historical5049 artifacts595451380B, original80-member archive,5311 supplemental current artifacts,10 live/PE spans795B and all28calls(24direct/4imports). Worker and combined strict /MD /W4 /WX /fp:strict Win32 build and3CTests pass. Current ignored fixture compares relocated original BEBF00[39] with source; genuine-manager source lifecycle covers10000 rows, used-vs-capacity, oldcapacity, stalezero and explicit scalar cleanup. Fixture repairs stale pointer before later destructor, not native behavior. Supplemental probe only relinked same proven core and freezes7 physical loaded+diskI386 modules; no primary fixture rerun. Historical device/window evidence is not current runtime proof. Original constructor/resize/FH3/SEH, generic cache deletion routing, wholewindow/renderer/app/gameplay unproved. reports/native_render_entry_cache_main_r49.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bec590",
+        "before": {
+          "address": "00bec590",
+          "function_name": "BSP_RenderEntryCacheBase_RegisterSingleton",
+          "comment": "[BSP reconstruction 00bec590]\nActual render-entry cache in window startup: docs/NATIVE_RENDER_ENTRY_CACHE.md; reports/native_render_entry_cache.json. State0 beforeD68CBC; same actual manager/first captured section. Enter/depth then state1; publish108FE88, second getter then current-publication registration; normal Leave still inside state1. Original owner returned. Full body freshly matched live Ghidra and installed PE; strict Win32 build and bounded source fixture passed. Added context interface, not original register/FH3/SEH ABI; failure unwind unexercised, no full window startup or gameplay proof."
+        },
+        "after": {
+          "address": "00bec590",
+          "name": "BSP_RenderEntryCacheBase_RegisterSingleton",
+          "evidence": "R49 byte-identical adoption of reviewed9ed3a6de raw render-entry cache header/source, nine functions plus59B BED1E8 window fragment. Same borrowed AA0/FE88/D7A24C cells and actual14h owner/28h rows; original used-count comparison, signed initialization iteration, stale pointer after resize0, old-capacity preservation, captured manager guard and current publication reloads retained. Genuine current singleton/section/allocation providers; no replacement manager/renderer/camera owner or app activation. Parent reviewed complete source/header/current probe; independently verified historical5049 artifacts595451380B, original80-member archive,5311 supplemental current artifacts,10 live/PE spans795B and all28calls(24direct/4imports). Worker and combined strict /MD /W4 /WX /fp:strict Win32 build and3CTests pass. Current ignored fixture compares relocated original BEBF00[39] with source; genuine-manager source lifecycle covers10000 rows, used-vs-capacity, oldcapacity, stalezero and explicit scalar cleanup. Fixture repairs stale pointer before later destructor, not native behavior. Supplemental probe only relinked same proven core and freezes7 physical loaded+diskI386 modules; no primary fixture rerun. Historical device/window evidence is not current runtime proof. Original constructor/resize/FH3/SEH, generic cache deletion routing, wholewindow/renderer/app/gameplay unproved. reports/native_render_entry_cache_main_r49.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bec630",
+        "before": {
+          "address": "00bec630",
+          "function_name": "BSP_RenderEntryCacheBase_UnregisterSingleton",
+          "comment": "[BSP reconstruction 00bec630]\nActual render-entry cache in window startup: docs/NATIVE_RENDER_ENTRY_CACHE.md; reports/native_render_entry_cache.json. D68CBC beforestate0. Second getter before current108FE88 read; unregister and clear only on success; captured section retained; reset original ownerCE3818. FH3 state1 guard411EE0 thenstate0 base412430. Full body freshly matched live Ghidra and installed PE; strict Win32 build and bounded source fixture passed. Added context interface, not original register/FH3/SEH ABI; failure unwind unexercised, no full window startup or gameplay proof."
+        },
+        "after": {
+          "address": "00bec630",
+          "name": "BSP_RenderEntryCacheBase_UnregisterSingleton",
+          "evidence": "R49 byte-identical adoption of reviewed9ed3a6de raw render-entry cache header/source, nine functions plus59B BED1E8 window fragment. Same borrowed AA0/FE88/D7A24C cells and actual14h owner/28h rows; original used-count comparison, signed initialization iteration, stale pointer after resize0, old-capacity preservation, captured manager guard and current publication reloads retained. Genuine current singleton/section/allocation providers; no replacement manager/renderer/camera owner or app activation. Parent reviewed complete source/header/current probe; independently verified historical5049 artifacts595451380B, original80-member archive,5311 supplemental current artifacts,10 live/PE spans795B and all28calls(24direct/4imports). Worker and combined strict /MD /W4 /WX /fp:strict Win32 build and3CTests pass. Current ignored fixture compares relocated original BEBF00[39] with source; genuine-manager source lifecycle covers10000 rows, used-vs-capacity, oldcapacity, stalezero and explicit scalar cleanup. Fixture repairs stale pointer before later destructor, not native behavior. Supplemental probe only relinked same proven core and freezes7 physical loaded+diskI386 modules; no primary fixture rerun. Historical device/window evidence is not current runtime proof. Original constructor/resize/FH3/SEH, generic cache deletion routing, wholewindow/renderer/app/gameplay unproved. reports/native_render_entry_cache_main_r49.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bec6f0",
+        "before": {
+          "address": "00bec6f0",
+          "function_name": "BSP_RenderEntryCacheBase_ScalarDelete",
+          "comment": "[BSP reconstruction 00bec6f0]\nActual render-entry cache in window startup: docs/NATIVE_RENDER_ENTRY_CACHE.md; reports/native_render_entry_cache.json. BEC630 thenflags&1 free original owner viaBF65AC; return original pointer. Free fallthrough and complete body restored. Full body freshly matched live Ghidra and installed PE; strict Win32 build and bounded source fixture passed. Added context interface, not original register/FH3/SEH ABI; failure unwind unexercised, no full window startup or gameplay proof."
+        },
+        "after": {
+          "address": "00bec6f0",
+          "name": "BSP_RenderEntryCacheBase_ScalarDelete",
+          "evidence": "R49 byte-identical adoption of reviewed9ed3a6de raw render-entry cache header/source, nine functions plus59B BED1E8 window fragment. Same borrowed AA0/FE88/D7A24C cells and actual14h owner/28h rows; original used-count comparison, signed initialization iteration, stale pointer after resize0, old-capacity preservation, captured manager guard and current publication reloads retained. Genuine current singleton/section/allocation providers; no replacement manager/renderer/camera owner or app activation. Parent reviewed complete source/header/current probe; independently verified historical5049 artifacts595451380B, original80-member archive,5311 supplemental current artifacts,10 live/PE spans795B and all28calls(24direct/4imports). Worker and combined strict /MD /W4 /WX /fp:strict Win32 build and3CTests pass. Current ignored fixture compares relocated original BEBF00[39] with source; genuine-manager source lifecycle covers10000 rows, used-vs-capacity, oldcapacity, stalezero and explicit scalar cleanup. Fixture repairs stale pointer before later destructor, not native behavior. Supplemental probe only relinked same proven core and freezes7 physical loaded+diskI386 modules; no primary fixture rerun. Historical device/window evidence is not current runtime proof. Original constructor/resize/FH3/SEH, generic cache deletion routing, wholewindow/renderer/app/gameplay unproved. reports/native_render_entry_cache_main_r49.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bec870",
+        "before": {
+          "address": "00bec870",
+          "function_name": "BSP_RenderEntryCache_Construct",
+          "comment": "[BSP reconstruction 00bec870]\nActual render-entry cache in window startup: docs/NATIVE_RENDER_ENTRY_CACHE.md; reports/native_render_entry_cache.json. Base publication thenD68CC0, capture oldcount08, state0, data04=0. Nonzero oldcount clears08/0C, frees current data and repeats capacity0; zero count preserves oldcapacity. State2 then actualBD1860 section. E01F68/E01F50 cleanup headerBEC240 thenbaseBEC630. Full body freshly matched live Ghidra and installed PE; strict Win32 build and bounded source fixture passed. Added context interface, not original register/FH3/SEH ABI; failure unwind unexercised, no full window startup or gameplay proof."
+        },
+        "after": {
+          "address": "00bec870",
+          "name": "BSP_RenderEntryCache_Construct",
+          "evidence": "R49 byte-identical adoption of reviewed9ed3a6de raw render-entry cache header/source, nine functions plus59B BED1E8 window fragment. Same borrowed AA0/FE88/D7A24C cells and actual14h owner/28h rows; original used-count comparison, signed initialization iteration, stale pointer after resize0, old-capacity preservation, captured manager guard and current publication reloads retained. Genuine current singleton/section/allocation providers; no replacement manager/renderer/camera owner or app activation. Parent reviewed complete source/header/current probe; independently verified historical5049 artifacts595451380B, original80-member archive,5311 supplemental current artifacts,10 live/PE spans795B and all28calls(24direct/4imports). Worker and combined strict /MD /W4 /WX /fp:strict Win32 build and3CTests pass. Current ignored fixture compares relocated original BEBF00[39] with source; genuine-manager source lifecycle covers10000 rows, used-vs-capacity, oldcapacity, stalezero and explicit scalar cleanup. Fixture repairs stale pointer before later destructor, not native behavior. Supplemental probe only relinked same proven core and freezes7 physical loaded+diskI386 modules; no primary fixture rerun. Historical device/window evidence is not current runtime proof. Original constructor/resize/FH3/SEH, generic cache deletion routing, wholewindow/renderer/app/gameplay unproved. reports/native_render_entry_cache_main_r49.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bec8e0",
+        "before": {
+          "address": "00bec8e0",
+          "function_name": "BSP_RenderEntryCache_Destroy",
+          "comment": "[BSP reconstruction 00bec8e0]\nActual render-entry cache in window startup: docs/NATIVE_RENDER_ENTRY_CACHE.md; reports/native_render_entry_cache.json. D68CC0, current section+10 release41CC80, current data+4 freeBF6989, tailJMP BEC630. Full native tail and stored body restored; no new rollback. Full body freshly matched live Ghidra and installed PE; strict Win32 build and bounded source fixture passed. Added context interface, not original register/FH3/SEH ABI; failure unwind unexercised, no full window startup or gameplay proof."
+        },
+        "after": {
+          "address": "00bec8e0",
+          "name": "BSP_RenderEntryCache_Destroy",
+          "evidence": "R49 byte-identical adoption of reviewed9ed3a6de raw render-entry cache header/source, nine functions plus59B BED1E8 window fragment. Same borrowed AA0/FE88/D7A24C cells and actual14h owner/28h rows; original used-count comparison, signed initialization iteration, stale pointer after resize0, old-capacity preservation, captured manager guard and current publication reloads retained. Genuine current singleton/section/allocation providers; no replacement manager/renderer/camera owner or app activation. Parent reviewed complete source/header/current probe; independently verified historical5049 artifacts595451380B, original80-member archive,5311 supplemental current artifacts,10 live/PE spans795B and all28calls(24direct/4imports). Worker and combined strict /MD /W4 /WX /fp:strict Win32 build and3CTests pass. Current ignored fixture compares relocated original BEBF00[39] with source; genuine-manager source lifecycle covers10000 rows, used-vs-capacity, oldcapacity, stalezero and explicit scalar cleanup. Fixture repairs stale pointer before later destructor, not native behavior. Supplemental probe only relinked same proven core and freezes7 physical loaded+diskI386 modules; no primary fixture rerun. Historical device/window evidence is not current runtime proof. Original constructor/resize/FH3/SEH, generic cache deletion routing, wholewindow/renderer/app/gameplay unproved. reports/native_render_entry_cache_main_r49.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bec910",
+        "before": {
+          "address": "00bec910",
+          "function_name": "BSP_RenderEntryCache_ScalarDelete",
+          "comment": "[BSP reconstruction 00bec910]\nActual render-entry cache in window startup: docs/NATIVE_RENDER_ENTRY_CACHE.md; reports/native_render_entry_cache.json. D68CC0, current section41CC80 and current array release, baseBEC630, flags&1 ownerfreeBF65AC. Concrete flags0/1 fixture routes pass actual section/buffer/publication/registration cleanup. Full body freshly matched live Ghidra and installed PE; strict Win32 build and bounded source fixture passed. Added context interface, not original register/FH3/SEH ABI; failure unwind unexercised, no full window startup or gameplay proof."
+        },
+        "after": {
+          "address": "00bec910",
+          "name": "BSP_RenderEntryCache_ScalarDelete",
+          "evidence": "R49 byte-identical adoption of reviewed9ed3a6de raw render-entry cache header/source, nine functions plus59B BED1E8 window fragment. Same borrowed AA0/FE88/D7A24C cells and actual14h owner/28h rows; original used-count comparison, signed initialization iteration, stale pointer after resize0, old-capacity preservation, captured manager guard and current publication reloads retained. Genuine current singleton/section/allocation providers; no replacement manager/renderer/camera owner or app activation. Parent reviewed complete source/header/current probe; independently verified historical5049 artifacts595451380B, original80-member archive,5311 supplemental current artifacts,10 live/PE spans795B and all28calls(24direct/4imports). Worker and combined strict /MD /W4 /WX /fp:strict Win32 build and3CTests pass. Current ignored fixture compares relocated original BEBF00[39] with source; genuine-manager source lifecycle covers10000 rows, used-vs-capacity, oldcapacity, stalezero and explicit scalar cleanup. Fixture repairs stale pointer before later destructor, not native behavior. Supplemental probe only relinked same proven core and freezes7 physical loaded+diskI386 modules; no primary fixture rerun. Historical device/window evidence is not current runtime proof. Original constructor/resize/FH3/SEH, generic cache deletion routing, wholewindow/renderer/app/gameplay unproved. reports/native_render_entry_cache_main_r49.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00becee0",
+        "before": {
+          "address": "00becee0",
+          "function_name": "BSP_Win32Platform_CreateWindowAndDevice",
+          "comment": "[BSP reconstruction 00becee0]\nConcrete vtable +4h target recovered as a missing function. Registers CS_GLOBALCLASS class with 24 extra bytes; creates caption/popup window; initializes renderer and changes power/screensaver state. Not yet ported/executed.\n\n[BSP reconstruction 00becee0] update\nCdecl eleven stack arguments including explicit platform pointer; caller ADD ESP,2Ch and callee RET. Native registers CS_GLOBALCLASS with24 extra bytes, adjusts caption rectangle, creates withplatform lpParam, applies windowed0300h/fullscreenTOPMOST styles and SetWindowPos0,0. Fragment00becf29..00bed087 reconstructed and windoweddiagnosticHWND verified. Native thunk/oldwindowstop/title/aspect/ShowWindow/fullrenderer/buffer/power setup remain outside host fragment. See docs/WINDOW_CREATION.md.\n\n[BSP reconstruction 00becee0] update\nHypothesis, not a recovered symbol. Resolves the map's unresolved indirect CALL EAX at 0073dc25: 0073dbee loads the platform singleton from 0x0109cf04, 0073dbfa its vtable 00d68cc4, 0073dc22 slot +4. __cdecl with eleven stack arguments, the platform pointer pushed last and first in argument order; caller ADD ESP,0x2c at 0073dc2b, callee RET. CORRECTION to src/win32_window.cpp and docs/WINDOW_CREATION.md and docs/PLATFORM_LOOP.md: the registered class style is 0x2000, CS_BYTEALIGNWINDOW, not CS_GLOBALCLASS which is 0x4000; 00becf36 writes 0x2000 to the style member of the WNDCLASSA whose address 00becf83 passes to RegisterClassA. Argument 2 is a temporary cNativeString 'Battlestations Pacific' used as class name, CreateWindowExA class name and title; argument 11 is the WinMain HINSTANCE from 0x00e1ae7c, which the map mislabels as the cachedload argument. Aspect arithmetic at 00bed0d9-00bed135 is x87 FILD/FIDIV rounded to float through a slot, compared against DAT_00d5bd98 = 1.3333334f, 4:3. Evidence: docs/APP_INIT_PLATFORM.md; reports/app_init_platform.json; docs/WINDOW_CREATION.md.\n\n[BSP reconstruction 00becee0] update\nHypothesis, not a recovered symbol. Resolves the map's unresolved indirect CALL EAX at 0073dc25: 0073dbee loads the platform singleton from 0x0109cf04, 0073dbfa its vtable 00d68cc4, 0073dc22 slot +4. __cdecl with eleven stack arguments, the platform pointer pushed last and first in argument order; caller ADD ESP,0x2c at 0073dc2b, callee RET. CORRECTION to src/win32_window.cpp and docs/WINDOW_CREATION.md and docs/PLATFORM_LOOP.md: the registered class style is 0x2000, CS_BYTEALIGNWINDOW, not CS_BYTEALIGNWINDOW (0x2000; corrected from the earlier 0x4000 label) which is 0x4000; 00becf36 writes 0x2000 to the style member of the WNDCLASSA whose address 00becf83 passes to RegisterClassA. Argument 2 is a temporary cNativeString 'Battlestations Pacific' used as class name, CreateWindowExA class name and title; argument 11 is the WinMain HINSTANCE from 0x00e1ae7c, which the map mislabels as the cachedload argument. Aspect arithmetic at 00bed0d9-00bed135 is x87 FILD/FIDIV rounded to float through a slot, compared against DAT_00d5bd98 = 1.3333334f, 4:3. Evidence: docs/APP_INIT_PLATFORM.md; reports/app_init_platform.json; docs/WINDOW_CREATION.md. Existing D3D9 probe now checks exact registered class style; reports/frame_bounds_integration_validation.json.\n\n[BSP reconstruction 00becee0] update\nHypothesis, not a recovered symbol. Resolves the map's unresolved indirect CALL EAX at 0073dc25: 0073dbee loads the platform singleton from 0x0109cf04, 0073dbfa its vtable 00d68cc4, 0073dc22 slot +4. __cdecl with eleven stack arguments, the platform pointer pushed last and first in argument order; caller ADD ESP,0x2c at 0073dc2b, callee RET. CORRECTION to src/win32_window.cpp and docs/WINDOW_CREATION.md and docs/PLATFORM_LOOP.md: the registered class style is 0x2000, CS_BYTEALIGNWINDOW, not CS_GLOBALCLASS which is 0x4000; 00becf36 writes 0x2000 to the style member of the WNDCLASSA whose address 00becf83 passes to RegisterClassA. Argument 2 is a temporary cNativeString 'Battlestations Pacific' used as class name, CreateWindowExA class name and title; argument 11 is the WinMain HINSTANCE from 0x00e1ae7c, which the map mislabels as the cachedload argument. Aspect arithmetic at 00bed0d9-00bed135 is x87 FILD/FIDIV rounded to float through a slot, compared against DAT_00d5bd98 = 1.3333334f, 4:3. Evidence: docs/APP_INIT_PLATFORM.md; reports/app_init_platform.json; docs/WINDOW_CREATION.md. Existing D3D9 probe now checks exact registered class style; reports/frame_bounds_integration_validation.json. Clarification superseding the earlier integration substitution: CS_BYTEALIGNWINDOW is 0x2000; CS_GLOBALCLASS is 0x4000. The native and registered probe value is 0x2000.\n\n[BSP reconstruction 00becee0] update\nHypothesis, not a recovered symbol. Resolves the map's unresolved indirect CALL EAX at 0073dc25: 0073dbee loads the platform singleton from 0x0109cf04, 0073dbfa its vtable 00d68cc4, 0073dc22 slot +4. __cdecl with eleven stack arguments, the platform pointer pushed last and first in argument order; caller ADD ESP,0x2c at 0073dc2b, callee RET. CORRECTION to src/win32_window.cpp and docs/WINDOW_CREATION.md and docs/PLATFORM_LOOP.md: the registered class style is 0x2000, CS_BYTEALIGNWINDOW, not CS_GLOBALCLASS which is 0x4000; 00becf36 writes 0x2000 to the style member of the WNDCLASSA whose address 00becf83 passes to RegisterClassA. Argument 2 is a temporary cNativeString 'Battlestations Pacific' used as class name, CreateWindowExA class name and title; argument 11 is the WinMain HINSTANCE from 0x00e1ae7c, which the map mislabels as the cachedload argument. Aspect arithmetic at 00bed0d9-00bed135 is x87 FILD/FIDIV rounded to float through a slot, compared against DAT_00d5bd98 = 1.3333334f, 4:3. Evidence: docs/APP_INIT_PLATFORM.md; reports/app_init_platform.json; docs/WINDOW_CREATION.md. Existing D3D9 probe now checks exact registered class style; reports/frame_bounds_integration_validation.json. Clarification superseding the earlier integration substitution: CS_BYTEALIGNWINDOW is 0x2000; CS_GLOBALCLASS is 0x4000. The native and registered probe value is 0x2000. | Actual render-entry cache in window startup: docs/NATIVE_RENDER_ENTRY_CACHE.md; reports/native_render_entry_cache.json. After device startup: BED1EA allocate14h, BED203 construct whennonnull, BED208 reload108FE88, deriveheader+4, disarm captured-owner cleanup beforeBED21E resize10000. E01FC0/E01FB8/CC7480 frees capturedowner only on constructor unwind. Actual cache uses40byte render entries, confirmed consumersB1DFF0/B2BB90/B72F80 and endframeB2DB8A. Source helper now executes in composed platform/renderer/device/cold-effect fixture. Full body freshly matched live Ghidra and installed PE; strict Win32 build and bounded source fixture passed. Added context interface, not original register/FH3/SEH ABI; failure unwind unexercised, no full window startup or gameplay proof."
+        },
+        "after": {
+          "address": "00becee0",
+          "name": "BSP_Win32Platform_CreateWindowAndDevice",
+          "evidence": "Hypothesis, not a recovered symbol. Resolves the map's unresolved indirect CALL EAX at 0073dc25: 0073dbee loads the platform singleton from 0x0109cf04, 0073dbfa its vtable 00d68cc4, 0073dc22 slot +4. __cdecl with eleven stack arguments, the platform pointer pushed last and first in argument order; caller ADD ESP,0x2c at 0073dc2b, callee RET. CORRECTION to src/win32_window.cpp and docs/WINDOW_CREATION.md and docs/PLATFORM_LOOP.md: the registered class style is 0x2000, CS_BYTEALIGNWINDOW, not CS_GLOBALCLASS which is 0x4000; 00becf36 writes 0x2000 to the style member of the WNDCLASSA whose address 00becf83 passes to RegisterClassA. Argument 2 is a temporary cNativeString 'Battlestations Pacific' used as class name, CreateWindowExA class name and title; argument 11 is the WinMain HINSTANCE from 0x00e1ae7c, which the map mislabels as the cachedload argument. Aspect arithmetic at 00bed0d9-00bed135 is x87 FILD/FIDIV rounded to float through a slot, compared against DAT_00d5bd98 = 1.3333334f, 4:3. Evidence: docs/APP_INIT_PLATFORM.md; reports/app_init_platform.json; docs/WINDOW_CREATION.md. Existing D3D9 probe now checks exact registered class style; reports/frame_bounds_integration_validation.json. Clarification superseding the earlier integration substitution: CS_BYTEALIGNWINDOW is 0x2000; CS_GLOBALCLASS is 0x4000. The native and registered probe value is 0x2000. | R49 byte-identical adoption of reviewed9ed3a6de raw render-entry cache header/source, nine functions plus59B BED1E8 window fragment. Same borrowed AA0/FE88/D7A24C cells and actual14h owner/28h rows; original used-count comparison, signed initialization iteration, stale pointer after resize0, old-capacity preservation, captured manager guard and current publication reloads retained. Genuine current singleton/section/allocation providers; no replacement manager/renderer/camera owner or app activation. Parent reviewed complete source/header/current probe; independently verified historical5049 artifacts595451380B, original80-member archive,5311 supplemental current artifacts,10 live/PE spans795B and all28calls(24direct/4imports). Worker and combined strict /MD /W4 /WX /fp:strict Win32 build and3CTests pass. Current ignored fixture compares relocated original BEBF00[39] with source; genuine-manager source lifecycle covers10000 rows, used-vs-capacity, oldcapacity, stalezero and explicit scalar cleanup. Fixture repairs stale pointer before later destructor, not native behavior. Supplemental probe only relinked same proven core and freezes7 physical loaded+diskI386 modules; no primary fixture rerun. Historical device/window evidence is not current runtime proof. Original constructor/resize/FH3/SEH, generic cache deletion routing, wholewindow/renderer/app/gameplay unproved. reports/native_render_entry_cache_main_r49.json."
+        },
+        "status": "applied"
+      }
+    ]
   }
 }
