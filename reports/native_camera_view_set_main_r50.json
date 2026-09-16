@@ -1,0 +1,653 @@
+{
+  "packet": "native_camera_view_set_main_r50",
+  "status": "reconstructed; strict-build and bounded actual-storage native/source fixture passed; parent integration and annotations pending",
+  "created_at": "2026-09-16T13:57:16.525280+00:00",
+  "baseline_commit": "13675f8236f69f16df97b6cc8a817d3daeff05db",
+  "source_commit": "42664cfb60beec24732c54b778d94d8a5267ec9c",
+  "owned_address": "00b71490",
+  "owned_source_files": [
+    "include/bsp/native_camera_view_set.hpp",
+    "src/native_camera_view_set.cpp",
+    "docs/NATIVE_CAMERA_VIEW_SET_R50.md"
+  ],
+  "integration_file": "cmake/startup.cmake: one additive target_sources line, short lease released before build",
+  "prerequisite_report": "reports/native_renderer_debug_records40_contract_r48.json",
+  "source_inputs": [
+    {
+      "path": "include/bsp/native_camera_view_set.hpp",
+      "bytes": 939,
+      "sha256": "e29d123a1460bc20b192618d2e4b5a8fa0f4451f15bb8af1fce3b260d7bf0223"
+    },
+    {
+      "path": "src/native_camera_view_set.cpp",
+      "bytes": 1430,
+      "sha256": "0e448dbd47bdbcbc16b5a3e32621a05ccdf640dd8d33e86bba2b94954c296879"
+    },
+    {
+      "path": "docs/NATIVE_CAMERA_VIEW_SET_R50.md",
+      "bytes": 1830,
+      "sha256": "b7f440499b3be7faee85ff19dc59553b8dd1528734ba9b4bf36f8b89ba231567"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 151473,
+      "sha256": "d37c938a4e3dcecbd1ba59451c9f3a0f6f127b09ca0cf175764882097fd07bf5"
+    }
+  ],
+  "interface": {
+    "header": "bsp/native_camera_view_set.hpp",
+    "declaration": "void set_native_camera_view_00b71490(NativeCameraOwner&, const void* actual_view_matrix);",
+    "ownership": "Borrows an existing canonical owner, its same actual node/tail storage and immutable environment. No allocation, pool, registry, publication, second owner or semantic camera snapshot.",
+    "storage": "Actual owner views reference raw camera fields in the existing 45Ch pool slot; flags +2F0, world +F0, local +B0, direction +1AC, target +1A0. Wrapper temporary is a private 64-byte inverse result.",
+    "supported_dispatch": "Captured native stamp D62CF0 with the owner environment borrowed original profile words; read current +34 only after inverse and admit exactly B71460. Existing owner pose invoker retains its same-camera identity guard.",
+    "failure": "Unknown captured profile, absent borrowed table or unsupported current target throws std::logic_error after mask and inverse. This is an explicit source contract boundary, not original fault or exception ABI.",
+    "preconditions": [
+      "Canonical NativeCameraOwner with initialized actual method fields and stable borrowed environment/profile mapping throughout the call.",
+      "Input points to 64 readable live bytes; aliases of actual camera fields remain live, with no eager matrix copy.",
+      "Native floating-point environment and clear direction flag; inherited helper constraints remain unchanged.",
+      "No concurrent mutation or rebinding of owner/context identities."
+    ],
+    "peer_use": "R51 B2B580 can call this function on its same genuinely constructed camera owner. This packet does not construct that camera or activate renderer/application ownership."
+  },
+  "native_contract": {
+    "range": "00B71490..00B714C6 inclusive",
+    "bytes": 55,
+    "instructions": 19,
+    "listing_gaps": [],
+    "original_name": "FUN_00b71490",
+    "original_abi": "ECX is actual camera; [entry ESP+4] is view-matrix pointer; RET4. ESI/EDI preserved. The wrapper captures source in EDX before masking, allocates private 40h bytes, passes ECX=temporary and EDX=live input to B63B30, then forwards its EAX result.",
+    "decompiler_limit": "Inferred no-argument/single-register declarations omit stacked input; assembly supplies the actual contract.",
+    "ordered_effects": [
+      "B71490 captures stacked source into EDX before any camera write.",
+      "B7149A masks actual +2F0 with FFFFFE4B.",
+      "B714A5 captures [camera+0] profile in EDI before inverse.",
+      "B714AB invokes genuine B63B30 on private 64-byte output and original live source.",
+      "B714B0 pushes returned EAX; B714B1 loads the current +34 word from the previously captured profile.",
+      "B714B6 invokes that slot with ECX=camera; supported B71460 performs its own world setter and refresh.",
+      "B714BA separately invokes B70660 with the same camera; do not collapse its second refresh."
+    ],
+    "calls": [
+      {
+        "address": "00b714ab",
+        "hex": "e88026ffff",
+        "text": "call 0xb63b30"
+      },
+      {
+        "address": "00b714b6",
+        "hex": "ffd0",
+        "text": "call eax"
+      },
+      {
+        "address": "00b714ba",
+        "hex": "e8a1f1ffff",
+        "text": "call 0xb70660"
+      }
+    ],
+    "hex": "8b54240483ec40568bf181a6f00200004bfeffff578b3e8d4c2408e88026ffff508b47348bceffd08bcee8a1f1ffff5f5e83c440c20400",
+    "sha256": "655319e588983a33e205eaa27cc8a0cfd1364e855d85c39ec18645e04acb033b",
+    "eh": "No native EH registration in this 55-byte wrapper. Nested providers retain their own contracts; C++ exceptions and private stack shape are not a recovered original exception ABI.",
+    "proposed_annotation": {
+      "name": "BSP_Camera_SetViewMatrix",
+      "comment": "55-byte ECX-camera / stacked view-pointer / RET4 wrapper. Captures input before +2F0 mask FFFFFE4B, captures profile before B63B30 scaled-affine inverse into private40h, reads captured profile current +34 after inverse, dispatches returned matrix (D62CF0 target B71460), then separately B70660 again. Source borrows NativeCameraOwner; unsupported dispatch explicit; original fault/exception ABI and active application composition not proven. Evidence: reports/native_camera_view_set_main_r50.json."
+    },
+    "mutation": "None by worker; parent owns Ghidra annotation and ledger changes."
+  },
+  "provider_closure": [
+    {
+      "address": "00b63b30",
+      "source": "native_camera_matrix_math.cpp",
+      "contract": "Existing raw fastcall/naked inverse exposes exact ECX output, EDX input and EAX returned output; no duplicated inverse."
+    },
+    {
+      "address": "00b71460",
+      "source": "camera_transform.cpp and native_camera_owner.cpp",
+      "contract": "Existing owner.pose.invoke_world_matrix_34 resolves same owner/camera identity and genuine world setter; retains B6E870 then first B70660."
+    },
+    {
+      "address": "00b70660",
+      "source": "camera_transform.cpp",
+      "contract": "Existing actual-backed direction refresh explicitly invoked a second time by new wrapper."
+    },
+    {
+      "address": "00b6e870",
+      "source": "camera_transform.cpp",
+      "contract": "Existing hierarchy/world update and callbacks unchanged. Fixture covers unattached root branch only."
+    }
+  ],
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "collection": "Read-only BSP project/program checks, prototype/export/bytes and installed-PE parsing. Complete instruction receipts and rel32 relocations retained in archived native_receipts.json; exports included.",
+    "span_count": 16,
+    "total_bytes": 2649,
+    "function_count": 12,
+    "context_count": 4,
+    "all_live_equals_pe": true,
+    "all_function_listings_complete": true,
+    "spans": [
+      {
+        "address": "00b71490",
+        "kind": "function",
+        "length": 55,
+        "end_exclusive": "00b714c7",
+        "pe_offset": 7804048,
+        "sha256": "655319e588983a33e205eaa27cc8a0cfd1364e855d85c39ec18645e04acb033b",
+        "hex": "8b54240483ec40568bf181a6f00200004bfeffff578b3e8d4c2408e88026ffff508b47348bceffd08bcee8a1f1ffff5f5e83c440c20400",
+        "calls": [
+          {
+            "address": "00b714ab",
+            "hex": "e88026ffff",
+            "text": "call 0xb63b30"
+          },
+          {
+            "address": "00b714b6",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00b714ba",
+            "hex": "e8a1f1ffff",
+            "text": "call 0xb70660"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b63b30",
+        "kind": "function",
+        "length": 531,
+        "end_exclusive": "00b63d43",
+        "pe_offset": 7748400,
+        "sha256": "619b87a228444a7f6e3e78d8d26e1cbd2851baa6bbcbc3362ea9b39c2ff06d5c",
+        "hex": "83ec34568bc157b9100000008bf28bf8f3a5d94204d95c2408d94208d95c2410d9442408f30f104220f30f11442424f30f104224f30f11442420f30f104228f30f11442428f30f104210f30f11442418f30f104214f30f11442414f30f104218f30f1144241cf30f1002f30f1144240cd944240cf30f1144242cd9442410d9c1decad9c9d95c2410d9442410d9c2decbd9cad95c2410d9442410dec2dcc8d95c2410d8442410d95c2430d9442414d9442418d944241cd9c1decad9c9d95c241cd944241cd9c2decbd9cad95c241cd944241cdec2dcc8d95c241cd844241cd95c2434d9442420d9442424d9442428d9c1decad9c9d95c2428d9442428d9c2decbd9cad95c2428d9442428dec2dcc8d95c2428d8442428d95c2438d944242cd9442430f30f100508a2d700d9c00f28c8defa0f28d05f5ed9c9d918d94204d8f1d95810d87a08d95820d94210d944242cd9c0defad9c9d95804d94214d8f1d95814d87a18d95824d94220d9442430d9c0defad9c9d95808d94224d8f1d95818d87a28d95c2424d9442424d95028d94034d95c2420d94030d95c2424d94038d95c241cd9442424d9c0d808d9442420d9c0d84810dec2d944241cd9c0d84820dec3d9cad95c2428d9c2f30f5c4c2428d84804d9c1d84814dec1d9c2d84824dec1d95c242cd94008f30f5c54242cdecbd84818f30f114830f30f115034dec2decadec1d95c2430f30f5c442430f30f11403883c434c3",
+        "calls": [],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b71460",
+        "kind": "function",
+        "length": 34,
+        "end_exclusive": "00b71482",
+        "pe_offset": 7804000,
+        "sha256": "138e48f3a0542e5005f2316f167ad635a3aa8a93df38d634cf5cac436dc59bd9",
+        "hex": "8b442404568bf181a6f00200004bfeffff50e8f9d3ffff8bcee8e2f1ffff5ec20400",
+        "calls": [
+          {
+            "address": "00b71472",
+            "hex": "e8f9d3ffff",
+            "text": "call 0xb6e870"
+          },
+          {
+            "address": "00b71479",
+            "hex": "e8e2f1ffff",
+            "text": "call 0xb70660"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b70660",
+        "kind": "function",
+        "length": 173,
+        "end_exclusive": "00b7070d",
+        "pe_offset": 7800416,
+        "sha256": "26dc2b745d1ed57343483e1ec1b2e37bc3c0d06e504db9cf50cbc16a633fc783",
+        "hex": "83ec18568bf1f6465c027505e8ffd4ffffd98610010000d99eac010000d98614010000d99eb0010000d98618010000d99eb4010000f6465c0275078bcee8ced4ffffd98620010000d95c2404d98624010000d95c2408d98628010000d95c240cd9442404d886ac010000d95c2410d986b0010000d8442408d95c2414d986b4010000d844240cd95c2418d9442410d99ea0010000d9442414d99ea4010000d9442418d99ea80100005e83c418c3",
+        "calls": [
+          {
+            "address": "00b7066c",
+            "hex": "e8ffd4ffff",
+            "text": "call 0xb6db70"
+          },
+          {
+            "address": "00b7069d",
+            "hex": "e8ced4ffff",
+            "text": "call 0xb6db70"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b6e870",
+        "kind": "function",
+        "length": 70,
+        "end_exclusive": "00b6e8b6",
+        "pe_offset": 7792752,
+        "sha256": "b0a80c82f34b3c71bb2131075a423fa4306edb44ba482f8297eedb2973a5b5e1",
+        "hex": "8b442404568bf1508d8ef0000000e86d4c8aff8b8ea000000085c974078b118b423cffd08bcee845ffffff8bcee88ef1ffff8b168b42408bceffd0c7465c020000005ec20400",
+        "calls": [
+          {
+            "address": "00b6e87e",
+            "hex": "e86d4c8aff",
+            "text": "call 0x4134f0"
+          },
+          {
+            "address": "00b6e892",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00b6e896",
+            "hex": "e845ffffff",
+            "text": "call 0xb6e7e0"
+          },
+          {
+            "address": "00b6e89d",
+            "hex": "e88ef1ffff",
+            "text": "call 0xb6da30"
+          },
+          {
+            "address": "00b6e8a9",
+            "hex": "ffd0",
+            "text": "call eax"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b6e7e0",
+        "kind": "function",
+        "length": 131,
+        "end_exclusive": "00b6e863",
+        "pe_offset": 7792608,
+        "sha256": "ef04978ad806c7bca370c1005a1b9d3d5021b82a9fbb65137c8cb58dc16b28fc",
+        "hex": "81ec8000000056578bf98b773085f674578b465ca8087527a80275078bcee86df3ffff8d96f00000008d4c2408e81e53ffff508d4e60e8d54c8aff834e5c0883c660568d44244c508d8ff0000000e8ed508aff508d8fb0000000e8b14c8aff5f5e81c480000000c38d8ff0000000518d8fb0000000e8964c8aff5f5e81c480000000c3",
+        "calls": [
+          {
+            "address": "00b6e7fe",
+            "hex": "e86df3ffff",
+            "text": "call 0xb6db70"
+          },
+          {
+            "address": "00b6e80d",
+            "hex": "e81e53ffff",
+            "text": "call 0xb63b30"
+          },
+          {
+            "address": "00b6e816",
+            "hex": "e8d54c8aff",
+            "text": "call 0x4134f0"
+          },
+          {
+            "address": "00b6e82e",
+            "hex": "e8ed508aff",
+            "text": "call 0x413920"
+          },
+          {
+            "address": "00b6e83a",
+            "hex": "e8b14c8aff",
+            "text": "call 0x4134f0"
+          },
+          {
+            "address": "00b6e855",
+            "hex": "e8964c8aff",
+            "text": "call 0x4134f0"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b6da30",
+        "kind": "function",
+        "length": 50,
+        "end_exclusive": "00b6da62",
+        "pe_offset": 7789104,
+        "sha256": "e59be0afa37414644d2bf59f9daf7d417752a80b37c134f7131771ef5ff81fac",
+        "hex": "568b713485f674288b465ca802741a83a638010000cf83e0f5837e340089465c74078bcee8d7ffffff8b763c85f675d85ec3",
+        "calls": [
+          {
+            "address": "00b6da54",
+            "hex": "e8d7ffffff",
+            "text": "call 0xb6da30"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b6dbe0",
+        "kind": "function",
+        "length": 25,
+        "end_exclusive": "00b6dbf9",
+        "pe_offset": 7789536,
+        "sha256": "dd48a01f78dcfc35f8948c8a6eaf0c1579f7db81a406e7b45dbc0b981fcb1008",
+        "hex": "83a138010000cf8b89a000000085c974078b018b503cffe2c3",
+        "calls": [],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "004134f0",
+        "kind": "function",
+        "length": 103,
+        "end_exclusive": "00413557",
+        "pe_offset": 79088,
+        "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+        "hex": "8bc18b4c2404d901d918d94104d95804d94108d95808d9410cd9580cd94110d95810d94114d95814d94118d95818d9411cd9581cd94120d95820d94124d95824d94128d95828d9412cd9582cd94130d95830d94134d95834d94138d95838d9413cd9583cc20400",
+        "calls": [],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b6db70",
+        "kind": "function",
+        "length": 80,
+        "end_exclusive": "00b6dbc0",
+        "pe_offset": 7789424,
+        "sha256": "bfec40ef2c2a4ca1f4b6fc6c2e4da19990fbd0e44f71100c3447570cc2e51679",
+        "hex": "568bf1578b7e3085ff742cf6475c0275078bcfe8e8ffffff81c7f0000000578d96b00000008d8ef0000000e830f9ffff834e5c025f5ec38d86b0000000508d8ef0000000e837598aff834e5c025f5ec3",
+        "calls": [
+          {
+            "address": "00b6db83",
+            "hex": "e8e8ffffff",
+            "text": "call 0xb6db70"
+          },
+          {
+            "address": "00b6db9b",
+            "hex": "e830f9ffff",
+            "text": "call 0xb6d4d0"
+          },
+          {
+            "address": "00b6dbb4",
+            "hex": "e837598aff",
+            "text": "call 0x4134f0"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00413920",
+        "kind": "function",
+        "length": 874,
+        "end_exclusive": "00413c8a",
+        "pe_offset": 80160,
+        "sha256": "a2ae101c6235ce95cd7cffdc28deb5797b9d844dbc809e729db5ac5b134e29d9",
+        "hex": "83ec408b542448d942108b442444d95c2430d94104d95c243cd902d95c2428d901d95c242cd94220d95c2434d94108d95c2424d94230d95c2438d9410cd95c2448d944243cd9c0d9442430d9c0decad944242cd9c0d9442428d9c0decad9ccdec1d9442424d9c0d84c2434dec2d9442448d84c2438dec2d9c9d918d94214d95c2408d94204d95c243cd94224d95c240cd94234d95c2410d944243cd8cad9442408d8cedec1d944240cd8cadec1d9442410d84c2448dec1d95804d94218d95c2418d94208d95c2414d94228d95c241cd94238d95c2420d9442414d8cad9442418d8cedec1d944241cd8cadec1d9442420d84c2448dec1d95808d9421cd95c2428d9420cd95c2424d9422cd95c242cd9423cd95c2430d9442424decad9442428decdd9c9dec4d84c242cdec3d9442430d84c2448dec3d9cad9580cd94114d95c2448d94110d95c2404d94118d95c2444d9411cd91c24d9442404d9c0d8cad9442448d8ccdec1d9442444d9442434d9c0decad9cadec1d90424d9442438d9c0decad9cadec1d95810d944243cd9c0deccd9442448d84c2408dec4d9442444d84c240cdec4d90424d84c2410dec4d9cbd95814d9442404d84c2414d9442448d84c2418dec1d9442444d84c241cdec1d90424d84c2420dec1d95818d9442404d84c2424d9442448d84c2428dec1d9442444d84c242cdec1d90424d84c2430dec1d9581cd94124d95c2444d94120d95c2448d94128d91c24d9412cd95c2404d9442448d8ccd9442444d8cedec1d90424d8cbdec1d9442404d8cadec1d95820d9442448d8cbd9442444d84c2408dec1d90424d84c240cdec1d9442404d84c2410dec1d95824d9442448d84c2414d9442444d84c2418dec1d90424d84c241cdec1d9442404d84c2420dec1d95828d9442448d84c2424d9442444d84c2428dec1d90424d84c242cdec1d9442404d84c2430dec1d9582cd94134d95c2444d94130d95c2448d94138d95c243cd9413cd95c2438d9442448d9c0decdd9442444d9c0decfd9cddec6d944243cd9c0deccd9cedec3d9442438d9c0decbd9cbdec2d9c9d95830d9c0decbd9c3d84c2408dec3d9c4d84c240cdec3d9c1d84c2410dec3d9cad95834d9c1d84c2414d9c3d84c2418dec1d9c4d84c241cdec1d9c1d84c2420dec1d95838d9442424decad9442428decbd9c9dec2d944242cdecbd9c9dec2d84c2430dec1d9583c83c440c20800",
+        "calls": [],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b6d4d0",
+        "kind": "function",
+        "length": 339,
+        "end_exclusive": "00b6d623",
+        "pe_offset": 7787728,
+        "sha256": "a046a9c272194648d838b69a1246fb01f53ecb02857485f0c6de279e5bf20a49",
+        "hex": "8b442404d902d8080f57c0d94204d84810dec1d94020d84a08dec1d919d94014d84a04d94004d80adec1d94208d84824dec1d95904d94018d84a04d94008d80adec1d94208d84828f30f11410cdec1d95908d94214d84810d900d84a10dec1d94218d84820dec1d95910d94004d84a10d94214d84814dec1d94218d84824dec1d95914d94008d84a10d94214d84818dec1d94218d84828f30f11411cdec1d95918d94220d808d94224d84810dec1d94020d84a28dec1d95920d94224d84814d94220d84804dec1d94228d84824dec1d95924d94224d84818d94220d84808dec1d94228d84828f30f11412cf30f10054ca2d700dec1d95928d94234d84810d900d84a30dec1d94238d84820dec1d84030d95930d94004d84a30d94234d84814dec1d94238d84824dec1d84034d95934d94008d84a30d94234d84818dec1d94238d84828dec1d84038f30f11413cd95938c20400",
+        "calls": [],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00d62cf0",
+        "kind": "context",
+        "length": 88,
+        "end_exclusive": "00d62d48",
+        "pe_offset": 9841904,
+        "sha256": "e28974468ad5614f4a554cfb6707393f56398b4eeca19834623fb06eb322c3de",
+        "hex": "e030bd00e01fb70060fbb600e01cb700f0f8b60070fbb60010f3b600b0d7b60080fbb600e00db70020d8b600d013b7000014b7006014b7003014b700c0dbb600e0dbb60000dcb600c0e8b60020dcb60080edb60010eeb600",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00d62c88",
+        "kind": "context",
+        "length": 88,
+        "end_exclusive": "00d62ce0",
+        "pe_offset": 9841800,
+        "sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9",
+        "hex": "e030bd00d0f8b60090d7b60070f5b600f0f8b600a0d7b60010f3b600b0d7b60090d9b60050e1b60020d8b600b0dab600e0dab60070e8b60010dbb600c0dbb600e0dbb60000dcb600c0e8b60020dcb60080edb60010eeb600",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00d7a208",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00d7a20c",
+        "pe_offset": 9937416,
+        "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6",
+        "hex": "00000080",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00d7a24c",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00d7a250",
+        "pe_offset": 9937484,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "hex": "0000803f",
+        "live_equals_pe": true
+      }
+    ]
+  },
+  "validation": {
+    "seed_command": "python tools/ghidra_export.py verify-seeds",
+    "seed_exit": 0,
+    "build_command": "./scripts/build.ps1",
+    "build_exit": 0,
+    "configuration": "MSVC Win32 Release, /MD /W4 /WX /fp:strict; generated vcxproj and compiler tlogs archived.",
+    "tests": [
+      {
+        "name": "reconstructed_math",
+        "result": "PASS"
+      },
+      {
+        "name": "native_math_differential",
+        "result": "PASS"
+      },
+      {
+        "name": "tool_tests",
+        "result": "PASS"
+      }
+    ],
+    "frozen_source_inputs": 3137,
+    "core_compiler_read_paths": 1891,
+    "fixture": {
+      "fixture": "actual camera view wrapper native/source",
+      "source": "local\\camera_view_set_r50\\probe.cpp",
+      "exe": "local\\camera_view_set_r50\\camera_view_probe_r50.exe",
+      "sha256": "6314350a1ce058859b96f76abeccb367b25df7394fcdf295e007cd362cfbf273",
+      "build_exit": 0,
+      "run_exit": 0,
+      "manifest_asInvoker": true,
+      "selected_output": [
+        "PASS actual camera wrapper variant0 full45Ch bytes; separate/world/flag-word alias",
+        "PASS actual camera wrapper variant1 full45Ch bytes; separate/world/flag-word alias",
+        "PASS actual camera wrapper variant2 full45Ch bytes; separate/world/flag-word alias",
+        "PASS unsupported current slot rejected after inverse; real prepared owner views retained"
+      ]
+    },
+    "fixture_domain": "One ignored focused executable; real NativeCameraPool and AllocatorListDomain allocate a 45Ch slot, then real NativeCameraOwner prepared constructor creates actual views and SceneAttachmentRuntime association. Actual initialized method state uses an unattached root. Type/bootstrap, viewport/registry and renderer access are genuine inert dependencies, with no viewport/device construction. No dummy callback or semantic camera owner.",
+    "native_copy": "All 12 complete native helper bodies copied and direct rel32 calls/jumps relocated to actual copied bodies. Fixture-only numeric profile maps replace +34 with copied B71460 and +40 with copied B6DBE0; original D7A208/D7A24C literal bits supplied. Native registers/private stack retained for copied wrapper invocation.",
+    "cases": [
+      "Separate scaled/rotated affine source: native/source compare full 45Ch raw slot.",
+      "Source aliases actual world +F0: native/source compare full 45Ch raw slot.",
+      "Source begins actual +2D0 and overlaps flags +2F0: initial 1B4 flag bits become zero before inverse; native/source compare full 45Ch raw slot.",
+      "Unsupported current profile +34 DEADBEEF: source throws after inverse, preserves mask and otherwise entire 45Ch preimage. This rejection is source-only, not invocation of an invalid native target."
+    ],
+    "fixture_cleanup": "Prepared owner destructor removes real scene association and typed views; real raw slot return B711E0 and pool destroy B71120; allocator binding removed and list head null. Manager/type publication cells remain null. This does not exercise B71A80 camera constructor/destructor or native camera lifetime.",
+    "compiled_schedule": {
+      "exe_sha256": "6314350a1ce058859b96f76abeccb367b25df7394fcdf295e007cd362cfbf273",
+      "machine": "014c",
+      "intervals": [
+        {
+          "symbol": "??1logic_error@std@@UAE@XZ",
+          "object": "i bsp_core:native_camera_view_set.obj",
+          "address": "30001b50",
+          "end_exclusive": "30001b70",
+          "length": 32,
+          "sha256": "ebfd84b20ab404ce737a067904332d9747a38bb7ff970551d3130f1ede07c34b",
+          "hex": "8d4104c7014c6f023050e8b539020059c3cccccccccccccccccccccccccccccc",
+          "note": "Map interval to next distinct code symbol; may include alignment or auxiliary code, not a native body boundary."
+        },
+        {
+          "symbol": "??0logic_error@std@@QAE@ABV01@@Z",
+          "object": "i bsp_core:native_camera_view_set.obj",
+          "address": "30003fa0",
+          "end_exclusive": "30003fe0",
+          "length": 64,
+          "sha256": "cdec1a6752967534b60883818d1703030c964ead0b04418488b81f25fa730375",
+          "hex": "558bec568bf10f57c08d460450c7064c6f0230660fd6008b450883c00450e84b15020083c408c706547302308bc65e5dc20400cccccccccccccccccccccccccc",
+          "note": "Map interval to next distinct code symbol; may include alignment or auxiliary code, not a native body boundary."
+        },
+        {
+          "symbol": "??0logic_error@std@@QAE@PBD@Z",
+          "object": "i bsp_core:native_camera_view_set.obj",
+          "address": "30003fe0",
+          "end_exclusive": "30004030",
+          "length": 80,
+          "sha256": "9f996e511ccc0cf7b64a83dae62f1d7a13edb68766a16040df2ff785c1767321",
+          "hex": "558bec83ec088b45080f57c0568bf18975fc8d56048945f88d45f852c7064c6f023050660fd602c645fc01e8fe14020083c408c706547302308bc65e8be55dc20400cccccccccccccccccccccccccccc",
+          "note": "Map interval to next distinct code symbol; may include alignment or auxiliary code, not a native body boundary."
+        },
+        {
+          "symbol": "??_Elogic_error@std@@UAEPAXI@Z",
+          "object": "i bsp_core:native_camera_view_set.obj",
+          "address": "30004030",
+          "end_exclusive": "30004060",
+          "length": 48,
+          "sha256": "98ba12dbc7224b0a0e8aac5a0cf9ecea870ccec8317b866aaf06df3cc941c6ef",
+          "hex": "558bec568bf18d4604c7064c6f023050e8cf14020083c404f6450801740b6a0c56e82a04020083c4088bc65e5dc20400",
+          "note": "Map interval to next distinct code symbol; may include alignment or auxiliary code, not a native body boundary."
+        },
+        {
+          "symbol": "??_Glogic_error@std@@UAEPAXI@Z",
+          "object": "i bsp_core:native_camera_view_set.obj",
+          "address": "30004030",
+          "end_exclusive": "30004060",
+          "length": 48,
+          "sha256": "98ba12dbc7224b0a0e8aac5a0cf9ecea870ccec8317b866aaf06df3cc941c6ef",
+          "hex": "558bec568bf18d4604c7064c6f023050e8cf14020083c404f6450801740b6a0c56e82a04020083c4088bc65e5dc20400",
+          "note": "Map interval to next distinct code symbol; may include alignment or auxiliary code, not a native body boundary."
+        },
+        {
+          "symbol": "?set_native_camera_view_00b71490@bsp@@YAXAAVNativeCameraOwner@1@PBX@Z",
+          "object": "bsp_core:native_camera_view_set.obj",
+          "address": "30004060",
+          "end_exclusive": "30004110",
+          "length": 176,
+          "sha256": "fdf005962f6d9c9889661fe22a1faa6fe7526d291a7d28a04a34e9a601c1e5c4",
+          "hex": "558bec83ec50a140a0033033c58945fc8b550c56578b7d088b4f048b817c010000254bfeffff89817c0100008d4dbc8b078b30e8d83e000081fef02cd60075458b4f088b493085c9743b8b493481f96014b7007537508b87a40600008db72c0200005651ffb794060000ffd056e8ae4400008b4dfc83c41433cd5f5ee8bf0602008be55dc3685c730230eb0568907302308d4db0e8e7feffff68187203308d45b050e813140200cccccccccccccccccc",
+          "note": "Map interval to next distinct code symbol; may include alignment or auxiliary code, not a native body boundary."
+        }
+      ],
+      "key_instructions": [
+        "30004070 captures input in EDX before actual flag read/mask/write at 3000407B..86.",
+        "30004091 captures profile; 30004093 calls existing raw inverse; 30004098 checks captured profile after inverse.",
+        "300040AA reads current profile +34 after inverse; 300040B5 passes returned EAX to genuine pose invoker at 300040CA.",
+        "300040CD invokes existing B70660 separately after pose dispatch."
+      ],
+      "limit": "Map intervals may include padding or auxiliary code and are not original-function boundaries. Source adapter ABI differs from native ECX/RET4 wrapper."
+    },
+    "loaded_modules": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\local\\camera_view_set_r50\\camera_view_probe_r50.exe",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 231936,
+        "sha256": "6314350a1ce058859b96f76abeccb367b25df7394fcdf295e007cd362cfbf273",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ntdll.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1822400,
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 687472,
+        "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\KernelBase.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 2974168,
+        "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\msvcp140.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 618944,
+        "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      }
+    ],
+    "module_identity": "Each file was opened in the same Win32 probe and resolved by GetFinalPathNameByHandleW. Loaded-memory PE Machine and resolved disk Machine are both I386. Files archived and rehashed. No GetMappedFileNameW call is claimed.",
+    "reporting_correction": "Preliminary evidence inspector inherited an inaccurate extra GetMappedFileNameW phrase. Corrected inspector and machine receipt in final sealed archive; source, fixture binary, run output and physical paths unchanged. Preliminary ZIP is retained immutable and superseded.",
+    "no_new_permanent_tests": true
+  },
+  "archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\local\\checkpoints\\camera-view-set-r50-42664cfb6-sealed\\validated_artifacts.zip",
+    "sha256": "204744bf7f76a2eae25b513c846d47646f7f4aa72c1ef009cfe81af5c63f26be",
+    "bytes": 64681288,
+    "manifest": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\local\\checkpoints\\camera-view-set-r50-42664cfb6-sealed\\manifest.json",
+    "manifest_sha256": "cce6faca7145e6f683518e5baa916f82ef9f4a32b53933585614ce6b43e4fe21",
+    "artifacts": 3675,
+    "artifact_bytes": 258021013,
+    "all_entries_hash_verified": true,
+    "loaded_modules": 7,
+    "prior_r45_zip_unchanged": true,
+    "full_bsp_core_lib": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\build\\win32\\Release\\bsp_core.lib",
+      "archive_entry": "workspace/build/win32/Release/bsp_core.lib",
+      "bytes": 63549102,
+      "sha256": "aaa589079f56023ec2760e825ca7a76786f83103bd0e977f8bd5c863fe9dcc3f"
+    }
+  },
+  "archive_closure": "Frozen tracked compile inputs, complete fresh core/lua/zlib libraries, camera/provider objects, core compiler command/read tlogs and dependency headers, fixture source/object/map/exe/manifest/read includes/link logs and libraries, compiler/linker host toolchains, exact native bytes/exports, same-process resolved I386 loaded modules. All 3675 archived artifacts independently reread and hash checked after writing ZIP.",
+  "superseded_preliminary_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\local\\checkpoints\\camera-view-set-r50-42664cfb6\\validated_artifacts.zip",
+    "sha256": "c222f47285892469dbd5c2d72828238f088c26bc1b3cb3eca3accbffca75c8b8",
+    "reason": "Corrected inspector provenance prose only; do not use as final handoff archive."
+  },
+  "limitations": [
+    "No original calling-convention/private-stack/FH3/hardware-fault or concurrent-mutation equivalence is claimed for the new owner-companion C++ API.",
+    "Fixture establishes supported wrapper state transitions for initialized prepared actual storage, not complete B71A80 construction/lifetime.",
+    "No arbitrary parent/child/notification/scene callback coverage; inherited hierarchy providers and identity guards are unchanged.",
+    "No viewport/device, renderer owner, process camera pool publication, application binding or gameplay validation.",
+    "R51 same-owner composition and primary combined-main build/relink remain integration work for parent."
+  ],
+  "handoff": {
+    "source_commit": "42664cfb60beec24732c54b778d94d8a5267ec9c",
+    "report": "reports/native_camera_view_set_main_r50.json",
+    "parent_annotations_required": true,
+    "cmake_lease_released_before_build": true,
+    "archive_immutable": true,
+    "build_after_archive": false
+  }
+}
