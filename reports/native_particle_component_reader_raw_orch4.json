@@ -1,0 +1,495 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "packet": "orch4-particle-component-reader-r22",
+  "source": "src/native_particle_component_reader_raw.cpp",
+  "header": "include/bsp/native_particle_component_reader_raw.hpp",
+  "functions": [
+    {
+      "address": "00871d00",
+      "end_exclusive": "00871f91",
+      "bytes": 657,
+      "instructions": 202,
+      "sha256": "9fe5cc32d92ca3707ec509f4db728ae7492269af40ae8458bca52b6a15e9915f",
+      "live_disk_match": true,
+      "name": "read_native_particle_component_00871d00",
+      "proposed_name": "BSP_ParticleComponent_ReadLua",
+      "coverage": "complete",
+      "status": "complete_native_storage_source_build_and_original_provider_fixture_checked",
+      "original_abi": "ECX actual34h component; stack actual14h definition LuaObject; RET4. EDX incidental, no recovered return contract.",
+      "old_documentation": {
+        "hash": "601ca5f70934f98bbea6e8b8d5c9f9927692b0699dbc161baf7b7b57b2d41e8f",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00871d00",
+        "function_name": "FUN_00871d00",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pvVar7",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffff94, 4)"
+          },
+          {
+            "name": "uVar8",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffff9c, 4)"
+          },
+          {
+            "name": "cVar3",
+            "type": "char",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "_Src",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pcVar4",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar5",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_50",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffb0, 4)"
+          },
+          {
+            "name": "local_48",
+            "type": "undefined1[20]"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x6c00, 4)"
+          },
+          {
+            "name": "local_4c",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffb4, 4)"
+          },
+          {
+            "name": "uVar2",
+            "type": "undefined1",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "local_20",
+            "type": "undefined1[20]"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_34",
+            "type": "undefined1[20]"
+          },
+          {
+            "name": "local_4",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 208,
+            "name": "LAB_00871dd0"
+          },
+          {
+            "relative_offset": 232,
+            "name": "LAB_00871de8"
+          },
+          {
+            "relative_offset": 281,
+            "name": "LAB_00871e19"
+          },
+          {
+            "relative_offset": 340,
+            "name": "LAB_00871e54"
+          },
+          {
+            "relative_offset": 372,
+            "name": "LAB_00871e74"
+          },
+          {
+            "relative_offset": 380,
+            "name": "LAB_00871e7c"
+          },
+          {
+            "relative_offset": 394,
+            "name": "LAB_00871e8a"
+          },
+          {
+            "relative_offset": 440,
+            "name": "LAB_00871eb8"
+          },
+          {
+            "relative_offset": 473,
+            "name": "LAB_00871ed9"
+          },
+          {
+            "relative_offset": 559,
+            "name": "LAB_00871f2f"
+          },
+          {
+            "relative_offset": 594,
+            "name": "LAB_00871f52"
+          },
+          {
+            "relative_offset": 602,
+            "name": "LAB_00871f5a"
+          },
+          {
+            "relative_offset": 616,
+            "name": "LAB_00871f68"
+          },
+          {
+            "relative_offset": 620,
+            "name": "LAB_00871f6c"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "calls": [
+        {
+          "address": "00871d22",
+          "native": "00868bf0",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871d33",
+          "native": "00b67800",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871d4c",
+          "native": "00b67800",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871d58",
+          "native": "00b66000",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871d6a",
+          "native": "00b67700",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871d73",
+          "native": "00b661b0",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871d84",
+          "native": "00b65f50",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871d92",
+          "native": "00b65f50",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871daa",
+          "native": "00b67080",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871db8",
+          "native": "00b66420",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871dd4",
+          "native": "00b662b0",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871dfa",
+          "native": "0041dd40",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871e11",
+          "native": "00bf7680",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871e1e",
+          "native": "00871bd0",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871e31",
+          "native": "00870dd0",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871e48",
+          "native": "00419cc0",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871e4f",
+          "native": "00bd1510",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871e5b",
+          "native": "00af3e10",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871e77",
+          "native": "0086a4d0",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871e9c",
+          "native": "00b67190",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871eaa",
+          "native": "00b66420",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871ec1",
+          "native": "00b67700",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871ecf",
+          "native": "00b67700",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871edd",
+          "native": "00b662b0",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871ee7",
+          "native": "0041e870",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871ef1",
+          "native": "00871bd0",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871f04",
+          "native": "00870dd0",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871f23",
+          "native": "00419cc0",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871f2a",
+          "native": "00bd1510",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871f36",
+          "native": "00af3e10",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871f55",
+          "native": "0086a4d0",
+          "function": "00871d00"
+        },
+        {
+          "address": "00871f78",
+          "native": "00b67700",
+          "function": "00871d00"
+        }
+      ]
+    }
+  ],
+  "regions": [
+    {
+      "kind": "body",
+      "address": "00871d00",
+      "bytes": 657,
+      "sha256": "9fe5cc32d92ca3707ec509f4db728ae7492269af40ae8458bca52b6a15e9915f",
+      "live_disk_match": true
+    },
+    {
+      "kind": "actions",
+      "address": "00c96130",
+      "bytes": 58,
+      "sha256": "a8b4552011e5a6d81f8491bd72ccfc636c0bc2c4490f589f91cb161f76a5b68d",
+      "live_disk_match": true
+    },
+    {
+      "kind": "eh",
+      "address": "00dc8134",
+      "bytes": 84,
+      "sha256": "d0d9e0404d02af916e64460557030880b1f595797d73edd9c3bbb977bb951c07",
+      "live_disk_match": true
+    }
+  ],
+  "fh3": {
+    "handler": "00c96160",
+    "func_info": "00dc8134",
+    "magic": "19930522",
+    "max_state": 6,
+    "unwind_map": "00dc8158",
+    "flags": 1,
+    "states": [
+      {
+        "state": 0,
+        "previous": -1,
+        "action": "00c96130",
+        "operation": "Particle Lua cleanup"
+      },
+      {
+        "state": 1,
+        "previous": 0,
+        "action": "00c96138",
+        "operation": "UnderWater Lua cleanup"
+      },
+      {
+        "state": 2,
+        "previous": 0,
+        "action": "00c96140",
+        "operation": "key Lua cleanup"
+      },
+      {
+        "state": 3,
+        "previous": 2,
+        "action": "00c96148",
+        "operation": "value Lua cleanup"
+      },
+      {
+        "state": 4,
+        "previous": 3,
+        "action": "00c96150",
+        "operation": "table name cleanup"
+      },
+      {
+        "state": 5,
+        "previous": 0,
+        "action": "00c96158",
+        "operation": "scalar name cleanup"
+      }
+    ]
+  },
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "architecture": "MSVC Win32",
+      "flags": [
+        "/W4",
+        "/WX",
+        "/fp:strict",
+        "/MD"
+      ],
+      "ctests_passed": 3,
+      "log": "local/particle_component_final_build.log",
+      "log_sha256": "c9188777488d168d3906e4e3f954991792c519e72fb96855a826ad807118c0d4"
+    },
+    "seed_verification": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "exit_code": 0,
+      "log_sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    "live_call_rows": {
+      "checked": 32,
+      "failed": 0
+    },
+    "independent_review": {
+      "reviewer": "particle_date_r22",
+      "source_commit": "1c465881f",
+      "evidence": "Complete657B native assembly and six FH3 states; no mismatch found; table captured-name vs scalar reread, predicate and append order individually checked."
+    },
+    "copied_original_probe": {
+      "exit_code": 0,
+      "stdout": "PASS: complete657-byte original/source reader, real Lua scalar/table/emptytable, false-is-boolean/numeric-is-not, normalized cache hits and retain, previous entry plus growth, actual resource underwater byte, tracked stack cleanup, genuine component/cache/raw-pool teardown, replay rejected. No original child/FH3/SEH/game claim.\n",
+      "stderr": "",
+      "elapsed_seconds": 0.093,
+      "executable_sha256": "400302172098868e0a9cc9d436b26e61a637d37b4ccc467a8ff6a9dadf69d719",
+      "source_sha256": "216681e77228108ddf48101a45e931a8163a445827d4f538853a0868a53db1cc",
+      "library_sha256": "8583d8ad985975c8890cbc78b316fd08675b562f75a34d5459a21fbcd2423885",
+      "linked_library": "build/win32/Release/bsp_core.lib",
+      "reader_source_sha256": "a278e0f7d360ec2816f46f0391038921f080b8fc152c5e15a20f265b9951875e",
+      "head": "3a0c7ac09f92f44497ee439b38a74e4f3be33903"
+    },
+    "fixture": {
+      "source": "local/particle_component_probe.cpp",
+      "source_sha256": "216681e77228108ddf48101a45e931a8163a445827d4f538853a0868a53db1cc",
+      "cases": [
+        "scalar A.PAR with UnderWater=false ->1",
+        "table a.par,b.par,a.par with UnderWater=1 ->0",
+        "emptytable with UnderWater=true: no acquisition"
+      ],
+      "actual_providers": [
+        "Lua5.1.1 tracked objects",
+        "868BF0 base Lua reader",
+        "native raw string pool",
+        "871BD0 current cache getter",
+        "870DD0 genuine cache acquisition hits",
+        "AF3E10 underwater byte",
+        "86A4D0 pointer vector",
+        "resource retain and concrete component/cache/pool destruction"
+      ],
+      "comparisons": [
+        "pointer-normalized complete34h owner images",
+        "base fields",
+        "preexisting entry preserved and pointer growth",
+        "appended names in actual table iteration order",
+        "both resources referencecounts and underwaterbyte",
+        "stack height and all tracked slot counts",
+        "source retained child phase and loader-not-reached",
+        "source replay rejected"
+      ],
+      "address_setup": "Suspended child RO data handoff from unchanged installed PE; explicit fixture-owned1080000/1090000 data reservations. Published cache initialized in actual18h storage; fast singleton path exercised. ResourceLoadEventHost is explicit fixture observer; production remains actual platform binding."
+    },
+    "source_sha256": "a278e0f7d360ec2816f46f0391038921f080b8fc152c5e15a20f265b9951875e",
+    "boundaries": [
+      "Only copied original caller body executes; source providers rebind direct calls",
+      "Original FH3 and hardwareSEH handlers not executed",
+      "No exceptional-path differential claim",
+      "No original ABI, executable replacement or gameplay claim"
+    ]
+  },
+  "semantics": {
+    "underwater": "B66000 exact Boolean type predicate: false and true both1; other types0. Returned UnderWater LuaObject supplies predicate; then destroy before Particle table test.",
+    "iteration": "Particle table VALUES in actual Lua order; empty table no acquisition. Scalar string once.",
+    "acquisition": "Genuine871BD0 currentouter+4 ->870DD0(name,0,0,1). No caller retain/release or rollback after successful acquisition.",
+    "name": "Table captures data/length before acquisition for normal return; scalar rereads after. FH3 cleanup reads current raw header. Normal return disarms first.",
+    "append": "Actual component+28 vector, capacity read before count, signed doubledDWORD clamp1, postreserve count/data rereads, DWORD destination and count arithmetic, no previous entry clear.",
+    "persistence": "Stable actual8h name and3actual14h Lua objects precede retained typed cacheacquisition children; no destructor retry or rollback. Borrow SAME cache/string/VFS/parser domains; failed child obligations remain."
+  }
+}
