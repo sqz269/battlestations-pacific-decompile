@@ -1,0 +1,401 @@
+{
+  "packet": "orch4_particle_preparation_i9",
+  "status": "reconstructed_complete_actual_storage_raw_pool_win32_build_and_original_byte_probe_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_particle_type_preparation.cpp",
+  "raw_string_source": "src/native_string.cpp",
+  "evidence": "docs/NATIVE_PARTICLE_TYPE_PREPARATION_ORCH4.md",
+  "byte_spans": [
+    {
+      "address": "00b075d0",
+      "end": "00b07653",
+      "size": 132,
+      "role": "consumed_material_name",
+      "live_sha256": "f0325c22a8c20664101b19a3d6f1a0c41d94c7b464303cb4c15a4f26b02f8fe5",
+      "disk_sha256": "f0325c22a8c20664101b19a3d6f1a0c41d94c7b464303cb4c15a4f26b02f8fe5",
+      "disk_live_equal": true,
+      "hex": "64a1000000006aff6898b8cb0050648925000000005356578b5c24208b7c241c8d71148d44241c3bf0c744241400000000741e6a01578bcee8336791ff85ff74108b068b4e04505351e862000f0083c40c85dbc7442414ffffffff74136a0183c7015753e8872691ff8bc8e8d09e0c008b4c240c5f5e64890d000000005b83c40cc20800"
+    },
+    {
+      "address": "00b0a000",
+      "end": "00b0a028",
+      "size": 41,
+      "role": "sprite_preparation",
+      "live_sha256": "8c0b722ca078614dbf5541ac70f949b975878a4cc7f9820454d7d5799ecb69b3",
+      "disk_sha256": "8c0b722ca078614dbf5541ac70f949b975878a4cc7f9820454d7d5799ecb69b3",
+      "disk_live_equal": true,
+      "hex": "518b41748b4914568b74813483ec088bcc8964240c6830e0d500e8514891ff8bcee8aad5ffff5e59c3"
+    },
+    {
+      "address": "00b07660",
+      "end": "00b07688",
+      "size": 41,
+      "role": "axial_preparation",
+      "live_sha256": "6afaddcad76e842736161dd0cadff55b39cbaff0e103b64bea99bed02844614a",
+      "disk_sha256": "6afaddcad76e842736161dd0cadff55b39cbaff0e103b64bea99bed02844614a",
+      "disk_live_equal": true,
+      "hex": "518b41748b4914568b74813483ec088bcc8964240c6898dfd500e8f17191ff8bcee84affffff5e59c3"
+    },
+    {
+      "address": "00b087b0",
+      "end": "00b087d8",
+      "size": 41,
+      "role": "floating_preparation",
+      "live_sha256": "7fb4d536c18587c2e44f1c3874cb3f4d5f18e2fd47028ac750e32563d9aa2f2f",
+      "disk_sha256": "7fb4d536c18587c2e44f1c3874cb3f4d5f18e2fd47028ac750e32563d9aa2f2f",
+      "disk_live_equal": true,
+      "hex": "518b41748b4914568b74813483ec088bcc8964240c6810d8d500e8a16091ff8bcee8faedffff5e59c3"
+    },
+    {
+      "address": "00af8a30",
+      "end": "00af8a30",
+      "size": 1,
+      "role": "object_preparation",
+      "live_sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "disk_sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "disk_live_equal": true,
+      "hex": "c3"
+    },
+    {
+      "address": "00b0a0f0",
+      "end": "00b0a0f0",
+      "size": 1,
+      "role": "tracer_preparation",
+      "live_sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "disk_sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "disk_live_equal": true,
+      "hex": "c3"
+    },
+    {
+      "address": "00b0a100",
+      "end": "00b0a100",
+      "size": 1,
+      "role": "tracer_clamp",
+      "live_sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "disk_sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "disk_live_equal": true,
+      "hex": "c3"
+    },
+    {
+      "address": "0041e870",
+      "end": "0041e8c2",
+      "size": 83,
+      "role": "raw_string_construction",
+      "live_sha256": "f32abf313aaccbee4a0686891e75d082fd051777ac277f8f6d68ff90750826c7",
+      "disk_sha256": "f32abf313aaccbee4a0686891e75d082fd051777ac277f8f6d68ff90750826c7",
+      "disk_live_equal": true,
+      "hex": "56578b7c240c8bf18bc7c70600000000c74604000000008d50018d9b000000008a0883c00184c975f72bc26a01508bcee89bf4ffff8b460485c074108b0e83c101515750e8c78d7d0083c40c5f8bc65ec20400"
+    },
+    {
+      "address": "00cbb890",
+      "end": "00cbb8a1",
+      "size": 18,
+      "role": "material_name_unwind",
+      "live_sha256": "28cbc605602a3848946b4fecd7626832ba265564bee2ccc3439c7073e2196623",
+      "disk_sha256": "28cbc605602a3848946b4fecd7626832ba265564bee2ccc3439c7073e2196623",
+      "disk_live_equal": true,
+      "hex": "8d4d04e9882476ffb8183adf00e9a1b2f3ff"
+    },
+    {
+      "address": "00df3a10",
+      "end": "00df3a3b",
+      "size": 44,
+      "role": "material_name_fh3",
+      "live_sha256": "3b15161496888b4fced96369ccf3c70719885736a03410de035a83eae774262d",
+      "disk_sha256": "3b15161496888b4fced96369ccf3c70719885736a03410de035a83eae774262d",
+      "disk_live_equal": true,
+      "hex": "ffffffff90b8cb002205931901000000103adf00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00d5dd2c",
+      "end": "00d5dd2f",
+      "size": 4,
+      "role": "sprite_vtable14",
+      "live_sha256": "acf0212dd530baa3fc63fccdb6de9c3c88e2f610558b13c317e1d36b6e32b390",
+      "disk_sha256": "acf0212dd530baa3fc63fccdb6de9c3c88e2f610558b13c317e1d36b6e32b390",
+      "disk_live_equal": true,
+      "hex": "00a0b000"
+    },
+    {
+      "address": "00d5dcd4",
+      "end": "00d5dcd7",
+      "size": 4,
+      "role": "axial_vtable14",
+      "live_sha256": "6fc3a091cb4433f4789c7cf9c8a1d45fcde9744a1871bee1773d6a86e90bbb26",
+      "disk_sha256": "6fc3a091cb4433f4789c7cf9c8a1d45fcde9744a1871bee1773d6a86e90bbb26",
+      "disk_live_equal": true,
+      "hex": "6076b000"
+    },
+    {
+      "address": "00d5dd00",
+      "end": "00d5dd03",
+      "size": 4,
+      "role": "floating_vtable14",
+      "live_sha256": "cc043d37edc03874f13917f8fe555fee2d2254f4fca9856bcb0a505855040f7a",
+      "disk_sha256": "cc043d37edc03874f13917f8fe555fee2d2254f4fca9856bcb0a505855040f7a",
+      "disk_live_equal": true,
+      "hex": "b087b000"
+    },
+    {
+      "address": "00d5db14",
+      "end": "00d5db17",
+      "size": 4,
+      "role": "object_vtable14",
+      "live_sha256": "f38c057013308e2cb4a5e6a0f435f6973e79297979b9df15e40768e95f744e5c",
+      "disk_sha256": "f38c057013308e2cb4a5e6a0f435f6973e79297979b9df15e40768e95f744e5c",
+      "disk_live_equal": true,
+      "hex": "308aaf00"
+    },
+    {
+      "address": "00d5e05c",
+      "end": "00d5e05f",
+      "size": 4,
+      "role": "tracer_vtable14",
+      "live_sha256": "e6d8c99e6e4fb421e72d6e9af88f614a66f7ee3c0b663edecfa282483957936d",
+      "disk_sha256": "e6d8c99e6e4fb421e72d6e9af88f614a66f7ee3c0b663edecfa282483957936d",
+      "disk_live_equal": true,
+      "hex": "f0a0b000"
+    },
+    {
+      "address": "00d5e054",
+      "end": "00d5e057",
+      "size": 4,
+      "role": "tracer_vtable0c",
+      "live_sha256": "aa609205435c9229382522607e1908a814e5855a87e5c4f32864e24562e29dac",
+      "disk_sha256": "aa609205435c9229382522607e1908a814e5855a87e5c4f32864e24562e29dac",
+      "disk_live_equal": true,
+      "hex": "00a1b000"
+    },
+    {
+      "address": "00d5e030",
+      "end": "00d5e043",
+      "size": 20,
+      "role": "sprite_name",
+      "live_sha256": "a7ffd5c35665ccc102d6cc3369d427186f7a8c1629097c710b2168f13baa15e6",
+      "disk_sha256": "a7ffd5c35665ccc102d6cc3369d427186f7a8c1629097c710b2168f13baa15e6",
+      "disk_live_equal": true,
+      "hex": "5061727469636c655370726974652e6d76666d00"
+    },
+    {
+      "address": "00d5df98",
+      "end": "00d5dfaa",
+      "size": 19,
+      "role": "axial_name",
+      "live_sha256": "d42516ca34e3f27e4e80b70e3f1ab56aa034c3582034dd3971f80dd6cbb06d2c",
+      "disk_sha256": "d42516ca34e3f27e4e80b70e3f1ab56aa034c3582034dd3971f80dd6cbb06d2c",
+      "disk_live_equal": true,
+      "hex": "5061727469636c65417869616c2e6d76666d00"
+    },
+    {
+      "address": "00d5d810",
+      "end": "00d5d825",
+      "size": 22,
+      "role": "floating_name",
+      "live_sha256": "fb2f219c12eeed71f009544cb8528a3b0f2c1902c8797a0f6ee7cb6af03c8885",
+      "disk_sha256": "fb2f219c12eeed71f009544cb8528a3b0f2c1902c8797a0f6ee7cb6af03c8885",
+      "disk_live_equal": true,
+      "hex": "5061727469636c65466c6f6174696e672e6d76666d00"
+    }
+  ],
+  "prior_ghidra_metadata": [
+    {
+      "address": "00b075d0",
+      "annotation": {
+        "address": "00b075d0",
+        "function_name": "FUN_00b075d0"
+      }
+    },
+    {
+      "address": "0041e870",
+      "annotation": {
+        "address": "0041e870",
+        "function_name": "BSP_NativeString_Assign",
+        "comment": "[BSP reconstruction 0041e870]\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. 1230 callers; body is BSP_NativeString_Resize followed by _memcpy. Used throughout BSP_Application_Initialize to build the mount roots and the datatable paths immediately before each consuming call. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json.\n\n[BSP reconstruction 0041e870] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers, assembly-verified. __thiscall, ECX 8-byte string, stack (const char* text), RET 4, returns this in EAX. This is a CONSTRUCTOR body, not an assignment: 0041e87a zeroes length and data before doing anything, so calling it on a live string abandons that buffer. strlen inline, then BSP_NativeString_Resize(len, preserve=1), then, only if data is non-null, memcpy of len+1 bytes, which rewrites the terminator Resize already placed. An empty text leaves data null because Resize(0) from length 0 is a no-op. 1230 callers. The name is kept for continuity with docs/APP_INITIALIZE_MAP.md; BSP_NativeString_ConstructFromCString would describe it better. Evidence: docs/APP_INIT_ALLOC_STRINGS.md.\n\n[BSP reconstruction 0041e870] update\nFull83-byte C-string construction. Clear header before nonnull scan; resize preserve=true; copy current length+1 without releasing abandoned pre-constructor buffer. Primary verified28 worker pins and16 literal current source/header/doc files,29 fresh guarded original spans3104 bytes and8 seeds. Strict main Win32/two existing CTests passed. Unchanged actual main-library fixture passes18 original comparisons over8 bodies667 bytes (7 owned nonallocating helpers plus shared443D00), full18432 same-address arena bytes and returns, including returning CRT continuation. Thirteen additional actual owning-pool/Win32/index checks pass;8 allocating/physical owned bodies are not original differential-tested. Exact main library7 archive objects and225 complete linked COFF sections18170 bytes797 relocations verified, including all f/i map flags. Thirteen owned separate entries retained; CString adapters are inlined into retained sections and their full object is frozen. Original external CRT entries use current host CRT; no original locale/nativeSEH, forced time-conversion failure, runtime code postimages, index population, arbitrary provider profile or gameplay claim. reports/native_physical_file_date_audit.json\n\n[BSP reconstruction 0041e870] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers, assembly-verified. __thiscall, ECX 8-byte string, stack (const char* text), RET 4, returns this in EAX. This is a CONSTRUCTOR body, not an assignment: 0041e87a zeroes length and data before doing anything, so calling it on a live string abandons that buffer. strlen inline, then BSP_NativeString_Resize(len, preserve=1), then, only if data is non-null, memcpy of len+1 bytes, which rewrites the terminator Resize already placed. An empty text leaves data null because Resize(0) from length 0 is a no-op. 1230 callers. The name is kept for continuity with docs/APP_INITIALIZE_MAP.md; BSP_NativeString_ConstructFromCString would describe it better. Evidence: docs/APP_INIT_ALLOC_STRINGS.md. | Full83-byte C-string construction. Clear header before nonnull scan; resize preserve=true; copy current length+1 without releasing abandoned pre-constructor buffer. Primary verified28 worker pins and16 literal current source/header/doc files,29 fresh guarded original spans3104 bytes and8 seeds. Strict main Win32/two existing CTests passed. Unchanged actual main-library fixture passes18 original comparisons over8 bodies667 bytes (7 owned nonallocating helpers plus shared443D00), full18432 same-address arena bytes and returns, including returning CRT continuation. Thirteen additional actual owning-pool/Win32/index checks pass;8 allocating/physical owned bodies are not original differential-tested. Exact main library7 archive objects and225 complete linked COFF sections18170 bytes797 relocations verified, including all f/i map flags. Thirteen owned separate entries retained; CString adapters are inlined into retained sections and their full object is frozen. Original external CRT entries use current host CRT; no original locale/nativeSEH, forced time-conversion failure, runtime code postimages, index population, arbitrary provider profile or gameplay claim. reports/native_physical_file_date_audit.json | AY dependency correction: actual-header source in native_physical_file_date.cpp now uses memmove at the BF7680 copy corresponding to41E8B4. Native BF769A branches to backward-overlap code atBF7844. Existing symbol and constructor contract retained; no additional reconstructed body counted.\n\n[BSP reconstruction 0041e870] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers, assembly-verified. __thiscall, ECX 8-byte string, stack (const char* text), RET 4, returns this in EAX. This is a CONSTRUCTOR body, not an assignment: 0041e87a zeroes length and data before doing anything, so calling it on a live string abandons that buffer. strlen inline, then BSP_NativeString_Resize(len, preserve=1), then, only if data is non-null, memcpy of len+1 bytes, which rewrites the terminator Resize already placed. An empty text leaves data null because Resize(0) from length 0 is a no-op. 1230 callers. The name is kept for continuity with docs/APP_INITIALIZE_MAP.md; BSP_NativeString_ConstructFromCString would describe it better. Evidence: docs/APP_INIT_ALLOC_STRINGS.md. | Full83-byte C-string construction. Clear header before nonnull scan; resize preserve=true; copy current length+1 without releasing abandoned pre-constructor buffer. Primary verified28 worker pins and16 literal current source/header/doc files,29 fresh guarded original spans3104 bytes and8 seeds. Strict main Win32/two existing CTests passed. Unchanged actual main-library fixture passes18 original comparisons over8 bodies667 bytes (7 owned nonallocating helpers plus shared443D00), full18432 same-address arena bytes and returns, including returning CRT continuation. Thirteen additional actual owning-pool/Win32/index checks pass;8 allocating/physical owned bodies are not original differential-tested. Exact main library7 archive objects and225 complete linked COFF sections18170 bytes797 relocations verified, including all f/i map flags. Thirteen owned separate entries retained; CString adapters are inlined into retained sections and their full object is frozen. Original external CRT entries use current host CRT; no original locale/nativeSEH, forced time-conversion failure, runtime code postimages, index population, arbitrary provider profile or gameplay claim. reports/native_physical_file_date_audit.json | AY dependency correction: actual-header source in native_physical_file_date.cpp now uses memmove at the BF7680 copy corresponding to41E8B4. Native BF769A branches to backward-overlap code atBF7844. Existing symbol and constructor contract retained; no additional reconstructed body counted. | Descriptive hypothesis, not a recovered symbol. Complete native 0041e870..0041e8c2 reviewed against current assembly, original register/stack ABI, live/PE bytes and actual producer/provider contracts. Preserve current raw reads, ordered stores and bit/copy/cleanup behavior. Added C++ interfaces remain distinct from original binary ABI, unrestricted FH3/SEH, concurrency and gameplay. Existing function record extended to the current raw-storage implementation; prior reconstruction retained, no new body count. Evidence: docs/NATIVE_STRING_CSTRING_RAW_BC.md; reports/native_string_cstring_raw_bc.json."
+      }
+    },
+    {
+      "address": "00b0a000",
+      "function_existed": false,
+      "prior_live_query": "No function at address; get_plate_comment unavailable",
+      "role": "sprite_preparation"
+    },
+    {
+      "address": "00b07660",
+      "function_existed": false,
+      "prior_live_query": "No function at address; get_plate_comment unavailable",
+      "role": "axial_preparation"
+    },
+    {
+      "address": "00b087b0",
+      "function_existed": false,
+      "prior_live_query": "No function at address; get_plate_comment unavailable",
+      "role": "floating_preparation"
+    },
+    {
+      "address": "00af8a30",
+      "function_existed": false,
+      "prior_live_query": "No function at address; get_plate_comment unavailable",
+      "role": "object_preparation"
+    },
+    {
+      "address": "00b0a0f0",
+      "function_existed": false,
+      "prior_live_query": "No function at address; get_plate_comment unavailable",
+      "role": "tracer_preparation"
+    },
+    {
+      "address": "00b0a100",
+      "function_existed": false,
+      "prior_live_query": "No function at address; get_plate_comment unavailable",
+      "role": "tracer_clamp"
+    }
+  ],
+  "call_rows": [
+    {
+      "function": "00b075d0",
+      "address": "00b07608",
+      "native": "0041dd40",
+      "purpose": "resize current destination from captured length"
+    },
+    {
+      "function": "00b075d0",
+      "address": "00b07619",
+      "native": "00bf7680",
+      "purpose": "copy captured source/current destination length"
+    },
+    {
+      "function": "00b075d0",
+      "address": "00b07634",
+      "native": "00419cc0",
+      "purpose": "resolve raw pool after disarming state"
+    },
+    {
+      "function": "00b075d0",
+      "address": "00b0763b",
+      "native": "00bd1510",
+      "purpose": "release initially captured argument"
+    },
+    {
+      "function": "00b0a000",
+      "address": "00b0a01a",
+      "native": "0041e870",
+      "purpose": "construct sprite by-value name"
+    },
+    {
+      "function": "00b0a000",
+      "address": "00b0a021",
+      "native": "00b075d0",
+      "purpose": "consume name into captured Layer"
+    },
+    {
+      "function": "00b07660",
+      "address": "00b0767a",
+      "native": "0041e870",
+      "purpose": "construct axial by-value name"
+    },
+    {
+      "function": "00b07660",
+      "address": "00b07681",
+      "native": "00b075d0",
+      "purpose": "consume name into captured Layer"
+    },
+    {
+      "function": "00b087b0",
+      "address": "00b087ca",
+      "native": "0041e870",
+      "purpose": "construct floating by-value name"
+    },
+    {
+      "function": "00b087b0",
+      "address": "00b087d1",
+      "native": "00b075d0",
+      "purpose": "consume name into captured Layer"
+    },
+    {
+      "function": "0041e870",
+      "address": "0041e8a0",
+      "native": "0041dd40",
+      "purpose": "resize after callee-owned header zeroing"
+    },
+    {
+      "function": "0041e870",
+      "address": "0041e8b4",
+      "native": "00bf7680",
+      "purpose": "copy current length+1 when data nonnull"
+    }
+  ],
+  "unwind": {
+    "handler": "00cbb898",
+    "info": "00df3a18",
+    "map": "00df3a10",
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "action": "00cbb890",
+        "target": "0041dd20",
+        "argument": "CURRENT incoming by-value header at EBP+4"
+      }
+    ],
+    "normal": "Captured EBX data and EDI length; disarm state before pool getter."
+  },
+  "limitations": [
+    "Source owning interfaces add raw pool context and consumed header address; original FH3/SEH and binary replacement unproved.",
+    "Raw string constructor abandons prior header buffer as native; caller supplies valid owned consumed argument and lifetime domain.",
+    "Normal original-byte comparison does not establish original CRT/OOM/fault or exceptional execution.",
+    "No gameplay claim."
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "result": "PASS",
+      "configuration": "Release Win32",
+      "compiler": "/W4 /WX /fp:strict",
+      "ctest": "2/2 PASS: reconstructed_math, tool_tests",
+      "log": "local/particle_preparation_build_final.log"
+    },
+    "call_verification": {
+      "command": "python tools/verify_report_calls.py reports/native_particle_type_preparation_orch4.json",
+      "checked": 12,
+      "failed": 0
+    },
+    "focused_probe": {
+      "command": "./local/particle_preparation_probe_build.ps1",
+      "result": "PASS",
+      "source": "local/particle_preparation_probe.cpp",
+      "native_bytes": 341,
+      "manifest": "/link /MANIFEST:EMBED",
+      "rebinding": "12 CALL operands to same concrete raw pool/resize/memory-copy bodies; three material constant pointers; original branches and field operations unchanged.",
+      "checks": [
+        "Callee-owned constructor header zeroing; nonempty/empty text and aliased text/header.",
+        "B075D0 normal consumed string cleanup and actual destination/incoming-stack-header alias branch.",
+        "Three actual material names and complete normalized40h Layer images.",
+        "Borrowed type,parent,untargeted Layer bytes unchanged.",
+        "All three RET-only bodies tolerate unreadable receiver without access.",
+        "NativeString raw-pool overload calls genuine actual-header provider."
+      ],
+      "unproved": [
+        "Original FH3/SEH exceptional execution, getter allocation failure, current-vs-captured header mutation during allocation, and secondary unwind exception are source-inspected only.",
+        "Original CRT/OOM/memory-fault, binary-drop-in ABI and gameplay."
+      ]
+    }
+  },
+  "definitions": "Parent independently defined and saved six missing preparation target functions; reports/native_particle_preparation_definitions_orch4_i9.json. Worker performed no live writes.",
+  "raw_string_interfaces": [
+    "construct_native_string_header_0041e870(void*, NativeStringRawPoolContext&, const char*)",
+    "NativeString::assign_0041e870(NativeStringRawPoolContext&, const char*) delegates to the actual-header provider; old NativeStringStorage overload unchanged."
+  ],
+  "artifact_sha256": {
+    "src/native_particle_type_preparation.cpp": "6a931ae45d59a8944b06ac0e76f63832591e988add2534921bcf509fad900078",
+    "include/bsp/native_particle_type_preparation.hpp": "ad552a7b658381ba2ac95a459b13c243f017f7d90bd5227f1f76f4aca1cc3857",
+    "src/native_string.cpp": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+    "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+    "local/particle_preparation_probe.cpp": "36f90ba1a10880754dcdd24e38051cc277d30481a099e0ecac89d8e0ca6739d9",
+    "local/particle_preparation_probe.exe": "e2def7b2bd2c20dc342b49063c3f8263440ed73202cc1e091f6ad7974bb964f5",
+    "local/particle_preparation_build_final.log": "06413c4473a1426fedd424d62e4d2dfcb70977e24c1a17886f88baeba65261e7",
+    "local/particle_preparation_probe_build.log": "602b1f265ebc5825ea2f4af5b4b8f0f0a96248d1d56f0f2839fa62df2cb864c1"
+  }
+}
