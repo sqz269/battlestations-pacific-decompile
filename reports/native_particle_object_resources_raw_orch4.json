@@ -1,0 +1,1082 @@
+{
+  "packet": "orch4-object-resource-raw-r18",
+  "status": "reconstructed_build_tested_bounded_native_and_source_fixture",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_particle_object_resources_raw.cpp",
+  "documentation": "docs/NATIVE_PARTICLE_OBJECT_RESOURCES_RAW_ORCH4.md",
+  "routines": [
+    {
+      "address": "00af8940",
+      "end_inclusive": "00af89b0",
+      "bytes": 113,
+      "instructions": 39,
+      "name": "clear_native_object_particle_models_00af8940",
+      "abi": "ECX actual98h Object; RET",
+      "sha256": "05a2c2f21809c4e1b7324d99252951c856b5681ed340ffc34d0457c5b2288e39",
+      "live_pe_match": true,
+      "coverage": "complete source composition"
+    },
+    {
+      "address": "00af9660",
+      "end_inclusive": "00af9bad",
+      "bytes": 1358,
+      "instructions": 420,
+      "name": "load_native_object_particle_models_00af9660",
+      "abi": "ECX actual98h Object; stacked filename; RET4",
+      "sha256": "b2716be3d783b677d856652ba7194bb1eb956fa9a3ee8d3af567c7ab1f6c8b7a",
+      "live_pe_match": true,
+      "coverage": "complete source composition"
+    },
+    {
+      "address": "00b80d70",
+      "end_inclusive": "00b80d80",
+      "bytes": 17,
+      "instructions": 6,
+      "name": "load_native_resource_with_default_factory_00b80d70",
+      "abi": "ECX actual28h manager; stacked actual8h name; RET4/EAXresource",
+      "sha256": "37cf3052fd108fd8ea272087fb222f00ae492d4add6839ce152167041efce64c",
+      "live_pe_match": true,
+      "coverage": "complete source composition"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00af9660",
+      "address": "00af9688",
+      "native": "00af8940",
+      "contract": "ECX actual definition; RET. Actual interlocked decrement then concrete resource-container terminal."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9695",
+      "native": "0041e870",
+      "contract": "ECX actual8h output; stacked nonnull C string; RET4/EAXoutput."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af96ae",
+      "native": "00bdf4c0",
+      "contract": "ECX captured current VFS; stacked actual mutable8h name; RET4/AL. Retain child invocation on failure."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af96c3",
+      "native": "0041dd40",
+      "contract": "ECX actual8h header; stack(length,preserve=1); RET8."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af96de",
+      "native": "00bf7680",
+      "contract": "cdecl(destination,source,bytes); caller removes12; overlap-capable byte copy."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af96f4",
+      "native": "00467cf0",
+      "contract": "ECX source; stack(needle,limit); RET8/EAXsigned position."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9706",
+      "native": "00419cc0",
+      "contract": "Actual current string pool getter; RET. Leaves pending pointer,size,unused=1 arguments for BD1510."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af970d",
+      "native": "00bd1510",
+      "contract": "ECX current pool; stack(captured pointer,captured length+1,unused=1); RET0Ch. Preserve stale header."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af973c",
+      "native": "00469840",
+      "contract": "ECX source; stack(output,start,count); RET0Ch/EAXoutput."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af975a",
+      "native": "0041dd40",
+      "contract": "ECX actual8h header; stack(length,preserve=1); RET8."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9772",
+      "native": "00bf7680",
+      "contract": "cdecl(destination,source,bytes); caller removes12; overlap-capable byte copy."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9795",
+      "native": "00419cc0",
+      "contract": "Actual current string pool getter; RET. Leaves pending pointer,size,unused=1 arguments for BD1510."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af979c",
+      "native": "00bd1510",
+      "contract": "ECX current pool; stack(captured pointer,captured length+1,unused=1); RET0Ch. Preserve stale header."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af97ad",
+      "native": "00469840",
+      "contract": "ECX source; stack(output,start,count); RET0Ch/EAXoutput."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af97c9",
+      "native": "0041dd40",
+      "contract": "ECX actual8h header; stack(length,preserve=1); RET8."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af97e1",
+      "native": "00bf7680",
+      "contract": "cdecl(destination,source,bytes); caller removes12; overlap-capable byte copy."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9804",
+      "native": "00419cc0",
+      "contract": "Actual current string pool getter; RET. Leaves pending pointer,size,unused=1 arguments for BD1510."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af980b",
+      "native": "00bd1510",
+      "contract": "ECX current pool; stack(captured pointer,captured length+1,unused=1); RET0Ch. Preserve stale header."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9853",
+      "native": "00bf8417",
+      "contract": "cdecl C string; caller cleanup shared with following sprintf; EAXsigned32 result."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af986a",
+      "native": "00bf7a6a",
+      "contract": "cdecl variadic sprintf; native1024byte output/format buffers; no extra bounds policy."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af987f",
+      "native": "00469840",
+      "contract": "ECX source; stack(output,start,count); RET0Ch/EAXoutput."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af98a7",
+      "native": "00bf7a6a",
+      "contract": "cdecl variadic sprintf; native1024byte output/format buffers; no extra bounds policy."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af98d7",
+      "native": "0041dd40",
+      "contract": "ECX actual8h header; stack(length,preserve=1); RET8."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af98f2",
+      "native": "00bf7680",
+      "contract": "cdecl(destination,source,bytes); caller removes12; overlap-capable byte copy."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9910",
+      "native": "004261a0",
+      "contract": "ECX left; stack(output,right); RET8/EAXoutput."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9929",
+      "native": "004261a0",
+      "contract": "ECX left; stack(output,right); RET8/EAXoutput."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9949",
+      "native": "00419cc0",
+      "contract": "Actual current string pool getter; RET. Leaves pending pointer,size,unused=1 arguments for BD1510."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9950",
+      "native": "00bd1510",
+      "contract": "ECX current pool; stack(captured pointer,captured length+1,unused=1); RET0Ch. Preserve stale header."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9968",
+      "native": "00419cc0",
+      "contract": "Actual current string pool getter; RET. Leaves pending pointer,size,unused=1 arguments for BD1510."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af996f",
+      "native": "00bd1510",
+      "contract": "ECX current pool; stack(captured pointer,captured length+1,unused=1); RET0Ch. Preserve stale header."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af997f",
+      "native": "00bdf4c0",
+      "contract": "ECX captured current VFS; stacked actual mutable8h name; RET4/AL. Retain child invocation on failure."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9994",
+      "native": "004c1400",
+      "contract": "Actual manager getter; no explicit native inputs; RET/EAXmanager. Factory alias test precedes this call."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af99a7",
+      "native": "00b80720",
+      "contract": "ECX manager; stack(actual name,current factory); RET8/EAXresource. Existing actual cache and caller-retained child."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af99ae",
+      "native": "004c1400",
+      "contract": "Actual manager getter; no explicit native inputs; RET/EAXmanager. Factory alias test precedes this call."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af99ba",
+      "native": "00b80d70",
+      "contract": "ECX manager; stack(actual name); RET4/EAXresource; capture manager+4."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af99e2",
+      "native": "00af8350",
+      "contract": "ECX actual descriptor; stacked signed capacity; RET4. Shared current CRT allocation/free."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9a18",
+      "native": "00419cc0",
+      "contract": "Actual current string pool getter; RET. Leaves pending pointer,size,unused=1 arguments for BD1510."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9a1f",
+      "native": "00bd1510",
+      "contract": "ECX current pool; stack(captured pointer,captured length+1,unused=1); RET0Ch. Preserve stale header."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9a44",
+      "native": "00419cc0",
+      "contract": "Actual current string pool getter; RET. Leaves pending pointer,size,unused=1 arguments for BD1510."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9a4b",
+      "native": "00bd1510",
+      "contract": "ECX current pool; stack(captured pointer,captured length+1,unused=1); RET0Ch. Preserve stale header."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9a6f",
+      "native": "00419cc0",
+      "contract": "Actual current string pool getter; RET. Leaves pending pointer,size,unused=1 arguments for BD1510."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9a76",
+      "native": "00bd1510",
+      "contract": "ECX current pool; stack(captured pointer,captured length+1,unused=1); RET0Ch. Preserve stale header."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9a8e",
+      "native": "004261a0",
+      "contract": "ECX left; stack(output,right); RET8/EAXoutput."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9aa6",
+      "native": "00bdf4c0",
+      "contract": "ECX captured current VFS; stacked actual mutable8h name; RET4/AL. Retain child invocation on failure."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9ab8",
+      "native": "004c1400",
+      "contract": "Actual manager getter; no explicit native inputs; RET/EAXmanager. Factory alias test precedes this call."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9acb",
+      "native": "00b80720",
+      "contract": "ECX manager; stack(actual name,current factory); RET8/EAXresource. Existing actual cache and caller-retained child."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9ad2",
+      "native": "004c1400",
+      "contract": "Actual manager getter; no explicit native inputs; RET/EAXmanager. Factory alias test precedes this call."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9ade",
+      "native": "00b80d70",
+      "contract": "ECX manager; stack(actual name); RET4/EAXresource; capture manager+4."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9b06",
+      "native": "00af8350",
+      "contract": "ECX actual descriptor; stacked signed capacity; RET4. Shared current CRT allocation/free."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9b38",
+      "native": "00419cc0",
+      "contract": "Actual current string pool getter; RET. Leaves pending pointer,size,unused=1 arguments for BD1510."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9b3f",
+      "native": "00bd1510",
+      "contract": "ECX current pool; stack(captured pointer,captured length+1,unused=1); RET0Ch. Preserve stale header."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9b61",
+      "native": "00419cc0",
+      "contract": "Actual current string pool getter; RET. Leaves pending pointer,size,unused=1 arguments for BD1510."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9b68",
+      "native": "00bd1510",
+      "contract": "ECX current pool; stack(captured pointer,captured length+1,unused=1); RET0Ch. Preserve stale header."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9b8b",
+      "native": "00419cc0",
+      "contract": "Actual current string pool getter; RET. Leaves pending pointer,size,unused=1 arguments for BD1510."
+    },
+    {
+      "function": "00af9660",
+      "address": "00af9b92",
+      "native": "00bd1510",
+      "contract": "ECX current pool; stack(captured pointer,captured length+1,unused=1); RET0Ch. Preserve stale header."
+    },
+    {
+      "function": "00b80d70",
+      "address": "00b80d79",
+      "native": "00b80720",
+      "contract": "ECX manager; stack(actual name,current factory); RET8/EAXresource. Existing actual cache and caller-retained child."
+    },
+    {
+      "function": "00af8940",
+      "address": "00af897c",
+      "native": "IAT00ce2220",
+      "contract": "Captured InterlockedDecrement import; one actual resource+4 pointer; RET4/EAXsigned count; manually checked indirect"
+    },
+    {
+      "function": "00af8940",
+      "address": "00af8988",
+      "native": "resource.current_profile+0",
+      "contract": "Captured current zero terminal only after decrement resultzero; no retry; manually checked indirect"
+    },
+    {
+      "function": "00cbaf40",
+      "address": "00cbaf46",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "contract": "ECX current8h native local header; tail destructor; header unchanged."
+    },
+    {
+      "function": "00cbaf4b",
+      "address": "00cbaf51",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "contract": "ECX current8h native local header; tail destructor; header unchanged."
+    },
+    {
+      "function": "00cbaf56",
+      "address": "00cbaf5c",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "contract": "ECX current8h native local header; tail destructor; header unchanged."
+    },
+    {
+      "function": "00cbaf61",
+      "address": "00cbaf67",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "contract": "ECX current8h native local header; tail destructor; header unchanged."
+    },
+    {
+      "function": "00cbaf6c",
+      "address": "00cbaf72",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "contract": "ECX current8h native local header; tail destructor; header unchanged."
+    },
+    {
+      "function": "00cbaf77",
+      "address": "00cbaf7d",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "contract": "ECX current8h native local header; tail destructor; header unchanged."
+    },
+    {
+      "function": "00cbaf82",
+      "address": "00cbaf88",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "contract": "ECX current8h native local header; tail destructor; header unchanged."
+    },
+    {
+      "function": "00cbaf8d",
+      "address": "00cbaf93",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "contract": "ECX current8h native local header; tail destructor; header unchanged."
+    },
+    {
+      "function": "00cbaf98",
+      "address": "00cbaf9e",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "contract": "ECX current8h native local header; tail destructor; header unchanged."
+    }
+  ],
+  "byte_preflight": [
+    {
+      "address": "00af8940",
+      "end_exclusive": "00af89b1",
+      "bytes": 113,
+      "sha256": "05a2c2f21809c4e1b7324d99252951c856b5681ed340ffc34d0457c5b2288e39",
+      "live_disk_match": true
+    },
+    {
+      "address": "00af9660",
+      "end_exclusive": "00af9bae",
+      "bytes": 1358,
+      "sha256": "b2716be3d783b677d856652ba7194bb1eb956fa9a3ee8d3af567c7ab1f6c8b7a",
+      "live_disk_match": true
+    },
+    {
+      "address": "00b80d70",
+      "end_exclusive": "00b80d81",
+      "bytes": 17,
+      "sha256": "37cf3052fd108fd8ea272087fb222f00ae492d4add6839ce152167041efce64c",
+      "live_disk_match": true
+    },
+    {
+      "address": "00cbaf40",
+      "end_exclusive": "00cbafad",
+      "bytes": 109,
+      "sha256": "1307beb2ba09f186b7ceccb48661f8e899f88c11c107b4138bafb37fd9fbf0be",
+      "live_disk_match": true
+    },
+    {
+      "address": "00df2df0",
+      "end_exclusive": "00df2e6c",
+      "bytes": 124,
+      "sha256": "2703dee17758fa001c823f703414af0273e8722faaeacdbc47c2703cd46f4bdc",
+      "live_disk_match": true
+    }
+  ],
+  "exception_map": {
+    "handler": "00cbafa3",
+    "function_info": "00df2df0",
+    "map": "00df2e14",
+    "states": [
+      {
+        "state": 0,
+        "previous": -1,
+        "action": "00cbaf40",
+        "native_local_offset": "0x10",
+        "entered": true
+      },
+      {
+        "state": 1,
+        "previous": 0,
+        "action": "00cbaf4b",
+        "native_local_offset": "0x30",
+        "entered": true
+      },
+      {
+        "state": 2,
+        "previous": 1,
+        "action": "00cbaf56",
+        "native_local_offset": "0x28",
+        "entered": true
+      },
+      {
+        "state": 3,
+        "previous": 1,
+        "action": "00cbaf61",
+        "native_local_offset": "0x28",
+        "entered": true
+      },
+      {
+        "state": 4,
+        "previous": 1,
+        "action": "00cbaf6c",
+        "native_local_offset": "0x28",
+        "entered": true
+      },
+      {
+        "state": 5,
+        "previous": 4,
+        "action": "00cbaf77",
+        "native_local_offset": "0x20",
+        "entered": true
+      },
+      {
+        "state": 6,
+        "previous": 5,
+        "action": "00cbaf82",
+        "native_local_offset": "0x40",
+        "entered": true
+      },
+      {
+        "state": 7,
+        "previous": 6,
+        "action": "00cbaf8d",
+        "native_local_offset": "0x18",
+        "entered": false
+      },
+      {
+        "state": 8,
+        "previous": 5,
+        "action": "00cbaf8d",
+        "native_local_offset": "0x18",
+        "entered": true
+      },
+      {
+        "state": 9,
+        "previous": 4,
+        "action": "00cbaf8d",
+        "native_local_offset": "0x18",
+        "entered": true
+      },
+      {
+        "state": 10,
+        "previous": 1,
+        "action": "00cbaf98",
+        "native_local_offset": "0x20",
+        "entered": true
+      }
+    ]
+  },
+  "prior_documentation": [
+    {
+      "address": "00af8940",
+      "documentation": {
+        "hash": "6243ec2715f1b619bc83e47263156933ac5c0652790ad4521a14b24d3520d2bc",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af8940",
+        "function_name": "BSP_NativeParticleObject_ClearModels",
+        "return_type": "void",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00af8940]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00af8940..00af89b0; ECX actual definition; RET; reverse current-count loop, actual InterlockedDecrement and current virtual00. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.\n\n[BSP reconstruction 00af8940] update\nDescriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00af8940..00af89b0; ECX actual definition; RET; reverse current-count loop, actual InterlockedDecrement and current virtual00. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md. | Descriptive hypothesis, not a recovered symbol. Complete 113B live/PE-equal body; ECX actual Object definition; RET. Genuine raw pool/base providers; fixed CRT allocation/free; Object model terminals require callable native vtables. FH3 true-unwind member/base states preserved. See docs/NATIVE_PARTICLE_OBJECT_TRACER_LIFETIME_ORCH4.md and reports/native_particle_object_tracer_lifetime_orch4.json.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "LVar4",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar3",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 32,
+            "name": "LAB_00af8960"
+          },
+          {
+            "relative_offset": 74,
+            "name": "LAB_00af898a"
+          },
+          {
+            "relative_offset": 80,
+            "name": "LAB_00af8990"
+          },
+          {
+            "relative_offset": 99,
+            "name": "LAB_00af89a3"
+          },
+          {
+            "relative_offset": 111,
+            "name": "LAB_00af89af"
+          }
+        ],
+        "completeness_score": 100.0
+      }
+    },
+    {
+      "address": "00af9660",
+      "documentation": {
+        "hash": "08741292566046150d1e4af576cd5d97c1e2d84f715203afc22b1ebd917f179a",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af9660",
+        "function_name": "BSP_NativeParticleObject_LoadModels",
+        "return_type": "void",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00af9660]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00af9660..00af9bad; ECX actual definition; stack C string; RET4; complete normal path over required real VFS/manager services. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "filename",
+            "type": "char *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "local_850",
+            "type": "size_t",
+            "storage": "(stack, 0xfffffffffffff7b0, 4)"
+          },
+          {
+            "name": "local_848",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffff7b8, 4)"
+          },
+          {
+            "name": "local_84c",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffff7b4, 4)"
+          },
+          {
+            "name": "local_840",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffff7c0, 4)"
+          },
+          {
+            "name": "local_844",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffff7bc, 4)"
+          },
+          {
+            "name": "local_838",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffff7c8, 4)"
+          },
+          {
+            "name": "local_83c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffff7c4, 4)"
+          },
+          {
+            "name": "local_830",
+            "type": "uint",
+            "storage": "(stack, 0xfffffffffffff7d0, 4)"
+          },
+          {
+            "name": "local_834",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffff7cc, 4)"
+          },
+          {
+            "name": "local_828",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffff7d8, 4)"
+          },
+          {
+            "name": "local_82c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffff7d4, 4)"
+          },
+          {
+            "name": "local_820",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffff7e0, 4)"
+          },
+          {
+            "name": "local_824",
+            "type": "long",
+            "storage": "(stack, 0xfffffffffffff7dc, 4)"
+          },
+          {
+            "name": "local_818",
+            "type": "char[1024]",
+            "storage": "(stack, 0xfffffffffffff7e8, 1)"
+          },
+          {
+            "name": "local_81c",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffff7e4, 4)"
+          },
+          {
+            "name": "local_418",
+            "type": "char[1028]"
+          },
+          {
+            "name": "pcVar8",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pvVar9",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "pvVar10",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar11",
+            "type": "int",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar5",
+            "type": "uint *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar7",
+            "type": "undefined *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x6c00, 4)"
+          },
+          {
+            "name": "lVar2",
+            "type": "long",
+            "storage": "(unique, 0x10000582, 4)"
+          },
+          {
+            "name": "cVar3",
+            "type": "char",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "puStack_10",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "piVar12",
+            "type": "int *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "uVar13",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffff79c, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 134,
+            "name": "LAB_00af96e6"
+          },
+          {
+            "relative_offset": 178,
+            "name": "LAB_00af9712"
+          },
+          {
+            "relative_offset": 282,
+            "name": "LAB_00af977a"
+          },
+          {
+            "relative_offset": 321,
+            "name": "LAB_00af97a1"
+          },
+          {
+            "relative_offset": 393,
+            "name": "LAB_00af97e9"
+          },
+          {
+            "relative_offset": 432,
+            "name": "LAB_00af9810"
+          },
+          {
+            "relative_offset": 453,
+            "name": "LAB_00af9825"
+          },
+          {
+            "relative_offset": 474,
+            "name": "LAB_00af983a"
+          },
+          {
+            "relative_offset": 496,
+            "name": "LAB_00af9850"
+          },
+          {
+            "relative_offset": 560,
+            "name": "LAB_00af9890"
+          },
+          {
+            "relative_offset": 613,
+            "name": "LAB_00af98c5"
+          },
+          {
+            "relative_offset": 666,
+            "name": "LAB_00af98fa"
+          },
+          {
+            "relative_offset": 757,
+            "name": "LAB_00af9955"
+          },
+          {
+            "relative_offset": 788,
+            "name": "LAB_00af9974"
+          },
+          {
+            "relative_offset": 846,
+            "name": "LAB_00af99ae"
+          },
+          {
+            "relative_offset": 863,
+            "name": "LAB_00af99bf"
+          },
+          {
+            "relative_offset": 895,
+            "name": "LAB_00af99df"
+          },
+          {
+            "relative_offset": 903,
+            "name": "LAB_00af99e7"
+          },
+          {
+            "relative_offset": 917,
+            "name": "LAB_00af99f5"
+          },
+          {
+            "relative_offset": 969,
+            "name": "LAB_00af9a29"
+          },
+          {
+            "relative_offset": 1008,
+            "name": "LAB_00af9a50"
+          },
+          {
+            "relative_offset": 1056,
+            "name": "LAB_00af9a80"
+          },
+          {
+            "relative_offset": 1138,
+            "name": "LAB_00af9ad2"
+          },
+          {
+            "relative_offset": 1155,
+            "name": "LAB_00af9ae3"
+          },
+          {
+            "relative_offset": 1187,
+            "name": "LAB_00af9b03"
+          },
+          {
+            "relative_offset": 1195,
+            "name": "LAB_00af9b0b"
+          },
+          {
+            "relative_offset": 1209,
+            "name": "LAB_00af9b19"
+          },
+          {
+            "relative_offset": 1213,
+            "name": "LAB_00af9b1d"
+          },
+          {
+            "relative_offset": 1252,
+            "name": "LAB_00af9b44"
+          },
+          {
+            "relative_offset": 1254,
+            "name": "LAB_00af9b46"
+          },
+          {
+            "relative_offset": 1293,
+            "name": "LAB_00af9b6d"
+          },
+          {
+            "relative_offset": 1335,
+            "name": "LAB_00af9b97"
+          }
+        ],
+        "completeness_score": 100.0
+      }
+    },
+    {
+      "address": "00b80d70",
+      "documentation": {
+        "hash": "751499e3c6a8518aea8c8f52d5154665b347be455c7cee2a329a142f352ffdc6",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b80d70",
+        "function_name": "BSP_NativeResourceManager_LoadDefaultFactory",
+        "return_type": "void *",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00b80d70]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00b80d70..00b80d80; ECX actual manager; stack actual8h name; RET4/EAX resource; captured current manager+4 to B80720 RET8. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "name",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "pvVar1",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      }
+    }
+  ],
+  "validation": {
+    "build": "PASS scripts/build.ps1 Release Win32;3CTests",
+    "native_probe": "PASS: 3 complete copied original bodies/1488 bytes; four actual empty-VFS model-name comparisons with pool accounting, reverse/null/repeated-reference clear, and actual B80720 hot-cache default-factory publication/refcount. No resource miss, original child/EH or gameplay claim.",
+    "original_bodies": 3,
+    "original_bytes": 1488,
+    "relocations": 68,
+    "scope": "AF9660 four empty-actual-VFS cases; AF8940 null/repeated/nonzero refs; B80D70 genuine B80720 hotcache",
+    "native_original_children": false,
+    "native_fh3": false,
+    "permanent_tests_added": 0,
+    "call_verification": "65 checked rows,0failed; two indirect rows separately documented",
+    "source_hashes": {
+      "src/native_particle_object_resources_raw.cpp": "6343589e3cc16665f557e495619115a0c4e2a55ed2f6ebd14fd02142b3604869",
+      "include/bsp/native_particle_object_resources_raw.hpp": "e7c8167fb18b69f7b37d353a59babc896f6a674e27c9212d2ef3b2e55add6976",
+      "local/object_resources_probe.cpp": "e9f2b91629ecf4cc81b974721db9cbac9b227d6e0ae899c7c8a0ff8fc18bf0fe",
+      "local/object_resources_bytes.inc": "57d90503b2477599cb084b8c77a21582414eb63aa776b35189a6ecde189a25ce"
+    },
+    "receipts": [
+      "local/object_resources_raw_build.log",
+      "local/object_resources_probe_build.log",
+      "local/object_resources_probe_run.log",
+      "local/object_resources_raw_calls.log"
+    ],
+    "final_library_sha256": "5a8bf2e73500fa8c702cbe2b37526abec54c5e8ec0b5b720456fb6f44644ede6",
+    "final_library_probe": "PASS: 3 complete copied original bodies/1488 bytes; four actual empty-VFS model-name comparisons with pool accounting, reverse/null/repeated-reference clear, and actual B80720 hot-cache default-factory publication/refcount. No resource miss, original child/EH or gameplay claim."
+  },
+  "limits": [
+    "Zero-reference container terminal reviewed/built, not executed by this probe",
+    "AF9660 successful candidate and resource-cache miss reviewed/built, not executed",
+    "Existing provider profiles and failed-frame retention limits remain",
+    "No native ABI/CRT/FH3/fault or gameplay equivalence"
+  ],
+  "prior_evidence": [
+    "docs/NATIVE_PARTICLE_MODEL_RAW_ORCH4.md",
+    "docs/NATIVE_PARTICLE_TYPE_RESOURCES.md",
+    "docs/NATIVE_RESOURCE_LOAD_CACHE_BY.md",
+    "docs/NATIVE_RESOURCE_CONTAINER_LIFETIME_CE.md"
+  ],
+  "previous_ledger_records": [
+    {
+      "address": "00af8940",
+      "name": "clear_native_object_particle_models_00af8940",
+      "source": "src/native_particle_type_resources.cpp",
+      "header": "include/bsp/native_particle_type_resources.hpp",
+      "status": "reconstructed_build_tested_bounded_fixture_tested",
+      "native_abi": "ECX actual Object definition; RET",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00af8940..00af89b0; ECX actual definition; RET; reverse current-count loop, actual InterlockedDecrement and current virtual00. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md. Existing host interface retained; raw fixed-provider overload shares its algorithm. Descriptive hypothesis, not a recovered symbol. Complete 113B live/PE-equal body; ECX actual Object definition; RET. Genuine raw pool/base providers; fixed CRT allocation/free; Object model terminals require callable native vtables. FH3 true-unwind member/base states preserved. See docs/NATIVE_PARTICLE_OBJECT_TRACER_LIFETIME_ORCH4.md and reports/native_particle_object_tracer_lifetime_orch4.json.",
+      "kind": "function"
+    },
+    {
+      "address": "00af9660",
+      "source": "src/native_particle_type_resources.cpp",
+      "header": "include/bsp/native_particle_type_resources.hpp",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00af9660..00af9bad; ECX actual definition; stack C string; RET4; complete normal path over required real VFS/manager services. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+      "name": "load_native_object_particle_models_00af9660",
+      "status": "reconstructed_build_tested_bounded_fixture_tested",
+      "native_abi": "ECX actual definition; stack C string; RET4; complete normal path over required real VFS/manager services.",
+      "kind": "function"
+    },
+    {
+      "address": "00b80d70",
+      "source": "src/native_particle_type_resources.cpp",
+      "header": "include/bsp/native_particle_type_resources.hpp",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00b80d70..00b80d80; ECX actual manager; stack actual8h name; RET4/EAX resource; captured current manager+4 to B80720 RET8. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+      "name": "load_native_resource_with_default_factory_00b80d70",
+      "status": "reconstructed_build_tested_bounded_fixture_tested",
+      "native_abi": "ECX actual manager; stack actual8h name; RET4/EAX resource; captured current manager+4 to B80720 RET8.",
+      "kind": "function"
+    }
+  ],
+  "previous_name_records": [
+    {
+      "address": "00af8940",
+      "name": "BSP_NativeParticleObject_ClearModels",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00af8940..00af89b0; ECX actual definition; RET; reverse current-count loop, actual InterlockedDecrement and current virtual00. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md. | Descriptive hypothesis, not a recovered symbol. Complete 113B live/PE-equal body; ECX actual Object definition; RET. Genuine raw pool/base providers; fixed CRT allocation/free; Object model terminals require callable native vtables. FH3 true-unwind member/base states preserved. See docs/NATIVE_PARTICLE_OBJECT_TRACER_LIFETIME_ORCH4.md and reports/native_particle_object_tracer_lifetime_orch4.json."
+    },
+    {
+      "address": "00af9660",
+      "name": "BSP_NativeParticleObject_LoadModels",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00af9660..00af9bad; ECX actual definition; stack C string; RET4; complete normal path over required real VFS/manager services. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md."
+    },
+    {
+      "address": "00b80d70",
+      "name": "BSP_NativeResourceManager_LoadDefaultFactory",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00b80d70..00b80d80; ECX actual manager; stack actual8h name; RET4/EAX resource; captured current manager+4 to B80720 RET8. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md."
+    }
+  ]
+}
