@@ -1,0 +1,555 @@
+{
+  "packet": "native_diagnostic_host_admission_r38",
+  "status": "source_host_binding_strict_build_and_real_shared_manager_fixture_checked",
+  "source_commit": "93b4c0c5bde6a0ed1d3ed19ef415ef4683e2ac79",
+  "scope": "One stable GameSingletonHost diagnostic publication and finite CE752C deletion admission; no new original body reconstructed.",
+  "source_files": [
+    "include/bsp/native_singleton_destruction.hpp",
+    "src/native_singleton_destruction.cpp",
+    "include/bsp/game_hosts_singletons.hpp",
+    "src/game_hosts_singletons.cpp"
+  ],
+  "native_evidence": {
+    "basis": "reports/native_diagnostic_raw_lifetime_audit_r37.json and reports/native_diagnostic_raw_access_r38.json",
+    "independently_verified_routines_profiles": [
+      {
+        "address": "004C14C0",
+        "length": 170,
+        "hex": "64a1000000006aff68684fc6005064892500000000a114cf090183ec0885c0757a56e8693ef5ff8b701085f6c7442404fc37ce0089742408740b56ff151822ce0083461801c744241400000000833d14cf09010075306a04e8fe52730083c40485c07408c7002c75ce00eb0233c0a314cf0901e8183ef5ff8b0d14cf0901518bc8e8eaf6700085f6740b834618ff56ff151022ce00a114cf09015e8b4c240864890d0000000083c414c3",
+        "sha256": "d1ed3a68f63885476351cadb135979cb5433c62f21ddc2778425c5b4a103b505"
+      },
+      {
+        "address": "004BBCA0",
+        "length": 41,
+        "hex": "f644240401568bf1c70514cf090100000000c7061838ce00740956e8eca8730083c4048bc65ec20400",
+        "sha256": "f462bb0027b9bfdceed4ade23ced0707acf58aa56d643492b1984d21f4da9c58"
+      },
+      {
+        "address": "00BD0400",
+        "length": 197,
+        "hex": "6aff685854cc0064a100000000506489250000000083ec0c53568bf18974240833db895c241ce8e5f4ffff85c07464578b7e08397e047605e8d66202008d47fc3b4608897c241477053b46047305e8c062020083c7fc3b7e087205e8b36202008b46043bc38b0f74128b56088bfa2bf8c1ff02740683c2fc8956083bcb74088b018b106a01ffd28bcee882f4ffff85c0759e5f8d4e10e8e5c784ff8b46043bc3740950e80461020083c4048b4c2414895e04895e08895e0c5e5b64890d0000000083c418c3",
+        "sha256": "6e73798d0366545ebbf2ebe6aa005e4630fd95238cdae48df6bc9f20240a3c36"
+      },
+      {
+        "address": "00CE752C",
+        "length": 4,
+        "hex": "a0bc4b00",
+        "sha256": "b3542deaae74443b0e3a4e9381c557f5a13e86c64ace23dd7546f66478aa9fa5"
+      },
+      {
+        "address": "00CE3818",
+        "length": 4,
+        "hex": "40244100",
+        "sha256": "9b438ce3feae2fd62d0e9bbaf623d6c8501a0d858c6da7d06cc04ccc29ebd57f"
+      }
+    ]
+  },
+  "binding_layout": {
+    "resource_support": 104,
+    "frame_clock": 108,
+    "actual_diagnostic_publication_0109cf14": 112,
+    "sizeof_win32": 116,
+    "all_prior_offsets_preserved": true
+  },
+  "host_lifetime": [
+    "Stable initially-null diagnostic cell shares host lifetime with raw AA0 and deletion bindings.",
+    "Constructor installs cell address; no diagnostic or manager is eagerly created.",
+    "Physical lock contexts borrow host cell and sound_lifetime access to same raw AA0.",
+    "Existing shutdown pops and deletes diagnostic via actual scalar before freeing captured manager and clearing AA0."
+  ],
+  "dispatch_schedule": [
+    "Unchanged raw manager pop precedes current-profile read and finite source dispatch.",
+    "CE752C requires same cell binding and forwards popped owner/current flags to existing004BBCA0.",
+    "Scalar clears currentcell, stamps capturedownerCE3818, frees for bit0, and does not unregister.",
+    "Missing binding follows existing unsupported-profile error; no success fallback."
+  ],
+  "validation": {
+    "strict_build": {
+      "command": "./scripts/build.ps1",
+      "target": "MSVC Win32 Release /MD /W4 /WX /fp:strict",
+      "exit": 0,
+      "ctests_passed": 3,
+      "log": "local/r38_diagnostic_host_build.log"
+    },
+    "fixture": {
+      "source": "local/diagnostic_host_r38_probe.cpp",
+      "build_log": "local/r38_diagnostic_host_probe_build.log",
+      "run_log": "local/r38_diagnostic_host_probe_run.log",
+      "build_exit": 0,
+      "run_exit": 0,
+      "manifest": "/MANIFEST:EMBED",
+      "genuine_providers": [
+        "GameSingletonHost",
+        "physical index/vertex constructors/destructors",
+        "index/vertex null-COM Lock/Unlock",
+        "raw manager registration/drain",
+        "diagnostic scalar and resource-support deletion",
+        "real Win32 critical sections and source CRT allocation/free"
+      ],
+      "assertions": [
+        "lazy null cells and binding installed before cold access",
+        "cross-adapter same rawmanager identity",
+        "cold index boundsdiagnostic creates oneCE752C owner",
+        "warm vertex and direct borrowedcell retain same owner/no duplicate registration",
+        "captured criticalsection physical recursion and tracked+18 bothzero",
+        "nullCOM Unlock preserves +20 depth1 exactly",
+        "physical destruction adds oneD62B64 registration in same manager",
+        "raw host drain consumes bothregistrations and clears diagnostic/support/manager publications"
+      ]
+    }
+  },
+  "limits": [
+    "Original007363B0 explicit Application_Shutdown step19 is not bound; final-manager drain is sourceownership closure only.",
+    "No original ABI/FH3/SEH or staticCRT identity proof.",
+    "No D3D COM Lock/device/renderer/application/gameplay execution.",
+    "The source host/deletion structure ABI changed and all current consumers were rebuilt."
+  ],
+  "source_hashes": {
+    "include/bsp/native_singleton_destruction.hpp": "489f6de28e375d0fc79d13d3a54c1d6fd4666308e99aaeae6a6a9a51f083ae45",
+    "src/native_singleton_destruction.cpp": "6f05fd40e85f3d56b75e2da19141c063c9f05ad6f0fb8ceeca039c57f9dd9e12",
+    "include/bsp/game_hosts_singletons.hpp": "cafbc94c64d7d2e42f9bba286fd9bddab836e934f6e5b37c599cd28fc6bb60b8",
+    "src/game_hosts_singletons.cpp": "cba1cd38c764abf6fac088341855122f16720f03daffa673487b12e79389c9da"
+  },
+  "artifact_archive": {
+    "path": "local/evidence-r38/diagnostic-host-admission-r38.zip",
+    "sha256": "57e173d43231ec227a771c41cd9ae8dd7438bf8ca3a1390e501b9b2bd1f16b61",
+    "artifacts": 83,
+    "manifest": [
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "bytes": 10384,
+        "sha256": "489f6de28e375d0fc79d13d3a54c1d6fd4666308e99aaeae6a6a9a51f083ae45"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "bytes": 16290,
+        "sha256": "6f05fd40e85f3d56b75e2da19141c063c9f05ad6f0fb8ceeca039c57f9dd9e12"
+      },
+      {
+        "path": "include/bsp/game_hosts_singletons.hpp",
+        "bytes": 5652,
+        "sha256": "cafbc94c64d7d2e42f9bba286fd9bddab836e934f6e5b37c599cd28fc6bb60b8"
+      },
+      {
+        "path": "src/game_hosts_singletons.cpp",
+        "bytes": 4234,
+        "sha256": "cba1cd38c764abf6fac088341855122f16720f03daffa673487b12e79389c9da"
+      },
+      {
+        "path": "docs/NATIVE_DIAGNOSTIC_HOST_ADMISSION_R38.md",
+        "bytes": 2555,
+        "sha256": "9b0b4a1273f81e1e4c27ec86b8e66d9b41627777804f64ff14b2f4a3db0d24d9"
+      },
+      {
+        "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+        "bytes": 1548,
+        "sha256": "a40b028e0ff76ba3b0c3b8e402a3872cc9833e90f276a3aa8f545cf14eb627ed"
+      },
+      {
+        "path": "src/native_diagnostic_sink_lifetime.cpp",
+        "bytes": 3372,
+        "sha256": "b4d18d22518fb033202d5aa6bc5c62ef18e06f0fc02842f3b6dff0dddbe07dd9"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_diagnostic_sink_lifetime.obj",
+        "bytes": 4631,
+        "sha256": "469f0977625aa5c65710ffcdac7660c218d310a483247b591e9d319ca23bff3c"
+      },
+      {
+        "path": "include/bsp/native_physical_buffer_access.hpp",
+        "bytes": 1430,
+        "sha256": "2b148eb3c36b24a631e316cb9f30f4e81c0d20f2819873aff98db089b15db9f5"
+      },
+      {
+        "path": "src/native_physical_buffer_access.cpp",
+        "bytes": 3020,
+        "sha256": "c3825d21870003bd4d45b006a7056600089358522bb2ca596a1e997b136cff4c"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_physical_buffer_access.obj",
+        "bytes": 1724,
+        "sha256": "a27c7aaf745c389b5e8f96e6d51019d447035a07b9f07bdc03e6a68626c74fff"
+      },
+      {
+        "path": "include/bsp/native_physical_buffer_lock.hpp",
+        "bytes": 1561,
+        "sha256": "519c67bd123883490af70464ab81cec74d5de948a39eada540cf5b8529e18340"
+      },
+      {
+        "path": "src/native_physical_buffer_lock.cpp",
+        "bytes": 3972,
+        "sha256": "453fcaf0f7d6bd1de0b2c8d398253cb381aa8cec6862c09fa527a52bb13fb309"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_physical_buffer_lock.obj",
+        "bytes": 3135,
+        "sha256": "c04c599ee29f9c0ab98bc2f1d7b6bc70c95a5c265f22c85c1e2a1ccd234f7715"
+      },
+      {
+        "path": "include/bsp/native_physical_buffer_owner.hpp",
+        "bytes": 4248,
+        "sha256": "1277b747e0963be41fdee456092ea42b3c191d7aa165eeeec772de3cad354e56"
+      },
+      {
+        "path": "src/native_physical_buffer_owner.cpp",
+        "bytes": 10263,
+        "sha256": "58990828f8fed7e38a4f58ca07ff58a844ba4e65d3d1ffe42da4edd38587f59d"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_physical_buffer_owner.obj",
+        "bytes": 13347,
+        "sha256": "8bff22a0a7179ed6579ec29c5642d4c5b1565ee1eb849496e3809a0577009dfe"
+      },
+      {
+        "path": "include/bsp/native_resource_support.hpp",
+        "bytes": 3479,
+        "sha256": "fb1506aba45e7801bcb638a6d836ce52972cf49e6d8120f7a07f8dc74d36b8f7"
+      },
+      {
+        "path": "src/native_resource_support.cpp",
+        "bytes": 6517,
+        "sha256": "be2925be3549d6906567ddb8da56f6d10deb4ea1352e2bb069d40bde8ac58d23"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_resource_support.obj",
+        "bytes": 16639,
+        "sha256": "d18ced2afd8d461004c88a8980052a8b223a2dab6f99dea71d49b23569609c53"
+      },
+      {
+        "path": "include/bsp/sound_lifetime_access.hpp",
+        "bytes": 3039,
+        "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+      },
+      {
+        "path": "src/sound_lifetime_access.cpp",
+        "bytes": 2751,
+        "sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/sound_lifetime_access.obj",
+        "bytes": 4291,
+        "sha256": "91df13c807eaf689c2bf3189bfde7c352dfb653846307b593dbc59cdd8a106a4"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+        "bytes": 17843,
+        "sha256": "08131235d46b183a12590d35cce1b7bef17a401c3f97b7ede38c5083702ad4d6"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+        "bytes": 12523,
+        "sha256": "8b0f9d0a8dabcf6d6c3366815b0be414219820aaa08d5a7b76db739e32fbf7b8"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63380754,
+        "sha256": "a4faee5fddcac726cd2f8694513deaf9bb7f8b07e0e620257290ccf7f2b974f5"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "bytes": 455244,
+        "sha256": "db83167c8c7d24461ef2bf60363b96264fd2406929d0e72a8909287d79b96a17"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "bytes": 71906,
+        "sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5"
+      },
+      {
+        "path": "local/diagnostic_host_r38_probe.cpp",
+        "bytes": 4507,
+        "sha256": "e24696947b36220e46032d77f3d30eb18fd9e62c5578ac190d1792b9ec92412e"
+      },
+      {
+        "path": "local/diagnostic_host_r38_probe.obj",
+        "bytes": 50418,
+        "sha256": "846dfdc1c30093da963b8f98934c428d85a4246259a9626e108d5044ce64f946"
+      },
+      {
+        "path": "local/diagnostic_host_r38_probe.exe",
+        "bytes": 371200,
+        "sha256": "e58fead181edb4f7357b5ed1f85bcf7488dba1d1a70af941c7f3a3748d570d03"
+      },
+      {
+        "path": "local/build_diagnostic_host_r38_probe.cmd",
+        "bytes": 608,
+        "sha256": "f9a912db4cf7a710c30620585fe2f7a89dd5a2e75e623da791431211ca3a577b"
+      },
+      {
+        "path": "local/resource_application_r24_game_objects.rsp",
+        "bytes": 5075,
+        "sha256": "d825c31c0084c9e9358470127e653a3ba3cdce05b696ef26c83f43b182286738"
+      },
+      {
+        "path": "local/r38_diagnostic_host_build.log",
+        "bytes": 2891,
+        "sha256": "b437d0143f15d9f27a8add6a2cd8968bf54a8d994f16527692e9f77552a99a81"
+      },
+      {
+        "path": "local/r38_diagnostic_host_probe_build.log",
+        "bytes": 31,
+        "sha256": "0ff786a3f8d62d337b7a314aed9b319a0d770ce47095c53896ef8c7a70722582"
+      },
+      {
+        "path": "local/r38_diagnostic_host_probe_run.log",
+        "bytes": 398,
+        "sha256": "e7d606c3a7c493a081992553049f585da7cd88ccfe166b7393b25d0f1565f11b"
+      },
+      {
+        "path": "local/diagnostic_host_r38_host.log",
+        "bytes": 269,
+        "sha256": "d0447d1af2b74c16a778aec29e54425163ef9a00a78813a56ab406866dab9ef3"
+      },
+      {
+        "path": "local/r38_diagnostic_host_annotations.log",
+        "bytes": 192,
+        "sha256": "567d84c856f4b516cd2f45af63db9e2c99cf47faa315a304ddf73cbd0f631fb7"
+      },
+      {
+        "path": "local/r38_diagnostic_host_exports.log",
+        "bytes": 104,
+        "sha256": "ec6805820fe5a21a33d75f90330bf7e199522f548b6140359f1186d715c76bd7"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T113027Z.json",
+        "bytes": 38356,
+        "sha256": "690142f1e3ab710927808e298807a1c9439b3a93e7a6637b7471215b05bf68ac"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ai_group_think.obj",
+        "bytes": 6132,
+        "sha256": "1a5a954ca13857d528fff56b252c7be08a9f4de0e0d73853671c1070ee911008"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ai_planners.obj",
+        "bytes": 12369,
+        "sha256": "d85f084da30a7494577929480a64aa46635e89f538773f6d8c0478202f713744"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/airfield_taxi.obj",
+        "bytes": 4203,
+        "sha256": "1521ca61bcfdcb643b238bdd083aebfe6e918137a84000c89a7a359846d7334f"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/command_completion.obj",
+        "bytes": 77478,
+        "sha256": "d9b010aaa9af434b45383c157da901103ee1a78226809ae35bb6b80ff061e6e0"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_avoid_zone_runtime.obj",
+        "bytes": 359966,
+        "sha256": "dbe77dc2226521907827edd632a988c267beccf0d79a7a6628622babb77d3ade"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_commands.obj",
+        "bytes": 338899,
+        "sha256": "c2362ec50e4d7ca32de591fd637d5529d4ffb7c1ce8fc741e8078f9efa10e91f"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_fixed_step.obj",
+        "bytes": 40556,
+        "sha256": "c4ff6d805e6f5f3818adf3cda975537539a9bfaf937c604df7da0f08c87969b3"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_fonts.obj",
+        "bytes": 147018,
+        "sha256": "55bd21afb1868c4e8b62ed94e86b384f7b5d9dbb8d2c5e6c3924461d2e3d3739"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_frontend.obj",
+        "bytes": 705690,
+        "sha256": "155483137424d821558c1b988bacad1e947e805233cee0c3135503d12ce66420"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_gunnery.obj",
+        "bytes": 671170,
+        "sha256": "5c056661496bafdf6b00c6cbd2a1d6e1b13b23f5c2c9bbf994397c77b9e42b84"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_hud_world.obj",
+        "bytes": 222447,
+        "sha256": "7e356f5606cdbab36d2f51ec1881dc8d2d28975adc10b0439d87b232fbea5585"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_hud.obj",
+        "bytes": 210381,
+        "sha256": "d6423f711e2bb0a066559a63fc859c6a9fd6a88f8386797d50569af7cc990ade"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_init_tail.obj",
+        "bytes": 123530,
+        "sha256": "3a841d1f9c880404fcd75f7f63fc7ede4472909c3cae40ac2e714d8c7cfab168"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_lua.obj",
+        "bytes": 579966,
+        "sha256": "937da29113a010442fb58017efc71eb7dff826eddc668458ee723824b8274a1d"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_menu.obj",
+        "bytes": 518796,
+        "sha256": "4e013202be3a3351c745e52ae9b5a7e481e9ceee9c7de236efeb17930cec4c90"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_mission_frame.obj",
+        "bytes": 572403,
+        "sha256": "5c95452a9cd1e159ed870e21a474bc26b4c25e2fbff938e07f2c4a09411da449"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_mission_result.obj",
+        "bytes": 241504,
+        "sha256": "d36fe134212736a12d1c885b55e9634b455961845dabf04bf468f48b9ca7ef24"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_mission.obj",
+        "bytes": 763775,
+        "sha256": "3c1d6d52be51c8128745757e20519786eeb499482704d65039a3fefa35da4646"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_ready.obj",
+        "bytes": 215770,
+        "sha256": "7f7530ea79d7ac9c2aab1ae212260975949833f071b87911b331827cdc958f02"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_scene_contents.obj",
+        "bytes": 930357,
+        "sha256": "e39e13f6d8479b6e8cc8e1320ee1c619a7b188ff0b29706b18acb5fd50c263fe"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_script_orders.obj",
+        "bytes": 305820,
+        "sha256": "aacff08b17256352f221235819e4438e98ccf15d3d2f8821be3ba842f42b92eb"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_ship_ai.obj",
+        "bytes": 707939,
+        "sha256": "f8a908062990067786bf3c23e1e4fe4342f4e9648be413360f2359871cdcde38"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_text.obj",
+        "bytes": 148586,
+        "sha256": "67e388e3a57f124cea71f83456188da117c66747da5dbd4d22a909feee84292f"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_trajectory.obj",
+        "bytes": 122707,
+        "sha256": "49f7be66aee467a469940d1f83e39c9fc40293337f73290be30532c77b075dae"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_units.obj",
+        "bytes": 469401,
+        "sha256": "d7f3e6c92c745c360599a88f96b33900dbd9fc8597dec01af6fa5a622861e924"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_vfs.obj",
+        "bytes": 423312,
+        "sha256": "1cd250c695bd2893ee9971f578b1d1c7b2ac46d20b7760c13a6ca33a9d1de86f"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_world.obj",
+        "bytes": 103418,
+        "sha256": "ddf34c066e97a56cdc1f6d80e92c3dd64923f94779ef6824efe20d7a8c215cc3"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+        "bytes": 692280,
+        "sha256": "f73e3b5baa4380f086797c7e181202ae9d73c8256e45fff3c14cd8ff64b069c6"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_vfs_application.obj",
+        "bytes": 51248,
+        "sha256": "a4faed54018e84183e8e8be6ee71deaa139490cb2198ddec28ca46089e222da8"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_observer_runtime.obj",
+        "bytes": 15861,
+        "sha256": "6859dd9a1ef37e211fd856f28d746855db44b2ff7c4b33c2ef93c2f87b8c5126"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/gameplay_loose_ends_2.obj",
+        "bytes": 1758,
+        "sha256": "6cef5ac34b229195f2d1d5da12829627f2b48227fd88a7d2d15cd34b261b2a42"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/geom_mesh_resource.obj",
+        "bytes": 261705,
+        "sha256": "e536b9089157b35b3c8494cfbf0d7fa85726d9ce82b2b4ab47c4e13d515c8035"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/hit_hull_segment.obj",
+        "bytes": 1836,
+        "sha256": "cd16b3a2c47c636a204fd4e622a4d0cd7f8c75d11091ca91fe67a394c3383538"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/kill_credit.obj",
+        "bytes": 33830,
+        "sha256": "2b42314fff614f7eb65ce4f58110a76ed78a679f360edefbdbb9afb3fc090351"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/narrowphase_unit_part_shape.obj",
+        "bytes": 2080,
+        "sha256": "7f5bbfc6210b33a0c452bb3601d04c9e7e5b0c1abcccf2ea6de669b291730d9a"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/part_damage_reachability.obj",
+        "bytes": 4156,
+        "sha256": "51f9c07e73db9914a4707775e8b5b76f13c8ff56bf380da1771e86fd72d65a33"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/pilot_command_path.obj",
+        "bytes": 8846,
+        "sha256": "062707a15f8ce177c4dcfb9f1c35c062c62a980d0f62100e5b541ae40d543fb2"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/plane_ground_ops.obj",
+        "bytes": 13388,
+        "sha256": "65b619e02850c012e3a0a5c6529b27f6c9447450f2f82274bc76c483d60a8a65"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ship_hit_record.obj",
+        "bytes": 7923,
+        "sha256": "6b1e0d411c1ba316a9f14fda39de96daaa30eff2c469dd20fcc54edfea4c5278"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ship_sub_entity_list.obj",
+        "bytes": 1477,
+        "sha256": "2666c7f4077143bd9dd5e8bd9c14c5cd3da243c4805cbab30a66e1a3ae9aa7aa"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/unit_gunnery_pass.obj",
+        "bytes": 11746,
+        "sha256": "f85d451504ab8259bf3e1278f96ca2ca3fde61a590064bad3867293d37d9c557"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/unit_message_arms.obj",
+        "bytes": 25782,
+        "sha256": "e1f10761f7e50ba10b3538e34ea2d7b889d97a0a7f659a5f7aae7d007ab17557"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/unit_neighbour_fields.obj",
+        "bytes": 1330,
+        "sha256": "26c8631b91ce225ffc008e150f64e0efbd711587708a3f8ed7db26d180c8665f"
+      }
+    ],
+    "all_entries_verified": true
+  },
+  "annotations": {
+    "status": "BD0400 name retained; finite diagnostic profile/source host evidence appended; project saved and export refreshed. No new original body or source ledger row.",
+    "prior_annotations": [
+      {
+        "address": "00bd0400",
+        "before": {
+          "address": "00bd0400",
+          "function_name": "BSP_SingletonLifetime_Destroy",
+          "comment": "[BSP reconstruction 00bd0400]\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463.\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation.\n\n[BSP reconstruction 00bd0400] update\nRaw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Raw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed.\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Raw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed. | docs/NATIVE_SINGLETON_INPUT_ONLINE.md. Extend finite raw deletion bindings to D24138/D2413C XLive allocation identities, D5B5F4/D5B5F8/D5B72C raw backend and D5B630 raw actions; current profile after pop. Primary archive-only nonempty/actual BD0400 fixtures passed. Required hardware/listener/application bindings remain; no original ABI claim.\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Raw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed. | docs/NATIVE_SINGLETON_INPUT_ONLINE.md. Extend finite raw deletion bindings to D24138/D2413C XLive allocation identities, D5B5F4/D5B5F8/D5B72C raw backend and D5B630 raw actions; current profile after pop. Primary archive-only nonempty/actual BD0400 fixtures passed. Required hardware/listener/application bindings remain; no original ABI claim. | AY source binding extension: canonical raw-manager deletion accepts CFEA1C MPAK factory+4 through735D30 and D6418C PAK registry+8 throughBB4FF0. Borrowed construction contexts; no private lifetime domain. New source binding struct is52bytes; this does not alter the original Win32 ABI or count another reconstructed body.\n\n[BSP reconstruction 00bd0400] update\nAQ extension: actual CF81CC slot0 was read as006AB800. Raw manager BD0485 pops then calls current profile slot0(flags1). Source NativeSingletonDeletionBindings now borrows the same NativeInputSettingsLifetimeContext through input_settings and dispatches scalar_delete_native_input_settings_006ab800 on the popped owner, without requiring publication identity. Source fixture drains populated installed-script settings, verifies pop before persistent Lua finalizer, section alive during close, differing publication cleared and all manager storage released. The settings routines have122545-word native comparison; this dispatch addition has source integration coverage, not an additional native-manager comparison. Required production container providers and application wiring remain open. Hypothesis, not recovered symbol. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json.\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Raw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed. | docs/NATIVE_SINGLETON_INPUT_ONLINE.md. Extend finite raw deletion bindings to D24138/D2413C XLive allocation identities, D5B5F4/D5B5F8/D5B72C raw backend and D5B630 raw actions; current profile after pop. Primary archive-only nonempty/actual BD0400 fixtures passed. Required hardware/listener/application bindings remain; no original ABI claim. | AY source binding extension: canonical raw-manager deletion accepts CFEA1C MPAK factory+4 through735D30 and D6418C PAK registry+8 throughBB4FF0. Borrowed construction contexts; no private lifetime domain. New source binding struct is52bytes; this does not alter the original Win32 ABI or count another reconstructed body. | AQ extension: actual CF81CC slot0 was read as006AB800. Raw manager BD0485 pops then calls current profile slot0(flags1). Source NativeSingletonDeletionBindings now borrows the same NativeInputSettingsLifetimeContext through input_settings and dispatches scalar_delete_native_input_settings_006ab800 on the popped owner, without requiring publication identity. Source fixture drains populated installed-script settings, verifies pop before persistent Lua finalizer, section alive during close, differing publication cleared and all manager storage released. The settings routines have122545-word native comparison; this dispatch addition has source integration coverage, not an additional native-manager comparison. Required production container providers and application wiring remain open. Hypothesis, not recovered symbol. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json. | Finite-map extension: D68B94 -> BE9600 exact debug owner; CFD84C -> 716520 exact factory+4, callee adjusts -4. Borrow construction contexts and same raw manager/pool. Existing pop/recount and all prior bindings preserved. Development strict Win32, two CTests and source-only actual drain passed; final exact-commit receipt separate.\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Raw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed. | docs/NATIVE_SINGLETON_INPUT_ONLINE.md. Extend finite raw deletion bindings to D24138/D2413C XLive allocation identities, D5B5F4/D5B5F8/D5B72C raw backend and D5B630 raw actions; current profile after pop. Primary archive-only nonempty/actual BD0400 fixtures passed. Required hardware/listener/application bindings remain; no original ABI claim. | AY source binding extension: canonical raw-manager deletion accepts CFEA1C MPAK factory+4 through735D30 and D6418C PAK registry+8 throughBB4FF0. Borrowed construction contexts; no private lifetime domain. New source binding struct is52bytes; this does not alter the original Win32 ABI or count another reconstructed body. | AQ extension: actual CF81CC slot0 was read as006AB800. Raw manager BD0485 pops then calls current profile slot0(flags1). Source NativeSingletonDeletionBindings now borrows the same NativeInputSettingsLifetimeContext through input_settings and dispatches scalar_delete_native_input_settings_006ab800 on the popped owner, without requiring publication identity. Source fixture drains populated installed-script settings, verifies pop before persistent Lua finalizer, section alive during close, differing publication cleared and all manager storage released. The settings routines have122545-word native comparison; this dispatch addition has source integration coverage, not an additional native-manager comparison. Required production container providers and application wiring remain open. Hypothesis, not recovered symbol. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json. | Finite-map extension: D68B94 -> BE9600 exact debug owner; CFD84C -> 716520 exact factory+4, callee adjusts -4. Borrow construction contexts and same raw manager/pool. Existing pop/recount and all prior bindings preserved. Development strict Win32, two CTests and source-only actual drain passed; final exact-commit receipt separate. | Current popped D62A3C/D626F4 profiles dispatch raw B5DF70/B5BB20 with borrowed actual0108FE94/01090AA0/01090AA8/01090AA4 context; no identity gate or retained Operation. Native manager body unchanged; dynamic pool recreation/drain checked. Source raw-terminal extension, source-only actual canonical fixture and exact native maps: docs/NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL.md. Original FH3/SEH/game execution unproved. | Hypothesis, not a recovered symbol. Two source workflows: actual registry/base canonical drain, pool recreation under live shutdown gate, and first array getter failure retaining native owner/data/section effects. Dispatch uses popped owner, no publication identity gate. Nonnegative current array count AND capacity required; unfinished legacy Operations excluded. Integrated code aa836cdd passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL.md; reports/native_system_registry_raw_terminal.json. Raw valid extents and borrowed current cells/providers are caller requirements. New source interfaces; original CRT/FH3/SEH/private-frame identity, full renderer adoption and gameplay unvalidated.\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Raw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed. | docs/NATIVE_SINGLETON_INPUT_ONLINE.md. Extend finite raw deletion bindings to D24138/D2413C XLive allocation identities, D5B5F4/D5B5F8/D5B72C raw backend and D5B630 raw actions; current profile after pop. Primary archive-only nonempty/actual BD0400 fixtures passed. Required hardware/listener/application bindings remain; no original ABI claim. | AY source binding extension: canonical raw-manager deletion accepts CFEA1C MPAK factory+4 through735D30 and D6418C PAK registry+8 throughBB4FF0. Borrowed construction contexts; no private lifetime domain. New source binding struct is52bytes; this does not alter the original Win32 ABI or count another reconstructed body. | AQ extension: actual CF81CC slot0 was read as006AB800. Raw manager BD0485 pops then calls current profile slot0(flags1). Source NativeSingletonDeletionBindings now borrows the same NativeInputSettingsLifetimeContext through input_settings and dispatches scalar_delete_native_input_settings_006ab800 on the popped owner, without requiring publication identity. Source fixture drains populated installed-script settings, verifies pop before persistent Lua finalizer, section alive during close, differing publication cleared and all manager storage released. The settings routines have122545-word native comparison; this dispatch addition has source integration coverage, not an additional native-manager comparison. Required production container providers and application wiring remain open. Hypothesis, not recovered symbol. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json. | Finite-map extension: D68B94 -> BE9600 exact debug owner; CFD84C -> 716520 exact factory+4, callee adjusts -4. Borrow construction contexts and same raw manager/pool. Existing pop/recount and all prior bindings preserved. Development strict Win32, two CTests and source-only actual drain passed; final exact-commit receipt separate. | Current popped D62A3C/D626F4 profiles dispatch raw B5DF70/B5BB20 with borrowed actual0108FE94/01090AA0/01090AA8/01090AA4 context; no identity gate or retained Operation. Native manager body unchanged; dynamic pool recreation/drain checked. Source raw-terminal extension, source-only actual canonical fixture and exact native maps: docs/NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL.md. Original FH3/SEH/game execution unproved. | Hypothesis, not a recovered symbol. Two source workflows: actual registry/base canonical drain, pool recreation under live shutdown gate, and first array getter failure retaining native owner/data/section effects. Dispatch uses popped owner, no publication identity gate. Nonnegative current array count AND capacity required; unfinished legacy Operations excluded. Integrated code aa836cdd passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL.md; reports/native_system_registry_raw_terminal.json. Raw valid extents and borrowed current cells/providers are caller requirements. New source interfaces; original CRT/FH3/SEH/private-frame identity, full renderer adoption and gameplay unvalidated. | Hypothesis, not a recovered symbol. Canonical actual-AA0 manager drain now dispatches D62B64 to substantive B61D60 without publication identity gate. Source actual getter registration and rebound-publication drain checked. Integrated code 7cbd532e passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_RESOURCE_SUPPORT_DRAIN.md; reports/native_resource_support_drain.json. Borrowed actual storage, live subobjects and scratch preimages remain caller requirements. Source interfaces; full parent execution, original CRT/FH3/SEH/register-ABI identity, application adoption and gameplay unvalidated.\n\n[BSP reconstruction 00bd0400] CB update\nCB raw resource manager lifetime:16 complete ordinary bodies2254physical bytes;785 ordinary+33 support executable instruction owners,81 direct transfers/3 indirect calls verified; three unreachable alignment spans excluded. Nine parser/cache instruction pairs and full44-byte erase EH group match. Actual28h constructor/getter, six raw parser registrations, complete map cleanup, default4h factory deletion and manager scalar/destructor are source-backed. Constructor failure cleans completed maps/base but retains default factory and published parsers; getter frees captured failed manager allocation and releases captured guard. Existing BD0400 finite source dispatcher adds managerD63128 and six parser-secondary profiles through actual borrowed publications. Strict Win32/two tests and one controlled child passed:16 original bodies/68 direct/13 absolute relocations, paired constructor/getter/partial erase/populated destruction, full canonical source drain and source name-failure cleanup. Original normal paths share canonical dependencies; fixture factory table reaches copiedB7D290; original exception paths guarded out. Native ABI/FH3/SEH/private spills/faults, lazy pool recreation, concrete parser bodies/nondefault factories, executable admission and gameplay remain open. Names hypotheses. docs/NATIVE_RESOURCE_MANAGER_LIFETIME_CB.md; reports/native_resource_manager_lifetime_cb.json. Existing BD0400 body gains seven finite source bindings; no newly reconstructed body claim.\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Raw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed. | docs/NATIVE_SINGLETON_INPUT_ONLINE.md. Extend finite raw deletion bindings to D24138/D2413C XLive allocation identities, D5B5F4/D5B5F8/D5B72C raw backend and D5B630 raw actions; current profile after pop. Primary archive-only nonempty/actual BD0400 fixtures passed. Required hardware/listener/application bindings remain; no original ABI claim. | AY source binding extension: canonical raw-manager deletion accepts CFEA1C MPAK factory+4 through735D30 and D6418C PAK registry+8 throughBB4FF0. Borrowed construction contexts; no private lifetime domain. New source binding struct is52bytes; this does not alter the original Win32 ABI or count another reconstructed body. | AQ extension: actual CF81CC slot0 was read as006AB800. Raw manager BD0485 pops then calls current profile slot0(flags1). Source NativeSingletonDeletionBindings now borrows the same NativeInputSettingsLifetimeContext through input_settings and dispatches scalar_delete_native_input_settings_006ab800 on the popped owner, without requiring publication identity. Source fixture drains populated installed-script settings, verifies pop before persistent Lua finalizer, section alive during close, differing publication cleared and all manager storage released. The settings routines have122545-word native comparison; this dispatch addition has source integration coverage, not an additional native-manager comparison. Required production container providers and application wiring remain open. Hypothesis, not recovered symbol. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json. | Finite-map extension: D68B94 -> BE9600 exact debug owner; CFD84C -> 716520 exact factory+4, callee adjusts -4. Borrow construction contexts and same raw manager/pool. Existing pop/recount and all prior bindings preserved. Development strict Win32, two CTests and source-only actual drain passed; final exact-commit receipt separate. | Current popped D62A3C/D626F4 profiles dispatch raw B5DF70/B5BB20 with borrowed actual0108FE94/01090AA0/01090AA8/01090AA4 context; no identity gate or retained Operation. Native manager body unchanged; dynamic pool recreation/drain checked. Source raw-terminal extension, source-only actual canonical fixture and exact native maps: docs/NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL.md. Original FH3/SEH/game execution unproved. | Hypothesis, not a recovered symbol. Two source workflows: actual registry/base canonical drain, pool recreation under live shutdown gate, and first array getter failure retaining native owner/data/section effects. Dispatch uses popped owner, no publication identity gate. Nonnegative current array count AND capacity required; unfinished legacy Operations excluded. Integrated code aa836cdd passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL.md; reports/native_system_registry_raw_terminal.json. Raw valid extents and borrowed current cells/providers are caller requirements. New source interfaces; original CRT/FH3/SEH/private-frame identity, full renderer adoption and gameplay unvalidated. | Hypothesis, not a recovered symbol. Canonical actual-AA0 manager drain now dispatches D62B64 to substantive B61D60 without publication identity gate. Source actual getter registration and rebound-publication drain checked. Integrated code 7cbd532e passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_RESOURCE_SUPPORT_DRAIN.md; reports/native_resource_support_drain.json. Borrowed actual storage, live subobjects and scratch preimages remain caller requirements. Source interfaces; full parent execution, original CRT/FH3/SEH/register-ABI identity, application adoption and gameplay unvalidated. | Raw diagnostic lifetime integration: docs/NATIVE_DIAGNOSTIC_RAW_LIFETIME.md; reports/native_diagnostic_raw_lifetime.json. Finite actual source deletion map now admits CE752C slot0->004BBCA0 using borrowed SAME0109CF14 publication. Existing pop-before-virtual0(1), recount, actual section release and vector cleanup remain unchanged. Real source raw manager drain clears diagnostic publication and vector in lifecycle capture. Strict Win32 rebuild,2CTests,8native seeds and one source lifecycle probe passed; complete five native bodies+profile756bytes freshly live/PE matched and16direct calls checked. No original body execution, D3D Lock/device Reset, allocation-failure/concurrency/nativeFH3/SEH/ABI or gameplay proof.\n\n[BSP reconstruction 00bd0400] update\nR24 source finite profile dispatch admits actual extra-parser secondary profiles CFEA34 and CFEA44 through reconstructed 735D90/735DC0 minus-four thunks and 737150/737190 primary deletes. Resource-manager and eight parser contexts borrow the same application string/lifetime domain and remain alive through shared drain. Production-object probes drain ten owners for phase6-before-core and fifteen after phase2, clearing all parser/manager/string publications; subsequent singleton-host-before-VFS destruction performs metadata cleanup only. Original BD0400 body unchanged. Strict Win32 build and three CTests passed; original ABI/FH3, concurrency and game validation remain open. docs/NATIVE_RESOURCE_APPLICATION_ORCH4.md; reports/native_resource_application_orch4.json. Existing function name retained."
+        },
+        "after": {
+          "address": "00bd0400",
+          "name": "BSP_SingletonLifetime_Destroy",
+          "evidence": "R24 source finite profile dispatch admits actual extra-parser secondary profiles CFEA34 and CFEA44 through reconstructed 735D90/735DC0 minus-four thunks and 737150/737190 primary deletes. Resource-manager and eight parser contexts borrow the same application string/lifetime domain and remain alive through shared drain. Production-object probes drain ten owners for phase6-before-core and fifteen after phase2, clearing all parser/manager/string publications; subsequent singleton-host-before-VFS destruction performs metadata cleanup only. Original BD0400 body unchanged. Strict Win32 build and three CTests passed; original ABI/FH3, concurrency and game validation remain open. docs/NATIVE_RESOURCE_APPLICATION_ORCH4.md; reports/native_resource_application_orch4.json. Existing function name retained. | R38 finite raw-manager deletion admission extends current source dispatch for actual4B diagnostic profileCE752C -> existing004BBCA0 flags1. GameSingletonHost owns one stable loader-zero CF14cell, exposes a borrowed reference and installs its address before diagnostic demand; no eager allocation or alternate AA0 domain. Append diagnostic publication binding112,size116 preserving all prior fields including resource_support104 and frame_clock108. RawBD0400 loop unchanged: pop before currentprofile dispatch; scalar clears same currentcell, stamps poppedownerCE3818 and frees via established sourceCRT. Strict MSVC Win32 /MD build and3CTests pass. Focused realGameSingletonHost fixture passes recovered physical constructors, coldindex/warmvertex nullCOM locks, native nullCOM Unlock retained depth, released diagnostic section, one diagnostic registration, real physicaldestructors adding support and sharedCE752C/D62B64 drain clearing allhostcells. Sourceownershipclosure only; original7363B0 Application_Shutdown step19 timing, nativeABI/FH3/SEH, D3D/device/render/gameplay remain unproved. reports/native_diagnostic_host_admission_r38.json."
+        },
+        "status": "applied"
+      }
+    ]
+  }
+}
