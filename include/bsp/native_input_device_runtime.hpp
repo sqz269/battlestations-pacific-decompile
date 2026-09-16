@@ -10,6 +10,24 @@
 #include "bsp/native_ref_counted.hpp"
 
 namespace bsp {
+struct NativeFrameClockPublicationContext;
+
+// Exactly one borrowed publication representation. Existing semantic aggregate
+// initializers convert without a dummy raw owner; raw callers need no FrameClock.
+// Source composition only: the enclosing service aggregate changes size.
+class NativeInputClockBinding final {
+public:
+    NativeInputClockBinding(FrameClock* volatile& clock) noexcept
+        : semantic_(&clock), actual_(nullptr) {}
+    NativeInputClockBinding(const NativeFrameClockPublicationContext& clock) noexcept
+        : semantic_(nullptr), actual_(&clock) {}
+    // Raw mode returns the caller's 16-byte result; semantic mode retains its
+    // current-member reference. Consume immediately on the serialized thread.
+    const ClockTimestamp& current_slot14(ClockTimestamp& result) const;
+private:
+    FrameClock* volatile* const semantic_;
+    const NativeFrameClockPublicationContext* const actual_;
+};
 
 // Stable borrowed application services. Clock/window are the existing canonical
 // source owners/publications used by the rest of the reconstruction; no native
@@ -22,7 +40,7 @@ struct NativeInputDeviceRuntimeServices {
     XInputLibrary& xinput;
     const XInputDeviceGlobals& xinput_tables;
     Win32PlatformState* volatile& platform_0109cf04;
-    FrameClock* volatile& clock_01090ab0;
+    NativeInputClockBinding clock_01090ab0;
     NativeKeyboardMouseGlobals keyboard_mouse;
     NativeJoystickConstants joystick;
     NativeInputSelectionConstants selection;
@@ -111,5 +129,6 @@ private:
     NativeKeyboardMouseContext keyboard_mouse_;
     NativeJoystickContext joystick_;
     NativeInputEnumerationContext enumeration_;
+    ClockTimestamp clock_current_result_;
 };
 } // namespace bsp

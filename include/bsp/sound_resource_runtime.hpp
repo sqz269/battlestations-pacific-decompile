@@ -9,6 +9,25 @@
 #include "bsp/vfs_lua_scripts.hpp"
 
 namespace bsp {
+struct NativeFrameClockPublicationContext;
+
+// One borrowed clock representation, selected at construction. Implicit
+// conversions preserve existing semantic service aggregate initializers.
+// This source binding is not an original object/aggregate ABI.
+class SoundClockBinding final {
+public:
+    SoundClockBinding(const FrameClock& clock) noexcept : semantic_(&clock), actual_(nullptr) {}
+    SoundClockBinding(const NativeFrameClockPublicationContext& clock) noexcept
+        : semantic_(nullptr), actual_(&clock) {}
+    std::array<std::uint32_t, 4> startup_words_slot14() const;
+    // Raw mode copies only the current 16-byte result into caller storage.
+    // Semantic mode preserves its existing borrowed current-member pointer.
+    const ClockTimestamp* current_slot14(ClockTimestamp& result) const;
+private:
+    const FrameClock* const semantic_;
+    const NativeFrameClockPublicationContext* const actual_;
+};
+
 inline SoundResourceOwner* get_sound_resource_owner_00a79910(SoundSystemOwner& owner) noexcept {
     return owner.resource_owner_54.get();
 }
@@ -51,14 +70,19 @@ private:
     SoundResourceCleanupContext cleanup_;
 };
 
-// Startup virtual +14 uses the existing concrete clock sample, preserving all
-// four words. The caller initializes and owns the canonical FrameClock.
+// Raw startup +14 reads current (A887F5), without sampling. The legacy semantic
+// path retains its earlier sampling behavior and is not native +14 proof.
+// Borrowed clock/context and result lifetime remain the caller's responsibility.
 class FrameClockSoundStartupHost final : public SoundStartupClockHost {
 public:
     explicit FrameClockSoundStartupHost(const FrameClock& clock) : clock_(clock) {}
+    explicit FrameClockSoundStartupHost(const NativeFrameClockPublicationContext& clock) : clock_(clock) {}
+    explicit FrameClockSoundStartupHost(SoundClockBinding clock) : clock_(clock) {}
     std::array<std::uint32_t, 4> sample_time_14() override;
+    const ClockTimestamp* current_timestamp_slot14();
 private:
-    const FrameClock& clock_;
+    SoundClockBinding clock_;
+    ClockTimestamp current_result_;
 };
 
 // Uses real Lua 5.1.1, cached installed fundamentals, canonical VFS and the
