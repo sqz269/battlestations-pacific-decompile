@@ -1,0 +1,40 @@
+{
+ "repairs": [
+  {
+   "function": "00bee110",
+   "owner": "agent/orch4-20260915",
+   "when": "2026-09-16T10:50:34Z",
+   "decompile_lines_before": 15,
+   "gaps": [
+    {
+     "site": "00bee126",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00bee12b",
+     "gap_end_exclusive": "00bee12e",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00bee126",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00bee12b",
+      "gap_end_exclusive": "00bee12e",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 00bee126 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 12,
+   "gaps_remaining": 0
+  }
+ ]
+}
