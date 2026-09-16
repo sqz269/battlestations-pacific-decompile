@@ -33507,5 +33507,126 @@
     "bytes": 385609810,
     "all_entries_rehashed": true,
     "scope": "Current source/build compiler input/output closure; successful native/source system/query terminal fixture and canonical derived registry drain,29 retained physical I386 modules, failed full-renderer device setup attempts. Full renderer destruction and original EH/gameplay unexecuted. Report before seal."
+  },
+  "primary_integration": {
+    "source_commit": "3f3dcc97a49373a602c4439e0ea32a127a0508d6",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "fixture_rerun_after_integration": false,
+    "archive": "local/evidence-r64/renderer-destruction-main-r64.zip",
+    "sha256": "d08312546cc61a11b6c6893637432b0b403e378937c750f871c05785d6653ce3",
+    "files": [
+      {
+        "path": "local/r64_integration.log",
+        "bytes": 2732,
+        "sha256": "ba2023a6e82ec1fa5dd8b30202bc64361342a641bd3b8317bd0058d2d9c459a6"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 153607,
+        "sha256": "51a168ac89bee707577bd313c1894a549a391f2b6a7bb7bbc83e4ef0adc6162d"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 232546,
+        "sha256": "ba95a9292fc44c96700b3f48f465e453656ff3728c7b53612c2131c6c8a39dd7"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63889624,
+        "sha256": "f1b3cc0a01a18b0e53e8aeb538cdd956c36855f4c4e455850d75c159b284aad4"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2327552,
+        "sha256": "16de46c6abee3db90891ef953051fdd17751c5a744eca50b828403d9588c392c"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2408,
+        "sha256": "410fcacb08a410bd53e53e811b8854511fe4c1c2c7cf607e9f08244c20f83394"
+      },
+      {
+        "path": "local/renderer_destruction_r64/call_gate_after_annotations.log",
+        "bytes": 78,
+        "sha256": "049b00ab5a1c2befd7bc380e0b244b1298c1c090584a96fad1f82262dcce1702"
+      },
+      {
+        "path": "local/renderer_destruction_r64/annotations.log",
+        "bytes": 786,
+        "sha256": "dc8971ae1cf5608e78682afcebfaea0083f0409557791278b15cc68db52ce02a"
+      },
+      {
+        "path": "local/renderer_destruction_r64/exports.log",
+        "bytes": 1401,
+        "sha256": "8a774285d00ebac9aff9274175fcc06ddce19b844ff5e07d0f025e1c57757b39"
+      },
+      {
+        "path": "include/bsp/native_renderer_destructor.hpp",
+        "bytes": 4426,
+        "sha256": "da3b7a5518943d69a44f7126a5088a2a1ccf203b1493422ec8f6d6bfa16cdeb2"
+      },
+      {
+        "path": "src/native_renderer_destructor.cpp",
+        "bytes": 23993,
+        "sha256": "cc1137004fe8940918c083612ee0ab7226671c6383dee33aaafc08dc7f7e8418"
+      },
+      {
+        "path": "include/bsp/native_system_registry_raw_terminal.hpp",
+        "bytes": 1633,
+        "sha256": "fc3c48aa5cf0e965494aa99c8f8214e8c76e70f03259c3937d4bb4f0187e1143"
+      },
+      {
+        "path": "src/native_system_registry_raw_terminal.cpp",
+        "bytes": 1747,
+        "sha256": "90860a4f3f03451487e574755d83f3706b6cfdc36d061e242d1752e4344532e0"
+      },
+      {
+        "path": "include/bsp/native_renderer_query_terminal.hpp",
+        "bytes": 3435,
+        "sha256": "88eb5f6da45f482d0647aeee4cae21a1afce1df02fd96a9862cf5e20940db954"
+      },
+      {
+        "path": "src/native_renderer_query_terminal.cpp",
+        "bytes": 4379,
+        "sha256": "f06ef5adaab71b5fe31cbae90431280bfa779f38d36d89617a0ff41059b0a908"
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "bytes": 12049,
+        "sha256": "14210fb49d19ecb118be17a2c36bcc4e32b72267614cb25f9543673d941d740e"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "bytes": 20197,
+        "sha256": "8f890fd6969e54e2e22c171fd8a2c5e0929378b3bd47b8fab74424f8c262aa37"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_destructor.obj",
+        "bytes": 26886,
+        "sha256": "08bd79da88cee9386ba961a677719e5a3c0564b45e5464021ee11f655c674139"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_query_terminal.obj",
+        "bytes": 7268,
+        "sha256": "f80a487c312c79c0b53977c281904805ec11f070accbec765cbd486b9b24619c"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_system_registry_raw_terminal.obj",
+        "bytes": 7124,
+        "sha256": "2c433b79fb4654d928d7c6b0b5c27c261aeb0844621fc1f5a281233a45979252"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+        "bytes": 21780,
+        "sha256": "92b7d177c1bb8b47a7e0a40d5031656b257d535dc4d631e20de15d8c04cc2fec"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T201024Z.json",
+        "bytes": 101931,
+        "sha256": "b9ec2cc1ab2a64d207c44b8f0ee2aa1ef5417a0ee2a2b6d5f5eaefc0370dc133"
+      }
+    ],
+    "scope": "Combined source integration build and existing CTests only. Exact successful native/source terminal fixture remains sealed in original archive; full renderer runtime still pending."
   }
 }
