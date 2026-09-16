@@ -901,5 +901,75 @@
         "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3"
       }
     ]
+  },
+  "primary_integration": {
+    "source_commit": "26d7d0cd3a053cebfe1f9f18eb5a83d34197590a",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "original_probe_rerun": false,
+    "archive": "local/evidence-r53/guard-main-r53.zip",
+    "sha256": "d0a77daf197fe4e6c9870eed9b53ea891d79e1846aab5000751305ee98ce433a",
+    "files": [
+      {
+        "path": "local/r53_integration.log",
+        "bytes": 1603,
+        "sha256": "cfe9d4a56bd475043ac4393d87e543ad9fc226d493742d0526e5835f80a54c21"
+      },
+      {
+        "path": "src/native_renderer_record_guard.cpp",
+        "bytes": 4716,
+        "sha256": "29a16cd00437a23d98ca5cbb97b3671465884e434ec1d6fe725c25416d0db402"
+      },
+      {
+        "path": "include/bsp/native_renderer_record_guard.hpp",
+        "bytes": 2055,
+        "sha256": "6651640a599ff398d5a9faa247830063c8460d691ed5849539c5db0efe57041f"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "bytes": 16583,
+        "sha256": "3f0335eed97a4606d998f8fcbfd59e1ee2f770c0f8e10de47f97c086223f6c86"
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "bytes": 10739,
+        "sha256": "ce78084db6d48bc93c247f7c36e301d9b42e1e3e3ccc05bcac9e3bb18ef88c6a"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 150864,
+        "sha256": "541ebcbde6678177606b81ca43b02bed790ab1d920c723516c704472c7173bd1"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 230790,
+        "sha256": "b51bd587b32443b776193e0cd8dbe67a4d34277db9253348d62feaa5299b53df"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_record_guard.obj",
+        "bytes": 7467,
+        "sha256": "92fd101f29ff691b246f459b3b99d43c2a95b94ad8103fdb29086b504532855a"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+        "bytes": 18018,
+        "sha256": "ac365efcb676f84eb0dce2a9bc23895fa6f98880a85c1063efcb6fd2c598d6a4"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63644372,
+        "sha256": "364ba912273e676d3024e64047a47254cdc5ea58b8950b6f7803924578ae3775"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2267136,
+        "sha256": "283e85c31f08d21a1fe07d6181263bc17f2e5e3758ebb77d6bce040bd1a93f8e"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2408,
+        "sha256": "87e51e63b948fbfd26c128d76322b83042b8e3e31b4a7a3a1c2289f392e397ff"
+      }
+    ]
   }
 }
