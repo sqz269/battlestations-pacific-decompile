@@ -25,8 +25,16 @@ loaded while any returned entry is used. Calls go directly to D3DX, preserving
 its HRESULT and output-pointer behavior.
 
 The original executable import table and live Ghidra program agree on the four
-names, thunks and IAT cells above. Build validation establishes source linkage;
-an image-info smoke can establish one real in-memory decode path. Texture
-creation still requires a real D3D9 device. The production texture cache,
-renderer/device recreation graph, gameplay behavior and visual parity remain
-outside this packet.
+names, thunks and IAT cells above. MSVC Win32 built the complete project and all
+three existing CTests passed. A temporary manifest-embedded Win32 smoke borrowed
+the installed `C:\Windows\SysWOW64\d3dx9_40.dll`, resolved all four entries and
+called only image-info on retained bytes from the installed
+`menu_dxt1_2.dds`. D3DX returned `S_OK`, 1024x1024, depth 1, one mip and
+`D3DRTYPE_TEXTURE`.
+
+Texture creation still requires a real D3D9 device and was not invoked by that
+smoke. The production texture cache, renderer/device recreation graph, gameplay
+behavior and visual parity remain outside this packet. Exact validation inputs,
+hashes and command boundaries are in
+`reports/native_d3dx9_texture_memory_imports.json`; the local smoke receipt is
+ignored under `local/output/`.
