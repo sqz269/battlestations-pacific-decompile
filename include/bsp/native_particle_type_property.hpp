@@ -72,6 +72,12 @@ void append_native_particle_type_record_00b00ee0(void* actual_descriptor,
     const void* actual_record, NativeParticleTypeBaseBindings&); // ECX,stack,RET4
 void clear_native_particle_type_records_00b00f30(void* actual_descriptor,
     NativeParticleTypeBaseBindings&); // ECX,RET; retains allocation
+// Raw descriptor overloads compose the fixed-CRT B00C20 provider directly.
+// Append copies seven forward DWORDs, then increments the CURRENT count;
+// clear retains storage/capacity and reserves one only for negative capacity.
+void append_native_particle_type_record_00b00ee0(void* actual_descriptor,
+    const void* actual_record);
+void clear_native_particle_type_records_00b00f30(void* actual_descriptor);
 
 // Actual atlas owner and raw30h item identity. No TextureAtlasItem conversion,
 // independent collection or alternate string allocator is introduced.

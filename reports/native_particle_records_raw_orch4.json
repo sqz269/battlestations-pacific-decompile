@@ -1,0 +1,184 @@
+{
+  "packet": "orch4_particle_records_raw_p16",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00b00ee0",
+      "bytes": 73,
+      "sha256": "e811a68ccd29b6bf0d896cb933b1a18e5aa393a5d8fe4f402cbdb9e299323802",
+      "hex": "538bd98b430839430457751203c083f8017f05b80100000050e822fdffff8b43048b138d0cc5000000002bc88d3c8a85ff740d568b742410b907000000f3a55e834304015f5bc20400",
+      "last_instruction": "00b00f26 ret 4",
+      "end_exclusive": "00b00f29",
+      "live_disk_match": true,
+      "old_documentation": {
+        "hash": "51ddbf81f00607d2dcd4b5c30aa4713b0bcf908b21f3ffff3344642be409d743",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b00ee0",
+        "function_name": "BSP_ParticleTypeRecords_Append",
+        "return_type": "void",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00b00ee0]\nAQ hypothesis, not recovered symbol. Full installed/live byte span verified; decoded calls and native stack cleanup inspected. Actual pooled string, raw atlas manager/item and1Ch particle record domains; real D3DXFloat32To16Array import. Strict Win32/native-byte differential passes supported normal paths. Original FH3/allocation-failure/malformed-buffer faults and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_PROPERTY.md and reports/native_particle_type_property.json.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "record",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00b00ef8"
+          },
+          {
+            "relative_offset": 30,
+            "name": "LAB_00b00efe"
+          },
+          {
+            "relative_offset": 64,
+            "name": "LAB_00b00f20"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_name": {
+        "address": "00b00ee0",
+        "name": "BSP_ParticleTypeRecords_Append",
+        "evidence": "AQ hypothesis, not recovered symbol. Full installed/live byte span verified; decoded calls and native stack cleanup inspected. Actual pooled string, raw atlas manager/item and1Ch particle record domains; real D3DXFloat32To16Array import. Strict Win32/native-byte differential passes supported normal paths. Original FH3/allocation-failure/malformed-buffer faults and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_PROPERTY.md and reports/native_particle_type_property.json."
+      },
+      "prior_reconstruction_records": [
+        {
+          "address": "00b00ee0",
+          "source": "src/native_particle_type_property.cpp",
+          "header": "include/bsp/native_particle_type_property.hpp",
+          "evidence": "AQ hypothesis, not recovered symbol. Full installed/live byte span verified; decoded calls and native stack cleanup inspected. Actual pooled string, raw atlas manager/item and1Ch particle record domains; real D3DXFloat32To16Array import. Strict Win32/native-byte differential passes supported normal paths. Original FH3/allocation-failure/malformed-buffer faults and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_PROPERTY.md and reports/native_particle_type_property.json.",
+          "name": "append_native_particle_type_record_00b00ee0",
+          "status": "reconstructed_build_tested_bounded_fixture_tested",
+          "native_abi": "ECX descriptor; stack actual1Ch record; RET4",
+          "kind": "function"
+        }
+      ],
+      "original_abi": "ECX actual descriptor; stack actual record; RET4",
+      "coverage": "complete",
+      "eh": "No FH3 frame or cleanup funclet in this body"
+    },
+    {
+      "address": "00b00f30",
+      "bytes": 50,
+      "sha256": "477f008c3a1760c78a856233f479634654c398aa8bc47706c501ab63c7e270e4",
+      "hex": "568bf1837e08007d076a00e8e0fcffff837e04007e1383c8ff8da42400000000014604837e04007ff7c74604000000005ec3",
+      "last_instruction": "00b00f61 ret ",
+      "end_exclusive": "00b00f62",
+      "live_disk_match": true,
+      "old_documentation": {
+        "hash": "4f7596758ae50e5f50251838aa9c1a6e4a4bbc22aa196bf3372c939e3b7d3c37",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b00f30",
+        "function_name": "BSP_ParticleTypeRecords_Clear",
+        "return_type": "void",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00b00f30]\nAQ hypothesis, not recovered symbol. Full installed/live byte span verified; decoded calls and native stack cleanup inspected. Actual pooled string, raw atlas manager/item and1Ch particle record domains; real D3DXFloat32To16Array import. Strict Win32/native-byte differential passes supported normal paths. Original FH3/allocation-failure/malformed-buffer faults and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_PROPERTY.md and reports/native_particle_type_property.json.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 16,
+            "name": "LAB_00b00f40"
+          },
+          {
+            "relative_offset": 32,
+            "name": "LAB_00b00f50"
+          },
+          {
+            "relative_offset": 41,
+            "name": "LAB_00b00f59"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_name": {
+        "address": "00b00f30",
+        "name": "BSP_ParticleTypeRecords_Clear",
+        "evidence": "AQ hypothesis, not recovered symbol. Full installed/live byte span verified; decoded calls and native stack cleanup inspected. Actual pooled string, raw atlas manager/item and1Ch particle record domains; real D3DXFloat32To16Array import. Strict Win32/native-byte differential passes supported normal paths. Original FH3/allocation-failure/malformed-buffer faults and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_PROPERTY.md and reports/native_particle_type_property.json."
+      },
+      "prior_reconstruction_records": [
+        {
+          "address": "00b00f30",
+          "source": "src/native_particle_type_property.cpp",
+          "header": "include/bsp/native_particle_type_property.hpp",
+          "evidence": "AQ hypothesis, not recovered symbol. Full installed/live byte span verified; decoded calls and native stack cleanup inspected. Actual pooled string, raw atlas manager/item and1Ch particle record domains; real D3DXFloat32To16Array import. Strict Win32/native-byte differential passes supported normal paths. Original FH3/allocation-failure/malformed-buffer faults and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_PROPERTY.md and reports/native_particle_type_property.json.",
+          "name": "clear_native_particle_type_records_00b00f30",
+          "status": "reconstructed_build_tested_bounded_fixture_tested",
+          "native_abi": "ECX descriptor; RET; retains allocation",
+          "kind": "function"
+        }
+      ],
+      "original_abi": "ECX actual descriptor; RET",
+      "coverage": "complete",
+      "eh": "No FH3 frame or cleanup funclet in this body"
+    }
+  ],
+  "calls": [
+    {
+      "function": "00b00ee0",
+      "address": "00b00ef9",
+      "native": "00b00c20"
+    },
+    {
+      "function": "00b00f30",
+      "address": "00b00f3b",
+      "native": "00b00c20"
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 strict Win32 and3/3 existing CTests passed",
+    "probe": {
+      "exit_code": 0,
+      "output": "PASS: 8 original/source comparisons; complete123B append/clear bodies, original133B reserve with genuine fixed CRT, capacity growth/minimum, seven forward overlapping DWORD copies, null destination, retained storage and signed clear cases. Native faults/OOM/gameplay unvalidated.\n"
+    },
+    "artifact_hashes": {
+      "include/bsp/native_particle_type_property.hpp": "995506392dee5bf538cebf001b979b3f7a661c40d815671d328643af1d989415",
+      "src/native_particle_type_property.cpp": "d8f8fd4633133b7a57ffc6b69c7f6adb2a7fbbae9907fbeeca4986bc8a84cc53",
+      "local/particle_records_probe.cpp": "d182b171da6953793174c211237914cf4ca941d308aa43dd3390971242ac76b2",
+      "local/run_particle_records_probe.py": "171e69e2a2e77aad26cf82c153cfa86d1c8eecfb701eacd3b16e736fad5a39ac",
+      "build/win32/Release/bsp_core.lib": "8ca8c5b8de0d4f2b05750dbee6ab478c3598979b9b15728fac7f8afd866ce159"
+    }
+  },
+  "limits": [
+    "New raw source overloads; not drop-in binary ABI replacements.",
+    "Copied-original normal paths share genuine fixed CRT with source; native invalid pointers, OOM/CRT exception identity and concurrency not tested.",
+    "Full parser composition and gameplay remain unvalidated."
+  ]
+}

@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "bsp/native_particle_type_property.hpp"
 #include "bsp/native_particle_type_resources.hpp"
+#include "bsp/native_particle_type_lifetime.hpp"
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_pooled_string_substring.hpp"
 #include "bsp/native_pooled_text.hpp"
@@ -263,26 +264,55 @@ void* construct_native_particle_uv_record_00b00880(void* output,
     return output;
 }
 
-void append_native_particle_type_record_00b00ee0(void* descriptor,
-    const void* record, NativeParticleTypeBaseBindings& base) {
+namespace {
+template<class Reserve>
+void append_record(void* descriptor, const void* record, Reserve reserve) {
     const auto capacity=read<std::uint32_t>(descriptor,8);
     if (read<std::uint32_t>(descriptor,4)==capacity) {
         auto next=static_cast<std::int32_t>(capacity*2u);
         if (next<=1) next=1;
-        reserve_native_particle_type_records_00b00c20(descriptor,next,base);
+        reserve(descriptor,next);
     }
-    void* destination=at(read<void*>(descriptor),read<std::uint32_t>(descriptor,4)*0x1cu);
+    const auto count=read<std::uint32_t>(descriptor,4);
+    void* destination=at(read<void*>(descriptor),count*0x1cu);
     if (destination) copy_record(destination,record);
     put(descriptor,4,read<std::uint32_t>(descriptor,4)+1u);
 }
 
-void clear_native_particle_type_records_00b00f30(void* descriptor,
-    NativeParticleTypeBaseBindings& base) {
+template<class Reserve>
+void clear_records(void* descriptor, Reserve reserve) {
     if (read<std::int32_t>(descriptor,8)<0)
-        reserve_native_particle_type_records_00b00c20(descriptor,0,base);
+        reserve(descriptor,0);
     while (read<std::int32_t>(descriptor,4)>0)
         put(descriptor,4,read<std::uint32_t>(descriptor,4)-1u);
     put<std::uint32_t>(descriptor,4,0);
+}
+} // namespace
+
+void append_native_particle_type_record_00b00ee0(void* descriptor,
+    const void* record, NativeParticleTypeBaseBindings& base) {
+    append_record(descriptor,record,[&base](void* p,std::int32_t count) {
+        reserve_native_particle_type_records_00b00c20(p,count,base);
+    });
+}
+
+void clear_native_particle_type_records_00b00f30(void* descriptor,
+    NativeParticleTypeBaseBindings& base) {
+    clear_records(descriptor,[&base](void* p,std::int32_t count) {
+        reserve_native_particle_type_records_00b00c20(p,count,base);
+    });
+}
+
+void append_native_particle_type_record_00b00ee0(void* descriptor,const void* record) {
+    append_record(descriptor,record,[](void* p,std::int32_t count) {
+        reserve_native_particle_type_records_00b00c20(p,count);
+    });
+}
+
+void clear_native_particle_type_records_00b00f30(void* descriptor) {
+    clear_records(descriptor,[](void* p,std::int32_t count) {
+        reserve_native_particle_type_records_00b00c20(p,count);
+    });
 }
 
 bool load_native_particle_type_texture_00b01350(void* definition,
