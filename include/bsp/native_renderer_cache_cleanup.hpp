@@ -12,6 +12,7 @@ class NativeRenderActualOwners;
 struct SingletonLifetimeCallbacks;
 struct NativeRenderResourceAccountingTables;
 struct NativeMaterialEffectCacheContext;
+struct NativeEffectRecordStorageContext;
 
 // Borrow the application's SAME pool, canonical actual-reference owners and
 // current numeric profile tables. No cache/owner/count copy is made. Selected
@@ -31,6 +32,8 @@ struct NativeRendererCacheCleanupContext {
 // Growth preserves row+08/+28; failure cleans only current partial name.
 void resize_native_effect_records_00b30410(void* actual_header,
     std::uint32_t requested_count, NativeMaterialEffectCacheContext&);
+void resize_native_effect_records_00b30410(void* actual_header,
+    std::uint32_t requested_count, NativeEffectRecordStorageContext&);
 
 // B316C0[106], ECX actual registry, RET. +04 data,+08 count,+0C capacity,
 // +10 accounting. Each iteration dispatches current last child+0C, subtracts

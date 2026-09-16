@@ -199,8 +199,8 @@ void destroy_native_effect_record_00b2fa10(NativeRenderResourceRecord& record,
     if (captured != nullptr) strings.release(captured, field<std::uint32_t>(&record, 0) + 1u);
 }
 
-void reserve_native_effect_records_00b2ffe0(void* header, std::uint32_t requested,
-    NativeMaterialEffectCacheContext& c) {
+template<class Context>
+static void reserve_effect_records(void* header, std::uint32_t requested, Context& c) {
     if (signed_bits(requested) < 64) requested = 64;
     if (signed_bits(field<std::uint32_t>(header, 8)) >= signed_bits(requested)) return;
     if (c.allocate_array_00bf55be == nullptr || c.free_array_00bf6989 == nullptr)
@@ -230,6 +230,15 @@ void reserve_native_effect_records_00b2ffe0(void* header, std::uint32_t requeste
     c.free_array_00bf6989(field<void*>(header, 0));
     field<void*>(header, 0) = replacement;
     field<std::uint32_t>(header, 8) = requested;
+}
+
+void reserve_native_effect_records_00b2ffe0(void* header, std::uint32_t requested,
+    NativeMaterialEffectCacheContext& c) {
+    reserve_effect_records(header, requested, c);
+}
+void reserve_native_effect_records_00b2ffe0(void* header, std::uint32_t requested,
+    NativeEffectRecordStorageContext& c) {
+    reserve_effect_records(header, requested, c);
 }
 
 void append_native_effect_record_00b301a0(void* header,

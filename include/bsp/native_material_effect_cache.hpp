@@ -11,6 +11,16 @@ struct ResourceLoadEventHost;
 struct SingletonLifetimeCallbacks;
 struct NativeRendererSynchronizationGlobals;
 
+// Record storage alone, shared by loading and destruction. Borrow the SAME
+// actual string/validation/array allocation domains; no owner or loader graph
+// is created. This permits renderer member cleanup before loading is wired.
+struct NativeEffectRecordStorageContext {
+    ActualNativeStringPoolStorage& strings;
+    const SingletonLifetimeCallbacks& validation;
+    void* (*allocate_array_00bf55be)(std::uint32_t bytes);
+    void (*free_array_00bf6989)(void*) noexcept;
+};
+
 // Actual D5F074 registry, normally renderer+1A98. +4/+8/+C is the actual
 // twelve-byte vector of 2Ch records; +10 is DWORD size accounting. Every
 // borrowed table contains original numeric targets, never host callables.
@@ -62,6 +72,8 @@ void destroy_native_effect_record_00b2fa10(NativeRenderResourceRecord&,
 // bounds, live reloads, DWORD wrapping and no-op placement-delete unwind.
 void reserve_native_effect_records_00b2ffe0(void*, std::uint32_t,
     NativeMaterialEffectCacheContext&);
+void reserve_native_effect_records_00b2ffe0(void*, std::uint32_t,
+    NativeEffectRecordStorageContext&);
 void append_native_effect_record_00b301a0(void*, const NativeRenderResourceRecord&,
     NativeMaterialEffectCacheContext&);
 // Incoming ECX unused; stack output/name/ignored-word, EAX output, RET0C.

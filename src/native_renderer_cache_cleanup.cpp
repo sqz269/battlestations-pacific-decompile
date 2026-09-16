@@ -76,8 +76,8 @@ struct TextureUnwind {
 };
 } // namespace
 
-void resize_native_effect_records_00b30410(void* header, std::uint32_t requested,
-    NativeMaterialEffectCacheContext& c) {
+template<class Context>
+static void resize_effect_records(void* header, std::uint32_t requested, Context& c) {
     if (signed_bits(requested) > signed_bits(field<std::uint32_t>(header, 8)))
         reserve_native_effect_records_00b2ffe0(header, requested, c);
     auto index = field<std::uint32_t>(header, 4);
@@ -109,6 +109,15 @@ void resize_native_effect_records_00b30410(void* header, std::uint32_t requested
         destroy_native_effect_record_00b2fa10(*current_record(header, retained), c.strings);
     }
     field<std::uint32_t>(header, 4) = requested;
+}
+
+void resize_native_effect_records_00b30410(void* header, std::uint32_t requested,
+    NativeMaterialEffectCacheContext& c) {
+    resize_effect_records(header, requested, c);
+}
+void resize_native_effect_records_00b30410(void* header, std::uint32_t requested,
+    NativeEffectRecordStorageContext& c) {
+    resize_effect_records(header, requested, c);
 }
 
 void clear_native_renderer_resource_cache_00b316c0(void* cache, NativeRendererCacheCleanupContext& c) {
