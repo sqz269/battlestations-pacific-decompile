@@ -1,0 +1,938 @@
+{
+  "packet": "native_particle_axial_raw_orch4",
+  "status": "reconstructed_build_tested_bounded_native_probe_tested",
+  "source_revision": "9f0995f9e",
+  "source": "src/native_particle_axial_raw.cpp",
+  "header": "include/bsp/native_particle_axial_raw.hpp",
+  "documentation": "docs/NATIVE_PARTICLE_AXIAL_RAW_ORCH4.md",
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mutations": false
+  },
+  "routines": [
+    {
+      "entry": "00b064a0",
+      "end": "00b06a33",
+      "coverage": "complete source companion; whole native listing read, all calls reported",
+      "bytes": 1428,
+      "instructions": 460,
+      "sha256": "5d07cfd3fd4c47c61227ae5517ae6ac80d6af47167a2c56d3e4eb3c7620b543a",
+      "live_equal": true
+    },
+    {
+      "entry": "00b062f0",
+      "end": "00b06499",
+      "coverage": "complete source companion; whole native listing read, all calls reported",
+      "bytes": 426,
+      "instructions": 113,
+      "sha256": "990669d5eab85c2394c8401e84b1a6dd1214e956999d94636937abef9a98223d",
+      "live_equal": true
+    },
+    {
+      "entry": "00b05d00",
+      "end": "00b05dc7",
+      "coverage": "complete source companion; whole native listing read, all calls reported",
+      "bytes": 200,
+      "instructions": 53,
+      "sha256": "75233d7ad3eaf4872310e4bf628d01b595609440aa49d1067680cea80d04dcc3",
+      "live_equal": true
+    },
+    {
+      "entry": "00cbb840",
+      "end": "00cbb847",
+      "coverage": "complete8B unwind action decoded and mechanically checked"
+    },
+    {
+      "entry": "00cbb848",
+      "end": "00cbb84f",
+      "coverage": "complete8B unwind action decoded and mechanically checked"
+    },
+    {
+      "entry": "00cbb850",
+      "end": "00cbb857",
+      "coverage": "complete8B unwind action decoded and mechanically checked"
+    },
+    {
+      "entry": "00cbb858",
+      "end": "00cbb85f",
+      "coverage": "complete8B unwind action decoded and mechanically checked"
+    },
+    {
+      "entry": "00cbb860",
+      "end": "00cbb867",
+      "coverage": "complete8B unwind action decoded and mechanically checked"
+    },
+    {
+      "entry": "00cbb868",
+      "end": "00cbb86f",
+      "coverage": "complete8B unwind action decoded and mechanically checked"
+    },
+    {
+      "entry": "00cbb870",
+      "end": "00cbb877",
+      "coverage": "complete8B unwind action decoded and mechanically checked"
+    },
+    {
+      "entry": "00cbb878",
+      "end": "00cbb87f",
+      "coverage": "complete8B unwind action decoded and mechanically checked"
+    },
+    {
+      "entry": "00cbb820",
+      "end": "00cbb827",
+      "coverage": "complete8B unused alignment map action; no entered state invokes it"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00b064a0",
+      "address": "00b064d2",
+      "native": "00af5740",
+      "contract": "ECX actual TextBuffer; stacked output4h pooled line; RET4/AL. Genuine raw provider uses the same actual F8C2C8 scratch and pool."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b064e5",
+      "native": "00bf7fbf",
+      "contract": "CRT _stricmp: two cdecl DWORDs; caller ADD ESP,8; return EAX tested for equality."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b064f8",
+      "native": "00af5740",
+      "contract": "ECX actual TextBuffer; stacked output4h pooled line; RET4/AL. Genuine raw provider uses the same actual F8C2C8 scratch and pool."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06510",
+      "native": "00bf7fbf",
+      "contract": "CRT _stricmp: two cdecl DWORDs; caller ADD ESP,8; return EAX tested for equality."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b0652a",
+      "native": "00bf7fbf",
+      "contract": "CRT _stricmp: two cdecl DWORDs; caller ADD ESP,8; return EAX tested for equality."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06544",
+      "native": "00aee3c0",
+      "contract": "ECX current4h line/suffix; stack output header,index; RET8/EAX output header. Genuine raw pool overload."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06551",
+      "native": "00bf7fbf",
+      "contract": "CRT _stricmp: two cdecl DWORDs; caller ADD ESP,8; return EAX tested for equality."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06582",
+      "native": "00419cc0",
+      "contract": "No new stack arguments; actual current pool getter returns EAX. Three pending words (pointer,size,unused1) belong to following BD1510."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06589",
+      "native": "00bd1510",
+      "contract": "ECX actual current pool; stack captured pointer,captured size,unused1; RET0Ch. No host storage adapter."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b065a5",
+      "native": "00af44c0",
+      "contract": "ECX current4h line/suffix; stack output header,index; RET8/EAX constructed output. Existing raw suffix provider."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b065b2",
+      "native": "00b015c0",
+      "contract": "ECX actual definition; stack actual4h suffix; RET4/AL handled. Embedded persistent raw property child is retained on failure."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b065e2",
+      "native": "00419cc0",
+      "contract": "No new stack arguments; actual current pool getter returns EAX. Three pending words (pointer,size,unused1) belong to following BD1510."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b065e9",
+      "native": "00bd1510",
+      "contract": "ECX actual current pool; stack captured pointer,captured size,unused1; RET0Ch. No host storage adapter."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06605",
+      "native": "00aee3c0",
+      "contract": "ECX current4h line/suffix; stack output header,index; RET8/EAX output header. Genuine raw pool overload."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06619",
+      "native": "00bf7fbf",
+      "contract": "CRT _stricmp: two cdecl DWORDs; caller ADD ESP,8; return EAX tested for equality."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06630",
+      "native": "00aee3c0",
+      "contract": "ECX current4h line/suffix; stack output header,index; RET8/EAX output header. Genuine raw pool overload."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06638",
+      "native": "00bf8417",
+      "contract": "CRT atol: one cdecl DWORD; ADD ESP,4; signed EAX >0 is stored as a full byte at definition+80."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b0666a",
+      "native": "00419cc0",
+      "contract": "No new stack arguments; actual current pool getter returns EAX. Three pending words (pointer,size,unused1) belong to following BD1510."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06671",
+      "native": "00bd1510",
+      "contract": "ECX actual current pool; stack captured pointer,captured size,unused1; RET0Ch. No host storage adapter."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b066a8",
+      "native": "00bf7fbf",
+      "contract": "CRT _stricmp: two cdecl DWORDs; caller ADD ESP,8; return EAX tested for equality."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b066c3",
+      "native": "00aee3c0",
+      "contract": "ECX current4h line/suffix; stack output header,index; RET8/EAX output header. Genuine raw pool overload."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b066d2",
+      "native": "00b062f0",
+      "contract": "ECX actual definition; stacked captured token bytes; RET4. Complete raw alignment companion."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06702",
+      "native": "00419cc0",
+      "contract": "No new stack arguments; actual current pool getter returns EAX. Three pending words (pointer,size,unused1) belong to following BD1510."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06709",
+      "native": "00bd1510",
+      "contract": "ECX actual current pool; stack captured pointer,captured size,unused1; RET0Ch. No host storage adapter."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06736",
+      "native": "00419cc0",
+      "contract": "No new stack arguments; actual current pool getter returns EAX. Three pending words (pointer,size,unused1) belong to following BD1510."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b0673d",
+      "native": "00bd1510",
+      "contract": "ECX actual current pool; stack captured pointer,captured size,unused1; RET0Ch. No host storage adapter."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06754",
+      "native": "00af44c0",
+      "contract": "ECX current4h line/suffix; stack output header,index; RET8/EAX constructed output. Existing raw suffix provider."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06766",
+      "native": "00aee3c0",
+      "contract": "ECX current4h line/suffix; stack output header,index; RET8/EAX output header. Genuine raw pool overload."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b0676e",
+      "native": "00bfa66c",
+      "contract": "CRT atof: one cdecl DWORD; native FSTP32 atB06773 precedes ADD ESP,4 atB0677B. Source keeps ST0 live until the same binary32 spill."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06799",
+      "native": "00419cc0",
+      "contract": "No new stack arguments; actual current pool getter returns EAX. Three pending words (pointer,size,unused1) belong to following BD1510."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b067a0",
+      "native": "00bd1510",
+      "contract": "ECX actual current pool; stack captured pointer,captured size,unused1; RET0Ch. No host storage adapter."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b067d2",
+      "native": "00419cc0",
+      "contract": "No new stack arguments; actual current pool getter returns EAX. Three pending words (pointer,size,unused1) belong to following BD1510."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b067d9",
+      "native": "00bd1510",
+      "contract": "ECX actual current pool; stack captured pointer,captured size,unused1; RET0Ch. No host storage adapter."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b067e6",
+      "native": "00afbed0",
+      "contract": "ECX actual10h builder; RET/EAX builder. Existing raw constructor clears only +0/+4/+8, leaving kind+C residue."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06800",
+      "native": "00afc360",
+      "contract": "ECX builder; stack two binary32 zero endpoints; RET8. Existing raw endpoint provider, caller state5."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06810",
+      "native": "00af44c0",
+      "contract": "ECX current4h line/suffix; stack output header,index; RET8/EAX constructed output. Existing raw suffix provider."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06823",
+      "native": "00af44c0",
+      "contract": "ECX current4h line/suffix; stack output header,index; RET8/EAX constructed output. Existing raw suffix provider."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06832",
+      "native": "00afc470",
+      "contract": "ECX builder; stacked actual4h curve text; RET4/AL ignored. Existing genuine raw parser preserves partial mutations."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06862",
+      "native": "00419cc0",
+      "contract": "No new stack arguments; actual current pool getter returns EAX. Three pending words (pointer,size,unused1) belong to following BD1510."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06869",
+      "native": "00bd1510",
+      "contract": "ECX actual current pool; stack captured pointer,captured size,unused1; RET0Ch. No host storage adapter."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06896",
+      "native": "00419cc0",
+      "contract": "No new stack arguments; actual current pool getter returns EAX. Three pending words (pointer,size,unused1) belong to following BD1510."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b0689d",
+      "native": "00bd1510",
+      "contract": "ECX actual current pool; stack captured pointer,captured size,unused1; RET0Ch. No host storage adapter."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b068ba",
+      "native": "00b00980",
+      "contract": "ECX actual definition; stack actual4h name,actual10h builder,binary32 percentage; RET0Ch/AL handled. Source preserves FLD32/FSTP32 argument spill before zeroing curve-suffix header."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b068c8",
+      "native": "00bf6989",
+      "contract": "CRT free: one cdecl pointer; ADD ESP,4. Main parser inline path then zeros builder+0/+4/+8, retaining kind+C; source uses existing exact AF4060 free/clear provider."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b068eb",
+      "native": "00bf7fbf",
+      "contract": "CRT _stricmp: two cdecl DWORDs; caller ADD ESP,8; return EAX tested for equality."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b068fb",
+      "native": "00afc1b0",
+      "contract": "ECX actual builder; RET/ST0 first backing-row value+4. Caller FSTP32 local,FLD32 local,FSTP32 destination before axis refresh."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06910",
+      "native": "00b05d00",
+      "contract": "ECX actual definition; no stacked arguments; RET. Heading/elevation already stored; caller x87 result consumed."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06926",
+      "native": "00bf7fbf",
+      "contract": "CRT _stricmp: two cdecl DWORDs; caller ADD ESP,8; return EAX tested for equality."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06936",
+      "native": "00afc1b0",
+      "contract": "ECX actual builder; RET/ST0 first backing-row value+4. Caller FSTP32 local,FLD32 local,FSTP32 destination before axis refresh."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b0694b",
+      "native": "00b05d00",
+      "contract": "ECX actual definition; no stacked arguments; RET. Heading/elevation already stored; caller x87 result consumed."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b0695c",
+      "native": "00bf7fbf",
+      "contract": "CRT _stricmp: two cdecl DWORDs; caller ADD ESP,8; return EAX tested for equality."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b0696c",
+      "native": "00afbf60",
+      "contract": "ECX actual10h builder; RET/EAX actual pooled runtime payload. Current D7A358 scale load and FLD32/FMUL64/FSTP32 occur after conversion, before owner pointer publication."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b0698f",
+      "native": "00bf7fbf",
+      "contract": "CRT _stricmp: two cdecl DWORDs; caller ADD ESP,8; return EAX tested for equality."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b0699f",
+      "native": "00afbf60",
+      "contract": "ECX actual10h builder; RET/EAX actual pooled runtime payload. Current D7A358 scale load and FLD32/FMUL64/FSTP32 occur after conversion, before owner pointer publication."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b069ba",
+      "native": "00af4110",
+      "contract": "ECX actual10h builder; RET. Free captured key-vector pointer and zero +0/+4/+8, leaving kind+C."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b069c8",
+      "native": "00aee2a0",
+      "contract": "ECX exact4h header; RET. Return current data through the same current raw pool, then zero header."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b069d6",
+      "native": "00af5740",
+      "contract": "ECX actual TextBuffer; stacked output4h pooled line; RET4/AL. Genuine raw provider uses the same actual F8C2C8 scratch and pool."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06a12",
+      "native": "00419cc0",
+      "contract": "No new stack arguments; actual current pool getter returns EAX. Three pending words (pointer,size,unused1) belong to following BD1510."
+    },
+    {
+      "function": "00b064a0",
+      "address": "00b06a19",
+      "native": "00bd1510",
+      "contract": "ECX actual current pool; stack captured pointer,captured size,unused1; RET0Ch. No host storage adapter."
+    },
+    {
+      "function": "00b062f0",
+      "address": "00b06315",
+      "native": "0041e870",
+      "contract": "ECX actual8h temporary header; stack nonnull C string; RET4/EAX header. Existing raw constructor zeros header and allocates through current pool."
+    },
+    {
+      "function": "00b062f0",
+      "address": "00b06328",
+      "native": "00bf7fbf",
+      "contract": "CRT _stricmp: two cdecl DWORDs; caller ADD ESP,8; return EAX tested for equality."
+    },
+    {
+      "function": "00b062f0",
+      "address": "00b06356",
+      "native": "00419cc0",
+      "contract": "No new stack arguments; actual current pool getter returns EAX. Three pending words (pointer,size,unused1) belong to following BD1510."
+    },
+    {
+      "function": "00b062f0",
+      "address": "00b0635d",
+      "native": "00bd1510",
+      "contract": "ECX actual current pool; stack captured pointer,captured size,unused1; RET0Ch. No host storage adapter."
+    },
+    {
+      "function": "00b062f0",
+      "address": "00b0637e",
+      "native": "00425850",
+      "contract": "ECX current8h header; stack literal; RET4/AL equality. Existing actual-header comparison helper."
+    },
+    {
+      "function": "00b062f0",
+      "address": "00b063ac",
+      "native": "00419cc0",
+      "contract": "No new stack arguments; actual current pool getter returns EAX. Three pending words (pointer,size,unused1) belong to following BD1510."
+    },
+    {
+      "function": "00b062f0",
+      "address": "00b063b3",
+      "native": "00bd1510",
+      "contract": "ECX actual current pool; stack captured pointer,captured size,unused1; RET0Ch. No host storage adapter."
+    },
+    {
+      "function": "00b062f0",
+      "address": "00b063d4",
+      "native": "00425850",
+      "contract": "ECX current8h header; stack literal; RET4/AL equality. Existing actual-header comparison helper."
+    },
+    {
+      "function": "00b062f0",
+      "address": "00b06402",
+      "native": "00419cc0",
+      "contract": "No new stack arguments; actual current pool getter returns EAX. Three pending words (pointer,size,unused1) belong to following BD1510."
+    },
+    {
+      "function": "00b062f0",
+      "address": "00b06409",
+      "native": "00bd1510",
+      "contract": "ECX actual current pool; stack captured pointer,captured size,unused1; RET0Ch. No host storage adapter."
+    },
+    {
+      "function": "00b062f0",
+      "address": "00b0642a",
+      "native": "00425850",
+      "contract": "ECX current8h header; stack literal; RET4/AL equality. Existing actual-header comparison helper."
+    },
+    {
+      "function": "00b062f0",
+      "address": "00b06457",
+      "native": "00425850",
+      "contract": "ECX current8h header; stack literal; RET4/AL equality. Existing actual-header comparison helper."
+    },
+    {
+      "function": "00b062f0",
+      "address": "00b06482",
+      "native": "0041dd20",
+      "contract": "ECX current8h header; RET. Capture current pointer and length+1, return through current raw pool; leave header untouched."
+    },
+    {
+      "function": "00b05d00",
+      "address": "00b05d3e",
+      "native": "00b646e0",
+      "contract": "ECX actual64B destination,EDX binary32 angle; RET/EAX destination. Existing raw Y rotation receives current one/negative-zero cells."
+    },
+    {
+      "function": "00b05d00",
+      "address": "00b05d54",
+      "native": "00b64640",
+      "contract": "ECX actual64B destination,EDX binary32 angle; RET/EAX destination. Existing raw X rotation receives current one/negative-zero cells."
+    },
+    {
+      "function": "00b05d00",
+      "address": "00b05d6d",
+      "native": "00b64780",
+      "contract": "ECX actual64B destination,EDX binary32 angle; RET/EAX destination. Existing current-cell Z rotation overload."
+    },
+    {
+      "function": "00b05d00",
+      "address": "00b05d74",
+      "native": "00413920",
+      "contract": "ECX left64B matrix; stack output,right matrix; RET8/EAX output. Existing actual matrix multiply; first Z*X, then result*Y."
+    },
+    {
+      "function": "00b05d00",
+      "address": "00b05d7b",
+      "native": "00413920",
+      "contract": "ECX left64B matrix; stack output,right matrix; RET8/EAX output. Existing actual matrix multiply; first Z*X, then result*Y."
+    },
+    {
+      "function": "00b05d00",
+      "address": "00b05dab",
+      "native": "004142e0",
+      "contract": "ECX input3f vector; stack output3f,matrix; RET8/EAX output. Existing affine transform; caller reloads each output with FLD32/FSTP32."
+    },
+    {
+      "address": "00b00ec2",
+      "native": "00b064a0",
+      "function": "00b00ce0",
+      "kind": "indirect_call",
+      "contract": "Current definition+0 then vtable+8; ECX actual definition, stacked actual TextBuffer. Both D5DCC8 and D5DF38 contain B064A0; factory publishes final D5DCC0 before call."
+    },
+    {
+      "address": "00cbb823",
+      "native": "0041dd20",
+      "function": "00cbb820",
+      "kind": "tail_jump",
+      "contract": "Complete8B LEA ECX exact unused alignment local-14 then JMP cleanup; no direct CALL instruction."
+    },
+    {
+      "address": "00cbb843",
+      "native": "00aee2a0",
+      "function": "00cbb840",
+      "kind": "tail_jump",
+      "contract": "Complete8B LEA ECX exact line-44 then JMP cleanup; no direct CALL instruction."
+    },
+    {
+      "address": "00cbb84b",
+      "native": "00aee2a0",
+      "function": "00cbb848",
+      "kind": "tail_jump",
+      "contract": "Complete8B LEA ECX exact common suffix-38 then JMP cleanup; no direct CALL instruction."
+    },
+    {
+      "address": "00cbb853",
+      "native": "00aee2a0",
+      "function": "00cbb850",
+      "kind": "tail_jump",
+      "contract": "Complete8B LEA ECX exact name-48 then JMP cleanup; no direct CALL instruction."
+    },
+    {
+      "address": "00cbb85b",
+      "native": "00aee2a0",
+      "function": "00cbb858",
+      "kind": "tail_jump",
+      "contract": "Complete8B LEA ECX exact alignment token-30 then JMP cleanup; no direct CALL instruction."
+    },
+    {
+      "address": "00cbb863",
+      "native": "00aee2a0",
+      "function": "00cbb860",
+      "kind": "tail_jump",
+      "contract": "Complete8B LEA ECX exact percentage suffix-28 then JMP cleanup; no direct CALL instruction."
+    },
+    {
+      "address": "00cbb86b",
+      "native": "00af4110",
+      "function": "00cbb868",
+      "kind": "tail_jump",
+      "contract": "Complete8B LEA ECX exact builder-1C then JMP cleanup; no direct CALL instruction."
+    },
+    {
+      "address": "00cbb873",
+      "native": "00aee2a0",
+      "function": "00cbb870",
+      "kind": "tail_jump",
+      "contract": "Complete8B LEA ECX exact curve suffix-20 then JMP cleanup; no direct CALL instruction."
+    },
+    {
+      "address": "00cbb87b",
+      "native": "00aee2a0",
+      "function": "00cbb878",
+      "kind": "tail_jump",
+      "contract": "Complete8B LEA ECX exact curve text-24 then JMP cleanup; no direct CALL instruction."
+    },
+    {
+      "address": "00af4116",
+      "native": "00bf6989",
+      "function": "00af4110",
+      "contract": "Complete AF4110 body inspected: stacked captured records pointer, caller ADD ESP,4 then zero current +0/+4/+8."
+    }
+  ],
+  "read_dependencies": [
+    {
+      "entry": "00afc1b0",
+      "coverage": "complete3-instruction body read; existing genuine first-value API"
+    },
+    {
+      "entry": "00af4110",
+      "coverage": "complete42B assembly body read; existing raw free/clear provider"
+    },
+    {
+      "entry": "00b00ce0",
+      "coverage": "partial: current+8 dispatch and prior final Axial profile publication evidence only"
+    },
+    {
+      "entry": "00af5740",
+      "coverage": "existing raw API/source contract reused; complete body not re-audited in this packet"
+    },
+    {
+      "entry": "00aee3c0",
+      "coverage": "existing raw API/source contract reused; full callee audit in prior property packet"
+    },
+    {
+      "entry": "00af44c0",
+      "coverage": "existing raw API/source contract reused; native body not re-audited"
+    },
+    {
+      "entry": "00afbed0",
+      "coverage": "existing raw constructor source/API inspected; native callee not re-audited"
+    },
+    {
+      "entry": "00afc360",
+      "coverage": "existing genuine raw endpoint kernel reused; current numeric-cell contract from prior packet"
+    },
+    {
+      "entry": "00afc470",
+      "coverage": "existing genuine raw parser reused; ignored AL and partial mutations from prior packet"
+    },
+    {
+      "entry": "00afbf60",
+      "coverage": "existing actual runtime-pool provider reused; native callee not re-audited"
+    },
+    {
+      "entry": "00b00980",
+      "coverage": "existing complete raw common-parameter provider reused; native callee not re-audited"
+    },
+    {
+      "entry": "00b015c0",
+      "coverage": "complete raw source from preceding owned packet reused; caller-retained acquired contract inspected"
+    },
+    {
+      "entry": "0041e870",
+      "coverage": "existing complete raw header source/API reused"
+    },
+    {
+      "entry": "0041dd20",
+      "coverage": "existing raw header source/API reused"
+    },
+    {
+      "entry": "00425850",
+      "coverage": "existing actual-header equality provider reused"
+    },
+    {
+      "entry": "00b64640",
+      "coverage": "existing complete raw current-cell X kernel reused; native body copied from installed PE for focused probe"
+    },
+    {
+      "entry": "00b646e0",
+      "coverage": "existing complete raw current-cell Y kernel reused; native body copied from installed PE for focused probe"
+    },
+    {
+      "entry": "00b64780",
+      "coverage": "existing complete raw current-cell Z kernel reused; native body copied from installed PE for focused probe"
+    },
+    {
+      "entry": "00413920",
+      "coverage": "existing genuine matrix provider reused; installed full body executed in probe"
+    },
+    {
+      "entry": "004142e0",
+      "coverage": "existing genuine affine provider reused; installed full body executed in probe"
+    }
+  ],
+  "provider_contract": {
+    "strings": "builder.strings, properties.strings and nested texture/cache publications must describe the same actual raw pool.",
+    "runtime": "parameters.parameters borrows the same actual NativeWeakHandlePool F8D344 used by returns.",
+    "scratch": "caller supplies actual shared F8C2C8; no private/reentrancy scratch policy",
+    "child": "optional concrete B015C0 acquired child follows persistent15-word local storage; only completed children may be replaced. Failed unresolved child remains with caller-owned Axial frame.",
+    "kind": "caller supplies incoming native kind+C residue; constructor/normal release preserve it across lines.",
+    "numeric": "borrowed angle/base/one/negative-zero cells; percentage pointer member loaded after actual runtime conversion",
+    "legacy_apis_unchanged": true
+  },
+  "unwind": {
+    "parser": {
+      "handler": "00cbb880",
+      "func_info": "00df39ac",
+      "map": "00df39d0",
+      "entered": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "previous": [
+        -1,
+        0,
+        0,
+        2,
+        2,
+        2,
+        5,
+        6
+      ],
+      "local_slots": [
+        "-44",
+        "-38",
+        "-48",
+        "-30",
+        "-28",
+        "-1c",
+        "-20",
+        "-24"
+      ],
+      "actions": [
+        "00cbb840",
+        "00cbb848",
+        "00cbb850",
+        "00cbb858",
+        "00cbb860",
+        "00cbb868",
+        "00cbb870",
+        "00cbb878"
+      ]
+    },
+    "alignment": {
+      "handler": "00cbb828",
+      "func_info": "00df3988",
+      "map": "00df3980",
+      "map_action": "00cbb820",
+      "entered": [],
+      "state_always": -1
+    },
+    "source": "Advance before exact caller action; secondary unwind exception terminates. Native FH3/SEH ABI not replaced."
+  },
+  "publication": {
+    "follow_direction": "signed atol>0 replaces full byte+80 before value cleanup",
+    "alignment": "full DWORD+A0 stored before captured-pointer/current-length return or current-header DD20",
+    "angles": "first value FSTP32 local then FLD32/FSTP32 +84/+88 before axis refresh",
+    "curves": "AFBF60 then FLD32 percentage/FMUL64 currentD7A358/FSTP32 payload, then publish+8C/+90; no release of overwritten pointer",
+    "axis": "Y,X,Z matrices then Z*X then result*Y; reload one, publish(0,one,0),transform,FLD32/FSTP32 final+94/+98/+9C"
+  },
+  "native_probe": {
+    "exit_code": 0,
+    "output": "PASS: 96 parser +7 alignment +48 axis original/source comparisons; actual string/runtime pools, full A4h bytes, curve payloads, texture records, cursor, x87 status from an empty incoming stack and current numeric cells. Native FH3 failures and cache misses not executed.\n",
+    "final_library": true,
+    "command": "python local/run_axial_final_probe.py",
+    "cases": {
+      "parser": 96,
+      "alignment": 7,
+      "axis": 48,
+      "total": 151
+    },
+    "parser_controls": "3 x87 precisions times4 rounding modes times8 text inputs",
+    "axis_controls": "3 precisions times2 current angle/base sets times8 angle pairs",
+    "comparison": "Full A4h owner bytes with relocated pointers normalized, runtime payloads/segments, texture records, text cursor, raw-string bump/live/peak, returned runtime slots and full x87 status word.",
+    "incoming_x87": "Empty stack, as at recovered B064A0 axis calls. An artificial extra marker failed in original native execution with an invalid stack result; exact failure instruction not localized, and that precondition is not covered.",
+    "native_children": "Direct calls bridge genuine reconstructed raw text/builder/runtime/property providers. Axis calls also execute complete copied original X/Y/Z/multiply/affine bodies.",
+    "supporting_spans": [
+      {
+        "entry": "00b64640",
+        "bytes": 159,
+        "sha256": "b80e6bf8d0debabd9bf1b0577c9b905d0ece579f188579433a59bc45eee3201c",
+        "live_comparison": "not repeated; prior axial packet evidence"
+      },
+      {
+        "entry": "00b646e0",
+        "bytes": 159,
+        "sha256": "bf50bf1402d4fdd6068817d1735fe9b90ed05e12c1e6b73c3d452f1ba96ba4ff",
+        "live_comparison": "not repeated; prior axial packet evidence"
+      },
+      {
+        "entry": "00b64780",
+        "bytes": 159,
+        "sha256": "0af68adacbc3e9cc638f6c18ca99d75462fc721c285da1ed80602503a6b73994",
+        "live_comparison": "not repeated; prior axial packet evidence"
+      },
+      {
+        "entry": "00413920",
+        "bytes": 874,
+        "sha256": "a2ae101c6235ce95cd7cffdc28deb5797b9d844dbc809e729db5ac5b134e29d9",
+        "live_comparison": "not repeated; prior axial packet evidence"
+      },
+      {
+        "entry": "004142e0",
+        "bytes": 132,
+        "sha256": "918c584a4b36931271d55da548684ecad60b7e02dd1fe7548aff6601a7364004",
+        "live_comparison": "not repeated; prior axial packet evidence"
+      }
+    ],
+    "compiler": "/EHsc /std:c++17 /O2 /W4 /WX /MD /link /MANIFEST:EMBED"
+  },
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "platform": "MSVC Win32",
+      "warnings": "/W4 /WX",
+      "log": "local/axial_build.log"
+    },
+    "ctest": {
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ]
+    },
+    "seed_verification": "all8 original seed spans match installed PE/live Ghidra",
+    "call_verification": {
+      "command": "python tools/verify_report_calls.py reports/native_particle_axial_raw_orch4.json",
+      "rows": 89,
+      "failed": 0,
+      "indirect_rows": 1,
+      "owned_direct_body_calls": 78,
+      "indirect_boundary": "B00EC2 instruction verified mechanically; target supplied by current D5DCC8/D5DF38 cells and factory publication evidence."
+    },
+    "permanent_tests_added": 0,
+    "artifact_hashes": {
+      "src\\native_particle_axial_raw.cpp": "e8d9b253d3c1a808fe060c64a2dd94928692b9b2e4583d53e8e42a37ce199af7",
+      "include\\bsp\\native_particle_axial_raw.hpp": "afbebb35238496d9d9d5cdf5037c1d441b9deaeb7f3cf6ebb60656b1d9feb9ec",
+      "local\\axial_probe.exe": "5dcfc267cf236b0a8f07c97dab0f9dff0a0bdf867583ad964ad1cd66290e1331",
+      "build\\win32\\Release\\bsp_core.lib": "321952b64cbdb2706797d746422d3c2bb4309615364580f819f55c994339dc23"
+    }
+  },
+  "prior_ledger_records": {
+    "functions": [
+      {
+        "address": "00b05d00",
+        "source": "src/native_particle_axial_loading.cpp",
+        "header": "include/bsp/native_particle_axial_loading.hpp",
+        "evidence": "docs/NATIVE_PARTICLE_AXIAL_LOADING.md; live/disk-equal full native span and final RET; exact operand-decoded capture in C:/Users/sqz269/bsp-aq-axial/byte_evidence.json; descriptive names are hypotheses.",
+        "name": "refresh_native_axial_particle_axis_00b05d00",
+        "status": "reconstructed_build_tested_bounded_fixture_tested",
+        "native_abi": "ECX actualA4h definition; no stack arguments; RET; incidental EAX unused",
+        "kind": "function"
+      },
+      {
+        "address": "00b062f0",
+        "source": "src/native_particle_axial_loading.cpp",
+        "header": "include/bsp/native_particle_axial_loading.hpp",
+        "evidence": "docs/NATIVE_PARTICLE_AXIAL_LOADING.md; live/disk-equal full native span and final RET; exact operand-decoded capture in C:/Users/sqz269/bsp-aq-axial/byte_evidence.json; descriptive names are hypotheses.",
+        "name": "set_native_axial_particle_alignment_00b062f0",
+        "status": "reconstructed_build_tested_bounded_fixture_tested",
+        "native_abi": "ECX actualA4h definition; stack nonnull C-string; RET4; C++ text is read-only",
+        "kind": "function"
+      },
+      {
+        "address": "00b064a0",
+        "source": "src/native_particle_axial_loading.cpp",
+        "header": "include/bsp/native_particle_axial_loading.hpp",
+        "evidence": "docs/NATIVE_PARTICLE_AXIAL_LOADING.md; live/disk-equal full native span and final RET; exact operand-decoded capture in C:/Users/sqz269/bsp-aq-axial/byte_evidence.json; descriptive names are hypotheses.",
+        "name": "load_native_axial_particle_definition_00b064a0",
+        "status": "reconstructed_build_tested_bounded_fixture_tested",
+        "native_abi": "ECX actualA4h definition; stack actualTextBuffer; RET4; AL=true, including missing braces and EOF",
+        "kind": "function"
+      }
+    ],
+    "names": [
+      {
+        "address": "00b05d00",
+        "name": "BSP_AxialParticle_RefreshAxis",
+        "evidence": "docs/NATIVE_PARTICLE_AXIAL_LOADING.md; live/disk-equal full native span and final RET; exact operand-decoded capture in C:/Users/sqz269/bsp-aq-axial/byte_evidence.json; descriptive names are hypotheses."
+      },
+      {
+        "address": "00b062f0",
+        "name": "BSP_AxialParticle_SetAlignment",
+        "evidence": "docs/NATIVE_PARTICLE_AXIAL_LOADING.md; live/disk-equal full native span and final RET; exact operand-decoded capture in C:/Users/sqz269/bsp-aq-axial/byte_evidence.json; descriptive names are hypotheses."
+      },
+      {
+        "address": "00b064a0",
+        "name": "BSP_AxialParticle_LoadDefinition",
+        "evidence": "docs/NATIVE_PARTICLE_AXIAL_LOADING.md; live/disk-equal full native span and final RET; exact operand-decoded capture in C:/Users/sqz269/bsp-aq-axial/byte_evidence.json; descriptive names are hypotheses."
+      }
+    ]
+  },
+  "prior_evidence": [
+    "docs/NATIVE_PARTICLE_AXIAL_LOADING.md",
+    "reports/native_particle_axial_loading.json",
+    "docs/NATIVE_PARTICLE_PARAMETER_PROPERTIES_RAW_ORCH4.md",
+    "reports/native_particle_parameter_properties_raw_orch4.json",
+    "docs/NATIVE_PARTICLE_PROPERTIES_RAW_ORCH4.md",
+    "reports/native_particle_properties_raw_orch4.json",
+    "docs/NATIVE_PARTICLE_TEXTURE_RAW_ORCH4.md"
+  ],
+  "limits": [
+    "Native FH3 and Windows SEH exception execution not validated.",
+    "Forced allocation/provider failures and malformed-memory faults not tested.",
+    "Renderer cache misses are not exercised by this parser probe.",
+    "Context identity/current-publication contract remains a caller obligation.",
+    "Complete source interface, not a binary ABI replacement; gameplay unvalidated."
+  ]
+}
