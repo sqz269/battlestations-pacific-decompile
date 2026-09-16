@@ -2,6 +2,8 @@
 // and docs/GAME_EXECUTABLE.md. No native behaviour is invented here: whatever is not
 // reconstructed is routed through GameHostLog::unimplemented with its native call site.
 #include "bsp/game_hosts.hpp"
+#include "bsp/native_renderer_reset_process.hpp"
+#include "bsp/native_renderer_reset_readiness.hpp"
 #include "bsp/settings_initial_state.hpp"
 #include "bsp/lua_runtime_globals.hpp"
 #include <stdexcept>
@@ -77,8 +79,9 @@ double input_image_double(std::uint64_t bits) noexcept {
     return value;
 }
 
-// 00bed3b0 keeps the platform object in window-extra offset zero. The extra-bytes layout
-// of the native object is not recovered, so the milestone binds one process-wide pointer.
+// BEC3B0 forwards the current platform singleton as the explicit receiver;
+// BED3B0 separately reads window-extra offset zero for the resize receiver.
+// The application binds both to its projection, preserving their distinct roles.
 Win32PlatformState* volatile g_active_platform = nullptr;
 
 // Window title and class name, the temporary string 00becee0 receives as argument 2.
@@ -133,6 +136,28 @@ void set_active_platform_state(Win32PlatformState* state) noexcept {
 
 LRESULT CALLBACK game_window_procedure(HWND window, UINT message, WPARAM wparam,
     LPARAM lparam) {
+    class WindowMessages final : public PlatformFocusMessageHost {
+    public:
+        Win32PlatformState& window_state(HWND hwnd) override {
+            return *reinterpret_cast<Win32PlatformState*>(GetWindowLongA(hwnd, 0));
+        }
+        void store_window_state(HWND hwnd, Win32PlatformState& state) override {
+            SetWindowLongA(hwnd, 0, reinterpret_cast<LONG>(&state));
+        }
+        void set_window_pos(HWND hwnd, HWND after, int x, int y, int width,
+            int height, UINT flags) override {
+            SetWindowPos(hwnd, after, x, y, width, height, flags);
+        }
+        void set_focus(HWND hwnd) override { SetFocus(hwnd); }
+        void set_foreground(HWND hwnd) override { SetForegroundWindow(hwnd); }
+        LRESULT default_message(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) override {
+            return DefWindowProcA(hwnd, msg, wp, lp);
+        }
+    } host;
+    LRESULT result;
+    if (g_active_platform && handle_platform_focus_message_00bed3b0_fragment(host,
+            *g_active_platform, window, message, wparam, lparam, result))
+        return result;
     // docs/WINDOW_CLOSE.md step 1: WM_CLOSE records a pending close at platform+180h and
     // returns zero. It does not set the loop exit byte +181h.
     if (message == WM_CLOSE) {
@@ -1580,6 +1605,10 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
             renderer_request_.width, renderer_request_.height,
             renderer_request_.fullscreen ? 1 : 0,
             renderer_request_.color_depth_selector ? 1 : 0, renderer_request_.option);
+        const auto* native_focus = &platform_.native_window_focus();
+        log_.notef("platform native focus cells: hwnd_matches=%d active=%d focused=%u",
+            native_platform_window_00bec230(native_focus) == platform_.window ? 1 : 0,
+            platform_.byte_041 ? 1 : 0, native_platform_has_focus_00b20c50(native_focus));
     } else {
         log_.note("window creation failed");
     }

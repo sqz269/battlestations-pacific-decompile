@@ -7,6 +7,7 @@
 #endif
 #include <windows.h>
 
+#include <cstddef>
 #include <cstdint>
 #include <string>
 
@@ -16,7 +17,7 @@
 // construction at 0073d899..0073d988 and the window configuration reached
 // through platform vtable +4 at 0073dc25. Evidence: docs/APP_INIT_PLATFORM.md.
 //
-// Every structure here is a typed projection of a native object, not its ABI.
+// The platform object is a typed projection, not its complete native ABI.
 // Native field offsets are quoted per member so the projection stays auditable;
 // none of these types are drop-in binary replacements. Window class registration
 // and CreateWindowEx themselves already exist as the audited native fragment
@@ -29,7 +30,7 @@ namespace bsp {
 // Projection of the 0x184-byte object allocated at 0073d8d1 and constructed by
 // 00becda0. Only fields written by 00becda0 or 00becee0 appear; bytes whose
 // role is not recovered keep an offset-derived name.
-struct Win32PlatformState {
+struct Win32PlatformFields {
     const void* vtable{};        // +000, native &PTR_LAB_00d68cc4
     std::string name;            // +004 length / +008 data, native cNativeString
     bool fullscreen{};           // +00c
@@ -42,12 +43,10 @@ struct Win32PlatformState {
     std::int32_t present_width{};    // +024
     std::int32_t present_height{};   // +028
     bool settings_changed_2c{};      // +02c, mouse cooperative-mode refresh flag
-    HWND window{};               // +030
     std::int32_t requested_width{};  // +034
     std::int32_t requested_height{}; // +038
     float desktop_aspect{};      // +03c
     bool byte_040{};             // +040, zeroed by 00becda0, role unrecovered
-    bool byte_041{};             // +041, zeroed by 00becda0, role unrecovered
     bool frames_enabled{};       // +042, gates the frame slot in 00bec1a0
     bool loop_finished{};        // +043, set on loop exit by 00bec1a0
     bool byte_044{};             // +044, zeroed by 00becda0, role unrecovered
@@ -60,6 +59,58 @@ struct Win32PlatformState {
     bool close_requested{};      // +180, set by WM_CLOSE in 00bed3b0
     bool exit_requested{};       // +181, loop exit flag read by 00bec1a0
 };
+
+// Only the two cells consumed by BEC230 and B20C50 have native offsets here.
+// Opaque bytes are padding, not recovered platform fields. Never pass this
+// storage to the full native platform constructor or message handler.
+struct NativePlatformWindowFocusStorage {
+    std::byte opaque_00[0x30]{};
+    HWND window_30{};
+    std::byte opaque_34[0x0d]{};
+    bool active_41{};
+    std::byte opaque_42[2]{};
+};
+static_assert(sizeof(HWND) == 4);
+static_assert(offsetof(NativePlatformWindowFocusStorage, window_30) == 0x30);
+static_assert(offsetof(NativePlatformWindowFocusStorage, active_41) == 0x41);
+static_assert(sizeof(NativePlatformWindowFocusStorage) == 0x44);
+
+struct Win32PlatformState : Win32PlatformFields {
+private:
+    NativePlatformWindowFocusStorage window_focus_{};
+public:
+    // Every projected producer and raw focus consumer uses these same cells.
+    // Explicit copy/move operations keep references bound to their own object.
+    HWND& window{window_focus_.window_30};
+    bool& byte_041{window_focus_.active_41};
+    Win32PlatformState() = default;
+    Win32PlatformState(const Win32PlatformState&);
+    Win32PlatformState(Win32PlatformState&&) noexcept;
+    Win32PlatformState& operator=(const Win32PlatformState&);
+    Win32PlatformState& operator=(Win32PlatformState&&) noexcept;
+    NativePlatformWindowFocusStorage& native_window_focus() noexcept { return window_focus_; }
+    const NativePlatformWindowFocusStorage& native_window_focus() const noexcept { return window_focus_; }
+};
+
+// Typed Win32 imports for the complete WM_CREATE and WM_SIZE arms of BED3B0.
+// Window-extra offset zero stores the projection passed to CreateWindowExA;
+// it is distinct from the active receiver forwarded by native thunk BEC3B0.
+struct PlatformFocusMessageHost {
+    virtual ~PlatformFocusMessageHost() = default;
+    virtual Win32PlatformState& window_state(HWND window) = 0; // GetWindowLongA(window, 0)
+    virtual void store_window_state(HWND window, Win32PlatformState& state) = 0; // SetWindowLongA
+    virtual void set_window_pos(HWND window, HWND insert_after, int x, int y,
+        int width, int height, UINT flags) = 0;
+    virtual void set_focus(HWND window) = 0;
+    virtual void set_foreground(HWND window) = 0;
+    virtual LRESULT default_message(HWND window, UINT message, WPARAM wparam, LPARAM lparam) = 0;
+};
+// Returns false without effects for messages outside this fragment. WM_SIZE
+// preserves both receiver identities and reloads the active HWND after SetFocus.
+// WM_ACTIVATE (audio/media/GUI/renderer calls) remains outside this fragment.
+bool handle_platform_focus_message_00bed3b0_fragment(PlatformFocusMessageHost& host,
+    Win32PlatformState& active, HWND window, UINT message, WPARAM wparam,
+    LPARAM lparam, LRESULT& result) noexcept;
 
 // 4/3, native float constant DAT_00d5bd98 read at 00bed129.
 inline constexpr float widescreen_threshold_00d5bd98 = 1.3333334f;

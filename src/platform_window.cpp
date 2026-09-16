@@ -1,6 +1,7 @@
 #include "bsp/platform_window.hpp"
 
 #include <cstddef>
+#include <utility>
 
 namespace bsp {
 namespace {
@@ -19,6 +20,56 @@ std::int32_t rect_extent(LONG high, LONG low) noexcept {
 }
 
 } // namespace
+
+Win32PlatformState::Win32PlatformState(const Win32PlatformState& other)
+    : Win32PlatformFields(other), window_focus_(other.window_focus_) {}
+Win32PlatformState::Win32PlatformState(Win32PlatformState&& other) noexcept
+    : Win32PlatformFields(std::move(other)), window_focus_(other.window_focus_) {}
+Win32PlatformState& Win32PlatformState::operator=(const Win32PlatformState& other) {
+    if (this != &other) {
+        Win32PlatformFields::operator=(other);
+        window_focus_ = other.window_focus_;
+    }
+    return *this;
+}
+Win32PlatformState& Win32PlatformState::operator=(Win32PlatformState&& other) noexcept {
+    if (this != &other) {
+        Win32PlatformFields::operator=(std::move(other));
+        window_focus_ = other.window_focus_;
+    }
+    return *this;
+}
+
+bool handle_platform_focus_message_00bed3b0_fragment(PlatformFocusMessageHost& host,
+    Win32PlatformState& active, HWND window, UINT message, WPARAM wparam,
+    LPARAM lparam, LRESULT& result) noexcept {
+    if (message == WM_CREATE) {
+        // BED508..BED524: store lpCreateParams before setting its +40 byte.
+        auto& state = *static_cast<Win32PlatformState*>(
+            reinterpret_cast<const CREATESTRUCTA*>(lparam)->lpCreateParams);
+        host.store_window_state(window, state);
+        state.byte_040 = true;
+        result = 0;
+        return true;
+    }
+    if (message != WM_SIZE) return false;
+    auto& state = host.window_state(window); // BED3C5, captured ESI
+    const bool inactive = wparam == SIZE_MAXHIDE || wparam == SIZE_MINIMIZED;
+    if (state.fullscreen) {
+        host.set_window_pos(state.window, inactive ? HWND_NOTOPMOST : HWND_TOPMOST,
+            0, 0, state.present_width, state.present_height, SWP_FRAMECHANGED);
+    }
+    state.byte_040 = !inactive;
+    state.byte_041 = !inactive;
+    if (!inactive) {
+        // BED557 reloads the explicit receiver, not window-extra ESI. Win32
+        // may reenter and change its HWND during SetFocus; preserve the reload.
+        host.set_focus(active.window);
+        host.set_foreground(active.window);
+    }
+    result = host.default_message(window, message, wparam, lparam);
+    return true;
+}
 
 void construct_win32_platform_00becda0(Win32PlatformState& state,
     void* text_queue_sentinel) noexcept {
