@@ -1,7 +1,8 @@
 {
   "packet": "orch4_particle_app_services_r23",
-  "status": "bounded_application_service_access_and_readonly_mapping_strict_win32_and_three_ctests_passed",
-  "base_head": "6baa27e70c399936f67ec5c2843b3b82c303ef4c",
+  "status": "bounded_application_service_access_readonly_mapping_and_particle_pool_bootstrap_strict_win32_focused_mask_probe_and_three_ctests_passed",
+  "followup": "r24_particle_process_bootstrap",
+  "base_head": "a3ba8f9ba7f2221b9c46ec55dcb88daac1cde685",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "ghidra_mutations": false,
@@ -21,24 +22,37 @@
     "identity": "All accessors refer to existing application-owned cells and contexts; no alias cell, owner, manager, provider, allocator or callback family is created."
   },
   "bootstrap_readonly_bands": [
-    "00ce0000", "00cf0000", "00d00000", "00d10000",
+    "00ce2000", "00cf0000", "00d00000", "00d10000",
     "00d50000", "00d60000", "00d70000"
   ],
+  "particle_pool_bootstrap": {
+    "owner": "GameNativeParticlePoolProcess",
+    "shared_allocator_domain": "GameNativePhysicalPoolProcess::allocator_list_domain_00e188b4()",
+    "order": [
+      "initialize_model_once_00cd7830",
+      "initialize_parameters_once_00cd78b0"
+    ],
+    "order_evidence": "DATA references at 00ce34ec and 00ce34f4 establish this relative CRT order; the intervening initializer is not claimed.",
+    "registration_status": "Log both actual atexit returns. Nonzero retains the initialized owner and does not fail startup or synthesize rollback/cleanup.",
+    "exception_status": "A thrown initializer logs startup failure and returns 1. An already registered earlier owner remains registered. The owner rejects replay after throw."
+  },
   "lifetime": "Borrowed contexts and cells remain alive through the existing shared singleton drain and immediate VFS retirement. F8D31C bits remain after owner deletion and may then be dangling; this packet never dereferences them after drain.",
   "validation": {
     "strict_win32_build": "passed",
     "seed_verification": "8 of 8 native differential seed bodies matched the installed executable",
+    "native_data_band_mask": "PASS corrected_mask=0000038f CE0000=rejected begin=00ce2000, using the production function from bsp_core.lib in an ignored MSVC Win32 probe",
     "ctests": [
       "reconstructed_math",
       "native_math_differential",
       "tool_tests"
     ],
-    "report_calls": "0 call rows checked, 0 failed"
+    "report_calls": "0 call rows checked, 0 failed",
+    "bootstrap_process_runtime": "Not run in this packet; the focused mask probe avoids launching the live game, and the actual pool process/atexit child probe remains separate."
   },
   "calls": [],
   "limits": [
     "No GameNativeParticleRuntime construction, registration, dispatch or install.",
-    "No raw resource manager/load cache, texture cache, render owners, F8D344 parameter pool, particle cache, atlas manager, platform host or load-event host is supplied.",
+    "No raw resource manager/load cache, texture cache, render owners, particle cache, atlas manager, platform host or load-event host is supplied.",
     "GameResourceManager and GuiLuaRef are not substituted for native raw owners.",
     "No native ABI, FH3, renderer, gameplay or installed-game runtime validation."
   ],
