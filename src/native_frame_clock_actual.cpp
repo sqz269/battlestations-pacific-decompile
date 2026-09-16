@@ -163,12 +163,12 @@ __declspec(naked) void __fastcall update_native_frame_clock_00bedc30(void*) {
     label_00bedd58: MOV dword ptr [ESI + 0x4c],EDX
     label_00bedd5b: FILD qword ptr [ESI + 0x40]
     label_00bedd5e: FILD qword ptr [ESI + 0x48]
-    label_00bedd61: FDIVP
+    label_00bedd61: FDIVP ST(1),ST(0)
     label_00bedd63: FSTP float ptr [ESP + 0xc]
     label_00bedd67: FLD float ptr [ESP + 0xc]
     label_00bedd6b: FLDZ
-    label_00bedd6d: FCOMIP ST0,ST1
-    label_00bedd6f: FSTP ST0
+    label_00bedd6d: FCOMIP ST(0),ST(1)
+    label_00bedd6f: FSTP ST(0)
     label_00bedd71: JBE label_00beddad
     label_00bedd73: MOV EAX,dword ptr [EBX]
     label_00bedd75: MOV ECX,dword ptr [EBX + 0x4]
