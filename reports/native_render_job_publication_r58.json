@@ -2032,5 +2032,95 @@
     "bytes": 356883253,
     "all_entries_rehashed": true,
     "scope": "Full current source/build compiler input/output closure and focused fixture/native/link evidence. Seven same-process physical I386 modules; no frame cold or job runtime proof."
+  },
+  "primary_integration": {
+    "source_commit": "691342c560bc7e2f29e5c6b6d048d547e9fa11af",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "fixture_rerun_after_integration": false,
+    "archive": "local/evidence-r58/render-jobs-main-r58.zip",
+    "sha256": "805ec01e48b4f6cd1aeaf3ab108d392f4744456ae7f6abc1be5932608150e99f",
+    "files": [
+      {
+        "path": "local/r58_integration.log",
+        "bytes": 1885,
+        "sha256": "61201d8fff0e6abf084ea89151a6d24c52a0840fbb703d271cd79928734a4d2e"
+      },
+      {
+        "path": "src/native_render_job_publication.cpp",
+        "bytes": 6188,
+        "sha256": "5b6ccfcc6d4f27a95381a3cfd3180dd99d102849e39674edcfd120ecbec7d947"
+      },
+      {
+        "path": "include/bsp/native_render_job_publication.hpp",
+        "bytes": 3226,
+        "sha256": "8d8f4c2d64134f08e62132a11d69b330eae64d82e5899d4730ccebad63ecd007"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 151399,
+        "sha256": "e09fda6ec50ab37205ecb301cd446c0aaf6af12317d4660360612bb9d9dda275"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "bytes": 17352,
+        "sha256": "8afc914ee29480e2092d23c4492a3c54e230690ccbf66471953857390ab03ecd"
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "bytes": 11084,
+        "sha256": "008189f3fb6bc36e8b88d7acdd537ce11e30cf6c9df3eee9a01398b237d81cf8"
+      },
+      {
+        "path": "reports/native_render_job_publication_flow_r58.json",
+        "bytes": 5605,
+        "sha256": "1a449167770a1eb0ea2ad31a12e429ce0240a10164a3642d8318dde54b235469"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 231301,
+        "sha256": "6c4e92dce22dc2417ea0724ec6f1b64208e43202916d5aff57ebf7d08689ba2b"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_render_job_publication.obj",
+        "bytes": 17264,
+        "sha256": "800796dca17a6c0164e98a6ed97630528cf306c12bc3f8e4a42956bd11d4262a"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63692586,
+        "sha256": "74b0c278d921137a4668c2717824af940ed137644b1f44e904a6b43d4b033c95"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2268672,
+        "sha256": "c21ec1be2deac5563dae9655679529e115916ce1e44638b92b319bb22e05c141"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2408,
+        "sha256": "c6ff46c31ec035b4be0b6fc726d958aba4e7542c5e8237fe24f0993d8bc33249"
+      },
+      {
+        "path": "local/render_job_publication_r58/call_gate.log",
+        "bytes": 80,
+        "sha256": "00d6a7d0f73b66a66f56eac659cf6cdf218e021cf2dc0cc9553ad514371de035"
+      },
+      {
+        "path": "local/render_job_publication_r58/annotations.log",
+        "bytes": 559,
+        "sha256": "1a0388bd437c1540195302ff061a15870d6ff436f78aa3ad7cf99464762b58d4"
+      },
+      {
+        "path": "local/render_job_publication_r58/exports.log",
+        "bytes": 987,
+        "sha256": "0461d60178074d29d8575a61abd45fba33894a859802f77e613e7a036781f8c1"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T172250Z.json",
+        "bytes": 26262,
+        "sha256": "a8259878e6f2c98d86bfad135f9b1925084fbdbd7e487452fd3d08741da8e6e1"
+      }
+    ]
   }
 }
