@@ -1,0 +1,1737 @@
+{
+  "schema_version": 1,
+  "packet": "native_renderer_debug_records24_provider_contract_r41",
+  "created_utc": "2026-09-16T12:19:59.290014+00:00",
+  "scope": "Report-only current-provider adoption audit. No C++/CMake edits, build, new test, Ghidra write, or game execution.",
+  "current_commit": "b15f322895cd86b6026b1a3bf035d35b8fdebe9d",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-debug-records24-contract-r41",
+  "lease": {
+    "packet": "native_renderer_debug_records24_provider_contract_r41",
+    "addresses": [
+      "00b2bb90",
+      "00b2bf60"
+    ],
+    "files": [
+      "reports/native_renderer_debug_records24_provider_contract_r41.json"
+    ]
+  },
+  "decision": "Do not adopt B2BB90 yet. Raw model/mapping/node blockers now have real providers, but gather, B42350 and material pass execution remain absent. Adopt bounded concrete children first; do not copy historical duplicate leaves.",
+  "analysis_identity": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "Each bsp.py ghidra invocation calls Client.verify, checking live project name, program path, language and image base against config/target.json. ensure --status confirmed active program. All live operations were read-only.",
+    "installed_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "historical_provenance": {
+    "source_revision": "a6b2884f2ef01c3a0b636b0853dc66ec7855aeba",
+    "parent_final_evidence_revision": "650d554919c3ba74c11eacb169fc2a8f1ec9466f",
+    "archive_manifest": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_validated_artifacts_v2\\manifest.json",
+    "manifest_sha256": "44a4e4e1d483b9829b414101dabca8637d4051c495a6f4d76797fc1a11cbd46f",
+    "artifacts": 4709,
+    "loaded_fixture_modules": 13,
+    "captured_utc": "2026-09-14T19:28:54.558987+00:00",
+    "dependency_head": "b85e93fe8d34d3c077e0e2f4ca13e3acb27f3aa1",
+    "selected_archive_files": [
+      {
+        "path": "src/native_sampler_loader_context.cpp",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_validated_artifacts_v2\\artifacts\\01174_477616c40fc4_native_sampler_loader_context.cpp",
+        "bytes": 4393,
+        "sha256": "477616c40fc4658735dadf9a31a2fe543f12bf507be12ce238ab379ac3feeedb",
+        "frozen_hash_verified": true,
+        "historical_git_blob_sha256": "477616c40fc4658735dadf9a31a2fe543f12bf507be12ce238ab379ac3feeedb",
+        "lf_normalized_equals_a6b2884f2": true
+      },
+      {
+        "path": "src/native_system_constant_gather.cpp",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_validated_artifacts_v2\\artifacts\\01215_4063d7f01b96_native_system_constant_gather.cpp",
+        "bytes": 35048,
+        "sha256": "4063d7f01b96b8d428412e25276fa39bc0256f0c086ac8ecfa80f8c3d5c82183",
+        "frozen_hash_verified": true,
+        "historical_git_blob_sha256": "4063d7f01b96b8d428412e25276fa39bc0256f0c086ac8ecfa80f8c3d5c82183",
+        "lf_normalized_equals_a6b2884f2": true
+      },
+      {
+        "path": "src/native_material_pass_execution.cpp",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_validated_artifacts_v2\\artifacts\\01226_c2619bf04f92_native_material_pass_execution.cpp",
+        "bytes": 20878,
+        "sha256": "c2619bf04f9228d13cf2a54611383137bdb62a3c2458d385200b4f767a840384",
+        "frozen_hash_verified": true,
+        "historical_git_blob_sha256": "c2619bf04f9228d13cf2a54611383137bdb62a3c2458d385200b4f767a840384",
+        "lf_normalized_equals_a6b2884f2": true
+      },
+      {
+        "path": "src/native_material_pass_execution_leaves.cpp",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_validated_artifacts_v2\\artifacts\\01227_0a158acac879_native_material_pass_execution_leaves.cpp",
+        "bytes": 656,
+        "sha256": "0a158acac87958f0479eb316c711d2b3a711171f9fa4946c27ab76f93b053168",
+        "frozen_hash_verified": true,
+        "historical_git_blob_sha256": "0a158acac87958f0479eb316c711d2b3a711171f9fa4946c27ab76f93b053168",
+        "lf_normalized_equals_a6b2884f2": true
+      },
+      {
+        "path": "src/native_material_constant_build.cpp",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_validated_artifacts_v2\\artifacts\\01229_757eb28bab6d_native_material_constant_build.cpp",
+        "bytes": 21148,
+        "sha256": "757eb28bab6d7925acec8e218eb6de01ef093c6da439d4f58c6e781fc6e2e06b",
+        "frozen_hash_verified": true,
+        "historical_git_blob_sha256": "2a8b9737c6f5f7520a2e74744f421f74f29f2a6f32b7f46a55e7ed36597210fd",
+        "lf_normalized_equals_a6b2884f2": false
+      },
+      {
+        "path": "src/native_material_constant_build_leaves.cpp",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_validated_artifacts_v2\\artifacts\\01230_327c838fb9cd_native_material_constant_build_leaves.cpp",
+        "bytes": 1835,
+        "sha256": "327c838fb9cde2ca1cea58518684960c84cfe6c8b4dbb4a85d50077f86958c75",
+        "frozen_hash_verified": true,
+        "historical_git_blob_sha256": "327c838fb9cde2ca1cea58518684960c84cfe6c8b4dbb4a85d50077f86958c75",
+        "lf_normalized_equals_a6b2884f2": true
+      },
+      {
+        "path": "src/native_material_texture_source_constants.cpp",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_validated_artifacts_v2\\artifacts\\01231_4feee5ff7d5d_native_material_texture_source_constants.cpp",
+        "bytes": 1614,
+        "sha256": "4feee5ff7d5d435e1604369bbe77c1c1b59103c1499da160963152720ec27523",
+        "frozen_hash_verified": true,
+        "historical_git_blob_sha256": "4feee5ff7d5d435e1604369bbe77c1c1b59103c1499da160963152720ec27523",
+        "lf_normalized_equals_a6b2884f2": true
+      },
+      {
+        "path": "src/native_renderer_debug_records24.cpp",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_validated_artifacts_v2\\artifacts\\01232_72c759e27fe3_native_renderer_debug_records24.cpp",
+        "bytes": 9706,
+        "sha256": "72c759e27fe397566a2f4d1d7c7baea4884771237f801754e80757c4aefc3a0a",
+        "frozen_hash_verified": true,
+        "historical_git_blob_sha256": "fe9f8be2c8c17bb2d286122945bc385acd1245a473c408473cdcd289aba9d19e",
+        "lf_normalized_equals_a6b2884f2": true
+      },
+      {
+        "path": "src/native_renderer_debug_records24_leaves.cpp",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_validated_artifacts_v2\\artifacts\\01233_6e23934651c1_native_renderer_debug_records24_leaves.cpp",
+        "bytes": 9125,
+        "sha256": "6e23934651c1849719b5bd923a04944517aec7042918fbdbd3af618a3ded9705",
+        "frozen_hash_verified": true,
+        "historical_git_blob_sha256": "2f2b9007318fccc7adf6dcb34675b9e140224ab5646cf8a3ee130799b8ca9671",
+        "lf_normalized_equals_a6b2884f2": true
+      },
+      {
+        "path": "include/bsp/native_sampler_loader_context.hpp",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_validated_artifacts_v2\\artifacts\\02786_1597437df568_NATIVE_SAMPLER_LOADER_CONTEXT.HPP",
+        "bytes": 3827,
+        "sha256": "1597437df568ec3a493a8cd4029fbd15b28bae6ef896450bf7f1925cbd10bb42",
+        "frozen_hash_verified": true,
+        "historical_git_blob_sha256": "475a5154e7a16cac2fcc2ecb6da719c98b4fee86322316f0c3fcce0137c7cc6b",
+        "lf_normalized_equals_a6b2884f2": false
+      },
+      {
+        "path": "include/bsp/native_material_pass_execution.hpp",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_validated_artifacts_v2\\artifacts\\02843_3353f9f23c8d_NATIVE_MATERIAL_PASS_EXECUTION.HPP",
+        "bytes": 5578,
+        "sha256": "3353f9f23c8d112b1cbcd23d0d93798fa3e8da9df1cd299009f19b309356fb37",
+        "frozen_hash_verified": true,
+        "historical_git_blob_sha256": "3353f9f23c8d112b1cbcd23d0d93798fa3e8da9df1cd299009f19b309356fb37",
+        "lf_normalized_equals_a6b2884f2": true
+      },
+      {
+        "path": "include/bsp/native_system_constant_gather.hpp",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_validated_artifacts_v2\\artifacts\\02844_5512f5c97324_NATIVE_SYSTEM_CONSTANT_GATHER.HPP",
+        "bytes": 3940,
+        "sha256": "5512f5c973240310fd64e996f65ab5f0e433ec4535bc1fa7a1e0d1e6be8c5cef",
+        "frozen_hash_verified": true,
+        "historical_git_blob_sha256": "5512f5c973240310fd64e996f65ab5f0e433ec4535bc1fa7a1e0d1e6be8c5cef",
+        "lf_normalized_equals_a6b2884f2": true
+      },
+      {
+        "path": "include/bsp/native_material_constant_build.hpp",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_validated_artifacts_v2\\artifacts\\02846_9a8cfa55a082_NATIVE_MATERIAL_CONSTANT_BUILD.HPP",
+        "bytes": 2687,
+        "sha256": "9a8cfa55a0828f563aacdd19459170130df65e287a48e6f2038f05eb05e084d3",
+        "frozen_hash_verified": true,
+        "historical_git_blob_sha256": "9a8cfa55a0828f563aacdd19459170130df65e287a48e6f2038f05eb05e084d3",
+        "lf_normalized_equals_a6b2884f2": true
+      },
+      {
+        "path": "include/bsp/native_material_constant_build_leaves.hpp",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_validated_artifacts_v2\\artifacts\\02847_2d54399b985b_NATIVE_MATERIAL_CONSTANT_BUILD_LEAVES.HPP",
+        "bytes": 1156,
+        "sha256": "2d54399b985b8c892de587307b9a8cbc3a1331f9438a533a2057954da2b5fea4",
+        "frozen_hash_verified": true,
+        "historical_git_blob_sha256": "2d54399b985b8c892de587307b9a8cbc3a1331f9438a533a2057954da2b5fea4",
+        "lf_normalized_equals_a6b2884f2": true
+      },
+      {
+        "path": "include/bsp/native_material_texture_source_constants.hpp",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_validated_artifacts_v2\\artifacts\\02848_e4f34abafe81_NATIVE_MATERIAL_TEXTURE_SOURCE_CONSTANTS.HPP",
+        "bytes": 855,
+        "sha256": "e4f34abafe81f6f5da92b5bdd7a8f8455ed49a02186404df6defa220c6d574d4",
+        "frozen_hash_verified": true,
+        "historical_git_blob_sha256": "e4f34abafe81f6f5da92b5bdd7a8f8455ed49a02186404df6defa220c6d574d4",
+        "lf_normalized_equals_a6b2884f2": true
+      },
+      {
+        "path": "include/bsp/native_renderer_debug_records24.hpp",
+        "frozen_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_validated_artifacts_v2\\artifacts\\02849_937b4c55f396_NATIVE_RENDERER_DEBUG_RECORDS24.HPP",
+        "bytes": 5051,
+        "sha256": "937b4c55f396d0c38da4f3e141758308b380495eab4596e0b064a596d64fd8da",
+        "frozen_hash_verified": true,
+        "historical_git_blob_sha256": "937b4c55f396d0c38da4f3e141758308b380495eab4596e0b064a596d64fd8da",
+        "lf_normalized_equals_a6b2884f2": true
+      }
+    ],
+    "source_identity_warning": "Frozen debug archive B42350.cpp predates four corrected schedules now in a6b2884f2: decode.y x87/live-one read order, descriptor end/count reloads, and both VS/PS world-valid capture orders. Its sampler header differs only in cache-loader documentation. Do not assign old archive runtime evidence to corrected B42350 source.",
+    "gather_primary": {
+      "source_commit": "1bbc16628a278b9c8b023266664e4874eb45a368",
+      "worker_source_commit": "8002713741ec755683789c72c635240f1cf66e0f",
+      "upstream_light_source_commit": "34c5ce54",
+      "strict_win32_build": true,
+      "seed_matches": 8,
+      "ctests_passed": 2,
+      "numeric_call_rows": 47,
+      "numeric_call_failures": 0,
+      "live_PE_spans": 24,
+      "live_PE_bytes": 5157,
+      "real_HAL_source_cases": 2,
+      "original_leaf_comparisons": 2,
+      "restored_original_COM_slots_and_vptrs": true,
+      "saved_read_back_annotations": 15,
+      "annotation_journal": "local/ghidra-annotations-20260914T191754Z.json",
+      "checkpoint": {
+        "path": "local/checkpoints/1bbc1662/native-system-constant-gather-wave/validation.json",
+        "sha256": "78ee9018977843340db954b871be19c91a27e56c175f83a216053571a02b2f66",
+        "source_commit": "1bbc16628a278b9c8b023266664e4874eb45a368",
+        "artifacts": 3377,
+        "runtime_modules": 58
+      },
+      "fixture_scope": "Full corrected source gather uses real Direct3D9 HAL devices. Only original four-byte texture width/height leaves executed differentially. Both current renderer/register count reloads, ignored VS failure, prefix preimage, fog/lighting/shadow, unsigned width and x87 reciprocal cases passed.",
+      "limitations": [
+        "Original full B46A70 remains unexecuted.",
+        "Uncached axes route, original private ABI/FH3/SEH, full renderer and game execution remain unvalidated.",
+        "Worker frozen evidence validates80027137; primary checkpoint validates captured-profile correction1bbc1662."
+      ]
+    },
+    "constant_builder_primary": {
+      "source_commit": "7da09ce91112fde1f29644ad2da177b4915be447",
+      "worker_source_commit": "6336f48698718c2fa5164b9ffb2fa48e0f0ae322",
+      "worker_final_commit": "9e4354598167e590d7a232263da28f3b15175323",
+      "strict_win32_build": true,
+      "seed_matches": 8,
+      "ctests_passed": 2,
+      "numeric_call_rows": 32,
+      "numeric_call_failures": 0,
+      "live_PE_spans": 52,
+      "live_PE_bytes": 12295,
+      "full_native_source_bank_variants": 2,
+      "compared_bank_bytes_per_variant": 8192,
+      "original_fixture_bodies": 27,
+      "original_fixture_bytes": 6704,
+      "saved_read_back_annotations": 17,
+      "new_descriptive_names": 4,
+      "annotation_journal": "local/ghidra-annotations-20260914T194348Z.json",
+      "independent_review_sha256": "0ba6dbf95bdbe56c296148a4a3a39bd2966dcf540070c10fb71891a1a47ec17f",
+      "checkpoint": {
+        "path": "local/checkpoints/7da09ce9/native-material-constant-build-wave/validation.json",
+        "sha256": "40e2d9986cf8c3e53cf84d715a1d9aa87081c7df36d8dde6639c4359e8e69b76",
+        "source_commit": "7da09ce91112fde1f29644ad2da177b4915be447",
+        "artifacts": 3516,
+        "runtime_modules": 7
+      },
+      "scope": "Full B42350 original/source fallback and optimized bank comparison plus actual texture-source providers and source retained-failure/replay guard. Shared source B48CE0, host memmove and host invalid-parameter boundaries.",
+      "limitations": [
+        "Nonempty renderer/shadow binding remains unexecuted.",
+        "Full compiler/pass/debug parent and game behavior remain unvalidated.",
+        "Original private stack/register ABI, FH3/SEH and injected cleanup exceptions are not claimed.",
+        "Worker frozen6336f486 predates primary fixes; final checkpoint covers7da09ce9."
+      ]
+    },
+    "pass_source_revision": "d91f24d39e2e7aeeb461724508ff1b8c86fce63e",
+    "checkpoint_validation_limit": "Primary checkpoint metadata copied from historical reports, not rerun or independently rehashed in this report. Selected debug archive files and manifest were rehashed now."
+  },
+  "current_native_evidence": {
+    "parent": {
+      "start": "00b2bb90",
+      "end_exclusive": "00b2c275",
+      "bytes": 1765,
+      "sha256": "3cb427ebdf70572b733735cd19f487e3ff9adcbe01633f3b39837526982f8d86",
+      "live_equals_installed_pe": true,
+      "listed_instructions": 476,
+      "original_abi": "ECX renderer; plain RET",
+      "historical_source_abi": "ECX renderer; EDX context; stacked persistent frame; RET4"
+    },
+    "sphere": {
+      "start": "00b2bf60",
+      "end_exclusive": "00b2c143",
+      "bytes": 483,
+      "sha256": "75d96f117722131ef42cd699dd91790e006502a6c1405cf931160f0fd50c8c86",
+      "live_equals_installed_pe": true,
+      "instruction_rows": 123,
+      "all_historical_address_mnemonic_operand_rows_match_after_documented_binding_and_assembler_notation": true,
+      "angle_binding_adaptations": [
+        {
+          "address": "00b2bf74",
+          "original": "FMUL double ptr [0x00cec730]",
+          "source": "fmul qword ptr [ebp]",
+          "reason": "Borrow actual CEC730 double through the explicit pointer held in EBP; retain each live FMUL64 read."
+        },
+        {
+          "address": "00b2c014",
+          "original": "FMUL double ptr [0x00cec730]",
+          "source": "fmul qword ptr [ebp]",
+          "reason": "Borrow actual CEC730 double through the explicit pointer held in EBP; retain each live FMUL64 read."
+        },
+        {
+          "address": "00b2c0b4",
+          "original": "FMUL double ptr [0x00cec730]",
+          "source": "fmul qword ptr [ebp]",
+          "reason": "Borrow actual CEC730 double through the explicit pointer held in EBP; retain each live FMUL64 read."
+        }
+      ],
+      "assembler_notation": "MSVC FMULP ST(2),ST(0) and Ghidra FMULP ST2 express the same three instructions.",
+      "original_function": false,
+      "vertices": 38,
+      "ring_counts": [
+        13,
+        12,
+        13
+      ],
+      "stride_bytes": 16,
+      "source_alias_domain": "Snapshot supplied center/radius DWORDs before output. Preserve original-shaped private scratch and all float spills. Arbitrary source/destination aliasing with original private stack is not established."
+    },
+    "direct_calls": 40,
+    "indirect_calls": 5,
+    "calls": [
+      {
+        "address": "00b2bbe0",
+        "instruction": "CALL 0x0041e870",
+        "bytes_hex": "e88b2c8fff",
+        "kind": "direct",
+        "historical_contract": "Native string literal constructor schedule: zero both header words, resize(strlen,1), copy CURRENT length+1 when data nonnull; inlined with exact known strings."
+      },
+      {
+        "address": "00b2bbf5",
+        "instruction": "CALL 0x0041e870",
+        "bytes_hex": "e8762c8fff",
+        "kind": "direct",
+        "historical_contract": "Native string literal constructor schedule: zero both header words, resize(strlen,1), copy CURRENT length+1 when data nonnull; inlined with exact known strings."
+      },
+      {
+        "address": "00b2bc0b",
+        "instruction": "CALL 0x0041e870",
+        "bytes_hex": "e8602c8fff",
+        "kind": "direct",
+        "historical_contract": "Native string literal constructor schedule: zero both header words, resize(strlen,1), copy CURRENT length+1 when data nonnull; inlined with exact known strings."
+      },
+      {
+        "address": "00b2bc2a",
+        "instruction": "CALL 0x00b4c700",
+        "bytes_hex": "e8d10a0200",
+        "kind": "direct",
+        "historical_contract": "Complete actual generated model builder; nameECX,layoutEDX,effect/3/0/0/0 stacked; persistent native creator acquisition."
+      },
+      {
+        "address": "00b2bc50",
+        "instruction": "CALL 0x00419cc0",
+        "bytes_hex": "e86be08eff",
+        "kind": "direct",
+        "historical_contract": "Actual current AA8 sized-string pool getter through NativeStringRawPoolContext; no release arguments consumed."
+      },
+      {
+        "address": "00b2bc57",
+        "instruction": "CALL 0x00bd1510",
+        "bytes_hex": "e8b4580a00",
+        "kind": "direct",
+        "historical_contract": "Actual sized-string return via current rawpool; captureddata/currentlength+1, unused1; RET0C."
+      },
+      {
+        "address": "00b2bc76",
+        "instruction": "CALL 0x00419cc0",
+        "bytes_hex": "e845e08eff",
+        "kind": "direct",
+        "historical_contract": "Actual current AA8 sized-string pool getter through NativeStringRawPoolContext; no release arguments consumed."
+      },
+      {
+        "address": "00b2bc7d",
+        "instruction": "CALL 0x00bd1510",
+        "bytes_hex": "e88e580a00",
+        "kind": "direct",
+        "historical_contract": "Actual sized-string return via current rawpool; captureddata/currentlength+1, unused1; RET0C."
+      },
+      {
+        "address": "00b2bca0",
+        "instruction": "CALL 0x00419cc0",
+        "bytes_hex": "e81be08eff",
+        "kind": "direct",
+        "historical_contract": "Actual current AA8 sized-string pool getter through NativeStringRawPoolContext; no release arguments consumed."
+      },
+      {
+        "address": "00b2bca7",
+        "instruction": "CALL 0x00bd1510",
+        "bytes_hex": "e864580a00",
+        "kind": "direct",
+        "historical_contract": "Actual sized-string return via current rawpool; captureddata/currentlength+1, unused1; RET0C."
+      },
+      {
+        "address": "00b2bd5a",
+        "instruction": "CALL EDX",
+        "bytes_hex": "ffd2",
+        "kind": "indirect"
+      },
+      {
+        "address": "00b2bdc8",
+        "instruction": "CALL 0x0041dd40",
+        "bytes_hex": "e8731f8fff",
+        "kind": "direct",
+        "historical_contract": "Actual raw8h string resize with preserve1 and explicit16/11/12 length; same AA8/AA4/AA0 storage context."
+      },
+      {
+        "address": "00b2bde3",
+        "instruction": "CALL 0x00bf7680",
+        "bytes_hex": "e898b80c00",
+        "kind": "direct",
+        "historical_contract": "Native memcpy schedule for disjoint immutable literal into resizedheader data, CURRENT headerlength+1; std::memcpy source interface."
+      },
+      {
+        "address": "00b2be06",
+        "instruction": "CALL 0x0041dd40",
+        "bytes_hex": "e8351f8fff",
+        "kind": "direct",
+        "historical_contract": "Actual raw8h string resize with preserve1 and explicit16/11/12 length; same AA8/AA4/AA0 storage context."
+      },
+      {
+        "address": "00b2be21",
+        "instruction": "CALL 0x00bf7680",
+        "bytes_hex": "e85ab80c00",
+        "kind": "direct",
+        "historical_contract": "Native memcpy schedule for disjoint immutable literal into resizedheader data, CURRENT headerlength+1; std::memcpy source interface."
+      },
+      {
+        "address": "00b2be41",
+        "instruction": "CALL 0x0041dd40",
+        "bytes_hex": "e8fa1e8fff",
+        "kind": "direct",
+        "historical_contract": "Actual raw8h string resize with preserve1 and explicit16/11/12 length; same AA8/AA4/AA0 storage context."
+      },
+      {
+        "address": "00b2be5c",
+        "instruction": "CALL 0x00bf7680",
+        "bytes_hex": "e81fb80c00",
+        "kind": "direct",
+        "historical_contract": "Native memcpy schedule for disjoint immutable literal into resizedheader data, CURRENT headerlength+1; std::memcpy source interface."
+      },
+      {
+        "address": "00b2be7e",
+        "instruction": "CALL 0x00b4c700",
+        "bytes_hex": "e87d080200",
+        "kind": "direct",
+        "historical_contract": "Complete actual generated model builder; nameECX,layoutEDX,effect/3/0/0/0 stacked; persistent native creator acquisition."
+      },
+      {
+        "address": "00b2bea0",
+        "instruction": "CALL 0x00419cc0",
+        "bytes_hex": "e81bde8eff",
+        "kind": "direct",
+        "historical_contract": "Actual current AA8 sized-string pool getter through NativeStringRawPoolContext; no release arguments consumed."
+      },
+      {
+        "address": "00b2bea7",
+        "instruction": "CALL 0x00bd1510",
+        "bytes_hex": "e864560a00",
+        "kind": "direct",
+        "historical_contract": "Actual sized-string return via current rawpool; captureddata/currentlength+1, unused1; RET0C."
+      },
+      {
+        "address": "00b2bec7",
+        "instruction": "CALL 0x00419cc0",
+        "bytes_hex": "e8f4dd8eff",
+        "kind": "direct",
+        "historical_contract": "Actual current AA8 sized-string pool getter through NativeStringRawPoolContext; no release arguments consumed."
+      },
+      {
+        "address": "00b2bece",
+        "instruction": "CALL 0x00bd1510",
+        "bytes_hex": "e83d560a00",
+        "kind": "direct",
+        "historical_contract": "Actual sized-string return via current rawpool; captureddata/currentlength+1, unused1; RET0C."
+      },
+      {
+        "address": "00b2bef1",
+        "instruction": "CALL 0x00419cc0",
+        "bytes_hex": "e8cadd8eff",
+        "kind": "direct",
+        "historical_contract": "Actual current AA8 sized-string pool getter through NativeStringRawPoolContext; no release arguments consumed."
+      },
+      {
+        "address": "00b2bef8",
+        "instruction": "CALL 0x00bd1510",
+        "bytes_hex": "e813560a00",
+        "kind": "direct",
+        "historical_contract": "Actual sized-string return via current rawpool; captureddata/currentlength+1, unused1; RET0C."
+      },
+      {
+        "address": "00b2bf0f",
+        "instruction": "CALL 0x00b74640",
+        "bytes_hex": "e82c870400",
+        "kind": "direct",
+        "historical_contract": "Actual model+174 tail geometry index0; native consumes one stack index (RET4)."
+      },
+      {
+        "address": "00b2bf16",
+        "instruction": "CALL 0x00b73260",
+        "bytes_hex": "e845730400",
+        "kind": "direct",
+        "historical_contract": "Current raw geometry vertex stream at index0; not retained across lock/unlock."
+      },
+      {
+        "address": "00b2bf26",
+        "instruction": "CALL EAX",
+        "bytes_hex": "ffd0",
+        "kind": "indirect"
+      },
+      {
+        "address": "00b2c147",
+        "instruction": "CALL 0x00b74640",
+        "bytes_hex": "e8f4840400",
+        "kind": "direct",
+        "historical_contract": "Actual model+174 tail geometry index0; native consumes one stack index (RET4)."
+      },
+      {
+        "address": "00b2c14e",
+        "instruction": "CALL 0x00b73260",
+        "bytes_hex": "e80d710400",
+        "kind": "direct",
+        "historical_contract": "Current raw geometry vertex stream at index0; not retained across lock/unlock."
+      },
+      {
+        "address": "00b2c15a",
+        "instruction": "CALL EAX",
+        "bytes_hex": "ffd0",
+        "kind": "indirect"
+      },
+      {
+        "address": "00b2c160",
+        "instruction": "CALL 0x00b74640",
+        "bytes_hex": "e8db840400",
+        "kind": "direct",
+        "historical_contract": "Actual model+174 tail geometry index0; native consumes one stack index (RET4)."
+      },
+      {
+        "address": "00b2c167",
+        "instruction": "CALL 0x00b732c0",
+        "bytes_hex": "e854710400",
+        "kind": "direct",
+        "historical_contract": "Current raw geometry section at index0; reread independently for counts, entry and material."
+      },
+      {
+        "address": "00b2c177",
+        "instruction": "CALL 0x00b74640",
+        "bytes_hex": "e8c4840400",
+        "kind": "direct",
+        "historical_contract": "Actual model+174 tail geometry index0; native consumes one stack index (RET4)."
+      },
+      {
+        "address": "00b2c17e",
+        "instruction": "CALL 0x00b732c0",
+        "bytes_hex": "e83d710400",
+        "kind": "direct",
+        "historical_contract": "Current raw geometry section at index0; reread independently for counts, entry and material."
+      },
+      {
+        "address": "00b2c18e",
+        "instruction": "CALL 0x00b46a70",
+        "bytes_hex": "e8dda80100",
+        "kind": "direct",
+        "historical_contract": "Complete raw gather, sceneECX0 and capturedcameraEDX; caller-owned prefix preimage and persistent actual sampler frame."
+      },
+      {
+        "address": "00b2c1a0",
+        "instruction": "CALL dword ptr [0x00ce221c]",
+        "bytes_hex": "ff151c22ce00",
+        "kind": "indirect"
+      },
+      {
+        "address": "00b2c1c3",
+        "instruction": "CALL 0x00b74640",
+        "bytes_hex": "e878840400",
+        "kind": "direct",
+        "historical_contract": "Actual model+174 tail geometry index0; native consumes one stack index (RET4)."
+      },
+      {
+        "address": "00b2c1cd",
+        "instruction": "CALL 0x00b74640",
+        "bytes_hex": "e86e840400",
+        "kind": "direct",
+        "historical_contract": "Actual model+174 tail geometry index0; native consumes one stack index (RET4)."
+      },
+      {
+        "address": "00b2c1d4",
+        "instruction": "CALL 0x00b732c0",
+        "bytes_hex": "e8e7700400",
+        "kind": "direct",
+        "historical_contract": "Current raw geometry section at index0; reread independently for counts, entry and material."
+      },
+      {
+        "address": "00b2c1e2",
+        "instruction": "CALL 0x00b51a20",
+        "bytes_hex": "e839580200",
+        "kind": "direct",
+        "historical_contract": "Complete raw28h render entry initialization on current cache; leading0, section, geometry, model, camera, visibility1, depthoverride0, flags0."
+      },
+      {
+        "address": "00b2c1eb",
+        "instruction": "CALL 0x00b74640",
+        "bytes_hex": "e850840400",
+        "kind": "direct",
+        "historical_contract": "Actual model+174 tail geometry index0; native consumes one stack index (RET4)."
+      },
+      {
+        "address": "00b2c1f2",
+        "instruction": "CALL 0x00b732c0",
+        "bytes_hex": "e8c9700400",
+        "kind": "direct",
+        "historical_contract": "Current raw geometry section at index0; reread independently for counts, entry and material."
+      },
+      {
+        "address": "00b2c209",
+        "instruction": "CALL EDX",
+        "bytes_hex": "ffd2",
+        "kind": "indirect"
+      },
+      {
+        "address": "00b2c211",
+        "instruction": "CALL 0x00b6dfa0",
+        "bytes_hex": "e88a1d0400",
+        "kind": "direct",
+        "historical_contract": "Existing canonical actual model unlink/release normal consumption; no added model unwind."
+      },
+      {
+        "address": "00b2c247",
+        "instruction": "CALL 0x00b229d0",
+        "bytes_hex": "e88467ffff",
+        "kind": "direct",
+        "historical_contract": "Existing actual24-byte container reserve, header ECX, stackcapacity0; source carries explicitunusedEDX0."
+      }
+    ],
+    "indirect_contracts": [
+      {
+        "site": "00b2bd5a",
+        "dispatch": "CURRENT cached model virtual38",
+        "supported": "D62DE8/+38=B6DB10; actual canonical model storage"
+      },
+      {
+        "site": "00b2bf26",
+        "dispatch": "CURRENT logical vertex virtual10",
+        "supported": "D61D6C/+10=B49980; actual raw mapping"
+      },
+      {
+        "site": "00b2c15a",
+        "dispatch": "fresh CURRENT logical vertex virtual14",
+        "supported": "D61D6C/+14=B49A80; actual raw mapping"
+      },
+      {
+        "site": "00b2c1a0",
+        "dispatch": "CURRENT CE221C InterlockedIncrement import",
+        "supported": "same actual imported stdcall pointer borrowed by concretepasscontext"
+      },
+      {
+        "site": "00b2c209",
+        "dispatch": "CURRENT firstpass virtual08",
+        "supported": "concretepassdependency baseD62A80/B5E5E0 RET4 or derivedD61BE8/B454D0->B44750/B43410"
+      }
+    ],
+    "receipts": [
+      {
+        "path": "local\\output\\ghidra-disasm-00b2bb90-lines-600-051025.txt",
+        "sha256": "e9e963a7c54f85907c5e8d2a4455658628e823bd9cdb1606024c9361e618ab66"
+      },
+      {
+        "path": "local\\output\\ghidra-bytes-00b2bb90-length-1765-051025.txt",
+        "sha256": "41e3066c64f43838b9744a8a448f418543584de02187b34b75367a2d6c3404bc"
+      }
+    ]
+  },
+  "provider_compatibility": {
+    "generated_model": {
+      "status": "present_with_required_parent_adaptation",
+      "context": "Current NativeRendererGeneratedModelContext still composes same real model/geometry/declaration/index/effect/layout domains.",
+      "acquired_difference": "Current raw_model replaces historical model; NativeMaterialFactoryAcquired material replaces historical separate effect plus GuiNativeMaterialAcquired material. Historical debug parent embeds the frame and does not access removed fields, so parent embedding itself remains source-compatible.",
+      "required_raw_overload": "Add a borrowed NativeRendererRawModelBinding in debug context and pass it to both cached and per-record B4C700 calls. The no-binding overload requires actual_names == &access.strings and is wrong for the current null-actual_names raw environment.",
+      "cell_identity": "raw names and models.nodes must borrow identical AA8 publication, AA4 small-return-disable and AA0 manager CELL addresses. AA0 must equal generated.actual_manager_01090aa0. Keep actual_names null through model destruction; constants CE4970/CE4ADC must equal model environment bounds.",
+      "current_mesh_material": "Use current exact geometry.create_native_mesh_00b73b60 and material cache/factory acquisition schedule. No old GuiNativeMaterialAcquired/effect rollback or mesh surrogate.",
+      "name_header": "Forward the exact live local NativeString header, not a projected copy. Current raw node construction reads it after resize callbacks and copies into node.name_54; the parent retains original normal string destruction order. Long-lived contexts/constants and model cleanup domain outlive the model."
+    },
+    "buffer_mapping": {
+      "status": "structural_blocker_removed; actual_runtime_composition_still_required",
+      "logical": "Historical mapping header matches current signature: same renderer publication, synchronization globals, physical lock and immutable physical profile views.",
+      "physical": "Current NativePhysicalBufferLockContext holds SoundLifetimeAccess by value and same CF14 reference. SoundLifetimeAccess(actual_AA0_cell) selects raw storage; borrows_same_domain compares cell identity. This can share generated/string AA0 without introducing a semantic manager.",
+      "failure": "Preserve real diagnostic getter and current CF14, sentinel address F8D4B8, failed HRESULT behavior and no invented Unlock/rollback.",
+      "application": "Current main now includes diagnostic initialize/shutdown binding. This does not construct a complete debug renderer context or prove active mapping runtime."
+    },
+    "node_profile": {
+      "status": "already_integrated",
+      "current_header": "include/bsp/native_node_raw_transform.hpp",
+      "current_source": "src/native_node_raw_transform.cpp",
+      "integration": "2ad9dd3fd6a1554d1bcf103878ca6a70b273910b",
+      "parent_adaptation": "Include existing header and omit historical first-65-line node closure and declarations. Keep canonical model identity check and current D62DE8/+38=B6DB10 before raw setter.",
+      "dispatch": "Borrow CURRENT profile resolver. B6DBC0 tail loop is supported; unknown current +3C target fails after previous real matrix/flag writes. No fixed CameraTransform callback substitution."
+    },
+    "gather": {
+      "status": "missing",
+      "additional_missing_child": "The one-shot native_sampler_loader_context operation-frame adapter/header remains absent at the baseline. Its 004DE4B0 native body is ALREADY implemented as get_native_particle_clock_singleton_004de4b0; reuse it rather than copying the historical body.",
+      "public_contract": "Raw globals and original numeric profiles, 1232 initialized preimage bytes and persistent NativeSamplerLoaderOperation.",
+      "current_reuse": [
+        "native_frame_clock_actual BEE070",
+        "native_material_constant_metadata B7AAB0"
+      ],
+      "header_comparison": "All existing direct included headers at a6b2884f2 equal current Git blobs; missing sampler context and gather header remain. New reuse headers must be introduced explicitly."
+    },
+    "constant_builder": {
+      "status": "missing",
+      "additional_missing_children": [
+        "raw A8FCF0 getter from gather",
+        "native_material_texture_source_constants; parent R43 in progress"
+      ],
+      "existing_header_difference": "native_particle_preparation adds raw-pool overloads; existing functions remain, and historical B42350 uses its resource query leaves.",
+      "do_not_duplicate": "Seven of eight historical leaves already have actual raw providers. B7AAB0 also already has a current raw provider; see explicit reuse map.",
+      "post_baseline_leaf": "Parent integrated B782D0 in existing native_material_constant_metadata.hpp/.cpp at 0fe3a50a4. Reuse historical native_optimized_animator_has_type_00b782d0 symbol after updating to that main revision; adopt no historical constant-build leaves pair."
+    },
+    "pass_execution": {
+      "status": "missing",
+      "required_shader_call_adaptation": [
+        "bind_native_renderer_vertex_shader_00b21d10(captured_renderer, &c.synchronization, pointer(pass,0x54))",
+        "bind_native_renderer_pixel_shader_00b21c20(captured_renderer, &c.synchronization, pointer(pass,0x58))"
+      ],
+      "shader_reason": "Current source interface uses fastcall with synchronization pointer in EDX and native stacked logical pointer. Historical source order renderer,logical,synchronization is incompatible.",
+      "direction_kernel": "Current material_effect_plane adds transform_native_effect_direction_0042d0d0_no_normalize(float*,const float*,const float*). Use actual scene+F0 float storage directly when adopting; retain historical arithmetic and false-normalization selection.",
+      "link_limit": "The historical pass header forward-declares B42350 and embeds its frame by reference; B42350 concrete definition/library must be linked. Derived pass still cannot be declared runtime-validated from base/getter fixtures."
+    },
+    "sampler_context": {
+      "status": "existing_native_getter_and_scalar_closure; missing_operation_frame_adapter_and_B1B810_wrapper",
+      "getter": "get_native_particle_clock_singleton_004de4b0 in native_particle_clock_singleton.hpp/.cpp already implements the complete 199-byte native getter over the same AA0/F8D420 cells. It leaves payload+18 untouched, publishes before the second manager lookup, and retains the captured-section cleanup schedule.",
+      "scalar_closure": "Existing native_particle_clock_shutdown.hpp/.cpp provides B1B680 complete destruction, 4DE340 scalar deletion, and 4DE360 secondary adjustment over genuine raw record/pool/sink providers. Reuse this closure; historical sampler-context documentation saying terminal dispatch was unimplemented is no longer a current-provider blocker.",
+      "adapter": "R42 will add the minimal one-shot operation-frame adapter around the existing getter. Production gather/sampler consumers use phase/one-shot state, not historical internal manager/allocation/guard snapshots. Do not reproduce the getter merely to populate fixture-only diagnostic snapshots; do not fabricate those snapshots from current values.",
+      "wrapper": "B1B810 remains a new direct wrapper composing actual B1B730 and B19E90; forward the exact name and returned creator without extra ownership.",
+      "identity": "Adapter must borrow the SAME AA0/F8D420 publication-cell addresses with the existing typed raw view, never a copied pointer cell. Existing getter/scalar contexts retain real ownership and cleanup responsibilities.",
+      "evidence": "Getter header and first 85 source lines plus scalar-closure header inspected during amendment. These files are unchanged between b15f32289 and 0fe3a50a4. The parent/assigned R42 worker reports the production-consumer phase-only audit; adapter implementation and R42 runtime evidence are still pending."
+    }
+  },
+  "reuse_map": [
+    {
+      "address": "00b17390",
+      "historical": "native_material_parameter_table_00b17390",
+      "current": "get_native_material_parameter_table_00b17390",
+      "header": "include/bsp/native_material_constant_metadata.hpp",
+      "adaptation": "Cast the same raw material pointer to const NativeMaterialStorage*. Returned table is void* const*; borrow its address without copying."
+    },
+    {
+      "address": "00b5b880",
+      "historical": "native_shader_constant_register_count_00b5b880",
+      "current": "get_native_shader_constant_register_count_00b5b880",
+      "header": "include/bsp/native_material_constant_metadata.hpp",
+      "adaptation": "Rename call only; same raw constant pointer and current +04 read."
+    },
+    {
+      "address": "00b47900",
+      "historical": "native_vertex_declaration_element_count_00b47900",
+      "current": "get_native_vertex_declaration_element_count_00b47900",
+      "header": "include/bsp/native_material_constant_metadata.hpp",
+      "adaptation": "Rename call only; same current +10 read."
+    },
+    {
+      "address": "00b75e50",
+      "historical": "native_optimized_animator_type_00b75e50",
+      "current": "get_native_optimized_animator_type_id_00b75e50",
+      "header": "include/bsp/native_material_constant_metadata.hpp",
+      "adaptation": "Pass *context.actual_types_010900fc by volatile reference, never a copied type word. Current source consumes that cell address in ECX."
+    },
+    {
+      "address": "00b8ff00",
+      "historical": "native_model_bone_count_00b8ff00",
+      "current": "get_native_model_bone_count_00b8ff00",
+      "header": "include/bsp/native_model_stream_queries.hpp",
+      "adaptation": "Rename only; preserve signed DWORD result and native JLE gate."
+    },
+    {
+      "address": "00b90620",
+      "historical": "native_model_bone_node_00b90620",
+      "current": "get_native_model_bone_node_00b90620",
+      "header": "include/bsp/native_model_stream_queries.hpp",
+      "adaptation": "Use the const-void-pointer, ignored-EDX-DWORD overload with 0u, preserving index in the native stack word. Avoid adding another body alongside the existing resource-instance overload."
+    },
+    {
+      "address": "00b61e10",
+      "historical": "native_logical_vertex_decode_record_00b61e10",
+      "current": "get_native_stream_decode_record_00b61e10",
+      "header": "include/bsp/native_model_stream_queries.hpp",
+      "adaptation": "Use 0u for ignored EDX, preserve borrowed const void* result and wrapping index*32 address arithmetic."
+    },
+    {
+      "address": "00b7aab0",
+      "historical": "get_raw_light_shadow_00b7aab0",
+      "current": "get_native_light_shadow_map_owner_00b7aab0",
+      "header": "include/bsp/native_material_constant_metadata.hpp",
+      "adaptation": "Reuse in gather and constant builder. Same raw light+174 return; do not adopt a duplicate gather leaf."
+    },
+    {
+      "address": "00bee070",
+      "historical": "get_raw_timer_interval_00bee070",
+      "current": "get_raw_timer_interval_00bee070",
+      "header": "include/bsp/native_frame_clock_actual.hpp",
+      "adaptation": "Omit historical gather definition and declaration; include current header. Exact same public symbol and LEA EAX,[ECX+40h];RET body already exists."
+    },
+    {
+      "address": "004de4b0",
+      "historical": "get_native_sampler_loader_singleton_004de4b0",
+      "current": "get_native_particle_clock_singleton_004de4b0",
+      "header": "include/bsp/native_particle_clock_singleton.hpp",
+      "adaptation": "Minimal one-shot operation-frame adapter over SAME AA0/F8D420 cells. Do not duplicate native body to reproduce historical fixture-only snapshots."
+    },
+    {
+      "address": "00b782d0",
+      "historical": "native_optimized_animator_has_type_00b782d0",
+      "current": "native_optimized_animator_has_type_00b782d0",
+      "header": "include/bsp/native_material_constant_metadata.hpp",
+      "available_since": "0fe3a50a406f740b355d433c180c39ae0a6dfd97",
+      "adaptation": "Reuse parent-integrated exact raw leaf; three contiguous live type cells in EDX, original stacked type, AL result and RET4. No new leaves translation unit."
+    }
+  ],
+  "frame_and_alias_contract": {
+    "per_record": "One fresh noncopyable persistent record row for each reached active record, including callbacks that grow the current count. Each embeds distinct gather, constant-builder, pass(bound to its own constants), generated acquisition and unconsumed-model diagnostics. No reuse/reset/allocation inserted into native loop.",
+    "multiplicity": "Exactly one B2C209 dispatch per active record. Supported derived path B454D0 -> B44750 -> B43410 -> B42350 reaches the embedded constant builder once. B51A20 performs no pass loop. Unrelated/reentrant calls require their own frames.",
+    "gather_preimage": "Caller supplies 1232 initialized bytes. REP MOVSD copies 0x134 DWORDs before native writes; unwritten words remain caller preimage. No zero/default synthetic stack. Copy occurs before native provider callbacks; keep context/frame and preimage valid through that copy and any stated provider use.",
+    "banks": "Pass actual_vertex_constants_0108ebf4 and pixel_0108dbec must be exactly constant-builder bank0108EBF4/bank0108DBEC, including immediately preceding live header DWORDs. Do not introduce shadow banks or copied parameter arrays.",
+    "aliasing": "Retain original memmove parameter overlap behavior, x87 temporary write order, captured vs current pointer distinctions and unsupported-target partial effects. Original private-stack/source-input aliases and ambient x87 stack faults remain outside proved source domain.",
+    "failures": "Normal reached B6DFA0 consumes the transient creator once. String cleanup failure retains model; failure after lock/gather/cache increment/pass retains all prior effects. Failed child diagnostic frames must persist and cannot be reset or destructed casually; sampler failed/running destructor terminates. No model/unlock/cache/bank rollback is added."
+  },
+  "adoption_packets": [
+    {
+      "id": "debug_sphere_vertices_raw_adoption",
+      "state": "ready_independent_after_R41_lease_release",
+      "addresses": [
+        "00b2bf60"
+      ],
+      "ranges": [
+        "00b2bf60..00b2c142 interior of B2BB90"
+      ],
+      "files": [
+        "include/bsp/native_debug_sphere_vertices.hpp",
+        "src/native_debug_sphere_vertices.cpp",
+        "reports/native_debug_sphere_vertices_adoption.json"
+      ],
+      "source": "Extract only write_native_debug_sphere_vertices_00b2bf60 from a6b2884f2 leaves, lines 66 through function end. Minimal header with cstdint; no parent debug context include and no B6 node copies.",
+      "contract": "Retain all 123 ordered instruction rows, x87 spills, branch targets, 13/12/13 rings, caller color bits and borrowed CEC730 double. B2BF60 remains an interior fragment, not a new original function.",
+      "depends_on": [],
+      "recommended_worker": "gpt-6-astra, xhigh: x87 and register ABI"
+    },
+    {
+      "id": "sampler_loader_context_adoption",
+      "state": "assigned_to_R42_worker; reuse_existing_getter_and_scalar_closure",
+      "addresses": [
+        "00b1b810"
+      ],
+      "files": [
+        "include/bsp/native_sampler_loader_context.hpp",
+        "src/native_sampler_loader_context.cpp",
+        "reports/native_sampler_loader_context_adoption.json"
+      ],
+      "source": "Use a6b2884f2 operation-frame and B1B810 contract as evidence; reuse current native_particle_clock_singleton 004DE4B0 and native_particle_clock_shutdown scalar closure. Do not adopt historical native_sampler_loader_context.cpp wholesale.",
+      "contract": "Add minimal fresh/running/complete/failed operation-frame state around the existing real getter, preserving same AA0/F8D420 cells and retained failure state. Production callers require phase/one-shot behavior; historical internal guard/manager/allocation snapshots are fixture-only and need not be synthesized. Add B1B810 direct wrapper over current real B1B730/B19E90. No duplicate getter or scalar body, no second owner/domain, and no fabricated cleanup. Full B1A4F0/B1B4D0 loading remains outside this packet.",
+      "depends_on": [],
+      "recommended_worker": "gpt-5.6-sol, xhigh",
+      "reuse_without_owning_native_body": [
+        "004de4b0",
+        "00b1b680",
+        "004de340",
+        "004de360"
+      ],
+      "coordination": "R42 worker currently leases 004DE4B0/B1B810 for adapter integration. This report does not reassign those addresses."
+    },
+    {
+      "id": "material_texture_source_constants_adoption",
+      "state": "assigned_to_parent_R43; source_and_scoped_checks_reported_passed; metadata_archive_pending",
+      "addresses": [
+        "00c302f0",
+        "00bbcc40",
+        "00bbcbd0"
+      ],
+      "files": [
+        "include/bsp/native_material_texture_source_constants.hpp",
+        "src/native_material_texture_source_constants.cpp",
+        "reports/native_material_texture_source_constants_adoption.json"
+      ],
+      "source": "a6b2884f2 native_material_constant_build report; frozen debug archive source hashes verified.",
+      "contract": "Exact raw current-texture getter and caustics/shore bodies, including real shore RET14 no-op and alias-sensitive DWORD store order. No replacement texture source owner.",
+      "depends_on": [],
+      "recommended_worker": "gpt-6-astra, xhigh: register ABI and naked bodies",
+      "coordination": "Parent owns C302F0/BBCC40/BBCBD0 and the historical header/source pair. Parent reports strict build, three CTests and native/source alias fixture passed; final commit/archive not captured here."
+    },
+    {
+      "id": "system_constant_gather_adoption",
+      "state": "blocked_on_sampler_context; independent of B42350/pass work once child API is fixed",
+      "addresses": [
+        "00b46a70",
+        "00a8fcf0",
+        "00a8fd10",
+        "00a8fd90",
+        "00a8fdb0",
+        "00b3ce50",
+        "00b3ce60",
+        "00af0460",
+        "00ad5700",
+        "00ad5740"
+      ],
+      "reuse_without_owning": [
+        "00bee070",
+        "00b7aab0"
+      ],
+      "files": [
+        "include/bsp/native_system_constant_gather.hpp",
+        "src/native_system_constant_gather.cpp",
+        "reports/native_system_constant_gather_adoption.json"
+      ],
+      "source": "a6b2884f2 contains primary captured-profile correction 1bbc1662; avoid pre-correction worker80027137.",
+      "contract": "Reuse current BEE070 and metadata B7AAB0. Preserve every original profile capture, live global reload, x87/SSE write, initialized 1232-byte prefix preimage and persistent sampler frame. Current projected shadow/time wrappers do not replace the missing raw leaves.",
+      "depends_on": [
+        "sampler_loader_context_adoption"
+      ],
+      "recommended_worker": "gpt-6-astra, xhigh: 519-line original listing and x87"
+    },
+    {
+      "id": "material_constant_builder_adoption",
+      "state": "blocked_on_raw_shadow_getter_and_parent_R43_texture_source_integration",
+      "addresses": [
+        "00b42350"
+      ],
+      "reuse_without_owning": [
+        "00b17390",
+        "00b5b880",
+        "00b8ff00",
+        "00b90620",
+        "00b75e50",
+        "00b47900",
+        "00b61e10",
+        "00b7aab0",
+        "00a8fcf0",
+        "00b782d0"
+      ],
+      "files": [
+        "include/bsp/native_material_constant_build.hpp",
+        "src/native_material_constant_build.cpp",
+        "reports/native_material_constant_build_adoption.json"
+      ],
+      "source": "Use a6b2884f2 corrected body, primary7da09ce9 provenance. Do not adopt historical leaves pair: reuse seven baseline raw leaves and the parent B782D0 metadata addition integrated at 0fe3a50a4.",
+      "contract": "Same raw VS/PS banks and preceding headers; retain reload order, volatile reference to type cell, partial writes, overlap-safe parameter copies, distinct persistent one-shot frame, and all primary x87/capture corrections.",
+      "depends_on": [
+        "system_constant_gather_adoption",
+        "material_texture_source_constants_adoption"
+      ],
+      "recommended_worker": "gpt-6-astra, xhigh: x87 and current field/capture schedule",
+      "minimum_current_revision_for_B782D0": "0fe3a50a406f740b355d433c180c39ae0a6dfd97"
+    },
+    {
+      "id": "material_pass_execution_adoption",
+      "state": "source_contract_review_can_run_independently; final_link_waits_for_B42350",
+      "addresses": [
+        "00b5e5e0",
+        "00b454d0",
+        "00b44750",
+        "00b43410",
+        "00b1bfa0"
+      ],
+      "files": [
+        "include/bsp/native_material_pass_execution.hpp",
+        "src/native_material_pass_execution.cpp",
+        "src/native_material_pass_execution_leaves.cpp",
+        "reports/native_material_pass_execution_adoption.json"
+      ],
+      "source": "a6b2884f2; historical d91f24d3 evidence.",
+      "contract": "Adapt both shader calls to current fastcall(renderer,&synchronization,logical). Prefer current raw no-normalize direction kernel over a fabricated CameraMatrix overlay. Preserve original pass/profile capture, material callback registers, bank sharing and borrowed child frame; link actual B42350, no fallback.",
+      "depends_on": [
+        "material_constant_builder_adoption"
+      ],
+      "recommended_worker": "gpt-6-astra, xhigh: x87/register callback trampoline"
+    },
+    {
+      "id": "renderer_debug_records24_parent_adoption",
+      "state": "not_ready_until_all_concrete_children_and_composition_contracts_close",
+      "addresses": [
+        "00b2bb90"
+      ],
+      "files": [
+        "include/bsp/native_renderer_debug_records24.hpp",
+        "src/native_renderer_debug_records24.cpp",
+        "reports/native_renderer_debug_records24_adoption.json"
+      ],
+      "source": "a6b2884f2 parent/header, final evidence650d55491; include new sphere and existing native_node_raw_transform headers.",
+      "contract": "Add caller-borrowed NativeRendererRawModelBinding and explicitly call the raw generated-model overload with exact live name header, constants and AA8/AA4/AA0 cells. Preserve fresh persistent record rows, current count/pointer reloads, retained failures and normal consumption only.",
+      "depends_on": [
+        "debug_sphere_vertices_raw_adoption",
+        "system_constant_gather_adoption",
+        "material_constant_builder_adoption",
+        "material_pass_execution_adoption"
+      ],
+      "recommended_worker": "gpt-6-astra, xhigh: orchestration and original register/unwind evidence"
+    }
+  ],
+  "in_flight_parent_coordination": {
+    "sampler_context": "Parent assigned texture_pool_process_r27 and approved a minimal operation-frame adapter reusing the already-existing get_native_particle_clock_singleton_004de4b0 and genuine scalar closure. No duplicate getter body. B1B810 direct wrapper is new.",
+    "B782D0": "Completed and integrated at 0fe3a50a4; see explicit post-baseline commit/file receipts. It is no longer an open body-adoption packet.",
+    "texture_source_constants": "Parent R43 owns the three addresses and source pair; final metadata/archive pending. No independent worker should claim them."
+  },
+  "historical_child_routine_spans": {
+    "native_system_constant_gather": [
+      {
+        "address": "00b46a70",
+        "name": "gather_native_system_constants_00b46a70",
+        "coverage": "complete",
+        "end_exclusive": "00b47639",
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "address": "00a8fcf0",
+        "name": "get_raw_shadow_depth_texture_00a8fcf0",
+        "coverage": "complete",
+        "end_exclusive": "00a8fd0f",
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "address": "00a8fd10",
+        "name": "get_raw_shadow_color_texture_00a8fd10",
+        "coverage": "complete",
+        "end_exclusive": "00a8fd2f",
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "address": "00a8fd90",
+        "name": "get_raw_shadow_target_color_00a8fd90",
+        "coverage": "complete",
+        "end_exclusive": "00a8fd94",
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "address": "00a8fdb0",
+        "name": "get_raw_shadow_target_depth_00a8fdb0",
+        "coverage": "complete",
+        "end_exclusive": "00a8fdb4",
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "address": "00b3ce50",
+        "name": "get_raw_texture_width_00b3ce50",
+        "coverage": "complete",
+        "end_exclusive": "00b3ce54",
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "address": "00b3ce60",
+        "name": "get_raw_texture_height_00b3ce60",
+        "coverage": "complete",
+        "end_exclusive": "00b3ce64",
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "address": "00af0460",
+        "name": "get_raw_foliage_manager_time_00af0460",
+        "coverage": "complete",
+        "end_exclusive": "00af0464",
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "address": "00ad5700",
+        "name": "get_raw_foliage_time_00ad5700",
+        "coverage": "complete",
+        "end_exclusive": "00ad5704",
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "address": "00ad5740",
+        "name": "get_raw_foliage_byte_00ad5740",
+        "coverage": "complete",
+        "end_exclusive": "00ad5744",
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "address": "00b7aab0",
+        "name": "get_raw_light_shadow_00b7aab0",
+        "coverage": "complete",
+        "end_exclusive": "00b7aab7",
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "address": "00bee070",
+        "name": "get_raw_timer_interval_00bee070",
+        "coverage": "complete",
+        "end_exclusive": "00bee074",
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "native_material_constant_build": [
+      {
+        "address": "00b42350",
+        "end_exclusive": "00b43410",
+        "bytes": 4288,
+        "native_sha256": "5b3d63fcdd42f9f5bb9cd7a02e08e3531472e87aa7409125153c83804f516091",
+        "name": "build_native_material_constants_00b42350",
+        "source": "src/native_material_constant_build.cpp",
+        "original_abi": "ECX actual pass; stack actual entry, unused override; RET8; new source context/frame parameters",
+        "raw_upgrade_of_existing_projected_function": true,
+        "new_native_body_credit": 0
+      },
+      {
+        "address": "00b17390",
+        "end_exclusive": "00b17397",
+        "bytes": 7,
+        "native_sha256": "a369532a26c5c1a580d2c2cd4846bfb741c2c3df0825ee6005ee1643bbc68e41",
+        "name": "native_material_parameter_table_00b17390",
+        "source": "src/native_material_constant_build_leaves.cpp",
+        "original_abi": "ECX actual material; EAX actual+80h; RET",
+        "raw_upgrade_of_existing_projected_function": false,
+        "new_native_body_credit": 1
+      },
+      {
+        "address": "00b5b880",
+        "end_exclusive": "00b5b884",
+        "bytes": 4,
+        "native_sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f",
+        "name": "native_shader_constant_register_count_00b5b880",
+        "source": "src/native_material_constant_build_leaves.cpp",
+        "original_abi": "ECX actual constant; EAX DWORD+04; RET",
+        "raw_upgrade_of_existing_projected_function": false,
+        "new_native_body_credit": 1
+      },
+      {
+        "address": "00b8ff00",
+        "end_exclusive": "00b8ff07",
+        "bytes": 7,
+        "native_sha256": "b679e47759c8f774f8f994e01d6997a3e6a9b94d3a2d95948f0fc1e8801ead7a",
+        "name": "native_model_bone_count_00b8ff00",
+        "source": "src/native_material_constant_build_leaves.cpp",
+        "original_abi": "ECX actual model; EAX signed DWORD+188; RET",
+        "raw_upgrade_of_existing_projected_function": false,
+        "new_native_body_credit": 1
+      },
+      {
+        "address": "00b90620",
+        "end_exclusive": "00b90630",
+        "bytes": 16,
+        "native_sha256": "71fa8e8ee03bdc5fd363b5475d813ca3dedcbfd61154227318a711eb27bfd78e",
+        "name": "native_model_bone_node_00b90620",
+        "source": "src/native_material_constant_build_leaves.cpp",
+        "original_abi": "ECX model; stack index; EAX [model+184][index]; RET4; source unused EDX",
+        "raw_upgrade_of_existing_projected_function": false,
+        "new_native_body_credit": 1
+      },
+      {
+        "address": "00b75e50",
+        "end_exclusive": "00b75e56",
+        "bytes": 6,
+        "native_sha256": "2b4f1290dd630ea02869f8dc9c45a88e27460c5f4a254aac68a48f979e84917c",
+        "name": "native_optimized_animator_type_00b75e50",
+        "source": "src/native_material_constant_build_leaves.cpp",
+        "original_abi": "native no arguments, EAX current10900FC; RET; source ECX actual publication address",
+        "raw_upgrade_of_existing_projected_function": false,
+        "new_native_body_credit": 1
+      },
+      {
+        "address": "00b47900",
+        "end_exclusive": "00b47904",
+        "bytes": 4,
+        "native_sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+        "name": "native_vertex_declaration_element_count_00b47900",
+        "source": "src/native_material_constant_build_leaves.cpp",
+        "original_abi": "ECX actual declaration; EAX DWORD+10; RET",
+        "raw_upgrade_of_existing_projected_function": false,
+        "new_native_body_credit": 1
+      },
+      {
+        "address": "00b61e10",
+        "end_exclusive": "00b61e1d",
+        "bytes": 13,
+        "native_sha256": "5fe3cbfe6f2e7862e70bd7a669c43c07281175d6aa8cb4556254679bcc348c4a",
+        "name": "native_logical_vertex_decode_record_00b61e10",
+        "source": "src/native_material_constant_build_leaves.cpp",
+        "original_abi": "ECX stream; stack index; EAX current+50 plus index*32; RET4; source unused EDX",
+        "raw_upgrade_of_existing_projected_function": false,
+        "new_native_body_credit": 1
+      },
+      {
+        "address": "00b782d0",
+        "end_exclusive": "00b782f8",
+        "bytes": 40,
+        "native_sha256": "463e918e1963f616d2f5130d3652aebbdd8b6eacc1b4fe1c72186bea942a1576",
+        "name": "native_optimized_animator_has_type_00b782d0",
+        "source": "src/native_material_constant_build_leaves.cpp",
+        "original_abi": "ECX unused actual animator; stack type; AL result only; RET4; source EDX same three current type cells",
+        "raw_upgrade_of_existing_projected_function": false,
+        "new_native_body_credit": 1
+      },
+      {
+        "address": "00c302f0",
+        "end_exclusive": "00c30303",
+        "bytes": 19,
+        "native_sha256": "1c32489e590cada7ddfc0f1e864d830c29d5be4d29b2f72a68cd503d115e13fd",
+        "name": "native_texture_source_current_texture_00c302f0",
+        "source": "src/native_material_texture_source_constants.cpp",
+        "original_abi": "ECX actual source; EAX borrowed texture; RET",
+        "raw_upgrade_of_existing_projected_function": false,
+        "new_native_body_credit": 1
+      },
+      {
+        "address": "00bbcc40",
+        "end_exclusive": "00bbcca7",
+        "bytes": 103,
+        "native_sha256": "85f81b9659df77033306c5a01d0fd5b253952aa28b113e7f8f67520c5d57c2b6",
+        "name": "native_caustics_source_constants_00bbcc40",
+        "source": "src/native_material_texture_source_constants.cpp",
+        "original_abi": "ECX actual source; stack entry,VS,PS,VSheader,PSheader; RET14; source unused EDX",
+        "raw_upgrade_of_existing_projected_function": false,
+        "new_native_body_credit": 1
+      },
+      {
+        "address": "00bbcbd0",
+        "end_exclusive": "00bbcbd3",
+        "bytes": 3,
+        "native_sha256": "596494f50350462943d59d32bfc675a2c3e2e9a6aa0d0606422e3cbbffd86c6b",
+        "name": "native_shore_source_constants_00bbcbd0",
+        "source": "src/native_material_texture_source_constants.cpp",
+        "original_abi": "ECX unused actual source; five unused stack arguments; literal RET14; source unused EDX",
+        "raw_upgrade_of_existing_projected_function": false,
+        "new_native_body_credit": 1
+      }
+    ],
+    "native_material_pass_execution": [
+      {
+        "address": "00B5E5E0",
+        "end_inclusive": "00B5E5E2",
+        "bytes": 3,
+        "native_sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+        "live_equals_pe": true,
+        "source": "execute_native_material_pass_base_00b5e5e0",
+        "coverage": "complete"
+      },
+      {
+        "address": "00B454D0",
+        "end_inclusive": "00B454DE",
+        "bytes": 15,
+        "native_sha256": "73a42931d4f4d385cbf29137d38a8c5ed4a17d34a9c11f217f5331b2636c84d8",
+        "live_equals_pe": true,
+        "source": "execute_native_material_pass_00b454d0",
+        "coverage": "complete body orchestration; actual provider chain linked, derived runtime unexecuted",
+        "worker_coverage": "complete body orchestration; downstream linkage incomplete"
+      },
+      {
+        "address": "00B44750",
+        "end_inclusive": "00B44B03",
+        "bytes": 948,
+        "native_sha256": "f7eb5a9057acf5af9e2b25b4a707e2f1824ef829a72469b0c794913103b750bd",
+        "live_equals_pe": true,
+        "source": "bind_native_material_pass_geometry_00b44750",
+        "coverage": "complete body orchestration; actual provider chain linked, derived runtime unexecuted",
+        "worker_coverage": "complete body orchestration; downstream linkage incomplete"
+      },
+      {
+        "address": "00B43410",
+        "end_inclusive": "00B43667",
+        "bytes": 600,
+        "native_sha256": "0dca81aa71a05c9c00cf5656a12f976cbefe8f0415eb9bc73e290cce0673399c",
+        "live_equals_pe": true,
+        "source": "apply_native_material_pass_00b43410",
+        "coverage": "complete body orchestration; actual provider chain linked, derived runtime unexecuted",
+        "worker_coverage": "complete body orchestration; downstream linkage incomplete"
+      },
+      {
+        "address": "00B1BFA0",
+        "end_inclusive": "00B1BFA3",
+        "bytes": 4,
+        "native_sha256": "c8cc0b90c656bd6a43ec1c5684c1a494142d2fce4803153d9b1a0944cad7e281",
+        "live_equals_pe": true,
+        "source": "get_native_material_plane_context_00b1bfa0",
+        "coverage": "complete"
+      }
+    ],
+    "native_sampler_loader_context": [
+      {
+        "address": "004de4b0",
+        "bytes": 199,
+        "end_inclusive": "004de576",
+        "sha256": "fa1f9c042b0a54c37c68547e0fed4dc02526fdfe6a8911e5b66e46ed9d541ec2",
+        "kind": "implemented",
+        "assembly_sha256": "9e611b9884b5fc9fe64bae62a5408ebf00dc17b8209d959063932612763744d5",
+        "coverage": "complete normal body",
+        "original_abi": "No consumed inputs; EAX actual1Ch owner; plainRET",
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "address": "00b1b810",
+        "bytes": 20,
+        "end_inclusive": "00b1b823",
+        "sha256": "8a65e02675980fa957b1a0e9d36c98b9b89afb43e7d2ee3f84189a5421809ce8",
+        "kind": "implemented",
+        "assembly_sha256": "4f9979d5139fd7bbc9fe40251445c59daae5425bc71982fb7bde5314c440fc6d",
+        "coverage": "complete normal body",
+        "original_abi": "Incoming ECX and second stacked options unused; first stacked name; EAX creator result; RET8",
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ]
+  },
+  "integration_control": "Packet file/address sets are proposals, not leases. Recheck actual ready state and claim ownership before implementation. Parent integrator serializes CMake, ledger, Ghidra annotations and source integration; no worker should duplicate the adopted node or metadata/query leaves.",
+  "current_files": [
+    {
+      "path": "include/bsp/native_renderer_generated_model.hpp",
+      "present": true,
+      "bytes": 3678,
+      "sha256": "0ea876d2c85b559b37897bc3353658032374af0cd4884b6cb347a4efdc5618e0",
+      "git_blob_sha256": "0ea876d2c85b559b37897bc3353658032374af0cd4884b6cb347a4efdc5618e0"
+    },
+    {
+      "path": "src/native_renderer_generated_model.cpp",
+      "present": true,
+      "bytes": 12877,
+      "sha256": "0003a0cdca008f65a062c98c5c783f0a7ff1556f30def295e72c327d48d4eafd",
+      "git_blob_sha256": "0003a0cdca008f65a062c98c5c783f0a7ff1556f30def295e72c327d48d4eafd"
+    },
+    {
+      "path": "include/bsp/native_model_owner.hpp",
+      "present": true,
+      "bytes": 6717,
+      "sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e",
+      "git_blob_sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e"
+    },
+    {
+      "path": "src/native_model_owner.cpp",
+      "present": true,
+      "bytes": 16777,
+      "sha256": "abe4817fd6ca9049f720a50e5c5c9a2041112f634dee73b2c4f2a94d4077886a",
+      "git_blob_sha256": "abe4817fd6ca9049f720a50e5c5c9a2041112f634dee73b2c4f2a94d4077886a"
+    },
+    {
+      "path": "include/bsp/native_node_construction.hpp",
+      "present": true,
+      "bytes": 6451,
+      "sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098",
+      "git_blob_sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098"
+    },
+    {
+      "path": "src/native_node_construction.cpp",
+      "present": true,
+      "bytes": 14664,
+      "sha256": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35",
+      "git_blob_sha256": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35"
+    },
+    {
+      "path": "include/bsp/native_node_raw_transform.hpp",
+      "present": true,
+      "bytes": 407,
+      "sha256": "53f7d50855779206ce1faff86469948e4ff4fa9c0d376d68fbba1b4a48e3884d",
+      "git_blob_sha256": "53f7d50855779206ce1faff86469948e4ff4fa9c0d376d68fbba1b4a48e3884d"
+    },
+    {
+      "path": "src/native_node_raw_transform.cpp",
+      "present": true,
+      "bytes": 2873,
+      "sha256": "31a50a5e6e6efd27bb2d32851cc6836b6aabb1a924eefa384363e561deb4e257",
+      "git_blob_sha256": "31a50a5e6e6efd27bb2d32851cc6836b6aabb1a924eefa384363e561deb4e257"
+    },
+    {
+      "path": "include/bsp/native_logical_buffer_mapping.hpp",
+      "present": true,
+      "bytes": 2420,
+      "sha256": "d3ee48a208b6636dc70941c6a62967407d657ad18f1ae971f2d900c752fcaef0",
+      "git_blob_sha256": "d3ee48a208b6636dc70941c6a62967407d657ad18f1ae971f2d900c752fcaef0"
+    },
+    {
+      "path": "src/native_logical_buffer_mapping.cpp",
+      "present": true,
+      "bytes": 6598,
+      "sha256": "6e9b61c4928f34705e12be655d0c8e6a72bca9210a9d9a2748e43054c55d3075",
+      "git_blob_sha256": "6e9b61c4928f34705e12be655d0c8e6a72bca9210a9d9a2748e43054c55d3075"
+    },
+    {
+      "path": "include/bsp/native_physical_buffer_lock.hpp",
+      "present": true,
+      "bytes": 1561,
+      "sha256": "519c67bd123883490af70464ab81cec74d5de948a39eada540cf5b8529e18340",
+      "git_blob_sha256": "519c67bd123883490af70464ab81cec74d5de948a39eada540cf5b8529e18340"
+    },
+    {
+      "path": "src/native_physical_buffer_lock.cpp",
+      "present": true,
+      "bytes": 3972,
+      "sha256": "453fcaf0f7d6bd1de0b2c8d398253cb381aa8cec6862c09fa527a52bb13fb309",
+      "git_blob_sha256": "453fcaf0f7d6bd1de0b2c8d398253cb381aa8cec6862c09fa527a52bb13fb309"
+    },
+    {
+      "path": "include/bsp/sound_lifetime_access.hpp",
+      "present": true,
+      "bytes": 3039,
+      "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b",
+      "git_blob_sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+    },
+    {
+      "path": "src/sound_lifetime_access.cpp",
+      "present": true,
+      "bytes": 2751,
+      "sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29",
+      "git_blob_sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29"
+    },
+    {
+      "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "present": true,
+      "bytes": 2257,
+      "sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+      "git_blob_sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1"
+    },
+    {
+      "path": "src/native_diagnostic_sink_lifetime.cpp",
+      "present": true,
+      "bytes": 5460,
+      "sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4",
+      "git_blob_sha256": "20a6882497154be780e6783a0591ce5e49876c2e94dd5e681b5c3fa7f54fdbf4"
+    },
+    {
+      "path": "include/bsp/native_traceline_render.hpp",
+      "present": true,
+      "bytes": 7210,
+      "sha256": "eec43d439a9ddcf4d5aa96954434c469b607c4ac198f54b6cb55339a0365caf4",
+      "git_blob_sha256": "eec43d439a9ddcf4d5aa96954434c469b607c4ac198f54b6cb55339a0365caf4"
+    },
+    {
+      "path": "src/native_traceline_render.cpp",
+      "present": true,
+      "bytes": 73470,
+      "sha256": "b791db0734c33fe6c8c12b3caa40c81b76ebfb5915ecdd80b9ae590605160eb6",
+      "git_blob_sha256": "b791db0734c33fe6c8c12b3caa40c81b76ebfb5915ecdd80b9ae590605160eb6"
+    },
+    {
+      "path": "include/bsp/native_material_constant_metadata.hpp",
+      "present": true,
+      "bytes": 1607,
+      "sha256": "ecdeb705ed7c422eb80e106fcc02d5b1f6577f284df5c3dab7ee84fcaccce348",
+      "git_blob_sha256": "ecdeb705ed7c422eb80e106fcc02d5b1f6577f284df5c3dab7ee84fcaccce348"
+    },
+    {
+      "path": "src/native_material_constant_metadata.cpp",
+      "present": true,
+      "bytes": 1297,
+      "sha256": "f511ee8c4e015b85c10de497adac9991e53204363bd694e29e1f12dc3419439e",
+      "git_blob_sha256": "f511ee8c4e015b85c10de497adac9991e53204363bd694e29e1f12dc3419439e"
+    },
+    {
+      "path": "include/bsp/native_model_stream_queries.hpp",
+      "present": true,
+      "bytes": 1281,
+      "sha256": "b5776e5c8a5a0cb68db1cef54d256d1e35f22cdbd1adbaf44d9d28aac84d7514",
+      "git_blob_sha256": "b5776e5c8a5a0cb68db1cef54d256d1e35f22cdbd1adbaf44d9d28aac84d7514"
+    },
+    {
+      "path": "src/native_model_stream_queries.cpp",
+      "present": true,
+      "bytes": 960,
+      "sha256": "3bc5b51d2a354879396fd31d9271d2d7c4c5400c9c8173707221ffe6d42193ed",
+      "git_blob_sha256": "3bc5b51d2a354879396fd31d9271d2d7c4c5400c9c8173707221ffe6d42193ed"
+    },
+    {
+      "path": "include/bsp/native_frame_clock_actual.hpp",
+      "present": true,
+      "bytes": 3348,
+      "sha256": "c41caab7f31fffd54a151438fa5f50198d5a66db6c193c10db66c7e745037ba1",
+      "git_blob_sha256": "c41caab7f31fffd54a151438fa5f50198d5a66db6c193c10db66c7e745037ba1"
+    },
+    {
+      "path": "src/native_frame_clock_actual.cpp",
+      "present": true,
+      "bytes": 12764,
+      "sha256": "77ea51332e27408544aa7c39848a6af5c562fefb08c42c9f469eb8385f9e25e6",
+      "git_blob_sha256": "77ea51332e27408544aa7c39848a6af5c562fefb08c42c9f469eb8385f9e25e6"
+    },
+    {
+      "path": "include/bsp/native_renderer_shader_binding.hpp",
+      "present": true,
+      "bytes": 1075,
+      "sha256": "782653d951ecf90001217c1825aecd35d9fd1977400bf53c4624329cf3d016bb",
+      "git_blob_sha256": "782653d951ecf90001217c1825aecd35d9fd1977400bf53c4624329cf3d016bb"
+    },
+    {
+      "path": "src/native_renderer_shader_binding.cpp",
+      "present": true,
+      "bytes": 3850,
+      "sha256": "a24c3585bf883864720869053fae9ede49dc2253f1791b4b8ad2c9afe7a3d84e",
+      "git_blob_sha256": "a24c3585bf883864720869053fae9ede49dc2253f1791b4b8ad2c9afe7a3d84e"
+    },
+    {
+      "path": "include/bsp/material_effect_plane.hpp",
+      "present": true,
+      "bytes": 3454,
+      "sha256": "c1c98d09b887efd3a8905c3630c1f791e0d90060ec04b98821902aeef3bc29e0",
+      "git_blob_sha256": "c1c98d09b887efd3a8905c3630c1f791e0d90060ec04b98821902aeef3bc29e0"
+    },
+    {
+      "path": "src/material_effect_plane.cpp",
+      "present": true,
+      "bytes": 11104,
+      "sha256": "ea9ca3b939f51146f79fe4e9d73a5decb79338486860724958c40680d954aeb5",
+      "git_blob_sha256": "ea9ca3b939f51146f79fe4e9d73a5decb79338486860724958c40680d954aeb5"
+    },
+    {
+      "path": "include/bsp/native_particle_preparation.hpp",
+      "present": true,
+      "bytes": 3343,
+      "sha256": "7582bb6fd01a685c7195589b7f32b155efd59979b747fa80639334c1f6719bb5",
+      "git_blob_sha256": "7582bb6fd01a685c7195589b7f32b155efd59979b747fa80639334c1f6719bb5"
+    },
+    {
+      "path": "src/native_particle_preparation.cpp",
+      "present": true,
+      "bytes": 6690,
+      "sha256": "b112e4233cb02cc76df1004c3e3a869b6433434a4620ac27df4115acd397da9d",
+      "git_blob_sha256": "b112e4233cb02cc76df1004c3e3a869b6433434a4620ac27df4115acd397da9d"
+    },
+    {
+      "path": "include/bsp/native_mesh_pool.hpp",
+      "present": true,
+      "bytes": 2929,
+      "sha256": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52",
+      "git_blob_sha256": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52"
+    },
+    {
+      "path": "src/native_mesh_pool.cpp",
+      "present": true,
+      "bytes": 11152,
+      "sha256": "4b9fc9871b003a25e357a3d7460c7d890431115b8289a012567280e8ca31fa44",
+      "git_blob_sha256": "4b9fc9871b003a25e357a3d7460c7d890431115b8289a012567280e8ca31fa44"
+    },
+    {
+      "path": "include/bsp/native_renderer_debug_records24.hpp",
+      "present": false
+    },
+    {
+      "path": "src/native_renderer_debug_records24.cpp",
+      "present": false
+    },
+    {
+      "path": "src/native_renderer_debug_records24_leaves.cpp",
+      "present": false
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "present": true,
+      "bytes": 87627,
+      "sha256": "ec6b1c99001b5d242a92df07ad600fd281b3a495ab89422a11ab9eed23ca131a",
+      "git_blob_sha256": "ec6b1c99001b5d242a92df07ad600fd281b3a495ab89422a11ab9eed23ca131a"
+    },
+    {
+      "path": "reports/native_node_raw_transform_main_r40.json",
+      "present": true,
+      "bytes": 27445,
+      "sha256": "0bf63ed5e5e4e633f1d7fb775261276bf0c52e175905e0bfc71950eec20f9fb4",
+      "git_blob_sha256": "0bf63ed5e5e4e633f1d7fb775261276bf0c52e175905e0bfc71950eec20f9fb4"
+    },
+    {
+      "path": "reports/native_diagnostic_application_binding_r41.json",
+      "present": true,
+      "bytes": 27228,
+      "sha256": "e51a85a97a47cdf1400e5e2fcf5b6f917f48b483300b7a854fa341760d7f7286",
+      "git_blob_sha256": "e51a85a97a47cdf1400e5e2fcf5b6f917f48b483300b7a854fa341760d7f7286"
+    },
+    {
+      "path": "include/bsp/native_system_constant_gather.hpp",
+      "present": false
+    },
+    {
+      "path": "src/native_system_constant_gather.cpp",
+      "present": false
+    },
+    {
+      "path": "include/bsp/native_material_constant_build.hpp",
+      "present": false
+    },
+    {
+      "path": "src/native_material_constant_build.cpp",
+      "present": false
+    },
+    {
+      "path": "include/bsp/native_material_pass_execution.hpp",
+      "present": false
+    },
+    {
+      "path": "src/native_material_pass_execution.cpp",
+      "present": false
+    },
+    {
+      "path": "include/bsp/native_sampler_loader_context.hpp",
+      "present": false
+    },
+    {
+      "path": "src/native_sampler_loader_context.cpp",
+      "present": false
+    },
+    {
+      "path": "include/bsp/native_material_texture_source_constants.hpp",
+      "present": false
+    },
+    {
+      "path": "src/native_material_texture_source_constants.cpp",
+      "present": false
+    }
+  ],
+  "historical_validation_only": {
+    "status": "strict Win32 and focused original/source fixtures passed; active/cold parent runtime remains open",
+    "source_interface_only": true,
+    "active_parent_executed": false,
+    "game_validated": false,
+    "strict_win32": true,
+    "verified_native_seeds": 8,
+    "ctests_passed": 2,
+    "numeric_calls_passed": 49,
+    "complete_concrete_parent_link": true,
+    "original_source_parent_cases": [
+      "initialzero",
+      "hotcachedmodel/two skipped cameras",
+      "hotcachedmodel/negativeinitialcount"
+    ],
+    "original_source_vertex_cases": 8,
+    "vertices_per_case": 38,
+    "rounding_modes": 4,
+    "original_source_raw_notification": true,
+    "source_unknown_target_retained_effects": true,
+    "actual_provider_runtime": "Raw localsetter calls existing substantive x87 matrixcopy; actual B2 active generatedmodel/gather/pass/constant child chain is linked but not executed.",
+    "original_fh3_runtime": false,
+    "immutable_closure": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_validated_artifacts_v2\\manifest.json",
+      "sha256": "44a4e4e1d483b9829b414101dabca8637d4051c495a6f4d76797fc1a11cbd46f",
+      "artifacts": 4709,
+      "actually_loaded_modules": 13,
+      "bytes": 357691133
+    }
+  },
+  "validation_performed_now": [
+    "Verified configured Ghidra project/program on every live batch through bsp.py.",
+    "Full B2BB90 live bytes equal installed PE; parent and 483-byte sphere hashes computed.",
+    "All 40 direct calls match final historical report; all five indirect call sites enumerated with exact bytes.",
+    "All 123 sphere instruction rows compared by address/mnemonic/operands with only three explicit CEC730 pointer substitutions and assembler spelling normalization.",
+    "Rehashed the 4709-entry archive manifest and 16 selected historical source/header artifacts; two normalized history differences explicitly separated.",
+    "Inspected current raw provider APIs, current body/address reuse and historical source adaptations; recorded current file and Git-blob SHA256s."
+  ],
+  "not_performed": [
+    "No C++ or CMake change",
+    "No rebuild or new test",
+    "No source/generated object/fixture execution",
+    "No Ghidra mutation or source export mutation",
+    "No original FH3/SEH/ABI or active/cold parent proof",
+    "No full renderer/gameplay/visual validation"
+  ],
+  "amended_utc": "2026-09-16T12:36:29.364217+00:00",
+  "amendment_scope": "Report-only correction after worker/parent review. Baseline current_commit and original current_files hashes remain b15f32289. Explicit post-baseline coordination below does not retimestamp or transfer earlier validation.",
+  "post_baseline_coordination": {
+    "baseline_unchanged": "b15f322895cd86b6026b1a3bf035d35b8fdebe9d",
+    "sampler_R42": "Parent assigned texture_pool_process_r27 and approved a minimal operation-frame adapter reusing the already-existing get_native_particle_clock_singleton_004de4b0 and genuine scalar closure. No duplicate getter body. B1B810 direct wrapper is new.",
+    "predicate_B782D0": {
+      "state": "integrated",
+      "commit": "0fe3a50a406f740b355d433c180c39ae0a6dfd97",
+      "native_bytes": 40,
+      "native_sha256": "463e918e1963f616d2f5130d3652aebbdd8b6eacc1b4fe1c72186bea942a1576",
+      "source": "Existing native_material_constant_metadata.hpp/.cpp; historical native_optimized_animator_has_type_00b782d0 symbol retained.",
+      "reported_validation": {
+        "instructions": 12,
+        "calls": 0,
+        "strict_build": true,
+        "ctests_passed": 3,
+        "fixture": "Seven AL comparisons with relocated original40B; only two absolute type-cell data immediates changed. Current source linked from fresh bsp_core.lib. No owner dereference.",
+        "relocations": [
+          {
+            "offset": 5,
+            "original": "010900fc",
+            "replacement": "same test cells begin"
+          },
+          {
+            "offset": 24,
+            "original": "01090108",
+            "replacement": "same test cells end"
+          }
+        ],
+        "result_domain": "AL only; EDX/upperEAX/private register fault behavior not validated."
+      },
+      "evidence_receipts": [
+        {
+          "path": "include/bsp/native_material_constant_metadata.hpp",
+          "revision": "0fe3a50a406f740b355d433c180c39ae0a6dfd97",
+          "bytes": 2096,
+          "git_blob_sha256": "402230d43e7758312034625182c7a43c43842e345daa4495b1ffd4249c01b617"
+        },
+        {
+          "path": "src/native_material_constant_metadata.cpp",
+          "revision": "0fe3a50a406f740b355d433c180c39ae0a6dfd97",
+          "bytes": 1731,
+          "git_blob_sha256": "12bb2d77368477d56f158e5089e38724fc3d16b5c9c55bd3f3e8aabb7985a4f1"
+        },
+        {
+          "path": "reports/native_optimized_animator_type_predicate_r42.json",
+          "revision": "0fe3a50a406f740b355d433c180c39ae0a6dfd97",
+          "bytes": 10486,
+          "git_blob_sha256": "5ac8c7169287fb2b502191a40f016e8d75de9d7a778743d4bcfecfde9a1ebd13"
+        }
+      ],
+      "verification_boundary": "Commit contents and tracked report inspected and hashed now. Parent reports main/origin equality, strict build, three CTests and seven relocated-native AL comparisons; this worker did not rerun them."
+    },
+    "texture_sources_R43": {
+      "state": "parent_owned_source_and_checks_reported_complete; metadata_archive_pending",
+      "addresses": [
+        "00c302f0",
+        "00bbcc40",
+        "00bbcbd0"
+      ],
+      "bytes": [
+        19,
+        103,
+        3
+      ],
+      "files": [
+        "include/bsp/native_material_texture_source_constants.hpp",
+        "src/native_material_texture_source_constants.cpp"
+      ],
+      "reported_validation": "Parent reports historical source pair adopted verbatim, all original assembly read, strict build/three CTests and native/source alias fixture passed.",
+      "verification_boundary": "Parent coordination update only; final report/commit/archive not yet supplied. Recheck parent integration before builder adoption."
+    }
+  },
+  "baseline_sampler_reuse_receipts": [
+    {
+      "path": "include/bsp/native_particle_clock_singleton.hpp",
+      "revision": "b15f322895cd86b6026b1a3bf035d35b8fdebe9d",
+      "bytes": 1535,
+      "git_blob_sha256": "cf420be7c1082e3ab237e8ca3585d94721a5afb6ad2cf05da64706d44d298602"
+    },
+    {
+      "path": "src/native_particle_clock_singleton.cpp",
+      "revision": "b15f322895cd86b6026b1a3bf035d35b8fdebe9d",
+      "bytes": 3387,
+      "git_blob_sha256": "970a49f005290b55e6a5dd8b67525a9d7324ae1b3928590e0dbe1b68f97d073d"
+    },
+    {
+      "path": "include/bsp/native_particle_clock_shutdown.hpp",
+      "revision": "b15f322895cd86b6026b1a3bf035d35b8fdebe9d",
+      "bytes": 2582,
+      "git_blob_sha256": "9bdaffd02e337dbc9ee915c2ea3ec16817bd14cbdd92872691e06c8ccea520ad"
+    },
+    {
+      "path": "src/native_particle_clock_shutdown.cpp",
+      "revision": "b15f322895cd86b6026b1a3bf035d35b8fdebe9d",
+      "bytes": 5777,
+      "git_blob_sha256": "04a797fbc598bfc9275c726643e6939272a411ac5cc3a82217b663fb7dbebbd9"
+    }
+  ]
+}
