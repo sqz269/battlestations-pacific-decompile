@@ -1,0 +1,684 @@
+{
+  "schema_version": 1,
+  "packet": "native_particle_smartarea_raw_orch4",
+  "status": "reconstructed_strict_compile_tested_pending_cycle_build",
+  "base_commit": "834ea4a0d",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "owned_addresses": [
+    "00b02210"
+  ],
+  "files": [
+    "include/bsp/native_particle_smartarea_raw.hpp",
+    "src/native_particle_smartarea_raw.cpp",
+    "docs/NATIVE_PARTICLE_SMARTAREA_RAW_ORCH4.md",
+    "reports/native_particle_smartarea_raw_orch4.json"
+  ],
+  "prior_reconstruction_records": [
+    {
+      "address": "00b02210",
+      "source": "src/native_particle_definition_loading.cpp",
+      "header": "include/bsp/native_particle_definition_loading.hpp",
+      "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. AP integration: suffix AF44C0 and particle factory B00CE0 now call concrete implementations in the same owner/string/parameter domain; actual current child parser08 remains the required application boundary.",
+      "name": "load_native_particle_smartarea_definition_00b02210",
+      "status": "reconstructed_build_tested_bounded_fixture_tested",
+      "native_abi": "ECX actual definition; one stack argument; RET4; AL boolean, high EAX unspecified",
+      "kind": "function"
+    }
+  ],
+  "prior_name_records": [
+    {
+      "address": "00b02210",
+      "name": "BSP_SmartAreaEmissionDefinition_Load",
+      "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. | Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. AP integration: suffix AF44C0 and particle factory B00CE0 now call concrete implementations in the same owner/string/parameter domain; actual current child parser08 remains the required application boundary."
+    }
+  ],
+  "pre_change_annotations": [
+    {
+      "address": "00b02210",
+      "function_name": "BSP_SmartAreaEmissionDefinition_Load",
+      "comment": "[BSP reconstruction 00b02210]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.\n\n[BSP reconstruction 00b02210] update\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. | Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. AP integration: suffix AF44C0 and particle factory B00CE0 now call concrete implementations in the same owner/string/parameter domain; actual current child parser08 remains the required application boundary."
+    }
+  ],
+  "native_abi": "ECX actual90h owner; stacked actual1Ch TextBuffer; AL=1 on normal completion; RET4",
+  "byte_ranges": [
+    {
+      "address": "00b02210",
+      "end_inclusive": "00b02b24",
+      "length": 2325,
+      "sha256": "9c8530f97e4767338706215e81f70802542faa27075d43d264b8c44a300b8e83",
+      "live_disk_equal": true,
+      "bytes_hex": "6aff6888b5cb0064a100000000506489250000000083ec705556578bf933ed897c2418896c240c8bb4248c00000089ac24840000008d44240c508bcee8ef34ffff84c074168b4c240c68384dce0051e85b5d0f0083c40885c075da8d54240c528bcee8c934ffff84c00f845a080000538b44241068d44cce0050e8305d0f0083c40885c00f843e0800008b4c2410680c3ace0051e8165d0f0083c40885c00f840b080000558d542424528d4c2418e8fdc0feff8b00688cd7d50050e8ef5c0f008b54242883c40885c00f94c33bd574238bc28d70018a0883c00184c975f72bc66a0183c0015052e8c47991ff8bc8e80df20c0084db896c24200f84b20300006a018d4c2428518d4c2418e8a121ffff508bcfc684248c00000001e82183ffff8b5424243bd58ad8c68424880000000074238bc28d70018a0883c00184c975f72bc66a0183c0015052e8637991ff8bc8e8acf10c0084db896c24240f854f0700006a018d542418528d4c2418e840c0feff6a028d442430508d4c2418c684249000000002e82821ffff558d4c242c518bc8c684249000000003e813c0feff8b1052e8b7820f00d95c241c8b54242c83c4043bd5742a8bc28d70018da424000000008a0883c00184c975f72bc66a0183c0015052e8d97891ff8bc8e822f10c008b54242c3bd5896c2428c68424880000000274238bc28d70018a0883c00184c975f72bc66a0183c0015052e8a27891ff8bc8e8ebf00c008d4c2470896c242ce89e9affffd9ee83ec08d95424048d4c2478d91c24c684249000000004e8119fffff6a028d442438508d4c2418e86120ffff6a018d4c2434518bc8c684249000000005e84b20ffff508d4c2474c684248c00000006e8e99fffff8b4c24303bcdc68424880000000574278bc18d70018d6424008a1083c00184d275f72bc66a0183c0015051e8097891ff8bc8e852f00c008b5424343bd5896c2430c68424880000000474238bc28d70018a0883c00184c975f72bc66a0183c0015052e8d27791ff8bc8e81bf00c00d944241851d91c248d542474528d44241c508bcf896c2440e8ee77ffff84c0743d8b4c247051e869440f008b54241883c4043bd5896c2470896c2474896c2478c6842488000000000f848d0000008bc28d70018a0883c00184c975f7eb688b5424146878ded50052e85d5a0f0083c40885c075708d4c2470e8ee99ffffd9442418dc0d58a3d700d9188987800000008b44247050e8fb430f008b54241883c4043bd5896c2470896c2474896c2478c68424880000000074238bc28d70018a0883c00184c975f72bc66a0183c0015052e8f77691ff8bc8e840ef0c00896c2414e9e60400008b4c241468545bce0051e8d7590f0083c40885c075228d4c2470e86899ffffd9442418dc0d58a3d700d9188b54247089878400000052eb368b442414686cded50050e89f590f0083c40885c0754a8d4c2470e83099ffffd9442418dc0d58a3d700d9188b4c247089878800000051e83d430f0083c4048d4c2414896c2470896c2474896c2478c684248800000000e834bcfeffe94e0400008b5424146860ded50052e83f590f0083c40885c08d4c2470751be8d098ffffd9442418dc0d58a3d7008d4c2470d91889878c000000e8651affff8d4c2414c684248800000000e8e4bbfeffe9fe030000558d44243c508d4c2418e8f0bcfeff8b08687cd9d50051e8e2580f008b54244083c40885c00f94c33bd574238bc28d70018a0883c00184c975f72bc66a0183c0015052e8b77591ff8bc8e800ee0c0084db896c24380f84a60100006a018d542444528d4c2418e894bcfeff8b308bc6c684248800000007896c2458896c245c8d50018a0883c00184c975f72bc26a01508d4c2460e8e6b591ff8b44245c3bc574128b4c245883c101515650e80f4f0f0083c40c6a028d542440528d4c2418c684249000000008e834bcfeff8b308bc6c684248800000009896c2450896c24548d50018a0883c00184c975f72bc26a01508d4c2458e886b591ff8b4424543bc574128b4c245083c101515650e8af4e0f0083c40c8b9424900000008b5c241c8b43105253508d5424648d4c245cc68424940000000ae8b677ffff8bf88b4424543bc5c68424880000000974178b4c24506a0183c1015150e8a47491ff8bc8e8edec0c008b54243c3bd5c68424880000000874238bc28d70018a0883c00184c975f72bc66a0183c0015052e8717491ff8bc8e8baec0c008b4c245c3bcd896c243cc68424880000000774178b4424586a0183c0015051e8467491ff8bc8e88fec0c008b5424403bd5c68424880000000074238bc28d70018a0883c00184c975f72bc66a0183c0015052e8137491ff8bc8e85cec0c00578bcb896c2444e84076ffff8bfb558d442448508d4c2418e8efbafeff8b0868d8dad00051e8e1560f008b54244c83c40885c00f94c33bd574238bc28d70018a0883c00184c975f72bc66a0183c0015052e8b67391ff8bc8e8ffeb0c0084db896c24440f84a20100006a018d542450528d4c2418e893bafeff8b308bc6c68424880000000b896c2468896c246c8d50018a0883c00184c975f72bc26a01508d4c2470e8e5b391ff8b44246c3bc574128b4c246883c101515650e80e4d0f0083c40c6a028d54244c528d4c2418c68424900000000ce833bafeff8b308bc6c68424880000000d896c2460896c24648d50018a0883c00184c975f72bc26a01508d4c2468e885b391ff8b4424643bc574128b4c246083c101515650e8ae4c0f0083c40c8b9424900000008b5c241c52538d5424708d4c2468c68424900000000ee8e9e2ffff8bf88b4424643bc5c68424880000000d74178b4c24606a0183c1015150e8a77291ff8bc8e8f0ea0c008b5424483bd5c68424880000000c74238bc28d70018a0883c00184c975f72bc66a0183c0015052e8747291ff8bc8e8bdea0c008b4c246c3bcd896c2448c68424880000000b74178b4424686a0183c0015051e8497291ff8bc8e892ea0c008b54244c3bd5c68424880000000074238bc28d70018a0883c00184c975f72bc66a0183c0015052e8167291ff8bc8e85fea0c00578bcb896c2450e86374ffff8bfb8b8c24900000008d44241050e8702cffff84c00f85a8f7ffff5b8b54240c3bd5c7842484000000ffffffff74238bc28d70018a0883c00184c975f72bc66a0183c0015052e8b87191ff8bc8e801ea0c008b4c247c5f5eb0015d64890d0000000083c47cc20400",
+      "instruction_count": 734,
+      "listing_gaps": 0,
+      "last_instruction": {
+        "address": "00b02b22",
+        "bytes": "c20400",
+        "text": "ret 4"
+      }
+    },
+    {
+      "address": "00cbb510",
+      "end_inclusive": "00cbb591",
+      "length": 130,
+      "sha256": "208b43905e5ee54a828a20cee867b178d9c36ea3bf308376ae04d5bb1db815c3",
+      "live_disk_equal": true,
+      "bytes_hex": "8d4d84e9882de3ff8d4d98e9802de3ff8d4d88e9782de3ff8d4da0e9702de3ff8d4de4e9d88be3ff8d4da8e9602de3ff8d4da4e9582de3ff8d4db4e9502de3ff8d4dcce9c82776ff8d4db0e9402de3ff8d4dc4e9b82776ff8d4dc0e9302de3ff8d4ddce9a82776ff8d4dbce9202de3ff8d4dd4e9982776ffb8b835df00e9b1b5f3ff"
+    },
+    {
+      "address": "00df35b8",
+      "end_inclusive": "00df3653",
+      "length": 156,
+      "sha256": "44d4aa893c1d38fe334112f42f956d99c1ca9787a076f018670dc4e0d8bffc12",
+      "live_disk_equal": true,
+      "bytes_hex": "220593190f000000dc35df00000000000000000000000000000000000000000001000000ffffffff10b5cb000000000018b5cb000000000020b5cb000200000028b5cb000200000030b5cb000400000038b5cb000500000040b5cb000000000048b5cb000700000050b5cb000800000058b5cb000900000060b5cb000000000068b5cb000b00000070b5cb000c00000078b5cb000d00000080b5cb00"
+    },
+    {
+      "address": "00d5de60",
+      "end_inclusive": "00d5de87",
+      "length": 40,
+      "sha256": "14a0a4657b66329d2e10fa14cef3e9f33e1e067406796089bc79fe6d528884e1",
+      "live_disk_equal": true,
+      "bytes_hex": "526164697573416e676c6500526164697573537065656400456d6974746564537065656400000000"
+    },
+    {
+      "address": "00ce5b54",
+      "end_inclusive": "00ce5b5a",
+      "length": 7,
+      "sha256": "cfdec507ae49659dac44f09e58c2eed2d08d5db462d0cfbda6d43342d56c9525",
+      "live_disk_equal": true,
+      "bytes_hex": "52616469757300"
+    },
+    {
+      "address": "00d7a358",
+      "end_inclusive": "00d7a35f",
+      "length": 8,
+      "sha256": "595700f5c0ba132c9ede02f9ad9a19cffe697fd8fd52890abb10fd78f47d9aa1",
+      "live_disk_equal": true,
+      "bytes_hex": "00000040e17a843f"
+    }
+  ],
+  "native_call_sites": [
+    {
+      "address": "00b0224c",
+      "instruction": "call 0xaf5740"
+    },
+    {
+      "address": "00b0225f",
+      "instruction": "call 0xbf7fbf"
+    },
+    {
+      "address": "00b02272",
+      "instruction": "call 0xaf5740"
+    },
+    {
+      "address": "00b0228a",
+      "instruction": "call 0xbf7fbf"
+    },
+    {
+      "address": "00b022a4",
+      "instruction": "call 0xbf7fbf"
+    },
+    {
+      "address": "00b022be",
+      "instruction": "call 0xaee3c0"
+    },
+    {
+      "address": "00b022cb",
+      "instruction": "call 0xbf7fbf"
+    },
+    {
+      "address": "00b022f7",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b022fe",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b0231a",
+      "instruction": "call 0xaf44c0"
+    },
+    {
+      "address": "00b0232a",
+      "instruction": "call 0xafa650"
+    },
+    {
+      "address": "00b02358",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b0235f",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b0237b",
+      "instruction": "call 0xaee3c0"
+    },
+    {
+      "address": "00b02393",
+      "instruction": "call 0xaf44c0"
+    },
+    {
+      "address": "00b023a8",
+      "instruction": "call 0xaee3c0"
+    },
+    {
+      "address": "00b023b0",
+      "instruction": "call 0xbfa66c"
+    },
+    {
+      "address": "00b023e2",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b023e9",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b02419",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b02420",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b0242d",
+      "instruction": "call 0xafbed0"
+    },
+    {
+      "address": "00b0244a",
+      "instruction": "call 0xafc360"
+    },
+    {
+      "address": "00b0245a",
+      "instruction": "call 0xaf44c0"
+    },
+    {
+      "address": "00b02470",
+      "instruction": "call 0xaf44c0"
+    },
+    {
+      "address": "00b02482",
+      "instruction": "call 0xafc470"
+    },
+    {
+      "address": "00b024b2",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b024b9",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b024e9",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b024f0",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b0250d",
+      "instruction": "call 0xaf9d00"
+    },
+    {
+      "address": "00b0251b",
+      "instruction": "call 0xbf6989"
+    },
+    {
+      "address": "00b0255d",
+      "instruction": "call 0xbf7fbf"
+    },
+    {
+      "address": "00b0256d",
+      "instruction": "call 0xafbf60"
+    },
+    {
+      "address": "00b02589",
+      "instruction": "call 0xbf6989"
+    },
+    {
+      "address": "00b025c4",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b025cb",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b025e3",
+      "instruction": "call 0xbf7fbf"
+    },
+    {
+      "address": "00b025f3",
+      "instruction": "call 0xafbf60"
+    },
+    {
+      "address": "00b0261b",
+      "instruction": "call 0xbf7fbf"
+    },
+    {
+      "address": "00b0262b",
+      "instruction": "call 0xafbf60"
+    },
+    {
+      "address": "00b02647",
+      "instruction": "call 0xbf6989"
+    },
+    {
+      "address": "00b02667",
+      "instruction": "call 0xaee2a0"
+    },
+    {
+      "address": "00b0267b",
+      "instruction": "call 0xbf7fbf"
+    },
+    {
+      "address": "00b0268b",
+      "instruction": "call 0xafbf60"
+    },
+    {
+      "address": "00b026a6",
+      "instruction": "call 0xaf4110"
+    },
+    {
+      "address": "00b026b7",
+      "instruction": "call 0xaee2a0"
+    },
+    {
+      "address": "00b026cb",
+      "instruction": "call 0xaee3c0"
+    },
+    {
+      "address": "00b026d8",
+      "instruction": "call 0xbf7fbf"
+    },
+    {
+      "address": "00b02704",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b0270b",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b02727",
+      "instruction": "call 0xaee3c0"
+    },
+    {
+      "address": "00b02755",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b0276c",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b02787",
+      "instruction": "call 0xaee3c0"
+    },
+    {
+      "address": "00b027b5",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b027cc",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b027f5",
+      "instruction": "call 0xaf9fb0"
+    },
+    {
+      "address": "00b02817",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b0281e",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b0284a",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b02851",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b02875",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b0287c",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b028a8",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b028af",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b028bb",
+      "instruction": "call 0xaf9f00"
+    },
+    {
+      "address": "00b028cc",
+      "instruction": "call 0xaee3c0"
+    },
+    {
+      "address": "00b028d9",
+      "instruction": "call 0xbf7fbf"
+    },
+    {
+      "address": "00b02905",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b0290c",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b02928",
+      "instruction": "call 0xaee3c0"
+    },
+    {
+      "address": "00b02956",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b0296d",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b02988",
+      "instruction": "call 0xaee3c0"
+    },
+    {
+      "address": "00b029b6",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b029cd",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00b029f2",
+      "instruction": "call 0xb00ce0"
+    },
+    {
+      "address": "00b02a14",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b02a1b",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b02a47",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b02a4e",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b02a72",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b02a79",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b02aa5",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b02aac",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "00b02ab8",
+      "instruction": "call 0xaf9f20"
+    },
+    {
+      "address": "00b02acb",
+      "instruction": "call 0xaf5740"
+    },
+    {
+      "address": "00b02b03",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "00b02b0a",
+      "instruction": "call 0xbd1510"
+    }
+  ],
+  "x87_schedule": [
+    {
+      "address": "00b023b5",
+      "instruction": "fstp dword ptr [esp + 0x1c]"
+    },
+    {
+      "address": "00b02432",
+      "instruction": "fldz "
+    },
+    {
+      "address": "00b02437",
+      "instruction": "fst dword ptr [esp + 4]"
+    },
+    {
+      "address": "00b0243f",
+      "instruction": "fstp dword ptr [esp]"
+    },
+    {
+      "address": "00b024f5",
+      "instruction": "fld dword ptr [esp + 0x18]"
+    },
+    {
+      "address": "00b024fa",
+      "instruction": "fstp dword ptr [esp]"
+    },
+    {
+      "address": "00b02572",
+      "instruction": "fld dword ptr [esp + 0x18]"
+    },
+    {
+      "address": "00b02576",
+      "instruction": "fmul qword ptr [0xd7a358]"
+    },
+    {
+      "address": "00b0257c",
+      "instruction": "fstp dword ptr [eax]"
+    },
+    {
+      "address": "00b025f8",
+      "instruction": "fld dword ptr [esp + 0x18]"
+    },
+    {
+      "address": "00b025fc",
+      "instruction": "fmul qword ptr [0xd7a358]"
+    },
+    {
+      "address": "00b02602",
+      "instruction": "fstp dword ptr [eax]"
+    },
+    {
+      "address": "00b02630",
+      "instruction": "fld dword ptr [esp + 0x18]"
+    },
+    {
+      "address": "00b02634",
+      "instruction": "fmul qword ptr [0xd7a358]"
+    },
+    {
+      "address": "00b0263a",
+      "instruction": "fstp dword ptr [eax]"
+    },
+    {
+      "address": "00b02690",
+      "instruction": "fld dword ptr [esp + 0x18]"
+    },
+    {
+      "address": "00b02694",
+      "instruction": "fmul qword ptr [0xd7a358]"
+    },
+    {
+      "address": "00b0269e",
+      "instruction": "fstp dword ptr [eax]"
+    }
+  ],
+  "unwind": {
+    "handler": "00cbb588",
+    "function_info": "00df35b8",
+    "map": "00df35dc",
+    "states": [
+      {
+        "state": 0,
+        "next_state": -1,
+        "action": "00cbb510",
+        "local": "line",
+        "ebp_offset": -124,
+        "target": "00aee2a0"
+      },
+      {
+        "state": 1,
+        "next_state": 0,
+        "action": "00cbb518",
+        "local": "flag_suffix",
+        "ebp_offset": -104,
+        "target": "00aee2a0"
+      },
+      {
+        "state": 2,
+        "next_state": 0,
+        "action": "00cbb520",
+        "local": "parameter_name",
+        "ebp_offset": -120,
+        "target": "00aee2a0"
+      },
+      {
+        "state": 3,
+        "next_state": 2,
+        "action": "00cbb528",
+        "local": "scalar_suffix",
+        "ebp_offset": -96,
+        "target": "00aee2a0"
+      },
+      {
+        "state": 4,
+        "next_state": 2,
+        "action": "00cbb530",
+        "local": "builder",
+        "ebp_offset": -28,
+        "target": "00af4110"
+      },
+      {
+        "state": 5,
+        "next_state": 4,
+        "action": "00cbb538",
+        "local": "curve_outer",
+        "ebp_offset": -88,
+        "target": "00aee2a0"
+      },
+      {
+        "state": 6,
+        "next_state": 5,
+        "action": "00cbb540",
+        "local": "curve_inner",
+        "ebp_offset": -92,
+        "target": "00aee2a0"
+      },
+      {
+        "state": 7,
+        "next_state": 0,
+        "action": "00cbb548",
+        "local": "emitter_name_token",
+        "ebp_offset": -76,
+        "target": "00aee2a0"
+      },
+      {
+        "state": 8,
+        "next_state": 7,
+        "action": "00cbb550",
+        "local": "emitter_name8",
+        "ebp_offset": -52,
+        "target": "0041dd20"
+      },
+      {
+        "state": 9,
+        "next_state": 8,
+        "action": "00cbb558",
+        "local": "emitter_kind_token",
+        "ebp_offset": -80,
+        "target": "00aee2a0"
+      },
+      {
+        "state": 10,
+        "next_state": 9,
+        "action": "00cbb560",
+        "local": "emitter_kind8",
+        "ebp_offset": -60,
+        "target": "0041dd20"
+      },
+      {
+        "state": 11,
+        "next_state": 0,
+        "action": "00cbb568",
+        "local": "particle_name_token",
+        "ebp_offset": -64,
+        "target": "00aee2a0"
+      },
+      {
+        "state": 12,
+        "next_state": 11,
+        "action": "00cbb570",
+        "local": "particle_name8",
+        "ebp_offset": -36,
+        "target": "0041dd20"
+      },
+      {
+        "state": 13,
+        "next_state": 12,
+        "action": "00cbb578",
+        "local": "particle_kind_token",
+        "ebp_offset": -68,
+        "target": "00aee2a0"
+      },
+      {
+        "state": 14,
+        "next_state": 13,
+        "action": "00cbb580",
+        "local": "particle_kind8",
+        "ebp_offset": -44,
+        "target": "0041dd20"
+      }
+    ]
+  },
+  "source_contract": {
+    "callbacks": false,
+    "persistent_native_headers_before_factory_children": true,
+    "own_builder_kind": "Explicit acquired constructor argument; retained across lines",
+    "child_builder_kind": "Separate explicit context residue passed to each nested factory acquired",
+    "normal_cleanup": "Disarm before captured pool returns; inline builder free preserves kind; final line header remains stale",
+    "unknown_parameter": "Construct and parse builder, then clean it without publishing",
+    "nested_publication": "After complete child parse and reverse-order temporary cleanup; Particle rechecked after Emitter",
+    "failure": "Record native site/state, run exactly reachable FH3 actions, retain failed concrete child"
+  },
+  "validation": {
+    "strict_win32_compile": true,
+    "full_cycle_build": false,
+    "copied_original_fixture": false,
+    "original_abi_compatible": false,
+    "game_validated": false,
+    "strict_flags": "/std:c++20 /permissive- /W4 /WX /EHsc /c"
+  }
+}

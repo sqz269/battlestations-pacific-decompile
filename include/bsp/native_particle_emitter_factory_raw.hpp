@@ -41,6 +41,7 @@ struct NativeParticleEmitterFactoryRawAcquired {
     Phase phase{Phase::fresh};
     std::uint32_t native_site{};
     int unwind_state{-1};
+    int native_state_at_failure{-1};
     void* allocation{}; // Captured identity; stale if allocation_released.
     std::uint32_t allocation_bytes{};
     bool allocation_released{};

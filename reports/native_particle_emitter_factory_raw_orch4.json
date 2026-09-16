@@ -2,7 +2,7 @@
   "schema_version": 1,
   "packet": "native_particle_emitter_factory_raw_orch4",
   "base_commit": "323c5d172",
-  "status": "reconstructed_pending_concrete_parser_dependencies",
+  "status": "reconstructed_strict_compile_tested_pending_cycle_build",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
@@ -180,7 +180,9 @@
     "build": false,
     "fixture": false,
     "original_abi_compatible": false,
-    "game_validated": false
+    "game_validated": false,
+    "strict_win32_compile": true,
+    "strict_flags": "/std:c++20 /permissive- /W4 /WX /EHsc /c"
   },
   "concrete_dependencies": [
     {
