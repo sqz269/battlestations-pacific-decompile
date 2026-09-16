@@ -1,0 +1,325 @@
+{
+  "packet": "orch4_particle_resource_parameter_lifetime_l12",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_particle_resource_lifetime.cpp",
+  "header": "include/bsp/native_particle_resource_lifetime.hpp",
+  "functions": [
+    {
+      "address": "00af4280",
+      "end_exclusive": "00af4360",
+      "bytes": 224,
+      "sha256": "0ba5cfaccb1164c98a610a4576749b40e23aace429ba9fb5a2dbbd8c496fe531",
+      "live_disk_match": true,
+      "name": "destroy_native_particle_resource_00af4280",
+      "original_abi": "ECX actual90h resource; RET",
+      "old_documentation": {
+        "hash": "096cf1687cbc7f8c723a27a1e616f1bd516387565cba6d0d90c83f24e8ce406c",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af4280",
+        "function_name": "BSP_ParticleResource_Destroy",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00af4280]\nComplete actual raw particle resource lifetime/removal body, current reads and owning FH3 cleanup preserved. Full fresh live/disk spans agree; strictWin32/3CTests and bounded original224B base-dtor/source composition passed. Actual child callable-vtable boundary remains. New C++ APIs, no binaryABI/game claim. docs/NATIVE_PARTICLE_RESOURCE_LIFETIME_ORCH4.md; docs/NATIVE_PARTICLE_RESOURCE_CACHE_REMOVAL_ORCH4.md; reports/native_particle_resource_cache_removal_orch4.json.\n\n[BSP reconstruction 00af4280] update\nComplete actual raw particle resource lifetime/removal body, current reads and owning FH3 cleanup preserved. Full fresh live/disk spans agree; strictWin32/3CTests and bounded original224B base-dtor/source composition passed. Actual child callable-vtable boundary remains. New C++ APIs, no binaryABI/game claim. docs/NATIVE_PARTICLE_RESOURCE_LIFETIME_ORCH4.md; docs/NATIVE_PARTICLE_RESOURCE_CACHE_REMOVAL_ORCH4.md; reports/native_particle_resource_cache_removal_orch4.json. | Layer source dispatch closure: currentD5DC38 slot0BD30E0 -> independently reloaded slot4AFACE0 flags1, one decrement, actual raw string pool forwarded. Other child profiles retain actual callable-terminal boundary; numeric emitter identities remain open. Full224B AF4280,14B BD30E0 and8B table PE/live parity rechecked. Strict Win32/3CTests and genuine resource/Layer/pool plus foreign-terminal composition probe passed; independent source/listing review found no findings. See docs/NATIVE_PARTICLE_LAYER_RESOURCE_RELEASE_ORCH4.md and reports/native_particle_layer_resource_release_orch4.json. Earlier copied-original evidence remains in reports/native_particle_resource_lifetime_orch4.json; new composition is source-only. No original exception, arbitrary concurrent vptr mutation, binary ABI or gameplay claim.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "LVar2",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar5",
+            "type": "int",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "uVar6",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "uint",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "piVar4",
+            "type": "int *",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 64,
+            "name": "LAB_00af42c0"
+          },
+          {
+            "relative_offset": 89,
+            "name": "LAB_00af42d9"
+          },
+          {
+            "relative_offset": 100,
+            "name": "LAB_00af42e4"
+          },
+          {
+            "relative_offset": 113,
+            "name": "LAB_00af42f1"
+          },
+          {
+            "relative_offset": 138,
+            "name": "LAB_00af430a"
+          },
+          {
+            "relative_offset": 149,
+            "name": "LAB_00af4315"
+          },
+          {
+            "relative_offset": 190,
+            "name": "LAB_00af433e"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_name": {
+        "address": "00af4280",
+        "name": "BSP_ParticleResource_Destroy",
+        "evidence": "Complete actual raw particle resource lifetime/removal body, current reads and owning FH3 cleanup preserved. Full fresh live/disk spans agree; strictWin32/3CTests and bounded original224B base-dtor/source composition passed. Actual child callable-vtable boundary remains. New C++ APIs, no binaryABI/game claim. docs/NATIVE_PARTICLE_RESOURCE_LIFETIME_ORCH4.md; docs/NATIVE_PARTICLE_RESOURCE_CACHE_REMOVAL_ORCH4.md; reports/native_particle_resource_cache_removal_orch4.json. | Layer source dispatch closure: currentD5DC38 slot0BD30E0 -> independently reloaded slot4AFACE0 flags1, one decrement, actual raw string pool forwarded. Other child profiles retain actual callable-terminal boundary; numeric emitter identities remain open. Full224B AF4280,14B BD30E0 and8B table PE/live parity rechecked. Strict Win32/3CTests and genuine resource/Layer/pool plus foreign-terminal composition probe passed; independent source/listing review found no findings. See docs/NATIVE_PARTICLE_LAYER_RESOURCE_RELEASE_ORCH4.md and reports/native_particle_layer_resource_release_orch4.json. Earlier copied-original evidence remains in reports/native_particle_resource_lifetime_orch4.json; new composition is source-only. No original exception, arbitrary concurrent vptr mutation, binary ABI or gameplay claim."
+      },
+      "prior_reconstruction_records": [
+        {
+          "address": "00af4280",
+          "name": "destroy_native_particle_resource_00af4280",
+          "source": "src/native_particle_resource_lifetime.cpp",
+          "status": "complete_raw_storage_layer_profile_build_and_bounded_probe_verified",
+          "coverage": "complete",
+          "original_abi": "ECX actual90h resource; RET",
+          "bytes": 224,
+          "sha256": "0ba5cfaccb1164c98a610a4576749b40e23aace429ba9fb5a2dbbd8c496fe531",
+          "evidence": "Layer source dispatch closure: currentD5DC38 slot0BD30E0 -> independently reloaded slot4AFACE0 flags1, one decrement, actual raw string pool forwarded. Other child profiles retain actual callable-terminal boundary; numeric emitter identities remain open. Full224B AF4280,14B BD30E0 and8B table PE/live parity rechecked. Strict Win32/3CTests and genuine resource/Layer/pool plus foreign-terminal composition probe passed; independent source/listing review found no findings. See docs/NATIVE_PARTICLE_LAYER_RESOURCE_RELEASE_ORCH4.md and reports/native_particle_layer_resource_release_orch4.json. Earlier copied-original evidence remains in reports/native_particle_resource_lifetime_orch4.json; new composition is source-only. No original exception, arbitrary concurrent vptr mutation, binary ABI or gameplay claim.",
+          "documentation": "docs/NATIVE_PARTICLE_LAYER_RESOURCE_RELEASE_ORCH4.md",
+          "report": "reports/native_particle_layer_resource_release_orch4.json",
+          "baseline_report": "reports/native_particle_resource_lifetime_orch4.json"
+        }
+      ],
+      "coverage": "complete",
+      "hex": "6aff6883abcb0064a1000000005064892500000000515355568bf15789742410c70658d9d5008b463033ff85c0c744241c010000007e2d8d6e108d9b000000008b5d008d430450ff152022ce0085c075088b138b028bcbffd083c70183c5043b7e307cdc33ff397e54897e307e278d6e348b5d008d4b0451ff152022ce0085c075088b138b028bcbffd083c70183c5043b7e547cdcc74654000000008b460c85c0c644241c0074168b4e086a0183c1015150e8895992ff8bc8e8d2d10d008bcec744241cffffffffe8a3ed0d008b4c24145f5e5d5b64890d0000000083c410c3"
+    },
+    {
+      "address": "00af46e0",
+      "end_exclusive": "00af46fe",
+      "bytes": 30,
+      "sha256": "3ab73ddec90507389e017662c7c458695df6d424b6abcbfe1fe2bfa3cc228fec",
+      "live_disk_match": true,
+      "name": "delete_native_particle_resource_00af46e0",
+      "original_abi": "ECX actual90h resource; stack flags; EAX same owner; RET4",
+      "old_documentation": {
+        "hash": "2d0e512dea879d0c7ddc1b6ca8f5ea2dd4c4ee6c1395475e080523c50cb544ba",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af46e0",
+        "function_name": "CG_scalar_deleting_dtor_00af46e0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00af46e0]\nComplete actual raw particle resource lifetime/removal body, current reads and owning FH3 cleanup preserved. Full fresh live/disk spans agree; strictWin32/3CTests and bounded original224B base-dtor/source composition passed. Actual child callable-vtable boundary remains. New C++ APIs, no binaryABI/game claim. docs/NATIVE_PARTICLE_RESOURCE_LIFETIME_ORCH4.md; docs/NATIVE_PARTICLE_RESOURCE_CACHE_REMOVAL_ORCH4.md; reports/native_particle_resource_cache_removal_orch4.json.",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00af46f8"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_name": {
+        "address": "00af46e0",
+        "name": "CG_scalar_deleting_dtor_00af46e0",
+        "evidence": "Complete actual raw particle resource lifetime/removal body, current reads and owning FH3 cleanup preserved. Full fresh live/disk spans agree; strictWin32/3CTests and bounded original224B base-dtor/source composition passed. Actual child callable-vtable boundary remains. New C++ APIs, no binaryABI/game claim. docs/NATIVE_PARTICLE_RESOURCE_LIFETIME_ORCH4.md; docs/NATIVE_PARTICLE_RESOURCE_CACHE_REMOVAL_ORCH4.md; reports/native_particle_resource_cache_removal_orch4.json."
+      },
+      "prior_reconstruction_records": [
+        {
+          "address": "00af46e0",
+          "name": "delete_native_particle_resource_00af46e0",
+          "source": "src/native_particle_resource_lifetime.cpp",
+          "header": "include/bsp/native_particle_resource_lifetime.hpp",
+          "status": "complete_raw_storage_context_build_and_bounded_probe_verified",
+          "original_abi": "ECX resource; stack flags; EAX original resource; RET4",
+          "evidence": "Complete actual raw particle resource lifetime/removal body, current reads and owning FH3 cleanup preserved. Full fresh live/disk spans agree; strictWin32/3CTests and bounded original224B base-dtor/source composition passed. Actual child callable-vtable boundary remains. New C++ APIs, no binaryABI/game claim. docs/NATIVE_PARTICLE_RESOURCE_LIFETIME_ORCH4.md; docs/NATIVE_PARTICLE_RESOURCE_CACHE_REMOVAL_ORCH4.md; reports/native_particle_resource_cache_removal_orch4.json.",
+          "abi_compatible": false,
+          "game_validated": false
+        }
+      ],
+      "coverage": "complete",
+      "hex": "568bf1e898fbfffff644240801740956e8b71e100083c4048bc65ec20400"
+    }
+  ],
+  "byte_evidence": [
+    {
+      "address": "00cbab70",
+      "end_exclusive": "00cbab8d",
+      "bytes": 29,
+      "sha256": "d88387d02e4d20caa3aad3b8394a310688eb42d8f4495eeea3b0bde057df75b1",
+      "live_disk_match": true,
+      "hex": "8b4df0e97885f1ff8b4df083c108e99d3176ffb8ac29df00e9b6bff3ff"
+    },
+    {
+      "address": "00df299c",
+      "end_exclusive": "00df29d0",
+      "bytes": 52,
+      "sha256": "b6eca93a9606f7f52e98623483bd82341d4f9fc3a5ed35c9668a3b363faf162c",
+      "live_disk_match": true,
+      "hex": "ffffffff70abcb000000000078abcb0022059319020000009c29df00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00d5dbc4",
+      "end_exclusive": "00d5dbcc",
+      "bytes": 8,
+      "sha256": "6e53bf817b5168944febad53a4a81df312223a77ddef1a115f1b96d3cfbc11a6",
+      "live_disk_match": true,
+      "hex": "e030bd0050a3af00"
+    },
+    {
+      "address": "00d5debc",
+      "end_exclusive": "00d5dec4",
+      "bytes": 8,
+      "sha256": "caea402dfed8cb6434eed8291cd40b258296f9bae10675e5df51246016ae613a",
+      "live_disk_match": true,
+      "hex": "e030bd00403bb000"
+    },
+    {
+      "address": "00d5de88",
+      "end_exclusive": "00d5de90",
+      "bytes": 8,
+      "sha256": "4ee042d0a3fab6f63d9ed7506b73fcc66644874e0763a6e339dfe05a7cb23845",
+      "live_disk_match": true,
+      "hex": "e030bd00b02fb000"
+    },
+    {
+      "address": "00d5de48",
+      "end_exclusive": "00d5de50",
+      "bytes": 8,
+      "sha256": "71012913db01fbde3c95e497ce21c9740ef18b94cab706450efbe56152001882",
+      "live_disk_match": true,
+      "hex": "e030bd00a01eb000"
+    },
+    {
+      "address": "00d5dc38",
+      "end_exclusive": "00d5dc40",
+      "bytes": 8,
+      "sha256": "145bce5dbc83b5d2bd1ce615d283c06068504d31c05988999947a1ff08fe5e23",
+      "live_disk_match": true,
+      "hex": "e030bd00e0acaf00"
+    },
+    {
+      "address": "00bd30e0",
+      "end_exclusive": "00bd30ee",
+      "bytes": 14,
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "live_disk_match": true,
+      "hex": "85c974098b018b50046a01ffd2c3"
+    }
+  ],
+  "calls": [
+    {
+      "function": "00af4280",
+      "address": "00af4332",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00af4280",
+      "address": "00af4339",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00af4280",
+      "address": "00af4348",
+      "native": "00bd30f0"
+    },
+    {
+      "function": "00af46e0",
+      "address": "00af46e3",
+      "native": "00af4280"
+    },
+    {
+      "function": "00af46e0",
+      "address": "00af46f0",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00cbab70",
+      "address": "00cbab73",
+      "native": "00bd30f0",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbab78",
+      "address": "00cbab7e",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    }
+  ],
+  "raw_handler_tail": {
+    "site": "00cbab88",
+    "target": "00bf6b43",
+    "func_info": "00df29ac",
+    "unwind_map": "00df299c",
+    "states": 2
+  },
+  "validation": {
+    "build": "scripts/build.ps1 strict Win32 and3/3 existing CTests passed",
+    "probe": {
+      "exit_code": 0,
+      "output": "PASS: both complete resource bodies254B/source; full90h image, current forward counts and scalar flags2/3; source terminal unwind; actual Resource->Base/Cone/Sphere/SmartArea->Type and Layer/material cleanup with the same string/parameter pools. Original FH3/SEH/exception paths not executed.\n",
+      "bodies": [
+        {
+          "address": "00af4280",
+          "bytes": 224,
+          "sha256": "0ba5cfaccb1164c98a610a4576749b40e23aace429ba9fb5a2dbbd8c496fe531"
+        },
+        {
+          "address": "00af46e0",
+          "bytes": 30,
+          "sha256": "3ab73ddec90507389e017662c7c458695df6d424b6abcbfe1fe2bfa3cc228fec"
+        }
+      ],
+      "scope": "Complete resource original/source normal bodies with genuine external providers and actual Kernel32 import; source-only terminal unwind and full nested actual-pool emitter/type/Layer cleanup. Original FH3/SEH/exception paths not executed."
+    },
+    "legacy_layer_probe": "PASS: real resource -> Layer scalar cleanup, pooled names/material, surviving refcount, preserved foreign terminal, resource base/counts.\n",
+    "independent_review": "particle_lifetime_h8 reviewed complete bodies/EH/live tablepairs and source compatibility: no findings",
+    "artifact_hashes": {
+      "src/native_particle_resource_lifetime.cpp": "1939dc50b22f61e54618159084da636e3fad90776ef8e40fb5ce1480adc2b3a4",
+      "include/bsp/native_particle_resource_lifetime.hpp": "da0bb00de2a3d322484bfa39f0ab9524ce129bf1d903aa1565d0b7d80cc8f6a7",
+      "local/particle_resource_parameter_probe.cpp": "945c5ac30e0f90dd31c2cf2746e8a4386e3181fc98e8ff9f7488102ece9b1559",
+      "local/run_particle_resource_parameter_probe.py": "d23b4cbcdc956eadcc79a0e58bf2787a60a6af99e6ca45355bfb0b21e54ec670",
+      "build/win32/Release/bsp_core.lib": "39c239198b161937f7c486be003926a3b77867be3b2121a26fda02ccf68791cf"
+    }
+  },
+  "limits": [
+    "New explicit parameter-pool source overload; native FH3/SEH, allocation failure, concurrency and gameplay unvalidated.",
+    "Original-code comparison covers normal paths; source-only terminal exception and nested numeric table chains exercise concrete provider composition.",
+    "Earlier string-only interface retained; application callers must select new overload with their actual shared F8D344 pool.",
+    "Other numeric renderer/foreign child profiles remain explicit callable-vtable boundaries."
+  ]
+}
