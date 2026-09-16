@@ -22,6 +22,7 @@
 #include "bsp/native_pak_registry.hpp"
 #include "bsp/native_vfs_derived_manager.hpp"
 #include "bsp/native_string_pool_owner.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 #include "bsp/xlive_owner_lifetime.hpp"
 
 #include "bsp/native_gameplay_effect_destruction.hpp"
@@ -34,6 +35,9 @@
 #include "bsp/native_diagnostic_sink_lifetime.hpp"
 #include "bsp/native_renderer_record_guard.hpp"
 #include "bsp/native_renderer_lua_owner.hpp"
+#include "bsp/native_renderer_destructor.hpp"
+#include "bsp/native_shader_state_definitions.hpp"
+#include "bsp/native_system_registry_raw_terminal.hpp"
 #include "bsp/native_render_job_publication.hpp"
 #include "bsp/native_frame_job_lifetime.hpp"
 #include "bsp/native_singleton_vector_leaves.hpp"
@@ -55,6 +59,45 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
     const NativeSingletonDeletionBindings& bindings, std::uint32_t profile,
     std::uint32_t flags) {
     switch (profile) {
+    case 0x00d5f0a4:
+        if (bindings.renderer_owner != nullptr) {
+            delete_native_renderer_secondary_00b32900(owner, bindings.renderer_owner, flags);
+            return;
+        }
+        break;
+    case 0x00d621ec:
+    case 0x00d62260:
+        if (bindings.renderer_owner != nullptr) {
+            auto& context = *bindings.renderer_owner;
+            auto* const definitions = static_cast<NativeShaderStateDefinitionsStorage*>(owner);
+            SoundLifetimeAccess lifetime(context.singleton_manager_01090aa0);
+            if (profile == 0x00d621ec) {
+                delete_native_shader_state_definition_base_00b56750(definitions,
+                    context.state_definitions_0108fe90, lifetime, flags);
+            } else {
+                ActualNativeStringPoolStorage strings(context.string_pool_01090aa8,
+                    context.small_returns_disabled_01090aa4, context.singleton_manager_01090aa0);
+                delete_native_shader_state_definitions_00b59e50(definitions,
+                    context.state_definitions_0108fe90, lifetime, strings, flags);
+            }
+            return;
+        }
+        break;
+    case 0x00d626f4:
+    case 0x00d62a3c:
+        if (bindings.renderer_owner != nullptr) {
+            auto& context = *bindings.renderer_owner;
+            NativeStringRawPoolContext strings{context.string_pool_01090aa8,
+                context.small_returns_disabled_01090aa4, context.singleton_manager_01090aa0};
+            NativeSystemConstantRegistryRawContext system{context.system_constants_0108fe94, strings};
+            auto* const constants = static_cast<NativeSystemConstantRegistryStorage*>(owner);
+            if (profile == 0x00d626f4)
+                delete_native_system_constant_base_00b5bb20(constants, system, flags);
+            else
+                delete_native_system_constant_registry_00b5df70(constants, system, flags);
+            return;
+        }
+        break;
     case 0x00d5e5a4:
         if (bindings.renderer_lua_owner != nullptr) {
             scalar_delete_native_renderer_lua_base_00b1bb70(
