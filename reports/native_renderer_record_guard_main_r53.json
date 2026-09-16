@@ -1,0 +1,905 @@
+{
+  "schema_version": 1,
+  "packet": "native_renderer_record_guard_r53",
+  "status": "source_strict_build_differential_leaves_and_source_gate_lifecycle_checked",
+  "baseline_commit": "d53b33a5a0f47c5c19b5ce8d9582ebcb3eb79f51",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved_annotations": "Names/evidence comments saved and exports refreshed; existing scalar library name retained.",
+    "prior_annotations_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\ghidra-annotations-20260916T160459Z.json",
+    "prior_annotations": [
+      {
+        "address": "00b22360",
+        "before": {
+          "address": "00b22360",
+          "function_name": "FUN_00b22360"
+        },
+        "after": {
+          "address": "00b22360",
+          "name": "BSP_RendererRecordGuard_DestroyBase",
+          "evidence": "R53 recovered complete raw renderer record guard B22360[17]/B23750[69]/B25BE0[189]/B26130[55]. SAME actualAA0/D5A0 cells, actual8B owner/D5E60C/section+4, genuine raw manager/allocator/section/register providers. Captured hot return and first-manager section; cold recheck, publication, current-manager/current-publication registration, final reload. Native FH3 maps confirm ctor base cleanup clear-before-profile, captured allocation free only on ctor throw, state0 guard cleanup through normal leave; registration throw retains published owner. Scalar releases actualslot, unconditionally clears current publication, optionally frees; no unregister. Shared source manager finite dispatch now accepts D5E60C with appended same-context binding. Fresh543B/15native spans and8live directcall rows; strictWin32/MD/W4/WX/fp:strict build+3CTests; copied full17Bbase and55Bscalar differential with flags0/2/1 and genuine depth2 section cleanup pass; source-only genuine rawmanager cold/hot/register/drain passes. Full original gate/ctor, injected exceptions, nativeFH3/private-frame/register/fault ABI, active renderer/app/visual/gameplay remain unproved. reports/native_renderer_record_guard_main_r53.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b23750",
+        "before": {
+          "address": "00b23750",
+          "function_name": "BSP_RendererRecordGuard_Construct",
+          "comment": "[BSP reconstruction 00b23750]\nR52 producer/guard contract audit only, no reconstructed source or runtime claim. Seven full live/PE spans690B,186 decoded instructions,11 unique direct calls verified and5 import sites reviewed. B29330 is actual D5F0A8+D4 target: capture renderer, acquire0108D5A0 owner section, increment nonnull record owner+4, copy ten arguments to40B record, append at renderer+1D18, normal guard release; concrete retained-owner type unresolved. B257B0 doubles capacity with signed threshold, reloads current data/used after genuine B22A70 reserve, interleaves two DWORD copies and eight x87 FLD/FSTP pairs, increments current count even on computed null output. B25BE0 same actual0108D5A0/AA0 singleton publication; B23750 creates tracked section in8B owner. B26130 keeps library deleting-destructor name; supported locked repair restores reachable ADD ESP,4 atB2615E after erroneous B26159 CALL_RETURN, preserving body/callee flags. Full FH3 maps, guard source, app deletion dispatch and renderer invocation remain prerequisites. reports/native_renderer_debug_records40_append_contract_r52.json."
+        },
+        "after": {
+          "address": "00b23750",
+          "name": "BSP_RendererRecordGuard_Construct",
+          "evidence": "R52 producer/guard contract audit only, no reconstructed source or runtime claim. Seven full live/PE spans690B,186 decoded instructions,11 unique direct calls verified and5 import sites reviewed. B29330 is actual D5F0A8+D4 target: capture renderer, acquire0108D5A0 owner section, increment nonnull record owner+4, copy ten arguments to40B record, append at renderer+1D18, normal guard release; concrete retained-owner type unresolved. B257B0 doubles capacity with signed threshold, reloads current data/used after genuine B22A70 reserve, interleaves two DWORD copies and eight x87 FLD/FSTP pairs, increments current count even on computed null output. B25BE0 same actual0108D5A0/AA0 singleton publication; B23750 creates tracked section in8B owner. B26130 keeps library deleting-destructor name; supported locked repair restores reachable ADD ESP,4 atB2615E after erroneous B26159 CALL_RETURN, preserving body/callee flags. Full FH3 maps, guard source, app deletion dispatch and renderer invocation remain prerequisites. reports/native_renderer_debug_records40_append_contract_r52.json. | R53 recovered complete raw renderer record guard B22360[17]/B23750[69]/B25BE0[189]/B26130[55]. SAME actualAA0/D5A0 cells, actual8B owner/D5E60C/section+4, genuine raw manager/allocator/section/register providers. Captured hot return and first-manager section; cold recheck, publication, current-manager/current-publication registration, final reload. Native FH3 maps confirm ctor base cleanup clear-before-profile, captured allocation free only on ctor throw, state0 guard cleanup through normal leave; registration throw retains published owner. Scalar releases actualslot, unconditionally clears current publication, optionally frees; no unregister. Shared source manager finite dispatch now accepts D5E60C with appended same-context binding. Fresh543B/15native spans and8live directcall rows; strictWin32/MD/W4/WX/fp:strict build+3CTests; copied full17Bbase and55Bscalar differential with flags0/2/1 and genuine depth2 section cleanup pass; source-only genuine rawmanager cold/hot/register/drain passes. Full original gate/ctor, injected exceptions, nativeFH3/private-frame/register/fault ABI, active renderer/app/visual/gameplay remain unproved. reports/native_renderer_record_guard_main_r53.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b25be0",
+        "before": {
+          "address": "00b25be0",
+          "function_name": "BSP_RendererRecordGuard_GetSingleton",
+          "comment": "[BSP reconstruction 00b25be0]\nR52 producer/guard contract audit only, no reconstructed source or runtime claim. Seven full live/PE spans690B,186 decoded instructions,11 unique direct calls verified and5 import sites reviewed. B29330 is actual D5F0A8+D4 target: capture renderer, acquire0108D5A0 owner section, increment nonnull record owner+4, copy ten arguments to40B record, append at renderer+1D18, normal guard release; concrete retained-owner type unresolved. B257B0 doubles capacity with signed threshold, reloads current data/used after genuine B22A70 reserve, interleaves two DWORD copies and eight x87 FLD/FSTP pairs, increments current count even on computed null output. B25BE0 same actual0108D5A0/AA0 singleton publication; B23750 creates tracked section in8B owner. B26130 keeps library deleting-destructor name; supported locked repair restores reachable ADD ESP,4 atB2615E after erroneous B26159 CALL_RETURN, preserving body/callee flags. Full FH3 maps, guard source, app deletion dispatch and renderer invocation remain prerequisites. reports/native_renderer_debug_records40_append_contract_r52.json."
+        },
+        "after": {
+          "address": "00b25be0",
+          "name": "BSP_RendererRecordGuard_GetSingleton",
+          "evidence": "R52 producer/guard contract audit only, no reconstructed source or runtime claim. Seven full live/PE spans690B,186 decoded instructions,11 unique direct calls verified and5 import sites reviewed. B29330 is actual D5F0A8+D4 target: capture renderer, acquire0108D5A0 owner section, increment nonnull record owner+4, copy ten arguments to40B record, append at renderer+1D18, normal guard release; concrete retained-owner type unresolved. B257B0 doubles capacity with signed threshold, reloads current data/used after genuine B22A70 reserve, interleaves two DWORD copies and eight x87 FLD/FSTP pairs, increments current count even on computed null output. B25BE0 same actual0108D5A0/AA0 singleton publication; B23750 creates tracked section in8B owner. B26130 keeps library deleting-destructor name; supported locked repair restores reachable ADD ESP,4 atB2615E after erroneous B26159 CALL_RETURN, preserving body/callee flags. Full FH3 maps, guard source, app deletion dispatch and renderer invocation remain prerequisites. reports/native_renderer_debug_records40_append_contract_r52.json. | R53 recovered complete raw renderer record guard B22360[17]/B23750[69]/B25BE0[189]/B26130[55]. SAME actualAA0/D5A0 cells, actual8B owner/D5E60C/section+4, genuine raw manager/allocator/section/register providers. Captured hot return and first-manager section; cold recheck, publication, current-manager/current-publication registration, final reload. Native FH3 maps confirm ctor base cleanup clear-before-profile, captured allocation free only on ctor throw, state0 guard cleanup through normal leave; registration throw retains published owner. Scalar releases actualslot, unconditionally clears current publication, optionally frees; no unregister. Shared source manager finite dispatch now accepts D5E60C with appended same-context binding. Fresh543B/15native spans and8live directcall rows; strictWin32/MD/W4/WX/fp:strict build+3CTests; copied full17Bbase and55Bscalar differential with flags0/2/1 and genuine depth2 section cleanup pass; source-only genuine rawmanager cold/hot/register/drain passes. Full original gate/ctor, injected exceptions, nativeFH3/private-frame/register/fault ABI, active renderer/app/visual/gameplay remain unproved. reports/native_renderer_record_guard_main_r53.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b26130",
+        "before": {
+          "address": "00b26130",
+          "function_name": "CG_scalar_deleting_dtor_00b26130",
+          "comment": "[BSP reconstruction 00b26130]\nR52 producer/guard contract audit only, no reconstructed source or runtime claim. Seven full live/PE spans690B,186 decoded instructions,11 unique direct calls verified and5 import sites reviewed. B29330 is actual D5F0A8+D4 target: capture renderer, acquire0108D5A0 owner section, increment nonnull record owner+4, copy ten arguments to40B record, append at renderer+1D18, normal guard release; concrete retained-owner type unresolved. B257B0 doubles capacity with signed threshold, reloads current data/used after genuine B22A70 reserve, interleaves two DWORD copies and eight x87 FLD/FSTP pairs, increments current count even on computed null output. B25BE0 same actual0108D5A0/AA0 singleton publication; B23750 creates tracked section in8B owner. B26130 keeps library deleting-destructor name; supported locked repair restores reachable ADD ESP,4 atB2615E after erroneous B26159 CALL_RETURN, preserving body/callee flags. Full FH3 maps, guard source, app deletion dispatch and renderer invocation remain prerequisites. reports/native_renderer_debug_records40_append_contract_r52.json."
+        },
+        "after": {
+          "address": "00b26130",
+          "name": "CG_scalar_deleting_dtor_00b26130",
+          "evidence": "R52 producer/guard contract audit only, no reconstructed source or runtime claim. Seven full live/PE spans690B,186 decoded instructions,11 unique direct calls verified and5 import sites reviewed. B29330 is actual D5F0A8+D4 target: capture renderer, acquire0108D5A0 owner section, increment nonnull record owner+4, copy ten arguments to40B record, append at renderer+1D18, normal guard release; concrete retained-owner type unresolved. B257B0 doubles capacity with signed threshold, reloads current data/used after genuine B22A70 reserve, interleaves two DWORD copies and eight x87 FLD/FSTP pairs, increments current count even on computed null output. B25BE0 same actual0108D5A0/AA0 singleton publication; B23750 creates tracked section in8B owner. B26130 keeps library deleting-destructor name; supported locked repair restores reachable ADD ESP,4 atB2615E after erroneous B26159 CALL_RETURN, preserving body/callee flags. Full FH3 maps, guard source, app deletion dispatch and renderer invocation remain prerequisites. reports/native_renderer_debug_records40_append_contract_r52.json. | R53 recovered complete raw renderer record guard B22360[17]/B23750[69]/B25BE0[189]/B26130[55]. SAME actualAA0/D5A0 cells, actual8B owner/D5E60C/section+4, genuine raw manager/allocator/section/register providers. Captured hot return and first-manager section; cold recheck, publication, current-manager/current-publication registration, final reload. Native FH3 maps confirm ctor base cleanup clear-before-profile, captured allocation free only on ctor throw, state0 guard cleanup through normal leave; registration throw retains published owner. Scalar releases actualslot, unconditionally clears current publication, optionally frees; no unregister. Shared source manager finite dispatch now accepts D5E60C with appended same-context binding. Fresh543B/15native spans and8live directcall rows; strictWin32/MD/W4/WX/fp:strict build+3CTests; copied full17Bbase and55Bscalar differential with flags0/2/1 and genuine depth2 section cleanup pass; source-only genuine rawmanager cold/hot/register/drain passes. Full original gate/ctor, injected exceptions, nativeFH3/private-frame/register/fault ABI, active renderer/app/visual/gameplay remain unproved. reports/native_renderer_record_guard_main_r53.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bd0400",
+        "before": {
+          "address": "00bd0400",
+          "function_name": "BSP_SingletonLifetime_Destroy",
+          "comment": "[BSP reconstruction 00bd0400]\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463.\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation.\n\n[BSP reconstruction 00bd0400] update\nRaw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Raw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed.\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Raw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed. | docs/NATIVE_SINGLETON_INPUT_ONLINE.md. Extend finite raw deletion bindings to D24138/D2413C XLive allocation identities, D5B5F4/D5B5F8/D5B72C raw backend and D5B630 raw actions; current profile after pop. Primary archive-only nonempty/actual BD0400 fixtures passed. Required hardware/listener/application bindings remain; no original ABI claim.\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Raw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed. | docs/NATIVE_SINGLETON_INPUT_ONLINE.md. Extend finite raw deletion bindings to D24138/D2413C XLive allocation identities, D5B5F4/D5B5F8/D5B72C raw backend and D5B630 raw actions; current profile after pop. Primary archive-only nonempty/actual BD0400 fixtures passed. Required hardware/listener/application bindings remain; no original ABI claim. | AY source binding extension: canonical raw-manager deletion accepts CFEA1C MPAK factory+4 through735D30 and D6418C PAK registry+8 throughBB4FF0. Borrowed construction contexts; no private lifetime domain. New source binding struct is52bytes; this does not alter the original Win32 ABI or count another reconstructed body.\n\n[BSP reconstruction 00bd0400] update\nAQ extension: actual CF81CC slot0 was read as006AB800. Raw manager BD0485 pops then calls current profile slot0(flags1). Source NativeSingletonDeletionBindings now borrows the same NativeInputSettingsLifetimeContext through input_settings and dispatches scalar_delete_native_input_settings_006ab800 on the popped owner, without requiring publication identity. Source fixture drains populated installed-script settings, verifies pop before persistent Lua finalizer, section alive during close, differing publication cleared and all manager storage released. The settings routines have122545-word native comparison; this dispatch addition has source integration coverage, not an additional native-manager comparison. Required production container providers and application wiring remain open. Hypothesis, not recovered symbol. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json.\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Raw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed. | docs/NATIVE_SINGLETON_INPUT_ONLINE.md. Extend finite raw deletion bindings to D24138/D2413C XLive allocation identities, D5B5F4/D5B5F8/D5B72C raw backend and D5B630 raw actions; current profile after pop. Primary archive-only nonempty/actual BD0400 fixtures passed. Required hardware/listener/application bindings remain; no original ABI claim. | AY source binding extension: canonical raw-manager deletion accepts CFEA1C MPAK factory+4 through735D30 and D6418C PAK registry+8 throughBB4FF0. Borrowed construction contexts; no private lifetime domain. New source binding struct is52bytes; this does not alter the original Win32 ABI or count another reconstructed body. | AQ extension: actual CF81CC slot0 was read as006AB800. Raw manager BD0485 pops then calls current profile slot0(flags1). Source NativeSingletonDeletionBindings now borrows the same NativeInputSettingsLifetimeContext through input_settings and dispatches scalar_delete_native_input_settings_006ab800 on the popped owner, without requiring publication identity. Source fixture drains populated installed-script settings, verifies pop before persistent Lua finalizer, section alive during close, differing publication cleared and all manager storage released. The settings routines have122545-word native comparison; this dispatch addition has source integration coverage, not an additional native-manager comparison. Required production container providers and application wiring remain open. Hypothesis, not recovered symbol. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json. | Finite-map extension: D68B94 -> BE9600 exact debug owner; CFD84C -> 716520 exact factory+4, callee adjusts -4. Borrow construction contexts and same raw manager/pool. Existing pop/recount and all prior bindings preserved. Development strict Win32, two CTests and source-only actual drain passed; final exact-commit receipt separate.\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Raw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed. | docs/NATIVE_SINGLETON_INPUT_ONLINE.md. Extend finite raw deletion bindings to D24138/D2413C XLive allocation identities, D5B5F4/D5B5F8/D5B72C raw backend and D5B630 raw actions; current profile after pop. Primary archive-only nonempty/actual BD0400 fixtures passed. Required hardware/listener/application bindings remain; no original ABI claim. | AY source binding extension: canonical raw-manager deletion accepts CFEA1C MPAK factory+4 through735D30 and D6418C PAK registry+8 throughBB4FF0. Borrowed construction contexts; no private lifetime domain. New source binding struct is52bytes; this does not alter the original Win32 ABI or count another reconstructed body. | AQ extension: actual CF81CC slot0 was read as006AB800. Raw manager BD0485 pops then calls current profile slot0(flags1). Source NativeSingletonDeletionBindings now borrows the same NativeInputSettingsLifetimeContext through input_settings and dispatches scalar_delete_native_input_settings_006ab800 on the popped owner, without requiring publication identity. Source fixture drains populated installed-script settings, verifies pop before persistent Lua finalizer, section alive during close, differing publication cleared and all manager storage released. The settings routines have122545-word native comparison; this dispatch addition has source integration coverage, not an additional native-manager comparison. Required production container providers and application wiring remain open. Hypothesis, not recovered symbol. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json. | Finite-map extension: D68B94 -> BE9600 exact debug owner; CFD84C -> 716520 exact factory+4, callee adjusts -4. Borrow construction contexts and same raw manager/pool. Existing pop/recount and all prior bindings preserved. Development strict Win32, two CTests and source-only actual drain passed; final exact-commit receipt separate. | Current popped D62A3C/D626F4 profiles dispatch raw B5DF70/B5BB20 with borrowed actual0108FE94/01090AA0/01090AA8/01090AA4 context; no identity gate or retained Operation. Native manager body unchanged; dynamic pool recreation/drain checked. Source raw-terminal extension, source-only actual canonical fixture and exact native maps: docs/NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL.md. Original FH3/SEH/game execution unproved. | Hypothesis, not a recovered symbol. Two source workflows: actual registry/base canonical drain, pool recreation under live shutdown gate, and first array getter failure retaining native owner/data/section effects. Dispatch uses popped owner, no publication identity gate. Nonnegative current array count AND capacity required; unfinished legacy Operations excluded. Integrated code aa836cdd passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL.md; reports/native_system_registry_raw_terminal.json. Raw valid extents and borrowed current cells/providers are caller requirements. New source interfaces; original CRT/FH3/SEH/private-frame identity, full renderer adoption and gameplay unvalidated.\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Raw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed. | docs/NATIVE_SINGLETON_INPUT_ONLINE.md. Extend finite raw deletion bindings to D24138/D2413C XLive allocation identities, D5B5F4/D5B5F8/D5B72C raw backend and D5B630 raw actions; current profile after pop. Primary archive-only nonempty/actual BD0400 fixtures passed. Required hardware/listener/application bindings remain; no original ABI claim. | AY source binding extension: canonical raw-manager deletion accepts CFEA1C MPAK factory+4 through735D30 and D6418C PAK registry+8 throughBB4FF0. Borrowed construction contexts; no private lifetime domain. New source binding struct is52bytes; this does not alter the original Win32 ABI or count another reconstructed body. | AQ extension: actual CF81CC slot0 was read as006AB800. Raw manager BD0485 pops then calls current profile slot0(flags1). Source NativeSingletonDeletionBindings now borrows the same NativeInputSettingsLifetimeContext through input_settings and dispatches scalar_delete_native_input_settings_006ab800 on the popped owner, without requiring publication identity. Source fixture drains populated installed-script settings, verifies pop before persistent Lua finalizer, section alive during close, differing publication cleared and all manager storage released. The settings routines have122545-word native comparison; this dispatch addition has source integration coverage, not an additional native-manager comparison. Required production container providers and application wiring remain open. Hypothesis, not recovered symbol. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json. | Finite-map extension: D68B94 -> BE9600 exact debug owner; CFD84C -> 716520 exact factory+4, callee adjusts -4. Borrow construction contexts and same raw manager/pool. Existing pop/recount and all prior bindings preserved. Development strict Win32, two CTests and source-only actual drain passed; final exact-commit receipt separate. | Current popped D62A3C/D626F4 profiles dispatch raw B5DF70/B5BB20 with borrowed actual0108FE94/01090AA0/01090AA8/01090AA4 context; no identity gate or retained Operation. Native manager body unchanged; dynamic pool recreation/drain checked. Source raw-terminal extension, source-only actual canonical fixture and exact native maps: docs/NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL.md. Original FH3/SEH/game execution unproved. | Hypothesis, not a recovered symbol. Two source workflows: actual registry/base canonical drain, pool recreation under live shutdown gate, and first array getter failure retaining native owner/data/section effects. Dispatch uses popped owner, no publication identity gate. Nonnegative current array count AND capacity required; unfinished legacy Operations excluded. Integrated code aa836cdd passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL.md; reports/native_system_registry_raw_terminal.json. Raw valid extents and borrowed current cells/providers are caller requirements. New source interfaces; original CRT/FH3/SEH/private-frame identity, full renderer adoption and gameplay unvalidated. | Hypothesis, not a recovered symbol. Canonical actual-AA0 manager drain now dispatches D62B64 to substantive B61D60 without publication identity gate. Source actual getter registration and rebound-publication drain checked. Integrated code 7cbd532e passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_RESOURCE_SUPPORT_DRAIN.md; reports/native_resource_support_drain.json. Borrowed actual storage, live subobjects and scratch preimages remain caller requirements. Source interfaces; full parent execution, original CRT/FH3/SEH/register-ABI identity, application adoption and gameplay unvalidated.\n\n[BSP reconstruction 00bd0400] CB update\nCB raw resource manager lifetime:16 complete ordinary bodies2254physical bytes;785 ordinary+33 support executable instruction owners,81 direct transfers/3 indirect calls verified; three unreachable alignment spans excluded. Nine parser/cache instruction pairs and full44-byte erase EH group match. Actual28h constructor/getter, six raw parser registrations, complete map cleanup, default4h factory deletion and manager scalar/destructor are source-backed. Constructor failure cleans completed maps/base but retains default factory and published parsers; getter frees captured failed manager allocation and releases captured guard. Existing BD0400 finite source dispatcher adds managerD63128 and six parser-secondary profiles through actual borrowed publications. Strict Win32/two tests and one controlled child passed:16 original bodies/68 direct/13 absolute relocations, paired constructor/getter/partial erase/populated destruction, full canonical source drain and source name-failure cleanup. Original normal paths share canonical dependencies; fixture factory table reaches copiedB7D290; original exception paths guarded out. Native ABI/FH3/SEH/private spills/faults, lazy pool recreation, concrete parser bodies/nondefault factories, executable admission and gameplay remain open. Names hypotheses. docs/NATIVE_RESOURCE_MANAGER_LIFETIME_CB.md; reports/native_resource_manager_lifetime_cb.json. Existing BD0400 body gains seven finite source bindings; no newly reconstructed body claim.\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Raw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed. | docs/NATIVE_SINGLETON_INPUT_ONLINE.md. Extend finite raw deletion bindings to D24138/D2413C XLive allocation identities, D5B5F4/D5B5F8/D5B72C raw backend and D5B630 raw actions; current profile after pop. Primary archive-only nonempty/actual BD0400 fixtures passed. Required hardware/listener/application bindings remain; no original ABI claim. | AY source binding extension: canonical raw-manager deletion accepts CFEA1C MPAK factory+4 through735D30 and D6418C PAK registry+8 throughBB4FF0. Borrowed construction contexts; no private lifetime domain. New source binding struct is52bytes; this does not alter the original Win32 ABI or count another reconstructed body. | AQ extension: actual CF81CC slot0 was read as006AB800. Raw manager BD0485 pops then calls current profile slot0(flags1). Source NativeSingletonDeletionBindings now borrows the same NativeInputSettingsLifetimeContext through input_settings and dispatches scalar_delete_native_input_settings_006ab800 on the popped owner, without requiring publication identity. Source fixture drains populated installed-script settings, verifies pop before persistent Lua finalizer, section alive during close, differing publication cleared and all manager storage released. The settings routines have122545-word native comparison; this dispatch addition has source integration coverage, not an additional native-manager comparison. Required production container providers and application wiring remain open. Hypothesis, not recovered symbol. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json. | Finite-map extension: D68B94 -> BE9600 exact debug owner; CFD84C -> 716520 exact factory+4, callee adjusts -4. Borrow construction contexts and same raw manager/pool. Existing pop/recount and all prior bindings preserved. Development strict Win32, two CTests and source-only actual drain passed; final exact-commit receipt separate. | Current popped D62A3C/D626F4 profiles dispatch raw B5DF70/B5BB20 with borrowed actual0108FE94/01090AA0/01090AA8/01090AA4 context; no identity gate or retained Operation. Native manager body unchanged; dynamic pool recreation/drain checked. Source raw-terminal extension, source-only actual canonical fixture and exact native maps: docs/NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL.md. Original FH3/SEH/game execution unproved. | Hypothesis, not a recovered symbol. Two source workflows: actual registry/base canonical drain, pool recreation under live shutdown gate, and first array getter failure retaining native owner/data/section effects. Dispatch uses popped owner, no publication identity gate. Nonnegative current array count AND capacity required; unfinished legacy Operations excluded. Integrated code aa836cdd passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL.md; reports/native_system_registry_raw_terminal.json. Raw valid extents and borrowed current cells/providers are caller requirements. New source interfaces; original CRT/FH3/SEH/private-frame identity, full renderer adoption and gameplay unvalidated. | Hypothesis, not a recovered symbol. Canonical actual-AA0 manager drain now dispatches D62B64 to substantive B61D60 without publication identity gate. Source actual getter registration and rebound-publication drain checked. Integrated code 7cbd532e passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_RESOURCE_SUPPORT_DRAIN.md; reports/native_resource_support_drain.json. Borrowed actual storage, live subobjects and scratch preimages remain caller requirements. Source interfaces; full parent execution, original CRT/FH3/SEH/register-ABI identity, application adoption and gameplay unvalidated. | Raw diagnostic lifetime integration: docs/NATIVE_DIAGNOSTIC_RAW_LIFETIME.md; reports/native_diagnostic_raw_lifetime.json. Finite actual source deletion map now admits CE752C slot0->004BBCA0 using borrowed SAME0109CF14 publication. Existing pop-before-virtual0(1), recount, actual section release and vector cleanup remain unchanged. Real source raw manager drain clears diagnostic publication and vector in lifecycle capture. Strict Win32 rebuild,2CTests,8native seeds and one source lifecycle probe passed; complete five native bodies+profile756bytes freshly live/PE matched and16direct calls checked. No original body execution, D3D Lock/device Reset, allocation-failure/concurrency/nativeFH3/SEH/ABI or gameplay proof.\n\n[BSP reconstruction 00bd0400] update\nR24 source finite profile dispatch admits actual extra-parser secondary profiles CFEA34 and CFEA44 through reconstructed 735D90/735DC0 minus-four thunks and 737150/737190 primary deletes. Resource-manager and eight parser contexts borrow the same application string/lifetime domain and remain alive through shared drain. Production-object probes drain ten owners for phase6-before-core and fifteen after phase2, clearing all parser/manager/string publications; subsequent singleton-host-before-VFS destruction performs metadata cleanup only. Original BD0400 body unchanged. Strict Win32 build and three CTests passed; original ABI/FH3, concurrency and game validation remain open. docs/NATIVE_RESOURCE_APPLICATION_ORCH4.md; reports/native_resource_application_orch4.json. Existing function name retained.\n\n[BSP reconstruction 00bd0400] update\nR24 source finite profile dispatch admits actual extra-parser secondary profiles CFEA34 and CFEA44 through reconstructed 735D90/735DC0 minus-four thunks and 737150/737190 primary deletes. Resource-manager and eight parser contexts borrow the same application string/lifetime domain and remain alive through shared drain. Production-object probes drain ten owners for phase6-before-core and fifteen after phase2, clearing all parser/manager/string publications; subsequent singleton-host-before-VFS destruction performs metadata cleanup only. Original BD0400 body unchanged. Strict Win32 build and three CTests passed; original ABI/FH3, concurrency and game validation remain open. docs/NATIVE_RESOURCE_APPLICATION_ORCH4.md; reports/native_resource_application_orch4.json. Existing function name retained. | R38 finite raw-manager deletion admission extends current source dispatch for actual4B diagnostic profileCE752C -> existing004BBCA0 flags1. GameSingletonHost owns one stable loader-zero CF14cell, exposes a borrowed reference and installs its address before diagnostic demand; no eager allocation or alternate AA0 domain. Append diagnostic publication binding112,size116 preserving all prior fields including resource_support104 and frame_clock108. RawBD0400 loop unchanged: pop before currentprofile dispatch; scalar clears same currentcell, stamps poppedownerCE3818 and frees via established sourceCRT. Strict MSVC Win32 /MD build and3CTests pass. Focused realGameSingletonHost fixture passes recovered physical constructors, coldindex/warmvertex nullCOM locks, native nullCOM Unlock retained depth, released diagnostic section, one diagnostic registration, real physicaldestructors adding support and sharedCE752C/D62B64 drain clearing allhostcells. Sourceownershipclosure only; original7363B0 Application_Shutdown step19 timing, nativeABI/FH3/SEH, D3D/device/render/gameplay remain unproved. reports/native_diagnostic_host_admission_r38.json."
+        },
+        "after": {
+          "address": "00bd0400",
+          "name": "BSP_SingletonLifetime_Destroy",
+          "evidence": "R24 source finite profile dispatch admits actual extra-parser secondary profiles CFEA34 and CFEA44 through reconstructed 735D90/735DC0 minus-four thunks and 737150/737190 primary deletes. Resource-manager and eight parser contexts borrow the same application string/lifetime domain and remain alive through shared drain. Production-object probes drain ten owners for phase6-before-core and fifteen after phase2, clearing all parser/manager/string publications; subsequent singleton-host-before-VFS destruction performs metadata cleanup only. Original BD0400 body unchanged. Strict Win32 build and three CTests passed; original ABI/FH3, concurrency and game validation remain open. docs/NATIVE_RESOURCE_APPLICATION_ORCH4.md; reports/native_resource_application_orch4.json. Existing function name retained. | R38 finite raw-manager deletion admission extends current source dispatch for actual4B diagnostic profileCE752C -> existing004BBCA0 flags1. GameSingletonHost owns one stable loader-zero CF14cell, exposes a borrowed reference and installs its address before diagnostic demand; no eager allocation or alternate AA0 domain. Append diagnostic publication binding112,size116 preserving all prior fields including resource_support104 and frame_clock108. RawBD0400 loop unchanged: pop before currentprofile dispatch; scalar clears same currentcell, stamps poppedownerCE3818 and frees via established sourceCRT. Strict MSVC Win32 /MD build and3CTests pass. Focused realGameSingletonHost fixture passes recovered physical constructors, coldindex/warmvertex nullCOM locks, native nullCOM Unlock retained depth, released diagnostic section, one diagnostic registration, real physicaldestructors adding support and sharedCE752C/D62B64 drain clearing allhostcells. Sourceownershipclosure only; original7363B0 Application_Shutdown step19 timing, nativeABI/FH3/SEH, D3D/device/render/gameplay remain unproved. reports/native_diagnostic_host_admission_r38.json. | R53 recovered complete raw renderer record guard B22360[17]/B23750[69]/B25BE0[189]/B26130[55]. SAME actualAA0/D5A0 cells, actual8B owner/D5E60C/section+4, genuine raw manager/allocator/section/register providers. Captured hot return and first-manager section; cold recheck, publication, current-manager/current-publication registration, final reload. Native FH3 maps confirm ctor base cleanup clear-before-profile, captured allocation free only on ctor throw, state0 guard cleanup through normal leave; registration throw retains published owner. Scalar releases actualslot, unconditionally clears current publication, optionally frees; no unregister. Shared source manager finite dispatch now accepts D5E60C with appended same-context binding. Fresh543B/15native spans and8live directcall rows; strictWin32/MD/W4/WX/fp:strict build+3CTests; copied full17Bbase and55Bscalar differential with flags0/2/1 and genuine depth2 section cleanup pass; source-only genuine rawmanager cold/hot/register/drain passes. Full original gate/ctor, injected exceptions, nativeFH3/private-frame/register/fault ABI, active renderer/app/visual/gameplay remain unproved. reports/native_renderer_record_guard_main_r53.json."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "evidence": {
+    "pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b25be0",
+        "length": 189,
+        "sha256": "40943764e215e165b894ded19fd13fabfed64e34d5345885b0f8c061bf21abaa",
+        "hex": "64a1000000006aff68d3d0cb005064892500000000a1a0d5080183ec0c85c00f858900000056e845f78eff8b701085f6c7442408fc37ce008974240c740b56ff151822ce0083461801c744241800000000833da0d5080100753f6a08e8da0b0d0083c4048944240485c0c64424180174098bc8e8f8daffffeb0233c0c644241800a3a0d50801e8e5f68eff8b0da0d50801518bc8e8b7af0a0085f6740b834618ff56ff151022ce00a1a0d508015e8b4c240c64890d0000000083c418c3",
+        "live_capture": "local/r52_append_gate_bytes.txt"
+      },
+      {
+        "address": "00b23750",
+        "length": 69,
+        "sha256": "8af794a2ada380d02fb74c601fca45c4a8e8cae08f464a88006fad4f303711bb",
+        "hex": "6aff68b8cecb0064a100000000506489250000000051568bf189742404c744241000000000c7060ce6d500e8e0e00a008b4c24088946048bc65e64890d0000000083c410c3",
+        "live_capture": "local/r52_guard_constructor_bytes.txt"
+      },
+      {
+        "address": "00b26130",
+        "length": 55,
+        "sha256": "5ae3bd6092fd6a2c69197ed08d72d35c38b16cdc974ee588aa2af70c325d4f64",
+        "hex": "568bf18d4e04c7060ce6d500e83f6b8ffff644240801c705a0d5080100000000c7061838ce00740956e84e040d0083c4048bc65ec20400",
+        "live_capture": "local/r52_guard_delete_bytes.txt"
+      },
+      {
+        "address": "00d5f17c",
+        "length": 4,
+        "sha256": "f5546d6024e574197bd5a26fbc7846bb623b9ee5e5cc7aa8ea289491d4f625e9",
+        "hex": "3093b200",
+        "live_capture": "local/r52_renderer_slot_bytes.txt"
+      },
+      {
+        "address": "00d5e60c",
+        "length": 4,
+        "sha256": "e946095a37e9f6f02a37a3a53c622fb1ddd4890fca562c90d649056d9f4291c9",
+        "hex": "3061b200",
+        "live_capture": "local/r52_guard_profile_bytes.txt"
+      },
+      {
+        "address": "00cbd0d3",
+        "length": 10,
+        "sha256": "25646f8fdb6de89ffca142614ebf40ec7d900eed9560db0849cf68d5e217ac2f",
+        "hex": "b88857df00e9669af3ff",
+        "live_capture": "local/r53_guard_gate_handler_bytes.txt",
+        "instructions": [
+          {
+            "address": "00cbd0d3",
+            "text": "mov eax, 0xdf5788"
+          },
+          {
+            "address": "00cbd0d8",
+            "text": "jmp 0xbf6b43"
+          }
+        ]
+      },
+      {
+        "address": "00cbceb8",
+        "length": 10,
+        "sha256": "d2e073e62ab256d094dede7bd1f2c28180ed6b39018e8132b020e4057765fc0e",
+        "hex": "b8a854df00e9819cf3ff",
+        "live_capture": "local/r53_guard_ctor_handler_bytes.txt",
+        "instructions": [
+          {
+            "address": "00cbceb8",
+            "text": "mov eax, 0xdf54a8"
+          },
+          {
+            "address": "00cbcebd",
+            "text": "jmp 0xbf6b43"
+          }
+        ]
+      },
+      {
+        "address": "00cbd2d8",
+        "length": 10,
+        "sha256": "67101cd8c072f2fcf30b214d0a6f74598b090387d6381672a8283d2c380bc078",
+        "hex": "b8a45adf00e96198f3ff",
+        "live_capture": "local/r53_append_handler_bytes.txt",
+        "instructions": [
+          {
+            "address": "00cbd2d8",
+            "text": "mov eax, 0xdf5aa4"
+          },
+          {
+            "address": "00cbd2dd",
+            "text": "jmp 0xbf6b43"
+          }
+        ]
+      },
+      {
+        "address": "00df5778",
+        "length": 52,
+        "sha256": "7abe803663ed80d7591a9789615eb7f2adff23cc558e61c4dffe4ee6c4b2b36d",
+        "hex": "ffffffffc0d0cb0000000000c8d0cb0022059319020000007857df00000000000000000000000000000000000000000001000000",
+        "live_capture": "local/r53_gate_unwind_bytes.txt"
+      },
+      {
+        "address": "00df54a0",
+        "length": 44,
+        "sha256": "17804ad9024f6e560b0de847c1e67f903e915906927f6563cc8247b4d6fddf84",
+        "hex": "ffffffffb0cecb002205931901000000a054df00000000000000000000000000000000000000000001000000",
+        "live_capture": "local/r53_ctor_unwind_bytes.txt"
+      },
+      {
+        "address": "00df5a9c",
+        "length": 44,
+        "sha256": "ae2344a65ba4586ecfa39893341c6929c4501a1176a00382832166b43905aa6e",
+        "hex": "ffffffffd0d2cb0022059319010000009c5adf00000000000000000000000000000000000000000001000000",
+        "live_capture": "local/r53_append_unwind_bytes.txt"
+      },
+      {
+        "address": "00cbd0c0",
+        "length": 19,
+        "sha256": "827434a7c26e175b90c888afe44617924978c83058137181bf6a416db1674ef1",
+        "hex": "8d4dece9184e75ff8b45e850e8db94f3ff59c3",
+        "live_capture": "local/r53_gate_funclets_bytes.txt",
+        "instructions": [
+          {
+            "address": "00cbd0c0",
+            "text": "lea ecx, [ebp - 0x14]"
+          },
+          {
+            "address": "00cbd0c3",
+            "text": "jmp 0x411ee0"
+          },
+          {
+            "address": "00cbd0c8",
+            "text": "mov eax, dword ptr [ebp - 0x18]"
+          },
+          {
+            "address": "00cbd0cb",
+            "text": "push eax"
+          },
+          {
+            "address": "00cbd0cc",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "00cbd0d1",
+            "text": "pop ecx"
+          },
+          {
+            "address": "00cbd0d2",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "address": "00cbceb0",
+        "length": 8,
+        "sha256": "90e3da96d7972bf0e82db5fc1385441022fefd58560895f794dca956e715b60c",
+        "hex": "8b4df0e9a854e6ff",
+        "live_capture": "local/r53_ctor_funclet_bytes.txt",
+        "instructions": [
+          {
+            "address": "00cbceb0",
+            "text": "mov ecx, dword ptr [ebp - 0x10]"
+          },
+          {
+            "address": "00cbceb3",
+            "text": "jmp 0xb22360"
+          }
+        ]
+      },
+      {
+        "address": "00cbd2d0",
+        "length": 8,
+        "sha256": "ee1a47966e0d70d6f178c554e067435460b92b1a60bb127422643e5154210ed2",
+        "hex": "8d4dc4e9084c75ff",
+        "live_capture": "local/r53_append_funclet_bytes.txt",
+        "instructions": [
+          {
+            "address": "00cbd2d0",
+            "text": "lea ecx, [ebp - 0x3c]"
+          },
+          {
+            "address": "00cbd2d3",
+            "text": "jmp 0x411ee0"
+          }
+        ]
+      },
+      {
+        "address": "00b22360",
+        "length": 17,
+        "sha256": "ceb993452f7a05ce7014a55207d739732b9c66e14d2fc561eb40b3037507ffb8",
+        "hex": "c705a0d5080100000000c7011838ce00c3",
+        "live_capture": "local/r53_guard_base_bytes.txt",
+        "instructions": [
+          {
+            "address": "00b22360",
+            "text": "mov dword ptr [0x108d5a0], 0"
+          },
+          {
+            "address": "00b2236a",
+            "text": "mov dword ptr [ecx], 0xce3818"
+          },
+          {
+            "address": "00b22370",
+            "text": "ret "
+          }
+        ]
+      }
+    ]
+  },
+  "routines": [
+    {
+      "address": "00b22360",
+      "length": 17,
+      "instructions": [
+        {
+          "address": "00b22360",
+          "text": "mov dword ptr [0x108d5a0], 0"
+        },
+        {
+          "address": "00b2236a",
+          "text": "mov dword ptr [ecx], 0xce3818"
+        },
+        {
+          "address": "00b22370",
+          "text": "ret "
+        }
+      ]
+    },
+    {
+      "address": "00b23750",
+      "length": 69,
+      "instructions": [
+        {
+          "address": "00b23750",
+          "text": "push -1"
+        },
+        {
+          "address": "00b23752",
+          "text": "push 0xcbceb8"
+        },
+        {
+          "address": "00b23757",
+          "text": "mov eax, dword ptr fs:[0]"
+        },
+        {
+          "address": "00b2375d",
+          "text": "push eax"
+        },
+        {
+          "address": "00b2375e",
+          "text": "mov dword ptr fs:[0], esp"
+        },
+        {
+          "address": "00b23765",
+          "text": "push ecx"
+        },
+        {
+          "address": "00b23766",
+          "text": "push esi"
+        },
+        {
+          "address": "00b23767",
+          "text": "mov esi, ecx"
+        },
+        {
+          "address": "00b23769",
+          "text": "mov dword ptr [esp + 4], esi"
+        },
+        {
+          "address": "00b2376d",
+          "text": "mov dword ptr [esp + 0x10], 0"
+        },
+        {
+          "address": "00b23775",
+          "text": "mov dword ptr [esi], 0xd5e60c"
+        },
+        {
+          "address": "00b2377b",
+          "text": "call 0xbd1860"
+        },
+        {
+          "address": "00b23780",
+          "text": "mov ecx, dword ptr [esp + 8]"
+        },
+        {
+          "address": "00b23784",
+          "text": "mov dword ptr [esi + 4], eax"
+        },
+        {
+          "address": "00b23787",
+          "text": "mov eax, esi"
+        },
+        {
+          "address": "00b23789",
+          "text": "pop esi"
+        },
+        {
+          "address": "00b2378a",
+          "text": "mov dword ptr fs:[0], ecx"
+        },
+        {
+          "address": "00b23791",
+          "text": "add esp, 0x10"
+        },
+        {
+          "address": "00b23794",
+          "text": "ret "
+        }
+      ]
+    },
+    {
+      "address": "00b25be0",
+      "length": 189,
+      "instructions": [
+        {
+          "address": "00b25be0",
+          "text": "mov eax, dword ptr fs:[0]"
+        },
+        {
+          "address": "00b25be6",
+          "text": "push -1"
+        },
+        {
+          "address": "00b25be8",
+          "text": "push 0xcbd0d3"
+        },
+        {
+          "address": "00b25bed",
+          "text": "push eax"
+        },
+        {
+          "address": "00b25bee",
+          "text": "mov dword ptr fs:[0], esp"
+        },
+        {
+          "address": "00b25bf5",
+          "text": "mov eax, dword ptr [0x108d5a0]"
+        },
+        {
+          "address": "00b25bfa",
+          "text": "sub esp, 0xc"
+        },
+        {
+          "address": "00b25bfd",
+          "text": "test eax, eax"
+        },
+        {
+          "address": "00b25bff",
+          "text": "jne 0xb25c8e"
+        },
+        {
+          "address": "00b25c05",
+          "text": "push esi"
+        },
+        {
+          "address": "00b25c06",
+          "text": "call 0x415350"
+        },
+        {
+          "address": "00b25c0b",
+          "text": "mov esi, dword ptr [eax + 0x10]"
+        },
+        {
+          "address": "00b25c0e",
+          "text": "test esi, esi"
+        },
+        {
+          "address": "00b25c10",
+          "text": "mov dword ptr [esp + 8], 0xce37fc"
+        },
+        {
+          "address": "00b25c18",
+          "text": "mov dword ptr [esp + 0xc], esi"
+        },
+        {
+          "address": "00b25c1c",
+          "text": "je 0xb25c29"
+        },
+        {
+          "address": "00b25c1e",
+          "text": "push esi"
+        },
+        {
+          "address": "00b25c1f",
+          "text": "call dword ptr [0xce2218]"
+        },
+        {
+          "address": "00b25c25",
+          "text": "add dword ptr [esi + 0x18], 1"
+        },
+        {
+          "address": "00b25c29",
+          "text": "mov dword ptr [esp + 0x18], 0"
+        },
+        {
+          "address": "00b25c31",
+          "text": "cmp dword ptr [0x108d5a0], 0"
+        },
+        {
+          "address": "00b25c38",
+          "text": "jne 0xb25c79"
+        },
+        {
+          "address": "00b25c3a",
+          "text": "push 8"
+        },
+        {
+          "address": "00b25c3c",
+          "text": "call 0xbf681b"
+        },
+        {
+          "address": "00b25c41",
+          "text": "add esp, 4"
+        },
+        {
+          "address": "00b25c44",
+          "text": "mov dword ptr [esp + 4], eax"
+        },
+        {
+          "address": "00b25c48",
+          "text": "test eax, eax"
+        },
+        {
+          "address": "00b25c4a",
+          "text": "mov byte ptr [esp + 0x18], 1"
+        },
+        {
+          "address": "00b25c4f",
+          "text": "je 0xb25c5a"
+        },
+        {
+          "address": "00b25c51",
+          "text": "mov ecx, eax"
+        },
+        {
+          "address": "00b25c53",
+          "text": "call 0xb23750"
+        },
+        {
+          "address": "00b25c58",
+          "text": "jmp 0xb25c5c"
+        },
+        {
+          "address": "00b25c5a",
+          "text": "xor eax, eax"
+        },
+        {
+          "address": "00b25c5c",
+          "text": "mov byte ptr [esp + 0x18], 0"
+        },
+        {
+          "address": "00b25c61",
+          "text": "mov dword ptr [0x108d5a0], eax"
+        },
+        {
+          "address": "00b25c66",
+          "text": "call 0x415350"
+        },
+        {
+          "address": "00b25c6b",
+          "text": "mov ecx, dword ptr [0x108d5a0]"
+        },
+        {
+          "address": "00b25c71",
+          "text": "push ecx"
+        },
+        {
+          "address": "00b25c72",
+          "text": "mov ecx, eax"
+        },
+        {
+          "address": "00b25c74",
+          "text": "call 0xbd0c30"
+        },
+        {
+          "address": "00b25c79",
+          "text": "test esi, esi"
+        },
+        {
+          "address": "00b25c7b",
+          "text": "je 0xb25c88"
+        },
+        {
+          "address": "00b25c7d",
+          "text": "add dword ptr [esi + 0x18], -1"
+        },
+        {
+          "address": "00b25c81",
+          "text": "push esi"
+        },
+        {
+          "address": "00b25c82",
+          "text": "call dword ptr [0xce2210]"
+        },
+        {
+          "address": "00b25c88",
+          "text": "mov eax, dword ptr [0x108d5a0]"
+        },
+        {
+          "address": "00b25c8d",
+          "text": "pop esi"
+        },
+        {
+          "address": "00b25c8e",
+          "text": "mov ecx, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "00b25c92",
+          "text": "mov dword ptr fs:[0], ecx"
+        },
+        {
+          "address": "00b25c99",
+          "text": "add esp, 0x18"
+        },
+        {
+          "address": "00b25c9c",
+          "text": "ret "
+        }
+      ]
+    },
+    {
+      "address": "00b26130",
+      "length": 55,
+      "instructions": [
+        {
+          "address": "00b26130",
+          "text": "push esi"
+        },
+        {
+          "address": "00b26131",
+          "text": "mov esi, ecx"
+        },
+        {
+          "address": "00b26133",
+          "text": "lea ecx, [esi + 4]"
+        },
+        {
+          "address": "00b26136",
+          "text": "mov dword ptr [esi], 0xd5e60c"
+        },
+        {
+          "address": "00b2613c",
+          "text": "call 0x41cc80"
+        },
+        {
+          "address": "00b26141",
+          "text": "test byte ptr [esp + 8], 1"
+        },
+        {
+          "address": "00b26146",
+          "text": "mov dword ptr [0x108d5a0], 0"
+        },
+        {
+          "address": "00b26150",
+          "text": "mov dword ptr [esi], 0xce3818"
+        },
+        {
+          "address": "00b26156",
+          "text": "je 0xb26161"
+        },
+        {
+          "address": "00b26158",
+          "text": "push esi"
+        },
+        {
+          "address": "00b26159",
+          "text": "call 0xbf65ac"
+        },
+        {
+          "address": "00b2615e",
+          "text": "add esp, 4"
+        },
+        {
+          "address": "00b26161",
+          "text": "mov eax, esi"
+        },
+        {
+          "address": "00b26163",
+          "text": "pop esi"
+        },
+        {
+          "address": "00b26164",
+          "text": "ret 4"
+        }
+      ]
+    }
+  ],
+  "calls": [
+    {
+      "address": "00b2377b",
+      "native": "00bd1860",
+      "function": "00b23750"
+    },
+    {
+      "address": "00b25c06",
+      "native": "00415350",
+      "function": "00b25be0"
+    },
+    {
+      "address": "00b25c1f",
+      "indirect": "dword ptr [0xce2218]",
+      "function": "00b25be0"
+    },
+    {
+      "address": "00b25c3c",
+      "native": "00bf681b",
+      "function": "00b25be0"
+    },
+    {
+      "address": "00b25c53",
+      "native": "00b23750",
+      "function": "00b25be0"
+    },
+    {
+      "address": "00b25c66",
+      "native": "00415350",
+      "function": "00b25be0"
+    },
+    {
+      "address": "00b25c74",
+      "native": "00bd0c30",
+      "function": "00b25be0"
+    },
+    {
+      "address": "00b25c82",
+      "indirect": "dword ptr [0xce2210]",
+      "function": "00b25be0"
+    },
+    {
+      "address": "00b2613c",
+      "native": "0041cc80",
+      "function": "00b26130"
+    },
+    {
+      "address": "00b26159",
+      "native": "00bf65ac",
+      "function": "00b26130"
+    }
+  ],
+  "native_abi": {
+    "00b22360": "ECX owner; RET; no semantic return",
+    "00b23750": "ECX owner; EAX owner; RET",
+    "00b25be0": "No arguments; EAX current publication; RET",
+    "00b26130": "ECX owner; stack flags; EAX captured owner; RET4"
+  },
+  "source_abi": "Explicit stable NativeRendererRecordGuardContext references to SAME actual AA0/D5A0 cells; not original ABI/FH3 compatible.",
+  "exception_maps": {
+    "gate": {
+      "func_info": "00df5788",
+      "unwind_map": "00df5778",
+      "states": [
+        [
+          0,
+          -1,
+          "00cbd0c0"
+        ],
+        [
+          1,
+          0,
+          "00cbd0c8"
+        ]
+      ]
+    },
+    "constructor": {
+      "func_info": "00df54a8",
+      "unwind_map": "00df54a0",
+      "states": [
+        [
+          0,
+          -1,
+          "00cbceb0"
+        ]
+      ]
+    },
+    "append": {
+      "func_info": "00df5aa4",
+      "unwind_map": "00df5a9c",
+      "states": [
+        [
+          0,
+          -1,
+          "00cbd2d0"
+        ]
+      ]
+    }
+  },
+  "contracts": {
+    "owner": "actual8B profileD5E60C section+4; raw manager14h section+10",
+    "hot": "captured publication return without manager access",
+    "cold": "capture first manager section; enter/depth increment; recheck; allocate8B; construct; publish; get current manager; reload current publication; register; decrement/leave captured section; reload publication",
+    "constructor_failure": "base cleanup clears actual current publication then CE3818; getter frees captured allocation then guard cleanup",
+    "registration_failure": "published owner retained; captured guard cleanup only",
+    "scalar": "D5E60C; genuine41CC80 actualslot+4; test lowflagsbit; clear currentpublication; CE3818; optionalfree; return capturedowner; no unregister",
+    "manager_extension": "Finite recovered D5E60C slot0=B26130 dispatch using appended context pointer at116; size120. No application/startup activation."
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "full_original_base17B": true,
+    "full_original_scalar55B_flags": [
+      0,
+      2,
+      1
+    ],
+    "differential_scope": "Same8B owner state after flags0/2; captured return and publication for all flags; actual depth2 Windows section release in both lanes. No read after free.",
+    "relocations": [
+      {
+        "address": "00b22360",
+        "length": 17,
+        "sha256": "ceb993452f7a05ce7014a55207d739732b9c66e14d2fc561eb40b3037507ffb8",
+        "relocations": [
+          {
+            "offset": 2,
+            "original_target": "0108d5a0",
+            "binding": "same fixture publication cell",
+            "kind": "absolute32"
+          }
+        ]
+      },
+      {
+        "address": "00b26130",
+        "length": 55,
+        "sha256": "5ae3bd6092fd6a2c69197ed08d72d35c38b16cdc974ee588aa2af70c325d4f64",
+        "relocations": [
+          {
+            "offset": 13,
+            "original_target": "0041cc80",
+            "binding": "release",
+            "kind": "rel32"
+          },
+          {
+            "offset": 24,
+            "original_target": "0108d5a0",
+            "binding": "same fixture publication cell",
+            "kind": "absolute32"
+          },
+          {
+            "offset": 42,
+            "original_target": "00bf65ac",
+            "binding": "free",
+            "kind": "rel32"
+          }
+        ]
+      }
+    ],
+    "source_only_lifecycle": "Genuine constructor; hot manager sentinel; raw manager cold create/register; repeat hot no duplicate; actual manager finite D5E60C drain clears publication and raw slots; caller frees manager.",
+    "exceptions_injected": false,
+    "probe": "local/guard_r53_probe.cpp",
+    "build_log": "local/r53_build.log",
+    "probe_build_log": "local/r53_probe_build.log",
+    "probe_run_log": "local/r53_probe_run.log",
+    "live_direct_call_rows_checked": 8
+  },
+  "boundaries": [
+    "Original gate and constructor not executed",
+    "No allocation/registration exception injection",
+    "No original FH3/private-frame/register ABI or hardware-fault proof",
+    "No active renderer/app/visual/gameplay execution",
+    "No private manager or provider stub"
+  ],
+  "archive": {
+    "path": "local/evidence-r53/guard-original-r53.zip",
+    "sha256": "5c78b9d91bca9f5413e33307a73e540ee0b6a179e66a9e94e6104f631f14a2e8",
+    "manifest_sha256": "2fc32d6c0bbd68ab3c1bcc211c37d88853a4cb7ff10bf9d2b617b7886f339fb4",
+    "artifact_count": 5708,
+    "uncompressed_bytes": 355857844,
+    "scope": "Current source/build outputs and compiler read-tlog input closure, probe showIncludes/compiler/link logs/map/executable, native receipts, exact toolchain and physical loaded I386 modules. Every archive member rehashed. Report stored pre-seal.",
+    "physical_modules": [
+      {
+        "loaded_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\guard_r53_probe.exe",
+        "physical_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\guard_r53_probe.exe",
+        "load_base": "003c0000",
+        "size_of_image": 274432,
+        "machine": "I386",
+        "sha256": "8ee62f108a52c9c288fb9022ad6f37d859694179ed497749fdee72087c9b74d7"
+      },
+      {
+        "loaded_path": "C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+        "physical_path": "C:\\Windows\\SysWOW64\\ntdll.dll",
+        "load_base": "77310000",
+        "size_of_image": 1830912,
+        "machine": "I386",
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df"
+      },
+      {
+        "loaded_path": "C:\\WINDOWS\\System32\\KERNEL32.DLL",
+        "physical_path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+        "load_base": "758f0000",
+        "size_of_image": 983040,
+        "machine": "I386",
+        "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3"
+      },
+      {
+        "loaded_path": "C:\\WINDOWS\\System32\\KERNELBASE.dll",
+        "physical_path": "C:\\Windows\\SysWOW64\\KernelBase.dll",
+        "load_base": "74ed0000",
+        "size_of_image": 2990080,
+        "machine": "I386",
+        "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253"
+      },
+      {
+        "loaded_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+        "physical_path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "load_base": "76570000",
+        "size_of_image": 1114112,
+        "machine": "I386",
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+      },
+      {
+        "loaded_path": "C:\\WINDOWS\\SYSTEM32\\MSVCP140.dll",
+        "physical_path": "C:\\Windows\\SysWOW64\\msvcp140.dll",
+        "load_base": "72690000",
+        "size_of_image": 614400,
+        "machine": "I386",
+        "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a"
+      },
+      {
+        "loaded_path": "C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll",
+        "physical_path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "load_base": "723e0000",
+        "size_of_image": 118784,
+        "machine": "I386",
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3"
+      }
+    ]
+  }
+}
