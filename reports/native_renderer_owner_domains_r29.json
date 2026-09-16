@@ -1,0 +1,216 @@
+{
+  "packet": "renderer_owner_domains_r29",
+  "kind": "read_only_owner_and_lifetime_research",
+  "baseline": {
+    "commit": "79adda5cd63d4bc188232b915abf3a34ef852938",
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "ghidra_program": "/battlestationspacific.exe",
+    "ghidra_function_count": 64134,
+    "installed_binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "method": {
+    "xref_completion": "Each named cell was queried live with `python tools/bsp.py ghidra xrefs <address> --limit 5000`. The two large results contained 577 rows for 00F8D394 and 148 rows for 0108D6DC, with no truncation marker. The smaller results were returned in full. Writer sets below include WRITE and READ_WRITE rows from those complete results, rather than the default capped xref head.",
+    "listing_evidence": "Writer instructions and call sites were checked with live Ghidra instruction-context/bytes queries. Function identity and caller/callee sets were checked through bsp.py lookup/xrefs.",
+    "pe_evidence": "A read-only pefile section check against the installed executable found every investigated cell in the virtual tail of .data. The section has SizeOfRawData 0x10000 and Misc_VirtualSize 0x297edc; each cell's section delta exceeds 0x10000, so there are no corresponding on-disk bytes. Windows loader zero-fill is the original initial state. Live Ghidra byte reads also returned zero for all cells."
+  },
+  "domains": {
+    "renderer_publication_00f8d394": {
+      "shape": "one 32-bit publication cell",
+      "initial_image": {
+        "section": ".data",
+        "section_delta": "0x185394",
+        "disk_backed": false,
+        "loader_initial_value": "00000000",
+        "live_saved_program_bytes": "00 00 00 00"
+      },
+      "complete_writer_set": [
+        {
+          "instruction": "00B25F9B",
+          "bytes": "A3 94 D3 F8 00",
+          "operation": "MOV [00F8D394],EAX",
+          "function": "BSP_RendererSingletonSubobject_Construct 00B25F40",
+          "value_provenance": "00B25F96 LEA EAX,[EDI-0Ch], where EDI is the renderer singleton subobject at primary renderer+0Ch. The published value is the primary renderer base."
+        },
+        {
+          "instruction": "00B26053",
+          "bytes": "C7 05 94 D3 F8 00 00 00 00 00",
+          "operation": "MOV dword ptr [00F8D394],0",
+          "function": "BSP_RendererSingletonSubobject_Destroy 00B25FE0",
+          "ordering": "After BSP_SingletonLifetime_Unregister 00BCFCA0 and before the subobject finishes destruction."
+        }
+      ],
+      "startup": {
+        "application_site": "BSP_Application_Initialize 0073D410 phase 4",
+        "constructor_call": {
+          "instruction": "0073DA88",
+          "bytes": "E8 83 49 3F 00",
+          "target": "BSP_D3D9Renderer_Construct 00B32410",
+          "allocation_size": "0x1D94"
+        },
+        "publication_path": [
+          "00B32434 (E8 B7 5F FF FF) calls BSP_RendererBase_Construct 00B283F0",
+          "00B283F0 calls BSP_RendererSingletonSubobject_Construct 00B25F40",
+          "00B25F40 publishes the primary renderer and registers primary+0Ch with the shared singleton lifetime manager"
+        ],
+        "profile_installation": [
+          "00B3243B: C7 06 A8 F0 D5 00 installs primary table 00D5F0A8",
+          "00B32441: C7 46 0C A4 F0 D5 00 installs the secondary/subobject table 00D5F0A4"
+        ],
+        "device_boundary": "Renderer publication precedes application phase 6 window/device creation; publication alone is not device readiness."
+      },
+      "destruction": {
+        "registered_object": "primary renderer+0Ch singleton subobject",
+        "manager": "shared BSP singleton lifetime manager published at 01090AA0",
+        "dispatch": "Manager shutdown drains registered objects LIFO with native delete flag 1. The renderer's deleting route reaches CG_scalar_deleting_dtor_00B339F0, which calls BSP_D3D9Renderer_Destroy 00B32920 and frees the primary allocation.",
+        "publication_clear": "00B32920 reaches BSP_RendererSingletonSubobject_Destroy 00B25FE0, which unregisters the subobject and clears 00F8D394.",
+        "winmain_evidence": [
+          "008F8455: E8 A6 7F 2D 00 calls singleton-manager shutdown 00BD0400",
+          "the manager allocation is freed after shutdown",
+          "008F8463: C7 05 A0 0A 09 01 00 00 00 00 clears manager publication 01090AA0"
+        ],
+        "crt_entry": null,
+        "crt_conclusion": "No renderer-specific CRT initializer or atexit callback owns this cell. Its original construction is an explicit application-initialize call, and its terminal deletion is the explicit WinMain singleton-manager drain."
+      },
+      "current_source_producer": {
+        "exists": false,
+        "evidence": [
+          "include/bsp/renderer_startup.hpp declares RendererStartupHost::construct_renderer_00b32410(void*) as a pure virtual host operation",
+          "src/renderer_startup.cpp only allocates 0x1D94 and delegates that operation",
+          "the only repository declaration/use of construct_renderer_00b32410 has no concrete Game host implementation",
+          "the 00B32410 ledger entry and docs/APP_INIT_RENDERER.md identify the full constructor as analysed but not ported",
+          "GameNativeTextureOwnerServices validates and borrows one renderer publication cell; it does not manufacture or publish a renderer"
+        ]
+      }
+    },
+    "renderer_synchronization_0108d6dc_0108d6e3": {
+      "shape": "8 bytes: mode byte +0, observed-mode byte +1, preserved bytes +2/+3, nesting DWORD +4",
+      "initial_image": {
+        "section": ".data",
+        "section_delta": "0x2856dc",
+        "disk_backed": false,
+        "loader_initial_value": "00 00 00 00 00 00 00 00",
+        "live_saved_program_bytes": "00 00 00 00 00 00 00 00"
+      },
+      "complete_xref_census": {
+        "0108D6DC": "148 rows; sole writer 00B33AA4",
+        "0108D6DD": "4 rows; writers 00B33AA9, 00B33AC4, 00B33B3A; read 00B33B32",
+        "0108D6DE": "0 rows",
+        "0108D6DF": "0 rows",
+        "0108D6E0": "3 rows; READ_WRITE 00B33AD0 and 00B33B06, read 00B33B29"
+      },
+      "complete_writer_set": [
+        "00B33AA4: A2 DC D6 08 01, MOV [0108D6DC],AL",
+        "00B33AA9: A2 DD D6 08 01, MOV [0108D6DD],AL",
+        "00B33AC4: A2 DD D6 08 01, MOV [0108D6DD],AL",
+        "00B33AD0: 83 05 E0 D6 08 01 01, ADD dword ptr [0108D6E0],1",
+        "00B33B06: 83 2D E0 D6 08 01 01, SUB dword ptr [0108D6E0],1",
+        "00B33B3A: 88 15 DD D6 08 01, MOV [0108D6DD],DL"
+      ],
+      "runtime_ownership": {
+        "mode_setter": "BSP_Renderer_SetOptionalSynchronization 00B33AA0 copies one raw mode byte to both mode cells.",
+        "mode_setter_callers": [
+          "BSP_D3D9Renderer_StartWorker 00B21740 sets mode 1 when renderer+1970h has a worker and then starts it",
+          "BSP_D3D9Renderer_StopWorkerMode 00B28A90 stops a worker when present, sets mode 0, clears the pipeline, then sleeps 100 ms",
+          "FUN_0050B2D0 calls the setter with 0 in a larger teardown/reset path"
+        ],
+        "observed_mode_direct_setter": "FUN_00B33AC0 writes 0108D6DD directly; its sole caller FUN_00511F40 loads 00F8D394 and calls it with 1 in a main-menu navigation path.",
+        "guard_helpers": "00B33AD0/00B33B06 change nesting; the leave path compares nesting with zero and reconciles observed mode to current mode.",
+        "crt_entry": null,
+        "conclusion": "This is loader-zeroed mutable renderer/worker state, not a separately initialized CRT singleton. The real renderer worker lifecycle supplies its meaningful mode transitions."
+      }
+    },
+    "logical_texture_serial_0108d6e8": {
+      "shape": "shared 32-bit monotonic construction serial",
+      "initial_image": {
+        "section": ".data",
+        "section_delta": "0x2856e8",
+        "disk_backed": false,
+        "loader_initial_value": "00000000"
+      },
+      "complete_xref_census": "8 rows: one read and one increment in each of four constructors",
+      "complete_writer_set": [
+        "00B33FF8: 01 15 E8 D6 08 01 in BSP_LogicalTextureBase_ConstructUnnamed_D5F228 00B33FC0",
+        "00B34058: 01 15 E8 D6 08 01 in BSP_LogicalTextureBase_ConstructUnnamed_D5F280 00B34020",
+        "00B340D8: 01 15 E8 D6 08 01 in BSP_LogicalTextureBase_ConstructUnnamed_D5F2C0 00B340A0",
+        "00B341B7: 83 05 E8 D6 08 01 01 in BSP_LogicalTextureBase_ConstructNamed 00B34120"
+      ],
+      "semantics": "Each constructor copies the old DWORD into logical texture+20h and then increments the same cell. Named wrapper variants delegate to 00B34120 and do not consume a second value.",
+      "crt_entry": null,
+      "current_source_producer": "No process owner was found. Several reconstructed texture-base functions accept this DWORD by reference; docs/MATERIAL_SORT_METADATA.md already records that all variants must share one cell."
+    },
+    "texture_tracking_counter_0108daf8": {
+      "shape": "32-bit live texture accounting counter",
+      "initial_image": {
+        "section": ".data",
+        "section_delta": "0x285af8",
+        "disk_backed": false,
+        "loader_initial_value": "00000000"
+      },
+      "complete_xref_census": "3 rows, all READ_WRITE",
+      "complete_writer_set": [
+        "00B3F913: 83 05 F8 DA 08 01 01 increments in FUN_00B3F7B0 (handmade texture path)",
+        "00B3FA65: 83 05 F8 DA 08 01 01 increments in BSP_D3D9Texture_ConstructFromLoaded2D 00B3F930",
+        "00B3F3C9: 83 2D F8 DA 08 01 01 decrements in BSP_D3D9Texture_Destroy 00B3F2E0"
+      ],
+      "gating": "The two visible construction increments are flag-gated; destruction tests owner flags at +1Ch before decrementing.",
+      "crt_entry": null,
+      "current_source_producer": "The loaded-2D constructor and texture destructor are present in src/native_texture_2d_owner.cpp and borrow this counter. FUN_00B3F7B0 is not ported as a whole. No process-level storage owner was found."
+    },
+    "surface_tracking_counter_0108dafc": {
+      "shape": "32-bit live surface accounting counter",
+      "initial_image": {
+        "section": ".data",
+        "section_delta": "0x285afc",
+        "disk_backed": false,
+        "loader_initial_value": "00000000"
+      },
+      "complete_xref_census": "2 rows, both READ_WRITE",
+      "complete_writer_set": [
+        "00B3F790: 83 05 FC DA 08 01 01 increments in BSP_D3D9Surface_Construct 00B3F630",
+        "00B3F540: 83 2D FC DA 08 01 01 decrements in BSP_NativeSurfaceOwner_Destroy 00B3F4E0"
+      ],
+      "gating": "The listed increment/decrement is guarded by the 0x100 owner flag at the exact writer sites.",
+      "crt_entry": null,
+      "current_source_producer": "Both functions are reconstructed in src/native_surface_owner.cpp and borrow this counter. No process-level storage owner was found."
+    }
+  },
+  "source_composition_audit": {
+    "available_actual_domains": [
+      "canonical mesh pool 0108FFF8",
+      "canonical mesh-section pool 010901D4",
+      "canonical surface pool 0108DB00",
+      "canonical 2D-texture pool 0108DB38",
+      "GameNativeVfsRuntime::borrow_raw_services supplies the same actual native-string and retained-memory objects",
+      "GameSingletonHost::resource_support_context supplies the actual resource-support/lifetime publication"
+    ],
+    "owner_bundle_contract": [
+      "src/game_native_texture_owner_services.cpp compares the renderer cell addresses in renderer_notification and surfaces and rejects different cells",
+      "it also requires renderer_notification to borrow the same actual native-string storage supplied to the bundle",
+      "it forwards 0108D6E8 and 0108DAF8 by reference and creates no backing storage",
+      "the surface context similarly borrows 0108DAFC and the renderer publication"
+    ],
+    "missing_actual_producer": "There is no current game/application class that constructs a real 00B32410-equivalent renderer, publishes it through 00F8D394, and participates in the same singleton-manager deletion domain. The existing renderer startup layer deliberately delegates construction to an abstract host."
+  },
+  "smallest_grounded_next_boundary": {
+    "bounded_scalar_step": "A process-lifetime scalar-domain object may own exactly one zero-initialized NativeRendererSynchronizationGlobals record, one shared serial DWORD, one texture counter DWORD, and one surface counter DWORD, and expose references to them. Original evidence supports ordinary loader-zero initialization and no CRT callback for these four cells. It must not claim ownership of 00F8D394 or create GameNativeTextureOwnerServices.",
+    "production_gate": "Production texture-owner composition still requires a canonical real renderer process. That packet must complete or adopt the 0x1D94 00B32410 construction path, use the same primary renderer publication cell, preserve registration of primary+0Ch in the existing singleton manager, route deletion through 00B339F0/00B32920/00B25FE0, and couple StartWorker/StopWorkerMode to the same 8-byte synchronization record. A null, fake, or independently typed renderer owner would not reproduce the observed domain.",
+    "recommended_next_packet": "Keep the first implementation bounded to the four scalar cells and borrowed views, while making renderer publication an explicit unsatisfied input. Separately close the full renderer constructor/deleting-dispatch boundary before instantiating GameNativeTextureOwnerServices in production."
+  },
+  "evidence_boundaries": {
+    "established": [
+      "installed-PE zero-fill provenance for all investigated cells",
+      "complete static writer sets within the saved program",
+      "original application construction and singleton-manager destruction paths for renderer publication",
+      "absence of a direct original CRT owner for these cells",
+      "absence of a current concrete source producer for the actual renderer publication"
+    ],
+    "not_established": [
+      "original ABI or exception-unwind equivalence of a future source renderer process",
+      "live game renderer/device startup",
+      "worker-thread synchronization parity",
+      "renderer, texture, or surface gameplay lifetime parity"
+    ],
+    "mutations": "No source, Ghidra, ledger, CMake, or build mutation was made for this research packet."
+  }
+}
