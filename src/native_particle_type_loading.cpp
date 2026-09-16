@@ -1,8 +1,10 @@
 #include "bsp/native_particle_type_loading.hpp"
 #include "bsp/native_particle_parameter_loading.hpp"
+#include "bsp/native_particle_parameter_runtime_loading.hpp"
 #include "bsp/native_particle_type_property.hpp"
 #include "bsp/native_pooled_text_suffix.hpp"
 #include "bsp/system_camera_axes.hpp"
+#include <cstddef>
 #include <cstdlib>
 #include <cstring>
 
@@ -42,7 +44,7 @@ private:
     NativeParticleParameterLoadingBindings& bindings_;
 };
 bool is(const Pooled& p,const char* text) { return _stricmp(p.header.data,text)==0; }
-void* convert(void* builder,float percentage,NativeParticleTypeLoadingBindings& b) {
+template<class Context> void* convert(void* builder,float percentage,Context& b) {
     void* parameter=convert_native_particle_parameter_00afbf60(builder,b.parameters);
     const volatile double* scale=b.percentage_scale_00d7a358;
     __asm {
@@ -54,8 +56,8 @@ void* convert(void* builder,float percentage,NativeParticleTypeLoadingBindings& 
     }
     return parameter;
 }
-void publish(void* definition,std::uint32_t offset,void* builder,float percentage,
-    NativeParticleTypeLoadingBindings& b) { store(definition,offset,convert(builder,percentage,b)); }
+template<class Context> void publish(void* definition,std::uint32_t offset,void* builder,float percentage,
+    Context& b) { store(definition,offset,convert(builder,percentage,b)); }
 
 bool load_sprite_or_floating(void* definition,void* text,NativeParticleTypeLoadingBindings& b,bool sprite) {
     auto& strings=b.parameters.owners.strings;
@@ -117,18 +119,29 @@ std::int32_t first_native_particle_parameter_integer_00afc1c0(const void* builde
     return value;
 }
 
-bool load_native_particle_type_parameter_00b00980(void* definition,const void* property,
-    void* builder,float percentage,NativeParticleTypeLoadingBindings& b) {
-    const char* name=load<const char*>(property);
-    if(_stricmp(name,"BornRatio")==0) {
-        store(definition,0x24,first_native_particle_parameter_value_00afc1b0(builder)); return true;
+namespace {
+void publish_first_value(void* definition,std::uint32_t destination_offset,const void* builder) {
+    // AFC1B0's FLD32 feeds B00980's single destination FSTP32, including SNaN.
+    __asm {
+        mov eax,builder
+        mov eax,dword ptr [eax]
+        mov edx,definition
+        add edx,destination_offset
+        fld dword ptr [eax+4]
+        fstp dword ptr [edx]
     }
-    if(_stricmp(name,"Lifetime")==0) { publish(definition,0x1c,builder,percentage,b); return true; }
-    if(_stricmp(name,"TerminateAfter")==0) {
-        store(definition,0x20,first_native_particle_parameter_value_00afc1b0(builder)); return true;
+}
+template<class Context> bool load_parameter_property(void* definition,const void* property,
+    void* builder,float percentage,Context& b) {
+    if(_stricmp(load<const char*>(property),"BornRatio")==0) {
+        publish_first_value(definition,0x24,builder); return true;
     }
-    if(_stricmp(name,"Speed")==0) { publish(definition,0x2c,builder,percentage,b); return true; }
-    if(_stricmp(name,"VerticalSpeed")==0) { publish(definition,0x30,builder,percentage,b); return true; }
+    if(_stricmp(load<const char*>(property),"Lifetime")==0) { publish(definition,0x1c,builder,percentage,b); return true; }
+    if(_stricmp(load<const char*>(property),"TerminateAfter")==0) {
+        publish_first_value(definition,0x20,builder); return true;
+    }
+    if(_stricmp(load<const char*>(property),"Speed")==0) { publish(definition,0x2c,builder,percentage,b); return true; }
+    if(_stricmp(load<const char*>(property),"VerticalSpeed")==0) { publish(definition,0x30,builder,percentage,b); return true; }
     struct Property { const char* name; std::uint32_t offset; };
     static constexpr Property curves[]={{"InheritedSpeed",0x48},{"WindSensitivity",0x34},
         {"Alpha",0x38},{"Color_R",0x3c},{"Color_G",0x40},{"Color_B",0x44},{"AnimPlaySpeed",0x5c}};
@@ -144,6 +157,16 @@ bool load_native_particle_type_parameter_00b00980(void* definition,const void* p
     return false;
 }
 
+} // namespace
+bool load_native_particle_type_parameter_00b00980(void* definition,const void* property,
+    void* builder,float percentage,NativeParticleTypeLoadingBindings& b) {
+    return load_parameter_property(definition,property,builder,percentage,b);
+}
+bool load_native_particle_type_parameter_00b00980(void* definition,const void* property,
+    void* builder,float percentage,NativeParticleTypeParameterRawContext& b) {
+    return load_parameter_property(definition,property,builder,percentage,b);
+}
+
 void set_native_sprite_particle_size_00b08870(void* definition,void* parameter,
     NativeParticleTypeLoadingBindings& b) {
     store(definition,0x88,parameter);
@@ -156,16 +179,22 @@ bool load_native_floating_particle_definition_00b07d60(void* definition,void* te
     NativeParticleTypeLoadingBindings& b) { return load_sprite_or_floating(definition,text,b,false); }
 
 namespace {
-// Private bridge borrows the actual current constants and CRT domain in EBX.
+// Private bridge borrows numeric pointer-member addresses and the CRT domain in EBX.
 // The three original kernels never use EBX; original stack and x87 schedules
 // below are retained. The public API is deliberately not a binary replacement.
 struct BoundAccess {
     const CameraAxesCrtAccess* crt;
-    const volatile double* limit;
-    const volatile double* base;
-    const volatile double* derivative;
-    const volatile double* discriminant;
+    const volatile double* const* limit;
+    const volatile double* const* base;
+    const volatile double* const* derivative;
+    const volatile double* const* discriminant;
 };
+using RawContext=NativeParticleTypeParameterRawContext;
+static_assert(sizeof(BoundAccess)==20 && sizeof(RawContext)==28);
+static_assert(offsetof(RawContext,last_time_00d7a220)==12 &&
+    offsetof(RawContext,bound_base_00d7a210)==16 &&
+    offsetof(RawContext,derivative_scale_00d7a2b0)==20 &&
+    offsetof(RawContext,discriminant_scale_00d7a328)==24);
 __declspec(naked) float quadratic_roots_kernel() {
     __asm {
         push ecx // 00affe20
@@ -177,6 +206,7 @@ __declspec(naked) float quadratic_roots_kernel() {
         mov esi, edx // 00affe2d
         push edx
         mov edx,dword ptr [ebx+16]
+        mov edx,dword ptr [edx]
         fmul qword ptr [edx] // 00affe2f
         pop edx
         mov edi, ecx // 00affe35
@@ -240,6 +270,7 @@ __declspec(naked) float cubic_bound_kernel() {
         fld dword ptr [esi + 0xc] // 00affed3
         push edx
         mov edx,dword ptr [ebx+12]
+        mov edx,dword ptr [edx]
         fmul qword ptr [edx] // 00affed6
         pop edx
         fstp dword ptr [esp + 0x1c] // 00affedc
@@ -406,6 +437,7 @@ __declspec(naked) float parameter_bound_kernel() {
     bound_00b001f8:
         push edx
         mov edx,dword ptr [ebx+4]
+        mov edx,dword ptr [edx]
         fld qword ptr [edx] // 00b001f8
         pop edx
         fld dword ptr [esi + 4] // 00b001fe
@@ -420,6 +452,7 @@ __declspec(naked) float parameter_bound_kernel() {
         pop edi // 00b0020f
         push edx
         mov edx,dword ptr [ebx+8]
+        mov edx,dword ptr [edx]
         fadd qword ptr [edx] // 00b00210
         pop edx
         fmul dword ptr [esp] // 00b00216
@@ -431,6 +464,7 @@ __declspec(naked) float parameter_bound_kernel() {
         mov ecx, dword ptr [edi + 4] // 00b00225
         push edx
         mov edx,dword ptr [ebx+4]
+        mov edx,dword ptr [edx]
         fld qword ptr [edx] // 00b00228
         pop edx
         movss xmm0, dword ptr [ecx + 8] // 00b0022e
@@ -468,6 +502,7 @@ __declspec(naked) float parameter_bound_kernel() {
         pop edi // 00b00289
         push edx
         mov edx,dword ptr [ebx+8]
+        mov edx,dword ptr [edx]
         fadd qword ptr [edx] // 00b0028a
         pop edx
         fmul dword ptr [esp] // 00b00290
@@ -479,10 +514,12 @@ __declspec(naked) float parameter_bound_kernel() {
         fld dword ptr [edi] // 00b0029f
         push edx
         mov edx,dword ptr [ebx+4]
+        mov edx,dword ptr [edx]
         fdiv qword ptr [edx] // 00b002a1
         pop edx
         push edx
         mov edx,dword ptr [ebx+8]
+        mov edx,dword ptr [edx]
         fadd qword ptr [edx] // 00b002a7
         pop edx
         fmul dword ptr [edi + 4] // 00b002ad
@@ -522,9 +559,37 @@ __declspec(naked) float __fastcall invoke_quadratic(float*,float*,float,float,fl
         ret 16
     }
 }
+
+// EAX=context; bind member ADDRESSES, not current pointer values. CRT is a
+// reference to the same access object, whose own cells remain live as before.
+#define BSP_BOUND_RAW_VIEW() \
+    __asm { lea ebx,[eax+24] } \
+    __asm { push ebx } \
+    __asm { lea ebx,[eax+20] } \
+    __asm { push ebx } \
+    __asm { lea ebx,[eax+16] } \
+    __asm { push ebx } \
+    __asm { lea ebx,[eax+12] } \
+    __asm { push ebx } \
+    __asm { push dword ptr [eax+8] } \
+    __asm { mov ebx,esp }
+
+__declspec(naked) float __fastcall raw_parameter_bound_entry(const void*,const RawContext*) {
+    __asm { push ebx
+        push eax
+        mov eax,edx
+    }
+    BSP_BOUND_RAW_VIEW()
+    __asm { call parameter_bound_kernel
+        add esp,20
+        pop eax
+        pop ebx
+        ret
+    }
+}
 BoundAccess bounds(NativeParticleTypeLoadingBindings& b) {
-    return {&b.parameters.crt,b.parameters.last_time_00d7a220,b.bound_base_00d7a210,
-        b.derivative_scale_00d7a2b0,b.discriminant_scale_00d7a328};
+    return {&b.parameters.crt,&b.parameters.last_time_00d7a220,&b.bound_base_00d7a210,
+        &b.derivative_scale_00d7a2b0,&b.discriminant_scale_00d7a328};
 }
 } // namespace
 float bound_native_runtime_particle_value_00b001a0(const void* parameter,
@@ -541,5 +606,62 @@ float solve_native_particle_quadratic_00affe20(float* first,float* second,float 
     NativeParticleTypeLoadingBindings& b) {
     const BoundAccess access=bounds(b);
     return invoke_quadratic(first,second,a,c,d,&access);
+}
+__declspec(naked) float __fastcall bound_native_runtime_particle_value_00b001a0(
+    const void*,const RawContext*) {
+    __asm { jmp raw_parameter_bound_entry }
+}
+__declspec(naked) float __fastcall bound_native_particle_cubic_segment_00affe90(
+    const void*,const RawContext*) {
+    __asm { push ebx
+        push eax
+        mov eax,edx
+    }
+    BSP_BOUND_RAW_VIEW()
+    __asm { call cubic_bound_kernel
+        add esp,20
+        pop eax
+        pop ebx
+        ret
+    }
+}
+__declspec(naked) float __fastcall solve_native_particle_quadratic_00affe20(
+    float*,float*,float,float,float,const RawContext*) {
+    __asm { push ebx
+        push eax
+        mov eax,dword ptr [esp+24]
+    }
+    BSP_BOUND_RAW_VIEW()
+    __asm { push dword ptr [esp+40]
+        push dword ptr [esp+40]
+        push dword ptr [esp+40]
+        call quadratic_roots_kernel
+        add esp,20
+        pop eax
+        pop ebx
+        ret 16
+    }
+}
+#undef BSP_BOUND_RAW_VIEW
+__declspec(naked) void __fastcall set_native_sprite_particle_size_00b08870(
+    void*,const RawContext*,void*) {
+    __asm { push esi
+        mov esi,ecx
+        mov ecx,dword ptr [esp+8]
+        test ecx,ecx
+        mov dword ptr [esi+88h],ecx
+        jz raw_size_zero
+        call raw_parameter_bound_entry
+        fstp dword ptr [esp+8]
+        movss xmm0,dword ptr [esp+8]
+        movss dword ptr [esi+8ch],xmm0
+        pop esi
+        ret 4
+    raw_size_zero:
+        xorps xmm0,xmm0
+        movss dword ptr [esi+8ch],xmm0
+        pop esi
+        ret 4
+    }
 }
 } // namespace bsp
