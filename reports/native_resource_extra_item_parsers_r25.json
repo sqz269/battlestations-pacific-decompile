@@ -1,0 +1,223 @@
+{
+  "packet": "native_resource_extra_item_parsers_r25",
+  "base": "8482b2618",
+  "implementation_commit": "f57a3a369313c29a0631942a0244d4acaa746361",
+  "generated_utc": "2026-09-16T07:24:39.6677858Z",
+  "program": "/battlestationspacific.exe",
+  "source": [
+    "include/bsp/native_resource_extra_item_parsers.hpp",
+    "src/native_resource_extra_item_parsers.cpp",
+    "cmake/startup.cmake"
+  ],
+  "coverage": {
+    "ordinary_functions": 2,
+    "ordinary_bytes": 243,
+    "eh_code_bytes": 42,
+    "eh_data_bytes": 88,
+    "total_receipt_bytes": 373,
+    "direct_calls_per_body": 2,
+    "current_indirect_calls_per_body": 1
+  },
+  "functions": [
+    {
+      "address": "00b8a910",
+      "end_inclusive": "00b8a986",
+      "bytes": 119,
+      "parser": "AnimationChannels",
+      "allocation_bytes": 20,
+      "base_constructor": "00b868b0",
+      "result_profile": "00d6328c",
+      "writes_after_base": [
+        "+00=00d6328c",
+        "+08=0",
+        "+0c=0",
+        "+10=0"
+      ],
+      "direct_calls": [
+        "00bf681b operator_new",
+        "00b868b0 BSP_ResourceItem_ConstructReferenceBase"
+      ],
+      "current_slot20_initial_target": "00b8ad80",
+      "original_abi": "ECX parser ignored; stack actual_handle; EAX item; RET4",
+      "reader_abi": "ECX item; stack actual_handle; RET4",
+      "reader_failure_ownership": "EH state is -1 before the call; retain the constructed item with no parser-level rollback"
+    },
+    {
+      "address": "00b8a990",
+      "end_inclusive": "00b8aa0b",
+      "bytes": 124,
+      "parser": "Bone",
+      "allocation_bytes": 44,
+      "base_constructor": "00b868b0",
+      "result_profile": "00d632b8",
+      "writes_after_base": [
+        "+00=00d632b8",
+        "+08=0",
+        "+0c=0"
+      ],
+      "untouched_before_reader": "+10..+2b",
+      "direct_calls": [
+        "00bf681b operator_new",
+        "00b868b0 BSP_ResourceItem_ConstructReferenceBase"
+      ],
+      "current_slot20_initial_target": "00b8af30",
+      "original_abi": "ECX parser ignored; stack actual_handle; EAX item; RET4",
+      "reader_abi": "ECX item; stack actual_handle; RET4",
+      "reader_failure_ownership": "EH state is -1 before the call; retain the constructed item with no parser-level rollback"
+    }
+  ],
+  "exception_contract": {
+    "native_state_zero": "armed after operator_new returns and before the null test",
+    "native_state_zero_action": "call _free on the raw allocation only",
+    "native_state_minus_one": "stored before the current slot20 reader call",
+    "source_construction_guard": "No additional C++ guard is required: the reused actual B868B0 interface is noexcept and performs only three stores. Allocation throws before a returned allocation exists. Hardware faults and original FH3 behavior are excluded.",
+    "null_allocation": "The original continues to the current-table load through null; the source preserves that reached null-access boundary rather than fabricating an empty item."
+  },
+  "required_concrete_dependencies": [
+    {
+      "target": "00b8ad80",
+      "role": "AnimationChannels item current slot20 reader",
+      "status": "not reconstructed or claimed by this packet"
+    },
+    {
+      "target": "00b8af30",
+      "role": "Bone item current slot20 reader",
+      "status": "not reconstructed or claimed by this packet"
+    }
+  ],
+  "old_ghidra_metadata": [
+    {
+      "address": "00b8a910",
+      "name": "FUN_00b8a910",
+      "comment": null,
+      "signature": "undefined FUN_00b8a910(void)"
+    },
+    {
+      "address": "00b8a990",
+      "name": "FUN_00b8a990",
+      "comment": null,
+      "signature": "undefined FUN_00b8a990(void)"
+    }
+  ],
+  "proposed_annotations_for_primary": [
+    {
+      "address": "00b8a910",
+      "reviewed_name": "BSP_AnimationChannelsParser_ParseItem",
+      "reviewed_signature": "void * __thiscall BSP_AnimationChannelsParser_ParseItem(void *parser, void *actual_handle)",
+      "evidence_comment": "[BSP reconstruction 00b8a910]\nComplete 119-byte AnimationChannels parser slot8 outer body. Ignores parser ECX; stacked handle; allocates14h through00BF681B; B868B0 constructs reference base; stamp D6328C; zero +8/+C/+10; capture CURRENT table slot20 (initial B8AD80) and call with item ECX/handle stack after EH state -1. Reader failure retains the item. Original ABI: ECX parser unused, stack handle, EAX item, RET4. Evidence: docs/NATIVE_RESOURCE_EXTRA_ITEM_PARSERS_R25.md; reports/native_resource_extra_item_parsers_r25.json. Descriptive name is a hypothesis; reader body, callable ABI/FH3/SEH and gameplay remain unvalidated."
+    },
+    {
+      "address": "00b8a990",
+      "reviewed_name": "BSP_BoneParser_ParseItem",
+      "reviewed_signature": "void * __thiscall BSP_BoneParser_ParseItem(void *parser, void *actual_handle)",
+      "evidence_comment": "[BSP reconstruction 00b8a990]\nComplete 124-byte Bone parser slot8 outer body. Ignores parser ECX; stacked handle; allocates2Ch through00BF681B; B868B0 constructs reference base; stamp D632B8; zero only +8/+C and preserve allocator bytes +10..+2B; capture CURRENT table slot20 (initial B8AF30) and call with item ECX/handle stack after EH state -1. Reader failure retains the item. Original ABI: ECX parser unused, stack handle, EAX item, RET4. Evidence: docs/NATIVE_RESOURCE_EXTRA_ITEM_PARSERS_R25.md; reports/native_resource_extra_item_parsers_r25.json. Descriptive name is a hypothesis; reader body, callable ABI/FH3/SEH and gameplay remain unvalidated."
+    }
+  ],
+  "complete_body_and_eh_receipt": {
+    "method": "Read-only bsp.py ghidra read_memory after verified project/program; installed PE32 RVA-to-raw mapping and SHA-256 comparison in PowerShell.",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_size": 12223752,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "range_count": 6,
+    "total_bytes": 373,
+    "live_aggregate_sha256": "ff044df08a71dd6368031f6f40164f35002bd2ffd419b7c4e316de1235e62f85",
+    "disk_aggregate_sha256": "ff044df08a71dd6368031f6f40164f35002bd2ffd419b7c4e316de1235e62f85",
+    "all_match": true,
+    "ranges": [
+      {
+        "address": "00b8a910",
+        "length": 119,
+        "end_exclusive": "00b8a987",
+        "kind": "complete_body",
+        "section": ".text",
+        "file_offset": 7907600,
+        "live_sha256": "33ba396b9697eb6c9be501bf33ac93c802d5c5e21b874401a7ed774c62d9d2e1",
+        "disk_sha256": "33ba396b9697eb6c9be501bf33ac93c802d5c5e21b874401a7ed774c62d9d2e1",
+        "matches_disk": true
+      },
+      {
+        "address": "00b8a990",
+        "length": 124,
+        "end_exclusive": "00b8aa0c",
+        "kind": "complete_body",
+        "section": ".text",
+        "file_offset": 7907728,
+        "live_sha256": "322185bc8880f9d702ed60ec423f28dafd3738a71a603de2a386a6d5b9ff8462",
+        "disk_sha256": "322185bc8880f9d702ed60ec423f28dafd3738a71a603de2a386a6d5b9ff8462",
+        "matches_disk": true
+      },
+      {
+        "address": "00cc2890",
+        "length": 21,
+        "end_exclusive": "00cc28a5",
+        "kind": "raw_free_unwind_funclet_and_cxx_handler_adapter",
+        "section": ".text",
+        "file_offset": 9185424,
+        "live_sha256": "10e7a1da459ceca87a7be347173c125f1b57169f0ca6c6cc44f7b514fb649c7e",
+        "disk_sha256": "10e7a1da459ceca87a7be347173c125f1b57169f0ca6c6cc44f7b514fb649c7e",
+        "matches_disk": true
+      },
+      {
+        "address": "00cc28b0",
+        "length": 21,
+        "end_exclusive": "00cc28c5",
+        "kind": "raw_free_unwind_funclet_and_cxx_handler_adapter",
+        "section": ".text",
+        "file_offset": 9185456,
+        "live_sha256": "cf5e0e89704c746ea1260cbb758a18e7986e61f0e5bb61261989a8abb5e09584",
+        "disk_sha256": "cf5e0e89704c746ea1260cbb758a18e7986e61f0e5bb61261989a8abb5e09584",
+        "matches_disk": true
+      },
+      {
+        "address": "00dfbe84",
+        "length": 44,
+        "end_exclusive": "00dfbeb0",
+        "kind": "unwind_map_and_funcinfo",
+        "section": ".rdata",
+        "file_offset": 10468996,
+        "live_sha256": "215b204a52707bd1eb125261275cd79f65ee1fd7aa5e8fb878ae63ff2c8b536a",
+        "disk_sha256": "215b204a52707bd1eb125261275cd79f65ee1fd7aa5e8fb878ae63ff2c8b536a",
+        "matches_disk": true
+      },
+      {
+        "address": "00dfbeb0",
+        "length": 44,
+        "end_exclusive": "00dfbedc",
+        "kind": "unwind_map_and_funcinfo",
+        "section": ".rdata",
+        "file_offset": 10469040,
+        "live_sha256": "11659907b9b767d0107ef7475ac987dc772a2140df11bfb3533f798134e6742a",
+        "disk_sha256": "11659907b9b767d0107ef7475ac987dc772a2140df11bfb3533f798134e6742a",
+        "matches_disk": true
+      }
+    ],
+    "ignored_raw_exports": [
+      "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00b8a910/decompiled.c",
+      "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00b8a910/assembly.txt",
+      "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00b8a990/decompiled.c",
+      "J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/00b8a990/assembly.txt"
+    ],
+    "boundary": "Only the two complete ordinary bodies and their immediately referenced EH code/data were compared. This is not whole-image, callable-ABI, FH3/SEH-identity, reader, or gameplay proof."
+  },
+  "validation": {
+    "strict_standalone_compile": "passed: MSVC Win32 C++20 /EHsc /MD /O2 /W4 /WX /fp:strict /permissive-",
+    "ghidra_export_seeds": "8/8 matched disk before the full build",
+    "full_release_build": "passed; native_resource_extra_item_parsers.cpp compiled into bsp_core",
+    "ctests": "3/3 passed",
+    "new_permanent_tests": 0,
+    "source_level_complete_outer_bodies": true,
+    "item_readers_complete": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "limits": [
+    "B8AD80 and B8AF30 require actual concrete reader services and remain outside this packet.",
+    "Deleting paths B8A760/B8A680 and B8AF10/B8A8A0 are not reconstructed here.",
+    "The source requires mapped native result profiles for current slot20 capture.",
+    "Original FH3/SEH, hardware-fault behavior, executable admission, full resource loading and gameplay remain unvalidated."
+  ]
+}
