@@ -1,0 +1,83 @@
+{
+  "packet": "orch4-particle-pool-process-r23",
+  "status": "source_process_storage_shared_list_and_real_crt_exit_probe_passed",
+  "source_head": "a3ba8f9ba",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "original_body_count_added": 0,
+  "ghidra_mutations": false,
+  "sources": [
+    "include/bsp/game_native_particle_pools.hpp",
+    "src/game_native_particle_pools.cpp"
+  ],
+  "actual_pool_storage": {
+    "00f8d2d0": 56,
+    "00f8d344": 56
+  },
+  "allocator_domain": "Same existing GameNativePhysicalPoolProcess E188B4 domain; no second head",
+  "initializer_table": {
+    "address": "00ce34ec",
+    "end_exclusive": "00ce34f8",
+    "bytes": 12,
+    "sha256": "6d206703cf310fe7fc6f69949ef8ba945a53a12b0c13ce83d9c88007f81784e0",
+    "live_disk_match": true
+  },
+  "initializer_words": [
+    "00cd7830",
+    "00cd7850",
+    "00cd78b0"
+  ],
+  "relative_order_scope": "Model before parameter; intervening CD7850 and full original CRT array not executed",
+  "validation": {
+    "strict_win32_build": "PASS; local/particle_pool_process_r23_build.log",
+    "ctest": "3/3 PASS: reconstructed_math, native_math_differential, tool_tests",
+    "verify_seeds": "8/8 original bodies matched installed PE",
+    "process_probe_exit": 0,
+    "process_probe_receipt": [
+      "PASS: same-list allocation/return/trim, distinct native storage, guarded and repeated startup",
+      "PASS: real physical callback completed before both particle callbacks",
+      "PASS: real parameter callback completed before model callback",
+      "PASS: real model callback completed; shared list empty; bookkeeping owners still alive"
+    ],
+    "registrar": "real std::atexit, no injected registrar",
+    "pool_providers": "genuine model, generic parameter and physical-provider implementations",
+    "artifact_hashes": [
+      {
+        "path": "local/particle_pool_process_probe.cpp",
+        "bytes": 6135,
+        "sha256": "0c23d261c5d8ef0cd52bf45a3bd544782af5639846c42b78cb4d5e764b554813"
+      },
+      {
+        "path": "local/build_particle_pool_process_probe.cmd",
+        "bytes": 516,
+        "sha256": "d99036b98ab90602ea0c95a77f651cd7528110622cffb8bf8a597228bd2adf43"
+      },
+      {
+        "path": "local/particle_pool_process_probe.exe",
+        "bytes": 27136,
+        "sha256": "a0d410a574bd8088cf3aae7cdce67ab41fc6f1636919665db7e0af2406e0f566"
+      },
+      {
+        "path": "local/particle_pool_process_probe_receipt.txt",
+        "bytes": 317,
+        "sha256": "b4f22deb3ffd2343cc3765390e3d9ff92460ab9dcc7765b5023878519a8e4e57"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 62690954,
+        "sha256": "3cc62ab9852a31e679ade6965b280c92d365836227089ad13e4a384fc313f070"
+      }
+    ],
+    "permanent_tests_added": 0
+  },
+  "calls": [],
+  "limits": [
+    "source adapter, not an additional recovered native body",
+    "original CRT array and FH3/SEH not executed",
+    "process registration failure and interrupted initialization not fault-injected",
+    "concurrent pool use, renderer and gameplay unvalidated",
+    "resource/render/raw-Lua particle dispatch remains separate"
+  ],
+  "binary_abi_compatible": false,
+  "gameplay_validated": false
+}
