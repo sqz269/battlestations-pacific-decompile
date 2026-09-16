@@ -34,6 +34,11 @@
       "sha256": "808d65cfdebef6d43c01f52c5e85fdf57346d96bbbcdb0a28207c8eff8c292ce",
       "live_disk_equal": true,
       "ghidra_name": "CG_static_init_00ce0be0",
+      "original_annotation": {
+        "address": "00ce0be0",
+        "function_name": "CG_static_init_00ce0be0",
+        "comment": "[BSP inventory 00ce0be0] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+      },
       "recommended_name": "BSP_ParticleParameterPool_StaticDestroy",
       "cpp_symbol": "destroy_static_native_particle_parameter_pool_00ce0be0",
       "source": "src/native_particle_parameter_pool_owner.cpp",
@@ -47,6 +52,11 @@
     {"from": "00cd78b0", "site": "00cd78bf", "to": "00bf6ff5", "kind": "call"},
     {"from": "00ce0be0", "site": "00ce0be5", "to": "00b002c0", "kind": "tail_jump"}
   ],
+  "host_steps": [
+    {"address": "00cd78b5", "native": "00b004b0", "function": "00cd78b0", "method": "NativeWeakHandlePool::initialize_00b004b0"},
+    {"address": "00cd78bf", "native": "00bf6ff5", "function": "00cd78b0", "method": "_atexit"},
+    {"address": "00ce0be5", "native": "00b002c0", "function": "00ce0be0", "kind": "tail_jump", "method": "NativeWeakHandlePool::destroy_00b002c0"}
+  ],
   "ownership": {
     "pool_storage": "caller-owned actual 00F8D344 38h storage",
     "allocator_list": "same application 00E188B4 AllocatorListDomain",
@@ -56,7 +66,7 @@
     "registration_failure_rollback": false
   },
   "validation": {
-    "verify_seeds": "PASS: all seven configured seed ranges matched the installed PE",
+    "verify_seeds": "PASS: all eight configured seed ranges matched the installed PE",
     "strict_win32_build": "PASS: full scripts/build.ps1 Release build compiled the new translation unit and linked bsp_game.exe",
     "ctest": "PASS: 3/3 reconstructed_math, native_math_differential, tool_tests",
     "focused_temporary_probe": "PASS: registration observed constructed list/table state, status 37 survived unchanged, generic 009242F0 allocation and 00924420 return reused one slot, captured destructor unlinked the pool",

@@ -61,7 +61,7 @@ permanent test was added.
 
 ## Validation and limits
 
-`python tools/ghidra_export.py verify-seeds` matched all seven configured seed
+`python tools/ghidra_export.py verify-seeds` matched all eight configured seed
 ranges against the installed executable. `scripts/build.ps1` completed the full
 MSVC Win32 Release build, including the new translation unit and linked
 `bsp_game.exe`. All three existing CTests passed: `reconstructed_math`,
