@@ -1,0 +1,888 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "packet": "orch4_particle_bounds_reader_l12",
+  "source": "src/native_particle_bounds_reader.cpp",
+  "header": "include/bsp/native_particle_bounds_reader.hpp",
+  "functions": [
+    {
+      "address": "00af4700",
+      "end_exclusive": "00af4b98",
+      "bytes": 1176,
+      "instructions": 399,
+      "listed_instructions": 397,
+      "sha256": "f9f880599de3433a8b56e5c9a89c9a51d77d1badbfe438d6babd5135ae22e991",
+      "live_disk_match": true,
+      "name": "read_native_particle_bounds_00af4700",
+      "proposed_name": "ParticleResource_ReadBounds_00AF4700",
+      "coverage": "complete",
+      "original_abi": "ECX captured destination owner; one stack actual1Ch TextBuffer argument; RET4; no defined result",
+      "old_documentation": {
+        "hash": "aa69bd63004f8026042e7311bfbd984801f237fe1860bd441b29060397d4bfd8",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af4700",
+        "function_name": "FUN_00af4700",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_28",
+            "type": "char *",
+            "storage": "(stack, 0xffffffffffffffd8, 4)"
+          },
+          {
+            "name": "pcVar7",
+            "type": "char *",
+            "storage": "(register, 0xc, 4)"
+          },
+          {
+            "name": "local_24",
+            "type": "char *",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "pcVar6",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_30",
+            "type": "char *",
+            "storage": "(stack, 0xffffffffffffffd0, 4)"
+          },
+          {
+            "name": "pcVar9",
+            "type": "char *",
+            "storage": "(stack, 0xffffffffffffffb0, 4)"
+          },
+          {
+            "name": "dVar8",
+            "type": "double",
+            "storage": "(VARIABLE, 0x0, 8)"
+          },
+          {
+            "name": "local_2c",
+            "type": "char *",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "local_18",
+            "type": "char *",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "char *",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "uVar10",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffb8, 4)"
+          },
+          {
+            "name": "local_20",
+            "type": "char *",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "local_1c",
+            "type": "char *",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          },
+          {
+            "name": "local_10",
+            "type": "char *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "bVar2",
+            "type": "bool",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "iVar5",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar4",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 48,
+            "name": "LAB_00af4730"
+          },
+          {
+            "relative_offset": 140,
+            "name": "LAB_00af478c"
+          },
+          {
+            "relative_offset": 145,
+            "name": "LAB_00af4791"
+          },
+          {
+            "relative_offset": 176,
+            "name": "LAB_00af47b0"
+          },
+          {
+            "relative_offset": 206,
+            "name": "LAB_00af47ce"
+          },
+          {
+            "relative_offset": 210,
+            "name": "LAB_00af47d2"
+          },
+          {
+            "relative_offset": 240,
+            "name": "LAB_00af47f0"
+          },
+          {
+            "relative_offset": 270,
+            "name": "LAB_00af480e"
+          },
+          {
+            "relative_offset": 274,
+            "name": "LAB_00af4812"
+          },
+          {
+            "relative_offset": 289,
+            "name": "LAB_00af4821"
+          },
+          {
+            "relative_offset": 327,
+            "name": "LAB_00af4847"
+          },
+          {
+            "relative_offset": 352,
+            "name": "LAB_00af4860"
+          },
+          {
+            "relative_offset": 453,
+            "name": "LAB_00af48c5"
+          },
+          {
+            "relative_offset": 483,
+            "name": "LAB_00af48e3"
+          },
+          {
+            "relative_offset": 624,
+            "name": "LAB_00af4970"
+          },
+          {
+            "relative_offset": 654,
+            "name": "LAB_00af498e"
+          },
+          {
+            "relative_offset": 704,
+            "name": "LAB_00af49c0"
+          },
+          {
+            "relative_offset": 734,
+            "name": "LAB_00af49de"
+          },
+          {
+            "relative_offset": 784,
+            "name": "LAB_00af4a10"
+          },
+          {
+            "relative_offset": 814,
+            "name": "LAB_00af4a2e"
+          },
+          {
+            "relative_offset": 864,
+            "name": "LAB_00af4a60"
+          },
+          {
+            "relative_offset": 894,
+            "name": "LAB_00af4a7e"
+          },
+          {
+            "relative_offset": 944,
+            "name": "LAB_00af4ab0"
+          },
+          {
+            "relative_offset": 974,
+            "name": "LAB_00af4ace"
+          },
+          {
+            "relative_offset": 978,
+            "name": "LAB_00af4ad2"
+          },
+          {
+            "relative_offset": 996,
+            "name": "LAB_00af4ae4"
+          },
+          {
+            "relative_offset": 1026,
+            "name": "LAB_00af4b02"
+          },
+          {
+            "relative_offset": 1048,
+            "name": "LAB_00af4b18"
+          },
+          {
+            "relative_offset": 1078,
+            "name": "LAB_00af4b36"
+          },
+          {
+            "relative_offset": 1082,
+            "name": "LAB_00af4b3a"
+          },
+          {
+            "relative_offset": 1104,
+            "name": "LAB_00af4b50"
+          },
+          {
+            "relative_offset": 1125,
+            "name": "LAB_00af4b65"
+          },
+          {
+            "relative_offset": 1155,
+            "name": "LAB_00af4b83"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "old_annotation": {
+        "address": "00af4700",
+        "function_name": "FUN_00af4700"
+      },
+      "evidence": "Descriptive hypothesis, not recovered symbol. Complete AF4700[1176] ECX destination owner, stack actual text buffer, RET4/no defined result. Genuine raw pooled text/space-count providers with same raw419CC0/BD1510 domain and sharedF8C2C8 scratch. First scan stops on BoundSphere, null token or EOF but continues brace search/body read. Param/Coords consumes suffix tokens0..4 without sanitization; direct atof ST0->FSTP fields7C/80/84/88/8C before token return. DF2A64 states3suffix->2name->0line and1conditional-first-token->0line, true unwind only; other tokens deliberately unowned. Current pointer capture/state-drop cleanup and partial writes preserved. Full body/EH/constants PE/live bytes verified. See docs/NATIVE_PARTICLE_BOUNDS_READER_ORCH4.md and reports/native_particle_bounds_reader_orch4.json. Native fault/EH/ABI/CRT locale/gameplay unvalidated. Strict Win32+3CTests pass after seed verification. Original/source genuine-pool four-script fixture passes7comparisons including all4x87rounding modes; every destination byte/cursor/pool counter matches.52function-owned calls verified;1compiler EHtail raw-only.",
+      "status": "complete_native_storage_source_build_and_original_pool_fixture_checked"
+    }
+  ],
+  "byte_evidence": [
+    {
+      "start": "00af4700",
+      "end_exclusive": "00af4b98",
+      "length": 1176,
+      "disk_sha256": "f9f880599de3433a8b56e5c9a89c9a51d77d1badbfe438d6babd5135ae22e991",
+      "live_sha256": "f9f880599de3433a8b56e5c9a89c9a51d77d1badbfe438d6babd5135ae22e991",
+      "equal": true,
+      "bytes": "6aff6831accb0064a100000000506489250000000083ec285355565733ff33db895c241c8be9897c2414897c24408bff8b4c24488d44241450e80210000084c0744a578d4c2424518d4c241ce86f9cffff83cb013938c644244001895c241c742b578d54241c528d4c241ce8509cffff8b006868d9d5005083cb02e83f38100083c40885c0c6442413017505c644241300f6c302743c8b54241883e3fd3bd7895c241c74298bc28d70018d9b000000008a0883c00184c975f72bc66a0183c0015052e8f95492ff8bc8e842cd0d00897c2418f6c301897c244074378b54242083e3fe3bd774288bc28d7001eb038d49008a0883c00184c975f72bc66a0183c0015052e8b95492ff8bc8e802cd0d00897c2420807c2413000f8513ffffff8b7424488d4c2414518bcee8130f000084c074168b54241468384dce0052e87f37100083c40885c075da8d442414508bcee8ed0e000084c00f84f5020000eb038d49008b4c241468d44cce0051e85037100083c40885c00f84d60200008b542414680c3ace0052e83637100083c40885c00f84a6020000578d442424508d4c241ce81d9bffff8b08688cd7d50051e80f3710008b54242883c40885c00f94c33bd774238bc28d70018a0883c00184c975f72bc66a0183c0015052e8e45392ff8bc8e82dcc0d0084db897c24200f844b0200008d4c2414e898f5ffff83f8030f8c390200006a018d542420528d4c241ce8af9affff6a028d44241c508d4c241cc644244802e89afbffff8b4c241c6860d9d50051c644244803e88536100083c40885c00f858d010000578d542428528d4c2420e86c9affff8b0050e8105d1000d95d7c8b54242883c4043bd774248bc28d7001908a0883c00184c975f72bc66a0183c0015052e8395392ff8bc8e882cb0d006a018d4c242c518d4c2420897c242ce81e9affff8b1052e8c25c1000d99d800000008b54242c83c4043bd774238bc28d70018a0883c00184c975f72bc66a0183c0015052e8e95292ff8bc8e832cb0d006a028d442430508d4c2420897c2430e8ce99ffff8b0851e8725c1000d99d840000008b54243083c4043bd774238bc28d70018a0883c00184c975f72bc66a0183c0015052e8995292ff8bc8e8e2ca0d006a038d542434528d4c2420897c2434e87e99ffff8b0050e8225c1000d99d880000008b54243483c4043bd774238bc28d70018a0883c00184c975f72bc66a0183c0015052e8495292ff8bc8e892ca0d006a048d4c2438518d4c2420897c2438e82e99ffff8b1052e8d25b1000d99d8c0000008b54243883c4043bd774238bc28d70018a0883c00184c975f72bc66a0183c0015052e8f95192ff8bc8e842ca0d00897c24348b5424183bd7c64424400274238bc28d70018a0883c00184c975f72bc66a0183c0015052e8c55192ff8bc8e80eca0d008b54241c3bd7897c2418c64424400074238bc28d70018a0883c00184c975f72bc66a0183c0015052e8915192ff8bc8e8dac90d00897c241c8b4c24488d44241450e8f80b000084c00f8510fdffff8b5424143bd7c7442440ffffffff74238bc28d70018a0883c00184c975f72bc66a0183c0015052e8445192ff8bc8e88dc90d008b4c24385f5e5d5b64890d0000000083c434c20400",
+      "instruction_count": 399
+    },
+    {
+      "start": "00cbac00",
+      "end_exclusive": "00cbac3b",
+      "length": 59,
+      "disk_sha256": "082b889e0498b14b8e7b9a800b7a001d2674c174713eeb9ce7710e2cbe3d08c5",
+      "live_sha256": "082b889e0498b14b8e7b9a800b7a001d2674c174713eeb9ce7710e2cbe3d08c5",
+      "equal": true,
+      "bytes": "8d4dd0e99836e3ff8b45d883e0010f840c0000008365d8fe8d4ddce98036e3ffc38d4dd8e97736e3ff8d4dd4e96f36e3ffb8842adf00e908bff3ff",
+      "instruction_count": 15
+    },
+    {
+      "start": "00df2a64",
+      "end_exclusive": "00df2aa8",
+      "length": 68,
+      "disk_sha256": "551e60a6f02e25912ec9e75c8e7ceb357090586465449c7fc1c43f91f4547515",
+      "live_sha256": "551e60a6f02e25912ec9e75c8e7ceb357090586465449c7fc1c43f91f4547515",
+      "equal": true,
+      "bytes": "ffffffff00accb000000000008accb000000000021accb000200000029accb002205931904000000642adf00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "start": "00d5d960",
+      "end_exclusive": "00d5d974",
+      "length": 20,
+      "disk_sha256": "5063407ebde16f031ad8d0c08e84aee2db3ee2f10ea8978f25c452a8f570e1da",
+      "live_sha256": "5063407ebde16f031ad8d0c08e84aee2db3ee2f10ea8978f25c452a8f570e1da",
+      "equal": true,
+      "bytes": "436f6f7264730000426f756e6453706865726500"
+    },
+    {
+      "start": "00d5d78c",
+      "end_exclusive": "00d5d792",
+      "length": 6,
+      "disk_sha256": "60cee899e765ad6ee095bece4a3af2ace4c0475bacf5f154b3e88d29b3a4a12f",
+      "live_sha256": "60cee899e765ad6ee095bece4a3af2ace4c0475bacf5f154b3e88d29b3a4a12f",
+      "equal": true,
+      "bytes": "506172616d00"
+    },
+    {
+      "start": "00ce4d38",
+      "end_exclusive": "00ce4d3a",
+      "length": 2,
+      "disk_sha256": "4d74440c32c4fad5c28ebb6cf407a7d3433fbd7ae90cff66354d9353b200b5b7",
+      "live_sha256": "4d74440c32c4fad5c28ebb6cf407a7d3433fbd7ae90cff66354d9353b200b5b7",
+      "equal": true,
+      "bytes": "7b00"
+    },
+    {
+      "start": "00ce4cd4",
+      "end_exclusive": "00ce4cd6",
+      "length": 2,
+      "disk_sha256": "40f6916b78ce91e89f740a14cdc77ab0e69292daefb8e06abe4b67637ccc30c5",
+      "live_sha256": "40f6916b78ce91e89f740a14cdc77ab0e69292daefb8e06abe4b67637ccc30c5",
+      "equal": true,
+      "bytes": "7d00"
+    },
+    {
+      "start": "00ce3a0c",
+      "end_exclusive": "00ce3a0d",
+      "length": 1,
+      "disk_sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "equal": true,
+      "bytes": "00"
+    }
+  ],
+  "call_sites": [
+    {
+      "function": "00af4700",
+      "address": "00af4739",
+      "native": "00af5740",
+      "kind": "direct",
+      "contract": "actual buffer/current4h line; same raw strings and sharedF8C2C8 scratch; AL result controls exact scan"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af474c",
+      "native": "00aee3c0",
+      "kind": "direct",
+      "contract": "construct actual4h token; captured output/index; same genuine raw pool"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af476b",
+      "native": "00aee3c0",
+      "kind": "direct",
+      "contract": "construct actual4h token; captured output/index; same genuine raw pool"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af477b",
+      "native": "00bf7fbf",
+      "kind": "direct",
+      "contract": "retained correct CRT _stricmp dependency; exact captured string and verified literal"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af47c2",
+      "native": "00419cc0",
+      "kind": "direct",
+      "contract": "current genuine raw pool getter after captured pointer/strlen+1; may throw on normal path"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af47c9",
+      "native": "00bd1510",
+      "kind": "direct",
+      "contract": "getter-returned actual pool, captured block/size/unused1, current shutdown gate"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4802",
+      "native": "00419cc0",
+      "kind": "direct",
+      "contract": "current genuine raw pool getter after captured pointer/strlen+1; may throw on normal path"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4809",
+      "native": "00bd1510",
+      "kind": "direct",
+      "contract": "getter-returned actual pool, captured block/size/unused1, current shutdown gate"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4828",
+      "native": "00af5740",
+      "kind": "direct",
+      "contract": "actual buffer/current4h line; same raw strings and sharedF8C2C8 scratch; AL result controls exact scan"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af483b",
+      "native": "00bf7fbf",
+      "kind": "direct",
+      "contract": "retained correct CRT _stricmp dependency; exact captured string and verified literal"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af484e",
+      "native": "00af5740",
+      "kind": "direct",
+      "contract": "actual buffer/current4h line; same raw strings and sharedF8C2C8 scratch; AL result controls exact scan"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af486a",
+      "native": "00bf7fbf",
+      "kind": "direct",
+      "contract": "retained correct CRT _stricmp dependency; exact captured string and verified literal"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4884",
+      "native": "00bf7fbf",
+      "kind": "direct",
+      "contract": "retained correct CRT _stricmp dependency; exact captured string and verified literal"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af489e",
+      "native": "00aee3c0",
+      "kind": "direct",
+      "contract": "construct actual4h token; captured output/index; same genuine raw pool"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af48ab",
+      "native": "00bf7fbf",
+      "kind": "direct",
+      "contract": "retained correct CRT _stricmp dependency; exact captured string and verified literal"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af48d7",
+      "native": "00419cc0",
+      "kind": "direct",
+      "contract": "current genuine raw pool getter after captured pointer/strlen+1; may throw on normal path"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af48de",
+      "native": "00bd1510",
+      "kind": "direct",
+      "contract": "getter-returned actual pool, captured block/size/unused1, current shutdown gate"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af48f3",
+      "native": "00af3e90",
+      "kind": "direct",
+      "contract": "current actual4h line space-run count; signed compare>=3 only, not five-value validation"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af490c",
+      "native": "00aee3c0",
+      "kind": "direct",
+      "contract": "construct actual4h token; captured output/index; same genuine raw pool"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4921",
+      "native": "00af44c0",
+      "kind": "direct",
+      "contract": "construct actual4h suffix2; activate state3 only after successful return"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4935",
+      "native": "00bf7fbf",
+      "kind": "direct",
+      "contract": "retained correct CRT _stricmp dependency; exact captured string and verified literal"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af494f",
+      "native": "00aee3c0",
+      "kind": "direct",
+      "contract": "construct actual4h token; captured output/index; same genuine raw pool"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4957",
+      "native": "00bfa66c",
+      "kind": "direct",
+      "contract": "cdecl CRT atof; ST0 goes directly to next actual binary32 FSTP, no double temporary"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4982",
+      "native": "00419cc0",
+      "kind": "direct",
+      "contract": "current genuine raw pool getter after captured pointer/strlen+1; may throw on normal path"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4989",
+      "native": "00bd1510",
+      "kind": "direct",
+      "contract": "getter-returned actual pool, captured block/size/unused1, current shutdown gate"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af499d",
+      "native": "00aee3c0",
+      "kind": "direct",
+      "contract": "construct actual4h token; captured output/index; same genuine raw pool"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af49a5",
+      "native": "00bfa66c",
+      "kind": "direct",
+      "contract": "cdecl CRT atof; ST0 goes directly to next actual binary32 FSTP, no double temporary"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af49d2",
+      "native": "00419cc0",
+      "kind": "direct",
+      "contract": "current genuine raw pool getter after captured pointer/strlen+1; may throw on normal path"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af49d9",
+      "native": "00bd1510",
+      "kind": "direct",
+      "contract": "getter-returned actual pool, captured block/size/unused1, current shutdown gate"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af49ed",
+      "native": "00aee3c0",
+      "kind": "direct",
+      "contract": "construct actual4h token; captured output/index; same genuine raw pool"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af49f5",
+      "native": "00bfa66c",
+      "kind": "direct",
+      "contract": "cdecl CRT atof; ST0 goes directly to next actual binary32 FSTP, no double temporary"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4a22",
+      "native": "00419cc0",
+      "kind": "direct",
+      "contract": "current genuine raw pool getter after captured pointer/strlen+1; may throw on normal path"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4a29",
+      "native": "00bd1510",
+      "kind": "direct",
+      "contract": "getter-returned actual pool, captured block/size/unused1, current shutdown gate"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4a3d",
+      "native": "00aee3c0",
+      "kind": "direct",
+      "contract": "construct actual4h token; captured output/index; same genuine raw pool"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4a45",
+      "native": "00bfa66c",
+      "kind": "direct",
+      "contract": "cdecl CRT atof; ST0 goes directly to next actual binary32 FSTP, no double temporary"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4a72",
+      "native": "00419cc0",
+      "kind": "direct",
+      "contract": "current genuine raw pool getter after captured pointer/strlen+1; may throw on normal path"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4a79",
+      "native": "00bd1510",
+      "kind": "direct",
+      "contract": "getter-returned actual pool, captured block/size/unused1, current shutdown gate"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4a8d",
+      "native": "00aee3c0",
+      "kind": "direct",
+      "contract": "construct actual4h token; captured output/index; same genuine raw pool"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4a95",
+      "native": "00bfa66c",
+      "kind": "direct",
+      "contract": "cdecl CRT atof; ST0 goes directly to next actual binary32 FSTP, no double temporary"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4ac2",
+      "native": "00419cc0",
+      "kind": "direct",
+      "contract": "current genuine raw pool getter after captured pointer/strlen+1; may throw on normal path"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4ac9",
+      "native": "00bd1510",
+      "kind": "direct",
+      "contract": "getter-returned actual pool, captured block/size/unused1, current shutdown gate"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4af6",
+      "native": "00419cc0",
+      "kind": "direct",
+      "contract": "current genuine raw pool getter after captured pointer/strlen+1; may throw on normal path"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4afd",
+      "native": "00bd1510",
+      "kind": "direct",
+      "contract": "getter-returned actual pool, captured block/size/unused1, current shutdown gate"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4b2a",
+      "native": "00419cc0",
+      "kind": "direct",
+      "contract": "current genuine raw pool getter after captured pointer/strlen+1; may throw on normal path"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4b31",
+      "native": "00bd1510",
+      "kind": "direct",
+      "contract": "getter-returned actual pool, captured block/size/unused1, current shutdown gate"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4b43",
+      "native": "00af5740",
+      "kind": "direct",
+      "contract": "actual buffer/current4h line; same raw strings and sharedF8C2C8 scratch; AL result controls exact scan"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4b77",
+      "native": "00419cc0",
+      "kind": "direct",
+      "contract": "current genuine raw pool getter after captured pointer/strlen+1; may throw on normal path"
+    },
+    {
+      "function": "00af4700",
+      "address": "00af4b7e",
+      "native": "00bd1510",
+      "kind": "direct",
+      "contract": "getter-returned actual pool, captured block/size/unused1, current shutdown gate"
+    },
+    {
+      "function": "00cbac00",
+      "address": "00cbac03",
+      "native": "00aee2a0",
+      "kind": "tail_jump",
+      "contract": "true unwind actual4h clear through raw pool context; second exception terminates"
+    },
+    {
+      "function": "00cbac08",
+      "address": "00cbac1b",
+      "native": "00aee2a0",
+      "kind": "tail_jump",
+      "contract": "true unwind actual4h clear through raw pool context; second exception terminates"
+    },
+    {
+      "function": "00cbac21",
+      "address": "00cbac24",
+      "native": "00aee2a0",
+      "kind": "tail_jump",
+      "contract": "true unwind actual4h clear through raw pool context; second exception terminates"
+    },
+    {
+      "function": "00cbac29",
+      "address": "00cbac2c",
+      "native": "00aee2a0",
+      "kind": "tail_jump",
+      "contract": "true unwind actual4h clear through raw pool context; second exception terminates"
+    }
+  ],
+  "raw_handler_tails": [
+    {
+      "function": "00cbac31",
+      "native": "00bf6b43",
+      "kind": "tail_jump",
+      "instruction_address": "00cbac36",
+      "contract": "compiler FH3 gateway; retained raw-only handler tail, no source ABI claim",
+      "proof": "Full59-byte EH code span and FuncInfo map match PE/live; compiler handler remains raw-only."
+    }
+  ],
+  "x87_stores": [
+    {
+      "address": "00af495c",
+      "destination_offset": "7c",
+      "source": "immediately preceding CRT atof ST0",
+      "store": "FSTP binary32 actual destination"
+    },
+    {
+      "address": "00af49aa",
+      "destination_offset": "80",
+      "source": "immediately preceding CRT atof ST0",
+      "store": "FSTP binary32 actual destination"
+    },
+    {
+      "address": "00af49fa",
+      "destination_offset": "84",
+      "source": "immediately preceding CRT atof ST0",
+      "store": "FSTP binary32 actual destination"
+    },
+    {
+      "address": "00af4a4a",
+      "destination_offset": "88",
+      "source": "immediately preceding CRT atof ST0",
+      "store": "FSTP binary32 actual destination"
+    },
+    {
+      "address": "00af4a9a",
+      "destination_offset": "8c",
+      "source": "immediately preceding CRT atof ST0",
+      "store": "FSTP binary32 actual destination"
+    }
+  ],
+  "eh": {
+    "handler": "00cbac31",
+    "function_info": "00df2a84",
+    "unwind_map": "00df2a64",
+    "max_state": 4,
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "action": "00cbac00",
+        "owner": "line"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "action": "00cbac08",
+        "owner": "first scan token only if storedflag&1; clearflag before cleanup"
+      },
+      {
+        "state": 2,
+        "next": 0,
+        "action": "00cbac21",
+        "owner": "parameter name"
+      },
+      {
+        "state": 3,
+        "next": 2,
+        "action": "00cbac29",
+        "owner": "suffix"
+      }
+    ],
+    "not_unwind_owned": [
+      "second scan token",
+      "body keyword token",
+      "five coordinate tokens"
+    ]
+  },
+  "listing_gaps": [
+    {
+      "start": "00af47ed",
+      "bytes": "8d4900",
+      "meaning": "jumped-over LEA ECX,[ECX] alignment; no repair required"
+    },
+    {
+      "start": "00af485d",
+      "bytes": "8d4900",
+      "meaning": "jumped-over LEA ECX,[ECX] alignment; no repair required"
+    }
+  ],
+  "validation": {
+    "seed_verification": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "result": "passed;8original seed spans match disk"
+    },
+    "strict_build": {
+      "command": "./scripts/build.ps1",
+      "log": "local/particle_bounds_l12_build.log",
+      "status": "passed",
+      "ctests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ]
+    },
+    "focused_probe": {
+      "source": "local/particle_bounds_probe.cpp",
+      "body_relocations": "local/particle_bounds_probe_body.inc",
+      "build": "local/build_particle_bounds_probe.cmd",
+      "status": "passed",
+      "script_count": 4,
+      "original_source_comparisons": 7,
+      "precision_case": "1.0000000596046448 under all4 x87 RC modes; other CW bits unchanged; expected down/up firstfield3F800000/3F800001",
+      "coverage": [
+        "all destination bytes including untouched holes",
+        "current buffer cursor,extent,auxiliary",
+        "raw pool bump/live/peak",
+        "genuine singleton manager drain",
+        "ordinary bounds scan and ignored lines/parameters",
+        "blank-token first scan stop without BoundSphere",
+        "EOF before brace",
+        "EOF after coordinate values without closing brace"
+      ],
+      "native_redirects": [
+        "48direct calls to the same genuine pooled text,space counter,pool getter/return,and CRT providers",
+        "six literal pointer operands relocated to verified literal bytes; internal branches unchanged",
+        "original EH frame setup retained but never exercised"
+      ],
+      "result_log": "local/particle_bounds_probe_result.log",
+      "result": "case0 rc0 cursor119 pool-bump395 pool-live33 PASS\ncase0 rc1 cursor119 pool-bump395 pool-live33 PASS\ncase0 rc2 cursor119 pool-bump395 pool-live33 PASS\ncase0 rc3 cursor119 pool-bump395 pool-live33 PASS\ncase1 rc0 cursor28 pool-bump98 pool-live12 PASS\ncase2 rc0 cursor11 pool-bump44 pool-live4 PASS\ncase3 rc0 cursor39 pool-bump134 pool-live14 PASS\nPASS original AF4700/source: four actual-buffer/genuine-pool scripts, precision case under all4 x87 rounding modes; all destination bytes and cursor/pool counters agree, including blank/EOF scans, ignored params, closing brace and raw pool drain.",
+      "asserted_first_field_bits": {
+        "round_down": "3f800000",
+        "round_up": "3f800001"
+      }
+    },
+    "not_claimed": [
+      "native getter/allocation failure execution",
+      "FH3 fault/secondary-unwind execution",
+      "CRT locale and exact parser identity",
+      "caller-stack slot alias identity",
+      "binary register ABI/hardware SEH",
+      "gameplay"
+    ],
+    "sha256": {
+      "src/native_particle_bounds_reader.cpp": "21302d83b397bb57ebd92ac5963f92b610d1dbb97f5a9b3120fd5bb2e0daff40",
+      "include/bsp/native_particle_bounds_reader.hpp": "28ea15146856ad85c4d9701337357de328794881f0235da07581ab4c35101b93",
+      "local/particle_bounds_probe.cpp": "cb45fb5a2a8b75513cc8466b51573c8af4baa0dec92db7e3fe062c1dfece08e8",
+      "local/particle_bounds_probe_body.inc": "2587cc570ccdd054bbb6030f9711e4ee0ac4f843602a0cd3201899e645e8fb55",
+      "local/particle_bounds_probe_result.log": "8ec7b950c0dab8ed1a6429a60029a13dd33c5c61a8a6a69897ee463973f2281d",
+      "local/particle_bounds_l12_build.log": "18c3d9639428571f1e44b06b895db4426badbe7438e337b6454b672dc2b699dd"
+    },
+    "call_verification": {
+      "command": "python tools/verify_report_calls.py reports/native_particle_bounds_reader_orch4.json",
+      "function_owned_rows_checked": 52,
+      "failures": 0,
+      "raw_only_handler_tails": 1
+    }
+  }
+}
