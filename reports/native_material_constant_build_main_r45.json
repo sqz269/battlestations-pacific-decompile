@@ -1,0 +1,1837 @@
+{
+  "schema_version": 1,
+  "packet": "native_material_constant_build_main_r45",
+  "status": "corrected_builder_adopted_with_canonical_providers_strict_build_and_primary_fixture_verified",
+  "baseline_commit": "5e50ef182526deb04d8c13563b119b629e029f41",
+  "source_commit": "c3ca85125f1601e7e0872f48d404b8dcedc45f0e",
+  "files": [
+    "include/bsp/native_material_constant_build.hpp",
+    "src/native_material_constant_build.cpp",
+    "cmake/startup.cmake",
+    "docs/NATIVE_MATERIAL_CONSTANT_BUILD_R45.md",
+    "reports/native_material_constant_build_main_r45.json"
+  ],
+  "owned_original_address": "00b42350",
+  "scope": "Adopt only complete corrected material constant builder; no historical constant-build-leaves translation unit, no pass execution/application binding/renderer owner changes.",
+  "historical_provenance": {
+    "source_revision": "a6b2884f2ef01c3a0b636b0853dc66ec7855aeba",
+    "primary_source_commit": "7da09ce91112fde1f29644ad2da177b4915be447",
+    "primary_checkpoint": "J:/PROG/battlestations-pacific-decompile-orch5-20260911/local/checkpoints/7da09ce9/native-material-constant-build-wave",
+    "validation_json_sha256": "40e2d9986cf8c3e53cf84d715a1d9aa87081c7df36d8dde6639c4359e8e69b76",
+    "primary_validation_scope": "Combined-library original/source two-variant bank fixture; historical2 CTests and nonempty renderer/shadow/ABI/game limits retained as history only.",
+    "used_primary_artifacts_restored": 144,
+    "all_used_primary_artifact_hashes_verified": true,
+    "used_primary_bytes": 1209549,
+    "source_files": [
+      {
+        "path": "include/bsp/native_material_constant_build.hpp",
+        "primary_frozen_file": "files/01252-native_material_constant_build.hpp",
+        "primary_sha256": "9a8cfa55a0828f563aacdd19459170130df65e287a48e6f2038f05eb05e084d3",
+        "historical_git_blob_sha256": "9a8cfa55a0828f563aacdd19459170130df65e287a48e6f2038f05eb05e084d3",
+        "historical_matches_primary_after_EOL_normalization": true,
+        "current_worktree_sha256": "9a8cfa55a0828f563aacdd19459170130df65e287a48e6f2038f05eb05e084d3",
+        "current_bytes": 2687,
+        "current_header_exact_primary_bytes": true
+      },
+      {
+        "path": "src/native_material_constant_build.cpp",
+        "primary_frozen_file": "files/02782-native_material_constant_build.cpp",
+        "primary_sha256": "2a8b9737c6f5f7520a2e74744f421f74f29f2a6f32b7f46a55e7ed36597210fd",
+        "historical_git_blob_sha256": "2a8b9737c6f5f7520a2e74744f421f74f29f2a6f32b7f46a55e7ed36597210fd",
+        "historical_matches_primary_after_EOL_normalization": true,
+        "current_worktree_sha256": "3b530ba76b682e5f48cae531766f1c7e0c5a757afcf34f380c43e444598c2b9f",
+        "current_bytes": 22850,
+        "current_header_exact_primary_bytes": null
+      }
+    ],
+    "exclusions": "Neither old6336f486 nor old debug archive builder reused. Old leaf implementations/library snapshots not adopted.",
+    "fixture": "Exact primary corrected probe restored; adaptations restricted to canonical metadata include, local output paths and same-process physically resolved module identity. Fresh current compile/link driver retains primary fixed high image base and delay-loaded user32."
+  },
+  "public_contract": {
+    "header_unchanged": true,
+    "signature": "void build_native_material_constants_00b42350(void* actual_pass, void* actual_entry, void* actual_override, NativeMaterialConstantBuildContext&, NativeMaterialConstantBuildFrame&)",
+    "original_abi": "ECX actual pass, two stacked entry/unused override words, RET8. Original private stack aliases/incidental registers/native exception ABI are not reproduced by this source interface.",
+    "original_range": "00b42350..00b4340f",
+    "original_bytes": 4288,
+    "source_abi": "New C++ context/frame parameters; not drop-in original ABI.",
+    "shared_storage": "Borrow SAME bank0108EBF4/0108DBEC as pass execution, including live DWORD headers0108EBF0/0108DBE8 immediately before them. No private bank copies or synthetic profile tables in production.",
+    "publications": "Borrow current renderer F8D394/service F8D39C/shadow-target F8BBF0 cells, live three type cells010900FC..01090104, actual float constants and original numeric profile words.",
+    "lifetime": "Banks, header words, profiles, publications, threshold and concrete texture-binding contexts remain valid through invocation and retained failure. No owner, acquisition or child failure frame is acknowledged/disarmed/replaced.",
+    "frame": "One fresh persistent distinct NativeMaterialConstantBuildFrame per invocation; fresh->running->completed, or running->failed on ordinary C++ failure. reached_callsite retains last original callsite; existing writes/effects remain. Reusing nonfresh frame rejects before effects.",
+    "preconditions": "Raw extents/indices and live storage, supported reached current targets, clear DF and native FP environment. No broad null/extent fallback added."
+  },
+  "canonical_provider_reuse": [
+    {
+      "address": "00b17390",
+      "historical": "native_material_parameter_table_00b17390",
+      "current": "get_native_material_parameter_table_00b17390",
+      "header": "include/bsp/native_material_constant_metadata.hpp",
+      "adaptation": "Cast the same raw material pointer to const NativeMaterialStorage*. Returned table is void* const*; borrow its address without copying."
+    },
+    {
+      "address": "00b5b880",
+      "historical": "native_shader_constant_register_count_00b5b880",
+      "current": "get_native_shader_constant_register_count_00b5b880",
+      "header": "include/bsp/native_material_constant_metadata.hpp",
+      "adaptation": "Rename call only; same raw constant pointer and current +04 read."
+    },
+    {
+      "address": "00b47900",
+      "historical": "native_vertex_declaration_element_count_00b47900",
+      "current": "get_native_vertex_declaration_element_count_00b47900",
+      "header": "include/bsp/native_material_constant_metadata.hpp",
+      "adaptation": "Rename call only; same current +10 read."
+    },
+    {
+      "address": "00b75e50",
+      "historical": "native_optimized_animator_type_00b75e50",
+      "current": "get_native_optimized_animator_type_id_00b75e50",
+      "header": "include/bsp/native_material_constant_metadata.hpp",
+      "adaptation": "Pass *context.actual_types_010900fc by volatile reference, never a copied type word. Current source consumes that cell address in ECX."
+    },
+    {
+      "address": "00b8ff00",
+      "historical": "native_model_bone_count_00b8ff00",
+      "current": "get_native_model_bone_count_00b8ff00",
+      "header": "include/bsp/native_model_stream_queries.hpp",
+      "adaptation": "Rename only; preserve signed DWORD result and native JLE gate."
+    },
+    {
+      "address": "00b90620",
+      "historical": "native_model_bone_node_00b90620",
+      "current": "get_native_model_bone_node_00b90620",
+      "header": "include/bsp/native_model_stream_queries.hpp",
+      "adaptation": "Use the const-void-pointer, ignored-EDX-DWORD overload with 0u, preserving index in the native stack word. Avoid adding another body alongside the existing resource-instance overload."
+    },
+    {
+      "address": "00b61e10",
+      "historical": "native_logical_vertex_decode_record_00b61e10",
+      "current": "get_native_stream_decode_record_00b61e10",
+      "header": "include/bsp/native_model_stream_queries.hpp",
+      "adaptation": "Use 0u for ignored EDX, preserve borrowed const void* result and wrapping index*32 address arithmetic."
+    },
+    {
+      "address": "00b7aab0",
+      "historical": "get_raw_light_shadow_00b7aab0",
+      "current": "get_native_light_shadow_map_owner_00b7aab0",
+      "header": "include/bsp/native_material_constant_metadata.hpp",
+      "adaptation": "Reuse in gather and constant builder. Same raw light+174 return; do not adopt a duplicate gather leaf."
+    },
+    {
+      "address": "00b782d0",
+      "historical": "native_optimized_animator_has_type_00b782d0",
+      "current": "native_optimized_animator_has_type_00b782d0",
+      "header": "include/bsp/native_material_constant_metadata.hpp",
+      "available_since": "0fe3a50a406f740b355d433c180c39ae0a6dfd97",
+      "adaptation": "Reuse parent-integrated exact raw leaf; three contiguous live type cells in EDX, original stacked type, AL result and RET4. No new leaves translation unit."
+    }
+  ],
+  "additional_current_providers": [
+    {
+      "address": "00c302f0",
+      "provider": "native_texture_source_current_texture_00c302f0",
+      "module": "native_material_texture_source_constants"
+    },
+    {
+      "address": "00bbcc40",
+      "provider": "native_caustics_source_constants_00bbcc40",
+      "module": "native_material_texture_source_constants"
+    },
+    {
+      "address": "00bbcbd0",
+      "provider": "native_shore_source_constants_00bbcbd0",
+      "module": "native_material_texture_source_constants"
+    },
+    {
+      "address": "00a8fcf0",
+      "provider": "get_raw_shadow_depth_texture_00a8fcf0",
+      "module": "native_system_constant_gather"
+    },
+    {
+      "address": "00b48ce0",
+      "provider": "native_logical_vertex_stream_get_declaration_00b48ce0",
+      "module": "native_renderer_binding_getters"
+    }
+  ],
+  "source_adaptation": {
+    "changes": "Replace historical leaves include with current metadata/model-stream headers; eight current getter-call name/signature adaptations. B782D0 existing symbol unchanged.",
+    "parameter_table": "Borrow returned table ADDRESS as void* const*, raw parameter cursor is the same address; cast same material pointer to const NativeMaterialStorage*. No copy or pointer-value dereference added.",
+    "type_cell": "get_native_optimized_animator_type_id_00b75e50(*c.actual_types_010900fc) binds volatile reference to same cell; no cached type argument.",
+    "stream_queries": "0u ignored EDX arguments retain index stack placement; decode result const void* remains borrowed same address.",
+    "library_registration": "One cmake/startup.cmake source line; short CMake lease released before build.",
+    "source_diff": "local/material_constant_build_r45/source_adaptation.diff",
+    "source_diff_sha256": "09f494d14194a4df598ef6b276d26c96e9a868d51b0ea76e938299ff14348f1e",
+    "fixture_diff": "local/material_constant_build_r45/fixture_adaptation.diff",
+    "fixture_diff_sha256": "18be533379267ff704c5f89d60bfbb727befa5b7a8e257586fc205780ac383d9"
+  },
+  "retained_native_schedules": [
+    "Texture binding/source and section pointers reload at the original points; production writer receives SAME live preceding bank headers.",
+    "Parameter matrix width2 uses bit scratch/ordered copies; widths3/4 retain individual FLD/FSTP crossings. Raw parameter/optimized palette copies retain std::memmove overlap behavior.",
+    "Animator original profile captured before live B75E50 cell read; supported+0C then resolves B782D0. No owner profile recapture introduced.",
+    "Decode LEA initial step runs once; backedge skips it. Source step stays1, including explicit decoded restore. Signed per-stream clamp and unsigned budget/remaining behavior retained.",
+    "B429DC..B429E7 live one read occurs with decode.y still in ST0, before destination FSTP; copy_decode_second preserves that schedule.",
+    "World widths/refresh flag are captured before refresh callbacks; pixel-world width intentionally comes from current VS+3E.",
+    "Renderer profile captured before service B0D130 or shadow A8FCF0 calls; original owner/target reload schedule retained.",
+    "Unsigned light count FILD/sign/bias then float spill/reload and zero/store order retained; four-light rows preserve ordered raw reads/writes."
+  ],
+  "supported_dispatch": [
+    {
+      "profile": "00d64478",
+      "slots": {
+        "+2C": "00c302f0",
+        "+30": "00bbcc40"
+      }
+    },
+    {
+      "profile": "00d644b4",
+      "slots": {
+        "+2C": "00c302f0",
+        "+30": "00bbcbd0"
+      }
+    },
+    {
+      "profile": "00d5f0a8",
+      "slots": {
+        "+130": "00b24710"
+      }
+    },
+    {
+      "profile": "00d62eb0",
+      "slots": {
+        "+0C": "00b782d0"
+      }
+    },
+    {
+      "profile": "00d61d6c",
+      "slots": {
+        "+24": "00b48ce0"
+      }
+    },
+    {
+      "profile": "00d5b5d8",
+      "slots": {
+        "+08": "00a8fcf0"
+      }
+    }
+  ],
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "read_only": true,
+    "pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "live_function_count": 64147,
+    "spans": [
+      {
+        "kind": "function",
+        "address": "00b42350",
+        "length": 4288,
+        "end_exclusive": "00b43410",
+        "pe_offset": 7611216,
+        "sha256": "5b3d63fcdd42f9f5bb9cd7a02e08e3531472e87aa7409125153c83804f516091",
+        "hex": "81eca400000053558bd933ed396b6c5657895c2420765e8d735c8d9b000000008b068b48048b018b502c8b3d94d3f800ffd28b178b9230010000508b068b08518bcfffd28b068b48048b43748b118b523068e8db080168f0eb0801508b4370508b8424c800000050ffd283c50183c6043b6b6c72ab8bb424b80000008b46048b4820e8b94ffdff8b4e108b91980100008b8880000000895424108d14883bc289442418894424140f84970200008d49008b4424148b008b4c24108b7c881483ffff0f8eb8010000807810000f84900100008b43708b507c8b7078c1e20503d633ed3bf274298bcee8349401003bc775098bcee8399401008be88b43708b487c83c078c1e105030883c6203bf175d78b5424148b028b40088bcd83e9020f84d200000083e901747783e9010f854f010000d900c1e70481c7f4eb08018bcfd919d94010d95904d94020d95908d94030d9590cd94004d95910d94014d95914d94024d95918d94034d9591cd94008d95920d94018d95924d94028d95928d94038d9592cd9400cd95930d9401cd95934d9402cd95938d9403cd9593ce9e1000000d900c1e70481c7f4eb08018bcfd919d94010d95904d94020d95908d94030d9590cd94004d95910d94014d95914d94024d95918d94034d9591cd94008d95920d94018d95924d94028d95928d94038d9592ce98b000000f30f1000f30f11442434f30f104010f30f11442438f30f104020f30f1144243cf30f104030f30f11442440f30f104004f30f11442444f30f104014f30f11442448f30f104024c1e704f30f1144244cf30f10403481c7f4eb0801b9080000008d742434f30f11442450f3a5eb1e8b480c8b500803c903c951c1e7045281c7f4eb080157e8b4500b0083c40c8b4424148b008b4c24108b4c884c83f9ff0f8e87000000c1e10481c1ecdb08018078100074638b4008d900d919d94010d95904d94020d95908d94030d9590cd94004d95910d94014d95914d94024d95918d94034d9591cd94008d95920d94018d95924d94028d95928d94038d9592cd9400cd95930d9401cd95934d9402cd95938d9403cd9593ceb158b500c8b400803d203d2525051e816500b0083c40c8b4424188b4c24148b908000000083c1048d04903bc8894c24140f8573fdffff8bb424b80000008b4b70807930ff0f84c40000008b4e0c894c2418e853d804008b53700fb67a3033ed85c0894424100f8ea3000000c1e70481c7fceb0801eb038d49008b4c241855e846df04008bf0f6465c0275078bcee887b40200d986f000000083c501d95ff883c7303b6c2410d98600010000d95fccd98610010000d95fd0d98620010000d95fd4d986f4000000d95fd8d98604010000d95fdcd98614010000d95fe0d98624010000d95fe4d986f8000000d95fe8d98608010000d95fecd98618010000d95ff0d98628010000d95ff40f8c6bffffff8b43708a40323cff0f844d0100008b8c24b80000008b790c0fb6f08b873001000085c08944241874528b0089442410e8b73603008b6c2418508b4424148b500c8bcdffd284c074338bbf9001000085ff0f84050100008b45348b40088d0c40c1e10451c1e6045781c6f4eb080156e8a84e0b0083c40ce9e00000008b878801000085c08b53700fb672320f8ecb000000c1e60433ed81c6fceb080189442424eb0a8da424000000008d49008b87840100008b0428f6405c028944241075078bc8e846b302008b8f840100008d5429208bcf89542418e891b802008b4c2410508d4424385081c1f0000000518b4c24248d94248000000052e8bf108dff8bc8e8b8108dffd900d95ef883c630d9401083c560836c242401d95eccd94020d95ed0d94030d95ed4d94004d95ed8d94014d95edcd94024d95ee0d94034d95ee4d94008d95ee8d94018d95eecd94028d95ef0d94038d95ef40f8550ffffff8b4370807820ff0f57c00f84ac0100000fb650200fb648218b8424b800000089542428894c242c2bca8b501083ba98010000028b53148b92c4000000894c242474058b5220eb038b52248b400483784c0089542414c7442418000000000f8659010000c74424103c000000eb078d49008b4c2424837c2414000f843d01000085c90f84350100008b4c24108b1c01837b50008b138b74242c8b42240f9544241f2b7424288bcbffd08bc8e8914f00003bc67d0689442430eb068bc6897424300f57c033ed85c00f8ec90000008b54242c8b4c24288b442430f30f100d4ca2d7008bf18bfac1e704c1e60403c881c7fceb080181c6fceb080103d0894c24288954242c8d4d01807c241f00744b558bcbe83cf40100d900d95ef80f57c0d94004f30f100d4ca2d700d95efcb901000000d94008d91ed9400cd95e04d94010d95ff8d94014d95ffcd94018d91fd9401c8b442430d95f04eb26f30f114ef8f30f114efcf30f110ef30f114e04f30f1147f8f30f1147fcf30f1107f30f114704294c2414294c242403e983c61083c7103be80f8c70ffffff8b4c24188b9424b80000008b420483442410048b5c242083c1013b484c894c24180f82b4feffff8b4370807808ff8bac24b80000000f84d50100008b750cf6465c020fb6783e750a8bcee8ccb002000f57c08b43700fb640088bcf83e9020f842601000083e9010f84a500000083e9010f859a010000d986f0000000c1e00405f4eb0801d918d98600010000d95804d98610010000d95808d98620010000d9580cd986f4000000d95810d98604010000d95814d98614010000d95818d98624010000d9581cd986f8000000d95820d98608010000d95824d98618010000d95828d98628010000d9582cd986fc000000d95830d9860c010000d95834d9861c010000d95838d9862c010000d9583ce9fe000000d986f0000000c1e00405f4eb0801d918d98600010000d95804d98610010000d95808d98620010000d9580cd986f4000000d95810d98604010000d95814d98614010000d95818d98624010000d9581cd986f8000000d95820d98608010000d95824d98618010000d95828d98628010000d9582ce986000000f30f108ef0000000f30f114c2434f30f108e00010000f30f114c2438f30f108e10010000f30f114c243cf30f108e20010000f30f114c2440f30f108ef4000000f30f114c2444f30f108e04010000f30f114c2448f30f108e140100008bf8f30f114c244cf30f108e24010000c1e70481c7f4eb0801b9080000008d742434f30f114c2450f3a58b4b74807908ff0f84d80100008b750cf6465c028b53700fb67a3e750a8bcee8e7ae02000f57c08b43740fb640088bcf83e9020f842601000083e9010f84a500000083e9010f859a010000d986f0000000c1e00405ecdb0801d918d98600010000d95804d98610010000d95808d98620010000d9580cd986f4000000d95810d98604010000d95814d98614010000d95818d98624010000d9581cd986f8000000d95820d98608010000d95824d98618010000d95828d98628010000d9582cd986fc000000d95830d9860c010000d95834d9861c010000d95838d9862c010000d9583ce9fe000000d986f0000000c1e00405ecdb0801d918d98600010000d95804d98610010000d95808d98620010000d9580cd986f4000000d95810d98604010000d95814d98614010000d95818d98624010000d9581cd986f8000000d95820d98608010000d95824d98618010000d95828d98628010000d9582ce986000000f30f108ef0000000f30f114c2434f30f108e00010000f30f114c2438f30f108e10010000f30f114c243cf30f108e20010000f30f114c2440f30f108ef4000000f30f114c2444f30f108e04010000f30f114c2448f30f108e140100008bf8f30f114c244cf30f108e24010000c1e70481c7ecdb0801b9080000008d742434f30f114c2450f3a58b4b708a41333cff7423f30f104d180fb6c0c1e00405f4eb0801f30f1108f30f114004f30f114008f30f11400c8b53748a42333cff7423f30f104d180fb6c0c1e00405ecdb0801f30f1108f30f114004f30f114008f30f11400c8b43748a40343cff744bd945008b4d08d95c242083ec08d90538a2d7000fb6f0d95c2404d9442428d91c24e89c0803000f57c0d95c2434d9442434c1e60481c6ecdb0801d91ef30f114604f30f114608f30f11460c8b4b70807909ff0f84570100008bc18b4d0c0fb6703f0fb67809e8b8b102008bce83e9020f84cf00000083e901747783e9010f852c010000d900c1e70481c7f4eb08018bcfd919d94010d95904d94020d95908d94030d9590cd94004d95910d94014d95914d94024d95918d94034d9591cd94008d95920d94018d95924d94028d95928d94038d9592cd9400cd95930d9401cd95934d9402cd95938d9403cd9593ce9be000000d900c1e70481c7f4eb08018bcfd919d94010d95904d94020d95908d94030d9590cd94004d95910d94014d95914d94024d95918d94034d9591cd94008d95920d94018d95924d94028d95928d94038d9592ceb6bf30f1000f30f11442434f30f104010f30f11442438f30f104020f30f1144243cf30f104030f30f11442440f30f104004f30f11442444f30f104014f30f11442448f30f104024c1e704f30f1144244cf30f10403481c7f4eb0801b9080000008d742434f30f11442450f3a58b53748a42373cff742f8b4d048b49206a000fb6f0e87949fdff8b10c1e60481c6ecdb080189168b4804894e048b50088956088b400c89460c8b4b708a41373cff742f8b55048b4a206a000fb6f0e84049fdff8b08c1e60481c6f4eb0801890e8b50048956048b4808894e088b500c89560c837b7cff74228b3594d3f8008b0d9cd3f8008b3ee848a0fcff8b9730010000508b437c508bceffd2837b78ff74638b450c8b80700100008b481c8b3183c0183bf17505e8fc350b008b4e08e89179030085c074228b108b3594d3f8008b3e8bc88b4208ffd08b4b788b973001000050518bceffd2eb1b8b93840000008b0d94d3f8008b018b8030010000528b537852ffd08b4d0ce8e8aa02008b4b708a493580f9ff0f848c0200008b680483fd047c05bd040000008bd585d289542420db4424207d06d8057839ce000f57c0d95c2434d94424340fb6c9c1e10481c1f4eb0801f30f114104f30f114108d919f30f11410c8b4b700fb6713681feff0000000f843002000033d283fd040f8cb30100008bce8d7dfdc1e1048d5fff81c1fceb0801c1eb028d74de08897424208d9b000000008b308b3496f30f1086ec010000f30f108ef0010000f30f1096f4010000f30f109ef8010000f30f1141f8f30f1149fcf30f1111f30f1159048b9e840100008959088b9e8801000089590c8b9e8c01000089591081c6840100008b760c8971148b308b749604f30f1086ec010000f30f108ef0010000f30f1096f4010000f30f109ef8010000f30f114118f30f11491cf30f115120f30f1159248b9e840100008959288b9e8801000089592c8b9e8c01000089593081c6840100008b760c8971348b308b749608f30f1086ec010000f30f108ef0010000f30f1096f4010000f30f109ef8010000f30f114138f30f11493cf30f115140f30f1159448b9e840100008959488b9e8801000089594c8b9e8c01000081c6840100008959508b760c8971548b308b74960cf30f1086ec010000f30f108ef0010000f30f1096f4010000f30f109ef8010000f30f114158f30f11495cf30f115160f30f1159648b9e8401000081c6840100008959688b5e0489596c8b5e088959708b760c89717483c20481c1800000003bd70f8273feffff8b7424203bd5736ec1e60481c6fceb08018bce8b308b3496f30f1086ec010000f30f108ef0010000f30f1096f4010000f30f109ef8010000f30f1141f8f30f1149fcf30f1111f30f1159048bbe8401000081c6840100008979088b7e0489790c8b7e088979108b760c89711483c20183c1203bd5729d5f5e5d5b81c4a4000000c20800",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [
+          {
+            "address": "00b42380",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00b42392",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00b423b8",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00b423d2",
+            "hex": "e8b94ffdff",
+            "text": "call 0xb17390"
+          },
+          {
+            "address": "00b42437",
+            "hex": "e834940100",
+            "text": "call 0xb5b870"
+          },
+          {
+            "address": "00b42442",
+            "hex": "e839940100",
+            "text": "call 0xb5b880"
+          },
+          {
+            "address": "00b425c7",
+            "hex": "e8b4500b00",
+            "text": "call 0xbf7680"
+          },
+          {
+            "address": "00b42665",
+            "hex": "e816500b00",
+            "text": "call 0xbf7680"
+          },
+          {
+            "address": "00b426a8",
+            "hex": "e853d80400",
+            "text": "call 0xb8ff00"
+          },
+          {
+            "address": "00b426d5",
+            "hex": "e846df0400",
+            "text": "call 0xb90620"
+          },
+          {
+            "address": "00b426e4",
+            "hex": "e887b40200",
+            "text": "call 0xb6db70"
+          },
+          {
+            "address": "00b42794",
+            "hex": "e8b7360300",
+            "text": "call 0xb75e50"
+          },
+          {
+            "address": "00b427a7",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00b427d3",
+            "hex": "e8a84e0b00",
+            "text": "call 0xbf7680"
+          },
+          {
+            "address": "00b42825",
+            "hex": "e846b30200",
+            "text": "call 0xb6db70"
+          },
+          {
+            "address": "00b4283a",
+            "hex": "e891b80200",
+            "text": "call 0xb6e0d0"
+          },
+          {
+            "address": "00b4285c",
+            "hex": "e8bf108dff",
+            "text": "call 0x413920"
+          },
+          {
+            "address": "00b42863",
+            "hex": "e8b8108dff",
+            "text": "call 0x413920"
+          },
+          {
+            "address": "00b42966",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00b4296a",
+            "hex": "e8914f0000",
+            "text": "call 0xb47900"
+          },
+          {
+            "address": "00b429cf",
+            "hex": "e83cf40100",
+            "text": "call 0xb61e10"
+          },
+          {
+            "address": "00b42a9f",
+            "hex": "e8ccb00200",
+            "text": "call 0xb6db70"
+          },
+          {
+            "address": "00b42c84",
+            "hex": "e8e7ae0200",
+            "text": "call 0xb6db70"
+          },
+          {
+            "address": "00b42ecf",
+            "hex": "e89c080300",
+            "text": "call 0xb73770"
+          },
+          {
+            "address": "00b42f13",
+            "hex": "e8b8b10200",
+            "text": "call 0xb6e0d0"
+          },
+          {
+            "address": "00b43072",
+            "hex": "e87949fdff",
+            "text": "call 0xb179f0"
+          },
+          {
+            "address": "00b430ab",
+            "hex": "e84049fdff",
+            "text": "call 0xb179f0"
+          },
+          {
+            "address": "00b430e3",
+            "hex": "e848a0fcff",
+            "text": "call 0xb0d130"
+          },
+          {
+            "address": "00b430f5",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00b43112",
+            "hex": "e8fc350b00",
+            "text": "call 0xbf6713"
+          },
+          {
+            "address": "00b4311a",
+            "hex": "e891790300",
+            "text": "call 0xb7aab0"
+          },
+          {
+            "address": "00b43132",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00b43141",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00b4315e",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00b43163",
+            "hex": "e8e8aa0200",
+            "text": "call 0xb6dc50"
+          }
+        ],
+        "listing_missing_instruction_starts": [
+          "00b426cd",
+          "00b42806",
+          "00b4280d",
+          "00b4292d"
+        ]
+      },
+      {
+        "kind": "function",
+        "address": "00b17390",
+        "length": 7,
+        "end_exclusive": "00b17397",
+        "pe_offset": 7435152,
+        "sha256": "a369532a26c5c1a580d2c2cd4846bfb741c2c3df0825ee6005ee1643bbc68e41",
+        "hex": "8d8180000000c3",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00b5b880",
+        "length": 4,
+        "end_exclusive": "00b5b884",
+        "pe_offset": 7714944,
+        "sha256": "f7e0208f5e988ae39c7a45dfddbd12921d02f9c3deb5695d4c534c8ab0ccdb0f",
+        "hex": "8b4104c3",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00b8ff00",
+        "length": 7,
+        "end_exclusive": "00b8ff07",
+        "pe_offset": 7929600,
+        "sha256": "b679e47759c8f774f8f994e01d6997a3e6a9b94d3a2d95948f0fc1e8801ead7a",
+        "hex": "8b8188010000c3",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00b90620",
+        "length": 16,
+        "end_exclusive": "00b90630",
+        "pe_offset": 7931424,
+        "sha256": "71fa8e8ee03bdc5fd363b5475d813ca3dedcbfd61154227318a711eb27bfd78e",
+        "hex": "8b81840100008b4c24048b0488c20400",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00b75e50",
+        "length": 6,
+        "end_exclusive": "00b75e56",
+        "pe_offset": 7822928,
+        "sha256": "2b4f1290dd630ea02869f8dc9c45a88e27460c5f4a254aac68a48f979e84917c",
+        "hex": "a1fc000901c3",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00b47900",
+        "length": 4,
+        "end_exclusive": "00b47904",
+        "pe_offset": 7633152,
+        "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+        "hex": "8b4110c3",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00b61e10",
+        "length": 13,
+        "end_exclusive": "00b61e1d",
+        "pe_offset": 7740944,
+        "sha256": "5fe3cbfe6f2e7862e70bd7a669c43c07281175d6aa8cb4556254679bcc348c4a",
+        "hex": "8b442404c1e005034150c20400",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00b782d0",
+        "length": 40,
+        "end_exclusive": "00b782f8",
+        "pe_offset": 7832272,
+        "sha256": "463e918e1963f616d2f5130d3652aebbdd8b6eacc1b4fe1c72186bea942a1576",
+        "hex": "8b4c2404b8fc0009018da424000000003908740f83c0043d0801090175f232c0c20400b001c20400",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00c302f0",
+        "length": 19,
+        "end_exclusive": "00c30303",
+        "pe_offset": 8585968,
+        "sha256": "1c32489e590cada7ddfc0f1e864d830c29d5be4d29b2f72a68cd503d115e13fd",
+        "hex": "83791400740a8b41088b49108b0481c333c0c3",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00bbcc40",
+        "length": 103,
+        "end_exclusive": "00bbcca7",
+        "pe_offset": 8113216,
+        "sha256": "85f81b9659df77033306c5a01d0fd5b253952aa28b113e7f8f67520c5d57c2b6",
+        "hex": "8b5424088a421e3cff568b7424147428f30f1041300fb6c0c1e0048d4430040f28c8f30f1140040f57c0f30f1108f30f114008f30f11400c8a521f80faff74238d41200fb6ca8b10c1e1048d4c310489118b50048951048b50088951088b400c89410c5ec21400",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00bbcbd0",
+        "length": 3,
+        "end_exclusive": "00bbcbd3",
+        "pe_offset": 8113104,
+        "sha256": "596494f50350462943d59d32bfc675a2c3e2e9a6aa0d0606422e3cbbffd86c6b",
+        "hex": "c21400",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00b5b870",
+        "length": 3,
+        "end_exclusive": "00b5b873",
+        "pe_offset": 7714928,
+        "sha256": "19d200194d49b34530548575f37a1bb4203ee60f18d42f0084e86b7a8c899faa",
+        "hex": "8b01c3",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00b6e0d0",
+        "length": 58,
+        "end_exclusive": "00b6e10a",
+        "pe_offset": 7790800,
+        "sha256": "60c75eba2be14db5ef3fa77834b5811c9e2ecc4a851a6913cb47536d043c63a6",
+        "hex": "83ec40568bf18b465ca8087525a8027505e88afaffff8d96f00000008d4c2404e83b5affff508d4e60e8f2538aff834e5c088d46605e83c440c3",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [
+          {
+            "address": "00b6e0e1",
+            "hex": "e88afaffff",
+            "text": "call 0xb6db70"
+          },
+          {
+            "address": "00b6e0f0",
+            "hex": "e83b5affff",
+            "text": "call 0xb63b30"
+          },
+          {
+            "address": "00b6e0f9",
+            "hex": "e8f2538aff",
+            "text": "call 0x4134f0"
+          }
+        ],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00b73770",
+        "length": 139,
+        "end_exclusive": "00b737fb",
+        "pe_offset": 7812976,
+        "sha256": "fdc084707cea40aba2b2da3f0a61755e0b36afb3c2db9635cea0cb3955123954",
+        "hex": "518b415085c0740bc1e004f30f10440804eb08f30f1005dc77ce00f30f110424d90424d9c0d84c240cd95c240cd9442408d944240cd9c0deebd9c9dee2d9e8d9c0def2d9cadec9dee9d95c240cd944240cd9eedff1ddd876110f57c0f30f1144240cd944240c59c20800f30f1044240cf30f100d4ca2d7000f2fc176dff30f114c240cd944240c59c20800",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00b179f0",
+        "length": 6,
+        "end_exclusive": "00b179f6",
+        "pe_offset": 7436784,
+        "sha256": "18126bf420a5b30e2a575d82cb5f7e00eaa3a07965af17c68b8d59713f47b4e3",
+        "hex": "8d4138c20400",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00b6dc50",
+        "length": 7,
+        "end_exclusive": "00b6dc57",
+        "pe_offset": 7789648,
+        "sha256": "d8ce96a6373a2f955f031e90e9e04c3ff42d3ace920d7c0be0c50017e1650c9a",
+        "hex": "8d8164010000c3",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "004134f0",
+        "length": 103,
+        "end_exclusive": "00413557",
+        "pe_offset": 79088,
+        "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+        "hex": "8bc18b4c2404d901d918d94104d95804d94108d95808d9410cd9580cd94110d95810d94114d95814d94118d95818d9411cd9581cd94120d95820d94124d95824d94128d95828d9412cd9582cd94130d95830d94134d95834d94138d95838d9413cd9583cc20400",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00413920",
+        "length": 874,
+        "end_exclusive": "00413c8a",
+        "pe_offset": 80160,
+        "sha256": "a2ae101c6235ce95cd7cffdc28deb5797b9d844dbc809e729db5ac5b134e29d9",
+        "hex": "83ec408b542448d942108b442444d95c2430d94104d95c243cd902d95c2428d901d95c242cd94220d95c2434d94108d95c2424d94230d95c2438d9410cd95c2448d944243cd9c0d9442430d9c0decad944242cd9c0d9442428d9c0decad9ccdec1d9442424d9c0d84c2434dec2d9442448d84c2438dec2d9c9d918d94214d95c2408d94204d95c243cd94224d95c240cd94234d95c2410d944243cd8cad9442408d8cedec1d944240cd8cadec1d9442410d84c2448dec1d95804d94218d95c2418d94208d95c2414d94228d95c241cd94238d95c2420d9442414d8cad9442418d8cedec1d944241cd8cadec1d9442420d84c2448dec1d95808d9421cd95c2428d9420cd95c2424d9422cd95c242cd9423cd95c2430d9442424decad9442428decdd9c9dec4d84c242cdec3d9442430d84c2448dec3d9cad9580cd94114d95c2448d94110d95c2404d94118d95c2444d9411cd91c24d9442404d9c0d8cad9442448d8ccdec1d9442444d9442434d9c0decad9cadec1d90424d9442438d9c0decad9cadec1d95810d944243cd9c0deccd9442448d84c2408dec4d9442444d84c240cdec4d90424d84c2410dec4d9cbd95814d9442404d84c2414d9442448d84c2418dec1d9442444d84c241cdec1d90424d84c2420dec1d95818d9442404d84c2424d9442448d84c2428dec1d9442444d84c242cdec1d90424d84c2430dec1d9581cd94124d95c2444d94120d95c2448d94128d91c24d9412cd95c2404d9442448d8ccd9442444d8cedec1d90424d8cbdec1d9442404d8cadec1d95820d9442448d8cbd9442444d84c2408dec1d90424d84c240cdec1d9442404d84c2410dec1d95824d9442448d84c2414d9442444d84c2418dec1d90424d84c241cdec1d9442404d84c2420dec1d95828d9442448d84c2424d9442444d84c2428dec1d90424d84c242cdec1d9442404d84c2430dec1d9582cd94134d95c2444d94130d95c2448d94138d95c243cd9413cd95c2438d9442448d9c0decdd9442444d9c0decfd9cddec6d944243cd9c0deccd9cedec3d9442438d9c0decbd9cbdec2d9c9d95830d9c0decbd9c3d84c2408dec3d9c4d84c240cdec3d9c1d84c2410dec3d9cad95834d9c1d84c2414d9c3d84c2418dec1d9c4d84c241cdec1d9c1d84c2420dec1d95838d9442424decad9442428decbd9c9dec2d944242cdecbd9c9dec2d84c2430dec1d9583c83c440c20800",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00b63b30",
+        "length": 531,
+        "end_exclusive": "00b63d43",
+        "pe_offset": 7748400,
+        "sha256": "619b87a228444a7f6e3e78d8d26e1cbd2851baa6bbcbc3362ea9b39c2ff06d5c",
+        "hex": "83ec34568bc157b9100000008bf28bf8f3a5d94204d95c2408d94208d95c2410d9442408f30f104220f30f11442424f30f104224f30f11442420f30f104228f30f11442428f30f104210f30f11442418f30f104214f30f11442414f30f104218f30f1144241cf30f1002f30f1144240cd944240cf30f1144242cd9442410d9c1decad9c9d95c2410d9442410d9c2decbd9cad95c2410d9442410dec2dcc8d95c2410d8442410d95c2430d9442414d9442418d944241cd9c1decad9c9d95c241cd944241cd9c2decbd9cad95c241cd944241cdec2dcc8d95c241cd844241cd95c2434d9442420d9442424d9442428d9c1decad9c9d95c2428d9442428d9c2decbd9cad95c2428d9442428dec2dcc8d95c2428d8442428d95c2438d944242cd9442430f30f100508a2d700d9c00f28c8defa0f28d05f5ed9c9d918d94204d8f1d95810d87a08d95820d94210d944242cd9c0defad9c9d95804d94214d8f1d95814d87a18d95824d94220d9442430d9c0defad9c9d95808d94224d8f1d95818d87a28d95c2424d9442424d95028d94034d95c2420d94030d95c2424d94038d95c241cd9442424d9c0d808d9442420d9c0d84810dec2d944241cd9c0d84820dec3d9cad95c2428d9c2f30f5c4c2428d84804d9c1d84814dec1d9c2d84824dec1d95c242cd94008f30f5c54242cdecbd84818f30f114830f30f115034dec2decadec1d95c2430f30f5c442430f30f11403883c434c3",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00b6db70",
+        "length": 80,
+        "end_exclusive": "00b6dbc0",
+        "pe_offset": 7789424,
+        "sha256": "bfec40ef2c2a4ca1f4b6fc6c2e4da19990fbd0e44f71100c3447570cc2e51679",
+        "hex": "568bf1578b7e3085ff742cf6475c0275078bcfe8e8ffffff81c7f0000000578d96b00000008d8ef0000000e830f9ffff834e5c025f5ec38d86b0000000508d8ef0000000e837598aff834e5c025f5ec3",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [
+          {
+            "address": "00b6db83",
+            "hex": "e8e8ffffff",
+            "text": "call 0xb6db70"
+          },
+          {
+            "address": "00b6db9b",
+            "hex": "e830f9ffff",
+            "text": "call 0xb6d4d0"
+          },
+          {
+            "address": "00b6dbb4",
+            "hex": "e837598aff",
+            "text": "call 0x4134f0"
+          }
+        ],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00b6d4d0",
+        "length": 339,
+        "end_exclusive": "00b6d623",
+        "pe_offset": 7787728,
+        "sha256": "a046a9c272194648d838b69a1246fb01f53ecb02857485f0c6de279e5bf20a49",
+        "hex": "8b442404d902d8080f57c0d94204d84810dec1d94020d84a08dec1d919d94014d84a04d94004d80adec1d94208d84824dec1d95904d94018d84a04d94008d80adec1d94208d84828f30f11410cdec1d95908d94214d84810d900d84a10dec1d94218d84820dec1d95910d94004d84a10d94214d84814dec1d94218d84824dec1d95914d94008d84a10d94214d84818dec1d94218d84828f30f11411cdec1d95918d94220d808d94224d84810dec1d94020d84a28dec1d95920d94224d84814d94220d84804dec1d94228d84824dec1d95924d94224d84818d94220d84808dec1d94228d84828f30f11412cf30f10054ca2d700dec1d95928d94234d84810d900d84a30dec1d94238d84820dec1d84030d95930d94004d84a30d94234d84814dec1d94238d84824dec1d84034d95934d94008d84a30d94234d84818dec1d94238d84828dec1d84038f30f11413cd95938c20400",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00b0d130",
+        "length": 8,
+        "end_exclusive": "00b0d138",
+        "pe_offset": 7393584,
+        "sha256": "82da3903d5fa0bc5719f3bdb47ac7ba8a53ba92f30ec9d9b9375a00f237e00ed",
+        "hex": "8b493ce9d8f90300",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00b4cb10",
+        "length": 4,
+        "end_exclusive": "00b4cb14",
+        "pe_offset": 7654160,
+        "sha256": "916ae10aa3fd76a4d5b25b2fb66e9df0fd04957c7ab10930268d1ed7808be689",
+        "hex": "8b4108c3",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00a8fcf0",
+        "length": 31,
+        "end_exclusive": "00a8fd0f",
+        "pe_offset": 6880496,
+        "sha256": "8db6438215b0fbf846958ff81821f76eaa1728c9406c9902d6155bd2d5786433",
+        "hex": "a1f0bbf80080780c00740d80780d0074078bc8e9a80000008b8184030000c3",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00a8fdb0",
+        "length": 4,
+        "end_exclusive": "00a8fdb4",
+        "pe_offset": 6880688,
+        "sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941",
+        "hex": "8b4118c3",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "function",
+        "address": "00b7aab0",
+        "length": 7,
+        "end_exclusive": "00b7aab7",
+        "pe_offset": 7842480,
+        "sha256": "c9b009cece926c8eb8e7682d20c7fdd9188da262bdb2e3340da5111892a1350b",
+        "hex": "8b8174010000c3",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true,
+        "calls": [],
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "kind": "context",
+        "address": "00d5f0a8",
+        "length": 316,
+        "end_exclusive": "00d5f1e4",
+        "pe_offset": 9826472,
+        "sha256": "bd602fc1258e6ea0848d349d6bc04a86bd86246765fdb62f12b739bf9ac0c92f",
+        "hex": "f039b300b0aeb2003014b20000b2b200b0f4b200a0f4b2005084b2006084b20010feb100207cb200f07cb20020feb10060ffb100a064b200e017b3001029b30010f7b200c0f4b200b018b30030feb10040feb1007085b20050feb100c087b200b088b200b019b300c01ab3005022b300b015b200403db200c015b200e014b200101fb200d015b20070a0b20080a3b200a0a5b200a0a9b200704eb200c001b200a085b2007067b200d0feb1007084b2008084b200d090b20070b2b2003092b200c08ab200008db2007092b200606cb200106ab2003093b2004074b2008077b200203fb200f04fb200103ab300c0ffb1006019b200e0feb100c01eb20010ffb10020ffb10050ffb10040ffb100d001b200503cb2001002b2004017b200908ab200d04db200204eb200c04db2009000b2001047b2004048b200004bb200",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true
+      },
+      {
+        "kind": "context",
+        "address": "00d61d6c",
+        "length": 52,
+        "end_exclusive": "00d61da0",
+        "pe_offset": 9837932,
+        "sha256": "384e1478cf11d2935eb491ad4f9c0bb1de1808da1189228426b27a7a38a04c88",
+        "hex": "e030bd0010bfb400408db400a0aab4008099b400809ab400308db400c08cb400d08cb400e08cb400108db400f08cb400b0aab400",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true
+      },
+      {
+        "kind": "context",
+        "address": "00d5b5d8",
+        "length": 16,
+        "end_exclusive": "00d5b5e8",
+        "pe_offset": 9811416,
+        "sha256": "87cb026e4c5693545ab92482f4031aea360414a7799f39830c129252fad9f45a",
+        "hex": "e030bd00d0fca800f0fca80010fda800",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true
+      },
+      {
+        "kind": "context",
+        "address": "00d62eb0",
+        "length": 20,
+        "end_exclusive": "00d62ec4",
+        "pe_offset": 9842352,
+        "sha256": "8c579af2f036942d04b3b5033f88ef9fc19b76c9a6a16ea77e0846a60fe8292b",
+        "hex": "e030bd002087b700705eb700d082b700209d6f00",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true
+      },
+      {
+        "kind": "context",
+        "address": "00d64478",
+        "length": 52,
+        "end_exclusive": "00d644ac",
+        "pe_offset": 9847928,
+        "sha256": "929192d20aba76d8745b84a07c79402efa73807d3e613d376aa7e72c0050c462",
+        "hex": "e030bd00d0c6bb00f001c30090c6bb00209d6f000002c300a002c3007005c300c0cbbb00a0cbbb00b003c300f002c30040ccbb00",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true
+      },
+      {
+        "kind": "context",
+        "address": "00d644b4",
+        "length": 52,
+        "end_exclusive": "00d644e8",
+        "pe_offset": 9847988,
+        "sha256": "cfb65cacd4ce0c2cf56ff62e541dbc3f40a67ecaf0610c182a35915c66145f17",
+        "hex": "e030bd00f0c7bb00f001c30090c6bb00209d6f000002c300a002c3007005c300f0cbbb00e0cbbb00b003c300f002c300d0cbbb00",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true
+      },
+      {
+        "kind": "context",
+        "address": "00d7a208",
+        "length": 4,
+        "end_exclusive": "00d7a20c",
+        "pe_offset": 9937416,
+        "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6",
+        "hex": "00000080",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true
+      },
+      {
+        "kind": "context",
+        "address": "00d7a238",
+        "length": 24,
+        "end_exclusive": "00d7a250",
+        "pe_offset": 9937464,
+        "sha256": "926b0a8f9c934a36811316fffdbf3e91b39ccb7bf79b4d8369baa72be989ed93",
+        "hex": "0ad7233c6f12833a00007ac4ffff7fffffff7f7f0000803f",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true
+      },
+      {
+        "kind": "context",
+        "address": "00ce3978",
+        "length": 4,
+        "end_exclusive": "00ce397c",
+        "pe_offset": 9320824,
+        "sha256": "9d459b445179d46efc315fd7ef9a5c8185bd7f3e2860dc6d325ab1b85acf6a96",
+        "hex": "0000804f",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true
+      },
+      {
+        "kind": "context",
+        "address": "00ce77dc",
+        "length": 4,
+        "end_exclusive": "00ce77e0",
+        "pe_offset": 9336796,
+        "sha256": "87e2f7bf058af2e1864bb8d20622940396484f1d8fab1da5e3c63ae693a4914a",
+        "hex": "52b87e3f",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true
+      },
+      {
+        "kind": "context",
+        "address": "00b79d47",
+        "length": 99,
+        "end_exclusive": "00b79daa",
+        "pe_offset": 7839047,
+        "sha256": "7a07e61fce665adc65a1294dfca258d5f34b54d1e8d43372da980c6e7c6db9af",
+        "hex": "c70630b1ce00c7460401000000894e20894e24894e28894e2cf30f114608f30f11460cf30f114610f30f114614f30f1146183bc1f30f11461c0f94c2f30f118424ac000000f30f118424b0000000f30f118424b4000000c706b02ed600885630894e34",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true
+      },
+      {
+        "kind": "context",
+        "address": "00b79bc0",
+        "length": 3613,
+        "end_exclusive": "00b7a9dd",
+        "pe_offset": 7838656,
+        "sha256": "79e115d20ec77e266a251609c03716d6161091d337797afebb7f6044c1e7b119",
+        "hex": "558bec83e4f86aff68401ecc0064a100000000506489250000000081ec040100005355568bd957538d4c244c895c242ce85bebffff837c2454000f84d80200006a20e814cc070083c4048944242433c93bc1898c241c010000740d8bc8e85efeffff89442410eb04894c24108b7c24548b6c245033f685ffc784241c010000ffffffff7670837c244c007505e8c2ca07008b44244c3b68047505e8b4ca07008b4d1485c9740c8b45182bc1c1f8033bf07205e89cca07008b4c244c3b69047505e88eca07008b4d1485c9740c8b45182bc1c1f8033bf07205e876ca07008b55148b4424108b4cf20450e82289010083c6013bf772908bcbc744241400000000e84cc8ffff85c00f8ef20100008d6424008b4b1485c9740e8b43182bc1c1f802394424147205e829ca07008b4b148b5424148b3c916a38897c241ce81ccb07008bf083c4048974242433c93bf1c784241c010000010000000f848f0000003bf974218b0789442420e8f45b0100508b4424248b400c8bcfffd033c984c074048bc7eb0233c00f57c0c70630b1ce00c7460401000000894e20894e24894e28894e2cf30f114608f30f11460cf30f114610f30f114614f30f1146183bc1f30f11461c0f94c2f30f118424ac000000f30f118424b0000000f30f118424b4000000c706b02ed600885630894e34eb0233f633ff397c2454c784241c010000ffffffff0f8685000000837c244c007505e842c907008b44244c3b68047505e834c907008b4d1485c9740c8b45182bc1c1f8033bf87205e81cc907008b4d148b5424183b14f9740b83c7013b7c245472b9eb3c837c244c007505e8f9c807008b44244c3b68047505e8ebc807008b4d1485c9740c8b45182bc1c1f8033bf87205e8d3c807008b4d148b7cf904897e348b4c241856e82c50ffff8b7e2c3b7c241074318b44241085c089462c740c8bd083c20452ff151c22ce0085ff74168d470450ff152022ce0085c075088b178b028bcfffd08d4e0451ff152022ce0085c075088b168b028bceffd08b74241483c6018bcb89742414e85ac6ffff3bf00f8c12feffff8b7424108d4e0451ff152022ce0085c075088b168b028bceffd0538d8c2490000000e82be9ffff33ed39ac24980000000f84500800006a20e820c9070083c404894424243bc5c784241c01000002000000740d8bc8e868fbffff89442418eb04896c2418896c243c896c2440896c24448b4b143bcdc784241c01000003000000750433c0eb088b43182bc1c1f802508d4c2440e81aeeffff8bcb33f6e8b1c5ffff85c07e378b7c243c8b4b1485c9740c8b43182bc1c1f8023bf07205e894c707008b4b148b14b189178bcb83c60183c710e87cc5ffff3bf07ccf33ed39ac24980000000f86de0000008bbc24940000008bff8b9c249000000085db7505e853c707003b7b047505e849c707008b4f1485c9740c8b47182bc1c1f8033be87205e831c707003b7b048b47148b34e87505e821c707008b4f1485c9740c8b47182bc1c1f8033be87205e809c707008b5424408b4f148b5ce90433c085d27e4e8b4c243c903931740c83c00183c1103bc27cf2eb398b54243cc1e0048d7410048b4608394604751403c083f8017f05b801000000508bcee8d9c7ffff8b46048b0e8d048185c074028918834604018b542418528bcbe8bb02010083c5013bac24980000000f822bffffff837c2440000f8e7f0200008b44243c8b4c244089442414894c24208b5424148b026a308944245ce86ac7070033ff83c4043bc7745d0f57c0c70030b1ce00c7400401000000c700602ed60089782089782489782889782cf30f114008f30f11400cf30f114010f30f114014f30f114018f30f118424b8000000f30f118424bc000000f30f118424c0000000f30f11401c8bf88b5c24188b6b103b6f288d77207e08558bcee862c6ffff8b46043bc57d168b0e8d0c8185c97406c7010000000083c0013bc57cea3b6e047d0b83c8ff0146043b6e047cf833c0896e043947247e1ceb098da424000000008bff8b16c704820000000083c0013b47247cef8b4c245857e8f54cffff8b772c3bf37427895f2c83c30453ff151c22ce0085f674168d460450ff152022ce0085c075088b168b028bceffd08d4f0451ff152022ce0085c075088b178b028bcfffd033c08944241c8b4c24143b41080f8d1b0100008b49048b0c81894c242cc744241000000000e8d700010085c00f8eee0000008b4424108b5424588b4c242c8b9a3001000050e8570101008d7808894424248b432c8d7008578bcee8e2c6ffff85f68be889ac24880000007505e8d3c407003b6e0489b424840000007431833f0075098b450cf7d81bc0eb16837d0c0074148b4d108b57045152e852dd070083c40885c07c098d842484000000eb128b4604898424800000008974247c8d44247c8b3885ff8b4e048b6804894c247874043bfe7405e86bc407003b6c2478750583c8ffeb1685ff7505e857c407003b6f047505e84dc407008b45148b53208b4c24248b742410890c828b4c242c83c60189742410e8e9ff00003bf00f8c12ffffff8344241c018b44241ce9d8feffff83c110836c242001894c24140f8591fdffff8b542428528d4c2468e8b3e5ffff8b44244085c00f8ed80300008b4c243c8b6c246c894c24148944242c8b5424148b3a8b37897c2410e8d6550100508b460c8bcfffd084c00f841e03000033f633db89742430895c24348974243839742470c684241c010000040f8601010000837c2468007505e88bc307008b4c24683b69047505e87dc307008b4d1485c9740c8b45182bc1c1f8033bf07205e865c307008b55148b04f28b483085c90f84b10000003bcf740f8bd7e836bbffff84c00f849e0000008b4424683b68047505e833c307008b4d1485c9740c8b45182bc1c1f8033bf07205e81bc307008b4d148b4424683b68048b14f1895424747505e803c307008b4d1485c9740c8b45182bc1c1f8033bf07205e8ebc207008b4424383bd88b4d148b7cf104751a03c083f8017f05b801000000508d4c2434e843c4ffff8b5c24348b5424308d04da85c074098b4c247489088978048b7c241083c301895c243483c6013b7424700f82fffeffff538bcfe80b7101006a008bcfe8b2a1ffff8bc8e89b82ffff8b4c242833ff8944241c897c2420e858cd000085c00f861b0100008b4c242857e8a6cd00008be88b7500e85cfc00008b560c508bcdffd284c00f84df00000033c085db0f8ed50000008b5424308d4a043b29740f83c00183c1083bc37cf2e9bb0000008b04c285c0894424240f84ac0000008b44241c33f63970040f8e9d00000033db8b4c241c8b118bcd8d3cf2e858fc00008b178b083bd1756885d27508f7d91bc98bc1eb1985c975058d4101eb108b40048b4f045051e86dda070083c40885c00f94c084c0743a8b5424108b8284010000833c0300752a8bcde83bfc0000518bcdd91c24e820fc0000508bcde808fc00008b4c242c50518b4c242056e8986601008b54241c83c60183c3603b72040f8c6dffffff8b7c24208b5c24348b4c242883c701897c2420e83dcc00003bf80f82e5feffff8b4c2410e82c6a01008b44243885c0c684241c010000037d4c83f8017d476a08e8ceaf070083c40485db8bf07e208b4c24302bce8bd385c0740c8b3c0189388b7c010489780483c00883ea0175e88b44243050e866c3070083c404c744243801000000eb048b74243085db7d1d8bd38d04def7da9085c0740733c9890889480483c00883ea0175ed85db7e0783eb0185db7ff956c744243800000000e81dc307008b6c247083c404e97900000083bf300100000074708b5c24108bcbe8d434ffff8bf0b9100000008dbc24d0000000f3a58bb330010000f30f10842400010000f30f114608f30f108424040100008d8c24c4000000f30f11460cf30f10842408010000518d8c24d4000000f30f114610e8108afeffd900d95e14d94004d95e18d94008d95e1c8344241410836c242c010f8538fcffff8b7424188d560452ff152022ce0085c075088b068b108bceffd26a008d4c2440c7842420010000ffffffffe83fe6ffff8b44243c50e84ec207008b5c242c83c40433ed8bcb33f6e8c3bdffff85c07e3d8b4b143bcd740c8b43182bc1c1f8023bf07205e8aabf07008b4b148b14b18b8a300100003bcd74078b018b5020ffd28bcb83c601e886bdffff3bf07cc3538d8c24a0000000e8f5e1ffff39ac24a8000000896c24180f86a60100008d6424008bac24a000000033db3beb7505e851bf07008bb424a40000003b75047505e840bf07008b4e143bcb8b7c2418740c8b46182bc1c1f8033bf87205e824bf07003b75048b46148b0cf8894c241c7505e810bf07008b4e143bcb740c8b46182bc1c1f8033bf87205e8f8be07008b56148b6cfa046a01538d4c2464895c2464895c2468e80a358aff8b7424603bf38b7c245c74128d470150680c3ace0056e82fce070083c40c395d1075088bc7f7d81bc0eb183bfb7507b801000000eb0d8b4d145651e849d7070083c40885c00f95c385f674136a0183c7015756e832f489ff8bc8e87b6c050084db0f847d0000008b7c24288bcf33f6e866bcffff85c00f8e680000008b4f1485c9740c8b47182bc1c1f8023bf07205e849be07008b57148b0cb2e82b2fffff8b088b55103bd1752e85d27508f7d91bc98bc1eb1985c975058d4101eb108b40048b4d145051e8bfd6070083c40885c00f94c084c0755c8bcf83c601e8fabbffff3bf07c988b5c241cd94508518bcbd91c24e88452ffffd9450c518bcbd91c24e89652ffff8b44241883c0013b8424a8000000894424180f825efeffff8b8c24140100005f64890d000000005e5d5b8be55dc38b4f1485c9740c8b47182bc1c1f8023bf07205e893bd07008b57148b5c241c8bbb3804000085ff8b34b274208d470450ff152022ce0085c075088b178b028bcfffd0c78338040000000000008bc68bcef7d91bc9f7c17c76e10089b3380400000f8450ffffff83c00450ff151c22ce00e941ffffff",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true
+      },
+      {
+        "kind": "context",
+        "address": "00b19980",
+        "length": 22,
+        "end_exclusive": "00b19996",
+        "pe_offset": 7444864,
+        "sha256": "b26833e11b0634915df7b20def4a02519ef23fed4c8cd5afd3d127926d230b40",
+        "hex": "8bc1c70030b1ce00c7400401000000c70054e5d500c3",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true
+      },
+      {
+        "kind": "context",
+        "address": "00c30470",
+        "length": 35,
+        "end_exclusive": "00c30493",
+        "pe_offset": 8586352,
+        "sha256": "29ebfb40b0ac77a7989972ffa487f27a7311848508fc89c18b583e896469c4c0",
+        "hex": "568bf1e80895eeff33c0c706549bd70089461089461489461889460888461c8bc65ec3",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true
+      },
+      {
+        "kind": "context",
+        "address": "00bbc6f0",
+        "length": 80,
+        "end_exclusive": "00bbc740",
+        "pe_offset": 8111856,
+        "sha256": "310c1fb7dad8d55e21d7f1b328a82539bf058e2c355451fe447951ab14510cfd",
+        "hex": "6aff687b4bcc0064a100000000506489250000000051566a34e80da103008bf083c4048974240433c03bf089442410740f8bcee8483d0700c7067844d6008bc68b4c24085e64890d0000000083c410c3",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true
+      },
+      {
+        "kind": "context",
+        "address": "00bbc810",
+        "length": 80,
+        "end_exclusive": "00bbc860",
+        "pe_offset": 8112144,
+        "sha256": "4a25637fc7034fdce68be05e3ff0478dc5b433e444c8a15dadcc94df49613455",
+        "hex": "6aff68bb4bcc0064a100000000506489250000000051566a34e8ed9f03008bf083c4048974240433c03bf089442410740f8bcee8283c0700c706b444d6008bc68b4c24085e64890d0000000083c410c3",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true
+      },
+      {
+        "kind": "context",
+        "address": "00bf7680",
+        "length": 869,
+        "end_exclusive": "00bf79e5",
+        "pe_offset": 8353408,
+        "sha256": "2eb4a27b7f2608f44cc78077c476658ebbc91ea1f736a39cde93a0194d5dd6c3",
+        "hex": "558bec57568b750c8b4d108b7d088bc18bd103c63bfe76083bf80f82a401000081f900010000721f833da4ee0901007416575683e70f83e60f3bfe5e5f75085e5f5de964510100f7c7030000007515c1e90283e20383f908722af3a5ff2495f477bf00908bc7ba0300000083e904720c83e00303c8ff24850877bf00ff248d0478bf0090ff248d8877bf00901877bf004477bf006877bf0023d18a0688078a46018847018a4602c1e90288470283c60383c70383f90872ccf3a5ff2495f477bf008d490023d18a0688078a4601c1e90288470183c60283c70283f90872a6f3a5ff2495f477bf009023d18a06880783c601c1e90283c70183f9087288f3a5ff2495f477bf008d4900eb77bf00d877bf00d077bf00c877bf00c077bf00b877bf00b077bf00a877bf008b448ee489448fe48b448ee889448fe88b448eec89448fec8b448ef089448ff08b448ef489448ff48b448ef889448ff88b448efc89448ffc8d048d0000000003f003f8ff2495f477bf008bff0478bf000c78bf001878bf002c78bf008b45085e5fc9c3908a0688078b45085e5fc9c3908a0688078a46018847018b45085e5fc9c38d49008a0688078a46018847018a46028847028b45085e5fc9c3908d7431fc8d7c39fcf7c7030000007524c1e90283e20383f908720dfdf3a5fcff24959079bf008bfff7d9ff248d4079bf008d49008bc7ba0300000083f904720c83e0032bc8ff24859478bf00ff248d9079bf0090a478bf00c878bf00f078bf008a460323d188470383ee01c1e90283ef0183f90872b2fdf3a5fcff24959079bf008d49008a460323d18847038a4602c1e90288470283ee0283ef0283f9087288fdf3a5fcff24959079bf00908a460323d18847038a46028847028a4601c1e90288470183ee0383ef0383f9080f8256fffffffdf3a5fcff24959079bf008d49004479bf004c79bf005479bf005c79bf006479bf006c79bf007479bf008779bf008b448e1c89448f1c8b448e1889448f188b448e1489448f148b448e1089448f108b448e0c89448f0c8b448e0889448f088b448e0489448f048d048d0000000003f003f8ff24959079bf008bffa079bf00a879bf00b879bf00cc79bf008b45085e5fc9c3908a46038847038b45085e5fc9c38d49008a46038847038a46028847028b45085e5fc9c3908a46038847038a46028847028a46018847018b45085e5fc9c3",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true
+      },
+      {
+        "kind": "context",
+        "address": "00cc4b70",
+        "length": 21,
+        "end_exclusive": "00cc4b85",
+        "pe_offset": 9194352,
+        "sha256": "97e5853d78093c91957d7890206502195a3b3a52e5265a1c5f4f5032bb84198b",
+        "hex": "8b45f050e8331af3ff59c3b8c4e9df00e9be1ff3ff",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true
+      },
+      {
+        "kind": "context",
+        "address": "00cc4bb0",
+        "length": 21,
+        "end_exclusive": "00cc4bc5",
+        "pe_offset": 9194416,
+        "sha256": "699936713bdafb0fddf39de80e78261580c18bb2320c04e5ea4cf615b880096c",
+        "hex": "8b45f050e8f319f3ff59c3b81ceadf00e97e1ff3ff",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true
+      },
+      {
+        "kind": "context",
+        "address": "00dfe9bc",
+        "length": 44,
+        "end_exclusive": "00dfe9e8",
+        "pe_offset": 10480060,
+        "sha256": "f795a78a020b2aa35efc04de9a09a746304cfd0e6f9378f486e10352287a81c6",
+        "hex": "ffffffff704bcc002205931901000000bce9df00000000000000000000000000000000000000000001000000",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true
+      },
+      {
+        "kind": "context",
+        "address": "00dfea14",
+        "length": 44,
+        "end_exclusive": "00dfea40",
+        "pe_offset": 10480148,
+        "sha256": "b59f287a36a39cd268c5302c1e3e4a5876f27c140447d507eb57b8671080a9a6",
+        "hex": "ffffffffb04bcc00220593190100000014eadf00000000000000000000000000000000000000000001000000",
+        "live_equals_pe": true,
+        "equals_correct_primary_frozen_fixture": true
+      }
+    ],
+    "span_count": 48,
+    "bytes": 12176,
+    "all_live_equals_current_PE_and_primary_bytes": true,
+    "builder": {
+      "address": "00b42350",
+      "length": 4288,
+      "sha256": "5b3d63fcdd42f9f5bb9cd7a02e08e3531472e87aa7409125153c83804f516091",
+      "decoded_instructions": 1126,
+      "calls": 35,
+      "direct_calls": 26,
+      "indirect_calls": 9,
+      "callsites": [
+        {
+          "address": "00b42380",
+          "hex": "ffd2",
+          "text": "call edx"
+        },
+        {
+          "address": "00b42392",
+          "hex": "ffd2",
+          "text": "call edx"
+        },
+        {
+          "address": "00b423b8",
+          "hex": "ffd2",
+          "text": "call edx"
+        },
+        {
+          "address": "00b423d2",
+          "hex": "e8b94ffdff",
+          "text": "call 0xb17390"
+        },
+        {
+          "address": "00b42437",
+          "hex": "e834940100",
+          "text": "call 0xb5b870"
+        },
+        {
+          "address": "00b42442",
+          "hex": "e839940100",
+          "text": "call 0xb5b880"
+        },
+        {
+          "address": "00b425c7",
+          "hex": "e8b4500b00",
+          "text": "call 0xbf7680"
+        },
+        {
+          "address": "00b42665",
+          "hex": "e816500b00",
+          "text": "call 0xbf7680"
+        },
+        {
+          "address": "00b426a8",
+          "hex": "e853d80400",
+          "text": "call 0xb8ff00"
+        },
+        {
+          "address": "00b426d5",
+          "hex": "e846df0400",
+          "text": "call 0xb90620"
+        },
+        {
+          "address": "00b426e4",
+          "hex": "e887b40200",
+          "text": "call 0xb6db70"
+        },
+        {
+          "address": "00b42794",
+          "hex": "e8b7360300",
+          "text": "call 0xb75e50"
+        },
+        {
+          "address": "00b427a7",
+          "hex": "ffd2",
+          "text": "call edx"
+        },
+        {
+          "address": "00b427d3",
+          "hex": "e8a84e0b00",
+          "text": "call 0xbf7680"
+        },
+        {
+          "address": "00b42825",
+          "hex": "e846b30200",
+          "text": "call 0xb6db70"
+        },
+        {
+          "address": "00b4283a",
+          "hex": "e891b80200",
+          "text": "call 0xb6e0d0"
+        },
+        {
+          "address": "00b4285c",
+          "hex": "e8bf108dff",
+          "text": "call 0x413920"
+        },
+        {
+          "address": "00b42863",
+          "hex": "e8b8108dff",
+          "text": "call 0x413920"
+        },
+        {
+          "address": "00b42966",
+          "hex": "ffd0",
+          "text": "call eax"
+        },
+        {
+          "address": "00b4296a",
+          "hex": "e8914f0000",
+          "text": "call 0xb47900"
+        },
+        {
+          "address": "00b429cf",
+          "hex": "e83cf40100",
+          "text": "call 0xb61e10"
+        },
+        {
+          "address": "00b42a9f",
+          "hex": "e8ccb00200",
+          "text": "call 0xb6db70"
+        },
+        {
+          "address": "00b42c84",
+          "hex": "e8e7ae0200",
+          "text": "call 0xb6db70"
+        },
+        {
+          "address": "00b42ecf",
+          "hex": "e89c080300",
+          "text": "call 0xb73770"
+        },
+        {
+          "address": "00b42f13",
+          "hex": "e8b8b10200",
+          "text": "call 0xb6e0d0"
+        },
+        {
+          "address": "00b43072",
+          "hex": "e87949fdff",
+          "text": "call 0xb179f0"
+        },
+        {
+          "address": "00b430ab",
+          "hex": "e84049fdff",
+          "text": "call 0xb179f0"
+        },
+        {
+          "address": "00b430e3",
+          "hex": "e848a0fcff",
+          "text": "call 0xb0d130"
+        },
+        {
+          "address": "00b430f5",
+          "hex": "ffd2",
+          "text": "call edx"
+        },
+        {
+          "address": "00b43112",
+          "hex": "e8fc350b00",
+          "text": "call 0xbf6713"
+        },
+        {
+          "address": "00b4311a",
+          "hex": "e891790300",
+          "text": "call 0xb7aab0"
+        },
+        {
+          "address": "00b43132",
+          "hex": "ffd0",
+          "text": "call eax"
+        },
+        {
+          "address": "00b43141",
+          "hex": "ffd2",
+          "text": "call edx"
+        },
+        {
+          "address": "00b4315e",
+          "hex": "ffd0",
+          "text": "call eax"
+        },
+        {
+          "address": "00b43163",
+          "hex": "e8e8aa0200",
+          "text": "call 0xb6dc50"
+        }
+      ]
+    },
+    "derivation": "BSP CLI live byte pages verified project/program, mapped current PE offsets and matched corrected primary .bin files; complete Capstone instruction decoding, exported listing-start comparison for all27 function spans.",
+    "alignment_listing_omissions": [
+      {
+        "address": "00b426cd",
+        "hex": "8d4900",
+        "instruction": "LEA ECX,[ECX]",
+        "control": "JMP00B426CB->00B426D0 skips these3 bytes"
+      },
+      {
+        "address": "00b42806",
+        "hex": "8da42400000000",
+        "instruction": "LEA ESP,[ESP]",
+        "control": "JMP00B42804->00B42810 skips this7-byte instruction and following3-byte LEA"
+      },
+      {
+        "address": "00b4280d",
+        "hex": "8d4900",
+        "instruction": "LEA ECX,[ECX]",
+        "control": "Same preceding unconditional jump skips to00B42810"
+      },
+      {
+        "address": "00b4292d",
+        "hex": "8d4900",
+        "instruction": "LEA ECX,[ECX]",
+        "control": "JMP00B4292B->00B42934 skips alignment; loop backedge uses00B42930"
+      }
+    ],
+    "listing_boundary": "These16 bytes are unreachable alignment in full contiguous PE range, not missing returning-call flow. They remain explicitly recorded; no zero-gap full-byte listing claim and no Ghidra repair requested.",
+    "native_EH": "Original B42350 body is preserved in full machine receipt. New source Failure guard is C++ instrumentation, not native FH3/private-stack/hardware-fault ABI proof.",
+    "receipts": "local/material_constant_build_r45/native_receipts.json"
+  },
+  "validation": {
+    "seed_check": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "exit": 0,
+      "log": "local/material_constant_build_r45/verify_seeds.log",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    "strict_build": {
+      "command": "./scripts/build.ps1",
+      "exit": 0,
+      "platform": "MSVC Win32 Release /MD /W4 /WX /fp:strict",
+      "ctests_passed": 3,
+      "ctests_failed": 0,
+      "ctests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "frozen_source_inputs": 3135,
+      "log": "local/material_constant_build_r45/build.log",
+      "sha256": "63093d774636291581e9b2caa405ef42190e7c080ddd4681166bd52f06a353d7"
+    },
+    "fixture": {
+      "fixture": "corrected primary7da09ce9 original/source material constant build",
+      "source": "local\\material_constant_build_r45\\fixture\\probe.cpp",
+      "exe": "local\\material_constant_build_r45\\fixture\\material_constant_probe_r45.exe",
+      "sha256": "d40bac96a210be19fd45bcca6972dc54bcc43cd7027801c63ddd2b4a1b0832ce",
+      "build_exit": 0,
+      "run_exit": 0,
+      "manifest_asInvoker": true,
+      "selected_output": [
+        "PASS: two original/source full-bank variants; matrix/copy/skin/decode/light schedules; actual texture-source factory/providers; source partial failure and replay guard."
+      ]
+    },
+    "fixture_domain": "Two original/source variants: fallback skin and optimized palette. Full copied original4288B parent with27 native routine bodies6704B and relocated established calls; both4096B banks compared byte-for-byte per variant. Concrete raw storage and real current texture-source factories/providers, no successful mock terminal.",
+    "fixture_coverage": [
+      "Matrix widths2/3/4, sNaN bit copy versus x87 crossings",
+      "Overlapping raw parameter copy",
+      "Bone/world/inverse refresh and fallback/optimized skin",
+      "Decoded/undecoded streams and retained step1/budget schedule",
+      "Fade/diffuse/scalar writes and four point lights",
+      "Real caustics/shore factories and current-texture/caustics writer native/source child checks",
+      "Unsupported logical profile throws after preceding writes, frame retains B42966 and failed state; replay rejects"
+    ],
+    "shared_native_source_boundaries": [
+      {
+        "address": "00b48ce0",
+        "meaning": "Native logical profile+24 is patched to existing concrete source declaration getter, also called by builder; this child is a shared differential boundary."
+      },
+      {
+        "address": "00bf7680",
+        "meaning": "Original call relocated to host std::memmove; source also uses host memmove. Valid-storage overlap case checked, original CRT implementation ABI not separately executed."
+      },
+      {
+        "address": "00bf6713",
+        "meaning": "Original relocation targets host _invalid_parameter_noinfo. Empty-light branch is not reached in full-bank fixture; original CRT invalid-parameter/hardware-fault semantics remain unproved."
+      }
+    ],
+    "fixture_limits": [
+      "Full B42350 fixture binding count0 and shadow sampler sentinels; nonempty renderer/COM binding paths are compiled and source-reviewed only.",
+      "Standalone concrete texture-source child checks do not prove the full parent binding route or alias combinations.",
+      "Original private stack aliasing, incidental registers, all FP exception/fault/interleaving schedules, native FH3, parent composition and gameplay remain unvalidated."
+    ],
+    "compiled_evidence": {
+      "exe_sha256": "d40bac96a210be19fd45bcca6972dc54bcc43cd7027801c63ddd2b4a1b0832ce",
+      "source_intervals": [
+        {
+          "symbol": "??1logic_error@std@@UAE@XZ",
+          "object": "i bsp_core:native_material_constant_build.obj",
+          "address": "300020f0",
+          "end_exclusive": "30002110",
+          "length": 32,
+          "sha256": "0c25935e90424f8fa1c37d3250d4c4ca6e2384895134f8f39a49966bb3695d8a",
+          "note": "Map interval to next distinct code symbol; may include alignment or auxiliary code, not a native body boundary.",
+          "calls": [
+            {
+              "address": "300020fa",
+              "hex": "e8015b0200",
+              "text": "call 0x30027c00",
+              "resolved_target": "___std_exception_destroy"
+            }
+          ]
+        },
+        {
+          "symbol": "??0logic_error@std@@QAE@ABV01@@Z",
+          "object": "i bsp_core:native_material_constant_build.obj",
+          "address": "300050d0",
+          "end_exclusive": "30005110",
+          "length": 64,
+          "sha256": "5acc54133a1d06fc7f0b7f86a153033b67b0016c22702ae9d0d5cce1ec77b1ad",
+          "note": "Map interval to next distinct code symbol; may include alignment or auxiliary code, not a native body boundary.",
+          "calls": [
+            {
+              "address": "300050ee",
+              "hex": "e8072b0200",
+              "text": "call 0x30027bfa",
+              "resolved_target": "___std_exception_copy"
+            }
+          ]
+        },
+        {
+          "symbol": "??0logic_error@std@@QAE@PBD@Z",
+          "object": "i bsp_core:native_material_constant_build.obj",
+          "address": "30005110",
+          "end_exclusive": "30005160",
+          "length": 80,
+          "sha256": "85c5d7a804e866f64236623b46514472657d4b17014bb5f3f847c4c50bada1ea",
+          "note": "Map interval to next distinct code symbol; may include alignment or auxiliary code, not a native body boundary.",
+          "calls": [
+            {
+              "address": "3000513b",
+              "hex": "e8ba2a0200",
+              "text": "call 0x30027bfa",
+              "resolved_target": "___std_exception_copy"
+            }
+          ]
+        },
+        {
+          "symbol": "??1Failure@?A0x6c63add0@bsp@@QAE@XZ",
+          "object": "bsp_core:native_material_constant_build.obj",
+          "address": "30005160",
+          "end_exclusive": "30005170",
+          "length": 16,
+          "sha256": "3c826f7b2cf7ab7e6eef9788178799b3b153ad089f13fb89b49c39a50585cdcf",
+          "note": "Map interval to next distinct code symbol; may include alignment or auxiliary code, not a native body boundary.",
+          "calls": []
+        },
+        {
+          "symbol": "??_Elogic_error@std@@UAEPAXI@Z",
+          "object": "i bsp_core:native_material_constant_build.obj",
+          "address": "30005170",
+          "end_exclusive": "300051a0",
+          "length": 48,
+          "sha256": "f57a03ba08a75898320e83bfa034c3a93672dd35f6acbd6f75b2781f83e3f5ef",
+          "note": "Map interval to next distinct code symbol; may include alignment or auxiliary code, not a native body boundary.",
+          "calls": [
+            {
+              "address": "30005180",
+              "hex": "e87b2a0200",
+              "text": "call 0x30027c00",
+              "resolved_target": "___std_exception_destroy"
+            },
+            {
+              "address": "30005191",
+              "hex": "e89a1b0200",
+              "text": "call 0x30026d30",
+              "resolved_target": "??3@YAXPAXI@Z"
+            }
+          ]
+        },
+        {
+          "symbol": "??_Glogic_error@std@@UAEPAXI@Z",
+          "object": "i bsp_core:native_material_constant_build.obj",
+          "address": "30005170",
+          "end_exclusive": "300051a0",
+          "length": 48,
+          "sha256": "f57a03ba08a75898320e83bfa034c3a93672dd35f6acbd6f75b2781f83e3f5ef",
+          "note": "Map interval to next distinct code symbol; may include alignment or auxiliary code, not a native body boundary.",
+          "calls": [
+            {
+              "address": "30005180",
+              "hex": "e87b2a0200",
+              "text": "call 0x30027c00",
+              "resolved_target": "___std_exception_destroy"
+            },
+            {
+              "address": "30005191",
+              "hex": "e89a1b0200",
+              "text": "call 0x30026d30",
+              "resolved_target": "??3@YAXPAXI@Z"
+            }
+          ]
+        },
+        {
+          "symbol": "?build_native_material_constants_00b42350@bsp@@YAXPAX00AAUNativeMaterialConstantBuildContext@1@AAUNativeMaterialConstantBuildFrame@1@@Z",
+          "object": "bsp_core:native_material_constant_build.obj",
+          "address": "300051a0",
+          "end_exclusive": "30006240",
+          "length": 4256,
+          "sha256": "3795e6eb267b8b39c07836c3a3a6c5b38cf23962bcc93486d0e0ef260cdd14dc",
+          "note": "Map interval to next distinct code symbol; may include alignment or auxiliary code, not a native body boundary.",
+          "calls": [
+            {
+              "address": "30005276",
+              "hex": "e875110000",
+              "text": "call 0x300063f0",
+              "resolved_target": "?native_texture_source_current_texture_00c302f0@bsp@@YIPAXPBX@Z"
+            },
+            {
+              "address": "300052c2",
+              "hex": "e8f91a0000",
+              "text": "call 0x30006dc0",
+              "resolved_target": "?bind_native_renderer_texture_00b24710@bsp@@YAXPAXI0AAUNativeRendererTextureBindingContext@1@@Z"
+            },
+            {
+              "address": "30005341",
+              "hex": "e82a100000",
+              "text": "call 0x30006370",
+              "resolved_target": "?native_caustics_source_constants_00bbcc40@bsp@@YIXPBXPAX10011@Z"
+            },
+            {
+              "address": "30005376",
+              "hex": "e865100000",
+              "text": "call 0x300063e0",
+              "resolved_target": "?native_shore_source_constants_00bbcbd0@bsp@@YIXPBXPAX10011@Z"
+            },
+            {
+              "address": "300053bf",
+              "hex": "e84c0f0000",
+              "text": "call 0x30006310",
+              "resolved_target": "?get_native_material_parameter_table_00b17390@bsp@@YIPBQAXPBUNativeMaterialStorage@1@@Z"
+            },
+            {
+              "address": "3000542d",
+              "hex": "e85e190000",
+              "text": "call 0x30006d90",
+              "resolved_target": "?native_shader_constant_register_00b5b870@bsp@@YAHPBX@Z"
+            },
+            {
+              "address": "30005447",
+              "hex": "e8e40e0000",
+              "text": "call 0x30006330",
+              "resolved_target": "?get_native_shader_constant_register_count_00b5b880@bsp@@YIIPBX@Z"
+            },
+            {
+              "address": "30005482",
+              "hex": "e8b90d0000",
+              "text": "call 0x30006240",
+              "resolved_target": "?transpose@?A0x6c63add0@bsp@@YAXPAXPBXI@Z"
+            },
+            {
+              "address": "300054bb",
+              "hex": "e834270200",
+              "text": "call 0x30027bf4",
+              "resolved_target": "_memmove"
+            },
+            {
+              "address": "30005554",
+              "hex": "e89b260200",
+              "text": "call 0x30027bf4",
+              "resolved_target": "_memmove"
+            },
+            {
+              "address": "300055b9",
+              "hex": "e8a2170000",
+              "text": "call 0x30006d60",
+              "resolved_target": "?get_native_model_bone_count_00b8ff00@bsp@@YIHPBX@Z"
+            },
+            {
+              "address": "30005601",
+              "hex": "e86a170000",
+              "text": "call 0x30006d70",
+              "resolved_target": "?get_native_model_bone_node_00b90620@bsp@@YIPAXPBXII@Z"
+            },
+            {
+              "address": "30005618",
+              "hex": "e8d31a0000",
+              "text": "call 0x300070f0",
+              "resolved_target": "?refresh_native_camera_world_00b6db70@bsp@@YIXPAX@Z"
+            },
+            {
+              "address": "300056d0",
+              "hex": "e84b0c0000",
+              "text": "call 0x30006320",
+              "resolved_target": "?get_native_optimized_animator_type_id_00b75e50@bsp@@YIIADI@Z"
+            },
+            {
+              "address": "30005718",
+              "hex": "e8330c0000",
+              "text": "call 0x30006350",
+              "resolved_target": "?native_optimized_animator_has_type_00b782d0@bsp@@YIEPBXPDII@Z"
+            },
+            {
+              "address": "30005757",
+              "hex": "e898240200",
+              "text": "call 0x30027bf4",
+              "resolved_target": "_memmove"
+            },
+            {
+              "address": "300057c2",
+              "hex": "e829190000",
+              "text": "call 0x300070f0",
+              "resolved_target": "?refresh_native_camera_world_00b6db70@bsp@@YIXPAX@Z"
+            },
+            {
+              "address": "300057db",
+              "hex": "e850200000",
+              "text": "call 0x30007830",
+              "resolved_target": "?get_native_node_inverse_world_00b6e0d0@bsp@@YIPAXPAX@Z"
+            },
+            {
+              "address": "3000580f",
+              "hex": "e8ac1c0000",
+              "text": "call 0x300074c0",
+              "resolved_target": "?multiply_native_camera_matrices_00413920@bsp@@YIPAXPBXPAX10@Z"
+            },
+            {
+              "address": "30005829",
+              "hex": "e8921c0000",
+              "text": "call 0x300074c0",
+              "resolved_target": "?multiply_native_camera_matrices_00413920@bsp@@YIPAXPBXPAX10@Z"
+            },
+            {
+              "address": "30005988",
+              "hex": "e8330b0000",
+              "text": "call 0x300064c0",
+              "resolved_target": "?native_logical_vertex_stream_get_declaration_00b48ce0@bsp@@YIPAXPBX@Z"
+            },
+            {
+              "address": "3000599b",
+              "hex": "e8a0090000",
+              "text": "call 0x30006340",
+              "resolved_target": "?native_volume_texture_get_com_00b3d0c0@bsp@@YIPAXPBX@Z"
+            },
+            {
+              "address": "30005a12",
+              "hex": "e869130000",
+              "text": "call 0x30006d80",
+              "resolved_target": "?get_native_stream_decode_record_00b61e10@bsp@@YIPBXPBXII@Z"
+            },
+            {
+              "address": "30005ba4",
+              "hex": "e847150000",
+              "text": "call 0x300070f0",
+              "resolved_target": "?refresh_native_camera_world_00b6db70@bsp@@YIXPAX@Z"
+            },
+            {
+              "address": "30005bcc",
+              "hex": "e86f060000",
+              "text": "call 0x30006240",
+              "resolved_target": "?transpose@?A0x6c63add0@bsp@@YAXPAXPBXI@Z"
+            },
+            {
+              "address": "30005c13",
+              "hex": "e8d8140000",
+              "text": "call 0x300070f0",
+              "resolved_target": "?refresh_native_camera_world_00b6db70@bsp@@YIXPAX@Z"
+            },
+            {
+              "address": "30005c3c",
+              "hex": "e8ff050000",
+              "text": "call 0x30006240",
+              "resolved_target": "?transpose@?A0x6c63add0@bsp@@YAXPAXPBXI@Z"
+            },
+            {
+              "address": "30005d39",
+              "hex": "e8321b0000",
+              "text": "call 0x30007870",
+              "resolved_target": "?native_stream_threshold_fade_00b73770@bsp@@YIMPBXPBUNativeInstanceCollectionAccess@1@MM@Z"
+            },
+            {
+              "address": "30005da5",
+              "hex": "e8861a0000",
+              "text": "call 0x30007830",
+              "resolved_target": "?get_native_node_inverse_world_00b6e0d0@bsp@@YIPAXPAX@Z"
+            },
+            {
+              "address": "30005db8",
+              "hex": "e883040000",
+              "text": "call 0x30006240",
+              "resolved_target": "?transpose@?A0x6c63add0@bsp@@YAXPAXPBXI@Z"
+            },
+            {
+              "address": "30005de8",
+              "hex": "e8631b0000",
+              "text": "call 0x30007950",
+              "resolved_target": "?native_material_diffuse_00b179f0@bsp@@YAPAMAAUNativeMaterialStorage@1@I@Z"
+            },
+            {
+              "address": "30005e3a",
+              "hex": "e8111b0000",
+              "text": "call 0x30007950",
+              "resolved_target": "?native_material_diffuse_00b179f0@bsp@@YAPAMAAUNativeMaterialStorage@1@I@Z"
+            },
+            {
+              "address": "30005e9d",
+              "hex": "e86e1a0000",
+              "text": "call 0x30007910",
+              "resolved_target": "?native_shadow_owner_texture_00b0d130@bsp@@YIPAXPBX@Z"
+            },
+            {
+              "address": "30005edb",
+              "hex": "e8e00e0000",
+              "text": "call 0x30006dc0",
+              "resolved_target": "?bind_native_renderer_texture_00b24710@bsp@@YAXPAXI0AAUNativeRendererTextureBindingContext@1@@Z"
+            },
+            {
+              "address": "30005f2d",
+              "hex": "e8ce030000",
+              "text": "call 0x30006300",
+              "resolved_target": "?get_native_light_shadow_map_owner_00b7aab0@bsp@@YIPAXPBX@Z"
+            },
+            {
+              "address": "30005f9e",
+              "hex": "e87d190000",
+              "text": "call 0x30007920",
+              "resolved_target": "?get_raw_shadow_depth_texture_00a8fcf0@bsp@@YIPAXPBXPDSAX@Z"
+            },
+            {
+              "address": "30005fe2",
+              "hex": "e8d90d0000",
+              "text": "call 0x30006dc0",
+              "resolved_target": "?bind_native_renderer_texture_00b24710@bsp@@YAXPAXI0AAUNativeRendererTextureBindingContext@1@@Z"
+            },
+            {
+              "address": "30005ffe",
+              "hex": "e8fd180000",
+              "text": "call 0x30007900",
+              "resolved_target": "?native_node_point_light_array_00b6dc50@bsp@@YIPAXPAX@Z"
+            },
+            {
+              "address": "300061af",
+              "hex": "e88c0e0200",
+              "text": "call 0x30027040",
+              "resolved_target": "@__security_check_cookie@4"
+            },
+            {
+              "address": "3000620a",
+              "hex": "e8b10b0000",
+              "text": "call 0x30006dc0",
+              "resolved_target": "?bind_native_renderer_texture_00b24710@bsp@@YAXPAXI0AAUNativeRendererTextureBindingContext@1@@Z"
+            },
+            {
+              "address": "30006222",
+              "hex": "e8e9eeffff",
+              "text": "call 0x30005110",
+              "resolved_target": "??0logic_error@std@@QAE@PBD@Z"
+            },
+            {
+              "address": "30006233",
+              "hex": "e8ce190200",
+              "text": "call 0x30027c06",
+              "resolved_target": "__CxxThrowException@8"
+            }
+          ]
+        },
+        {
+          "symbol": "?transpose@?A0x6c63add0@bsp@@YAXPAXPBXI@Z",
+          "object": "bsp_core:native_material_constant_build.obj",
+          "address": "30006240",
+          "end_exclusive": "30006300",
+          "length": 192,
+          "sha256": "de73562332476964dbf00ca6e2b94cba3051824d228ee964268d284466a4b2fe",
+          "note": "Map interval to next distinct code symbol; may include alignment or auxiliary code, not a native body boundary.",
+          "calls": []
+        },
+        {
+          "symbol": "__unwindfunclet$?build_native_material_constants_00b42350@bsp@@YAXPAX00AAUNativeMaterialConstantBuildContext@1@AAUNativeMaterialConstantBuildFrame@1@@Z$0",
+          "object": "bsp_core:native_material_constant_build.obj",
+          "address": "30028140",
+          "end_exclusive": "30028150",
+          "length": 16,
+          "sha256": "1e48a777c114d1ed3a14d08fc240bb792ecabd0f561b9a710162af3a80d974bb",
+          "note": "Map interval to next distinct code symbol; may include alignment or auxiliary code, not a native body boundary.",
+          "calls": [
+            {
+              "address": "30028146",
+              "hex": "e915d0fdff",
+              "text": "jmp 0x30005160",
+              "resolved_target": "??1Failure@?A0x6c63add0@bsp@@QAE@XZ"
+            }
+          ]
+        },
+        {
+          "symbol": "__ehhandler$?build_native_material_constants_00b42350@bsp@@YAXPAX00AAUNativeMaterialConstantBuildContext@1@AAUNativeMaterialConstantBuildFrame@1@@Z",
+          "object": "bsp_core:native_material_constant_build.obj",
+          "address": "30028150",
+          "end_exclusive": "30028180",
+          "length": 48,
+          "sha256": "525c96f64b53124d83b8ff22ce3a0dfc6d8bacbd6452484c2282c62c806b0b46",
+          "note": "Map interval to next distinct code symbol; may include alignment or auxiliary code, not a native body boundary.",
+          "calls": [
+            {
+              "address": "30028161",
+              "hex": "e8daeeffff",
+              "text": "call 0x30027040",
+              "resolved_target": "@__security_check_cookie@4"
+            },
+            {
+              "address": "3002816b",
+              "hex": "e8d0eeffff",
+              "text": "call 0x30027040",
+              "resolved_target": "@__security_check_cookie@4"
+            },
+            {
+              "address": "30028175",
+              "hex": "e992faffff",
+              "text": "jmp 0x30027c0c",
+              "resolved_target": "___CxxFrameHandler3"
+            }
+          ]
+        }
+      ],
+      "interval_count": 10,
+      "receipt": "local/material_constant_build_r45/machine_receipts.json",
+      "boundary": "Map-to-next-symbol intervals may include padding or auxiliary code; do not equate them with original native bounds.",
+      "type_cell_call": "Current linked builder loads ECX from context+1C (borrowed cell ADDRESS) then calls canonical B75E50 provider; it does not load/copy the type word before that call."
+    },
+    "loaded_modules": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\local\\material_constant_build_r45\\fixture\\material_constant_probe_r45.exe",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 264704,
+        "sha256": "d40bac96a210be19fd45bcca6972dc54bcc43cd7027801c63ddd2b4a1b0832ce",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe, plus GetMappedFileNameW device path receipt in run log"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ntdll.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1822400,
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe, plus GetMappedFileNameW device path receipt in run log"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 687472,
+        "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe, plus GetMappedFileNameW device path receipt in run log"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\KernelBase.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 2974168,
+        "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe, plus GetMappedFileNameW device path receipt in run log"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\apphelp.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 710832,
+        "sha256": "a8109618c3bf3623be23e8e18f1e7184538600c953169297fd0009ed77564c6e",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe, plus GetMappedFileNameW device path receipt in run log"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe, plus GetMappedFileNameW device path receipt in run log"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\msvcp140.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 618944,
+        "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe, plus GetMappedFileNameW device path receipt in run log"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe, plus GetMappedFileNameW device path receipt in run log"
+      }
+    ],
+    "module_identity": "Eight same-process physically resolved module paths from GetFinalPathNameByHandleW, plus GetMappedFileNameW device receipts; loaded-memory and archived-file MachineI386 checked. Toolhelp path alone is not used as loaded-file identity.",
+    "permanent_tests_added": 0
+  },
+  "immutable_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\local\\checkpoints\\material-constant-build-r45-c3ca85125\\validated_artifacts.zip",
+    "sha256": "d5b39c2c54dda289754f50881b77581ef173cca5fc3e496169977f9ee1f9c3e8",
+    "bytes": 65688284,
+    "manifest": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\local\\checkpoints\\material-constant-build-r45-c3ca85125\\manifest.json",
+    "manifest_sha256": "5c279a7b95955eeb9fe5f643f4c17e19e19dc969ceb84b408ef2929c906cf071",
+    "artifacts": 3930,
+    "artifact_bytes": 261891560,
+    "all_entries_hash_verified": true,
+    "loaded_modules": 8,
+    "prior_r41_zip_unchanged": true,
+    "full_bsp_core_lib": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\build\\win32\\Release\\bsp_core.lib",
+      "archive_entry": "workspace/build/win32/Release/bsp_core.lib",
+      "bytes": 63540008,
+      "sha256": "e52db433f8afbde592576d5fa54d9743a50615836387d3d58b58373ea2501299"
+    }
+  },
+  "integration": {
+    "public_header_ready_for_R46": true,
+    "dependent_call": "build_native_material_constants_00b42350(pass, entry, override, context, distinct_frame)",
+    "parent_scope": "Parent integrates, names/ledgers/annotations and later pass/deletion/application composition; worker performed no Ghidra mutation or ledger writes.",
+    "old_Ghidra_name": "BSP_MaterialPass_BuildShaderConstants",
+    "proposed_name": "retain BSP_MaterialPass_BuildShaderConstants",
+    "proposed_annotation": "Corrected complete source body now adopted in native_material_constant_build; canonical leaf providers reused, new context/frame source ABI, same banks and retained failure. Two full-bank variants validated; nonempty binding/native ABI/game limits remain.",
+    "lease": "native_material_constant_build_main_r45",
+    "source_commit": "c3ca85125f1601e7e0872f48d404b8dcedc45f0e",
+    "report_commit": "the commit containing this report"
+  }
+}
