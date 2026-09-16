@@ -1,0 +1,458 @@
+{
+  "schema": 1,
+  "packet": "native_renderer_record_destroy_main_r35",
+  "status": "complete_source_reuse_with_current_provider_abi_live_pe_calls_fixture_and_archive_checked",
+  "created_utc": "2026-09-16T10:23:45.912Z",
+  "branch_head": "1b547b676ec966b0b1a3b2e0ceea50c0d69f8a16",
+  "merged_main": "b19485313b575988a33dadc649cf39d050a647a3",
+  "adopted_from": {
+    "commit": "10870d920",
+    "worktree": "J:/PROG/battlestations-pacific-decompile-orch5-native-renderer-record-destroy"
+  },
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "language": "x86:LE:32:default"
+  },
+  "owned_files": [
+    "include/bsp/native_renderer_record_destroy.hpp",
+    "src/native_renderer_record_destroy.cpp",
+    "docs/NATIVE_RENDERER_RECORD_DESTROY.md",
+    "reports/native_renderer_record_destroy.json",
+    "reports/native_renderer_record_destroy_main_r35.json"
+  ],
+  "adopted_git_blobs": {
+    "include/bsp/native_renderer_record_destroy.hpp": "0db891325252651193c81345cd1d7432eaeb88e7",
+    "src/native_renderer_record_destroy.cpp": "f9b0f59c978ad7d998a9f9788bef3cd174001da4",
+    "docs/NATIVE_RENDERER_RECORD_DESTROY.md": "fbb320a416befab2d4df40737c9aadbe0f7a10da",
+    "reports/native_renderer_record_destroy.json": "9560cbb69c3be7aecd31b6ae5657477c80afb81a"
+  },
+  "current_provider_git_blobs": {
+    "include/bsp/native_renderer_container_lifetime.hpp": "823aa3b23025260643010cde9ceea51413146b3f",
+    "src/native_renderer_container_lifetime.cpp": "aa8e9644047e06de99d85c6c23ba20918178a79b",
+    "include/bsp/singleton_lifetime.hpp": "4d10f6c53a3b9be4745776df443f340ea1769936",
+    "src/singleton_lifetime.cpp": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+  },
+  "provider_abi": [
+    {
+      "source": "reserve_native_renderer_records16_00b228b0",
+      "abi": "void __fastcall(void* actual_header, uint32_t unused_edx, int32_t requested_capacity)"
+    },
+    {
+      "source": "reserve_native_renderer_records20_00b22940",
+      "abi": "void __fastcall(void* actual_header, uint32_t unused_edx, int32_t requested_capacity)"
+    },
+    {
+      "source": "reserve_native_renderer_records24_00b229d0",
+      "abi": "void __fastcall(void* actual_header, uint32_t unused_edx, int32_t requested_capacity)"
+    },
+    {
+      "source": "reserve_native_renderer_records40_00b22a70",
+      "abi": "void __fastcall(void* actual_header, uint32_t unused_edx, int32_t requested_capacity)"
+    },
+    {
+      "source": "singleton_lifetime_free",
+      "abi": "void(void*) noexcept"
+    }
+  ],
+  "routines": [
+    {
+      "address": "00b29ba0",
+      "name": "destroy_native_renderer_records16_00b29ba0",
+      "end_exclusive": "00b29bdd",
+      "length": 61,
+      "reserve": "00b228b0",
+      "stride": 16,
+      "parent_header": "1cf4",
+      "sha256": "4689aab48c1feeab5707ac08d884f04ace81958e10e753073d930654ecd12b58",
+      "live_matches_installed_pe": true,
+      "live_matches_historical": true,
+      "original_abi": "ECX=actual raw 0Ch header; plain RET; no semantic result"
+    },
+    {
+      "address": "00b29be0",
+      "name": "destroy_native_renderer_records20_00b29be0",
+      "end_exclusive": "00b29c1d",
+      "length": 61,
+      "reserve": "00b22940",
+      "stride": 20,
+      "parent_header": "1d00",
+      "sha256": "edf79defb82deaf385932e77037a156a20c14434996bb6b6a792a5cf67568a93",
+      "live_matches_installed_pe": true,
+      "live_matches_historical": true,
+      "original_abi": "ECX=actual raw 0Ch header; plain RET; no semantic result"
+    },
+    {
+      "address": "00b29c20",
+      "name": "destroy_native_renderer_records24_00b29c20",
+      "end_exclusive": "00b29c5d",
+      "length": 61,
+      "reserve": "00b229d0",
+      "stride": 24,
+      "parent_header": "1d0c",
+      "sha256": "ba9958ce42358467f7149e3ab9b505dabe3d109b8313606f47e7676a860a42f2",
+      "live_matches_installed_pe": true,
+      "live_matches_historical": true,
+      "original_abi": "ECX=actual raw 0Ch header; plain RET; no semantic result"
+    },
+    {
+      "address": "00b29c60",
+      "name": "destroy_native_renderer_records40_00b29c60",
+      "end_exclusive": "00b29c9d",
+      "length": 61,
+      "reserve": "00b22a70",
+      "stride": 40,
+      "parent_header": "1d18",
+      "sha256": "9bfc359fe410310c82c6a11692a08991b98c59a1ec94ba8d12cd1c954bd1ceaf",
+      "live_matches_installed_pe": true,
+      "live_matches_historical": true,
+      "original_abi": "ECX=actual raw 0Ch header; plain RET; no semantic result"
+    }
+  ],
+  "native_byte_receipt": {
+    "span_count": 4,
+    "total_bytes": 244,
+    "aggregate_sha256": "54530d164312b67eb38615529917296520db4a1236381af2f1465782c280fba8",
+    "all_match": true
+  },
+  "external_calls": [
+    {
+      "function": "00b29ba0",
+      "address": "00b29bab",
+      "native": "00b228b0",
+      "source": "matching reserve; pushed request 0, EDX ignored"
+    },
+    {
+      "function": "00b29ba0",
+      "address": "00b29bd3",
+      "native": "00bf6989",
+      "source": "shared free; current data captured before count-zero store"
+    },
+    {
+      "function": "00b29be0",
+      "address": "00b29beb",
+      "native": "00b22940",
+      "source": "matching reserve; pushed request 0, EDX ignored"
+    },
+    {
+      "function": "00b29be0",
+      "address": "00b29c13",
+      "native": "00bf6989",
+      "source": "shared free; current data captured before count-zero store"
+    },
+    {
+      "function": "00b29c20",
+      "address": "00b29c2b",
+      "native": "00b229d0",
+      "source": "matching reserve; pushed request 0, EDX ignored"
+    },
+    {
+      "function": "00b29c20",
+      "address": "00b29c53",
+      "native": "00bf6989",
+      "source": "shared free; current data captured before count-zero store"
+    },
+    {
+      "function": "00b29c60",
+      "address": "00b29c6b",
+      "native": "00b22a70",
+      "source": "matching reserve; pushed request 0, EDX ignored"
+    },
+    {
+      "function": "00b29c60",
+      "address": "00b29c93",
+      "native": "00bf6989",
+      "source": "shared free; current data captured before count-zero store"
+    }
+  ],
+  "exact_semantics": [
+    "Interpret header +08 as signed capacity; if negative, call the matching reserve with request zero.",
+    "After any returning reserve, repeatedly read and decrement the current signed count while it is positive.",
+    "Capture the current data pointer, publish count zero, then free the captured pointer.",
+    "Leave data-pointer and capacity bits unchanged after the free; the pointer is stale.",
+    "Do not destroy records, clear data, store capacity, free the header, add rollback, or add fallback cleanup.",
+    "A reserve failure prevents the later count/free schedule and retains provider effects already performed."
+  ],
+  "ghidra": {
+    "mode": "read_only",
+    "live_function_count": 64146,
+    "snapshot_function_count": 64146,
+    "complete_tails": [
+      "00b29bd8..00b29bdc",
+      "00b29c18..00b29c1c",
+      "00b29c58..00b29c5c",
+      "00b29c98..00b29c9c"
+    ],
+    "listing_repairs_required": false,
+    "register_or_x87_recovery_required": false
+  },
+  "validation": {
+    "source_platform_gate": "MSVC Win32 enforced by header; static_assert(sizeof(void*) == 4)",
+    "seed_verification": "8/8 live ranges match installed PE",
+    "build": "scripts/build.ps1 passed after merging main b19485313; MSVC Win32 Release /W4 /WX /fp:strict and /MD project contract",
+    "ctests": "3/3 passed: reconstructed_math, native_math_differential, tool_tests",
+    "fixture": "fresh /MD /O2 /W4 /WX /fp:strict relink with /MANIFEST:EMBED passed all 16 original-body/source postimage comparisons",
+    "fixture_cases": "each body: positive count, signed-negative count, negative-capacity reserve/reallocation, empty/null storage",
+    "fixture_bindings": "eight CALL operands rebound only to the four current substantive reserve providers and singleton_lifetime_free",
+    "runtime": "loaded Win32 ucrtbase.dll and vcruntime140.dll report PE machine 014c",
+    "historical_call_gate": "reports/native_renderer_record_destroy.json: 8 call rows checked, 0 failed",
+    "fresh_call_gate": "reports/native_renderer_record_destroy_main_r35.json: 8 call rows checked, 0 failed"
+  },
+  "artifact_archive": {
+    "path": "local/evidence-r35/renderer-record-destroy-r35-final.zip",
+    "bytes": 13130768,
+    "sha256": "fc870346f17da0b19fbba8b971a6689a8258a4355d8dd4940d178a4894363305",
+    "manifest_entries": 26,
+    "manifest": [
+      {
+        "path": "include/bsp/native_renderer_record_destroy.hpp",
+        "bytes": 1552,
+        "sha256": "e9432baea13b84832dc4068b34fed44ba935418bc0ad4220672b875490e7dc73"
+      },
+      {
+        "path": "src/native_renderer_record_destroy.cpp",
+        "bytes": 1497,
+        "sha256": "66f42cfdb2cadde7cafbbc4b82cc796263ad80a7eefbaa2673d06a19aead03be"
+      },
+      {
+        "path": "docs/NATIVE_RENDERER_RECORD_DESTROY.md",
+        "bytes": 4432,
+        "sha256": "c6fc3480cbba2f7159fe13fdacf2e1e15eba10edc3c925bbb0e883fff0ddbe7a"
+      },
+      {
+        "path": "reports/native_renderer_record_destroy.json",
+        "bytes": 37481,
+        "sha256": "b48f9e412da8dd0ced3fd9914705830408f84c41dca8a84f7ba34a146cf075b9"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 148529,
+        "sha256": "824a7bab14bfa85efbd0120a492a6e0ad21430da40e6e3d9614f7b80759cf091"
+      },
+      {
+        "path": "include/bsp/native_renderer_container_lifetime.hpp",
+        "bytes": 2121,
+        "sha256": "680c430daa67600cb13a54e8147eac9ad402fa6e84f2f45879253a1ee40cb0d7"
+      },
+      {
+        "path": "src/native_renderer_container_lifetime.cpp",
+        "bytes": 3507,
+        "sha256": "4f20fe408411e00afed498f0542bfe94be0a66024c89dc7782448de025ff9cd1"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "local/r35_renderer_record_evidence.py",
+        "bytes": 2483,
+        "sha256": "f9af18426cfde269803ca68a37bb86dd166c2a517ecad688e028d9c0633d1a32"
+      },
+      {
+        "path": "local/r35_renderer_record_byte_receipt.json",
+        "bytes": 2146,
+        "sha256": "7ad52c5c8070a27e921dd9c21c4431953e14a96e87746081a22343629526d0eb"
+      },
+      {
+        "path": "local/native_renderer_record_reference.hpp",
+        "bytes": 1477,
+        "sha256": "fbccd2cafc177421c24a48acf679957feb36c8d0b0bb025102a984ae3870a08d"
+      },
+      {
+        "path": "local/native_renderer_record_probe.cpp",
+        "bytes": 5912,
+        "sha256": "632b4a480b36b76d9001c12b1b18fa2c3506f4f3b7d47df8e764bfc31873e3c4"
+      },
+      {
+        "path": "local/build_native_renderer_record_probe.ps1",
+        "bytes": 1816,
+        "sha256": "837dcb5ec16ce0f99777cc8c5b9f759c2e606e31e5612ace0d9f3f55d973709c"
+      },
+      {
+        "path": "local/native_renderer_record_probe.exe",
+        "bytes": 15872,
+        "sha256": "e72ba9f0fdec6e395a3b29f05e99a31566b8e4d31dbff2c41d0056335e0f7c0b"
+      },
+      {
+        "path": "local/native_renderer_record_probe.obj",
+        "bytes": 26305,
+        "sha256": "3113bc9651a519c2d4b605c5793efd6ea6f5215c26920d2eaccdf2300a4efc5d"
+      },
+      {
+        "path": "local/native_renderer_record_tools.json",
+        "bytes": 1456,
+        "sha256": "e28c021ed9ceff45e92f5da4d418b12753a294f0ba4b7f836fb16d22d5f55540"
+      },
+      {
+        "path": "local/r35_renderer_record_build.log",
+        "bytes": 3088,
+        "sha256": "ccc3d650130de7a2db16fef8664ad70e48cfbf4644015cc0db9772d6b1240468"
+      },
+      {
+        "path": "local/r35_renderer_record_probe.log",
+        "bytes": 765,
+        "sha256": "dd3c572c799d9c83ec7b57f94b50454c48fcff037413a6ae23dd1a027d8721ec"
+      },
+      {
+        "path": "local/r35_renderer_record_seeds.log",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "path": "local/r35_renderer_record_calls.log",
+        "bytes": 76,
+        "sha256": "121af8a2767f5b5e8c2ebb651556c65537168d32e8d08a9cf0ab274c6c101b3e"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_record_destroy.obj",
+        "bytes": 4267,
+        "sha256": "850674dd22c193f5d8fcee0a94b2286d916319389a42a8428cc328c0d9d55aec"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63354770,
+        "sha256": "8249896dbccc55979178c9539f45ce088803dfbc3428a99610922f7680cd48d2"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "bytes": 1820,
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "bytes": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612"
+      },
+      {
+        "path": "tools/verify_report_calls.py",
+        "bytes": 9233,
+        "sha256": "396e6d544dece7c9551ff10ee15ab234a0ad1c4a339fd118ddec20de1bb7a8cd"
+      }
+    ]
+  },
+  "evidence_limits": [
+    "Source uses the current CRT and private frames; original FH3/SEH/static-CRT exception identity is not established.",
+    "Allocation failure ordering is source- and assembly-checked but was not fault-injected.",
+    "Raw extents, lifetimes, allocator ownership, and wrapping-address validity remain caller preconditions.",
+    "The fixture proves tested raw-header postimages after rebinding only eight calls; it does not prove every original caller or register state.",
+    "No renderer owner or renderer constructor is reconstructed by this packet.",
+    "No game runtime or gameplay validation was performed."
+  ],
+  "primary_integration": {
+    "source_merge": "722281af7",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "log": "local/r35_record_destroy_integration.log",
+    "review": "Full source/header and provider ABI reviewed; all26 immutable worker files verified and original ZIP retained.",
+    "worker_archive_retained": "local/evidence-r35/renderer-record-destroy-r35-final.zip",
+    "archive_sha256": "fc870346f17da0b19fbba8b971a6689a8258a4355d8dd4940d178a4894363305",
+    "fixture_scope": "Fresh worker fixture retained; primary combined build/CTests rerun, no primary fixture re-execution."
+  },
+  "primary_archive": {
+    "path": "local/evidence-r35/renderer-record-destroy-main-r35.zip",
+    "sha256": "14215492b8891f496aa051aaa2672b00ec1ed5d492d2e6df08cc2306971378f1",
+    "files": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "484923aa0d80806579dabec130b4a8c7ed80d5f8a414b56a48801895c5eec922"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_record_destroy.obj",
+        "sha256": "60f04e975c5fe2abcb9077a1fc98a4f55125867841077ad28f8a2dd684bad20c"
+      },
+      {
+        "path": "local/r35_record_destroy_integration.log",
+        "sha256": "f54a2c0e877409367e46dd8406b5f01f1b86db5d516074541f10bca5e7dc889f"
+      },
+      {
+        "path": "local/r35_record_destroy_annotations.log",
+        "sha256": "9b63c54f68cdc462eb82ada0f35dbb5f48f8d167970d0cd7ceafa343a29f3f5f"
+      },
+      {
+        "path": "local/r35_record_destroy_exports.log",
+        "sha256": "8b00d51f25fb5baea7ed933c4862d3953a1f26555a2b91345a730ae99cd336c6"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T102811Z.json",
+        "sha256": "944bd431ca6000f092a1f5ea446893dd228297e49f503410ee453368ff661ddb"
+      },
+      {
+        "path": "include/bsp/native_renderer_record_destroy.hpp",
+        "sha256": "e9432baea13b84832dc4068b34fed44ba935418bc0ad4220672b875490e7dc73"
+      },
+      {
+        "path": "src/native_renderer_record_destroy.cpp",
+        "sha256": "66f42cfdb2cadde7cafbbc4b82cc796263ad80a7eefbaa2673d06a19aead03be"
+      }
+    ]
+  },
+  "annotation_status": {
+    "status": "Primary retained existing live names, extended ledger evidence, preserved prior annotations, saved project and refreshed four exports.",
+    "prior_annotations": [
+      {
+        "address": "00b29ba0",
+        "before": {
+          "address": "00b29ba0",
+          "function_name": "BSP_RendererRecords16_Destroy",
+          "comment": "[BSP reconstruction 00b29ba0]\nHypothesis, not a recovered symbol. Negative capacity calls B228B0 reserve0. Decrement current positive count, capture current data BEFORE final count0 store, then free captured data. Pointer/capacity remain stale. Four-case original/source postimage fixture passed; allocation failure is static evidence only. Integrated source at33ac99a2 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_RECORD_DESTROY.md; reports/native_renderer_record_destroy.json. Original whole-owner FH3/SEH, complete renderer adoption and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "00b29ba0",
+          "name": "BSP_RendererRecords16_Destroy",
+          "evidence": "R35 unchanged four-entry source reuse from10870d920: four complete61B raw-header destructors,244B total. Preserve signed negative-capacity reserve0, current-count decrements, capture current data before zero-count store, free captured pointer, stale pointer/capacity. Current main reviewed x87 reserves and singleton providers retained. Fresh live/PE/historical match and8 call rows pass; unchanged fixture freshly passes16 postimage cases. Worker and combined main strict /MD builds and three CTests pass. Parent reviewed full source/header and provider ABI, verified all26 archived artifacts. Original native FH3/SEH, whole binary replacement and gameplay unproved. reports/native_renderer_record_destroy_main_r35.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b29be0",
+        "before": {
+          "address": "00b29be0",
+          "function_name": "BSP_RendererRecords20_Destroy",
+          "comment": "[BSP reconstruction 00b29be0]\nHypothesis, not a recovered symbol. Negative capacity calls B22940 reserve0. Decrement current positive count, capture current data BEFORE final count0 store, then free captured data. Pointer/capacity remain stale. Four-case original/source postimage fixture passed; allocation failure is static evidence only. Integrated source at33ac99a2 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_RECORD_DESTROY.md; reports/native_renderer_record_destroy.json. Original whole-owner FH3/SEH, complete renderer adoption and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "00b29be0",
+          "name": "BSP_RendererRecords20_Destroy",
+          "evidence": "R35 unchanged four-entry source reuse from10870d920: four complete61B raw-header destructors,244B total. Preserve signed negative-capacity reserve0, current-count decrements, capture current data before zero-count store, free captured pointer, stale pointer/capacity. Current main reviewed x87 reserves and singleton providers retained. Fresh live/PE/historical match and8 call rows pass; unchanged fixture freshly passes16 postimage cases. Worker and combined main strict /MD builds and three CTests pass. Parent reviewed full source/header and provider ABI, verified all26 archived artifacts. Original native FH3/SEH, whole binary replacement and gameplay unproved. reports/native_renderer_record_destroy_main_r35.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b29c20",
+        "before": {
+          "address": "00b29c20",
+          "function_name": "BSP_RendererRecords24_Destroy",
+          "comment": "[BSP reconstruction 00b29c20]\nHypothesis, not a recovered symbol. Negative capacity calls B229D0 reserve0. Decrement current positive count, capture current data BEFORE final count0 store, then free captured data. Pointer/capacity remain stale. Four-case original/source postimage fixture passed; allocation failure is static evidence only. Integrated source at33ac99a2 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_RECORD_DESTROY.md; reports/native_renderer_record_destroy.json. Original whole-owner FH3/SEH, complete renderer adoption and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "00b29c20",
+          "name": "BSP_RendererRecords24_Destroy",
+          "evidence": "R35 unchanged four-entry source reuse from10870d920: four complete61B raw-header destructors,244B total. Preserve signed negative-capacity reserve0, current-count decrements, capture current data before zero-count store, free captured pointer, stale pointer/capacity. Current main reviewed x87 reserves and singleton providers retained. Fresh live/PE/historical match and8 call rows pass; unchanged fixture freshly passes16 postimage cases. Worker and combined main strict /MD builds and three CTests pass. Parent reviewed full source/header and provider ABI, verified all26 archived artifacts. Original native FH3/SEH, whole binary replacement and gameplay unproved. reports/native_renderer_record_destroy_main_r35.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b29c60",
+        "before": {
+          "address": "00b29c60",
+          "function_name": "BSP_RendererRecords40_Destroy",
+          "comment": "[BSP reconstruction 00b29c60]\nHypothesis, not a recovered symbol. Negative capacity calls B22A70 reserve0. Decrement current positive count, capture current data BEFORE final count0 store, then free captured data. Pointer/capacity remain stale. Four-case original/source postimage fixture passed; allocation failure is static evidence only. Integrated source at33ac99a2 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_RECORD_DESTROY.md; reports/native_renderer_record_destroy.json. Original whole-owner FH3/SEH, complete renderer adoption and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "00b29c60",
+          "name": "BSP_RendererRecords40_Destroy",
+          "evidence": "R35 unchanged four-entry source reuse from10870d920: four complete61B raw-header destructors,244B total. Preserve signed negative-capacity reserve0, current-count decrements, capture current data before zero-count store, free captured pointer, stale pointer/capacity. Current main reviewed x87 reserves and singleton providers retained. Fresh live/PE/historical match and8 call rows pass; unchanged fixture freshly passes16 postimage cases. Worker and combined main strict /MD builds and three CTests pass. Parent reviewed full source/header and provider ABI, verified all26 archived artifacts. Original native FH3/SEH, whole binary replacement and gameplay unproved. reports/native_renderer_record_destroy_main_r35.json."
+        },
+        "status": "applied"
+      }
+    ]
+  }
+}

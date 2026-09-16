@@ -128,36 +128,119 @@
     "ghidra_function_count": 64146,
     "live_equals_PE": true,
     "spans": [
-      ["00B25CF0", 80, "7cf8137663c8e2568c9ce4c3dd10d16fd355791d68d5a0d7661661e73cc646f9", "owned"],
-      ["00B25D40", 80, "aab7fb366dc9ba54dbf4419460e198a660b86462f11c17368df92941e7d61121", "owned"],
-      ["00B22E90", 80, "3107577e96b9747d4ddb223bff1085111b2486aa193cbae5f9cdf6409f7ce78e", "owned"],
-      ["00B29B60", 23, "d25aee3f94d45eb9e8522755cb79d9aff6c46b26f10e08a8a25c6dc2cd9d50e8", "owned"],
-      ["00B29B80", 23, "12929bea011798e3ac9cf7058f4a1a03e0fabd689a8e12cf7827ef8f3bc01706", "owned"],
-      ["00B28090", 23, "eb78c0cf6e275f63e47527785a337fa8eb8f8127f6eb8091f5e19b5c2c9e3243", "owned"],
-      ["00B22DD0", 95, "b32d7acad6820ca5a72905fb1f712945fd3a8360186307ccba25ac24099647e1", "dependency"],
-      ["00B22E30", 95, "1d2d48fb4446e930c3cd3769085811f152da6a9f9210cb237453bf0c18d13da6", "dependency"],
-      ["00B22650", 95, "a4546dc9aef64a47544db6414582ba04d65b81cef8b332353b0c15d14ef83c98", "dependency"],
-      ["00B25940", 80, "1de73759a45a6858f2823a68bd79a9f5f781393cd9dbab2358bfe2a39dd36f00", "dependency"],
-      ["00B29B20", 23, "0e5f6a014028bb11c0b90eb8c6375f038a7b478e9e963b8c09689e907470c687", "dependency"],
-      ["00B22D10", 95, "70c57d1530f440247d5a72624ff0c7567d13328133833ecaf2f0d260013034b6", "dependency"]
+      [
+        "00B25CF0",
+        80,
+        "7cf8137663c8e2568c9ce4c3dd10d16fd355791d68d5a0d7661661e73cc646f9",
+        "owned"
+      ],
+      [
+        "00B25D40",
+        80,
+        "aab7fb366dc9ba54dbf4419460e198a660b86462f11c17368df92941e7d61121",
+        "owned"
+      ],
+      [
+        "00B22E90",
+        80,
+        "3107577e96b9747d4ddb223bff1085111b2486aa193cbae5f9cdf6409f7ce78e",
+        "owned"
+      ],
+      [
+        "00B29B60",
+        23,
+        "d25aee3f94d45eb9e8522755cb79d9aff6c46b26f10e08a8a25c6dc2cd9d50e8",
+        "owned"
+      ],
+      [
+        "00B29B80",
+        23,
+        "12929bea011798e3ac9cf7058f4a1a03e0fabd689a8e12cf7827ef8f3bc01706",
+        "owned"
+      ],
+      [
+        "00B28090",
+        23,
+        "eb78c0cf6e275f63e47527785a337fa8eb8f8127f6eb8091f5e19b5c2c9e3243",
+        "owned"
+      ],
+      [
+        "00B22DD0",
+        95,
+        "b32d7acad6820ca5a72905fb1f712945fd3a8360186307ccba25ac24099647e1",
+        "dependency"
+      ],
+      [
+        "00B22E30",
+        95,
+        "1d2d48fb4446e930c3cd3769085811f152da6a9f9210cb237453bf0c18d13da6",
+        "dependency"
+      ],
+      [
+        "00B22650",
+        95,
+        "a4546dc9aef64a47544db6414582ba04d65b81cef8b332353b0c15d14ef83c98",
+        "dependency"
+      ],
+      [
+        "00B25940",
+        80,
+        "1de73759a45a6858f2823a68bd79a9f5f781393cd9dbab2358bfe2a39dd36f00",
+        "dependency"
+      ],
+      [
+        "00B29B20",
+        23,
+        "0e5f6a014028bb11c0b90eb8c6375f038a7b478e9e963b8c09689e907470c687",
+        "dependency"
+      ],
+      [
+        "00B22D10",
+        95,
+        "70c57d1530f440247d5a72624ff0c7567d13328133833ecaf2f0d260013034b6",
+        "dependency"
+      ]
     ],
     "equivalence_groups": [
       {
-        "members": ["00B22DD0", "00B22E30", "00B22650", "00B22D10"],
+        "members": [
+          "00B22DD0",
+          "00B22E30",
+          "00B22650",
+          "00B22D10"
+        ],
         "length": 95,
-        "masked_call_offsets": [32, 76],
+        "masked_call_offsets": [
+          32,
+          76
+        ],
         "all_other_bytes_identical": true
       },
       {
-        "members": ["00B25CF0", "00B25D40", "00B22E90", "00B25940"],
+        "members": [
+          "00B25CF0",
+          "00B25D40",
+          "00B22E90",
+          "00B25940"
+        ],
         "length": 80,
-        "masked_call_offsets": [14],
+        "masked_call_offsets": [
+          14
+        ],
         "all_other_bytes_identical": true
       },
       {
-        "members": ["00B29B60", "00B29B80", "00B28090", "00B29B20"],
+        "members": [
+          "00B29B60",
+          "00B29B80",
+          "00B28090",
+          "00B29B20"
+        ],
         "length": 23,
-        "masked_call_offsets": [5, 13],
+        "masked_call_offsets": [
+          5,
+          13
+        ],
         "all_other_bytes_identical": true
       }
     ],
@@ -231,5 +314,142 @@
     "The source exposes equivalent C++ entry points and is not proven as a drop-in original ABI, FH3/SEH or private-frame replacement.",
     "No renderer startup, reset/recreation, application integration, game execution or gameplay result is claimed.",
     "No Ghidra or shared-ledger mutation was performed in this packet."
-  ]
+  ],
+  "primary_integration": {
+    "source_merge": "b19485313",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "log": "local/r35_record_array_integration.log",
+    "review": "Full source/header and provider ABI reviewed; all21 immutable worker files verified and packed in primary ZIP.",
+    "worker_archive_retained": "local/evidence-r35/renderer-record-array-cleanup-r35.zip",
+    "archive_sha256": "fd0732ac4251818ddfe37c38b3d764351010bfbd5bfee4d73cc1b4442941a224",
+    "fixture_scope": "Fresh worker fixture retained; primary combined build/CTests rerun, no primary fixture re-execution."
+  },
+  "primary_archive": {
+    "path": "local/evidence-r35/renderer-record-array-main-r35.zip",
+    "sha256": "babd98952f3e82d44e6b3d7f83b6a5698ae7f904a3fa850f6f867f850690baf7",
+    "files": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "5b7af6c1443fb87b8c44a4dc4164c1d1cf3e4f84999d90096874477b88a5f4cd"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_record_array_cleanup.obj",
+        "sha256": "279ef1f246f166097b163f6e0f59e1aec928fd0ecccef5aa5ce05a696a8d0a00"
+      },
+      {
+        "path": "local/r35_record_array_integration.log",
+        "sha256": "bddb96840f1447139b45a88eeb34982db9df8022799d6fe707611d3d11243160"
+      },
+      {
+        "path": "local/r35_record_array_annotations.log",
+        "sha256": "abde1641c6094b2663a3da60b1d2d2d63bb8dd8a1f3831d6bda9750e4093ff1d"
+      },
+      {
+        "path": "local/r35_record_array_exports.log",
+        "sha256": "101ac22dde5a4c8909cc42ba05ab42413d2ebb6348029febb58de1a39ba8a309"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T102344Z.json",
+        "sha256": "a82c64a64ceb1569b1bc8eaa67454fa9eafa07174e0c68adc5389578c332b098"
+      },
+      {
+        "path": "include/bsp/native_renderer_record_array_cleanup.hpp",
+        "sha256": "197950ee4652d37af66e6eed0e6e0cbe5261b738100a9102a779c62a5a19099b"
+      },
+      {
+        "path": "src/native_renderer_record_array_cleanup.cpp",
+        "sha256": "a453648b670e335eb7cf454bcaebddd7bb598c058e65ddb51f558ef10e7f26fd"
+      }
+    ]
+  },
+  "annotation_status": {
+    "status": "Primary retained existing live names, extended ledger evidence, preserved prior annotations, saved project and refreshed six exports.",
+    "prior_annotations": [
+      {
+        "address": "00b22e90",
+        "before": {
+          "address": "00b22e90",
+          "function_name": "BSP_RendererThirdStatePointerArray_Resize",
+          "comment": "[BSP reconstruction 00b22e90]\nHypothesis, not a recovered symbol. Three complete original reserve/resize/destructor chains versus six distinct source entries: 21 comparisons. Full instruction equivalence justifies shared raw providers. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only. Integrated source at87dad090 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_RECORD_ARRAY_CLEANUP.md; reports/native_renderer_record_array_cleanup.json. Original private-frame/CRT/FH3/SEH identity, full renderer adoption and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "00b22e90",
+          "name": "BSP_RendererThirdStatePointerArray_Resize",
+          "evidence": "R35 unchanged six-entry source reuse from7908392e9. Three resizes delegate to current B25940 and three destructors to B29B20 after full normalized native instruction equality including providers. Current raw0Ch headers, signed bounds, current storage reloads, zero initialization, resize0 before current data free, stale header and no pointee work retained. Twelve fresh live/PE spans792B (309B owned,483B providers),20 direct-call rows pass; original archive48 rows and fresh21 artifact hashes verified. Unchanged retained fixture freshly passes21 comparisons; worker and combined main strict /MD builds and three CTests pass. Parent reviewed full source/header and provider ABI. Original FH3/SEH, binary replacement and gameplay unproved. reports/native_renderer_record_array_cleanup_main_r35.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b25cf0",
+        "before": {
+          "address": "00b25cf0",
+          "function_name": "BSP_RendererVertexShaderPointerArray_Resize",
+          "comment": "[BSP reconstruction 00b25cf0]\nHypothesis, not a recovered symbol. Three complete original reserve/resize/destructor chains versus six distinct source entries: 21 comparisons. Full instruction equivalence justifies shared raw providers. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only. Integrated source at87dad090 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_RECORD_ARRAY_CLEANUP.md; reports/native_renderer_record_array_cleanup.json. Original private-frame/CRT/FH3/SEH identity, full renderer adoption and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "00b25cf0",
+          "name": "BSP_RendererVertexShaderPointerArray_Resize",
+          "evidence": "R35 unchanged six-entry source reuse from7908392e9. Three resizes delegate to current B25940 and three destructors to B29B20 after full normalized native instruction equality including providers. Current raw0Ch headers, signed bounds, current storage reloads, zero initialization, resize0 before current data free, stale header and no pointee work retained. Twelve fresh live/PE spans792B (309B owned,483B providers),20 direct-call rows pass; original archive48 rows and fresh21 artifact hashes verified. Unchanged retained fixture freshly passes21 comparisons; worker and combined main strict /MD builds and three CTests pass. Parent reviewed full source/header and provider ABI. Original FH3/SEH, binary replacement and gameplay unproved. reports/native_renderer_record_array_cleanup_main_r35.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b25d40",
+        "before": {
+          "address": "00b25d40",
+          "function_name": "BSP_RendererPixelShaderPointerArray_Resize",
+          "comment": "[BSP reconstruction 00b25d40]\nHypothesis, not a recovered symbol. Three complete original reserve/resize/destructor chains versus six distinct source entries: 21 comparisons. Full instruction equivalence justifies shared raw providers. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only. Integrated source at87dad090 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_RECORD_ARRAY_CLEANUP.md; reports/native_renderer_record_array_cleanup.json. Original private-frame/CRT/FH3/SEH identity, full renderer adoption and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "00b25d40",
+          "name": "BSP_RendererPixelShaderPointerArray_Resize",
+          "evidence": "R35 unchanged six-entry source reuse from7908392e9. Three resizes delegate to current B25940 and three destructors to B29B20 after full normalized native instruction equality including providers. Current raw0Ch headers, signed bounds, current storage reloads, zero initialization, resize0 before current data free, stale header and no pointee work retained. Twelve fresh live/PE spans792B (309B owned,483B providers),20 direct-call rows pass; original archive48 rows and fresh21 artifact hashes verified. Unchanged retained fixture freshly passes21 comparisons; worker and combined main strict /MD builds and three CTests pass. Parent reviewed full source/header and provider ABI. Original FH3/SEH, binary replacement and gameplay unproved. reports/native_renderer_record_array_cleanup_main_r35.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b28090",
+        "before": {
+          "address": "00b28090",
+          "function_name": "BSP_RendererThirdStatePointerArray_Destroy",
+          "comment": "[BSP reconstruction 00b28090]\nHypothesis, not a recovered symbol. Three complete original reserve/resize/destructor chains versus six distinct source entries: 21 comparisons. Full instruction equivalence justifies shared raw providers. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only. Integrated source at87dad090 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_RECORD_ARRAY_CLEANUP.md; reports/native_renderer_record_array_cleanup.json. Original private-frame/CRT/FH3/SEH identity, full renderer adoption and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "00b28090",
+          "name": "BSP_RendererThirdStatePointerArray_Destroy",
+          "evidence": "R35 unchanged six-entry source reuse from7908392e9. Three resizes delegate to current B25940 and three destructors to B29B20 after full normalized native instruction equality including providers. Current raw0Ch headers, signed bounds, current storage reloads, zero initialization, resize0 before current data free, stale header and no pointee work retained. Twelve fresh live/PE spans792B (309B owned,483B providers),20 direct-call rows pass; original archive48 rows and fresh21 artifact hashes verified. Unchanged retained fixture freshly passes21 comparisons; worker and combined main strict /MD builds and three CTests pass. Parent reviewed full source/header and provider ABI. Original FH3/SEH, binary replacement and gameplay unproved. reports/native_renderer_record_array_cleanup_main_r35.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b29b60",
+        "before": {
+          "address": "00b29b60",
+          "function_name": "BSP_RendererVertexShaderPointerArray_Destroy",
+          "comment": "[BSP reconstruction 00b29b60]\nHypothesis, not a recovered symbol. Three complete original reserve/resize/destructor chains versus six distinct source entries: 21 comparisons. Full instruction equivalence justifies shared raw providers. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only. Integrated source at87dad090 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_RECORD_ARRAY_CLEANUP.md; reports/native_renderer_record_array_cleanup.json. Original private-frame/CRT/FH3/SEH identity, full renderer adoption and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "00b29b60",
+          "name": "BSP_RendererVertexShaderPointerArray_Destroy",
+          "evidence": "R35 unchanged six-entry source reuse from7908392e9. Three resizes delegate to current B25940 and three destructors to B29B20 after full normalized native instruction equality including providers. Current raw0Ch headers, signed bounds, current storage reloads, zero initialization, resize0 before current data free, stale header and no pointee work retained. Twelve fresh live/PE spans792B (309B owned,483B providers),20 direct-call rows pass; original archive48 rows and fresh21 artifact hashes verified. Unchanged retained fixture freshly passes21 comparisons; worker and combined main strict /MD builds and three CTests pass. Parent reviewed full source/header and provider ABI. Original FH3/SEH, binary replacement and gameplay unproved. reports/native_renderer_record_array_cleanup_main_r35.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b29b80",
+        "before": {
+          "address": "00b29b80",
+          "function_name": "BSP_RendererPixelShaderPointerArray_Destroy",
+          "comment": "[BSP reconstruction 00b29b80]\nHypothesis, not a recovered symbol. Three complete original reserve/resize/destructor chains versus six distinct source entries: 21 comparisons. Full instruction equivalence justifies shared raw providers. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only. Integrated source at87dad090 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_RECORD_ARRAY_CLEANUP.md; reports/native_renderer_record_array_cleanup.json. Original private-frame/CRT/FH3/SEH identity, full renderer adoption and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "00b29b80",
+          "name": "BSP_RendererPixelShaderPointerArray_Destroy",
+          "evidence": "R35 unchanged six-entry source reuse from7908392e9. Three resizes delegate to current B25940 and three destructors to B29B20 after full normalized native instruction equality including providers. Current raw0Ch headers, signed bounds, current storage reloads, zero initialization, resize0 before current data free, stale header and no pointee work retained. Twelve fresh live/PE spans792B (309B owned,483B providers),20 direct-call rows pass; original archive48 rows and fresh21 artifact hashes verified. Unchanged retained fixture freshly passes21 comparisons; worker and combined main strict /MD builds and three CTests pass. Parent reviewed full source/header and provider ABI. Original FH3/SEH, binary replacement and gameplay unproved. reports/native_renderer_record_array_cleanup_main_r35.json."
+        },
+        "status": "applied"
+      }
+    ]
+  }
 }

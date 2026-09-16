@@ -1,0 +1,111 @@
+{
+  "packet": "renderer_generated_model_dependency_frontier_r36",
+  "status": "dependency_audit_only_no_generated_model_source_on_main",
+  "baseline": "43cff61ab",
+  "orch5_tip": "769bdc3e3",
+  "body": {
+    "address": "00b4c700",
+    "bytes": 462,
+    "assembly_instructions_reviewed": 169,
+    "x87": "B4C778 FLD D7A260; B4C785 FST [ESP+4]; B4C78D FSTP [ESP]; source sentinel_pair schedule retained in archived draft."
+  },
+  "original_artifacts": {
+    "entries_verified": 4423,
+    "manifest_sha256": "8862fb2fb8562206e737861b603ac048d054508f486689e6ea5bc0c0dd747251",
+    "primary_zip": "local/evidence-r36/generated-model-original-r36.zip",
+    "zip_sha256": "e3262fa5ae150ba51ea74fd38aca562357d7af1e835e3f19438e0c661b747428"
+  },
+  "observed_dependency_mismatches": [
+    {
+      "files": [
+        "include/bsp/native_physical_buffer_owner.hpp",
+        "include/bsp/native_hardware_layout_owner.hpp"
+      ],
+      "main": "SingletonLifetimeDomain& actual_lifetime_01090aa0",
+      "orch5": "SoundLifetimeAccess actual_lifetime_01090aa0",
+      "effect": "Generated model requires raw AA0 identity through borrows_same_domain, absent from semantic domain. Main NativeResourceSupportLifetime already supports semantic/raw support dispatch; preserve that wrapper instead of importing the incompatible sound adapter."
+    },
+    {
+      "file": "include/bsp/native_physical_buffer_lock.hpp",
+      "main": "SingletonLifetimeDomain& for diagnostic sink",
+      "orch5": "SoundLifetimeAccess",
+      "effect": "Separate diagnostic raw-lifetime closure; resource-support wrapper cannot be substituted without a diagnostic provider."
+    },
+    {
+      "file": "include/bsp/gui_native_geometry.hpp",
+      "main": "Current explicit section/mesh acquisition structures, create_native_section_00533fa0, create_native_mesh_and_publish, register_native_material_creator; stream registration requires NativeStreamCloneServices.",
+      "orch5": "GuiNativeCreatorAcquired template, create_mesh(acquired)/create_section(acquired), direct vertex/index registration overload and raw material creator overload.",
+      "effect": "Retain main acquired frames and failure semantics; reconcile narrow APIs or add equivalent current-frame operations. Do not overwrite main geometry implementation."
+    },
+    {
+      "file": "include/bsp/native_material_factory.hpp",
+      "main": "NativeMaterialFactoryAcquired with persistent unique cache frame; create_native_material_from_effect_cache_00535320.",
+      "orch5": "NativeMaterialFactoryRawContext with separately borrowed cache frame and completed output.",
+      "effect": "Use main current frame semantics and explicitly retain completed material/effect obligations; do not replace with historical provider wholesale."
+    }
+  ],
+  "raw_model_contract": "R32 proposal remains valid: explicit null actual_names/raw runtime, same AA8/AA4/AA0 reference identities and caller header address, existing raw B75030 bound checks. It is insufficient alone to admit the factory because of the provider mismatches above.",
+  "current_main_fixture_boundary": "Historical generated-model fixture only links B4C700; it executes raw mesh/section creator registration and bind-failure cleanup, not the factory normal body, raw material route or renderer. Its old acquired types also require explicit current-API adaptation.",
+  "ordered_followups": [
+    "Make physical/hardware resource-support contexts accept current NativeResourceSupportLifetime raw mode and expose precise raw AA0 identity without semantic fallback; validate existing semantic callers and raw shared-manager cleanup.",
+    "Reconcile current geometry/material acquisition frames and direct stream-registration closure while retaining main real-storage extensions.",
+    "Reapply generated-model source with additive raw model binding, then build and validate a genuine constructor/creator fixture before admitting renderer producers."
+  ],
+  "validation": {
+    "isolated_draft_commit": "c43d211b0",
+    "withdrawal_commit": "aa163cf80",
+    "draft_build": "Failed at genuine provider type/member/overload mismatches; no stubs added.",
+    "restored_build": "Strict MSVC Win32 /MD build and all3 existing CTests pass.",
+    "source_net_diff": "No generated-model source/header/CMake change remains relative to43cff61ab.",
+    "factory_executed": false,
+    "application_bound": false,
+    "ghidra_mutated_for_this_packet": false,
+    "gameplay_validated": false
+  },
+  "evidence_files": [
+    {
+      "path": "include/bsp/native_physical_buffer_owner.hpp",
+      "sha256": "6aad296c974287291b404f5ab422146128fe9e0d17c249416b49be54953aaf45"
+    },
+    {
+      "path": "include/bsp/native_physical_buffer_lock.hpp",
+      "sha256": "c921a67527c5b9018cf67cf0a36567f1a08e91bd997392a4432a63e1ab9551b2"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_owner.hpp",
+      "sha256": "ac3ee6f74b81efef4450262004533d5e9d8fd19aea1c0d24987841f6667e3ede"
+    },
+    {
+      "path": "include/bsp/gui_native_geometry.hpp",
+      "sha256": "921d2a58592986d6fd501b723fe6048ced9b20975b0c2ac4e56f921ded87392a"
+    },
+    {
+      "path": "src/gui_native_geometry.cpp",
+      "sha256": "39feddb85b2166a418b81668d38e2104becc2d65d7008819047fb4b5fe873a77"
+    },
+    {
+      "path": "include/bsp/native_material_factory.hpp",
+      "sha256": "fa8a45423c10da368d803d5df7fb583a5bc91e9f3c3ac59722607e4a95d90b71"
+    },
+    {
+      "path": "src/native_material_factory.cpp",
+      "sha256": "92261291bd48c98e561e93b0e3ca0a439e9ae88daa9510cc56a32baf0c744eb9"
+    },
+    {
+      "path": "include/bsp/native_resource_support.hpp",
+      "sha256": "4b38a43b6668da12abda910fc2aabb2145ac25aa831cb4158f072bf0dd2dbb2c"
+    },
+    {
+      "path": "local/r36_generated_model_draft.patch",
+      "sha256": "9cf75f11b9911a52ef86185a0222d768d937678f4db91103d276ce8749168d42"
+    },
+    {
+      "path": "local/r36_generated_model_build.log",
+      "sha256": "24da8b94a3a1ad6883601323a316c4f8af0d651cc131494f16612b69232da511"
+    },
+    {
+      "path": "local/r36_generated_model_restored_build.log",
+      "sha256": "57235d16f474758259161c74840ac610911a582c059566ff0994a4af3e53451d"
+    }
+  ]
+}
