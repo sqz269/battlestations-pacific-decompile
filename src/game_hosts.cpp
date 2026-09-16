@@ -1016,11 +1016,11 @@ GameStartupHost::GameStartupHost(GameHostLog& log, HINSTANCE instance,
 void GameStartupHost::exit_if_native_vfs_interrupted() noexcept {
     if (!vfs_ || !vfs_->requires_process_retention()) return;
     try {
-        log_.notef("native VFS interrupted; name-resolution failure site=%08x (0=not recorded); cleanup is unrecovered; retaining application and mapped data until process exit",
+        log_.notef("native application service interrupted; VFS failure site or resource operation entry=%08x (0=not recorded); cleanup is unrecovered; retaining application and mapped data until process exit",
             vfs_->failure_site());
         log_.close();
     } catch (...) {
-        std::fputs("bsp_game: interrupted native VFS requires process exit\n", stderr);
+        std::fputs("bsp_game: interrupted native application service requires process exit\n", stderr);
         std::fflush(stderr);
     }
     // std::exit would run the native physical-pool CRT cleanup against the

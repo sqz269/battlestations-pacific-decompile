@@ -6,6 +6,7 @@
 namespace bsp {
 struct NativeResourceRegistryDeleteBindings;
 struct NativeResourceManagerContext;
+struct NativeResourceExtraParserContexts;
 class XLiveOwnerAllocation;
 struct NativeInputBackendOwnerContext;
 struct NativeInputActionOwnerContext;
@@ -34,7 +35,7 @@ namespace game { class GameSoundRuntime; }
 // D2413C, D5B5F4, D5B5F8, D5B72C, D5B630, D68200, D68CF8, D68D04 or
 // D688B0, CFEA1C, D6418C, CF7E70, CF7E74, CE7548, D190C4, CF81CC, D68B94,
 // CFD84C, D62C18, D68EC0, D5E5DC, D5E5D4, CFB6C4, CFEA10, D63128,
-// D63084, D63094, D630A4, D630B4, D630C4, D630D4, D5B56C or CE44DC. D0DA64
+// D63084, D63094, D630A4, D630B4, D630C4, D630D4, CFEA34, CFEA44, D5B56C or CE44DC. D0DA64
 // requires its actual publication cell; registry and sound profiles require
 // their concrete borrowed bindings. Sound and XLive owners retain C++ projected
 // storage; XLive additionally requires the exact allocation identity. Input
@@ -115,13 +116,17 @@ struct NativeSingletonDeletionBindings {
     // Borrow the construction context through drain; transient D5B568 is not
     // admitted. Appended/default-null so all previous member offsets remain.
     // Merged after the independently added D63128 resource_manager binding,
-    // so it now sits at +96 and the bindings object is 100 bytes.
+    // so it sits at +96.
     NativeShadowJobContext* shadow_job{};
+    // CFEA34/CFEA44 are AnimationChannels/Bone parser secondaries at +4.
+    // Borrow the same publication cells used by their actual singleton getters.
+    NativeResourceExtraParserContexts* resource_extra_parsers{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
 static_assert(offsetof(NativeSingletonDeletionBindings, shadow_job) == 96);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 100);
+static_assert(offsetof(NativeSingletonDeletionBindings, resource_extra_parsers) == 100);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 104);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

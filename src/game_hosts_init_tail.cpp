@@ -251,31 +251,6 @@ void GameHardwareProbe::run() {
 }
 
 // ---------------------------------------------------------------------------
-// GameStructuredParser, the two phase-6 singletons
-// ---------------------------------------------------------------------------
-
-GameStructuredParser::GameStructuredParser(GameHostLog& log,
-    const StructuredParserIdentity& identity) : log_(log), identity_(identity) {}
-
-std::string GameStructuredParser::type_name() const {
-    // Vtable slot +4h. 00b8b050 is 33 bytes, ignores its ECX and returns the
-    // hidden output string; 00b80a50 asks for it twice on a miss.
-    return std::string(identity_.type_name);
-}
-
-bool GameStructuredParser::decode(StructuredNode& node, StructuredResourcePayload& output,
-    std::string& error) {
-    // Vtable slot +8h, 00b8a910 for AnimationChannels and 00b8a990 for Bone.
-    // Packet `resource_item_parsers`; nothing is invented here.
-    static_cast<void>(node);
-    static_cast<void>(output);
-    error = std::string(identity_.type_name) + " item parser is not reconstructed";
-    log_.unimplemented("ResourceParser::create_item",
-        identity_.create_item_slot == 0x00b8a910u ? "00b8a910" : "00b8a990");
-    return false;
-}
-
-// ---------------------------------------------------------------------------
 // GameStartupSingletonPublication, 0073fa70 and 00af06a0
 // ---------------------------------------------------------------------------
 

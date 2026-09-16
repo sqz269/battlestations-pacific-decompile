@@ -26,7 +26,9 @@ GameVfsHost::GameVfsHost(GameHostLog& log, GameSingletonHost& singletons,
     bool hardware_probe_commit)
     : log_(log), hardware_probe_commit_(hardware_probe_commit),
       native_(std::make_unique<GameNativeVfsApplication>(log, singletons, data,
-          original_executable)) {
+          original_executable)),
+      resources_(std::make_unique<GameNativeResourceApplication>(singletons,
+          native_->raw_strings(), data)) {
     consumer_context_.native_access = this;
 }
 GameVfsHost::~GameVfsHost() = default;
@@ -94,20 +96,23 @@ void GameVfsHost::factory_tail(VfsStartupState& state, bool cached_load) {
     log_.implemented("Factory tail actual MPAK registry/cache/lock", "0073d94f");
 }
 void GameVfsHost::phase6(VfsStartupState& state) {
-    auto manager = resource_manager_004c1400();
-    state.animation_channels_parser_registered = register_type_parser_00b80a50(
-        manager, animation_channels_parser_00736dd0());
-    manager = resource_manager_004c1400();
-    state.bone_parser_registered = register_type_parser_00b80a50(manager, bone_parser_00736ea0());
+    invoke_native([&] {
+        auto manager = resource_manager_004c1400();
+        state.animation_channels_parser_registered = register_type_parser_00b80a50(
+            manager, animation_channels_parser_00736dd0());
+        manager = resource_manager_004c1400();
+        state.bone_parser_registered = register_type_parser_00b80a50(manager, bone_parser_00736ea0());
+    });
 }
 const GameHardwareProbeSummary& GameVfsHost::hardware_probe() const noexcept {
     static const GameHardwareProbeSummary not_run{};
     return hardware_probe_ ? hardware_probe_->summary() : not_run;
 }
 std::size_t GameVfsHost::registered_parsers() const noexcept {
-    return resource_manager_ ? resource_manager_->parsers.size() : 0;
+    return resources_->registered_parsers();
 }
 std::uint32_t GameVfsHost::failure_site() const noexcept {
+    if (resources_->failure_entry()) return resources_->failure_entry();
     if (!core_ready_) return 0;
     const auto request_site = native_->runtime().file_store_request_failure_site();
     return request_site ? request_site : native_->runtime().name_resolution_failure_site();
@@ -147,50 +152,29 @@ std::array<std::uint32_t, 5> GameVfsHost::file_date(const std::string& name) {
 }
 
 VfsStartupObject GameVfsHost::resource_manager_004c1400() {
-    // 004c1400 returns the global at 010901c4, constructing a 0x28-byte manager
-    // through 00b81040 on the first call. That object is packet
-    // `resource_manager_singleton`; the process holds the parser map at
-    // manager+8h, which is the one field 00b80a50 touches, and hands back the
-    // same object for both 0073db41 and 0073db55 as the native does.
-    if (resource_manager_ == nullptr) {
-        resource_manager_ = std::make_unique<GameResourceManager>();
-    }
-    log_.implemented("Phase 6 resource_manager", "004c1400");
-    return resource_manager_.get();
+    void* const manager = resources_->manager_004c1400();
+    log_.implemented("Phase 6 actual resource manager", "004c1400");
+    return manager;
 }
 
 VfsStartupObject GameVfsHost::animation_channels_parser_00736dd0() {
-    if (animation_channels_parser_ == nullptr) {
-        animation_channels_parser_ = std::make_unique<GameStructuredParser>(log_,
-            kAnimationChannelsParser_00736dd0);
-    }
-    log_.implemented("Phase 6 animation_channels_parser", "00736dd0");
-    return animation_channels_parser_.get();
+    void* const parser = resources_->animation_channels_parser_00736dd0();
+    log_.implemented("Phase 6 actual animation channels parser", "00736dd0");
+    return parser;
 }
 
 VfsStartupObject GameVfsHost::bone_parser_00736ea0() {
-    if (bone_parser_ == nullptr) {
-        bone_parser_ = std::make_unique<GameStructuredParser>(log_, kBoneParser_00736ea0);
-    }
-    log_.implemented("Phase 6 bone_parser", "00736ea0");
-    return bone_parser_.get();
+    void* const parser = resources_->bone_parser_00736ea0();
+    log_.implemented("Phase 6 actual bone parser", "00736ea0");
+    return parser;
 }
 
 bool GameVfsHost::register_type_parser_00b80a50(VfsStartupObject manager,
     VfsStartupObject parser) {
-    // 00b80a50 appends into the parser map at manager+8h keyed by the string the
-    // parser's vtable slot +4h returns. Phase 6 discards the result both times.
-    auto* resource_manager = static_cast<GameResourceManager*>(manager);
-    auto* structured = static_cast<GameStructuredParser*>(parser);
-    if (resource_manager == nullptr || structured == nullptr) {
-        log_.unimplemented("Phase 6 register_type_parser", "00b80a50");
-        return false;
-    }
-    const bool registered = resource_manager->parsers.register_parser(*structured);
-    log_.implemented("Phase 6 register_type_parser", "00b80a50");
-    log_.notef("resource type parser %-18s registered=%d map=%zu",
-        structured->identity().type_name, registered ? 1 : 0,
-        resource_manager->parsers.size());
+    const bool registered = resources_->register_parser_00b80a50(manager, parser);
+    log_.implemented("Phase 6 actual resource type parser registration", "00b80a50");
+    log_.notef("resource type parser %p registered=%d map=%zu storage=raw28h/raw8h",
+        parser, registered ? 1 : 0, resources_->registered_parsers());
     return registered;
 }
 

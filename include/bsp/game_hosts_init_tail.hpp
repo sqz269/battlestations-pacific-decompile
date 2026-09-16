@@ -108,34 +108,6 @@ private:
 };
 
 // ---------------------------------------------------------------------------
-// C. Phase 6, the two resource type parsers
-// ---------------------------------------------------------------------------
-
-// One of the two 8-byte parser singletons. Slot +4h of the primary vtable
-// returns the registration key, which is all 00b80a50 consumes; slot +8h
-// (00b8a910 / 00b8a990) creates a resource item and is packet
-// `resource_item_parsers`, so decode records the gap rather than inventing one.
-class GameStructuredParser final : public StructuredResourceParser {
-public:
-    GameStructuredParser(GameHostLog& log, const StructuredParserIdentity& identity);
-    std::string type_name() const override;
-    bool decode(StructuredNode& node, StructuredResourcePayload& output,
-        std::string& error) override;
-    const StructuredParserIdentity& identity() const noexcept { return identity_; }
-
-private:
-    GameHostLog& log_;
-    StructuredParserIdentity identity_;
-};
-
-// The object 004c1400 hands back at 0073db41 and again at 0073db55. The native
-// 0x28-byte manager 00b81040 is not reconstructed; this stands for the parser
-// map at manager+8h only, which is the one field 00b80a50 touches.
-struct GameResourceManager {
-    StructuredResourceRegistry parsers;
-};
-
-// ---------------------------------------------------------------------------
 // D. The startup singleton publication shared by 0073fa70 and 00af06a0
 // ---------------------------------------------------------------------------
 

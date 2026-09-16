@@ -40,6 +40,7 @@
 #include "bsp/vfs_candidates.hpp"
 #include "bsp/vfs_native_access.hpp"
 #include "bsp/game_native_vfs_application.hpp"
+#include "bsp/game_native_resource_application.hpp"
 #include "bsp/vfs_startup.hpp"
 #include "bsp/vfs_locale_runtime.hpp"
 #include "bsp/settings_capabilities.hpp"
@@ -103,7 +104,8 @@ public:
     std::size_t package_scans_completed() const noexcept { return package_scans_completed_; }
     bool cached_load() const noexcept { return cached_load_; }
     const GameHardwareProbeSummary& hardware_probe() const noexcept;
-    GameResourceManager* resource_manager() const noexcept { return resource_manager_.get(); }
+    void* resource_manager() const noexcept { return resources_->published_manager(); }
+    NativeResourceManagerContext& raw_resource_manager_context() { return resources_->raw_manager_context(); }
     std::size_t registered_factories() const noexcept { return factories_registered_; }
     std::size_t registered_parsers() const noexcept;
     bool pak_registry_published() const noexcept { return archive_tail_ready_; }
@@ -127,6 +129,7 @@ private:
     GameHostLog& log_;
     bool hardware_probe_commit_{};
     std::unique_ptr<GameNativeVfsApplication> native_;
+    std::unique_ptr<GameNativeResourceApplication> resources_;
     VfsMountContext consumer_context_;
     VfsCandidateRegistrations unused_registrations_;
     bool core_ready_{};
@@ -138,9 +141,6 @@ private:
     std::vector<GameMountRecord> mounts_;
     std::vector<GameVfsProbeResult> probes_;
     std::unique_ptr<GameHardwareProbe> hardware_probe_;
-    std::unique_ptr<GameResourceManager> resource_manager_;
-    std::unique_ptr<GameStructuredParser> animation_channels_parser_;
-    std::unique_ptr<GameStructuredParser> bone_parser_;
 };
 
 // Settings startup over the retained game state, mounted catalog and recovered
