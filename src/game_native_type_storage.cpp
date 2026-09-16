@@ -16,7 +16,9 @@ GameNativeTypeStorage::GameNativeTypeStorage() noexcept
           mesh_guard_01090440_, mesh_01090444_, skined_guard_01090441_, skined_01090454_,
           matrix_guard_01090442_, matrix_01090468_},
       resource_selectors_{convex_guard_00e19a94_, convex_00e19a98_,
-          aux_guard_00e19b51_, aux_00e19b64_, geom_mesh_guard_00e19bd4_, geom_mesh_00e19be4_} {}
+          aux_guard_00e19b51_, aux_00e19b64_, geom_mesh_guard_00e19bd4_, geom_mesh_00e19be4_},
+      resource_extra_types_{animation_guard_01090264_, animation_01090268_,
+          bone_guard_01090265_, bone_01090278_} {}
 
 void GameNativeTypeStorage::require_common_bootstrap(
     const LightTypeBootstrap& common) const {
@@ -41,6 +43,9 @@ void GameNativeTypeStorage::initialize_resource_types(
     selectors.initialize_convex_object_00ccec00();
     selectors.initialize_aux_00ccf740();
     selectors.initialize_geom_mesh_00ccf980();
+    NativeResourceExtraTypeIds extra(existing_counter, mesh, resource_extra_types_);
+    extra.initialize_animation_resource_00cd82f0();
+    extra.initialize_bone_resource_00cd8340();
     mesh.initialize_mesh_resource_00cd8690();
     mesh.initialize_skined_mesh_resource_00cd86f0();
     mesh.initialize_matrix_mesh_resource_00cd87b0();

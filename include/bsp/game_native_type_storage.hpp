@@ -3,6 +3,7 @@
 #include "bsp/light_type_bootstrap.hpp"
 #include "bsp/native_stream_type_ids.hpp"
 #include "bsp/native_mesh_subset_loading.hpp"
+#include "bsp/native_resource_extra_type_ids.hpp"
 
 #include <cstdint>
 
@@ -26,9 +27,11 @@ public:
     NativeStreamTypeIdStorage& stream_types() noexcept { return stream_types_; }
     NativeMeshResourceTypeStorage& mesh_resource_types() noexcept { return mesh_resource_types_; }
     NativeGameResourceSelectorStorage& resource_selectors() noexcept { return resource_selectors_; }
+    NativeResourceExtraTypeIdStorage& resource_extra_types() noexcept { return resource_extra_types_; }
 
     // Recovered relative CRT order: CCEC00/CCF740/CCF980 selectors, then
-    // CD8690/CD86F0/CD87B0 mesh types, all before the stream types below.
+    // CD82F0/CD8340 extra resource types and CD8690/CD86F0/CD87B0 mesh types,
+    // all before the stream types below.
     // Other native CRT entries remain separate; this does not promise their
     // execution or original absolute numeric IDs. All represented families
     // share this application's counter/root/scene and stable selector cells.
@@ -61,6 +64,10 @@ private:
     volatile NativeDerivedFileTypeDescriptor physical_0109dc30_{};
     volatile std::uint8_t scene_guard_0109020c_{};
     volatile std::uint32_t scene_01090210_[3]{};
+    volatile std::uint8_t animation_guard_01090264_{};
+    volatile std::uint32_t animation_01090268_[4]{};
+    volatile std::uint8_t bone_guard_01090265_{};
+    volatile std::uint32_t bone_01090278_[4]{};
     volatile std::uint8_t mesh_guard_01090440_{};
     volatile std::uint32_t mesh_01090444_[4]{};
     volatile std::uint8_t skined_guard_01090441_{};
@@ -77,6 +84,7 @@ private:
     NativeStreamTypeIdStorage stream_types_;
     NativeMeshResourceTypeStorage mesh_resource_types_;
     NativeGameResourceSelectorStorage resource_selectors_;
+    NativeResourceExtraTypeIdStorage resource_extra_types_;
 };
 
 } // namespace bsp::game
