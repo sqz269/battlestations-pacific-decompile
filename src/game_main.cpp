@@ -42,6 +42,7 @@
 #include "bsp/game_native_surface_pool.hpp"
 #include "bsp/game_native_texture_pool.hpp"
 #include "bsp/game_native_graphics_pools.hpp"
+#include "bsp/game_native_hardware_layout_tree.hpp"
 #include "bsp/winmain_startup.hpp"
 
 namespace {
@@ -384,6 +385,10 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         const int parameter_atexit = particle_pools.initialize_parameters_once_00cd78b0();
         log.notef("native particle pools initialized: model_atexit=%d parameter_atexit=%d "
             "storage=process_actual38h/actual38h", model_atexit, parameter_atexit);
+        auto& layout_tree = bsp::game::game_native_hardware_layout_tree_process();
+        const int tree_atexit = layout_tree.initialize_once_00cd7960();
+        log.notef("native hardware-layout tree initialized: atexit=%d storage=process_actual0ch",
+            tree_atexit);
         auto& surface_pool = bsp::game::game_native_surface_pool_process();
         const int surface_atexit = surface_pool.initialize_once_00cd7b40();
         log.notef("native D3D9 surface pool initialized: atexit=%d storage=process_actual38h",
