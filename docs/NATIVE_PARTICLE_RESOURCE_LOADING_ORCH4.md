@@ -59,8 +59,15 @@ establish binary replacement ABI compatibility, or validate gameplay.
 
 ## Remaining loader dependency
 
-AF5850 remains source-absent. Its complete 221-byte body is exported and its
-failure-tail flow repair is recorded, but composing the actual VFS resolver,
-file-manager open dispatch, and stream read/release ownership remains required.
-AF4BA0, the full particle parser, also remains absent. Neither is represented
-by a placeholder or a generic callback wrapper in this packet.
+AF5850 is now reconstructed in `native_particle_text_loader.cpp`; see
+`NATIVE_PARTICLE_TEXT_LOADER_ORCH4.md`. Its complete 221-byte body composes the
+actual VFS resolver, file-manager open, and stream length/read/release providers.
+The caller explicitly owns the retained resolution frame and actual text/name
+storage; exposing the borrowed runtime services remains separate wiring work.
+The historical source-absent entries in this packet's report describe its
+starting boundary before that j10 extension.
+
+AF4BA0, the full particle parser, and its AFAD00 Layer parser and AF4700 bounds
+reader remain absent. They require concrete raw line/token/suffix and parameter
+ownership composition. No placeholder or generic callback wrapper represents
+these missing bodies.

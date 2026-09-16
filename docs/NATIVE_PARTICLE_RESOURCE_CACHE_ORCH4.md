@@ -4,9 +4,10 @@
 
 Ten complete source bodies cover the actual cache key copier, resource retain/release,
 vector destruction, inner and outer owner destruction, scalar deleters, base reset,
-and singleton publication. `0086BA60` remains **source-absent**: the resource
-constructor, actual file loading, top-level parser and text-buffer destructor are
-separate prerequisites. No acquisition wrapper or replacement loader is supplied.
+and singleton publication. `0086BA60` remains **source-absent** pending the full
+particle parser and its ownership composition. Its resource constructor, actual
+file loader and text-buffer destructor are now supplied by the h8/j10 packets
+listed below. This cache packet itself supplies no acquisition wrapper.
 Validation results and complete disk/live byte hashes are retained in
 `reports/native_particle_resource_cache_orch4.json`.
 
@@ -85,26 +86,28 @@ was performed. BF6989's library identity was preserved.
 `0086BA60..0086BB75` is278 bytes. It initializes a1Ch TextBuffer, copies and
 lowercases a native name, allocates90h, constructs AF45D0 and stamps D0D418,
 loads the name through AF5850, parses through AF4BA0, releases the temporary
-name, and destroys the TextBuffer through AF5620. These bodies have no genuine
-source implementation in the starting checkout:
+name, and destroys the TextBuffer through AF5620. The original h8 audit found
+these prerequisites missing. Their current source status is:
 
-| Required body | Bytes / evidence | Further work |
+| Required body | Bytes / evidence | Current status |
 | --- | --- | --- |
-| AF45D0..AF46D6 | 263; 72 listed instructions | Raw90h constructor, string copy, literal defaults and constructor EH. |
-| AF5850..AF592C | 221; 81 listed instructions | Actual VFS name resolver, current109CEEC vslot4 file open, file vslot30 extent and vslot24 read, resource atomic release. |
-| AF4BA0..AF55AD | 2574; 762 listed instructions,120 CALLs | Top-level parser;25 distinct direct callees plus actual provider contracts. |
-| AF5620..AF5651 | 50;20 listed instructions | Free TextBuffer+14, then raw pooled native-name release at+C. |
+| AF45D0..AF46D6 | 263; 72 listed instructions | Complete raw constructor: `NATIVE_PARTICLE_RESOURCE_LOADING_ORCH4.md`. |
+| AF5850..AF592C | 221; 81 listed instructions | Complete concrete VFS loader: `NATIVE_PARTICLE_TEXT_LOADER_ORCH4.md`; explicit caller-retained failure frame and runtime-service wiring boundary. |
+| AF4BA0..AF55AD | 2574; 762 listed instructions,120 CALLs | Source absent; full parser and25 distinct direct callees' concrete ownership composition. |
+| AF5620..AF5651 | 50;20 listed instructions | Complete raw text-buffer cleanup: `NATIVE_PARTICLE_RESOURCE_LOADING_ORCH4.md`. |
 
 The report preserves every CALL instruction from all four complete byte spans.
-Parser dependencies include actual AF4700, AFAB90, AFAD00, AF3E90, AEDF60,
-parameter-builder construction/parsing/default endpoints, definition type factory,
-pooled line/token/suffix ownership, and CRT comparison/conversion.
+The Layer constructor/lifetime and AF3E90/AEDF60 token helpers are now complete;
+see `NATIVE_PARTICLE_LAYER_LIFETIME_ORCH4.md` and
+`NATIVE_PARTICLE_TEXT_HELPERS_ORCH4.md`. Source-absent AFAD00 and AF4700 still
+require raw pooled line/token/suffix and parameter-builder ownership composition.
+The definition type factory and CRT provider boundaries also require concrete
+composition in the full parser.
 
-Current AF5850 pseudocode omits the post-free failure tail AF58FB..AF590C: add ESP,
-clear buffer+14, return0 with RET4. Current AF5620 pseudocode incorrectly makes
-free return early; disk bytes AF5630..AF5632 continue into pooled name cleanup.
-These are documented follow-up flow repairs; this packet does not claim loader
-implementation or modify those unleased functions.
+Both audited flow defects were repaired and saved under the write lock:
+AF5850's AF58FB..AF590C failure tail and AF5620's AF5630..AF5632 stack adjustment.
+Full live/PE preflight and prior-state evidence are recorded in
+`reports/native_particle_flow_repairs_orch4_h8.json`; affected exports are current.
 
 ## Validation boundaries
 
