@@ -1,0 +1,138 @@
+{
+  "packet": "native_node_raw_transform_r40",
+  "status": "source_adopted_strict_build_and_scoped_original_source_fixture_pass",
+  "baseline_main": "b94912e30",
+  "source_commit": "5b343acb4d27c8dfa0b722e65d2838e32c433098",
+  "validation_merge": "7d334e48be30ff96fc1359061b26efe3549ce751",
+  "owned_addresses": [
+    "00b6da30",
+    "00b6db10",
+    "00b6dbc0"
+  ],
+  "native_identity": {
+    "project": "C:\\Users\\sqz269\\bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_bodies": [
+    {"address":"00b6da30","length":50,"end_exclusive":"00b6da62","file_offset":7789104,"sha256":"e59be0afa37414644d2bf59f9daf7d417752a80b37c134f7131771ef5ff81fac","live_equals_pe":true,"live_equals_frozen":true},
+    {"address":"00b6db10","length":73,"end_exclusive":"00b6db59","file_offset":7789328,"sha256":"4bf57ceafa88c53f385239ba006d90f7d65ca239ef51f4c3c9a8ea114d07d276","live_equals_pe":true,"live_equals_frozen":true},
+    {"address":"00b6dbc0","length":25,"end_exclusive":"00b6dbd9","file_offset":7789504,"sha256":"ff03f5e2a5c5c4450e8385ba9b6c671844c50e3c6de7f712550e6988134727f7","live_equals_pe":true,"live_equals_frozen":true}
+  ],
+  "provider_body": {
+    "address": "004134f0",
+    "length": 104,
+    "end_exclusive": "00413558",
+    "file_offset": 79088,
+    "sha256": "410c88e63b96f604926aae96f70fc8731319909bc4b8d7661a4c8ff34c5a407b",
+    "live_equals_pe": true,
+    "live_equals_frozen": true,
+    "current_header_git_blob": "4cee0aa171c5abcebc575b159710a76c643c5d42",
+    "historical_header_git_blob": "4cee0aa171c5abcebc575b159710a76c643c5d42"
+  },
+  "call_sites": [
+    {"address":"00b6da54","function":"00b6da30","bytes":"e8d7ffffff","native":"00b6da30","kind":"direct_call"},
+    {"address":"00b6db1e","function":"00b6db10","bytes":"e8cd598aff","native":"004134f0","kind":"direct_call"},
+    {"address":"00b6db50","function":"00b6db10","bytes":"e8dbfeffff","native":"00b6da30","kind":"direct_call"}
+  ],
+  "indirect_dispatch": [
+    {"site":"00b6db46","operation":"call current captured attachment profile slot3C"},
+    {"site":"00b6dbd6","operation":"tail jump to current enclosing A0 profile slot3C"}
+  ],
+  "source_adoption": {
+    "historical_commit": "a6b2884f2",
+    "historical_path": "src/native_renderer_debug_records24_leaves.cpp",
+    "historical_lines": "5..64 inclusive",
+    "verbatim_body_compare": true,
+    "changes": "Replace the aggregate debug-record include with native_node_raw_transform.hpp, include the current NativeTracelineRenderServices definition explicitly, and close namespace bsp after the third leaf.",
+    "excluded": [
+      "write_native_debug_sphere_vertices_00b2bf60 and all x87 sphere interior code",
+      "draw_native_renderer_debug_records24_00b2bb90 parent",
+      "all renderer debug record projections and parent-owned source"
+    ]
+  },
+  "behavior": {
+    "descendants_00b6da30": "Load current child+34, walk current sibling+3C, inspect current flags+5C. Bit2 clear skips that child and its subtree. Bit2 set clears +138 bits30, captures current child+34 presence, stores flags with bits1/3 cleared, recurses only for that captured child presence, then reloads sibling.",
+    "local_matrix_00b6db10": "Call genuine 4134F0 into actual+B0 first. Reload low byte +5C and enter only for mask0A. Capture current+A0, clear +138 bits30, zero full +5C, dispatch captured attachment when nonnull, then reload current+34 before descendant invalidation.",
+    "bounds_00b6dbc0": "Clear current +138 bits3C, reload current+A0, return on null. Otherwise resolve the current raw profile and preserve the native tail JMP as a source loop for the proven B6DBC0 closure.",
+    "unsupported_target": "The profile resolver accepts only current slot3C B6DBC0. An unsupported target throws after all native writes already reached; there is no rollback, child walk, fallback or numeric call.",
+    "raw_backing": "All +00/+34/+3C/+5C/+A0/+B0/+138 accesses remain volatile raw backing. No node overlay, copied vtable or owner is introduced."
+  },
+  "provider_contract": {
+    "type": "NativeTracelineRenderServices",
+    "profile_interface_changed_from_historical": false,
+    "current_header_difference": "NativeTracelineRenderAccess has a later appended render20_profiles pointer; the service profile() interface used here is unchanged.",
+    "profile_result": "Current raw +00 table view with slot3C available and stable through each check.",
+    "numeric_targets": "Numeric image addresses are evidence tokens and are never called as relocated host pointers."
+  },
+  "historical_archive": {
+    "manifest_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_validated_artifacts_v2\\manifest.json",
+    "manifest_bytes": 1992926,
+    "manifest_entries": 4709,
+    "manifest_sha256": "44a4e4e1d483b9829b414101dabca8637d4051c495a6f4d76797fc1a11cbd46f",
+    "historical_source_sha256": "6e23934651c1849719b5bd923a04944517aec7042918fbdbd3af618a3ded9705",
+    "historical_fixture_sha256": "6c0a54665eb632b66a39a5c787aa8e7eb6ff7b9788b40f2ab9848f5758742c39",
+    "historical_build_command_sha256": "0ffcfdb4fea6ca65d63adf70d0dbc3bcb1b9ca6d1e1327c129f4663f2688ffb2"
+  },
+  "validation": {
+    "verify_seeds": "PASS",
+    "live_pe_frozen_ranges": "4/4 PASS including matrix provider",
+    "direct_call_rows": "3/3 PASS",
+    "build": "scripts/build.ps1 PASS on integrated main baseline",
+    "compiler": "MSVC Win32 /MD /W4 /WX /fp:strict",
+    "ctests": "3/3 PASS",
+    "fixture_build": "PASS from final bsp_core.lib with /MD /W4 /WX /fp:strict and /MANIFEST:EMBED",
+    "fixture_run": "PASS",
+    "fixture_scope": [
+      "relocated original raw copies of B6DB10, B6DA30, B6DBC0 and 4134F0",
+      "all 64 local matrix bytes and all seven nodes' +5C/+138 results agree",
+      "invalid child skips its subtree",
+      "two current A0 bounds tail dispatches",
+      "unsupported current profile target preserves matrix and prior local writes while skipping notification and child walk"
+    ],
+    "renderer_parent_executed": false,
+    "sphere_interior_executed": false,
+    "original_abi_validated": false,
+    "gameplay_validated": false,
+    "ghidra_mutated": false
+  },
+  "artifact_receipts": [
+    {"path":"include/bsp/native_node_raw_transform.hpp","bytes":407,"sha256":"53f7d50855779206ce1faff86469948e4ff4fa9c0d376d68fbba1b4a48e3884d"},
+    {"path":"src/native_node_raw_transform.cpp","bytes":2873,"sha256":"31a50a5e6e6efd27bb2d32851cc6836b6aabb1a924eefa384363e561deb4e257"},
+    {"path":"docs/NATIVE_NODE_RAW_TRANSFORM.md","bytes":3038,"sha256":"33d6191fc57cbae506caaa77a2f1d8d3cda16bd3c8524ac02fe51de43ed7ff9d"},
+    {"path":"cmake/startup.cmake","bytes":149313,"sha256":"d8ccf4b064d5b7f21b791c123ead3ec4b98c6c8aa6badbf58387141dce52f77d"},
+    {"path":"include/bsp/native_traceline_render.hpp","bytes":7210,"sha256":"eec43d439a9ddcf4d5aa96954434c469b607c4ac198f54b6cb55339a0365caf4"},
+    {"path":"include/bsp/native_camera_matrix_copy.hpp","bytes":606,"sha256":"70e741350edb66be14fc9d1b981181fe5ecf8c536f33eab47221469d8d3f1a7a"},
+    {"path":"build/win32/bsp_core.vcxproj","bytes":275680,"sha256":"ed05ee4b0a2b0d931b3cd9d85a414530cfb65eece6b32556b14b1416888aed62"},
+    {"path":"build/win32/Release/bsp_core.lib","bytes":63476230,"sha256":"04ed5c669c9c0b278b2838527e65fb2e77a1eacea413674c3e80063c048ddd32"},
+    {"path":"build/win32/bsp_core.dir/Release/native_node_raw_transform.obj","bytes":12345,"sha256":"53548c85a094d3accd501999ce16ce2cd30885992808abc692dba06b7739828b"},
+    {"path":"build/win32/bsp_core.dir/Release/native_camera_matrix_copy.obj","bytes":848,"sha256":"501afa349ee08b42966f5c0359b0325dbeb50784e49765321c1463fdeb1d7ff2"},
+    {"path":"local/output/r40_node_raw_transform_probe.cpp","bytes":6929,"sha256":"b01f296dcc6d6ba2c4ce442be3ea629a437af0f0f34f8f89f4c9f29ecc3bbebf"},
+    {"path":"local/output/r40_node_raw_transform_probe.obj","bytes":151972,"sha256":"3f8339ceaf9f52c83aa0d80b22d2a65a03d09e46f39632de22604abee6937643"},
+    {"path":"local/output/r40_node_raw_transform_probe.exe","bytes":31744,"sha256":"581f79f7e3e5b3c13b120c452cb6589a0e53b11d330707d96623530f7c4bd37f"},
+    {"path":"local/output/r40_node_raw_transform_probe.map","bytes":71031,"sha256":"1f278d6ca667cb65a867a72bd59045043e475290cb92d82c8367a8f5825c7974"},
+    {"path":"local/output/r40_node_raw_transform_probe_build.log","bytes":1134,"sha256":"2ed16786d634d67eb2271338bab33ff04cf91016438bce941e9f765dc99db606"},
+    {"path":"local/output/r40_node_raw_transform_probe_run.log","bytes":681,"sha256":"a142292477f9d1a0d04cca306f0c07ab9817d74031ef7632b92e6ee357888121"},
+    {"path":"local/output/r40_node_raw_transform_runtime.bin","bytes":1280,"sha256":"f2525726343dd64483a1774b3bd51ae12827ad64c4695a7eb9ff2fba67790b9f"},
+    {"path":"local/r40_build_full.log","bytes":8761,"sha256":"8fed4e1b5aceeb286bce0987cbeb2e6b93ba6aedd60c60e59a9612b73f0d5703"},
+    {"path":"local/r40_verify_seeds.log","bytes":3034,"sha256":"edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"},
+    {"path":"local/r40_node_raw_transform_byte_receipt.json","bytes":3986,"sha256":"1757bb7d7d6fa161d1e793c127e4bc9a5d1d491e439fd2c5011055152c15e855"},
+    {"path":"local/r40_callgate.log","bytes":80,"sha256":"02db58b8981a0a352cbba67d797d5e5db11caeeebf66dde61cb372189b48bf58"}
+  ],
+  "archive": {
+    "path": "local/evidence-r40/node-raw-transform-r40-final.zip",
+    "bytes": 13745151,
+    "manifest_path": "local/evidence-r40/node-raw-transform-r40-final.manifest.json",
+    "manifest_bytes": 12098,
+    "manifest_sha256": "b530e95a4c1416cde5f0c64712baf1e5db527e9de0853063625c17e995fc9431",
+    "zip_sha256": "5bfbe6924bd81c82f534cfbab58851f6ba82dd0e5130beff7d97f223aa066e86",
+    "artifact_entries": 33,
+    "entries": 34,
+    "report_excluded_to_avoid_self_reference": true
+  },
+  "limits": [
+    "The source interfaces add an explicit profile service in EDX; they are not drop-in binary replacements for the original register ABI.",
+    "Unsupported current slot3C targets remain an explicit source boundary after retained prior writes.",
+    "Renderer parent B2BB90, sphere x87 interior, original exception behavior, gameplay and visual parity remain unvalidated."
+  ]
+}
