@@ -1,0 +1,162 @@
+{
+  "packet": "animation_group_lifetime_r28",
+  "base": "561eb8558",
+  "cmake_commit": "793d9b459",
+  "implementation_commit": "ed164f9f0",
+  "generated_utc": "2026-09-16T08:44:06.2335072Z",
+  "program": "/battlestationspacific.exe",
+  "source": [
+    "include/bsp/native_animation_group_lifetime.hpp",
+    "src/native_animation_group_lifetime.cpp",
+    "cmake/startup.cmake"
+  ],
+  "coverage": {
+    "ordinary_functions": 5,
+    "ordinary_bytes": 494,
+    "eh_code_bytes": 69,
+    "eh_data_bytes": 112,
+    "profile_bytes": 16,
+    "total_receipt_bytes": 691,
+    "exact_direct_call_rows": 22,
+    "indirect_virtual_rows": 1
+  },
+  "functions": [
+    {
+      "address": "00b78530",
+      "end_inclusive": "00b785f2",
+      "bytes": 195,
+      "proposed_name": "BSP_AnimationChannelGroup_Destroy",
+      "source_symbol": "destroy_native_animation_channel_group_00b78530",
+      "original_abi": "ECX actual group20h; RET",
+      "behavior": "stampD62ED4; reverse current vector using captured cells; direct captured channel slot04 flags1; resize/free vector; raw pooled name return; B86890 base"
+    },
+    {
+      "address": "00b78d00",
+      "end_inclusive": "00b78d1d",
+      "bytes": 30,
+      "proposed_name": "BSP_AnimationChannelGroup_ScalarDeletingDestructor",
+      "source_symbol": "delete_native_animation_channel_group_00b78d00",
+      "original_abi": "ECX actual group; stack flags DWORD (low-byte bit0); EAX original pointer; RET4",
+      "behavior": "always destroy; BF65AC iff flags bit0; return original address"
+    },
+    {
+      "address": "00b8a3c0",
+      "end_inclusive": "00b8a42f",
+      "bytes": 112,
+      "proposed_name": "BSP_AnimationKeys_Resize",
+      "source_symbol": "resize_native_animation_keys_00b8a3c0",
+      "original_abi": "ECX actual key-vector header0Ch; stack requested signed count; RET4",
+      "behavior": "reserve through B76680 when signed capacity is short; zero ten DWORDs per grown key; shrink count only; publish requested count"
+    },
+    {
+      "address": "00b8a7d0",
+      "end_inclusive": "00b8a84e",
+      "bytes": 127,
+      "proposed_name": "BSP_AnimationChannel_Destroy",
+      "source_symbol": "destroy_native_animation_channel_00b8a7d0",
+      "original_abi": "ECX actual channel28h; RET",
+      "behavior": "resize key vector to0; free current key data; raw pooled name return; BD30F0 base"
+    },
+    {
+      "address": "00b8ad60",
+      "end_inclusive": "00b8ad7d",
+      "bytes": 30,
+      "proposed_name": "BSP_AnimationChannel_ScalarDeletingDestructor",
+      "source_symbol": "delete_native_animation_channel_00b8ad60",
+      "original_abi": "ECX actual channel; stack flags DWORD (low-byte bit0); EAX original pointer; RET4",
+      "behavior": "always destroy; BF65AC iff flags bit0; return original address"
+    }
+  ],
+  "old_ghidra_metadata": [
+    {"address":"00b78530","function_name":"FUN_00b78530"},
+    {"address":"00b78d00","function_name":"CG_scalar_deleting_dtor_00b78d00"},
+    {"address":"00b8a3c0","function_name":"FUN_00b8a3c0"},
+    {"address":"00b8a7d0","function_name":"FUN_00b8a7d0"},
+    {"address":"00b8ad60","function_name":"CG_scalar_deleting_dtor_00b8ad60"}
+  ],
+  "annotation_status": "Worker read-only. Primary repairs listing, defines handlers, applies reviewed names/comments and adds ledger records under the write lock.",
+  "byte_receipt": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "total_bytes": 691,
+    "all_match": true,
+    "aggregate_sha256": "735ee2317d4a0d9a485f9bef34549751e65a5216534405a44f4c54b2e86acdf8",
+    "ranges": [
+      {"address":"00b78530","length":195,"end_exclusive":"00b785f3","kind":"complete_group_destructor","file_offset":7832880,"sha256":"e2e829f75234a7d216dab42f2ca404b4ab330cd2c893419937c242c6ec79ea56","matches_disk":true},
+      {"address":"00b78d00","length":30,"end_exclusive":"00b78d1e","kind":"complete_group_scalar_delete","file_offset":7834880,"sha256":"5c52c03e538f823a87a890c2dfe8f44543dbdfead17f87a7e03fe6b9ca0b5a5f","matches_disk":true},
+      {"address":"00b8a3c0","length":112,"end_exclusive":"00b8a430","kind":"complete_key_resize","file_offset":7906240,"sha256":"2a71b8ca125833645cb0f4d20b56b8edcbba318caf602f58bbe79fcedb9bcddb","matches_disk":true},
+      {"address":"00b8a7d0","length":127,"end_exclusive":"00b8a84f","kind":"complete_channel_destructor","file_offset":7907280,"sha256":"58379fb6bf5949791e4abf69ad3d061ea13d375454b0b700896b245c6d9d30d5","matches_disk":true},
+      {"address":"00b8ad60","length":30,"end_exclusive":"00b8ad7e","kind":"complete_channel_scalar_delete","file_offset":7908704,"sha256":"cc3b10d1988bf214b510ee1c3d18109c8355b0fb237a21d016ab5279146fb806","matches_disk":true},
+      {"address":"00cc1cb0","length":40,"end_exclusive":"00cc1cd8","kind":"group_unwind_funclets_and_handler","file_offset":9182384,"sha256":"fae6b36bd412c7190c518ce6d2fa9b0708bb65fbfed98f0f9159466491839a4d","matches_disk":true},
+      {"address":"00dfacd4","length":60,"end_exclusive":"00dfad10","kind":"group_unwind_map_and_funcinfo","file_offset":10464468,"sha256":"cc0142e819fe56d0ba052d219f9aa3952e902f4ecc7d7bfc8f86f6340356042e","matches_disk":true},
+      {"address":"00cc2850","length":29,"end_exclusive":"00cc286d","kind":"channel_unwind_funclets_and_handler","file_offset":9185360,"sha256":"39dc38a9929a38e3c652b5f0b2d8961be4b119a722a04a85fdcc3e35f4c29238","matches_disk":true},
+      {"address":"00dfbe24","length":52,"end_exclusive":"00dfbe58","kind":"channel_unwind_map_and_funcinfo","file_offset":10468900,"sha256":"a4e4209c72391de8812297e2dcb0d00b260d8aa889c783991f4a6d72508c2e7f","matches_disk":true},
+      {"address":"00d62ed4","length":8,"end_exclusive":"00d62edc","kind":"group_profile_slots00_04","file_offset":9842388,"sha256":"db0b5fc2d2242d26389cf402cbc0910438aeaebb9e6d9a4a1881c732cbd6bf9d","matches_disk":true},
+      {"address":"00d632b0","length":8,"end_exclusive":"00d632b8","kind":"channel_profile_slots00_04","file_offset":9843376,"sha256":"a0ab03051bc51b250662c4e57edd23a9b79cf1101cf4861e3781e08b4036750f","matches_disk":true}
+    ]
+  },
+  "call_rows": [
+    {"address":"00b7857a","native":"captured-channel-profile+vtable04","function":"00b78530","kind":"indirect_virtual","flags":1},
+    {"address":"00b785a1","native":"00b774e0","function":"00b78530"},
+    {"address":"00b785a9","native":"00bf6989","function":"00b78530"},
+    {"address":"00b785c7","native":"00419cc0","function":"00b78530"},
+    {"address":"00b785ce","native":"00bd1510","function":"00b78530"},
+    {"address":"00b785dd","native":"00b86890","function":"00b78530"},
+    {"address":"00b78d03","native":"00b78530","function":"00b78d00"},
+    {"address":"00b78d10","native":"00bf65ac","function":"00b78d00"},
+    {"address":"00b8a3ce","native":"00b76680","function":"00b8a3c0"},
+    {"address":"00b8a7fd","native":"00b8a3c0","function":"00b8a7d0"},
+    {"address":"00b8a805","native":"00bf6989","function":"00b8a7d0"},
+    {"address":"00b8a823","native":"00419cc0","function":"00b8a7d0"},
+    {"address":"00b8a82a","native":"00bd1510","function":"00b8a7d0"},
+    {"address":"00b8a839","native":"00bd30f0","function":"00b8a7d0"},
+    {"address":"00b8ad63","native":"00b8a7d0","function":"00b8ad60"},
+    {"address":"00b8ad70","native":"00bf65ac","function":"00b8ad60"},
+    {"address":"00cc1cb3","native":"00b86890","function":"00cc1cb0","kind":"tail_jump"},
+    {"address":"00cc1cbe","native":"0041dd20","function":"00cc1cb8","kind":"tail_jump"},
+    {"address":"00cc1cc9","native":"00b77a10","function":"00cc1cc3","kind":"tail_jump"},
+    {"address":"00cc1cd3","native":"00bf6b43","function":"00cc1cce","kind":"tail_jump"},
+    {"address":"00cc2853","native":"00bd30f0","function":"00cc2850","kind":"tail_jump"},
+    {"address":"00cc285e","native":"0041dd20","function":"00cc2858","kind":"tail_jump"},
+    {"address":"00cc2868","native":"00bf6b43","function":"00cc2863","kind":"tail_jump"}
+  ],
+  "listing_repairs_required": [
+    {"call":"00b785a9","override":"CALL_RETURN","current_body_end":"00b785ad","physical_tail":"00b785ae-00b785f2","physical_end":"00b785f2"},
+    {"call":"00b78d10","override":"CALL_RETURN","missing":"00b78d15-00b78d17","physical_end":"00b78d1d"},
+    {"call":"00b8a805","override":"CALL_RETURN","current_body_end":"00b8a809","physical_tail":"00b8a80a-00b8a84e","physical_end":"00b8a84e"},
+    {"call":"00b8ad70","override":"CALL_RETURN","missing":"00b8ad75-00b8ad77","physical_end":"00b8ad7d"},
+    {"define_handler":"00cc1cce-00cc1cd7","funcinfo":"00dfacec","tail":"00cc1cd3->00bf6b43"},
+    {"define_handler":"00cc2863-00cc286c","funcinfo":"00dfbe34","tail":"00cc2868->00bf6b43"}
+  ],
+  "exception_contract": {
+    "group": "DFACD4: state0->-1 CC1CB0/B86890 base; state1->0 CC1CB8/41DD20 name; state2->1 CC1CC3/B77A10 vector. HandlerCC1CCE FuncInfoDFACEC maxState3.",
+    "channel": "DFBE24: state0->-1 CC2850/BD30F0 base; state1->0 CC2858/41DD20 name. HandlerCC2863 FuncInfoDFBE34 maxState2.",
+    "source_boundary": "C++ exception effects and termination on cleanup failure are reproduced. Original FH3/SEH frame identity, private aliases and hardware-fault delivery are not."
+  },
+  "profile_contract": {
+    "group": "D62ED4 words BD30E0,B78D00; item destructor and group loop invoke slot04 flags1 directly with no reference decrement.",
+    "channel": "D632B0 words BD30E0,B8AD60; adapter reloads supplied actual table slot04 on every captured-profile dispatch.",
+    "binding": "Finite group/channel mapping only. Unknown profiles and slot mismatches throw; no arbitrary table execution or fallback cleanup."
+  },
+  "validation": {
+    "verify_seeds": "PASS eight Ghidra/disk seed ranges",
+    "strict_build": "PASS full Release scripts/build.ps1; MSVC Win32 /W4 /WX /EHsc /fp:strict /MD",
+    "ctest": "PASS reconstructed_math, native_math_differential, tool_tests; 3/3",
+    "focused_probe": "PASS success_names=3 failure_names=2 terminal_failures=1",
+    "probe_command": "cl /std:c++17 /EHsc /W4 /WX /fp:strict /MD /Iinclude local/r28_animation_group_lifetime_probe.cpp; own bsp_core/lua/zlib; /MANIFEST:EMBED /MACHINE:X86",
+    "probe_scope": "Actual raw string pool; actual20h groups, actual28h channels/keys; real finite scalar terminals and BD30E0 source ref dispatch on success; explicit throwing terminal only for required state2 unwind test.",
+    "call_rows": "CURRENT 14/22 pass and 8 fail only because B785AE..F2, B8A80A..4E and handlersCC1CCE/CC2863 are in no saved Ghidra function; all 22 exact direct/tail rows are retained for the primary repair gate"
+  },
+  "artifact_receipts": [
+    {"path":"include/bsp/native_animation_group_lifetime.hpp","bytes":2844,"sha256":"cd63f1aaee13299386cef666a8e1471e6c6c106676ba7d7c729de5df21e7e89a"},
+    {"path":"src/native_animation_group_lifetime.cpp","bytes":6305,"sha256":"5cac30fb74376b071995fd8e538098cb51a684e320b551ae6e882412921e4c45"},
+    {"path":"cmake/startup.cmake","bytes":146450,"sha256":"bf9a5153044ceb4bbb3da256143cda9af63e02e92c91fe8922a06494a70bea29"}
+  ],
+  "proof_limits": [
+    "Proposed names are evidence-backed hypotheses, not recovered symbols.",
+    "Source/build/byte/fixture evidence does not establish original binary ABI, FH3/SEH, native CRT identity, executable admission, runtime integration or gameplay.",
+    "No permanent test was added. The focused probe is ignored local evidence and does not execute the installed game."
+  ]
+}
