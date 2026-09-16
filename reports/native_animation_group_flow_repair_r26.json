@@ -1,0 +1,195 @@
+{
+  "repairs": [
+    {
+      "function": "00b76710",
+      "owner": "agent/orch4-20260915",
+      "when": "2026-09-16T07:48:31Z",
+      "decompile_lines_before": 28,
+      "gaps": [
+        {
+          "site": "00b7675c",
+          "mnemonic": "CALL",
+          "operands": "0x00bf6989",
+          "gap_start": "00b76761",
+          "gap_end_exclusive": "00b7676a",
+          "bytes": 9,
+          "after_call": true,
+          "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "00b7675c",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00b76761",
+            "gap_end_exclusive": "00b7676a",
+            "bytes": 9,
+            "after_call": true,
+            "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1"
+          },
+          "clear": "Success: Cleared flow override at 00b7675c (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 9 byte(s)"
+        },
+        {
+          "explicit_tail_call": "00b7675c",
+          "clear": {
+            "status": "success",
+            "message": "Success: Cleared flow override at 00b7675c (was: NONE, now: NONE)"
+          }
+        }
+      ],
+      "explicit_tail_end_exclusive": "00b7676f",
+      "explicit_tail_terminator": "ret",
+      "explicit_body_sha256": "36e4ca71573dfd9069d78a1f27a867afd1bfdb0cbc05d40cee72b045931cfab1",
+      "body_before": "Function: FUN_00b76710 at 00b76710\nSignature: undefined FUN_00b76710(void)\nEntry: 00b76710\nBody: 00b76710 - 00b7676e",
+      "decompile_lines_after": 31,
+      "gaps_remaining": 0,
+      "body_after": "Function: FUN_00b76710 at 00b76710\nSignature: undefined FUN_00b76710(void)\nEntry: 00b76710\nBody: 00b76710 - 00b7676e",
+      "stored_body_tail_complete": true
+    },
+    {
+      "function": "00b77a10",
+      "owner": "agent/orch4-20260915",
+      "when": "2026-09-16T07:48:39Z",
+      "decompile_lines_before": 9,
+      "gaps": [
+        {
+          "site": "00b77a1d",
+          "mnemonic": "CALL",
+          "operands": "0x00bf6989",
+          "gap_start": "00b77a22",
+          "gap_end_exclusive": "00b77a27",
+          "bytes": 5,
+          "after_call": true,
+          "sha256": "246cfe16160ada23624a604f2cc9ecac6fc5ea9c3cff8bfee109c4cc2e366440"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "00b77a1d",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00b77a22",
+            "gap_end_exclusive": "00b77a27",
+            "bytes": 5,
+            "after_call": true,
+            "sha256": "246cfe16160ada23624a604f2cc9ecac6fc5ea9c3cff8bfee109c4cc2e366440"
+          },
+          "clear": "Success: Cleared flow override at 00b77a1d (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 5 byte(s)"
+        },
+        {
+          "explicit_tail_call": "00b77a1d",
+          "clear": {
+            "status": "success",
+            "message": "Success: Cleared flow override at 00b77a1d (was: NONE, now: NONE)"
+          }
+        }
+      ],
+      "explicit_tail_end_exclusive": "00b77a27",
+      "explicit_tail_terminator": "ret",
+      "explicit_body_sha256": "ef81bfa9324a6058276cb1b34d5f70c331928d15e77472af058967574f772a93",
+      "body_before": "Function: FUN_00b77a10 at 00b77a10\nSignature: undefined FUN_00b77a10(void)\nEntry: 00b77a10\nBody: 00b77a10 - 00b77a21",
+      "decompile_lines_after": 9,
+      "gaps_remaining": 1,
+      "body_after": "Function: FUN_00b77a10 at 00b77a10\nSignature: undefined FUN_00b77a10(void)\nEntry: 00b77a10\nBody: 00b77a10 - 00b77a21",
+      "stored_body_tail_complete": false,
+      "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+    }
+  ],
+  "prior_documentation": {
+    "path": "local/r26_animation_group_prior_documentation.json",
+    "sha256": "8df24e1e59df348ff2224e99e803eeb2190eee0b42bdb579acde4d6d2a9f9a5c"
+  },
+  "subsequent_body_repair": {
+    "events": [
+      {
+        "recreate": "00b77a10",
+        "previous": "Function: FUN_00b77a10 at 00b77a10\nSignature: undefined FUN_00b77a10(void)\nEntry: 00b77a10\nBody: 00b77a10 - 00b77a21",
+        "plate": null
+      },
+      {
+        "endpoint": "delete_function",
+        "body": {
+          "address": "00b77a10"
+        },
+        "result": {
+          "success": true,
+          "address": "00b77a10",
+          "deleted_function": "FUN_00b77a10",
+          "body_size": 18,
+          "message": "Function 'FUN_00b77a10' deleted at 00b77a10"
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00b77a10",
+          "end_address": "00b77a27"
+        },
+        "result": {
+          "success": true,
+          "start_address": "00b77a10",
+          "end_address": "00b77a26",
+          "bytes_disassembled": 23,
+          "message": "Successfully disassembled 23 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00b77a10",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "00b77a10",
+          "function_name": "FUN_00b77a10",
+          "entry_point": "00b77a10",
+          "body_size": 23,
+          "message": "Function created successfully at 00b77a10"
+        }
+      },
+      {
+        "defined": "00b77a10",
+        "end": "00b77a27",
+        "name": null,
+        "after": "Function: FUN_00b77a10 at 00b77a10\nSignature: undefined FUN_00b77a10(void)\nEntry: 00b77a10\nBody: 00b77a10 - 00b77a26"
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "error": "Unable to lock due to active transaction"
+        }
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "success": true,
+          "program": "battlestationspacific.exe",
+          "message": "Program saved successfully"
+        }
+      }
+    ]
+  },
+  "final_verified_state": [
+    {
+      "function": "00b76710",
+      "bytes": 95,
+      "gap_count": 0,
+      "export_refreshed": true
+    },
+    {
+      "function": "00b77a10",
+      "bytes": 23,
+      "instruction_count": 10,
+      "gap_count": 0,
+      "export_refreshed": true
+    }
+  ]
+}

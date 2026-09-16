@@ -1,0 +1,169 @@
+{
+  "packet": "orch4-geometry-pools-r26",
+  "source_commit": "0b50389a235eea45b37af6d34857f62b3f9e9b54",
+  "status": "source_startup_integrated_strict_win32_and_real_crt_source_probe_checked",
+  "source_files": [
+    "include/bsp/game_native_resource_pools.hpp",
+    "src/game_native_resource_pools.cpp",
+    "include/bsp/native_mesh_section.hpp",
+    "src/native_mesh_section.cpp",
+    "src/game_main.cpp"
+  ],
+  "native_storage": [
+    "0108fff8 mesh actual38h",
+    "010901d4 section actual38h",
+    "0109022c hierarchy actual38h"
+  ],
+  "shared_allocator_list": "00e188b4",
+  "native_bytes": [
+    {
+      "address": "00cd7e40",
+      "end_exclusive": "00cd7e56",
+      "bytes": 22,
+      "sha256": "b6a3f43c0f464337430c916749c75ca61be5070216f19ad9d65034e105888c58",
+      "live_disk_match": true
+    },
+    {
+      "address": "00ce0e40",
+      "end_exclusive": "00ce0e4a",
+      "bytes": 10,
+      "sha256": "11d2186140ef1d14979f28dd54fd5a9c1c8617517995ddf38f17687347c6a9db",
+      "live_disk_match": true
+    },
+    {
+      "address": "00cd8250",
+      "end_exclusive": "00cd8266",
+      "bytes": 22,
+      "sha256": "70a4bf0f8cd8cba341e7a311e0bace5e8e2664dad6bb71ad3c0071242aad5137",
+      "live_disk_match": true
+    },
+    {
+      "address": "00ce0ec0",
+      "end_exclusive": "00ce0eca",
+      "bytes": 10,
+      "sha256": "ba22e99ce863968790cb922d9fa2b61dfaf36beab06f92870355d467e13a2377",
+      "live_disk_match": true
+    },
+    {
+      "address": "00ce34ec",
+      "end_exclusive": "00ce34f0",
+      "bytes": 4,
+      "sha256": "f4324158d522f33f2ea7536be614627628cd5eebba2c29c941d30a6871545cec",
+      "live_disk_match": true
+    },
+    {
+      "address": "00ce34f4",
+      "end_exclusive": "00ce34f8",
+      "bytes": 4,
+      "sha256": "e86cc0c615b24bfea24b94bcee8600d0e89b801359dcd12472ca3c6491b7fcc0",
+      "live_disk_match": true
+    },
+    {
+      "address": "00ce3564",
+      "end_exclusive": "00ce3568",
+      "bytes": 4,
+      "sha256": "da8c8cd4ad8743df193e1a5e4066a01c594d8318314265b511d79b0f3f6e2998",
+      "live_disk_match": true
+    },
+    {
+      "address": "00ce35a4",
+      "end_exclusive": "00ce35a8",
+      "bytes": 4,
+      "sha256": "b00889714bdaf13a975059020feaa31b821f9f0774804b83b28b7a3b339b9c03",
+      "live_disk_match": true
+    },
+    {
+      "address": "00ce35b0",
+      "end_exclusive": "00ce35b4",
+      "bytes": 4,
+      "sha256": "c4da8509ab49f0dc471aa33e31a030b70342f2c6f55a62302dec579a9c5a7093",
+      "live_disk_match": true
+    }
+  ],
+  "call_sites": [
+    {
+      "function": "00cd7e40",
+      "address": "00cd7e45",
+      "native": "00b73890"
+    },
+    {
+      "function": "00cd7e40",
+      "address": "00cd7e4f",
+      "native": "00bf6ff5"
+    },
+    {
+      "function": "00ce0e40",
+      "address": "00ce0e45",
+      "native": "00b72ce0",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cd8250",
+      "address": "00cd8255",
+      "native": "00b85bb0"
+    },
+    {
+      "function": "00cd8250",
+      "address": "00cd825f",
+      "native": "00bf6ff5"
+    },
+    {
+      "function": "00ce0ec0",
+      "address": "00ce0ec5",
+      "native": "00b858f0",
+      "kind": "tail_jump"
+    }
+  ],
+  "validation": {
+    "strict_win32_build": "passed",
+    "existing_ctests": "3 of 3 passed",
+    "focused_source_probe": "six genuine canonical pools, stable initialization, native links, allocation/return/trim, real CRT shutdown",
+    "exit_callback_order": [
+      "physical",
+      "hierarchy",
+      "section",
+      "mesh",
+      "parameters",
+      "model"
+    ],
+    "original_code_executed": false,
+    "original_abi_fh3_seh": false,
+    "game_validated": false,
+    "failure_injection": false,
+    "payloads_constructed": false
+  },
+  "artifacts": [
+    {
+      "path": "local/geometry_pool_r26_build.log",
+      "sha256": "4ff130d3fe630a318e12ba9a3321ab25f97939a709f3c21a052ae2d7590ab881"
+    },
+    {
+      "path": "local/geometry_pool_process_probe.cpp",
+      "sha256": "572e5490e011f7ecae38e73741c4ffcc3b71066ecd405e7b9c85f697ddaa64de"
+    },
+    {
+      "path": "local/build_geometry_pool_process_probe.cmd",
+      "sha256": "6285fddd4f434f664447c717cebdae15abf0cd3b1ea58225f8e90242c2972d2b"
+    },
+    {
+      "path": "local/geometry_pool_process_probe.exe",
+      "sha256": "1da7b9f3a683365a36d77cd39c8b4552a3d3ff240b929771e04bcf15273228e8"
+    },
+    {
+      "path": "local/geometry_pool_process_probe_receipt.txt",
+      "sha256": "7f41ab07b71b0b370c3c1e337e57d4e83ccba274be4551883e4c27d396aa6647"
+    },
+    {
+      "path": "local/r26_geometry_pool_defined_functions.json",
+      "sha256": "c0d1a4ff856cea2516eac5464dd88b77cb9a9b73e75a36f2440fc55debe2b9d5"
+    },
+    {
+      "path": "local/r26_section_initializer_context.json",
+      "sha256": "c0bd888c1bcd8e84f34fd4bdece6eba9d21329fc8c99da33162376400be4d956"
+    },
+    {
+      "path": "local/r26_section_exit_prior_documentation.json",
+      "sha256": "919c26b4cf887ce1d4a8854e4394caca134e6a4d03b9751e23c6f64a280c808d"
+    }
+  ]
+}
