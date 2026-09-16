@@ -1,0 +1,356 @@
+{
+  "packet": "orch4-resource-application-r24",
+  "status": "actual_manager_and_eight_parser_startup_installed_and_shared_drain_source_probe_passed",
+  "source_head": "21d2e1e6b",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "original_body_count_added_by_application_adapter": 0,
+  "original_phase6_region": {
+    "address": "0073db41",
+    "end_exclusive": "0073db69",
+    "bytes": 40,
+    "sha256": "cb626130d6847508119b90af3bc46e6945d667bc25c9446d2fe3ed7fe73331f2",
+    "live_disk_match": true
+  },
+  "sources": [
+    "include/bsp/game_native_resource_application.hpp",
+    "src/game_native_resource_application.cpp",
+    "include/bsp/game_hosts_vfs.hpp",
+    "src/game_hosts_vfs.cpp",
+    "src/game_native_vfs_application.cpp",
+    "include/bsp/native_singleton_destruction.hpp",
+    "src/native_singleton_destruction.cpp",
+    "src/game_hosts.cpp"
+  ],
+  "removed_semantic_application_types": [
+    "GameResourceManager",
+    "GameStructuredParser"
+  ],
+  "actual_publications": [
+    "010901c4",
+    "0109033c",
+    "0109047c",
+    "01090480",
+    "01090484",
+    "010902a0",
+    "0109043c",
+    "01090298",
+    "0109029c"
+  ],
+  "borrowed_domains": [
+    "existing01090aa0 lifetime manager",
+    "existing01090aa8/01090aa4 raw strings",
+    "verified CE/CF/D6 read-only data"
+  ],
+  "host_steps": [
+    {
+      "address": "0073db41",
+      "native": "004c1400",
+      "function": "0073d410"
+    },
+    {
+      "address": "0073db48",
+      "native": "00736dd0",
+      "function": "0073d410"
+    },
+    {
+      "address": "0073db50",
+      "native": "00b80a50",
+      "function": "0073d410"
+    },
+    {
+      "address": "0073db55",
+      "native": "004c1400",
+      "function": "0073d410"
+    },
+    {
+      "address": "0073db5c",
+      "native": "00736ea0",
+      "function": "0073d410"
+    },
+    {
+      "address": "0073db64",
+      "native": "00b80a50",
+      "function": "0073d410"
+    }
+  ],
+  "validation": {
+    "strict_win32_build": "PASS; local/resource_application_r24_build.log",
+    "ctests": "3/3 PASS",
+    "source_application_probe": "PASS two controlled children: phase6 before and after actual VFS phase2",
+    "parser_names_and_profiles_checked": 8,
+    "shared_drain_registered_counts": [
+      10,
+      15
+    ],
+    "phase2": "three loose mounts and two package scans in the worktree; hardware-profile comparison unavailable",
+    "duplicate_registration": "false for both extra parsers; actual manager, count8 and lifetime registrations unchanged",
+    "cleared_publications": "all eight parsers, resource manager, raw string pool and singleton manager",
+    "metadata_destruction_order": "same as GameStartupHost: singleton host deleted before VFS metadata",
+    "parent_receipt": "PASS production phase6 before/after actual phase2 source application children; no installed game process or rendering launched",
+    "original_image_code_executed": false,
+    "game_window_or_rendering_launched": false,
+    "permanent_tests_added": 0,
+    "artifacts": [
+      {
+        "path": "local/resource_application_r24_probe.cpp",
+        "bytes": 7716,
+        "sha256": "1e8d412ab69d03a07f421a22d52a93dcfe15541d49edf85f16758217c8315343"
+      },
+      {
+        "path": "local/build_resource_application_r24_probe.cmd",
+        "bytes": 611,
+        "sha256": "fafccec4900951eb03f9b556a0f3081d0a708c6ba49eb15ee07341fda08638e8"
+      },
+      {
+        "path": "local/resource_application_r24_probe.exe",
+        "bytes": 572416,
+        "sha256": "2b30d6f135ae75c4c6956ab83a0ea8f602d32d879f71e900bbc69f83a7e47497"
+      },
+      {
+        "path": "local/resource_application_r24_probe.log",
+        "bytes": 955,
+        "sha256": "97e5982cb1130a1926efc9e76a68d19bb3e9461230fef9102d7fa04ef22a83ad"
+      },
+      {
+        "path": "local/resource_application_r24_vfs_probe.log",
+        "bytes": 1209,
+        "sha256": "faa5b5fb861cb3524933711605b968db349361ce8af175d38fb71d1c79730196"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 62764906,
+        "sha256": "53bffd30c059c03a757983e2bc77ac5eb42bdd0ea40575a244bbf45ce7c509b1"
+      }
+    ],
+    "application_objects": [
+      {
+        "path": "build/win32/bsp_game.dir/Release/ai_group_think.obj",
+        "bytes": 6132,
+        "sha256": "1a5a954ca13857d528fff56b252c7be08a9f4de0e0d73853671c1070ee911008"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ai_planners.obj",
+        "bytes": 12369,
+        "sha256": "d85f084da30a7494577929480a64aa46635e89f538773f6d8c0478202f713744"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/airfield_taxi.obj",
+        "bytes": 4203,
+        "sha256": "1521ca61bcfdcb643b238bdd083aebfe6e918137a84000c89a7a359846d7334f"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/command_completion.obj",
+        "bytes": 77478,
+        "sha256": "d9b010aaa9af434b45383c157da901103ee1a78226809ae35bb6b80ff061e6e0"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_avoid_zone_runtime.obj",
+        "bytes": 359966,
+        "sha256": "dbe77dc2226521907827edd632a988c267beccf0d79a7a6628622babb77d3ade"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+        "bytes": 692280,
+        "sha256": "3a68300a3a279b7bb26ccc8f86457c30675c9c4fe2bb55278ee1d5d91aa5a8ac"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_commands.obj",
+        "bytes": 338899,
+        "sha256": "c2362ec50e4d7ca32de591fd637d5529d4ffb7c1ce8fc741e8078f9efa10e91f"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_fixed_step.obj",
+        "bytes": 40556,
+        "sha256": "c4ff6d805e6f5f3818adf3cda975537539a9bfaf937c604df7da0f08c87969b3"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_fonts.obj",
+        "bytes": 147018,
+        "sha256": "3bc31e240c4c9b8afda0c0c8f161758d401e4fb62c7ac6bfbd0507c3b40a63c6"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_frontend.obj",
+        "bytes": 705690,
+        "sha256": "30c63b03dc2dda64e83f6698bf756e0fa31693a17ad66e078027813a18aa62bf"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_gunnery.obj",
+        "bytes": 671170,
+        "sha256": "939c0c11b0eae8a378a6d99a4724ddcd3705eb403862d4df191a0ff3e74ed56b"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_hud.obj",
+        "bytes": 210381,
+        "sha256": "f6a2d14b4f87226b6255e5d5592d2d5817e47b30065df0fe1cdb45fc846e158c"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_hud_world.obj",
+        "bytes": 222447,
+        "sha256": "4f5384f051aabdba4c96fbab30a0aba8cf7fdd7aed7cd2836367e454a50c3369"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_init_tail.obj",
+        "bytes": 123530,
+        "sha256": "cd95cca3c5ee9dccb4bd3dfb887bf7b5e77c22dcd8877e05f1da66244517fb78"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_lua.obj",
+        "bytes": 579966,
+        "sha256": "abfcf55937fa3dd3c934601c125acd76880fd9c2571d56cc8881538d004750d4"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_menu.obj",
+        "bytes": 518796,
+        "sha256": "e71db58c4b2fb4bb7c9577957fc35cccb6ecaf61e6041d2ebbf5a2e21c986274"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_mission.obj",
+        "bytes": 763775,
+        "sha256": "e30c76afdbab9157ea5611f40d0962c3d816f6b984750409ae0bee9bc4d73b1d"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_mission_frame.obj",
+        "bytes": 572403,
+        "sha256": "87d9a13f22f54aff599ef35b4631bb3bf3b105be513b422219d7610230da755e"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_mission_result.obj",
+        "bytes": 241504,
+        "sha256": "d36fe134212736a12d1c885b55e9634b455961845dabf04bf468f48b9ca7ef24"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_ready.obj",
+        "bytes": 215770,
+        "sha256": "8d974ffefebcfc5b4e6ee29e451579027c979f27f549556bbe0ef7890c79642e"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_scene_contents.obj",
+        "bytes": 930357,
+        "sha256": "b9d7de22276ee8b56d25b7aaff5945c07b6d7e872c4b6ef1ba076bc49e1f31d8"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_script_orders.obj",
+        "bytes": 305820,
+        "sha256": "0f120a3024779602619fca42ca263615a50498afddc2155e713e67255bd44ba8"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_ship_ai.obj",
+        "bytes": 707939,
+        "sha256": "bb917313aa91c44a0bd34b676e837f2f4093122f11dc81129e7f91e709367951"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+        "bytes": 12455,
+        "sha256": "c94d1290517349327af2c64270e929130333641cb9dab975149e4cbae71a3890"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_text.obj",
+        "bytes": 148586,
+        "sha256": "67e388e3a57f124cea71f83456188da117c66747da5dbd4d22a909feee84292f"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_trajectory.obj",
+        "bytes": 122707,
+        "sha256": "fc13f06d1a35db573d67d454aa1baa0f3f73d69228dfeeb082c391f0007097ec"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_units.obj",
+        "bytes": 469401,
+        "sha256": "c54e1f9f6fd6b85bbd1a81bc8af278af3a36a8690ef1f2e185c9f99259339601"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_vfs.obj",
+        "bytes": 423312,
+        "sha256": "7f7a6d60f00ceb5044721b7714733ad97da7801684e4d5c492aa633c72b572e6"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_world.obj",
+        "bytes": 103418,
+        "sha256": "0a59a07e3887d484d1dbbd9ed6dcdf904c71268b11eac007ec83749f509f0a78"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_vfs_application.obj",
+        "bytes": 51248,
+        "sha256": "0f3218cf021f980bf9d659296b46b531bb28d08f41bb109dd64444c831d92ee7"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_observer_runtime.obj",
+        "bytes": 15861,
+        "sha256": "b0b9b3e65befc43f04fd936abb359e4094835ebf82a9f31fcb9a3202d202a52c"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/gameplay_loose_ends_2.obj",
+        "bytes": 1758,
+        "sha256": "6cef5ac34b229195f2d1d5da12829627f2b48227fd88a7d2d15cd34b261b2a42"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/geom_mesh_resource.obj",
+        "bytes": 261705,
+        "sha256": "e536b9089157b35b3c8494cfbf0d7fa85726d9ce82b2b4ab47c4e13d515c8035"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/hit_hull_segment.obj",
+        "bytes": 1836,
+        "sha256": "cd16b3a2c47c636a204fd4e622a4d0cd7f8c75d11091ca91fe67a394c3383538"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/kill_credit.obj",
+        "bytes": 33830,
+        "sha256": "2b42314fff614f7eb65ce4f58110a76ed78a679f360edefbdbb9afb3fc090351"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/narrowphase_unit_part_shape.obj",
+        "bytes": 2080,
+        "sha256": "7f5bbfc6210b33a0c452bb3601d04c9e7e5b0c1abcccf2ea6de669b291730d9a"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/part_damage_reachability.obj",
+        "bytes": 4156,
+        "sha256": "51f9c07e73db9914a4707775e8b5b76f13c8ff56bf380da1771e86fd72d65a33"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/pilot_command_path.obj",
+        "bytes": 8846,
+        "sha256": "062707a15f8ce177c4dcfb9f1c35c062c62a980d0f62100e5b541ae40d543fb2"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/plane_ground_ops.obj",
+        "bytes": 13388,
+        "sha256": "65b619e02850c012e3a0a5c6529b27f6c9447450f2f82274bc76c483d60a8a65"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ship_hit_record.obj",
+        "bytes": 7923,
+        "sha256": "6b1e0d411c1ba316a9f14fda39de96daaa30eff2c469dd20fcc54edfea4c5278"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ship_sub_entity_list.obj",
+        "bytes": 1477,
+        "sha256": "2666c7f4077143bd9dd5e8bd9c14c5cd3da243c4805cbab30a66e1a3ae9aa7aa"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/unit_gunnery_pass.obj",
+        "bytes": 11746,
+        "sha256": "f85d451504ab8259bf3e1278f96ca2ca3fde61a590064bad3867293d37d9c557"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/unit_message_arms.obj",
+        "bytes": 25782,
+        "sha256": "e1f10761f7e50ba10b3538e34ea2d7b889d97a0a7f659a5f7aae7d007ab17557"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/unit_neighbour_fields.obj",
+        "bytes": 1330,
+        "sha256": "26c8631b91ce225ffc008e150f64e0efbd711587708a3f8ed7db26d180c8665f"
+      }
+    ]
+  },
+  "limits": [
+    "source interfaces, not original register ABI replacements",
+    "original FH3/SEH and CRT exception identity unvalidated",
+    "complete raw resource load/cache/item dispatch and texture/render graph not installed",
+    "allocation-failure recovery, concurrency and gameplay unvalidated"
+  ],
+  "gameplay_validated": false
+}
