@@ -1,6 +1,6 @@
 {
   "packet": "native_renderer_application_r69",
-  "status": "application_native_startup_reset_and_drain_checked_candidate",
+  "status": "integrated_application_native_renderer_startup_reset_and_drain_checked",
   "game_rebuilt": false,
   "owned_files": [
     "cmake/startup.cmake",
@@ -31759,5 +31759,193 @@
         "sha256": "866a9ba68dbe21f4659774b74002bc79cf71d041edee4a9f703fd44741a33994"
       }
     ]
+  },
+  "primary_integration": {
+    "source_commit": "028a50a65b5c5c1a06ca71d9c5b682bb6ffcba91",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "fixture_rerun_after_integration": false,
+    "application_rerun_after_integration": false,
+    "archive": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r69\\renderer-application-main-r69.zip",
+    "sha256": "fd94117dea4cc4b4d9e7c234d5743253eb89b6faf7e1b60d7b9ceb68e6b58889",
+    "files": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "size": 63896176,
+        "sha256": "867c874e529d98d26918075668610e23bf2b6e75cec7b9b9c82a233d822a2acf"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "size": 2412032,
+        "sha256": "176a97b317152c68d14d3bfd4c41ce6f008950e90b122e6066597d47bd1ef3e3"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "size": 2408,
+        "sha256": "172c145a9edf2bd3f8fbc14bc9858d7fa24cd3ca5fda811c24389db0238f38cb"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/game_native_renderer_scalars.obj",
+        "size": 2631,
+        "sha256": "d2002b7edc7b0e3b43de701a08055a61d732bf575e35518806af8d982e6100f6"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_constructor.obj",
+        "size": 13903,
+        "sha256": "7375db27012b2aafc900a9b9c65267a6566445a4503c9193f9ec95a67e4a3953"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_control_worker.obj",
+        "size": 15231,
+        "sha256": "ecbbc380bf71addd829ee21ee1ed9e22f8e4e05868d637bc9fad2f3a1b78c453"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_destructor.obj",
+        "size": 26886,
+        "sha256": "08bd79da88cee9386ba961a677719e5a3c0564b45e5464021ee11f655c674139"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_device_recreation_actual.obj",
+        "size": 23106,
+        "sha256": "dca8402b58631e087cf29fcae45468af843fa72e06f122c2f4f3a2294ff3153c"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_device_startup_actual.obj",
+        "size": 10183,
+        "sha256": "39addb20e89c6e156f97c81e9014653919ac26279e24bbf0bb831f52f4855b80"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_reset_process.obj",
+        "size": 9139,
+        "sha256": "c66c7bb865bf7b39d85bbc48ea9c5f4bd4922d57a921cfb05721634191e6ad42"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_vertex_declaration_loading.obj",
+        "size": 56629,
+        "sha256": "f7a3ebeca7f181fd71168dfcd50dbb5927ccd5e7365c89de68bcaeb7762be12f"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "size": 232794,
+        "sha256": "c80fa7f3e28480300f5a05871de2a74a926c287cd96ef93cdf2c2f4a535a73b5"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+        "size": 726343,
+        "sha256": "77ab977aa16923ab1e575176115559fcd3d19513916e1cb2b373ac619bb75b7d"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_vfs.obj",
+        "size": 422799,
+        "sha256": "7b9554fea9a6d9c8085f1fec1cb64cc56fb7f05212df9063111420e10f0db5de"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_main.obj",
+        "size": 296660,
+        "sha256": "8259323989a8d6106e84204e96b3a2c287971e24996a594c261fe004599e70fc"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_renderer_application.obj",
+        "size": 166135,
+        "sha256": "958134d72fe2f150b2a9c3069cdac193868dfa9272667d68d3ccfdafe0ef3849"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_vertex_declarations.obj",
+        "size": 17104,
+        "sha256": "e57ec85125fc203a949fd2dbb3bef7f632796387af75c5f650a5a43b2650fc60"
+      },
+      {
+        "path": "build/win32/bsp_game.vcxproj",
+        "size": 64257,
+        "sha256": "b0e4bec4bd85016b40bb6ca1addc3ac3b32bc742c7b99ed55ab33893349525ee"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "size": 154588,
+        "sha256": "5685043c4083df0b385a9b661c75ec61afbe7870819fe1f0093ec228ea95a099"
+      },
+      {
+        "path": "docs/NATIVE_RENDERER_APPLICATION_R69.md",
+        "size": 6910,
+        "sha256": "fe0dcb7cf0625eba3eb831dc28369c37f70a18d5f8e5c51c432de9e7d67df021"
+      },
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "size": 32459,
+        "sha256": "164c40c1de2db22565c00186626d370155229a4dd2ed51afc7c68ad9d1472186"
+      },
+      {
+        "path": "include/bsp/game_hosts_vfs.hpp",
+        "size": 11035,
+        "sha256": "cc19d681adbac24d05e482b55a0c5de81a161d50a0df2a4617b8668431339ebc"
+      },
+      {
+        "path": "include/bsp/game_native_renderer_application.hpp",
+        "size": 1840,
+        "sha256": "78948f5e94e71ecfae69a1dcc3e5caec20ca7727847e5ebf05d4be39415d5f63"
+      },
+      {
+        "path": "include/bsp/game_native_vertex_declarations.hpp",
+        "size": 1655,
+        "sha256": "6155de13aeef7970585788a6b83a12662c860ea37ae382229811da5d1435872d"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T231514Z.json",
+        "size": 104641,
+        "sha256": "621c320febbde14cfb0f8c3bd0e2214bf6b0f3dfffafa968515cc934f5a2c150"
+      },
+      {
+        "path": "local/r69_integration.log",
+        "size": 2307,
+        "sha256": "54c62ea963ffdab3a8aa0bf48300af20d0fc9b1f7ac63768ffbd8651d7146388"
+      },
+      {
+        "path": "local/renderer_application_r69/annotations.log",
+        "size": 642,
+        "sha256": "c4d3c374b0e74c4b9c5ce74287f6c1f119418c4bfa915b8a86b259bddc09c97c"
+      },
+      {
+        "path": "local/renderer_application_r69/exports_after_annotations.log",
+        "size": 1093,
+        "sha256": "14894c8b43862e069085dfe1ad912e364ecdad8a3a8482c8502a988f2f556bcd"
+      },
+      {
+        "path": "reports/native_renderer_application_r69.json",
+        "size": 1470754,
+        "sha256": "128e356284dcc984855260462a1582f28c7edeca0c6d758e6939bbef24d8986f"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "size": 98005,
+        "sha256": "e66805b4ec1ce05defc6c8a3823a0f8e312676f91db9070c270e8ffa7243c246"
+      },
+      {
+        "path": "src/game_hosts_vfs.cpp",
+        "size": 17504,
+        "sha256": "95639b8e60e7ab3f651e96b8b2f6dbf43dff9ef983347a4078171e8ff57f70cb"
+      },
+      {
+        "path": "src/game_native_renderer_application.cpp",
+        "size": 15951,
+        "sha256": "6fc5d142b2c102ddf35d7ca3fa69edb8e35ab1852d3762d907a4759b1ed78978"
+      },
+      {
+        "path": "src/game_native_renderer_device.inc",
+        "size": 4617,
+        "sha256": "5add02f9f99e90c8e070f5dd748e2fe718edb432d4489566c178ba5e662c3e0a"
+      },
+      {
+        "path": "src/game_native_renderer_lifetime.inc",
+        "size": 6882,
+        "sha256": "c61027e7786ac0637ae63027ce5b6ff0f5fc9e3c5e84810cbbc9f7cc74061f5f"
+      },
+      {
+        "path": "src/game_native_vertex_declarations.cpp",
+        "size": 1977,
+        "sha256": "866a9ba68dbe21f4659774b74002bc79cf71d041edee4a9f703fd44741a33994"
+      }
+    ],
+    "scope": "Combined integration build and CTests. The source25-token real CRT-exit fixture, two/eight-frame runs and same-binary HAL failure are separately sealed in the tested archive. Native frame/resource composition and gameplay remain open.",
+    "annotations": "Integrator bare owner deferred ten addresses held by this worktree; these ten names/evidence were already saved and force-exported under the owning worktree before integration."
   }
 }
