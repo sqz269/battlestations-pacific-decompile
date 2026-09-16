@@ -4,6 +4,8 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_native_lua_globals.hpp"
 #include "bsp/game_native_lua_services.hpp"
+#include "bsp/game_native_renderer_application.hpp"
+#include "bsp/native_xlive_device_adapter.hpp"
 #include "bsp/game_native_vfs_runtime.hpp"
 #include "bsp/native_renderer_reset_process.hpp"
 #include "bsp/native_renderer_reset_readiness.hpp"
@@ -676,30 +678,17 @@ GameDeviceHost::~GameDeviceHost() { release(); }
 
 bool GameDeviceHost::create(const RendererInitRequest& request) {
     release();
-
-    RendererDisplaySettings settings{};
-    settings.width = static_cast<std::uint32_t>(request.width);
-    settings.height = static_cast<std::uint32_t>(request.height);
-    settings.fullscreen = request.fullscreen;
-    const D3D9StartupOptions options = renderer_present_request_00becee0(settings,
-        request.window);
-
-    log_.implemented("RendererHost::create_device", "00b2aeb0");
-    creation_result_ = d3d9_create_device_prefix_00b2aeb0(api_, options,
-        renderer_parameters_, parameters_, behavior_flags_, device_);
-    if (FAILED(creation_result_) || device_ == nullptr) {
-        log_.notef("device creation failed hr=0x%08lx",
-            static_cast<unsigned long>(creation_result_));
-        return false;
-    }
-    log_.notef("device created hr=0x%08lx flags=0x%lx size=%ux%u windowed=%d format=%u "
-        "depth=%u interval=0x%x", static_cast<unsigned long>(creation_result_),
-        behavior_flags_, parameters_.BackBufferWidth, parameters_.BackBufferHeight,
-        parameters_.Windowed, static_cast<unsigned>(parameters_.BackBufferFormat),
-        static_cast<unsigned>(parameters_.AutoDepthStencilFormat),
+    renderer_.create_device(request);
+    device_=renderer_.device();
+    parameters_=renderer_.presentation();
+    creation_result_=device_ ? S_OK : E_FAIL; // observation, not the ignored native CreateDevice HRESULT
+    log_.notef("device created by full native startup size=%ux%u windowed=%d format=%u depth=%u interval=0x%x",
+        parameters_.BackBufferWidth,parameters_.BackBufferHeight,parameters_.Windowed,
+        static_cast<unsigned>(parameters_.BackBufferFormat),static_cast<unsigned>(parameters_.AutoDepthStencilFormat),
         parameters_.PresentationInterval);
-    return true;
+    return device_!=nullptr;
 }
+IDirect3D9& GameDeviceHost::renderer_api() { return renderer_.api(); }
 
 bool GameDeviceHost::clear_and_present() {
     if (device_ == nullptr) {
@@ -741,10 +730,9 @@ void GameDeviceHost::request_capture(std::function<void(IDirect3DDevice9&)> capt
 void GameDeviceHost::release() {
     overlay_ = nullptr;
     capture_ = nullptr;
-    if (device_ != nullptr) {
-        device_->Release();
-        device_ = nullptr;
-    }
+    // The renderer composition retains the real COM reference through native
+    // teardown and its later diagnostic AddRef/Release pairs.
+    device_ = nullptr;
 }
 
 // ---------------------------------------------------------------------------
@@ -1038,6 +1026,7 @@ struct GameStartupHost::SoundServices {
     XLiveManagerOwner* volatile online_00f8abe8{};
     std::uint8_t cursor_shown_0109db8e{}, focus_reset_pending_0109db8f{}, previous_ui_0109db90{};
     XLiveLibrary xlive;
+    NativeXLiveDeviceAdapter device_adapter;
     GamePlatformServices platform;
     void* volatile alternate_00f8bbcc{};
     const std::array<std::uint32_t, 4> format_counts_00e12ef0{0, 1, 2, 6};
@@ -1051,6 +1040,7 @@ struct GameStartupHost::SoundServices {
     explicit SoundServices(GameStartupHost& app)
         : xlive(selected_library_path(app.options_.xlive_dll, L"xlive.dll"),
               app.options_.xlive_dependencies),
+          device_adapter(xlive),
           platform(app.input_backend_00f8bbf4_, app.input_runtime_, online_00f8abe8, xlive),
           dialog({alternate_00f8bbcc, format_counts_00e12ef0, one_00d7a24c,
               fade_00ce3dc8, &null_integer_format_01090ab4}),
@@ -1178,7 +1168,17 @@ void GameStartupHost::exit_if_native_lua_interrupted() noexcept {
     std::_Exit(1); // no guessed raw-manager rollback or CRT cleanup of partial state
 }
 
+void GameStartupHost::exit_if_native_renderer_incomplete() noexcept {
+    if (!native_renderer_ || !native_renderer_->requires_process_retention()) return;
+    try {
+        log_.note("native renderer incomplete; actual destructor requires completed device/default surfaces, retaining native ownership until exit");
+        log_.close();
+    } catch (...) { std::fputs("bsp_game: incomplete native renderer requires process exit\n", stderr); }
+    std::_Exit(1);
+}
+
 GameStartupHost::~GameStartupHost() {
+    exit_if_native_renderer_incomplete();
     exit_if_native_lua_interrupted();
     exit_if_frame_clock_failed();
     exit_if_native_vfs_interrupted();
@@ -1188,10 +1188,13 @@ GameStartupHost::~GameStartupHost() {
     // device and before the font host whose registry its pages reference.
     if (device_) device_->set_overlay(nullptr);
     delete menu_;
+    delete frontend_;
+    frontend_ = nullptr;
     // Retain sound callbacks, DLLs, VFS/Lua and lifetime publication cells
     // through the actual raw singleton drain, including exceptional startup.
     if (singletons_) {
-        singletons_->shutdown();
+        if (native_renderer_) native_renderer_->drain_singletons();
+        else singletons_->shutdown();
         if (clock_services_) clock_services_->phase = ClockServices::Phase::drained;
     }
     if (input_) {
@@ -1219,8 +1222,9 @@ GameStartupHost::~GameStartupHost() {
     lua_services_.reset(); // after every Lua close/shared drain, before VFS bindings die
     delete settings_host_;
     delete device_;
-    delete renderer_parameters_;
-    if (renderer_api_) renderer_api_->Release();
+    renderer_parameters_ = nullptr;
+    renderer_api_ = nullptr;
+    native_renderer_.reset(); // all COM consumers closed; native owner already drained
     release_platform_window();
     delete window_host_;
     delete vfs_;
@@ -1285,6 +1289,7 @@ void GameStartupHost::game_explorer_release() {
 }
 
 void GameStartupHost::exit_process(int code) {
+    exit_if_native_renderer_incomplete();
     exit_if_native_lua_interrupted();
     exit_if_frame_clock_failed();
     exit_if_native_vfs_interrupted();
@@ -1483,25 +1488,16 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // then settings0073daa5. The same Direct3D API survives into device creation.
     if (!vfs_->ready()) throw std::runtime_error("Script/settings startup requires the mounted VFS");
     lua_services_ = std::make_unique<GameNativeLuaServices>(*singletons_, vfs_->borrow_raw_services());
-    renderer_api_ = Direct3DCreate9(D3D_SDK_VERSION);
-    if (!renderer_api_) throw std::runtime_error("Renderer Direct3DCreate9 failed");
-    log_.implemented("RendererHost::direct3d_create", "00b32410");
-    renderer_parameters_ = new NativeRendererParametersOwner;
-    initialize_native_renderer_parameters_00b32410_fragment(*renderer_parameters_);
-    Win32SettingsCapabilityQueries renderer_queries(*renderer_api_);
-    enumerate_settings_resolutions_00b27d80(renderer_capabilities_, renderer_queries);
-    HRESULT capabilities_result = query_renderer_adapter_identifier_00b32410(
-        renderer_full_capabilities_, *renderer_api_);
-    if (FAILED(capabilities_result)) throw std::runtime_error("Renderer adapter identification failed");
-    capabilities_result = gather_renderer_capabilities_00b2c8e0(
-        renderer_full_capabilities_, renderer_capabilities_, *renderer_api_);
-    if (FAILED(capabilities_result)) throw std::runtime_error("Renderer capability query failed");
-    log_.implemented("RendererHost::gather_capabilities", "00b2c8e0");
-    log_.notef("renderer capabilities api=%p pixel_version=0x%04x shader_ceiling=%d "
-        "formats=%zu declaration_types=%zu", static_cast<void*>(renderer_api_),
-        renderer_capabilities_.pixel_shader_version_28, renderer_capabilities_.max_shader_model,
-        renderer_full_capabilities_.texture_formats_1b68.size(),
-        renderer_full_capabilities_.declaration_types_1b5c.size());
+    bind_legacy_crt_math_runtime(application_math_runtime);
+    native_renderer_ = std::make_unique<GameNativeRendererApplication>(log_, *singletons_,
+        *vfs_, *lua_services_, *native_data_, clock_publication_01090ab0_, &platform_.native_window_focus());
+    native_renderer_->construct();
+    renderer_api_ = &native_renderer_->api();
+    renderer_parameters_ = &native_renderer_->parameters();
+    native_renderer_->copy_settings_capabilities(renderer_capabilities_);
+    log_.notef("renderer capabilities from actual owner api=%p pixel_version=0x%04x shader_ceiling=%d resolutions=%zu",
+        renderer_api_,renderer_capabilities_.pixel_shader_version_28,renderer_capabilities_.max_shader_model,
+        renderer_capabilities_.resolutions.size());
 
     scripts_ = new GameScriptHost(log_, vfs_->context(), content_suffixes_,
         *lua_services_);
@@ -1617,12 +1613,8 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         log_.notef("window created %dx%d at %d,%d color_depth=%d",
             platform_.present_width, platform_.present_height, platform_.x, platform_.y,
             platform_.color_depth);
-        // 00bed1b8 builds the renderer init request from the same settings. Both VSync and
-        // the antialias sample count reach it, but d3d9_create_device_prefix_00b2aeb0 models
-        // neither PresentationInterval nor MultiSampleType, so the device below is created
-        // with the recovered constants and these two values stop here.
-        log_.notef("renderer init request %dx%d fullscreen=%d vsync=%d antialias=%u "
-            "(vsync and antialias are not consumed by the device prefix)",
+        // Full B2AEB0 receives all ten slots, including VSync and multisampling.
+        log_.notef("renderer init request %dx%d fullscreen=%d vsync=%d antialias=%u",
             renderer_request_.width, renderer_request_.height,
             renderer_request_.fullscreen ? 1 : 0,
             renderer_request_.color_depth_selector ? 1 : 0, renderer_request_.option);
@@ -1640,7 +1632,9 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     log_.unimplemented("Phase 5 online_manager_initialize", "0073dc7c");
 
     // Device creation after window/online, corresponding to0073DD12.
-    device_ = new GameDeviceHost(log_, *renderer_api_, *renderer_parameters_);
+    native_renderer_->bind_platform_services(sound_->platform.load_events(),
+        reinterpret_cast<const volatile std::uint32_t*>(&sound_->online_00f8abe8), &sound_->device_adapter);
+    device_ = new GameDeviceHost(log_, *native_renderer_);
     if (summary_.window_created && renderer_request_.requested) {
         summary_.device_created = device_->create(renderer_request_);
         summary_.device_result = device_->creation_result();
@@ -1832,6 +1826,7 @@ void GameStartupHost::release_platform_window() noexcept {
 }
 
 void GameStartupHost::application_shutdown() {
+    exit_if_native_renderer_incomplete();
     exit_if_native_lua_interrupted();
     exit_if_frame_clock_failed();
     exit_if_native_vfs_interrupted();
@@ -1931,11 +1926,13 @@ void GameStartupHost::application_destruct() {
 }
 
 void GameStartupHost::destroy_singleton_lifetime_manager() {
+    exit_if_native_renderer_incomplete();
     exit_if_native_lua_interrupted();
     exit_if_frame_clock_failed();
     exit_if_native_vfs_interrupted();
     log_.implemented("StartupHost::destroy_singleton_lifetime_manager", "008f8449");
-    singletons_->shutdown();
+    if (native_renderer_) native_renderer_->drain_singletons();
+    else singletons_->shutdown();
     if (lua_services_)
         log_.notef("native Lua after raw singleton drain: fundamentals=%s getters=%u",
             lua_services_->fundamentals_published() ? "non-null" : "null",

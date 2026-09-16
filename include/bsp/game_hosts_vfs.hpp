@@ -115,6 +115,8 @@ public:
     // retained runtime and is rejected after an interrupted native operation.
     NativeStringRawPoolContext& raw_strings() noexcept;
     GameNativeVfsRawServices borrow_raw_services();
+    NativeVfsOwnerServices& native_owners() noexcept;
+    GameNativeTypeStorage& native_types() noexcept;
 
 private:
     template<class Operation> decltype(auto) invoke_native(Operation&& operation) {

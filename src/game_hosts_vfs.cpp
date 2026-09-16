@@ -47,6 +47,8 @@ NativeStringRawPoolContext& GameVfsHost::raw_strings() noexcept {
 GameNativeVfsRawServices GameVfsHost::borrow_raw_services() {
     return active_runtime().borrow_raw_services();
 }
+NativeVfsOwnerServices& GameVfsHost::native_owners() noexcept { return native_->owners(); }
+GameNativeTypeStorage& GameVfsHost::native_types() noexcept { return native_->types(); }
 
 void GameVfsHost::phase2(VfsStartupState& state) {
     state.first_time_block_ran = !core_ready_;

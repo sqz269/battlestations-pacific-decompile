@@ -68,6 +68,7 @@ class GameNativeReadOnlyData;
 class GameSettingsBinding;
 class GameScriptHost;
 class GameNativeLuaServices;
+class GameNativeRendererApplication;
 class GameLocaleHost;
 class GameFontHost;
 // Milestone 2b, defined in bsp/game_hosts_frontend.hpp.
@@ -283,14 +284,14 @@ private:
 };
 
 // Device ownership for the milestone. Creation is the reconstructed prefix of 00b2aeb0;
-// the per-frame clear and present are direct Direct3D 9 calls, because the native
-// renderer frame routine behind renderer virtual +20h is not reconstructed.
+// Device creation uses the complete native renderer startup. Per-frame clear
+// and present remain the bridge until the full native frame path is composed.
 class GameDeviceHost {
 public:
-    // The application's renderer API outlives this device, settings queries and
-    // any device recreation. This object releases only the device it creates.
-    GameDeviceHost(GameHostLog& log, IDirect3D9& api, NativeRendererParametersOwner& parameters)
-        : log_(log), api_(api), renderer_parameters_(parameters) {}
+    // Borrow the full native renderer and its retained COM references through
+    // the raw singleton drain. This bridge owns only callbacks and observations.
+    GameDeviceHost(GameHostLog& log, GameNativeRendererApplication& renderer)
+        : log_(log), renderer_(renderer) {}
     GameDeviceHost(const GameDeviceHost&) = delete;
     GameDeviceHost& operator=(const GameDeviceHost&) = delete;
     ~GameDeviceHost();
@@ -313,17 +314,15 @@ public:
     unsigned long long presented() const noexcept { return presented_; }
     const D3DPRESENT_PARAMETERS& parameters() const noexcept { return parameters_; }
     IDirect3DDevice9* device() const noexcept { return device_; }
-    IDirect3D9& renderer_api() noexcept { return api_; }
+    IDirect3D9& renderer_api();
 
 private:
     GameHostLog& log_;
-    IDirect3D9& api_;
-    NativeRendererParametersOwner& renderer_parameters_;
+    GameNativeRendererApplication& renderer_;
     IDirect3DDevice9* device_{};
     std::function<void(IDirect3DDevice9&)> overlay_;
     std::function<void(IDirect3DDevice9&)> capture_;
     D3DPRESENT_PARAMETERS parameters_{};
-    DWORD behavior_flags_{};
     HRESULT creation_result_{E_FAIL};
     unsigned long long presented_{};
 };
@@ -600,6 +599,8 @@ private:
     const NativeFrameClockPublicationContext& require_frame_clock_context() const;
     void exit_if_frame_clock_failed() noexcept;
     void exit_if_native_lua_interrupted() noexcept;
+    void exit_if_native_renderer_incomplete() noexcept;
+    std::unique_ptr<GameNativeRendererApplication> native_renderer_;
     std::unique_ptr<GameNativeLuaServices> lua_services_;
     struct SoundServices;
     std::unique_ptr<SoundServices> sound_;
@@ -653,7 +654,6 @@ private:
     IDirect3D9* renderer_api_{};
     NativeRendererParametersOwner* renderer_parameters_{};
     SettingsRendererCapabilities renderer_capabilities_;
-    RendererCapabilities renderer_full_capabilities_;
     std::string window_class_name_;
     GameRunSummary summary_;
     bool constructed_{};
