@@ -1,0 +1,64 @@
+{
+  "packet": "orch4-animation-dispatch-q17",
+  "kind": "source dispatch composition; no additional native body",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "evidence": [
+    {
+      "address": "00d630d8",
+      "bytes": "40deb700202ab900202fb900",
+      "meaning": "parser current +8 = B92F20"
+    },
+    {
+      "address": "00d63700",
+      "bytes": "e030bd00a02fb900",
+      "meaning": "zero terminal BD30E0 and scalar delete B92FA0"
+    },
+    {
+      "address": "00bd30e0",
+      "length": 14,
+      "instructions": [
+        "TEST ECX,ECX",
+        "JZ BD30ED",
+        "MOV EAX,[ECX]",
+        "MOV EDX,[EAX+4]",
+        "PUSH 1",
+        "CALL EDX at BD30EB",
+        "RET"
+      ],
+      "meaning": "null guard, current scalar-delete slot, flags1, no decrement"
+    }
+  ],
+  "implementation": {
+    "parser": "exact B92F20 dispatch, borrowed actual stream context; unused parser receiver",
+    "zero_terminal": "captured D63700/BD30E0, current profile and +4 target, flag1 delete after external actual +4 decrement",
+    "other_domains": "forward exact original arguments",
+    "unsupported": "changed reached D63700 terminal throws explicit source-domain error",
+    "ownership": "same raw string publications; no replacement owner, retain/decrement, rollback or retry"
+  },
+  "validation": {
+    "build": "PASS scripts/build.ps1 Release MSVC Win32",
+    "ctest": "3/3 PASS",
+    "probe": "PASS: registered parser dispatch, actual +4 decrement followed by scalar deletion, zero-terminal null guard; 2 copied original vector bodies, 5 relocations; reserve/copy/self-assignment parity; source parser two records, outer relocation, 24 values, embedded NUL, empty inner capacity, full budget debit, flag2/base/name cleanup; injected read failure retains appended record and cleans temporaries.",
+    "probe_scope": "source dispatch/parser with actual raw pool and fixture stream; only B92440/B926E0 are copied-original comparisons",
+    "permanent_tests_added": 0,
+    "source_hashes": {
+      "include/bsp/native_skinned_animation_dispatch.hpp": "19ddd954c99bd8ed86203f540fd865fdb8beca0d1f6653da7ac2192e507216b5",
+      "src/native_skinned_animation_dispatch.cpp": "e1c66ef7cbdb6e0efcf554c26c582c961cb7d24f0464f3c0742ad1a6b569646b",
+      "local/skinned_animation_dispatch_probe.cpp": "42f9f04e4d5769c901d2e58eccc270cd2e73ba9f458652342ba0aaf26f77ce2b",
+      "build/win32/Release/bsp_core.lib": "b92577461beacbb312ce7e485721a3bc6304ee8f0e8996f93a4ed1cf02f29d5b"
+    },
+    "receipts": [
+      "local/animation_dispatch_build.log",
+      "local/animation_dispatch_probe_compile.log",
+      "local/animation_dispatch_probe_run.log"
+    ]
+  },
+  "limitations": [
+    "Not installed into the final application chain by this packet",
+    "No original parser or FH3 execution",
+    "No real VFS input or game validation",
+    "Not a binary ABI replacement",
+    "Arbitrary reached profile changes outside supported source domain"
+  ]
+}
