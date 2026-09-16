@@ -33,6 +33,8 @@ void put(void* base, Word offset, Word value) noexcept {
 
 void read_current_slot20(void* item, void* handle,
     NativeResourceExtraItemReaderCalls& readers) {
+    // Original table/target loads precede disarming allocation cleanup; the
+    // reader CALL follows it. Hardware-fault unwinding is outside this interface.
     const Word current_profile = word(item);
     const Word captured_target = word(pointer(current_profile), 0x20);
     readers.read_item(captured_target, item, handle);
@@ -52,7 +54,7 @@ void* parse_native_animation_channels_item_00b8a910(
         put(item, 0x10, 0);
     }
 
-    // Native EH state is already -1 here. Reader failure owns no rollback.
+    // The reader callback has no parser-level C++ rollback.
     read_current_slot20(item, handle, readers);
     return item;
 }

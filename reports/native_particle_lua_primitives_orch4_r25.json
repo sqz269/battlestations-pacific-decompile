@@ -2,7 +2,7 @@
   "packet": "native_particle_lua_primitives_r25",
   "status": "source_build_fixture_validated_original_error_execution_open",
   "baseline": "8482b261808f21403bbc20b75d47e298c9988f17",
-  "ghidra_mutated": false,
+  "ghidra_mutated": true,
   "ghidra_target": {
     "project": "bsp",
     "project_file": "C:/Users/sqz269/bsp.gpr",
@@ -364,5 +364,41 @@
     "path": "local/particle-lua-primitives-r25.zip",
     "sha256": "a4c767bb66b9b61ff38773546bb8c6248040f0a520055d904c3ddd0fc9a3b8ee",
     "includes": "ignored probe sources, build/evidence scripts, exact byte receipts and final logs; rebuilt libraries are not archived"
-  }
+  },
+  "integration_library_identification": [
+    {
+      "address": "00a6eea0",
+      "previous_name": "luaH_next",
+      "reviewed_name": "findindex",
+      "original_abi": "EDI key; stacked Lua state then Table; EAX index; RET8",
+      "evidence": "Full186B/77-instruction body matches Lua5.1.1 ltable.c static findindex: nil/-1; x87 exact integral array test; hash/dead-key chain; invalid-key error."
+    },
+    {
+      "address": "00a6ef60",
+      "previous_name": "FUN_00a6ef60",
+      "reviewed_name": "luaH_next",
+      "original_abi": "ECX Lua state, EDX Table, stacked key; EAX boolean; RET4",
+      "evidence": "Full218B/86-instruction body calls findindex at A6EF6D, walks array then hash part, publishes next TValue pair or returns0."
+    }
+  ],
+  "integration_validation": {
+    "combined_source_head": "d18ed0ddc",
+    "strict_win32_build": "passed",
+    "ctests": "3/3 passed",
+    "call_rows": "27 checked, 0 failed",
+    "library_identification": "Parent reviewed both complete pseudocode/listings and pinned Lua5.1.1 ltable.c:137-181; no ABI implementation or original failure execution claim."
+  },
+  "integration_annotations": {
+    "applied": true,
+    "saved_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "prior_annotation_archive": "local/ghidra-annotations-20260916T073457Z.json",
+    "prior_annotation_archive_sha256": "d51cee788743ab4d4b7e55fe52aa40996d79e7d01a65314ba9e220312064cfca",
+    "apply_log": "local/r25_ghidra_annotations.log",
+    "primary_only": true,
+    "previous_comments_preserved": true,
+    "source_build_head": "d18ed0ddc",
+    "strict_build_and_ctests": "passed; 3/3"
+  },
+  "worker_ghidra_mutated": false
 }

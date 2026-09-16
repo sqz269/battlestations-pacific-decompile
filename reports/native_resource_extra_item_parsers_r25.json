@@ -219,5 +219,45 @@
     "Deleting paths B8A760/B8A680 and B8AF10/B8A8A0 are not reconstructed here.",
     "The source requires mapped native result profiles for current slot20 capture.",
     "Original FH3/SEH, hardware-fault behavior, executable admission, full resource loading and gameplay remain unvalidated."
-  ]
+  ],
+  "parent_verified_calls": [
+    {
+      "address": "00b8a92a",
+      "function": "00b8a910",
+      "native": "00bf681b"
+    },
+    {
+      "address": "00b8a944",
+      "function": "00b8a910",
+      "native": "00b868b0"
+    },
+    {
+      "address": "00b8a9a9",
+      "function": "00b8a990",
+      "native": "00bf681b"
+    },
+    {
+      "address": "00b8a9c5",
+      "function": "00b8a990",
+      "native": "00b868b0"
+    }
+  ],
+  "parent_review": {
+    "combined_source_head": "d18ed0ddc",
+    "build": "strict Win32 passed",
+    "ctests": "3/3 passed",
+    "table_target_loads": "Original EH state0 still armed at loads; disarmed immediately before virtual reader call. Source hardware-fault unwinding excluded."
+  },
+  "integration_annotations": {
+    "applied": true,
+    "saved_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "prior_annotation_archive": "local/ghidra-annotations-20260916T073457Z.json",
+    "prior_annotation_archive_sha256": "d51cee788743ab4d4b7e55fe52aa40996d79e7d01a65314ba9e220312064cfca",
+    "apply_log": "local/r25_ghidra_annotations.log",
+    "primary_only": true,
+    "previous_comments_preserved": true,
+    "source_build_head": "d18ed0ddc",
+    "strict_build_and_ctests": "passed; 3/3"
+  }
 }

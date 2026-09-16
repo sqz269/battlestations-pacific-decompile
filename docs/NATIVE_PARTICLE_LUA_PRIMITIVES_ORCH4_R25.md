@@ -40,9 +40,12 @@ finalizer error can follow it. The linked `lapi.c:339-353`, `lvm.c:47-56`, and
 `lgc.c:445-470` preserve that order. No string conversion rollback is justified.
 
 `00A683A0` calls `00A6EF60`, whose first call is `00A6EEA0`. The latter matches
-stock `ltable.c:findindex`, including the invalid-key error; its current Ghidra
-name `luaH_next` is too broad. `00A6EF60` matches the actual traversal/pair
-publication in `luaH_next`. This audit leaves those unowned names unchanged.
+stock `ltable.c:findindex`, including the invalid-key error. Integration corrected
+the earlier broad `luaH_next` inventory label to `findindex` and named
+`00A6EF60` as the actual `luaH_next` traversal/pair publication. Full listing
+review preserves the helper's EDI key and two stacked arguments (RET 8), and
+the traversal's ECX state, EDX table and stacked key (RET 4). Prior Ghidra
+comments are retained; this naming correction adds no binary ABI implementation.
 The linked `ltable.c:137-179` raises for an invalid key before publishing the
 next pair. Nil-first iteration of a valid table has no invalid-key error.
 `lua_next` does not dispatch `__pairs` or an indexing metamethod.
