@@ -37,8 +37,9 @@ std::uint32_t load_native_particle_text_buffer_00af5850(
 
 // Native table words must remain readable at their identity addresses, as
 // required by the existing concrete VFS bindings. Their supported profiles
-// and source exception/CRT boundaries are unchanged. GameNativeVfsRuntime's
-// private services are not exposed here; application wiring remains separate.
+// and source exception/CRT boundaries are unchanged. GameNativeVfsRuntime can
+// expose these SAME services through borrow_raw_services(); application callers
+// still retain the actual text/resolution frames and supply the same raw cells.
 // Original argument-slot aliases, register ABI, hardware SEH and gameplay
 // equivalence are not provided by this source interface.
 } // namespace bsp

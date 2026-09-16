@@ -409,6 +409,10 @@ GameNativeVfsRuntime::~GameNativeVfsRuntime() = default;
 void* GameNativeVfsRuntime::actual_manager() const noexcept {
     return impl_->inputs.actual_vfs_storage_a0;
 }
+GameNativeVfsRawServices GameNativeVfsRuntime::borrow_raw_services() noexcept {
+    return {impl_->inputs.owners.vfs_publication_0109ceec(), impl_->bindings,
+        impl_->name_resolution_context};
+}
 void GameNativeVfsRuntime::construct_and_register_core() {
     impl_->register_core();
 }

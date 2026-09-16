@@ -19,9 +19,21 @@ struct NativeFileAccessLogLifetimeBindings;
 struct SingletonLifetimeCallbacks;
 class NativeVfsEnumerationDuplicateLog;
 class NativeFileStoreCompletionDispatch;
+class NativeVfsRuntimeBindings;
+struct NativeVfsNameResolutionContext;
 }
 namespace bsp::game {
 class GameNativeReadOnlyData;
+
+// Borrow existing raw services for reconstructed callers such as AF5850.
+// This view owns no native storage or invocation frames. Keep the runtime and
+// its inputs alive through every consumer and the shared singleton drain;
+// failed resolution frames retain their existing process-lifetime obligation.
+struct GameNativeVfsRawServices {
+    void* volatile& actual_vfs_publication_0109ceec;
+    NativeVfsRuntimeBindings& bindings;
+    NativeVfsNameResolutionContext& name_resolution;
+};
 
 // Borrow one initialized raw lifetime, physical-provider pool, type-ID set and
 // immutable original table image. actual_vfs_storage points to caller-owned A0h
@@ -66,6 +78,11 @@ public:
     GameNativeVfsRuntime& operator=(GameNativeVfsRuntime&&) = delete;
 
     void* actual_manager() const noexcept;
+    // The publication remains a live reference, not a cached manager pointer.
+    // Consumers supply the SAME raw string cells used by inputs.owners, and
+    // retain their own actual headers and acquired frames. Borrowing performs
+    // no startup, I/O, retry or cleanup and is valid before core registration.
+    GameNativeVfsRawServices borrow_raw_services() noexcept;
     // Keep this object alive if startup throws: drain the shared singleton
     // manager before any bound context or publication cell is destroyed.
     void construct_and_register_core();
