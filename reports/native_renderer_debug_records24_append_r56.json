@@ -2007,5 +2007,85 @@
     "bytes": 356125221,
     "all_entries_rehashed": true,
     "scope": "Full current source/build compiler input/output closure and focused fixture/native/link evidence. Seven same-process physical I386 modules; no public-producer runtime proof."
+  },
+  "primary_integration": {
+    "source_commit": "fbcc5bca6ce5510a96c85720518a50b3ac092fa9",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "fixture_rerun_after_integration": false,
+    "archive": "local/evidence-r56/sphere-append-main-r56.zip",
+    "sha256": "7a59b80f7f90f9590891cb67c43a63c20595e74c4399feabc48f4a3864d085df",
+    "files": [
+      {
+        "path": "local/r56_integration.log",
+        "bytes": 1321,
+        "sha256": "ed3dac528bfc5970bc3e45cbf506ebeb35bdd639c681049c56e4cc65ff796c77"
+      },
+      {
+        "path": "src/native_renderer_debug_records24_append.cpp",
+        "bytes": 4115,
+        "sha256": "9de2059051d5b7cda3052ce0c5f7ab2bf1cdc60b6f76cfb62e97357ca1cedfc4"
+      },
+      {
+        "path": "include/bsp/native_renderer_debug_records24_append.hpp",
+        "bytes": 1515,
+        "sha256": "7319edf5c29f99a11da8f1a940a0ec31712303428ab12445622b7f6e15790a20"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 151140,
+        "sha256": "902908e789081ea7d5d10b0fcc9613a0b69e46e8b026aa537c2d185cb4dc8ae4"
+      },
+      {
+        "path": "docs/MATERIAL_ENTRY_DISPATCH.md",
+        "bytes": 11722,
+        "sha256": "c94d241f7dbc03b4e043da40cb026261a64987d2ed5be124daebf5911c2a8515"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 231054,
+        "sha256": "059780be2fbb8332f4ff9f2eec498718a01003b1ec3e7ca5a6873f1f14b1eacf"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_debug_records24_append.obj",
+        "bytes": 4109,
+        "sha256": "a97c4e887e09c86c40cf78fe9ae02b597ab36a411ee570a6eea8e894632b0bde"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63654290,
+        "sha256": "a4ce244c022045133ae49517b77d9f1bde60b2ba0df7fc13f33da2d6f2a38783"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2267136,
+        "sha256": "e805faa613e02210d73eff864b6b5c6f93e3e7b7e4b89ed9187b104b83f777b8"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2408,
+        "sha256": "66e79ae6f0e7587733638270fb5d9632b3f02c0bafb2898103cb2fa4b7d5f39c"
+      },
+      {
+        "path": "local/sphere_append_r56/call_gate.log",
+        "bytes": 89,
+        "sha256": "5dfdca8058995e714f8f066537a8edb3a554ee83f078c5f78fe2f8ca6fb7e07d"
+      },
+      {
+        "path": "local/sphere_append_r56/annotations.log",
+        "bytes": 287,
+        "sha256": "b3dbb4472ff3dc0f30a4ce9da88bb53b1edd27a94fcee3a5f9c003067aa9c2a8"
+      },
+      {
+        "path": "local/sphere_append_r56/exports.log",
+        "bytes": 308,
+        "sha256": "d09de7232580e09556fee3267ab9ad40778f7cd8537f0e6ff7036a8913d1cf63"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T163840Z.json",
+        "bytes": 8008,
+        "sha256": "3a108e2c9993b72c0822d846ba671c2cf197c841ab803d0a0f17a2e36a48b129"
+      }
+    ]
   }
 }
