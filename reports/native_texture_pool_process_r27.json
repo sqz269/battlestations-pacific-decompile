@@ -1,0 +1,74 @@
+{
+  "packet": "texture_pool_process_r27",
+  "source_commit": "04ad131bfedaba8f7f12e674e4e314f7e9b5d3cc",
+  "status": "canonical_actual38h_process_owner_strict_win32_and_real_crt_source_probe_checked",
+  "source_files": [
+    "include/bsp/game_native_texture_pool.hpp",
+    "src/game_native_texture_pool.cpp",
+    "src/game_main.cpp",
+    "cmake/startup.cmake"
+  ],
+  "native_storage": "0108db38 D3D9 texture2D actual38h",
+  "shared_allocator_list": "00e188b4",
+  "native_bytes": [
+    {
+      "address": "00cd7b60",
+      "end_exclusive": "00cd7b76",
+      "bytes": 22,
+      "hex": "b938db0801e81673e6ff68a00cce00e881f4f1ff59c3",
+      "sha256": "ad96bb40b665d436bf86a4deca1f0fe8a5eec9f1b621e690b71cc3f3f50b57c5",
+      "live_disk_match": true
+    },
+    {
+      "address": "00ce0ca0",
+      "end_exclusive": "00ce0caa",
+      "bytes": 10,
+      "hex": "b938db0801e986d7e5ff",
+      "sha256": "02f6a4daebc75ebd857a71a946817e691d86acdb0471181615ed7275354e6417",
+      "live_disk_match": true
+    }
+  ],
+  "call_sites": [
+    {"function": "00cd7b60", "address": "00cd7b65", "native": "00b3ee80"},
+    {"function": "00cd7b60", "address": "00cd7b6f", "native": "00bf6ff5"},
+    {"function": "00ce0ca0", "address": "00ce0ca5", "native": "00b3e430", "kind": "tail_jump"}
+  ],
+  "selected_crt_table": [
+    {"address": "00ce34ec", "target": "00cd7830", "sha256": "f4324158d522f33f2ea7536be614627628cd5eebba2c29c941d30a6871545cec", "live_disk_match": true},
+    {"address": "00ce34f4", "target": "00cd78b0", "sha256": "e86cc0c615b24bfea24b94bcee8600d0e89b801359dcd12472ca3c6491b7fcc0", "live_disk_match": true},
+    {"address": "00ce3514", "target": "00cd7b60", "sha256": "606c5df9cc70c2c7d7cef8b6476e4584c9d86d1693208b30aa7c563967c193e5", "live_disk_match": true},
+    {"address": "00ce3564", "target": "00cd7e40", "sha256": "da8c8cd4ad8743df193e1a5e4066a01c594d8318314265b511d79b0f3f6e2998", "live_disk_match": true},
+    {"address": "00ce35a4", "target": "00cd8250", "sha256": "b00889714bdaf13a975059020feaa31b821f9f0774804b83b28b7a3b339b9c03", "live_disk_match": true},
+    {"address": "00ce35b0", "target": "00cd82d0", "sha256": "c4da8509ab49f0dc471aa33e31a030b70342f2c6f55a62302dec579a9c5a7093", "live_disk_match": true}
+  ],
+  "validation": {
+    "verify_seeds": "passed",
+    "strict_win32_build": "passed",
+    "compiler": "MSVC 19.51.36244.0 Hostx64/x86",
+    "runtime_library": "/MD",
+    "existing_ctests": "3 of 3 passed",
+    "focused_source_probe": "passed with exit code 0",
+    "texture_operations": "33 allocations -> 2 slabs; 33 returns -> trim to 0; one retained slab freed by CE0CA0",
+    "exit_callback_order": [
+      "physical",
+      "hierarchy",
+      "section",
+      "mesh",
+      "texture",
+      "parameter",
+      "model"
+    ],
+    "final_allocator_list_head": "null",
+    "original_code_executed": false,
+    "original_abi_fh3_seh": false,
+    "renderer_or_device_constructed": false,
+    "game_validated": false
+  },
+  "artifacts": [
+    {"path": "local/texture_pool_process_probe.cpp", "sha256": "9f4f392b251757ec08ebd671c0e534350ec07b4c1fad824f52c47335ed0389f3"},
+    {"path": "local/build_texture_pool_process_probe.cmd", "sha256": "4a8c1e2d6ed6a3ffd8bc1bc0f4a9865f42a835ff225f386f21ab97bcd658196a"},
+    {"path": "local/texture_pool_process_probe.exe", "sha256": "2955b765068c884ed1d0c5ce7e1e6810ed46e07201935e42ecb8b5edf19d0e99"},
+    {"path": "build/win32/Release/bsp_core.lib", "sha256": "6422a8a47db561621dc78363f5f424a8343d6a22cb2aecb238bd485db704eb97"},
+    {"path": "build/win32/Release/bsp_game.exe", "sha256": "0a28b811eed3a2fc971f9d6763f56c8338f224401968cb72d3a8f5ce99f97a60"}
+  ]
+}
