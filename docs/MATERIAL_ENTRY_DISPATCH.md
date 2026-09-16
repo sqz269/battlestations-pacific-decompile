@@ -48,9 +48,12 @@ body. Its code ends at `00B43667`; the six-DWORD primitive jump table occupies
    `VisilityFade` option. Assembly uses COMISS/JBE; unordered visibility takes
    the regular path, as does visibility equal to or above1.
 3. Capture model+170 collection before the optional effect+08/mode0 operation.
-   That operation calls model virtual+48 with camera and entry flags, then
-   renderer virtual+C8 with its result. Its complete owner/ABI interpretation
-   is unresolved and requires the actual implementation.
+   The camera and entry flags pushed at B453D6/B453D7 remain on the stack across
+   model virtual+48. Its returned sphere pointer is pushed at B453E7; renderer
+   virtual+C8 is B29270, consuming all three words with RET0C: sphere, camera,
+   selector. The model call consumes no stack arguments on this path. This is
+   sphere-record production, not an inferred model-state setter. R56 preserves
+   the exact caller/callee bytes and corrects the earlier argument attribution.
 4. Without a collection, reread the entry's live camera mode and visibility.
    Mode0 below1 selects effect+100; every other case selects effect+C8+4*mode.
    A null selected program skips the draw. No fixed NORMAL substitution occurs.
