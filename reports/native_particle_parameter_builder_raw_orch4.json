@@ -1,0 +1,1030 @@
+{
+  "packet": "orch4_parameter_builder_raw_m13",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00afbed0",
+      "end_exclusive": "00afbf14",
+      "end_inclusive": "00afbf13",
+      "length": 68,
+      "sha256": "027863bb2c45a5a7f74bc8713019494825c3014672ceb2bdb6d8e38f06fa7d52",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00afbf13",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "cpp_symbol": "construct_native_particle_parameter_builder_00afbed0",
+      "ghidra_name": "BSP_ParticleParameterBuilder_Construct",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "original_abi": "ECX actual10h builder; RET; EAX same owner",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_ParticleParameterBuilder_Construct(void)",
+      "coverage": "complete raw provider composition; existing legacy overload retained where present",
+      "evidence": "ORCH4 m13 raw builder: actual NativeStringRawPoolContext, fixed CRT key allocation, shared numeric view preserving original pointer-member reloads, and explicit native FH3 owners. Complete nine-body live/PE hashes, exact calls, 40-case copied-original raw-pool/FP probe and 14-case legacy compatibility probe in docs/NATIVE_PARTICLE_PARAMETER_BUILDER_RAW_ORCH4.md and reports/native_particle_parameter_builder_raw_orch4.json. Strict Win32 build and three CTests pass. Raw runtime conversion, FH3 transport/SEH ABI and gameplay unvalidated; C++ overloads are not binary replacements."
+    },
+    {
+      "address": "00af4110",
+      "end_exclusive": "00af412a",
+      "end_inclusive": "00af4129",
+      "length": 26,
+      "sha256": "48528fb6b6f080664c6d6c60618eec22bc5dd6060b9297c9069bdc9e886e6b19",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00af4129",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "cpp_symbol": "destroy_native_particle_parameter_builder_00af4110",
+      "ghidra_name": "BSP_ParticleParameterBuilder_ReleaseKeys",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "original_abi": "ECX actual builder; RET",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleParameterBuilder_ReleaseKeys(void)",
+      "coverage": "complete raw provider composition; existing legacy overload retained where present",
+      "evidence": "ORCH4 m13 raw builder: actual NativeStringRawPoolContext, fixed CRT key allocation, shared numeric view preserving original pointer-member reloads, and explicit native FH3 owners. Complete nine-body live/PE hashes, exact calls, 40-case copied-original raw-pool/FP probe and 14-case legacy compatibility probe in docs/NATIVE_PARTICLE_PARAMETER_BUILDER_RAW_ORCH4.md and reports/native_particle_parameter_builder_raw_orch4.json. Strict Win32 build and three CTests pass. Raw runtime conversion, FH3 transport/SEH ABI and gameplay unvalidated; C++ overloads are not binary replacements."
+    },
+    {
+      "address": "00af4060",
+      "end_exclusive": "00af407a",
+      "end_inclusive": "00af4079",
+      "length": 26,
+      "sha256": "5879ca1ed99f578ea770568b4098897262e61195f4456305c9a31ee845cbebd3",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00af4079",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "cpp_symbol": "destroy_native_particle_parameter_key_vector_00af4060",
+      "ghidra_name": "BSP_ParticleParameterKeyVector_Destroy",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "original_abi": "ECX actual10h key vector; RET; no specified return",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleParameterKeyVector_Destroy(void)",
+      "coverage": "complete raw provider composition; existing legacy overload retained where present",
+      "evidence": "ORCH4 m13 raw builder: actual NativeStringRawPoolContext, fixed CRT key allocation, shared numeric view preserving original pointer-member reloads, and explicit native FH3 owners. Complete nine-body live/PE hashes, exact calls, 40-case copied-original raw-pool/FP probe and 14-case legacy compatibility probe in docs/NATIVE_PARTICLE_PARAMETER_BUILDER_RAW_ORCH4.md and reports/native_particle_parameter_builder_raw_orch4.json. Strict Win32 build and three CTests pass. Raw runtime conversion, FH3 transport/SEH ABI and gameplay unvalidated; C++ overloads are not binary replacements."
+    },
+    {
+      "address": "00afc360",
+      "end_exclusive": "00afc46c",
+      "end_inclusive": "00afc46b",
+      "length": 268,
+      "sha256": "63d8bd5a92b5567d964cb710ab9a0a763d60d52761eb55c1dc33611e2442987f",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00afc469",
+        "length": 3,
+        "bytes": "c20800",
+        "text": "ret 8"
+      },
+      "cpp_symbol": "initialize_native_particle_parameter_endpoints_00afc360",
+      "ghidra_name": "BSP_ParticleParameterBuilder_InsertDefaultEndpoints",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "original_abi": "ECX actual builder; stack(first_value,last_value); RET8",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleParameterBuilder_InsertDefaultEndpoints(float first_value, float last_value)",
+      "coverage": "complete raw provider composition; existing legacy overload retained where present",
+      "evidence": "ORCH4 m13 raw builder: actual NativeStringRawPoolContext, fixed CRT key allocation, shared numeric view preserving original pointer-member reloads, and explicit native FH3 owners. Complete nine-body live/PE hashes, exact calls, 40-case copied-original raw-pool/FP probe and 14-case legacy compatibility probe in docs/NATIVE_PARTICLE_PARAMETER_BUILDER_RAW_ORCH4.md and reports/native_particle_parameter_builder_raw_orch4.json. Strict Win32 build and three CTests pass. Raw runtime conversion, FH3 transport/SEH ABI and gameplay unvalidated; C++ overloads are not binary replacements."
+    },
+    {
+      "address": "00afc470",
+      "end_exclusive": "00afcc9f",
+      "end_inclusive": "00afcc9e",
+      "length": 2095,
+      "sha256": "1e0ccc85a3c849b93370b8b88541b585bd2f5643231e1e0a8dc57da42d29c623",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00afcc9c",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "cpp_symbol": "parse_native_particle_parameter_00afc470",
+      "ghidra_name": "BSP_ParticleParameterBuilder_ParsePooledLine",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "original_abi": "ECX actual builder; stack(actual4h line); RET4; AL boolean",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "bool __thiscall BSP_ParticleParameterBuilder_ParsePooledLine(void * actual_line)",
+      "coverage": "complete raw provider composition; existing legacy overload retained where present",
+      "evidence": "ORCH4 m13 raw builder: actual NativeStringRawPoolContext, fixed CRT key allocation, shared numeric view preserving original pointer-member reloads, and explicit native FH3 owners. Complete nine-body live/PE hashes, exact calls, 40-case copied-original raw-pool/FP probe and 14-case legacy compatibility probe in docs/NATIVE_PARTICLE_PARAMETER_BUILDER_RAW_ORCH4.md and reports/native_particle_parameter_builder_raw_orch4.json. Strict Win32 build and three CTests pass. Raw runtime conversion, FH3 transport/SEH ABI and gameplay unvalidated; C++ overloads are not binary replacements."
+    },
+    {
+      "address": "00afbc90",
+      "end_exclusive": "00afbd03",
+      "end_inclusive": "00afbd02",
+      "length": 115,
+      "sha256": "99e1821ff5864aeb057333b1eae1a784c14eb10c668bc9b2623ec0948723742d",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00afbd00",
+        "length": 3,
+        "bytes": "c20800",
+        "text": "ret 8"
+      },
+      "cpp_symbol": "incoming",
+      "ghidra_name": "BSP_ParticleKey_NormalizeIncomingTangent",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "original_abi": "ECX actual2float destination; stack(x,y); RET8",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleKey_NormalizeIncomingTangent(float x, float y)",
+      "coverage": "complete raw provider composition; existing legacy overload retained where present",
+      "evidence": "ORCH4 m13 raw builder: actual NativeStringRawPoolContext, fixed CRT key allocation, shared numeric view preserving original pointer-member reloads, and explicit native FH3 owners. Complete nine-body live/PE hashes, exact calls, 40-case copied-original raw-pool/FP probe and 14-case legacy compatibility probe in docs/NATIVE_PARTICLE_PARAMETER_BUILDER_RAW_ORCH4.md and reports/native_particle_parameter_builder_raw_orch4.json. Strict Win32 build and three CTests pass. Raw runtime conversion, FH3 transport/SEH ABI and gameplay unvalidated; C++ overloads are not binary replacements."
+    },
+    {
+      "address": "00afbd10",
+      "end_exclusive": "00afbd83",
+      "end_inclusive": "00afbd82",
+      "length": 115,
+      "sha256": "6bfc8c3918d79cb1ae997b65daddd5e2367ed97fa82714d8b892d2359521dd18",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00afbd80",
+        "length": 3,
+        "bytes": "c20800",
+        "text": "ret 8"
+      },
+      "cpp_symbol": "outgoing",
+      "ghidra_name": "BSP_ParticleKey_NormalizeOutgoingTangent",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "original_abi": "ECX actual2float destination; stack(x,y); RET8",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleKey_NormalizeOutgoingTangent(float x, float y)",
+      "coverage": "complete raw provider composition; existing legacy overload retained where present",
+      "evidence": "ORCH4 m13 raw builder: actual NativeStringRawPoolContext, fixed CRT key allocation, shared numeric view preserving original pointer-member reloads, and explicit native FH3 owners. Complete nine-body live/PE hashes, exact calls, 40-case copied-original raw-pool/FP probe and 14-case legacy compatibility probe in docs/NATIVE_PARTICLE_PARAMETER_BUILDER_RAW_ORCH4.md and reports/native_particle_parameter_builder_raw_orch4.json. Strict Win32 build and three CTests pass. Raw runtime conversion, FH3 transport/SEH ABI and gameplay unvalidated; C++ overloads are not binary replacements."
+    },
+    {
+      "address": "00afbdb0",
+      "end_exclusive": "00afbe75",
+      "end_inclusive": "00afbe74",
+      "length": 197,
+      "sha256": "49ec104d46852dd70291f9cda8a175360db2ea43ace7afa29add48b9204392f4",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00afbe72",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "cpp_symbol": "reserve_00afbdb0",
+      "ghidra_name": "BSP_ParticleParameterBuilder_ReserveKeys",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "original_abi": "ECX actual builder; stack(signed capacity); RET4",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleParameterBuilder_ReserveKeys(int capacity)",
+      "coverage": "complete raw provider composition; existing legacy overload retained where present",
+      "evidence": "ORCH4 m13 raw builder: actual NativeStringRawPoolContext, fixed CRT key allocation, shared numeric view preserving original pointer-member reloads, and explicit native FH3 owners. Complete nine-body live/PE hashes, exact calls, 40-case copied-original raw-pool/FP probe and 14-case legacy compatibility probe in docs/NATIVE_PARTICLE_PARAMETER_BUILDER_RAW_ORCH4.md and reports/native_particle_parameter_builder_raw_orch4.json. Strict Win32 build and three CTests pass. Raw runtime conversion, FH3 transport/SEH ABI and gameplay unvalidated; C++ overloads are not binary replacements."
+    },
+    {
+      "address": "00afc260",
+      "end_exclusive": "00afc334",
+      "end_inclusive": "00afc333",
+      "length": 212,
+      "sha256": "b6c1c32782d4f3480ab9d29576b5cfa4eec3cd99cd6c60281603665784b0e36b",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00afc331",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "cpp_symbol": "insert_00afc260",
+      "ghidra_name": "BSP_ParticleParameterBuilder_InsertSortedKey",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "original_abi": "ECX actual builder; stack(actual2Ch key); RET4; EAX inserted index",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "int __thiscall BSP_ParticleParameterBuilder_InsertSortedKey(void * actual_key)",
+      "coverage": "complete raw provider composition; existing legacy overload retained where present",
+      "evidence": "ORCH4 m13 raw builder: actual NativeStringRawPoolContext, fixed CRT key allocation, shared numeric view preserving original pointer-member reloads, and explicit native FH3 owners. Complete nine-body live/PE hashes, exact calls, 40-case copied-original raw-pool/FP probe and 14-case legacy compatibility probe in docs/NATIVE_PARTICLE_PARAMETER_BUILDER_RAW_ORCH4.md and reports/native_particle_parameter_builder_raw_orch4.json. Strict Win32 build and three CTests pass. Raw runtime conversion, FH3 transport/SEH ABI and gameplay unvalidated; C++ overloads are not binary replacements."
+    }
+  ],
+  "unchanged_probe_dependencies": [
+    {
+      "address": "00afb670",
+      "end_exclusive": "00afb6a8",
+      "end_inclusive": "00afb6a7",
+      "length": 56,
+      "sha256": "3a2233da3edb7b14453ff04fe86a074ebbde01c780fa4b487ff2d1070fbb080f",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00afb6a7",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      }
+    },
+    {
+      "address": "00403560",
+      "end_exclusive": "00403592",
+      "end_inclusive": "00403591",
+      "length": 50,
+      "sha256": "51dc337b96022e62bb4e503f32bd34ccdd7bc831d1377c96108344b59065c616",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "0040358f",
+        "length": 3,
+        "bytes": "c21000",
+        "text": "ret 0x10"
+      }
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00afbefd",
+      "native": "00afbdb0",
+      "function": "00afbed0"
+    },
+    {
+      "address": "00af4116",
+      "native": "00bf6989",
+      "function": "00af4110"
+    },
+    {
+      "address": "00af4066",
+      "native": "00bf6989",
+      "function": "00af4060"
+    },
+    {
+      "address": "00afc3ce",
+      "native": "00afbd10",
+      "function": "00afc360"
+    },
+    {
+      "address": "00afc3da",
+      "native": "00afc260",
+      "function": "00afc360"
+    },
+    {
+      "address": "00afc454",
+      "native": "00afbc90",
+      "function": "00afc360"
+    },
+    {
+      "address": "00afc460",
+      "native": "00afc260",
+      "function": "00afc360"
+    },
+    {
+      "address": "00afc4a6",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc4bc",
+      "native": "00bf7fbf",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc4d5",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc4dd",
+      "native": "00bf8417",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc50a",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc511",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc552",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc559",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc56d",
+      "native": "00bf6989",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc5a4",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc5ac",
+      "native": "00bfa66c",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc5d7",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc5de",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc5f6",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc5fe",
+      "native": "00bfa66c",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc629",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc630",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc70b",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc725",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc72f",
+      "native": "00bfa66c",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc73b",
+      "native": "00bfa66c",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc784",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc78b",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc7c2",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc7c9",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc7e1",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc7fb",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc805",
+      "native": "00bfa66c",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc811",
+      "native": "00bfa66c",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc85a",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc861",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc893",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc89a",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc8ac",
+      "native": "00afc260",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc8f2",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc8f9",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc939",
+      "native": "00bf7fbf",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc952",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc95a",
+      "native": "00bf8417",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc987",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc98e",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc9aa",
+      "native": "00bf6989",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc9e3",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afc9eb",
+      "native": "00bfa66c",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afca16",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afca1d",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afca36",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afca3e",
+      "native": "00bfa66c",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afca69",
+      "native": "00419cc0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afca70",
+      "native": "00bd1510",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afcbcd",
+      "native": "00afc260",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afcc18",
+      "native": "00bf7fbf",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afcc30",
+      "native": "00aee3c0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afcc38",
+      "native": "00bfa66c",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afcc51",
+      "native": "00aee2a0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afcc65",
+      "native": "00aee2a0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afcc7d",
+      "native": "00aee2a0",
+      "function": "00afc470"
+    },
+    {
+      "address": "00afbcd6",
+      "native": "00bf7030",
+      "function": "00afbc90"
+    },
+    {
+      "address": "00afbd56",
+      "native": "00bf7030",
+      "function": "00afbd10"
+    },
+    {
+      "address": "00afbdf8",
+      "native": "00bf55be",
+      "function": "00afbdb0"
+    },
+    {
+      "address": "00afbe1b",
+      "native": "00403560",
+      "function": "00afbdb0"
+    },
+    {
+      "address": "00afbe53",
+      "native": "00bf6989",
+      "function": "00afbdb0"
+    },
+    {
+      "address": "00afc2aa",
+      "native": "00afbdb0",
+      "function": "00afc260"
+    },
+    {
+      "address": "00afc2d6",
+      "native": "00afbdb0",
+      "function": "00afc260"
+    },
+    {
+      "address": "00403582",
+      "native": "ebx",
+      "function": "00403560"
+    }
+  ],
+  "eh_funclet_calls": [
+    {
+      "function": "00cbb120",
+      "address": "00cbb124",
+      "native": "00bf6989"
+    },
+    {
+      "function": "00cbb140",
+      "address": "00cbb143",
+      "native": "00af4060",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbb180",
+      "address": "00cbb186",
+      "native": "00aee2a0",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbb18b",
+      "address": "00cbb18e",
+      "native": "00aee2a0",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbb193",
+      "address": "00cbb199",
+      "native": "00aee2a0",
+      "kind": "tail_jump"
+    }
+  ],
+  "constants": [
+    {
+      "address": "00ce3928",
+      "length": 8,
+      "bytes": "000000a09999b9bf",
+      "sha256": "8b1d35c57227e7999ce2ecf0ed34a4269573ec0d8c32e4f4c1578cf211839f57",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00ce3cb4",
+      "length": 4,
+      "bytes": "cdccccbd",
+      "sha256": "c0163c2ecd64a0a15ca02ecf8c7aef2d50721774aae0cc1fc14a092fbe999dbb",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d7a3a0",
+      "length": 8,
+      "bytes": "000000a09999b93f",
+      "sha256": "3e2a4d232d889625aa1c184b27588b7c6ebdfef18e01332502d986209f65b905",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d7a2f0",
+      "length": 4,
+      "bytes": "cdcccc3d",
+      "sha256": "fb360f7241a770dc32cade9a1d1273c92b13bd4959b1c130931312b7fe95e63f",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00ce3d08",
+      "length": 4,
+      "bytes": "0000c842",
+      "sha256": "2238f30df488055daf5e8f362cf904e370011a172d20df193c1b7ae8e5db8e01",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00ce65d8",
+      "length": 4,
+      "bytes": "0000c8c2",
+      "sha256": "a48bed9ee2950cc60ca91386a6c64a241a9ffd24bdc321bb15424ac7a7d3baed",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d7a218",
+      "length": 4,
+      "bytes": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d7a220",
+      "length": 8,
+      "bytes": "0000000000005940",
+      "sha256": "00754a39f7de30495780d4c6242f680316f56bf4bf735c3681b3ac1d14f1512e",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d7a260",
+      "length": 4,
+      "bytes": "000080bf",
+      "sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d7a24c",
+      "length": 4,
+      "bytes": "0000803f",
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_disk_equal": true
+    }
+  ],
+  "eh_spans": [
+    {
+      "address": "00cbb120",
+      "end_inclusive": "00cbb134",
+      "length": 21,
+      "sha256": "e1b15d43e7342c1128013d593b822c309916408eecfa842d9e24f7b39cf6f10b",
+      "live_disk_equal": true,
+      "bytes": "8b45f050e860b8f3ff59c3b89830df00e90ebaf3ff"
+    },
+    {
+      "address": "00cbb140",
+      "end_inclusive": "00cbb151",
+      "length": 18,
+      "sha256": "aaba88c383195a4dd7aacca3855d3f9ff612b77e7fd8b30ae91595322dddf362",
+      "live_disk_equal": true,
+      "bytes": "8b4df0e9188fe3ffb8c430df00e9f1b9f3ff"
+    },
+    {
+      "address": "00cbb180",
+      "end_inclusive": "00cbb1a7",
+      "length": 40,
+      "sha256": "cd4e8bbffb8170c407afc3d91dd88d44489ad504a8aae4b755824a556fd6bddb",
+      "live_disk_equal": true,
+      "bytes": "8d8d64ffffffe91531e3ff8d4d94e90d31e3ff8d8d70ffffffe90231e3ffb82c31df00e99bb9f3ff"
+    },
+    {
+      "address": "00df3090",
+      "end_inclusive": "00df30bb",
+      "length": 44,
+      "sha256": "e22d9a53b9b837599be9f2612ccb572157c3e638cb57a376e72c49823be286e7",
+      "live_disk_equal": true,
+      "bytes": "ffffffff20b1cb0022059319010000009030df00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00df30bc",
+      "end_inclusive": "00df30e7",
+      "length": 44,
+      "sha256": "fd41faec0352065636abae5d61334b8904284fb36e177633a6ccc3243668cde4",
+      "live_disk_equal": true,
+      "bytes": "ffffffff40b1cb002205931901000000bc30df00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00df3114",
+      "end_inclusive": "00df314f",
+      "length": 60,
+      "sha256": "b7a06577c55a294feaaa6283359838871e7ac642afad5ab24e479549c175545e",
+      "live_disk_equal": true,
+      "bytes": "ffffffff80b1cb00000000008bb1cb000000000093b1cb0022059319030000001431df00000000000000000000000000000000000000000001000000"
+    }
+  ],
+  "prior_annotations": [
+    {
+      "address": "00afbed0",
+      "annotation": {
+        "address": "00afbed0",
+        "function_name": "BSP_ParticleParameterBuilder_Construct",
+        "comment": "[BSP reconstruction 00afbed0]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      }
+    },
+    {
+      "address": "00af4110",
+      "annotation": {
+        "address": "00af4110",
+        "function_name": "BSP_ParticleParameterBuilder_ReleaseKeys",
+        "comment": "[BSP reconstruction 00af4110]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      }
+    },
+    {
+      "address": "00af4060",
+      "annotation": {
+        "address": "00af4060",
+        "function_name": "FUN_00af4060"
+      }
+    },
+    {
+      "address": "00afc360",
+      "annotation": {
+        "address": "00afc360",
+        "function_name": "BSP_ParticleParameterBuilder_InsertDefaultEndpoints",
+        "comment": "[BSP reconstruction 00afc360]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      }
+    },
+    {
+      "address": "00afc470",
+      "annotation": {
+        "address": "00afc470",
+        "function_name": "BSP_ParticleParameterBuilder_ParsePooledLine",
+        "comment": "[BSP reconstruction 00afc470]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      }
+    },
+    {
+      "address": "00afbdb0",
+      "annotation": {
+        "address": "00afbdb0",
+        "function_name": "BSP_ParticleParameterBuilder_ReserveKeys",
+        "comment": "[BSP reconstruction 00afbdb0]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      }
+    },
+    {
+      "address": "00afc260",
+      "annotation": {
+        "address": "00afc260",
+        "function_name": "BSP_ParticleParameterBuilder_InsertSortedKey",
+        "comment": "[BSP reconstruction 00afc260]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      }
+    },
+    {
+      "address": "00afbc90",
+      "annotation": {
+        "address": "00afbc90",
+        "function_name": "BSP_ParticleKey_NormalizeIncomingTangent",
+        "comment": "[BSP reconstruction 00afbc90]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      }
+    },
+    {
+      "address": "00afbd10",
+      "annotation": {
+        "address": "00afbd10",
+        "function_name": "BSP_ParticleKey_NormalizeOutgoingTangent",
+        "comment": "[BSP reconstruction 00afbd10]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded."
+      }
+    }
+  ],
+  "prior_reconstruction_records": [
+    {
+      "address": "00af4110",
+      "name": "destroy_native_particle_parameter_builder_00af4110",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "native_abi": "ECX actual builder; RET",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "status": "reconstructed_build_tested_bounded_fixture_tested",
+      "kind": "function"
+    },
+    {
+      "address": "00afbc90",
+      "name": "incoming",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "native_abi": "ECX actual2float destination; stack(x,y); RET8",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "status": "reconstructed_build_tested_bounded_fixture_tested",
+      "kind": "function"
+    },
+    {
+      "address": "00afbd10",
+      "name": "outgoing",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "native_abi": "ECX actual2float destination; stack(x,y); RET8",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "status": "reconstructed_build_tested_bounded_fixture_tested",
+      "kind": "function"
+    },
+    {
+      "address": "00afbdb0",
+      "name": "reserve_00afbdb0",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "native_abi": "ECX actual builder; stack(signed capacity); RET4",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "status": "reconstructed_build_tested_bounded_fixture_tested",
+      "kind": "function"
+    },
+    {
+      "address": "00afbed0",
+      "name": "construct_native_particle_parameter_builder_00afbed0",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "native_abi": "ECX actual10h builder; RET; EAX same owner",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "status": "reconstructed_build_tested_bounded_fixture_tested",
+      "kind": "function"
+    },
+    {
+      "address": "00afc260",
+      "name": "insert_00afc260",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "native_abi": "ECX actual builder; stack(actual2Ch key); RET4; EAX inserted index",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "status": "reconstructed_build_tested_bounded_fixture_tested",
+      "kind": "function"
+    },
+    {
+      "address": "00afc360",
+      "name": "initialize_native_particle_parameter_endpoints_00afc360",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "native_abi": "ECX actual builder; stack(first_value,last_value); RET8",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "status": "reconstructed_build_tested_bounded_fixture_tested",
+      "kind": "function"
+    },
+    {
+      "address": "00afc470",
+      "name": "parse_native_particle_parameter_00afc470",
+      "source": "src/native_particle_parameter_loading.cpp",
+      "header": "include/bsp/native_particle_parameter_loading.hpp",
+      "native_abi": "ECX actual builder; stack(actual4h line); RET4; AL boolean",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk span and last instruction verified. Current x87 widths/spills, real F8D344 pool ownership and sparse scratch documented in docs/NATIVE_PARTICLE_PARAMETER_LOADING.md. New C++ APIs; original FH3 unwind, unchecked extreme-count behavior and gameplay unvalidated. Primary AO integration: Ghidra thiscall signature models ECX implicitly and lists only original stack words; native B004A0 ignores incoming ECX. New borrowed C++ bindings are not native arguments. Native pointer/storage and fixture scope remain as recorded.",
+      "status": "reconstructed_build_tested_bounded_fixture_tested",
+      "kind": "function"
+    }
+  ],
+  "parent_repairs": [
+    "reports/native_particle_layer_builder_flow_orch4_m13.json",
+    "reports/native_particle_layer_builder_bodies_orch4_m13.json"
+  ],
+  "eh_state_maps": {
+    "00afbdb0": {
+      "handler": "00cbb12b",
+      "descriptor": "00df3098",
+      "map": "00df3090",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbb120",
+          "ownership": "replacement array through normal publication"
+        }
+      ]
+    },
+    "00afbed0": {
+      "handler": "00cbb148",
+      "descriptor": "00df30c4",
+      "map": "00df30bc",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbb140",
+          "ownership": "builder vector through AF4060"
+        }
+      ]
+    },
+    "00afc470": {
+      "handler": "00cbb19e",
+      "descriptor": "00df312c",
+      "map": "00df3114",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbb180",
+          "ownership": "type pooled header"
+        },
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cbb18b",
+          "ownership": "incoming-y pooled header"
+        },
+        {
+          "state": 2,
+          "next": 0,
+          "action": "00cbb193",
+          "ownership": "outgoing-y pooled header"
+        }
+      ],
+      "unowned_temporaries": "count, ordinary x/y, pair-x and Const-value have explicit normal release only"
+    }
+  },
+  "validation": {
+    "build": "scripts/build.ps1 Win32 Release /W4 /WX /fp:strict; final pass 3/3 CTests",
+    "seed_verification": "all eight native seed spans match live and PE",
+    "raw_probe": {
+      "directory": "local/parameter_builder_probe",
+      "result": "parameter_probe.cpp\nraw builder original/source: observations=40 copied_spans=11 rounding_modes=4 actual_pool_bytes=9098372 failures=0",
+      "copied_spans": 11,
+      "observations": 40,
+      "x87_rounding_modes": 4,
+      "pool_image_bytes": 9098372,
+      "checks": [
+        "defined key fields and builder count/capacity/kind",
+        "x87 exception flags and TOP",
+        "complete actual pool arena, bump, ring cells/head/tail/live/peak",
+        "normal parser returns and partial mutations",
+        "both cleanup leaves sparse clears"
+      ],
+      "excluded": [
+        "indeterminate key scratch",
+        "copied native FH3 exception transport",
+        "arbitrary invalid pointer/overflow inputs",
+        "gameplay"
+      ]
+    },
+    "legacy_probe": {
+      "directory": "local/parameter_builder_legacy_probe",
+      "result": "parameter_probe.cpp\nparameter original-byte actual-owner fixture: observations=14 native_spans=21 current_constant_sets=2 failures=0",
+      "observations": 14,
+      "constant_sets": 2,
+      "scope": "existing host overload compatibility including converter and actual parameter pool; no raw converter claim"
+    },
+    "review": "Parent and independent source/evidence review: numeric pointer-cell reloads, stack offsets, x87 schedule, legacy68B layout and DF3114 state transitions. Not runtime EH proof.",
+    "call_verification": {
+      "checked": 76,
+      "failed": 0,
+      "indirect_skipped": 1,
+      "note": "403560 vector-constructor iterator calls EBX; copied binding targets unchanged AFB670."
+    }
+  },
+  "boundaries": [
+    "current std::atof/std::atol/_stricmp provider boundaries, not reconstructed original CRT bodies",
+    "actual application string publications and CRT access are required; no host string facade or parameter pool in raw builder context",
+    "source noexcept true-unwind cleanup terminates on a second C++ exception; native FH3 transport/SEH ABI unvalidated",
+    "unchanged converter/coefficient/integral implementations and their legacy interfaces remain outside raw overload scope"
+  ],
+  "artifact_hashes": {
+    "include/bsp/native_particle_parameter_loading.hpp": "4b5ef4aa983cbb68257c4ca8f6133f9cdfa9b0160e01d72e93451355f13b2222",
+    "src/native_particle_parameter_loading.cpp": "7e5ffc18ce050922cd3f3129225f18ddc1c8bb6856bb0299002452d62f8d6967",
+    "local/parameter_builder_probe/parameter_probe.cpp": "2fd79d387bf11a682319425f28e8f1db7c99af04d859b2d46daf29acafb46dfd",
+    "local/parameter_builder_probe/make_fixture.py": "37c788e1f6dedf1a0d7a61ba734a244e13c3af46bf9a6c9b8dd83f2c14be55ae",
+    "local/parameter_builder_probe/original_bytes.hpp": "33c8a193c0037900825b6d680c5c0b0906fed34d8fd07801d6b9931afab6d7be",
+    "local/parameter_builder_probe/bind_original.inl": "4e5a0696c70adb7cff8dab36143992b4c1e9663205478f95389ae10d759e27ec",
+    "local/parameter_builder_probe/probe.cmd": "079af218f07a427975a7a4df30a5d9742d933eef036ba53389a3f74f342f1083",
+    "local/parameter_builder_probe/library_fixture.log": "5c9f4a43654733b7d9d62328ff8d646893c20241855a2e9e4c46ceae93041c7f",
+    "local/parameter_builder_m13_final_build.log": "2cd3d5775e6a3fee1bb84ba0bd6d4e7437050c60bf7b70733b42dbe93d4f2aa0"
+  }
+}
