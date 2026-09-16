@@ -186,9 +186,11 @@ bool load_native_tracer_particle_definition_00b0ad50(void* definition, void* buf
                 if (param) {
                     void* common=suffix(&a.line,a.common_suffix,1,0xb0ae5a);
                     a.unwind_state=1;a.native_site=0xb0ae67;
-                    a.property_children.emplace_back();
+                    if (a.property && a.property->phase != NativeParticleTypePropertyRawAcquired::Phase::complete)
+                        throw std::logic_error("Unfinished Tracer property child cannot be replaced");
+                    a.property.emplace();
                     const bool handled=load_native_particle_type_property_00b015c0(
-                        definition,common,c.properties,a.property_children.back());
+                        definition,common,c.properties,*a.property);
                     clear(a.common_suffix,0,0xb0ae99,true);
                     if (!handled) {
                         token(&a.line,a.name,1,0xb0aeb5);a.unwind_state=2;

@@ -2,7 +2,7 @@
 #include "bsp/native_particle_parameter_loading.hpp"
 #include "bsp/native_particle_type_property_raw.hpp"
 #include "bsp/native_pooled_text.hpp"
-#include <deque>
+#include <optional>
 
 namespace bsp {
 struct NativeParticleTextureNamesRawContext;
@@ -21,8 +21,9 @@ struct NativeParticleTracerRawContext {
 };
 
 // Retain this invocation until failed child obligations have been resolved.
-// Native four-byte headers precede children so their addresses stay valid during
-// child teardown. No destructor rollback, reference increment or replay. Only
+// Native four-byte headers precede the child so their addresses stay valid during
+// child teardown. Only a completed child may be replaced. No destructor rollback,
+// reference increment or replay. Only
 // caller-supplied builder kind represents the original unwritten incoming slot;
 // constructors and successful parses establish the other builder fields.
 struct NativeParticleTracerRawAcquired {
@@ -40,7 +41,7 @@ struct NativeParticleTracerRawAcquired {
     NativePooledTextStorage keyword, common_suffix, boolean_value, head, tail,
         texture, scalar_token, scalar_suffix, inner_suffix, outer_suffix;
     NativeParticleParameterBuilderStorage builder;
-    std::deque<NativeParticleTypePropertyRawAcquired> property_children;
+    std::optional<NativeParticleTypePropertyRawAcquired> property;
 };
 
 // Complete B0AD50[2172], ECX actual E8h Tracer, stack actual1Ch text buffer,

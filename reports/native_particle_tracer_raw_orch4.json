@@ -1413,21 +1413,21 @@
   "source_contract": {
     "strings": "Same NativeStringRawPoolContext shared by builders, raw properties and raw names; actual publication/gate/manager cells.",
     "parameters": "Actual NativeWeakHandlePool F8D344 runtime domain, existing builder and B00980 contexts; no alternate allocator.",
-    "retained": "Single-use acquired frame contains actual four-byte headers and fresh deque entries for each B015C0 child. Failed child cache/texture obligations and referenced header storage outlive the call. Caller must retain until resolved; no destructor rollback or ref increment.",
+    "retained": "Single-use acquired frame contains actual four-byte headers and one optional B015C0 child. Only a completed child may be replaced by the next invocation. Failed child cache/texture obligations and referenced header storage outlive the call. Caller must retain until resolved; no destructor rollback or ref increment.",
     "initial_kind": "Explicit caller input for otherwise-unwritten builder+C; persists across lines, parse failures ignored.",
     "arithmetic": "AtOf ST0 -> float spill, common argument FLD32/FSTP32, first-value ST0 stores, runtime conversion before late context percentage-pointer read and FLD32/FMUL64/FSTP32. TileLength does not write multiplier.",
     "publication": "Existing parameter fields overwritten without release. Texture count reset only; capacity updated before saturated allocation, current source/count copied, old array freed before publication; borrowed items and live atlas publication.",
     "exception": "Parent DF3D08 ten-state map and companion DF3C58 one-state map follow existing raw cleanup bodies. Secondary source unwind failure terminates. No original FH3 transport/failure proof."
   },
   "validation": {
-    "build": "./scripts/build.ps1 clean MSVC Win32 Release /W4 /WX /fp:strict passed; 2 existing CTests passed",
+    "build": "./scripts/build.ps1 clean MSVC Win32 Release /W4 /WX /fp:strict passed; 2 existing CTests passed; after optional-child refinement, incremental strict Win32 rebuild and the same 2 existing CTests passed",
     "probe": {
       "exit_code": 0,
       "output": "PASS native/source scenario0 9105313 bytes\nPASS native/source scenario1 9105313 bytes\nPASS: two complete copied originals2791B, actual raw string/parameter pools, all24 Tracer keys plus common properties, growth/reset, EOF/brace, x87 sNaN percentage and retained source child failure. Original FH3/error paths and external helper originals excluded.\n",
       "x86": true,
       "embedded_manifest": true,
-      "exe_sha256": "fe83c475fb3ba2ac54db78c6cc47dd7d01aedc2d1b8ca47f6286bdc0053d9da7",
-      "library_sha256": "78527d58f5f0467046a04ed7c2193837c4303946268e024038266d8c98bf7735"
+      "exe_sha256": "0e064c363fafd05bf3fd8d0f43caa376b20600122b48137d546813a108742438",
+      "library_sha256": "a0e574884affeceae9428bfd4d33b4c5293752e17f8edea93e3a9ea0aa0e7847"
     },
     "original_bodies": "B0AD50 and B0A920 copied completely,2791 bytes; owned internal call enters copied B0A920. All104 direct calls relocated. Other17 helper targets execute existing source bridges;2 fixed CRT allocation/free bridges and3 current CRT functions. No fake allocator.",
     "scenarios": "Two cohesive sequences: all24 Tracer properties plus common Stops/Shader, unknown name/line, ignored malformed curve, actual Const/Linear/Hermite conversion, old pointer overwrite, growth0->2->6 and count reset, borrowed head/tail items, brace/EOF, signaling-NaN percentage x87 status.",
@@ -1442,6 +1442,19 @@
       "was": "B0AD50 and B0A920 were available only through NativeParticleTypeLoadingBindings/NativeParticleTypePropertyBindings, including legacy string/allocator interfaces.",
       "is": "New concrete raw overloads compose the actual shared raw text/parameter/atlas services and retain common-property acquired children. Existing overloads remain available.",
       "evidence": "Complete body/map review, caller-retained acquired interface, 104 recorded call sites, clean strict build and focused copied-original comparisons."
+    },
+    {
+      "was": "Initial r18 commit e655f6cca4099b8504b5162680ba04acc03ab216 retained every completed common-property frame in a deque.",
+      "is": "One optional common-property frame is retained, and the next invocation replaces it only after completion. A failed child and its referenced headers remain caller-owned.",
+      "evidence": "Only successful B015C0 return reaches the next property; parent review requested removal of unnecessary per-property allocation and memory growth. Same two copied-original comparisons and retained-source-child failure assertion passed after strict rebuild.",
+      "prior_probe_receipt": {
+        "exit_code": 0,
+        "output": "PASS native/source scenario0 9105313 bytes\nPASS native/source scenario1 9105313 bytes\nPASS: two complete copied originals2791B, actual raw string/parameter pools, all24 Tracer keys plus common properties, growth/reset, EOF/brace, x87 sNaN percentage and retained source child failure. Original FH3/error paths and external helper originals excluded.\n",
+        "x86": true,
+        "embedded_manifest": true,
+        "exe_sha256": "fe83c475fb3ba2ac54db78c6cc47dd7d01aedc2d1b8ca47f6286bdc0053d9da7",
+        "library_sha256": "78527d58f5f0467046a04ed7c2193837c4303946268e024038266d8c98bf7735"
+      }
     }
   ],
   "checklist": {
@@ -1458,7 +1471,7 @@
   },
   "boundaries": [
     "New C++ interfaces are not binary substitutes; original FH3/SEH, memory faults, failures in allocation/cleanup and concurrent mutation unvalidated.",
-    "Source acquisition metadata allocation and provider-domain checks are added interface boundaries.",
+    "Source phase and provider-domain checks are added interface boundaries.",
     "Current CRT parsing/comparison, native fixed-buffer validity and literal/stack alias boundaries remain.",
     "Seventeen original helper bodies and five CRT bodies are not executed as original code in this probe.",
     "No gameplay validation or permanent tests; descriptive names remain hypotheses."
@@ -1466,13 +1479,13 @@
   "artifacts": [
     {
       "path": "src/native_particle_tracer_raw.cpp",
-      "bytes": 13867,
-      "sha256": "62549f6104f264a57b209faaf7bce8f9dc748f818d09e9209e77092a626c1733"
+      "bytes": 14056,
+      "sha256": "cb71a2fa74fbb28f0bfb46683603fdb9e9ea54d58b12f55687edf79bc2a9cb4a"
     },
     {
       "path": "include/bsp/native_particle_tracer_raw.hpp",
-      "bytes": 3117,
-      "sha256": "616e7108bfefee1c8267d1c29af522bf7e65790a914dff79a64e3fc22856cba7"
+      "bytes": 3158,
+      "sha256": "c3aa1cacce69597ffa75b7d2fd6998d6c1ad6ba78e19ba2863b6cb5d9be6f00c"
     },
     {
       "path": "local/tracer_evidence.py",
@@ -1511,8 +1524,8 @@
     },
     {
       "path": "local/tracer_probe.cpp",
-      "bytes": 14817,
-      "sha256": "c2d70185de4adb7bad956d08a046cfba11783279b6f3d86b246fa912a0a8427f"
+      "bytes": 14860,
+      "sha256": "f22e455273c11e535400fea9a905e7de64a694709297c9c8365bb4f4df7d0e75"
     },
     {
       "path": "local/tracer_probe_build.cmd",
@@ -1526,8 +1539,8 @@
     },
     {
       "path": "local/tracer_probe.exe",
-      "bytes": 322048,
-      "sha256": "fe83c475fb3ba2ac54db78c6cc47dd7d01aedc2d1b8ca47f6286bdc0053d9da7"
+      "bytes": 321024,
+      "sha256": "0e064c363fafd05bf3fd8d0f43caa376b20600122b48137d546813a108742438"
     },
     {
       "path": "local/run_tracer_probe.py",
@@ -1537,7 +1550,7 @@
     {
       "path": "local/tracer_probe_result.json",
       "bytes": 614,
-      "sha256": "556c87d73d85e0030899f7e5fb08d2a2edb1f62fac0a11c05b6b02d9dcffc777"
+      "sha256": "2e4a577b30bd65adb0d9cdb069c89bb37b1c3fa8bf934ed4651ac6d15d08d279"
     },
     {
       "path": "local/tracer_probe_case0.bin",
@@ -1547,7 +1560,7 @@
     {
       "path": "local/tracer_probe_case1.bin",
       "bytes": 9105313,
-      "sha256": "73f290e99f2d34f194e89934233a75fc9b051ea41186823f7998092503902061"
+      "sha256": "ab58cc337b35122e0f0ae844d90b2404071a9bd0961b820641e6458b50f434c0"
     },
     {
       "path": "local/tracer_old_b0ad50.json",
@@ -1566,13 +1579,18 @@
     },
     {
       "path": "build/win32/Release/bsp_core.lib",
-      "bytes": 61872242,
-      "sha256": "78527d58f5f0467046a04ed7c2193837c4303946268e024038266d8c98bf7735"
+      "bytes": 61833428,
+      "sha256": "a0e574884affeceae9428bfd4d33b4c5293752e17f8edea93e3a9ea0aa0e7847"
     },
     {
       "path": "build/win32/Testing/Temporary/LastTest.log",
       "bytes": 1660,
-      "sha256": "9a9577cc80671bbcdd7ab87a642b7cce756cb61cb7065efdfcbfffb332a120d3"
+      "sha256": "614a5e60d021b22fc6102c38393c836163b2d37e4bd2e5bb44ed2a7481c50036"
+    },
+    {
+      "path": "local/tracer_optional_build.log",
+      "bytes": 4279,
+      "sha256": "61fa91933b45cb3778df4c30d85596b3e6c2242ab1041aef4b77a3c2c0824356"
     }
   ]
 }

@@ -24,12 +24,13 @@ Constructor-established layouts and all 24 property offsets are documented in
 [the earlier Object/Tracer analysis](NATIVE_PARTICLE_OBJECT_TRACER_LOADING.md).
 
 `NativeParticleTracerRawAcquired` is a caller-retained, single-use invocation.
-Its actual four-byte temporary headers outlive its deque of B015C0 child frames.
-Every common-property invocation gets a fresh child; a failed child's nested
+Its actual four-byte temporary headers outlive its optional B015C0 child frame.
+Every common-property invocation replaces only a completed child; a failed child's nested
 texture/cache obligations remain available after parent cleanup. Destruction adds
 no rollback or reference release. The caller must retain the frame until those
-existing obligations are resolved. Source metadata allocation and provider-domain
-validation are explicit C++ boundaries rather than native instruction behavior.
+existing obligations are resolved. The retained slot adds no per-line allocation.
+Source phase and provider-domain validation are explicit C++ boundaries rather
+than native instruction behavior.
 
 The builder's unwritten initial kind is supplied by the caller and persists across
 lines. No valid kind is substituted after an ignored parser failure. Native parser
