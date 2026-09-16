@@ -41,11 +41,13 @@ The existing resolver terminates if a failed/incomplete frame is destroyed.
 This loader neither creates a local frame nor changes that policy. Subsequent
 provider exceptions propagate without adding cleanup absent from AF5850.
 
-`GameNativeVfsRuntime` still keeps its runtime bindings and name-resolution
-context private. This packet supplies the complete loader with an explicit
-concrete-context contract; application access to that existing service graph is
-a separate wiring frontier. It adds no new public runtime exposure and does not
-implement the AF4BA0 parser or 86BA60 cache acquisition body.
+`GameNativeVfsRuntime::borrow_raw_services()` now exposes references to the
+existing publication cell, runtime bindings and name-resolution context without
+constructing another manager; see `NATIVE_PARTICLE_VFS_SERVICES_ORCH4.md`.
+The subsequent raw AF4BA0 parser and 86BA60 resource loader compose this body
+and retain its resolution invocation. Application context installation and the
+outer 00870DD0 cache acquisition algorithm remain separate work. See
+`NATIVE_PARTICLE_RESOURCE_LOADER_RAW_ORCH4.md` for the current caller contract.
 
 ## Ordering and lifetime
 

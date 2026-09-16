@@ -4,10 +4,12 @@
 
 Ten complete source bodies cover the actual cache key copier, resource retain/release,
 vector destruction, inner and outer owner destruction, scalar deleters, base reset,
-and singleton publication. `0086BA60` remains **source-absent** pending the full
-particle parser and its ownership composition. Its resource constructor, actual
-file loader and text-buffer destructor are now supplied by the h8/j10 packets
-listed below. This cache packet itself supplies no acquisition wrapper.
+and singleton publication. The subsequent r21 packets supply the `0086BA60`
+resource loader, complete `00AF4BA0` parser and loaded-resource lifetime
+composition. See `NATIVE_PARTICLE_RESOURCE_LOADER_RAW_ORCH4.md`,
+`NATIVE_PARTICLE_RESOURCE_PARSER_RAW_ORCH4.md` and
+`NATIVE_PARTICLE_LOADED_LIFETIME_ORCH4.md`. The outer `00870DD0` cache
+acquisition body and application wiring remain separate work.
 Validation results and complete disk/live byte hashes are retained in
 `reports/native_particle_resource_cache_orch4.json`.
 
@@ -81,7 +83,7 @@ The parent integrator independently verified bytes and repaired previously absen
 The old metadata/comments are retained in the report. No worker Ghidra mutation
 was performed. BF6989's library identity was preserved.
 
-## Exact missing resource-loader closure
+## Resource-loader dependency closure
 
 `0086BA60..0086BB75` is278 bytes. It initializes a1Ch TextBuffer, copies and
 lowercases a native name, allocates90h, constructs AF45D0 and stamps D0D418,
@@ -93,7 +95,7 @@ these prerequisites missing. Their current source status is:
 | --- | --- | --- |
 | AF45D0..AF46D6 | 263; 72 listed instructions | Complete raw constructor: `NATIVE_PARTICLE_RESOURCE_LOADING_ORCH4.md`. |
 | AF5850..AF592C | 221; 81 listed instructions | Complete concrete VFS loader: `NATIVE_PARTICLE_TEXT_LOADER_ORCH4.md`; explicit caller-retained failure frame and runtime-service wiring boundary. |
-| AF4BA0..AF55AD | 2574; 762 listed instructions,120 CALLs | Source absent; full parser and25 distinct direct callees' concrete ownership composition. |
+| AF4BA0..AF55AD | 2574; 762 listed instructions,120 CALLs | Complete raw parser: `NATIVE_PARTICLE_RESOURCE_PARSER_RAW_ORCH4.md`; retained recursive invocation and explicit incoming builder state. |
 | AF5620..AF5651 | 50;20 listed instructions | Complete raw text-buffer cleanup: `NATIVE_PARTICLE_RESOURCE_LOADING_ORCH4.md`. |
 
 The report preserves every CALL instruction from all four complete byte spans.
@@ -105,14 +107,13 @@ are now reconstructed. See `NATIVE_PARTICLE_LAYER_READER_ORCH4.md`,
 `NATIVE_PARTICLE_PREPARATION_RAW_ORCH4.md` for their original-code comparisons
 and explicit source-interface limits.
 
-The complete AF4BA0 resource parser remains absent. Its AF9FB0 emitter factory,
-three emitter parsers, nested B00CE0 particle factory and all five particle
-parsers are now concrete raw compositions. Property/texture, parameter-bound,
-and Object model-resource helpers are present in the same actual domains.
-The registered emitter cycle passed strict Win32 compilation, three CTests,
-and18 complete caller-body comparisons with nested loading. See the current
-frontier in `NATIVE_PARTICLE_RESOURCE_LOADING_ORCH4.md` for source and fixture
-limits. The86BA60 loader still depends on the whole AF4BA0 parser.
+The complete AF4BA0 parser composes the AF9FB0 emitter factory, three emitter
+parsers, nested B00CE0 particle factory and all five particle parsers. Its strict
+Win32 build and three CTests pass; fifteen copied-body comparisons cover
+numeric modes, malformed/EOF inputs, Layer and nested emitters. The 86BA60
+loader now composes AF5850 and AF4BA0 through the existing VFS providers.
+These caller fixtures bridge to genuine source children; they do not prove
+every descendant independently or establish full application loading.
 
 Both audited flow defects were repaired and saved under the write lock:
 AF5850's AF58FB..AF590C failure tail and AF5620's AF5630..AF5632 stack adjustment.
@@ -145,11 +146,11 @@ and artifact hashes are referenced in the report; no permanent test was added.
 Additional raw dependencies are now reconstructed: AFBF60 runtime conversion,
 the four emitter constructors, seven particle constructors, four emitter
 parameter/enum/flag helpers, and the shader/Layer-name helpers. Their evidence
-is linked from `NATIVE_PARTICLE_RESOURCE_LOADING_ORCH4.md`. AF4BA0 and86BA60
-remain to be composed. Complete acquisition/release also needs context
-threading:871420 still reaches the string-only AF4280 resource destructor,
-and Object's AF8A40 still reaches the old AF8940 model-clear overload. The
-same actual parameter pool and resource-container references must reach those
-existing raw companions. AFA100 also needs its current terminal dispatch to
-recognize all three derived emitter profiles and their existing scalar deleters.
-No runnable particle system or gameplay is claimed.
+is linked from `NATIVE_PARTICLE_RESOURCE_LOADING_ORCH4.md`. Loaded-resource
+release now carries the supplied parameter pool into AF4280/AF46E0, routes
+all three derived emitter profiles through their scalar deleters, and uses the
+Object loader's resource-container references for model cleanup. Applications
+must supply both optional lifetime-domain pointers with the same objects used
+for loading. This composition passed a focused cache-to-Object cleanup fixture.
+The 00870DD0 acquisition algorithm, application context installation, original
+ABI/FH3/SEH, and gameplay remain unvalidated. No runnable particle system is claimed.

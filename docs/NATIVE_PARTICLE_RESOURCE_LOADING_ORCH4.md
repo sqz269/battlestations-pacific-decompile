@@ -57,13 +57,15 @@ the destructor's stale fields. An independent assembly/EH review found no
 discrepancies. These checks do not execute original FH3/SEH failure paths,
 establish binary replacement ABI compatibility, or validate gameplay.
 
-## Remaining loader dependency
+## Loader composition and remaining boundaries
 
 AF5850 is now reconstructed in `native_particle_text_loader.cpp`; see
 `NATIVE_PARTICLE_TEXT_LOADER_ORCH4.md`. Its complete 221-byte body composes the
 actual VFS resolver, file-manager open, and stream length/read/release providers.
 The caller explicitly owns the retained resolution frame and actual text/name
-storage; exposing the borrowed runtime services remains separate wiring work.
+storage. `GameNativeVfsRuntime::borrow_raw_services()` now exposes references
+to its existing publication cell, bindings and resolution context; see
+`NATIVE_PARTICLE_VFS_SERVICES_ORCH4.md`. Application context installation remains.
 The historical source-absent entries in this packet's report describe its
 starting boundary before that j10 extension.
 
@@ -75,7 +77,10 @@ original/source comparisons. See `NATIVE_PARTICLE_LAYER_READER_ORCH4.md` and
 all five proven particle profiles with their genuine methods and actual string
 pool; see `NATIVE_PARTICLE_PREPARATION_RAW_ORCH4.md`.
 
-The full AF4BA0 resource parser and dependent 86BA60 loader remain absent.
+The full AF4BA0 resource parser and dependent 86BA60 loader now have concrete
+raw compositions; see `NATIVE_PARTICLE_RESOURCE_PARSER_RAW_ORCH4.md` and
+`NATIVE_PARTICLE_RESOURCE_LOADER_RAW_ORCH4.md`. The parser passed fifteen
+copied-body comparisons, including numeric modes and nested emitters/Layer.
 Their AF9FB0 emitter factory, all three emitter parser targets (B03EC0, B02FD0,
 B02210), B00CE0 particle factory and all five particle parsers now have concrete
 raw compositions. These use the actual raw constructors, strings, builder and
@@ -102,10 +107,11 @@ limits. Unknown particle kind still reaches an emitter record-creation slot
 with an incompatible observed stack contract; the raw factory records this
 target and stops at an explicit boundary.
 
-Three additional lifetime connections remain before complete acquisition/release
-can be claimed: cache release still reaches the string-only AF4280 overload,
-Object destruction still reaches the old AF8940 overload, and AFA100's current
-terminal dispatch omits the three derived emitter profiles. These must carry
-the same parameter pool and resource-container reference domains through the
-real lifetime chain and reach the existing derived scalar deleters. Runtime
-VFS/context installation, original FH3/SEH/ABI and gameplay remain separate work.
+The loaded lifetime path now connects cache release to the context-aware
+AF4280/AF46E0 overloads, Object destruction to the actual AF8940 reference
+chain, and AFA100 to all three derived emitter scalar deleters. Applications
+must provide the same parameter pool and resource-container references used
+for loading; see `NATIVE_PARTICLE_LOADED_LIFETIME_ORCH4.md` for the required
+borrowed pointers and focused graph-cleanup evidence. The outer 00870DD0
+cache acquisition body, runtime context installation, original FH3/SEH/ABI
+and gameplay remain separate work.
