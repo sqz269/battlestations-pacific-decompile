@@ -51,8 +51,8 @@ private:
 // Complete 0086BA60[278]. Incoming ECX is ignored. TWO stacked arguments:
 // actual8h name and ignored second DWORD; RET8/EAX resource. Copy/lowercase,
 // allocate90h, genuine AF45D0 and D0D418 stamp, AF5850, AF4BA0, native cleanup.
-// Both AF5850 count and AF4BA0 AL are ignored. Null allocation still reaches
-// the native parser dereference. Constructed resources survive load/parse
+// Both AF5850 count and AF4BA0 AL are ignored. A null allocation is passed
+// to the parser without recovery. Constructed resources survive load/parse
 // failure; constructor failure frees only its allocation after inner unwind.
 // New source interface, not original register/FH3/hardware-SEH or game proof.
 void* create_native_particle_resource_0086ba60(void* ignored_cache,
