@@ -834,5 +834,37 @@
     "Parent parser and factory child frames retain sparse native headers before child storage; failed children and borrowed contexts must remain alive until existing obligations resolve. Failed Object/VFS currently requires process lifetime.",
     "Incoming parent and child builder residue are explicit distinct inputs; native does not initialize or propagate kind+C.",
     "Completed children can be replaced; no retry, rollback, overwritten-parameter reclamation or owner release is introduced."
-  ]
+  ],
+  "prior_reconstruction_records": [
+    {
+      "address": "00b03ec0",
+      "name": "load_native_cone_emitter_definition_00b03ec0",
+      "source": "src/native_particle_cone_raw.cpp",
+      "status": "reconstructed_raw_composition_strict_compile_tested_pending_cycle_integration",
+      "documentation": "docs/NATIVE_PARTICLE_CONE_RAW_ORCH4.md",
+      "evidence": "Complete2404B/755instructions/94directCALLs and all15states/livePE-equal EH metadata; genuine raw strings/builder/runtime/typed factories, sparse retained children and late x87 scale. Strict MSVC Win32 compile passes; whole-cycle build/shared copied-original probe pending integrator. Original FH3/SEH/CRT/fault and gameplay unvalidated.",
+      "original_abi": "ECX actual94h definition; stack actual TextBuffer; RET4/AL true",
+      "kind": "function"
+    }
+  ],
+  "prior_name_records": [
+    {
+      "address": "00b03ec0",
+      "name": "BSP_ConeEmissionDefinition_Load",
+      "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. | Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated. AP integration: suffix AF44C0 and particle factory B00CE0 now call concrete implementations in the same owner/string/parameter domain; actual current child parser08 remains the required application boundary."
+    }
+  ],
+  "status": "reconstructed_build_tested_bounded_differential_fixture_tested",
+  "integrated_validation": {
+    "build": "scripts/build.ps1 PASS MSVC Win32 Release",
+    "ctests": "3/3 PASS",
+    "log": "local/emitter_raw_cycle_build.log",
+    "source_review": "complete source and critical assembly reviewed by parent; independent SmartArea review by Cone worker",
+    "shared_probe": "local/emitter_raw_probe.cpp",
+    "final_link": "local/emitter_raw_probe_final_build.cmd; final root bsp_core.lib only, no explicit cycle objects",
+    "result": "18 complete original/source pairs PASS,6 for each shape; one source Sphere failure/cleanup/replay",
+    "log_probe": "local/emitter_raw_probe_final_run.log",
+    "evidence": "local/emitter_raw_native_evidence.json",
+    "limitations": "Original child bodies/FH3/SEH/CRT/ABI/full application asset loading/gameplay not proved"
+  }
 }

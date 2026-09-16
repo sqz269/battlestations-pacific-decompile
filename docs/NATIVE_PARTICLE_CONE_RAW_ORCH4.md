@@ -121,3 +121,16 @@ This is a new C++ interface. It does not establish the original register/stack
 ABI, native FH3/SEH transport, original CRT identity, unrestricted memory-fault
 behavior or game validation. No live Ghidra names/comments were modified by
 this worker; the integrator serializes annotation/save work.
+
+## Integrated emitter cycle validation
+
+The raw Sphere/Cone/SmartArea parsers and emitter factory are now registered in
+`bsp_core`. The strict Win32 build and all3 existing CTests pass. One shared
+probe linked only to that final library passed18 complete original/source pairs,
+six per shape: four x87 rounding modes with all own/common properties, nested
+three emitter kinds plus Sprite, and EOF without an opening brace. Root owner
+bytes, native-defined child fields, actual raw pool counters, curve payloads,
+cursor and x87 status agree. A Sphere source-only missing-factory case checks
+state10 cleanup, retained prior publication and replay rejection. Original
+children are bridged to genuine source; original FH3/SEH/ABI/CRT, full resource
+loading, application wiring and gameplay remain outside this proof.
