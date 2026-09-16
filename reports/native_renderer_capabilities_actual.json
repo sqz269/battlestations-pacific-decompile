@@ -1,0 +1,460 @@
+{
+  "packet": "orch5_native_renderer_capabilities_actual",
+  "status": "existing_complete_body_actual_manager_overload_strict_build_and_focused_source_probe_passed",
+  "source_base": "0a7c5c7035e01af98bc9136db86c5817a9dca690",
+  "owned_addresses": [
+    "00b2c8e0"
+  ],
+  "owned_files": [
+    "include/bsp/native_renderer_gather_capabilities.hpp",
+    "src/native_renderer_gather_capabilities.cpp",
+    "docs/NATIVE_RENDERER_CAPABILITIES_ACTUAL.md",
+    "reports/native_renderer_capabilities_actual.json"
+  ],
+  "new_native_bodies": 0,
+  "new_native_bytes": 0,
+  "functions": [
+    {
+      "address": "00b2c8e0",
+      "end_exclusive": "00b2d8de",
+      "existing_body_bytes": 4094,
+      "original_linear_instructions": 885,
+      "cpp_symbol": "bsp::gather_native_renderer_capabilities_00b2c8e0",
+      "actual_overload": "void __fastcall(void*, const NativeRendererGatherCapabilitiesActualContext*)",
+      "legacy_overload_retained": true,
+      "source": "src/native_renderer_gather_capabilities.cpp",
+      "header": "include/bsp/native_renderer_gather_capabilities.hpp",
+      "coverage": "existing_complete_body_ownership_migration",
+      "new_native_body": false,
+      "new_native_bytes": 0,
+      "original_abi": "ECX actual renderer, plain RET; native private stack/FH3 frame",
+      "source_abi": "ECX actual renderer, EDX fixed borrowed context; caller supplied770h scratch",
+      "ghidra_name": "BSP_D3D9Renderer_GatherCapabilities",
+      "name_is_hypothesis": true
+    }
+  ],
+  "shared_body_proof": {
+    "existing_helper_and_literal_prefix_unchanged": true,
+    "prefix_sha256": "e885e6d1a3a37e277995eb0559e8274bf3be0c940948bd819b780ad2c39e4562",
+    "shared_algorithm_unchanged_except_two_lifetime_selections": true,
+    "normalized_shared_body_sha256": "8481417e52bcee85ec09bce935206d075dcea55cd160b610b97e10258c3fe51b",
+    "actual_lifetime_substitutions": 2,
+    "new_body_count": 0,
+    "new_native_bytes": 0
+  },
+  "call_sites": [
+    {
+      "address": "00b2c91a",
+      "native": "eax",
+      "function": "00b2c8e0",
+      "scope": "existing_body",
+      "binding": "current renderer+1990 real IDirect3D9 +38 GetDeviceCaps"
+    },
+    {
+      "address": "00b2c998",
+      "native": "edx",
+      "function": "00b2c8e0",
+      "scope": "existing_body",
+      "binding": "captured current factory +28 ATOC"
+    },
+    {
+      "address": "00b2c9bb",
+      "native": "eax",
+      "function": "00b2c8e0",
+      "scope": "existing_body",
+      "binding": "current factory +14 GetAdapterIdentifier"
+    },
+    {
+      "address": "00b2c9e2",
+      "native": "0041dd40",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2ca00",
+      "native": "00bf7680",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2ca19",
+      "native": "00bf9440",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2ca32",
+      "native": "00bf9440",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2ca4b",
+      "native": "00bf9440",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2ca64",
+      "native": "00bf9440",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2cb78",
+      "native": "00b236b0",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2cba6",
+      "native": "00b236b0",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2cbd8",
+      "native": "00b236b0",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2cc0a",
+      "native": "00b236b0",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2cc3c",
+      "native": "00b236b0",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2cc74",
+      "native": "00b236b0",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2ccb0",
+      "native": "00b236b0",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2ccec",
+      "native": "00b236b0",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2cd28",
+      "native": "00b236b0",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2cd64",
+      "native": "00b236b0",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2cda0",
+      "native": "00b236b0",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2cddc",
+      "native": "00b236b0",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2ce18",
+      "native": "00b236b0",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2ce57",
+      "native": "00b236b0",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2ce97",
+      "native": "eax",
+      "function": "00b2c8e0",
+      "scope": "existing_body",
+      "binding": "current real IDirect3D9 +28 CheckDeviceFormat; exact arguments/order preserved by unchanged body"
+    },
+    {
+      "address": "00b2d74c",
+      "native": "edx",
+      "function": "00b2c8e0",
+      "scope": "existing_body",
+      "binding": "current real IDirect3D9 +28 CheckDeviceFormat; exact arguments/order preserved by unchanged body"
+    },
+    {
+      "address": "00b2d785",
+      "native": "edx",
+      "function": "00b2c8e0",
+      "scope": "existing_body",
+      "binding": "current real IDirect3D9 +28 CheckDeviceFormat; exact arguments/order preserved by unchanged body"
+    },
+    {
+      "address": "00b2d7af",
+      "native": "eax",
+      "function": "00b2c8e0",
+      "scope": "existing_body",
+      "binding": "current real IDirect3D9 +28 CheckDeviceFormat; exact arguments/order preserved by unchanged body"
+    },
+    {
+      "address": "00b2d7dc",
+      "native": "edx",
+      "function": "00b2c8e0",
+      "scope": "existing_body",
+      "binding": "current real IDirect3D9 +28 CheckDeviceFormat; exact arguments/order preserved by unchanged body"
+    },
+    {
+      "address": "00b2d7ff",
+      "native": "edx",
+      "function": "00b2c8e0",
+      "scope": "existing_body",
+      "binding": "current real IDirect3D9 +28 CheckDeviceFormat; exact arguments/order preserved by unchanged body"
+    },
+    {
+      "address": "00b2d81c",
+      "native": "00b2ae20",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2d84d",
+      "native": "00b22b30",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2d8bd",
+      "native": "00419cc0",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00b2d8c4",
+      "native": "00bd1510",
+      "function": "00b2c8e0",
+      "scope": "existing_body"
+    },
+    {
+      "address": "00419ce6",
+      "native": "00415350",
+      "function": "00419cc0",
+      "scope": "read_only_dependency_or_parent_gate"
+    },
+    {
+      "address": "00419cff",
+      "native": "dword ptr [0xce2218]",
+      "function": "00419cc0",
+      "scope": "read_only_dependency_or_parent_gate",
+      "binding": "IAT CE2218 EnterCriticalSection on captured manager section"
+    },
+    {
+      "address": "00419d1f",
+      "native": "00bf681b",
+      "function": "00419cc0",
+      "scope": "read_only_dependency_or_parent_gate"
+    },
+    {
+      "address": "00419d36",
+      "native": "00bd1480",
+      "function": "00419cc0",
+      "scope": "read_only_dependency_or_parent_gate"
+    },
+    {
+      "address": "00419d49",
+      "native": "00415350",
+      "function": "00419cc0",
+      "scope": "read_only_dependency_or_parent_gate"
+    },
+    {
+      "address": "00419d57",
+      "native": "00bd0c30",
+      "function": "00419cc0",
+      "scope": "read_only_dependency_or_parent_gate"
+    },
+    {
+      "address": "00419d65",
+      "native": "dword ptr [0xce2210]",
+      "function": "00419cc0",
+      "scope": "read_only_dependency_or_parent_gate",
+      "binding": "IAT CE2210 LeaveCriticalSection on same section"
+    },
+    {
+      "address": "00b3289b",
+      "native": "00b2c8e0",
+      "function": "00b32410",
+      "scope": "read_only_dependency_or_parent_gate"
+    }
+  ],
+  "live_disk_spans": [
+    {
+      "address": "00b2c8e0",
+      "length": 4094,
+      "sha256": "8694261e128742a42f0b64eb1a447932e1929eaa9e30da100effeb738b49c43b",
+      "live_equals_disk": true,
+      "pe_raw_offset": 7522528
+    },
+    {
+      "address": "00419cc0",
+      "length": 192,
+      "sha256": "43eaf61f27efa9fd1c8905e3266d3183717240b825126da7d970fbecb703190a",
+      "live_equals_disk": true,
+      "pe_raw_offset": 105664
+    },
+    {
+      "address": "00cbd560",
+      "length": 21,
+      "sha256": "4ba1a034b0f5675058771fd3f01b2670566bab498a1e3e5778ca97ae087dcfe8",
+      "live_equals_disk": true,
+      "pe_raw_offset": 9164128
+    },
+    {
+      "address": "00df5df0",
+      "length": 44,
+      "sha256": "290c798ce005a8d0a79ae5ad5fcd0dd02b7ba87c368b651a42699db70ed89d0f",
+      "live_equals_disk": true,
+      "pe_raw_offset": 10444272
+    },
+    {
+      "address": "00b32861",
+      "length": 63,
+      "sha256": "060959250f388aa39a1329650839b14e044ed0ed41209fa4986440583b537d08",
+      "live_equals_disk": true,
+      "pe_raw_offset": 7546977
+    },
+    {
+      "address": "00b32654",
+      "length": 167,
+      "sha256": "0f0dea3a609b0502ec5b512cf9fce6f3f1b738ac860967b46b047c3ab3df1263",
+      "live_equals_disk": true,
+      "pe_raw_offset": 7546452
+    },
+    {
+      "address": "00b32439",
+      "length": 2,
+      "sha256": "45f1dcfd70b34f4cf0bb2c8541d74e6ec286851628ace2c254fae48a382a590d",
+      "live_equals_disk": true,
+      "pe_raw_offset": 7545913
+    }
+  ],
+  "prior_complete_body_evidence": "reports/native_renderer_gather_capabilities_audit.json",
+  "raw_binding": {
+    "manager_publication": "01090aa0",
+    "pool_publication": "01090aa8",
+    "small_return_gate": "01090aa4",
+    "allocation_and_unwind": "existing ActualNativeStringPoolStorage raw manager overload",
+    "normal_return": "captured length then pointer; disarmed raw00419CC0 then BD1510",
+    "pool_getter": "first raw manager/captured section; early pool publication; second raw manager getter before current pool argument; BD0C30 registration; same section unwind",
+    "new_manager_or_owner_map": false,
+    "projected_manager_reinterpretation": false
+  },
+  "eh": {
+    "handler": "00cbd56b",
+    "func_info": "00df5df8",
+    "unwind_map": "00df5df0",
+    "action": "00cbd560",
+    "target": "0041dd20",
+    "max_state": 1,
+    "arm": "00b2ca0a after resize/copy",
+    "normal_disarm": "00b2d8a0 after predicate, before length/pointer/raw getter",
+    "armed_release_limitation": "NativeStringStorage::release is noexcept; lazy pool getter failure during cleanup terminates",
+    "normal_release_limitation": "disarmed raw getter failure may propagate without a second string cleanup",
+    "no_native_fh3_or_asynchronous_seh_claim": true
+  },
+  "constructor_preimages": {
+    "parent": "00b32410",
+    "call_site": "00b3289b",
+    "target": "00b2c8e0",
+    "array_header_zero_stores": "00b32657..00b32675",
+    "capability_zero_stores": "00b3267b..00b326fa including1B55 ATOC",
+    "pre_call": "earlier identifier supplies1D88 NVIDIA flag; clear+14 before gather",
+    "caller_scratch": "B2C8E0 owns its native uninitialized770h private frame; parent does not supply/initialize that frame",
+    "source_requires": "aligned valid initialized preimages for all unwritten/failed outputs and reachable Description NUL; not original incidental stack recovery"
+  },
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "passed": true,
+      "configuration": "MSVC Win32 Release",
+      "log": "local/native_renderer_capabilities_actual_build.log",
+      "ctests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "ctests_passed": 2
+    },
+    "seed_verification": {
+      "passed": 8,
+      "all_live_equals_disk": true,
+      "log": "local/native_renderer_capabilities_actual_seeds.log"
+    },
+    "call_verification": {
+      "direct_parent_helper_checked": 30,
+      "failed": 0,
+      "indirect_recorded": 11,
+      "indirect_verifier_does_not_check": true,
+      "log": "local/native_renderer_capabilities_actual_calls.log"
+    },
+    "focused_probe": {
+      "source": "local/native_renderer_capabilities_actual_probe.cpp",
+      "build_script": "local/native_renderer_capabilities_actual_probe.cmd",
+      "compile_script": "local/native_renderer_capabilities_actual_probe_compile.cmd",
+      "build_log": "local/native_renderer_capabilities_actual_probe_build.log",
+      "compile_log": "local/native_renderer_capabilities_actual_probe_compile.log",
+      "run_log": "local/native_renderer_capabilities_actual_probe_run.log",
+      "result": "PASS: actual AA0 pool registration/normal+unwind return; ignored COM failures and retained preimages; real D3D9 gather caps HRESULT=00000000 formats=34; canonical shutdown",
+      "flags": "/MD /EHsc /O2 /W4 /WX /fp:strict /link /MANIFEST:EMBED /MACHINE:X86",
+      "actual_providers": [
+        "raw manager creation and publication",
+        "raw pool cold allocation and registration",
+        "actual array append and free",
+        "normal and armed string return",
+        "canonical raw pool deletion binding"
+      ],
+      "fixture_callbacks": "Ignored failed caps and identifier outputs; one artificial post-arm C++ format exception. Test instrumentation only.",
+      "real_provider": "Direct3DCreate9 and real IDirect3D9 capability/format queries; GetDeviceCaps S_OK and 34 formats on this machine",
+      "original_owned_body_executed": false,
+      "native_fh3_executed": false,
+      "game_validated": false
+    },
+    "new_configured_tests": 0,
+    "one_local_probe_program": true
+  },
+  "limits": [
+    "No newly reconstructed body or bytes; all existing literals and algorithm reused",
+    "Source execution and real D3D9 query evidence, not original B2C8E0 execution",
+    "Caller scratch/preimages, source/context alias domain, original caller ABI and full parent EH composition remain explicit",
+    "Existing fixed memmove/strstr valid-buffer adaptations and source noexcept unwind boundary retained",
+    "No game rendering, asynchronous SEH, unrestricted reentrancy or gameplay proof"
+  ],
+  "ghidra_mutations": 0,
+  "cmake_change": false,
+  "immutable_evidence": {
+    "directory": "local/immutable/native_renderer_capabilities_actual_20260914T074412Z",
+    "manifest": "local/immutable/native_renderer_capabilities_actual_20260914T074412Z/manifest.json",
+    "manifest_sha256": "e574a28aa79b1980b042059081b8a14ad528b801e198a5cf5f94a1aa8d07695a",
+    "artifact_count": 367,
+    "all_frozen_hashes_reverified": true,
+    "all_original_inputs_reverified": true
+  },
+  "historical_scope": {
+    "branch": "agent/orch5-native-renderer-capabilities-actual",
+    "commit": "4f12d563679ad12fbc303610ce19d26cf93b20ee",
+    "note": "Historical source packet validation. Fresh current-main validation is in native_renderer_capabilities_actual_main_r32.json; historical local paths resolve under the original worker worktree."
+  }
+}
