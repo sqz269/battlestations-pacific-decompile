@@ -57,6 +57,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_physic
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_readonly_data.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_resource_application.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_resource_pools.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_surface_pool.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_texture_pool.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_texture_owner_services.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_type_storage.cpp)

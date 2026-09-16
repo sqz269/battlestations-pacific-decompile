@@ -39,6 +39,7 @@
 #include "bsp/game_native_mutable_crt_data.hpp"
 #include "bsp/game_native_particle_pools.hpp"
 #include "bsp/game_native_resource_pools.hpp"
+#include "bsp/game_native_surface_pool.hpp"
 #include "bsp/game_native_texture_pool.hpp"
 #include "bsp/winmain_startup.hpp"
 
@@ -382,6 +383,10 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         const int parameter_atexit = particle_pools.initialize_parameters_once_00cd78b0();
         log.notef("native particle pools initialized: model_atexit=%d parameter_atexit=%d "
             "storage=process_actual38h/actual38h", model_atexit, parameter_atexit);
+        auto& surface_pool = bsp::game::game_native_surface_pool_process();
+        const int surface_atexit = surface_pool.initialize_once_00cd7b40();
+        log.notef("native D3D9 surface pool initialized: atexit=%d storage=process_actual38h",
+            surface_atexit);
         auto& texture_pool = bsp::game::game_native_texture_pool_process();
         const int texture_atexit = texture_pool.initialize_once_00cd7b60();
         log.notef("native texture2D pool initialized: atexit=%d storage=process_actual38h",
