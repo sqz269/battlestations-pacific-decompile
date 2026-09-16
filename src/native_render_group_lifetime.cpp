@@ -13,6 +13,11 @@ void return_name(ActualNativeStringPoolStorage& strings, char* data,
     std::uint32_t size) noexcept {
     strings.release(data, size);
 }
+void return_name(NativeStringRawPoolContext& strings, char* data, std::uint32_t size) {
+    auto* const pool=native_string_pool_get_or_create_00419cc0(
+        strings.actual_published_01090aa8,strings.actual_manager_publication_01090aa0);
+    return_native_string_pool_00bd1510(pool,data,size,strings.actual_small_returns_disabled_01090aa4);
+}
 template<class StringStorage>
 class GroupNameCleanup final {
 public:
@@ -93,6 +98,11 @@ NativeRenderGroupStorage* delete_native_render_group_00b1d8e0(
     destroy_native_render_group_00b1d760(*group, owners, models, strings);
     if (flags & 1) singleton_lifetime_free(group);
     return group;
+}
+void destroy_native_render_group_00b1d760(NativeRenderGroupStorage& group,
+    NativeRenderActualOwners& owners, NativeRenderGroupModels& models,
+    NativeStringRawPoolContext& strings) {
+    destroy_group(group,owners,models,strings);
 }
 NativeRenderGroupStorage* delete_native_render_group_00b1d8e0(
     NativeRenderGroupStorage* group, NativeRenderActualOwners& owners,

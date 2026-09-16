@@ -1,4 +1,5 @@
 #include "bsp/native_renderer_end_frame.hpp"
+#include "bsp/native_render_queue_execution.hpp"
 #include "bsp/native_render_state_leaves.hpp"
 #include "bsp/native_renderer_cached_states.hpp"
 #include "bsp/native_renderer_frame_statistics.hpp"
@@ -146,7 +147,7 @@ void end_native_renderer_frame_00b2d8e0(void* renderer, const void* save_header,
     }
     GuardCleanup cleanup{guard, globals};
     auto* const queue = get_native_render_command_queue_004c11f0(c.actual_queue_getter);
-    c.remaining.execute_queue_00b1ebe0(*queue);
+    execute_native_render_queue_00b1ebe0(*queue,c.actual_queue_execution,c.actual_queue_frame);
     for (Word sampler = 0; sampler < 20; ++sampler) {
         renderer_slot(renderer, 0x130, 0x00b24710u, c.actual_bindings);
         bind_native_renderer_texture_00b24710(renderer, sampler, nullptr, c.actual_bindings.actual_texture);

@@ -38,13 +38,8 @@ void __fastcall rewind_native_logical_index_00b48dd0(void*) noexcept;
 void rewind_native_physical_vertex_00b232b0(void*, NativePhysicalBufferRewindContext&);
 void rewind_native_physical_index_00b231c0(void*, NativePhysicalBufferRewindContext&);
 
-// Queue execution is not yet available for the actual owner graph. A production
-// adapter must execute it substantively, including current callback dispatch.
-// There are intentionally no default implementations or success fallbacks.
-struct NativeRendererEndFrameRemaining {
-    virtual ~NativeRendererEndFrameRemaining() = default;
-    virtual void execute_queue_00b1ebe0(NativeRenderCommandQueueStorage&) = 0;
-};
+struct NativeRenderQueueExecutionContext;
+struct NativeRenderQueueExecutionFrame;
 
 struct NativeRendererDebugLinesContext;
 struct NativeRendererDebugRecords24Context;
@@ -60,7 +55,9 @@ struct NativeRendererEndFrameContext {
     const NativeRendererViewportClearContext& actual_clear;
     NativePhysicalBufferRewindContext& actual_rewind;
     const NativeXLiveRenderImport& actual_xlive;
-    NativeRendererEndFrameRemaining& remaining;
+    // Same raw queue/renderer/preparation/lifetime domains as this frame.
+    // May be null only when the reached queue's signed count is nonpositive.
+    NativeRenderQueueExecutionContext* actual_queue_execution;
     volatile std::uint8_t& actual_in_end_frame_0108d4cc;
     volatile std::uint8_t& actual_clear_request_00e1306c;
     volatile std::uint8_t& actual_present_failure_0108d4b9;
@@ -82,9 +79,10 @@ struct NativeRendererEndFrameContext {
     NativeRendererDebugRecords24Frame* actual_debug_records24_frame{};
     NativeRendererDebugRecords40Context* actual_debug_records40{};
     NativeRendererDebugRecords40Frame* actual_debug_records40_frame{};
+    NativeRenderQueueExecutionFrame* actual_queue_frame{};
 };
 
-// Complete B2D8E0 call schedule through B2DBCC, with the required frontier above.
+// Complete B2D8E0 call schedule through B2DBCC, including direct raw queue execution.
 // Context, publications, tables and all provider domains are borrowed and must
 // describe the SAME actual renderer/device/cache/string/synchronization graph.
 // An inactive DWORD +1998 returns before touching context (which may then be null).

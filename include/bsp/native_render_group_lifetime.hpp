@@ -5,6 +5,7 @@ namespace bsp {
 class NativeModelReference;
 class SizedStoragePool;
 class ActualNativeStringPoolStorage;
+struct NativeStringRawPoolContext;
 
 // Pure canonical association: one stable companion for each actual model slot
 // stored in group+1C/+20. No logical release, reference adjustment or collection
@@ -31,6 +32,11 @@ void destroy_native_render_group_00b1d760(NativeRenderGroupStorage&,
 // B1DFF0's group name. Preserves capture-data/current-length and unwind order.
 void destroy_native_render_group_00b1d760(NativeRenderGroupStorage&,
     NativeRenderActualOwners&, NativeRenderGroupModels&, ActualNativeStringPoolStorage&);
+// Same body with raw AA8/AA4/AA0 getter failures preserved at normal return.
+// Cleanup during another exception remains nonthrowing and terminates on a
+// second failure. Native state -1 precedes the final captured-buffer return.
+void destroy_native_render_group_00b1d760(NativeRenderGroupStorage&,
+    NativeRenderActualOwners&, NativeRenderGroupModels&, NativeStringRawPoolContext&);
 
 // Original ECX=actualgroup; stack flags; EAX=original pointer; RET4. Destroy
 // first, then ordinary-free iff flags&1. A throwing destructor prevents free.

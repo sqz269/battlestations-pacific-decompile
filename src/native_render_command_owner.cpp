@@ -5,6 +5,7 @@
 #include <exception>
 #include <new>
 #include <stdexcept>
+#include <type_traits>
 
 namespace bsp {
 static_assert(sizeof(NativeRenderCommandStorage) == 0x44);
@@ -30,6 +31,12 @@ void return_diagnostic(ActualNativeStringPoolStorage& strings, char* data,
     std::uint32_t size) noexcept {
     strings.release(data, size);
 }
+void return_diagnostic(NativeStringRawPoolContext& strings, char* data,
+    std::uint32_t size) {
+    auto* const pool=native_string_pool_get_or_create_00419cc0(
+        strings.actual_published_01090aa8,strings.actual_manager_publication_01090aa0);
+    return_native_string_pool_00bd1510(pool,data,size,strings.actual_small_returns_disabled_01090aa4);
+}
 template<class StringStorage>
 class DiagnosticCleanup final {
 public:
@@ -37,7 +44,7 @@ public:
         : command_(command), strings_(strings) {}
     ~DiagnosticCleanup() { if (armed_) run(); }
     void disarm() noexcept { armed_ = false; }
-    void run() noexcept {
+    void run() noexcept(!std::is_same_v<StringStorage,NativeStringRawPoolContext>) {
         char* const captured = command_.diagnostic_data_18;
         armed_ = false;
         if (captured) return_diagnostic(strings_, captured, command_.diagnostic_length_14 + 1u);
@@ -209,6 +216,10 @@ NativeRenderCommandStorage* construct_native_render_command_00b1f170(void* raw,
 void destroy_native_render_command_00b1ddd0(NativeRenderCommandStorage& command,
     NativeRenderCommandActualEnvironment& environment) {
     destroy_command(command, environment);
+}
+void destroy_native_render_command_00b1ddd0(NativeRenderCommandStorage& command,
+    NativeRenderCommandRawEnvironment& environment) {
+    destroy_command(command,environment);
 }
 NativeRenderCommandStorage* delete_native_render_command_00b1e6b0(
     NativeRenderCommandStorage* command, NativeRenderCommandActualEnvironment& environment,

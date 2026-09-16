@@ -41,6 +41,16 @@ struct NativeRenderCommandActualEnvironment {
     const char* default_diagnostic_00ce9a38;
 };
 
+// Destruction through the actual raw AA8/AA4/AA0 pool. Reuses the SAME batch,
+// owner and model associations; no command/batch/pool owner is created. Raw
+// returning-getter failures propagate after native diagnostic disarming.
+struct NativeRenderCommandRawEnvironment {
+    NativeRenderBatchReferences& batch_references;
+    NativeRenderActualOwners& owners;
+    NativeRenderGroupModels& models;
+    NativeStringRawPoolContext& strings;
+};
+
 // Association only: prepare stable host storage/capacity BEFORE entering the
 // native initializer. These calls cannot allocate, throw, retain, publish any
 // native field, or run ownership behavior. Return the one concrete companion
@@ -98,6 +108,8 @@ NativeRenderCommandStorage* construct_native_render_command_00b1f170(void* actua
     void* scene, void* camera, void* target);
 void destroy_native_render_command_00b1ddd0(NativeRenderCommandStorage&,
     NativeRenderCommandActualEnvironment&);
+void destroy_native_render_command_00b1ddd0(NativeRenderCommandStorage&,
+    NativeRenderCommandRawEnvironment&);
 NativeRenderCommandStorage* delete_native_render_command_00b1e6b0(
     NativeRenderCommandStorage*, NativeRenderCommandActualEnvironment&, std::uint32_t flags);
 
