@@ -1637,6 +1637,10 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     device_ = new GameDeviceHost(log_, *native_renderer_);
     if (summary_.window_created && renderer_request_.requested) {
         summary_.device_created = device_->create(renderer_request_);
+        // Complete BED1E8..BED222 follows the native device call in BECEE0.
+        // Its actual cache joins the same manager as the renderer and is
+        // retired by the manager's current-profile scalar-deletion dispatch.
+        native_renderer_->initialize_window_render_entry_cache();
         summary_.device_result = device_->creation_result();
         summary_.back_buffer_width = device_->parameters().BackBufferWidth;
         summary_.back_buffer_height = device_->parameters().BackBufferHeight;

@@ -1,4 +1,5 @@
 #include "bsp/native_renderer_constructor.hpp"
+#include "bsp/native_render_entry_cache.hpp"
 #include "bsp/native_renderer_base_lifetime.hpp"
 #include "bsp/native_render_cache_construction.hpp"
 #include "bsp/native_renderer_frame_statistics.hpp"
@@ -100,7 +101,7 @@ struct CanonicalProfiles {
 } // namespace
 
 struct GameNativeRendererApplication::Impl {
-    enum class Phase { prepared, constructing, constructed, starting_device, ready, draining, failed, drained };
+    enum class Phase { prepared, constructing, constructed, starting_device, initializing_window_cache, ready, draining, failed, drained };
     GameHostLog& log;
     GameSingletonHost& singletons;
     GameNativeLuaServices& lua_services;
@@ -111,6 +112,8 @@ struct GameNativeRendererApplication::Impl {
     void* volatile lua_publication{};
     void* volatile system_publication{};
     NativeShaderStateDefinitionsStorage* volatile definitions{};
+    void* volatile entry_cache_publication{};
+    NativeRenderEntryCacheContext entry_cache;
     volatile std::uint8_t frame_flag{},device_lost{};
     volatile U& time_bits{game_native_renderer_scalar_process().renderer_worker_time_bits_0108d6e4()};
     NativeRendererLuaOwnerContext lua;
@@ -142,6 +145,7 @@ struct GameNativeRendererApplication::Impl {
         void* const volatile& clock,const void* platform)
         : log(log_),singletons(host),lua_services(services),vfs(files.borrow_raw_services()),
           raw(files.raw_strings()),profiles{data},
+          entry_cache{host.manager_publication_01090aa0(),entry_cache_publication,*profiles(0xd7a24c)},
           lua{host.manager_publication_01090aa0(),lua_publication,vfs.strings,services.bootstrap()},
           control{clock,renderer,time_bits,profiles(0xd6821c),profiles(0xd68d50),profiles(0xd5f0a8),nullptr,nullptr,nullptr},
           validation(game_native_hardware_layout_tree_process().invalid_parameters()),
@@ -161,9 +165,11 @@ struct GameNativeRendererApplication::Impl {
           devices(graph,constructor,host,vfs.strings,platform) {
         auto& deletion=host.native_deletion_bindings();
         check(!deletion.renderer_owner && !deletion.renderer_lua_owner,"renderer lifetime already bound");
+        check(!deletion.render_entry_cache,"render-entry cache lifetime already bound");
         bind_native_renderer_control_worker_process_context(control);
         deletion.renderer_owner=&graph.destructor;
         deletion.renderer_lua_owner=&lua;
+        deletion.render_entry_cache=&entry_cache;
     }
     ~Impl() {
         if(phase!=Phase::prepared && phase!=Phase::drained) std::terminate();
@@ -224,6 +230,22 @@ void GameNativeRendererApplication::create_device(const RendererInitRequest& req
             native_platform_has_focus_00b20c50(p.devices.platform_publication));
     } catch(...) {p.phase=Impl::Phase::failed;throw;}
 }
+void GameNativeRendererApplication::initialize_window_render_entry_cache() {
+    auto& p=*impl_;
+    check(p.phase==Impl::Phase::ready && !p.entry_cache_publication,"render-entry cache startup order");
+    p.phase=Impl::Phase::initializing_window_cache;
+    try {
+        initialize_native_window_render_entry_cache_00bed1e8_fragment(p.entry_cache);
+        void* const owner=p.entry_cache_publication;
+        check(owner && get<U>(owner)==0xd68cc0 && get<void*>(owner,4)
+            && get<U>(owner,8)==0 && get<U>(owner,0xc)==10000 && get<void*>(owner,0x10),
+            "native render-entry cache startup incomplete");
+        p.phase=Impl::Phase::ready;
+        p.log.notef("native render-entry cache initialized: owner=%p records=%p used=%lu capacity=%lu section=%p storage=actual14h",
+            owner,get<void*>(owner,4),static_cast<unsigned long>(get<U>(owner,8)),
+            static_cast<unsigned long>(get<U>(owner,0xc)),get<void*>(owner,0x10));
+    } catch(...) {p.phase=Impl::Phase::failed;throw;}
+}
 void GameNativeRendererApplication::copy_settings_capabilities(SettingsRendererCapabilities& output) const {
     const auto& p=*impl_;check(p.phase==Impl::Phase::constructed,"capability consumer order");
     auto* resolutions=get<const Resolution*>(p.renderer,0x1c);const U count=get<U>(p.renderer,0x20);
@@ -258,8 +280,9 @@ void GameNativeRendererApplication::drain_singletons() {
 void GameNativeRendererApplication::after_native_drain() {
     auto& p=*impl_;if(p.phase==Impl::Phase::drained || p.phase==Impl::Phase::prepared)return;
     check(!p.renderer && !p.lua_publication && !p.system_publication && !p.definitions,"native renderer children survived drain");
+    check(!p.entry_cache_publication,"native render-entry cache survived drain");
     check(WaitForSingleObject(p.observed_worker,0)==WAIT_OBJECT_0,"native renderer worker did not join");
     p.phase=Impl::Phase::drained;
-    p.log.note("native renderer after raw drain: owner=null lua=null definitions=null system=null worker=joined");
+    p.log.note("native renderer after raw drain: owner=null lua=null definitions=null system=null entry_cache=null worker=joined");
 }
 } // namespace bsp::game
