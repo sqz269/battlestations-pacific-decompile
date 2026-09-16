@@ -45644,5 +45644,125 @@
     "bytes": 393572475,
     "all_entries_rehashed": true,
     "scope": "Full current source/build compiler input/output closure and actual renderer construction and VFS/Lua/registry fixture and native/link evidence. Forty same-process retained physical I386 modules; expired Toolhelp entries documented; no active frame runtime proof."
+  },
+  "primary_integration": {
+    "source_commit": "86fc51b91c5c2036f500e75866ca51052cf93b80",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "fixture_rerun_after_integration": false,
+    "archive": "local/evidence-r63/renderer-constructor-main-r63.zip",
+    "sha256": "d2baab8d6eba65b4706a1479d006936f1c16f68af6b944736d11cc14ff9747b5",
+    "files": [
+      {
+        "path": "local/r63_integration.log",
+        "bytes": 3296,
+        "sha256": "620788549240297459f8e6db1e6107e1eb850b486550c455d47ea7a0aa42e238"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 153399,
+        "sha256": "8413d77bf3790668b6c20bb99490073757ad4997b77e68a7f22ca638b28efe80"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 232173,
+        "sha256": "50134f3d3fadae0bec22c288506f5a270197efa6c8bbbbe6d137b8e87a455520"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63842578,
+        "sha256": "87bf1fc2e2a3cbdfda8c8711044d19bb37d401de109fabf2780a479c81d9b664"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2269184,
+        "sha256": "8a04d315d8d94bbea59bbc195cc795e361d90f5a5f5b14a58181c9280db7050c"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2408,
+        "sha256": "fc2816f16156e8dd304daee3019c5a83ce83d4d4fb29013835f1d59a6486ae36"
+      },
+      {
+        "path": "local/renderer_constructor_r63/call_gate.log",
+        "bytes": 79,
+        "sha256": "929100884b74737c6149e65ff688062afc39a7896c68a450d3c64676282ddf65"
+      },
+      {
+        "path": "local/renderer_constructor_r63/annotations.log",
+        "bytes": 1133,
+        "sha256": "7db35bc3091cac25c1c2b0625b8af10111c7b1e8cbb00d11cf4f5876fde81999"
+      },
+      {
+        "path": "local/renderer_constructor_r63/exports.log",
+        "bytes": 1809,
+        "sha256": "d079d0e3f1e8f42723631616b2bf36eff5570b9d9f748563aed68808ec46149e"
+      },
+      {
+        "path": "src/native_renderer_constructor.cpp",
+        "bytes": 15249,
+        "sha256": "bfb0e4c463bc4153cfe9d5ed5c6a35ead40d2772fb7df3ef76eadffe6e6a8ccf"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_constructor.obj",
+        "bytes": 13903,
+        "sha256": "7375db27012b2aafc900a9b9c65267a6566445a4503c9193f9ec95a67e4a3953"
+      },
+      {
+        "path": "src/native_shader_state_definitions.cpp",
+        "bytes": 14453,
+        "sha256": "056de7f46f488143822d17abd59969778e5d58f8063572abb0b0e9c1c50fad18"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_shader_state_definitions.obj",
+        "bytes": 37441,
+        "sha256": "599139e3785557af9e4b62337492e75a188b761b3b285d1ed37c35483ae3b32b"
+      },
+      {
+        "path": "src/native_compiled_shader_owner.cpp",
+        "bytes": 11900,
+        "sha256": "d8d37fd1640377167d5a5ec0462c2220c76e52af029e239460b117de7c49f045"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_compiled_shader_owner.obj",
+        "bytes": 49559,
+        "sha256": "36b0cb340d89f0ad0dac50ce4f6e023e45a77233b69caf6a5b6fc5c74b476b2b"
+      },
+      {
+        "path": "src/native_system_constant_registry_raw.cpp",
+        "bytes": 11224,
+        "sha256": "1e680dc2d734db93a5e799bf4e39924be29da34abd9f87d97591587cdf097082"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_system_constant_registry_raw.obj",
+        "bytes": 29490,
+        "sha256": "a2284de174f4d0b4ed7af8c7581e966a15fe4b6bcc4c8ae3c65a77e54a04ef5d"
+      },
+      {
+        "path": "include/bsp/native_renderer_constructor.hpp",
+        "bytes": 3156,
+        "sha256": "66ef2ae2b0970e668f1bf7017e0f1c061664150bdc6cd8d17ceeff8e66ac3d4c"
+      },
+      {
+        "path": "include/bsp/native_shader_state_definitions.hpp",
+        "bytes": 7046,
+        "sha256": "ccf8ffa6bd3875bec37ba79632bb4ce63ecac681a762b1e4fcf31e2c98d82dc2"
+      },
+      {
+        "path": "include/bsp/native_compiled_shader_owner.hpp",
+        "bytes": 8013,
+        "sha256": "c6611427a641aca6748c44e79cffa29b0a20db6e30df419184d54160324d0e48"
+      },
+      {
+        "path": "include/bsp/native_system_constant_registry.hpp",
+        "bytes": 9183,
+        "sha256": "fd43b657db3010ad60d050a74c5b1fc8d2048f100b499cf2fd72e49d309b94c4"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T192925Z.json",
+        "bytes": 87812,
+        "sha256": "d1c865ec5a12667b3801a5f19e47d57191f6c9bb8ad749c85f9f830de9b2096c"
+      }
+    ]
   }
 }
