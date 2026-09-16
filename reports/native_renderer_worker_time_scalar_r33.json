@@ -1,0 +1,78 @@
+{
+  "packet": "renderer_worker_time_scalar_r33",
+  "baseline": "0ab7c0266",
+  "scope": "add canonical source storage for the loader-zero DWORD at 0108D6E4",
+  "owned_address": "0108D6E4",
+  "implementation": {
+    "owner": "bsp::game::GameNativeRendererScalarProcess",
+    "accessor": "renderer_worker_time_bits_0108d6e4()",
+    "source_type": "std::uint32_t",
+    "initialization": "one value-initialized zero DWORD with the existing process singleton",
+    "stable_reference": true,
+    "reset_or_reinitialize": false,
+    "native_crt_callback": false,
+    "worker_or_renderer_created": false
+  },
+  "naming_boundary": {
+    "raw_bits": true,
+    "cpp_float_object_claim": false,
+    "reason": "Original code moves the word with MOVSS and consumes it with x87 FSUB, but source ownership is for the exact mutable DWORD bit pattern."
+  },
+  "original_evidence": {
+    "live_bytes": "00 00 00 00",
+    "pe_storage": "non-disk-backed .data virtual tail; loader-zero preimage",
+    "complete_xref_count": 3,
+    "xrefs": [
+      {
+        "instruction": "00B33DC7",
+        "access": "WRITE",
+        "operation": "MOVSS dword ptr [0108D6E4],XMM0",
+        "provenance": "B33DA0 begins with XORPS XMM0,XMM0, so each control-worker construction writes zero bits before the first BD1970 event creation."
+      },
+      {
+        "instruction": "00B33C96",
+        "access": "READ",
+        "operation": "FSUB float ptr [0108D6E4]",
+        "provenance": "Worker timing subtracts the previous published bit pattern from the rounded current sample."
+      },
+      {
+        "instruction": "00B33CEA",
+        "access": "WRITE",
+        "operation": "MOVSS dword ptr [0108D6E4],XMM0",
+        "provenance": "Accepted worker timing samples publish the current rounded sample bits."
+      }
+    ]
+  },
+  "initialization_boundary": {
+    "process_initial_zero": "GameNativeRendererScalarProcess value-initializes the backing DWORD once when its function-local process owner is created.",
+    "worker_constructor_zero": "Original B33DA0 writes zero again at B33DC7 for every constructed control worker.",
+    "source_decision": "This packet owns only stable process storage. A future worker reuse packet must perform the B33DC7 constructor write through the borrowed reference; the scalar owner adds no reset API."
+  },
+  "preserved_contracts": [
+    "existing scalar-process singleton and accessor identities",
+    "private default construction and noncopyable ownership",
+    "NativeRendererSynchronizationGlobals size and offset static assertions",
+    "no renderer publication at 00F8D394",
+    "no control worker, binding context, EndFrame callback or null provider",
+    "no game_main startup call"
+  ],
+  "validation": {
+    "verify_seeds": "passed; all 8 configured saved-Ghidra spans matched the installed PE",
+    "strict_msvc_win32_release": "passed; game_native_renderer_scalars.cpp compiled into bsp_core with /MD /W4 /WX /fp:strict",
+    "ctests": "3 passed, 0 failed: reconstructed_math, native_math_differential, tool_tests",
+    "new_test": "none; a zero-initialization test would mirror ordinary value initialization"
+  },
+  "proof_boundary": {
+    "established": [
+      "complete saved-program xref set and live zero preimage",
+      "one stable source DWORD identity and reference accessor",
+      "process-zero versus worker-constructor-zero ownership boundary"
+    ],
+    "not_established": [
+      "worker source integration or x87 timing parity",
+      "control-context or renderer binding",
+      "original ABI, FH3 or SEH equivalence",
+      "live thread, renderer, game or gameplay behavior"
+    ]
+  }
+}

@@ -16,6 +16,11 @@ GameNativeRendererScalarProcess::synchronization_0108d6dc() noexcept {
     return synchronization_0108d6dc_;
 }
 
+std::uint32_t&
+GameNativeRendererScalarProcess::renderer_worker_time_bits_0108d6e4() noexcept {
+    return renderer_worker_time_bits_0108d6e4_;
+}
+
 std::uint32_t& GameNativeRendererScalarProcess::logical_texture_serial_0108d6e8() noexcept {
     return logical_texture_serial_0108d6e8_;
 }

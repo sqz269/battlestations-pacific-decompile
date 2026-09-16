@@ -1,10 +1,11 @@
 # Canonical native renderer scalar process
 
-`GameNativeRendererScalarProcess` owns one source instance of the four
+`GameNativeRendererScalarProcess` owns one source instance of the five
 loader-zero scalar domains needed by native renderer and texture work:
 
 * the 8-byte `NativeRendererSynchronizationGlobals` record corresponding to
   `0108D6DC`;
+* the raw renderer-worker time-bits DWORD corresponding to `0108D6E4`;
 * the shared logical-texture construction serial corresponding to `0108D6E8`;
 * the live texture accounting counter corresponding to `0108DAF8`; and
 * the live surface accounting counter corresponding to `0108DAFC`.
@@ -16,18 +17,27 @@ original zero preimage. There is no explicit initializer, reinitialization,
 reset, native exit callback, or native cleanup route.
 
 The synchronization record has compile-time checks for its original 8-byte
-size and offsets `0`, `1`, `2`, and `4`. The three counters are independent
-DWORDs. The class does not imply original address spacing between the four
-source members.
+size and offsets `0`, `1`, `2`, and `4`. The time word and three counters are
+independent DWORDs. The time accessor returns `std::uint32_t&`: it preserves the
+exact bit pattern used by original `MOVSS` and `FSUB` instructions without
+claiming a C++ float object. The class does not imply original address spacing
+between the five source members.
 
 ## Evidence and ownership boundary
 
-The complete R29 writer census is recorded in
-`reports/native_renderer_owner_domains_r29.json`. All four domains fall in the
+The R29 writer census for the original four domains is recorded in
+`reports/native_renderer_owner_domains_r29.json`; the R33 worker-time census is
+recorded in `reports/native_renderer_worker_time_scalar_r33.json`. All five fall in the
 virtual tail of the original `.data` section and therefore begin as loader-zero
 storage with no raw file bytes. No domain has a direct original CRT initializer
 or exit callback. Their values change only through the previously reconstructed
 renderer guard/worker, logical texture, texture owner, and surface owner paths.
+
+The source process performs only that one process-initial zero initialization.
+The original control-worker constructor separately writes zero bits to
+`0108D6E4` at `00B33DC7` on each worker construction, before it creates either
+event. That later constructor write belongs to the worker implementation and is
+not converted into a scalar-process reset or initialization method here.
 
 The actual renderer publication at `00F8D394` is outside this class. The current
 `main` baseline still has no production owner that constructs the full renderer
@@ -53,6 +63,7 @@ The strict MSVC Win32 Release build compiled the new source with `/MD`, `/W4`,
 `/WX`, and `/fp:strict`; all three existing CTests passed. No new test was added
 because the implementation is a compile-time layout plus ordinary stable
 process storage, and a zero-initialization fixture would only mirror it.
+The R33 worker-time extension reran the same seed, build and three-test checks.
 
 These checks establish source compilation, layout and process identity design.
 They do not establish original ABI or exception-unwind equivalence, original
