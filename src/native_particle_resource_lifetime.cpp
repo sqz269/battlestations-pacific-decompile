@@ -1,4 +1,5 @@
 #include "bsp/native_particle_resource_lifetime.hpp"
+#include "bsp/native_particle_layer_lifetime.hpp"
 #include "bsp/native_ref_counted.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/native_string_pool_storage.hpp"
@@ -26,10 +27,23 @@ struct ResourceUnwind {
         if (state >= 0) destroy_native_ref_counted_base_00bd30f0(resource);
     }
 };
-void release_child(void* child) {
+void release_child(void* child, NativeStringRawPoolContext& strings) {
     if (InterlockedDecrement(static_cast<volatile LONG*>(at(child, 4))) == 0) {
+        const U terminal_profile = field<U>(child, 0);
+        if (terminal_profile == 0x00d5dc38) {
+            // Proven Layer slot0 is BD30E0: reload the current table and call
+            // its scalar slot4 with flags1, without a second decrement.
+            const U scalar_profile = field<U>(child, 0);
+            if (scalar_profile == 0x00d5dc38)
+                scalar_delete_native_particle_layer_00aface0(child, 1, strings);
+            else {
+                using Scalar = void* (__thiscall*)(void*, U);
+                field<Scalar>(reinterpret_cast<void*>(scalar_profile), 4)(child, 1);
+            }
+            return;
+        }
         using Terminal = void (__thiscall*)(void*);
-        auto* const table = field<void*>(child, 0);
+        auto* const table = reinterpret_cast<void*>(terminal_profile);
         const auto target = field<Terminal>(table, 0);
         target(child);
     }
@@ -45,7 +59,7 @@ void destroy_native_particle_resource_00af4280(void* resource, NativeStringRawPo
         auto* cursor = at(resource, 0x10);
         do {
             void* const child = field<void*>(cursor, 0);
-            release_child(child);
+            release_child(child, strings);
             ++index;
             cursor = at(cursor, 4);
         } while (static_cast<I>(index) < field<I>(resource, 0x30));
@@ -57,7 +71,7 @@ void destroy_native_particle_resource_00af4280(void* resource, NativeStringRawPo
         auto* cursor = at(resource, 0x34);
         do {
             void* const child = field<void*>(cursor, 0);
-            release_child(child);
+            release_child(child, strings);
             ++index;
             cursor = at(cursor, 4);
         } while (static_cast<I>(index) < field<I>(resource, 0x54));

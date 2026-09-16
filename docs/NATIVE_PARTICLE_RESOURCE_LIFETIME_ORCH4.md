@@ -23,10 +23,11 @@ returned through the application's actual string-pool publications. BD30F0
 finally stamps CEB130 without changing the remaining resource bytes.
 
 No host owner, copied resource object, generic destructor callback or substitute
-string allocator is introduced. Child tables remain actual callable Win32
-tables. Arbitrary numeric child profile identities are not newly bound by this
-packet; only the proved resource profiles described below receive concrete
-source dispatch.
+string allocator is introduced. The j10 extension binds the proven Layer
+D5DC38 identity to genuine BD30E0/AFACE0 source destruction with the same raw
+pool; see `NATIVE_PARTICLE_LAYER_RESOURCE_RELEASE_ORCH4.md`. Other child tables
+still require actual callable Win32 terminals. Numeric emitter profiles remain
+unbound. The resource profiles described below also receive concrete dispatch.
 
 ## Unwind ownership
 

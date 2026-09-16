@@ -1,0 +1,161 @@
+{
+  "packet": "orch4_layer_resource_release_j10",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "address": "00af4280",
+  "source": "src/native_particle_resource_lifetime.cpp",
+  "full_byte_proof": [
+    {
+      "address": "00af4280",
+      "end_exclusive": "00af4360",
+      "bytes": 224,
+      "sha256": "0ba5cfaccb1164c98a610a4576749b40e23aace429ba9fb5a2dbbd8c496fe531",
+      "live_disk_match": true
+    },
+    {
+      "address": "00bd30e0",
+      "end_exclusive": "00bd30ee",
+      "bytes": 14,
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "live_disk_match": true
+    },
+    {
+      "address": "00d5dc38",
+      "end_exclusive": "00d5dc40",
+      "bytes": 8,
+      "sha256": "145bce5dbc83b5d2bd1ce615d283c06068504d31c05988999947a1ff08fe5e23",
+      "live_disk_match": true
+    }
+  ],
+  "prior_documentation": [
+    {
+      "address": "00af4280",
+      "documentation": {
+        "hash": "096cf1687cbc7f8c723a27a1e616f1bd516387565cba6d0d90c83f24e8ce406c",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af4280",
+        "function_name": "BSP_ParticleResource_Destroy",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00af4280]\nComplete actual raw particle resource lifetime/removal body, current reads and owning FH3 cleanup preserved. Full fresh live/disk spans agree; strictWin32/3CTests and bounded original224B base-dtor/source composition passed. Actual child callable-vtable boundary remains. New C++ APIs, no binaryABI/game claim. docs/NATIVE_PARTICLE_RESOURCE_LIFETIME_ORCH4.md; docs/NATIVE_PARTICLE_RESOURCE_CACHE_REMOVAL_ORCH4.md; reports/native_particle_resource_cache_removal_orch4.json.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "LVar2",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar5",
+            "type": "int",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "uVar6",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "uint",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "piVar4",
+            "type": "int *",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 64,
+            "name": "LAB_00af42c0"
+          },
+          {
+            "relative_offset": 89,
+            "name": "LAB_00af42d9"
+          },
+          {
+            "relative_offset": 100,
+            "name": "LAB_00af42e4"
+          },
+          {
+            "relative_offset": 113,
+            "name": "LAB_00af42f1"
+          },
+          {
+            "relative_offset": 138,
+            "name": "LAB_00af430a"
+          },
+          {
+            "relative_offset": 149,
+            "name": "LAB_00af4315"
+          },
+          {
+            "relative_offset": 190,
+            "name": "LAB_00af433e"
+          }
+        ],
+        "completeness_score": 100.0
+      }
+    }
+  ],
+  "baseline_reports": [
+    "reports/native_particle_resource_lifetime_orch4.json",
+    "reports/native_particle_layer_lifetime_orch4.json"
+  ],
+  "change": "Layer source dispatch closure: currentD5DC38 slot0BD30E0 -> independently reloaded slot4AFACE0 flags1, one decrement, actual raw string pool forwarded. Other child profiles retain actual callable-terminal boundary; numeric emitter identities remain open. Full224B AF4280,14B BD30E0 and8B table PE/live parity rechecked. Strict Win32/3CTests and genuine resource/Layer/pool plus foreign-terminal composition probe passed; independent source/listing review found no findings. See docs/NATIVE_PARTICLE_LAYER_RESOURCE_RELEASE_ORCH4.md and reports/native_particle_layer_resource_release_orch4.json. Earlier copied-original evidence remains in reports/native_particle_resource_lifetime_orch4.json; new composition is source-only. No original exception, arbitrary concurrent vptr mutation, binary ABI or gameplay claim.",
+  "validation": {
+    "strict_win32_build": "passed",
+    "existing_ctests": "3/3 passed",
+    "source_composition_probe": "PASS: real resource -> Layer scalar cleanup, pooled names/material, surviving refcount, preserved foreign terminal, resource base/counts.\n",
+    "independent_review": "No findings; current tables, flags1, single decrement, context, loops and EH inspected."
+  },
+  "artifacts": [
+    {
+      "path": "src/native_particle_resource_lifetime.cpp",
+      "sha256": "0818ba7c59a6940e8e857c9bf0469a8af3cae0bdc55b0bf53197bd5c327c5cf0"
+    },
+    {
+      "path": "local/layer_resource_release_probe.cpp",
+      "sha256": "50a72b5e9fbe3a72709418da59b2ee5c180acdc7a25e3776ac5f7d17842d5103"
+    },
+    {
+      "path": "local/layer_resource_release_probe_build.cmd",
+      "sha256": "68e1288145fc0e853fd4e86c911cf95e21b9d95d99c234e6091b295c6843edc4"
+    },
+    {
+      "path": "local/layer_resource_release_probe.exe",
+      "sha256": "c767d1e50032d0ac2bc8430151d547231a44e1b9ea90bbf8e082c2918052ced6"
+    },
+    {
+      "path": "local/layer_resource_release_probe_result.txt",
+      "sha256": "d7da50972885cc6b0c94c92f0707d07652d6fe3865fd772206ba9382fbf4f067"
+    },
+    {
+      "path": "local/layer_resource_release_build_j10.log",
+      "sha256": "398c712205f686963d57fef3c2fabb5799bcc3faff6182235187d62bc45dad22"
+    }
+  ]
+}
