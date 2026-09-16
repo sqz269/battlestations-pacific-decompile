@@ -1001,5 +1001,651 @@
     "report_commit": "the commit containing this report",
     "lease": "native_frame_clock_application_binding_r41",
     "archive_immutable": true
+  },
+  "primary_integration": {
+    "source_merge": "4f816624c",
+    "complete_source_and_fixture_reviewed": true,
+    "native_spans_independently_verified": 12,
+    "native_bytes": 671,
+    "worker_artifacts_verified": 3610,
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "worker_archive": "local/evidence-r41/frame-clock-application-original-r41.zip",
+    "worker_archive_sha256": "e9729d1f20506829596a89c46ff659f0b338d03b38c48e8a699d71f99985719e",
+    "fresh_primary_fixture": [
+      {
+        "fixture": "frame_clock_application",
+        "source": "local/frame_clock_application_probe_r41.cpp",
+        "exe": "local\\frame_clock_application_probe_r41.exe",
+        "sha256": "37c5aeb8a61ad20430267920049cb10b1e71528da8921249c6faf14b32c67b22",
+        "build_exit": 0,
+        "run_exit": 0,
+        "manifest_asInvoker": true,
+        "selected_output": [
+          "PASS genuine host single raw80h allocation, exact shared registration, numeric profile and repeated ensure",
+          "PASS same-owner sound/input current, signed50 fixed and one frame provider advance",
+          "PASS public shared drain and retained contexts; drained consumer admission; normal host destructor follows"
+        ]
+      },
+      {
+        "fixture": "genuine_host_constructor_failure",
+        "run_exit": 1,
+        "log": "local/frame_clock_application_probe_failure_r41.log",
+        "output": [
+          "host ObserverRuntime::initialize_dispatch [00ccd6a0] concrete",
+          "observer runtime initialized: dispatch_owner=present alias=owner+4 lock=lazy manager=application_raw14h storage=raw14h/raw8h",
+          "pending entity CRT owners initialized: destroy=present kill=present counts=0/0 atexit=0/0 storage=process_raw24h",
+          "CLOCK_FREE 0098E2D0 stamp=00ce3818 count=1",
+          "PASS genuine registration exception; no AB0 dereference; entering terminal guard",
+          "raw application clock construction failed; manager graph cleanup is unproved; retaining application and mapped data until process exit"
+        ]
+      }
+    ],
+    "limitations": "Exact current host-object closure linked; genuine host/raw ownership/drain and failure guard exercised. Full application startup, GameFrameHost/VFS, FMOD/inputSDK composition, frame loop, native FH3 and gameplay not executed."
+  },
+  "primary_archive": {
+    "path": "local/evidence-r41/frame-clock-application-main-r41.zip",
+    "sha256": "d6454cf60e1855f78c4177c6df91617c1ad1ddad81bd8b14b3c185352db10c58",
+    "files": [
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "bytes": 31672,
+        "sha256": "62e77c44068963b17637c572824ed3eba8a6b2368a3b682e4213b6fafc2da4a0"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "bytes": 93275,
+        "sha256": "ba7d3326a1a845c32d1bda3a55a64c7706668d60e9e9fc975075b5390befae9a"
+      },
+      {
+        "path": "docs/NATIVE_FRAME_CLOCK_APPLICATION_BINDING_R41.md",
+        "bytes": 3463,
+        "sha256": "fa1a511a8df373765ce1441a5437713070b748fc3a23a52cdefeb3fc497e669f"
+      },
+      {
+        "path": "build/win32/bsp_game.vcxproj",
+        "bytes": 63405,
+        "sha256": "86f4f9e0d55e75c56a4b8b1e08cae5f97ef4c26e072a8e826ecdccbbd43b39bc"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 229690,
+        "sha256": "c1f8fe186826c28685b73746c6969d46264a5990215d2f209e7fbb8e16f32c3a"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ai_group_think.obj",
+        "bytes": 6132,
+        "sha256": "1a5a954ca13857d528fff56b252c7be08a9f4de0e0d73853671c1070ee911008"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ai_planners.obj",
+        "bytes": 12369,
+        "sha256": "d85f084da30a7494577929480a64aa46635e89f538773f6d8c0478202f713744"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/airfield_taxi.obj",
+        "bytes": 4203,
+        "sha256": "1521ca61bcfdcb643b238bdd083aebfe6e918137a84000c89a7a359846d7334f"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/command_completion.obj",
+        "bytes": 77478,
+        "sha256": "d9b010aaa9af434b45383c157da901103ee1a78226809ae35bb6b80ff061e6e0"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_avoid_zone_runtime.obj",
+        "bytes": 359966,
+        "sha256": "e21a8453a8bf2fe6d941b1722a1b37806c9fb02483908c5809bfe309b3873b0d"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+        "bytes": 711298,
+        "sha256": "307212dbe8df3a256231364814763cf134619de1cbc4ae31847dca0cd0dadeb7"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_commands.obj",
+        "bytes": 338899,
+        "sha256": "0ddde1ada5f3667e0c6633414634e0310820faeb2d14ed1dafbfc0daafdd840e"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_fixed_step.obj",
+        "bytes": 40556,
+        "sha256": "8d949e7a3eca30793339c1faeb54d1c7fb238829948f2151992df533fa03a03a"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_fonts.obj",
+        "bytes": 147018,
+        "sha256": "bf5bb92db79bdeb1fd325f6390516cdc13006537bcb0d995a9e258874e3652ce"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_frontend.obj",
+        "bytes": 705690,
+        "sha256": "26dbf290bdb695a5ed9d8f6c3d9a950dd653051c7a171635bb4074801b783692"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_gunnery.obj",
+        "bytes": 671166,
+        "sha256": "8f1bc8a014f2b706d36514f44595e0a41ce4f06a137f9ebcdd792d75cd8d3f0e"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_hud.obj",
+        "bytes": 210381,
+        "sha256": "8d177fcd78c755f9b348f001ecac528d2ff30fdc0a74236aca44b87a5b59b8f3"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_hud_world.obj",
+        "bytes": 222447,
+        "sha256": "ae9c37ba5dd551158bf53440c28f64b35ab4382551b888a6059a8f41a3e2e2e2"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_init_tail.obj",
+        "bytes": 123530,
+        "sha256": "e7afce9e04e271b71cade1378f9fd866f05681e59a7a8d64240624e3166fe6d3"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_lua.obj",
+        "bytes": 579966,
+        "sha256": "d8ece9ebb43a20bdec6299ec3931590f28599052816dd22d28545d4142a09118"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_menu.obj",
+        "bytes": 518796,
+        "sha256": "107677bd906b7beee05cac1eaec508c2e6f78a9b831152453099dcfd91f4457d"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_mission.obj",
+        "bytes": 763775,
+        "sha256": "d817c78979ac47f1ad6bf05b801e401a8781f91872001f71cecf832f5599d936"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_mission_frame.obj",
+        "bytes": 572403,
+        "sha256": "1f8e0e32c035ebff879a38b4b2782e4159f0be973a9d4914c2b8dfe12a43a7f6"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_mission_result.obj",
+        "bytes": 241504,
+        "sha256": "3c09b91bf566adf65cea35e935bcaee1598f2553c884b0a5f12d9a5af0ce301a"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_ready.obj",
+        "bytes": 215770,
+        "sha256": "28bf9961786ef05dc061586e6c182dab456ad5fecdecf23cc0474c812e150d3a"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_scene_contents.obj",
+        "bytes": 930357,
+        "sha256": "b168c790fb1589da49116d76a5e64c4ad50c59f586b2d9b806fe173a59dd5de7"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_script_orders.obj",
+        "bytes": 305820,
+        "sha256": "c025acd6c9d2ae7fea4c625d33882a587424109f9120a54eca4bfd1e7282f510"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_ship_ai.obj",
+        "bytes": 707939,
+        "sha256": "84af245acf76228165e5d13d52e9120a4cbfc821f66862c57cf5757822bf608c"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+        "bytes": 12523,
+        "sha256": "3597f6f93687919a2037e19cfc5a57540d0de300b59c4aac95344749ea7c1b6d"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_text.obj",
+        "bytes": 148586,
+        "sha256": "fdede3ec1bc2e690105619a25e26cf59431d2cd87ef78f7d998e2d9dd3fcd9b0"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_trajectory.obj",
+        "bytes": 122707,
+        "sha256": "d5f9cfd3456934b4d0d7c53e36d79e58d2db52c21f0276091f4e9c925e25dd8a"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_units.obj",
+        "bytes": 469397,
+        "sha256": "43a49b354619422b8109aa21875832bcec8ed680de1235d83907f236c31d92de"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_vfs.obj",
+        "bytes": 423312,
+        "sha256": "3a6fb4b36924d9e13357f67ad99748ba2d2b1fc224ba6a5ad5fc377b25929345"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_world.obj",
+        "bytes": 103418,
+        "sha256": "4b54cf7d9037de352258f32f78ad28fb75133c394435df18de257b3201a98278"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_vfs_application.obj",
+        "bytes": 51248,
+        "sha256": "d455456860c029b7eea4daeafd76b280f68a5ce34b61c581103ff986ebae9c81"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_observer_runtime.obj",
+        "bytes": 15861,
+        "sha256": "e93ddb34df73a71a2e5b87278b9dc5110182646e224a2dd2f67848b3004602ba"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/gameplay_loose_ends_2.obj",
+        "bytes": 1758,
+        "sha256": "6cef5ac34b229195f2d1d5da12829627f2b48227fd88a7d2d15cd34b261b2a42"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/geom_mesh_resource.obj",
+        "bytes": 261705,
+        "sha256": "e536b9089157b35b3c8494cfbf0d7fa85726d9ce82b2b4ab47c4e13d515c8035"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/hit_hull_segment.obj",
+        "bytes": 1836,
+        "sha256": "cd16b3a2c47c636a204fd4e622a4d0cd7f8c75d11091ca91fe67a394c3383538"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/kill_credit.obj",
+        "bytes": 33830,
+        "sha256": "2b42314fff614f7eb65ce4f58110a76ed78a679f360edefbdbb9afb3fc090351"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/narrowphase_unit_part_shape.obj",
+        "bytes": 2080,
+        "sha256": "7f5bbfc6210b33a0c452bb3601d04c9e7e5b0c1abcccf2ea6de669b291730d9a"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/part_damage_reachability.obj",
+        "bytes": 4156,
+        "sha256": "51f9c07e73db9914a4707775e8b5b76f13c8ff56bf380da1771e86fd72d65a33"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/pilot_command_path.obj",
+        "bytes": 8846,
+        "sha256": "062707a15f8ce177c4dcfb9f1c35c062c62a980d0f62100e5b541ae40d543fb2"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/plane_ground_ops.obj",
+        "bytes": 13388,
+        "sha256": "65b619e02850c012e3a0a5c6529b27f6c9447450f2f82274bc76c483d60a8a65"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ship_hit_record.obj",
+        "bytes": 7923,
+        "sha256": "6b1e0d411c1ba316a9f14fda39de96daaa30eff2c469dd20fcc54edfea4c5278"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ship_sub_entity_list.obj",
+        "bytes": 1477,
+        "sha256": "2666c7f4077143bd9dd5e8bd9c14c5cd3da243c4805cbab30a66e1a3ae9aa7aa"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/unit_gunnery_pass.obj",
+        "bytes": 11746,
+        "sha256": "f85d451504ab8259bf3e1278f96ca2ca3fde61a590064bad3867293d37d9c557"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/unit_message_arms.obj",
+        "bytes": 25782,
+        "sha256": "e1f10761f7e50ba10b3538e34ea2d7b889d97a0a7f659a5f7aae7d007ab17557"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/unit_neighbour_fields.obj",
+        "bytes": 1330,
+        "sha256": "26c8631b91ce225ffc008e150f64e0efbd711587708a3f8ed7db26d180c8665f"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63462796,
+        "sha256": "89fd5c18802ef25e0f4b97d8ae0b992ff4cfe86a72e5601ef921800e5e86a712"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "bytes": 455244,
+        "sha256": "db83167c8c7d24461ef2bf60363b96264fd2406929d0e72a8909287d79b96a17"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "bytes": 71906,
+        "sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2267136,
+        "sha256": "497e8226ae171a850cf77484981ad61abed71bf3ba98b8df7af1793a06a5faf9"
+      },
+      {
+        "path": "local/frame_clock_application_probe_r41.cpp",
+        "bytes": 13345,
+        "sha256": "094f238ff139cab241765e99e726884782c8aa3fafbcf09dc138894970f9cc86"
+      },
+      {
+        "path": "local/frame_clock_application_probe_r41.cmd",
+        "bytes": 890,
+        "sha256": "46975eeab27f0e62e564c088e44730dff72ef35aa8a75b5b461732b82dde8756"
+      },
+      {
+        "path": "local/frame_clock_application_probe_r41.obj",
+        "bytes": 167166,
+        "sha256": "fb219568cd880d771745851253a3d274b99a726057f5bf10a9e60b1aadbfbec5"
+      },
+      {
+        "path": "local/frame_clock_application_probe_r41.exe",
+        "bytes": 2151424,
+        "sha256": "37c5aeb8a61ad20430267920049cb10b1e71528da8921249c6faf14b32c67b22"
+      },
+      {
+        "path": "local/frame_clock_application_probe_r41.map",
+        "bytes": 4065064,
+        "sha256": "ef97ba4765e30d66c2bc9b483db3a1a968ab2fda01c9c9d3b19d8e54053609f3"
+      },
+      {
+        "path": "local/frame_clock_application_probe_r41_dependencies.json",
+        "bytes": 49605,
+        "sha256": "fe56ba8299c71410586cfa549e86a335ecb857cb94853d9ba9b58ed30da2d016"
+      },
+      {
+        "path": "local/frame_clock_application_probe_r41_build.log",
+        "bytes": 58689,
+        "sha256": "a9e840216618cf5d3b0dae566e699efd1095653aae9f71a5944d6aabd73bba40"
+      },
+      {
+        "path": "local/frame_clock_application_probe_r41_run.log",
+        "bytes": 3052,
+        "sha256": "a3113c0e8e5f23cb26a5abd5e8fe99d6ac5eacbb35f8ab439dd4cf357683b194"
+      },
+      {
+        "path": "local/run_frame_clock_application_probe_r41.py",
+        "bytes": 3707,
+        "sha256": "321e42d2d5a3c1ff82ea688e390b0ec694600061c626b895d6d934d0fe41420f"
+      },
+      {
+        "path": "local/frame_clock_application_host_objects_r41.rsp",
+        "bytes": 2523,
+        "sha256": "34a453f71ce4ff465a54f1db690ab80c9bc089650327008cd43154f9ef8b2f6a"
+      },
+      {
+        "path": "local/frame_clock_application_probe_results_r41.json",
+        "bytes": 1490,
+        "sha256": "2d88fca4d87b3bd96ecadf8a89be0527750c271b98a36401b3c81b74d5d9f478"
+      },
+      {
+        "path": "local/frame_clock_application_probe_failure_r41.log",
+        "bytes": 565,
+        "sha256": "d902d5d6f7e76fa5bc9d15d9c5dfa9f74df611e95a411029cd77d45f74cb63c4"
+      },
+      {
+        "path": "local/r41_clock_application_integration.log",
+        "bytes": 825,
+        "sha256": "ef1d4cf212b902f406d860e61ae3e2d3f72d7436d06114e96e491df88570389b"
+      },
+      {
+        "path": "local/r41_clock_application_primary_fixture.log",
+        "bytes": 733,
+        "sha256": "6939b6f277d54b32b831d8470fd6856a0d82924496beb1390f9370a795bc5c86"
+      },
+      {
+        "path": "local/r41_clock_application_proto.txt",
+        "bytes": 1544,
+        "sha256": "3508d7a611d4542973eea2700abb5286357fe64fc9cde4fef4d3db9778f8ca17"
+      },
+      {
+        "path": "local/r41_clock_application_annotations.log",
+        "bytes": 227,
+        "sha256": "088c9480ca061d47ee2c7551150bbfa2056a088fe28a16264de0101791f61e79"
+      },
+      {
+        "path": "local/r41_clock_application_exports.log",
+        "bytes": 206,
+        "sha256": "bd6c76c3f69546454268089e4abb9a0f8798a65d18dc7da36ea042b3317a2fe3"
+      },
+      {
+        "path": "local/r41_clock_application_native_spans.json",
+        "bytes": 10120,
+        "sha256": "ce88bd6c1b0be58eaa1712a40e038e2d3c00dc1c01142e9ae953366114eb7359"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T125701Z.json",
+        "bytes": 31660,
+        "sha256": "ae83da8b221cbfbc6edfb42eacf41976ee84a2aedf6a72579c3164ddfa0deddb"
+      }
+    ],
+    "loaded_modules": [
+      {
+        "resolved_path": "\\\\?\\J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\frame_clock_application_probe_r41.exe",
+        "loaded_machine": "014c",
+        "bytes": 2151424,
+        "sha256": "37c5aeb8a61ad20430267920049cb10b1e71528da8921249c6faf14b32c67b22"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+        "loaded_machine": "014c",
+        "bytes": 1822400,
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\kernel32.dll",
+        "loaded_machine": "014c",
+        "bytes": 687472,
+        "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\KernelBase.dll",
+        "loaded_machine": "014c",
+        "bytes": 2974168,
+        "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\user32.dll",
+        "loaded_machine": "014c",
+        "bytes": 1972624,
+        "sha256": "bff75906f4abcc050cf85e38e20090ea0edf7dc33e0ed60cb74cf9e1bc007527"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\win32u.dll",
+        "loaded_machine": "014c",
+        "bytes": 108120,
+        "sha256": "7183521868938b0f6c131ef58288aed6cb55e4bde34d27d9612616ddc4dc2b33"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\gdi32.dll",
+        "loaded_machine": "014c",
+        "bytes": 132352,
+        "sha256": "7c3cb17bc41a00e5167a82aef67d0da4a09e73e6deba9addcdc8b20a90b5186c"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\gdi32full.dll",
+        "loaded_machine": "014c",
+        "bytes": 950488,
+        "sha256": "579857a52f8e9cccff64a4c1c1eb5d2a4a8c6e19c30eab16bef63ed6d61e8806"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\msvcp_win.dll",
+        "loaded_machine": "014c",
+        "bytes": 505792,
+        "sha256": "2c3dd2c830375591addea061588f8183bcafdba501c638526b85215465ac905a"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "loaded_machine": "014c",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\shell32.dll",
+        "loaded_machine": "014c",
+        "bytes": 6734832,
+        "sha256": "1d79d4611f64bb78c10a4688377cddd2e93b6dd12437c537f11d3d763772dea0"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\ole32.dll",
+        "loaded_machine": "014c",
+        "bytes": 1406032,
+        "sha256": "d178e227ede5073ecfed4528199b03327e1c2edff9ddd09d79d4af821fdde968"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\combase.dll",
+        "loaded_machine": "014c",
+        "bytes": 2711704,
+        "sha256": "3f152587249ff6623eb0023cf52cad64aac02f6d8117d8754349f83768f9a6f8"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\rpcrt4.dll",
+        "loaded_machine": "014c",
+        "bytes": 772776,
+        "sha256": "6e3f4e700f03dc415d0a52ffdaac0ce3dfe80a42cd5e27dd304ccc11afea11d8"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\advapi32.dll",
+        "loaded_machine": "014c",
+        "bytes": 537816,
+        "sha256": "06e6ee5fcd0601e181e5dd8f9a6328dd79b6bcc8fcdfc2b1a7832f0556d0d049"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\msvcrt.dll",
+        "loaded_machine": "014c",
+        "bytes": 809472,
+        "sha256": "23a918921c545140d189ce6dc68590bacdeb0ab2f3e3a9a2d722c5aff45ce64f"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\sechost.dll",
+        "loaded_machine": "014c",
+        "bytes": 538352,
+        "sha256": "bfb478f918ee80d1945237cb15db42e2c5e2e324fa00211de37511c1cc720ad4"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\d3d9.dll",
+        "loaded_machine": "014c",
+        "bytes": 1528480,
+        "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll",
+        "loaded_machine": "014c",
+        "bytes": 618944,
+        "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\dinput8.dll",
+        "loaded_machine": "014c",
+        "bytes": 176640,
+        "sha256": "2a746ccf3922aecced0387f3c6e21e55c6df786df8164c482f2a2e6165edd395"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "loaded_machine": "014c",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\dwmapi.dll",
+        "loaded_machine": "014c",
+        "bytes": 132936,
+        "sha256": "b57e484bf23ac0c23c97040939924896de7801524abfc29dd59cff2ba08c3ef5"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\version.dll",
+        "loaded_machine": "014c",
+        "bytes": 28976,
+        "sha256": "4f66b88731e84be8e1545eefc589a79e701cca426ce916e4ac9322e60ea9680b"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\DXCore.dll",
+        "loaded_machine": "014c",
+        "bytes": 210384,
+        "sha256": "848382e31f21c5d7b98fd3047efb94d8e9ab6e8780edf0e55c1cdac290833881"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\imm32.dll",
+        "loaded_machine": "014c",
+        "bytes": 147856,
+        "sha256": "027d404ea547f446740336b90dc69b0cfa7c2bea4f1f366053251364f0eefe02"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\InputHost.dll",
+        "loaded_machine": "014c",
+        "bytes": 1516072,
+        "sha256": "b0d67681c9030e157311202c0b78409249ba97b65ea1d85e5806761ea09d777c"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\CoreMessaging.dll",
+        "loaded_machine": "014c",
+        "bytes": 916904,
+        "sha256": "93ed751bc4b65c61c85d4552ad91a4cd3bb8d60616c869e8511971db6a41901a"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\SHCore.dll",
+        "loaded_machine": "014c",
+        "bytes": 852368,
+        "sha256": "6b5db294c55eb62f6dc0e038b858a60b90a80a5e2933d49e8b512b1491267225"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\bcryptprimitives.dll",
+        "loaded_machine": "014c",
+        "bytes": 501136,
+        "sha256": "dfd29f2c1f28034949f0a3716a99f00816bda0bffd48a5a2750be4569e7d21ee"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\cryptbase.dll",
+        "loaded_machine": "014c",
+        "bytes": 32696,
+        "sha256": "795b93001b5c00b4c6ad0806c12df0d4f3477cbed0c261a85b92e5f77ff64a94"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\kernel.appcore.dll",
+        "loaded_machine": "014c",
+        "bytes": 74552,
+        "sha256": "b1d3e1c0cd752be86ab59e151b9627f703a30c6d4d43bcb14522ea738b1886f4"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\cryptsp.dll",
+        "loaded_machine": "014c",
+        "bytes": 76616,
+        "sha256": "ee4ea256f8edc949fc0ef9b9425d1afa22aea98faf7dbcc7c73161d93fa44c72"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\rsaenh.dll",
+        "loaded_machine": "014c",
+        "bytes": 198888,
+        "sha256": "898179763b3fc4b288820ceb8ee24605375f7e0e98d0a27a2d95430b818d37e8"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\bcrypt.dll",
+        "loaded_machine": "014c",
+        "bytes": 114240,
+        "sha256": "137cec7506fdb011ed03c5a7b51c6ea168cc75ec4359b8dc3f83855622d86bc3"
+      }
+    ]
+  },
+  "primary_annotations": {
+    "status": "Two enclosing names retained and bounded application fragments appended. Prior comments preserved, project saved and exports refreshed.",
+    "prior_annotations": [
+      {
+        "address": "00737a50",
+        "before": {
+          "address": "00737a50",
+          "function_name": "BSP_Application_RunFrame",
+          "comment": "[BSP reconstruction 00737a50]\nApplication vtable 00cfeab0 slot +10h, invoked by Win32Platform_RunFrame. Updates time-dependent systems and copies global exit request 00e1ae75 into platform loop-exit byte +181h; other per-frame work is not yet reconstructed.\n\n[BSP reconstruction 00737a50] update\nApplication vtable 00cfeab0 slot +10h, invoked by Win32Platform_RunFrame. Updates time-dependent systems and copies global exit request 00e1ae75 into platform loop-exit byte +181h; other per-frame work is not yet reconstructed. Close routing recovered:004e4a40 calls004ca2f0 at004e4a79. Exit propagation at00737b4e..00737b77 is sticky: nonzero global00e1ae75 sets platform+181h; false does not clear an existing loop-exit request.\n\n[BSP reconstruction 00737a50] update\nApplication vtable 00cfeab0 slot +10h, invoked by Win32Platform_RunFrame. Updates time-dependent systems and copies global exit request 00e1ae75 into platform loop-exit byte +181h; other per-frame work is not yet reconstructed. Close routing recovered:004e4a40 calls004ca2f0 at004e4a79. Exit propagation at00737b4e..00737b77 is sticky: nonzero global00e1ae75 sets platform+181h; false does not clear an existing loop-exit request. ECX application; no stack arguments; RET Existing BSP_Application_RunFrame name preserved. VFS global0109ceec loaded00737b79, direct manager pump call00737b7f on ordinary frame path; surrounding subsystem semantics are outside this audit. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\n\n[BSP reconstruction 00737a50] update\nApplication vtable 00cfeab0 slot +10h, invoked by Win32Platform_RunFrame. Updates time-dependent systems and copies global exit request 00e1ae75 into platform loop-exit byte +181h; other per-frame work is not yet reconstructed. Close routing recovered:004e4a40 calls004ca2f0 at004e4a79. Exit propagation at00737b4e..00737b77 is sticky: nonzero global00e1ae75 sets platform+181h; false does not clear an existing loop-exit request. ECX application; no stack arguments; RET Existing BSP_Application_RunFrame name preserved. VFS global0109ceec loaded00737b79, direct manager pump call00737b7f on ordinary frame path; surrounding subsystem semantics are outside this audit. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\n\n[BSP reconstruction 00737a50] update\nComplete 371-byte frame span freshly PE-matched. Additional loading-order evidence: after sticky exit propagation, 00737b79/7f pump VFS 0109ceec; 00737b84 obtains the loader through 004fde20; 00737b89/8b update via 00509190; then frame cleanup. Successful physical callback can make the current front ready before the same frame update; submission from that update needs a later physical pump. Preserve all existing frame evidence.\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim. Original ABI: ECX application; no stack arguments; RET. Existing frame ABI preserved.. Evidence: docs/VFS_LOADING_PUMP_LIFETIME.md; reports/vfs_loading_pump_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00737a50] update\nApplication vtable 00cfeab0 slot +10h, invoked by Win32Platform_RunFrame. Updates time-dependent systems and copies global exit request 00e1ae75 into platform loop-exit byte +181h; other per-frame work is not yet reconstructed. Close routing recovered:004e4a40 calls004ca2f0 at004e4a79. Exit propagation at00737b4e..00737b77 is sticky: nonzero global00e1ae75 sets platform+181h; false does not clear an existing loop-exit request. ECX application; no stack arguments; RET Existing BSP_Application_RunFrame name preserved. VFS global0109ceec loaded00737b79, direct manager pump call00737b7f on ordinary frame path; surrounding subsystem semantics are outside this audit. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\n\n[BSP reconstruction 00737a50] update\nComplete 371-byte frame span freshly PE-matched. Additional loading-order evidence: after sticky exit propagation, 00737b79/7f pump VFS 0109ceec; 00737b84 obtains the loader through 004fde20; 00737b89/8b update via 00509190; then frame cleanup. Successful physical callback can make the current front ready before the same frame update; submission from that update needs a later physical pump. Preserve all existing frame evidence.\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim. Original ABI: ECX application; no stack arguments; RET. Existing frame ABI preserved.. Evidence: docs/VFS_LOADING_PUMP_LIFETIME.md; reports/vfs_loading_pump_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00737a50] update\nExisting name and all earlier frame evidence preserved. Complete 371-byte span 00737a50..00737bc2 re-verified byte-for-byte against the disk PE. Full frame order now recovered: one-time init of profiler bar colour 00e1ae94 to FF000000h guarded by bit 0 of 00e1ae98; PERF_APP_UPDATE counter slot read from 0109d014 and written into the profiler colour array at instance+24h; begin counter 00be3640 opening an SEH scope guard (handler 00c86228, trylevel 0 at 00737ac3 and back to -1 at 00737b90); clear application+19h; on non-mission game states only, input edge test 004c43c0(0Eh) at 00737ae7 sets application+19h; frame clock 01090ab0 virtual +8h then +1Ch, and dt = interval ticks/frequency by FILD/FILD/FDIVP spilled to float32 at 00737b10; game update 004e4a40 with ECX = *(application+14h); clear application+18h, which constructor 00737970 initialises to 1; the already-recorded sticky exit propagation, VFS tick and loading-queue update; then end counter 00be3660 and end-of-frame aggregation 00be34d0, whose ring-wrap result is discarded. The game-state read at 00737b33 is dead because both exit branches are identical. The frame contains no message pump, device polling, render kick, present, throttle, sleep, focus or pause handling, and returns void, so the loop's exit decision rests entirely on platform 0109cf04+181h. Decompiler artifact: 00737ab0 writes the slot index into a dead local that Ghidra folds into the saved exception-list slot, emitting ExceptionList = pvVar1; the assembly restores from [ESP+14h] at 00737bb1. Original ABI: __thiscall, ECX = application, no stack arguments, RET, void. Evidence: docs/APP_RUN_FRAME.md and reports/app_run_frame_audit.json. Read-only audit plus a semantic C++ projection in src/app_frame.cpp; no ABI-compatible replacement or gameplay validation claim.\n\n[BSP reconstruction 00737a50] update\nApplication vtable 00cfeab0 slot +10h, invoked by Win32Platform_RunFrame. Updates time-dependent systems and copies global exit request 00e1ae75 into platform loop-exit byte +181h; other per-frame work is not yet reconstructed. Close routing recovered:004e4a40 calls004ca2f0 at004e4a79. Exit propagation at00737b4e..00737b77 is sticky: nonzero global00e1ae75 sets platform+181h; false does not clear an existing loop-exit request. ECX application; no stack arguments; RET Existing BSP_Application_RunFrame name preserved. VFS global0109ceec loaded00737b79, direct manager pump call00737b7f on ordinary frame path; surrounding subsystem semantics are outside this audit. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\n\n[BSP reconstruction 00737a50] update\nComplete 371-byte frame span freshly PE-matched. Additional loading-order evidence: after sticky exit propagation, 00737b79/7f pump VFS 0109ceec; 00737b84 obtains the loader through 004fde20; 00737b89/8b update via 00509190; then frame cleanup. Successful physical callback can make the current front ready before the same frame update; submission from that update needs a later physical pump. Preserve all existing frame evidence.\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim. Original ABI: ECX application; no stack arguments; RET. Existing frame ABI preserved.. Evidence: docs/VFS_LOADING_PUMP_LIFETIME.md; reports/vfs_loading_pump_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00737a50] update\nExisting name and all earlier frame evidence preserved. Complete 371-byte span 00737a50..00737bc2 re-verified byte-for-byte against the disk PE. Full frame order now recovered: one-time init of profiler bar colour 00e1ae94 to FF000000h guarded by bit 0 of 00e1ae98; PERF_APP_UPDATE counter slot read from 0109d014 and written into the profiler colour array at instance+24h; begin counter 00be3640 opening an SEH scope guard (handler 00c86228, trylevel 0 at 00737ac3 and back to -1 at 00737b90); clear application+19h; on non-mission game states only, input edge test 004c43c0(0Eh) at 00737ae7 sets application+19h; frame clock 01090ab0 virtual +8h then +1Ch, and dt = interval ticks/frequency by FILD/FILD/FDIVP spilled to float32 at 00737b10; game update 004e4a40 with ECX = *(application+14h); clear application+18h, which constructor 00737970 initialises to 1; the already-recorded sticky exit propagation, VFS tick and loading-queue update; then end counter 00be3660 and end-of-frame aggregation 00be34d0, whose ring-wrap result is discarded. The game-state read at 00737b33 is dead because both exit branches are identical. The frame contains no message pump, device polling, render kick, present, throttle, sleep, focus or pause handling, and returns void, so the loop's exit decision rests entirely on platform 0109cf04+181h. Decompiler artifact: 00737ab0 writes the slot index into a dead local that Ghidra folds into the saved exception-list slot, emitting ExceptionList = pvVar1; the assembly restores from [ESP+14h] at 00737bb1. Original ABI: __thiscall, ECX = application, no stack arguments, RET, void. Evidence: docs/APP_RUN_FRAME.md and reports/app_run_frame_audit.json. Read-only audit plus a semantic C++ projection in src/app_frame.cpp; no ABI-compatible replacement or gameplay validation claim. | Run-time evidence from bsp_game.exe milestone 2c (packet cc_exe_2c), `--frames 120 --press-start-frame 30` against the installed game; see docs/GAME_EXECUTABLE.md. The game-state field at 00737acc and 00737b33 is now a real read over a slot the title bring-up, the shell entry and the drain write: it reports 2 while the title is up and 5 once the main-menu shell is ready."
+        },
+        "after": {
+          "address": "00737a50",
+          "name": "BSP_Application_RunFrame",
+          "evidence": "Application vtable 00cfeab0 slot +10h, invoked by Win32Platform_RunFrame. Updates time-dependent systems and copies global exit request 00e1ae75 into platform loop-exit byte +181h; other per-frame work is not yet reconstructed. Close routing recovered:004e4a40 calls004ca2f0 at004e4a79. Exit propagation at00737b4e..00737b77 is sticky: nonzero global00e1ae75 sets platform+181h; false does not clear an existing loop-exit request. ECX application; no stack arguments; RET Existing BSP_Application_RunFrame name preserved. VFS global0109ceec loaded00737b79, direct manager pump call00737b7f on ordinary frame path; surrounding subsystem semantics are outside this audit. Evidence: docs/VFS_PENDING_LIFETIME.md and reports/vfs_pending_lifetime_audit.json. Read-only contract; no new host implementation or runtime equivalence. reports/vfs_pending_lifetime_audit.json\n\n[BSP reconstruction 00737a50] update\nComplete 371-byte frame span freshly PE-matched. Additional loading-order evidence: after sticky exit propagation, 00737b79/7f pump VFS 0109ceec; 00737b84 obtains the loader through 004fde20; 00737b89/8b update via 00509190; then frame cleanup. Successful physical callback can make the current front ready before the same frame update; submission from that update needs a later physical pump. Preserve all existing frame evidence.\nEvidence: docs/VFS_LOADING_PUMP_LIFETIME.md and reports/vfs_loading_pump_lifetime_audit.json. Read-only audit; no new runtime or ABI-compatible implementation claim. Original ABI: ECX application; no stack arguments; RET. Existing frame ABI preserved.. Evidence: docs/VFS_LOADING_PUMP_LIFETIME.md; reports/vfs_loading_pump_lifetime_audit.json. Descriptive names are hypotheses; no native ABI or gameplay validation claim.\n\n[BSP reconstruction 00737a50] update\nExisting name and all earlier frame evidence preserved. Complete 371-byte span 00737a50..00737bc2 re-verified byte-for-byte against the disk PE. Full frame order now recovered: one-time init of profiler bar colour 00e1ae94 to FF000000h guarded by bit 0 of 00e1ae98; PERF_APP_UPDATE counter slot read from 0109d014 and written into the profiler colour array at instance+24h; begin counter 00be3640 opening an SEH scope guard (handler 00c86228, trylevel 0 at 00737ac3 and back to -1 at 00737b90); clear application+19h; on non-mission game states only, input edge test 004c43c0(0Eh) at 00737ae7 sets application+19h; frame clock 01090ab0 virtual +8h then +1Ch, and dt = interval ticks/frequency by FILD/FILD/FDIVP spilled to float32 at 00737b10; game update 004e4a40 with ECX = *(application+14h); clear application+18h, which constructor 00737970 initialises to 1; the already-recorded sticky exit propagation, VFS tick and loading-queue update; then end counter 00be3660 and end-of-frame aggregation 00be34d0, whose ring-wrap result is discarded. The game-state read at 00737b33 is dead because both exit branches are identical. The frame contains no message pump, device polling, render kick, present, throttle, sleep, focus or pause handling, and returns void, so the loop's exit decision rests entirely on platform 0109cf04+181h. Decompiler artifact: 00737ab0 writes the slot index into a dead local that Ghidra folds into the saved exception-list slot, emitting ExceptionList = pvVar1; the assembly restores from [ESP+14h] at 00737bb1. Original ABI: __thiscall, ECX = application, no stack arguments, RET, void. Evidence: docs/APP_RUN_FRAME.md and reports/app_run_frame_audit.json. Read-only audit plus a semantic C++ projection in src/app_frame.cpp; no ABI-compatible replacement or gameplay validation claim. | Run-time evidence from bsp_game.exe milestone 2c (packet cc_exe_2c), `--frames 120 --press-start-frame 30` against the installed game; see docs/GAME_EXECUTABLE.md. The game-state field at 00737acc and 00737b33 is now a real read over a slot the title bring-up, the shell entry and the drain write: it reports 2 while the title is up and 5 once the main-menu shell is ready. | R41 application host binds one actual80h frame-clock owner through persistent method/publication/lifetime contexts, the same AB0/AA0 cells and deletion binding+108 of existing116B table. All11 D68D50 words checked before allocation. Native73D480 null/allocate/construct gate and signed50 slot24 call immediately after settings recovered. Separate frame advance/current interval publication reloads retained; sound/input use R39 borrowed bindings. Constructor failure frees only captured allocation, does not repair stale publication; failed/constructing source state uses explicit conservative _Exit(1) before shared/CRT cleanup, not native FH3 equivalence. Parent reviewed complete source diff and scoped fixture;3610 worker artifacts and12native PE spans671B verified. Combined strict /MD Win32 build and3CTests pass. Fresh primary actual GameNativeDataBootstrapChild/GameStartupHost fixture verifies one owner, repeat local ensure, same sound/input context, signed50/provider advance, one real shared drain and registration-failure child. Full GameFrameHost/VFS, FMOD/input SDK, full startup/frame loop and gameplay not executed. reports/native_frame_clock_application_binding_r41.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0073d410",
+        "before": {
+          "address": "0073d410",
+          "function_name": "BSP_Application_Initialize",
+          "comment": "[BSP reconstruction 0073d410]\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown.\n\n[BSP reconstruction 0073d410] update\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown. Startup block0073e1e2..0073e45b preloads inputs.lua, keyboardsetup.lua, controllerinputnames.lua, controlpresets.lua, scoring.lua under scripts/datatables/ in this order, each flags32h. Native caller ignores incidental return. Bounded host policy in src/resource_preload.cpp opens via existing mounted/FileStore path and stops on first host failure. Installed fixture verifies all five request names/flags and140625 bytes against disk; script execution/full initializer remain unreconstructed. docs/STARTUP_SCRIPT_PRELOAD.md.\n\n[BSP reconstruction 0073d410] update\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown. Startup block0073e1e2..0073e45b preloads inputs.lua, keyboardsetup.lua, controllerinputnames.lua, controlpresets.lua, scoring.lua under scripts/datatables/ in this order, each flags32h. Native caller ignores incidental return. Bounded host policy in src/resource_preload.cpp opens via existing mounted/FileStore path and stops on first host failure. Installed fixture verifies all five request names/flags and140625 bytes against disk; script execution/full initializer remain unreconstructed. docs/STARTUP_SCRIPT_PRELOAD.md. Startup mount/scan fragment0073d68d onward now uses actual providers: root->dot priority0 ownership1, root->persistent_data priority99 ownership1, FileStore->dot priority300 ownership0, all device-1; two fresh package scans precede search defaults. Explicit installed root replaces process-current directory. Does not reconstruct complete application initializer. docs/VFS_PROVIDER_MANAGER.md; reports/startup_manager_validation.json.\n\n[BSP reconstruction 0073d410] update\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown. Startup block0073e1e2..0073e45b preloads inputs.lua, keyboardsetup.lua, controllerinputnames.lua, controlpresets.lua, scoring.lua under scripts/datatables/ in this order, each flags32h. Native caller ignores incidental return. Bounded host policy in src/resource_preload.cpp opens via existing mounted/FileStore path and stops on first host failure. Installed fixture verifies all five request names/flags and140625 bytes against disk; script execution/full initializer remain unreconstructed. docs/STARTUP_SCRIPT_PRELOAD.md. Startup mount/scan fragment0073d68d onward now uses actual providers: root->dot priority0 ownership1, root->persistent_data priority99 ownership1, FileStore->dot priority300 ownership0, all device-1; two fresh package scans precede search defaults. Explicit installed root replaces process-current directory. Does not reconstruct complete application initializer. docs/VFS_PROVIDER_MANAGER.md; reports/startup_manager_validation.json. | Hypothesis, not a recovered symbol. Runtime owner integration follows renderer0073da88, input getter/guarded reload0073da94/da9b, settings0073daa5; locale constructor0073e057, selected catalog lanfile0073e06a/e08f, register globals0073e103, reloadfalse0073e135. Existing platform/save/factory/parser operations reordered to their native relative sites. New C++ ownership and failure cleanup; full application remains incomplete. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof.\n\n[BSP reconstruction 0073d410] update\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown. Startup block0073e1e2..0073e45b preloads inputs.lua, keyboardsetup.lua, controllerinputnames.lua, controlpresets.lua, scoring.lua under scripts/datatables/ in this order, each flags32h. Native caller ignores incidental return. Bounded host policy in src/resource_preload.cpp opens via existing mounted/FileStore path and stops on first host failure. Installed fixture verifies all five request names/flags and140625 bytes against disk; script execution/full initializer remain unreconstructed. docs/STARTUP_SCRIPT_PRELOAD.md. Startup mount/scan fragment0073d68d onward now uses actual providers: root->dot priority0 ownership1, root->persistent_data priority99 ownership1, FileStore->dot priority300 ownership0, all device-1; two fresh package scans precede search defaults. Explicit installed root replaces process-current directory. Does not reconstruct complete application initializer. docs/VFS_PROVIDER_MANAGER.md; reports/startup_manager_validation.json. | Hypothesis, not a recovered symbol. Runtime owner integration follows renderer0073da88, input getter/guarded reload0073da94/da9b, settings0073daa5; locale constructor0073e057, selected catalog lanfile0073e06a/e08f, register globals0073e103, reloadfalse0073e135. Existing platform/save/factory/parser operations reordered to their native relative sites. New C++ ownership and failure cleanup; full application remains incomplete. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof. | Configured native argument path: WinMain8F841E pushes fixed cachedload and8F8423 pushes0; app ESP-=148h,73D4C2 reads second argument atESP+150h intoEBP,73D933/73D93C duplicate it,73D945 storesE1AE78,73D94A parses. GameStartupHost now forwards that borrowed mode through its phases instead of parsing GetCommandLineA; separate bsp_game executable options remain separate. This corrects a composed fragment only, not the complete initializer or native string/global ABI. docs/NATIVE_STARTUP_ARGUMENT.md; reports/native_startup_argument.json; docs/NATIVE_ENTRY_BOOTSTRAP.md.\n\n[BSP reconstruction 0073d410] update\nWinMain passes this in ECX and stack arguments 0 and cachedload. Initializes resources, audio, window, Lua datatables and game systems; observed behavior, original class name unknown. Startup block0073e1e2..0073e45b preloads inputs.lua, keyboardsetup.lua, controllerinputnames.lua, controlpresets.lua, scoring.lua under scripts/datatables/ in this order, each flags32h. Native caller ignores incidental return. Bounded host policy in src/resource_preload.cpp opens via existing mounted/FileStore path and stops on first host failure. Installed fixture verifies all five request names/flags and140625 bytes against disk; script execution/full initializer remain unreconstructed. docs/STARTUP_SCRIPT_PRELOAD.md. Startup mount/scan fragment0073d68d onward now uses actual providers: root->dot priority0 ownership1, root->persistent_data priority99 ownership1, FileStore->dot priority300 ownership0, all device-1; two fresh package scans precede search defaults. Explicit installed root replaces process-current directory. Does not reconstruct complete application initializer. docs/VFS_PROVIDER_MANAGER.md; reports/startup_manager_validation.json. | Hypothesis, not a recovered symbol. Runtime owner integration follows renderer0073da88, input getter/guarded reload0073da94/da9b, settings0073daa5; locale constructor0073e057, selected catalog lanfile0073e06a/e08f, register globals0073e103, reloadfalse0073e135. Existing platform/save/factory/parser operations reordered to their native relative sites. New C++ ownership and failure cleanup; full application remains incomplete. docs/RUNTIME_STARTUP_OWNERS.md; reports/runtime_startup_owners.json. Win32 and focused installed-owner fixture passed; source interfaces are not native ABI or gameplay proof. | Configured native argument path: WinMain8F841E pushes fixed cachedload and8F8423 pushes0; app ESP-=148h,73D4C2 reads second argument atESP+150h intoEBP,73D933/73D93C duplicate it,73D945 storesE1AE78,73D94A parses. GameStartupHost now forwards that borrowed mode through its phases instead of parsing GetCommandLineA; separate bsp_game executable options remain separate. This corrects a composed fragment only, not the complete initializer or native string/global ABI. docs/NATIVE_STARTUP_ARGUMENT.md; reports/native_startup_argument.json; docs/NATIVE_ENTRY_BOOTSTRAP.md. | Hypothesis, not a recovered symbol. Sound application composition and native pre-window ordering documented in docs/SOUND_APPLICATION_WIRING.md; actual two-frame run verified, full application/gameplay incomplete.\n\n[BSP reconstruction 0073d410] update\nR24 application binding: original 40-byte phase-6 schedule at 0073DB41..0073DB68 matches installed PE/live Ghidra; all six call sites verified. GameVfsHost now calls actual raw 004C1400/B81040 resource-manager construction and B80A50 registration with actual 736DD0/736EA0 parser owners, using the same 01090AA0 lifetime manager and 01090AA8 raw string domain. GameNativeResourceApplication owns actual 010901C4 and eight parser publication cells. Full strict Win32 build and three CTests passed; linked production-object children exercised phase6 before core and phase2 then phase6, eight names/profiles, duplicate registration, ten/fifteen shared-owner drains, and production host destruction order. This is source application lifetime evidence, not complete resource loading, native ABI/FH3 or gameplay. docs/NATIVE_RESOURCE_APPLICATION_ORCH4.md; reports/native_resource_application_orch4.json. Existing function name retained.\n\n[BSP reconstruction 0073d410] update\nR24 application binding: original 40-byte phase-6 schedule at 0073DB41..0073DB68 matches installed PE/live Ghidra; all six call sites verified. GameVfsHost now calls actual raw 004C1400/B81040 resource-manager construction and B80A50 registration with actual 736DD0/736EA0 parser owners, using the same 01090AA0 lifetime manager and 01090AA8 raw string domain. GameNativeResourceApplication owns actual 010901C4 and eight parser publication cells. Full strict Win32 build and three CTests passed; linked production-object children exercised phase6 before core and phase2 then phase6, eight names/profiles, duplicate registration, ten/fifteen shared-owner drains, and production host destruction order. This is source application lifetime evidence, not complete resource loading, native ABI/FH3 or gameplay. docs/NATIVE_RESOURCE_APPLICATION_ORCH4.md; reports/native_resource_application_orch4.json. Existing function name retained. | R41 actual GameStartupHost binding uses same GameSingletonHost CF14 cell and raw AA0 SoundLifetimeAccess. Getter004C14C0 immediately follows font/GUI startup0073BAE0 at native73E14B; return discarded and failure propagated. Shutdown7363B0 is explicit at current application-shutdown tail after frontend/device effects, before application destruction/shared raw drain. Full42step teardown adjacency remains unbound; unimplemented marker retained. No null assertion, retry, exception swallowing, publication repair or new manager. Parent complete source diff reviewed,4native call/context spans50B independently PE verified, all29frozen artifacts+manifest verified. Worker and combined strict /MD Win32 builds/3CTests pass. Application placement has not been executed; R38/R39 component fixture evidence is not a full host runtime claim. reports/native_diagnostic_application_binding_r41.json."
+        },
+        "after": {
+          "address": "0073d410",
+          "name": "BSP_Application_Initialize",
+          "evidence": "R24 application binding: original 40-byte phase-6 schedule at 0073DB41..0073DB68 matches installed PE/live Ghidra; all six call sites verified. GameVfsHost now calls actual raw 004C1400/B81040 resource-manager construction and B80A50 registration with actual 736DD0/736EA0 parser owners, using the same 01090AA0 lifetime manager and 01090AA8 raw string domain. GameNativeResourceApplication owns actual 010901C4 and eight parser publication cells. Full strict Win32 build and three CTests passed; linked production-object children exercised phase6 before core and phase2 then phase6, eight names/profiles, duplicate registration, ten/fifteen shared-owner drains, and production host destruction order. This is source application lifetime evidence, not complete resource loading, native ABI/FH3 or gameplay. docs/NATIVE_RESOURCE_APPLICATION_ORCH4.md; reports/native_resource_application_orch4.json. Existing function name retained. | R41 actual GameStartupHost binding uses same GameSingletonHost CF14 cell and raw AA0 SoundLifetimeAccess. Getter004C14C0 immediately follows font/GUI startup0073BAE0 at native73E14B; return discarded and failure propagated. Shutdown7363B0 is explicit at current application-shutdown tail after frontend/device effects, before application destruction/shared raw drain. Full42step teardown adjacency remains unbound; unimplemented marker retained. No null assertion, retry, exception swallowing, publication repair or new manager. Parent complete source diff reviewed,4native call/context spans50B independently PE verified, all29frozen artifacts+manifest verified. Worker and combined strict /MD Win32 builds/3CTests pass. Application placement has not been executed; R38/R39 component fixture evidence is not a full host runtime claim. reports/native_diagnostic_application_binding_r41.json. | R41 application host binds one actual80h frame-clock owner through persistent method/publication/lifetime contexts, the same AB0/AA0 cells and deletion binding+108 of existing116B table. All11 D68D50 words checked before allocation. Native73D480 null/allocate/construct gate and signed50 slot24 call immediately after settings recovered. Separate frame advance/current interval publication reloads retained; sound/input use R39 borrowed bindings. Constructor failure frees only captured allocation, does not repair stale publication; failed/constructing source state uses explicit conservative _Exit(1) before shared/CRT cleanup, not native FH3 equivalence. Parent reviewed complete source diff and scoped fixture;3610 worker artifacts and12native PE spans671B verified. Combined strict /MD Win32 build and3CTests pass. Fresh primary actual GameNativeDataBootstrapChild/GameStartupHost fixture verifies one owner, repeat local ensure, same sound/input context, signed50/provider advance, one real shared drain and registration-failure child. Full GameFrameHost/VFS, FMOD/input SDK, full startup/frame loop and gameplay not executed. reports/native_frame_clock_application_binding_r41.json."
+        },
+        "status": "applied"
+      }
+    ]
   }
 }
