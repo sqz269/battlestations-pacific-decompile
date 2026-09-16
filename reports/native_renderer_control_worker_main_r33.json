@@ -169,7 +169,8 @@
       }
     },
     "status": "Current live Ghidra has no instruction at B33C15; full 30-byte scalar PE/live span contains the bytes. Parent notified and will repair the returning-call flow/export after worker releases the address lease.",
-    "archive": "Pre-repair context response and complete scalar bytes are sealed in the artifact archive. No worker mutation or definition."
+    "archive": "Pre-repair context response and complete scalar bytes are sealed in the artifact archive. No worker mutation or definition.",
+    "primary_followup": "B33C10 CALL_RETURN cleared under lock; B33C15..17 now ADD ESP,4; 11 stored instructions, zero gaps. See native_renderer_control_flow_repair_r33.json."
   },
   "call_sites": [
     {
@@ -634,17 +635,233 @@
     }
   },
   "annotation_handoff": {
-    "rename_required": false,
-    "append_only_comment_proposals": [
+    "status": "Primary retained current live behavior names, preserved/extended ledger evidence, saved project and refreshed all5 exports under write lock.",
+    "prior_annotations": [
       {
-        "address": "00bee080",
-        "text": "R33 confirms full 93-byte BEE080..BEE0DC span, including final C2 04 00. Prior 91-byte receipt/oracle was truncated. Complete fresh clock oracle, strict Win32 build and bounded inactive-worker fixture pass; actual application context remains unbound and active rendering/gameplay are unvalidated."
+        "address": "00b33b50",
+        "before": {
+          "address": "00b33b50",
+          "function_name": "BSP_RendererControlWorker_Destroy",
+          "comment": "[BSP reconstruction 00b33b50]\nSet shutdown+5=1; signal wake event+C; WaitForSingleObject(thread+8h,INFINITE), close/clearthread, destroy both event wrappers. Separate from idle stop00b33bf0. Must coordinate active run flag before destruction; not ported.\n\n[BSP reconstruction 00b33b50] update\nSet shutdown+5=1; signal wake event+C; WaitForSingleObject(thread+8h,INFINITE), close/clearthread, destroy both event wrappers. Separate from idle stop00b33bf0. Must coordinate active run flag before destruction; not ported. | Hypothesis, not a recovered symbol. Actual 24h thread owner, actual events and raw 80h clock publication. Preserve suspended thread creation, event capture/current-owner deletion order, current clock sampling, x87 timestamp conversions, negative-zero clamp and unsigned rate correction. EndFrame remains a required substantive provider; active rendering is not validated. docs/NATIVE_RENDERER_CONTROL_WORKER.md; reports/native_renderer_control_worker.json. Strict integrated Win32 build, two CTests and focused packet fixture passed at 6641c05f. Original whole-function ABI/FH3/SEH and gameplay compatibility remain unvalidated."
+        },
+        "after": {
+          "address": "00b33b50",
+          "name": "BSP_RendererControlWorker_Destroy",
+          "evidence": "Set shutdown+5=1; signal wake event+C; WaitForSingleObject(thread+8h,INFINITE), close/clearthread, destroy both event wrappers. Separate from idle stop00b33bf0. Must coordinate active run flag before destruction; not ported. | R33 reuse of final orch5 control-worker source with current main providers;5 complete bodies684B, including corrected BEE080 extent93B (old91B receipt omitted RET4 immediate). Fresh12-span live/PE evidence;7 directcalls pass and19 indirect/import rows separate. Primary reviewed full source/header and native listings; retained3348+50 artifact hashes verified. Combined main strict /MD build3 CTests and freshly relinked fixture pass16 original/source timing comparisons, complete original raw-clock fixed/QPC paths and real inactive worker sample/yield/stop/idle/join/delete with immutable binding rejection. Parent repaired B33C10 CALL_RETURN gap B33C15..17; full11-instruction scalar listing now has zero gaps. Application context remains unbound; active Begin/End, accepted callback, forced QPC/thread failure, original thread/lifetime bytes, FH3/SEH and gameplay unvalidated. Stop/idle must precede renderer destruction; borrowed contexts must survive joins and failure-retained workers. reports/native_renderer_control_worker_main_r33.json."
+        },
+        "status": "applied"
       },
       {
         "address": "00b33c00",
-        "text": "R33 full 30-byte PE/live parity confirms returning free path: B33C15 bytes83 C4 04 are ADD ESP,4 before B33C18 MOV EAX,ESI. Worker observed a three-byte listing gap; parent serializes returning-call flow repair/export."
+        "before": {
+          "address": "00b33c00",
+          "function_name": "BSP_RendererControlWorker_ScalarDelete",
+          "comment": "[BSP reconstruction 00b33c00]\nHypothesis, not a recovered symbol. Actual 24h thread owner, actual events and raw 80h clock publication. Preserve suspended thread creation, event capture/current-owner deletion order, current clock sampling, x87 timestamp conversions, negative-zero clamp and unsigned rate correction. EndFrame remains a required substantive provider; active rendering is not validated. docs/NATIVE_RENDERER_CONTROL_WORKER.md; reports/native_renderer_control_worker.json. Strict integrated Win32 build, two CTests and focused packet fixture passed at 6641c05f. Original whole-function ABI/FH3/SEH and gameplay compatibility remain unvalidated."
+        },
+        "after": {
+          "address": "00b33c00",
+          "name": "BSP_RendererControlWorker_ScalarDelete",
+          "evidence": "R33 reuse of final orch5 control-worker source with current main providers;5 complete bodies684B, including corrected BEE080 extent93B (old91B receipt omitted RET4 immediate). Fresh12-span live/PE evidence;7 directcalls pass and19 indirect/import rows separate. Primary reviewed full source/header and native listings; retained3348+50 artifact hashes verified. Combined main strict /MD build3 CTests and freshly relinked fixture pass16 original/source timing comparisons, complete original raw-clock fixed/QPC paths and real inactive worker sample/yield/stop/idle/join/delete with immutable binding rejection. Parent repaired B33C10 CALL_RETURN gap B33C15..17; full11-instruction scalar listing now has zero gaps. Application context remains unbound; active Begin/End, accepted callback, forced QPC/thread failure, original thread/lifetime bytes, FH3/SEH and gameplay unvalidated. Stop/idle must precede renderer destruction; borrowed contexts must survive joins and failure-retained workers. reports/native_renderer_control_worker_main_r33.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b33c20",
+        "before": {
+          "address": "00b33c20",
+          "function_name": "BSP_RendererControlWorker_Thread",
+          "comment": "[BSP reconstruction 00b33c20]\nInitially waits wake+C; while shutdown+5 false, run while+4 nonzero with timing/callback and renderer Begin/End; after run clears signal idle acknowledgment+10h and waitwake+C again. Shutdown checked after wake; ExitThread0. Timing and renderer gate dependencies remain unported.\n\n[BSP reconstruction 00b33c20] update\nInitially waits wake+C; while shutdown+5 false, run while+4 nonzero with timing/callback and renderer Begin/End; after run clears signal idle acknowledgment+10h and waitwake+C again. Shutdown checked after wake; ExitThread0. Timing and renderer gate dependencies remain unported. Timing constants verified:1000.0 double, -0.0 float, 2^32 float. Float-stored elapsed uses positive delta else -0.0-delta; strict elapsed>1000/unsigned rate runs callback with context inECX, otherwise SwitchToThread. Zero rate is not guarded. Stop flag is not checked in inner Sleep10 pending-count loop.\n\n[BSP reconstruction 00b33c20] update\nInitially waits wake+C; while shutdown+5 false, run while+4 nonzero with timing/callback and renderer Begin/End; after run clears signal idle acknowledgment+10h and waitwake+C again. Shutdown checked after wake; ExitThread0. Timing and renderer gate dependencies remain unported. Timing constants verified:1000.0 double, -0.0 float, 2^32 float. Float-stored elapsed uses positive delta else -0.0-delta; strict elapsed>1000/unsigned rate runs callback with context inECX, otherwise SwitchToThread. Zero rate is not guarded. Stop flag is not checked in inner Sleep10 pending-count loop. | Hypothesis, not a recovered symbol. Actual 24h thread owner, actual events and raw 80h clock publication. Preserve suspended thread creation, event capture/current-owner deletion order, current clock sampling, x87 timestamp conversions, negative-zero clamp and unsigned rate correction. EndFrame remains a required substantive provider; active rendering is not validated. docs/NATIVE_RENDERER_CONTROL_WORKER.md; reports/native_renderer_control_worker.json. Strict integrated Win32 build, two CTests and focused packet fixture passed at 6641c05f. Original whole-function ABI/FH3/SEH and gameplay compatibility remain unvalidated."
+        },
+        "after": {
+          "address": "00b33c20",
+          "name": "BSP_RendererControlWorker_Thread",
+          "evidence": "Initially waits wake+C; while shutdown+5 false, run while+4 nonzero with timing/callback and renderer Begin/End; after run clears signal idle acknowledgment+10h and waitwake+C again. Shutdown checked after wake; ExitThread0. Timing and renderer gate dependencies remain unported. Timing constants verified:1000.0 double, -0.0 float, 2^32 float. Float-stored elapsed uses positive delta else -0.0-delta; strict elapsed>1000/unsigned rate runs callback with context inECX, otherwise SwitchToThread. Zero rate is not guarded. Stop flag is not checked in inner Sleep10 pending-count loop. | R33 reuse of final orch5 control-worker source with current main providers;5 complete bodies684B, including corrected BEE080 extent93B (old91B receipt omitted RET4 immediate). Fresh12-span live/PE evidence;7 directcalls pass and19 indirect/import rows separate. Primary reviewed full source/header and native listings; retained3348+50 artifact hashes verified. Combined main strict /MD build3 CTests and freshly relinked fixture pass16 original/source timing comparisons, complete original raw-clock fixed/QPC paths and real inactive worker sample/yield/stop/idle/join/delete with immutable binding rejection. Parent repaired B33C10 CALL_RETURN gap B33C15..17; full11-instruction scalar listing now has zero gaps. Application context remains unbound; active Begin/End, accepted callback, forced QPC/thread failure, original thread/lifetime bytes, FH3/SEH and gameplay unvalidated. Stop/idle must precede renderer destruction; borrowed contexts must survive joins and failure-retained workers. reports/native_renderer_control_worker_main_r33.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b33da0",
+        "before": {
+          "address": "00b33da0",
+          "function_name": "BSP_RendererControlWorker_Construct",
+          "comment": "[BSP reconstruction 00b33da0]\nTwo auto-reset initially unsignaled events: wake+C and idle acknowledgment+10h. CreateThread suspended with00b33c20 andworker, storehandle+8h/id+14h, priority-2, ResumeThread. Run+4 andshutdown+5 initially0. Not ported.\n\n[BSP reconstruction 00b33da0] update\nTwo auto-reset initially unsignaled events: wake+C and idle acknowledgment+10h. CreateThread suspended with00b33c20 andworker, storehandle+8h/id+14h, priority-2, ResumeThread. Run+4 andshutdown+5 initially0. Not ported. | Hypothesis, not a recovered symbol. Actual 24h thread owner, actual events and raw 80h clock publication. Preserve suspended thread creation, event capture/current-owner deletion order, current clock sampling, x87 timestamp conversions, negative-zero clamp and unsigned rate correction. EndFrame remains a required substantive provider; active rendering is not validated. docs/NATIVE_RENDERER_CONTROL_WORKER.md; reports/native_renderer_control_worker.json. Strict integrated Win32 build, two CTests and focused packet fixture passed at 6641c05f. Original whole-function ABI/FH3/SEH and gameplay compatibility remain unvalidated."
+        },
+        "after": {
+          "address": "00b33da0",
+          "name": "BSP_RendererControlWorker_Construct",
+          "evidence": "Two auto-reset initially unsignaled events: wake+C and idle acknowledgment+10h. CreateThread suspended with00b33c20 andworker, storehandle+8h/id+14h, priority-2, ResumeThread. Run+4 andshutdown+5 initially0. Not ported. | R33 reuse of final orch5 control-worker source with current main providers;5 complete bodies684B, including corrected BEE080 extent93B (old91B receipt omitted RET4 immediate). Fresh12-span live/PE evidence;7 directcalls pass and19 indirect/import rows separate. Primary reviewed full source/header and native listings; retained3348+50 artifact hashes verified. Combined main strict /MD build3 CTests and freshly relinked fixture pass16 original/source timing comparisons, complete original raw-clock fixed/QPC paths and real inactive worker sample/yield/stop/idle/join/delete with immutable binding rejection. Parent repaired B33C10 CALL_RETURN gap B33C15..17; full11-instruction scalar listing now has zero gaps. Application context remains unbound; active Begin/End, accepted callback, forced QPC/thread failure, original thread/lifetime bytes, FH3/SEH and gameplay unvalidated. Stop/idle must precede renderer destruction; borrowed contexts must survive joins and failure-retained workers. reports/native_renderer_control_worker_main_r33.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bee080",
+        "before": {
+          "address": "00bee080",
+          "function_name": "BSP_FrameClock_SampleRawTimestamp",
+          "comment": "[BSP reconstruction 00bee080]\nECX clock, stack output, EAX output, RET4. Fixed mode+69 copies elapsed pair+20; normal samples absolute QPC and frequency+60, regardless of pause. Typed host reports QPC failure; native ignores it. Preserve mode-dependent timestamp meaning.\n\n[BSP reconstruction 00bee080] update\nECX clock, stack output, EAX output, RET4. Fixed mode+69 copies elapsed pair+20; normal samples absolute QPC and frequency+60, regardless of pause. Typed host reports QPC failure; native ignores it. Preserve mode-dependent timestamp meaning. | Hypothesis, not a recovered symbol. Actual 24h thread owner, actual events and raw 80h clock publication. Preserve suspended thread creation, event capture/current-owner deletion order, current clock sampling, x87 timestamp conversions, negative-zero clamp and unsigned rate correction. EndFrame remains a required substantive provider; active rendering is not validated. docs/NATIVE_RENDERER_CONTROL_WORKER.md; reports/native_renderer_control_worker.json. Strict integrated Win32 build, two CTests and focused packet fixture passed at 6641c05f. Original whole-function ABI/FH3/SEH and gameplay compatibility remain unvalidated."
+        },
+        "after": {
+          "address": "00bee080",
+          "name": "BSP_FrameClock_SampleRawTimestamp",
+          "evidence": "ECX clock, stack output, EAX output, RET4. Fixed mode+69 copies elapsed pair+20; normal samples absolute QPC and frequency+60, regardless of pause. Typed host reports QPC failure; native ignores it. Preserve mode-dependent timestamp meaning. | R33 reuse of final orch5 control-worker source with current main providers;5 complete bodies684B, including corrected BEE080 extent93B (old91B receipt omitted RET4 immediate). Fresh12-span live/PE evidence;7 directcalls pass and19 indirect/import rows separate. Primary reviewed full source/header and native listings; retained3348+50 artifact hashes verified. Combined main strict /MD build3 CTests and freshly relinked fixture pass16 original/source timing comparisons, complete original raw-clock fixed/QPC paths and real inactive worker sample/yield/stop/idle/join/delete with immutable binding rejection. Parent repaired B33C10 CALL_RETURN gap B33C15..17; full11-instruction scalar listing now has zero gaps. Application context remains unbound; active Begin/End, accepted callback, forced QPC/thread failure, original thread/lifetime bytes, FH3/SEH and gameplay unvalidated. Stop/idle must precede renderer destruction; borrowed contexts must survive joins and failure-retained workers. reports/native_renderer_control_worker_main_r33.json."
+        },
+        "status": "applied"
       }
-    ],
-    "ledger_status": "Five reused bodies are build-tested; timing/raw clock and inactive source worker lifetime fixture-tested only. No application-active or whole-native ABI status escalation."
+    ]
+  },
+  "primary_integration": {
+    "source_merge": "98ef379fa",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "integration_log": "local/r33_control_worker_integration.log",
+    "fresh_combined_fixture_build": "local/r33_control_fixture_build.log",
+    "fresh_combined_fixture_run": "local/r33_control_fixture_run.log",
+    "fresh_combined_fixture_exit": 0,
+    "review": "Primary reviewed entire source/header and5 native listings including full x87 timing schedule; verified all3398 frozen artifact entries.",
+    "worker_archive_copy": "local/evidence-r33/renderer-control-worker-original-r33.zip",
+    "worker_archive_sha256": "a32a4d0b7a3e81493a97ffdc51139d607937aa341f3e8092659fdaa4b9356bd1",
+    "flow_repair": "reports/native_renderer_control_flow_repair_r33.json",
+    "scalar_instructions_after_repair": 11,
+    "scalar_gaps_after_repair": 0
+  },
+  "primary_artifacts": [
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 63258256,
+      "sha256": "2d0c8ae884343902d8df64dbf50ae212290e59f4b6553767182f90280cb21aa3"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_renderer_control_worker.obj",
+      "bytes": 15231,
+      "sha256": "ecbbc380bf71addd829ee21ee1ed9e22f8e4e05868d637bc9fad2f3a1b78c453"
+    },
+    {
+      "path": "local/native_renderer_control_probe.cpp",
+      "bytes": 8659,
+      "sha256": "cc4b97f78b05b3376103cd46984ece3c287f9718fc35b009d50e88aacd7604a1"
+    },
+    {
+      "path": "local/control_original_reference.hpp",
+      "bytes": 1301,
+      "sha256": "aa71375fe9af01d1670b7641ff8255b5e8aee963033c48964e9c5abb3819444d"
+    },
+    {
+      "path": "local/control_worker_probe_r33.cmd",
+      "bytes": 633,
+      "sha256": "7c29aaec9f00452e0c26f50a86818cb451c00d8ab37e16e88e99cfdd44d6e72b"
+    },
+    {
+      "path": "local/control_worker_probe_r33.exe",
+      "bytes": 120320,
+      "sha256": "00b24bc42a0e6915102b403677d4232c9cbc1f8ea4a9f2b4484ac3241af76bd8"
+    },
+    {
+      "path": "local/control_worker_probe_r33.obj",
+      "bytes": 80378,
+      "sha256": "3bbdda067461157323a0a2329e1d414134c34a044dbf9d9c140cd2a2144f6759"
+    },
+    {
+      "path": "local/control_worker_probe_r33_dependencies.json",
+      "bytes": 38706,
+      "sha256": "886127430a33beeb1ef513970c15ec4843c9f0517d39ac0fccb6952c90aebed5"
+    },
+    {
+      "path": "local/r33_control_fixture_build.log",
+      "bytes": 48751,
+      "sha256": "3deb1b44f10e8113a56d63af831a4009fba198a387b1fccb5ba29d5ea9e4f243"
+    },
+    {
+      "path": "local/r33_control_fixture_run.log",
+      "bytes": 120,
+      "sha256": "9a6e62e579ad8eb0837f4d8eb6b975505e001ebfc46054af62c7ebeebb65e20f"
+    },
+    {
+      "path": "local/r33_control_worker_integration.log",
+      "bytes": 966,
+      "sha256": "47a9dbb697e59584ed41e47316394761bd06505bec00ef7e228f471b1a19f780"
+    },
+    {
+      "path": "local/r33_control_scalar_repaired_export.log",
+      "bytes": 104,
+      "sha256": "ac1611589e367d2b59182ec3d8f9d3c19f9bc69a2d85d50713b0ad2733573880"
+    }
+  ],
+  "primary_archive": {
+    "path": "local/evidence-r33/renderer-control-worker-main-r33.zip",
+    "sha256": "aa0d29f7716026d6533dc0e1462e12f32e2ee735d61d05df7f776a5e0e351f60",
+    "files": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "2d0c8ae884343902d8df64dbf50ae212290e59f4b6553767182f90280cb21aa3"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_control_worker.obj",
+        "sha256": "ecbbc380bf71addd829ee21ee1ed9e22f8e4e05868d637bc9fad2f3a1b78c453"
+      },
+      {
+        "path": "local/native_renderer_control_probe.cpp",
+        "sha256": "cc4b97f78b05b3376103cd46984ece3c287f9718fc35b009d50e88aacd7604a1"
+      },
+      {
+        "path": "local/control_original_reference.hpp",
+        "sha256": "aa71375fe9af01d1670b7641ff8255b5e8aee963033c48964e9c5abb3819444d"
+      },
+      {
+        "path": "local/control_worker_probe_r33.cmd",
+        "sha256": "7c29aaec9f00452e0c26f50a86818cb451c00d8ab37e16e88e99cfdd44d6e72b"
+      },
+      {
+        "path": "local/control_worker_probe_r33.exe",
+        "sha256": "00b24bc42a0e6915102b403677d4232c9cbc1f8ea4a9f2b4484ac3241af76bd8"
+      },
+      {
+        "path": "local/control_worker_probe_r33.obj",
+        "sha256": "3bbdda067461157323a0a2329e1d414134c34a044dbf9d9c140cd2a2144f6759"
+      },
+      {
+        "path": "local/control_worker_probe_r33_dependencies.json",
+        "sha256": "886127430a33beeb1ef513970c15ec4843c9f0517d39ac0fccb6952c90aebed5"
+      },
+      {
+        "path": "local/r33_control_fixture_build.log",
+        "sha256": "3deb1b44f10e8113a56d63af831a4009fba198a387b1fccb5ba29d5ea9e4f243"
+      },
+      {
+        "path": "local/r33_control_fixture_run.log",
+        "sha256": "9a6e62e579ad8eb0837f4d8eb6b975505e001ebfc46054af62c7ebeebb65e20f"
+      },
+      {
+        "path": "local/r33_control_worker_integration.log",
+        "sha256": "47a9dbb697e59584ed41e47316394761bd06505bec00ef7e228f471b1a19f780"
+      },
+      {
+        "path": "local/r33_control_scalar_repaired_export.log",
+        "sha256": "ac1611589e367d2b59182ec3d8f9d3c19f9bc69a2d85d50713b0ad2733573880"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T100329Z.json",
+        "sha256": "1c8360679b43d47ff0b333094b57bd48ea8857f5aa4eda1a086da546cb6f5b30"
+      },
+      {
+        "path": "local/r33_control_annotations.log",
+        "sha256": "cafa3ad6480e585f5b917bb17a585d00f789ec86094df4f9a7a3ec90ef75e538"
+      },
+      {
+        "path": "local/r33_control_exports.log",
+        "sha256": "7fe7facc72ebf926d9e395813bd1a0499469bb8f4b180a4e5db1013f2030288a"
+      },
+      {
+        "path": "reports/native_renderer_control_flow_repair_r33.json",
+        "sha256": "0876f463f075c31fecdd33e7c5d96094bb727539bd35839e80fc9ade3e029f5d"
+      },
+      {
+        "path": "include/bsp/native_renderer_control_worker.hpp",
+        "sha256": "b8d3827486b6bc3434d80373496827b7d6c3cbe535588ff934cbf4892278119a"
+      },
+      {
+        "path": "src/native_renderer_control_worker.cpp",
+        "sha256": "72dd2701d8afab04771f8664b203e716d9c7094a1adfc4fb1a39fcb49d7f69ca"
+      }
+    ]
   }
 }
