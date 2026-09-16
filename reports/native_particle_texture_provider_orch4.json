@@ -1,0 +1,84 @@
+{
+  "packet": "native_particle_texture_provider_orch4",
+  "status": "read_only_provider_composition_audit",
+  "source_revision": "74f3054a9",
+  "ghidra": {"project_file": "C:/Users/sqz269/bsp.gpr", "program": "/battlestationspacific.exe", "mutations": false},
+  "documentation": "docs/NATIVE_PARTICLE_TEXTURE_PROVIDER_ORCH4.md",
+  "decision": {
+    "load": "load_native_renderer_texture_00b319b0(captured_renderer, actual_name8h, 0, same_cache_context, retained_cache_acquired)",
+    "release": "release_native_render_actual_owner(same_canonical_actual_owners, returned_raw_texture), replacing the complete decrement plus zero-terminal sequence once",
+    "current_renderer_profile": "00d5f0a8",
+    "slot_offset": "0x64",
+    "slot_storage": "00d5f10c",
+    "target": "00b319b0",
+    "cache_offset": "0x1a74",
+    "publication": "00b25f9b writes incoming singleton-subobject minus 0x0c into 00f8d394"
+  },
+  "routines": [
+    {"entry": "00b01350", "body": ["00b01350", "00b015bf"], "coverage": "complete native body read, provider composition audit only", "abi": "ECX particle; filename stack DWORD; AL bool; RET4"},
+    {"entry": "00b319b0", "body": ["00b319b0", "00b31ab0"], "coverage": "complete native body and current source wrapper read", "abi": "ECX renderer; name and post-load word stack DWORDs; EAX texture; RET8"},
+    {"entry": "00b25f40", "body": ["00b25f40", "00b25fd7"], "coverage": "complete native body read", "abi": "ECX singleton subobject; EAX same subobject; RET"},
+    {"entry": "00b283f0", "body": ["00b283f0", "00b2844e"], "coverage": "complete native body read", "abi": "ECX primary renderer; EAX same object; RET"},
+    {"entry": "00b32410", "body": ["00b32410", "00b328f7"], "coverage": "partial: publication/profile prefix; rest not re-audited"},
+    {"entry": "00bd30e0", "body": ["00bd30e0", "00bd30ed"], "coverage": "complete native body read", "abi": "ECX resource; zero stack arguments; RET; invokes current slot4 with flag1"},
+    {"entry": "00b3f590", "body": ["00b3f590", "00b3f5af"], "coverage": "complete scalar deletion body read; underlying destructor prior dependency", "abi": "ECX resource; flags stack DWORD; EAX original address; RET4"},
+    {"entry": "00b3f410", "body": ["00b3f410", "00b3f42f"], "coverage": "complete scalar deletion body read; underlying destructor prior dependency", "abi": "ECX resource; flags stack DWORD; EAX original address; RET4"},
+    {"entry": "00b3f430", "body": ["00b3f430", "00b3f44f"], "coverage": "complete scalar deletion body read; underlying destructor prior dependency", "abi": "ECX resource; flags stack DWORD; EAX original address; RET4"},
+    {"entry": "00b30b40", "body": ["00b30b40", "00b31089"], "coverage": "partial: existing source and dependency contract; native full body not re-audited"},
+    {"entry": "00b2c2d0", "body": ["00b2c2d0", "00b2c896"], "coverage": "partial: existing provider domain and ownership contract; native full body not re-audited"},
+    {"entry": "00b015c0", "body": ["00b015c0", "00b01c11"], "coverage": "partial: caller setup through 00b01679 only"}
+  ],
+  "host_steps": [
+    {"address": "00b0164f", "native": "00b01350", "function": "00b015c0", "contract": "saved EDI particle receiver, filename from word0 of AEE3C0 returned header; RET4"},
+    {"address": "00b013c4", "native": "0041e870", "function": "00b01350", "contract": "existing actual pooled filename assignment dependency; callee not re-audited here"},
+    {"address": "00b013e3", "native": "00b319b0", "function": "00b01350", "kind": "indirect_call", "contract": "CALL EAX captured from current renderer D5F0A8+64; ECX renderer, actual header and zero; RET8"},
+    {"address": "00b01409", "native": "00bd1510", "function": "00b01350", "contract": "existing current pool return dependency; callee not re-audited here"},
+    {"address": "00b0143d", "native": "00c2dfce", "function": "00b01350", "contract": "D3DXFloat32To16Array import, output/input/count4; three stdcall DWORDs"},
+    {"address": "00b01449", "native": "00b00ee0", "function": "00b01350", "contract": "existing actual record append dependency; parent owns reconstruction"},
+    {"address": "00b01452", "native": "00ce2220+IAT", "function": "00b01350", "contract": "InterlockedDecrement(actual returned resource+4), one stdcall DWORD"},
+    {"address": "00b01462", "native": "00bd30e0", "function": "00b01350", "kind": "indirect_call", "contract": "CALL EDX, current returned texture slot0; reached only after zero; ECX resource, no stack args"},
+    {"address": "00b31a55", "native": "00b30b40", "function": "00b319b0", "contract": "ECX captured renderer+1A74; name, incoming second word,0,1; RET10"},
+    {"address": "00b28420", "native": "00b25f40", "function": "00b283f0", "contract": "ECX primary renderer+0C; no stack args; RET"},
+    {"address": "00b32434", "native": "00b283f0", "function": "00b32410", "contract": "ECX primary renderer, before primary D5F0A8 store"},
+    {"address": "00bd30eb", "native": "00b3f590", "function": "00bd30e0", "kind": "indirect_call", "contract": "current D61948 slot4, pushed flag1; RET4"},
+    {"address": "00bd30eb", "native": "00b3f410", "function": "00bd30e0", "kind": "indirect_call", "contract": "current D61870 slot4, pushed flag1; RET4"},
+    {"address": "00bd30eb", "native": "00b3f430", "function": "00bd30e0", "kind": "indirect_call", "contract": "current D618B0 slot4, pushed flag1; RET4"},
+    {"address": "00b3f593", "native": "00b3f2e0", "function": "00b3f590", "contract": "existing complete 2D destructor dependency; not re-audited"},
+    {"address": "00b3f5a5", "native": "00b3d8d0", "function": "00b3f590", "contract": "existing canonical 108DB38 pool-return dependency; not re-audited"},
+    {"address": "00b3f413", "native": "00b3ead0", "function": "00b3f410", "contract": "existing cube destructor dependency; not re-audited"},
+    {"address": "00b3f425", "native": "00b3d940", "function": "00b3f410", "contract": "existing canonical 108DB70 pool-return dependency; not re-audited"},
+    {"address": "00b3f433", "native": "00b3eb70", "function": "00b3f430", "contract": "existing volume destructor dependency; not re-audited"},
+    {"address": "00b3f445", "native": "00b3d860", "function": "00b3f430", "contract": "existing canonical 108DBA8 pool-return dependency; not re-audited"}
+  ],
+  "terminal_profiles": [
+    {"profile": "00d61948", "bytes": "e0 30 bd 00 90 f5 b3 00", "zero_target": "00bd30e0", "deleting_target": "00b3f590", "pool": "0108db38"},
+    {"profile": "00d61870", "bytes": "e0 30 bd 00 10 f4 b3 00", "zero_target": "00bd30e0", "deleting_target": "00b3f410", "pool": "0108db70"},
+    {"profile": "00d618b0", "bytes": "e0 30 bd 00 30 f4 b3 00", "zero_target": "00bd30e0", "deleting_target": "00b3f430", "pool": "0108dba8"}
+  ],
+  "existing_source": [
+    "include/bsp/native_texture_loading_cache.hpp",
+    "src/native_texture_loading_cache.cpp",
+    "include/bsp/native_render_context.hpp",
+    "src/native_render_context.cpp",
+    "include/bsp/gui_native_geometry.hpp",
+    "src/native_mesh_texture_field.cpp",
+    "src/native_render_service_texture_construction.cpp",
+    "src/native_material_effect_runtime.cpp"
+  ],
+  "failure_contract": [
+    "One fresh retained NativeTextureCacheAcquired per B01350 invocation that reaches the renderer, stable before native work.",
+    "Optional null child supports only first-search nonnull cache hit; resolution/cold/fallback paths require retained storage.",
+    "Failed cache/loader/recursive VFS frames remain alive until external resolution; unresolved failed/running frame destruction terminates. No reset/replay/cancel implied.",
+    "No synthetic resource release on provider or record-append failure before native B01452; preserve existing native string cleanup arming.",
+    "Use same actual owners as NativeTextureLoadOwners registration, same raw string pool cells and live renderer publication cell.",
+    "Hot hit retains; fresh result returns loader reference without increment. caller_acquired tracks extra increment, not the whole returned temporary-release obligation.",
+    "Release begins once; do not decrement twice, retry a consumed zero-terminal, or access raw storage after terminal return.",
+    "Terminal callback is noexcept and terminates if destruction throws. Host frame/error behavior does not establish native FH3/SEH parity."
+  ],
+  "corrections": [
+    {"was": "A search for renderer_virtual64 found only the particle callback and could suggest no provider exists.", "is": "Real B319B0/cache/2D-cube-volume owners and same-domain composition already exist.", "evidence": "native_texture_loading_cache.hpp/cpp and native_mesh_texture_field.cpp; live D5F10C bytes select B319B0."},
+    {"was": "First 12 F8D394 xrefs only expose consumers and destruction.", "is": "The full bounded result contains publication at B25F9B from singleton subobject minus0C.", "evidence": "Complete B25F40 and B283F0 listings, derived profile stores B3243B/B32441."}
+  ],
+  "validation": {"mechanical_call_check": "python tools/verify_report_calls.py reports/native_particle_texture_provider_orch4.json: 19 call rows checked, 0 failed; five register-indirect rows require recorded profile-byte evidence; IAT row explicitly skipped", "diff_check": "git diff --check passed", "build": "not applicable; documentation only", "runtime": "not run", "native_exception_equivalence": false, "game_validated": false},
+  "prior_reports": ["reports/native_texture_loading_cache.json", "reports/native_particle_type_property.json", "reports/native_mesh_texture_field_cj.json", "reports/native_texture_2d_owner_audit.json", "reports/native_cube_texture_owner_audit.json", "reports/native_volume_texture_owner_audit.json"]
+}
