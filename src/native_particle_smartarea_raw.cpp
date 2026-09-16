@@ -268,13 +268,14 @@ bool load_native_smartarea_emitter_definition_00b02210(void* definition, void* b
                         a.unwind_state = 9;
                         a.native_site = 0x00b027b5;
                         make_string(f.emitter_kind, kind_bytes, strings);
+                        a.native_site = 0x00b027df;
+                        const Word word10 = field<volatile Word>(definition, 0x10);
                         a.unwind_state = 10;
                         a.native_site = 0x00b027f5;
                         if (!c.emitters) throw std::invalid_argument("Missing concrete SmartArea emitter factory context");
                         if (f.emitter && f.emitter->phase != NativeParticleEmitterFactoryRawAcquired::Phase::complete)
                             throw std::logic_error("Unfinished SmartArea emitter child cannot be replaced");
                         f.emitter.emplace(c.child_builder_kind);
-                        const Word word10 = field<volatile Word>(definition, 0x10);
                         void* child = create_native_particle_definition_00af9fb0(&f.emitter_kind,
                             &f.emitter_name, word10, reinterpret_cast<Word>(definition), buffer,
                             *c.emitters, *f.emitter);
