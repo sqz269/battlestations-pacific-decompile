@@ -1,11 +1,14 @@
 #pragma once
 
+#include "bsp/game_native_vfs_runtime.hpp"
+
 #include <filesystem>
 #include <memory>
 #include <optional>
 
 namespace bsp {
 class NativeVfsOwnerServices;
+struct NativeStringRawPoolContext;
 }
 
 namespace bsp::game {
@@ -13,7 +16,6 @@ class GameHostLog;
 class GameSingletonHost;
 class GameNativeReadOnlyData;
 class GameNativeTypeStorage;
-class GameNativeVfsRuntime;
 
 // Retained source owner for one application's raw VFS graph. Borrow the same
 // GameSingletonHost and mapped data throughout startup and the shared drain.
@@ -36,6 +38,12 @@ public:
     // status does not mean that the native pool construction failed.
     void initialize_core();
     GameNativeVfsRuntime& runtime();
+    // Stable views of this application's existing raw string and VFS graph.
+    // They create no publication, manager, provider or callback family. Keep
+    // this application and GameSingletonHost alive through every consumer and
+    // the shared singleton drain.
+    NativeStringRawPoolContext& raw_strings() noexcept;
+    GameNativeVfsRawServices borrow_raw_services();
     NativeVfsOwnerServices& owners() noexcept;
     GameNativeTypeStorage& types() noexcept;
     // Empty until CD9010 returns. Its status describes CRT registration only.

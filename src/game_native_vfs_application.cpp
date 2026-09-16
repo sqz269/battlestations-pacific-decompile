@@ -51,6 +51,7 @@ struct GameNativeVfsApplication::Impl {
     NativeVfsPublicationCells cells;
     SingletonLifetimeCallbacks validation{nullptr, nullptr, &reject_native_vfs_parameter};
     NativeVfsOwnerServices owner_services;
+    NativeStringRawPoolContext raw_strings;
     GameNativeTypeStorage type_storage;
     LightTypeBootstrap common_types;
 
@@ -78,6 +79,9 @@ struct GameNativeVfsApplication::Impl {
               static_cast<const volatile std::uint32_t*>(
                   mapped.data_at(0x00d5e5ac, sizeof(std::uint32_t))),
               validation),
+          raw_strings{owner_services.string_pool_publication_01090aa8(),
+              owner_services.string_returns_disabled_01090aa4(),
+              host.manager_publication_01090aa0()},
           common_types(owner_services.types(), type_storage.light_types()),
           retained_memory{retained_objects_0109db98, retained_bytes_0109db9c,
               static_cast<const volatile std::uint32_t*>(
@@ -140,6 +144,14 @@ GameNativeVfsRuntime& GameNativeVfsApplication::runtime() {
     if (!impl_->vfs_runtime)
         throw std::logic_error("native VFS runtime has not been retained");
     return *impl_->vfs_runtime;
+}
+
+NativeStringRawPoolContext& GameNativeVfsApplication::raw_strings() noexcept {
+    return impl_->raw_strings;
+}
+
+GameNativeVfsRawServices GameNativeVfsApplication::borrow_raw_services() {
+    return runtime().borrow_raw_services();
 }
 
 NativeVfsOwnerServices& GameNativeVfsApplication::owners() noexcept {

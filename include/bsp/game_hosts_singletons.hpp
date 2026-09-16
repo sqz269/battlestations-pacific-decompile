@@ -50,6 +50,11 @@ public:
     void* volatile& manager_publication_01090aa0() noexcept {
         return manager_publication_01090aa0_;
     }
+    // Borrow WinMain's existing alias cell. Native owner deletion clears the
+    // separate E19B90 publication and deliberately leaves these alias bits.
+    void* volatile& game_resource_factory_alias_00f8d31c() noexcept {
+        return game_resource_factory_alias_00f8d31c_;
+    }
     // Install the borrowed settings context before CF81CC can be registered.
     // The context must remain alive until shutdown returns.
     void bind_input_settings(NativeInputSettingsLifetimeContext*) noexcept;

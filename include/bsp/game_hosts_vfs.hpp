@@ -108,6 +108,11 @@ public:
     std::size_t registered_parsers() const noexcept;
     bool pak_registry_published() const noexcept { return archive_tail_ready_; }
     bool pak_lock_published() const noexcept { return archive_tail_ready_; }
+    // Borrow the same raw application services retained by native_. The string
+    // context is valid before core registration; the VFS view requires the
+    // retained runtime and is rejected after an interrupted native operation.
+    NativeStringRawPoolContext& raw_strings() noexcept;
+    GameNativeVfsRawServices borrow_raw_services();
 
 private:
     template<class Operation> decltype(auto) invoke_native(Operation&& operation) {
