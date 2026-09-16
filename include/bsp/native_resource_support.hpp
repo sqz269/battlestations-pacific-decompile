@@ -35,6 +35,14 @@ public:
     NativeResourceSupportLifetime(NativeResourceSupportRawContext& context) noexcept
         : raw_(&context) {}
     NativeResourceSupportStorage* get(NativeResourceSupportStorage* volatile&) const;
+    // Compare borrowed identities, never current pointer values. A raw route
+    // cannot match a semantic manager, even when both publications are null.
+    bool borrows_same_domain(const SingletonLifetimeDomain& lifetime) const noexcept {
+        return semantic_ == &lifetime;
+    }
+    bool borrows_same_domain(void* volatile& publication) const noexcept {
+        return raw_ && &raw_->actual_manager_publication_01090aa0 == &publication;
+    }
 private:
     SingletonLifetimeDomain* semantic_{};
     NativeResourceSupportRawContext* raw_{};

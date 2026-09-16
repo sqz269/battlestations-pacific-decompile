@@ -1,0 +1,184 @@
+{
+  "packet": "native_procedural_resource_lifetime_main_r36",
+  "status": "source adopted and validated on current main",
+  "current_main_base": "b19485313b575988a33dadc649cf39d050a647a3",
+  "source_adoption_commit": "e10f45f96",
+  "adopted_from": {
+    "commit": "16bdecc8a0ad504ebb9947bbdd2e7cc3ce01c79b",
+    "final_orch5_baseline": "769bdc3e3",
+    "source": "src/native_procedural_resource_lifetime.cpp",
+    "header": "include/bsp/native_procedural_resource_lifetime.hpp",
+    "documentation": "docs/NATIVE_PROCEDURAL_RESOURCE_LIFETIME.md",
+    "historical_report": "reports/native_procedural_resource_lifetime.json",
+    "content_changes": "none; all four adopted files are exact Git blobs from 16bdecc8a"
+  },
+  "owned_routines": [
+    {
+      "address": "00BBC6D0",
+      "source_name": "delete_native_caustics_resource_00bbc6d0",
+      "original_span": "00BBC6D0-00BBC6ED",
+      "bytes": 30,
+      "sha256": "7e255976d124f832a26275845d53fb3a92aac2a130fe3c64d364f4f0e1dde8ba",
+      "original_abi": "ECX owner, stacked flags, captured owner returned in EAX, RET 4"
+    },
+    {
+      "address": "00BBC7F0",
+      "source_name": "delete_native_shore_wave_resource_00bbc7f0",
+      "original_span": "00BBC7F0-00BBC80D",
+      "bytes": 30,
+      "sha256": "73d21946e72e8bf207404c1bf15caaeb072952226f1add7947a6d68f72b56d3f",
+      "original_abi": "ECX owner, stacked flags, captured owner returned in EAX, RET 4"
+    },
+    {
+      "address": "00C304A0",
+      "source_name": "destroy_native_procedural_resource_00c304a0",
+      "original_span": "00C304A0-00C3054B",
+      "bytes": 172,
+      "sha256": "0a6910b2020e22eae13374c7c342c2c6452d4ea93a889715705d71deeb65118a",
+      "original_abi": "ECX owner, RET; original FH3 metadata remains outside the C++ interface"
+    },
+    {
+      "address": "00737390",
+      "source_name": "resize_native_procedural_pointer_array_00737390",
+      "original_span": "00737390-007373DF",
+      "bytes": 80,
+      "sha256": "49fb1569f737042ad97ed4f6ad9be2b428d6299f2c1a98756879133253998bde",
+      "original_abi": "ECX actual 12-byte header, stacked signed requested count, RET 4"
+    },
+    {
+      "address": "00B19750",
+      "source_name": "destroy_native_procedural_resource_base_00b19750",
+      "original_span": "00B19750-00B1975A",
+      "bytes": 11,
+      "sha256": "3361a36cf011319709b9eed02d6f3d9f92cbf55e4c79076b38d4017c02f78eea",
+      "original_abi": "ECX owner; stamp then tail jump to 00BD30F0"
+    }
+  ],
+  "source_contract": {
+    "identity": "NativeRenderActualOwners remains the canonical identity domain. Every procedural companion borrows the same actual allocation and raw +04 reference counter as sampler, cache and render views; this packet creates no second identity map.",
+    "current_profile": "Zero-reference resolution rereads the current virtual profile. Supported profiles remain D64478/BBC6D0 and D644B4/BBC7F0 even if the profile changed after construction.",
+    "terminal": "The current virtual-0 terminal and canonical retirement dependencies must not throw. Successful retirement removes the same canonical binding.",
+    "exception_cleanup": "If a zero child cannot be resolved, the source path still performs pointer-array resize/free and base destruction, skips scalar owner free, retains the already-zero child for caller repair, and rejects replay until diagnostic acknowledgement.",
+    "array_state": "Destruction rereads current data and count after child terminals. Normal cleanup leaves data and capacity stale after freeing the current array, matching the recovered native behavior.",
+    "operation": "The lifetime operation is one-shot. A failed operation terminates if abandoned before the caller resolves retained ownership and acknowledges diagnostic cleanup."
+  },
+  "current_main_providers": [
+    {
+      "source": "native_cube_texture_owner_array_reserve",
+      "routine": "reserve_native_cube_texture_owner_array_00735ff0",
+      "status": "present on current main and byte-identical to final orch5 source"
+    },
+    {
+      "source": "native_ref_counted",
+      "routines": [
+        "invoke_native_ref_counted_delete_00bd30e0",
+        "destroy_native_ref_counted_base_00bd30f0"
+      ],
+      "status": "present on current main and byte-identical to final orch5 source"
+    },
+    {
+      "source": "native_resource_cache_leaves",
+      "status": "present on current main and byte-identical to final orch5 source"
+    },
+    {
+      "source": "native_render_context",
+      "routine": "release_native_render_actual_owner",
+      "status": "release implementation is unchanged; current main adds the canonical NativeRenderActualOwnerRegistry"
+    },
+    {
+      "source": "existing procedural factories",
+      "routines": [
+        "create_native_caustics_texture_source_00bbc6f0",
+        "create_native_shore_wave_texture_source_00bbc810"
+      ],
+      "status": "present on current main"
+    }
+  ],
+  "fresh_original_evidence": {
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "ghidra_program": "/battlestationspacific.exe",
+    "ghidra_function_count": 64146,
+    "ghidra_mode": "read-only",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "span_check": "18 complete spans / 677 bytes matched live Ghidra and the installed PE",
+    "call_check": "14 direct call rows passed with zero failures; the two documented dynamic contracts remain indirect and were not classified as direct calls",
+    "repaired_live_bodies": [
+      "00C304A0-00C3054B",
+      "00BBC6D0-00BBC6ED",
+      "00BBC7F0-00BBC80D",
+      "00737BF0-00737C06",
+      "00737390-007373DF",
+      "00B19750-00B1975A"
+    ],
+    "logs": [
+      "local/native_procedural_resource_lifetime_main_r36_live_pe.log",
+      "local/native_procedural_resource_lifetime_main_r36_call_audit.log",
+      "local/procedural-evidence-manifest.json"
+    ]
+  },
+  "historical_evidence": {
+    "boundary": "The adopted report and documentation describe validation performed on the orch5 source baseline. They are retained unchanged as historical evidence and must not be read as the fresh current-main run.",
+    "archive": "J:/PROG/battlestations-pacific-decompile-orch5-native-procedural-resource-lifetime/local/native-procedural-resource-final/manifest.json",
+    "archive_manifest_sha256": "39e987123a8754e92e7badb614a91bec00dde45834147e3117fd83c30881b4f3",
+    "archive_recheck": "2,518 files / 185,738,678 bytes rehashed with zero mismatch",
+    "historical_ctests": "2 passed",
+    "historical_fixture": "Included sampler admission through native_sampler_owner_lifetime in addition to the procedural schedules."
+  },
+  "fresh_validation": {
+    "seeds": "8 native seeds matched live Ghidra and the installed PE",
+    "build": "scripts/build.ps1 Release completed for strict MSVC Win32 /MD",
+    "ctest": {
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ]
+    },
+    "object": {
+      "path": "build/win32/bsp_core.dir/Release/native_procedural_resource_lifetime.obj",
+      "sha256": "d3630a1848ab7cb3c267e96c88f253a1664f7462cf3235f308197c020d25a22f",
+      "machine": "x86",
+      "crt_directive": "/DEFAULTLIB:MSVCRT"
+    },
+    "library": {
+      "path": "build/win32/Release/bsp_core.lib",
+      "sha256": "6291912fbf2988850341b128565db284884211512a2d34f0404fccdd01d45389"
+    },
+    "scoped_fixture": {
+      "source": "local/native_procedural_resource_scoped_r36_probe.cpp",
+      "runner": "local/run_native_procedural_resource_scoped_r36_probe.ps1",
+      "normal_exit": 0,
+      "failed_retirement_exit": 77,
+      "coverage": "All four native/source factory, pointer-resize and terminal schedules plus source unwind, replay rejection and failed-frame retirement.",
+      "sampler_scope": "Skipped only the sampler-owner include, sampler_admission function and call, and its success-text clause because native_sampler_owner_lifetime is not on current main. No sampler substitute or fake was added.",
+      "native_boundary": "All five original packet normal bodies execute. Existing source supplies allocator, reserve and canonical child-terminal dependencies. The fixture does not execute the original native FH3 handlers or game renderer.",
+      "exe_sha256": "d071cf411b7c2c32921c68a4062e6a2db90b75f89a35eeec2915a07e2bbfef12",
+      "machine": "x86",
+      "manifest": "embedded .rsrc present"
+    },
+    "logs": [
+      "local/native_procedural_resource_lifetime_main_r36_seeds.log",
+      "local/native_procedural_resource_lifetime_main_r36_build.log",
+      "local/procedural-scoped-r36-probe-compile.log",
+      "local/procedural-scoped-r36-probe.log",
+      "local/procedural-scoped-r36-guard.log",
+      "local/procedural-scoped-r36-probe-status.json",
+      "local/native_procedural_resource_scoped_r36_probe.diff"
+    ]
+  },
+  "adopted_file_hashes": {
+    "include/bsp/native_procedural_resource_lifetime.hpp": "6e9e4e5cd70e7fa9d0e150f0cf235d03754c916c2dbd14bb9e886dc10f498b3b",
+    "src/native_procedural_resource_lifetime.cpp": "1aeca5d85a4960807040ed991036a8f3df949f751cb8853634a1753b558737ec",
+    "docs/NATIVE_PROCEDURAL_RESOURCE_LIFETIME.md": "767b7e57d9ef1cf25cef6397227a8edf82bbf40571db3ca962e7c651aa3ea187",
+    "reports/native_procedural_resource_lifetime.json": "d49407e5f72f98df0e8fef04b7af6da078582301a9399ca3fcfe5a2401c0ed4a"
+  },
+  "fresh_artifact_manifest": "local/native-procedural-resource-lifetime-main-r36/manifest.json",
+  "limits": [
+    "The C++ interfaces are explicit source reconstructions, not drop-in original ABI or EH/FH3 replacements.",
+    "The fresh fixture establishes selected original/source schedule agreement and failure cleanup; it does not establish arbitrary SEH or hardware-fault parity.",
+    "No game, renderer, visual, COM-device or gameplay validation was performed.",
+    "No sampler owner source, application closure, fake provider, Ghidra annotation or shared ledger change is included."
+  ]
+}
