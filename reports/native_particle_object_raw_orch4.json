@@ -1,0 +1,534 @@
+{
+  "packet": "native_particle_object_raw_orch4",
+  "base_revision": "670e5f650",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "documentation": "docs/NATIVE_PARTICLE_OBJECT_RAW_ORCH4.md",
+  "routines": [
+    {
+      "address": "00af8bd0",
+      "body": [
+        "00af8bd0",
+        "00af9094"
+      ],
+      "bytes": 1221,
+      "instructions": 400,
+      "coverage": "complete",
+      "source_symbol": "load_native_object_particle_definition_00af8bd0",
+      "original_abi": "ECX actual98h Object definition; stacked actual TextBuffer; RET4/AL true",
+      "pe_live_match": true,
+      "sha256": "180671c6f9dfafcb849630ab66fe660d9e3d7daf0a229e257a806925f7f87a7f",
+      "saved_name": "BSP_ObjectParticleDefinition_LoadText"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00af8c0b",
+      "native": "00af5740",
+      "function": "00af8bd0",
+      "contract": "Existing raw TextBuffer reader: actual cursor, shared F8C2C8 scratch and actual4h pooled output; RET4/AL"
+    },
+    {
+      "address": "00af8c1e",
+      "native": "00bf7fbf",
+      "function": "00af8bd0",
+      "contract": "Current CRT _stricmp; cdecl two arguments; ADD ESP8"
+    },
+    {
+      "address": "00af8c31",
+      "native": "00af5740",
+      "function": "00af8bd0",
+      "contract": "Existing raw TextBuffer reader: actual cursor, shared F8C2C8 scratch and actual4h pooled output; RET4/AL"
+    },
+    {
+      "address": "00af8c4a",
+      "native": "00bf7fbf",
+      "function": "00af8bd0",
+      "contract": "Current CRT _stricmp; cdecl two arguments; ADD ESP8"
+    },
+    {
+      "address": "00af8c64",
+      "native": "00bf7fbf",
+      "function": "00af8bd0",
+      "contract": "Current CRT _stricmp; cdecl two arguments; ADD ESP8"
+    },
+    {
+      "address": "00af8c7e",
+      "native": "00aee3c0",
+      "function": "00af8bd0",
+      "contract": "Existing actual4h pooled token constructor, output/index stack; RET8"
+    },
+    {
+      "address": "00af8c8b",
+      "native": "00bf7fbf",
+      "function": "00af8bd0",
+      "contract": "Current CRT _stricmp; cdecl two arguments; ADD ESP8"
+    },
+    {
+      "address": "00af8cb7",
+      "native": "00419cc0",
+      "function": "00af8bd0",
+      "contract": "Existing current native string-pool getter; later sized-return arguments already on stack"
+    },
+    {
+      "address": "00af8cbe",
+      "native": "00bd1510",
+      "function": "00af8bd0",
+      "contract": "Existing actual sized string-pool return, block/bytes/unused1; RET12"
+    },
+    {
+      "address": "00af8cda",
+      "native": "00af44c0",
+      "function": "00af8bd0",
+      "contract": "Existing actual4h pooled suffix constructor, output/index stack; RET8"
+    },
+    {
+      "address": "00af8ce7",
+      "native": "00b015c0",
+      "function": "00af8bd0",
+      "contract": "Existing complete raw common properties, same string/texture/cache domain and retained child; RET4/AL"
+    },
+    {
+      "address": "00af8d12",
+      "native": "00419cc0",
+      "function": "00af8bd0",
+      "contract": "Existing current native string-pool getter; later sized-return arguments already on stack"
+    },
+    {
+      "address": "00af8d19",
+      "native": "00bd1510",
+      "function": "00af8bd0",
+      "contract": "Existing actual sized string-pool return, block/bytes/unused1; RET12"
+    },
+    {
+      "address": "00af8d35",
+      "native": "00aee3c0",
+      "function": "00af8bd0",
+      "contract": "Existing actual4h pooled token constructor, output/index stack; RET8"
+    },
+    {
+      "address": "00af8d49",
+      "native": "00bf7fbf",
+      "function": "00af8bd0",
+      "contract": "Current CRT _stricmp; cdecl two arguments; ADD ESP8"
+    },
+    {
+      "address": "00af8d60",
+      "native": "00aee3c0",
+      "function": "00af8bd0",
+      "contract": "Existing actual4h pooled token constructor, output/index stack; RET8"
+    },
+    {
+      "address": "00af8da2",
+      "native": "00419cc0",
+      "function": "00af8bd0",
+      "contract": "Existing current native string-pool getter; later sized-return arguments already on stack"
+    },
+    {
+      "address": "00af8da9",
+      "native": "00bd1510",
+      "function": "00af8bd0",
+      "contract": "Existing actual sized string-pool return, block/bytes/unused1; RET12"
+    },
+    {
+      "address": "00af8ddf",
+      "native": "00af44c0",
+      "function": "00af8bd0",
+      "contract": "Existing actual4h pooled suffix constructor, output/index stack; RET8"
+    },
+    {
+      "address": "00af8df1",
+      "native": "00aee3c0",
+      "function": "00af8bd0",
+      "contract": "Existing actual4h pooled token constructor, output/index stack; RET8"
+    },
+    {
+      "address": "00af8df9",
+      "native": "00bfa66c",
+      "function": "00af8bd0",
+      "contract": "Current CRT atof, cdecl one argument, immediate x87 FSTP32 then ADD ESP4"
+    },
+    {
+      "address": "00af8e24",
+      "native": "00419cc0",
+      "function": "00af8bd0",
+      "contract": "Existing current native string-pool getter; later sized-return arguments already on stack"
+    },
+    {
+      "address": "00af8e2b",
+      "native": "00bd1510",
+      "function": "00af8bd0",
+      "contract": "Existing actual sized string-pool return, block/bytes/unused1; RET12"
+    },
+    {
+      "address": "00af8e58",
+      "native": "00419cc0",
+      "function": "00af8bd0",
+      "contract": "Existing current native string-pool getter; later sized-return arguments already on stack"
+    },
+    {
+      "address": "00af8e5f",
+      "native": "00bd1510",
+      "function": "00af8bd0",
+      "contract": "Existing actual sized string-pool return, block/bytes/unused1; RET12"
+    },
+    {
+      "address": "00af8e6c",
+      "native": "00afbed0",
+      "function": "00af8bd0",
+      "contract": "Existing actual10h raw builder constructor; kind+C remains untouched"
+    },
+    {
+      "address": "00af8e86",
+      "native": "00afc360",
+      "function": "00af8bd0",
+      "contract": "Existing raw builder default endpoints, two stacked floats; RET8"
+    },
+    {
+      "address": "00af8e96",
+      "native": "00af44c0",
+      "function": "00af8bd0",
+      "contract": "Existing actual4h pooled suffix constructor, output/index stack; RET8"
+    },
+    {
+      "address": "00af8ea9",
+      "native": "00af44c0",
+      "function": "00af8bd0",
+      "contract": "Existing actual4h pooled suffix constructor, output/index stack; RET8"
+    },
+    {
+      "address": "00af8eb8",
+      "native": "00afc470",
+      "function": "00af8bd0",
+      "contract": "Existing raw builder curve parser, AL ignored at this call site; RET4"
+    },
+    {
+      "address": "00af8ee2",
+      "native": "00419cc0",
+      "function": "00af8bd0",
+      "contract": "Existing current native string-pool getter; later sized-return arguments already on stack"
+    },
+    {
+      "address": "00af8ee9",
+      "native": "00bd1510",
+      "function": "00af8bd0",
+      "contract": "Existing actual sized string-pool return, block/bytes/unused1; RET12"
+    },
+    {
+      "address": "00af8f16",
+      "native": "00419cc0",
+      "function": "00af8bd0",
+      "contract": "Existing current native string-pool getter; later sized-return arguments already on stack"
+    },
+    {
+      "address": "00af8f1d",
+      "native": "00bd1510",
+      "function": "00af8bd0",
+      "contract": "Existing actual sized string-pool return, block/bytes/unused1; RET12"
+    },
+    {
+      "address": "00af8f3a",
+      "native": "00b00980",
+      "function": "00af8bd0",
+      "contract": "Existing raw common parameter name/builder/percentage; RET12/AL"
+    },
+    {
+      "address": "00af8f48",
+      "native": "00bf6989",
+      "function": "00af8bd0",
+      "contract": "Current CRT free; cdecl one argument; ADD ESP4"
+    },
+    {
+      "address": "00af8f82",
+      "native": "00419cc0",
+      "function": "00af8bd0",
+      "contract": "Existing current native string-pool getter; later sized-return arguments already on stack"
+    },
+    {
+      "address": "00af8f89",
+      "native": "00bd1510",
+      "function": "00af8bd0",
+      "contract": "Existing actual sized string-pool return, block/bytes/unused1; RET12"
+    },
+    {
+      "address": "00af8f9e",
+      "native": "00bf7fbf",
+      "function": "00af8bd0",
+      "contract": "Current CRT _stricmp; cdecl two arguments; ADD ESP8"
+    },
+    {
+      "address": "00af8fb2",
+      "native": "00afbf60",
+      "function": "00af8bd0",
+      "contract": "Existing actual F8D344 raw runtime parameter conversion; RET/EAX"
+    },
+    {
+      "address": "00af8fce",
+      "native": "00bf6989",
+      "function": "00af8bd0",
+      "contract": "Current CRT free; cdecl one argument; ADD ESP4"
+    },
+    {
+      "address": "00af8feb",
+      "native": "00aee2a0",
+      "function": "00af8bd0",
+      "contract": "Existing actual4h pooled-text destructor: captured bytes return then header clear"
+    },
+    {
+      "address": "00af8ff9",
+      "native": "00af5740",
+      "function": "00af8bd0",
+      "contract": "Existing raw TextBuffer reader: actual cursor, shared F8C2C8 scratch and actual4h pooled output; RET4/AL"
+    },
+    {
+      "address": "00af9032",
+      "native": "00419cc0",
+      "function": "00af8bd0",
+      "contract": "Existing current native string-pool getter; later sized-return arguments already on stack"
+    },
+    {
+      "address": "00af9039",
+      "native": "00bd1510",
+      "function": "00af8bd0",
+      "contract": "Existing actual sized string-pool return, block/bytes/unused1; RET12"
+    },
+    {
+      "address": "00af905e",
+      "native": "00bf7fbf",
+      "function": "00af8bd0",
+      "contract": "Current CRT _stricmp; cdecl two arguments; ADD ESP8"
+    },
+    {
+      "address": "00af9072",
+      "native": "00afbf60",
+      "function": "00af8bd0",
+      "contract": "Existing actual F8D344 raw runtime parameter conversion; RET/EAX"
+    },
+    {
+      "address": "00af9086",
+      "native": "00af80f0",
+      "function": "00af8bd0",
+      "contract": "Existing raw Object Size setter, publish+84 then cache raw const or curve value at zero in+88; RET4"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "site": "00af8d75",
+      "function": "00af8bd0",
+      "selection": "capture current definition profile then current slot+20 at AF8D6B",
+      "supported_profile": "00d5db00",
+      "supported_target": "00af9660",
+      "boundary": "Unknown reached profile/target is explicit; no callback fallback"
+    }
+  ],
+  "exception_handling": {
+    "handler": {
+      "address": "00cbaeb0",
+      "bytes": 10,
+      "sha256": "47a1c0af9060acdd2af8bb265b7c48c11e39f453889bdb417172fcee9a42a1aa",
+      "instructions": [
+        "mov eax,0xdf2d28",
+        "jmp 0xbf6b43"
+      ]
+    },
+    "func_info": {
+      "address": "00df2d28",
+      "bytes": 36,
+      "sha256": "7ca2d92c2bf6539067fbea0f2b6bc42bbb829c65e3b02e97d70f2df676726c5b",
+      "magic": "19930522",
+      "max_state": 8,
+      "unwind_map": "00df2d4c",
+      "try_block_count": 0,
+      "try_block_map": "00000000",
+      "ip_map_count": 0,
+      "ip_map": "00000000",
+      "es_type_list": "00000000",
+      "eh_flags": 1
+    },
+    "unwind_map": {
+      "address": "00df2d4c",
+      "bytes": 64,
+      "sha256": "a4169a2d9023b9df3f3426fa26927f3e28487750bb58e9aa747f164471735eba",
+      "entries": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cbae70",
+          "local": "line(-44)",
+          "action_bytes": "8d4dbce92834e3ff",
+          "sha256": "83ec5a3b5653ace776ac351baa2c49b8f2aacbfcc27bc067700f9505457b74d2",
+          "instructions": [
+            "lea ecx, [ebp - 0x44]",
+            "jmp 0xaee2a0"
+          ]
+        },
+        {
+          "state": 1,
+          "previous": 0,
+          "action": "00cbae78",
+          "local": "property suffix(-34)",
+          "action_bytes": "8d4dcce92034e3ff",
+          "sha256": "2eab05464465e77dfe7e9d59e661b2694fee50aa6e28a63da51f6732136e8d4e",
+          "instructions": [
+            "lea ecx, [ebp - 0x34]",
+            "jmp 0xaee2a0"
+          ]
+        },
+        {
+          "state": 2,
+          "previous": 0,
+          "action": "00cbae80",
+          "local": "name(-40)",
+          "action_bytes": "8d4dc0e91834e3ff",
+          "sha256": "03c57ae8e8d25876f1255e268ad610e52189efc1fb44b96c9579c6829473dd8c",
+          "instructions": [
+            "lea ecx, [ebp - 0x40]",
+            "jmp 0xaee2a0"
+          ]
+        },
+        {
+          "state": 3,
+          "previous": 2,
+          "action": "00cbae88",
+          "local": "model name(-30)",
+          "action_bytes": "8d4dd0e91034e3ff",
+          "sha256": "e49e0c2d48ca89784109f7b29189374d731c388e28e9c80ed4d5a38d5beddcf3",
+          "instructions": [
+            "lea ecx, [ebp - 0x30]",
+            "jmp 0xaee2a0"
+          ]
+        },
+        {
+          "state": 4,
+          "previous": 2,
+          "action": "00cbae90",
+          "local": "percentage suffix(-28)",
+          "action_bytes": "8d4dd8e90834e3ff",
+          "sha256": "928fbf5dff169dbd398097f40be84e7c9b74da3654ac2b4fa4233c231cdfc3b1",
+          "instructions": [
+            "lea ecx, [ebp - 0x28]",
+            "jmp 0xaee2a0"
+          ]
+        },
+        {
+          "state": 5,
+          "previous": 2,
+          "action": "00cbae98",
+          "local": "builder(-1c)",
+          "action_bytes": "8d4de4e97092e3ff",
+          "sha256": "ed0a0560f66bf19852f7e70112d2f4cf30eecb1de50446251e69aca46bb9086a",
+          "instructions": [
+            "lea ecx, [ebp - 0x1c]",
+            "jmp 0xaf4110"
+          ]
+        },
+        {
+          "state": 6,
+          "previous": 5,
+          "action": "00cbaea0",
+          "local": "curve suffix(-20)",
+          "action_bytes": "8d4de0e9f833e3ff",
+          "sha256": "34ecbd1f929874ab6e8a614505eef1b2630b670089a3135274941a0c0e660eb3",
+          "instructions": [
+            "lea ecx, [ebp - 0x20]",
+            "jmp 0xaee2a0"
+          ]
+        },
+        {
+          "state": 7,
+          "previous": 6,
+          "action": "00cbaea8",
+          "local": "curve(-24)",
+          "action_bytes": "8d4ddce9f033e3ff",
+          "sha256": "ac9da468ed4b38ae41fa3b3e2ada2285e35744336721d0b35f7628f1d3a0ec7c",
+          "instructions": [
+            "lea ecx, [ebp - 0x24]",
+            "jmp 0xaee2a0"
+          ]
+        }
+      ]
+    }
+  },
+  "previous_ledger_records": [
+    {
+      "ledger": "reconstruction",
+      "record": {
+        "address": "00af8bd0",
+        "source": "src/native_particle_object_tracer_loading.cpp",
+        "header": "include/bsp/native_particle_object_tracer_loading.hpp",
+        "evidence": "Complete installed/live byte match SHA256 180671c6f9dfafcb849630ab66fe660d9e3d7daf0a229e257a806925f7f87a7f; inclusive last byte 00af9094; RET4 at 00af9051; decoded Capstone listing and all direct call sites captured in C:/Users/sqz269/bsp-aq-object-tracer. Descriptive name is a hypothesis. See docs/NATIVE_PARTICLE_OBJECT_TRACER_LOADING.md. AR integration: Optional same-base resource binding directly invokes complete AF9660 for the captured Object model20 target; current overrides and legacy callers retain the required real dispatcher. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+        "name": "load_native_object_particle_definition_00af8bd0",
+        "status": "reconstructed_build_tested_bounded_fixture_tested",
+        "native_abi": {
+          "receiver": "ECX actual definition",
+          "stack_arguments": "void *text",
+          "stack_cleanup": "RET 4",
+          "result": "AL true, including EOF",
+          "native_eh": "FH3 normal paths inspected; native exception ABI not replaced"
+        },
+        "kind": "function"
+      }
+    },
+    {
+      "ledger": "names",
+      "record": {
+        "address": "00af8bd0",
+        "name": "BSP_ObjectParticleDefinition_LoadText",
+        "evidence": "Complete installed/live byte match SHA256 180671c6f9dfafcb849630ab66fe660d9e3d7daf0a229e257a806925f7f87a7f; inclusive last byte 00af9094; RET4 at 00af9051; decoded Capstone listing and all direct call sites captured in C:/Users/sqz269/bsp-aq-object-tracer. Descriptive name is a hypothesis. See docs/NATIVE_PARTICLE_OBJECT_TRACER_LOADING.md. | Complete installed/live byte match SHA256 180671c6f9dfafcb849630ab66fe660d9e3d7daf0a229e257a806925f7f87a7f; inclusive last byte 00af9094; RET4 at 00af9051; decoded Capstone listing and all direct call sites captured in C:/Users/sqz269/bsp-aq-object-tracer. Descriptive name is a hypothesis. See docs/NATIVE_PARTICLE_OBJECT_TRACER_LOADING.md. AR integration: Optional same-base resource binding directly invokes complete AF9660 for the captured Object model20 target; current overrides and legacy callers retain the required real dispatcher. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md."
+      }
+    }
+  ],
+  "validation": {
+    "body_bytes": 1221,
+    "body_instructions": 400,
+    "direct_call_rows": 48,
+    "full_pe_live_match": true,
+    "build": "PASS full scripts/build.ps1 Release MSVC Win32",
+    "fixture": "PASS: 4 copied-original/source AF8BD0 pairs across 4 x87 rounding modes; 1221B body/48 direct relocations/current slot20 adapter; raw repeated Model empty-VFS, Const/Linear/Hermite, percentage stores, Object Size value-at-zero, full pool byte accounting; 3 source failures preserve publication and reject replay. Failed model/VFS frame and contexts deliberately retained to process exit.",
+    "existing_ctests": "PASS 3/3 reconstructed_math, native_math_differential, tool_tests",
+    "native_seeds": "PASS all 8 seeds match installed PE",
+    "strict_probe_compile": "PASS /W4 /WX /EHsc /MD /O2 /fp:strict /link /MANIFEST:EMBED",
+    "call_validation": "48 direct call rows checked, 0 failed",
+    "copied_original_pairs": 4,
+    "rounding_modes": 4,
+    "source_failure_cases": 3,
+    "native_abi_compatible": false,
+    "game_validated": false,
+    "fixture_boundary": "Complete copied AF8BD0 normal body with 48 direct ABI adapters plus the current+20 Model ABI adapter; all child operations call existing genuine raw source providers. Original child bodies, original CRT/FH3 transport, x87 status/EFLAGS and private aliases are not compared. Actual Model/VFS success limited to empty registration trees and no loaded candidate.",
+    "failure_boundary": "Source missing Texture provider, unsupported current Model target, and actual Model/VFS child unknown reached visitor target. Earlier runtime parameter publication survives; owned headers unwind; replay rejected. The final failed VFS/model/acquired frame and all contexts stay alive until explicit ExitProcess because existing failed VFS destructor terminates and offers no discharge API.",
+    "receipts": {
+      "local/object_raw_probe.cpp": "c1ec44ac49636393c3cadf9e55086d1add599da6548a93c71043aa16ba37f834",
+      "local/object_raw_original.inc": "1b6abfd276da1c005b8dbd5e9d3def38df1bc7e4341355f8731d11cbe422676f",
+      "local/object_raw_probe_compile.log": "23963a91435b82c4b4618166eedc06d191ed0e8e2fff7c1cdd20431f7ec17ee8",
+      "local/object_raw_probe_run.log": "1edca49aa71f78aa766fc24373a5b7982a84c8980248dae48eb27736dee82620",
+      "local/object_raw_build.log": "1d414a653810de837da52663fecf6e5e368fc5e458a5436fefa0158086b47f9f",
+      "local/object_raw_seeds.json/seed_byte_comparison.json": "32f6c78b0dd1b73bb1023c82831731b40e88e5e57d023bffda0b872c8cf2d298",
+      "local/object_raw_original_listing.txt": "affcb6bb8a9e115fa399c78ffb905782c107e080d3dac7eb5b39ad06685b055b"
+    }
+  },
+  "limits": [
+    "New source interface, not original register/FH3/SEH/CRT/hardware-fault identity.",
+    "Retain failed child operations and all referenced storage until provider obligations resolve.",
+    "No gameplay validation."
+  ],
+  "ownership": {
+    "frame": "Caller-retained and immovable; actual4h headers and10h builder precede optional property and model children",
+    "failed_children": "Retained; parser cannot replay or replace a failed child; no destructor rollback",
+    "failed_vfs_lifetime": "Existing failed VFS resolution has no discharge API and terminates on destruction; retain frame plus contexts for process life",
+    "completed_children": "Optional replacement only after prior child completed normally",
+    "model_profile": "Explicit borrowed nine-word current D5DB00 profile through+20, separate from property context five-word view",
+    "model_capture": "Read token bytes, current definition profile, current+20 target; then state3 and selected AF9660 raw invocation",
+    "builder": "Explicit initial kind+C residue; all lines share builder storage and retain current kind",
+    "normal_line": "Final captured byte return in state-1; actual line header remains stale",
+    "unarmed": "Command token and percentage token have no FH3 cleanup state",
+    "partial_publication": "No overwrite release or failure rollback of published runtime parameters/models",
+    "percentage": "atof x87 FSTP32, later FLD32/FSTP32 argument; derived FMUL current double only after runtime conversion"
+  },
+  "corrections": [
+    {
+      "was": "The prior typed-host Object parser row could be mistaken for a raw provider closure",
+      "evidence": "Full PE/live body, all direct call rows and full native FH3 record/map/action bytes; new explicit profile-through20 contract",
+      "is": "New complete raw AF8BD0 overload composes real string/text/builder/runtime/property/model resources with caller-retained children and exact eight-state cleanup"
+    }
+  ]
+}
