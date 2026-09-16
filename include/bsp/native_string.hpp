@@ -89,6 +89,14 @@ void resize_native_string_header_0041dd40(void* actual_header,
 void resize_native_string_header_0041dd40(void* actual_header,
     NativeStringRawPoolContext& context, std::uint32_t length, bool preserve);
 
+// Complete 0041E870 against an actual8h header and the concrete raw pool.
+// ECX header, stack nonnull C string, RET4/EAX same header. The CALLEE zeros
+// both header fields before strlen; no caller initialization is assumed and
+// any previous buffer is abandoned. Resize preserves, then copy CURRENT
+// length+1 into CURRENT data if nonnull. No local exception cleanup is added.
+void* construct_native_string_header_0041e870(void* actual_header,
+    NativeStringRawPoolContext& context, const char* text);
+
 // Existing BE0A30 copy fragment against actual8h headers, without starting a
 // NativeString object or copying a source header. Self-copy returns; otherwise
 // resize from source length, then reload source length/data and destination
@@ -121,6 +129,9 @@ public:
     // not an assignment: it zeroes both fields before resizing, so calling it
     // on a live string leaks that string's buffer. text must not be null.
     NativeString& assign_0041e870(NativeStringStorage& storage, const char* text);
+    // Raw-pool overload delegates to the actual-header body above; getter
+    // exceptions propagate, with the same callee-owned zero initialization.
+    NativeString& assign_0041e870(NativeStringRawPoolContext& context, const char* text);
 
     // The copy fragment at 00be0a82 inside BSP_FileBlock_Construct: guard
     // against self-copy, resize to the source length with preserve set, then

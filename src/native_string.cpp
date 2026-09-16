@@ -173,6 +173,25 @@ NativeString& NativeString::assign_0041e870(NativeStringStorage& storage, const 
     return *this;
 }
 
+void* construct_native_string_header_0041e870(void* header,
+    NativeStringRawPoolContext& context, const char* text) {
+    write_header<std::uint32_t>(header, 0, 0);
+    write_header<char*>(header, 4, nullptr);
+    const auto length = static_cast<std::uint32_t>(std::strlen(text));
+    resize_native_string_header_0041dd40(header, context, length, true);
+    void* const data = read_header<void*>(header, 4);
+    if (data != nullptr) {
+        const auto bytes = read_header<std::uint32_t>(header, 0) + 1u;
+        if (bytes) std::memmove(data, text, bytes); // Native BF7680 admits overlap.
+    }
+    return header;
+}
+
+NativeString& NativeString::assign_0041e870(NativeStringRawPoolContext& context, const char* text) {
+    construct_native_string_header_0041e870(this, context, text);
+    return *this;
+}
+
 void NativeString::copy_from_00be0a30_fragment(NativeStringStorage& storage, const NativeString& source) {
     copy_native_string_header_00be0a30_fragment(this, storage, &source);
 }
