@@ -1,6 +1,6 @@
 {
   "packet": "native_lua_process_lifetime_r68",
-  "status": "source_original_crt_exit_and_application_cache_checked_candidate",
+  "status": "integrated_source_original_crt_exit_and_application_cache_checked",
   "game_rebuilt": false,
   "owned_files": [
     "cmake/startup.cmake",
@@ -16413,5 +16413,243 @@
         "sha256": "fc24a2ba32b9a329ac1b74a08587020a7164838012d2d5113464788bcc7427b4"
       }
     ]
+  },
+  "primary_integration": {
+    "source_commit": "25a7f276cc9f005e395cb222b8211be771a7e893",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "fixture_rerun_after_integration": false,
+    "application_rerun_after_integration": false,
+    "archive": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r68\\lua-process-main-r68.zip",
+    "sha256": "06c7048b101dc89e96e1ea14f4b6a90b00387c7fbfc508d5a06fcc0b12f9710e",
+    "files": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "size": 63896176,
+        "sha256": "867c874e529d98d26918075668610e23bf2b6e75cec7b9b9c82a233d822a2acf"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "size": 2345984,
+        "sha256": "662af0729df5e5fb06dce350e3fd259703518249b0bf39a523f07a690486f559"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "size": 2408,
+        "sha256": "a915997bbc8eb73931c2b6e85140aaa84cd87bb19987460a71ca03d950ba10a4"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/lua_runtime_globals.obj",
+        "size": 6214,
+        "sha256": "32081e350dd3ac6ca2559241a816bcc453aeabd82fd88ce7f8803dc29b833bba"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_lua_fundamentals.obj",
+        "size": 17810,
+        "sha256": "c43741ace8dc6af8fc70c53fb54756d426813462bbd8d02c8698294c66f42cd2"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_lua_globals_lifetime.obj",
+        "size": 8489,
+        "sha256": "7eab84cf2b7c09d4077bed5d8b505acc677d57e418e0f20cfd1caf5e7f844a62"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_string_pool_storage.obj",
+        "size": 9143,
+        "sha256": "dab9746705cf936f5bda61c9b048d34c1a6425b9d33698fa29669fd1e93bb726"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/vfs_lua_scripts.obj",
+        "size": 149705,
+        "sha256": "fc47a8065468e8ff169441fe7af8a87f742e0f1eec4373dcd5a5ac231fb3f83c"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "size": 232794,
+        "sha256": "c80fa7f3e28480300f5a05871de2a74a926c287cd96ef93cdf2c2f4a535a73b5"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+        "size": 729018,
+        "sha256": "54c98f47c26728ee5f10bfe67b5342d2b89050d645fcd84db015b7c685f821c1"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+        "size": 12960,
+        "sha256": "515089427c39a3af23995e5e0e1a2a15108057456debb2767e625b6c448aaf1b"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_vfs.obj",
+        "size": 422009,
+        "sha256": "b8b6c88e689318c84b2188a700e2d81224b888742c944b9a050ad395fd39a68b"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_main.obj",
+        "size": 296660,
+        "sha256": "94961bfdc399624c34518665e31748b4561d61cbcd1271113edd1fbe5402c9ee"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_lua_globals.obj",
+        "size": 15945,
+        "sha256": "932075a1c004dbcc5d423665c91329e2975439efbb27e4a725b84d5b65a032f6"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_lua_services.obj",
+        "size": 23118,
+        "sha256": "aa902096cca8428b2b175b6468f1f03ad71b4cf5145202e5f1f1886cdb70c130"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_string_process.obj",
+        "size": 4101,
+        "sha256": "790f75ee44bff156efae3528e02ca87bd52f54d7ce74ad9a6b2ecdc5445334ef"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_vfs_application.obj",
+        "size": 51971,
+        "sha256": "0852a83ff1b45e1a179836219d431fab243cf2072d39f3f4e1c077dd0065c946"
+      },
+      {
+        "path": "build/win32/bsp_game.vcxproj",
+        "size": 64006,
+        "sha256": "10010e4786eba4ee6d56144ebe3cc2e868490623e3ca08cbe4ba5014579e8375"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "size": 154407,
+        "sha256": "e46885343f5d6a9db42b4f78ef7a17be50cf10162fc79bf491f0393afdbf85a9"
+      },
+      {
+        "path": "docs/NATIVE_LUA_PROCESS_LIFETIME_R68.md",
+        "size": 6705,
+        "sha256": "639576853d4744b838f402c13c6c76f66d01ce14243e10abbc8fb1378b9a3bfd"
+      },
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "size": 31811,
+        "sha256": "c13061e916c013607d7df548e55f9ff21279198abf2da25a5c3b6612ef60a1fe"
+      },
+      {
+        "path": "include/bsp/game_hosts_singletons.hpp",
+        "size": 5670,
+        "sha256": "639462579b8409d9f03936b77e2f9ae1f72cf6b31cc18cd54663a8bc0a68c53c"
+      },
+      {
+        "path": "include/bsp/game_hosts_vfs.hpp",
+        "size": 10929,
+        "sha256": "f5e46bb0db032650c5ceaa97e97b0528b0800f42bc12e30b70f679320ef8d23c"
+      },
+      {
+        "path": "include/bsp/game_native_lua_globals.hpp",
+        "size": 1390,
+        "sha256": "1cfc015f317ebaf7334681d8235fd53d4394242449110d6b978f1fb1b10b3858"
+      },
+      {
+        "path": "include/bsp/game_native_lua_services.hpp",
+        "size": 1332,
+        "sha256": "8f3944745d91adeedfd48964026f5506fb6116c2ae49b7e796802b890b7f4707"
+      },
+      {
+        "path": "include/bsp/game_native_string_process.hpp",
+        "size": 1513,
+        "sha256": "34a9a53a8a0970e948b047bf4ceab71f4baf1614f748160122d9697831c0278a"
+      },
+      {
+        "path": "include/bsp/lua_runtime_globals.hpp",
+        "size": 1575,
+        "sha256": "42635de4bd4581f2aa46d2cec83a07c36dabf66c7c7c98478a01d81c73aba5d3"
+      },
+      {
+        "path": "include/bsp/native_lua_globals_lifetime.hpp",
+        "size": 1096,
+        "sha256": "e09319f0daf6362248e824d4daba37815b361b05d7a47e7fb794978ca14ef506"
+      },
+      {
+        "path": "include/bsp/vfs_lua_scripts.hpp",
+        "size": 2655,
+        "sha256": "9b01a287b90977e07ad549fc4b25d0bce4ddcc182250be0100e9f4517434d181"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T224026Z.json",
+        "size": 55215,
+        "sha256": "0240df75459f36ba9978aa5cc6ac63170be77a4adfd8851f5014c293685279ee"
+      },
+      {
+        "path": "local/lua_process_r68/annotations.log",
+        "size": 565,
+        "sha256": "2f0179a64efa58d27208f0187e4eed0656f1e2b4138fc5b16483e738cb113846"
+      },
+      {
+        "path": "local/lua_process_r68/exports_after_annotations.log",
+        "size": 987,
+        "sha256": "7e22bdd2cec80d71e6e85e79d8c91de1617c5dc51714c6660aca06869b177e23"
+      },
+      {
+        "path": "local/r68_integration.log",
+        "size": 2165,
+        "sha256": "3508521ae68a4a9e30738f130b9d282c40698c4d75de93714f5d314dc78a0535"
+      },
+      {
+        "path": "reports/native_lua_process_lifetime_r68.json",
+        "size": 899060,
+        "sha256": "088a142a7a9e7678f90a2beeb2bd3dc6ca1fa15ee735a8acec92e05565eb28d2"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "size": 96303,
+        "sha256": "ca7e636d7d5219bca912b93849b09fa839f8b45d54a746ebc9685e94d440cebe"
+      },
+      {
+        "path": "src/game_hosts_singletons.cpp",
+        "size": 4366,
+        "sha256": "468844bb84c979c079ca46f0e19cc818a6730c9a17c65042a1a579048e6c8224"
+      },
+      {
+        "path": "src/game_hosts_vfs.cpp",
+        "size": 17323,
+        "sha256": "2e5ec3ac4acf17ea489ae6a3b6cfd3de0347499aebf79fe82f5dfc67219116e5"
+      },
+      {
+        "path": "src/game_main.cpp",
+        "size": 27457,
+        "sha256": "895a6d2305e67d273ddbffdb32b9685778025a1835cdf6fb2946d6f2d515bb8f"
+      },
+      {
+        "path": "src/game_native_lua_globals.cpp",
+        "size": 1223,
+        "sha256": "4c045e9b570d39610a173e0d306285707995399c64ac5cacbc5fc5216feddbc5"
+      },
+      {
+        "path": "src/game_native_lua_services.cpp",
+        "size": 3183,
+        "sha256": "9a8b02210f9274fa18e30454fc5e0ae2e6649820145aa623d933b614af406bb7"
+      },
+      {
+        "path": "src/game_native_string_process.cpp",
+        "size": 235,
+        "sha256": "3e1a337c0a2b59f377ad2cefcbefb2e5ae8bfcc08e04b8c6128a10c8ef96b1bd"
+      },
+      {
+        "path": "src/game_native_vfs_application.cpp",
+        "size": 7697,
+        "sha256": "79f6d688cf0fdd8cfadd81217a25fd06edf12da9192c1c585e87e902e4786677"
+      },
+      {
+        "path": "src/lua_runtime_globals.cpp",
+        "size": 1970,
+        "sha256": "c57f12e2e80cb2fc7d8d101ebb0bd2025070ddfe5658286ef8a9d5227cea2b61"
+      },
+      {
+        "path": "src/native_lua_globals_lifetime.cpp",
+        "size": 1063,
+        "sha256": "fa0a8cb2a284d02423bb00e010699bf6a75a4d0b363fc153713f3aab44914712"
+      },
+      {
+        "path": "src/vfs_lua_scripts.cpp",
+        "size": 4424,
+        "sha256": "fc24a2ba32b9a329ac1b74a08587020a7164838012d2d5113464788bcc7427b4"
+      }
+    ],
+    "scope": "Combined integration build and CTests. The original/source real CRT-exit fixture and two-frame application run are separately sealed in the tested archive. Full native renderer composition and gameplay remain open.",
+    "annotations": "Integrator bare owner deferred nine addresses held by this worktree; these nine names/evidence were already saved and force-exported under the owning worktree before integration."
   }
 }
