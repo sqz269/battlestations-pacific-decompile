@@ -28,6 +28,14 @@ std::uint32_t __fastcall get_native_shader_constant_register_count_00b5b880(
 std::uint32_t __fastcall get_native_optimized_animator_type_id_00b75e50(
     const volatile std::uint32_t& actual_type_id_cell_010900fc) noexcept;
 
+// Original B782D0 ignores ECX, searches the three CURRENT DWORD cells at
+// 010900FC..01090104 for the stacked type ID, and returns AL with RET4.
+// Source EDX borrows those same contiguous cells; no type-ID copy is owned.
+// Only AL is a result. EDX and the upper EAX bits differ from the native ABI.
+std::uint8_t __fastcall native_optimized_animator_has_type_00b782d0(
+    const void* unused_owner, const volatile std::uint32_t* actual_type_cells,
+    std::uint32_t type_id) noexcept;
+
 // Original ECX is the actual light, EAX its borrowed shadow-map owner at
 // +174h. No retain, null substitution, or pointer validation is performed.
 void* __fastcall get_native_light_shadow_map_owner_00b7aab0(

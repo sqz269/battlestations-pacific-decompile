@@ -1,0 +1,189 @@
+{
+  "packet": "native_optimized_animator_type_predicate_r42",
+  "status": "complete_source_strict_build_scoped_relocated_native_fixture_checked",
+  "baseline": "d551c53cfe547d1880ec4257a05deb8e68f67e29",
+  "source": {
+    "address": "00b782d0",
+    "kind": "function",
+    "name": "native_optimized_animator_has_type_00b782d0",
+    "source": "src/native_material_constant_metadata.cpp",
+    "status": "complete_raw_source_build_and_relocated_native_AL_fixture_checked",
+    "abi": "Original unusedECX/stackDWORD/ALresult/RET4. Source adds EDX currentcell pointer and clobbers EDX; upperEAX not specified.",
+    "evidence": "R42 complete40B B782D0 raw source bridge added to existing material metadata pair, adopting historical a6b2884f2 body with whitespace-only difference. Original unusedECX, stackedtype, three CURRENT DWORDs10900FC..1090104, firstmatchAL1/fullmissAL0/RET4; no dereference ofowner. Source borrows same contiguouscells inEDX and derivesend, upperEAX andEDX not originalABI. Fresh Ghidra/PE40B exact,12instruction rows/zero calls; original assembly fully reviewed. StrictMSVCWin32 /MD /W4 /WX /fp:strict build and3CTests pass. One ignored focused fixture relocates only two data immediates in original40B and compares seven AL outcomes with linked source: three positions, miss and three currentcell mutations. No new permanent tests. Fullbuilder/renderer/FH3/SEH/gameplay unproved. reports/native_optimized_animator_type_predicate_r42.json."
+  },
+  "native": {
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "spans": [
+      {
+        "address": "00b782d0",
+        "length": 40,
+        "hex": "8b4c2404b8fc0009018da424000000003908740f83c0043d0801090175f232c0c20400b001c20400",
+        "sha256": "463e918e1963f616d2f5130d3652aebbdd8b6eacc1b4fe1c72186bea942a1576"
+      }
+    ]
+  },
+  "historical_adoption": {
+    "commit": "a6b2884f2",
+    "path": "src/native_material_constant_build_leaves.cpp",
+    "body_whitespace_normalized_equal": true
+  },
+  "validation": {
+    "instructions": 12,
+    "calls": 0,
+    "strict_build": true,
+    "ctests_passed": 3,
+    "fixture": "Seven AL comparisons with relocated original40B; only two absolute type-cell data immediates changed. Current source linked from fresh bsp_core.lib. No owner dereference.",
+    "relocations": [
+      {
+        "offset": 5,
+        "original": "010900fc",
+        "replacement": "same test cells begin"
+      },
+      {
+        "offset": 24,
+        "original": "01090108",
+        "replacement": "same test cells end"
+      }
+    ],
+    "result_domain": "AL only; EDX/upperEAX/private register fault behavior not validated."
+  },
+  "archive": {
+    "path": "local/evidence-r42/animator-type-predicate-r42.zip",
+    "sha256": "c31b41615640b9ed01ddafe673e190088569e6ba8070b9b40201027d19337c52",
+    "files": [
+      {
+        "path": "include/bsp/native_material_constant_metadata.hpp",
+        "bytes": 2096,
+        "sha256": "402230d43e7758312034625182c7a43c43842e345daa4495b1ffd4249c01b617"
+      },
+      {
+        "path": "src/native_material_constant_metadata.cpp",
+        "bytes": 1731,
+        "sha256": "12bb2d77368477d56f158e5089e38724fc3d16b5c9c55bd3f3e8aabb7985a4f1"
+      },
+      {
+        "path": "docs/NATIVE_OPTIMIZED_ANIMATOR_TYPE_PREDICATE_R42.md",
+        "bytes": 1291,
+        "sha256": "c4d8fad60d410c097f9707cb4e05b952f3703a6cf98080178cb8404533617cff"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 229433,
+        "sha256": "a380e7cb16e78816c051f1cea239548fea8dafa56ec6d90e4e4f1216d1a00673"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_material_constant_metadata.obj",
+        "bytes": 3257,
+        "sha256": "e7d26aa842d3fa5dd1b4cd2de2923156fc50062d42d99e1593b17d1a2103e1a9"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63448136,
+        "sha256": "2fc605adecfbd672f34d968b81039faf716db91344a2331169692ae9e42e617f"
+      },
+      {
+        "path": "local/animator_type_r42_probe.cpp",
+        "bytes": 2633,
+        "sha256": "275ed7434db93c214ee75bed44faefd90f16ced416aa735864e83042dfcfd1ef"
+      },
+      {
+        "path": "local/animator_type_r42_probe.obj",
+        "bytes": 13756,
+        "sha256": "9c917fe4d51f24b57c270db09e1c86ad1a4d04012b964a013cd74f7ceec01288"
+      },
+      {
+        "path": "local/animator_type_r42_probe.exe",
+        "bytes": 12288,
+        "sha256": "8b23ddd20ef70c83fafa42ceb66f59ad60ef357232c5acc27788efe9a5f16235"
+      },
+      {
+        "path": "local/animator_type_r42_probe.map",
+        "bytes": 29058,
+        "sha256": "197f1e591d9c28d1c2c8bd5d57e617ddd510d05fce42937bb2a6c24e6187c090"
+      },
+      {
+        "path": "local/animator_type_original_r42.hpp",
+        "bytes": 193,
+        "sha256": "7ffc5d7be3fd5c24f2f7840468a4eaa5b7d38326741af12c9d4a6b62bceef1a0"
+      },
+      {
+        "path": "local/build_animator_type_r42_probe.cmd",
+        "bytes": 463,
+        "sha256": "29e106fbd9bae692fe35ca7836719d4ca0d99f374cb79c29d03ff373ef6a6d04"
+      },
+      {
+        "path": "local/r42_animator_type_proto.txt",
+        "bytes": 687,
+        "sha256": "bf86fb0c195595913eeb3b8b68012e59bd5b1695b850545f30bc927bfbdb8429"
+      },
+      {
+        "path": "local/r42_animator_type_bytes.txt",
+        "bytes": 199,
+        "sha256": "304b1b11e0ff145d40b3f32bc239eb1c14e6fb47cb4024994508d6b107fbdcfd"
+      },
+      {
+        "path": "local/r42_animator_type_native_spans.json",
+        "bytes": 406,
+        "sha256": "c6fd86a6b308c492fe5d13f63da442ff1736c06bf044a47dde6c406e08c8211e"
+      },
+      {
+        "path": "local/r42_animator_type_verify_seeds.log",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "path": "local/r42_animator_type_build.log",
+        "bytes": 2621,
+        "sha256": "f02fa73115329ec1529e1a6e0281cd757087381d3b6c049f3da2a3892ee91cc8"
+      },
+      {
+        "path": "local/r42_animator_type_probe_build.log",
+        "bytes": 1426,
+        "sha256": "839aa01793389695b4d37e011ae9b9db07b3bf5ac7400dc6ffbb7c9019edb748"
+      },
+      {
+        "path": "local/r42_animator_type_probe_run.log",
+        "bytes": 101,
+        "sha256": "2533af27bccbf252302369ebfef1cfa3565fc1e2ac78c27cf5399e667db39e06"
+      },
+      {
+        "path": "local/r42_animator_type_annotations.log",
+        "bytes": 198,
+        "sha256": "33873171c7fcdf5b1c2a53ee818788cd2761b1ee7130fceadb33ab4a9d334eed"
+      },
+      {
+        "path": "local/r42_animator_type_exports.log",
+        "bytes": 104,
+        "sha256": "58b0fc330c4cf30336921c3afdfde4a9cdb9afb76f7b43cf705054c5e0579a3d"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T122350Z.json",
+        "bytes": 3165,
+        "sha256": "ed9680f251354a6cf7c84228a2dd450a09fe38f95cdf43af9778dea0ae886aac"
+      }
+    ]
+  },
+  "annotations": {
+    "prior": [
+      {
+        "address": "00b782d0",
+        "before": {
+          "address": "00b782d0",
+          "function_name": "BSP_Optimized3dNodeAnimator_HasType",
+          "comment": "[BSP reconstruction 00b782d0]\nHypothesis, not a recovered symbol. Original unused ECX owner; search three current DWORD type cells10900FC..1090104 and return AL0/1 with RET4. Source EDX borrows same cells. Producer B79BC0 establishes optimized animator D62EB0 profile. Integrated code 8b2e79df passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed.\n\n[BSP reconstruction 00b782d0] update\nHypothesis, not a recovered symbol. Original unused ECX owner; search three current DWORD type cells10900FC..1090104 and return AL0/1 with RET4. Source EDX borrows same cells. Producer B79BC0 establishes optimized animator D62EB0 profile. Integrated code 8b2e79df passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed. | Hypothesis, not a recovered symbol. Original unused ECX owner; search three current DWORD type cells10900FC..1090104 and return AL0/1 with RET4. Source EDX borrows same cells. Producer B79BC0 establishes optimized animator D62EB0 profile. Integrated code 7da09ce9 passed strict MSVC Win32 build, eight native seeds, both CTests,32 numeric call rows and52 live/PE spans totaling12295 bytes; fixture scope belongs to full builder and reached concrete providers only. docs/NATIVE_MATERIAL_CONSTANT_BUILD.md; reports/native_material_constant_build.json. Original private stack/register ABI, native FH3/SEH, full parent and gameplay are not claimed."
+        },
+        "after": {
+          "address": "00b782d0",
+          "name": "BSP_Optimized3dNodeAnimator_HasType",
+          "evidence": "R42 complete40B B782D0 raw source bridge added to existing material metadata pair, adopting historical a6b2884f2 body with whitespace-only difference. Original unusedECX, stackedtype, three CURRENT DWORDs10900FC..1090104, firstmatchAL1/fullmissAL0/RET4; no dereference ofowner. Source borrows same contiguouscells inEDX and derivesend, upperEAX andEDX not originalABI. Fresh Ghidra/PE40B exact,12instruction rows/zero calls; original assembly fully reviewed. StrictMSVCWin32 /MD /W4 /WX /fp:strict build and3CTests pass. One ignored focused fixture relocates only two data immediates in original40B and compares seven AL outcomes with linked source: three positions, miss and three currentcell mutations. No new permanent tests. Fullbuilder/renderer/FH3/SEH/gameplay unproved. reports/native_optimized_animator_type_predicate_r42.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "status": "Existing name retained, new raw source row added, saved and export refreshed."
+  },
+  "limits": [
+    "Real producer/publication of process type IDs not exercised; fixture supplies borrowed contiguous cells.",
+    "No full material builder, renderer, original native ABI, FH3/SEH or gameplay claim."
+  ]
+}

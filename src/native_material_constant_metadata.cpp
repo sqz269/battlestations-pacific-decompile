@@ -49,4 +49,24 @@ __declspec(naked) void* __fastcall get_native_light_shadow_map_owner_00b7aab0(
         ret
     }
 }
+
+__declspec(naked) std::uint8_t __fastcall native_optimized_animator_has_type_00b782d0(
+    const void*, const volatile std::uint32_t*, std::uint32_t) noexcept {
+    __asm {
+        mov ecx, [esp+4]
+        mov eax, edx
+        add edx, 0ch
+    again:
+        cmp [eax], ecx
+        je found
+        add eax, 4
+        cmp eax, edx
+        jne again
+        xor al, al
+        ret 4
+    found:
+        mov al, 1
+        ret 4
+    }
+}
 } // namespace bsp
