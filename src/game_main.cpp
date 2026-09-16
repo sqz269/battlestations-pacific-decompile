@@ -50,11 +50,13 @@ void attach_parent_console() {
     freopen_s(&stream, "CONOUT$", "w", stderr);
 }
 
-// These explicit spans select the four original read-only 64-KB bands consumed by
-// the raw VFS entry path. The mapper verifies the entire original PE before it
-// admits any table/literal read in those bands.
-constexpr std::array<bsp::game::GameNativeDataSpan, 4> native_data_spans{{
-    {0x00cf0000u, 1}, {0x00d10000u, 1}, {0x00d50000u, 1}, {0x00d60000u, 1}
+// These explicit spans are the union of the original read-only 64-KB bands
+// consumed by the raw VFS entry path and the composed particle graph. The mapper
+// verifies the entire original PE before it admits any table/literal read.
+constexpr std::array<bsp::game::GameNativeDataSpan, 7> native_data_spans{{
+    {0x00ce0000u, 1}, {0x00cf0000u, 1}, {0x00d00000u, 1},
+    {0x00d10000u, 1}, {0x00d50000u, 1}, {0x00d60000u, 1},
+    {0x00d70000u, 1}
 }};
 constexpr char handoff_prefix[] = "--bsp-native-data-handoff=";
 

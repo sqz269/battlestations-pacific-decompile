@@ -37,6 +37,14 @@ GameNativeVfsRuntime& GameVfsHost::active_runtime() {
     return native_->runtime();
 }
 
+NativeStringRawPoolContext& GameVfsHost::raw_strings() noexcept {
+    return native_->raw_strings();
+}
+
+GameNativeVfsRawServices GameVfsHost::borrow_raw_services() {
+    return active_runtime().borrow_raw_services();
+}
+
 void GameVfsHost::phase2(VfsStartupState& state) {
     state.first_time_block_ran = !core_ready_;
     if (state.first_time_block_ran) {

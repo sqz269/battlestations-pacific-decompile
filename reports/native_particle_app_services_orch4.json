@@ -1,0 +1,49 @@
+{
+  "packet": "orch4_particle_app_services_r23",
+  "status": "bounded_application_service_access_and_readonly_mapping_strict_win32_and_three_ctests_passed",
+  "base_head": "6baa27e70c399936f67ec5c2843b3b82c303ef4c",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "original_body_count_added": 0,
+  "sources": [
+    "include/bsp/game_hosts_vfs.hpp",
+    "src/game_hosts_vfs.cpp",
+    "include/bsp/game_native_vfs_application.hpp",
+    "src/game_native_vfs_application.cpp",
+    "include/bsp/game_hosts_singletons.hpp",
+    "src/game_main.cpp"
+  ],
+  "borrowed_services": {
+    "raw_strings": ["01090aa8", "01090aa4", "01090aa0"],
+    "vfs": ["0109ceec", "runtime_bindings", "name_resolution", "physical_dates"],
+    "factory_alias": "00f8d31c",
+    "identity": "All accessors refer to existing application-owned cells and contexts; no alias cell, owner, manager, provider, allocator or callback family is created."
+  },
+  "bootstrap_readonly_bands": [
+    "00ce0000", "00cf0000", "00d00000", "00d10000",
+    "00d50000", "00d60000", "00d70000"
+  ],
+  "lifetime": "Borrowed contexts and cells remain alive through the existing shared singleton drain and immediate VFS retirement. F8D31C bits remain after owner deletion and may then be dangling; this packet never dereferences them after drain.",
+  "validation": {
+    "strict_win32_build": "passed",
+    "seed_verification": "8 of 8 native differential seed bodies matched the installed executable",
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "report_calls": "0 call rows checked, 0 failed"
+  },
+  "calls": [],
+  "limits": [
+    "No GameNativeParticleRuntime construction, registration, dispatch or install.",
+    "No raw resource manager/load cache, texture cache, render owners, F8D344 parameter pool, particle cache, atlas manager, platform host or load-event host is supplied.",
+    "GameResourceManager and GuiLuaRef are not substituted for native raw owners.",
+    "No native ABI, FH3, renderer, gameplay or installed-game runtime validation."
+  ],
+  "binary_abi_compatible": false,
+  "native_fh3_tested": false,
+  "game_process_exercised": false,
+  "gameplay_validated": false
+}
