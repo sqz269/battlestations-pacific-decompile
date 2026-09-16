@@ -1,0 +1,80 @@
+{
+  "packet": "orch4-particle-lua-bridge-r23",
+  "status": "evidence_only_error_contract_blocks_production_bridge",
+  "baseline_commit": "2b4614890",
+  "worktree": "agent/orch4-20260916-particle-lua-bridge-r23",
+  "documentation": "docs/gui_lua_native_bridge_r23.md",
+  "production_cpp_changed": false,
+  "ghidra_mutated": false,
+  "native_body_reconstructed": false,
+  "ghidra_target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py client target verification on live queries; ghidra count and ensure --status passed",
+    "seed_regions_matched_disk": 8,
+    "binary_sha256": "B682A82C52F81F957B2C70222077305A933F72481686C88843077F714B956DD6"
+  },
+  "source_contract": {
+    "host_references": "private registry handles, globals pseudo-index, borrowed indices",
+    "native_object_size": "0x14",
+    "native_owner_size": "0x4c8",
+    "tracking_capacity": {"slots": 50, "references_per_slot": 5},
+    "slot_expression": "stack_offset_0c + object.index_08",
+    "addresses_must_remain_stable": true,
+    "longjmp_failure_identity_and_cleanup_are_unproved_for_particle": true,
+    "private_registry_push_boundary_tested": false
+  },
+  "original_error_path": [
+    {"address": "00a69330", "name": "luaD_throw", "evidence": "status at current L+70 error frame +44; call00c03570 at00a69346 with frame+4,1"},
+    {"address": "00a68b80", "name": "luaD_rawrunprotected", "evidence": "call__setjmp3 at00a68ba6 with count0; restore prior error chain on both returns"},
+    {"address": "00c034f4", "name": "__setjmp3", "evidence": "saved FS exception frame, registers, ESP, return address and VC20 signature; count0 installs no explicit callback"},
+    {"address": "00c03570", "name": "FID_conflict:___longjmp_internal", "evidence": "exception80000026; conditional RtlUnwind at00c035b9; optional local unwind; restore and jump"},
+    {"address": "00a680e0", "name": "lua_pcall", "evidence": "call00a696f0 at00a68125; saved function slot uses10h value stride"},
+    {"address": "00a696f0", "name": "FUN_00a696f0", "hypothesis": "luaD_pcall", "evidence": "on error closes upvalues, sets error object and restores CallInfo/base/call/hook fields", "renamed": false},
+    {"address": "00a68af0", "name": "seterrorobj", "evidence": "runtime/syntax copy current error to saved location; top becomes saved location+10h at00a68b62..65"}
+  ],
+  "probe": {
+    "source": "local/gui_lua_native_bridge_r23_probe.cpp",
+    "source_sha256": "BF094932A2809983D62F7C0C4949003E695B33E014F70BA6E4A92C8253AEDCDE",
+    "build_script": "local/build_gui_lua_native_bridge_r23_probe.ps1",
+    "build_script_sha256": "06B7CCD9F028D1818A37FA53AD929AB2BE47F663789B440492824B2942E3FBCF",
+    "executable": "local/gui_lua_native_bridge_r23/gui_lua_native_bridge_probe.exe",
+    "executable_sha256": "3F5DBB91C92ADD46B4BC155C277CE5B1B3387F757C3B47C1202449B93E6A9074",
+    "log": "local/gui_lua_native_bridge_r23_probe.log",
+    "architecture": "MSVC Win32",
+    "flags": ["/std:c++17", "/EHsc", "/fp:strict", "/O2", "/MD", "/W4", "/WX", "/MANIFEST:EMBED"],
+    "exit_code": 0,
+    "lua_library": "J:/PROG/battlestations-pacific-decompile/build/win32/Release/bsp_lua511.lib",
+    "lua_library_sha256": "544CADC939D0423AE27E54C5D9A8191B30D985AEDE79E75C30CB635014D7D4FE",
+    "current_source_compiled": ["src/gui_lua_runtime.cpp", "src/native_lua_objects.cpp"],
+    "normal_result": {
+      "root_index": 64, "owner_stack_offset": -64, "root_slot": 0,
+      "root_references": 2, "child_slot": 1, "read_value": 23,
+      "restored_caller_stack_top": 63, "last_sentinel_preserved": true,
+      "root_access": "same interpreter/global table; private host registry push is not exposed or tested"
+    },
+    "error_result": {
+      "lua_status": 2, "catch_entered": 0, "after_error": 0,
+      "callback_stack_top_before_error": 3, "returned_stack_top": 1,
+      "retained_root_index": 2, "retained_child_index": 3,
+      "retained_root_count": 1, "retained_child_count": 1,
+      "root_lua_type_after_return": -1,
+      "callback_nontrivial_destructors_crossed": false,
+      "native_cleanup_replayed_after_invalidating_stack": false
+    }
+  },
+  "source_hashes": {
+    "src/gui_lua_runtime.cpp": "26837A78ACA1AD98AD6264EDB6DC1390FD4A3AB64887EC3B61D52A3DA1FEBF84",
+    "src/native_lua_objects.cpp": "C2D70E3C7471688114C14677FACB25EF318C224CE0CAB8DE0AB2EF3BE43A0A2E",
+    "src/native_particle_component_reader_raw.cpp": "A278E0F7D360EC2816F46F0391038921F080B8FC152C5E15A20F265B9951875E"
+  },
+  "full_build_and_ctests": "not rerun: evidence-only tracked changes, no production C++ edits",
+  "limits": [
+    "Source probe does not execute original instructions, original Particle FH3 or resource acquisition.",
+    "Original Lua uses longjmp and its CRT performs SEH unwind; the probe does not prove original cleanup behavior.",
+    "No cast, table snapshot, substitute Lua state, DoFile installation or error/allocator ABI rewrite was introduced.",
+    "No safe production retained bridge API or dispatch callback is claimed.",
+    "No allocator exhaustion, arbitrary borrowed alias, original raw Lua ABI or gameplay validation."
+  ],
+  "next_contract": "Recover original Particle/base-reader FH3 cleanup on the identified Lua nonlocal transfer, then establish a source Lua operation boundary that records failure and keeps or finishes every retained stack/child obligation before adding the actual root lease."
+}
