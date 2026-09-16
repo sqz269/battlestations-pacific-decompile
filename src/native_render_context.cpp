@@ -1,8 +1,10 @@
 #include "bsp/native_render_context.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <exception>
+#include <mutex>
 #include <new>
 #include <stdexcept>
+#include <unordered_map>
 
 namespace bsp {
 namespace {
@@ -25,6 +27,82 @@ void release_then_clear(void*& slot, NativeRenderActualOwners& owners) {
     }
 }
 } // namespace
+
+struct NativeRenderActualOwnerRegistry::Impl final {
+    mutable std::mutex mutex;
+    std::unordered_map<void*, RenderCommandReference*> entries;
+};
+
+NativeRenderActualOwnerRegistry::NativeRenderActualOwnerRegistry()
+    : impl_(std::make_unique<Impl>()) {}
+
+NativeRenderActualOwnerRegistry::~NativeRenderActualOwnerRegistry() {
+    if (!empty()) std::terminate();
+}
+
+void NativeRenderActualOwnerRegistry::bind(void* identity,
+    RenderCommandReference& reference) {
+    if (!identity || reinterpret_cast<std::uintptr_t>(identity) % alignof(std::uint32_t) != 0)
+        throw std::invalid_argument("native owner registry requires an aligned actual identity");
+    auto* const actual = std::launder(reinterpret_cast<std::atomic<std::int32_t>*>(
+        static_cast<std::byte*>(identity) + 4));
+    if (&reference.reference_count != actual ||
+        actual->load(std::memory_order_relaxed) <= 0)
+        throw std::invalid_argument(
+            "native owner registry companion must borrow the live actual +04 atomic");
+    const std::lock_guard<std::mutex> lock(impl_->mutex);
+    if (!impl_->entries.emplace(identity, &reference).second)
+        throw std::logic_error("native owner identity already has a canonical companion");
+}
+
+void NativeRenderActualOwnerRegistry::unbind(void* identity,
+    RenderCommandReference& reference) noexcept {
+    const std::lock_guard<std::mutex> lock(impl_->mutex);
+    const auto found = impl_->entries.find(identity);
+    if (found == impl_->entries.end() || found->second != &reference)
+        std::terminate();
+    impl_->entries.erase(found);
+}
+
+RenderCommandReference* NativeRenderActualOwnerRegistry::find(void* identity) {
+    const std::lock_guard<std::mutex> lock(impl_->mutex);
+    const auto found = impl_->entries.find(identity);
+    return found == impl_->entries.end() ? nullptr : found->second;
+}
+
+RenderCommandReference& NativeRenderActualOwnerRegistry::resolve_actual(void* identity) {
+    auto* const found = find(identity);
+    if (!found)
+        throw std::logic_error("actual render owner has no canonical companion");
+    return *found;
+}
+
+std::size_t NativeRenderActualOwnerRegistry::size() const {
+    const std::lock_guard<std::mutex> lock(impl_->mutex);
+    return impl_->entries.size();
+}
+
+bool NativeRenderActualOwnerRegistry::empty() const {
+    return size() == 0;
+}
+
+void NativeRenderActualOwnerRegistry::bind_callback(void* context, void* identity,
+    RenderCommandReference& reference) {
+    if (!context) throw std::invalid_argument("native owner registry context is null");
+    static_cast<NativeRenderActualOwnerRegistry*>(context)->bind(identity, reference);
+}
+
+void NativeRenderActualOwnerRegistry::unbind_callback(void* context, void* identity,
+    RenderCommandReference& reference) noexcept {
+    if (!context) std::terminate();
+    static_cast<NativeRenderActualOwnerRegistry*>(context)->unbind(identity, reference);
+}
+
+RenderCommandReference* NativeRenderActualOwnerRegistry::find_callback(
+    void* context, void* identity) {
+    if (!context) throw std::invalid_argument("native owner registry context is null");
+    return static_cast<NativeRenderActualOwnerRegistry*>(context)->find(identity);
+}
 
 void release_native_render_actual_owner(NativeRenderActualOwners& owners, void* identity) {
     auto* const actual = std::launder(reinterpret_cast<std::atomic<std::int32_t>*>(
