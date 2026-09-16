@@ -1,0 +1,717 @@
+{
+  "packet": "orch5_native_renderer_remaining_array_cleanup",
+  "source_base": "0a7c5c7035e01af98bc9136db86c5817a9dca690",
+  "status": "complete_actual_source_strict_win32_two_ctests_and_original_source_probe_passed",
+  "owned_addresses": [
+    "00b280b0",
+    "00b280d0",
+    "00737bf0",
+    "00b280f0",
+    "00b22ee0",
+    "00b22f30",
+    "00b22f80"
+  ],
+  "owned_files": [
+    "include/bsp/native_renderer_remaining_array_cleanup.hpp",
+    "src/native_renderer_remaining_array_cleanup.cpp",
+    "docs/NATIVE_RENDERER_REMAINING_ARRAY_CLEANUP.md",
+    "reports/native_renderer_remaining_array_cleanup.json"
+  ],
+  "functions": [
+    {
+      "address": "00b280b0",
+      "end_exclusive": "00b280c7",
+      "bytes": 23,
+      "coverage": "complete",
+      "cpp_symbol": "bsp::destroy_native_renderer_array_00b280b0",
+      "source": "src/native_renderer_remaining_array_cleanup.cpp",
+      "header": "include/bsp/native_renderer_remaining_array_cleanup.hpp",
+      "renderer_header_offset": "1ae8",
+      "original_abi": "ECX header, plain RET",
+      "source_abi": "MSVC Win32 fastcall ECX header",
+      "uncertainty": "Source private frames/CRT are new; no native FH3/asynchronous SEH or gameplay proof"
+    },
+    {
+      "address": "00b280d0",
+      "end_exclusive": "00b280e7",
+      "bytes": 23,
+      "coverage": "complete",
+      "cpp_symbol": "bsp::destroy_native_renderer_array_00b280d0",
+      "source": "src/native_renderer_remaining_array_cleanup.cpp",
+      "header": "include/bsp/native_renderer_remaining_array_cleanup.hpp",
+      "renderer_header_offset": "1af4",
+      "original_abi": "ECX header, plain RET",
+      "source_abi": "MSVC Win32 fastcall ECX header",
+      "uncertainty": "Source private frames/CRT are new; no native FH3/asynchronous SEH or gameplay proof"
+    },
+    {
+      "address": "00737bf0",
+      "end_exclusive": "00737c07",
+      "bytes": 23,
+      "coverage": "complete",
+      "cpp_symbol": "bsp::destroy_native_renderer_array_00737bf0",
+      "source": "src/native_renderer_remaining_array_cleanup.cpp",
+      "header": "include/bsp/native_renderer_remaining_array_cleanup.hpp",
+      "renderer_header_offset": "1b00",
+      "original_abi": "ECX header, plain RET",
+      "source_abi": "MSVC Win32 fastcall ECX header",
+      "uncertainty": "Source private frames/CRT are new; no native FH3/asynchronous SEH or gameplay proof"
+    },
+    {
+      "address": "00b280f0",
+      "end_exclusive": "00b28107",
+      "bytes": 23,
+      "coverage": "complete",
+      "cpp_symbol": "bsp::destroy_native_renderer_array_00b280f0",
+      "source": "src/native_renderer_remaining_array_cleanup.cpp",
+      "header": "include/bsp/native_renderer_remaining_array_cleanup.hpp",
+      "renderer_header_offset": "1b0c",
+      "original_abi": "ECX header, plain RET",
+      "source_abi": "MSVC Win32 fastcall ECX header",
+      "uncertainty": "Source private frames/CRT are new; no native FH3/asynchronous SEH or gameplay proof"
+    },
+    {
+      "address": "00b22ee0",
+      "end_exclusive": "00b22f30",
+      "bytes": 80,
+      "coverage": "complete",
+      "cpp_symbol": "bsp::resize_native_renderer_array_00b22ee0",
+      "source": "src/native_renderer_remaining_array_cleanup.cpp",
+      "header": "include/bsp/native_renderer_remaining_array_cleanup.hpp",
+      "renderer_header_offset": "1ae8",
+      "original_abi": "ECX header, one stacked signed count, RET4",
+      "source_abi": "MSVC Win32 fastcall ECX header, reserved EDX, stacked signed count",
+      "uncertainty": "Source private frames/CRT are new; no native FH3/asynchronous SEH or gameplay proof"
+    },
+    {
+      "address": "00b22f30",
+      "end_exclusive": "00b22f80",
+      "bytes": 80,
+      "coverage": "complete",
+      "cpp_symbol": "bsp::resize_native_renderer_array_00b22f30",
+      "source": "src/native_renderer_remaining_array_cleanup.cpp",
+      "header": "include/bsp/native_renderer_remaining_array_cleanup.hpp",
+      "renderer_header_offset": "1af4",
+      "original_abi": "ECX header, one stacked signed count, RET4",
+      "source_abi": "MSVC Win32 fastcall ECX header, reserved EDX, stacked signed count",
+      "uncertainty": "Source private frames/CRT are new; no native FH3/asynchronous SEH or gameplay proof"
+    },
+    {
+      "address": "00b22f80",
+      "end_exclusive": "00b22fd0",
+      "bytes": 80,
+      "coverage": "complete",
+      "cpp_symbol": "bsp::resize_native_renderer_array_00b22f80",
+      "source": "src/native_renderer_remaining_array_cleanup.cpp",
+      "header": "include/bsp/native_renderer_remaining_array_cleanup.hpp",
+      "renderer_header_offset": "1b0c",
+      "original_abi": "ECX header, one stacked signed count, RET4",
+      "source_abi": "MSVC Win32 fastcall ECX header, reserved EDX, stacked signed count",
+      "uncertainty": "Source private frames/CRT are new; no native FH3/asynchronous SEH or gameplay proof"
+    }
+  ],
+  "owned_native_bytes": 332,
+  "call_sites": [
+    {
+      "address": "00b280b5",
+      "native": "00b22ee0",
+      "function": "00b280b0",
+      "scope": "owned"
+    },
+    {
+      "address": "00b280bd",
+      "native": "00bf6989",
+      "function": "00b280b0",
+      "scope": "owned"
+    },
+    {
+      "address": "00b280d5",
+      "native": "00b22f30",
+      "function": "00b280d0",
+      "scope": "owned"
+    },
+    {
+      "address": "00b280dd",
+      "native": "00bf6989",
+      "function": "00b280d0",
+      "scope": "owned"
+    },
+    {
+      "address": "00737bf5",
+      "native": "00737390",
+      "function": "00737bf0",
+      "scope": "owned"
+    },
+    {
+      "address": "00737bfd",
+      "native": "00bf6989",
+      "function": "00737bf0",
+      "scope": "owned"
+    },
+    {
+      "address": "00b280f5",
+      "native": "00b22f80",
+      "function": "00b280f0",
+      "scope": "owned"
+    },
+    {
+      "address": "00b280fd",
+      "native": "00bf6989",
+      "function": "00b280f0",
+      "scope": "owned"
+    },
+    {
+      "address": "00b22eee",
+      "native": "00b226b0",
+      "function": "00b22ee0",
+      "scope": "owned"
+    },
+    {
+      "address": "00b22f3e",
+      "native": "00b22710",
+      "function": "00b22f30",
+      "scope": "owned"
+    },
+    {
+      "address": "00b22f8e",
+      "native": "00b22850",
+      "function": "00b22f80",
+      "scope": "owned"
+    },
+    {
+      "address": "0073739e",
+      "native": "00735ff0",
+      "function": "00737390",
+      "scope": "read_only_reused_provider_equivalence"
+    },
+    {
+      "address": "00736010",
+      "native": "00bf55be",
+      "function": "00735ff0",
+      "scope": "read_only_reused_provider_equivalence"
+    },
+    {
+      "address": "0073603c",
+      "native": "00bf6989",
+      "function": "00735ff0",
+      "scope": "read_only_reused_provider_equivalence"
+    },
+    {
+      "address": "00b226d0",
+      "native": "00bf55be",
+      "function": "00b226b0",
+      "scope": "read_only_reused_provider_equivalence"
+    },
+    {
+      "address": "00b226fc",
+      "native": "00bf6989",
+      "function": "00b226b0",
+      "scope": "read_only_reused_provider_equivalence"
+    },
+    {
+      "address": "00b22730",
+      "native": "00bf55be",
+      "function": "00b22710",
+      "scope": "read_only_reused_provider_equivalence"
+    },
+    {
+      "address": "00b2275c",
+      "native": "00bf6989",
+      "function": "00b22710",
+      "scope": "read_only_reused_provider_equivalence"
+    },
+    {
+      "address": "00b22870",
+      "native": "00bf55be",
+      "function": "00b22850",
+      "scope": "read_only_reused_provider_equivalence"
+    },
+    {
+      "address": "00b2289c",
+      "native": "00bf6989",
+      "function": "00b22850",
+      "scope": "read_only_reused_provider_equivalence"
+    },
+    {
+      "address": "00cbde1f",
+      "native": "00b280b0",
+      "function": "00cbde13",
+      "scope": "read_only_parent_unwind_action",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cbde30",
+      "native": "00b280d0",
+      "function": "00cbde24",
+      "scope": "read_only_parent_unwind_action",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cbde41",
+      "native": "00737bf0",
+      "function": "00cbde35",
+      "scope": "read_only_parent_unwind_action",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cbde52",
+      "native": "00b280f0",
+      "function": "00cbde46",
+      "scope": "read_only_parent_unwind_action",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cbdfcf",
+      "native": "00b280b0",
+      "function": "00cbdfc6",
+      "scope": "read_only_parent_unwind_action",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cbdfdd",
+      "native": "00b280d0",
+      "function": "00cbdfd4",
+      "scope": "read_only_parent_unwind_action",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cbdfeb",
+      "native": "00737bf0",
+      "function": "00cbdfe2",
+      "scope": "read_only_parent_unwind_action",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cbdff9",
+      "native": "00b280f0",
+      "function": "00cbdff0",
+      "scope": "read_only_parent_unwind_action",
+      "kind": "tail_jump"
+    }
+  ],
+  "live_disk_spans": [
+    {
+      "address": "00b280b0",
+      "length": 23,
+      "sha256": "a4c4981dbcb79d4de54ac1fbc528d8503d611346712c1cbeb67f070791a36bc2",
+      "live_equals_disk": true,
+      "pe_raw_offset": 7504048,
+      "instructions": 10,
+      "owned": true
+    },
+    {
+      "address": "00b280d0",
+      "length": 23,
+      "sha256": "e7deef13c1ae68f52485404845ae64c6f00915d64d8790dee02996d17a2aeaa7",
+      "live_equals_disk": true,
+      "pe_raw_offset": 7504080,
+      "instructions": 10,
+      "owned": true
+    },
+    {
+      "address": "00737bf0",
+      "length": 23,
+      "sha256": "f0708457aa9430f4450c62b17f36d912acc425d0f9e1d4fa57d19c8c8a9e83f9",
+      "live_equals_disk": true,
+      "pe_raw_offset": 3374064,
+      "instructions": 10,
+      "owned": true
+    },
+    {
+      "address": "00b280f0",
+      "length": 23,
+      "sha256": "ceb8d9405d145bfefca6cfc3c24967406c3ff9169323c43bf5574a503cc75f04",
+      "live_equals_disk": true,
+      "pe_raw_offset": 7504112,
+      "instructions": 10,
+      "owned": true
+    },
+    {
+      "address": "00b22ee0",
+      "length": 80,
+      "sha256": "5c658dfede8740f57269daafb806416b89dc148030038418840d262c9f32507c",
+      "live_equals_disk": true,
+      "pe_raw_offset": 7483104,
+      "instructions": 31,
+      "owned": true
+    },
+    {
+      "address": "00b22f30",
+      "length": 80,
+      "sha256": "b81a71b1ad221b30b58097d0f7ba59d986e664d2133b7db0de43440da98fe045",
+      "live_equals_disk": true,
+      "pe_raw_offset": 7483184,
+      "instructions": 31,
+      "owned": true
+    },
+    {
+      "address": "00b22f80",
+      "length": 80,
+      "sha256": "dcfd72a61c37c0205d9c852e42bb4cbc327281584ee4cd0576951284394538df",
+      "live_equals_disk": true,
+      "pe_raw_offset": 7483264,
+      "instructions": 31,
+      "owned": true
+    },
+    {
+      "address": "00737390",
+      "length": 80,
+      "sha256": "49fb1569fb5ef002c8f3b8f0e2d79d5247ae2e032365b7ad52e55af27316e4c5",
+      "live_equals_disk": true,
+      "pe_raw_offset": 3371920,
+      "instructions": 31,
+      "owned": false
+    },
+    {
+      "address": "00735ff0",
+      "length": 95,
+      "sha256": "9b09d6402eefec772d18c71e9abf5feda1c7ffd1d231a3ce57c7140171282699",
+      "live_equals_disk": true,
+      "pe_raw_offset": 3366896,
+      "instructions": 38,
+      "owned": false
+    },
+    {
+      "address": "00b226b0",
+      "length": 95,
+      "sha256": "30016eb06a19fe6b329421ad7159abac2e7b6952a93e083feed08d10179aaeee",
+      "live_equals_disk": true,
+      "pe_raw_offset": 7481008,
+      "instructions": 38,
+      "owned": false
+    },
+    {
+      "address": "00b22710",
+      "length": 95,
+      "sha256": "e9f9a89352a9077211e2ec2dae9be2a5caf55c1feaee849455f486536ed51eda",
+      "live_equals_disk": true,
+      "pe_raw_offset": 7481104,
+      "instructions": 38,
+      "owned": false
+    },
+    {
+      "address": "00b22850",
+      "length": 95,
+      "sha256": "51123d34c5c59c434f75a165b075c36f355c6b2816889f54f244f0db6a8ba2d7",
+      "live_equals_disk": true,
+      "pe_raw_offset": 7481424,
+      "instructions": 38,
+      "owned": false
+    },
+    {
+      "address": "00df6788",
+      "length": 32,
+      "sha256": "f869038d9f09f0184f14920af9fbeff0cc5f6b6deca4ee67051d1e9aacd15e48",
+      "live_equals_disk": true,
+      "pe_raw_offset": 10446728,
+      "owned": false,
+      "scope": "read_only_parent_context"
+    },
+    {
+      "address": "00cbde13",
+      "length": 17,
+      "sha256": "d178a2589d0c5644cbf3ab99b758eec257291d52d69e1eb0c555dc151058caef",
+      "live_equals_disk": true,
+      "pe_raw_offset": 9166355,
+      "owned": false,
+      "scope": "read_only_parent_context"
+    },
+    {
+      "address": "00cbde24",
+      "length": 17,
+      "sha256": "b3526761f992efbeb0860088ac8743207f250bd53d880ad9cbc69716cb1c3197",
+      "live_equals_disk": true,
+      "pe_raw_offset": 9166372,
+      "owned": false,
+      "scope": "read_only_parent_context"
+    },
+    {
+      "address": "00cbde35",
+      "length": 17,
+      "sha256": "ae6c3f2d3926351216db474ffd9fc2b987b9622eae57b6c194558aab6703818b",
+      "live_equals_disk": true,
+      "pe_raw_offset": 9166389,
+      "owned": false,
+      "scope": "read_only_parent_context"
+    },
+    {
+      "address": "00cbde46",
+      "length": 17,
+      "sha256": "fa6e48e9162f032b2f311552f51b06e2223511eb5506b728bab6831a66c2dad9",
+      "live_equals_disk": true,
+      "pe_raw_offset": 9166406,
+      "owned": false,
+      "scope": "read_only_parent_context"
+    },
+    {
+      "address": "00df6894",
+      "length": 32,
+      "sha256": "578e95e69e77d666f657cd5e07948cc9403e19a5d50393d5ddef9ef8d1da76a2",
+      "live_equals_disk": true,
+      "pe_raw_offset": 10446996,
+      "owned": false,
+      "scope": "read_only_parent_context"
+    },
+    {
+      "address": "00cbdfc6",
+      "length": 14,
+      "sha256": "cfda4798e38c025bc401b88b4a27b7fb81fd48f5eee5c7cd47ec088156ea451d",
+      "live_equals_disk": true,
+      "pe_raw_offset": 9166790,
+      "owned": false,
+      "scope": "read_only_parent_context"
+    },
+    {
+      "address": "00cbdfd4",
+      "length": 14,
+      "sha256": "4e48b43d94f117ae78e93975a3c5d95ee106453f3d6d77f6d3d50c70ac9fd59e",
+      "live_equals_disk": true,
+      "pe_raw_offset": 9166804,
+      "owned": false,
+      "scope": "read_only_parent_context"
+    },
+    {
+      "address": "00cbdfe2",
+      "length": 14,
+      "sha256": "7bd77c441b3f4a0079f5b058ae3fb1ab94fbbf7a3da1ccb1fe91eb02b68b0e99",
+      "live_equals_disk": true,
+      "pe_raw_offset": 9166818,
+      "owned": false,
+      "scope": "read_only_parent_context"
+    },
+    {
+      "address": "00cbdff0",
+      "length": 14,
+      "sha256": "1747a27db11ed576fca5be950f2f6f6353a6c3256e7de010f75864a12039fde6",
+      "live_equals_disk": true,
+      "pe_raw_offset": 9166832,
+      "owned": false,
+      "scope": "read_only_parent_context"
+    }
+  ],
+  "provider_equivalence": {
+    "resize_reference": "00737390",
+    "resize_equivalents": [
+      "00b22ee0",
+      "00b22f30",
+      "00b22f80"
+    ],
+    "resize_ignored_bytes": "four relative displacement bytes of CALL at +0E only",
+    "normalized_resize_sha256": "4e60f99674d9d2488deca45fa68ec72e5b3a93e4077d8d65b540d1d8eacb7d6b",
+    "reserve_reference": "00735ff0",
+    "reserve_equivalents": [
+      "00b226b0",
+      "00b22710",
+      "00b22850"
+    ],
+    "reserve_ignored_bytes": "four relative displacement bytes each of CALL at +20/+4C only; all destinations verified BF55BE/BF6989",
+    "normalized_reserve_sha256": "1c564a5e55152124ad1cecd69ae2cea0d80558e3f015cc1f3fd3007ba493a1e4",
+    "complete_instruction_equivalence": true
+  },
+  "parent_context": {
+    "constructor": {
+      "unwind_map": "00df6710",
+      "captured_entries_address": "00df6788",
+      "states": [
+        {
+          "state": 15,
+          "next_state": 14,
+          "action": "00cbde13",
+          "direct_target": "00b280b0",
+          "receiver": {
+            "register": "ECX",
+            "captured_slot": "[FH3 establisher EBP-45Ch]",
+            "byte_offset": 6888,
+            "relation": "actual renderer + 1AE8h"
+          }
+        },
+        {
+          "state": 16,
+          "next_state": 15,
+          "action": "00cbde24",
+          "direct_target": "00b280d0",
+          "receiver": {
+            "register": "ECX",
+            "captured_slot": "[FH3 establisher EBP-45Ch]",
+            "byte_offset": 6900,
+            "relation": "actual renderer + 1AF4h"
+          }
+        },
+        {
+          "state": 17,
+          "next_state": 16,
+          "action": "00cbde35",
+          "direct_target": "00737bf0",
+          "receiver": {
+            "register": "ECX",
+            "captured_slot": "[FH3 establisher EBP-45Ch]",
+            "byte_offset": 6912,
+            "relation": "actual renderer + 1B00h"
+          }
+        },
+        {
+          "state": 18,
+          "next_state": 17,
+          "action": "00cbde46",
+          "direct_target": "00b280f0",
+          "receiver": {
+            "register": "ECX",
+            "captured_slot": "[FH3 establisher EBP-45Ch]",
+            "byte_offset": 6924,
+            "relation": "actual renderer + 1B0Ch"
+          }
+        }
+      ]
+    },
+    "destructor": {
+      "unwind_map": "00df681c",
+      "captured_entries_address": "00df6894",
+      "states": [
+        {
+          "state": 15,
+          "next_state": 14,
+          "action": "00cbdfc6",
+          "direct_target": "00b280b0",
+          "receiver": {
+            "register": "ECX",
+            "captured_slot": "[FH3 establisher EBP-14h]",
+            "byte_offset": 6888,
+            "relation": "actual renderer + 1AE8h"
+          }
+        },
+        {
+          "state": 16,
+          "next_state": 15,
+          "action": "00cbdfd4",
+          "direct_target": "00b280d0",
+          "receiver": {
+            "register": "ECX",
+            "captured_slot": "[FH3 establisher EBP-14h]",
+            "byte_offset": 6900,
+            "relation": "actual renderer + 1AF4h"
+          }
+        },
+        {
+          "state": 17,
+          "next_state": 16,
+          "action": "00cbdfe2",
+          "direct_target": "00737bf0",
+          "receiver": {
+            "register": "ECX",
+            "captured_slot": "[FH3 establisher EBP-14h]",
+            "byte_offset": 6912,
+            "relation": "actual renderer + 1B00h"
+          }
+        },
+        {
+          "state": 18,
+          "next_state": 17,
+          "action": "00cbdff0",
+          "direct_target": "00b280f0",
+          "receiver": {
+            "register": "ECX",
+            "captured_slot": "[FH3 establisher EBP-14h]",
+            "byte_offset": 6924,
+            "relation": "actual renderer + 1B0Ch"
+          }
+        }
+      ]
+    }
+  },
+  "providers": {
+    "resize": "bsp::resize_native_procedural_pointer_array_00737390",
+    "reserve": "bsp::reserve_native_cube_texture_owner_array_00735ff0",
+    "allocate": "singleton_lifetime_allocate actual CRT allocation/new-handler loop",
+    "free": "singleton_lifetime_free actual CRT free",
+    "opaque_callbacks": false,
+    "projected_storage": false,
+    "dependency_merge": null
+  },
+  "repair_needs": [
+    {
+      "address": "00b280b0",
+      "was": "declared body ends immediately after BF6989 CALL",
+      "evidence": "local/remaining_array_original_00b280b0.bin",
+      "is": "complete23-byte returning body ends00b280c6"
+    },
+    {
+      "address": "00b280d0",
+      "was": "declared body ends immediately after BF6989 CALL",
+      "evidence": "local/remaining_array_original_00b280d0.bin",
+      "is": "complete23-byte returning body ends00b280e6"
+    },
+    {
+      "address": "00b280f0",
+      "was": "declared body ends immediately after BF6989 CALL",
+      "evidence": "local/remaining_array_original_00b280f0.bin",
+      "is": "complete23-byte returning body ends00b28106"
+    },
+    {
+      "address": "00b22850",
+      "was": "complete declared span but incorrect nonreturning-free flow skips publication instructions",
+      "evidence": "local/remaining_array_flow.log and complete live/PE capture",
+      "is": "returning-free publication tail through B228AE; read-only dependency"
+    }
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "passed": true,
+      "configuration": "MSVC Win32 Release",
+      "log": "local/native_renderer_remaining_array_build.log",
+      "ctests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "ctests_passed": 2
+    },
+    "seed_verification": {
+      "passed": 8,
+      "all_live_equals_disk": true,
+      "log": "local/native_renderer_remaining_array_seeds.log"
+    },
+    "calls": {
+      "direct": 20,
+      "parent_tail_jumps": 8,
+      "total_checked": 28,
+      "failed": 0,
+      "log": "local/native_renderer_remaining_array_calls.log"
+    },
+    "focused_probe": {
+      "source": "local/remaining_array_probe.cpp",
+      "generated_original_bytes": "local/remaining_array_probe_bytes.hpp",
+      "build_script": "local/remaining_array_probe.cmd",
+      "build_log": "local/remaining_array_probe_build.log",
+      "run_log": "local/remaining_array_probe_run.log",
+      "modules_log": "local/remaining_array_probe_modules.log",
+      "result": "PASS: original/source raw resize grow and signed shrink; all four negative-capacity destructor replacement tails; pointee poison retained",
+      "flags": "/MD /EHsc /O2 /W4 /WX /fp:strict /link /MANIFEST:EMBED /MACHINE:X86",
+      "original_owned_body_executed": true,
+      "original_dependencies_executed": true,
+      "relocations": "Direct CALL displacements only; BF55BE/BF6989 use genuine source allocation/free providers",
+      "runtime_failure_injected": false,
+      "native_fh3_executed": false,
+      "game_validated": false,
+      "module_path_resolution": "Toolhelp32 plus same-process GetFinalPathNameByHandleW; loaded image Machine=I386 checked"
+    },
+    "new_configured_tests": 0,
+    "one_local_probe_program": true
+  },
+  "limits": [
+    "No pointee ownership or deletion",
+    "Valid actual extents/lifetimes required for wrapping pointer arithmetic",
+    "Allocation-failure behavior is static/source-contract evidence only",
+    "Relocated original owned bodies execute with source CRT allocator/free, not original CRT machine code",
+    "Original FH3/asynchronous SEH, unrestricted reentrancy and gameplay remain unvalidated"
+  ],
+  "ghidra_mutations": 0,
+  "cmake_change": "one source append inside short unleased-file coordination.lease_transaction",
+  "immutable_evidence": {
+    "directory": "local/immutable/native_renderer_remaining_array_20260914T152733Z",
+    "manifest": "local/immutable/native_renderer_remaining_array_20260914T152733Z/manifest.json",
+    "manifest_sha256": "c5852556f6a8471516e275d6c3da0d95a9c2e8a892dcc96240d41d0d3963baf9",
+    "artifact_count": 477,
+    "all_frozen_hashes_reverified": true,
+    "all_original_inputs_reverified": true
+  }
+}
