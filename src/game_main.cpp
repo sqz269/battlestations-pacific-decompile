@@ -382,6 +382,10 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         log.notef("native particle pools initialized: model_atexit=%d parameter_atexit=%d "
             "storage=process_actual38h/actual38h", model_atexit, parameter_atexit);
         auto& resource_pools = bsp::game::game_native_resource_pool_process();
+        const int mesh_atexit = resource_pools.initialize_mesh_once_00cd7e40();
+        const int section_atexit = resource_pools.initialize_section_once_00cd8250();
+        log.notef("native geometry pools initialized: mesh_atexit=%d section_atexit=%d "
+            "storage=process_actual38h/actual38h", mesh_atexit, section_atexit);
         const int hierarchy_atexit = resource_pools.initialize_hierarchy_once_00cd82d0();
         log.notef("native resource hierarchy pool initialized: atexit=%d storage=process_actual38h "
             "slots=actual88h", hierarchy_atexit);

@@ -2,6 +2,7 @@
 #include "bsp/allocator_list.hpp"
 #include "bsp/native_render_context.hpp"
 #include <array>
+#include <cstdlib>
 
 namespace bsp {
 
@@ -64,6 +65,14 @@ private:
 // Caller supplies that SAME concrete pool; no process-global substitute pool.
 void* allocate_native_mesh_section_slot_00b85ee0(NativeMeshSectionPool&);
 void return_native_mesh_section_slot_00b85b20(NativeMeshSectionPool&, void*);
+
+// 00CD8250/00CE0EC0 select the actual 010901D4 pool. Its storage, companion
+// and shared allocator domain must outlive the real CRT exit callback.
+using NativeMeshSectionPoolAtexit = int (*)(void (*)());
+void bind_static_native_mesh_section_pool_010901d4(NativeMeshSectionPool& pool);
+int initialize_static_native_mesh_section_pool_00cd8250(
+    NativeMeshSectionPoolAtexit register_atexit = &std::atexit);
+void destroy_static_native_mesh_section_pool_00ce0ec0();
 
 struct NativeMeshSectionEnvironment {
     NativeMeshSectionPool& pool_010901d4;

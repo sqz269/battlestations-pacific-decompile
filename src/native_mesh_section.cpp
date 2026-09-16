@@ -26,6 +26,12 @@ static_assert(offsetof(NativeMeshSectionPoolStorage, first_free_slab_34) == 0x34
 constexpr std::size_t free_indices = 0x1900;
 constexpr std::size_t free_count = 0x1980;
 constexpr std::uint32_t no_free_slab = 0xffffffffu;
+NativeMeshSectionPool* static_pool_010901d4{};
+NativeMeshSectionPool& require_static_pool() {
+    if (!static_pool_010901d4)
+        throw std::logic_error("native mesh section pool 010901D4 is not bound");
+    return *static_pool_010901d4;
+}
 struct SlabBytes { std::byte bytes[NativeMeshSectionPool::slab_bytes]; };
 
 CRITICAL_SECTION* section(NativeMeshSectionPoolStorage& storage) noexcept {
@@ -219,6 +225,25 @@ void NativeMeshSectionPool::destroy_00b858f0() {
     free_table_unwind_00b85720();
     destroy_critical_section_00402f70();
     allocator_list_.unlink_base_element_00403970(storage_.allocator_00);
+}
+
+void bind_static_native_mesh_section_pool_010901d4(NativeMeshSectionPool& pool) {
+    if (static_pool_010901d4 && static_pool_010901d4 != &pool)
+        throw std::logic_error("native mesh section pool 010901D4 is already bound");
+    static_pool_010901d4 = &pool;
+}
+
+int initialize_static_native_mesh_section_pool_00cd8250(
+    NativeMeshSectionPoolAtexit register_atexit) {
+    if (!register_atexit)
+        throw std::invalid_argument("native mesh section pool requires atexit");
+    require_static_pool().initialize_00b85bb0();
+    // Preserve EAX from the real registration, including failure without rollback.
+    return register_atexit(&destroy_static_native_mesh_section_pool_00ce0ec0);
+}
+
+void destroy_static_native_mesh_section_pool_00ce0ec0() {
+    require_static_pool().destroy_00b858f0();
 }
 
 namespace {
