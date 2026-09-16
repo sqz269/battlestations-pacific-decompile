@@ -234,6 +234,40 @@ struct GuiNativeGeometryOwners::Impl {
         it->registered = true; acquired.registered = true;
         return it->raw;
     }
+    NativeMeshStorage* create_native_mesh_00b73b60(GuiNativeMeshAcquired& acquired) {
+        require(!acquired.started && !acquired.raw_slot && !acquired.creator &&
+            !acquired.companion && !acquired.owner_record && !acquired.published &&
+            !acquired.registered,
+            "Native B4C700 mesh admission requires one fresh acquired frame");
+        acquired.started = true;
+        auto it = mesh_entries.emplace(mesh_entries.end(), *this);
+        try {
+            acquired.native_site = 0x00b4c756;
+            acquired.raw_slot = allocate_native_mesh_slot_00b73b60();
+            if (acquired.raw_slot) {
+                acquired.native_site = 0x00b4c761;
+                try { it->raw = construct_native_mesh_00b73d70(acquired.raw_slot, constants); }
+                catch (...) {
+                    return_native_mesh_slot_00b72f70(acquired.raw_slot);
+                    acquired.raw_slot = nullptr;
+                    throw;
+                }
+                acquired.constructor_complete = true;
+            }
+        } catch (...) { mesh_entries.erase(it); throw; }
+        acquired.creator = it->raw;
+        acquired.raw_slot = nullptr; // Constructor consumed storage; not a release.
+        acquired.native_site = 0x00b4c789;
+        if (!it->raw) { mesh_entries.erase(it); return nullptr; }
+        acquired.owner_record = &*it;
+        it->reference = std::make_unique<NativeMeshReference>(*it->raw, meshes,
+            NativeMeshCompanionDisposal{&*it, retire_mesh});
+        acquired.companion = it->reference.get();
+        registration.bind(registration.context, it->raw, *it->reference);
+        it->registered = true;
+        acquired.registered = true;
+        return it->raw;
+    }
     NativeMeshStorage* create_mesh() {
         auto it = mesh_entries.emplace(mesh_entries.end(), *this);
         try {
@@ -418,6 +452,8 @@ NativeMeshSectionStorage* GuiNativeGeometryOwners::create_native_section_00533fa
     GuiNativeSectionAcquired& acquired) { return impl_->create_native_section(acquired); }
 NativeMeshStorage* GuiNativeGeometryOwners::create_native_mesh_and_publish(
     void* pair, GuiNativeMeshAcquired& acquired) { return impl_->create_native_mesh(pair, acquired); }
+NativeMeshStorage* GuiNativeGeometryOwners::create_native_mesh_00b73b60(
+    GuiNativeMeshAcquired& acquired) { return impl_->create_native_mesh_00b73b60(acquired); }
 NativeMeshConstants GuiNativeGeometryOwners::mesh_constants() const noexcept { return impl_->constants; }
 NativeMeshStorage* GuiNativeGeometryOwners::clone_mesh_for_text_00b742a0(
     NativeMeshStorage& source, const volatile std::uint32_t* mesh_profile,

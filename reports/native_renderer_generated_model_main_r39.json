@@ -1,0 +1,132 @@
+{
+  "packet": "native_renderer_generated_model_r39",
+  "status": "source_reconstructed_strict_build_and_focused_creator_fixture_pass",
+  "baseline_main": "f927c92c316b95f49610752b2812317a059ee1ff",
+  "source_commit": "2821d397253f6f639de71bd244c9e1e6ae51507e",
+  "validation_merge": "c5a314aa37c0c0172196dbc9a65dbfaa985a2139",
+  "owned_addresses": [
+    "00b4c700",
+    "00b73b60"
+  ],
+  "native_identity": {
+    "project": "C:\\Users\\sqz269\\bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native_bodies": [
+    {
+      "address": "00b4c700",
+      "length": 462,
+      "end_exclusive": "00b4c8ce",
+      "instructions": 169,
+      "file_offset": 7653120,
+      "sha256": "f0db9d4b323b45ee0e7f9e7670cd95197a538c53217aff5178e42481ec3f605a",
+      "live_equals_pe": true,
+      "abi": "ECX model-name header; EDX layout-name header; stack effect-name header, section kind, vertex count, section primitive count, index count; EAX model; RET14h"
+    },
+    {
+      "address": "00b73b60",
+      "length": 10,
+      "end_exclusive": "00b73b6a",
+      "instructions": 2,
+      "file_offset": 7813984,
+      "sha256": "5335b00fb639ebd563221cca93458c27eedd4ef5b72bffb13acf3a297cd8bc36",
+      "live_equals_pe": true,
+      "abi": "incoming ECX discarded; load canonical mesh pool 0108FFF8; tail jump B73A10"
+    }
+  ],
+  "call_sites": [
+    {"address":"00b4c725","function":"00b4c700","bytes":"e886870200","native":"00b74eb0","kind":"direct_call"},
+    {"address":"00b4c73b","function":"00b4c700","bytes":"e8f0880200","native":"00b75030","kind":"direct_call"},
+    {"address":"00b4c756","function":"00b4c700","bytes":"e805740200","native":"00b73b60","kind":"direct_call"},
+    {"address":"00b4c76d","function":"00b4c700","bytes":"e8fe750200","native":"00b73d70","kind":"direct_call"},
+    {"address":"00b4c792","function":"00b4c700","bytes":"e8d9890200","native":"00b75170","kind":"direct_call"},
+    {"address":"00b4c7e5","function":"00b4c700","bytes":"e8c6730200","native":"00b73bb0","kind":"direct_call"},
+    {"address":"00b4c804","function":"00b4c700","bytes":"e8178b9eff","native":"00535320","kind":"direct_call"},
+    {"address":"00b4c834","function":"00b4c700","bytes":"e837730200","native":"00b73b70","kind":"direct_call"},
+    {"address":"00b4c839","function":"00b4c700","bytes":"e862779eff","native":"00533fa0","kind":"direct_call"},
+    {"address":"00b4c85c","function":"00b4c700","bytes":"e83f9d0300","native":"00b865a0","kind":"direct_call"},
+    {"address":"00b4c864","function":"00b4c700","bytes":"e8579c0300","native":"00b864c0","kind":"direct_call"},
+    {"address":"00b4c86c","function":"00b4c700","bytes":"e8ef730200","native":"00b73c60","kind":"direct_call"},
+    {"address":"00b73b65","function":"00b73b60","bytes":"e9a6feffff","native":"00b73a10","kind":"tail_jump"}
+  ],
+  "source_contract": {
+    "model": "Allocate through exact B74EB0. Prepare the current model companion over that slot, construct through B75030, and on state0 failure retire only host bookkeeping before exact B748C0 raw return. Completed model bind failure has no native rollback.",
+    "raw_model": "The overload requires null actual_names, the same model-name header address, same AA8/AA4/AA0 raw name cells, and caller NativeNodeRawConstants. No second model or ID domain.",
+    "mesh": "GuiNativeGeometryOwners::create_native_mesh_00b73b60 uses the exact canonical wrapper and B73D70. State1 uses B72F70 only for constructor allocation unwind. It has no B94710 pair publication and preserves completed creator/owner record/companion on host failure.",
+    "declaration_and_streams": "Reload current F8D394 before slots38,5C and60. Register declaration and creators in the existing canonical domain. The R37 direct stream overload avoids unrelated mapping/diagnostic-lock dependencies.",
+    "material": "Use one persistent NativeMaterialFactoryAcquired. create_native_material_from_effect_cache_00535320 performs the slot48 capture and original effect/material schedule; register_native_material_creator adds only canonical host metadata. Obsolete raw-material frames are absent.",
+    "section": "Reuse exact create_native_section_00533fa0 acquired helper; store +08 kind,+0C zero,+10 vertex count,+14 zero,+18 primitive count; then B865A0, B864C0 and B73C60.",
+    "x87": "One FLD of volatile D7A260, FST second scalar, FSTP first scalar. No two-load C++ replacement or new arithmetic.",
+    "releases": "After vertex creation release captured declaration; after B73BB0 release captured vertex; after append release captured material, section and mesh in that order. Clear acquired creator immediately before terminal dispatch.",
+    "success": "Returned model creator remains outstanding. Optional index creator also remains outstanding after B73B70; no balancing decrement is invented."
+  },
+  "failure_states": {
+    "model_state0": "Only raw model allocation return. No complete-model destructor.",
+    "mesh_state1": "Only raw mesh allocation return; completed model remains retained and state0 is not chained.",
+    "host_registration": "Completed model, mesh, declaration, stream, material and section states survive added companion allocation/bind failure in caller-owned frames.",
+    "material_factory": "Persistent cache child and effect/raw/material phase remain in NativeMaterialFactoryAcquired. Constructor failure returns only its raw slot; normal path releases effect.",
+    "outer_cleanup": "There is no enclosing rollback of earlier native effects and no acquired-frame destructor cleanup."
+  },
+  "current_raw_context": {
+    "resource_support": "NativeResourceSupportLifetime raw mode proves the exact AA0 publication identity used by NativePhysicalBufferOwnerContext.",
+    "diagnostic_lock": "Main f927c92c3 supplies SoundLifetimeAccess and the actual GameSingletonHost CF14/CE752C drain. B4C700 does not map buffers and therefore does not consume NativePhysicalBufferLockContext directly."
+  },
+  "validation": {
+    "verify_seeds": "PASS",
+    "body_live_pe": "2/2 PASS",
+    "exact_call_rows": "13/13 PASS",
+    "build": "scripts/build.ps1 PASS after merging main f927c92c3",
+    "compiler": "MSVC Win32 /MD /W4 /WX /fp:strict",
+    "ctests": "3/3 PASS",
+    "fixture_build": "PASS with /MD /W4 /WX /fp:strict and /MANIFEST:EMBED",
+    "fixture_run": "PASS",
+    "fixture_cases": [
+      "exact B73B60 mesh plus exact 533FA0 section, append retain, creator drops and real terminal cascade",
+      "injected mesh canonical bind failure preserves completed creator and companion until explicit real terminal",
+      "injected section canonical bind failure preserves completed creator and companion until explicit real terminal"
+    ],
+    "full_factory_executed": false,
+    "renderer_executed": false,
+    "cold_material_path_executed": false,
+    "original_fh3_seh_abi_validated": false,
+    "gameplay_validated": false,
+    "ghidra_mutated": false
+  },
+  "artifact_receipts": [
+    {"path":"include/bsp/native_renderer_generated_model.hpp","bytes":3678,"sha256":"0ea876d2c85b559b37897bc3353658032374af0cd4884b6cb347a4efdc5618e0"},
+    {"path":"src/native_renderer_generated_model.cpp","bytes":12877,"sha256":"0003a0cdca008f65a062c98c5c783f0a7ff1556f30def295e72c327d48d4eafd"},
+    {"path":"include/bsp/gui_native_geometry.hpp","bytes":10778,"sha256":"132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf"},
+    {"path":"src/gui_native_geometry.cpp","bytes":30316,"sha256":"1b957f0aa970eec806bd09389aaa4f21157a64013a3a5c721a0065a0a7e5f0bf"},
+    {"path":"docs/NATIVE_RENDERER_GENERATED_MODEL.md","bytes":4579,"sha256":"e12589d505845875c5fd98ce9980368af14f0f60c0def6fb251cfa5d02724c7f"},
+    {"path":"cmake/startup.cmake","bytes":149188,"sha256":"b5def6b4c20e21b5a584ef5d542ea7725bbd76fc2d510f3b08342e84095d4af5"},
+    {"path":"build/win32/bsp_core.vcxproj","bytes":275532,"sha256":"41cfdd7d0ac3a01ebc73ce498c572e2d8d0e0e443f0e4e9f77530dc0b697c792"},
+    {"path":"build/win32/Release/bsp_core.lib","bytes":63454902,"sha256":"304715b6e9c3dd50c6ede078ecddb7e186de90ec5111c63c6508b857a3f76614"},
+    {"path":"build/win32/bsp_core.dir/Release/native_renderer_generated_model.obj","bytes":25716,"sha256":"7431052aef240ad27bf3a3cdcdecfd0bef3ec41538b0c07707d40e848b328595"},
+    {"path":"build/win32/bsp_core.dir/Release/gui_native_geometry.obj","bytes":315702,"sha256":"93839c7fee45a4882ffc835d63f32759cd9180755ec4481cd2723b6e7016dfc7"},
+    {"path":"local/output/r39_generated_model_probe.cpp","bytes":10376,"sha256":"d2b2aca00e2bba7e4c1d39023f8f53780a2915a83af92f6d4c690248706ba769"},
+    {"path":"local/output/r39_generated_model_probe.obj","bytes":112650,"sha256":"375d502139173c6b7715d37d831103d7c26dfc68a27aa2f6735a7a5f0a7128d9"},
+    {"path":"local/output/r39_generated_model_probe.exe","bytes":443392,"sha256":"9943ba53576fe77b386424d14a97416bbce4a292a642712c386e13ad8d79054d"},
+    {"path":"local/output/r39_generated_model_probe.map","bytes":731792,"sha256":"9d4cf7b1e23f32b299419c209369ba451981ec122b55d03fa6947920259affff"},
+    {"path":"local/output/r39_generated_model_probe_build.log","bytes":2559,"sha256":"01c20dceb499b9401d7e672cb61633a0c900908c3d3f26bee8867188c1bf2445"},
+    {"path":"local/output/r39_generated_model_probe_run.log","bytes":905,"sha256":"1d715c10f432f7f61de3cdc2f4081dd0d8736ab72625684898bf93c8d2f0181a"},
+    {"path":"local/r39_build_full.log","bytes":16132,"sha256":"a40dd2e3d97a40edabcfb0d9d624cf44ea9db4d626029e07fcf1b6d3c7f0dcda"},
+    {"path":"local/r39_verify_seeds.log","bytes":3034,"sha256":"edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"},
+    {"path":"local/r39_generated_model_byte_receipt.json","bytes":4020,"sha256":"a679536a02bd46de7b08504e47b140981fcacb1599559621a9655ef8d759ea21"},
+    {"path":"local/r39_callgate.log","bytes":87,"sha256":"1e42eec3b240d0017c96f2830368eb5336e290c11ff4a3d93d6644e93ac6be12"}
+  ],
+  "archive": {
+    "path": "local/evidence-r39/generated-model-r39-final.zip",
+    "manifest_sha256": "d7b6eb9bc657d0ff00b07abd170bf2078794206b14316c9296037be63b966a54",
+    "zip_bytes": 13409839,
+    "zip_sha256": "de076fcda3bebb92dd23b18508d211848a21056460be0e399e395571c2a5505d",
+    "entries": 28,
+    "report_excluded_to_avoid_self_reference": true
+  },
+  "limits": [
+    "The focused fixture links the complete B4C700 translation unit but deliberately does not call the full factory or claim runtime proof.",
+    "The renderer, D3D9 device recreation, cold material compiler continuation and original exception execution remain outside the focused fixture.",
+    "Native null allocation faults, mutable original stack aliases, original register ABI/FH3/SEH, game and visual parity remain unvalidated.",
+    "Caller19E0 remains unidentified."
+  ]
+}
