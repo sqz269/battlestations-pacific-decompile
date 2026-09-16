@@ -1,0 +1,665 @@
+{
+  "schema_version": 1,
+  "packet": "native_system_constant_gather_main_r44",
+  "created_utc": "2026-09-16T12:47:40.277604+00:00",
+  "base_commit": "2e3082eef5f0f1cbf04f39c1a9a5835d6d1e4b08",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-system-gather-r44",
+  "source": "src/native_system_constant_gather.cpp",
+  "header": "include/bsp/native_system_constant_gather.hpp",
+  "scope": "Current raw gather adoption, ten owned routines, two established leaves reused. New explicit source interface; no new native body credit over previous reconstruction.",
+  "historical_provenance": {
+    "source_commit": "a6b2884f2ef01c3a0b636b0853dc66ec7855aeba",
+    "captured_profile_correction": "1bbc16628a278b9c8b023266664e4874eb45a368",
+    "checkpoint": "J:/PROG/battlestations-pacific-decompile-orch5-20260911/local/checkpoints/1bbc1662/native-system-constant-gather-wave/validation.json",
+    "checkpoint_sha256": "78ee9018977843340db954b871be19c91a27e56c175f83a216053571a02b2f66",
+    "checkpoint_sha_reverified": true,
+    "fixture_source_sha256": "724429465f8c5b0c2f07f145938f43467a8d1c9c8db65692fd59c1e2dcc2912c",
+    "fixture_source_sha_reverified": true,
+    "selected_debug_archive_files_rehashed": [
+      {
+        "path": "src/native_system_constant_gather.cpp",
+        "archive_frozen_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_validated_artifacts_v2\\artifacts\\01215_4063d7f01b96_native_system_constant_gather.cpp",
+        "sha256": "4063d7f01b96b8d428412e25276fa39bc0256f0c086ac8ecfa80f8c3d5c82183",
+        "bytes": 35048,
+        "git_a6b2884f2_equals_after_lf_normalization": true
+      },
+      {
+        "path": "include/bsp/native_system_constant_gather.hpp",
+        "archive_frozen_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-records24\\local\\output\\debug24_validated_artifacts_v2\\artifacts\\02844_5512f5c97324_NATIVE_SYSTEM_CONSTANT_GATHER.HPP",
+        "sha256": "5512f5c973240310fd64e996f65ab5f0e433ec4535bc1fa7a1e0d1e6be8c5cef",
+        "bytes": 3940,
+        "git_a6b2884f2_equals_after_lf_normalization": true
+      }
+    ],
+    "archive_manifest_sha256": "44a4e4e1d483b9829b414101dabca8637d4051c495a6f4d76797fc1a11cbd46f"
+  },
+  "source_adaptation": {
+    "exact_equality_after_named_substitutions": true,
+    "changes": [
+      "Include current native_frame_clock_actual.hpp and omit duplicate BEE070 declaration/body.",
+      "Include native_material_constant_metadata.hpp and call get_native_light_shadow_map_owner_00b7aab0; omit duplicate old leaf."
+    ],
+    "diff": "local/gather_source_adaptation.diff",
+    "instruction_schedule_changed": false,
+    "linked_reuse_owners": [
+      " 0001:00003340       ?get_raw_timer_interval_00bee070@bsp@@YIPBXPBX@Z 60004340 f   bsp_core:native_frame_clock_actual.obj",
+      " 0001:00003350       ?get_native_light_shadow_map_owner_00b7aab0@bsp@@YIPAXPBX@Z 60004350 f   bsp_core:native_material_constant_metadata.obj"
+    ],
+    "gather_object_references_existing_leaves_as_UNDEF": true
+  },
+  "routines": [
+    {
+      "address": "00b46a70",
+      "name": "gather_native_system_constants_00b46a70",
+      "end_exclusive": "00b47639",
+      "bytes": 3017,
+      "native_sha256": "60ecc210cbbafe2cbeece90dd0d4a6ebac84d90bc598c725729451981e93b3c2",
+      "coverage": "complete within borrowed current-profile domain",
+      "original_abi": "ECX optional scene, EDX camera, RET; source adds two borrowed stack args and RET8",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a8fcf0",
+      "name": "get_raw_shadow_depth_texture_00a8fcf0",
+      "end_exclusive": "00a8fd0f",
+      "bytes": 31,
+      "native_sha256": "8db6438215b0fbf846958ff81821f76eaa1728c9406c9902d6155bd2d5786433",
+      "coverage": "complete within borrowed current-profile domain",
+      "original_abi": "ECX raw shadow; capture global F8BBF0, flag tests +0C then +0D; borrowed EAX result via leaf tail jump or shadow+384 fallback; RET. Source EDX adds borrowed global cell.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a8fd10",
+      "name": "get_raw_shadow_color_texture_00a8fd10",
+      "end_exclusive": "00a8fd2f",
+      "bytes": 31,
+      "native_sha256": "8e91715e18fc4e2694811b48eea1e06fcc7537ef8bf286b0cb90ee9a5eed6442",
+      "coverage": "complete within borrowed current-profile domain",
+      "original_abi": "ECX raw shadow; capture global F8BBF0, flag tests +0C then +0D; borrowed EAX result via leaf tail jump or shadow+384 fallback; RET. Source EDX adds borrowed global cell.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a8fd90",
+      "name": "get_raw_shadow_target_color_00a8fd90",
+      "end_exclusive": "00a8fd94",
+      "bytes": 4,
+      "native_sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+      "coverage": "complete within borrowed current-profile domain",
+      "original_abi": "ECX raw owner; EAX DWORD/pointer field result; plain RET.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a8fdb0",
+      "name": "get_raw_shadow_target_depth_00a8fdb0",
+      "end_exclusive": "00a8fdb4",
+      "bytes": 4,
+      "native_sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941",
+      "coverage": "complete within borrowed current-profile domain",
+      "original_abi": "ECX raw owner; EAX DWORD/pointer field result; plain RET.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b3ce50",
+      "name": "get_raw_texture_width_00b3ce50",
+      "end_exclusive": "00b3ce54",
+      "bytes": 4,
+      "native_sha256": "f9ab56c764100f6de974a6afa5ca5ea00146ab6bd602328393ec5e4228c34b90",
+      "coverage": "complete within borrowed current-profile domain",
+      "original_abi": "ECX raw owner; EAX DWORD/pointer field result; plain RET.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00b3ce60",
+      "name": "get_raw_texture_height_00b3ce60",
+      "end_exclusive": "00b3ce64",
+      "bytes": 4,
+      "native_sha256": "4d8bbabf4078fb522f1b7e5fa9e993af5e9c941d53117c673ecfde3a5feca5c7",
+      "coverage": "complete within borrowed current-profile domain",
+      "original_abi": "ECX raw owner; EAX DWORD/pointer field result; plain RET.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00af0460",
+      "name": "get_raw_foliage_manager_time_00af0460",
+      "end_exclusive": "00af0464",
+      "bytes": 4,
+      "native_sha256": "f95341a99d51f5475633b0a992fa6bb809c41744fe61f8de030d059a5d1f6bb6",
+      "coverage": "complete within borrowed current-profile domain",
+      "original_abi": "ECX raw owner; FLD DWORD field into x87 ST0; plain RET.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00ad5700",
+      "name": "get_raw_foliage_time_00ad5700",
+      "end_exclusive": "00ad5704",
+      "bytes": 4,
+      "native_sha256": "a4b7d4539fa03abbe69a398ca110f35831e031556ffd14e0089956276d803f49",
+      "coverage": "complete within borrowed current-profile domain",
+      "original_abi": "ECX raw owner; FLD DWORD field into x87 ST0; plain RET.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00ad5740",
+      "name": "get_raw_foliage_byte_00ad5740",
+      "end_exclusive": "00ad5744",
+      "bytes": 4,
+      "native_sha256": "0f1c001fbeb759fd118bad1fcc54565058b361622474b02f4e3a873ef4e4ce7a",
+      "coverage": "complete within borrowed current-profile domain",
+      "original_abi": "ECX raw owner; AL byte at +11, upper EAX unspecified; plain RET.",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b46a88",
+      "native": "00b0d100",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46a92",
+      "native": "00b404a0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46aa0",
+      "native": "00b6db70",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46ad1",
+      "native": "00b6fcb0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46ade",
+      "native": "00b404a0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46aea",
+      "native": "00b6db70",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46afd",
+      "native": "00b404a0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46b04",
+      "native": "00b70490",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46b11",
+      "native": "00b404a0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46b18",
+      "native": "00b6fcf0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46b25",
+      "native": "00b404a0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46b2c",
+      "native": "00b70510",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46b39",
+      "native": "00b404a0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46c50",
+      "native": "00b70fe0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46c80",
+      "native": "00b70ea0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46cc2",
+      "native": "004de4b0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46cdb",
+      "native": "00af0460",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46ced",
+      "native": "00ad5700",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46d1a",
+      "native": "00b0cf30",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46d36",
+      "native": "00b0cf30",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46d74",
+      "native": "00ad5740",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46d99",
+      "native": "00b84da0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46da7",
+      "native": "00b84db0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46db5",
+      "native": "00b84e20",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46dc3",
+      "native": "00b84e30",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46dd1",
+      "native": "00b84e40",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46ddf",
+      "native": "00b84cb0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46ded",
+      "native": "00b84cc0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46dfb",
+      "native": "00b84ca0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46e09",
+      "native": "00b84cd0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46e17",
+      "native": "00b84ce0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46e25",
+      "native": "00b84cf0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46e43",
+      "native": "00b84fd0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46e6f",
+      "native": "00b84c60",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46ea1",
+      "native": "00b84c90",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46edb",
+      "native": "00b72110",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46ef3",
+      "native": "00bf6713",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46f0b",
+      "native": "00b7aa30",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b46f66",
+      "native": "00b7aa20",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b47055",
+      "native": "00b7aa40",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b4707d",
+      "native": "00b7aab0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b475b6",
+      "native": "00b6feb0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b475c1",
+      "native": "00b6feb0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b47611",
+      "native": "00b21820",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00b47629",
+      "native": "00b218c0",
+      "function": "00b46a70"
+    },
+    {
+      "address": "00a8fd03",
+      "native": "00a8fdb0",
+      "function": "00a8fcf0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00a8fd23",
+      "native": "00a8fd90",
+      "function": "00a8fd10",
+      "kind": "tail_jump"
+    }
+  ],
+  "evidence": {
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "analysis_identity": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "all_live_equals_pe": true,
+    "span_count": 22,
+    "byte_count": 3280,
+    "manifest_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-system-gather-r44\\local\\output\\debug24_gather_native_inputs\\manifest.json",
+    "manifest_sha256": "b504481f5c6e2e78d074c747066d51e14a5a9dcf23a68e736c6a06844fca1437",
+    "spans": [
+      {
+        "address": "00b46a70",
+        "length": 3017,
+        "sha256": "60ecc210cbbafe2cbeece90dd0d4a6ebac84d90bc598c725729451981e93b3c2",
+        "name": "gather"
+      },
+      {
+        "address": "00a8fcf0",
+        "length": 31,
+        "sha256": "8db6438215b0fbf846958ff81821f76eaa1728c9406c9902d6155bd2d5786433",
+        "name": "shadow_depth"
+      },
+      {
+        "address": "00a8fd10",
+        "length": 31,
+        "sha256": "8e91715e18fc4e2694811b48eea1e06fcc7537ef8bf286b0cb90ee9a5eed6442",
+        "name": "shadow_color"
+      },
+      {
+        "address": "00a8fd90",
+        "length": 4,
+        "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+        "name": "target_color"
+      },
+      {
+        "address": "00a8fdb0",
+        "length": 4,
+        "sha256": "38058506e8e859d5be73a33baa621352c08ea01f2224ee170173253757193941",
+        "name": "target_depth"
+      },
+      {
+        "address": "00b3ce50",
+        "length": 4,
+        "sha256": "f9ab56c764100f6de974a6afa5ca5ea00146ab6bd602328393ec5e4228c34b90",
+        "name": "texture_width"
+      },
+      {
+        "address": "00b3ce60",
+        "length": 4,
+        "sha256": "4d8bbabf4078fb522f1b7e5fa9e993af5e9c941d53117c673ecfde3a5feca5c7",
+        "name": "texture_height"
+      },
+      {
+        "address": "00af0460",
+        "length": 4,
+        "sha256": "f95341a99d51f5475633b0a992fa6bb809c41744fe61f8de030d059a5d1f6bb6",
+        "name": "foliage_manager"
+      },
+      {
+        "address": "00ad5700",
+        "length": 4,
+        "sha256": "a4b7d4539fa03abbe69a398ca110f35831e031556ffd14e0089956276d803f49",
+        "name": "foliage"
+      },
+      {
+        "address": "00ad5740",
+        "length": 4,
+        "sha256": "0f1c001fbeb759fd118bad1fcc54565058b361622474b02f4e3a873ef4e4ce7a",
+        "name": "foliage_byte"
+      },
+      {
+        "address": "00b7aab0",
+        "length": 7,
+        "sha256": "c9b009cece926c8eb8e7682d20c7fdd9188da262bdb2e3340da5111892a1350b",
+        "name": "light_shadow"
+      },
+      {
+        "address": "00bee070",
+        "length": 4,
+        "sha256": "9b5251af6794c76b2f519f4601eefe7c7f18622726ef5633ff8713cbcdf488fe",
+        "name": "timer_interval"
+      },
+      {
+        "address": "00b7aa20",
+        "length": 4,
+        "sha256": "8b91dec277a1e45d013282c013b573b4b19b5d0d9edca7cc20469f39bd16cb54",
+        "name": "ambient"
+      },
+      {
+        "address": "00b7aa30",
+        "length": 4,
+        "sha256": "84820c9f74a607947a808a1567dcf68506f79bdd5cb57fd2d8af148e5c8c05b7",
+        "name": "mode3_ambient"
+      },
+      {
+        "address": "00b7aa40",
+        "length": 14,
+        "sha256": "4749a398a42302a626f26dfc1028c9739f7e511df639ca6fbef6c68cab64b258",
+        "name": "cube_face"
+      },
+      {
+        "address": "00d5b5d8",
+        "length": 16,
+        "sha256": "87cb026e4c5693545ab92482f4031aea360414a7799f39830c129252fad9f45a",
+        "name": "shadow_profile"
+      },
+      {
+        "address": "00d61948",
+        "length": 72,
+        "sha256": "1b3ac094f5ca97abf61222030440a7e70dfad9726bc0e4a550a5ba4a7ba83ca6",
+        "name": "texture_profile"
+      },
+      {
+        "address": "00d68d50",
+        "length": 32,
+        "sha256": "d0a0d53f8bcdf02ca5634cc1e96e2b51eff1b8c9399887d63a38c7e7772ddbee",
+        "name": "timer_profile"
+      },
+      {
+        "address": "00cec730",
+        "length": 8,
+        "sha256": "f9e6ffa7baa63fcae1e7a05cf87949fed958b744b09cb66d8350cc2e8b21af5f",
+        "name": "step"
+      },
+      {
+        "address": "00d7a24c",
+        "length": 4,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "name": "one"
+      },
+      {
+        "address": "00ce3978",
+        "length": 4,
+        "sha256": "9d459b445179d46efc315fd7ef9a5c8185bd7f3e2860dc6d325ab1b85acf6a96",
+        "name": "bias"
+      },
+      {
+        "address": "00cfad80",
+        "length": 4,
+        "sha256": "ad286c64373644140ff927b256b8415467b5d27645ff997010b15519d022631b",
+        "name": "exponent"
+      }
+    ],
+    "captured_profile_and_x87_sites": {
+      "path": "local/gather_capture_sites.json",
+      "sha256": "1686a9caebd67657ccc47540e3a249084e011009c8ccac55a7085a7567fdda8c",
+      "sites": [
+        "00b46cff",
+        "00b4753a",
+        "00b47543",
+        "00b47565",
+        "00b4756e",
+        "00b47552"
+      ],
+      "read_only_live_instruction_context": true
+    }
+  },
+  "reuse": [
+    {
+      "address": "00bee070",
+      "provider": "get_raw_timer_interval_00bee070",
+      "source": "src/native_frame_clock_actual.cpp"
+    },
+    {
+      "address": "00b7aab0",
+      "provider": "get_native_light_shadow_map_owner_00b7aab0",
+      "source": "src/native_material_constant_metadata.cpp"
+    },
+    {
+      "address": "004de4b0",
+      "provider": "get_native_sampler_loader_singleton_004de4b0",
+      "source": "src/native_sampler_loader_context.cpp",
+      "delegates_to": "get_native_particle_clock_singleton_004de4b0",
+      "integration_commit": "2e3082eef"
+    }
+  ],
+  "contracts": {
+    "context_bytes": 68,
+    "prefix_initialized_bytes": 1232,
+    "frame": "One fresh persistent child sampler operation per gather; failure retained without outer cleanup or retry.",
+    "profiles": {
+      "00d68d50+1c": "00bee070",
+      "00d5b5d8+08": "00a8fcf0",
+      "00d61948+3c": "00b3ce50",
+      "00d61948+40": "00b3ce60"
+    },
+    "profile_capture": "Each original owner profile captured once before bridge; slot read from borrowed current table at dispatch; never reload owner[0].",
+    "reloads": "Same borrowed renderer and register-count cells loaded separately for VS/PS; VS HRESULT does not suppress PS.",
+    "arithmetic": "Full original x87/SSE store and unsigned-bias schedule retained."
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "verified_seeds": 8,
+    "ctests_passed": 3,
+    "numeric_calls_passed": 47,
+    "numeric_calls_failed": 0,
+    "real_hal_cases": 2,
+    "original_leaf_comparisons": 2,
+    "restored_original_com_slots_and_vptrs": true,
+    "source_adaptation_exact": true,
+    "original_full_gather_executed": false,
+    "build": "local/gather_build_final.log",
+    "call_gate": "local/gather_call_gate.log",
+    "fixture_source": "local/gather_probe.cpp",
+    "fixture_build": "local/gather_probe_build_final.log",
+    "fixture_run": "local/gather_probe_run.log",
+    "build_exit_code": 0,
+    "fixture_compile_exit_code": 0,
+    "fixture_run_exit_code": 0,
+    "loaded_module_machine": "014c",
+    "module_path_resolution": "GetMappedFileNameW to physical GLOBALROOT path; same-process CreateFileW and GetFinalPathNameByHandleW; no inferred System32 redirection",
+    "permanent_tests_added": 0
+  },
+  "limits": [
+    "Full original B46A70 remains unexecuted; only original four-byte width and height leaves are executed differentially.",
+    "HAL fixture supplies initialized raw native-layout storage, not game-created owners; only source gather composition is executed.",
+    "Uncached axes route, cold sampler creation, profile failure/unwind, invalid-parameter path, original private stack aliases, FH3/SEH and hardware faults remain unvalidated.",
+    "No full renderer, gameplay or visual validation. No second owner or bank, projected math, mock provider, game/camera intervention or permanent test added."
+  ],
+  "immutable_closure": {
+    "path": "local\\output\\gather_r44_validated_artifacts.zip",
+    "sha256": "6644904961e3de53ff63a1c7eeafedce2544885311cebdb183601f1f78d966ad",
+    "bytes": 166752653,
+    "manifest_path": "manifest.json",
+    "manifest_sha256": "16d78e946baf6c985609304dcf759e3dfad0d8da8200c29f67c4540500cca712",
+    "artifacts": 5356,
+    "actually_loaded_modules": 58,
+    "uncompressed_bytes": 696917223,
+    "all_archive_members_rehashed": true
+  },
+  "current_files": [
+    {
+      "path": "include/bsp/native_system_constant_gather.hpp",
+      "bytes": 3792,
+      "sha256": "c50c3972023f6275762edc02119843c626c002d0820a92302342e89ce654ae11"
+    },
+    {
+      "path": "src/native_system_constant_gather.cpp",
+      "bytes": 34872,
+      "sha256": "8078dc01ff71f37185a8149cf7535019257a300d71562b292cc8216a74e75a86"
+    },
+    {
+      "path": "docs/NATIVE_SYSTEM_CONSTANT_GATHER_R44.md",
+      "bytes": 4896,
+      "sha256": "43dbfcc2f0f2f6b25a5ef3096230169193748f5e918d470b4718a97bbce1ccdb"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 149842,
+      "sha256": "85183569d2e11d9579845a8960cb69449a18a9629a285f0478be43670ca75d34"
+    }
+  ],
+  "ledger_and_ghidra": "Read-only worker. Primary serializes naming, comments, ledgers and main integration after lease release."
+}
