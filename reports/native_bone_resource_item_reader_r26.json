@@ -341,5 +341,15 @@
     "Original FH3/SEH, hardware-fault delivery, CRT identity, drop-in ABI and gameplay are unproven.",
     "Numeric non-Bone slot20 targets require the supplied remaining reader service."
   ],
-  "implementation_commit": "14b50e38955c44fc00e2a1c1d2ffd79407893510"
+  "implementation_commit": "14b50e38955c44fc00e2a1c1d2ffd79407893510",
+  "integration": {
+    "source_integrated_commit": "18a70b3fb9c26a88aaad6c062bae92e56de84908",
+    "parent_review": "Complete new source and contracts reviewed; original B8AD80/B78C40 and B8AF30 assembly inspected; exact call rows rechecked.",
+    "combined_strict_build": "passed; 3 of 3 CTests",
+    "log": "local/r26_bone_integration.log",
+    "archive": "local/evidence-r26/bone-item-reader-r26.zip",
+    "archive_sha256": "d7c40fc7dbbe35c10f2c6972fa7853d472d1c4564dc853df5c37bff51183ee4a",
+    "archived_files": 30,
+    "annotation_status": "reviewed names applied by primary; original comments preserved; saved and refreshed exports"
+  }
 }

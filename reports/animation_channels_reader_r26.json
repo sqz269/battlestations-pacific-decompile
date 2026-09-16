@@ -503,5 +503,15 @@
       "sha256": "e97a24f1be88761585563d328af467296bd19064c9b73fe978c2f6900f4c746a"
     }
   ],
-  "flow_repairs": "Primary repaired/saved returning-free gaps at B76761..69 and B77A22..26 and recreated B77A10 full23B body; refreshed four group-chain exports. Parent evidence reports/native_animation_group_flow_repair_r26.json."
+  "flow_repairs": "Primary repaired/saved returning-free gaps at B76761..69 and B77A22..26 and recreated B77A10 full23B body; refreshed four group-chain exports. Parent evidence reports/native_animation_group_flow_repair_r26.json.",
+  "integration": {
+    "source_integrated_commit": "18a70b3fb9c26a88aaad6c062bae92e56de84908",
+    "parent_review": "Complete new source and contracts reviewed; original B8AD80/B78C40 and B8AF30 assembly inspected; exact call rows rechecked.",
+    "combined_strict_build": "passed; 3 of 3 CTests",
+    "log": "local/r26_bone_integration.log",
+    "archive": "local/evidence-r26/animation-channels-reader-r26.zip",
+    "archive_sha256": "ab7ace987b62a8b84322468f3e2e0907aabf5d3a127865b30d2396903d1a8936",
+    "archived_files": 29,
+    "annotation_status": "reviewed names applied by primary; original comments preserved; saved and refreshed exports"
+  }
 }
