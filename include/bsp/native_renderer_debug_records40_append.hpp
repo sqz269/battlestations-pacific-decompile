@@ -27,7 +27,7 @@ void __fastcall append_native_renderer_records40_00b257b0(
 // captured native guard is cleaned up. No manufactured owner or terminal.
 // This extra context/source ABI does not reproduce native FH3/private frames.
 void append_native_renderer_debug_record40_00b29330(
-    void* actual_renderer, const NativeRendererRecordGuardContext& guard_context,
+    void* actual_renderer, NativeRendererRecordGuardContext& guard_context,
     void* retained_owner, std::uint32_t x_bits, std::uint32_t y_bits,
     std::uint32_t width_bits, std::uint32_t height_bits, std::uint32_t color,
     std::uint32_t u0_bits, std::uint32_t v0_bits,
