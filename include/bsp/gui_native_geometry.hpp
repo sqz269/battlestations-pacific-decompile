@@ -100,6 +100,12 @@ public:
     // are resolved. A raw creator without companion still needs its real terminal
     // context. Never drop or retry the interrupted clone to perform cleanup.
     void register_stream_clone_creator(NativeStreamCloneAcquired&, NativeStreamCloneServices&);
+    // Same registration body with only its logical vertex/index contexts. The
+    // direct route requires the geometry owner, renderer cell, synchronization
+    // globals and physical owner context to describe one canonical domain. It
+    // adds no retain, native registration or rollback behavior.
+    void register_stream_clone_creator(NativeStreamCloneAcquired&,
+        NativeLogicalVertexOwnerContext&, NativeLogicalIndexCreationContext&);
 
     // Register/reuse the cache-returned actual declaration without AddRef.
     // Cache creator and caller reference retain their native counts. On bind
