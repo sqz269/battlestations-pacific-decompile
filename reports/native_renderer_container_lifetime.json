@@ -1,0 +1,333 @@
+{
+  "schema": 1,
+  "packet": "orch5_native_renderer_containers",
+  "status": "complete_raw_record_reserves_strict_win32_and_full_instruction_differential_checked",
+  "created_utc": "2026-09-14T06:36:12.650816+00:00",
+  "base_commit": "038b2942b68e3041cfacf73a33ce36a55f2c419a",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-containers",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "owned_files": [
+    "include/bsp/native_renderer_container_lifetime.hpp",
+    "src/native_renderer_container_lifetime.cpp",
+    "docs/NATIVE_RENDERER_CONTAINER_LIFETIME.md",
+    "reports/native_renderer_container_lifetime.json"
+  ],
+  "shared_append": "cmake/startup.cmake: one deferred target_sources line; added inside coordination.lease_transaction after checking unleased",
+  "routines": [
+    {
+      "address": "00b228b0",
+      "name": "reserve_native_renderer_records16_00b228b0",
+      "coverage": "complete",
+      "source": "src/native_renderer_container_lifetime.cpp",
+      "bytes": 132,
+      "end": "00b22933",
+      "original_ABI": "ECX actual 12-byte header; signed stack DWORD; RET4; no semantic result",
+      "source_ABI": "explicit unused EDX fastcall argument; source CRT and source exception/frame boundary"
+    },
+    {
+      "address": "00b22940",
+      "name": "reserve_native_renderer_records20_00b22940",
+      "coverage": "complete",
+      "source": "src/native_renderer_container_lifetime.cpp",
+      "bytes": 138,
+      "end": "00b229c9",
+      "original_ABI": "ECX actual 12-byte header; signed stack DWORD; RET4; no semantic result",
+      "source_ABI": "explicit unused EDX fastcall argument; source CRT and source exception/frame boundary"
+    },
+    {
+      "address": "00b229d0",
+      "name": "reserve_native_renderer_records24_00b229d0",
+      "coverage": "complete",
+      "source": "src/native_renderer_container_lifetime.cpp",
+      "bytes": 150,
+      "end": "00b22a65",
+      "original_ABI": "ECX actual 12-byte header; signed stack DWORD; RET4; no semantic result",
+      "source_ABI": "explicit unused EDX fastcall argument; source CRT and source exception/frame boundary"
+    },
+    {
+      "address": "00b22a70",
+      "name": "reserve_native_renderer_records40_00b22a70",
+      "coverage": "complete",
+      "source": "src/native_renderer_container_lifetime.cpp",
+      "bytes": 178,
+      "end": "00b22b21",
+      "original_ABI": "ECX actual 12-byte header; signed stack DWORD; RET4; no semantic result",
+      "source_ABI": "explicit unused EDX fastcall argument; source CRT and source exception/frame boundary"
+    }
+  ],
+  "external_calls": [
+    {
+      "address": "00b228ce",
+      "native": "00bf55be",
+      "containing_function": "00b228b0",
+      "source": "singleton_lifetime_allocate; equal native/host sizes",
+      "contract": "allocate wrapping request*stride through existing malloc/new-handler service; throws on exhausted allocation"
+    },
+    {
+      "address": "00b22921",
+      "native": "00bf6989",
+      "containing_function": "00b228b0",
+      "source": "singleton_lifetime_free",
+      "contract": "free current old data; return before fresh pointer and capacity publication"
+    },
+    {
+      "address": "00b22960",
+      "native": "00bf55be",
+      "containing_function": "00b22940",
+      "source": "singleton_lifetime_allocate; equal native/host sizes",
+      "contract": "allocate wrapping request*stride through existing malloc/new-handler service; throws on exhausted allocation"
+    },
+    {
+      "address": "00b229b7",
+      "native": "00bf6989",
+      "containing_function": "00b22940",
+      "source": "singleton_lifetime_free",
+      "contract": "free current old data; return before fresh pointer and capacity publication"
+    },
+    {
+      "address": "00b229f2",
+      "native": "00bf55be",
+      "containing_function": "00b229d0",
+      "source": "singleton_lifetime_allocate; equal native/host sizes",
+      "contract": "allocate wrapping request*stride through existing malloc/new-handler service; throws on exhausted allocation"
+    },
+    {
+      "address": "00b22a53",
+      "native": "00bf6989",
+      "containing_function": "00b229d0",
+      "source": "singleton_lifetime_free",
+      "contract": "free current old data; return before fresh pointer and capacity publication"
+    },
+    {
+      "address": "00b22a96",
+      "native": "00bf55be",
+      "containing_function": "00b22a70",
+      "source": "singleton_lifetime_allocate; equal native/host sizes",
+      "contract": "allocate wrapping request*stride through existing malloc/new-handler service; throws on exhausted allocation"
+    },
+    {
+      "address": "00b22b0f",
+      "native": "00bf6989",
+      "containing_function": "00b22a70",
+      "source": "singleton_lifetime_free",
+      "contract": "free current old data; return before fresh pointer and capacity publication"
+    }
+  ],
+  "fresh_guarded_spans": [
+    {
+      "address": "00b228b0",
+      "end": "00b22933",
+      "length": 132,
+      "stride": 16,
+      "float_mask": "007",
+      "bytes_hex": "558b6c240883fd01568bf17d05bd01000000396e087d688bc5c1e0045350e8eb2c0d0033d283c4043956048bd87e3f57bff8ffffff8d4b082bfb8d9b000000008d41f885c0741b8d040f0306d900d959f8d94004d959fcd94008d9198b400c89410483c20183c1103b56047cd35f8b0e51e863400d0083c404891e896e085b5e5dc20400",
+      "sha256": "a9ace03126544434d8bd4c39a552b1b6364e0461299c6046a2ab7e808584a5e1",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b22940",
+      "end": "00b229c9",
+      "length": 138,
+      "stride": 20,
+      "float_mask": "00f",
+      "bytes_hex": "56578b7c240c83ff018bf17d05bf01000000397e087d6e8d04bf03c003c05550e8592c0d0033d283c4043956048be87e4353bbf8ffffff8d4d082bdd8d6424008d41f885c074218d040b0306d900d959f8d94004d959fcd94008d919d9400cd959048b401089410883c20183c1143b56047ccd5b8b0e51e8cd3f0d0083c404892e897e085d5f5ec20400",
+      "sha256": "81c28ad3286174856c85ae8dff1d4ef50462dc3db81c7333de876d2c8f949506",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b229d0",
+      "end": "00b22a65",
+      "length": 150,
+      "stride": 24,
+      "float_mask": "00f",
+      "bytes_hex": "56578b7c240c83ff018bf17d05bf01000000397e087d7a8d047f03c003c003c05550e8c72b0d0033d283c4043956048be8896c24107e4953bbf8ffffff8d4d082bdd8d41f885c0742b8d040b0306d900d959f8d94004d959fcd94008d919d9400cd959048b68108969088b40148b6c241489410c83c20183c1183b56047cc35b8b0e51e8313f0d0083c404892e897e085d5f5ec20400",
+      "sha256": "e89268357e131ecba4d7e98a743b0f1ee6dcf2d3101cb94a94c55527dd879f08",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b22a70",
+      "end": "00b22b21",
+      "length": 178,
+      "stride": 40,
+      "float_mask": "3de",
+      "bytes_hex": "56578b7c240c83ff018bf17d05bf01000000397e080f8d920000008d04bf03c003c003c05550e8232b0d0033d283c4043956048be8896c24107e6153bbe4ffffff8d4d1c2bdd8d41e485c074438d040b03068b288969e4d94004d959e8d94008d959ecd9400cd959f0d94010d959f48b68148969f8d940188b6c2414d959fcd9401cd919d94020d95904d94024d9590883c20183c1283b56047cab5b8b0e51e8753e0d0083c404892e897e085d5f5ec20400",
+      "sha256": "f5d2b59b8edf7665919adf034712e4436fcdbc44d84f72363f8c1f46e36577f0",
+      "live_PE_match": true
+    }
+  ],
+  "owned_original_bytes": 598,
+  "native_header": {
+    "0": "current data pointer",
+    "4": "current signed count",
+    "8": "current signed capacity"
+  },
+  "preservation": [
+    "signed clamp and early return",
+    "32-bit wrapping byte and row arithmetic",
+    "current header reads after allocation and every copied row",
+    "per-row null destination check",
+    "increasing DWORD-order x87 FLD/FSTP and integer copies",
+    "free current old data before pointer then capacity publication",
+    "no direct count store or unused-row initialization",
+    "no added rollback; allocation-handler mutations retained"
+  ],
+  "corrections": [
+    {
+      "was": "All four live decompilations stop at BF6989; reserve publication tails omitted",
+      "is": "BF6989 returns to pointer/capacity publication and RET4",
+      "evidence": "Full guarded live spans equal installed PE; return sites B22931/B229C7/B22A63/B22B1F",
+      "required_returning_callsite_overrides": [
+        "00b22921",
+        "00b229b7",
+        "00b22a53",
+        "00b22b0f"
+      ]
+    }
+  ],
+  "parent_cleanup_disk_continuation": [
+    {
+      "site": "00b32d53",
+      "target": "00b22a70",
+      "renderer_header": "1d18",
+      "data_free_site": "00b32d6e",
+      "live_containing_function": "00b32920"
+    },
+    {
+      "site": "00b32d89",
+      "target": "00b229d0",
+      "renderer_header": "1d0c",
+      "data_free_site": "00b32da1",
+      "live_containing_function": null
+    },
+    {
+      "site": "00b32dbc",
+      "target": "00b22940",
+      "renderer_header": "1d00",
+      "data_free_site": "00b32dd4",
+      "live_containing_function": null
+    },
+    {
+      "site": "00b32def",
+      "target": "00b228b0",
+      "renderer_header": "1cf4",
+      "data_free_site": "00b32e0e",
+      "live_containing_function": null
+    }
+  ],
+  "parent_boundary_evidence": "At read-only observation, B32920 body ends B32D72. Later sites are disk-continuation evidence awaiting integrator listing repair, not verified current function membership. Each conditionally reserves0 if signed capacity<0, then decrements positive count, writes0, and frees current data without clearing pointer/capacity.",
+  "ghidra_mutations": "None by worker. Integrator owns repair, old-value annotation history, names, save, refreshed exports after lease release.",
+  "validation": {
+    "build_command": "./scripts/build.ps1",
+    "build": "pass; MSVC Win32 Release /W4 /WX /fp:strict",
+    "seed_verification": "8 live/installed-PE math seeds match before build",
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "ctest_result": "2/2 pass",
+    "fixture": "4 complete relocated original functions, 598 bytes, compared with main-archive source through the same real singleton allocation/free provider. Four focused scenarios per routine: masked signaling-NaN row bytes and x87 status; clamped no-grow; negative-capacity reserve0; exhausted allocation through source new-handler/bad_alloc.",
+    "fixture_result": "16 original/source comparisons pass; raw header guards and expected publication state pass",
+    "fixture_call_relocations": "Only eight rel32 call operands replaced; allocation/free bind actual source service, no original EXE-address calls, algorithm instructions retained",
+    "fixture_build_flags": "/std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /link /MANIFEST:EMBED",
+    "fixture_stdout": "native_renderer_container_probe.cpp\nPASS 00b228b0: growth x87 bytes/status, clamped no-grow, negative-capacity resize0, allocation failure\nPASS 00b22940: growth x87 bytes/status, clamped no-grow, negative-capacity resize0, allocation failure\nPASS 00b229d0: growth x87 bytes/status, clamped no-grow, negative-capacity resize0, allocation failure\nPASS 00b22a70: growth x87 bytes/status, clamped no-grow, negative-capacity resize0, allocation failure\nPASS: four complete original bodies against main-archive source; 16 comparisons\n",
+    "source_text": "#include \"bsp/native_renderer_container_lifetime.hpp\"\n#include \"bsp/singleton_lifetime.hpp\"\n#include \"native_renderer_container_reference.hpp\"\n#include <Windows.h>\n#include <new.h>\n#include <array>\n#include <cstdio>\n#include <cstring>\n#include <limits>\n#include <new>\n#include <stdexcept>\n#include <vector>\n\nnamespace {\nusing Routine = void (__fastcall*)(void*, std::uint32_t, std::int32_t);\nstruct Header { void* data; std::int32_t count; std::int32_t capacity; };\nstatic_assert(sizeof(Header) == 12);\nstruct Frame { std::uint32_t before; Header header; std::uint32_t after; };\nstruct Spec {\n    const char* name;\n    const unsigned char* bytes;\n    std::size_t size;\n    std::size_t allocation;\n    std::size_t release;\n    std::uint32_t stride;\n    Routine source;\n};\nint failure_calls;\nvoid require(bool value, const char* message) {\n    if (!value) throw std::runtime_error(message);\n}\nint __cdecl fail_allocation(std::size_t) { ++failure_calls; return 0; }\nvoid* __cdecl allocate_original(std::uint32_t bytes) {\n    return bsp::singleton_lifetime_allocate({bsp::SingletonAllocationKind::object, bytes, bytes});\n}\nvoid __cdecl release_original(void* data) noexcept { bsp::singleton_lifetime_free(data); }\n\nvoid relocate(unsigned char* code, std::size_t site, std::uintptr_t target) {\n    require(code[site] == 0xe8, \"expected direct CALL\");\n    const auto displacement = static_cast<std::uint32_t>(target - reinterpret_cast<std::uintptr_t>(code + site + 5));\n    std::memcpy(code + site + 1, &displacement, 4);\n}\nclass Original {\n    void* code_;\npublic:\n    explicit Original(const Spec& spec) : code_(VirtualAlloc(nullptr, spec.size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE)) {\n        require(code_ != nullptr, \"VirtualAlloc\");\n        std::memcpy(code_, spec.bytes, spec.size);\n        auto* code = static_cast<unsigned char*>(code_);\n        relocate(code, spec.allocation, reinterpret_cast<std::uintptr_t>(&allocate_original));\n        relocate(code, spec.release, reinterpret_cast<std::uintptr_t>(&release_original));\n        DWORD old_protection;\n        require(VirtualProtect(code_, spec.size, PAGE_EXECUTE_READ, &old_protection) != 0, \"VirtualProtect\");\n        require(FlushInstructionCache(GetCurrentProcess(), code_, spec.size) != 0, \"FlushInstructionCache\");\n    }\n    ~Original() { VirtualFree(code_, 0, MEM_RELEASE); }\n    Routine function() const { return reinterpret_cast<Routine>(code_); }\n};\nvoid reset_x87() {\n    unsigned short control = 0x037f;\n    __asm { fnclex }\n    __asm { fldcw control }\n}\nunsigned short status_x87() {\n    unsigned short result;\n    __asm { fnstsw result }\n    return static_cast<unsigned short>(result & 0x003f);\n}\nstruct Outcome { std::vector<unsigned char> rows; unsigned short x87; };\nOutcome exercise(Routine routine, std::uint32_t stride, int scenario) {\n    Frame frame{0x13579bdfu, {nullptr, 2, 2}, 0x2468ace0u};\n    const std::uint32_t bytes = stride * 2;\n    frame.header.data = allocate_original(bytes);\n    auto* words = static_cast<std::uint32_t*>(frame.header.data);\n    for (std::uint32_t word = 0; word < bytes / 4; ++word) words[word] = 0x7f800001u + word;\n    const auto old = frame.header;\n    Outcome result;\n    reset_x87();\n    if (scenario == 0) {\n        routine(&frame.header, 0x98765432u, 4);\n        result.x87 = status_x87();\n        require(frame.header.data != old.data && frame.header.count == 2 && frame.header.capacity == 4, \"grow header\");\n    } else if (scenario == 1) {\n        routine(&frame.header, 0, -7);\n        result.x87 = status_x87();\n        require(frame.header.data == old.data && frame.header.count == 2 && frame.header.capacity == 2, \"clamped no-grow header\");\n    } else if (scenario == 2) {\n        release_original(frame.header.data);\n        frame.header = {nullptr, 0, -1};\n        routine(&frame.header, 0, 0);\n        result.x87 = status_x87();\n        require(frame.header.data != nullptr && frame.header.count == 0 && frame.header.capacity == 1, \"zero-resize reserve header\");\n    } else {\n        failure_calls = 0;\n        const auto previous = _set_new_handler(&fail_allocation);\n        bool caught = false;\n        try { routine(&frame.header, 0, (std::numeric_limits<std::int32_t>::max)()); }\n        catch (const std::bad_alloc&) { caught = true; }\n        _set_new_handler(previous);\n        result.x87 = status_x87();\n        require(caught && failure_calls == 1, \"allocation failure propagation\");\n        require(std::memcmp(&frame.header, &old, sizeof old) == 0, \"failure preserves header\");\n    }\n    require(frame.before == 0x13579bdfu && frame.after == 0x2468ace0u, \"header guards\");\n    const auto copied = static_cast<std::size_t>(frame.header.count) * stride;\n    result.rows.resize(copied);\n    if (copied != 0) std::memcpy(result.rows.data(), frame.header.data, copied);\n    release_original(frame.header.data);\n    return result;\n}\n}\nint main() {\n    const Spec specs[] = {\n        {\"00b228b0\", original_00b228b0, sizeof original_00b228b0, allocation_site_00b228b0, release_site_00b228b0, 16, &bsp::reserve_native_renderer_records16_00b228b0},\n        {\"00b22940\", original_00b22940, sizeof original_00b22940, allocation_site_00b22940, release_site_00b22940, 20, &bsp::reserve_native_renderer_records20_00b22940},\n        {\"00b229d0\", original_00b229d0, sizeof original_00b229d0, allocation_site_00b229d0, release_site_00b229d0, 24, &bsp::reserve_native_renderer_records24_00b229d0},\n        {\"00b22a70\", original_00b22a70, sizeof original_00b22a70, allocation_site_00b22a70, release_site_00b22a70, 40, &bsp::reserve_native_renderer_records40_00b22a70}\n    };\n    try {\n        for (const auto& spec : specs) {\n            Original original(spec);\n            for (int scenario = 0; scenario < 4; ++scenario) {\n                const auto expected = exercise(original.function(), spec.stride, scenario);\n                const auto actual = exercise(spec.source, spec.stride, scenario);\n                require(actual.rows == expected.rows, \"original/source bytes\");\n                require(actual.x87 == expected.x87, \"original/source x87 status\");\n                require(actual.x87 == (scenario == 0 ? 1 : 0), \"masked signaling-NaN status\");\n            }\n            std::printf(\"PASS %s: growth x87 bytes/status, clamped no-grow, negative-capacity resize0, allocation failure\\n\", spec.name);\n        }\n        std::puts(\"PASS: four complete original bodies against main-archive source; 16 comparisons\");\n        return 0;\n    } catch (const std::exception& error) {\n        std::fprintf(stderr, \"FAIL: %s\\n\", error.what());\n        return 1;\n    }\n}\n",
+    "reference_header_text": "#pragma once\n#include <cstddef>\n#include <cstdint>\ninline constexpr unsigned char original_00b228b0[] = {0x55,0x8b,0x6c,0x24,0x08,0x83,0xfd,0x01,0x56,0x8b,0xf1,0x7d,0x05,0xbd,0x01,0x00,0x00,0x00,0x39,0x6e,0x08,0x7d,0x68,0x8b,0xc5,0xc1,0xe0,0x04,0x53,0x50,0xe8,0xeb,0x2c,0x0d,0x00,0x33,0xd2,0x83,0xc4,0x04,0x39,0x56,0x04,0x8b,0xd8,0x7e,0x3f,0x57,0xbf,0xf8,0xff,0xff,0xff,0x8d,0x4b,0x08,0x2b,0xfb,0x8d,0x9b,0x00,0x00,0x00,0x00,0x8d,0x41,0xf8,0x85,0xc0,0x74,0x1b,0x8d,0x04,0x0f,0x03,0x06,0xd9,0x00,0xd9,0x59,0xf8,0xd9,0x40,0x04,0xd9,0x59,0xfc,0xd9,0x40,0x08,0xd9,0x19,0x8b,0x40,0x0c,0x89,0x41,0x04,0x83,0xc2,0x01,0x83,0xc1,0x10,0x3b,0x56,0x04,0x7c,0xd3,0x5f,0x8b,0x0e,0x51,0xe8,0x63,0x40,0x0d,0x00,0x83,0xc4,0x04,0x89,0x1e,0x89,0x6e,0x08,0x5b,0x5e,0x5d,0xc2,0x04,0x00};\ninline constexpr std::size_t allocation_site_00b228b0 = 30;\ninline constexpr std::size_t release_site_00b228b0 = 113;\ninline constexpr unsigned char original_00b22940[] = {0x56,0x57,0x8b,0x7c,0x24,0x0c,0x83,0xff,0x01,0x8b,0xf1,0x7d,0x05,0xbf,0x01,0x00,0x00,0x00,0x39,0x7e,0x08,0x7d,0x6e,0x8d,0x04,0xbf,0x03,0xc0,0x03,0xc0,0x55,0x50,0xe8,0x59,0x2c,0x0d,0x00,0x33,0xd2,0x83,0xc4,0x04,0x39,0x56,0x04,0x8b,0xe8,0x7e,0x43,0x53,0xbb,0xf8,0xff,0xff,0xff,0x8d,0x4d,0x08,0x2b,0xdd,0x8d,0x64,0x24,0x00,0x8d,0x41,0xf8,0x85,0xc0,0x74,0x21,0x8d,0x04,0x0b,0x03,0x06,0xd9,0x00,0xd9,0x59,0xf8,0xd9,0x40,0x04,0xd9,0x59,0xfc,0xd9,0x40,0x08,0xd9,0x19,0xd9,0x40,0x0c,0xd9,0x59,0x04,0x8b,0x40,0x10,0x89,0x41,0x08,0x83,0xc2,0x01,0x83,0xc1,0x14,0x3b,0x56,0x04,0x7c,0xcd,0x5b,0x8b,0x0e,0x51,0xe8,0xcd,0x3f,0x0d,0x00,0x83,0xc4,0x04,0x89,0x2e,0x89,0x7e,0x08,0x5d,0x5f,0x5e,0xc2,0x04,0x00};\ninline constexpr std::size_t allocation_site_00b22940 = 32;\ninline constexpr std::size_t release_site_00b22940 = 119;\ninline constexpr unsigned char original_00b229d0[] = {0x56,0x57,0x8b,0x7c,0x24,0x0c,0x83,0xff,0x01,0x8b,0xf1,0x7d,0x05,0xbf,0x01,0x00,0x00,0x00,0x39,0x7e,0x08,0x7d,0x7a,0x8d,0x04,0x7f,0x03,0xc0,0x03,0xc0,0x03,0xc0,0x55,0x50,0xe8,0xc7,0x2b,0x0d,0x00,0x33,0xd2,0x83,0xc4,0x04,0x39,0x56,0x04,0x8b,0xe8,0x89,0x6c,0x24,0x10,0x7e,0x49,0x53,0xbb,0xf8,0xff,0xff,0xff,0x8d,0x4d,0x08,0x2b,0xdd,0x8d,0x41,0xf8,0x85,0xc0,0x74,0x2b,0x8d,0x04,0x0b,0x03,0x06,0xd9,0x00,0xd9,0x59,0xf8,0xd9,0x40,0x04,0xd9,0x59,0xfc,0xd9,0x40,0x08,0xd9,0x19,0xd9,0x40,0x0c,0xd9,0x59,0x04,0x8b,0x68,0x10,0x89,0x69,0x08,0x8b,0x40,0x14,0x8b,0x6c,0x24,0x14,0x89,0x41,0x0c,0x83,0xc2,0x01,0x83,0xc1,0x18,0x3b,0x56,0x04,0x7c,0xc3,0x5b,0x8b,0x0e,0x51,0xe8,0x31,0x3f,0x0d,0x00,0x83,0xc4,0x04,0x89,0x2e,0x89,0x7e,0x08,0x5d,0x5f,0x5e,0xc2,0x04,0x00};\ninline constexpr std::size_t allocation_site_00b229d0 = 34;\ninline constexpr std::size_t release_site_00b229d0 = 131;\ninline constexpr unsigned char original_00b22a70[] = {0x56,0x57,0x8b,0x7c,0x24,0x0c,0x83,0xff,0x01,0x8b,0xf1,0x7d,0x05,0xbf,0x01,0x00,0x00,0x00,0x39,0x7e,0x08,0x0f,0x8d,0x92,0x00,0x00,0x00,0x8d,0x04,0xbf,0x03,0xc0,0x03,0xc0,0x03,0xc0,0x55,0x50,0xe8,0x23,0x2b,0x0d,0x00,0x33,0xd2,0x83,0xc4,0x04,0x39,0x56,0x04,0x8b,0xe8,0x89,0x6c,0x24,0x10,0x7e,0x61,0x53,0xbb,0xe4,0xff,0xff,0xff,0x8d,0x4d,0x1c,0x2b,0xdd,0x8d,0x41,0xe4,0x85,0xc0,0x74,0x43,0x8d,0x04,0x0b,0x03,0x06,0x8b,0x28,0x89,0x69,0xe4,0xd9,0x40,0x04,0xd9,0x59,0xe8,0xd9,0x40,0x08,0xd9,0x59,0xec,0xd9,0x40,0x0c,0xd9,0x59,0xf0,0xd9,0x40,0x10,0xd9,0x59,0xf4,0x8b,0x68,0x14,0x89,0x69,0xf8,0xd9,0x40,0x18,0x8b,0x6c,0x24,0x14,0xd9,0x59,0xfc,0xd9,0x40,0x1c,0xd9,0x19,0xd9,0x40,0x20,0xd9,0x59,0x04,0xd9,0x40,0x24,0xd9,0x59,0x08,0x83,0xc2,0x01,0x83,0xc1,0x28,0x3b,0x56,0x04,0x7c,0xab,0x5b,0x8b,0x0e,0x51,0xe8,0x75,0x3e,0x0d,0x00,0x83,0xc4,0x04,0x89,0x2e,0x89,0x7e,0x08,0x5d,0x5f,0x5e,0xc2,0x04,0x00};\ninline constexpr std::size_t allocation_site_00b22a70 = 38;\ninline constexpr std::size_t release_site_00b22a70 = 159;\n",
+    "build_script_text": "$ErrorActionPreference = 'Stop'\n$vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio/Installer/vswhere.exe'\n$vsPath = & $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath\n$dev = Join-Path $vsPath 'Common7/Tools/Launch-VsDevShell.ps1'\n& $dev -Arch x86 -HostArch amd64 -SkipAutomaticLocation | Out-Null\ncl /nologo /std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /I include /I local /Fo:local/native_renderer_container_probe.obj /Fe:local/native_renderer_container_probe.exe local/native_renderer_container_probe.cpp build/win32/Release/bsp_core.lib /link /MANIFEST:EMBED user32.lib d3d9.lib\nif ($LASTEXITCODE) { throw 'Fixture compilation failed.' }\n& ./local/native_renderer_container_probe.exe\nif ($LASTEXITCODE) { throw 'Fixture failed.' }\n",
+    "report_call_audit": "tools/verify_report_calls.py: 8 call rows checked, 0 failed"
+  },
+  "remaining_boundaries": [
+    "original private request-slot writes and private-frame aliases",
+    "original register/SEH hardware-fault unwinding and static CRT exception identity",
+    "unmasked x87 traps and malformed/wrapped-invalid storage not fixture-tested",
+    "no game integration or game validation",
+    "renderer destructor and EH continuations owned by integrator"
+  ],
+  "artifact_manifest": [
+    {
+      "path": "include/bsp/native_renderer_container_lifetime.hpp",
+      "bytes": 2121,
+      "sha256": "680c430daa67600cb13a54e8147eac9ad402fa6e84f2f45879253a1ee40cb0d7"
+    },
+    {
+      "path": "src/native_renderer_container_lifetime.cpp",
+      "bytes": 3507,
+      "sha256": "4f20fe408411e00afed498f0542bfe94be0a66024c89dc7782448de025ff9cd1"
+    },
+    {
+      "path": "docs/NATIVE_RENDERER_CONTAINER_LIFETIME.md",
+      "bytes": 5123,
+      "sha256": "9f147cd36e882c8041c5ed023352d09c08ae4b9eb32cb287be128a4645042fac"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 112777,
+      "sha256": "cadf63357b19183e8ab5ade77934883fe891c13c52335365ed64a5ee3f0c0692"
+    },
+    {
+      "path": "local/native_renderer_container_reference.hpp",
+      "bytes": 3752,
+      "sha256": "a18675fdbf4b1eab98f32f196e6bd4f17bc4ee8efde1677f4f27f0f15031950c"
+    },
+    {
+      "path": "local/native_renderer_container_probe.cpp",
+      "bytes": 6587,
+      "sha256": "8e74eb2f072a6127e2d648578be352ec844cddc3c5552aff2d08975fc4441495"
+    },
+    {
+      "path": "local/build_native_renderer_container_probe.ps1",
+      "bytes": 822,
+      "sha256": "45805df9032012b5e2dd8deaaa4db12010be2a9c69ad9a5047afa96479214eec"
+    },
+    {
+      "path": "local/prepare_native_renderer_containers.py",
+      "bytes": 3091,
+      "sha256": "79f2d7d61634f948727b7f61cbf3466a6b20da4c826e776f48c4541d48245e9e"
+    },
+    {
+      "path": "local/native_renderer_container_probe.exe",
+      "bytes": 17408,
+      "sha256": "9fe767c26c229096b7210cfade1b45c7b3d31a593f7ce7c873cc0018ab54ec67"
+    },
+    {
+      "path": "local/native_renderer_container_probe.obj",
+      "bytes": 57237,
+      "sha256": "c359b75035b7f7c0ce29e97ca00db7f8bd7ef8f4559ab94c0315a231b04fcc86"
+    },
+    {
+      "path": "local/native_renderer_container_probe.log",
+      "bytes": 534,
+      "sha256": "89b9820be0904916d797a5e570512baba408c019944908a93d9acd04cf3b2350"
+    },
+    {
+      "path": "local/native_renderer_container_build.log",
+      "bytes": 46078,
+      "sha256": "443cfe2690e17094b57286a81e6d7685973fa39cfd032a0d2a104d1e2654dd30"
+    },
+    {
+      "path": "local/native_renderer_container_seeds.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 57562260,
+      "sha256": "ef79373ea475a52dd0f1f621ca6a4f23835b25ef16535cb8839b0e6c551a8dc2"
+    }
+  ]
+}

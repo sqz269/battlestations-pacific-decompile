@@ -1,0 +1,164 @@
+{
+  "packet": "renderer_member_cleanup_main_r32",
+  "generated_utc": "2026-09-16T09:37:51.6868931Z",
+  "baseline": "44dfc5c317f11a844f43ab803873eb651b639d99",
+  "combined_main": "c68a19df23e6ba0b0ce64eec68b40b9dc287e291",
+  "cmake_commit": "1340c0fb268d8b7a181649c10313bec03767ecd7",
+  "source_commit": "408a24015c44d480e72f94b35f780f3456b5ab75",
+  "combined_merge_commit": "33b66460f11c4d9d6812f229cbeaf59fade56308",
+  "outcome": {
+    "adopted_subset": "Four complete native renderer record-container reserve bodies.",
+    "deferred_subset": "Capability DWORD-array resize/destructor pair.",
+    "reason": "The record reserves bind current main's byte-identical singleton allocation/free provider. The capability pair's two direct source providers are absent from current main."
+  },
+  "historical_provenance": {
+    "source_branch": "agent/orch5-20260911",
+    "reviewed_tip": "769bdc3e3b8254f95867b11e2546d629f2a564b6",
+    "container_origin_commit": "c1a53b187",
+    "capability_origin_commit": "247dc9192",
+    "container_source_identity": {
+      "include/bsp/native_renderer_container_lifetime.hpp": "git blob 823aa3b23025260643010cde9ceea51413146b3f; byte-identical",
+      "src/native_renderer_container_lifetime.cpp": "git blob aa8e9644047e06de99d85c6c23ba20918178a79b; byte-identical",
+      "docs/NATIVE_RENDERER_CONTAINER_LIFETIME.md": "git blob 498b011caec603c810e49158144d4030bf1c02d1; byte-identical",
+      "reports/native_renderer_container_lifetime.json": "git blob 226f3f1eab9cebca16bb85eb438aaa1e49a5fa4b; byte-identical"
+    },
+    "retained_historical_report": "reports/native_renderer_container_lifetime.json",
+    "retained_historical_doc": "docs/NATIVE_RENDERER_CONTAINER_LIFETIME.md",
+    "note": "The retained historical report/doc remain unchanged, including their original two-CTest result. This report records the current three-CTest validation."
+  },
+  "provider_audit": {
+    "container": {
+      "compatible": true,
+      "header": "include/bsp/singleton_lifetime.hpp",
+      "source": "src/singleton_lifetime.cpp",
+      "header_blob_current_and_historical": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "source_blob_current_and_historical": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+      "contract": "singleton_lifetime_allocate uses host_bytes through malloc/new-handler retry and throws bad_alloc; singleton_lifetime_free calls free. Each reserve supplies equal wrapped native/host byte counts."
+    },
+    "capability": {
+      "compatible": false,
+      "historical_source_blobs_unchanged_at_reviewed_tip": true,
+      "cleanup_header_blob": "82284bed31e70412f0c1737b229ec0757317c328",
+      "cleanup_source_blob": "87d945994314ac6c56a2a57e596790f6892c551b",
+      "missing_provider_header": "include/bsp/native_renderer_pointer_array_destroy.hpp",
+      "missing_provider_header_blob_at_tip": "b42f1838efe07ece6509247e2c1277690a350e37",
+      "missing_provider_source": "src/native_renderer_pointer_array_destroy.cpp",
+      "missing_provider_source_blob_at_tip": "699877250b9f72a0039dfe17deb4dde075a09486",
+      "required_symbols": [
+        "resize_native_renderer_vertex_pointers_00b25940",
+        "destroy_native_renderer_vertex_pointers_00b29b20"
+      ],
+      "current_partial_overlap": "reserve_native_renderer_pointer_array_00b22d10 exists, but it is only the lower reserve dependency and does not provide either required resize/destructor contract.",
+      "decision": "No capability cleanup source/header/CMake adoption and no substitute provider implementation in this bounded packet."
+    }
+  },
+  "functions": [
+    {
+      "address": "00b228b0",
+      "end_inclusive": "00b22933",
+      "end_exclusive": "00b22934",
+      "bytes": 132,
+      "source_symbol": "reserve_native_renderer_records16_00b228b0",
+      "stride": 16,
+      "x87_word_mask": "007",
+      "original_abi": "ECX actual12-byte header; signed stack DWORD; RET4"
+    },
+    {
+      "address": "00b22940",
+      "end_inclusive": "00b229c9",
+      "end_exclusive": "00b229ca",
+      "bytes": 138,
+      "source_symbol": "reserve_native_renderer_records20_00b22940",
+      "stride": 20,
+      "x87_word_mask": "00f",
+      "original_abi": "ECX actual12-byte header; signed stack DWORD; RET4"
+    },
+    {
+      "address": "00b229d0",
+      "end_inclusive": "00b22a65",
+      "end_exclusive": "00b22a66",
+      "bytes": 150,
+      "source_symbol": "reserve_native_renderer_records24_00b229d0",
+      "stride": 24,
+      "x87_word_mask": "00f",
+      "original_abi": "ECX actual12-byte header; signed stack DWORD; RET4"
+    },
+    {
+      "address": "00b22a70",
+      "end_inclusive": "00b22b21",
+      "end_exclusive": "00b22b22",
+      "bytes": 178,
+      "source_symbol": "reserve_native_renderer_records40_00b22a70",
+      "stride": 40,
+      "x87_word_mask": "3de",
+      "original_abi": "ECX actual12-byte header; signed stack DWORD; RET4"
+    }
+  ],
+  "fresh_byte_receipt": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "total_bytes": 598,
+    "all_live_disk_historical_match": true,
+    "aggregate_sha256": "bed6c64bacdb03b2556ed59ef94f2586b2f2e4c95f05a3120352a527dbdf1ace",
+    "ranges": [
+      {"address": "00b228b0", "length": 132, "end_exclusive": "00b22934", "sha256": "a9ace03126544434d8bd4c39a552b1b6364e0461299c6046a2ab7e808584a5e1", "matches_disk": true, "matches_historical": true},
+      {"address": "00b22940", "length": 138, "end_exclusive": "00b229ca", "sha256": "81c28ad3286174856c85ae8dff1d4ef50462dc3db81c7333de876d2c8f949506", "matches_disk": true, "matches_historical": true},
+      {"address": "00b229d0", "length": 150, "end_exclusive": "00b22a66", "sha256": "e89268357e131ecba4d7e98a743b0f1ee6dcf2d3101cb94a94c55527dd879f08", "matches_disk": true, "matches_historical": true},
+      {"address": "00b22a70", "length": 178, "end_exclusive": "00b22b22", "sha256": "f5d2b59b8edf7665919adf034712e4436fcdbc44d84f72363f8c1f46e36577f0", "matches_disk": true, "matches_historical": true}
+    ],
+    "full_body_hex": "Retained per range in reports/native_renderer_container_lifetime.json and local/r32_renderer_container_byte_receipt.json."
+  },
+  "call_rows": [
+    {"address": "00b228ce", "native": "00bf55be", "function": "00b228b0"},
+    {"address": "00b22921", "native": "00bf6989", "function": "00b228b0"},
+    {"address": "00b22960", "native": "00bf55be", "function": "00b22940"},
+    {"address": "00b229b7", "native": "00bf6989", "function": "00b22940"},
+    {"address": "00b229f2", "native": "00bf55be", "function": "00b229d0"},
+    {"address": "00b22a53", "native": "00bf6989", "function": "00b229d0"},
+    {"address": "00b22a96", "native": "00bf55be", "function": "00b22a70"},
+    {"address": "00b22b0f", "native": "00bf6989", "function": "00b22a70"}
+  ],
+  "source_review": {
+    "header": "Actual 0Ch header with pointer/count/capacity; signed capacity gate and request clamp retained.",
+    "allocation": "Wrapped request*stride passed as equal native and host byte counts to the current shared allocator.",
+    "copy": "Current source/count reloads, per-row null destination test, ascending field order and exact x87 versus integer word masks retained.",
+    "publication": "Current old base is freed before fresh base and capacity publication; count remains untouched.",
+    "failure": "No rollback, malformed-header repair, overflow guard or fresh-allocation cleanup was invented."
+  },
+  "validation": {
+    "ghidra": "live function count 64144; snapshot 64144; same; existing complete body ranges and comments present; worker remained read-only",
+    "verify_seeds": "PASS 8/8 live bytes equal installed PE",
+    "call_rows": "PASS 8 exact direct calls checked, 0 failed",
+    "build": "PASS after merge of current main c68a19df2; MSVC Win32 Release /W4 /WX /fp:strict /MD",
+    "ctest": "PASS reconstructed_math, native_math_differential, tool_tests; 3/3",
+    "fixture": "PASS retained manifested /MD fixture; four complete relocated original bodies; 16 original/source comparisons",
+    "fixture_cases_per_body": "growth x87 bytes/status, clamped no-grow, negative-capacity resize0, allocation failure",
+    "fixture_boundary": "Only eight rel32 allocation/free call operands are rebound to the same current source service; no original EXE address executes."
+  },
+  "artifact_receipts": [
+    {"path": "include/bsp/native_renderer_container_lifetime.hpp", "sha256": "680c430daa67600cb13a54e8147eac9ad402fa6e84f2f45879253a1ee40cb0d7"},
+    {"path": "src/native_renderer_container_lifetime.cpp", "sha256": "4f20fe408411e00afed498f0542bfe94be0a66024c89dc7782448de025ff9cd1"},
+    {"path": "docs/NATIVE_RENDERER_CONTAINER_LIFETIME.md", "sha256": "9f147cd36e882c8041c5ed023352d09c08ae4b9eb32cb287be128a4645042fac"},
+    {"path": "reports/native_renderer_container_lifetime.json", "sha256": "7bdc98d9e3dad507017351b48dd8a94220a371efc0a201092e7ff0d2cd6d0ac7"},
+    {"path": "cmake/startup.cmake", "sha256": "9ddeb3e8b9cbb85536114cc1f7d386fa135368818ca52955d99af5fdde06f7fd"},
+    {"path": "build/win32/Release/bsp_core.lib", "sha256": "b747dc70688d1ed461796b3984f91435b7eee5f8021ec7a6c2179d1057de3e29"},
+    {"path": "local/native_renderer_container_probe.exe", "sha256": "a73808ef2fd6b74e8bc0a3690f740d2627434cbaa2c7d0831349d3b881180143"},
+    {"path": "local/native_renderer_container_probe.obj", "sha256": "b0c6c94896aacebed31db94a27d56779ba14244d2545208bdcd697b9c0e3b05b"}
+  ],
+  "archive": {
+    "path": "local/evidence-r32/renderer-member-cleanup-r32.zip",
+    "bytes": 13302736,
+    "sha256": "91fc814ba4f86bb9529b8daf2afe8e1984ffbd6fc125272c503a2de064dc5e49",
+    "archived_files": 19,
+    "manifest": "local/evidence-r32/renderer-member-cleanup-r32/manifest.json"
+  },
+  "annotation_status": "Worker performed no Ghidra mutation. All four functions already have reviewed names/comments and complete ranges; no parent listing repair is required for this subset. Parent owns any integration-era metadata append.",
+  "limits": [
+    "Source interfaces are not drop-in reproductions of original private frames, complete register ABI, FH3 or SEH identity.",
+    "The differential fixture is bounded relocated-code evidence, not execution of original EXE addresses or gameplay validation.",
+    "The four reserve bodies do not reconstruct their renderer destructor parent or define semantic record fields.",
+    "Capability DWORD-array cleanup remains deferred until its B25940/B29B20 provider pair is integrated or separately reconstructed."
+  ]
+}
