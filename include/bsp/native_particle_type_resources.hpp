@@ -31,6 +31,12 @@ void reserve_native_object_particle_models_00af8350(void*,std::int32_t,
 // AF8940 ECX actual98h Object definition, RET: reverse captured-cell decref,
 // clear that cell and decrement CURRENT count. Keeps allocation/capacity.
 void clear_native_object_particle_models_00af8940(void*,NativeParticleTypeBaseBindings&);
+// Genuine raw-storage overloads: fixed CRT allocation/free; actual atomics and
+// callable current model virtual00. They borrow no host strings or owner facade.
+// Numeric image model profiles require the canonical renderer lifetime domain
+// to be threaded separately; this overload does not make them callable.
+void reserve_native_object_particle_models_00af8350(void*,std::int32_t);
+void clear_native_object_particle_models_00af8940(void*);
 // B80D70 ECX actual manager; stack name8h, RET4/EAX. Current manager+4 is
 // passed to the existing real B80720 body with original name/factory RET8.
 void* load_native_resource_with_default_factory_00b80d70(void*,const void*,

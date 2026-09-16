@@ -1,0 +1,905 @@
+{
+  "schema_version": 1,
+  "packet": "orch4_particle_object_tracer_k11",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "base_commit": "9f2483c2e",
+  "status": "complete_raw_bodies_build_and_focused_original_source_probe_verified",
+  "functions": [
+    {
+      "address": "00869b10",
+      "end_exclusive": "00869b2a",
+      "length": 26,
+      "cpp_symbol": "destroy_native_particle_tracer_buffer_00869b10",
+      "original_ABI": "ECX actual pointer cell; RET",
+      "source": "src/native_particle_object_tracer_lifetime.cpp",
+      "header": "include/bsp/native_particle_object_tracer_lifetime.hpp",
+      "raw_overload": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "reviewed_name": "BSP_NativePointer_FreeAndClear",
+      "probe_coverage": "complete original/source Tracer normal comparison; actual buffer cleanup and pool return order"
+    },
+    {
+      "address": "00af8350",
+      "end_exclusive": "00af83af",
+      "length": 95,
+      "cpp_symbol": "reserve_native_object_particle_models_00af8350",
+      "original_ABI": "ECX actual0Ch vector; stack signed capacity; RET4",
+      "source": "src/native_particle_type_resources.cpp",
+      "header": "include/bsp/native_particle_type_resources.hpp",
+      "raw_overload": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "reviewed_name": "BSP_NativeParticleObject_ReserveModels",
+      "probe_coverage": "source vector growth/shrink; original resize reached by complete Object comparison"
+    },
+    {
+      "address": "00af83b0",
+      "end_exclusive": "00af8400",
+      "length": 80,
+      "cpp_symbol": "resize_native_object_particle_models_00af83b0",
+      "original_ABI": "ECX actual0Ch vector; stack signed count; RET4",
+      "source": "src/native_particle_object_tracer_lifetime.cpp",
+      "header": "include/bsp/native_particle_object_tracer_lifetime.hpp",
+      "raw_overload": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "reviewed_name": "BSP_NativeParticleObject_ResizeModels",
+      "probe_coverage": "source vector growth/shrink; original resize reached by complete Object comparison"
+    },
+    {
+      "address": "00af8940",
+      "end_exclusive": "00af89b1",
+      "length": 113,
+      "cpp_symbol": "clear_native_object_particle_models_00af8940",
+      "original_ABI": "ECX actual Object definition; RET",
+      "source": "src/native_particle_type_resources.cpp",
+      "header": "include/bsp/native_particle_type_resources.hpp",
+      "raw_overload": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "reviewed_name": "BSP_NativeParticleObject_ClearModels",
+      "probe_coverage": "complete original/source Object normal comparison plus source throwing-model unwind"
+    },
+    {
+      "address": "00af89c0",
+      "end_exclusive": "00af89d7",
+      "length": 23,
+      "cpp_symbol": "destroy_native_object_particle_model_vector_00af89c0",
+      "original_ABI": "ECX actual0Ch vector; RET",
+      "source": "src/native_particle_object_tracer_lifetime.cpp",
+      "header": "include/bsp/native_particle_object_tracer_lifetime.hpp",
+      "raw_overload": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "reviewed_name": "BSP_NativeParticleObject_DestroyModelVector",
+      "probe_coverage": "source vector growth/shrink; original resize reached by complete Object comparison"
+    },
+    {
+      "address": "00af8a40",
+      "end_exclusive": "00af8af6",
+      "length": 182,
+      "cpp_symbol": "destroy_native_object_particle_type_00af8a40",
+      "original_ABI": "ECX actual Object definition; RET",
+      "source": "src/native_particle_object_tracer_lifetime.cpp",
+      "header": "include/bsp/native_particle_object_tracer_lifetime.hpp",
+      "raw_overload": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "reviewed_name": "BSP_ObjectParticleType_Destroy",
+      "probe_coverage": "complete original/source Object normal comparison plus source throwing-model unwind"
+    },
+    {
+      "address": "00af8bb0",
+      "end_exclusive": "00af8bce",
+      "length": 30,
+      "cpp_symbol": "delete_native_object_particle_type_00af8bb0",
+      "original_ABI": "ECX actual Object definition; stack flags; EAX original owner; RET4",
+      "source": "src/native_particle_object_tracer_lifetime.cpp",
+      "header": "include/bsp/native_particle_object_tracer_lifetime.hpp",
+      "raw_overload": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "reviewed_name": "BSP_ObjectParticleType_ScalarDeletingDestructor",
+      "probe_coverage": "complete bytes/assembly and strict build only; scalar flags variants not executed by focused probe"
+    },
+    {
+      "address": "00b0a4e0",
+      "end_exclusive": "00b0a70b",
+      "length": 555,
+      "cpp_symbol": "destroy_native_tracer_particle_type_00b0a4e0",
+      "original_ABI": "ECX actual Tracer definition; RET",
+      "source": "src/native_particle_object_tracer_lifetime.cpp",
+      "header": "include/bsp/native_particle_object_tracer_lifetime.hpp",
+      "raw_overload": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "reviewed_name": "BSP_TracerParticleType_Destroy",
+      "probe_coverage": "complete original/source Tracer normal comparison; actual buffer cleanup and pool return order"
+    },
+    {
+      "address": "00b0a820",
+      "end_exclusive": "00b0a83e",
+      "length": 30,
+      "cpp_symbol": "delete_native_tracer_particle_type_00b0a820",
+      "original_ABI": "ECX actual Tracer definition; stack flags; EAX original owner; RET4",
+      "source": "src/native_particle_object_tracer_lifetime.cpp",
+      "header": "include/bsp/native_particle_object_tracer_lifetime.hpp",
+      "raw_overload": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "reviewed_name": "BSP_TracerParticleType_ScalarDeletingDestructor",
+      "probe_coverage": "complete bytes/assembly and strict build only; scalar flags variants not executed by focused probe"
+    }
+  ],
+  "spans": [
+    {
+      "address": "00869b10",
+      "end_exclusive": "00869b2a",
+      "length": 26,
+      "sha256": "17ba168b981f602e7a93da50fc9eefb1b151104b5b927deae10c407a5daa6e7d",
+      "bytes_hex": "568bf18b0685c0740f50e86ace380083c404c706000000005ec3",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00af8350",
+      "end_exclusive": "00af83af",
+      "length": 95,
+      "sha256": "904fe92052053edff0a81e9c13f26204e6c19937fc17b611bb57de5bd7c5a7c2",
+      "bytes_hex": "56578b7c240c83ff018bf17d05bf01000000397e087d438d04bd000000005350e849d20f008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e8e8e50f0083c404891e897e085b5f5ec20400",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00af83b0",
+      "end_exclusive": "00af8400",
+      "length": 80,
+      "sha256": "15de752aef3aad37775487213e3ecfa8464a719ec5107c7c7d19ac6fccb0ff56",
+      "bytes_hex": "56578b7c240c8bf13b7e087e0657e88dffffff8b46043bc77d1c8d9b000000008b0e8d0c8185c97406c7010000000083c0013bc77cea3b7e047d0d83c8ff8bff0146043b7e047cf8897e045f5ec20400",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00af8940",
+      "end_exclusive": "00af89b1",
+      "length": 113,
+      "sha256": "05a2c2f21809c4e1b7324d99252951c856b5681ed340ffc34d0457c5b2288e39",
+      "bytes_hex": "568bf183be9000000000746353558b2d2022ce0057eb098da424000000008bff8b86900000008b8e8c0000008b7c81fc85ff8d5c81fc74188d570452ffd585c075088b078b108bcfffd2c703000000008b869000000085c0740983c0ff89869000000083be900000000075b45f5d5b5ec3",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00af89c0",
+      "end_exclusive": "00af89d7",
+      "length": 23,
+      "sha256": "359813a865adca1b8315966b894f66d3d7398e654f0bac7649103f2b4777c5a8",
+      "bytes_hex": "566a008bf1e8e6f9ffff8b0650e8b7df0f0083c4045ec3",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00af8a40",
+      "end_exclusive": "00af8af6",
+      "length": 182,
+      "sha256": "d65b4bae2ea0268c63d42b555cd08be1ddc71f6534ca57c7acf85a48b2176ad0",
+      "bytes_hex": "6aff6846aecb0064a100000000506489250000000051568bf15789742408c70600dbd5008bbe8000000085ffc74424140100000074188bcfe8737300008bcfe80c760000c78680000000000000008bbe8400000085ff74188bcfe8517300008bcfe8ea750000c78684000000000000008bcee889feffff8dbe8c0000006a008bcfc644241800e8e5f8ffff8b3f57e8b6de0f0083c4048bcec7442414ffffffffe8cb8400008b4c240c5f5e64890d0000000083c410c3",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00af8bb0",
+      "end_exclusive": "00af8bce",
+      "length": 30,
+      "sha256": "080f7de998bfa3f3478af983a5601d2fdec0832efab7ea92391b25ceaac5c4b7",
+      "bytes_hex": "568bf1e888fefffff644240801740956e8e7d90f0083c4048bc65ec20400",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00b0a4e0",
+      "end_exclusive": "00b0a70b",
+      "length": 555,
+      "sha256": "38f0a1ce5f3559b1ceba92d398cafb6d98ea7fa23d927306bc5f39460700632b",
+      "bytes_hex": "6aff6836bacb0064a10000000050648925000000005153568bf1578974240cc70648e0d5008b9eb400000033ff3bdfc74424180100000074148bcbe8d058ffff8bcbe8695bffff89beb40000008b9eb80000003bdf74148bcbe8b258ffff8bcbe84b5bffff89beb80000008b9ebc0000003bdf74148bcbe89458ffff8bcbe82d5bffff89bebc0000008b9ec00000003bdf74148bcbe87658ffff8bcbe80f5bffff89bec00000008b9ec40000003bdf74148bcbe85858ffff8bcbe8f15affff89bec40000008b9ec80000003bdf74148bcbe83a58ffff8bcbe8d35affff89bec80000008b9ecc0000003bdf74148bcbe81c58ffff8bcbe8b55affff89becc0000008b9ed00000003bdf74148bcbe8fe57ffff8bcbe8975affff89bed00000008b9ed40000003bdf74148bcbe8e057ffff8bcbe8795affff89bed40000008b9ed80000003bdf74148bcbe8c257ffff8bcbe85b5affff89bed80000008b9edc0000003bdf74148bcbe8a457ffff8bcbe83d5affff89bedc0000008b9ee00000003bdf74148bcbe88657ffff8bcbe81f5affff89bee00000008b9ee40000003bdf74148bcbe86857ffff8bcbe8015affff89bee40000008b9e8c0000003bdf74148bcbe84a57ffff8bcbe8e359ffff89be8c0000008b9e940000003bdf74148bcbe82c57ffff8bcbe8c559ffff89be940000008b86980000003bc7740f50e8a8c20e0083c40489be980000008bcec7442418ffffffffe8b768ffff8b4c24105f5e5b64890d0000000083c410c3",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00b0a820",
+      "end_exclusive": "00b0a83e",
+      "length": 30,
+      "sha256": "d31fb184ce5dd6d25919baf89c1941d344277206200033c816d85b931dc3ceb8",
+      "bytes_hex": "568bf1e8b8fcfffff644240801740956e877bd0e0083c4048bc65ec20400",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00cbae30",
+      "end_exclusive": "00cbae38",
+      "length": 8,
+      "sha256": "41fe5e289cb8e58a1e3babeafed7fa1e73776f27bba2cd379850188ae4b8c769",
+      "bytes_hex": "8b4df0e97861e4ff",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00cbae38",
+      "end_exclusive": "00cbae46",
+      "length": 14,
+      "sha256": "96fb77acbeea02cb9f469665c904f98002bb0131925201a324d517d8736aef7b",
+      "bytes_hex": "8b4df081c18c000000e97adbe3ff",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00cbae46",
+      "end_exclusive": "00cbae50",
+      "length": 10,
+      "sha256": "c92d553a1ec5a9731a81f0927f83ce9e21f2a8843a16b7b8340bf1fa9396e31e",
+      "bytes_hex": "b8d82cdf00e9f3bcf3ff",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00cbba20",
+      "end_exclusive": "00cbba28",
+      "length": 8,
+      "sha256": "d301ea6caa9e82dadabcd29e04b9459d683406a2e4f508ebc735b40cdf8d983d",
+      "bytes_hex": "8b4df0e98855e4ff",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00cbba28",
+      "end_exclusive": "00cbba36",
+      "length": 14,
+      "sha256": "86a97c79eea03899b1d9df4942b07f957710106c31aea073a8e13ed3b449ecf2",
+      "bytes_hex": "8b4df081c198000000e9dae0baff",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00cbba36",
+      "end_exclusive": "00cbba40",
+      "length": 10,
+      "sha256": "d268cade6a431781955cabbf106b03dbcb9a74617d29c6ccc6b9c420f6446875",
+      "bytes_hex": "b8083cdf00e903b1f3ff",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00df2cc8",
+      "end_exclusive": "00df2cfc",
+      "length": 52,
+      "sha256": "d7d4993881c4f374c04226a284d2bbb1a63ec7bb8534a93ecf62545118f1831b",
+      "bytes_hex": "ffffffff30aecb000000000038aecb002205931902000000c82cdf00000000000000000000000000000000000000000001000000",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00df3bf8",
+      "end_exclusive": "00df3c2c",
+      "length": 52,
+      "sha256": "828b539c344ff13cc8e0b5bfd29093d2f0ca0495b414588babd869806170e246",
+      "bytes_hex": "ffffffff20bacb000000000028bacb002205931902000000f83bdf00000000000000000000000000000000000000000001000000",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d5db00",
+      "end_exclusive": "00d5db08",
+      "length": 8,
+      "sha256": "c9ffb428765977853f0bbb8a3645e1484b0d1faafc6583e3c6f3d4989e7f7f55",
+      "bytes_hex": "e030bd00b08baf00",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d5e048",
+      "end_exclusive": "00d5e050",
+      "length": 8,
+      "sha256": "4d2c08aceaa286dccdfc5e4812b49de308b698333bee6d601c8024554a6a2d04",
+      "bytes_hex": "e030bd0020a8b000",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00bf55be",
+      "end_exclusive": "00bf55c3",
+      "length": 5,
+      "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "bytes_hex": "e958120000",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00bf65ac",
+      "end_exclusive": "00bf65b1",
+      "length": 5,
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "bytes_hex": "e917380000",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00bf6989",
+      "end_exclusive": "00bf698e",
+      "length": 5,
+      "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "bytes_hex": "e91efcffff",
+      "live_disk_equal": true
+    }
+  ],
+  "call_sites": [
+    {
+      "function": "00869b10",
+      "address": "00869b1a",
+      "native": "00bf6989",
+      "kind": "call",
+      "assembly": "call 0xbf6989"
+    },
+    {
+      "function": "00af8350",
+      "address": "00af8370",
+      "native": "00bf55be",
+      "kind": "call",
+      "assembly": "call 0xbf55be"
+    },
+    {
+      "function": "00af8350",
+      "address": "00af839c",
+      "native": "00bf6989",
+      "kind": "call",
+      "assembly": "call 0xbf6989"
+    },
+    {
+      "function": "00af83b0",
+      "address": "00af83be",
+      "native": "00af8350",
+      "kind": "call",
+      "assembly": "call 0xaf8350"
+    },
+    {
+      "function": "00af8940",
+      "address": "00af897c",
+      "native": "00af8940+vtable_or_import",
+      "kind": "call",
+      "assembly": "call ebp"
+    },
+    {
+      "function": "00af8940",
+      "address": "00af8988",
+      "native": "00af8940+vtable_or_import",
+      "kind": "call",
+      "assembly": "call edx"
+    },
+    {
+      "function": "00af89c0",
+      "address": "00af89c5",
+      "native": "00af83b0",
+      "kind": "call",
+      "assembly": "call 0xaf83b0"
+    },
+    {
+      "function": "00af89c0",
+      "address": "00af89cd",
+      "native": "00bf6989",
+      "kind": "call",
+      "assembly": "call 0xbf6989"
+    },
+    {
+      "function": "00af8a40",
+      "address": "00af8a78",
+      "native": "00affdf0",
+      "kind": "call",
+      "assembly": "call 0xaffdf0"
+    },
+    {
+      "function": "00af8a40",
+      "address": "00af8a7f",
+      "native": "00b00090",
+      "kind": "call",
+      "assembly": "call 0xb00090"
+    },
+    {
+      "function": "00af8a40",
+      "address": "00af8a9a",
+      "native": "00affdf0",
+      "kind": "call",
+      "assembly": "call 0xaffdf0"
+    },
+    {
+      "function": "00af8a40",
+      "address": "00af8aa1",
+      "native": "00b00090",
+      "kind": "call",
+      "assembly": "call 0xb00090"
+    },
+    {
+      "function": "00af8a40",
+      "address": "00af8ab2",
+      "native": "00af8940",
+      "kind": "call",
+      "assembly": "call 0xaf8940"
+    },
+    {
+      "function": "00af8a40",
+      "address": "00af8ac6",
+      "native": "00af83b0",
+      "kind": "call",
+      "assembly": "call 0xaf83b0"
+    },
+    {
+      "function": "00af8a40",
+      "address": "00af8ace",
+      "native": "00bf6989",
+      "kind": "call",
+      "assembly": "call 0xbf6989"
+    },
+    {
+      "function": "00af8a40",
+      "address": "00af8ae0",
+      "native": "00b00fb0",
+      "kind": "call",
+      "assembly": "call 0xb00fb0"
+    },
+    {
+      "function": "00af8bb0",
+      "address": "00af8bb3",
+      "native": "00af8a40",
+      "kind": "call",
+      "assembly": "call 0xaf8a40"
+    },
+    {
+      "function": "00af8bb0",
+      "address": "00af8bc0",
+      "native": "00bf65ac",
+      "kind": "call",
+      "assembly": "call 0xbf65ac"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a51b",
+      "native": "00affdf0",
+      "kind": "call",
+      "assembly": "call 0xaffdf0"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a522",
+      "native": "00b00090",
+      "kind": "call",
+      "assembly": "call 0xb00090"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a539",
+      "native": "00affdf0",
+      "kind": "call",
+      "assembly": "call 0xaffdf0"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a540",
+      "native": "00b00090",
+      "kind": "call",
+      "assembly": "call 0xb00090"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a557",
+      "native": "00affdf0",
+      "kind": "call",
+      "assembly": "call 0xaffdf0"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a55e",
+      "native": "00b00090",
+      "kind": "call",
+      "assembly": "call 0xb00090"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a575",
+      "native": "00affdf0",
+      "kind": "call",
+      "assembly": "call 0xaffdf0"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a57c",
+      "native": "00b00090",
+      "kind": "call",
+      "assembly": "call 0xb00090"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a593",
+      "native": "00affdf0",
+      "kind": "call",
+      "assembly": "call 0xaffdf0"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a59a",
+      "native": "00b00090",
+      "kind": "call",
+      "assembly": "call 0xb00090"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a5b1",
+      "native": "00affdf0",
+      "kind": "call",
+      "assembly": "call 0xaffdf0"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a5b8",
+      "native": "00b00090",
+      "kind": "call",
+      "assembly": "call 0xb00090"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a5cf",
+      "native": "00affdf0",
+      "kind": "call",
+      "assembly": "call 0xaffdf0"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a5d6",
+      "native": "00b00090",
+      "kind": "call",
+      "assembly": "call 0xb00090"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a5ed",
+      "native": "00affdf0",
+      "kind": "call",
+      "assembly": "call 0xaffdf0"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a5f4",
+      "native": "00b00090",
+      "kind": "call",
+      "assembly": "call 0xb00090"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a60b",
+      "native": "00affdf0",
+      "kind": "call",
+      "assembly": "call 0xaffdf0"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a612",
+      "native": "00b00090",
+      "kind": "call",
+      "assembly": "call 0xb00090"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a629",
+      "native": "00affdf0",
+      "kind": "call",
+      "assembly": "call 0xaffdf0"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a630",
+      "native": "00b00090",
+      "kind": "call",
+      "assembly": "call 0xb00090"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a647",
+      "native": "00affdf0",
+      "kind": "call",
+      "assembly": "call 0xaffdf0"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a64e",
+      "native": "00b00090",
+      "kind": "call",
+      "assembly": "call 0xb00090"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a665",
+      "native": "00affdf0",
+      "kind": "call",
+      "assembly": "call 0xaffdf0"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a66c",
+      "native": "00b00090",
+      "kind": "call",
+      "assembly": "call 0xb00090"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a683",
+      "native": "00affdf0",
+      "kind": "call",
+      "assembly": "call 0xaffdf0"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a68a",
+      "native": "00b00090",
+      "kind": "call",
+      "assembly": "call 0xb00090"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a6a1",
+      "native": "00affdf0",
+      "kind": "call",
+      "assembly": "call 0xaffdf0"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a6a8",
+      "native": "00b00090",
+      "kind": "call",
+      "assembly": "call 0xb00090"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a6bf",
+      "native": "00affdf0",
+      "kind": "call",
+      "assembly": "call 0xaffdf0"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a6c6",
+      "native": "00b00090",
+      "kind": "call",
+      "assembly": "call 0xb00090"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a6dc",
+      "native": "00bf6989",
+      "kind": "call",
+      "assembly": "call 0xbf6989"
+    },
+    {
+      "function": "00b0a4e0",
+      "address": "00b0a6f4",
+      "native": "00b00fb0",
+      "kind": "call",
+      "assembly": "call 0xb00fb0"
+    },
+    {
+      "function": "00b0a820",
+      "address": "00b0a823",
+      "native": "00b0a4e0",
+      "kind": "call",
+      "assembly": "call 0xb0a4e0"
+    },
+    {
+      "function": "00b0a820",
+      "address": "00b0a830",
+      "native": "00bf65ac",
+      "kind": "call",
+      "assembly": "call 0xbf65ac"
+    },
+    {
+      "function": "00cbae30",
+      "address": "00cbae33",
+      "native": "00b00fb0",
+      "kind": "tail_jump",
+      "assembly": "jmp 0xb00fb0"
+    },
+    {
+      "function": "00cbae38",
+      "address": "00cbae41",
+      "native": "00af89c0",
+      "kind": "tail_jump",
+      "assembly": "jmp 0xaf89c0"
+    },
+    {
+      "function": "00cbba20",
+      "address": "00cbba23",
+      "native": "00b00fb0",
+      "kind": "tail_jump",
+      "assembly": "jmp 0xb00fb0"
+    },
+    {
+      "function": "00cbba28",
+      "address": "00cbba31",
+      "native": "00869b10",
+      "kind": "tail_jump",
+      "assembly": "jmp 0x869b10"
+    },
+    {
+      "function": "00bf55be",
+      "address": "00bf55be",
+      "native": "00bf681b",
+      "kind": "tail_jump",
+      "assembly": "jmp 0xbf681b"
+    },
+    {
+      "function": "00bf65ac",
+      "address": "00bf65ac",
+      "native": "00bf9dc8",
+      "kind": "tail_jump",
+      "assembly": "jmp 0xbf9dc8"
+    },
+    {
+      "function": "00bf6989",
+      "address": "00bf6989",
+      "native": "00bf65ac",
+      "kind": "tail_jump",
+      "assembly": "jmp 0xbf65ac"
+    }
+  ],
+  "fh3_handler_transfers": [
+    {
+      "handler_entry": "00cbae46",
+      "instruction_address": "00cbae4b",
+      "tail_target": "00bf6b43",
+      "assembly": "jmp 0xbf6b43",
+      "validation": "Full live/disk bytes equal; compiler handler is not a Ghidra function, so function-body call verifier does not apply."
+    },
+    {
+      "handler_entry": "00cbba36",
+      "instruction_address": "00cbba3b",
+      "tail_target": "00bf6b43",
+      "assembly": "jmp 0xbf6b43",
+      "validation": "Full live/disk bytes equal; compiler handler is not a Ghidra function, so function-body call verifier does not apply."
+    }
+  ],
+  "prior_annotations": [
+    {
+      "address": "00869b10",
+      "annotation": {
+        "address": "00869b10",
+        "function_name": "FUN_00869b10"
+      }
+    },
+    {
+      "address": "00af8350",
+      "annotation": {
+        "address": "00af8350",
+        "function_name": "BSP_NativeParticleObject_ReserveModels",
+        "comment": "[BSP reconstruction 00af8350]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00af8350..00af83ae; ECX actual0Ch array descriptor; stack signed capacity; RET4; current count/base reads and post-free stores. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md."
+      }
+    },
+    {
+      "address": "00af83b0",
+      "annotation": {
+        "address": "00af83b0",
+        "function_name": "FUN_00af83b0"
+      }
+    },
+    {
+      "address": "00af8940",
+      "annotation": {
+        "address": "00af8940",
+        "function_name": "BSP_NativeParticleObject_ClearModels",
+        "comment": "[BSP reconstruction 00af8940]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00af8940..00af89b0; ECX actual definition; RET; reverse current-count loop, actual InterlockedDecrement and current virtual00. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md."
+      }
+    },
+    {
+      "address": "00af89c0",
+      "annotation": {
+        "address": "00af89c0",
+        "function_name": "FUN_00af89c0"
+      }
+    },
+    {
+      "address": "00af8a40",
+      "annotation": {
+        "address": "00af8a40",
+        "function_name": "FUN_00af8a40"
+      }
+    },
+    {
+      "address": "00af8bb0",
+      "annotation": {
+        "address": "00af8bb0",
+        "function_name": "CG_scalar_deleting_dtor_00af8bb0"
+      }
+    },
+    {
+      "address": "00b0a4e0",
+      "annotation": {
+        "address": "00b0a4e0",
+        "function_name": "FUN_00b0a4e0"
+      }
+    },
+    {
+      "address": "00b0a820",
+      "annotation": {
+        "address": "00b0a820",
+        "function_name": "CG_scalar_deleting_dtor_00b0a820"
+      }
+    }
+  ],
+  "prior_reconstruction_records": [
+    {
+      "address": "00af8350",
+      "source": "src/native_particle_type_resources.cpp",
+      "header": "include/bsp/native_particle_type_resources.hpp",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00af8350..00af83ae; ECX actual0Ch array descriptor; stack signed capacity; RET4; current count/base reads and post-free stores. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+      "name": "reserve_native_object_particle_models_00af8350",
+      "status": "reconstructed_build_tested_bounded_fixture_tested",
+      "native_abi": "ECX actual0Ch array descriptor; stack signed capacity; RET4; current count/base reads and post-free stores.",
+      "kind": "function"
+    },
+    {
+      "address": "00af8940",
+      "source": "src/native_particle_type_resources.cpp",
+      "header": "include/bsp/native_particle_type_resources.hpp",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00af8940..00af89b0; ECX actual definition; RET; reverse current-count loop, actual InterlockedDecrement and current virtual00. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+      "name": "clear_native_object_particle_models_00af8940",
+      "status": "reconstructed_build_tested_bounded_fixture_tested",
+      "native_abi": "ECX actual definition; RET; reverse current-count loop, actual InterlockedDecrement and current virtual00.",
+      "kind": "function"
+    }
+  ],
+  "prerequisite_commit": "0fb04a9e8",
+  "flow_repair_evidence": [
+    "reports/native_particle_lifetime_flow_orch4_k11.json",
+    "reports/native_particle_lifetime_bodies_orch4_k11.json"
+  ],
+  "behavior": {
+    "object_profile": "00d5db00",
+    "object_parameter_slots": [
+      "80",
+      "84"
+    ],
+    "model_vector_offsets": [
+      "8c",
+      "90",
+      "94"
+    ],
+    "tracer_profile": "00d5e048",
+    "tracer_parameter_slots": [
+      "b4",
+      "b8",
+      "bc",
+      "c0",
+      "c4",
+      "c8",
+      "cc",
+      "d0",
+      "d4",
+      "d8",
+      "dc",
+      "e0",
+      "e4",
+      "8c",
+      "94"
+    ],
+    "tracer_buffer_offset": "98",
+    "unwind": "Object state1 destroys vector via AF89C0 then base; Tracer state1 frees current buffer via869B10 then base; state0 base only. noexcept guards terminate on a second exception.",
+    "model_dispatch_boundary": "Actual callable current Win32 virtual0 only; numeric image profiles await canonical NativeRenderActualOwners/NativeModelOwner binding.",
+    "provider_context": "Same actual raw string publication cells and actual NativeWeakPoolStorage parameter pool; no host owner/storage substitution."
+  },
+  "validation": {
+    "build": "scripts/build.ps1 Release Win32 /W4 /WX /fp:strict; 3/3 CTests passed",
+    "seeds": "8 native seeds live/disk equal",
+    "calls": "57 direct call/tail rows checked, 0 failed; 2 indirect rows explicitly skipped; 2 compiler-handler transfers separately byte-verified",
+    "probe": "local/build_object_tracer_probe.cmd; /MANIFEST:EMBED; local/object_tracer_probe.exe passed",
+    "original_coverage": "Complete182B Object and555B Tracer normal copied bodies; complete113B model clear and80B resize. 41 direct call-site bridges link copied internal bodies and genuine current source providers; actual Kernel32 InterlockedDecrement IAT cell.",
+    "source_only_coverage": "Throwing callable model terminal: member/base unwind, raw resize growth/shrink, fixed raw reserve/free.",
+    "limits": "No native FH3 exception execution, no scalar flags execution, no numeric renderer profile binding, no game validation or original ABI compatibility.",
+    "probe_stdout": "PASS: complete original Object/Tracer normal bodies, real pool/base providers, captured model cell/current count/current vector, source unwind, raw resize"
+  },
+  "validated_file_sha256": {
+    "include/bsp/native_particle_object_tracer_lifetime.hpp": "799cc6d2c01fc234d07d41311d303229ecebdce2aa7505dd9940c784cb2bc19e",
+    "src/native_particle_object_tracer_lifetime.cpp": "994851f09a8f44089675b9a1e60059b91008e1fe9d3b8e6cd1f31d7def78d41c",
+    "include/bsp/native_particle_type_resources.hpp": "eafb5927580828354402f6def73c1df9ce4573088406d522cc3a7e4e7aa49dc1",
+    "src/native_particle_type_resources.cpp": "1b83d82da91afedfeb5729d518a2de9e7d4fc4c6f869e50be414103608cb2acb",
+    "local/object_tracer_probe.cpp": "9e3508630c547020f748ecbe94f539100d207d02fca61ca4740f54694662356a",
+    "local/object_tracer_calls.hpp": "890a5b70d2e65e7cd4d0fcb81e01738da0f47d3af703dcbe387897b747546a16",
+    "local/build_object_tracer_probe.cmd": "756ddeb01bc90c1185e460c50ebb63478d847d5230f613258d89f0715d63ab06",
+    "local/object_tracer_probe.exe": "c93bcbf0f6160a6aba23f0fb1e19cda6435a796e5af7a23324b10385875e0edb",
+    "build/win32/Release/bsp_core.lib": "e0274b42e930a12e7788c3a8bfe3dabb8560ecb68e7417a5afb649f7303a231a"
+  }
+}
