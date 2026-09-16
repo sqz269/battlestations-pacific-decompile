@@ -4,6 +4,7 @@
 #include "bsp/native_renderer_container_lifetime.hpp"
 #include "bsp/native_renderer_record_guard.hpp"
 #include "bsp/random_threads.hpp"
+#include <exception>
 
 namespace bsp {
 namespace {
@@ -115,13 +116,18 @@ void append_native_renderer_debug_record40_00b29330(
         }
         append_native_renderer_records40_00b257b0(
             header, 0, const_cast<const std::uint32_t*>(record));
+        // Native state0 remains armed through the normal leave operation.
+        if (section) {
+            word(section, 0x18) = word(section, 0x18) - 1u;
+            LeaveCriticalSection(&section->native);
+        }
     } catch (...) {
-        destroy_native_singleton_guard_00411ee0(&guard);
+        try {
+            destroy_native_singleton_guard_00411ee0(&guard);
+        } catch (...) {
+            std::terminate();
+        }
         throw;
-    }
-    if (section) {
-        word(section, 0x18) = word(section, 0x18) - 1u;
-        LeaveCriticalSection(&section->native);
     }
 }
 } // namespace bsp

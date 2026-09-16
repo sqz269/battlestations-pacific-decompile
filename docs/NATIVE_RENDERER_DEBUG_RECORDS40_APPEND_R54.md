@@ -26,6 +26,8 @@ reuses that real guard cleanup for C++ exceptions and does not compensate the
 earlier retained-reference increment. Normal exit decrements and leaves the
 captured section directly. The guard publication and manager are the same cells
 borrowed by the separate R53 provider; this module creates neither owner.
+State0 remains armed through the normal leave operation. A secondary source
+C++ exception during guard cleanup terminates instead of replacing the first.
 
 The interfaces do not reproduce the native private stack, FH3/SEH, hardware
 fault delivery or arbitrary concurrent mutation. Valid reachable storage and
