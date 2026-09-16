@@ -1,4 +1,5 @@
 #include "bsp/native_particle_component_lifetime.hpp"
+#include "bsp/native_particle_resource_cache.hpp"
 #include "bsp/native_ref_counted.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/singleton_lifetime.hpp"
@@ -86,13 +87,14 @@ void destroy_effect_component_base_0086b7e0(void* component, NativeStringRawPool
     destroy_native_string_header_0041dd20(member(component, 8), strings);
 }
 
-void destroy_native_particle_component_0086bb80(void* component, NativeStringRawPoolContext& strings) {
+static void destroy_component_with_context(void* component, NativeStringRawPoolContext& strings, NativeParticleResourceCacheContext* context) {
     write(component, 0, 0x00d0d5b4);
     ParticleCleanup cleanup{component, strings};
     while (read(component, 0x2c) != 0) {
         void* const resource = pointer(read(pointer(
             read(component, 0x28) + read(component, 0x2c) * 4u - 4u)));
-        if (InterlockedDecrement(reinterpret_cast<volatile LONG*>(member(resource, 4))) == 0) {
+        if (context) release_native_particle_resource_00871420(resource, *context, strings);
+        else if (InterlockedDecrement(reinterpret_cast<volatile LONG*>(member(resource, 4))) == 0) {
             using ZeroReferences = void (__thiscall*)(void*);
             const auto current_slot = reinterpret_cast<ZeroReferences>(read(pointer(read(resource))));
             current_slot(resource);
@@ -114,4 +116,19 @@ void* scalar_delete_native_particle_component_0086bc60(void* component, Word fla
     if (flags & 1u) singleton_lifetime_free(component);
     return component;
 }
+
+void destroy_native_particle_component_0086bb80(void* component, NativeStringRawPoolContext& strings) {
+    destroy_component_with_context(component, strings, nullptr);
+}
+void destroy_native_particle_component_0086bb80(void* component,
+    NativeParticleResourceCacheContext& context, NativeStringRawPoolContext& strings) {
+    destroy_component_with_context(component, strings, &context);
+}
+void* scalar_delete_native_particle_component_0086bc60(void* component, Word flags,
+    NativeParticleResourceCacheContext& context, NativeStringRawPoolContext& strings) {
+    destroy_native_particle_component_0086bb80(component, context, strings);
+    if ((flags & 1u) != 0) singleton_lifetime_free(component);
+    return component;
+}
+
 } // namespace bsp

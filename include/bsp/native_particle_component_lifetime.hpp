@@ -3,6 +3,7 @@
 
 namespace bsp {
 struct NativeStringRawPoolContext;
+struct NativeParticleResourceCacheContext;
 
 // Genuine raw 0Ch pointer-vector header: +0 data, +4 signed count, +8 signed
 // capacity. The Particle component embeds this at +28h in its actual 34h owner.
@@ -42,4 +43,11 @@ void* scalar_delete_native_particle_component_0086bc60(void* actual_component,
 // providers. C++ unwinding follows the recovered FH3 cleanup states, including
 // termination on a second cleanup exception. They are not original FH3 frames
 // or drop-in binary/SEH entry points; CRT faults/OOM and game parity are unproved.
+
+// Same native reverse-release/current-count schedule, with genuine known
+// D0D418/D5D958 resource lifetime composition through actual publications.
+void destroy_native_particle_component_0086bb80(void*, NativeParticleResourceCacheContext&, NativeStringRawPoolContext&);
+void* scalar_delete_native_particle_component_0086bc60(void*, std::uint32_t,
+    NativeParticleResourceCacheContext&, NativeStringRawPoolContext&);
+
 } // namespace bsp

@@ -5,6 +5,7 @@
 namespace bsp {
 
 class NativeStringStorage;
+struct NativeStringRawPoolContext;
 
 // Full 00426060, originally ECX destination, stack source, EAX destination,
 // RET 4. Both pointers address actual eight-byte length/data headers. Clears
@@ -26,5 +27,13 @@ void* copy_construct_native_string_header_00426060(void* actual_destination_head
 void* construct_native_string_substring_00469840(const void* actual_source_header,
     void* actual_output_header, std::uint32_t start, std::uint32_t count,
     NativeStringStorage& storage);
+
+
+// Genuine raw pool variants: no noexcept storage adapter. Actual output and
+// temporary ownership states are retained, with true-unwind second-failure
+// termination. Raw byte copying retains native overlap behavior.
+void* copy_construct_native_string_header_00426060(void*, const void*, NativeStringRawPoolContext&);
+void* construct_native_string_substring_00469840(const void*, void*, std::uint32_t,
+    std::uint32_t, NativeStringRawPoolContext&);
 
 } // namespace bsp

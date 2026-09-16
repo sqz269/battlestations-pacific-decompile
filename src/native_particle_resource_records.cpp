@@ -1,4 +1,5 @@
 #include "bsp/native_particle_resource_records.hpp"
+#include "bsp/native_particle_resource_cache.hpp"
 #include "bsp/native_render_resource_record_construction.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/native_string_pool_storage.hpp"
@@ -127,13 +128,14 @@ void resize_native_particle_resource_records_00870b30(void* vector, I requested,
     field<I>(vector, 4) = requested;
 }
 
-void clear_native_particle_resource_cache_00871310(void* owner, NativeStringRawPoolContext& strings) {
+static void clear_cache_with_context(void* owner, NativeStringRawPoolContext& strings, NativeParticleResourceCacheContext* context) {
     while (field<U>(owner, 8) != 0) {
         const U offset = field<U>(owner, 8) * 0x2cu - 4u;
         void* const resource = field<void*>(field<void*>(owner, 4), offset);
         const U table = field<U>(owner, 0);
         if (table == 0x00d0daf0 || table == 0x00d0db40) {
-            release_native_particle_resource_00871420(resource);
+            if (context) release_native_particle_resource_00871420(resource, *context, strings);
+            else release_native_particle_resource_00871420(resource);
         } else {
             using Release = void (__thiscall*)(void*, void*);
             auto target = field<Release>(reinterpret_cast<void*>(table), 0x10);
@@ -148,4 +150,13 @@ void clear_native_particle_resource_cache_00871310(void* owner, NativeStringRawP
     }
     resize_native_particle_resource_records_00870b30(add(owner, 4), 0, strings);
 }
+
+void clear_native_particle_resource_cache_00871310(void* owner, NativeStringRawPoolContext& strings) {
+    clear_cache_with_context(owner, strings, nullptr);
+}
+void clear_native_particle_resource_cache_00871310(void* owner,
+    NativeParticleResourceCacheContext& context, NativeStringRawPoolContext& strings) {
+    clear_cache_with_context(owner, strings, &context);
+}
+
 }
