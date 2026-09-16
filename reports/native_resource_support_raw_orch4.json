@@ -1,0 +1,155 @@
+{
+  "packet": "orch4-resource-support-raw-r27",
+  "source_commit": "f163dcca3eb41f6a7ff61eb84c4cd1e31c1bbf7f",
+  "status": "actual_application_singleton_lifetime_strict_win32_source_probe_checked",
+  "source": [
+    "include/bsp/native_resource_support.hpp",
+    "src/native_resource_support.cpp",
+    "include/bsp/native_surface_owner.hpp",
+    "include/bsp/native_singleton_destruction.hpp",
+    "src/native_singleton_destruction.cpp",
+    "include/bsp/game_hosts_singletons.hpp",
+    "src/game_hosts_singletons.cpp"
+  ],
+  "ordinary_bodies": {
+    "00b3e730": 189,
+    "00b61d50": 9,
+    "00b61d60": 41
+  },
+  "native_bytes": [
+    {
+      "address": "00b3e730",
+      "end_exclusive": "00b3e7ed",
+      "bytes": 189,
+      "sha256": "7b9c8865a04b8c98121a241786a0d3703768772cb806f8f557b00270e77c81d9",
+      "live_disk_match": true
+    },
+    {
+      "address": "00b61d50",
+      "end_exclusive": "00b61d59",
+      "bytes": 9,
+      "sha256": "6c0ec936e146005bb724c1e96a0a3844a76634ccfea694f9567a58828f37f039",
+      "live_disk_match": true
+    },
+    {
+      "address": "00b61d60",
+      "end_exclusive": "00b61d89",
+      "bytes": 41,
+      "sha256": "2ef739c60e79ada0fd96d7f40a8491598626c692a9bfa6f325257b17d3c76854",
+      "live_disk_match": true
+    },
+    {
+      "address": "00cbeda0",
+      "end_exclusive": "00cbedbd",
+      "bytes": 29,
+      "sha256": "8b65adfdec54a926a59eedd1e6753bc1eae572e2786b145175599e8de47d808a",
+      "live_disk_match": true
+    },
+    {
+      "address": "00df75c0",
+      "end_exclusive": "00df75f4",
+      "bytes": 52,
+      "sha256": "093d96cb1dc9ecb83d5080631b7775c14201c66e904be8676dfb221c9937d906",
+      "live_disk_match": true
+    },
+    {
+      "address": "00d62b64",
+      "end_exclusive": "00d62b68",
+      "bytes": 4,
+      "sha256": "6efc1f922772919e4b34bf722e638f563f25ef4b3b22161306f0a16d467a762c",
+      "live_disk_match": true
+    }
+  ],
+  "call_sites": [
+    {
+      "function": "00b3e730",
+      "address": "00b3e756",
+      "native": "00415350"
+    },
+    {
+      "function": "00b3e730",
+      "address": "00b3e78c",
+      "native": "00bf681b"
+    },
+    {
+      "function": "00b3e730",
+      "address": "00b3e7a3",
+      "native": "00b61d50"
+    },
+    {
+      "function": "00b3e730",
+      "address": "00b3e7b6",
+      "native": "00415350"
+    },
+    {
+      "function": "00b3e730",
+      "address": "00b3e7c4",
+      "native": "00bd0c30"
+    },
+    {
+      "function": "00b61d60",
+      "address": "00b61d7b",
+      "native": "00bf65ac"
+    }
+  ],
+  "binding_layout": {
+    "resource_support_offset": 104,
+    "size": 108,
+    "previous_offsets_preserved": true
+  },
+  "validation": {
+    "strict_win32_build": "passed",
+    "existing_ctests": "3/3 passed",
+    "focused_source_probe": "actual GameSingletonHost: one raw-manager registration, captured lock release, stable fast path, same-cell guard, real D62B64 shutdown",
+    "original_code_executed": false,
+    "failure_injection": false,
+    "original_abi_fh3_seh": false,
+    "game_validated": false
+  },
+  "artifacts": [
+    {
+      "path": "local/r27_resource_support_build.log",
+      "sha256": "752163169f9a205de0b9441e28f10f11bdb5b7200115155faa43b32111f29f4b"
+    },
+    {
+      "path": "local/resource_support_raw_r27_probe.cpp",
+      "sha256": "afa0e92c079f1b45341c6620fec43118709f594a6aed8180a272a844ae078285"
+    },
+    {
+      "path": "local/build_resource_support_raw_r27_probe.cmd",
+      "sha256": "e42d45308bccf4e31460c6733c593d1daa77ab05e899a7fb93cede570f256f7a"
+    },
+    {
+      "path": "local/resource_application_r24_game_objects.rsp",
+      "sha256": "d825c31c0084c9e9358470127e653a3ba3cdce05b696ef26c83f43b182286738"
+    },
+    {
+      "path": "local/resource_support_raw_r27_probe_build.log",
+      "sha256": "825c122c22e0b85f6badcafbcd5a7200a46359d52df2f75c47a12107d1bfc897"
+    },
+    {
+      "path": "local/resource_support_raw_r27_probe.exe",
+      "sha256": "8a2ef8dbdc573d9d27f842c2db97718171ebdf7a400386e88cd32c703a018d64"
+    },
+    {
+      "path": "local/resource_support_raw_r27_probe_result.txt",
+      "sha256": "826a32ca26ac0016f225269b223979724d4d72bd919de848ccd1f563ff23feb7"
+    },
+    {
+      "path": "local/resource_support_raw_r27_host.log",
+      "sha256": "de569c520f8471b3bce6abcc6a3c64a71a09f9430e31e0112edeaab2ffaf7388"
+    },
+    {
+      "path": "local/r27_resource_support_prior_documentation.json",
+      "sha256": "74c097ebdba868d98304dc57426bc5650c41c3b468bf7e6261fedf4eadf6e07c"
+    },
+    {
+      "path": "local/r27_resource_support_handler_context.json",
+      "sha256": "6e8860cdd97f0bc618e7cd49491d3959a912e73e90620f2d31e5613843bcc13e"
+    },
+    {
+      "path": "local/r27_resource_support_unwind_context.json",
+      "sha256": "29334c919844c70cd9f9e75d97cb63aa99434266908f0de19f303f23bf2ee5af"
+    }
+  ]
+}
