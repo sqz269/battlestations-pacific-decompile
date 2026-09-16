@@ -68,6 +68,12 @@ are outside this interface.
 
 ## Remaining channel dependency
 
+Follow-on R27 supplies this packet's required service with
+`NativeAnimationChannelBodyReader`; see
+[`ANIMATION_CHANNEL_BODY_R27.md`](ANIMATION_CHANNEL_BODY_R27.md). It completes
+the channel/key reader and publication chain described below. Group/channel
+destruction and application wiring remain separate lifetime contracts.
+
 `00B8AAD0` is a required concrete service, with no stand-in implementation.
 Its 641-byte body allocates a `28h` channel, copies its name, reads two DWORDs,
 classifies eleven channel names, and processes `AnimationKey` children. It

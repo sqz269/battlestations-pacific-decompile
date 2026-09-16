@@ -534,5 +534,72 @@
     "9c357271f",
     "ef5c32343"
   ],
-  "review_correction": "B8AB56/58/5B count, source-data and destination-data volatile loads now occupy three explicit source statements before memcpy; no C++ argument evaluation order dependency. Required incremental build/3 CTests and the existing own-library focused probe rerun after source commit ef5c32343."
+  "review_correction": "B8AB56/58/5B count, source-data and destination-data volatile loads now occupy three explicit source statements before memcpy; no C++ argument evaluation order dependency. Required incremental build/3 CTests and the existing own-library focused probe rerun after source commit ef5c32343.",
+  "integration": {
+    "source_integrated_commit": "561eb8558a20e08626276cfd9c1c6bcb6786c67a",
+    "parent_review": "Complete header/source reviewed; B771C0 full assembly matches source schedule; B8AAD0 name-copy loads corrected to explicit count/source/destination order.",
+    "combined_build": "strict Win32 passed; 3/3 CTests",
+    "build_log": "local/r27_animation_channel_integration.log",
+    "build_log_sha256": "00bbef93b0c22139fa6cb2d8dd8fd8ec75f2a7e758d9fce8751204d82cbc06ce",
+    "archive": "local/evidence-r27/animation-channel-body-r27.zip",
+    "archive_sha256": "0e0e69a561686a8c2b6f5266fac88ba4cf2a050e78c2273ac818baf51a2f2b24",
+    "archived_files": 41,
+    "handler_definition_events": {
+      "events": [
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cc2900",
+            "end_address": "00cc290a"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cc2900",
+            "end_address": "00cc2909",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cc2900",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cc2900",
+            "function_name": "FUN_00cc2900",
+            "entry_point": "00cc2900",
+            "body_size": 10,
+            "message": "Function created successfully at 00cc2900"
+          }
+        },
+        {
+          "defined": "00cc2900",
+          "end": "00cc290a",
+          "name": null,
+          "after": "Function: FUN_00cc2900 at 00cc2900\nSignature: undefined FUN_00cc2900(void)\nEntry: 00cc2900\nBody: 00cc2900 - 00cc2909"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    },
+    "prior_handler_listing_sha256": "6244e2fcd48cba2dba2cd24797ceef4c07fbc35fed27f27049e8902623ea3aed",
+    "annotation_status": "primary reviewed names applied with old comments preserved; project saved and affected exports refreshed"
+  }
 }
