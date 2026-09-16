@@ -72,16 +72,18 @@ void destroy_native_animation_channels_item_00b8a680(void* item,
     int state = 1;
     try {
         while (word(item, 0x0c) != 0) {
-            const Word cell_address =
-                word(item, 8) + word(item, 0x0c) * 4u - 4u;
+            const Word current_data = word(item, 8);
+            const Word current_count = word(item, 0x0c);
+            const Word cell_address = current_data + current_count * 4u - 4u;
             void* const cell = pointer(cell_address);
             void* const group = pointer(word(cell));
             if (group != nullptr) {
                 delete_current_group(group, context);
                 put(cell, 0, 0);
             }
-            const Word current_count = word(item, 0x0c);
-            if (current_count != 0) put(item, 0x0c, current_count - 1u);
+            const Word count_after_delete = word(item, 0x0c);
+            if (count_after_delete != 0)
+                put(item, 0x0c, count_after_delete - 1u);
         }
         state = 0;
         auto& array = groups(item);
