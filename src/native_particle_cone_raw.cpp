@@ -117,7 +117,6 @@ bool load_native_cone_emitter_definition_00b03ec0(void* definition, void* buffer
     a.phase = Phase::running;
     auto& f = *a.impl_;
     auto& strings = c.builder.strings;
-    const volatile double* const scale = c.percentage_scale_00d7a358;
     f.line = 0; a.unwind_state = 0;
     auto read = [&](U site) {
         a.native_site = site;
@@ -178,7 +177,8 @@ bool load_native_cone_emitter_definition_00b03ec0(void* definition, void* buffer
                         copy_float_store(&scalar_argument, &f.percentage_bits);
                         a.native_site = 0x00b041bdu;
                         const bool common = load_native_particle_base_parameter_00af9d00(
-                            definition, &f.name, &f.builder, scalar_argument, c.parameters, scale);
+                            definition, &f.name, &f.builder, scalar_argument, c.parameters,
+                            c.percentage_scale_00d7a358);
                         U offset = 0;
                         if (!common) {
                             if (_stricmp(text(&f.name), "InnerEmitSpeed") == 0) { offset = 0x80; a.native_site = 0x00b0421du; }
@@ -188,7 +188,7 @@ bool load_native_cone_emitter_definition_00b03ec0(void* definition, void* buffer
                             else if (_stricmp(text(&f.name), "OuterDistance") == 0) { offset = 0x90; a.native_site = 0x00b0436eu; }
                             if (offset) {
                                 void* const parameter = convert_native_particle_parameter_00afbf60(&f.builder, c.parameters);
-                                scale_parameter(parameter, &f.percentage_bits, scale);
+                                scale_parameter(parameter, &f.percentage_bits, c.percentage_scale_00d7a358);
                                 *reinterpret_cast<volatile U*>(reinterpret_cast<U>(definition) + offset) = reinterpret_cast<U>(parameter);
                             }
                         }

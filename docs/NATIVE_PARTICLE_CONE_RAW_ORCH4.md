@@ -57,8 +57,9 @@ If the base parser declines, comparisons preserve the original order:
 
 Each branch performs actual raw AFBF60 conversion, then FLD32/FMUL64/FSTP32
 using the current D7A358 double, then publishes the returned parameter pointer.
-The scale address is retained for the invocation; its value is read after
-conversion. No overwritten parameter is reclaimed.
+The context's current scale pointer and its double value are read after
+conversion, preserving the raw context's pointer-member rebinding contract.
+No overwritten parameter is reclaimed.
 
 Base/Inner paths use the original inline free and captured-name return;
 Outer/Max use inline free plus AEE2A0 current-header destruction. Distance and
