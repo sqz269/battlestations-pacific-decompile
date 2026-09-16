@@ -1,0 +1,1334 @@
+{
+  "schema_version": 1,
+  "packet": "native_renderer_debug_records40_r51",
+  "status": "complete_source_recovery_strict_build_vertex_differential_and_empty_parent_checked_active_parent_unexecuted",
+  "created_utc": "2026-09-16T15:45:00.852643+00:00",
+  "baseline_commit": "94052b814e9567ae59c15cff73ee3af015c06b19",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-debug-records24-contract-r41",
+  "source": "src/native_renderer_debug_records40.cpp",
+  "header": "include/bsp/native_renderer_debug_records40.hpp",
+  "documentation": "docs/NATIVE_RENDERER_DEBUG_RECORDS40_R51.md",
+  "scope": "Recover only complete B2B580 parent and its internal vertex fragment from native assembly. No historical parent body, provider duplication, application startup/pool/cache owner, append producer, permanent test, ledger edit or Ghidra mutation.",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "query_method": "bsp.py ghidra bytes/disasm with Client.verify; capped disassembly copied from the recorded whole-output file. All saved live spans rechecked against installed PE.",
+    "installed_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "machine": "014c"
+  },
+  "native": {
+    "address": "00b2b580",
+    "bytes": 1549,
+    "sha256": "3cfd33f9ca108149dd39b6ce6e39e949fcb33facdef7e9ab034a261edd2e29b1",
+    "instructions": 414,
+    "calls": [
+      {
+        "site": "00b2b5c3",
+        "target": "0x41e870",
+        "bytes": "e8a8328fff"
+      },
+      {
+        "site": "00b2b5d5",
+        "target": "0x41e870",
+        "bytes": "e896328fff"
+      },
+      {
+        "site": "00b2b5e8",
+        "target": "0x41e870",
+        "bytes": "e883328fff"
+      },
+      {
+        "site": "00b2b607",
+        "target": "0xb4c700",
+        "bytes": "e8f4100200"
+      },
+      {
+        "site": "00b2b62a",
+        "target": "0x419cc0",
+        "bytes": "e891e68eff"
+      },
+      {
+        "site": "00b2b631",
+        "target": "0xbd1510",
+        "bytes": "e8da5e0a00"
+      },
+      {
+        "site": "00b2b64e",
+        "target": "0x419cc0",
+        "bytes": "e86de68eff"
+      },
+      {
+        "site": "00b2b655",
+        "target": "0xbd1510",
+        "bytes": "e8b65e0a00"
+      },
+      {
+        "site": "00b2b675",
+        "target": "0x419cc0",
+        "bytes": "e846e68eff"
+      },
+      {
+        "site": "00b2b67c",
+        "target": "0xbd1510",
+        "bytes": "e88f5e0a00"
+      },
+      {
+        "site": "00b2b6fc",
+        "target": "edx",
+        "bytes": "ffd2"
+      },
+      {
+        "site": "00b2b717",
+        "target": "0xb74640",
+        "bytes": "e8248f0400"
+      },
+      {
+        "site": "00b2b71e",
+        "target": "0xb73260",
+        "bytes": "e83d7b0400"
+      },
+      {
+        "site": "00b2b72d",
+        "target": "eax",
+        "bytes": "ffd0"
+      },
+      {
+        "site": "00b2b87d",
+        "target": "dword ptr [0xce2220]",
+        "bytes": "ff152022ce00"
+      },
+      {
+        "site": "00b2b88f",
+        "target": "edx",
+        "bytes": "ffd2"
+      },
+      {
+        "site": "00b2b8d9",
+        "target": "0xb74640",
+        "bytes": "e8628d0400"
+      },
+      {
+        "site": "00b2b8e0",
+        "target": "0xb73260",
+        "bytes": "e87b790400"
+      },
+      {
+        "site": "00b2b8ec",
+        "target": "eax",
+        "bytes": "ffd0"
+      },
+      {
+        "site": "00b2b8fc",
+        "target": "0xb74640",
+        "bytes": "e83f8d0400"
+      },
+      {
+        "site": "00b2b903",
+        "target": "0xb732c0",
+        "bytes": "e8b8790400"
+      },
+      {
+        "site": "00b2b916",
+        "target": "0xb74640",
+        "bytes": "e8258d0400"
+      },
+      {
+        "site": "00b2b91d",
+        "target": "0xb732c0",
+        "bytes": "e89e790400"
+      },
+      {
+        "site": "00b2b92a",
+        "target": "0xb71930",
+        "bytes": "e801600400"
+      },
+      {
+        "site": "00b2b954",
+        "target": "0x41dd40",
+        "bytes": "e8e7238fff"
+      },
+      {
+        "site": "00b2b96f",
+        "target": "0xbf7680",
+        "bytes": "e80cbd0c00"
+      },
+      {
+        "site": "00b2b98e",
+        "target": "0xb71a80",
+        "bytes": "e8ed600400"
+      },
+      {
+        "site": "00b2b9be",
+        "target": "0x419cc0",
+        "bytes": "e8fde28eff"
+      },
+      {
+        "site": "00b2b9c5",
+        "target": "0xbd1510",
+        "bytes": "e8465b0a00"
+      },
+      {
+        "site": "00b2ba3c",
+        "target": "0xb71490",
+        "bytes": "e84f5a0400"
+      },
+      {
+        "site": "00b2bab3",
+        "target": "0xb6fd60",
+        "bytes": "e8a8420400"
+      },
+      {
+        "site": "00b2babc",
+        "target": "0xb46a70",
+        "bytes": "e8afaf0100"
+      },
+      {
+        "site": "00b2bace",
+        "target": "dword ptr [0xce221c]",
+        "bytes": "ff151c22ce00"
+      },
+      {
+        "site": "00b2baf5",
+        "target": "0xb74640",
+        "bytes": "e8468b0400"
+      },
+      {
+        "site": "00b2bb03",
+        "target": "0xb74640",
+        "bytes": "e8388b0400"
+      },
+      {
+        "site": "00b2bb0a",
+        "target": "0xb732c0",
+        "bytes": "e8b1770400"
+      },
+      {
+        "site": "00b2bb18",
+        "target": "0xb51a20",
+        "bytes": "e8035f0200"
+      },
+      {
+        "site": "00b2bb25",
+        "target": "0xb74640",
+        "bytes": "e8168b0400"
+      },
+      {
+        "site": "00b2bb2c",
+        "target": "0xb732c0",
+        "bytes": "e88f770400"
+      },
+      {
+        "site": "00b2bb43",
+        "target": "eax",
+        "bytes": "ffd0"
+      },
+      {
+        "site": "00b2bb4b",
+        "target": "0xb6dfa0",
+        "bytes": "e850240400"
+      },
+      {
+        "site": "00b2bb60",
+        "target": "0xb22a70",
+        "bytes": "e80b6fffff"
+      }
+    ],
+    "x87": [
+      {
+        "site": "00b2b741",
+        "op": "fld qword ptr [0xd7a308]",
+        "bytes": "dd0508a3d700"
+      },
+      {
+        "site": "00b2b74f",
+        "op": "fld1 ",
+        "bytes": "d9e8"
+      },
+      {
+        "site": "00b2b75a",
+        "op": "fld dword ptr [edx + ebp + 4]",
+        "bytes": "d9442a04"
+      },
+      {
+        "site": "00b2b761",
+        "op": "fmul st(2)",
+        "bytes": "d8ca"
+      },
+      {
+        "site": "00b2b769",
+        "op": "fsub st(1)",
+        "bytes": "d8e1"
+      },
+      {
+        "site": "00b2b76b",
+        "op": "fstp dword ptr [esp + 0x10]",
+        "bytes": "d95c2410"
+      },
+      {
+        "site": "00b2b76f",
+        "op": "fld dword ptr [eax + 8]",
+        "bytes": "d94008"
+      },
+      {
+        "site": "00b2b778",
+        "op": "fsubr st(1)",
+        "bytes": "d8e9"
+      },
+      {
+        "site": "00b2b77a",
+        "op": "fmul st(2)",
+        "bytes": "d8ca"
+      },
+      {
+        "site": "00b2b77c",
+        "op": "fsub st(1)",
+        "bytes": "d8e1"
+      },
+      {
+        "site": "00b2b77e",
+        "op": "fstp dword ptr [esp + 0x14]",
+        "bytes": "d95c2414"
+      },
+      {
+        "site": "00b2b782",
+        "op": "fld dword ptr [eax + 0xc]",
+        "bytes": "d9400c"
+      },
+      {
+        "site": "00b2b78b",
+        "op": "fmul st(2)",
+        "bytes": "d8ca"
+      },
+      {
+        "site": "00b2b78d",
+        "op": "fld dword ptr [esp + 0x10]",
+        "bytes": "d9442410"
+      },
+      {
+        "site": "00b2b791",
+        "op": "fld st(0)",
+        "bytes": "d9c0"
+      },
+      {
+        "site": "00b2b793",
+        "op": "faddp st(2)",
+        "bytes": "dec2"
+      },
+      {
+        "site": "00b2b795",
+        "op": "fxch st(1)",
+        "bytes": "d9c9"
+      },
+      {
+        "site": "00b2b797",
+        "op": "fstp dword ptr [esp + 0x18]",
+        "bytes": "d95c2418"
+      },
+      {
+        "site": "00b2b79b",
+        "op": "fld dword ptr [esp + 0x14]",
+        "bytes": "d9442414"
+      },
+      {
+        "site": "00b2b7a5",
+        "op": "fld dword ptr [eax + 0x10]",
+        "bytes": "d94010"
+      },
+      {
+        "site": "00b2b7ad",
+        "op": "fmul st(4)",
+        "bytes": "d8cc"
+      },
+      {
+        "site": "00b2b7af",
+        "op": "fsubp st(1)",
+        "bytes": "dee9"
+      },
+      {
+        "site": "00b2b7b1",
+        "op": "fstp dword ptr [esp + 0x1c]",
+        "bytes": "d95c241c"
+      },
+      {
+        "site": "00b2b7b5",
+        "op": "fstp dword ptr [ecx - 0x60]",
+        "bytes": "d959a0"
+      },
+      {
+        "site": "00b2b7b8",
+        "op": "fld dword ptr [esp + 0x1c]",
+        "bytes": "d944241c"
+      },
+      {
+        "site": "00b2b7bc",
+        "op": "fst dword ptr [esi - 0x74]",
+        "bytes": "d9568c"
+      },
+      {
+        "site": "00b2b7c4",
+        "op": "fld dword ptr [esp + 0x18]",
+        "bytes": "d9442418"
+      },
+      {
+        "site": "00b2b7d2",
+        "op": "fstp dword ptr [esi - 0x58]",
+        "bytes": "d95ea8"
+      },
+      {
+        "site": "00b2b7da",
+        "op": "fstp dword ptr [esi - 0x54]",
+        "bytes": "d95eac"
+      },
+      {
+        "site": "00b2b878",
+        "op": "fstp st(1)",
+        "bytes": "ddd9"
+      },
+      {
+        "site": "00b2b87b",
+        "op": "fstp st(0)",
+        "bytes": "ddd8"
+      },
+      {
+        "site": "00b2b891",
+        "op": "fld1 ",
+        "bytes": "d9e8"
+      },
+      {
+        "site": "00b2b89b",
+        "op": "fld qword ptr [0xd7a308]",
+        "bytes": "dd0508a3d700"
+      },
+      {
+        "site": "00b2b8ab",
+        "op": "fxch st(1)",
+        "bytes": "d9c9"
+      },
+      {
+        "site": "00b2b8cb",
+        "op": "fstp st(1)",
+        "bytes": "ddd9"
+      },
+      {
+        "site": "00b2b8cd",
+        "op": "fstp st(0)",
+        "bytes": "ddd8"
+      },
+      {
+        "site": "00b2bad4",
+        "op": "fldz ",
+        "bytes": "d9ee"
+      },
+      {
+        "site": "00b2badc",
+        "op": "fstp dword ptr [esp + 4]",
+        "bytes": "d95c2404"
+      },
+      {
+        "site": "00b2bae3",
+        "op": "fld1 ",
+        "bytes": "d9e8"
+      },
+      {
+        "site": "00b2baef",
+        "op": "fstp dword ptr [esp]",
+        "bytes": "d91c24"
+      },
+      {
+        "site": "00b2bb0f",
+        "op": "fldz ",
+        "bytes": "d9ee"
+      },
+      {
+        "site": "00b2bb15",
+        "op": "fstp dword ptr [esp]",
+        "bytes": "d91c24"
+      }
+    ],
+    "live_equals_pe": true
+  },
+  "supporting_spans": [
+    {
+      "address": "00d5e788",
+      "bytes": 17,
+      "sha256": "9c47b1d6bdf9647abd21b459ace6e3748183f079e60872beedf63cbd62263fda",
+      "live_equals_pe": true
+    },
+    {
+      "address": "00d5e77c",
+      "bytes": 12,
+      "sha256": "945061e48a92380d4ed58369f97efaf88ae8a8a9feeb7e8917a1fe5172eb3a64",
+      "live_equals_pe": true
+    },
+    {
+      "address": "00d5e7ac",
+      "bytes": 10,
+      "sha256": "312a610bbf886cb7aa2a15f70db0ba151b15e64f99c81ccdb411b7055a984bca",
+      "live_equals_pe": true
+    },
+    {
+      "address": "00d5e79c",
+      "bytes": 15,
+      "sha256": "a7c8085b28b54acf0518379398a8a677c9d7c70a61602cb49ce9da8b2e08ada8",
+      "live_equals_pe": true
+    },
+    {
+      "address": "00d7a24c",
+      "bytes": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_equals_pe": true
+    },
+    {
+      "address": "00d7a308",
+      "bytes": 8,
+      "sha256": "3f710ac088db33363087de2b9a657541fe5447821debaa9fe5cbd538eb1a5f29",
+      "live_equals_pe": true
+    },
+    {
+      "address": "00ce3800",
+      "bytes": 4,
+      "sha256": "d99e58435243d9fef9c88273b8d553b4fba4d0baf8009d29eae74fa99e0d9f57",
+      "live_equals_pe": true
+    },
+    {
+      "address": "00cbd4a9",
+      "bytes": 10,
+      "sha256": "e8d9ec99f83feba7cc6285af92fefbdfbc8f2f0e39d5bfd66e6e1c36dc0dc766",
+      "live_equals_pe": true
+    },
+    {
+      "address": "00df5cec",
+      "bytes": 36,
+      "sha256": "3c0e1316198c95b214504ca7e61c1f390ae3b9afcf7f93bc2b92643bd45055f7",
+      "live_equals_pe": true
+    },
+    {
+      "address": "00df5d10",
+      "bytes": 48,
+      "sha256": "1911053f681594a750394b7629ff11c5a0b43b0c45fad7287169d596e01f6fdb",
+      "live_equals_pe": true
+    },
+    {
+      "address": "00cbd470",
+      "bytes": 57,
+      "sha256": "003fc5c653a56a61741afbcd82a8c70ec8fc254e1c7b4b5226bbd79badfd747e",
+      "live_equals_pe": true
+    }
+  ],
+  "native_summary": {
+    "start": "00b2b580",
+    "end_inclusive": "00b2bb8c",
+    "bytes": 1549,
+    "instructions": 414,
+    "x87_instructions": 42,
+    "direct_calls": 35,
+    "indirect_calls": 7,
+    "all_live_equals_pe": true,
+    "original_abi": "ECX actual renderer, no stack arguments, plain RET; private FH3 frame with FuncInfo DF5CEC.",
+    "source_abi": "fastcall ECX actual renderer, EDX borrowed context, stacked persistent frame/RET4. Explicit source admission/errors and host diagnostics are not native FH3/private-stack identity."
+  },
+  "provenance": {
+    "historical_parent": "Absent; this body is newly recovered from all414 listing rows.",
+    "contract": "reports/native_renderer_debug_records40_contract_r48.json",
+    "r48_vertex_correction_commit": "2128148a3",
+    "current_composition_pattern": "R47 current raw generated-model overload and distinct dependency frames; no copied provider body.",
+    "entry_cache_dependency": "R49 native_render_entry_cache: borrow current actual_cache_0108fe88; no new application owner.",
+    "camera_view_dependency": "R50 B71490 over the same NativeCameraOwner, current profile and raw inverse.",
+    "material_pass_dependency": "R46 fresh-only pass frame and same actual raw VS/PS banks with preceding headers."
+  },
+  "contracts": {
+    "initial_count": "Read renderer+1D1C; zero returns without touching context/frame, leaving a supplied preparation untouched. Negative nonzero input still reaches the cold/buffer/camera path; arithmetic wraps DWORD.",
+    "cached_model": "Current +19E8, exact debugshader.mshd/pf43cc.mvfm/2DSprites names, section kind4 and zero initial counts. Name/layout/effect cleanup precedes current model transform. Explicit raw binding shares AA8/AA4/AA0 and actual_names remains null; node copies name bytes.",
+    "counts": "Initial count*6 is captured before stream lock and retained through callbacks. Current count*2 goes to section+18 after unlock; initial count*6 goes to separately current section+10.",
+    "vertex_layout": "28h source records -> six10h vertices,60h bytes total. XY order BL,TL,BR,TR,BR,TL. Current source/data/count reloads and six independent color reads retained. R48 originally misstated18h and an extra attribute pair; primary independently corrected it.",
+    "vertex_release": "36 ordered x87 rows, exact spills, FSTP ST1/FSTP ST0 before a real nonnull decrement, FLD1/MOVSS-depth/FLD-two/FXCH afterward. Zero terminal validates current token and actual profile[0] only after decrement. Record+00 clears only after returning release.",
+    "opaque_terminal": "Required caller-asserted binding executes the actual current terminal provider. Numeric original addresses are identities, never callable source pointers. Unknown or changed profile fails after decrement with preceding effects retained. No concrete owner type or successful fallback is fabricated.",
+    "entry": "Capture current0108FE88, increment+08 through actualCE221C, reload+04 bank, calculate row(newcount-1)*28h. Six entry x87 rows retain bank/model captures between FLD/FSTP. No capacity guard, increment undo or fabricated entry owner.",
+    "camera_pool_precondition": "Caller MUST already bind exactly context.cameras.pool_0108ffb0 through the existing static adapter. B71930/B71350 use its private canonical binding, while scalar cleanup uses the environment pool. No read-only identity accessor exists, so prepare neither verifies this equality nor creates/binds a pool. This is a caller-domain precondition, not established by the isolated fixture.",
+    "camera_companions": "Existing NativeCameraOwner/NativeCameraReference and viewport Storage live in caller-owned persistent frame; same node and actual render-entry registry. Prepared scene/lifetime/viewport credits are host admissions before native effects. No new native ownership or startup process.",
+    "frames_and_domains": "Distinct generated/gather/pass/constant and camera state per invocation. Same F8D394 renderer cell, D6DC synchronization, AA8/AA4/AA0 names/lifetime, physical CF14 diagnostics,0108FE88 cache and actual camera-pool domain. No replay, implicit reset or cleanup acknowledgement.",
+    "banks": "Pass VS0108EBF4/PS0108DBEC pointers equal the builder banks, including current preceding DWORD headers.",
+    "source_admissions": "Nonzero parent requires a prepared persistent frame; initial zero needs none. Unsupported profile and null-camera source errors happen at the reached operation. These explicit source-domain diagnostics are not original fault/exception behavior."
+  },
+  "exception_schedule": {
+    "function_info": "00df5cec",
+    "unwind_map": "00df5d10",
+    "states": 6,
+    "string_group": "states0/1/2 -> effect/layout/name reverse destruction; native normal cleanup disarms before each return.",
+    "camera_state3": "CBD488 reads captured raw slot and jumps B71350; allocation/name/native-constructor failure returns that slot while this state is active.",
+    "camera_state4": "CBD490 tests/clears name-live bit1 and destroys the name, then state3 returns the slot. B71A80 performs its own reached native cleanup. A published viewport surviving constructor failure is retained diagnostically.",
+    "normal_camera_return": "B2B99E sets state-1 before normal camera-name cleanup. No later failure returns/releases camera or unlocks stream, decrements cache, clears record, releases cached model, or drains record count.",
+    "source_limit": "C++ failure frames and explicit cleanup scheduling are evidence-backed adaptations; original private FH3/SEH and secondary-exception identity are unproved."
+  },
+  "validation": {
+    "strict_build": {
+      "script": "scripts/build.ps1",
+      "platform": "Win32",
+      "configuration": "Release",
+      "runtime": "/MD",
+      "warnings": "/W4 /WX",
+      "floating_point": "/fp:strict",
+      "exit_code": 0,
+      "ctests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ]
+    },
+    "native_seed_count": 8,
+    "all_seeds_live_equals_pe": true,
+    "object": {
+      "machine": "014c",
+      "object": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-debug-records24-contract-r41\\build\\win32\\bsp_core.dir\\Release\\native_renderer_debug_records40.obj",
+      "object_sha256": "c604e6db0b556dfaf5b578677a2d104bfaaef16248b04c7a3b06fd16a164a07e",
+      "native_vertex_x87_checked": true,
+      "functions": [
+        {
+          "function": "draw_native_renderer_debug_records40_00b2b580",
+          "symbol": {
+            "index": 312,
+            "name": "?draw_native_renderer_debug_records40_00b2b580@bsp@@YIXPAXPAUNativeRendererDebugRecords40Context@1@PAVNativeRendererDebugRecords40Frame@1@@Z",
+            "value": 0,
+            "section": 92,
+            "kind": 32,
+            "storage": 2
+          },
+          "section": {
+            "name": ".text$mn",
+            "size": 1351,
+            "pointer": 11395,
+            "relocation_pointer": 12746,
+            "relocations": 49
+          },
+          "bytes": 1351,
+          "sha256": "b2810b54e4b6c14a75b9bf2820f058384290227ad632e34758a7b690b0b58682",
+          "disassembly": "local\\records40_r51_draw_native_renderer_debug_records40_00b2b580_object.txt"
+        },
+        {
+          "function": "write_native_debug_records40_vertices_00b2b741",
+          "symbol": {
+            "index": 307,
+            "name": "?write_native_debug_records40_vertices_00b2b741@bsp@@YIXPAX0PBUNativeDebugRecords40VertexContext@1@@Z",
+            "value": 0,
+            "section": 119,
+            "kind": 32,
+            "storage": 2
+          },
+          "section": {
+            "name": ".text$mn",
+            "size": 451,
+            "pointer": 16531,
+            "relocation_pointer": 16982,
+            "relocations": 1
+          },
+          "bytes": 451,
+          "sha256": "2bc0bcc49e29bbde4d39d826d7740d1b70bfc22e7da6388beea29042e00ced68",
+          "disassembly": "local\\records40_r51_write_native_debug_records40_vertices_00b2b741_object.txt"
+        }
+      ],
+      "limits": "Only the ordered vertex x87 instruction stream is compared instruction-wise; constant addresses are bound through explicit arguments. Parent and helper use a new source ABI. No whole-body binary-equivalence or native EH identity is claimed.",
+      "vertex_x87_rows": [
+        {
+          "native": {
+            "site": "00b2b741",
+            "op": "fld qword ptr [0xd7a308]",
+            "bytes": "dd0508a3d700"
+          },
+          "source_offset": 41,
+          "source_bytes": "dd00",
+          "source_op": "fld qword ptr [eax]",
+          "constant_binding_adaptation": true
+        },
+        {
+          "native": {
+            "site": "00b2b74f",
+            "op": "fld1 ",
+            "bytes": "d9e8"
+          },
+          "source_offset": 53,
+          "source_bytes": "d9e8",
+          "source_op": "fld1 ",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b75a",
+            "op": "fld dword ptr [edx + ebp + 4]",
+            "bytes": "d9442a04"
+          },
+          "source_offset": 64,
+          "source_bytes": "d9442a04",
+          "source_op": "fld dword ptr [edx + ebp + 4]",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b761",
+            "op": "fmul st(2)",
+            "bytes": "d8ca"
+          },
+          "source_offset": 71,
+          "source_bytes": "d8ca",
+          "source_op": "fmul st(2)",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b769",
+            "op": "fsub st(1)",
+            "bytes": "d8e1"
+          },
+          "source_offset": 79,
+          "source_bytes": "d8e1",
+          "source_op": "fsub st(1)",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b76b",
+            "op": "fstp dword ptr [esp + 0x10]",
+            "bytes": "d95c2410"
+          },
+          "source_offset": 81,
+          "source_bytes": "d95c2410",
+          "source_op": "fstp dword ptr [esp + 0x10]",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b76f",
+            "op": "fld dword ptr [eax + 8]",
+            "bytes": "d94008"
+          },
+          "source_offset": 85,
+          "source_bytes": "d94008",
+          "source_op": "fld dword ptr [eax + 8]",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b778",
+            "op": "fsubr st(1)",
+            "bytes": "d8e9"
+          },
+          "source_offset": 94,
+          "source_bytes": "d8e9",
+          "source_op": "fsubr st(1)",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b77a",
+            "op": "fmul st(2)",
+            "bytes": "d8ca"
+          },
+          "source_offset": 96,
+          "source_bytes": "d8ca",
+          "source_op": "fmul st(2)",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b77c",
+            "op": "fsub st(1)",
+            "bytes": "d8e1"
+          },
+          "source_offset": 98,
+          "source_bytes": "d8e1",
+          "source_op": "fsub st(1)",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b77e",
+            "op": "fstp dword ptr [esp + 0x14]",
+            "bytes": "d95c2414"
+          },
+          "source_offset": 100,
+          "source_bytes": "d95c2414",
+          "source_op": "fstp dword ptr [esp + 0x14]",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b782",
+            "op": "fld dword ptr [eax + 0xc]",
+            "bytes": "d9400c"
+          },
+          "source_offset": 104,
+          "source_bytes": "d9400c",
+          "source_op": "fld dword ptr [eax + 0xc]",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b78b",
+            "op": "fmul st(2)",
+            "bytes": "d8ca"
+          },
+          "source_offset": 113,
+          "source_bytes": "d8ca",
+          "source_op": "fmul st(2)",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b78d",
+            "op": "fld dword ptr [esp + 0x10]",
+            "bytes": "d9442410"
+          },
+          "source_offset": 115,
+          "source_bytes": "d9442410",
+          "source_op": "fld dword ptr [esp + 0x10]",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b791",
+            "op": "fld st(0)",
+            "bytes": "d9c0"
+          },
+          "source_offset": 119,
+          "source_bytes": "d9c0",
+          "source_op": "fld st(0)",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b793",
+            "op": "faddp st(2)",
+            "bytes": "dec2"
+          },
+          "source_offset": 121,
+          "source_bytes": "dec2",
+          "source_op": "faddp st(2)",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b795",
+            "op": "fxch st(1)",
+            "bytes": "d9c9"
+          },
+          "source_offset": 123,
+          "source_bytes": "d9c9",
+          "source_op": "fxch st(1)",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b797",
+            "op": "fstp dword ptr [esp + 0x18]",
+            "bytes": "d95c2418"
+          },
+          "source_offset": 125,
+          "source_bytes": "d95c2418",
+          "source_op": "fstp dword ptr [esp + 0x18]",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b79b",
+            "op": "fld dword ptr [esp + 0x14]",
+            "bytes": "d9442414"
+          },
+          "source_offset": 129,
+          "source_bytes": "d9442414",
+          "source_op": "fld dword ptr [esp + 0x14]",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b7a5",
+            "op": "fld dword ptr [eax + 0x10]",
+            "bytes": "d94010"
+          },
+          "source_offset": 139,
+          "source_bytes": "d94010",
+          "source_op": "fld dword ptr [eax + 0x10]",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b7ad",
+            "op": "fmul st(4)",
+            "bytes": "d8cc"
+          },
+          "source_offset": 147,
+          "source_bytes": "d8cc",
+          "source_op": "fmul st(4)",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b7af",
+            "op": "fsubp st(1)",
+            "bytes": "dee9"
+          },
+          "source_offset": 149,
+          "source_bytes": "dee9",
+          "source_op": "fsubp st(1)",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b7b1",
+            "op": "fstp dword ptr [esp + 0x1c]",
+            "bytes": "d95c241c"
+          },
+          "source_offset": 151,
+          "source_bytes": "d95c241c",
+          "source_op": "fstp dword ptr [esp + 0x1c]",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b7b5",
+            "op": "fstp dword ptr [ecx - 0x60]",
+            "bytes": "d959a0"
+          },
+          "source_offset": 155,
+          "source_bytes": "d959a0",
+          "source_op": "fstp dword ptr [ecx - 0x60]",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b7b8",
+            "op": "fld dword ptr [esp + 0x1c]",
+            "bytes": "d944241c"
+          },
+          "source_offset": 158,
+          "source_bytes": "d944241c",
+          "source_op": "fld dword ptr [esp + 0x1c]",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b7bc",
+            "op": "fst dword ptr [esi - 0x74]",
+            "bytes": "d9568c"
+          },
+          "source_offset": 162,
+          "source_bytes": "d9568c",
+          "source_op": "fst dword ptr [esi - 0x74]",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b7c4",
+            "op": "fld dword ptr [esp + 0x18]",
+            "bytes": "d9442418"
+          },
+          "source_offset": 170,
+          "source_bytes": "d9442418",
+          "source_op": "fld dword ptr [esp + 0x18]",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b7d2",
+            "op": "fstp dword ptr [esi - 0x58]",
+            "bytes": "d95ea8"
+          },
+          "source_offset": 184,
+          "source_bytes": "d95ea8",
+          "source_op": "fstp dword ptr [esi - 0x58]",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b7da",
+            "op": "fstp dword ptr [esi - 0x54]",
+            "bytes": "d95eac"
+          },
+          "source_offset": 192,
+          "source_bytes": "d95eac",
+          "source_op": "fstp dword ptr [esi - 0x54]",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b878",
+            "op": "fstp st(1)",
+            "bytes": "ddd9"
+          },
+          "source_offset": 350,
+          "source_bytes": "ddd9",
+          "source_op": "fstp st(1)",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b87b",
+            "op": "fstp st(0)",
+            "bytes": "ddd8"
+          },
+          "source_offset": 353,
+          "source_bytes": "ddd8",
+          "source_op": "fstp st(0)",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b891",
+            "op": "fld1 ",
+            "bytes": "d9e8"
+          },
+          "source_offset": 380,
+          "source_bytes": "d9e8",
+          "source_op": "fld1 ",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b89b",
+            "op": "fld qword ptr [0xd7a308]",
+            "bytes": "dd0508a3d700"
+          },
+          "source_offset": 397,
+          "source_bytes": "dd00",
+          "source_op": "fld qword ptr [eax]",
+          "constant_binding_adaptation": true
+        },
+        {
+          "native": {
+            "site": "00b2b8ab",
+            "op": "fxch st(1)",
+            "bytes": "d9c9"
+          },
+          "source_offset": 409,
+          "source_bytes": "d9c9",
+          "source_op": "fxch st(1)",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b8cb",
+            "op": "fstp st(1)",
+            "bytes": "ddd9"
+          },
+          "source_offset": 437,
+          "source_bytes": "ddd9",
+          "source_op": "fstp st(1)",
+          "constant_binding_adaptation": false
+        },
+        {
+          "native": {
+            "site": "00b2b8cd",
+            "op": "fstp st(0)",
+            "bytes": "ddd8"
+          },
+          "source_offset": 439,
+          "source_bytes": "ddd8",
+          "source_op": "fstp st(0)",
+          "constant_binding_adaptation": false
+        }
+      ],
+      "vertex_x87_order_and_encodings_match": true
+    },
+    "fixture": {
+      "exit_code": 0,
+      "vertex_cases": [
+        "PASS vertices rc=0000 alias=0 output_bytes=192 x87_flags=80001 references=1",
+        "PASS vertices rc=0000 alias=1 output_bytes=96 x87_flags=1 references=2",
+        "PASS vertices rc=0100 alias=0 output_bytes=192 x87_flags=80001 references=1",
+        "PASS vertices rc=0100 alias=1 output_bytes=96 x87_flags=1 references=2",
+        "PASS vertices rc=0200 alias=0 output_bytes=192 x87_flags=80001 references=1",
+        "PASS vertices rc=0200 alias=1 output_bytes=96 x87_flags=1 references=2",
+        "PASS vertices rc=0300 alias=0 output_bytes=192 x87_flags=80001 references=1",
+        "PASS vertices rc=0300 alias=1 output_bytes=96 x87_flags=1 references=2"
+      ],
+      "vertex_comparisons": 8,
+      "inputs": [
+        "two records, real Windows nonzero InterlockedDecrement plus null owner, exceptional float bits",
+        "one valid output=record+4 alias row"
+      ],
+      "checks": "All512-byte record/output/preimage buffers, actual opaque count effects, live record count, x87 and SSE exception flags; four rounding modes. Output extent is192 or96 bytes, respectively.",
+      "empty_parent_comparisons": 1,
+      "empty_parent": "Copied full1549-byte body takes only zero-count branch; source accepts null context/frame, every renderer byte unchanged.",
+      "fragment_adaptations": "Copied B2B72F..B2B8D0 interior in a new callee-register/scratch wrapper; two D7A308 operands, two CE3800 operands and one CE2220 IAT operand remapped to borrowed exact-value cells and the real Windows function. Internal branches unchanged, no terminal stub.",
+      "active_parent_executed": false,
+      "zero_reference_terminal_executed": false,
+      "new_permanent_tests": 0,
+      "manifest_embedded": true
+    },
+    "genuine_full_provider_link": true,
+    "retained_symbols": [
+      "draw_native_renderer_debug_records40_00b2b580",
+      "write_native_debug_records40_vertices_00b2b741",
+      "create_native_renderer_generated_model_00b4c700",
+      "set_native_camera_view_00b71490",
+      "construct_native_camera_00b71a80",
+      "gather_native_system_constants_00b46a70",
+      "initialize_native_render_entry_00b51a20",
+      "execute_native_material_pass_current08",
+      "build_native_material_constants_00b42350"
+    ],
+    "actual_loaded_modules": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-debug-records24-contract-r41\\local\\records40_r51_probe.exe",
+        "machine": "014c",
+        "sha256": "0aaacdb98cca1130cb9d41973d141d333f619b6f7dd5911f3174074685a18861",
+        "same_process_I386_and_final_path_verified": true
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ntdll.dll",
+        "machine": "014c",
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+        "same_process_I386_and_final_path_verified": true
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+        "machine": "014c",
+        "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "same_process_I386_and_final_path_verified": true
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\KernelBase.dll",
+        "machine": "014c",
+        "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253",
+        "same_process_I386_and_final_path_verified": true
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\apphelp.dll",
+        "machine": "014c",
+        "sha256": "a8109618c3bf3623be23e8e18f1e7184538600c953169297fd0009ed77564c6e",
+        "same_process_I386_and_final_path_verified": true
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\user32.dll",
+        "machine": "014c",
+        "sha256": "bff75906f4abcc050cf85e38e20090ea0edf7dc33e0ed60cb74cf9e1bc007527",
+        "same_process_I386_and_final_path_verified": true
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\win32u.dll",
+        "machine": "014c",
+        "sha256": "7183521868938b0f6c131ef58288aed6cb55e4bde34d27d9612616ddc4dc2b33",
+        "same_process_I386_and_final_path_verified": true
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\gdi32.dll",
+        "machine": "014c",
+        "sha256": "7c3cb17bc41a00e5167a82aef67d0da4a09e73e6deba9addcdc8b20a90b5186c",
+        "same_process_I386_and_final_path_verified": true
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\gdi32full.dll",
+        "machine": "014c",
+        "sha256": "579857a52f8e9cccff64a4c1c1eb5d2a4a8c6e19c30eab16bef63ed6d61e8806",
+        "same_process_I386_and_final_path_verified": true
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\msvcp_win.dll",
+        "machine": "014c",
+        "sha256": "2c3dd2c830375591addea061588f8183bcafdba501c638526b85215465ac905a",
+        "same_process_I386_and_final_path_verified": true
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "machine": "014c",
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "same_process_I386_and_final_path_verified": true
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\msvcp140.dll",
+        "machine": "014c",
+        "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a",
+        "same_process_I386_and_final_path_verified": true
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "machine": "014c",
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "same_process_I386_and_final_path_verified": true
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\imm32.dll",
+        "machine": "014c",
+        "sha256": "027d404ea547f446740336b90dc69b0cfa7c2bea4f1f366053251364f0eefe02",
+        "same_process_I386_and_final_path_verified": true
+      }
+    ],
+    "full_renderer_validated": false,
+    "game_validated": false,
+    "original_FH3_SEH_validated": false
+  },
+  "frozen_evidence": {
+    "manifest": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-debug-records24-contract-r41\\local\\output\\records40_r51_validated_artifacts\\manifest.json",
+    "manifest_sha256": "39e054f101f950d06f7c6b1826a13ec137bad80c835f959af5b4255043651547",
+    "archive": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-debug-records24-contract-r41\\local\\output\\records40_r51_validated_artifacts.zip",
+    "archive_sha256": "beb409a28704198cebbd74a93ae72e9a82452d3f4fee6045842447dd63f025cd",
+    "archive_bytes": 96097940,
+    "artifacts": 5060,
+    "artifact_bytes": 336808171,
+    "loaded_modules": 14
+  },
+  "closure": {
+    "description": "Modified owned source/header/CMake plus every existing observed BSP-core compiler/library read input from build tlogs, probe compiler includes/linker library search, compiler tools, output library/objects/probe, exact native spans and runtime modules are frozen by hash. Baseline commit alone is not the built-source identity.",
+    "all_copies_hash_checked": true,
+    "zip_crc_verified": true,
+    "report_excluded_to_avoid_self_reference": true,
+    "limits": "Only copied original/source vertex interior and zero-count full parent execute. Active parent and zero-reference terminal remain unexecuted; the full genuine provider graph is linked. All loaded-module I386 headers and resolved file paths were checked in the same probe process. Full renderer/parent/FH3/SEH/game execution is unproved. Read tracking covers observed inputs, not arbitrary future provider paths. Unused library objects are build artifacts, not loaded modules."
+  },
+  "selected_artifacts": [
+    {
+      "path": "include/bsp/native_renderer_debug_records40.hpp",
+      "bytes": 6828,
+      "sha256": "490efd3422be72cdafe18c15a2f5c408c85def7de1aedfef3c2d665c079acd07",
+      "frozen_path": "artifacts\\02912_490efd3422be_native_renderer_debug_records40.hpp"
+    },
+    {
+      "path": "src/native_renderer_debug_records40.cpp",
+      "bytes": 23480,
+      "sha256": "88e81fcccb45c6e772686c4689029012043a52888c8b34c71e20ad5c89c657bf",
+      "frozen_path": "artifacts\\04464_88e81fcccb45_native_renderer_debug_records40.cpp"
+    },
+    {
+      "path": "docs/NATIVE_RENDERER_DEBUG_RECORDS40_R51.md",
+      "bytes": 6165,
+      "sha256": "9d8ca1c30524767feb05fabd5251eeecf0e9543fab493f4645060993e2731dbe",
+      "frozen_path": "artifacts\\01993_9d8ca1c30524_NATIVE_RENDERER_DEBUG_RECORDS40_R51.md"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 150736,
+      "sha256": "e68a32b12d8af0d3f9ad90b67a998e22a7bfce68a02d32007e1c29cfc950f935",
+      "frozen_path": "artifacts\\01989_e68a32b12d8a_startup.cmake"
+    },
+    {
+      "path": "include/bsp/native_render_entry_cache.hpp",
+      "bytes": 4539,
+      "sha256": "827a16a594dbba5e509c8153a966bbeb1a05ebeb4ca0c933febf1633c7b192cc",
+      "frozen_path": "artifacts\\02872_827a16a594db_native_render_entry_cache.hpp"
+    },
+    {
+      "path": "src/native_render_entry_cache.cpp",
+      "bytes": 9420,
+      "sha256": "f53fb7e6e79cc58002dd039403c03e7ee8f690ab7cb84c062ca7553bb4aaee87",
+      "frozen_path": "artifacts\\04424_f53fb7e6e79c_native_render_entry_cache.cpp"
+    },
+    {
+      "path": "include/bsp/native_camera_view_set.hpp",
+      "bytes": 939,
+      "sha256": "e29d123a1460bc20b192618d2e4b5a8fa0f4451f15bb8af1fce3b260d7bf0223",
+      "frozen_path": "artifacts\\02424_e29d123a1460_native_camera_view_set.hpp"
+    },
+    {
+      "path": "src/native_camera_view_set.cpp",
+      "bytes": 1430,
+      "sha256": "0e448dbd47bdbcbc16b5a3e32621a05ccdf640dd8d33e86bba2b94954c296879",
+      "frozen_path": "artifacts\\03977_0e448dbd47bd_native_camera_view_set.cpp"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 63679132,
+      "sha256": "8fc66fe2737592e56c30f1e1cef0f47968e11245f5244e5d0432a63472ee38e8",
+      "frozen_path": "artifacts\\01981_8fc66fe27375_bsp_core.lib"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_renderer_debug_records40.obj",
+      "bytes": 45496,
+      "sha256": "c604e6db0b556dfaf5b578677a2d104bfaaef16248b04c7a3b06fd16a164a07e",
+      "frozen_path": "artifacts\\01387_c604e6db0b55_native_renderer_debug_records40.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_render_entry_cache.obj",
+      "bytes": 14636,
+      "sha256": "344c31bfc1d3c0d82a2402b39ad67d2283d57dbd237a98775c532d48af69a535",
+      "frozen_path": "artifacts\\01347_344c31bfc1d3_native_render_entry_cache.obj"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_camera_view_set.obj",
+      "bytes": 8603,
+      "sha256": "9363f44ed557d4aa1262e606c9bc7d2ad4958a4dbec7a97d772afc5c6b84e516",
+      "frozen_path": "artifacts\\00900_9363f44ed557_native_camera_view_set.obj"
+    },
+    {
+      "path": "local/records40_r51_probe.cpp",
+      "bytes": 9087,
+      "sha256": "3e3d257c278f14cf6fea7a6f3fd5dbd3a5ad9c1ffc8f2ef97944b7896d3c60b5",
+      "frozen_path": "artifacts\\03540_3e3d257c278f_records40_r51_probe.cpp"
+    },
+    {
+      "path": "local/records40_r51_probe_build.cmd",
+      "bytes": 837,
+      "sha256": "5da89162b43f795e2310742c09c828414147735f6e83920cffb45280b69c57b3",
+      "frozen_path": "artifacts\\03544_5da89162b43f_records40_r51_probe_build.cmd"
+    },
+    {
+      "path": "local/records40_r51_probe.exe",
+      "bytes": 471552,
+      "sha256": "0aaacdb98cca1130cb9d41973d141d333f619b6f7dd5911f3174074685a18861",
+      "frozen_path": "artifacts\\03541_0aaacdb98cca_records40_r51_probe.exe"
+    },
+    {
+      "path": "local/records40_r51_probe.obj",
+      "bytes": 93918,
+      "sha256": "1d96ef897194c9db8049a68dcb16d70a389c30557fb051cc03be8a521fa250bb",
+      "frozen_path": "artifacts\\03543_1d96ef897194_records40_r51_probe.obj"
+    },
+    {
+      "path": "local/records40_r51_probe.map",
+      "bytes": 774635,
+      "sha256": "ef32a83ad16db3f1c869178c0a0784e4a7baa89719e3ecfbd6e4f56f73447097",
+      "frozen_path": "artifacts\\03542_ef32a83ad16d_records40_r51_probe.map"
+    },
+    {
+      "path": "local/records40_r51_probe_dependencies.json",
+      "bytes": 49002,
+      "sha256": "44eb2d8aa12d5c10137119f9c034887bcbb28f260c6acd14fdf519c1b7060a7a",
+      "frozen_path": "artifacts\\03546_44eb2d8aa12d_records40_r51_probe_dependencies.json"
+    },
+    {
+      "path": "local/records40_r51_probe_build.log",
+      "bytes": 13597,
+      "sha256": "cf879f0c445c60d963467e2351e7f42ee2cc8277c00debc02d6309bb0d22d307",
+      "frozen_path": "artifacts\\03545_cf879f0c445c_records40_r51_probe_build.log"
+    },
+    {
+      "path": "local/records40_r51_probe_run.log",
+      "bytes": 2389,
+      "sha256": "5953275d1a773a3047c0e6f7d01be8bfb50728f17aeb70b18fae9eda0c008bf7",
+      "frozen_path": "artifacts\\03547_5953275d1a77_records40_r51_probe_run.log"
+    },
+    {
+      "path": "local/records40_r51_fragment_runtime.bin",
+      "bytes": 439,
+      "sha256": "42cc506c5f6df4d79d4e87cb44f49334389fa352b336c08675875067bd1fdb0c",
+      "frozen_path": "artifacts\\03510_42cc506c5f6d_records40_r51_fragment_runtime.bin"
+    },
+    {
+      "path": "local/records40_r51_runtime_outputs.bin",
+      "bytes": 4096,
+      "sha256": "2d28a66c94c5628af706c39135b4d9a2e5e988aa8432fcb9fab6822c46c5abc1",
+      "frozen_path": "artifacts\\03548_2d28a66c94c5_records40_r51_runtime_outputs.bin"
+    },
+    {
+      "path": "local/records40_r51_build.log",
+      "bytes": 3083,
+      "sha256": "5dfa10ca1970b67657ec2ed23bd10478a6e4faca44422bd8fa186e51ec044e03",
+      "frozen_path": "artifacts\\03508_5dfa10ca1970_records40_r51_build.log"
+    },
+    {
+      "path": "local/records40_r51_seeds.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "frozen_path": "artifacts\\03549_edd871f38f1f_records40_r51_seeds.log"
+    },
+    {
+      "path": "local/records40_r51_object_audit.json",
+      "bytes": 12381,
+      "sha256": "bbe7c25156c6f880a0770a494ff3958e3034450a48583d378e97c6bf797c41bf",
+      "frozen_path": "artifacts\\03538_bbe7c25156c6_records40_r51_object_audit.json"
+    }
+  ],
+  "limits": [
+    "The actual camera-pool static binding equality is a required caller precondition with no current read-only verification API.",
+    "Active/cold parent, camera construction, pass execution and zero-reference terminal are not exercised by this probe; successful genuine linking does not establish runtime composition.",
+    "No producer, renderer startup, application publication binding, gameplay or visual result is supplied by this component.",
+    "Copied-fragment/source numerical parity is bounded to the stated cases and admitted alias domain; private stack/FH3/SEH/original full binary ABI remain unproved."
+  ]
+}
