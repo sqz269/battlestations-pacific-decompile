@@ -22,11 +22,11 @@ NativeShaderStateDefinition* at(NativeShaderStateDefinitionArray& rows,std::int3
     return reinterpret_cast<NativeShaderStateDefinition*>(
         reinterpret_cast<std::uintptr_t>(rows.data_00)+static_cast<std::uint32_t>(index)*16u);
 }
-void release_section(SystemSingletonCriticalSection* section) noexcept {
-    if(section){--section->recursion_18;singleton_leave_critical_section(*section);}
+void release_section(CapturedSoundLifetimeSection* section) noexcept {
+    if(section)section->~CapturedSoundLifetimeSection();
 }
 void destroy_members(NativeShaderStateDefinitionsStorage& owner,
-    NativeShaderStateDefinitionsStorage* volatile& published,SingletonLifetimeDomain& lifetime,
+    NativeShaderStateDefinitionsStorage* volatile& published,SoundLifetimeAccess lifetime,
     NativeStringStorage& strings,int index){
     auto* rows=index==2?&owner.texture_stage_1c:index==1?&owner.sampler_10:&owner.render_04;
     __try {destroy_native_shader_state_definition_array_00b58300(*rows,strings);}
@@ -119,34 +119,34 @@ void append_unique_native_shader_state_pair_00b567b0(
 }
 NativeShaderStateDefinitionsStorage* construct_native_shader_state_definition_base_00b56610(
     NativeShaderStateDefinitionsStorage& owner,NativeShaderStateDefinitionsStorage* volatile& published,
-    SingletonLifetimeDomain& lifetime){
-    owner.vtable_00=0x00d621ec;SystemSingletonCriticalSection* captured=nullptr;
+    SoundLifetimeAccess lifetime){
+    owner.vtable_00=0x00d621ec;alignas(CapturedSoundLifetimeSection) std::byte section_storage[sizeof(CapturedSoundLifetimeSection)];
+    CapturedSoundLifetimeSection* captured=nullptr;
     __try {
-        auto* section=lifetime.get_manager_00415350()->system_owner().section_10;
-        if(section){singleton_enter_critical_section(*section);++section->recursion_18;}captured=section;
-        published=&owner;auto* manager=lifetime.get_manager_00415350();manager->register_object(published);
+        captured=::new(section_storage) CapturedSoundLifetimeSection(lifetime);
+        published=&owner;auto manager=lifetime.get_manager_00415350();manager->register_object(published);
     } __finally {release_section(captured);if(AbnormalTermination())owner.vtable_00=0x00ce3818;}
     return &owner;
 }
 void destroy_native_shader_state_definition_base_00b566b0(
     NativeShaderStateDefinitionsStorage& owner,NativeShaderStateDefinitionsStorage* volatile& published,
-    SingletonLifetimeDomain& lifetime){
-    owner.vtable_00=0x00d621ec;SystemSingletonCriticalSection* captured=nullptr;
+    SoundLifetimeAccess lifetime){
+    owner.vtable_00=0x00d621ec;alignas(CapturedSoundLifetimeSection) std::byte section_storage[sizeof(CapturedSoundLifetimeSection)];
+    CapturedSoundLifetimeSection* captured=nullptr;
     __try {
-        auto* section=lifetime.get_manager_00415350()->system_owner().section_10;
-        if(section){singleton_enter_critical_section(*section);++section->recursion_18;}captured=section;
-        auto* manager=lifetime.get_manager_00415350();manager->unregister_object(published);published=nullptr;
+        captured=::new(section_storage) CapturedSoundLifetimeSection(lifetime);
+        auto manager=lifetime.get_manager_00415350();manager->unregister_object(published);published=nullptr;
     } __finally {release_section(captured);owner.vtable_00=0x00ce3818;}
 }
 NativeShaderStateDefinitionsStorage* delete_native_shader_state_definition_base_00b56750(
     NativeShaderStateDefinitionsStorage* owner,NativeShaderStateDefinitionsStorage* volatile& published,
-    SingletonLifetimeDomain& lifetime,std::uint32_t flags){
+    SoundLifetimeAccess lifetime,std::uint32_t flags){
     destroy_native_shader_state_definition_base_00b566b0(*owner,published,lifetime);
     if(flags&1)singleton_lifetime_free(owner);return owner;
 }
 NativeShaderStateDefinitionsStorage* construct_native_shader_state_definitions_00b585a0(
     void* fresh,NativeShaderStateDefinitionsStorage* volatile& published,
-    SingletonLifetimeDomain& lifetime,NativeStringStorage& strings){
+    SoundLifetimeAccess lifetime,NativeStringStorage& strings){
     auto* owner=::new(fresh) NativeShaderStateDefinitionsStorage;
     construct_native_shader_state_definition_base_00b56610(*owner,published,lifetime);
     owner->vtable_00=0x00d62260;
@@ -160,14 +160,45 @@ NativeShaderStateDefinitionsStorage* construct_native_shader_state_definitions_0
 }
 void destroy_native_shader_state_definitions_00b58320(
     NativeShaderStateDefinitionsStorage& owner,NativeShaderStateDefinitionsStorage* volatile& published,
-    SingletonLifetimeDomain& lifetime,NativeStringStorage& strings){
+    SoundLifetimeAccess lifetime,NativeStringStorage& strings){
     owner.vtable_00=0x00d62260;destroy_members(owner,published,lifetime,strings,2);
 }
 NativeShaderStateDefinitionsStorage* delete_native_shader_state_definitions_00b59e50(
     NativeShaderStateDefinitionsStorage* owner,NativeShaderStateDefinitionsStorage* volatile& published,
-    SingletonLifetimeDomain& lifetime,NativeStringStorage& strings,std::uint32_t flags){
+    SoundLifetimeAccess lifetime,NativeStringStorage& strings,std::uint32_t flags){
     destroy_native_shader_state_definitions_00b58320(*owner,published,lifetime,strings);
     if(flags&1)singleton_lifetime_free(owner);return owner;
+}
+// Preserve the projected interface while sharing the actual array/literal bodies.
+NativeShaderStateDefinitionsStorage* construct_native_shader_state_definition_base_00b56610(
+    NativeShaderStateDefinitionsStorage& owner,NativeShaderStateDefinitionsStorage* volatile& published,
+    SingletonLifetimeDomain& lifetime){
+    return construct_native_shader_state_definition_base_00b56610(owner,published,SoundLifetimeAccess(lifetime));
+}
+void destroy_native_shader_state_definition_base_00b566b0(
+    NativeShaderStateDefinitionsStorage& owner,NativeShaderStateDefinitionsStorage* volatile& published,
+    SingletonLifetimeDomain& lifetime){
+    destroy_native_shader_state_definition_base_00b566b0(owner,published,SoundLifetimeAccess(lifetime));
+}
+NativeShaderStateDefinitionsStorage* delete_native_shader_state_definition_base_00b56750(
+    NativeShaderStateDefinitionsStorage* owner,NativeShaderStateDefinitionsStorage* volatile& published,
+    SingletonLifetimeDomain& lifetime,std::uint32_t flags){
+    return delete_native_shader_state_definition_base_00b56750(owner,published,SoundLifetimeAccess(lifetime),flags);
+}
+NativeShaderStateDefinitionsStorage* construct_native_shader_state_definitions_00b585a0(
+    void* fresh,NativeShaderStateDefinitionsStorage* volatile& published,
+    SingletonLifetimeDomain& lifetime,NativeStringStorage& strings){
+    return construct_native_shader_state_definitions_00b585a0(fresh,published,SoundLifetimeAccess(lifetime),strings);
+}
+void destroy_native_shader_state_definitions_00b58320(
+    NativeShaderStateDefinitionsStorage& owner,NativeShaderStateDefinitionsStorage* volatile& published,
+    SingletonLifetimeDomain& lifetime,NativeStringStorage& strings){
+    destroy_native_shader_state_definitions_00b58320(owner,published,SoundLifetimeAccess(lifetime),strings);
+}
+NativeShaderStateDefinitionsStorage* delete_native_shader_state_definitions_00b59e50(
+    NativeShaderStateDefinitionsStorage* owner,NativeShaderStateDefinitionsStorage* volatile& published,
+    SingletonLifetimeDomain& lifetime,NativeStringStorage& strings,std::uint32_t flags){
+    return delete_native_shader_state_definitions_00b59e50(owner,published,SoundLifetimeAccess(lifetime),strings,flags);
 }
 NativeShaderStateDefinitionsLifetimeBinding::NativeShaderStateDefinitionsLifetimeBinding(
     NativeShaderStateDefinitionsStorage* volatile& published,SingletonLifetimeCallbacks next):published_(published),next_(next){

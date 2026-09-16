@@ -1,6 +1,7 @@
 #pragma once
 #include "bsp/native_shader_sampler_owner.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/sound_lifetime_access.hpp"
 
 namespace bsp {
 // Actual 16-byte registry entry. Only the name is initialized by resize growth;
@@ -65,6 +66,30 @@ void destroy_native_shader_state_definitions_00b58320(
 NativeShaderStateDefinitionsStorage* delete_native_shader_state_definitions_00b59e50(
     NativeShaderStateDefinitionsStorage*, NativeShaderStateDefinitionsStorage* volatile&,
     SingletonLifetimeDomain&, NativeStringStorage&, std::uint32_t flags);
+
+// The SAME full bodies using a borrowed actual01090AA0 publication access.
+// Supply SoundLifetimeAccess(actual_manager_cell), the actual0108FE90 cell,
+// and the application's existing string storage. No projected manager is used.
+// The caller owns canonical shutdown/profile dispatch and passes its popped
+// actual owner to the scalar wrapper. Cells and string storage must outlive it.
+NativeShaderStateDefinitionsStorage* construct_native_shader_state_definition_base_00b56610(
+    NativeShaderStateDefinitionsStorage&, NativeShaderStateDefinitionsStorage* volatile&,
+    SoundLifetimeAccess);
+void destroy_native_shader_state_definition_base_00b566b0(
+    NativeShaderStateDefinitionsStorage&, NativeShaderStateDefinitionsStorage* volatile&,
+    SoundLifetimeAccess);
+NativeShaderStateDefinitionsStorage* delete_native_shader_state_definition_base_00b56750(
+    NativeShaderStateDefinitionsStorage*, NativeShaderStateDefinitionsStorage* volatile&,
+    SoundLifetimeAccess, std::uint32_t flags);
+NativeShaderStateDefinitionsStorage* construct_native_shader_state_definitions_00b585a0(
+    void* fresh, NativeShaderStateDefinitionsStorage* volatile&,
+    SoundLifetimeAccess, NativeStringStorage&);
+void destroy_native_shader_state_definitions_00b58320(
+    NativeShaderStateDefinitionsStorage&, NativeShaderStateDefinitionsStorage* volatile&,
+    SoundLifetimeAccess, NativeStringStorage&);
+NativeShaderStateDefinitionsStorage* delete_native_shader_state_definitions_00b59e50(
+    NativeShaderStateDefinitionsStorage*, NativeShaderStateDefinitionsStorage* volatile&,
+    SoundLifetimeAccess, NativeStringStorage&, std::uint32_t flags);
 
 // Host callback composition for the SAME lifetime domain and published slot.
 // Construct binding, then domain from callbacks(), then bind(domain, strings)

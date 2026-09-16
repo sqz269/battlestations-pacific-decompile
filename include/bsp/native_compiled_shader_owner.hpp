@@ -53,8 +53,14 @@ static_assert(std::is_trivially_destructible_v<NativeCompiledShaderStorage>);
 NativeCompiledShaderStorage* initialize_native_compiled_shader_00b3b3c0_fragment(void*);
 NativeCompiledShaderConstantStorage* initialize_native_compiled_shader_constant_00b5bb40(
     void*, NativeStringStorage&);
+NativeCompiledShaderConstantStorage* initialize_native_compiled_shader_constant_00b5bb40(
+    void*, NativeStringRawPoolContext&);
 NativeCompiledShaderConstantStorage* copy_native_compiled_shader_constant_00b38310(
     void*, const NativeCompiledShaderConstantStorage&, NativeStringStorage&);
+// Same full 114-byte copy schedule through the actual mutable raw pool cells.
+// No local EH cleanup: an exception can leave an uncounted partial string.
+NativeCompiledShaderConstantStorage* copy_native_compiled_shader_constant_00b38310(
+    void*, const NativeCompiledShaderConstantStorage&, NativeStringRawPoolContext&);
 
 // Host continuation metadata, not native layout or native SEH emulation.
 // Keep the operation, array, strings domain and append source alive after a
