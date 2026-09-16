@@ -3,6 +3,7 @@
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_pooled_string_substring.hpp"
 #include "bsp/native_pooled_text.hpp"
+#include "bsp/singleton_lifetime.hpp"
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -81,20 +82,40 @@ bool dispatch_known_native_particle_shader(void* definition,std::uint32_t target
     default:return false;
     }
 }
-void reserve_native_object_particle_models_00af8350(void* descriptor,std::int32_t wanted,
-    NativeParticleTypeBaseBindings& b) {
+namespace {
+struct HostModelStorage {
+    NativeParticleTypeBaseBindings& bindings;
+    void* allocate(std::uint32_t bytes) { return bindings.allocate_array_00bf55be(bytes); }
+    void free(void* p) { bindings.owners.free_array_00bf6989(p); }
+    void terminal(void* p,std::uint32_t target) {
+        bindings.owners.member_virtual00(bindings.owners.context,p,target);
+    }
+};
+struct RawModelStorage {
+    void* allocate(std::uint32_t bytes) {
+        return singleton_lifetime_allocate({SingletonAllocationKind::object,bytes,bytes});
+    }
+    void free(void* p) noexcept { singleton_lifetime_free(p); }
+    void terminal(void* p,std::uint32_t target) {
+        using Terminal=void (__thiscall*)(void*);
+        reinterpret_cast<Terminal>(target)(p);
+    }
+};
+template<class Storage>
+void reserve_models(void* descriptor,std::int32_t wanted,Storage storage) {
     if(wanted<1)wanted=1;
     if(load<std::int32_t>(descriptor,8)>=wanted)return;
-    void* fresh=b.allocate_array_00bf55be(static_cast<std::uint32_t>(wanted)*4u);
+    void* fresh=storage.allocate(static_cast<std::uint32_t>(wanted)*4u);
     for(std::int32_t i=0;i<load<std::int32_t>(descriptor,4);++i){
         void* cell=at(fresh,static_cast<std::uint32_t>(i)*4u);
         if(cell)store(cell,0,load<std::uint32_t>(load<void*>(descriptor),static_cast<std::uint32_t>(i)*4u));
     }
-    b.owners.free_array_00bf6989(load<void*>(descriptor));
+    storage.free(load<void*>(descriptor));
     store(descriptor,0,fresh);
     store(descriptor,8,wanted);
 }
-void clear_native_object_particle_models_00af8940(void* definition,NativeParticleTypeBaseBindings& b) {
+template<class Storage>
+void clear_models(void* definition,Storage storage) {
     while(load<std::uint32_t>(definition,0x90)!=0){
         const auto count=load<std::uint32_t>(definition,0x90);
         void* cell=at(load<void*>(definition,0x8c),count*4u-4u);
@@ -102,13 +123,27 @@ void clear_native_object_particle_models_00af8940(void* definition,NativeParticl
         if(resource){
             if(InterlockedDecrement(static_cast<volatile LONG*>(at(resource,4)))==0){
                 const auto target=load<std::uint32_t>(load<void*>(resource));
-                b.owners.member_virtual00(b.owners.context,resource,target);
+                storage.terminal(resource,target);
             }
             store<void*>(cell,0,nullptr);
         }
         const auto current=load<std::uint32_t>(definition,0x90);
         if(current)store(definition,0x90,current-1u);
     }
+}
+} // namespace
+void reserve_native_object_particle_models_00af8350(void* descriptor,std::int32_t wanted,
+    NativeParticleTypeBaseBindings& bindings) {
+    reserve_models(descriptor,wanted,HostModelStorage{bindings});
+}
+void reserve_native_object_particle_models_00af8350(void* descriptor,std::int32_t wanted) {
+    reserve_models(descriptor,wanted,RawModelStorage{});
+}
+void clear_native_object_particle_models_00af8940(void* definition,NativeParticleTypeBaseBindings& bindings) {
+    clear_models(definition,HostModelStorage{bindings});
+}
+void clear_native_object_particle_models_00af8940(void* definition) {
+    clear_models(definition,RawModelStorage{});
 }
 void* load_native_resource_with_default_factory_00b80d70(void* manager,const void* name,
     NativeParticleTypeResourceBindings& b) {
