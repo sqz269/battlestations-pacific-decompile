@@ -15,9 +15,33 @@
     "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
   },
   "native_bodies": [
-    {"address":"00b6da30","length":50,"end_exclusive":"00b6da62","file_offset":7789104,"sha256":"e59be0afa37414644d2bf59f9daf7d417752a80b37c134f7131771ef5ff81fac","live_equals_pe":true,"live_equals_frozen":true},
-    {"address":"00b6db10","length":73,"end_exclusive":"00b6db59","file_offset":7789328,"sha256":"4bf57ceafa88c53f385239ba006d90f7d65ca239ef51f4c3c9a8ea114d07d276","live_equals_pe":true,"live_equals_frozen":true},
-    {"address":"00b6dbc0","length":25,"end_exclusive":"00b6dbd9","file_offset":7789504,"sha256":"ff03f5e2a5c5c4450e8385ba9b6c671844c50e3c6de7f712550e6988134727f7","live_equals_pe":true,"live_equals_frozen":true}
+    {
+      "address": "00b6da30",
+      "length": 50,
+      "end_exclusive": "00b6da62",
+      "file_offset": 7789104,
+      "sha256": "e59be0afa37414644d2bf59f9daf7d417752a80b37c134f7131771ef5ff81fac",
+      "live_equals_pe": true,
+      "live_equals_frozen": true
+    },
+    {
+      "address": "00b6db10",
+      "length": 73,
+      "end_exclusive": "00b6db59",
+      "file_offset": 7789328,
+      "sha256": "4bf57ceafa88c53f385239ba006d90f7d65ca239ef51f4c3c9a8ea114d07d276",
+      "live_equals_pe": true,
+      "live_equals_frozen": true
+    },
+    {
+      "address": "00b6dbc0",
+      "length": 25,
+      "end_exclusive": "00b6dbd9",
+      "file_offset": 7789504,
+      "sha256": "ff03f5e2a5c5c4450e8385ba9b6c671844c50e3c6de7f712550e6988134727f7",
+      "live_equals_pe": true,
+      "live_equals_frozen": true
+    }
   ],
   "provider_body": {
     "address": "004134f0",
@@ -31,13 +55,37 @@
     "historical_header_git_blob": "4cee0aa171c5abcebc575b159710a76c643c5d42"
   },
   "call_sites": [
-    {"address":"00b6da54","function":"00b6da30","bytes":"e8d7ffffff","native":"00b6da30","kind":"direct_call"},
-    {"address":"00b6db1e","function":"00b6db10","bytes":"e8cd598aff","native":"004134f0","kind":"direct_call"},
-    {"address":"00b6db50","function":"00b6db10","bytes":"e8dbfeffff","native":"00b6da30","kind":"direct_call"}
+    {
+      "address": "00b6da54",
+      "function": "00b6da30",
+      "bytes": "e8d7ffffff",
+      "native": "00b6da30",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b6db1e",
+      "function": "00b6db10",
+      "bytes": "e8cd598aff",
+      "native": "004134f0",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b6db50",
+      "function": "00b6db10",
+      "bytes": "e8dbfeffff",
+      "native": "00b6da30",
+      "kind": "direct_call"
+    }
   ],
   "indirect_dispatch": [
-    {"site":"00b6db46","operation":"call current captured attachment profile slot3C"},
-    {"site":"00b6dbd6","operation":"tail jump to current enclosing A0 profile slot3C"}
+    {
+      "site": "00b6db46",
+      "operation": "call current captured attachment profile slot3C"
+    },
+    {
+      "site": "00b6dbd6",
+      "operation": "tail jump to current enclosing A0 profile slot3C"
+    }
   ],
   "source_adoption": {
     "historical_commit": "a6b2884f2",
@@ -97,27 +145,111 @@
     "ghidra_mutated": false
   },
   "artifact_receipts": [
-    {"path":"include/bsp/native_node_raw_transform.hpp","bytes":407,"sha256":"53f7d50855779206ce1faff86469948e4ff4fa9c0d376d68fbba1b4a48e3884d"},
-    {"path":"src/native_node_raw_transform.cpp","bytes":2873,"sha256":"31a50a5e6e6efd27bb2d32851cc6836b6aabb1a924eefa384363e561deb4e257"},
-    {"path":"docs/NATIVE_NODE_RAW_TRANSFORM.md","bytes":3038,"sha256":"33d6191fc57cbae506caaa77a2f1d8d3cda16bd3c8524ac02fe51de43ed7ff9d"},
-    {"path":"cmake/startup.cmake","bytes":149313,"sha256":"d8ccf4b064d5b7f21b791c123ead3ec4b98c6c8aa6badbf58387141dce52f77d"},
-    {"path":"include/bsp/native_traceline_render.hpp","bytes":7210,"sha256":"eec43d439a9ddcf4d5aa96954434c469b607c4ac198f54b6cb55339a0365caf4"},
-    {"path":"include/bsp/native_camera_matrix_copy.hpp","bytes":606,"sha256":"70e741350edb66be14fc9d1b981181fe5ecf8c536f33eab47221469d8d3f1a7a"},
-    {"path":"build/win32/bsp_core.vcxproj","bytes":275680,"sha256":"ed05ee4b0a2b0d931b3cd9d85a414530cfb65eece6b32556b14b1416888aed62"},
-    {"path":"build/win32/Release/bsp_core.lib","bytes":63476230,"sha256":"04ed5c669c9c0b278b2838527e65fb2e77a1eacea413674c3e80063c048ddd32"},
-    {"path":"build/win32/bsp_core.dir/Release/native_node_raw_transform.obj","bytes":12345,"sha256":"53548c85a094d3accd501999ce16ce2cd30885992808abc692dba06b7739828b"},
-    {"path":"build/win32/bsp_core.dir/Release/native_camera_matrix_copy.obj","bytes":848,"sha256":"501afa349ee08b42966f5c0359b0325dbeb50784e49765321c1463fdeb1d7ff2"},
-    {"path":"local/output/r40_node_raw_transform_probe.cpp","bytes":6929,"sha256":"b01f296dcc6d6ba2c4ce442be3ea629a437af0f0f34f8f89f4c9f29ecc3bbebf"},
-    {"path":"local/output/r40_node_raw_transform_probe.obj","bytes":151972,"sha256":"3f8339ceaf9f52c83aa0d80b22d2a65a03d09e46f39632de22604abee6937643"},
-    {"path":"local/output/r40_node_raw_transform_probe.exe","bytes":31744,"sha256":"581f79f7e3e5b3c13b120c452cb6589a0e53b11d330707d96623530f7c4bd37f"},
-    {"path":"local/output/r40_node_raw_transform_probe.map","bytes":71031,"sha256":"1f278d6ca667cb65a867a72bd59045043e475290cb92d82c8367a8f5825c7974"},
-    {"path":"local/output/r40_node_raw_transform_probe_build.log","bytes":1134,"sha256":"2ed16786d634d67eb2271338bab33ff04cf91016438bce941e9f765dc99db606"},
-    {"path":"local/output/r40_node_raw_transform_probe_run.log","bytes":681,"sha256":"a142292477f9d1a0d04cca306f0c07ab9817d74031ef7632b92e6ee357888121"},
-    {"path":"local/output/r40_node_raw_transform_runtime.bin","bytes":1280,"sha256":"f2525726343dd64483a1774b3bd51ae12827ad64c4695a7eb9ff2fba67790b9f"},
-    {"path":"local/r40_build_full.log","bytes":8761,"sha256":"8fed4e1b5aceeb286bce0987cbeb2e6b93ba6aedd60c60e59a9612b73f0d5703"},
-    {"path":"local/r40_verify_seeds.log","bytes":3034,"sha256":"edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"},
-    {"path":"local/r40_node_raw_transform_byte_receipt.json","bytes":3986,"sha256":"1757bb7d7d6fa161d1e793c127e4bc9a5d1d491e439fd2c5011055152c15e855"},
-    {"path":"local/r40_callgate.log","bytes":80,"sha256":"02db58b8981a0a352cbba67d797d5e5db11caeeebf66dde61cb372189b48bf58"}
+    {
+      "path": "include/bsp/native_node_raw_transform.hpp",
+      "bytes": 407,
+      "sha256": "53f7d50855779206ce1faff86469948e4ff4fa9c0d376d68fbba1b4a48e3884d"
+    },
+    {
+      "path": "src/native_node_raw_transform.cpp",
+      "bytes": 2873,
+      "sha256": "31a50a5e6e6efd27bb2d32851cc6836b6aabb1a924eefa384363e561deb4e257"
+    },
+    {
+      "path": "docs/NATIVE_NODE_RAW_TRANSFORM.md",
+      "bytes": 3038,
+      "sha256": "33d6191fc57cbae506caaa77a2f1d8d3cda16bd3c8524ac02fe51de43ed7ff9d"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 149313,
+      "sha256": "d8ccf4b064d5b7f21b791c123ead3ec4b98c6c8aa6badbf58387141dce52f77d"
+    },
+    {
+      "path": "include/bsp/native_traceline_render.hpp",
+      "bytes": 7210,
+      "sha256": "eec43d439a9ddcf4d5aa96954434c469b607c4ac198f54b6cb55339a0365caf4"
+    },
+    {
+      "path": "include/bsp/native_camera_matrix_copy.hpp",
+      "bytes": 606,
+      "sha256": "70e741350edb66be14fc9d1b981181fe5ecf8c536f33eab47221469d8d3f1a7a"
+    },
+    {
+      "path": "build/win32/bsp_core.vcxproj",
+      "bytes": 275680,
+      "sha256": "ed05ee4b0a2b0d931b3cd9d85a414530cfb65eece6b32556b14b1416888aed62"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 63476230,
+      "sha256": "04ed5c669c9c0b278b2838527e65fb2e77a1eacea413674c3e80063c048ddd32"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_node_raw_transform.obj",
+      "bytes": 12345,
+      "sha256": "53548c85a094d3accd501999ce16ce2cd30885992808abc692dba06b7739828b"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_camera_matrix_copy.obj",
+      "bytes": 848,
+      "sha256": "501afa349ee08b42966f5c0359b0325dbeb50784e49765321c1463fdeb1d7ff2"
+    },
+    {
+      "path": "local/output/r40_node_raw_transform_probe.cpp",
+      "bytes": 6929,
+      "sha256": "b01f296dcc6d6ba2c4ce442be3ea629a437af0f0f34f8f89f4c9f29ecc3bbebf"
+    },
+    {
+      "path": "local/output/r40_node_raw_transform_probe.obj",
+      "bytes": 151972,
+      "sha256": "3f8339ceaf9f52c83aa0d80b22d2a65a03d09e46f39632de22604abee6937643"
+    },
+    {
+      "path": "local/output/r40_node_raw_transform_probe.exe",
+      "bytes": 31744,
+      "sha256": "581f79f7e3e5b3c13b120c452cb6589a0e53b11d330707d96623530f7c4bd37f"
+    },
+    {
+      "path": "local/output/r40_node_raw_transform_probe.map",
+      "bytes": 71031,
+      "sha256": "1f278d6ca667cb65a867a72bd59045043e475290cb92d82c8367a8f5825c7974"
+    },
+    {
+      "path": "local/output/r40_node_raw_transform_probe_build.log",
+      "bytes": 1134,
+      "sha256": "2ed16786d634d67eb2271338bab33ff04cf91016438bce941e9f765dc99db606"
+    },
+    {
+      "path": "local/output/r40_node_raw_transform_probe_run.log",
+      "bytes": 681,
+      "sha256": "a142292477f9d1a0d04cca306f0c07ab9817d74031ef7632b92e6ee357888121"
+    },
+    {
+      "path": "local/output/r40_node_raw_transform_runtime.bin",
+      "bytes": 1280,
+      "sha256": "f2525726343dd64483a1774b3bd51ae12827ad64c4695a7eb9ff2fba67790b9f"
+    },
+    {
+      "path": "local/r40_build_full.log",
+      "bytes": 8761,
+      "sha256": "8fed4e1b5aceeb286bce0987cbeb2e6b93ba6aedd60c60e59a9612b73f0d5703"
+    },
+    {
+      "path": "local/r40_verify_seeds.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/r40_node_raw_transform_byte_receipt.json",
+      "bytes": 3986,
+      "sha256": "1757bb7d7d6fa161d1e793c127e4bc9a5d1d491e439fd2c5011055152c15e855"
+    },
+    {
+      "path": "local/r40_callgate.log",
+      "bytes": 80,
+      "sha256": "02db58b8981a0a352cbba67d797d5e5db11caeeebf66dde61cb372189b48bf58"
+    }
   ],
   "archive": {
     "path": "local/evidence-r40/node-raw-transform-r40-final.zip",
@@ -134,5 +266,149 @@
     "The source interfaces add an explicit profile service in EDX; they are not drop-in binary replacements for the original register ABI.",
     "Unsupported current slot3C targets remain an explicit source boundary after retained prior writes.",
     "Renderer parent B2BB90, sphere x87 interior, original exception behavior, gameplay and visual parity remain unvalidated."
-  ]
+  ],
+  "primary_integration": {
+    "source_merge": "2ad9dd3fd",
+    "source_and_original_assembly_reviewed": true,
+    "verbatim_body_lines_verified": 60,
+    "native_spans_independently_verified": 4,
+    "worker_artifacts_verified": 33,
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "fixture": "Worker frozen relocated-original fixture verified; no additional primary fixture run.",
+    "worker_archive": "local/evidence-r40/node-raw-transform-r40-final.zip"
+  },
+  "primary_archive": {
+    "path": "local/evidence-r40/node-raw-transform-main-r40.zip",
+    "sha256": "639bd3258e37a4f0bd5ea77a5c31f13b14e735655dc6d6c722e0a48b98be7447",
+    "files": [
+      {
+        "path": "include/bsp/native_node_raw_transform.hpp",
+        "bytes": 407,
+        "sha256": "53f7d50855779206ce1faff86469948e4ff4fa9c0d376d68fbba1b4a48e3884d"
+      },
+      {
+        "path": "src/native_node_raw_transform.cpp",
+        "bytes": 2873,
+        "sha256": "31a50a5e6e6efd27bb2d32851cc6836b6aabb1a924eefa384363e561deb4e257"
+      },
+      {
+        "path": "include/bsp/native_traceline_render.hpp",
+        "bytes": 7210,
+        "sha256": "eec43d439a9ddcf4d5aa96954434c469b607c4ac198f54b6cb55339a0365caf4"
+      },
+      {
+        "path": "include/bsp/native_camera_matrix_copy.hpp",
+        "bytes": 606,
+        "sha256": "70e741350edb66be14fc9d1b981181fe5ecf8c536f33eab47221469d8d3f1a7a"
+      },
+      {
+        "path": "src/native_camera_matrix_copy.cpp",
+        "bytes": 1626,
+        "sha256": "31840777adef31ac0717e7bc4cb148ecd9aa45be8e5d2d52eb79f3c8a00a708d"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 149443,
+        "sha256": "5144c85e6426a48b95db95244abc2f7a7c33e0ab6eee0c2f09f9fb6de6c3f996"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 229433,
+        "sha256": "a380e7cb16e78816c051f1cea239548fea8dafa56ec6d90e4e4f1216d1a00673"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63444656,
+        "sha256": "0a5d50078ad84d43bee4eb0af62389c19438cce88c7a6380f0312408981c6864"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_node_raw_transform.obj",
+        "bytes": 12317,
+        "sha256": "ea29d3fe5349b27c18716200aaf4db7d2c0c030acfd76b0ef8741f9f12c3ad5c"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_camera_matrix_copy.obj",
+        "bytes": 820,
+        "sha256": "220997fbced961d2fc0aaeccd5c30a704a2634375d2a7ced08ebda25f915132d"
+      },
+      {
+        "path": "local/r40_node_raw_transform_integration.log",
+        "bytes": 837,
+        "sha256": "0ce13a5f70141a29d5e458315550508be7fdeccc3cbe58da40f9f71697836d39"
+      },
+      {
+        "path": "local/r40_node_raw_transform_proto.txt",
+        "bytes": 2339,
+        "sha256": "47af8d5f5010567b387413e3d72cc851271310b6a6aebb3790636d1365741f51"
+      },
+      {
+        "path": "local/r40_node_raw_transform_annotations.log",
+        "bytes": 303,
+        "sha256": "c4a662c1e8b216b62ca2b860d838075cb27b8b9ed8ea400ce569a39b70435ba1"
+      },
+      {
+        "path": "local/r40_node_raw_transform_exports.log",
+        "bytes": 308,
+        "sha256": "91c9a290deb646ae11e802c260519679a6af09297233fba5411f6ea2e2b62c1b"
+      },
+      {
+        "path": "local/r40_node_raw_transform_native_spans.json",
+        "bytes": 1512,
+        "sha256": "244d2ac4448a8e09c652f860819208655683cbd09399958b6f18b0278d73f1b3"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T120921Z.json",
+        "bytes": 12175,
+        "sha256": "25190fb39eaa75f2b039ef4ec1633e25f0d30c6e9329759b2640051fc23de001"
+      }
+    ]
+  },
+  "primary_annotations": {
+    "status": "Three names retained and raw-source rows added alongside existing typed/group rows. Prior comments preserved, project saved, exports refreshed.",
+    "prior_annotations": [
+      {
+        "address": "00b6da30",
+        "before": {
+          "address": "00b6da30",
+          "function_name": "BSP_Transform_InvalidateValidDescendants",
+          "comment": "[BSP reconstruction 00b6da30]\nTyped local matrix edit slice in src/camera_transform.cpp. 00b6db10 ECX/stacksource/RET4: x87copy local, if flags5C&A clear flags138 bits30, flags5C=0, attached+A0 virtual3C notification, then invalidate descendants. 00b6da30 ECX/RET: only world-valid children clear flags5C&A and138&30 then recurse; no camera2F0 writes/notifications. Camera wrapper00b71430 ECX/stacksource/RET4 clears2F0 withFFFFFE4B, callsbase then00b70660. Direction refresh00b70660 ECX/RET ensuresworld and x87copies row2 into+1AC then translation+direction into+1A0; operand/spill order retained. New graph/callback interface preserves order; existing localedit fixture/draw passes. Full attached service/ancestor camera cache behavior unported. Body hashes reports/camera_local_edit.json.\n\n[BSP reconstruction 00b6da30] update\nTyped local matrix edit slice in src/camera_transform.cpp. 00b6db10 ECX/stacksource/RET4: x87copy local, if flags5C&A clear flags138 bits30, flags5C=0, attached+A0 virtual3C notification, then invalidate descendants. 00b6da30 ECX/RET: only world-valid children clear flags5C&A and138&30 then recurse; no camera2F0 writes/notifications. Camera wrapper00b71430 ECX/stacksource/RET4 clears2F0 withFFFFFE4B, callsbase then00b70660. Direction refresh00b70660 ECX/RET ensuresworld and x87copies row2 into+1AC then translation+direction into+1A0; operand/spill order retained. New graph/callback interface preserves order; existing localedit fixture/draw passes. Full attached service/ancestor camera cache behavior unported. Body hashes reports/camera_local_edit.json. | Hypothesis, not a recovered symbol. Complete50-byte raw descendant walk. World-valid bit2 gates entire subtree; clear auxiliary30 and flags0A with original capture order, recurse actual child then reload sibling. Original/source descendant skip and recursion cases passed. Integrated code a6b2884f passed strict MSVC Win32,2 existing CTests,8 native seeds,50 numeric rows and21 live/PE spans totaling2848 bytes. Literal38-vertex interior matches original through four x87 rounding modes. Physical runtime modules and actual CMake objects/libraries are retained. New source interfaces do not establish original ABI/private aliases, FH3/SEH, active drawing or game behavior. docs/NATIVE_RENDERER_DEBUG_RECORDS24.md; reports/native_renderer_debug_records24.json."
+        },
+        "after": {
+          "address": "00b6da30",
+          "name": "BSP_Transform_InvalidateValidDescendants",
+          "evidence": "Typed local matrix edit slice in src/camera_transform.cpp. 00b6db10 ECX/stacksource/RET4: x87copy local, if flags5C&A clear flags138 bits30, flags5C=0, attached+A0 virtual3C notification, then invalidate descendants. 00b6da30 ECX/RET: only world-valid children clear flags5C&A and138&30 then recurse; no camera2F0 writes/notifications. Camera wrapper00b71430 ECX/stacksource/RET4 clears2F0 withFFFFFE4B, callsbase then00b70660. Direction refresh00b70660 ECX/RET ensuresworld and x87copies row2 into+1AC then translation+direction into+1A0; operand/spill order retained. New graph/callback interface preserves order; existing localedit fixture/draw passes. Full attached service/ancestor camera cache behavior unported. Body hashes reports/camera_local_edit.json. | R40 raw node interfaces adopted verbatim from historical a6b2884f2 leaves lines5..64; parent complete source and original assembly reviewed. Preserve genuine 4134F0 matrix copy, flags5C/138, current34/3C child reloads and invalid child subtree skip, capturedA0 before local writes, finite current virtual3C B6DBC0 tail loop. Unknown target fails after retaining prior native writes. All33 frozen artifacts and manifest hash independently verified, 4PE spans252B incl104B matrix provider verified. Worker and combined strict /MD Win32 builds and3CTests pass. Worker relocated-original fixture compares64matrixbytes and7node flag results, subtree skip, two bounds tail dispatches and unsupported-profile retention. Source adds EDX profile service; no original ABI/FH3 or sphere/B2BB90/gameplay claim. Existing typed/group source rows retained. reports/native_node_raw_transform_main_r40.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b6db10",
+        "before": {
+          "address": "00b6db10",
+          "function_name": "BSP_Transform_SetLocalMatrix",
+          "comment": "[BSP reconstruction 00b6db10]\nTyped local matrix edit slice in src/camera_transform.cpp. 00b6db10 ECX/stacksource/RET4: x87copy local, if flags5C&A clear flags138 bits30, flags5C=0, attached+A0 virtual3C notification, then invalidate descendants. 00b6da30 ECX/RET: only world-valid children clear flags5C&A and138&30 then recurse; no camera2F0 writes/notifications. Camera wrapper00b71430 ECX/stacksource/RET4 clears2F0 withFFFFFE4B, callsbase then00b70660. Direction refresh00b70660 ECX/RET ensuresworld and x87copies row2 into+1AC then translation+direction into+1A0; operand/spill order retained. New graph/callback interface preserves order; existing localedit fixture/draw passes. Full attached service/ancestor camera cache behavior unported. Body hashes reports/camera_local_edit.json.\n\n[BSP reconstruction 00b6db10] update\nTyped local matrix edit slice in src/camera_transform.cpp. 00b6db10 ECX/stacksource/RET4: x87copy local, if flags5C&A clear flags138 bits30, flags5C=0, attached+A0 virtual3C notification, then invalidate descendants. 00b6da30 ECX/RET: only world-valid children clear flags5C&A and138&30 then recurse; no camera2F0 writes/notifications. Camera wrapper00b71430 ECX/stacksource/RET4 clears2F0 withFFFFFE4B, callsbase then00b70660. Direction refresh00b70660 ECX/RET ensuresworld and x87copies row2 into+1AC then translation+direction into+1A0; operand/spill order retained. New graph/callback interface preserves order; existing localedit fixture/draw passes. Full attached service/ancestor camera cache behavior unported. Body hashes reports/camera_local_edit.json. | Hypothesis, not a recovered symbol. Complete73-byte raw local matrix body: actual ordered x87 copy4134F0, captured attachment before auxiliary/flag clears, current original profile virtual3C dispatch and reloaded first-child. CurrentB6DBC0 closure supported; unknown target fails after prior writes. Original/source raw matrix and notification closure passed. Integrated code a6b2884f passed strict MSVC Win32,2 existing CTests,8 native seeds,50 numeric rows and21 live/PE spans totaling2848 bytes. Literal38-vertex interior matches original through four x87 rounding modes. Physical runtime modules and actual CMake objects/libraries are retained. New source interfaces do not establish original ABI/private aliases, FH3/SEH, active drawing or game behavior. docs/NATIVE_RENDERER_DEBUG_RECORDS24.md; reports/native_renderer_debug_records24.json."
+        },
+        "after": {
+          "address": "00b6db10",
+          "name": "BSP_Transform_SetLocalMatrix",
+          "evidence": "Typed local matrix edit slice in src/camera_transform.cpp. 00b6db10 ECX/stacksource/RET4: x87copy local, if flags5C&A clear flags138 bits30, flags5C=0, attached+A0 virtual3C notification, then invalidate descendants. 00b6da30 ECX/RET: only world-valid children clear flags5C&A and138&30 then recurse; no camera2F0 writes/notifications. Camera wrapper00b71430 ECX/stacksource/RET4 clears2F0 withFFFFFE4B, callsbase then00b70660. Direction refresh00b70660 ECX/RET ensuresworld and x87copies row2 into+1AC then translation+direction into+1A0; operand/spill order retained. New graph/callback interface preserves order; existing localedit fixture/draw passes. Full attached service/ancestor camera cache behavior unported. Body hashes reports/camera_local_edit.json. | R40 raw node interfaces adopted verbatim from historical a6b2884f2 leaves lines5..64; parent complete source and original assembly reviewed. Preserve genuine 4134F0 matrix copy, flags5C/138, current34/3C child reloads and invalid child subtree skip, capturedA0 before local writes, finite current virtual3C B6DBC0 tail loop. Unknown target fails after retaining prior native writes. All33 frozen artifacts and manifest hash independently verified, 4PE spans252B incl104B matrix provider verified. Worker and combined strict /MD Win32 builds and3CTests pass. Worker relocated-original fixture compares64matrixbytes and7node flag results, subtree skip, two bounds tail dispatches and unsupported-profile retention. Source adds EDX profile service; no original ABI/FH3 or sphere/B2BB90/gameplay claim. Existing typed/group source rows retained. reports/native_node_raw_transform_main_r40.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b6dbc0",
+        "before": {
+          "address": "00b6dbc0",
+          "function_name": "BSP_Transform_InvalidateBoundsAndNotifyGroup",
+          "comment": "[BSP reconstruction 00b6dbc0]\nHypothesis, not recovered symbol. Installed group virtual3C clears138 maskFFFFFFC3 and follows current enclosing group. Bounds terminology is provisional. Original ECX receiver; RET or current+A0 virtual3C tail dispatch; [00b6dbc0,00b6dbd9). Same native backing/new C++ ABI. Win322 CTests and focused original-prefix/host fixture passed; native full EH and game behavior unvalidated. docs/NATIVE_GROUP_OWNER.md; reports/native_group_owner.json.\n\n[BSP reconstruction 00b6dbc0] update\nHypothesis, not recovered symbol. Installed group virtual3C clears138 maskFFFFFFC3 and follows current enclosing group. Bounds terminology is provisional. Original ECX receiver; RET or current+A0 virtual3C tail dispatch; [00b6dbc0,00b6dbd9). Same native backing/new C++ ABI. Win322 CTests and focused original-prefix/host fixture passed; native full EH and game behavior unvalidated. docs/NATIVE_GROUP_OWNER.md; reports/native_group_owner.json. | Hypothesis, not a recovered symbol. Complete25-byte bounds notification and supported current-profile tail loop: clear auxiliary3C, reload enclosingA0, dispatch current virtual3C. RepeatedB6DBC0 targets supported. Original/source two-tail case and source unsupported-target retained effects passed. Integrated code a6b2884f passed strict MSVC Win32,2 existing CTests,8 native seeds,50 numeric rows and21 live/PE spans totaling2848 bytes. Literal38-vertex interior matches original through four x87 rounding modes. Physical runtime modules and actual CMake objects/libraries are retained. New source interfaces do not establish original ABI/private aliases, FH3/SEH, active drawing or game behavior. docs/NATIVE_RENDERER_DEBUG_RECORDS24.md; reports/native_renderer_debug_records24.json."
+        },
+        "after": {
+          "address": "00b6dbc0",
+          "name": "BSP_Transform_InvalidateBoundsAndNotifyGroup",
+          "evidence": "Hypothesis, not recovered symbol. Installed group virtual3C clears138 maskFFFFFFC3 and follows current enclosing group. Bounds terminology is provisional. Original ECX receiver; RET or current+A0 virtual3C tail dispatch; [00b6dbc0,00b6dbd9). Same native backing/new C++ ABI. Win322 CTests and focused original-prefix/host fixture passed; native full EH and game behavior unvalidated. docs/NATIVE_GROUP_OWNER.md; reports/native_group_owner.json. | R40 raw node interfaces adopted verbatim from historical a6b2884f2 leaves lines5..64; parent complete source and original assembly reviewed. Preserve genuine 4134F0 matrix copy, flags5C/138, current34/3C child reloads and invalid child subtree skip, capturedA0 before local writes, finite current virtual3C B6DBC0 tail loop. Unknown target fails after retaining prior native writes. All33 frozen artifacts and manifest hash independently verified, 4PE spans252B incl104B matrix provider verified. Worker and combined strict /MD Win32 builds and3CTests pass. Worker relocated-original fixture compares64matrixbytes and7node flag results, subtree skip, two bounds tail dispatches and unsupported-profile retention. Source adds EDX profile service; no original ABI/FH3 or sphere/B2BB90/gameplay claim. Existing typed/group source rows retained. reports/native_node_raw_transform_main_r40.json."
+        },
+        "status": "applied"
+      }
+    ]
+  }
 }
