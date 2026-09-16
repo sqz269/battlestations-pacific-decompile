@@ -1,4 +1,5 @@
 #include "bsp/native_pooled_text_suffix.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 
 #include <cstring>
 
@@ -72,6 +73,65 @@ void* get_native_pooled_text_suffix_00af44c0(const void* line,
         }
     }
     return copy_construct_native_pooled_text_00aee2e0(output, &temporary, storage);
+}
+
+namespace {
+template<class T> volatile T& raw_field(const void* p) noexcept {
+    return *reinterpret_cast<volatile T*>(const_cast<void*>(p));
+}
+struct RawSuffixUnwind {
+    void* header;
+    NativeStringRawPoolContext& strings;
+    bool active = true;
+    ~RawSuffixUnwind() noexcept {
+        if (active) destroy_native_pooled_text_00aee2a0(header, strings);
+    }
+};
+}
+
+std::uint32_t assign_native_pooled_text_suffix_00af4450(void* header,
+    const char* text, NativeStringRawPoolContext& strings) {
+    if (!text) return 0;
+    std::uint32_t count = 0;
+    while (text[count] == '\t' || search_byte(text[count])) ++count;
+    if (!count) return 0;
+    auto* const old = raw_field<char*>(header);
+    if (old) release_native_pooled_text_bytes_00aee1e0(old, strings);
+    auto* const pool = native_string_pool_get_or_create_00419cc0(
+        strings.actual_published_01090aa8, strings.actual_manager_publication_01090aa0);
+    auto* const block = static_cast<char*>(allocate_native_string_pool_00bd1120(pool, count + 1u));
+    raw_field<char*>(header) = block;
+#pragma warning(suppress: 4996)
+    std::strncpy(block, text, count);
+    raw_field<char*>(header)[count] = '\0';
+    return count;
+}
+
+void* get_native_pooled_text_suffix_00af44c0(const void* line, void* output,
+    std::int32_t index, NativeStringRawPoolContext& strings) {
+    NativePooledTextStorage temporary{nullptr};
+    const auto* const text = raw_field<const char*>(line);
+    if (!text) return copy_construct_native_pooled_text_00aee2e0(output, &temporary, strings);
+    const auto length = static_cast<std::int32_t>(std::strlen(text));
+    std::int32_t cursor = 0;
+    std::uint32_t token = search_byte(text[0]) ? 0u : 0xffffffffu;
+    while (cursor < length && search_byte(text[cursor])) {
+        if (token == static_cast<std::uint32_t>(index)) {
+            RawSuffixUnwind temporary_unwind{&temporary, strings}; // Native state1.
+            assign_native_pooled_text_suffix_00af4450(&temporary, text + cursor, strings);
+            copy_construct_native_pooled_text_00aee2e0(output, &temporary, strings);
+            RawSuffixUnwind output_unwind{output, strings}; // Flag1, then state0.
+            temporary_unwind.active = false;
+            destroy_native_pooled_text_00aee2a0(&temporary, strings);
+            output_unwind.active = false;
+            return output;
+        }
+        if (text[cursor] == ' ') {
+            ++token;
+            while (cursor < length && text[cursor] == ' ') ++cursor;
+        } else ++cursor;
+    }
+    return copy_construct_native_pooled_text_00aee2e0(output, &temporary, strings);
 }
 
 } // namespace bsp

@@ -66,4 +66,26 @@ void rewind_native_text_buffer_00af55f0(void* actual_buffer) noexcept;
 bool read_native_text_buffer_line_00af5740(void* actual_buffer,
     void* actual_output, NativeStringStorage& storage, char* scratch);
 
+// Genuine raw-pool overloads. Every allocation/return calls current00419CC0
+// through the borrowed01090AA8/01090AA0 cells, including large blocks and
+// disabled small returns. Getter failure propagates during normal execution;
+// no noexcept NativeStringStorage adapter is introduced. True native unwind
+// actions use noexcept guards, so a second exception terminates.
+//
+// Keep the same actual4h headers, unsafe source/header aliases and shared
+// F8C2C8 scratch as the native caller. No private scratch, bounds check or
+// reentrancy policy is supplied. Token EH also destroys the completed output
+// if its subsequent normal temporary release throws. Existing host overloads
+// above retain their previous storage/exception contract.
+void release_native_pooled_text_bytes_00aee1e0(char*, NativeStringRawPoolContext&);
+void destroy_native_pooled_text_00aee2a0(void*, NativeStringRawPoolContext&);
+void* copy_construct_native_pooled_text_00aee2e0(void*, const void*, NativeStringRawPoolContext&);
+void* construct_native_pooled_text_00af5660(void*, const char*, NativeStringRawPoolContext&);
+void* assign_native_pooled_text_00af56c0(void*, const void*, NativeStringRawPoolContext&);
+std::uint32_t assign_native_pooled_text_prefix_00aee340(void*, const char*, NativeStringRawPoolContext&);
+void* get_native_pooled_text_token_00aee3c0(const void*, void*, std::int32_t,
+    NativeStringRawPoolContext&);
+bool read_native_text_buffer_line_00af5740(void*, void*, NativeStringRawPoolContext&,
+    char* actual_shared_scratch_00f8c2c8);
+
 } // namespace bsp

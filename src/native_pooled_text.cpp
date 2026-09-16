@@ -1,4 +1,5 @@
 #include "bsp/native_pooled_text.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 
 #include <cstring>
 
@@ -196,6 +197,163 @@ bool read_native_text_buffer_line_00af5740(void* buffer, void* output,
         throw;
     }
     destroy_native_pooled_text_00aee2a0(&temporary, storage);
+    return true;
+}
+
+namespace {
+using RawWord = std::uint32_t;
+template<class T> volatile T& raw_field(const void* object, RawWord offset = 0) noexcept {
+    return *reinterpret_cast<volatile T*>(reinterpret_cast<RawWord>(object) + offset);
+}
+char* raw_allocate(RawWord bytes, NativeStringRawPoolContext& strings) {
+    auto* const pool = native_string_pool_get_or_create_00419cc0(
+        strings.actual_published_01090aa8, strings.actual_manager_publication_01090aa0);
+    return static_cast<char*>(allocate_native_string_pool_00bd1120(pool, bytes));
+}
+// CBA630/CBA638 and CBACF0 are unwind actions, not catch cleanup. Normal
+// destruction is performed explicitly only after its native state is disabled.
+struct RawTextUnwind {
+    void* header;
+    NativeStringRawPoolContext& strings;
+    bool active = true;
+    ~RawTextUnwind() noexcept {
+        if (active) destroy_native_pooled_text_00aee2a0(header, strings);
+    }
+};
+}
+
+void release_native_pooled_text_bytes_00aee1e0(char* text,
+    NativeStringRawPoolContext& strings) {
+    const auto bytes = size_with_nul(text);
+    auto* const pool = native_string_pool_get_or_create_00419cc0(
+        strings.actual_published_01090aa8, strings.actual_manager_publication_01090aa0);
+    return_native_string_pool_00bd1510(pool, text, bytes,
+        strings.actual_small_returns_disabled_01090aa4);
+}
+
+void destroy_native_pooled_text_00aee2a0(void* header, NativeStringRawPoolContext& strings) {
+    auto* const text = raw_field<char*>(header);
+    if (text) release_native_pooled_text_bytes_00aee1e0(text, strings);
+    raw_field<char*>(header) = nullptr;
+}
+
+void* copy_construct_native_pooled_text_00aee2e0(void* destination,
+    const void* source, NativeStringRawPoolContext& strings) {
+    const auto* const initial = raw_field<const char*>(source);
+    if (!initial) raw_field<char*>(destination) = nullptr;
+    else {
+        auto* const block = raw_allocate(size_with_nul(initial), strings);
+        raw_field<char*>(destination) = block;
+        copy_through_nul(block, raw_field<const char*>(source));
+    }
+    return destination;
+}
+
+void* construct_native_pooled_text_00af5660(void* destination,
+    const char* text, NativeStringRawPoolContext& strings) {
+    if (!text) raw_field<char*>(destination) = nullptr;
+    else {
+        auto* const block = raw_allocate(size_with_nul(text), strings);
+        raw_field<char*>(destination) = block;
+        copy_through_nul(block, text);
+    }
+    return destination;
+}
+
+void* assign_native_pooled_text_00af56c0(void* destination,
+    const void* source, NativeStringRawPoolContext& strings) {
+    auto* const old = raw_field<char*>(destination);
+    if (old) release_native_pooled_text_bytes_00aee1e0(old, strings);
+    const auto* const text = raw_field<const char*>(source);
+    if (text) {
+        auto* const block = raw_allocate(size_with_nul(text), strings);
+        raw_field<char*>(destination) = block;
+        copy_through_nul(block, raw_field<const char*>(source));
+    }
+    // A null source retains the destination's possibly returned pointer.
+    return destination;
+}
+
+std::uint32_t assign_native_pooled_text_prefix_00aee340(void* header,
+    const char* text, NativeStringRawPoolContext& strings) {
+    if (!text) return 0;
+    RawWord count = 0;
+    while (static_cast<std::int8_t>(text[count]) > 0x20 &&
+        static_cast<std::int8_t>(text[count]) < 0x7f) ++count;
+    if (!count) return 0;
+    auto* const old = raw_field<char*>(header);
+    if (old) release_native_pooled_text_bytes_00aee1e0(old, strings);
+    auto* const block = raw_allocate(count + 1u, strings);
+    raw_field<char*>(header) = block;
+    // BF9280 is a CRT strncpy dependency, including its padding. Byte-range
+    // overlap remains outside that provider contract; header reloads are kept.
+#pragma warning(suppress: 4996)
+    std::strncpy(block, text, count);
+    raw_field<char*>(header)[count] = '\0';
+    return count;
+}
+
+void* get_native_pooled_text_token_00aee3c0(const void* line, void* output,
+    std::int32_t index, NativeStringRawPoolContext& strings) {
+    NativePooledTextStorage temporary{nullptr};
+    const auto* const text = raw_field<const char*>(line);
+    if (!text) return copy_construct_native_pooled_text_00aee2e0(output, &temporary, strings);
+    const auto length = static_cast<std::int32_t>(std::strlen(text));
+    std::int32_t cursor = 0;
+    RawWord token = token_byte(text[0]) ? 0u : 0xffffffffu;
+    while (cursor < length && token_byte(text[cursor])) {
+        if (token == static_cast<RawWord>(index)) {
+            RawTextUnwind temporary_unwind{&temporary, strings}; // Native state1.
+            assign_native_pooled_text_prefix_00aee340(&temporary, text + cursor, strings);
+            copy_construct_native_pooled_text_00aee2e0(output, &temporary, strings);
+            RawTextUnwind output_unwind{output, strings}; // Flag1, then state0.
+            temporary_unwind.active = false;
+            destroy_native_pooled_text_00aee2a0(&temporary, strings);
+            output_unwind.active = false;
+            return output;
+        }
+        if (text[cursor] == ' ') {
+            ++token;
+            while (cursor < length && text[cursor] == ' ') ++cursor;
+        } else ++cursor;
+    }
+    return copy_construct_native_pooled_text_00aee2e0(output, &temporary, strings);
+}
+
+bool read_native_text_buffer_line_00af5740(void* buffer, void* output,
+    NativeStringRawPoolContext& strings, char* scratch) {
+    const auto* const initial_data = raw_field<const char*>(buffer, 0x14);
+    if (!initial_data) return false;
+    auto start = raw_field<RawWord>(buffer, 4);
+    if (static_cast<std::int32_t>(start) >= raw_field<std::int32_t>(buffer, 8)) return false;
+    do {
+        const auto cursor = raw_field<RawWord>(buffer, 4);
+        if (initial_data[cursor] == '\n') break;
+        raw_field<RawWord>(buffer, 4) = cursor + 1u;
+    } while (raw_field<std::int32_t>(buffer, 4) < raw_field<std::int32_t>(buffer, 8));
+    const auto end = raw_field<RawWord>(buffer, 4);
+    while (static_cast<std::int32_t>(start) < static_cast<std::int32_t>(end) &&
+        static_cast<std::int8_t>(initial_data[start]) <= 0x20) ++start;
+    RawWord copied = 0;
+    if (start < end) {
+        do {
+            const char byte = raw_field<const char*>(buffer, 0x14)[start];
+            if (static_cast<std::int8_t>(byte) >= 0x20) {
+                scratch[copied] = byte;
+                ++copied;
+            }
+            ++start;
+        } while (start < raw_field<RawWord>(buffer, 4));
+    }
+    scratch[copied] = '\0';
+    raw_field<RawWord>(buffer, 4) = raw_field<RawWord>(buffer, 4) + 1u;
+    NativePooledTextStorage temporary;
+    construct_native_pooled_text_00af5660(&temporary, scratch, strings);
+    RawTextUnwind temporary_unwind{&temporary, strings}; // State0 after constructor.
+    assign_native_pooled_text_00af56c0(output, &temporary, strings);
+    char* const text = raw_field<char*>(&temporary); // Capture BEFORE state=-1.
+    temporary_unwind.active = false;
+    if (text) release_native_pooled_text_bytes_00aee1e0(text, strings);
     return true;
 }
 

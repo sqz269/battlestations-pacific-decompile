@@ -22,4 +22,13 @@ std::uint32_t assign_native_pooled_text_suffix_00af4450(void* actual_header,
 void* get_native_pooled_text_suffix_00af44c0(const void* actual_line,
     void* actual_output, std::int32_t index, NativeStringStorage& storage);
 
+// Same actual-storage algorithm through the current raw singleton/pool cells.
+// Normal getter exceptions propagate. AF44C0 has true unwind actions for its
+// temporary and, after copy completion, the output if normal temp release
+// throws; a second unwind exception terminates. See native_pooled_text.hpp.
+std::uint32_t assign_native_pooled_text_suffix_00af4450(void* actual_header,
+    const char* text, NativeStringRawPoolContext&);
+void* get_native_pooled_text_suffix_00af44c0(const void* actual_line,
+    void* actual_output, std::int32_t index, NativeStringRawPoolContext&);
+
 } // namespace bsp

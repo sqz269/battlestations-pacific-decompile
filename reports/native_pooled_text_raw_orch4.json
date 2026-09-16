@@ -1,0 +1,1589 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "packet": "orch4_raw_text_k11",
+  "sources": [
+    "src/native_pooled_text.cpp",
+    "src/native_pooled_text_suffix.cpp"
+  ],
+  "headers": [
+    "include/bsp/native_pooled_text.hpp",
+    "include/bsp/native_pooled_text_suffix.hpp"
+  ],
+  "functions": [
+    {
+      "address": "00aee1e0",
+      "end_exclusive": "00aee212",
+      "bytes": 50,
+      "sha256": "bd63b1bd715dd384ce48e07319578fd02fa01b5b65435b4493a526abf83f8f8e",
+      "live_disk_match": true,
+      "name": "release_native_pooled_text_bytes_00aee1e0",
+      "existing_name": "BSP_NativePooledText_ReleaseBytes",
+      "source": "src/native_pooled_text.cpp",
+      "coverage": "complete_raw_context_overload",
+      "original_abi": "stack nonnull C-string; RET4",
+      "old_documentation": {
+        "hash": "c220fdcdf24539b4285ea35db731af3d182127d493d4f2d71480f6eda568cb16",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00aee1e0",
+        "function_name": "BSP_NativePooledText_ReleaseBytes",
+        "return_type": "void",
+        "calling_convention": "__stdcall",
+        "plate_comment": "[BSP reconstruction 00aee1e0]\nAO complete pooled-text reconstruction: descriptive name is a hypothesis, not a recovered symbol. Existing Atlas/TextBuffer names retained. Actual4h pooled header uses canonical sized string storage; actual buffer cursor4/extent8/data14 and sharedF8C2C8 scratch. Complete live/installed bytes, strict Win32 compile and bounded original-byte42-observation/67-pool-event differential passed. Preserve source reloads, unsafe self/null assignment, leading-space token behavior and exact allocation order. See docs/NATIVE_POOLED_TEXT.md and reports/native_pooled_text.json. New C++ ABI; original allocation failure/FH3/gameplay unvalidated.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "text",
+            "type": "char *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "pcVar2",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 16,
+            "name": "LAB_00aee1f0"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_annotation": {
+        "address": "00aee1e0",
+        "function_name": "BSP_NativePooledText_ReleaseBytes",
+        "comment": "[BSP reconstruction 00aee1e0]\nAO complete pooled-text reconstruction: descriptive name is a hypothesis, not a recovered symbol. Existing Atlas/TextBuffer names retained. Actual4h pooled header uses canonical sized string storage; actual buffer cursor4/extent8/data14 and sharedF8C2C8 scratch. Complete live/installed bytes, strict Win32 compile and bounded original-byte42-observation/67-pool-event differential passed. Preserve source reloads, unsafe self/null assignment, leading-space token behavior and exact allocation order. See docs/NATIVE_POOLED_TEXT.md and reports/native_pooled_text.json. New C++ ABI; original allocation failure/FH3/gameplay unvalidated."
+      },
+      "evidence": "K11 genuine NativeStringRawPoolContext overload, existing host overload unchanged. Full body/EH PE/live bytes and original ABI audited. Current419CC0 raw getter before every BD1120 allocation/BD1510 nonnull return, including large/disabled paths; normal getter exceptions propagate. Actual4h headers, unsafe alias/publication reads, sharedF8C2C8 scratch and current field reloads preserved. AEE3C0/AF44C0 state1 temp and state0 completed-output true unwind guards; AF5740 state0 temp only after construction, normal return after state=-1. No noexcept host adapter, generic callback or new bounds policy. Source CRT strncpy byte-range overlap and native failure/FH3/ABI/SEH/gameplay unvalidated. See docs/NATIVE_POOLED_TEXT_RAW_ORCH4.md and reports/native_pooled_text_raw_orch4.json. Strict Win32+2CTests and genuine-pool ten-body original/source fixture pass, including current-cursor/scratch alias;39 function-owned calls plus3 raw EH tails verified.",
+      "status": "complete_raw_context_overload_build_and_original_pool_fixture_checked"
+    },
+    {
+      "address": "00aee2a0",
+      "end_exclusive": "00aee2d7",
+      "bytes": 55,
+      "sha256": "2ba588048d71bfd3a508a9ce493a1cca7df1f9d19c54ad38c93b6a33676b5ad2",
+      "live_disk_match": true,
+      "name": "destroy_native_pooled_text_00aee2a0",
+      "existing_name": "BSP_NativePooledText_Clear",
+      "source": "src/native_pooled_text.cpp",
+      "coverage": "complete_raw_context_overload",
+      "original_abi": "ECX actual4h header; RET",
+      "old_documentation": {
+        "hash": "fdcb68751ce499b65a4ba33cb7b796a8332c18d7386611a955c7d5d22323ad4e",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00aee2a0",
+        "function_name": "BSP_NativePooledText_Clear",
+        "return_type": "void",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00aee2a0]\nAO complete pooled-text reconstruction: descriptive name is a hypothesis, not a recovered symbol. Existing Atlas/TextBuffer names retained. Actual4h pooled header uses canonical sized string storage; actual buffer cursor4/extent8/data14 and sharedF8C2C8 scratch. Complete live/installed bytes, strict Win32 compile and bounded original-byte42-observation/67-pool-event differential passed. Preserve source reloads, unsafe self/null assignment, leading-space token behavior and exact allocation order. See docs/NATIVE_POOLED_TEXT.md and reports/native_pooled_text.json. New C++ ABI; original allocation failure/FH3/gameplay unvalidated.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          },
+          {
+            "name": "pcVar2",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pcVar3",
+            "type": "char *",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 16,
+            "name": "LAB_00aee2b0"
+          },
+          {
+            "relative_offset": 47,
+            "name": "LAB_00aee2cf"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_annotation": {
+        "address": "00aee2a0",
+        "function_name": "BSP_NativePooledText_Clear",
+        "comment": "[BSP reconstruction 00aee2a0]\nAO complete pooled-text reconstruction: descriptive name is a hypothesis, not a recovered symbol. Existing Atlas/TextBuffer names retained. Actual4h pooled header uses canonical sized string storage; actual buffer cursor4/extent8/data14 and sharedF8C2C8 scratch. Complete live/installed bytes, strict Win32 compile and bounded original-byte42-observation/67-pool-event differential passed. Preserve source reloads, unsafe self/null assignment, leading-space token behavior and exact allocation order. See docs/NATIVE_POOLED_TEXT.md and reports/native_pooled_text.json. New C++ ABI; original allocation failure/FH3/gameplay unvalidated."
+      },
+      "evidence": "K11 genuine NativeStringRawPoolContext overload, existing host overload unchanged. Full body/EH PE/live bytes and original ABI audited. Current419CC0 raw getter before every BD1120 allocation/BD1510 nonnull return, including large/disabled paths; normal getter exceptions propagate. Actual4h headers, unsafe alias/publication reads, sharedF8C2C8 scratch and current field reloads preserved. AEE3C0/AF44C0 state1 temp and state0 completed-output true unwind guards; AF5740 state0 temp only after construction, normal return after state=-1. No noexcept host adapter, generic callback or new bounds policy. Source CRT strncpy byte-range overlap and native failure/FH3/ABI/SEH/gameplay unvalidated. See docs/NATIVE_POOLED_TEXT_RAW_ORCH4.md and reports/native_pooled_text_raw_orch4.json. Strict Win32+2CTests and genuine-pool ten-body original/source fixture pass, including current-cursor/scratch alias;39 function-owned calls plus3 raw EH tails verified.",
+      "status": "complete_raw_context_overload_build_and_original_pool_fixture_checked"
+    },
+    {
+      "address": "00aee2e0",
+      "end_exclusive": "00aee33a",
+      "bytes": 90,
+      "sha256": "cfcd9a84c05e42c433a4a1cddb94326bf6e44b6cfc44cb2b885a20872cd07dda",
+      "live_disk_match": true,
+      "name": "copy_construct_native_pooled_text_00aee2e0",
+      "existing_name": "BSP_NativePooledText_CopyConstruct",
+      "source": "src/native_pooled_text.cpp",
+      "coverage": "complete_raw_context_overload",
+      "original_abi": "ECX destination4h; stack source4h; RET4/EAX destination",
+      "old_documentation": {
+        "hash": "3b7b540f43c46dd46649f39ef6c09046dcc9eb0ea7ed0d2116e45126bf054165",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00aee2e0",
+        "function_name": "BSP_NativePooledText_CopyConstruct",
+        "return_type": "void *",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00aee2e0]\nAO complete pooled-text reconstruction: descriptive name is a hypothesis, not a recovered symbol. Existing Atlas/TextBuffer names retained. Actual4h pooled header uses canonical sized string storage; actual buffer cursor4/extent8/data14 and sharedF8C2C8 scratch. Complete live/installed bytes, strict Win32 compile and bounded original-byte42-observation/67-pool-event differential passed. Preserve source reloads, unsafe self/null assignment, leading-space token behavior and exact allocation order. See docs/NATIVE_POOLED_TEXT.md and reports/native_pooled_text.json. New C++ ABI; original allocation failure/FH3/gameplay unvalidated.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "source",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "pcVar3",
+            "type": "char *",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "pcVar2",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 17,
+            "name": "LAB_00aee2f1"
+          },
+          {
+            "relative_offset": 56,
+            "name": "LAB_00aee318"
+          },
+          {
+            "relative_offset": 77,
+            "name": "LAB_00aee32d"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_annotation": {
+        "address": "00aee2e0",
+        "function_name": "BSP_NativePooledText_CopyConstruct",
+        "comment": "[BSP reconstruction 00aee2e0]\nAO complete pooled-text reconstruction: descriptive name is a hypothesis, not a recovered symbol. Existing Atlas/TextBuffer names retained. Actual4h pooled header uses canonical sized string storage; actual buffer cursor4/extent8/data14 and sharedF8C2C8 scratch. Complete live/installed bytes, strict Win32 compile and bounded original-byte42-observation/67-pool-event differential passed. Preserve source reloads, unsafe self/null assignment, leading-space token behavior and exact allocation order. See docs/NATIVE_POOLED_TEXT.md and reports/native_pooled_text.json. New C++ ABI; original allocation failure/FH3/gameplay unvalidated."
+      },
+      "evidence": "K11 genuine NativeStringRawPoolContext overload, existing host overload unchanged. Full body/EH PE/live bytes and original ABI audited. Current419CC0 raw getter before every BD1120 allocation/BD1510 nonnull return, including large/disabled paths; normal getter exceptions propagate. Actual4h headers, unsafe alias/publication reads, sharedF8C2C8 scratch and current field reloads preserved. AEE3C0/AF44C0 state1 temp and state0 completed-output true unwind guards; AF5740 state0 temp only after construction, normal return after state=-1. No noexcept host adapter, generic callback or new bounds policy. Source CRT strncpy byte-range overlap and native failure/FH3/ABI/SEH/gameplay unvalidated. See docs/NATIVE_POOLED_TEXT_RAW_ORCH4.md and reports/native_pooled_text_raw_orch4.json. Strict Win32+2CTests and genuine-pool ten-body original/source fixture pass, including current-cursor/scratch alias;39 function-owned calls plus3 raw EH tails verified.",
+      "status": "complete_raw_context_overload_build_and_original_pool_fixture_checked"
+    },
+    {
+      "address": "00aee340",
+      "end_exclusive": "00aee3b4",
+      "bytes": 116,
+      "sha256": "d274f694ddf8d91f503dfa5ce90cb7fa386d5c25dc65d578397be8eefe5e108d",
+      "live_disk_match": true,
+      "name": "assign_native_pooled_text_prefix_00aee340",
+      "existing_name": "BSP_AtlasToken_AssignPrintablePrefix",
+      "source": "src/native_pooled_text.cpp",
+      "coverage": "complete_raw_context_overload",
+      "original_abi": "ECX header4h; stack C-string; RET4/EAX copied count",
+      "old_documentation": {
+        "hash": "974fcf8efc5b74a668ea73b90c72a6beeedd403eb36e8c11733d84e2972920a6",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00aee340",
+        "function_name": "BSP_AtlasToken_AssignPrintablePrefix",
+        "return_type": "uint",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00aee340]\nECX token object; stack char pointer; RET4; EAX copied byte count. Copies printable ASCII run21h..7Eh, stopping at space/control/high-bit or NUL. See docs/ATLAS_PARSER.md; not reconstructed.\n\n[BSP reconstruction 00aee340] update\nECX token object; stack char pointer; RET4; EAX copied byte count. Copies printable ASCII run21h..7Eh, stopping at space/control/high-bit or NUL. See docs/ATLAS_PARSER.md; supported parser semantics implemented in src/texture_atlas.cpp, explicit path/ownership adapters; seven installed item records checked.\n\n[BSP reconstruction 00aee340] update\nECX token object; stack char pointer; RET4; EAX copied byte count. Copies printable ASCII run21h..7Eh, stopping at space/control/high-bit or NUL. See docs/ATLAS_PARSER.md; supported parser semantics implemented in src/texture_atlas.cpp, explicit path/ownership adapters; seven installed item records checked. | AO complete pooled-text reconstruction: descriptive name is a hypothesis, not a recovered symbol. Existing Atlas/TextBuffer names retained. Actual4h pooled header uses canonical sized string storage; actual buffer cursor4/extent8/data14 and sharedF8C2C8 scratch. Complete live/installed bytes, strict Win32 compile and bounded original-byte42-observation/67-pool-event differential passed. Preserve source reloads, unsafe self/null assignment, leading-space token behavior and exact allocation order. See docs/NATIVE_POOLED_TEXT.md and reports/native_pooled_text.json. New C++ ABI; original allocation failure/FH3/gameplay unvalidated.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "text",
+            "type": "char *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "_Count",
+            "type": "size_t",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "_Dest",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(register, 0x0, 1)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 19,
+            "name": "LAB_00aee353"
+          },
+          {
+            "relative_offset": 32,
+            "name": "LAB_00aee360"
+          },
+          {
+            "relative_offset": 47,
+            "name": "LAB_00aee36f"
+          },
+          {
+            "relative_offset": 51,
+            "name": "LAB_00aee373"
+          },
+          {
+            "relative_offset": 59,
+            "name": "LAB_00aee37b"
+          },
+          {
+            "relative_offset": 71,
+            "name": "LAB_00aee387"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_annotation": {
+        "address": "00aee340",
+        "function_name": "BSP_AtlasToken_AssignPrintablePrefix",
+        "comment": "[BSP reconstruction 00aee340]\nECX token object; stack char pointer; RET4; EAX copied byte count. Copies printable ASCII run21h..7Eh, stopping at space/control/high-bit or NUL. See docs/ATLAS_PARSER.md; not reconstructed.\n\n[BSP reconstruction 00aee340] update\nECX token object; stack char pointer; RET4; EAX copied byte count. Copies printable ASCII run21h..7Eh, stopping at space/control/high-bit or NUL. See docs/ATLAS_PARSER.md; supported parser semantics implemented in src/texture_atlas.cpp, explicit path/ownership adapters; seven installed item records checked.\n\n[BSP reconstruction 00aee340] update\nECX token object; stack char pointer; RET4; EAX copied byte count. Copies printable ASCII run21h..7Eh, stopping at space/control/high-bit or NUL. See docs/ATLAS_PARSER.md; supported parser semantics implemented in src/texture_atlas.cpp, explicit path/ownership adapters; seven installed item records checked. | AO complete pooled-text reconstruction: descriptive name is a hypothesis, not a recovered symbol. Existing Atlas/TextBuffer names retained. Actual4h pooled header uses canonical sized string storage; actual buffer cursor4/extent8/data14 and sharedF8C2C8 scratch. Complete live/installed bytes, strict Win32 compile and bounded original-byte42-observation/67-pool-event differential passed. Preserve source reloads, unsafe self/null assignment, leading-space token behavior and exact allocation order. See docs/NATIVE_POOLED_TEXT.md and reports/native_pooled_text.json. New C++ ABI; original allocation failure/FH3/gameplay unvalidated."
+      },
+      "evidence": "K11 genuine NativeStringRawPoolContext overload, existing host overload unchanged. Full body/EH PE/live bytes and original ABI audited. Current419CC0 raw getter before every BD1120 allocation/BD1510 nonnull return, including large/disabled paths; normal getter exceptions propagate. Actual4h headers, unsafe alias/publication reads, sharedF8C2C8 scratch and current field reloads preserved. AEE3C0/AF44C0 state1 temp and state0 completed-output true unwind guards; AF5740 state0 temp only after construction, normal return after state=-1. No noexcept host adapter, generic callback or new bounds policy. Source CRT strncpy byte-range overlap and native failure/FH3/ABI/SEH/gameplay unvalidated. See docs/NATIVE_POOLED_TEXT_RAW_ORCH4.md and reports/native_pooled_text_raw_orch4.json. Strict Win32+2CTests and genuine-pool ten-body original/source fixture pass, including current-cursor/scratch alias;39 function-owned calls plus3 raw EH tails verified.",
+      "status": "complete_raw_context_overload_build_and_original_pool_fixture_checked"
+    },
+    {
+      "address": "00aee3c0",
+      "end_exclusive": "00aee4d0",
+      "bytes": 272,
+      "sha256": "785c0df978c492950194314425dcdb22737b817d7bc6a911ca490d39cae2450c",
+      "live_disk_match": true,
+      "name": "get_native_pooled_text_token_00aee3c0",
+      "existing_name": "BSP_AtlasLine_GetToken",
+      "source": "src/native_pooled_text.cpp",
+      "coverage": "complete_raw_context_overload",
+      "original_abi": "ECX line4h; stack output4h/index; RET8/EAX output",
+      "old_documentation": {
+        "hash": "8dc5eb6f8621a5faa5bfea3a5d75c54d7fc2ab227c0dd42d4420201d2b190f89",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00aee3c0",
+        "function_name": "BSP_AtlasLine_GetToken",
+        "return_type": "void *",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00aee3c0]\nECX line string object; stack output object,index; RET8; EAX output. Select zero-based space-delimited token, skips repeated spaces, calls printable-prefix helper; no quoting grammar. See docs/ATLAS_PARSER.md; not reconstructed.\n\n[BSP reconstruction 00aee3c0] update\nECX line string object; stack output object,index; RET8; EAX output. Select zero-based space-delimited token, skips repeated spaces, calls printable-prefix helper; no quoting grammar. See docs/ATLAS_PARSER.md; supported parser semantics implemented in src/texture_atlas.cpp, explicit path/ownership adapters; seven installed item records checked.\n\n[BSP reconstruction 00aee3c0] update\nECX line string object; stack output object,index; RET8; EAX output. Select zero-based space-delimited token, skips repeated spaces, calls printable-prefix helper; no quoting grammar. See docs/ATLAS_PARSER.md; supported parser semantics implemented in src/texture_atlas.cpp, explicit path/ownership adapters; seven installed item records checked. | AO complete pooled-text reconstruction: descriptive name is a hypothesis, not a recovered symbol. Existing Atlas/TextBuffer names retained. Actual4h pooled header uses canonical sized string storage; actual buffer cursor4/extent8/data14 and sharedF8C2C8 scratch. Complete live/installed bytes, strict Win32 compile and bounded original-byte42-observation/67-pool-event differential passed. Preserve source reloads, unsafe self/null assignment, leading-space token behavior and exact allocation order. See docs/NATIVE_POOLED_TEXT.md and reports/native_pooled_text.json. New C++ ABI; original allocation failure/FH3/gameplay unvalidated.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "output",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "index",
+            "type": "int"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "pcVar2",
+            "type": "char *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "uint",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "iVar5",
+            "type": "int",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "pcVar4",
+            "type": "char *",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 85,
+            "name": "LAB_00aee415"
+          },
+          {
+            "relative_offset": 96,
+            "name": "LAB_00aee420"
+          },
+          {
+            "relative_offset": 125,
+            "name": "LAB_00aee43d"
+          },
+          {
+            "relative_offset": 129,
+            "name": "LAB_00aee441"
+          },
+          {
+            "relative_offset": 160,
+            "name": "LAB_00aee460"
+          },
+          {
+            "relative_offset": 173,
+            "name": "LAB_00aee46d"
+          },
+          {
+            "relative_offset": 189,
+            "name": "LAB_00aee47d"
+          },
+          {
+            "relative_offset": 211,
+            "name": "LAB_00aee493"
+          },
+          {
+            "relative_offset": 214,
+            "name": "LAB_00aee496"
+          },
+          {
+            "relative_offset": 220,
+            "name": "LAB_00aee49c"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_annotation": {
+        "address": "00aee3c0",
+        "function_name": "BSP_AtlasLine_GetToken",
+        "comment": "[BSP reconstruction 00aee3c0]\nECX line string object; stack output object,index; RET8; EAX output. Select zero-based space-delimited token, skips repeated spaces, calls printable-prefix helper; no quoting grammar. See docs/ATLAS_PARSER.md; not reconstructed.\n\n[BSP reconstruction 00aee3c0] update\nECX line string object; stack output object,index; RET8; EAX output. Select zero-based space-delimited token, skips repeated spaces, calls printable-prefix helper; no quoting grammar. See docs/ATLAS_PARSER.md; supported parser semantics implemented in src/texture_atlas.cpp, explicit path/ownership adapters; seven installed item records checked.\n\n[BSP reconstruction 00aee3c0] update\nECX line string object; stack output object,index; RET8; EAX output. Select zero-based space-delimited token, skips repeated spaces, calls printable-prefix helper; no quoting grammar. See docs/ATLAS_PARSER.md; supported parser semantics implemented in src/texture_atlas.cpp, explicit path/ownership adapters; seven installed item records checked. | AO complete pooled-text reconstruction: descriptive name is a hypothesis, not a recovered symbol. Existing Atlas/TextBuffer names retained. Actual4h pooled header uses canonical sized string storage; actual buffer cursor4/extent8/data14 and sharedF8C2C8 scratch. Complete live/installed bytes, strict Win32 compile and bounded original-byte42-observation/67-pool-event differential passed. Preserve source reloads, unsafe self/null assignment, leading-space token behavior and exact allocation order. See docs/NATIVE_POOLED_TEXT.md and reports/native_pooled_text.json. New C++ ABI; original allocation failure/FH3/gameplay unvalidated."
+      },
+      "evidence": "K11 genuine NativeStringRawPoolContext overload, existing host overload unchanged. Full body/EH PE/live bytes and original ABI audited. Current419CC0 raw getter before every BD1120 allocation/BD1510 nonnull return, including large/disabled paths; normal getter exceptions propagate. Actual4h headers, unsafe alias/publication reads, sharedF8C2C8 scratch and current field reloads preserved. AEE3C0/AF44C0 state1 temp and state0 completed-output true unwind guards; AF5740 state0 temp only after construction, normal return after state=-1. No noexcept host adapter, generic callback or new bounds policy. Source CRT strncpy byte-range overlap and native failure/FH3/ABI/SEH/gameplay unvalidated. See docs/NATIVE_POOLED_TEXT_RAW_ORCH4.md and reports/native_pooled_text_raw_orch4.json. Strict Win32+2CTests and genuine-pool ten-body original/source fixture pass, including current-cursor/scratch alias;39 function-owned calls plus3 raw EH tails verified.",
+      "status": "complete_raw_context_overload_build_and_original_pool_fixture_checked"
+    },
+    {
+      "address": "00af4450",
+      "end_exclusive": "00af44bf",
+      "bytes": 111,
+      "sha256": "a9ce909ce3ee2a4fdf8398686250abb08281839eae2e3f0c3f7337d1fec06472",
+      "live_disk_match": true,
+      "name": "assign_native_pooled_text_suffix_00af4450",
+      "existing_name": "BSP_NativePooledText_AssignSuffix",
+      "source": "src/native_pooled_text_suffix.cpp",
+      "coverage": "complete_raw_context_overload",
+      "original_abi": "ECX header4h; stack C-string; RET4/EAX copied count",
+      "old_documentation": {
+        "hash": "b02aac52c3ec67499ab0d786b1ce471c3b3550750e73414a1e0a32069fb01d17",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af4450",
+        "function_name": "BSP_NativePooledText_AssignSuffix",
+        "return_type": "uint",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00af4450]\nComplete AP pooled suffix body from live/installed-equal bytes. Actual4h NativePooledTextStorage and same canonical NativeStringStorage; signed ASCII, selection-before-space-skip, source capture/publication/reloads, scanned-count padding and allocation/copy/cleanup order retained. Descriptive symbol is a hypothesis. Genuine CRT dependency excludes overlapping byte ranges. Strict Win32 probe passed386 observations/449 pool events; native FH3, allocation failure and gameplay unvalidated. See docs/NATIVE_POOLED_TEXT_SUFFIX.md.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "text",
+            "type": "char *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "_Count",
+            "type": "size_t",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "_Dest",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 19,
+            "name": "LAB_00af4463"
+          },
+          {
+            "relative_offset": 22,
+            "name": "LAB_00af4466"
+          },
+          {
+            "relative_offset": 33,
+            "name": "LAB_00af4471"
+          },
+          {
+            "relative_offset": 42,
+            "name": "LAB_00af447a"
+          },
+          {
+            "relative_offset": 54,
+            "name": "LAB_00af4486"
+          },
+          {
+            "relative_offset": 66,
+            "name": "LAB_00af4492"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_annotation": {
+        "address": "00af4450",
+        "function_name": "BSP_NativePooledText_AssignSuffix",
+        "comment": "[BSP reconstruction 00af4450]\nComplete AP pooled suffix body from live/installed-equal bytes. Actual4h NativePooledTextStorage and same canonical NativeStringStorage; signed ASCII, selection-before-space-skip, source capture/publication/reloads, scanned-count padding and allocation/copy/cleanup order retained. Descriptive symbol is a hypothesis. Genuine CRT dependency excludes overlapping byte ranges. Strict Win32 probe passed386 observations/449 pool events; native FH3, allocation failure and gameplay unvalidated. See docs/NATIVE_POOLED_TEXT_SUFFIX.md."
+      },
+      "evidence": "K11 genuine NativeStringRawPoolContext overload, existing host overload unchanged. Full body/EH PE/live bytes and original ABI audited. Current419CC0 raw getter before every BD1120 allocation/BD1510 nonnull return, including large/disabled paths; normal getter exceptions propagate. Actual4h headers, unsafe alias/publication reads, sharedF8C2C8 scratch and current field reloads preserved. AEE3C0/AF44C0 state1 temp and state0 completed-output true unwind guards; AF5740 state0 temp only after construction, normal return after state=-1. No noexcept host adapter, generic callback or new bounds policy. Source CRT strncpy byte-range overlap and native failure/FH3/ABI/SEH/gameplay unvalidated. See docs/NATIVE_POOLED_TEXT_RAW_ORCH4.md and reports/native_pooled_text_raw_orch4.json. Strict Win32+2CTests and genuine-pool ten-body original/source fixture pass, including current-cursor/scratch alias;39 function-owned calls plus3 raw EH tails verified.",
+      "status": "complete_raw_context_overload_build_and_original_pool_fixture_checked"
+    },
+    {
+      "address": "00af44c0",
+      "end_exclusive": "00af45d0",
+      "bytes": 272,
+      "sha256": "8451d2badc4ac8adf3922a1d9805afa6eba282c9bb51de668f708c59e904d097",
+      "live_disk_match": true,
+      "name": "get_native_pooled_text_suffix_00af44c0",
+      "existing_name": "BSP_NativePooledText_GetSuffix",
+      "source": "src/native_pooled_text_suffix.cpp",
+      "coverage": "complete_raw_context_overload",
+      "original_abi": "ECX line4h; stack output4h/index; RET8/EAX output",
+      "old_documentation": {
+        "hash": "8dc5eb6f8621a5faa5bfea3a5d75c54d7fc2ab227c0dd42d4420201d2b190f89",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af44c0",
+        "function_name": "BSP_NativePooledText_GetSuffix",
+        "return_type": "void *",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00af44c0]\nComplete AP pooled suffix body from live/installed-equal bytes. Actual4h NativePooledTextStorage and same canonical NativeStringStorage; signed ASCII, selection-before-space-skip, source capture/publication/reloads, scanned-count padding and allocation/copy/cleanup order retained. Descriptive symbol is a hypothesis. Genuine CRT dependency excludes overlapping byte ranges. Strict Win32 probe passed386 observations/449 pool events; native FH3, allocation failure and gameplay unvalidated. See docs/NATIVE_POOLED_TEXT_SUFFIX.md.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "output",
+            "type": "void *"
+          },
+          {
+            "ordinal": 2,
+            "name": "index",
+            "type": "int"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "local_4",
+            "type": "uint",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "pcVar4",
+            "type": "char *",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "iVar3",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          },
+          {
+            "name": "iVar5",
+            "type": "int",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "pcVar2",
+            "type": "char *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          },
+          {
+            "name": "local_10",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 85,
+            "name": "LAB_00af4515"
+          },
+          {
+            "relative_offset": 96,
+            "name": "LAB_00af4520"
+          },
+          {
+            "relative_offset": 125,
+            "name": "LAB_00af453d"
+          },
+          {
+            "relative_offset": 129,
+            "name": "LAB_00af4541"
+          },
+          {
+            "relative_offset": 160,
+            "name": "LAB_00af4560"
+          },
+          {
+            "relative_offset": 173,
+            "name": "LAB_00af456d"
+          },
+          {
+            "relative_offset": 189,
+            "name": "LAB_00af457d"
+          },
+          {
+            "relative_offset": 211,
+            "name": "LAB_00af4593"
+          },
+          {
+            "relative_offset": 214,
+            "name": "LAB_00af4596"
+          },
+          {
+            "relative_offset": 220,
+            "name": "LAB_00af459c"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_annotation": {
+        "address": "00af44c0",
+        "function_name": "BSP_NativePooledText_GetSuffix",
+        "comment": "[BSP reconstruction 00af44c0]\nComplete AP pooled suffix body from live/installed-equal bytes. Actual4h NativePooledTextStorage and same canonical NativeStringStorage; signed ASCII, selection-before-space-skip, source capture/publication/reloads, scanned-count padding and allocation/copy/cleanup order retained. Descriptive symbol is a hypothesis. Genuine CRT dependency excludes overlapping byte ranges. Strict Win32 probe passed386 observations/449 pool events; native FH3, allocation failure and gameplay unvalidated. See docs/NATIVE_POOLED_TEXT_SUFFIX.md."
+      },
+      "evidence": "K11 genuine NativeStringRawPoolContext overload, existing host overload unchanged. Full body/EH PE/live bytes and original ABI audited. Current419CC0 raw getter before every BD1120 allocation/BD1510 nonnull return, including large/disabled paths; normal getter exceptions propagate. Actual4h headers, unsafe alias/publication reads, sharedF8C2C8 scratch and current field reloads preserved. AEE3C0/AF44C0 state1 temp and state0 completed-output true unwind guards; AF5740 state0 temp only after construction, normal return after state=-1. No noexcept host adapter, generic callback or new bounds policy. Source CRT strncpy byte-range overlap and native failure/FH3/ABI/SEH/gameplay unvalidated. See docs/NATIVE_POOLED_TEXT_RAW_ORCH4.md and reports/native_pooled_text_raw_orch4.json. Strict Win32+2CTests and genuine-pool ten-body original/source fixture pass, including current-cursor/scratch alias;39 function-owned calls plus3 raw EH tails verified.",
+      "status": "complete_raw_context_overload_build_and_original_pool_fixture_checked"
+    },
+    {
+      "address": "00af5660",
+      "end_exclusive": "00af56bc",
+      "bytes": 92,
+      "sha256": "3d9bd80dbeef910f88ceb539161f8b831cc25d0c167e664d0566ecabc0c65eb8",
+      "live_disk_match": true,
+      "name": "construct_native_pooled_text_00af5660",
+      "existing_name": "BSP_NativePooledText_Construct",
+      "source": "src/native_pooled_text.cpp",
+      "coverage": "complete_raw_context_overload",
+      "original_abi": "ECX destination4h; stack nullable C-string; RET4/EAX destination",
+      "old_documentation": {
+        "hash": "dba681d78c7f87a163b4820eb9f91e1e1100cbad9a7d5dc2104761077123b19d",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af5660",
+        "function_name": "BSP_NativePooledText_Construct",
+        "return_type": "void *",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00af5660]\nAO complete pooled-text reconstruction: descriptive name is a hypothesis, not a recovered symbol. Existing Atlas/TextBuffer names retained. Actual4h pooled header uses canonical sized string storage; actual buffer cursor4/extent8/data14 and sharedF8C2C8 scratch. Complete live/installed bytes, strict Win32 compile and bounded original-byte42-observation/67-pool-event differential passed. Preserve source reloads, unsafe self/null assignment, leading-space token behavior and exact allocation order. See docs/NATIVE_POOLED_TEXT.md and reports/native_pooled_text.json. New C++ ABI; original allocation failure/FH3/gameplay unvalidated.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "text",
+            "type": "char *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "pcVar2",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 21,
+            "name": "LAB_00af5675"
+          },
+          {
+            "relative_offset": 32,
+            "name": "LAB_00af5680"
+          },
+          {
+            "relative_offset": 71,
+            "name": "LAB_00af56a7"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_annotation": {
+        "address": "00af5660",
+        "function_name": "BSP_NativePooledText_Construct",
+        "comment": "[BSP reconstruction 00af5660]\nAO complete pooled-text reconstruction: descriptive name is a hypothesis, not a recovered symbol. Existing Atlas/TextBuffer names retained. Actual4h pooled header uses canonical sized string storage; actual buffer cursor4/extent8/data14 and sharedF8C2C8 scratch. Complete live/installed bytes, strict Win32 compile and bounded original-byte42-observation/67-pool-event differential passed. Preserve source reloads, unsafe self/null assignment, leading-space token behavior and exact allocation order. See docs/NATIVE_POOLED_TEXT.md and reports/native_pooled_text.json. New C++ ABI; original allocation failure/FH3/gameplay unvalidated."
+      },
+      "evidence": "K11 genuine NativeStringRawPoolContext overload, existing host overload unchanged. Full body/EH PE/live bytes and original ABI audited. Current419CC0 raw getter before every BD1120 allocation/BD1510 nonnull return, including large/disabled paths; normal getter exceptions propagate. Actual4h headers, unsafe alias/publication reads, sharedF8C2C8 scratch and current field reloads preserved. AEE3C0/AF44C0 state1 temp and state0 completed-output true unwind guards; AF5740 state0 temp only after construction, normal return after state=-1. No noexcept host adapter, generic callback or new bounds policy. Source CRT strncpy byte-range overlap and native failure/FH3/ABI/SEH/gameplay unvalidated. See docs/NATIVE_POOLED_TEXT_RAW_ORCH4.md and reports/native_pooled_text_raw_orch4.json. Strict Win32+2CTests and genuine-pool ten-body original/source fixture pass, including current-cursor/scratch alias;39 function-owned calls plus3 raw EH tails verified.",
+      "status": "complete_raw_context_overload_build_and_original_pool_fixture_checked"
+    },
+    {
+      "address": "00af56c0",
+      "end_exclusive": "00af573b",
+      "bytes": 123,
+      "sha256": "6df196f7c24a910c06c421f551f2696c16bcb4782e6dd247b24e99f5aa66025a",
+      "live_disk_match": true,
+      "name": "assign_native_pooled_text_00af56c0",
+      "existing_name": "BSP_NativePooledText_Assign",
+      "source": "src/native_pooled_text.cpp",
+      "coverage": "complete_raw_context_overload",
+      "original_abi": "ECX destination4h; stack source4h; RET4/EAX destination",
+      "old_documentation": {
+        "hash": "a1b9a16b3126caba58cf818f242852dcf4cf97fc72ae14edb81684e30118036c",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af56c0",
+        "function_name": "BSP_NativePooledText_Assign",
+        "return_type": "void *",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00af56c0]\nAO complete pooled-text reconstruction: descriptive name is a hypothesis, not a recovered symbol. Existing Atlas/TextBuffer names retained. Actual4h pooled header uses canonical sized string storage; actual buffer cursor4/extent8/data14 and sharedF8C2C8 scratch. Complete live/installed bytes, strict Win32 compile and bounded original-byte42-observation/67-pool-event differential passed. Preserve source reloads, unsafe self/null assignment, leading-space token behavior and exact allocation order. See docs/NATIVE_POOLED_TEXT.md and reports/native_pooled_text.json. New C++ ABI; original allocation failure/FH3/gameplay unvalidated.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "source",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "pcVar3",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pcVar2",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 16,
+            "name": "LAB_00af56d0"
+          },
+          {
+            "relative_offset": 46,
+            "name": "LAB_00af56ee"
+          },
+          {
+            "relative_offset": 64,
+            "name": "LAB_00af5700"
+          },
+          {
+            "relative_offset": 101,
+            "name": "LAB_00af5725"
+          },
+          {
+            "relative_offset": 115,
+            "name": "LAB_00af5733"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_annotation": {
+        "address": "00af56c0",
+        "function_name": "BSP_NativePooledText_Assign",
+        "comment": "[BSP reconstruction 00af56c0]\nAO complete pooled-text reconstruction: descriptive name is a hypothesis, not a recovered symbol. Existing Atlas/TextBuffer names retained. Actual4h pooled header uses canonical sized string storage; actual buffer cursor4/extent8/data14 and sharedF8C2C8 scratch. Complete live/installed bytes, strict Win32 compile and bounded original-byte42-observation/67-pool-event differential passed. Preserve source reloads, unsafe self/null assignment, leading-space token behavior and exact allocation order. See docs/NATIVE_POOLED_TEXT.md and reports/native_pooled_text.json. New C++ ABI; original allocation failure/FH3/gameplay unvalidated."
+      },
+      "evidence": "K11 genuine NativeStringRawPoolContext overload, existing host overload unchanged. Full body/EH PE/live bytes and original ABI audited. Current419CC0 raw getter before every BD1120 allocation/BD1510 nonnull return, including large/disabled paths; normal getter exceptions propagate. Actual4h headers, unsafe alias/publication reads, sharedF8C2C8 scratch and current field reloads preserved. AEE3C0/AF44C0 state1 temp and state0 completed-output true unwind guards; AF5740 state0 temp only after construction, normal return after state=-1. No noexcept host adapter, generic callback or new bounds policy. Source CRT strncpy byte-range overlap and native failure/FH3/ABI/SEH/gameplay unvalidated. See docs/NATIVE_POOLED_TEXT_RAW_ORCH4.md and reports/native_pooled_text_raw_orch4.json. Strict Win32+2CTests and genuine-pool ten-body original/source fixture pass, including current-cursor/scratch alias;39 function-owned calls plus3 raw EH tails verified.",
+      "status": "complete_raw_context_overload_build_and_original_pool_fixture_checked"
+    },
+    {
+      "address": "00af5740",
+      "end_exclusive": "00af5842",
+      "bytes": 258,
+      "sha256": "07d0a6f295d8ab1aeec2098ddce4c6dd318d9da389056e301fafd4ef7f488f5c",
+      "live_disk_match": true,
+      "name": "read_native_text_buffer_line_00af5740",
+      "existing_name": "BSP_TextBuffer_ReadNormalizedLine",
+      "source": "src/native_pooled_text.cpp",
+      "coverage": "complete_raw_context_overload",
+      "original_abi": "ECX actual1Ch text buffer; stack output4h; RET4/AL bool",
+      "old_documentation": {
+        "hash": "6e1ae54572f526942641f96470afe98f760850ac7b290b0fed6b952de02006e7",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af5740",
+        "function_name": "BSP_TextBuffer_ReadNormalizedLine",
+        "return_type": "bool",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00af5740]\nECX buffer; stack output string object; RET4; AL status. Signed-byte line normalization, leading <=20h removed, embedded controls/high-bit bytes removed, spaces retained; global scratch, no observed bounds; cursor advances past LF or extent. See docs/ATLAS_PARSER.md; not reconstructed.\n\n[BSP reconstruction 00af5740] update\nECX buffer; stack output string object; RET4; AL status. Signed-byte line normalization, leading <=20h removed, embedded controls/high-bit bytes removed, spaces retained; global scratch, no observed bounds; cursor advances past LF or extent. See docs/ATLAS_PARSER.md; supported parser semantics implemented in src/texture_atlas.cpp, explicit path/ownership adapters; seven installed item records checked.\n\n[BSP reconstruction 00af5740] update\nECX buffer; stack output string object; RET4; AL status. Signed-byte line normalization, leading <=20h removed, embedded controls/high-bit bytes removed, spaces retained; global scratch, no observed bounds; cursor advances past LF or extent. See docs/ATLAS_PARSER.md; supported parser semantics implemented in src/texture_atlas.cpp, explicit path/ownership adapters; seven installed item records checked. | AO complete pooled-text reconstruction: descriptive name is a hypothesis, not a recovered symbol. Existing Atlas/TextBuffer names retained. Actual4h pooled header uses canonical sized string storage; actual buffer cursor4/extent8/data14 and sharedF8C2C8 scratch. Complete live/installed bytes, strict Win32 compile and bounded original-byte42-observation/67-pool-event differential passed. Preserve source reloads, unsafe self/null assignment, leading-space token behavior and exact allocation order. See docs/NATIVE_POOLED_TEXT.md and reports/native_pooled_text.json. New C++ ABI; original allocation failure/FH3/gameplay unvalidated.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "output",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "uVar8",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "pcVar7",
+            "type": "char *",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "iVar5",
+            "type": "int",
+            "storage": "(register, 0x8, 4)"
+          },
+          {
+            "name": "pcVar4",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "source",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "ppvVar2",
+            "type": "void * *",
+            "storage": "(unique, 0x1000009c, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "char *",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 30,
+            "name": "LAB_00af575e"
+          },
+          {
+            "relative_offset": 50,
+            "name": "LAB_00af5772"
+          },
+          {
+            "relative_offset": 64,
+            "name": "LAB_00af5780"
+          },
+          {
+            "relative_offset": 84,
+            "name": "LAB_00af5794"
+          },
+          {
+            "relative_offset": 96,
+            "name": "LAB_00af57a0"
+          },
+          {
+            "relative_offset": 109,
+            "name": "LAB_00af57ad"
+          },
+          {
+            "relative_offset": 115,
+            "name": "LAB_00af57b3"
+          },
+          {
+            "relative_offset": 135,
+            "name": "LAB_00af57c7"
+          },
+          {
+            "relative_offset": 143,
+            "name": "LAB_00af57cf"
+          },
+          {
+            "relative_offset": 208,
+            "name": "LAB_00af5810"
+          },
+          {
+            "relative_offset": 238,
+            "name": "LAB_00af582e"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_annotation": {
+        "address": "00af5740",
+        "function_name": "BSP_TextBuffer_ReadNormalizedLine",
+        "comment": "[BSP reconstruction 00af5740]\nECX buffer; stack output string object; RET4; AL status. Signed-byte line normalization, leading <=20h removed, embedded controls/high-bit bytes removed, spaces retained; global scratch, no observed bounds; cursor advances past LF or extent. See docs/ATLAS_PARSER.md; not reconstructed.\n\n[BSP reconstruction 00af5740] update\nECX buffer; stack output string object; RET4; AL status. Signed-byte line normalization, leading <=20h removed, embedded controls/high-bit bytes removed, spaces retained; global scratch, no observed bounds; cursor advances past LF or extent. See docs/ATLAS_PARSER.md; supported parser semantics implemented in src/texture_atlas.cpp, explicit path/ownership adapters; seven installed item records checked.\n\n[BSP reconstruction 00af5740] update\nECX buffer; stack output string object; RET4; AL status. Signed-byte line normalization, leading <=20h removed, embedded controls/high-bit bytes removed, spaces retained; global scratch, no observed bounds; cursor advances past LF or extent. See docs/ATLAS_PARSER.md; supported parser semantics implemented in src/texture_atlas.cpp, explicit path/ownership adapters; seven installed item records checked. | AO complete pooled-text reconstruction: descriptive name is a hypothesis, not a recovered symbol. Existing Atlas/TextBuffer names retained. Actual4h pooled header uses canonical sized string storage; actual buffer cursor4/extent8/data14 and sharedF8C2C8 scratch. Complete live/installed bytes, strict Win32 compile and bounded original-byte42-observation/67-pool-event differential passed. Preserve source reloads, unsafe self/null assignment, leading-space token behavior and exact allocation order. See docs/NATIVE_POOLED_TEXT.md and reports/native_pooled_text.json. New C++ ABI; original allocation failure/FH3/gameplay unvalidated."
+      },
+      "evidence": "K11 genuine NativeStringRawPoolContext overload, existing host overload unchanged. Full body/EH PE/live bytes and original ABI audited. Current419CC0 raw getter before every BD1120 allocation/BD1510 nonnull return, including large/disabled paths; normal getter exceptions propagate. Actual4h headers, unsafe alias/publication reads, sharedF8C2C8 scratch and current field reloads preserved. AEE3C0/AF44C0 state1 temp and state0 completed-output true unwind guards; AF5740 state0 temp only after construction, normal return after state=-1. No noexcept host adapter, generic callback or new bounds policy. Source CRT strncpy byte-range overlap and native failure/FH3/ABI/SEH/gameplay unvalidated. See docs/NATIVE_POOLED_TEXT_RAW_ORCH4.md and reports/native_pooled_text_raw_orch4.json. Strict Win32+2CTests and genuine-pool ten-body original/source fixture pass, including current-cursor/scratch alias;39 function-owned calls plus3 raw EH tails verified.",
+      "status": "complete_raw_context_overload_build_and_original_pool_fixture_checked"
+    }
+  ],
+  "byte_evidence": [
+    {
+      "start": "00aee1e0",
+      "end_exclusive": "00aee212",
+      "length": 50,
+      "disk_sha256": "bd63b1bd715dd384ce48e07319578fd02fa01b5b65435b4493a526abf83f8f8e",
+      "live_sha256": "bd63b1bd715dd384ce48e07319578fd02fa01b5b65435b4493a526abf83f8f8e",
+      "equal": true,
+      "bytes": "8b5424048bc2568d70018d9b000000008a0883c00184c975f72bc66a0183c0015052e8b9ba92ff8bc8e802330e005ec20400",
+      "instruction_count": 19
+    },
+    {
+      "start": "00aee2a0",
+      "end_exclusive": "00aee2d7",
+      "length": 55,
+      "disk_sha256": "2ba588048d71bfd3a508a9ce493a1cca7df1f9d19c54ad38c93b6a33676b5ad2",
+      "live_sha256": "2ba588048d71bfd3a508a9ce493a1cca7df1f9d19c54ad38c93b6a33676b5ad2",
+      "equal": true,
+      "bytes": "568bf18b1685d274268bc2578d7801908a0883c00184c975f72bc76a0183c0015052e8f9b992ff8bc8e842320e005fc706000000005ec3",
+      "instruction_count": 25
+    },
+    {
+      "start": "00aee2e0",
+      "end_exclusive": "00aee33a",
+      "length": 90,
+      "disk_sha256": "cfcd9a84c05e42c433a4a1cddb94326bf6e44b6cfc44cb2b885a20872cd07dda",
+      "live_sha256": "cfcd9a84c05e42c433a4a1cddb94326bf6e44b6cfc44cb2b885a20872cd07dda",
+      "equal": true,
+      "bytes": "538b5c24088b0385c0578bf9743f8d50018a0883c00184c975f72bc2568bf0e8bcb992ff6a0183c601568bc8e80f2e0e0089078b0b8bd05e8a01880283c10183c20184c075f28bc75f5bc20400c707000000008bc75f5bc20400",
+      "instruction_count": 40
+    },
+    {
+      "start": "00aee340",
+      "end_exclusive": "00aee3b4",
+      "length": 116,
+      "disk_sha256": "d274f694ddf8d91f503dfa5ce90cb7fa386d5c25dc65d578397be8eefe5e108d",
+      "live_sha256": "d274f694ddf8d91f503dfa5ce90cb7fa386d5c25dc65d578397be8eefe5e108d",
+      "equal": true,
+      "bytes": "53578b7c240c85ff8bd975075f33c05bc204008a075633f63c207e178d6424003c7f7d0b8a443e0183c6013c207ff185f675085e5f33c05bc204008b0385c0740650e859feffffe834b992ff6a018d4e01518bc8e8872d0e005657508903e8ddae10008b1383c40cc60416008bc65e5f5bc20400",
+      "instruction_count": 53
+    },
+    {
+      "start": "00aee3c0",
+      "end_exclusive": "00aee4d0",
+      "length": 272,
+      "disk_sha256": "785c0df978c492950194314425dcdb22737b817d7bc6a911ca490d39cae2450c",
+      "live_sha256": "785c0df978c492950194314425dcdb22737b817d7bc6a911ca490d39cae2450c",
+      "equal": true,
+      "bytes": "6aff6851a6cb0064a100000000506489250000000083ec0833c08944240456894424048b313bf0c74424140100000075248b74241c8d442404508bcee8dffeffff8bc65e8b4c240864890d0000000083c414c20800558bce5783cdff8d7901908a1183c10184d275f72bcf85c97e3e8a1680fa207c0780fa7f7d0233ed8b7c24288a140680fa207c2480fa7f7d1f3bef744a80fa20753c83c5013bc17d0f8bff803c0620753083c0013bc17cf38b7424248d54240c528bcee863feffff8b4c24145f5d8bc65e64890d0000000083c414c2080083c0013bc17ca7ebd103f0568d4c2410e898feffff8b7424248d4c240c518bcee828feffff8d4c240cc744241001000000c644241c00e8d2fdffffebad",
+      "instruction_count": 94
+    },
+    {
+      "start": "00af4450",
+      "end_exclusive": "00af44bf",
+      "length": 111,
+      "disk_sha256": "a9ce909ce3ee2a4fdf8398686250abb08281839eae2e3f0c3f7337d1fec06472",
+      "live_sha256": "a9ce909ce3ee2a4fdf8398686250abb08281839eae2e3f0c3f7337d1fec06472",
+      "equal": true,
+      "bytes": "538b5c240885db578bf975075f33c05bc204005633f68a041e3c0974043c207c093c7f7d0583c601ebec85f675085e5f33c05bc204008b0785c0740650e84e9dffffe8295892ff6a018d4e01518bc8e87ccc0d005653508907e8d24d10008b1783c40cc60416008bc65e5f5bc20400",
+      "instruction_count": 52
+    },
+    {
+      "start": "00af44c0",
+      "end_exclusive": "00af45d0",
+      "length": 272,
+      "disk_sha256": "8451d2badc4ac8adf3922a1d9805afa6eba282c9bb51de668f708c59e904d097",
+      "live_sha256": "8451d2badc4ac8adf3922a1d9805afa6eba282c9bb51de668f708c59e904d097",
+      "equal": true,
+      "bytes": "6aff68d1abcb0064a100000000506489250000000083ec0833c08944240456894424048b313bf0c74424140100000075248b74241c8d442404508bcee8df9dffff8bc65e8b4c240864890d0000000083c414c20800558bce5783cdff8d7901908a1183c10184d275f72bcf85c97e3e8a1680fa207c0780fa7f7d0233ed8b7c24288a140680fa207c2480fa7f7d1f3bef744a80fa20753c83c5013bc17d0f8bff803c0620753083c0013bc17cf38b7424248d54240c528bcee8639dffff8b4c24145f5d8bc65e64890d0000000083c414c2080083c0013bc17ca7ebd103f0568d4c2410e8a8feffff8b7424248d4c240c518bcee8289dffff8d4c240cc744241001000000c644241c00e8d29cffffebad",
+      "instruction_count": 94
+    },
+    {
+      "start": "00af5660",
+      "end_exclusive": "00af56bc",
+      "length": 92,
+      "disk_sha256": "3d9bd80dbeef910f88ceb539161f8b831cc25d0c167e664d0566ecabc0c65eb8",
+      "live_sha256": "3d9bd80dbeef910f88ceb539161f8b831cc25d0c167e664d0566ecabc0c65eb8",
+      "equal": true,
+      "bytes": "53578b7c240c85ff8bd97509893b5f8bc35bc204008bc78d50018d9b000000008a0883c00184c975f72bc2568bf0e82d4692ff6a0183c601568bc8e880ba0d0089038bcf8bd05e8a01880283c10183c20184c075f25f8bc35bc20400",
+      "instruction_count": 41
+    },
+    {
+      "start": "00af56c0",
+      "end_exclusive": "00af573b",
+      "length": 123,
+      "disk_sha256": "6df196f7c24a910c06c421f551f2696c16bcb4782e6dd247b24e99f5aa66025a",
+      "live_sha256": "6df196f7c24a910c06c421f551f2696c16bcb4782e6dd247b24e99f5aa66025a",
+      "equal": true,
+      "bytes": "538bd98b0b85c9565774238bc18d70018a1083c00184d275f72bc66a0183c0015051e8d94592ff8bc8e822be0d008b7c24108b0785c0743b8d5001eb038d49008a0883c00184c975f72bc28bf0e8ae4592ff6a0183c601568bc8e801ba0d0089038b0f8bd08a01880283c10183c20184c075f25f5e8bc35bc20400",
+      "instruction_count": 54
+    },
+    {
+      "start": "00af5740",
+      "end_exclusive": "00af5842",
+      "length": 258,
+      "disk_sha256": "07d0a6f295d8ab1aeec2098ddce4c6dd318d9da389056e301fafd4ef7f488f5c",
+      "live_sha256": "07d0a6f295d8ab1aeec2098ddce4c6dd318d9da389056e301fafd4ef7f488f5c",
+      "equal": true,
+      "bytes": "6aff68f8accb0064a100000000506489250000000051568b711485f6751432c05e8b4c240464890d0000000083c410c204008b41043b41087de48d9b000000008b5104803c320a740b83c2018951043b51087cec8b51043bc27d12eb038d4900803c06207f0783c0013bc27cf333f63bc2731c8b51148a141080fa207c098896c8c2f80083c60183c0013b410472e4c686c8c2f800008341040168c8c2f8008d4c2408e878feffff8b4c241850c744241400000000e8c6feffff8b54240485d2c7442410ffffffff74248bc28d7001908a0883c00184c975f72bc66a0183c0015052e8994492ff8bc8e8e2bc0d008b4c2408b0015e64890d0000000083c410c20400",
+      "instruction_count": 83
+    },
+    {
+      "start": "00cba630",
+      "end_exclusive": "00cba65b",
+      "length": 43,
+      "disk_sha256": "6a2d7048dc49966b7124fa793d1f13194d97114811dc3961aefad54057c36e5e",
+      "live_sha256": "6a2d7048dc49966b7124fa793d1f13194d97114811dc3961aefad54057c36e5e",
+      "equal": true,
+      "bytes": "8d4dece9683ce3ff8b45f083e0010f840c0000008365f0fe8b4d04e9503ce3ffc3b80023df00e9e8c4f3ff",
+      "instruction_count": 11
+    },
+    {
+      "start": "00cbabb0",
+      "end_exclusive": "00cbabdb",
+      "length": 43,
+      "disk_sha256": "558b440465390eb88dd3897a4c89d6645d2da82037fb95ce79d28bf95dd638e8",
+      "live_sha256": "558b440465390eb88dd3897a4c89d6645d2da82037fb95ce79d28bf95dd638e8",
+      "equal": true,
+      "bytes": "8d4dece9e836e3ff8b45f083e0010f840c0000008365f0fe8b4d04e9d036e3ffc3b80c2adf00e968bff3ff",
+      "instruction_count": 11
+    },
+    {
+      "start": "00cbacf0",
+      "end_exclusive": "00cbad02",
+      "length": 18,
+      "disk_sha256": "29f6f08637879a31f93a81575e6700a9888721a01774b636a89f082d4adf18c7",
+      "live_sha256": "29f6f08637879a31f93a81575e6700a9888721a01774b636a89f082d4adf18c7",
+      "equal": true,
+      "bytes": "8d4df0e9a835e3ffb84c2bdf00e941bef3ff",
+      "instruction_count": 4
+    },
+    {
+      "start": "00df22f0",
+      "end_exclusive": "00df2324",
+      "length": 52,
+      "disk_sha256": "0b14540919aa0e96099766fd761f3f540d80f75de85982824955601af4f7fb75",
+      "live_sha256": "0b14540919aa0e96099766fd761f3f540d80f75de85982824955601af4f7fb75",
+      "equal": true,
+      "bytes": "ffffffff38a6cb000000000030a6cb002205931902000000f022df00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "start": "00df29fc",
+      "end_exclusive": "00df2a30",
+      "length": 52,
+      "disk_sha256": "79eb313a1c5d7b5006ecbcaf02fbead5e8808462b0c61f5a9a683003c1c80b5a",
+      "live_sha256": "79eb313a1c5d7b5006ecbcaf02fbead5e8808462b0c61f5a9a683003c1c80b5a",
+      "equal": true,
+      "bytes": "ffffffffb8abcb0000000000b0abcb002205931902000000fc29df00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "start": "00df2b44",
+      "end_exclusive": "00df2b70",
+      "length": 44,
+      "disk_sha256": "0ec6bae684afa8336f228a3c2a999de8b52876b839784f83a0e8f66a3bc5aba3",
+      "live_sha256": "0ec6bae684afa8336f228a3c2a999de8b52876b839784f83a0e8f66a3bc5aba3",
+      "equal": true,
+      "bytes": "fffffffff0accb002205931901000000442bdf00000000000000000000000000000000000000000001000000"
+    }
+  ],
+  "call_sites": [
+    {
+      "function": "00aee1e0",
+      "address": "00aee202",
+      "native": "00419cc0",
+      "kind": "direct",
+      "contract": "real current raw pool/singleton manager getter; no noexcept host wrapper"
+    },
+    {
+      "function": "00aee1e0",
+      "address": "00aee209",
+      "native": "00bd1510",
+      "kind": "direct",
+      "contract": "ECX getter-returned actual pool; captured block,size,unused1; current gate"
+    },
+    {
+      "function": "00aee2a0",
+      "address": "00aee2c2",
+      "native": "00419cc0",
+      "kind": "direct",
+      "contract": "real current raw pool/singleton manager getter; no noexcept host wrapper"
+    },
+    {
+      "function": "00aee2a0",
+      "address": "00aee2c9",
+      "native": "00bd1510",
+      "kind": "direct",
+      "contract": "ECX getter-returned actual pool; captured block,size,unused1; current gate"
+    },
+    {
+      "function": "00aee2e0",
+      "address": "00aee2ff",
+      "native": "00419cc0",
+      "kind": "direct",
+      "contract": "real current raw pool/singleton manager getter; no noexcept host wrapper"
+    },
+    {
+      "function": "00aee2e0",
+      "address": "00aee30c",
+      "native": "00bd1120",
+      "kind": "direct",
+      "contract": "ECX getter-returned actual pool; captured size,unused1; real size-class allocation"
+    },
+    {
+      "function": "00aee340",
+      "address": "00aee382",
+      "native": "00aee1e0",
+      "kind": "direct",
+      "contract": "captured nonnull pointer; strlen+1 captured before getter"
+    },
+    {
+      "function": "00aee340",
+      "address": "00aee387",
+      "native": "00419cc0",
+      "kind": "direct",
+      "contract": "real current raw pool/singleton manager getter; no noexcept host wrapper"
+    },
+    {
+      "function": "00aee340",
+      "address": "00aee394",
+      "native": "00bd1120",
+      "kind": "direct",
+      "contract": "ECX getter-returned actual pool; captured size,unused1; real size-class allocation"
+    },
+    {
+      "function": "00aee340",
+      "address": "00aee39e",
+      "native": "00bf9280",
+      "kind": "direct",
+      "contract": "genuine CRT strncpy(count), padding and nonoverlap provider contract"
+    },
+    {
+      "function": "00aee3c0",
+      "address": "00aee3fc",
+      "native": "00aee2e0",
+      "kind": "direct",
+      "contract": "construct actual4h output; publish allocation before source-header reload"
+    },
+    {
+      "function": "00aee3c0",
+      "address": "00aee478",
+      "native": "00aee2e0",
+      "kind": "direct",
+      "contract": "construct actual4h output; publish allocation before source-header reload"
+    },
+    {
+      "function": "00aee3c0",
+      "address": "00aee4a3",
+      "native": "00aee340",
+      "kind": "direct",
+      "contract": "assign printable prefix through real pool; captures count before return/allocation"
+    },
+    {
+      "function": "00aee3c0",
+      "address": "00aee4b3",
+      "native": "00aee2e0",
+      "kind": "direct",
+      "contract": "construct actual4h output; publish allocation before source-header reload"
+    },
+    {
+      "function": "00aee3c0",
+      "address": "00aee4c9",
+      "native": "00aee2a0",
+      "kind": "direct",
+      "contract": "current actual4h header cleanup; capture text, getter/return, clear only after success"
+    },
+    {
+      "function": "00af4450",
+      "address": "00af448d",
+      "native": "00aee1e0",
+      "kind": "direct",
+      "contract": "captured nonnull pointer; strlen+1 captured before getter"
+    },
+    {
+      "function": "00af4450",
+      "address": "00af4492",
+      "native": "00419cc0",
+      "kind": "direct",
+      "contract": "real current raw pool/singleton manager getter; no noexcept host wrapper"
+    },
+    {
+      "function": "00af4450",
+      "address": "00af449f",
+      "native": "00bd1120",
+      "kind": "direct",
+      "contract": "ECX getter-returned actual pool; captured size,unused1; real size-class allocation"
+    },
+    {
+      "function": "00af4450",
+      "address": "00af44a9",
+      "native": "00bf9280",
+      "kind": "direct",
+      "contract": "genuine CRT strncpy(count), padding and nonoverlap provider contract"
+    },
+    {
+      "function": "00af44c0",
+      "address": "00af44fc",
+      "native": "00aee2e0",
+      "kind": "direct",
+      "contract": "construct actual4h output; publish allocation before source-header reload"
+    },
+    {
+      "function": "00af44c0",
+      "address": "00af4578",
+      "native": "00aee2e0",
+      "kind": "direct",
+      "contract": "construct actual4h output; publish allocation before source-header reload"
+    },
+    {
+      "function": "00af44c0",
+      "address": "00af45a3",
+      "native": "00af4450",
+      "kind": "direct",
+      "contract": "assign suffix including tabs through real pool; captures count before return/allocation"
+    },
+    {
+      "function": "00af44c0",
+      "address": "00af45b3",
+      "native": "00aee2e0",
+      "kind": "direct",
+      "contract": "construct actual4h output; publish allocation before source-header reload"
+    },
+    {
+      "function": "00af44c0",
+      "address": "00af45c9",
+      "native": "00aee2a0",
+      "kind": "direct",
+      "contract": "current actual4h header cleanup; capture text, getter/return, clear only after success"
+    },
+    {
+      "function": "00af5660",
+      "address": "00af568e",
+      "native": "00419cc0",
+      "kind": "direct",
+      "contract": "real current raw pool/singleton manager getter; no noexcept host wrapper"
+    },
+    {
+      "function": "00af5660",
+      "address": "00af569b",
+      "native": "00bd1120",
+      "kind": "direct",
+      "contract": "ECX getter-returned actual pool; captured size,unused1; real size-class allocation"
+    },
+    {
+      "function": "00af56c0",
+      "address": "00af56e2",
+      "native": "00419cc0",
+      "kind": "direct",
+      "contract": "real current raw pool/singleton manager getter; no noexcept host wrapper"
+    },
+    {
+      "function": "00af56c0",
+      "address": "00af56e9",
+      "native": "00bd1510",
+      "kind": "direct",
+      "contract": "ECX getter-returned actual pool; captured block,size,unused1; current gate"
+    },
+    {
+      "function": "00af56c0",
+      "address": "00af570d",
+      "native": "00419cc0",
+      "kind": "direct",
+      "contract": "real current raw pool/singleton manager getter; no noexcept host wrapper"
+    },
+    {
+      "function": "00af56c0",
+      "address": "00af571a",
+      "native": "00bd1120",
+      "kind": "direct",
+      "contract": "ECX getter-returned actual pool; captured size,unused1; real size-class allocation"
+    },
+    {
+      "function": "00af5740",
+      "address": "00af57e3",
+      "native": "00af5660",
+      "kind": "direct",
+      "contract": "construct actual4h temporary from current shared scratch bytes"
+    },
+    {
+      "function": "00af5740",
+      "address": "00af57f5",
+      "native": "00af56c0",
+      "kind": "direct",
+      "contract": "assign output, releasing old before source read; null source retains old pointer"
+    },
+    {
+      "function": "00af5740",
+      "address": "00af5822",
+      "native": "00419cc0",
+      "kind": "direct",
+      "contract": "real current raw pool/singleton manager getter; no noexcept host wrapper"
+    },
+    {
+      "function": "00af5740",
+      "address": "00af5829",
+      "native": "00bd1510",
+      "kind": "direct",
+      "contract": "ECX getter-returned actual pool; captured block,size,unused1; current gate"
+    },
+    {
+      "function": "00cba630",
+      "address": "00cba633",
+      "native": "00aee2a0",
+      "kind": "tail_jump",
+      "contract": "current actual4h header cleanup; capture text, getter/return, clear only after success"
+    },
+    {
+      "function": "00cba638",
+      "address": "00cba64b",
+      "native": "00aee2a0",
+      "kind": "tail_jump",
+      "contract": "current actual4h header cleanup; capture text, getter/return, clear only after success"
+    },
+    {
+      "function": "00cbabb0",
+      "address": "00cbabb3",
+      "native": "00aee2a0",
+      "kind": "tail_jump",
+      "contract": "current actual4h header cleanup; capture text, getter/return, clear only after success"
+    },
+    {
+      "function": "00cbabb8",
+      "address": "00cbabcb",
+      "native": "00aee2a0",
+      "kind": "tail_jump",
+      "contract": "current actual4h header cleanup; capture text, getter/return, clear only after success"
+    },
+    {
+      "function": "00cbacf0",
+      "address": "00cbacf3",
+      "native": "00aee2a0",
+      "kind": "tail_jump",
+      "contract": "current actual4h header cleanup; capture text, getter/return, clear only after success"
+    }
+  ],
+  "eh": [
+    {
+      "body": "00aee3c0",
+      "handler": "00cba651",
+      "function_info": "00df2300",
+      "unwind_map": "00df22f0",
+      "max_state": 2,
+      "states": [
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cba630",
+          "meaning": "temporary actual4h clear"
+        },
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cba638",
+          "meaning": "clear output only if completed-output flag1; flag cleared before cleanup"
+        }
+      ]
+    },
+    {
+      "body": "00af44c0",
+      "handler": "00cbabd1",
+      "function_info": "00df2a0c",
+      "unwind_map": "00df29fc",
+      "max_state": 2,
+      "states": [
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cbabb0",
+          "meaning": "temporary actual4h clear"
+        },
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbabb8",
+          "meaning": "clear output only if completed-output flag1; flag cleared before cleanup"
+        }
+      ]
+    },
+    {
+      "body": "00af5740",
+      "handler": "00cbacf8",
+      "function_info": "00df2b4c",
+      "unwind_map": "00df2b44",
+      "max_state": 1,
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbacf0",
+          "meaning": "temporary clear only after constructor; normal return captures pointer before state=-1"
+        }
+      ]
+    }
+  ],
+  "listing_gaps": [
+    {
+      "start": "00af56fd",
+      "length": 3,
+      "instruction": "lea ecx,[ecx]",
+      "action": "jumped-over alignment; no repair required"
+    },
+    {
+      "start": "00af579d",
+      "length": 3,
+      "instruction": "lea ecx,[ecx]",
+      "action": "jumped-over alignment; no repair required"
+    }
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "status": "passed",
+      "ctests": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "log": "local/raw_text_k11_build_final.log",
+      "earlier_full_build": "local/raw_text_k11_build.log"
+    },
+    "probe": {
+      "source": "local/raw_text_probe.cpp",
+      "build": "local/build_raw_text_probe.cmd",
+      "status": "passed",
+      "genuine_providers": [
+        "raw419CC0 publication/registration",
+        "BD1120 actual ring/arena and large CRT blocks",
+        "BD1510 actual ring/current gate",
+        "rawBD0400 manager drain with concrete string-pool deletion binding"
+      ],
+      "specific_risk": "AF5740 shared scratch[0] aliasing cursor low byte: store A changes current end65, final current cursor increment changes scratch to B/cursor66",
+      "original_redirects": [
+        "419CC0",
+        "BD1120",
+        "BD1510",
+        "BF9280 to current CRT strncpy",
+        "All10 bodies relocated together, internal direct calls relocated; three F8C2C8 operands share the same fixture scratch binding as source. Native EH is retained but never triggered."
+      ],
+      "not_executed": [
+        "native allocation/getter failure",
+        "FH3/secondary-unwind exceptions",
+        "overlapping strncpy byte ranges",
+        "hardware SEH",
+        "binary ABI/gameplay"
+      ],
+      "result": "PASS original10 raw-text bodies/source: token and suffix, shared scratch line filtering/cursors, self assignment, large allocation, disabled returns, genuine getter/pool and raw manager drain; strings and pool counters agree.",
+      "coverage": [
+        "leading spaces token0 null/token1 alpha",
+        "suffix including TAB",
+        "two normalized lines and EOF/output preservation",
+        "scratch cursor alias produces B and current cursor66",
+        "small-ring self assignment",
+        "large180-byte string",
+        "disabled small return",
+        "string outputs/cursors and pool bump/live/peak agree",
+        "genuine raw singleton manager drain clears pool",
+        "directAEE1E0 byte release, giving actual execution of all10 owned original bodies"
+      ]
+    },
+    "call_verification": {
+      "function_owned_rows": 39,
+      "raw_handler_tails": 3,
+      "note": "Raw-only handler tails verified by exact PE/live bytes and FuncInfo. Existing undefined compiler FH3 stubs kept unchanged per parent.",
+      "result": "39 function-owned rows checked,0failed;3raw-only EHtails matched PE/live"
+    },
+    "sha256": {
+      "src/native_pooled_text.cpp": "da9bf235546af58d385dc0f964c73bb89fd4ea7c8c18e0d66ad57d5a1326da9e",
+      "src/native_pooled_text_suffix.cpp": "fd8708efc9a93b93f22c293eafb4b125b6789dbb3d944e7295b7a910d0cdcf2a",
+      "include/bsp/native_pooled_text.hpp": "7496f31d04f73e73d6115fa7840ebb0855a3be470e8491cc8e82b7bc3cc1063b",
+      "include/bsp/native_pooled_text_suffix.hpp": "9ad18d321a42489e4f52351ce56a5a48fd6a0474fc47ad0a0ba036f6e39c15e4",
+      "local/raw_text_probe.cpp": "907e7a8b62bf816de3537a7dda8d8fbcb1f254442d5651f2b6b7b9252c207078",
+      "local/raw_text_probe_bodies.inc": "56cdf1938c0455de50c2d925cc3b742c7ece503c68dd24a2d9e225c543bc4dbb",
+      "local/raw_text_k11_build_final.log": "ff1df54b81d4a414507fbfeb893c1deaa224b12d7af0eb22c3b9ebbf614b9991"
+    }
+  },
+  "raw_handler_tails": [
+    {
+      "function": "00cba651",
+      "native": "00bf6b43",
+      "kind": "tail_jump",
+      "contract": "retained original FH3 runtime gateway, source uses explicit native-state unwind guards",
+      "instruction_address": "00cba656",
+      "proof": "Exact whole handler bytes match PE/live; compiler FH3 stub is not a defined Ghidra function. No function ownership manufactured."
+    },
+    {
+      "function": "00cbabd1",
+      "native": "00bf6b43",
+      "kind": "tail_jump",
+      "contract": "retained original FH3 runtime gateway, source uses explicit native-state unwind guards",
+      "instruction_address": "00cbabd6",
+      "proof": "Exact whole handler bytes match PE/live; compiler FH3 stub is not a defined Ghidra function. No function ownership manufactured."
+    },
+    {
+      "function": "00cbacf8",
+      "native": "00bf6b43",
+      "kind": "tail_jump",
+      "contract": "retained original FH3 runtime gateway, source uses explicit native-state unwind guards",
+      "instruction_address": "00cbacfd",
+      "proof": "Exact whole handler bytes match PE/live; compiler FH3 stub is not a defined Ghidra function. No function ownership manufactured."
+    }
+  ]
+}
