@@ -1,0 +1,548 @@
+{
+  "packet": "animation_lifetime_flow_repair_r28",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "status": "saved_complete_functions_exported_zero_remaining_call_gaps",
+  "changes": [
+    {
+      "address": "00b78530",
+      "end_exclusive": "00b785f3",
+      "call_return_override": "00b785a9",
+      "bytes": 195,
+      "body_recreated": true
+    },
+    {
+      "address": "00b78d00",
+      "end_exclusive": "00b78d1e",
+      "call_return_override": "00b78d10",
+      "bytes": 30,
+      "restored_gap": "00b78d15..00b78d17"
+    },
+    {
+      "address": "00b8a7d0",
+      "end_exclusive": "00b8a84f",
+      "call_return_override": "00b8a805",
+      "bytes": 127,
+      "body_recreated": true
+    },
+    {
+      "address": "00b8ad60",
+      "end_exclusive": "00b8ad7e",
+      "call_return_override": "00b8ad70",
+      "bytes": 30,
+      "restored_gap": "00b8ad75..00b8ad77"
+    },
+    {
+      "address": "00cc1cce",
+      "end_exclusive": "00cc1cd8",
+      "bytes": 10,
+      "new_handler": true,
+      "funcinfo": "00dfacec"
+    },
+    {
+      "address": "00cc2863",
+      "end_exclusive": "00cc286d",
+      "bytes": 10,
+      "new_handler": true,
+      "funcinfo": "00dfbe34"
+    }
+  ],
+  "repair_sequence": "First flow repairs cleared returning-free overrides. The group/channel body tails remained incomplete; verified full-body recreation then removed both remaining gaps. Scalar wrappers retained complete bodies after their three-byte ADD ESP,4 gaps were repaired. Two complete handler definitions were added.",
+  "prior_and_event_archive": {
+    "path": "local/evidence-r28/animation-lifetime-flow-repair-r28.zip",
+    "sha256": "2b1f64f248f65838432579e5d9b1cd19ac540f79189438d805bbd27df143b37c",
+    "files": [
+      {
+        "path": "r28_group_prior.json",
+        "sha256": "5c36d6e1dc19450d92190f8602265b32ff7fa0e457b178fbd48f962bf897020a"
+      },
+      {
+        "path": "r28_group_scalar_prior.json",
+        "sha256": "efcd7aee48aa79c9e39989c0891a5fb657a80bf79892e998de61fe756d27da27"
+      },
+      {
+        "path": "r28_channel_prior.json",
+        "sha256": "9a70330859d3659a96ba9088cf29625d86bac837855b584a674dd0671fb4838e"
+      },
+      {
+        "path": "r28_channel_scalar_prior.json",
+        "sha256": "42b4864f0d9c1497ba339b9e87159e210c43db70ffce0064294531c42371982e"
+      },
+      {
+        "path": "r28_group_handler_prior.json",
+        "sha256": "bf50f1a69680b3ca8c1f68450e4bf6cce3564f34904deb5122fed74709f47909"
+      },
+      {
+        "path": "r28_channel_handler_prior.json",
+        "sha256": "50bfe58f3747825e833e548a9c57a227cfa64a500dd031a11dcd786ea4f120f6"
+      },
+      {
+        "path": "r28_group_flow.json",
+        "sha256": "dfbff32a2a49b1c171bab448be129085c7c50edc1265f68b89e9c279986bd9a6"
+      },
+      {
+        "path": "r28_group_scalar_flow.json",
+        "sha256": "f6d34d5064916d78f61fe883987c296eb3b4aa0c4564dca4d4c68847ace8114d"
+      },
+      {
+        "path": "r28_channel_flow.json",
+        "sha256": "b4990ee59caf64dd7e12131bc05c72951ccf02959f567bb81913a128d523aa83"
+      },
+      {
+        "path": "r28_channel_scalar_flow.json",
+        "sha256": "4b30af6a6b6e925835be89a63159edc45e1423e7de9ccc17da08dd0d4f93d407"
+      },
+      {
+        "path": "r28_animation_body_recreation.json",
+        "sha256": "7d1ca7c8d2041033a43db808cac906e68f24f7959444034862617dbcb4ddd4f6"
+      },
+      {
+        "path": "r28_animation_handler_definition.json",
+        "sha256": "1573d59e447e50c90f15a7a36d0d7d63908267ee09e5a2efe349bcfdadd573a5"
+      },
+      {
+        "path": "r28_group_final_flow.log",
+        "sha256": "e685212bfe8b803aafa673c844d1659cfe68833c317a795255c2275be317e8bf"
+      },
+      {
+        "path": "r28_channel_final_flow.log",
+        "sha256": "eaedde83bf76ea33718478110e4abd4701456ea124aa09c6415849691996db69"
+      },
+      {
+        "path": "r28_animation_lifetime_exports.log",
+        "sha256": "127752f6de4d0502d882b8e40f279554c67c54f5c97641b1380cb559855bb65d"
+      },
+      {
+        "path": "r28_animation_lifetime_snapshot.log",
+        "sha256": "58afbf58db92adfc27f9f83e5b7d67e6f7d88000310f92b7f22153fd81bc74bf"
+      }
+    ]
+  },
+  "flow_events": {
+    "r28_group_flow.json": {
+      "repairs": [
+        {
+          "function": "00b78530",
+          "owner": "agent/orch4-20260915",
+          "when": "2026-09-16T08:48:04Z",
+          "decompile_lines_before": 37,
+          "gaps": [
+            {
+              "site": "00b785a9",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b785ae",
+              "gap_end_exclusive": "00b785f3",
+              "bytes": 69,
+              "after_call": true,
+              "sha256": "5fa39eb264c8873342985f6358a4fc87ac8b26178d75067e17af2946aecb93de"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b785a9",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b785ae",
+                "gap_end_exclusive": "00b785f3",
+                "bytes": 69,
+                "after_call": true,
+                "sha256": "5fa39eb264c8873342985f6358a4fc87ac8b26178d75067e17af2946aecb93de"
+              },
+              "clear": "Success: Cleared flow override at 00b785a9 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 69 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00b785a9",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b785a9 (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00b785f3",
+          "explicit_tail_terminator": "ret",
+          "explicit_body_sha256": "e2e829f75234a7d216dab42f2ca404b4ab330cd2c893419937c242c6ec79ea56",
+          "body_before": "Function: FUN_00b78530 at 00b78530\nSignature: undefined FUN_00b78530(void)\nEntry: 00b78530\nBody: 00b78530 - 00b785ad",
+          "decompile_lines_after": 54,
+          "gaps_remaining": 1,
+          "body_after": "Function: FUN_00b78530 at 00b78530\nSignature: undefined FUN_00b78530(void)\nEntry: 00b78530\nBody: 00b78530 - 00b785ad",
+          "stored_body_tail_complete": false,
+          "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+        }
+      ]
+    },
+    "r28_group_scalar_flow.json": {
+      "repairs": [
+        {
+          "function": "00b78d00",
+          "owner": "agent/orch4-20260915",
+          "when": "2026-09-16T08:48:10Z",
+          "decompile_lines_before": 14,
+          "gaps": [
+            {
+              "site": "00b78d10",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00b78d15",
+              "gap_end_exclusive": "00b78d18",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b78d10",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00b78d15",
+                "gap_end_exclusive": "00b78d18",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 00b78d10 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00b78d10",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b78d10 (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00b78d1e",
+          "explicit_tail_terminator": "ret",
+          "explicit_body_sha256": "5c52c03e538f823a87a890c2dfe8f44543dbdfead17f87a7e03fe6b9ca0b5a5f",
+          "body_before": "Function: CG_scalar_deleting_dtor_00b78d00 at 00b78d00\nSignature: undefined CG_scalar_deleting_dtor_00b78d00(void)\nEntry: 00b78d00\nBody: 00b78d00 - 00b78d1d",
+          "decompile_lines_after": 11,
+          "gaps_remaining": 0,
+          "body_after": "Function: CG_scalar_deleting_dtor_00b78d00 at 00b78d00\nSignature: undefined CG_scalar_deleting_dtor_00b78d00(void)\nEntry: 00b78d00\nBody: 00b78d00 - 00b78d1d",
+          "stored_body_tail_complete": true
+        }
+      ]
+    },
+    "r28_channel_flow.json": {
+      "repairs": [
+        {
+          "function": "00b8a7d0",
+          "owner": "agent/orch4-20260915",
+          "when": "2026-09-16T08:48:16Z",
+          "decompile_lines_before": 17,
+          "gaps": [
+            {
+              "site": "00b8a805",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b8a80a",
+              "gap_end_exclusive": "00b8a84f",
+              "bytes": 69,
+              "after_call": true,
+              "sha256": "b978779245741e3b35dfc39ee742dee6644892105f55db09aeddeba17a947f98"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b8a805",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b8a80a",
+                "gap_end_exclusive": "00b8a84f",
+                "bytes": 69,
+                "after_call": true,
+                "sha256": "b978779245741e3b35dfc39ee742dee6644892105f55db09aeddeba17a947f98"
+              },
+              "clear": "Success: Cleared flow override at 00b8a805 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 69 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00b8a805",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b8a805 (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00b8a84f",
+          "explicit_tail_terminator": "ret",
+          "explicit_body_sha256": "58379fb6bf5949791e4abf69ad3d061ea13d375454b0b700896b245c6d9d30d5",
+          "body_before": "Function: FUN_00b8a7d0 at 00b8a7d0\nSignature: undefined FUN_00b8a7d0(void)\nEntry: 00b8a7d0\nBody: 00b8a7d0 - 00b8a809",
+          "decompile_lines_after": 31,
+          "gaps_remaining": 1,
+          "body_after": "Function: FUN_00b8a7d0 at 00b8a7d0\nSignature: undefined FUN_00b8a7d0(void)\nEntry: 00b8a7d0\nBody: 00b8a7d0 - 00b8a809",
+          "stored_body_tail_complete": false,
+          "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+        }
+      ]
+    },
+    "r28_channel_scalar_flow.json": {
+      "repairs": [
+        {
+          "function": "00b8ad60",
+          "owner": "agent/orch4-20260915",
+          "when": "2026-09-16T08:48:22Z",
+          "decompile_lines_before": 14,
+          "gaps": [
+            {
+              "site": "00b8ad70",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00b8ad75",
+              "gap_end_exclusive": "00b8ad78",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b8ad70",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00b8ad75",
+                "gap_end_exclusive": "00b8ad78",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 00b8ad70 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00b8ad70",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b8ad70 (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00b8ad7e",
+          "explicit_tail_terminator": "ret",
+          "explicit_body_sha256": "cc3b10d1988bf214b510ee1c3d18109c8355b0fb237a21d016ab5279146fb806",
+          "body_before": "Function: CG_scalar_deleting_dtor_00b8ad60 at 00b8ad60\nSignature: undefined CG_scalar_deleting_dtor_00b8ad60(void)\nEntry: 00b8ad60\nBody: 00b8ad60 - 00b8ad7d",
+          "decompile_lines_after": 11,
+          "gaps_remaining": 0,
+          "body_after": "Function: CG_scalar_deleting_dtor_00b8ad60 at 00b8ad60\nSignature: undefined CG_scalar_deleting_dtor_00b8ad60(void)\nEntry: 00b8ad60\nBody: 00b8ad60 - 00b8ad7d",
+          "stored_body_tail_complete": true
+        }
+      ]
+    },
+    "r28_animation_body_recreation.json": {
+      "events": [
+        {
+          "recreate": "00b78530",
+          "previous": "Function: FUN_00b78530 at 00b78530\nSignature: undefined FUN_00b78530(void)\nEntry: 00b78530\nBody: 00b78530 - 00b785ad",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00b78530"
+          },
+          "result": {
+            "success": true,
+            "address": "00b78530",
+            "deleted_function": "FUN_00b78530",
+            "body_size": 126,
+            "message": "Function 'FUN_00b78530' deleted at 00b78530"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b78530",
+            "end_address": "00b785f3"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b78530",
+            "end_address": "00b785f2",
+            "bytes_disassembled": 195,
+            "message": "Successfully disassembled 195 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b78530",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b78530",
+            "function_name": "FUN_00b78530",
+            "entry_point": "00b78530",
+            "body_size": 195,
+            "message": "Function created successfully at 00b78530"
+          }
+        },
+        {
+          "defined": "00b78530",
+          "end": "00b785f3",
+          "name": null,
+          "after": "Function: FUN_00b78530 at 00b78530\nSignature: undefined FUN_00b78530(void)\nEntry: 00b78530\nBody: 00b78530 - 00b785f2"
+        },
+        {
+          "recreate": "00b8a7d0",
+          "previous": "Function: FUN_00b8a7d0 at 00b8a7d0\nSignature: undefined FUN_00b8a7d0(void)\nEntry: 00b8a7d0\nBody: 00b8a7d0 - 00b8a809",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00b8a7d0"
+          },
+          "result": {
+            "success": true,
+            "address": "00b8a7d0",
+            "deleted_function": "FUN_00b8a7d0",
+            "body_size": 58,
+            "message": "Function 'FUN_00b8a7d0' deleted at 00b8a7d0"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b8a7d0",
+            "end_address": "00b8a84f"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b8a7d0",
+            "end_address": "00b8a84e",
+            "bytes_disassembled": 127,
+            "message": "Successfully disassembled 127 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b8a7d0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b8a7d0",
+            "function_name": "FUN_00b8a7d0",
+            "entry_point": "00b8a7d0",
+            "body_size": 127,
+            "message": "Function created successfully at 00b8a7d0"
+          }
+        },
+        {
+          "defined": "00b8a7d0",
+          "end": "00b8a84f",
+          "name": null,
+          "after": "Function: FUN_00b8a7d0 at 00b8a7d0\nSignature: undefined FUN_00b8a7d0(void)\nEntry: 00b8a7d0\nBody: 00b8a7d0 - 00b8a84e"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    },
+    "r28_animation_handler_definition.json": {
+      "events": [
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cc1cce",
+            "end_address": "00cc1cd8"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cc1cce",
+            "end_address": "00cc1cd7",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cc1cce",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cc1cce",
+            "function_name": "FUN_00cc1cce",
+            "entry_point": "00cc1cce",
+            "body_size": 10,
+            "message": "Function created successfully at 00cc1cce"
+          }
+        },
+        {
+          "defined": "00cc1cce",
+          "end": "00cc1cd8",
+          "name": null,
+          "after": "Function: FUN_00cc1cce at 00cc1cce\nSignature: undefined FUN_00cc1cce(void)\nEntry: 00cc1cce\nBody: 00cc1cce - 00cc1cd7"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cc2863",
+            "end_address": "00cc286d"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cc2863",
+            "end_address": "00cc286c",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cc2863",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cc2863",
+            "function_name": "FUN_00cc2863",
+            "entry_point": "00cc2863",
+            "body_size": 10,
+            "message": "Function created successfully at 00cc2863"
+          }
+        },
+        {
+          "defined": "00cc2863",
+          "end": "00cc286d",
+          "name": null,
+          "after": "Function: FUN_00cc2863 at 00cc2863\nSignature: undefined FUN_00cc2863(void)\nEntry: 00cc2863\nBody: 00cc2863 - 00cc286c"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    }
+  },
+  "validation": "22/22 direct/tail rows in worker native_animation_group_lifetime_r28.json checked against repaired live listing. One current virtual-call row is explicitly separate. Full spans checked against original PE by write-lock-taking repair tools.",
+  "limits": "Listing and source evidence only; original ABI/FH3/SEH and gameplay remain unproven."
+}
