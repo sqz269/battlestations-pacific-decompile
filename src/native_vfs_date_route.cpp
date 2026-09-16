@@ -3,6 +3,7 @@
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_pooled_resource_path.hpp"
 #include "bsp/native_pooled_string_substring.hpp"
+#include "bsp/native_string.hpp"
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/native_vfs_date_leaf_providers.hpp"
 #include "bsp/singleton_lifetime.hpp"
@@ -228,6 +229,47 @@ void* query_native_vfs_file_date_00bdd340(void* manager, void* output,
         reset_native_vfs_date_visitor_00bd90b0(visitor);
         throw;
     }
+    return output;
+}
+
+void* query_native_vfs_file_date_00bdd340(void* manager, void* output,
+    const void* name, NativeVfsDateRouteContext& context,
+    NativeStringRawPoolContext& strings) {
+    std::uint32_t visitor[6];
+    put(visitor, 0, 0x00d683b0);
+    put(visitor, 0x14, 0); put(visitor, 0x10, 0); put(visitor, 0x0c, 0);
+    put(visitor, 8, 0); put(visitor, 4, 0);
+    std::uint32_t copied_name[2] = {0, 0};
+    // E00768: state0 owns only the visitor; state1 adds the copied name.
+    // True unwind cleanup must terminate if the raw pool getter throws again.
+    struct Unwind {
+        void* visitor;
+        void* name;
+        NativeStringRawPoolContext& strings;
+        bool name_armed = false;
+        bool visitor_armed = true;
+        ~Unwind() noexcept {
+            if (name_armed) destroy_native_string_header_0041dd20(name, strings);
+            if (visitor_armed) reset_native_vfs_date_visitor_00bd90b0(visitor);
+        }
+    } unwind{visitor, copied_name, strings};
+    assign_native_string_header_00425f40(copied_name, name, strings);
+    unwind.name_armed = true; // BDD3BF, after the complete initial copy.
+    normalize_native_resource_path_header_00bee690(copied_name, strings);
+    visit_native_vfs_date_mounts_00bdd0a0(manager, copied_name, visitor, context);
+    const auto first = word(visitor, 4);
+    const auto second = word(visitor, 8);
+    const auto third = word(visitor, 0x0c);
+    put(output, 0, first);
+    const auto fourth = word(visitor, 0x10);
+    put(output, 4, second);
+    const auto fifth = word(visitor, 0x14);
+    put(output, 8, third); put(output, 0x0c, fourth); put(output, 0x10, fifth);
+    // BDD406 precedes 419CC0/BD1510: normal release failure resets only the
+    // visitor, without a retry of this name's already-disarmed cleanup.
+    unwind.name_armed = false;
+    destroy_native_string_header_0041dd20(copied_name, strings);
+    unwind.visitor_armed = false; // Native success omits BD90B0.
     return output;
 }
 } // namespace bsp
