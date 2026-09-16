@@ -1,0 +1,258 @@
+{
+  "packet": "orch4_particle_preparation_raw_n14",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_particle_preparation.cpp",
+  "header": "include/bsp/native_particle_preparation.hpp",
+  "functions": [
+    {
+      "address": "00af40e0",
+      "bytes": 38,
+      "sha256": "28dbcf6c872359e694ab775d3521cf1dceb90f98347f280225fa33dbebd6c3c3",
+      "last_instruction": "00af4105 RET",
+      "hex": "53568bd933f63973307e18578d7b10908b0fe8595e000083c60183c7043b73307cee5f5e5bc3",
+      "end_exclusive": "00af4106",
+      "live_disk_match": true,
+      "original_abi": "ECX actual owner; plain RET; no native stack arguments",
+      "old_documentation": {
+        "hash": "cd082015837ba6ea5bdc1b6bfa8b9f78b0d2c07c4028b33940b8e66708f102a9",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af40e0",
+        "function_name": "BSP_NativeParticleVariant_Prepare",
+        "return_type": "void",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00af40e0]\nDescriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(register, 0x1c, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 16,
+            "name": "LAB_00af40f0"
+          },
+          {
+            "relative_offset": 35,
+            "name": "LAB_00af4103"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_name": {
+        "address": "00af40e0",
+        "name": "BSP_NativeParticleVariant_Prepare",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+      },
+      "prior_reconstruction_records": [
+        {
+          "address": "00af40e0",
+          "name": "prepare_native_particle_variant_00af40e0",
+          "source": "src/native_particle_preparation.cpp",
+          "header": "include/bsp/native_particle_preparation.hpp",
+          "status": "reconstructed_build_tested_bounded_fixture_tested",
+          "native_abi": "ECX actual owner; void; RET; void return",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+          "kind": "function"
+        }
+      ],
+      "coverage": "complete"
+    },
+    {
+      "address": "00af9f50",
+      "bytes": 81,
+      "sha256": "0804b7f81d8cf9b22671c88593c4a90adf663516b559e787cdbc748c678a10ab",
+      "last_instruction": "00af9fa0 RET",
+      "hex": "5356578bf933f639774c7e168d5f3c908b0be8e9ffffff83c60183c3043b774c7cee33db395f687e248d77548d6424008b0e8b018b5014ffd28b0e8b018b500cffd283c30183c6043b5f687ce35f5e5bc3",
+      "end_exclusive": "00af9fa1",
+      "live_disk_match": true,
+      "original_abi": "ECX actual owner; plain RET; no native stack arguments",
+      "old_documentation": {
+        "hash": "020c158f5c4a27abcd2ca6ba4fe8ed5bcfea11835fe8b0c383da30462d10f74a",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af9f50",
+        "function_name": "BSP_NativeParticleDefinition_Prepare",
+        "return_type": "void",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00af9f50]\nDescriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0xc, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x18, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 16,
+            "name": "LAB_00af9f60"
+          },
+          {
+            "relative_offset": 34,
+            "name": "LAB_00af9f72"
+          },
+          {
+            "relative_offset": 48,
+            "name": "LAB_00af9f80"
+          },
+          {
+            "relative_offset": 77,
+            "name": "LAB_00af9f9d"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_name": {
+        "address": "00af9f50",
+        "name": "BSP_NativeParticleDefinition_Prepare",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+      },
+      "prior_reconstruction_records": [
+        {
+          "address": "00af9f50",
+          "name": "prepare_native_particle_definition_00af9f50",
+          "source": "src/native_particle_preparation.cpp",
+          "header": "include/bsp/native_particle_preparation.hpp",
+          "status": "reconstructed_build_tested_bounded_fixture_tested",
+          "native_abi": "ECX actual owner; void; RET; void return",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/disk byte span verified. Actual borrowed pointers, current signed counts and post-virtual row/table reloads; no replacement owner. See docs/NATIVE_PARTICLE_PREPARATION.md and reports/native_particle_preparation.json. Full producer class sizes, real polymorphic member behavior, native exceptions and gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual owner; void; RET; void return. Complete live/installed span and final instruction verified. See reports/native_particle_preparation.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+          "kind": "function"
+        }
+      ],
+      "coverage": "complete"
+    }
+  ],
+  "tables": [
+    {
+      "address": "00d5dd18",
+      "end_exclusive": "00d5dd30",
+      "bytes": 24,
+      "sha256": "c1c68d6ce28c9c828a0da7433a86d1c584854719930274e557bd59854a8cf1cf",
+      "live_disk_match": true,
+      "hex": "e030bd000009b000c08ab0002009b000e089b00000a0b000",
+      "virtual14": "00b0a000",
+      "virtual0c": "00b00920"
+    },
+    {
+      "address": "00d5dcc0",
+      "end_exclusive": "00d5dcd8",
+      "bytes": 24,
+      "sha256": "bc9aa585bc074a8112d22959bfaea44fab74f849fd3e9b7c44c0ccf28348862f",
+      "live_disk_match": true,
+      "hex": "e030bd00c008b000a064b0002009b0001062b0006076b000",
+      "virtual14": "00b07660",
+      "virtual0c": "00b00920"
+    },
+    {
+      "address": "00d5dcec",
+      "end_exclusive": "00d5dd04",
+      "bytes": 24,
+      "sha256": "d5fadbd2eb4aa60f1c070490b8faa6791c2fc4e8e6e4987dd255034560f7d0b2",
+      "live_disk_match": true,
+      "hex": "e030bd00e008b000607db0002009b000807cb000b087b000",
+      "virtual14": "00b087b0",
+      "virtual0c": "00b00920"
+    },
+    {
+      "address": "00d5db00",
+      "end_exclusive": "00d5db18",
+      "bytes": 24,
+      "sha256": "6f9feccedff38b5bb9f318e1a9dba9ceafaca6498fdb3869431acbb326333050",
+      "live_disk_match": true,
+      "hex": "e030bd00b08baf00d08baf002009b000e080af00308aaf00",
+      "virtual14": "00af8a30",
+      "virtual0c": "00b00920"
+    },
+    {
+      "address": "00d5e048",
+      "end_exclusive": "00d5e060",
+      "bytes": 24,
+      "sha256": "55e7e3c3f2e7fd2df3881b2f41d9928e591bc6f8ad1a15a833b3f79862915492",
+      "live_disk_match": true,
+      "hex": "e030bd0020a8b00050adb00000a1b00040a0b000f0a0b000",
+      "virtual14": "00b0a0f0",
+      "virtual0c": "00b0a100"
+    }
+  ],
+  "calls": [
+    {
+      "function": "00af40e0",
+      "address": "00af40f2",
+      "native": "00af9f50"
+    },
+    {
+      "function": "00af9f50",
+      "address": "00af9f62",
+      "native": "00af9f50"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "function": "00af9f50",
+      "address": "00af9f87",
+      "target": "edx"
+    },
+    {
+      "function": "00af9f50",
+      "address": "00af9f90",
+      "target": "edx"
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 strict Win32 and3/3 existing CTests passed",
+    "flow": "19 and36 listed instructions; zero gaps in both functions",
+    "probe": {
+      "exit_code": 0,
+      "output": "PASS: complete119B dispatcher original/raw/legacy comparison; five actual providers/string pool/material names/ranges; nested children before members; post-call member+table and three current-count reloads; signed nonpositive counts. Native exception transport/gameplay not exercised.\n"
+    },
+    "artifact_hashes": {
+      "src/native_particle_preparation.cpp": "b112e4233cb02cc76df1004c3e3a869b6433434a4620ac27df4115acd397da9d",
+      "include/bsp/native_particle_preparation.hpp": "7582bb6fd01a685c7195589b7f32b155efd59979b747fa80639334c1f6719bb5",
+      "local/particle_preparation_probe.cpp": "31adeb13c0d01728941c379078bbfb8d9bc0f37e4e404d8043a9f31cc9381856",
+      "local/run_particle_preparation_probe.py": "4f4bca40eaa28372cfb73ca82c35937d0c7378f4b32b2a1f8d0b33d159ed75a7",
+      "build/win32/Release/bsp_core.lib": "3edc00b4d1832a510c655468d173a2c5669eea07b067dcb6e160f832a9082a04"
+    },
+    "call_verification": {
+      "checked": 2,
+      "failed": 0,
+      "indirect_sites_preserved": [
+        "00af9f87 EDX",
+        "00af9f90 EDX"
+      ]
+    }
+  },
+  "limits": [
+    "New source overloads, not binary replacements; native EH transport and gameplay unvalidated.",
+    "Five proven final particle tables compose actual providers; other profiles need a real callable current native vtable.",
+    "Probe uses relocated table storage for copied original/legacy paths and original numeric profiles for the raw path.",
+    "No validation of arbitrary invalid pointers or concurrent owner mutation."
+  ]
+}

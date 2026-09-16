@@ -1,5 +1,7 @@
 #include "bsp/native_particle_preparation.hpp"
 #include "bsp/native_node_construction.hpp"
+#include "bsp/native_particle_type_base.hpp"
+#include "bsp/native_particle_type_preparation.hpp"
 #include <cstring>
 #include <stdexcept>
 
@@ -25,23 +27,59 @@ void* live_pointer(const void* owner, std::uint32_t offset) noexcept {
     return *reinterpret_cast<void* const volatile*>(
         reinterpret_cast<std::uintptr_t>(owner) + offset);
 }
+void invoke_preparation(void* member, const NativeParticlePreparationDispatch& dispatch) {
+    void* table = live_pointer(member, 0);
+    const auto target = read<std::uint32_t>(table, 0x14);
+    if (!dispatch.member_virtual14)
+        throw std::logic_error("particle preparation requires actual current member virtual14 dispatch");
+    dispatch.member_virtual14(dispatch.context, member, target);
 }
-void prepare_native_particle_variant_00af40e0(void* variant,
-    const NativeParticlePreparationDispatch& dispatch) {
+void invoke_range(void* member, const NativeParticlePreparationDispatch& dispatch) {
+    void* table = live_pointer(member, 0);
+    const auto target = read<std::uint32_t>(table, 0x0c);
+    if (!dispatch.member_virtual0c)
+        throw std::logic_error("particle preparation requires actual current member virtual0C dispatch");
+    dispatch.member_virtual0c(dispatch.context, member, target);
+}
+void invoke_preparation(void* member, NativeStringRawPoolContext& strings) {
+    void* table = live_pointer(member, 0);
+    switch (reinterpret_cast<std::uintptr_t>(table)) {
+    case 0x00d5dd18: prepare_native_sprite_particle_type_00b0a000(member, strings); return;
+    case 0x00d5dcc0: prepare_native_axial_particle_type_00b07660(member, strings); return;
+    case 0x00d5dcec: prepare_native_floating_particle_type_00b087b0(member, strings); return;
+    case 0x00d5db00: prepare_native_object_particle_type_00af8a30(member); return;
+    case 0x00d5e048: prepare_native_tracer_particle_type_00b0a0f0(member); return;
+    default:
+        using Member = void (__thiscall*)(void*);
+        read<Member>(table, 0x14)(member);
+    }
+}
+void invoke_range(void* member, NativeStringRawPoolContext&) {
+    void* table = live_pointer(member, 0);
+    switch (reinterpret_cast<std::uintptr_t>(table)) {
+    case 0x00d5dd18: case 0x00d5dcc0: case 0x00d5dcec: case 0x00d5db00:
+        clamp_native_particle_type_record_range_00b00920(member); return;
+    case 0x00d5e048: clamp_native_tracer_particle_type_00b0a100(member); return;
+    default:
+        using Member = void (__thiscall*)(void*);
+        read<Member>(table, 0x0c)(member);
+    }
+}
+template<class Context> void prepare_definition(void*, Context&);
+template<class Context> void prepare_variant(void* variant, Context& context) {
     std::uint32_t index = 0;
     void* row = at(variant, 0x10);
     while (static_cast<std::int32_t>(index) < live_count(variant, 0x30)) {
-        prepare_native_particle_definition_00af9f50(live_pointer(row, 0), dispatch);
+        prepare_definition(live_pointer(row, 0), context);
         ++index;
         row = at(row, 4);
     }
 }
-void prepare_native_particle_definition_00af9f50(void* definition,
-    const NativeParticlePreparationDispatch& dispatch) {
+template<class Context> void prepare_definition(void* definition, Context& context) {
     std::uint32_t index = 0;
     void* row = at(definition, 0x3c);
     while (static_cast<std::int32_t>(index) < live_count(definition, 0x4c)) {
-        prepare_native_particle_definition_00af9f50(live_pointer(row, 0), dispatch);
+        prepare_definition(live_pointer(row, 0), context);
         ++index;
         row = at(row, 4);
     }
@@ -49,21 +87,22 @@ void prepare_native_particle_definition_00af9f50(void* definition,
     row = at(definition, 0x54);
     while (static_cast<std::int32_t>(index) < live_count(definition, 0x68)) {
         void* member = live_pointer(row, 0);
-        void* table = live_pointer(member, 0);
-        auto target = read<std::uint32_t>(table, 0x14);
-        if (!dispatch.member_virtual14)
-            throw std::logic_error("particle preparation requires actual current member virtual14 dispatch");
-        dispatch.member_virtual14(dispatch.context, member, target);
+        invoke_preparation(member, context);
         member = live_pointer(row, 0); // AF9F89: do not reuse the earlier owner/table.
-        table = live_pointer(member, 0);
-        target = read<std::uint32_t>(table, 0x0c);
-        if (!dispatch.member_virtual0c)
-            throw std::logic_error("particle preparation requires actual current member virtual0C dispatch");
-        dispatch.member_virtual0c(dispatch.context, member, target);
+        invoke_range(member, context);
         ++index;
         row = at(row, 4);
     }
 }
+} // namespace
+void prepare_native_particle_variant_00af40e0(void* variant,
+    const NativeParticlePreparationDispatch& dispatch) { prepare_variant(variant, dispatch); }
+void prepare_native_particle_definition_00af9f50(void* definition,
+    const NativeParticlePreparationDispatch& dispatch) { prepare_definition(definition, dispatch); }
+void prepare_native_particle_variant_00af40e0(void* variant,
+    NativeStringRawPoolContext& strings) { prepare_variant(variant, strings); }
+void prepare_native_particle_definition_00af9f50(void* definition,
+    NativeStringRawPoolContext& strings) { prepare_definition(definition, strings); }
 void* __fastcall native_particle_index_stream_00af10a0(const void* owner) {
     return read<void*>(owner, 4);
 }

@@ -4,6 +4,7 @@
 namespace bsp {
 struct NativeMaterialStorage;
 struct NativeNodeStorage;
+struct NativeStringRawPoolContext;
 
 // Borrow the existing application's current member dispatch. These callbacks
 // execute the supplied captured target on the SAME actual owner, with native
@@ -20,6 +21,13 @@ struct NativeParticlePreparationDispatch {
 // counts and pointer/table reloads follow the original instructions.
 void prepare_native_particle_variant_00af40e0(void*, const NativeParticlePreparationDispatch&);
 void prepare_native_particle_definition_00af9f50(void*, const NativeParticlePreparationDispatch&);
+
+// Raw-pool companions compose the five proven final particle profiles with
+// their genuine +14 preparation and +0C range methods. Each call uses the same
+// actual member; the second member/table are reloaded after +14. Other profiles
+// require a real callable native vtable. No host dispatch or substitute owner.
+void prepare_native_particle_variant_00af40e0(void*, NativeStringRawPoolContext&);
+void prepare_native_particle_definition_00af9f50(void*, NativeStringRawPoolContext&);
 
 // Complete borrowed resource accessors, ECX actual resources/EAX result/RET.
 void* __fastcall native_particle_index_stream_00af10a0(const void*);
