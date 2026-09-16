@@ -1,8 +1,8 @@
 {
   "packet": "animation_channel_body_r27",
   "base": "ab3a53ee0",
-  "implementation_commit": "9c357271f",
-  "generated_utc": "2026-09-16T08:14:34.365790+00:00",
+  "implementation_commit": "ef5c32343",
+  "generated_utc": "2026-09-16T08:17:46.638009+00:00",
   "program": "/battlestationspacific.exe",
   "source": [
     "include/bsp/native_animation_channel_body_reader.hpp",
@@ -449,8 +449,8 @@
     },
     {
       "path": "src/native_animation_channel_body_reader.cpp",
-      "bytes": 7514,
-      "sha256": "7c1f67f7cf023b5f75fc1878b4c9229af94519f72e66ac1a292d929669120a48"
+      "bytes": 7779,
+      "sha256": "a6fa952ab8022c00bf7ce824b7895b4e46646513596275c6c27fc6adde15359a"
     },
     {
       "path": "cmake/startup.cmake",
@@ -475,17 +475,17 @@
     {
       "path": "local/r27-reader.obj",
       "bytes": 10740,
-      "sha256": "b62e16e73bb0bba81af6277ea3dcd9736bd88f77150a1c9162b9bff596d388ea"
+      "sha256": "b38e1e61681fd7d278f1af709bf9270695131434230dcf55e25b5d97e777d5a4"
     },
     {
       "path": "local/r27-reader-disassembly.txt",
       "bytes": 37028,
-      "sha256": "1e9f4caa3899972fefdc736ba63d9426e84ba823c2dbb3e0fdeeead93e7776d8"
+      "sha256": "bc21f02f1a34dc99a727b4f0602928bad0b4fe8aff070012e69d98789272da4f"
     },
     {
       "path": "local/r27-probe.exe",
       "bytes": 43008,
-      "sha256": "96c0de3abbb2586bac53dd047eafac186e76b6241f908b990d3fce8d798837ee"
+      "sha256": "6477cb53b5fcfa21f8c224e955d781fb302d436f66ccb9584ded9cef4948cfd1"
     },
     {
       "path": "local/r27-probe.log",
@@ -494,8 +494,8 @@
     },
     {
       "path": "local/r27-build.log",
-      "bytes": 57131,
-      "sha256": "de57091f2836b549ddaf720cd1fec11532165cc86baad7603d73b2f3f1998ac5"
+      "bytes": 4913,
+      "sha256": "d582153c1770b8e0eb60e44d0883f74ae2875ab22a54d2a71d9da2f1d3e38fa0"
     },
     {
       "path": "local/r27-call-verification.log",
@@ -508,9 +508,19 @@
       "sha256": "dbef3c38e1cd2b98b31dac6630bbb978c22d5f9c7144dbdd95e9b763106c60bd"
     },
     {
+      "path": "local/r27-copy-order-compile.log",
+      "bytes": 42,
+      "sha256": "1bef0c40d631b681f482b5bcd3e35e8764baa33c374260d9e282c142ad0651a1"
+    },
+    {
+      "path": "local/r27-copy-order-seeds.json",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
       "path": "build/win32/Release/bsp_core.lib",
       "bytes": 63082608,
-      "sha256": "d8f2f4f96ebbb97a1b3d82b4235ea05ce99d948b238997ea29aa48bbb5460d0d"
+      "sha256": "a3f9b7106778dd4939c9fde5cb19166f6905881ba0e795c02a60c6bf82bf8095"
     }
   ],
   "local_evidence_scripts": [
@@ -519,5 +529,10 @@
     "local/r27_finalize.py",
     "local/r27-probe.cmd",
     "local/r27-compile.cmd"
-  ]
+  ],
+  "implementation_commits": [
+    "9c357271f",
+    "ef5c32343"
+  ],
+  "review_correction": "B8AB56/58/5B count, source-data and destination-data volatile loads now occupy three explicit source statements before memcpy; no C++ argument evaluation order dependency. Required incremental build/3 CTests and the existing own-library focused probe rerun after source commit ef5c32343."
 }
