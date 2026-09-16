@@ -1,6 +1,6 @@
 {
   "packet": "native_camera_view_set_main_r50",
-  "status": "reconstructed; strict-build and bounded actual-storage native/source fixture passed; parent integration and annotations pending",
+  "status": "integrated_source_and_saved_annotations; strict_build_and_prepared_actual_storage_native_source_fixture_passed",
   "created_at": "2026-09-16T13:57:16.525280+00:00",
   "baseline_commit": "13675f8236f69f16df97b6cc8a817d3daeff05db",
   "source_commit": "42664cfb60beec24732c54b778d94d8a5267ec9c",
@@ -649,5 +649,112 @@
     "cmake_lease_released_before_build": true,
     "archive_immutable": true,
     "build_after_archive": false
+  },
+  "primary_integration": {
+    "source_merge": "84f994f53",
+    "full_source_header_fixture_reviewed": true,
+    "worker_artifacts_rehashed": 3675,
+    "native_spans_independently_verified": 16,
+    "native_bytes": 2649,
+    "full_native_functions": 12,
+    "native_calls_checked": 22,
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "primary_fixture_rerun": false,
+    "worker_archive": "local/evidence-r50/camera-view-original-r50.zip"
+  },
+  "primary_archive": {
+    "path": "local/evidence-r50/camera-view-main-r50.zip",
+    "sha256": "68ca8a316306825b7b7041512b2320e2f1206f429e7434c8c43b4909f6beb0b1",
+    "files": [
+      {
+        "path": "include/bsp/native_camera_view_set.hpp",
+        "bytes": 939,
+        "sha256": "e29d123a1460bc20b192618d2e4b5a8fa0f4451f15bb8af1fce3b260d7bf0223"
+      },
+      {
+        "path": "src/native_camera_view_set.cpp",
+        "bytes": 1430,
+        "sha256": "0e448dbd47bdbcbc16b5a3e32621a05ccdf640dd8d33e86bba2b94954c296879"
+      },
+      {
+        "path": "docs/NATIVE_CAMERA_VIEW_SET_R50.md",
+        "bytes": 1830,
+        "sha256": "b7f440499b3be7faee85ff19dc59553b8dd1528734ba9b4bf36f8b89ba231567"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 150480,
+        "sha256": "8f04fa951567f6e5368c311b5beda065c0728d61ff7636e4c329fa3f6fad7c7a"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 230424,
+        "sha256": "82d354b50ba929eb1e51a31853f098ca2c71ee1c8fad723b7d606a76cc018cd7"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_camera_view_set.obj",
+        "bytes": 8571,
+        "sha256": "9a20e02beed57b32c6706e60cc7d977d923d1e528014886daa93788c6589ccab"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63570330,
+        "sha256": "6a3658980edaa53d4b84f61bad9efa315f775e7506eb92aebe2ec9482426a449"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2267136,
+        "sha256": "e7711091ac37be2766e2049617287d44d73c32639a8e4fb01a8321750f63685f"
+      },
+      {
+        "path": "local/r50_integration.log",
+        "bytes": 913,
+        "sha256": "f6e94b67d40fca6c2cd7cee41581da43996276bef49c3180ab348a0030570c2e"
+      },
+      {
+        "path": "local/r50_camera_view_proto.txt",
+        "bytes": 679,
+        "sha256": "c541d0cc1a8ecbd38f0511014b3d66bac3c899460aa076c1d9261d7d3b18b817"
+      },
+      {
+        "path": "local/r50_camera_view_annotations.log",
+        "bytes": 187,
+        "sha256": "ce18ea718e53afbbebc94d2c59d638244c7d12ca33aebe7c0662c0a0693bca7a"
+      },
+      {
+        "path": "local/r50_camera_view_exports.log",
+        "bytes": 104,
+        "sha256": "0a22c16d2f81366b01921be01d67d6cba8c1a2436b0d47a461e517412b0c34be"
+      },
+      {
+        "path": "local/r50_camera_view_native_spans.json",
+        "bytes": 14273,
+        "sha256": "b01b41c39704235372bd89855648927fc74d5b7a2b83da22728009e848b3282a"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T140202Z.json",
+        "bytes": 1481,
+        "sha256": "06d49bf54e44db5d140a76298da0faf9ca0e28c414e2a814bf5a1a0e82dbff32"
+      }
+    ]
+  },
+  "primary_annotations": {
+    "status": "Evidence-backed descriptive name applied, current source record added; original ABI limitations explicit. Prior comments preserved, project saved and exports refreshed.",
+    "prior_annotations": [
+      {
+        "address": "00b71490",
+        "before": {
+          "address": "00b71490",
+          "function_name": "FUN_00b71490"
+        },
+        "after": {
+          "address": "00b71490",
+          "name": "BSP_Camera_SetViewMatrix",
+          "evidence": "R50 full55B B71490: original ECX camera, stacked view pointer, RET4. Capture input before +2F0 maskFFFFFE4B; capture profile before genuine raw B63B30 inverse into private40h; read captured profile current+34 only after inverse, pass returned pointer to current B71460 through same NativeCameraOwner pose adapter, then separately invoke B70660 again. New C++ owner interface, no second camera/pool or application publication. Unsupported profile/slot rejection preserves preceding mask/inverse effects. Parent reviewed full source/header, all19 wrapper instructions, provider pose adapter and complete scoped fixture.3675 archived artifacts,16 live/PE spans2649B,12complete bodies/all22calls independently verified. Worker and combined strict /MD Win32 build+3CTests pass. Worker original/source real prepared pool/owner fixture compares complete45Ch storage for separate input, world-storage alias and flags-word-input alias; source unsupported-slot case passes. No primary fixture rerun. Existing typed owner/scene association and raw pool are genuine; B71A80 construction/viewport/device/live renderer/app/gameplay and original private-stack/fault/FH3 ABI unproved. reports/native_camera_view_set_main_r50.json."
+        },
+        "status": "applied"
+      }
+    ]
   }
 }
