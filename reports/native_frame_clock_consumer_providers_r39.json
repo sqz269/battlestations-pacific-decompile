@@ -1,0 +1,1449 @@
+{
+  "schema": "bsp.native_frame_clock_consumer_providers.r39.v1",
+  "status": "additive_raw_sound_input_current_providers_built_fixture_pass_application_unbound",
+  "baseline_commit": "6d3757320",
+  "source_commit": "bdc50a386b33a27c29f49676d1ca7b4cd50bba9b",
+  "packet": "R37 stage B; R38 borrowed publication interface is reused without modification.",
+  "owned_files": [
+    "include/bsp/sound_resource_runtime.hpp",
+    "src/sound_resource_runtime.cpp",
+    "include/bsp/game_sound_runtime.hpp",
+    "src/game_sound_runtime.cpp",
+    "include/bsp/native_input_device_runtime.hpp",
+    "src/native_input_device_runtime.cpp",
+    "docs/NATIVE_FRAME_CLOCK_CONSUMER_PROVIDERS.md",
+    "reports/native_frame_clock_consumer_providers_r39.json"
+  ],
+  "leased_native_callsites": [
+    "00a887ea",
+    "00a7e639",
+    "00a98cdb",
+    "00a990d5"
+  ],
+  "scope": {
+    "changed": "Two borrowed binding types, raw current-slot branches and 16-byte result storage in existing providers. GameSoundRuntime update delegates to its existing clock host; input delegates through its borrowed binding.",
+    "unchanged": "game_hosts, application clock ownership, frame-clock methods/lifecycle/publication, sound update arithmetic, native joystick consumers, original device storage layouts, shared deletion bindings, CMake and permanent tests.",
+    "original_body_entries": [],
+    "ghidra_mutations": false,
+    "ledger_changes": false,
+    "review": "Parent approved converting semantic/raw binding constructors before aggregate edits and accepted the serialized/live/disjoint snapshot boundary. R38 archive and head were held until parent capture/integration notice; no R38 archive content was overwritten."
+  },
+  "interface": {
+    "SoundClockBinding": {
+      "constructors": [
+        "SoundClockBinding(const FrameClock&) noexcept",
+        "SoundClockBinding(const NativeFrameClockPublicationContext&) noexcept"
+      ],
+      "selection": "No default constructor; private const semantic/raw pointers select exactly one borrowed representation. Copies copy only the binding, not clock state.",
+      "methods": [
+        "std::array<uint32_t,4> startup_words_slot14() const",
+        "const ClockTimestamp* current_slot14(ClockTimestamp& result) const"
+      ],
+      "raw": "Both operations call current_published_native_frame_clock. Startup copies16B into the array; current copies16B into caller result and returns its address. Neither uses BEE080 sampling.",
+      "semantic": "Startup retains sample_frame_clock_00bee080 and its existing throw-on-false policy. Current returns the same projected current-member pointer, with no result copy."
+    },
+    "FrameClockSoundStartupHost": {
+      "constructors": "Preserves const FrameClock& constructor; adds publication-context and SoundClockBinding overloads.",
+      "startup": "Existing sample_time_14 interface delegates to binding startup_words_slot14. Historical method name is retained even though the raw branch reads current.",
+      "update": "New current_timestamp_slot14 uses one private ClockTimestamp current_result_. GameSoundRuntime::Impl calls this exact provider; the existing update consumer immediately copies the returned timestamp.",
+      "lifetime": "Raw result is temporary adapter storage, overwritten by a subsequent current call. The borrowed publication context and live actual clock must outlive the call."
+    },
+    "NativeInputClockBinding": {
+      "constructors": [
+        "NativeInputClockBinding(FrameClock* volatile&) noexcept",
+        "NativeInputClockBinding(const NativeFrameClockPublicationContext&) noexcept"
+      ],
+      "selection": "No default constructor; exactly one private borrowed representation. The semantic branch retains the actual semantic publication cell address and reloads it.",
+      "method": "const ClockTimestamp& current_slot14(ClockTimestamp& result) const",
+      "raw": "R38 current-slot admission and reload, copy16B into caller result, return that reference. NativeInputDeviceRuntime supplies its private clock_current_result_.",
+      "semantic": "Reload original FrameClock* volatile cell, retain original null logic_error and sound_frame_clock_current_00bee050 return reference. No dummy FrameClock is needed for the raw path."
+    },
+    "aggregate_compatibility": {
+      "GameSoundRuntimeServices": "clock retains its field name/order, now SoundClockBinding. Existing FrameClock arguments implicitly convert; raw callers pass the shared publication context.",
+      "NativeInputDeviceRuntimeServices": "clock_01090ab0 retains its field name/order, now NativeInputClockBinding. Existing typed publication references implicitly convert; raw callers pass the same shared context.",
+      "measured_win32_sizes": {
+        "SoundClockBinding": 8,
+        "NativeInputClockBinding": 8,
+        "GameSoundRuntimeServices_before": 96,
+        "GameSoundRuntimeServices_after": 104,
+        "NativeInputDeviceRuntimeServices_before": 124,
+        "NativeInputDeviceRuntimeServices_after": 128,
+        "FrameClockSoundStartupHost_after": 32
+      },
+      "measurement": "Old service definitions extracted verbatim from baseline6d3757320 into uniquely named compile-only types; fixture reports sizeof for those and current types. No old-layout service object or fake provider was instantiated.",
+      "boundary": "Source aggregate sizes and following source-member offsets change. These are C++ composition contracts, not original game ABI layouts. Existing native object offsets and device access structs are untouched."
+    },
+    "no_ownership": "Bindings create no clock, publication, allocator, manager, registration, virtual table or process callback. They neither copy full clock state nor advance it. They borrow R38 admission behavior and preserve its explicit unsupported-domain exceptions."
+  },
+  "original_evidence_and_schedule": [
+    {
+      "entry": "00a88770",
+      "consumer": "Sound startup",
+      "abi": "Native ECX owner; current virtual call uses ECX clock, EAX16B pointer. Existing source host returns four DWORDs, not a drop-in native ABI.",
+      "load": "00a887ea",
+      "call": "00a887f5",
+      "slot": "14",
+      "reads": "A887F7 timestamp+0 then owner+118 store;A887FF timestamp+4 then owner+11C;A88808 timestamp+8 then owner+120;A88811 timestamp+C then owner+124.",
+      "source": "Raw startup current array contains exactly those16B. No sample, update or BOOL test. Original interleaved owner stores are not recreated by the array-return ABI."
+    },
+    {
+      "entry": "00a7e630",
+      "consumer": "Sound update base",
+      "abi": "Current Ghidra source-bridge prototype fastcall self/unusedEDX plus matrix and three velocity stack values. This packet modifies the clock provider, not that body ABI.",
+      "load": "00a7e639",
+      "call": "00a7e644",
+      "slot": "14",
+      "reads": "Timestamp DWORDs +8,+0,+4,+C, copied to local timestamp before530890 atA7E671; original then performs FILD/FILD/FDIVP and updates owner+118..124 before alternate-owner work.",
+      "source": "New provider snapshot is copied immediately by unchanged sound_system_update consumer. Native timestamp load order/fault behavior is not claimed by memcpy."
+    },
+    {
+      "entry": "00a98cc0",
+      "consumer": "Joystick force",
+      "abi": "Existing source bridge fastcall actual_device/unusedEDX, channel and float on stack. This packet preserves NativeJoystickCalls constClockTimestamp& contract.",
+      "load": "00a98cdb",
+      "call": "00a98ce6",
+      "slot": "14",
+      "reads": "A98CE8 loads device+B38 deadline BEFORE A98CEE/F0 FILD timestamp ticks/frequency; divide and float spill precede deadline comparison.",
+      "source": "Raw snapshot reads timestamp before returning, hence before the unchanged caller loads deadline. This is an explicit serialized-storage adapter boundary, not concurrent or original fault-schedule parity."
+    },
+    {
+      "entry": "00a98e30",
+      "consumer": "Joystick poll",
+      "abi": "Existing source bridge fastcall actual_device/unusedEDX and ignored float seconds on stack.",
+      "load": "00a990d5",
+      "call": "00a990e0",
+      "slot": "14",
+      "reads": "A990E2/E4 FILD ticks/frequency, E7 FDIVP, E9 float spill, ED float reload,F1 add double60seconds atCE3D68,F7 store device+B38.",
+      "source": "Raw snapshot supplies the same timestamp values to unchanged x87 conversion and deadline arithmetic in the supported serialized domain."
+    }
+  ],
+  "r37_correction": {
+    "incorrect_narrative_entry": "00a7e590",
+    "verified_entry": "00a7e630",
+    "preserved_fact": "R37 load addressA7E639 and slot14 semantics were correct. Live proto and full existing A7E630 listing establish the actual containing entry. No prior report was silently rewritten."
+  },
+  "storage_and_schedule_contract": [
+    "All calls are serialized on the owning thread with live, accessible, disjoint raw clock and consumer storage. R38 profile checks do not prove allocation size or pointer lifetime.",
+    "Raw current providers independently reload the same publication on each call; they do not retain the returned raw owner pointer across calls.",
+    "Snapshots contain only16 timestamp bytes. The caller must consume the result before another provider call or adapter retirement. Publication changes alone do not update the previous snapshot.",
+    "The original force consumer loads deadline before reading timestamp qwords. This adapter copies timestamp earlier. No concurrent mutation, aliased storage, exception/fault ordering or native binary ABI equivalence is claimed.",
+    "Legacy semantic sound startup still samples and can throw on failed QPC. That known mismatch is preserved as an explicitly limited legacy path; the raw path uses native current-slot semantics."
+  ],
+  "build": {
+    "command": "./scripts/build.ps1",
+    "seed_command": "python tools/ghidra_export.py verify-seeds",
+    "seed_result": "PASS",
+    "target": "MSVC Win32 Release /MD (MultiThreadedDLL), /fp:strict, /W4 /WX",
+    "result": "PASS",
+    "ctests": [
+      {
+        "name": "reconstructed_math",
+        "result": "PASS"
+      },
+      {
+        "name": "native_math_differential",
+        "result": "PASS"
+      },
+      {
+        "name": "tool_tests",
+        "result": "PASS"
+      }
+    ],
+    "compile_inputs": 3123,
+    "frozen_inputs_unchanged": true,
+    "compatibility": "Existing game_hosts aggregate calls compile without edits. Full GameSoundRuntime and NativeInputDeviceRuntime translation units compile against the new binding members.",
+    "logs": [
+      {
+        "path": "local/frame_clock_consumer_build_r39.log",
+        "bytes": 9093,
+        "sha256": "df7fbf7f0856845eb42ed0df54d41979dde9669044adc8b0d006995c7704fd59"
+      },
+      {
+        "path": "local/frame_clock_consumer_verify_seeds_r39.log",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2523,
+        "sha256": "2df70502554f7b394f7e9c13e79252b9196b9c61c15c8a28e791e28f61bad73b"
+      }
+    ]
+  },
+  "fixture": {
+    "kind": "One ignored genuine-storage provider fixture; no new permanent tests and no mock services.",
+    "source": "local/frame_clock_consumer_probe_r39.cpp",
+    "runner": "local/run_frame_clock_consumer_probe_r39.py",
+    "storage": "Two genuine80h owners constructed by R36 in the SAME real14h singleton manager, with same AA0/AB0/method/lifecycle contexts and exact shared deletion table. No FrameClock object is instantiated anywhere in this fixture.",
+    "profile": "Fresh PE/live verified44B table copied into a nonfixed VirtualAlloc band, then protected read-only. methods.profile_d68d50 points to that borrowed view; object profile stamp remainsD68D50. Numeric table residency is not a provider precondition.",
+    "exercised": [
+      "FrameClockSoundStartupHost raw startup and current result provider",
+      "SoundClockBinding exact aggregate field type and current provider",
+      "NativeInputClockBinding exact aggregate field type and current provider",
+      "R38 publication guards",
+      "R36 lifecycle and real shared manager drain"
+    ],
+    "positive_checks": [
+      "Raw sound startup words and update snapshot equal A.current16B; input returns caller-owned16B result equal A.current.",
+      "Changing the same AB0 cell to genuine B makes subsequent startup/update/input reads equal B.current. Earlier sound result stays unchanged until the next current call, which reuses its result address.",
+      "Observed real-module QueryPerformanceCounter count does not change during any current-provider operation; neither owner update count changes. No sampler or hidden advancing clock.",
+      "Null and unsupported object profile failures propagate through sound/input rather than falling back to a semantic clock.",
+      "Full BD0400 drain reaches BEE110 using the existing frame_clock binding, frees each actual clock exactlyonce via forwarding CRT observer, clears AB0 and manager storage, retains AA0 until caller frees captured manager."
+    ],
+    "instrumentation": "Existing R38 IAT observers forward to real QPC/free and are restored. QPC/QPF initialization and locks/registration/destruction are real. Static type/sizeof checks instantiate no fake services.",
+    "not_exercised": "No complete GameSoundRuntime/FMOD startup, DirectInput runtime/device lifecycle, application producer, worker callback or game run. The exact reusable clock providers used by those runtimes are exercised directly; runtime forwarding and legacy aggregate compatibility are source/build checked.",
+    "run_receipt": [
+      {
+        "fixture": "frame_clock_consumer",
+        "source": "local/frame_clock_consumer_probe_r39.cpp",
+        "exe": "local\\frame_clock_consumer_probe_r39.exe",
+        "sha256": "47659d210e3a80753e5b05b3e70c7d01550b3f96f3ec0906a517318add89ec5a",
+        "build_exit": 0,
+        "run_exit": 0,
+        "manifest_asInvoker": true,
+        "selected_output": [
+          "LAYOUT SoundClockBinding=8 NativeInputClockBinding=8 GameSoundRuntimeServices=104 NativeInputDeviceRuntimeServices=128 SoundStartupHost=32",
+          "LAYOUT prior GameSoundRuntimeServices=96 prior NativeInputDeviceRuntimeServices=124",
+          "PASS raw sound startup/update and input current providers: exact16B snapshots, live A/B reload, unchanged interfaces, no dummy FrameClock, no QPC/advance",
+          "PASS real registered80h owners drained once with persistent contexts and exact shared deletion"
+        ]
+      }
+    ],
+    "resolved_modules": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\local\\frame_clock_consumer_probe_r39.exe",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 260608,
+        "sha256": "47659d210e3a80753e5b05b3e70c7d01550b3f96f3ec0906a517318add89ec5a",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ntdll.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1822400,
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 687472,
+        "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\KernelBase.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 2974168,
+        "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\msvcp140.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 618944,
+        "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      }
+    ],
+    "module_identity": "Same Win32 probe resolves each opened module with GetFinalPathNameByHandleW and checks loaded-memory I386; archive helper separately verifies resolved-file PE Machine I386 and hashes it. Seven actual modules in this run; no System32/WOW64 pathname substitution."
+  },
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "collection": "Read-only BSP CLI batches verify saved project/program. PE offsets and Capstone instruction boundaries derived independently; shared exports resolved through workspace.py.",
+    "span_count": 6,
+    "bytes": 265,
+    "calls": 5,
+    "all_live_equals_pe": true,
+    "selected_listing_gaps": {},
+    "spans": [
+      {
+        "label": "sound_startup_current",
+        "address": "00a887ea",
+        "length": 52,
+        "end_exclusive": "00a8881e",
+        "pe_offset": 6850538,
+        "sha256": "7bd9177eb9d3476ca361395f3497c493424f328dc5834f91728268adde0ec316",
+        "hex": "8b0db00a09018b118b4214ffd08b08898e180100008b500489961c0100008b4808898e200100008b500c8d7e4857899624010000",
+        "live_equals_pe": true,
+        "calls": [
+          {
+            "address": "00a887f5",
+            "hex": "ffd0",
+            "text": "call eax"
+          }
+        ],
+        "listing_entry": "00a88770",
+        "listing_missing_instruction_starts": [],
+        "instruction_count": 14,
+        "instruction_starts": [
+          "00a887ea",
+          "00a887f0",
+          "00a887f2",
+          "00a887f5",
+          "00a887f7",
+          "00a887f9",
+          "00a887ff",
+          "00a88802",
+          "00a88808",
+          "00a8880b",
+          "00a88811",
+          "00a88814",
+          "00a88817",
+          "00a88818"
+        ]
+      },
+      {
+        "label": "sound_update_current",
+        "address": "00a7e639",
+        "length": 87,
+        "end_exclusive": "00a7e690",
+        "pe_offset": 6809145,
+        "sha256": "6ec12b6d878f6e598a07d552faf4caa451b1f2caa2600cba64e04f1e6ea819ae",
+        "hex": "8b0db00a09018b018b5014ffd28b48088b188b68048b500c8db718010000568d44244c894c2464508d4c2460895c2460896c24648954246ce81a22abffdf28df68088b4c24608b542464891edef9896e04894e0889560c",
+        "live_equals_pe": true,
+        "calls": [
+          {
+            "address": "00a7e644",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00a7e671",
+            "hex": "e81a22abff",
+            "text": "call 0x530890"
+          }
+        ],
+        "listing_entry": "00a7e630",
+        "listing_missing_instruction_starts": [],
+        "instruction_count": 27,
+        "instruction_starts": [
+          "00a7e639",
+          "00a7e63f",
+          "00a7e641",
+          "00a7e644",
+          "00a7e646",
+          "00a7e649",
+          "00a7e64b",
+          "00a7e64e",
+          "00a7e651",
+          "00a7e657",
+          "00a7e658",
+          "00a7e65c",
+          "00a7e660",
+          "00a7e661",
+          "00a7e665",
+          "00a7e669",
+          "00a7e66d",
+          "00a7e671",
+          "00a7e676",
+          "00a7e678",
+          "00a7e67b",
+          "00a7e67f",
+          "00a7e683",
+          "00a7e685",
+          "00a7e687",
+          "00a7e68a",
+          "00a7e68d"
+        ]
+      },
+      {
+        "label": "joystick_force_current",
+        "address": "00a98cdb",
+        "length": 38,
+        "end_exclusive": "00a98d01",
+        "pe_offset": 6917339,
+        "sha256": "e774f899863cef8468ab8dcb9b56e43498800aad79797937007b438f0c167db9",
+        "hex": "8b0db00a09018b018b5014ffd2d986380b0000df28df6808def9d95c240cd944240cdff1ddd8",
+        "live_equals_pe": true,
+        "calls": [
+          {
+            "address": "00a98ce6",
+            "hex": "ffd2",
+            "text": "call edx"
+          }
+        ],
+        "listing_entry": "00a98cc0",
+        "listing_missing_instruction_starts": [],
+        "instruction_count": 12,
+        "instruction_starts": [
+          "00a98cdb",
+          "00a98ce1",
+          "00a98ce3",
+          "00a98ce6",
+          "00a98ce8",
+          "00a98cee",
+          "00a98cf0",
+          "00a98cf3",
+          "00a98cf5",
+          "00a98cf9",
+          "00a98cfd",
+          "00a98cff"
+        ]
+      },
+      {
+        "label": "joystick_poll_current",
+        "address": "00a990d5",
+        "length": 40,
+        "end_exclusive": "00a990fd",
+        "pe_offset": 6918357,
+        "sha256": "da7a42229b368af8794cdb94ec66b47f6056b9a65a56b6216fd315ca20855c93",
+        "hex": "8b0db00a09018b118b4214ffd0df28df6808def9d95c2414d9442414dc05683dce00d99e380b0000",
+        "live_equals_pe": true,
+        "calls": [
+          {
+            "address": "00a990e0",
+            "hex": "ffd0",
+            "text": "call eax"
+          }
+        ],
+        "listing_entry": "00a98e30",
+        "listing_missing_instruction_starts": [],
+        "instruction_count": 11,
+        "instruction_starts": [
+          "00a990d5",
+          "00a990db",
+          "00a990dd",
+          "00a990e0",
+          "00a990e2",
+          "00a990e4",
+          "00a990e7",
+          "00a990e9",
+          "00a990ed",
+          "00a990f1",
+          "00a990f7"
+        ]
+      },
+      {
+        "label": "current_getter",
+        "address": "00bee050",
+        "length": 4,
+        "end_exclusive": "00bee054",
+        "pe_offset": 8314960,
+        "sha256": "dadecdeeff0b9454fd9dc08c558a9148187b2b1bec017fe8b92430570b86012a",
+        "hex": "8d4120c3",
+        "live_equals_pe": true,
+        "calls": [],
+        "listing_entry": "00bee050",
+        "listing_missing_instruction_starts": [],
+        "instruction_count": 2,
+        "instruction_starts": [
+          "00bee050",
+          "00bee053"
+        ]
+      },
+      {
+        "label": "profile",
+        "address": "00d68d50",
+        "length": 44,
+        "end_exclusive": "00d68d7c",
+        "pe_offset": 9866576,
+        "sha256": "fed689db7f77645fa9f42e4b36aaf2c74312f0539c3cadf20ff28afe7c14e781",
+        "hex": "10e1be00d0dbbe0030dcbe00e0dabe00c0ddbe0050e0be0060e0be0070e0be0080e0be0020dbbe0060dbbe00",
+        "live_equals_pe": true
+      }
+    ]
+  },
+  "linked_machine": {
+    "exe_sha256": "47659d210e3a80753e5b05b3e70c7d01550b3f96f3ec0906a517318add89ec5a",
+    "inspection": "MSVC map and PE-backed Capstone decode identify four linked provider spans; startup_words_slot14 is inlined into sample_time_14. Raw paths call R38 current_published_native_frame_clock. The legacy startup branch retains semantic sample_frame_clock_00bee080; input legacy branch retains semantic current getter.",
+    "boundary": "Function spans are bounded by the next mapped symbol and may include alignment. This is source-machine call evidence, not original consumer byte parity.",
+    "functions": [
+      {
+        "symbol": "?current_slot14@SoundClockBinding@bsp@@QBEPBUClockTimestamp@2@AAU32@@Z",
+        "object": "bsp_core:sound_resource_runtime.obj",
+        "address": "00403630",
+        "end_exclusive": "00403660",
+        "length": 48,
+        "sha256": "6b15ba0cae41662f49893d75d8f08a28a83cb22194903db75d5234792a6bd263",
+        "hex": "558bec8b410485c0741650e8503a000083c4040f10008b45080f11005dc204008b0183c0205dc20400cccccccccccccc",
+        "instructions": [
+          {
+            "address": "00403630",
+            "hex": "55",
+            "text": "push ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "00403631",
+            "hex": "8bec",
+            "text": "mov ebp, esp",
+            "resolved_target": null
+          },
+          {
+            "address": "00403633",
+            "hex": "8b4104",
+            "text": "mov eax, dword ptr [ecx + 4]",
+            "resolved_target": null
+          },
+          {
+            "address": "00403636",
+            "hex": "85c0",
+            "text": "test eax, eax",
+            "resolved_target": null
+          },
+          {
+            "address": "00403638",
+            "hex": "7416",
+            "text": "je 0x403650",
+            "resolved_target": null
+          },
+          {
+            "address": "0040363a",
+            "hex": "50",
+            "text": "push eax",
+            "resolved_target": null
+          },
+          {
+            "address": "0040363b",
+            "hex": "e8503a0000",
+            "text": "call 0x407090",
+            "resolved_target": "?current_published_native_frame_clock@bsp@@YAPBXABUNativeFrameClockPublicationContext@1@@Z"
+          },
+          {
+            "address": "00403640",
+            "hex": "83c404",
+            "text": "add esp, 4",
+            "resolved_target": null
+          },
+          {
+            "address": "00403643",
+            "hex": "0f1000",
+            "text": "movups xmm0, xmmword ptr [eax]",
+            "resolved_target": null
+          },
+          {
+            "address": "00403646",
+            "hex": "8b4508",
+            "text": "mov eax, dword ptr [ebp + 8]",
+            "resolved_target": null
+          },
+          {
+            "address": "00403649",
+            "hex": "0f1100",
+            "text": "movups xmmword ptr [eax], xmm0",
+            "resolved_target": null
+          },
+          {
+            "address": "0040364c",
+            "hex": "5d",
+            "text": "pop ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "0040364d",
+            "hex": "c20400",
+            "text": "ret 4",
+            "resolved_target": null
+          },
+          {
+            "address": "00403650",
+            "hex": "8b01",
+            "text": "mov eax, dword ptr [ecx]",
+            "resolved_target": null
+          },
+          {
+            "address": "00403652",
+            "hex": "83c020",
+            "text": "add eax, 0x20",
+            "resolved_target": null
+          },
+          {
+            "address": "00403655",
+            "hex": "5d",
+            "text": "pop ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "00403656",
+            "hex": "c20400",
+            "text": "ret 4",
+            "resolved_target": null
+          },
+          {
+            "address": "00403659",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040365a",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040365b",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040365c",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040365d",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040365e",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040365f",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          }
+        ],
+        "note": "Linked source span bounded by next mapped function; may include alignment. This is not original-game byte parity."
+      },
+      {
+        "symbol": "?current_timestamp_slot14@FrameClockSoundStartupHost@bsp@@QAEPBUClockTimestamp@2@XZ",
+        "object": "bsp_core:sound_resource_runtime.obj",
+        "address": "00403660",
+        "end_exclusive": "00403690",
+        "length": 48,
+        "sha256": "d7cbd6ec9ef7d57d97f20a4d895738480c5a3ab361eff2bf208e385f2b0916c5",
+        "hex": "8b4108568d711085c0741350e81f3a000083c4040f10008bc60f11065ec38b410483c0205ec3cccccccccccccccccccc",
+        "instructions": [
+          {
+            "address": "00403660",
+            "hex": "8b4108",
+            "text": "mov eax, dword ptr [ecx + 8]",
+            "resolved_target": null
+          },
+          {
+            "address": "00403663",
+            "hex": "56",
+            "text": "push esi",
+            "resolved_target": null
+          },
+          {
+            "address": "00403664",
+            "hex": "8d7110",
+            "text": "lea esi, [ecx + 0x10]",
+            "resolved_target": null
+          },
+          {
+            "address": "00403667",
+            "hex": "85c0",
+            "text": "test eax, eax",
+            "resolved_target": null
+          },
+          {
+            "address": "00403669",
+            "hex": "7413",
+            "text": "je 0x40367e",
+            "resolved_target": null
+          },
+          {
+            "address": "0040366b",
+            "hex": "50",
+            "text": "push eax",
+            "resolved_target": null
+          },
+          {
+            "address": "0040366c",
+            "hex": "e81f3a0000",
+            "text": "call 0x407090",
+            "resolved_target": "?current_published_native_frame_clock@bsp@@YAPBXABUNativeFrameClockPublicationContext@1@@Z"
+          },
+          {
+            "address": "00403671",
+            "hex": "83c404",
+            "text": "add esp, 4",
+            "resolved_target": null
+          },
+          {
+            "address": "00403674",
+            "hex": "0f1000",
+            "text": "movups xmm0, xmmword ptr [eax]",
+            "resolved_target": null
+          },
+          {
+            "address": "00403677",
+            "hex": "8bc6",
+            "text": "mov eax, esi",
+            "resolved_target": null
+          },
+          {
+            "address": "00403679",
+            "hex": "0f1106",
+            "text": "movups xmmword ptr [esi], xmm0",
+            "resolved_target": null
+          },
+          {
+            "address": "0040367c",
+            "hex": "5e",
+            "text": "pop esi",
+            "resolved_target": null
+          },
+          {
+            "address": "0040367d",
+            "hex": "c3",
+            "text": "ret",
+            "resolved_target": null
+          },
+          {
+            "address": "0040367e",
+            "hex": "8b4104",
+            "text": "mov eax, dword ptr [ecx + 4]",
+            "resolved_target": null
+          },
+          {
+            "address": "00403681",
+            "hex": "83c020",
+            "text": "add eax, 0x20",
+            "resolved_target": null
+          },
+          {
+            "address": "00403684",
+            "hex": "5e",
+            "text": "pop esi",
+            "resolved_target": null
+          },
+          {
+            "address": "00403685",
+            "hex": "c3",
+            "text": "ret",
+            "resolved_target": null
+          },
+          {
+            "address": "00403686",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00403687",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00403688",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00403689",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040368a",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040368b",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040368c",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040368d",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040368e",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040368f",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          }
+        ],
+        "note": "Linked source span bounded by next mapped function; may include alignment. This is not original-game byte parity."
+      },
+      {
+        "symbol": "?sample_time_14@FrameClockSoundStartupHost@bsp@@UAE?AV?$array@I$03@std@@XZ",
+        "object": "bsp_core:sound_resource_runtime.obj",
+        "address": "004036b0",
+        "end_exclusive": "00403730",
+        "length": 128,
+        "sha256": "ce5e883e92418294a5d4c195fcdb56d6bc794c221a1a8153fa7145387b037c22",
+        "hex": "558bec8b410883ec1c85c0741850e8cd39000083c4040f10008b45080f11008be55dc204008d45e4c745ec0100000050ff71040f57c0c745f000000000660f1345e4e8d932000083c40884c074108b45080f1045e40f11008be55dc2040068ecc942008d4df4e8d5daffff6844c143008d45f450e8d57a0200cccccccccccccc",
+        "instructions": [
+          {
+            "address": "004036b0",
+            "hex": "55",
+            "text": "push ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "004036b1",
+            "hex": "8bec",
+            "text": "mov ebp, esp",
+            "resolved_target": null
+          },
+          {
+            "address": "004036b3",
+            "hex": "8b4108",
+            "text": "mov eax, dword ptr [ecx + 8]",
+            "resolved_target": null
+          },
+          {
+            "address": "004036b6",
+            "hex": "83ec1c",
+            "text": "sub esp, 0x1c",
+            "resolved_target": null
+          },
+          {
+            "address": "004036b9",
+            "hex": "85c0",
+            "text": "test eax, eax",
+            "resolved_target": null
+          },
+          {
+            "address": "004036bb",
+            "hex": "7418",
+            "text": "je 0x4036d5",
+            "resolved_target": null
+          },
+          {
+            "address": "004036bd",
+            "hex": "50",
+            "text": "push eax",
+            "resolved_target": null
+          },
+          {
+            "address": "004036be",
+            "hex": "e8cd390000",
+            "text": "call 0x407090",
+            "resolved_target": "?current_published_native_frame_clock@bsp@@YAPBXABUNativeFrameClockPublicationContext@1@@Z"
+          },
+          {
+            "address": "004036c3",
+            "hex": "83c404",
+            "text": "add esp, 4",
+            "resolved_target": null
+          },
+          {
+            "address": "004036c6",
+            "hex": "0f1000",
+            "text": "movups xmm0, xmmword ptr [eax]",
+            "resolved_target": null
+          },
+          {
+            "address": "004036c9",
+            "hex": "8b4508",
+            "text": "mov eax, dword ptr [ebp + 8]",
+            "resolved_target": null
+          },
+          {
+            "address": "004036cc",
+            "hex": "0f1100",
+            "text": "movups xmmword ptr [eax], xmm0",
+            "resolved_target": null
+          },
+          {
+            "address": "004036cf",
+            "hex": "8be5",
+            "text": "mov esp, ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "004036d1",
+            "hex": "5d",
+            "text": "pop ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "004036d2",
+            "hex": "c20400",
+            "text": "ret 4",
+            "resolved_target": null
+          },
+          {
+            "address": "004036d5",
+            "hex": "8d45e4",
+            "text": "lea eax, [ebp - 0x1c]",
+            "resolved_target": null
+          },
+          {
+            "address": "004036d8",
+            "hex": "c745ec01000000",
+            "text": "mov dword ptr [ebp - 0x14], 1",
+            "resolved_target": null
+          },
+          {
+            "address": "004036df",
+            "hex": "50",
+            "text": "push eax",
+            "resolved_target": null
+          },
+          {
+            "address": "004036e0",
+            "hex": "ff7104",
+            "text": "push dword ptr [ecx + 4]",
+            "resolved_target": null
+          },
+          {
+            "address": "004036e3",
+            "hex": "0f57c0",
+            "text": "xorps xmm0, xmm0",
+            "resolved_target": null
+          },
+          {
+            "address": "004036e6",
+            "hex": "c745f000000000",
+            "text": "mov dword ptr [ebp - 0x10], 0",
+            "resolved_target": null
+          },
+          {
+            "address": "004036ed",
+            "hex": "660f1345e4",
+            "text": "movlpd qword ptr [ebp - 0x1c], xmm0",
+            "resolved_target": null
+          },
+          {
+            "address": "004036f2",
+            "hex": "e8d9320000",
+            "text": "call 0x4069d0",
+            "resolved_target": "?sample_frame_clock_00bee080@bsp@@YA_NABUFrameClock@1@AAUClockTimestamp@1@@Z"
+          },
+          {
+            "address": "004036f7",
+            "hex": "83c408",
+            "text": "add esp, 8",
+            "resolved_target": null
+          },
+          {
+            "address": "004036fa",
+            "hex": "84c0",
+            "text": "test al, al",
+            "resolved_target": null
+          },
+          {
+            "address": "004036fc",
+            "hex": "7410",
+            "text": "je 0x40370e",
+            "resolved_target": null
+          },
+          {
+            "address": "004036fe",
+            "hex": "8b4508",
+            "text": "mov eax, dword ptr [ebp + 8]",
+            "resolved_target": null
+          },
+          {
+            "address": "00403701",
+            "hex": "0f1045e4",
+            "text": "movups xmm0, xmmword ptr [ebp - 0x1c]",
+            "resolved_target": null
+          },
+          {
+            "address": "00403705",
+            "hex": "0f1100",
+            "text": "movups xmmword ptr [eax], xmm0",
+            "resolved_target": null
+          },
+          {
+            "address": "00403708",
+            "hex": "8be5",
+            "text": "mov esp, ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "0040370a",
+            "hex": "5d",
+            "text": "pop ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "0040370b",
+            "hex": "c20400",
+            "text": "ret 4",
+            "resolved_target": null
+          },
+          {
+            "address": "0040370e",
+            "hex": "68ecc94200",
+            "text": "push 0x42c9ec",
+            "resolved_target": null
+          },
+          {
+            "address": "00403713",
+            "hex": "8d4df4",
+            "text": "lea ecx, [ebp - 0xc]",
+            "resolved_target": null
+          },
+          {
+            "address": "00403716",
+            "hex": "e8d5daffff",
+            "text": "call 0x4011f0",
+            "resolved_target": "??0runtime_error@std@@QAE@PBD@Z"
+          },
+          {
+            "address": "0040371b",
+            "hex": "6844c14300",
+            "text": "push 0x43c144",
+            "resolved_target": null
+          },
+          {
+            "address": "00403720",
+            "hex": "8d45f4",
+            "text": "lea eax, [ebp - 0xc]",
+            "resolved_target": null
+          },
+          {
+            "address": "00403723",
+            "hex": "50",
+            "text": "push eax",
+            "resolved_target": null
+          },
+          {
+            "address": "00403724",
+            "hex": "e8d57a0200",
+            "text": "call 0x42b1fe",
+            "resolved_target": "__CxxThrowException@8"
+          },
+          {
+            "address": "00403729",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040372a",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040372b",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040372c",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040372d",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040372e",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040372f",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          }
+        ],
+        "note": "Linked source span bounded by next mapped function; may include alignment. This is not original-game byte parity."
+      },
+      {
+        "symbol": "?current_slot14@NativeInputClockBinding@bsp@@QBEABUClockTimestamp@2@AAU32@@Z",
+        "object": "bsp_core:native_input_device_runtime.obj",
+        "address": "00403730",
+        "end_exclusive": "00403790",
+        "length": 96,
+        "sha256": "e5bea793dbadacf24e0f0094e3a313b37afb3cc83db62b4fc8477755278b81ec",
+        "hex": "558bec8b410483ec0c85c0741850e84d39000083c4040f10008b45080f11008be55dc204008b018b0085c0740f50e8cd3d000083c4048be55dc204006810ca42008d4df4e867ecffff68d8c243008d45f450e8777a0200cccccccccccccccccc",
+        "instructions": [
+          {
+            "address": "00403730",
+            "hex": "55",
+            "text": "push ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "00403731",
+            "hex": "8bec",
+            "text": "mov ebp, esp",
+            "resolved_target": null
+          },
+          {
+            "address": "00403733",
+            "hex": "8b4104",
+            "text": "mov eax, dword ptr [ecx + 4]",
+            "resolved_target": null
+          },
+          {
+            "address": "00403736",
+            "hex": "83ec0c",
+            "text": "sub esp, 0xc",
+            "resolved_target": null
+          },
+          {
+            "address": "00403739",
+            "hex": "85c0",
+            "text": "test eax, eax",
+            "resolved_target": null
+          },
+          {
+            "address": "0040373b",
+            "hex": "7418",
+            "text": "je 0x403755",
+            "resolved_target": null
+          },
+          {
+            "address": "0040373d",
+            "hex": "50",
+            "text": "push eax",
+            "resolved_target": null
+          },
+          {
+            "address": "0040373e",
+            "hex": "e84d390000",
+            "text": "call 0x407090",
+            "resolved_target": "?current_published_native_frame_clock@bsp@@YAPBXABUNativeFrameClockPublicationContext@1@@Z"
+          },
+          {
+            "address": "00403743",
+            "hex": "83c404",
+            "text": "add esp, 4",
+            "resolved_target": null
+          },
+          {
+            "address": "00403746",
+            "hex": "0f1000",
+            "text": "movups xmm0, xmmword ptr [eax]",
+            "resolved_target": null
+          },
+          {
+            "address": "00403749",
+            "hex": "8b4508",
+            "text": "mov eax, dword ptr [ebp + 8]",
+            "resolved_target": null
+          },
+          {
+            "address": "0040374c",
+            "hex": "0f1100",
+            "text": "movups xmmword ptr [eax], xmm0",
+            "resolved_target": null
+          },
+          {
+            "address": "0040374f",
+            "hex": "8be5",
+            "text": "mov esp, ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "00403751",
+            "hex": "5d",
+            "text": "pop ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "00403752",
+            "hex": "c20400",
+            "text": "ret 4",
+            "resolved_target": null
+          },
+          {
+            "address": "00403755",
+            "hex": "8b01",
+            "text": "mov eax, dword ptr [ecx]",
+            "resolved_target": null
+          },
+          {
+            "address": "00403757",
+            "hex": "8b00",
+            "text": "mov eax, dword ptr [eax]",
+            "resolved_target": null
+          },
+          {
+            "address": "00403759",
+            "hex": "85c0",
+            "text": "test eax, eax",
+            "resolved_target": null
+          },
+          {
+            "address": "0040375b",
+            "hex": "740f",
+            "text": "je 0x40376c",
+            "resolved_target": null
+          },
+          {
+            "address": "0040375d",
+            "hex": "50",
+            "text": "push eax",
+            "resolved_target": null
+          },
+          {
+            "address": "0040375e",
+            "hex": "e8cd3d0000",
+            "text": "call 0x407530",
+            "resolved_target": "?sound_frame_clock_current_00bee050@bsp@@YAPBUClockTimestamp@1@AAUFrameClock@1@@Z"
+          },
+          {
+            "address": "00403763",
+            "hex": "83c404",
+            "text": "add esp, 4",
+            "resolved_target": null
+          },
+          {
+            "address": "00403766",
+            "hex": "8be5",
+            "text": "mov esp, ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "00403768",
+            "hex": "5d",
+            "text": "pop ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "00403769",
+            "hex": "c20400",
+            "text": "ret 4",
+            "resolved_target": null
+          },
+          {
+            "address": "0040376c",
+            "hex": "6810ca4200",
+            "text": "push 0x42ca10",
+            "resolved_target": null
+          },
+          {
+            "address": "00403771",
+            "hex": "8d4df4",
+            "text": "lea ecx, [ebp - 0xc]",
+            "resolved_target": null
+          },
+          {
+            "address": "00403774",
+            "hex": "e867ecffff",
+            "text": "call 0x4023e0",
+            "resolved_target": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "address": "00403779",
+            "hex": "68d8c24300",
+            "text": "push 0x43c2d8",
+            "resolved_target": null
+          },
+          {
+            "address": "0040377e",
+            "hex": "8d45f4",
+            "text": "lea eax, [ebp - 0xc]",
+            "resolved_target": null
+          },
+          {
+            "address": "00403781",
+            "hex": "50",
+            "text": "push eax",
+            "resolved_target": null
+          },
+          {
+            "address": "00403782",
+            "hex": "e8777a0200",
+            "text": "call 0x42b1fe",
+            "resolved_target": "__CxxThrowException@8"
+          },
+          {
+            "address": "00403787",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00403788",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00403789",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040378a",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040378b",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040378c",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040378d",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040378e",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040378f",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          }
+        ],
+        "note": "Linked source span bounded by next mapped function; may include alignment. This is not original-game byte parity."
+      }
+    ]
+  },
+  "artifacts": {
+    "source": [
+      {
+        "path": "include/bsp/sound_resource_runtime.hpp",
+        "bytes": 5195,
+        "sha256": "1d47b5b5d1f9c908ec481dfac76ec53b4b82ced579f7eb9a5ec983a1fb282529"
+      },
+      {
+        "path": "src/sound_resource_runtime.cpp",
+        "bytes": 5587,
+        "sha256": "701461386a7667940f6f88a78dc2d794355f4e5452668682c797b1e883606058"
+      },
+      {
+        "path": "include/bsp/game_sound_runtime.hpp",
+        "bytes": 5374,
+        "sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957"
+      },
+      {
+        "path": "src/game_sound_runtime.cpp",
+        "bytes": 20078,
+        "sha256": "9999a87458b0c069d12bbe1b6be6c8154db00949654b3a05dd2c3b930b2fd3d1"
+      },
+      {
+        "path": "include/bsp/native_input_device_runtime.hpp",
+        "bytes": 7289,
+        "sha256": "748ec173974a7a6b2d0fd3c3ff7663bc295c99c4e7a81f91a3b4230774f00dc9"
+      },
+      {
+        "path": "src/native_input_device_runtime.cpp",
+        "bytes": 13772,
+        "sha256": "eef85878ca5d1013deae564da17d6dad109b97c7d36205e197652ee910f875e9"
+      },
+      {
+        "path": "docs/NATIVE_FRAME_CLOCK_CONSUMER_PROVIDERS.md",
+        "bytes": 3566,
+        "sha256": "4e742c38afeab60392dd6a36e142c347953be42e0969d3aaa3ce33202e5c0f00"
+      }
+    ],
+    "objects_and_library": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63468644,
+        "sha256": "0b894e3c94797dab0282bdc571e859348a3d6ae5d45cc3ffd1c482f85c5493f4"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/sound_resource_runtime.obj",
+        "bytes": 81378,
+        "sha256": "ae4ebb4deaed98a8dc18ec99cfe74678f7e76d5720c239a3065c88023547b2d6"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/game_sound_runtime.obj",
+        "bytes": 314104,
+        "sha256": "3ef911d498d884eaeea569c5985c2d9b183081d1b4eb76d45ad50a6257159483"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_input_device_runtime.obj",
+        "bytes": 58793,
+        "sha256": "aae64b3e281c871e971d0d9abe97c1b9da65cdca7a6c3f1b8dfaae5811dca2be"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_frame_clock_publication.obj",
+        "bytes": 9883,
+        "sha256": "99a1e16fb2bb459b04a0a9c39ef7395741b78d9f6327985a8df327e588da52af"
+      }
+    ],
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\local\\checkpoints\\frame-clock-consumer-r39-bdc50a386\\validated_artifacts.zip",
+      "sha256": "c411826c0c64b9bdc2c905f407f08bc20e5536b507baed4c241fa405c2be05f1",
+      "bytes": 45808549,
+      "manifest": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\local\\checkpoints\\frame-clock-consumer-r39-bdc50a386\\manifest.json",
+      "manifest_sha256": "b27b119435a3ef30c64a397b18eedccb134d22bd6a5e945efe2deea28f46a193",
+      "artifacts": 3479,
+      "artifact_bytes": 161779987,
+      "all_entries_hash_verified": true,
+      "loaded_modules": 7,
+      "prior_r38_zip_unchanged": true,
+      "full_bsp_core_lib": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\build\\win32\\Release\\bsp_core.lib",
+        "archive_entry": "workspace/build/win32/Release/bsp_core.lib",
+        "bytes": 63468644,
+        "sha256": "0b894e3c94797dab0282bdc571e859348a3d6ae5d45cc3ffd1c482f85c5493f4"
+      }
+    },
+    "archive_boundary": "Immutable archive contains full frozen compile inputs, full fresh library/objects, fixture and its build dependencies, machine/native/listing receipts, logs, toolchain and resolved DLL files. Final report is outside the archive to avoid circular hashing; R38 archive remains unchanged."
+  },
+  "next_frontier": [
+    "R37 stage C still owns application cutover: persistent borrowed contexts, one raw80h allocation, native non-null publication gate, constructor failure policy, same-manager drain and fixed-rate phase placement.",
+    "Existing application continues its semantic clock and existing valid paths until that separately reviewed composition change. No raw owner is activated by this packet.",
+    "Optional XLive, renderer worker, system-time, traceline and full OnMove remain separate provider/ownership frontiers. Captured-owner reads must not be replaced by universal publication reloads."
+  ],
+  "annotations": {
+    "requested": [],
+    "reason": "New source composition adapters reuse existing current getter and publication resolver. No new original body or duplicate ledger entry is appropriate."
+  },
+  "full_entry_abi_boundary": "Only the listed clock callsites and selected spans are admitted. Quoted Ghidra entry signatures are existing metadata, not independent full-entry ABI recovery in R39. No full consumer body, original FH3/SEH or fault-order equivalence is claimed."
+}
