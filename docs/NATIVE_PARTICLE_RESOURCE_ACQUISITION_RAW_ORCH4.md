@@ -75,11 +75,15 @@ and a null cached row before a new load. Real physical VFS, file-date and parser
 providers run; observations include record names/aliases/date words, counts,
 resource references, low-byte flags, RET10, and genuine singleton/pool drain.
 Source-only checks cover replay and unsupported platform/profile cleanup states.
+A reached unsupported date-visitor slot after a successful load also verifies
+state4 cleanup: the temporary record is destroyed, no cache record is published,
+the constructed resource retains reference count1, its loader child remains
+complete, and a retry of the failed acquisition is rejected before the pump.
 
 The original parent calls bridge to source providers, and its virtual slots use
 fixture callable bridges; the source uses installed numeric table words. The
 fixture's platform policy is an observer. The resolved-key alias-insertion path,
-allocation/provider failures and second-exception behavior are reviewed
-statically. These checks do not establish original child/EH execution, native
+allocation faults, other provider failures and second-exception behavior are
+reviewed statically. These checks do not establish original child/EH execution, native
 ABI/FH3/SEH/CRT identity, complete application installation or gameplay.
 Full receipts are in `reports/native_particle_resource_acquisition_raw_orch4.json`.

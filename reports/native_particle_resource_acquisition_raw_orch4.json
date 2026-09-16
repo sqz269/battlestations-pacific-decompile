@@ -358,8 +358,8 @@
     "strict_build": "local/particle_r22_acquire_integrate.log; MSVC Win32 /W4 /WX /MD /fp:strict;3existingCTestsPASS",
     "probe": {
       "exit_code": 0,
-      "output": "PASS7: complete copied1338B/source acquisition; real VFS date/load/parser, miss/load flags, first/later alias hits, null cached rows, retain gates, byte flags, native RET10, cleanup/drain; source binding boundaries/replay.\n",
-      "seconds": 0.10221589999855496
+      "output": "PASS7: complete copied1338B/source acquisition; real VFS date/load/parser, miss/load flags, first/later alias hits, null cached rows, retain gates, byte flags, native RET10, cleanup/drain; source binding boundaries/replay, retained loaded resource and completed child after state4 date-boundary failure.\n",
+      "seconds": 0.09811579999950482
     },
     "probe_sources": [
       "local/particle_acquisition_probe.cpp",
@@ -379,7 +379,8 @@
     "source_only": [
       "unsupported platform identity before locals/state-1",
       "unknown cache profile atstate1 with realnamecleanup",
-      "one-shot rejection"
+      "one-shot rejection",
+      "Reached unsupported date visitor after successful loader: state4 cleanup, no record publication, retained ref1 resource/completed child, failed replay rejected before pump"
     ],
     "observations": [
       "actual realfile VFS date/load/parse",
@@ -391,12 +392,13 @@
       "genuine singleton/pool drain"
     ],
     "bridges": "All40original direct CALLs and4indirect virtual dispatches reach genuine source providers. Original profile slots use fixture callable bridge addresses; source consumes unmodified installed numeric table words. Two publication operands are relocated to the same live fixture cells. Platform host is an explicit policy observer with genuine Win32 load-message pump.",
-    "independent_review": "particle_component_r22 compared complete source/full259line pseudocode/447line listing; no discrepancy"
+    "independent_review": "particle_component_r22 compared complete source/full259line pseudocode/447line listing; no discrepancy",
+    "probe_final_build": "Final probe linked root bsp_core.lib after runtime/component CMake integration6baa27e70. Library timestamp precedes probe executable; receipt and hashes reflect this artifact."
   },
   "limits": [
     "No original child-body execution in this parent probe or original FH3/SEH/CRT/ABI/game proof",
     "Second resolved-key alias path statically reviewed; native86BA10 normal key is identical after normalization",
-    "Allocation/provider failures and second exception termination not fault-injected",
+    "Allocation faults, other provider failures and second exception termination not fault-injected; one explicit post-load date visitor boundary exercised",
     "Unknown current profiles/targets and unmatched actual platform publication stop at explicit source boundaries",
     "BDD340 raw own-name operations compose existing actual-storage traversal/providers; both string services must refer to the same actual pool",
     "Acquired-frame allocation is source metadata; failed VFS frames retain process-lifetime requirements"
@@ -404,8 +406,8 @@
   "source_sha256": "6041375fac78fe70a0789cdfc8a649d934dc54fef9e02bdf78e8f8f98eb6d0d6",
   "header_sha256": "1d00245879332e86c52740f2dbfaf28676cbddbefee64dfe38021f43122d598d",
   "artifact_sha256": {
-    "local/particle_acquisition_probe.exe": "45cbc1236c818d6379ee72ce21de7ee46ae88dc3915367f02c7d836d63b0ccc4",
-    "build/win32/Release/bsp_core.lib": "610f165253a50331e47b66c8de41fb19b3816754ec86fa81e3d08276347d4691"
+    "local/particle_acquisition_probe.exe": "38bed4486e8db0f8c6d97054f5fd3c6a0489aa40cf8d8b6c81400097bf11232c",
+    "build/win32/Release/bsp_core.lib": "f38a27a934fdd0e12a53b04b41c5112b0391f615d0b184a291819104787cc484"
   },
   "evidence": "Descriptive hypothesis; complete1338B actual particle cache acquisition, ECX innercache and FOUR stack args(name,forwarded word,retain-new,allow-load), RET10/EAXresource. Pump captured platform; current alias scans/key/loader/retain slots; cached hits always retain, new loads conditionally retain; actual date and record insertion. Five native owning states DC7FA0/DC7FC4; persistent23DWORD frame with retained typed loader. No alias/resource rollback on later failure. Full1512B body/EH/maps/tables disk/live parity;45direct/tail rows; strictWin32/3CTests;7 complete copied1338B/source actualVFS/date/loader comparisons plus sourcebinding/replay cases. Resolved-key alias insertion, allocation faults and original EH are statically reviewed, not independently executed. Existing date child retains actual-storage provider boundary. New C++ API, borrowed exact profile/platform bindings; no original FH3/SEH/ABI/CRT/gameplay claim. docs/NATIVE_PARTICLE_RESOURCE_ACQUISITION_RAW_ORCH4.md; reports/native_particle_resource_acquisition_raw_orch4.json."
 }
