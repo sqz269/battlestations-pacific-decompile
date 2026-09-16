@@ -1,0 +1,98 @@
+{
+  "packet": "orch4-particle-runtime-r22",
+  "result": "application-owned raw particle context graph composed",
+  "files": [
+    "include/bsp/game_native_particle_runtime.hpp",
+    "src/game_native_particle_runtime.cpp",
+    "docs/NATIVE_PARTICLE_RUNTIME_ORCH4.md",
+    "cmake/startup.cmake"
+  ],
+  "owned_contexts": [
+    "NativeParticleParameterBuilderRawContext",
+    "NativeParticleParameterRuntimeRawContext",
+    "NativeParticleTypeParameterRawContext",
+    "NativeParticleTextureNamesRawContext",
+    "NativeParticleTypeTextureRawContext",
+    "NativeParticleTypePropertyRawContext",
+    "NativeParticleSpriteFloatingRawContext",
+    "NativeParticleAxialAxisRawContext",
+    "NativeParticleAxialRawContext",
+    "NativeParticleObjectResourcesRawContext",
+    "NativeParticleObjectRawContext",
+    "NativeParticleTracerRawContext",
+    "NativeParticleTypeConstructionContext",
+    "NativeParticleTypeFactoryRawContext",
+    "NativeParticleTypeLifetimeContext",
+    "NativeParticleEmitterConstructionContext",
+    "NativeParticleSphereRawContext",
+    "NativeParticleConeRawContext",
+    "NativeParticleSmartAreaRawContext",
+    "NativeParticleEmitterFactoryRawContext",
+    "NativeParticleResourceParserRawContext",
+    "NativeParticleResourceLoaderRawContext",
+    "NativeParticleResourceCacheContext",
+    "NativeParticleResourceAcquisitionRawContext"
+  ],
+  "recursive_links": {
+    "sphere": ["emitter_factory", "type_factory"],
+    "cone": ["emitter_factory", "type_factory"],
+    "smartarea": ["emitter_factory", "type_factory"],
+    "resource_parser": "emitter_factory",
+    "resource_loader": "resource_parser",
+    "acquisition": "resource_loader"
+  },
+  "borrowed_domains": [
+    "raw string publication/gate/01090AA0 manager cells",
+    "F8D344 NativeWeakHandlePool",
+    "GameNativeVfsRawServices including BDD340 dates",
+    "resource manager/load cache/container references",
+    "texture cache and canonical render actual owners",
+    "D3DX9_40 float32-to-float16 import and CameraAxesCrtAccess",
+    "F87668 particle cache, F8D31C model factory and F8C26C atlas publications",
+    "live 0109EEA4 feature word",
+    "live 0109CF04 publication, bound identity and existing load-event host",
+    "verified CE/CF/D0/D5/D7 original read-only data bands"
+  ],
+  "explicit_unwritten_inputs": [
+    "resource emitter child builder kind",
+    "Sphere child builder kind",
+    "Cone child builder kind",
+    "SmartArea child builder kind",
+    "Axial builder kind",
+    "type record stack word +18",
+    "first texture record stack word +18",
+    "later texture record stack word +18",
+    "caller-owned acquired-frame incoming builder kinds"
+  ],
+  "construction_checks": [
+    "resource manager and runtime share NativeStringRawPoolContext",
+    "resource manager and strings share the 01090AA0 publication cell",
+    "resource load cache and VFS raw services share 0109CEEC and name resolution",
+    "texture cache and VFS raw services share NativeVfsDateRouteContext",
+    "platform identity, scratch and native empty literal bindings are non-null"
+  ],
+  "platform_contract": {
+    "full_application": "PlatformServices implements ResourceLoadEventHost directly",
+    "game_host": "GamePlatformServices::load_events returns GameSoundLoadEvents over existing XLive/input/online services",
+    "binding": "870DD0 receives live publication, explicit bound identity and existing ResourceLoadEventHost separately",
+    "fallback": false
+  },
+  "validation": {
+    "verify_seeds": "PASS: all seven configured Ghidra seed ranges matched the installed PE",
+    "incremental_compile": "PASS: MSVC Win32 bsp_core compiled game_native_particle_runtime.cpp",
+    "final_strict_build": "PASS: scripts/build.ps1 compiled runtime, BDD340 date route, 870DD0 acquisition and 871D00 component reader in bsp_core and linked bsp_game",
+    "ctest": "PASS: 3/3 reconstructed_math, native_math_differential, tool_tests",
+    "source_wiring_audit": "PASS: resource child kind flows to emitter acquired frame; each shape child kind flows to recursive emitter/type acquired frames; type factory forwards its explicit kind to Sprite/Floating, Object and Tracer while Axial retains its separate context residue; 870DD0 captures 0109CF04 and rejects identity mismatch before BECCD0"
+  },
+  "focused_smoke": {
+    "added": false,
+    "reason": "No retained fixture owns all required VFS, resource, texture/render and platform domains. Existing acquisition/loader fixtures lack texture/render owners; the recursive factory fixture deliberately uses a null texture branch. A synthetic bundle would require inactive fake owner/callback families and would not prove the SAME-domain contract. Existing focused domain probes and the strict linked build remain the bounded evidence."
+  },
+  "limits": [
+    "not installed in GameStartupHost",
+    "not an original register/FH3/SEH ABI replacement",
+    "not hardware-fault or CRT allocation-domain proof",
+    "not retail gameplay validation"
+  ],
+  "ghidra_mutations": false
+}
