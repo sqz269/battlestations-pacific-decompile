@@ -1,0 +1,1319 @@
+{
+  "schema_version": 1,
+  "packet": "native_renderer_debug_records40_contract_r48",
+  "created_utc": "2026-09-16T13:26:52.455643+00:00",
+  "status": "read_only_contract_audit_complete",
+  "baseline": {
+    "worker_head": "5e50ef182526deb04d8c13563b119b629e029f41",
+    "main_at_sync": "3440caefd1a6f5d9f3ea9be715dd901ffbef122a",
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "ghidra_program": "/battlestationspacific.exe",
+    "installed_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "machine": "014C"
+  },
+  "scope": {
+    "owned_address": "00B2B580",
+    "owned_report": "reports/native_renderer_debug_records40_contract_r48.json",
+    "read_only": true,
+    "source_or_cmake_changes": false,
+    "ghidra_mutations": false,
+    "build_or_tests": false,
+    "excluded_active_work": [
+      "00B42350 R45 material constant build",
+      "R46 material pass execution",
+      "00B2BB90 records24 parent integration"
+    ]
+  },
+  "decision": {
+    "current_main_provider": "absent",
+    "historical_a6_body": "absent",
+    "body_ready_for_source_recovery": "conditionally: recover after the shared render-entry-cache owner and R46 material-pass callback are integrated; carry B71490 in a small prerequisite or the same Astra packet",
+    "recommended_worker": "gpt-6-astra xhigh",
+    "reason": "The body contains 42 x87 instructions, private FH3 state, seven indirect calls, mutable count/pointer reloads, and original register-sensitive provider calls."
+  },
+  "native_evidence": {
+    "span": {
+      "address": "00B2B580",
+      "end_inclusive": "00B2BB8C",
+      "length": 1549,
+      "sha256": "3cfd33f9ca108149dd39b6ce6e39e949fcb33facdef7e9ab034a261edd2e29b1",
+      "instruction_count": 414,
+      "live_ghidra_equal_installed_pe": true,
+      "bytes_hex": "6A FF 68 A9 D4 CB 00 64 A1 00 00 00 00 50 64 89 25 00 00 00 00 83 EC 68 55 33 ED 57 8B F9 89 6C 24 24 39 AF 1C 1D 00 00 0F 84 CE 05 00 00 39 AF E8 19 00 00 0F 85 44 01 00 00 68 88 E7 D5 00 8D 4C 24 18 E8 A8 32 8F FF 68 7C E7 D5 00 8D 4C 24 20 89 6C 24 7C E8 96 32 8F FF 68 AC E7 D5 00 8D 4C 24 2C C6 44 24 7C 01 E8 83 32 8F FF 55 55 55 6A 04 8D 44 24 24 50 8D 54 24 30 8D 4C 24 3C C6 84 24 8C 00 00 00 02 E8 F4 10 02 00 89 87 E8 19 00 00 8B 44 24 2C 3B C5 C6 44 24 78 01 74 17 8B 4C 24 28 6A 01 83 C1 01 51 50 E8 91 E6 8E FF 8B C8 E8 DA 5E 0A 00 8B 4C 24 20 3B CD C6 44 24 78 00 74 17 8B 44 24 1C 6A 01 83 C0 01 50 51 E8 6D E6 8E FF 8B C8 E8 B6 5E 0A 00 8B 4C 24 18 3B CD C7 44 24 78 FF FF FF FF 74 17 8B 44 24 14 6A 01 83 C0 01 50 51 E8 46 E6 8E FF 8B C8 E8 8F 5E 0A 00 0F 57 C0 F3 0F 10 0D 4C A2 D7 00 8B 8F E8 19 00 00 F3 0F 11 4C 24 30 F3 0F 11 44 24 34 F3 0F 11 44 24 38 F3 0F 11 44 24 3C F3 0F 11 44 24 40 F3 0F 11 4C 24 44 F3 0F 11 44 24 48 F3 0F 11 44 24 4C F3 0F 11 44 24 50 F3 0F 11 44 24 54 F3 0F 11 4C 24 58 F3 0F 11 44 24 5C F3 0F 11 44 24 60 F3 0F 11 44 24 64 F3 0F 11 44 24 68 F3 0F 11 4C 24 6C 8B 11 8B 52 38 8D 44 24 30 50 FF D2 8B 87 1C 1D 00 00 8B 8F E8 19 00 00 53 56 8D 34 40 55 03 F6 55 89 74 24 38 E8 24 8F 04 00 8B C8 E8 3D 7B 04 00 8B 10 55 55 8B C8 8B 42 10 56 FF D0 39 AF 1C 1D 00 00 8B C8 89 6C 24 24 0F 8E 90 01 00 00 DD 05 08 A3 D7 00 F3 0F 10 05 00 38 CE 00 D9 E8 8D 71 18 8B 97 18 1D 00 00 D9 44 2A 04 8D 04 2A D8 CA 83 C1 60 83 C6 60 D8 E1 D9 5C 24 10 D9 40 08 F3 0F 10 54 24 10 D8 E9 D8 CA D8 E1 D9 5C 24 14 D9 40 0C F3 0F 10 4C 24 14 D8 CA D9 44 24 10 D9 C0 DE C2 D9 C9 D9 5C 24 18 D9 44 24 14 F3 0F 10 5C 24 18 D9 40 10 F3 0F 11 46 90 D8 CC DE E9 D9 5C 24 1C D9 59 A0 D9 44 24 1C D9 56 8C F3 0F 11 56 98 D9 44 24 18 F3 0F 11 4E 9C F3 0F 11 46 A0 D9 5E A8 F3 0F 11 46 B0 D9 5E AC F3 0F 11 5E B8 F3 0F 11 4E BC F3 0F 11 46 C0 F3 0F 11 5E C8 F3 0F 10 5C 24 1C F3 0F 11 5E CC F3 0F 11 46 D0 F3 0F 11 56 D8 F3 0F 11 4E DC F3 0F 11 46 E0 8B 87 18 1D 00 00 8B 54 28 14 89 56 94 8B 87 18 1D 00 00 8B 54 28 14 89 56 A4 8B 87 18 1D 00 00 8B 54 28 14 89 56 B4 8B 87 18 1D 00 00 8B 54 28 14 89 56 C4 8B 87 18 1D 00 00 8B 54 28 14 89 56 D4 8B 87 18 1D 00 00 8B 54 28 14 89 56 E4 8B 9F 18 1D 00 00 8B 04 2B 03 DD 85 C0 89 4C 24 18 89 44 24 1C 74 38 83 C0 04 DD D9 50 DD D8 FF 15 20 22 CE 00 85 C0 75 0A 8B 4C 24 1C 8B 01 8B 10 FF D2 D9 E8 F3 0F 10 05 00 38 CE 00 DD 05 08 A3 D7 00 8B 4C 24 18 C7 03 00 00 00 00 D9 C9 8B 44 24 24 83 C0 01 83 C5 28 3B 87 1C 1D 00 00 89 44 24 24 0F 8C 8D FE FF FF 8B 74 24 30 DD D9 DD D8 33 ED 8B 8F E8 19 00 00 55 55 E8 62 8D 04 00 8B C8 E8 7B 79 04 00 8B 10 8B C8 8B 42 14 FF D0 8B 8F E8 19 00 00 8B 9F 1C 1D 00 00 55 55 E8 3F 8D 04 00 8B C8 E8 B8 79 04 00 8D 0C 1B 55 89 48 18 8B 8F E8 19 00 00 55 E8 25 8D 04 00 8B C8 E8 9E 79 04 00 B9 58 04 00 00 89 70 10 E8 01 60 04 00 8B F0 89 74 24 30 3B F5 C7 84 24 80 00 00 00 03 00 00 00 74 53 6A 01 6A 0E 8D 4C 24 2C 89 6C 24 2C 89 6C 24 30 E8 E7 23 8F FF 8B 44 24 28 3B C5 74 16 8B 54 24 24 83 C2 01 52 68 9C E7 D5 00 50 E8 0C BD 0C 00 83 C4 0C 8D 44 24 24 50 8B CE C6 84 24 84 00 00 00 04 C7 44 24 30 01 00 00 00 E8 ED 60 04 00 8B F0 EB 02 33 F6 F6 44 24 2C 01 C7 84 24 80 00 00 00 FF FF FF FF 74 1F 8B 4C 24 28 3B CD 74 17 8B 44 24 24 6A 01 83 C0 01 50 51 E8 FD E2 8E FF 8B C8 E8 46 5B 0A 00 0F 57 C0 F3 0F 10 0D 4C A2 D7 00 8D 4C 24 38 51 8B CE F3 0F 11 4C 24 3C F3 0F 11 44 24 40 F3 0F 11 44 24 44 F3 0F 11 44 24 48 F3 0F 11 44 24 4C F3 0F 11 4C 24 50 F3 0F 11 44 24 54 F3 0F 11 44 24 58 F3 0F 11 44 24 5C F3 0F 11 44 24 60 F3 0F 11 4C 24 64 F3 0F 11 44 24 68 F3 0F 11 44 24 6C F3 0F 11 44 24 70 F3 0F 11 44 24 74 F3 0F 11 4C 24 78 E8 4F 5A 04 00 0F 57 C0 F3 0F 10 0D 4C A2 D7 00 8D 54 24 38 52 8B CE F3 0F 11 4C 24 3C F3 0F 11 44 24 40 F3 0F 11 44 24 44 F3 0F 11 44 24 48 F3 0F 11 44 24 4C F3 0F 11 4C 24 50 F3 0F 11 44 24 54 F3 0F 11 44 24 58 F3 0F 11 44 24 5C F3 0F 11 44 24 60 F3 0F 11 4C 24 64 F3 0F 11 44 24 68 F3 0F 11 44 24 6C F3 0F 11 44 24 70 F3 0F 11 44 24 74 F3 0F 11 4C 24 78 E8 A8 42 04 00 8B D6 33 C9 E8 AF AF 01 00 8B 1D 88 FE 08 01 83 C3 04 8D 43 04 50 FF 15 1C 22 CE 00 D9 EE 8B 13 55 83 EC 08 D9 5C 24 04 8D 0C 80 D9 E8 8D 5C CA D8 8B 8F E8 19 00 00 D9 1C 24 56 51 55 E8 46 8B 04 00 8B 8F E8 19 00 00 50 55 55 E8 38 8B 04 00 8B C8 E8 B1 77 04 00 D9 EE 50 51 8B CB D9 1C 24 E8 03 5F 02 00 55 55 8B 8F E8 19 00 00 E8 16 8B 04 00 8B C8 E8 8F 77 04 00 8B 40 20 8B 48 7C 8B 89 9C 00 00 00 8B 11 8B 42 08 53 FF D0 3B F5 74 07 8B CE E8 50 24 04 00 81 C7 18 1D 00 00 39 6F 08 5E 5B 7D 08 55 8B CF E8 0B 6F FF FF 39 6F 04 7E 0F 8D 9B 00 00 00 00 83 47 04 FF 39 6F 04 7F F7 89 6F 04 8B 4C 24 70 5F 5D 64 89 0D 00 00 00 00 83 C4 74 C3"
+    },
+    "original_abi": "ECX is the actual renderer; no stack arguments; plain RET. EDI retains the receiver. The function installs an FH3 frame using handler 00CBD4A9 and 68h local bytes.",
+    "xref_set": {
+      "callers": [
+        {
+          "site": "00B2D9F0",
+          "function": "00B2D8E0",
+          "role": "EndFrame after B2BB90 and renderer virtual+C4/B28D00"
+        }
+      ],
+      "complete_live_xref_count": 1
+    },
+    "instruction_profile": {
+      "instructions": 414,
+      "direct_call_sites": 35,
+      "distinct_direct_targets": 17,
+      "indirect_call_sites": 7,
+      "conditional_or_unconditional_branches": 18,
+      "x87_instructions": 42
+    },
+    "direct_calls_by_target": [
+      {
+        "target": "0041E870",
+        "sites": [
+          {
+            "site": "00B2B5C3",
+            "bytes": "E8 A8 32 8F FF",
+            "sha256": "9a89500ff1669e3596ffa61e3abadf3f189fbfa77ac65902c698e08ad430fb05"
+          },
+          {
+            "site": "00B2B5D5",
+            "bytes": "E8 96 32 8F FF",
+            "sha256": "39668f5c110260054b32010a3f05e8256b3420751938a82104c70003bf3ceaae"
+          },
+          {
+            "site": "00B2B5E8",
+            "bytes": "E8 83 32 8F FF",
+            "sha256": "f8843170126f9efa9b22f2959479783bebae82239af7a24451ebe7f19c567caa"
+          }
+        ]
+      },
+      {
+        "target": "00B4C700",
+        "sites": [
+          {
+            "site": "00B2B607",
+            "bytes": "E8 F4 10 02 00",
+            "sha256": "24416ebeddc9d5ee72d0b8447fe9c221420dfcaf7a761723e9784351d09b5936"
+          }
+        ]
+      },
+      {
+        "target": "00419CC0",
+        "sites": [
+          {
+            "site": "00B2B62A",
+            "bytes": "E8 91 E6 8E FF",
+            "sha256": "0afad1d4b0f2c88e4d39cf4aebd85511c29ff45c32ab77957c70bcb97522e625"
+          },
+          {
+            "site": "00B2B64E",
+            "bytes": "E8 6D E6 8E FF",
+            "sha256": "8998b09f1bd8895f85f029a394a2edee75771355706649350a1e8211774a0beb"
+          },
+          {
+            "site": "00B2B675",
+            "bytes": "E8 46 E6 8E FF",
+            "sha256": "7e524e774030d4be84f7e6973248d10c002f21a21b49326fb35d5aca76f82afe"
+          },
+          {
+            "site": "00B2B9BE",
+            "bytes": "E8 FD E2 8E FF",
+            "sha256": "fabeb65e72974a02e4f1568b3ff1df67333a483d647232ed61bf676818d997b4"
+          }
+        ]
+      },
+      {
+        "target": "00BD1510",
+        "sites": [
+          {
+            "site": "00B2B631",
+            "bytes": "E8 DA 5E 0A 00",
+            "sha256": "ef315dfd5ad9e3a317b7ea6552380b714c0d501d0857dbe3d976bf43ea7dea51"
+          },
+          {
+            "site": "00B2B655",
+            "bytes": "E8 B6 5E 0A 00",
+            "sha256": "f84cb3e929342680a705d7b7db26763981f3c1c74b0458f4a7b1d665d4d55e96"
+          },
+          {
+            "site": "00B2B67C",
+            "bytes": "E8 8F 5E 0A 00",
+            "sha256": "67877f01e58be533d837a982c0ed0cd9dc1cc20d450e93e2d614895b38e13498"
+          },
+          {
+            "site": "00B2B9C5",
+            "bytes": "E8 46 5B 0A 00",
+            "sha256": "ece37967f2f0f35550a17df53bc383b13a88c9b7f306654e9c0bf27628239469"
+          }
+        ]
+      },
+      {
+        "target": "00B74640",
+        "sites": [
+          {
+            "site": "00B2B717",
+            "bytes": "E8 24 8F 04 00",
+            "sha256": "260d7ccb3330f597625d1951d5a9277405ffa4df6a31eae96bba2ff2c57091f0"
+          },
+          {
+            "site": "00B2B8D9",
+            "bytes": "E8 62 8D 04 00",
+            "sha256": "9b54441f18ab923cfbeb427267d8ef99717763008c3e3448870257f75f922df8"
+          },
+          {
+            "site": "00B2B8FC",
+            "bytes": "E8 3F 8D 04 00",
+            "sha256": "9fd928bf6e03e615060b05439c7a817d8218d8c7ab26dd098c1a4ac2ccc72cd3"
+          },
+          {
+            "site": "00B2B916",
+            "bytes": "E8 25 8D 04 00",
+            "sha256": "6b0ef4a3fa161f0fa73a8967991b8c6b98ee94c9be58b3346589c67ee52c8e7f"
+          },
+          {
+            "site": "00B2BAF5",
+            "bytes": "E8 46 8B 04 00",
+            "sha256": "b78b09ac17e7b7bd0c914f4c001f24527dfb2440a2360fd8e8738251f39fffd9"
+          },
+          {
+            "site": "00B2BB03",
+            "bytes": "E8 38 8B 04 00",
+            "sha256": "7665a349e83c8f20882dd22d8f80eda397cc75abe3620a1ba41a2f4ae2a8b607"
+          },
+          {
+            "site": "00B2BB25",
+            "bytes": "E8 16 8B 04 00",
+            "sha256": "6fe307f02ed780df9e9b6a64e2727ac92c495788e1baf881e79d18b8cbcc18c5"
+          }
+        ]
+      },
+      {
+        "target": "00B73260",
+        "sites": [
+          {
+            "site": "00B2B71E",
+            "bytes": "E8 3D 7B 04 00",
+            "sha256": "259922ff77483ce16b924c656429418a17fc56c3642fee69a118518150e44880"
+          },
+          {
+            "site": "00B2B8E0",
+            "bytes": "E8 7B 79 04 00",
+            "sha256": "937424e4c9ad23f12af09abe3889b66c08d9f0b24bf052ed90907ded97fcc9ee"
+          }
+        ]
+      },
+      {
+        "target": "00B732C0",
+        "sites": [
+          {
+            "site": "00B2B903",
+            "bytes": "E8 B8 79 04 00",
+            "sha256": "e3f3efac906e4b3109a73736d3a1bf515994e520b62b88e76710d0a6290580f5"
+          },
+          {
+            "site": "00B2B91D",
+            "bytes": "E8 9E 79 04 00",
+            "sha256": "32a41128ce60e9d3028c827db3f40789dff482e020803458eb279475448d46a0"
+          },
+          {
+            "site": "00B2BB0A",
+            "bytes": "E8 B1 77 04 00",
+            "sha256": "b7990d55f62573e1467ca80c338e4d3ba28a1d820e5abe8dc17731a7528283f7"
+          },
+          {
+            "site": "00B2BB2C",
+            "bytes": "E8 8F 77 04 00",
+            "sha256": "c443c0b18abf0349c4e80abec79bcda4c281ffdea8f58336f65e3d7c40f58e2a"
+          }
+        ]
+      },
+      {
+        "target": "00B71930",
+        "sites": [
+          {
+            "site": "00B2B92A",
+            "bytes": "E8 01 60 04 00",
+            "sha256": "7a0c480ccc27eabd729c10da25a7369d30f1546e3c4ee075ab1ddc17cd4b7195"
+          }
+        ]
+      },
+      {
+        "target": "0041DD40",
+        "sites": [
+          {
+            "site": "00B2B954",
+            "bytes": "E8 E7 23 8F FF",
+            "sha256": "518c380e759839eeb796c8758792f1620b4d6ffd05dfbbe426e85031dfb478b7"
+          }
+        ]
+      },
+      {
+        "target": "00BF7680",
+        "sites": [
+          {
+            "site": "00B2B96F",
+            "bytes": "E8 0C BD 0C 00",
+            "sha256": "dac07719e0891441f4edb580d170a6494ddf54f5d965efe43f1fcd6c98065e43"
+          }
+        ]
+      },
+      {
+        "target": "00B71A80",
+        "sites": [
+          {
+            "site": "00B2B98E",
+            "bytes": "E8 ED 60 04 00",
+            "sha256": "30eba35e3034de749ce3e53831274267be2d71e6d7d6f27ddc8783a70cd4a954"
+          }
+        ]
+      },
+      {
+        "target": "00B71490",
+        "sites": [
+          {
+            "site": "00B2BA3C",
+            "bytes": "E8 4F 5A 04 00",
+            "sha256": "d887602f51453cab02ccc2d81ba0a07bae256c9c21bf43b9800ea9db2b50ccc7"
+          }
+        ]
+      },
+      {
+        "target": "00B6FD60",
+        "sites": [
+          {
+            "site": "00B2BAB3",
+            "bytes": "E8 A8 42 04 00",
+            "sha256": "72a1770ca20cf1d44bdb0da7e456131db2eb5043ea9def4afda684c8c3ed322d"
+          }
+        ]
+      },
+      {
+        "target": "00B46A70",
+        "sites": [
+          {
+            "site": "00B2BABC",
+            "bytes": "E8 AF AF 01 00",
+            "sha256": "1f2ea6a95484ee47197b312ec7b29ebe6db6bab5ec77ea9ab03c0cd67a8ecc3e"
+          }
+        ]
+      },
+      {
+        "target": "00B51A20",
+        "sites": [
+          {
+            "site": "00B2BB18",
+            "bytes": "E8 03 5F 02 00",
+            "sha256": "12e0f83d0980e7511ba86d583018a73e3b72cb1e8881c135af186e16d0a2cb80"
+          }
+        ]
+      },
+      {
+        "target": "00B6DFA0",
+        "sites": [
+          {
+            "site": "00B2BB4B",
+            "bytes": "E8 50 24 04 00",
+            "sha256": "5418b266d2c894b37f37eebf590c73094a0647aa024202970638a0c1a30a2b75"
+          }
+        ]
+      },
+      {
+        "target": "00B22A70",
+        "sites": [
+          {
+            "site": "00B2BB60",
+            "bytes": "E8 0B 6F FF FF",
+            "sha256": "54f7ae6da9edbe4d80e85d3a05cc45aaa774469500943dd91ccfc4b75f7b6bb8"
+          }
+        ]
+      }
+    ],
+    "indirect_calls": [
+      {
+        "site": "00B2B6FC",
+        "operand": "EDX",
+        "contract": "CURRENT cached generated-model virtual+38; D62DE8/+38=B6DB10; receives local identity matrix",
+        "current_provider": "set_raw_local_matrix_00b6db10"
+      },
+      {
+        "site": "00B2B72D",
+        "operand": "EAX",
+        "contract": "CURRENT logical vertex-stream virtual+10; count=current renderer+1D1C times six, offset0, readonly0",
+        "current_provider": "lock_native_logical_vertex_stream_00b49980"
+      },
+      {
+        "site": "00B2B87D",
+        "operand": "[00CE2220]",
+        "contract": "InterlockedDecrement(record+00 owner+04)",
+        "current_provider": "Win32 IAT import"
+      },
+      {
+        "site": "00B2B88F",
+        "operand": "EDX",
+        "contract": "CURRENT record+00 owner virtual0 only when decrement returns zero",
+        "current_provider": "missing concrete profile resolver for the opaque retained record owner"
+      },
+      {
+        "site": "00B2B8EC",
+        "operand": "EAX",
+        "contract": "fresh CURRENT logical vertex-stream virtual+14 after reloading model/geometry/stream",
+        "current_provider": "unlock_native_logical_vertex_stream_00b49a80"
+      },
+      {
+        "site": "00B2BACE",
+        "operand": "[00CE221C]",
+        "contract": "InterlockedIncrement(actual 0108FE88 owner+08 used count)",
+        "current_provider": "Win32 IAT import; actual bank owner absent on main"
+      },
+      {
+        "site": "00B2BB43",
+        "operand": "EAX",
+        "contract": "CURRENT generated section+20 material+7C effect+9C pass virtual+08(entry)",
+        "current_provider": "R46 material-pass execution in flight; absent at audited baseline"
+      }
+    ],
+    "x87_sites": [
+      {
+        "site": "00B2B741",
+        "mnemonic": "fld",
+        "operand": "qword ptr [0xd7a308]"
+      },
+      {
+        "site": "00B2B74F",
+        "mnemonic": "fld1",
+        "operand": ""
+      },
+      {
+        "site": "00B2B75A",
+        "mnemonic": "fld",
+        "operand": "dword ptr [edx + ebp + 4]"
+      },
+      {
+        "site": "00B2B761",
+        "mnemonic": "fmul",
+        "operand": "st(2)"
+      },
+      {
+        "site": "00B2B769",
+        "mnemonic": "fsub",
+        "operand": "st(1)"
+      },
+      {
+        "site": "00B2B76B",
+        "mnemonic": "fstp",
+        "operand": "dword ptr [esp + 0x10]"
+      },
+      {
+        "site": "00B2B76F",
+        "mnemonic": "fld",
+        "operand": "dword ptr [eax + 8]"
+      },
+      {
+        "site": "00B2B778",
+        "mnemonic": "fsubr",
+        "operand": "st(1)"
+      },
+      {
+        "site": "00B2B77A",
+        "mnemonic": "fmul",
+        "operand": "st(2)"
+      },
+      {
+        "site": "00B2B77C",
+        "mnemonic": "fsub",
+        "operand": "st(1)"
+      },
+      {
+        "site": "00B2B77E",
+        "mnemonic": "fstp",
+        "operand": "dword ptr [esp + 0x14]"
+      },
+      {
+        "site": "00B2B782",
+        "mnemonic": "fld",
+        "operand": "dword ptr [eax + 0xc]"
+      },
+      {
+        "site": "00B2B78B",
+        "mnemonic": "fmul",
+        "operand": "st(2)"
+      },
+      {
+        "site": "00B2B78D",
+        "mnemonic": "fld",
+        "operand": "dword ptr [esp + 0x10]"
+      },
+      {
+        "site": "00B2B791",
+        "mnemonic": "fld",
+        "operand": "st(0)"
+      },
+      {
+        "site": "00B2B793",
+        "mnemonic": "faddp",
+        "operand": "st(2)"
+      },
+      {
+        "site": "00B2B795",
+        "mnemonic": "fxch",
+        "operand": "st(1)"
+      },
+      {
+        "site": "00B2B797",
+        "mnemonic": "fstp",
+        "operand": "dword ptr [esp + 0x18]"
+      },
+      {
+        "site": "00B2B79B",
+        "mnemonic": "fld",
+        "operand": "dword ptr [esp + 0x14]"
+      },
+      {
+        "site": "00B2B7A5",
+        "mnemonic": "fld",
+        "operand": "dword ptr [eax + 0x10]"
+      },
+      {
+        "site": "00B2B7AD",
+        "mnemonic": "fmul",
+        "operand": "st(4)"
+      },
+      {
+        "site": "00B2B7AF",
+        "mnemonic": "fsubp",
+        "operand": "st(1)"
+      },
+      {
+        "site": "00B2B7B1",
+        "mnemonic": "fstp",
+        "operand": "dword ptr [esp + 0x1c]"
+      },
+      {
+        "site": "00B2B7B5",
+        "mnemonic": "fstp",
+        "operand": "dword ptr [ecx - 0x60]"
+      },
+      {
+        "site": "00B2B7B8",
+        "mnemonic": "fld",
+        "operand": "dword ptr [esp + 0x1c]"
+      },
+      {
+        "site": "00B2B7BC",
+        "mnemonic": "fst",
+        "operand": "dword ptr [esi - 0x74]"
+      },
+      {
+        "site": "00B2B7C4",
+        "mnemonic": "fld",
+        "operand": "dword ptr [esp + 0x18]"
+      },
+      {
+        "site": "00B2B7D2",
+        "mnemonic": "fstp",
+        "operand": "dword ptr [esi - 0x58]"
+      },
+      {
+        "site": "00B2B7DA",
+        "mnemonic": "fstp",
+        "operand": "dword ptr [esi - 0x54]"
+      },
+      {
+        "site": "00B2B878",
+        "mnemonic": "fstp",
+        "operand": "st(1)"
+      },
+      {
+        "site": "00B2B87B",
+        "mnemonic": "fstp",
+        "operand": "st(0)"
+      },
+      {
+        "site": "00B2B891",
+        "mnemonic": "fld1",
+        "operand": ""
+      },
+      {
+        "site": "00B2B89B",
+        "mnemonic": "fld",
+        "operand": "qword ptr [0xd7a308]"
+      },
+      {
+        "site": "00B2B8AB",
+        "mnemonic": "fxch",
+        "operand": "st(1)"
+      },
+      {
+        "site": "00B2B8CB",
+        "mnemonic": "fstp",
+        "operand": "st(1)"
+      },
+      {
+        "site": "00B2B8CD",
+        "mnemonic": "fstp",
+        "operand": "st(0)"
+      },
+      {
+        "site": "00B2BAD4",
+        "mnemonic": "fldz",
+        "operand": ""
+      },
+      {
+        "site": "00B2BADC",
+        "mnemonic": "fstp",
+        "operand": "dword ptr [esp + 4]"
+      },
+      {
+        "site": "00B2BAE3",
+        "mnemonic": "fld1",
+        "operand": ""
+      },
+      {
+        "site": "00B2BAEF",
+        "mnemonic": "fstp",
+        "operand": "dword ptr [esp]"
+      },
+      {
+        "site": "00B2BB0F",
+        "mnemonic": "fldz",
+        "operand": ""
+      },
+      {
+        "site": "00B2BB15",
+        "mnemonic": "fstp",
+        "operand": "dword ptr [esp]"
+      }
+    ],
+    "control_branches": [
+      {
+        "site": "00B2B5A8",
+        "mnemonic": "je",
+        "operand": "0xb2bb7c"
+      },
+      {
+        "site": "00B2B5B4",
+        "mnemonic": "jne",
+        "operand": "0xb2b6fe"
+      },
+      {
+        "site": "00B2B61D",
+        "mnemonic": "je",
+        "operand": "0xb2b636"
+      },
+      {
+        "site": "00B2B641",
+        "mnemonic": "je",
+        "operand": "0xb2b65a"
+      },
+      {
+        "site": "00B2B668",
+        "mnemonic": "je",
+        "operand": "0xb2b681"
+      },
+      {
+        "site": "00B2B73B",
+        "mnemonic": "jle",
+        "operand": "0xb2b8d1"
+      },
+      {
+        "site": "00B2B873",
+        "mnemonic": "je",
+        "operand": "0xb2b8ad"
+      },
+      {
+        "site": "00B2B885",
+        "mnemonic": "jne",
+        "operand": "0xb2b891"
+      },
+      {
+        "site": "00B2B8C1",
+        "mnemonic": "jl",
+        "operand": "0xb2b754"
+      },
+      {
+        "site": "00B2B942",
+        "mnemonic": "je",
+        "operand": "0xb2b997"
+      },
+      {
+        "site": "00B2B95F",
+        "mnemonic": "je",
+        "operand": "0xb2b977"
+      },
+      {
+        "site": "00B2B995",
+        "mnemonic": "jmp",
+        "operand": "0xb2b999"
+      },
+      {
+        "site": "00B2B9A9",
+        "mnemonic": "je",
+        "operand": "0xb2b9ca"
+      },
+      {
+        "site": "00B2B9B1",
+        "mnemonic": "je",
+        "operand": "0xb2b9ca"
+      },
+      {
+        "site": "00B2BB47",
+        "mnemonic": "je",
+        "operand": "0xb2bb50"
+      },
+      {
+        "site": "00B2BB5B",
+        "mnemonic": "jge",
+        "operand": "0xb2bb65"
+      },
+      {
+        "site": "00B2BB68",
+        "mnemonic": "jle",
+        "operand": "0xb2bb79"
+      },
+      {
+        "site": "00B2BB77",
+        "mnemonic": "jg",
+        "operand": "0xb2bb70"
+      }
+    ],
+    "constants": [
+      {
+        "address": "00D7A24C",
+        "bytes": "00 00 80 3F",
+        "value": "float32 1.0; identity diagonal and visibility"
+      },
+      {
+        "address": "00D7A308",
+        "bytes": "00 00 00 00 00 00 00 40",
+        "value": "float64 2.0; coordinate scale held in x87"
+      },
+      {
+        "address": "00CE3800",
+        "bytes": "00 00 00 3F",
+        "value": "float32 0.5; vertex Z"
+      },
+      {
+        "address": "0108FE88",
+        "bytes": "00 00 00 00",
+        "value": "loader-zero publication cell; populated by render-entry-cache lifetime"
+      }
+    ]
+  },
+  "control_contract": [
+    {
+      "step": 1,
+      "range": "00B2B5A2..00B2B5AD",
+      "behavior": "Return immediately when renderer+1D1C current signed count is zero."
+    },
+    {
+      "step": 2,
+      "range": "00B2B5AE..00B2B6FC",
+      "behavior": "If renderer+19E8 is null, construct exact pooled strings debugshader.mshd, pf43cc.mvfm and 2DSprites; call B4C700 with section kind4 and zero counts; publish EAX to +19E8; release names in name/layout/effect order; set the CURRENT cached model local matrix to identity through virtual+38."
+    },
+    {
+      "step": 3,
+      "range": "00B2B6FE..00B2B72D",
+      "behavior": "Reload current count, request count*6 vertices from cached model stream0 virtual+10. Arithmetic wraps DWORD."
+    },
+    {
+      "step": 4,
+      "range": "00B2B72F..00B2B8CB",
+      "behavior": "For each signed ordinal while ordinal is below CURRENT +1D1C, expand the 28h record to six 18h vertices. Convert x and width by *2-1; convert y/height with (1-y)*2-1; write Z=.5 and replicate record+14. Release record+00 with real InterlockedDecrement/current virtual0 and clear +00 only after a returning terminal. The loop reloads current data/count after callbacks."
+    },
+    {
+      "step": 5,
+      "range": "00B2B8D1..00B2B922",
+      "behavior": "Reload cached model stream0 and call current virtual+14; reload CURRENT count into section0+18 as count*2, while section0+10 receives the initial pre-callback count*6 value saved before the lock."
+    },
+    {
+      "step": 6,
+      "range": "00B2B92A..00B2B9D1",
+      "behavior": "Allocate one raw camera from actual0108FFB0; construct it with exact pooled name 2dSpriteCamera; release the name. A null allocation reaches the original fault domain later; no fallback camera exists."
+    },
+    {
+      "step": 7,
+      "range": "00B2B9D6..00B2BABC",
+      "behavior": "Build identity view and projection matrices. B71490 inverts the view, dispatches camera current virtual+34 (D62CF0/+34=B71460), and refreshes direction again; B6FD60 sets projection. Call full B46A70 with ECX=null scene and EDX=camera."
+    },
+    {
+      "step": 8,
+      "range": "00B2BAC1..00B2BB43",
+      "behavior": "Load CURRENT 0108FE88 owner, atomically increment +08, compute entry at +04+(new_count-1)*28h, initialize B51A20 with leading0/visibility1/depth0/flags0 and cached model section/geometry/camera, then dispatch CURRENT pass virtual+08."
+    },
+    {
+      "step": 9,
+      "range": "00B2BB45..00B2BB4F",
+      "behavior": "If camera is nonnull, invoke B6DFA0 actual hierarchy unlink and current virtual+18. This consumes the temporary camera creator/reference; no substitute delete or raw-slot return is inserted."
+    },
+    {
+      "step": 10,
+      "range": "00B2BB50..00B2BB79",
+      "behavior": "Operate on renderer+1D18 header. Negative signed capacity calls B22A70 with zero (native clamp semantics); decrement CURRENT positive count to zero and explicitly store zero. Data pointer/capacity remain current/stale as dictated by reserve; no data free occurs here."
+    }
+  ],
+  "storage_and_lifetime_contract": {
+    "renderer_fields": [
+      {
+        "offset": "19E8",
+        "role": "persistent cached generated 2DSprites model; constructor initializes null; B2B580 publishes once; renderer teardown owns terminal cleanup"
+      },
+      {
+        "offset": "1D18",
+        "role": "actual 0Ch records40 header: data+00, signed count+04, signed capacity+08"
+      },
+      {
+        "offset": "1D1C",
+        "role": "same header count; reloaded after callbacks and drained at end"
+      },
+      {
+        "offset": "1D20",
+        "role": "same header capacity; negative invokes reserve0"
+      }
+    ],
+    "record_28h": [
+      {
+        "offset": "00",
+        "role": "opaque retained owner; +04 is atomic references; CURRENT virtual0 at zero; cleared after returning release"
+      },
+      {
+        "offsets": [
+          "04",
+          "08",
+          "0C",
+          "10"
+        ],
+        "role": "x, y, width, height float bits consumed by the x87 vertex expansion"
+      },
+      {
+        "offset": "14",
+        "role": "DWORD replicated at vertex+0C for all six vertices"
+      },
+      {
+        "offsets": [
+          "18",
+          "1C",
+          "20",
+          "24"
+        ],
+        "role": "copied by reserve, not read by B2B580; meanings remain unknown"
+      }
+    ],
+    "vertex_output": "Six vertices per reached record; each vertex is 18h bytes. Native writes x/y/Z(.5), record+14, and a second x/y pair. Source must preserve the exact x87 store order and current environment.",
+    "entry_bank_0108fe88": "Publication points at a raw14h render-entry-cache owner. +04 is 28h-row base; +08 is atomic used count; +0C capacity; +10 owned critical section. Original window startup resizes to 10000 rows. B2B580 performs no capacity check and does not undo the increment on later failure.",
+    "failure_schedule": "String FH3 states clean only reached local strings. No outer rollback unlocks a stream, decrements the entry bank, releases the cached model, clears a partially consumed record, or destroys the camera after a later child failure. Persistent diagnostic/acquisition frames must survive failed calls."
+  },
+  "publication_and_owner_contracts": {
+    "actual_renderer_00f8d394": {
+      "current_main": "No Game/application owner constructs a complete B32410-equivalent renderer and publishes it to the actual cell. Current reports R29/R32 qualify this as a current-main gap. Native base lifetime exists; full historical constructor/destructor exist only off main.",
+      "effect": "B2B580 can be reconstructed as a component taking a valid actual renderer, but cannot be called production-ready or application-bound."
+    },
+    "renderer_records40_header": {
+      "current_main": "B22A70 reserve and B29C60 destroy are complete on actual storage. The full B32410 constructor that zeros +19E8/+1D18/+1D1C/+1D20 and B32920 teardown that closes them are not on main.",
+      "historical_a6": "Constructor source writes +19E8=0 at B324F1 and the header words at B32744/B3274A/B32750; unwind state23 and destructor call B29C60 / inline B22A70 cleanup."
+    },
+    "entry_cache_0108fe88": {
+      "current_main": "No owner/source producer. Complete live xrefs: BEC5E6 writes publication; BEC699 clears; other 14 rows are reads.",
+      "cross_branch": "orch5 commit 9ed3a6de77995315a41980b6941cdcee4fb4e22b contains native_render_entry_cache.hpp/.cpp and report. It implements BEBF00/BEC240/BEC3E0/BEC590/BEC630/BEC6F0/BEC870/BEC8E0/BEC910 plus BED1E8 window fragment, with actual registration/unregistration and 10000-row allocation. This is available for a separate reviewed adoption; it is not a current-main provider."
+    },
+    "camera_pool_0108ffb0": {
+      "current_main": "The exact pool/storage adapter and allocate B71930 exist, but no GameNative process owns/binds/starts canonical 0108FFB0. B2B580 must borrow the eventual same owner; it must not create another pool."
+    },
+    "camera_object": "B71A80 current source requires NativeCameraOwner over the raw 45Ch pool slot, NativeCameraEnvironment, actual D62CF0/D62C88 tables and real scene/viewport/name domains. B6DFA0 must resolve the same constructed camera reference.",
+    "record_producer": {
+      "native": "D5F0A8 renderer profile +D4 is B29330. It enters the 0108D5A0 guard, retains the opaque first argument, copies ten DWORDs into one 28h row through B257B0 and increments count. B257B0 and B29330 have no current source.",
+      "effect": "They are not needed to compile/test the consumer with valid prepared rows, but actual production input remains unavailable until this append route and its 0108D5A0 owner are recovered."
+    }
+  },
+  "provider_matrix": [
+    {
+      "targets": [
+        "00419CC0",
+        "0041DD40",
+        "0041E870",
+        "00BD1510"
+      ],
+      "status": "ready",
+      "reuse": "current actual pooled-string owner/storage and header routines"
+    },
+    {
+      "targets": [
+        "00B22A70"
+      ],
+      "status": "ready",
+      "reuse": "complete records40 reserve over the actual 0Ch header"
+    },
+    {
+      "targets": [
+        "00B4C700"
+      ],
+      "status": "ready_with_context",
+      "reuse": "complete generated-model factory; supply NativeRendererGeneratedModelContext, persistent acquired frame and NativeRendererRawModelBinding with same AA8/AA4/AA0 cells"
+    },
+    {
+      "targets": [
+        "00B74640",
+        "00B73260",
+        "00B732C0"
+      ],
+      "status": "ready",
+      "reuse": "actual model/geometry/stream/section accessors"
+    },
+    {
+      "targets": [
+        "00B49980",
+        "00B49A80"
+      ],
+      "status": "ready_with_context",
+      "reuse": "existing NativeLogicalBufferMappingContext and actual physical/synchronization/diagnostic domains for stream virtual10/14"
+    },
+    {
+      "targets": [
+        "00B71930",
+        "00B71A80"
+      ],
+      "status": "component_ready_owner_missing",
+      "reuse": "existing pool allocation and camera constructor; canonical application pool process/binding is absent"
+    },
+    {
+      "targets": [
+        "00B71490"
+      ],
+      "status": "missing_small_wrapper",
+      "reuse": "compose exact B63B30 raw inverse plus current D62CF0/+34=B71460 and second B70660 refresh; preserve ECX/EDX/private temp schedule; lease separately"
+    },
+    {
+      "targets": [
+        "00B6FD60"
+      ],
+      "status": "ready_typed_actual_view",
+      "reuse": "existing projection setter over the NativeCameraOwner projection view"
+    },
+    {
+      "targets": [
+        "00B46A70"
+      ],
+      "status": "ready_with_persistent_frame",
+      "reuse": "full raw gather now on main; supply canonical globals/profiles, initialized 1232-byte preimage and fresh NativeSystemConstantGatherFrame"
+    },
+    {
+      "targets": [
+        "00B51A20"
+      ],
+      "status": "ready_with_context",
+      "reuse": "complete raw entry initializer with NativeTracelineRenderAccess borrowing same mapping/clock/profile domains"
+    },
+    {
+      "targets": [
+        "00B6DFA0"
+      ],
+      "status": "ready_with_real_lifetime_binding",
+      "reuse": "existing hierarchy unlink; resolve the newly constructed camera to its canonical RenderCommandModelLifetime/NativeCameraReference"
+    },
+    {
+      "targets": [
+        "pass virtual+08"
+      ],
+      "status": "in_flight_R46",
+      "reuse": "wait for /root/debug_records24_contract_r41 material-pass packet; use one fresh persistent pass frame and same raw constant banks"
+    },
+    {
+      "targets": [
+        "0108FE88 owner"
+      ],
+      "status": "cross_branch_only",
+      "reuse": "adopt reviewed orch5 native_render_entry_cache source before active B2B580 fixture"
+    },
+    {
+      "targets": [
+        "record+00 current virtual0"
+      ],
+      "status": "missing_profile_contract",
+      "reuse": "define an explicit current-profile zero-reference service; no numeric-address call or no-op fallback"
+    }
+  ],
+  "historical_provenance": {
+    "revision": "a6b2884f2",
+    "b2b580_source_search": "No include/src native_renderer_debug_records40 file or B2B580 definition exists. The only source hit is NativeRendererEndFrameRemaining::render_00b2b580, an abstract frontier call.",
+    "artifacts": [
+      {
+        "revision": "a6b2884f2",
+        "path": "reports/native_renderer_generated_model.json",
+        "present": true,
+        "bytes": 29482,
+        "sha256": "d8c1af40b10db6b3fec872757cffd5a282ebe063524a48d57ad9f06b9a9c6f85"
+      },
+      {
+        "revision": "a6b2884f2",
+        "path": "docs/NATIVE_RENDERER_GENERATED_MODEL.md",
+        "present": true,
+        "bytes": 10055,
+        "sha256": "b0811d1434ae4923d5f9220dc3c9e347bcbd6b675031b338562c484351b07a8c"
+      },
+      {
+        "revision": "a6b2884f2",
+        "path": "reports/native_renderer_end_frame.json",
+        "present": true,
+        "bytes": 32274,
+        "sha256": "4c4cb414ff0e7143d5312a66620f11aef7ada30af35b616a62d14750d11b0c5c"
+      },
+      {
+        "revision": "a6b2884f2",
+        "path": "docs/NATIVE_RENDERER_END_FRAME.md",
+        "present": true,
+        "bytes": 12016,
+        "sha256": "3ae77ab3fc65e3645c4b67d2272d473015f18d5361ee4df0dcce794b900c3b80"
+      },
+      {
+        "revision": "a6b2884f2",
+        "path": "include/bsp/native_renderer_constructor.hpp",
+        "present": true,
+        "bytes": 3156,
+        "sha256": "66ef2ae2b0970e668f1bf7017e0f1c061664150bdc6cd8d17ceeff8e66ac3d4c"
+      },
+      {
+        "revision": "a6b2884f2",
+        "path": "src/native_renderer_constructor.cpp",
+        "present": true,
+        "bytes": 15249,
+        "sha256": "bfb0e4c463bc4153cfe9d5ed5c6a35ead40d2772fb7df3ef76eadffe6e6a8ccf"
+      },
+      {
+        "revision": "a6b2884f2",
+        "path": "reports/native_renderer_constructor.json",
+        "present": true,
+        "bytes": 68494,
+        "sha256": "bb8b47fca4d8c7e871d8ad83c724f6948c652a8e37e72c6bd867ad63d93c9ad1"
+      },
+      {
+        "revision": "a6b2884f2",
+        "path": "include/bsp/native_renderer_destructor.hpp",
+        "present": true,
+        "bytes": 4119,
+        "sha256": "699b3ba871be605f94afabd7dbaa7a8282dbd44b59d0f6c37078a042a4d4d166"
+      },
+      {
+        "revision": "a6b2884f2",
+        "path": "src/native_renderer_destructor.cpp",
+        "present": true,
+        "bytes": 23473,
+        "sha256": "5f5c03e93f86d41bc3798ce0442c206555c6c3370295e7422f7188134b0dd3f8"
+      },
+      {
+        "revision": "a6b2884f2",
+        "path": "reports/native_renderer_destructor.json",
+        "present": true,
+        "bytes": 113846,
+        "sha256": "25690837ac2075dadc0350375f3f4171bb700f12acae2b12b2bcafcb92683594"
+      },
+      {
+        "revision": "a6b2884f2",
+        "path": "include/bsp/native_renderer_debug_records40.hpp",
+        "present": false
+      },
+      {
+        "revision": "a6b2884f2",
+        "path": "src/native_renderer_debug_records40.cpp",
+        "present": false
+      }
+    ],
+    "meaning": [
+      "native_renderer_generated_model.json proves only the B2B607 call and B2B60C +19E8 publication for 2DSprites; its fixture did not execute full B4C700, an active renderer or B2B580.",
+      "native_renderer_end_frame.json records B2B580 as a required 1549-byte frontier; active EndFrame remained unproved.",
+      "Historical constructor/destructor sources establish raw renderer field ownership but are not current-main production owners.",
+      "No historical B2B580 source, object, fixture, runtime, visual or gameplay proof was found."
+    ],
+    "cross_branch_render_entry_cache": [
+      {
+        "revision": "9ed3a6de77995315a41980b6941cdcee4fb4e22b",
+        "path": "include/bsp/native_render_entry_cache.hpp",
+        "present": true,
+        "bytes": 4539,
+        "sha256": "827a16a594dbba5e509c8153a966bbeb1a05ebeb4ca0c933febf1633c7b192cc"
+      },
+      {
+        "revision": "9ed3a6de77995315a41980b6941cdcee4fb4e22b",
+        "path": "src/native_render_entry_cache.cpp",
+        "present": true,
+        "bytes": 9420,
+        "sha256": "f53fb7e6e79cc58002dd039403c03e7ee8f690ab7cb84c062ca7553bb4aaee87"
+      },
+      {
+        "revision": "9ed3a6de77995315a41980b6941cdcee4fb4e22b",
+        "path": "docs/NATIVE_RENDER_ENTRY_CACHE.md",
+        "present": true,
+        "bytes": 8960,
+        "sha256": "43da42379ee9d99c80f628f214edd2e3379120b93ab963c863204661ec416e73"
+      },
+      {
+        "revision": "9ed3a6de77995315a41980b6941cdcee4fb4e22b",
+        "path": "reports/native_render_entry_cache.json",
+        "present": true,
+        "bytes": 57265,
+        "sha256": "2f18418b1e205143b5c6070fece09dac3b252e5f2fa305af304fa97985d782c2"
+      }
+    ]
+  },
+  "smallest_next_packets": [
+    {
+      "order": 1,
+      "id": "native_render_entry_cache_main_adoption",
+      "addresses": [
+        "00BEBF00",
+        "00BEC240",
+        "00BEC3E0",
+        "00BEC590",
+        "00BEC630",
+        "00BEC6F0",
+        "00BEC870",
+        "00BEC8E0",
+        "00BEC910",
+        "00BED1E8..00BED222"
+      ],
+      "files": [
+        "include/bsp/native_render_entry_cache.hpp",
+        "src/native_render_entry_cache.cpp",
+        "docs/NATIVE_RENDER_ENTRY_CACHE_MAIN_*.md",
+        "reports/native_render_entry_cache_main_*.json"
+      ],
+      "source": "adopt exact reviewed blobs from orch5 9ed3a6de; verify current singleton and window providers before CMake/build",
+      "limit": "Does not create the missing renderer owner or bind application window startup by itself."
+    },
+    {
+      "order": 2,
+      "id": "native_camera_view_set_00b71490",
+      "addresses": [
+        "00B71490"
+      ],
+      "files": [
+        "include/bsp/native_camera_view_set.hpp",
+        "src/native_camera_view_set.cpp",
+        "reports/native_camera_view_set_main_*.json"
+      ],
+      "source": "55-byte wrapper over existing B63B30/B71460/B70660 with NativeCameraOwner actual views",
+      "limit": "Register-sensitive wrapper; no second camera owner/pool. Recommended Astra review."
+    },
+    {
+      "order": 3,
+      "id": "native_renderer_debug_records40_parent",
+      "addresses": [
+        "00B2B580"
+      ],
+      "files": [
+        "include/bsp/native_renderer_debug_records40.hpp",
+        "src/native_renderer_debug_records40.cpp",
+        "docs/NATIVE_RENDERER_DEBUG_RECORDS40.md",
+        "reports/native_renderer_debug_records40_main_*.json"
+      ],
+      "depends_on": [
+        "R46 material pass integrated",
+        "native_render_entry_cache_main_adoption",
+        "B71490 provider or same-packet owned helper"
+      ],
+      "reuse": [
+        "all ready providers in provider_matrix",
+        "same actual F8D394/D6DC/AA0/CF14/0108FE88/0108FFB0 domains",
+        "one persistent call frame for lazy generated-model acquisition, gather operation, pass operation, camera construction and partial-failure receipts"
+      ],
+      "contract": "Preserve exact ten-step schedule, all 42 x87 instructions, mutable count/pointer reloads, current-profile dispatches, retained effects and no rollback. Empty count may return without contexts. Source interface is not original FH3/private-frame ABI.",
+      "limit": "Component packet can be build/fixture validated with genuine prepared owners; active GameStartupHost/renderer publication, append producer and gameplay stay separate."
+    },
+    {
+      "order": 4,
+      "id": "native_renderer_debug_records40_append_route",
+      "addresses": [
+        "00B25BE0",
+        "00B257B0",
+        "00B29330"
+      ],
+      "files": [
+        "include/bsp/native_renderer_debug_records40_append.hpp",
+        "src/native_renderer_debug_records40_append.cpp",
+        "reports/native_renderer_debug_records40_append_*.json"
+      ],
+      "contract": "Recover the real D5F0A8/+D4 append, 0108D5A0 guard lifetime and opaque retained-owner profile closure. Do not fold this into the consumer merely to fabricate rows."
+    }
+  ],
+  "specific_astra_questions": [
+    "Translate B2B741..B2B8CB with the exact x87 stack/store order, including the explicit FSTP pair before InterlockedDecrement and FLD1/FLD D7A308 reload afterward; a scalar float rewrite is not evidence-equivalent.",
+    "Preserve ECX/EDX at B2B6FC, B2B72D, B2BA3C, B2BAB3 and B2BABC while threading new source contexts; original private-register identity is not claimed.",
+    "Confirm the source failure frame retains the entry-cache increment and locked stream on the same native boundaries, and that record+00 is cleared only after a returning zero-reference terminal."
+  ],
+  "current_file_hashes": [
+    {
+      "path": "include/bsp/native_renderer_end_frame.hpp",
+      "bytes": 4305,
+      "sha256": "3a23bd02daa5ff2f83759d209705260f8edd1d837510ebb01b3c20b9a338aaee"
+    },
+    {
+      "path": "src/native_renderer_end_frame.cpp",
+      "bytes": 11082,
+      "sha256": "458e4ef7fe23da5d594bc265f914a38a4bb7b1f31c8527a10dad654288c81189"
+    },
+    {
+      "path": "include/bsp/native_renderer_container_lifetime.hpp",
+      "bytes": 2121,
+      "sha256": "680c430daa67600cb13a54e8147eac9ad402fa6e84f2f45879253a1ee40cb0d7"
+    },
+    {
+      "path": "src/native_renderer_container_lifetime.cpp",
+      "bytes": 3507,
+      "sha256": "4f20fe408411e00afed498f0542bfe94be0a66024c89dc7782448de025ff9cd1"
+    },
+    {
+      "path": "include/bsp/native_renderer_generated_model.hpp",
+      "bytes": 3678,
+      "sha256": "0ea876d2c85b559b37897bc3353658032374af0cd4884b6cb347a4efdc5618e0"
+    },
+    {
+      "path": "src/native_renderer_generated_model.cpp",
+      "bytes": 12877,
+      "sha256": "0003a0cdca008f65a062c98c5c783f0a7ff1556f30def295e72c327d48d4eafd"
+    },
+    {
+      "path": "include/bsp/native_system_constant_gather.hpp",
+      "bytes": 3792,
+      "sha256": "c50c3972023f6275762edc02119843c626c002d0820a92302342e89ce654ae11"
+    },
+    {
+      "path": "src/native_system_constant_gather.cpp",
+      "bytes": 34872,
+      "sha256": "8078dc01ff71f37185a8149cf7535019257a300d71562b292cc8216a74e75a86"
+    },
+    {
+      "path": "include/bsp/native_logical_buffer_mapping.hpp",
+      "bytes": 2420,
+      "sha256": "d3ee48a208b6636dc70941c6a62967407d657ad18f1ae971f2d900c752fcaef0"
+    },
+    {
+      "path": "src/native_logical_buffer_mapping.cpp",
+      "bytes": 6598,
+      "sha256": "6e9b61c4928f34705e12be655d0c8e6a72bca9210a9d9a2748e43054c55d3075"
+    },
+    {
+      "path": "include/bsp/native_traceline_render.hpp",
+      "bytes": 7210,
+      "sha256": "eec43d439a9ddcf4d5aa96954434c469b607c4ac198f54b6cb55339a0365caf4"
+    },
+    {
+      "path": "src/native_traceline_render.cpp",
+      "bytes": 73470,
+      "sha256": "b791db0734c33fe6c8c12b3caa40c81b76ebfb5915ecdd80b9ae590605160eb6"
+    },
+    {
+      "path": "include/bsp/native_node_raw_transform.hpp",
+      "bytes": 407,
+      "sha256": "53f7d50855779206ce1faff86469948e4ff4fa9c0d376d68fbba1b4a48e3884d"
+    },
+    {
+      "path": "src/native_node_raw_transform.cpp",
+      "bytes": 2873,
+      "sha256": "31a50a5e6e6efd27bb2d32851cc6836b6aabb1a924eefa384363e561deb4e257"
+    },
+    {
+      "path": "include/bsp/native_camera_pool.hpp",
+      "bytes": 3029,
+      "sha256": "1e084ad1aefc6df32be13fec3ff9fdc94d727378173fd1a24e9324727c630038"
+    },
+    {
+      "path": "src/native_camera_pool.cpp",
+      "bytes": 11439,
+      "sha256": "15dafb3a90dcb2dd5dccea1147f2cd4e198f0cd760b8baad5e02e02876d772a3"
+    },
+    {
+      "path": "include/bsp/native_camera_owner.hpp",
+      "bytes": 6271,
+      "sha256": "527c605fcc55eedd421271a5c4b27d45947e325c391838f14f3cab6d75e1f808"
+    },
+    {
+      "path": "src/native_camera_owner.cpp",
+      "bytes": 20601,
+      "sha256": "51f7c97c40027337af8d83b0a35613338a8963ad2664d0d6eaa220be7d22f376"
+    },
+    {
+      "path": "include/bsp/camera_transform.hpp",
+      "bytes": 7028,
+      "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+    },
+    {
+      "path": "src/camera_transform.cpp",
+      "bytes": 11626,
+      "sha256": "55d1ab50deaf9d3eca0812aecf3c1079f38798f2d7a55e7aa525575b1147cf97"
+    },
+    {
+      "path": "include/bsp/native_camera_matrix_math.hpp",
+      "bytes": 1803,
+      "sha256": "1a3d64ca2fb309bc24aaa36278b2f7be38e086c4faef36ad674a5c888cc93f1d"
+    },
+    {
+      "path": "src/native_camera_matrix_math.cpp",
+      "bytes": 23218,
+      "sha256": "ca793757d2bb262ae48cf09a29be44462714da585b430db68c5b3e9262277fa0"
+    },
+    {
+      "path": "include/bsp/camera_projection.hpp",
+      "bytes": 2413,
+      "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+    },
+    {
+      "path": "src/camera_projection.cpp",
+      "bytes": 5226,
+      "sha256": "6584f17e3893365d1960dfad4bcdefe078ca5010fc5080199b3bea97958cd96c"
+    },
+    {
+      "path": "include/bsp/render_command_queue.hpp",
+      "bytes": 10656,
+      "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a"
+    },
+    {
+      "path": "src/render_command_queue.cpp",
+      "bytes": 10448,
+      "sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02"
+    },
+    {
+      "path": "reports/native_renderer_owner_domains_r29.json",
+      "bytes": 15515,
+      "sha256": "c4561942ac772b2eea32d9e022162524f8f62b21b2db37c073a8f57fb9392e60"
+    },
+    {
+      "path": "reports/native_renderer_control_binding_r32.json",
+      "bytes": 22092,
+      "sha256": "8b40c01c8dc1b16361674c4a22413474230b7b259d322387ce0197f9959e1f44"
+    },
+    {
+      "path": "reports/native_renderer_debug_records24_provider_contract_r41.json",
+      "bytes": 86362,
+      "sha256": "e6c81979e11b4755d88d81d5e25ef3c40b2eecffb9e568be8449d2ab337c5864"
+    },
+    {
+      "path": "reports/native_system_constant_gather_main_r44.json",
+      "bytes": 90328,
+      "sha256": "c8b7334c754c67233920c80adb1d9d3bf81396fa929dd67af75ec545e3436029"
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": "local/native_renderer_debug_records40_r48_ghidra_bytes.txt",
+      "bytes": 7457,
+      "sha256": "d55f94786ee9ea0fe52f08a1029f24ae80cb91c43d47cec99322bbd7178df694"
+    },
+    {
+      "path": "local/native_renderer_debug_records40_r48_native_receipt.json",
+      "bytes": 23536,
+      "sha256": "2d91abdc58195a4de2d0eeb13b90b8eea47f7140979770cebfc705c9e52000b9"
+    },
+    {
+      "path": "local/capture_native_renderer_debug_records40_r48.py",
+      "bytes": 2520,
+      "sha256": "9613a763e1e0945c76822c2a78f5fc1cb3e9a6a5bcaf93f4e28ee275820bf92a"
+    }
+  ],
+  "validation_performed_now": [
+    "Verified live Ghidra project C:/Users/sqz269/bsp.gpr and program /battlestationspacific.exe through supported bsp.py queries.",
+    "Parsed every byte from a fresh live Ghidra 00B2B580[1549] read and required equality with the installed PE before hashing.",
+    "Disassembled the exact span with Capstone: 414 instructions, 35 direct calls to 17 targets, seven indirect calls, 42 x87 instructions and 18 branches.",
+    "Queried complete B2B580 caller/callee sets, complete 0108FE88 xrefs, current ledgers/source, a6b2884f2 tree artifacts, and the exact orch5 render-entry-cache commit.",
+    "No source was compiled and no fixture/game was run because this packet is evidence-only."
+  ],
+  "boundaries": [
+    "Live/PE byte equality and source inventory are static evidence. They do not establish original ABI/FH3/SEH, full active EndFrame, renderer ownership, hardware behavior, visual output or gameplay.",
+    "Current provider availability means callable source interfaces exist under their documented contexts; it does not mean GameStartupHost constructs the same actual renderer/camera/cache graph.",
+    "The orch5 render-entry-cache fixture is historical cross-branch evidence. Its source is absent from the audited main baseline and was not rerun here.",
+    "The a6 generated-model and renderer fixtures did not execute B2B580. No prior result is promoted to runtime proof for this parent."
+  ],
+  "hash_provenance": "All current and historical SHA-256 values were computed programmatically from exact workspace bytes or git-show blob bytes. The native span hash was computed only after full fresh Ghidra/installed-PE equality; no abbreviated hashes were expanded manually."
+}
