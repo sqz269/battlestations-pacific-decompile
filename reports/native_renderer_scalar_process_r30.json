@@ -1,0 +1,134 @@
+{
+  "packet": "renderer_scalar_process_r30",
+  "baseline": "f30bf7343",
+  "implementation_commit": "98a82120cdc6a7ce483a38efd1d4df00db793e80",
+  "owned_files": [
+    "include/bsp/game_native_renderer_scalars.hpp",
+    "src/game_native_renderer_scalars.cpp",
+    "docs/NATIVE_RENDERER_SCALAR_PROCESS_R30.md",
+    "reports/native_renderer_scalar_process_r30.json",
+    "cmake/startup.cmake"
+  ],
+  "source_owner": {
+    "type": "bsp::game::GameNativeRendererScalarProcess",
+    "entry": "bsp::game::game_native_renderer_scalar_process()",
+    "construction": "one function-local process object, value-initialized once",
+    "copyable": false,
+    "reset_or_reinitialize": false,
+    "native_crt_initializer": false,
+    "native_exit_callback": false,
+    "native_cleanup": false,
+    "borrowed_accessors": [
+      "synchronization_0108d6dc()",
+      "logical_texture_serial_0108d6e8()",
+      "texture_tracking_counter_0108daf8()",
+      "surface_tracking_counter_0108dafc()"
+    ]
+  },
+  "storage": [
+    {
+      "original_identity": "0108D6DC..0108D6E3",
+      "source_type": "NativeRendererSynchronizationGlobals",
+      "initial_state": "8 zero bytes",
+      "layout_assertions": {
+        "size": 8,
+        "mode_00": 0,
+        "observed_mode_01": 1,
+        "preserved_02": 2,
+        "nesting_04": 4
+      }
+    },
+    {
+      "original_identity": "0108D6E8",
+      "source_type": "std::uint32_t",
+      "role": "one serial shared by all named and unnamed logical texture variants",
+      "initial_state": 0
+    },
+    {
+      "original_identity": "0108DAF8",
+      "source_type": "std::uint32_t",
+      "role": "live texture accounting counter",
+      "initial_state": 0
+    },
+    {
+      "original_identity": "0108DAFC",
+      "source_type": "std::uint32_t",
+      "role": "live surface accounting counter",
+      "initial_state": 0
+    }
+  ],
+  "evidence": {
+    "primary_report": "reports/native_renderer_owner_domains_r29.json",
+    "original_storage": "all four domains are in the non-disk-backed virtual tail of .data and receive loader-zero initial state",
+    "original_lifecycle": "the complete writer census found no direct CRT initializer, atexit callback, reset or native cleanup owner for these cells",
+    "source_mapping": "value initialization supplies the zero preimage; later reconstructed functions must borrow these stable references"
+  },
+  "cross_branch_duplicate_check": {
+    "method": "bounded read-only git ls-tree/git grep; no checkout or merge",
+    "branches": [
+      {
+        "name": "agent/orch5-native-renderer-base",
+        "head": "b521b0a5988081eaee24e9ab535e6055379bf5a7",
+        "related_validation_commit": "3c85892ea",
+        "result": "raw renderer base lifetime source and borrowed scalar uses exist; no GameNativeRenderer process or backing definition for these four cells"
+      },
+      {
+        "name": "agent/orch5-native-renderer-constructor",
+        "head": "00a12b5d0fa86494f6e9efccaa90c543c9bd3bef",
+        "result": "renderer constructor source exists; its constructor header/source/report contain no definition or reference for these four address identities, and no GameNativeRenderer process was found"
+      }
+    ],
+    "boundary": "The no-production-renderer conclusion is limited to the current main baseline. The orchestrator is tracking unmerged renderer body recovery separately."
+  },
+  "explicit_exclusions": [
+    "renderer publication 00F8D394",
+    "renderer or device object",
+    "renderer worker startup or shutdown",
+    "GameNativeTextureOwnerServices construction",
+    "COM texture or surface payloads",
+    "fake renderer aliases",
+    "original-address spacing between source members"
+  ],
+  "validation": {
+    "verify_seeds": "passed; all configured disk and saved-Ghidra bytes matched",
+    "build": "strict MSVC Win32 Release passed",
+    "compiled_source": "src/game_native_renderer_scalars.cpp",
+    "flags": [
+      "/MD",
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "ctest": {
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ]
+    },
+    "new_test": "none; a dedicated zero-initialization test would mirror the implementation"
+  },
+  "proof_boundary": {
+    "established": [
+      "source process owns exactly one instance of each researched scalar domain",
+      "stable borrowed-reference API",
+      "synchronization record size and offsets",
+      "strict Win32 compilation and existing test-suite compatibility"
+    ],
+    "not_established": [
+      "original ABI, FH3 or SEH equivalence",
+      "actual renderer publication or lifetime",
+      "worker-thread synchronization parity",
+      "live game renderer, texture or surface behavior",
+      "rendering or gameplay parity"
+    ]
+  },
+  "mutations": {
+    "ghidra": false,
+    "ledgers": false,
+    "game_main": false,
+    "texture_owner_bundle": false
+  }
+}
