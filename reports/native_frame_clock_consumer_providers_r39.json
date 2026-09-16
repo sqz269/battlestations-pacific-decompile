@@ -1445,5 +1445,293 @@
     "requested": [],
     "reason": "New source composition adapters reuse existing current getter and publication resolver. No new original body or duplicate ledger entry is appropriate."
   },
-  "full_entry_abi_boundary": "Only the listed clock callsites and selected spans are admitted. Quoted Ghidra entry signatures are existing metadata, not independent full-entry ABI recovery in R39. No full consumer body, original FH3/SEH or fault-order equivalence is claimed."
+  "full_entry_abi_boundary": "Only the listed clock callsites and selected spans are admitted. Quoted Ghidra entry signatures are existing metadata, not independent full-entry ABI recovery in R39. No full consumer body, original FH3/SEH or fault-order equivalence is claimed.",
+  "primary_integration": {
+    "source_merge": "f93acf671",
+    "all_source_diffs_reviewed": true,
+    "native_spans_independently_verified": 6,
+    "worker_artifacts_verified": 3479,
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "worker_archive": "local/evidence-r39/frame-clock-consumer-original-r39.zip",
+    "primary_fixture": "Fresh unchanged genuine-provider fixture linked combined main passes both groups; full application/FMOD/input SDK runtime not executed.",
+    "run_log": "local/frame_clock_consumer_probe_r39_run.log"
+  },
+  "primary_archive": {
+    "path": "local/evidence-r39/frame-clock-consumer-main-r39.zip",
+    "sha256": "272e95fba5890beff819d1a31909fe267dc66659eb4b9ee63332fa937defcff2",
+    "files": [
+      {
+        "path": "include/bsp/sound_resource_runtime.hpp",
+        "bytes": 5195,
+        "sha256": "1d47b5b5d1f9c908ec481dfac76ec53b4b82ced579f7eb9a5ec983a1fb282529"
+      },
+      {
+        "path": "src/sound_resource_runtime.cpp",
+        "bytes": 5587,
+        "sha256": "701461386a7667940f6f88a78dc2d794355f4e5452668682c797b1e883606058"
+      },
+      {
+        "path": "include/bsp/game_sound_runtime.hpp",
+        "bytes": 5374,
+        "sha256": "adc71df223c83c0042fe0b984f4c9bc34ee6ab2ea2867d4e96111d460f706957"
+      },
+      {
+        "path": "src/game_sound_runtime.cpp",
+        "bytes": 20078,
+        "sha256": "9999a87458b0c069d12bbe1b6be6c8154db00949654b3a05dd2c3b930b2fd3d1"
+      },
+      {
+        "path": "include/bsp/native_input_device_runtime.hpp",
+        "bytes": 7289,
+        "sha256": "748ec173974a7a6b2d0fd3c3ff7663bc295c99c4e7a81f91a3b4230774f00dc9"
+      },
+      {
+        "path": "src/native_input_device_runtime.cpp",
+        "bytes": 13772,
+        "sha256": "eef85878ca5d1013deae564da17d6dad109b97c7d36205e197652ee910f875e9"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 229433,
+        "sha256": "a380e7cb16e78816c051f1cea239548fea8dafa56ec6d90e4e4f1216d1a00673"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+        "bytes": 693219,
+        "sha256": "7c4e74edade8c2196c974b03baef0327882229f7d844618b6e515d7fea91df9d"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/sound_resource_runtime.obj",
+        "bytes": 81354,
+        "sha256": "65a51687db8c43b99ccda4d2878c5619e924faca9e210b0033b94224e965f9d1"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/game_sound_runtime.obj",
+        "bytes": 314080,
+        "sha256": "14b5f8d4c11030a8e868b54cd97e65bb5df9a2319d4f0bdfc70254a29562ad25"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_input_device_runtime.obj",
+        "bytes": 58773,
+        "sha256": "a53c0e2f7e5aaeb56a965dcd68b1fc39f5f0750bfdac910a782b4d0b83584cb7"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63447810,
+        "sha256": "dc317cde42b9751f36b86fab859b9f138338439c7770ab7769cf97624a0a8e42"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "bytes": 455244,
+        "sha256": "db83167c8c7d24461ef2bf60363b96264fd2406929d0e72a8909287d79b96a17"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "bytes": 71906,
+        "sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5"
+      },
+      {
+        "path": "local/frame_clock_consumer_probe_r39.cpp",
+        "bytes": 10587,
+        "sha256": "7332e224e44855af34911cf1e49e910342b9f7dc5b56dd160b1793fd650e22cf"
+      },
+      {
+        "path": "local/frame_clock_consumer_probe_r39.cmd",
+        "bytes": 790,
+        "sha256": "75dfb8ee273fe41e781c65e49d1559c6ca70f604b552cf0e56986410ef48247e"
+      },
+      {
+        "path": "local/frame_clock_consumer_probe_r39.obj",
+        "bytes": 42149,
+        "sha256": "832bc2ee7b3d937123890fdf2fed74bc348c6524e4a2ab284e891728534b5661"
+      },
+      {
+        "path": "local/frame_clock_consumer_probe_r39.exe",
+        "bytes": 260608,
+        "sha256": "258373b0610b412b87693257a985446a74286dfebe767b3fc10e3375c7d9f0f4"
+      },
+      {
+        "path": "local/frame_clock_consumer_probe_r39.map",
+        "bytes": 386112,
+        "sha256": "82d9be28f3ea162983cbcfbd8de072afae0f0ab958ef80198fcf9ebb3b0b0994"
+      },
+      {
+        "path": "local/frame_clock_consumer_probe_r39_dependencies.json",
+        "bytes": 42345,
+        "sha256": "a13a0d3fc62b8ae00a64e989322ed2f9ac8b841a90aecda4521961a91bf88134"
+      },
+      {
+        "path": "local/frame_clock_consumer_probe_r39_build.log",
+        "bytes": 53238,
+        "sha256": "dd26148d3eebdd7431da49737729042e0acf86bb177a66e3de85485d860716b9"
+      },
+      {
+        "path": "local/frame_clock_consumer_probe_r39_run.log",
+        "bytes": 1014,
+        "sha256": "1219b566580db40e40c68033c407e4d471f86df0d38a1491969bc16a353d69f4"
+      },
+      {
+        "path": "local/frame_clock_consumer_original_r39.hpp",
+        "bytes": 220,
+        "sha256": "3a2e2c49594fd74d9338db7e88b197136d5ce548c3ff57db8668029c177d5f71"
+      },
+      {
+        "path": "local/frame_clock_consumer_legacy_layout_r39.hpp",
+        "bytes": 1411,
+        "sha256": "2641330cd05b2896a400bfac4f9977d2b77af468d8b9dfc3224e8ffe2589cee2"
+      },
+      {
+        "path": "local/run_frame_clock_consumer_probe_r39.py",
+        "bytes": 2544,
+        "sha256": "a52a3ab5a70cc8e10ede64248b4111291b106ecd07dfb211d324945a865a6ae1"
+      },
+      {
+        "path": "local/frame_clock_consumer_probe_results_r39.json",
+        "bytes": 874,
+        "sha256": "d86d3e84daf14609772e162a5a0618439c3c180f1dec9714fd4fc35e9c11bf79"
+      },
+      {
+        "path": "local/r39_clock_consumer_integration.log",
+        "bytes": 825,
+        "sha256": "57b51b07df417330cd765b4375fa81736f872dea74a504bb5004fdd5f4802da7"
+      },
+      {
+        "path": "local/r39_clock_consumer_proto.txt",
+        "bytes": 3170,
+        "sha256": "c6f8608c21521829ff0752a7c09572d8d39810f672edbc6387b1aa48c38d2baa"
+      },
+      {
+        "path": "local/r39_clock_consumer_annotations.log",
+        "bytes": 319,
+        "sha256": "81abd5b29ea532fe3754097e5a3a7970827fb5f54167483e1158bc5b478def1f"
+      },
+      {
+        "path": "local/r39_clock_consumer_exports.log",
+        "bytes": 410,
+        "sha256": "65d8a3dc3e02af8a71e0a30c114b18c15d98fdaf93849c779c7a874dfbc6ce38"
+      },
+      {
+        "path": "local/r39_clock_consumer_native_spans.json",
+        "bytes": 6227,
+        "sha256": "bc5a84e42224070384b155e7ea9a3aef52050fc6e252f6de14924664c0237d74"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T121733Z.json",
+        "bytes": 36858,
+        "sha256": "9b948ff81da5a82caba49dc18877adb4181805e979f3acd1051094ab047c3b48"
+      }
+    ],
+    "loaded_modules": [
+      {
+        "resolved_path": "\\\\?\\J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\frame_clock_consumer_probe_r39.exe",
+        "loaded_machine": "014c",
+        "bytes": 260608,
+        "sha256": "258373b0610b412b87693257a985446a74286dfebe767b3fc10e3375c7d9f0f4"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+        "loaded_machine": "014c",
+        "bytes": 1822400,
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\kernel32.dll",
+        "loaded_machine": "014c",
+        "bytes": 687472,
+        "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\KernelBase.dll",
+        "loaded_machine": "014c",
+        "bytes": 2974168,
+        "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\apphelp.dll",
+        "loaded_machine": "014c",
+        "bytes": 710832,
+        "sha256": "a8109618c3bf3623be23e8e18f1e7184538600c953169297fd0009ed77564c6e"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "loaded_machine": "014c",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll",
+        "loaded_machine": "014c",
+        "bytes": 618944,
+        "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "loaded_machine": "014c",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3"
+      }
+    ]
+  },
+  "primary_annotations": {
+    "status": "Four enclosing names retained; bounded provider fragments appended. Prior comments preserved, project saved, exports refreshed.",
+    "prior_annotations": [
+      {
+        "address": "00a7e630",
+        "before": {
+          "address": "00a7e630",
+          "function_name": "BSP_SoundSystem_UpdateBase",
+          "comment": "[BSP reconstruction 00a7e630]\nHypothesis, not a recovered symbol. ECX=self; stack void* matrix, float velocity_x, float velocity_y, float velocity_z; RET 0x10. Clockglobal01090AB0 virtual14 snapshot,00530890 subtraction,x87 ratio and timestamp publication; optional alternate04; FMOD channels query before flag69 earlyout. Preserve velocity metric with 50/dt and600 double thresholds and unordered-CF acceptance; matrix copy and listener snapshots. First pass update30/transition24, increment168. EventSystem listener7C then update8 with current handles. Second pass refresh10,completion0C,nonvirtual14; retire completed or unprotected virtual with signed updates18>5, stop8(0), swap-last erase, increment164 and revisit moved slot. Full span SHA256 004d795bbe7c3ce6878dc13fb3679cfd3b88343fd1f95970ea74996757b8f8ed. docs/SOUND_SYSTEM_UPDATE.md. Win32, focused callback/order checks and installed FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open."
+        },
+        "after": {
+          "address": "00a7e630",
+          "name": "BSP_SoundSystem_UpdateBase",
+          "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack void* matrix, float velocity_x, float velocity_y, float velocity_z; RET 0x10. Clockglobal01090AB0 virtual14 snapshot,00530890 subtraction,x87 ratio and timestamp publication; optional alternate04; FMOD channels query before flag69 earlyout. Preserve velocity metric with 50/dt and600 double thresholds and unordered-CF acceptance; matrix copy and listener snapshots. First pass update30/transition24, increment168. EventSystem listener7C then update8 with current handles. Second pass refresh10,completion0C,nonvirtual14; retire completed or unprotected virtual with signed updates18>5, stop8(0), swap-last erase, increment164 and revisit moved slot. Full span SHA256 004d795bbe7c3ce6878dc13fb3679cfd3b88343fd1f95970ea74996757b8f8ed. docs/SOUND_SYSTEM_UPDATE.md. Win32, focused callback/order checks and installed FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open. | R39 additive borrowed clock bindings admit semantic OR actual publication without a dummy semantic owner. Raw sound startup uses current slot14 rather than sample slot20; sound update/input copy exactly16B into immediate result storage. Same current AB0 reload on every operation, no allocation/QPC/advance. Legacy semantic paths retained. Source aggregate sizes change sound96->104/input124->128; not native ABI layouts. Parent reviewed all source diffs; all3479worker artifacts+manifest and6PE spans265B independently verified. Worker/combined strict /MD builds and3CTests pass; fresh primary genuine80h-owner fixture passes same AA0/AB0 A/B reload, exact snapshots/noQPC, rejection and one deletion each by real shared drain. Serialized live disjoint storage contract only: memcpy snapshots do not reproduce original interleaved reads/stores, concurrent or fault schedule. FullSound/FMOD/InputSDK composition only compile checked. R37 narrative corrected: A7E639 is inside A7E630, not A7E590. Application owner cutover/nativeFH3/gameplay unproved. reports/native_frame_clock_consumer_providers_r39.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a88770",
+        "before": {
+          "address": "00a88770",
+          "function_name": "BSP_SoundSystem_Initialize",
+          "comment": "[BSP reconstruction 00a88770]\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073dafd with the boolean DAT_00f889a4 == 0. Carries the original misspelt failure string 'Out of sounjd memory:'. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json.\n\n[BSP reconstruction 00a88770] update\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); called at 0073dafd with the boolean DAT_00f889a4 == 0. Carries the original misspelt failure string 'Out of sounjd memory:' (00d5ab94). Reconstructed in packet app_init_audio_online. __thiscall(ECX = a 0x178-byte object from operator new at 0073dac8), RET 0xc: three stack dwords, of which only the first byte is read (the caller pushes the flag plus two zeroes). 00a887b1 stores the negation of that byte into +0x70, so +0x70 is 'sound enabled'. Sequence: base ctor 00a81480; vtable 00d5b44c; +0x174 = 0; operator new(0x10) with ctor 00a88650; BSP_SingletonLifetime_GetManager (00415350) then 00bd0d70; four dwords from DAT_01090ab0 vtable +0x14 copied to +0x118..+0x124; FMOD_EventSystem_Create (00c2df80) into +0x48; the handle's own function table slot 7 (+0x1c) into +0x44, which is the FMOD::System that every later import takes as its first stack argument. When +0x70 is set: getNumDrivers, then getDriverCaps counted down from numdrivers-1 to 0 writing +0x158/+0x15c and a stack speaker mode seeded with 1 at 00a88890, then setSpeakerMode with the value driver 0 left behind. +0x158 = 1 and +0x15c = 440000 are stored unconditionally afterwards, discarding the queried range. When +0x70 is clear: setOutput(2) = FMOD_OUTPUTTYPE_NOSOUND, the disabled-sound path. Then handle table slot 0 = init(maxchannels 0x200, flags 0x10, extradriverdata NULL, eventflags 0); setFileSystem(open 00a7d410, close 00a7b750, read 00a79930, seek 00a79970, blockalign 0); set3DSettings(dopplerscale DAT_00ce69c8 = 0.3f, distancefactor 1.0f, rolloffscale 1.0f); then getDriver, getOutput and getSpeakerMode into stack slots. Only the speaker mode is used: the eight-entry jump table at 00a88aac maps FMOD_SPEAKERMODE 1..6 onto +0x170 = 1..6, aliases 7 (SRS 5.1 matrix) onto 5 and leaves the field untouched for 0 (RAW). No setDriver call exists and no channel group is created here; the master channel group and the FMOD advanced settings belong to the follow-on stage 00a7ff80 called at 00a88a8e. The fmodex.dll imports are the mangled C++ methods with the QAG (public __stdcall) qualifier, so 'this' is pushed as the first stack argument. Every result is tested against 0x2b (FMOD_ERR_MEMORY) and nothing else; the handler is BSP_SoundSystem_ReportFmodMemoryFailure (00a7a460). Evidence: docs/APP_INIT_AUDIO_ONLINE.md; reports/app_init_audio_online.json; docs/APP_INITIALIZE_MAP.md.\n\n[BSP reconstruction 00a88770] update\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); called at 0073dafd with the boolean DAT_00f889a4 == 0. Carries the original misspelt failure string 'Out of sounjd memory:' (00d5ab94). Reconstructed in packet app_init_audio_online. __thiscall(ECX = a 0x178-byte object from operator new at 0073dac8), RET 0xc: three stack dwords, of which only the first byte is read (the caller pushes the flag plus two zeroes). 00a887b1 stores the negation of that byte into +0x70, so +0x70 is 'sound enabled'. Sequence: base ctor 00a81480; vtable 00d5b44c; +0x174 = 0; operator new(0x10) with ctor 00a88650; BSP_SingletonLifetime_GetManager (00415350) then 00bd0d70; four dwords from DAT_01090ab0 vtable +0x14 copied to +0x118..+0x124; FMOD_EventSystem_Create (00c2df80) into +0x48; the handle's own function table slot 7 (+0x1c) into +0x44, which is the FMOD::System that every later import takes as its first stack argument. When +0x70 is set: getNumDrivers, then getDriverCaps counted down from numdrivers-1 to 0 writing +0x158/+0x15c and a stack speaker mode seeded with 1 at 00a88890, then setSpeakerMode with the value driver 0 left behind. +0x158 = 1 and +0x15c = 440000 are stored unconditionally afterwards, discarding the queried range. When +0x70 is clear: setOutput(2) = FMOD_OUTPUTTYPE_NOSOUND, the disabled-sound path. Then handle table slot 0 = init(maxchannels 0x200, flags 0x10, extradriverdata NULL, eventflags 0); setFileSystem(open 00a7d410, close 00a7b750, read 00a79930, seek 00a79970, blockalign 0); set3DSettings(dopplerscale DAT_00ce69c8 = 0.3f, distancefactor 1.0f, rolloffscale 1.0f); then getDriver, getOutput and getSpeakerMode into stack slots. Only the speaker mode is used: the eight-entry jump table at 00a88aac maps FMOD_SPEAKERMODE 1..6 onto +0x170 = 1..6, aliases 7 (SRS 5.1 matrix) onto 5 and leaves the field untouched for 0 (RAW). No setDriver call exists and no channel group is created here; the master channel group and the FMOD advanced settings belong to the follow-on stage 00a7ff80 called at 00a88a8e. The fmodex.dll imports are the mangled C++ methods with the QAG (public __stdcall) qualifier, so 'this' is pushed as the first stack argument. Every result is tested against 0x2b (FMOD_ERR_MEMORY) and nothing else; the handler is BSP_SoundSystem_ReportFmodMemoryFailure (00a7a460). Evidence: docs/APP_INIT_AUDIO_ONLINE.md; reports/app_init_audio_online.json; docs/APP_INITIALIZE_MAP.md. | Hypothesis, not a recovered symbol. docs/COMPLETE_SOUND_STARTUP.md. Full normal-path sequence now directly invokes base owner, auxiliary owner, lifetime reorder, four-word clock copy, recovered FMOD fragment, resourceowner and Lua configuration. Canonical state retained between stages. Clock/actual00a84740 asset loader/Lua owner remain required external contracts; no stub. Library fragment and file hooks runtime verified against installed4.18.04, not full constructor/gameplay.\n\n[BSP reconstruction 00a88770] update\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); called at 0073dafd with the boolean DAT_00f889a4 == 0. Carries the original misspelt failure string 'Out of sounjd memory:' (00d5ab94). Reconstructed in packet app_init_audio_online. __thiscall(ECX = a 0x178-byte object from operator new at 0073dac8), RET 0xc: three stack dwords, of which only the first byte is read (the caller pushes the flag plus two zeroes). 00a887b1 stores the negation of that byte into +0x70, so +0x70 is 'sound enabled'. Sequence: base ctor 00a81480; vtable 00d5b44c; +0x174 = 0; operator new(0x10) with ctor 00a88650; BSP_SingletonLifetime_GetManager (00415350) then 00bd0d70; four dwords from DAT_01090ab0 vtable +0x14 copied to +0x118..+0x124; FMOD_EventSystem_Create (00c2df80) into +0x48; the handle's own function table slot 7 (+0x1c) into +0x44, which is the FMOD::System that every later import takes as its first stack argument. When +0x70 is set: getNumDrivers, then getDriverCaps counted down from numdrivers-1 to 0 writing +0x158/+0x15c and a stack speaker mode seeded with 1 at 00a88890, then setSpeakerMode with the value driver 0 left behind. +0x158 = 1 and +0x15c = 440000 are stored unconditionally afterwards, discarding the queried range. When +0x70 is clear: setOutput(2) = FMOD_OUTPUTTYPE_NOSOUND, the disabled-sound path. Then handle table slot 0 = init(maxchannels 0x200, flags 0x10, extradriverdata NULL, eventflags 0); setFileSystem(open 00a7d410, close 00a7b750, read 00a79930, seek 00a79970, blockalign 0); set3DSettings(dopplerscale DAT_00ce69c8 = 0.3f, distancefactor 1.0f, rolloffscale 1.0f); then getDriver, getOutput and getSpeakerMode into stack slots. Only the speaker mode is used: the eight-entry jump table at 00a88aac maps FMOD_SPEAKERMODE 1..6 onto +0x170 = 1..6, aliases 7 (SRS 5.1 matrix) onto 5 and leaves the field untouched for 0 (RAW). No setDriver call exists and no channel group is created here; the master channel group and the FMOD advanced settings belong to the follow-on stage 00a7ff80 called at 00a88a8e. The fmodex.dll imports are the mangled C++ methods with the QAG (public __stdcall) qualifier, so 'this' is pushed as the first stack argument. Every result is tested against 0x2b (FMOD_ERR_MEMORY) and nothing else; the handler is BSP_SoundSystem_ReportFmodMemoryFailure (00a7a460). Evidence: docs/APP_INIT_AUDIO_ONLINE.md; reports/app_init_audio_online.json; docs/APP_INITIALIZE_MAP.md. | Hypothesis, not a recovered symbol. docs/COMPLETE_SOUND_STARTUP.md. Full normal-path sequence now directly invokes base owner, auxiliary owner, lifetime reorder, four-word clock copy, recovered FMOD fragment, resourceowner and Lua configuration. Canonical state retained between stages. Clock/actual00a84740 asset loader/Lua owner remain required external contracts; no stub. Library fragment and file hooks runtime verified against installed4.18.04, not full constructor/gameplay. | Hypothesis, not a recovered symbol. Follow-up docs/SOUND_RESOURCE_RUNTIME.md: SoundResourceRuntime now supplies actual VFS cache/FSB/FEV creation and teardown; concrete FrameClock and VFS Lua owners execute this entire normal constructor in an installed-DLL fixture. 133 FMOD calls succeeded, error bank and event project loaded/released. Platform XLive/focus are explicit fixture observers. No enabled hardware audio, native ABI or gameplay claim.\n\n[BSP reconstruction 00a88770] update\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); called at 0073dafd with the boolean DAT_00f889a4 == 0. Carries the original misspelt failure string 'Out of sounjd memory:' (00d5ab94). Reconstructed in packet app_init_audio_online. __thiscall(ECX = a 0x178-byte object from operator new at 0073dac8), RET 0xc: three stack dwords, of which only the first byte is read (the caller pushes the flag plus two zeroes). 00a887b1 stores the negation of that byte into +0x70, so +0x70 is 'sound enabled'. Sequence: base ctor 00a81480; vtable 00d5b44c; +0x174 = 0; operator new(0x10) with ctor 00a88650; BSP_SingletonLifetime_GetManager (00415350) then 00bd0d70; four dwords from DAT_01090ab0 vtable +0x14 copied to +0x118..+0x124; FMOD_EventSystem_Create (00c2df80) into +0x48; the handle's own function table slot 7 (+0x1c) into +0x44, which is the FMOD::System that every later import takes as its first stack argument. When +0x70 is set: getNumDrivers, then getDriverCaps counted down from numdrivers-1 to 0 writing +0x158/+0x15c and a stack speaker mode seeded with 1 at 00a88890, then setSpeakerMode with the value driver 0 left behind. +0x158 = 1 and +0x15c = 440000 are stored unconditionally afterwards, discarding the queried range. When +0x70 is clear: setOutput(2) = FMOD_OUTPUTTYPE_NOSOUND, the disabled-sound path. Then handle table slot 0 = init(maxchannels 0x200, flags 0x10, extradriverdata NULL, eventflags 0); setFileSystem(open 00a7d410, close 00a7b750, read 00a79930, seek 00a79970, blockalign 0); set3DSettings(dopplerscale DAT_00ce69c8 = 0.3f, distancefactor 1.0f, rolloffscale 1.0f); then getDriver, getOutput and getSpeakerMode into stack slots. Only the speaker mode is used: the eight-entry jump table at 00a88aac maps FMOD_SPEAKERMODE 1..6 onto +0x170 = 1..6, aliases 7 (SRS 5.1 matrix) onto 5 and leaves the field untouched for 0 (RAW). No setDriver call exists and no channel group is created here; the master channel group and the FMOD advanced settings belong to the follow-on stage 00a7ff80 called at 00a88a8e. The fmodex.dll imports are the mangled C++ methods with the QAG (public __stdcall) qualifier, so 'this' is pushed as the first stack argument. Every result is tested against 0x2b (FMOD_ERR_MEMORY) and nothing else; the handler is BSP_SoundSystem_ReportFmodMemoryFailure (00a7a460). Evidence: docs/APP_INIT_AUDIO_ONLINE.md; reports/app_init_audio_online.json; docs/APP_INITIALIZE_MAP.md. | Hypothesis, not a recovered symbol. docs/COMPLETE_SOUND_STARTUP.md. Full normal-path sequence now directly invokes base owner, auxiliary owner, lifetime reorder, four-word clock copy, recovered FMOD fragment, resourceowner and Lua configuration. Canonical state retained between stages. Clock/actual00a84740 asset loader/Lua owner remain required external contracts; no stub. Library fragment and file hooks runtime verified against installed4.18.04, not full constructor/gameplay. | Hypothesis, not a recovered symbol. Follow-up docs/SOUND_RESOURCE_RUNTIME.md: SoundResourceRuntime now supplies actual VFS cache/FSB/FEV creation and teardown; concrete FrameClock and VFS Lua owners execute this entire normal constructor in an installed-DLL fixture. 133 FMOD calls succeeded, error bank and event project loaded/released. Platform XLive/focus are explicit fixture observers. No enabled hardware audio, native ABI or gameplay claim. | Hypothesis, not a recovered symbol. docs/SOUND_STARTUP_UNWIND.md; reports/sound_startup_unwind.json. DEC478/DEC460 maps state0 through CB62A3 to base-only A816B0; states1/2 free partial auxiliary/resource allocations through CB62A8/CB62B3. Required canonical shutdown context now unwinds base after completed A81480 on later C++ exception, retaining completed auxiliary/FMOD/resource objects. Three stack words; disabled low byte is not FMOD_SPEAKERMODE. Throwing factory domain; null defensive branches recorded, native FH3 ABI not projected. Win32 Release and two existing CTests passed; outer failure runtime belongs to application integration.\n\n[BSP reconstruction 00a88770] update\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); called at 0073dafd with the boolean DAT_00f889a4 == 0. Carries the original misspelt failure string 'Out of sounjd memory:' (00d5ab94). Reconstructed in packet app_init_audio_online. __thiscall(ECX = a 0x178-byte object from operator new at 0073dac8), RET 0xc: three stack dwords, of which only the first byte is read (the caller pushes the flag plus two zeroes). 00a887b1 stores the negation of that byte into +0x70, so +0x70 is 'sound enabled'. Sequence: base ctor 00a81480; vtable 00d5b44c; +0x174 = 0; operator new(0x10) with ctor 00a88650; BSP_SingletonLifetime_GetManager (00415350) then 00bd0d70; four dwords from DAT_01090ab0 vtable +0x14 copied to +0x118..+0x124; FMOD_EventSystem_Create (00c2df80) into +0x48; the handle's own function table slot 7 (+0x1c) into +0x44, which is the FMOD::System that every later import takes as its first stack argument. When +0x70 is set: getNumDrivers, then getDriverCaps counted down from numdrivers-1 to 0 writing +0x158/+0x15c and a stack speaker mode seeded with 1 at 00a88890, then setSpeakerMode with the value driver 0 left behind. +0x158 = 1 and +0x15c = 440000 are stored unconditionally afterwards, discarding the queried range. When +0x70 is clear: setOutput(2) = FMOD_OUTPUTTYPE_NOSOUND, the disabled-sound path. Then handle table slot 0 = init(maxchannels 0x200, flags 0x10, extradriverdata NULL, eventflags 0); setFileSystem(open 00a7d410, close 00a7b750, read 00a79930, seek 00a79970, blockalign 0); set3DSettings(dopplerscale DAT_00ce69c8 = 0.3f, distancefactor 1.0f, rolloffscale 1.0f); then getDriver, getOutput and getSpeakerMode into stack slots. Only the speaker mode is used: the eight-entry jump table at 00a88aac maps FMOD_SPEAKERMODE 1..6 onto +0x170 = 1..6, aliases 7 (SRS 5.1 matrix) onto 5 and leaves the field untouched for 0 (RAW). No setDriver call exists and no channel group is created here; the master channel group and the FMOD advanced settings belong to the follow-on stage 00a7ff80 called at 00a88a8e. The fmodex.dll imports are the mangled C++ methods with the QAG (public __stdcall) qualifier, so 'this' is pushed as the first stack argument. Every result is tested against 0x2b (FMOD_ERR_MEMORY) and nothing else; the handler is BSP_SoundSystem_ReportFmodMemoryFailure (00a7a460). Evidence: docs/APP_INIT_AUDIO_ONLINE.md; reports/app_init_audio_online.json; docs/APP_INITIALIZE_MAP.md. | Hypothesis, not a recovered symbol. docs/COMPLETE_SOUND_STARTUP.md. Full normal-path sequence now directly invokes base owner, auxiliary owner, lifetime reorder, four-word clock copy, recovered FMOD fragment, resourceowner and Lua configuration. Canonical state retained between stages. Clock/actual00a84740 asset loader/Lua owner remain required external contracts; no stub. Library fragment and file hooks runtime verified against installed4.18.04, not full constructor/gameplay. | Hypothesis, not a recovered symbol. Follow-up docs/SOUND_RESOURCE_RUNTIME.md: SoundResourceRuntime now supplies actual VFS cache/FSB/FEV creation and teardown; concrete FrameClock and VFS Lua owners execute this entire normal constructor in an installed-DLL fixture. 133 FMOD calls succeeded, error bank and event project loaded/released. Platform XLive/focus are explicit fixture observers. No enabled hardware audio, native ABI or gameplay claim. | Hypothesis, not a recovered symbol. docs/SOUND_STARTUP_UNWIND.md; reports/sound_startup_unwind.json. DEC478/DEC460 maps state0 through CB62A3 to base-only A816B0; states1/2 free partial auxiliary/resource allocations through CB62A8/CB62B3. Required canonical shutdown context now unwinds base after completed A81480 on later C++ exception, retaining completed auxiliary/FMOD/resource objects. Three stack words; disabled low byte is not FMOD_SPEAKERMODE. Throwing factory domain; null defensive branches recorded, native FH3 ABI not projected. Win32 Release and two existing CTests passed; outer failure runtime belongs to application integration. | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed."
+        },
+        "after": {
+          "address": "00a88770",
+          "name": "BSP_SoundSystem_Initialize",
+          "evidence": "Hypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); called at 0073dafd with the boolean DAT_00f889a4 == 0. Carries the original misspelt failure string 'Out of sounjd memory:' (00d5ab94). Reconstructed in packet app_init_audio_online. __thiscall(ECX = a 0x178-byte object from operator new at 0073dac8), RET 0xc: three stack dwords, of which only the first byte is read (the caller pushes the flag plus two zeroes). 00a887b1 stores the negation of that byte into +0x70, so +0x70 is 'sound enabled'. Sequence: base ctor 00a81480; vtable 00d5b44c; +0x174 = 0; operator new(0x10) with ctor 00a88650; BSP_SingletonLifetime_GetManager (00415350) then 00bd0d70; four dwords from DAT_01090ab0 vtable +0x14 copied to +0x118..+0x124; FMOD_EventSystem_Create (00c2df80) into +0x48; the handle's own function table slot 7 (+0x1c) into +0x44, which is the FMOD::System that every later import takes as its first stack argument. When +0x70 is set: getNumDrivers, then getDriverCaps counted down from numdrivers-1 to 0 writing +0x158/+0x15c and a stack speaker mode seeded with 1 at 00a88890, then setSpeakerMode with the value driver 0 left behind. +0x158 = 1 and +0x15c = 440000 are stored unconditionally afterwards, discarding the queried range. When +0x70 is clear: setOutput(2) = FMOD_OUTPUTTYPE_NOSOUND, the disabled-sound path. Then handle table slot 0 = init(maxchannels 0x200, flags 0x10, extradriverdata NULL, eventflags 0); setFileSystem(open 00a7d410, close 00a7b750, read 00a79930, seek 00a79970, blockalign 0); set3DSettings(dopplerscale DAT_00ce69c8 = 0.3f, distancefactor 1.0f, rolloffscale 1.0f); then getDriver, getOutput and getSpeakerMode into stack slots. Only the speaker mode is used: the eight-entry jump table at 00a88aac maps FMOD_SPEAKERMODE 1..6 onto +0x170 = 1..6, aliases 7 (SRS 5.1 matrix) onto 5 and leaves the field untouched for 0 (RAW). No setDriver call exists and no channel group is created here; the master channel group and the FMOD advanced settings belong to the follow-on stage 00a7ff80 called at 00a88a8e. The fmodex.dll imports are the mangled C++ methods with the QAG (public __stdcall) qualifier, so 'this' is pushed as the first stack argument. Every result is tested against 0x2b (FMOD_ERR_MEMORY) and nothing else; the handler is BSP_SoundSystem_ReportFmodMemoryFailure (00a7a460). Evidence: docs/APP_INIT_AUDIO_ONLINE.md; reports/app_init_audio_online.json; docs/APP_INITIALIZE_MAP.md. | Hypothesis, not a recovered symbol. docs/COMPLETE_SOUND_STARTUP.md. Full normal-path sequence now directly invokes base owner, auxiliary owner, lifetime reorder, four-word clock copy, recovered FMOD fragment, resourceowner and Lua configuration. Canonical state retained between stages. Clock/actual00a84740 asset loader/Lua owner remain required external contracts; no stub. Library fragment and file hooks runtime verified against installed4.18.04, not full constructor/gameplay. | Hypothesis, not a recovered symbol. Follow-up docs/SOUND_RESOURCE_RUNTIME.md: SoundResourceRuntime now supplies actual VFS cache/FSB/FEV creation and teardown; concrete FrameClock and VFS Lua owners execute this entire normal constructor in an installed-DLL fixture. 133 FMOD calls succeeded, error bank and event project loaded/released. Platform XLive/focus are explicit fixture observers. No enabled hardware audio, native ABI or gameplay claim. | Hypothesis, not a recovered symbol. docs/SOUND_STARTUP_UNWIND.md; reports/sound_startup_unwind.json. DEC478/DEC460 maps state0 through CB62A3 to base-only A816B0; states1/2 free partial auxiliary/resource allocations through CB62A8/CB62B3. Required canonical shutdown context now unwinds base after completed A81480 on later C++ exception, retaining completed auxiliary/FMOD/resource objects. Three stack words; disabled low byte is not FMOD_SPEAKERMODE. Throwing factory domain; null defensive branches recorded, native FH3 ABI not projected. Win32 Release and two existing CTests passed; outer failure runtime belongs to application integration. | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed. | R39 additive borrowed clock bindings admit semantic OR actual publication without a dummy semantic owner. Raw sound startup uses current slot14 rather than sample slot20; sound update/input copy exactly16B into immediate result storage. Same current AB0 reload on every operation, no allocation/QPC/advance. Legacy semantic paths retained. Source aggregate sizes change sound96->104/input124->128; not native ABI layouts. Parent reviewed all source diffs; all3479worker artifacts+manifest and6PE spans265B independently verified. Worker/combined strict /MD builds and3CTests pass; fresh primary genuine80h-owner fixture passes same AA0/AB0 A/B reload, exact snapshots/noQPC, rejection and one deletion each by real shared drain. Serialized live disjoint storage contract only: memcpy snapshots do not reproduce original interleaved reads/stores, concurrent or fault schedule. FullSound/FMOD/InputSDK composition only compile checked. R37 narrative corrected: A7E639 is inside A7E630, not A7E590. Application owner cutover/nativeFH3/gameplay unproved. reports/native_frame_clock_consumer_providers_r39.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a98cc0",
+        "before": {
+          "address": "00a98cc0",
+          "function_name": "BSP_GamepadForce_SetJoystickOutput",
+          "comment": "[BSP reconstruction 00a98cc0]\nHypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=joystick, stack channel,float, RET8 A98E1C/3 Absent effect skips clock; current timestamp vs deadline; 56-byte DIEFFECT; exact magnitude scaling/mode; reload effect, actual SetParameters flags20000100, ignored HRESULT.\n\n[BSP reconstruction 00a98cc0] update\nHypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=joystick, stack channel,float, RET8 A98E1C/3 Absent effect skips clock; current timestamp vs deadline; 56-byte DIEFFECT; exact magnitude scaling/mode; reload effect, actual SetParameters flags20000100, ignored HRESULT. | Hypothesis, not a recovered symbol. Raw AD variant: thiscall ECX=actualB48h; stack channel,float; RET8; clock then deadline load and final effect reload; final instruction 00a98e1c/3, end-exclusive00a98e1f. Actual B48h owner/member storage and SDK output slots; no typed owner projection. Existing typed reconstruction retained. Strict Win32/2CTests; bounded native-query/force and raw nonempty/real SDK acquisition fixture; required concrete base/current-profile parent composition; no game claim. docs/NATIVE_JOYSTICK.md; reports/native_joystick.json. | Hypothesis, not a recovered symbol. docs/NATIVE_JOYSTICK.md; reports/native_joystick.json. Raw owner/provider variant preserves canonical allocation and CRT allocation/free, required external dispatch and native EH member cleanup. Full native register/stack signature recorded in reports/native_input_device_prototypes.json; source providers excluded. Existing typed records retained. Integrated source review and bounded probes do not establish full backend startup or physical controller/gameplay validation."
+        },
+        "after": {
+          "address": "00a98cc0",
+          "name": "BSP_GamepadForce_SetJoystickOutput",
+          "evidence": "Hypothesis, not a recovered symbol. Packet orch3_gamepad_force_requests_f; read-only bsp.gpr /battlestationspacific.exe. docs/GAMEPAD_FORCE_REQUESTS.md; reports/gamepad_force_requests.json. thiscall ECX=joystick, stack channel,float, RET8 A98E1C/3 Absent effect skips clock; current timestamp vs deadline; 56-byte DIEFFECT; exact magnitude scaling/mode; reload effect, actual SetParameters flags20000100, ignored HRESULT. | Hypothesis, not a recovered symbol. Raw AD variant: thiscall ECX=actualB48h; stack channel,float; RET8; clock then deadline load and final effect reload; final instruction 00a98e1c/3, end-exclusive00a98e1f. Actual B48h owner/member storage and SDK output slots; no typed owner projection. Existing typed reconstruction retained. Strict Win32/2CTests; bounded native-query/force and raw nonempty/real SDK acquisition fixture; required concrete base/current-profile parent composition; no game claim. docs/NATIVE_JOYSTICK.md; reports/native_joystick.json. | Hypothesis, not a recovered symbol. docs/NATIVE_JOYSTICK.md; reports/native_joystick.json. Raw owner/provider variant preserves canonical allocation and CRT allocation/free, required external dispatch and native EH member cleanup. Full native register/stack signature recorded in reports/native_input_device_prototypes.json; source providers excluded. Existing typed records retained. Integrated source review and bounded probes do not establish full backend startup or physical controller/gameplay validation. | R39 additive borrowed clock bindings admit semantic OR actual publication without a dummy semantic owner. Raw sound startup uses current slot14 rather than sample slot20; sound update/input copy exactly16B into immediate result storage. Same current AB0 reload on every operation, no allocation/QPC/advance. Legacy semantic paths retained. Source aggregate sizes change sound96->104/input124->128; not native ABI layouts. Parent reviewed all source diffs; all3479worker artifacts+manifest and6PE spans265B independently verified. Worker/combined strict /MD builds and3CTests pass; fresh primary genuine80h-owner fixture passes same AA0/AB0 A/B reload, exact snapshots/noQPC, rejection and one deletion each by real shared drain. Serialized live disjoint storage contract only: memcpy snapshots do not reproduce original interleaved reads/stores, concurrent or fault schedule. FullSound/FMOD/InputSDK composition only compile checked. R37 narrative corrected: A7E639 is inside A7E630, not A7E590. Application owner cutover/nativeFH3/gameplay unproved. reports/native_frame_clock_consumer_providers_r39.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a98e30",
+        "before": {
+          "address": "00a98e30",
+          "function_name": "BSP_JoystickInputDevice_Poll",
+          "comment": "[BSP reconstruction 00a98e30]\nHypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. thiscall ECX=this; ignored stack float; AL=success; RET4 A9914B/3, endA9914D Poll failure Acquire; copy previous before GetDeviceState; x87 deadzone, detection, activity clock, then Xbox trigger import.\n\n[BSP reconstruction 00a98e30] update\nHypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. thiscall ECX=this; ignored stack float; AL=success; RET4 A9914B/3, endA9914D Poll failure Acquire; copy previous before GetDeviceState; x87 deadzone, detection, activity clock, then Xbox trigger import. | Hypothesis, not a recovered symbol. Raw AD variant: thiscall ECX=actualB48h; unread float stack argument; AL=success; RET4; final instruction 00a9914b/3, end-exclusive00a9914e. Actual B48h owner/member storage and SDK output slots; no typed owner projection. Existing typed reconstruction retained. Strict Win32/2CTests; bounded native-query/force and raw nonempty/real SDK acquisition fixture; required concrete base/current-profile parent composition; no game claim. docs/NATIVE_JOYSTICK.md; reports/native_joystick.json. | Hypothesis, not a recovered symbol. docs/NATIVE_JOYSTICK.md; reports/native_joystick.json. Raw owner/provider variant preserves canonical allocation and CRT allocation/free, required external dispatch and native EH member cleanup. Full native register/stack signature recorded in reports/native_input_device_prototypes.json; source providers excluded. Existing typed records retained. Integrated source review and bounded probes do not establish full backend startup or physical controller/gameplay validation."
+        },
+        "after": {
+          "address": "00a98e30",
+          "name": "BSP_JoystickInputDevice_Poll",
+          "evidence": "Hypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. thiscall ECX=this; ignored stack float; AL=success; RET4 A9914B/3, endA9914D Poll failure Acquire; copy previous before GetDeviceState; x87 deadzone, detection, activity clock, then Xbox trigger import. | Hypothesis, not a recovered symbol. Raw AD variant: thiscall ECX=actualB48h; unread float stack argument; AL=success; RET4; final instruction 00a9914b/3, end-exclusive00a9914e. Actual B48h owner/member storage and SDK output slots; no typed owner projection. Existing typed reconstruction retained. Strict Win32/2CTests; bounded native-query/force and raw nonempty/real SDK acquisition fixture; required concrete base/current-profile parent composition; no game claim. docs/NATIVE_JOYSTICK.md; reports/native_joystick.json. | Hypothesis, not a recovered symbol. docs/NATIVE_JOYSTICK.md; reports/native_joystick.json. Raw owner/provider variant preserves canonical allocation and CRT allocation/free, required external dispatch and native EH member cleanup. Full native register/stack signature recorded in reports/native_input_device_prototypes.json; source providers excluded. Existing typed records retained. Integrated source review and bounded probes do not establish full backend startup or physical controller/gameplay validation. | R39 additive borrowed clock bindings admit semantic OR actual publication without a dummy semantic owner. Raw sound startup uses current slot14 rather than sample slot20; sound update/input copy exactly16B into immediate result storage. Same current AB0 reload on every operation, no allocation/QPC/advance. Legacy semantic paths retained. Source aggregate sizes change sound96->104/input124->128; not native ABI layouts. Parent reviewed all source diffs; all3479worker artifacts+manifest and6PE spans265B independently verified. Worker/combined strict /MD builds and3CTests pass; fresh primary genuine80h-owner fixture passes same AA0/AB0 A/B reload, exact snapshots/noQPC, rejection and one deletion each by real shared drain. Serialized live disjoint storage contract only: memcpy snapshots do not reproduce original interleaved reads/stores, concurrent or fault schedule. FullSound/FMOD/InputSDK composition only compile checked. R37 narrative corrected: A7E639 is inside A7E630, not A7E590. Application owner cutover/nativeFH3/gameplay unproved. reports/native_frame_clock_consumer_providers_r39.json."
+        },
+        "status": "applied"
+      }
+    ]
+  }
 }
