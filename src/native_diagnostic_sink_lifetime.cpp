@@ -1,4 +1,5 @@
 #include "bsp/native_diagnostic_sink_lifetime.hpp"
+#include "bsp/native_singleton_destruction.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -7,6 +8,7 @@
 #include <cstddef>
 #include <cstring>
 #include <new>
+#include <stdexcept>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native diagnostic sink reconstruction requires MSVC Win32.
@@ -89,6 +91,55 @@ NativeDiagnosticSinkStorage* delete_native_diagnostic_sink_004bbca0(
         singleton_lifetime_free(original_address);
     }
     return original_address;
+}
+
+void destroy_native_diagnostic_sink_007363b0(
+    NativeDiagnosticSinkStorage* volatile& actual_published_0109cf14,
+    SoundLifetimeAccess actual_lifetime) {
+    if (!actual_published_0109cf14) return;
+
+    auto* const captured = static_cast<CRITICAL_SECTION*>(
+        actual_lifetime.get_manager_00415350().native_system_section_10());
+    NativeGuard guard{0x00ce37fcu, captured};
+    if (captured) {
+        EnterCriticalSection(captured);
+        ++tracked_counter(captured);
+    }
+    // Native state 0 arms here. The first publication recheck precedes the
+    // second manager lookup; that manager is resolved before capturing the
+    // current publication passed to unregister.
+    try {
+        if (actual_published_0109cf14) {
+            auto manager = actual_lifetime.get_manager_00415350();
+            auto* const unregister_owner = actual_published_0109cf14;
+            manager->unregister_object(unregister_owner);
+
+            // Reload after unregister. Original virtual slot zero observes the
+            // current profile and flags1, not the earlier unregister owner.
+            if (auto* const current = actual_published_0109cf14) {
+                switch (current->native_vtable_00) {
+                case 0x00ce752cu:
+                    (void)delete_native_diagnostic_sink_004bbca0(
+                        *current, 1, actual_published_0109cf14);
+                    break;
+                case 0x00ce3818u:
+                    (void)delete_native_singleton_base_00412440(current, nullptr, 1);
+                    break;
+                default:
+                    throw std::logic_error(
+                        "diagnostic shutdown reached an unsupported current profile");
+                }
+            }
+            actual_published_0109cf14 = nullptr;
+        }
+        if (captured) {
+            --tracked_counter(captured);
+            LeaveCriticalSection(captured);
+        }
+    } catch (...) {
+        destroy_native_singleton_guard_00411ee0(&guard);
+        throw;
+    }
 }
 
 } // namespace bsp
