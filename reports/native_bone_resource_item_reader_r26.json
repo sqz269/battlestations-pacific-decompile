@@ -1,0 +1,345 @@
+{
+  "packet": "native_bone_resource_item_reader_r26",
+  "base": "5dab344fd",
+  "generated_utc": "2026-09-16T07:57:42.972046+00:00",
+  "program": "/battlestationspacific.exe",
+  "source": [
+    "include/bsp/native_bone_resource_item_reader.hpp",
+    "src/native_bone_resource_item_reader.cpp",
+    "cmake/startup.cmake"
+  ],
+  "coverage": {
+    "ordinary_functions": 1,
+    "ordinary_bytes": 285,
+    "eh_code_bytes": 18,
+    "eh_data_bytes": 44,
+    "total_receipt_bytes": 347,
+    "direct_calls": 12,
+    "cleanup_tail_jumps": 1
+  },
+  "function": {
+    "address": "00b8af30",
+    "end_inclusive": "00b8b04c",
+    "bytes": 285,
+    "original_abi": "ECX actual 2Ch Bone item; stacked actual structured-node handle; RET4; no EDX input and no defined EAX result",
+    "result_profile": "00d632b8",
+    "reader_slot": "20",
+    "name_storage": "actual item+08 length and item+0C data pointer",
+    "scalar_storage": "seven float32 fields at +10,+14,+18,+1C,+20,+24,+28"
+  },
+  "old_ghidra_metadata": [
+    {
+      "address": "00b8af30",
+      "name": "FUN_00b8af30",
+      "signature": "undefined FUN_00b8af30(void)",
+      "comment": null
+    },
+    {
+      "address": "00cc2940",
+      "name": "Unwind@00cc2940",
+      "signature": "undefined Unwind@00cc2940(void)",
+      "comment": null
+    },
+    {
+      "address": "00cc2948",
+      "name": "LAB_00cc2948",
+      "function": false,
+      "listing": "MOV EAX,0xdfbf80; JMP 0x00bf6b43"
+    }
+  ],
+  "proposed_annotations": [
+    {
+      "address": "00b8af30",
+      "name": "BSP_BoneResourceItem_ReadFields",
+      "evidence": "Complete 285-byte body. ECX item2Ch, stack node handle, RET4; EDX unused. ReadString BEA010 constructs temporary; alias-aware resize/copy assigns native name+08/+0C, state0 temp cleanup CC2940. Disarm before getter/return; seven BE99D0 ST0 values FSTP32 to locals, then seven FLD32/FSTP32 stores to +10..+28 only after final read. Reader failures retain item and any completed name; no payload defaults. New source ABI only; native FH3/SEH and gameplay unproven."
+    }
+  ],
+  "read_spill_schedule": [
+    {
+      "call": "00b8afbc",
+      "spill": "ESP+4C",
+      "destination": "item+10"
+    },
+    {
+      "call": "00b8afc7",
+      "spill": "ESP+10",
+      "destination": "item+14"
+    },
+    {
+      "call": "00b8afd2",
+      "spill": "ESP+2C",
+      "destination": "item+18"
+    },
+    {
+      "call": "00b8afdd",
+      "spill": "ESP+14",
+      "destination": "item+1C"
+    },
+    {
+      "call": "00b8afe8",
+      "spill": "ESP+18",
+      "destination": "item+20"
+    },
+    {
+      "call": "00b8aff3",
+      "spill": "ESP+38",
+      "destination": "item+24"
+    },
+    {
+      "call": "00b8affe",
+      "spill": "ESP+1C",
+      "destination": "item+28"
+    }
+  ],
+  "exception_contract": {
+    "state_minus_one": "through BEA010, and from B8AF99 before ordinary temp release and all float reads",
+    "state_zero": "armed B8AF65 after completed ReadString, covers alias comparison result, resize and copy",
+    "unwind_funclet": "CC2940 LEA ECX,[EBP-2C]; CC2943 JMP 41DD20",
+    "handler": "CC2948 MOV EAX,DFBF80; CC294D JMP BF6B43",
+    "unwind_map": "DFBF78: toState=-1, action=CC2940",
+    "funcinfo": "DFBF80: magic19930522, maxState1, pUnwindMapDFBF78, no try blocks",
+    "source": "catch only assignment; raw cleanup on failure then rethrow; second exception during cleanup terminates. Ordinary temp return is outside catch and never retried. Floats are uncommitted until all seven reads return."
+  },
+  "byte_receipt": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "binary_size": 12223752,
+    "range_count": 3,
+    "total_bytes": 347,
+    "all_match": true,
+    "live_aggregate_sha256": "e69b125805181574e23da591487737c118c1b91e93af553407a5b68f1b217ad3",
+    "disk_aggregate_sha256": "e69b125805181574e23da591487737c118c1b91e93af553407a5b68f1b217ad3",
+    "ranges": [
+      {
+        "address": "00b8af30",
+        "length": 285,
+        "end_exclusive": "00b8b04d",
+        "kind": "complete_reader_body",
+        "section": ".text",
+        "file_offset": 7909168,
+        "live_sha256": "3f31918832c286267eed9c9ff828f35fbd716add02a0fddbb694607477d5f165",
+        "disk_sha256": "3f31918832c286267eed9c9ff828f35fbd716add02a0fddbb694607477d5f165",
+        "matches_disk": true
+      },
+      {
+        "address": "00cc2940",
+        "length": 18,
+        "end_exclusive": "00cc2952",
+        "kind": "complete_unwind_funclet_and_handler",
+        "section": ".text",
+        "file_offset": 9185600,
+        "live_sha256": "4a228a16d2095d206721b78034cf5856cfc2076cf1bdcafc58d708be5804433c",
+        "disk_sha256": "4a228a16d2095d206721b78034cf5856cfc2076cf1bdcafc58d708be5804433c",
+        "matches_disk": true
+      },
+      {
+        "address": "00dfbf78",
+        "length": 44,
+        "end_exclusive": "00dfbfa4",
+        "kind": "unwind_map_and_funcinfo",
+        "section": ".rdata",
+        "file_offset": 10469240,
+        "live_sha256": "f2ffd592c3d379c9fefb20f7ac8040ff755f5df6259116e8d527d458b2b5fdb2",
+        "disk_sha256": "f2ffd592c3d379c9fefb20f7ac8040ff755f5df6259116e8d527d458b2b5fdb2",
+        "matches_disk": true
+      }
+    ]
+  },
+  "call_rows": [
+    {
+      "address": "00b8af59",
+      "native": "00bea010",
+      "function": "00b8af30",
+      "source": "read_native_resource_handle_string_00bea010"
+    },
+    {
+      "address": "00b8af76",
+      "native": "0041dd40",
+      "function": "00b8af30",
+      "source": "resize_native_string_header_0041dd40"
+    },
+    {
+      "address": "00b8af8b",
+      "native": "00bf7680",
+      "function": "00b8af30",
+      "source": "std::memcpy"
+    },
+    {
+      "address": "00b8afae",
+      "native": "00419cc0",
+      "function": "00b8af30",
+      "source": "raw pool getter through destroy_native_string_header_0041dd20"
+    },
+    {
+      "address": "00b8afb5",
+      "native": "00bd1510",
+      "function": "00b8af30",
+      "source": "raw pool return through destroy_native_string_header_0041dd20"
+    },
+    {
+      "address": "00b8afbc",
+      "native": "00be99d0",
+      "function": "00b8af30",
+      "source": "read_native_resource_node_float_00be99d0"
+    },
+    {
+      "address": "00b8afc7",
+      "native": "00be99d0",
+      "function": "00b8af30",
+      "source": "read_native_resource_node_float_00be99d0"
+    },
+    {
+      "address": "00b8afd2",
+      "native": "00be99d0",
+      "function": "00b8af30",
+      "source": "read_native_resource_node_float_00be99d0"
+    },
+    {
+      "address": "00b8afdd",
+      "native": "00be99d0",
+      "function": "00b8af30",
+      "source": "read_native_resource_node_float_00be99d0"
+    },
+    {
+      "address": "00b8afe8",
+      "native": "00be99d0",
+      "function": "00b8af30",
+      "source": "read_native_resource_node_float_00be99d0"
+    },
+    {
+      "address": "00b8aff3",
+      "native": "00be99d0",
+      "function": "00b8af30",
+      "source": "read_native_resource_node_float_00be99d0"
+    },
+    {
+      "address": "00b8affe",
+      "native": "00be99d0",
+      "function": "00b8af30",
+      "source": "read_native_resource_node_float_00be99d0"
+    },
+    {
+      "address": "00cc2943",
+      "native": "0041dd20",
+      "function": "00cc2940",
+      "kind": "tail_jump",
+      "source": "destroy_native_string_header_0041dd20"
+    }
+  ],
+  "validation": {
+    "status": "passed",
+    "ghidra_mutations": false,
+    "live_original_seed_checks": "8/8 match before strict build",
+    "build": "scripts/build.ps1 Release Win32 /MD /W4 /WX /fp:strict",
+    "ctests": "3/3",
+    "exact_call_rows": "13/13",
+    "slot20_readback": "00d632d8:30 af b8 00",
+    "standalone_assembly": "seven FSTP32 spills; seven FLD32/FSTP32 field writes; volatile source/destination reload order checked",
+    "fixture": {
+      "scope": "Copied 285-byte original B8AF30 ordinary path, with all 12 direct CALLs redirected to native-ABI bridges to genuine existing source services; source body linked from exact just-built bsp_core.lib.",
+      "real_storage": "BD1480-constructed actual NativeStringPoolStorage, native item2Ch, native handle/node/reader/stream words, actual pool publication and accounting cells",
+      "comparisons": 2,
+      "variants": [
+        "name bytes Bone-NUL-X (length6)",
+        "zero-length name"
+      ],
+      "patterns": [
+        "1.5",
+        "negative zero",
+        "positive infinity",
+        "negative infinity",
+        "minimum float32 subnormal",
+        "signaling NaN",
+        "quiet NaN"
+      ],
+      "source_exception": "fourth scalar source_read throws after three successful scalars; completed name retained, all seven payload words A5A5A5A5, accounting budget978, six raw read calls",
+      "remaining_dispatch": "B8AD80 forwarded without changing target/item/handle",
+      "output": [
+        "original/source empty=0 fields: 3fc00000 80000000 7f800000 ff800000 00000001 7fc12345 7fc54321 budget=962 live=1 reads=9",
+        "original/source empty=1 fields: 3fc00000 80000000 7f800000 ff800000 00000001 7fc12345 7fc54321 budget=968 live=0 reads=8",
+        "source failure at scalar4 retained name and all seven sentinel fields; budget=978 reads=6",
+        "PASS: two original/source comparisons, one source exception-retention case, exact-target forwarding"
+      ],
+      "limits": "Copied original exception handler is not exercised. No original-callee machine-code, FH3/SEH, hardware-fault, drop-in ABI or gameplay validation."
+    },
+    "artifacts": [
+      {
+        "path": "local/bone_r26_build.log",
+        "bytes": 56880,
+        "sha256": "4a97f97aeffbf7ab2a16d7ce2a76ea2e2d90afdff1638aab971bf401991c99dc"
+      },
+      {
+        "path": "local/bone_r26_execution.log",
+        "bytes": 436,
+        "sha256": "1cc4dc8d7302c6a95ec6e8b32642f5e8012769e0724ec9317fff7f1e9640d7e1"
+      },
+      {
+        "path": "local/bone_r26_probe.cpp",
+        "bytes": 7594,
+        "sha256": "430fef4f0275018aa4118a4e7110ba79f34b229d27dd4d8091010775a8932404"
+      },
+      {
+        "path": "local/bone_r26_probe.obj",
+        "bytes": 138977,
+        "sha256": "531c878fcd4c99dd566dadc9ebc29521fccef57b1c681e6adc5879bfbe173786"
+      },
+      {
+        "path": "local/bone_r26_probe.exe",
+        "bytes": 38912,
+        "sha256": "a0ea5dbad3b283e71433ea802c88b2ed0c0ee44ff79efbafcf47fc2ed3d61ef6"
+      },
+      {
+        "path": "local/bone_r26_probe.map",
+        "bytes": 86209,
+        "sha256": "e63f019e989f91d4e0a54e8bedc09d518baee41d2d628bcb5975efa553692f31"
+      },
+      {
+        "path": "local/bone_r26_link.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "local/bone_r26_reader.asm",
+        "bytes": 16646,
+        "sha256": "0b75b5215cee1e423ecc62e165a02b9364918cbc25da669539193c3f9712469c"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63042718,
+        "sha256": "020e33d956684f91a57f2c4c44e9f206a23ca06111ac34e5190da7e60ba4dd3b"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_bone_resource_item_reader.obj",
+        "bytes": 4482,
+        "sha256": "9f021c4edf50a9f922f1bff97720ed1497c9d9a65ac4200e64359195663a2277"
+      },
+      {
+        "path": "src/native_bone_resource_item_reader.cpp",
+        "bytes": 4217,
+        "sha256": "0c66e54098f05738f53ea849957fc01737f5e9df4b23032120a1dfa99597d294"
+      },
+      {
+        "path": "include/bsp/native_bone_resource_item_reader.hpp",
+        "bytes": 1645,
+        "sha256": "108a27c252aca4bcc86b9bce53cd4b46ac01e60459e68f6e2ff56dd54c8ffcbc"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 145907,
+        "sha256": "549229b2321529123d8482ff3ba817eb95a5f4134a564ad95a01744a4f12399b"
+      }
+    ]
+  },
+  "limits": [
+    "Source C++ ABI differs from original thiscall stack layout.",
+    "Source assembly preserves x87 spill/store order, not original stack addresses, GP registers or EFLAGS.",
+    "Original FH3/SEH, hardware-fault delivery, CRT identity, drop-in ABI and gameplay are unproven.",
+    "Numeric non-Bone slot20 targets require the supplied remaining reader service."
+  ],
+  "implementation_commit": "14b50e38955c44fc00e2a1c1d2ffd79407893510"
+}
