@@ -1,0 +1,89 @@
+{
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00bee060",
+        "end_address": "00bee064"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00bee060",
+        "end_address": "00bee063",
+        "bytes_disassembled": 4,
+        "message": "Successfully disassembled 4 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00bee060",
+        "disassemble_first": false,
+        "name": "BSP_FrameClock_GetPrevious"
+      },
+      "result": {
+        "success": true,
+        "address": "00bee060",
+        "function_name": "BSP_FrameClock_GetPrevious",
+        "entry_point": "00bee060",
+        "body_size": 4,
+        "message": "Function created successfully at 00bee060",
+        "warnings": [
+          "Function name 'BSP_FrameClock_GetPrevious' \u2014 main part 'FrameClock_GetPrevious' is not PascalCase. Expected: FrameclockGetprevious",
+          "Function name 'BSP_FrameClock_GetPrevious' \u2014 main part 'FrameClock_GetPrevious' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_FrameClock_GetPrevious' does not start with a recognized verb. First word 'Frame' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "defined": "00bee060",
+      "end": "00bee064",
+      "name": "BSP_FrameClock_GetPrevious",
+      "after": "Function: BSP_FrameClock_GetPrevious at 00bee060\nSignature: undefined BSP_FrameClock_GetPrevious(void)\nEntry: 00bee060\nBody: 00bee060 - 00bee063"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "evidence": {
+    "scope": "Define and name four-byte BEE060 getter only; source methods separate",
+    "prior_proto": "No function found for 00bee060\n(signature unavailable: get_function_signature: {'error': 'No function at address: 00bee060'})\n",
+    "before_disasm": "disasm: Ghidra has no function starting at 00bee060 (disassemble_function: {'error': 'No function found at or containing address 00be). 00bee060: no function starts here; enclosing candidate 00bee050 BSP_FrameClock_GetCurrent\n",
+    "live_bytes": "00bee060  8d 41 30 c3 cc cc cc cc cc cc cc cc cc cc cc cc  .A0.............\n",
+    "after_listing": "00bee060: LEA EAX,[ECX + 0x30] \n00bee063: RET \n",
+    "pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "fresh_span": {
+      "address": "00bee060",
+      "length": 16,
+      "end_exclusive": "00bee070",
+      "pe_offset": 8314976,
+      "sha256": "556536ea30821d9e8250519d9f6abb701d3bfe1a7e10190bd0cd86ef33f6f1bc",
+      "hex": "8d4130c3cccccccccccccccccccccccc",
+      "live_equals_pe": true
+    },
+    "prior_annotations": [
+      {
+        "address": "00bee060",
+        "before": {
+          "address": "00bee060",
+          "function_name": "BSP_FrameClock_GetPrevious"
+        },
+        "after": {
+          "address": "00bee060",
+          "name": "BSP_FrameClock_GetPrevious",
+          "evidence": "R35 four-byte raw previous-timestamp getter: BEE060 LEA EAX,[ECX+30]; BEE063 RET. ECX actual clock, EAX borrowed 16-byte timestamp at +30, plain RET. Fresh saved Ghidra/installed PE bytes8D4130C3; twelve followingCC padding bytes excluded. No prior function existed; adjacent +20/+40 getters independently return. Definition/evidence only here; raw clock source method packet separate. reports/native_frame_clock_previous_getter_definition_r35.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "function_count_after": 64147,
+    "source_or_runtime_claim": false
+  }
+}
