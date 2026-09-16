@@ -1,0 +1,1596 @@
+{
+  "packet": "orch4-particle-tracer-r18",
+  "utc": "2026-09-16T04:01:23.980474+00:00",
+  "scope": "Complete raw Tracer parser and its raw texture-list companion, no host callback/string fallback.",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00b0ad50",
+      "bytes": 2172,
+      "end_exclusive": "00b0b5cc",
+      "sha256": "083aaf7a56a84ff723429ed7ae4c8b09d18966a2914dc8d6c8758a0859466490",
+      "coverage": "complete",
+      "last_instruction": "00b0b5c9 ret 4",
+      "symbol": "load_native_tracer_particle_definition_00b0ad50",
+      "original_abi": "ECX actual E8h Tracer definition; stack actual1Ch TextBuffer; RET4/AL true",
+      "source": "src/native_particle_tracer_raw.cpp",
+      "header": "include/bsp/native_particle_tracer_raw.hpp"
+    },
+    {
+      "address": "00b0a920",
+      "bytes": 619,
+      "end_exclusive": "00b0ab8b",
+      "sha256": "3a5fbab84d629b563b73f4b926d16c4e194eec33913350772fd25e585fb4d43c",
+      "coverage": "complete",
+      "last_instruction": "00b0ab88 ret 4",
+      "symbol": "load_native_tracer_particle_textures_00b0a920",
+      "original_abi": "ECX actual E8h Tracer definition; stack filename; RET4",
+      "source": "src/native_particle_tracer_raw.cpp",
+      "header": "include/bsp/native_particle_tracer_raw.hpp"
+    }
+  ],
+  "native_calls": [
+    {
+      "function": "00b0ad50",
+      "address": "00b0ad87",
+      "native": "00af5740",
+      "contract": "existing raw TextBuffer normalized line read; ECX buffer,stack output,RET4/AL"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0ad9a",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0adad",
+      "native": "00af5740",
+      "contract": "existing raw TextBuffer normalized line read; ECX buffer,stack output,RET4/AL"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0adca",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0ade4",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0adfe",
+      "native": "00aee3c0",
+      "contract": "existing raw pooled-text token constructor; ECX line, stack output/index, RET8"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0ae0b",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0ae37",
+      "native": "00419cc0",
+      "contract": "existing raw string-pool singleton getter; no stack arguments"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0ae3e",
+      "native": "00bd1510",
+      "contract": "existing actual string-pool block return; ECX pool,stack block/size/unused,RET0C"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0ae5a",
+      "native": "00af44c0",
+      "contract": "existing raw pooled-text suffix constructor; ECX line,stack output/index,RET8"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0ae67",
+      "native": "00b015c0",
+      "contract": "existing raw common property closure and caller-retained acquired child; ECX definition,stack suffix,RET4/AL"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0ae92",
+      "native": "00419cc0",
+      "contract": "existing raw string-pool singleton getter; no stack arguments"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0ae99",
+      "native": "00bd1510",
+      "contract": "existing actual string-pool block return; ECX pool,stack block/size/unused,RET0C"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0aeb5",
+      "native": "00aee3c0",
+      "contract": "existing raw pooled-text token constructor; ECX line, stack output/index, RET8"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0aec9",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0aee0",
+      "native": "00aee3c0",
+      "contract": "existing raw pooled-text token constructor; ECX line, stack output/index, RET8"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0aee8",
+      "native": "00bf8417",
+      "contract": "current CRT atol, cdecl pointer, EAX signed32"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0af1a",
+      "native": "00419cc0",
+      "contract": "existing raw string-pool singleton getter; no stack arguments"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0af21",
+      "native": "00bd1510",
+      "contract": "existing actual string-pool block return; ECX pool,stack block/size/unused,RET0C"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0af58",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0af73",
+      "native": "00aee3c0",
+      "contract": "existing raw pooled-text token constructor; ECX line, stack output/index, RET8"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0af86",
+      "native": "00aefb20",
+      "contract": "existing raw atlas query; ECX current manager, stack filename, RET4/EAX borrowed item"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0afb5",
+      "native": "00419cc0",
+      "contract": "existing raw string-pool singleton getter; no stack arguments"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0afbc",
+      "native": "00bd1510",
+      "contract": "existing actual string-pool block return; ECX pool,stack block/size/unused,RET0C"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0afe9",
+      "native": "00419cc0",
+      "contract": "existing raw string-pool singleton getter; no stack arguments"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0aff0",
+      "native": "00bd1510",
+      "contract": "existing actual string-pool block return; ECX pool,stack block/size/unused,RET0C"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b008",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b01f",
+      "native": "00aee3c0",
+      "contract": "existing raw pooled-text token constructor; ECX line, stack output/index, RET8"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b032",
+      "native": "00aefb20",
+      "contract": "existing raw atlas query; ECX current manager, stack filename, RET4/EAX borrowed item"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b046",
+      "native": "00aee2a0",
+      "contract": "existing raw four-byte pooled-text cleanup; ECX header, RET"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b05a",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b071",
+      "native": "00aee3c0",
+      "contract": "existing raw pooled-text token constructor; ECX line, stack output/index, RET8"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b080",
+      "native": "00b0a920",
+      "contract": "complete companion raw Tracer texture list; ECX definition,stack filename,RET4"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b08e",
+      "native": "00aee2a0",
+      "contract": "existing raw four-byte pooled-text cleanup; ECX header, RET"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b0a1",
+      "native": "00af44c0",
+      "contract": "existing raw pooled-text suffix constructor; ECX line,stack output/index,RET8"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b0b3",
+      "native": "00aee3c0",
+      "contract": "existing raw pooled-text token constructor; ECX line, stack output/index, RET8"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b0bb",
+      "native": "00bfa66c",
+      "contract": "current CRT atof, cdecl pointer, ST0 then native float spill"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b0cb",
+      "native": "00aee2a0",
+      "contract": "existing raw four-byte pooled-text cleanup; ECX header, RET"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b0d9",
+      "native": "00aee2a0",
+      "contract": "existing raw four-byte pooled-text cleanup; ECX header, RET"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b0e2",
+      "native": "00afbed0",
+      "contract": "existing raw actual10h builder constructor; ECX builder,RET/EAX builder"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b0fc",
+      "native": "00afc360",
+      "contract": "existing raw endpoint insertion; ECX builder,stack two floats,RET8"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b10c",
+      "native": "00af44c0",
+      "contract": "existing raw pooled-text suffix constructor; ECX line,stack output/index,RET8"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b11f",
+      "native": "00af44c0",
+      "contract": "existing raw pooled-text suffix constructor; ECX line,stack output/index,RET8"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b12e",
+      "native": "00afc470",
+      "contract": "existing raw builder parse; ECX builder,stack four-byte text header,RET4/AL"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b13c",
+      "native": "00aee2a0",
+      "contract": "existing raw four-byte pooled-text cleanup; ECX header, RET"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b14a",
+      "native": "00aee2a0",
+      "contract": "existing raw four-byte pooled-text cleanup; ECX header, RET"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b163",
+      "native": "00b00980",
+      "contract": "existing raw common numeric parameter closure; ECX definition,stack name/builder/percentage,RET0C/AL"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b17a",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b18a",
+      "native": "00afc1b0",
+      "contract": "existing first builder float; ECX builder,RET/ST0"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b1a4",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b1b4",
+      "native": "00afc1b0",
+      "contract": "existing first builder float; ECX builder,RET/ST0"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b1ce",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b1de",
+      "native": "00afc1b0",
+      "contract": "existing first builder float; ECX builder,RET/ST0"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b1f8",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b208",
+      "native": "00afbf60",
+      "contract": "existing raw runtime parameter conversion using actual F8D344 pool; ECX builder,RET/EAX slot"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b22e",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b23e",
+      "native": "00afc1b0",
+      "contract": "existing first builder float; ECX builder,RET/ST0"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b258",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b268",
+      "native": "00afbf60",
+      "contract": "existing raw runtime parameter conversion using actual F8D344 pool; ECX builder,RET/EAX slot"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b28e",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b29e",
+      "native": "00afc1b0",
+      "contract": "existing first builder float; ECX builder,RET/ST0"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b2b8",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b2c8",
+      "native": "00afbf60",
+      "contract": "existing raw runtime parameter conversion using actual F8D344 pool; ECX builder,RET/EAX slot"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b2ee",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b2fe",
+      "native": "00afbf60",
+      "contract": "existing raw runtime parameter conversion using actual F8D344 pool; ECX builder,RET/EAX slot"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b324",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b334",
+      "native": "00afbf60",
+      "contract": "existing raw runtime parameter conversion using actual F8D344 pool; ECX builder,RET/EAX slot"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b35a",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b36a",
+      "native": "00afbf60",
+      "contract": "existing raw runtime parameter conversion using actual F8D344 pool; ECX builder,RET/EAX slot"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b390",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b3a0",
+      "native": "00afbf60",
+      "contract": "existing raw runtime parameter conversion using actual F8D344 pool; ECX builder,RET/EAX slot"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b3c6",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b3d6",
+      "native": "00afbf60",
+      "contract": "existing raw runtime parameter conversion using actual F8D344 pool; ECX builder,RET/EAX slot"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b3fc",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b40c",
+      "native": "00afbf60",
+      "contract": "existing raw runtime parameter conversion using actual F8D344 pool; ECX builder,RET/EAX slot"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b432",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b442",
+      "native": "00afbf60",
+      "contract": "existing raw runtime parameter conversion using actual F8D344 pool; ECX builder,RET/EAX slot"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b468",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b478",
+      "native": "00afbf60",
+      "contract": "existing raw runtime parameter conversion using actual F8D344 pool; ECX builder,RET/EAX slot"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b49e",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b4ae",
+      "native": "00afbf60",
+      "contract": "existing raw runtime parameter conversion using actual F8D344 pool; ECX builder,RET/EAX slot"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b4d4",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b4e4",
+      "native": "00afbf60",
+      "contract": "existing raw runtime parameter conversion using actual F8D344 pool; ECX builder,RET/EAX slot"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b4fb",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b50b",
+      "native": "00afbf60",
+      "contract": "existing raw runtime parameter conversion using actual F8D344 pool; ECX builder,RET/EAX slot"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b52e",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp, cdecl two pointers"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b53e",
+      "native": "00afbf60",
+      "contract": "existing raw runtime parameter conversion using actual F8D344 pool; ECX builder,RET/EAX slot"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b559",
+      "native": "00af4110",
+      "contract": "existing raw builder key release; ECX builder,RET"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b567",
+      "native": "00aee2a0",
+      "contract": "existing raw four-byte pooled-text cleanup; ECX header, RET"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b575",
+      "native": "00af5740",
+      "contract": "existing raw TextBuffer normalized line read; ECX buffer,stack output,RET4/AL"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b5aa",
+      "native": "00419cc0",
+      "contract": "existing raw string-pool singleton getter; no stack arguments"
+    },
+    {
+      "function": "00b0ad50",
+      "address": "00b0b5b1",
+      "native": "00bd1510",
+      "contract": "existing actual string-pool block return; ECX pool,stack block/size/unused,RET0C"
+    },
+    {
+      "function": "00b0a920",
+      "address": "00b0a94e",
+      "native": "00af3a20",
+      "contract": "existing raw contiguous-frame count; ECX filename, RET/EAX signed count"
+    },
+    {
+      "function": "00b0a920",
+      "address": "00b0a968",
+      "native": "00aefb20",
+      "contract": "existing raw atlas query; ECX current manager, stack filename, RET4/EAX borrowed item"
+    },
+    {
+      "function": "00b0a920",
+      "address": "00b0a9aa",
+      "native": "00bf55be",
+      "contract": "fixed current CRT allocation via singleton_lifetime_allocate, cdecl size; no callback allocator"
+    },
+    {
+      "function": "00b0a920",
+      "address": "00b0a9f0",
+      "native": "00bf6989",
+      "contract": "fixed current CRT free via singleton_lifetime_free, cdecl pointer"
+    },
+    {
+      "function": "00b0a920",
+      "address": "00b0aa3c",
+      "native": "00af3b50",
+      "contract": "existing raw frame-name constructor; ECX output,EDX filename,stack index,RET4"
+    },
+    {
+      "function": "00b0a920",
+      "address": "00b0aa5d",
+      "native": "00aefb20",
+      "contract": "existing raw atlas query; ECX current manager, stack filename, RET4/EAX borrowed item"
+    },
+    {
+      "function": "00b0a920",
+      "address": "00b0aa9f",
+      "native": "00bf55be",
+      "contract": "fixed current CRT allocation via singleton_lifetime_allocate, cdecl size; no callback allocator"
+    },
+    {
+      "function": "00b0a920",
+      "address": "00b0aae0",
+      "native": "00bf6989",
+      "contract": "fixed current CRT free via singleton_lifetime_free, cdecl pointer"
+    },
+    {
+      "function": "00b0a920",
+      "address": "00b0ab23",
+      "native": "00419cc0",
+      "contract": "existing raw string-pool singleton getter; no stack arguments"
+    },
+    {
+      "function": "00b0a920",
+      "address": "00b0ab2a",
+      "native": "00bd1510",
+      "contract": "existing actual string-pool block return; ECX pool,stack block/size/unused,RET0C"
+    },
+    {
+      "function": "00b0a920",
+      "address": "00b0ab6a",
+      "native": "00419cc0",
+      "contract": "existing raw string-pool singleton getter; no stack arguments"
+    },
+    {
+      "function": "00b0a920",
+      "address": "00b0ab71",
+      "native": "00bd1510",
+      "contract": "existing actual string-pool block return; ECX pool,stack block/size/unused,RET0C"
+    }
+  ],
+  "eh": [
+    {
+      "function": "00b0ad50",
+      "handler": "00cbbb10",
+      "handler_hex": "b8e43cdf00e929b0f3ff",
+      "info": "00df3ce4",
+      "info_hex": "220593190a000000083ddf00000000000000000000000000000000000000000001000000",
+      "map": "00df3d08",
+      "map_hex": "ffffffffc0bacb0000000000c8bacb0000000000d0bacb0002000000d8bacb0002000000e0bacb0002000000e8bacb0002000000f0bacb0002000000f8bacb000700000000bbcb000800000008bbcb00",
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cbbac0",
+          "bytes": 8,
+          "hex": "8d4db4e9d827e3ff",
+          "instructions": [
+            "00cbbac0 lea ecx, [ebp - 0x4c]",
+            "00cbbac3 jmp 0xaee2a0"
+          ]
+        },
+        {
+          "state": 1,
+          "previous": 0,
+          "action": "00cbbac8",
+          "bytes": 8,
+          "hex": "8d4dc0e9d027e3ff",
+          "instructions": [
+            "00cbbac8 lea ecx, [ebp - 0x40]",
+            "00cbbacb jmp 0xaee2a0"
+          ]
+        },
+        {
+          "state": 2,
+          "previous": 0,
+          "action": "00cbbad0",
+          "bytes": 8,
+          "hex": "8d4db0e9c827e3ff",
+          "instructions": [
+            "00cbbad0 lea ecx, [ebp - 0x50]",
+            "00cbbad3 jmp 0xaee2a0"
+          ]
+        },
+        {
+          "state": 3,
+          "previous": 2,
+          "action": "00cbbad8",
+          "bytes": 8,
+          "hex": "8d4dc8e9c027e3ff",
+          "instructions": [
+            "00cbbad8 lea ecx, [ebp - 0x38]",
+            "00cbbadb jmp 0xaee2a0"
+          ]
+        },
+        {
+          "state": 4,
+          "previous": 2,
+          "action": "00cbbae0",
+          "bytes": 8,
+          "hex": "8d4dcce9b827e3ff",
+          "instructions": [
+            "00cbbae0 lea ecx, [ebp - 0x34]",
+            "00cbbae3 jmp 0xaee2a0"
+          ]
+        },
+        {
+          "state": 5,
+          "previous": 2,
+          "action": "00cbbae8",
+          "bytes": 8,
+          "hex": "8d4dd0e9b027e3ff",
+          "instructions": [
+            "00cbbae8 lea ecx, [ebp - 0x30]",
+            "00cbbaeb jmp 0xaee2a0"
+          ]
+        },
+        {
+          "state": 6,
+          "previous": 2,
+          "action": "00cbbaf0",
+          "bytes": 8,
+          "hex": "8d4dd8e9a827e3ff",
+          "instructions": [
+            "00cbbaf0 lea ecx, [ebp - 0x28]",
+            "00cbbaf3 jmp 0xaee2a0"
+          ]
+        },
+        {
+          "state": 7,
+          "previous": 2,
+          "action": "00cbbaf8",
+          "bytes": 8,
+          "hex": "8d4de4e91086e3ff",
+          "instructions": [
+            "00cbbaf8 lea ecx, [ebp - 0x1c]",
+            "00cbbafb jmp 0xaf4110"
+          ]
+        },
+        {
+          "state": 8,
+          "previous": 7,
+          "action": "00cbbb00",
+          "bytes": 8,
+          "hex": "8d4de0e99827e3ff",
+          "instructions": [
+            "00cbbb00 lea ecx, [ebp - 0x20]",
+            "00cbbb03 jmp 0xaee2a0"
+          ]
+        },
+        {
+          "state": 9,
+          "previous": 8,
+          "action": "00cbbb08",
+          "bytes": 8,
+          "hex": "8d4ddce99027e3ff",
+          "instructions": [
+            "00cbbb08 lea ecx, [ebp - 0x24]",
+            "00cbbb0b jmp 0xaee2a0"
+          ]
+        }
+      ]
+    },
+    {
+      "function": "00b0a920",
+      "handler": "00cbba68",
+      "handler_hex": "b8603cdf00e9d1b0f3ff",
+      "info": "00df3c60",
+      "info_hex": "2205931901000000583cdf00000000000000000000000000000000000000000001000000",
+      "map": "00df3c58",
+      "map_hex": "ffffffff60bacb00",
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cbba60",
+          "bytes": 8,
+          "hex": "8d4dece9b82276ff",
+          "instructions": [
+            "00cbba60 lea ecx, [ebp - 0x14]",
+            "00cbba63 jmp 0x41dd20"
+          ]
+        }
+      ]
+    }
+  ],
+  "absolute_references": [
+    {
+      "owner": 11578704,
+      "offset": 3,
+      "address": 13351696,
+      "kind": "immediate",
+      "bytes": "b8e43cdf00e929b0f3ffcccccccccccc8d4dece9b86375ff8b45e850e87baaf3ff59c3b8683ddf00e906b0f3ffcccccc8b4d98e9b8faebff8b857cffffff83e0"
+    },
+    {
+      "owner": 11578704,
+      "offset": 69,
+      "address": 13520184,
+      "kind": "immediate",
+      "bytes": "7b000000506f696e744c697374200000456e74697479706174683a2022000000416e696d6174696f6e207b000000000000000040e17aa43f0000000000006940"
+    },
+    {
+      "owner": 11578704,
+      "offset": 117,
+      "address": 13520084,
+      "kind": "immediate",
+      "bytes": "7d0000004f757454616e67656e743a2000000000496e54616e67656e743a2000416c7068613a2000506f696e74506f733a200000436f6d6d656e743a20220000"
+    },
+    {
+      "owner": 11578704,
+      "offset": 143,
+      "address": 13515276,
+      "kind": "immediate",
+      "bytes": "00000000505b420054696d6564206f75742e0a0063726173682e6c6f670000007700000025730a00256400005f6175746f5f2e6c6f67000020634200252e3366"
+    },
+    {
+      "owner": 11578704,
+      "offset": 182,
+      "address": 14014348,
+      "kind": "immediate",
+      "bytes": "506172616d000000546578747572654974656d005465787475726541746c61730000000041746c61732066696c65206e6f7420666f756e643a20257300000000"
+    },
+    {
+      "owner": 11578704,
+      "offset": 367,
+      "address": 13683328,
+      "kind": "immediate",
+      "bytes": "53686f7742756c6c65740000636c6f75645f736e616b652e64647300416e696d506c61795370656564000000416e696d456e644672616d6500000000416e696d"
+    },
+    {
+      "owner": 11578704,
+      "offset": 515,
+      "address": 13683272,
+      "kind": "immediate",
+      "bytes": "42756c6c6574486561645465787475726500000074725f62756c6c65742e64647300000042756c6c65745461696c5465787475726500000053686f7742756c6c"
+    },
+    {
+      "owner": 11578704,
+      "offset": 556,
+      "address": 16302700,
+      "kind": "memory",
+      "bytes": ""
+    },
+    {
+      "owner": 11578704,
+      "offset": 691,
+      "address": 13683308,
+      "kind": "immediate",
+      "bytes": "42756c6c65745461696c5465787475726500000053686f7742756c6c65740000636c6f75645f736e616b652e64647300416e696d506c61795370656564000000"
+    },
+    {
+      "owner": 11578704,
+      "offset": 728,
+      "address": 16302700,
+      "kind": "memory",
+      "bytes": ""
+    },
+    {
+      "owner": 11578704,
+      "offset": 773,
+      "address": 14016776,
+      "kind": "immediate",
+      "bytes": "5472616365725465787475726500000054726163656c696e6500000000007044000034448988883babaaaa3dabaaaa3c398ee33d4072b100e030bd0080f6b000"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1061,
+      "address": 13683476,
+      "kind": "immediate",
+      "bytes": "4d61785365676d656e744e756d00000057696474685370656564456e64000000576964746853706565640000576964746800000054726163654c696e65000000"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1103,
+      "address": 13683456,
+      "kind": "immediate",
+      "bytes": "4d696e5365676d656e744c656e677468000000004d61785365676d656e744e756d00000057696474685370656564456e64000000576964746853706565640000"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1145,
+      "address": 13683440,
+      "kind": "immediate",
+      "bytes": "5365676d656e744c69666554696d65004d696e5365676d656e744c656e677468000000004d61785365676d656e744e756d00000057696474685370656564456e"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1187,
+      "address": 14016760,
+      "kind": "immediate",
+      "bytes": "42756c6c6574526164697573000000005472616365725465787475726500000054726163656c696e6500000000007044000034448988883babaaaa3dabaaaa3c"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1219,
+      "address": 14132056,
+      "kind": "memory",
+      "bytes": "00000040e17a843f0000b44300000000000000000080464000000000000014400000000000004440000000a09999993f00000040e17a94bf000000c0ccccec3f"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1241,
+      "address": 13683216,
+      "kind": "immediate",
+      "bytes": "42756c6c65744c69666554696d6500004865616452616469757300005461696c4c656e677468000074725f676c6f775f6164642e6464730042756c6c65744865"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1283,
+      "address": 13683200,
+      "kind": "immediate",
+      "bytes": "42756c6c657446616465426567696e0042756c6c65744c69666554696d6500004865616452616469757300005461696c4c656e677468000074725f676c6f775f"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1315,
+      "address": 14132056,
+      "kind": "memory",
+      "bytes": "00000040e17a843f0000b44300000000000000000080464000000000000014400000000000004440000000a09999993f00000040e17a94bf000000c0ccccec3f"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1337,
+      "address": 14016740,
+      "kind": "immediate",
+      "bytes": "42756c6c65745461696c4c656e6774680000000042756c6c6574526164697573000000005472616365725465787475726500000054726163656c696e65000000"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1379,
+      "address": 14016724,
+      "kind": "immediate",
+      "bytes": "4f75746572436f6c6f725f520000000042756c6c65745461696c4c656e6774680000000042756c6c657452616469757300000000547261636572546578747572"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1411,
+      "address": 14132056,
+      "kind": "memory",
+      "bytes": "00000040e17a843f0000b44300000000000000000080464000000000000014400000000000004440000000a09999993f00000040e17a94bf000000c0ccccec3f"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1433,
+      "address": 14016708,
+      "kind": "immediate",
+      "bytes": "4f75746572436f6c6f725f47000000004f75746572436f6c6f725f520000000042756c6c65745461696c4c656e6774680000000042756c6c6574526164697573"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1465,
+      "address": 14132056,
+      "kind": "memory",
+      "bytes": "00000040e17a843f0000b44300000000000000000080464000000000000014400000000000004440000000a09999993f00000040e17a94bf000000c0ccccec3f"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1487,
+      "address": 14016692,
+      "kind": "immediate",
+      "bytes": "4f75746572436f6c6f725f42000000004f75746572436f6c6f725f47000000004f75746572436f6c6f725f520000000042756c6c65745461696c4c656e677468"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1519,
+      "address": 14132056,
+      "kind": "memory",
+      "bytes": "00000040e17a843f0000b44300000000000000000080464000000000000014400000000000004440000000a09999993f00000040e17a94bf000000c0ccccec3f"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1541,
+      "address": 14016684,
+      "kind": "immediate",
+      "bytes": "476c6f775f5200004f75746572436f6c6f725f42000000004f75746572436f6c6f725f47000000004f75746572436f6c6f725f520000000042756c6c65745461"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1573,
+      "address": 14132056,
+      "kind": "memory",
+      "bytes": "00000040e17a843f0000b44300000000000000000080464000000000000014400000000000004440000000a09999993f00000040e17a94bf000000c0ccccec3f"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1595,
+      "address": 14016676,
+      "kind": "immediate",
+      "bytes": "476c6f775f470000476c6f775f5200004f75746572436f6c6f725f42000000004f75746572436f6c6f725f47000000004f75746572436f6c6f725f5200000000"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1627,
+      "address": 14132056,
+      "kind": "memory",
+      "bytes": "00000040e17a843f0000b44300000000000000000080464000000000000014400000000000004440000000a09999993f00000040e17a94bf000000c0ccccec3f"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1649,
+      "address": 14016668,
+      "kind": "immediate",
+      "bytes": "476c6f775f420000476c6f775f470000476c6f775f5200004f75746572436f6c6f725f42000000004f75746572436f6c6f725f47000000004f75746572436f6c"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1681,
+      "address": 14132056,
+      "kind": "memory",
+      "bytes": "00000040e17a843f0000b44300000000000000000080464000000000000014400000000000004440000000a09999993f00000040e17a94bf000000c0ccccec3f"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1703,
+      "address": 14016660,
+      "kind": "immediate",
+      "bytes": "5461696c5f520000476c6f775f420000476c6f775f470000476c6f775f5200004f75746572436f6c6f725f42000000004f75746572436f6c6f725f4700000000"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1735,
+      "address": 14132056,
+      "kind": "memory",
+      "bytes": "00000040e17a843f0000b44300000000000000000080464000000000000014400000000000004440000000a09999993f00000040e17a94bf000000c0ccccec3f"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1757,
+      "address": 14016652,
+      "kind": "immediate",
+      "bytes": "5461696c5f4700005461696c5f520000476c6f775f420000476c6f775f470000476c6f775f5200004f75746572436f6c6f725f42000000004f75746572436f6c"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1789,
+      "address": 14132056,
+      "kind": "memory",
+      "bytes": "00000040e17a843f0000b44300000000000000000080464000000000000014400000000000004440000000a09999993f00000040e17a94bf000000c0ccccec3f"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1811,
+      "address": 14016644,
+      "kind": "immediate",
+      "bytes": "5461696c5f4200005461696c5f4700005461696c5f520000476c6f775f420000476c6f775f470000476c6f775f5200004f75746572436f6c6f725f4200000000"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1843,
+      "address": 14132056,
+      "kind": "memory",
+      "bytes": "00000040e17a843f0000b44300000000000000000080464000000000000014400000000000004440000000a09999993f00000040e17a94bf000000c0ccccec3f"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1865,
+      "address": 13683520,
+      "kind": "immediate",
+      "bytes": "576964746800000054726163654c696e65000000ffff7f7f686f727a526f7444697200007456657274416e676c65000074486f727a416e676c65000076657274"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1897,
+      "address": 14132056,
+      "kind": "memory",
+      "bytes": "00000040e17a843f0000b44300000000000000000080464000000000000014400000000000004440000000a09999993f00000040e17a94bf000000c0ccccec3f"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1919,
+      "address": 14016632,
+      "kind": "immediate",
+      "bytes": "54696c654c656e67746800005461696c5f4200005461696c5f4700005461696c5f520000476c6f775f420000476c6f775f470000476c6f775f5200004f757465"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1958,
+      "address": 13683508,
+      "kind": "immediate",
+      "bytes": "576964746853706565640000576964746800000054726163654c696e65000000ffff7f7f686f727a526f7444697200007456657274416e676c65000074486f72"
+    },
+    {
+      "owner": 11578704,
+      "offset": 1990,
+      "address": 14132056,
+      "kind": "memory",
+      "bytes": "00000040e17a843f0000b44300000000000000000080464000000000000014400000000000004440000000a09999993f00000040e17a94bf000000c0ccccec3f"
+    },
+    {
+      "owner": 11578704,
+      "offset": 2009,
+      "address": 13683492,
+      "kind": "immediate",
+      "bytes": "57696474685370656564456e64000000576964746853706565640000576964746800000054726163654c696e65000000ffff7f7f686f727a526f744469720000"
+    },
+    {
+      "owner": 11578704,
+      "offset": 2041,
+      "address": 14132056,
+      "kind": "memory",
+      "bytes": "00000040e17a843f0000b44300000000000000000080464000000000000014400000000000004440000000a09999993f00000040e17a94bf000000c0ccccec3f"
+    },
+    {
+      "owner": 11577632,
+      "offset": 3,
+      "address": 13351528,
+      "kind": "immediate",
+      "bytes": "b8603cdf00e9d1b0f3ffcccccccccccccccccccccccccccc8b4dd4e998e9e4ff8d4dd8e9902276ffb8943cdf00e9a9b0f3ffcccccccccccc8b4df0e978e9e4ff"
+    },
+    {
+      "owner": 11577632,
+      "offset": 67,
+      "address": 16302700,
+      "kind": "memory",
+      "bytes": ""
+    },
+    {
+      "owner": 11577632,
+      "offset": 306,
+      "address": 16307088,
+      "kind": "immediate",
+      "bytes": ""
+    },
+    {
+      "owner": 11577632,
+      "offset": 312,
+      "address": 16302700,
+      "kind": "memory",
+      "bytes": ""
+    }
+  ],
+  "prior_records": [
+    {
+      "address": "00b0ad50",
+      "reconstruction": {
+        "address": "00b0ad50",
+        "source": "src/native_particle_object_tracer_loading.cpp",
+        "header": "include/bsp/native_particle_object_tracer_loading.hpp",
+        "evidence": "Complete installed/live byte match SHA256 083aaf7a56a84ff723429ed7ae4c8b09d18966a2914dc8d6c8758a0859466490; inclusive last byte 00b0b5cb; RET4 at 00b0b5c9; decoded Capstone listing and all direct call sites captured in C:/Users/sqz269/bsp-aq-object-tracer. Descriptive name is a hypothesis. See docs/NATIVE_PARTICLE_OBJECT_TRACER_LOADING.md.",
+        "name": "load_native_tracer_particle_definition_00b0ad50",
+        "status": "reconstructed_build_tested_bounded_fixture_tested",
+        "native_abi": {
+          "receiver": "ECX actual definition",
+          "stack_arguments": "void *text",
+          "stack_cleanup": "RET 4",
+          "result": "AL true, including EOF",
+          "native_eh": "FH3 normal paths inspected; native exception ABI not replaced"
+        },
+        "kind": "function"
+      },
+      "reviewed_name": {
+        "address": "00b0ad50",
+        "name": "BSP_TracerParticleDefinition_LoadText",
+        "evidence": "Complete installed/live byte match SHA256 083aaf7a56a84ff723429ed7ae4c8b09d18966a2914dc8d6c8758a0859466490; inclusive last byte 00b0b5cb; RET4 at 00b0b5c9; decoded Capstone listing and all direct call sites captured in C:/Users/sqz269/bsp-aq-object-tracer. Descriptive name is a hypothesis. See docs/NATIVE_PARTICLE_OBJECT_TRACER_LOADING.md."
+      },
+      "ghidra_documentation": {
+        "hash": "5f1946b4580d969ad310afbab41fedfbe4f6fd0b482f520c0a87ba9d75ed3468",
+        "function_name": "BSP_TracerParticleDefinition_LoadText",
+        "plate_comment": "[BSP reconstruction 00b0ad50]\nComplete installed/live byte match SHA256 083aaf7a56a84ff723429ed7ae4c8b09d18966a2914dc8d6c8758a0859466490; inclusive last byte 00b0b5cb; RET4 at 00b0b5c9; decoded Capstone listing and all direct call sites captured in C:/Users/sqz269/bsp-aq-object-tracer. Descriptive name is a hypothesis. See docs/NATIVE_PARTICLE_OBJECT_TRACER_LOADING.md.",
+        "calling_convention": "__thiscall",
+        "return_type": "bool",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "text",
+            "type": "void *"
+          }
+        ]
+      },
+      "previous_function_report": {
+        "address": "00b0ad50",
+        "end_inclusive": "00b0b5cb",
+        "cpp_symbol": "load_native_tracer_particle_definition_00b0ad50",
+        "ghidra_name": "BSP_TracerParticleDefinition_LoadText",
+        "native_prototype": "bool __thiscall BSP_TracerParticleDefinition_LoadText(void *text)",
+        "native_calling_convention": "__thiscall",
+        "source": "src/native_particle_object_tracer_loading.cpp",
+        "header": "include/bsp/native_particle_object_tracer_loading.hpp",
+        "evidence": "Complete installed/live byte match SHA256 083aaf7a56a84ff723429ed7ae4c8b09d18966a2914dc8d6c8758a0859466490; inclusive last byte 00b0b5cb; RET4 at 00b0b5c9; decoded Capstone listing and all direct call sites captured in C:/Users/sqz269/bsp-aq-object-tracer. Descriptive name is a hypothesis. See docs/NATIVE_PARTICLE_OBJECT_TRACER_LOADING.md.",
+        "original_abi": {
+          "receiver": "ECX actual definition",
+          "stack_arguments": "void *text",
+          "stack_cleanup": "RET 4",
+          "result": "AL true, including EOF",
+          "native_eh": "FH3 normal paths inspected; native exception ABI not replaced"
+        },
+        "coverage": "complete",
+        "status": "reconstructed_installed_byte_fixture_tested_new_cpp_interface",
+        "bytes": 2172,
+        "native_sha256": "083aaf7a56a84ff723429ed7ae4c8b09d18966a2914dc8d6c8758a0859466490",
+        "last_instruction": "00b0b5c9: ret 4",
+        "end_exclusive": "00b0b5cc"
+      }
+    },
+    {
+      "address": "00b0a920",
+      "reconstruction": {
+        "address": "00b0a920",
+        "source": "src/native_particle_object_tracer_loading.cpp",
+        "header": "include/bsp/native_particle_object_tracer_loading.hpp",
+        "evidence": "Complete installed/live byte match SHA256 3a5fbab84d629b563b73f4b926d16c4e194eec33913350772fd25e585fb4d43c; inclusive last byte 00b0ab8a; RET4 at 00b0ab88; decoded Capstone listing and all direct call sites captured in C:/Users/sqz269/bsp-aq-object-tracer. Descriptive name is a hypothesis. See docs/NATIVE_PARTICLE_OBJECT_TRACER_LOADING.md.",
+        "name": "load_native_tracer_particle_textures_00b0a920",
+        "status": "reconstructed_build_tested_bounded_fixture_tested",
+        "native_abi": {
+          "receiver": "ECX actual definition",
+          "stack_arguments": "char *filename",
+          "stack_cleanup": "RET 4",
+          "result": "no EAX contract",
+          "native_eh": "FH3 normal paths inspected; native exception ABI not replaced"
+        },
+        "kind": "function"
+      },
+      "reviewed_name": {
+        "address": "00b0a920",
+        "name": "BSP_TracerParticleDefinition_LoadTextures",
+        "evidence": "Complete installed/live byte match SHA256 3a5fbab84d629b563b73f4b926d16c4e194eec33913350772fd25e585fb4d43c; inclusive last byte 00b0ab8a; RET4 at 00b0ab88; decoded Capstone listing and all direct call sites captured in C:/Users/sqz269/bsp-aq-object-tracer. Descriptive name is a hypothesis. See docs/NATIVE_PARTICLE_OBJECT_TRACER_LOADING.md."
+      },
+      "ghidra_documentation": {
+        "hash": "b78c7ea1718f9829ed6f27447f218e36098483bac225254d21106a732ae9836c",
+        "function_name": "BSP_TracerParticleDefinition_LoadTextures",
+        "plate_comment": "[BSP reconstruction 00b0a920]\nComplete installed/live byte match SHA256 3a5fbab84d629b563b73f4b926d16c4e194eec33913350772fd25e585fb4d43c; inclusive last byte 00b0ab8a; RET4 at 00b0ab88; decoded Capstone listing and all direct call sites captured in C:/Users/sqz269/bsp-aq-object-tracer. Descriptive name is a hypothesis. See docs/NATIVE_PARTICLE_OBJECT_TRACER_LOADING.md.",
+        "calling_convention": "__thiscall",
+        "return_type": "void",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "filename",
+            "type": "char *"
+          }
+        ]
+      },
+      "previous_function_report": {
+        "address": "00b0a920",
+        "end_inclusive": "00b0ab8a",
+        "cpp_symbol": "load_native_tracer_particle_textures_00b0a920",
+        "ghidra_name": "BSP_TracerParticleDefinition_LoadTextures",
+        "native_prototype": "void __thiscall BSP_TracerParticleDefinition_LoadTextures(char *filename)",
+        "native_calling_convention": "__thiscall",
+        "source": "src/native_particle_object_tracer_loading.cpp",
+        "header": "include/bsp/native_particle_object_tracer_loading.hpp",
+        "evidence": "Complete installed/live byte match SHA256 3a5fbab84d629b563b73f4b926d16c4e194eec33913350772fd25e585fb4d43c; inclusive last byte 00b0ab8a; RET4 at 00b0ab88; decoded Capstone listing and all direct call sites captured in C:/Users/sqz269/bsp-aq-object-tracer. Descriptive name is a hypothesis. See docs/NATIVE_PARTICLE_OBJECT_TRACER_LOADING.md.",
+        "original_abi": {
+          "receiver": "ECX actual definition",
+          "stack_arguments": "char *filename",
+          "stack_cleanup": "RET 4",
+          "result": "no EAX contract",
+          "native_eh": "FH3 normal paths inspected; native exception ABI not replaced"
+        },
+        "coverage": "complete",
+        "status": "reconstructed_installed_byte_fixture_tested_new_cpp_interface",
+        "bytes": 619,
+        "native_sha256": "3a5fbab84d629b563b73f4b926d16c4e194eec33913350772fd25e585fb4d43c",
+        "last_instruction": "00b0ab88: ret 4",
+        "end_exclusive": "00b0ab8b"
+      }
+    }
+  ],
+  "live_byte_verification": {
+    "guard": "Every bsp.py query verifies project bsp/program /battlestationspacific.exe/language/image_base.",
+    "spans": [
+      {
+        "address": "00b0ad50",
+        "bytes": 2172,
+        "kind": "helper",
+        "sha256": "083aaf7a56a84ff723429ed7ae4c8b09d18966a2914dc8d6c8758a0859466490"
+      },
+      {
+        "address": "00b0a920",
+        "bytes": 619,
+        "kind": "helper",
+        "sha256": "3a5fbab84d629b563b73f4b926d16c4e194eec33913350772fd25e585fb4d43c"
+      },
+      {
+        "address": "00cbbb10",
+        "bytes": 10,
+        "kind": "handler",
+        "sha256": "4cfa6c344ef6f8a93cadad0f3d633cb43eca94d29c1dba81c1bfc92aadbe95a2"
+      },
+      {
+        "address": "00df3ce4",
+        "bytes": 36,
+        "kind": "info",
+        "sha256": "3a8313b24831e813e4866b956c8970b740342b7fc103c6c7f2cbbe159909f285"
+      },
+      {
+        "address": "00df3d08",
+        "bytes": 80,
+        "kind": "map",
+        "sha256": "7c7954de88db0321753f2e13f73af8fa2597084e81fdcfe9ca25e1291ca53bb4"
+      },
+      {
+        "address": "00cbbac0",
+        "bytes": 8,
+        "kind": "unwind_action",
+        "sha256": "fa1f1145a6ca35d2638dab0c1e5cbb3c7ca5d76fa5ab0bcc2a78dd6152835ab5"
+      },
+      {
+        "address": "00cbbac8",
+        "bytes": 8,
+        "kind": "unwind_action",
+        "sha256": "91fa96c709dff211be8c061d61a657bcacdbcd26fabc9b28b25730ef9cc2ff62"
+      },
+      {
+        "address": "00cbbad0",
+        "bytes": 8,
+        "kind": "unwind_action",
+        "sha256": "f57dc0177d8677aec9b9f4ebf8cbe452bef6d21c969cd6ce7b80719c5967d696"
+      },
+      {
+        "address": "00cbbad8",
+        "bytes": 8,
+        "kind": "unwind_action",
+        "sha256": "2fb7070471a8bc9ae2ef7813891f1a6872c17826420dc232db242f73fcf2d691"
+      },
+      {
+        "address": "00cbbae0",
+        "bytes": 8,
+        "kind": "unwind_action",
+        "sha256": "faecb1afeb46360353b301a918ea822435f3ae7057e8b76de38e5ca07e267ca4"
+      },
+      {
+        "address": "00cbbae8",
+        "bytes": 8,
+        "kind": "unwind_action",
+        "sha256": "00658ecbefa6df4573dd4edb71896b604ed6d51147a71dd40f4af2aed7538d83"
+      },
+      {
+        "address": "00cbbaf0",
+        "bytes": 8,
+        "kind": "unwind_action",
+        "sha256": "7b723ec553d06b558379fb6778f78fa09e075e9a9dd51d02689a534ad41798bb"
+      },
+      {
+        "address": "00cbbaf8",
+        "bytes": 8,
+        "kind": "unwind_action",
+        "sha256": "648e6a27aeedd6ca6bf4674b262ea055a6812f2935fb5c0639c7644b13dc011d"
+      },
+      {
+        "address": "00cbbb00",
+        "bytes": 8,
+        "kind": "unwind_action",
+        "sha256": "ce0725196d644fcda11be595231d39f3bcfe0a19b1f7c1e437a26760b4ea4ebe"
+      },
+      {
+        "address": "00cbbb08",
+        "bytes": 8,
+        "kind": "unwind_action",
+        "sha256": "8502f80ad22d87fa99aad2f92331a8b24ef5b84828125b5caa83b6b3b2c86515"
+      },
+      {
+        "address": "00cbba68",
+        "bytes": 10,
+        "kind": "handler",
+        "sha256": "dd1955b4cd52492649551d6a0d7710faf40a306ad2ce585d57f1d0f2259763d6"
+      },
+      {
+        "address": "00df3c60",
+        "bytes": 36,
+        "kind": "info",
+        "sha256": "ee2fb6555d9345b42016e1f592d65f1c6b9f028dae93eea61f7c781b9f907279"
+      },
+      {
+        "address": "00df3c58",
+        "bytes": 8,
+        "kind": "map",
+        "sha256": "d5498cd194e16cde62c29d39f0225682ff1cee3861ca403e43118de99c39304c"
+      },
+      {
+        "address": "00cbba60",
+        "bytes": 8,
+        "kind": "unwind_action",
+        "sha256": "5c0890fa940330b9c221a1049b5bd601ad9f4840fa21d5171866d0da70f3c59a"
+      }
+    ],
+    "total_bytes": 3059
+  },
+  "ghidra_mutations": [],
+  "listing_gap": {
+    "address": "00b0adbd",
+    "bytes": "8d4900",
+    "interpretation": "lea ecx,[ecx], alignment after unconditional jump; no missing control flow or repair"
+  },
+  "source_contract": {
+    "strings": "Same NativeStringRawPoolContext shared by builders, raw properties and raw names; actual publication/gate/manager cells.",
+    "parameters": "Actual NativeWeakHandlePool F8D344 runtime domain, existing builder and B00980 contexts; no alternate allocator.",
+    "retained": "Single-use acquired frame contains actual four-byte headers and one optional B015C0 child. Only a completed child may be replaced by the next invocation. Failed child cache/texture obligations and referenced header storage outlive the call. Caller must retain until resolved; no destructor rollback or ref increment.",
+    "initial_kind": "Explicit caller input for otherwise-unwritten builder+C; persists across lines, parse failures ignored.",
+    "arithmetic": "AtOf ST0 -> float spill, common argument FLD32/FSTP32, first-value ST0 stores, runtime conversion before late context percentage-pointer read and FLD32/FMUL64/FSTP32. TileLength does not write multiplier.",
+    "publication": "Existing parameter fields overwritten without release. Texture count reset only; capacity updated before saturated allocation, current source/count copied, old array freed before publication; borrowed items and live atlas publication.",
+    "exception": "Parent DF3D08 ten-state map and companion DF3C58 one-state map follow existing raw cleanup bodies. Secondary source unwind failure terminates. No original FH3 transport/failure proof."
+  },
+  "validation": {
+    "build": "./scripts/build.ps1 clean MSVC Win32 Release /W4 /WX /fp:strict passed; 2 existing CTests passed; after optional-child refinement, incremental strict Win32 rebuild and the same 2 existing CTests passed",
+    "probe": {
+      "exit_code": 0,
+      "output": "PASS native/source scenario0 9105313 bytes\nPASS native/source scenario1 9105313 bytes\nPASS: two complete copied originals2791B, actual raw string/parameter pools, all24 Tracer keys plus common properties, growth/reset, EOF/brace, x87 sNaN percentage and retained source child failure. Original FH3/error paths and external helper originals excluded.\n",
+      "x86": true,
+      "embedded_manifest": true,
+      "exe_sha256": "0e064c363fafd05bf3fd8d0f43caa376b20600122b48137d546813a108742438",
+      "library_sha256": "a0e574884affeceae9428bfd4d33b4c5293752e17f8edea93e3a9ea0aa0e7847"
+    },
+    "original_bodies": "B0AD50 and B0A920 copied completely,2791 bytes; owned internal call enters copied B0A920. All104 direct calls relocated. Other17 helper targets execute existing source bridges;2 fixed CRT allocation/free bridges and3 current CRT functions. No fake allocator.",
+    "scenarios": "Two cohesive sequences: all24 Tracer properties plus common Stops/Shader, unknown name/line, ignored malformed curve, actual Const/Linear/Hermite conversion, old pointer overwrite, growth0->2->6 and count reset, borrowed head/tail items, brace/EOF, signaling-NaN percentage x87 status.",
+    "observations": "Each comparison contains9,105,313 bytes: fullE8h owner,1Ch TextBuffer,4 actual30h items,shared4096B scratch,initialized live/high-water texture cells,entire initialized parameter slab plus live segments/counters,full initialized string arena/ring/counters; allocation-pointer fields normalized only.",
+    "excluded_storage": "Opaque Windows critical sections, uninitialized unused texture/segment capacity, private native stack storage; parameter pool allocator-list pointers not compared.",
+    "failure_check": "Source-only missing Tracer profile on Shader produces failed outer/child phases with retained child frame and cleared owned line/suffix headers. This is a source provider-boundary check, not original FH3 execution.",
+    "native_exceptions": "Both original handler references relocated to a fatal probe sentinel; neither invoked. Maps/actions inspected statically and matched live/PE.",
+    "call_site_verification": "tools/verify_report_calls.py checked 104 call rows, 0 failed against live Ghidra"
+  },
+  "corrections": [
+    {
+      "was": "B0AD50 and B0A920 were available only through NativeParticleTypeLoadingBindings/NativeParticleTypePropertyBindings, including legacy string/allocator interfaces.",
+      "is": "New concrete raw overloads compose the actual shared raw text/parameter/atlas services and retain common-property acquired children. Existing overloads remain available.",
+      "evidence": "Complete body/map review, caller-retained acquired interface, 104 recorded call sites, clean strict build and focused copied-original comparisons."
+    },
+    {
+      "was": "Initial r18 commit e655f6cca4099b8504b5162680ba04acc03ab216 retained every completed common-property frame in a deque.",
+      "is": "One optional common-property frame is retained, and the next invocation replaces it only after completion. A failed child and its referenced headers remain caller-owned.",
+      "evidence": "Only successful B015C0 return reaches the next property; parent review requested removal of unnecessary per-property allocation and memory growth. Same two copied-original comparisons and retained-source-child failure assertion passed after strict rebuild.",
+      "prior_probe_receipt": {
+        "exit_code": 0,
+        "output": "PASS native/source scenario0 9105313 bytes\nPASS native/source scenario1 9105313 bytes\nPASS: two complete copied originals2791B, actual raw string/parameter pools, all24 Tracer keys plus common properties, growth/reset, EOF/brace, x87 sNaN percentage and retained source child failure. Original FH3/error paths and external helper originals excluded.\n",
+        "x86": true,
+        "embedded_manifest": true,
+        "exe_sha256": "fe83c475fb3ba2ac54db78c6cc47dd7d01aedc2d1b8ca47f6286bdc0053d9da7",
+        "library_sha256": "78527d58f5f0467046a04ed7c2193837c4303946268e024038266d8c98bf7735"
+      }
+    }
+  ],
+  "checklist": {
+    "1_callee_before_contract": "Reused established provider bodies/headers/source contracts. Live callee prototypes checked; no newly invented callback contracts. Original dependency execution explicitly excluded.",
+    "2_boundary_before_attribution": "Every decoded call row gives containing owned function and exact site; checked by verify_report_calls.",
+    "3_all_call_sites": "B0AD50 only direct caller of B0A920; additional parser dispatch is via constructor-established D5E048 profile. Existing overload contracts preserved.",
+    "4_producer_before_layout": "Existing B0A0B0 actualE8h definition/descriptor producer and actual builder/TextBuffer/pool layouts reused; refs docs/NATIVE_PARTICLE_OBJECT_TRACER_LOADING.md.",
+    "5_partial_projection_label": "Both body spans complete; fixture coverage bounded and original external helper/FH3 execution excluded.",
+    "6_runtime_evidence": "Copied-original fixture run, no gameplay/frame-reachability claim.",
+    "7_argument_counts": "Parser and companion RET4; B00980 RET0C; builder endpoints RET8; cdecl atol/atof ADD ESP4; stricmp ADD ESP8; BF55BE/BF6989 ADD ESP4.",
+    "8_register_provenance": "Complete629-line parser and177-line companion assembly reviewed. ECX owner captured inESI; x87 instructions and EAX publication retained; EDI frame count preserved across allocation.",
+    "9_lease_only_annotated": "Only B0AD50 and approved B0A920 companion; own source/header/doc/report; appended CMake source registration without whole-file lease.",
+    "10_evidence_in_report": "Complete functions,104 call rows,fullEH maps/actions,old Ghidra comments/records, correction and artifact hashes."
+  },
+  "boundaries": [
+    "New C++ interfaces are not binary substitutes; original FH3/SEH, memory faults, failures in allocation/cleanup and concurrent mutation unvalidated.",
+    "Source phase and provider-domain checks are added interface boundaries.",
+    "Current CRT parsing/comparison, native fixed-buffer validity and literal/stack alias boundaries remain.",
+    "Seventeen original helper bodies and five CRT bodies are not executed as original code in this probe.",
+    "No gameplay validation or permanent tests; descriptive names remain hypotheses."
+  ],
+  "artifacts": [
+    {
+      "path": "src/native_particle_tracer_raw.cpp",
+      "bytes": 14056,
+      "sha256": "cb71a2fa74fbb28f0bfb46683603fdb9e9ea54d58b12f55687edf79bc2a9cb4a"
+    },
+    {
+      "path": "include/bsp/native_particle_tracer_raw.hpp",
+      "bytes": 3158,
+      "sha256": "c3aa1cacce69597ffa75b7d2fd6998d6c1ad6ba78e19ba2863b6cb5d9be6f00c"
+    },
+    {
+      "path": "local/tracer_evidence.py",
+      "bytes": 3700,
+      "sha256": "0c946c8ee9dddaf703fafd60c5f45f86016a89fd53684121855df5caf598d2a1"
+    },
+    {
+      "path": "local/tracer_evidence.json",
+      "bytes": 28082,
+      "sha256": "b9331c92afbf8a71d1a82b99fd041fe675ba38d7a5f734777b63dd7cc5457701"
+    },
+    {
+      "path": "local/tracer_bytes.inc",
+      "bytes": 14334,
+      "sha256": "448784908689eac889fd4283118f0f3ce7046b5606f7a53269d1a54b59c185a4"
+    },
+    {
+      "path": "local/tracer_data.inc",
+      "bytes": 5212,
+      "sha256": "32d92a4fe21cb5eba307d66eacc83f1b01248b94f7460c7e3708213d43d2d111"
+    },
+    {
+      "path": "local/prepare_tracer_probe.py",
+      "bytes": 1305,
+      "sha256": "a8391d7c07b8df98a7a4a39124464d5ffc981cc1f94e07d9eb74cdeabe4c40d8"
+    },
+    {
+      "path": "local/verify_tracer_live.py",
+      "bytes": 1690,
+      "sha256": "573af25cf84e5a0b1e23aee2f740389afb3abd9527dd51f85e27eac15bab8356"
+    },
+    {
+      "path": "local/tracer_live_receipt.json",
+      "bytes": 3525,
+      "sha256": "192316f4e0639b1556837d03d9576822a994cc18480c168ba31a32ce068866ef"
+    },
+    {
+      "path": "local/tracer_probe.cpp",
+      "bytes": 14860,
+      "sha256": "f22e455273c11e535400fea9a905e7de64a694709297c9c8365bb4f4df7d0e75"
+    },
+    {
+      "path": "local/tracer_probe_build.cmd",
+      "bytes": 483,
+      "sha256": "c8227319ba835cf3529c9137fc2984b014a964db89b5ab8c1008df09ddbb43a5"
+    },
+    {
+      "path": "local/tracer_probe_build.log",
+      "bytes": 18,
+      "sha256": "6abde7fd86bdb3da58bf0b9254360c2dee07c97a78a34c6552144d5149827a01"
+    },
+    {
+      "path": "local/tracer_probe.exe",
+      "bytes": 321024,
+      "sha256": "0e064c363fafd05bf3fd8d0f43caa376b20600122b48137d546813a108742438"
+    },
+    {
+      "path": "local/run_tracer_probe.py",
+      "bytes": 706,
+      "sha256": "8e6413df47f43234223c532206bb9597e35cbee8437ec7348aad64b26ae016cd"
+    },
+    {
+      "path": "local/tracer_probe_result.json",
+      "bytes": 614,
+      "sha256": "2e4a577b30bd65adb0d9cdb069c89bb37b1c3fa8bf934ed4651ac6d15d08d279"
+    },
+    {
+      "path": "local/tracer_probe_case0.bin",
+      "bytes": 9105313,
+      "sha256": "3799c6c81cc13eeba41b5c33577b18d2b0cce0ead4dd2cf8989ed1ce014ff2f0"
+    },
+    {
+      "path": "local/tracer_probe_case1.bin",
+      "bytes": 9105313,
+      "sha256": "ab58cc337b35122e0f0ae844d90b2404071a9bd0961b820641e6458b50f434c0"
+    },
+    {
+      "path": "local/tracer_old_b0ad50.json",
+      "bytes": 8485,
+      "sha256": "66db1c64696890f6907450dd20db1a0b098f4516d9b04ceb9af5dabc2ccabb1a"
+    },
+    {
+      "path": "local/tracer_old_b0a920.json",
+      "bytes": 3860,
+      "sha256": "d9c45e9498a183967f6447dbac7f05c4ebb4011baa56211907bcbc3ef0e6da9d"
+    },
+    {
+      "path": "local/tracer_build.log",
+      "bytes": 55525,
+      "sha256": "d58488f8991493c683d246b96a8fd6a3c15702b8a3674e4ea5df314ea263364c"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 61833428,
+      "sha256": "a0e574884affeceae9428bfd4d33b4c5293752e17f8edea93e3a9ea0aa0e7847"
+    },
+    {
+      "path": "build/win32/Testing/Temporary/LastTest.log",
+      "bytes": 1660,
+      "sha256": "614a5e60d021b22fc6102c38393c836163b2d37e4bd2e5bb44ed2a7481c50036"
+    },
+    {
+      "path": "local/tracer_optional_build.log",
+      "bytes": 4279,
+      "sha256": "61fa91933b45cb3778df4c30d85596b3e6c2242ab1041aef4b77a3c2c0824356"
+    }
+  ]
+}
