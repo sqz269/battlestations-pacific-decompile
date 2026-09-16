@@ -26,7 +26,9 @@ struct NativeRendererGeneratedModelContext {
 
 // Exact raw-name mode for the application's null-actual_names model runtime.
 // These are the same AA8/AA4/AA0 cells borrowed by models.nodes. The constants
-// and caller's model-name header address survive the call and model lifetime.
+// remain valid through construction; the name pool remains valid through model
+// destruction. The caller's name header is read during construction and its
+// bytes are copied into the model's own native name storage.
 struct NativeRendererRawModelBinding {
     NativeStringRawPoolContext& names;
     const NativeNodeRawConstants& constants;

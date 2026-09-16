@@ -1,0 +1,408 @@
+{
+  "packet": "native_renderer_debug_records24_r47",
+  "status": "current_source_build_and_original_empty_skipped_negative_parent_paths_checked",
+  "source": "src/native_renderer_debug_records24.cpp",
+  "header": "include/bsp/native_renderer_debug_records24.hpp",
+  "historical_source": "a6b2884f2ef01c3a0b636b0853dc66ec7855aeba",
+  "contract_audit": "reports/native_renderer_debug_records24_provider_contract_r41.json",
+  "routines": [
+    {
+      "address": "00b2bb90",
+      "end_exclusive": "00b2c275",
+      "bytes": 1765,
+      "coverage": "complete schedule in documented actual provider domain",
+      "name": "draw_native_renderer_debug_records24_00b2bb90",
+      "original_abi": "ECX renderer, RET; not a float parameter",
+      "source_abi": "ECX renderer, EDX borrowedcontext, stack persistentframe, RET4",
+      "abi_compatible": false,
+      "game_validated": false,
+      "source": "src/native_renderer_debug_records24.cpp"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00b2bbe0",
+      "native": "0041e870",
+      "function": "00b2bb90",
+      "contract": "Native string literal constructor schedule: zero both header words, resize(strlen,1), copy CURRENT length+1 when data nonnull; inlined with exact known strings."
+    },
+    {
+      "address": "00b2bbf5",
+      "native": "0041e870",
+      "function": "00b2bb90",
+      "contract": "Native string literal constructor schedule: zero both header words, resize(strlen,1), copy CURRENT length+1 when data nonnull; inlined with exact known strings."
+    },
+    {
+      "address": "00b2bc0b",
+      "native": "0041e870",
+      "function": "00b2bb90",
+      "contract": "Native string literal constructor schedule: zero both header words, resize(strlen,1), copy CURRENT length+1 when data nonnull; inlined with exact known strings."
+    },
+    {
+      "address": "00b2bc2a",
+      "native": "00b4c700",
+      "function": "00b2bb90",
+      "contract": "Complete actual generated model builder; nameECX,layoutEDX,effect/3/0/0/0 stacked; persistent native creator acquisition."
+    },
+    {
+      "address": "00b2bc50",
+      "native": "00419cc0",
+      "function": "00b2bb90",
+      "contract": "Actual current AA8 sized-string pool getter through NativeStringRawPoolContext; no release arguments consumed."
+    },
+    {
+      "address": "00b2bc57",
+      "native": "00bd1510",
+      "function": "00b2bb90",
+      "contract": "Actual sized-string return via current rawpool; captureddata/currentlength+1, unused1; RET0C."
+    },
+    {
+      "address": "00b2bc76",
+      "native": "00419cc0",
+      "function": "00b2bb90",
+      "contract": "Actual current AA8 sized-string pool getter through NativeStringRawPoolContext; no release arguments consumed."
+    },
+    {
+      "address": "00b2bc7d",
+      "native": "00bd1510",
+      "function": "00b2bb90",
+      "contract": "Actual sized-string return via current rawpool; captureddata/currentlength+1, unused1; RET0C."
+    },
+    {
+      "address": "00b2bca0",
+      "native": "00419cc0",
+      "function": "00b2bb90",
+      "contract": "Actual current AA8 sized-string pool getter through NativeStringRawPoolContext; no release arguments consumed."
+    },
+    {
+      "address": "00b2bca7",
+      "native": "00bd1510",
+      "function": "00b2bb90",
+      "contract": "Actual sized-string return via current rawpool; captureddata/currentlength+1, unused1; RET0C."
+    },
+    {
+      "address": "00b2bdc8",
+      "native": "0041dd40",
+      "function": "00b2bb90",
+      "contract": "Actual raw8h string resize with preserve1 and explicit16/11/12 length; same AA8/AA4/AA0 storage context."
+    },
+    {
+      "address": "00b2bde3",
+      "native": "00bf7680",
+      "function": "00b2bb90",
+      "contract": "Native memcpy schedule for disjoint immutable literal into resizedheader data, CURRENT headerlength+1; std::memcpy source interface."
+    },
+    {
+      "address": "00b2be06",
+      "native": "0041dd40",
+      "function": "00b2bb90",
+      "contract": "Actual raw8h string resize with preserve1 and explicit16/11/12 length; same AA8/AA4/AA0 storage context."
+    },
+    {
+      "address": "00b2be21",
+      "native": "00bf7680",
+      "function": "00b2bb90",
+      "contract": "Native memcpy schedule for disjoint immutable literal into resizedheader data, CURRENT headerlength+1; std::memcpy source interface."
+    },
+    {
+      "address": "00b2be41",
+      "native": "0041dd40",
+      "function": "00b2bb90",
+      "contract": "Actual raw8h string resize with preserve1 and explicit16/11/12 length; same AA8/AA4/AA0 storage context."
+    },
+    {
+      "address": "00b2be5c",
+      "native": "00bf7680",
+      "function": "00b2bb90",
+      "contract": "Native memcpy schedule for disjoint immutable literal into resizedheader data, CURRENT headerlength+1; std::memcpy source interface."
+    },
+    {
+      "address": "00b2be7e",
+      "native": "00b4c700",
+      "function": "00b2bb90",
+      "contract": "Complete actual generated model builder; nameECX,layoutEDX,effect/3/0/0/0 stacked; persistent native creator acquisition."
+    },
+    {
+      "address": "00b2bea0",
+      "native": "00419cc0",
+      "function": "00b2bb90",
+      "contract": "Actual current AA8 sized-string pool getter through NativeStringRawPoolContext; no release arguments consumed."
+    },
+    {
+      "address": "00b2bea7",
+      "native": "00bd1510",
+      "function": "00b2bb90",
+      "contract": "Actual sized-string return via current rawpool; captureddata/currentlength+1, unused1; RET0C."
+    },
+    {
+      "address": "00b2bec7",
+      "native": "00419cc0",
+      "function": "00b2bb90",
+      "contract": "Actual current AA8 sized-string pool getter through NativeStringRawPoolContext; no release arguments consumed."
+    },
+    {
+      "address": "00b2bece",
+      "native": "00bd1510",
+      "function": "00b2bb90",
+      "contract": "Actual sized-string return via current rawpool; captureddata/currentlength+1, unused1; RET0C."
+    },
+    {
+      "address": "00b2bef1",
+      "native": "00419cc0",
+      "function": "00b2bb90",
+      "contract": "Actual current AA8 sized-string pool getter through NativeStringRawPoolContext; no release arguments consumed."
+    },
+    {
+      "address": "00b2bef8",
+      "native": "00bd1510",
+      "function": "00b2bb90",
+      "contract": "Actual sized-string return via current rawpool; captureddata/currentlength+1, unused1; RET0C."
+    },
+    {
+      "address": "00b2bf0f",
+      "native": "00b74640",
+      "function": "00b2bb90",
+      "contract": "Actual model+174 tail geometry index0; native consumes one stack index (RET4)."
+    },
+    {
+      "address": "00b2bf16",
+      "native": "00b73260",
+      "function": "00b2bb90",
+      "contract": "Current raw geometry vertex stream at index0; not retained across lock/unlock."
+    },
+    {
+      "address": "00b2c147",
+      "native": "00b74640",
+      "function": "00b2bb90",
+      "contract": "Actual model+174 tail geometry index0; native consumes one stack index (RET4)."
+    },
+    {
+      "address": "00b2c14e",
+      "native": "00b73260",
+      "function": "00b2bb90",
+      "contract": "Current raw geometry vertex stream at index0; not retained across lock/unlock."
+    },
+    {
+      "address": "00b2c160",
+      "native": "00b74640",
+      "function": "00b2bb90",
+      "contract": "Actual model+174 tail geometry index0; native consumes one stack index (RET4)."
+    },
+    {
+      "address": "00b2c167",
+      "native": "00b732c0",
+      "function": "00b2bb90",
+      "contract": "Current raw geometry section at index0; reread independently for counts, entry and material."
+    },
+    {
+      "address": "00b2c177",
+      "native": "00b74640",
+      "function": "00b2bb90",
+      "contract": "Actual model+174 tail geometry index0; native consumes one stack index (RET4)."
+    },
+    {
+      "address": "00b2c17e",
+      "native": "00b732c0",
+      "function": "00b2bb90",
+      "contract": "Current raw geometry section at index0; reread independently for counts, entry and material."
+    },
+    {
+      "address": "00b2c18e",
+      "native": "00b46a70",
+      "function": "00b2bb90",
+      "contract": "Complete raw gather, sceneECX0 and capturedcameraEDX; caller-owned prefix preimage and persistent actual sampler frame."
+    },
+    {
+      "address": "00b2c1c3",
+      "native": "00b74640",
+      "function": "00b2bb90",
+      "contract": "Actual model+174 tail geometry index0; native consumes one stack index (RET4)."
+    },
+    {
+      "address": "00b2c1cd",
+      "native": "00b74640",
+      "function": "00b2bb90",
+      "contract": "Actual model+174 tail geometry index0; native consumes one stack index (RET4)."
+    },
+    {
+      "address": "00b2c1d4",
+      "native": "00b732c0",
+      "function": "00b2bb90",
+      "contract": "Current raw geometry section at index0; reread independently for counts, entry and material."
+    },
+    {
+      "address": "00b2c1e2",
+      "native": "00b51a20",
+      "function": "00b2bb90",
+      "contract": "Complete raw28h render entry initialization on current cache; leading0, section, geometry, model, camera, visibility1, depthoverride0, flags0."
+    },
+    {
+      "address": "00b2c1eb",
+      "native": "00b74640",
+      "function": "00b2bb90",
+      "contract": "Actual model+174 tail geometry index0; native consumes one stack index (RET4)."
+    },
+    {
+      "address": "00b2c1f2",
+      "native": "00b732c0",
+      "function": "00b2bb90",
+      "contract": "Current raw geometry section at index0; reread independently for counts, entry and material."
+    },
+    {
+      "address": "00b2c211",
+      "native": "00b6dfa0",
+      "function": "00b2bb90",
+      "contract": "Existing canonical actual model unlink/release normal consumption; no added model unwind."
+    },
+    {
+      "address": "00b2c247",
+      "native": "00b229d0",
+      "function": "00b2bb90",
+      "contract": "Existing actual24-byte container reserve, header ECX, stackcapacity0; source carries explicitunusedEDX0."
+    }
+  ],
+  "evidence": {
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "spans": [
+      {
+        "address": "00b2bb90",
+        "length": 1765,
+        "sha256": "3cb427ebdf70572b733735cd19f487e3ff9adcbe01633f3b39837526982f8d86"
+      }
+    ]
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "fresh_proto": "local/r47_debug24_proto.txt",
+    "fresh_bytes": "local/r47_debug24_native_bytes.txt",
+    "writes": "Existing descriptive name retained, evidence appended and current source record added. No duplicate native body or fragment credit. Prior comments preserved, project saved and export refreshed.",
+    "prior_annotations": [
+      {
+        "address": "00b2bb90",
+        "before": {
+          "address": "00b2bb90",
+          "function_name": "BSP_Renderer_DrawDebugSphereRecords",
+          "comment": "[BSP reconstruction 00b2bb90]\nHypothesis, not a recovered symbol. Complete1765-byte source schedule: initial count gate, cached model construction/publication before string cleanup, current raw identity setter, six-DWORD record producer layout, camera guard, a fresh actual model per active record, literal38-vertex x87 interior, fresh stream/section lookups, gather, cache increment and one current pass dispatch per active record. Distinct persistent gather/constants/pass child frames retain failures without rollback. Existing original/source fixture executed empty/skipped/negative-count parents; active/cold parent remains unexecuted. Integrated code a6b2884f passed strict MSVC Win32,2 existing CTests,8 native seeds,50 numeric rows and21 live/PE spans totaling2848 bytes. Literal38-vertex interior matches original through four x87 rounding modes. Physical runtime modules and actual CMake objects/libraries are retained. New source interfaces do not establish original ABI/private aliases, FH3/SEH, active drawing or game behavior. docs/NATIVE_RENDERER_DEBUG_RECORDS24.md; reports/native_renderer_debug_records24.json.\n\n[BSP reconstruction 00b2bb90] update\nR44 isolated sphere interior B2BF60..B2C142,483B of parent B2BB90, not a separate original function. Exact historical x87 instruction schedule and live CEC730 step reads,13/12/13 rings38vertices608B plus verbatim color. New source fastcall wrapper snapshots four inputs into private scratch and borrows step pointer; parent private-stack aliases/fault/unwind ABI remain unproved. Parent complete source/header and fixture reviewed, historical body equality independently checked;5062frozen artifacts/20current receipts and2native PE spans491B independently verified. Worker and combined strict /MD Win32 build and3CTests pass; worker relocated original/source fixture8cases compares608B+8canary bytes under4rounding modes. Worker COFF audit123reachable instructions and mapped branches, only3absolute-step to borrowed-pointer substitutions. Parent did not rerun fixture. Parent renderer/gameplay unvalidated. reports/native_debug_sphere_vertices_main_r44.json."
+        },
+        "after": {
+          "address": "00b2bb90",
+          "name": "BSP_Renderer_DrawDebugSphereRecords",
+          "evidence": "R44 isolated sphere interior B2BF60..B2C142,483B of parent B2BB90, not a separate original function. Exact historical x87 instruction schedule and live CEC730 step reads,13/12/13 rings38vertices608B plus verbatim color. New source fastcall wrapper snapshots four inputs into private scratch and borrows step pointer; parent private-stack aliases/fault/unwind ABI remain unproved. Parent complete source/header and fixture reviewed, historical body equality independently checked;5062frozen artifacts/20current receipts and2native PE spans491B independently verified. Worker and combined strict /MD Win32 build and3CTests pass; worker relocated original/source fixture8cases compares608B+8canary bytes under4rounding modes. Worker COFF audit123reachable instructions and mapped branches, only3absolute-step to borrowed-pointer substitutions. Parent did not rerun fixture. Parent renderer/gameplay unvalidated. reports/native_debug_sphere_vertices_main_r44.json. | R47 full1765B B2BB90 current source adoption from corrected a6b2884f2. Uses explicit current B4C700 raw binding at both model creation sites, genuine current sphere/raw-node/material-pass/constants/gather providers and the same raw name/model/manager cells. Caller owns distinct persistent per-record gather preimage/constants/pass/acquisition frames, including records appended by callbacks; no reset, model/stream rollback or retry. Parent source/header/listing/call schedule reviewed. Same cached publication/string cleanup ordering, current model/selector/count reloads and normal transient creator release. Raw constructor consumes/copies incoming name header during construction; pool outlives model. Forty direct call rows verified, five indirect/import contracts preserved; full native span independently matches PE. Strict Win32 /MD /W4 /WX /fp:strict build,3 CTests and8 seeds pass. Fresh unchanged historical parent cases compare entire1D18 renderer storage against original bytes for empty/skipped-camera/negative-count paths.5328 frozen artifacts and14 physically resolved I386 modules rehashed. Active/cold parent, full renderer/gameplay, private-stack/FH3/SEH/fault behavior unvalidated. Original ECX renderer/RET; source adds borrowed EDX context and persistent stack frame/RET4, not drop-in ABI. reports/native_renderer_debug_records24_main_r47.json."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "adoption": {
+    "include/bsp/native_renderer_debug_records24.hpp": {
+      "historical_lf_sha256": "937b4c55f396d0c38da4f3e141758308b380495eab4596e0b064a596d64fd8da",
+      "adapted_lf_sha256": "331910638fac73515f350eb797cc8803e31b708662bf4956b49e6b839e89cc40",
+      "diff": "--- a6b2884f2/include/bsp/native_renderer_debug_records24.hpp\n+++ include/bsp/native_renderer_debug_records24.hpp\n@@ -5,10 +5,13 @@\n #include \"bsp/native_logical_buffer_mapping.hpp\"\n #include \"bsp/native_material_constant_build.hpp\"\n #include \"bsp/native_material_pass_execution.hpp\"\n+#include \"bsp/native_debug_sphere_vertices.hpp\"\n+#include \"bsp/native_node_raw_transform.hpp\"\n \n namespace bsp {\n struct NativeRendererDebugRecords24Context {\n     NativeRendererGeneratedModelContext& generated;\n+    const NativeRendererRawModelBinding& raw_models;\n     NativeLogicalBufferMappingContext& mapping;\n     const NativeTracelineRenderAccess& render_entry;\n     const NativeSystemConstantGatherContext& gather;\n@@ -57,6 +60,9 @@\n // all earlier effects; only the reached normal B6DFA0 consumes its creator.\n // Acquired frames must survive failures and must never be replayed.\n //\n+// raw_models borrows the same AA8/AA4/AA0 name cells and model bound constants.\n+// Its model environment keeps actual_names null through destruction. Temporary\n+// name headers remain live through construction; the raw node copies their data.\n // Same actual raw model/geometry/pool/string/device/profile/entry domains are\n // required. Full generated-model cold compilation remains an explicit child\n // dependency. The canonical model transform borrows its native fields; any\n@@ -67,23 +73,4 @@\n void __fastcall draw_native_renderer_debug_records24_00b2bb90(void* actual_renderer,\n     NativeRendererDebugRecords24Context*, NativeRendererDebugRecords24Frame*);\n \n-// Exact interior B2BF60..B2C142, all38 vertices at stride10h. This new source\n-// interface snapshots supplied center/radius DWORDs into the original-shaped\n-// local frame and preserves all FILD/FMUL64/FSTP32/FCOS/FSIN/x87 arithmetic.\n-// The selector's already selected color DWORD is passed verbatim. No trig\n-// library approximation, SSE arithmetic or generated default scratch values.\n-void __fastcall write_native_debug_sphere_vertices_00b2bf60(void* destination,\n-    const void* center_radius_float4, std::uint32_t color,\n-    const volatile double* actual_angle_step_00cec730);\n-\n-// Full raw local setter and its descendant/bounds closure. Same native field\n-// storage, current+A0/+34/+3C reloads and x87 matrix copy. The profile resolver\n-// only reads the CURRENT original table; virtual3C=B6DBC0 executes the concrete\n-// tail-loop body. Any other target is a reached source boundary. No fixed\n-// CameraTransform callback is substituted for the current native attachment.\n-void __fastcall set_raw_local_matrix_00b6db10(void* actual_node,\n-    NativeTracelineRenderServices* current_profiles,const void* matrix);\n-void __fastcall invalidate_raw_descendants_00b6da30(void* actual_node);\n-void __fastcall notify_raw_bounds_00b6dbc0(void* actual_node,\n-    NativeTracelineRenderServices* current_profiles);\n } // namespace bsp\n"
+    },
+    "src/native_renderer_debug_records24.cpp": {
+      "historical_lf_sha256": "fe9f8be2c8c17bb2d286122945bc385acd1245a473c408473cdcd289aba9d19e",
+      "adapted_lf_sha256": "112c7333f0ad7760ed1d44d5299b26e32cc38ed8af611dd751bfee053a1a4524",
+      "diff": "--- a6b2884f2/src/native_renderer_debug_records24.cpp\n+++ src/native_renderer_debug_records24.cpp\n@@ -4,7 +4,6 @@\n #include \"bsp/gui_widget_owner.hpp\"\n #include \"bsp/gui_text_content.hpp\"\n #include \"bsp/camera_transform.hpp\"\n-#include \"bsp/native_camera_matrix_copy.hpp\"\n #include \"bsp/native_string.hpp\"\n #include <cstring>\n #include <exception>\n@@ -36,6 +35,7 @@\n     if(void* data=read<void*>(&header,4))std::memcpy(data,text,read<U>(&header)+1u);\n }\n void* make_model(void* renderer_to_publish,NativeRendererGeneratedModelContext& c,\n+    const NativeRendererRawModelBinding& raw_models,\n     NativeRendererGeneratedModelAcquired& acquired,void** retained_model=nullptr) {\n     auto& pool=c.model_and_geometry.models.nodes.require_raw_name_pool();\n     require(&pool.actual_manager_publication_01090aa0==&c.actual_manager_01090aa0,\n@@ -49,7 +49,7 @@\n         literal(layout,pool,\"pf43cc.mvfm\",0x0b);stage=1;\n         literal(name,pool,\"DebugSpheres\",0x0c);stage=2;\n         void* model=create_native_renderer_generated_model_00b4c700(\n-            name,layout,effect,3,0,0,0,c,acquired);\n+            name,layout,effect,3,0,0,0,c,acquired,raw_models);\n         if(retained_model)*retained_model=model;\n         if(renderer_to_publish)store(renderer_to_publish,0x19e4,reinterpret_cast<U>(model));\n         stage=1;destroy_native_string_header_0041dd20(&name,pool);\n@@ -108,7 +108,7 @@\n     if(read<U>(renderer,0x1d10)==0)return;\n     if(read<U>(renderer,0x19e4)==0) {\n         require(context&&frame,\"cold debug model requires actual contexts and persistent acquisitions\");\n-        (void)make_model(renderer,context->generated,frame->cached_model);\n+        (void)make_model(renderer,context->generated,context->raw_models,frame->cached_model);\n         // String returns may change +19E4: reload its CURRENT actual model.\n         local_identity(renderer,*context);\n     }\n@@ -129,7 +129,7 @@\n             auto& c=*context;\n             require(c.render_entry.mapping==&c.mapping,\n                 \"debug entry and stream contexts must share actual mapping\");\n-            void* model=make_model(nullptr,c.generated,acquired->generated,&acquired->unconsumed_model);\n+            void* model=make_model(nullptr,c.generated,c.raw_models,acquired->generated,&acquired->unconsumed_model);\n             // Selector is reloaded AFTER all generated-model/string callbacks.\n             U selector=read<U>(at(read<void*>(renderer,0x1d0c),offset),0x10);\n             void* current_stream=stream(model);current_stream_slot(current_stream,c,0x10,0x00b49980);\n"
+    }
+  },
+  "source_changes": [
+    "Bind explicit existing NativeRendererRawModelBinding at both generated-model calls; require same raw AA8/AA4/AA0 and model constants through established B4C700 provider. Models actual_names stays null.",
+    "Reuse existing sphere and raw-node headers; omit all historical duplicate leaf declarations/definitions.",
+    "Clarify B4C700 header lifetime: incoming name header is consumed during raw B6F5A0 copy; the pool remains valid through model destruction. No provider implementation change."
+  ],
+  "ownership_contract": [
+    "Caller supplies distinct persistent record frames for each reached active record, including newly appended records. Each owns gather preimage binding, constant frame, pass bound to that frame, and generated acquisitions.",
+    "Same VS/PS banks and live preceding headers are passed through builder/pass contexts. No copy/second bank or automatic frame reset.",
+    "Cached publication precedes normal string cleanup. Current model is reloaded before local identity. Per-record selector is reloaded after generated-model/string callbacks.",
+    "No enclosing model/lock/entry rollback or retry. Only reached normal B6DFA0 consumes transient creator. Failed acquisition and child frames remain caller-owned."
+  ],
+  "validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "seeds_verified": 8,
+    "direct_call_rows_checked": 40,
+    "indirect_sites_reviewed": 5,
+    "parent_native_bytes": 1765,
+    "original_source_parent_cases": 3,
+    "full_renderer_storage_compared": true,
+    "active_or_cold_parent_executed": false,
+    "fixture_source": "local/debug24_parent_probe_r47.cpp",
+    "fixture_run": "local/r47_debug24_fixture_run.log",
+    "permanent_tests_added": 0
+  },
+  "limits": [
+    "Active/cold parent, renderer appearance and gameplay remain unexecuted.",
+    "Original private-stack aliases, native EH/FH3/SEH/CRT and hardware-fault schedules are unproved.",
+    "Historical primitive fixtures and component validation do not establish active parent behavior."
+  ],
+  "indirect_sites": [
+    {
+      "site": "00b2bd5a",
+      "dispatch": "CURRENT cached model virtual38",
+      "supported": "D62DE8/+38=B6DB10; actual canonical model storage"
+    },
+    {
+      "site": "00b2bf26",
+      "dispatch": "CURRENT logical vertex virtual10",
+      "supported": "D61D6C/+10=B49980; actual raw mapping"
+    },
+    {
+      "site": "00b2c15a",
+      "dispatch": "fresh CURRENT logical vertex virtual14",
+      "supported": "D61D6C/+14=B49A80; actual raw mapping"
+    },
+    {
+      "site": "00b2c1a0",
+      "dispatch": "CURRENT CE221C InterlockedIncrement import",
+      "supported": "same actual imported stdcall pointer borrowed by concretepasscontext"
+    },
+    {
+      "site": "00b2c209",
+      "dispatch": "CURRENT firstpass virtual08",
+      "supported": "concretepassdependency baseD62A80/B5E5E0 RET4 or derivedD61BE8/B454D0->B44750/B43410"
+    }
+  ],
+  "immutable_closure": {
+    "path": "local/output/debug24_r47_validated_artifacts.zip",
+    "sha256": "ec3bd4608b3ae8be8278608a9c79d1a0838acba209b6f1bb91900fe56897b696",
+    "bytes": 102694099,
+    "manifest_sha256": "c25bedecee0d8f50fd117fe72d9f2c37e501a394a01762da6bfa6f3f05a20fa9",
+    "artifacts": 5328,
+    "artifact_bytes": 374378338,
+    "actually_loaded_modules": 14,
+    "all_members_rehashed": true
+  },
+  "final_metadata_archive": {
+    "path": "local/output/debug24_r47_metadata.zip",
+    "sha256": "77e03c0983160b94ff52b552a76f20211caa056ca83f4bfa213153c4ea0da081",
+    "files": [
+      {
+        "path": "docs/NATIVE_RENDERER_DEBUG_RECORDS24_R47.md",
+        "bytes": 4125,
+        "sha256": "cd3b6a1b1eaaedfd8e54030171fbc9808ae4f0c4430afc232b8992c1f0227cbd"
+      },
+      {
+        "path": "local/r47_debug24_annotations.log",
+        "bytes": 198,
+        "sha256": "d03ec52991ae9f4011c22ea9b04bfb3a6dd816b4a438be7ba4e3be42a778d356"
+      },
+      {
+        "path": "local/r47_debug24_exports.log",
+        "bytes": 104,
+        "sha256": "33c7f62878625f78b801c65b5fd6b25b380b3e05c66e7c7f30e4f9037cec5f17"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T134449Z.json",
+        "bytes": 4782,
+        "sha256": "274e48630c12eb3ef46c8833be63f1ea67b26a9a3a73745f30cd9e815516673c"
+      },
+      {
+        "path": "local/record_debug24_main_r47.py",
+        "bytes": 4605,
+        "sha256": "6abe662fce52573d71c9a2862b1bd7e26fd16054dcaeadf4ab408c0f6a9f3c48"
+      }
+    ],
+    "note": "Documentation validation paragraph updated after full build archive capture; source and compiled inputs unchanged."
+  }
+}
