@@ -1,0 +1,151 @@
+{
+  "repairs": [
+    {
+      "function": "00af46e0",
+      "owner": "agent/orch4-20260915-resource-lifetime-i9",
+      "when": "2026-09-15T23:58:11Z",
+      "decompile_lines_before": 14,
+      "gaps": [
+        {
+          "site": "00af46f0",
+          "mnemonic": "CALL",
+          "operands": "0x00bf65ac",
+          "gap_start": "00af46f5",
+          "gap_end_exclusive": "00af46f8",
+          "bytes": 3,
+          "after_call": true,
+          "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "00af46f0",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "00af46f5",
+            "gap_end_exclusive": "00af46f8",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          },
+          "clear": "Success: Cleared flow override at 00af46f0 (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 3 byte(s)"
+        }
+      ],
+      "decompile_lines_after": 11,
+      "gaps_remaining": 0
+    },
+    {
+      "function": "00871fa0",
+      "owner": "agent/orch4-20260915-resource-lifetime-i9",
+      "when": "2026-09-15T23:58:12Z",
+      "decompile_lines_before": 14,
+      "gaps": [
+        {
+          "site": "00871fb0",
+          "mnemonic": "CALL",
+          "operands": "0x00bf65ac",
+          "gap_start": "00871fb5",
+          "gap_end_exclusive": "00871fb8",
+          "bytes": 3,
+          "after_call": true,
+          "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "00871fb0",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "00871fb5",
+            "gap_end_exclusive": "00871fb8",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          },
+          "clear": "Success: Cleared flow override at 00871fb0 (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 3 byte(s)"
+        }
+      ],
+      "decompile_lines_after": 11,
+      "gaps_remaining": 0
+    }
+  ],
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "full_body_preflight": [
+    {
+      "address": "00af46e0",
+      "end_exclusive": "00af46fe",
+      "bytes": 30,
+      "sha256": "3ab73ddec90507389e017662c7c458695df6d424b6abcbfe1fe2bfa3cc228fec",
+      "live_disk_match": true
+    },
+    {
+      "address": "00871fa0",
+      "end_exclusive": "00871fbe",
+      "bytes": 30,
+      "sha256": "b5df344a553701dccf46963ea492e9f3e91ed26aded88cf1877c6171de649a51",
+      "live_disk_match": true
+    }
+  ],
+  "status": "Locked mutation saved; exports refreshed; full PE/live preflight matched",
+  "prior_documentation": [
+    {
+      "address": "00af46e0",
+      "documentation": {
+        "hash": "2d0e512dea879d0c7ddc1b6ca8f5ea2dd4c4ee6c1395475e080523c50cb544ba",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af46e0",
+        "function_name": "CG_scalar_deleting_dtor_00af46e0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EAX",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00af46f8"
+          }
+        ],
+        "completeness_score": 80.0
+      }
+    },
+    {
+      "address": "00871fa0",
+      "documentation": {
+        "hash": "2d0e512dea879d0c7ddc1b6ca8f5ea2dd4c4ee6c1395475e080523c50cb544ba",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00871fa0",
+        "function_name": "CG_scalar_deleting_dtor_00871fa0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EAX",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00871fb8"
+          }
+        ],
+        "completeness_score": 80.0
+      }
+    }
+  ]
+}

@@ -1,0 +1,309 @@
+{
+  "packet": "orch4_particle_resource_loading_h8",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_particle_resource_loading.cpp",
+  "header": "include/bsp/native_particle_resource_loading.hpp",
+  "functions": [
+    {
+      "address": "00af45d0",
+      "end_exclusive": "00af46d7",
+      "bytes": 263,
+      "sha256": "c83c2512ef68e777c7cadd2617486611a800018a42bb4167e2881113512946d3",
+      "live_disk_match": true,
+      "name": "construct_native_particle_resource_00af45d0",
+      "proposed_name": "ParticleResource_Construct_00AF45D0",
+      "coverage": "complete",
+      "status": "complete_native_storage_source_build_and_focused_fixture_checked",
+      "original_abi": "ECX actual90h resource; stack raw8h name header; RET4; EAX same resource",
+      "old_documentation": {
+        "hash": "ddc6a2e9973b6d3c2e4964c128ab27415f91ca134bd80c044a17146bb33bb0c2",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af45d0",
+        "function_name": "FUN_00af45d0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "uVar1",
+            "type": "undefined4",
+            "storage": "(unique, 0x100000ce, 4)"
+          },
+          {
+            "name": "this",
+            "type": "uint *",
+            "storage": "(unique, 0x6600, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 121,
+            "name": "LAB_00af4649"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "evidence": "Hypothesis, not recovered symbol. Initialize identity/refcount and current raw name before self-header comparison; preserve unknown bytes. Clear child counts, deep-copy through genuine raw41DD40; exact image-bit defaults and ordered flag stores. FH3 DF2A30 state1 current name release then state0 baseBD30F0; secondary unwind failure terminates. Complete 263B live/PE SHA256 c83c2512ef68e777c7cadd2617486611a800018a42bb4167e2881113512946d3. ECX actual90h resource; stack raw8h name header; RET4; EAX same resource. See docs/NATIVE_PARTICLE_RESOURCE_LOADING_ORCH4.md and reports/native_particle_resource_loading_orch4.json. Strict Win32 build,3CTests and copied-original/genuine-provider probe passed; independent listing/EH review found no discrepancies. Original exception execution, binary ABI compatibility and gameplay unvalidated."
+    },
+    {
+      "address": "00af5620",
+      "end_exclusive": "00af5652",
+      "bytes": 50,
+      "sha256": "e61eca001b94cbabea79480bc35cf3b3b6c425ca5310f222db6b7d346e7e8de8",
+      "live_disk_match": true,
+      "name": "destroy_native_particle_text_buffer_00af5620",
+      "proposed_name": "ParticleTextBuffer_Destroy_00AF5620",
+      "coverage": "complete",
+      "status": "complete_native_storage_source_build_and_focused_fixture_checked",
+      "original_abi": "ECX actual1Ch text buffer; RET; no specified return",
+      "old_documentation": {
+        "hash": "d75c372ae734234720bf05eca828d0e457e57abb2e9d4d63e714c175498334ae",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af5620",
+        "function_name": "FUN_00af5620",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 19,
+            "name": "LAB_00af5633"
+          },
+          {
+            "relative_offset": 48,
+            "name": "LAB_00af5650"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "evidence": "Hypothesis, not recovered symbol. Free captured buffer+14 first, then current raw name+C through genuine getter/return. Leave released fields stale. Full50B includes repaired ADD ESP,4 at AF5630 after CRTfree. Complete 50B live/PE SHA256 e61eca001b94cbabea79480bc35cf3b3b6c425ca5310f222db6b7d346e7e8de8. ECX actual1Ch text buffer; RET; no specified return. See docs/NATIVE_PARTICLE_RESOURCE_LOADING_ORCH4.md and reports/native_particle_resource_loading_orch4.json. Strict Win32 build,3CTests and copied-original/genuine-provider probe passed; independent listing/EH review found no discrepancies. Original exception execution, binary ABI compatibility and gameplay unvalidated."
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00af462c",
+      "native": "0041dd40",
+      "function": "00af45d0"
+    },
+    {
+      "address": "00af4641",
+      "native": "00bf7680",
+      "function": "00af45d0"
+    },
+    {
+      "address": "00af562b",
+      "native": "00bf6989",
+      "function": "00af5620"
+    },
+    {
+      "address": "00af5644",
+      "native": "00419cc0",
+      "function": "00af5620"
+    },
+    {
+      "address": "00af564b",
+      "native": "00bd1510",
+      "function": "00af5620"
+    }
+  ],
+  "exception_evidence": {
+    "handler": "00cbabf3",
+    "funcinfo": "00df2a40",
+    "max_state": 2,
+    "unwind_map": "00df2a30",
+    "actions": [
+      "state1 ->0 CBABE8 ->41DD20(owner+8)",
+      "state0 ->-1 CBABE0 ->BD30F0"
+    ]
+  },
+  "exception_bytes": [
+    {
+      "address": "00cbabe0",
+      "end_exclusive": "00cbabfd",
+      "bytes": 29,
+      "sha256": "b95f74160f654239661005faa970148756e917385b6c092f59fcd668832033ab",
+      "live_disk_match": true
+    },
+    {
+      "address": "00df2a30",
+      "end_exclusive": "00df2a64",
+      "bytes": 52,
+      "sha256": "102c0e65b73233e6b696ab8336f10c74644cd877413f3d74b4b35019acf1c97e",
+      "live_disk_match": true
+    }
+  ],
+  "validation": {
+    "strict_win32_build": "passed;local/particle_loading_build_h8_final.log",
+    "existing_ctests": "3/3 passed",
+    "focused_probe": {
+      "exit_code": 0,
+      "output": "PASS: original/source constructor empty, small, large, self-header; text cleanup null/small/large; full owner bytes, pooled return, stale fields.\n",
+      "constructor_sha256": "c83c2512ef68e777c7cadd2617486611a800018a42bb4167e2881113512946d3",
+      "text_destructor_sha256": "e61eca001b94cbabea79480bc35cf3b3b6c425ca5310f222db6b7d346e7e8de8",
+      "constants": [
+        1120403456,
+        1161527296,
+        1114636288
+      ],
+      "scope": "Complete copied original two bodies; five direct calls bridged to genuine raw pool resize/getter/return and CRT free/memmove; three read-only image constants relocated. Actual raw native pool. No original FH3/SEH failure execution; source is not a binary ABI replacement."
+    },
+    "independent_review": "No findings in complete assembly/EH/raw storage review by particle_cache_h8 worker."
+  },
+  "source_absent": [
+    {
+      "address": "00af5850",
+      "reason": "Actual VFS resolver/open/read/release composition pending",
+      "old_documentation": {
+        "hash": "fd1baee883da4f5056739596b3f2b446c7c388cecb9a46b6833b417c4829d713",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af5850",
+        "function_name": "FUN_00af5850",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "this",
+            "type": "size_t *",
+            "storage": "(unique, 0x6600, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "LVar5",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "extraout_EAX",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "length",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pcVar2",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 21,
+            "name": "LAB_00af5865"
+          },
+          {
+            "relative_offset": 34,
+            "name": "LAB_00af5872"
+          },
+          {
+            "relative_offset": 36,
+            "name": "LAB_00af5874"
+          },
+          {
+            "relative_offset": 66,
+            "name": "LAB_00af5892"
+          },
+          {
+            "relative_offset": 189,
+            "name": "LAB_00af590d"
+          },
+          {
+            "relative_offset": 211,
+            "name": "LAB_00af5923"
+          }
+        ],
+        "completeness_score": 50.0
+      }
+    },
+    {
+      "address": "00af4ba0",
+      "reason": "Full particle parser dependency closure pending"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "local/particle_loading_probe.cpp",
+      "sha256": "f1237f52aff491fca2cc031abadad8c614e38620b788ad88cbb58b4abd70856f"
+    },
+    {
+      "path": "local/run_particle_loading_probe.py",
+      "sha256": "f883b919bc40e436300462d314e63ee96852f4951adebeb46f98d935353c00e6"
+    },
+    {
+      "path": "local/particle_loading_probe_result.json",
+      "sha256": "317e4f181d0206927391e6635d1b0a697e6bae43fba8b2437c7eda69e076c803"
+    },
+    {
+      "path": "local/particle_loading_build_h8_final.log",
+      "sha256": "10d5326e27f6ed837b0edf6d2ff98324b20c9610a712445de17abec0f1d15340"
+    },
+    {
+      "path": "local/particle_loading_before_h8.json",
+      "sha256": "b0d09a89bbd3dbc4ab7d0987cd36818be038fe8a9af6c7a3697536324639d026"
+    }
+  ],
+  "boundaries": [
+    "Original FH3/SEH exception paths not executed.",
+    "Calls bridged to genuine source providers do not independently differential-test each provider.",
+    "New C++ interfaces, not binary ABI replacements.",
+    "No game runtime or gameplay proof."
+  ]
+}
