@@ -1,0 +1,505 @@
+{
+  "packet": "orch4_emitter_base_lifetime_l12",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_particle_emitter_definition_lifetime.cpp",
+  "header": "include/bsp/native_particle_emitter_definition_lifetime.hpp",
+  "functions": [
+    {
+      "address": "00afa100",
+      "end_exclusive": "00afa27a",
+      "bytes": 378,
+      "sha256": "5023f0e9ce37b874fd1dbeb43bd3dac91de3b71722649a93e117f77881aba714",
+      "live_disk_match": true,
+      "name": "destroy_native_particle_definition_00afa100",
+      "original_abi": "ECX actual80h emitter definition; RET",
+      "old_documentation": {
+        "hash": "658193e607853218791a24de78ecf01f29247dd4446f28f0d63872c2a76514bc",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00afa100",
+        "function_name": "BSP_ParticleDefinition_DestroyBase",
+        "return_type": "void",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00afa100]\nDescriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "uint",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "uVar7",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "LVar3",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "piVar5",
+            "type": "int *",
+            "storage": "(register, 0x14, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "pcStack_8",
+            "type": "undefined *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "pvVar1",
+            "type": "void *",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 72,
+            "name": "LAB_00afa148"
+          },
+          {
+            "relative_offset": 96,
+            "name": "LAB_00afa160"
+          },
+          {
+            "relative_offset": 120,
+            "name": "LAB_00afa178"
+          },
+          {
+            "relative_offset": 144,
+            "name": "LAB_00afa190"
+          },
+          {
+            "relative_offset": 168,
+            "name": "LAB_00afa1a8"
+          },
+          {
+            "relative_offset": 192,
+            "name": "LAB_00afa1c0"
+          },
+          {
+            "relative_offset": 216,
+            "name": "LAB_00afa1d8"
+          },
+          {
+            "relative_offset": 226,
+            "name": "LAB_00afa1e2"
+          },
+          {
+            "relative_offset": 251,
+            "name": "LAB_00afa1fb"
+          },
+          {
+            "relative_offset": 264,
+            "name": "LAB_00afa208"
+          },
+          {
+            "relative_offset": 272,
+            "name": "LAB_00afa210"
+          },
+          {
+            "relative_offset": 297,
+            "name": "LAB_00afa229"
+          },
+          {
+            "relative_offset": 310,
+            "name": "LAB_00afa236"
+          },
+          {
+            "relative_offset": 344,
+            "name": "LAB_00afa258"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_name": {
+        "address": "00afa100",
+        "name": "BSP_ParticleDefinition_DestroyBase",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+      },
+      "prior_reconstruction_records": [
+        {
+          "address": "00afa100",
+          "name": "destroy_native_particle_definition_00afa100",
+          "source": "src/native_particle_definition.cpp",
+          "header": "include/bsp/native_particle_definition.hpp",
+          "native_abi": "ECX actual owner; void; ret ",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+          "status": "reconstructed_build_tested_bounded_fixture_tested"
+        }
+      ],
+      "coverage": "complete",
+      "hex": "6aff68f3afcb0064a1000000005064892500000000515355568bf15789742410c706c4dbd5008b5e2433ff3bdfc744241c0100000074118bcbe8b25c00008bcbe84b5f0000897e248b5e283bdf74118bcbe89a5c00008bcbe8335f0000897e288b5e2c3bdf74118bcbe8825c00008bcbe81b5f0000897e2c8b5e203bdf74118bcbe86a5c00008bcbe8035f0000897e208b5e303bdf74118bcbe8525c00008bcbe8eb5e0000897e308b5e343bdf74118bcbe83a5c00008bcbe8d35e0000897e348b5e383bdf74118bcbe8225c00008bcbe8bb5e0000897e388b464c3bc77e298d6e3c8b5d008d430450ff152022ce0085c075088b138b028bcbffd083c70183c5043b7e4c7cdc33ff397e687e298d6e548b5d008d4b0451ff152022ce0085c075088b138b028bcbffd083c70183c5043b7e687cdc33ff8b460c3bc7c644241c0074168b4e086a0183c1015150e86ffa91ff8bc8e8b8720d008bcec744241cffffffffe8898e0d008b4c24145f5e5d5b64890d0000000083c410c3"
+    },
+    {
+      "address": "00afa350",
+      "end_exclusive": "00afa36e",
+      "bytes": 30,
+      "sha256": "10fadaf9f55be1464eb9c067d85dd7ce7d7639f81b347db287af7bc51826cd4c",
+      "live_disk_match": true,
+      "name": "delete_native_particle_definition_00afa350",
+      "original_abi": "ECX actual80h owner; stack flags; EAX same owner; RET4",
+      "old_documentation": {
+        "hash": "91e4718dbb451d97dd06d7f5283b45bb8ef330cbc9947aadbab0bee635159320",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00afa350",
+        "function_name": "BSP_ParticleDefinition_DeleteBase",
+        "return_type": "void *",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00afa350]\nDescriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "flags",
+            "type": "uint"
+          }
+        ],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00afa368"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_name": {
+        "address": "00afa350",
+        "name": "BSP_ParticleDefinition_DeleteBase",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+      },
+      "prior_reconstruction_records": [
+        {
+          "address": "00afa350",
+          "name": "delete_native_particle_definition_00afa350",
+          "source": "src/native_particle_definition.cpp",
+          "header": "include/bsp/native_particle_definition.hpp",
+          "native_abi": "ECX actual owner; uint flags; ret 4",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+          "status": "reconstructed_build_tested_bounded_fixture_tested"
+        }
+      ],
+      "coverage": "complete",
+      "hex": "568bf1e8a8fdfffff644240801740956e847c20f0083c4048bc65ec20400"
+    }
+  ],
+  "byte_evidence": [
+    {
+      "address": "00cbafe0",
+      "end_exclusive": "00cbaffd",
+      "bytes": 29,
+      "sha256": "9acdb0b9f11e7a03d79fffbed15d98c24490c71f6602831cefaf645c7e36b087",
+      "live_disk_match": true,
+      "hex": "8b4df0e90881f1ff8b4df083c108e92d2d76ffb8b82edf00e946bbf3ff"
+    },
+    {
+      "address": "00df2ea8",
+      "end_exclusive": "00df2edc",
+      "bytes": 52,
+      "sha256": "47c5a06c761bf2f6f3972e657c80c25bdc71839332c31f274593e4fb4ee30575",
+      "live_disk_match": true,
+      "hex": "ffffffffe0afcb0000000000e8afcb002205931902000000a82edf00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00d5ddc0",
+      "end_exclusive": "00d5ddc8",
+      "bytes": 8,
+      "sha256": "f7c8eb3364adc5d83d608a6f76e75a3fba32e0bcf9387dcf9cd88f8ceb10ca69",
+      "live_disk_match": true,
+      "hex": "e030bd003011b000"
+    },
+    {
+      "address": "00d5db00",
+      "end_exclusive": "00d5db08",
+      "bytes": 8,
+      "sha256": "c9ffb428765977853f0bbb8a3645e1484b0d1faafc6583e3c6f3d4989e7f7f55",
+      "live_disk_match": true,
+      "hex": "e030bd00b08baf00"
+    },
+    {
+      "address": "00d5df30",
+      "end_exclusive": "00d5df38",
+      "bytes": 8,
+      "sha256": "c470176029be0eeee3719c2d24243a5f3704abc03548ccf790b9291efccc63aa",
+      "live_disk_match": true,
+      "hex": "e030bd00e05cb000"
+    },
+    {
+      "address": "00d5dcc0",
+      "end_exclusive": "00d5dcc8",
+      "bytes": 8,
+      "sha256": "1348618a31922c5c9834dadbfa08e9904db30347ed75ee830f68bab63f750bd4",
+      "live_disk_match": true,
+      "hex": "e030bd00c008b000"
+    },
+    {
+      "address": "00d5dfb0",
+      "end_exclusive": "00d5dfb8",
+      "bytes": 8,
+      "sha256": "471383d684d1fc60a93cb7b9d2780dc2e26b7cbfc4693f355eca1695eddfc422",
+      "live_disk_match": true,
+      "hex": "e030bd00607cb000"
+    },
+    {
+      "address": "00d5dcec",
+      "end_exclusive": "00d5dcf4",
+      "bytes": 8,
+      "sha256": "7ea105ad439689cbe49027fe53fa0428a415ab91640ae96c99ac773428948857",
+      "live_disk_match": true,
+      "hex": "e030bd00e008b000"
+    },
+    {
+      "address": "00d5dff4",
+      "end_exclusive": "00d5dffc",
+      "bytes": 8,
+      "sha256": "2667473a8b447030fca050e4d773cff92d2f605a7d8466cab450849289628796",
+      "live_disk_match": true,
+      "hex": "e030bd00c089b000"
+    },
+    {
+      "address": "00d5dd18",
+      "end_exclusive": "00d5dd20",
+      "bytes": 8,
+      "sha256": "3105836075c51e6e59d977a298c5820e908ecf4a870742d715f0ea4a6b3a183b",
+      "live_disk_match": true,
+      "hex": "e030bd000009b000"
+    },
+    {
+      "address": "00d5e048",
+      "end_exclusive": "00d5e050",
+      "bytes": 8,
+      "sha256": "4d2c08aceaa286dccdfc5e4812b49de308b698333bee6d601c8024554a6a2d04",
+      "live_disk_match": true,
+      "hex": "e030bd0020a8b000"
+    },
+    {
+      "address": "00d5dc38",
+      "end_exclusive": "00d5dc40",
+      "bytes": 8,
+      "sha256": "145bce5dbc83b5d2bd1ce615d283c06068504d31c05988999947a1ff08fe5e23",
+      "live_disk_match": true,
+      "hex": "e030bd00e0acaf00"
+    },
+    {
+      "address": "00d5dbc4",
+      "end_exclusive": "00d5dbcc",
+      "bytes": 8,
+      "sha256": "6e53bf817b5168944febad53a4a81df312223a77ddef1a115f1b96d3cfbc11a6",
+      "live_disk_match": true,
+      "hex": "e030bd0050a3af00"
+    },
+    {
+      "address": "00bd30e0",
+      "end_exclusive": "00bd30ee",
+      "bytes": 14,
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "live_disk_match": true,
+      "hex": "85c974098b018b50046a01ffd2c3"
+    }
+  ],
+  "calls": [
+    {
+      "function": "00afa100",
+      "address": "00afa139",
+      "native": "00affdf0"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa140",
+      "native": "00b00090"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa151",
+      "native": "00affdf0"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa158",
+      "native": "00b00090"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa169",
+      "native": "00affdf0"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa170",
+      "native": "00b00090"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa181",
+      "native": "00affdf0"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa188",
+      "native": "00b00090"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa199",
+      "native": "00affdf0"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa1a0",
+      "native": "00b00090"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa1b1",
+      "native": "00affdf0"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa1b8",
+      "native": "00b00090"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa1c9",
+      "native": "00affdf0"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa1d0",
+      "native": "00b00090"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa24c",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa253",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa262",
+      "native": "00bd30f0"
+    },
+    {
+      "function": "00afa350",
+      "address": "00afa353",
+      "native": "00afa100"
+    },
+    {
+      "function": "00afa350",
+      "address": "00afa360",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00cbafe0",
+      "address": "00cbafe3",
+      "native": "00bd30f0",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbafe8",
+      "address": "00cbafee",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "site": "00afa1e9",
+      "iat": "00ce2220",
+      "meaning": "Kernel32 InterlockedDecrement"
+    },
+    {
+      "site": "00afa217",
+      "iat": "00ce2220",
+      "meaning": "Kernel32 InterlockedDecrement"
+    },
+    {
+      "site": "00afa1f9",
+      "meaning": "captured current child table slot0"
+    },
+    {
+      "site": "00afa227",
+      "meaning": "captured current child table slot0"
+    }
+  ],
+  "raw_handler_tail": {
+    "site": "00cbaff8",
+    "target": "00bf6b43",
+    "func_info": "00df2eb8",
+    "unwind_map": "00df2ea8",
+    "max_state": 2
+  },
+  "validation": {
+    "build": "scripts/build.ps1 strict Win32 and3/3 existing CTests passed",
+    "probe": {
+      "exit_code": 0,
+      "output": "PASS: two complete original emitter bodies408B/source, genuine shared pools, seven parameter return order, forward current-count retained releases, skipped/nonterminal rows, full80h unchanged fields, scalar flags2/3; source throwing terminal unwind and eleven numeric-profile scalar chains. Original FH3/SEH/failure paths not executed.\n",
+      "bodies": [
+        {
+          "address": "00afa100",
+          "bytes": 378,
+          "sha256": "5023f0e9ce37b874fd1dbeb43bd3dac91de3b71722649a93e117f77881aba714"
+        },
+        {
+          "address": "00afa350",
+          "bytes": 30,
+          "sha256": "10fadaf9f55be1464eb9c067d85dd7ce7d7639f81b347db287af7bc51826cd4c"
+        }
+      ],
+      "scope": "Complete original base/scalar, genuine existing providers and actual InterlockedDecrement IAT binding; full normal source comparison. Source-only throwing terminal and eleven numeric table dispatch paths; no original FH3/SEH/exception execution."
+    },
+    "independent_review": "particle_lifetime_h8 reviewed complete bodies/EH/tablepairs and source: no findings",
+    "artifact_hashes": {
+      "src/native_particle_emitter_definition_lifetime.cpp": "8895391b8dabb7a8f1ab18f93e405aa31cb0d553e4f9983d90836a6e251bd538",
+      "include/bsp/native_particle_emitter_definition_lifetime.hpp": "a04103627c5cc9ee51f19b833240788bbb235e7e608e3ee215cd32c1b4919358",
+      "local/particle_emitter_base_probe.cpp": "381afb06c91ffc5cb60956a8b6af07492afead37eea0ab63dce1e52f238d2e0f",
+      "local/run_particle_emitter_base_probe.py": "d828caa41adfee9cdc332666f96c963bad6553ce0b2243f09fd157a137304525",
+      "build/win32/Release/bsp_core.lib": "c82ad5e03b0aa7d9c1a7698bc75edcfe4793e4362cc9e4d499f904c21d385a50"
+    },
+    "call_check": "21 unique function-owned CALL/tail rows verified; indirect sites and FH3 raw handler kept separate"
+  },
+  "limits": [
+    "New C++ context; native FH3/SEH, allocation failure, concurrency and gameplay unvalidated.",
+    "Original-byte execution covers normal paths; throwing terminal cleanup and eleven numeric dispatch paths additionally exercised in source only.",
+    "Other child profiles and Object model terminals require callable Win32 tables or future canonical renderer binding."
+  ]
+}
