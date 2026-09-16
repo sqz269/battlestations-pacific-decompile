@@ -1,0 +1,323 @@
+{
+  "packet": "orch4_particle_layer_lifetime_j10",
+  "status": "reconstructed_complete_actual_storage_raw_pool_win32_build_and_original_byte_probe_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_particle_layer_lifetime.cpp",
+  "evidence": "docs/NATIVE_PARTICLE_LAYER_LIFETIME_ORCH4.md",
+  "byte_spans": [
+    {
+      "address": "00afab90",
+      "end": "00afac46",
+      "size": 183,
+      "role": "Layer constructor",
+      "live_sha256": "a9d6bfbf8180f2d0e341d5ff8076c994f10b1d42966e50a4afceaa735d0f5a8d",
+      "disk_sha256": "a9d6bfbf8180f2d0e341d5ff8076c994f10b1d42966e50a4afceaa735d0f5a8d",
+      "disk_live_equal": true,
+      "hex": "6aff68aeb0cb0064a1000000005064892500000000515355568bf1b801000000c70630b1ce00578974241089460433ed8d7e08c70638dcd500896c241c892f896f04896e14896e188b5c24243bfbc644241c0288462c7422508b03508bcfe84d3192ff392b74138b0f8b53048b4704515250e879ca0f0083c40c0f57c08b4c2428f30f100d84afd1005f894e108b4c2410f30f114630f30f114634f30f114e38f30f11463c8bc65e5d5b64890d0000000083c410c20800"
+    },
+    {
+      "address": "00afac50",
+      "end": "00afacd8",
+      "size": 137,
+      "role": "Layer destructor",
+      "live_sha256": "4ef104a70463389050b85357ab31a49e6b9a60128afb7b86336e0e8e426442e6",
+      "disk_sha256": "4ef104a70463389050b85357ab31a49e6b9a60128afb7b86336e0e8e426442e6",
+      "disk_live_equal": true,
+      "hex": "6aff68d3b0cb0064a100000000506489250000000051568bf189742404c70638dcd5008b461885c0c74424100100000074168b4e146a0183c1015150e82ff091ff8bc8e878680d008b460c85c0c64424100074168b4e086a0183c1015150e80df091ff8bc8e856680d008bcec7442410ffffffffe827840d008b4c24085e64890d0000000083c410c3"
+    },
+    {
+      "address": "00aface0",
+      "end": "00afacfd",
+      "size": 30,
+      "role": "Layer scalar deleting destructor",
+      "live_sha256": "b2fe2c265dbdf3bfe0d0d86627284904b8fd7a72dae1da26d26bb41f90c90fc5",
+      "disk_sha256": "b2fe2c265dbdf3bfe0d0d86627284904b8fd7a72dae1da26d26bb41f90c90fc5",
+      "disk_live_equal": true,
+      "hex": "568bf1e868fffffff644240801740956e8b7b80f0083c4048bc65ec20400"
+    },
+    {
+      "address": "00cbb090",
+      "end": "00cbb0b7",
+      "size": 40,
+      "role": "constructor cleanup actions and handler",
+      "live_sha256": "312bae9fff92666fdb2fc420bc6624ca5808d566d52199222ad3e5b112208e3f",
+      "disk_sha256": "312bae9fff92666fdb2fc420bc6624ca5808d566d52199222ad3e5b112208e3f",
+      "disk_live_equal": true,
+      "hex": "8b4df0e95880f1ff8b4df083c108e97d2c76ff8b4df083c114e9722c76ffb8e42fdf00e98bbaf3ff"
+    },
+    {
+      "address": "00cbb0c0",
+      "end": "00cbb0dd",
+      "size": 30,
+      "role": "destructor cleanup actions and handler",
+      "live_sha256": "eaa5770062686bc33beef5c9743b17582d1f3ed6c85058fe04cf45dd1798dfd1",
+      "disk_sha256": "eaa5770062686bc33beef5c9743b17582d1f3ed6c85058fe04cf45dd1798dfd1",
+      "disk_live_equal": true,
+      "hex": "8b4df0e92880f1ff8b4df083c108e94d2c76ffb81830df00e966baf3ffcc"
+    },
+    {
+      "address": "00df2fcc",
+      "end": "00df3007",
+      "size": 60,
+      "role": "constructor unwind map and full FuncInfo",
+      "live_sha256": "4edfabd7df350bd5a43aaee48778616e0b3809e6850a215cc0f0929741818a36",
+      "disk_sha256": "4edfabd7df350bd5a43aaee48778616e0b3809e6850a215cc0f0929741818a36",
+      "disk_live_equal": true,
+      "hex": "ffffffff90b0cb000000000098b0cb0001000000a3b0cb002205931903000000cc2fdf00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00df3008",
+      "end": "00df303b",
+      "size": 52,
+      "role": "destructor unwind map and full FuncInfo",
+      "live_sha256": "fcfca449799d8ac32a142813b4d3e9a339065407dfc09da36908b0365d9ddbec",
+      "disk_sha256": "fcfca449799d8ac32a142813b4d3e9a339065407dfc09da36908b0365d9ddbec",
+      "disk_live_equal": true,
+      "hex": "ffffffffc0b0cb0000000000c8b0cb0022059319020000000830df00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00d5dc38",
+      "end": "00d5dc3f",
+      "size": 8,
+      "role": "Layer vtable slots 0 and 4",
+      "live_sha256": "145bce5dbc83b5d2bd1ce615d283c06068504d31c05988999947a1ff08fe5e23",
+      "disk_sha256": "145bce5dbc83b5d2bd1ce615d283c06068504d31c05988999947a1ff08fe5e23",
+      "disk_live_equal": true,
+      "hex": "e030bd00e0acaf00"
+    },
+    {
+      "address": "00d1af84",
+      "end": "00d1af87",
+      "size": 4,
+      "role": "binary32 5000 constant",
+      "live_sha256": "8894c65262f29d789d8a8edd57197d3909daba8a60e794fcfc1acc0672cf722b",
+      "disk_sha256": "8894c65262f29d789d8a8edd57197d3909daba8a60e794fcfc1acc0672cf722b",
+      "disk_live_equal": true,
+      "hex": "00409c45"
+    }
+  ],
+  "prior_ghidra_metadata": [
+    {
+      "address": "00afab90",
+      "annotation": {
+        "address": "00afab90",
+        "function_name": "FUN_00afab90"
+      }
+    },
+    {
+      "address": "00afac50",
+      "annotation": {
+        "address": "00afac50",
+        "function_name": "FUN_00afac50"
+      }
+    },
+    {
+      "address": "00aface0",
+      "annotation": {
+        "address": "00aface0",
+        "function_name": "CG_scalar_deleting_dtor_00aface0"
+      }
+    }
+  ],
+  "call_rows": [
+    {
+      "function": "00afab90",
+      "address": "00afabee",
+      "native": "0041dd40",
+      "purpose": "resize name after initializing both headers"
+    },
+    {
+      "function": "00afab90",
+      "address": "00afac02",
+      "native": "00bf7680",
+      "purpose": "current source and destination copy"
+    },
+    {
+      "function": "00afac50",
+      "address": "00afac8c",
+      "native": "00419cc0",
+      "purpose": "resolve pool for captured material data"
+    },
+    {
+      "function": "00afac50",
+      "address": "00afac93",
+      "native": "00bd1510",
+      "purpose": "return material block"
+    },
+    {
+      "function": "00afac50",
+      "address": "00afacae",
+      "native": "00419cc0",
+      "purpose": "resolve pool for captured name data"
+    },
+    {
+      "function": "00afac50",
+      "address": "00afacb5",
+      "native": "00bd1510",
+      "purpose": "return name block"
+    },
+    {
+      "function": "00afac50",
+      "address": "00afacc4",
+      "native": "00bd30f0",
+      "purpose": "base destruction after disarming"
+    },
+    {
+      "function": "00aface0",
+      "address": "00aface3",
+      "native": "00afac50",
+      "purpose": "full Layer destruction"
+    },
+    {
+      "function": "00aface0",
+      "address": "00afacf0",
+      "native": "00bf65ac",
+      "purpose": "conditional free followed by stack cleanup and object return"
+    },
+    {
+      "function": "00cbb090",
+      "address": "00cbb093",
+      "native": "00bd30f0",
+      "kind": "tail_jump",
+      "purpose": "constructor state0 base"
+    },
+    {
+      "function": "00cbb098",
+      "address": "00cbb09e",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "purpose": "constructor state1 current name"
+    },
+    {
+      "function": "00cbb0a3",
+      "address": "00cbb0a9",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "purpose": "constructor state2 current material"
+    },
+    {
+      "function": "00cbb0c0",
+      "address": "00cbb0c3",
+      "native": "00bd30f0",
+      "kind": "tail_jump",
+      "purpose": "destructor state0 base"
+    },
+    {
+      "function": "00cbb0c8",
+      "address": "00cbb0ce",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "purpose": "destructor state1 current name"
+    }
+  ],
+  "abi": [
+    {
+      "address": "00afab90",
+      "inputs": "ECX actual40h Layer; stack borrowed8h name pointer and DWORD value_10",
+      "outputs": "EAX same Layer; RET8"
+    },
+    {
+      "address": "00afac50",
+      "inputs": "ECX actual40h Layer",
+      "outputs": "RET; EAX incidental"
+    },
+    {
+      "address": "00aface0",
+      "inputs": "ECX actual40h Layer; stack flags",
+      "outputs": "EAX same Layer; RET4"
+    }
+  ],
+  "unwind": {
+    "constructor": {
+      "handler": "00cbb0ae",
+      "info": "00df2fe4",
+      "map": "00df2fcc",
+      "states": [
+        "2->1 current material+14 via CBB0A3",
+        "1->0 current name+8 via CBB098",
+        "0->-1 base via CBB090"
+      ]
+    },
+    "destructor": {
+      "handler": "00cbb0d3",
+      "info": "00df3018",
+      "map": "00df3008",
+      "states": [
+        "1->0 current name+8 via CBB0C8",
+        "0->-1 base via CBB0C0"
+      ]
+    },
+    "source": "noexcept cleanup guard terminates on a second C++ exception"
+  },
+  "vtable": {
+    "address": "00d5dc38",
+    "slot0": "00bd30e0",
+    "slot4": "00aface0",
+    "xrefs": [
+      "00afabc3",
+      "00afac6d"
+    ]
+  },
+  "flow_repair": {
+    "parent_report": "reports/native_particle_layer_flow_orch4_j10.json",
+    "site": "00afacf0",
+    "old_override": "CALL_RETURN",
+    "restored_half_open_span": [
+      "00afacf5",
+      "00afacf8"
+    ],
+    "restored_hex": "83c404",
+    "owner": "parent orchestrator",
+    "published_commit": "5b77f3a25"
+  },
+  "limitations": [
+    "Owning C++ interfaces add a concrete raw pool context; not original binary thunks.",
+    "No original FH3/SEH/fault, allocation failure, concurrency or gameplay claim.",
+    "Original external allocation/CRT dependencies are composed through existing source providers in the focused probe."
+  ],
+  "validation": {
+    "strict_win32_build": {
+      "command": "./scripts/build.ps1",
+      "result": "passed",
+      "existing_ctests": "2/2",
+      "log": "local/layer_build.log"
+    },
+    "call_verification": {
+      "command": "python tools/verify_report_calls.py reports/native_particle_layer_lifetime_orch4.json",
+      "rows": 14,
+      "failed": 0
+    },
+    "flow": {
+      "instructions": [
+        60,
+        42,
+        11
+      ],
+      "gaps": 0
+    },
+    "index": {
+      "functions": 63690
+    },
+    "probe": {
+      "source": "local/layer_lifetime_probe.cpp",
+      "source_sha256": "faf913ed90e8ae37c9a74a714fe18eeb570e0aa9376c51338cba5abd8947c3e4",
+      "bytes_include_sha256": "57e429d574511268a0d7c825dece11a0fb0f90c1a85d897248385361e4995850",
+      "executable_sha256": "814e6d17af717b1efecd35f8db77dfa1987f29c43ef41b1175dda6b8e823588b",
+      "build_script": "local/layer_lifetime_probe_build.ps1",
+      "manifest": "embedded",
+      "result": "PASS: 350 original bytes; full40h constructor images/unknown bytes, embedded NUL/empty/self name; real pool material-before-name release, null material, full destructor images, scalar flags2/3 and returns. Original FH3/SEH/exception paths not executed.",
+      "native_bytes": 350,
+      "patches": [
+        "9 external CALL displacements to source dependencies or copied owned bodies",
+        "AFAC15 absolute constant operand relocated to verified 459C4000 word"
+      ],
+      "dependency_boundary": "Existing raw string resize/getter/return, ref-counted base, CRT memmove and canonical free are source-composed in both original/source paths; original CRT/FH3/SEH and exceptional execution are unproved."
+    },
+    "source_sha256": "a72fc2c2970fe12efc2696147359c8cea88af8cad506980215588bd148e3691f",
+    "header_sha256": "a609b4ad6c4ff3b4fe442b62b14fca0348573ad41bff57520d6f3bbb9e127064",
+    "independent_review": "Parent checked complete constructor/destructor assembly against source: no concrete finding in initialization/alias order, state arming, current copy reads, preserved bytes/defaults, captured normal/current EH releases, or scalar flags."
+  }
+}
