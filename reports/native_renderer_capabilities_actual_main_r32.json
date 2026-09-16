@@ -1,0 +1,272 @@
+{
+  "packet": "orch4_renderer_gather_actual_r32",
+  "status": "unchanged_source_reuse_current_main_strict_build_and_focused_fixture_passed",
+  "source_commit": "d17fae86e5d317ca0a66d5deea208579732be61d",
+  "source_reuse": {
+    "revision": "4f12d563679ad12fbc303610ce19d26cf93b20ee",
+    "manifest": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capabilities-actual\\local\\immutable\\native_renderer_capabilities_actual_20260914T074412Z\\manifest.json",
+    "manifest_sha256": "e574a28aa79b1980b042059081b8a14ad528b801e198a5cf5f94a1aa8d07695a",
+    "artifacts_verified": 367,
+    "fixture_sha256": "2fe786012df00585434120fed97154286054fccf4e87dccf1d17ab84ad91d140",
+    "source_files_equal_historical_commit": [
+      "include/bsp/native_renderer_gather_capabilities.hpp",
+      "src/native_renderer_gather_capabilities.cpp"
+    ],
+    "base_source_files_equal_historical_parent": true
+  },
+  "address": "00b2c8e0",
+  "existing_complete_body_bytes": 4094,
+  "new_native_bodies": 0,
+  "new_native_bytes": 0,
+  "scope": "Only existing gather header/source pair copied unchanged from4f12d5636; shared providers/deletion table retain current main. Existing helper/literal table and algorithm unchanged except two lifetime selections shared by both overloads.",
+  "borrowed_context": [
+    "caller-owned770h scratch",
+    "current01090AA8 actual string pool publication",
+    "current01090AA4 small-return gate",
+    "current01090AA0 actual raw singleton-manager publication"
+  ],
+  "byte_receipt": {
+    "method": "Fresh bounded BSP Ghidra byte queries (verified project/program), compared with installed PE and historical span hashes.",
+    "spans": [
+      {
+        "address": "00b2c8e0",
+        "bytes": 4094,
+        "sha256": "8694261e128742a42f0b64eb1a447932e1929eaa9e30da100effeb738b49c43b",
+        "live_pe_historical_match": true
+      },
+      {
+        "address": "00419cc0",
+        "bytes": 192,
+        "sha256": "43eaf61f27efa9fd1c8905e3266d3183717240b825126da7d970fbecb703190a",
+        "live_pe_historical_match": true
+      },
+      {
+        "address": "00cbd560",
+        "bytes": 21,
+        "sha256": "4ba1a034b0f5675058771fd3f01b2670566bab498a1e3e5778ca97ae087dcfe8",
+        "live_pe_historical_match": true
+      },
+      {
+        "address": "00df5df0",
+        "bytes": 44,
+        "sha256": "290c798ce005a8d0a79ae5ad5fcd0dd02b7ba87c368b651a42699db70ed89d0f",
+        "live_pe_historical_match": true
+      },
+      {
+        "address": "00b32861",
+        "bytes": 63,
+        "sha256": "060959250f388aa39a1329650839b14e044ed0ed41209fa4986440583b537d08",
+        "live_pe_historical_match": true
+      },
+      {
+        "address": "00b32654",
+        "bytes": 167,
+        "sha256": "0f0dea3a609b0502ec5b512cf9fce6f3f1b738ac860967b46b047c3ab3df1263",
+        "live_pe_historical_match": true
+      },
+      {
+        "address": "00b32439",
+        "bytes": 2,
+        "sha256": "45f1dcfd70b34f4cf0bb2c8541d74e6ec286851628ace2c254fae48a382a590d",
+        "live_pe_historical_match": true
+      }
+    ],
+    "total_bytes": 4583
+  },
+  "validation": {
+    "build": "scripts/build.ps1, MSVC Win32 /MD /W4 /WX /fp:strict; passed",
+    "ctests_passed": 3,
+    "direct_parent_helper_calls_passed": 30,
+    "indirect_com_iat_rows_recorded_not_verified_by_direct_gate": 11,
+    "fixture": "Historical 8008-byte source copied unchanged after verifying its archive hash; recompiled with current full bsp_core.lib /MD /O2 /W4 /WX /fp:strict and /MANIFEST:EMBED.",
+    "fixture_coverage": [
+      "actual pool creation/publication/registration through same raw manager",
+      "ignored failed COM output calls retain supplied preimages and ordered publications",
+      "normal string return",
+      "artificial post-arm callback exception returns string while published arrays survive",
+      "real Direct3DCreate9 and capability/format queries",
+      "canonical raw pool deletion and manager cleanup"
+    ],
+    "real_get_device_caps_hresult": "00000000",
+    "real_formats": 34,
+    "original_function_executed": false,
+    "original_fh3_executed": false,
+    "rendered_frame": false,
+    "game_validated": false
+  },
+  "limits": [
+    "No production renderer/context owner or constructor caller added.",
+    "Original ABI, private stack aliases, native FH3/SEH and hardware fault behavior are unvalidated.",
+    "Existing NativeStringStorage release is noexcept; throwing pool getter during armed cleanup terminates.",
+    "Caller supplies valid scratch/owner preimages; host memmove/strstr adaptations retain documented bounds."
+  ],
+  "artifacts": [
+    {
+      "path": "include/bsp/native_renderer_gather_capabilities.hpp",
+      "bytes": 4883,
+      "sha256": "cf88b29e3c6216d216a6771d0a3c176509d188cf175c846e21a3a2f2dd39dd25"
+    },
+    {
+      "path": "src/native_renderer_gather_capabilities.cpp",
+      "bytes": 28116,
+      "sha256": "9a6396caf931878b9d2ff4144615cec8b07105dd5325fc7a26e010d1febf2054"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 63198798,
+      "sha256": "228e6a6232499a40fdc78cad4efbd5e14cc14b9a14a65e6a4601233377a93a8d"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_renderer_gather_capabilities.obj",
+      "bytes": 17268,
+      "sha256": "2e04fa5a03b038adf6b1e0094db67c9921eb3bc1f09f97a40dde3901c720f295"
+    },
+    {
+      "path": "local/r32_gather_actual_build.log",
+      "bytes": 2598,
+      "sha256": "083eb8981fadcb2fd2730a807869f047b1628ede1f27354f9e12cea9cefddbed"
+    },
+    {
+      "path": "local/r32_gather_calls.log",
+      "bytes": 806,
+      "sha256": "b97f354fb5e37c2669d53819749c1c2000a05e656f5d3a4068d78c2d42f2414f"
+    },
+    {
+      "path": "local/r32_gather_actual_fixture.log",
+      "bytes": 39901,
+      "sha256": "62f66bef93b4a18fae9b542a37cb9a39f1617d1bdbfc16150786bcc91ad1bb81"
+    },
+    {
+      "path": "local/r32_gather_actual_probe.cpp",
+      "bytes": 8008,
+      "sha256": "2fe786012df00585434120fed97154286054fccf4e87dccf1d17ab84ad91d140"
+    },
+    {
+      "path": "local/r32_gather_actual_probe.obj",
+      "bytes": 24449,
+      "sha256": "bfaffe0d417520ca94546d06ecb789cc895ad1ec8105a558f9614f5d0e15dd39"
+    },
+    {
+      "path": "local/r32_gather_actual_probe.exe",
+      "bytes": 244224,
+      "sha256": "29f1dc6d46e9a7b570023c1e1bf4e530869d5399a7598fce7a2bab7d38c953f9"
+    },
+    {
+      "path": "local/build_r32_gather_actual_probe.cmd",
+      "bytes": 615,
+      "sha256": "21f2ec210fbd68ee5d7beb11963f2b820dd9915df991dfdf79793c2df4132992"
+    },
+    {
+      "path": "local/r32_gather_byte_receipt.json",
+      "bytes": 1518,
+      "sha256": "2acb52a2b4e519475ce6c57c1e3f9a7308cc1894265c817cd8d8e8e59b1019d5"
+    },
+    {
+      "path": "local/r32_gather_reuse_receipt.json",
+      "bytes": 679,
+      "sha256": "b59c9a294cb48eb900c7b68d817237ec14e4f50493d7a66852027f0f93aa4643"
+    },
+    {
+      "path": "local/verify_gather_actual_r32.py",
+      "bytes": 1780,
+      "sha256": "4c653cd118ea517cff8739d2c8e785a6f436737717bd0bb1563502bb4710b7ba"
+    }
+  ],
+  "integration_archive": {
+    "path": "local/evidence-r32/renderer-gather-actual-main-r32.zip",
+    "sha256": "dbea6e95e594205f50aea6445a2489fde365c4298a9b43a1760b0d8b5a15066c",
+    "files": [
+      {
+        "path": "include/bsp/native_renderer_gather_capabilities.hpp",
+        "sha256": "cf88b29e3c6216d216a6771d0a3c176509d188cf175c846e21a3a2f2dd39dd25"
+      },
+      {
+        "path": "src/native_renderer_gather_capabilities.cpp",
+        "sha256": "9a6396caf931878b9d2ff4144615cec8b07105dd5325fc7a26e010d1febf2054"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "228e6a6232499a40fdc78cad4efbd5e14cc14b9a14a65e6a4601233377a93a8d"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_gather_capabilities.obj",
+        "sha256": "2e04fa5a03b038adf6b1e0094db67c9921eb3bc1f09f97a40dde3901c720f295"
+      },
+      {
+        "path": "local/r32_gather_actual_build.log",
+        "sha256": "083eb8981fadcb2fd2730a807869f047b1628ede1f27354f9e12cea9cefddbed"
+      },
+      {
+        "path": "local/r32_gather_calls.log",
+        "sha256": "b97f354fb5e37c2669d53819749c1c2000a05e656f5d3a4068d78c2d42f2414f"
+      },
+      {
+        "path": "local/r32_gather_actual_fixture.log",
+        "sha256": "62f66bef93b4a18fae9b542a37cb9a39f1617d1bdbfc16150786bcc91ad1bb81"
+      },
+      {
+        "path": "local/r32_gather_actual_probe.cpp",
+        "sha256": "2fe786012df00585434120fed97154286054fccf4e87dccf1d17ab84ad91d140"
+      },
+      {
+        "path": "local/r32_gather_actual_probe.obj",
+        "sha256": "bfaffe0d417520ca94546d06ecb789cc895ad1ec8105a558f9614f5d0e15dd39"
+      },
+      {
+        "path": "local/r32_gather_actual_probe.exe",
+        "sha256": "29f1dc6d46e9a7b570023c1e1bf4e530869d5399a7598fce7a2bab7d38c953f9"
+      },
+      {
+        "path": "local/build_r32_gather_actual_probe.cmd",
+        "sha256": "21f2ec210fbd68ee5d7beb11963f2b820dd9915df991dfdf79793c2df4132992"
+      },
+      {
+        "path": "local/r32_gather_byte_receipt.json",
+        "sha256": "2acb52a2b4e519475ce6c57c1e3f9a7308cc1894265c817cd8d8e8e59b1019d5"
+      },
+      {
+        "path": "local/r32_gather_reuse_receipt.json",
+        "sha256": "b59c9a294cb48eb900c7b68d817237ec14e4f50493d7a66852027f0f93aa4643"
+      },
+      {
+        "path": "local/verify_gather_actual_r32.py",
+        "sha256": "4c653cd118ea517cff8739d2c8e785a6f436737717bd0bb1563502bb4710b7ba"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T093420Z.json",
+        "sha256": "733cb5311c8b96bbf1af6858bf25f18c3e98ca97a993a13dc3d4e717c49f80c1"
+      },
+      {
+        "path": "local/r32_gather_annotations.log",
+        "sha256": "6b9552f3eada4c54fb168e98f2fed89463757667cd5d014f016d016f54c350b2"
+      },
+      {
+        "path": "local/r32_gather_exports.log",
+        "sha256": "9567acdb1fb0fb5682ae17b41ef40923f721aa28361021297f17951d210f09f9"
+      },
+      {
+        "path": "reports/native_renderer_capabilities_actual.json",
+        "sha256": "58d6105b2598497e7ce5be378bdf992bd04c6c9f953ff4f08d9c1429910aa076"
+      }
+    ]
+  },
+  "ghidra_annotations": {
+    "status": "Retained reviewed name and appended R32 evidence under write lock; project saved and export refreshed.",
+    "prior_annotations": [
+      {
+        "address": "00b2c8e0",
+        "before": {
+          "address": "00b2c8e0",
+          "function_name": "BSP_D3D9Renderer_GatherCapabilities",
+          "comment": "[BSP reconstruction 00b2c8e0]\nHypothesis, not a recovered symbol. Settings-only fragment: GetDeviceCaps(0,HAL) at00b2c91a; LOWORD D3DCAPS9.PixelShaderVersion(+CCh) stored renderer+1B40h(record+28h) at00b2c985; unsigned comparison<200h produces1 else2 in+1B48h at00b2caa0. Other producer fields/probes remain unreconstructed. Native ignores query failure; projection returns false on negative HRESULT and preserves prior fields. Original ABI: ECX renderer, RET; only settings fields projected here. Evidence: docs/SETTINGS_CAPABILITIES.md; reports/settings_capabilities.json. New C++ ownership/interface; not binary ABI or game validation.\n\n[BSP reconstruction 00b2c8e0] update\nHypothesis, not a recovered symbol. Settings-only fragment: GetDeviceCaps(0,HAL) at00b2c91a; LOWORD D3DCAPS9.PixelShaderVersion(+CCh) stored renderer+1B40h(record+28h) at00b2c985; unsigned comparison<200h produces1 else2 in+1B48h at00b2caa0. Other producer fields/probes remain unreconstructed. Native ignores query failure; projection returns false on negative HRESULT and preserves prior fields. Original ABI: ECX renderer, RET; only settings fields projected here. Evidence: docs/SETTINGS_CAPABILITIES.md; reports/settings_capabilities.json. New C++ ownership/interface; not binary ABI or game validation. | Packet orch2_renderer_capabilities extends prior settings-only projection. Full query/decision body [00b2c8e0,00b2d8de): caps field mapping, ATOC, second identifier with8800/8600/8200/ATI classification, declaration-type append, conditional INST then unconditional1B50h clear, exact57format TEXTURE-only table with strict HRESULT-zero acceptance. Constructor identifier fragment00b32861..00b32898 performs GetAdapterIdentifier(0,0), Description+200h NVIDIA match into1D88h. Native ABI ECX renderer/RET; constructor returns this; new C++ state borrows shared IDirect3D9. C++ temporary state delays native publications and preserves outputs on failed caps/identifier or allocation throws; native allocator/EH and undefined format-record padding are not reproduced. MSVC Win32 build,2existingCTests,8seed comparisons and ignored trace/liveD3D9 fixture pass. Not native full-routine differential, binary ABI or gameplay validation. Evidence docs/RENDERER_CAPABILITIES.md; reports/renderer_capabilities.json.\n\n[BSP reconstruction 00b2c8e0] update\nDescriptive name hypothesis unless existing matched CRT name. Complete4094-byte/885-instruction source schedule with actual renderer extent1D8A, stable fixed EDX context and initialized aligned770h caller scratch. Full285 ordered table stores/57rows456B verified as exact helper body. Actual current COM factory/method reads and raw outputs/HRESULT schedule,12 actual array/string/pool/lifetime bindings,44-byte nativeEH map/FuncInfo chain reviewed. Fixed host memmove/strstr valid-buffer adaptations and new C++ EH/scratch ABI explicit. All seven actual archive members, every mapped COFF byte and relocation, whole owned COFF sections and exact341 native primitive/resize bytes checked. Incremental main verifier only drops unnecessary repeated nested-source compile-line demand; strict actual CL commands/full current member evidence retained. Address-only probe never executed; no COM/device/gather/nativeEH/originalcallerABI/game validation. Same frozen main library e59c0a7d198e8059d3eb65064cd1857b72e48f91e858906a448a9b38d4414ccf; strict Win32/two existing CTests/eight original seeds passed. reports/native_renderer_gather_capabilities_audit.json\n\n[BSP reconstruction 00b2c8e0] update\nHypothesis, not a recovered symbol. Settings-only fragment: GetDeviceCaps(0,HAL) at00b2c91a; LOWORD D3DCAPS9.PixelShaderVersion(+CCh) stored renderer+1B40h(record+28h) at00b2c985; unsigned comparison<200h produces1 else2 in+1B48h at00b2caa0. Other producer fields/probes remain unreconstructed. Native ignores query failure; projection returns false on negative HRESULT and preserves prior fields. Original ABI: ECX renderer, RET; only settings fields projected here. Evidence: docs/SETTINGS_CAPABILITIES.md; reports/settings_capabilities.json. New C++ ownership/interface; not binary ABI or game validation. | Packet orch2_renderer_capabilities extends prior settings-only projection. Full query/decision body [00b2c8e0,00b2d8de): caps field mapping, ATOC, second identifier with8800/8600/8200/ATI classification, declaration-type append, conditional INST then unconditional1B50h clear, exact57format TEXTURE-only table with strict HRESULT-zero acceptance. Constructor identifier fragment00b32861..00b32898 performs GetAdapterIdentifier(0,0), Description+200h NVIDIA match into1D88h. Native ABI ECX renderer/RET; constructor returns this; new C++ state borrows shared IDirect3D9. C++ temporary state delays native publications and preserves outputs on failed caps/identifier or allocation throws; native allocator/EH and undefined format-record padding are not reproduced. MSVC Win32 build,2existingCTests,8seed comparisons and ignored trace/liveD3D9 fixture pass. Not native full-routine differential, binary ABI or gameplay validation. Evidence docs/RENDERER_CAPABILITIES.md; reports/renderer_capabilities.json. | Descriptive name hypothesis unless existing matched CRT name. Complete4094-byte/885-instruction source schedule with actual renderer extent1D8A, stable fixed EDX context and initialized aligned770h caller scratch. Full285 ordered table stores/57rows456B verified as exact helper body. Actual current COM factory/method reads and raw outputs/HRESULT schedule,12 actual array/string/pool/lifetime bindings,44-byte nativeEH map/FuncInfo chain reviewed. Fixed host memmove/strstr valid-buffer adaptations and new C++ EH/scratch ABI explicit. All seven actual archive members, every mapped COFF byte and relocation, whole owned COFF sections and exact341 native primitive/resize bytes checked. Incremental main verifier only drops unnecessary repeated nested-source compile-line demand; strict actual CL commands/full current member evidence retained. Address-only probe never executed; no COM/device/gather/nativeEH/originalcallerABI/game validation. Same frozen main library e59c0a7d198e8059d3eb65064cd1857b72e48f91e858906a448a9b38d4414ccf; strict Win32/two existing CTests/eight original seeds passed. reports/native_renderer_gather_capabilities_audit.json | Hypothesis, not a recovered symbol. Existing complete B2C8E0 algorithm and literals shared by both lifetime contexts; new raw AA0/AA8/AA4 overload adds no new native body or bytes. Source fixture confirms ignored failed COM output preimages, post-arm cleanup retaining appended rows, same-manager pool registration/return/canonical pool shutdown, and real D3D9 S_OK caps/34 formats. Original gather/FH3 body was not executed; caller scratch preimages and source noexcept cleanup boundary remain explicit. Integrated source at87dad090 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_CAPABILITIES_ACTUAL.md; reports/native_renderer_capabilities_actual.json. Original private-frame/CRT/FH3/SEH identity, full renderer adoption and gameplay remain unvalidated.\n\n[BSP reconstruction 00b2c8e0] update\nHypothesis, not a recovered symbol. Settings-only fragment: GetDeviceCaps(0,HAL) at00b2c91a; LOWORD D3DCAPS9.PixelShaderVersion(+CCh) stored renderer+1B40h(record+28h) at00b2c985; unsigned comparison<200h produces1 else2 in+1B48h at00b2caa0. Other producer fields/probes remain unreconstructed. Native ignores query failure; projection returns false on negative HRESULT and preserves prior fields. Original ABI: ECX renderer, RET; only settings fields projected here. Evidence: docs/SETTINGS_CAPABILITIES.md; reports/settings_capabilities.json. New C++ ownership/interface; not binary ABI or game validation. | Packet orch2_renderer_capabilities extends prior settings-only projection. Full query/decision body [00b2c8e0,00b2d8de): caps field mapping, ATOC, second identifier with8800/8600/8200/ATI classification, declaration-type append, conditional INST then unconditional1B50h clear, exact57format TEXTURE-only table with strict HRESULT-zero acceptance. Constructor identifier fragment00b32861..00b32898 performs GetAdapterIdentifier(0,0), Description+200h NVIDIA match into1D88h. Native ABI ECX renderer/RET; constructor returns this; new C++ state borrows shared IDirect3D9. C++ temporary state delays native publications and preserves outputs on failed caps/identifier or allocation throws; native allocator/EH and undefined format-record padding are not reproduced. MSVC Win32 build,2existingCTests,8seed comparisons and ignored trace/liveD3D9 fixture pass. Not native full-routine differential, binary ABI or gameplay validation. Evidence docs/RENDERER_CAPABILITIES.md; reports/renderer_capabilities.json. | Descriptive name hypothesis unless existing matched CRT name. Complete4094-byte/885-instruction source schedule with actual renderer extent1D8A, stable fixed EDX context and initialized aligned770h caller scratch. Full285 ordered table stores/57rows456B verified as exact helper body. Actual current COM factory/method reads and raw outputs/HRESULT schedule,12 actual array/string/pool/lifetime bindings,44-byte nativeEH map/FuncInfo chain reviewed. Fixed host memmove/strstr valid-buffer adaptations and new C++ EH/scratch ABI explicit. All seven actual archive members, every mapped COFF byte and relocation, whole owned COFF sections and exact341 native primitive/resize bytes checked. Incremental main verifier only drops unnecessary repeated nested-source compile-line demand; strict actual CL commands/full current member evidence retained. Address-only probe never executed; no COM/device/gather/nativeEH/originalcallerABI/game validation. Same frozen main library e59c0a7d198e8059d3eb65064cd1857b72e48f91e858906a448a9b38d4414ccf; strict Win32/two existing CTests/eight original seeds passed. reports/native_renderer_gather_capabilities_audit.json | Hypothesis, not a recovered symbol. Existing complete B2C8E0 algorithm and literals shared by both lifetime contexts; new raw AA0/AA8/AA4 overload adds no new native body or bytes. Source fixture confirms ignored failed COM output preimages, post-arm cleanup retaining appended rows, same-manager pool registration/return/canonical pool shutdown, and real D3D9 S_OK caps/34 formats. Original gather/FH3 body was not executed; caller scratch preimages and source noexcept cleanup boundary remain explicit. Integrated source at87dad090 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_CAPABILITIES_ACTUAL.md; reports/native_renderer_capabilities_actual.json. Original private-frame/CRT/FH3/SEH identity, full renderer adoption and gameplay remain unvalidated. | Constructed renderer effect validation: docs/NATIVE_CONSTRUCTED_RENDERER_EFFECT.md; reports/native_constructed_renderer_effect.json. Complete existing actual raw source gather now executes inside B32410 against its real Direct3D9 factory and shared raw lifetime/string pool before cold installed effect admission. Published maximum texture16384x16384 and PS0300 agree with independent GetDeviceCaps(0,HAL); observed VS0300 and ATOC1. Cold DDS owners and eight exact installed HAL shaders survive this actual capability producer, replacing prior fixture capability preimages. Full4094 live/PE bytes and selected direct calls checked. Explicit initialized770h native scratch preserves unwritten-output domain; no original gather machine-code execution, ignored-query-failure test, native private-frame/FH3/ABI or full renderer/game validation."
+        },
+        "after": {
+          "address": "00b2c8e0",
+          "name": "BSP_D3D9Renderer_GatherCapabilities",
+          "evidence": "Hypothesis, not a recovered symbol. Settings-only fragment: GetDeviceCaps(0,HAL) at00b2c91a; LOWORD D3DCAPS9.PixelShaderVersion(+CCh) stored renderer+1B40h(record+28h) at00b2c985; unsigned comparison<200h produces1 else2 in+1B48h at00b2caa0. Other producer fields/probes remain unreconstructed. Native ignores query failure; projection returns false on negative HRESULT and preserves prior fields. Original ABI: ECX renderer, RET; only settings fields projected here. Evidence: docs/SETTINGS_CAPABILITIES.md; reports/settings_capabilities.json. New C++ ownership/interface; not binary ABI or game validation. | Packet orch2_renderer_capabilities extends prior settings-only projection. Full query/decision body [00b2c8e0,00b2d8de): caps field mapping, ATOC, second identifier with8800/8600/8200/ATI classification, declaration-type append, conditional INST then unconditional1B50h clear, exact57format TEXTURE-only table with strict HRESULT-zero acceptance. Constructor identifier fragment00b32861..00b32898 performs GetAdapterIdentifier(0,0), Description+200h NVIDIA match into1D88h. Native ABI ECX renderer/RET; constructor returns this; new C++ state borrows shared IDirect3D9. C++ temporary state delays native publications and preserves outputs on failed caps/identifier or allocation throws; native allocator/EH and undefined format-record padding are not reproduced. MSVC Win32 build,2existingCTests,8seed comparisons and ignored trace/liveD3D9 fixture pass. Not native full-routine differential, binary ABI or gameplay validation. Evidence docs/RENDERER_CAPABILITIES.md; reports/renderer_capabilities.json. | Descriptive name hypothesis unless existing matched CRT name. Complete4094-byte/885-instruction source schedule with actual renderer extent1D8A, stable fixed EDX context and initialized aligned770h caller scratch. Full285 ordered table stores/57rows456B verified as exact helper body. Actual current COM factory/method reads and raw outputs/HRESULT schedule,12 actual array/string/pool/lifetime bindings,44-byte nativeEH map/FuncInfo chain reviewed. Fixed host memmove/strstr valid-buffer adaptations and new C++ EH/scratch ABI explicit. All seven actual archive members, every mapped COFF byte and relocation, whole owned COFF sections and exact341 native primitive/resize bytes checked. Incremental main verifier only drops unnecessary repeated nested-source compile-line demand; strict actual CL commands/full current member evidence retained. Address-only probe never executed; no COM/device/gather/nativeEH/originalcallerABI/game validation. Same frozen main library e59c0a7d198e8059d3eb65064cd1857b72e48f91e858906a448a9b38d4414ccf; strict Win32/two existing CTests/eight original seeds passed. reports/native_renderer_gather_capabilities_audit.json | R32 reuses unchanged4f12d5636 actual-manager context overload while preserving current main providers and deletion bindings. Both overloads share the existing complete4094B algorithm, exactly two lifetime selections; zero newly reconstructed bodies/bytes. Fresh7-span4583B live/PE/retained-hash parity;30 direct/parent/helper calls pass,11 indirect COM/IAT rows explicitly outside direct-call gate. Strict MSVC Win32 /MD build and3 CTests pass; unchanged retained fixture recompiled with current library passes actual raw pool registration, normal/unwind return, supplied failure preimages and real D3D9 GetDeviceCaps S_OK/34 formats. Source ABI ECX renderer/EDX context with770h caller scratch; original ABI ECX renderer/RET. Native FH3/SEH, production renderer/frame/gameplay unvalidated. reports/native_renderer_capabilities_actual_main_r32.json."
+        },
+        "status": "applied"
+      }
+    ]
+  }
+}
