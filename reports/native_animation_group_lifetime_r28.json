@@ -3,7 +3,8 @@
   "base": "561eb8558",
   "cmake_commit": "793d9b459",
   "implementation_commit": "ed164f9f0",
-  "generated_utc": "2026-09-16T08:44:06.2335072Z",
+  "review_correction_commit": "b30da2294",
+  "generated_utc": "2026-09-16T08:51:08.0998170Z",
   "program": "/battlestationspacific.exe",
   "source": [
     "include/bsp/native_animation_group_lifetime.hpp",
@@ -74,7 +75,7 @@
     {"address":"00b8a7d0","function_name":"FUN_00b8a7d0"},
     {"address":"00b8ad60","function_name":"CG_scalar_deleting_dtor_00b8ad60"}
   ],
-  "annotation_status": "Worker read-only. Primary repairs listing, defines handlers, applies reviewed names/comments and adds ledger records under the write lock.",
+  "annotation_status": "Worker remained read-only. Primary repaired all four returning-free flows and defined both EH handlers under the write lock; names/comments and ledger records remain primary-owned.",
   "byte_receipt": {
     "project": "C:/Users/sqz269/bsp.gpr",
     "program_path": "/battlestationspacific.exe",
@@ -122,13 +123,13 @@
     {"address":"00cc285e","native":"0041dd20","function":"00cc2858","kind":"tail_jump"},
     {"address":"00cc2868","native":"00bf6b43","function":"00cc2863","kind":"tail_jump"}
   ],
-  "listing_repairs_required": [
-    {"call":"00b785a9","override":"CALL_RETURN","current_body_end":"00b785ad","physical_tail":"00b785ae-00b785f2","physical_end":"00b785f2"},
-    {"call":"00b78d10","override":"CALL_RETURN","missing":"00b78d15-00b78d17","physical_end":"00b78d1d"},
-    {"call":"00b8a805","override":"CALL_RETURN","current_body_end":"00b8a809","physical_tail":"00b8a80a-00b8a84e","physical_end":"00b8a84e"},
-    {"call":"00b8ad70","override":"CALL_RETURN","missing":"00b8ad75-00b8ad77","physical_end":"00b8ad7d"},
-    {"define_handler":"00cc1cce-00cc1cd7","funcinfo":"00dfacec","tail":"00cc1cd3->00bf6b43"},
-    {"define_handler":"00cc2863-00cc286c","funcinfo":"00dfbe34","tail":"00cc2868->00bf6b43"}
+  "listing_repairs_completed_by_primary": [
+    {"call":"00b785a9","cleared_override":"CALL_RETURN","restored_tail":"00b785ae-00b785f2","physical_end":"00b785f2","status":"complete"},
+    {"call":"00b78d10","cleared_override":"CALL_RETURN","restored":"00b78d15-00b78d17","physical_end":"00b78d1d","status":"complete"},
+    {"call":"00b8a805","cleared_override":"CALL_RETURN","restored_tail":"00b8a80a-00b8a84e","physical_end":"00b8a84e","status":"complete"},
+    {"call":"00b8ad70","cleared_override":"CALL_RETURN","restored":"00b8ad75-00b8ad77","physical_end":"00b8ad7d","status":"complete"},
+    {"defined_handler":"00cc1cce-00cc1cd7","funcinfo":"00dfacec","tail":"00cc1cd3->00bf6b43","status":"complete"},
+    {"defined_handler":"00cc2863-00cc286c","funcinfo":"00dfbe34","tail":"00cc2868->00bf6b43","status":"complete"}
   ],
   "exception_contract": {
     "group": "DFACD4: state0->-1 CC1CB0/B86890 base; state1->0 CC1CB8/41DD20 name; state2->1 CC1CC3/B77A10 vector. HandlerCC1CCE FuncInfoDFACEC maxState3.",
@@ -142,21 +143,27 @@
   },
   "validation": {
     "verify_seeds": "PASS eight Ghidra/disk seed ranges",
-    "strict_build": "PASS full Release scripts/build.ps1; MSVC Win32 /W4 /WX /EHsc /fp:strict /MD",
-    "ctest": "PASS reconstructed_math, native_math_differential, tool_tests; 3/3",
-    "focused_probe": "PASS success_names=3 failure_names=2 terminal_failures=1",
+    "strict_build": "PASS post-review Release scripts/build.ps1; MSVC Win32 /W4 /WX /EHsc /fp:strict /MD",
+    "ctest": "PASS post-review reconstructed_math, native_math_differential, tool_tests; 3/3",
+    "focused_probe": "PASS post-review relink against current bsp_core: success_names=3 failure_names=2 terminal_failures=1",
     "probe_command": "cl /std:c++17 /EHsc /W4 /WX /fp:strict /MD /Iinclude local/r28_animation_group_lifetime_probe.cpp; own bsp_core/lua/zlib; /MANIFEST:EMBED /MACHINE:X86",
     "probe_scope": "Actual raw string pool; actual20h groups, actual28h channels/keys; real finite scalar terminals and BD30E0 source ref dispatch on success; explicit throwing terminal only for required state2 unwind test.",
-    "call_rows": "CURRENT 14/22 pass and 8 fail only because B785AE..F2, B8A80A..4E and handlersCC1CCE/CC2863 are in no saved Ghidra function; all 22 exact direct/tail rows are retained for the primary repair gate"
+    "call_rows": "PASS 22 exact direct/tail rows checked, 0 failed after primary flow repairs and handler definitions; one captured virtual row remains explicitly indirect and unchecked"
   },
   "artifact_receipts": [
     {"path":"include/bsp/native_animation_group_lifetime.hpp","bytes":2844,"sha256":"cd63f1aaee13299386cef666a8e1471e6c6c106676ba7d7c729de5df21e7e89a"},
-    {"path":"src/native_animation_group_lifetime.cpp","bytes":6305,"sha256":"5cac30fb74376b071995fd8e538098cb51a684e320b551ae6e882412921e4c45"},
-    {"path":"cmake/startup.cmake","bytes":146450,"sha256":"bf9a5153044ceb4bbb3da256143cda9af63e02e92c91fe8922a06494a70bea29"}
+    {"path":"src/native_animation_group_lifetime.cpp","bytes":6367,"sha256":"eba10d118f5aa363b26177f28f28db03afaf38bf9121dd367946431b3449640d"},
+    {"path":"cmake/startup.cmake","bytes":146450,"sha256":"bf9a5153044ceb4bbb3da256143cda9af63e02e92c91fe8922a06494a70bea29"},
+    {"path":"build/win32/bsp_core.dir/Release/native_animation_group_lifetime.obj","bytes":18286,"sha256":"4e6c686489b90e99604d5a70707bfd611bb47228f42c1760cd17588d594bdff2"},
+    {"path":"build/win32/Release/bsp_core.lib","bytes":63137386,"sha256":"1a683f902c8f2fb395a45b19cc75085a21a30f179fb0effe30ddee9b67de5db0"},
+    {"path":"build/win32/Release/bsp_lua511.lib","bytes":456056,"sha256":"8d79100b76a6bfaef20e2b5ab282f6d7c7a76be97e6820eb62425cb3a94df539"},
+    {"path":"build/win32/Release/bsp_zlib121.lib","bytes":72206,"sha256":"690cd4cb317c4159b8e4fa587aa850745a7a9ebaecbc08009bb905f9dc322be9"},
+    {"path":"local/r28_animation_group_lifetime_probe.exe","bytes":30720,"sha256":"591cdb404d9ea9e553e224d7c4255490b7fb3552a78b4534cc5296cae85f3a1a"}
   ],
   "proof_limits": [
     "Proposed names are evidence-backed hypotheses, not recovered symbols.",
     "Source/build/byte/fixture evidence does not establish original binary ABI, FH3/SEH, native CRT identity, executable admission, runtime integration or gameplay.",
     "No permanent test was added. The focused probe is ignored local evidence and does not execute the installed game."
-  ]
+  ],
+  "review_correction": "B78582..B7858C reload current group count once after the channel terminal returns, test that captured value, then store captured-1. Source now uses count_after_delete without a second volatile read; strict build, 3 CTests, own-library focused probe and exact call gate were rerun after commit b30da2294."
 }

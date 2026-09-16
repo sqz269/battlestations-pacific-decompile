@@ -27,9 +27,10 @@ reloads current vector data `+10` and current count, captures the last cell and
 the channel pointer in that cell, then captures that channel's current profile
 and slot 4. A nonnull channel receives flags 1 directly; no reference decrement
 occurs. The captured cell is cleared only after the scalar deletion returns.
-The group count is then reloaded and decremented only when its current value is
-nonzero. A terminal callback can therefore mutate the vector or count; the
-subsequent accesses keep the native captured-versus-current distinction.
+The group count is then reloaded exactly once, tested, and that captured value
+is decremented when nonzero. A terminal callback can therefore mutate the
+vector or count; the subsequent load keeps the native captured-versus-current
+distinction without introducing a second count read.
 
 After the loop, the normal path changes EH state before each cleanup stage:
 resize the pointer vector to zero, free its current data, return the raw pooled
@@ -78,9 +79,10 @@ failure therefore advances through name and base cleanup. A name-pool failure
 after the state changes performs only the base cleanup. The source reproduces
 these effects for C++ exceptions, not original FH3/SEH or hardware faults.
 
-## Saved-listing repairs for the primary agent
+## Saved-listing repairs completed by the primary agent
 
-Four returning CRT free calls truncate or disconnect the saved flow:
+The primary cleared four returning CRT-free flow overrides and restored the
+complete saved bodies:
 
 | Call site | Required fallthrough/body |
 |---|---|
@@ -89,9 +91,11 @@ Four returning CRT free calls truncate or disconnect the saved flow:
 | `B8A805` | clear `CALL_RETURN`; retain `B8A80A..B8A84E`, physical end `B8A84E` |
 | `B8AD70` | clear `CALL_RETURN`; disassemble `B8AD75..B8AD77`, physical end `B8AD7D` |
 
-The complete ten-byte handlers `CC1CCE..CC1CD7` and `CC2863..CC286C` also
-need function definitions so their `BF6B43` tail rows can be checked. The
-worker made no Ghidra, name-ledger, reconstruction-ledger, or tag-ledger writes.
+The primary also defined the complete ten-byte handlers `CC1CCE..CC1CD7` and
+`CC2863..CC286C`. All 22 direct/tail rows now pass the live exact-call checker;
+the captured channel slot-4 call remains explicitly indirect and unchecked by
+that tool. The worker made no Ghidra, name-ledger, reconstruction-ledger, or
+tag-ledger writes.
 
 ## Validation and limits
 
@@ -105,8 +109,7 @@ growth zeroes it. The only synthetic terminal is an explicit throwing callback:
 it verifies state-2 group unwind without pretending deletion succeeded.
 
 Exact bodies, EH data, profile words, call rows, proposed metadata and receipts
-are in `reports/native_animation_group_lifetime_r28.json`. The complete flow
-still needs the primary's four saved-listing repairs and two handler definitions
-before all exact call rows can pass the live checker. Build, byte, fixture and
-source-interface evidence does not establish original binary ABI/FH3/SEH,
-native CRT identity, executable admission, runtime integration or gameplay.
+are in `reports/native_animation_group_lifetime_r28.json`. The repaired saved
+flow passes all 22 exact direct/tail rows. Build, byte, fixture and source-
+interface evidence does not establish original binary ABI/FH3/SEH, native CRT
+identity, executable admission, runtime integration or gameplay.
