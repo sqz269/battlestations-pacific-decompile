@@ -1,0 +1,1313 @@
+{
+  "schema_version": 1,
+  "packet": "native_renderer_debug_records40_append_main_r54",
+  "status": "source_strict_build_native_helper_differential_checked_public_chain_linked",
+  "source_commit": "ebf6233bca63e6cb0da950b3891412ced892e09f",
+  "worker_source_commits": [
+    "514d8d615",
+    "c7fb538c9"
+  ],
+  "primary_correction": "Normal decrement/Leave remains inside native state0 scope; secondary C++ cleanup exception terminates. Worker stopped before build; primary completed final build, fixture, review and evidence freeze.",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "annotations": "Current source evidence appended to both recovered names; comments preserved; project saved and exports refreshed.",
+    "prior_annotations_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\ghidra-annotations-20260916T161146Z.json",
+    "prior_annotations": [
+      {
+        "address": "00b257b0",
+        "before": {
+          "address": "00b257b0",
+          "function_name": "BSP_RendererRecords40_Append",
+          "comment": "[BSP reconstruction 00b257b0]\nR52 producer/guard contract audit only, no reconstructed source or runtime claim. Seven full live/PE spans690B,186 decoded instructions,11 unique direct calls verified and5 import sites reviewed. B29330 is actual D5F0A8+D4 target: capture renderer, acquire0108D5A0 owner section, increment nonnull record owner+4, copy ten arguments to40B record, append at renderer+1D18, normal guard release; concrete retained-owner type unresolved. B257B0 doubles capacity with signed threshold, reloads current data/used after genuine B22A70 reserve, interleaves two DWORD copies and eight x87 FLD/FSTP pairs, increments current count even on computed null output. B25BE0 same actual0108D5A0/AA0 singleton publication; B23750 creates tracked section in8B owner. B26130 keeps library deleting-destructor name; supported locked repair restores reachable ADD ESP,4 atB2615E after erroneous B26159 CALL_RETURN, preserving body/callee flags. Full FH3 maps, guard source, app deletion dispatch and renderer invocation remain prerequisites. reports/native_renderer_debug_records40_append_contract_r52.json."
+        },
+        "after": {
+          "address": "00b257b0",
+          "name": "BSP_RendererRecords40_Append",
+          "evidence": "R52 producer/guard contract audit only, no reconstructed source or runtime claim. Seven full live/PE spans690B,186 decoded instructions,11 unique direct calls verified and5 import sites reviewed. B29330 is actual D5F0A8+D4 target: capture renderer, acquire0108D5A0 owner section, increment nonnull record owner+4, copy ten arguments to40B record, append at renderer+1D18, normal guard release; concrete retained-owner type unresolved. B257B0 doubles capacity with signed threshold, reloads current data/used after genuine B22A70 reserve, interleaves two DWORD copies and eight x87 FLD/FSTP pairs, increments current count even on computed null output. B25BE0 same actual0108D5A0/AA0 singleton publication; B23750 creates tracked section in8B owner. B26130 keeps library deleting-destructor name; supported locked repair restores reachable ADD ESP,4 atB2615E after erroneous B26159 CALL_RETURN, preserving body/callee flags. Full FH3 maps, guard source, app deletion dispatch and renderer invocation remain prerequisites. reports/native_renderer_debug_records40_append_contract_r52.json. | R54 complete B257B0[114] raw12B/28h-record append and B29330[255] public renderer+1D18 producer. Capacity capture/equality-only growth/wrapped signed doubling uses genuine current B22A70; reloadused/data; computedzero skips inputs; interleaved DWORD00/14 and eight x87 FLD/FSTP pairs preserve overlap/header alias and currentused reload. Public method uses R53 SAME actualAA0/D5A0 guard, captures actualsection+4, enters/increments, retains nonnull actualopaqueowner+4 with realInterlockedIncrement, captures numeric MOVSS/color schedule, appends, decrements/leaves while state0 remainsarmed. Sole CBD2D0->411EE0 unwind; no retain rollback. Primary corrected normalleave scope and secondary C++ cleanup termination before final build. Fresh11native spans646B/no listing gaps/5live directcall rows; strict/MD/W4/WX/fp:strict Win32build+3CTests;6full114B original/source helper cases: separate/forwardoverlap/headeralias/full160B+x87flags, computednullskip, two genuine allocation/wrappedgrowth cases. Only nativeB22A70call relocated to shared genuine source provider.16ordered compiled x87 encodings byteidentical.3650frozen artifacts/7physicalI386modules. Public genuine guardchain forcedlinked, not executed. No synthetic renderer/retainedowner/terminal. Originalreserve/publicproducer, exception injection, originalFH3/privateframe/hardwarefault ABI, app/visual/gameplay remain unproved. reports/native_renderer_debug_records40_append_main_r54.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b29330",
+        "before": {
+          "address": "00b29330",
+          "function_name": "BSP_Renderer_AppendDebugRecord40",
+          "comment": "[BSP reconstruction 00b29330]\nR52 producer/guard contract audit only, no reconstructed source or runtime claim. Seven full live/PE spans690B,186 decoded instructions,11 unique direct calls verified and5 import sites reviewed. B29330 is actual D5F0A8+D4 target: capture renderer, acquire0108D5A0 owner section, increment nonnull record owner+4, copy ten arguments to40B record, append at renderer+1D18, normal guard release; concrete retained-owner type unresolved. B257B0 doubles capacity with signed threshold, reloads current data/used after genuine B22A70 reserve, interleaves two DWORD copies and eight x87 FLD/FSTP pairs, increments current count even on computed null output. B25BE0 same actual0108D5A0/AA0 singleton publication; B23750 creates tracked section in8B owner. B26130 keeps library deleting-destructor name; supported locked repair restores reachable ADD ESP,4 atB2615E after erroneous B26159 CALL_RETURN, preserving body/callee flags. Full FH3 maps, guard source, app deletion dispatch and renderer invocation remain prerequisites. reports/native_renderer_debug_records40_append_contract_r52.json."
+        },
+        "after": {
+          "address": "00b29330",
+          "name": "BSP_Renderer_AppendDebugRecord40",
+          "evidence": "R52 producer/guard contract audit only, no reconstructed source or runtime claim. Seven full live/PE spans690B,186 decoded instructions,11 unique direct calls verified and5 import sites reviewed. B29330 is actual D5F0A8+D4 target: capture renderer, acquire0108D5A0 owner section, increment nonnull record owner+4, copy ten arguments to40B record, append at renderer+1D18, normal guard release; concrete retained-owner type unresolved. B257B0 doubles capacity with signed threshold, reloads current data/used after genuine B22A70 reserve, interleaves two DWORD copies and eight x87 FLD/FSTP pairs, increments current count even on computed null output. B25BE0 same actual0108D5A0/AA0 singleton publication; B23750 creates tracked section in8B owner. B26130 keeps library deleting-destructor name; supported locked repair restores reachable ADD ESP,4 atB2615E after erroneous B26159 CALL_RETURN, preserving body/callee flags. Full FH3 maps, guard source, app deletion dispatch and renderer invocation remain prerequisites. reports/native_renderer_debug_records40_append_contract_r52.json. | R54 complete B257B0[114] raw12B/28h-record append and B29330[255] public renderer+1D18 producer. Capacity capture/equality-only growth/wrapped signed doubling uses genuine current B22A70; reloadused/data; computedzero skips inputs; interleaved DWORD00/14 and eight x87 FLD/FSTP pairs preserve overlap/header alias and currentused reload. Public method uses R53 SAME actualAA0/D5A0 guard, captures actualsection+4, enters/increments, retains nonnull actualopaqueowner+4 with realInterlockedIncrement, captures numeric MOVSS/color schedule, appends, decrements/leaves while state0 remainsarmed. Sole CBD2D0->411EE0 unwind; no retain rollback. Primary corrected normalleave scope and secondary C++ cleanup termination before final build. Fresh11native spans646B/no listing gaps/5live directcall rows; strict/MD/W4/WX/fp:strict Win32build+3CTests;6full114B original/source helper cases: separate/forwardoverlap/headeralias/full160B+x87flags, computednullskip, two genuine allocation/wrappedgrowth cases. Only nativeB22A70call relocated to shared genuine source provider.16ordered compiled x87 encodings byteidentical.3650frozen artifacts/7physicalI386modules. Public genuine guardchain forcedlinked, not executed. No synthetic renderer/retainedowner/terminal. Originalreserve/publicproducer, exception injection, originalFH3/privateframe/hardwarefault ABI, app/visual/gameplay remain unproved. reports/native_renderer_debug_records40_append_main_r54.json."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "evidence": {
+    "pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b257b0",
+        "kind": "function",
+        "length": 114,
+        "end_exclusive": "00b25822",
+        "pe_offset": 7493552,
+        "sha256": "3867f5678dfd4e69111c9f8aefbec1de8739213d5aa3d531383cc31ef33a3e87",
+        "hex": "568bf18b4608394604751203c083f8017f05b80100000050e8a3d2ffff8b46048b0e8d04808d04c185c0743e8b4c24088b118910d94104d95804d94108d95808d9410cd9580cd94110d958108b5114895014d94118d95818d9411cd9581cd94120d95820d94124d95824834604015ec20400",
+        "relocations": [
+          [
+            25,
+            11676272
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00b257b0",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b257b1",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "00b257b3",
+            "hex": "8b4608",
+            "text": "mov eax, dword ptr [esi + 8]"
+          },
+          {
+            "address": "00b257b6",
+            "hex": "394604",
+            "text": "cmp dword ptr [esi + 4], eax"
+          },
+          {
+            "address": "00b257b9",
+            "hex": "7512",
+            "text": "jne 0xb257cd"
+          },
+          {
+            "address": "00b257bb",
+            "hex": "03c0",
+            "text": "add eax, eax"
+          },
+          {
+            "address": "00b257bd",
+            "hex": "83f801",
+            "text": "cmp eax, 1"
+          },
+          {
+            "address": "00b257c0",
+            "hex": "7f05",
+            "text": "jg 0xb257c7"
+          },
+          {
+            "address": "00b257c2",
+            "hex": "b801000000",
+            "text": "mov eax, 1"
+          },
+          {
+            "address": "00b257c7",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b257c8",
+            "hex": "e8a3d2ffff",
+            "text": "call 0xb22a70"
+          },
+          {
+            "address": "00b257cd",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "00b257d0",
+            "hex": "8b0e",
+            "text": "mov ecx, dword ptr [esi]"
+          },
+          {
+            "address": "00b257d2",
+            "hex": "8d0480",
+            "text": "lea eax, [eax + eax*4]"
+          },
+          {
+            "address": "00b257d5",
+            "hex": "8d04c1",
+            "text": "lea eax, [ecx + eax*8]"
+          },
+          {
+            "address": "00b257d8",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "00b257da",
+            "hex": "743e",
+            "text": "je 0xb2581a"
+          },
+          {
+            "address": "00b257dc",
+            "hex": "8b4c2408",
+            "text": "mov ecx, dword ptr [esp + 8]"
+          },
+          {
+            "address": "00b257e0",
+            "hex": "8b11",
+            "text": "mov edx, dword ptr [ecx]"
+          },
+          {
+            "address": "00b257e2",
+            "hex": "8910",
+            "text": "mov dword ptr [eax], edx"
+          },
+          {
+            "address": "00b257e4",
+            "hex": "d94104",
+            "text": "fld dword ptr [ecx + 4]"
+          },
+          {
+            "address": "00b257e7",
+            "hex": "d95804",
+            "text": "fstp dword ptr [eax + 4]"
+          },
+          {
+            "address": "00b257ea",
+            "hex": "d94108",
+            "text": "fld dword ptr [ecx + 8]"
+          },
+          {
+            "address": "00b257ed",
+            "hex": "d95808",
+            "text": "fstp dword ptr [eax + 8]"
+          },
+          {
+            "address": "00b257f0",
+            "hex": "d9410c",
+            "text": "fld dword ptr [ecx + 0xc]"
+          },
+          {
+            "address": "00b257f3",
+            "hex": "d9580c",
+            "text": "fstp dword ptr [eax + 0xc]"
+          },
+          {
+            "address": "00b257f6",
+            "hex": "d94110",
+            "text": "fld dword ptr [ecx + 0x10]"
+          },
+          {
+            "address": "00b257f9",
+            "hex": "d95810",
+            "text": "fstp dword ptr [eax + 0x10]"
+          },
+          {
+            "address": "00b257fc",
+            "hex": "8b5114",
+            "text": "mov edx, dword ptr [ecx + 0x14]"
+          },
+          {
+            "address": "00b257ff",
+            "hex": "895014",
+            "text": "mov dword ptr [eax + 0x14], edx"
+          },
+          {
+            "address": "00b25802",
+            "hex": "d94118",
+            "text": "fld dword ptr [ecx + 0x18]"
+          },
+          {
+            "address": "00b25805",
+            "hex": "d95818",
+            "text": "fstp dword ptr [eax + 0x18]"
+          },
+          {
+            "address": "00b25808",
+            "hex": "d9411c",
+            "text": "fld dword ptr [ecx + 0x1c]"
+          },
+          {
+            "address": "00b2580b",
+            "hex": "d9581c",
+            "text": "fstp dword ptr [eax + 0x1c]"
+          },
+          {
+            "address": "00b2580e",
+            "hex": "d94120",
+            "text": "fld dword ptr [ecx + 0x20]"
+          },
+          {
+            "address": "00b25811",
+            "hex": "d95820",
+            "text": "fstp dword ptr [eax + 0x20]"
+          },
+          {
+            "address": "00b25814",
+            "hex": "d94124",
+            "text": "fld dword ptr [ecx + 0x24]"
+          },
+          {
+            "address": "00b25817",
+            "hex": "d95824",
+            "text": "fstp dword ptr [eax + 0x24]"
+          },
+          {
+            "address": "00b2581a",
+            "hex": "83460401",
+            "text": "add dword ptr [esi + 4], 1"
+          },
+          {
+            "address": "00b2581e",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00b2581f",
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ],
+        "calls": [
+          {
+            "address": "00b257c8",
+            "hex": "e8a3d2ffff",
+            "text": "call 0xb22a70"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b29330",
+        "kind": "function",
+        "length": 255,
+        "end_exclusive": "00b2942f",
+        "pe_offset": 7508784,
+        "sha256": "583b376be410453356cc3217dc561f168a310ee710ca96b17fc8b1acd260ef73",
+        "hex": "6aff68d8d2cb0064a100000000506489250000000083ec3056578bf9e88fc8ffff8b700485f6c7442408fc37ce008974240c740b56ff151822ce00834618018b44244885c0c744244000000000c744241000000000740e8944241083c00450ff151c22ce00f30f1044244c8b44245cf30f11442414f30f10442450f30f11442418f30f10442454f30f1144241cf30f10442458f30f11442420f30f10442460f30f11442428f30f10442464f30f1144242cf30f104424688d4c2410f30f11442430f30f1044246c518d8f181d000089442428f30f11442438e8a3c3ffff85f6740b834618ff56ff151022ce008b4c24385f5e64890d0000000083c43cc22800",
+        "relocations": [
+          [
+            29,
+            11688928
+          ],
+          [
+            217,
+            11687856
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00b29330",
+            "hex": "6aff",
+            "text": "push -1"
+          },
+          {
+            "address": "00b29332",
+            "hex": "68d8d2cb00",
+            "text": "push 0xcbd2d8"
+          },
+          {
+            "address": "00b29337",
+            "hex": "64a100000000",
+            "text": "mov eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "00b2933d",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b2933e",
+            "hex": "64892500000000",
+            "text": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "address": "00b29345",
+            "hex": "83ec30",
+            "text": "sub esp, 0x30"
+          },
+          {
+            "address": "00b29348",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b29349",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00b2934a",
+            "hex": "8bf9",
+            "text": "mov edi, ecx"
+          },
+          {
+            "address": "00b2934c",
+            "hex": "e88fc8ffff",
+            "text": "call 0xb25be0"
+          },
+          {
+            "address": "00b29351",
+            "hex": "8b7004",
+            "text": "mov esi, dword ptr [eax + 4]"
+          },
+          {
+            "address": "00b29354",
+            "hex": "85f6",
+            "text": "test esi, esi"
+          },
+          {
+            "address": "00b29356",
+            "hex": "c7442408fc37ce00",
+            "text": "mov dword ptr [esp + 8], 0xce37fc"
+          },
+          {
+            "address": "00b2935e",
+            "hex": "8974240c",
+            "text": "mov dword ptr [esp + 0xc], esi"
+          },
+          {
+            "address": "00b29362",
+            "hex": "740b",
+            "text": "je 0xb2936f"
+          },
+          {
+            "address": "00b29364",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b29365",
+            "hex": "ff151822ce00",
+            "text": "call dword ptr [0xce2218]"
+          },
+          {
+            "address": "00b2936b",
+            "hex": "83461801",
+            "text": "add dword ptr [esi + 0x18], 1"
+          },
+          {
+            "address": "00b2936f",
+            "hex": "8b442448",
+            "text": "mov eax, dword ptr [esp + 0x48]"
+          },
+          {
+            "address": "00b29373",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "00b29375",
+            "hex": "c744244000000000",
+            "text": "mov dword ptr [esp + 0x40], 0"
+          },
+          {
+            "address": "00b2937d",
+            "hex": "c744241000000000",
+            "text": "mov dword ptr [esp + 0x10], 0"
+          },
+          {
+            "address": "00b29385",
+            "hex": "740e",
+            "text": "je 0xb29395"
+          },
+          {
+            "address": "00b29387",
+            "hex": "89442410",
+            "text": "mov dword ptr [esp + 0x10], eax"
+          },
+          {
+            "address": "00b2938b",
+            "hex": "83c004",
+            "text": "add eax, 4"
+          },
+          {
+            "address": "00b2938e",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b2938f",
+            "hex": "ff151c22ce00",
+            "text": "call dword ptr [0xce221c]"
+          },
+          {
+            "address": "00b29395",
+            "hex": "f30f1044244c",
+            "text": "movss xmm0, dword ptr [esp + 0x4c]"
+          },
+          {
+            "address": "00b2939b",
+            "hex": "8b44245c",
+            "text": "mov eax, dword ptr [esp + 0x5c]"
+          },
+          {
+            "address": "00b2939f",
+            "hex": "f30f11442414",
+            "text": "movss dword ptr [esp + 0x14], xmm0"
+          },
+          {
+            "address": "00b293a5",
+            "hex": "f30f10442450",
+            "text": "movss xmm0, dword ptr [esp + 0x50]"
+          },
+          {
+            "address": "00b293ab",
+            "hex": "f30f11442418",
+            "text": "movss dword ptr [esp + 0x18], xmm0"
+          },
+          {
+            "address": "00b293b1",
+            "hex": "f30f10442454",
+            "text": "movss xmm0, dword ptr [esp + 0x54]"
+          },
+          {
+            "address": "00b293b7",
+            "hex": "f30f1144241c",
+            "text": "movss dword ptr [esp + 0x1c], xmm0"
+          },
+          {
+            "address": "00b293bd",
+            "hex": "f30f10442458",
+            "text": "movss xmm0, dword ptr [esp + 0x58]"
+          },
+          {
+            "address": "00b293c3",
+            "hex": "f30f11442420",
+            "text": "movss dword ptr [esp + 0x20], xmm0"
+          },
+          {
+            "address": "00b293c9",
+            "hex": "f30f10442460",
+            "text": "movss xmm0, dword ptr [esp + 0x60]"
+          },
+          {
+            "address": "00b293cf",
+            "hex": "f30f11442428",
+            "text": "movss dword ptr [esp + 0x28], xmm0"
+          },
+          {
+            "address": "00b293d5",
+            "hex": "f30f10442464",
+            "text": "movss xmm0, dword ptr [esp + 0x64]"
+          },
+          {
+            "address": "00b293db",
+            "hex": "f30f1144242c",
+            "text": "movss dword ptr [esp + 0x2c], xmm0"
+          },
+          {
+            "address": "00b293e1",
+            "hex": "f30f10442468",
+            "text": "movss xmm0, dword ptr [esp + 0x68]"
+          },
+          {
+            "address": "00b293e7",
+            "hex": "8d4c2410",
+            "text": "lea ecx, [esp + 0x10]"
+          },
+          {
+            "address": "00b293eb",
+            "hex": "f30f11442430",
+            "text": "movss dword ptr [esp + 0x30], xmm0"
+          },
+          {
+            "address": "00b293f1",
+            "hex": "f30f1044246c",
+            "text": "movss xmm0, dword ptr [esp + 0x6c]"
+          },
+          {
+            "address": "00b293f7",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00b293f8",
+            "hex": "8d8f181d0000",
+            "text": "lea ecx, [edi + 0x1d18]"
+          },
+          {
+            "address": "00b293fe",
+            "hex": "89442428",
+            "text": "mov dword ptr [esp + 0x28], eax"
+          },
+          {
+            "address": "00b29402",
+            "hex": "f30f11442438",
+            "text": "movss dword ptr [esp + 0x38], xmm0"
+          },
+          {
+            "address": "00b29408",
+            "hex": "e8a3c3ffff",
+            "text": "call 0xb257b0"
+          },
+          {
+            "address": "00b2940d",
+            "hex": "85f6",
+            "text": "test esi, esi"
+          },
+          {
+            "address": "00b2940f",
+            "hex": "740b",
+            "text": "je 0xb2941c"
+          },
+          {
+            "address": "00b29411",
+            "hex": "834618ff",
+            "text": "add dword ptr [esi + 0x18], -1"
+          },
+          {
+            "address": "00b29415",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b29416",
+            "hex": "ff151022ce00",
+            "text": "call dword ptr [0xce2210]"
+          },
+          {
+            "address": "00b2941c",
+            "hex": "8b4c2438",
+            "text": "mov ecx, dword ptr [esp + 0x38]"
+          },
+          {
+            "address": "00b29420",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "00b29421",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00b29422",
+            "hex": "64890d00000000",
+            "text": "mov dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "00b29429",
+            "hex": "83c43c",
+            "text": "add esp, 0x3c"
+          },
+          {
+            "address": "00b2942c",
+            "hex": "c22800",
+            "text": "ret 0x28"
+          }
+        ],
+        "calls": [
+          {
+            "address": "00b2934c",
+            "hex": "e88fc8ffff",
+            "text": "call 0xb25be0"
+          },
+          {
+            "address": "00b29365",
+            "hex": "ff151822ce00",
+            "text": "call dword ptr [0xce2218]"
+          },
+          {
+            "address": "00b2938f",
+            "hex": "ff151c22ce00",
+            "text": "call dword ptr [0xce221c]"
+          },
+          {
+            "address": "00b29408",
+            "hex": "e8a3c3ffff",
+            "text": "call 0xb257b0"
+          },
+          {
+            "address": "00b29416",
+            "hex": "ff151022ce00",
+            "text": "call dword ptr [0xce2210]"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b22a70",
+        "kind": "function",
+        "length": 178,
+        "end_exclusive": "00b22b22",
+        "pe_offset": 7481968,
+        "sha256": "f5d2b59b8edf7665919adf034712e4436fcdbc44d84f72363f8c1f46e36577f0",
+        "hex": "56578b7c240c83ff018bf17d05bf01000000397e080f8d920000008d04bf03c003c003c05550e8232b0d0033d283c4043956048be8896c24107e6153bbe4ffffff8d4d1c2bdd8d41e485c074438d040b03068b288969e4d94004d959e8d94008d959ecd9400cd959f0d94010d959f48b68148969f8d940188b6c2414d959fcd9401cd919d94020d95904d94024d9590883c20183c1283b56047cab5b8b0e51e8753e0d0083c404892e897e085d5f5ec20400",
+        "relocations": [
+          [
+            39,
+            12539326
+          ],
+          [
+            160,
+            12544393
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00b22a70",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b22a71",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00b22a72",
+            "hex": "8b7c240c",
+            "text": "mov edi, dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00b22a76",
+            "hex": "83ff01",
+            "text": "cmp edi, 1"
+          },
+          {
+            "address": "00b22a79",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "00b22a7b",
+            "hex": "7d05",
+            "text": "jge 0xb22a82"
+          },
+          {
+            "address": "00b22a7d",
+            "hex": "bf01000000",
+            "text": "mov edi, 1"
+          },
+          {
+            "address": "00b22a82",
+            "hex": "397e08",
+            "text": "cmp dword ptr [esi + 8], edi"
+          },
+          {
+            "address": "00b22a85",
+            "hex": "0f8d92000000",
+            "text": "jge 0xb22b1d"
+          },
+          {
+            "address": "00b22a8b",
+            "hex": "8d04bf",
+            "text": "lea eax, [edi + edi*4]"
+          },
+          {
+            "address": "00b22a8e",
+            "hex": "03c0",
+            "text": "add eax, eax"
+          },
+          {
+            "address": "00b22a90",
+            "hex": "03c0",
+            "text": "add eax, eax"
+          },
+          {
+            "address": "00b22a92",
+            "hex": "03c0",
+            "text": "add eax, eax"
+          },
+          {
+            "address": "00b22a94",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "00b22a95",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b22a96",
+            "hex": "e8232b0d00",
+            "text": "call 0xbf55be"
+          },
+          {
+            "address": "00b22a9b",
+            "hex": "33d2",
+            "text": "xor edx, edx"
+          },
+          {
+            "address": "00b22a9d",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "00b22aa0",
+            "hex": "395604",
+            "text": "cmp dword ptr [esi + 4], edx"
+          },
+          {
+            "address": "00b22aa3",
+            "hex": "8be8",
+            "text": "mov ebp, eax"
+          },
+          {
+            "address": "00b22aa5",
+            "hex": "896c2410",
+            "text": "mov dword ptr [esp + 0x10], ebp"
+          },
+          {
+            "address": "00b22aa9",
+            "hex": "7e61",
+            "text": "jle 0xb22b0c"
+          },
+          {
+            "address": "00b22aab",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b22aac",
+            "hex": "bbe4ffffff",
+            "text": "mov ebx, 0xffffffe4"
+          },
+          {
+            "address": "00b22ab1",
+            "hex": "8d4d1c",
+            "text": "lea ecx, [ebp + 0x1c]"
+          },
+          {
+            "address": "00b22ab4",
+            "hex": "2bdd",
+            "text": "sub ebx, ebp"
+          },
+          {
+            "address": "00b22ab6",
+            "hex": "8d41e4",
+            "text": "lea eax, [ecx - 0x1c]"
+          },
+          {
+            "address": "00b22ab9",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "00b22abb",
+            "hex": "7443",
+            "text": "je 0xb22b00"
+          },
+          {
+            "address": "00b22abd",
+            "hex": "8d040b",
+            "text": "lea eax, [ebx + ecx]"
+          },
+          {
+            "address": "00b22ac0",
+            "hex": "0306",
+            "text": "add eax, dword ptr [esi]"
+          },
+          {
+            "address": "00b22ac2",
+            "hex": "8b28",
+            "text": "mov ebp, dword ptr [eax]"
+          },
+          {
+            "address": "00b22ac4",
+            "hex": "8969e4",
+            "text": "mov dword ptr [ecx - 0x1c], ebp"
+          },
+          {
+            "address": "00b22ac7",
+            "hex": "d94004",
+            "text": "fld dword ptr [eax + 4]"
+          },
+          {
+            "address": "00b22aca",
+            "hex": "d959e8",
+            "text": "fstp dword ptr [ecx - 0x18]"
+          },
+          {
+            "address": "00b22acd",
+            "hex": "d94008",
+            "text": "fld dword ptr [eax + 8]"
+          },
+          {
+            "address": "00b22ad0",
+            "hex": "d959ec",
+            "text": "fstp dword ptr [ecx - 0x14]"
+          },
+          {
+            "address": "00b22ad3",
+            "hex": "d9400c",
+            "text": "fld dword ptr [eax + 0xc]"
+          },
+          {
+            "address": "00b22ad6",
+            "hex": "d959f0",
+            "text": "fstp dword ptr [ecx - 0x10]"
+          },
+          {
+            "address": "00b22ad9",
+            "hex": "d94010",
+            "text": "fld dword ptr [eax + 0x10]"
+          },
+          {
+            "address": "00b22adc",
+            "hex": "d959f4",
+            "text": "fstp dword ptr [ecx - 0xc]"
+          },
+          {
+            "address": "00b22adf",
+            "hex": "8b6814",
+            "text": "mov ebp, dword ptr [eax + 0x14]"
+          },
+          {
+            "address": "00b22ae2",
+            "hex": "8969f8",
+            "text": "mov dword ptr [ecx - 8], ebp"
+          },
+          {
+            "address": "00b22ae5",
+            "hex": "d94018",
+            "text": "fld dword ptr [eax + 0x18]"
+          },
+          {
+            "address": "00b22ae8",
+            "hex": "8b6c2414",
+            "text": "mov ebp, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00b22aec",
+            "hex": "d959fc",
+            "text": "fstp dword ptr [ecx - 4]"
+          },
+          {
+            "address": "00b22aef",
+            "hex": "d9401c",
+            "text": "fld dword ptr [eax + 0x1c]"
+          },
+          {
+            "address": "00b22af2",
+            "hex": "d919",
+            "text": "fstp dword ptr [ecx]"
+          },
+          {
+            "address": "00b22af4",
+            "hex": "d94020",
+            "text": "fld dword ptr [eax + 0x20]"
+          },
+          {
+            "address": "00b22af7",
+            "hex": "d95904",
+            "text": "fstp dword ptr [ecx + 4]"
+          },
+          {
+            "address": "00b22afa",
+            "hex": "d94024",
+            "text": "fld dword ptr [eax + 0x24]"
+          },
+          {
+            "address": "00b22afd",
+            "hex": "d95908",
+            "text": "fstp dword ptr [ecx + 8]"
+          },
+          {
+            "address": "00b22b00",
+            "hex": "83c201",
+            "text": "add edx, 1"
+          },
+          {
+            "address": "00b22b03",
+            "hex": "83c128",
+            "text": "add ecx, 0x28"
+          },
+          {
+            "address": "00b22b06",
+            "hex": "3b5604",
+            "text": "cmp edx, dword ptr [esi + 4]"
+          },
+          {
+            "address": "00b22b09",
+            "hex": "7cab",
+            "text": "jl 0xb22ab6"
+          },
+          {
+            "address": "00b22b0b",
+            "hex": "5b",
+            "text": "pop ebx"
+          },
+          {
+            "address": "00b22b0c",
+            "hex": "8b0e",
+            "text": "mov ecx, dword ptr [esi]"
+          },
+          {
+            "address": "00b22b0e",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00b22b0f",
+            "hex": "e8753e0d00",
+            "text": "call 0xbf6989"
+          },
+          {
+            "address": "00b22b14",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "00b22b17",
+            "hex": "892e",
+            "text": "mov dword ptr [esi], ebp"
+          },
+          {
+            "address": "00b22b19",
+            "hex": "897e08",
+            "text": "mov dword ptr [esi + 8], edi"
+          },
+          {
+            "address": "00b22b1c",
+            "hex": "5d",
+            "text": "pop ebp"
+          },
+          {
+            "address": "00b22b1d",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "00b22b1e",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00b22b1f",
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ],
+        "calls": [
+          {
+            "address": "00b22a96",
+            "hex": "e8232b0d00",
+            "text": "call 0xbf55be"
+          },
+          {
+            "address": "00b22b0f",
+            "hex": "e8753e0d00",
+            "text": "call 0xbf6989"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00411ee0",
+        "kind": "function",
+        "length": 25,
+        "end_exclusive": "00411ef9",
+        "pe_offset": 73440,
+        "sha256": "bc62d20fb11c300342533b8e94fc0319bb550dcd5bb5ecd734f2e03c92cc3382",
+        "hex": "8b410485c0c701fc37ce00740b834018ff50ff151022ce00c3",
+        "relocations": [],
+        "instructions": [
+          {
+            "address": "00411ee0",
+            "hex": "8b4104",
+            "text": "mov eax, dword ptr [ecx + 4]"
+          },
+          {
+            "address": "00411ee3",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "00411ee5",
+            "hex": "c701fc37ce00",
+            "text": "mov dword ptr [ecx], 0xce37fc"
+          },
+          {
+            "address": "00411eeb",
+            "hex": "740b",
+            "text": "je 0x411ef8"
+          },
+          {
+            "address": "00411eed",
+            "hex": "834018ff",
+            "text": "add dword ptr [eax + 0x18], -1"
+          },
+          {
+            "address": "00411ef1",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00411ef2",
+            "hex": "ff151022ce00",
+            "text": "call dword ptr [0xce2210]"
+          },
+          {
+            "address": "00411ef8",
+            "hex": "c3",
+            "text": "ret"
+          }
+        ],
+        "calls": [
+          {
+            "address": "00411ef2",
+            "hex": "ff151022ce00",
+            "text": "call dword ptr [0xce2210]"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00cbd2d0",
+        "kind": "context",
+        "length": 8,
+        "end_exclusive": "00cbd2d8",
+        "pe_offset": 9163472,
+        "sha256": "ee1a47966e0d70d6f178c554e067435460b92b1a60bb127422643e5154210ed2",
+        "hex": "8d4dc4e9084c75ff",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00cbd2d8",
+        "kind": "context",
+        "length": 10,
+        "end_exclusive": "00cbd2e2",
+        "pe_offset": 9163480,
+        "sha256": "67101cd8c072f2fcf30b214d0a6f74598b090387d6381672a8283d2c380bc078",
+        "hex": "b8a45adf00e96198f3ff",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00df5aa4",
+        "kind": "context",
+        "length": 36,
+        "end_exclusive": "00df5ac8",
+        "pe_offset": 10443428,
+        "sha256": "a604b2a8b9529eb5fa5ab1c57c50abd12f46791ed8a8b8a4877e207a25bce7fc",
+        "hex": "22059319010000009c5adf00000000000000000000000000000000000000000001000000",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00df5a9c",
+        "kind": "context",
+        "length": 8,
+        "end_exclusive": "00df5aa4",
+        "pe_offset": 10443420,
+        "sha256": "0d26c19c3e68fe8a3123bc0ee25e2466c156f6a64b8088f26b256db0ef80636f",
+        "hex": "ffffffffd0d2cb00",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00ce2218",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00ce221c",
+        "pe_offset": 9314840,
+        "sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+        "hex": "b856a000",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00ce221c",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00ce2220",
+        "pe_offset": 9314844,
+        "sha256": "1dd5f9d7c8651bec3c86f5d6bd80b95d5822e70e3e21d07076a378beaaac9327",
+        "hex": "d056a000",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00ce2210",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00ce2214",
+        "pe_offset": 9314832,
+        "sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+        "hex": "8856a000",
+        "live_equals_pe": true
+      }
+    ]
+  },
+  "calls": [
+    {
+      "address": "00b257c8",
+      "function": "00b257b0",
+      "native": "00b22a70"
+    },
+    {
+      "address": "00b2934c",
+      "function": "00b29330",
+      "native": "00b25be0"
+    },
+    {
+      "address": "00b29365",
+      "function": "00b29330",
+      "indirect": "dword ptr [0xce2218]"
+    },
+    {
+      "address": "00b2938f",
+      "function": "00b29330",
+      "indirect": "dword ptr [0xce221c]"
+    },
+    {
+      "address": "00b29408",
+      "function": "00b29330",
+      "native": "00b257b0"
+    },
+    {
+      "address": "00b29416",
+      "function": "00b29330",
+      "indirect": "dword ptr [0xce2210]"
+    },
+    {
+      "address": "00b22a96",
+      "function": "00b22a70",
+      "native": "00bf55be"
+    },
+    {
+      "address": "00b22b0f",
+      "function": "00b22a70",
+      "native": "00bf6989"
+    },
+    {
+      "address": "00411ef2",
+      "function": "00411ee0",
+      "indirect": "dword ptr [0xce2210]"
+    }
+  ],
+  "contracts": {
+    "00b257b0": "Complete114B/ECX raw12B header, stack live40B input, RET4. Capture capacity; grow only used==capacity; wrapped doubled DWORD signed>1 else1; genuine current B22A70. Reload used then data; destination DWORD data+used*28; computedzero skips input reads. Interleave DWORD00/eight explicit x87 FLD/FSTP at04/08/0c/10/18/1c/20/24 and DWORD14; reload currentused after stores and increment. No bulk snapshot.",
+    "00b29330": "Complete255B/ECX renderer, ten stack arguments, RET28h. Genuine current R53 guard; capture actual+4 section; enter/increment; state0; initialize localrecord00; InterlockedIncrement nonnull opaqueowner+4; actual MOVSS bit/order/color capture; append actualrenderer+1D18; normal decrement/leave capturedsection while state0 armed. Sole unwind guardcleanup viaCBD2D0->411EE0; no retained-owner rollback.",
+    "source_abi": "Low helper MSVC Win32 fastcall actualheader/unusedEDX/live40Binput; public method adds same borrowed NativeRendererRecordGuardContext and raw numeric DWORD arguments. Not original private-frame/FH3 or general drop-in ABI proof.",
+    "providers": [
+      "R53 actual8B renderer record guard and SAME AA0/D5A0 cells",
+      "genuine existing raw B22A70 reserve",
+      "actual Windows Enter/LeaveCriticalSection and InterlockedIncrement",
+      "genuine 411EE0 guard cleanup"
+    ],
+    "opaque_owner": "Only actual raw retainedowner+4 increment; no fabricated type, terminal provider or synthetic renderer ownership."
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "flags": "/MD /W4 /WX /fp:strict",
+    "ctests_passed": 3,
+    "fixture": {
+      "fixture": "actual40-byte append native/source with genuine current reserve provider",
+      "source": "local\\camera_append_r54\\probe.cpp",
+      "exe": "local\\camera_append_r54\\camera_append_probe_r54.exe",
+      "sha256": "540d4f3b0d278f9fe3e11bde57f642c311d09853f85096122a56769508e6125e",
+      "build_exit": 0,
+      "run_exit": 0,
+      "manifest_asInvoker": true,
+      "selected_output": [
+        "PASS append variant0 separate/forward-overlap/header-alias full160B and x87 status 0003",
+        "PASS append variant1 separate/forward-overlap/header-alias full160B and x87 status 0000",
+        "PASS append variant2 separate/forward-overlap/header-alias full160B and x87 status 0003",
+        "PASS computed-null destination skips null input and increments current used",
+        "PASS genuine B22A70 allocation growth initial00000000; count/capacity/full40B and x87 status",
+        "PASS genuine B22A70 allocation growth initialc0000000; count/capacity/full40B and x87 status"
+      ]
+    },
+    "full_original_helper_bytes": 114,
+    "relocation_boundary": "Sole relative B22A70 call binds existing genuine source reserve in both lanes. Native reserve and public producer are not executed.",
+    "cases": 6,
+    "whole_arena_bytes": 160,
+    "x87_status_compared": true,
+    "x87_machine_encodings": {
+      "ordered_instructions": 16,
+      "byte_identical": true,
+      "receipt": "local\\camera_append_r54\\x87_audit.json"
+    },
+    "public_method": "Genuine guard/dependency chain forced linked by volatile function pointer; source/native schedule audited, unexecuted.",
+    "physical_i386_modules": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\camera_append_r54\\camera_append_probe_r54.exe",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 201216,
+        "sha256": "540d4f3b0d278f9fe3e11bde57f642c311d09853f85096122a56769508e6125e",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ntdll.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1822400,
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 687472,
+        "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\KernelBase.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 2974168,
+        "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\apphelp.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 710832,
+        "sha256": "a8109618c3bf3623be23e8e18f1e7184538600c953169297fd0009ed77564c6e",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      }
+    ],
+    "all_native_spans_rechecked_against_pe": true,
+    "listing_missing_instruction_starts": 0,
+    "direct_call_rows": 5
+  },
+  "archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\checkpoints\\renderer-record40-append-r54-ebf6233bc\\validated_artifacts.zip",
+    "sha256": "0f90c9daf9148f4eb3910aa175fe9dc0423751462cfec0789de79a5fff329757",
+    "bytes": 64642125,
+    "manifest": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\checkpoints\\renderer-record40-append-r54-ebf6233bc\\manifest.json",
+    "manifest_sha256": "0e65f3caf197c1f554dd359de27229fb0a6e80ab45852ef00fa364a1319ad6f2",
+    "artifacts": 3650,
+    "artifact_bytes": 256044200,
+    "all_entries_hash_verified": true,
+    "loaded_modules": 7,
+    "prior_r50_zip_unchanged": true,
+    "full_bsp_core_lib": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\Release\\bsp_core.lib",
+      "archive_entry": "workspace/build/win32/Release/bsp_core.lib",
+      "bytes": 63649370,
+      "sha256": "d5d19e180a752b3e822380153c3f80cbfe48e6e36147927db54251def477de69"
+    }
+  },
+  "boundaries": [
+    "Public producer and active renderer ownership not executed",
+    "Both helper lanes share genuine current source B22A70 reserve; full original reserve not executed",
+    "No retained-owner zero terminal or rollback modeled",
+    "No injected exceptions/original FH3/private-frame/hardware-fault ABI proof",
+    "No application/visual/gameplay validation"
+  ]
+}
