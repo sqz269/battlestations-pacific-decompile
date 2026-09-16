@@ -46,7 +46,7 @@ private:
         NativeParticleConeRawContext&, NativeParticleConeRawAcquired&);
 };
 
-// Complete B03EC0..B04824. ECX actual94h definition, stacked TextBuffer,
+// Complete B03EC0..B04823. ECX actual94h definition, stacked TextBuffer,
 // RET4/AL true on normal EOF or closing brace. Actual raw providers and typed
 // recursive factories, 15 native cleanup states, late x87 scale, and partial
 // publication. New C++ interface, not native FH3/SEH/CRT or gameplay proof.
