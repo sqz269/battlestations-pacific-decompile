@@ -1,0 +1,80 @@
+{
+  "repairs": [
+    {
+      "function": "00aface0",
+      "owner": "agent/orch4-20260915-layer-lifetime-j10",
+      "when": "2026-09-16T00:19:25Z",
+      "decompile_lines_before": 14,
+      "gaps": [
+        {
+          "site": "00afacf0",
+          "mnemonic": "CALL",
+          "operands": "0x00bf65ac",
+          "gap_start": "00afacf5",
+          "gap_end_exclusive": "00afacf8",
+          "bytes": 3,
+          "after_call": true,
+          "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "00afacf0",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "00afacf5",
+            "gap_end_exclusive": "00afacf8",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          },
+          "clear": "Success: Cleared flow override at 00afacf0 (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 3 byte(s)"
+        }
+      ],
+      "decompile_lines_after": 11,
+      "gaps_remaining": 0
+    }
+  ],
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "full_body_preflight": [
+    {
+      "address": "00aface0",
+      "end_exclusive": "00afacfe",
+      "bytes": 30,
+      "sha256": "b2fe2c265dbdf3bfe0d0d86627284904b8fd7a72dae1da26d26bb41f90c90fc5",
+      "live_disk_match": true
+    }
+  ],
+  "prior_documentation": [
+    {
+      "address": "00aface0",
+      "documentation": {
+        "hash": "2d0e512dea879d0c7ddc1b6ca8f5ea2dd4c4ee6c1395475e080523c50cb544ba",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00aface0",
+        "function_name": "CG_scalar_deleting_dtor_00aface0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EAX",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00afacf8"
+          }
+        ],
+        "completeness_score": 80.0
+      }
+    }
+  ]
+}
