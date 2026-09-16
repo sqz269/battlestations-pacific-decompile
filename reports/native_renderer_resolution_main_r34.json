@@ -108,11 +108,31 @@
     }
   },
   "call_rows": [
-    {"address": "00b27e06", "native": "008d46c0", "function": "00b27d80"},
-    {"address": "00b27e27", "native": "008d4750", "function": "00b27d80"},
-    {"address": "00b27e68", "native": "00bfc350", "function": "00b27d80"},
-    {"address": "008d4770", "native": "00bf55be", "function": "008d4750"},
-    {"address": "008d47a5", "native": "00bf6989", "function": "008d4750"}
+    {
+      "address": "00b27e06",
+      "native": "008d46c0",
+      "function": "00b27d80"
+    },
+    {
+      "address": "00b27e27",
+      "native": "008d4750",
+      "function": "00b27d80"
+    },
+    {
+      "address": "00b27e68",
+      "native": "00bfc350",
+      "function": "00b27d80"
+    },
+    {
+      "address": "008d4770",
+      "native": "00bf55be",
+      "function": "008d4750"
+    },
+    {
+      "address": "008d47a5",
+      "native": "00bf6989",
+      "function": "008d4750"
+    }
   ],
   "fresh_byte_receipt": {
     "project": "C:/Users/sqz269/bsp.gpr",
@@ -123,10 +143,30 @@
     "all_live_disk_historical_match": true,
     "aggregate_sha256": "876125b3aa1f09ad24d47404aa191e7294ca5f8697855e3be8094d82fde09f65",
     "ranges": [
-      {"address": "00b27d80", "length": 245, "end_exclusive": "00b27e75", "sha256": "b78a4a690e24b1c203f4b5d3ebd4917ada4aa46b33d2538fe0023ad44ae4d447"},
-      {"address": "008d46c0", "length": 72, "end_exclusive": "008d4708", "sha256": "00678c8757c9db19bee31322564d5abe8358b9e0b49176224ed920d4b8b025e9"},
-      {"address": "008d4750", "length": 104, "end_exclusive": "008d47b8", "sha256": "d95f6ef2410f3ec72c4679f9122dc876476dabc5508c7d0923d130ed3054df66"},
-      {"address": "00b1ffd0", "length": 29, "end_exclusive": "00b1ffed", "sha256": "03bbcf779db76a9712100c749dde55f17fbfb2045e85f47afeedcc8374c9eade"}
+      {
+        "address": "00b27d80",
+        "length": 245,
+        "end_exclusive": "00b27e75",
+        "sha256": "b78a4a690e24b1c203f4b5d3ebd4917ada4aa46b33d2538fe0023ad44ae4d447"
+      },
+      {
+        "address": "008d46c0",
+        "length": 72,
+        "end_exclusive": "008d4708",
+        "sha256": "00678c8757c9db19bee31322564d5abe8358b9e0b49176224ed920d4b8b025e9"
+      },
+      {
+        "address": "008d4750",
+        "length": 104,
+        "end_exclusive": "008d47b8",
+        "sha256": "d95f6ef2410f3ec72c4679f9122dc876476dabc5508c7d0923d130ed3054df66"
+      },
+      {
+        "address": "00b1ffd0",
+        "length": 29,
+        "end_exclusive": "00b1ffed",
+        "sha256": "03bbcf779db76a9712100c749dde55f17fbfb2045e85f47afeedcc8374c9eade"
+      }
     ],
     "full_body_hex": "Retained in reports/native_renderer_resolution_enumeration.json and local/r34_renderer_resolution_byte_receipt.json."
   },
@@ -142,14 +182,38 @@
     "fixture_boundary": "Only five direct CALL operands and the pushed comparator address are rebound; no original EXE address executes."
   },
   "artifact_receipts": [
-    {"path": "include/bsp/native_renderer_resolution_enumeration.hpp", "sha256": "478440bd42997d5839f78f06151d74ded1cf969b2dbc4f4d67ad0d8d6a05acae"},
-    {"path": "src/native_renderer_resolution_enumeration.cpp", "sha256": "d5ccb64e0a7668cfd86518d5f64af59cf6aa31ac2e5726776f526a38d81bf64c"},
-    {"path": "docs/NATIVE_RENDERER_RESOLUTION_ENUMERATION.md", "sha256": "30ea1a0529d74af0cd4819b52d46a3f21531d02430f4d57d5e8352dfe5f8f95f"},
-    {"path": "reports/native_renderer_resolution_enumeration.json", "sha256": "2c1ae00805b56c8e933da2c25b66d750ec2a9c4a49feaddfc3efc03d28d18094"},
-    {"path": "cmake/startup.cmake", "sha256": "ee91fec0ce1cdfa8905ab611755e6cbfe19d9aef101c29ab7c6e85ffc091e1df"},
-    {"path": "build/win32/Release/bsp_core.lib", "sha256": "9b0d78e07252cc469a81e42ba4a6acbd5f300b169fbbc52a93dab26ea72d0c2f"},
-    {"path": "local/native_renderer_resolution_probe.exe", "sha256": "252251366d2331968efe08059042002ea0fd724178c12f6057fd6ca65a42e64e"},
-    {"path": "local/native_renderer_resolution_probe.obj", "sha256": "dbfbb59d3b74205927ceaffdfe164268024d71d3f330d0a6042d9023f1ca8c67"}
+    {
+      "path": "include/bsp/native_renderer_resolution_enumeration.hpp",
+      "sha256": "478440bd42997d5839f78f06151d74ded1cf969b2dbc4f4d67ad0d8d6a05acae"
+    },
+    {
+      "path": "src/native_renderer_resolution_enumeration.cpp",
+      "sha256": "d5ccb64e0a7668cfd86518d5f64af59cf6aa31ac2e5726776f526a38d81bf64c"
+    },
+    {
+      "path": "docs/NATIVE_RENDERER_RESOLUTION_ENUMERATION.md",
+      "sha256": "30ea1a0529d74af0cd4819b52d46a3f21531d02430f4d57d5e8352dfe5f8f95f"
+    },
+    {
+      "path": "reports/native_renderer_resolution_enumeration.json",
+      "sha256": "2c1ae00805b56c8e933da2c25b66d750ec2a9c4a49feaddfc3efc03d28d18094"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256": "ee91fec0ce1cdfa8905ab611755e6cbfe19d9aef101c29ab7c6e85ffc091e1df"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "sha256": "9b0d78e07252cc469a81e42ba4a6acbd5f300b169fbbc52a93dab26ea72d0c2f"
+    },
+    {
+      "path": "local/native_renderer_resolution_probe.exe",
+      "sha256": "252251366d2331968efe08059042002ea0fd724178c12f6057fd6ca65a42e64e"
+    },
+    {
+      "path": "local/native_renderer_resolution_probe.obj",
+      "sha256": "dbfbb59d3b74205927ceaffdfe164268024d71d3f330d0a6042d9023f1ca8c67"
+    }
   ],
   "archive": {
     "path": "local/evidence-r34/renderer-resolution-r34-final.zip",
@@ -158,11 +222,118 @@
     "archived_files": 20,
     "manifest": "local/evidence-r34/renderer-resolution-r34-final/manifest.json"
   },
-  "annotation_status": "Worker performed no Ghidra mutation. The prior 008D4750 returning-call gap is already repaired and all four names/comments/ranges are present; parent owns integration metadata.",
+  "annotation_status": {
+    "status": "Primary retained existing live names, extended ledger evidence, preserved prior annotations, saved project and refreshed four exports.",
+    "prior_annotations": [
+      {
+        "address": "008d46c0",
+        "before": {
+          "address": "008d46c0",
+          "function_name": "BSP_IntPairVector_FindFirst",
+          "comment": "[BSP reconstruction 008d46c0]\nHypothesis, not a recovered symbol. Packet orch2_options_token_reader. ECX data/count vector; stack int32 pair pointer; returns first match index or -1, RET4 through 008d4707. This is the resolution-list search, not a scanner. docs/OPTIONS_TOKEN_READER.md; reports/options_token_reader.json\n\n[BSP reconstruction 008d46c0] update\nHypothesis, not a recovered symbol. Packet orch2_options_token_reader. ECX data/count vector; stack int32 pair pointer; returns first match index or -1, RET4 through 008d4707. This is the resolution-list search, not a scanner. docs/OPTIONS_TOKEN_READER.md; reports/options_token_reader.json | Hypothesis, not a recovered symbol. Complete original/source four-body chain, scripted current-COM rebinding and partial mode writes, plus real D3D9 enumeration; host CRT qsort private behavior remains unproved. Integrated code aa836cdd passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_RENDERER_RESOLUTION_ENUMERATION.md; reports/native_renderer_resolution_enumeration.json. Raw valid extents and borrowed current cells/providers are caller requirements. New source interfaces; original CRT/FH3/SEH/private-frame identity, full renderer adoption and gameplay unvalidated."
+        },
+        "after": {
+          "address": "008d46c0",
+          "name": "BSP_IntPairVector_FindFirst",
+          "evidence": "Hypothesis, not a recovered symbol. Packet orch2_options_token_reader. ECX data/count vector; stack int32 pair pointer; returns first match index or -1, RET4 through 008d4707. This is the resolution-list search, not a scanner. docs/OPTIONS_TOKEN_READER.md; reports/options_token_reader.json | R34 unchanged source reuse from f1b43cfd7, four complete entries450B. Actual renderer +1990 COM interface, +1C/+20/+24 pair header, caller-owned16B scratch preimage and current interface/header reloads retained; exact HRESULT0, unsigned size gates, wrapped signed comparator and unconditional CRT qsort. Fresh live/PE bytes and5 direct calls pass. Retained original/source fixture freshly passes scripted partial-output/rebinding cases and real D3D9 enumeration25 unique pairs. Primary reviewed entire source/header and provider ABI, verified archive and all8 artifact receipts; combined main strict /MD build and3 CTests pass. Original static CRT sort identity, original FH3/SEH and gameplay remain unproved. reports/native_renderer_resolution_main_r34.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "008d4750",
+        "before": {
+          "address": "008d4750",
+          "function_name": "BSP_IntPairVector_Reserve",
+          "comment": "[BSP reconstruction 008d4750]\nHypothesis, not a recovered symbol. Complete original/source four-body chain, scripted current-COM rebinding and partial mode writes, plus real D3D9 enumeration; host CRT qsort private behavior remains unproved. Integrated code aa836cdd passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_RENDERER_RESOLUTION_ENUMERATION.md; reports/native_renderer_resolution_enumeration.json. Raw valid extents and borrowed current cells/providers are caller requirements. New source interfaces; original CRT/FH3/SEH/private-frame identity, full renderer adoption and gameplay unvalidated."
+        },
+        "after": {
+          "address": "008d4750",
+          "name": "BSP_IntPairVector_Reserve",
+          "evidence": "R34 unchanged source reuse from f1b43cfd7, four complete entries450B. Actual renderer +1990 COM interface, +1C/+20/+24 pair header, caller-owned16B scratch preimage and current interface/header reloads retained; exact HRESULT0, unsigned size gates, wrapped signed comparator and unconditional CRT qsort. Fresh live/PE bytes and5 direct calls pass. Retained original/source fixture freshly passes scripted partial-output/rebinding cases and real D3D9 enumeration25 unique pairs. Primary reviewed entire source/header and provider ABI, verified archive and all8 artifact receipts; combined main strict /MD build and3 CTests pass. Original static CRT sort identity, original FH3/SEH and gameplay remain unproved. reports/native_renderer_resolution_main_r34.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b1ffd0",
+        "before": {
+          "address": "00b1ffd0",
+          "function_name": "BSP_D3D9Renderer_CompareResolutionPairs",
+          "comment": "[BSP reconstruction 00b1ffd0]\nHypothesis, not a recovered symbol. Complete 29-byte body: signed wrapped width difference, else height difference. Originally missing Ghidra function; integrator defined/saved under write lock. Disk bytes match live export. Original-byte fixture agrees in four cases. Original ABI: cdecl(two resolution pointers), RET. Evidence: docs/SETTINGS_CAPABILITIES.md; reports/settings_capabilities.json. New C++ ownership/interface; not binary ABI or game validation.\n\n[BSP reconstruction 00b1ffd0] update\nHypothesis, not a recovered symbol. Complete 29-byte body: signed wrapped width difference, else height difference. Originally missing Ghidra function; integrator defined/saved under write lock. Disk bytes match live export. Original-byte fixture agrees in four cases. Original ABI: cdecl(two resolution pointers), RET. Evidence: docs/SETTINGS_CAPABILITIES.md; reports/settings_capabilities.json. New C++ ownership/interface; not binary ABI or game validation. | Hypothesis, not a recovered symbol. Complete original/source four-body chain, scripted current-COM rebinding and partial mode writes, plus real D3D9 enumeration; host CRT qsort private behavior remains unproved. Integrated code aa836cdd passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_RENDERER_RESOLUTION_ENUMERATION.md; reports/native_renderer_resolution_enumeration.json. Raw valid extents and borrowed current cells/providers are caller requirements. New source interfaces; original CRT/FH3/SEH/private-frame identity, full renderer adoption and gameplay unvalidated."
+        },
+        "after": {
+          "address": "00b1ffd0",
+          "name": "BSP_D3D9Renderer_CompareResolutionPairs",
+          "evidence": "Hypothesis, not a recovered symbol. Complete 29-byte body: signed wrapped width difference, else height difference. Originally missing Ghidra function; integrator defined/saved under write lock. Disk bytes match live export. Original-byte fixture agrees in four cases. Original ABI: cdecl(two resolution pointers), RET. Evidence: docs/SETTINGS_CAPABILITIES.md; reports/settings_capabilities.json. New C++ ownership/interface; not binary ABI or game validation. | R34 unchanged source reuse from f1b43cfd7, four complete entries450B. Actual renderer +1990 COM interface, +1C/+20/+24 pair header, caller-owned16B scratch preimage and current interface/header reloads retained; exact HRESULT0, unsigned size gates, wrapped signed comparator and unconditional CRT qsort. Fresh live/PE bytes and5 direct calls pass. Retained original/source fixture freshly passes scripted partial-output/rebinding cases and real D3D9 enumeration25 unique pairs. Primary reviewed entire source/header and provider ABI, verified archive and all8 artifact receipts; combined main strict /MD build and3 CTests pass. Original static CRT sort identity, original FH3/SEH and gameplay remain unproved. reports/native_renderer_resolution_main_r34.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b27d80",
+        "before": {
+          "address": "00b27d80",
+          "function_name": "BSP_D3D9Renderer_EnumerateResolutionPairs",
+          "comment": "[BSP reconstruction 00b27d80]\nHypothesis, not a recovered symbol. Clears opaque renderer+19DCh, counts and enumerates adapter0 X8R8G8B8 modes, accepts result==0 and unsigned width>=640,height>=480, appends absent pairs using external008d46c0, retains existing vector and qsorts with00b1ffd0. Original ABI: ECX renderer, RET. Evidence: docs/SETTINGS_CAPABILITIES.md; reports/settings_capabilities.json. New C++ ownership/interface; not binary ABI or game validation.\n\n[BSP reconstruction 00b27d80] update\nHypothesis, not a recovered symbol. Clears opaque renderer+19DCh, counts and enumerates adapter0 X8R8G8B8 modes, accepts result==0 and unsigned width>=640,height>=480, appends absent pairs using external008d46c0, retains existing vector and qsorts with00b1ffd0. Original ABI: ECX renderer, RET. Evidence: docs/SETTINGS_CAPABILITIES.md; reports/settings_capabilities.json. New C++ ownership/interface; not binary ABI or game validation. | Hypothesis, not a recovered symbol. Complete original/source four-body chain, scripted current-COM rebinding and partial mode writes, plus real D3D9 enumeration; host CRT qsort private behavior remains unproved. Integrated code aa836cdd passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_RENDERER_RESOLUTION_ENUMERATION.md; reports/native_renderer_resolution_enumeration.json. Raw valid extents and borrowed current cells/providers are caller requirements. New source interfaces; original CRT/FH3/SEH/private-frame identity, full renderer adoption and gameplay unvalidated."
+        },
+        "after": {
+          "address": "00b27d80",
+          "name": "BSP_D3D9Renderer_EnumerateResolutionPairs",
+          "evidence": "Hypothesis, not a recovered symbol. Clears opaque renderer+19DCh, counts and enumerates adapter0 X8R8G8B8 modes, accepts result==0 and unsigned width>=640,height>=480, appends absent pairs using external008d46c0, retains existing vector and qsorts with00b1ffd0. Original ABI: ECX renderer, RET. Evidence: docs/SETTINGS_CAPABILITIES.md; reports/settings_capabilities.json. New C++ ownership/interface; not binary ABI or game validation. | R34 unchanged source reuse from f1b43cfd7, four complete entries450B. Actual renderer +1990 COM interface, +1C/+20/+24 pair header, caller-owned16B scratch preimage and current interface/header reloads retained; exact HRESULT0, unsigned size gates, wrapped signed comparator and unconditional CRT qsort. Fresh live/PE bytes and5 direct calls pass. Retained original/source fixture freshly passes scripted partial-output/rebinding cases and real D3D9 enumeration25 unique pairs. Primary reviewed entire source/header and provider ABI, verified archive and all8 artifact receipts; combined main strict /MD build and3 CTests pass. Original static CRT sort identity, original FH3/SEH and gameplay remain unproved. reports/native_renderer_resolution_main_r34.json."
+        },
+        "status": "applied"
+      }
+    ]
+  },
   "limits": [
     "Source exposes caller-owned initialized scratch because native B27D80 uses uninitialized stack preimage; this is not a recovered second native argument.",
     "Host qsort private behavior, original incidental registers, static CRT/FH3/SEH/private frames and hardware-fault unwind remain unvalidated.",
     "The real D3D9 fixture is bounded host-runtime evidence, not game process execution or gameplay validation.",
     "Renderer construction, device ownership, COM AddRef/Release and application adoption remain outside this packet."
-  ]
+  ],
+  "primary_integration": {
+    "source_merge": "caa77c030",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "log": "local/r34_resolution_integration.log",
+    "review": "Primary reviewed entire source/header and provider ABI, verified archive and all8 artifact receipts.",
+    "archive_retained_in_primary": "local/evidence-r34/renderer-resolution-r34-final.zip",
+    "fixture_scope": "Fresh worker fixture retained; combined primary build/CTests rerun. No claim of primary fixture re-execution."
+  },
+  "primary_archive": {
+    "path": "local/evidence-r34/renderer-resolution-main-r34.zip",
+    "sha256": "8c5b2f58e716ffda8d706a1aa5fa807fabf7ce7068524e24104be7efe3176081",
+    "files": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "16feccd3a7656a39667a642e54b4dee299251a66696f3b7e490ab694b81d2992"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_resolution_enumeration.obj",
+        "sha256": "103c09ec444164a1216de4e4ba85d5da1d65dca952f024ed06c15c4f438c0c15"
+      },
+      {
+        "path": "local/r34_resolution_integration.log",
+        "sha256": "c90e02c8ce4828996ed417292c1c66a26a6f706c49ea54fa9badc9e1e2cb2c6d"
+      },
+      {
+        "path": "local/r34_resolution_annotations.log",
+        "sha256": "6537c76a9fd7af05068a4a6a71705f80fccfe26eb137e7de32434a1f93cdb168"
+      },
+      {
+        "path": "local/r34_resolution_exports.log",
+        "sha256": "3d0fe7e8f86a2c304834ee7814671c4e013f72d819e3e927fbfb84fdcc127406"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T101348Z.json",
+        "sha256": "3133fc2c8089bb482c4df09bcb6cf80c86449c1dccf686e86bf01ebcc898ed18"
+      },
+      {
+        "path": "include/bsp/native_renderer_resolution_enumeration.hpp",
+        "sha256": "478440bd42997d5839f78f06151d74ded1cf969b2dbc4f4d67ad0d8d6a05acae"
+      },
+      {
+        "path": "src/native_renderer_resolution_enumeration.cpp",
+        "sha256": "d5ccb64e0a7668cfd86518d5f64af59cf6aa31ac2e5726776f526a38d81bf64c"
+      }
+    ]
+  }
 }
