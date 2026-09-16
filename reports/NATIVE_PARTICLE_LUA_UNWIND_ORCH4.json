@@ -1,0 +1,580 @@
+{
+  "packet": "native_particle_lua_unwind_r24",
+  "baseline_commit": "af9ce1480",
+  "worktree": "agent/orch4-20260916-particle-lua-unwind-r24",
+  "documentation": "docs/NATIVE_PARTICLE_LUA_UNWIND_ORCH4.md",
+  "status": "named_lookup_same_frame_source_error_boundary_build_and_focused_probe_checked",
+  "production_cpp_changed": true,
+  "ghidra_mutated": false,
+  "new_native_body_reconstructed": false,
+  "original_abi": {
+    "00868bf0": "ECX actual component; stacked actual LuaObject; RET4",
+    "00871d00": "ECX actual component; stacked actual LuaObject; RET4",
+    "00b67800": "ECX actual Lua table object; stacked output and C-string key; EAX output; RET8",
+    "source": "existing new C++ interface, not binary-compatible ABI"
+  },
+  "ghidra_target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py live queries verify target before read batch",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "regions": [
+    {
+      "address": "00868bf0",
+      "length": 216,
+      "sha256": "c4cb668513eefa759aad0a24b921d5dce074543d373fd2bd4ad9c1d3c6b40d0b",
+      "live_disk_match": true
+    },
+    {
+      "address": "00871d00",
+      "length": 657,
+      "sha256": "9fe5cc32d92ca3707ec509f4db728ae7492269af40ae8458bca52b6a15e9915f",
+      "live_disk_match": true
+    },
+    {
+      "address": "00b67800",
+      "length": 219,
+      "sha256": "44fdc629195c04c5858ad007742cf4029427581463d96d8dc250ef0878fffd56",
+      "live_disk_match": true
+    },
+    {
+      "address": "00c95170",
+      "length": 34,
+      "sha256": "31c6829323ad2529ce82f2ffedd51aa6d2f12e77356064e51f2d7a2ba722de90",
+      "live_disk_match": true
+    },
+    {
+      "address": "00c96130",
+      "length": 58,
+      "sha256": "a8b4552011e5a6d81f8491bd72ccfc636c0bc2c4490f589f91cb161f76a5b68d",
+      "live_disk_match": true
+    },
+    {
+      "address": "00dc7028",
+      "length": 60,
+      "sha256": "a5eaf27e5a4ec59e266fe396f195610ee52ca00e019e3f8a6876f59cf5071db3",
+      "live_disk_match": true
+    },
+    {
+      "address": "00dc8134",
+      "length": 84,
+      "sha256": "d0d9e0404d02af916e64460557030880b1f595797d73edd9c3bbb977bb951c07",
+      "live_disk_match": true
+    },
+    {
+      "address": "00a69330",
+      "length": 62,
+      "sha256": "f256ce9c20e06eaacc1c814efbda7c7e1f1ce5353c93c67cb869484bcac8e9d7",
+      "live_disk_match": true
+    },
+    {
+      "address": "00a68b80",
+      "length": 94,
+      "sha256": "b0b9b3d4c7215c8fbb0406c572784bb977e9e9cacb69e92d92c40b83547c6334",
+      "live_disk_match": true
+    },
+    {
+      "address": "00c034f4",
+      "length": 123,
+      "sha256": "c24e8aaed4de58907df11c265260404d68e8b92e1a6373d11e2db8e73238e755",
+      "live_disk_match": true
+    },
+    {
+      "address": "00c03570",
+      "length": 173,
+      "sha256": "485b3e791edaf7e32822b767836cfc84aead145760ad22fdd9d26135bcf4152d",
+      "live_disk_match": true
+    },
+    {
+      "address": "00bf6b43",
+      "length": 54,
+      "sha256": "0b6262330c802ad46bf5e3c675db66ed6c02d01f93c6da7e63bcc3cbe6de56f2",
+      "live_disk_match": true
+    },
+    {
+      "address": "00c07991",
+      "length": 228,
+      "sha256": "3b08ba0b3c685e6065f6ce8071ccaadcdf9cbbbe82ff0af45c97f073c4acae60",
+      "live_disk_match": true
+    },
+    {
+      "address": "00c069a2",
+      "length": 192,
+      "sha256": "1fec28dd01c0bc6a429f6aabf83fd7d2266beaca51f8ec016d0a7db56ece5973",
+      "live_disk_match": true
+    },
+    {
+      "address": "00a696f0",
+      "length": 240,
+      "sha256": "0ea16d93d437a7572956f057eb9827ccf13f5996618cbf700b7971f700f6fe2e",
+      "live_disk_match": true
+    },
+    {
+      "address": "00a68af0",
+      "length": 118,
+      "sha256": "9cf910cb96224d1e4e9cd098e10780b3d21c9e6e006e1b26e1565e7e44a44b25",
+      "live_disk_match": true
+    }
+  ],
+  "annotations_before": [
+    {
+      "address": "00868bf0",
+      "annotation": {
+        "address": "00868bf0",
+        "function_name": "BSP_EffectComponent_ReadLuaBase",
+        "comment": "[BSP reconstruction 00868bf0]\nHypothesis, not a recovered symbol. ECX actual component; one stack LuaObject pointer; RET4. Autostart truthiness byte10; number-only Delay14 default0 through binary32 and late actual CRT conversion; lookup NoFilterDist before x87 current18 fallback load, number-only float32 or captured default, store before Lua ref release. Full-span disk/live SHA256 c4cb668513eefa759aad0a24b921d5dce074543d373fd2bd4ad9c1d3c6b40d0b. See docs/GAMEPLAY_EFFECT_COMPONENTS.md. Win32 checks and native-constructor/real-Lua fixture passed; component-specific virtuals, native ABI/SEH and gameplay remain unvalidated.\n\n[BSP reconstruction 00868bf0] update\nHypothesis, not a recovered symbol. ECX actual component; one stack LuaObject pointer; RET4. Autostart truthiness byte10; number-only Delay14 default0 through binary32 and late actual CRT conversion; lookup NoFilterDist before x87 current18 fallback load, number-only float32 or captured default, store before Lua ref release. Full-span disk/live SHA256 c4cb668513eefa759aad0a24b921d5dce074543d373fd2bd4ad9c1d3c6b40d0b. See docs/GAMEPLAY_EFFECT_COMPONENTS.md. Win32 checks and native-constructor/real-Lua fixture passed; component-specific virtuals, native ABI/SEH and gameplay remain unvalidated. | Hypothesis, not recovered symbol. Actual native Lua stack-object composition: Autostart truthiness byte10, exact-number Delay14 default0 via genuine B66380 and borrowed late CRT mode, NoFilterDist lookup before CURRENT18 x87 fallback, final store before release. Three completed-object unwind states clean real B67700; second unwind exception terminates. Complete216B live/disk SHA256 c4cb668513eefa759aad0a24b921d5dce074543d373fd2bd4ad9c1d3c6b40d0b. ECX actual component; stack actual14h Lua object; RET4. See docs/NATIVE_EFFECT_COMPONENT_READER_ORCH4.md and reports/native_effect_component_reader_orch4.json. Strict Win32 build/3CTests and focused copied-original/native-Lua composition probe passed. Original ABI/FH3/SEH/gameplay unvalidated."
+      }
+    },
+    {
+      "address": "00871d00",
+      "annotation": {
+        "address": "00871d00",
+        "function_name": "BSP_ParticleComponent_ReadLua",
+        "comment": "[BSP reconstruction 00871d00]\nDescriptive hypothesis; complete657B/202instructions/32calls 00871D00; ECXactual34h component, stackactual14h LuaObject, RET4. Genuine868BF0; Particle table VALUES or scalar string; UnderWater B66000 exactBooleanTYPE (false/true both1). Actual871BD0+4 ->870DD0(name,0,0,1), returntempname beforeAF3E10+70 and append+28. Table captures namepointer/length beforeacquire; scalar rereadsafter; noresource rollback or priorentry clear. SignedDWORDgrowth/currentvector rereads; sixFH3states/DC8158 cleanup current raw names and actualLua. Persistentactual locals precede retained typedcachechildren with sameborrowed publicationdomains. FullPE/live body/actions/info/map match;32livecallrows; independent fullasm/EH review; strictWin32+3CTests and completecopied657B/source actualLua/genuinecache-hit providerprobe3cases pass. No originalchild/FH3/SEH/ABI/executable/game claim. See docs/NATIVE_PARTICLE_COMPONENT_READER_RAW_ORCH4.md and reports/native_particle_component_reader_raw_orch4.json."
+      }
+    },
+    {
+      "address": "00b67800",
+      "annotation": {
+        "address": "00b67800",
+        "function_name": "BSP_LuaObject_GetByName",
+        "comment": "[BSP reconstruction 00b67800]\nHypothesis, not a recovered symbol. __thiscall(table LuaObject, LuaObject *out, const char *name), RET 8, returns out. lua_gettop, lua_pushlstring (00A67A10) and lua_gettable (00A67C20). It is key kind 0 of 00BD5790. See docs/GUI_LUA_READER.md.\n\n[BSP reconstruction 00b67800] update\nHypothesis, not a recovered symbol. __thiscall(table LuaObject, LuaObject *out, const char *name), RET 8, returns out. lua_gettop, lua_pushlstring (00A67A10) and lua_gettable (00A67C20). It is key kind 0 of 00BD5790. See docs/GUI_LUA_READER.md. | Concrete GuiLua51Host uses lua_gettable for bound values including userdata and nil; borrowed original index is resolved after pushing the NUL-scanned key. No non-table nil fallback. Independent listing review and actualLua fixture passed. docs/DIALOG_CONFIG.md; src/gui_lua_runtime.cpp. Registry handles are semantic, not native14h tracking/SEH/GC timing. Lua errors may panic/longjmp; no error-path cleanup guarantee.\n\n[BSP reconstruction 00b67800] update\nHypothesis, not a recovered symbol. __thiscall(table LuaObject, LuaObject *out, const char *name), RET 8, returns out. lua_gettop, lua_pushlstring (00A67A10) and lua_gettable (00A67C20). It is key kind 0 of 00BD5790. See docs/GUI_LUA_READER.md. | Concrete GuiLua51Host uses lua_gettable for bound values including userdata and nil; borrowed original index is resolved after pushing the NUL-scanned key. No non-table nil fallback. Independent listing review and actualLua fixture passed. docs/DIALOG_CONFIG.md; src/gui_lua_runtime.cpp. Registry handles are semantic, not native14h tracking/SEH/GC timing. Lua errors may panic/longjmp; no error-path cleanup guarantee. | Descriptive hypothesis, not a recovered symbol. Full219-byte actual stack lookup: kind3 selects globals, others currentindex AFTERpush key; ignorescheckstack result, lua_gettable preservesmetatables. Publish kind2/index=top/word0C0/tracked1, raisehighwater, append SAME object pointer to5-reference slot. No kind0 guard and no registry-reference substitution. docs/NATIVE_SHADER_STATE_READER.md; reports/native_shader_state_reader.json."
+      }
+    },
+    {
+      "address": "00a69330",
+      "annotation": {
+        "address": "00a69330",
+        "function_name": "luaD_throw",
+        "comment": "[BSP inventory 00a69330] lua511 (high): ldo.c:luaD_throw; noreturn (int3 after) from luaD_call/growCI"
+      }
+    },
+    {
+      "address": "00a68b80",
+      "annotation": {
+        "address": "00a68b80",
+        "function_name": "luaD_rawrunprotected",
+        "comment": "[BSP inventory 00a68b80] lua511 (high): ldo.c:luaD_rawrunprotected; called from lua_newstate/lua_close"
+      }
+    },
+    {
+      "address": "00c034f4",
+      "annotation": {
+        "address": "00c034f4",
+        "function_name": "__setjmp3",
+        "comment": "Library Function - Single Match\n __setjmp3\n\nLibrary: Visual Studio"
+      }
+    },
+    {
+      "address": "00c03570",
+      "annotation": {
+        "address": "00c03570",
+        "function_name": "FID_conflict:___longjmp_internal",
+        "comment": "Library Function - Multiple Matches With Different Base Names\n ___longjmp_internal\n _longjmp\n\nLibrary: Visual Studio 2019 Release"
+      }
+    },
+    {
+      "address": "00bf6b43",
+      "annotation": {
+        "address": "00bf6b43",
+        "function_name": "FID_conflict:___CxxFrameHandler3",
+        "comment": "Library Function - Multiple Matches With Different Base Names\n ___CxxFrameHandler\n ___CxxFrameHandler2\n ___CxxFrameHandler3\n\nLibraries: Visual Studio 2005 Release, Visual Studio 2008 Release, Visual Studio 2010 Release"
+      }
+    },
+    {
+      "address": "00c07991",
+      "annotation": {
+        "address": "00c07991",
+        "function_name": "___InternalCxxFrameHandler",
+        "comment": "Library Function - Single Match\n ___InternalCxxFrameHandler\n\nLibrary: Visual Studio 2005 Release"
+      }
+    },
+    {
+      "address": "00c069a2",
+      "annotation": {
+        "address": "00c069a2",
+        "function_name": "___FrameUnwindToState",
+        "comment": "Library Function - Single Match\n ___FrameUnwindToState\n\nLibrary: Visual Studio 2005 Release"
+      }
+    },
+    {
+      "address": "00a696f0",
+      "annotation": {
+        "address": "00a696f0",
+        "function_name": "FUN_00a696f0"
+      }
+    },
+    {
+      "address": "00a68af0",
+      "annotation": {
+        "address": "00a68af0",
+        "function_name": "seterrorobj",
+        "comment": "[BSP inventory 00a68af0] lua511 (high): ldo.c:seterrorobj; string anchor xref \"not enough memory\"/\"error in error handling\""
+      }
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00a69346",
+      "native": "00c03570",
+      "function": "00a69330"
+    },
+    {
+      "address": "00a68ba6",
+      "native": "00c034f4",
+      "function": "00a68b80"
+    },
+    {
+      "address": "00c035b9",
+      "native": "00c2f25c",
+      "function": "00c03570"
+    },
+    {
+      "address": "00bf6b64",
+      "native": "00c07991",
+      "function": "00bf6b43"
+    },
+    {
+      "address": "00c079f9",
+      "native": "00c069a2",
+      "function": "00c07991"
+    },
+    {
+      "address": "00c06a19",
+      "native": "00c07b10",
+      "function": "00c069a2"
+    },
+    {
+      "address": "00a69723",
+      "native": "00a68b80",
+      "function": "00a696f0"
+    },
+    {
+      "address": "00a69746",
+      "native": "00a68af0",
+      "function": "00a696f0"
+    },
+    {
+      "address": "00b6781d",
+      "native": "00a672f0",
+      "function": "00b67800"
+    },
+    {
+      "address": "00b6784b",
+      "native": "00a672f0",
+      "function": "00b67800"
+    },
+    {
+      "address": "00b67841",
+      "native": "00a67a10",
+      "function": "00b67800"
+    },
+    {
+      "address": "00b67871",
+      "native": "00a67a10",
+      "function": "00b67800"
+    },
+    {
+      "address": "00b67880",
+      "native": "00a67c20",
+      "function": "00b67800"
+    },
+    {
+      "address": "00b6788a",
+      "native": "00a673d0",
+      "function": "00b67800"
+    },
+    {
+      "address": "00c95173",
+      "native": "00b67700",
+      "function": "00c95170",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c9517b",
+      "native": "00b67700",
+      "function": "00c95178",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c95183",
+      "native": "00b67700",
+      "function": "00c95180",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c96133",
+      "native": "00b67700",
+      "function": "00c96130",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c9613b",
+      "native": "00b67700",
+      "function": "00c96138",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c96143",
+      "native": "00b67700",
+      "function": "00c96140",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c9614b",
+      "native": "00b67700",
+      "function": "00c96148",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c96153",
+      "native": "0041dd20",
+      "function": "00c96150",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c9615b",
+      "native": "0041dd20",
+      "function": "00c96158",
+      "kind": "tail_jump"
+    }
+  ],
+  "original_fh3": {
+    "evidence_kind": "original_instruction_and_metadata_path_proof_only",
+    "executed_original_eh": false,
+    "longjmp_exception": "80000026",
+    "accepted_at": "00c079c0",
+    "unwind_mask": "66",
+    "dispatch": "00c079f9 -> 00c069a2 to state -1; predecessor written before action at 00c06a19",
+    "base": {
+      "handler": "00c95188",
+      "func_info": "00dc7040",
+      "map": "00dc7028",
+      "flags": 1,
+      "try_blocks": 0,
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00c95170",
+          "object": "EBP-34 first"
+        },
+        {
+          "state": 1,
+          "previous": -1,
+          "action": "00c95178",
+          "object": "EBP-34 first"
+        },
+        {
+          "state": 2,
+          "previous": -1,
+          "action": "00c95180",
+          "object": "EBP-20 distance"
+        }
+      ]
+    },
+    "particle": {
+      "handler": "00c96160",
+      "func_info": "00dc8134",
+      "map": "00dc8158",
+      "flags": 1,
+      "try_blocks": 0,
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00c96130",
+          "object": "Particle"
+        },
+        {
+          "state": 1,
+          "previous": 0,
+          "action": "00c96138",
+          "object": "UnderWater"
+        },
+        {
+          "state": 2,
+          "previous": 0,
+          "action": "00c96140",
+          "object": "key"
+        },
+        {
+          "state": 3,
+          "previous": 2,
+          "action": "00c96148",
+          "object": "value"
+        },
+        {
+          "state": 4,
+          "previous": 3,
+          "action": "00c96150",
+          "object": "table name"
+        },
+        {
+          "state": 5,
+          "previous": 0,
+          "action": "00c96158",
+          "object": "scalar name"
+        }
+      ]
+    },
+    "ordering_limit": "FH3 actions run before A696F0 restores Lua CallInfo/base. Index validity during a nested metamethod error is not established."
+  },
+  "source_boundary": {
+    "function": "native_lua_get_by_name_00b67800",
+    "dependency": "pinned linked Lua5.1.1 private luaD_pcall",
+    "same_c_frame": true,
+    "trivial_callback_locals_only": true,
+    "covers": "checkstack, pushlstring, gettable and subsequent output/tracking publication",
+    "success": "original operation body/order retained; current owner/index reload after key push; ignored checkstack return retained",
+    "failure": "luaD_pcall restores prior CallInfo/base; entry top restored; no output publication; throw NativeLuaOperationError{status} to source reader catches",
+    "error_handler": "inherits current L->errfunc; runtime handler runs before source status; resulting Lua error value consumed",
+    "requires": "stable table/owner/interpreter/stack domain throughout callbacks; no foreign C++ exception thrown through Lua",
+    "general_retained_dispatch_admitted": false
+  },
+  "validation": {
+    "full_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "ctests_passed": 3,
+      "log": "local/lua_unwind_full_build.log",
+      "log_sha256": "162b043586300b83bd5a4d1c816696416cc466807a97bd4e1e799844d283a925",
+      "architecture": "MSVC Win32",
+      "flags": [
+        "/MD",
+        "/W4",
+        "/WX",
+        "/fp:strict"
+      ]
+    },
+    "seed_verification": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "exit_code": 0,
+      "regions": 8
+    },
+    "actual_source_error_probe": {
+      "exit_code": 0,
+      "cases": [
+        {
+          "trigger": "Delay __index Lua error",
+          "lua_status": 2,
+          "failure_site": "00871d22",
+          "native_state": -1
+        },
+        {
+          "trigger": "UnderWater __index Lua error",
+          "lua_status": 2,
+          "failure_site": "00871d4c",
+          "native_state": 0
+        }
+      ],
+      "root_index": 64,
+      "root_remains_table": true,
+      "restored_caller_values": 63,
+      "remaining_tracked_objects": 1,
+      "acquired_children": 0,
+      "real_resource_string_vfs_domains_drained": true,
+      "compiled_current_sources": [
+        "src/native_lua_objects.cpp",
+        "src/native_effect_component_reader.cpp",
+        "src/native_particle_component_reader_raw.cpp"
+      ]
+    },
+    "ordinary_flow_parity": {
+      "exit_code": 0,
+      "copied_original_bytes": 657,
+      "cases": [
+        "scalar",
+        "table",
+        "empty table"
+      ],
+      "existing_r22_probe_reused": true,
+      "original_eh_executed": false
+    },
+    "inherited_handler_probe": {
+      "exit_code": 0,
+      "handler_calls": 1,
+      "lua_status": 2,
+      "outer_status": 0,
+      "output_preimage_unchanged": true,
+      "same_callinfo_base_and_root": true,
+      "prior_errfunc_restored": true
+    },
+    "checkstack_allocation_failure": {
+      "exit_code": 0,
+      "method": "probe-only Lua allocator rejects next growth after filling available stack",
+      "rejected_allocations": 1,
+      "lua_status": 4,
+      "failure_before_key_push": true,
+      "output_preimage_stack_sentinel_tracking_preserved": true,
+      "production_allocator_modified": false
+    },
+    "call_rows": {
+      "checked": 23,
+      "failed": 0,
+      "log": "local/lua_unwind_call_verify.log"
+    },
+    "final_probe_libraries": "All three focused probes relinked against this worktrees completed strict build; exited0."
+  },
+  "artifacts": [
+    {
+      "path": "local/lua_unwind_probe.cpp",
+      "sha256": "4ac8da60e7ca771e87c9a269dd1c28593f336a718d869d8008a454097d38e0b5"
+    },
+    {
+      "path": "local/lua_unwind_normal_probe.cpp",
+      "sha256": "216681e77228108ddf48101a45e931a8163a445827d4f538853a0868a53db1cc"
+    },
+    {
+      "path": "local/particle_component_original.inc",
+      "sha256": "ab17254e9985befef07205f5536f8afb277113a7dd9959e6859e078887159b0e"
+    },
+    {
+      "path": "local/lua_named_handler_probe.cpp",
+      "sha256": "69429db4304fda58f58f908b715c5533c1f6a1d26fa30c742784c0d363b7780c"
+    },
+    {
+      "path": "local/build_lua_unwind_probe.ps1",
+      "sha256": "664521a2dd22813f0cfe06fb24e57a5946f42cf26752d1a5b2c8f85c385738ab"
+    },
+    {
+      "path": "local/lua_unwind_production_build.log",
+      "sha256": "702c537b2c9db57fe43573ec8eacaed6914e5c8ac11991474d0c28aa6e1cc777"
+    },
+    {
+      "path": "local/lua_unwind_normal_build.log",
+      "sha256": "8163e650268374f42632f5e6003ca05c54b16d4cd64e432e2bee1af5251ad130"
+    },
+    {
+      "path": "local/lua_unwind_handler_build.log",
+      "sha256": "2c4cf4d25a9724c82b618645012cbed64df6869bf4620bbc836e0b414b394602"
+    },
+    {
+      "path": "local/lua_unwind_seed_verify.log",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/lua_unwind_call_context.json",
+      "sha256": "0f70c2a3cfe80ea83f288afafeb409136f7a07c56411493ad743850a40256653"
+    }
+  ],
+  "source_hashes": {
+    "src/native_lua_objects.cpp": "74c5895f6e3fe4389ff32bedd1f92c58de84de7a072c17a6453565f087da0455",
+    "include/bsp/native_lua_objects.hpp": "ea2829a88429ebc7eb74815938b3ebc25aa2faa614c093cba6e380fbeebf7ac7",
+    "src/native_effect_component_reader.cpp": "e89f835cbd730a9ca7d5080faf3e0beb9b72e5f33b072713d732fbcc43f1bb47",
+    "src/native_particle_component_reader_raw.cpp": "a278e0f7d360ec2816f46f0391038921f080b8fc152c5e15a20f265b9951875e"
+  },
+  "built_libraries": {
+    "build/win32/Release/bsp_core.lib": "b3808e8d393200c08a0337825e1800d3864099e5e410d3251b719dc69fda2881",
+    "build/win32/Release/bsp_lua511.lib": "a3ce06f4fd68dbd7760f7d2a84019197b4e771c7552510710979e137dd7aa187"
+  },
+  "limits": [
+    "No execution of original FH3/SEH or game process.",
+    "No exact original error-stack parity after failing nested metamethod.",
+    "Named lookups precede resource acquisition: source failure probe creates no acquired resource children.",
+    "Iteration, numeric-to-string conversion, bridge construction and other primitives still need error boundaries.",
+    "Only forced checkstack growth allocation failure covered; other allocation failures and reentrant/alias stack mutation not tested.",
+    "No native register ABI equivalence or general retained dispatch admission."
+  ]
+}

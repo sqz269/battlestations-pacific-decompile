@@ -54,10 +54,19 @@ int execute_native_lua_string_00b66c60(NativeLuaStateStorage&,const NativeString
 // then clear state04 unconditionally, leaving ownership/tracking metadata stale.
 void close_native_lua_state_00b669a0(NativeLuaStateStorage&);
 NativeLuaObjectStorage* native_lua_globals_00b67980(NativeLuaStateStorage&,void* fresh);
+// Source error transport for the named-lookup boundary below. This is a linked
+// Lua status, not the original CRT exception or a retained Lua error value.
+struct NativeLuaOperationError { int status; };
 // B67800 always uses the supplied owner, even for kind0. Kind3 reads globals;
 // all other kinds use current index08 AFTER pushing the C-string key. Output
 // is a tracked kind2 object at actual top. Unchecked slots<50/refs<5 are caller
 // contracts; lua_checkstack's return is ignored just as in the original.
+// Named lookup alone protects its checkstack/push/gettable in the SAME Lua C
+// frame. On Lua error it restores the entry stack, publishes no output, and
+// throws NativeLuaOperationError after Lua restores the frame. Inherits the
+// current error handler; consumes its error value. Caller objects/interpreter
+// must remain stable, including across metamethod/error-handler execution.
+// Other primitives still have their existing Lua nonlocal-transfer contract.
 NativeLuaObjectStorage* native_lua_get_by_name_00b67800(
     NativeLuaObjectStorage& table,void* fresh,const char* key);
 NativeLuaObjectStorage* native_lua_get_by_string_00b68100(

@@ -7,6 +7,7 @@
 extern "C" {
 #include <lua.h>
 #include <lauxlib.h>
+#include <ldo.h>
 }
 namespace bsp {
 NativeLuaObjectStorage* construct_native_lua_object_00b65f50(void* fresh) noexcept {
@@ -37,7 +38,8 @@ NativeLuaObjectStorage* native_lua_globals_00b67980(NativeLuaStateStorage& owner
     object->owner_00=&owner;object->kind_04=1;object->index_08=LUA_GLOBALSINDEX;
     object->opaque_0c=0;object->tracked_10=0;return object;
 }
-NativeLuaObjectStorage* native_lua_get_by_name_00b67800(
+namespace {
+NativeLuaObjectStorage* get_by_name_unprotected(
     NativeLuaObjectStorage& table,void* fresh,const char* key){
     const bool globals=table.kind_04==3;
     (void)lua_checkstack(table.owner_00->state_04,1);
@@ -52,6 +54,33 @@ NativeLuaObjectStorage* native_lua_get_by_name_00b67800(
     const auto slot_index=static_cast<std::int32_t>(static_cast<std::uint32_t>(owner->stack_offset_0c)+static_cast<std::uint32_t>(top));
     if(owner->high_water_4c4<=slot_index)owner->high_water_4c4=slot_index+1;
     auto& slot=owner->slots_14[slot_index];slot.references_00[slot.count_14]=object;++slot.count_14;return object;
+}
+struct NamedLookupOperation {
+    NativeLuaObjectStorage* table;
+    void* fresh;
+    const char* key;
+    NativeLuaObjectStorage* result;
+};
+void named_lookup_operation(lua_State*,void* context) {
+    auto& operation=*static_cast<NamedLookupOperation*>(context);
+    operation.result=get_by_name_unprotected(*operation.table,operation.fresh,operation.key);
+}
+} // namespace
+NativeLuaObjectStorage* native_lua_get_by_name_00b67800(
+    NativeLuaObjectStorage& table,void* fresh,const char* key){
+    auto* const state=table.owner_00->state_04;
+    const int entry_top=lua_gettop(state);
+    NamedLookupOperation operation{&table,fresh,key,nullptr};
+    // Pinned Lua5.1.1 private API: unlike lua_pcall/lua_cpcall this invokes the
+    // trivial callback without introducing another Lua C frame. Include the
+    // allocation in checkstack and key creation in the protected operation.
+    const int status=luaD_pcall(state,&named_lookup_operation,&operation,
+        savestack(state,state->top),state->errfunc);
+    if(status){
+        lua_settop(state,entry_top);
+        throw NativeLuaOperationError{status};
+    }
+    return operation.result;
 }
 NativeLuaObjectStorage* native_lua_get_by_string_00b68100(
     NativeLuaObjectStorage& table,void* fresh,const NativeString& key){
