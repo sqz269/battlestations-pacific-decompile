@@ -1,0 +1,1096 @@
+{
+  "packet": "renderer_model_contract_r32",
+  "status": "evidence_only_contract_audit_complete_no_source_integration",
+  "scope": {
+    "main_base": "44dfc5c317f11a844f43ab803873eb651b639d99",
+    "reviewed_other_tip": "769bdc3e3b8254f95867b11e2546d629f2a564b6",
+    "other_branch": "agent/orch5-20260911",
+    "later_parent_commit": "c68a19df23e6ba0b0ce64eec68b40b9dc287e291",
+    "later_commit_note": "Focused diff confirms no changes between base and c68a19df2 in native_model_owner, native_node_destruction or native_resource_support header/source pairs. This audit remains pinned to base; parent separately integrated the gather overload.",
+    "output_only": "reports/native_renderer_model_contract_r32.json",
+    "no_production_ledger_cmake_changes": true,
+    "ghidra_read_only": true,
+    "builds_tests_or_native_execution": false,
+    "parent_handles_integration": true
+  },
+  "conclusions": [
+    "All three actual renderer fields +19E0/+19E4/+19E8 receive the B4C700 generated-model result; +19E0 was newly resolved by exact existing instructions despite no containing Ghidra function.",
+    "Current main already has complete model construction B75030, destruction B750C0 and scalar deletion B75290, including an additive actual-header/raw-name construction path. No duplicate model reconstruction or shared-file replacement is needed.",
+    "The older factory/destructor are mutually consistent in the nonnull NativeStringStorage adapter domain, which current main still supports. They reject the newer raw model domain because the old factory requires actual_names == &strings and the old destructor requires actual_names != nullptr.",
+    "A minimal compatible extension consists of an explicit expected name-service binding in the future renderer destructor context and a separate raw generated-model overload borrowing current raw pool cells and node constants. Keep existing adapter entrypoints and every owner/runtime/cell guard.",
+    "Native producer type evidence does not supply canonical host bindings or an application renderer producer. Complete derived renderer construction/destruction, control-worker binding and EndFrame admission remain separately gated."
+  ],
+  "address_correction": {
+    "initial_hint": "00b75320",
+    "actual_containing_function": "BSP_Model_CloneCurrent10",
+    "containing_entry": "00b752b0",
+    "containing_end_exclusive": "00b753f2",
+    "instruction_start": "00b7531f",
+    "instruction": "MOV EBP,dword ptr [00ce2220]",
+    "instruction_hex": "8b2d2022ce00",
+    "finding": "B75320 is the second byte of this six-byte instruction, not an entry or an instruction start. A no-instruction response for this interior byte is not a listing gap.",
+    "verified_lifetime_entries": [
+      "00b75030",
+      "00b750c0",
+      "00b75290"
+    ],
+    "action": "Preserve clone function and instruction; no definition, split, rename or source change proposed there."
+  },
+  "current_source_contract": {
+    "actual_type_name": "NativeModelEnvironment; NativeModelOwnerContext is not the current API name.",
+    "environment_dependencies": [
+      "NativeModelPool& pool_01090054",
+      "NativeNodeDestructionRuntime& nodes",
+      "ModelTypeBootstrap& types",
+      "NativeRenderActualOwners& retained_owners",
+      "NativeModelConstants borrowed current minimum CE4ADC, maximum CE4970, negative-zero D7A208 and unchanged D7A260 cells",
+      "current D62DE8 profile >=23 DWORDs and D62C88 profile >=22 DWORDs",
+      "NativeStringStorage* actual_names"
+    ],
+    "modes": [
+      {
+        "mode": "legacy semantic",
+        "selector": "actual_names == nullptr and nodes constructed with semantic SizedStoragePool",
+        "constructor": "two-argument construct_native_model_00b75030(owner, NativeString const&)",
+        "cleanup": "semantic name pool"
+      },
+      {
+        "mode": "actual string adapter",
+        "selector": "actual_names != nullptr; stable exact NativeStringStorage instance through model destruction",
+        "constructor": "same two-argument overload delegates to that adapter",
+        "cleanup": "NativeStringStorage adapter, whose release is noexcept",
+        "orch5_factory": "requires actual_names == &model_and_geometry.strings",
+        "orch5_destructor": "requires nodes raw runtime and actual_names != nullptr, plus actual raw cell identities"
+      },
+      {
+        "mode": "actual header and raw current pool",
+        "selector": "actual_names == nullptr and nodes constructed with persistent NativeStringRawPoolContext",
+        "constructor": "three-argument construct_native_model_00b75030(owner, actual_name_header, NativeNodeRawConstants const&)",
+        "cleanup": "same nodes.require_raw_name_pool(); no NativeStringStorage release bridge",
+        "important": "two-argument overload with null actual_names asks for the semantic pool; it does not auto-select raw mode"
+      }
+    ],
+    "raw_constants_identity": "Raw constructor requires borrowed positive_bound_00ce4970 and negative_bound_00ce4adc to have the same addresses as environment maximum/minimum. The additional one_00d7a24c is also an actual current cell; do not invent or snapshot it.",
+    "raw_runtime_identity": "NativeNodeDestructionRuntime stores immutable mutually exclusive semantic/raw pool pointers. The raw context borrows actual_published_01090aa8, actual_small_returns_disabled_01090aa4 and actual_manager_publication_01090aa0. No new mode flag is needed in NativeModelOwner.",
+    "cleanup_selector": "finish_node first selects nonnull actual_names; otherwise raw runtime if present; otherwise semantic runtime. It ends the model tail on success or failure, then propagates a direct destructor failure.",
+    "header_comment_correction": "The existing actual_names comment saying null retains the semantic interface applies to the legacy two-argument overload only. Proposed documentation should describe the separate raw overload; null alone does not identify semantic versus raw.",
+    "stable_actual_storage": "NativeModelPool slot 0x188, body 0x184, trailing pool index DWORD +0x184; preparation preserves slot preimages and registers only the external scene association. NativeModelOwner must remain stable through its explicit lifetime.",
+    "canonical_reference": "NativeModelReference borrows the actual +4 atomic count, requires a live owner, a retirement callback and current BD30E0/B75290 terminal slots. It binds the same GeneratedModelLifetimeRuntime exposed by nodes.attachments; no copied count or projected model can replace it."
+  },
+  "native_lifetime": [
+    {
+      "entry": "00b75030",
+      "name": "BSP_GeneratedModel_Construct",
+      "bytes": 132,
+      "end_exclusive": "00b750b4",
+      "abi": "ECX actual model, stack actual 8-byte name header; EAX same model; RET4",
+      "calls": [
+        {
+          "site": "00b75038",
+          "target": "00b6f5a0",
+          "meaning": "construct actual node prefix"
+        }
+      ],
+      "behavior": "Publishes D62DE8; clears retained174 and geometry180; loads current CE4ADC/CE4970 model scalars and D7A208 pose values. No local FH3 frame in this 132-byte parent."
+    },
+    {
+      "entry": "00b750c0",
+      "name": "BSP_Model_Destroy",
+      "bytes": 165,
+      "end_exclusive": "00b75165",
+      "abi": "ECX actual model; RET",
+      "eh": "Frame handler CC1C66. Local state 1 before retained174 release, state 0 before geometry180 release, then -1 before base node destruction. Existing source carries this cleanup schedule; this audit did not execute FH3 or requalify handler metadata.",
+      "calls": [
+        {
+          "site": "00b75101",
+          "target": "indirect CE2220 import captured in EBP",
+          "meaning": "InterlockedDecrement actual retained174+4"
+        },
+        {
+          "site": "00b7510d",
+          "target": "current retained174 virtual slot00",
+          "meaning": "zero-count terminal"
+        },
+        {
+          "site": "00b7512c",
+          "target": "same captured CE2220 import",
+          "meaning": "InterlockedDecrement current geometry180+4"
+        },
+        {
+          "site": "00b75138",
+          "target": "current geometry180 virtual slot00",
+          "meaning": "zero-count terminal"
+        },
+        {
+          "site": "00b7514e",
+          "target": "00b6f440",
+          "meaning": "node destruction"
+        }
+      ],
+      "behavior": "Read current retained174 then geometry180; decrement their actual counts, dispatch current slot00 only at zero, and clear after return. A direct destructor exception uses existing cleanup states; no failed release is retried."
+    },
+    {
+      "entry": "00b75290",
+      "name": "BSP_Model_DeletingDestructor",
+      "bytes": 32,
+      "end_exclusive": "00b752b0",
+      "abi": "ECX actual model, stack flags; EAX original captured model; RET4",
+      "calls": [
+        {
+          "site": "00b75293",
+          "target": "00b750c0"
+        },
+        {
+          "site": "00b752a5",
+          "target": "00b74750",
+          "meaning": "return to model pool01090054 iff flags bit0 after destructor returns"
+        }
+      ]
+    },
+    {
+      "entry": "00b6dfa0",
+      "bytes": 105,
+      "end_exclusive": "00b6e009",
+      "abi": "ECX actual node/model; tail-dispatch current virtual18",
+      "calls": [
+        {
+          "site": "00b6dff0",
+          "target": "00b72220",
+          "meaning": "unlink current root-list node when no parent"
+        },
+        {
+          "site": "00b6e007",
+          "target": "current receiver virtual18",
+          "meaning": "tail jump; qualified model slot B6F310"
+        }
+      ],
+      "behavior": "Unlink current parent/siblings or root list before current virtual18. This is not an unconditional physical destructor call; logical release may leave other references alive."
+    }
+  ],
+  "producer_consumer_matrix": [
+    {
+      "renderer_field": "19E0",
+      "initial_zero_site": "00b324e5",
+      "producer_entry_candidate": "00b2b270",
+      "producer_status": "instructions present, no containing function at audit time",
+      "queue_count_field": "1CF8",
+      "count_gate_site": "00b2b28b",
+      "null_test_site": "00b2b299",
+      "model_name": "DebugLines",
+      "model_name_literal": "00d5e770",
+      "section_kind": 2,
+      "vertex_primitive_index_counts": [
+        0,
+        0,
+        0
+      ],
+      "factory_call": "00b2b301",
+      "result_store": "00b2b306",
+      "store_instruction": "MOV [ESI+19E0],EAX",
+      "consumer_load": "00b32b51",
+      "consumer_call": "00b32b5b",
+      "consumer_target": "00b6dfa0",
+      "clear_after_return": "00b32b60"
+    },
+    {
+      "renderer_field": "19E4",
+      "initial_zero_site": "00b324eb",
+      "producer_entry": "00b2bb90",
+      "producer_name": "BSP_Renderer_DrawDebugSphereRecords",
+      "queue_count_field": "1D10",
+      "model_name": "DebugSpheres",
+      "section_kind": 3,
+      "vertex_primitive_index_counts": [
+        0,
+        0,
+        0
+      ],
+      "factory_call": "00b2bc2a",
+      "result_store": "00b2bc2f",
+      "store_instruction": "MOV [EDI+19E4],EAX",
+      "consumer_load": "00b32b6a",
+      "consumer_call": "00b32b74",
+      "consumer_target": "00b6dfa0",
+      "clear_after_return": "00b32b79"
+    },
+    {
+      "renderer_field": "19E8",
+      "initial_zero_site": "00b324f1",
+      "producer_entry": "00b2b580",
+      "producer_name": "FUN_00b2b580",
+      "queue_count_field": "1D1C",
+      "model_name": "2DSprites",
+      "section_kind": 4,
+      "vertex_primitive_index_counts": [
+        0,
+        0,
+        0
+      ],
+      "factory_call": "00b2b607",
+      "result_store": "00b2b60c",
+      "store_instruction": "MOV [EDI+19E8],EAX",
+      "consumer_load": "00b32b83",
+      "consumer_call": "00b32b8d",
+      "consumer_target": "00b6dfa0",
+      "clear_after_return": "00b32b94"
+    }
+  ],
+  "shared_producer_proof": {
+    "entry": "00b4c700",
+    "bytes": 462,
+    "end_exclusive": "00b4c8ce",
+    "abi": "Native ECX=model-name8h header, EDX=layout-name8h header, five stack arguments: effect-name header, section kind, vertex count, primitive count, index count; EAX model; RET14.",
+    "pool_call": "B4C725 -> B74EB0 canonical model pool allocation; existing source uses same pool object allocate_raw_slot_B74D00.",
+    "constructor_call": "B4C73B -> B75030, with allocated slot in ECX and actual model-name header pushed at B4C738.",
+    "captured_return": "B4C740 stores model pointer at stack+10; B4C8B9 reloads it to EAX; RET14 at B4C8CB.",
+    "publication_order": "Each audited caller stores returned EAX in its renderer member before releasing its temporary name strings. No extra retain is inserted on these stores; the returned creator reference remains outstanding.",
+    "source_canonical_binding": "Orch5 source calls prepare_model on the exact allocated slot/environment, runs B75030, then bind_completed_model and verifies owners.resolve_actual(raw_model) == the same NativeModelReference. Preparation/constructor failure retires the failed companion and returns the raw pool slot. Completed native creators survive subsequent host-binding/child failures.",
+    "other_source_dependencies": "Actual mesh/declaration/material/section and stream providers; current renderer slots38/5C/60/48 qualified as B317E0/B287C0/B288B0/B318B0; unchanged x87 sentinel cell D7A260. Existing strings for declarations/effects/materials stay bound to the same adapter. A raw model-name extension does not replace those services.",
+    "ownership_limit": "On success the model creator and any nonzero index creator remain outstanding. Do not add a balancing release absent from native schedule."
+  },
+  "listing_gap": {
+    "candidate_entry": "00b2b270",
+    "candidate_final_instruction": "00b2b573 RET4",
+    "candidate_end_exclusive": "00b2b576",
+    "candidate_extent_bytes": 774,
+    "prologue": "MOV EAX,FS:[0] at B2B270; PUSH -1; PUSH CBD458; save FS frame; stack58; ECX renderer copied to ESI.",
+    "epilogue": "B2B564 reload frame, B2B568 POP ESI, B2B569 restore FS:[0], B2B570 ADD ESP,64, B2B573 RET4.",
+    "bounded_proof": "Entry/cold-factory/store and epilogue spans match live/PE. Full intervening CFG, handler extent and all incoming edges were not audited; extent is a candidate, not a requested or completed definition.",
+    "old_name": null,
+    "proposed_descriptive_name": "BSP_Renderer_DrawDebugLineRecords (provisional, distinct from existing B28D00 debug-lines source)",
+    "proposed_comment": "Read-only producer gate: nonzero renderer+1CF8 and null +19E0 reach B4C700 at B2B301 with DebugLines, pf43cc.mvfm, debugshader.mshd, section kind2 and zero counts. Returned model stored at +19E0 at B2B306 before temporary-name releases. Full body/ABI/FH3 qualification remains separate.",
+    "mutations_performed": false
+  },
+  "concrete_patch_proposal": {
+    "status": "review proposal only; no implementation or admission of full derived renderer",
+    "required_main_model_api_changes": "None. Reuse existing 3-argument raw B75030 and existing canonical deletion/reference APIs. Optional comment clarification only.",
+    "future_destructor_context": {
+      "file": "include/bsp/native_renderer_destructor.hpp (not currently on main)",
+      "add": "class NativeStringStorage; then NativeStringStorage* expected_model_names; in NativeRendererDestructorContext, explicitly initialized by the caller.",
+      "contract": "Null selects current raw-model mode; nonnull is the exact persistent adapter pointer expected for every renderer-owned model. The existing actual_nodes raw-runtime and SAME actual AA8/AA4/AA0 checks remain mandatory in either case. No semantic pool fallback.",
+      "replace_guard": "require(c.actual_nodes.uses_raw_name_pool() && model.environment.actual_names == c.expected_model_names);",
+      "retain_guards": [
+        "dynamic_cast<NativeModelReference*> of actual_nodes.attachments.find_actual_node(actual raw pointer)",
+        "address of reference.model_owner().storage.node equals incoming raw owner",
+        "address of model.environment.nodes equals address of c.actual_nodes",
+        "address equality of raw actual_published_01090aa8 to c.string_pool_01090aa8",
+        "address equality of raw actual_small_returns_disabled_01090aa4 to c.small_returns_disabled_01090aa4",
+        "address equality of raw actual_manager_publication_01090aa0 to c.singleton_manager_01090aa0",
+        "current model terminal/virtual18 selector checks performed by existing NativeModelReference"
+      ],
+      "rejected_shortcuts": [
+        "Remove actual_names check",
+        "Accept any nonnull adapter",
+        "Treat a semantic runtime as raw",
+        "Copy publication values into new cells",
+        "Construct a projected node or copied reference count"
+      ],
+      "adapter_limit": "Exact adapter-pointer equality strengthens the older guard, but that adapter private AA8/AA4/AA0 binding remains a documented application precondition because its public API has no identity accessor. Do not claim that raw-runtime cell comparisons introspect the adapter."
+    },
+    "future_factory_additive_raw_overload": {
+      "files": [
+        "include/bsp/native_renderer_generated_model.hpp",
+        "src/native_renderer_generated_model.cpp"
+      ],
+      "borrowed_binding": "struct NativeRendererRawModelBinding { NativeStringRawPoolContext& names; const NativeNodeRawConstants& constants; };",
+      "overload": "Add an overload of create_native_renderer_generated_model_00b4c700 with its existing arguments plus const NativeRendererRawModelBinding&. Keep the existing adapter overload and its actual_names == &a.strings gate unchanged.",
+      "raw_gate": "Require a.models.actual_names == nullptr, a.models.nodes.uses_raw_name_pool(), exact address equality between the runtime raw context AA8/AA4/AA0 references and binding.names, and binding.names.actual_manager_publication_01090aa0 bound to c.actual_manager_01090aa0. Keep every existing model/pool/retained-owner/stream/renderer/synchronization/string-service guard other than the adapter-specific model-name predicate.",
+      "constructor_statement": "construct_native_model_00b75030(model, static_cast<const void*>(&model_name), raw_model.constants);",
+      "header_rule": "NativeString is the actual 8-byte length/pointer header. Pass the same caller header address; do not create a string copy or substitute its data pointer. Native raw constructor preserves current header reads and aliases.",
+      "constants_gate": "Use existing raw B75030 identity checks for CE4970/CE4ADC; bind actual current D7A24C for one. The binding and constants must outlive this call; the runtime raw pool and null actual_names choice must remain valid through model destruction.",
+      "mode_boundary": "Other material/declaration/effect names still use a.strings and preserve their existing identity guards and noexcept adapter boundary. Raw model construction alone does not upgrade every child exception domain.",
+      "caller_changes": "Only a later admitted renderer producer selects this explicit overload and supplies the binding. Existing NativeInstanceGeometryAccess, B4C8D0 instance geometry users and GUI widget semantic/adapter users remain unchanged. Future E0/E4/E8 producer ports must agree with the destructor expected_model_names value."
+    },
+    "why_both_sides": "Changing only the destructor can admit externally prepared raw models but does not make the old B4C700 source produce them. Changing only the factory would generate models rejected by the older consumer. Native byte evidence supports the same model lifetime for all three fields; host mode/context agreement is the missing source composition."
+  },
+  "genuine_storage_fixture_prerequisites": [
+    "Use one actual NativeModelPoolStorage/NativeModelPool over genuine 0x188 slots, actual slab bookkeeping and critical section; preserve the +0x184 slot index and return exactly once through B74750. Destroy the pool only after all owners/references are gone.",
+    "Borrow one actual AA0 manager publication, AA8 NativeStringPoolStorage publication and AA4 small-return flag. Use the existing substantive raw singleton/name pool providers; an already-published actual pool tests the fast path only, not cold manager construction.",
+    "Supply actual nonempty 8-byte model-name storage and accessible live data; real CE4970/CE4ADC/D7A24C/D7A208/D7A260 cells; valid current D62DE8/D62C88 profile views with required extents and selectors. Do not call numeric EXE addresses as host function pointers.",
+    "Use the same SceneAttachmentRuntime, GeneratedModelLifetimeRuntime/actual_nodes.attachments, NativeRenderActualOwners and ModelTypeBootstrap throughout. prepare_model and bind_completed_model must create/register the exact NativeModelOwner and NativeModelReference for that slot; callbacks are host identity bookkeeping, not native constructor substitutes.",
+    "Retire the canonical reference/companion after physical pool return without reading freed native fields. The host reference remains alive until its explicit disposal callback; no implicit live NativeModelOwner destruction.",
+    "For the smallest consumer trajectory, construct one genuine raw model with real name allocation and valid null retained174/geometry180, then invoke existing B6DFA0 source through its canonical reference. Verify logical release, count-zero scalar path, one pool return and same actual name-ring recycling. This is a model consumer fixture, not full B4C700 or full B32920 validation.",
+    "A nonnull retained174 or geometry180 requires a genuine supported canonical terminal and real retained count/scene relationships. Full B4C700 requires the actual mesh/declaration/stream/material/effect/section provider closure; nulling these fields afterward does not validate that factory.",
+    "A renderer-member fixture must place the same canonical model raw address in its real +19E0/E4/E8 cell only after completed construction/binding. Verify the cell clears only after B6DFA0 returns; do not fabricate a success/no-op lifetime callback to exercise the schedule.",
+    "Keep cleanup-failure probes separate from the canonical final-release trajectory: B6DFA0 source, NativeModelReference::release_model_virtual18 and release_zero_references are noexcept. A raw name-pool getter throw can propagate from explicit direct model deletion, but cannot be claimed to propagate through this canonical noexcept terminal graph.",
+    "Reuse the existing raw model source probe as a starting point if a later implementation requires validation; one focused additional genuine-storage canonical-unlink trajectory suffices for this contract risk. No new test or executable was created or run in this audit."
+  ],
+  "validation_boundaries": {
+    "this_audit": "Source/API/control-flow review and 14 fresh PE/live byte comparisons only. No compiled integration, runtime fixture, original-byte execution or game validation.",
+    "existing_raw_model_report": "reports/native_model_raw_name_bp.json at main base",
+    "existing_raw_model_validation": {
+      "build_passed": true,
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "ctests_passed": 2,
+      "ctests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "unchanged_build_inputs": 2553,
+      "focused_source_probe": {
+        "passed": true,
+        "new_adapted_trajectory_count": 1,
+        "description": "Nonempty actual-header raw construction, raw direct deletion and exact name-buffer recycling from the same actual NativeStringPool size ring.",
+        "native_pool_domain": "Already-published actual pool fast path; raw manager publication is not consumed.",
+        "compile": "/W4 /WX /EHsc /fp:strict /O2 /Oy- /MD /Gy /Gw; /MANIFEST:EMBED verified in PE",
+        "no_cleanup_exception_injection": true,
+        "no_original_byte_execution": true
+      },
+      "existing_legacy_source_probe_passed": true,
+      "legacy_constructor_coff_unchanged": true,
+      "names_preserved": true,
+      "three_original_thiscall_signatures_saved_read_back": true,
+      "prior_comments_preserved": true,
+      "exports_force_refreshed": 3,
+      "new_native_fixture": false,
+      "drop_in_ABI": false,
+      "native_FH3_SEH": false,
+      "gameplay": false
+    },
+    "old_factory_validation": {
+      "status": "strict_win32_eight_seeds_two_ctests_and_focused_actual_creator_source_fixture_passed",
+      "source_commit": "0212603dd3c5b4fb5f8c4a1117906aed16d8714a",
+      "call_rows_checked": 21,
+      "call_rows_failed": 0,
+      "indirect_rows_unproved": 16
+    },
+    "old_factory_fixture": {
+      "cases": [
+        "Actual AA0/AA8/AA4 strings, canonical raw mesh/section creators, substantive append/retains and cascading real terminal pool returns.",
+        "Two source-only canonical bind failures retain completed raw mesh and section creators plus companions; explicit substantive terminals retire unregistered companions."
+      ],
+      "generated_model_normal_body_executed": false,
+      "raw_material_route_executed": false
+    },
+    "old_destructor_validation": {
+      "full_destructor_runtime_executed": false,
+      "late_parent_failure_runtime_executed": false,
+      "original_native_destructor_executed": false,
+      "native_fh3_executed": false,
+      "game_validated": false
+    },
+    "remaining_edges": [
+      "No whole B32410/B32920 application provider composition is established by this report; prior R31 audit remains the broader boundary.",
+      "Cold material compiler/effect continuation B3B3C0/B3B513/B3B536 and full B4C700 parent execution remain separate.",
+      "Control-worker fixed process binding and actual EndFrame callback/provider composition remain separate admission conditions.",
+      "Complete B2B270 candidate body/CFG/FH3 metadata and its source port remain unqualified; the narrow return/store gate is proved.",
+      "Raw source exception cleanup is not native FH3/private-frame/SEH identity; transient typed-lifetime writes, asynchronous/fault-time observations and binary drop-in ABI are unproved.",
+      "Publication/canonical binding is an application responsibility; existence of reconstructed bodies and matching native bytes does not instantiate that application graph."
+    ]
+  },
+  "source_provenance": {
+    "main_raw_model_last_source_commit": "8f2c9521e5c62f314f8fed1e3a729f569d404565",
+    "other_factory_source_commit": "0212603dd3c5b4fb5f8c4a1117906aed16d8714a",
+    "other_destructor_source_commit": "1e70442b46953b54737792ec4bfdbdb6057ba40d",
+    "files": [
+      {
+        "revision": "44dfc5c317f11a844f43ab803873eb651b639d99",
+        "path": "include/bsp/native_model_owner.hpp",
+        "git_blob": "e43819d121cfa9f6c7d51691c39b04f6d954ea4c",
+        "sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e",
+        "bytes": 6717
+      },
+      {
+        "revision": "44dfc5c317f11a844f43ab803873eb651b639d99",
+        "path": "src/native_model_owner.cpp",
+        "git_blob": "b959a8d937bdab01f9013f2cbd7e28ad320a0090",
+        "sha256": "abe4817fd6ca9049f720a50e5c5c9a2041112f634dee73b2c4f2a94d4077886a",
+        "bytes": 16777
+      },
+      {
+        "revision": "44dfc5c317f11a844f43ab803873eb651b639d99",
+        "path": "include/bsp/native_node_destruction.hpp",
+        "git_blob": "d84edd297c4dfb43cb0b5aa630676fb1b245eedc",
+        "sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+        "bytes": 5997
+      },
+      {
+        "revision": "44dfc5c317f11a844f43ab803873eb651b639d99",
+        "path": "src/native_node_destruction.cpp",
+        "git_blob": "471b67cac72f5a45fb6a4789f82d7533fd72f6c9",
+        "sha256": "2ee6ba84e759958a8f160cb25ad210076203931d4ae4f2e9265529bff5c57269",
+        "bytes": 14506
+      },
+      {
+        "revision": "44dfc5c317f11a844f43ab803873eb651b639d99",
+        "path": "include/bsp/native_node_construction.hpp",
+        "git_blob": "888b44f3f32e67b930c840740cdabdea10283f1a",
+        "sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098",
+        "bytes": 6451
+      },
+      {
+        "revision": "44dfc5c317f11a844f43ab803873eb651b639d99",
+        "path": "include/bsp/native_string.hpp",
+        "git_blob": "3b7af4c6508cfc1df81e913108b5162208685e97",
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+        "bytes": 8771
+      },
+      {
+        "revision": "44dfc5c317f11a844f43ab803873eb651b639d99",
+        "path": "include/bsp/native_model_pool.hpp",
+        "git_blob": "b7e5213b7c625594f02be828ca84137cf95adc0d",
+        "sha256": "30e4945729d723ec450a6eebaf28968c976dcd50f366ba193aa591d751709144",
+        "bytes": 3166
+      },
+      {
+        "revision": "44dfc5c317f11a844f43ab803873eb651b639d99",
+        "path": "include/bsp/native_instance_geometry.hpp",
+        "git_blob": "6d0527a7db3b093c91bfe52573cbb5388df58157",
+        "sha256": "d636744a916ce5acad921606f43f76e9edbe8cb855d4580e936afca162b3cb03",
+        "bytes": 3560
+      },
+      {
+        "revision": "44dfc5c317f11a844f43ab803873eb651b639d99",
+        "path": "src/native_instance_geometry.cpp",
+        "git_blob": "edf09965a186bbec8374235f8250c4e690ffd420",
+        "sha256": "afbc9cad4d13e6ef3869384470eb7d259219c7063ffe17d6f8adf00ce50f439a",
+        "bytes": 6761
+      },
+      {
+        "revision": "44dfc5c317f11a844f43ab803873eb651b639d99",
+        "path": "src/render_command_queue.cpp",
+        "git_blob": "2dfed2bf3b6b07fd6e1560ccf98287171e07134e",
+        "sha256": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+        "bytes": 10448
+      },
+      {
+        "revision": "44dfc5c317f11a844f43ab803873eb651b639d99",
+        "path": "reports/native_model_raw_name_bp.json",
+        "git_blob": "d9a70a11c2d1aee7dff4cecb9988adf5d7ab4007",
+        "sha256": "57081d8595164b7c5bf8e3a2ba622b0675b40f6756bdedeab2ec659214ecaf77",
+        "bytes": 20757
+      },
+      {
+        "revision": "44dfc5c317f11a844f43ab803873eb651b639d99",
+        "path": "reports/native_renderer_crossbranch_reuse_r31.json",
+        "git_blob": "bc3b0e3e71dc09414cdf94fcfe59e2b38963ae76",
+        "sha256": "bd19d54146610c2a896f156d1775e14fea6ef41231ce00ec19f501f190bfc909",
+        "bytes": 45909
+      },
+      {
+        "revision": "769bdc3e3b8254f95867b11e2546d629f2a564b6",
+        "path": "include/bsp/native_renderer_destructor.hpp",
+        "git_blob": "d5482d188f0d23f9b475d30bb1350b4029c72f64",
+        "sha256": "699b3ba871be605f94afabd7dbaa7a8282dbd44b59d0f6c37078a042a4d4d166",
+        "bytes": 4119
+      },
+      {
+        "revision": "769bdc3e3b8254f95867b11e2546d629f2a564b6",
+        "path": "src/native_renderer_destructor.cpp",
+        "git_blob": "2a4ef0801575398b7a3cac90383bcaf1202322d7",
+        "sha256": "5f5c03e93f86d41bc3798ce0442c206555c6c3370295e7422f7188134b0dd3f8",
+        "bytes": 23473
+      },
+      {
+        "revision": "769bdc3e3b8254f95867b11e2546d629f2a564b6",
+        "path": "include/bsp/native_renderer_generated_model.hpp",
+        "git_blob": "3126b761df1904e34f1ddd47e26c73be91789ad3",
+        "sha256": "514ef56de89eaf299d6d7b23a2207fad5683bbb9fff621c81d260dfefc87f70c",
+        "bytes": 2954
+      },
+      {
+        "revision": "769bdc3e3b8254f95867b11e2546d629f2a564b6",
+        "path": "src/native_renderer_generated_model.cpp",
+        "git_blob": "94fc62e92d908d5d5cda1882af65c86c99f621fb",
+        "sha256": "e83a0a80fe6bd04b46b20739cc18300816f1e0944f49796ccf81802c4c7bd4b8",
+        "bytes": 9397
+      },
+      {
+        "revision": "769bdc3e3b8254f95867b11e2546d629f2a564b6",
+        "path": "reports/native_renderer_destructor.json",
+        "git_blob": "bdca3f137f953708709984432235221c097a7040",
+        "sha256": "25690837ac2075dadc0350375f3f4171bb700f12acae2b12b2bcafcb92683594",
+        "bytes": 113846
+      },
+      {
+        "revision": "769bdc3e3b8254f95867b11e2546d629f2a564b6",
+        "path": "reports/native_renderer_generated_model.json",
+        "git_blob": "fdff5cc7afd683f7c4e857715c4b4303b76d58cf",
+        "sha256": "d8c1af40b10db6b3fec872757cffd5a282ebe063524a48d57ad9f06b9a9c6f85",
+        "bytes": 29482
+      }
+    ]
+  },
+  "native_byte_receipts": {
+    "collected_at": "2026-09-16T09:40:17.011524+00:00",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "disk_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "disk_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "disk_size": 12223752,
+    "span_count": 14,
+    "all_match": true,
+    "note": "Each read used bsp.py ghidra bytes, which verifies project/program before the read. Only listed spans have PE/live parity; this is not whole-image or runtime verification.",
+    "spans": [
+      {
+        "address": "00b75030",
+        "length": 132,
+        "end_exclusive": "00b750b4",
+        "meaning": "complete model constructor",
+        "pe_offset": 7819312,
+        "live_equals_pe": true,
+        "sha256": "22f27972bec6801620bbc3bc257c6d402ae58b2e0a0834d7b569cc043b463bf0",
+        "hex": "8b44240456508bf1e863a5fffff30f1005dc4ace00c706e82dd60033c0898674010000f30f118678010000f30f10057049ce00f30f11867c010000f30f100508a2d700898680010000f30f114618f30f11461cf30f1146200f57c0f30f114624f30f114628f30f11462cf30f114608f30f11460cf30f114610f30f1146148bc65ec20400"
+      },
+      {
+        "address": "00b750c0",
+        "length": 165,
+        "end_exclusive": "00b75165",
+        "meaning": "complete model destructor",
+        "pe_offset": 7819456,
+        "live_equals_pe": true,
+        "sha256": "ec61956a442c9cfeacd30ea09c246837a8111f6f06051b113c12325b9a00ed56",
+        "hex": "6aff68661ccc0064a10000000050648925000000005155568bf1578974240cc706e82dd6008bbe7401000085ff8b2d2022ce00c744241801000000741c8d470450ffd585c075088b178b028bcfffd0c78674010000000000008bbe8001000085ffc644241800741c8d4f0451ffd585c075088b178b028bcfffd0c78680010000000000008bcec7442418ffffffffe8eda2ffff8b4c24105f5e5d64890d0000000083c410c3"
+      },
+      {
+        "address": "00b75290",
+        "length": 32,
+        "end_exclusive": "00b752b0",
+        "meaning": "complete model scalar deletion",
+        "pe_offset": 7819920,
+        "live_equals_pe": true,
+        "sha256": "5d1cfd11b6e1842c15c9d5f07965e1a5a93961e72a860ba2ce14a4379841db64",
+        "hex": "568bf1e828fefffff644240801740b56b954000901e8a6f4ffff8bc65ec20400"
+      },
+      {
+        "address": "00b6dfa0",
+        "length": 105,
+        "end_exclusive": "00b6e009",
+        "meaning": "complete model unlink and virtual18 release",
+        "pe_offset": 7790496,
+        "live_equals_pe": true,
+        "sha256": "1dcfcfe0477feddec6f7d54533816577db3c6937fe7dcb7e0445a6d16e175277",
+        "hex": "568bf18b463085c0743b8b4e4085c9c746300000000074068b563c89513c8b4e3c85c974068b56408951408b48343bf175068b493c894834834038ffc7463000000000eb1a8b8ea400000085c9741056e82b420000c786a4000000000000008b168b42188bce5effe0"
+      },
+      {
+        "address": "00b4c725",
+        "length": 31,
+        "end_exclusive": "00b4c744",
+        "meaning": "pool allocation and model construction",
+        "pe_offset": 7653157,
+        "live_equals_pe": true,
+        "sha256": "69f54df0b6e331dbeb3357bd0e06281bf83fedc7313bcbafc8cfde1109786bc4",
+        "hex": "e8868702008944241033db3bc3895c2420740e568bc8e8f088020089442410"
+      },
+      {
+        "address": "00b4c8b9",
+        "length": 21,
+        "end_exclusive": "00b4c8ce",
+        "meaning": "captured model return and RET14",
+        "pe_offset": 7653561,
+        "live_equals_pe": true,
+        "sha256": "f9a376bc212760494a6bde23b27240d14c529b802188d2863839c88934ef3f6f",
+        "hex": "8b4424105f5e5d5b64890d0000000083c414c21400"
+      },
+      {
+        "address": "00b2b270",
+        "length": 156,
+        "end_exclusive": "00b2b30c",
+        "meaning": "undefined producer prologue, kind2 call and 19E0 store",
+        "pe_offset": 7516784,
+        "live_equals_pe": true,
+        "sha256": "2e81cc2b54e9ccf15378c27a01c7626e99aae27e8b35cb522ef9530e0dd6d6db",
+        "hex": "64a1000000006aff6858d4cb00506489250000000083ec58568bf18b86f81c000085c00f84cb02000083bee0190000005355570f854a0100006888e7d5008d4c2424e8b9358fff687ce7d5008d4c241cc744247400000000e8a3358fffbb010000006870e7d5008d4c2414885c2474e88c358fff6a006a006a006a028d442430508d54242c8d4c2424c684248400000002e8fa1302008986e0190000"
+      },
+      {
+        "address": "00b2b564",
+        "length": 18,
+        "end_exclusive": "00b2b576",
+        "meaning": "undefined producer epilogue through RET4",
+        "pe_offset": 7517540,
+        "live_equals_pe": true,
+        "sha256": "3b8b4d49c101790f0df468861071e0fdb21bb53bf5750e98d57fe0ad9fd366fb",
+        "hex": "8b4c245c5e64890d0000000083c464c20400"
+      },
+      {
+        "address": "00b2bc2a",
+        "length": 11,
+        "end_exclusive": "00b2bc35",
+        "meaning": "kind3 producer call and 19E4 store",
+        "pe_offset": 7519274,
+        "live_equals_pe": true,
+        "sha256": "5a297c98b0ca8d60e972615dba340642841d04b68689dbe1e81eb1011284340c",
+        "hex": "e8d10a02008987e4190000"
+      },
+      {
+        "address": "00b2b607",
+        "length": 11,
+        "end_exclusive": "00b2b612",
+        "meaning": "kind4 producer call and 19E8 store",
+        "pe_offset": 7517703,
+        "live_equals_pe": true,
+        "sha256": "8b5986c23e7f9ba48422323c951aec2ac2137e07296552d137d6c9165ada0508",
+        "hex": "e8f41002008987e8190000"
+      },
+      {
+        "address": "00b32b51",
+        "length": 73,
+        "end_exclusive": "00b32b9a",
+        "meaning": "three destructor model loads, unlinks and post-return clears",
+        "pe_offset": 7547729,
+        "live_equals_pe": true,
+        "sha256": "883aa036e916808e7c7c4da710c63742c8e14c3736dc595504b83df364da68aa",
+        "hex": "8b8ee019000085c9740fe840b40300c786e0190000000000008b8ee419000085c9740fe827b40300c786e4190000000000008b8ee819000085c9740fe80eb4030033db899ee8190000"
+      },
+      {
+        "address": "00b324e5",
+        "length": 18,
+        "end_exclusive": "00b324f7",
+        "meaning": "constructor zero model fields",
+        "pe_offset": 7546085,
+        "live_equals_pe": true,
+        "sha256": "c59162e21167475a74e39372edd30b68863bfc2fad2db6b07886f9c0962077c7",
+        "hex": "899ee0190000899ee4190000899ee8190000"
+      },
+      {
+        "address": "00b7531f",
+        "length": 6,
+        "end_exclusive": "00b75325",
+        "meaning": "instruction containing non-entry B75320",
+        "pe_offset": 7820063,
+        "live_equals_pe": true,
+        "sha256": "d668335ba04815a0a767a97905111d2bc9787c11c1c2aa41230bdd6c8cfcc8b4",
+        "hex": "8b2d2022ce00"
+      },
+      {
+        "address": "00d5e770",
+        "length": 48,
+        "end_exclusive": "00d5e7a0",
+        "meaning": "kind2 producer string literals",
+        "pe_offset": 9824112,
+        "live_equals_pe": true,
+        "sha256": "7a6627fe104927f2f94f83ec36c3cb6efc23da30af7e25d878495d3f4209f57d",
+        "hex": "44656275674c696e657300007066343363632e6d76666d0064656275677368616465722e6d7368640000000032645370"
+      }
+    ]
+  },
+  "live_instruction_context": {
+    "00b75320": {
+      "address": "00b75320",
+      "error": "No instruction at address"
+    },
+    "00b4c72a": {
+      "address": "00b4c72a",
+      "instruction": "MOV dword ptr [ESP + 0x10],EAX",
+      "context_before": [
+        "00b4c725: CALL 0x00b74eb0",
+        "00b4c723: MOV EBP,EDX",
+        "00b4c71e: MOV ECX,0x184",
+        "00b4c71d: PUSH EDI"
+      ],
+      "context_after": [
+        "00b4c72e: XOR EBX,EBX",
+        "00b4c730: CMP EAX,EBX",
+        "00b4c732: MOV dword ptr [ESP + 0x20],EBX",
+        "00b4c736: JZ 0x00b4c746"
+      ],
+      "mnemonic": "MOV",
+      "patterns_detected": [
+        "data_access"
+      ]
+    },
+    "00b4c73b": {
+      "address": "00b4c73b",
+      "instruction": "CALL 0x00b75030",
+      "context_before": [
+        "00b4c739: MOV ECX,EAX",
+        "00b4c738: PUSH ESI",
+        "00b4c736: JZ 0x00b4c746",
+        "00b4c732: MOV dword ptr [ESP + 0x20],EBX"
+      ],
+      "context_after": [
+        "00b4c740: MOV dword ptr [ESP + 0x10],EAX",
+        "00b4c744: JMP 0x00b4c74a",
+        "00b4c746: MOV dword ptr [ESP + 0x10],EBX",
+        "00b4c74a: OR ESI,0xffffffff"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b4c8b9": {
+      "address": "00b4c8b9",
+      "instruction": "MOV EAX,dword ptr [ESP + 0x10]",
+      "context_before": [
+        "00b4c8b5: MOV ECX,dword ptr [ESP + 0x18]",
+        "00b4c8b3: CALL EAX",
+        "00b4c8b1: MOV ECX,EDI",
+        "00b4c8af: MOV EAX,dword ptr [EDX]"
+      ],
+      "context_after": [
+        "00b4c8bd: POP EDI",
+        "00b4c8be: POP ESI",
+        "00b4c8bf: POP EBP",
+        "00b4c8c0: POP EBX"
+      ],
+      "mnemonic": "MOV",
+      "patterns_detected": [
+        "data_access"
+      ]
+    },
+    "00b2bc2a": {
+      "address": "00b2bc2a",
+      "instruction": "CALL 0x00b4c700",
+      "context_before": [
+        "00b2bc22: MOV byte ptr [ESP + 0xf8],0x2",
+        "00b2bc1e: LEA ECX,[ESP + 0x34]",
+        "00b2bc1a: LEA EDX,[ESP + 0x3c]",
+        "00b2bc19: PUSH EAX"
+      ],
+      "context_after": [
+        "00b2bc2f: MOV dword ptr [EDI + 0x19e4],EAX",
+        "00b2bc35: MOV EAX,dword ptr [ESP + 0x24]",
+        "00b2bc39: CMP EAX,EBX",
+        "00b2bc3b: MOV byte ptr [ESP + 0xe4],0x1"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b2b607": {
+      "address": "00b2b607",
+      "instruction": "CALL 0x00b4c700",
+      "context_before": [
+        "00b2b5ff: MOV byte ptr [ESP + 0x8c],0x2",
+        "00b2b5fb: LEA ECX,[ESP + 0x3c]",
+        "00b2b5f7: LEA EDX,[ESP + 0x30]",
+        "00b2b5f6: PUSH EAX"
+      ],
+      "context_after": [
+        "00b2b60c: MOV dword ptr [EDI + 0x19e8],EAX",
+        "00b2b612: MOV EAX,dword ptr [ESP + 0x2c]",
+        "00b2b616: CMP EAX,EBP",
+        "00b2b618: MOV byte ptr [ESP + 0x78],0x1"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b32b5b": {
+      "address": "00b32b5b",
+      "instruction": "CALL 0x00b6dfa0",
+      "context_before": [
+        "00b32b59: JZ 0x00b32b6a",
+        "00b32b57: TEST ECX,ECX",
+        "00b32b51: MOV ECX,dword ptr [ESI + 0x19e0]",
+        "00b32b4f: JNZ 0x00b32b00"
+      ],
+      "context_after": [
+        "00b32b60: MOV dword ptr [ESI + 0x19e0],0x0",
+        "00b32b6a: MOV ECX,dword ptr [ESI + 0x19e4]",
+        "00b32b70: TEST ECX,ECX",
+        "00b32b72: JZ 0x00b32b83"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b32b74": {
+      "address": "00b32b74",
+      "instruction": "CALL 0x00b6dfa0",
+      "context_before": [
+        "00b32b72: JZ 0x00b32b83",
+        "00b32b70: TEST ECX,ECX",
+        "00b32b6a: MOV ECX,dword ptr [ESI + 0x19e4]",
+        "00b32b60: MOV dword ptr [ESI + 0x19e0],0x0"
+      ],
+      "context_after": [
+        "00b32b79: MOV dword ptr [ESI + 0x19e4],0x0",
+        "00b32b83: MOV ECX,dword ptr [ESI + 0x19e8]",
+        "00b32b89: TEST ECX,ECX",
+        "00b32b8b: JZ 0x00b32b9c"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b32b8d": {
+      "address": "00b32b8d",
+      "instruction": "CALL 0x00b6dfa0",
+      "context_before": [
+        "00b32b8b: JZ 0x00b32b9c",
+        "00b32b89: TEST ECX,ECX",
+        "00b32b83: MOV ECX,dword ptr [ESI + 0x19e8]",
+        "00b32b79: MOV dword ptr [ESI + 0x19e4],0x0"
+      ],
+      "context_after": [
+        "00b32b92: XOR EBX,EBX",
+        "00b32b94: MOV dword ptr [ESI + 0x19e8],EBX",
+        "00b32b9a: JMP 0x00b32b9e",
+        "00b32b9c: XOR EBX,EBX"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b7531f": {
+      "address": "00b7531f",
+      "instruction": "MOV EBP,dword ptr [0x00ce2220]",
+      "context_before": [
+        "00b7531d: TEST ECX,ECX"
+      ],
+      "context_after": [
+        "00b75325: JZ 0x00b75365"
+      ],
+      "mnemonic": "MOV",
+      "patterns_detected": [
+        "data_access"
+      ]
+    },
+    "00b2b299": {
+      "address": "00b2b299",
+      "instruction": "CMP dword ptr [ESI + 0x19e0],0x0",
+      "context_before": [
+        "00b2b293: JZ 0x00b2b564",
+        "00b2b291: TEST EAX,EAX",
+        "00b2b28b: MOV EAX,dword ptr [ESI + 0x1cf8]",
+        "00b2b289: MOV ESI,ECX"
+      ],
+      "context_after": [
+        "00b2b2a0: PUSH EBX",
+        "00b2b2a1: PUSH EBP",
+        "00b2b2a2: PUSH EDI",
+        "00b2b2a3: JNZ 0x00b2b3f3"
+      ],
+      "mnemonic": "CMP",
+      "patterns_detected": [
+        "comparison"
+      ]
+    },
+    "00b2b306": {
+      "address": "00b2b306",
+      "instruction": "MOV dword ptr [ESI + 0x19e0],EAX",
+      "context_before": [
+        "00b2b301: CALL 0x00b4c700",
+        "00b2b2f9: MOV byte ptr [ESP + 0x84],0x2",
+        "00b2b2f5: LEA ECX,[ESP + 0x24]",
+        "00b2b2f1: LEA EDX,[ESP + 0x2c]"
+      ],
+      "context_after": [
+        "00b2b30c: MOV EAX,dword ptr [ESP + 0x14]",
+        "00b2b310: TEST EAX,EAX",
+        "00b2b312: MOV byte ptr [ESP + 0x70],BL",
+        "00b2b316: JZ 0x00b2b32d"
+      ],
+      "mnemonic": "MOV",
+      "patterns_detected": [
+        "data_access"
+      ]
+    },
+    "00b2b381": {
+      "address": "00b2b381",
+      "instruction": "MOV ECX,dword ptr [ESI + 0x19e0]",
+      "context_before": [
+        "00b2b379: MOVSS XMM1,dword ptr [0x00d7a24c]",
+        "00b2b376: XORPS XMM0,XMM0",
+        "00b2b371: CALL 0x00bd1510",
+        "00b2b36f: MOV ECX,EAX"
+      ],
+      "context_after": [
+        "00b2b387: MOVSS dword ptr [ESP + 0x28],XMM1",
+        "00b2b38d: MOVSS dword ptr [ESP + 0x2c],XMM0",
+        "00b2b393: MOVSS dword ptr [ESP + 0x30],XMM0",
+        "00b2b399: MOVSS dword ptr [ESP + 0x34],XMM0"
+      ],
+      "mnemonic": "MOV",
+      "patterns_detected": [
+        "data_access"
+      ]
+    },
+    "00b2b270": {
+      "address": "00b2b270",
+      "instruction": "MOV EAX,FS:[0x0]",
+      "context_before": [
+        "00b2b263: RET",
+        "00b2b262: POP ESI",
+        "00b2b260: MOV AL,0x1",
+        "00b2b25b: CALL 0x00b15090",
+        "00b2b259: JZ 0x00b2b260",
+        "00b2b257: TEST ECX,ECX",
+        "00b2b251: MOV ECX,dword ptr [0x00f8d39c]",
+        "00b2b24f: CALL ECX",
+        "00b2b24e: PUSH ESI",
+        "00b2b248: MOV ECX,dword ptr [EAX + 0xa4]",
+        "00b2b246: MOV EAX,dword ptr [ESI]",
+        "00b2b240: MOV ESI,dword ptr [ESI + 0x1a10]",
+        "00b2b23e: JNZ 0x00b2b251",
+        "00b2b237: CMP byte ptr [ESI + 0x1d8a],0x0",
+        "00b2b235: JNZ 0x00b2b251",
+        "00b2b22e: CMP dword ptr [ESI + 0x1d90],0x0",
+        "00b2b229: CALL 0x00b2abd0",
+        "00b2b223: MOV dword ptr [ESI + 0x1d90],EAX"
+      ],
+      "context_after": [
+        "00b2b276: PUSH -0x1",
+        "00b2b278: PUSH 0xcbd458",
+        "00b2b27d: PUSH EAX",
+        "00b2b27e: MOV dword ptr FS:[0x0],ESP",
+        "00b2b285: SUB ESP,0x58",
+        "00b2b288: PUSH ESI",
+        "00b2b289: MOV ESI,ECX",
+        "00b2b28b: MOV EAX,dword ptr [ESI + 0x1cf8]",
+        "00b2b291: TEST EAX,EAX",
+        "00b2b293: JZ 0x00b2b564",
+        "00b2b299: CMP dword ptr [ESI + 0x19e0],0x0",
+        "00b2b2a0: PUSH EBX",
+        "00b2b2a1: PUSH EBP",
+        "00b2b2a2: PUSH EDI",
+        "00b2b2a3: JNZ 0x00b2b3f3",
+        "00b2b2a9: PUSH 0xd5e788",
+        "00b2b2ae: LEA ECX,[ESP + 0x24]",
+        "00b2b2b2: CALL 0x0041e870"
+      ],
+      "mnemonic": "MOV",
+      "patterns_detected": [
+        "data_access"
+      ]
+    },
+    "00b2b301": {
+      "address": "00b2b301",
+      "instruction": "CALL 0x00b4c700",
+      "context_before": [
+        "00b2b2f9: MOV byte ptr [ESP + 0x84],0x2",
+        "00b2b2f5: LEA ECX,[ESP + 0x24]",
+        "00b2b2f1: LEA EDX,[ESP + 0x2c]",
+        "00b2b2f0: PUSH EAX",
+        "00b2b2ec: LEA EAX,[ESP + 0x30]",
+        "00b2b2ea: PUSH 0x2",
+        "00b2b2e8: PUSH 0x0",
+        "00b2b2e6: PUSH 0x0",
+        "00b2b2e4: PUSH 0x0",
+        "00b2b2df: CALL 0x0041e870",
+        "00b2b2db: MOV byte ptr [ESP + 0x74],BL",
+        "00b2b2d7: LEA ECX,[ESP + 0x14]",
+        "00b2b2d2: PUSH 0xd5e770",
+        "00b2b2cd: MOV EBX,0x1",
+        "00b2b2c8: CALL 0x0041e870",
+        "00b2b2c0: MOV dword ptr [ESP + 0x74],0x0",
+        "00b2b2bc: LEA ECX,[ESP + 0x1c]",
+        "00b2b2b7: PUSH 0xd5e77c"
+      ],
+      "context_after": [
+        "00b2b306: MOV dword ptr [ESI + 0x19e0],EAX",
+        "00b2b30c: MOV EAX,dword ptr [ESP + 0x14]",
+        "00b2b310: TEST EAX,EAX",
+        "00b2b312: MOV byte ptr [ESP + 0x70],BL",
+        "00b2b316: JZ 0x00b2b32d",
+        "00b2b318: MOV ECX,dword ptr [ESP + 0x10]",
+        "00b2b31c: PUSH EBX",
+        "00b2b31d: ADD ECX,EBX",
+        "00b2b31f: PUSH ECX",
+        "00b2b320: PUSH EAX",
+        "00b2b321: CALL 0x00419cc0",
+        "00b2b326: MOV ECX,EAX",
+        "00b2b328: CALL 0x00bd1510",
+        "00b2b32d: MOV ECX,dword ptr [ESP + 0x1c]",
+        "00b2b331: TEST ECX,ECX",
+        "00b2b333: MOV byte ptr [ESP + 0x70],0x0",
+        "00b2b338: JZ 0x00b2b350",
+        "00b2b33a: MOV EAX,dword ptr [ESP + 0x18]"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b2b564": {
+      "address": "00b2b564",
+      "instruction": "MOV ECX,dword ptr [ESP + 0x5c]",
+      "context_before": [
+        "00b2b563: POP EBX",
+        "00b2b562: POP EBP",
+        "00b2b561: POP EDI",
+        "00b2b55a: MOV dword ptr [EDI + 0x4],0x0",
+        "00b2b558: JG 0x00b2b550",
+        "00b2b554: CMP dword ptr [EDI + 0x4],0x0",
+        "00b2b550: ADD dword ptr [EDI + 0x4],-0x1",
+        "00b2b54e: MOV EDI,EDI",
+        "00b2b54c: JLE 0x00b2b55a",
+        "00b2b548: CMP dword ptr [EDI + 0x4],0x0",
+        "00b2b543: CALL 0x00b228b0",
+        "00b2b541: MOV ECX,EDI",
+        "00b2b53f: PUSH 0x0",
+        "00b2b53d: JGE 0x00b2b548",
+        "00b2b539: CMP dword ptr [EDI + 0x8],0x0",
+        "00b2b537: CALL EDX",
+        "00b2b536: PUSH EBP",
+        "00b2b533: MOV EDX,dword ptr [EAX + 0x8]"
+      ],
+      "context_after": [
+        "00b2b568: POP ESI",
+        "00b2b569: MOV dword ptr FS:[0x0],ECX",
+        "00b2b570: ADD ESP,0x64",
+        "00b2b573: RET 0x4",
+        "00b2b580: PUSH -0x1",
+        "00b2b582: PUSH 0xcbd4a9",
+        "00b2b587: MOV EAX,FS:[0x0]",
+        "00b2b58d: PUSH EAX",
+        "00b2b58e: MOV dword ptr FS:[0x0],ESP",
+        "00b2b595: SUB ESP,0x68",
+        "00b2b598: PUSH EBP",
+        "00b2b599: XOR EBP,EBP",
+        "00b2b59b: PUSH EDI",
+        "00b2b59c: MOV EDI,ECX",
+        "00b2b59e: MOV dword ptr [ESP + 0x24],EBP",
+        "00b2b5a2: CMP dword ptr [EDI + 0x1d1c],EBP",
+        "00b2b5a8: JZ 0x00b2bb7c",
+        "00b2b5ae: CMP dword ptr [EDI + 0x19e8],EBP"
+      ],
+      "mnemonic": "MOV",
+      "patterns_detected": [
+        "data_access"
+      ]
+    },
+    "00b324e5": {
+      "address": "00b324e5",
+      "instruction": "MOV dword ptr [ESI + 0x19e0],EBX",
+      "context_before": [
+        "00b324df: MOV dword ptr [ESI + 0x19dc],EBX",
+        "00b324d9: MOV dword ptr [ESI + 0x19d8],EBX",
+        "00b324d8: PUSH EDI",
+        "00b324d2: LEA EDI,[ESI + 0x19f4]",
+        "00b324cc: MOV dword ptr [ESI + 0x19cc],EBX"
+      ],
+      "context_after": [
+        "00b324eb: MOV dword ptr [ESI + 0x19e4],EBX",
+        "00b324f1: MOV dword ptr [ESI + 0x19e8],EBX",
+        "00b324f7: MOV dword ptr [ESI + 0x19ec],EBX",
+        "00b324fd: MOV dword ptr [ESI + 0x19f0],EBX",
+        "00b32503: CALL dword ptr [0x00ce220c]"
+      ],
+      "mnemonic": "MOV",
+      "patterns_detected": [
+        "data_access"
+      ]
+    },
+    "00b32b51": {
+      "address": "00b32b51",
+      "instruction": "MOV ECX,dword ptr [ESI + 0x19e0]",
+      "context_before": [
+        "00b32b4f: JNZ 0x00b32b00",
+        "00b32b48: CMP dword ptr [ESI + 0x1aec],0x0",
+        "00b32b42: MOV dword ptr [ESI + 0x1aec],EAX",
+        "00b32b3f: ADD EAX,-0x1",
+        "00b32b3d: JZ 0x00b32b48"
+      ],
+      "context_after": [
+        "00b32b57: TEST ECX,ECX",
+        "00b32b59: JZ 0x00b32b6a",
+        "00b32b5b: CALL 0x00b6dfa0",
+        "00b32b60: MOV dword ptr [ESI + 0x19e0],0x0",
+        "00b32b6a: MOV ECX,dword ptr [ESI + 0x19e4]"
+      ],
+      "mnemonic": "MOV",
+      "patterns_detected": [
+        "data_access"
+      ]
+    }
+  }
+}
