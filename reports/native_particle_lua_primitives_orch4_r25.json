@@ -220,7 +220,7 @@
     "next_shared_sequence_matches_preimage": true
   },
   "source_sha256": {
-    "include/bsp/native_lua_objects.hpp": "3876d2556149eb202189afcf0990282b158784b3a4646a9116571960d53a4e90",
+    "include/bsp/native_lua_objects.hpp": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d",
     "src/native_lua_objects.cpp": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5",
     "src/native_particle_component_reader_raw.cpp": "5ca91d8bc86d1b04ead7f0a6dbe608c94a4ca176bd3d878913d4cbd87783856b"
   },
@@ -242,7 +242,8 @@
       "no arbitrary C++ exception across Lua C frames",
       "null string and invalid Lua API input are outside this error boundary",
       "no retained dispatch bridge or original ABI/FH3/SEH/game claim"
-    ]
+    ],
+    "iterator_handler_placement": "L->errfunc must be zero or designate a stable function slot below every removed/consumed slot in iterator preparation, callbacks and surrounding reader cleanup. Lua stack removal does not relocate the saved byte offset. A stable handler installed before Particle reader entry meets this precondition; arbitrary upper-slot handlers do not."
   },
   "annotation_proposals": [
     {
@@ -317,6 +318,13 @@
       "result": [
         "PASS: four actual Lua protected callback wrappers return false/original error text, preserve outputs and caller stack; explicit source status is std::exception compatible."
       ]
+    },
+    "iterator_inherited_handler_probe": {
+      "log": "local/r25_iterator_handler_final.log",
+      "sha256": "82d49e0b6c5517dfeb7e78014a873b8a922bc3ce18a3d6a25b2de8def99c1123",
+      "result": [
+        "PASS: next invalid-key error with real inherited handler below both released slots; exactly one handler invocation, source status2/outer status0, same frame/prior errfunc restored, surviving tracked suffix shifts twice, caller top/handler/sentinel retained and tracking drains."
+      ]
     }
   },
   "linked_lua_source_sha256": {
@@ -336,15 +344,25 @@
     "build_lua_unwind_probe.ps1": "2ca1413b7d655eca009edca10f5d455f8d3b0c2eb547c23896db089cbd950033",
     "lua_named_handler_probe.cpp": "62e2e90d95ee6c115c2ca63707294dea2c79bfed2fe77a83f17037cf281ee2c3",
     "lua_callback_contract_probe.cpp": "b3b201674f28bf45be223face0e91803060c571a9ed12d903f83216bbb752935",
-    "lua_callback_source.inc": "df393b80a1c4b002c095d58d3bdec367acd75adf454c16dfc4178adb7d068403"
+    "lua_callback_source.inc": "df393b80a1c4b002c095d58d3bdec367acd75adf454c16dfc4178adb7d068403",
+    "r25_iterator_handler_probe.cpp": "2c2fd715f112ef0732d4085854fd55d066cb4607487ae925ce0fb72b770e9903"
   },
   "library_sha256": {
     "bsp_core.lib": "d8ac0229bc4572d8f2b32a47f3f3173fa6804839a57e7eb72dea938b676a5317",
     "bsp_lua511.lib": "694559e0e6655df98a40110c33d3729a8b1fdcd05475d12d766ee467444a668b"
   },
+  "handler_placement_followup": {
+    "scope": "comments/documentation only; executable source unchanged after validated 5968680c0; one focused inherited-handler probe added",
+    "linked_source_evidence": [
+      "lapi.c:160-183 lua_settop/lua_remove do not update L->errfunc",
+      "ldebug.c:600-609 luaG_errormsg resolves the saved offset directly"
+    ],
+    "ldebug_c_sha256": "5e4cae0e2b7fc313bd7673f01a246232e1218d225eb150422dccac094460aaa6",
+    "probe_boundary": "Initial iterator/Particle probes used errfunc=0. The focused follow-up executes a real inherited handler below both removed slots on the non-top-key path; one invocation, source status2/outer status0, same frame/prior errfunc, surviving suffix shifts twice and caller stack/tracking cleanup pass. No upper-slot handler safety claim."
+  },
   "reproducer_archive": {
     "path": "local/particle-lua-primitives-r25.zip",
-    "sha256": "e077d130ae71e42dae816db94bd14848e81ca8e1c293f60ab07a9f69fb1c161a",
+    "sha256": "a4c767bb66b9b61ff38773546bb8c6248040f0a520055d904c3ddd0fc9a3b8ee",
     "includes": "ignored probe sources, build/evidence scripts, exact byte receipts and final logs; rebuilt libraries are not archived"
   }
 }

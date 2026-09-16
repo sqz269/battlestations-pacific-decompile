@@ -69,6 +69,27 @@ The valid table, interpreter, owner and caller stack/tracking domain must stay
 stable across callbacks. Native unchecked slot/reference capacities and the
 ignored `checkstack` return remain caller contracts.
 
+An inherited error handler needs a stable slot **below every removed or
+consumed key/value/work-key slot**, including the surrounding reader's cleanup
+removals. `L->errfunc == 0` also satisfies the contract. Linked
+`lapi.c:160-183` shows that `lua_settop`/`lua_remove` do not adjust the saved
+`L->errfunc` byte offset when slots disappear or shift; `ldebug.c:600-609`
+resolves that offset directly. An upper handler could consequently designate
+another value/function after a removal, including producing `LUA_ERRERR`.
+The adapter neither relocates nor replaces the inherited handler.
+
+Particle creates its locals above the entry stack, so a handler installed
+before reader entry and left unmoved by callbacks satisfies this placement
+requirement. Direct iterator callers must establish it themselves. The
+initial iterator and actual Particle error probes use no inherited handler;
+the string finalizer probe places its handler below the converted object.
+One focused follow-up exercises a real inherited handler below both removed
+slots during non-top-key iteration failure: it runs once, the source receives
+status 2, the outer protected call returns 0, and the same frame/prior errfunc,
+caller top/sentinel and surviving tracked suffix remain valid. The suffix
+undergoes both native index shifts, and subsequent cleanup drains tracking.
+No upper-slot handler behavior is made safe or claimed.
+
 Error-handler/finalizer side effects are retained, including prior TValue or
 table mutations. The wrappers restore only the state Lua's own `luaD_pcall`
 restores (`ldo.c:453-474`) plus the specified stack height; they do not promise

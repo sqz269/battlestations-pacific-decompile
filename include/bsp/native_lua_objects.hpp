@@ -129,6 +129,9 @@ void native_lua_iterate_next_00b67190(NativeLuaObjectStorage& table,
 // First drops operation temporaries; next drops its detached working key.
 // Next requires the reader's exclusively owned key/value, valid table and
 // stack/tracking domain, with no surviving reference to the working key.
+// An inherited error handler must be below every removed/consumed slot and
+// remain unmoved through preparation, callbacks and surrounding reader cleanup:
+// Lua stack removal does not adjust the saved L->errfunc byte offset.
 // Same C++ boundary/handler/stability restrictions as the named adapter apply.
 void native_lua_iterate_first_protected(NativeLuaObjectStorage& table,
     NativeLuaObjectStorage& key,NativeLuaObjectStorage& value);
