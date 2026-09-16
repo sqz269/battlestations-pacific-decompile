@@ -73,6 +73,11 @@ public:
     // bind failure. Does not parse fields or consume the creator reference.
     NativeMeshStorage* create_native_mesh_and_publish(void* actual_pair,
         GuiNativeMeshAcquired&);
+    // B4C700's exact B73B60/B73D70 mesh creation. Unlike the B94710 prefix,
+    // this performs no caller-pair publication. State1 returns only a raw
+    // constructor allocation through B72F70; after construction the creator,
+    // owner record and any companion remain in acquired on host bind failure.
+    NativeMeshStorage* create_native_mesh_00b73b60(GuiNativeMeshAcquired&);
     NativeMeshConstants mesh_constants() const noexcept;
 
     // B742A0 -> B73F50, Text flags26h or exactly3E when streams is supplied.
