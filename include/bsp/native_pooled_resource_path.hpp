@@ -3,6 +3,7 @@
 namespace bsp {
 
 class NativeStringStorage;
+struct NativeStringRawPoolContext;
 
 // Full 00BEE690, originally ECX actual eight-byte length/data header, RET.
 // Lowercases ASCII, changes counted backslashes to slashes, trims only byte 20h,
@@ -23,5 +24,12 @@ void normalize_native_resource_path_header_00bee690(void* actual_header,
 // Evidence, original ABI, and exception limits: docs/NATIVE_POOLED_RESOURCE_PATH.md.
 void* copy_construct_native_resource_path_header_00bee780(void* actual_output_header,
     const void* actual_source_header, NativeStringStorage& storage);
+
+
+// Genuine raw publication variants. Current pool getter failures propagate;
+// actual native unwind cleanup terminates if a second cleanup exception escapes.
+// Existing NativeStringStorage behavior remains a separate host interface.
+void normalize_native_resource_path_header_00bee690(void*, NativeStringRawPoolContext&);
+void* copy_construct_native_resource_path_header_00bee780(void*, const void*, NativeStringRawPoolContext&);
 
 } // namespace bsp

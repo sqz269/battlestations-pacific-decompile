@@ -1,4 +1,6 @@
 #include "bsp/native_particle_resource_cache.hpp"
+#include "bsp/native_particle_resource_lifetime.hpp"
+#include "bsp/native_particle_resource_cache_removal.hpp"
 
 #include "bsp/native_diagnostic_sink_lifetime.hpp"
 #include "bsp/native_particle_resource_records.hpp"
@@ -93,11 +95,12 @@ void destroy_native_particle_resource_records_00871370(
     singleton_lifetime_free(pointer(vector));
 }
 
-void destroy_native_particle_resource_cache_00871480(
-    void* inner, NativeStringRawPoolContext& strings) {
+static void destroy_cache_with_context(void* inner, NativeStringRawPoolContext& strings,
+    NativeParticleResourceCacheContext* context) {
     word(inner) = 0x00d0daf0u;
     VectorUnwind cleanup{at(inner, 4), strings};
-    clear_native_particle_resource_cache_00871310(inner, strings);
+    if (context) clear_native_particle_resource_cache_00871310(inner, *context, strings);
+    else clear_native_particle_resource_cache_00871310(inner, strings);
     cleanup.armed = false;
     destroy_native_particle_resource_records_00871370(at(inner, 4), strings);
 }
@@ -119,7 +122,7 @@ void destroy_native_particle_resource_cache_owner_00871ae0(
     void* outer, NativeParticleResourceCacheContext& context,
     NativeStringRawPoolContext& strings) {
     BaseUnwind cleanup{outer, context};
-    destroy_native_particle_resource_cache_00871480(at(outer, 4), strings);
+    destroy_native_particle_resource_cache_00871480(at(outer, 4), context, strings);
     destroy_native_particle_resource_cache_base_0086a200(outer, context);
     cleanup.armed = false;
 }
@@ -170,4 +173,41 @@ void* get_native_particle_resource_cache_owner_00871bd0(
     cleanup.armed = false;
     return context.actual_cache_publication_00f87668;
 }
+
+void destroy_native_particle_resource_cache_00871480(void* inner, NativeStringRawPoolContext& strings) {
+    destroy_cache_with_context(inner, strings, nullptr);
+}
+void destroy_native_particle_resource_cache_00871480(void* inner,
+    NativeParticleResourceCacheContext& context, NativeStringRawPoolContext& strings) {
+    destroy_cache_with_context(inner, strings, &context);
+}
+void* delete_native_particle_resource_cache_00871730(void* inner, std::uint32_t flags,
+    NativeParticleResourceCacheContext& context, NativeStringRawPoolContext& strings) {
+    destroy_native_particle_resource_cache_00871480(inner, context, strings);
+    if ((flags & 1u) != 0) singleton_lifetime_free(inner);
+    return inner;
+}
+void release_native_particle_resource_00871420(void* resource,
+    NativeParticleResourceCacheContext& context, NativeStringRawPoolContext& strings) {
+    if (InterlockedDecrement(static_cast<volatile LONG*>(at(resource, 4))) == 0) {
+        const std::uint32_t current_profile = word(resource);
+        // Both proved profiles select BD30E0 at slot0. It performs no decrement
+        // and reloads the resource vptr before its scalar slot4(flags1) call.
+        if (current_profile == 0x00d0d418 || current_profile == 0x00d5d958) {
+            const std::uint32_t scalar_profile = word(resource);
+            if (scalar_profile == 0x00d0d418)
+                delete_native_cached_particle_resource_00871fa0(resource, 1, context, strings);
+            else if (scalar_profile == 0x00d5d958)
+                delete_native_particle_resource_00af46e0(resource, 1, strings);
+            else {
+                const std::uint32_t target = word(reinterpret_cast<void*>(scalar_profile), 4);
+                reinterpret_cast<void* (__thiscall*)(void*, std::uint32_t)>(target)(resource, 1);
+            }
+        } else {
+            const std::uint32_t target = word(reinterpret_cast<void*>(current_profile));
+            reinterpret_cast<void (__thiscall*)(void*)>(target)(resource);
+        }
+    }
+}
+
 } // namespace bsp

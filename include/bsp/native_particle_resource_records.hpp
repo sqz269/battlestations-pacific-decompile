@@ -3,6 +3,7 @@
 
 namespace bsp {
 struct NativeStringRawPoolContext;
+struct NativeParticleResourceCacheContext;
 
 // Actual record is 2Ch: name {length+0,data+4}, untouched word+8,
 // alias sentinel+C/count+10, five payload words+14..24, resource+28.
@@ -30,4 +31,9 @@ void resize_native_particle_resource_records_00870b30(
 // last-record destruction. Known D0DAF0/D0DB40 identities compose the actual
 // 871420 provider; other tables must contain callable thiscall slot10 targets.
 void clear_native_particle_resource_cache_00871310(void*, NativeStringRawPoolContext&);
+
+// Same clear algorithm, composing known resource identities through actual
+// cache and string contexts. The older callable-vtable overload is preserved.
+void clear_native_particle_resource_cache_00871310(void*, NativeParticleResourceCacheContext&, NativeStringRawPoolContext&);
+
 }

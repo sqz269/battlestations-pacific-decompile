@@ -61,4 +61,17 @@ void* get_native_particle_resource_cache_owner_00871bd0(
 // no complete cache virtual surface or executable resource-acquisition path
 // is claimed. These C++ entry points do not reproduce FH3/SEH stack identity,
 // hardware-fault cleanup, original CRT domain or the original callable ABI.
+
+// Context-aware concrete resource lifetime. On zero references, current native
+// D0D418/D5D958 identity invokes its proved BD30E0 -> current scalar(flags1)
+// chain using real cache/string publications. Other profiles still require
+// callable current slot0. No duplicate decrement or generic destructor callback.
+void release_native_particle_resource_00871420(void*, NativeParticleResourceCacheContext&, NativeStringRawPoolContext&);
+void destroy_native_particle_resource_cache_00871480(void*, NativeParticleResourceCacheContext&, NativeStringRawPoolContext&);
+void* delete_native_particle_resource_cache_00871730(void*, std::uint32_t,
+    NativeParticleResourceCacheContext&, NativeStringRawPoolContext&);
+// Outer owner destruction already receives this context and selects these
+// concrete overloads. The older inner/release interfaces retain their callable
+// resource-vtable precondition for applications which use that representation.
+
 } // namespace bsp
