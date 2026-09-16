@@ -11,6 +11,7 @@
 
 namespace bsp {
 class NativeVfsOwnerServices;
+class ActualNativeStringPoolStorage;
 struct NativeSingletonDeletionBindings;
 struct NativePhysicalProviderPoolContext;
 struct NativeRetainedMemoryOwnerContext;
@@ -42,6 +43,11 @@ struct GameNativeVfsRawServices {
     // obligations; borrowing these references performs no I/O or cleanup.
     NativeVfsOpenRouteContext& opens;
     NativeStoredStreamConversionContext& conversion;
+    // The SAME application pool wrapper and retained-memory counters/profiles
+    // used by these routes. Texture owners borrow them through shared drain;
+    // this view creates no second pool, backing owner or accounting domain.
+    ActualNativeStringPoolStorage& strings;
+    NativeRetainedMemoryOwnerContext& retained_memory;
 };
 
 // Borrow one initialized raw lifetime, physical-provider pool, type-ID set and
