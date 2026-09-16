@@ -20638,5 +20638,121 @@
     "bytes": 367620565,
     "all_entries_rehashed": true,
     "scope": "Exact current source/build/compiler input-output closure and successful native/source graphics-pool process/CRT fixture with retained physical I386 modules; application startup/exit/debug fault evidence and installed faulting DLL. Full application asset closure, original EH, full renderer/frame/gameplay are not claimed. Report before seal."
+  },
+  "primary_integration": {
+    "source_commit": "05561eb7650943049bf6cea8a5c3fc3c6c4a43ea",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "fixture_rerun_after_integration": false,
+    "archive": "local/evidence-r65/graphics-pool-process-main-r65.zip",
+    "sha256": "fdfc5e4ac549a0b688f0cfcb6e47145521dd8659523247494fe36124fd972504",
+    "files": [
+      {
+        "path": "local/r65_integration.log",
+        "bytes": 4553,
+        "sha256": "c670d739a755e56cd8d4361a9bfa1843a37cd252ee1645fb8cd04067f9654503"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 153866,
+        "sha256": "7fd406112d5131ff11a358e89f706f5697b9af155ef7c379422149d682f40237"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 232673,
+        "sha256": "92dca2f12da6e57d4069f93cf307c4dba31b690991fa6b851909fcd008d100bc"
+      },
+      {
+        "path": "build/win32/bsp_game.vcxproj",
+        "bytes": 63525,
+        "sha256": "7f493c25c054533c1763dc2bd202c675941fa5389ae19d70efec0257dd4ab6ca"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63898758,
+        "sha256": "a5a32fec2c69713c396ade505478ba03a282e73ca7fe272724463bc5e966302c"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2335744,
+        "sha256": "8c4631913bcc04fdd26be7e175c12ff636f4d6afc11a31245315078b14141d82"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2408,
+        "sha256": "3057f89607cb83d440b7855587c85c938e1bd02d3e11f15f8c2884f6073dca26"
+      },
+      {
+        "path": "local/graphics_pool_r65/call_gate_after_annotations.log",
+        "bytes": 79,
+        "sha256": "3835cf439866e08c294ba17f07ca8390c6ec8abc391cb2ca570c8c3fa36c0090"
+      },
+      {
+        "path": "local/graphics_pool_r65/annotations.log",
+        "bytes": 1352,
+        "sha256": "162d8617a3b5c35fb2096bacb31c42e701e7349c6e058a33ea868dad1f2bf787"
+      },
+      {
+        "path": "local/graphics_pool_r65/exports.log",
+        "bytes": 2421,
+        "sha256": "e9a98f262957c59a35ecdaa10adfa47dacf293df96276c15abee9ede6eb99f4e"
+      },
+      {
+        "path": "include/bsp/game_native_graphics_pools.hpp",
+        "bytes": 3310,
+        "sha256": "e67b556153bdaff61fae57be90b9fe9c10ff9fcdac71bc64bb98adce733ccef3"
+      },
+      {
+        "path": "src/game_native_graphics_pools.cpp",
+        "bytes": 6317,
+        "sha256": "1e7351bef7e2d4249f637b60e242dae4e69ae3b48e4cfef0e09b7a81fb0736d0"
+      },
+      {
+        "path": "include/bsp/native_volume_texture_pool_static.hpp",
+        "bytes": 1056,
+        "sha256": "32724a6c514c69e2b711fdd332e5c0826983322122065545ad958a326572347c"
+      },
+      {
+        "path": "src/native_volume_texture_pool_static.cpp",
+        "bytes": 956,
+        "sha256": "857069cfff4bfcad0d60c84a46cb18d3d3c7486b67f49e5e5459a62afafb6bfc"
+      },
+      {
+        "path": "src/game_main.cpp",
+        "bytes": 26803,
+        "sha256": "15857ddb38903d4c8c12fcb57174407cce96693884fc44ce9221896f2dc23cf8"
+      },
+      {
+        "path": "src/game_native_data_bootstrap.cpp",
+        "bytes": 23126,
+        "sha256": "3a892cfd77dac2babc9d6aaccf4a027c5cd2ec64c0abd842c2a84808520d2b8c"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_main.obj",
+        "bytes": 295642,
+        "sha256": "28eec55a48261ba90d47345f5a299da15fbcbdbf953ba8078e51f2dc829a6e3c"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_graphics_pools.obj",
+        "bytes": 27852,
+        "sha256": "1206517652b072b6d6aaba6b95a6225339bda61cc4a64107016d5b5dcc91a905"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/game_native_data_bootstrap.obj",
+        "bytes": 161645,
+        "sha256": "28c588bf2cd8c456f7455828227aa29a611de9ff306eaff3ade691e02a485517"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_volume_texture_pool_static.obj",
+        "bytes": 8329,
+        "sha256": "c2e653ba6b10f3bcd2f8768ef6e023a02236a51dd5c1aa6c14a92b976d9beb56"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T204627Z.json",
+        "bytes": 53769,
+        "sha256": "5febb66c102c17e0568c049707d4385420f7e82d95c871031ed6113922d9fd1b"
+      }
+    ],
+    "scope": "Combined source integration build and existing CTests only. Exact successful native/source pool fixtures and actual application startup/fault trace remain sealed in original archive. Full renderer/device/frame/gameplay pending."
   }
 }
