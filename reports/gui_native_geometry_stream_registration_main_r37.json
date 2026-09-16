@@ -187,5 +187,40 @@
     "This validates the host API, provider type compatibility, build, object, and library only.",
     "No native ABI replacement, original FH3/SEH identity, renderer construction, game runtime, or gameplay behavior is established.",
     "The direct overload is a prerequisite; no generated-model producer is admitted by this packet."
-  ]
+  ],
+  "primary_integration": {
+    "source_merge": "eba0a7fc2",
+    "review": "Complete production diff reviewed; original services guards unchanged and same acquired/companion publication body retained. Direct route checks same actual owner/context/reference identities.",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "log": "local/r37_geometry_stream_integration.log",
+    "worker_artifacts_verified": 17,
+    "fixture": "No new runtime fixture; source interface and compiled existing callers only."
+  },
+  "primary_archive": {
+    "path": "local/evidence-r37/gui-stream-registration-main-r37.zip",
+    "sha256": "1d7df66ce07f11a9017702e57a4817fa06b71e307652c98e09b5e9ec020f04e3",
+    "files": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "879381213bbdc3c203a6b1ba6602aade07ffd9ad92102e42192ccda03bdaf252"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/gui_native_geometry.obj",
+        "sha256": "2f494941081098a2401a33254adec9cdb7095fe927ae9b2d152a84acfa344f3b"
+      },
+      {
+        "path": "local/r37_geometry_stream_integration.log",
+        "sha256": "f79ab84338b9fe8d58487887f5deb8e26d6c2139ad845ad2ae4134cbbc4081a2"
+      },
+      {
+        "path": "include/bsp/gui_native_geometry.hpp",
+        "sha256": "c4eb78a5c91fe3687209c6c1ad52af081cb231aef281364b94d78d7a097bf8fd"
+      },
+      {
+        "path": "src/gui_native_geometry.cpp",
+        "sha256": "31be3e91201a8388cb9c25bd56e6b9b750f19ab474cd2808fab47605e54d53c0"
+      }
+    ]
+  }
 }
