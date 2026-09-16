@@ -1,0 +1,82 @@
+{
+  "packet": "orch4-particle-parameter-owner-r23",
+  "result": "distinct F8D344 static lifecycle reconstructed over the existing generic pool provider",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "files": [
+    "include/bsp/native_particle_parameter_pool_owner.hpp",
+    "src/native_particle_parameter_pool_owner.cpp",
+    "docs/NATIVE_PARTICLE_PARAMETER_POOL_OWNER_ORCH4.md",
+    "cmake/startup.cmake"
+  ],
+  "functions": [
+    {
+      "address": "00cd78b0",
+      "end_exclusive": "00cd78c6",
+      "length": 22,
+      "bytes": "b944d3f800e8f68be2ff68e00bce00e831f7f1ff59c3",
+      "sha256": "88d88a5d4640c8a545a0e5b23df12e1ae1d953de9c9431a5fa613d2720cb2991",
+      "live_disk_equal": true,
+      "ghidra_name": "BSP_ParticleParameterPool_StaticInitialize",
+      "cpp_symbol": "initialize_static_native_particle_parameter_pool_00cd78b0",
+      "source": "src/native_particle_parameter_pool_owner.cpp",
+      "original_abi": "No arguments; ECX=00F8D344 for 00B004B0; EAX exact atexit result; RET",
+      "coverage": "complete",
+      "behavior": "Select actual F8D344 owner, call generic construct 00B004B0, register 00CE0BE0 through 00BF6FF5, return registration status without rollback."
+    },
+    {
+      "address": "00ce0be0",
+      "end_exclusive": "00ce0bea",
+      "length": 10,
+      "bytes": "b944d3f800e9d6f6e1ff",
+      "sha256": "808d65cfdebef6d43c01f52c5e85fdf57346d96bbbcdb0a28207c8eff8c292ce",
+      "live_disk_equal": true,
+      "ghidra_name": "CG_static_init_00ce0be0",
+      "original_annotation": {
+        "address": "00ce0be0",
+        "function_name": "CG_static_init_00ce0be0",
+        "comment": "[BSP inventory 00ce0be0] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+      },
+      "recommended_name": "BSP_ParticleParameterPool_StaticDestroy",
+      "cpp_symbol": "destroy_static_native_particle_parameter_pool_00ce0be0",
+      "source": "src/native_particle_parameter_pool_owner.cpp",
+      "original_abi": "No arguments; MOV ECX,00F8D344; tail JMP 00B002C0",
+      "coverage": "complete",
+      "behavior": "Exit callback registered by 00CD78B0 selects the same F8D344 owner and tail-dispatches generic destroy."
+    }
+  ],
+  "call_edges": [
+    {"from": "00cd78b0", "site": "00cd78b5", "to": "00b004b0", "kind": "call"},
+    {"from": "00cd78b0", "site": "00cd78bf", "to": "00bf6ff5", "kind": "call"},
+    {"from": "00ce0be0", "site": "00ce0be5", "to": "00b002c0", "kind": "tail_jump"}
+  ],
+  "host_steps": [
+    {"address": "00cd78b5", "native": "00b004b0", "function": "00cd78b0", "method": "NativeWeakHandlePool::initialize_00b004b0"},
+    {"address": "00cd78bf", "native": "00bf6ff5", "function": "00cd78b0", "method": "_atexit"},
+    {"address": "00ce0be5", "native": "00b002c0", "function": "00ce0be0", "kind": "tail_jump", "method": "NativeWeakHandlePool::destroy_00b002c0"}
+  ],
+  "ownership": {
+    "pool_storage": "caller-owned actual 00F8D344 38h storage",
+    "allocator_list": "same application 00E188B4 AllocatorListDomain",
+    "provider": "existing NativeWeakHandlePool generic 128x16 implementation",
+    "separate_static_binding": "0109CE94 weak-handle pool remains distinct",
+    "created_private_storage": false,
+    "registration_failure_rollback": false
+  },
+  "validation": {
+    "verify_seeds": "PASS: all eight configured seed ranges matched the installed PE",
+    "strict_win32_build": "PASS: full scripts/build.ps1 Release build compiled the new translation unit and linked bsp_game.exe",
+    "ctest": "PASS: 3/3 reconstructed_math, native_math_differential, tool_tests",
+    "focused_temporary_probe": "PASS: registration observed constructed list/table state, status 37 survived unchanged, generic 009242F0 allocation and 00924420 return reused one slot, captured destructor unlinked the pool",
+    "permanent_test_added": false
+  },
+  "limits": [
+    "new C++ interface, not an original register-ABI replacement",
+    "application storage and bootstrap installation are separate",
+    "native EH and real CRT process-exit timing are untested",
+    "concurrent use and retail gameplay are unvalidated"
+  ],
+  "ghidra_mutations": false
+}
