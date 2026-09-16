@@ -129,8 +129,9 @@ void destroy_native_animation_channel_group_00b78530(void* group,
                 deletes.delete_vslot04(captured_channel, captured_profile, 1);
                 *captured_cell = 0;
             }
-            if (word(group, 0x14) != 0)
-                put(group, 0x14, word(group, 0x14) - 1u);
+            const U count_after_delete = word(group, 0x14);
+            if (count_after_delete != 0)
+                put(group, 0x14, count_after_delete - 1u);
         }
 
         state = 1;
