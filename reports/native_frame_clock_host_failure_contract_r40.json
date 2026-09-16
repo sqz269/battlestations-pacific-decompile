@@ -1,0 +1,111 @@
+{
+  "packet": "native_frame_clock_host_failure_contract_r40",
+  "status": "reviewed_source_and_native_contract_only_no_host_cutover",
+  "baseline": "2ad9dd3fd6a1554d1bcf103878ca6a70b273910b",
+  "prior_contract": "reports/native_frame_clock_application_contract_r37.json",
+  "current_completed_dependencies": [
+    "R36 genuine raw clock lifecycle",
+    "R38 current-publication helpers integrated806a4efad/9599a5c0b",
+    "R39 sound/input borrowed providers pending separate integration"
+  ],
+  "new_native_checks": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "spans": [
+      {
+        "label": "startup",
+        "address": "0073d480",
+        "length": 61,
+        "hex": "393db00a0901899c2444010000752e6880000000e882934b0083c404894424183bc7c78424440100000100000074078bc8e8fa0a4b00899c2444010000",
+        "sha256": "b34d55d35f5cc0759687f0dc487d9a968cdbf2e84f9da1cfe89e93a77008c461",
+        "live_read": "local/r40_clock_host_startup_bytes.txt"
+      },
+      {
+        "label": "fixed",
+        "address": "0073daa5",
+        "length": 29,
+        "hex": "e8e6a61900803d81aee10000740f8b0db00a09018b118b42246a32ffd0",
+        "sha256": "3601f21f30a6193741098a55e9fdbd4f74e4ec9515907ed3b2250d30483b6025",
+        "live_read": "local/r40_clock_host_fixed_bytes.txt"
+      },
+      {
+        "label": "cleanup",
+        "address": "00c86a3e",
+        "length": 14,
+        "hex": "8b85d0feffff50e862fbf6ff59c3",
+        "sha256": "f1042d732d5f9599d3dfaf422130ea3cd3904ed50fce0f79bc9906ce359b8863",
+        "live_read": "local/r40_clock_host_cleanup_bytes.txt"
+      }
+    ]
+  },
+  "phase0": {
+    "range": "0073D480..0073D4BC",
+    "contract": "Compare current AB0 and skip allocation on nonnull. Allocate uninitialized80h through singleton_lifetime_allocate; call BEDFB0 only if nonnull. Store no caller publication. Constructor performs original publication/registration. Ordinary constructor failure frees captured allocation via C86A3E, with no caller AB0 clear or unregister.",
+    "source_change": "Replace embedded FrameClock construction/manual AB0 assignment atomically with persistent contexts and this exact gate. No default-initialization or memset of80h storage."
+  },
+  "fixed_gate": {
+    "range": "0073DAA5..0073DAC1",
+    "native_order": "CALL8D8190; test E1AE81; if true reload AB0 and profile slot24, push signed50 and call.",
+    "current_boundary": "Immediately after load_game_settings_008d8190 returns and before sound startup0073DAFD; place before summary reads/logging where practical. Existing command_line.fixed_frame_rate provides the parsed flag.",
+    "limit": "The projected renderer/input setup preceding settings is incomplete; adding the gate establishes this local settings-to-sound order, not whole application order. Do not enable fixed mode in phase0."
+  },
+  "persistent_contexts": {
+    "owner": "One private GameStartupHost::ClockServices with actual methods, publication and lifetime contexts; no separately advancing state.",
+    "cells": "Change existing clock_publication_01090ab0_ to void* volatile, borrow exactly it and existing GameSingletonHost manager_publication_01090aa0().",
+    "profile": "native_data_->data_at(D68D50,44) is admitted by the already mapped D60000 band and validates the requested44B range. Confirm required slot words before allocation so unsupported data cannot reach raw method termination.",
+    "deletion": "Bind existing NativeSingletonDeletionBindings.frame_clock at108 before construction; sizeof116 with diagnostic112 is preserved. Shared raw manager is sole deleter of a successful clock.",
+    "teardown": "Keep ClockServices, input/sound services, mapped profile and cells alive through GameSingletonHost::shutdown and destruction. Reset ClockServices only after deleting GameSingletonHost; it owns contexts, never frees AB0."
+  },
+  "failure_policy_proposal": {
+    "status": "Explicit conservative application source policy, not recovered native exception behavior and not implemented by this report.",
+    "states": [
+      "unattempted",
+      "constructing",
+      "constructed",
+      "failed",
+      "drained"
+    ],
+    "construction": "Set constructing before allocation; retain captured allocation for exact ordinary catch/free if BEDFB0 throws; set failed before rethrow. Never inspect freed AB0 to classify cleanup. Failed is terminal for retries and clock consumers. Preserve AB0 bits and prior effects.",
+    "conservative_retention": "For any construction exception whose manager graph cleanup is not established, use the existing application terminal-retention pattern before shared drain/destruction: log, close log, std::_Exit(1). Do not call exit (CRT cleanup) or attempt to repair/clear/delete stale publication. This intentionally avoids promoting an unproved safe-drain claim.",
+    "guard_locations": "Check clock failure at start of destructor, application_shutdown and destroy_singleton_lifetime_manager before any owned teardown. A new private helper can preserve existing public VFS helper and avoid editing game_main. Existing catch reports then host.reset invokes destructor; summary reads do not consume the clock.",
+    "consumer_admission": "SoundServices/InputServices and GameFrameHost are composed only after successful phase0. Obtain the publication context through ClockServices constructed-state check; do not pass a dummy semantic FrameClock. A repeated ensure may skip allocation only for an established constructed context/current valid publication; broader run_initialize_phases repeatability remains unproved.",
+    "null_allocation": "Preserve native defensive null branch without a fallback clock. Current source allocator normally throws. A later source consumer boundary may reject missing live storage; no native-null fault-parity claim.",
+    "later_failure": "After successful registration, later startup failure uses existing normal raw manager fallback, retaining contexts throughout. Stop consumers before drain; mark drained only after successful host shutdown. No renderer-worker activation is authorized."
+  },
+  "consumer_cutover": {
+    "frame": "Only tracked GameFrameHost constructor call is in game_hosts.cpp. Replace FrameClock& field/parameter with borrowed NativeFrameClockPublicationContext& plus one16B interval result; advance and interval each reload current AB0 separately through R38. Snapshot immediate consumer restriction remains explicit.",
+    "sound_input": "Use approved R39 borrowed binding paths in SoundServices/InputServices aggregates. No semantic owner may remain just to satisfy an aggregate reference. Raw sound startup uses current slot14, not sample slot20.",
+    "removal": "Remove embedded GameStartupHost::clock_ in same commit as all required consumer connections; all existing production clock_ references are frame, SoundServices, phase0 and frame-host composition. Optional system/worker/XLive adapters remain separate."
+  },
+  "next_packet": {
+    "files": [
+      "include/bsp/game_hosts.hpp",
+      "src/game_hosts.cpp",
+      "docs/NATIVE_FRAME_CLOCK_APPLICATION_BINDING_R41.md",
+      "reports/native_frame_clock_application_binding_r41.json"
+    ],
+    "prerequisites": [
+      "R39 sound/input providers integrated and reviewed",
+      "R41 diagnostic game_hosts.cpp binding integrated first"
+    ],
+    "validation": "Strict build and existing tests; smallest genuine-host composition check for one raw allocation, fixed gate behavior and drain. Do not claim full app/runtime or original FH3 from component fixtures. If terminal failure policy is exercised, use a separate probe child and explicit expected exit, never corrupt a live game graph."
+  },
+  "source_hashes": {
+    "include/bsp/game_hosts.hpp": "09169d856660ebab478ee6986a168939bea17ecf445fe417e41064bd196772c0",
+    "src/game_hosts.cpp": "81372029b2bb19550f3f5ee6e5630989c3ce41c70892a104ca5684b238edcfeb",
+    "src/game_main.cpp": "a7c9dc5b6ceae4ebc7da00bd60706f2670bc750940ecfd5386791e69344e104a",
+    "src/game_native_readonly_data.cpp": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+    "src/native_frame_clock_lifetime.cpp": "3c2261b760e9a471965bbad4d475f6051d52b33fa56d6ece3b1c02c0e455a5a3",
+    "include/bsp/native_frame_clock_lifetime.hpp": "4373852fa08f86469a72840f2aeb187ff86dd4c871335f7d9fce851492a560fc",
+    "include/bsp/native_frame_clock_publication.hpp": "5781316b10fc7d41027310c4ba39d34143b82eb0711d86860937456126a16a1b",
+    "src/native_frame_clock_publication.cpp": "4759c3d76740d893f615ff72f3f7d3ecab251151325f119e5e452a8aac518a55",
+    "include/bsp/native_singleton_destruction.hpp": "489f6de28e375d0fc79d13d3a54c1d6fd4666308e99aaeae6a6a9a51f083ae45",
+    "src/game_hosts_singletons.cpp": "cba1cd38c764abf6fac088341855122f16720f03daffa673487b12e79389c9da"
+  },
+  "boundaries": [
+    "No C++ changes, build, test, Ghidra annotation or runtime claim from this audit.",
+    "Native three fresh spans104B match installed PE; R37 remaining native contracts retain their prior evidence.",
+    "Conservative terminal retention is a proposed source policy requiring explicit implementation/review; it is not a newly proved native cleanup."
+  ]
+}
