@@ -713,7 +713,7 @@
     {
       "step": 4,
       "range": "00B2B72F..00B2B8CB",
-      "behavior": "For each signed ordinal while ordinal is below CURRENT +1D1C, expand the 28h record to six 18h vertices. Convert x and width by *2-1; convert y/height with (1-y)*2-1; write Z=.5 and replicate record+14. Release record+00 with real InterlockedDecrement/current virtual0 and clear +00 only after a returning terminal. The loop reloads current data/count after callbacks."
+      "behavior": "For each signed ordinal while ordinal is below CURRENT +1D1C, expand the 28h record to six 10h vertices (60h output bytes). Left=x*2-1; top=(1-y)*2-1; right=left+width*2; bottom=top-height*2, with the native x87 spill/store schedule. Write Z=.5 and reload current renderer+1D18/record+14 independently for each of six colors. Release record+00 with real InterlockedDecrement/current virtual0 and clear +00 only after a returning terminal. The loop reloads current data/count after callbacks."
     },
     {
       "step": 5,
@@ -793,7 +793,7 @@
         "role": "copied by reserve, not read by B2B580; meanings remain unknown"
       }
     ],
-    "vertex_output": "Six vertices per reached record; each vertex is 18h bytes. Native writes x/y/Z(.5), record+14, and a second x/y pair. Source must preserve the exact x87 store order and current environment.",
+    "vertex_output": "Six vertices per reached record; each vertex is 10h bytes, with x/y/Z(.5)/color at +00/+04/+08/+0C. Total output stride is60h. XY order is (left,bottom),(left,top),(right,bottom),(right,top),(right,bottom),(left,top). There is no second XY pair. Source must preserve the exact x87 store order and current environment.",
     "entry_bank_0108fe88": "Publication points at a raw14h render-entry-cache owner. +04 is 28h-row base; +08 is atomic used count; +0C capacity; +10 owned critical section. Original window startup resizes to 10000 rows. B2B580 performs no capacity check and does not undo the increment on later failure.",
     "failure_schedule": "String FH3 states clean only reached local strings. No outer rollback unlocks a stream, decrements the entry bank, releases the cached model, clears a partially consumed record, or destroys the camera after a later child failure. Persistent diagnostic/acquisition frames must survive failed calls."
   },
@@ -1315,5 +1315,16 @@
     "The orch5 render-entry-cache fixture is historical cross-branch evidence. Its source is absent from the audited main baseline and was not rerun here.",
     "The a6 generated-model and renderer fixtures did not execute B2B580. No prior result is promoted to runtime proof for this parent."
   ],
-  "hash_provenance": "All current and historical SHA-256 values were computed programmatically from exact workspace bytes or git-show blob bytes. The native span hash was computed only after full fresh Ghidra/installed-PE equality; no abbreviated hashes were expanded manually."
+  "hash_provenance": "All current and historical SHA-256 values were computed programmatically from exact workspace bytes or git-show blob bytes. The native span hash was computed only after full fresh Ghidra/installed-PE equality; no abbreviated hashes were expanded manually.",
+  "primary_contract_correction": {
+    "review": "R51 worker recovery and independent parent listing inspection corrected initial R48 vertex-layout interpretation. Native span and hashes unchanged.",
+    "addresses": [
+      "00b2b751: ESI=ECX+18h",
+      "00b2b763/00b2b766: ECX and ESI each advance60h",
+      "00b2b7b5/00b2b7bc/00b2b7a8/00b2b81a: first XYZ/color resolve to output00/04/08/0C",
+      "00b2b7bf..00b2b85b: next five groups resolve to10/14/18/1C through50/54/58/5C",
+      "00b2b810/00b2b81d/00b2b82a/00b2b837/00b2b844/00b2b851: six independent current data reloads",
+      "00b2b8c1: back-edge to00b2b754"
+    ]
+  }
 }
