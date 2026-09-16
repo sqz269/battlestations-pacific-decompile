@@ -661,5 +661,655 @@
       "sha256": "85183569d2e11d9579845a8960cb69449a18a9629a285f0478be43670ca75d34"
     }
   ],
-  "ledger_and_ghidra": "Read-only worker. Primary serializes naming, comments, ledgers and main integration after lease release."
+  "ledger_and_ghidra": "Read-only worker. Primary serializes naming, comments, ledgers and main integration after lease release.",
+  "primary_integration": {
+    "source_merge": "63290a43e",
+    "complete_source_header_and_fixture_reviewed": true,
+    "exact_source_adaptation_independently_verified": true,
+    "worker_artifacts_verified": 5356,
+    "native_spans_independently_verified": 22,
+    "native_bytes": 3280,
+    "call_rows_verified": 47,
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "worker_archive": "local/evidence-r44/gather-original-r44.zip",
+    "fresh_primary_fixture": "Both real HAL source cases and two original4B dimension leaves pass. Actual COM slots/vptrs restored. Full original gather not executed.",
+    "fixture_run_log": "local/r44_gather_primary_fixture_run.log"
+  },
+  "primary_archive": {
+    "path": "local/evidence-r44/gather-main-r44.zip",
+    "sha256": "cc55dadc9f4b1fe8bbc61f256ea4a4e1fe4969e7ff535f7c1a78d67cf60e2856",
+    "files": [
+      {
+        "path": "include/bsp/native_system_constant_gather.hpp",
+        "bytes": 3792,
+        "sha256": "c50c3972023f6275762edc02119843c626c002d0820a92302342e89ce654ae11"
+      },
+      {
+        "path": "src/native_system_constant_gather.cpp",
+        "bytes": 34872,
+        "sha256": "8078dc01ff71f37185a8149cf7535019257a300d71562b292cc8216a74e75a86"
+      },
+      {
+        "path": "docs/NATIVE_SYSTEM_CONSTANT_GATHER_R44.md",
+        "bytes": 4810,
+        "sha256": "0805224d3f77f43bfeee91fb7eb51a82bcda4afd004cff54214131d8ba3d06a5"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 149967,
+        "sha256": "019b754b0321fb40e3f40e31469cd0cd161db6dfcfe3d179e14f951e775f5bd0"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 229935,
+        "sha256": "6f269cbc29dad0e64a9f24ce09f959557f7238131a7820fc4faef8830802b6a2"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2267136,
+        "sha256": "4c132dfafb25a48a4943d04c806327c1041daa3b15eefcbe6ae4c25064519688"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_system_constant_gather.obj",
+        "bytes": 18840,
+        "sha256": "4280ab65003279d01151a89b5e670f3fb9b9f55611f05d01b7ac330e99aad073"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_frame_clock_actual.obj",
+        "bytes": 5381,
+        "sha256": "f8d63dcb4362dae77ba4ff61973a125c12db0e13920140baf2ba5d33ca2ab957"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_material_constant_metadata.obj",
+        "bytes": 3257,
+        "sha256": "e7d26aa842d3fa5dd1b4cd2de2923156fc50062d42d99e1593b17d1a2103e1a9"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_sampler_loader_context.obj",
+        "bytes": 11864,
+        "sha256": "6ecf44be2f884a08b34be703efdf05e2e1834a9b3f7f835a2d5d2904d169d4a2"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63484652,
+        "sha256": "5b44def4d74a697a4c7c33b9dae96c2e4a76509f5dc5f22a5a6c64c6d225110d"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "bytes": 455244,
+        "sha256": "db83167c8c7d24461ef2bf60363b96264fd2406929d0e72a8909287d79b96a17"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "bytes": 71906,
+        "sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5"
+      },
+      {
+        "path": "local/gather_probe.cpp",
+        "bytes": 13327,
+        "sha256": "53f489f3e5bb8d43ac41f313fda6efc67e4c946257e555f2bca7cd7957b1f327"
+      },
+      {
+        "path": "local/gather_probe.obj",
+        "bytes": 91676,
+        "sha256": "b0a859fc27df5adbb566afbe23d019ef11ad42e43047f00e38b079b8d93f3dfc"
+      },
+      {
+        "path": "local/gather_probe.exe",
+        "bytes": 224256,
+        "sha256": "a58eaf526c5d8466adc48c45fb0131778f2d9f7a41e7c4843d799b305acc39d6"
+      },
+      {
+        "path": "local/gather_probe.map",
+        "bytes": 309519,
+        "sha256": "f698a192e78cf1bf8cb98dbc482683464dcebdd604effac737e83b1817ced5f2"
+      },
+      {
+        "path": "local/gather_probe_dependencies.json",
+        "bytes": 31715,
+        "sha256": "6cf9626e33b25de773b2e9529540d98dc5a290e025feb79289fba0d283fa1e19"
+      },
+      {
+        "path": "local/build_gather_probe.cmd",
+        "bytes": 821,
+        "sha256": "54803590d4538a685f8f386d18e6e8c328e042631f83a8bd9c382403be64bc21"
+      },
+      {
+        "path": "local/r44_gather_integration.log",
+        "bytes": 903,
+        "sha256": "2d869706e9a08d9c7cde6e1e66e26d2970621268fe332db7e8d7bfafce8d580c"
+      },
+      {
+        "path": "local/r44_gather_primary_fixture_build.log",
+        "bytes": 3143,
+        "sha256": "54ee365129f81ee0eb6734a54ebdfbab6b05137eb5396b0e7ed292fba8629d27"
+      },
+      {
+        "path": "local/r44_gather_primary_fixture_run.log",
+        "bytes": 7916,
+        "sha256": "92b3c5f298e4ebc631ab341d3d9436551c1829099fc885157a3ba1446bbc9d8e"
+      },
+      {
+        "path": "local/r44_gather_proto.txt",
+        "bytes": 7193,
+        "sha256": "9632f2ea3ac44d6d08be048efd9b693e31e06e3a98d6baebf06dfc6f31a16e8c"
+      },
+      {
+        "path": "local/r44_gather_annotations.log",
+        "bytes": 604,
+        "sha256": "65b1974c157889fc2cc26a5792606827441fac1256a16c1168b8c78132f072d3"
+      },
+      {
+        "path": "local/r44_gather_exports.log",
+        "bytes": 1022,
+        "sha256": "be852824d2d091e137dfd6301f2dfcf78344fb74ac5cd4d3516af3eb1b5894f6"
+      },
+      {
+        "path": "local/r44_gather_native_spans.json",
+        "bytes": 3172,
+        "sha256": "e8b253cfa774b53a528d7c6c4889ef8ad13a536c4b2374936ff3beba7d639b1b"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T130458Z.json",
+        "bytes": 47946,
+        "sha256": "75e9c5009c8d26a50daf980dd3eed4823aba880fc28eb17f8cbc8a6992b4ffc8"
+      }
+    ],
+    "modules": [
+      {
+        "resolved_path": "\\\\?\\J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\gather_probe.exe",
+        "machine": "014c",
+        "bytes": 224256,
+        "sha256": "a58eaf526c5d8466adc48c45fb0131778f2d9f7a41e7c4843d799b305acc39d6"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+        "machine": "014c",
+        "bytes": 1822400,
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\kernel32.dll",
+        "machine": "014c",
+        "bytes": 687472,
+        "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\KernelBase.dll",
+        "machine": "014c",
+        "bytes": 2974168,
+        "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\apphelp.dll",
+        "machine": "014c",
+        "bytes": 710832,
+        "sha256": "a8109618c3bf3623be23e8e18f1e7184538600c953169297fd0009ed77564c6e"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\user32.dll",
+        "machine": "014c",
+        "bytes": 1972624,
+        "sha256": "bff75906f4abcc050cf85e38e20090ea0edf7dc33e0ed60cb74cf9e1bc007527"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\win32u.dll",
+        "machine": "014c",
+        "bytes": 108120,
+        "sha256": "7183521868938b0f6c131ef58288aed6cb55e4bde34d27d9612616ddc4dc2b33"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\gdi32.dll",
+        "machine": "014c",
+        "bytes": 132352,
+        "sha256": "7c3cb17bc41a00e5167a82aef67d0da4a09e73e6deba9addcdc8b20a90b5186c"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\gdi32full.dll",
+        "machine": "014c",
+        "bytes": 950488,
+        "sha256": "579857a52f8e9cccff64a4c1c1eb5d2a4a8c6e19c30eab16bef63ed6d61e8806"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\msvcp_win.dll",
+        "machine": "014c",
+        "bytes": 505792,
+        "sha256": "2c3dd2c830375591addea061588f8183bcafdba501c638526b85215465ac905a"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "machine": "014c",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll",
+        "machine": "014c",
+        "bytes": 618944,
+        "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "machine": "014c",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\d3d9.dll",
+        "machine": "014c",
+        "bytes": 1528480,
+        "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\msvcrt.dll",
+        "machine": "014c",
+        "bytes": 809472,
+        "sha256": "23a918921c545140d189ce6dc68590bacdeb0ab2f3e3a9a2d722c5aff45ce64f"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\sechost.dll",
+        "machine": "014c",
+        "bytes": 538352,
+        "sha256": "bfb478f918ee80d1945237cb15db42e2c5e2e324fa00211de37511c1cc720ad4"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\version.dll",
+        "machine": "014c",
+        "bytes": 28976,
+        "sha256": "4f66b88731e84be8e1545eefc589a79e701cca426ce916e4ac9322e60ea9680b"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\dwmapi.dll",
+        "machine": "014c",
+        "bytes": 132936,
+        "sha256": "b57e484bf23ac0c23c97040939924896de7801524abfc29dd59cff2ba08c3ef5"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\combase.dll",
+        "machine": "014c",
+        "bytes": 2711704,
+        "sha256": "3f152587249ff6623eb0023cf52cad64aac02f6d8117d8754349f83768f9a6f8"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\rpcrt4.dll",
+        "machine": "014c",
+        "bytes": 772776,
+        "sha256": "6e3f4e700f03dc415d0a52ffdaac0ce3dfe80a42cd5e27dd304ccc11afea11d8"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\DXCore.dll",
+        "machine": "014c",
+        "bytes": 210384,
+        "sha256": "848382e31f21c5d7b98fd3047efb94d8e9ab6e8780edf0e55c1cdac290833881"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\imm32.dll",
+        "machine": "014c",
+        "bytes": 147856,
+        "sha256": "027d404ea547f446740336b90dc69b0cfa7c2bea4f1f366053251364f0eefe02"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\uxtheme.dll",
+        "machine": "014c",
+        "bytes": 497664,
+        "sha256": "9272416d85266c9f1bbec589cdd3212de8ad02da4471a29dd598d362f44878db"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\msctf.dll",
+        "machine": "014c",
+        "bytes": 1137976,
+        "sha256": "2755d3fbabd83ce05043192f364f1ed46c791fde4179357d89a254c640fb5e69"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\System32\\DriverStore\\FileRepository\\nv_dispi.inf_amd64_b26cc1edfbb8f4d0\\nvldumd.dll",
+        "machine": "014c",
+        "bytes": 669496,
+        "sha256": "c7febdd2ee89b27cb37e3147e57191a455302a3daf3c4c710e21158f64204be6"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\shell32.dll",
+        "machine": "014c",
+        "bytes": 6734832,
+        "sha256": "1d79d4611f64bb78c10a4688377cddd2e93b6dd12437c537f11d3d763772dea0"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\msasn1.dll",
+        "machine": "014c",
+        "bytes": 52320,
+        "sha256": "ad134f21e46afa9d28e728243a6bc27739e57aaac07b0f6aff37c4381532eea4"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\cryptnet.dll",
+        "machine": "014c",
+        "bytes": 170064,
+        "sha256": "69a8495f7d5290931ba741b87ca0e785f21768f9e65d8718a02a21d3992897ef"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\crypt32.dll",
+        "machine": "014c",
+        "bytes": 1092552,
+        "sha256": "23189fed3a48d7322e28a9d4be0e64d8b3984c3aff7cd67eb545edc2a463506b"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\cryptbase.dll",
+        "machine": "014c",
+        "bytes": 32696,
+        "sha256": "795b93001b5c00b4c6ad0806c12df0d4f3477cbed0c261a85b92e5f77ff64a94"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\wldp.dll",
+        "machine": "014c",
+        "bytes": 375608,
+        "sha256": "422f814b84a2ac861c1c45f95b0eef18f07e70fe9c886b43fc37148267219c72"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\drvstore.dll",
+        "machine": "014c",
+        "bytes": 1223176,
+        "sha256": "9c227899b9785d50a742fac8e56ce67987f1e28166f9f6cf09162ab4c8954fc2"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\devobj.dll",
+        "machine": "014c",
+        "bytes": 146296,
+        "sha256": "75807fdd61014be50a57e9c0884e9768877f3a9f2ac180e0a36223bfb4176488"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\cfgmgr32.dll",
+        "machine": "014c",
+        "bytes": 253248,
+        "sha256": "01af4eede3f7408879c7c55893c8b1d26111220fc08e89d1967f8bd40938ba95"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\wintrust.dll",
+        "machine": "014c",
+        "bytes": 416440,
+        "sha256": "0a20c74f8fe8388e988d93062172ddd9f610d84b0150036bbf90d51374360c4b"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\imagehlp.dll",
+        "machine": "014c",
+        "bytes": 102864,
+        "sha256": "4d46df4b5618698cd5aeeb872e390c82e0288ce5255b3d5a6622f196a9e3cf47"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\cryptsp.dll",
+        "machine": "014c",
+        "bytes": 76616,
+        "sha256": "ee4ea256f8edc949fc0ef9b9425d1afa22aea98faf7dbcc7c73161d93fa44c72"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\rsaenh.dll",
+        "machine": "014c",
+        "bytes": 198888,
+        "sha256": "898179763b3fc4b288820ceb8ee24605375f7e0e98d0a27a2d95430b818d37e8"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\bcryptprimitives.dll",
+        "machine": "014c",
+        "bytes": 501136,
+        "sha256": "dfd29f2c1f28034949f0a3716a99f00816bda0bffd48a5a2750be4569e7d21ee"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\bcrypt.dll",
+        "machine": "014c",
+        "bytes": 114240,
+        "sha256": "137cec7506fdb011ed03c5a7b51c6ea168cc75ec4359b8dc3f83855622d86bc3"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\System32\\DriverStore\\FileRepository\\nv_dispi.inf_amd64_b26cc1edfbb8f4d0\\nvgpucomp32.dll",
+        "machine": "014c",
+        "bytes": 79745232,
+        "sha256": "4bfc3875abb1ce506876d1ff479f2f0b67fa1dc406d2c133453b18387d9afae6"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\ole32.dll",
+        "machine": "014c",
+        "bytes": 1406032,
+        "sha256": "d178e227ede5073ecfed4528199b03327e1c2edff9ddd09d79d4af821fdde968"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\advapi32.dll",
+        "machine": "014c",
+        "bytes": 537816,
+        "sha256": "06e6ee5fcd0601e181e5dd8f9a6328dd79b6bcc8fcdfc2b1a7832f0556d0d049"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\System32\\DriverStore\\FileRepository\\nv_dispi.inf_amd64_b26cc1edfbb8f4d0\\NvMemMapStorage.dll",
+        "machine": "014c",
+        "bytes": 1009144,
+        "sha256": "2a977a108a3f043f3a4c53cf3e6cc027203eccb0f304a894c24739389f7bd839"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\powrprof.dll",
+        "machine": "014c",
+        "bytes": 342544,
+        "sha256": "834b832c2a0b4400212702a2df921b1e572f2fc690c94f80491919091695e694"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\winmm.dll",
+        "machine": "014c",
+        "bytes": 195912,
+        "sha256": "eefb711e78a3e2031ff2015d04471da7258945f40bce2dd54433f664c2d667bf"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\umpdc.dll",
+        "machine": "014c",
+        "bytes": 55416,
+        "sha256": "52e5f333029039f3a7e5f28c673fbc25d5b2f2151dea6358802e668759d736a5"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\windows.storage.dll",
+        "machine": "014c",
+        "bytes": 7475520,
+        "sha256": "af7298c0b4a83ccee4c9d8400207e94cbafcfcdbe95fd9d0f7f5232dfd1e1f47"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\SHCore.dll",
+        "machine": "014c",
+        "bytes": 852368,
+        "sha256": "6b5db294c55eb62f6dc0e038b858a60b90a80a5e2933d49e8b512b1491267225"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\shlwapi.dll",
+        "machine": "014c",
+        "bytes": 334296,
+        "sha256": "184748cce799bcf03100775e6a93288be314161d290cf27cc96a4fb0dbb45528"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\System32\\DriverStore\\FileRepository\\nv_dispi.inf_amd64_b26cc1edfbb8f4d0\\nvd3dum.dll",
+        "machine": "014c",
+        "bytes": 69152160,
+        "sha256": "77001eae926cbcfa59ab9d1918da992622cd8be2fa140ee9515c89a636eff83d"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\directxdatabasehelper.dll",
+        "machine": "014c",
+        "bytes": 307456,
+        "sha256": "c471e9b5e29a38fce19190650eed67164cd9a7eaf7cfb082ada49a49c53d00c6"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\kernel.appcore.dll",
+        "machine": "014c",
+        "bytes": 74552,
+        "sha256": "b1d3e1c0cd752be86ab59e151b9627f703a30c6d4d43bcb14522ea738b1886f4"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\nvspcap.dll",
+        "machine": "014c",
+        "bytes": 1224304,
+        "sha256": "66355254da05fb95e8ad4f65b85fb0b031642d56194a787aa1a40fa78ebd71e9"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\profapi.dll",
+        "machine": "014c",
+        "bytes": 114304,
+        "sha256": "b7447c8d750bce9bbb33471bd14e9a44b016d9f7cb8bf36da98d98092565e64b"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\ntmarta.dll",
+        "machine": "014c",
+        "bytes": 156032,
+        "sha256": "84c6bf1f607632e85f27c74f7b1eff693cfcec4a4797aa7fa19d0e862670fb02"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\SysWOW64\\gpapi.dll",
+        "machine": "014c",
+        "bytes": 116848,
+        "sha256": "de775d3ad495a67f5ab94ec7a628bf457568d17ba26707c2b2c7c3feec0aef35"
+      },
+      {
+        "resolved_path": "\\\\?\\C:\\Windows\\System32\\DriverStore\\FileRepository\\nv_dispi.inf_amd64_b26cc1edfbb8f4d0\\nvppe.dll",
+        "machine": "014c",
+        "bytes": 1337464,
+        "sha256": "33c920680b68651972d7dd7802ced8a7e139be2e7305ae84612b3c204feed931"
+      }
+    ]
+  },
+  "primary_annotations": {
+    "status": "Ten existing names retained and current source records appended; no new original body credit. Prior comments preserved, project saved and exports refreshed.",
+    "prior_annotations": [
+      {
+        "address": "00a8fcf0",
+        "before": {
+          "address": "00a8fcf0",
+          "function_name": "SystemShadowMap_GetDepthTexture",
+          "comment": "[BSP reconstruction 00a8fcf0]\nNative [00a8fcf0,00a8fd0f); ECX shadow; borrowed EAX; RET or tail JMP 00A8FDB0. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.\n\n[BSP reconstruction 00a8fcf0] update\nNative [00a8fcf0,00a8fd0f); ECX shadow; borrowed EAX; RET or tail JMP 00A8FDB0. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim. | Hypothesis, not a recovered symbol. Raw depth texture: capture current F8BBF0 target, preserve short-circuit bytes+C/+D, then captured target+18 or original receiver+384 fallback. No added null repair. Integrated code 1bbc1662 passed strict MSVC Win32 build, eight native seeds, both CTests,47 numeric call rows and24 live/installed-PE spans totaling5157 bytes. docs/NATIVE_SYSTEM_CONSTANT_GATHER.md; reports/native_system_constant_gather.json. Explicit actual storage and providers remain caller requirements. New C++ interface is not drop-in ABI/FH3/SEH or game validation."
+        },
+        "after": {
+          "address": "00a8fcf0",
+          "name": "SystemShadowMap_GetDepthTexture",
+          "evidence": "Native [00a8fcf0,00a8fd0f); ECX shadow; borrowed EAX; RET or tail JMP 00A8FDB0. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim. | R44 corrected system gather adoption preserves full B46A70 body and nine raw shadow/texture/foliage leaves; source adds borrowed68B context and persistent sampler frame. Caller supplies1232initialized preimage bytes, copied before native writes; unwritten prefix retained. Exact captured timer/shadow/texture profiles dispatch through existing raw providers. Existing BEE070 and B7AAB0 reused; no duplicate leaves. Original x87/SSE order and unsigned-width bias retained. Renderer/register count separately reloaded for VS/PS, first HRESULT does not suppress second upload. Parent reviewed complete source/header and fixture, independently reproduced only named provider substitutions against corrected a6b2884f2, checked primary1bbc1662 provenance,5356frozen artifacts,22native PE spans3280B and47callrows. Combined strict /MD Win32 build/3CTests pass. Fresh unchanged primary HAL fixture linked combined libraries passes2source cases including initialized preimage, raw fog/light/shadow, width reciprocal and changed renderer/count after ignored VS failure; real COM slots/vptrs restored. Original execution covers only two4B dimension leaves. Full original gather, uncached axes, cold sampler, failure/FH3/private-stack ABI, renderer and gameplay unproved. reports/native_system_constant_gather_main_r44.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a8fd10",
+        "before": {
+          "address": "00a8fd10",
+          "function_name": "SystemShadowMap_GetColorTexture",
+          "comment": "[BSP reconstruction 00a8fd10]\nNative [00a8fd10,00a8fd2f); ECX shadow; borrowed EAX; RET or tail JMP 00A8FD90. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.\n\n[BSP reconstruction 00a8fd10] update\nNative [00a8fd10,00a8fd2f); ECX shadow; borrowed EAX; RET or tail JMP 00A8FD90. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim. | Hypothesis, not a recovered symbol. Raw color texture: capture current F8BBF0 target, preserve short-circuit bytes+C/+D, then captured target+10 or original receiver+384 fallback. No added null repair. Integrated code 1bbc1662 passed strict MSVC Win32 build, eight native seeds, both CTests,47 numeric call rows and24 live/installed-PE spans totaling5157 bytes. docs/NATIVE_SYSTEM_CONSTANT_GATHER.md; reports/native_system_constant_gather.json. Explicit actual storage and providers remain caller requirements. New C++ interface is not drop-in ABI/FH3/SEH or game validation."
+        },
+        "after": {
+          "address": "00a8fd10",
+          "name": "SystemShadowMap_GetColorTexture",
+          "evidence": "Native [00a8fd10,00a8fd2f); ECX shadow; borrowed EAX; RET or tail JMP 00A8FD90. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim. | R44 corrected system gather adoption preserves full B46A70 body and nine raw shadow/texture/foliage leaves; source adds borrowed68B context and persistent sampler frame. Caller supplies1232initialized preimage bytes, copied before native writes; unwritten prefix retained. Exact captured timer/shadow/texture profiles dispatch through existing raw providers. Existing BEE070 and B7AAB0 reused; no duplicate leaves. Original x87/SSE order and unsigned-width bias retained. Renderer/register count separately reloaded for VS/PS, first HRESULT does not suppress second upload. Parent reviewed complete source/header and fixture, independently reproduced only named provider substitutions against corrected a6b2884f2, checked primary1bbc1662 provenance,5356frozen artifacts,22native PE spans3280B and47callrows. Combined strict /MD Win32 build/3CTests pass. Fresh unchanged primary HAL fixture linked combined libraries passes2source cases including initialized preimage, raw fog/light/shadow, width reciprocal and changed renderer/count after ignored VS failure; real COM slots/vptrs restored. Original execution covers only two4B dimension leaves. Full original gather, uncached axes, cold sampler, failure/FH3/private-stack ABI, renderer and gameplay unproved. reports/native_system_constant_gather_main_r44.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a8fd90",
+        "before": {
+          "address": "00a8fd90",
+          "function_name": "SystemShadowTarget_GetColorTexture",
+          "comment": "[BSP reconstruction 00a8fd90]\nNative [00a8fd90,00a8fd94); ECX target; borrowed EAX; RET. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.\n\n[BSP reconstruction 00a8fd90] update\nNative [00a8fd90,00a8fd94); ECX target; borrowed EAX; RET. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim. | Hypothesis, not a recovered symbol. Raw target+10 color pointer getter; original four-byte MOV/RET body. Integrated code 1bbc1662 passed strict MSVC Win32 build, eight native seeds, both CTests,47 numeric call rows and24 live/installed-PE spans totaling5157 bytes. docs/NATIVE_SYSTEM_CONSTANT_GATHER.md; reports/native_system_constant_gather.json. Explicit actual storage and providers remain caller requirements. New C++ interface is not drop-in ABI/FH3/SEH or game validation."
+        },
+        "after": {
+          "address": "00a8fd90",
+          "name": "SystemShadowTarget_GetColorTexture",
+          "evidence": "Native [00a8fd90,00a8fd94); ECX target; borrowed EAX; RET. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim. | R44 corrected system gather adoption preserves full B46A70 body and nine raw shadow/texture/foliage leaves; source adds borrowed68B context and persistent sampler frame. Caller supplies1232initialized preimage bytes, copied before native writes; unwritten prefix retained. Exact captured timer/shadow/texture profiles dispatch through existing raw providers. Existing BEE070 and B7AAB0 reused; no duplicate leaves. Original x87/SSE order and unsigned-width bias retained. Renderer/register count separately reloaded for VS/PS, first HRESULT does not suppress second upload. Parent reviewed complete source/header and fixture, independently reproduced only named provider substitutions against corrected a6b2884f2, checked primary1bbc1662 provenance,5356frozen artifacts,22native PE spans3280B and47callrows. Combined strict /MD Win32 build/3CTests pass. Fresh unchanged primary HAL fixture linked combined libraries passes2source cases including initialized preimage, raw fog/light/shadow, width reciprocal and changed renderer/count after ignored VS failure; real COM slots/vptrs restored. Original execution covers only two4B dimension leaves. Full original gather, uncached axes, cold sampler, failure/FH3/private-stack ABI, renderer and gameplay unproved. reports/native_system_constant_gather_main_r44.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a8fdb0",
+        "before": {
+          "address": "00a8fdb0",
+          "function_name": "SystemShadowTarget_GetDepthTexture",
+          "comment": "[BSP reconstruction 00a8fdb0]\nNative [00a8fdb0,00a8fdb4); ECX target; borrowed EAX; RET. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.\n\n[BSP reconstruction 00a8fdb0] update\nNative [00a8fdb0,00a8fdb4); ECX target; borrowed EAX; RET. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim. | Hypothesis, not a recovered symbol. Raw target+18 depth pointer getter; original four-byte MOV/RET body. Integrated code 1bbc1662 passed strict MSVC Win32 build, eight native seeds, both CTests,47 numeric call rows and24 live/installed-PE spans totaling5157 bytes. docs/NATIVE_SYSTEM_CONSTANT_GATHER.md; reports/native_system_constant_gather.json. Explicit actual storage and providers remain caller requirements. New C++ interface is not drop-in ABI/FH3/SEH or game validation."
+        },
+        "after": {
+          "address": "00a8fdb0",
+          "name": "SystemShadowTarget_GetDepthTexture",
+          "evidence": "Native [00a8fdb0,00a8fdb4); ECX target; borrowed EAX; RET. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim. | R44 corrected system gather adoption preserves full B46A70 body and nine raw shadow/texture/foliage leaves; source adds borrowed68B context and persistent sampler frame. Caller supplies1232initialized preimage bytes, copied before native writes; unwritten prefix retained. Exact captured timer/shadow/texture profiles dispatch through existing raw providers. Existing BEE070 and B7AAB0 reused; no duplicate leaves. Original x87/SSE order and unsigned-width bias retained. Renderer/register count separately reloaded for VS/PS, first HRESULT does not suppress second upload. Parent reviewed complete source/header and fixture, independently reproduced only named provider substitutions against corrected a6b2884f2, checked primary1bbc1662 provenance,5356frozen artifacts,22native PE spans3280B and47callrows. Combined strict /MD Win32 build/3CTests pass. Fresh unchanged primary HAL fixture linked combined libraries passes2source cases including initialized preimage, raw fog/light/shadow, width reciprocal and changed renderer/count after ignored VS failure; real COM slots/vptrs restored. Original execution covers only two4B dimension leaves. Full original gather, uncached axes, cold sampler, failure/FH3/private-stack ABI, renderer and gameplay unproved. reports/native_system_constant_gather_main_r44.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ad5700",
+        "before": {
+          "address": "00ad5700",
+          "function_name": "BSP_Foliage_GetScalar08",
+          "comment": "[BSP reconstruction 00ad5700]\nNative4-byte getter, c33.w caller FSTP. Scalar interpretation remains provisional; actual retained field reference, no time units. Original ABI: ECX owner; FLD float[ECX+8], ST0 result; RET. Evidence docs/SYSTEM_TIME_CONSTANTS.md; reports/system_time_constants_audit.json. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation.\n\n[BSP reconstruction 00ad5700] update\nNative4-byte getter, c33.w caller FSTP. Scalar interpretation remains provisional; actual retained field reference, no time units. Original ABI: ECX owner; FLD float[ECX+8], ST0 result; RET. Evidence docs/SYSTEM_TIME_CONSTANTS.md; reports/system_time_constants_audit.json. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Hypothesis, not a recovered symbol. Raw owner+08 float getter returns x87 ST0, preserving native FLD dword schedule. Integrated code 1bbc1662 passed strict MSVC Win32 build, eight native seeds, both CTests,47 numeric call rows and24 live/installed-PE spans totaling5157 bytes. docs/NATIVE_SYSTEM_CONSTANT_GATHER.md; reports/native_system_constant_gather.json. Explicit actual storage and providers remain caller requirements. New C++ interface is not drop-in ABI/FH3/SEH or game validation."
+        },
+        "after": {
+          "address": "00ad5700",
+          "name": "BSP_Foliage_GetScalar08",
+          "evidence": "Native4-byte getter, c33.w caller FSTP. Scalar interpretation remains provisional; actual retained field reference, no time units. Original ABI: ECX owner; FLD float[ECX+8], ST0 result; RET. Evidence docs/SYSTEM_TIME_CONSTANTS.md; reports/system_time_constants_audit.json. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | R44 corrected system gather adoption preserves full B46A70 body and nine raw shadow/texture/foliage leaves; source adds borrowed68B context and persistent sampler frame. Caller supplies1232initialized preimage bytes, copied before native writes; unwritten prefix retained. Exact captured timer/shadow/texture profiles dispatch through existing raw providers. Existing BEE070 and B7AAB0 reused; no duplicate leaves. Original x87/SSE order and unsigned-width bias retained. Renderer/register count separately reloaded for VS/PS, first HRESULT does not suppress second upload. Parent reviewed complete source/header and fixture, independently reproduced only named provider substitutions against corrected a6b2884f2, checked primary1bbc1662 provenance,5356frozen artifacts,22native PE spans3280B and47callrows. Combined strict /MD Win32 build/3CTests pass. Fresh unchanged primary HAL fixture linked combined libraries passes2source cases including initialized preimage, raw fog/light/shadow, width reciprocal and changed renderer/count after ignored VS failure; real COM slots/vptrs restored. Original execution covers only two4B dimension leaves. Full original gather, uncached axes, cold sampler, failure/FH3/private-stack ABI, renderer and gameplay unproved. reports/native_system_constant_gather_main_r44.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ad5740",
+        "before": {
+          "address": "00ad5740",
+          "function_name": "BSP_Foliage_GetByte11",
+          "comment": "[BSP reconstruction 00ad5740]\nFull byte becomes unsigned integer then float in c75.y; no boolean normalization. Original ABI: ECX owner; MOV AL,byte[ECX+11]; RET. Evidence docs/SYSTEM_TIME_CONSTANTS.md; reports/system_time_constants_audit.json. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation.\n\n[BSP reconstruction 00ad5740] update\nFull byte becomes unsigned integer then float in c75.y; no boolean normalization. Original ABI: ECX owner; MOV AL,byte[ECX+11]; RET. Evidence docs/SYSTEM_TIME_CONSTANTS.md; reports/system_time_constants_audit.json. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Hypothesis, not a recovered symbol. Raw owner+11 byte getter returns AL without boolean normalization; source gather fixture observes FE as254. Integrated code 1bbc1662 passed strict MSVC Win32 build, eight native seeds, both CTests,47 numeric call rows and24 live/installed-PE spans totaling5157 bytes. docs/NATIVE_SYSTEM_CONSTANT_GATHER.md; reports/native_system_constant_gather.json. Explicit actual storage and providers remain caller requirements. New C++ interface is not drop-in ABI/FH3/SEH or game validation."
+        },
+        "after": {
+          "address": "00ad5740",
+          "name": "BSP_Foliage_GetByte11",
+          "evidence": "Full byte becomes unsigned integer then float in c75.y; no boolean normalization. Original ABI: ECX owner; MOV AL,byte[ECX+11]; RET. Evidence docs/SYSTEM_TIME_CONSTANTS.md; reports/system_time_constants_audit.json. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | R44 corrected system gather adoption preserves full B46A70 body and nine raw shadow/texture/foliage leaves; source adds borrowed68B context and persistent sampler frame. Caller supplies1232initialized preimage bytes, copied before native writes; unwritten prefix retained. Exact captured timer/shadow/texture profiles dispatch through existing raw providers. Existing BEE070 and B7AAB0 reused; no duplicate leaves. Original x87/SSE order and unsigned-width bias retained. Renderer/register count separately reloaded for VS/PS, first HRESULT does not suppress second upload. Parent reviewed complete source/header and fixture, independently reproduced only named provider substitutions against corrected a6b2884f2, checked primary1bbc1662 provenance,5356frozen artifacts,22native PE spans3280B and47callrows. Combined strict /MD Win32 build/3CTests pass. Fresh unchanged primary HAL fixture linked combined libraries passes2source cases including initialized preimage, raw fog/light/shadow, width reciprocal and changed renderer/count after ignored VS failure; real COM slots/vptrs restored. Original execution covers only two4B dimension leaves. Full original gather, uncached axes, cold sampler, failure/FH3/private-stack ABI, renderer and gameplay unproved. reports/native_system_constant_gather_main_r44.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af0460",
+        "before": {
+          "address": "00af0460",
+          "function_name": "BSP_FoliageGroupManager_GetShaderTime",
+          "comment": "[BSP reconstruction 00af0460]\nNative4-byte getter, c33.z caller FSTP. New sink interface fuses getter/caller spill using canonical FoliageGroupManager.shader_time. Original ABI: ECX owner; FLD float[ECX+2C], ST0 result; RET. Evidence docs/SYSTEM_TIME_CONSTANTS.md; reports/system_time_constants_audit.json. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation.\n\n[BSP reconstruction 00af0460] update\nNative4-byte getter, c33.z caller FSTP. New sink interface fuses getter/caller spill using canonical FoliageGroupManager.shader_time. Original ABI: ECX owner; FLD float[ECX+2C], ST0 result; RET. Evidence docs/SYSTEM_TIME_CONSTANTS.md; reports/system_time_constants_audit.json. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Hypothesis, not a recovered symbol. Raw owner+2C float getter returns x87 ST0, preserving native FLD dword schedule. Integrated code 1bbc1662 passed strict MSVC Win32 build, eight native seeds, both CTests,47 numeric call rows and24 live/installed-PE spans totaling5157 bytes. docs/NATIVE_SYSTEM_CONSTANT_GATHER.md; reports/native_system_constant_gather.json. Explicit actual storage and providers remain caller requirements. New C++ interface is not drop-in ABI/FH3/SEH or game validation."
+        },
+        "after": {
+          "address": "00af0460",
+          "name": "BSP_FoliageGroupManager_GetShaderTime",
+          "evidence": "Native4-byte getter, c33.z caller FSTP. New sink interface fuses getter/caller spill using canonical FoliageGroupManager.shader_time. Original ABI: ECX owner; FLD float[ECX+2C], ST0 result; RET. Evidence docs/SYSTEM_TIME_CONSTANTS.md; reports/system_time_constants_audit.json. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | R44 corrected system gather adoption preserves full B46A70 body and nine raw shadow/texture/foliage leaves; source adds borrowed68B context and persistent sampler frame. Caller supplies1232initialized preimage bytes, copied before native writes; unwritten prefix retained. Exact captured timer/shadow/texture profiles dispatch through existing raw providers. Existing BEE070 and B7AAB0 reused; no duplicate leaves. Original x87/SSE order and unsigned-width bias retained. Renderer/register count separately reloaded for VS/PS, first HRESULT does not suppress second upload. Parent reviewed complete source/header and fixture, independently reproduced only named provider substitutions against corrected a6b2884f2, checked primary1bbc1662 provenance,5356frozen artifacts,22native PE spans3280B and47callrows. Combined strict /MD Win32 build/3CTests pass. Fresh unchanged primary HAL fixture linked combined libraries passes2source cases including initialized preimage, raw fog/light/shadow, width reciprocal and changed renderer/count after ignored VS failure; real COM slots/vptrs restored. Original execution covers only two4B dimension leaves. Full original gather, uncached axes, cold sampler, failure/FH3/private-stack ABI, renderer and gameplay unproved. reports/native_system_constant_gather_main_r44.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b3ce50",
+        "before": {
+          "address": "00b3ce50",
+          "function_name": "D3D9Texture_GetReportedWidth",
+          "comment": "[BSP reconstruction 00b3ce50]\nNative [00b3ce50,00b3ce54); ECX wrapper; unsigned DWORD EAX; RET. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.\n\n[BSP reconstruction 00b3ce50] update\nNative [00b3ce50,00b3ce54); ECX wrapper; unsigned DWORD EAX; RET. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim. | Hypothesis, not a recovered symbol. Raw texture+28 uint32 width getter; original four-byte MOV/RET leaf compared against reconstructed source. Full source gather preserves FILD32 and conditional 2^32 conversion of width80000001. Integrated code 1bbc1662 passed strict MSVC Win32 build, eight native seeds, both CTests,47 numeric call rows and24 live/installed-PE spans totaling5157 bytes. docs/NATIVE_SYSTEM_CONSTANT_GATHER.md; reports/native_system_constant_gather.json. Explicit actual storage and providers remain caller requirements. New C++ interface is not drop-in ABI/FH3/SEH or game validation."
+        },
+        "after": {
+          "address": "00b3ce50",
+          "name": "D3D9Texture_GetReportedWidth",
+          "evidence": "Native [00b3ce50,00b3ce54); ECX wrapper; unsigned DWORD EAX; RET. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim. | R44 corrected system gather adoption preserves full B46A70 body and nine raw shadow/texture/foliage leaves; source adds borrowed68B context and persistent sampler frame. Caller supplies1232initialized preimage bytes, copied before native writes; unwritten prefix retained. Exact captured timer/shadow/texture profiles dispatch through existing raw providers. Existing BEE070 and B7AAB0 reused; no duplicate leaves. Original x87/SSE order and unsigned-width bias retained. Renderer/register count separately reloaded for VS/PS, first HRESULT does not suppress second upload. Parent reviewed complete source/header and fixture, independently reproduced only named provider substitutions against corrected a6b2884f2, checked primary1bbc1662 provenance,5356frozen artifacts,22native PE spans3280B and47callrows. Combined strict /MD Win32 build/3CTests pass. Fresh unchanged primary HAL fixture linked combined libraries passes2source cases including initialized preimage, raw fog/light/shadow, width reciprocal and changed renderer/count after ignored VS failure; real COM slots/vptrs restored. Original execution covers only two4B dimension leaves. Full original gather, uncached axes, cold sampler, failure/FH3/private-stack ABI, renderer and gameplay unproved. reports/native_system_constant_gather_main_r44.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b3ce60",
+        "before": {
+          "address": "00b3ce60",
+          "function_name": "D3D9Texture_GetReportedHeight",
+          "comment": "[BSP reconstruction 00b3ce60]\nNative [00b3ce60,00b3ce64); ECX wrapper; unsigned DWORD EAX; RET. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.\n\n[BSP reconstruction 00b3ce60] update\nNative [00b3ce60,00b3ce64); ECX wrapper; unsigned DWORD EAX; RET. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim. | Hypothesis, not a recovered symbol. Raw texture+2C uint32 height getter; original four-byte MOV/RET leaf compared against reconstructed source. Integrated code 1bbc1662 passed strict MSVC Win32 build, eight native seeds, both CTests,47 numeric call rows and24 live/installed-PE spans totaling5157 bytes. docs/NATIVE_SYSTEM_CONSTANT_GATHER.md; reports/native_system_constant_gather.json. Explicit actual storage and providers remain caller requirements. New C++ interface is not drop-in ABI/FH3/SEH or game validation."
+        },
+        "after": {
+          "address": "00b3ce60",
+          "name": "D3D9Texture_GetReportedHeight",
+          "evidence": "Native [00b3ce60,00b3ce64); ECX wrapper; unsigned DWORD EAX; RET. Borrowed actual raw global target/fallback slots, concrete D5B5E8/D61948 identities and live unsigned28/2C metadata. Native getter permits null; host unbound nonnull identities fail. Toggle captures created0D before writing exact enabled0C byte and reloads second dimensions/texture after first metadata update. Primary reran one native alias/live-global/fallback/flag sequence successfully. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim. | R44 corrected system gather adoption preserves full B46A70 body and nine raw shadow/texture/foliage leaves; source adds borrowed68B context and persistent sampler frame. Caller supplies1232initialized preimage bytes, copied before native writes; unwritten prefix retained. Exact captured timer/shadow/texture profiles dispatch through existing raw providers. Existing BEE070 and B7AAB0 reused; no duplicate leaves. Original x87/SSE order and unsigned-width bias retained. Renderer/register count separately reloaded for VS/PS, first HRESULT does not suppress second upload. Parent reviewed complete source/header and fixture, independently reproduced only named provider substitutions against corrected a6b2884f2, checked primary1bbc1662 provenance,5356frozen artifacts,22native PE spans3280B and47callrows. Combined strict /MD Win32 build/3CTests pass. Fresh unchanged primary HAL fixture linked combined libraries passes2source cases including initialized preimage, raw fog/light/shadow, width reciprocal and changed renderer/count after ignored VS failure; real COM slots/vptrs restored. Original execution covers only two4B dimension leaves. Full original gather, uncached axes, cold sampler, failure/FH3/private-stack ABI, renderer and gameplay unproved. reports/native_system_constant_gather_main_r44.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b46a70",
+        "before": {
+          "address": "00b46a70",
+          "function_name": "BSP_ShaderConstants_GatherAndUploadSystemPrefix",
+          "comment": "[BSP reconstruction 00b46a70]\nECX optional scene/lighting owner preserved EBP, EDX camera preserved EDI, plain RET. Local prefix starts ESP+14 after prologue; first six camera matrices use00b404a0. Tail00b475fd..00b4762e uploads the same local block to VS00b21820 then PS00b218c0 at register0, count global00e13078=77. No initial clear; conditional scene/fog/shadow writes and float3 padding can leave words unwritten. Source owner type names provisional. Complete gatherer unported. See docs/SHADER_CONSTANT_DISPATCH_ANALYSIS.md and follow-up lighting/camera analysis.\n\n[BSP reconstruction 00b46a70] update\nECX optional scene/lighting owner preserved EBP, EDX camera preserved EDI, plain RET. Local prefix starts ESP+14 after prologue; first six camera matrices use00b404a0. Tail00b475fd..00b4762e uploads the same local block to VS00b21820 then PS00b218c0 at register0, count global00e13078=77. No initial clear; conditional scene/fog/shadow writes and float3 padding can leave words unwritten. Source owner type names provisional. Complete gatherer unported. See docs/SHADER_CONSTANT_DISPATCH_ANALYSIS.md and follow-up lighting/camera analysis. | 2026-09-10 ordered typed full body composed in src/system_constant_builder.cpp. ECX optional scene, EDX camera, no stack args, RET. Same captured00F8D39C matrix/time owner; camera matrices/16 raw globals; shared axes/cache and capturedtimer; actual clock/foliage/service reloads; capturedfog with live later rereads; firstlight/ambient/shadow; optional rawcamera+43C; VS then PS with independent livecount/renderer loads.77-register caller-initialized preimage is never cleared; holes/absent branches retain it. Returning empty-list invalid-handler continues with captured sentinel. HRESULTfailure permitslaterupload. Earlier full-builder-unported comments superseded by this composition; typed concrete runtime adapters do not establish native world initialization or full binarylayout. Evidence docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. New checked C++ ABI; actual native factory/owner bindings and gameplay validation remain.\n\n[BSP reconstruction 00b46a70] update\nECX optional scene/lighting owner preserved EBP, EDX camera preserved EDI, plain RET. Local prefix starts ESP+14 after prologue; first six camera matrices use00b404a0. Tail00b475fd..00b4762e uploads the same local block to VS00b21820 then PS00b218c0 at register0, count global00e13078=77. No initial clear; conditional scene/fog/shadow writes and float3 padding can leave words unwritten. Source owner type names provisional. Complete gatherer unported. See docs/SHADER_CONSTANT_DISPATCH_ANALYSIS.md and follow-up lighting/camera analysis. | 2026-09-10 ordered typed full body composed in src/system_constant_builder.cpp. ECX optional scene, EDX camera, no stack args, RET. Same captured00F8D39C matrix/time owner; camera matrices/16 raw globals; shared axes/cache and capturedtimer; actual clock/foliage/service reloads; capturedfog with live later rereads; firstlight/ambient/shadow; optional rawcamera+43C; VS then PS with independent livecount/renderer loads.77-register caller-initialized preimage is never cleared; holes/absent branches retain it. Returning empty-list invalid-handler continues with captured sentinel. HRESULTfailure permitslaterupload. Earlier full-builder-unported comments superseded by this composition; typed concrete runtime adapters do not establish native world initialization or full binarylayout. Evidence docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. New checked C++ ABI; actual native factory/owner bindings and gameplay validation remain. | Owner integration now reads actual outer/resource/environment slots through explicit live accessors and opaque canonical registry node identity. Capture sentinel and first once; after a returning invalid-parameter handler, resolve the retained raw first key through actual globally bound light projections. No copied list or mirrored owner slots. See docs/SYSTEM_OWNER_INTEGRATION.md; reports/system_owner_integration_audit.json\nIntegration: docs/SYSTEM_OWNER_INTEGRATION.md; reports/system_owner_integration_audit.json\n\n[BSP reconstruction 00b46a70] update\nECX optional scene/lighting owner preserved EBP, EDX camera preserved EDI, plain RET. Local prefix starts ESP+14 after prologue; first six camera matrices use00b404a0. Tail00b475fd..00b4762e uploads the same local block to VS00b21820 then PS00b218c0 at register0, count global00e13078=77. No initial clear; conditional scene/fog/shadow writes and float3 padding can leave words unwritten. Source owner type names provisional. Complete gatherer unported. See docs/SHADER_CONSTANT_DISPATCH_ANALYSIS.md and follow-up lighting/camera analysis. | 2026-09-10 ordered typed full body composed in src/system_constant_builder.cpp. ECX optional scene, EDX camera, no stack args, RET. Same captured00F8D39C matrix/time owner; camera matrices/16 raw globals; shared axes/cache and capturedtimer; actual clock/foliage/service reloads; capturedfog with live later rereads; firstlight/ambient/shadow; optional rawcamera+43C; VS then PS with independent livecount/renderer loads.77-register caller-initialized preimage is never cleared; holes/absent branches retain it. Returning empty-list invalid-handler continues with captured sentinel. HRESULTfailure permitslaterupload. Earlier full-builder-unported comments superseded by this composition; typed concrete runtime adapters do not establish native world initialization or full binarylayout. Evidence docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. New checked C++ ABI; actual native factory/owner bindings and gameplay validation remain. | Owner integration now reads actual outer/resource/environment slots through explicit live accessors and opaque canonical registry node identity. Capture sentinel and first once; after a returning invalid-parameter handler, resolve the retained raw first key through actual globally bound light projections. No copied list or mirrored owner slots. See docs/SYSTEM_OWNER_INTEGRATION.md; reports/system_owner_integration_audit.json\nIntegration: docs/SYSTEM_OWNER_INTEGRATION.md; reports/system_owner_integration_audit.json | Hypothesis, not a recovered symbol. Full normal raw gather schedule: explicit 1232-byte caller stack preimage, original matrix/x87/MOVSS ordering, current raw service/camera/fog/light/shadow providers, one captured profile read at each of five private dispatch sites, and independent current renderer/register-count loads before VS then PS upload. Both real Direct3D9 HAL source cases passed, including ignored VS HRESULT and changed renderer/count; original full gather remains unexecuted. Integrated code 1bbc1662 passed strict MSVC Win32 build, eight native seeds, both CTests,47 numeric call rows and24 live/installed-PE spans totaling5157 bytes. docs/NATIVE_SYSTEM_CONSTANT_GATHER.md; reports/native_system_constant_gather.json. Explicit actual storage and providers remain caller requirements. New C++ interface is not drop-in ABI/FH3/SEH or game validation."
+        },
+        "after": {
+          "address": "00b46a70",
+          "name": "BSP_ShaderConstants_GatherAndUploadSystemPrefix",
+          "evidence": "ECX optional scene/lighting owner preserved EBP, EDX camera preserved EDI, plain RET. Local prefix starts ESP+14 after prologue; first six camera matrices use00b404a0. Tail00b475fd..00b4762e uploads the same local block to VS00b21820 then PS00b218c0 at register0, count global00e13078=77. No initial clear; conditional scene/fog/shadow writes and float3 padding can leave words unwritten. Source owner type names provisional. Complete gatherer unported. See docs/SHADER_CONSTANT_DISPATCH_ANALYSIS.md and follow-up lighting/camera analysis. | 2026-09-10 ordered typed full body composed in src/system_constant_builder.cpp. ECX optional scene, EDX camera, no stack args, RET. Same captured00F8D39C matrix/time owner; camera matrices/16 raw globals; shared axes/cache and capturedtimer; actual clock/foliage/service reloads; capturedfog with live later rereads; firstlight/ambient/shadow; optional rawcamera+43C; VS then PS with independent livecount/renderer loads.77-register caller-initialized preimage is never cleared; holes/absent branches retain it. Returning empty-list invalid-handler continues with captured sentinel. HRESULTfailure permitslaterupload. Earlier full-builder-unported comments superseded by this composition; typed concrete runtime adapters do not establish native world initialization or full binarylayout. Evidence docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. New checked C++ ABI; actual native factory/owner bindings and gameplay validation remain. | Owner integration now reads actual outer/resource/environment slots through explicit live accessors and opaque canonical registry node identity. Capture sentinel and first once; after a returning invalid-parameter handler, resolve the retained raw first key through actual globally bound light projections. No copied list or mirrored owner slots. See docs/SYSTEM_OWNER_INTEGRATION.md; reports/system_owner_integration_audit.json\nIntegration: docs/SYSTEM_OWNER_INTEGRATION.md; reports/system_owner_integration_audit.json | R44 corrected system gather adoption preserves full B46A70 body and nine raw shadow/texture/foliage leaves; source adds borrowed68B context and persistent sampler frame. Caller supplies1232initialized preimage bytes, copied before native writes; unwritten prefix retained. Exact captured timer/shadow/texture profiles dispatch through existing raw providers. Existing BEE070 and B7AAB0 reused; no duplicate leaves. Original x87/SSE order and unsigned-width bias retained. Renderer/register count separately reloaded for VS/PS, first HRESULT does not suppress second upload. Parent reviewed complete source/header and fixture, independently reproduced only named provider substitutions against corrected a6b2884f2, checked primary1bbc1662 provenance,5356frozen artifacts,22native PE spans3280B and47callrows. Combined strict /MD Win32 build/3CTests pass. Fresh unchanged primary HAL fixture linked combined libraries passes2source cases including initialized preimage, raw fog/light/shadow, width reciprocal and changed renderer/count after ignored VS failure; real COM slots/vptrs restored. Original execution covers only two4B dimension leaves. Full original gather, uncached axes, cold sampler, failure/FH3/private-stack ABI, renderer and gameplay unproved. reports/native_system_constant_gather_main_r44.json."
+        },
+        "status": "applied"
+      }
+    ]
+  }
 }
