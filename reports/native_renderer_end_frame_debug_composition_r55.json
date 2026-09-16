@@ -1,0 +1,4454 @@
+{
+  "schema_version": 1,
+  "packet": "native_renderer_end_frame_debug_composition_r55",
+  "status": "direct_recovered_debug_consumer_composition_build_and_inactive_fixture_checked",
+  "baseline_commit": "9acc95ad5d0d84715e60dfb65f66371cd7c8ee63",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "prior_annotations_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\ghidra-annotations-20260916T162258Z.json",
+    "prior_annotations": [
+      {
+        "address": "00b2d8e0",
+        "before": {
+          "address": "00b2d8e0",
+          "function_name": "BSP_D3D9Renderer_EndFrameAndPresent",
+          "comment": "[BSP reconstruction 00b2d8e0]\nProvisional high-level name, assembly-grounded: active field+1998h gate; unbinds textures/streams/index, invokes numerous unresolved callbacks and XLiveRender, conditionally calls device EndScene(vtable+A8h), clears binding cache, conditionally Present(+44h), sets global0108d4b9 on88760868 DEVICELOST, increments renderer+14h. Full routine not reconstructed; no substitute frame loop implied.\n\n[BSP reconstruction 00b2d8e0] update\nProvisional high-level name, assembly-grounded: active field+1998h gate; unbinds textures/streams/index, invokes numerous unresolved callbacks and XLiveRender, conditionally calls device EndScene(vtable+A8h), clears binding cache, conditionally Present(+44h), sets global0108d4b9 on88760868 DEVICELOST, increments renderer+14h. Full routine not reconstructed; no substitute frame loop implied. Query polling at00b2dadb..00b2db14 traverses borrowed array+19A0 before Present: state+8==0 only, one virtual10 poll per entry, AL ignored, no wait/retry or local lost-device gate; base/count reloaded by index. See docs/OCCLUSION_QUERY_CALLERS.md.\n\n[BSP reconstruction 00b2d8e0] update\nProvisional high-level name, assembly-grounded: active field+1998h gate; unbinds textures/streams/index, invokes numerous unresolved callbacks and XLiveRender, conditionally calls device EndScene(vtable+A8h), clears binding cache, conditionally Present(+44h), sets global0108d4b9 on88760868 DEVICELOST, increments renderer+14h. Full routine not reconstructed; no substitute frame loop implied. Query polling at00b2dadb..00b2db14 traverses borrowed array+19A0 before Present: state+8==0 only, one virtual10 poll per entry, AL ignored, no wait/retry or local lost-device gate; base/count reloaded by index. See docs/OCCLUSION_QUERY_CALLERS.md. | Hypothesis, not a recovered symbol. Full call schedule now binds current D62AD0 query+10 to actual B5FCA0. Queue and three overlay bodies remain required substantive providers. Only inactive parent return is fixture-tested; active frame and loaded XLiveRender remain unvalidated. Integrated source at33ac99a2 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_END_FRAME.md; reports/native_renderer_end_frame.json. Original whole-owner FH3/SEH, complete renderer adoption and gameplay remain unvalidated.\n\n[BSP reconstruction 00b2d8e0] update\nProvisional high-level name, assembly-grounded: active field+1998h gate; unbinds textures/streams/index, invokes numerous unresolved callbacks and XLiveRender, conditionally calls device EndScene(vtable+A8h), clears binding cache, conditionally Present(+44h), sets global0108d4b9 on88760868 DEVICELOST, increments renderer+14h. Full routine not reconstructed; no substitute frame loop implied. Query polling at00b2dadb..00b2db14 traverses borrowed array+19A0 before Present: state+8==0 only, one virtual10 poll per entry, AL ignored, no wait/retry or local lost-device gate; base/count reloaded by index. See docs/OCCLUSION_QUERY_CALLERS.md. | Hypothesis, not a recovered symbol. Full call schedule now binds current D62AD0 query+10 to actual B5FCA0. Queue and three overlay bodies remain required substantive providers. Only inactive parent return is fixture-tested; active frame and loaded XLiveRender remain unvalidated. Integrated source at33ac99a2 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_END_FRAME.md; reports/native_renderer_end_frame.json. Original whole-owner FH3/SEH, complete renderer adoption and gameplay remain unvalidated. | Hypothesis, not a recovered symbol. Current +C4 provider now invokes substantive B28D00 after the current-profile gate. Actual queue B1EBE0, B2BB90 and B2B580 remain outer providers. Inactive wrappers checked; active EndFrame unproved. Integrated code 425b3b48 passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_RENDERER_END_FRAME.md; reports/native_renderer_end_frame.json. Borrowed actual storage, live subobjects and scratch preimages remain caller requirements. Source interfaces; full parent execution, original CRT/FH3/SEH/register-ABI identity, application adoption and gameplay unvalidated.\n\n[BSP reconstruction 00b2d8e0] update\nProvisional high-level name, assembly-grounded: active field+1998h gate; unbinds textures/streams/index, invokes numerous unresolved callbacks and XLiveRender, conditionally calls device EndScene(vtable+A8h), clears binding cache, conditionally Present(+44h), sets global0108d4b9 on88760868 DEVICELOST, increments renderer+14h. Full routine not reconstructed; no substitute frame loop implied. Query polling at00b2dadb..00b2db14 traverses borrowed array+19A0 before Present: state+8==0 only, one virtual10 poll per entry, AL ignored, no wait/retry or local lost-device gate; base/count reloaded by index. See docs/OCCLUSION_QUERY_CALLERS.md. | R34 reuse of final orch5 EndFrame, query-poll and debug-line source, nine entries2120B; only two shader-call arguments adapted to current main fastcall interfaces. Fresh21 spans live/PE match and67 direct/tail rows pass. Primary reviewed all six source/header files, current provider ABI and exact source diff; verified3542 archived artifact hashes. Worker strict /MD build, three CTests and three freshly relinked fixtures pass; combined main strict build and three CTests pass. Fixtures cover original/source physical rewinds, inactive EndFrame wrappers,52B exact query poll with four synthetic COM cases, empty debug-line differential and real two-device source paths with current reloads/ignored HRESULT/retained exception. B1EBE0, B2BB90, B2B580 remain explicit required EndFrame providers. No active full EndFrame, XLiveRender, worker callback, nonempty original debug-line body, native FH3/SEH or gameplay validation. reports/native_renderer_end_frame_main_r34.json."
+        },
+        "after": {
+          "address": "00b2d8e0",
+          "name": "BSP_D3D9Renderer_EndFrameAndPresent",
+          "evidence": "Provisional high-level name, assembly-grounded: active field+1998h gate; unbinds textures/streams/index, invokes numerous unresolved callbacks and XLiveRender, conditionally calls device EndScene(vtable+A8h), clears binding cache, conditionally Present(+44h), sets global0108d4b9 on88760868 DEVICELOST, increments renderer+14h. Full routine not reconstructed; no substitute frame loop implied. Query polling at00b2dadb..00b2db14 traverses borrowed array+19A0 before Present: state+8==0 only, one virtual10 poll per entry, AL ignored, no wait/retry or local lost-device gate; base/count reloaded by index. See docs/OCCLUSION_QUERY_CALLERS.md. | R34 reuse of final orch5 EndFrame, query-poll and debug-line source, nine entries2120B; only two shader-call arguments adapted to current main fastcall interfaces. Fresh21 spans live/PE match and67 direct/tail rows pass. Primary reviewed all six source/header files, current provider ABI and exact source diff; verified3542 archived artifact hashes. Worker strict /MD build, three CTests and three freshly relinked fixtures pass; combined main strict build and three CTests pass. Fixtures cover original/source physical rewinds, inactive EndFrame wrappers,52B exact query poll with four synthetic COM cases, empty debug-line differential and real two-device source paths with current reloads/ignored HRESULT/retained exception. B1EBE0, B2BB90, B2B580 remain explicit required EndFrame providers. No active full EndFrame, XLiveRender, worker callback, nonempty original debug-line body, native FH3/SEH or gameplay validation. reports/native_renderer_end_frame_main_r34.json. | R55 current end-frame composition: B2D9DD calls recovered B2BB90 sphere consumer directly; current-profile+C4 calls existing B28D00 lines; B2D9F0 calls recovered B2B580 sprite consumer directly. Removed obsolete rendering methods from remaining-provider interface; only actual-native-owner B1EBE0 queue execution remains. Four appended borrowed child context/frame pointers require SAME current renderer/model/geometry/name/device/cache/camera/pool graph; null only when child initialcountzero. Caller retains prepared persistent frames/admissions acrossfailure; parent does not prepare/replay/retire/rollback. Existing outer optionalguard cleanup receives childexceptions with their partialeffects intact. Fresh full749Bparent plus4rewind/leaves1089Btotal matchlive/PE;27directcall rows checkedlive. StrictWin32/MD/W4/WX/fp:strict build+3CTests; existing fixture source unchanged, freshlylinked fullcurrentlibraries and run: original/source rewinds, exactleaves, recursiveguards, partialfailure, signedcount, inactivecontextfree parentwrappers pass. Linkedparent machinecode calls sphere/lines/sprites in native order. Activeparent and these activecalls unexecuted byfixture. Genuinequeue/fullownergraph, originalFH3/privateframe/register/hardwarefaultABI, loadedXLive/application/visual/gameplay remain open. Prior source/fixture history: reports/native_renderer_end_frame_main_r34.json; current reports/native_renderer_end_frame_debug_composition_r55.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "status": "Existing name retained; current composition evidence appended preserving prior comments, project saved and exports refreshed."
+  },
+  "evidence": {
+    "pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b2d8e0",
+        "length": 749,
+        "sha256": "a1d5427e2a7c23cfd1b66bbdf7f0620da2ec877b1934dad51ab57bc292dcaee1",
+        "hex": "64a1000000006aff6888d5cb00506489250000000083ec0853568bf133db399e981900000f84b0020000381dccd408017406ff154821ce00381ddcd60801c605ccd4080101740f8bce8974240ce89e6100008844240857895c241ce8b03899ff8bc8e89912ffff33ff8da424000000008b068b903001000053578bceffd283c70183ff147cea33ffeb068d9b000000008b068b903401000053578bceffd283c70183ff047cea8b068b903801000053538bceffd28dbef419000057ff151822ce00834718018b8e74190000e80059ffff834718ff57ff151022ce008b8e78190000e8fa57ffff8b4424243bc3740d8b16508b82100100008bceffd08bcee8aee1ffff8b168b82c40000008bceffd08bcee88bdbffff536a1a8bcee8616affff536a1a8bcee8576affff536a1c8bcee84d6affff536a078bcee8436affff536a0e8bcee8396affff6a026a178bcee82e6affff536a348bcee8246affff536a0f8bcee81a6affff536a1b8bcee8106affff6a036a168bcee8056affff536a1d8bcee8fb69ffff6a036a088bcee8f069ffff6a0f68a80000008bcee8e269ffff536a348bcee8d869ffff5368ae0000008bcee8cb69ffff5368c20000008bcee8be69ffffe825171000399e901d00007519389e8a1d000075118b86101a00008b088b91a800000050ffd28d4e34e8f066ffff8d8e781b0000e8d5f1fdff33ff399ea4190000899e98190000762aeb038d49008b86a01900008b0cb83959088d04b875098bc18b108b4210ffd083c7013bbea419000072db381d6c30e1005f742fd9e88b168b52085351d91c248d442428506a0153538bce885c243a885c2439885c2438885c243bffd2881d6c30e100399e901d00007535389e8a1d0000752d8b068b502c8bceffd284c075208b86101a00008b088b51445353535350ffd23d680876887507c605b9d4080101a188fe080189580883461401381ddcd60801881dccd40801c7442418ffffffff740e8b4c2408518b4c2410e8465f00008b4c24105e5b64890d0000000083c414c20400",
+        "live_equals_pe": true,
+        "instructions": [
+          {
+            "address": "00b2d8e0",
+            "hex": "64a100000000",
+            "text": "mov eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "00b2d8e6",
+            "hex": "6aff",
+            "text": "push -1"
+          },
+          {
+            "address": "00b2d8e8",
+            "hex": "6888d5cb00",
+            "text": "push 0xcbd588"
+          },
+          {
+            "address": "00b2d8ed",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b2d8ee",
+            "hex": "64892500000000",
+            "text": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "address": "00b2d8f5",
+            "hex": "83ec08",
+            "text": "sub esp, 8"
+          },
+          {
+            "address": "00b2d8f8",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2d8f9",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b2d8fa",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "00b2d8fc",
+            "hex": "33db",
+            "text": "xor ebx, ebx"
+          },
+          {
+            "address": "00b2d8fe",
+            "hex": "399e98190000",
+            "text": "cmp dword ptr [esi + 0x1998], ebx"
+          },
+          {
+            "address": "00b2d904",
+            "hex": "0f84b0020000",
+            "text": "je 0xb2dbba"
+          },
+          {
+            "address": "00b2d90a",
+            "hex": "381dccd40801",
+            "text": "cmp byte ptr [0x108d4cc], bl"
+          },
+          {
+            "address": "00b2d910",
+            "hex": "7406",
+            "text": "je 0xb2d918"
+          },
+          {
+            "address": "00b2d912",
+            "hex": "ff154821ce00",
+            "text": "call dword ptr [0xce2148]"
+          },
+          {
+            "address": "00b2d918",
+            "hex": "381ddcd60801",
+            "text": "cmp byte ptr [0x108d6dc], bl"
+          },
+          {
+            "address": "00b2d91e",
+            "hex": "c605ccd4080101",
+            "text": "mov byte ptr [0x108d4cc], 1"
+          },
+          {
+            "address": "00b2d925",
+            "hex": "740f",
+            "text": "je 0xb2d936"
+          },
+          {
+            "address": "00b2d927",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2d929",
+            "hex": "8974240c",
+            "text": "mov dword ptr [esp + 0xc], esi"
+          },
+          {
+            "address": "00b2d92d",
+            "hex": "e89e610000",
+            "text": "call 0xb33ad0"
+          },
+          {
+            "address": "00b2d932",
+            "hex": "88442408",
+            "text": "mov byte ptr [esp + 8], al"
+          },
+          {
+            "address": "00b2d936",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00b2d937",
+            "hex": "895c241c",
+            "text": "mov dword ptr [esp + 0x1c], ebx"
+          },
+          {
+            "address": "00b2d93b",
+            "hex": "e8b03899ff",
+            "text": "call 0x4c11f0"
+          },
+          {
+            "address": "00b2d940",
+            "hex": "8bc8",
+            "text": "mov ecx, eax"
+          },
+          {
+            "address": "00b2d942",
+            "hex": "e89912ffff",
+            "text": "call 0xb1ebe0"
+          },
+          {
+            "address": "00b2d947",
+            "hex": "33ff",
+            "text": "xor edi, edi"
+          },
+          {
+            "address": "00b2d949",
+            "hex": "8da42400000000",
+            "text": "lea esp, [esp]"
+          },
+          {
+            "address": "00b2d950",
+            "hex": "8b06",
+            "text": "mov eax, dword ptr [esi]"
+          },
+          {
+            "address": "00b2d952",
+            "hex": "8b9030010000",
+            "text": "mov edx, dword ptr [eax + 0x130]"
+          },
+          {
+            "address": "00b2d958",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2d959",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00b2d95a",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2d95c",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00b2d95e",
+            "hex": "83c701",
+            "text": "add edi, 1"
+          },
+          {
+            "address": "00b2d961",
+            "hex": "83ff14",
+            "text": "cmp edi, 0x14"
+          },
+          {
+            "address": "00b2d964",
+            "hex": "7cea",
+            "text": "jl 0xb2d950"
+          },
+          {
+            "address": "00b2d966",
+            "hex": "33ff",
+            "text": "xor edi, edi"
+          },
+          {
+            "address": "00b2d968",
+            "hex": "eb06",
+            "text": "jmp 0xb2d970"
+          },
+          {
+            "address": "00b2d96a",
+            "hex": "8d9b00000000",
+            "text": "lea ebx, [ebx]"
+          },
+          {
+            "address": "00b2d970",
+            "hex": "8b06",
+            "text": "mov eax, dword ptr [esi]"
+          },
+          {
+            "address": "00b2d972",
+            "hex": "8b9034010000",
+            "text": "mov edx, dword ptr [eax + 0x134]"
+          },
+          {
+            "address": "00b2d978",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2d979",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00b2d97a",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2d97c",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00b2d97e",
+            "hex": "83c701",
+            "text": "add edi, 1"
+          },
+          {
+            "address": "00b2d981",
+            "hex": "83ff04",
+            "text": "cmp edi, 4"
+          },
+          {
+            "address": "00b2d984",
+            "hex": "7cea",
+            "text": "jl 0xb2d970"
+          },
+          {
+            "address": "00b2d986",
+            "hex": "8b06",
+            "text": "mov eax, dword ptr [esi]"
+          },
+          {
+            "address": "00b2d988",
+            "hex": "8b9038010000",
+            "text": "mov edx, dword ptr [eax + 0x138]"
+          },
+          {
+            "address": "00b2d98e",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2d98f",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2d990",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2d992",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00b2d994",
+            "hex": "8dbef4190000",
+            "text": "lea edi, [esi + 0x19f4]"
+          },
+          {
+            "address": "00b2d99a",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00b2d99b",
+            "hex": "ff151822ce00",
+            "text": "call dword ptr [0xce2218]"
+          },
+          {
+            "address": "00b2d9a1",
+            "hex": "83471801",
+            "text": "add dword ptr [edi + 0x18], 1"
+          },
+          {
+            "address": "00b2d9a5",
+            "hex": "8b8e74190000",
+            "text": "mov ecx, dword ptr [esi + 0x1974]"
+          },
+          {
+            "address": "00b2d9ab",
+            "hex": "e80059ffff",
+            "text": "call 0xb232b0"
+          },
+          {
+            "address": "00b2d9b0",
+            "hex": "834718ff",
+            "text": "add dword ptr [edi + 0x18], -1"
+          },
+          {
+            "address": "00b2d9b4",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00b2d9b5",
+            "hex": "ff151022ce00",
+            "text": "call dword ptr [0xce2210]"
+          },
+          {
+            "address": "00b2d9bb",
+            "hex": "8b8e78190000",
+            "text": "mov ecx, dword ptr [esi + 0x1978]"
+          },
+          {
+            "address": "00b2d9c1",
+            "hex": "e8fa57ffff",
+            "text": "call 0xb231c0"
+          },
+          {
+            "address": "00b2d9c6",
+            "hex": "8b442424",
+            "text": "mov eax, dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00b2d9ca",
+            "hex": "3bc3",
+            "text": "cmp eax, ebx"
+          },
+          {
+            "address": "00b2d9cc",
+            "hex": "740d",
+            "text": "je 0xb2d9db"
+          },
+          {
+            "address": "00b2d9ce",
+            "hex": "8b16",
+            "text": "mov edx, dword ptr [esi]"
+          },
+          {
+            "address": "00b2d9d0",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b2d9d1",
+            "hex": "8b8210010000",
+            "text": "mov eax, dword ptr [edx + 0x110]"
+          },
+          {
+            "address": "00b2d9d7",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2d9d9",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00b2d9db",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2d9dd",
+            "hex": "e8aee1ffff",
+            "text": "call 0xb2bb90"
+          },
+          {
+            "address": "00b2d9e2",
+            "hex": "8b16",
+            "text": "mov edx, dword ptr [esi]"
+          },
+          {
+            "address": "00b2d9e4",
+            "hex": "8b82c4000000",
+            "text": "mov eax, dword ptr [edx + 0xc4]"
+          },
+          {
+            "address": "00b2d9ea",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2d9ec",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00b2d9ee",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2d9f0",
+            "hex": "e88bdbffff",
+            "text": "call 0xb2b580"
+          },
+          {
+            "address": "00b2d9f5",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2d9f6",
+            "hex": "6a1a",
+            "text": "push 0x1a"
+          },
+          {
+            "address": "00b2d9f8",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2d9fa",
+            "hex": "e8616affff",
+            "text": "call 0xb24460"
+          },
+          {
+            "address": "00b2d9ff",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2da00",
+            "hex": "6a1a",
+            "text": "push 0x1a"
+          },
+          {
+            "address": "00b2da02",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2da04",
+            "hex": "e8576affff",
+            "text": "call 0xb24460"
+          },
+          {
+            "address": "00b2da09",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2da0a",
+            "hex": "6a1c",
+            "text": "push 0x1c"
+          },
+          {
+            "address": "00b2da0c",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2da0e",
+            "hex": "e84d6affff",
+            "text": "call 0xb24460"
+          },
+          {
+            "address": "00b2da13",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2da14",
+            "hex": "6a07",
+            "text": "push 7"
+          },
+          {
+            "address": "00b2da16",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2da18",
+            "hex": "e8436affff",
+            "text": "call 0xb24460"
+          },
+          {
+            "address": "00b2da1d",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2da1e",
+            "hex": "6a0e",
+            "text": "push 0xe"
+          },
+          {
+            "address": "00b2da20",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2da22",
+            "hex": "e8396affff",
+            "text": "call 0xb24460"
+          },
+          {
+            "address": "00b2da27",
+            "hex": "6a02",
+            "text": "push 2"
+          },
+          {
+            "address": "00b2da29",
+            "hex": "6a17",
+            "text": "push 0x17"
+          },
+          {
+            "address": "00b2da2b",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2da2d",
+            "hex": "e82e6affff",
+            "text": "call 0xb24460"
+          },
+          {
+            "address": "00b2da32",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2da33",
+            "hex": "6a34",
+            "text": "push 0x34"
+          },
+          {
+            "address": "00b2da35",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2da37",
+            "hex": "e8246affff",
+            "text": "call 0xb24460"
+          },
+          {
+            "address": "00b2da3c",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2da3d",
+            "hex": "6a0f",
+            "text": "push 0xf"
+          },
+          {
+            "address": "00b2da3f",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2da41",
+            "hex": "e81a6affff",
+            "text": "call 0xb24460"
+          },
+          {
+            "address": "00b2da46",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2da47",
+            "hex": "6a1b",
+            "text": "push 0x1b"
+          },
+          {
+            "address": "00b2da49",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2da4b",
+            "hex": "e8106affff",
+            "text": "call 0xb24460"
+          },
+          {
+            "address": "00b2da50",
+            "hex": "6a03",
+            "text": "push 3"
+          },
+          {
+            "address": "00b2da52",
+            "hex": "6a16",
+            "text": "push 0x16"
+          },
+          {
+            "address": "00b2da54",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2da56",
+            "hex": "e8056affff",
+            "text": "call 0xb24460"
+          },
+          {
+            "address": "00b2da5b",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2da5c",
+            "hex": "6a1d",
+            "text": "push 0x1d"
+          },
+          {
+            "address": "00b2da5e",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2da60",
+            "hex": "e8fb69ffff",
+            "text": "call 0xb24460"
+          },
+          {
+            "address": "00b2da65",
+            "hex": "6a03",
+            "text": "push 3"
+          },
+          {
+            "address": "00b2da67",
+            "hex": "6a08",
+            "text": "push 8"
+          },
+          {
+            "address": "00b2da69",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2da6b",
+            "hex": "e8f069ffff",
+            "text": "call 0xb24460"
+          },
+          {
+            "address": "00b2da70",
+            "hex": "6a0f",
+            "text": "push 0xf"
+          },
+          {
+            "address": "00b2da72",
+            "hex": "68a8000000",
+            "text": "push 0xa8"
+          },
+          {
+            "address": "00b2da77",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2da79",
+            "hex": "e8e269ffff",
+            "text": "call 0xb24460"
+          },
+          {
+            "address": "00b2da7e",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2da7f",
+            "hex": "6a34",
+            "text": "push 0x34"
+          },
+          {
+            "address": "00b2da81",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2da83",
+            "hex": "e8d869ffff",
+            "text": "call 0xb24460"
+          },
+          {
+            "address": "00b2da88",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2da89",
+            "hex": "68ae000000",
+            "text": "push 0xae"
+          },
+          {
+            "address": "00b2da8e",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2da90",
+            "hex": "e8cb69ffff",
+            "text": "call 0xb24460"
+          },
+          {
+            "address": "00b2da95",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2da96",
+            "hex": "68c2000000",
+            "text": "push 0xc2"
+          },
+          {
+            "address": "00b2da9b",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2da9d",
+            "hex": "e8be69ffff",
+            "text": "call 0xb24460"
+          },
+          {
+            "address": "00b2daa2",
+            "hex": "e825171000",
+            "text": "call 0xc2f1cc"
+          },
+          {
+            "address": "00b2daa7",
+            "hex": "399e901d0000",
+            "text": "cmp dword ptr [esi + 0x1d90], ebx"
+          },
+          {
+            "address": "00b2daad",
+            "hex": "7519",
+            "text": "jne 0xb2dac8"
+          },
+          {
+            "address": "00b2daaf",
+            "hex": "389e8a1d0000",
+            "text": "cmp byte ptr [esi + 0x1d8a], bl"
+          },
+          {
+            "address": "00b2dab5",
+            "hex": "7511",
+            "text": "jne 0xb2dac8"
+          },
+          {
+            "address": "00b2dab7",
+            "hex": "8b86101a0000",
+            "text": "mov eax, dword ptr [esi + 0x1a10]"
+          },
+          {
+            "address": "00b2dabd",
+            "hex": "8b08",
+            "text": "mov ecx, dword ptr [eax]"
+          },
+          {
+            "address": "00b2dabf",
+            "hex": "8b91a8000000",
+            "text": "mov edx, dword ptr [ecx + 0xa8]"
+          },
+          {
+            "address": "00b2dac5",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b2dac6",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00b2dac8",
+            "hex": "8d4e34",
+            "text": "lea ecx, [esi + 0x34]"
+          },
+          {
+            "address": "00b2dacb",
+            "hex": "e8f066ffff",
+            "text": "call 0xb241c0"
+          },
+          {
+            "address": "00b2dad0",
+            "hex": "8d8e781b0000",
+            "text": "lea ecx, [esi + 0x1b78]"
+          },
+          {
+            "address": "00b2dad6",
+            "hex": "e8d5f1fdff",
+            "text": "call 0xb0ccb0"
+          },
+          {
+            "address": "00b2dadb",
+            "hex": "33ff",
+            "text": "xor edi, edi"
+          },
+          {
+            "address": "00b2dadd",
+            "hex": "399ea4190000",
+            "text": "cmp dword ptr [esi + 0x19a4], ebx"
+          },
+          {
+            "address": "00b2dae3",
+            "hex": "899e98190000",
+            "text": "mov dword ptr [esi + 0x1998], ebx"
+          },
+          {
+            "address": "00b2dae9",
+            "hex": "762a",
+            "text": "jbe 0xb2db15"
+          },
+          {
+            "address": "00b2daeb",
+            "hex": "eb03",
+            "text": "jmp 0xb2daf0"
+          },
+          {
+            "address": "00b2daed",
+            "hex": "8d4900",
+            "text": "lea ecx, [ecx]"
+          },
+          {
+            "address": "00b2daf0",
+            "hex": "8b86a0190000",
+            "text": "mov eax, dword ptr [esi + 0x19a0]"
+          },
+          {
+            "address": "00b2daf6",
+            "hex": "8b0cb8",
+            "text": "mov ecx, dword ptr [eax + edi*4]"
+          },
+          {
+            "address": "00b2daf9",
+            "hex": "395908",
+            "text": "cmp dword ptr [ecx + 8], ebx"
+          },
+          {
+            "address": "00b2dafc",
+            "hex": "8d04b8",
+            "text": "lea eax, [eax + edi*4]"
+          },
+          {
+            "address": "00b2daff",
+            "hex": "7509",
+            "text": "jne 0xb2db0a"
+          },
+          {
+            "address": "00b2db01",
+            "hex": "8bc1",
+            "text": "mov eax, ecx"
+          },
+          {
+            "address": "00b2db03",
+            "hex": "8b10",
+            "text": "mov edx, dword ptr [eax]"
+          },
+          {
+            "address": "00b2db05",
+            "hex": "8b4210",
+            "text": "mov eax, dword ptr [edx + 0x10]"
+          },
+          {
+            "address": "00b2db08",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00b2db0a",
+            "hex": "83c701",
+            "text": "add edi, 1"
+          },
+          {
+            "address": "00b2db0d",
+            "hex": "3bbea4190000",
+            "text": "cmp edi, dword ptr [esi + 0x19a4]"
+          },
+          {
+            "address": "00b2db13",
+            "hex": "72db",
+            "text": "jb 0xb2daf0"
+          },
+          {
+            "address": "00b2db15",
+            "hex": "381d6c30e100",
+            "text": "cmp byte ptr [0xe1306c], bl"
+          },
+          {
+            "address": "00b2db1b",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "00b2db1c",
+            "hex": "742f",
+            "text": "je 0xb2db4d"
+          },
+          {
+            "address": "00b2db1e",
+            "hex": "d9e8",
+            "text": "fld1 "
+          },
+          {
+            "address": "00b2db20",
+            "hex": "8b16",
+            "text": "mov edx, dword ptr [esi]"
+          },
+          {
+            "address": "00b2db22",
+            "hex": "8b5208",
+            "text": "mov edx, dword ptr [edx + 8]"
+          },
+          {
+            "address": "00b2db25",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2db26",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00b2db27",
+            "hex": "d91c24",
+            "text": "fstp dword ptr [esp]"
+          },
+          {
+            "address": "00b2db2a",
+            "hex": "8d442428",
+            "text": "lea eax, [esp + 0x28]"
+          },
+          {
+            "address": "00b2db2e",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b2db2f",
+            "hex": "6a01",
+            "text": "push 1"
+          },
+          {
+            "address": "00b2db31",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2db32",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2db33",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2db35",
+            "hex": "885c243a",
+            "text": "mov byte ptr [esp + 0x3a], bl"
+          },
+          {
+            "address": "00b2db39",
+            "hex": "885c2439",
+            "text": "mov byte ptr [esp + 0x39], bl"
+          },
+          {
+            "address": "00b2db3d",
+            "hex": "885c2438",
+            "text": "mov byte ptr [esp + 0x38], bl"
+          },
+          {
+            "address": "00b2db41",
+            "hex": "885c243b",
+            "text": "mov byte ptr [esp + 0x3b], bl"
+          },
+          {
+            "address": "00b2db45",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00b2db47",
+            "hex": "881d6c30e100",
+            "text": "mov byte ptr [0xe1306c], bl"
+          },
+          {
+            "address": "00b2db4d",
+            "hex": "399e901d0000",
+            "text": "cmp dword ptr [esi + 0x1d90], ebx"
+          },
+          {
+            "address": "00b2db53",
+            "hex": "7535",
+            "text": "jne 0xb2db8a"
+          },
+          {
+            "address": "00b2db55",
+            "hex": "389e8a1d0000",
+            "text": "cmp byte ptr [esi + 0x1d8a], bl"
+          },
+          {
+            "address": "00b2db5b",
+            "hex": "752d",
+            "text": "jne 0xb2db8a"
+          },
+          {
+            "address": "00b2db5d",
+            "hex": "8b06",
+            "text": "mov eax, dword ptr [esi]"
+          },
+          {
+            "address": "00b2db5f",
+            "hex": "8b502c",
+            "text": "mov edx, dword ptr [eax + 0x2c]"
+          },
+          {
+            "address": "00b2db62",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b2db64",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00b2db66",
+            "hex": "84c0",
+            "text": "test al, al"
+          },
+          {
+            "address": "00b2db68",
+            "hex": "7520",
+            "text": "jne 0xb2db8a"
+          },
+          {
+            "address": "00b2db6a",
+            "hex": "8b86101a0000",
+            "text": "mov eax, dword ptr [esi + 0x1a10]"
+          },
+          {
+            "address": "00b2db70",
+            "hex": "8b08",
+            "text": "mov ecx, dword ptr [eax]"
+          },
+          {
+            "address": "00b2db72",
+            "hex": "8b5144",
+            "text": "mov edx, dword ptr [ecx + 0x44]"
+          },
+          {
+            "address": "00b2db75",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2db76",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2db77",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2db78",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b2db79",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b2db7a",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00b2db7c",
+            "hex": "3d68087688",
+            "text": "cmp eax, 0x88760868"
+          },
+          {
+            "address": "00b2db81",
+            "hex": "7507",
+            "text": "jne 0xb2db8a"
+          },
+          {
+            "address": "00b2db83",
+            "hex": "c605b9d4080101",
+            "text": "mov byte ptr [0x108d4b9], 1"
+          },
+          {
+            "address": "00b2db8a",
+            "hex": "a188fe0801",
+            "text": "mov eax, dword ptr [0x108fe88]"
+          },
+          {
+            "address": "00b2db8f",
+            "hex": "895808",
+            "text": "mov dword ptr [eax + 8], ebx"
+          },
+          {
+            "address": "00b2db92",
+            "hex": "83461401",
+            "text": "add dword ptr [esi + 0x14], 1"
+          },
+          {
+            "address": "00b2db96",
+            "hex": "381ddcd60801",
+            "text": "cmp byte ptr [0x108d6dc], bl"
+          },
+          {
+            "address": "00b2db9c",
+            "hex": "881dccd40801",
+            "text": "mov byte ptr [0x108d4cc], bl"
+          },
+          {
+            "address": "00b2dba2",
+            "hex": "c7442418ffffffff",
+            "text": "mov dword ptr [esp + 0x18], 0xffffffff"
+          },
+          {
+            "address": "00b2dbaa",
+            "hex": "740e",
+            "text": "je 0xb2dbba"
+          },
+          {
+            "address": "00b2dbac",
+            "hex": "8b4c2408",
+            "text": "mov ecx, dword ptr [esp + 8]"
+          },
+          {
+            "address": "00b2dbb0",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00b2dbb1",
+            "hex": "8b4c2410",
+            "text": "mov ecx, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00b2dbb5",
+            "hex": "e8465f0000",
+            "text": "call 0xb33b00"
+          },
+          {
+            "address": "00b2dbba",
+            "hex": "8b4c2410",
+            "text": "mov ecx, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00b2dbbe",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00b2dbbf",
+            "hex": "5b",
+            "text": "pop ebx"
+          },
+          {
+            "address": "00b2dbc0",
+            "hex": "64890d00000000",
+            "text": "mov dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "00b2dbc7",
+            "hex": "83c414",
+            "text": "add esp, 0x14"
+          },
+          {
+            "address": "00b2dbca",
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ]
+      },
+      {
+        "address": "00b232b0",
+        "length": 162,
+        "sha256": "1d929ea60ded156ddd69d4c82b7b4112b883c53bce00d896a52da0cc00151c62",
+        "hex": "64a1000000006aff6898cecb00506489250000000083ec08803ddcd608010055578bf974178b2d94d3f8008bcd896c240ce8ea07010088442408eb048b6c240c5633f639770cc744241c000000007e158b47088b0cb08b118b4208ffd083c6013b770c7cebc7471c00000000c7472400000000803ddcd6080100c744241cffffffff5e740c8b4c2408518bcde8bf0701008b4c24105f5d64890d0000000083c414c3",
+        "live_equals_pe": true,
+        "instructions": [
+          {
+            "address": "00b232b0",
+            "hex": "64a100000000",
+            "text": "mov eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "00b232b6",
+            "hex": "6aff",
+            "text": "push -1"
+          },
+          {
+            "address": "00b232b8",
+            "hex": "6898cecb00",
+            "text": "push 0xcbce98"
+          },
+          {
+            "address": "00b232bd",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b232be",
+            "hex": "64892500000000",
+            "text": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "address": "00b232c5",
+            "hex": "83ec08",
+            "text": "sub esp, 8"
+          },
+          {
+            "address": "00b232c8",
+            "hex": "803ddcd6080100",
+            "text": "cmp byte ptr [0x108d6dc], 0"
+          },
+          {
+            "address": "00b232cf",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "00b232d0",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00b232d1",
+            "hex": "8bf9",
+            "text": "mov edi, ecx"
+          },
+          {
+            "address": "00b232d3",
+            "hex": "7417",
+            "text": "je 0xb232ec"
+          },
+          {
+            "address": "00b232d5",
+            "hex": "8b2d94d3f800",
+            "text": "mov ebp, dword ptr [0xf8d394]"
+          },
+          {
+            "address": "00b232db",
+            "hex": "8bcd",
+            "text": "mov ecx, ebp"
+          },
+          {
+            "address": "00b232dd",
+            "hex": "896c240c",
+            "text": "mov dword ptr [esp + 0xc], ebp"
+          },
+          {
+            "address": "00b232e1",
+            "hex": "e8ea070100",
+            "text": "call 0xb33ad0"
+          },
+          {
+            "address": "00b232e6",
+            "hex": "88442408",
+            "text": "mov byte ptr [esp + 8], al"
+          },
+          {
+            "address": "00b232ea",
+            "hex": "eb04",
+            "text": "jmp 0xb232f0"
+          },
+          {
+            "address": "00b232ec",
+            "hex": "8b6c240c",
+            "text": "mov ebp, dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00b232f0",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b232f1",
+            "hex": "33f6",
+            "text": "xor esi, esi"
+          },
+          {
+            "address": "00b232f3",
+            "hex": "39770c",
+            "text": "cmp dword ptr [edi + 0xc], esi"
+          },
+          {
+            "address": "00b232f6",
+            "hex": "c744241c00000000",
+            "text": "mov dword ptr [esp + 0x1c], 0"
+          },
+          {
+            "address": "00b232fe",
+            "hex": "7e15",
+            "text": "jle 0xb23315"
+          },
+          {
+            "address": "00b23300",
+            "hex": "8b4708",
+            "text": "mov eax, dword ptr [edi + 8]"
+          },
+          {
+            "address": "00b23303",
+            "hex": "8b0cb0",
+            "text": "mov ecx, dword ptr [eax + esi*4]"
+          },
+          {
+            "address": "00b23306",
+            "hex": "8b11",
+            "text": "mov edx, dword ptr [ecx]"
+          },
+          {
+            "address": "00b23308",
+            "hex": "8b4208",
+            "text": "mov eax, dword ptr [edx + 8]"
+          },
+          {
+            "address": "00b2330b",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00b2330d",
+            "hex": "83c601",
+            "text": "add esi, 1"
+          },
+          {
+            "address": "00b23310",
+            "hex": "3b770c",
+            "text": "cmp esi, dword ptr [edi + 0xc]"
+          },
+          {
+            "address": "00b23313",
+            "hex": "7ceb",
+            "text": "jl 0xb23300"
+          },
+          {
+            "address": "00b23315",
+            "hex": "c7471c00000000",
+            "text": "mov dword ptr [edi + 0x1c], 0"
+          },
+          {
+            "address": "00b2331c",
+            "hex": "c7472400000000",
+            "text": "mov dword ptr [edi + 0x24], 0"
+          },
+          {
+            "address": "00b23323",
+            "hex": "803ddcd6080100",
+            "text": "cmp byte ptr [0x108d6dc], 0"
+          },
+          {
+            "address": "00b2332a",
+            "hex": "c744241cffffffff",
+            "text": "mov dword ptr [esp + 0x1c], 0xffffffff"
+          },
+          {
+            "address": "00b23332",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00b23333",
+            "hex": "740c",
+            "text": "je 0xb23341"
+          },
+          {
+            "address": "00b23335",
+            "hex": "8b4c2408",
+            "text": "mov ecx, dword ptr [esp + 8]"
+          },
+          {
+            "address": "00b23339",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00b2333a",
+            "hex": "8bcd",
+            "text": "mov ecx, ebp"
+          },
+          {
+            "address": "00b2333c",
+            "hex": "e8bf070100",
+            "text": "call 0xb33b00"
+          },
+          {
+            "address": "00b23341",
+            "hex": "8b4c2410",
+            "text": "mov ecx, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00b23345",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "00b23346",
+            "hex": "5d",
+            "text": "pop ebp"
+          },
+          {
+            "address": "00b23347",
+            "hex": "64890d00000000",
+            "text": "mov dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "00b2334e",
+            "hex": "83c414",
+            "text": "add esp, 0x14"
+          },
+          {
+            "address": "00b23351",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "address": "00b231c0",
+        "length": 162,
+        "sha256": "900e2e06215880732ad7ce7a6a7d2315a9018d52cce99ba8a2068c9504cbb0b5",
+        "hex": "64a1000000006aff6878cecb00506489250000000083ec08803ddcd608010055578bf974178b2d94d3f8008bcd896c240ce8da08010088442408eb048b6c240c5633f639770cc744241c000000007e158b47088b0cb08b118b4208ffd083c6013b770c7cebc7471c00000000c7472400000000803ddcd6080100c744241cffffffff5e740c8b4c2408518bcde8af0801008b4c24105f5d64890d0000000083c414c3",
+        "live_equals_pe": true,
+        "instructions": [
+          {
+            "address": "00b231c0",
+            "hex": "64a100000000",
+            "text": "mov eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "00b231c6",
+            "hex": "6aff",
+            "text": "push -1"
+          },
+          {
+            "address": "00b231c8",
+            "hex": "6878cecb00",
+            "text": "push 0xcbce78"
+          },
+          {
+            "address": "00b231cd",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b231ce",
+            "hex": "64892500000000",
+            "text": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "address": "00b231d5",
+            "hex": "83ec08",
+            "text": "sub esp, 8"
+          },
+          {
+            "address": "00b231d8",
+            "hex": "803ddcd6080100",
+            "text": "cmp byte ptr [0x108d6dc], 0"
+          },
+          {
+            "address": "00b231df",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "00b231e0",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00b231e1",
+            "hex": "8bf9",
+            "text": "mov edi, ecx"
+          },
+          {
+            "address": "00b231e3",
+            "hex": "7417",
+            "text": "je 0xb231fc"
+          },
+          {
+            "address": "00b231e5",
+            "hex": "8b2d94d3f800",
+            "text": "mov ebp, dword ptr [0xf8d394]"
+          },
+          {
+            "address": "00b231eb",
+            "hex": "8bcd",
+            "text": "mov ecx, ebp"
+          },
+          {
+            "address": "00b231ed",
+            "hex": "896c240c",
+            "text": "mov dword ptr [esp + 0xc], ebp"
+          },
+          {
+            "address": "00b231f1",
+            "hex": "e8da080100",
+            "text": "call 0xb33ad0"
+          },
+          {
+            "address": "00b231f6",
+            "hex": "88442408",
+            "text": "mov byte ptr [esp + 8], al"
+          },
+          {
+            "address": "00b231fa",
+            "hex": "eb04",
+            "text": "jmp 0xb23200"
+          },
+          {
+            "address": "00b231fc",
+            "hex": "8b6c240c",
+            "text": "mov ebp, dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00b23200",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b23201",
+            "hex": "33f6",
+            "text": "xor esi, esi"
+          },
+          {
+            "address": "00b23203",
+            "hex": "39770c",
+            "text": "cmp dword ptr [edi + 0xc], esi"
+          },
+          {
+            "address": "00b23206",
+            "hex": "c744241c00000000",
+            "text": "mov dword ptr [esp + 0x1c], 0"
+          },
+          {
+            "address": "00b2320e",
+            "hex": "7e15",
+            "text": "jle 0xb23225"
+          },
+          {
+            "address": "00b23210",
+            "hex": "8b4708",
+            "text": "mov eax, dword ptr [edi + 8]"
+          },
+          {
+            "address": "00b23213",
+            "hex": "8b0cb0",
+            "text": "mov ecx, dword ptr [eax + esi*4]"
+          },
+          {
+            "address": "00b23216",
+            "hex": "8b11",
+            "text": "mov edx, dword ptr [ecx]"
+          },
+          {
+            "address": "00b23218",
+            "hex": "8b4208",
+            "text": "mov eax, dword ptr [edx + 8]"
+          },
+          {
+            "address": "00b2321b",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00b2321d",
+            "hex": "83c601",
+            "text": "add esi, 1"
+          },
+          {
+            "address": "00b23220",
+            "hex": "3b770c",
+            "text": "cmp esi, dword ptr [edi + 0xc]"
+          },
+          {
+            "address": "00b23223",
+            "hex": "7ceb",
+            "text": "jl 0xb23210"
+          },
+          {
+            "address": "00b23225",
+            "hex": "c7471c00000000",
+            "text": "mov dword ptr [edi + 0x1c], 0"
+          },
+          {
+            "address": "00b2322c",
+            "hex": "c7472400000000",
+            "text": "mov dword ptr [edi + 0x24], 0"
+          },
+          {
+            "address": "00b23233",
+            "hex": "803ddcd6080100",
+            "text": "cmp byte ptr [0x108d6dc], 0"
+          },
+          {
+            "address": "00b2323a",
+            "hex": "c744241cffffffff",
+            "text": "mov dword ptr [esp + 0x1c], 0xffffffff"
+          },
+          {
+            "address": "00b23242",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00b23243",
+            "hex": "740c",
+            "text": "je 0xb23251"
+          },
+          {
+            "address": "00b23245",
+            "hex": "8b4c2408",
+            "text": "mov ecx, dword ptr [esp + 8]"
+          },
+          {
+            "address": "00b23249",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00b2324a",
+            "hex": "8bcd",
+            "text": "mov ecx, ebp"
+          },
+          {
+            "address": "00b2324c",
+            "hex": "e8af080100",
+            "text": "call 0xb33b00"
+          },
+          {
+            "address": "00b23251",
+            "hex": "8b4c2410",
+            "text": "mov ecx, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00b23255",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "00b23256",
+            "hex": "5d",
+            "text": "pop ebp"
+          },
+          {
+            "address": "00b23257",
+            "hex": "64890d00000000",
+            "text": "mov dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "00b2325e",
+            "hex": "83c414",
+            "text": "add esp, 0x14"
+          },
+          {
+            "address": "00b23261",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "address": "00b48d40",
+        "length": 8,
+        "sha256": "43c39d6b1d54208013457a1207a70b9131b42a8b01b23455a0c05c722a6543ae",
+        "hex": "c7415cffffffffc3",
+        "live_equals_pe": true,
+        "instructions": [
+          {
+            "address": "00b48d40",
+            "hex": "c7415cffffffff",
+            "text": "mov dword ptr [ecx + 0x5c], 0xffffffff"
+          },
+          {
+            "address": "00b48d47",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "address": "00b48dd0",
+        "length": 8,
+        "sha256": "67aab7ebb9932963cd5e56d7a86cee99288023badf825bd1afb922c9610f9763",
+        "hex": "c7410cffffffffc3",
+        "live_equals_pe": true,
+        "instructions": [
+          {
+            "address": "00b48dd0",
+            "hex": "c7410cffffffff",
+            "text": "mov dword ptr [ecx + 0xc], 0xffffffff"
+          },
+          {
+            "address": "00b48dd7",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      }
+    ]
+  },
+  "calls": [
+    {
+      "address": "00b2d912",
+      "function": "00b2d8e0",
+      "indirect": "dword ptr [0xce2148]"
+    },
+    {
+      "address": "00b2d92d",
+      "function": "00b2d8e0",
+      "native": "00b33ad0"
+    },
+    {
+      "address": "00b2d93b",
+      "function": "00b2d8e0",
+      "native": "004c11f0"
+    },
+    {
+      "address": "00b2d942",
+      "function": "00b2d8e0",
+      "native": "00b1ebe0"
+    },
+    {
+      "address": "00b2d95c",
+      "function": "00b2d8e0",
+      "indirect": "edx"
+    },
+    {
+      "address": "00b2d97c",
+      "function": "00b2d8e0",
+      "indirect": "edx"
+    },
+    {
+      "address": "00b2d992",
+      "function": "00b2d8e0",
+      "indirect": "edx"
+    },
+    {
+      "address": "00b2d99b",
+      "function": "00b2d8e0",
+      "indirect": "dword ptr [0xce2218]"
+    },
+    {
+      "address": "00b2d9ab",
+      "function": "00b2d8e0",
+      "native": "00b232b0"
+    },
+    {
+      "address": "00b2d9b5",
+      "function": "00b2d8e0",
+      "indirect": "dword ptr [0xce2210]"
+    },
+    {
+      "address": "00b2d9c1",
+      "function": "00b2d8e0",
+      "native": "00b231c0"
+    },
+    {
+      "address": "00b2d9d9",
+      "function": "00b2d8e0",
+      "indirect": "eax"
+    },
+    {
+      "address": "00b2d9dd",
+      "function": "00b2d8e0",
+      "native": "00b2bb90"
+    },
+    {
+      "address": "00b2d9ec",
+      "function": "00b2d8e0",
+      "indirect": "eax"
+    },
+    {
+      "address": "00b2d9f0",
+      "function": "00b2d8e0",
+      "native": "00b2b580"
+    },
+    {
+      "address": "00b2d9fa",
+      "function": "00b2d8e0",
+      "native": "00b24460"
+    },
+    {
+      "address": "00b2da04",
+      "function": "00b2d8e0",
+      "native": "00b24460"
+    },
+    {
+      "address": "00b2da0e",
+      "function": "00b2d8e0",
+      "native": "00b24460"
+    },
+    {
+      "address": "00b2da18",
+      "function": "00b2d8e0",
+      "native": "00b24460"
+    },
+    {
+      "address": "00b2da22",
+      "function": "00b2d8e0",
+      "native": "00b24460"
+    },
+    {
+      "address": "00b2da2d",
+      "function": "00b2d8e0",
+      "native": "00b24460"
+    },
+    {
+      "address": "00b2da37",
+      "function": "00b2d8e0",
+      "native": "00b24460"
+    },
+    {
+      "address": "00b2da41",
+      "function": "00b2d8e0",
+      "native": "00b24460"
+    },
+    {
+      "address": "00b2da4b",
+      "function": "00b2d8e0",
+      "native": "00b24460"
+    },
+    {
+      "address": "00b2da56",
+      "function": "00b2d8e0",
+      "native": "00b24460"
+    },
+    {
+      "address": "00b2da60",
+      "function": "00b2d8e0",
+      "native": "00b24460"
+    },
+    {
+      "address": "00b2da6b",
+      "function": "00b2d8e0",
+      "native": "00b24460"
+    },
+    {
+      "address": "00b2da79",
+      "function": "00b2d8e0",
+      "native": "00b24460"
+    },
+    {
+      "address": "00b2da83",
+      "function": "00b2d8e0",
+      "native": "00b24460"
+    },
+    {
+      "address": "00b2da90",
+      "function": "00b2d8e0",
+      "native": "00b24460"
+    },
+    {
+      "address": "00b2da9d",
+      "function": "00b2d8e0",
+      "native": "00b24460"
+    },
+    {
+      "address": "00b2daa2",
+      "function": "00b2d8e0",
+      "native": "00c2f1cc"
+    },
+    {
+      "address": "00b2dac6",
+      "function": "00b2d8e0",
+      "indirect": "edx"
+    },
+    {
+      "address": "00b2dacb",
+      "function": "00b2d8e0",
+      "native": "00b241c0"
+    },
+    {
+      "address": "00b2dad6",
+      "function": "00b2d8e0",
+      "native": "00b0ccb0"
+    },
+    {
+      "address": "00b2db08",
+      "function": "00b2d8e0",
+      "indirect": "eax"
+    },
+    {
+      "address": "00b2db45",
+      "function": "00b2d8e0",
+      "indirect": "edx"
+    },
+    {
+      "address": "00b2db64",
+      "function": "00b2d8e0",
+      "indirect": "edx"
+    },
+    {
+      "address": "00b2db7a",
+      "function": "00b2d8e0",
+      "indirect": "edx"
+    },
+    {
+      "address": "00b2dbb5",
+      "function": "00b2d8e0",
+      "native": "00b33b00"
+    }
+  ],
+  "change": "Replace remaining-provider rendering callbacks with genuine current B2BB90 and B2B580 direct source calls at original sites, preserving B28D00 lines between them. Queue execution remains the sole unresolved actual-owner callback.",
+  "contracts": {
+    "context": "Append four borrowed context/frame pointers; each child initialzero count admits null pair. Nonempty child needs existing prepared persistent frame and SAME actual renderer/model/geometry/name/device/entry/camera/pool domains.",
+    "failure": "Caller retains frames and admissions across failure; parent creates/prepares/replays/retires/rolls back none. Child partial effects survive; exception propagates to existing outer optionalguard cleanup.",
+    "native_abi": "Original ECX renderer, stack saveheader, RET4; source additional explicit context; no original privateframe/FH3/SEH/register/fault ABI proof.",
+    "actual_queue": "B1EBE0 actual native owner/command dispatch remains required; typed RenderCommandQueue executor is not substituted.",
+    "application": "No startup or active renderer ownership activation."
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "flags": "/MD /W4 /WX /fp:strict",
+    "ctests_passed": 3,
+    "existing_fixture_source_sha256": "9f5e1cbb65f0f0352f27c30abad7b62472213e64603551b4d591d58329b9c24b",
+    "existing_fixture_unchanged": true,
+    "fixture_executable_sha256": "eda7c34fbc88a77e2e5e056209f9c9c78ebb28a7993acda04d3eb3a6528547ff",
+    "fixture_machine": "I386",
+    "fixture_manifest_asInvoker": true,
+    "fixture_scope": "Original/source normal buffer rewinds with same source optionalguard bridge; exact8B leaves; recursive guards; source partial failure/signedcount; inactive default/save parent wrappers with null contexts.",
+    "fresh_native_spans": 5,
+    "fresh_native_bytes": 1089,
+    "linked_parent_audit": {
+      "parent_symbol": {
+        "name": "?end_native_renderer_frame_00b2d8e0@bsp@@YAXPAXPBXPAUNativeRendererEndFrameContext@1@@Z",
+        "address": 4202112,
+        "object": "bsp_core:native_renderer_end_frame.obj"
+      },
+      "length_to_next_map_symbol": 1552,
+      "sha256": "15a5f32e40831aecccab48315d419cbcabe8b9de923d042f8d6aff5397617801",
+      "instructions": [
+        {
+          "address": "00401e80",
+          "hex": "55",
+          "text": "push ebp"
+        },
+        {
+          "address": "00401e81",
+          "hex": "8bec",
+          "text": "mov ebp, esp"
+        },
+        {
+          "address": "00401e83",
+          "hex": "6aff",
+          "text": "push -1"
+        },
+        {
+          "address": "00401e85",
+          "hex": "683d344500",
+          "text": "push 0x45343d"
+        },
+        {
+          "address": "00401e8a",
+          "hex": "64a100000000",
+          "text": "mov eax, dword ptr fs:[0]"
+        },
+        {
+          "address": "00401e90",
+          "hex": "50",
+          "text": "push eax"
+        },
+        {
+          "address": "00401e91",
+          "hex": "83ec50",
+          "text": "sub esp, 0x50"
+        },
+        {
+          "address": "00401e94",
+          "hex": "a100204700",
+          "text": "mov eax, dword ptr [0x472000]"
+        },
+        {
+          "address": "00401e99",
+          "hex": "33c5",
+          "text": "xor eax, ebp"
+        },
+        {
+          "address": "00401e9b",
+          "hex": "8945f0",
+          "text": "mov dword ptr [ebp - 0x10], eax"
+        },
+        {
+          "address": "00401e9e",
+          "hex": "53",
+          "text": "push ebx"
+        },
+        {
+          "address": "00401e9f",
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00401ea0",
+          "hex": "57",
+          "text": "push edi"
+        },
+        {
+          "address": "00401ea1",
+          "hex": "50",
+          "text": "push eax"
+        },
+        {
+          "address": "00401ea2",
+          "hex": "8d45f4",
+          "text": "lea eax, [ebp - 0xc]"
+        },
+        {
+          "address": "00401ea5",
+          "hex": "64a300000000",
+          "text": "mov dword ptr fs:[0], eax"
+        },
+        {
+          "address": "00401eab",
+          "hex": "8b5d08",
+          "text": "mov ebx, dword ptr [ebp + 8]"
+        },
+        {
+          "address": "00401eae",
+          "hex": "8b450c",
+          "text": "mov eax, dword ptr [ebp + 0xc]"
+        },
+        {
+          "address": "00401eb1",
+          "hex": "8b7d10",
+          "text": "mov edi, dword ptr [ebp + 0x10]"
+        },
+        {
+          "address": "00401eb4",
+          "hex": "895de0",
+          "text": "mov dword ptr [ebp - 0x20], ebx"
+        },
+        {
+          "address": "00401eb7",
+          "hex": "8945dc",
+          "text": "mov dword ptr [ebp - 0x24], eax"
+        },
+        {
+          "address": "00401eba",
+          "hex": "897dc0",
+          "text": "mov dword ptr [ebp - 0x40], edi"
+        },
+        {
+          "address": "00401ebd",
+          "hex": "8b45e0",
+          "text": "mov eax, dword ptr [ebp - 0x20]"
+        },
+        {
+          "address": "00401ec0",
+          "hex": "ba98190000",
+          "text": "mov edx, 0x1998"
+        },
+        {
+          "address": "00401ec5",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "00401ec8",
+          "hex": "8945b4",
+          "text": "mov dword ptr [ebp - 0x4c], eax"
+        },
+        {
+          "address": "00401ecb",
+          "hex": "837db400",
+          "text": "cmp dword ptr [ebp - 0x4c], 0"
+        },
+        {
+          "address": "00401ecf",
+          "hex": "0f8481050000",
+          "text": "je 0x402456"
+        },
+        {
+          "address": "00401ed5",
+          "hex": "8b4714",
+          "text": "mov eax, dword ptr [edi + 0x14]"
+        },
+        {
+          "address": "00401ed8",
+          "hex": "8b7004",
+          "text": "mov esi, dword ptr [eax + 4]"
+        },
+        {
+          "address": "00401edb",
+          "hex": "8b4720",
+          "text": "mov eax, dword ptr [edi + 0x20]"
+        },
+        {
+          "address": "00401ede",
+          "hex": "8975b4",
+          "text": "mov dword ptr [ebp - 0x4c], esi"
+        },
+        {
+          "address": "00401ee1",
+          "hex": "803800",
+          "text": "cmp byte ptr [eax], 0"
+        },
+        {
+          "address": "00401ee4",
+          "hex": "7406",
+          "text": "je 0x401eec"
+        },
+        {
+          "address": "00401ee6",
+          "hex": "ff15a4604500",
+          "text": "call dword ptr [0x4560a4]"
+        },
+        {
+          "address": "00401eec",
+          "hex": "8a0e",
+          "text": "mov cl, byte ptr [esi]"
+        },
+        {
+          "address": "00401eee",
+          "hex": "8b4720",
+          "text": "mov eax, dword ptr [edi + 0x20]"
+        },
+        {
+          "address": "00401ef1",
+          "hex": "c60001",
+          "text": "mov byte ptr [eax], 1"
+        },
+        {
+          "address": "00401ef4",
+          "hex": "84c9",
+          "text": "test cl, cl"
+        },
+        {
+          "address": "00401ef6",
+          "hex": "7410",
+          "text": "je 0x401f08"
+        },
+        {
+          "address": "00401ef8",
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00401ef9",
+          "hex": "53",
+          "text": "push ebx"
+        },
+        {
+          "address": "00401efa",
+          "hex": "895dec",
+          "text": "mov dword ptr [ebp - 0x14], ebx"
+        },
+        {
+          "address": "00401efd",
+          "hex": "e87efdffff",
+          "text": "call 0x401c80",
+          "resolved_target": {
+            "name": "?enter_native_renderer_optional_guard_00b33ad0@bsp@@YAEPBXAAUNativeRendererSynchronizationGlobals@1@@Z",
+            "address": 4201600,
+            "object": "bsp_core:native_renderer_synchronization_actual.obj"
+          }
+        },
+        {
+          "address": "00401f02",
+          "hex": "83c408",
+          "text": "add esp, 8"
+        },
+        {
+          "address": "00401f05",
+          "hex": "8845e8",
+          "text": "mov byte ptr [ebp - 0x18], al"
+        },
+        {
+          "address": "00401f08",
+          "hex": "8d45e8",
+          "text": "lea eax, [ebp - 0x18]"
+        },
+        {
+          "address": "00401f0b",
+          "hex": "8975a8",
+          "text": "mov dword ptr [ebp - 0x58], esi"
+        },
+        {
+          "address": "00401f0e",
+          "hex": "8945a4",
+          "text": "mov dword ptr [ebp - 0x5c], eax"
+        },
+        {
+          "address": "00401f11",
+          "hex": "c645ac01",
+          "text": "mov byte ptr [ebp - 0x54], 1"
+        },
+        {
+          "address": "00401f15",
+          "hex": "ff37",
+          "text": "push dword ptr [edi]"
+        },
+        {
+          "address": "00401f17",
+          "hex": "c745fc00000000",
+          "text": "mov dword ptr [ebp - 4], 0"
+        },
+        {
+          "address": "00401f1e",
+          "hex": "e85d160000",
+          "text": "call 0x403580",
+          "resolved_target": {
+            "name": "?get_native_render_command_queue_004c11f0@bsp@@YAPAUNativeRenderCommandQueueStorage@1@AAUNativeRenderBatchPreparationContext@1@@Z",
+            "address": 4208000,
+            "object": "bsp_core:native_render_batch_preparation_actual.obj"
+          }
+        },
+        {
+          "address": "00401f23",
+          "hex": "8b4f1c",
+          "text": "mov ecx, dword ptr [edi + 0x1c]"
+        },
+        {
+          "address": "00401f26",
+          "hex": "83c404",
+          "text": "add esp, 4"
+        },
+        {
+          "address": "00401f29",
+          "hex": "50",
+          "text": "push eax"
+        },
+        {
+          "address": "00401f2a",
+          "hex": "8b01",
+          "text": "mov eax, dword ptr [ecx]"
+        },
+        {
+          "address": "00401f2c",
+          "hex": "ff5004",
+          "text": "call dword ptr [eax + 4]"
+        },
+        {
+          "address": "00401f2f",
+          "hex": "33f6",
+          "text": "xor esi, esi"
+        },
+        {
+          "address": "00401f31",
+          "hex": "8b4f04",
+          "text": "mov ecx, dword ptr [edi + 4]"
+        },
+        {
+          "address": "00401f34",
+          "hex": "8b45e0",
+          "text": "mov eax, dword ptr [ebp - 0x20]"
+        },
+        {
+          "address": "00401f37",
+          "hex": "ba00000000",
+          "text": "mov edx, 0"
+        },
+        {
+          "address": "00401f3c",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "00401f3f",
+          "hex": "8945c4",
+          "text": "mov dword ptr [ebp - 0x3c], eax"
+        },
+        {
+          "address": "00401f42",
+          "hex": "817dc4a8f0d500",
+          "text": "cmp dword ptr [ebp - 0x3c], 0xd5f0a8"
+        },
+        {
+          "address": "00401f49",
+          "hex": "0f8523050000",
+          "text": "jne 0x402472"
+        },
+        {
+          "address": "00401f4f",
+          "hex": "8b4110",
+          "text": "mov eax, dword ptr [ecx + 0x10]"
+        },
+        {
+          "address": "00401f52",
+          "hex": "8945bc",
+          "text": "mov dword ptr [ebp - 0x44], eax"
+        },
+        {
+          "address": "00401f55",
+          "hex": "8b45bc",
+          "text": "mov eax, dword ptr [ebp - 0x44]"
+        },
+        {
+          "address": "00401f58",
+          "hex": "ba30010000",
+          "text": "mov edx, 0x130"
+        },
+        {
+          "address": "00401f5d",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "00401f60",
+          "hex": "8945e4",
+          "text": "mov dword ptr [ebp - 0x1c], eax"
+        },
+        {
+          "address": "00401f63",
+          "hex": "817de41047b200",
+          "text": "cmp dword ptr [ebp - 0x1c], 0xb24710"
+        },
+        {
+          "address": "00401f6a",
+          "hex": "0f8502050000",
+          "text": "jne 0x402472"
+        },
+        {
+          "address": "00401f70",
+          "hex": "8b4704",
+          "text": "mov eax, dword ptr [edi + 4]"
+        },
+        {
+          "address": "00401f73",
+          "hex": "ff7004",
+          "text": "push dword ptr [eax + 4]"
+        },
+        {
+          "address": "00401f76",
+          "hex": "6a00",
+          "text": "push 0"
+        },
+        {
+          "address": "00401f78",
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00401f79",
+          "hex": "53",
+          "text": "push ebx"
+        },
+        {
+          "address": "00401f7a",
+          "hex": "e8410a0000",
+          "text": "call 0x4029c0",
+          "resolved_target": {
+            "name": "?bind_native_renderer_texture_00b24710@bsp@@YAXPAXI0AAUNativeRendererTextureBindingContext@1@@Z",
+            "address": 4204992,
+            "object": "bsp_core:native_renderer_texture_binding.obj"
+          }
+        },
+        {
+          "address": "00401f7f",
+          "hex": "46",
+          "text": "inc esi"
+        },
+        {
+          "address": "00401f80",
+          "hex": "83c410",
+          "text": "add esp, 0x10"
+        },
+        {
+          "address": "00401f83",
+          "hex": "83fe14",
+          "text": "cmp esi, 0x14"
+        },
+        {
+          "address": "00401f86",
+          "hex": "72a9",
+          "text": "jb 0x401f31"
+        },
+        {
+          "address": "00401f88",
+          "hex": "33f6",
+          "text": "xor esi, esi"
+        },
+        {
+          "address": "00401f8a",
+          "hex": "660f1f440000",
+          "text": "nop word ptr [eax + eax]"
+        },
+        {
+          "address": "00401f90",
+          "hex": "8b4f04",
+          "text": "mov ecx, dword ptr [edi + 4]"
+        },
+        {
+          "address": "00401f93",
+          "hex": "8b45e0",
+          "text": "mov eax, dword ptr [ebp - 0x20]"
+        },
+        {
+          "address": "00401f96",
+          "hex": "ba00000000",
+          "text": "mov edx, 0"
+        },
+        {
+          "address": "00401f9b",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "00401f9e",
+          "hex": "8945e4",
+          "text": "mov dword ptr [ebp - 0x1c], eax"
+        },
+        {
+          "address": "00401fa1",
+          "hex": "817de4a8f0d500",
+          "text": "cmp dword ptr [ebp - 0x1c], 0xd5f0a8"
+        },
+        {
+          "address": "00401fa8",
+          "hex": "0f85c4040000",
+          "text": "jne 0x402472"
+        },
+        {
+          "address": "00401fae",
+          "hex": "8b4110",
+          "text": "mov eax, dword ptr [ecx + 0x10]"
+        },
+        {
+          "address": "00401fb1",
+          "hex": "8945bc",
+          "text": "mov dword ptr [ebp - 0x44], eax"
+        },
+        {
+          "address": "00401fb4",
+          "hex": "8b45bc",
+          "text": "mov eax, dword ptr [ebp - 0x44]"
+        },
+        {
+          "address": "00401fb7",
+          "hex": "ba34010000",
+          "text": "mov edx, 0x134"
+        },
+        {
+          "address": "00401fbc",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "00401fbf",
+          "hex": "8945c4",
+          "text": "mov dword ptr [ebp - 0x3c], eax"
+        },
+        {
+          "address": "00401fc2",
+          "hex": "817dc44048b200",
+          "text": "cmp dword ptr [ebp - 0x3c], 0xb24840"
+        },
+        {
+          "address": "00401fc9",
+          "hex": "0f85a3040000",
+          "text": "jne 0x402472"
+        },
+        {
+          "address": "00401fcf",
+          "hex": "8b4704",
+          "text": "mov eax, dword ptr [edi + 4]"
+        },
+        {
+          "address": "00401fd2",
+          "hex": "ff30",
+          "text": "push dword ptr [eax]"
+        },
+        {
+          "address": "00401fd4",
+          "hex": "6a00",
+          "text": "push 0"
+        },
+        {
+          "address": "00401fd6",
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00401fd7",
+          "hex": "53",
+          "text": "push ebx"
+        },
+        {
+          "address": "00401fd8",
+          "hex": "e8f30c0000",
+          "text": "call 0x402cd0",
+          "resolved_target": {
+            "name": "?bind_native_renderer_vertex_stream_00b24840@bsp@@YAXPAXI0AAUNativeRendererVertexBindingContext@1@@Z",
+            "address": 4205776,
+            "object": "bsp_core:native_renderer_vertex_binding.obj"
+          }
+        },
+        {
+          "address": "00401fdd",
+          "hex": "46",
+          "text": "inc esi"
+        },
+        {
+          "address": "00401fde",
+          "hex": "83c410",
+          "text": "add esp, 0x10"
+        },
+        {
+          "address": "00401fe1",
+          "hex": "83fe04",
+          "text": "cmp esi, 4"
+        },
+        {
+          "address": "00401fe4",
+          "hex": "72aa",
+          "text": "jb 0x401f90"
+        },
+        {
+          "address": "00401fe6",
+          "hex": "8b4f04",
+          "text": "mov ecx, dword ptr [edi + 4]"
+        },
+        {
+          "address": "00401fe9",
+          "hex": "8b45e0",
+          "text": "mov eax, dword ptr [ebp - 0x20]"
+        },
+        {
+          "address": "00401fec",
+          "hex": "ba00000000",
+          "text": "mov edx, 0"
+        },
+        {
+          "address": "00401ff1",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "00401ff4",
+          "hex": "8945e4",
+          "text": "mov dword ptr [ebp - 0x1c], eax"
+        },
+        {
+          "address": "00401ff7",
+          "hex": "817de4a8f0d500",
+          "text": "cmp dword ptr [ebp - 0x1c], 0xd5f0a8"
+        },
+        {
+          "address": "00401ffe",
+          "hex": "0f856e040000",
+          "text": "jne 0x402472"
+        },
+        {
+          "address": "00402004",
+          "hex": "8b4110",
+          "text": "mov eax, dword ptr [ecx + 0x10]"
+        },
+        {
+          "address": "00402007",
+          "hex": "8945e4",
+          "text": "mov dword ptr [ebp - 0x1c], eax"
+        },
+        {
+          "address": "0040200a",
+          "hex": "8b45e4",
+          "text": "mov eax, dword ptr [ebp - 0x1c]"
+        },
+        {
+          "address": "0040200d",
+          "hex": "ba38010000",
+          "text": "mov edx, 0x138"
+        },
+        {
+          "address": "00402012",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "00402015",
+          "hex": "8945bc",
+          "text": "mov dword ptr [ebp - 0x44], eax"
+        },
+        {
+          "address": "00402018",
+          "hex": "817dbc004bb200",
+          "text": "cmp dword ptr [ebp - 0x44], 0xb24b00"
+        },
+        {
+          "address": "0040201f",
+          "hex": "0f854d040000",
+          "text": "jne 0x402472"
+        },
+        {
+          "address": "00402025",
+          "hex": "8b4704",
+          "text": "mov eax, dword ptr [edi + 4]"
+        },
+        {
+          "address": "00402028",
+          "hex": "ff7008",
+          "text": "push dword ptr [eax + 8]"
+        },
+        {
+          "address": "0040202b",
+          "hex": "6a00",
+          "text": "push 0"
+        },
+        {
+          "address": "0040202d",
+          "hex": "6a00",
+          "text": "push 0"
+        },
+        {
+          "address": "0040202f",
+          "hex": "53",
+          "text": "push ebx"
+        },
+        {
+          "address": "00402030",
+          "hex": "e84b070000",
+          "text": "call 0x402780",
+          "resolved_target": {
+            "name": "?bind_native_renderer_index_stream_00b24b00@bsp@@YAXPAX0IAAUNativeRendererIndexBindingContext@1@@Z",
+            "address": 4204416,
+            "object": "bsp_core:native_renderer_index_binding.obj"
+          }
+        },
+        {
+          "address": "00402035",
+          "hex": "83c410",
+          "text": "add esp, 0x10"
+        },
+        {
+          "address": "00402038",
+          "hex": "8db3f4190000",
+          "text": "lea esi, [ebx + 0x19f4]"
+        },
+        {
+          "address": "0040203e",
+          "hex": "8975c4",
+          "text": "mov dword ptr [ebp - 0x3c], esi"
+        },
+        {
+          "address": "00402041",
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00402042",
+          "hex": "ff155c604500",
+          "text": "call dword ptr [0x45605c]"
+        },
+        {
+          "address": "00402048",
+          "hex": "8b45c4",
+          "text": "mov eax, dword ptr [ebp - 0x3c]"
+        },
+        {
+          "address": "0040204b",
+          "hex": "ba18000000",
+          "text": "mov edx, 0x18"
+        },
+        {
+          "address": "00402050",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "00402053",
+          "hex": "8945e4",
+          "text": "mov dword ptr [ebp - 0x1c], eax"
+        },
+        {
+          "address": "00402056",
+          "hex": "8b45e4",
+          "text": "mov eax, dword ptr [ebp - 0x1c]"
+        },
+        {
+          "address": "00402059",
+          "hex": "40",
+          "text": "inc eax"
+        },
+        {
+          "address": "0040205a",
+          "hex": "894618",
+          "text": "mov dword ptr [esi + 0x18], eax"
+        },
+        {
+          "address": "0040205d",
+          "hex": "8b4f14",
+          "text": "mov ecx, dword ptr [edi + 0x14]"
+        },
+        {
+          "address": "00402060",
+          "hex": "8b45e0",
+          "text": "mov eax, dword ptr [ebp - 0x20]"
+        },
+        {
+          "address": "00402063",
+          "hex": "ba74190000",
+          "text": "mov edx, 0x1974"
+        },
+        {
+          "address": "00402068",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "0040206b",
+          "hex": "8945e4",
+          "text": "mov dword ptr [ebp - 0x1c], eax"
+        },
+        {
+          "address": "0040206e",
+          "hex": "6a01",
+          "text": "push 1"
+        },
+        {
+          "address": "00402070",
+          "hex": "51",
+          "text": "push ecx"
+        },
+        {
+          "address": "00402071",
+          "hex": "ff75e4",
+          "text": "push dword ptr [ebp - 0x1c]"
+        },
+        {
+          "address": "00402074",
+          "hex": "e8a7040000",
+          "text": "call 0x402520",
+          "resolved_target": {
+            "name": "?rewind_physical@?A0x91f9ecac@bsp@@YAXPAXAAUNativePhysicalBufferRewindContext@2@_N@Z",
+            "address": 4203808,
+            "object": "bsp_core:native_renderer_end_frame.obj"
+          }
+        },
+        {
+          "address": "00402079",
+          "hex": "83c40c",
+          "text": "add esp, 0xc"
+        },
+        {
+          "address": "0040207c",
+          "hex": "8b45c4",
+          "text": "mov eax, dword ptr [ebp - 0x3c]"
+        },
+        {
+          "address": "0040207f",
+          "hex": "ba18000000",
+          "text": "mov edx, 0x18"
+        },
+        {
+          "address": "00402084",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "00402087",
+          "hex": "8945e4",
+          "text": "mov dword ptr [ebp - 0x1c], eax"
+        },
+        {
+          "address": "0040208a",
+          "hex": "8b45e4",
+          "text": "mov eax, dword ptr [ebp - 0x1c]"
+        },
+        {
+          "address": "0040208d",
+          "hex": "48",
+          "text": "dec eax"
+        },
+        {
+          "address": "0040208e",
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "0040208f",
+          "hex": "894618",
+          "text": "mov dword ptr [esi + 0x18], eax"
+        },
+        {
+          "address": "00402092",
+          "hex": "ff1554604500",
+          "text": "call dword ptr [0x456054]"
+        },
+        {
+          "address": "00402098",
+          "hex": "8b4f14",
+          "text": "mov ecx, dword ptr [edi + 0x14]"
+        },
+        {
+          "address": "0040209b",
+          "hex": "8b45e0",
+          "text": "mov eax, dword ptr [ebp - 0x20]"
+        },
+        {
+          "address": "0040209e",
+          "hex": "ba78190000",
+          "text": "mov edx, 0x1978"
+        },
+        {
+          "address": "004020a3",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "004020a6",
+          "hex": "8945e4",
+          "text": "mov dword ptr [ebp - 0x1c], eax"
+        },
+        {
+          "address": "004020a9",
+          "hex": "6a00",
+          "text": "push 0"
+        },
+        {
+          "address": "004020ab",
+          "hex": "51",
+          "text": "push ecx"
+        },
+        {
+          "address": "004020ac",
+          "hex": "ff75e4",
+          "text": "push dword ptr [ebp - 0x1c]"
+        },
+        {
+          "address": "004020af",
+          "hex": "e86c040000",
+          "text": "call 0x402520",
+          "resolved_target": {
+            "name": "?rewind_physical@?A0x91f9ecac@bsp@@YAXPAXAAUNativePhysicalBufferRewindContext@2@_N@Z",
+            "address": 4203808,
+            "object": "bsp_core:native_renderer_end_frame.obj"
+          }
+        },
+        {
+          "address": "004020b4",
+          "hex": "8b75dc",
+          "text": "mov esi, dword ptr [ebp - 0x24]"
+        },
+        {
+          "address": "004020b7",
+          "hex": "83c40c",
+          "text": "add esp, 0xc"
+        },
+        {
+          "address": "004020ba",
+          "hex": "85f6",
+          "text": "test esi, esi"
+        },
+        {
+          "address": "004020bc",
+          "hex": "744a",
+          "text": "je 0x402108"
+        },
+        {
+          "address": "004020be",
+          "hex": "8b4f04",
+          "text": "mov ecx, dword ptr [edi + 4]"
+        },
+        {
+          "address": "004020c1",
+          "hex": "8b45e0",
+          "text": "mov eax, dword ptr [ebp - 0x20]"
+        },
+        {
+          "address": "004020c4",
+          "hex": "ba00000000",
+          "text": "mov edx, 0"
+        },
+        {
+          "address": "004020c9",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "004020cc",
+          "hex": "8945dc",
+          "text": "mov dword ptr [ebp - 0x24], eax"
+        },
+        {
+          "address": "004020cf",
+          "hex": "817ddca8f0d500",
+          "text": "cmp dword ptr [ebp - 0x24], 0xd5f0a8"
+        },
+        {
+          "address": "004020d6",
+          "hex": "0f8596030000",
+          "text": "jne 0x402472"
+        },
+        {
+          "address": "004020dc",
+          "hex": "8b4110",
+          "text": "mov eax, dword ptr [ecx + 0x10]"
+        },
+        {
+          "address": "004020df",
+          "hex": "8945dc",
+          "text": "mov dword ptr [ebp - 0x24], eax"
+        },
+        {
+          "address": "004020e2",
+          "hex": "8b45dc",
+          "text": "mov eax, dword ptr [ebp - 0x24]"
+        },
+        {
+          "address": "004020e5",
+          "hex": "ba10010000",
+          "text": "mov edx, 0x110"
+        },
+        {
+          "address": "004020ea",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "004020ed",
+          "hex": "8945e4",
+          "text": "mov dword ptr [ebp - 0x1c], eax"
+        },
+        {
+          "address": "004020f0",
+          "hex": "817de4503cb200",
+          "text": "cmp dword ptr [ebp - 0x1c], 0xb23c50"
+        },
+        {
+          "address": "004020f7",
+          "hex": "0f8575030000",
+          "text": "jne 0x402472"
+        },
+        {
+          "address": "004020fd",
+          "hex": "8b570c",
+          "text": "mov edx, dword ptr [edi + 0xc]"
+        },
+        {
+          "address": "00402100",
+          "hex": "8bcb",
+          "text": "mov ecx, ebx"
+        },
+        {
+          "address": "00402102",
+          "hex": "56",
+          "text": "push esi"
+        },
+        {
+          "address": "00402103",
+          "hex": "e818160000",
+          "text": "call 0x403720",
+          "resolved_target": {
+            "name": "?capture_native_renderer_surface_save_00b23c50@bsp@@YIXPAXPBUNativeRendererSurfaceSavePublishContext@1@PBX@Z",
+            "address": 4208416,
+            "object": "bsp_core:native_renderer_surface_save_publish.obj"
+          }
+        },
+        {
+          "address": "00402108",
+          "hex": "ff773c",
+          "text": "push dword ptr [edi + 0x3c]"
+        },
+        {
+          "address": "0040210b",
+          "hex": "8b5738",
+          "text": "mov edx, dword ptr [edi + 0x38]"
+        },
+        {
+          "address": "0040210e",
+          "hex": "8bcb",
+          "text": "mov ecx, ebx"
+        },
+        {
+          "address": "00402110",
+          "hex": "e8fb210000",
+          "text": "call 0x404310",
+          "resolved_target": {
+            "name": "?draw_native_renderer_debug_records24_00b2bb90@bsp@@YIXPAXPAUNativeRendererDebugRecords24Context@1@PAUNativeRendererDebugRecords24Frame@1@@Z",
+            "address": 4211472,
+            "object": "bsp_core:native_renderer_debug_records24.obj"
+          }
+        },
+        {
+          "address": "00402115",
+          "hex": "8b4f04",
+          "text": "mov ecx, dword ptr [edi + 4]"
+        },
+        {
+          "address": "00402118",
+          "hex": "8b45e0",
+          "text": "mov eax, dword ptr [ebp - 0x20]"
+        },
+        {
+          "address": "0040211b",
+          "hex": "ba00000000",
+          "text": "mov edx, 0"
+        },
+        {
+          "address": "00402120",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "00402123",
+          "hex": "8945dc",
+          "text": "mov dword ptr [ebp - 0x24], eax"
+        },
+        {
+          "address": "00402126",
+          "hex": "817ddca8f0d500",
+          "text": "cmp dword ptr [ebp - 0x24], 0xd5f0a8"
+        },
+        {
+          "address": "0040212d",
+          "hex": "0f853f030000",
+          "text": "jne 0x402472"
+        },
+        {
+          "address": "00402133",
+          "hex": "8b4110",
+          "text": "mov eax, dword ptr [ecx + 0x10]"
+        },
+        {
+          "address": "00402136",
+          "hex": "8945dc",
+          "text": "mov dword ptr [ebp - 0x24], eax"
+        },
+        {
+          "address": "00402139",
+          "hex": "8b45dc",
+          "text": "mov eax, dword ptr [ebp - 0x24]"
+        },
+        {
+          "address": "0040213c",
+          "hex": "bac4000000",
+          "text": "mov edx, 0xc4"
+        },
+        {
+          "address": "00402141",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "00402144",
+          "hex": "8945e4",
+          "text": "mov dword ptr [ebp - 0x1c], eax"
+        },
+        {
+          "address": "00402147",
+          "hex": "817de4008db200",
+          "text": "cmp dword ptr [ebp - 0x1c], 0xb28d00"
+        },
+        {
+          "address": "0040214e",
+          "hex": "0f851e030000",
+          "text": "jne 0x402472"
+        },
+        {
+          "address": "00402154",
+          "hex": "8b5734",
+          "text": "mov edx, dword ptr [edi + 0x34]"
+        },
+        {
+          "address": "00402157",
+          "hex": "8bcb",
+          "text": "mov ecx, ebx"
+        },
+        {
+          "address": "00402159",
+          "hex": "e8f21c0000",
+          "text": "call 0x403e50",
+          "resolved_target": {
+            "name": "?draw_native_renderer_debug_lines_00b28d00@bsp@@YIXPAXPBUNativeRendererDebugLinesContext@1@@Z",
+            "address": 4210256,
+            "object": "bsp_core:native_renderer_debug_lines.obj"
+          }
+        },
+        {
+          "address": "0040215e",
+          "hex": "ff7744",
+          "text": "push dword ptr [edi + 0x44]"
+        },
+        {
+          "address": "00402161",
+          "hex": "8b5740",
+          "text": "mov edx, dword ptr [edi + 0x40]"
+        },
+        {
+          "address": "00402164",
+          "hex": "8bcb",
+          "text": "mov ecx, ebx"
+        },
+        {
+          "address": "00402166",
+          "hex": "e8052d0000",
+          "text": "call 0x404e70",
+          "resolved_target": {
+            "name": "?draw_native_renderer_debug_records40_00b2b580@bsp@@YIXPAXPAUNativeRendererDebugRecords40Context@1@PAVNativeRendererDebugRecords40Frame@1@@Z",
+            "address": 4214384,
+            "object": "bsp_core:native_renderer_debug_records40.obj"
+          }
+        },
+        {
+          "address": "0040216b",
+          "hex": "8b7db4",
+          "text": "mov edi, dword ptr [ebp - 0x4c]"
+        },
+        {
+          "address": "0040216e",
+          "hex": "bee8674500",
+          "text": "mov esi, 0x4567e8"
+        },
+        {
+          "address": "00402173",
+          "hex": "57",
+          "text": "push edi"
+        },
+        {
+          "address": "00402174",
+          "hex": "ff7604",
+          "text": "push dword ptr [esi + 4]"
+        },
+        {
+          "address": "00402177",
+          "hex": "ff36",
+          "text": "push dword ptr [esi]"
+        },
+        {
+          "address": "00402179",
+          "hex": "53",
+          "text": "push ebx"
+        },
+        {
+          "address": "0040217a",
+          "hex": "e821190000",
+          "text": "call 0x403aa0",
+          "resolved_target": {
+            "name": "?set_native_renderer_render_state_00b24460@bsp@@YAXPAXIIAAUNativeRendererSynchronizationGlobals@1@@Z",
+            "address": 4209312,
+            "object": "bsp_core:native_renderer_cached_states.obj"
+          }
+        },
+        {
+          "address": "0040217f",
+          "hex": "83c608",
+          "text": "add esi, 8"
+        },
+        {
+          "address": "00402182",
+          "hex": "83c410",
+          "text": "add esp, 0x10"
+        },
+        {
+          "address": "00402185",
+          "hex": "81fe68684500",
+          "text": "cmp esi, 0x456868"
+        },
+        {
+          "address": "0040218b",
+          "hex": "75e6",
+          "text": "jne 0x402173"
+        },
+        {
+          "address": "0040218d",
+          "hex": "8b7dc0",
+          "text": "mov edi, dword ptr [ebp - 0x40]"
+        },
+        {
+          "address": "00402190",
+          "hex": "8b4718",
+          "text": "mov eax, dword ptr [edi + 0x18]"
+        },
+        {
+          "address": "00402193",
+          "hex": "8b00",
+          "text": "mov eax, dword ptr [eax]"
+        },
+        {
+          "address": "00402195",
+          "hex": "ffd0",
+          "text": "call eax"
+        },
+        {
+          "address": "00402197",
+          "hex": "8b45e0",
+          "text": "mov eax, dword ptr [ebp - 0x20]"
+        },
+        {
+          "address": "0040219a",
+          "hex": "ba901d0000",
+          "text": "mov edx, 0x1d90"
+        },
+        {
+          "address": "0040219f",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "004021a2",
+          "hex": "8945c0",
+          "text": "mov dword ptr [ebp - 0x40], eax"
+        },
+        {
+          "address": "004021a5",
+          "hex": "837dc000",
+          "text": "cmp dword ptr [ebp - 0x40], 0"
+        },
+        {
+          "address": "004021a9",
+          "hex": "7544",
+          "text": "jne 0x4021ef"
+        },
+        {
+          "address": "004021ab",
+          "hex": "8a838a1d0000",
+          "text": "mov al, byte ptr [ebx + 0x1d8a]"
+        },
+        {
+          "address": "004021b1",
+          "hex": "84c0",
+          "text": "test al, al"
+        },
+        {
+          "address": "004021b3",
+          "hex": "753a",
+          "text": "jne 0x4021ef"
+        },
+        {
+          "address": "004021b5",
+          "hex": "8b45e0",
+          "text": "mov eax, dword ptr [ebp - 0x20]"
+        },
+        {
+          "address": "004021b8",
+          "hex": "ba101a0000",
+          "text": "mov edx, 0x1a10"
+        },
+        {
+          "address": "004021bd",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "004021c0",
+          "hex": "8945c0",
+          "text": "mov dword ptr [ebp - 0x40], eax"
+        },
+        {
+          "address": "004021c3",
+          "hex": "8b4dc0",
+          "text": "mov ecx, dword ptr [ebp - 0x40]"
+        },
+        {
+          "address": "004021c6",
+          "hex": "894ddc",
+          "text": "mov dword ptr [ebp - 0x24], ecx"
+        },
+        {
+          "address": "004021c9",
+          "hex": "8b45dc",
+          "text": "mov eax, dword ptr [ebp - 0x24]"
+        },
+        {
+          "address": "004021cc",
+          "hex": "ba00000000",
+          "text": "mov edx, 0"
+        },
+        {
+          "address": "004021d1",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "004021d4",
+          "hex": "8945e4",
+          "text": "mov dword ptr [ebp - 0x1c], eax"
+        },
+        {
+          "address": "004021d7",
+          "hex": "8b45e4",
+          "text": "mov eax, dword ptr [ebp - 0x1c]"
+        },
+        {
+          "address": "004021da",
+          "hex": "8945dc",
+          "text": "mov dword ptr [ebp - 0x24], eax"
+        },
+        {
+          "address": "004021dd",
+          "hex": "8b45dc",
+          "text": "mov eax, dword ptr [ebp - 0x24]"
+        },
+        {
+          "address": "004021e0",
+          "hex": "baa8000000",
+          "text": "mov edx, 0xa8"
+        },
+        {
+          "address": "004021e5",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "004021e8",
+          "hex": "8945e4",
+          "text": "mov dword ptr [ebp - 0x1c], eax"
+        },
+        {
+          "address": "004021eb",
+          "hex": "51",
+          "text": "push ecx"
+        },
+        {
+          "address": "004021ec",
+          "hex": "ff55e4",
+          "text": "call dword ptr [ebp - 0x1c]"
+        },
+        {
+          "address": "004021ef",
+          "hex": "ff7708",
+          "text": "push dword ptr [edi + 8]"
+        },
+        {
+          "address": "004021f2",
+          "hex": "8d4334",
+          "text": "lea eax, [ebx + 0x34]"
+        },
+        {
+          "address": "004021f5",
+          "hex": "50",
+          "text": "push eax"
+        },
+        {
+          "address": "004021f6",
+          "hex": "e8e50e0000",
+          "text": "call 0x4030e0",
+          "resolved_target": {
+            "name": "?clear_native_renderer_binding_cache_00b241c0@bsp@@YAXPAXAAUNativeRendererCacheClearContext@1@@Z",
+            "address": 4206816,
+            "object": "bsp_core:native_renderer_cache_clear.obj"
+          }
+        },
+        {
+          "address": "004021fb",
+          "hex": "8d83781b0000",
+          "text": "lea eax, [ebx + 0x1b78]"
+        },
+        {
+          "address": "00402201",
+          "hex": "50",
+          "text": "push eax"
+        },
+        {
+          "address": "00402202",
+          "hex": "e8591b0000",
+          "text": "call 0x403d60",
+          "resolved_target": {
+            "name": "?publish_native_renderer_frame_statistics_00b0ccb0@bsp@@YAXPAX@Z",
+            "address": 4210016,
+            "object": "bsp_core:native_renderer_frame_statistics.obj"
+          }
+        },
+        {
+          "address": "00402207",
+          "hex": "83c40c",
+          "text": "add esp, 0xc"
+        },
+        {
+          "address": "0040220a",
+          "hex": "8b45e0",
+          "text": "mov eax, dword ptr [ebp - 0x20]"
+        },
+        {
+          "address": "0040220d",
+          "hex": "baa4190000",
+          "text": "mov edx, 0x19a4"
+        },
+        {
+          "address": "00402212",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "00402215",
+          "hex": "8945c0",
+          "text": "mov dword ptr [ebp - 0x40], eax"
+        },
+        {
+          "address": "00402218",
+          "hex": "8b45c0",
+          "text": "mov eax, dword ptr [ebp - 0x40]"
+        },
+        {
+          "address": "0040221b",
+          "hex": "c7839819000000000000",
+          "text": "mov dword ptr [ebx + 0x1998], 0"
+        },
+        {
+          "address": "00402225",
+          "hex": "85c0",
+          "text": "test eax, eax"
+        },
+        {
+          "address": "00402227",
+          "hex": "0f84a0000000",
+          "text": "je 0x4022cd"
+        },
+        {
+          "address": "0040222d",
+          "hex": "33f6",
+          "text": "xor esi, esi"
+        },
+        {
+          "address": "0040222f",
+          "hex": "90",
+          "text": "nop "
+        },
+        {
+          "address": "00402230",
+          "hex": "8d04b500000000",
+          "text": "lea eax, [esi*4]"
+        },
+        {
+          "address": "00402237",
+          "hex": "8945e4",
+          "text": "mov dword ptr [ebp - 0x1c], eax"
+        },
+        {
+          "address": "0040223a",
+          "hex": "8b45e0",
+          "text": "mov eax, dword ptr [ebp - 0x20]"
+        },
+        {
+          "address": "0040223d",
+          "hex": "baa0190000",
+          "text": "mov edx, 0x19a0"
+        },
+        {
+          "address": "00402242",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "00402245",
+          "hex": "8945c0",
+          "text": "mov dword ptr [ebp - 0x40], eax"
+        },
+        {
+          "address": "00402248",
+          "hex": "8b45c0",
+          "text": "mov eax, dword ptr [ebp - 0x40]"
+        },
+        {
+          "address": "0040224b",
+          "hex": "8945dc",
+          "text": "mov dword ptr [ebp - 0x24], eax"
+        },
+        {
+          "address": "0040224e",
+          "hex": "8b45dc",
+          "text": "mov eax, dword ptr [ebp - 0x24]"
+        },
+        {
+          "address": "00402251",
+          "hex": "8b55e4",
+          "text": "mov edx, dword ptr [ebp - 0x1c]"
+        },
+        {
+          "address": "00402254",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "00402257",
+          "hex": "8945bc",
+          "text": "mov dword ptr [ebp - 0x44], eax"
+        },
+        {
+          "address": "0040225a",
+          "hex": "8b4dbc",
+          "text": "mov ecx, dword ptr [ebp - 0x44]"
+        },
+        {
+          "address": "0040225d",
+          "hex": "894dc4",
+          "text": "mov dword ptr [ebp - 0x3c], ecx"
+        },
+        {
+          "address": "00402260",
+          "hex": "8b45c4",
+          "text": "mov eax, dword ptr [ebp - 0x3c]"
+        },
+        {
+          "address": "00402263",
+          "hex": "ba08000000",
+          "text": "mov edx, 8"
+        },
+        {
+          "address": "00402268",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "0040226b",
+          "hex": "8945b0",
+          "text": "mov dword ptr [ebp - 0x50], eax"
+        },
+        {
+          "address": "0040226e",
+          "hex": "837db000",
+          "text": "cmp dword ptr [ebp - 0x50], 0"
+        },
+        {
+          "address": "00402272",
+          "hex": "7541",
+          "text": "jne 0x4022b5"
+        },
+        {
+          "address": "00402274",
+          "hex": "8b45c4",
+          "text": "mov eax, dword ptr [ebp - 0x3c]"
+        },
+        {
+          "address": "00402277",
+          "hex": "ba00000000",
+          "text": "mov edx, 0"
+        },
+        {
+          "address": "0040227c",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "0040227f",
+          "hex": "8945b8",
+          "text": "mov dword ptr [ebp - 0x48], eax"
+        },
+        {
+          "address": "00402282",
+          "hex": "817db8d02ad600",
+          "text": "cmp dword ptr [ebp - 0x48], 0xd62ad0"
+        },
+        {
+          "address": "00402289",
+          "hex": "0f85e3010000",
+          "text": "jne 0x402472"
+        },
+        {
+          "address": "0040228f",
+          "hex": "8b4730",
+          "text": "mov eax, dword ptr [edi + 0x30]"
+        },
+        {
+          "address": "00402292",
+          "hex": "8945dc",
+          "text": "mov dword ptr [ebp - 0x24], eax"
+        },
+        {
+          "address": "00402295",
+          "hex": "8b45dc",
+          "text": "mov eax, dword ptr [ebp - 0x24]"
+        },
+        {
+          "address": "00402298",
+          "hex": "ba10000000",
+          "text": "mov edx, 0x10"
+        },
+        {
+          "address": "0040229d",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "004022a0",
+          "hex": "8945d4",
+          "text": "mov dword ptr [ebp - 0x2c], eax"
+        },
+        {
+          "address": "004022a3",
+          "hex": "817dd4a0fcb500",
+          "text": "cmp dword ptr [ebp - 0x2c], 0xb5fca0"
+        },
+        {
+          "address": "004022aa",
+          "hex": "0f85c2010000",
+          "text": "jne 0x402472"
+        },
+        {
+          "address": "004022b0",
+          "hex": "e85b1b0000",
+          "text": "call 0x403e10",
+          "resolved_target": {
+            "name": "?poll_native_occlusion_query_00b5fca0@bsp@@YI_NPAX@Z",
+            "address": 4210192,
+            "object": "bsp_core:native_occlusion_query_poll.obj"
+          }
+        },
+        {
+          "address": "004022b5",
+          "hex": "46",
+          "text": "inc esi"
+        },
+        {
+          "address": "004022b6",
+          "hex": "8b45e0",
+          "text": "mov eax, dword ptr [ebp - 0x20]"
+        },
+        {
+          "address": "004022b9",
+          "hex": "baa4190000",
+          "text": "mov edx, 0x19a4"
+        },
+        {
+          "address": "004022be",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "004022c1",
+          "hex": "8945d8",
+          "text": "mov dword ptr [ebp - 0x28], eax"
+        },
+        {
+          "address": "004022c4",
+          "hex": "3b75d8",
+          "text": "cmp esi, dword ptr [ebp - 0x28]"
+        },
+        {
+          "address": "004022c7",
+          "hex": "0f8263ffffff",
+          "text": "jb 0x402230"
+        },
+        {
+          "address": "004022cd",
+          "hex": "8b4724",
+          "text": "mov eax, dword ptr [edi + 0x24]"
+        },
+        {
+          "address": "004022d0",
+          "hex": "803800",
+          "text": "cmp byte ptr [eax], 0"
+        },
+        {
+          "address": "004022d3",
+          "hex": "746a",
+          "text": "je 0x40233f"
+        },
+        {
+          "address": "004022d5",
+          "hex": "8b4f04",
+          "text": "mov ecx, dword ptr [edi + 4]"
+        },
+        {
+          "address": "004022d8",
+          "hex": "c745b800000000",
+          "text": "mov dword ptr [ebp - 0x48], 0"
+        },
+        {
+          "address": "004022df",
+          "hex": "8b45e0",
+          "text": "mov eax, dword ptr [ebp - 0x20]"
+        },
+        {
+          "address": "004022e2",
+          "hex": "ba00000000",
+          "text": "mov edx, 0"
+        },
+        {
+          "address": "004022e7",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "004022ea",
+          "hex": "8945d8",
+          "text": "mov dword ptr [ebp - 0x28], eax"
+        },
+        {
+          "address": "004022ed",
+          "hex": "817dd8a8f0d500",
+          "text": "cmp dword ptr [ebp - 0x28], 0xd5f0a8"
+        },
+        {
+          "address": "004022f4",
+          "hex": "0f8578010000",
+          "text": "jne 0x402472"
+        },
+        {
+          "address": "004022fa",
+          "hex": "8b4110",
+          "text": "mov eax, dword ptr [ecx + 0x10]"
+        },
+        {
+          "address": "004022fd",
+          "hex": "8945d8",
+          "text": "mov dword ptr [ebp - 0x28], eax"
+        },
+        {
+          "address": "00402300",
+          "hex": "8b45d8",
+          "text": "mov eax, dword ptr [ebp - 0x28]"
+        },
+        {
+          "address": "00402303",
+          "hex": "ba08000000",
+          "text": "mov edx, 8"
+        },
+        {
+          "address": "00402308",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "0040230b",
+          "hex": "8945d4",
+          "text": "mov dword ptr [ebp - 0x2c], eax"
+        },
+        {
+          "address": "0040230e",
+          "hex": "817dd43014b200",
+          "text": "cmp dword ptr [ebp - 0x2c], 0xb21430"
+        },
+        {
+          "address": "00402315",
+          "hex": "0f8557010000",
+          "text": "jne 0x402472"
+        },
+        {
+          "address": "0040231b",
+          "hex": "8b5710",
+          "text": "mov edx, dword ptr [edi + 0x10]"
+        },
+        {
+          "address": "0040231e",
+          "hex": "8d45b8",
+          "text": "lea eax, [ebp - 0x48]"
+        },
+        {
+          "address": "00402321",
+          "hex": "6a00",
+          "text": "push 0"
+        },
+        {
+          "address": "00402323",
+          "hex": "51",
+          "text": "push ecx"
+        },
+        {
+          "address": "00402324",
+          "hex": "c704240000803f",
+          "text": "mov dword ptr [esp], 0x3f800000"
+        },
+        {
+          "address": "0040232b",
+          "hex": "8bcb",
+          "text": "mov ecx, ebx"
+        },
+        {
+          "address": "0040232d",
+          "hex": "50",
+          "text": "push eax"
+        },
+        {
+          "address": "0040232e",
+          "hex": "6a01",
+          "text": "push 1"
+        },
+        {
+          "address": "00402330",
+          "hex": "6a00",
+          "text": "push 0"
+        },
+        {
+          "address": "00402332",
+          "hex": "6a00",
+          "text": "push 0"
+        },
+        {
+          "address": "00402334",
+          "hex": "e837170000",
+          "text": "call 0x403a70",
+          "resolved_target": {
+            "name": "?clear_native_renderer_00b21430@bsp@@YIXPAXPBUNativeRendererViewportClearContext@1@IPBXI2MI@Z",
+            "address": 4209264,
+            "object": "bsp_core:native_renderer_viewport_clear.obj"
+          }
+        },
+        {
+          "address": "00402339",
+          "hex": "8b4724",
+          "text": "mov eax, dword ptr [edi + 0x24]"
+        },
+        {
+          "address": "0040233c",
+          "hex": "c60000",
+          "text": "mov byte ptr [eax], 0"
+        },
+        {
+          "address": "0040233f",
+          "hex": "8b45e0",
+          "text": "mov eax, dword ptr [ebp - 0x20]"
+        },
+        {
+          "address": "00402342",
+          "hex": "ba901d0000",
+          "text": "mov edx, 0x1d90"
+        },
+        {
+          "address": "00402347",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "0040234a",
+          "hex": "8945d8",
+          "text": "mov dword ptr [ebp - 0x28], eax"
+        },
+        {
+          "address": "0040234d",
+          "hex": "837dd800",
+          "text": "cmp dword ptr [ebp - 0x28], 0"
+        },
+        {
+          "address": "00402351",
+          "hex": "0f85a7000000",
+          "text": "jne 0x4023fe"
+        },
+        {
+          "address": "00402357",
+          "hex": "8a838a1d0000",
+          "text": "mov al, byte ptr [ebx + 0x1d8a]"
+        },
+        {
+          "address": "0040235d",
+          "hex": "84c0",
+          "text": "test al, al"
+        },
+        {
+          "address": "0040235f",
+          "hex": "0f8599000000",
+          "text": "jne 0x4023fe"
+        },
+        {
+          "address": "00402365",
+          "hex": "8b4f04",
+          "text": "mov ecx, dword ptr [edi + 4]"
+        },
+        {
+          "address": "00402368",
+          "hex": "8b45e0",
+          "text": "mov eax, dword ptr [ebp - 0x20]"
+        },
+        {
+          "address": "0040236b",
+          "hex": "ba00000000",
+          "text": "mov edx, 0"
+        },
+        {
+          "address": "00402370",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "00402373",
+          "hex": "8945d8",
+          "text": "mov dword ptr [ebp - 0x28], eax"
+        },
+        {
+          "address": "00402376",
+          "hex": "817dd8a8f0d500",
+          "text": "cmp dword ptr [ebp - 0x28], 0xd5f0a8"
+        },
+        {
+          "address": "0040237d",
+          "hex": "0f85ef000000",
+          "text": "jne 0x402472"
+        },
+        {
+          "address": "00402383",
+          "hex": "8b4110",
+          "text": "mov eax, dword ptr [ecx + 0x10]"
+        },
+        {
+          "address": "00402386",
+          "hex": "8945d8",
+          "text": "mov dword ptr [ebp - 0x28], eax"
+        },
+        {
+          "address": "00402389",
+          "hex": "8b45d8",
+          "text": "mov eax, dword ptr [ebp - 0x28]"
+        },
+        {
+          "address": "0040238c",
+          "hex": "ba2c000000",
+          "text": "mov edx, 0x2c"
+        },
+        {
+          "address": "00402391",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "00402394",
+          "hex": "8945d4",
+          "text": "mov dword ptr [ebp - 0x2c], eax"
+        },
+        {
+          "address": "00402397",
+          "hex": "817dd420feb100",
+          "text": "cmp dword ptr [ebp - 0x2c], 0xb1fe20"
+        },
+        {
+          "address": "0040239e",
+          "hex": "0f85ce000000",
+          "text": "jne 0x402472"
+        },
+        {
+          "address": "004023a4",
+          "hex": "8bcb",
+          "text": "mov ecx, ebx"
+        },
+        {
+          "address": "004023a6",
+          "hex": "e8e5160000",
+          "text": "call 0x403a90",
+          "resolved_target": {
+            "name": "?native_render_is_frame_active_00b1fe20@bsp@@YIEPBX@Z",
+            "address": 4209296,
+            "object": "bsp_core:native_render_state_leaves.obj"
+          }
+        },
+        {
+          "address": "004023ab",
+          "hex": "84c0",
+          "text": "test al, al"
+        },
+        {
+          "address": "004023ad",
+          "hex": "754f",
+          "text": "jne 0x4023fe"
+        },
+        {
+          "address": "004023af",
+          "hex": "8b45e0",
+          "text": "mov eax, dword ptr [ebp - 0x20]"
+        },
+        {
+          "address": "004023b2",
+          "hex": "ba101a0000",
+          "text": "mov edx, 0x1a10"
+        },
+        {
+          "address": "004023b7",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "004023ba",
+          "hex": "8945d8",
+          "text": "mov dword ptr [ebp - 0x28], eax"
+        },
+        {
+          "address": "004023bd",
+          "hex": "8b4dd8",
+          "text": "mov ecx, dword ptr [ebp - 0x28]"
+        },
+        {
+          "address": "004023c0",
+          "hex": "894dd4",
+          "text": "mov dword ptr [ebp - 0x2c], ecx"
+        },
+        {
+          "address": "004023c3",
+          "hex": "8b45d4",
+          "text": "mov eax, dword ptr [ebp - 0x2c]"
+        },
+        {
+          "address": "004023c6",
+          "hex": "ba00000000",
+          "text": "mov edx, 0"
+        },
+        {
+          "address": "004023cb",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "004023ce",
+          "hex": "8945b8",
+          "text": "mov dword ptr [ebp - 0x48], eax"
+        },
+        {
+          "address": "004023d1",
+          "hex": "8b45b8",
+          "text": "mov eax, dword ptr [ebp - 0x48]"
+        },
+        {
+          "address": "004023d4",
+          "hex": "8945d4",
+          "text": "mov dword ptr [ebp - 0x2c], eax"
+        },
+        {
+          "address": "004023d7",
+          "hex": "8b45d4",
+          "text": "mov eax, dword ptr [ebp - 0x2c]"
+        },
+        {
+          "address": "004023da",
+          "hex": "ba44000000",
+          "text": "mov edx, 0x44"
+        },
+        {
+          "address": "004023df",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "004023e2",
+          "hex": "8945b8",
+          "text": "mov dword ptr [ebp - 0x48], eax"
+        },
+        {
+          "address": "004023e5",
+          "hex": "6a00",
+          "text": "push 0"
+        },
+        {
+          "address": "004023e7",
+          "hex": "6a00",
+          "text": "push 0"
+        },
+        {
+          "address": "004023e9",
+          "hex": "6a00",
+          "text": "push 0"
+        },
+        {
+          "address": "004023eb",
+          "hex": "6a00",
+          "text": "push 0"
+        },
+        {
+          "address": "004023ed",
+          "hex": "51",
+          "text": "push ecx"
+        },
+        {
+          "address": "004023ee",
+          "hex": "ff55b8",
+          "text": "call dword ptr [ebp - 0x48]"
+        },
+        {
+          "address": "004023f1",
+          "hex": "3d68087688",
+          "text": "cmp eax, 0x88760868"
+        },
+        {
+          "address": "004023f6",
+          "hex": "7506",
+          "text": "jne 0x4023fe"
+        },
+        {
+          "address": "004023f8",
+          "hex": "8b4728",
+          "text": "mov eax, dword ptr [edi + 0x28]"
+        },
+        {
+          "address": "004023fb",
+          "hex": "c60001",
+          "text": "mov byte ptr [eax], 1"
+        },
+        {
+          "address": "004023fe",
+          "hex": "8b472c",
+          "text": "mov eax, dword ptr [edi + 0x2c]"
+        },
+        {
+          "address": "00402401",
+          "hex": "8b00",
+          "text": "mov eax, dword ptr [eax]"
+        },
+        {
+          "address": "00402403",
+          "hex": "c7400800000000",
+          "text": "mov dword ptr [eax + 8], 0"
+        },
+        {
+          "address": "0040240a",
+          "hex": "8b45e0",
+          "text": "mov eax, dword ptr [ebp - 0x20]"
+        },
+        {
+          "address": "0040240d",
+          "hex": "ba14000000",
+          "text": "mov edx, 0x14"
+        },
+        {
+          "address": "00402412",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "00402415",
+          "hex": "8945d8",
+          "text": "mov dword ptr [ebp - 0x28], eax"
+        },
+        {
+          "address": "00402418",
+          "hex": "8b45d8",
+          "text": "mov eax, dword ptr [ebp - 0x28]"
+        },
+        {
+          "address": "0040241b",
+          "hex": "40",
+          "text": "inc eax"
+        },
+        {
+          "address": "0040241c",
+          "hex": "c645ac00",
+          "text": "mov byte ptr [ebp - 0x54], 0"
+        },
+        {
+          "address": "00402420",
+          "hex": "894314",
+          "text": "mov dword ptr [ebx + 0x14], eax"
+        },
+        {
+          "address": "00402423",
+          "hex": "8b5db4",
+          "text": "mov ebx, dword ptr [ebp - 0x4c]"
+        },
+        {
+          "address": "00402426",
+          "hex": "8a0b",
+          "text": "mov cl, byte ptr [ebx]"
+        },
+        {
+          "address": "00402428",
+          "hex": "8b4720",
+          "text": "mov eax, dword ptr [edi + 0x20]"
+        },
+        {
+          "address": "0040242b",
+          "hex": "c60000",
+          "text": "mov byte ptr [eax], 0"
+        },
+        {
+          "address": "0040242e",
+          "hex": "84c9",
+          "text": "test cl, cl"
+        },
+        {
+          "address": "00402430",
+          "hex": "7424",
+          "text": "je 0x402456"
+        },
+        {
+          "address": "00402432",
+          "hex": "8d45e8",
+          "text": "lea eax, [ebp - 0x18]"
+        },
+        {
+          "address": "00402435",
+          "hex": "8945d8",
+          "text": "mov dword ptr [ebp - 0x28], eax"
+        },
+        {
+          "address": "00402438",
+          "hex": "8b45d8",
+          "text": "mov eax, dword ptr [ebp - 0x28]"
+        },
+        {
+          "address": "0040243b",
+          "hex": "ba00000000",
+          "text": "mov edx, 0"
+        },
+        {
+          "address": "00402440",
+          "hex": "8b0410",
+          "text": "mov eax, dword ptr [eax + edx]"
+        },
+        {
+          "address": "00402443",
+          "hex": "8945d4",
+          "text": "mov dword ptr [ebp - 0x2c], eax"
+        },
+        {
+          "address": "00402446",
+          "hex": "8b45ec",
+          "text": "mov eax, dword ptr [ebp - 0x14]"
+        },
+        {
+          "address": "00402449",
+          "hex": "53",
+          "text": "push ebx"
+        },
+        {
+          "address": "0040244a",
+          "hex": "ff75d4",
+          "text": "push dword ptr [ebp - 0x2c]"
+        },
+        {
+          "address": "0040244d",
+          "hex": "50",
+          "text": "push eax"
+        },
+        {
+          "address": "0040244e",
+          "hex": "e86df8ffff",
+          "text": "call 0x401cc0",
+          "resolved_target": {
+            "name": "?leave_native_renderer_optional_guard_00b33b00@bsp@@YAXPBXIAAUNativeRendererSynchronizationGlobals@1@@Z",
+            "address": 4201664,
+            "object": "bsp_core:native_renderer_synchronization_actual.obj"
+          }
+        },
+        {
+          "address": "00402453",
+          "hex": "83c40c",
+          "text": "add esp, 0xc"
+        },
+        {
+          "address": "00402456",
+          "hex": "8b4df4",
+          "text": "mov ecx, dword ptr [ebp - 0xc]"
+        },
+        {
+          "address": "00402459",
+          "hex": "64890d00000000",
+          "text": "mov dword ptr fs:[0], ecx"
+        },
+        {
+          "address": "00402460",
+          "hex": "59",
+          "text": "pop ecx"
+        },
+        {
+          "address": "00402461",
+          "hex": "5f",
+          "text": "pop edi"
+        },
+        {
+          "address": "00402462",
+          "hex": "5e",
+          "text": "pop esi"
+        },
+        {
+          "address": "00402463",
+          "hex": "5b",
+          "text": "pop ebx"
+        },
+        {
+          "address": "00402464",
+          "hex": "8b4df0",
+          "text": "mov ecx, dword ptr [ebp - 0x10]"
+        },
+        {
+          "address": "00402467",
+          "hex": "33cd",
+          "text": "xor ecx, ebp"
+        },
+        {
+          "address": "00402469",
+          "hex": "e8d2fa0400",
+          "text": "call 0x451f40",
+          "resolved_target": {
+            "name": "@__security_check_cookie@4",
+            "address": 4529984,
+            "object": "MSVCRT:secchk.obj"
+          }
+        },
+        {
+          "address": "0040246e",
+          "hex": "8be5",
+          "text": "mov esp, ebp"
+        },
+        {
+          "address": "00402470",
+          "hex": "5d",
+          "text": "pop ebp"
+        },
+        {
+          "address": "00402471",
+          "hex": "c3",
+          "text": "ret "
+        },
+        {
+          "address": "00402472",
+          "hex": "68c0674500",
+          "text": "push 0x4567c0"
+        },
+        {
+          "address": "00402477",
+          "hex": "8d4dc8",
+          "text": "lea ecx, [ebp - 0x38]"
+        },
+        {
+          "address": "0040247a",
+          "hex": "e8d1f8ffff",
+          "text": "call 0x401d50",
+          "resolved_target": {
+            "name": "??0invalid_argument@std@@QAE@PBD@Z",
+            "address": 4201808,
+            "object": "i bsp_core:native_renderer_end_frame.obj"
+          }
+        },
+        {
+          "address": "0040247f",
+          "hex": "6848d14600",
+          "text": "push 0x46d148"
+        },
+        {
+          "address": "00402484",
+          "hex": "8d45c8",
+          "text": "lea eax, [ebp - 0x38]"
+        },
+        {
+          "address": "00402487",
+          "hex": "50",
+          "text": "push eax"
+        },
+        {
+          "address": "00402488",
+          "hex": "e85b0d0500",
+          "text": "call 0x4531e8",
+          "resolved_target": {
+            "name": "__CxxThrowException@8",
+            "address": 4534760,
+            "object": "vcruntime:VCRUNTIME140.dll"
+          }
+        },
+        {
+          "address": "0040248d",
+          "hex": "cc",
+          "text": "int3 "
+        },
+        {
+          "address": "0040248e",
+          "hex": "cc",
+          "text": "int3 "
+        },
+        {
+          "address": "0040248f",
+          "hex": "cc",
+          "text": "int3 "
+        }
+      ],
+      "direct_child_calls_in_native_order": [
+        {
+          "source": "draw_native_renderer_debug_records24_00b2bb90",
+          "callsite": "00402110",
+          "target": {
+            "name": "?draw_native_renderer_debug_records24_00b2bb90@bsp@@YIXPAXPAUNativeRendererDebugRecords24Context@1@PAUNativeRendererDebugRecords24Frame@1@@Z",
+            "address": 4211472,
+            "object": "bsp_core:native_renderer_debug_records24.obj"
+          }
+        },
+        {
+          "source": "draw_native_renderer_debug_lines_00b28d00",
+          "callsite": "00402159",
+          "target": {
+            "name": "?draw_native_renderer_debug_lines_00b28d00@bsp@@YIXPAXPBUNativeRendererDebugLinesContext@1@@Z",
+            "address": 4210256,
+            "object": "bsp_core:native_renderer_debug_lines.obj"
+          }
+        },
+        {
+          "source": "draw_native_renderer_debug_records40_00b2b580",
+          "callsite": "00402166",
+          "target": {
+            "name": "?draw_native_renderer_debug_records40_00b2b580@bsp@@YIXPAXPAUNativeRendererDebugRecords40Context@1@PAVNativeRendererDebugRecords40Frame@1@@Z",
+            "address": 4214384,
+            "object": "bsp_core:native_renderer_debug_records40.obj"
+          }
+        }
+      ],
+      "scope": "Compiled/link evidence only; fixture executes inactive parent and existing rewinds, not active child calls."
+    },
+    "direct_calls_checked": 27
+  },
+  "boundaries": [
+    "Active parent/debug consumers not reached by this fixture",
+    "Queue provider and full owner graph remain dependencies",
+    "No original FH3/SEH or hardwarefault execution",
+    "No loaded XLiveRender/application/visual/gameplay proof"
+  ],
+  "prior_component_reports": [
+    "reports/native_renderer_end_frame_main_r34.json",
+    "reports/native_renderer_debug_records24_main_r47.json",
+    "reports/native_renderer_debug_records40_main_r51.json"
+  ],
+  "archive": {
+    "path": "local/evidence-r55/end-frame-original-r55.zip",
+    "sha256": "54011725ac392daaa9a8f5108676f9da6cba3659ac1d7bb13f0ae08bd7e24f3f",
+    "manifest_sha256": "f6a13a43510e713f8229efd44f2316b3b81d48f537b2b411f1682ef38675c460",
+    "artifact_count": 5693,
+    "bytes": 349422983,
+    "all_entries_rehashed": true,
+    "scope": "Full current source/build compiler input/output closure and focused fixture/native/link evidence. No active-parent proof."
+  }
+}

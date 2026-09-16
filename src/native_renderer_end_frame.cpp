@@ -4,6 +4,8 @@
 #include "bsp/native_renderer_frame_statistics.hpp"
 #include "bsp/native_occlusion_query_poll.hpp"
 #include "bsp/native_renderer_debug_lines.hpp"
+#include "bsp/native_renderer_debug_records24.hpp"
+#include "bsp/native_renderer_debug_records40.hpp"
 #include "bsp/xlive_library.hpp"
 
 #define WIN32_LEAN_AND_MEAN
@@ -167,10 +169,12 @@ void end_native_renderer_frame_00b2d8e0(void* renderer, const void* save_header,
         renderer_slot(renderer, 0x110, 0x00b23c50u, c.actual_bindings);
         capture_native_renderer_surface_save_00b23c50(renderer, &c.actual_surface_save, save_header);
     }
-    c.remaining.render_00b2bb90(renderer);
+    draw_native_renderer_debug_records24_00b2bb90(renderer,
+        c.actual_debug_records24, c.actual_debug_records24_frame);
     renderer_slot(renderer, 0xc4, 0x00b28d00u, c.actual_bindings);
     draw_native_renderer_debug_lines_00b28d00(renderer, c.actual_debug_lines);
-    c.remaining.render_00b2b580(renderer);
+    draw_native_renderer_debug_records40_00b2b580(renderer,
+        c.actual_debug_records40, c.actual_debug_records40_frame);
     static constexpr Word states[][2] = {
         {0x1a, 0}, {0x1a, 0}, {0x1c, 0}, {7, 0}, {0x0e, 0}, {0x17, 2},
         {0x34, 0}, {0x0f, 0}, {0x1b, 0}, {0x16, 3}, {0x1d, 0}, {8, 3},

@@ -38,17 +38,19 @@ void __fastcall rewind_native_logical_index_00b48dd0(void*) noexcept;
 void rewind_native_physical_vertex_00b232b0(void*, NativePhysicalBufferRewindContext&);
 void rewind_native_physical_index_00b231c0(void*, NativePhysicalBufferRewindContext&);
 
-// These bodies are not yet available for the actual owner graph. A production
-// adapter must execute them substantively, including current callback dispatch.
+// Queue execution is not yet available for the actual owner graph. A production
+// adapter must execute it substantively, including current callback dispatch.
 // There are intentionally no default implementations or success fallbacks.
 struct NativeRendererEndFrameRemaining {
     virtual ~NativeRendererEndFrameRemaining() = default;
     virtual void execute_queue_00b1ebe0(NativeRenderCommandQueueStorage&) = 0;
-    virtual void render_00b2bb90(void* actual_renderer) = 0;
-    virtual void render_00b2b580(void* actual_renderer) = 0;
 };
 
 struct NativeRendererDebugLinesContext;
+struct NativeRendererDebugRecords24Context;
+struct NativeRendererDebugRecords24Frame;
+struct NativeRendererDebugRecords40Context;
+class NativeRendererDebugRecords40Frame;
 
 struct NativeRendererEndFrameContext {
     NativeRenderBatchPreparationContext& actual_queue_getter;
@@ -70,6 +72,16 @@ struct NativeRendererEndFrameContext {
     // synchronization, vertex/index and profile domains. May be null only when
     // B28D00 observes an empty current +1D04 header and returns before use.
     const NativeRendererDebugLinesContext* actual_debug_lines;
+    // Direct B2BB90/B2B580 providers borrow the SAME actual renderer/model/
+    // geometry/name/device/cache/camera domains as the other frame providers.
+    // Each pair may be null only when its child's initial current count is zero.
+    // Nonempty children require their existing prepared persistent frames; those
+    // frames and all admitted domains outlive this call, including failures.
+    // End-frame does not prepare, replay, retire or roll back either child frame.
+    NativeRendererDebugRecords24Context* actual_debug_records24{};
+    NativeRendererDebugRecords24Frame* actual_debug_records24_frame{};
+    NativeRendererDebugRecords40Context* actual_debug_records40{};
+    NativeRendererDebugRecords40Frame* actual_debug_records40_frame{};
 };
 
 // Complete B2D8E0 call schedule through B2DBCC, with the required frontier above.
