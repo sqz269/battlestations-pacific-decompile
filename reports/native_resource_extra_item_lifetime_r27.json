@@ -118,10 +118,22 @@
     "failure": "a reached known profile with a changed current terminal throws; no fake successful release"
   },
   "old_ghidra_metadata": [
-    {"address": "00b8a680", "name": "FUN_00b8a680"},
-    {"address": "00b8a760", "name": "CG_scalar_deleting_dtor_00b8a760"},
-    {"address": "00b8a8a0", "name": "FUN_00b8a8a0"},
-    {"address": "00b8af10", "name": "CG_scalar_deleting_dtor_00b8af10"}
+    {
+      "address": "00b8a680",
+      "name": "FUN_00b8a680"
+    },
+    {
+      "address": "00b8a760",
+      "name": "CG_scalar_deleting_dtor_00b8a760"
+    },
+    {
+      "address": "00b8a8a0",
+      "name": "FUN_00b8a8a0"
+    },
+    {
+      "address": "00b8af10",
+      "name": "CG_scalar_deleting_dtor_00b8af10"
+    }
   ],
   "proposed_annotations": [
     {
@@ -157,34 +169,204 @@
     "live_aggregate_sha256": "965dd7b49f6d04339d7c1e0e6877eef34a93f95837536eab222413c8adb73643",
     "disk_aggregate_sha256": "965dd7b49f6d04339d7c1e0e6877eef34a93f95837536eab222413c8adb73643",
     "ranges": [
-      {"address": "00b8a680", "length": 161, "end_exclusive": "00b8a721", "kind": "complete_body", "file_offset": 7906944, "live_sha256": "d13ed82d599d3594da29586086912a396580774de6e3974e43b70f9a2b98f9e5", "disk_sha256": "d13ed82d599d3594da29586086912a396580774de6e3974e43b70f9a2b98f9e5", "matches_disk": true},
-      {"address": "00b8a760", "length": 30, "end_exclusive": "00b8a77e", "kind": "complete_physical_body", "file_offset": 7907168, "live_sha256": "4e97858b8789a8b17fdfbd581c9d784f6e0b6c5879896f557e0b2f1ee97dc099", "disk_sha256": "4e97858b8789a8b17fdfbd581c9d784f6e0b6c5879896f557e0b2f1ee97dc099", "matches_disk": true},
-      {"address": "00b8a8a0", "length": 97, "end_exclusive": "00b8a901", "kind": "complete_body", "file_offset": 7907488, "live_sha256": "e7b3f8d13c773c60cc0811e95c759ade906587e8dc5edfba73dd3590c4406aba", "disk_sha256": "e7b3f8d13c773c60cc0811e95c759ade906587e8dc5edfba73dd3590c4406aba", "matches_disk": true},
-      {"address": "00b8af10", "length": 30, "end_exclusive": "00b8af2e", "kind": "complete_physical_body", "file_offset": 7909136, "live_sha256": "828b09835da557b5a9ed96fae6afb216d8a3b0f599f6b5cf6c2c2c05951ed507", "disk_sha256": "828b09835da557b5a9ed96fae6afb216d8a3b0f599f6b5cf6c2c2c05951ed507", "matches_disk": true},
-      {"address": "00cc2830", "length": 29, "end_exclusive": "00cc284d", "kind": "unwind_funclets_and_handler", "file_offset": 9185328, "live_sha256": "323f43ac5458921e993ee1ff037d199ca6f7ab9cd88e540ddaf2d496ab4ee766", "disk_sha256": "323f43ac5458921e993ee1ff037d199ca6f7ab9cd88e540ddaf2d496ab4ee766", "matches_disk": true},
-      {"address": "00cc2870", "length": 18, "end_exclusive": "00cc2882", "kind": "unwind_funclet_and_handler", "file_offset": 9185392, "live_sha256": "6b521e86c4177153772e9f877d9205dfdd1780ff06cfce845dc632b15ba34d41", "disk_sha256": "6b521e86c4177153772e9f877d9205dfdd1780ff06cfce845dc632b15ba34d41", "matches_disk": true},
-      {"address": "00dfbdf0", "length": 52, "end_exclusive": "00dfbe24", "kind": "unwind_map_and_funcinfo", "file_offset": 10468848, "live_sha256": "8695731f5aa34054ef1081b9a25bf750804557a4b63eae228c6e95b5b03709a8", "disk_sha256": "8695731f5aa34054ef1081b9a25bf750804557a4b63eae228c6e95b5b03709a8", "matches_disk": true},
-      {"address": "00dfbe58", "length": 44, "end_exclusive": "00dfbe84", "kind": "unwind_map_and_funcinfo", "file_offset": 10468952, "live_sha256": "42e3fd38519cc85aea2f24167c554e1279b4e9008c7dfd1ac2dd56e4e4abb066", "disk_sha256": "42e3fd38519cc85aea2f24167c554e1279b4e9008c7dfd1ac2dd56e4e4abb066", "matches_disk": true},
-      {"address": "00d6328c", "length": 8, "end_exclusive": "00d63294", "kind": "current_slot00_slot04", "file_offset": 9843340, "live_sha256": "232d1688a1fbe29022a45ca460f8a5fdd676859d427acd41c92f345a3080f51f", "disk_sha256": "232d1688a1fbe29022a45ca460f8a5fdd676859d427acd41c92f345a3080f51f", "matches_disk": true},
-      {"address": "00d632b8", "length": 8, "end_exclusive": "00d632c0", "kind": "current_slot00_slot04", "file_offset": 9843384, "live_sha256": "7d1f292357f31617e63d6f42412ffc7eece447a6f1baf2528285289719aecb0c", "disk_sha256": "7d1f292357f31617e63d6f42412ffc7eece447a6f1baf2528285289719aecb0c", "matches_disk": true},
-      {"address": "00d62ed4", "length": 8, "end_exclusive": "00d62edc", "kind": "required_current_slot00_slot04", "file_offset": 9842388, "live_sha256": "db0b5fc2d2242d26389cf402cbc0910438aeaebb9e6d9a4a1881c732cbd6bf9d", "disk_sha256": "db0b5fc2d2242d26389cf402cbc0910438aeaebb9e6d9a4a1881c732cbd6bf9d", "matches_disk": true}
+      {
+        "address": "00b8a680",
+        "length": 161,
+        "end_exclusive": "00b8a721",
+        "kind": "complete_body",
+        "file_offset": 7906944,
+        "live_sha256": "d13ed82d599d3594da29586086912a396580774de6e3974e43b70f9a2b98f9e5",
+        "disk_sha256": "d13ed82d599d3594da29586086912a396580774de6e3974e43b70f9a2b98f9e5",
+        "matches_disk": true
+      },
+      {
+        "address": "00b8a760",
+        "length": 30,
+        "end_exclusive": "00b8a77e",
+        "kind": "complete_physical_body",
+        "file_offset": 7907168,
+        "live_sha256": "4e97858b8789a8b17fdfbd581c9d784f6e0b6c5879896f557e0b2f1ee97dc099",
+        "disk_sha256": "4e97858b8789a8b17fdfbd581c9d784f6e0b6c5879896f557e0b2f1ee97dc099",
+        "matches_disk": true
+      },
+      {
+        "address": "00b8a8a0",
+        "length": 97,
+        "end_exclusive": "00b8a901",
+        "kind": "complete_body",
+        "file_offset": 7907488,
+        "live_sha256": "e7b3f8d13c773c60cc0811e95c759ade906587e8dc5edfba73dd3590c4406aba",
+        "disk_sha256": "e7b3f8d13c773c60cc0811e95c759ade906587e8dc5edfba73dd3590c4406aba",
+        "matches_disk": true
+      },
+      {
+        "address": "00b8af10",
+        "length": 30,
+        "end_exclusive": "00b8af2e",
+        "kind": "complete_physical_body",
+        "file_offset": 7909136,
+        "live_sha256": "828b09835da557b5a9ed96fae6afb216d8a3b0f599f6b5cf6c2c2c05951ed507",
+        "disk_sha256": "828b09835da557b5a9ed96fae6afb216d8a3b0f599f6b5cf6c2c2c05951ed507",
+        "matches_disk": true
+      },
+      {
+        "address": "00cc2830",
+        "length": 29,
+        "end_exclusive": "00cc284d",
+        "kind": "unwind_funclets_and_handler",
+        "file_offset": 9185328,
+        "live_sha256": "323f43ac5458921e993ee1ff037d199ca6f7ab9cd88e540ddaf2d496ab4ee766",
+        "disk_sha256": "323f43ac5458921e993ee1ff037d199ca6f7ab9cd88e540ddaf2d496ab4ee766",
+        "matches_disk": true
+      },
+      {
+        "address": "00cc2870",
+        "length": 18,
+        "end_exclusive": "00cc2882",
+        "kind": "unwind_funclet_and_handler",
+        "file_offset": 9185392,
+        "live_sha256": "6b521e86c4177153772e9f877d9205dfdd1780ff06cfce845dc632b15ba34d41",
+        "disk_sha256": "6b521e86c4177153772e9f877d9205dfdd1780ff06cfce845dc632b15ba34d41",
+        "matches_disk": true
+      },
+      {
+        "address": "00dfbdf0",
+        "length": 52,
+        "end_exclusive": "00dfbe24",
+        "kind": "unwind_map_and_funcinfo",
+        "file_offset": 10468848,
+        "live_sha256": "8695731f5aa34054ef1081b9a25bf750804557a4b63eae228c6e95b5b03709a8",
+        "disk_sha256": "8695731f5aa34054ef1081b9a25bf750804557a4b63eae228c6e95b5b03709a8",
+        "matches_disk": true
+      },
+      {
+        "address": "00dfbe58",
+        "length": 44,
+        "end_exclusive": "00dfbe84",
+        "kind": "unwind_map_and_funcinfo",
+        "file_offset": 10468952,
+        "live_sha256": "42e3fd38519cc85aea2f24167c554e1279b4e9008c7dfd1ac2dd56e4e4abb066",
+        "disk_sha256": "42e3fd38519cc85aea2f24167c554e1279b4e9008c7dfd1ac2dd56e4e4abb066",
+        "matches_disk": true
+      },
+      {
+        "address": "00d6328c",
+        "length": 8,
+        "end_exclusive": "00d63294",
+        "kind": "current_slot00_slot04",
+        "file_offset": 9843340,
+        "live_sha256": "232d1688a1fbe29022a45ca460f8a5fdd676859d427acd41c92f345a3080f51f",
+        "disk_sha256": "232d1688a1fbe29022a45ca460f8a5fdd676859d427acd41c92f345a3080f51f",
+        "matches_disk": true
+      },
+      {
+        "address": "00d632b8",
+        "length": 8,
+        "end_exclusive": "00d632c0",
+        "kind": "current_slot00_slot04",
+        "file_offset": 9843384,
+        "live_sha256": "7d1f292357f31617e63d6f42412ffc7eece447a6f1baf2528285289719aecb0c",
+        "disk_sha256": "7d1f292357f31617e63d6f42412ffc7eece447a6f1baf2528285289719aecb0c",
+        "matches_disk": true
+      },
+      {
+        "address": "00d62ed4",
+        "length": 8,
+        "end_exclusive": "00d62edc",
+        "kind": "required_current_slot00_slot04",
+        "file_offset": 9842388,
+        "live_sha256": "db0b5fc2d2242d26389cf402cbc0910438aeaebb9e6d9a4a1881c732cbd6bf9d",
+        "disk_sha256": "db0b5fc2d2242d26389cf402cbc0910438aeaebb9e6d9a4a1881c732cbd6bf9d",
+        "matches_disk": true
+      }
     ]
   },
   "call_rows": [
-    {"address": "00b8a6ca", "native": "00d62ed4+vtable04", "function": "00b8a680", "kind": "indirect_call", "observed_current_target": "00b78d00"},
-    {"address": "00b8a6f1", "native": "00b77530", "function": "00b8a680", "kind": "direct_call"},
-    {"address": "00b8a6f9", "native": "00bf6989", "function": "00b8a680", "kind": "direct_call"},
-    {"address": "00b8a70b", "native": "00b86890", "function": "00b8a680", "kind": "direct_call"},
-    {"address": "00b8a763", "native": "00b8a680", "function": "00b8a760", "kind": "direct_call"},
-    {"address": "00b8a770", "native": "00bf65ac", "function": "00b8a760", "kind": "direct_call"},
-    {"address": "00b8a8d6", "native": "00419cc0", "function": "00b8a8a0", "kind": "direct_call"},
-    {"address": "00b8a8dd", "native": "00bd1510", "function": "00b8a8a0", "kind": "direct_call"},
-    {"address": "00b8a8ec", "native": "00b86890", "function": "00b8a8a0", "kind": "direct_call"},
-    {"address": "00b8af13", "native": "00b8a8a0", "function": "00b8af10", "kind": "direct_call"},
-    {"address": "00b8af20", "native": "00bf65ac", "function": "00b8af10", "kind": "direct_call"},
-    {"address": "00cc2833", "native": "00b86890", "function": "00cc2830", "kind": "tail_jump"},
-    {"address": "00cc283e", "native": "00b77a60", "function": "00cc2838", "kind": "tail_jump"},
-    {"address": "00cc2873", "native": "00b86890", "function": "00cc2870", "kind": "tail_jump"}
+    {
+      "address": "00b8a6ca",
+      "native": "00d62ed4+vtable04",
+      "function": "00b8a680",
+      "kind": "indirect_call",
+      "observed_current_target": "00b78d00"
+    },
+    {
+      "address": "00b8a6f1",
+      "native": "00b77530",
+      "function": "00b8a680",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b8a6f9",
+      "native": "00bf6989",
+      "function": "00b8a680",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b8a70b",
+      "native": "00b86890",
+      "function": "00b8a680",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b8a763",
+      "native": "00b8a680",
+      "function": "00b8a760",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b8a770",
+      "native": "00bf65ac",
+      "function": "00b8a760",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b8a8d6",
+      "native": "00419cc0",
+      "function": "00b8a8a0",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b8a8dd",
+      "native": "00bd1510",
+      "function": "00b8a8a0",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b8a8ec",
+      "native": "00b86890",
+      "function": "00b8a8a0",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b8af13",
+      "native": "00b8a8a0",
+      "function": "00b8af10",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00b8af20",
+      "native": "00bf65ac",
+      "function": "00b8af10",
+      "kind": "direct_call"
+    },
+    {
+      "address": "00cc2833",
+      "native": "00b86890",
+      "function": "00cc2830",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc283e",
+      "native": "00b77a60",
+      "function": "00cc2838",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc2873",
+      "native": "00b86890",
+      "function": "00cc2870",
+      "kind": "tail_jump"
+    }
   ],
   "validation": {
     "verify_seeds": "passed: 8/8 matched original PE",
@@ -204,5 +386,132 @@
     "The new C++ interfaces are not drop-in binary replacements for the original callable ABI.",
     "Original FH3/SEH transport, hardware-fault behavior, CRT exception identity, executable admission, runtime wiring and gameplay remain unvalidated.",
     "Build, fixture, byte and call-row parity do not establish gameplay parity."
-  ]
+  ],
+  "integration_validation": {
+    "commit": "e47c48361",
+    "strict_build_and_ctests": "Combined strict Win32 build and 3/3 CTests passed.",
+    "log": "local/r27_extra_item_integration.log"
+  },
+  "integration_archive": {
+    "path": "local/evidence-r28/extra-item-lifetime-r27.zip",
+    "sha256": "6a43303d832aba512b0f2aee390b3fba4477ae1638005ae22539bb49080df74c",
+    "worker_commit": "a046521da",
+    "files": [
+      {
+        "path": "local/native_resource_extra_item_lifetime_probe.cpp",
+        "sha256": "565234fb83828edf7fd1947bbc20fe13e3dcd9fbe57db584beec6f14bb66dc86"
+      },
+      {
+        "path": "local/native_resource_extra_item_lifetime_probe.exe",
+        "sha256": "ecb22e9f496537a2d8f352688f6f72c8d0860ab87899560f713bcba2b6da97c3"
+      },
+      {
+        "path": "local/extra_item_lifetime_receipt.py",
+        "sha256": "4a557298ff85f62f8e14ef7cb8ef63218cdfdadae0c90de20fc82bd483a68003"
+      },
+      {
+        "path": "local/extra_item_instruction_context.json",
+        "sha256": "27a98576cd8c58e33076ca7e2f5fa5e6333f3bfe1b518aa4ae236ade4799d84d"
+      },
+      {
+        "path": "local/extra_item_lifetime_parent_probe.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "reports/native_resource_extra_item_lifetime_r27.json",
+        "sha256": "bd3ba0e5adceadde91c4cd7c100abd1190929f3fae0fd4ad8131341d30064aee"
+      },
+      {
+        "path": "include/bsp/native_resource_extra_item_lifetime.hpp",
+        "sha256": "4fe14172b7ac65db27de7402f89ee42e4ecc79782a322f875f9194f5cbfe33ad"
+      },
+      {
+        "path": "src/native_resource_extra_item_lifetime.cpp",
+        "sha256": "f78fd8b4045fc50aad404769dff7b5883e1e24fdc4e30f3655429bf3f5895ebb"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "ce04dfcd96f5d10918d501be3479bc93b91b6a858cc8b81958dde8edcf64e34e"
+      },
+      {
+        "path": "integration/ghidra-annotations-20260916T084007Z.json",
+        "sha256": "5504f83539a95ecb6700fb9a24a452f56da6816a328314a88f2465f0ab52f5d9"
+      },
+      {
+        "path": "integration/r27_extra_item_integration.log",
+        "sha256": "bd604654d293bb9a94d6056155097255878fc0c459a6decae8d20e9407444c87"
+      },
+      {
+        "path": "integration/r28_extra_item_annotations.log",
+        "sha256": "9bea30ea1c32ea566d30b80949e8b65cba2bedd2d7ae7089d745520532e2331d"
+      },
+      {
+        "path": "integration/r28_extra_item_exports.log",
+        "sha256": "c19bb543c4c020f9f35b72499c444ce9255c3bed92b3569e5d4701600ec97574"
+      },
+      {
+        "path": "integration/r28_integrated_call_rows.log",
+        "sha256": "65e7b33ca64512824677c275eeddb267bc1301254e56f533bb1feba4cb26277d"
+      }
+    ],
+    "probe_provenance": "Worker confirmed probe rebuilt after ordered-load fix, before commit 0428157d9; parent matched worker-provided SHA256 and reran executable with exit 0 (no stdout). No separate probe build log was preserved."
+  },
+  "integration_ghidra": {
+    "status": "Four names and appended evidence comments applied under shared write lock; prior values archived; project saved; all four exports refreshed.",
+    "prior_annotations": [
+      {
+        "address": "00b8a680",
+        "before": {
+          "address": "00b8a680",
+          "function_name": "FUN_00b8a680"
+        },
+        "after": {
+          "address": "00b8a680",
+          "name": "BSP_AnimationChannelsItem_Destroy",
+          "evidence": "[BSP reconstruction 00B8A680] Complete161-byte AnimationChannels item destructor. Native ECX actual14h/RET. StampD6328C; reverse-delete nonnull current group cells through current slot04 flags1 without a refcount decrement; clear captured cell only after success; decrement reloaded count; resize0/free current vector data; destroy base. FH3 state1 destroys vector then base; state0 destroys base. Source requires actual D62ED4/B78D00 group deletion. Descriptive name is a hypothesis; no native ABI/FH3/SEH or gameplay validation. reports/native_resource_extra_item_lifetime_r27.json; 485 live/PE bytes, 13 direct/tail call rows, strict combined Win32 build and 3/3 CTests passed. Ignored genuine-storage cleanup/failure fixture; source services only."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b8a760",
+        "before": {
+          "address": "00b8a760",
+          "function_name": "CG_scalar_deleting_dtor_00b8a760"
+        },
+        "after": {
+          "address": "00b8a760",
+          "name": "BSP_AnimationChannelsItem_ScalarDeletingDestructor",
+          "evidence": "[BSP reconstruction 00B8A760] Complete30-byte scalar deletion wrapper. ECX item, stacked flags, EAX original item, RET4. Run B8A680 fully; then flags low-byte bit0 optionally frees through BF65AC. Restored ADD ESP,4 at00B8A775. No outer free after destructor failure. Descriptive name is a hypothesis; no native ABI/gameplay validation. reports/native_resource_extra_item_lifetime_r27.json; 485 live/PE bytes, 13 direct/tail call rows, strict combined Win32 build and 3/3 CTests passed. Ignored genuine-storage cleanup/failure fixture; source services only."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b8a8a0",
+        "before": {
+          "address": "00b8a8a0",
+          "function_name": "FUN_00b8a8a0"
+        },
+        "after": {
+          "address": "00b8a8a0",
+          "name": "BSP_BoneItem_Destroy",
+          "evidence": "[BSP reconstruction 00B8A8A0] Complete97-byte Bone item destructor. Native ECX actual2Ch/RET. Nonnull +0C data is returned through actual00419CC0/BD1510 with wrapping +08+1 size; header stays unchanged; normal and exceptional paths destroy the resource-item base. No initial D632B8 restamp. Descriptive name is a hypothesis; no native ABI/FH3/SEH or gameplay validation. reports/native_resource_extra_item_lifetime_r27.json; 485 live/PE bytes, 13 direct/tail call rows, strict combined Win32 build and 3/3 CTests passed. Ignored genuine-storage cleanup/failure fixture; source services only."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b8af10",
+        "before": {
+          "address": "00b8af10",
+          "function_name": "CG_scalar_deleting_dtor_00b8af10"
+        },
+        "after": {
+          "address": "00b8af10",
+          "name": "BSP_BoneItem_ScalarDeletingDestructor",
+          "evidence": "[BSP reconstruction 00B8AF10] Complete30-byte scalar deletion wrapper. ECX item, stacked flags, EAX original item, RET4. Run B8A8A0 fully; then flags low-byte bit0 optionally frees through BF65AC. Restored ADD ESP,4 at00B8AF25. No outer free after destructor failure. Descriptive name is a hypothesis; no native ABI/gameplay validation. reports/native_resource_extra_item_lifetime_r27.json; 485 live/PE bytes, 13 direct/tail call rows, strict combined Win32 build and 3/3 CTests passed. Ignored genuine-storage cleanup/failure fixture; source services only."
+        },
+        "status": "applied"
+      }
+    ],
+    "direct_tail_call_rows": "13 checked, 0 failed; explicit indirect row retained separately."
+  }
 }
