@@ -76,3 +76,38 @@ No production path activates the cache in this packet.
 
 Machine-readable receipts and artifact hashes are in
 `reports/native_render_entry_cache_main_r49.json`.
+
+## Supplemental full closure
+
+Review of the first 80-member evidence ZIP found that it did not contain the
+complete current compiler/read-input closure, and its module trace reported
+WOW64 virtual `System32` names. That ZIP remains immutable at SHA-256
+`395e0bea83c1dc693f0ff83028f16eb7c8b56ffabe825f7702c4c0f50df8d66e`.
+
+The superseding supplement freezes 5,311 artifacts: configured projects,
+translation units, compiler read inputs and tracking logs, compiled objects,
+libraries and executables, fixture source dependencies and linker inputs,
+build commands, toolchain binaries, and the physical bytes of every module
+loaded by the focused fixture. The supplement ZIP SHA-256 is
+`9bfbe81050de1f109288943ef13f1fb28886fd054588e77ccd4a79883a54b16e`;
+its manifest SHA-256 is
+`86cf84cc885f6563366e1d2d0c60ba8415e79c5dd6f03cf8f6dd51e38db38e29`.
+
+The probe opens each loaded module from inside the same 32-bit process, obtains
+its final path with `GetFinalPathNameByHandleW`, maps that resolved file, and
+requires both the loaded image and disk image to be I386. This resolves the
+system modules to their physical `C:/Windows/SysWOW64` files. All seven loaded
+modules and their exact hashes are recorded in the supplemental manifest.
+
+The validated core library was not rebuilt for this correction. Its preserved
+SHA-256 is
+`61f49c102b6375cd5cce2fe9f2658601cd55b4d3f16bf1bf8062c3c600dec370`.
+The focused probe was recompiled, relinked against that library, and rerun with
+an embedded manifest. The configured `bsp_core` Release build and the focused
+probe translation unit independently show `/MD /W4 /WX /fp:strict`; the report
+keeps those two flag receipts separate.
+
+The execution boundary is unchanged: the probe executes only the relocated
+original 39-byte `00BEBF00` leaf as original code. Manager publication,
+registration, cache construction, resizing, stale-pointer behavior, and
+teardown execute reconstructed source.

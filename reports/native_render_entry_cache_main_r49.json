@@ -1,5 +1,5 @@
 {
-  "status": "reviewed_historical_source_adopted_build_tested_focused_component_fixture",
+  "status": "reviewed_historical_source_adopted_build_tested_focused_fixture_full_closure_archived",
   "created_utc": "2026-09-16T13:56:43.303798+00:00",
   "packet": "native_render_entry_cache_main_r49",
   "source_commit": "a7fae4cf830d3f7986cb6dbc3511f665056c7d83",
@@ -536,20 +536,21 @@
         "explicit derived scalar destruction releases section, unregisters, clears FE88 and frees owner"
       ],
       "loaded_modules": [
-        "MODULE machine=014C size=00043000 J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-texture-pool-process-r27\\local\\native-render-entry-cache-main-r49\\native_render_entry_cache_r49_library_probe.exe",
-        "MODULE machine=014C size=001BF000 C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
-        "MODULE machine=014C size=000F0000 C:\\WINDOWS\\System32\\KERNEL32.DLL",
-        "MODULE machine=014C size=002DA000 C:\\WINDOWS\\System32\\KERNELBASE.dll",
-        "MODULE machine=014C size=00110000 C:\\WINDOWS\\System32\\ucrtbase.dll",
-        "MODULE machine=014C size=00096000 C:\\WINDOWS\\SYSTEM32\\MSVCP140.dll",
-        "MODULE machine=014C size=0001D000 C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll"
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-texture-pool-process-r27\\local\\native-render-entry-cache-main-r49\\native_render_entry_cache_r49_library_probe.exe",
+        "C:\\Windows\\SysWOW64\\ntdll.dll",
+        "C:\\Windows\\SysWOW64\\kernel32.dll",
+        "C:\\Windows\\SysWOW64\\KernelBase.dll",
+        "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "C:\\Windows\\SysWOW64\\msvcp140.dll",
+        "C:\\Windows\\SysWOW64\\vcruntime140.dll"
       ],
       "all_loaded_modules_report_i386": true,
       "trace": {
         "path": "local/native-render-entry-cache-main-r49/library_probe_trace.txt",
         "bytes": 946,
         "sha256": "53d17de0d0423c641ba4489a98b6ca3d0dc60d3a8facfb19cbb764dcbd000bf5"
-      }
+      },
+      "module_path_receipt": "Superseded by supplemental_full_closure.focused_fixture: physical final paths and disk hashes."
     }
   },
   "evidence_archive": {
@@ -570,5 +571,199 @@
     "No failure injection, successful overflow allocation or concurrent mutation was tested.",
     "No full BECEE0/window/device/renderer/application activation, active frame, draw, shutdown ordering or gameplay is claimed.",
     "No production singleton owner or current-publication binding is added by R49."
-  ]
+  ],
+  "supplemental_full_closure": {
+    "path": "local/evidence-r49/native-render-entry-cache-main-r49-supplement.zip",
+    "sha256": "9bfbe81050de1f109288943ef13f1fb28886fd054588e77ccd4a79883a54b16e",
+    "bytes": 127891269,
+    "manifest_sha256": "86cf84cc885f6563366e1d2d0c60ba8415e79c5dd6f03cf8f6dd51e38db38e29",
+    "artifacts": 5311,
+    "artifact_bytes": 399722182,
+    "actually_loaded_modules": 7,
+    "all_members_rehashed": true,
+    "prior_archive_sha256": "395e0bea83c1dc693f0ff83028f16eb7c8b56ffabe825f7702c4c0f50df8d66e",
+    "bsp_core_sha256": "61f49c102b6375cd5cce2fe9f2658601cd55b4d3f16bf1bf8062c3c600dec370",
+    "manifest": {
+      "path": "local/evidence-r49/native-render-entry-cache-main-r49-supplement/manifest.json",
+      "bytes": 2225835,
+      "sha256": "86cf84cc885f6563366e1d2d0c60ba8415e79c5dd6f03cf8f6dd51e38db38e29"
+    },
+    "supplements_prior_archive_without_mutating_it": true,
+    "closure": {
+      "configured_projects": [
+        "bsp_core",
+        "bsp_game",
+        "bsp_lua511",
+        "bsp_zlib121",
+        "bsp_math_tests",
+        "bsp_native_math_tests"
+      ],
+      "translation_units_and_compiler_read_inputs": true,
+      "build_tracking_and_command_logs": true,
+      "compiled_objects_and_link_products": true,
+      "fixture_source_dependencies_and_linker_inputs": true,
+      "compiler_linker_build_test_tools": true,
+      "physically_resolved_loaded_module_bytes": true
+    },
+    "build_flag_evidence": {
+      "global_bsp_core_release": [
+        "/MD",
+        "/W4",
+        "/WX",
+        "/fp:strict"
+      ],
+      "focused_fixture_translation_unit": [
+        "/MD",
+        "/W4",
+        "/WX",
+        "/fp:strict"
+      ],
+      "relationship": "independently evidenced and equal for these four flags"
+    },
+    "focused_fixture": {
+      "linked_bsp_core_sha256": "61f49c102b6375cd5cce2fe9f2658601cd55b4d3f16bf1bf8062c3c600dec370",
+      "core_rebuilt_for_supplement": false,
+      "manifest_embedded": true,
+      "artifacts": [
+        {
+          "path": "local/native-render-entry-cache-main-r49/native_render_entry_cache_r49_probe.cpp",
+          "bytes": 11894,
+          "sha256": "6305c55396b3a9855c05a0e407939dcd2b0f11013a839318f4cf459de79afe25"
+        },
+        {
+          "path": "local/native-render-entry-cache-main-r49/build_probe_from_library.cmd",
+          "bytes": 1714,
+          "sha256": "f7d769ccd3a03ef00c9d40fecba48b2c7373dcb323a40ec3d56ec85b6c2ce37c"
+        },
+        {
+          "path": "local/native-render-entry-cache-main-r49/library_probe_dependencies.json",
+          "bytes": 28428,
+          "sha256": "babe4a0f8ce35cbe1a7e90545aed7d92899f3b43138cd6b74966ae5346cb90b2"
+        },
+        {
+          "path": "local/native-render-entry-cache-main-r49/library_probe_compile.log",
+          "bytes": 29011,
+          "sha256": "6f35303606c8e032ea9745458c4f125b880371954be819fc1d6013587d6b4534"
+        },
+        {
+          "path": "local/native-render-entry-cache-main-r49/library_link.log",
+          "bytes": 14391,
+          "sha256": "43aede512598ca5a3808ba43b3ca0b421bea2f70b73fcc5b825e28d38410e809"
+        },
+        {
+          "path": "local/native-render-entry-cache-main-r49/library_probe_trace.txt",
+          "bytes": 1719,
+          "sha256": "bf8483c63c9cb570efa3576e3189a509ffba7146d5408c08c9dae2f8f0bc727e"
+        },
+        {
+          "path": "local/native-render-entry-cache-main-r49/library_i386_headers.txt",
+          "bytes": 349680,
+          "sha256": "32e9bf5b6c398ed9b4abdc9f1eee17b7fba7eb0d298550c240b9c88cf7946632"
+        },
+        {
+          "path": "local/native-render-entry-cache-main-r49/library_dependents.txt",
+          "bytes": 831,
+          "sha256": "7739b1996ea325f05397794c7861a26914b429d260bae36a9a6357a45081ad7d"
+        },
+        {
+          "path": "local/native-render-entry-cache-main-r49/native_render_entry_cache_r49_library_probe.obj",
+          "bytes": 138228,
+          "sha256": "6bb824aa56322d7c6be9536883c4fbaeb075fb891f5948e323e0dae6e26162cc"
+        },
+        {
+          "path": "local/native-render-entry-cache-main-r49/native_render_entry_cache_r49_library_probe.exe",
+          "bytes": 267264,
+          "sha256": "78eb61b8edd09c0090bc9c46ee3dbbbb7f5ed55b7558d397383c077e567c2e35"
+        },
+        {
+          "path": "local/native-render-entry-cache-main-r49/native_render_entry_cache_r49_library_probe.map",
+          "bytes": 406752,
+          "sha256": "689b508fdcd218bea0b28bed04c6b217ec87d808b4820ce9bdc643ee01ffeb3c"
+        }
+      ],
+      "actually_loaded_modules": [
+        {
+          "physical_final_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-texture-pool-process-r27\\local\\native-render-entry-cache-main-r49\\native_render_entry_cache_r49_library_probe.exe",
+          "loaded_machine": "014c",
+          "resolved_disk_machine": "014c",
+          "loaded_image_size_hex": "00045000",
+          "disk_bytes": 267264,
+          "sha256": "78eb61b8edd09c0090bc9c46ee3dbbbb7f5ed55b7558d397383c077e567c2e35",
+          "frozen_path": "artifacts/05269_78eb61b8edd0_native_render_entry_cache_r49_library_probe.exe"
+        },
+        {
+          "physical_final_path": "C:\\Windows\\SysWOW64\\ntdll.dll",
+          "loaded_machine": "014c",
+          "resolved_disk_machine": "014c",
+          "loaded_image_size_hex": "001bf000",
+          "disk_bytes": 1822400,
+          "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+          "frozen_path": "artifacts/05305_7e15bd30890e_ntdll.dll"
+        },
+        {
+          "physical_final_path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+          "loaded_machine": "014c",
+          "resolved_disk_machine": "014c",
+          "loaded_image_size_hex": "000f0000",
+          "disk_bytes": 687472,
+          "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+          "frozen_path": "artifacts/05306_bafd9e061964_kernel32.dll"
+        },
+        {
+          "physical_final_path": "C:\\Windows\\SysWOW64\\KernelBase.dll",
+          "loaded_machine": "014c",
+          "resolved_disk_machine": "014c",
+          "loaded_image_size_hex": "002da000",
+          "disk_bytes": 2974168,
+          "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253",
+          "frozen_path": "artifacts/05307_85ad413ff860_KernelBase.dll"
+        },
+        {
+          "physical_final_path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+          "loaded_machine": "014c",
+          "resolved_disk_machine": "014c",
+          "loaded_image_size_hex": "00110000",
+          "disk_bytes": 1114240,
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "frozen_path": "artifacts/05308_60c5a497b52d_ucrtbase.dll"
+        },
+        {
+          "physical_final_path": "C:\\Windows\\SysWOW64\\msvcp140.dll",
+          "loaded_machine": "014c",
+          "resolved_disk_machine": "014c",
+          "loaded_image_size_hex": "00096000",
+          "disk_bytes": 618944,
+          "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a",
+          "frozen_path": "artifacts/05309_f0cda2a0cf1f_msvcp140.dll"
+        },
+        {
+          "physical_final_path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+          "loaded_machine": "014c",
+          "resolved_disk_machine": "014c",
+          "loaded_image_size_hex": "0001d000",
+          "disk_bytes": 123328,
+          "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+          "frozen_path": "artifacts/05310_2fa6efc05320_vcruntime140.dll"
+        }
+      ],
+      "same_process_resolution": "Each module was opened by the 32-bit fixture, resolved with GetFinalPathNameByHandleW, mapped, and checked as I386 in memory and on disk.",
+      "all_loaded_and_resolved_disk_modules_i386": true
+    },
+    "execution_partition": {
+      "original_code_executed": [
+        "Relocated original BEBF00[39] leaf; complete 28h record compared with source."
+      ],
+      "reconstructed_source_executed": [
+        "raw singleton manager creation and registration",
+        "render-entry cache construction",
+        "10000-record resize and initialization",
+        "used-count equality and zero-request stale-pointer behavior",
+        "unregister, clear, section release and scalar teardown"
+      ],
+      "original_code_not_executed": [
+        "BEC240/BEC3E0/BEC590/BEC630/BEC6F0/BEC870/BEC8E0/BEC910",
+        "BED1E8..BED222 fragment and the remainder of BECEE0"
+      ]
+    }
+  }
 }
