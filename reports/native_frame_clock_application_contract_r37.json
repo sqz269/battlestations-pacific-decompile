@@ -1,0 +1,2520 @@
+{
+  "schema": "bsp.native_frame_clock_application_contract.r37.v1",
+  "status": "evidence_only_contract_proposal_no_application_binding",
+  "baseline_commit": "6d893a8b4bd2b8320c8cb31ddbde598b1e85c46a",
+  "prior_packets": {
+    "methods_main": "467d2e679",
+    "lifecycle_source_main": "613cf288b",
+    "lifecycle_metadata_main": "667b34270",
+    "reports": [
+      "reports/native_frame_clock_actual_r35.json",
+      "reports/native_frame_clock_lifetime_r36.json",
+      "reports/native_frame_clock_owner_audit_r34.json",
+      "reports/native_renderer_control_binding_r32.json"
+    ],
+    "runtime_identity_correction": "Parent published correction f509d21f6: the same five R36 groups passed after fresh relink to main. Same-process GetFinalPathNameByHandleW resolves six actual SysWOW64 DLLs and the executable; loaded-memory PE Machine is I386. New archive SHA256 f01f78db6a3151febb1f4bc8120af46562f5d3aafcb60399600d5beb0ccdbf4d. This R37 audit did not rerun or independently verify that archive; it does not promote older Toolhelp System32 names into loaded-DLL identity proof."
+  },
+  "scope": {
+    "owned_output": [
+      "reports/native_frame_clock_application_contract_r37.json"
+    ],
+    "owned_original_entries": [
+      "0073d410",
+      "008f81f0",
+      "00737f30",
+      "00737a50"
+    ],
+    "borrowed_read_only": [
+      "00bede00",
+      "00bedea0",
+      "00bedfb0",
+      "00bee110",
+      "004e4a40",
+      "00a88770",
+      "00d68d50"
+    ],
+    "no_changes": [
+      "production source",
+      "CMake",
+      "ledgers",
+      "Ghidra",
+      "application/worker binding"
+    ],
+    "validation": "Source/control-flow/layout audit and fresh installed-PE/live-byte comparison. No build, test, game run, or full application parity claim."
+  },
+  "conclusions": [
+    "Current application still owns and advances the semantic FrameClock. R35/R36 actual methods/lifecycle and shared deletion support are available but have no application producer.",
+    "A safe cutover uses one raw 80h allocation, the existing host publication cell changed to void* volatile, the existing actual AA0 manager, and persistent borrowed method/lifecycle contexts. Remove the embedded semantic owner in the same final binding change.",
+    "Required currently composed consumers are GameFrameHost, sound startup/update, and NativeInputDeviceRuntime. Their timestamp-only interfaces can be retained with 16-byte result snapshots; no FrameClock reinterpretation or second clock state is necessary.",
+    "Sound startup currently samples BEE080 but native A887F5 calls current slot +14 and copies four words. This is a concrete behavior mismatch to correct during adapter preparation.",
+    "The native fixed-rate flag invokes +24 with signed milliseconds 50 after renderer construction/settings calls. Current application only logs the flag. Mapping its exact host phase remains a separate explicit ordering obligation.",
+    "Original clock deletion occurs through the shared singleton drain after Application_Shutdown and Application_Destruct, not a separate AB0 deleter. Keep all cells, contexts, read-only profile data, and consumer services alive through that drain.",
+    "Unbound full game-move, XLive, renderer worker/system-time/traceline, and timestamp-host consumers are recorded below. They do not justify activating a second clock or claiming complete native graph coverage."
+  ],
+  "original_startup": {
+    "entry_abi": "0073D410 native ECX application, two stack arguments (caller008F8429); recovered phase0 uses ESI application and EDI zero. This is an audit, not an ABI replacement.",
+    "sequence": [
+      [
+        "0073d43f",
+        "BD1780 allocator probe, then BD17A0 at73D448; application bytes+18/+19 set at73D450/454."
+      ],
+      [
+        "0073d458",
+        "439040 module path; BF681B allocates0Ch at73D45F, state0, optionalBE2900 allocation-stat constructor."
+      ],
+      [
+        "0073d480",
+        "Compare SAME AB0 cell with zero. State resets to-1 at73D486. Non-null skips all clock allocation/construction to73D4BD."
+      ],
+      [
+        "0073d48f",
+        "Push80h; BF681B at73D494. Store returned allocation atESP+18 (EH localEBP-130) at73D49C."
+      ],
+      [
+        "0073d4a2",
+        "Install FH3 state1; defensive null allocation branch skips constructor. Non-null enters BEDFB0 at73D4B1 with ECX=allocation."
+      ],
+      [
+        "0073d4b6",
+        "Restore state-1. There is NO caller AB0 store; baseBEDE00 publishes/registers during the constructor. Continue6AD0D0 at73D4BD."
+      ]
+    ],
+    "ownership": "BF681B allocation is caller-owned until construction succeeds and the registered object is left to shared-manager deletion. Allocate {SingletonAllocationKind::object,0x80,0x80} with singleton_lifetime_allocate, preserving uninitialized storage; free captured allocation on ordinary constructor failure with singleton_lifetime_free.",
+    "constructor_borrowed_contract": "R36 captures first manager critical section, publishes self to the same AB0, obtains current manager again, reloads current AB0 for registration, then releases captured section. Derived initialization uses R35 raw methods and ignored QPC/QPF BOOL behavior. Do not replace this with caller publication after initialization.",
+    "untouched_storage": "No value-initialization or blanket memset: preserve original+6A..6F,+70,+78 and QPF destination preimage+60 until native stores. R36 owns exact initialization schedule.",
+    "fixed_mode": {
+      "range": "0073DA66..0073DAC1",
+      "order": [
+        "BF681B(1D94)",
+        "B32410 derived renderer constructor",
+        "5547D0",
+        "6A7BE0",
+        "8D8190 with ECX F88980",
+        "if E1AE81: reloadAB0; table +24; push 50; call at73DAC0"
+      ],
+      "target": "D68D50[9]=BEDB20",
+      "current_gap": "command_line.fixed_frame_rate is parsed and logged at game_hosts.cpp1305; no production enable call. Do not move the native gate to phase0 merely because the clock exists there. Current projected renderer sequence is incomplete."
+    }
+  },
+  "original_eh": {
+    "handler": "73D412 installs C86CBA; C86CBA MOV EAX,DB609C; C86CBF JMP BF6B43.",
+    "funcinfo": {
+      "address": "00db609c",
+      "magic": "19930522",
+      "max_state": 49,
+      "unwind_map": "00db60c0",
+      "focus": "Only states0/1 relevant to the two phase0 allocations are decoded here; remaining47 states not audited."
+    },
+    "unwind_entries": [
+      {
+        "state": 0,
+        "to_state": -1,
+        "action": "00c86a30",
+        "meaning": "free captured allocation-stat allocation"
+      },
+      {
+        "state": 1,
+        "to_state": -1,
+        "action": "00c86a3e",
+        "meaning": "free captured clock allocation"
+      }
+    ],
+    "state1_action": "C86A3E MOV EAX,[EBP-130]; C86A44 PUSH EAX; C86A45 CALL BF65AC; C86A4A POP ECX; C86A4B RET. No AB0 clear or unregister in this caller action.",
+    "nested_cleanup": "Use R36 derived unwind: state0 actionCC7540 -> BEDFA0 tail JMP BEDEA0. Parent metadata667b34270 includes fresh BEDFA0 E9FBFEFFFF evidence. Base/section cleanup belongs to R36, not a new application wrapper.",
+    "failure_caveat": "If base registration fails after publishing but before successful construction, base cleanup can leave AB0 containing the captured allocation; caller state1 then frees that allocation. The surviving AB0 bits must not be treated as a valid completed clock or automatically repaired under a parity claim.",
+    "boundary": "Source C++ catch/free can reproduce the established ordinary cleanup actions. It does not reproduce original FH3 stack maps, arbitrary exception-spill aliases, SEH/hardware exceptions, or process-wide native termination policy."
+  },
+  "original_frame_and_shutdown": {
+    "frame": "737AF6 reloadAB0;737AFC load profile;737AFE load +08;737B01 call update.737B03 independently reloadAB0;737B09 load profile;737B0B load +1C;737B0E call interval.737B10/12 FILD signed qwords,737B19 FDIVP,737B1B FSTP float, then737B26 GameOnMove. No QPC success branch.",
+    "accumulation_fragment": "4E4D4A FLD game +21F0;4E4D50 captureAB0;4E4D55/59 float spill/reload;4E4D5E FADD[clock +4];4E4D63 FSTP[clock +4]. FrameClock.accumulated is a semantic field at a different layout, so use a raw +4 adapter with this x87 schedule if the full move spine is later bound.",
+    "shutdown_prefix": "737F58 loads F8D394,737F63 calls its+0C;737F65 reloads F8D394,737F70 calls+14 before subsequent application owner teardown. These callsites alone do not prove a source worker join.",
+    "winmain_order": [
+      "8F843B Application_Shutdown737F30",
+      "8F8444 Application_Destruct7379A0",
+      "8F8449 capturecurrentAA0",
+      "if nonnull:8F8455 BD0400 manager drain",
+      "8F845B BF65AC(captured manager)",
+      "8F8463 clearAA0"
+    ],
+    "clock_delete": "BD0400 dispatches the registered clock D68D50 through existing NativeSingletonDeletionBindings.frame_clock at offset108, then BEE110(flags1): derived stamp, base current-publication unregister/clear, and free. Table size was112 at the report baseline and is116 at f927c92c3 after diagnostic append. No extra host-side clock free.",
+    "xref_boundary": "All68 current direct AB0 references are retained below. Only BEDE56 and BEDF09 are WRITE references; Application_Shutdown737F30 has no direct AB0 reference. Indirect calls in the full shutdown graph are not exhaustively closed by this fact.",
+    "listing_gap": "Saved004E4A40 body remains8B although decompiler traverses the larger function. Only the live/PE-verified4E4D4A..65 fragment is admitted here. No function repair requested; full OnMove remains unbound."
+  },
+  "current_ownership": {
+    "host": "GameStartupHost has FrameClock* volatile clock_publication_01090ab0_ at game_hosts.hpp604 and embedded FrameClock clock_ at619. phase0game_hosts.cpp1270 constructs semantic clock unconditionally, ignores success BOOL, then manually publishes its address.",
+    "manager": "GameSingletonHost already owns actual AA0 and deletion table. manager_publication_01090aa0() returns the SAME cell; native_deletion_bindings() exposes the SAME table. No manager or table snapshot is needed.",
+    "normal_cleanup": "run_win_main calls application_shutdown, application_destruct, destroy_singleton_lifetime_manager. GameSingletonHost::shutdown capturesmanager, rawBD0400 drains, retiresVFS, recordsobserver state, frees captured manager, clearsAA0.",
+    "fallback_cleanup": "game_main catches std::exception from run_win_main; GameStartupHost destructor later deletes frame/menu callbacks before singleton shutdown, retains sound/input services through drain, then deletes singletonhost. Existing nativeVFS interrupted-retention path terminates with _Exit before destructive cleanup. Clock contexts must fit these existing lifetime paths.",
+    "read_only_profile_source": "GameNativeReadOnlyData::data_at(0x00D68D50,44), from verified numeric read-only/non-executable PE mapping. game_main native_data_spans already maps D60000 band, and canonical data owner is initialized before GameStartupHost and retained afterward. Profile words are ORIGINAL ADDRESS IDENTITIES, never executable source calls.",
+    "remaining_application_limits": "Device prefix, full renderer resource construction, online owner, simulation spine and full native shutdown remain incomplete. Being present in startup source is not evidence that a real game run reaches every route."
+  },
+  "consumer_inventory": [
+    {
+      "id": "required_frame",
+      "files": [
+        "include/bsp/game_hosts.hpp",
+        "src/game_hosts.cpp",
+        "include/bsp/app_frame.hpp",
+        "src/app_frame.cpp"
+      ],
+      "current": "GameFrameHost captures FrameClock&; advance770 calls semantic BEDC30; interval773 returns clock_.interval; run_application_frame converts via timestamp_seconds_x87 beforegame_on_move.",
+      "proposal": "Store const NativeFrameClockPublicationContext&. Advance capturesAB0/checks+08 and calls existing raw update once. Interval independently capturesAB0/checks+1C and memcpy 16B into one provider-owned ClockTimestamp interval_result_; return existing const& for immediate x87 conversion. This is a result snapshot, not a second clock.",
+      "reachability": "Composed production frame route; simulation body in game_on_move remains a logged boundary."
+    },
+    {
+      "id": "required_sound_startup",
+      "files": [
+        "include/bsp/game_sound_runtime.hpp",
+        "src/game_sound_runtime.cpp",
+        "include/bsp/sound_resource_runtime.hpp",
+        "src/sound_resource_runtime.cpp",
+        "include/bsp/sound_startup.hpp",
+        "src/sound_startup.cpp"
+      ],
+      "current": "GameSoundRuntimeServices.clock is captured FrameClock&; Impl buildsFrameClockSoundStartupHost. sample_time_14 currently calls semantic BEE080 and throws on false. construct_sound_system_A88770 copies itsarray intoowner.time118.",
+      "native": "A887EA capturesAB0, A887F2 loads+14, A887F5 calls current getter BEE050, A887F7..A88818 copies four DWORDs toowner +118..124.",
+      "proposal": "Add concrete NativeFrameClockSoundStartupHost borrowing publication context. Keep SoundStartupClockHost::sample_time_14 signature (historical name) but document current-slot semantics and copy exact four words from published raw current. No QPC call, bool branch, or storedFrameClock reference. Existing semantic helper can remain for projection fixtures but must leave production composition.",
+      "reachability": "SoundServices constructed in current application startup before window/input."
+    },
+    {
+      "id": "required_sound_update",
+      "files": [
+        "src/game_sound_runtime.cpp",
+        "include/bsp/sound_system_update.hpp",
+        "src/sound_system_update.cpp"
+      ],
+      "current": "Impl.current_timestamp_slot14 returns typedgetter on services.clock; updateA7E590 immediately copies16B then subtracts priorowner.time118.",
+      "proposal": "Same publication context; independently reload/current-slot resolve at each call, copy 16B into Impl.current_result_, return existing pointer. Preserve immediate caller copy and existing subtract/service schedule. Keep sound runtime/context alive through shared drain.",
+      "reachability": "Bound production runtime, including possible service work during shutdown."
+    },
+    {
+      "id": "required_input",
+      "files": [
+        "include/bsp/native_input_device_runtime.hpp",
+        "src/native_input_device_runtime.cpp",
+        "include/bsp/native_joystick.hpp",
+        "src/native_joystick.cpp",
+        "src/game_hosts.cpp"
+      ],
+      "current": "NativeInputDeviceRuntimeServices.clock_01090ab0 is FrameClock* volatile&. call_clock_01090ab0_vslot14 reloads it then returns semantic current. Native joystick poll481 and force499 consume returned timestamp immediately.",
+      "proposal": "Replace serviceclockmember with const NativeFrameClockPublicationContext&; copy published raw current into provider-owned current_result_ and retain existing NativeJoystickCalls const ClockTimestamp& result ABI. Host InputServices supplies the SAME publication context. No SDK/device binding changes.",
+      "reachability": "Composed production input startup andpoll/force routes."
+    },
+    {
+      "id": "optional_xlive",
+      "files": [
+        "include/bsp/xlive_manager_runtime.hpp",
+        "src/xlive_manager_runtime.cpp",
+        "include/bsp/xlive_signin.hpp",
+        "include/bsp/xlive_system_pump.hpp"
+      ],
+      "current": "FrameClock* volatile&; sample_clock_vslot20 reloads and uses semantic BEE080 with throw-on-false; both sample spelling variants delegate.",
+      "proposal": "Borrow same rawpublication context and reuse existing rawBEE080 into caller/result16B storage, preserving ignoredBOOL and output preimage contract. No owneractivation.",
+      "reachability": "No production XLiveManagerRuntime instantiation found; online startup explicitly unimplemented and owner publicationnull."
+    },
+    {
+      "id": "optional_renderer_worker",
+      "files": [
+        "include/bsp/native_renderer_control_worker.hpp",
+        "src/native_renderer_control_worker.cpp"
+      ],
+      "current": "Already uses void* volatile& actual_clock_01090ab0 plusactual D68D50 words, verifiesprofile/+20 and reuses raw93B BEE080. Immutable processcontext remainsUNBOUND.",
+      "proposal": "When renderer contract closes, borrow exactsame host cell andprofile view, with required substantive BeginFrame/EndFrame. No new clock/sample implementation and no early worker binding.",
+      "reachability": "No production bind call found. Component fixtures are not active rendering. Failed/retainedworker requires clock/manager/context lifetime until established stop/idle/join completion; stop flag alone is insufficient."
+    },
+    {
+      "id": "optional_system_time",
+      "files": [
+        "include/bsp/system_time_constants.hpp",
+        "src/system_time_constants.cpp",
+        "include/bsp/system_camera_axes.hpp",
+        "src/system_camera_axes.cpp",
+        "src/system_constant_builder.cpp"
+      ],
+      "current": "TypedFrameClock* volatile publication; axes capturesclock atB46C89 before Y stores; timeB46CB4 reads captured->accumulated, invokesother providers, later reloads current publication for interval via typedvirtuals.",
+      "proposal": "Add explicit raw overloads/context while preserving projection APIs usedby d3d9_mesh_probe. Axes returns capturedvoid* atsame instruction order; time reads captured raw +4, independently reloads currentcell later, gets raw interval pointer, preserves two FILDs/renderer capture/FDIVP/FSTP schedule. Never turn both accesses into a single cached owner or reinterpretFrameClock.",
+      "reachability": "Only concrete SystemTimeBindings construction found in d3d9_mesh_probe; production native renderer builder/provider remainsunbound."
+    },
+    {
+      "id": "optional_traceline",
+      "files": [
+        "include/bsp/native_traceline_update.hpp",
+        "src/native_traceline_update.cpp",
+        "include/bsp/native_traceline_render.hpp",
+        "src/native_traceline_render.cpp",
+        "src/native_scene_render_traversal.cpp"
+      ],
+      "current": "Raw bodies have typedclock bridges. UpdateAccess clockcellpointeroffset24/virtualsoffset28; RenderAccess clockcellpointeroffset12/virtualsoffset16/currentcallbackoffset52,size60.",
+      "proposal": "Separate adapter packet aftersharedcontract: either explicit raw siblingaccess or carefully reviewed raw pointees with same 4B fields andall offset asserts. Raw bridges returnconst void* 16Bpair for originalFILD/DWORDreads, acceptactualvoid* and borrowedraw context. Do not change embedded access offsets or cast raw clock toFrameClock.",
+      "reachability": "Renderer component providers accept accessobjects from caller; no production application builder found. Do not silently activate broader renderer graph."
+    },
+    {
+      "id": "optional_full_game_move",
+      "files": [
+        "include/bsp/game_frame_control.hpp",
+        "src/game_frame_control.cpp",
+        "src/game_hosts.cpp"
+      ],
+      "current": "run_game_frame_control takes FrameClock& and performs clock.accumulated += scaled_delta; no call from current GameFrameHost.",
+      "proposal": "When full move is bound, explicit raw +4 x87 accumulation adapter for verified4E4D50fragment, preservingcapture/spill/store timing. No secondupdateBEDC30.",
+      "reachability": "Function exists but no current production caller; GameFrameHost logs simulation_spine boundary and drivesmenu."
+    },
+    {
+      "id": "timestamp_only_optional_hosts",
+      "files": [
+        "include/bsp/frontend_prompts.hpp",
+        "include/bsp/title_init.hpp",
+        "include/bsp/loading_screen_elements.hpp",
+        "include/bsp/gamepad_force_requests.hpp",
+        "include/bsp/joystick_input.hpp",
+        "include/bsp/sound_frame_service.hpp",
+        "include/bsp/platform_window.hpp"
+      ],
+      "current": "Timestamp-valued host contracts/sample_clock or now operations, not embeddedFrameClock owners. Prompt+20, logo+20 and loading+20 require same publication sampler if later implemented. Other timestamp arithmetic/force contracts consume values.",
+      "proposal": "Retain ClockTimestamp as16B value/arithmetic type; future concrete host uses sharedraw sampler. Do not remove timestamp APIs merely because frame_clock.hpp also contains semanticowner.",
+      "reachability": "No concreteproductionsample_clock/LogoSequenceHost::now override found outside probe implementations in boundedsource search. Platform/frame delegates carry ApplicationFrameHost, not a second clock."
+    },
+    {
+      "id": "independent_profiler",
+      "files": [
+        "src/game_hosts_menu.cpp"
+      ],
+      "current": "GameFrameProfiler::query_performance_counter uses directQPC; constructorQPF produces profiling tickscale.",
+      "proposal": "Leave profiling counter separate: it neither ownsAB0 nor advances applicationFrameClock. This is independent instrumentation, not an application clock replacement.",
+      "reachability": "Bound profiler route."
+    },
+    {
+      "id": "fixtures_and_semantic_library",
+      "files": [
+        "src/frame_clock.cpp",
+        "src/startup_probe.cpp",
+        "src/timestamp_reference_probe.cpp",
+        "src/d3d9_mesh_probe.cpp"
+      ],
+      "current": "SemanticFrameClock APIs and projection fixtures remain valid within stated boundaries. R35/R36 source and prior differential fixtures prove boundedmethods/lifetime, notapplication binding.",
+      "proposal": "Preserve currentprojectiontests; no need to delete semanticlibrary or reinterpretit toadmitraw storage. Existingchecks run afterfuture code changes, notthisreport.",
+      "reachability": "Test/projection component domain."
+    }
+  ],
+  "proposed_shared_contract": {
+    "status": "Reviewable proposal only. Names are proposed source interfaces, not recovered game symbols.",
+    "new_files": [
+      "include/bsp/native_frame_clock_publication.hpp",
+      "src/native_frame_clock_publication.cpp"
+    ],
+    "declaration": [
+      "struct NativeFrameClockPublicationContext { void* volatile& actual_clock_01090ab0; const NativeFrameClockActualContext& methods; };",
+      "void advance_published_native_frame_clock(const NativeFrameClockPublicationContext&);",
+      "const void* current_published_native_frame_clock(const NativeFrameClockPublicationContext&);",
+      "const void* interval_published_native_frame_clock(const NativeFrameClockPublicationContext&);",
+      "ClockTimestamp* sample_published_native_frame_clock(const NativeFrameClockPublicationContext&, ClockTimestamp* output);",
+      "void enable_fixed_published_native_frame_clock(const NativeFrameClockPublicationContext&, std::int32_t milliseconds);"
+    ],
+    "identity_and_dispatch": "Each operation captures the current volatile AB0 cell once, requires a non-null actual 80h object with profile DWORD D68D50, checks the exact borrowed profile slot, then calls the existing concrete source helper. Admitted slots: +08 BEDC30, +14 BEE050, +1C BEE070, +20 BEE080, +24 BEDB20. Never execute the numeric address word. Unknown profiles or targets remain an explicit unsupported-domain failure. Preserve existing R35/R33 guards.",
+    "timestamp_contract": "Current/interval operations return a borrowed pointer to the actual 16-byte member for consumers that preserve the native read schedule. C++ adapters memcpy those bytes into aligned ClockTimestamp result objects. Sampling accepts caller-owned output storage and does not initialize it before invoking the raw sampler. A timestamp snapshot contains no accumulated time, update counter, paused/fixed state, or independently advancing state.",
+    "abi_boundary": "The proposed publication functions are ordinary source interfaces. Original methods retain the explicit ECX/EDX/stack bridges already defined by R35/R36; BEE080 remains the existing (const void*, void*, ClockTimestamp*) bridge. This does not claim a drop-in executable ABI for host classes or their virtual methods.",
+    "captured_vs_current": "Do not cache a universal owner pointer. The capture at B46C89 must remain distinct from the later current-publication reload at B46CF9. Publication helpers serve original current-publication callsites; a consumer that already captured an owner uses explicit raw getters on that captured pointer.",
+    "minimal_host_storage": [
+      "Change the existing GameStartupHost clock_publication_01090ab0_ member to void* volatile. Remove the embedded FrameClock clock_ in the same final composition change.",
+      "Add a persistent private ClockServices object containing NativeFrameClockActualContext methods, NativeFrameClockPublicationContext publication, and NativeFrameClockLifetimeContext lifetime. It owns these source contexts, not an independently deleted clock allocation.",
+      "Borrow native_data_->data_at(0x00D68D50,44) for methods. Borrow singletons_->manager_publication_01090aa0(), the existing host AB0 member, and methods for lifetime. The publication context borrows exactly that AB0 member and methods.",
+      "Before registration, assign singletons_->native_deletion_bindings().frame_clock to the lifetime context. The field remains at offset108. At current main f927c92c3 the table is116 bytes, including the appended diagnostic binding at112; preserve it and do not append another clock binding or replace the table.",
+      "Create and validate the contexts before phase0 allocation. Allocate the clock only inside the original null-publication gate. Retain the contexts through normal and fallback singleton shutdown and GameSingletonHost destruction; destroy them afterward.",
+      "Startup remains the sole application clock producer. The shared manager is the sole deleter of a successfully constructed clock. Frame, worker, sound, input and XLive consumers borrow this owner."
+    ],
+    "allocation_helper_proposal": "A narrow ensure_application_frame_clock_0073d480(NativeFrameClockLifetimeContext&) helper can retain the captured allocation and ordinary catch/free scope. Check the same AB0 cell first; allocate {SingletonAllocationKind::object,0x80,0x80}; call existing BEDFB0 if non-null; free the captured allocation if construction throws. Do not publish manually or rewrite R35/R36 methods.",
+    "api_compatibility_choice": "Retain ApplicationFrameHost::frame_interval as const ClockTimestamp&, SoundSystemUpdateHost::current_timestamp_slot14 as a pointer, NativeJoystickCalls as const ClockTimestamp&, and SoundStartupClockHost as a four-word array. One 16-byte result object per concrete adapter supports their current immediate-consumption paths. These temporary result references do not promise stability across another call; asynchronous or retained-reference consumers need a separate review.",
+    "failure_state_proposal": "Keep explicit source-only construction state in ClockServices: unattempted, constructing, constructed, failed, drained. It is bookkeeping, not an invented native field. Only constructed state admits production consumers. The phase0 helper records failed before rethrowing after captured-allocation cleanup. A failed attempt is terminal for retry and consumers even if AB0 retains non-null bits. Before enabling final host binding, specify which verified ordinary failures leave a safe manager drain; otherwise preserve the existing application pattern of explicit terminal retention. Never inspect the freed clock to decide whether cleanup succeeded. This failure policy is an application safety boundary, not recovered native exception semantics."
+  },
+  "failure_invariants": [
+    {
+      "phase": "before allocation",
+      "invariant": "Validate borrowed profile data, contexts and deletion binding before clock publication. An allocator exception leaves AB0 unchanged; there is no allocation to free until the allocator returns."
+    },
+    {
+      "phase": "defensive null allocation",
+      "invariant": "The native caller skips construction without publishing. The existing BF681B-style source allocator normally throws instead of returning null. Do not create a fallback clock to continue."
+    },
+    {
+      "phase": "constructor registration",
+      "invariant": "Preserve publication before registration, the captured first section, current-manager reload, and R36 cleanup. On constructor failure, caller state1 frees the captured allocation. A non-null AB0 does not prove construction completed."
+    },
+    {
+      "phase": "failure after publication",
+      "invariant": "A failed registration can leave AB0 dangling after caller cleanup. Make this failure terminal for clock consumers and retry. Final binding must identify the verified ordinary failures that permit the remaining manager drain. Do not delete or dereference the freed publication. If ownership cannot be established, retain the uncertain graph under an explicit terminal application policy; that policy is not native exception parity."
+    },
+    {
+      "phase": "timer queries",
+      "invariant": "Native QPC/QPF BOOL results are ignored. Preserve destination/stack preimages and signed-millisecond fixed mode. Do not import the semantic API success/failure branches."
+    },
+    {
+      "phase": "later startup failure",
+      "invariant": "A successfully registered clock belongs to the shared manager while later initialization unwinds. Keep contexts, profile data, publication cells and services alive for fallback drain. There is no independent clock smart-pointer free."
+    },
+    {
+      "phase": "normal shutdown",
+      "invariant": "Stop consumers before drain; keep sound/input services through owner destruction and clock contexts through the full manager drain. Clear AA0 only after freeing the captured manager. Do not free AB0 separately."
+    },
+    {
+      "phase": "future worker binding",
+      "invariant": "A retained worker may still read AB0. Keep clock, manager, profile and services alive until established stop/idle/join completion. A stop flag or an inactive fixture alone does not justify freeing the clock."
+    },
+    {
+      "phase": "repeated initialization",
+      "invariant": "The original non-null gate skips reconstruction. Do not reset or allocate another clock on a repeated call. A failed-construction state must prevent treating stale AB0 bits as successful prior initialization."
+    }
+  ],
+  "staging_and_file_ownership": [
+    {
+      "packet": "A: borrowed publication adapters",
+      "files": [
+        "include/bsp/native_frame_clock_publication.hpp",
+        "src/native_frame_clock_publication.cpp"
+      ],
+      "depends": [
+        "R35 raw methods",
+        "R33 raw sampler",
+        "R36 lifecycle for the focused fixture"
+      ],
+      "result": "Establish the exact context and operation signatures above without an application producer. A short CMake lease is needed if implemented."
+    },
+    {
+      "packet": "B: required sound and input providers",
+      "files": [
+        "include/bsp/sound_resource_runtime.hpp",
+        "src/sound_resource_runtime.cpp",
+        "include/bsp/game_sound_runtime.hpp",
+        "src/game_sound_runtime.cpp",
+        "include/bsp/native_input_device_runtime.hpp",
+        "src/native_input_device_runtime.cpp"
+      ],
+      "depends": [
+        "A approved interface"
+      ],
+      "result": "Implement current-timestamp providers and 16-byte result storage. Additive providers can be prepared while the old application composition remains active; they do not create a clock. Coordinate service aggregate signatures with packet C."
+    },
+    {
+      "packet": "C: one-clock host cutover",
+      "files": [
+        "include/bsp/game_hosts.hpp",
+        "src/game_hosts.cpp",
+        "optional application ensure-helper pair"
+      ],
+      "depends": [
+        "A",
+        "B",
+        "explicit constructor-failure and manager-drain policy",
+        "verified host phase for the fixed-rate gate"
+      ],
+      "result": "One atomic composition change removes the embedded semantic clock, installs persistent contexts and the existing deletion binding, uses the phase0 allocation gate, and supplies the same publication to frame, sound and input. Existing GameSingletonHost accessors and game_main read-only mapping suffice; no shared-owner replacement is needed."
+    },
+    {
+      "packet": "D: optional consumers, deferred",
+      "files": [
+        "xlive_manager_runtime pair",
+        "system_camera_axes pair",
+        "system_time_constants pair",
+        "system_constant_builder.cpp",
+        "native_traceline_update/render pairs",
+        "game_frame_control pair"
+      ],
+      "depends": [
+        "A",
+        "each real owner/provider contract"
+      ],
+      "result": "Prepare independent raw adapters later. This does not authorize renderer worker, online owner, or full OnMove activation. System-time and traceline field offsets require their own ABI review."
+    }
+  ],
+  "future_fixture_prerequisites": [
+    "Use one actual 80h allocation, the real raw 14h manager, the actual read-only D68D50 view, persistent AA0/AB0 cells, R36 lifecycle, and the exact shared deletion table. No fake terminal destructor, synthetic vtable, semantic manager cast, or second advancing clock.",
+    "One focused adapter fixture should verify that current slot +14 returns the stored 16 bytes without sampling QPC, update and interval reload AB0 independently, fixed mode dispatches signed50 through actual slot +24, and manager drain clears AB0 and frees the owner once while contexts remain alive. Reuse R35/R36 method/lifecycle coverage.",
+    "Exercise agreed frame/sound/input interfaces and temporary timestamp lifetimes. Keep unsupported null/profile/slot paths explicit. Do not fabricate successful providers to reach later startup.",
+    "Before final host binding, exercise the ordinary startup-failure cleanup/publication case, run the strict /MD build and existing three CTests, and state renderer/online/simulation limits. No new permanent suite is needed by default; game validation is separate.",
+    "Ad hoc Win32 probes link /MANIFEST:EMBED. Archive the fresh full library, objects, executable, bytes, source and hashes. Loaded-DLL identity requires same-process resolved paths and machine identity; Toolhelp System32 names alone are insufficient."
+  ],
+  "proof_limits": [
+    "This is a source contract audit. No production implementation, build, fixture execution, game validation, worker activation or Ghidra mutation was performed.",
+    "The fresh 12 spans, 671 bytes and 30 call instructions cover only the listed startup/frame/shutdown and supporting EH/consumer fragments. They are not full-function byte parity for Application_Initialize or Application_Shutdown.",
+    "All 68 current direct AB0 references and all 182 source-pattern matches are retained. Indirect/escaped clock pointers and unresolved native consumers may exist. Retaining a native reference does not establish its reconstruction.",
+    "The saved 004E4A40 body is eight bytes. The accumulation fragment does not establish full OnMove ABI/control-flow coverage. Lifecycle/FH3 limitations remain those of R36.",
+    "The current application catches std::exception and performs fallback cleanup. That source policy is not proof of the original process-wide exception policy.",
+    "QPC/QPF failure preimages, current-publication and manager reloads, x87 rounding, actual profile words and loaded-DLL identity are separate proof obligations. Compilation or archive hashes alone do not establish them."
+  ],
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "label": "application_shutdown_prefix",
+        "address": "00737f30",
+        "length": 66,
+        "end_exclusive": "00737f72",
+        "pe_offset": 3374896,
+        "sha256": "561b84c7529797e7caa9497396b13408369271f5232fddd5408250975d5f20ca",
+        "hex": "64a1000000006aff68e062c800506489250000000083ec1053568bf1e85f93d8ff8bc8e8189036008b0d94d3f8008b018b500cffd28b0d94d3f8008b018b5014ffd2",
+        "live_equals_pe": true,
+        "calls": [
+          {
+            "address": "00737f4c",
+            "hex": "e85f93d8ff",
+            "text": "call 0x4c12b0"
+          },
+          {
+            "address": "00737f53",
+            "hex": "e818903600",
+            "text": "call 0xaa0f70"
+          },
+          {
+            "address": "00737f63",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00737f70",
+            "hex": "ffd2",
+            "text": "call edx"
+          }
+        ],
+        "listing_entry": "00737f30",
+        "listing_missing_instruction_starts": [],
+        "instruction_count": 20,
+        "decoded_bytes": 66,
+        "instruction_receipt_sha256": "3cbf25f49f94ce63ffdf57e42d58f03cfd50393dd59155dfd3a0c45977e5b402",
+        "instruction_starts": [
+          "00737f30",
+          "00737f36",
+          "00737f38",
+          "00737f3d",
+          "00737f3e",
+          "00737f45",
+          "00737f48",
+          "00737f49",
+          "00737f4a",
+          "00737f4c",
+          "00737f51",
+          "00737f53",
+          "00737f58",
+          "00737f5e",
+          "00737f60",
+          "00737f63",
+          "00737f65",
+          "00737f6b",
+          "00737f6d",
+          "00737f70"
+        ]
+      },
+      {
+        "label": "startup_phase0",
+        "address": "0073d410",
+        "length": 178,
+        "end_exclusive": "0073d4c2",
+        "pe_offset": 3396624,
+        "sha256": "836def208fa5872591b0c896d1d79760c5e1c2f7d9c3789c3a92cb0d0ed3bb13",
+        "hex": "6aff68ba6cc80064a100000000506489250000000081ec2c010000535556578bf16a1033ff6a1089742434897c2428e83c43490083c40450e85343490083c408c6461801c6461900e8e3bbcfff6a0ce8b7934b0083c404894424183bc789bc244401000074078bc8e883544a0083cbff393db00a0901899c2444010000752e6880000000e882934b0083c404894424183bc7c78424440100000100000074078bc8e8fa0a4b00899c2444010000e80efcf6ff",
+        "live_equals_pe": true,
+        "calls": [
+          {
+            "address": "0073d43f",
+            "hex": "e83c434900",
+            "text": "call 0xbd1780"
+          },
+          {
+            "address": "0073d448",
+            "hex": "e853434900",
+            "text": "call 0xbd17a0"
+          },
+          {
+            "address": "0073d458",
+            "hex": "e8e3bbcfff",
+            "text": "call 0x439040"
+          },
+          {
+            "address": "0073d45f",
+            "hex": "e8b7934b00",
+            "text": "call 0xbf681b"
+          },
+          {
+            "address": "0073d478",
+            "hex": "e883544a00",
+            "text": "call 0xbe2900"
+          },
+          {
+            "address": "0073d494",
+            "hex": "e882934b00",
+            "text": "call 0xbf681b"
+          },
+          {
+            "address": "0073d4b1",
+            "hex": "e8fa0a4b00",
+            "text": "call 0xbedfb0"
+          },
+          {
+            "address": "0073d4bd",
+            "hex": "e80efcf6ff",
+            "text": "call 0x6ad0d0"
+          }
+        ],
+        "listing_entry": "0073d410",
+        "listing_missing_instruction_starts": [],
+        "instruction_count": 48,
+        "decoded_bytes": 178,
+        "instruction_receipt_sha256": "b944a926fe024fe1827f3531eb482cb805a008eba0758f1aa7f0deafa5338834",
+        "instruction_starts": [
+          "0073d410",
+          "0073d412",
+          "0073d417",
+          "0073d41d",
+          "0073d41e",
+          "0073d425",
+          "0073d42b",
+          "0073d42c",
+          "0073d42d",
+          "0073d42e",
+          "0073d42f",
+          "0073d431",
+          "0073d433",
+          "0073d435",
+          "0073d437",
+          "0073d43b",
+          "0073d43f",
+          "0073d444",
+          "0073d447",
+          "0073d448",
+          "0073d44d",
+          "0073d450",
+          "0073d454",
+          "0073d458",
+          "0073d45d",
+          "0073d45f",
+          "0073d464",
+          "0073d467",
+          "0073d46b",
+          "0073d46d",
+          "0073d474",
+          "0073d476",
+          "0073d478",
+          "0073d47d",
+          "0073d480",
+          "0073d486",
+          "0073d48d",
+          "0073d48f",
+          "0073d494",
+          "0073d499",
+          "0073d49c",
+          "0073d4a0",
+          "0073d4a2",
+          "0073d4ad",
+          "0073d4af",
+          "0073d4b1",
+          "0073d4b6",
+          "0073d4bd"
+        ]
+      },
+      {
+        "label": "fixed_mode",
+        "address": "0073da66",
+        "length": 92,
+        "end_exclusive": "0073dac2",
+        "pe_offset": 3398246,
+        "sha256": "7a511a73318979996c92bf0c3fbcbe7b43b93570dfd25f65305c20ae7ed0e9a1",
+        "hex": "68941d0000e8ab8d4b0083c404894424103bc7c78424440100001000000074078bc8e883493f00899c2444010000e8376de1ff8bc8e840a1f6ffb98089f800e8e6a61900803d81aee10000740f8b0db00a09018b118b42246a32ffd0",
+        "live_equals_pe": true,
+        "calls": [
+          {
+            "address": "0073da6b",
+            "hex": "e8ab8d4b00",
+            "text": "call 0xbf681b"
+          },
+          {
+            "address": "0073da88",
+            "hex": "e883493f00",
+            "text": "call 0xb32410"
+          },
+          {
+            "address": "0073da94",
+            "hex": "e8376de1ff",
+            "text": "call 0x5547d0"
+          },
+          {
+            "address": "0073da9b",
+            "hex": "e840a1f6ff",
+            "text": "call 0x6a7be0"
+          },
+          {
+            "address": "0073daa5",
+            "hex": "e8e6a61900",
+            "text": "call 0x8d8190"
+          },
+          {
+            "address": "0073dac0",
+            "hex": "ffd0",
+            "text": "call eax"
+          }
+        ],
+        "listing_entry": "0073d410",
+        "listing_missing_instruction_starts": [],
+        "instruction_count": 22,
+        "decoded_bytes": 92,
+        "instruction_receipt_sha256": "e39848869ae61c9d9c08b650d40790f3ff76dbae09016ed6d81538f4112b67c2",
+        "instruction_starts": [
+          "0073da66",
+          "0073da6b",
+          "0073da70",
+          "0073da73",
+          "0073da77",
+          "0073da79",
+          "0073da84",
+          "0073da86",
+          "0073da88",
+          "0073da8d",
+          "0073da94",
+          "0073da99",
+          "0073da9b",
+          "0073daa0",
+          "0073daa5",
+          "0073daaa",
+          "0073dab1",
+          "0073dab3",
+          "0073dab9",
+          "0073dabb",
+          "0073dabe",
+          "0073dac0"
+        ]
+      },
+      {
+        "label": "startup_handler",
+        "address": "00c86cba",
+        "length": 10,
+        "end_exclusive": "00c86cc4",
+        "pe_offset": 8940730,
+        "sha256": "7dcc60aaf653ef840c139e429219e059b4a4febe03365acc54120d6ca96f2f93",
+        "hex": "b89c60db00e97ffef6ff",
+        "live_equals_pe": true,
+        "calls": [],
+        "instruction_count": 2,
+        "decoded_bytes": 10,
+        "instruction_receipt_sha256": "31cb0b42fba907a8e283292f4a2919662b348b6503eb62a7f6a713ec6c5179dc",
+        "instruction_starts": [
+          "00c86cba",
+          "00c86cbf"
+        ]
+      },
+      {
+        "label": "allocation_cleanup_actions",
+        "address": "00c86a30",
+        "length": 28,
+        "end_exclusive": "00c86a4c",
+        "pe_offset": 8940080,
+        "sha256": "e8d988e0b885370d861c8368265d4b7937e15d481f35bd1bd00c49e25d391b0a",
+        "hex": "8b85d0feffff50e870fbf6ff59c38b85d0feffff50e862fbf6ff59c3",
+        "live_equals_pe": true,
+        "calls": [
+          {
+            "address": "00c86a37",
+            "hex": "e870fbf6ff",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "00c86a45",
+            "hex": "e862fbf6ff",
+            "text": "call 0xbf65ac"
+          }
+        ],
+        "instruction_count": 10,
+        "decoded_bytes": 28,
+        "instruction_receipt_sha256": "e8722b5db205f533d26219233405c9164b5a8d7bcddab1697aaf2c169ba867b4",
+        "instruction_starts": [
+          "00c86a30",
+          "00c86a36",
+          "00c86a37",
+          "00c86a3c",
+          "00c86a3d",
+          "00c86a3e",
+          "00c86a44",
+          "00c86a45",
+          "00c86a4a",
+          "00c86a4b"
+        ]
+      },
+      {
+        "label": "startup_funcinfo",
+        "address": "00db609c",
+        "length": 36,
+        "end_exclusive": "00db60c0",
+        "pe_offset": 10182812,
+        "sha256": "14beb8044a80e1663ec517b799fbfc0a724a07100d6554125b0681dcd06ba5f3",
+        "hex": "2205931931000000c060db00000000000000000000000000000000000000000001000000",
+        "live_equals_pe": true
+      },
+      {
+        "label": "startup_first_two_unwind_entries",
+        "address": "00db60c0",
+        "length": 16,
+        "end_exclusive": "00db60d0",
+        "pe_offset": 10182848,
+        "sha256": "e75d77dd4e1a39b4acc28fc7a1ac652ef1b2e63dd03cb44b822a43a2b5c7dc6c",
+        "hex": "ffffffff306ac800ffffffff3e6ac800",
+        "live_equals_pe": true
+      },
+      {
+        "label": "winmain_shutdown",
+        "address": "008f8429",
+        "length": 68,
+        "end_exclusive": "008f846d",
+        "pe_offset": 5211177,
+        "sha256": "a557907d84bd4eab51b8620adfac4c625ba97c102908121551e5c3d707718890",
+        "hex": "e8e24fe4ff8d4c2420e8c9232f008d4c2420e8f0fae3ff8d4c2420e857f5e3ff8b0da00a090185c9741a8bf9e8a67f2d0057e84ce12f0083c404c705a00a090100000000",
+        "live_equals_pe": true,
+        "calls": [
+          {
+            "address": "008f8429",
+            "hex": "e8e24fe4ff",
+            "text": "call 0x73d410"
+          },
+          {
+            "address": "008f8432",
+            "hex": "e8c9232f00",
+            "text": "call 0xbea800"
+          },
+          {
+            "address": "008f843b",
+            "hex": "e8f0fae3ff",
+            "text": "call 0x737f30"
+          },
+          {
+            "address": "008f8444",
+            "hex": "e857f5e3ff",
+            "text": "call 0x7379a0"
+          },
+          {
+            "address": "008f8455",
+            "hex": "e8a67f2d00",
+            "text": "call 0xbd0400"
+          },
+          {
+            "address": "008f845b",
+            "hex": "e84ce12f00",
+            "text": "call 0xbf65ac"
+          }
+        ],
+        "listing_entry": "008f81f0",
+        "listing_missing_instruction_starts": [],
+        "instruction_count": 16,
+        "decoded_bytes": 68,
+        "instruction_receipt_sha256": "0fcf255b350dea738c96aa71fd9ac4311369715ef9b0f2dae64debd704d8f1b7",
+        "instruction_starts": [
+          "008f8429",
+          "008f842e",
+          "008f8432",
+          "008f8437",
+          "008f843b",
+          "008f8440",
+          "008f8444",
+          "008f8449",
+          "008f844f",
+          "008f8451",
+          "008f8453",
+          "008f8455",
+          "008f845a",
+          "008f845b",
+          "008f8460",
+          "008f8463"
+        ]
+      },
+      {
+        "label": "application_frame_clock",
+        "address": "00737af6",
+        "length": 53,
+        "end_exclusive": "00737b2b",
+        "pe_offset": 3373814,
+        "sha256": "0d499fc6fbfeb1a6b9783e378d229ea49d4512ad9e84d36cf74d15f626ccf158",
+        "hex": "8b0db00a09018b118b4208ffd08b0db00a09018b118b421cffd0df28df6808518b4e14def9d95c2410d9442410d91c24e815cfdaff",
+        "live_equals_pe": true,
+        "calls": [
+          {
+            "address": "00737b01",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00737b0e",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00737b26",
+            "hex": "e815cfdaff",
+            "text": "call 0x4e4a40"
+          }
+        ],
+        "listing_entry": "00737a50",
+        "listing_missing_instruction_starts": [],
+        "instruction_count": 17,
+        "decoded_bytes": 53,
+        "instruction_receipt_sha256": "a9055ff61e21398960be0257559973722f1daad8c90f61433b21a215473bcf27",
+        "instruction_starts": [
+          "00737af6",
+          "00737afc",
+          "00737afe",
+          "00737b01",
+          "00737b03",
+          "00737b09",
+          "00737b0b",
+          "00737b0e",
+          "00737b10",
+          "00737b12",
+          "00737b15",
+          "00737b16",
+          "00737b19",
+          "00737b1b",
+          "00737b1f",
+          "00737b23",
+          "00737b26"
+        ]
+      },
+      {
+        "label": "sound_startup_current",
+        "address": "00a887ea",
+        "length": 52,
+        "end_exclusive": "00a8881e",
+        "pe_offset": 6850538,
+        "sha256": "7bd9177eb9d3476ca361395f3497c493424f328dc5834f91728268adde0ec316",
+        "hex": "8b0db00a09018b118b4214ffd08b08898e180100008b500489961c0100008b4808898e200100008b500c8d7e4857899624010000",
+        "live_equals_pe": true,
+        "calls": [
+          {
+            "address": "00a887f5",
+            "hex": "ffd0",
+            "text": "call eax"
+          }
+        ],
+        "listing_entry": "00a88770",
+        "listing_missing_instruction_starts": [],
+        "instruction_count": 14,
+        "decoded_bytes": 52,
+        "instruction_receipt_sha256": "0c42cdf2cbd0df7ee41435d69b90869216619887ca1d71c83624f47148a94ccd",
+        "instruction_starts": [
+          "00a887ea",
+          "00a887f0",
+          "00a887f2",
+          "00a887f5",
+          "00a887f7",
+          "00a887f9",
+          "00a887ff",
+          "00a88802",
+          "00a88808",
+          "00a8880b",
+          "00a88811",
+          "00a88814",
+          "00a88817",
+          "00a88818"
+        ]
+      },
+      {
+        "label": "game_accumulation_fragment",
+        "address": "004e4d4a",
+        "length": 28,
+        "end_exclusive": "004e4d66",
+        "pe_offset": 937290,
+        "sha256": "463fab30daed110ad2298f1cd7c3243ff17c89bde10b86cf2c7db7d300fa76d7",
+        "hex": "d986f0210000a1b00a0901d95c241cd944241c51d840048bced95804",
+        "live_equals_pe": true,
+        "calls": [],
+        "instruction_count": 8,
+        "decoded_bytes": 28,
+        "instruction_receipt_sha256": "e210fa04684e7f4de4db1e0238ba6275b7a2a4af686f902a67bdea0291be6d77",
+        "instruction_starts": [
+          "004e4d4a",
+          "004e4d50",
+          "004e4d55",
+          "004e4d59",
+          "004e4d5d",
+          "004e4d5e",
+          "004e4d61",
+          "004e4d63"
+        ]
+      },
+      {
+        "label": "profile",
+        "address": "00d68d50",
+        "length": 44,
+        "end_exclusive": "00d68d7c",
+        "pe_offset": 9866576,
+        "sha256": "fed689db7f77645fa9f42e4b36aaf2c74312f0539c3cadf20ff28afe7c14e781",
+        "hex": "10e1be00d0dbbe0030dcbe00e0dabe00c0ddbe0050e0be0060e0be0070e0be0080e0be0020dbbe0060dbbe00",
+        "live_equals_pe": true
+      }
+    ]
+  },
+  "ab0_xrefs": {
+    "count": 68,
+    "query": "python tools/bsp.py ghidra xrefs 01090ab0 --limit 100 --lines 100",
+    "references": [
+      {
+        "address": "00a3ad1f",
+        "containing_name": "FUN_00a3ad10",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00a3adfc",
+        "containing_name": "FUN_00a3adf0",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00a3ae62",
+        "containing_name": "FUN_00a3adf0",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00a3b263",
+        "containing_name": "FUN_00a3b210",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00a3af46",
+        "containing_name": "FUN_00a3aef0",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00bedefb",
+        "containing_name": "BSP_FrameClockBase_Destroy",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00bedf09",
+        "containing_name": "BSP_FrameClockBase_Destroy",
+        "reference_type": "WRITE"
+      },
+      {
+        "address": "0073d480",
+        "containing_name": "BSP_Application_Initialize",
+        "reference_type": "READ"
+      },
+      {
+        "address": "0073dab3",
+        "containing_name": "BSP_Application_Initialize",
+        "reference_type": "READ"
+      },
+      {
+        "address": "004278bc",
+        "containing_name": "FUN_004278a0",
+        "reference_type": "READ"
+      },
+      {
+        "address": "0053259f",
+        "containing_name": "BSP_MenuPromptScreen_Refresh",
+        "reference_type": "READ"
+      },
+      {
+        "address": "007884f6",
+        "containing_name": "FUN_007884d0",
+        "reference_type": "READ"
+      },
+      {
+        "address": "0077633c",
+        "containing_name": "BSP_PeerManager_PumpMessageQueues",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00a3bfb3",
+        "containing_name": "FUN_00a3bf50",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00a40a02",
+        "containing_name": "BSP_XLiveSystem_Pump",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00a40a3d",
+        "containing_name": "BSP_XLiveSystem_Pump",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00a3f3ec",
+        "containing_name": "BSP_XLiveManager_PollSigninDebounce_Provisional",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00a887ea",
+        "containing_name": "BSP_SoundSystem_Initialize",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00b1020a",
+        "containing_name": "FUN_00b101c0",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00bede56",
+        "containing_name": "BSP_FrameClockBase_Construct",
+        "reference_type": "WRITE"
+      },
+      {
+        "address": "00bede61",
+        "containing_name": "BSP_FrameClockBase_Construct",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00a3f467",
+        "containing_name": "BSP_XLiveManager_ToggleSigninDebounce_Provisional",
+        "reference_type": "READ"
+      },
+      {
+        "address": "004258d5",
+        "containing_name": "FUN_004258d0",
+        "reference_type": "READ"
+      },
+      {
+        "address": "0042593a",
+        "containing_name": "FUN_004258d0",
+        "reference_type": "READ"
+      },
+      {
+        "address": "0043e5c2",
+        "containing_name": "FUN_0043e4d0",
+        "reference_type": "READ"
+      },
+      {
+        "address": "004c018d",
+        "containing_name": "BSP_Game_UpdatePresenceContext",
+        "reference_type": "READ"
+      },
+      {
+        "address": "0057c4d7",
+        "containing_name": "BSP_LoadingScreen_TickHint",
+        "reference_type": "READ"
+      },
+      {
+        "address": "0057c3a2",
+        "containing_name": "BSP_LoadingScreen_AdvanceHint",
+        "reference_type": "READ"
+      },
+      {
+        "address": "0057ca95",
+        "containing_name": "BSP_LoadingScreen_WorkerTick",
+        "reference_type": "READ"
+      },
+      {
+        "address": "0064fdd4",
+        "containing_name": "FUN_0064dd30",
+        "reference_type": "READ"
+      },
+      {
+        "address": "0064fe23",
+        "containing_name": "FUN_0064dd30",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00685176",
+        "containing_name": "BSP_LogoSequence_PollSkip",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00685117",
+        "containing_name": "BSP_LogoSequence_AdvanceOrFinish",
+        "reference_type": "READ"
+      },
+      {
+        "address": "007839a6",
+        "containing_name": "FUN_007839a0",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00783e15",
+        "containing_name": "FUN_00783e00",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00783eb6",
+        "containing_name": "FUN_00783ea0",
+        "reference_type": "READ"
+      },
+      {
+        "address": "0078786d",
+        "containing_name": "FUN_00787850",
+        "reference_type": "READ"
+      },
+      {
+        "address": "0078958d",
+        "containing_name": "FUN_00789560",
+        "reference_type": "READ"
+      },
+      {
+        "address": "0078a201",
+        "containing_name": "FUN_00789560",
+        "reference_type": "READ"
+      },
+      {
+        "address": "0079a29d",
+        "containing_name": "FUN_0079a260",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00a39890",
+        "containing_name": "FUN_00a39870",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00a3aea6",
+        "containing_name": "FUN_00a3aea0",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00a3b48d",
+        "containing_name": "FUN_00a3b420",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00a3b5f8",
+        "containing_name": "FUN_00a3b5f0",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00a3b7aa",
+        "containing_name": "FUN_00a3b780",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00a3c63a",
+        "containing_name": "FUN_00a3c5e0",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00a3c699",
+        "containing_name": "FUN_00a3c5e0",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00a3c7c5",
+        "containing_name": "FUN_00a3c5e0",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00a7e639",
+        "containing_name": "BSP_SoundSystem_UpdateBase",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00a98cdb",
+        "containing_name": "BSP_GamepadForce_SetJoystickOutput",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00a990d5",
+        "containing_name": "BSP_JoystickInputDevice_Poll",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00b0a3b6",
+        "containing_name": "BSP_NativeParticleTracer_Update",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00b1580e",
+        "containing_name": "FUN_00b156c0",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00b46c89",
+        "containing_name": "BSP_ShaderConstants_GatherAndUploadSystemPrefix",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00b46cf9",
+        "containing_name": "BSP_ShaderConstants_GatherAndUploadSystemPrefix",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00b52f9e",
+        "containing_name": "FUN_00b529a0",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00b33c60",
+        "containing_name": "BSP_RendererControlWorker_Thread",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00a3cb4b",
+        "containing_name": "FUN_00a3caf0",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00532e11",
+        "containing_name": "BSP_MenuPromptScreen_Update",
+        "reference_type": "READ"
+      },
+      {
+        "address": "0060d308",
+        "containing_name": "FUN_0060d2f0",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00737af6",
+        "containing_name": "BSP_Application_RunFrame",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00737b03",
+        "containing_name": "BSP_Application_RunFrame",
+        "reference_type": "READ"
+      },
+      {
+        "address": "00ad3083",
+        "containing_name": null,
+        "reference_type": "READ"
+      },
+      {
+        "address": "00ad30d9",
+        "containing_name": null,
+        "reference_type": "READ"
+      },
+      {
+        "address": "00af26c5",
+        "containing_name": "BSP_NativeTraceline_FillAndSubmitGeometry",
+        "reference_type": "READ"
+      },
+      {
+        "address": "0077149e",
+        "containing_name": "FUN_007713a0",
+        "reference_type": "READ"
+      },
+      {
+        "address": "0077156e",
+        "containing_name": "FUN_007713a0",
+        "reference_type": "READ"
+      },
+      {
+        "address": "004e4d50",
+        "containing_name": "BSP_Game_OnMove",
+        "reference_type": "READ"
+      }
+    ]
+  },
+  "source_inventory": {
+    "query": "rg -n \"\\bFrameClock\\b|\\bclock_\\b|actual_clock_publication|frame_clock|frame_interval\" include/bsp src",
+    "match_count": 182,
+    "matches": [
+      {
+        "path": "src/app_frame.cpp",
+        "line": 27,
+        "text": "host.advance_frame_clock();"
+      },
+      {
+        "path": "src/app_frame.cpp",
+        "line": 28,
+        "text": "const float seconds = timestamp_seconds_x87(host.frame_interval());"
+      },
+      {
+        "path": "include/bsp/app_frame.hpp",
+        "line": 4,
+        "text": "#include \"bsp/frame_clock.hpp\""
+      },
+      {
+        "path": "include/bsp/app_frame.hpp",
+        "line": 46,
+        "text": "virtual void advance_frame_clock() = 0; // clock 01090ab0 virtual +8h -> 00bedc30"
+      },
+      {
+        "path": "include/bsp/app_frame.hpp",
+        "line": 47,
+        "text": "virtual const ClockTimestamp& frame_interval() = 0; // virtual +1Ch -> 00bee070"
+      },
+      {
+        "path": "src/d3d9_mesh_probe.cpp",
+        "line": 243,
+        "text": "bsp::FrameClock frame;"
+      },
+      {
+        "path": "src/d3d9_mesh_probe.cpp",
+        "line": 244,
+        "text": "if (!bsp::initialize_frame_clock_00bedbd0(frame)"
+      },
+      {
+        "path": "src/d3d9_mesh_probe.cpp",
+        "line": 245,
+        "text": "|| !bsp::update_frame_clock_00bedc30(frame)) {"
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "line": 23,
+        "text": "struct FrameClock {"
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "line": 40,
+        "text": "bool initialize_frame_clock_00bedbd0(FrameClock& clock) noexcept;"
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "line": 41,
+        "text": "bool update_frame_clock_00bedc30(FrameClock& clock) noexcept;"
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "line": 43,
+        "text": "bool enable_fixed_clock_00bedb20(FrameClock& clock, std::int32_t milliseconds) noexcept;"
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "line": 44,
+        "text": "void disable_fixed_clock_00bedb60(FrameClock& clock) noexcept;"
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "line": 47,
+        "text": "bool sample_frame_clock_00bee080(const FrameClock& clock, ClockTimestamp& destination) noexcept;"
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "line": 49,
+        "text": "bool pause_frame_clock_00bedae0(FrameClock& clock) noexcept;"
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "line": 50,
+        "text": "bool resume_frame_clock_00beddc0(FrameClock& clock) noexcept;"
+      },
+      {
+        "path": "src/frame_clock.cpp",
+        "line": 1,
+        "text": "#include \"bsp/frame_clock.hpp\""
+      },
+      {
+        "path": "src/frame_clock.cpp",
+        "line": 73,
+        "text": "bool update_frame_clock_00bedc30(FrameClock& clock) noexcept {"
+      },
+      {
+        "path": "src/frame_clock.cpp",
+        "line": 112,
+        "text": "bool initialize_frame_clock_00bedbd0(FrameClock& clock) noexcept {"
+      },
+      {
+        "path": "src/frame_clock.cpp",
+        "line": 120,
+        "text": "return update_frame_clock_00bedc30(clock) && update_frame_clock_00bedc30(clock);"
+      },
+      {
+        "path": "src/frame_clock.cpp",
+        "line": 123,
+        "text": "bool enable_fixed_clock_00bedb20(FrameClock& clock, std::int32_t milliseconds) noexcept {"
+      },
+      {
+        "path": "src/frame_clock.cpp",
+        "line": 134,
+        "text": "void disable_fixed_clock_00bedb60(FrameClock& clock) noexcept {"
+      },
+      {
+        "path": "src/frame_clock.cpp",
+        "line": 138,
+        "text": "bool sample_frame_clock_00bee080(const FrameClock& clock, ClockTimestamp& destination) noexcept {"
+      },
+      {
+        "path": "src/frame_clock.cpp",
+        "line": 149,
+        "text": "bool pause_frame_clock_00bedae0(FrameClock& clock) noexcept {"
+      },
+      {
+        "path": "src/frame_clock.cpp",
+        "line": 153,
+        "text": "if (!sample_frame_clock_00bee080(clock, sampled)) return false;"
+      },
+      {
+        "path": "src/frame_clock.cpp",
+        "line": 158,
+        "text": "bool resume_frame_clock_00beddc0(FrameClock& clock) noexcept {"
+      },
+      {
+        "path": "src/frame_clock.cpp",
+        "line": 162,
+        "text": "if (!sample_frame_clock_00bee080(clock, sampled)) return false;"
+      },
+      {
+        "path": "include/bsp/frontend_prompts.hpp",
+        "line": 7,
+        "text": "#include \"bsp/frame_clock.hpp\""
+      },
+      {
+        "path": "include/bsp/gamepad_force_requests.hpp",
+        "line": 3,
+        "text": "#include \"bsp/frame_clock.hpp\""
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "line": 768,
+        "text": "void GameFrameHost::advance_frame_clock() {"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "line": 769,
+        "text": "log_.implemented(\"ApplicationFrameHost::advance_frame_clock\", \"00bedc30\");"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "line": 770,
+        "text": "update_frame_clock_00bedc30(clock_);"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "line": 773,
+        "text": "const ClockTimestamp& GameFrameHost::frame_interval() {"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "line": 774,
+        "text": "log_.implemented(\"ApplicationFrameHost::frame_interval\", \"00bee070\");"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "line": 775,
+        "text": "return clock_.interval;"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "line": 921,
+        "text": "app.clock_, crt_string_storage(), platform.load_events(),"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "line": 1270,
+        "text": "construct_frame_clock_singleton_00bedfb0(clock_);"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "line": 1271,
+        "text": "clock_publication_01090ab0_ = &clock_;"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "line": 1272,
+        "text": "log_.implemented(\"Phase 0 construct_frame_clock_singleton\", \"00bedfb0\");"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "line": 1618,
+        "text": "frame_host_ = new GameFrameHost(log_, clock_, platform_, loop_, game_state_, profiler_,"
+      },
+      {
+        "path": "src/game_frame_control.cpp",
+        "line": 332,
+        "text": "void run_game_frame_control(GameFrameControlState& state, FrameClock& clock,"
+      },
+      {
+        "path": "include/bsp/game_frame_control.hpp",
+        "line": 7,
+        "text": "#include \"bsp/frame_clock.hpp\""
+      },
+      {
+        "path": "include/bsp/game_frame_control.hpp",
+        "line": 291,
+        "text": "void run_game_frame_control(GameFrameControlState& state, FrameClock& clock,"
+      },
+      {
+        "path": "src/game_hosts_commands.cpp",
+        "line": 1195,
+        "text": ": chain_(chain), clock_(mission_clock), player_(player_controlled),"
+      },
+      {
+        "path": "src/game_hosts_commands.cpp",
+        "line": 1248,
+        "text": "chain_.owner.params_of(chain_.unit.index), clock_, *this);"
+      },
+      {
+        "path": "src/game_hosts_commands.cpp",
+        "line": 1284,
+        "text": "float clock_{0.0f};"
+      },
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "line": 44,
+        "text": "#include \"bsp/frame_clock.hpp\""
+      },
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "line": 336,
+        "text": "GameFrameHost(GameHostLog& log, FrameClock& clock, Win32PlatformState& platform,"
+      },
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "line": 339,
+        "text": ": log_(log), clock_(clock), platform_(platform), loop_(loop),"
+      },
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "line": 346,
+        "text": "void advance_frame_clock() override;"
+      },
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "line": 347,
+        "text": "const ClockTimestamp& frame_interval() override;"
+      },
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "line": 365,
+        "text": "FrameClock& clock_;"
+      },
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "line": 604,
+        "text": "FrameClock* volatile clock_publication_01090ab0_{};"
+      },
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "line": 619,
+        "text": "FrameClock clock_;"
+      },
+      {
+        "path": "include/bsp/game_sound_runtime.hpp",
+        "line": 17,
+        "text": "struct FrameClock;"
+      },
+      {
+        "path": "include/bsp/game_sound_runtime.hpp",
+        "line": 47,
+        "text": "FrameClock& clock;"
+      },
+      {
+        "path": "src/game_sound_runtime.cpp",
+        "line": 86,
+        "text": "return sound_frame_clock_current_00bee050(services.clock);"
+      },
+      {
+        "path": "include/bsp/joystick_input.hpp",
+        "line": 3,
+        "text": "#include \"bsp/frame_clock.hpp\""
+      },
+      {
+        "path": "include/bsp/loading_screen_elements.hpp",
+        "line": 25,
+        "text": "#include \"bsp/frame_clock.hpp\""
+      },
+      {
+        "path": "include/bsp/loading_screen_elements.hpp",
+        "line": 220,
+        "text": "// sample_frame_clock_00BEE080 in include/bsp/frame_clock.hpp."
+      },
+      {
+        "path": "include/bsp/native_frame_clock_lifetime.hpp",
+        "line": 2,
+        "text": "#include \"bsp/native_frame_clock_actual.hpp\""
+      },
+      {
+        "path": "include/bsp/native_frame_clock_lifetime.hpp",
+        "line": 11,
+        "text": "void* volatile& actual_clock_publication_01090ab0;"
+      },
+      {
+        "path": "include/bsp/native_frame_clock_lifetime.hpp",
+        "line": 17,
+        "text": "void* __fastcall construct_native_frame_clock_base_00bede00("
+      },
+      {
+        "path": "include/bsp/native_frame_clock_lifetime.hpp",
+        "line": 21,
+        "text": "void __fastcall destroy_native_frame_clock_base_00bedea0("
+      },
+      {
+        "path": "include/bsp/native_frame_clock_lifetime.hpp",
+        "line": 28,
+        "text": "void* __fastcall construct_native_frame_clock_00bedfb0("
+      },
+      {
+        "path": "include/bsp/native_frame_clock_lifetime.hpp",
+        "line": 33,
+        "text": "void* __fastcall delete_native_frame_clock_00bee110("
+      },
+      {
+        "path": "include/bsp/native_frame_clock_actual.hpp",
+        "line": 46,
+        "text": "// Required storage is the genuine 80h layout; no FrameClock projection accepted."
+      },
+      {
+        "path": "include/bsp/native_frame_clock_actual.hpp",
+        "line": 47,
+        "text": "void __fastcall pause_native_frame_clock_00bedae0(void*, const NativeFrameClockActualContext*);"
+      },
+      {
+        "path": "include/bsp/native_frame_clock_actual.hpp",
+        "line": 48,
+        "text": "void __fastcall initialize_native_frame_clock_00bedbd0(void*, const NativeFrameClockActualContext*);"
+      },
+      {
+        "path": "include/bsp/native_frame_clock_actual.hpp",
+        "line": 49,
+        "text": "void __fastcall resume_native_frame_clock_00beddc0(void*, const NativeFrameClockActualContext*);"
+      },
+      {
+        "path": "include/bsp/native_frame_clock_actual.hpp",
+        "line": 51,
+        "text": "void __fastcall enable_fixed_native_frame_clock_00bedb20(void*, void*, std::int32_t milliseconds);"
+      },
+      {
+        "path": "include/bsp/native_frame_clock_actual.hpp",
+        "line": 52,
+        "text": "void __fastcall disable_fixed_native_frame_clock_00bedb60(void*) noexcept;"
+      },
+      {
+        "path": "include/bsp/native_frame_clock_actual.hpp",
+        "line": 53,
+        "text": "void __fastcall update_native_frame_clock_00bedc30(void*);"
+      },
+      {
+        "path": "include/bsp/native_frame_clock_actual.hpp",
+        "line": 57,
+        "text": "// BEDB70 remains add_timestamp_00bedb70 in frame_clock.hpp. These methods reuse"
+      },
+      {
+        "path": "include/bsp/native_frame_clock_actual.hpp",
+        "line": 59,
+        "text": "// sample_native_frame_clock_00bee080 in native_renderer_control_worker.hpp."
+      },
+      {
+        "path": "src/native_frame_clock_actual.cpp",
+        "line": 1,
+        "text": "#include \"bsp/native_frame_clock_actual.hpp\""
+      },
+      {
+        "path": "src/native_frame_clock_actual.cpp",
+        "line": 2,
+        "text": "#include \"bsp/frame_clock.hpp\""
+      },
+      {
+        "path": "src/native_frame_clock_actual.cpp",
+        "line": 22,
+        "text": "return update_native_frame_clock_00bedc30;"
+      },
+      {
+        "path": "src/native_frame_clock_actual.cpp",
+        "line": 26,
+        "text": "return sample_native_frame_clock_00bee080;"
+      },
+      {
+        "path": "src/native_frame_clock_actual.cpp",
+        "line": 30,
+        "text": "// semantic FrameClock. The existing arithmetic retains modulo products and"
+      },
+      {
+        "path": "src/native_frame_clock_actual.cpp",
+        "line": 59,
+        "text": "__declspec(naked) void __fastcall update_native_frame_clock_00bedc30(void*) {"
+      },
+      {
+        "path": "src/native_frame_clock_actual.cpp",
+        "line": 204,
+        "text": "__declspec(naked) void __fastcall enable_fixed_native_frame_clock_00bedb20(void*, void*, std::int32_t) {"
+      },
+      {
+        "path": "src/native_frame_clock_actual.cpp",
+        "line": 225,
+        "text": "__declspec(naked) void __fastcall disable_fixed_native_frame_clock_00bedb60(void*) noexcept {"
+      },
+      {
+        "path": "src/native_frame_clock_actual.cpp",
+        "line": 233,
+        "text": "__declspec(naked) void __fastcall initialize_native_frame_clock_00bedbd0(void*, const NativeFrameClockActualContext*) {"
+      },
+      {
+        "path": "src/native_frame_clock_actual.cpp",
+        "line": 276,
+        "text": "__declspec(naked) void __fastcall pause_native_frame_clock_00bedae0(void*, const NativeFrameClockActualContext*) {"
+      },
+      {
+        "path": "src/native_frame_clock_actual.cpp",
+        "line": 308,
+        "text": "__declspec(naked) void __fastcall resume_native_frame_clock_00beddc0(void*, const NativeFrameClockActualContext*) {"
+      },
+      {
+        "path": "src/native_frame_clock_lifetime.cpp",
+        "line": 1,
+        "text": "#include \"bsp/native_frame_clock_lifetime.hpp\""
+      },
+      {
+        "path": "src/native_frame_clock_lifetime.cpp",
+        "line": 53,
+        "text": "if(armed)try {destroy_native_frame_clock_base_00bedea0(owner,context);}catch(...) {std::terminate();}"
+      },
+      {
+        "path": "src/native_frame_clock_lifetime.cpp",
+        "line": 58,
+        "text": "void* __fastcall construct_native_frame_clock_base_00bede00("
+      },
+      {
+        "path": "src/native_frame_clock_lifetime.cpp",
+        "line": 64,
+        "text": "context.actual_clock_publication_01090ab0=owner;"
+      },
+      {
+        "path": "src/native_frame_clock_lifetime.cpp",
+        "line": 66,
+        "text": "void* const current_clock=context.actual_clock_publication_01090ab0;"
+      },
+      {
+        "path": "src/native_frame_clock_lifetime.cpp",
+        "line": 72,
+        "text": "void __fastcall destroy_native_frame_clock_base_00bedea0("
+      },
+      {
+        "path": "src/native_frame_clock_lifetime.cpp",
+        "line": 79,
+        "text": "void* const current_clock=context.actual_clock_publication_01090ab0;"
+      },
+      {
+        "path": "src/native_frame_clock_lifetime.cpp",
+        "line": 81,
+        "text": "context.actual_clock_publication_01090ab0=nullptr;"
+      },
+      {
+        "path": "src/native_frame_clock_lifetime.cpp",
+        "line": 86,
+        "text": "void* __fastcall construct_native_frame_clock_00bedfb0("
+      },
+      {
+        "path": "src/native_frame_clock_lifetime.cpp",
+        "line": 88,
+        "text": "construct_native_frame_clock_base_00bede00(owner,context);"
+      },
+      {
+        "path": "src/native_frame_clock_lifetime.cpp",
+        "line": 101,
+        "text": "initialize_native_frame_clock_00bedbd0(owner,&context.methods);"
+      },
+      {
+        "path": "src/native_frame_clock_lifetime.cpp",
+        "line": 106,
+        "text": "__declspec(naked) void* __fastcall delete_native_frame_clock_00bee110("
+      },
+      {
+        "path": "src/native_frame_clock_lifetime.cpp",
+        "line": 112,
+        "text": "call destroy_native_frame_clock_base_00bedea0"
+      },
+      {
+        "path": "include/bsp/native_input_device_runtime.hpp",
+        "line": 16,
+        "text": "// FrameClock/Win32PlatformState ABI cast is made. Fields naming the same image"
+      },
+      {
+        "path": "include/bsp/native_input_device_runtime.hpp",
+        "line": 25,
+        "text": "FrameClock* volatile& clock_01090ab0;"
+      },
+      {
+        "path": "include/bsp/native_joystick.hpp",
+        "line": 3,
+        "text": "#include \"bsp/frame_clock.hpp\""
+      },
+      {
+        "path": "src/native_input_device_runtime.cpp",
+        "line": 148,
+        "text": "return *sound_frame_clock_current_00bee050(*clock);"
+      },
+      {
+        "path": "include/bsp/native_renderer_control_worker.hpp",
+        "line": 3,
+        "text": "#include \"bsp/frame_clock.hpp\""
+      },
+      {
+        "path": "include/bsp/native_renderer_control_worker.hpp",
+        "line": 61,
+        "text": "ClockTimestamp* __fastcall sample_native_frame_clock_00bee080("
+      },
+      {
+        "path": "src/native_renderer_control_worker.cpp",
+        "line": 46,
+        "text": "sample_native_frame_clock_00bee080(clock,nullptr,&output);"
+      },
+      {
+        "path": "src/native_renderer_control_worker.cpp",
+        "line": 69,
+        "text": "__declspec(naked) ClockTimestamp* __fastcall sample_native_frame_clock_00bee080("
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "line": 33,
+        "text": "#include \"bsp/native_frame_clock_lifetime.hpp\""
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "line": 54,
+        "text": "if (bindings.frame_clock != nullptr) {"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "line": 55,
+        "text": "delete_native_frame_clock_00bee110(owner, *bindings.frame_clock, flags);"
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "line": 132,
+        "text": "NativeFrameClockLifetimeContext* frame_clock{};"
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "line": 139,
+        "text": "static_assert(offsetof(NativeSingletonDeletionBindings, frame_clock) == 108);"
+      },
+      {
+        "path": "include/bsp/native_traceline_update.hpp",
+        "line": 7,
+        "text": "struct FrameClock;"
+      },
+      {
+        "path": "include/bsp/native_traceline_update.hpp",
+        "line": 12,
+        "text": "// is the SAME canonical FrameClock used by system-time and frame services;"
+      },
+      {
+        "path": "include/bsp/native_traceline_update.hpp",
+        "line": 21,
+        "text": "FrameClock* const volatile* clock_01090ab0;"
+      },
+      {
+        "path": "include/bsp/native_traceline_render.hpp",
+        "line": 8,
+        "text": "struct FrameClock;"
+      },
+      {
+        "path": "include/bsp/native_traceline_render.hpp",
+        "line": 40,
+        "text": "FrameClock* const volatile* clock_01090ab0;"
+      },
+      {
+        "path": "include/bsp/native_traceline_render.hpp",
+        "line": 50,
+        "text": "// +14 service on the SAME current FrameClock, returning its real signed"
+      },
+      {
+        "path": "include/bsp/native_traceline_render.hpp",
+        "line": 52,
+        "text": "const ClockTimestamp* (__fastcall* clock_current_14)(FrameClock&, SystemTimeTimerVirtuals&);"
+      },
+      {
+        "path": "include/bsp/native_traceline_render.hpp",
+        "line": 119,
+        "text": "// the canonical FrameClock's CURRENT pair, not its interval or a double time."
+      },
+      {
+        "path": "include/bsp/native_traceline_render.hpp",
+        "line": 120,
+        "text": "const ClockTimestamp* __fastcall frame_clock_current_00bee050(FrameClock&) noexcept;"
+      },
+      {
+        "path": "src/native_traceline_render.cpp",
+        "line": 38,
+        "text": "FrameClock* const actual=*a->clock_01090ab0;"
+      },
+      {
+        "path": "src/native_traceline_render.cpp",
+        "line": 92,
+        "text": "const ClockTimestamp* __fastcall frame_clock_current_00bee050(FrameClock& clock) noexcept {"
+      },
+      {
+        "path": "src/native_traceline_update.cpp",
+        "line": 22,
+        "text": "FrameClock* const clock=*a->clock_01090ab0;"
+      },
+      {
+        "path": "include/bsp/platform_window.hpp",
+        "line": 13,
+        "text": "#include \"bsp/frame_clock.hpp\""
+      },
+      {
+        "path": "include/bsp/platform_window.hpp",
+        "line": 211,
+        "text": "// bsp/frame_clock.hpp: every field this constructor writes lands on a FrameClock"
+      },
+      {
+        "path": "include/bsp/platform_window.hpp",
+        "line": 215,
+        "text": "// 00bedbd0. Returns what initialize_frame_clock_00bedbd0 returns."
+      },
+      {
+        "path": "include/bsp/platform_window.hpp",
+        "line": 216,
+        "text": "bool construct_frame_clock_singleton_00bedfb0(FrameClock& clock) noexcept;"
+      },
+      {
+        "path": "src/platform_window.cpp",
+        "line": 229,
+        "text": "bool construct_frame_clock_singleton_00bedfb0(FrameClock& clock) noexcept {"
+      },
+      {
+        "path": "src/platform_window.cpp",
+        "line": 241,
+        "text": "return initialize_frame_clock_00bedbd0(clock);"
+      },
+      {
+        "path": "include/bsp/sound_frame_service.hpp",
+        "line": 22,
+        "text": "// which supplies its same FrameClock through BEE050/current+20. These callers"
+      },
+      {
+        "path": "include/bsp/sound_resource_runtime.hpp",
+        "line": 3,
+        "text": "#include \"bsp/frame_clock.hpp\""
+      },
+      {
+        "path": "include/bsp/sound_resource_runtime.hpp",
+        "line": 55,
+        "text": "// four words. The caller initializes and owns the canonical FrameClock."
+      },
+      {
+        "path": "include/bsp/sound_resource_runtime.hpp",
+        "line": 58,
+        "text": "explicit FrameClockSoundStartupHost(const FrameClock& clock) : clock_(clock) {}"
+      },
+      {
+        "path": "include/bsp/sound_resource_runtime.hpp",
+        "line": 61,
+        "text": "const FrameClock& clock_;"
+      },
+      {
+        "path": "include/bsp/sound_system_update.hpp",
+        "line": 4,
+        "text": "#include \"bsp/frame_clock.hpp\""
+      },
+      {
+        "path": "include/bsp/sound_system_update.hpp",
+        "line": 40,
+        "text": "// Current-clock vslot14 for verifiedD68D50: ECX=FrameClock, EAX=this+20, RET."
+      },
+      {
+        "path": "include/bsp/sound_system_update.hpp",
+        "line": 41,
+        "text": "const ClockTimestamp* sound_frame_clock_current_00bee050(FrameClock&) noexcept;"
+      },
+      {
+        "path": "include/bsp/system_camera_axes.hpp",
+        "line": 7,
+        "text": "struct FrameClock;"
+      },
+      {
+        "path": "include/bsp/system_camera_axes.hpp",
+        "line": 61,
+        "text": "FrameClock* write_system_camera_axes_00b46c50(CameraFrameState&, float* prefix,"
+      },
+      {
+        "path": "include/bsp/system_camera_axes.hpp",
+        "line": 62,
+        "text": "std::size_t capacity, FrameClock* const volatile& global_01090ab0,"
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "line": 3,
+        "text": "#include \"bsp/frame_clock.hpp\""
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "line": 72,
+        "text": "const ClockTimestamp* frame_clock_interval_00bee070(FrameClock&) noexcept;"
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "line": 79,
+        "text": "// clock adapter calls frame_clock_interval_00bee070(owner)."
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "line": 80,
+        "text": "virtual const ClockTimestamp* interval_1c(FrameClock& owner) = 0;"
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "line": 84,
+        "text": "const ClockTimestamp* interval_1c(FrameClock& owner) override;"
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "line": 88,
+        "text": "FrameClock* const volatile& timer_01090ab0;"
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "line": 103,
+        "text": "CameraFrameState&, FrameClock* captured_timer, float* output,"
+      },
+      {
+        "path": "include/bsp/title_init.hpp",
+        "line": 5,
+        "text": "#include \"bsp/frame_clock.hpp\""
+      },
+      {
+        "path": "src/sound_resource_runtime.cpp",
+        "line": 68,
+        "text": "if (!sample_frame_clock_00bee080(clock_, timestamp))"
+      },
+      {
+        "path": "src/sound_system_update.cpp",
+        "line": 83,
+        "text": "const ClockTimestamp* sound_frame_clock_current_00bee050(FrameClock& clock) noexcept { return &clock.current; }"
+      },
+      {
+        "path": "src/startup_probe.cpp",
+        "line": 2,
+        "text": "#include \"bsp/frame_clock.hpp\""
+      },
+      {
+        "path": "src/startup_probe.cpp",
+        "line": 14,
+        "text": "bsp::FrameClock clock;"
+      },
+      {
+        "path": "src/startup_probe.cpp",
+        "line": 15,
+        "text": "if (!bsp::initialize_frame_clock_00bedbd0(clock) || clock.updates != 2"
+      },
+      {
+        "path": "src/startup_probe.cpp",
+        "line": 16,
+        "text": "|| !bsp::update_frame_clock_00bedc30(clock)) return 3;"
+      },
+      {
+        "path": "src/startup_probe.cpp",
+        "line": 20,
+        "text": "|| !bsp::update_frame_clock_00bedc30(clock)"
+      },
+      {
+        "path": "src/startup_probe.cpp",
+        "line": 21,
+        "text": "|| !bsp::update_frame_clock_00bedc30(clock)"
+      },
+      {
+        "path": "src/startup_probe.cpp",
+        "line": 26,
+        "text": "if (!bsp::update_frame_clock_00bedc30(clock)"
+      },
+      {
+        "path": "src/startup_probe.cpp",
+        "line": 29,
+        "text": "if (!bsp::pause_frame_clock_00bedae0(clock)"
+      },
+      {
+        "path": "src/startup_probe.cpp",
+        "line": 33,
+        "text": "if (!bsp::update_frame_clock_00bedc30(clock) || clock.updates != updates"
+      },
+      {
+        "path": "src/startup_probe.cpp",
+        "line": 35,
+        "text": "if (!bsp::resume_frame_clock_00beddc0(clock) || clock.paused"
+      },
+      {
+        "path": "src/startup_probe.cpp",
+        "line": 39,
+        "text": "if (!bsp::sample_frame_clock_00bee080(clock, absolute)"
+      },
+      {
+        "path": "src/startup_probe.cpp",
+        "line": 41,
+        "text": "|| !bsp::pause_frame_clock_00bedae0(clock)"
+      },
+      {
+        "path": "src/startup_probe.cpp",
+        "line": 42,
+        "text": "|| !bsp::resume_frame_clock_00beddc0(clock)"
+      },
+      {
+        "path": "src/system_camera_axes.cpp",
+        "line": 414,
+        "text": "FrameClock* write_system_camera_axes_00b46c50(CameraFrameState& frame, float* prefix,"
+      },
+      {
+        "path": "src/system_camera_axes.cpp",
+        "line": 415,
+        "text": "std::size_t capacity, FrameClock* const volatile& global_01090ab0,"
+      },
+      {
+        "path": "src/system_camera_axes.cpp",
+        "line": 431,
+        "text": "FrameClock* const volatile* timer_slot = &global_01090ab0;"
+      },
+      {
+        "path": "src/system_camera_axes.cpp",
+        "line": 432,
+        "text": "FrameClock* captured;"
+      },
+      {
+        "path": "src/system_time_constants.cpp",
+        "line": 88,
+        "text": "const ClockTimestamp* frame_clock_interval_00bee070(FrameClock& owner) noexcept {"
+      },
+      {
+        "path": "src/system_time_constants.cpp",
+        "line": 91,
+        "text": "const ClockTimestamp* ConcreteSystemTimeTimerVirtuals::interval_1c(FrameClock& owner) {"
+      },
+      {
+        "path": "src/system_time_constants.cpp",
+        "line": 92,
+        "text": "return frame_clock_interval_00bee070(owner);"
+      },
+      {
+        "path": "src/system_time_constants.cpp",
+        "line": 96,
+        "text": "CameraFrameState& camera, FrameClock* captured_timer, float* output,"
+      },
+      {
+        "path": "include/bsp/xlive_manager_runtime.hpp",
+        "line": 28,
+        "text": "XLiveAcceptedInvite&, XLiveNotificationGlobals&, FrameClock* volatile&,"
+      },
+      {
+        "path": "include/bsp/xlive_manager_runtime.hpp",
+        "line": 53,
+        "text": "FrameClock* volatile& clock_;"
+      },
+      {
+        "path": "src/timestamp_reference_probe.cpp",
+        "line": 2,
+        "text": "#include \"bsp/frame_clock.hpp\""
+      },
+      {
+        "path": "src/title_init.cpp",
+        "line": 3,
+        "text": "#include \"bsp/frame_clock.hpp\""
+      },
+      {
+        "path": "include/bsp/xlive_signin.hpp",
+        "line": 4,
+        "text": "#include \"bsp/frame_clock.hpp\""
+      },
+      {
+        "path": "include/bsp/xlive_system_pump.hpp",
+        "line": 4,
+        "text": "#include \"bsp/frame_clock.hpp\""
+      },
+      {
+        "path": "src/xlive_manager_runtime.cpp",
+        "line": 12,
+        "text": "XLiveNotificationGlobals& globals, FrameClock* volatile& clock,"
+      },
+      {
+        "path": "src/xlive_manager_runtime.cpp",
+        "line": 17,
+        "text": "invite_(invite), globals_(globals), clock_(clock), game_(game) {}"
+      },
+      {
+        "path": "src/xlive_manager_runtime.cpp",
+        "line": 24,
+        "text": "auto* clock = clock_;"
+      },
+      {
+        "path": "src/xlive_manager_runtime.cpp",
+        "line": 27,
+        "text": "if (!sample_frame_clock_00bee080(*clock, result))"
+      }
+    ],
+    "files": [
+      {
+        "path": "include/bsp/app_frame.hpp",
+        "sha256": "b74741c8e369d1b2555bbe757f585b709d2830ef5a082b1703a4f4ed93d0f16a",
+        "git_blob": "d13ad68653a8450ed1346c6f9f05b4c756392f57"
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b",
+        "git_blob": "c189a9bd5bd90a82bb8c7d21d3b7c015be1a267d"
+      },
+      {
+        "path": "include/bsp/frontend_prompts.hpp",
+        "sha256": "ba11e0c866cb414881296390f7bd4717b3547322055e134eb95e4f2c1a400cb1",
+        "git_blob": "0d96cf658651aa84efafa10284f736ead305ff95"
+      },
+      {
+        "path": "include/bsp/game_frame_control.hpp",
+        "sha256": "b622bc1408bc7d6f5f0ef9b021abe73a8f6fc251cdee3314da679b31e193b38a",
+        "git_blob": "ef9c3eb915ccdfb2d1bdee8d8bbf59841dc1596d"
+      },
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "sha256": "09169d856660ebab478ee6986a168939bea17ecf445fe417e41064bd196772c0",
+        "git_blob": "55590b7dd9d3ce6631875f35ca1c7c4f77577275"
+      },
+      {
+        "path": "include/bsp/game_hosts_singletons.hpp",
+        "sha256": "545a472f94813a3f2f03257b361c913bf2ec56e99979becc04257bce9cf2d8f5",
+        "git_blob": "b11abe50c879a0d0cf59a6e26b09aaa54100c191"
+      },
+      {
+        "path": "include/bsp/game_sound_runtime.hpp",
+        "sha256": "252056a01364d78d02631f8e3869a707f3584d0e05b7bdf0bbf736b7fcb55490",
+        "git_blob": "f2ffe3937aeae57bb533656d507c9dce90920001"
+      },
+      {
+        "path": "include/bsp/gamepad_force_requests.hpp",
+        "sha256": "01f3c2418e90ee23bce3605e4bf8d3d344c1aef10aa1e69283c85ef740952370",
+        "git_blob": "cbcdcc0694a9739eaa48a333d163d907e26d613c"
+      },
+      {
+        "path": "include/bsp/joystick_input.hpp",
+        "sha256": "3d279d4b6a55bb669723a87a0a1cb1057180a5471b253777a25af43567f2b096",
+        "git_blob": "71f4a06c65efedfa1a00bb05e54cc134f403b733"
+      },
+      {
+        "path": "include/bsp/loading_screen_elements.hpp",
+        "sha256": "168dd9f048ee82599adb3143b349a3cc0d1b86e201e86df29820ecaef54ec3ea",
+        "git_blob": "c2abc3cffa7145842cde0a026534d2689d65eba5"
+      },
+      {
+        "path": "include/bsp/native_frame_clock_actual.hpp",
+        "sha256": "b77afbe9be4d024e1a84f84fbb39c74b7d6e4d5d185452fca79a3d65649c1258",
+        "git_blob": "81f5e2579ee565cd9f32aebc194d05b9d8e008b1"
+      },
+      {
+        "path": "include/bsp/native_frame_clock_lifetime.hpp",
+        "sha256": "12310eb884c777f278863b945d931bcbe91f2c689b086e9a4f07017fe8434d76",
+        "git_blob": "bd6f9e95112830c854f813a35c6c6f880ebe46c1"
+      },
+      {
+        "path": "include/bsp/native_input_device_runtime.hpp",
+        "sha256": "ddb74990a3c164faf973b6af209f01ab0c39a0420d78dba9e36e270e27087b23",
+        "git_blob": "f1b6d620b6635739f60e2780bd94145ace5411da"
+      },
+      {
+        "path": "include/bsp/native_joystick.hpp",
+        "sha256": "5d3159928aed031bc747232b8332afa7966865ea5932e94ea158c4fe93115bf9",
+        "git_blob": "eff741299bf310acbb243a27b7c1269266ca5dca"
+      },
+      {
+        "path": "include/bsp/native_renderer_control_worker.hpp",
+        "sha256": "57ebea3be377d6165847e7108052788fefcb99038ba38b4c235cff01f9a0d942",
+        "git_blob": "6588cb1543afb6b6502a5dd80e7da21e4482df40"
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "sha256": "b5f018a453b433daa8942d4b007a816f7a72954e783d4a889add39d0366dd0e7",
+        "git_blob": "07274ad134a69bf95d20471191db07d5e1dd4a02"
+      },
+      {
+        "path": "include/bsp/native_traceline_render.hpp",
+        "sha256": "eec43d439a9ddcf4d5aa96954434c469b607c4ac198f54b6cb55339a0365caf4",
+        "git_blob": "0458953af335f5363ae3f1ab70dd85db9d275ff5"
+      },
+      {
+        "path": "include/bsp/native_traceline_update.hpp",
+        "sha256": "0beed3578741592b26ad26b2474203b47c3c366478646aa03e36a056e04fffab",
+        "git_blob": "694dce8548fdd4517064916ee6fb47c9c5e0e455"
+      },
+      {
+        "path": "include/bsp/platform_window.hpp",
+        "sha256": "b284fc6add7a90fb7c1a308426b6e3c2f2bcfcfee4aa8045086ccf4a8e5ca05c",
+        "git_blob": "809c2392dc2d3e82bd92f310d5365e442ba84773"
+      },
+      {
+        "path": "include/bsp/sound_frame_service.hpp",
+        "sha256": "c5d121881c8184cf6aba4137a1ecbff94abf601fb983c1ddc94629cad93ceceb",
+        "git_blob": "ebffde4ff53bc46ca4ef887ef0d22f185829c567"
+      },
+      {
+        "path": "include/bsp/sound_resource_runtime.hpp",
+        "sha256": "8e89b4a7012af257b3c411599253c43fa407de3632f5a948f44870b7c5d61c82",
+        "git_blob": "c54ab9242ce768bddb568c86d86f493c5a829d91"
+      },
+      {
+        "path": "include/bsp/sound_startup.hpp",
+        "sha256": "e40f978b6234fa9fb60a403b14c6a2523bb3ed0b628518ad2d4de0dba63bbcf7",
+        "git_blob": "d61c50c24b7882f7942f75e5022280708d838cb6"
+      },
+      {
+        "path": "include/bsp/sound_system_update.hpp",
+        "sha256": "6fe29666c3dda92c374c9218831086b8448a457ba85f04d50c43c73a40bc80a6",
+        "git_blob": "3d2d19bca8fb3585139f732ac03ecc1f6799987c"
+      },
+      {
+        "path": "include/bsp/system_camera_axes.hpp",
+        "sha256": "abfa9300a54975dcdb7489f466d941b9341991af3f027ebb764a19cbb08124d5",
+        "git_blob": "55c1dc58431c80cddc69535d4d4042ad8d697c22"
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+        "git_blob": "8b1f859cb9cf20f1eb0a7ee924b17a7818bbbb2c"
+      },
+      {
+        "path": "include/bsp/title_init.hpp",
+        "sha256": "812e33bb6a996f862bbbd73af8d6d3c90575b132bb25e3d3dcca722ec3a20e72",
+        "git_blob": "31fec5f7f61fe3e562934162f3519dc312394f92"
+      },
+      {
+        "path": "include/bsp/xlive_manager_runtime.hpp",
+        "sha256": "e53fd2dd8886d79e5ce17d12bde32a621eb9725fc4d26346fb42b4606bef162e",
+        "git_blob": "337c93e3f14ee6a349bd02c65d534d8ab7fea58e"
+      },
+      {
+        "path": "include/bsp/xlive_signin.hpp",
+        "sha256": "c8b1a3e6af7aad6f5dbbba8d7a0309f8903339331d2d106695092eb8e532e7fb",
+        "git_blob": "17e62e66aaba5b69132ff74651ea49faba84b0ca"
+      },
+      {
+        "path": "include/bsp/xlive_system_pump.hpp",
+        "sha256": "04bed387cd51ec34b3289df55ae27436ceeb59a7fcc6360eb1113c2585899cfc",
+        "git_blob": "2f541a5a3fc6511984832614fcfa4bad042f4e15"
+      },
+      {
+        "path": "src/app_frame.cpp",
+        "sha256": "c049f6801753eeb227ecde128b5905d154acc9cd05d6ce96aa4b2b9d67d26308",
+        "git_blob": "92b28bfcd29d329a2cbd336858c755b6d2894cf8"
+      },
+      {
+        "path": "src/d3d9_mesh_probe.cpp",
+        "sha256": "0c9291ba41023652e687e24163d6ba661716d0dd3948a674c80566f86b83d8ef",
+        "git_blob": "b9dba47d643ab6af5a35af4bb586f182cdb71f70"
+      },
+      {
+        "path": "src/frame_clock.cpp",
+        "sha256": "85689c22573c3724489e6341e0fd48573033c893f5fe7ca81a6793f714c903a6",
+        "git_blob": "1a1d0c9f547e1cf554ea8e74e113721f95feda55"
+      },
+      {
+        "path": "src/game_frame_control.cpp",
+        "sha256": "1d9459a79d0f9245fdcdf3fd8ca118732f12a14c5f338e403b2f103bf91227ee",
+        "git_blob": "9c128d202e7769b61c9bad7b9204afd9faffb5ea"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "sha256": "81372029b2bb19550f3f5ee6e5630989c3ce41c70892a104ca5684b238edcfeb",
+        "git_blob": "bfe88fdb15ed9381604d251ccbad2d4396c5ecc2"
+      },
+      {
+        "path": "src/game_hosts_commands.cpp",
+        "sha256": "283aad8439f8999f36e54ad7b0a23086e8bf97e15fb7d314010fd7ac4668e343",
+        "git_blob": "565859c9e912f1cbcbce2762ca093e40d713fb41"
+      },
+      {
+        "path": "src/game_hosts_singletons.cpp",
+        "sha256": "8e3b32493cb44fce7935dda3afa306dd5d7e80c63931b23c7dfdc3810672237b",
+        "git_blob": "7b0578fb86b22f1abafd022156da58a43fc8b124"
+      },
+      {
+        "path": "src/game_main.cpp",
+        "sha256": "a7c9dc5b6ceae4ebc7da00bd60706f2670bc750940ecfd5386791e69344e104a",
+        "git_blob": "2b39fc6bf6d36badc7f88b23aa89626ac84029a0"
+      },
+      {
+        "path": "src/game_sound_runtime.cpp",
+        "sha256": "2f47d95ba7d638db0b07d9045fc5248d5cc155b05445902e62aae5032403c648",
+        "git_blob": "1f7a0b0b3d3cfbb0eb04ea04c960eaa711db277d"
+      },
+      {
+        "path": "src/native_frame_clock_actual.cpp",
+        "sha256": "2a9b0552962c55c528248db06985ef20bb584e984bc243ef44e246a3d1a91e86",
+        "git_blob": "dd4df6914967f53bf05b388f55cd9061def3509a"
+      },
+      {
+        "path": "src/native_frame_clock_lifetime.cpp",
+        "sha256": "e1015047eabf1f7558b1b2a0cd404d5f46828474a17811f4ce05a74485a3c27d",
+        "git_blob": "f3822fd0785b939bf2fa1280e3f9404cfeadf35c"
+      },
+      {
+        "path": "src/native_input_device_runtime.cpp",
+        "sha256": "2c8d099a6b691c7ca408d55c08864759f46f41f66d7f8303b6dc47908d552e24",
+        "git_blob": "70431003bb381bb6fa7e53a44b2fc01f4dffe3d7"
+      },
+      {
+        "path": "src/native_renderer_control_worker.cpp",
+        "sha256": "72dd2701d8afab04771f8664b203e716d9c7094a1adfc4fb1a39fcb49d7f69ca",
+        "git_blob": "2bf8f72451f8ddc16231b28f908681fdc844702b"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "sha256": "de8d03373ca7eec40acce5c91438f68f024f4c42d4bf774fba8104ba33560fc6",
+        "git_blob": "8bd686665972bf50c11f2c4faf9b01ef4edf94b2"
+      },
+      {
+        "path": "src/native_traceline_render.cpp",
+        "sha256": "b791db0734c33fe6c8c12b3caa40c81b76ebfb5915ecdd80b9ae590605160eb6",
+        "git_blob": "63068bb68643c4ef65b6fd6fc62409bb1c7bdce0"
+      },
+      {
+        "path": "src/native_traceline_update.cpp",
+        "sha256": "6ca7b2974c03b5e672da8528bdace20a5ebf9abe1ac34eb521aed5e6ac751f79",
+        "git_blob": "a8882eec3aa144b00acf89da8e358d6d09566609"
+      },
+      {
+        "path": "src/platform_window.cpp",
+        "sha256": "529af9e0063d3f422a983947923958068212b287bd6c2a28e798e032b5a54f02",
+        "git_blob": "f0dbb9a00f0854b1bb571c2aac8843b459bb4ae3"
+      },
+      {
+        "path": "src/sound_resource_runtime.cpp",
+        "sha256": "b1810905849127601e91c911ea8f925157a01ba4d5dfc0dd2d646049d2bda19c",
+        "git_blob": "8dff2cae799734b06b206bf1adfa212189e0a5c9"
+      },
+      {
+        "path": "src/sound_startup.cpp",
+        "sha256": "df982f9b8cfd8c4451ec540750f5f41b0c45b14bae43210043c04f54df0b27e0",
+        "git_blob": "827a01a1113757d71b0114d39187ce5a35fa0f20"
+      },
+      {
+        "path": "src/sound_system_update.cpp",
+        "sha256": "a1314a4c4653022027d8e9ef90bdcc1dc32139d37a77c03516fe682a68463fb9",
+        "git_blob": "46482543e364f137d15021b99c46544a6a537a70"
+      },
+      {
+        "path": "src/startup_probe.cpp",
+        "sha256": "fb5627f924f8e9df8395a50b2351291fb604b10fbc5811c212fdc360b76a513f",
+        "git_blob": "c9dd48c43c5cceaf71be20a439e273402fad4e47"
+      },
+      {
+        "path": "src/system_camera_axes.cpp",
+        "sha256": "2682460d77fd18e19909c946ddd58ed60e63234e441c2f5badafc2c2815f0415",
+        "git_blob": "625cbee3e65c8059c576549c149e169448a8e7db"
+      },
+      {
+        "path": "src/system_constant_builder.cpp",
+        "sha256": "8e9abc434d042ad941532219ebfaa305af5d68d71ccfd91b10fe2865ca407563",
+        "git_blob": "28588a9e074e6df597d0cd2ab464dfd9b1e26e5f"
+      },
+      {
+        "path": "src/system_time_constants.cpp",
+        "sha256": "4281c8bba03dc6726c29a84441b4a52da98b0143ee0aa3bd7e3018bb8192e45c",
+        "git_blob": "584ccd6a40ea5a9c02840af4f3dc5441218c19d1"
+      },
+      {
+        "path": "src/timestamp_reference_probe.cpp",
+        "sha256": "11c5440bccaf7284fed543c520890f7e5fc06854343e087086e4988bcd1cf7f2",
+        "git_blob": "53d871a4d79e380e196c1e5e8d6652bb2360e137"
+      },
+      {
+        "path": "src/title_init.cpp",
+        "sha256": "fdeb6154f772f18ae496daeff3b02b4331e8989b869f308b67678d7d47c0a33e",
+        "git_blob": "837f14985cec3f5f1264d39943f2685d721cbe3c"
+      },
+      {
+        "path": "src/winmain_startup.cpp",
+        "sha256": "521a73023c5d196bdb15b0acf864c4e15cb46e801a58bda1a90d8f6c94de7113",
+        "git_blob": "4dc6dd149ab3e4a76c5b5ff1633d83e3fe12f38a"
+      },
+      {
+        "path": "src/xlive_manager_runtime.cpp",
+        "sha256": "e9c36f7b13225a4e8764a8c82a9e5eb2dbfc1b0f4935f0b0843d27372839ab5f",
+        "git_blob": "363d5fa4e0b3bdb77623f43165357679632b7948"
+      },
+      {
+        "path": "include/bsp/game_native_readonly_data.hpp",
+        "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+        "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3"
+      },
+      {
+        "path": "src/game_native_readonly_data.cpp",
+        "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+        "git_blob": "f3d8bd97c8109d7a076f39073d53b74b1a86e58e"
+      }
+    ]
+  },
+  "old_names_and_annotations": {
+    "no_edits": true,
+    "proposed": "No new name/type/comment changes requested. Preserve existing application/WinMain names and R36 lifecycle metadata. The OnMove body gap is already documented."
+  },
+  "post_baseline_review": {
+    "commit": "f927c92c3",
+    "verification": "git show of current main native_singleton_destruction.hpp and game_hosts_singletons.hpp",
+    "change": "Diagnostic publication 0109CF14 and CE752C deletion binding append at112; NativeSingletonDeletionBindings is now116 bytes. Frame-clock binding remains108. No application AB0 producer added. Existing baseline hashes describe6d893a8b4, not this later tree.",
+    "compatibility": "Borrow current shared deletion table; set only existing frame_clock member. Preserve diagnostic cell/binding and all earlier members. Never copy the older112-byte table snapshot."
+  }
+}
