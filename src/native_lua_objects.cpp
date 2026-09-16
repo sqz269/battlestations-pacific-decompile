@@ -191,6 +191,30 @@ bool native_lua_is_integer_number_00b66a60(const NativeLuaObjectStorage& object)
 const char* native_lua_string_00b662b0(const NativeLuaObjectStorage& object){
     return lua_tolstring(object.owner_00->state_04,object.index_08,nullptr);
 }
+namespace {
+struct StringOperation {
+    const NativeLuaObjectStorage* object;
+    const char* result;
+};
+void string_operation(lua_State*,void* context) {
+    auto& operation=*static_cast<StringOperation*>(context);
+    operation.result=native_lua_string_00b662b0(*operation.object);
+}
+} // namespace
+const char* native_lua_string_protected(const NativeLuaObjectStorage& object){
+    auto* const state=object.owner_00->state_04;
+    const int entry_top=lua_gettop(state);
+    StringOperation operation{&object,nullptr};
+    const int status=luaD_pcall(state,&string_operation,&operation,
+        savestack(state,state->top),state->errfunc);
+    if(status){
+        // Allocation can fail before conversion; GC/finalizers can fail after
+        // conversion. Keep the actual TValue and remove only the error slot.
+        lua_settop(state,entry_top);
+        throw NativeLuaOperationError{status};
+    }
+    return operation.result;
+}
 std::uint8_t native_lua_boolean_or_00b662f0(const NativeLuaObjectStorage& object,std::uint8_t fallback){
     if(!native_lua_is_boolean_00b66000(object))return fallback;
     return lua_toboolean(object.owner_00->state_04,object.index_08)!=0?1:0;
@@ -224,13 +248,14 @@ void finish_iteration(NativeLuaObjectStorage& table,NativeLuaObjectStorage& key,
     const auto key_index=lua_gettop(table.owner_00->state_04)-1;publish_iteration_object(table,key,key_index);
     const auto value_index=lua_gettop(table.owner_00->state_04);publish_iteration_object(table,value,value_index);
 }
-}
-void native_lua_iterate_first_00b67080(NativeLuaObjectStorage& table,NativeLuaObjectStorage& key,NativeLuaObjectStorage& value){
+void release_iteration_objects(NativeLuaObjectStorage& key,NativeLuaObjectStorage& value){
     destroy_native_lua_object_00b67700(value);destroy_native_lua_object_00b67700(key);
+}
+void start_iteration(NativeLuaObjectStorage& table,NativeLuaObjectStorage& key,NativeLuaObjectStorage& value){
     (void)lua_checkstack(table.owner_00->state_04,2);lua_pushnil(table.owner_00->state_04);
     finish_iteration(table,key,value);
 }
-void native_lua_iterate_next_00b67190(NativeLuaObjectStorage& table,NativeLuaObjectStorage& key,NativeLuaObjectStorage& value){
+void prepare_next_iteration(NativeLuaObjectStorage& table,NativeLuaObjectStorage& key,NativeLuaObjectStorage& value){
     destroy_native_lua_object_00b67700(value);
     const auto key_index=key.index_08;
     if(key_index==lua_gettop(table.owner_00->state_04)){
@@ -239,6 +264,53 @@ void native_lua_iterate_next_00b67190(NativeLuaObjectStorage& table,NativeLuaObj
         lua_pushvalue(table.owner_00->state_04,key_index);
         if(key.kind_04){release_native_lua_tracked_object_00b66de0(key.owner_00,key,key.index_08,1);key.kind_04=0;}
     }
+}
+} // namespace
+void native_lua_iterate_first_00b67080(NativeLuaObjectStorage& table,NativeLuaObjectStorage& key,NativeLuaObjectStorage& value){
+    release_iteration_objects(key,value);
+    start_iteration(table,key,value);
+}
+void native_lua_iterate_next_00b67190(NativeLuaObjectStorage& table,NativeLuaObjectStorage& key,NativeLuaObjectStorage& value){
+    prepare_next_iteration(table,key,value);
     finish_iteration(table,key,value);
+}
+namespace {
+struct IterationOperation {
+    NativeLuaObjectStorage* table;
+    NativeLuaObjectStorage* key;
+    NativeLuaObjectStorage* value;
+    bool first;
+};
+void iteration_operation(lua_State*,void* context) {
+    auto& operation=*static_cast<IterationOperation*>(context);
+    // lua_next can raise before it returns a pair. The following publication
+    // uses nonallocating Lua getters and plain tracking stores only.
+    if(operation.first)start_iteration(*operation.table,*operation.key,*operation.value);
+    else finish_iteration(*operation.table,*operation.key,*operation.value);
+}
+void protect_iteration(IterationOperation& operation,int discard_top){
+    auto* const state=operation.table->owner_00->state_04;
+    const int failure_top=lua_gettop(state)-discard_top;
+    const int status=luaD_pcall(state,&iteration_operation,&operation,
+        savestack(state,state->top-discard_top),state->errfunc);
+    if(status){
+        // This is the post-release stack. Reinstating the entry height would
+        // resurrect removed value/key slots without their tracking records.
+        lua_settop(state,failure_top);
+        throw NativeLuaOperationError{status};
+    }
+}
+} // namespace
+void native_lua_iterate_first_protected(NativeLuaObjectStorage& table,NativeLuaObjectStorage& key,NativeLuaObjectStorage& value){
+    release_iteration_objects(key,value);
+    IterationOperation operation{&table,&key,&value,true};
+    protect_iteration(operation,0);
+}
+void native_lua_iterate_next_protected(NativeLuaObjectStorage& table,NativeLuaObjectStorage& key,NativeLuaObjectStorage& value){
+    prepare_next_iteration(table,key,value);
+    // The reader owns key/value exclusively. The top key is now detached;
+    // retain all prior releases/shifts and consume this work slot on failure.
+    IterationOperation operation{&table,&key,&value,false};
+    protect_iteration(operation,1);
 }
 } // namespace bsp

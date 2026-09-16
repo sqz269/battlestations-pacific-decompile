@@ -67,7 +67,7 @@ NativeLuaObjectStorage* native_lua_get_by_name_00b67800(
 // a linked Lua status, not the original CRT exception or retained error value.
 struct NativeLuaOperationError final : std::exception {
     explicit NativeLuaOperationError(int value) noexcept : status(value) {}
-    const char* what() const noexcept override { return "native Lua named lookup failed"; }
+    const char* what() const noexcept override { return "native Lua operation failed"; }
     int status;
 };
 // Explicit C++ reader adapter: protects checkstack/push/gettable in the SAME Lua C
@@ -77,7 +77,7 @@ struct NativeLuaOperationError final : std::exception {
 // must remain stable, including across metamethod/error-handler execution.
 // Do not use inside a Lua C callback that expects its caller's lua_pcall to
 // receive the Lua error. It is selected only by the base/Particle C++ readers.
-// Other primitives still have their existing Lua nonlocal-transfer contract.
+// Raw primitives retain their Lua nonlocal-transfer contract.
 NativeLuaObjectStorage* native_lua_get_by_name_protected(
     NativeLuaObjectStorage& table,void* fresh,const char* key);
 NativeLuaObjectStorage* native_lua_get_by_string_00b68100(
@@ -110,6 +110,10 @@ bool native_lua_boolean_00b66250(const NativeLuaObjectStorage&);
 bool native_lua_is_table_00b661b0(const NativeLuaObjectStorage&);
 bool native_lua_is_integer_number_00b66a60(const NativeLuaObjectStorage&);
 const char* native_lua_string_00b662b0(const NativeLuaObjectStorage&);
+// Same-frame C++ reader boundary, with the named adapter's error-handler and
+// caller-stability contract. Restores stack height on failure, but does NOT
+// undo numeric-to-string conversion: GC can fail AFTER the TValue changes.
+const char* native_lua_string_protected(const NativeLuaObjectStorage&);
 std::uint8_t native_lua_boolean_or_00b662f0(const NativeLuaObjectStorage&,std::uint8_t fallback);
 bool native_lua_is_unbound_00b66420(const NativeLuaObjectStorage&) noexcept;
 // ECX table; stack key/value; RET8. Existing value is released before key.
@@ -118,6 +122,20 @@ bool native_lua_is_unbound_00b66420(const NativeLuaObjectStorage&) noexcept;
 void native_lua_iterate_first_00b67080(NativeLuaObjectStorage& table,
     NativeLuaObjectStorage& key,NativeLuaObjectStorage& value);
 void native_lua_iterate_next_00b67190(NativeLuaObjectStorage& table,
+    NativeLuaObjectStorage& key,NativeLuaObjectStorage& value);
+// Explicit Particle reader adapters. Release/preparation retains the native
+// order BEFORE protecting Lua work. Errors leave key/value unbound and retain
+// the completed releases/index shifts; they never restore the entry stack.
+// First drops operation temporaries; next drops its detached working key.
+// Next requires the reader's exclusively owned key/value, valid table and
+// stack/tracking domain, with no surviving reference to the working key.
+// An inherited error handler must be below every removed/consumed slot and
+// remain unmoved through preparation, callbacks and surrounding reader cleanup:
+// Lua stack removal does not adjust the saved L->errfunc byte offset.
+// Same C++ boundary/handler/stability restrictions as the named adapter apply.
+void native_lua_iterate_first_protected(NativeLuaObjectStorage& table,
+    NativeLuaObjectStorage& key,NativeLuaObjectStorage& value);
+void native_lua_iterate_next_protected(NativeLuaObjectStorage& table,
     NativeLuaObjectStorage& key,NativeLuaObjectStorage& value);
 // Exact NUMBER or the full signed fallback DWORD; unlike integer coercion,
 // numeric strings take the fallback. ECX object, stack fallback, EAX, RET4.
