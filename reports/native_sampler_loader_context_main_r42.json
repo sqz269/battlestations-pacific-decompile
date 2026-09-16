@@ -246,5 +246,139 @@
     "runtime": "Build, object, fixture, PE and live-Ghidra evidence do not establish renderer behavior, game execution or gameplay.",
     "metadata": "No Ghidra, ledger, name, tag or export mutation was performed. Parent owns any later metadata update."
   },
-  "hash_provenance": "Native bytes/calls were generated programmatically from exact installed-PE spans and accepted only after full equality with fresh guarded Ghidra reads. Current source, objects, library, fixture and logs were hashed from the exact frozen files. Historical selected artifacts were rehashed from the external immutable archive against its 44a4e4e1... manifest; no abbreviated hash was expanded manually."
+  "hash_provenance": "Native bytes/calls were generated programmatically from exact installed-PE spans and accepted only after full equality with fresh guarded Ghidra reads. Current source, objects, library, fixture and logs were hashed from the exact frozen files. Historical selected artifacts were rehashed from the external immutable archive against its 44a4e4e1... manifest; no abbreviated hash was expanded manually.",
+  "primary_integration": {
+    "source_merge": "2e3082eef",
+    "full_source_reviewed": true,
+    "native_spans_independently_verified": 2,
+    "worker_artifacts_verified": 53,
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "worker_archive": "local/evidence-r42/sampler-context-original-r42.zip",
+    "fixture": "Worker adapted frozen fixture reviewed via report; no primary rerun and no whole registry/host claim."
+  },
+  "primary_archive": {
+    "path": "local/evidence-r42/sampler-context-main-r42.zip",
+    "sha256": "b0565231aff256e74b5bb45dc9e37ae6724e4ce02aeffc09e05c20297c4cb582",
+    "files": [
+      {
+        "path": "include/bsp/native_sampler_loader_context.hpp",
+        "bytes": 3732,
+        "sha256": "1e00a575651470112c8b4845273d284387a45d206cd7124f09a3b00e03be9d95"
+      },
+      {
+        "path": "src/native_sampler_loader_context.cpp",
+        "bytes": 3119,
+        "sha256": "beaea1a0c6fa20cb1e28c683c987db4373451761a9dfc90390a80586dd58b3a3"
+      },
+      {
+        "path": "include/bsp/native_particle_clock_singleton.hpp",
+        "bytes": 1535,
+        "sha256": "cf420be7c1082e3ab237e8ca3585d94721a5afb6ad2cf05da64706d44d298602"
+      },
+      {
+        "path": "src/native_particle_clock_singleton.cpp",
+        "bytes": 3387,
+        "sha256": "970a49f005290b55e6a5dd8b67525a9d7324ae1b3928590e0dbe1b68f97d073d"
+      },
+      {
+        "path": "src/native_particle_clock_shutdown.cpp",
+        "bytes": 5777,
+        "sha256": "04a797fbc598bfc9275c726643e6939272a411ac5cc3a82217b663fb7dbebbd9"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 149712,
+        "sha256": "d25ea296a14c9d803547acd352d0e0eea9bd19574dba05e9226d34a679457544"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 229690,
+        "sha256": "c1f8fe186826c28685b73746c6969d46264a5990215d2f209e7fbb8e16f32c3a"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63462796,
+        "sha256": "89fd5c18802ef25e0f4b97d8ae0b992ff4cfe86a72e5601ef921800e5e86a712"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_sampler_loader_context.obj",
+        "bytes": 11864,
+        "sha256": "6ecf44be2f884a08b34be703efdf05e2e1834a9b3f7f835a2d5d2904d169d4a2"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_particle_clock_singleton.obj",
+        "bytes": 3596,
+        "sha256": "273507bc2985f9d878d681930bd05044939e19a15d2aef4ee0f18e47001033ef"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_particle_clock_shutdown.obj",
+        "bytes": 14937,
+        "sha256": "2783a7ee49006c91266c6c7398ca519b30647285873a2dce08658e0a3d00d67b"
+      },
+      {
+        "path": "local/r42_sampler_context_integration.log",
+        "bytes": 829,
+        "sha256": "8c7df37c6e609ed694e1208bb77f32864da0c6d81c5e24c308bbd690262ec598"
+      },
+      {
+        "path": "local/r42_sampler_context_proto.txt",
+        "bytes": 1480,
+        "sha256": "336bdfa99c62f5598fe23425b1864e07fa1a8a71ac9707a166654b694548b5cf"
+      },
+      {
+        "path": "local/r42_sampler_context_annotations.log",
+        "bytes": 246,
+        "sha256": "cf1e5776fffb0647706527df1faacd5c7a2c79a9df9d2646a0824df1bd1a869e"
+      },
+      {
+        "path": "local/r42_sampler_context_exports.log",
+        "bytes": 206,
+        "sha256": "9e4a0fc9d0afd42db36dc868a7c753f448c36b37f3d9f2abf2f6912f7e9ed63d"
+      },
+      {
+        "path": "local/r42_sampler_context_native_spans.json",
+        "bytes": 467,
+        "sha256": "6432d7401b3fd1c8a8f8d077ed4a90d2fc16c8d67f06bba347cee7f31224cd6a"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T124702Z.json",
+        "bytes": 12320,
+        "sha256": "6a479271a039b5743a0bea0998d806009c2ac9a05072170fb7425eb1a9732fdf"
+      }
+    ]
+  },
+  "primary_annotations": {
+    "status": "Existing names retained; 4DE4B0 adapter fragment only and B1B810 source row added. Prior comments preserved, saved, exports refreshed.",
+    "prior": [
+      {
+        "address": "004de4b0",
+        "before": {
+          "address": "004de4b0",
+          "function_name": "BSP_ParticleClock_GetSingleton",
+          "comment": "[BSP reconstruction 004de4b0]\nHypothesis, not a recovered symbol. Double-checked lazy singleton over DAT_00f8d420 (004de4b0), 1Ch bytes from 00bf681b, vtables at +0 (00ce7d38) and +4 (00ce7d24), +8h..+14h zeroed, registered with BSP_SingletonLifetime_Register. Its result is the ECX of 00b19a10, which writes +18h; 00b46cb4 reads that same field as component y of shader constant c33 Time (docs/SHADER_CONSTANT_DISPATCH_ANALYSIS.md line 67). Segment 82 keywords particle, emitter, additive. docs/GAME_RENDER_TAIL.md\n\n[BSP reconstruction 004de4b0] update\nHypothesis, not a recovered symbol. Double-checked lazy singleton over DAT_00f8d420 (004de4b0), 1Ch bytes from 00bf681b, vtables at +0 (00ce7d38) and +4 (00ce7d24), +8h..+14h zeroed, registered with BSP_SingletonLifetime_Register. Its result is the ECX of 00b19a10, which writes +18h; 00b46cb4 reads that same field as component y of shader constant c33 Time (docs/SHADER_CONSTANT_DISPATCH_ANALYSIS.md line 67). Segment 82 keywords particle, emitter, additive. docs/GAME_RENDER_TAIL.md | DCL over00F8D420; manager lookup twice; capture manager+10 section; enter/increment+18; allocate1C; initialize+0/+4/+8..14 without touching+18; publish; register reloaded slot; decrement/leave captured section; return reloaded slot. Null allocation still calls registration. Canonical ParticleClock projection and mandatory actual adapters; no native layout/lifetime-manager implementation claim. Original ABI: No inputs consumed; EAX singleton; RET. Evidence docs/SYSTEM_TIME_CONSTANTS.md; reports/system_time_constants_audit.json. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation.\n\n[BSP reconstruction 004de4b0] update\nHypothesis, not a recovered symbol. Double-checked lazy singleton over DAT_00f8d420 (004de4b0), 1Ch bytes from 00bf681b, vtables at +0 (00ce7d38) and +4 (00ce7d24), +8h..+14h zeroed, registered with BSP_SingletonLifetime_Register. Its result is the ECX of 00b19a10, which writes +18h; 00b46cb4 reads that same field as component y of shader constant c33 Time (docs/SHADER_CONSTANT_DISPATCH_ANALYSIS.md line 67). Segment 82 keywords particle, emitter, additive. docs/GAME_RENDER_TAIL.md | DCL over00F8D420; manager lookup twice; capture manager+10 section; enter/increment+18; allocate1C; initialize+0/+4/+8..14 without touching+18; publish; register reloaded slot; decrement/leave captured section; return reloaded slot. Null allocation still calls registration. Canonical ParticleClock projection and mandatory actual adapters; no native layout/lifetime-manager implementation claim. Original ABI: No inputs consumed; EAX singleton; RET. Evidence docs/SYSTEM_TIME_CONSTANTS.md; reports/system_time_constants_audit.json. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Additional actual-storage reconstruction: docs/NATIVE_SAMPLER_LOADER_CONTEXT.md and reports/native_sampler_loader_context.json. Full199-byte getter now uses actual1Ch F8D420 owner, raw01090AA0 manager, canonical registration/allocation/guard; CE7D38/CE7D24 and shared actual record vector. Existing system_time_constants ParticleClock remains a different projection. Strict Win32 and one focused original/source fixture passed; no terminal profile or full cache-loader closure.\n\n[BSP reconstruction 004de4b0] update\nHypothesis, not a recovered symbol. Double-checked lazy singleton over DAT_00f8d420 (004de4b0), 1Ch bytes from 00bf681b, vtables at +0 (00ce7d38) and +4 (00ce7d24), +8h..+14h zeroed, registered with BSP_SingletonLifetime_Register. Its result is the ECX of 00b19a10, which writes +18h; 00b46cb4 reads that same field as component y of shader constant c33 Time (docs/SHADER_CONSTANT_DISPATCH_ANALYSIS.md line 67). Segment 82 keywords particle, emitter, additive. docs/GAME_RENDER_TAIL.md | DCL over00F8D420; manager lookup twice; capture manager+10 section; enter/increment+18; allocate1C; initialize+0/+4/+8..14 without touching+18; publish; register reloaded slot; decrement/leave captured section; return reloaded slot. Null allocation still calls registration. Canonical ParticleClock projection and mandatory actual adapters; no native layout/lifetime-manager implementation claim. Original ABI: No inputs consumed; EAX singleton; RET. Evidence docs/SYSTEM_TIME_CONSTANTS.md; reports/system_time_constants_audit.json. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Descriptive hypothesis, not recovered symbol. Raw 1Ch singleton publication with actual manager registration, captured critical section and depth, seven ordered construction stores leaving +18 unwritten, fresh publication reloads and source-call guard cleanup. Native state 0 arms at 004DE4FC before the second publication CMP at 004DE500. Source state store is at +69h after CMP +66h. C++ source-call cleanup is retained; asynchronous hardware faults, original private FH3 frames and native CRT identity are outside this source-interface claim. Original ABI: No arguments, EAX actual published 1Ch owner, plain RET; native global cells 01090AA0 and 00F8D420. Source cdecl takes explicit borrowed publication references. Exact Win32 Release and both existing math CTests passed at f4e629edab9b2e3ce1fdd905521d5ee8a830765e. Primary complete native/source/generated review and focused CP/CQ raw source composition probe passed. Existing typed full-function record retained; zero additional native body/byte credit. Evidence docs/NATIVE_PARTICLE_CLOCK_SINGLETON_CP.md; reports/native_particle_clock_singleton_cp.json. No injected failures, original private CRT/FH3 identity, complete mixed-owner shutdown, native parent execution or gameplay proof."
+        },
+        "after": {
+          "address": "004de4b0",
+          "name": "BSP_ParticleClock_GetSingleton",
+          "evidence": "Hypothesis, not a recovered symbol. Double-checked lazy singleton over DAT_00f8d420 (004de4b0), 1Ch bytes from 00bf681b, vtables at +0 (00ce7d38) and +4 (00ce7d24), +8h..+14h zeroed, registered with BSP_SingletonLifetime_Register. Its result is the ECX of 00b19a10, which writes +18h; 00b46cb4 reads that same field as component y of shader constant c33 Time (docs/SHADER_CONSTANT_DISPATCH_ANALYSIS.md line 67). Segment 82 keywords particle, emitter, additive. docs/GAME_RENDER_TAIL.md | DCL over00F8D420; manager lookup twice; capture manager+10 section; enter/increment+18; allocate1C; initialize+0/+4/+8..14 without touching+18; publish; register reloaded slot; decrement/leave captured section; return reloaded slot. Null allocation still calls registration. Canonical ParticleClock projection and mandatory actual adapters; no native layout/lifetime-manager implementation claim. Original ABI: No inputs consumed; EAX singleton; RET. Evidence docs/SYSTEM_TIME_CONSTANTS.md; reports/system_time_constants_audit.json. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Descriptive hypothesis, not recovered symbol. Raw 1Ch singleton publication with actual manager registration, captured critical section and depth, seven ordered construction stores leaving +18 unwritten, fresh publication reloads and source-call guard cleanup. Native state 0 arms at 004DE4FC before the second publication CMP at 004DE500. Source state store is at +69h after CMP +66h. C++ source-call cleanup is retained; asynchronous hardware faults, original private FH3 frames and native CRT identity are outside this source-interface claim. Original ABI: No arguments, EAX actual published 1Ch owner, plain RET; native global cells 01090AA0 and 00F8D420. Source cdecl takes explicit borrowed publication references. Exact Win32 Release and both existing math CTests passed at f4e629edab9b2e3ce1fdd905521d5ee8a830765e. Primary complete native/source/generated review and focused CP/CQ raw source composition probe passed. Existing typed full-function record retained; zero additional native body/byte credit. Evidence docs/NATIVE_PARTICLE_CLOCK_SINGLETON_CP.md; reports/native_particle_clock_singleton_cp.json. No injected failures, original private CRT/FH3 identity, complete mixed-owner shutdown, native parent execution or gameplay proof. | R42 sampler operation adapter reuses complete current get_native_particle_clock_singleton_004de4b0 for same rawAA0/F8D420 cell. No second nativegetter body, allocation, registration or guardalgorithm. Retain only actual entry boundary, borrowed cells, result and one-shot success/failure; old internal snapshots removed because no productionconsumer uses them. B1B810 delegates actual B1B730 then B19E90 with exact name/result and ignoredoptions; explicit sourcecontexts/persistent frame. Parent complete source/header and six original forwarder instructions reviewed;53frozenworker artifacts+manifest and2PE spans219B independently verified. Worker/combined strict /MD Win32 builds/3CTests pass. Adapted worker84word original/source fixture, constructor/registration failures, replay/abandonment guards and real direct unregister/scalar cleanup passed; factory tree uses producer-layout fixture, not executed registryconstructor. No primary fixture rerun. Same Win32 cell is viewed through typedpublication reference; no copiedpublication. No host cell/deletionbinding/fullcache loading or original FH3/privateABI/race/gameplay claim. reports/native_sampler_loader_context_main_r42.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b1b810",
+        "before": {
+          "address": "00b1b810",
+          "function_name": "BSP_SamplerLoader_CreateFactoryResource",
+          "comment": "[BSP reconstruction 00b1b810]\nHypothesis, not recovered symbol. Full20-byte CE7D24+8 profile forwarder: incoming ECX and second stacked options unused; CALL B1B730, forward first stacked native name to B19E90, EAX unchanged, RET8. Existing actual registry/qualified creators reused; docs/NATIVE_SAMPLER_LOADER_CONTEXT.md and reports/native_sampler_loader_context.json. Strict Win32 and focused original/source creator/miss comparison; no native ABI or game claim."
+        },
+        "after": {
+          "address": "00b1b810",
+          "name": "BSP_SamplerLoader_CreateFactoryResource",
+          "evidence": "R42 sampler operation adapter reuses complete current get_native_particle_clock_singleton_004de4b0 for same rawAA0/F8D420 cell. No second nativegetter body, allocation, registration or guardalgorithm. Retain only actual entry boundary, borrowed cells, result and one-shot success/failure; old internal snapshots removed because no productionconsumer uses them. B1B810 delegates actual B1B730 then B19E90 with exact name/result and ignoredoptions; explicit sourcecontexts/persistent frame. Parent complete source/header and six original forwarder instructions reviewed;53frozenworker artifacts+manifest and2PE spans219B independently verified. Worker/combined strict /MD Win32 builds/3CTests pass. Adapted worker84word original/source fixture, constructor/registration failures, replay/abandonment guards and real direct unregister/scalar cleanup passed; factory tree uses producer-layout fixture, not executed registryconstructor. No primary fixture rerun. Same Win32 cell is viewed through typedpublication reference; no copiedpublication. No host cell/deletionbinding/fullcache loading or original FH3/privateABI/race/gameplay claim. reports/native_sampler_loader_context_main_r42.json."
+        },
+        "status": "applied"
+      }
+    ]
+  }
 }
