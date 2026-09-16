@@ -2,7 +2,7 @@
   "schema_version": 1,
   "packet": "native_particle_emitter_factory_raw_orch4",
   "base_commit": "323c5d172",
-  "status": "reconstructed_strict_compile_tested_pending_cycle_build",
+  "status": "reconstructed_build_tested_bounded_fixture_tested",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
@@ -177,12 +177,23 @@
     "listing_note": "Ghidra action listings stop at free; complete installed/live action bytes include POP ECX; RET."
   },
   "validation": {
-    "build": false,
-    "fixture": false,
+    "build": true,
+    "fixture": true,
     "original_abi_compatible": false,
     "game_validated": false,
     "strict_win32_compile": true,
-    "strict_flags": "/std:c++20 /permissive- /W4 /WX /EHsc /c"
+    "strict_flags": "/std:c++20 /permissive- /W4 /WX /EHsc /c",
+    "full_cycle_build": true,
+    "ctest_passed": 3,
+    "copied_original_fixture": true,
+    "seed_verification": "all eight live/disk seeds match",
+    "integrated_build_artifacts": {
+      "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\emitter_raw_cycle_build.log": "57002807cfc138094af3d4964848b0272851d388ddaa15d445c16adfee7a3467",
+      "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\emitter_raw_probe_final_run.log": "59a2af7e36cd753b1774fc8d68e70bd91e3594dc8b4e8863b083178058c5e4d3",
+      "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\emitter_raw_probe.cpp": "ac3d88b22c52cc9230a45e72e8392f4aee0b65263c2fd8f1c2a42ac461b44577",
+      "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\emitter_raw_originals.inc": "3f06c987e333278e794d00b68b69270720b33179081354884eb8e14ef809d489",
+      "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\Release\\bsp_core.lib": "e53efca0cd1d0216eaa338d18901cf53eead6017e40597281e372f9584e98d9e"
+    }
   },
   "concrete_dependencies": [
     {
@@ -209,5 +220,25 @@
     "incoming_parser_builder_kind": "Explicit acquired constructor argument forwarded to selected concrete parser acquired",
     "unknown_kind": "word70 reused as actual owner",
     "unsupported": "Unknown reached current profiles/targets or missing reached concrete context raise source boundary"
-  }
+  },
+  "focused_factory_fixture": {
+    "exit_code": 0,
+    "stdout": "case index=0 native=1 reused=0 rebound=0\ncase index=0 native=0 reused=0 rebound=0\ncase index=1 native=1 reused=0 rebound=0\ncase index=1 native=0 reused=0 rebound=0\ncase index=2 native=1 reused=0 rebound=0\ncase index=2 native=0 reused=0 rebound=0\ncase index=1 native=1 reused=1 rebound=0\ncase index=1 native=0 reused=1 rebound=0\ncase index=0 native=1 reused=0 rebound=1\ncase index=0 native=0 reused=0 rebound=1\nPASS: three named emitter factories, unknown-kind owner reuse, current +14 rebind, native RET0C, source parser-failure retained owner/child and no replay.\n",
+    "stderr": "",
+    "original_body_bytes": 329,
+    "original_normal_path_pairs": 5,
+    "original_direct_call_bridges": 9,
+    "original_absolute_relocations": 4,
+    "real_constructor_and_parser_providers": true,
+    "original_fh3_executed": false,
+    "source_failure_retention_and_no_replay": true,
+    "artifacts": {
+      "local/emitter_factory_probe.cpp": "c51c39cb634b79da47f25e2acfaa9f93924b34854512e497f2682c34303d2d63",
+      "local/emitter_factory_original.inc": "212800fd7f4b652b9826a619743e53f1a50043da2c54f8866798c55e24ffb03b",
+      "local/emitter_factory_probe.exe": "38e634ef88531b36ff998a346288db51137cb73dab3f73b80ddadb2e0a055e22",
+      "J:/PROG/battlestations-pacific-decompile-orch4-20260915/build/win32/Release/bsp_core.lib": "e53efca0cd1d0216eaa338d18901cf53eead6017e40597281e372f9584e98d9e"
+    },
+    "final_integrated_library_only": true
+  },
+  "evidence_summary": "Complete 329-byte/103-instruction raw factory with real constructors, current profile/+14 concrete parser dispatch, retained failed child and owner, constructor-only free. Live/installed 552-byte span and FH3 map verified; strict Win32 build and three CTests and five complete-original/source normal pairs plus source failure/replay checks pass. New source ABI; original FH3/fault/gameplay unvalidated."
 }

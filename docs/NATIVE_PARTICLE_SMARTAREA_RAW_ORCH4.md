@@ -113,9 +113,18 @@ no child owner release and no destructor-based rollback.
 
 ## Validation and limits
 
-Strict MSVC Win32 `/std:c++20 /permissive- /W4 /WX /EHsc /c` passes using
-the genuine raw type-factory header. The source is kept outside the CMake
-registry until the entire concrete parser/factory cycle can link. The primary
-integrator owns cycle build, shared copied-original fixture and Ghidra/ledger
-updates. These interfaces do not establish native calling-convention/FH3/SEH,
-unrestricted fault/CRT, concurrent-mutation or gameplay identity.
+Strict MSVC Win32 `/std:c++20 /permissive- /W4 /WX /EHsc /c` passes, and
+the integrated concrete cycle passes the full build plus all three existing
+CTest checks. The shared copied-original fixture passes 18 complete-body
+pairs across the three shapes: all common/derived parameters in four x87
+rounding modes, nested three-emitter-plus-Sprite trees, and EOF without braces.
+Six pairs exercise SmartArea directly. Nested children use genuine raw
+factories and parsers; snapshots include only natively established child
+bytes. The final fixture links the integrated core library.
+
+The shared fixture also checks a source-only missing-factory cleanup and
+replay boundary. The original FH3 handlers are not executed, and arbitrary
+pool-getter failure combinations are not exhaustively exercised. The primary
+integrator owns Ghidra annotation updates. These source interfaces do not
+establish native calling-convention/FH3/SEH, unrestricted fault/CRT,
+concurrent-mutation or gameplay identity.
