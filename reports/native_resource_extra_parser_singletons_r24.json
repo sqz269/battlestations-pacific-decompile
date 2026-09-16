@@ -13,11 +13,21 @@
     "primary_delete_bytes": 116,
     "secondary_thunk_bytes": 16,
     "name_bytes": 66,
-    "parse_targets_out_of_scope": ["00b8a910", "00b8a990"]
+    "parse_targets_out_of_scope": [
+      "00b8a910",
+      "00b8a990"
+    ]
   },
   "table_dwords_00cfea34_00cfea57": [
-    "00735d90", "00737150", "00b8b050", "00b8a910",
-    "00735dc0", "00737190", "00b8b080", "00b8a990", "00737680"
+    "00735d90",
+    "00737150",
+    "00b8b050",
+    "00b8a910",
+    "00735dc0",
+    "00737190",
+    "00b8b080",
+    "00b8a990",
+    "00737680"
   ],
   "families": [
     {
@@ -49,17 +59,56 @@
       "parse_out_of_scope": "00b8a990"
     }
   ],
-  "getter_direct_calls": ["00415350", "00bf681b", "00bd0c30"],
-  "getter_import_calls": ["EnterCriticalSection", "LeaveCriticalSection"],
+  "getter_direct_calls": [
+    "00415350",
+    "00bf681b",
+    "00bd0c30"
+  ],
+  "getter_import_calls": [
+    "EnterCriticalSection",
+    "LeaveCriticalSection"
+  ],
   "old_ghidra_metadata": [
-    {"address":"00735d90","name":"FUN_00735d90","comment":null},
-    {"address":"00736dd0","name":"BSP_AnimationChannelsParser_GetSingleton","comment":"[BSP reconstruction 00736dd0]\nLazily construct8-byte AnimationChannels parser singleton with primaryvtable00cfea38 and lifetime subobject+4 using existing lock/registration. Parser virtual+8 target00b8a910 remains separately reconstructed. Original ABI: No caller arguments; EAX singleton; plain RET. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."},
-    {"address":"00737150","name":"CG_scalar_deleting_dtor_00737150","comment":null},
-    {"address":"00b8b050","name":"BSP_AnimationChannelsParser_GetTypeName","comment":"[BSP reconstruction 00b8b050]\nConstruct exact native type literal AnimationChannels into hidden owned output string.33-byte complete body; spelling is native. Original ABI: Incoming parser ECX unused; hidden output string pointer stack; EAX output; RET4. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."},
-    {"address":"00735dc0","name":"FUN_00735dc0","comment":null},
-    {"address":"00736ea0","name":"BSP_BoneParser_GetSingleton","comment":"[BSP reconstruction 00736ea0]\nLazily construct8-byte Bone parser singleton with primaryvtable00cfea48 and lifetime subobject+4 using existing lock/registration. Parser virtual+8 target00b8a990 remains separately reconstructed. Original ABI: No caller arguments; EAX singleton; plain RET. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."},
-    {"address":"00737190","name":"CG_scalar_deleting_dtor_00737190","comment":null},
-    {"address":"00b8b080","name":"BSP_BoneParser_GetTypeName","comment":"[BSP reconstruction 00b8b080]\nConstruct exact native type literal Bone into hidden owned output string.33-byte complete body; spelling is native. Original ABI: Incoming parser ECX unused; hidden output string pointer stack; EAX output; RET4. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."}
+    {
+      "address": "00735d90",
+      "name": "FUN_00735d90",
+      "comment": null
+    },
+    {
+      "address": "00736dd0",
+      "name": "BSP_AnimationChannelsParser_GetSingleton",
+      "comment": "[BSP reconstruction 00736dd0]\nLazily construct8-byte AnimationChannels parser singleton with primaryvtable00cfea38 and lifetime subobject+4 using existing lock/registration. Parser virtual+8 target00b8a910 remains separately reconstructed. Original ABI: No caller arguments; EAX singleton; plain RET. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+    },
+    {
+      "address": "00737150",
+      "name": "CG_scalar_deleting_dtor_00737150",
+      "comment": null
+    },
+    {
+      "address": "00b8b050",
+      "name": "BSP_AnimationChannelsParser_GetTypeName",
+      "comment": "[BSP reconstruction 00b8b050]\nConstruct exact native type literal AnimationChannels into hidden owned output string.33-byte complete body; spelling is native. Original ABI: Incoming parser ECX unused; hidden output string pointer stack; EAX output; RET4. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+    },
+    {
+      "address": "00735dc0",
+      "name": "FUN_00735dc0",
+      "comment": null
+    },
+    {
+      "address": "00736ea0",
+      "name": "BSP_BoneParser_GetSingleton",
+      "comment": "[BSP reconstruction 00736ea0]\nLazily construct8-byte Bone parser singleton with primaryvtable00cfea48 and lifetime subobject+4 using existing lock/registration. Parser virtual+8 target00b8a990 remains separately reconstructed. Original ABI: No caller arguments; EAX singleton; plain RET. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+    },
+    {
+      "address": "00737190",
+      "name": "CG_scalar_deleting_dtor_00737190",
+      "comment": null
+    },
+    {
+      "address": "00b8b080",
+      "name": "BSP_BoneParser_GetTypeName",
+      "comment": "[BSP reconstruction 00b8b080]\nConstruct exact native type literal Bone into hidden owned output string.33-byte complete body; spelling is native. Original ABI: Incoming parser ECX unused; hidden output string pointer stack; EAX output; RET4. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."
+    }
   ],
   "validation": {
     "msvc_win32_strict_build": "passed",
@@ -68,5 +117,111 @@
     "source_file_compiled": true,
     "abi_compatible": false,
     "game_validated": false
+  },
+  "complete_body_byte_receipt": {
+    "generated_utc": "2026-09-16T06:56:44.756849+00:00",
+    "method": "Read-only Ghidra read_memory after Client.verify; PE32 RVA-to-raw mapping from tools/ghidra_export.py pe_summary.",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_size": 12223752,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "range_count": 8,
+    "total_bytes": 610,
+    "live_aggregate_sha256": "a5dd154e9187742f992e4f75123831cac68472f0790a47370ecaf521ada0362b",
+    "disk_aggregate_sha256": "a5dd154e9187742f992e4f75123831cac68472f0790a47370ecaf521ada0362b",
+    "all_match": true,
+    "ranges": [
+      {
+        "address": "00735d90",
+        "length": 8,
+        "end_exclusive": "00735d98",
+        "section": ".text",
+        "file_offset": 3366288,
+        "live_sha256": "3f996e6ce675a3a08dc03e9def543980a8ad4b36304b222cf8d7735831367b40",
+        "disk_sha256": "3f996e6ce675a3a08dc03e9def543980a8ad4b36304b222cf8d7735831367b40",
+        "matches_disk": true
+      },
+      {
+        "address": "00735dc0",
+        "length": 8,
+        "end_exclusive": "00735dc8",
+        "section": ".text",
+        "file_offset": 3366336,
+        "live_sha256": "2a9d398787cb8e10ea1cdcc5c48c78a3453d14e9d9f3464900be8e57c8a5b608",
+        "disk_sha256": "2a9d398787cb8e10ea1cdcc5c48c78a3453d14e9d9f3464900be8e57c8a5b608",
+        "matches_disk": true
+      },
+      {
+        "address": "00736dd0",
+        "length": 206,
+        "end_exclusive": "00736e9e",
+        "section": ".text",
+        "file_offset": 3370448,
+        "live_sha256": "64202d93db95aaf5d0ecc0e93bea58937c58b309f51a7d1942a5d3fd34f402db",
+        "disk_sha256": "64202d93db95aaf5d0ecc0e93bea58937c58b309f51a7d1942a5d3fd34f402db",
+        "matches_disk": true
+      },
+      {
+        "address": "00736ea0",
+        "length": 206,
+        "end_exclusive": "00736f6e",
+        "section": ".text",
+        "file_offset": 3370656,
+        "live_sha256": "228fe9c17fb6104867fc94b070755c73549364d15adb372c94f27242b8cdbc81",
+        "disk_sha256": "228fe9c17fb6104867fc94b070755c73549364d15adb372c94f27242b8cdbc81",
+        "matches_disk": true
+      },
+      {
+        "address": "00737150",
+        "length": 58,
+        "end_exclusive": "0073718a",
+        "section": ".text",
+        "file_offset": 3371344,
+        "live_sha256": "a7e8f650c4eee681ea0b416548cf77ed07c272d6990ac360178d734aef48a753",
+        "disk_sha256": "a7e8f650c4eee681ea0b416548cf77ed07c272d6990ac360178d734aef48a753",
+        "matches_disk": true
+      },
+      {
+        "address": "00737190",
+        "length": 58,
+        "end_exclusive": "007371ca",
+        "section": ".text",
+        "file_offset": 3371408,
+        "live_sha256": "43f0c300412b2e74a0fd5ace7e8d8764458b5cc1acf17b0533758e03521cc073",
+        "disk_sha256": "43f0c300412b2e74a0fd5ace7e8d8764458b5cc1acf17b0533758e03521cc073",
+        "matches_disk": true
+      },
+      {
+        "address": "00b8b050",
+        "length": 33,
+        "end_exclusive": "00b8b071",
+        "section": ".text",
+        "file_offset": 7909456,
+        "live_sha256": "cc383dfa28b3bb0bacdd7917da425c7f2563fb2cd25218289448aa6ced5638b8",
+        "disk_sha256": "cc383dfa28b3bb0bacdd7917da425c7f2563fb2cd25218289448aa6ced5638b8",
+        "matches_disk": true
+      },
+      {
+        "address": "00b8b080",
+        "length": 33,
+        "end_exclusive": "00b8b0a1",
+        "section": ".text",
+        "file_offset": 7909504,
+        "live_sha256": "9cca04c86688cdf828048829b4a195c93d1e2d371d2db0714aa6efd270ea6595",
+        "disk_sha256": "9cca04c86688cdf828048829b4a195c93d1e2d371d2db0714aa6efd270ea6595",
+        "matches_disk": true
+      }
+    ],
+    "boundary": "Only these eight complete ordinary function bodies (610 bytes) were compared. This is not whole-image, ABI, FH3/SEH, or gameplay proof."
+  },
+  "root_combined_validation": {
+    "source_head": "b55156b51",
+    "strict_msvc_win32_build": "passed",
+    "ctests": "3/3 passed",
+    "log": "local/r24_combined_integration.log",
+    "boundary": "Original source application and compiled source probes only; native ABI/FH3/SEH and gameplay remain open."
   }
 }
