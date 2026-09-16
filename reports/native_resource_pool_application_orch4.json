@@ -1,0 +1,200 @@
+{
+  "packet": "orch4-resource-hierarchy-process-r25",
+  "source_head": "d2807d6b6efda2f902352fb2763f56e6aa558d5e",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "source_files": [
+    "include/bsp/game_native_resource_pools.hpp",
+    "src/game_native_resource_pools.cpp",
+    "src/game_main.cpp"
+  ],
+  "native_pool": {
+    "storage_global": "0109022c",
+    "storage_bytes": 56,
+    "slot_bytes": 136,
+    "allocator_list": "00e188b4",
+    "companion": "NativeMaterialParameterPool",
+    "distinct_from": "00f8d3e4 material parameter pool"
+  },
+  "original_byte_receipts": [
+    {
+      "address": "00ce34ec",
+      "end_exclusive": "00ce34f0",
+      "bytes": 4,
+      "sha256": "f4324158d522f33f2ea7536be614627628cd5eebba2c29c941d30a6871545cec",
+      "live_disk_match": true
+    },
+    {
+      "address": "00cd82d0",
+      "end_exclusive": "00cd82e6",
+      "bytes": 22,
+      "sha256": "f841dadfaba4737c074bde9e2b8ff208fc69946aeb3bddd00db3e49c5c3748cb",
+      "live_disk_match": true
+    },
+    {
+      "address": "00ce0ed0",
+      "end_exclusive": "00ce0eda",
+      "bytes": 10,
+      "sha256": "49114224b429e5ed79a054561bab842953ed53b9bf860f515ab6c19a3d4ba546",
+      "live_disk_match": true
+    },
+    {
+      "address": "00ce34f4",
+      "end_exclusive": "00ce34f8",
+      "bytes": 4,
+      "sha256": "e86cc0c615b24bfea24b94bcee8600d0e89b801359dcd12472ca3c6491b7fcc0",
+      "live_disk_match": true
+    },
+    {
+      "address": "00ce35b0",
+      "end_exclusive": "00ce35b4",
+      "bytes": 4,
+      "sha256": "c4da8509ab49f0dc471aa33e31a030b70342f2c6f55a62302dec579a9c5a7093",
+      "live_disk_match": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00cd82d5",
+      "function": "00cd82d0",
+      "native": "00b18340",
+      "operation": "construct selected actual pool"
+    },
+    {
+      "address": "00cd82df",
+      "function": "00cd82d0",
+      "native": "00bf6ff5",
+      "operation": "register actual CRT exit callback"
+    },
+    {
+      "address": "00ce0ed5",
+      "function": "00ce0ed0",
+      "native": "00b18470",
+      "kind": "tail_jump",
+      "operation": "destroy same actual pool"
+    }
+  ],
+  "initializer_table": [
+    {
+      "slot": "00ce34ec",
+      "target": "00cd7830"
+    },
+    {
+      "slot": "00ce34f4",
+      "target": "00cd78b0"
+    },
+    {
+      "slot": "00ce35b0",
+      "target": "00cd82d0"
+    }
+  ],
+  "startup": {
+    "same_process_allocator_domain": true,
+    "construct_bookkeeping_before_native_callback_registration": true,
+    "once_guard": true,
+    "return_original_atexit_status": true,
+    "retry_after_throw": false,
+    "substitute_cleanup_on_registration_failure": false,
+    "automatic_native_drain_from_cpp_destructor": false
+  },
+  "validation": {
+    "strict_msvc_win32_build": "passed",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "probe_exit_code": 0,
+    "four_pool_allocation_return_and_shared_trim": "passed",
+    "prestart_guard_and_repeat_identity": "passed",
+    "native_exit_order": [
+      "physical",
+      "hierarchy",
+      "particle parameter",
+      "particle model"
+    ],
+    "real_crt_exit_callbacks": true,
+    "shared_list_empty_before_bookkeeping_destruction": true,
+    "game_main_startup": "compiled; probe directly invokes same source owners",
+    "raw_slots_have_no_constructed_payloads": true,
+    "permanent_tests_added": 0
+  },
+  "artifacts": [
+    {
+      "path": "local/resource_pool_r25_build.log",
+      "bytes": 2606,
+      "sha256": "0ee046239ca4874b3bf52e71299affc6c2e02c45d1d8c0d814114edeb8dda6c7"
+    },
+    {
+      "path": "local/resource_pool_process_probe.cpp",
+      "bytes": 8347,
+      "sha256": "20096543572bc67370593dc10c43a5543424e534a9b68125aee2deca242135ab"
+    },
+    {
+      "path": "local/build_resource_pool_process_probe.cmd",
+      "bytes": 521,
+      "sha256": "0ebbdc6c3b33415c0102572418931924d93723ab7ea4f700132f7df17371a06c"
+    },
+    {
+      "path": "local/resource_pool_process_probe_build.log",
+      "bytes": 33,
+      "sha256": "b2b76660389379f4e45233e931e67ff5a8955a439df13892b9e6894da99dec22"
+    },
+    {
+      "path": "local/resource_pool_process_probe.exe",
+      "bytes": 31232,
+      "sha256": "21ea53e26b83fbd9a69f4e4d96f1313eea9bb4f46ec1dcf472131439f16c4795"
+    },
+    {
+      "path": "local/resource_pool_process_probe_receipt.txt",
+      "bytes": 431,
+      "sha256": "5dfa9e173fcad9ab1c0f07f6d67f4b18ed61bd37084df12584ad53e0afdfdcc6"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 62966672,
+      "sha256": "504c8e7db51e95a3d8ca71bfcc270e954f483e975794272a9775912a915d290d"
+    },
+    {
+      "path": "build/win32/Release/bsp_game.exe",
+      "bytes": 2236928,
+      "sha256": "805cce84be7616aa07517e5bf5ba5882f2e97021045480beee3811ff7213055b"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/game_native_resource_pools.obj",
+      "bytes": 17385,
+      "sha256": "4ba8008f93a8399af350f1f48c1561d14e382fd19912ab8fedfe239714047b16"
+    },
+    {
+      "path": "build/win32/bsp_game.dir/Release/game_main.obj",
+      "bytes": 292883,
+      "sha256": "f30a57644b94a9133964c9667ba9283a25f1a18ea8f6630f3717e0c6e8ac49f7"
+    }
+  ],
+  "source_hashes": [
+    {
+      "path": "include/bsp/game_native_resource_pools.hpp",
+      "bytes": 1618,
+      "sha256": "5cfa9ea699d355676b28818c45367dc38f4f86bbc30b9010b0fad403c7bcdf2d"
+    },
+    {
+      "path": "src/game_native_resource_pools.cpp",
+      "bytes": 1687,
+      "sha256": "155f576f99c91e916dd952f45feb2734508780c2b9ec0dfc4eaf3773a8d53c78"
+    },
+    {
+      "path": "src/game_main.cpp",
+      "bytes": 24852,
+      "sha256": "84a98d803e7634212fa3740a67e7e36f5bf5351798217b88d521fb80526a50f0"
+    },
+    {
+      "path": "include/bsp/native_resource_hierarchy_pool.hpp",
+      "bytes": 2175,
+      "sha256": "43c6b72030e5acb673d7fce986a1822384f845394f02d18854138b5e37a66eed"
+    }
+  ],
+  "limits": [
+    "selected initializer order only, not complete original CRT table",
+    "resource payload and full load/cache/parse graph not exercised",
+    "original image/ABI/FH3/CRT exception identity not validated",
+    "allocation/atexit failure and concurrent startup not exercised",
+    "gameplay not validated"
+  ]
+}
