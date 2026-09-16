@@ -1,6 +1,6 @@
 {
   "packet": "native_render_entry_application_r70",
-  "status": "application_cache_binding_build_checked_focused_lifetime_passed",
+  "status": "integrated_application_cache_binding_build_checked_focused_lifetime_passed",
   "game_rebuilt": false,
   "owned_files": [
     "config/names/00bd0000.jsonl",
@@ -6640,5 +6640,128 @@
         "sha256": "16cf4e2d5f0e3dceeee9610a603c73af1abebe6d975d8f3283a0e2699666f38b"
       }
     ]
+  },
+  "primary_integration": {
+    "source_commit": "5666cdd290e150916e21a5fd20db635232f72c11",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "fixture_rerun_after_integration": false,
+    "application_rerun_after_integration": false,
+    "archive": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r70\\render-entry-application-main-r70.zip",
+    "sha256": "d0fd8d68a6615f269245a7201ba2c29bd5272d088ffeae99456d107e2372cac8",
+    "files": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "size": 63896494,
+        "sha256": "d4424008d83b6dbbee41290a79abf3a09fc760b9560a249c529f208db7d6cbc5"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "size": 2414080,
+        "sha256": "f3bc5d545be74c94887f15a61fcf350680ef65cd1115754b972c7c837363f345"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "size": 2408,
+        "sha256": "2892e3f11c2e3a93fe02c4272678b6b0fc0b182aa6b533ef8062aac1b189510f"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_render_entry_cache.obj",
+        "size": 14608,
+        "sha256": "83a9ef5d57c1a79b6e9a39717bcc9d3709a8b12da677fc8ffc82d7cfc6adf6ac"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+        "size": 22097,
+        "sha256": "05214c27c4b24b767650c3484ef8404caede3d3c4846e001de8422811e3d4c00"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "size": 232794,
+        "sha256": "c80fa7f3e28480300f5a05871de2a74a926c287cd96ef93cdf2c2f4a535a73b5"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+        "size": 726416,
+        "sha256": "68cafc3b6e6ed7d40bec60853991142c7d7842dd5c59d414c18a0b729f8aca07"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+        "size": 12970,
+        "sha256": "04d8c3390b275b4f1bef434868a6f12714ed00652f7fd8fb882689e1836cffc0"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_renderer_application.obj",
+        "size": 169223,
+        "sha256": "8a8ed7f37c8cfc74e5f7ffecc8c992d4a577e54fea48743e78078fa4f3636881"
+      },
+      {
+        "path": "build/win32/bsp_game.vcxproj",
+        "size": 64257,
+        "sha256": "b0e4bec4bd85016b40bb6ca1addc3ac3b32bc742c7b99ed55ab33893349525ee"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "size": 154588,
+        "sha256": "5685043c4083df0b385a9b661c75ec61afbe7870819fe1f0093ec228ea95a099"
+      },
+      {
+        "path": "docs/NATIVE_RENDER_ENTRY_APPLICATION_R70.md",
+        "size": 3879,
+        "sha256": "1fb36353f7aba9c66cfc83a4c76cf6eba141a3b8894a97885c02a95b50e9ebfc"
+      },
+      {
+        "path": "include/bsp/game_native_renderer_application.hpp",
+        "size": 2044,
+        "sha256": "85107bef50429d7ac64aac9a234e29ecc85318ad106ef523e7f19d99e96c3e04"
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "size": 12535,
+        "sha256": "e27630dc3e613543dc6832517f243c39565a1e2e0a82d799aee86a9e428943d5"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T233504Z.json",
+        "size": 95588,
+        "sha256": "5e8f13daa23ab0990908b5d7c2cc5c2f620b7729014e5c0898d0b1218b9b30b1"
+      },
+      {
+        "path": "local/r70_integration.log",
+        "size": 1601,
+        "sha256": "f904c10cfa77d0c7a048fc7e09b4d2622be7ca3c1fc60ab8bcde4350be68cbd1"
+      },
+      {
+        "path": "local/render_entry_application_r70/annotations.log",
+        "size": 387,
+        "sha256": "de374d1c8b2f3b26e630552a036ecfe0df24ab31f6b7b44e8e7d7072e03088d5"
+      },
+      {
+        "path": "local/render_entry_application_r70/exports_after_annotations.log",
+        "size": 579,
+        "sha256": "1d9227acf76a58ef650a984d3c2ad74fc9709ff0e5f4843ace197be5fe45fef3"
+      },
+      {
+        "path": "reports/native_render_entry_application_r70.json",
+        "size": 401454,
+        "sha256": "2f8e29b02e3883db2e806a25841fc380f0210a315346f56703eddae13b42364b"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "size": 98299,
+        "sha256": "36fc3d2ad502a7abceede89b0a1c6126dfc5fa77fe524b0bf1f06714cbca8458"
+      },
+      {
+        "path": "src/game_native_renderer_application.cpp",
+        "size": 17471,
+        "sha256": "54ff8371256f83f7c8ec650a3cd70b2965ebed79d4d4083eedc254b47b0721cc"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "size": 20692,
+        "sha256": "71d1ef7357a3456ab902246c5c6fc3e43bf52a9b8b1d649d0e26c5e3881120e3"
+      }
+    ],
+    "scope": "Combined integration build and CTests. Focused source cache/real GameSingletonHost probe and failed pre-cache application attempt are separately sealed in tested archive. Application cache/combined renderer drain and gameplay remain unexecuted.",
+    "annotations": "Five annotations already saved and force-exported under owning worktree before integration; integrator bare-owner deferral does not leave annotation work outstanding."
   }
 }
