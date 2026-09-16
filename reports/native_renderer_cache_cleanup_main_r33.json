@@ -1,0 +1,450 @@
+{
+  "packet": "orch4_renderer_cache_reuse_r33",
+  "status": "unchanged_source_reuse_current_main_strict_build_and_scoped_fixture_passed",
+  "source_commit": "aa2b9c2274a92ad501621bdbb0d75b00aaba5dae",
+  "source_reuse": {
+    "revision": "8e1bdea084a82e0cb764a67757c83128dc4b8ff6",
+    "historical_artifacts_verified": 16,
+    "source_files_equal_historical_commit": [
+      "include/bsp/native_render_resource_record_array.hpp",
+      "src/native_render_resource_record_array.cpp",
+      "include/bsp/native_renderer_cache_cleanup.hpp",
+      "src/native_renderer_cache_cleanup.cpp"
+    ],
+    "main_shared_files_equal_historical_parent": true,
+    "fixture_cpp_sha256": "7209f1d55d0217b576be38d1cccbee1fca184680e5ef06a8873bd7b06e44f461",
+    "fixture_reference_sha256": "1197af5ff76c5f485a443b690d8b8a9acd5efb1d7a9942308d0c5d52bbbaa5d7",
+    "provider_review": "Main material-effect cache and accounting providers match source branch. Main actual-owner registry additions and raw alias-copy/destroy overloads retained; used existing interfaces unchanged."
+  },
+  "functions": [
+    {
+      "address": "00b30340",
+      "name": "resize_native_render_resource_record_array_00b30340",
+      "coverage": "complete",
+      "source": "src/native_render_resource_record_array.cpp",
+      "original_ABI": "ECX actual 12-byte header; signed request on stack; RET4",
+      "role": "existing_function_actual_pool_overload",
+      "source_ABI": "explicit borrowed-context C++ interface; not original caller/register/private-frame/SEH ABI",
+      "end": "00b3040c",
+      "bytes": 205
+    },
+    {
+      "address": "00b30410",
+      "name": "resize_native_effect_records_00b30410",
+      "coverage": "complete",
+      "source": "src/native_renderer_cache_cleanup.cpp",
+      "original_ABI": "ECX actual 12-byte header; signed request on stack; RET4",
+      "role": "new_complete_function",
+      "source_ABI": "explicit borrowed-context C++ interface; not original caller/register/private-frame/SEH ABI",
+      "end": "00b304db",
+      "bytes": 204
+    },
+    {
+      "address": "00b316c0",
+      "name": "clear_native_renderer_resource_cache_00b316c0",
+      "coverage": "complete",
+      "source": "src/native_renderer_cache_cleanup.cpp",
+      "original_ABI": "ECX actual owner/header; plain RET; no semantic return",
+      "role": "new_complete_function",
+      "source_ABI": "explicit borrowed-context C++ interface; not original caller/register/private-frame/SEH ABI",
+      "end": "00b31729",
+      "bytes": 106
+    },
+    {
+      "address": "00b31730",
+      "name": "destroy_native_renderer_resource_array_00b31730",
+      "coverage": "complete",
+      "source": "src/native_renderer_cache_cleanup.cpp",
+      "original_ABI": "ECX actual owner/header; plain RET; no semantic return",
+      "role": "new_complete_function",
+      "source_ABI": "explicit borrowed-context C++ interface; not original caller/register/private-frame/SEH ABI",
+      "end": "00b31746",
+      "bytes": 23
+    },
+    {
+      "address": "00b32090",
+      "name": "destroy_native_renderer_resource_cache_00b32090",
+      "coverage": "complete",
+      "source": "src/native_renderer_cache_cleanup.cpp",
+      "original_ABI": "ECX actual owner/header; plain RET; no semantic return",
+      "role": "new_complete_function",
+      "source_ABI": "explicit borrowed-context C++ interface; not original caller/register/private-frame/SEH ABI",
+      "end": "00b320ee",
+      "bytes": 95
+    },
+    {
+      "address": "00b32370",
+      "name": "destroy_native_texture_resource_cache_00b32370",
+      "coverage": "complete",
+      "source": "src/native_renderer_cache_cleanup.cpp",
+      "original_ABI": "ECX actual owner/header; plain RET; no semantic return",
+      "role": "new_complete_function",
+      "source_ABI": "explicit borrowed-context C++ interface; not original caller/register/private-frame/SEH ABI",
+      "end": "00b32401",
+      "bytes": 146
+    }
+  ],
+  "newly_adopted_main_bodies": 5,
+  "newly_adopted_main_body_bytes": 574,
+  "existing_shared_body_bytes": 205,
+  "newly_reconstructed_bodies": 0,
+  "byte_receipt": {
+    "method": "Fresh bounded BSP Ghidra byte queries (verified project/program), compared with installed PE and historical span hashes.",
+    "spans": [
+      {
+        "address": "00b30340",
+        "bytes": 205,
+        "sha256": "33d53eeafd83c2831550c450bdc1dcdebceb30bce75a80a520cf74d2e598f86c",
+        "live_pe_historical_match": true
+      },
+      {
+        "address": "00b30410",
+        "bytes": 204,
+        "sha256": "2fa20617a7043cb17806a34da9f27d24dc008b893fb301a36a68c9142e2703b6",
+        "live_pe_historical_match": true
+      },
+      {
+        "address": "00b316c0",
+        "bytes": 106,
+        "sha256": "17d649b2d967539174142ded4193989fcbd2cec60c1e0263325604b5a2c32ca5",
+        "live_pe_historical_match": true
+      },
+      {
+        "address": "00b31730",
+        "bytes": 23,
+        "sha256": "3639a21ad71e08f9934d30956715977c4ef2818668b8ac7d15d663eb60f8d3ba",
+        "live_pe_historical_match": true
+      },
+      {
+        "address": "00b32090",
+        "bytes": 95,
+        "sha256": "862aabcbdb8afd2673f88f5ec98b89002a0ca904e04c7462525a29d0d3264f7a",
+        "live_pe_historical_match": true
+      },
+      {
+        "address": "00b32370",
+        "bytes": 146,
+        "sha256": "bd883eafef756d8b5f782f5ebf658c14f8344e060bba020e1bbdf4bb38599098",
+        "live_pe_historical_match": true
+      }
+    ],
+    "total_bytes": 779
+  },
+  "review": "Primary reviewed full new source/header, shared array-overload delta, five complete assembly bodies, existing fixture and provider differences. Main canonical actual-owner registry and raw alias overloads retained. Current Ghidra exports already include complete return instructions; no listing repair required.",
+  "validation": {
+    "build": "scripts/build.ps1 MSVC Win32 /MD /W4 /WX /fp:strict passed",
+    "ctests_passed": 3,
+    "direct_call_rows_passed": 19,
+    "indirect_import_rows_explicitly_outside_gate": 5,
+    "fixture": "Unchanged 11699-byte retained fixture and4291-byte reference header recompiled /MD /O2 /W4 /WX /fp:strict /MANIFEST:EMBED against current full library.",
+    "reference_arrays": "All6 reference byte arrays exactly match freshly verified live/PE/historical spans.",
+    "original_source_cases": [
+      "B30340 normal reserved-capacity growth/shrink",
+      "B316C0 normal clear and terminal callback changing current data/count",
+      "B31730 current data resize/free and stale headers"
+    ],
+    "source_failure_cases": [
+      "B32090 canonical lookup failure retains count/accounting/reference effects while array is cleaned",
+      "B32370 child terminal lookup failure retains uncleared child pointer and performs base/array cleanup"
+    ],
+    "not_executed": [
+      "B30410 effect-record resize differential or fixture",
+      "nonnull pooled names and nonempty aliases",
+      "real texture terminal provider",
+      "original native exception transport",
+      "full derived renderer",
+      "gameplay"
+    ]
+  },
+  "limits": [
+    "original caller/register/private-frame and native SEH/CRT exception identity",
+    "inherited actual-pool release and canonical terminal noexcept failure obligations",
+    "unsupported cache/resource profile and malformed raw-storage preconditions",
+    "nonnull pooled-name and full effect-resize differential paths not fixture-tested",
+    "no game integration or game validation"
+  ],
+  "artifacts": [
+    {
+      "path": "include/bsp/native_renderer_cache_cleanup.hpp",
+      "bytes": 3225,
+      "sha256": "a75a20e24832ebc7f4d9635e4e34845fec3c7a9cc12e03ef51fc037df075a042"
+    },
+    {
+      "path": "src/native_renderer_cache_cleanup.cpp",
+      "bytes": 7558,
+      "sha256": "16a4e2603938316a028d5ea6fda4505357089df52aa1993d505c34294eaab7f5"
+    },
+    {
+      "path": "include/bsp/native_render_resource_record_array.hpp",
+      "bytes": 2078,
+      "sha256": "ce90302f76ec165c3a1a77e6fdf5cde2399876ee2e9dc9a553866268037a2e79"
+    },
+    {
+      "path": "src/native_render_resource_record_array.cpp",
+      "bytes": 7847,
+      "sha256": "02d6cfa91481aa8d4c605460fb5cebdc2ba6d99b2971d797be22dd16e76f9afd"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 63225178,
+      "sha256": "c91297bb75056c89e90eb4f891e9b8ed0011782befee8809fada2f377f037956"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_renderer_cache_cleanup.obj",
+      "bytes": 20703,
+      "sha256": "ea6dfd483976a74f2a2e56df94c8a3a1cb18d4a7a89b29abaf343bfe72c77d31"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_render_resource_record_array.obj",
+      "bytes": 14665,
+      "sha256": "eea91cd5ab0660d3d435e9bda8724f3a1c8f202e68bb9a0de04939035b61de32"
+    },
+    {
+      "path": "local/native_renderer_cache_probe.cpp",
+      "bytes": 11699,
+      "sha256": "7209f1d55d0217b576be38d1cccbee1fca184680e5ef06a8873bd7b06e44f461"
+    },
+    {
+      "path": "local/native_renderer_cache_reference.hpp",
+      "bytes": 4291,
+      "sha256": "1197af5ff76c5f485a443b690d8b8a9acd5efb1d7a9942308d0c5d52bbbaa5d7"
+    },
+    {
+      "path": "local/r33_renderer_cache_probe.exe",
+      "bytes": 207872,
+      "sha256": "269e17d42e53812930847605617ec37d91c0dfd7431c7970a1dfb780c0a02daf"
+    },
+    {
+      "path": "local/r33_renderer_cache_probe.obj",
+      "bytes": 53374,
+      "sha256": "bd26af085c10cd6143a0c08e75352927a67df9ce4cedb0635352c6e8a55a7d12"
+    },
+    {
+      "path": "local/build_r33_renderer_cache_probe.cmd",
+      "bytes": 763,
+      "sha256": "b519812af8c75d41988c18fb78bda2c441934e2ced135f1cf7f5d47b6dbecdcb"
+    },
+    {
+      "path": "local/r33_renderer_cache_build.log",
+      "bytes": 2693,
+      "sha256": "ebb57466315f844b23693cb5d6dde4729a9475f46a0aa66fc3d85a4fae67e2f0"
+    },
+    {
+      "path": "local/r33_renderer_cache_fixture.log",
+      "bytes": 166,
+      "sha256": "94c1965416b886ce4108513fde928e2932a27053e1459ec4e3f490aa35049060"
+    },
+    {
+      "path": "local/r33_renderer_cache_fixture_includes.txt",
+      "bytes": 47247,
+      "sha256": "cebf04ced057c44c688a55d01e8a815d3289d4b36faf86681f12b0980f64a1cd"
+    },
+    {
+      "path": "local/r33_cache_calls.log",
+      "bytes": 714,
+      "sha256": "ab2d52ae1cf1193c21e875ef343183799241e485e718082d20ce54b9280dd8fd"
+    },
+    {
+      "path": "local/r33_cache_byte_receipt.json",
+      "bytes": 1328,
+      "sha256": "0f55d76c84104a1134d34240c80da2b667f3c6ea773cdfa2948f164b8d5fbb84"
+    },
+    {
+      "path": "local/r33_cache_reuse_receipt.json",
+      "bytes": 830,
+      "sha256": "05ef405dde1ef1e69222907d9d64b10cdd4af8cc09cc411054af26128e643a93"
+    },
+    {
+      "path": "local/verify_cache_r33.py",
+      "bytes": 1809,
+      "sha256": "140363033ec9049ac45fdf466edfcb9999024b6ae7317c9113b59304e3fe055d"
+    }
+  ],
+  "integration_archive": {
+    "path": "local/evidence-r33/renderer-cache-cleanup-main-r33.zip",
+    "sha256": "f093d659be884607ba3dde92e3f9ef3751dbaa994dc5f434dd96c07820e3463c",
+    "files": [
+      {
+        "path": "include/bsp/native_renderer_cache_cleanup.hpp",
+        "sha256": "a75a20e24832ebc7f4d9635e4e34845fec3c7a9cc12e03ef51fc037df075a042"
+      },
+      {
+        "path": "src/native_renderer_cache_cleanup.cpp",
+        "sha256": "16a4e2603938316a028d5ea6fda4505357089df52aa1993d505c34294eaab7f5"
+      },
+      {
+        "path": "include/bsp/native_render_resource_record_array.hpp",
+        "sha256": "ce90302f76ec165c3a1a77e6fdf5cde2399876ee2e9dc9a553866268037a2e79"
+      },
+      {
+        "path": "src/native_render_resource_record_array.cpp",
+        "sha256": "02d6cfa91481aa8d4c605460fb5cebdc2ba6d99b2971d797be22dd16e76f9afd"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "c91297bb75056c89e90eb4f891e9b8ed0011782befee8809fada2f377f037956"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_cache_cleanup.obj",
+        "sha256": "ea6dfd483976a74f2a2e56df94c8a3a1cb18d4a7a89b29abaf343bfe72c77d31"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_render_resource_record_array.obj",
+        "sha256": "eea91cd5ab0660d3d435e9bda8724f3a1c8f202e68bb9a0de04939035b61de32"
+      },
+      {
+        "path": "local/native_renderer_cache_probe.cpp",
+        "sha256": "7209f1d55d0217b576be38d1cccbee1fca184680e5ef06a8873bd7b06e44f461"
+      },
+      {
+        "path": "local/native_renderer_cache_reference.hpp",
+        "sha256": "1197af5ff76c5f485a443b690d8b8a9acd5efb1d7a9942308d0c5d52bbbaa5d7"
+      },
+      {
+        "path": "local/r33_renderer_cache_probe.exe",
+        "sha256": "269e17d42e53812930847605617ec37d91c0dfd7431c7970a1dfb780c0a02daf"
+      },
+      {
+        "path": "local/r33_renderer_cache_probe.obj",
+        "sha256": "bd26af085c10cd6143a0c08e75352927a67df9ce4cedb0635352c6e8a55a7d12"
+      },
+      {
+        "path": "local/build_r33_renderer_cache_probe.cmd",
+        "sha256": "b519812af8c75d41988c18fb78bda2c441934e2ced135f1cf7f5d47b6dbecdcb"
+      },
+      {
+        "path": "local/r33_renderer_cache_build.log",
+        "sha256": "ebb57466315f844b23693cb5d6dde4729a9475f46a0aa66fc3d85a4fae67e2f0"
+      },
+      {
+        "path": "local/r33_renderer_cache_fixture.log",
+        "sha256": "94c1965416b886ce4108513fde928e2932a27053e1459ec4e3f490aa35049060"
+      },
+      {
+        "path": "local/r33_renderer_cache_fixture_includes.txt",
+        "sha256": "cebf04ced057c44c688a55d01e8a815d3289d4b36faf86681f12b0980f64a1cd"
+      },
+      {
+        "path": "local/r33_cache_calls.log",
+        "sha256": "ab2d52ae1cf1193c21e875ef343183799241e485e718082d20ce54b9280dd8fd"
+      },
+      {
+        "path": "local/r33_cache_byte_receipt.json",
+        "sha256": "0f55d76c84104a1134d34240c80da2b667f3c6ea773cdfa2948f164b8d5fbb84"
+      },
+      {
+        "path": "local/r33_cache_reuse_receipt.json",
+        "sha256": "05ef405dde1ef1e69222907d9d64b10cdd4af8cc09cc411054af26128e643a93"
+      },
+      {
+        "path": "local/verify_cache_r33.py",
+        "sha256": "140363033ec9049ac45fdf466edfcb9999024b6ae7317c9113b59304e3fe055d"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T094059Z.json",
+        "sha256": "53ecff11fc031a7f17931490c4cbecc5eb5434c574ddd7432f34a715b03d2743"
+      },
+      {
+        "path": "local/r33_cache_annotations.log",
+        "sha256": "287fd59d63d10c99996ffed4053d2b95c3a0a04bc571d96c0574fac34ec771c9"
+      },
+      {
+        "path": "local/r33_cache_exports.log",
+        "sha256": "e54d653794be9176860be4533ab625f6a830ee1e34e523325c98b78a6533497f"
+      },
+      {
+        "path": "reports/native_renderer_cache_cleanup.json",
+        "sha256": "d7ab510ff83637d58559737322406d9aad40207e60e1c87b17ec40c39124ff0e"
+      }
+    ]
+  },
+  "ghidra_annotations": {
+    "status": "Retained reviewed names and appended R33 evidence under write lock; project saved and export refreshed.",
+    "prior_annotations": [
+      {
+        "address": "00b30340",
+        "before": {
+          "address": "00b30340",
+          "function_name": "BSP_NativeRenderResourceRecordArray_Resize",
+          "comment": "[BSP reconstruction 00b30340]\nActual12-byte header resize: signed reserve/growth/shrink tests; currentbegin per defaultrecord; zeroname before sentinel allocation then sentinel/count and descending fivepayloadstores. Preserve unknown08/resource28. Current partialname only on failure; state0 currentbegin read before no-op00401130, earliercompleted records remain. Shrink decrements currentcount before currentrecord destruction; finalcount=request. Original ABI: ECX actual 12-byte array header, one stack DWORD, RET4; no semantic result. Evidence reports/native_render_resource_record_array_audit.json and docs/NATIVE_RENDER_RESOURCE_RECORD_ARRAY.md. Primary-library originalcaller fixture10900words/9cases/100events includes complete selected native parent spans and current-name unwind with actual dependency composition; strictWin32+2CTest. New C++interface, hostallocator/CRTexception limits explicit, no fullcontainer/ABI/game completion claim.\n\n[BSP reconstruction 00b30340] update\nActual12-byte header resize: signed reserve/growth/shrink tests; currentbegin per defaultrecord; zeroname before sentinel allocation then sentinel/count and descending fivepayloadstores. Preserve unknown08/resource28. Current partialname only on failure; state0 currentbegin read before no-op00401130, earliercompleted records remain. Shrink decrements currentcount before currentrecord destruction; finalcount=request. Original ABI: ECX actual 12-byte array header, one stack DWORD, RET4; no semantic result. Evidence reports/native_render_resource_record_array_audit.json and docs/NATIVE_RENDER_RESOURCE_RECORD_ARRAY.md. Primary-library originalcaller fixture10900words/9cases/100events includes complete selected native parent spans and current-name unwind with actual dependency composition; strictWin32+2CTest. New C++interface, hostallocator/CRTexception limits explicit, no fullcontainer/ABI/game completion claim. | Hypothesis, not a recovered symbol. Existing body now shares actual-pool and projected-pool overloads. Original/source growth and shrink fixture passed. Integrated source at33ac99a2 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_CACHE_CLEANUP.md; reports/native_renderer_cache_cleanup.json. Original whole-owner FH3/SEH, complete renderer adoption and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "00b30340",
+          "name": "BSP_NativeRenderResourceRecordArray_Resize",
+          "evidence": "Actual12-byte header resize: signed reserve/growth/shrink tests; currentbegin per defaultrecord; zeroname before sentinel allocation then sentinel/count and descending fivepayloadstores. Preserve unknown08/resource28. Current partialname only on failure; state0 currentbegin read before no-op00401130, earliercompleted records remain. Shrink decrements currentcount before currentrecord destruction; finalcount=request. Original ABI: ECX actual 12-byte array header, one stack DWORD, RET4; no semantic result. Evidence reports/native_render_resource_record_array_audit.json and docs/NATIVE_RENDER_RESOURCE_RECORD_ARRAY.md. Primary-library originalcaller fixture10900words/9cases/100events includes complete selected native parent spans and current-name unwind with actual dependency composition; strictWin32+2CTest. New C++interface, hostallocator/CRTexception limits explicit, no fullcontainer/ABI/game completion claim. | R33 unchanged8e1bdea08 source reuse with current main owner/alias providers retained. Fresh6-span779B live/PE/historical parity and unchanged copied-original fixture arrays;19 direct call rows pass,5 indirect/import rows outside gate. Strict MSVC Win32 /MD build/3 CTests; retained fixture recompiled against current full library passes original/source B30340/B316C0/B31730 normal/current-storage cases and source B32090/B32370 failure-retention cases. B30410 build/static/source reviewed only. Names/aliases empty in fixture; terminal callbacks are fixture instrumentation. Not native ABI/FH3/SEH, actual texture terminal or gameplay proof. reports/native_renderer_cache_cleanup_main_r33.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b30410",
+        "before": {
+          "address": "00b30410",
+          "function_name": "BSP_NativeEffectRecordArray_Resize",
+          "comment": "[BSP reconstruction 00b30410]\nHypothesis, not a recovered symbol. Full effect-record growth/shrink body. Strict build and native static evidence only; the adjacent B30340 fixture does not execute this entry. Integrated source at33ac99a2 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_CACHE_CLEANUP.md; reports/native_renderer_cache_cleanup.json. Original whole-owner FH3/SEH, complete renderer adoption and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "00b30410",
+          "name": "BSP_NativeEffectRecordArray_Resize",
+          "evidence": "R33 unchanged8e1bdea08 source reuse with current main owner/alias providers retained. Fresh6-span779B live/PE/historical parity and unchanged copied-original fixture arrays;19 direct call rows pass,5 indirect/import rows outside gate. Strict MSVC Win32 /MD build/3 CTests; retained fixture recompiled against current full library passes original/source B30340/B316C0/B31730 normal/current-storage cases and source B32090/B32370 failure-retention cases. B30410 build/static/source reviewed only. Names/aliases empty in fixture; terminal callbacks are fixture instrumentation. Not native ABI/FH3/SEH, actual texture terminal or gameplay proof. reports/native_renderer_cache_cleanup_main_r33.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b316c0",
+        "before": {
+          "address": "00b316c0",
+          "function_name": "BSP_NativeRenderResourceCache_Clear",
+          "comment": "[BSP reconstruction 00b316c0]\nHypothesis, not a recovered symbol. Reverse current storage traversal, accounting, current release and current row destruction. Original/source normal and reentrant storage-mutation fixture passed. Integrated source at33ac99a2 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_CACHE_CLEANUP.md; reports/native_renderer_cache_cleanup.json. Original whole-owner FH3/SEH, complete renderer adoption and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "00b316c0",
+          "name": "BSP_NativeRenderResourceCache_Clear",
+          "evidence": "R33 unchanged8e1bdea08 source reuse with current main owner/alias providers retained. Fresh6-span779B live/PE/historical parity and unchanged copied-original fixture arrays;19 direct call rows pass,5 indirect/import rows outside gate. Strict MSVC Win32 /MD build/3 CTests; retained fixture recompiled against current full library passes original/source B30340/B316C0/B31730 normal/current-storage cases and source B32090/B32370 failure-retention cases. B30410 build/static/source reviewed only. Names/aliases empty in fixture; terminal callbacks are fixture instrumentation. Not native ABI/FH3/SEH, actual texture terminal or gameplay proof. reports/native_renderer_cache_cleanup_main_r33.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b31730",
+        "before": {
+          "address": "00b31730",
+          "function_name": "BSP_NativeRenderResourceArray_Destroy",
+          "comment": "[BSP reconstruction 00b31730]\nHypothesis, not a recovered symbol. Resize0 then free current base, retaining pointer/capacity. Original/source fixture passed; returning tail restored. Integrated source at33ac99a2 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_CACHE_CLEANUP.md; reports/native_renderer_cache_cleanup.json. Original whole-owner FH3/SEH, complete renderer adoption and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "00b31730",
+          "name": "BSP_NativeRenderResourceArray_Destroy",
+          "evidence": "R33 unchanged8e1bdea08 source reuse with current main owner/alias providers retained. Fresh6-span779B live/PE/historical parity and unchanged copied-original fixture arrays;19 direct call rows pass,5 indirect/import rows outside gate. Strict MSVC Win32 /MD build/3 CTests; retained fixture recompiled against current full library passes original/source B30340/B316C0/B31730 normal/current-storage cases and source B32090/B32370 failure-retention cases. B30410 build/static/source reviewed only. Names/aliases empty in fixture; terminal callbacks are fixture instrumentation. Not native ABI/FH3/SEH, actual texture terminal or gameplay proof. reports/native_renderer_cache_cleanup_main_r33.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b32090",
+        "before": {
+          "address": "00b32090",
+          "function_name": "BSP_NativeRenderResourceCache_Destroy",
+          "comment": "[BSP reconstruction 00b32090]\nHypothesis, not a recovered symbol. D5F038 profile, array cleanup armed during clear and disarmed before normal resize0/free. Source unwind fixture passed; no original FH3 execution. Integrated source at33ac99a2 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_CACHE_CLEANUP.md; reports/native_renderer_cache_cleanup.json. Original whole-owner FH3/SEH, complete renderer adoption and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "00b32090",
+          "name": "BSP_NativeRenderResourceCache_Destroy",
+          "evidence": "R33 unchanged8e1bdea08 source reuse with current main owner/alias providers retained. Fresh6-span779B live/PE/historical parity and unchanged copied-original fixture arrays;19 direct call rows pass,5 indirect/import rows outside gate. Strict MSVC Win32 /MD build/3 CTests; retained fixture recompiled against current full library passes original/source B30340/B316C0/B31730 normal/current-storage cases and source B32090/B32370 failure-retention cases. B30410 build/static/source reviewed only. Names/aliases empty in fixture; terminal callbacks are fixture instrumentation. Not native ABI/FH3/SEH, actual texture terminal or gameplay proof. reports/native_renderer_cache_cleanup_main_r33.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b32370",
+        "before": {
+          "address": "00b32370",
+          "function_name": "BSP_NativeTextureResourceCache_Destroy",
+          "comment": "[BSP reconstruction 00b32370]\nHypothesis, not a recovered symbol. D5F088 profile, captured child release and name cleanup, then base destruction with exact armed states. Source unwind fixture passed; no original FH3 execution. Integrated source at33ac99a2 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_CACHE_CLEANUP.md; reports/native_renderer_cache_cleanup.json. Original whole-owner FH3/SEH, complete renderer adoption and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "00b32370",
+          "name": "BSP_NativeTextureResourceCache_Destroy",
+          "evidence": "R33 unchanged8e1bdea08 source reuse with current main owner/alias providers retained. Fresh6-span779B live/PE/historical parity and unchanged copied-original fixture arrays;19 direct call rows pass,5 indirect/import rows outside gate. Strict MSVC Win32 /MD build/3 CTests; retained fixture recompiled against current full library passes original/source B30340/B316C0/B31730 normal/current-storage cases and source B32090/B32370 failure-retention cases. B30410 build/static/source reviewed only. Names/aliases empty in fixture; terminal callbacks are fixture instrumentation. Not native ABI/FH3/SEH, actual texture terminal or gameplay proof. reports/native_renderer_cache_cleanup_main_r33.json."
+        },
+        "status": "applied"
+      }
+    ]
+  }
+}
