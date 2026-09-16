@@ -21,6 +21,7 @@ class NativeVfsEnumerationDuplicateLog;
 class NativeFileStoreCompletionDispatch;
 class NativeVfsRuntimeBindings;
 struct NativeVfsNameResolutionContext;
+struct NativeVfsDateRouteContext;
 }
 namespace bsp::game {
 class GameNativeReadOnlyData;
@@ -33,6 +34,7 @@ struct GameNativeVfsRawServices {
     void* volatile& actual_vfs_publication_0109ceec;
     NativeVfsRuntimeBindings& bindings;
     NativeVfsNameResolutionContext& name_resolution;
+    NativeVfsDateRouteContext& dates;
 };
 
 // Borrow one initialized raw lifetime, physical-provider pool, type-ID set and

@@ -4,6 +4,7 @@
 
 namespace bsp {
 struct NativePhysicalFileDateContext;
+struct NativeStringRawPoolContext;
 struct SingletonLifetimeCallbacks;
 
 // The stack visitor retains original identity D683B0. Bind the application's
@@ -50,4 +51,12 @@ void visit_native_vfs_date_mounts_00bdd0a0(void* actual_manager,
 void* query_native_vfs_file_date_00bdd340(void* actual_manager,
     void* actual_date_output, const void* actual_name_header,
     NativeVfsDateRouteContext&);
+
+// Additional source interface: BDD340's copied name uses the supplied actual
+// pool publication cells, including getter failure and native unwind ownership.
+// The established BDD0A0 traversal and provider contexts remain borrowed from
+// dates; both string interfaces must identify the same owning native pool.
+void* query_native_vfs_file_date_00bdd340(void* actual_manager,
+    void* actual_date_output, const void* actual_name_header,
+    NativeVfsDateRouteContext& dates, NativeStringRawPoolContext& strings);
 } // namespace bsp
