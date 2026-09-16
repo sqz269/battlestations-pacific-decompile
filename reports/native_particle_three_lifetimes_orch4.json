@@ -1,0 +1,649 @@
+{
+  "packet": "orch4_particle_three_lifetime_k11",
+  "status": "reconstructed_complete_actual_storage_raw_pools_win32_build_and_original_byte_probe_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_particle_three_lifetimes.cpp",
+  "evidence": "docs/NATIVE_PARTICLE_THREE_LIFETIMES_ORCH4.md",
+  "byte_spans": [
+    {
+      "address": "00b05940",
+      "end": "00b059bb",
+      "size": 124,
+      "role": "axial destructor",
+      "live_sha256": "edd9b933c7ece2b30d1e8db560efa73f4a688370ed21cba6610d997aeac980d5",
+      "disk_sha256": "edd9b933c7ece2b30d1e8db560efa73f4a688370ed21cba6610d997aeac980d5",
+      "disk_live_equal": true,
+      "hex": "6aff68e8b7cb0064a100000000506489250000000051568bf15789742408c70630dfd5008bbe8c00000085ffc744241400000000740e8bcfe873a4ffff8bcfe80ca7ffff8bbe9000000085ff740e8bcfe85ba4ffff8bcfe8f4a6ffff8bcec7442414ffffffffe805b6ffff8b4c240c5f5e64890d0000000083c410c3",
+      "instructions": 35
+    },
+    {
+      "address": "00b07730",
+      "end": "00b077c3",
+      "size": 148,
+      "role": "floating destructor",
+      "live_sha256": "3d29c79718a87b4231f0992ba882a8f8c9593428d959877e3b71f45582544487",
+      "disk_sha256": "3d29c79718a87b4231f0992ba882a8f8c9593428d959877e3b71f45582544487",
+      "disk_live_equal": true,
+      "hex": "6aff68b8b8cb0064a100000000506489250000000051568bf15789742408c706b0dfd5008bbe8400000085ffc744241400000000740e8bcfe88386ffff8bcfe81c89ffff8bbe8000000085ff740e8bcfe86b86ffff8bcfe80489ffff8bbe8800000085ff740e8bcfe85386ffff8bcfe8ec88ffff8bcec7442414ffffffffe8fd97ffff8b4c240c5f5e64890d0000000083c410c3",
+      "instructions": 42
+    },
+    {
+      "address": "00b088b0",
+      "end": "00b08943",
+      "size": 148,
+      "role": "sprite destructor",
+      "live_sha256": "9b2904c5d39b21ceeb81b89719e53dc788df2649dbd3ca54e4152019773d9050",
+      "disk_sha256": "9b2904c5d39b21ceeb81b89719e53dc788df2649dbd3ca54e4152019773d9050",
+      "disk_live_equal": true,
+      "hex": "6aff6848b9cb0064a100000000506489250000000051568bf15789742408c706f4dfd5008bbe8400000085ffc744241400000000740e8bcfe80375ffff8bcfe89c77ffff8bbe8000000085ff740e8bcfe8eb74ffff8bcfe88477ffff8bbe8800000085ff740e8bcfe8d374ffff8bcfe86c77ffff8bcec7442414ffffffffe87d86ffff8b4c240c5f5e64890d0000000083c410c3",
+      "instructions": 42
+    },
+    {
+      "address": "00b008c0",
+      "end": "00b008dd",
+      "size": 30,
+      "role": "axial definition scalar",
+      "live_sha256": "d659557a02bf7626c4f95b98c38cbf967e1fb1e93546247e1a81a58152b2ef73",
+      "disk_sha256": "d659557a02bf7626c4f95b98c38cbf967e1fb1e93546247e1a81a58152b2ef73",
+      "disk_live_equal": true,
+      "hex": "568bf1e878500000f644240801740956e8d75c0f0083c4048bc65ec20400",
+      "instructions": 11
+    },
+    {
+      "address": "00b05ce0",
+      "end": "00b05cfd",
+      "size": 30,
+      "role": "axial base scalar",
+      "live_sha256": "439a618c2334202136d48039817ffba0c8221c990c7c74aa0b481c72e02b66c9",
+      "disk_sha256": "439a618c2334202136d48039817ffba0c8221c990c7c74aa0b481c72e02b66c9",
+      "disk_live_equal": true,
+      "hex": "568bf1e858fcfffff644240801740956e8b7080f0083c4048bc65ec20400",
+      "instructions": 11
+    },
+    {
+      "address": "00b008e0",
+      "end": "00b008fd",
+      "size": 30,
+      "role": "floating definition scalar",
+      "live_sha256": "a8ca5c3b91cfaeaf4f68f9472a1af56f6e591d386476c05c6026fb0bc7fdb1e2",
+      "disk_sha256": "a8ca5c3b91cfaeaf4f68f9472a1af56f6e591d386476c05c6026fb0bc7fdb1e2",
+      "disk_live_equal": true,
+      "hex": "568bf1e8486e0000f644240801740956e8b75c0f0083c4048bc65ec20400",
+      "instructions": 11
+    },
+    {
+      "address": "00b07c60",
+      "end": "00b07c7d",
+      "size": 30,
+      "role": "floating base scalar",
+      "live_sha256": "2a87b9ed15334c6612d457ddcad8c3c9f548e0960c3d7674b409ec7270a85993",
+      "disk_sha256": "2a87b9ed15334c6612d457ddcad8c3c9f548e0960c3d7674b409ec7270a85993",
+      "disk_live_equal": true,
+      "hex": "568bf1e8c8fafffff644240801740956e837e90e0083c4048bc65ec20400",
+      "instructions": 11
+    },
+    {
+      "address": "00b00900",
+      "end": "00b0091d",
+      "size": 30,
+      "role": "sprite definition scalar",
+      "live_sha256": "5b3e0ddd60c0e9e7f930a3103647c1c62310a8b52e0915361eec1c105c04cc79",
+      "disk_sha256": "5b3e0ddd60c0e9e7f930a3103647c1c62310a8b52e0915361eec1c105c04cc79",
+      "disk_live_equal": true,
+      "hex": "568bf1e8a87f0000f644240801740956e8975c0f0083c4048bc65ec20400",
+      "instructions": 11
+    },
+    {
+      "address": "00b089c0",
+      "end": "00b089dd",
+      "size": 30,
+      "role": "sprite base scalar",
+      "live_sha256": "5e533a6cd8c7cdcf8940b9397014a8a82ac3cffc3849f39e4ef11c23fcc92c5c",
+      "disk_sha256": "5e533a6cd8c7cdcf8940b9397014a8a82ac3cffc3849f39e4ef11c23fcc92c5c",
+      "disk_live_equal": true,
+      "hex": "568bf1e8e8fefffff644240801740956e8d7db0e0083c4048bc65ec20400",
+      "instructions": 11
+    },
+    {
+      "address": "00cbb7e0",
+      "end": "00cbb7f1",
+      "size": 18,
+      "role": "axial unwind and handler",
+      "live_sha256": "d768032b07a598135fdf599f7928d7fb46ee940c950a9c6276d0e7d62fcb344e",
+      "disk_sha256": "d768032b07a598135fdf599f7928d7fb46ee940c950a9c6276d0e7d62fcb344e",
+      "disk_live_equal": true,
+      "hex": "8b4df0e9c857e4ffb83039df00e951b3f3ff"
+    },
+    {
+      "address": "00cbb8b0",
+      "end": "00cbb8c1",
+      "size": 18,
+      "role": "floating unwind and handler",
+      "live_sha256": "22e3fea48f54ed233b75f3a27e91cfd70233ca5b8045db21d2eb6ab19720de4f",
+      "disk_sha256": "22e3fea48f54ed233b75f3a27e91cfd70233ca5b8045db21d2eb6ab19720de4f",
+      "disk_live_equal": true,
+      "hex": "8b4df0e9f856e4ffb8443adf00e981b2f3ff"
+    },
+    {
+      "address": "00cbb940",
+      "end": "00cbb951",
+      "size": 18,
+      "role": "sprite unwind and handler",
+      "live_sha256": "fd58e7b051ae9d51e0a0911393be9e5a5d03be26752715a1f04f76c095eaf0b0",
+      "disk_sha256": "fd58e7b051ae9d51e0a0911393be9e5a5d03be26752715a1f04f76c095eaf0b0",
+      "disk_live_equal": true,
+      "hex": "8b4df0e96856e4ffb8f83adf00e9f1b1f3ff"
+    },
+    {
+      "address": "00df3928",
+      "end": "00df3953",
+      "size": 44,
+      "role": "axial full unwind map and FuncInfo",
+      "live_sha256": "d00ee8c7034075781c03c89a90aea6e4e62eb28503cf3e5e44ae52cf5ef8a29f",
+      "disk_sha256": "d00ee8c7034075781c03c89a90aea6e4e62eb28503cf3e5e44ae52cf5ef8a29f",
+      "disk_live_equal": true,
+      "hex": "ffffffffe0b7cb0022059319010000002839df00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00df3a3c",
+      "end": "00df3a67",
+      "size": 44,
+      "role": "floating full unwind map and FuncInfo",
+      "live_sha256": "864b67259b3207ea1c389c1f65cfa37ef0f2f7807572f56aee1414370f3c5b35",
+      "disk_sha256": "864b67259b3207ea1c389c1f65cfa37ef0f2f7807572f56aee1414370f3c5b35",
+      "disk_live_equal": true,
+      "hex": "ffffffffb0b8cb0022059319010000003c3adf00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00df3af0",
+      "end": "00df3b1b",
+      "size": 44,
+      "role": "sprite full unwind map and FuncInfo",
+      "live_sha256": "051d4615ebbdff9e580d477c51fd67fbfac961d2bd83c3fc9ea2602ebe5395d6",
+      "disk_sha256": "051d4615ebbdff9e580d477c51fd67fbfac961d2bd83c3fc9ea2602ebe5395d6",
+      "disk_live_equal": true,
+      "hex": "ffffffff40b9cb002205931901000000f03adf00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00d5df30",
+      "end": "00d5df37",
+      "size": 8,
+      "role": "axial base table slots0/4",
+      "live_sha256": "c470176029be0eeee3719c2d24243a5f3704abc03548ccf790b9291efccc63aa",
+      "disk_sha256": "c470176029be0eeee3719c2d24243a5f3704abc03548ccf790b9291efccc63aa",
+      "disk_live_equal": true,
+      "hex": "e030bd00e05cb000"
+    },
+    {
+      "address": "00d5dcc0",
+      "end": "00d5dcc7",
+      "size": 8,
+      "role": "axial definition table slots0/4",
+      "live_sha256": "1348618a31922c5c9834dadbfa08e9904db30347ed75ee830f68bab63f750bd4",
+      "disk_sha256": "1348618a31922c5c9834dadbfa08e9904db30347ed75ee830f68bab63f750bd4",
+      "disk_live_equal": true,
+      "hex": "e030bd00c008b000"
+    },
+    {
+      "address": "00d5dfb0",
+      "end": "00d5dfb7",
+      "size": 8,
+      "role": "floating base table slots0/4",
+      "live_sha256": "471383d684d1fc60a93cb7b9d2780dc2e26b7cbfc4693f355eca1695eddfc422",
+      "disk_sha256": "471383d684d1fc60a93cb7b9d2780dc2e26b7cbfc4693f355eca1695eddfc422",
+      "disk_live_equal": true,
+      "hex": "e030bd00607cb000"
+    },
+    {
+      "address": "00d5dcec",
+      "end": "00d5dcf3",
+      "size": 8,
+      "role": "floating definition table slots0/4",
+      "live_sha256": "7ea105ad439689cbe49027fe53fa0428a415ab91640ae96c99ac773428948857",
+      "disk_sha256": "7ea105ad439689cbe49027fe53fa0428a415ab91640ae96c99ac773428948857",
+      "disk_live_equal": true,
+      "hex": "e030bd00e008b000"
+    },
+    {
+      "address": "00d5dff4",
+      "end": "00d5dffb",
+      "size": 8,
+      "role": "sprite base table slots0/4",
+      "live_sha256": "2667473a8b447030fca050e4d773cff92d2f605a7d8466cab450849289628796",
+      "disk_sha256": "2667473a8b447030fca050e4d773cff92d2f605a7d8466cab450849289628796",
+      "disk_live_equal": true,
+      "hex": "e030bd00c089b000"
+    },
+    {
+      "address": "00d5dd18",
+      "end": "00d5dd1f",
+      "size": 8,
+      "role": "sprite definition table slots0/4",
+      "live_sha256": "3105836075c51e6e59d977a298c5820e908ecf4a870742d715f0ea4a6b3a183b",
+      "disk_sha256": "3105836075c51e6e59d977a298c5820e908ecf4a870742d715f0ea4a6b3a183b",
+      "disk_live_equal": true,
+      "hex": "e030bd000009b000"
+    }
+  ],
+  "prior_ghidra_metadata": [
+    {
+      "address": "00b05940",
+      "annotation": {
+        "address": "00b05940",
+        "function_name": "FUN_00b05940"
+      }
+    },
+    {
+      "address": "00b07730",
+      "annotation": {
+        "address": "00b07730",
+        "function_name": "FUN_00b07730"
+      }
+    },
+    {
+      "address": "00b088b0",
+      "annotation": {
+        "address": "00b088b0",
+        "function_name": "FUN_00b088b0"
+      }
+    },
+    {
+      "address": "00b008c0",
+      "annotation": {
+        "address": "00b008c0",
+        "function_name": "CG_scalar_deleting_dtor_00b008c0"
+      }
+    },
+    {
+      "address": "00b05ce0",
+      "annotation": {
+        "address": "00b05ce0",
+        "function_name": "CG_scalar_deleting_dtor_00b05ce0"
+      }
+    },
+    {
+      "address": "00b008e0",
+      "annotation": {
+        "address": "00b008e0",
+        "function_name": "CG_scalar_deleting_dtor_00b008e0"
+      }
+    },
+    {
+      "address": "00b07c60",
+      "annotation": {
+        "address": "00b07c60",
+        "function_name": "CG_scalar_deleting_dtor_00b07c60"
+      }
+    },
+    {
+      "address": "00b00900",
+      "annotation": {
+        "address": "00b00900",
+        "function_name": "CG_scalar_deleting_dtor_00b00900"
+      }
+    },
+    {
+      "address": "00b089c0",
+      "annotation": {
+        "address": "00b089c0",
+        "function_name": "CG_scalar_deleting_dtor_00b089c0"
+      }
+    }
+  ],
+  "call_rows": [
+    {
+      "function": "00b05940",
+      "address": "00b05978",
+      "native": "00affdf0"
+    },
+    {
+      "function": "00b05940",
+      "address": "00b0597f",
+      "native": "00b00090"
+    },
+    {
+      "function": "00b05940",
+      "address": "00b05990",
+      "native": "00affdf0"
+    },
+    {
+      "function": "00b05940",
+      "address": "00b05997",
+      "native": "00b00090"
+    },
+    {
+      "function": "00b05940",
+      "address": "00b059a6",
+      "native": "00b00fb0"
+    },
+    {
+      "function": "00b07730",
+      "address": "00b07768",
+      "native": "00affdf0"
+    },
+    {
+      "function": "00b07730",
+      "address": "00b0776f",
+      "native": "00b00090"
+    },
+    {
+      "function": "00b07730",
+      "address": "00b07780",
+      "native": "00affdf0"
+    },
+    {
+      "function": "00b07730",
+      "address": "00b07787",
+      "native": "00b00090"
+    },
+    {
+      "function": "00b07730",
+      "address": "00b07798",
+      "native": "00affdf0"
+    },
+    {
+      "function": "00b07730",
+      "address": "00b0779f",
+      "native": "00b00090"
+    },
+    {
+      "function": "00b07730",
+      "address": "00b077ae",
+      "native": "00b00fb0"
+    },
+    {
+      "function": "00b088b0",
+      "address": "00b088e8",
+      "native": "00affdf0"
+    },
+    {
+      "function": "00b088b0",
+      "address": "00b088ef",
+      "native": "00b00090"
+    },
+    {
+      "function": "00b088b0",
+      "address": "00b08900",
+      "native": "00affdf0"
+    },
+    {
+      "function": "00b088b0",
+      "address": "00b08907",
+      "native": "00b00090"
+    },
+    {
+      "function": "00b088b0",
+      "address": "00b08918",
+      "native": "00affdf0"
+    },
+    {
+      "function": "00b088b0",
+      "address": "00b0891f",
+      "native": "00b00090"
+    },
+    {
+      "function": "00b088b0",
+      "address": "00b0892e",
+      "native": "00b00fb0"
+    },
+    {
+      "function": "00b008c0",
+      "address": "00b008c3",
+      "native": "00b05940"
+    },
+    {
+      "function": "00b008c0",
+      "address": "00b008d0",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00b05ce0",
+      "address": "00b05ce3",
+      "native": "00b05940"
+    },
+    {
+      "function": "00b05ce0",
+      "address": "00b05cf0",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00b008e0",
+      "address": "00b008e3",
+      "native": "00b07730"
+    },
+    {
+      "function": "00b008e0",
+      "address": "00b008f0",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00b07c60",
+      "address": "00b07c63",
+      "native": "00b07730"
+    },
+    {
+      "function": "00b07c60",
+      "address": "00b07c70",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00b00900",
+      "address": "00b00903",
+      "native": "00b088b0"
+    },
+    {
+      "function": "00b00900",
+      "address": "00b00910",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00b089c0",
+      "address": "00b089c3",
+      "native": "00b088b0"
+    },
+    {
+      "function": "00b089c0",
+      "address": "00b089d0",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00cbb7e0",
+      "address": "00cbb7e3",
+      "native": "00b00fb0",
+      "kind": "tail_jump",
+      "purpose": "state0->-1 common type base cleanup"
+    },
+    {
+      "function": "00cbb8b0",
+      "address": "00cbb8b3",
+      "native": "00b00fb0",
+      "kind": "tail_jump",
+      "purpose": "state0->-1 common type base cleanup"
+    },
+    {
+      "function": "00cbb940",
+      "address": "00cbb943",
+      "native": "00b00fb0",
+      "kind": "tail_jump",
+      "purpose": "state0->-1 common type base cleanup"
+    }
+  ],
+  "abi": {
+    "destructors": "ECX actual owner, RET; no stable EAX result",
+    "scalars": "ECX actual owner; stack flags; EAX original owner; RET4"
+  },
+  "unwind": [
+    {
+      "owner": "00b05940",
+      "handler": "00cbb7e8",
+      "info": "00df3930",
+      "map": "00df3928",
+      "action": "00cbb7e0"
+    },
+    {
+      "owner": "00b07730",
+      "handler": "00cbb8b8",
+      "info": "00df3a44",
+      "map": "00df3a3c",
+      "action": "00cbb8b0"
+    },
+    {
+      "owner": "00b088b0",
+      "handler": "00cbb948",
+      "info": "00df3af8",
+      "map": "00df3af0",
+      "action": "00cbb940"
+    }
+  ],
+  "cleanup": "Each state0->-1 calls B00FB0 with current owner. Arm after first parameter capture; disarm before normal base call. A second C++ cleanup exception terminates.",
+  "parameter_order": {
+    "axial": [
+      "8c",
+      "90"
+    ],
+    "floating": [
+      "84",
+      "80",
+      "88"
+    ],
+    "sprite": [
+      "84",
+      "80",
+      "88"
+    ]
+  },
+  "dependencies": {
+    "context": "NativeParticleTypeLifetimeContext borrows same actual string context and F8D344 NativeWeakHandlePool",
+    "payload": "destroy_native_particle_parameter_00affdf0",
+    "pool_return": "return_native_particle_parameter_00b00090",
+    "base": "destroy_native_particle_type_base_00b00fb0",
+    "heap_free": "singleton_lifetime_free",
+    "published_commit": "0fb04a9e8"
+  },
+  "flow_repairs": [
+    {
+      "function": "00b008c0",
+      "site": "00b008d0",
+      "old_override": "CALL_RETURN",
+      "missing_half_open_span": [
+        "00b008d5",
+        "00b008d8"
+      ],
+      "restored_hex": "83c404",
+      "owner": "parent orchestrator"
+    },
+    {
+      "function": "00b05ce0",
+      "site": "00b05cf0",
+      "old_override": "CALL_RETURN",
+      "missing_half_open_span": [
+        "00b05cf5",
+        "00b05cf8"
+      ],
+      "restored_hex": "83c404",
+      "owner": "parent orchestrator"
+    },
+    {
+      "function": "00b008e0",
+      "site": "00b008f0",
+      "old_override": "CALL_RETURN",
+      "missing_half_open_span": [
+        "00b008f5",
+        "00b008f8"
+      ],
+      "restored_hex": "83c404",
+      "owner": "parent orchestrator"
+    },
+    {
+      "function": "00b07c60",
+      "site": "00b07c70",
+      "old_override": "CALL_RETURN",
+      "missing_half_open_span": [
+        "00b07c75",
+        "00b07c78"
+      ],
+      "restored_hex": "83c404",
+      "owner": "parent orchestrator"
+    },
+    {
+      "function": "00b00900",
+      "site": "00b00910",
+      "old_override": "CALL_RETURN",
+      "missing_half_open_span": [
+        "00b00915",
+        "00b00918"
+      ],
+      "restored_hex": "83c404",
+      "owner": "parent orchestrator"
+    },
+    {
+      "function": "00b089c0",
+      "site": "00b089d0",
+      "old_override": "CALL_RETURN",
+      "missing_half_open_span": [
+        "00b089d5",
+        "00b089d8"
+      ],
+      "restored_hex": "83c404",
+      "owner": "parent orchestrator"
+    }
+  ],
+  "limitations": [
+    "Source owning interfaces borrow genuine common providers; original binary thunks/FH3/SEH/fault behavior are not established.",
+    "Same canonical parameter pool must be used by producers and lifetime consumers.",
+    "Exception paths and second-unwind-exception termination are source/EH-map reviewed unless explicitly tested.",
+    "No concurrency or gameplay claim."
+  ],
+  "validation": {
+    "strict_win32_build": {
+      "command": "./scripts/build.ps1",
+      "result": "passed",
+      "ctest_summary": "100% tests passed, 0 tests failed out of 3"
+    },
+    "call_verification": {
+      "rows": 34,
+      "failed": 0
+    },
+    "flow": {
+      "instructions": [
+        35,
+        42,
+        42,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "gaps": 0
+    },
+    "index": {
+      "functions": 63690
+    },
+    "probe": {
+      "source": "local/particle_three_probe.cpp",
+      "source_sha256": "8188efdc0f0774de05c4e1f5d14fc9acc7afbe5803eb4f2f2fb14cd52f87c233",
+      "original_include_sha256": "c11e565354eb5794743ce2d4c15eec469cab77616db3bcc8b8fa7ac76ddfb5d5",
+      "call_patch_include_sha256": "ff60566625816a0c5f5fa45427a2cae71fe1123f87cfc93b2585e4a5eec6f343",
+      "executable_sha256": "573b31064e16cfa8acaf13969bda451146355f0a896a648a9a653f3a2ef112d5",
+      "build_script": "local/particle_three_probe_build.ps1",
+      "manifest": "embedded",
+      "native_bytes": 600,
+      "result": "PASS: all600 original bytes; complete A4h/8Ch/90h images and unknown bytes; null/populated derived parameters, actual shared pool return order, type1/2 payloads, common descriptor/name/base cleanup, all six scalar entries flags2/3 and returns. Original FH3/SEH/exception paths not executed.",
+      "dependency_boundary": "All31 direct CALL operands rebound to genuine shared source providers/canonical free or copied owned bodies; original CRT/FH3/SEH and exception execution remain unproved.",
+      "fixture_correction": "Initial fixture incorrectly placed the parameter type at+0; AFFDF0 assembly confirmed uint16+A. Corrected only the local fixture before the final passing run; production code unchanged."
+    },
+    "source_sha256": "5e414a8f226688e605bd1c72e05b2d4677e3b78613f1c307195247154afb68e9",
+    "header_sha256": "143c0b525d684d714603ae66c4a8586474a0630f074cdc38bddce80b90ad0f54",
+    "dependency_source_sha256": "918e22fa3bd346bee0026367a2eb1dc8b13ef07ef7693de223bcc1b3dd096e12",
+    "dependency_header_sha256": "ec41c544a759091cc78d1188b41589f9282827986177530fb1a1f6a24f2389df",
+    "independent_review": "Parent reviewed complete source against the original bodies: no normal-path or EH schedule finding.",
+    "seed_verification": "python tools/ghidra_export.py verify-seeds passed; native_math_differential included in the final3CTests."
+  },
+  "parent_flow_repair_report": "reports/native_particle_lifetime_flow_orch4_k11.json",
+  "parent_body_repair_report": "reports/native_particle_lifetime_bodies_orch4_k11.json"
+}
