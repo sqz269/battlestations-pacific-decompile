@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "packet": "native_diagnostic_raw_access_r38",
+  "status": "phase1_source_complete_validated",
+  "baseline": {
+    "merged_main_commit": "6a0c65625a796cf962d99c91477ffb2a9818c696",
+    "worker_merge_commit": "122fc70d124fee6e525144956474e2890ab8d90c",
+    "source_commit": "61af0c3a45de017bbc7525e30c6bb20c3145fd6a"
+  },
+  "scope": "Route the existing diagnostic getter and physical-buffer lock context through SoundLifetimeAccess, expose the resolved manager +10 section, and compare SoundLifetimeAccess with NativeResourceSupportLifetime by semantic-object or raw-cell identity. No host publication, deletion binding, startup, shutdown, CMake, ledger, or Ghidra mutation is included.",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "installed_pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "language": "x86:LE:32:default",
+    "mode": "read_only"
+  },
+  "original_evidence": {
+    "getter": {
+      "address": "004C14C0",
+      "span": "004C14C0-004C1569",
+      "length": 170,
+      "sha256": "d1ed3a68f63885476351cadb135979cb5433c62f21ddc2778425c5b4a103b505",
+      "live_ghidra_equal_installed_pe": true,
+      "schedule": "Warm first publication returns immediately. Cold path performs first manager lookup; captures manager+10; enters and increments captured section+18; rechecks publication; allocates four bytes, writes CE752C and publishes; performs a second manager lookup; registers the then-current publication; releases the captured section; finally reloads publication. Registration failure retains the publication and releases the captured guard."
+    },
+    "scalar": {
+      "address": "004BBCA0",
+      "span": "004BBCA0-004BBCC8",
+      "length": 41,
+      "sha256": "f462bb0027b9bfdceed4ade23ced0707acf58aa56d643492b1984d21f4da9c58",
+      "live_ghidra_equal_installed_pe": true,
+      "schedule": "Clears current 0109CF14, writes base profile CE3818, frees the captured owner only for flags bit zero, and returns the original address. It does not unregister itself."
+    },
+    "profiles": [
+      {
+        "address": "00CE752C",
+        "bytes": "A0 BC 4B 00",
+        "sha256": "b3542deaae74443b0e3a4e9381c557f5a13e86c64ace23dd7546f66478aa9fa5",
+        "slot_zero": "004BBCA0"
+      },
+      {
+        "address": "00CE3818",
+        "bytes": "40 24 41 00",
+        "sha256": "9b438ce3feae2fd62d0e9bbaf623d6c8501a0d858c6da7d06cc04ccc29ebd57f",
+        "slot_zero": "00412440"
+      }
+    ],
+    "loader_zero_cells": {
+      "01090AA0": {
+        "data_section_delta": 2656928,
+        "section_raw_size": 65536,
+        "section_virtual_size": 2719452
+      },
+      "0109CF14": {
+        "data_section_delta": 2707220,
+        "section_raw_size": 65536,
+        "section_virtual_size": 2719452
+      }
+    }
+  },
+  "source_changes": {
+    "sound_lifetime_access": "SoundLifetimeManagerView::native_system_section_10 reads the already-resolved semantic projection or raw manager+10. SoundLifetimeAccess identity helpers compare a semantic object or the address of a raw publication cell.",
+    "diagnostic_getter": "native_diagnostic_sink_get_or_create_004c14c0 takes SoundLifetimeAccess by value and preserves the existing recheck, second-getter, current-publication registration, guard release and final-reload schedule.",
+    "physical_lock_context": "actual_lifetime_01090aa0 is a SoundLifetimeAccess value; Win32 sizeof is asserted as 16 bytes.",
+    "resource_support": "NativeResourceSupportLifetime gains one cross-adapter predicate. Semantic mode compares the SingletonLifetimeDomain object; raw mode compares the 01090AA0 cell address. It does not replace either adapter.",
+    "compile_sensitive_guards": "Current baseline native_stream_clone.cpp and native_mesh_buffer_fields.cpp already call NativeResourceSupportLifetime::borrows_same_domain on the physical-lock lifetime. The new overload satisfies those checks; no source edit to either caller was necessary.",
+    "construction": "The changes create no manager or diagnostic cell. Access values only borrow existing semantic or raw lifetime identity."
+  },
+  "identity_contract": {
+    "semantic": "Both adapters must point at the same SingletonLifetimeDomain object.",
+    "raw": "Both adapters must borrow the same void* volatile 01090AA0 cell address.",
+    "rejected": "Distinct raw cells remain distinct even when both current values are null; adapter object addresses and current pointer values are never used as identity."
+  },
+  "validation": {
+    "seeds": "python tools/ghidra_export.py verify-seeds passed",
+    "build": "scripts/build.ps1 strict MSVC Win32 /MD passed",
+    "ctests": [
+      "reconstructed_math passed",
+      "native_math_differential passed",
+      "tool_tests passed"
+    ],
+    "coff": "Six relevant fresh objects are x86 and carry DEFAULTLIB:MSVCRT. Symbols establish the value-form diagnostic getter, native_system_section_10, the cross-adapter predicate, and both physical lock wrappers.",
+    "fixture": {
+      "name": "native_diagnostic_raw_access_r38_probe.exe",
+      "manifest": "embedded .rsrc present",
+      "result": "PASS raw diagnostic access: identity, cold/warm registration, index/vertex null-COM locks, real unregister/scalar retirement, retained registration failure and released raw sections",
+      "coverage": [
+        "same raw cell passes and distinct null raw cells reject",
+        "same semantic domain passes and distinct semantic domains reject",
+        "cold index lock creates and registers one CE752C diagnostic owner",
+        "warm vertex lock and direct warm getter reuse the same publication without duplicate registration",
+        "captured raw section recursion depth and +18 depth return to zero",
+        "genuine unregister plus 004BBCA0 flags1 cleanup clears and frees the diagnostic owner",
+        "real manager registration validation failure retains the published owner and releases the captured section",
+        "warm access after retained failure does not retry registration"
+      ],
+      "retirement_boundary": "The fixture directly unregisters and scalar-deletes the owner, then destroys an empty raw manager. It does not supply a fake deletion dispatcher or claim production raw-drain admission."
+    }
+  },
+  "evidence_files": [
+    "local/native_diagnostic_raw_access_r38_native_receipts.json",
+    "local/native_diagnostic_raw_access_r38_ghidra_getter.txt",
+    "local/native_diagnostic_raw_access_r38_ghidra_scalar.txt",
+    "local/native_diagnostic_raw_access_r38_ghidra_derived_profile.txt",
+    "local/native_diagnostic_raw_access_r38_ghidra_base_profile.txt",
+    "local/native_diagnostic_raw_access_r38_build.log",
+    "local/native_diagnostic_raw_access_r38_seeds.log",
+    "local/native_diagnostic_raw_access_r38_probe.cpp",
+    "local/native_diagnostic_raw_access_r38_probe.log",
+    "local/native_diagnostic_raw_access_r38_probe_status.json",
+    "local/native_diagnostic_raw_access_r38_toolchain.json",
+    "local/native_diagnostic_raw_access_r38_probe_headers.txt",
+    "local/native_diagnostic_raw_access_r38_coff_*.txt"
+  ],
+  "boundaries": {
+    "phase2_required": "A later packet must own a stable GameSingletonHost 0109CF14 cell and append CE752C to NativeSingletonDeletionBindings after the current frame-clock tail. This packet deliberately leaves both untouched.",
+    "shutdown_wrapper": "Original 007363B0 unregister/scalar shutdown remains a separate source packet.",
+    "no_original_abi": "These are typed C++ source interfaces, not drop-in cdecl/ECX native replacements.",
+    "no_native_eh": "C++ EH cleanup preserves the established source schedule; original FH3/SEH identity, asynchronous faults and second-exception behavior are unproved.",
+    "no_runtime_claim": "No application startup/shutdown, production context composition, renderer/device behavior, game execution or gameplay validation is claimed.",
+    "no_metadata_mutation": "No Ghidra, ledger, name or tag mutation was performed."
+  },
+  "hash_provenance": "Native SHA-256 values were computed programmatically from exact installed-PE spans and accepted only after byte-for-byte equality with fresh guarded Ghidra reads. Source, object, library, executable, log and report hashes are generated from retained files by the archive manifest; no abbreviated hash was expanded manually.",
+  "artifact_archive": "local/native-diagnostic-raw-access-r38.zip; exact archive and member hashes are recorded after this report is committed"
+}
