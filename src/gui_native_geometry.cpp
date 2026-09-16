@@ -174,14 +174,15 @@ struct GuiNativeGeometryOwners::Impl {
         it->registered = true;
         acquired.canonical_registration = true;
     }
-    void register_stream(NativeStreamCloneAcquired& acquired, NativeStreamCloneServices& services) {
+    void register_stream(NativeStreamCloneAcquired& acquired,
+        NativeLogicalVertexOwnerContext& vertices, NativeLogicalIndexCreationContext& indices) {
         require(acquired.creator && !acquired.companion && !acquired.canonical_registration,
             "stream registration requires one unbound actual creator");
         if (acquired.vertex) {
             auto it = vertex_entries.emplace(vertex_entries.end(), *this);
             it->raw = acquired.creator;
             try {
-                it->reference = std::make_unique<NativeLogicalVertexReference>(it->raw, services.vertices,
+                it->reference = std::make_unique<NativeLogicalVertexReference>(it->raw, vertices,
                     NativeLogicalVertexCompanionDisposal{&*it, retire_vertex});
             } catch (...) { vertex_entries.erase(it); throw; } // No native effect or creator release.
             acquired.companion = it->reference.get();
@@ -191,7 +192,7 @@ struct GuiNativeGeometryOwners::Impl {
             auto it = index_entries.emplace(index_entries.end(), *this);
             it->raw = acquired.creator;
             try {
-                it->reference = std::make_unique<NativeLogicalIndexReference>(it->raw, services.indices,
+                it->reference = std::make_unique<NativeLogicalIndexReference>(it->raw, indices,
                     NativeLogicalIndexCompanionDisposal{&*it, retire_index});
             } catch (...) { index_entries.erase(it); throw; }
             acquired.companion = it->reference.get();
@@ -448,7 +449,16 @@ void GuiNativeGeometryOwners::register_stream_clone_creator(NativeStreamCloneAcq
     NativeStreamCloneServices& services) {
     require(&services.geometry == this && &services.vertices.actual_owners == &impl_->registration.owners,
         "stream companion registration must use the same canonical owner domain");
-    impl_->register_stream(acquired, services);
+    impl_->register_stream(acquired, services.vertices, services.indices);
+}
+void GuiNativeGeometryOwners::register_stream_clone_creator(NativeStreamCloneAcquired& acquired,
+    NativeLogicalVertexOwnerContext& vertices, NativeLogicalIndexCreationContext& indices) {
+    require(&vertices.actual_owners == &impl_->registration.owners &&
+        &vertices.actual_physical == &indices.lifetime.actual_physical &&
+        &vertices.actual_renderer_00f8d394 == &indices.lifetime.actual_renderer_00f8d394 &&
+        &vertices.actual_synchronization_0108d6dc == &indices.lifetime.actual_synchronization_0108d6dc,
+        "stream companion registration requires the same actual owners and renderer services");
+    impl_->register_stream(acquired, vertices, indices);
 }
 void GuiNativeGeometryOwners::register_native_declaration_reference(GuiNativeDeclarationAcquired& acquired,
     NativeVertexDeclarationLoadingContext& loading) {
