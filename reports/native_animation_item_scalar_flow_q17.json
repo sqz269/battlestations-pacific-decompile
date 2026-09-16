@@ -1,0 +1,83 @@
+{
+  "repairs": [
+    {
+      "function": "00b92fa0",
+      "owner": "agent/orch4-20260916-animation-item-q17",
+      "when": "2026-09-16T03:24:35Z",
+      "decompile_lines_before": 14,
+      "gaps": [
+        {
+          "site": "00b92fb0",
+          "mnemonic": "CALL",
+          "operands": "0x00bf65ac",
+          "gap_start": "00b92fb5",
+          "gap_end_exclusive": "00b92fb8",
+          "bytes": 3,
+          "after_call": true,
+          "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "00b92fb0",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "00b92fb5",
+            "gap_end_exclusive": "00b92fb8",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          },
+          "clear": "Success: Cleared flow override at 00b92fb0 (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 3 byte(s)"
+        }
+      ],
+      "decompile_lines_after": 11,
+      "gaps_remaining": 0
+    }
+  ],
+  "independent_preflight": {
+    "address": "00b92fa0",
+    "end_exclusive": "00b92fbe",
+    "bytes": 30,
+    "sha256": "50dd0475293f46a8b11a888ba673d2d148d1d796ee971c6437cfdb7180a8ffb3",
+    "live_disk_match": true
+  },
+  "prior_documentation": [
+    {
+      "address": "00b92fa0",
+      "documentation": {
+        "hash": "bb43afd0ab614ecb9dd8355da8b4779dc46d512be1303eb0c885096d8ad31633",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b92fa0",
+        "function_name": "CG_scalar_deleting_dtor_00b92fa0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "extraout_EAX",
+            "type": "void *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00b92fb8"
+          }
+        ],
+        "completeness_score": 80.0
+      }
+    }
+  ],
+  "final_validation": {
+    "body": "00b92fa0..00b92fbd",
+    "call_gaps": 0,
+    "saved": true,
+    "forced_export_refreshed": true,
+    "scope": "Restored ADD ESP,4 after returning free; body/name preserved; no source/game claim"
+  }
+}
