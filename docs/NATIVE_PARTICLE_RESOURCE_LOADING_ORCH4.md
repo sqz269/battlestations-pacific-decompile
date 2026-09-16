@@ -113,5 +113,7 @@ chain, and AFA100 to all three derived emitter scalar deleters. Applications
 must provide the same parameter pool and resource-container references used
 for loading; see `NATIVE_PARTICLE_LOADED_LIFETIME_ORCH4.md` for the required
 borrowed pointers and focused graph-cleanup evidence. The outer 00870DD0
-cache acquisition body, runtime context installation, original FH3/SEH/ABI
-and gameplay remain separate work.
+cache acquisition body now has a complete raw composition and seven copied-body
+comparisons, including real physical VFS date/load/parser paths; see
+`NATIVE_PARTICLE_RESOURCE_ACQUISITION_RAW_ORCH4.md`. Runtime context installation,
+original FH3/SEH/ABI and gameplay remain separate work.

@@ -9,7 +9,9 @@ resource loader, complete `00AF4BA0` parser and loaded-resource lifetime
 composition. See `NATIVE_PARTICLE_RESOURCE_LOADER_RAW_ORCH4.md`,
 `NATIVE_PARTICLE_RESOURCE_PARSER_RAW_ORCH4.md` and
 `NATIVE_PARTICLE_LOADED_LIFETIME_ORCH4.md`. The outer `00870DD0` cache
-acquisition body and application wiring remain separate work.
+acquisition body is also complete; see
+`NATIVE_PARTICLE_RESOURCE_ACQUISITION_RAW_ORCH4.md`. Application installation
+of the same actual provider and lifetime domains remains separate work.
 Validation results and complete disk/live byte hashes are retained in
 `reports/native_particle_resource_cache_orch4.json`.
 
@@ -152,5 +154,7 @@ all three derived emitter profiles through their scalar deleters, and uses the
 Object loader's resource-container references for model cleanup. Applications
 must supply both optional lifetime-domain pointers with the same objects used
 for loading. This composition passed a focused cache-to-Object cleanup fixture.
-The 00870DD0 acquisition algorithm, application context installation, original
-ABI/FH3/SEH, and gameplay remain unvalidated. No runnable particle system is claimed.
+The complete 00870DD0 acquisition algorithm passed seven copied-body comparisons
+with real VFS/date/loader providers. Cache hits always retain; new loads retain
+only when requested. Application installation, original ABI/FH3/SEH and gameplay
+remain unvalidated. No runnable particle system is claimed.

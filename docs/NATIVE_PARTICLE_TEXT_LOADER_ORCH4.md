@@ -45,8 +45,9 @@ provider exceptions propagate without adding cleanup absent from AF5850.
 existing publication cell, runtime bindings and name-resolution context without
 constructing another manager; see `NATIVE_PARTICLE_VFS_SERVICES_ORCH4.md`.
 The subsequent raw AF4BA0 parser and 86BA60 resource loader compose this body
-and retain its resolution invocation. Application context installation and the
-outer 00870DD0 cache acquisition algorithm remain separate work. See
+and retain its resolution invocation. The outer 00870DD0 cache acquisition
+algorithm is now complete; see `NATIVE_PARTICLE_RESOURCE_ACQUISITION_RAW_ORCH4.md`.
+Application context installation remains separate work. See
 `NATIVE_PARTICLE_RESOURCE_LOADER_RAW_ORCH4.md` for the current caller contract.
 
 ## Ordering and lifetime
