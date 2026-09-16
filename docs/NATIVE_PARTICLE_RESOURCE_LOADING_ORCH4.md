@@ -67,7 +67,19 @@ storage; exposing the borrowed runtime services remains separate wiring work.
 The historical source-absent entries in this packet's report describe its
 starting boundary before that j10 extension.
 
-AF4BA0, the full particle parser, and its AFAD00 Layer parser and AF4700 bounds
-reader remain absent. They require concrete raw line/token/suffix and parameter
-ownership composition. No placeholder or generic callback wrapper represents
-these missing bodies.
+AFAD00 is now a complete Layer reader using the genuine raw line/token/suffix
+providers and raw parameter builder. AF4700 is also complete; its bounds fields
+retain the native atof-to-x87-store schedule. Both passed full caller-body
+original/source comparisons. See `NATIVE_PARTICLE_LAYER_READER_ORCH4.md` and
+`NATIVE_PARTICLE_BOUNDS_READER_ORCH4.md`. AF40E0/AF9F50 preparation now composes
+all five proven particle profiles with their genuine methods and actual string
+pool; see `NATIVE_PARTICLE_PREPARATION_RAW_ORCH4.md`.
+
+The full AF4BA0 resource parser and dependent 86BA60 loader remain absent.
+AF9FB0's three emitter parser targets (B03EC0, B02FD0, B02210), nested B00CE0
+particle parsers, and property/resource ownership domains still require complete
+raw composition. B01150 and derived particle constructors currently have bounded
+host-binding interfaces; their real raw construction remains a separate task.
+Object resource loading must compose the existing VFS/name-resolution, resource
+manager/cache and actual renderer/model ownership domains. Generic callbacks or
+known function names do not establish those contracts or gameplay readiness.

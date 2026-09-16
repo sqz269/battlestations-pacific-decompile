@@ -97,12 +97,20 @@ these prerequisites missing. Their current source status is:
 | AF5620..AF5651 | 50;20 listed instructions | Complete raw text-buffer cleanup: `NATIVE_PARTICLE_RESOURCE_LOADING_ORCH4.md`. |
 
 The report preserves every CALL instruction from all four complete byte spans.
-The Layer constructor/lifetime and AF3E90/AEDF60 token helpers are now complete;
-see `NATIVE_PARTICLE_LAYER_LIFETIME_ORCH4.md` and
-`NATIVE_PARTICLE_TEXT_HELPERS_ORCH4.md`. Source-absent AFAD00 and AF4700 still
-require raw pooled line/token/suffix and parameter-builder ownership composition.
-The definition type factory and CRT provider boundaries also require concrete
-composition in the full parser.
+The raw Layer lifetime, pooled line/token/suffix helpers, parameter builder,
+AFAD00 Layer reader, AF4700 bounds reader and AF40E0/AF9F50 preparation dispatch
+are now reconstructed. See `NATIVE_PARTICLE_LAYER_READER_ORCH4.md`,
+`NATIVE_PARTICLE_BOUNDS_READER_ORCH4.md`,
+`NATIVE_PARTICLE_PARAMETER_BUILDER_RAW_ORCH4.md` and
+`NATIVE_PARTICLE_PREPARATION_RAW_ORCH4.md` for their original-code comparisons
+and explicit source-interface limits.
+
+The complete AF4BA0 resource parser remains absent. Its AF9FB0 emitter factory
+and three emitter parsers still require full raw-provider composition, including
+nested B00CE0 particle construction/parsing and property/resource domains.
+Existing host-binding implementations and named functions do not close these
+contracts. The 86BA60 resource-loader body remains dependent on that whole parser;
+no placeholder stands in for either missing body.
 
 Both audited flow defects were repaired and saved under the write lock:
 AF5850's AF58FB..AF590C failure tail and AF5620's AF5630..AF5632 stack adjustment.
