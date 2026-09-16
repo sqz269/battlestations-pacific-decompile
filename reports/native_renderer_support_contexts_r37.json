@@ -1,0 +1,388 @@
+{
+  "packet": "renderer_support_contexts_r37",
+  "source_commit": "475e45c5b",
+  "status": "source_context_raw_domain_extension_build_and_real_host_fixture_checked",
+  "native_body_changes": 0,
+  "context_changes": [
+    "NativePhysicalBufferOwnerContext lifetime field uses current NativeResourceSupportLifetime.",
+    "NativeHardwareLayoutOwnerContext lifetime field uses same adapter.",
+    "Stream-clone and mesh-buffer semantic-domain comparisons use exact borrowed identity, preserving old same-object requirement."
+  ],
+  "identity": {
+    "semantic": "Exact semantic manager object; raw mode never matches.",
+    "raw": "Exact AA0 reference address, independent of its current pointer value.",
+    "publication": "Existing raw getter rejects a support publication reference distinct from its bound108FEDC cell."
+  },
+  "validation": {
+    "strict_build": true,
+    "toolchain": "MSVC Win32 Release /MD /W4 /WX /fp:strict",
+    "ctests_passed": 3,
+    "fixture_exit": 0,
+    "fixture_basis": "One ignored scoped extension of retained resource_support_raw_r27_probe.cpp; no new permanent test.",
+    "executed": [
+      "Actual2Ch physical index constructor B4BB60 and destructor B4B900 using GameSingletonHost raw support context.",
+      "Exact AA0 cell identity despite equal null values, adapter copy identity, mismatched support-cell rejection.",
+      "One real shared-manager registration, captured lock release and stable fast path.",
+      "Shared BD0400 drain dispatches finite D62B64/B61D60 and clears same actual publications."
+    ],
+    "not_executed": [
+      "Hardware-layout lifetime through raw mode",
+      "Raw physical-buffer locking",
+      "Active renderer/EndFrame",
+      "Original ABI/FH3/SEH",
+      "Gameplay"
+    ]
+  },
+  "remaining_closure": "NativePhysicalBufferLockContext diagnostic route remains semantic. Raw support paired with that semantic lock route is rejected by stream/mesh guards; diagnostic raw owner remains prerequisite.",
+  "annotation": {
+    "name_retained": "bsp_resource_support_get_singleton",
+    "prior": [
+      {
+        "address": "00b3e730",
+        "before": {
+          "address": "00b3e730",
+          "function_name": "bsp_resource_support_get_singleton",
+          "comment": "[BSP reconstruction 00b3e730]\nProvisional resource-support role; originalclasspurpose unknown. Getter checks0108FEDC, takes lifetime manager lock, rechecks, allocates8bytes, constructor00b61d50 installs vtableonly, publishes and registers singleton00bd0c30 for shutdown, releaseslock and returnsEAX. No per-surface argument or registration. Surfaceconstructor/destructor ignore returnedvalue. See SURFACE_REGISTRATION_AUDIT.\n\n[BSP reconstruction 00b3e730] update\nNative [00b3e730,00b3e7ed); No inputs; EAX actual published owner; RET; real lifetime manager lock/recheck/allocate/publish/register/unlock.. lazy resource-support getter Component: reports/native_resource_support_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim.\n\n[BSP reconstruction 00b3e730] update\nProvisional resource-support role; originalclasspurpose unknown. Getter checks0108FEDC, takes lifetime manager lock, rechecks, allocates8bytes, constructor00b61d50 installs vtableonly, publishes and registers singleton00bd0c30 for shutdown, releaseslock and returnsEAX. No per-surface argument or registration. Surfaceconstructor/destructor ignore returnedvalue. See SURFACE_REGISTRATION_AUDIT. | Native [00b3e730,00b3e7ed); No inputs; EAX actual published owner; RET; real lifetime manager lock/recheck/allocate/publish/register/unlock.. lazy resource-support getter Component: reports/native_resource_support_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim. | Hypothesis, not a recovered symbol. Shared legacy and actual-AA0 resource-support getter body reconstructed. Source actual publication and postpublication failure retain owner; captured section exits before current publication reload. Native operand order checked, original getter FH3 not executed. Integrated code 7cbd532e passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_RESOURCE_SUPPORT_ACTUAL.md; reports/native_resource_support_actual.json. Borrowed actual storage, live subobjects and scratch preimages remain caller requirements. Source interfaces; full parent execution, original CRT/FH3/SEH/register-ABI identity, application adoption and gameplay unvalidated.\n\n[BSP reconstruction 00b3e730] update\nProvisional resource-support role; originalclasspurpose unknown. Getter checks0108FEDC, takes lifetime manager lock, rechecks, allocates8bytes, constructor00b61d50 installs vtableonly, publishes and registers singleton00bd0c30 for shutdown, releaseslock and returnsEAX. No per-surface argument or registration. Surfaceconstructor/destructor ignore returnedvalue. See SURFACE_REGISTRATION_AUDIT. | Native [00b3e730,00b3e7ed); No inputs; EAX actual published owner; RET; real lifetime manager lock/recheck/allocate/publish/register/unlock.. lazy resource-support getter Component: reports/native_resource_support_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim. | Raw application lifetime extension: NativeResourceSupportRawContext uses the same actual01090AA0/0108FEDC cells owned by GameSingletonHost; capture first raw manager section, enter/recheck/allocate/construct/publish, get manager again THEN reload publication for BD0C30, unlock then final reload. D62B64 shared drain calls existing B61D60; source-only binding appended at104, size108. Full324B PE/live and six exact calls verified; strict Win32/3CTests plus actual-host one-registration/lock/fast-path/shutdown probe. docs/NATIVE_RESOURCE_SUPPORT_RAW_ORCH4.md; reports/native_resource_support_raw_orch4.json. Allocation/registration failure, original ABI/FH3/SEH and game/renderer behavior unproven."
+        },
+        "after": {
+          "address": "00b3e730",
+          "name": "bsp_resource_support_get_singleton",
+          "evidence": "Provisional resource-support role; originalclasspurpose unknown. Getter checks0108FEDC, takes lifetime manager lock, rechecks, allocates8bytes, constructor00b61d50 installs vtableonly, publishes and registers singleton00bd0c30 for shutdown, releaseslock and returnsEAX. No per-surface argument or registration. Surfaceconstructor/destructor ignore returnedvalue. See SURFACE_REGISTRATION_AUDIT. | Native [00b3e730,00b3e7ed); No inputs; EAX actual published owner; RET; real lifetime manager lock/recheck/allocate/publish/register/unlock.. lazy resource-support getter Component: reports/native_resource_support_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim. | Raw application lifetime extension: NativeResourceSupportRawContext uses the same actual01090AA0/0108FEDC cells owned by GameSingletonHost; capture first raw manager section, enter/recheck/allocate/construct/publish, get manager again THEN reload publication for BD0C30, unlock then final reload. D62B64 shared drain calls existing B61D60; source-only binding appended at104, size108. Full324B PE/live and six exact calls verified; strict Win32/3CTests plus actual-host one-registration/lock/fast-path/shutdown probe. docs/NATIVE_RESOURCE_SUPPORT_RAW_ORCH4.md; reports/native_resource_support_raw_orch4.json. Allocation/registration failure, original ABI/FH3/SEH and game/renderer behavior unproven. | R37 source-context extension: physical-buffer and hardware-layout owner contexts accept existing NativeResourceSupportLifetime with exact borrowed semantic/raw domain identity. Native getter body unchanged. Stream/mesh guards compare underlying semantic domain and reject raw support with still-semantic diagnostic locking. Strict Win32 /MD build3 CTests; real GameSingletonHost fixture constructs/destroys actual2Ch physical index buffer, registers one support owner in same raw manager and drains D62B64. No hardware-layout runtime, raw stream-lock closure, active renderer or gameplay claim. reports/native_renderer_support_contexts_r37.json. | Provisional resource-support role; originalclasspurpose unknown. Getter checks0108FEDC, takes lifetime manager lock, rechecks, allocates8bytes, constructor00b61d50 installs vtableonly, publishes and registers singleton00bd0c30 for shutdown, releaseslock and returnsEAX. No per-surface argument or registration. Surfaceconstructor/destructor ignore returnedvalue. See SURFACE_REGISTRATION_AUDIT. | Native [00b3e730,00b3e7ed); No inputs; EAX actual published owner; RET; real lifetime manager lock/recheck/allocate/publish/register/unlock.. lazy resource-support getter Component: reports/native_resource_support_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim. | Raw application lifetime extension: NativeResourceSupportRawContext uses the same actual01090AA0/0108FEDC cells owned by GameSingletonHost; capture first raw manager section, enter/recheck/allocate/construct/publish, get manager again THEN reload publication for BD0C30, unlock then final reload. D62B64 shared drain calls existing B61D60; source-only binding appended at104, size108. Full324B PE/live and six exact calls verified; strict Win32/3CTests plus actual-host one-registration/lock/fast-path/shutdown probe. docs/NATIVE_RESOURCE_SUPPORT_RAW_ORCH4.md; reports/native_resource_support_raw_orch4.json. Allocation/registration failure, original ABI/FH3/SEH and game/renderer behavior unproven. | R37 source-context extension: physical-buffer and hardware-layout owner contexts accept existing NativeResourceSupportLifetime with exact borrowed semantic/raw domain identity. Native getter body unchanged. Stream/mesh guards compare underlying semantic domain and reject raw support with still-semantic diagnostic locking. Strict Win32 /MD build3 CTests; real GameSingletonHost fixture constructs/destroys actual2Ch physical index buffer, registers one support owner in same raw manager and drains D62B64. No hardware-layout runtime, raw stream-lock closure, active renderer or gameplay claim. reports/native_renderer_support_contexts_r37.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "saved_and_exported": true
+  },
+  "archive": {
+    "path": "local/evidence-r37/renderer-support-contexts-r37.zip",
+    "sha256": "122c83773e38ee7b727de420effa5dad566c1c6df5d58ce96b56ae248ad7aadb",
+    "artifacts": [
+      {
+        "path": "include/bsp/native_resource_support.hpp",
+        "bytes": 3215,
+        "sha256": "dbbab5a5b01537c8683cd69435d159807fbce6eb0e616fae0f61ca051ebcf687"
+      },
+      {
+        "path": "include/bsp/native_physical_buffer_owner.hpp",
+        "bytes": 4248,
+        "sha256": "1277b747e0963be41fdee456092ea42b3c191d7aa165eeeec772de3cad354e56"
+      },
+      {
+        "path": "include/bsp/native_hardware_layout_owner.hpp",
+        "bytes": 3993,
+        "sha256": "57c6e2ad4a2b612969901001efc4c6b8bb8ec3702bcafe180ebc3926cdde5870"
+      },
+      {
+        "path": "src/native_mesh_buffer_fields.cpp",
+        "bytes": 11615,
+        "sha256": "1a4cfda0124597bd48d7208fdbd974546951067e89f555534b098cf4465aaa50"
+      },
+      {
+        "path": "src/native_stream_clone.cpp",
+        "bytes": 9737,
+        "sha256": "ca2fff6a311b90c35dc926d75142e8318f72d2c3198c4420afdc2dc4250f11ab"
+      },
+      {
+        "path": "docs/NATIVE_RENDERER_SUPPORT_CONTEXTS_R37.md",
+        "bytes": 1889,
+        "sha256": "0cefd612de41d56704675c00433176453db0bfc301618517a08a58a2f70b48d1"
+      },
+      {
+        "path": "local/r37_support_contexts_build.log",
+        "bytes": 8368,
+        "sha256": "823cc1e9f106103e3e3500e94dc1aceaca9463be9ecce557e0fe480c2b002864"
+      },
+      {
+        "path": "local/r37_support_contexts_fixture_build.log",
+        "bytes": 32,
+        "sha256": "c29769d894c80f3bbfad36e9b6677e99f952c88de6f73a968e22b4be7792ab92"
+      },
+      {
+        "path": "local/r37_support_contexts_fixture_run.log",
+        "bytes": 408,
+        "sha256": "fe9821a3f9c5677c94a334a3f48f12a4cbea7407db1699d111b63581a60e1b08"
+      },
+      {
+        "path": "local/support_contexts_r37_host.log",
+        "bytes": 269,
+        "sha256": "de569c520f8471b3bce6abcc6a3c64a71a09f9430e31e0112edeaab2ffaf7388"
+      },
+      {
+        "path": "local/support_contexts_r37_probe.cpp",
+        "bytes": 4474,
+        "sha256": "1b08a07a7c1c8b7cca6f127c71fa73087e46e70d0158aa838cc19be0a32abb6e"
+      },
+      {
+        "path": "local/support_contexts_r37_probe.exe",
+        "bytes": 352768,
+        "sha256": "04cdda54d05eab1411107d8f77853e5d0d7bff1da3649c7bc64b531effc4292e"
+      },
+      {
+        "path": "local/support_contexts_r37_probe.obj",
+        "bytes": 50601,
+        "sha256": "f5182c54e0567ddd7846b834ec56f7723bcc560c2406d49a552117f65550c291"
+      },
+      {
+        "path": "local/build_support_contexts_r37_probe.cmd",
+        "bytes": 608,
+        "sha256": "7a3a539763a96992159ee4069868ad408e7309c0099544c55a5ecacb6fb0acbe"
+      },
+      {
+        "path": "local/resource_application_r24_game_objects.rsp",
+        "bytes": 5075,
+        "sha256": "d825c31c0084c9e9358470127e653a3ba3cdce05b696ef26c83f43b182286738"
+      },
+      {
+        "path": "local/r37_support_contexts_annotations.log",
+        "bytes": 197,
+        "sha256": "5a19f2a197d3e0ee3a9692b4d3b19166466738292a8663990c8919fda6e5668b"
+      },
+      {
+        "path": "local/r37_support_contexts_exports.log",
+        "bytes": 104,
+        "sha256": "1f115a048f0f12c2efd191e75ea37cdd8090808d122ff3355a0709547b236721"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T104304Z.json",
+        "bytes": 8582,
+        "sha256": "f4923124df094a32b3959ff5f88348da642b9e0d456efdc96127764e865f2da5"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63312558,
+        "sha256": "6dfcfe082e7654c07d3f99a36c66483a75fd30f54a65729bcb4966a19998de78"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "bytes": 455244,
+        "sha256": "db83167c8c7d24461ef2bf60363b96264fd2406929d0e72a8909287d79b96a17"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "bytes": 71906,
+        "sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ai_group_think.obj",
+        "bytes": 6132,
+        "sha256": "1a5a954ca13857d528fff56b252c7be08a9f4de0e0d73853671c1070ee911008"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ai_planners.obj",
+        "bytes": 12369,
+        "sha256": "d85f084da30a7494577929480a64aa46635e89f538773f6d8c0478202f713744"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/airfield_taxi.obj",
+        "bytes": 4203,
+        "sha256": "1521ca61bcfdcb643b238bdd083aebfe6e918137a84000c89a7a359846d7334f"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/command_completion.obj",
+        "bytes": 77478,
+        "sha256": "d9b010aaa9af434b45383c157da901103ee1a78226809ae35bb6b80ff061e6e0"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_avoid_zone_runtime.obj",
+        "bytes": 359966,
+        "sha256": "dbe77dc2226521907827edd632a988c267beccf0d79a7a6628622babb77d3ade"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_commands.obj",
+        "bytes": 338899,
+        "sha256": "c2362ec50e4d7ca32de591fd637d5529d4ffb7c1ce8fc741e8078f9efa10e91f"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_fixed_step.obj",
+        "bytes": 40556,
+        "sha256": "c4ff6d805e6f5f3818adf3cda975537539a9bfaf937c604df7da0f08c87969b3"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_fonts.obj",
+        "bytes": 147018,
+        "sha256": "55bd21afb1868c4e8b62ed94e86b384f7b5d9dbb8d2c5e6c3924461d2e3d3739"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_frontend.obj",
+        "bytes": 705690,
+        "sha256": "155483137424d821558c1b988bacad1e947e805233cee0c3135503d12ce66420"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_gunnery.obj",
+        "bytes": 671170,
+        "sha256": "939c0c11b0eae8a378a6d99a4724ddcd3705eb403862d4df191a0ff3e74ed56b"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_hud_world.obj",
+        "bytes": 222447,
+        "sha256": "4f5384f051aabdba4c96fbab30a0aba8cf7fdd7aed7cd2836367e454a50c3369"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_hud.obj",
+        "bytes": 210381,
+        "sha256": "f6a2d14b4f87226b6255e5d5592d2d5817e47b30065df0fe1cdb45fc846e158c"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_init_tail.obj",
+        "bytes": 123530,
+        "sha256": "3a841d1f9c880404fcd75f7f63fc7ede4472909c3cae40ac2e714d8c7cfab168"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_lua.obj",
+        "bytes": 579966,
+        "sha256": "937da29113a010442fb58017efc71eb7dff826eddc668458ee723824b8274a1d"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_menu.obj",
+        "bytes": 518796,
+        "sha256": "6685a3c40ff7aef03c124cd8a9cfde706b8b176df4ba676b2b76e29aa18899f9"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_mission_frame.obj",
+        "bytes": 572403,
+        "sha256": "c2bc9b8fff389a9add0d2979dcd2f11780a94fcc04d270a9017055cfb25b8c8b"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_mission_result.obj",
+        "bytes": 241504,
+        "sha256": "d36fe134212736a12d1c885b55e9634b455961845dabf04bf468f48b9ca7ef24"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_mission.obj",
+        "bytes": 763775,
+        "sha256": "daddc1a1628d4df9d915049169c17340024231c6b662cbf7389208b33dcefa1b"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_ready.obj",
+        "bytes": 215770,
+        "sha256": "8d974ffefebcfc5b4e6ee29e451579027c979f27f549556bbe0ef7890c79642e"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_scene_contents.obj",
+        "bytes": 930357,
+        "sha256": "e39e13f6d8479b6e8cc8e1320ee1c619a7b188ff0b29706b18acb5fd50c263fe"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_script_orders.obj",
+        "bytes": 305820,
+        "sha256": "0f120a3024779602619fca42ca263615a50498afddc2155e713e67255bd44ba8"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_ship_ai.obj",
+        "bytes": 707939,
+        "sha256": "bb917313aa91c44a0bd34b676e837f2f4093122f11dc81129e7f91e709367951"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+        "bytes": 12484,
+        "sha256": "0f13b1838ff6dcdba3f2a5aee827114a6aad6ba830cd6c596035967fa9992982"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_text.obj",
+        "bytes": 148586,
+        "sha256": "67e388e3a57f124cea71f83456188da117c66747da5dbd4d22a909feee84292f"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_trajectory.obj",
+        "bytes": 122707,
+        "sha256": "fc13f06d1a35db573d67d454aa1baa0f3f73d69228dfeeb082c391f0007097ec"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_units.obj",
+        "bytes": 469401,
+        "sha256": "c54e1f9f6fd6b85bbd1a81bc8af278af3a36a8690ef1f2e185c9f99259339601"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_vfs.obj",
+        "bytes": 423312,
+        "sha256": "1cd250c695bd2893ee9971f578b1d1c7b2ac46d20b7760c13a6ca33a9d1de86f"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_world.obj",
+        "bytes": 103418,
+        "sha256": "0a59a07e3887d484d1dbbd9ed6dcdf904c71268b11eac007ec83749f509f0a78"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+        "bytes": 692280,
+        "sha256": "e7e5847d5300b6d28329ddefa00399e7b819d84e0c7267418b5fdd81a1e82c5e"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_vfs_application.obj",
+        "bytes": 51248,
+        "sha256": "8943c0c02843010edff8ec80a5e41d74fa09dc76d92ae88ba5ce2999a0bca129"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_observer_runtime.obj",
+        "bytes": 15861,
+        "sha256": "40e2b809a4d3d620a7f5c2ed561656e5f24a776ccbbf572f06dac2d9137bf93f"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/gameplay_loose_ends_2.obj",
+        "bytes": 1758,
+        "sha256": "6cef5ac34b229195f2d1d5da12829627f2b48227fd88a7d2d15cd34b261b2a42"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/geom_mesh_resource.obj",
+        "bytes": 261705,
+        "sha256": "e536b9089157b35b3c8494cfbf0d7fa85726d9ce82b2b4ab47c4e13d515c8035"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/hit_hull_segment.obj",
+        "bytes": 1836,
+        "sha256": "cd16b3a2c47c636a204fd4e622a4d0cd7f8c75d11091ca91fe67a394c3383538"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/kill_credit.obj",
+        "bytes": 33830,
+        "sha256": "2b42314fff614f7eb65ce4f58110a76ed78a679f360edefbdbb9afb3fc090351"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/narrowphase_unit_part_shape.obj",
+        "bytes": 2080,
+        "sha256": "7f5bbfc6210b33a0c452bb3601d04c9e7e5b0c1abcccf2ea6de669b291730d9a"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/part_damage_reachability.obj",
+        "bytes": 4156,
+        "sha256": "51f9c07e73db9914a4707775e8b5b76f13c8ff56bf380da1771e86fd72d65a33"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/pilot_command_path.obj",
+        "bytes": 8846,
+        "sha256": "062707a15f8ce177c4dcfb9f1c35c062c62a980d0f62100e5b541ae40d543fb2"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/plane_ground_ops.obj",
+        "bytes": 13388,
+        "sha256": "65b619e02850c012e3a0a5c6529b27f6c9447450f2f82274bc76c483d60a8a65"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ship_hit_record.obj",
+        "bytes": 7923,
+        "sha256": "6b1e0d411c1ba316a9f14fda39de96daaa30eff2c469dd20fcc54edfea4c5278"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ship_sub_entity_list.obj",
+        "bytes": 1477,
+        "sha256": "2666c7f4077143bd9dd5e8bd9c14c5cd3da243c4805cbab30a66e1a3ae9aa7aa"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/unit_gunnery_pass.obj",
+        "bytes": 11746,
+        "sha256": "f85d451504ab8259bf3e1278f96ca2ca3fde61a590064bad3867293d37d9c557"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/unit_message_arms.obj",
+        "bytes": 25782,
+        "sha256": "e1f10761f7e50ba10b3538e34ea2d7b889d97a0a7f659a5f7aae7d007ab17557"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/unit_neighbour_fields.obj",
+        "bytes": 1330,
+        "sha256": "26c8631b91ce225ffc008e150f64e0efbd711587708a3f8ed7db26d180c8665f"
+      }
+    ]
+  }
+}

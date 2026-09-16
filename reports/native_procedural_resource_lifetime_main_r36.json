@@ -180,5 +180,234 @@
     "The fresh fixture establishes selected original/source schedule agreement and failure cleanup; it does not establish arbitrary SEH or hardware-fault parity.",
     "No game, renderer, visual, COM-device or gameplay validation was performed.",
     "No sampler owner source, application closure, fake provider, Ghidra annotation or shared ledger change is included."
-  ]
+  ],
+  "primary_integration": {
+    "source_merge": "cfca77cc4",
+    "correction_merge": "8535189d3",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "log": "local/r36_procedural_integration.log",
+    "primary_fixture": {
+      "failed_retirement_exit": 77,
+      "normal_exit": 0,
+      "library_root": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915"
+    },
+    "primary_fixture_log": "local/r36_procedural_primary_fixture.log",
+    "review": "Complete source/header, current provider ABI, exact scoped fixture diff and all107 stored artifacts reviewed/verified.",
+    "independent_fresh_hashes": [
+      {
+        "address": "00bbc6d0",
+        "bytes": 30,
+        "sha256": "7e255976b8de2c032cbd5fe24d74ba9862c012453cd9dee6a473c09b6e9ec5c7",
+        "live_equals_pe": true,
+        "superseded_report_sha256": "7e255976d124f832a26275845d53fb3a92aac2a130fe3c64d364f4f0e1dde8ba"
+      },
+      {
+        "address": "00bbc7f0",
+        "bytes": 30,
+        "sha256": "73d21946bb0bc7e392a7b10e0dc7193b88ed39dcf1944b1f60ff52f915b8d62f",
+        "live_equals_pe": true,
+        "superseded_report_sha256": "73d21946e72e8bf207404c1bf15caaeb072952226f1add7947a6d68f72b56d3f"
+      },
+      {
+        "address": "00c304a0",
+        "bytes": 172,
+        "sha256": "0a6910b2f3d70c95dc9afd4e0dfef9fc9c55cbe201e8cb68469e0afc86c735f1",
+        "live_equals_pe": true,
+        "superseded_report_sha256": "0a6910b2020e22eae13374c7c342c2c6452d4ea93a889715705d71deeb65118a"
+      },
+      {
+        "address": "00737390",
+        "bytes": 80,
+        "sha256": "49fb1569fb5ef002c8f3b8f0e2d79d5247ae2e032365b7ad52e55af27316e4c5",
+        "live_equals_pe": true,
+        "superseded_report_sha256": "49fb1569f737042ad97ed4f6ad9be2b428d6299f2c1a98756879133253998bde"
+      },
+      {
+        "address": "00b19750",
+        "bytes": 11,
+        "sha256": "3361a36c37aa721fe2b55389623448b46a05cb63f00dd24ee205541a17f34ee7",
+        "live_equals_pe": true,
+        "superseded_report_sha256": "3361a36cf011319709b9eed02d6f3d9f92cbf55e4c79076b38d4017c02f78eea"
+      }
+    ],
+    "archive_report_caveat": "The immutable worker ZIP retains the superseded report copy with five incorrect hash suffixes. Its actual byte files and artifact manifest are correct and were independently verified. Current tracked report has all five corrected values."
+  },
+  "primary_archive": {
+    "path": "local/evidence-r36/procedural-resource-main-r36.zip",
+    "sha256": "916f9763beb10a24f02caba251ea0dba880bafa0cb3fd0ce8db295ffa0b80ac6",
+    "files": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "59e689e12b628f8a7e157aa86fdc5850e7b91d35deb3c0c6065e0c6a1c1a7e7a"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_procedural_resource_lifetime.obj",
+        "sha256": "2df8d8663a9eeaad4d540e3ce19bf53068530667eb9a4ecc358cabafd3753121"
+      },
+      {
+        "path": "include/bsp/native_procedural_resource_lifetime.hpp",
+        "sha256": "6e9e4e5cd70e7fa9d0e150f0cf235d03754c916c2dbd14bb9e886dc10f498b3b"
+      },
+      {
+        "path": "src/native_procedural_resource_lifetime.cpp",
+        "sha256": "1aeca5d85a4960807040ed991036a8f3df949f751cb8853634a1753b558737ec"
+      },
+      {
+        "path": "local/r36_procedural_integration.log",
+        "sha256": "51578147fc40b1afd38a11df09456e154efa0a61f49db761cbe787313e4bb879"
+      },
+      {
+        "path": "local/r36_procedural_primary_fixture.log",
+        "sha256": "30f9185bea83e2546127ca59e51d2cb7cabe5a61f4a3450a3f822349c504c4b2"
+      },
+      {
+        "path": "local/r36_procedural_primary_hashes.json",
+        "sha256": "516cc4207d134faa57b37287e7ac4b7e5a173f07b81655086d944a9bdce5a747"
+      },
+      {
+        "path": "local/r36_procedural_primary_calls.log",
+        "sha256": "0c2c296f56bd478d8ae91cc986610a37a11290802c1778bb269f338e83e227a8"
+      },
+      {
+        "path": "local/r36_procedural_annotations.log",
+        "sha256": "11a7abdf44c3e6629b9603ff35db6a82992f84ac90411df52e3816391156b2bc"
+      },
+      {
+        "path": "local/r36_procedural_exports.log",
+        "sha256": "30953c9df12cf96b17d4956d447ab508a1f8dcf58a0b23c72e5c93059502128b"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T104911Z.json",
+        "sha256": "5f951fddbdbcf05a590395570d5f297d064e3f42e650f1e0f580042133a0f9bb"
+      },
+      {
+        "path": "local/native_procedural_resource_scoped_r36_probe.cpp",
+        "sha256": "481efe3d6fa8e5c4ab0eea36d64fe7482c906296a4f856cb0663241e107bbc1e"
+      },
+      {
+        "path": "local/native_procedural_resource_scoped_r36_probe.exe",
+        "sha256": "3bd09389d85f6b93499efdda8928aaa6afe9fc38aa6320aaa1a31f144bbc7ec6"
+      },
+      {
+        "path": "local/native_procedural_resource_scoped_r36_probe.obj",
+        "sha256": "947562cf8ff55b780dbc2365906485249f10af2d63e34090c25d8f5593a16eb1"
+      },
+      {
+        "path": "local/run_native_procedural_resource_scoped_r36_probe.ps1",
+        "sha256": "0e6c70ffb2d3f831199904ad696c7acb987da20f347b83217cbe1531de6943d6"
+      },
+      {
+        "path": "local/procedural_original.hpp",
+        "sha256": "474367995540eccb8751d57a7d372dcd44dc95b49858dc7d2fc45623d86886aa"
+      },
+      {
+        "path": "local/procedural_imports.inc",
+        "sha256": "fd8b45ddc064597de06c7d629b63a13635e0b3e01958d078d5a7f543c1d2a0cc"
+      },
+      {
+        "path": "local/procedural_00d64478.bin",
+        "sha256": "c916f226b74b983b1bde5e98659bbdacc5206ed84aa7eb64017209cee7933624"
+      },
+      {
+        "path": "local/procedural_00d644b4.bin",
+        "sha256": "1670667b0edfaefa9793b4f65435dd7b2cc609320a6ab580fcb28dbe55f46421"
+      },
+      {
+        "path": "local/procedural-scoped-r36-probe-status.json",
+        "sha256": "93846cfda28524c7cbddf6bdf2c79d71565f659ce80776c56053dff97d6bbbee"
+      },
+      {
+        "path": "local/procedural-scoped-r36-probe-compile.log",
+        "sha256": "d886ce9f7e84b4a29e6a99e706162f7d8da5ead166cfbe65c6bc8ab8a320e770"
+      },
+      {
+        "path": "local/procedural-scoped-r36-probe.log",
+        "sha256": "30f9185bea83e2546127ca59e51d2cb7cabe5a61f4a3450a3f822349c504c4b2"
+      },
+      {
+        "path": "local/procedural-scoped-r36-guard.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "local/procedural-scoped-r36-toolchain.json",
+        "sha256": "ab7d632bef8591e44282ec9fa0a96d0582db3e03c48554d2f97296cc2d0e17a4"
+      }
+    ]
+  },
+  "annotation_handoff": {
+    "status": "Primary retained current live names, extended five source records, preserved prior annotations, saved project and refreshed five exports.",
+    "prior_annotations": [
+      {
+        "address": "00737390",
+        "before": {
+          "address": "00737390",
+          "function_name": "BSP_ProceduralPointerArray_Resize",
+          "comment": "[BSP reconstruction 00737390]\nComplete actual procedural lifetime 00737390..007373df; original ABI ECX actual12-byte data/count/capacity header; stacked signed count; RET4. Live verified bsp Ghidra/installed PE byte equality; strict Win32 build, both CTests and original/source normal fixture passed. Same canonical owner domain and actual+04; source C++ EH effects only. New C++ interface, not binary ABI/FH3 or game validation. Names provisional; root Ghidra annotation/listing repair pending lease release. Evidence reports/native_procedural_resource_lifetime.json and docs/NATIVE_PROCEDURAL_RESOURCE_LIFETIME.md."
+        },
+        "after": {
+          "address": "00737390",
+          "name": "BSP_ProceduralPointerArray_Resize",
+          "evidence": "R36 unchanged five-entry source reuse from16bdecc8a, preserving current main canonical raw+04 owner domain. Current child/data/count reloads, zero-only terminal dispatch, resize0/current array free/stale header and base cleanup retained; failed child resolution leaves explicit unresolved obligations and prevents replay. Worker18 fresh spans677B and14 direct rows pass. Parent independently rechecked allfive owned bodies323B live/PE/frozen bytes and14 calls; corrected five erroneous hand-written report hash suffixes in8af3ccbb2 (no byte/source/archive change). Primary reviewed complete source/header, provider ABI and scoped fixture diff; all107 frozen artifacts verified. Worker and combined main strict /MD builds/three CTests pass. Primary freshly relinked scoped retained fixture: four native/source factory/resize/terminal schedules, source unwind/replay and failed-frame retirement77 pass. Missing-main sampler-admission extra test excluded, without substitute. Native FH3/SEH, arbitrary faults, binary replacement and gameplay remain unproved. reports/native_procedural_resource_lifetime_main_r36.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b19750",
+        "before": {
+          "address": "00b19750",
+          "function_name": "BSP_ProceduralTextureSource_DestroyBase",
+          "comment": "[BSP reconstruction 00b19750]\nComplete actual procedural lifetime 00b19750..00b1975a; original ABI ECX owner; no adjustment; stamp then tail JMP BD30F0. Live verified bsp Ghidra/installed PE byte equality; strict Win32 build, both CTests and original/source normal fixture passed. Same canonical owner domain and actual+04; source C++ EH effects only. New C++ interface, not binary ABI/FH3 or game validation. Names provisional; root Ghidra annotation/listing repair pending lease release. Evidence reports/native_procedural_resource_lifetime.json and docs/NATIVE_PROCEDURAL_RESOURCE_LIFETIME.md."
+        },
+        "after": {
+          "address": "00b19750",
+          "name": "BSP_ProceduralTextureSource_DestroyBase",
+          "evidence": "R36 unchanged five-entry source reuse from16bdecc8a, preserving current main canonical raw+04 owner domain. Current child/data/count reloads, zero-only terminal dispatch, resize0/current array free/stale header and base cleanup retained; failed child resolution leaves explicit unresolved obligations and prevents replay. Worker18 fresh spans677B and14 direct rows pass. Parent independently rechecked allfive owned bodies323B live/PE/frozen bytes and14 calls; corrected five erroneous hand-written report hash suffixes in8af3ccbb2 (no byte/source/archive change). Primary reviewed complete source/header, provider ABI and scoped fixture diff; all107 frozen artifacts verified. Worker and combined main strict /MD builds/three CTests pass. Primary freshly relinked scoped retained fixture: four native/source factory/resize/terminal schedules, source unwind/replay and failed-frame retirement77 pass. Missing-main sampler-admission extra test excluded, without substitute. Native FH3/SEH, arbitrary faults, binary replacement and gameplay remain unproved. reports/native_procedural_resource_lifetime_main_r36.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bbc6d0",
+        "before": {
+          "address": "00bbc6d0",
+          "function_name": "BSP_CausticsTextureSource_ScalarDelete",
+          "comment": "[BSP reconstruction 00bbc6d0]\nComplete actual procedural lifetime 00bbc6d0..00bbc6ed; original ABI ECX owner; stacked flags; EAX captured owner; RET4. Live verified bsp Ghidra/installed PE byte equality; strict Win32 build, both CTests and original/source normal fixture passed. Same canonical owner domain and actual+04; source C++ EH effects only. New C++ interface, not binary ABI/FH3 or game validation. Names provisional; root Ghidra annotation/listing repair pending lease release. Evidence reports/native_procedural_resource_lifetime.json and docs/NATIVE_PROCEDURAL_RESOURCE_LIFETIME.md."
+        },
+        "after": {
+          "address": "00bbc6d0",
+          "name": "BSP_CausticsTextureSource_ScalarDelete",
+          "evidence": "R36 unchanged five-entry source reuse from16bdecc8a, preserving current main canonical raw+04 owner domain. Current child/data/count reloads, zero-only terminal dispatch, resize0/current array free/stale header and base cleanup retained; failed child resolution leaves explicit unresolved obligations and prevents replay. Worker18 fresh spans677B and14 direct rows pass. Parent independently rechecked allfive owned bodies323B live/PE/frozen bytes and14 calls; corrected five erroneous hand-written report hash suffixes in8af3ccbb2 (no byte/source/archive change). Primary reviewed complete source/header, provider ABI and scoped fixture diff; all107 frozen artifacts verified. Worker and combined main strict /MD builds/three CTests pass. Primary freshly relinked scoped retained fixture: four native/source factory/resize/terminal schedules, source unwind/replay and failed-frame retirement77 pass. Missing-main sampler-admission extra test excluded, without substitute. Native FH3/SEH, arbitrary faults, binary replacement and gameplay remain unproved. reports/native_procedural_resource_lifetime_main_r36.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bbc7f0",
+        "before": {
+          "address": "00bbc7f0",
+          "function_name": "BSP_ShoreWaveTextureSource_ScalarDelete",
+          "comment": "[BSP reconstruction 00bbc7f0]\nComplete actual procedural lifetime 00bbc7f0..00bbc80d; original ABI ECX owner; stacked flags; EAX captured owner; RET4. Live verified bsp Ghidra/installed PE byte equality; strict Win32 build, both CTests and original/source normal fixture passed. Same canonical owner domain and actual+04; source C++ EH effects only. New C++ interface, not binary ABI/FH3 or game validation. Names provisional; root Ghidra annotation/listing repair pending lease release. Evidence reports/native_procedural_resource_lifetime.json and docs/NATIVE_PROCEDURAL_RESOURCE_LIFETIME.md."
+        },
+        "after": {
+          "address": "00bbc7f0",
+          "name": "BSP_ShoreWaveTextureSource_ScalarDelete",
+          "evidence": "R36 unchanged five-entry source reuse from16bdecc8a, preserving current main canonical raw+04 owner domain. Current child/data/count reloads, zero-only terminal dispatch, resize0/current array free/stale header and base cleanup retained; failed child resolution leaves explicit unresolved obligations and prevents replay. Worker18 fresh spans677B and14 direct rows pass. Parent independently rechecked allfive owned bodies323B live/PE/frozen bytes and14 calls; corrected five erroneous hand-written report hash suffixes in8af3ccbb2 (no byte/source/archive change). Primary reviewed complete source/header, provider ABI and scoped fixture diff; all107 frozen artifacts verified. Worker and combined main strict /MD builds/three CTests pass. Primary freshly relinked scoped retained fixture: four native/source factory/resize/terminal schedules, source unwind/replay and failed-frame retirement77 pass. Missing-main sampler-admission extra test excluded, without substitute. Native FH3/SEH, arbitrary faults, binary replacement and gameplay remain unproved. reports/native_procedural_resource_lifetime_main_r36.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c304a0",
+        "before": {
+          "address": "00c304a0",
+          "function_name": "BSP_ProceduralTextureSource_Destroy",
+          "comment": "[BSP reconstruction 00c304a0]\nComplete actual procedural lifetime 00c304a0..00c3054b; original ABI ECX owner; RET. Live verified bsp Ghidra/installed PE byte equality; strict Win32 build, both CTests and original/source normal fixture passed. Same canonical owner domain and actual+04; source C++ EH effects only. New C++ interface, not binary ABI/FH3 or game validation. Names provisional; root Ghidra annotation/listing repair pending lease release. Evidence reports/native_procedural_resource_lifetime.json and docs/NATIVE_PROCEDURAL_RESOURCE_LIFETIME.md."
+        },
+        "after": {
+          "address": "00c304a0",
+          "name": "BSP_ProceduralTextureSource_Destroy",
+          "evidence": "R36 unchanged five-entry source reuse from16bdecc8a, preserving current main canonical raw+04 owner domain. Current child/data/count reloads, zero-only terminal dispatch, resize0/current array free/stale header and base cleanup retained; failed child resolution leaves explicit unresolved obligations and prevents replay. Worker18 fresh spans677B and14 direct rows pass. Parent independently rechecked allfive owned bodies323B live/PE/frozen bytes and14 calls; corrected five erroneous hand-written report hash suffixes in8af3ccbb2 (no byte/source/archive change). Primary reviewed complete source/header, provider ABI and scoped fixture diff; all107 frozen artifacts verified. Worker and combined main strict /MD builds/three CTests pass. Primary freshly relinked scoped retained fixture: four native/source factory/resize/terminal schedules, source unwind/replay and failed-frame retirement77 pass. Missing-main sampler-admission extra test excluded, without substitute. Native FH3/SEH, arbitrary faults, binary replacement and gameplay remain unproved. reports/native_procedural_resource_lifetime_main_r36.json."
+        },
+        "status": "applied"
+      }
+    ]
+  }
 }
