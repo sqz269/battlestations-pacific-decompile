@@ -1,0 +1,658 @@
+{
+  "packet": "extra_item_profile_r29",
+  "base": "6cd895bf1",
+  "source_commit": "93c57d80f",
+  "generated_utc": "2026-09-16T08:54:58.475560+00:00",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": [
+    "include/bsp/native_resource_extra_item_profile.hpp",
+    "src/native_resource_extra_item_profile.cpp",
+    "cmake/startup.cmake"
+  ],
+  "coverage": {
+    "ordinary_functions": 8,
+    "ordinary_bytes": 152,
+    "profile_neighborhood_bytes": 88,
+    "instance_profile_prefix_bytes": 24,
+    "total_receipt_bytes": 264,
+    "direct_calls": 0,
+    "indirect_calls": 2,
+    "native_eh_code_bytes": 0,
+    "native_eh_data_bytes": 0
+  },
+  "functions": [
+    {
+      "address": "00b8a060",
+      "end_exclusive": "00b8a066",
+      "bytes": 6,
+      "source_symbol": "read_native_mesh_binding_type_00b931b0",
+      "proposed_name": "BSP_AnimationChannelsItem_CurrentTypeToken",
+      "original_abi": "No consumed ECX/stack input; EAX current DWORD; RET.",
+      "behavior": "Read SAME current volatile DWORD 01090268; reuse existing complete getter with borrowed reference. No captured startup value.",
+      "coverage": "complete ordinary body; bounded source provider domains for attachment"
+    },
+    {
+      "address": "00b8a070",
+      "end_exclusive": "00b8a076",
+      "bytes": 6,
+      "source_symbol": "read_native_mesh_binding_type_00b931b0",
+      "proposed_name": "BSP_AnimationChannelsItem_CurrentAuxiliaryWord",
+      "original_abi": "No consumed ECX/stack input; EAX current DWORD; RET.",
+      "behavior": "Read SAME current volatile DWORD 01090274; reuse existing complete getter with borrowed reference. No captured startup value. Wider meaning of the slot14 word is unassigned.",
+      "coverage": "complete ordinary body; bounded source provider domains for attachment"
+    },
+    {
+      "address": "00b8a080",
+      "end_exclusive": "00b8a098",
+      "bytes": 24,
+      "source_symbol": "attach_native_extra_item_00b8a080",
+      "proposed_name": "BSP_AnimationChannelsItem_AttachToInstance",
+      "original_abi": "ECX item; stack(instance,record,node,creation_word); current instance slot08 receives ECX instance and stack(item,node); RET16; no specified return.",
+      "behavior": "Identical24B body: capture current instance profile and slot08, call with(item,node); record and creation_word unused. Source bound to D63244/B89E90 or CFD8E0/71B710 full publication; other/changed reached domains explicit error.",
+      "coverage": "complete ordinary body; bounded source provider domains for attachment"
+    },
+    {
+      "address": "00b8a730",
+      "end_exclusive": "00b8a758",
+      "bytes": 40,
+      "source_symbol": "matches_native_fallback_type_00b86950",
+      "proposed_name": "BSP_AnimationChannelsItem_MatchesType",
+      "original_abi": "ECX object ignored; stacked DWORD token; AL Boolean, upper EAX unspecified; RET4.",
+      "behavior": "Compare exactly three CURRENT volatile DWORDs at 01090268 in order, stop at first match; reuse existing complete predicate.",
+      "coverage": "complete ordinary body; bounded source provider domains for attachment"
+    },
+    {
+      "address": "00b8a140",
+      "end_exclusive": "00b8a146",
+      "bytes": 6,
+      "source_symbol": "read_native_mesh_binding_type_00b931b0",
+      "proposed_name": "BSP_BoneItem_CurrentTypeToken",
+      "original_abi": "No consumed ECX/stack input; EAX current DWORD; RET.",
+      "behavior": "Read SAME current volatile DWORD 01090278; reuse existing complete getter with borrowed reference. No captured startup value.",
+      "coverage": "complete ordinary body; bounded source provider domains for attachment"
+    },
+    {
+      "address": "00b8a150",
+      "end_exclusive": "00b8a156",
+      "bytes": 6,
+      "source_symbol": "read_native_mesh_binding_type_00b931b0",
+      "proposed_name": "BSP_BoneItem_CurrentAuxiliaryWord",
+      "original_abi": "No consumed ECX/stack input; EAX current DWORD; RET.",
+      "behavior": "Read SAME current volatile DWORD 01090284; reuse existing complete getter with borrowed reference. No captured startup value. Wider meaning of the slot14 word is unassigned.",
+      "coverage": "complete ordinary body; bounded source provider domains for attachment"
+    },
+    {
+      "address": "00b8a160",
+      "end_exclusive": "00b8a178",
+      "bytes": 24,
+      "source_symbol": "attach_native_extra_item_00b8a080",
+      "proposed_name": "BSP_BoneItem_AttachToInstance",
+      "original_abi": "ECX item; stack(instance,record,node,creation_word); current instance slot08 receives ECX instance and stack(item,node); RET16; no specified return.",
+      "behavior": "Identical24B body: capture current instance profile and slot08, call with(item,node); record and creation_word unused. Source bound to D63244/B89E90 or CFD8E0/71B710 full publication; other/changed reached domains explicit error.",
+      "coverage": "complete ordinary body; bounded source provider domains for attachment"
+    },
+    {
+      "address": "00b8a870",
+      "end_exclusive": "00b8a898",
+      "bytes": 40,
+      "source_symbol": "matches_native_fallback_type_00b86950",
+      "proposed_name": "BSP_BoneItem_MatchesType",
+      "original_abi": "ECX object ignored; stacked DWORD token; AL Boolean, upper EAX unspecified; RET4.",
+      "behavior": "Compare exactly three CURRENT volatile DWORDs at 01090278 in order, stop at first match; reuse existing complete predicate.",
+      "coverage": "complete ordinary body; bounded source provider domains for attachment"
+    }
+  ],
+  "byte_receipt": {
+    "generated_utc": "2026-09-16T08:52:57.472365+00:00",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_size": 12223752,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b8a060",
+        "end_exclusive": "00b8a066",
+        "bytes": 6,
+        "kind": "getter",
+        "current_cell": "01090268",
+        "hex": "a168020901c3",
+        "sha256": "42413fe2277c5ffb59b0dacb184df3d51868ba7345d8e7576142b69353606839",
+        "file_offset": 7905376,
+        "live_matches_pe": true
+      },
+      {
+        "address": "00b8a070",
+        "end_exclusive": "00b8a076",
+        "bytes": 6,
+        "kind": "getter",
+        "current_cell": "01090274",
+        "hex": "a174020901c3",
+        "sha256": "ee88b18124887289df1f3836c5257d099d6bd6170438773fce8385680f60a08b",
+        "file_offset": 7905392,
+        "live_matches_pe": true
+      },
+      {
+        "address": "00b8a080",
+        "end_exclusive": "00b8a098",
+        "bytes": 24,
+        "kind": "attachment",
+        "current_cell": null,
+        "hex": "568b7424108bc18b4c24088b1156508b4208ffd05ec21000",
+        "sha256": "461ebc4a55b562ee1e09742080b60de2b332ba59effadaa4e6f1faeb12539e49",
+        "file_offset": 7905408,
+        "live_matches_pe": true
+      },
+      {
+        "address": "00b8a730",
+        "end_exclusive": "00b8a758",
+        "bytes": 40,
+        "kind": "predicate",
+        "current_cell": "01090268",
+        "hex": "8b4c2404b8680209018da424000000003908740f83c0043d7402090175f232c0c20400b001c20400",
+        "sha256": "48d88e2cda08f4bbccce0a6064b41700a36358d146af56036aa198bb324d32d4",
+        "file_offset": 7907120,
+        "live_matches_pe": true
+      },
+      {
+        "address": "00b8a140",
+        "end_exclusive": "00b8a146",
+        "bytes": 6,
+        "kind": "getter",
+        "current_cell": "01090278",
+        "hex": "a178020901c3",
+        "sha256": "9df5ade2b6e0a1992220b3126b91e7318606d08b343407c66e6134f3f69cc9cb",
+        "file_offset": 7905600,
+        "live_matches_pe": true
+      },
+      {
+        "address": "00b8a150",
+        "end_exclusive": "00b8a156",
+        "bytes": 6,
+        "kind": "getter",
+        "current_cell": "01090284",
+        "hex": "a184020901c3",
+        "sha256": "fb300410d8276fb04e9b4622d8080f7b3127cb8a323fa404c141114a50ca0857",
+        "file_offset": 7905616,
+        "live_matches_pe": true
+      },
+      {
+        "address": "00b8a160",
+        "end_exclusive": "00b8a178",
+        "bytes": 24,
+        "kind": "attachment",
+        "current_cell": null,
+        "hex": "568b7424108bc18b4c24088b1156508b4208ffd05ec21000",
+        "sha256": "461ebc4a55b562ee1e09742080b60de2b332ba59effadaa4e6f1faeb12539e49",
+        "file_offset": 7905632,
+        "live_matches_pe": true
+      },
+      {
+        "address": "00b8a870",
+        "end_exclusive": "00b8a898",
+        "bytes": 40,
+        "kind": "predicate",
+        "current_cell": "01090278",
+        "hex": "8b4c2404b8780209018da424000000003908740f83c0043d8402090175f232c0c20400b001c20400",
+        "sha256": "aece252da253549f2c8323126b2605fdc590c003396c895b6293ff2979e3fc67",
+        "file_offset": 7907440,
+        "live_matches_pe": true
+      },
+      {
+        "address": "00d6328c",
+        "end_exclusive": "00d632b8",
+        "bytes": 44,
+        "kind": "item_profile_and_adjacent_two_words",
+        "current_cell": null,
+        "hex": "e030bd0060a7b80060a0b80030a7b800209d6f0070a0b80080a0b800309d6f0080adb800e030bd0060adb800",
+        "sha256": "f1eb8a7577221a1a742618a89e3723aaceb3e14f477920eb624eae8188b7582d",
+        "file_offset": 9843340,
+        "live_matches_pe": true
+      },
+      {
+        "address": "00d632b8",
+        "end_exclusive": "00d632e4",
+        "bytes": 44,
+        "kind": "item_profile_and_adjacent_two_words",
+        "current_cell": null,
+        "hex": "e030bd0010afb80040a1b80070a8b800209d6f0050a1b80060a1b800309d6f0030afb800e030bd00c0b2b800",
+        "sha256": "2ae5d4e3749c299198bbc6fda2844c30b76ebe44cab0d3d9b42a652c634f2e93",
+        "file_offset": 9843384,
+        "live_matches_pe": true
+      },
+      {
+        "address": "00d63244",
+        "end_exclusive": "00d63250",
+        "bytes": 12,
+        "kind": "instance_profile_prefix",
+        "current_cell": null,
+        "hex": "e030bd00c09fb800909eb800",
+        "sha256": "204030713ab3f23dd0f41e9f044519405b4684e658317fcc82c099e88c2e9b65",
+        "file_offset": 9843268,
+        "live_matches_pe": true
+      },
+      {
+        "address": "00cfd8e0",
+        "end_exclusive": "00cfd8ec",
+        "bytes": 12,
+        "kind": "instance_profile_prefix",
+        "current_cell": null,
+        "hex": "e030bd00008d710010b77100",
+        "sha256": "27b791ccfa583185689b7c054bfba67cfdde6e45e5891945ea4fe0dceaf81bd7",
+        "file_offset": 9427168,
+        "live_matches_pe": true
+      }
+    ]
+  },
+  "call_rows": [
+    {
+      "address": "00b8a092",
+      "function": "00b8a080",
+      "native": "instance+vtable08",
+      "kind": "indirect_call",
+      "instruction": "CALL EAX",
+      "exact_bytes": "ffd0",
+      "target_load": "00b8a08f",
+      "target_load_instruction": "MOV EAX,dword ptr [EDX + 0x8]",
+      "receiver": "original stackarg1 instance in ECX",
+      "stack_arguments": [
+        "original ECX item",
+        "original stackarg3 node"
+      ],
+      "full_source_providers": [
+        "00b89e90",
+        "0071b710"
+      ]
+    },
+    {
+      "address": "00b8a172",
+      "function": "00b8a160",
+      "native": "instance+vtable08",
+      "kind": "indirect_call",
+      "instruction": "CALL EAX",
+      "exact_bytes": "ffd0",
+      "target_load": "00b8a16f",
+      "target_load_instruction": "MOV EAX,dword ptr [EDX + 0x8]",
+      "receiver": "original stackarg1 instance in ECX",
+      "stack_arguments": [
+        "original ECX item",
+        "original stackarg3 node"
+      ],
+      "full_source_providers": [
+        "00b89e90",
+        "0071b710"
+      ]
+    }
+  ],
+  "profile_slots": [
+    {
+      "profile": "00d6328c",
+      "slot08": "00b8a060",
+      "slot0c": "00b8a730",
+      "slot14": "00b8a070",
+      "slot18": "00b8a080"
+    },
+    {
+      "profile": "00d632b8",
+      "slot08": "00b8a140",
+      "slot0c": "00b8a870",
+      "slot14": "00b8a150",
+      "slot18": "00b8a160"
+    }
+  ],
+  "instance_slots": [
+    {
+      "profile": "00d63244",
+      "slot08": "00b89e90"
+    },
+    {
+      "profile": "00cfd8e0",
+      "slot08": "0071b710"
+    }
+  ],
+  "adapter": {
+    "name": "NativeResourceExtraItemProfileCalls",
+    "domain": "Known profile slots00..20 read SAME current table; four getters and two predicates use SAME descriptor block. Unknown entries forward.",
+    "attachment": "Standalone narrow helper for both identical bodies; calls existing complete base/game publication after current instance slot08 check.",
+    "descriptor_owner": "Required actual01090268/01090278 blocks. Inspected GameNativeTypeStorage: these two descriptors currently have no represented owner/accessors there.",
+    "no_invented": "No synthetic vtables, native code-address calls, frozen type values, new callback success stubs, or application wiring."
+  },
+  "definition_history": {
+    "report": "reports/native_resource_extra_item_profile_definition_r29.json",
+    "parent_commit": "6cd895bf1",
+    "previously_missing": [
+      "00b8a060",
+      "00b8a070",
+      "00b8a140",
+      "00b8a150",
+      "00b8a730",
+      "00b8a870"
+    ],
+    "original_instruction_context": {
+      "00b8a060": {
+        "address": "00b8a060",
+        "instruction": "MOV EAX,[0x01090268]",
+        "context_before": [
+          "00b8a045: RET"
+        ],
+        "context_after": [
+          "00b8a065: RET"
+        ],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "00b8a070": {
+        "address": "00b8a070",
+        "instruction": "MOV EAX,[0x01090274]",
+        "context_before": [
+          "00b8a065: RET"
+        ],
+        "context_after": [
+          "00b8a075: RET"
+        ],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "00b8a730": {
+        "address": "00b8a730",
+        "instruction": "MOV ECX,dword ptr [ESP + 0x4]",
+        "context_before": [
+          "00b8a720: RET"
+        ],
+        "context_after": [
+          "00b8a734: MOV EAX,0x1090268"
+        ],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "00b8a140": {
+        "address": "00b8a140",
+        "instruction": "MOV EAX,[0x01090278]",
+        "context_before": [
+          "00b8a125: RET"
+        ],
+        "context_after": [
+          "00b8a145: RET"
+        ],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "00b8a150": {
+        "address": "00b8a150",
+        "instruction": "MOV EAX,[0x01090284]",
+        "context_before": [
+          "00b8a145: RET"
+        ],
+        "context_after": [
+          "00b8a155: RET"
+        ],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      },
+      "00b8a870": {
+        "address": "00b8a870",
+        "instruction": "MOV ECX,dword ptr [ESP + 0x4]",
+        "context_before": [
+          "00b8a869: RET"
+        ],
+        "context_after": [
+          "00b8a874: MOV EAX,0x1090278"
+        ],
+        "mnemonic": "MOV",
+        "patterns_detected": [
+          "data_access"
+        ]
+      }
+    },
+    "note": "Parent defined exact verified bodies under write lock and saved; worker stayed read-only."
+  },
+  "old_ghidra_metadata": [
+    {
+      "address": "00b8a060",
+      "name": "FUN_00b8a060",
+      "note": "After parent definition for previously missing entries; original missing status retained above."
+    },
+    {
+      "address": "00b8a070",
+      "name": "FUN_00b8a070",
+      "note": "After parent definition for previously missing entries; original missing status retained above."
+    },
+    {
+      "address": "00b8a080",
+      "name": "FUN_00b8a080",
+      "note": "After parent definition for previously missing entries; original missing status retained above."
+    },
+    {
+      "address": "00b8a730",
+      "name": "FUN_00b8a730",
+      "note": "After parent definition for previously missing entries; original missing status retained above."
+    },
+    {
+      "address": "00b8a140",
+      "name": "FUN_00b8a140",
+      "note": "After parent definition for previously missing entries; original missing status retained above."
+    },
+    {
+      "address": "00b8a150",
+      "name": "FUN_00b8a150",
+      "note": "After parent definition for previously missing entries; original missing status retained above."
+    },
+    {
+      "address": "00b8a160",
+      "name": "FUN_00b8a160",
+      "note": "After parent definition for previously missing entries; original missing status retained above."
+    },
+    {
+      "address": "00b8a870",
+      "name": "FUN_00b8a870",
+      "note": "After parent definition for previously missing entries; original missing status retained above."
+    }
+  ],
+  "proposed_annotations": [
+    {
+      "address": "00b8a060",
+      "name": "BSP_AnimationChannelsItem_CurrentTypeToken",
+      "comment": "[BSP reconstruction 00B8A060] Complete 6-byte body. No consumed ECX/stack input; EAX current DWORD; RET. Read SAME current volatile DWORD 01090268; reuse existing complete getter with borrowed reference. No captured startup value. Descriptive name is a hypothesis. No native callable ABI, application wiring, FH3/SEH or gameplay validation."
+    },
+    {
+      "address": "00b8a070",
+      "name": "BSP_AnimationChannelsItem_CurrentAuxiliaryWord",
+      "comment": "[BSP reconstruction 00B8A070] Complete 6-byte body. No consumed ECX/stack input; EAX current DWORD; RET. Read SAME current volatile DWORD 01090274; reuse existing complete getter with borrowed reference. No captured startup value. Wider meaning of the slot14 word is unassigned. Descriptive name is a hypothesis. No native callable ABI, application wiring, FH3/SEH or gameplay validation."
+    },
+    {
+      "address": "00b8a080",
+      "name": "BSP_AnimationChannelsItem_AttachToInstance",
+      "comment": "[BSP reconstruction 00B8A080] Complete 24-byte body. ECX item; stack(instance,record,node,creation_word); current instance slot08 receives ECX instance and stack(item,node); RET16; no specified return. Identical24B body: capture current instance profile and slot08, call with(item,node); record and creation_word unused. Source bound to D63244/B89E90 or CFD8E0/71B710 full publication; other/changed reached domains explicit error. Descriptive name is a hypothesis. No native callable ABI, application wiring, FH3/SEH or gameplay validation."
+    },
+    {
+      "address": "00b8a730",
+      "name": "BSP_AnimationChannelsItem_MatchesType",
+      "comment": "[BSP reconstruction 00B8A730] Complete 40-byte body. ECX object ignored; stacked DWORD token; AL Boolean, upper EAX unspecified; RET4. Compare exactly three CURRENT volatile DWORDs at 01090268 in order, stop at first match; reuse existing complete predicate. Descriptive name is a hypothesis. No native callable ABI, application wiring, FH3/SEH or gameplay validation."
+    },
+    {
+      "address": "00b8a140",
+      "name": "BSP_BoneItem_CurrentTypeToken",
+      "comment": "[BSP reconstruction 00B8A140] Complete 6-byte body. No consumed ECX/stack input; EAX current DWORD; RET. Read SAME current volatile DWORD 01090278; reuse existing complete getter with borrowed reference. No captured startup value. Descriptive name is a hypothesis. No native callable ABI, application wiring, FH3/SEH or gameplay validation."
+    },
+    {
+      "address": "00b8a150",
+      "name": "BSP_BoneItem_CurrentAuxiliaryWord",
+      "comment": "[BSP reconstruction 00B8A150] Complete 6-byte body. No consumed ECX/stack input; EAX current DWORD; RET. Read SAME current volatile DWORD 01090284; reuse existing complete getter with borrowed reference. No captured startup value. Wider meaning of the slot14 word is unassigned. Descriptive name is a hypothesis. No native callable ABI, application wiring, FH3/SEH or gameplay validation."
+    },
+    {
+      "address": "00b8a160",
+      "name": "BSP_BoneItem_AttachToInstance",
+      "comment": "[BSP reconstruction 00B8A160] Complete 24-byte body. ECX item; stack(instance,record,node,creation_word); current instance slot08 receives ECX instance and stack(item,node); RET16; no specified return. Identical24B body: capture current instance profile and slot08, call with(item,node); record and creation_word unused. Source bound to D63244/B89E90 or CFD8E0/71B710 full publication; other/changed reached domains explicit error. Descriptive name is a hypothesis. No native callable ABI, application wiring, FH3/SEH or gameplay validation."
+    },
+    {
+      "address": "00b8a870",
+      "name": "BSP_BoneItem_MatchesType",
+      "comment": "[BSP reconstruction 00B8A870] Complete 40-byte body. ECX object ignored; stacked DWORD token; AL Boolean, upper EAX unspecified; RET4. Compare exactly three CURRENT volatile DWORDs at 01090278 in order, stop at first match; reuse existing complete predicate. Descriptive name is a hypothesis. No native callable ABI, application wiring, FH3/SEH or gameplay validation."
+    }
+  ],
+  "annotation_status": "Parent owns saved Ghidra annotations and ledger integration.",
+  "verification": {
+    "seed_parity": "8/8 current original seeds match installed PE",
+    "full_span_parity": "12/12 spans,264B match current Ghidra and installed PE",
+    "exact_indirect_rows": "Both FF D0 instructions and target/argument loads read from live listings and matched to PE.",
+    "strict_win32_build": "Passed scripts/build.ps1 Release at93c57d80f; MSVC Win32 /W4 /WX /fp:strict /MD.",
+    "existing_ctests": "3/3 passed: reconstructed_math,native_math_differential,tool_tests.",
+    "focused_ignored_probe": "Passed:20 relocated original getter/predicate comparisons; actual source-constructed base/game instance pair/tree storage, reloads, classifications, Bone map entry and changed slot08 rejection.",
+    "probe_boundary": "Native comparison relocates only absolute descriptor addresses in original getter/predicate bodies. Attachment exercises complete source providers with constructed storage and original PE profile data; it is not a native attachment/whole-game differential.",
+    "call_verifier": "0 direct rows checked,0 failed;2 explicit indirect rows skipped by standard verifier. Exact indirect listing/load evidence is recorded separately."
+  },
+  "limitations": [
+    "Source interface is not original callable ABI.",
+    "Attachment accepts only actual D63244/B89E90 or CFD8E0/71B710 instance domains; unsupported/changed terminals throw.",
+    "Descriptor initialization/ownership and resource graph application wiring are not supplied.",
+    "The separate slot14 word is read exactly; broader interpretation remains unproved.",
+    "No arbitrary profile, native FH3/SEH, hardware-fault, installed application or gameplay equivalence is claimed."
+  ],
+  "indirect_listing_receipt": {
+    "00b8a092": {
+      "address": "00b8a092",
+      "instruction": "CALL EAX",
+      "context_before": [
+        "00b8a08f: MOV EAX,dword ptr [EDX + 0x8]",
+        "00b8a08e: PUSH EAX",
+        "00b8a08d: PUSH ESI"
+      ],
+      "context_after": [
+        "00b8a094: POP ESI",
+        "00b8a095: RET 0x10",
+        "00b8a0a0: SUB ESP,0x28"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b8a172": {
+      "address": "00b8a172",
+      "instruction": "CALL EAX",
+      "context_before": [
+        "00b8a16f: MOV EAX,dword ptr [EDX + 0x8]",
+        "00b8a16e: PUSH EAX",
+        "00b8a16d: PUSH ESI"
+      ],
+      "context_after": [
+        "00b8a174: POP ESI",
+        "00b8a175: RET 0x10",
+        "00b8a180: LEA EAX,[ECX + 0x8]"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    }
+  },
+  "build_settings_receipt": {
+    "project": "build/win32/bsp_core.vcxproj",
+    "runtime": "MultiThreadedDLL",
+    "floating_point": "Strict",
+    "warning_level": "Level4",
+    "warnings_as_errors": true
+  },
+  "artifact_receipts": [
+    {
+      "path": "local/extra_item_profile_probe.cpp",
+      "size": 6305,
+      "sha256": "5910e6672985605bd2eb2607410e093f21b42a4fe90ac12d3ce31524d74098b1"
+    },
+    {
+      "path": "local/extra_item_profile_probe.exe",
+      "size": 201728,
+      "sha256": "75970476e7b07de0bb958b245b3f09f4aa2b915d85cb9a5d1de85e05d07bd047"
+    },
+    {
+      "path": "local/extra_item_profile_probe.obj",
+      "size": 22787,
+      "sha256": "4dd935f6816fd0bef007f0b54a56d6c0f62e6a43aa626611f917ff6dcb8e2588"
+    },
+    {
+      "path": "local/extra_item_profile_probe.cmd",
+      "size": 501,
+      "sha256": "7042b331f4283edf5e20832b8b43117d99533d84e983b8babdc9499547dfcee7"
+    },
+    {
+      "path": "local/extra_item_profile_probe_build.log",
+      "size": 30,
+      "sha256": "85a3684762807fbcf20028267b1c27415655c3ab82cf4d0b83ce8cbdbae428ff"
+    },
+    {
+      "path": "local/extra_item_profile_probe.log",
+      "size": 163,
+      "sha256": "f526421d809b755fa93430c5086c885ee7086366f1c70fb3cede2d87674f63d0"
+    },
+    {
+      "path": "local/extra_item_profile_build.log",
+      "size": 57269,
+      "sha256": "0aa69b1ec4764c4bc251bcf9b0646d5d2de6cea6e1c671061ea47f2a6b8fd4d7"
+    },
+    {
+      "path": "local/extra_item_profile_pe_bytes.hpp",
+      "size": 1860,
+      "sha256": "99ac33d19ace6a8c5472576ab96aeed18b52577ce524195a721076d1bedccf1a"
+    },
+    {
+      "path": "local/extra_item_profile_receipt.py",
+      "size": 2509,
+      "sha256": "f099709a5469a3ee9ba1b52b64976c6fa09291070fba9627035247bf121463e7"
+    },
+    {
+      "path": "local/extra_item_profile_byte_receipt.json",
+      "size": 4805,
+      "sha256": "f969c27a98d687694d2c4e0bad4b74d3be9d9bf0fae022d65ebb4367b31e6b86"
+    },
+    {
+      "path": "local/extra_item_profile_instruction_context.json",
+      "size": 1205,
+      "sha256": "e8b578743b9d456e49a1dd0cdf0a6febe7dedea9dd1e01f67eb5fbd75fa905a4"
+    },
+    {
+      "path": "local/extra_item_profile_indirect_context.json",
+      "size": 610,
+      "sha256": "affe9cbcb8e322915341c5c75c85af91105c73ec7fbf0b1b8d1f20b522c2ad71"
+    },
+    {
+      "path": "include/bsp/native_resource_extra_item_profile.hpp",
+      "size": 2935,
+      "sha256": "dfbea06a5517f1e2f9606b674a02de69c9abd65835770ca876fe125b24ecc228"
+    },
+    {
+      "path": "src/native_resource_extra_item_profile.cpp",
+      "size": 3056,
+      "sha256": "16bbe7e9fc8c82ca823a5bdce078cfadf92225d6a644086af27472a4f19d8ccd"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "size": 146773,
+      "sha256": "6134b68873025e519d0a33e7a6245167a6d9434ce585425dabe2485d4d4937b7"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_resource_extra_item_profile.obj",
+      "size": 14755,
+      "sha256": "06a7ba9d10617b36bf9b73adec93a23cd2e453b056342014f3e23f211482f085"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "size": 63180916,
+      "sha256": "bba5cea5c9bf3f346b44ca9b978d3b7e8afb78457b9ea4951833e5464ee03323"
+    }
+  ],
+  "evidence_bundle": {
+    "path": "local/evidence-r29/extra-item-profile-r29.zip",
+    "size": 148328,
+    "sha256": "557f05f637d6aeb468621f8773de55c8c403ceb379fcad087176669d0f7bd498",
+    "note": "Contains listed artifacts except fullbsp_core.lib; archive receipt uses a standalone local path. Full library remains in worker build with hash above."
+  }
+}
