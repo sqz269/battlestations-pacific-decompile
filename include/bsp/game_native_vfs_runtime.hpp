@@ -22,6 +22,8 @@ class NativeFileStoreCompletionDispatch;
 class NativeVfsRuntimeBindings;
 struct NativeVfsNameResolutionContext;
 struct NativeVfsDateRouteContext;
+struct NativeVfsOpenRouteContext;
+struct NativeStoredStreamConversionContext;
 }
 namespace bsp::game {
 class GameNativeReadOnlyData;
@@ -35,6 +37,11 @@ struct GameNativeVfsRawServices {
     NativeVfsRuntimeBindings& bindings;
     NativeVfsNameResolutionContext& name_resolution;
     NativeVfsDateRouteContext& dates;
+    // The same retained routes used by the runtime's own opens and stored
+    // stream conversion. Callers keep their acquired frames and native owner
+    // obligations; borrowing these references performs no I/O or cleanup.
+    NativeVfsOpenRouteContext& opens;
+    NativeStoredStreamConversionContext& conversion;
 };
 
 // Borrow one initialized raw lifetime, physical-provider pool, type-ID set and
