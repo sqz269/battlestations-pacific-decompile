@@ -4,6 +4,7 @@
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
+#include <memory>
 
 namespace bsp {
 
@@ -35,6 +36,43 @@ class NativeRenderActualOwners {
 public:
     virtual ~NativeRenderActualOwners() = default;
     virtual RenderCommandReference& resolve_actual(void* raw_identity) = 0;
+};
+
+// Application-owned canonical metadata for actual render-resource companions.
+// Binding borrows both objects, validates that the companion uses raw+04, and
+// performs no native write, retain or release. One live identity has exactly
+// one companion; replacement is never implicit. All companions must unbind
+// before this registry is destroyed. The registry serializes its metadata only
+// and holds no lock across terminal dispatch; callers still provide the native
+// resource/lifetime synchronization that keeps a resolved companion alive.
+class NativeRenderActualOwnerRegistry final : public NativeRenderActualOwners {
+public:
+    NativeRenderActualOwnerRegistry();
+    ~NativeRenderActualOwnerRegistry() override;
+    NativeRenderActualOwnerRegistry(const NativeRenderActualOwnerRegistry&) = delete;
+    NativeRenderActualOwnerRegistry& operator=(const NativeRenderActualOwnerRegistry&) = delete;
+    NativeRenderActualOwnerRegistry(NativeRenderActualOwnerRegistry&&) = delete;
+    NativeRenderActualOwnerRegistry& operator=(NativeRenderActualOwnerRegistry&&) = delete;
+
+    void bind(void* raw_identity, RenderCommandReference&);
+    // Exact-match retirement for nonthrowing native terminal callbacks. A
+    // missing/mismatched binding is a lifetime contract violation.
+    void unbind(void* raw_identity, RenderCommandReference&) noexcept;
+    RenderCommandReference* find(void* raw_identity);
+    RenderCommandReference& resolve_actual(void* raw_identity) override;
+    std::size_t size() const;
+    bool empty() const;
+
+    // Function-pointer adapters for GuiNativeGeometryRegistration and every
+    // other owner family that shares that same registration shape.
+    static void bind_callback(void*, void* raw_identity, RenderCommandReference&);
+    static void unbind_callback(void*, void* raw_identity,
+        RenderCommandReference&) noexcept;
+    static RenderCommandReference* find_callback(void*, void* raw_identity);
+
+private:
+    struct Impl;
+    std::unique_ptr<Impl> impl_;
 };
 
 // Host helper shared by actual native owners. Nonnull, aligned, live atomic at
