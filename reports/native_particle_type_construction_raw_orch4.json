@@ -1,0 +1,554 @@
+{
+  "packet": "orch4_particle_type_construction_raw_o15",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00b01150",
+      "end_inclusive": "00b012e8",
+      "length": 409,
+      "sha256": "9e050dfdc0518d504504a7de96ace1faa2996b72fc9e34385d2b3eaa2f5cf15c",
+      "live_disk_equal": true,
+      "last_instruction": "00b012e6: ret 0xc",
+      "calls": [
+        {
+          "address": "00b011b4",
+          "native": "0041dd40",
+          "function": "00b01150",
+          "offset": 101
+        },
+        {
+          "address": "00b011cc",
+          "native": "00bf7680",
+          "function": "00b01150",
+          "offset": 125
+        },
+        {
+          "address": "00b01274",
+          "native": "00c2dfce",
+          "function": "00b01150",
+          "offset": 293
+        },
+        {
+          "address": "00b01290",
+          "native": "00b00c20",
+          "function": "00b01150",
+          "offset": 321
+        }
+      ],
+      "absolute": [
+        {
+          "offset": 3,
+          "target": 13349998,
+          "instruction": "00b01152: push 0xcbb46e"
+        },
+        {
+          "offset": 32,
+          "target": 13545776,
+          "instruction": "00b0116d: mov dword ptr [ebp], 0xceb130"
+        },
+        {
+          "offset": 56,
+          "target": 14015936,
+          "instruction": "00b01185: mov dword ptr [ebp], 0xd5ddc0"
+        },
+        {
+          "offset": 140,
+          "target": 14131788,
+          "instruction": "00b011d8: movss xmm0, dword ptr [0xd7a24c]"
+        },
+        {
+          "offset": 152,
+          "target": 13514756,
+          "instruction": "00b011e4: movss xmm1, dword ptr [0xce3804]"
+        },
+        {
+          "offset": 199,
+          "target": 13526608,
+          "instruction": "00b01213: movss xmm0, dword ptr [0xce6650]"
+        }
+      ],
+      "old_annotation": [
+        {
+          "address": "00b01150",
+          "annotation": {
+            "address": "00b01150",
+            "function_name": "BSP_ParticleTypeBase_Construct",
+            "comment": "[BSP reconstruction 00b01150]\nAP review: descriptive hypothesis, not a recovered symbol. Full live/installed byte span and final RET verified; sparse actual80h particle definition, same native string/parameter pool and1Ch record array; actual named D3DXFloat32To16Array import. Native unknown record18 is explicit input. See docs/NATIVE_PARTICLE_TYPE_BASE.md and reports/native_particle_type_base.json. Strict isolated Win32/native-byte fixture passed; combined integration pending; original FH3/invalid faults/gameplay unvalidated."
+          }
+        }
+      ],
+      "old_ledger_lookup": "00b01150  BSP_ParticleTypeBase_Construct  thunk=no  export=exports/bsp/functions/00b01150\nsegment 82 [00af37d0-00b1bd20] 428 candidates wave 2  keywords: param, emitter, additive, dynamic_light_, rotationspeed, particle, mvfm, windsensitivity\nledger name: BSP_ParticleTypeBase_Construct - AP review: descriptive hypothesis, not a recovered symbol. Full live/installed byte span and final RET verified; sparse actual80h particle definition, same native string/parameter pool and1Ch record array; actual named D3DXFloat32To16Array import. Native unknown record18 is explicit input. See docs/\nreconstruction: function construct_native_particle_type_base_00b01150 status=reconstructed_build_tested_bounded_fixture_tested source=src/native_particle_type_base.cpp\ncallers (5): 00af89e0 BSP_ObjectParticleDefinition_Construct, 00b058e0 BSP_AxialParticleBase_Construct, 00b076f0 BSP_FloatingParticleBase_Construct, 00b08830 BSP_SpriteParticleBase_Construct, 00b0a0b0 BSP_TracerParticleDefinition_Construct\ncallees (4): 0041dd40 BSP_NativeString_Resize, 00b00c20 BSP_ParticleTypeRecords_Reserve, 00bf7680 _memcpy, 00c2dfce D3DXFloat32To16Array\ndocs (1): docs/NATIVE_PARTICLE_TYPE_BASE.md (Actual PARTICLE definition base)\n",
+      "old_name_record": {
+        "address": "00b01150",
+        "name": "BSP_ParticleTypeBase_Construct",
+        "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full live/installed byte span and final RET verified; sparse actual80h particle definition, same native string/parameter pool and1Ch record array; actual named D3DXFloat32To16Array import. Native unknown record18 is explicit input. See docs/NATIVE_PARTICLE_TYPE_BASE.md and reports/native_particle_type_base.json. Strict isolated Win32/native-byte fixture passed; combined integration pending; original FH3/invalid faults/gameplay unvalidated."
+      },
+      "old_reconstruction_record": {
+        "address": "00b01150",
+        "source": "src/native_particle_type_base.cpp",
+        "header": "include/bsp/native_particle_type_base.hpp",
+        "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full live/installed byte span and final RET verified; sparse actual80h particle definition, same native string/parameter pool and1Ch record array; actual named D3DXFloat32To16Array import. Native unknown record18 is explicit input. See docs/NATIVE_PARTICLE_TYPE_BASE.md and reports/native_particle_type_base.json. Strict isolated Win32/native-byte fixture passed; combined integration pending; original FH3/invalid faults/gameplay unvalidated.",
+        "name": "construct_native_particle_type_base_00b01150",
+        "status": "reconstructed_build_tested_bounded_fixture_tested",
+        "native_abi": "ECX actual owner; stack(name8h,word14,parent18); RET0C; EAX owner"
+      },
+      "cpp_symbol": "construct_native_particle_type_base_00b01150",
+      "ghidra_name": "BSP_ParticleTypeBase_Construct",
+      "source": "src/native_particle_type_construction.cpp",
+      "header": "include/bsp/native_particle_type_construction.hpp",
+      "original_abi": "ECX actual owner; stack(name8h,word14,parent18); RET0C/EAX same owner",
+      "evidence": "O15 raw constructor composition: actual raw string pool cells, concrete B00C20 record reserve, actual loaded d3dx9_40 import, physical intermediate profiles, exact sparse writes/current constant loads, explicit incoming record+18 stack residue, genuine FH3-state B00F70/41DD20/BD30F0 unwind actions. Complete PE/live spans and native-byte normal-path comparison passed. New C++ overloads; original FH3/SEH transport, binary replacement and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_CONSTRUCTION_RAW_ORCH4.md and reports/native_particle_type_construction_raw_orch4.json.",
+      "status": "reconstructed_build_tested_bounded_fixture_tested"
+    },
+    {
+      "address": "00b00770",
+      "end_inclusive": "00b00794",
+      "length": 37,
+      "sha256": "8d7fca6f01eef96e8b226ed59e892ba1dff923f8b549ae21802f64de443b53a3",
+      "live_disk_equal": true,
+      "last_instruction": "00b00792: ret 0xc",
+      "calls": [
+        {
+          "address": "00b00784",
+          "native": "00b076f0",
+          "function": "00b00770",
+          "offset": 21
+        }
+      ],
+      "absolute": [
+        {
+          "offset": 27,
+          "target": 14015724,
+          "instruction": "00b00789: mov dword ptr [esi], 0xd5dcec"
+        }
+      ],
+      "old_annotation": [
+        {
+          "address": "00b00770",
+          "annotation": {
+            "address": "00b00770",
+            "function_name": "BSP_FloatingParticleDefinition_Construct",
+            "comment": "[BSP reconstruction 00b00770]\nAP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated."
+          }
+        }
+      ],
+      "old_ledger_lookup": "00b00770  BSP_FloatingParticleDefinition_Construct  thunk=no  export=exports/bsp/functions/00b00770\nsegment 82 [00af37d0-00b1bd20] 428 candidates wave 2  keywords: param, emitter, additive, dynamic_light_, rotationspeed, particle, mvfm, windsensitivity\nledger name: BSP_FloatingParticleDefinition_Construct - AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_p\nreconstruction: function construct_native_floating_particle_definition_00b00770 status=reconstructed_build_tested_bounded_fixture_tested source=src/native_particle_type_factory.cpp\ncallers (1): 00b00ce0 BSP_ParticleTypeDefinition_Create\ncallees (1): 00b076f0 BSP_FloatingParticleBase_Construct\n",
+      "old_name_record": {
+        "address": "00b00770",
+        "name": "BSP_FloatingParticleDefinition_Construct",
+        "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated."
+      },
+      "old_reconstruction_record": {
+        "address": "00b00770",
+        "source": "src/native_particle_type_factory.cpp",
+        "header": "include/bsp/native_particle_type_factory.hpp",
+        "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated.",
+        "name": "construct_native_floating_particle_definition_00b00770",
+        "status": "reconstructed_build_tested_bounded_fixture_tested",
+        "native_abi": "ECX actual raw owner; stack(actual8h name,word,parent); RET0C/EAX same owner"
+      },
+      "cpp_symbol": "construct_native_floating_particle_definition_00b00770",
+      "ghidra_name": "BSP_FloatingParticleDefinition_Construct",
+      "source": "src/native_particle_type_construction.cpp",
+      "header": "include/bsp/native_particle_type_construction.hpp",
+      "original_abi": "ECX actual owner; stack(name8h,word14,parent18); RET0C/EAX same owner",
+      "evidence": "O15 raw constructor composition: actual raw string pool cells, concrete B00C20 record reserve, actual loaded d3dx9_40 import, physical intermediate profiles, exact sparse writes/current constant loads, explicit incoming record+18 stack residue, genuine FH3-state B00F70/41DD20/BD30F0 unwind actions. Complete PE/live spans and native-byte normal-path comparison passed. New C++ overloads; original FH3/SEH transport, binary replacement and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_CONSTRUCTION_RAW_ORCH4.md and reports/native_particle_type_construction_raw_orch4.json.",
+      "status": "reconstructed_build_tested_bounded_fixture_tested"
+    },
+    {
+      "address": "00b076f0",
+      "end_inclusive": "00b0772f",
+      "length": 64,
+      "sha256": "05bcfaad07115148b1fbc02e3edb5f62601b026db0d343dc90d1f46fb234e1d4",
+      "live_disk_equal": true,
+      "last_instruction": "00b0772d: ret 0xc",
+      "calls": [
+        {
+          "address": "00b07704",
+          "native": "00b01150",
+          "function": "00b076f0",
+          "offset": 21
+        }
+      ],
+      "absolute": [
+        {
+          "offset": 47,
+          "target": 14016432,
+          "instruction": "00b0771d: mov dword ptr [esi], 0xd5dfb0"
+        }
+      ],
+      "old_annotation": [
+        {
+          "address": "00b076f0",
+          "annotation": {
+            "address": "00b076f0",
+            "function_name": "BSP_FloatingParticleBase_Construct",
+            "comment": "[BSP reconstruction 00b076f0]\nAP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated."
+          }
+        }
+      ],
+      "old_ledger_lookup": "00b076f0  BSP_FloatingParticleBase_Construct  thunk=no  export=exports/bsp/functions/00b076f0\nsegment 82 [00af37d0-00b1bd20] 428 candidates wave 2  keywords: param, emitter, additive, dynamic_light_, rotationspeed, particle, mvfm, windsensitivity\nledger name: BSP_FloatingParticleBase_Construct - AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_p\nreconstruction: function construct_native_floating_particle_base_00b076f0 status=reconstructed_build_tested_bounded_fixture_tested source=src/native_particle_type_factory.cpp\ncallers (1): 00b00770 BSP_FloatingParticleDefinition_Construct\ncallees (1): 00b01150 BSP_ParticleTypeBase_Construct\n",
+      "old_name_record": {
+        "address": "00b076f0",
+        "name": "BSP_FloatingParticleBase_Construct",
+        "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated."
+      },
+      "old_reconstruction_record": {
+        "address": "00b076f0",
+        "source": "src/native_particle_type_factory.cpp",
+        "header": "include/bsp/native_particle_type_factory.hpp",
+        "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated.",
+        "name": "construct_native_floating_particle_base_00b076f0",
+        "status": "reconstructed_build_tested_bounded_fixture_tested",
+        "native_abi": "ECX actual raw owner; stack(actual8h name,word,parent); RET0C/EAX same owner"
+      },
+      "cpp_symbol": "construct_native_floating_particle_base_00b076f0",
+      "ghidra_name": "BSP_FloatingParticleBase_Construct",
+      "source": "src/native_particle_type_construction.cpp",
+      "header": "include/bsp/native_particle_type_construction.hpp",
+      "original_abi": "ECX actual owner; stack(name8h,word14,parent18); RET0C/EAX same owner",
+      "evidence": "O15 raw constructor composition: actual raw string pool cells, concrete B00C20 record reserve, actual loaded d3dx9_40 import, physical intermediate profiles, exact sparse writes/current constant loads, explicit incoming record+18 stack residue, genuine FH3-state B00F70/41DD20/BD30F0 unwind actions. Complete PE/live spans and native-byte normal-path comparison passed. New C++ overloads; original FH3/SEH transport, binary replacement and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_CONSTRUCTION_RAW_ORCH4.md and reports/native_particle_type_construction_raw_orch4.json.",
+      "status": "reconstructed_build_tested_bounded_fixture_tested"
+    },
+    {
+      "address": "00b058e0",
+      "end_inclusive": "00b05934",
+      "length": 85,
+      "sha256": "ebddff656003466d1dc811decfe74a7c1d982a6c4bb3b85533d1ce3eea882ef2",
+      "live_disk_equal": true,
+      "last_instruction": "00b05932: ret 0xc",
+      "calls": [
+        {
+          "address": "00b058f4",
+          "native": "00b01150",
+          "function": "00b058e0",
+          "offset": 21
+        }
+      ],
+      "absolute": [
+        {
+          "offset": 59,
+          "target": 14016304,
+          "instruction": "00b05919: mov dword ptr [esi], 0xd5df30"
+        }
+      ],
+      "old_annotation": [
+        {
+          "address": "00b058e0",
+          "annotation": {
+            "address": "00b058e0",
+            "function_name": "BSP_AxialParticleBase_Construct",
+            "comment": "[BSP reconstruction 00b058e0]\nAP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated."
+          }
+        }
+      ],
+      "old_ledger_lookup": "00b058e0  BSP_AxialParticleBase_Construct  thunk=no  export=exports/bsp/functions/00b058e0\nsegment 82 [00af37d0-00b1bd20] 428 candidates wave 2  keywords: param, emitter, additive, dynamic_light_, rotationspeed, particle, mvfm, windsensitivity\nledger name: BSP_AxialParticleBase_Construct - AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_p\nreconstruction: function construct_native_axial_particle_base_00b058e0 status=reconstructed_build_tested_bounded_fixture_tested source=src/native_particle_type_factory.cpp\ncallers (1): 00b00ce0 BSP_ParticleTypeDefinition_Create\ncallees (1): 00b01150 BSP_ParticleTypeBase_Construct\n",
+      "old_name_record": {
+        "address": "00b058e0",
+        "name": "BSP_AxialParticleBase_Construct",
+        "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated."
+      },
+      "old_reconstruction_record": {
+        "address": "00b058e0",
+        "source": "src/native_particle_type_factory.cpp",
+        "header": "include/bsp/native_particle_type_factory.hpp",
+        "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated.",
+        "name": "construct_native_axial_particle_base_00b058e0",
+        "status": "reconstructed_build_tested_bounded_fixture_tested",
+        "native_abi": "ECX actual raw owner; stack(actual8h name,word,parent); RET0C/EAX same owner"
+      },
+      "cpp_symbol": "construct_native_axial_particle_base_00b058e0",
+      "ghidra_name": "BSP_AxialParticleBase_Construct",
+      "source": "src/native_particle_type_construction.cpp",
+      "header": "include/bsp/native_particle_type_construction.hpp",
+      "original_abi": "ECX actual owner; stack(name8h,word14,parent18); RET0C/EAX same owner",
+      "evidence": "O15 raw constructor composition: actual raw string pool cells, concrete B00C20 record reserve, actual loaded d3dx9_40 import, physical intermediate profiles, exact sparse writes/current constant loads, explicit incoming record+18 stack residue, genuine FH3-state B00F70/41DD20/BD30F0 unwind actions. Complete PE/live spans and native-byte normal-path comparison passed. New C++ overloads; original FH3/SEH transport, binary replacement and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_CONSTRUCTION_RAW_ORCH4.md and reports/native_particle_type_construction_raw_orch4.json.",
+      "status": "reconstructed_build_tested_bounded_fixture_tested"
+    },
+    {
+      "address": "00b08830",
+      "end_inclusive": "00b0886b",
+      "length": 60,
+      "sha256": "5d56117bae1e8eb8b62868b193f352d4137c94c2a84fb4b1d9de2e74c4153eaa",
+      "live_disk_equal": true,
+      "last_instruction": "00b08869: ret 0xc",
+      "calls": [
+        {
+          "address": "00b08844",
+          "native": "00b01150",
+          "function": "00b08830",
+          "offset": 21
+        }
+      ],
+      "absolute": [
+        {
+          "offset": 50,
+          "target": 14016500,
+          "instruction": "00b08860: mov dword ptr [esi], 0xd5dff4"
+        }
+      ],
+      "old_annotation": [
+        {
+          "address": "00b08830",
+          "annotation": {
+            "address": "00b08830",
+            "function_name": "BSP_SpriteParticleBase_Construct",
+            "comment": "[BSP reconstruction 00b08830]\nAP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated."
+          }
+        }
+      ],
+      "old_ledger_lookup": "00b08830  BSP_SpriteParticleBase_Construct  thunk=no  export=exports/bsp/functions/00b08830\nsegment 82 [00af37d0-00b1bd20] 428 candidates wave 2  keywords: param, emitter, additive, dynamic_light_, rotationspeed, particle, mvfm, windsensitivity\nledger name: BSP_SpriteParticleBase_Construct - AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_p\nreconstruction: function construct_native_sprite_particle_base_00b08830 status=reconstructed_build_tested_bounded_fixture_tested source=src/native_particle_type_factory.cpp\ncallers (1): 00b00ce0 BSP_ParticleTypeDefinition_Create\ncallees (1): 00b01150 BSP_ParticleTypeBase_Construct\n",
+      "old_name_record": {
+        "address": "00b08830",
+        "name": "BSP_SpriteParticleBase_Construct",
+        "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated."
+      },
+      "old_reconstruction_record": {
+        "address": "00b08830",
+        "source": "src/native_particle_type_factory.cpp",
+        "header": "include/bsp/native_particle_type_factory.hpp",
+        "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated.",
+        "name": "construct_native_sprite_particle_base_00b08830",
+        "status": "reconstructed_build_tested_bounded_fixture_tested",
+        "native_abi": "ECX actual raw owner; stack(actual8h name,word,parent); RET0C/EAX same owner"
+      },
+      "cpp_symbol": "construct_native_sprite_particle_base_00b08830",
+      "ghidra_name": "BSP_SpriteParticleBase_Construct",
+      "source": "src/native_particle_type_construction.cpp",
+      "header": "include/bsp/native_particle_type_construction.hpp",
+      "original_abi": "ECX actual owner; stack(name8h,word14,parent18); RET0C/EAX same owner",
+      "evidence": "O15 raw constructor composition: actual raw string pool cells, concrete B00C20 record reserve, actual loaded d3dx9_40 import, physical intermediate profiles, exact sparse writes/current constant loads, explicit incoming record+18 stack residue, genuine FH3-state B00F70/41DD20/BD30F0 unwind actions. Complete PE/live spans and native-byte normal-path comparison passed. New C++ overloads; original FH3/SEH transport, binary replacement and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_CONSTRUCTION_RAW_ORCH4.md and reports/native_particle_type_construction_raw_orch4.json.",
+      "status": "reconstructed_build_tested_bounded_fixture_tested"
+    },
+    {
+      "address": "00af89e0",
+      "end_inclusive": "00af8a2b",
+      "length": 76,
+      "sha256": "dfdeaab2781ae0555757b180104ae54459ff60f89d2731c201f24496d7c4cf98",
+      "live_disk_equal": true,
+      "last_instruction": "00af8a29: ret 0xc",
+      "calls": [
+        {
+          "address": "00af89f4",
+          "native": "00b01150",
+          "function": "00af89e0",
+          "offset": 21
+        }
+      ],
+      "absolute": [
+        {
+          "offset": 29,
+          "target": 14015232,
+          "instruction": "00af89fb: mov dword ptr [esi], 0xd5db00"
+        }
+      ],
+      "old_annotation": [
+        {
+          "address": "00af89e0",
+          "annotation": {
+            "address": "00af89e0",
+            "function_name": "BSP_ObjectParticleDefinition_Construct",
+            "comment": "[BSP reconstruction 00af89e0]\nAP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated."
+          }
+        }
+      ],
+      "old_ledger_lookup": "00af89e0  BSP_ObjectParticleDefinition_Construct  thunk=no  export=exports/bsp/functions/00af89e0\nsegment 82 [00af37d0-00b1bd20] 428 candidates wave 2  keywords: param, emitter, additive, dynamic_light_, rotationspeed, particle, mvfm, windsensitivity\nledger name: BSP_ObjectParticleDefinition_Construct - AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_p\nreconstruction: function construct_native_object_particle_definition_00af89e0 status=reconstructed_build_tested_bounded_fixture_tested source=src/native_particle_type_factory.cpp\ncallers (1): 00b00ce0 BSP_ParticleTypeDefinition_Create\ncallees (1): 00b01150 BSP_ParticleTypeBase_Construct\n",
+      "old_name_record": {
+        "address": "00af89e0",
+        "name": "BSP_ObjectParticleDefinition_Construct",
+        "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated."
+      },
+      "old_reconstruction_record": {
+        "address": "00af89e0",
+        "source": "src/native_particle_type_factory.cpp",
+        "header": "include/bsp/native_particle_type_factory.hpp",
+        "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated.",
+        "name": "construct_native_object_particle_definition_00af89e0",
+        "status": "reconstructed_build_tested_bounded_fixture_tested",
+        "native_abi": "ECX actual raw owner; stack(actual8h name,word,parent); RET0C/EAX same owner"
+      },
+      "cpp_symbol": "construct_native_object_particle_definition_00af89e0",
+      "ghidra_name": "BSP_ObjectParticleDefinition_Construct",
+      "source": "src/native_particle_type_construction.cpp",
+      "header": "include/bsp/native_particle_type_construction.hpp",
+      "original_abi": "ECX actual owner; stack(name8h,word14,parent18); RET0C/EAX same owner",
+      "evidence": "O15 raw constructor composition: actual raw string pool cells, concrete B00C20 record reserve, actual loaded d3dx9_40 import, physical intermediate profiles, exact sparse writes/current constant loads, explicit incoming record+18 stack residue, genuine FH3-state B00F70/41DD20/BD30F0 unwind actions. Complete PE/live spans and native-byte normal-path comparison passed. New C++ overloads; original FH3/SEH transport, binary replacement and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_CONSTRUCTION_RAW_ORCH4.md and reports/native_particle_type_construction_raw_orch4.json.",
+      "status": "reconstructed_build_tested_bounded_fixture_tested"
+    },
+    {
+      "address": "00b0a0b0",
+      "end_inclusive": "00b0a0ef",
+      "length": 64,
+      "sha256": "e213bb4c24307070a1d2483b77fc72f165263bf0d8d2d89cb026a5c1e707c80e",
+      "live_disk_equal": true,
+      "last_instruction": "00b0a0ed: ret 0xc",
+      "calls": [
+        {
+          "address": "00b0a0c4",
+          "native": "00b01150",
+          "function": "00b0a0b0",
+          "offset": 21
+        }
+      ],
+      "absolute": [
+        {
+          "offset": 29,
+          "target": 14016584,
+          "instruction": "00b0a0cb: mov dword ptr [esi], 0xd5e048"
+        }
+      ],
+      "old_annotation": [
+        {
+          "address": "00b0a0b0",
+          "annotation": {
+            "address": "00b0a0b0",
+            "function_name": "BSP_TracerParticleDefinition_Construct",
+            "comment": "[BSP reconstruction 00b0a0b0]\nAP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated."
+          }
+        }
+      ],
+      "old_ledger_lookup": "00b0a0b0  BSP_TracerParticleDefinition_Construct  thunk=no  export=exports/bsp/functions/00b0a0b0\nsegment 82 [00af37d0-00b1bd20] 428 candidates wave 2  keywords: param, emitter, additive, dynamic_light_, rotationspeed, particle, mvfm, windsensitivity\nledger name: BSP_TracerParticleDefinition_Construct - AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_p\nreconstruction: function construct_native_tracer_particle_definition_00b0a0b0 status=reconstructed_build_tested_bounded_fixture_tested source=src/native_particle_type_factory.cpp\ncallers (1): 00b00ce0 BSP_ParticleTypeDefinition_Create\ncallees (1): 00b01150 BSP_ParticleTypeBase_Construct\n",
+      "old_name_record": {
+        "address": "00b0a0b0",
+        "name": "BSP_TracerParticleDefinition_Construct",
+        "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated."
+      },
+      "old_reconstruction_record": {
+        "address": "00b0a0b0",
+        "source": "src/native_particle_type_factory.cpp",
+        "header": "include/bsp/native_particle_type_factory.hpp",
+        "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated.",
+        "name": "construct_native_tracer_particle_definition_00b0a0b0",
+        "status": "reconstructed_build_tested_bounded_fixture_tested",
+        "native_abi": "ECX actual raw owner; stack(actual8h name,word,parent); RET0C/EAX same owner"
+      },
+      "cpp_symbol": "construct_native_tracer_particle_definition_00b0a0b0",
+      "ghidra_name": "BSP_TracerParticleDefinition_Construct",
+      "source": "src/native_particle_type_construction.cpp",
+      "header": "include/bsp/native_particle_type_construction.hpp",
+      "original_abi": "ECX actual owner; stack(name8h,word14,parent18); RET0C/EAX same owner",
+      "evidence": "O15 raw constructor composition: actual raw string pool cells, concrete B00C20 record reserve, actual loaded d3dx9_40 import, physical intermediate profiles, exact sparse writes/current constant loads, explicit incoming record+18 stack residue, genuine FH3-state B00F70/41DD20/BD30F0 unwind actions. Complete PE/live spans and native-byte normal-path comparison passed. New C++ overloads; original FH3/SEH transport, binary replacement and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_CONSTRUCTION_RAW_ORCH4.md and reports/native_particle_type_construction_raw_orch4.json.",
+      "status": "reconstructed_build_tested_bounded_fixture_tested"
+    }
+  ],
+  "support": [
+    {
+      "address": "00cbb450",
+      "length": 40,
+      "kind": "FH3 funclets and handler",
+      "hex": "8b4dd4e9987cf1ff8b4dd483c108e9bd2876ff8b4dd483c168e9025be4ffb8bc34df00e9cbb6f3ff",
+      "sha256": "6d2c246d9db0388df84d445bb298e8e7fc9b5a8d76b3e66c3f702aae969859f9",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00df34a4",
+      "length": 60,
+      "kind": "FH3 map and info",
+      "hex": "ffffffff50b4cb000000000058b4cb000100000063b4cb002205931903000000a434df00000000000000000000000000000000000000000001000000",
+      "sha256": "83b015a85f0c8eda20f5615a574bc4043d237cef1fb01da49754cb1bfbc13f4d",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00c2dfce",
+      "length": 6,
+      "kind": "D3DX import thunk",
+      "hex": "ff251024ce00",
+      "sha256": "9a41f197b05116a4310c6e1ba05c9ec6d595f49f1c655cb5c58489a1a8126a99",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00d7a24c",
+      "length": 4,
+      "kind": "one cell",
+      "hex": "0000803f",
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00ce3804",
+      "length": 4,
+      "kind": "scalar cell",
+      "hex": "00007a44",
+      "sha256": "07883481b5c147464597d44401db095d88c2a6b049fbbcd7b278de98a5ceeb71",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00ce6650",
+      "length": 4,
+      "kind": "record scalar cell",
+      "hex": "48e17a3f",
+      "sha256": "6cd00ccbb89fc4145ef09d9250e8fcb9c61e06567d5cd499cb136cc0d35a4441",
+      "live_disk_equal": true
+    }
+  ],
+  "dependency_spans": [
+    {
+      "address": "00b00c20",
+      "end_inclusive": "00b00ca4",
+      "length": 133,
+      "sha256": "9306985af1f23d030900a90f906f94530587b1baa161ade5fd4b16b324f7cfde",
+      "live_disk_equal": true,
+      "last_instruction": "00b00ca2: ret 4",
+      "calls": [
+        {
+          "address": "00b00c4f",
+          "native": "00bf55be",
+          "function": "00b00c20",
+          "offset": 48
+        },
+        {
+          "address": "00b00c90",
+          "native": "00bf6989",
+          "function": "00b00c20",
+          "offset": 113
+        }
+      ],
+      "absolute": [],
+      "old_annotation": [
+        {
+          "address": "00b00c20",
+          "annotation": {
+            "address": "00b00c20",
+            "function_name": "BSP_ParticleTypeRecords_Reserve",
+            "comment": "[BSP reconstruction 00b00c20]\nAP review: descriptive hypothesis, not a recovered symbol. Full live/installed byte span and final RET verified; sparse actual80h particle definition, same native string/parameter pool and1Ch record array; actual named D3DXFloat32To16Array import. Native unknown record18 is explicit input. See docs/NATIVE_PARTICLE_TYPE_BASE.md and reports/native_particle_type_base.json. Strict isolated Win32/native-byte fixture passed; combined integration pending; original FH3/invalid faults/gameplay unvalidated.\n\n[BSP reconstruction 00b00c20] update\nAP review: descriptive hypothesis, not a recovered symbol. Full live/installed byte span and final RET verified; sparse actual80h particle definition, same native string/parameter pool and1Ch record array; actual named D3DXFloat32To16Array import. Native unknown record18 is explicit input. See docs/NATIVE_PARTICLE_TYPE_BASE.md and reports/native_particle_type_base.json. Strict isolated Win32/native-byte fixture passed; combined integration pending; original FH3/invalid faults/gameplay unvalidated. | Raw-pool companion: complete body/live PE equality, exact parameter/descriptor/name schedules and genuine three-state unwind; strict Win32 plus six-body662B original/source actual-pool probe pass. New C++ interface; original FH3/SEH/gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_LIFETIME_RAW_ORCH4.md and reports/native_particle_type_lifetime_raw_orch4.json."
+          }
+        }
+      ],
+      "old_ledger_lookup": "00b00c20  BSP_ParticleTypeRecords_Reserve  thunk=no  export=exports/bsp/functions/00b00c20\nsegment 82 [00af37d0-00b1bd20] 428 candidates wave 2  keywords: param, emitter, additive, dynamic_light_, rotationspeed, particle, mvfm, windsensitivity\nledger name: BSP_ParticleTypeRecords_Reserve - AP review: descriptive hypothesis, not a recovered symbol. Full live/installed byte span and final RET verified; sparse actual80h particle definition, same native string/parameter pool and1Ch record array; actual named D3DXFloat32To16Array import. Native unknown record18 is explicit input. See docs/\nreconstruction: function reserve_native_particle_type_records_00b00c20 status=reconstructed_complete_raw_pool_win32_build_and_original_byte_probe_passed source=src/native_particle_type_lifetime.cpp\ncallers (6): 00b00ee0 BSP_ParticleTypeRecords_Append, 00b00f30 BSP_ParticleTypeRecords_Clear, 00b00f70 BSP_ParticleTypeRecords_Destroy, 00b00fb0 BSP_ParticleTypeBase_Destroy, 00b01150 BSP_ParticleTypeBase_Construct, 00b01350 BSP_ParticleType_LoadTexture\ncallees (2): 00bf55be operator_new, 00bf6989 _free\ndocs (1): docs/NATIVE_PARTICLE_TYPE_BASE.md (Actual PARTICLE definition base)\n"
+    }
+  ],
+  "validation": {
+    "isolated_strict_compile": "passed",
+    "compiler_flags": "MSVC Win32 /O2 /EHsc /MD /fp:strict /W4 /WX",
+    "native_probe_comparisons": 28,
+    "native_probe_result": "passed; complete original seven constructors plus B00C20, actual raw string pools and loaded d3dx9_40 export",
+    "repository_build": "scripts/build.ps1 passed",
+    "ctest": "3/3 passed",
+    "native_exception_execution": false,
+    "game_validated": false,
+    "native_probe_log": "local/particle_type_construction/probe.log",
+    "native_probe_exact_output": "probe.cpp\nPASS: 28 complete-original/raw-source constructor comparisons; actual string pools, original reserve with real CRT storage, actual d3dx9_40 import, full sparse E8-byte owners, intermediate physical profiles, self-name, long name, current/aliased constant cells, raw NaN/-0 bits, explicit incoming stack residue, native RET0C. FH3/SEH/gameplay unvalidated.\n",
+    "full_current_library_replay": true
+  },
+  "ghidra_mutation": "none; parent integrator owns annotation append/save/export",
+  "uncertainty": [
+    "record+18 has no recovered initialized value: source requires explicit incoming residue",
+    "source APIs differ from native calling conventions",
+    "FH3/SEH transport and arbitrary invalid-pointer faults unvalidated",
+    "gameplay unvalidated"
+  ],
+  "hashes": {
+    "src/native_particle_type_construction.cpp": "04da81aa1eb7e6d0d5ed8132f6757ee5a96e47587d23d1eb48b3cb7aedd73cd1",
+    "include/bsp/native_particle_type_construction.hpp": "2e65ef2c991f9c81036ee3c3349a2c49dd2e4875e2b6ad0592e3f7f86a3af13a",
+    "docs/NATIVE_PARTICLE_TYPE_CONSTRUCTION_RAW_ORCH4.md": "0296bd465e574b35c09bef7d02bededdbdf95adcc55b55bfb9c225bab0ad96d7",
+    "local/particle_type_construction_capture.py": "5081ea136a2b8dcb23a0d57a2a7fdf8dadb652ad16cffbff78ce04c3789d92ec",
+    "local/particle_type_construction/probe.cpp": "3e012af4cd670ddbe91086d857703a9130fede878b118d69fc2e122f1d1f0f2a",
+    "local/particle_type_construction/probe.cmd": "d5b3158cd1ca537157aee0bab68c73eb00a102932bf80ecf4c63ab884581b4cd",
+    "local/particle_type_construction/probe.log": "ac4e79325389d755045258728627815624242d84cc514d8bbacf4712fafae681",
+    "local/particle_type_construction_build.txt": "0848ced38f840be6defb4e119526bb7e01e57114d55d6f6eaf430089111ab58e",
+    "C:/Windows/SysWOW64/d3dx9_40.dll": "16fd909aeb68d0d1aca8529dc7f78880b97d6649d70ce8d03a2c858bc28e216b"
+  }
+}
