@@ -14,6 +14,7 @@ struct NativeRendererRecordGuardContext;
 struct NativeRendererLuaOwnerContext;
 struct NativeRendererDestructorContext;
 struct NativeRenderEntryCacheContext;
+struct NativeRenderQueueDestructionContext;
 struct NativeRenderJobPublicationContext;
 class XLiveOwnerAllocation;
 struct NativeInputBackendOwnerContext;
@@ -41,6 +42,7 @@ namespace game { class GameSoundRuntime; }
 // D5F0A4, D621EC/D62260 and D626F4/D62A3C. The renderer requires initialized
 // device and surface storage through its complete destruction schedule.
 // D68CBC/D68CC0 use the same raw render-entry cache context as publication.
+// D5E5F4 executes and destroys its actual render queue with shared providers.
 // Other admitted objects carry these recovered slot-zero profiles: CE3818,
 // D0DA64, D5E594, D5E59C, D5B44C, D5B460, D5B478, D58F78, D24138,
 // D2413C, D5B5F4, D5B5F8, D5B72C, D5B630, D68200, D68CF8, D68D04 or
@@ -161,6 +163,10 @@ struct NativeSingletonDeletionBindings {
     // the popped owner through its real scalar deleter and borrow the SAME
     // AA0/FE88 cells through unregister/clear; do not require owner==FE88.
     NativeRenderEntryCacheContext* render_entry_cache{};
+    // D5E5F4 slot0 B1F6B0 executes the queue before freeing its members.
+    // Borrow the same publication, strings and persistent execution frames;
+    // do not replace the ordinary destructor with a command deletion loop.
+    NativeRenderQueueDestructionContext* render_queue{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -174,7 +180,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, render_jobs) == 120);
 static_assert(offsetof(NativeSingletonDeletionBindings, renderer_lua_owner) == 124);
 static_assert(offsetof(NativeSingletonDeletionBindings, renderer_owner) == 128);
 static_assert(offsetof(NativeSingletonDeletionBindings, render_entry_cache) == 132);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 136);
+static_assert(offsetof(NativeSingletonDeletionBindings, render_queue) == 136);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 140);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting
