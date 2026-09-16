@@ -21,7 +21,6 @@ void current_resource_invalid_parameter(void*) {
 }
 
 struct GameNativeResourceApplication::Impl {
-    NativeSingletonDeletionBindings& deletion;
     void* volatile manager_010901c4{};
     void* volatile group_params_0109033c{};
     void* volatile mesh_0109047c{};
@@ -41,7 +40,7 @@ struct GameNativeResourceApplication::Impl {
 
     Impl(GameSingletonHost& host, NativeStringRawPoolContext& strings,
         GameNativeReadOnlyData& mapped)
-        : deletion(host.native_deletion_bindings()), default_names(strings),
+        : default_names(strings),
           names(strings, default_names),
           manager{host.manager_publication_01090aa0(), manager_010901c4,
               {group_params_0109033c, mesh_0109047c, skined_mesh_01090480,
@@ -55,6 +54,7 @@ struct GameNativeResourceApplication::Impl {
         (void)mapped.data_at(0x00ce2000, 1);
         (void)mapped.data_at(0x00cf0000, 1);
         (void)mapped.data_at(0x00d60000, 1);
+        auto& deletion = host.native_deletion_bindings();
         if (deletion.resource_manager || deletion.resource_extra_parsers)
             throw std::logic_error("resource application deletion bindings are already installed");
         // No native owner has registered yet. All cells and contexts above
@@ -63,12 +63,9 @@ struct GameNativeResourceApplication::Impl {
         deletion.resource_extra_parsers = &extra;
     }
 
-    ~Impl() {
-        // The caller has already completed the shared drain. Remove borrowed
-        // source bindings without destroying a native owner a second time.
-        if (deletion.resource_manager == &manager) deletion.resource_manager = nullptr;
-        if (deletion.resource_extra_parsers == &extra) deletion.resource_extra_parsers = nullptr;
-    }
+    // Metadata-only destruction. GameStartupHost can delete its singleton
+    // host after the shared drain and before this VFS-owned context, so no
+    // borrowed publication or deletion-table reference is accessed here.
 
     void require_operable() const {
         if (failed_entry)
