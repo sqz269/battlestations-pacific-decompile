@@ -30,6 +30,7 @@
 #include "bsp/game_hosts_mission.hpp"
 #include "bsp/font_registry_startup.hpp"
 #include "bsp/fingerprint_payload.hpp"
+#include "bsp/native_diagnostic_sink_lifetime.hpp"
 #include "bsp/native_renderer_parameters.hpp"
 #include "bsp/physical_file.hpp"
 #include "bsp/renderer_startup.hpp"
@@ -1535,6 +1536,11 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         platform_.widescreen);
     frontend_->run_font_and_gui_startup_0073bae0(language_font_path_008d4890(
         settings_host_->language_catalog(), settings_.gameplay.language_index_04));
+    // 0073E14B follows the retail-stubbed After InitGui checkpoint. Borrow the
+    // canonical host cell and its shared raw lifetime domain; an earlier
+    // diagnostic path may already have made this warm.
+    (void)native_diagnostic_sink_get_or_create_004c14c0(
+        singletons_->diagnostic_publication_0109cf14(), singletons_->sound_lifetime());
     summary_.fonts_loaded = fonts_->registry().fonts().size();
     summary_.font_resource_opens = fonts_->resource_opens();
     summary_.fingerprint_defined_bytes = fonts_->fingerprint().defined_size();
@@ -1743,6 +1749,11 @@ void GameStartupHost::application_shutdown() {
     delete frontend_;
     frontend_ = nullptr;
     if (device_ != nullptr) device_->release();
+    // Native 0073830F is step 19 of the broader 00737F30 teardown. The other
+    // recovered steps remain unbound above, but this explicit owner retirement
+    // must precede application destruction and the shared raw-manager drain.
+    destroy_native_diagnostic_sink_007363b0(
+        singletons_->diagnostic_publication_0109cf14(), singletons_->sound_lifetime());
 }
 
 void GameStartupHost::application_destruct() {
