@@ -1,0 +1,804 @@
+{
+  "packet": "orch5_native_renderer_debug_lines",
+  "status": "full_actual_body_strict_win32_two_ctests_real_d3d9_source_fixture_passed",
+  "created_utc": "2026-09-14T16:52:57.672568+00:00",
+  "entry": "00b28d00",
+  "native_end_inclusive": "00b290c5",
+  "native_bytes": 966,
+  "source_files": [
+    "include/bsp/native_renderer_debug_lines.hpp",
+    "src/native_renderer_debug_lines.cpp"
+  ],
+  "original_abi": "ECX actual renderer, no stack arguments, plain RET; no local EH handler.",
+  "source_api": "void __fastcall draw_native_renderer_debug_lines_00b28d00(void* actual_renderer, const NativeRendererDebugLinesContext*)",
+  "source_abi_boundary": "EDX adds the caller-owned context. This is not a drop-in original caller interface or active game-renderer execution proof.",
+  "context": {
+    "bindings": [
+      "NativeRendererVertexBindingContext&",
+      "NativeRendererIndexBindingContext&",
+      "NativeRendererSynchronizationGlobals& actual0108D6DC",
+      "borrowed original D5F0A8 profile through +138",
+      "const volatile float& actual D7A24C"
+    ],
+    "domain": "All providers must use the same actual renderer, current synchronization/global cells and canonical owner associations. Existing logical/physical owner preconditions remain in force.",
+    "empty_path": "Initial DWORD(renderer+1D04)==0 returns before context access, even if capacity+1D08 is negative. Only this path admits a null context.",
+    "profile_gate": "At each renderer virtual call separately, require current raw vptr D5F0A8 then current borrowed slot+134=B24840 or slot+138=B24B00. Unknown profile raises a source binding error at that point; no arbitrary numeric native token is called as host code."
+  },
+  "native_schedule": [
+    {
+      "ips": "B28D06..B28D0D",
+      "action": "Initial count!=0 gate; no context/global/cache access on empty path."
+    },
+    {
+      "ips": "B28D18..B28D88",
+      "action": "Nine ordered B24460 calls; shared raw B21D10(null), then B21C20(null)."
+    },
+    {
+      "ips": "B28D8D..B28DB8",
+      "action": "Current renderer+1A10 then device vptr+164 SetFVF(4042h), two B24510 calls."
+    },
+    {
+      "ips": "B28DBD..B28F47",
+      "action": "One shared64-byte matrix. Per call reload D7A24C raw DWORD, then current device, write all16 words in index order, read captured device current vptr then+B0. Diagonal receives the one captured bits, others positive zero. Calls100h,2,3; no hoisted constant/device/table."
+    },
+    {
+      "ips": "B28F49..B28F67",
+      "action": "Reload current renderer/profile separately for +134(0,null) and +138(null,0); substantive raw B24840/B24B00."
+    },
+    {
+      "ips": "B28F69..B28FA1",
+      "action": "Read DWORD+1D90, then only when zero byte+1D8A. Both zero: capture data+1D00, count+1D04, current device+1A10 and its current table. CDQ/SUB/SAR signed count/2 toward zero; call table+14C(type2, primitivecount, data,stride14h)."
+    },
+    {
+      "ips": "B28FA9..B2908E",
+      "action": "Twelve ordered B24460, six ordered B24510, final B24460(88h,1), B24460(3Ch,FFFFFFFF). Repeated cache calls are retained even when inner provider skips COM."
+    },
+    {
+      "ips": "B29093..B290B9",
+      "action": "Capture renderer+1D00 header. Signed capacity+8<0 invokes complete B22940(header,0). Read current signed count+4 and decrement current value until nonpositive; unconditionally write count0. No record destruction or array free beyond native reserve."
+    }
+  ],
+  "numeric_direct_call_rows": [
+    {
+      "address": 11701528,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        28,
+        0
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 71,
+      "source_arguments": "renderer, 0x1c, 0, globals"
+    },
+    {
+      "address": 11701539,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        52,
+        0
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 72,
+      "source_arguments": "renderer, 0x34, 0, globals"
+    },
+    {
+      "address": 11701550,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        8,
+        3
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 73,
+      "source_arguments": "renderer, 8, 3, globals"
+    },
+    {
+      "address": 11701561,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        27,
+        0
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 74,
+      "source_arguments": "renderer, 0x1b, 0, globals"
+    },
+    {
+      "address": 11701572,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        15,
+        0
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 75,
+      "source_arguments": "renderer, 0x0f, 0, globals"
+    },
+    {
+      "address": 11701583,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        7,
+        0
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 76,
+      "source_arguments": "renderer, 7, 0, globals"
+    },
+    {
+      "address": 11701594,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        14,
+        0
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 77,
+      "source_arguments": "renderer, 0x0e, 0, globals"
+    },
+    {
+      "address": 11701608,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        168,
+        15
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 78,
+      "source_arguments": "renderer, 0xa8, 0x0f, globals"
+    },
+    {
+      "address": 11701622,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        136,
+        0
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 79,
+      "source_arguments": "renderer, 0x88, 0, globals"
+    },
+    {
+      "address": 11701631,
+      "native": 11672848,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        0
+      ],
+      "source_literal_arguments_match": true,
+      "api": "bind_native_renderer_vertex_shader_00b21d10",
+      "source_line": 80,
+      "source_arguments": "renderer, nullptr, globals"
+    },
+    {
+      "address": 11701640,
+      "native": 11672608,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        0
+      ],
+      "source_literal_arguments_match": true,
+      "api": "bind_native_renderer_pixel_shader_00b21c20",
+      "source_line": 81,
+      "source_arguments": "renderer, nullptr, globals"
+    },
+    {
+      "address": 11701675,
+      "native": 11683088,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        0,
+        2,
+        0
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_texture_stage_state_00b24510",
+      "source_line": 88,
+      "source_arguments": "renderer, 0, 2, 0, globals"
+    },
+    {
+      "address": 11701688,
+      "native": 11683088,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        0,
+        1,
+        2
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_texture_stage_state_00b24510",
+      "source_line": 89,
+      "source_arguments": "renderer, 0, 1, 2, globals"
+    },
+    {
+      "address": 11702185,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        8,
+        2
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 110,
+      "source_arguments": "renderer, 8, 2, globals"
+    },
+    {
+      "address": 11702196,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        7,
+        1
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 111,
+      "source_arguments": "renderer, 7, 1, globals"
+    },
+    {
+      "address": 11702207,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        27,
+        0
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 112,
+      "source_arguments": "renderer, 0x1b, 0, globals"
+    },
+    {
+      "address": 11702221,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        137,
+        0
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 113,
+      "source_arguments": "renderer, 0x89, 0, globals"
+    },
+    {
+      "address": 11702232,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        22,
+        1
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 114,
+      "source_arguments": "renderer, 0x16, 1, globals"
+    },
+    {
+      "address": 11702243,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        27,
+        0
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 115,
+      "source_arguments": "renderer, 0x1b, 0, globals"
+    },
+    {
+      "address": 11702254,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        15,
+        0
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 116,
+      "source_arguments": "renderer, 0x0f, 0, globals"
+    },
+    {
+      "address": 11702265,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        28,
+        0
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 117,
+      "source_arguments": "renderer, 0x1c, 0, globals"
+    },
+    {
+      "address": 11702276,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        29,
+        0
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 118,
+      "source_arguments": "renderer, 0x1d, 0, globals"
+    },
+    {
+      "address": 11702287,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        15,
+        0
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 119,
+      "source_arguments": "renderer, 0x0f, 0, globals"
+    },
+    {
+      "address": 11702298,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        27,
+        0
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 120,
+      "source_arguments": "renderer, 0x1b, 0, globals"
+    },
+    {
+      "address": 11702309,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        8,
+        2
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 121,
+      "source_arguments": "renderer, 8, 2, globals"
+    },
+    {
+      "address": 11702322,
+      "native": 11683088,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        0,
+        2,
+        3
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_texture_stage_state_00b24510",
+      "source_line": 122,
+      "source_arguments": "renderer, 0, 2, 3, globals"
+    },
+    {
+      "address": 11702335,
+      "native": 11683088,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        0,
+        1,
+        2
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_texture_stage_state_00b24510",
+      "source_line": 123,
+      "source_arguments": "renderer, 0, 1, 2, globals"
+    },
+    {
+      "address": 11702348,
+      "native": 11683088,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        0,
+        5,
+        3
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_texture_stage_state_00b24510",
+      "source_line": 124,
+      "source_arguments": "renderer, 0, 5, 3, globals"
+    },
+    {
+      "address": 11702361,
+      "native": 11683088,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        0,
+        4,
+        2
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_texture_stage_state_00b24510",
+      "source_line": 125,
+      "source_arguments": "renderer, 0, 4, 2, globals"
+    },
+    {
+      "address": 11702374,
+      "native": 11683088,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        1,
+        1,
+        1
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_texture_stage_state_00b24510",
+      "source_line": 126,
+      "source_arguments": "renderer, 1, 1, 1, globals"
+    },
+    {
+      "address": 11702387,
+      "native": 11683088,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        1,
+        4,
+        1
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_texture_stage_state_00b24510",
+      "source_line": 127,
+      "source_arguments": "renderer, 1, 4, 1, globals"
+    },
+    {
+      "address": 11702401,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        136,
+        1
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 128,
+      "source_arguments": "renderer, 0x88, 1, globals"
+    },
+    {
+      "address": 11702414,
+      "native": 11682912,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        60,
+        4294967295
+      ],
+      "source_literal_arguments_match": true,
+      "api": "set_native_renderer_render_state_00b24460",
+      "source_line": 129,
+      "source_arguments": "renderer, 0x3c, 0xffffffffu, globals"
+    },
+    {
+      "address": 11702435,
+      "native": 11675968,
+      "function": 11701504,
+      "kind": "call",
+      "native_stack_arguments": [
+        0
+      ],
+      "source_literal_arguments_match": true,
+      "api": "reserve_native_renderer_records20_00b22940",
+      "source_line": 132,
+      "source_arguments": "header, 0, 0"
+    }
+  ],
+  "indirect_call_rows_not_mechanically_proved": [
+    {
+      "address": 11701665,
+      "native": "indirect edx",
+      "function": 11701504,
+      "kind": "call",
+      "gate_status": "unproved indirect dispatch",
+      "observed_contract": "current device +164 SetFVF",
+      "canonical_selector": null
+    },
+    {
+      "address": 11701825,
+      "native": "indirect eax",
+      "function": 11701504,
+      "kind": "call",
+      "gate_status": "unproved indirect dispatch",
+      "observed_contract": "current device +B0 SetTransform(100h)",
+      "canonical_selector": null
+    },
+    {
+      "address": 11701956,
+      "native": "indirect eax",
+      "function": 11701504,
+      "kind": "call",
+      "gate_status": "unproved indirect dispatch",
+      "observed_contract": "current device +B0 SetTransform(2)",
+      "canonical_selector": null
+    },
+    {
+      "address": 11702087,
+      "native": "indirect eax",
+      "function": 11701504,
+      "kind": "call",
+      "gate_status": "unproved indirect dispatch",
+      "observed_contract": "current device +B0 SetTransform(3)",
+      "canonical_selector": null
+    },
+    {
+      "address": 11702103,
+      "native": "indirect eax",
+      "function": 11701504,
+      "kind": "call",
+      "gate_status": "unproved indirect dispatch",
+      "observed_contract": "current renderer +134 -> actual B24840",
+      "canonical_selector": 11683904
+    },
+    {
+      "address": 11702119,
+      "native": "indirect eax",
+      "function": 11701504,
+      "kind": "call",
+      "gate_status": "unproved indirect dispatch",
+      "observed_contract": "current renderer +138 -> actual B24B00",
+      "canonical_selector": 11684608
+    },
+    {
+      "address": 11702177,
+      "native": "indirect eax",
+      "function": 11701504,
+      "kind": "call",
+      "gate_status": "unproved indirect dispatch",
+      "observed_contract": "current device +14C DrawPrimitiveUP",
+      "canonical_selector": null
+    }
+  ],
+  "native_control_evidence": {
+    "instructions": 275,
+    "decoded_bytes": 966,
+    "internal_branch_targets_valid": [
+      {
+        "ip": 11701517,
+        "target": 11702465,
+        "mnemonic": "je"
+      },
+      {
+        "ip": 11702128,
+        "target": 11702179,
+        "mnemonic": "jne"
+      },
+      {
+        "ip": 11702137,
+        "target": 11702179,
+        "mnemonic": "jne"
+      },
+      {
+        "ip": 11702429,
+        "target": 11702440,
+        "mnemonic": "jge"
+      },
+      {
+        "ip": 11702444,
+        "target": 11702457,
+        "mnemonic": "jle"
+      },
+      {
+        "ip": 11702455,
+        "target": 11702448,
+        "mnemonic": "jg"
+      }
+    ],
+    "last_instruction": "00b290c5 RET",
+    "local_fh3_handler": null
+  },
+  "native_manifest": {
+    "path": "local/output/debug_lines_inputs/manifest.json",
+    "sha256": "595b0d70ceedbc905dbb6b4bcc6b80f903d3346cbd8d71dcd92bf89cb50f2498",
+    "spans": [
+      {
+        "name": "body",
+        "start": "00b28d00",
+        "end": "00b290c5",
+        "bytes": 966,
+        "sha256": "ec91eeb54fef6d40e27f694ff77d7cc47df22c00ee8eab856d6cb5e711464b4c",
+        "live_equals_pe": true
+      },
+      {
+        "name": "renderer_profile",
+        "start": "00d5f0a8",
+        "end": "00d5f1e3",
+        "bytes": 316,
+        "sha256": "bd602fc1258e6ea0848d349d6bc04a86bd86246765fdb62f12b739bf9ac0c92f",
+        "live_equals_pe": true
+      },
+      {
+        "name": "one",
+        "start": "00d7a24c",
+        "end": "00d7a24f",
+        "bytes": 4,
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "live_equals_pe": true
+      }
+    ],
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe"
+  },
+  "dependencies": {
+    "shader_worker": {
+      "commit": "5ccb5885ca28e4280d8f39478bcb49bb8e6cd4d2",
+      "private_ancestry_merge": "878fafdb",
+      "source_and_header_unchanged": true
+    },
+    "existing_actual": [
+      "B24460 render state",
+      "B24510 texture-stage state",
+      "B33AD0/B33B00/B21110 guard domain via dependencies",
+      "B24840 vertex binding",
+      "B24B00 index binding",
+      "B22940 reserve20"
+    ],
+    "remaining_resource_support_domain": "Root identified B3E730 resource-support access and physical/surface/layout/shader contexts still using projected SingletonLifetimeDomain. Actual01090AA0 migration and stable borrowed manager identity remain a separate prerequisite for full parent/nonempty terminal composition. B28D00 creates no projected manager; fixture null logical-buffer bindings do not invoke that lifetime path.",
+    "integration_owner": "Root owns native_renderer_end_frame.hpp/.cpp; this packet does not edit or claim those entry points."
+  },
+  "exception_and_domain_limits": [
+    "B28D00 has no original FH3 frame or outer guard. A called operation failure preserves prior state/COM/owner effects and prevents all later work; source adds no count drain, restoration or rollback on unwind.",
+    "Shared callees retain their own source guard cleanup/second-exception termination and native valid-storage restrictions. Original FH3 identity, hardware-fault/SEH unwinding and original active-renderer execution remain unproved.",
+    "Every reached raw address must remain valid across callbacks, including actual signed-count/negative-capacity B22940 copy extents. No overflow, malformed-array, missing-device or alternate-profile repair is added.",
+    "COM HRESULTs are ignored. Device/table/constant reloads, bitwise matrix stores and signed arithmetic are native evidence, not proof of game-rendering or visual parity.",
+    "The shared local matrix preserves pointer identity across its three calls; equivalence for aliases into other original private stack slots or asynchronous data races is not claimed."
+  ],
+  "validation": {
+    "strict_build": {
+      "command": "./scripts/build.ps1",
+      "log": "local/output/debug_lines_build.log",
+      "exit_code": 0,
+      "target": "MSVC Win32 Release",
+      "warnings": "W4/WX",
+      "floating_point": "strict",
+      "eight_seeds_verified_before_configure": true,
+      "ctests": 2,
+      "ctests_failed": 0
+    },
+    "native_call_gate": {
+      "command": "python tools/verify_report_calls.py reports/native_renderer_debug_lines.json",
+      "log": "local/output/debug_lines_call_gate.log",
+      "numeric_direct_sites": 34,
+      "failed": 0,
+      "indirect_sites_unproved": 7,
+      "constant_stack_arguments_match_source": 34
+    },
+    "focused_fixture": {
+      "source": "local/output/debug_lines_probe.cpp",
+      "build_command_file": "local/output/build_debug_lines_probe.cmd",
+      "compile_log": "local/output/debug_lines_probe_compile.log",
+      "run_log": "local/output/debug_lines_probe_run.log",
+      "manifest_embedded": true,
+      "crt": "MD",
+      "link_inputs": "Fixture source plus the complete rebuilt bsp_core/bsp_lua511/bsp_zlib121 libraries and normal platform import libraries; no reconstructed source/object inputs.",
+      "cases": [
+        "Original/source count-zero return, including negative capacity and absent context; all actual8192 receiver bytes agree. Original active branch was not executed.",
+        "Nonempty source with two real HAL devices: three calls reuse one64-byte matrix, reload current D7A24C/current device, forward actual D3D9 operations, continue after an injected E_FAIL, draw odd count3 as one primitive and drain records.",
+        "Source byte draw gate retains state/transform work and executes actual B22940 negative-capacity reserve with one valid row, then drains count.",
+        "Injected source exception after the second real transform retains count/data and old index-base word, while prior actual shader cache/counter effects remain. No later call/draw/cleanup occurs."
+      ],
+      "observed_com_calls": [
+        30,
+        29,
+        16
+      ],
+      "restoration": "Two original device vptrs retained; seven observed slots in each original vtable restored and checked before release.",
+      "limits": "Temporary original-vtable slot observation forwards real COM operations; shader cache views and null logical buffers are controlled fixture inputs. Actual01090AA0 resource-support migration remains separate; the fixture never selects that lifetime path. No full EndFrame, original nonempty FH3/SEH execution, active game renderer, visual parity or game validation."
+    },
+    "retained_prior_attempts": [
+      {
+        "log": "local/output/debug_lines_initial_build_failure.log",
+        "cause": "MSVC inline assembly treated parameter name offset as reserved OFFSET; final source uses byte_offset. Corrected strict build and both CTests passed."
+      },
+      {
+        "log": "local/output/debug_lines_probe_observation_failure.log",
+        "source": "local/output/debug_lines_probe_observation_failure.cpp",
+        "exe": "local/output/debug_lines_probe_observation_failure.exe",
+        "cause": "A copied COM vtable observation setup faulted inside d3d9.dll. Final fixture preserves real vptrs and observes/restores original table slots; all final cases and restoration checks passed."
+      }
+    ],
+    "immutable_closure": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-debug-lines\\local\\output\\debug_lines_validated_artifacts\\manifest.json",
+      "sha256": "70b6caaf38ef74603ea9a4b25cf2e044f4d586eafa8d73869495b768acf95029",
+      "artifacts": 4409,
+      "actually_loaded_modules": 57,
+      "bytes": 512892352
+    }
+  },
+  "ghidra_followup_for_root": {
+    "worker_mutations": false,
+    "current_name": "FUN_00b28d00",
+    "proposed_descriptive_name": "BSP_D3D9Renderer_DrawDebugLineRecords",
+    "current_saved_signature": "undefined FUN_00b28d00(void)",
+    "established_original_abi": "ECX actual renderer, no stack arguments, RET",
+    "body_repairs_needed": null,
+    "do_after_worker_release": "Root may annotate name/prototype/evidence, preserving previous metadata and refreshing export."
+  },
+  "orch5_constructor_wave_integration": {
+    "code_commit": "425b3b4843efe2a3f7032340461002fb83798fc9",
+    "checkpoint": {
+      "path": "local/checkpoints/425b3b48/native-renderer-constructor-wave/validation.json",
+      "sha256": "64c19259048ada5f8868750e99c793c0b95674ea7f391b124b8ed2e613ae8fe0",
+      "code_commit": "425b3b4843efe2a3f7032340461002fb83798fc9",
+      "artifacts": 3439
+    },
+    "strict_msvc_win32_build": true,
+    "verified_native_seeds": 8,
+    "ctests_passed": 2,
+    "fixture_program": "local/native_renderer_constructor_integration/renderer_debug_lines_probe.exe",
+    "fixture_scope": "Original/source empty return matched. Three nonempty source scenarios used two real D3D9 devices, checked current device/constant reloads and ignored HRESULT, performed negative-capacity reserve and retained partial failure. Fourteen original COM slots were restored and checked. Original nonempty execution and actual-AA0 terminal composition remain unproved.",
+    "saved_annotation_journal": "local/ghidra-annotations-20260914T170148Z.json",
+    "native_byte_review": {
+      "spans": 38,
+      "bytes": 5535,
+      "scope": "combined packet and explicit dependency/context spans; includes overlaps"
+    },
+    "call_site_review": {
+      "rows_checked": 118,
+      "failures": 0,
+      "scope": "combined numeric direct/tail rows; indirect dispatch and original exception execution excluded"
+    },
+    "constructor_executed": false,
+    "full_renderer_lifetime_validated": false,
+    "original_fh3_seh_abi_validated": false,
+    "game_validated": false
+  }
+}
