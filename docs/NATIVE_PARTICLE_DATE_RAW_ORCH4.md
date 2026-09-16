@@ -53,6 +53,10 @@ The accompanying [report](../reports/native_particle_date_raw_orch4.json)
 records fresh live/installed-PE parity for 16 spans (1,732 bytes): the 13 existing
 native fixture bodies, BDD340's unwind funclets/dispatcher and metadata, and the
 D683B0 profile. All 13 fixture bodies also match the installed PE.
+The report additionally lists all six direct BDD340 call sites and the two
+unwind-action tail jumps. `tools/verify_report_calls.py` checked all eight rows
+against their exact live instructions and containing functions, with zero
+failures. The broader fixture spans remain separate from these call rows.
 
 The ignored probe reuses the existing date-route composition fixture, with its
 borrowed pool services changed to the same raw publication cells and its rebuilt

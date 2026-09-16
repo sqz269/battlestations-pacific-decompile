@@ -183,7 +183,65 @@
     "second_failure_policy": "noexcept destructor during active C++ unwind terminates",
     "dynamically_fault_injected": false
   },
+  "direct_and_unwind_call_rows": [
+    {
+      "address": "00bdd39c",
+      "native": "0041dd40",
+      "function": "00bdd340",
+      "purpose": "resize copied name before cleanup ownership"
+    },
+    {
+      "address": "00bdd3b3",
+      "native": "00bf7680",
+      "function": "00bdd340",
+      "purpose": "copy current header bytes"
+    },
+    {
+      "address": "00bdd3c4",
+      "native": "00bee690",
+      "function": "00bdd340",
+      "purpose": "normalize copied name"
+    },
+    {
+      "address": "00bdd3d5",
+      "native": "00bdd0a0",
+      "function": "00bdd340",
+      "purpose": "visit matching mounts on captured manager"
+    },
+    {
+      "address": "00bdd417",
+      "native": "00419cc0",
+      "function": "00bdd340",
+      "purpose": "resolve current pool after normal name cleanup is disarmed"
+    },
+    {
+      "address": "00bdd41e",
+      "native": "00bd1510",
+      "function": "00bdd340",
+      "purpose": "return captured name block"
+    },
+    {
+      "address": "00cc6303",
+      "native": "00bd90b0",
+      "function": "00cc6300",
+      "kind": "tail_jump",
+      "purpose": "state0 unwind resets visitor base identity"
+    },
+    {
+      "address": "00cc630b",
+      "native": "0041dd20",
+      "function": "00cc6308",
+      "kind": "tail_jump",
+      "purpose": "state1 unwind destroys current name header"
+    }
+  ],
   "validation": {
+    "call_row_verifier": {
+      "command": "python tools/verify_report_calls.py reports/native_particle_date_raw_orch4.json",
+      "checked": 8,
+      "failed": 0,
+      "scope": "six direct BDD340 calls and both EH action tail jumps; exact live instruction sites and containing functions checked"
+    },
     "strict_Win32_build": true,
     "command": "./scripts/build.ps1",
     "strict_flags": [
