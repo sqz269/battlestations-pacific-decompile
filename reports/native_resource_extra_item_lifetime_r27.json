@@ -1,0 +1,208 @@
+{
+  "packet": "extra_item_lifetime_r27",
+  "base": "18a70b3fb",
+  "implementation_commits": [
+    "c69a52d43",
+    "0428157d9"
+  ],
+  "generated_utc": "2026-09-16T08:28:35.5582401Z",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": [
+    "include/bsp/native_resource_extra_item_lifetime.hpp",
+    "src/native_resource_extra_item_lifetime.cpp",
+    "cmake/startup.cmake"
+  ],
+  "coverage": {
+    "ordinary_functions": 4,
+    "ordinary_bytes": 318,
+    "eh_code_bytes": 47,
+    "eh_data_bytes": 96,
+    "profile_slot_bytes": 24,
+    "total_receipt_bytes": 485,
+    "exact_transfer_rows": 14
+  },
+  "functions": [
+    {
+      "address": "00b8a680",
+      "end_exclusive": "00b8a721",
+      "bytes": 161,
+      "proposed_name": "BSP_AnimationChannelsItem_Destroy",
+      "source_symbol": "destroy_native_animation_channels_item_00b8a680",
+      "original_abi": "ECX actual item14h; RET",
+      "behavior": "stamp D6328C; reverse-delete current group cells through current slot04 flags1; clear captured cell after success; decrement reloaded count; resize0/free current data; destroy resource-item base"
+    },
+    {
+      "address": "00b8a760",
+      "end_exclusive": "00b8a77e",
+      "bytes": 30,
+      "proposed_name": "BSP_AnimationChannelsItem_ScalarDeletingDestructor",
+      "source_symbol": "delete_native_animation_channels_item_00b8a760",
+      "original_abi": "ECX actual item14h; stacked flags DWORD; EAX original item; RET4",
+      "behavior": "complete B8A680 first; test only low-byte bit0; optionally free through BF65AC; return original pointer"
+    },
+    {
+      "address": "00b8a8a0",
+      "end_exclusive": "00b8a901",
+      "bytes": 97,
+      "proposed_name": "BSP_BoneItem_Destroy",
+      "source_symbol": "destroy_native_bone_item_00b8a8a0",
+      "original_abi": "ECX actual item2Ch; RET",
+      "behavior": "if +0C data is nonnull, resolve current pool00419CC0 and return block through BD1510 with wrapping +08+1 size; leave header untouched; destroy resource-item base"
+    },
+    {
+      "address": "00b8af10",
+      "end_exclusive": "00b8af2e",
+      "bytes": 30,
+      "proposed_name": "BSP_BoneItem_ScalarDeletingDestructor",
+      "source_symbol": "delete_native_bone_item_00b8af10",
+      "original_abi": "ECX actual item2Ch; stacked flags DWORD; EAX original item; RET4",
+      "behavior": "complete B8A8A0 first; test only low-byte bit0; optionally free through BF65AC; return original pointer"
+    }
+  ],
+  "current_profile_targets": [
+    {
+      "profile": "00d6328c",
+      "slot00": "00bd30e0",
+      "slot04": "00b8a760",
+      "role": "AnimationChannels item terminal"
+    },
+    {
+      "profile": "00d632b8",
+      "slot00": "00bd30e0",
+      "slot04": "00b8af10",
+      "role": "Bone item terminal"
+    },
+    {
+      "profile": "00d62ed4",
+      "slot00": "00bd30e0",
+      "slot04": "00b78d00",
+      "role": "required AnimationChannel group terminal"
+    }
+  ],
+  "reference_and_storage_transitions": [
+    "The finite adopted-substream adapter runs after the caller's real item+4 decrement reaches zero; it does not retain or decrement.",
+    "Neither ordinary item destructor changes its own +4 reference count.",
+    "B8A680 calls every nonnull group current slot04 directly with flags1; it does not decrement group+4.",
+    "B8A680 loads current data then current count in original order, calls the last captured cell, clears that captured cell only after success, reloads count after the callback, and decrements it only when nonzero.",
+    "Normal and state1 cleanup resize the pointer vector to zero and free current data while retaining the dangling data word and capacity.",
+    "Bone leaves +08 length and +0C data unchanged after returning the owned block."
+  ],
+  "exception_contract": {
+    "animation_map": "DFBDF0: state0->-1 CC2830/B86890 base cleanup; state1->0 CC2838/B77A60 vector resize0/free, followed by state0 cleanup. Handler CC2843 loads FuncInfo DFBE00.",
+    "animation_schedule": "state1 is active before the reverse-delete loop; state0 is published before normal B77530 resize0; state-1 is published after BF6989 and before normal B86890.",
+    "animation_failure": "A throwing group terminal leaves its captured cell uncleared and count undecremented, then EH discards pointer storage without retrying any group release and destroys the base.",
+    "bone_map": "DFBE58: state0->-1 CC2870/B86890. Handler CC2878 loads FuncInfo DFBE60.",
+    "bone_schedule": "state0 covers the conditional 00419CC0/BD1510 string return; state-1 is published before the normal B86890 call.",
+    "source_cleanup": "A second exception from explicit source cleanup terminates; native FH3/SEH and hardware-fault identity are not claimed."
+  },
+  "allocation_and_domain_effects": [
+    "00419CC0 may lazily create the application's actual string pool; failure runs Bone base cleanup and leaves the string header/storage outstanding.",
+    "BD1510 receives the captured block, wrapping length+1 and actual small-return gate. Its concrete source is noexcept and may preserve a small block when the gate is nonzero.",
+    "AnimationChannels vector and scalar wrapper frees use the canonical BF6989/BF65AC source boundary through singleton_lifetime_free.",
+    "Scalar flags are tested only after complete destruction; bit0 clear preserves outer allocation and bit0 set frees it. Destructor failure skips the outer free."
+  ],
+  "required_concrete_dependencies": [
+    {
+      "profile": "00d62ed4",
+      "target": "00b78d00",
+      "status": "required actual NativeRefCountedDeleteCalls service; not implemented in this packet",
+      "contract": "scalar-delete the actual group with flags1; group/channel destructors B78530/B78D00 and B8A7D0/B8AD60 remain separately owned"
+    }
+  ],
+  "adapter": {
+    "name": "NativeResourceExtraItemReferences",
+    "intercepts": "only BD30E0 terminals with captured D6328C or D632B8",
+    "current_checks": "same current item profile and same live slot04 B8A760/B8AF10",
+    "forwarding": "all other adopted-substream operations and terminal domains forward unchanged",
+    "failure": "a reached known profile with a changed current terminal throws; no fake successful release"
+  },
+  "old_ghidra_metadata": [
+    {"address": "00b8a680", "name": "FUN_00b8a680"},
+    {"address": "00b8a760", "name": "CG_scalar_deleting_dtor_00b8a760"},
+    {"address": "00b8a8a0", "name": "FUN_00b8a8a0"},
+    {"address": "00b8af10", "name": "CG_scalar_deleting_dtor_00b8af10"}
+  ],
+  "proposed_annotations": [
+    {
+      "address": "00b8a680",
+      "name": "BSP_AnimationChannelsItem_Destroy",
+      "comment": "[BSP reconstruction 00B8A680] Complete161-byte AnimationChannels item destructor. Native ECX actual14h/RET. StampD6328C; reverse-delete nonnull current group cells through current slot04 flags1 without a refcount decrement; clear captured cell only after success; decrement reloaded count; resize0/free current vector data; destroy base. FH3 state1 destroys vector then base; state0 destroys base. Source requires actual D62ED4/B78D00 group deletion. Descriptive name is a hypothesis; no native ABI/FH3/SEH or gameplay validation."
+    },
+    {
+      "address": "00b8a760",
+      "name": "BSP_AnimationChannelsItem_ScalarDeletingDestructor",
+      "comment": "[BSP reconstruction 00B8A760] Complete30-byte scalar deletion wrapper. ECX item, stacked flags, EAX original item, RET4. Run B8A680 fully; then flags low-byte bit0 optionally frees through BF65AC. Restored ADD ESP,4 at00B8A775. No outer free after destructor failure. Descriptive name is a hypothesis; no native ABI/gameplay validation."
+    },
+    {
+      "address": "00b8a8a0",
+      "name": "BSP_BoneItem_Destroy",
+      "comment": "[BSP reconstruction 00B8A8A0] Complete97-byte Bone item destructor. Native ECX actual2Ch/RET. Nonnull +0C data is returned through actual00419CC0/BD1510 with wrapping +08+1 size; header stays unchanged; normal and exceptional paths destroy the resource-item base. No initial D632B8 restamp. Descriptive name is a hypothesis; no native ABI/FH3/SEH or gameplay validation."
+    },
+    {
+      "address": "00b8af10",
+      "name": "BSP_BoneItem_ScalarDeletingDestructor",
+      "comment": "[BSP reconstruction 00B8AF10] Complete30-byte scalar deletion wrapper. ECX item, stacked flags, EAX original item, RET4. Run B8A8A0 fully; then flags low-byte bit0 optionally frees through BF65AC. Restored ADD ESP,4 at00B8AF25. No outer free after destructor failure. Descriptive name is a hypothesis; no native ABI/gameplay validation."
+    }
+  ],
+  "annotation_status": "Primary owns Ghidra names/comments and sharded ledger writes. Worker remained Ghidra-read-only. Parent repair history is reports/native_resource_extra_item_flow_repair_r27.json.",
+  "byte_receipt": {
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_size": 12223752,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "method": "Verified bsp.py Ghidra byte reads against pefile RVA-to-raw bytes and SHA-256 over full bodies, EH code/data and current slot00/slot04 cells.",
+    "range_count": 11,
+    "total_bytes": 485,
+    "all_match": true,
+    "live_aggregate_sha256": "965dd7b49f6d04339d7c1e0e6877eef34a93f95837536eab222413c8adb73643",
+    "disk_aggregate_sha256": "965dd7b49f6d04339d7c1e0e6877eef34a93f95837536eab222413c8adb73643",
+    "ranges": [
+      {"address": "00b8a680", "length": 161, "end_exclusive": "00b8a721", "kind": "complete_body", "file_offset": 7906944, "live_sha256": "d13ed82d599d3594da29586086912a396580774de6e3974e43b70f9a2b98f9e5", "disk_sha256": "d13ed82d599d3594da29586086912a396580774de6e3974e43b70f9a2b98f9e5", "matches_disk": true},
+      {"address": "00b8a760", "length": 30, "end_exclusive": "00b8a77e", "kind": "complete_physical_body", "file_offset": 7907168, "live_sha256": "4e97858b8789a8b17fdfbd581c9d784f6e0b6c5879896f557e0b2f1ee97dc099", "disk_sha256": "4e97858b8789a8b17fdfbd581c9d784f6e0b6c5879896f557e0b2f1ee97dc099", "matches_disk": true},
+      {"address": "00b8a8a0", "length": 97, "end_exclusive": "00b8a901", "kind": "complete_body", "file_offset": 7907488, "live_sha256": "e7b3f8d13c773c60cc0811e95c759ade906587e8dc5edfba73dd3590c4406aba", "disk_sha256": "e7b3f8d13c773c60cc0811e95c759ade906587e8dc5edfba73dd3590c4406aba", "matches_disk": true},
+      {"address": "00b8af10", "length": 30, "end_exclusive": "00b8af2e", "kind": "complete_physical_body", "file_offset": 7909136, "live_sha256": "828b09835da557b5a9ed96fae6afb216d8a3b0f599f6b5cf6c2c2c05951ed507", "disk_sha256": "828b09835da557b5a9ed96fae6afb216d8a3b0f599f6b5cf6c2c2c05951ed507", "matches_disk": true},
+      {"address": "00cc2830", "length": 29, "end_exclusive": "00cc284d", "kind": "unwind_funclets_and_handler", "file_offset": 9185328, "live_sha256": "323f43ac5458921e993ee1ff037d199ca6f7ab9cd88e540ddaf2d496ab4ee766", "disk_sha256": "323f43ac5458921e993ee1ff037d199ca6f7ab9cd88e540ddaf2d496ab4ee766", "matches_disk": true},
+      {"address": "00cc2870", "length": 18, "end_exclusive": "00cc2882", "kind": "unwind_funclet_and_handler", "file_offset": 9185392, "live_sha256": "6b521e86c4177153772e9f877d9205dfdd1780ff06cfce845dc632b15ba34d41", "disk_sha256": "6b521e86c4177153772e9f877d9205dfdd1780ff06cfce845dc632b15ba34d41", "matches_disk": true},
+      {"address": "00dfbdf0", "length": 52, "end_exclusive": "00dfbe24", "kind": "unwind_map_and_funcinfo", "file_offset": 10468848, "live_sha256": "8695731f5aa34054ef1081b9a25bf750804557a4b63eae228c6e95b5b03709a8", "disk_sha256": "8695731f5aa34054ef1081b9a25bf750804557a4b63eae228c6e95b5b03709a8", "matches_disk": true},
+      {"address": "00dfbe58", "length": 44, "end_exclusive": "00dfbe84", "kind": "unwind_map_and_funcinfo", "file_offset": 10468952, "live_sha256": "42e3fd38519cc85aea2f24167c554e1279b4e9008c7dfd1ac2dd56e4e4abb066", "disk_sha256": "42e3fd38519cc85aea2f24167c554e1279b4e9008c7dfd1ac2dd56e4e4abb066", "matches_disk": true},
+      {"address": "00d6328c", "length": 8, "end_exclusive": "00d63294", "kind": "current_slot00_slot04", "file_offset": 9843340, "live_sha256": "232d1688a1fbe29022a45ca460f8a5fdd676859d427acd41c92f345a3080f51f", "disk_sha256": "232d1688a1fbe29022a45ca460f8a5fdd676859d427acd41c92f345a3080f51f", "matches_disk": true},
+      {"address": "00d632b8", "length": 8, "end_exclusive": "00d632c0", "kind": "current_slot00_slot04", "file_offset": 9843384, "live_sha256": "7d1f292357f31617e63d6f42412ffc7eece447a6f1baf2528285289719aecb0c", "disk_sha256": "7d1f292357f31617e63d6f42412ffc7eece447a6f1baf2528285289719aecb0c", "matches_disk": true},
+      {"address": "00d62ed4", "length": 8, "end_exclusive": "00d62edc", "kind": "required_current_slot00_slot04", "file_offset": 9842388, "live_sha256": "db0b5fc2d2242d26389cf402cbc0910438aeaebb9e6d9a4a1881c732cbd6bf9d", "disk_sha256": "db0b5fc2d2242d26389cf402cbc0910438aeaebb9e6d9a4a1881c732cbd6bf9d", "matches_disk": true}
+    ]
+  },
+  "call_rows": [
+    {"address": "00b8a6ca", "native": "00d62ed4+vtable04", "function": "00b8a680", "kind": "indirect_call", "observed_current_target": "00b78d00"},
+    {"address": "00b8a6f1", "native": "00b77530", "function": "00b8a680", "kind": "direct_call"},
+    {"address": "00b8a6f9", "native": "00bf6989", "function": "00b8a680", "kind": "direct_call"},
+    {"address": "00b8a70b", "native": "00b86890", "function": "00b8a680", "kind": "direct_call"},
+    {"address": "00b8a763", "native": "00b8a680", "function": "00b8a760", "kind": "direct_call"},
+    {"address": "00b8a770", "native": "00bf65ac", "function": "00b8a760", "kind": "direct_call"},
+    {"address": "00b8a8d6", "native": "00419cc0", "function": "00b8a8a0", "kind": "direct_call"},
+    {"address": "00b8a8dd", "native": "00bd1510", "function": "00b8a8a0", "kind": "direct_call"},
+    {"address": "00b8a8ec", "native": "00b86890", "function": "00b8a8a0", "kind": "direct_call"},
+    {"address": "00b8af13", "native": "00b8a8a0", "function": "00b8af10", "kind": "direct_call"},
+    {"address": "00b8af20", "native": "00bf65ac", "function": "00b8af10", "kind": "direct_call"},
+    {"address": "00cc2833", "native": "00b86890", "function": "00cc2830", "kind": "tail_jump"},
+    {"address": "00cc283e", "native": "00b77a60", "function": "00cc2838", "kind": "tail_jump"},
+    {"address": "00cc2873", "native": "00b86890", "function": "00cc2870", "kind": "tail_jump"}
+  ],
+  "validation": {
+    "verify_seeds": "passed: 8/8 matched original PE",
+    "exact_call_rows": "passed: 13 direct/tail rows checked against live repaired Ghidra; 1 explicit current slot04 indirect row recorded",
+    "strict_standalone_compile": "passed: MSVC Win32 C++20 /EHsc /MD /O2 /W4 /WX /fp:strict /permissive-; manifest embedded",
+    "ignored_genuine_storage_probe": "passed: empty AnimationChannels, throwing last-group terminal with state1 vector/base unwind and untouched refcounts, Bone null-string base transition",
+    "full_release_build": "passed after ordered volatile-load review fix; native_resource_extra_item_lifetime.cpp compiled into bsp_core with MultiThreadedDLL, strict FP and warnings-as-errors",
+    "ctests": "3/3 passed",
+    "new_permanent_tests": 0,
+    "source_complete_for_owned_bodies": true,
+    "group_terminal_complete": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "limits": [
+    "B78D00 group deletion and its B8A7D0/B8AD60 channel lifetime are required external services and are not implemented here.",
+    "The new C++ interfaces are not drop-in binary replacements for the original callable ABI.",
+    "Original FH3/SEH transport, hardware-fault behavior, CRT exception identity, executable admission, runtime wiring and gameplay remain unvalidated.",
+    "Build, fixture, byte and call-row parity do not establish gameplay parity."
+  ]
+}
