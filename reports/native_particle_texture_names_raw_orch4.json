@@ -230,6 +230,16 @@
       "was": "the earlier AEFB20 ledger entry was a fragment and a separate semantic atlas function occupied the function record",
       "is": "the actual C++ raw overload is recorded as the complete-body function; both prior records are preserved above",
       "evidence": "00aefb20..00aeff33 complete live/disk-matching span and borrowed actual manager/item fixture"
+    },
+    {
+      "was": "Stem output cleanup was armed before 41E870 because AF37F5 installs state zero; source OutputUnwind::arm preceded initial construction.",
+      "is": "Arm output cleanup only after the initial constructor returns. Native state zero has a separate ownership-bit predicate.",
+      "evidence": "AF37F9 clears flag at original ESP+14 after filename PUSH; AF37FD calls41E870; AF380E sets same physical flag at ESP+18 after two argument PUSHes. FH3 actionCBAAC0 tests[EBP-1C]&1, clears bit, loads output[EBP-18], then jumps41DD20. HandlerCBAAD9 selects infoDF28E8/mapDF28E0, maxState1. All relevant bytes live/PE verified; exception path not executed.",
+      "provenance": {
+        "prior_source_sha256": "bf15294f21235ab1f97d6cbacb1860b5d441c28c34f0b681c20f05e99ce113fb",
+        "prior_doc_claim": "Stem output cleanup is armed before 41E870, because AF37F5 establishes that state first.",
+        "base_commit": "1f7a5ca86"
+      }
     }
   ],
   "listing_gaps": [
@@ -254,8 +264,1091 @@
     "new C++ source interfaces; not original register ABI or binary replacements",
     "native FH3 transport and allocation-failure injection are not validated",
     "fixed CRT buffer overflow, malformed pointers and concurrent mutation retain native validity requirements",
-    "probe validates source normal flow and aliases, not copied original execution",
+    "The earlier p16 probe validates source normal flow and aliases only. Independent q17 copied-original normal-flow proof and its dependency/FH3 limits are recorded below.",
     "gameplay is unvalidated; descriptive names remain hypotheses"
   ],
-  "ghidra_mutations": []
+  "ghidra_mutations": [],
+  "independent_native_proof_q17": {
+    "utc": "2026-09-16T03:35:46.961688+00:00",
+    "packet": "orch4-texture-names-proof-q17",
+    "summary": "Eight complete original bodies,2992 bytes, twelve sequential native/source checkpoints; normal filename/atlas/frame flow and two alias cases pass.",
+    "build": "Clean ./scripts/build.ps1: MSVC Win32 Release strict build and 2 existing CTests; final probe linked this worktree bsp_core.lib after the ownership-flag source correction.",
+    "probe": {
+      "exit_code": 0,
+      "output": "PASS checkpoint initial (9098588 bytes)\nPASS checkpoint stem (9098588 bytes)\nPASS checkpoint extension (9098588 bytes)\nPASS checkpoint prefix (9098588 bytes)\nPASS checkpoint frame_name (9098588 bytes)\nPASS checkpoint atlas_hit (9098588 bytes)\nPASS checkpoint frame_count (9098588 bytes)\nPASS checkpoint fill (9098588 bytes)\nPASS checkpoint replacement (9098588 bytes)\nPASS checkpoint search_alias (9098588 bytes)\nPASS checkpoint replacement_alias (9098588 bytes)\nPASS checkpoint cleanup (9098588 bytes)\nPASS: eight complete original bodies (2992 bytes), 12 initialized-storage checkpoints; genuine raw pool; normal filename/atlas/frame flow and two value-alias cases. Eleven callee source bridges plus five CRT bridges; original FH3/error paths/gameplay excluded.\n",
+      "executable_machine": "IMAGE_FILE_MACHINE_I386",
+      "embedded_manifest": true,
+      "source_sha256": "fb57ea62196906006c62164ac2710bc4379273b9c065b54f8170baac5ea50761",
+      "library_sha256": "53b249acc4f8046bb40cdc8681b6aaff931ac550dcd338dea8957f41ba04d639"
+    },
+    "functions": [
+      {
+        "address": 4439024,
+        "size": 52,
+        "sha256": "5cd771624db713e617a7ac727301c9440df18185f96b363346a632875891abc2",
+        "last": "0043bc21 ret 8"
+      },
+      {
+        "address": 5025088,
+        "size": 463,
+        "sha256": "d884e3db51927e83f8560ef0c494e7db8f006020eee7a76960904535bbef0f7f",
+        "last": "004caf0c ret 0xc"
+      },
+      {
+        "address": 11467552,
+        "size": 1044,
+        "sha256": "6ca5a904df9162370f16d690366e46038d3fb5d19e72483a0b85d65a6af94dd2",
+        "last": "00aeff31 ret 4"
+      },
+      {
+        "address": 11483088,
+        "size": 222,
+        "sha256": "987c1823b17512df2ecbd5aa31b7aacdf7c4ce081e0f438bfd0b0b6009331cfb",
+        "last": "00af38ad ret "
+      },
+      {
+        "address": 11483312,
+        "size": 172,
+        "sha256": "8cf8027119738d39e646e2f5e4ce8c8277d8f3c59181d0cb1643216900aeaecd",
+        "last": "00af395b ret "
+      },
+      {
+        "address": 11483488,
+        "size": 187,
+        "sha256": "ad6518ff86f5e80f44fbd84a1535a1a06c7ecb5cda523142980ee22e3a389a3c",
+        "last": "00af3a19 jmp 0xaf39ce"
+      },
+      {
+        "address": 11483680,
+        "size": 304,
+        "sha256": "85af5dbdadb4056bec07644f11634f5e9712c1b7960fee7ee9bb061e9f845698",
+        "last": "00af3b4f ret "
+      },
+      {
+        "address": 11483984,
+        "size": 548,
+        "sha256": "a4c94cf1f13996bcb05a3de7b3e17b4a2973ab01981dd48430ea98ec263365ac",
+        "last": "00af3d71 ret 4"
+      }
+    ],
+    "live_byte_verification": {
+      "project": "bsp",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "guard": "Every bsp.py ghidra query runs Client.verify for project/program/language/image_base.",
+      "spans": [
+        {
+          "address": "0043bbf0",
+          "bytes": 52,
+          "kind": "helper",
+          "sha256": "5cd771624db713e617a7ac727301c9440df18185f96b363346a632875891abc2"
+        },
+        {
+          "address": "004cad40",
+          "bytes": 463,
+          "kind": "helper",
+          "sha256": "d884e3db51927e83f8560ef0c494e7db8f006020eee7a76960904535bbef0f7f"
+        },
+        {
+          "address": "00aefb20",
+          "bytes": 1044,
+          "kind": "helper",
+          "sha256": "6ca5a904df9162370f16d690366e46038d3fb5d19e72483a0b85d65a6af94dd2"
+        },
+        {
+          "address": "00af37d0",
+          "bytes": 222,
+          "kind": "helper",
+          "sha256": "987c1823b17512df2ecbd5aa31b7aacdf7c4ce081e0f438bfd0b0b6009331cfb"
+        },
+        {
+          "address": "00af38b0",
+          "bytes": 172,
+          "kind": "helper",
+          "sha256": "8cf8027119738d39e646e2f5e4ce8c8277d8f3c59181d0cb1643216900aeaecd"
+        },
+        {
+          "address": "00af3960",
+          "bytes": 187,
+          "kind": "helper",
+          "sha256": "ad6518ff86f5e80f44fbd84a1535a1a06c7ecb5cda523142980ee22e3a389a3c"
+        },
+        {
+          "address": "00af3a20",
+          "bytes": 304,
+          "kind": "helper",
+          "sha256": "85af5dbdadb4056bec07644f11634f5e9712c1b7960fee7ee9bb061e9f845698"
+        },
+        {
+          "address": "00af3b50",
+          "bytes": 548,
+          "kind": "helper",
+          "sha256": "a4c94cf1f13996bcb05a3de7b3e17b4a2973ab01981dd48430ea98ec263365ac"
+        },
+        {
+          "address": "00c655f0",
+          "bytes": 10,
+          "kind": "FH3_handler",
+          "sha256": "b0076b23e7030dfdc7ec355f2e88a87a24aa432b1e5e857f8345ee323cc9ec9f"
+        },
+        {
+          "address": "00d8de00",
+          "bytes": 36,
+          "kind": "FH3_info",
+          "sha256": "4abf2e378032f73918086957c25b139c6d84fb31734a077b73a9feb802e014ba"
+        },
+        {
+          "address": "00d8dde0",
+          "bytes": 32,
+          "kind": "FH3_unwind_map",
+          "sha256": "131ced66f05d0a54dc6fd879d52ac41370489506bfc6bccc77dd8c9906f028d3"
+        },
+        {
+          "address": "00c655d0",
+          "bytes": 8,
+          "kind": "FH3_action",
+          "sha256": "f96bb098e03bc8fdca3b73fbbc6f4cbf81d9faf79800d5de49dde9c28fc81f15"
+        },
+        {
+          "address": "00c655d8",
+          "bytes": 8,
+          "kind": "FH3_action",
+          "sha256": "2fa177d99da4d2a68da7ed84122b52eb525fb7748c89914036f96097ab45e478"
+        },
+        {
+          "address": "00c655e0",
+          "bytes": 8,
+          "kind": "FH3_action",
+          "sha256": "4ec35d329a1299787763f6449879aebfbf1a1e0f933fa54dee8d6ed39be4348b"
+        },
+        {
+          "address": "00c655e8",
+          "bytes": 8,
+          "kind": "FH3_action",
+          "sha256": "7366b09d2df474af0ed2bd0ba8d4afbd1a82d6b7aabbaa1246e368443634710a"
+        },
+        {
+          "address": "00cba818",
+          "bytes": 10,
+          "kind": "FH3_handler",
+          "sha256": "8491f0ea57c8af6ea06df6924aacc617e0c0da5048dd7daa2adb1cc8e6d64940"
+        },
+        {
+          "address": "00df2514",
+          "bytes": 36,
+          "kind": "FH3_info",
+          "sha256": "835f641eba2e732ea12b01c2d92171314ec00a832e9f14ed77bad280073a597f"
+        },
+        {
+          "address": "00df2538",
+          "bytes": 40,
+          "kind": "FH3_unwind_map",
+          "sha256": "fddbfc51ad2a08af6df8d743bed159ee96a878865d6700765d15f8f1510fc271"
+        },
+        {
+          "address": "00cba7f0",
+          "bytes": 8,
+          "kind": "FH3_action",
+          "sha256": "d81823e2382928538e86f176c5cb5e005bd6e3f3be0a390257eb2fb9a52c4278"
+        },
+        {
+          "address": "00cba7f8",
+          "bytes": 8,
+          "kind": "FH3_action",
+          "sha256": "8f9a0ccbab06bf4cc142345031d617fb92739700d3dc3625fc4b9a6b4c43b239"
+        },
+        {
+          "address": "00cba800",
+          "bytes": 8,
+          "kind": "FH3_action",
+          "sha256": "c0d7ef34f24d9cb421fd45c3aeb0b126b40995c52488d920993262f551c164f1"
+        },
+        {
+          "address": "00cba808",
+          "bytes": 8,
+          "kind": "FH3_action",
+          "sha256": "3b2c25dc95f0648a6d42ebe0353b955f78e421bd3ad9deda709b6169c40c780f"
+        },
+        {
+          "address": "00cba810",
+          "bytes": 8,
+          "kind": "FH3_action",
+          "sha256": "7b054aab4c5c11b3f361253d4d5b2be5a6d305d0a937eddcb61709f5db73ffb5"
+        },
+        {
+          "address": "00cbaad9",
+          "bytes": 10,
+          "kind": "FH3_handler",
+          "sha256": "d8c54145a3d450cc44cc346dd738ad52040aae5580cc2dc92d0285123e477983"
+        },
+        {
+          "address": "00df28e8",
+          "bytes": 36,
+          "kind": "FH3_info",
+          "sha256": "8f1c5e19ae40994bcddb3fa661e927e890aae1ad292570f35d93f4356de66b26"
+        },
+        {
+          "address": "00df28e0",
+          "bytes": 8,
+          "kind": "FH3_unwind_map",
+          "sha256": "2256c4960da7115d03d4ffcb13bde54b887e81c44a929c4d8bc753f615166b13"
+        },
+        {
+          "address": "00cbaac0",
+          "bytes": 25,
+          "kind": "FH3_action",
+          "sha256": "866fceed147fd6e150a71302f3b315819b38a393edf654bab818e0e8ca73e8ab"
+        },
+        {
+          "address": "00cbab00",
+          "bytes": 10,
+          "kind": "FH3_handler",
+          "sha256": "eab9c7ddbc54d63a9e12cebaeaa5c243fe48981d239fa97f05c4d050e636daeb"
+        },
+        {
+          "address": "00df291c",
+          "bytes": 36,
+          "kind": "FH3_info",
+          "sha256": "9d9a3425e011dd1dfd79eb528129ff8524f0ea4f8e0d4de743cd290043890f05"
+        },
+        {
+          "address": "00df290c",
+          "bytes": 16,
+          "kind": "FH3_unwind_map",
+          "sha256": "e12266feb29768cc79eeb791e53490a2138d43fdb9c46f9559e951daa616bd28"
+        },
+        {
+          "address": "00cbaaf0",
+          "bytes": 8,
+          "kind": "FH3_action",
+          "sha256": "a49b825415029ea1cad04ab5a5d5b9df1137b350806328cf112344b2d3118b7e"
+        },
+        {
+          "address": "00cbaaf8",
+          "bytes": 8,
+          "kind": "FH3_action",
+          "sha256": "46a5164018def8c59c658009612d694cc47c12d131d990370fb432d9086fdffe"
+        },
+        {
+          "address": "00cbab59",
+          "bytes": 10,
+          "kind": "FH3_handler",
+          "sha256": "901776a21ce9f1ad5c7954aac78c9c928de5e332257cfbcb533b5107e1fb4645"
+        },
+        {
+          "address": "00df2940",
+          "bytes": 36,
+          "kind": "FH3_info",
+          "sha256": "c0f21adf8031dac7b8a8fccfa4c692c675698827fe7d206fa3b369821655e286"
+        },
+        {
+          "address": "00df2964",
+          "bytes": 56,
+          "kind": "FH3_unwind_map",
+          "sha256": "9e03dfc5df827ed2b14040b3ab9fb85e8807abc81fe3189a845b17d51afe2af4"
+        },
+        {
+          "address": "00cbab40",
+          "bytes": 25,
+          "kind": "FH3_action",
+          "sha256": "87a156a6f78759ab4a305be513708fff0d3de0515b670853b78315bb4c884c61"
+        },
+        {
+          "address": "00cbab10",
+          "bytes": 8,
+          "kind": "FH3_action",
+          "sha256": "cd7ce4596e77e60d538e4f5d8dacbca54910f562e50a4a5d81ae49c38a4cf0f3"
+        },
+        {
+          "address": "00cbab18",
+          "bytes": 8,
+          "kind": "FH3_action",
+          "sha256": "823106c2d6da7520a9037ab476aa627d746a2246954b30bd47f6b2fd8fd97953"
+        },
+        {
+          "address": "00cbab20",
+          "bytes": 8,
+          "kind": "FH3_action",
+          "sha256": "fc61d0cbe9b3653073e84ea63981b613592a1359fe93b43ea0b3c8d19b9c2f29"
+        },
+        {
+          "address": "00cbab28",
+          "bytes": 8,
+          "kind": "FH3_action",
+          "sha256": "f74ff654f724396e92708d70210c32799da7d230734f2187945535da6903133a"
+        },
+        {
+          "address": "00cbab30",
+          "bytes": 8,
+          "kind": "FH3_action",
+          "sha256": "5e4e5b18ce6bdfa1b24067b11ef83fec73164f3bd4ccc4a6ac8e64dac8e8750f"
+        },
+        {
+          "address": "00cbab38",
+          "bytes": 8,
+          "kind": "FH3_action",
+          "sha256": "000cb0632fb58b7484fbed61c5828b45a11854cf8f3dae7088dbb7c22ca99ee4"
+        }
+      ],
+      "total_bytes": 3560
+    },
+    "call_verification": "tools/verify_report_calls.py: 101 call rows checked,0 failed; all101 direct calls retargeted, all98 intrabody branches retain relative offsets.",
+    "internal_call_policy": "Calls among the eight owned bodies target their copied originals, including AF3960 ESI-output/EAX-input entry. AF3960 last physical instruction isJMP AF39CE; sharedRET atAF39FF.",
+    "data_relocations": [
+      {
+        "owner": "004cad40",
+        "site": "004cad48",
+        "original": "00c655f0",
+        "kind": "immediate",
+        "initial_pe_bytes": "b800ded800e94915f9ffcccccccccccc8b45f08b48048b55f08b028d0c88518b55ec52e818bb79ff83c408c3b82cded8"
+      },
+      {
+        "owner": "00aefb20",
+        "site": "00aefb28",
+        "original": "00cba818",
+        "kind": "immediate",
+        "initial_pe_bytes": "b81425df00e921c3f3ffcccccccccccccccccccccccccccc8d4dd8e9e83476ff8d4de8e910d389ff8d4de0e9d83476ff"
+      },
+      {
+        "owner": "00aefb20",
+        "site": "00aefb66",
+        "original": "00ce3a70",
+        "kind": "immediate",
+        "initial_pe_bytes": "2e00000047524f5550200000454e4447524f5550000000004c4f472000000000200000004d656d6f72790000636c6173"
+      },
+      {
+        "owner": "00aefb20",
+        "site": "00aefbbd",
+        "original": "00ce7898",
+        "kind": "immediate",
+        "initial_pe_bytes": "2f00000070f74c0064657175653c543e20746f6f206c6f6e670000006c6561766500000020264d00e04c4d00206e6577"
+      },
+      {
+        "owner": "00aefb20",
+        "site": "00aefbcb",
+        "original": "00ce7894",
+        "kind": "immediate",
+        "initial_pe_bytes": "5c0000002f00000070f74c0064657175653c543e20746f6f206c6f6e670000006c6561766500000020264d00e04c4d00"
+      },
+      {
+        "owner": "00aefb20",
+        "site": "00aefd27",
+        "original": "00ce7898",
+        "kind": "immediate",
+        "initial_pe_bytes": "2f00000070f74c0064657175653c543e20746f6f206c6f6e670000006c6561766500000020264d00e04c4d00206e6577"
+      },
+      {
+        "owner": "00af37d0",
+        "site": "00af37d2",
+        "original": "00cbaad9",
+        "kind": "immediate",
+        "initial_pe_bytes": "b8e828df00e960c0f3ffcccccccccccccccccccccccccc8d4dc4e9283276ff8d4dcce9203276ffb81c29df00e939c0f3"
+      },
+      {
+        "owner": "00af37d0",
+        "site": "00af3833",
+        "original": "00ce3a70",
+        "kind": "immediate",
+        "initial_pe_bytes": "2e00000047524f5550200000454e4447524f5550000000004c4f472000000000200000004d656d6f72790000636c6173"
+      },
+      {
+        "owner": "00af3a20",
+        "site": "00af3a22",
+        "original": "00cbab00",
+        "kind": "immediate",
+        "initial_pe_bytes": "b81c29df00e939c0f3ffcccccccccccc8d4dbce9083276ff8d4db4e9003276ff8d4dace9f83176ff8d4da4e9f03176ff"
+      },
+      {
+        "owner": "00af3a20",
+        "site": "00af3a57",
+        "original": "00f8c2c1",
+        "kind": "immediate",
+        "initial_pe_bytes": ""
+      },
+      {
+        "owner": "00af3a20",
+        "site": "00af3a6f",
+        "original": "00f8c2c1",
+        "kind": "immediate",
+        "initial_pe_bytes": ""
+      },
+      {
+        "owner": "00af3a20",
+        "site": "00af3a8e",
+        "original": "00f8c2c1",
+        "kind": "immediate",
+        "initial_pe_bytes": ""
+      },
+      {
+        "owner": "00af3a20",
+        "site": "00af3a99",
+        "original": "00d5d944",
+        "kind": "immediate",
+        "initial_pe_bytes": "25732530336400002530336400000000c0b8b23ee030bd00e046af00436f6f7264730000426f756e6453706865726500"
+      },
+      {
+        "owner": "00af3a20",
+        "site": "00af3aac",
+        "original": "00f8c26c",
+        "kind": "memory",
+        "initial_pe_bytes": ""
+      },
+      {
+        "owner": "00af3b50",
+        "site": "00af3b52",
+        "original": "00cbab59",
+        "kind": "immediate",
+        "initial_pe_bytes": "b84029df00e9e0bff3ffcccccccccccccccccccccccccc8b4df0e97885f1ff8b4df083c108e99d3176ffb8ac29df00e9"
+      },
+      {
+        "owner": "00af3b50",
+        "site": "00af3b93",
+        "original": "00f8c2c1",
+        "kind": "immediate",
+        "initial_pe_bytes": ""
+      },
+      {
+        "owner": "00af3b50",
+        "site": "00af3bba",
+        "original": "00d5d94c",
+        "kind": "immediate",
+        "initial_pe_bytes": "2530336400000000c0b8b23ee030bd00e046af00436f6f7264730000426f756e64537068657265004c61796572000000"
+      }
+    ],
+    "source_dependency_bridges": {
+      "00419cc0": "native_string_pool_get_or_create_00419cc0 over actual publication/manager cells; existing published pool path",
+      "0041dd40": "resize_native_string_header_0041dd40, raw-pool overload",
+      "0041e870": "construct_native_string_header_0041e870, raw-pool overload",
+      "004261a0": "concatenate_native_string_headers_004261a0, raw-pool overload",
+      "0043e9a0": "matches_native_particle_string_at_0043e9a0, actual8h headers",
+      "00467cf0": "reverse_find_native_string_header_00467cf0, actual8h headers",
+      "00469840": "construct_native_string_substring_00469840, raw-pool overload",
+      "004bcc00": "lowercase_native_string_header_004bcc00, actual8h header",
+      "00aee0f0": "matches_native_particle_atlas_item_00aee0f0, actual30h item/query",
+      "00af3750": "has_native_particle_frame_suffix_00af3750, EDI/AL adapter",
+      "00bd1510": "return_native_string_pool_00bd1510, actual8AD4A0h pool and live return gate"
+    },
+    "crt_dependency_bridges": {
+      "00bf7680": "current CRT memmove (native recovered overlap contract)",
+      "00bf79f0": "current CRT memset",
+      "00bf7a6a": "current CRT sprintf",
+      "00bf7fbf": "current CRT _stricmp",
+      "00bf9440": "current CRT strstr"
+    },
+    "comparison": {
+      "checkpoints": 12,
+      "bytes_per_checkpoint": 9098588,
+      "pool": "Real construct_native_string_pool_00bd1480 owner, initialized A5 bytes, actual raw publication/getter/BD1120/BD1510 providers. No callback allocator, converted item or alternate atlas.",
+      "includes": "Entire initialized owner up to Windows critical section, plus recursion counter; all7MB arena and all ring cells/counters; four complete8h headers; three complete30h items; complete12h manager and row identities; semantic return values and output/borrowed item identity.",
+      "normalized": "Only actual pointer cells: pool-relative addresses in output/item headers and ring cells; verified manager/array/item identities represented by fixed identifiers.",
+      "excluded": "Opaque24-byte Windows CRITICAL_SECTION; implementation stack frames/addresses; original SEH/FH3 transport."
+    },
+    "eh_static_review": {
+      "handlers": [
+        {
+          "function": "004cad40",
+          "handler": "00c655f0",
+          "handler_bytes": "b800ded800e94915f9ff",
+          "handler_sha256": "b0076b23e7030dfdc7ec355f2e88a87a24aa432b1e5e857f8345ee323cc9ec9f",
+          "function_info": "00d8de00",
+          "function_info_bytes": "2205931904000000e0ddd800000000000000000000000000000000000000000001000000",
+          "max_state": 4,
+          "unwind_map": "00d8dde0",
+          "unwind_map_bytes": "ffffffffd055c60000000000d855c60001000000e055c60002000000e855c600",
+          "states": [
+            {
+              "state": 0,
+              "previous": -1,
+              "action": "00c655d0",
+              "instructions": [
+                "00c655d0 lea ecx, [ebp - 0x14]",
+                "00c655d3 jmp 0x41dd20"
+              ]
+            },
+            {
+              "state": 1,
+              "previous": 0,
+              "action": "00c655d8",
+              "instructions": [
+                "00c655d8 lea ecx, [ebp - 0x1c]",
+                "00c655db jmp 0x41dd20"
+              ]
+            },
+            {
+              "state": 2,
+              "previous": 1,
+              "action": "00c655e0",
+              "instructions": [
+                "00c655e0 lea ecx, [ebp - 0x24]",
+                "00c655e3 jmp 0x41dd20"
+              ]
+            },
+            {
+              "state": 3,
+              "previous": 2,
+              "action": "00c655e8",
+              "instructions": [
+                "00c655e8 lea ecx, [ebp - 0x2c]",
+                "00c655eb jmp 0x41dd20"
+              ]
+            }
+          ]
+        },
+        {
+          "function": "00aefb20",
+          "handler": "00cba818",
+          "handler_bytes": "b81425df00e921c3f3ff",
+          "handler_sha256": "8491f0ea57c8af6ea06df6924aacc617e0c0da5048dd7daa2adb1cc8e6d64940",
+          "function_info": "00df2514",
+          "function_info_bytes": "22059319050000003825df00000000000000000000000000000000000000000001000000",
+          "max_state": 5,
+          "unwind_map": "00df2538",
+          "unwind_map_bytes": "fffffffff0a7cb0000000000f8a7cb000100000000a8cb000000000008a8cb000000000010a8cb00",
+          "states": [
+            {
+              "state": 0,
+              "previous": -1,
+              "action": "00cba7f0",
+              "instructions": [
+                "00cba7f0 lea ecx, [ebp - 0x28]",
+                "00cba7f3 jmp 0x41dd20"
+              ]
+            },
+            {
+              "state": 1,
+              "previous": 0,
+              "action": "00cba7f8",
+              "instructions": [
+                "00cba7f8 lea ecx, [ebp - 0x18]",
+                "00cba7fb jmp 0x41dd20"
+              ]
+            },
+            {
+              "state": 2,
+              "previous": 1,
+              "action": "00cba800",
+              "instructions": [
+                "00cba800 lea ecx, [ebp - 0x20]",
+                "00cba803 jmp 0x41dd20"
+              ]
+            },
+            {
+              "state": 3,
+              "previous": 0,
+              "action": "00cba808",
+              "instructions": [
+                "00cba808 lea ecx, [ebp - 0x18]",
+                "00cba80b jmp 0x41dd20"
+              ]
+            },
+            {
+              "state": 4,
+              "previous": 0,
+              "action": "00cba810",
+              "instructions": [
+                "00cba810 lea ecx, [ebp - 0x18]",
+                "00cba813 jmp 0x41dd20"
+              ]
+            }
+          ]
+        },
+        {
+          "function": "00af37d0",
+          "handler": "00cbaad9",
+          "handler_bytes": "b8e828df00e960c0f3ff",
+          "handler_sha256": "d8c54145a3d450cc44cc346dd738ad52040aae5580cc2dc92d0285123e477983",
+          "function_info": "00df28e8",
+          "function_info_bytes": "2205931901000000e028df00000000000000000000000000000000000000000001000000",
+          "max_state": 1,
+          "unwind_map": "00df28e0",
+          "unwind_map_bytes": "ffffffffc0aacb00",
+          "states": [
+            {
+              "state": 0,
+              "previous": -1,
+              "action": "00cbaac0",
+              "instructions": [
+                "00cbaac0 mov eax, dword ptr [ebp - 0x1c]",
+                "00cbaac3 and eax, 1",
+                "00cbaac6 je 0xcbaad8",
+                "00cbaacc and dword ptr [ebp - 0x1c], 0xfffffffe",
+                "00cbaad0 mov ecx, dword ptr [ebp - 0x18]",
+                "00cbaad3 jmp 0x41dd20"
+              ]
+            }
+          ]
+        },
+        {
+          "function": "00af3a20",
+          "handler": "00cbab00",
+          "handler_bytes": "b81c29df00e939c0f3ff",
+          "handler_sha256": "eab9c7ddbc54d63a9e12cebaeaa5c243fe48981d239fa97f05c4d050e636daeb",
+          "function_info": "00df291c",
+          "function_info_bytes": "22059319020000000c29df00000000000000000000000000000000000000000001000000",
+          "max_state": 2,
+          "unwind_map": "00df290c",
+          "unwind_map_bytes": "fffffffff0aacb0000000000f8aacb00",
+          "states": [
+            {
+              "state": 0,
+              "previous": -1,
+              "action": "00cbaaf0",
+              "instructions": [
+                "00cbaaf0 lea ecx, [ebp - 0x3c]",
+                "00cbaaf3 jmp 0x41dd20"
+              ]
+            },
+            {
+              "state": 1,
+              "previous": 0,
+              "action": "00cbaaf8",
+              "instructions": [
+                "00cbaaf8 lea ecx, [ebp - 0x34]",
+                "00cbaafb jmp 0x41dd20"
+              ]
+            }
+          ]
+        },
+        {
+          "function": "00af3b50",
+          "handler": "00cbab59",
+          "handler_bytes": "b84029df00e9e0bff3ff",
+          "handler_sha256": "901776a21ce9f1ad5c7954aac78c9c928de5e332257cfbcb533b5107e1fb4645",
+          "function_info": "00df2940",
+          "function_info_bytes": "22059319070000006429df00000000000000000000000000000000000000000001000000",
+          "max_state": 7,
+          "unwind_map": "00df2964",
+          "unwind_map_bytes": "ffffffff40abcb000000000010abcb000100000018abcb000200000020abcb000300000028abcb000400000030abcb000500000038abcb00",
+          "states": [
+            {
+              "state": 0,
+              "previous": -1,
+              "action": "00cbab40",
+              "instructions": [
+                "00cbab40 mov eax, dword ptr [ebp - 0x64]",
+                "00cbab43 and eax, 1",
+                "00cbab46 je 0xcbab58",
+                "00cbab4c and dword ptr [ebp - 0x64], 0xfffffffe",
+                "00cbab50 mov ecx, dword ptr [ebp - 0x60]",
+                "00cbab53 jmp 0x41dd20"
+              ]
+            },
+            {
+              "state": 1,
+              "previous": 0,
+              "action": "00cbab10",
+              "instructions": [
+                "00cbab10 lea ecx, [ebp - 0x44]",
+                "00cbab13 jmp 0x41dd20"
+              ]
+            },
+            {
+              "state": 2,
+              "previous": 1,
+              "action": "00cbab18",
+              "instructions": [
+                "00cbab18 lea ecx, [ebp - 0x4c]",
+                "00cbab1b jmp 0x41dd20"
+              ]
+            },
+            {
+              "state": 3,
+              "previous": 2,
+              "action": "00cbab20",
+              "instructions": [
+                "00cbab20 lea ecx, [ebp - 0x54]",
+                "00cbab23 jmp 0x41dd20"
+              ]
+            },
+            {
+              "state": 4,
+              "previous": 3,
+              "action": "00cbab28",
+              "instructions": [
+                "00cbab28 lea ecx, [ebp - 0x5c]",
+                "00cbab2b jmp 0x41dd20"
+              ]
+            },
+            {
+              "state": 5,
+              "previous": 4,
+              "action": "00cbab30",
+              "instructions": [
+                "00cbab30 lea ecx, [ebp - 0x34]",
+                "00cbab33 jmp 0x41dd20"
+              ]
+            },
+            {
+              "state": 6,
+              "previous": 5,
+              "action": "00cbab38",
+              "instructions": [
+                "00cbab38 lea ecx, [ebp - 0x3c]",
+                "00cbab3b jmp 0x41dd20"
+              ]
+            }
+          ]
+        }
+      ],
+      "correction": {
+        "was": "Stem output cleanup was armed before 41E870 because AF37F5 installs state zero; source OutputUnwind::arm preceded initial construction.",
+        "is": "Arm output cleanup only after the initial constructor returns. Native state zero has a separate ownership-bit predicate.",
+        "evidence": "AF37F9 clears flag at original ESP+14 after filename PUSH; AF37FD calls41E870; AF380E sets same physical flag at ESP+18 after two argument PUSHes. FH3 actionCBAAC0 tests[EBP-1C]&1, clears bit, loads output[EBP-18], then jumps41DD20. HandlerCBAAD9 selects infoDF28E8/mapDF28E0, maxState1. All relevant bytes live/PE verified; exception path not executed.",
+        "provenance": {
+          "prior_source_sha256": "bf15294f21235ab1f97d6cbacb1860b5d441c28c34f0b681c20f05e99ce113fb",
+          "prior_doc_claim": "Stem output cleanup is armed before 41E870, because AF37F5 establishes that state first.",
+          "base_commit": "1f7a5ca86"
+        }
+      },
+      "normal_cleanup": "4CAD40 suffix/prefix/head/join state chain; AEFB20 query plus reused transient slots; AF3A20 stem/prefix; AF3B50 six temporaries plus flag-guarded output. Normal release order is covered by full pool checkpoint equivalence. AF3B50 output flag remains zero until AF3C88 after copy; source already arms after successful copy.",
+      "execution": "Five copied handler references are redirected to a fatal probe sentinel. It was never invoked. Original FH3 handlers/maps/actions were statically inspected and byte-verified, not executed. Constructor/cleanup failure behavior remains unvalidated."
+    },
+    "checklist": {
+      "1_callee_before_contract": "Existing original callee bodies/prototypes inspected; eleven source and five currentCRT bridges named explicitly.",
+      "2_boundary_before_attribution": "101 original call rows pass live containing-function checks.",
+      "3_all_call_sites": "No new host callback contracts or parameter projections introduced; source/CRT adapters retain existing direct-call ABIs.",
+      "4_producer_before_layout": "Existing NativeStringPoolStorage/raw8h header/actual30h item and manager+4/+8 contracts reused; initialized real-pool fixture.",
+      "5_complete_vs_partial": "Eight complete decoded spans; focused normal input coverage, not exhaustive branch/failure coverage.",
+      "6_runtime_evidence": "Original/source ignored native fixture executed. No game-frame/gameplay claim.",
+      "7_stack_cleanup": "OriginalRET8/RET0C/RET4/RET preserved; AF3B50 sprintfAF3BC5 hasADD ESP,0Ch atAF3BCE. CRT memmove/memset/strstr retaincdecl.",
+      "8_register_provenance": "FullAF3960 listing inspected: ESI output/EAX input, callee-saved EBX/EDI and sharedRET. Copied internal calls retain original register setup.",
+      "9_minimal_leases": "Eight annotated addresses, doc/report/source/header only; no dependency addresses or whole ledger leases.",
+      "10_report_evidence": "Original101 rows and prior receipts retained; q17 adds full-body/EH byte receipts, correction provenance and artifact hashes."
+    },
+    "prior_ledger_records": [
+      {
+        "address": "0043bbf0",
+        "reconstruction": [
+          {
+            "address": "0043bbf0",
+            "name": "resize_native_particle_string_fill_0043bbf0",
+            "source": "src/native_particle_texture_names_raw.cpp",
+            "header": "include/bsp/native_particle_texture_names_raw.hpp",
+            "status": "reconstructed_build_tested_actual_raw_pool_probe_checked",
+            "native_abi": "ECX actual8h string; stack requested length,signed low-byte fill; RET8",
+            "evidence": "Complete raw-pool overload over actual header. Live/disk span, reload schedule, strict Win32 build and actual 9MB pool probe checked. See docs/NATIVE_PARTICLE_TEXTURE_NAMES_RAW_ORCH4.md and reports/native_particle_texture_names_raw_orch4.json.",
+            "kind": "function"
+          }
+        ],
+        "names": [
+          {
+            "address": "0043bbf0",
+            "name": "BSP_NativeString_ResizeAndFill",
+            "evidence": "AQ hypothesis, not recovered symbol. Full installed/live byte span verified; decoded calls and native stack cleanup inspected. Actual pooled string, raw atlas manager/item and1Ch particle record domains; real D3DXFloat32To16Array import. Strict Win32/native-byte differential passes supported normal paths. Original FH3/allocation-failure/malformed-buffer faults and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_PROPERTY.md and reports/native_particle_type_property.json."
+          }
+        ]
+      },
+      {
+        "address": "004cad40",
+        "reconstruction": [
+          {
+            "address": "004cad40",
+            "name": "replace_native_particle_string_substrings_004cad40",
+            "source": "src/native_particle_texture_names_raw.cpp",
+            "header": "include/bsp/native_particle_texture_names_raw.hpp",
+            "status": "reconstructed_build_tested_actual_raw_pool_probe_checked",
+            "native_abi": "ECX actual8h string; stack search8h,replacement8h,count; RET0C",
+            "evidence": "Complete raw-pool overload retaining actual headers, current-field reloads, alias behavior and reverse temporary cleanup. Strict Win32 build and real-pool alias probe checked. See docs/NATIVE_PARTICLE_TEXTURE_NAMES_RAW_ORCH4.md and reports/native_particle_texture_names_raw_orch4.json.",
+            "kind": "function"
+          }
+        ],
+        "names": [
+          {
+            "address": "004cad40",
+            "name": "BSP_String_ReplaceSubstrings",
+            "evidence": "ECX mutable native string, search/replacement/count stack, RET0C. strstr case-sensitive; rebuild prefix+replacement+suffix, resume after inserted replacement, decrement count. Fixed .mshd->.shfx caller projection implemented for ordinary strings; generic allocation/malformed/embeddedNUL/count-edge behavior not ported. Full463 bytes verified. | AQ hypothesis, not recovered symbol. Full installed/live byte span verified; decoded calls and native stack cleanup inspected. Actual pooled string, raw atlas manager/item and1Ch particle record domains; real D3DXFloat32To16Array import. Strict Win32/native-byte differential passes supported normal paths. Original FH3/allocation-failure/malformed-buffer faults and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_PROPERTY.md and reports/native_particle_type_property.json."
+          }
+        ]
+      },
+      {
+        "address": "00aefb20",
+        "reconstruction": [
+          {
+            "address": "00aefb20",
+            "name": "find_native_particle_atlas_item_00aefb20",
+            "source": "src/native_particle_texture_names_raw.cpp",
+            "header": "include/bsp/native_particle_texture_names_raw.hpp",
+            "status": "reconstructed_build_tested_actual_raw_pool_probe_checked",
+            "native_abi": "ECX actual atlas manager; stack filename; RET4/EAX borrowed raw30h item",
+            "evidence": "Complete native body over actual manager +4 rows/+8 signed count, raw item name headers and current string pool. Ordered normalization/scans and borrowed row reload checked with real-pool atlas probe. See docs/NATIVE_PARTICLE_TEXTURE_NAMES_RAW_ORCH4.md and reports/native_particle_texture_names_raw_orch4.json.",
+            "kind": "function"
+          }
+        ],
+        "names": [
+          {
+            "address": "00aefb20",
+            "name": "BSP_TextureAtlas_FindItem",
+            "evidence": "ECX manager stackcharpointer RET4, borroweditem. Querylastdot>0 resize0043bbf0, backslash->slash, leading slashstrip, ASCIIlower004bcc00. Ordered firstscan: whole-name case-insensitive00435c40 OR slash-delimited CASE-SENSITIVE suffix0043e9a0. Ifmiss andqueryslash, retries basename in sameorder. Typed ASCII port installedatlas lookupchecked; malformed/nativeownership/locale-specific bytes unported. | AQ hypothesis, not recovered symbol. Full installed/live byte span verified; decoded calls and native stack cleanup inspected. Actual pooled string, raw atlas manager/item and1Ch particle record domains; real D3DXFloat32To16Array import. Strict Win32/native-byte differential passes supported normal paths. Original FH3/allocation-failure/malformed-buffer faults and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_PROPERTY.md and reports/native_particle_type_property.json."
+          }
+        ]
+      },
+      {
+        "address": "00af37d0",
+        "reconstruction": [
+          {
+            "address": "00af37d0",
+            "name": "construct_native_particle_texture_stem_00af37d0",
+            "source": "src/native_particle_texture_names_raw.cpp",
+            "header": "include/bsp/native_particle_texture_names_raw.hpp",
+            "status": "reconstructed_build_tested_actual_raw_pool_probe_checked",
+            "native_abi": "ECX output8h, EDX filename; RET/EAX output",
+            "evidence": "Complete raw-pool overload preserving output cleanup state, last-dot search and resize-fill. Strict Win32 build and actual pool probe checked. See docs/NATIVE_PARTICLE_TEXTURE_NAMES_RAW_ORCH4.md and reports/native_particle_texture_names_raw_orch4.json.",
+            "kind": "function"
+          }
+        ],
+        "names": [
+          {
+            "address": "00af37d0",
+            "name": "BSP_ParticleTexture_ConstructStem",
+            "evidence": "AQ hypothesis, not recovered symbol. Full installed/live byte span verified; decoded calls and native stack cleanup inspected. Actual pooled string, raw atlas manager/item and1Ch particle record domains; real D3DXFloat32To16Array import. Strict Win32/native-byte differential passes supported normal paths. Original FH3/allocation-failure/malformed-buffer faults and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_PROPERTY.md and reports/native_particle_type_property.json."
+          }
+        ]
+      },
+      {
+        "address": "00af38b0",
+        "reconstruction": [
+          {
+            "address": "00af38b0",
+            "name": "construct_native_particle_texture_extension_00af38b0",
+            "source": "src/native_particle_texture_names_raw.cpp",
+            "header": "include/bsp/native_particle_texture_names_raw.hpp",
+            "status": "reconstructed_build_tested_actual_raw_pool_probe_checked",
+            "native_abi": "ECX output8h, EDX filename; RET/EAX output",
+            "evidence": "Complete raw-pool overload preserving fixed buffer, positive-index last-dot rule and output construction. Strict Win32 build and actual pool probe checked. See docs/NATIVE_PARTICLE_TEXTURE_NAMES_RAW_ORCH4.md and reports/native_particle_texture_names_raw_orch4.json.",
+            "kind": "function"
+          }
+        ],
+        "names": [
+          {
+            "address": "00af38b0",
+            "name": "BSP_ParticleTexture_ConstructExtension",
+            "evidence": "AQ hypothesis, not recovered symbol. Full installed/live byte span verified; decoded calls and native stack cleanup inspected. Actual pooled string, raw atlas manager/item and1Ch particle record domains; real D3DXFloat32To16Array import. Strict Win32/native-byte differential passes supported normal paths. Original FH3/allocation-failure/malformed-buffer faults and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_PROPERTY.md and reports/native_particle_type_property.json."
+          }
+        ]
+      },
+      {
+        "address": "00af3960",
+        "reconstruction": [
+          {
+            "address": "00af3960",
+            "name": "construct_native_particle_texture_prefix_00af3960",
+            "source": "src/native_particle_texture_names_raw.cpp",
+            "header": "include/bsp/native_particle_texture_names_raw.hpp",
+            "status": "reconstructed_build_tested_actual_raw_pool_probe_checked",
+            "native_abi": "ESI output8h, EAX stem; RET/EAX output; custom register storage required",
+            "evidence": "Complete raw-pool overload preserving backward third-zero rule and fixed buffer validity boundary. Strict Win32 build and actual pool probe checked. See docs/NATIVE_PARTICLE_TEXTURE_NAMES_RAW_ORCH4.md and reports/native_particle_texture_names_raw_orch4.json.",
+            "kind": "function"
+          }
+        ],
+        "names": [
+          {
+            "address": "00af3960",
+            "name": "BSP_ParticleTexture_ConstructPrefix",
+            "evidence": "AQ hypothesis, not recovered symbol. Full installed/live byte span verified; decoded calls and native stack cleanup inspected. Actual pooled string, raw atlas manager/item and1Ch particle record domains; real D3DXFloat32To16Array import. Strict Win32/native-byte differential passes supported normal paths. Original FH3/allocation-failure/malformed-buffer faults and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_PROPERTY.md and reports/native_particle_type_property.json."
+          }
+        ]
+      },
+      {
+        "address": "00af3a20",
+        "reconstruction": [
+          {
+            "address": "00af3a20",
+            "name": "count_native_particle_texture_frames_00af3a20",
+            "source": "src/native_particle_texture_names_raw.cpp",
+            "header": "include/bsp/native_particle_texture_names_raw.hpp",
+            "status": "reconstructed_build_tested_actual_raw_pool_probe_checked",
+            "native_abi": "ECX filename; EDX unused; RET/EAX signed count",
+            "evidence": "Complete raw-pool composition. Actual F8C26C manager publication is reloaded at every numbered probe; real-pool atlas fixture counted three contiguous frames. See docs/NATIVE_PARTICLE_TEXTURE_NAMES_RAW_ORCH4.md and reports/native_particle_texture_names_raw_orch4.json.",
+            "kind": "function"
+          }
+        ],
+        "names": [
+          {
+            "address": "00af3a20",
+            "name": "BSP_ParticleTexture_CountFrames",
+            "evidence": "AQ hypothesis, not recovered symbol. Full installed/live byte span verified; decoded calls and native stack cleanup inspected. Actual pooled string, raw atlas manager/item and1Ch particle record domains; real D3DXFloat32To16Array import. Strict Win32/native-byte differential passes supported normal paths. Original FH3/allocation-failure/malformed-buffer faults and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_PROPERTY.md and reports/native_particle_type_property.json."
+          }
+        ]
+      },
+      {
+        "address": "00af3b50",
+        "reconstruction": [
+          {
+            "address": "00af3b50",
+            "name": "construct_native_particle_texture_frame_name_00af3b50",
+            "source": "src/native_particle_texture_names_raw.cpp",
+            "header": "include/bsp/native_particle_texture_names_raw.hpp",
+            "status": "reconstructed_build_tested_actual_raw_pool_probe_checked",
+            "native_abi": "ECX output8h, EDX filename, stack index; RET4/EAX output",
+            "evidence": "Complete raw-pool composition preserving six temporary states, output flag timing and current-header copy. Strict Win32 build and real-pool frame-name probe checked. See docs/NATIVE_PARTICLE_TEXTURE_NAMES_RAW_ORCH4.md and reports/native_particle_texture_names_raw_orch4.json.",
+            "kind": "function"
+          }
+        ],
+        "names": [
+          {
+            "address": "00af3b50",
+            "name": "BSP_ParticleTexture_ConstructFrameName",
+            "evidence": "AQ hypothesis, not recovered symbol. Full installed/live byte span verified; decoded calls and native stack cleanup inspected. Actual pooled string, raw atlas manager/item and1Ch particle record domains; real D3DXFloat32To16Array import. Strict Win32/native-byte differential passes supported normal paths. Original FH3/allocation-failure/malformed-buffer faults and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_PROPERTY.md and reports/native_particle_type_property.json."
+          }
+        ]
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "src/native_particle_texture_names_raw.cpp",
+        "bytes": 14759,
+        "sha256": "fb57ea62196906006c62164ac2710bc4379273b9c065b54f8170baac5ea50761"
+      },
+      {
+        "path": "include/bsp/native_particle_texture_names_raw.hpp",
+        "bytes": 2444,
+        "sha256": "96527a03f29e6edd2511735b94f7dc961127a31a890df02a91a827e5743c8c43"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 61720098,
+        "sha256": "53b249acc4f8046bb40cdc8681b6aaff931ac550dcd338dea8957f41ba04d639"
+      },
+      {
+        "path": "local/texture_names_probe.cpp",
+        "bytes": 12476,
+        "sha256": "c8ad7ec64ee9ba9a9ddd7899a946a1c3bc71266b1125aa23c371d288fd3e6c20"
+      },
+      {
+        "path": "local/texture_names_probe.exe",
+        "bytes": 41984,
+        "sha256": "e6253f0aeeaa5e45e72ef8da3e5faba1c7895416e29d4f9f3bf025f7e7f9a5b0"
+      },
+      {
+        "path": "local/texture_names_probe_build.cmd",
+        "bytes": 497,
+        "sha256": "cecfe8e50cf60b000b65754884d29dc43d7882e768d9a202f07ee8c91377a62f"
+      },
+      {
+        "path": "local/run_texture_names_probe.py",
+        "bytes": 1101,
+        "sha256": "bdbc899d3be8a256b654968459c0c4a1e0c3e08b322bf2d896e146c085443e28"
+      },
+      {
+        "path": "local/prepare_texture_names_probe.py",
+        "bytes": 2762,
+        "sha256": "4c4cf733271b775857aebecf97ad0c707a67f4a79469a1299d1408b1b48dcc8d"
+      },
+      {
+        "path": "local/texture_names_bytes.inc",
+        "bytes": 13958,
+        "sha256": "bdfdbf1681bcaa2018d3187382034733f5734a483eed10338c3ebe661b286d49"
+      },
+      {
+        "path": "local/texture_names_byte_manifest.json",
+        "bytes": 18314,
+        "sha256": "577125069712b558c3ffa65ec55c80d6ece2bfbaac932a792c199dd5a84ccab7"
+      },
+      {
+        "path": "local/texture_names_eh_receipt.py",
+        "bytes": 2108,
+        "sha256": "43fe7c46dffb538383807a5700e4b79dc4cee37b87d1916432a59c33d85b58d8"
+      },
+      {
+        "path": "local/texture_names_eh_receipt.json",
+        "bytes": 6988,
+        "sha256": "98f19b0d3b3e7b589adf262686e0e8e0f994a2d105ef66fffeccf7ce88df10dc"
+      },
+      {
+        "path": "local/verify_texture_names_live.py",
+        "bytes": 2225,
+        "sha256": "f9080677c5a6eac84e9c070ee478606bf38fc1e4d0d7e6f835150db65a6a8277"
+      },
+      {
+        "path": "local/texture_names_live_receipt.json",
+        "bytes": 7709,
+        "sha256": "9f8baea0553ddc2161afb1b7f6fa22eb691a5ec040425d27815305078cacf5cb"
+      },
+      {
+        "path": "local/texture_names_probe_result.json",
+        "bytes": 1077,
+        "sha256": "0b6d8613cbc42366984abeac20d6930607e0bc85c19b6b5ea5f792b983324fdf"
+      },
+      {
+        "path": "local/texture_names_probe_build.log",
+        "bytes": 25,
+        "sha256": "aaac12af6e25aae69bf0b17fbb67bd0527e6eecb7e0a9ab6004e40b6fd37e507"
+      },
+      {
+        "path": "local/prior_source_texture_names_probe.cpp",
+        "bytes": 5118,
+        "sha256": "104727a6b785fa4e522c0cff04ae2a0ab13ce8709288d8839ea063598d57a7ef"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 1672,
+        "sha256": "4cc5ff1c726367a31993241fdaeed7f3889105b5b1fc9b21efc0dd48220b2798"
+      },
+      {
+        "path": "local/texture_names_checkpoint_atlas_hit.bin",
+        "bytes": 9098588,
+        "sha256": "4952ab7475774c3113e300216450508a7a443fbd19a27b37396eb27b8a18c823"
+      },
+      {
+        "path": "local/texture_names_checkpoint_cleanup.bin",
+        "bytes": 9098588,
+        "sha256": "28bda04e476b7997c8e3fb8bc3b8a0929ef019e9adaf7816ae15e9666607c91d"
+      },
+      {
+        "path": "local/texture_names_checkpoint_extension.bin",
+        "bytes": 9098588,
+        "sha256": "9775e90d969a7d1a4cc735416a4d34f974087b46bed97cf38c133ebb4190a6e6"
+      },
+      {
+        "path": "local/texture_names_checkpoint_fill.bin",
+        "bytes": 9098588,
+        "sha256": "1d7ee339e9b98e00a9467baaef7f2045dfbda268c07b73728c198645012b53aa"
+      },
+      {
+        "path": "local/texture_names_checkpoint_frame_count.bin",
+        "bytes": 9098588,
+        "sha256": "bfad1bd09223709c3c939c828362292e91d429f81ab68a0f7823d57073b8b136"
+      },
+      {
+        "path": "local/texture_names_checkpoint_frame_name.bin",
+        "bytes": 9098588,
+        "sha256": "6c4812ad1ef6ccb9be19ce3b3a7c441d7163ef9c4d497a3884ca1f5b5f48eb68"
+      },
+      {
+        "path": "local/texture_names_checkpoint_initial.bin",
+        "bytes": 9098588,
+        "sha256": "78353f78d6a12abbffc94aa31360eaf7c3b9e89ecc89922792bbe6211130de52"
+      },
+      {
+        "path": "local/texture_names_checkpoint_prefix.bin",
+        "bytes": 9098588,
+        "sha256": "4ffc96bd1b9502936674801036ab6d399a4c04dd3ef06b5c33786ae0a9f9b47a"
+      },
+      {
+        "path": "local/texture_names_checkpoint_replacement.bin",
+        "bytes": 9098588,
+        "sha256": "04b2d960398f8dc17d636864994ef932f469bcb4914e72f1b2275f7b28cab1ba"
+      },
+      {
+        "path": "local/texture_names_checkpoint_replacement_alias.bin",
+        "bytes": 9098588,
+        "sha256": "a2adfde806392dfa5f1c277b1efc746b86d5928dac0200959ace13b933cef474"
+      },
+      {
+        "path": "local/texture_names_checkpoint_search_alias.bin",
+        "bytes": 9098588,
+        "sha256": "7392166a6472ef3002916e7c538c9018e77da2fbbe138b7e4ef704f708e4973d"
+      },
+      {
+        "path": "local/texture_names_checkpoint_stem.bin",
+        "bytes": 9098588,
+        "sha256": "d3e148537f161fc1b7552b7ed472363241950da3897fdefcf089c6fe07b88b13"
+      }
+    ],
+    "limitations": [
+      "Eleven helper bodies and five CRT bodies are source bridges, not copied-original dependency execution.",
+      "Only normal input sequence and two alias cases; constructor/cleanup failures and original FH3 unexecuted.",
+      "No binary substitution/ABI compatibility of new C++ interfaces, concurrency/malformed data or gameplay proof."
+    ]
+  }
 }

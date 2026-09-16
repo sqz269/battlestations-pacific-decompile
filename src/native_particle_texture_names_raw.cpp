@@ -211,8 +211,10 @@ void replace_native_particle_string_substrings_004cad40(void* value,
 void* construct_native_particle_texture_stem_00af37d0(void* output,
     const char* filename, NativeStringRawPoolContext& strings) {
     OutputUnwind output_unwind(output, strings);
-    output_unwind.arm(); // AF37F5: output cleanup state precedes 41E870.
     construct_native_string_header_0041e870(output, strings, filename);
+    // AF37F5 installs state 0, but its CBAAC0 unwind action also tests the
+    // ownership flag. AF37F9 clears that flag; AF380E sets it after 41E870.
+    output_unwind.arm();
 
     RawHeaderOwner needle(strings);
     construct_native_string_header_0041e870(needle.header(), strings, ".");

@@ -63,7 +63,9 @@ constructs prefix + zero-padded signed index + original extension.
 Temporary headers use the native construction states and reverse cleanup order.
 A state is armed only after its constructor returns; normal cleanup clears the
 state before asking the current pool to return the block. Stem output cleanup is
-armed before 41E870, because AF37F5 establishes that state first. Frame-name output
+armed after 41E870 returns: AF37F5 installs state zero, but AF37F9 clears its
+separate ownership flag and AF380E sets that flag only after the constructor.
+The CBAAC0 unwind action tests that flag before destroying the output. Frame-name output
 cleanup is armed only after the final copy returns at AF3C82/AF3C88. Thus a later
 temporary-return failure consumes the output, while a failed output construction
 does not claim ownership that the native had not established.
@@ -92,3 +94,35 @@ gameplay remain unvalidated. Descriptive names remain hypotheses.
 
 Full hashes, prior ledger records, old Ghidra documentation, call-site evidence and
 validation receipts are in `reports/native_particle_texture_names_raw_orch4.json`.
+
+## Independent native comparison and ownership correction (q17)
+
+The earlier actual-pool probe executed source only. A separate ignored Win32 probe
+now executes all eight complete original bodies (2,992 bytes), preserving their
+entry registers and stack cleanup, and compares the source sequence at twelve
+checkpoints of 9,098,588 bytes each. The sequence covers stem, extension, prefix,
+frame-name construction, normalized borrowed atlas lookup, three contiguous frames,
+resize-fill, replacement, and the two search/value and replacement/value aliases.
+Every checkpoint checks initialized pool arena/ring/counter bytes, all output and
+item headers, item/manager storage, publication and borrowed-return identities.
+Only allocation addresses in pointer cells are normalized. The Windows critical
+section's 24 opaque bytes are excluded; its recursion counter is compared.
+
+Calls among these eight bodies execute their copied originals. Eleven external
+helper targets use existing reconstructed implementations over the genuine pool,
+and five CRT targets use the current CRT. These dependencies were not themselves
+executed as original code in this probe. Copied FH3 handler references terminate
+the probe if invoked; allocation failure and original exception transport remain
+unexecuted. The 2,992 helper bytes plus 568 bytes of EH handlers, maps and actions
+match live Ghidra and the installed PE in 42 guarded spans.
+
+The static EH review corrected the earlier claim that state zero alone arms stem
+output cleanup. The source now enables cleanup after successful initial string
+construction, matching the separate native flag. The earlier claim and receipts
+remain in the report's correction/provenance records. The normal native comparison
+does not establish behavior when constructors or cleanup throw, binary substitution
+compatibility, or gameplay correctness.
+
+After the correction, a clean strict MSVC Win32 build and both existing CTests
+passed. The twelve-checkpoint probe also passed when linked against that corrected
+worktree's library. No permanent test cases were added.
