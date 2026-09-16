@@ -1,0 +1,650 @@
+{
+  "packet": "renderer_control_worker_reuse_r33",
+  "status": "source_reused_strict_build_three_ctests_and_fresh_bounded_fixture_passed_application_unbound",
+  "baseline": "f015066b4",
+  "source_commit": "d9e2a96ca719b7566d70d329421fca9f4924a5c3",
+  "reused_branch": "agent/orch5-20260911",
+  "reused_tip": "769bdc3e3b8254f95867b11e2546d629f2a564b6",
+  "prior_source_commits": [
+    {
+      "commit": "6feace267befe73af454df178a9362f622033f20",
+      "role": "original five-body source reconstruction"
+    },
+    {
+      "commit": "6641c05f524e29f9352f66ddbd017c64d2f99cee",
+      "role": "final correction of thread clock destination comment to native 10h; retained exactly"
+    }
+  ],
+  "scope": {
+    "owned_addresses": [
+      "00b33da0",
+      "00b33b50",
+      "00b33c00",
+      "00b33c20",
+      "00bee080"
+    ],
+    "body_count": 5,
+    "complete_body_bytes": 684,
+    "production_files": [
+      "include/bsp/native_renderer_control_worker.hpp",
+      "src/native_renderer_control_worker.cpp"
+    ],
+    "cmake": "One deferred bsp_core source registration in cmake/startup.cmake; short lease released immediately after source commit.",
+    "historical_receipts": "reports/native_renderer_control_worker.json copied unchanged from the fixed source tip. Its 91-byte clock label/span and related historical fixture claim are superseded by the correction below.",
+    "production_cpp_identical_to_source_tip": true,
+    "header_change": "Comment only: Complete91-byte BEE080 -> Complete93-byte BEE080.",
+    "no_shared_owner_or_deletion_replacement": true,
+    "no_game_main_or_scalar_process_changes": true,
+    "no_ghidra_mutation": true,
+    "no_new_configured_tests": true
+  },
+  "provider_reconciliation": {
+    "unchanged_header_interfaces": [
+      "bsp/frame_clock.hpp",
+      "bsp/native_event_owner.hpp",
+      "bsp/native_renderer_begin_frame.hpp",
+      "bsp/native_renderer_synchronization_actual.hpp",
+      "bsp/singleton_lifetime.hpp"
+    ],
+    "comparison": "git diff fixed orch5 tip to current main base was empty for these five headers. Source imported without API changes and strict build resolves all substantive references.",
+    "clock": "Borrow actual_clock_01090ab0 current publication and actual D68D50 profile; reached +20 slot must be BEE080. Actual 80h clock construction/publication remains outside this component.",
+    "events": "Existing real BD1970 event factory (auto-reset initially unsignaled) and BD1910/BD17C0/BD19B0 signal/wait/scalar bodies; require current D6821C profile before virtual-selector dispatch.",
+    "begin": "Borrow existing NativeRendererBeginFrameContext and call complete current begin_native_renderer_frame_00b2b200; current renderer D5F0A8+0C must select B2B200.",
+    "end": "Required substantive end_frame_00b2f4a0 callback and borrowed context; current renderer D5F0A8+14 must select B2F4A0. Missing reached callback throws a contract error; it is never replaced by successful no-op work.",
+    "busy": "Existing native_renderer_device_lifecycle_busy_00b20220 reads actual current renderer. Native sequence has initial busy check, repeated Sleep10/current checks, and separate final current check before Begin.",
+    "memory": "Worker storage is actual 0x24 with no host vptr. Event/worker allocator and scalar frees use the existing substantive shared CRT singleton_lifetime allocation/free functions; no new manager, count, native vtable or owner snapshot."
+  },
+  "application_binding": {
+    "state": "UNBOUND",
+    "verification": "Repository search finds the binder definition and declaration only, with no production call. The ignored fixture binds only its own process context.",
+    "mechanism": "One static zero-initialized host process-context pointer, published using InterlockedCompareExchangePointer. Rebinding the same address is accepted; a different nonnull address is rejected. No unbind or automatic teardown.",
+    "lifetime": "The context address and every borrowed provider/cell must remain valid through all worker joins and module calls. Its references read current clock, renderer and time values at each corresponding native access; stable address does not mean frozen publication values.",
+    "native_time": "Borrowed actual_time_bits_0108d6e4 is reset by construction, read by timing and published before callback on accepted sample. This packet adds no owner for that native scalar and makes no application binding."
+  },
+  "native_functions": [
+    {
+      "entry": "00b33da0",
+      "current_live_name": "BSP_RendererControlWorker_Construct",
+      "bytes": 111,
+      "end_exclusive": "00b33e0f",
+      "original_abi": "ECX actual worker; EAX same captured owner; RET",
+      "source_abi": "New ordinary C++ pointer argument, not an original thiscall replacement",
+      "schedule": "Write D5F1F0, clear run04/shutdown05/thread08/id14 and current shared time; create wake then idle; CreateThread suspended with raw owner, priority -2, then ResumeThread current handle. Preserve bytes06..07/rate18/callback1C/context20."
+    },
+    {
+      "entry": "00b33b50",
+      "current_live_name": "BSP_RendererControlWorker_Destroy",
+      "bytes": 98,
+      "end_exclusive": "00b33bb2",
+      "original_abi": "ECX actual worker; RET",
+      "source_abi": "New ordinary C++ reference argument",
+      "schedule": "Capture wake at B33B53 before profile/shutdown writes. Signal captured wake; wait current thread08 INFINITE; reload current thread08 for CloseHandle then clear; delete current nonnull wake and idle and clear each after return."
+    },
+    {
+      "entry": "00b33c00",
+      "current_live_name": "BSP_RendererControlWorker_ScalarDelete",
+      "bytes": 30,
+      "end_exclusive": "00b33c1e",
+      "original_abi": "ECX captured worker; stack flags, low bit0; EAX captured pointer even after free; RET4",
+      "source_abi": "New ordinary C++ owner/flags arguments",
+      "schedule": "Call B33B50; free captured pointer through BF65AC iff flags bit0; ADD ESP,4 after free; return captured owner."
+    },
+    {
+      "entry": "00b33c20",
+      "current_live_name": "BSP_RendererControlWorker_Thread",
+      "bytes": 352,
+      "end_exclusive": "00b33d80",
+      "original_abi": "Win32 thread entry, stack actual owner; normal terminal calls ExitThread(0), no returning RET in this body",
+      "source_abi": "Win32 unsigned long __stdcall(void*) entry, explicit required context",
+      "schedule": "Initial current wake wait, shutdown check; inner run/timing loop; publish accepted sample, optional ECX callback, busy loop/final check, current Begin then current End. Rejected sample yields. On run0 signal current idle, wait current wake, then check shutdown. Normal exit ExitThread0."
+    },
+    {
+      "entry": "00bee080",
+      "current_live_name": "BSP_FrameClock_SampleRawTimestamp",
+      "bytes": 93,
+      "end_exclusive": "00bee0dd",
+      "original_abi": "ECX actual 80h clock; EDX unused; stack output16-byte timestamp; EAX output; RET4",
+      "source_abi": "Naked fastcall with unused EDX argument gives the same ECX/stack-output/RET4 call shape in MSVC Win32; this is not a whole-game drop-in ABI claim",
+      "schedule": "Mode+69 nonzero copies four DWORDs from +20..+2C in native read/store order; otherwise sample QPC into uninitialized stack preimage, ignore BOOL, copy low/high then current +60/+64 frequency in native interleaving."
+    }
+  ],
+  "clock_extent_correction": {
+    "historical_report_span": {
+      "address": "00bee080",
+      "length": 91,
+      "end_exclusive": "00bee0db",
+      "sha256": "7ac0b0553597e9b8251bae171dc0635b8f28eb9403e8bb28217ff3505075a5a5"
+    },
+    "actual_full_span": {
+      "address": "00bee080",
+      "length": 93,
+      "end_exclusive": "00bee0dd",
+      "sha256": "7e990a52cc76f8cc7ef3b1607abf21f2250505786338e6a1b8a5949499a4f756"
+    },
+    "missing_bytes": "04 00 at BEE0DB..BEE0DC; final instruction at BEE0DA is C2 04 00 (RET4).",
+    "historical_fixture_header": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-control-worker\\local\\control_original_reference.hpp",
+      "sha256": "eb0f156f554b6ad9bfe2a5b935f67f89f2099f6179540ccea98906dfb844204a",
+      "original_clock_array_bytes": 91
+    },
+    "impact": "Historical local oracle also stopped at C2. The dynamically allocated executable page is zero-initialized, so absent immediate bytes can act as RET0 and be masked by surrounding generated stack handling. Its reported clock result is not proof of the complete original RET4 body. R33 makes no claim that the truncated original fixture was equivalent.",
+    "fresh_fixture": "Regenerated original_clock from the full 93-byte current PE/live span; static_assert(sizeof(original_clock)==93). Regenerated complete 114-byte timing slice as well. Original probe .cpp is otherwise byte-identical and freshly linked against this source commit.",
+    "destination_extent": "ClockTimestamp is 16 bytes; source thread retains aligned uninitialized sizeof(ClockTimestamp) storage. The 6641c05f comment correction is preserved. No synthesized default ticks/frequency are written before sampling."
+  },
+  "timing_register_audit": {
+    "slice": "B33C72..B33CE3 inclusive, 114 bytes, checked as a separate fresh span.",
+    "timestamp": "Clock destination formed by LEA EDX,[ESP+18] at B33C6B and pushed before current clock slot20 call. FILD signed64 ticks at +18 and frequency at +20; FDIVP then FSTP float at +14.",
+    "rounding": "Reload rounded seconds; load exact double1000 CE47A0; multiply and preserve that 1000 on x87 stack; round sample to float; reload then subtract current float time0108D6E4 and round delta to float.",
+    "delta": "FCOMIP/POP then JBE takes nonpositive or unordered path. SSE subtracts delta from negative-zero D7A208 (0x80000000). This is not an absolute-value C++ substitute or a wrap-period correction.",
+    "rate": "First read MOV ECX,[ESI+18] at B33CC2 and TEST determines sign branch; second current read FILD DWORD[ESI+18] at B33CD1. If original sign test is negative, add exact float2^32 CE3978. Source preserves the two volatile reads and unsigned correction, including different values under external mutation; arbitrary C++ race equivalence is not claimed.",
+    "decision": "FDIVP ST2,ST0 computes retained1000/rate; FCOMIP/POP and JBE reject below/equal/unordered. Source SETA matches the taken condition; rate0 is not replaced by an artificial success/default rate.",
+    "publication": "Accepted native path reloads rounded sample at B33CE4 and publishes at B33CEA before loading callback1C and current context20. Source does the same. Fresh fixture reaches only the rejected-sample worker path.",
+    "constant_values": {
+      "CE47A0": "408f400000000000",
+      "CE3978": "4f800000",
+      "D7A208": "80000000"
+    },
+    "boundary": "The helper uses the same x87/SSE arithmetic and incoming modes, but the new C++ interface/compiler frame is not native private-frame/register/exception ABI identity. Fresh timing comparisons cover nearest and downward x87 rounding in the fixture environment, not every FP trap/MXCSR/async state."
+  },
+  "failure_retention_and_stop_limits": [
+    "Worker constructor has no local EH rollback. If the second event allocation throws, the first event and earlier field writes remain; the supplied raw owner is still caller-owned. Source allocation uses existing malloc/new-handler retry then bad_alloc behavior, not an invented successful null object.",
+    "CreateEvent may return a null handle inside a real event wrapper. CreateThread may return null; its result is stored and still passed to SetThreadPriority and ResumeThread. Their failure results are ignored as in native. No retries, replacement threads or fabricated event successes are added.",
+    "Destructor sets shutdown but does not clear run. It signals captured wake, attempts an infinite wait, then closes current handle. With a null/invalid handle, the wait/close results do not prove a successful join. With a valid handle, run staying nonzero can prevent exit indefinitely.",
+    "Shutdown is not tested inside the run loop, timing loop, callback or renderer-busy loop. A callback or substantive Begin/End provider that does not return, or a busy renderer that never clears, prevents the stop acknowledgement/join.",
+    "Existing B33BF0 stop helper clears run and waits on current idle event; it does not wake an initially sleeping worker. Callers must obey the real wake/run/idle protocol. The fixture starts and signals run before asking for stop, then waits for acknowledgement before scalar deletion.",
+    "If a context/profile contract error or provider C++ exception escapes the Win32 thread entry, no source catch, idle acknowledgement or normal ExitThread result is supplied. Such failures are outside the returning-worker domain; do not label them recoverable game errors.",
+    "Event/profile contexts must survive until all workers have actually joined. Failed construction with retained acquisitions does not justify releasing borrowed providers or rebinding the immutable process pointer.",
+    "Volatile accesses preserve intended current field reads, but arbitrary concurrent mutations and C++ data-race equivalence remain unproved. Native SEH/asynchronous faults and original thread-private stack identity are not validated."
+  ],
+  "listing_gap": {
+    "address": "00b33c15",
+    "length": 3,
+    "bytes": "83c404",
+    "instruction": "ADD ESP,4",
+    "context": "Returning free call at B33C10 -> BF65AC, followed by B33C18 MOV EAX,ESI and RET4.",
+    "live_pre_repair": {
+      "00b33c15": {
+        "address": "00b33c15",
+        "error": "No instruction at address"
+      }
+    },
+    "status": "Current live Ghidra has no instruction at B33C15; full 30-byte scalar PE/live span contains the bytes. Parent notified and will repair the returning-call flow/export after worker releases the address lease.",
+    "archive": "Pre-repair context response and complete scalar bytes are sealed in the artifact archive. No worker mutation or definition."
+  },
+  "call_sites": [
+    {
+      "function": "00b33da0",
+      "address": "00b33dcf",
+      "native": "00bd1970"
+    },
+    {
+      "function": "00b33da0",
+      "address": "00b33dd9",
+      "native": "00bd1970"
+    },
+    {
+      "function": "00b33c00",
+      "address": "00b33c03",
+      "native": "00b33b50"
+    },
+    {
+      "function": "00b33c00",
+      "address": "00b33c10",
+      "native": "00bf65ac"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33d04",
+      "native": "00b20220"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33d1a",
+      "native": "00b20220"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33d29",
+      "native": "00b20220"
+    },
+    {
+      "function": "00b33da0",
+      "address": "00b33dee",
+      "native": "IAT CE2238 CreateThread"
+    },
+    {
+      "function": "00b33da0",
+      "address": "00b33dfa",
+      "native": "IAT CE22A0 SetThreadPriority"
+    },
+    {
+      "function": "00b33da0",
+      "address": "00b33e04",
+      "native": "IAT CE22CC ResumeThread"
+    },
+    {
+      "function": "00b33b50",
+      "address": "00b33b65",
+      "native": "D6821C+04 -> BD1910 signal"
+    },
+    {
+      "function": "00b33b50",
+      "address": "00b33b6d",
+      "native": "IAT CE22B0 WaitForSingleObject"
+    },
+    {
+      "function": "00b33b50",
+      "address": "00b33b77",
+      "native": "IAT CE225C CloseHandle"
+    },
+    {
+      "function": "00b33b50",
+      "address": "00b33b91",
+      "native": "D6821C+00 -> BD19B0 scalar delete"
+    },
+    {
+      "function": "00b33b50",
+      "address": "00b33ba7",
+      "native": "D6821C+00 -> BD19B0 scalar delete"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33c37",
+      "native": "D6821C+08 -> BD17C0 wait"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33c70",
+      "native": "D68D50+20 -> BEE080 sample"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33cfc",
+      "native": "current callback1C, ECX current context20"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33d12",
+      "native": "EDI captured IAT CE2230 Sleep"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33d3d",
+      "native": "D5F0A8+0C -> B2B200 BeginFrame"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33d4a",
+      "native": "D5F0A8+14 -> B2F4A0 -> B2D8E0 required EndFrame"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33d4e",
+      "native": "EBX captured IAT CE2144 SwitchToThread"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33d62",
+      "native": "D6821C+04 -> BD1910 signal"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33d6c",
+      "native": "D6821C+08 -> BD17C0 wait"
+    },
+    {
+      "function": "00b33c20",
+      "address": "00b33d7a",
+      "native": "IAT CE22C8 ExitThread"
+    },
+    {
+      "function": "00bee080",
+      "address": "00bee0b3",
+      "native": "IAT CE2270 QueryPerformanceCounter"
+    }
+  ],
+  "validation": {
+    "verify_seeds": {
+      "ranges": 8,
+      "all_match": true,
+      "log": {
+        "path": "local/control_worker_verify_seeds_r33.log",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      }
+    },
+    "full_byte_spans": {
+      "count": 12,
+      "all_match": true,
+      "complete_five_body_bytes": 684
+    },
+    "numeric_calls": {
+      "checked": 7,
+      "failed": 0,
+      "indirect_rows": 19,
+      "log": {
+        "path": "local/control_worker_calls_r33.log",
+        "bytes": 1771,
+        "sha256": "65b4351fed2172365fb741605a337f783e65045cf1c52e5373f744602331182f"
+      },
+      "boundary": "The checker validates direct rel32 targets; indirect rows are documented selectors/imports, not evidence of active provider execution."
+    },
+    "strict_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "configuration": "MSVC Win32 Release /MD /W4 /WX /fp:strict",
+      "unchanged_source_inputs": 3096,
+      "source_inputs": {
+        "path": "local/control_worker_build_inputs_r33.json",
+        "bytes": 543675,
+        "sha256": "533e2eba9a1bd8d3b0e337fd07200665299d53def5a3c7b4695e131b587b40c1"
+      },
+      "log": {
+        "path": "local/control_worker_build_r33.log",
+        "bytes": 5265,
+        "sha256": "8c8a2ae1593ba7e7e626793ee12ae562e004ea7dcc161d67b418788d65001396"
+      },
+      "ctests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "passed": 3,
+      "project_settings": {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 264006,
+        "sha256": "7b83dc9072446f4511ec2a7bacf7d9ed03cda726c38c173d1b24e2462a212852"
+      }
+    },
+    "fresh_fixture": {
+      "source": {
+        "path": "local/native_renderer_control_probe.cpp",
+        "bytes": 8659,
+        "sha256": "cc4b97f78b05b3376103cd46984ece3c287f9718fc35b009d50e88aacd7604a1"
+      },
+      "source_unchanged_from_original_worker": true,
+      "reference": {
+        "path": "local/control_original_reference.hpp",
+        "bytes": 1301,
+        "sha256": "aa71375fe9af01d1670b7641ff8255b5e8aee963033c48964e9c5abb3819444d"
+      },
+      "compile_command": {
+        "path": "local/control_worker_probe_r33.cmd",
+        "bytes": 633,
+        "sha256": "7c29aaec9f00452e0c26f50a86818cb451c00d8ab37e16e88e99cfdd44d6e72b"
+      },
+      "compiler_flags": "/std:c++20 /EHsc /MD /O2 /fp:strict /W4 /WX /Bv /showIncludes /sourceDependencies",
+      "link_flags": "/MANIFEST:EMBED /MACHINE:X86 /VERBOSE:LIB",
+      "build_exit": 0,
+      "run_exit": 0,
+      "embedded_asInvoker_manifest_verified": true,
+      "build_log": {
+        "path": "local/control_worker_probe_build_r33.log",
+        "bytes": 48774,
+        "sha256": "e9c2a9b057dfde83391893b7f093c1d0c4a75bd99a9f1fe1ec81ceb1de2e1dc7"
+      },
+      "run_log": {
+        "path": "local/control_worker_probe_run_r33.log",
+        "bytes": 120,
+        "sha256": "9a6e62e579ad8eb0837f4d8eb6b975505e001ebfc46054af62c7ebeebb65e20f"
+      },
+      "dependencies": {
+        "path": "local/control_worker_probe_r33_dependencies.json",
+        "bytes": 39971,
+        "sha256": "7664010ef40f909e18a6d40789cd6abf9ae3f32b614371671d68e54109fae762"
+      },
+      "pe": {
+        "machine": "x86",
+        "size": 120320,
+        "sha256": "6720a0a1790794901f79a9ae0ed2d50b27406948e5b46e72840348b54f217f8d",
+        "imported_dlls": [
+          "USER32.dll",
+          "MSVCP140.dll",
+          "KERNEL32.dll",
+          "VCRUNTIME140.dll",
+          "api-ms-win-crt-heap-l1-1-0.dll",
+          "api-ms-win-crt-runtime-l1-1-0.dll",
+          "api-ms-win-crt-math-l1-1-0.dll",
+          "api-ms-win-crt-string-l1-1-0.dll",
+          "api-ms-win-crt-stdio-l1-1-0.dll",
+          "api-ms-win-crt-locale-l1-1-0.dll"
+        ]
+      },
+      "stdout": "PASS original/source timing16 cases and raw clock; real worker create/sample/yield/stop/join/delete; immutable binding",
+      "original_timing_cases": 16,
+      "complete_original_clock_bytes_executed": 93,
+      "clock_branches": [
+        "fixed four-DWORD copy with returned output pointer",
+        "real QueryPerformanceCounter/current frequency"
+      ],
+      "worker_trajectory": "Real event owners and CreateThread; constructor partial-write/preimage checks; rate0 worker samples real clock and yields; existing stop waits for idle; scalar delete wakes shutdown, joins, closes handles and frees; immutable binding rejection.",
+      "active_Begin_End_executed": false,
+      "accepted_worker_callback_executed": false,
+      "forced_QPC_or_CreateThread_failure_tested": false,
+      "full_original_thread_or_lifetime_bodies_executed": false,
+      "fresh_linkage": "Only the full current bsp_core.lib, bsp_lua511.lib and bsp_zlib121.lib plus platform libraries; no directly compiled production module and no historical binary reuse.",
+      "loaded_module_identity_measured": false
+    },
+    "game_validated": false,
+    "whole_original_ABI_compatible": false,
+    "native_FH3_SEH_validated": false
+  },
+  "source_provenance": {
+    "old": [
+      {
+        "revision": "769bdc3e3b8254f95867b11e2546d629f2a564b6",
+        "path": "include/bsp/native_renderer_control_worker.hpp",
+        "git_blob": "9befb4279c4918fdfc46acca53235a8364021c85",
+        "bytes": 4610,
+        "sha256": "c9310eb41d28e2edb42ee6dfc2398c6b7b44b80a92d89035112dca241b583852"
+      },
+      {
+        "revision": "769bdc3e3b8254f95867b11e2546d629f2a564b6",
+        "path": "src/native_renderer_control_worker.cpp",
+        "git_blob": "2bf8f72451f8ddc16231b28f908681fdc844702b",
+        "bytes": 8860,
+        "sha256": "72dd2701d8afab04771f8664b203e716d9c7094a1adfc4fb1a39fcb49d7f69ca"
+      },
+      {
+        "revision": "769bdc3e3b8254f95867b11e2546d629f2a564b6",
+        "path": "docs/NATIVE_RENDERER_CONTROL_WORKER.md",
+        "git_blob": "6127e7ada033bbbd0f6deffdabd85eff2db3aac1",
+        "bytes": 6327,
+        "sha256": "6e7dbca4d02112c49390151da53c35663e49d27b875a92cbe764e46a67414e11"
+      },
+      {
+        "revision": "769bdc3e3b8254f95867b11e2546d629f2a564b6",
+        "path": "reports/native_renderer_control_worker.json",
+        "git_blob": "b89665db360acbee2344ebdc7c9a74f6ffe53a2e",
+        "bytes": 193547,
+        "sha256": "8ba61973ac8b052507d679ae6756a40ce2195b3692c9079c0dde2341f5e43b74"
+      }
+    ],
+    "current": [
+      {
+        "revision": "d9e2a96ca719b7566d70d329421fca9f4924a5c3",
+        "path": "include/bsp/native_renderer_control_worker.hpp",
+        "git_blob": "6588cb1543afb6b6502a5dd80e7da21e4482df40",
+        "bytes": 4610,
+        "sha256": "b8d3827486b6bc3434d80373496827b7d6c3cbe535588ff934cbf4892278119a"
+      },
+      {
+        "revision": "d9e2a96ca719b7566d70d329421fca9f4924a5c3",
+        "path": "src/native_renderer_control_worker.cpp",
+        "git_blob": "2bf8f72451f8ddc16231b28f908681fdc844702b",
+        "bytes": 8860,
+        "sha256": "72dd2701d8afab04771f8664b203e716d9c7094a1adfc4fb1a39fcb49d7f69ca"
+      },
+      {
+        "revision": "d9e2a96ca719b7566d70d329421fca9f4924a5c3",
+        "path": "docs/NATIVE_RENDERER_CONTROL_WORKER.md",
+        "git_blob": "2b9befa10502a6dc2767f8f09ee262f459531751",
+        "bytes": 7745,
+        "sha256": "1d035bfded05ec72ef40d9c63ee6bbc9a4c2bb8e7aa7e65b774d6b39c3be5d7e"
+      },
+      {
+        "revision": "d9e2a96ca719b7566d70d329421fca9f4924a5c3",
+        "path": "reports/native_renderer_control_worker.json",
+        "git_blob": "b89665db360acbee2344ebdc7c9a74f6ffe53a2e",
+        "bytes": 193547,
+        "sha256": "8ba61973ac8b052507d679ae6756a40ce2195b3692c9079c0dde2341f5e43b74"
+      },
+      {
+        "revision": "d9e2a96ca719b7566d70d329421fca9f4924a5c3",
+        "path": "cmake/startup.cmake",
+        "git_blob": "2b7519c398fbf06f8d2616e8e3ade1afc9449e82",
+        "bytes": 147651,
+        "sha256": "98adfbc3e67a7c5ee2acf92793ca2e958da85d520aea10302c1c59992e2c421d"
+      }
+    ]
+  },
+  "native_receipts": {
+    "collected_at": "2026-09-16T09:50:36.196469+00:00",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "span_count": 12,
+    "all_match": true,
+    "spans": [
+      {
+        "address": "00b33da0",
+        "length": 111,
+        "end_exclusive": "00b33e0f",
+        "pe_offset": 7552416,
+        "live_equals_pe": true,
+        "sha256": "078c7e8b53c377ad39280b155415522ff1ae12636b82e03904ba9e83f2b38432",
+        "hex": "0f57c0568bf1578d7e14c706f0f1d500c6460400c6460500c7460800000000c7070000000032c9f30f1105e4d60801e89cdb090032c989460ce892db0900576a045668203cb3006a006a00894610ff153822ce006afe50894608ff15a022ce008b460850ff15cc22ce005f8bc65ec3"
+      },
+      {
+        "address": "00b33b50",
+        "length": 98,
+        "end_exclusive": "00b33bb2",
+        "pe_offset": 7551824,
+        "live_equals_pe": true,
+        "sha256": "3d7498deae37a0bc9cc66e51f05bf74244e57cfe8a063451e633478105c20945",
+        "hex": "568bf18b4e0cc706f0f1d500c64605018b018b5004ffd28b46086aff50ff15b022ce008b4e0851ff155c22ce00c74608000000008b4e0c85c9740f8b118b026a01ffd0c7460c000000008b4e1085c9740f8b118b026a01ffd0c74610000000005ec3"
+      },
+      {
+        "address": "00b33c00",
+        "length": 30,
+        "end_exclusive": "00b33c1e",
+        "pe_offset": 7552000,
+        "live_equals_pe": true,
+        "sha256": "946b0728b8be36453b688c221e135c92cbf7b821dc1eba2247c6d5d45d2e13fc",
+        "hex": "568bf1e848fffffff644240801740956e897290c0083c4048bc65ec20400"
+      },
+      {
+        "address": "00b33c20",
+        "length": 352,
+        "end_exclusive": "00b33d80",
+        "pe_offset": 7552032,
+        "live_equals_pe": true,
+        "sha256": "c92b627c84c0567ac3a36be1f0bb79c514ffdbcc532dca1059288d9d602bfcb3",
+        "hex": "558bec83e4f883ec1c53568b75088b4e0c8b018b500857ffd2807e05000f85350100008b3d3022ce008b1d4421ce0090807e04000f84000100008d9b000000008b0db00a09018b018b40208d54241852ffd0df6c2418df6c2420def9d95c2414d9442414dd05a047ce00dcc9d9c9d95c2414d9442414d825e4d60801d95c240cd9eed944240cdff1ddd87608f30f1044240ceb0ef30f100508a2d700f30f5c44240c8b4e1885c9f30f11442410d9442410db46187d06d8057839ce00defadff1ddd8766af30f10442414f30f1105e4d608018b461c85c074058b4e20ffd08b0d94d3f800e817c5feff84c074168d49006a0affd78b0d94d3f800e801c5feff84c075ed8b0d94d3f800e8f2c4feff84c0751e8b0d94d3f8008b118b420cffd08b0d94d3f8008b118b4214ffd0eb02ffd3807e04000f8506ffffff8b4e108b118b4204ffd08b4e0c8b118b4208ffd0807e05000f84d8feffff6a00ff15c822ce00"
+      },
+      {
+        "address": "00bee080",
+        "length": 93,
+        "end_exclusive": "00bee0dd",
+        "pe_offset": 8315008,
+        "live_equals_pe": true,
+        "sha256": "7e990a52cc76f8cc7ef3b1607abf21f2250505786338e6a1b8a5949499a4f756",
+        "hex": "83ec08568bf1807e690074228b4424108b4e208b562489088b4e288950048b562c89480889500c5e83c408c204008d44240450ff157022ce008b4424108b4c24048b54240889088b4e608950048b566489480889500c5e83c408c20400"
+      },
+      {
+        "address": "00ce47a0",
+        "length": 8,
+        "end_exclusive": "00ce47a8",
+        "pe_offset": 9324448,
+        "live_equals_pe": true,
+        "sha256": "139107fd63d004e94cb64abb75361dd8490810c6709a9311896ca17496f5ecde",
+        "hex": "0000000000408f40"
+      },
+      {
+        "address": "00ce3978",
+        "length": 4,
+        "end_exclusive": "00ce397c",
+        "pe_offset": 9320824,
+        "live_equals_pe": true,
+        "sha256": "9d459b445179d46efc315fd7ef9a5c8185bd7f3e2860dc6d325ab1b85acf6a96",
+        "hex": "0000804f"
+      },
+      {
+        "address": "00d7a208",
+        "length": 4,
+        "end_exclusive": "00d7a20c",
+        "pe_offset": 9937416,
+        "live_equals_pe": true,
+        "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6",
+        "hex": "00000080"
+      },
+      {
+        "address": "00d6821c",
+        "length": 16,
+        "end_exclusive": "00d6822c",
+        "pe_offset": 9863708,
+        "live_equals_pe": true,
+        "sha256": "961065846b722b86f72bfe064bfcd47827f3cd7348a5c679e35ef20a8c1275a7",
+        "hex": "b019bd001019bd00c017bd006019bd00"
+      },
+      {
+        "address": "00d68d50",
+        "length": 40,
+        "end_exclusive": "00d68d78",
+        "pe_offset": 9866576,
+        "live_equals_pe": true,
+        "sha256": "8d034220783cf8f2302087c227f8c6a6804eb09cbb5c7ff28db4b1438a9736c7",
+        "hex": "10e1be00d0dbbe0030dcbe00e0dabe00c0ddbe0050e0be0060e0be0070e0be0080e0be0020dbbe00"
+      },
+      {
+        "address": "00d5f0a8",
+        "length": 28,
+        "end_exclusive": "00d5f0c4",
+        "pe_offset": 9826472,
+        "live_equals_pe": true,
+        "sha256": "758a95da68defbe65e5e12f107041b1e21a9be46601288a0b4de7835f21d130b",
+        "hex": "f039b300b0aeb2003014b20000b2b200b0f4b200a0f4b2005084b200"
+      },
+      {
+        "address": "00b33c72",
+        "length": 114,
+        "end_exclusive": "00b33ce4",
+        "pe_offset": 7552114,
+        "live_equals_pe": true,
+        "sha256": "644b649c808c8da2149bbf2bdb53791776c9a98778b9bb17b4206f1cb460db35",
+        "hex": "df6c2418df6c2420def9d95c2414d9442414dd05a047ce00dcc9d9c9d95c2414d9442414d825e4d60801d95c240cd9eed944240cdff1ddd87608f30f1044240ceb0ef30f100508a2d700f30f5c44240c8b4e1885c9f30f11442410d9442410db46187d06d8057839ce00defadff1ddd8766a"
+      }
+    ]
+  },
+  "archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\local\\checkpoints\\control-worker-r33-d9e2a96ca\\validated_artifacts.zip",
+    "sha256": "a32a4d0b7a3e81493a97ffdc51139d607937aa341f3e8092659fdaa4b9356bd1",
+    "bytes": 41533503,
+    "manifest": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\local\\checkpoints\\control-worker-r33-d9e2a96ca\\manifest.json",
+    "manifest_sha256": "57986b0e808e914d3cd3c5cb9150a548d2d7e0166f62bb737f8e157ca939b05b",
+    "artifacts": 3398,
+    "artifact_bytes": 150374492,
+    "all_entries_hash_verified": true,
+    "full_bsp_core_lib": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\build\\win32\\Release\\bsp_core.lib",
+      "archive_entry": "workspace/build/win32/Release/bsp_core.lib",
+      "bytes": 63282412,
+      "sha256": "3f36c6887a6283ba280f7d8717663a7979f3a3ad4b900fd1be660a6044bceb4a"
+    }
+  },
+  "annotation_handoff": {
+    "rename_required": false,
+    "append_only_comment_proposals": [
+      {
+        "address": "00bee080",
+        "text": "R33 confirms full 93-byte BEE080..BEE0DC span, including final C2 04 00. Prior 91-byte receipt/oracle was truncated. Complete fresh clock oracle, strict Win32 build and bounded inactive-worker fixture pass; actual application context remains unbound and active rendering/gameplay are unvalidated."
+      },
+      {
+        "address": "00b33c00",
+        "text": "R33 full 30-byte PE/live parity confirms returning free path: B33C15 bytes83 C4 04 are ADD ESP,4 before B33C18 MOV EAX,ESI. Worker observed a three-byte listing gap; parent serializes returning-call flow repair/export."
+      }
+    ],
+    "ledger_status": "Five reused bodies are build-tested; timing/raw clock and inactive source worker lifetime fixture-tested only. No application-active or whole-native ABI status escalation."
+  }
+}
