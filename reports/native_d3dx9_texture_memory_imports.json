@@ -63,5 +63,32 @@
     "Production texture loading/cache and device-recreation integration remain outside this packet.",
     "No gameplay or visual validation was performed.",
     "No Ghidra names, comments or ledgers were changed."
-  ]
+  ],
+  "integration": {
+    "source_commit": "6956ccd8a",
+    "parent_review": "Complete binder and typed-accessor changes reviewed.",
+    "combined_build": "strict Win32 passed; all 3 CTests passed",
+    "build_log": "local/r26_texture_imports_integration.log",
+    "build_log_sha256": "025088fb3f0250d9dce460f3184bd59a2b50a5e1030b309735449b63fcb5ca73",
+    "worker_smoke_archive": "local/evidence-r26/texture-memory-imports-r26.zip",
+    "worker_smoke_archive_sha256": "bb6a905f1157c6220f14ebc574362ccba5c1c921e4925d77bf8d3ca84b5e0969",
+    "worker_smoke_artifacts": [
+      {
+        "path": "local/texture_info_smoke.cpp",
+        "sha256": "c222c18129f26940f1edcef14c14562ed5b6bf3efd49f10d1655dad0bd9c55d2"
+      },
+      {
+        "path": "local/texture_info_smoke.exe",
+        "sha256": "608fcd39a9a2240d2f8606ee1334010815b6aa987dfa98940639b45ad47bf140"
+      },
+      {
+        "path": "local/texture_info_smoke.obj",
+        "sha256": "f56d21e14d7005d1aaacd9810d1d13dffff2868b05dd1aea6767d87f16e93346"
+      },
+      {
+        "path": "local/output/texture_memory_imports_r26_smoke.json",
+        "sha256": "58e8885a076725e6a15c19f00600a3b9d633586ef984e77c3d658286698a67dd"
+      }
+    ]
+  }
 }

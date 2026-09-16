@@ -1,0 +1,65 @@
+{
+  "repairs": [
+    {
+      "function": "00b76680",
+      "owner": "agent/orch4-20260915",
+      "when": "2026-09-16T08:04:38Z",
+      "decompile_lines_before": 40,
+      "gaps": [
+        {
+          "site": "00b766ec",
+          "mnemonic": "CALL",
+          "operands": "0x00bf6989",
+          "gap_start": "00b766f1",
+          "gap_end_exclusive": "00b766fb",
+          "bytes": 10,
+          "after_call": true,
+          "sha256": "f0d2a892bb94936f17e8e780b901b1e7b196e70b62a9401277c270b7d0696b84"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "00b766ec",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00b766f1",
+            "gap_end_exclusive": "00b766fb",
+            "bytes": 10,
+            "after_call": true,
+            "sha256": "f0d2a892bb94936f17e8e780b901b1e7b196e70b62a9401277c270b7d0696b84"
+          },
+          "clear": "Success: Cleared flow override at 00b766ec (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 10 byte(s)"
+        },
+        {
+          "explicit_tail_call": "00b766ec",
+          "clear": {
+            "status": "success",
+            "message": "Success: Cleared flow override at 00b766ec (was: NONE, now: NONE)"
+          }
+        }
+      ],
+      "explicit_tail_end_exclusive": "00b76701",
+      "explicit_tail_terminator": "ret",
+      "explicit_body_sha256": "189c25b2069d96fd5672c248b168047829356b68663f87d5ee66c6524132665e",
+      "body_before": "Function: FUN_00b76680 at 00b76680\nSignature: undefined FUN_00b76680(void)\nEntry: 00b76680\nBody: 00b76680 - 00b76700",
+      "decompile_lines_after": 43,
+      "gaps_remaining": 0,
+      "body_after": "Function: FUN_00b76680 at 00b76680\nSignature: undefined FUN_00b76680(void)\nEntry: 00b76680\nBody: 00b76680 - 00b76700",
+      "stored_body_tail_complete": true
+    }
+  ],
+  "prior_documentation": {
+    "path": "local/r27_key_reserve_prior_documentation.json",
+    "sha256": "0e99a1ee8f01652d727d0a694eac8665135e643241a91c12f4748d908ce1da68"
+  },
+  "final_verified_state": [
+    {
+      "function": "00b76680",
+      "bytes": 129,
+      "gap_count": 0,
+      "export_refreshed": true
+    }
+  ]
+}
