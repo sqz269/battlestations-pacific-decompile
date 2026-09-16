@@ -38,8 +38,7 @@ NativeLuaObjectStorage* native_lua_globals_00b67980(NativeLuaStateStorage& owner
     object->owner_00=&owner;object->kind_04=1;object->index_08=LUA_GLOBALSINDEX;
     object->opaque_0c=0;object->tracked_10=0;return object;
 }
-namespace {
-NativeLuaObjectStorage* get_by_name_unprotected(
+NativeLuaObjectStorage* native_lua_get_by_name_00b67800(
     NativeLuaObjectStorage& table,void* fresh,const char* key){
     const bool globals=table.kind_04==3;
     (void)lua_checkstack(table.owner_00->state_04,1);
@@ -55,6 +54,7 @@ NativeLuaObjectStorage* get_by_name_unprotected(
     if(owner->high_water_4c4<=slot_index)owner->high_water_4c4=slot_index+1;
     auto& slot=owner->slots_14[slot_index];slot.references_00[slot.count_14]=object;++slot.count_14;return object;
 }
+namespace {
 struct NamedLookupOperation {
     NativeLuaObjectStorage* table;
     void* fresh;
@@ -63,10 +63,10 @@ struct NamedLookupOperation {
 };
 void named_lookup_operation(lua_State*,void* context) {
     auto& operation=*static_cast<NamedLookupOperation*>(context);
-    operation.result=get_by_name_unprotected(*operation.table,operation.fresh,operation.key);
+    operation.result=native_lua_get_by_name_00b67800(*operation.table,operation.fresh,operation.key);
 }
 } // namespace
-NativeLuaObjectStorage* native_lua_get_by_name_00b67800(
+NativeLuaObjectStorage* native_lua_get_by_name_protected(
     NativeLuaObjectStorage& table,void* fresh,const char* key){
     auto* const state=table.owner_00->state_04;
     const int entry_top=lua_gettop(state);

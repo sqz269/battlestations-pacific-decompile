@@ -422,8 +422,11 @@
     "ordering_limit": "FH3 actions run before A696F0 restores Lua CallInfo/base. Index validity during a nested metamethod error is not established."
   },
   "source_boundary": {
-    "function": "native_lua_get_by_name_00b67800",
+    "function": "native_lua_get_by_name_protected",
     "dependency": "pinned linked Lua5.1.1 private luaD_pcall",
+    "scope": "Explicitly selected only by three native base-reader named calls and two native Particle-reader named calls.",
+    "raw_native_default": "native_lua_get_by_name_00b67800 and native_lua_get_by_string_00b68100 retain original Lua nonlocal transfer.",
+    "source_exception": "NativeLuaOperationError derives std::exception, carries status and returns a fixed nonallocating what message.",
     "same_c_frame": true,
     "trivial_callback_locals_only": true,
     "covers": "checkstack, pushlstring, gettable and subsequent output/tracking publication",
@@ -433,13 +436,65 @@
     "requires": "stable table/owner/interpreter/stack domain throughout callbacks; no foreign C++ exception thrown through Lua",
     "general_retained_dispatch_admitted": false
   },
+  "protected_callback_audit": [
+    {
+      "callback": "read_ship_depth_protected",
+      "source": "src/game_hosts_lua.cpp",
+      "named_lookup_lines": [
+        837,
+        839,
+        860,
+        887,
+        888,
+        891
+      ],
+      "protected_caller": "read_ship_tuning_lua",
+      "pcall_line": 941
+    },
+    {
+      "callback": "read_ship_layer_timing_protected",
+      "source": "src/game_hosts_lua.cpp",
+      "named_lookup_lines": [
+        967,
+        968,
+        985
+      ],
+      "protected_caller": "read_ship_layer_timing_input_lua",
+      "pcall_line": 1020
+    },
+    {
+      "callback": "read_protected",
+      "source": "src/game_ship_avoidance_tuning_lua.cpp",
+      "named_lookup_lines": [
+        29,
+        52,
+        57
+      ],
+      "protected_caller": "read_ship_avoidance_tuning_lua",
+      "pcall_line": 84
+    },
+    {
+      "callback": "read_ramp_protected and load_ship_ai_path_turn_ramp_0083d492",
+      "source": "src/ship_ai_path_turn_ramp.cpp",
+      "named_lookup_lines": [
+        31,
+        32,
+        33,
+        46,
+        52,
+        58
+      ],
+      "protected_caller": "read_ship_ai_path_turn_ramp_lua",
+      "pcall_line": 70
+    }
+  ],
   "validation": {
     "full_build": {
       "command": "./scripts/build.ps1",
       "exit_code": 0,
       "ctests_passed": 3,
       "log": "local/lua_unwind_full_build.log",
-      "log_sha256": "162b043586300b83bd5a4d1c816696416cc466807a97bd4e1e799844d283a925",
+      "log_sha256": "ce08f781f0275b014258d6d9b3069b26031b292c62daf1c6fd422e1dbfc50b91",
       "architecture": "MSVC Win32",
       "flags": [
         "/MD",
@@ -515,7 +570,29 @@
       "failed": 0,
       "log": "local/lua_unwind_call_verify.log"
     },
-    "final_probe_libraries": "All three focused probes relinked against this worktrees completed strict build; exited0."
+    "existing_callback_contract_probe": {
+      "exit_code": 0,
+      "actual_protected_wrappers": 4,
+      "failure": "genuine globals __index Lua error",
+      "returned_status": "all wrappers false without C++ throw",
+      "returned_error_text": "original-wrapper-error",
+      "output_preimages_preserved": true,
+      "caller_stack_sentinel_preserved": true,
+      "game_hosts_bodies": "unchanged source slice; no stand-ins for callbacks/wrappers",
+      "other_two_bodies": "current built source library",
+      "source_status_caught_as_std_exception": true,
+      "log": "local/lua_callback_contract_build.log"
+    },
+    "raw_default_preservation": {
+      "baseline": "af9ce1480",
+      "functions": [
+        "native_lua_get_by_name_00b67800",
+        "native_lua_get_by_string_00b68100"
+      ],
+      "result": "both complete function bodies text-identical after newline normalization",
+      "log": "local/lua_raw_contract_check.log"
+    },
+    "final_probe_libraries": "All four focused probes relinked against this worktrees completed corrected strict build; exited0."
   },
   "artifacts": [
     {
@@ -532,7 +609,19 @@
     },
     {
       "path": "local/lua_named_handler_probe.cpp",
-      "sha256": "69429db4304fda58f58f908b715c5533c1f6a1d26fa30c742784c0d363b7780c"
+      "sha256": "62e2e90d95ee6c115c2ca63707294dea2c79bfed2fe77a83f17037cf281ee2c3"
+    },
+    {
+      "path": "local/lua_callback_contract_probe.cpp",
+      "sha256": "e0a2a9794c7fa0a276a6f0fd82ea48b9cb197116ae556e0154800b41d47f9eca"
+    },
+    {
+      "path": "local/lua_callback_source.inc",
+      "sha256": "df393b80a1c4b002c095d58d3bdec367acd75adf454c16dfc4178adb7d068403"
+    },
+    {
+      "path": "local/make_callback_probe_slice.py",
+      "sha256": "551aafed6d745679ffd7ee0884f8b55fc11c7da1dceda41c286a6532b9743b16"
     },
     {
       "path": "local/build_lua_unwind_probe.ps1",
@@ -551,6 +640,10 @@
       "sha256": "2c4cf4d25a9724c82b618645012cbed64df6869bf4620bbc836e0b414b394602"
     },
     {
+      "path": "local/lua_callback_contract_build.log",
+      "sha256": "c26ce28b6af76c92c84712f2a5dc5e2200bcbfd044ffcbbd89f9663fd3491df5"
+    },
+    {
       "path": "local/lua_unwind_seed_verify.log",
       "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
     },
@@ -560,13 +653,16 @@
     }
   ],
   "source_hashes": {
-    "src/native_lua_objects.cpp": "74c5895f6e3fe4389ff32bedd1f92c58de84de7a072c17a6453565f087da0455",
-    "include/bsp/native_lua_objects.hpp": "ea2829a88429ebc7eb74815938b3ebc25aa2faa614c093cba6e380fbeebf7ac7",
-    "src/native_effect_component_reader.cpp": "e89f835cbd730a9ca7d5080faf3e0beb9b72e5f33b072713d732fbcc43f1bb47",
-    "src/native_particle_component_reader_raw.cpp": "a278e0f7d360ec2816f46f0391038921f080b8fc152c5e15a20f265b9951875e"
+    "src/native_lua_objects.cpp": "2cd32377251088d5c745d81f55e57616e35a9c92e724ecb25d03ea00aca1e484",
+    "include/bsp/native_lua_objects.hpp": "29e6bb45696f8dff0f9984d7458fbd8b4d2cab5307cb1a49a4c11b6fc6ae6877",
+    "src/native_effect_component_reader.cpp": "6e859a59d21a501eb85436071a3790c1e342d63ea00fe05e004a8f1c058e02f0",
+    "src/native_particle_component_reader_raw.cpp": "8aa1c44eeaf309418378e1869097ffa279858a58d269c56f3c1c25c04cb7598e",
+    "src/game_hosts_lua.cpp": "3aa557cb8ae9a4b7f51a8f2efa43358a023764a3c6131b1acafaeafd0ce67819",
+    "src/game_ship_avoidance_tuning_lua.cpp": "85243079baf1f442ce313cfd9825fab73fe94920c2087165847bcb494aa8840e",
+    "src/ship_ai_path_turn_ramp.cpp": "813ec95a2cec3b2291b35854657b1ec3edc12e9372fc75adb73bd977b13b282c"
   },
   "built_libraries": {
-    "build/win32/Release/bsp_core.lib": "b3808e8d393200c08a0337825e1800d3864099e5e410d3251b719dc69fda2881",
+    "build/win32/Release/bsp_core.lib": "5f6f31a0e868fb09d40435afe24dd2497646ad3cb7a1fd4724caaad860f00503",
     "build/win32/Release/bsp_lua511.lib": "a3ce06f4fd68dbd7760f7d2a84019197b4e771c7552510710979e137dd7aa187"
   },
   "limits": [
