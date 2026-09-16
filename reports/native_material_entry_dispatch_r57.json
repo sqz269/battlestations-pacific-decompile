@@ -6275,5 +6275,80 @@
     "bytes": 356618245,
     "all_entries_rehashed": true,
     "scope": "Full current source/build compiler input/output closure and focused fixture/native/link evidence. Seven same-process physical I386 modules; no selected-pass/model/light runtime proof."
+  },
+  "primary_integration": {
+    "source_commit": "6f12acebde0b0150a0ad1d0a708c9a7dc202c83a",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "fixture_rerun_after_integration": false,
+    "archive": "local/evidence-r57/material-entry-main-r57.zip",
+    "sha256": "ea2324b948f49a4a852d9b102e3fed95b6f94e2edaaf26b780c4d6287e2cffa1",
+    "files": [
+      {
+        "path": "local/r57_integration.log",
+        "bytes": 1180,
+        "sha256": "2805a4b8b75f2087f21a098efd099fb00c7340fac4f026398c8860bacbb93c6b"
+      },
+      {
+        "path": "src/native_material_entry_dispatch.cpp",
+        "bytes": 8586,
+        "sha256": "de585d7cf4c11a14f3e46f52571909d05311f0fe967191da29d1386821103329"
+      },
+      {
+        "path": "include/bsp/native_material_entry_dispatch.hpp",
+        "bytes": 3308,
+        "sha256": "64807b0698c33ce5dcf5d78c18ba634e2f406ececcda168631b897953dbedb9b"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 151270,
+        "sha256": "cfdd9630c86c62416b064b849e258bc099202cc961398ea2ca727ac1fad532e2"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 231178,
+        "sha256": "dc61cfc587c7f6216c23cd82dd2c620f593030ccc06e2dbcb0ce4e818d39eea6"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_material_entry_dispatch.obj",
+        "bytes": 16311,
+        "sha256": "a303a9e3ee4453233b3bfd0e32673cfddb557dfd4ec965fb91947009c7b625e5"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63672840,
+        "sha256": "ff23131ee3844043dc96dbbd80e2c7cdd97ccd11f4a161d2f8445d9b6e977d88"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2267136,
+        "sha256": "164b905ea2737504576803d69645d5606d3223963a6eb83ac82239299b846e46"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2408,
+        "sha256": "82540f97ee296b254a8654a8752f7e793f5988a90dd8f36b075e8224494dc86c"
+      },
+      {
+        "path": "local/material_dispatch_r57/call_gate.log",
+        "bytes": 80,
+        "sha256": "919625da68cff41de86ee838ef691ee686c47ce4c1ce6c25cca6a213768dbc32"
+      },
+      {
+        "path": "local/material_dispatch_r57/annotations.log",
+        "bytes": 239,
+        "sha256": "14b958e42e928d6c66b4a8a4dc5b5a2a74c65bedd24e263a855616d1c482b622"
+      },
+      {
+        "path": "local/material_dispatch_r57/exports.log",
+        "bytes": 206,
+        "sha256": "3b36fa1645a7b94122ffdda61a9b70c0a3ea295773cfa668cb77425b0451a9a5"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T170353Z.json",
+        "bytes": 13146,
+        "sha256": "65fe2fda0d14029831a82dde297d33532ea1cc675bb5b4378b3a17f507e444c3"
+      }
+    ]
   }
 }
