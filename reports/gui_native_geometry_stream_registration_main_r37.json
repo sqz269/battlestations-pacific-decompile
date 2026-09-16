@@ -1,0 +1,226 @@
+{
+  "schema": 1,
+  "packet": "gui_native_geometry_stream_registration_main_r37",
+  "status": "complete_host_api_prerequisite_strict_win32_three_ctests_and_archived_object_library_checked",
+  "created_utc": "2026-09-16T11:00:01.595Z",
+  "branch_head": "f9a458a5dae1fae8d8fd325f37e4b97fe0e3fc9f",
+  "base_main": "6a0c65625a796cf962d99c91477ffb2a9818c696",
+  "owned_files": [
+    "include/bsp/gui_native_geometry.hpp",
+    "src/gui_native_geometry.cpp",
+    "docs/GUI_NATIVE_GEOMETRY_STREAM_REGISTRATION.md",
+    "reports/gui_native_geometry_stream_registration_main_r37.json"
+  ],
+  "native_addresses": [],
+  "source_scope": {
+    "kind": "host metadata companion registration API",
+    "changed_types": [
+      "GuiNativeGeometryOwners"
+    ],
+    "added_overload": "register_stream_clone_creator(NativeStreamCloneAcquired&, NativeLogicalVertexOwnerContext&, NativeLogicalIndexCreationContext&)",
+    "inner_refactor": "Impl::register_stream now receives only NativeLogicalVertexOwnerContext and NativeLogicalIndexCreationContext",
+    "excluded": [
+      "mesh and section acquired structures",
+      "native factories and raw support",
+      "material registration",
+      "logical mapping and processing bindings",
+      "renderer construction and ownership",
+      "native address or body claims"
+    ]
+  },
+  "source_diff": {
+    "baseline_git_blobs": {
+      "include/bsp/gui_native_geometry.hpp": "a6df73056b6ca5c85801db02eb88a7c21d14b0df",
+      "src/gui_native_geometry.cpp": "dcee530667f6fb6364833c479c16c8525f88151d"
+    },
+    "resulting_git_blobs": {
+      "include/bsp/gui_native_geometry.hpp": "ec45f0de619cfc43c7f33ce4a55baf751f27da1c",
+      "src/gui_native_geometry.cpp": "03ec97c86e296d9056e7799d440c400f2589679c"
+    },
+    "summary": "three owned files changed: one overload declaration, direct-context inner parameters, one overload definition, and focused documentation"
+  },
+  "provider_git_blobs": {
+    "include/bsp/native_stream_clone.hpp": "ce2e7741362f51544b91a798c3e96ca4c67d180e",
+    "src/native_stream_clone.cpp": "b2a48e0066cb8f3d125b12d169d6b4302266db04",
+    "include/bsp/native_logical_vertex_owner.hpp": "f2c5a72e46f030f049f370eda07de9594a5f3816",
+    "src/native_logical_vertex_owner.cpp": "be3c28943b8b96b9c2e6829fb93546654271de62",
+    "include/bsp/native_logical_index_owner.hpp": "11d29b13d925881300e58513113e3baeb14b74f1",
+    "src/native_logical_index_owner.cpp": "b121f65bc4986b04c0958d2ababb1c7a6f00ad08",
+    "include/bsp/native_render_context.hpp": "c2659850ea55864f3b0f1b6478cccd0845aadb8b"
+  },
+  "existing_services_route": {
+    "guards_unchanged": [
+      "services.geometry address equals this GuiNativeGeometryOwners",
+      "services.vertices.actual_owners address equals registration.owners"
+    ],
+    "failure_message_unchanged": "stream companion registration must use the same canonical owner domain",
+    "delegation": "passes services.vertices and services.indices directly to the common inner registration body",
+    "new_restrictions": false,
+    "current_callers": [
+      "src/gui_text_native_renderer.cpp",
+      "src/native_stream_clone.cpp clone vertex route",
+      "src/native_stream_clone.cpp clone index route"
+    ]
+  },
+  "direct_context_route": {
+    "guards": [
+      "vertices.actual_owners address equals registration.owners",
+      "vertices.actual_physical address equals indices.lifetime.actual_physical",
+      "vertices.actual_renderer_00f8d394 reference address equals indices.lifetime.actual_renderer_00f8d394 reference address",
+      "vertices.actual_synchronization_0108d6dc address equals indices.lifetime.actual_synchronization_0108d6dc"
+    ],
+    "index_contract_audit": "NativeLogicalIndexCreationContext has no canonical-owner field; its lifetime contract borrows the same renderer cell, synchronization globals, and physical owner context. The direct route checks those explicit relations.",
+    "old_callers_affected": false
+  },
+  "registration_schedule": [
+    "Require one acquired.creator with no companion and no canonical registration.",
+    "Append the corresponding vertex or index host entry and store acquired.creator as its raw identity.",
+    "Construct NativeLogicalVertexReference or NativeLogicalIndexReference over the existing actual +04 count.",
+    "If companion construction throws, erase only the empty host entry; the completed raw creator remains in acquired.",
+    "Publish the companion pointer into acquired before canonical bind.",
+    "Bind the companion through the existing registration callback.",
+    "After successful bind, mark the host entry registered and finally mark acquired.canonical_registration.",
+    "Bind failure retains the raw creator and companion with registration flags unset; no rollback, release, retry, or added retain occurs."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; MSVC Win32 Release /W4 /WX /fp:strict under the /MD project contract",
+    "ctests": "3/3 passed: reconstructed_math, native_math_differential, tool_tests",
+    "source_provider_review": "current vertex/index reference constructors and context contracts reviewed; exact before/after and provider blobs recorded",
+    "existing_callers": "broad header rebuild compiled all three existing services-route call sites",
+    "focused_fixture": "none retained in this worktree; no new permanent test added for the metadata-only forwarding overload",
+    "ghidra": "read-only; no native query or mutation required because this packet claims no native body"
+  },
+  "artifact_archive": {
+    "path": "local/evidence-r37/gui-stream-registration-r37-final.zip",
+    "bytes": 13162543,
+    "sha256": "73243a1363a2eb22c23157cc892cd8b03cb19913209190700ea7c7b75fc8cb8c",
+    "manifest_entries": 17,
+    "manifest": [
+      {
+        "path": "include/bsp/gui_native_geometry.hpp",
+        "bytes": 10393,
+        "sha256": "c4eb78a5c91fe3687209c6c1ad52af081cb231aef281364b94d78d7a097bf8fd"
+      },
+      {
+        "path": "src/gui_native_geometry.cpp",
+        "bytes": 28419,
+        "sha256": "31be3e91201a8388cb9c25bd56e6b9b750f19ab474cd2808fab47605e54d53c0"
+      },
+      {
+        "path": "docs/GUI_NATIVE_GEOMETRY_STREAM_REGISTRATION.md",
+        "bytes": 3282,
+        "sha256": "fcfc6cdfa025213871eff49d469fd6cc392c8a0e6147a6f9b3f1b83e17ec97e5"
+      },
+      {
+        "path": "reports/native_renderer_generated_model_main_r36.json",
+        "bytes": 6166,
+        "sha256": "cf228c08c08fced3d15ceaf82e049961facf29e785fb6d8b95180f699098fccf"
+      },
+      {
+        "path": "include/bsp/native_mesh_clone.hpp",
+        "bytes": 2821,
+        "sha256": "0fbe93a15ed525fd128257ca58ac4c4d8da4b4a533dd345c6c856bce5d839d5e"
+      },
+      {
+        "path": "include/bsp/native_stream_clone.hpp",
+        "bytes": 3283,
+        "sha256": "a333d180afcf21084068a671d60c34ee8e1b18ea980a6c03b115a32ce2ff3e6a"
+      },
+      {
+        "path": "src/native_stream_clone.cpp",
+        "bytes": 9737,
+        "sha256": "ca2fff6a311b90c35dc926d75142e8318f72d2c3198c4420afdc2dc4250f11ab"
+      },
+      {
+        "path": "include/bsp/native_logical_vertex_owner.hpp",
+        "bytes": 7242,
+        "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+      },
+      {
+        "path": "src/native_logical_vertex_owner.cpp",
+        "bytes": 25341,
+        "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba"
+      },
+      {
+        "path": "include/bsp/native_logical_index_owner.hpp",
+        "bytes": 6804,
+        "sha256": "c0ae53059fba249f589990b7d41d1986a2134cd86b99cd5d6db7ab2c849b38cb"
+      },
+      {
+        "path": "src/native_logical_index_owner.cpp",
+        "bytes": 20415,
+        "sha256": "d2de40f465f482dc1ad6511ed2a848e587718279bc47958c07b9763bc788a2a8"
+      },
+      {
+        "path": "include/bsp/native_render_context.hpp",
+        "bytes": 6924,
+        "sha256": "1c8d834d50cbf8ee7f660e7803efe6bad43fe70bbe87fd5cdf3375f6e68ef56d"
+      },
+      {
+        "path": "src/gui_text_native_renderer.cpp",
+        "bytes": 4627,
+        "sha256": "4a05f92e7209fd8ed69e184d6e6c48261611d2044c66a5608a43fa421cff7150"
+      },
+      {
+        "path": "local/r37_gui_stream_registration_build.log",
+        "bytes": 6819,
+        "sha256": "6132e3e803a0ac6bc13c369f930224b7f03666eeb4684f8036298f9c6389e431"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/gui_native_geometry.obj",
+        "bytes": 312713,
+        "sha256": "5a42bb0aa71c62790e827f0c4d3add29e70a773edd1c240550b31eb40a0e9221"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63411290,
+        "sha256": "9a8e7190a471f0210bf4f38bb0cd0993af1fcf27aaee1824e983d5743787d157"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "bytes": 1820,
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+      }
+    ]
+  },
+  "evidence_limits": [
+    "This validates the host API, provider type compatibility, build, object, and library only.",
+    "No native ABI replacement, original FH3/SEH identity, renderer construction, game runtime, or gameplay behavior is established.",
+    "The direct overload is a prerequisite; no generated-model producer is admitted by this packet."
+  ],
+  "primary_integration": {
+    "source_merge": "eba0a7fc2",
+    "review": "Complete production diff reviewed; original services guards unchanged and same acquired/companion publication body retained. Direct route checks same actual owner/context/reference identities.",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "log": "local/r37_geometry_stream_integration.log",
+    "worker_artifacts_verified": 17,
+    "fixture": "No new runtime fixture; source interface and compiled existing callers only."
+  },
+  "primary_archive": {
+    "path": "local/evidence-r37/gui-stream-registration-main-r37.zip",
+    "sha256": "1d7df66ce07f11a9017702e57a4817fa06b71e307652c98e09b5e9ec020f04e3",
+    "files": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "879381213bbdc3c203a6b1ba6602aade07ffd9ad92102e42192ccda03bdaf252"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/gui_native_geometry.obj",
+        "sha256": "2f494941081098a2401a33254adec9cdb7095fe927ae9b2d152a84acfa344f3b"
+      },
+      {
+        "path": "local/r37_geometry_stream_integration.log",
+        "sha256": "f79ab84338b9fe8d58487887f5deb8e26d6c2139ad845ad2ae4134cbbc4081a2"
+      },
+      {
+        "path": "include/bsp/gui_native_geometry.hpp",
+        "sha256": "c4eb78a5c91fe3687209c6c1ad52af081cb231aef281364b94d78d7a097bf8fd"
+      },
+      {
+        "path": "src/gui_native_geometry.cpp",
+        "sha256": "31be3e91201a8388cb9c25bd56e6b9b750f19ab474cd2808fab47605e54d53c0"
+      }
+    ]
+  }
+}
