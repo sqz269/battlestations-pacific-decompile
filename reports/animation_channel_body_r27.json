@@ -1,0 +1,538 @@
+{
+  "packet": "animation_channel_body_r27",
+  "base": "ab3a53ee0",
+  "implementation_commit": "ef5c32343",
+  "generated_utc": "2026-09-16T08:17:46.638009+00:00",
+  "program": "/battlestationspacific.exe",
+  "source": [
+    "include/bsp/native_animation_channel_body_reader.hpp",
+    "src/native_animation_channel_body_reader.cpp",
+    "cmake/startup.cmake"
+  ],
+  "coverage": {
+    "ordinary_functions": 5,
+    "ordinary_bytes": 1047,
+    "eh_code_bytes": 26,
+    "eh_data_bytes": 52,
+    "profile_bytes": 4,
+    "tag_bytes": 136,
+    "total_receipt_bytes": 1265,
+    "exact_call_rows": 41
+  },
+  "functions": [
+    {
+      "address": "00b8aad0",
+      "end_inclusive": "00b8ad50",
+      "bytes": 641,
+      "proposed_name": "BSP_AnimationChannelsItem_ReadChannel",
+      "source_symbol": "read_native_animation_channel_00b8aad0",
+      "original_abi": "ECX actual item (only forwarded, unused downstream); stack actual handle address and captured group; RET8",
+      "behavior": "alloc channel28h; name and two DWORDs; eleven-name classification; create actual key children; publish after each key; no channel rollback"
+    },
+    {
+      "address": "00b8a0a0",
+      "end_inclusive": "00b8a118",
+      "bytes": 121,
+      "proposed_name": "BSP_AnimationChannel_ReadKey",
+      "source_symbol": "read_native_animation_key_00b8a0a0",
+      "original_abi": "ECX item unused; stack actual handle address and channel; RET8",
+      "behavior": "DWORD and nine ST0-to-FSTP32 scalar reads; append complete key28h"
+    },
+    {
+      "address": "00b771c0",
+      "end_inclusive": "00b77215",
+      "bytes": 86,
+      "proposed_name": "BSP_AnimationChannelGroup_PublishChannel",
+      "source_symbol": "publish_native_animation_channel_00b771c0",
+      "original_abi": "ECX group; stack index and channel; EAX last-key+8 address; RET8",
+      "behavior": "old field1C FLD/FSTP32; raw index publication; last-key+8 FLD/FSTP32; FCOMIP old versus candidate; JBE chooses candidate including unordered/equal; MOVSS result"
+    },
+    {
+      "address": "00b77870",
+      "end_inclusive": "00b778b5",
+      "bytes": 70,
+      "proposed_name": "BSP_AnimationChannel_AppendKey",
+      "source_symbol": "append_native_animation_key_00b77870",
+      "original_abi": "ECX channel; stack key28h; RET4",
+      "behavior": "grow when count equals capacity; signed max(1,wrapping capacity*2); raw REP MOVSD ten DWORDs when destination nonzero; count++"
+    },
+    {
+      "address": "00b76680",
+      "end_inclusive": "00b76700",
+      "bytes": 129,
+      "proposed_name": "BSP_AnimationKeys_Reserve",
+      "source_symbol": "reserve_native_animation_keys_00b76680",
+      "original_abi": "ECX actual key-vector header0Ch; stack requested signed capacity; RET4",
+      "behavior": "clamp capacity1; allocate wrapping capacity*28h; REP MOVSD copies; free old data before publishing replacement/capacity"
+    }
+  ],
+  "old_ghidra_metadata": [
+    {
+      "address": "00b8aad0",
+      "annotation": {
+        "address": "00b8aad0",
+        "function_name": "FUN_00b8aad0"
+      }
+    },
+    {
+      "address": "00b8a0a0",
+      "annotation": {
+        "address": "00b8a0a0",
+        "function_name": "FUN_00b8a0a0"
+      }
+    },
+    {
+      "address": "00b771c0",
+      "annotation": {
+        "address": "00b771c0",
+        "function_name": "FUN_00b771c0"
+      }
+    },
+    {
+      "address": "00b77870",
+      "annotation": {
+        "address": "00b77870",
+        "function_name": "FUN_00b77870"
+      }
+    },
+    {
+      "address": "00b76680",
+      "annotation": {
+        "address": "00b76680",
+        "function_name": "FUN_00b76680"
+      }
+    }
+  ],
+  "annotation_status": "Worker read-only. Primary applies reviewed names/comments and ledger records under write lock.",
+  "original_signature": "All five saved function signatures are undefined FUN_<address>(void); ABI recovered from physical instructions.",
+  "byte_receipt": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "total_bytes": 1265,
+    "all_match": true,
+    "aggregate_sha256": "14ad85cf5c42ea84e3e7be68d469a755c33727af804b62c00a75a7f573c4af40",
+    "ranges": [
+      {
+        "address": "00b8aad0",
+        "length": 641,
+        "end_exclusive": "00b8ad51",
+        "kind": "complete_body",
+        "file_offset": 7908048,
+        "sha256": "96c84501db625802a907fd95bab8c41bcb3a0a4f41459bdd7419c3fbc8235ce0",
+        "matches_disk": true
+      },
+      {
+        "address": "00b8a0a0",
+        "length": 121,
+        "end_exclusive": "00b8a119",
+        "kind": "complete_body",
+        "file_offset": 7905440,
+        "sha256": "0593f0d97e98ff2666235af79ca6988a456892782efbb546049197feebee81bb",
+        "matches_disk": true
+      },
+      {
+        "address": "00b771c0",
+        "length": 86,
+        "end_exclusive": "00b77216",
+        "kind": "complete_body",
+        "file_offset": 7827904,
+        "sha256": "f7ee83c7ef8695c724e9015c389fd30977bbcb9304f518958a2d9d1ddc01368f",
+        "matches_disk": true
+      },
+      {
+        "address": "00b77870",
+        "length": 70,
+        "end_exclusive": "00b778b6",
+        "kind": "complete_body",
+        "file_offset": 7829616,
+        "sha256": "cf2ce969459d24763074bde7bdc54a96385a5f1be8108e7aeb55db688804ac44",
+        "matches_disk": true
+      },
+      {
+        "address": "00b76680",
+        "length": 129,
+        "end_exclusive": "00b76701",
+        "kind": "complete_repaired_body",
+        "file_offset": 7825024,
+        "sha256": "189c25b2069d96fd5672c248b168047829356b68663f87d5ee66c6524132665e",
+        "matches_disk": true
+      },
+      {
+        "address": "00cc28f0",
+        "length": 26,
+        "end_exclusive": "00cc290a",
+        "kind": "unwind_funclets_and_handler",
+        "file_offset": 9185520,
+        "sha256": "beae580fa171f6a13863b91b872c2c1d0f053e61fad8f3d72b4772e6210dd1ac",
+        "matches_disk": true
+      },
+      {
+        "address": "00dfbf08",
+        "length": 52,
+        "end_exclusive": "00dfbf3c",
+        "kind": "unwind_map_and_funcinfo",
+        "file_offset": 10469128,
+        "sha256": "eaf17a9d1b29196b9f5e4c7c8c0d992854dd4441bd3f2e5633ea716b353d14a0",
+        "matches_disk": true
+      },
+      {
+        "address": "00d632b0",
+        "length": 4,
+        "end_exclusive": "00d632b4",
+        "kind": "channel_profile_slot0",
+        "file_offset": 9843376,
+        "sha256": "5ae14f1d954ba6d85032fec8151028e2e54e9acedebfc25118d430414c9a0ad3",
+        "matches_disk": true
+      },
+      {
+        "address": "00d632fc",
+        "length": 136,
+        "end_exclusive": "00d63384",
+        "kind": "classification_and_key_tags",
+        "file_offset": 9843452,
+        "sha256": "b5a1cfd8569c785d3a1fe46197a83ae89a62f3d4dd71069e325514780ed4b1d0",
+        "matches_disk": true
+      }
+    ]
+  },
+  "call_rows": [
+    {
+      "address": "00b8aaf2",
+      "native": "00bf681b",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8ab33",
+      "native": "00bea010",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8ab4c",
+      "native": "0041dd40",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8ab61",
+      "native": "00bf7680",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8ab83",
+      "native": "00419cc0",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8ab8a",
+      "native": "00bd1510",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8ab91",
+      "native": "00be9a00",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8ab9b",
+      "native": "00be9a00",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8abb0",
+      "native": "00bf7fbf",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8abcf",
+      "native": "00425850",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8abe9",
+      "native": "00425850",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8ac03",
+      "native": "00425850",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8ac1d",
+      "native": "00425850",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8ac37",
+      "native": "00425850",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8ac4e",
+      "native": "00425850",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8ac65",
+      "native": "00425850",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8ac7c",
+      "native": "00425850",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8ac93",
+      "native": "00425850",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8acaa",
+      "native": "00425850",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8acba",
+      "native": "00715bf0",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8acce",
+      "native": "00bea680",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8acec",
+      "native": "00bf7fbf",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8ad07",
+      "native": "00b8a0a0",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8ad10",
+      "native": "00b771c0",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8ad1b",
+      "native": "00be9c40",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8ad2c",
+      "native": "00be9ed0",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8ad33",
+      "native": "00715bf0",
+      "function": "00b8aad0"
+    },
+    {
+      "address": "00b8a0ab",
+      "native": "00be9a00",
+      "function": "00b8a0a0"
+    },
+    {
+      "address": "00b8a0b6",
+      "native": "00be99d0",
+      "function": "00b8a0a0"
+    },
+    {
+      "address": "00b8a0c1",
+      "native": "00be99d0",
+      "function": "00b8a0a0"
+    },
+    {
+      "address": "00b8a0cc",
+      "native": "00be99d0",
+      "function": "00b8a0a0"
+    },
+    {
+      "address": "00b8a0d7",
+      "native": "00be99d0",
+      "function": "00b8a0a0"
+    },
+    {
+      "address": "00b8a0e2",
+      "native": "00be99d0",
+      "function": "00b8a0a0"
+    },
+    {
+      "address": "00b8a0f2",
+      "native": "00be99d0",
+      "function": "00b8a0a0"
+    },
+    {
+      "address": "00b8a10c",
+      "native": "00b77870",
+      "function": "00b8a0a0"
+    },
+    {
+      "address": "00b7788c",
+      "native": "00b76680",
+      "function": "00b77870"
+    },
+    {
+      "address": "00b766ab",
+      "native": "00bf55be",
+      "function": "00b76680"
+    },
+    {
+      "address": "00b766ec",
+      "native": "00bf6989",
+      "function": "00b76680"
+    },
+    {
+      "address": "00cc28f3",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc28fb",
+      "native": "00be9ed0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc2905",
+      "native": "00bf6b43",
+      "kind": "tail_jump"
+    }
+  ],
+  "listing_repair": "Primary removed returning-free CALL_RETURN override at B766EC and repaired only missing B766F1..FA; existing B766FB..B76700 tail retained. Full B76680..B76700 now129B, saved/refreshed. Parent report native_animation_key_vector_flow_repair_r27.json.",
+  "storage_contract": [
+    "Channel28h stamps CEB130 then D632B0 and references1; initializes name8/C and key vector1C/20/24; +10 remains uninitialized; +14/+18 hold read DWORDs of unresolved meaning.",
+    "Key28h is DWORD plus nine float32; group1C observes the last key at +8. Time/duration interpretation is provisional.",
+    "Classification indices0..10 are Position.X, Position.Y, Position.Z, Rotation.H, Rotation.P, Rotation.B, Scale.X, Scale.Y, Scale.Z, ZoomFactor, Dissolve. Nonempty constants permit equivalent null-or-stricmp source reuse of425850.",
+    "Unknown classification keeps FFFFFFFF, with unvalidated wrapping vector-address write before vector data. Group is not touched before a successful key append. Null group then faults at first FLD; no fallback.",
+    "Each matching key appends then republishes channel. Duplicate channel names overwrite borrowed group pointer without decrement/free. Zero-key or unknown-only channel allocations have no publication/destruction path."
+  ],
+  "exception_contract": {
+    "map": "DFBF08: state0->-1 CC28F0 temp-name destroy; state1->-1 CC28F8 child release. HandlerCC2900 and FuncInfoDFBF18. States are separate, not nested.",
+    "channel": "No allocation or channel/name/vector guard, including initial ReadString failure. Completed/published and partially constructed channel remains allocated on error.",
+    "temporary": "state0 starts after ReadString returns; copy failure destroys temporary; state disarmed before normal destroy; normal destroy failure is not retried.",
+    "child": "state1 starts after CreateChild returns; scalar/append/publication/skip failure releases child; state disarmed before normal release. No channel rollback. C++ cleanup failure while unwinding terminates.",
+    "boundary": "New explicit-service C++ ABI, not original FH3/SEH or hardware-fault delivery; private register/stack aliases are not recovered."
+  },
+  "current_profile_contract": {
+    "channel_profile": "D632B0 first slot BD30E0; stamped numeric native profile, no host vtable/second owner. Whole channel deletion is outside this packet.",
+    "services": "Concrete existing raw pooled string, structured child, DWORD and ST0 float services; required current stream slot34/38 targetsBE42E0/BE4300, slot44BE4360, slot48BE4620; source raw stream dispatch remains explicit. No missing service defaults."
+  },
+  "x87_contract": "Native old1C FLD/FSTP32 occurs before pointer publication; candidate last-key+8 FLD/FSTP32 after publication; reload candidate then old, FCOMIP old,candidate and pop candidate. JBE selects candidate on old<=candidate OR unordered. Equal signed zeros select candidate. Masked SNaNs are quieted by FLD/FSTP and comparison exception flags remain observable; MOVSS does not recompute float. Source reproduces these operations with inline assembly.",
+  "validation": {
+    "strict_compile": "PASS MSVC Win32 /W4 /WX /EHsc /fp:strict /MD",
+    "verify_seeds": "PASS eight Ghidra/disk seed ranges",
+    "full_build": "PASS full Release scripts/build.ps1, MSVC Win32 /W4 /WX /fp:strict and MultiThreadedDLL (/MD)",
+    "ctest": "PASS reconstructed_math, native_math_differential, tool_tests; 3/3",
+    "focused_probe": "PASS own completed bsp_core library: 72 copied-original/source publication pairs; actual raw channel/node/string/key storage; capacity1/2/4; unknown detach; scalar failure releases child and retains first published key",
+    "call_rows": "PASS 41 rows checked, 0 failed",
+    "probe_command": "cl /std:c++17 /EHsc /W4 /WX /fp:strict /MD /Iinclude local/r27_probe.cpp; own bsp_core/lua/zlib; /MANIFEST:EMBED /BASE:0x10000000 /DYNAMICBASE:NO",
+    "probe_boundary": "Original 86B publication body copied from verified live/disk bytes; 12 selected old/candidate pairs times six masked x87 controls; compare output bits/full status/return/publication including FFFFFFFF index into valid preceding cell. Real raw stream supplies encoded bytes, no synthetic semantic reader. No deliberate process faults or whole channel destructor test. Initial early link lacked still-building library; interim probe linked frozen new object plus R26 lib, final probe relinked own completed library and passed.",
+    "object_inspection": "dumpbin source object confirms FLD/FSTP32, FCOMIP, JBE and MOVSS publication sequence; source __cdecl argument adaptation only"
+  },
+  "proof_limits": [
+    "Function names and scalar meanings are hypotheses.",
+    "Byte/build/fixture proof does not establish original ABI, FH3/SEH, exact native allocator/CRT identity, executable admission, whole resource deletion, rendering or gameplay.",
+    "No permanent tests added; original allocation leaks, invalid-index addressing and missing-group fault behavior are retained without intentionally causing process faults."
+  ],
+  "handler_definition": "Primary defined complete verified CC2900..CC2909 handler, saved/exported; CC2905 tail JMP BF6B43 now passes the same exact live call checker. Prior instruction context and definition archive retained by primary.",
+  "artifact_receipts": [
+    {
+      "path": "include/bsp/native_animation_channel_body_reader.hpp",
+      "bytes": 2383,
+      "sha256": "4d04466770894369a9f42fc18ec693e6a73cc7f8f6344ae9c9a51099d0b1844a"
+    },
+    {
+      "path": "src/native_animation_channel_body_reader.cpp",
+      "bytes": 7779,
+      "sha256": "a6fa952ab8022c00bf7ce824b7895b4e46646513596275c6c27fc6adde15359a"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 146052,
+      "sha256": "0e02f5a46cbab318fa15e17d5aeb9dfd581d03129447250b28c5b27a9a2f97f7"
+    },
+    {
+      "path": "docs/ANIMATION_CHANNEL_BODY_R27.md",
+      "bytes": 6641,
+      "sha256": "3ac6d1997e2c9b3822bdf3da2327b9d3d52591940e310d9eee45f1932f28b09b"
+    },
+    {
+      "path": "local/r27_probe.cpp",
+      "bytes": 8071,
+      "sha256": "5f81c3566f2ee579fc3f576b8860f94410235488c43d60b826882316641e7f85"
+    },
+    {
+      "path": "local/r27_original.hpp",
+      "bytes": 468,
+      "sha256": "31f7451b6635bf171418377d6a620a49b8a510fde436cc5706974ed2d7178329"
+    },
+    {
+      "path": "local/r27-reader.obj",
+      "bytes": 10740,
+      "sha256": "b38e1e61681fd7d278f1af709bf9270695131434230dcf55e25b5d97e777d5a4"
+    },
+    {
+      "path": "local/r27-reader-disassembly.txt",
+      "bytes": 37028,
+      "sha256": "bc21f02f1a34dc99a727b4f0602928bad0b4fe8aff070012e69d98789272da4f"
+    },
+    {
+      "path": "local/r27-probe.exe",
+      "bytes": 43008,
+      "sha256": "6477cb53b5fcfa21f8c224e955d781fb302d436f66ccb9584ded9cef4948cfd1"
+    },
+    {
+      "path": "local/r27-probe.log",
+      "bytes": 215,
+      "sha256": "5f180c036e0941abf3d6c3961927a588dd24ac335a78b02c6576291483dd84ba"
+    },
+    {
+      "path": "local/r27-build.log",
+      "bytes": 4913,
+      "sha256": "d582153c1770b8e0eb60e44d0883f74ae2875ab22a54d2a71d9da2f1d3e38fa0"
+    },
+    {
+      "path": "local/r27-call-verification.log",
+      "bytes": 73,
+      "sha256": "f9368507b376330d8656a8944642d0a801891880da8e2635f9268df0e640f1ba"
+    },
+    {
+      "path": "local/r27_receipt.json",
+      "bytes": 2999,
+      "sha256": "dbef3c38e1cd2b98b31dac6630bbb978c22d5f9c7144dbdd95e9b763106c60bd"
+    },
+    {
+      "path": "local/r27-copy-order-compile.log",
+      "bytes": 42,
+      "sha256": "1bef0c40d631b681f482b5bcd3e35e8764baa33c374260d9e282c142ad0651a1"
+    },
+    {
+      "path": "local/r27-copy-order-seeds.json",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 63082608,
+      "sha256": "a3f9b7106778dd4939c9fde5cb19166f6905881ba0e795c02a60c6bf82bf8095"
+    }
+  ],
+  "local_evidence_scripts": [
+    "local/r27_make_evidence.py",
+    "local/r27_report.py",
+    "local/r27_finalize.py",
+    "local/r27-probe.cmd",
+    "local/r27-compile.cmd"
+  ],
+  "implementation_commits": [
+    "9c357271f",
+    "ef5c32343"
+  ],
+  "review_correction": "B8AB56/58/5B count, source-data and destination-data volatile loads now occupy three explicit source statements before memcpy; no C++ argument evaluation order dependency. Required incremental build/3 CTests and the existing own-library focused probe rerun after source commit ef5c32343."
+}
