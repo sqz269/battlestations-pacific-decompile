@@ -1,0 +1,308 @@
+{
+  "packet": "native_frame_clock_owner_audit_r34",
+  "kind": "read_only_source_and_binary_audit",
+  "baseline": {
+    "main_commit": "89b890308b41eb993389697525fa38d94897ca2c",
+    "cross_branch": "agent/orch5-20260911",
+    "cross_branch_commit": "769bdc3e3b8254f95867b11e2546d629f2a564b6",
+    "renderer_worker_last_change": "6641c05f524e29f9352f66ddbd017c64d2f99cee",
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "ghidra_program": "/battlestationspacific.exe",
+    "ghidra_mode": "read_only"
+  },
+  "scope": {
+    "publication": "01090AB0",
+    "clock_profile": "00D68D50",
+    "included": [
+      "original allocation, construction, initialization, getters, publication, registration, destruction and shared-manager drain",
+      "current-main and agent/orch5-20260911 source producers",
+      "precise raw-object versus FrameClock projection boundary",
+      "minimum source closure and lifetime requirements for a later actual owner"
+    ],
+    "excluded": [
+      "no source, CMake, ledger or Ghidra mutation",
+      "no build or test",
+      "no port or reanalysis of the x87-sensitive 00BEE080 body",
+      "no application or renderer binding"
+    ]
+  },
+  "result": {
+    "actual_raw_source_owner_exists": false,
+    "current_main_producer": "GameStartupHost owns a typed FrameClock projection and publishes its address through a private source cell; it is not the original profile-bearing object",
+    "orch5_producer": "the same typed GameStartupHost projection; native_renderer_control_worker only borrows an externally supplied actual clock cell",
+    "smallest_safe_conclusion": "01090AB0 needs one canonical 80h raw allocation with D68D50 at +0, published and registered in the existing 01090AA0 lifetime domain before renderer-worker creation. The current FrameClock object cannot be used as that allocation because +0 is accumulated float rather than the profile token."
+  },
+  "original_binary": {
+    "loader_state": {
+      "address": "01090AB0",
+      "ghidra_bytes": "00 00 00 00 00 00 00 00",
+      "pe_section": ".data",
+      "section_va": "00E08000",
+      "section_virtual_size": "00297EDC",
+      "section_raw_size": "00010000",
+      "offset_in_section": "00288AB0",
+      "raw_backed": false,
+      "conclusion": "the publication is loader-zero storage"
+    },
+    "complete_publication_writer_set": {
+      "xref_count": 68,
+      "writes": [
+        {
+          "site": "00BEDE56",
+          "function": "00BEDE00",
+          "operation": "MOV [01090AB0], EDI",
+          "meaning": "publish the constructor receiver"
+        },
+        {
+          "site": "00BEDF09",
+          "function": "00BEDEA0",
+          "operation": "MOV [01090AB0], 0",
+          "meaning": "clear during base destruction"
+        }
+      ],
+      "all_other_xrefs": "reads",
+      "important_reads": [
+        "0073D480 application construction gate",
+        "0073DAB3 fixed-step startup dispatch",
+        "00737AF6/00737B03 application frame dispatch",
+        "00B33C60 renderer control worker sample",
+        "00A887EA sound initialization"
+      ]
+    },
+    "application_startup": {
+      "caller": "0073D410 BSP_Application_Initialize",
+      "constructor_callers": ["0073D410"],
+      "sequence": [
+        "0073D480 compares 01090AB0 with zero and skips creation when already published",
+        "0073D48F requests 80h bytes from 00BF681B",
+        "0073D4A0..0073D4AD skips the constructor when allocation returned null",
+        "0073D4AF sets ECX to the allocation and 0073D4B1 calls 00BEDFB0",
+        "0073DA66 later requests 1D94h bytes and 0073DA88 calls renderer-worker constructor 00B32410"
+      ],
+      "order_conclusion": "the clock is published and lifetime-registered before renderer-worker construction",
+      "crt_entry": "none: 00BEDFB0 has only the application-initialize caller; cleanup is reached through the shared singleton manager"
+    },
+    "raw_layout_80h": {
+      "+00": "profile token, D68D50 after derived construction",
+      "+04": "float accumulated time",
+      "+08": "uint64 update count",
+      "+10": "ClockTimestamp start",
+      "+20": "ClockTimestamp current",
+      "+30": "ClockTimestamp previous",
+      "+40": "ClockTimestamp interval",
+      "+50": "ClockTimestamp pause snapshot",
+      "+60": "int64 QPC frequency",
+      "+68": "paused byte",
+      "+69": "fixed-counter byte",
+      "+6A..+6F": "constructor-untouched bytes",
+      "+70": "int64 fixed increment, constructor-untouched",
+      "+78": "int64 synthetic counter, constructor-untouched"
+    },
+    "construction": {
+      "base_00BEDE00": [
+        "stores base profile D68D20 at receiver+0",
+        "gets the current 01090AA0 manager through 00415350 and enters manager+10h critical section",
+        "publishes the exact receiver to 01090AB0 at 00BEDE56",
+        "reloads the manager and registers the current publication through 00BD0C30 at 00BEDE6A",
+        "leaves the same section and returns the receiver"
+      ],
+      "derived_00BEDFB0": [
+        "calls 00BEDE00",
+        "stores float zero at +4 and profile D68D50 at +0",
+        "sets update count +8 to zero",
+        "initializes five ClockTimestamp values at +10,+20,+30,+40,+50 to {0,1}",
+        "clears bytes +68 and +69",
+        "leaves +6A..+6F, +70 and +78 untouched",
+        "calls 00BEDBD0 and returns the receiver; the Win32 QPC BOOL values do not change the native return identity"
+      ]
+    },
+    "initialization_00BEDBD0": [
+      "clears paused +68 and update count +8",
+      "calls QueryPerformanceFrequency into +60 and QueryPerformanceCounter into a local pair without branching on either BOOL",
+      "copies the initial counter and stored frequency to start +10",
+      "dispatches profile slot +8 twice, which is 00BEDC30 under D68D50"
+    ],
+    "profile_00D68D50": {
+      "bytes": "10 E1 BE 00 D0 DB BE 00 30 DC BE 00 E0 DA BE 00 C0 DD BE 00 50 E0 BE 00 60 E0 BE 00 70 E0 BE 00 80 E0 BE 00 20 DB BE 00 60 DB BE 00",
+      "xrefs": ["00BEDFDC installs it during construction", "00BEE113 restores it in the scalar deleting destructor"],
+      "slots": {
+        "+00": "00BEE110 scalar deleting destructor",
+        "+04": "00BEDBD0 initialize",
+        "+08": "00BEDC30 update",
+        "+0C": "00BEDAE0 pause",
+        "+10": "00BEDDC0 resume",
+        "+14": "00BEE050 return this+20 current timestamp",
+        "+18": "00BEE060 return this+30 previous timestamp",
+        "+1C": "00BEE070 return this+40 interval timestamp",
+        "+20": "00BEE080 sample raw timestamp",
+        "+24": "00BEDB20 enable fixed milliseconds",
+        "+28": "00BEDB60 disable fixed counter"
+      },
+      "source_boundary": "D68D50 is original table data and cannot be called as a source-process C++ vtable; actual source consumers validate its tokens then call reconstructed source bodies"
+    },
+    "destruction": {
+      "00BEE110": [
+        "stores D68D50 at receiver+0",
+        "calls 00BEDEA0",
+        "when flags bit0 is set, passes the captured allocation to 00BF65AC",
+        "returns the captured receiver with RET 4"
+      ],
+      "00BEDEA0": [
+        "stores base profile D68D20",
+        "enters the current 01090AA0 manager critical section",
+        "reloads 01090AB0 and unregisters that current value through 00BCFCA0",
+        "clears 01090AB0 unconditionally",
+        "leaves the section and stores terminal base profile CE3818"
+      ],
+      "shared_drain": [
+        "008F8449 loads 01090AA0 and 008F8455 calls 00BD0400",
+        "00BD0400 pops registered pointers from the end and calls profile slot zero with flags 1",
+        "008F845A..008F8460 frees the lifetime manager and 008F8463 clears 01090AA0"
+      ],
+      "order_conclusion": "reverse registration order destroys later renderer owners before the early frame clock; any separately retained or failure-retained worker must also be joined before the clock entry is drained"
+    }
+  },
+  "current_source_comparison": {
+    "typed_projection": {
+      "files": ["include/bsp/frame_clock.hpp", "src/frame_clock.cpp", "src/platform_window.cpp"],
+      "declared_boundary": "the header already calls FrameClock a typed state projection, not the original singleton/vtable ABI",
+      "layout_difference": [
+        "FrameClock::accumulated is C++ offset +0 while the native accumulated float is +4",
+        "native +0 must contain D68D50, but FrameClock has no profile field",
+        "the projection's alignment places updates and later fields at their documented native offsets, so prefixing or shifting this object cannot repair the +0/+4 mismatch",
+        "there are no FrameClock sizeof/offsetof assertions enforcing an actual raw-object contract"
+      ],
+      "behavior_difference": [
+        "construct_frame_clock_singleton_00bedfb0 writes typed members only; it does not call 00BEDE00, publish, register or install D68D50",
+        "its bool return reports QueryPerformance failures, while native 00BEDFB0 returns the receiver and ignores the QPC BOOLs",
+        "typed initialize/update/sample bodies are source projections and cannot provide a callable original vtable"
+      ]
+    },
+    "main_89b890308": {
+      "owner": "GameStartupHost::clock_",
+      "publication_cell": "GameStartupHost::clock_publication_01090ab0_",
+      "startup": "src/game_hosts.cpp:1270 constructs clock_, then line 1271 assigns the private cell to &clock_",
+      "lifetime": "the object is an application member and is never registered in the raw singleton manager; its cell is not cleared by a recovered clock destructor",
+      "direct_consumers": [
+        "GameFrameHost owns FrameClock& and calls typed update/read interval",
+        "SoundServices borrows app.clock_",
+        "InputServices borrows the private FrameClock* publication cell"
+      ]
+    },
+    "orch5_769bdc3e3": {
+      "producer": "unchanged from main: the frame_clock/platform_window sources have no branch diff and GameStartupHost still assigns &clock_",
+      "actual_consumer_available": "native_renderer_control_worker.hpp/.cpp defines NativeRendererControlWorkerContext::actual_clock_01090ab0 as void* const volatile& and validates D68D50 slot 8 before calling source 00BEE080",
+      "available_raw_fragments": [
+        "src/native_renderer_control_worker.cpp has the exact raw 00BEE080 body",
+        "src/native_system_constant_gather.cpp has the raw 00BEE070 this+40 getter",
+        "typed/raw-compatible this+20 getter bodies exist elsewhere, but no canonical raw owner, publication or destruction exists"
+      ],
+      "failure_if_bound_to_current_projection": "the worker's profile validation reads FrameClock accumulated bits at +0, not D68D50, so the typed publication is deliberately not an acceptable actual-clock provider"
+    },
+    "shared_manager_gap": "NativeSingletonDeletionBindings and delete_current_profile do not currently admit D68D50, so registering a raw clock now would make the source shared drain reject it"
+  },
+  "canonical_owner_requirements": [
+    "one stable process/application cell representing 01090AB0, exposed by reference to every raw consumer; no second renderer-only clock cell",
+    "one allocation in the same source allocation/free domain, exactly 80h bytes, with asserted offsets and untouched-byte policy matching 00BEDFB0",
+    "construction against GameSingletonHost's existing 01090AA0 manager publication; publish before 00BD0C30 registration under the manager section",
+    "a D68D50 deletion admission in the same NativeSingletonDeletionBindings used by GameSingletonHost::shutdown, bound before clock registration",
+    "destruction must unregister the current publication, clear the same cell, and free only through the scalar flags path; a C++ wrapper destructor must not repeat raw destruction",
+    "the owner context, publication cell, reconstructed callbacks and read-only D68D50 evidence must remain alive through all renderer-worker joins and the shared manager drain",
+    "startup must preserve the original nonnull gate identity: repeated application initialization cannot allocate and register a second clock",
+    "application integration must route frame, sound, input and renderer-worker consumers to the same raw state rather than keeping an independently advancing typed clock"
+  ],
+  "minimal_followup_packets": [
+    {
+      "order": 1,
+      "name": "native_frame_clock_raw_body",
+      "reason": "the owner cannot safely publish D68D50 until every callable path required during construction and frame use operates on the raw +0 profile/+4 accumulated layout",
+      "addresses": [
+        "00BEDAE0", "00BEDB20", "00BEDB60", "00BEDB70", "00BEDBD0", "00BEDC30", "00BEDDC0",
+        "00BEE050", "00BEE060", "00BEE070", "00BEE080"
+      ],
+      "files": [
+        "new include/bsp/native_frame_clock_actual.hpp",
+        "new src/native_frame_clock_actual.cpp"
+      ],
+      "contract": [
+        "define exact 80h storage and offset assertions without changing the shared FrameClock projection",
+        "reuse the reviewed orch5 00BEE080 body and raw 00BEE070 getter after integration rather than re-porting them",
+        "recover/adapt the remaining raw methods with exact QPC-failure and x87/SSE boundaries; this arithmetic packet should use Astra review",
+        "no publication, manager registration or game-host binding in this packet"
+      ]
+    },
+    {
+      "order": 2,
+      "name": "game_native_frame_clock_process",
+      "depends_on": "native_frame_clock_raw_body",
+      "addresses": ["00BEDE00", "00BEDEA0", "00BEDFB0", "00BEE110", "01090AB0", "00D68D50"],
+      "files": [
+        "new include/bsp/game_native_frame_clock.hpp",
+        "new src/game_native_frame_clock.cpp",
+        "include/bsp/native_singleton_destruction.hpp",
+        "src/native_singleton_destruction.cpp",
+        "include/bsp/game_hosts_singletons.hpp",
+        "src/game_hosts_singletons.cpp"
+      ],
+      "contract": [
+        "own the sole raw allocation and stable publication cell",
+        "borrow the existing GameSingletonHost manager and install D68D50 deletion context before registration",
+        "implement publish/register and unregister/clear/free order without calling original numeric addresses",
+        "return the same published identity after successful startup and reject or preserve a failed attempt according to the established process-owner policy",
+        "leave GameStartupHost and renderer-worker binding for the next packet"
+      ]
+    },
+    {
+      "order": 3,
+      "name": "application_frame_clock_binding",
+      "depends_on": "game_native_frame_clock_process plus complete renderer-worker provider closure",
+      "files": [
+        "include/bsp/game_hosts.hpp",
+        "src/game_hosts.cpp",
+        "the smallest typed consumer adapters required by GameFrameHost, sound and input",
+        "renderer-worker composition source"
+      ],
+      "contract": [
+        "start the raw clock at original phase 0 before renderer-worker creation",
+        "bind frame, sound, input and renderer worker to the same publication/state",
+        "join all normal and failure-retained renderer workers before the shared drain can reach the clock",
+        "remove the private typed producer only when those consumers have migrated; do not publish two independently advancing clocks"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "query": "ghidra xrefs 01090AB0 --limit 5000 --lines 100",
+      "result": "68 xrefs; only 00BEDE56 and 00BEDF09 are writes"
+    },
+    {
+      "query": "ghidra bytes 01090AB0 length 8 plus PE section mapping",
+      "result": "eight zero bytes in a virtual-only part of .data"
+    },
+    {
+      "query": "ghidra callers 00BEDFB0",
+      "result": "only 0073D410"
+    },
+    {
+      "query": "instruction contexts 0073D480, 0073D48F, 0073D4B1 and 0073DA88",
+      "result": "nonnull gate, 80h allocation, clock constructor call, then later 1D94h renderer-worker construction"
+    },
+    {
+      "query": "disassembly 00BEDE00, 00BEDEA0, 00BEDFB0, 00BEE110 and 00BD0400",
+      "result": "exact publish/register, derived initialization, unregister/clear, scalar free and reverse manager dispatch"
+    },
+    {
+      "query": "ghidra bytes 00D68D50 length 44 and xrefs",
+      "result": "eleven-slot profile; only constructor and scalar destructor install it"
+    },
+    {
+      "query": "git diff/grep main versus agent/orch5-20260911",
+      "result": "same typed producer on both; orch5 adds raw worker/gather consumers but no raw owner"
+    }
+  ],
+  "proof_limits": [
+    "This audit proves original bytes, calls, references and current source composition; it does not prove source ABI equivalence, exception-unwind equivalence, runtime thread ordering or gameplay behavior.",
+    "Proposed filenames and packet boundaries are source integration recommendations, not recovered symbols.",
+    "No claim is made that original numeric profile entries are callable in the source executable."
+  ]
+}
