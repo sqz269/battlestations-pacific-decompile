@@ -4,6 +4,7 @@
 #include <cstdint>
 
 namespace bsp {
+struct NativeStringRawPoolContext;
 // Producer-established actual 10h temporary owner. Each key occupies 2Ch:
 // x,y,incoming.xy,outgoing.xy,endpoint-kind,a,b,c,d. Coefficients and unused
 // constructor scratch are indeterminate until their producing operation.
@@ -34,6 +35,40 @@ struct NativeParticleParameterLoadingBindings {
     const volatile float* linear_incoming_00d7a260;
     const volatile float* linear_outgoing_00d7a24c;
 };
+
+// Raw builder services over the application's actual string publication cells,
+// CRT state and native numeric cells. No parameter pool is needed until runtime
+// conversion, which remains a separate interface. Pointer members stay live:
+// callbacks may rebind them; numeric kernels reload through their addresses.
+// This does not change the existing 68-byte legacy bindings above.
+struct NativeParticleParameterBuilderRawContext {
+    NativeStringRawPoolContext& strings;
+    const CameraAxesCrtAccess& crt;
+    const volatile double* backward_limit_00ce3928;
+    const volatile float* backward_clamp_00ce3cb4;
+    const volatile double* forward_limit_00d7a3a0;
+    const volatile float* forward_clamp_00d7a2f0;
+    const volatile float* endpoint_time_00ce3d08;
+    const volatile float* endpoint_backward_00ce65d8;
+    const volatile float* first_time_00d7a218;
+    const volatile double* last_time_00d7a220;
+    const volatile float* linear_incoming_00d7a260;
+    const volatile float* linear_outgoing_00d7a24c;
+};
+
+// Genuine raw-pool overloads of the same complete builder bodies. Preserve
+// actual 10h owner/2Ch rows, partial parse mutations and sparse scratch. Fixed
+// CRT arrays, current raw pool getter, no NativeStringStorage adapter. Normal
+// getter failures propagate; exact native unwind states use noexcept guards,
+// so secondary exceptions terminate. Constructor kind+C remains untouched;
+// endpoints append without clearing; parse AL is not a transaction result.
+void* construct_native_particle_parameter_builder_00afbed0(void*, NativeParticleParameterBuilderRawContext&);
+void initialize_native_particle_parameter_endpoints_00afc360(void*, float, float, NativeParticleParameterBuilderRawContext&);
+bool parse_native_particle_parameter_00afc470(void*, const void*, NativeParticleParameterBuilderRawContext&);
+void destroy_native_particle_parameter_builder_00af4110(void*, NativeParticleParameterBuilderRawContext&) noexcept;
+// Actual AFBED0 state0 action: AF4060[26], ECX owner, RET. Free captured
+// records, then clear current +0/+4/+8; kind+C remains untouched.
+void destroy_native_particle_parameter_key_vector_00af4060(void*) noexcept;
 
 // Native ECX owner, RET/EAX owner. Clears only +0/+4/+8, grows to32 keys;
 // kind+C is untouched. New C++ interface and host unwind, not native FH3 ABI.
