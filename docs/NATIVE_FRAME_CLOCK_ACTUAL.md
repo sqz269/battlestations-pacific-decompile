@@ -46,3 +46,23 @@ must establish those contracts. This component alone proves no live game loop.
 
 Detailed original spans, ABI, calls, build and fixture boundaries are recorded
 in `reports/native_frame_clock_actual_r35.json` after verification.
+
+## R35 verification
+
+Strict MSVC Win32 /MD /W4 /WX /fp:strict build and the three existing CTests
+pass. The ignored focused probe freshly links the complete library. Its native
+reference uses 1,206 freshly PE/live-verified bytes across 14 bodies, with
+18 explicit relocations and all 22 call rows checked against the saved listing.
+The compiled update's 388 bytes match after masking just six call operands;
+the disable method and three getters match exactly.
+
+59 native/source pairs compare all 80h bytes: signed fixed inputs and wrapped
+products, four x87 rounding modes, update/synthetic wrap, negative rollback,
+unordered zero-frequency comparison, pause/resume, and double-update init.
+Query-import instrumentation returns FALSE, including no-write destination
+cases. Four local-QPC cases observe untouched scratch bits and replay them
+through the opposite implementation; they do not assume equal stack preimages.
+The probe restores its own imports, then checks actual QPF/QPC initialization
+and fixed enable with real before/after counter bounds. No production import,
+profile table or application binding is installed. This is component/fixture
+and native-call-boundary evidence, not game execution or owner publication.
