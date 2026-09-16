@@ -345,5 +345,114 @@
     "The fixture proves tested raw-header postimages after rebinding only eight calls; it does not prove every original caller or register state.",
     "No renderer owner or renderer constructor is reconstructed by this packet.",
     "No game runtime or gameplay validation was performed."
-  ]
+  ],
+  "primary_integration": {
+    "source_merge": "722281af7",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "log": "local/r35_record_destroy_integration.log",
+    "review": "Full source/header and provider ABI reviewed; all26 immutable worker files verified and original ZIP retained.",
+    "worker_archive_retained": "local/evidence-r35/renderer-record-destroy-r35-final.zip",
+    "archive_sha256": "fc870346f17da0b19fbba8b971a6689a8258a4355d8dd4940d178a4894363305",
+    "fixture_scope": "Fresh worker fixture retained; primary combined build/CTests rerun, no primary fixture re-execution."
+  },
+  "primary_archive": {
+    "path": "local/evidence-r35/renderer-record-destroy-main-r35.zip",
+    "sha256": "14215492b8891f496aa051aaa2672b00ec1ed5d492d2e6df08cc2306971378f1",
+    "files": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "484923aa0d80806579dabec130b4a8c7ed80d5f8a414b56a48801895c5eec922"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_record_destroy.obj",
+        "sha256": "60f04e975c5fe2abcb9077a1fc98a4f55125867841077ad28f8a2dd684bad20c"
+      },
+      {
+        "path": "local/r35_record_destroy_integration.log",
+        "sha256": "f54a2c0e877409367e46dd8406b5f01f1b86db5d516074541f10bca5e7dc889f"
+      },
+      {
+        "path": "local/r35_record_destroy_annotations.log",
+        "sha256": "9b63c54f68cdc462eb82ada0f35dbb5f48f8d167970d0cd7ceafa343a29f3f5f"
+      },
+      {
+        "path": "local/r35_record_destroy_exports.log",
+        "sha256": "8b00d51f25fb5baea7ed933c4862d3953a1f26555a2b91345a730ae99cd336c6"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T102811Z.json",
+        "sha256": "944bd431ca6000f092a1f5ea446893dd228297e49f503410ee453368ff661ddb"
+      },
+      {
+        "path": "include/bsp/native_renderer_record_destroy.hpp",
+        "sha256": "e9432baea13b84832dc4068b34fed44ba935418bc0ad4220672b875490e7dc73"
+      },
+      {
+        "path": "src/native_renderer_record_destroy.cpp",
+        "sha256": "66f42cfdb2cadde7cafbbc4b82cc796263ad80a7eefbaa2673d06a19aead03be"
+      }
+    ]
+  },
+  "annotation_status": {
+    "status": "Primary retained existing live names, extended ledger evidence, preserved prior annotations, saved project and refreshed four exports.",
+    "prior_annotations": [
+      {
+        "address": "00b29ba0",
+        "before": {
+          "address": "00b29ba0",
+          "function_name": "BSP_RendererRecords16_Destroy",
+          "comment": "[BSP reconstruction 00b29ba0]\nHypothesis, not a recovered symbol. Negative capacity calls B228B0 reserve0. Decrement current positive count, capture current data BEFORE final count0 store, then free captured data. Pointer/capacity remain stale. Four-case original/source postimage fixture passed; allocation failure is static evidence only. Integrated source at33ac99a2 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_RECORD_DESTROY.md; reports/native_renderer_record_destroy.json. Original whole-owner FH3/SEH, complete renderer adoption and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "00b29ba0",
+          "name": "BSP_RendererRecords16_Destroy",
+          "evidence": "R35 unchanged four-entry source reuse from10870d920: four complete61B raw-header destructors,244B total. Preserve signed negative-capacity reserve0, current-count decrements, capture current data before zero-count store, free captured pointer, stale pointer/capacity. Current main reviewed x87 reserves and singleton providers retained. Fresh live/PE/historical match and8 call rows pass; unchanged fixture freshly passes16 postimage cases. Worker and combined main strict /MD builds and three CTests pass. Parent reviewed full source/header and provider ABI, verified all26 archived artifacts. Original native FH3/SEH, whole binary replacement and gameplay unproved. reports/native_renderer_record_destroy_main_r35.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b29be0",
+        "before": {
+          "address": "00b29be0",
+          "function_name": "BSP_RendererRecords20_Destroy",
+          "comment": "[BSP reconstruction 00b29be0]\nHypothesis, not a recovered symbol. Negative capacity calls B22940 reserve0. Decrement current positive count, capture current data BEFORE final count0 store, then free captured data. Pointer/capacity remain stale. Four-case original/source postimage fixture passed; allocation failure is static evidence only. Integrated source at33ac99a2 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_RECORD_DESTROY.md; reports/native_renderer_record_destroy.json. Original whole-owner FH3/SEH, complete renderer adoption and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "00b29be0",
+          "name": "BSP_RendererRecords20_Destroy",
+          "evidence": "R35 unchanged four-entry source reuse from10870d920: four complete61B raw-header destructors,244B total. Preserve signed negative-capacity reserve0, current-count decrements, capture current data before zero-count store, free captured pointer, stale pointer/capacity. Current main reviewed x87 reserves and singleton providers retained. Fresh live/PE/historical match and8 call rows pass; unchanged fixture freshly passes16 postimage cases. Worker and combined main strict /MD builds and three CTests pass. Parent reviewed full source/header and provider ABI, verified all26 archived artifacts. Original native FH3/SEH, whole binary replacement and gameplay unproved. reports/native_renderer_record_destroy_main_r35.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b29c20",
+        "before": {
+          "address": "00b29c20",
+          "function_name": "BSP_RendererRecords24_Destroy",
+          "comment": "[BSP reconstruction 00b29c20]\nHypothesis, not a recovered symbol. Negative capacity calls B229D0 reserve0. Decrement current positive count, capture current data BEFORE final count0 store, then free captured data. Pointer/capacity remain stale. Four-case original/source postimage fixture passed; allocation failure is static evidence only. Integrated source at33ac99a2 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_RECORD_DESTROY.md; reports/native_renderer_record_destroy.json. Original whole-owner FH3/SEH, complete renderer adoption and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "00b29c20",
+          "name": "BSP_RendererRecords24_Destroy",
+          "evidence": "R35 unchanged four-entry source reuse from10870d920: four complete61B raw-header destructors,244B total. Preserve signed negative-capacity reserve0, current-count decrements, capture current data before zero-count store, free captured pointer, stale pointer/capacity. Current main reviewed x87 reserves and singleton providers retained. Fresh live/PE/historical match and8 call rows pass; unchanged fixture freshly passes16 postimage cases. Worker and combined main strict /MD builds and three CTests pass. Parent reviewed full source/header and provider ABI, verified all26 archived artifacts. Original native FH3/SEH, whole binary replacement and gameplay unproved. reports/native_renderer_record_destroy_main_r35.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b29c60",
+        "before": {
+          "address": "00b29c60",
+          "function_name": "BSP_RendererRecords40_Destroy",
+          "comment": "[BSP reconstruction 00b29c60]\nHypothesis, not a recovered symbol. Negative capacity calls B22A70 reserve0. Decrement current positive count, capture current data BEFORE final count0 store, then free captured data. Pointer/capacity remain stale. Four-case original/source postimage fixture passed; allocation failure is static evidence only. Integrated source at33ac99a2 passed strict MSVC Win32 build and both CTests. docs/NATIVE_RENDERER_RECORD_DESTROY.md; reports/native_renderer_record_destroy.json. Original whole-owner FH3/SEH, complete renderer adoption and gameplay remain unvalidated."
+        },
+        "after": {
+          "address": "00b29c60",
+          "name": "BSP_RendererRecords40_Destroy",
+          "evidence": "R35 unchanged four-entry source reuse from10870d920: four complete61B raw-header destructors,244B total. Preserve signed negative-capacity reserve0, current-count decrements, capture current data before zero-count store, free captured pointer, stale pointer/capacity. Current main reviewed x87 reserves and singleton providers retained. Fresh live/PE/historical match and8 call rows pass; unchanged fixture freshly passes16 postimage cases. Worker and combined main strict /MD builds and three CTests pass. Parent reviewed full source/header and provider ABI, verified all26 archived artifacts. Original native FH3/SEH, whole binary replacement and gameplay unproved. reports/native_renderer_record_destroy_main_r35.json."
+        },
+        "status": "applied"
+      }
+    ]
+  }
 }
