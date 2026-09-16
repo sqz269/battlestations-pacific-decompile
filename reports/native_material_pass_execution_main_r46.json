@@ -1182,5 +1182,173 @@
     "Review and successful forced linking do not prove full renderer, B2BB90 parent, original private-stack or exception machinery equivalence.",
     "Current numeric profile and actual publication-cell/bank/frame contracts are required admission conditions.",
     "No gameplay, visual, full renderer or complete native ABI validation is claimed."
-  ]
+  ],
+  "primary_integration": {
+    "source_merge": "bfc176c6b",
+    "full_source_header_fixture_reviewed": true,
+    "worker_artifacts_rehashed": 5037,
+    "native_spans_independently_verified": 11,
+    "native_bytes": 1646,
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "primary_fixture_rerun": false,
+    "worker_archive": "local/evidence-r46/pass-original-r46.zip",
+    "build_source_note": "Pending R47 comment-only generated-model header clarification captured; R47 parent unregistered/unlinked."
+  },
+  "primary_archive": {
+    "path": "local/evidence-r46/pass-main-r46.zip",
+    "sha256": "b322eb9109dbcde9f23ff70a8b7a5da017ab1e28fb14a440ed6d40a8f0f666a1",
+    "files": [
+      {
+        "path": "include/bsp/native_material_pass_execution.hpp",
+        "bytes": 5739,
+        "sha256": "13d8637d8c9ee560e9ec5894c973dbb619a01c46da81aba3c513ece43a0bda88"
+      },
+      {
+        "path": "src/native_material_pass_execution.cpp",
+        "bytes": 21471,
+        "sha256": "e687d5e19aaa8c226abf28f5467a037e316d29735d4a0df546e41964a3c0733d"
+      },
+      {
+        "path": "docs/NATIVE_MATERIAL_PASS_EXECUTION_R46.md",
+        "bytes": 4221,
+        "sha256": "e24c282b325eff49750b7598a325424330eb5662c11ba48c566eb2bc0ee0d337"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 150227,
+        "sha256": "945beeee524494f617d5c31bbecbbbd3fbc556f7c84b6cf2d21a957605be0c1f"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 230183,
+        "sha256": "42b9f5ceb1f5fc36774e1ef9ca3978513b60b6d88f59abc3b99747f25ff06808"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_material_pass_execution.obj",
+        "bytes": 26156,
+        "sha256": "59d18bf39277cfe6e7094d9ca33008f67f36dd884b8653811a0a1f9182ff3d1c"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63534028,
+        "sha256": "31a426a1ae74858553109855cbce4256a13c69628e13b5d5c18cb62bbf7f0aa9"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2267136,
+        "sha256": "00be87666a77362b01b8a16d5093e6402275566621289dacdb215a1968a68e8d"
+      },
+      {
+        "path": "include/bsp/native_renderer_generated_model.hpp",
+        "bytes": 3818,
+        "sha256": "50c6a1938c1376f5e3ca5108708cf64cb3d7c35e1a7984899e8092234301b71b"
+      },
+      {
+        "path": "local/r46_integration.log",
+        "bytes": 837,
+        "sha256": "5fde0fe7e060938e925018fee31c05c181de6c0543b9e333bbd1e6f592ba5ccf"
+      },
+      {
+        "path": "local/r46_pass_proto.txt",
+        "bytes": 3847,
+        "sha256": "3c29546b2649ad3412bd192d23e708151005bd38009f4d2d59661296ad634f5f"
+      },
+      {
+        "path": "local/r46_pass_annotations.log",
+        "bytes": 387,
+        "sha256": "0ebf6325abf2afa1018aa59ad42213dcfaabbd75ad12deac4bf5d65868551a9b"
+      },
+      {
+        "path": "local/r46_pass_exports.log",
+        "bytes": 512,
+        "sha256": "8b3f42f4bccc0a9d1f28027543c5a6c24fc94f3c068be8c1c51fa7a984cd8030"
+      },
+      {
+        "path": "local/r46_pass_native_spans.json",
+        "bytes": 1902,
+        "sha256": "dd5c08265734ea4c6707d70219a8ce881d79bf8f5a9a6b465f78dae1d51c6082"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T134000Z.json",
+        "bytes": 30117,
+        "sha256": "386f24695fba81ca51985078a5854ed0a23b1efe1319502e3f04ebde63fdb087"
+      }
+    ]
+  },
+  "primary_annotations": {
+    "status": "Existing descriptive names retained, current source records appended; no duplicate original body credit. Comments preserved, saved and exports refreshed.",
+    "prior_annotations": [
+      {
+        "address": "00b1bfa0",
+        "before": {
+          "address": "00b1bfa0",
+          "function_name": "BSP_RenderCommandQueue_GetCurrentContext",
+          "comment": "[BSP reconstruction 00b1bfa0]\nECX queue; EAX=[ECX+30]; RET. Returns borrowed current context without retain. Caller00B44750 at00B448AF reads context+0C scene transform, not context+08 camera. Typed getter uses existing RenderCommandQueue.current_context. Evidence docs/MATERIAL_EFFECT_PLANE.md; no native layout or ABI replacement. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation.\n\n[BSP reconstruction 00b1bfa0] update\nECX queue; EAX=[ECX+30]; RET. Returns borrowed current context without retain. Caller00B44750 at00B448AF reads context+0C scene transform, not context+08 camera. Typed getter uses existing RenderCommandQueue.current_context. Evidence docs/MATERIAL_EFFECT_PLANE.md; no native layout or ABI replacement. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Hypothesis, not a recovered symbol. Raw current render-command context getter returns receiver+30; full original/source fixture verifies both pointer and null slot. Integrated code d91f24d3 passed strict MSVC Win32 build, eight native seeds, both CTests,123 numeric call rows and40 fresh live/PE spans totaling5487 bytes. Full derived pass now links the actual B42350 provider. Existing source diagnostic pool/vector/draw probes pass; derived pass, native diagnostic parent, injected cleanup failures, native FH3/private ABI and game execution are not claimed. docs/NATIVE_MATERIAL_PASS_EXECUTION.md; reports/native_material_pass_execution.json."
+        },
+        "after": {
+          "address": "00b1bfa0",
+          "name": "BSP_RenderCommandQueue_GetCurrentContext",
+          "evidence": "ECX queue; EAX=[ECX+30]; RET. Returns borrowed current context without retain. Caller00B44750 at00B448AF reads context+0C scene transform, not context+08 camera. Typed getter uses existing RenderCommandQueue.current_context. Evidence docs/MATERIAL_EFFECT_PLANE.md; no native layout or ABI replacement. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | R46 current adoption of corrected a6b2884f2/d91f24d3 material-pass providers. Seven explicit adaptations reuse raw effect direction, current shader setter argument order, restore selector-negative material+34 read gate and primitive-count captures before profile checks, and require a fresh persistent source frame before effects. Same live VS/PS banks, renderer/type/profile cells and genuine current B42350 constant builder. No rollback on failure. Parent reviewed full source/header and leaf fixture; independently rehashed5037 frozen artifacts and11 native/data spans1646B. Worker and combined strict Win32 /MD /W4 /WX /fp:strict build and3 CTests pass. Original/source base RET4 register/flags/ESP and queue raw getter checks pass; complete derived provider chain forced linked, not executed. No primary fixture rerun. Only two literal leaves claim exact native bytes; derived functions use explicit source context/frame and do not claim original register/private-frame/FH3/SEH ABI, renderer or gameplay parity. reports/native_material_pass_execution_main_r46.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b43410",
+        "before": {
+          "address": "00b43410",
+          "function_name": "BSP_MaterialPass_ApplyStateAndDraw",
+          "comment": "[BSP reconstruction 00b43410]\nECX pass plus6 stackargs RET18h. Render/sampler blocks, VS/PS, texture slots,00b42350 constant builder, float uploads, material callback, indexed/nonindexed renderer dispatch. Full routine unported.\n\n[BSP reconstruction 00b43410] update\nECX pass plus6 stackargs RET18h. Render/sampler blocks, VS/PS, texture slots,00b42350 constant builder, float uploads, material callback, indexed/nonindexed renderer dispatch. Full routine unported.\nRecovered apply sequence around REQUIRED00B42350: render/sampler blocks; signed material104>=0 ALPHAREF; logical shaders; ordinal-bit static sampler loop including negative effect texture slots via00B17D90. Compute signed byte-end minus shared00E13078 upload counts; reread first and PS end after VS for PS gate but push old PS count. Material08 CALL EAX optional with ECX entry/no explicit args. Draw indexed/nonindexed with wrapping bases, then diagnostic00B16F80 even for skipped/failed draw. Constant builder, raw callback, effect texture and diagnostic owners remain actual required operations. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements. Original ABI: ECX pass; stack entry, override, indexed flag, index stream, index base, vertex base; RET18. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b43410] update\nECX pass plus6 stackargs RET18h. Render/sampler blocks, VS/PS, texture slots,00b42350 constant builder, float uploads, material callback, indexed/nonindexed renderer dispatch. Full routine unported.\nRecovered apply sequence around REQUIRED00B42350: render/sampler blocks; signed material104>=0 ALPHAREF; logical shaders; ordinal-bit static sampler loop including negative effect texture slots via00B17D90. Compute signed byte-end minus shared00E13078 upload counts; reread first and PS end after VS for PS gate but push old PS count. Material08 CALL EAX optional with ECX entry/no explicit args. Draw indexed/nonindexed with wrapping bases, then diagnostic00B16F80 even for skipped/failed draw. Constant builder, raw callback, effect texture and diagnostic owners remain actual required operations. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements. Original ABI: ECX pass; stack entry, override, indexed flag, index stream, index base, vertex base; RET18. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation. | 2026-09-10 native state/capture correction. Save00F8D394 atentry for render/samplerblock and VS/PSbinds; reloadindependently for word104state, eachtexture, VS/PSconstants, draw. 00B43453 PUSH39h is D3DRS_STENCILREF57; prior ALPHAREF interpretation is superseded. 00B43541helper retains original signedcounts and latePSgate/start; VSfailure still permits PS/callback/draw. ECXselectedpass, sixstackargs, RET18. Combined native19eventcomparison and existing21selector/COMcontinuation checks passed. Evidence docs/MATERIAL_RENDERER_RELOADS.md; reports/material_renderer_reloads_audit.json. Native object ABI and gameplay remain.\n\n[BSP reconstruction 00b43410] update\nECX pass plus6 stackargs RET18h. Render/sampler blocks, VS/PS, texture slots,00b42350 constant builder, float uploads, material callback, indexed/nonindexed renderer dispatch. Full routine unported.\nRecovered apply sequence around REQUIRED00B42350: render/sampler blocks; signed material104>=0 ALPHAREF; logical shaders; ordinal-bit static sampler loop including negative effect texture slots via00B17D90. Compute signed byte-end minus shared00E13078 upload counts; reread first and PS end after VS for PS gate but push old PS count. Material08 CALL EAX optional with ECX entry/no explicit args. Draw indexed/nonindexed with wrapping bases, then diagnostic00B16F80 even for skipped/failed draw. Constant builder, raw callback, effect texture and diagnostic owners remain actual required operations. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements. Original ABI: ECX pass; stack entry, override, indexed flag, index stream, index base, vertex base; RET18. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation. | 2026-09-10 native state/capture correction. Save00F8D394 atentry for render/samplerblock and VS/PSbinds; reloadindependently for word104state, eachtexture, VS/PSconstants, draw. 00B43453 PUSH39h is D3DRS_STENCILREF57; prior ALPHAREF interpretation is superseded. 00B43541helper retains original signedcounts and latePSgate/start; VSfailure still permits PS/callback/draw. ECXselectedpass, sixstackargs, RET18. Combined native19eventcomparison and existing21selector/COMcontinuation checks passed. Evidence docs/MATERIAL_RENDERER_RELOADS.md; reports/material_renderer_reloads_audit.json. Native object ABI and gameplay remain. | Hypothesis, not a recovered symbol. Raw state/sampler/texture binding, actual B42350 constants, initial versus current renderer captures, retained unmatched fallback texture, original upload counts, register/flags-seeded actual callback, native primitive draw and actual B16F80 diagnostics. Complete600-byte normal body; no compensation or invented cleanup. Integrated code d91f24d3 passed strict MSVC Win32 build, eight native seeds, both CTests,123 numeric call rows and40 fresh live/PE spans totaling5487 bytes. Full derived pass now links the actual B42350 provider. Existing source diagnostic pool/vector/draw probes pass; derived pass, native diagnostic parent, injected cleanup failures, native FH3/private ABI and game execution are not claimed. docs/NATIVE_MATERIAL_PASS_EXECUTION.md; reports/native_material_pass_execution.json."
+        },
+        "after": {
+          "address": "00b43410",
+          "name": "BSP_MaterialPass_ApplyStateAndDraw",
+          "evidence": "ECX pass plus6 stackargs RET18h. Render/sampler blocks, VS/PS, texture slots,00b42350 constant builder, float uploads, material callback, indexed/nonindexed renderer dispatch. Full routine unported.\nRecovered apply sequence around REQUIRED00B42350: render/sampler blocks; signed material104>=0 ALPHAREF; logical shaders; ordinal-bit static sampler loop including negative effect texture slots via00B17D90. Compute signed byte-end minus shared00E13078 upload counts; reread first and PS end after VS for PS gate but push old PS count. Material08 CALL EAX optional with ECX entry/no explicit args. Draw indexed/nonindexed with wrapping bases, then diagnostic00B16F80 even for skipped/failed draw. Constant builder, raw callback, effect texture and diagnostic owners remain actual required operations. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements. Original ABI: ECX pass; stack entry, override, indexed flag, index stream, index base, vertex base; RET18. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation. | 2026-09-10 native state/capture correction. Save00F8D394 atentry for render/samplerblock and VS/PSbinds; reloadindependently for word104state, eachtexture, VS/PSconstants, draw. 00B43453 PUSH39h is D3DRS_STENCILREF57; prior ALPHAREF interpretation is superseded. 00B43541helper retains original signedcounts and latePSgate/start; VSfailure still permits PS/callback/draw. ECXselectedpass, sixstackargs, RET18. Combined native19eventcomparison and existing21selector/COMcontinuation checks passed. Evidence docs/MATERIAL_RENDERER_RELOADS.md; reports/material_renderer_reloads_audit.json. Native object ABI and gameplay remain. | R46 current adoption of corrected a6b2884f2/d91f24d3 material-pass providers. Seven explicit adaptations reuse raw effect direction, current shader setter argument order, restore selector-negative material+34 read gate and primitive-count captures before profile checks, and require a fresh persistent source frame before effects. Same live VS/PS banks, renderer/type/profile cells and genuine current B42350 constant builder. No rollback on failure. Parent reviewed full source/header and leaf fixture; independently rehashed5037 frozen artifacts and11 native/data spans1646B. Worker and combined strict Win32 /MD /W4 /WX /fp:strict build and3 CTests pass. Original/source base RET4 register/flags/ESP and queue raw getter checks pass; complete derived provider chain forced linked, not executed. No primary fixture rerun. Only two literal leaves claim exact native bytes; derived functions use explicit source context/frame and do not claim original register/private-frame/FH3/SEH ABI, renderer or gameplay parity. reports/native_material_pass_execution_main_r46.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b44750",
+        "before": {
+          "address": "00b44750",
+          "function_name": "BSP_MaterialPass_BindGeometryAndDraw",
+          "comment": "[BSP reconstruction 00b44750]\nECX selected pass, stack entry/override RET8. Gates section streamcount/valid offset; bind streams/frequencies/declaration/index, optional plane cache, call00b43410 with6args. Constant/plane/ownership contracts unported.\n\n[BSP reconstruction 00b44750] update\nECX selected pass, stack entry/override RET8. Gates section streamcount/valid offset; bind streams/frequencies/declaration/index, optional plane cache, call00b43410 with6args. Constant/plane/ownership contracts unported.\nRecovered geometry/apply orchestration. Section+4C zero or first stream virtual28 byte offsetFFFFFFFF skips. Noninstanced resets frequency0/1 to1; instanced exact tag80000000 uses tag|1, other tags use tag|live instance count. Compare pass+14 effect with0108FBF4 and publish before clip operation. Disabled/nonpositive/unordered clip restores pending planes00B25080; positive extra-plane construction remains required. Bind layout/index/base, indexed iff indexnonnull and section+58, then00B43410. Full native body byte-verified; no whole-pipeline/draw-native differential claim. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements. Original ABI: ECX selected pass; stack entry, override; RET8. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b44750] update\nECX selected pass, stack entry/override RET8. Gates section streamcount/valid offset; bind streams/frequencies/declaration/index, optional plane cache, call00b43410 with6args. Constant/plane/ownership contracts unported.\nRecovered geometry/apply orchestration. Section+4C zero or first stream virtual28 byte offsetFFFFFFFF skips. Noninstanced resets frequency0/1 to1; instanced exact tag80000000 uses tag|1, other tags use tag|live instance count. Compare pass+14 effect with0108FBF4 and publish before clip operation. Disabled/nonpositive/unordered clip restores pending planes00B25080; positive extra-plane construction remains required. Bind layout/index/base, indexed iff indexnonnull and section+58, then00B43410. Full native body byte-verified; no whole-pipeline/draw-native differential claim. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements. Original ABI: ECX selected pass; stack entry, override; RET8. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation. | Selected clip-plane branch00B448A3..00B44A53 reconstructed: queue singleton004C11F0 -> current context00B1BFA0 -> context+0C scene transform; scene world basis(0,0,1) through0042D0D0 normalize0. Captured entry+10 camera supplies reloaded+198 mode/effect+140 distance at00B448FC after world refresh, then view/projection. Normal is negativeZero00D7A208 minus direction; x87 offset dot spills before FCHS. InverseProjection*inverseView, mixed raw/x87 transpose00B23360, plane transform00B65BA0, append00B25040 on renderer saved00B4485A. Same CameraFrameState/D3D9CameraFrameAccess owners required; no replacement globals or camera domain. Native math differential passes finite/refresh/signedzero/NaN selected cases and COM-failure continuation with synthetic service adapters. Evidence docs/MATERIAL_EFFECT_PLANE.md and reports/material_effect_plane_audit.json; no whole pipeline, native ABI or game validation. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. 2026-09-10 renderer reload correction: reference actual live00F8D394 slot, independently capture streams/frequencies/layout/index owners, save plane renderer at00B4485A across required plane callbacks, reload at00B44A62. ECX selectedpass, stackentry/override, RET8. Focused combined original-byte00B44750/00B43410 scenario matched19events under renderer replacement. Evidence docs/MATERIAL_RENDERER_RELOADS.md; reports/material_renderer_reloads_audit.json. Concrete extra-plane math is now src/material_effect_plane.cpp; actual queue/scene/camera identity bindings and native source/lifecycle/ABI/gameplay remain separate.\n\n[BSP reconstruction 00b44750] update\nECX selected pass, stack entry/override RET8. Gates section streamcount/valid offset; bind streams/frequencies/declaration/index, optional plane cache, call00b43410 with6args. Constant/plane/ownership contracts unported.\nRecovered geometry/apply orchestration. Section+4C zero or first stream virtual28 byte offsetFFFFFFFF skips. Noninstanced resets frequency0/1 to1; instanced exact tag80000000 uses tag|1, other tags use tag|live instance count. Compare pass+14 effect with0108FBF4 and publish before clip operation. Disabled/nonpositive/unordered clip restores pending planes00B25080; positive extra-plane construction remains required. Bind layout/index/base, indexed iff indexnonnull and section+58, then00B43410. Full native body byte-verified; no whole-pipeline/draw-native differential claim. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements. Original ABI: ECX selected pass; stack entry, override; RET8. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation. | Selected clip-plane branch00B448A3..00B44A53 reconstructed: queue singleton004C11F0 -> current context00B1BFA0 -> context+0C scene transform; scene world basis(0,0,1) through0042D0D0 normalize0. Captured entry+10 camera supplies reloaded+198 mode/effect+140 distance at00B448FC after world refresh, then view/projection. Normal is negativeZero00D7A208 minus direction; x87 offset dot spills before FCHS. InverseProjection*inverseView, mixed raw/x87 transpose00B23360, plane transform00B65BA0, append00B25040 on renderer saved00B4485A. Same CameraFrameState/D3D9CameraFrameAccess owners required; no replacement globals or camera domain. Native math differential passes finite/refresh/signedzero/NaN selected cases and COM-failure continuation with synthetic service adapters. Evidence docs/MATERIAL_EFFECT_PLANE.md and reports/material_effect_plane_audit.json; no whole pipeline, native ABI or game validation. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. 2026-09-10 renderer reload correction: reference actual live00F8D394 slot, independently capture streams/frequencies/layout/index owners, save plane renderer at00B4485A across required plane callbacks, reload at00B44A62. ECX selectedpass, stackentry/override, RET8. Focused combined original-byte00B44750/00B43410 scenario matched19events under renderer replacement. Evidence docs/MATERIAL_RENDERER_RELOADS.md; reports/material_renderer_reloads_audit.json. Concrete extra-plane math is now src/material_effect_plane.cpp; actual queue/scene/camera identity bindings and native source/lifecycle/ABI/gameplay remain separate. | Hypothesis, not a recovered symbol. Raw geometry dispatch preserves instance/indexed branches, current render-stream reloads, x87 plane/clip handling and calls actual B43410. Complete948-byte normal body. Integrated code d91f24d3 passed strict MSVC Win32 build, eight native seeds, both CTests,123 numeric call rows and40 fresh live/PE spans totaling5487 bytes. Full derived pass now links the actual B42350 provider. Existing source diagnostic pool/vector/draw probes pass; derived pass, native diagnostic parent, injected cleanup failures, native FH3/private ABI and game execution are not claimed. docs/NATIVE_MATERIAL_PASS_EXECUTION.md; reports/native_material_pass_execution.json."
+        },
+        "after": {
+          "address": "00b44750",
+          "name": "BSP_MaterialPass_BindGeometryAndDraw",
+          "evidence": "ECX selected pass, stack entry/override RET8. Gates section streamcount/valid offset; bind streams/frequencies/declaration/index, optional plane cache, call00b43410 with6args. Constant/plane/ownership contracts unported.\nRecovered geometry/apply orchestration. Section+4C zero or first stream virtual28 byte offsetFFFFFFFF skips. Noninstanced resets frequency0/1 to1; instanced exact tag80000000 uses tag|1, other tags use tag|live instance count. Compare pass+14 effect with0108FBF4 and publish before clip operation. Disabled/nonpositive/unordered clip restores pending planes00B25080; positive extra-plane construction remains required. Bind layout/index/base, indexed iff indexnonnull and section+58, then00B43410. Full native body byte-verified; no whole-pipeline/draw-native differential claim. Evidence docs/MATERIAL_ENTRY_DISPATCH.md; reports/material_entry_dispatch_audit.json. Descriptive application names are hypotheses; C++ interfaces are not native layout/ABI replacements. Original ABI: ECX selected pass; stack entry, override; RET8. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation. | Selected clip-plane branch00B448A3..00B44A53 reconstructed: queue singleton004C11F0 -> current context00B1BFA0 -> context+0C scene transform; scene world basis(0,0,1) through0042D0D0 normalize0. Captured entry+10 camera supplies reloaded+198 mode/effect+140 distance at00B448FC after world refresh, then view/projection. Normal is negativeZero00D7A208 minus direction; x87 offset dot spills before FCHS. InverseProjection*inverseView, mixed raw/x87 transpose00B23360, plane transform00B65BA0, append00B25040 on renderer saved00B4485A. Same CameraFrameState/D3D9CameraFrameAccess owners required; no replacement globals or camera domain. Native math differential passes finite/refresh/signedzero/NaN selected cases and COM-failure continuation with synthetic service adapters. Evidence docs/MATERIAL_EFFECT_PLANE.md and reports/material_effect_plane_audit.json; no whole pipeline, native ABI or game validation. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. 2026-09-10 renderer reload correction: reference actual live00F8D394 slot, independently capture streams/frequencies/layout/index owners, save plane renderer at00B4485A across required plane callbacks, reload at00B44A62. ECX selectedpass, stackentry/override, RET8. Focused combined original-byte00B44750/00B43410 scenario matched19events under renderer replacement. Evidence docs/MATERIAL_RENDERER_RELOADS.md; reports/material_renderer_reloads_audit.json. Concrete extra-plane math is now src/material_effect_plane.cpp; actual queue/scene/camera identity bindings and native source/lifecycle/ABI/gameplay remain separate. | R46 current adoption of corrected a6b2884f2/d91f24d3 material-pass providers. Seven explicit adaptations reuse raw effect direction, current shader setter argument order, restore selector-negative material+34 read gate and primitive-count captures before profile checks, and require a fresh persistent source frame before effects. Same live VS/PS banks, renderer/type/profile cells and genuine current B42350 constant builder. No rollback on failure. Parent reviewed full source/header and leaf fixture; independently rehashed5037 frozen artifacts and11 native/data spans1646B. Worker and combined strict Win32 /MD /W4 /WX /fp:strict build and3 CTests pass. Original/source base RET4 register/flags/ESP and queue raw getter checks pass; complete derived provider chain forced linked, not executed. No primary fixture rerun. Only two literal leaves claim exact native bytes; derived functions use explicit source context/frame and do not claim original register/private-frame/FH3/SEH ABI, renderer or gameplay parity. reports/native_material_pass_execution_main_r46.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b454d0",
+        "before": {
+          "address": "00b454d0",
+          "function_name": "BSP_MaterialPass_DrawEntry",
+          "comment": "[BSP reconstruction 00b454d0]\nDerived D61BE8/+08. MOV EAX,[ESP+4]; push0; push EAX; call B44750; RET4. Complete raw wrapper; derived constant-builder concrete linkage pending. docs/NATIVE_MATERIAL_PASS_EXECUTION.md. | Hypothesis, not a recovered symbol. Actual D61BE8 virtual08 wrapper passes actual entry+08 material and trailing zero into B44750; complete15-byte body, RET4. Integrated code d91f24d3 passed strict MSVC Win32 build, eight native seeds, both CTests,123 numeric call rows and40 fresh live/PE spans totaling5487 bytes. Full derived pass now links the actual B42350 provider. Existing source diagnostic pool/vector/draw probes pass; derived pass, native diagnostic parent, injected cleanup failures, native FH3/private ABI and game execution are not claimed. docs/NATIVE_MATERIAL_PASS_EXECUTION.md; reports/native_material_pass_execution.json."
+        },
+        "after": {
+          "address": "00b454d0",
+          "name": "BSP_MaterialPass_DrawEntry",
+          "evidence": "R46 current adoption of corrected a6b2884f2/d91f24d3 material-pass providers. Seven explicit adaptations reuse raw effect direction, current shader setter argument order, restore selector-negative material+34 read gate and primitive-count captures before profile checks, and require a fresh persistent source frame before effects. Same live VS/PS banks, renderer/type/profile cells and genuine current B42350 constant builder. No rollback on failure. Parent reviewed full source/header and leaf fixture; independently rehashed5037 frozen artifacts and11 native/data spans1646B. Worker and combined strict Win32 /MD /W4 /WX /fp:strict build and3 CTests pass. Original/source base RET4 register/flags/ESP and queue raw getter checks pass; complete derived provider chain forced linked, not executed. No primary fixture rerun. Only two literal leaves claim exact native bytes; derived functions use explicit source context/frame and do not claim original register/private-frame/FH3/SEH ABI, renderer or gameplay parity. reports/native_material_pass_execution_main_r46.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b5e5e0",
+        "before": {
+          "address": "00b5e5e0",
+          "function_name": "BSP_MaterialPassBase_IgnoreEntry",
+          "comment": "[BSP reconstruction 00b5e5e0]\nExact C2 04 00; complete actual base D62A80/+08 RET4 with no receiver or argument reads. New explicit-context C++ ABI; original/source leaf fixture preserves registers/flags/stack. docs/NATIVE_MATERIAL_PASS_EXECUTION.md. | Hypothesis, not a recovered symbol. Actual D62A80 virtual08 is literal RET4; all receiver/entry values unused. Full original/source fixture preserves EAX/ECX/EDX/EFLAGS/ESP with invalid unused pointers. Integrated code d91f24d3 passed strict MSVC Win32 build, eight native seeds, both CTests,123 numeric call rows and40 fresh live/PE spans totaling5487 bytes. Full derived pass now links the actual B42350 provider. Existing source diagnostic pool/vector/draw probes pass; derived pass, native diagnostic parent, injected cleanup failures, native FH3/private ABI and game execution are not claimed. docs/NATIVE_MATERIAL_PASS_EXECUTION.md; reports/native_material_pass_execution.json."
+        },
+        "after": {
+          "address": "00b5e5e0",
+          "name": "BSP_MaterialPassBase_IgnoreEntry",
+          "evidence": "R46 current adoption of corrected a6b2884f2/d91f24d3 material-pass providers. Seven explicit adaptations reuse raw effect direction, current shader setter argument order, restore selector-negative material+34 read gate and primitive-count captures before profile checks, and require a fresh persistent source frame before effects. Same live VS/PS banks, renderer/type/profile cells and genuine current B42350 constant builder. No rollback on failure. Parent reviewed full source/header and leaf fixture; independently rehashed5037 frozen artifacts and11 native/data spans1646B. Worker and combined strict Win32 /MD /W4 /WX /fp:strict build and3 CTests pass. Original/source base RET4 register/flags/ESP and queue raw getter checks pass; complete derived provider chain forced linked, not executed. No primary fixture rerun. Only two literal leaves claim exact native bytes; derived functions use explicit source context/frame and do not claim original register/private-frame/FH3/SEH ABI, renderer or gameplay parity. reports/native_material_pass_execution_main_r46.json."
+        },
+        "status": "applied"
+      }
+    ]
+  }
 }
