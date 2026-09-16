@@ -1,0 +1,837 @@
+{
+  "packet": "native_particle_cone_raw_orch4",
+  "base_revision": "834ea4a0d",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "documentation": "docs/NATIVE_PARTICLE_CONE_RAW_ORCH4.md",
+  "routines": [
+    {
+      "address": "00b03ec0",
+      "body": [
+        "00b03ec0",
+        "00b04823"
+      ],
+      "bytes": 2404,
+      "instructions": 755,
+      "coverage": "complete",
+      "source_symbol": "load_native_cone_emitter_definition_00b03ec0",
+      "original_abi": "ECX actual94h Cone definition; stack actual TextBuffer; RET4/AL true",
+      "pe_live_match": true,
+      "sha256": "18d11da33c20bfd3e52bff630d92c4f8a107c891e3abe613119ecba60a1adc67",
+      "saved_name": "BSP_ConeEmissionDefinition_Load"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b03efc",
+      "native": "00af5740",
+      "function": "00b03ec0",
+      "contract": "Existing raw actual TextBuffer/pooled4h normalized line; SAME scratch and raw string domain; ECX, stack output, RET4/AL"
+    },
+    {
+      "address": "00b03f0f",
+      "native": "00bf7fbf",
+      "function": "00b03ec0",
+      "contract": "Current source CRT _stricmp; two C strings, cdecl; native ADD ESP8"
+    },
+    {
+      "address": "00b03f22",
+      "native": "00af5740",
+      "function": "00b03ec0",
+      "contract": "Existing raw actual TextBuffer/pooled4h normalized line; SAME scratch and raw string domain; ECX, stack output, RET4/AL"
+    },
+    {
+      "address": "00b03f3a",
+      "native": "00bf7fbf",
+      "function": "00b03ec0",
+      "contract": "Current source CRT _stricmp; two C strings, cdecl; native ADD ESP8"
+    },
+    {
+      "address": "00b03f54",
+      "native": "00bf7fbf",
+      "function": "00b03ec0",
+      "contract": "Current source CRT _stricmp; two C strings, cdecl; native ADD ESP8"
+    },
+    {
+      "address": "00b03f6e",
+      "native": "00aee3c0",
+      "function": "00b03ec0",
+      "contract": "Existing actual4h pooled token constructor; ECX line, stack output/index, RET8/EAX header"
+    },
+    {
+      "address": "00b03f7b",
+      "native": "00bf7fbf",
+      "function": "00b03ec0",
+      "contract": "Current source CRT _stricmp; two C strings, cdecl; native ADD ESP8"
+    },
+    {
+      "address": "00b03fa7",
+      "native": "00419cc0",
+      "function": "00b03ec0",
+      "contract": "Current raw string singleton getter; captured return pointer/size arguments already stacked"
+    },
+    {
+      "address": "00b03fae",
+      "native": "00bd1510",
+      "function": "00b03ec0",
+      "contract": "Genuine sized-pool return through current raw pool; captured block/bytes/unused1, RET12"
+    },
+    {
+      "address": "00b03fca",
+      "native": "00af44c0",
+      "function": "00b03ec0",
+      "contract": "Existing actual4h suffix constructor; ECX line, stack output/index, RET8/EAX header; its own true-unwind actions retained"
+    },
+    {
+      "address": "00b03fda",
+      "native": "00afa650",
+      "function": "00b03ec0",
+      "contract": "Genuine raw base flag parser; actual definition and actual4h suffix, same string pool; RET4/AL"
+    },
+    {
+      "address": "00b04008",
+      "native": "00419cc0",
+      "function": "00b03ec0",
+      "contract": "Current raw string singleton getter; captured return pointer/size arguments already stacked"
+    },
+    {
+      "address": "00b0400f",
+      "native": "00bd1510",
+      "function": "00b03ec0",
+      "contract": "Genuine sized-pool return through current raw pool; captured block/bytes/unused1, RET12"
+    },
+    {
+      "address": "00b0402b",
+      "native": "00aee3c0",
+      "function": "00b03ec0",
+      "contract": "Existing actual4h pooled token constructor; ECX line, stack output/index, RET8/EAX header"
+    },
+    {
+      "address": "00b04043",
+      "native": "00af44c0",
+      "function": "00b03ec0",
+      "contract": "Existing actual4h suffix constructor; ECX line, stack output/index, RET8/EAX header; its own true-unwind actions retained"
+    },
+    {
+      "address": "00b04058",
+      "native": "00aee3c0",
+      "function": "00b03ec0",
+      "contract": "Existing actual4h pooled token constructor; ECX line, stack output/index, RET8/EAX header"
+    },
+    {
+      "address": "00b04060",
+      "native": "00bfa66c",
+      "function": "00b03ec0",
+      "contract": "Current source CRT atof; cdecl string; native ST0 stored directly binary32 at B04065"
+    },
+    {
+      "address": "00b04092",
+      "native": "00419cc0",
+      "function": "00b03ec0",
+      "contract": "Current raw string singleton getter; captured return pointer/size arguments already stacked"
+    },
+    {
+      "address": "00b04099",
+      "native": "00bd1510",
+      "function": "00b03ec0",
+      "contract": "Genuine sized-pool return through current raw pool; captured block/bytes/unused1, RET12"
+    },
+    {
+      "address": "00b040c9",
+      "native": "00419cc0",
+      "function": "00b03ec0",
+      "contract": "Current raw string singleton getter; captured return pointer/size arguments already stacked"
+    },
+    {
+      "address": "00b040d0",
+      "native": "00bd1510",
+      "function": "00b03ec0",
+      "contract": "Genuine sized-pool return through current raw pool; captured block/bytes/unused1, RET12"
+    },
+    {
+      "address": "00b040dd",
+      "native": "00afbed0",
+      "function": "00b03ec0",
+      "contract": "Genuine actual10h raw builder constructor; ECX builder, incoming kind+C untouched"
+    },
+    {
+      "address": "00b040fa",
+      "native": "00afc360",
+      "function": "00b03ec0",
+      "contract": "Genuine actual10h raw default-endpoint append; zero floats supplied by native FLDZ/FST/FSTP"
+    },
+    {
+      "address": "00b0410a",
+      "native": "00af44c0",
+      "function": "00b03ec0",
+      "contract": "Existing actual4h suffix constructor; ECX line, stack output/index, RET8/EAX header; its own true-unwind actions retained"
+    },
+    {
+      "address": "00b04120",
+      "native": "00af44c0",
+      "function": "00b03ec0",
+      "contract": "Existing actual4h suffix constructor; ECX line, stack output/index, RET8/EAX header; its own true-unwind actions retained"
+    },
+    {
+      "address": "00b04132",
+      "native": "00afc470",
+      "function": "00b03ec0",
+      "contract": "Genuine raw pooled curve parser; actual4h suffix, native AL ignored and partial mutations retained"
+    },
+    {
+      "address": "00b04162",
+      "native": "00419cc0",
+      "function": "00b03ec0",
+      "contract": "Current raw string singleton getter; captured return pointer/size arguments already stacked"
+    },
+    {
+      "address": "00b04169",
+      "native": "00bd1510",
+      "function": "00b03ec0",
+      "contract": "Genuine sized-pool return through current raw pool; captured block/bytes/unused1, RET12"
+    },
+    {
+      "address": "00b04199",
+      "native": "00419cc0",
+      "function": "00b03ec0",
+      "contract": "Current raw string singleton getter; captured return pointer/size arguments already stacked"
+    },
+    {
+      "address": "00b041a0",
+      "native": "00bd1510",
+      "function": "00b03ec0",
+      "contract": "Genuine sized-pool return through current raw pool; captured block/bytes/unused1, RET12"
+    },
+    {
+      "address": "00b041bd",
+      "native": "00af9d00",
+      "function": "00b03ec0",
+      "contract": "Genuine raw base-parameter parser; actual4h name/10h builder and FLD32/FSTP32 copied scalar, raw runtime pool and late scale"
+    },
+    {
+      "address": "00b041cb",
+      "native": "00bf6989",
+      "function": "00b03ec0",
+      "contract": "Fixed source CRT free of captured builder records; native clear+0/+4/+8 afterward, kind+C unchanged"
+    },
+    {
+      "address": "00b0420d",
+      "native": "00bf7fbf",
+      "function": "00b03ec0",
+      "contract": "Current source CRT _stricmp; two C strings, cdecl; native ADD ESP8"
+    },
+    {
+      "address": "00b0421d",
+      "native": "00afbf60",
+      "function": "00b03ec0",
+      "contract": "Genuine actual10h raw parameter conversion; SAME runtime pool and current numeric cells; EAX payload before FLD32/FMUL64/FSTP32 multiplier"
+    },
+    {
+      "address": "00b04239",
+      "native": "00bf6989",
+      "function": "00b03ec0",
+      "contract": "Fixed source CRT free of captured builder records; native clear+0/+4/+8 afterward, kind+C unchanged"
+    },
+    {
+      "address": "00b04274",
+      "native": "00419cc0",
+      "function": "00b03ec0",
+      "contract": "Current raw string singleton getter; captured return pointer/size arguments already stacked"
+    },
+    {
+      "address": "00b0427b",
+      "native": "00bd1510",
+      "function": "00b03ec0",
+      "contract": "Genuine sized-pool return through current raw pool; captured block/bytes/unused1, RET12"
+    },
+    {
+      "address": "00b04293",
+      "native": "00bf7fbf",
+      "function": "00b03ec0",
+      "contract": "Current source CRT _stricmp; two C strings, cdecl; native ADD ESP8"
+    },
+    {
+      "address": "00b042a3",
+      "native": "00afbf60",
+      "function": "00b03ec0",
+      "contract": "Genuine actual10h raw parameter conversion; SAME runtime pool and current numeric cells; EAX payload before FLD32/FMUL64/FSTP32 multiplier"
+    },
+    {
+      "address": "00b042cb",
+      "native": "00bf7fbf",
+      "function": "00b03ec0",
+      "contract": "Current source CRT _stricmp; two C strings, cdecl; native ADD ESP8"
+    },
+    {
+      "address": "00b042db",
+      "native": "00afbf60",
+      "function": "00b03ec0",
+      "contract": "Genuine actual10h raw parameter conversion; SAME runtime pool and current numeric cells; EAX payload before FLD32/FMUL64/FSTP32 multiplier"
+    },
+    {
+      "address": "00b042f7",
+      "native": "00bf6989",
+      "function": "00b03ec0",
+      "contract": "Fixed source CRT free of captured builder records; native clear+0/+4/+8 afterward, kind+C unchanged"
+    },
+    {
+      "address": "00b04317",
+      "native": "00aee2a0",
+      "function": "00b03ec0",
+      "contract": "Genuine current actual4h header destructor; captured bytes returned then header nulled"
+    },
+    {
+      "address": "00b0432b",
+      "native": "00bf7fbf",
+      "function": "00b03ec0",
+      "contract": "Current source CRT _stricmp; two C strings, cdecl; native ADD ESP8"
+    },
+    {
+      "address": "00b0433b",
+      "native": "00afbf60",
+      "function": "00b03ec0",
+      "contract": "Genuine actual10h raw parameter conversion; SAME runtime pool and current numeric cells; EAX payload before FLD32/FMUL64/FSTP32 multiplier"
+    },
+    {
+      "address": "00b0435e",
+      "native": "00bf7fbf",
+      "function": "00b03ec0",
+      "contract": "Current source CRT _stricmp; two C strings, cdecl; native ADD ESP8"
+    },
+    {
+      "address": "00b0436e",
+      "native": "00afbf60",
+      "function": "00b03ec0",
+      "contract": "Genuine actual10h raw parameter conversion; SAME runtime pool and current numeric cells; EAX payload before FLD32/FMUL64/FSTP32 multiplier"
+    },
+    {
+      "address": "00b04389",
+      "native": "00af4110",
+      "function": "00b03ec0",
+      "contract": "Genuine builder destructor; captured records freed, current+0/+4/+8 cleared, kind+C retained"
+    },
+    {
+      "address": "00b0439a",
+      "native": "00aee2a0",
+      "function": "00b03ec0",
+      "contract": "Genuine current actual4h header destructor; captured bytes returned then header nulled"
+    },
+    {
+      "address": "00b043a4",
+      "native": "00af4110",
+      "function": "00b03ec0",
+      "contract": "Genuine builder destructor; captured records freed, current+0/+4/+8 cleared, kind+C retained"
+    },
+    {
+      "address": "00b043b5",
+      "native": "00aee2a0",
+      "function": "00b03ec0",
+      "contract": "Genuine current actual4h header destructor; captured bytes returned then header nulled"
+    },
+    {
+      "address": "00b043c4",
+      "native": "00aee3c0",
+      "function": "00b03ec0",
+      "contract": "Existing actual4h pooled token constructor; ECX line, stack output/index, RET8/EAX header"
+    },
+    {
+      "address": "00b043d1",
+      "native": "00bf7fbf",
+      "function": "00b03ec0",
+      "contract": "Current source CRT _stricmp; two C strings, cdecl; native ADD ESP8"
+    },
+    {
+      "address": "00b04402",
+      "native": "00419cc0",
+      "function": "00b03ec0",
+      "contract": "Current raw string singleton getter; captured return pointer/size arguments already stacked"
+    },
+    {
+      "address": "00b04409",
+      "native": "00bd1510",
+      "function": "00b03ec0",
+      "contract": "Genuine sized-pool return through current raw pool; captured block/bytes/unused1, RET12"
+    },
+    {
+      "address": "00b04425",
+      "native": "00aee3c0",
+      "function": "00b03ec0",
+      "contract": "Existing actual4h pooled token constructor; ECX line, stack output/index, RET8/EAX header"
+    },
+    {
+      "address": "00b04453",
+      "native": "0041dd40",
+      "function": "00b03ec0",
+      "contract": "Genuine actual8h header resize; native caller zeros header, preserve=1, SAME raw strings; RET8"
+    },
+    {
+      "address": "00b0446a",
+      "native": "00bf7680",
+      "function": "00b03ec0",
+      "contract": "Fixed source CRT overlapping-safe byte copy; captured token source, current8h destination and length+1"
+    },
+    {
+      "address": "00b04485",
+      "native": "00aee3c0",
+      "function": "00b03ec0",
+      "contract": "Existing actual4h pooled token constructor; ECX line, stack output/index, RET8/EAX header"
+    },
+    {
+      "address": "00b044b3",
+      "native": "0041dd40",
+      "function": "00b03ec0",
+      "contract": "Genuine actual8h header resize; native caller zeros header, preserve=1, SAME raw strings; RET8"
+    },
+    {
+      "address": "00b044ca",
+      "native": "00bf7680",
+      "function": "00b03ec0",
+      "contract": "Fixed source CRT overlapping-safe byte copy; captured token source, current8h destination and length+1"
+    },
+    {
+      "address": "00b044f3",
+      "native": "00af9fb0",
+      "function": "00b03ec0",
+      "contract": "Concrete recursive raw emitter factory; ECX kind8h, EDX name8h; stack current parent+10,parent,text; RET12; retained typed child"
+    },
+    {
+      "address": "00b04515",
+      "native": "00419cc0",
+      "function": "00b03ec0",
+      "contract": "Current raw string singleton getter; captured return pointer/size arguments already stacked"
+    },
+    {
+      "address": "00b0451c",
+      "native": "00bd1510",
+      "function": "00b03ec0",
+      "contract": "Genuine sized-pool return through current raw pool; captured block/bytes/unused1, RET12"
+    },
+    {
+      "address": "00b04548",
+      "native": "00419cc0",
+      "function": "00b03ec0",
+      "contract": "Current raw string singleton getter; captured return pointer/size arguments already stacked"
+    },
+    {
+      "address": "00b0454f",
+      "native": "00bd1510",
+      "function": "00b03ec0",
+      "contract": "Genuine sized-pool return through current raw pool; captured block/bytes/unused1, RET12"
+    },
+    {
+      "address": "00b04573",
+      "native": "00419cc0",
+      "function": "00b03ec0",
+      "contract": "Current raw string singleton getter; captured return pointer/size arguments already stacked"
+    },
+    {
+      "address": "00b0457a",
+      "native": "00bd1510",
+      "function": "00b03ec0",
+      "contract": "Genuine sized-pool return through current raw pool; captured block/bytes/unused1, RET12"
+    },
+    {
+      "address": "00b045a6",
+      "native": "00419cc0",
+      "function": "00b03ec0",
+      "contract": "Current raw string singleton getter; captured return pointer/size arguments already stacked"
+    },
+    {
+      "address": "00b045ad",
+      "native": "00bd1510",
+      "function": "00b03ec0",
+      "contract": "Genuine sized-pool return through current raw pool; captured block/bytes/unused1, RET12"
+    },
+    {
+      "address": "00b045b9",
+      "native": "00af9f00",
+      "function": "00b03ec0",
+      "contract": "Existing native parent emitter append; ECX actual definition, stacked child; RET4; ignores null without added reference"
+    },
+    {
+      "address": "00b045ca",
+      "native": "00aee3c0",
+      "function": "00b03ec0",
+      "contract": "Existing actual4h pooled token constructor; ECX line, stack output/index, RET8/EAX header"
+    },
+    {
+      "address": "00b045d7",
+      "native": "00bf7fbf",
+      "function": "00b03ec0",
+      "contract": "Current source CRT _stricmp; two C strings, cdecl; native ADD ESP8"
+    },
+    {
+      "address": "00b04603",
+      "native": "00419cc0",
+      "function": "00b03ec0",
+      "contract": "Current raw string singleton getter; captured return pointer/size arguments already stacked"
+    },
+    {
+      "address": "00b0460a",
+      "native": "00bd1510",
+      "function": "00b03ec0",
+      "contract": "Genuine sized-pool return through current raw pool; captured block/bytes/unused1, RET12"
+    },
+    {
+      "address": "00b04626",
+      "native": "00aee3c0",
+      "function": "00b03ec0",
+      "contract": "Existing actual4h pooled token constructor; ECX line, stack output/index, RET8/EAX header"
+    },
+    {
+      "address": "00b04654",
+      "native": "0041dd40",
+      "function": "00b03ec0",
+      "contract": "Genuine actual8h header resize; native caller zeros header, preserve=1, SAME raw strings; RET8"
+    },
+    {
+      "address": "00b0466b",
+      "native": "00bf7680",
+      "function": "00b03ec0",
+      "contract": "Fixed source CRT overlapping-safe byte copy; captured token source, current8h destination and length+1"
+    },
+    {
+      "address": "00b04686",
+      "native": "00aee3c0",
+      "function": "00b03ec0",
+      "contract": "Existing actual4h pooled token constructor; ECX line, stack output/index, RET8/EAX header"
+    },
+    {
+      "address": "00b046b4",
+      "native": "0041dd40",
+      "function": "00b03ec0",
+      "contract": "Genuine actual8h header resize; native caller zeros header, preserve=1, SAME raw strings; RET8"
+    },
+    {
+      "address": "00b046cb",
+      "native": "00bf7680",
+      "function": "00b03ec0",
+      "contract": "Fixed source CRT overlapping-safe byte copy; captured token source, current8h destination and length+1"
+    },
+    {
+      "address": "00b046f0",
+      "native": "00b00ce0",
+      "function": "00b03ec0",
+      "contract": "Concrete raw particle factory with all typed raw child parsers; ECX kind8h, EDX name8h; stack parent,text; RET8; retained typed child"
+    },
+    {
+      "address": "00b04712",
+      "native": "00419cc0",
+      "function": "00b03ec0",
+      "contract": "Current raw string singleton getter; captured return pointer/size arguments already stacked"
+    },
+    {
+      "address": "00b04719",
+      "native": "00bd1510",
+      "function": "00b03ec0",
+      "contract": "Genuine sized-pool return through current raw pool; captured block/bytes/unused1, RET12"
+    },
+    {
+      "address": "00b04745",
+      "native": "00419cc0",
+      "function": "00b03ec0",
+      "contract": "Current raw string singleton getter; captured return pointer/size arguments already stacked"
+    },
+    {
+      "address": "00b0474c",
+      "native": "00bd1510",
+      "function": "00b03ec0",
+      "contract": "Genuine sized-pool return through current raw pool; captured block/bytes/unused1, RET12"
+    },
+    {
+      "address": "00b04770",
+      "native": "00419cc0",
+      "function": "00b03ec0",
+      "contract": "Current raw string singleton getter; captured return pointer/size arguments already stacked"
+    },
+    {
+      "address": "00b04777",
+      "native": "00bd1510",
+      "function": "00b03ec0",
+      "contract": "Genuine sized-pool return through current raw pool; captured block/bytes/unused1, RET12"
+    },
+    {
+      "address": "00b047a3",
+      "native": "00419cc0",
+      "function": "00b03ec0",
+      "contract": "Current raw string singleton getter; captured return pointer/size arguments already stacked"
+    },
+    {
+      "address": "00b047aa",
+      "native": "00bd1510",
+      "function": "00b03ec0",
+      "contract": "Genuine sized-pool return through current raw pool; captured block/bytes/unused1, RET12"
+    },
+    {
+      "address": "00b047b6",
+      "native": "00af9f20",
+      "function": "00b03ec0",
+      "contract": "Existing native parent particle append; ECX actual definition, stacked child; RET4; dereferences null and reloads updated count"
+    },
+    {
+      "address": "00b047c9",
+      "native": "00af5740",
+      "function": "00b03ec0",
+      "contract": "Existing raw actual TextBuffer/pooled4h normalized line; SAME scratch and raw string domain; ECX, stack output, RET4/AL"
+    },
+    {
+      "address": "00b04802",
+      "native": "00419cc0",
+      "function": "00b03ec0",
+      "contract": "Current raw string singleton getter; captured return pointer/size arguments already stacked"
+    },
+    {
+      "address": "00b04809",
+      "native": "00bd1510",
+      "function": "00b03ec0",
+      "contract": "Genuine sized-pool return through current raw pool; captured block/bytes/unused1, RET12"
+    }
+  ],
+  "exception_handling": {
+    "handler": {
+      "address": "00cbb728",
+      "bytes": 10,
+      "sha256": "8e15c7b57602518ab2c09da4ebcda3d5c3b5800d998cbd16b2dd054eb3142296",
+      "pe_live_match": true,
+      "instructions": [
+        "mov eax, 0xdf37a0",
+        "jmp 0xbf6b43"
+      ]
+    },
+    "func_info": {
+      "address": "00df37a0",
+      "bytes": 36,
+      "sha256": "ab3f374cb99418d82fd7218724384a9f703541373b4f04b5d9f0074fc4b17e25",
+      "pe_live_match": true,
+      "magic": "19930522",
+      "max_state": 15,
+      "unwind_map": "00df37c4",
+      "try_block_count": 0,
+      "try_block_map": "00000000",
+      "ip_map_count": 0,
+      "ip_map": "00000000",
+      "es_type_list": "00000000",
+      "eh_flags": 1
+    },
+    "unwind_map": {
+      "address": "00df37c4",
+      "bytes": 120,
+      "sha256": "c0bea385db3a0c073934fbd03116122dccc702db550b85fd03ceddf2db27035e",
+      "pe_live_match": true,
+      "entries": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cbb6b0",
+          "local": "line(-7c)",
+          "action_bytes": "8d4d84e9e82be3ff",
+          "sha256": "bbc836e21496f30952e8c94228048511d2fcafb6d05539e3eb61718d63c9e106",
+          "instructions": [
+            "lea ecx, [ebp - 0x7c]",
+            "jmp 0xaee2a0"
+          ],
+          "pe_live_match": true
+        },
+        {
+          "state": 1,
+          "previous": 0,
+          "action": "00cbb6b8",
+          "local": "flag_suffix(-68)",
+          "action_bytes": "8d4d98e9e02be3ff",
+          "sha256": "731f43c2168dbb03ac6827cce7aca74b36c9216e224f2071881c543b656fec27",
+          "instructions": [
+            "lea ecx, [ebp - 0x68]",
+            "jmp 0xaee2a0"
+          ],
+          "pe_live_match": true
+        },
+        {
+          "state": 2,
+          "previous": 0,
+          "action": "00cbb6c0",
+          "local": "name(-78)",
+          "action_bytes": "8d4d88e9d82be3ff",
+          "sha256": "f504e42f1067f12d4eb44bb5f3851749a8ae41eae3e1c82edf2fcd95a26e51dd",
+          "instructions": [
+            "lea ecx, [ebp - 0x78]",
+            "jmp 0xaee2a0"
+          ],
+          "pe_live_match": true
+        },
+        {
+          "state": 3,
+          "previous": 2,
+          "action": "00cbb6c8",
+          "local": "percentage_suffix(-60)",
+          "action_bytes": "8d4da0e9d02be3ff",
+          "sha256": "ed51f13cadee553c70df94c279ff219afe2e7f288842c9845b7b90cc06f1026a",
+          "instructions": [
+            "lea ecx, [ebp - 0x60]",
+            "jmp 0xaee2a0"
+          ],
+          "pe_live_match": true
+        },
+        {
+          "state": 4,
+          "previous": 2,
+          "action": "00cbb6d0",
+          "local": "builder(-1c)",
+          "action_bytes": "8d4de4e9388ae3ff",
+          "sha256": "90c567cea442def5468d277d293e2c92cc8915103c524b051e8cc61b9260cd57",
+          "instructions": [
+            "lea ecx, [ebp - 0x1c]",
+            "jmp 0xaf4110"
+          ],
+          "pe_live_match": true
+        },
+        {
+          "state": 5,
+          "previous": 4,
+          "action": "00cbb6d8",
+          "local": "curve_suffix(-58)",
+          "action_bytes": "8d4da8e9c02be3ff",
+          "sha256": "675a32fef2af810db973030a128ecb407bc5561ec898bf50591ca93dbd2ebeb3",
+          "instructions": [
+            "lea ecx, [ebp - 0x58]",
+            "jmp 0xaee2a0"
+          ],
+          "pe_live_match": true
+        },
+        {
+          "state": 6,
+          "previous": 5,
+          "action": "00cbb6e0",
+          "local": "curve(-5c)",
+          "action_bytes": "8d4da4e9b82be3ff",
+          "sha256": "2687f845f8c69316a0dc1b0299c02d0c4d5b2827d2ae0b255342955b77b660fb",
+          "instructions": [
+            "lea ecx, [ebp - 0x5c]",
+            "jmp 0xaee2a0"
+          ],
+          "pe_live_match": true
+        },
+        {
+          "state": 7,
+          "previous": 0,
+          "action": "00cbb6e8",
+          "local": "emitter_name_token(-4c)",
+          "action_bytes": "8d4db4e9b02be3ff",
+          "sha256": "0b0ec4386edeb142b476a70ed7e8c35d4a6f6f22e808bfc7cf367a96fe755e92",
+          "instructions": [
+            "lea ecx, [ebp - 0x4c]",
+            "jmp 0xaee2a0"
+          ],
+          "pe_live_match": true
+        },
+        {
+          "state": 8,
+          "previous": 7,
+          "action": "00cbb6f0",
+          "local": "emitter_name8h(-34)",
+          "action_bytes": "8d4dcce9282676ff",
+          "sha256": "7a8829ab6525a94d4154e9198d9250f50c71d052fc7be641769946b183c57206",
+          "instructions": [
+            "lea ecx, [ebp - 0x34]",
+            "jmp 0x41dd20"
+          ],
+          "pe_live_match": true
+        },
+        {
+          "state": 9,
+          "previous": 8,
+          "action": "00cbb6f8",
+          "local": "emitter_kind_token(-50)",
+          "action_bytes": "8d4db0e9a02be3ff",
+          "sha256": "fff25ef75a720df4d5cbfa4002c08a9107435d18a0b4b40e05f3b6642a41cabd",
+          "instructions": [
+            "lea ecx, [ebp - 0x50]",
+            "jmp 0xaee2a0"
+          ],
+          "pe_live_match": true
+        },
+        {
+          "state": 10,
+          "previous": 9,
+          "action": "00cbb700",
+          "local": "emitter_kind8h(-3c)",
+          "action_bytes": "8d4dc4e9182676ff",
+          "sha256": "4b0dfa41bfebf53c9bf96791de840a2ecf3ad1b989eedfb9fe156164034cefd7",
+          "instructions": [
+            "lea ecx, [ebp - 0x3c]",
+            "jmp 0x41dd20"
+          ],
+          "pe_live_match": true
+        },
+        {
+          "state": 11,
+          "previous": 0,
+          "action": "00cbb708",
+          "local": "particle_name_token(-40)",
+          "action_bytes": "8d4dc0e9902be3ff",
+          "sha256": "f35dea2305d5c058ba685478479ee9d6a7ade0eaa7f728f2176ba9e595da7bf1",
+          "instructions": [
+            "lea ecx, [ebp - 0x40]",
+            "jmp 0xaee2a0"
+          ],
+          "pe_live_match": true
+        },
+        {
+          "state": 12,
+          "previous": 11,
+          "action": "00cbb710",
+          "local": "particle_name8h(-24)",
+          "action_bytes": "8d4ddce9082676ff",
+          "sha256": "19dfba43f43961185a32816e497e1c0fbb48f0bb7d8e7bc6ca3db7405f949949",
+          "instructions": [
+            "lea ecx, [ebp - 0x24]",
+            "jmp 0x41dd20"
+          ],
+          "pe_live_match": true
+        },
+        {
+          "state": 13,
+          "previous": 12,
+          "action": "00cbb718",
+          "local": "particle_kind_token(-44)",
+          "action_bytes": "8d4dbce9802be3ff",
+          "sha256": "bc9fd3498cdbedcd610899d2005c768cd6b916879d2a4cf877a69d35bc48c8ee",
+          "instructions": [
+            "lea ecx, [ebp - 0x44]",
+            "jmp 0xaee2a0"
+          ],
+          "pe_live_match": true
+        },
+        {
+          "state": 14,
+          "previous": 13,
+          "action": "00cbb720",
+          "local": "particle_kind8h(-2c)",
+          "action_bytes": "8d4dd4e9f82576ff",
+          "sha256": "0ae2edbd6d3cd7a7c5c255abe1bcad48a1ef335a3b5426059336793afc723dc6",
+          "instructions": [
+            "lea ecx, [ebp - 0x2c]",
+            "jmp 0x41dd20"
+          ],
+          "pe_live_match": true
+        }
+      ]
+    }
+  },
+  "validation": {
+    "full_pe_live_match": true,
+    "direct_call_rows": 94,
+    "strict_compile": "PASS MSVC Win32 /c /std:c++17 /MD /EHsc /W4 /WX /fp:strict; temporary include lookup to particle-factory worker stable header",
+    "whole_cycle_build": "pending integrator after concrete cycle sources integrate",
+    "fixture": "pending shared copied-original/source emitter probe",
+    "native_fh3": false,
+    "gameplay": false,
+    "report_call_verification": "PASS 94 call rows checked, 0 failed"
+  },
+  "boundaries": [
+    "New source interfaces do not replace original register/stack ABI, original FH3/SEH/CRT transport, unrestricted faults or gameplay.",
+    "No legacy host callbacks or fabricated providers. Missing reached typed factory is an explicit source boundary.",
+    "Parent parser and factory child frames retain sparse native headers before child storage; failed children and borrowed contexts must remain alive until existing obligations resolve. Failed Object/VFS currently requires process lifetime.",
+    "Incoming parent and child builder residue are explicit distinct inputs; native does not initialize or propagate kind+C.",
+    "Completed children can be replaced; no retry, rollback, overwritten-parameter reclamation or owner release is introduced."
+  ]
+}
