@@ -1,7 +1,9 @@
 #include "bsp/native_particle_object_tracer_lifetime.hpp"
 #include "bsp/native_particle_type_lifetime.hpp"
 #include "bsp/native_particle_type_resources.hpp"
+#include "bsp/native_particle_object_resources_raw.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include <stdexcept>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native particle Object/Tracer lifetime requires MSVC Win32.
@@ -74,7 +76,12 @@ void destroy_native_object_particle_type_00af8a40(void* owner,
     Unwind unwind{owner, context, true};
     release_parameter(owner, 0x80, context);
     release_parameter(owner, 0x84, context);
-    clear_native_object_particle_models_00af8940(owner);
+    // AF8940 tests count != 0 (not signed > 0). An empty vector needs no
+    // external domain; a reached nonempty vector must use the loader's chain.
+    if (context.resource_container_references)
+        clear_native_object_particle_models_00af8940(owner, *context.resource_container_references);
+    else if (word(owner, 0x90) != 0)
+        throw std::runtime_error("Object particle model lifetime requires the loading resource-container references");
     unwind.state = 0;
     destroy_native_object_particle_model_vector_00af89c0(at(owner, 0x8c));
     unwind.state = -1;

@@ -1,0 +1,758 @@
+{
+  "schema_version": 1,
+  "packet": "orch4-particle-lifetime-r21",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "base_commit": "9d0a290f5fbb5a6c2bbd2a181f638fcc2ffb8c56",
+  "owned_addresses": [
+    "00871420",
+    "00871310",
+    "00871480",
+    "00871730",
+    "00871ae0",
+    "00871b30",
+    "00871ca0",
+    "00871fa0",
+    "00afa100",
+    "00af8a40",
+    "00af8bb0"
+  ],
+  "byte_ranges": [
+    {
+      "address": "00871420",
+      "end_exclusive": "0087143f",
+      "length": 31,
+      "sha256": "1071027371a9ce2f817139cbfde3b2eb3ef9061595d7348715c459167dea677f",
+      "live_disk_equal": true,
+      "bytes_hex": "568b7424088d460450ff152022ce0085c075088b168b028bceffd05ec20400",
+      "last_instruction": "ret 4",
+      "instruction_count": 13,
+      "original_abi": "incoming ECX ignored; stack resource; RET4"
+    },
+    {
+      "address": "00871310",
+      "end_exclusive": "00871364",
+      "length": 84,
+      "sha256": "ee44aff7b85199f79a248a5f86cae636bdfe5132d2c2b03e83ecc1ce674a885a",
+      "live_disk_equal": true,
+      "bytes_hex": "51568bf1837e0800743d8d9b000000008b46088b4e046bc02c8b4408fc8b168b5210508bceffd28b460885c074138b4e046bc02c8d4c08d4e8a3e9ffff834608ff837e080075c96a008d4e04e8cff7ffff5e59c3",
+      "last_instruction": "ret ",
+      "instruction_count": 31,
+      "original_abi": "ECX owner; RET"
+    },
+    {
+      "address": "00871480",
+      "end_exclusive": "008714df",
+      "length": 95,
+      "sha256": "28d5c519f1ed537264227224da463ef5a6cff43e276d6dc9812730faea81bcf9",
+      "live_disk_equal": true,
+      "bytes_hex": "6aff683b60c90064a100000000506489250000000051568bf189742404c706f0dad000c744241000000000e860feffff83c6046a008bcec7442414ffffffffe86cf6ffff8b0650e8bd5438008b4c240c83c4045e64890d0000000083c410c3",
+      "last_instruction": "ret ",
+      "instruction_count": 26,
+      "original_abi": "ECX owner; RET"
+    },
+    {
+      "address": "00871730",
+      "end_exclusive": "0087174e",
+      "length": 30,
+      "sha256": "e346084d0757404191d9341edda5f88968005c8f25fbd44241515a4a70b3a2d3",
+      "live_disk_equal": true,
+      "bytes_hex": "568bf1e848fdfffff644240801740956e8674e380083c4048bc65ec20400",
+      "last_instruction": "ret 4",
+      "instruction_count": 11,
+      "original_abi": "ECX owner; stack flags; EAX owner; RET4"
+    },
+    {
+      "address": "00871ae0",
+      "end_exclusive": "00871b2d",
+      "length": 77,
+      "sha256": "8adf5e5d545148cabc3581a02d633586d17050a873a9778fec68624663bdabb4",
+      "live_disk_equal": true,
+      "bytes_hex": "6aff68d860c90064a100000000506489250000000051568bf1897424048d4e04c744241000000000e873f9ffff8b4c2408c7056876f80000000000c7061838ce005e64890d0000000083c410c3",
+      "last_instruction": "ret ",
+      "instruction_count": 19,
+      "original_abi": "ECX owner; RET"
+    },
+    {
+      "address": "00871b30",
+      "end_exclusive": "00871b4e",
+      "length": 30,
+      "sha256": "8f1b38887095863582604ba4c1ff3f0ed1287d894a8771c7e150974d37d1f784",
+      "live_disk_equal": true,
+      "bytes_hex": "568bf1e8a8fffffff644240801740956e8674a380083c4048bc65ec20400",
+      "last_instruction": "ret 4",
+      "instruction_count": 11,
+      "original_abi": "ECX owner; stack flags; EAX owner; RET4"
+    },
+    {
+      "address": "00871ca0",
+      "end_exclusive": "00871cfb",
+      "length": 91,
+      "sha256": "fad0efe5a679dc2cb1be82464ee91ec423f3dd5f69781b00c353aec458274e89",
+      "live_disk_equal": true,
+      "bytes_hex": "6aff681861c90064a100000000506489250000000051568bf189742404c70618d4d000c744241000000000e800ffffff8d4e08518d4804e804f8ffff8bcec7442410ffffffffe8952528008b4c24085e64890d0000000083c410c3",
+      "last_instruction": "ret ",
+      "instruction_count": 24,
+      "original_abi": "ECX owner; RET"
+    },
+    {
+      "address": "00871fa0",
+      "end_exclusive": "00871fbe",
+      "length": 30,
+      "sha256": "b5df344a553701dccf46963ea492e9f3e91ed26aded88cf1877c6171de649a51",
+      "live_disk_equal": true,
+      "bytes_hex": "568bf1e8f8fcfffff644240801740956e8f745380083c4048bc65ec20400",
+      "last_instruction": "ret 4",
+      "instruction_count": 11,
+      "original_abi": "ECX owner; stack flags; EAX owner; RET4"
+    },
+    {
+      "address": "00afa100",
+      "end_exclusive": "00afa27a",
+      "length": 378,
+      "sha256": "5023f0e9ce37b874fd1dbeb43bd3dac91de3b71722649a93e117f77881aba714",
+      "live_disk_equal": true,
+      "bytes_hex": "6aff68f3afcb0064a1000000005064892500000000515355568bf15789742410c706c4dbd5008b5e2433ff3bdfc744241c0100000074118bcbe8b25c00008bcbe84b5f0000897e248b5e283bdf74118bcbe89a5c00008bcbe8335f0000897e288b5e2c3bdf74118bcbe8825c00008bcbe81b5f0000897e2c8b5e203bdf74118bcbe86a5c00008bcbe8035f0000897e208b5e303bdf74118bcbe8525c00008bcbe8eb5e0000897e308b5e343bdf74118bcbe83a5c00008bcbe8d35e0000897e348b5e383bdf74118bcbe8225c00008bcbe8bb5e0000897e388b464c3bc77e298d6e3c8b5d008d430450ff152022ce0085c075088b138b028bcbffd083c70183c5043b7e4c7cdc33ff397e687e298d6e548b5d008d4b0451ff152022ce0085c075088b138b028bcbffd083c70183c5043b7e687cdc33ff8b460c3bc7c644241c0074168b4e086a0183c1015150e86ffa91ff8bc8e8b8720d008bcec744241cffffffffe8898e0d008b4c24145f5e5d5b64890d0000000083c410c3",
+      "last_instruction": "ret ",
+      "instruction_count": 131,
+      "original_abi": "ECX owner; RET"
+    },
+    {
+      "address": "00af8a40",
+      "end_exclusive": "00af8af6",
+      "length": 182,
+      "sha256": "d65b4bae2ea0268c63d42b555cd08be1ddc71f6534ca57c7acf85a48b2176ad0",
+      "live_disk_equal": true,
+      "bytes_hex": "6aff6846aecb0064a100000000506489250000000051568bf15789742408c70600dbd5008bbe8000000085ffc74424140100000074188bcfe8737300008bcfe80c760000c78680000000000000008bbe8400000085ff74188bcfe8517300008bcfe8ea750000c78684000000000000008bcee889feffff8dbe8c0000006a008bcfc644241800e8e5f8ffff8b3f57e8b6de0f0083c4048bcec7442414ffffffffe8cb8400008b4c240c5f5e64890d0000000083c410c3",
+      "last_instruction": "ret ",
+      "instruction_count": 48,
+      "original_abi": "ECX owner; RET"
+    },
+    {
+      "address": "00af8bb0",
+      "end_exclusive": "00af8bce",
+      "length": 30,
+      "sha256": "080f7de998bfa3f3478af983a5601d2fdec0832efab7ea92391b25ceaac5c4b7",
+      "live_disk_equal": true,
+      "bytes_hex": "568bf1e888fefffff644240801740956e8e7d90f0083c4048bc65ec20400",
+      "last_instruction": "ret 4",
+      "instruction_count": 11,
+      "original_abi": "ECX owner; stack flags; EAX owner; RET4"
+    },
+    {
+      "address": "00bd30e0",
+      "end_exclusive": "00bd30ee",
+      "length": 14,
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "live_disk_equal": true,
+      "bytes_hex": "85c974098b018b50046a01ffd2c3"
+    },
+    {
+      "address": "00af8940",
+      "end_exclusive": "00af89b1",
+      "length": 113,
+      "sha256": "05a2c2f21809c4e1b7324d99252951c856b5681ed340ffc34d0457c5b2288e39",
+      "live_disk_equal": true,
+      "bytes_hex": "568bf183be9000000000746353558b2d2022ce0057eb098da424000000008bff8b86900000008b8e8c0000008b7c81fc85ff8d5c81fc74188d570452ffd585c075088b078b108bcfffd2c703000000008b869000000085c0740983c0ff89869000000083be900000000075b45f5d5b5ec3"
+    },
+    {
+      "address": "00d5debc",
+      "end_exclusive": "00d5ded4",
+      "length": 24,
+      "sha256": "cae5e5c1ae8eff4ee489a449ef8333d67ebd0081c236175d7615cbead2524b22",
+      "live_disk_equal": true,
+      "bytes_hex": "e030bd00403bb0007039b000603bb000c03ab000c03eb000"
+    },
+    {
+      "address": "00d5de88",
+      "end_exclusive": "00d5dea0",
+      "length": 24,
+      "sha256": "363aab474b0bd61be412b72d507df1cef6ec89502ff241dfa5d43ebc4a89a806",
+      "live_disk_equal": true,
+      "bytes_hex": "e030bd00b02fb000c02bb000e02cb000302fb000d02fb000"
+    },
+    {
+      "address": "00d5de48",
+      "end_exclusive": "00d5de60",
+      "length": 24,
+      "sha256": "3215a00a5aa973580ac5653110e037d2324b836c1804801049631f0248b685f5",
+      "live_disk_equal": true,
+      "bytes_hex": "e030bd00a01eb000e01cb000c01eb000201eb0001022b000"
+    },
+    {
+      "address": "00d63228",
+      "end_exclusive": "00d63230",
+      "length": 8,
+      "sha256": "fc11421b064bb75e8d670f6f6166f4089d646ab28d9b036ae25dc2a92827aed7",
+      "live_disk_equal": true,
+      "bytes_hex": "e030bd006087b800"
+    },
+    {
+      "address": "00d0d418",
+      "end_exclusive": "00d0d420",
+      "length": 8,
+      "sha256": "1dc4ef92066349679b3a195d18a67b104d24cf8fc202d1f27dd56c989447655b",
+      "live_disk_equal": true,
+      "bytes_hex": "e030bd00a01f8700"
+    },
+    {
+      "address": "00d5d958",
+      "end_exclusive": "00d5d960",
+      "length": 8,
+      "sha256": "4e47fa007f2ce9f1c9010fe70c6461155889d4fbd5bc7e7d4a6eccb48e9be48b",
+      "live_disk_equal": true,
+      "bytes_hex": "e030bd00e046af00"
+    },
+    {
+      "address": "00c96110",
+      "end_exclusive": "00c96122",
+      "length": 18,
+      "sha256": "6e4d221804bbe09a7c46b2c9e600e186da89eaed6b0cc8a82c5413e6ba10a44e",
+      "live_disk_equal": true,
+      "bytes_hex": "8b4df0e968e1e5ffb81081dc00e9210af6ff"
+    },
+    {
+      "address": "00dc8108",
+      "end_exclusive": "00dc8134",
+      "length": 44,
+      "sha256": "6eca3c8bf7f337d1b8033edca550e784a69c682efef23c26a2b61831a3a9fcc5",
+      "live_disk_equal": true,
+      "bytes_hex": "ffffffff1061c90022059319010000000881dc00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00cbafe0",
+      "end_exclusive": "00cbb013",
+      "length": 51,
+      "sha256": "c58c60f644961ffd0a48adcca5f306bb1f4384ecb7f801b0024b1ccc40174860",
+      "live_disk_equal": true,
+      "bytes_hex": "8b4df0e90881f1ff8b4df083c108e92d2d76ffb8b82edf00e946bbf3ffcccccc8b4df0e9e880f1ff8b4df083c108e90d2d76ff"
+    },
+    {
+      "address": "00df2ea8",
+      "end_exclusive": "00df2edc",
+      "length": 52,
+      "sha256": "47c5a06c761bf2f6f3972e657c80c25bdc71839332c31f274593e4fb4ee30575",
+      "live_disk_equal": true,
+      "bytes_hex": "ffffffffe0afcb0000000000e8afcb002205931902000000a82edf00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00cbae30",
+      "end_exclusive": "00cbae50",
+      "length": 32,
+      "sha256": "66feb01bdeb8514e617dea3acb4cf1d21526726e8c530a7d34f0a3a9891d7dae",
+      "live_disk_equal": true,
+      "bytes_hex": "8b4df0e97861e4ff8b4df081c18c000000e97adbe3ffb8d82cdf00e9f3bcf3ff"
+    },
+    {
+      "address": "00df2cc8",
+      "end_exclusive": "00df2cfc",
+      "length": 52,
+      "sha256": "d7d4993881c4f374c04226a284d2bbb1a63ec7bb8534a93ecf62545118f1831b",
+      "live_disk_equal": true,
+      "bytes_hex": "ffffffff30aecb000000000038aecb002205931902000000c82cdf00000000000000000000000000000000000000000001000000"
+    }
+  ],
+  "call_rows": [
+    {
+      "function": "00871420",
+      "address": "00871429",
+      "instruction": "call dword ptr [0xce2220]",
+      "kind": "indirect"
+    },
+    {
+      "function": "00871420",
+      "address": "00871439",
+      "instruction": "call eax",
+      "kind": "indirect"
+    },
+    {
+      "function": "00871310",
+      "address": "00871335",
+      "instruction": "call edx",
+      "kind": "indirect"
+    },
+    {
+      "function": "00871310",
+      "address": "00871348",
+      "instruction": "call 0x86fcf0",
+      "native": "0086fcf0",
+      "kind": "direct"
+    },
+    {
+      "function": "00871310",
+      "address": "0087135c",
+      "instruction": "call 0x870b30",
+      "native": "00870b30",
+      "kind": "direct"
+    },
+    {
+      "function": "00871480",
+      "address": "008714ab",
+      "instruction": "call 0x871310",
+      "native": "00871310",
+      "kind": "direct"
+    },
+    {
+      "function": "00871480",
+      "address": "008714bf",
+      "instruction": "call 0x870b30",
+      "native": "00870b30",
+      "kind": "direct"
+    },
+    {
+      "function": "00871480",
+      "address": "008714c7",
+      "instruction": "call 0xbf6989",
+      "native": "00bf6989",
+      "kind": "direct"
+    },
+    {
+      "function": "00871730",
+      "address": "00871733",
+      "instruction": "call 0x871480",
+      "native": "00871480",
+      "kind": "direct"
+    },
+    {
+      "function": "00871730",
+      "address": "00871740",
+      "instruction": "call 0xbf65ac",
+      "native": "00bf65ac",
+      "kind": "direct"
+    },
+    {
+      "function": "00871ae0",
+      "address": "00871b08",
+      "instruction": "call 0x871480",
+      "native": "00871480",
+      "kind": "direct"
+    },
+    {
+      "function": "00871b30",
+      "address": "00871b33",
+      "instruction": "call 0x871ae0",
+      "native": "00871ae0",
+      "kind": "direct"
+    },
+    {
+      "function": "00871b30",
+      "address": "00871b40",
+      "instruction": "call 0xbf65ac",
+      "native": "00bf65ac",
+      "kind": "direct"
+    },
+    {
+      "function": "00871ca0",
+      "address": "00871ccb",
+      "instruction": "call 0x871bd0",
+      "native": "00871bd0",
+      "kind": "direct"
+    },
+    {
+      "function": "00871ca0",
+      "address": "00871cd7",
+      "instruction": "call 0x8714e0",
+      "native": "008714e0",
+      "kind": "direct"
+    },
+    {
+      "function": "00871ca0",
+      "address": "00871ce6",
+      "instruction": "call 0xaf4280",
+      "native": "00af4280",
+      "kind": "direct"
+    },
+    {
+      "function": "00871fa0",
+      "address": "00871fa3",
+      "instruction": "call 0x871ca0",
+      "native": "00871ca0",
+      "kind": "direct"
+    },
+    {
+      "function": "00871fa0",
+      "address": "00871fb0",
+      "instruction": "call 0xbf65ac",
+      "native": "00bf65ac",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa139",
+      "instruction": "call 0xaffdf0",
+      "native": "00affdf0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa140",
+      "instruction": "call 0xb00090",
+      "native": "00b00090",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa151",
+      "instruction": "call 0xaffdf0",
+      "native": "00affdf0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa158",
+      "instruction": "call 0xb00090",
+      "native": "00b00090",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa169",
+      "instruction": "call 0xaffdf0",
+      "native": "00affdf0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa170",
+      "instruction": "call 0xb00090",
+      "native": "00b00090",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa181",
+      "instruction": "call 0xaffdf0",
+      "native": "00affdf0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa188",
+      "instruction": "call 0xb00090",
+      "native": "00b00090",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa199",
+      "instruction": "call 0xaffdf0",
+      "native": "00affdf0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa1a0",
+      "instruction": "call 0xb00090",
+      "native": "00b00090",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa1b1",
+      "instruction": "call 0xaffdf0",
+      "native": "00affdf0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa1b8",
+      "instruction": "call 0xb00090",
+      "native": "00b00090",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa1c9",
+      "instruction": "call 0xaffdf0",
+      "native": "00affdf0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa1d0",
+      "instruction": "call 0xb00090",
+      "native": "00b00090",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa1e9",
+      "instruction": "call dword ptr [0xce2220]",
+      "kind": "indirect"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa1f9",
+      "instruction": "call eax",
+      "kind": "indirect"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa217",
+      "instruction": "call dword ptr [0xce2220]",
+      "kind": "indirect"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa227",
+      "instruction": "call eax",
+      "kind": "indirect"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa24c",
+      "instruction": "call 0x419cc0",
+      "native": "00419cc0",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa253",
+      "instruction": "call 0xbd1510",
+      "native": "00bd1510",
+      "kind": "direct"
+    },
+    {
+      "function": "00afa100",
+      "address": "00afa262",
+      "instruction": "call 0xbd30f0",
+      "native": "00bd30f0",
+      "kind": "direct"
+    },
+    {
+      "function": "00af8a40",
+      "address": "00af8a78",
+      "instruction": "call 0xaffdf0",
+      "native": "00affdf0",
+      "kind": "direct"
+    },
+    {
+      "function": "00af8a40",
+      "address": "00af8a7f",
+      "instruction": "call 0xb00090",
+      "native": "00b00090",
+      "kind": "direct"
+    },
+    {
+      "function": "00af8a40",
+      "address": "00af8a9a",
+      "instruction": "call 0xaffdf0",
+      "native": "00affdf0",
+      "kind": "direct"
+    },
+    {
+      "function": "00af8a40",
+      "address": "00af8aa1",
+      "instruction": "call 0xb00090",
+      "native": "00b00090",
+      "kind": "direct"
+    },
+    {
+      "function": "00af8a40",
+      "address": "00af8ab2",
+      "instruction": "call 0xaf8940",
+      "native": "00af8940",
+      "kind": "direct"
+    },
+    {
+      "function": "00af8a40",
+      "address": "00af8ac6",
+      "instruction": "call 0xaf83b0",
+      "native": "00af83b0",
+      "kind": "direct"
+    },
+    {
+      "function": "00af8a40",
+      "address": "00af8ace",
+      "instruction": "call 0xbf6989",
+      "native": "00bf6989",
+      "kind": "direct"
+    },
+    {
+      "function": "00af8a40",
+      "address": "00af8ae0",
+      "instruction": "call 0xb00fb0",
+      "native": "00b00fb0",
+      "kind": "direct"
+    },
+    {
+      "function": "00af8bb0",
+      "address": "00af8bb3",
+      "instruction": "call 0xaf8a40",
+      "native": "00af8a40",
+      "kind": "direct"
+    },
+    {
+      "function": "00af8bb0",
+      "address": "00af8bc0",
+      "instruction": "call 0xbf65ac",
+      "native": "00bf65ac",
+      "kind": "direct"
+    }
+  ],
+  "prior_annotations": [
+    {
+      "address": "00871420",
+      "annotation": {
+        "address": "00871420",
+        "function_name": "BSP_ParticleResourceCache_ReleaseResource",
+        "comment": "[BSP reconstruction 00871420]\nDescriptive hypothesis; complete raw source body. ECX ignored; stack resource; RET4. Actual raw record/string/singleton providers; precise current read and true-unwind schedule. Full installed/live bytes verified. See docs/NATIVE_PARTICLE_RESOURCE_CACHE_ORCH4.md and reports/native_particle_resource_cache_orch4.json. New C++ ABI; profile relocation, loader slot86BA60 and gameplay unvalidated. | Ten complete raw entries596B. Plain strict MSVC Win32 build and2 existing CTests passed; focused original/source raw publication+registration, atomic retain/release, normal/self key and source throw-cleanup probe passed. 160 direct/tail rows verified, all26 disk/live spans identical. Loader86BA60 remains source absent; original FH3/ABI/CRT identity and gameplay unvalidated. See reports/native_particle_resource_cache_orch4.json.\n\n[BSP reconstruction 00871420] update\nDescriptive hypothesis; complete raw source body. ECX ignored; stack resource; RET4. Actual raw record/string/singleton providers; precise current read and true-unwind schedule. Full installed/live bytes verified. See docs/NATIVE_PARTICLE_RESOURCE_CACHE_ORCH4.md and reports/native_particle_resource_cache_orch4.json. New C++ ABI; profile relocation, loader slot86BA60 and gameplay unvalidated. | Ten complete raw entries596B. Plain strict MSVC Win32 build and2 existing CTests passed; focused original/source raw publication+registration, atomic retain/release, normal/self key and source throw-cleanup probe passed. 160 direct/tail rows verified, all26 disk/live spans identical. Loader86BA60 remains source absent; original FH3/ABI/CRT identity and gameplay unvalidated. See reports/native_particle_resource_cache_orch4.json. | Existing complete algorithm gains genuine raw pool/context overload, preserving older callable/host interfaces. Concrete known resource identities use actual base/derived deletion; raw cleanup propagates getter failures with true-unwind ownership. No additional unique function claim. Complete actual raw particle resource lifetime/removal body, current reads and owning FH3 cleanup preserved. Full fresh live/disk spans agree; strictWin32/3CTests and bounded original224B base-dtor/source composition passed. Actual child callable-vtable boundary remains. New C++ APIs, no binaryABI/game claim. docs/NATIVE_PARTICLE_RESOURCE_LIFETIME_ORCH4.md; docs/NATIVE_PARTICLE_RESOURCE_CACHE_REMOVAL_ORCH4.md; reports/native_particle_resource_cache_removal_orch4.json."
+      }
+    },
+    {
+      "address": "00871310",
+      "annotation": {
+        "address": "00871310",
+        "function_name": "BSP_ParticleResourceCache_Clear",
+        "comment": "[BSP reconstruction 00871310]\nComplete actual raw storage body; genuine throwing NativeStringRawPoolContext aliases, exact current reloads and FH3 owning name-unwind schedule. Complete live/disk spans matched; Win32 build and focused actual-library source composition passed. New C++ interface, not binaryABI/game validation. docs/NATIVE_PARTICLE_RESOURCE_RECORDS_ORCH4.md; reports/native_particle_resource_records_orch4.json.\n\n[BSP reconstruction 00871310] update\nComplete actual raw storage body; genuine throwing NativeStringRawPoolContext aliases, exact current reloads and FH3 owning name-unwind schedule. Complete live/disk spans matched; Win32 build and focused actual-library source composition passed. New C++ interface, not binaryABI/game validation. docs/NATIVE_PARTICLE_RESOURCE_RECORDS_ORCH4.md; reports/native_particle_resource_records_orch4.json. | Existing complete algorithm gains genuine raw pool/context overload, preserving older callable/host interfaces. Concrete known resource identities use actual base/derived deletion; raw cleanup propagates getter failures with true-unwind ownership. No additional unique function claim. Complete actual raw particle resource lifetime/removal body, current reads and owning FH3 cleanup preserved. Full fresh live/disk spans agree; strictWin32/3CTests and bounded original224B base-dtor/source composition passed. Actual child callable-vtable boundary remains. New C++ APIs, no binaryABI/game claim. docs/NATIVE_PARTICLE_RESOURCE_LIFETIME_ORCH4.md; docs/NATIVE_PARTICLE_RESOURCE_CACHE_REMOVAL_ORCH4.md; reports/native_particle_resource_cache_removal_orch4.json."
+      }
+    },
+    {
+      "address": "00871480",
+      "annotation": {
+        "address": "00871480",
+        "function_name": "BSP_ParticleResourceCache_Destroy",
+        "comment": "[BSP reconstruction 00871480]\nDescriptive hypothesis; complete raw source body. ECX raw14h inner; RET. Actual raw record/string/singleton providers; precise current read and true-unwind schedule. Full installed/live bytes verified. See docs/NATIVE_PARTICLE_RESOURCE_CACHE_ORCH4.md and reports/native_particle_resource_cache_orch4.json. New C++ ABI; profile relocation, loader slot86BA60 and gameplay unvalidated. | Ten complete raw entries596B. Plain strict MSVC Win32 build and2 existing CTests passed; focused original/source raw publication+registration, atomic retain/release, normal/self key and source throw-cleanup probe passed. 160 direct/tail rows verified, all26 disk/live spans identical. Loader86BA60 remains source absent; original FH3/ABI/CRT identity and gameplay unvalidated. See reports/native_particle_resource_cache_orch4.json.\n\n[BSP reconstruction 00871480] update\nDescriptive hypothesis; complete raw source body. ECX raw14h inner; RET. Actual raw record/string/singleton providers; precise current read and true-unwind schedule. Full installed/live bytes verified. See docs/NATIVE_PARTICLE_RESOURCE_CACHE_ORCH4.md and reports/native_particle_resource_cache_orch4.json. New C++ ABI; profile relocation, loader slot86BA60 and gameplay unvalidated. | Ten complete raw entries596B. Plain strict MSVC Win32 build and2 existing CTests passed; focused original/source raw publication+registration, atomic retain/release, normal/self key and source throw-cleanup probe passed. 160 direct/tail rows verified, all26 disk/live spans identical. Loader86BA60 remains source absent; original FH3/ABI/CRT identity and gameplay unvalidated. See reports/native_particle_resource_cache_orch4.json. | Existing complete algorithm gains genuine raw pool/context overload, preserving older callable/host interfaces. Concrete known resource identities use actual base/derived deletion; raw cleanup propagates getter failures with true-unwind ownership. No additional unique function claim. Complete actual raw particle resource lifetime/removal body, current reads and owning FH3 cleanup preserved. Full fresh live/disk spans agree; strictWin32/3CTests and bounded original224B base-dtor/source composition passed. Actual child callable-vtable boundary remains. New C++ APIs, no binaryABI/game claim. docs/NATIVE_PARTICLE_RESOURCE_LIFETIME_ORCH4.md; docs/NATIVE_PARTICLE_RESOURCE_CACHE_REMOVAL_ORCH4.md; reports/native_particle_resource_cache_removal_orch4.json."
+      }
+    },
+    {
+      "address": "00871730",
+      "annotation": {
+        "address": "00871730",
+        "function_name": "CG_scalar_deleting_dtor_00871730",
+        "comment": "[BSP reconstruction 00871730]\nDescriptive hypothesis; complete raw source body. ECX inner; stack flags; EAX original; RET4. Actual raw record/string/singleton providers; precise current read and true-unwind schedule. Full installed/live bytes verified. See docs/NATIVE_PARTICLE_RESOURCE_CACHE_ORCH4.md and reports/native_particle_resource_cache_orch4.json. New C++ ABI; profile relocation, loader slot86BA60 and gameplay unvalidated. | Ten complete raw entries596B. Plain strict MSVC Win32 build and2 existing CTests passed; focused original/source raw publication+registration, atomic retain/release, normal/self key and source throw-cleanup probe passed. 160 direct/tail rows verified, all26 disk/live spans identical. Loader86BA60 remains source absent; original FH3/ABI/CRT identity and gameplay unvalidated. See reports/native_particle_resource_cache_orch4.json.\n\n[BSP reconstruction 00871730] update\nDescriptive hypothesis; complete raw source body. ECX inner; stack flags; EAX original; RET4. Actual raw record/string/singleton providers; precise current read and true-unwind schedule. Full installed/live bytes verified. See docs/NATIVE_PARTICLE_RESOURCE_CACHE_ORCH4.md and reports/native_particle_resource_cache_orch4.json. New C++ ABI; profile relocation, loader slot86BA60 and gameplay unvalidated. | Ten complete raw entries596B. Plain strict MSVC Win32 build and2 existing CTests passed; focused original/source raw publication+registration, atomic retain/release, normal/self key and source throw-cleanup probe passed. 160 direct/tail rows verified, all26 disk/live spans identical. Loader86BA60 remains source absent; original FH3/ABI/CRT identity and gameplay unvalidated. See reports/native_particle_resource_cache_orch4.json. | Existing complete algorithm gains genuine raw pool/context overload, preserving older callable/host interfaces. Concrete known resource identities use actual base/derived deletion; raw cleanup propagates getter failures with true-unwind ownership. No additional unique function claim. Complete actual raw particle resource lifetime/removal body, current reads and owning FH3 cleanup preserved. Full fresh live/disk spans agree; strictWin32/3CTests and bounded original224B base-dtor/source composition passed. Actual child callable-vtable boundary remains. New C++ APIs, no binaryABI/game claim. docs/NATIVE_PARTICLE_RESOURCE_LIFETIME_ORCH4.md; docs/NATIVE_PARTICLE_RESOURCE_CACHE_REMOVAL_ORCH4.md; reports/native_particle_resource_cache_removal_orch4.json."
+      }
+    },
+    {
+      "address": "00871ae0",
+      "annotation": {
+        "address": "00871ae0",
+        "function_name": "BSP_ParticleResourceCache_DestroySingleton",
+        "comment": "[BSP reconstruction 00871ae0]\nDescriptive hypothesis; complete raw source body. ECX raw18h outer; RET. Actual raw record/string/singleton providers; precise current read and true-unwind schedule. Full installed/live bytes verified. See docs/NATIVE_PARTICLE_RESOURCE_CACHE_ORCH4.md and reports/native_particle_resource_cache_orch4.json. New C++ ABI; profile relocation, loader slot86BA60 and gameplay unvalidated. | Ten complete raw entries596B. Plain strict MSVC Win32 build and2 existing CTests passed; focused original/source raw publication+registration, atomic retain/release, normal/self key and source throw-cleanup probe passed. 160 direct/tail rows verified, all26 disk/live spans identical. Loader86BA60 remains source absent; original FH3/ABI/CRT identity and gameplay unvalidated. See reports/native_particle_resource_cache_orch4.json.\n\n[BSP reconstruction 00871ae0] update\nDescriptive hypothesis; complete raw source body. ECX raw18h outer; RET. Actual raw record/string/singleton providers; precise current read and true-unwind schedule. Full installed/live bytes verified. See docs/NATIVE_PARTICLE_RESOURCE_CACHE_ORCH4.md and reports/native_particle_resource_cache_orch4.json. New C++ ABI; profile relocation, loader slot86BA60 and gameplay unvalidated. | Ten complete raw entries596B. Plain strict MSVC Win32 build and2 existing CTests passed; focused original/source raw publication+registration, atomic retain/release, normal/self key and source throw-cleanup probe passed. 160 direct/tail rows verified, all26 disk/live spans identical. Loader86BA60 remains source absent; original FH3/ABI/CRT identity and gameplay unvalidated. See reports/native_particle_resource_cache_orch4.json. | Existing complete algorithm gains genuine raw pool/context overload, preserving older callable/host interfaces. Concrete known resource identities use actual base/derived deletion; raw cleanup propagates getter failures with true-unwind ownership. No additional unique function claim. Complete actual raw particle resource lifetime/removal body, current reads and owning FH3 cleanup preserved. Full fresh live/disk spans agree; strictWin32/3CTests and bounded original224B base-dtor/source composition passed. Actual child callable-vtable boundary remains. New C++ APIs, no binaryABI/game claim. docs/NATIVE_PARTICLE_RESOURCE_LIFETIME_ORCH4.md; docs/NATIVE_PARTICLE_RESOURCE_CACHE_REMOVAL_ORCH4.md; reports/native_particle_resource_cache_removal_orch4.json."
+      }
+    },
+    {
+      "address": "00871b30",
+      "annotation": {
+        "address": "00871b30",
+        "function_name": "CG_scalar_deleting_dtor_00871b30",
+        "comment": "[BSP reconstruction 00871b30]\nDescriptive hypothesis; complete raw source body. ECX outer; stack flags; EAX original; RET4. Actual raw record/string/singleton providers; precise current read and true-unwind schedule. Full installed/live bytes verified. See docs/NATIVE_PARTICLE_RESOURCE_CACHE_ORCH4.md and reports/native_particle_resource_cache_orch4.json. New C++ ABI; profile relocation, loader slot86BA60 and gameplay unvalidated. | Ten complete raw entries596B. Plain strict MSVC Win32 build and2 existing CTests passed; focused original/source raw publication+registration, atomic retain/release, normal/self key and source throw-cleanup probe passed. 160 direct/tail rows verified, all26 disk/live spans identical. Loader86BA60 remains source absent; original FH3/ABI/CRT identity and gameplay unvalidated. See reports/native_particle_resource_cache_orch4.json."
+      }
+    },
+    {
+      "address": "00871ca0",
+      "annotation": {
+        "address": "00871ca0",
+        "function_name": "BSP_CachedParticleResource_Destroy",
+        "comment": "[BSP reconstruction 00871ca0]\nComplete actual raw particle resource lifetime/removal body, current reads and owning FH3 cleanup preserved. Full fresh live/disk spans agree; strictWin32/3CTests and bounded original224B base-dtor/source composition passed. Actual child callable-vtable boundary remains. New C++ APIs, no binaryABI/game claim. docs/NATIVE_PARTICLE_RESOURCE_LIFETIME_ORCH4.md; docs/NATIVE_PARTICLE_RESOURCE_CACHE_REMOVAL_ORCH4.md; reports/native_particle_resource_cache_removal_orch4.json."
+      }
+    },
+    {
+      "address": "00871fa0",
+      "annotation": {
+        "address": "00871fa0",
+        "function_name": "CG_scalar_deleting_dtor_00871fa0",
+        "comment": "[BSP reconstruction 00871fa0]\nComplete actual raw particle resource lifetime/removal body, current reads and owning FH3 cleanup preserved. Full fresh live/disk spans agree; strictWin32/3CTests and bounded original224B base-dtor/source composition passed. Actual child callable-vtable boundary remains. New C++ APIs, no binaryABI/game claim. docs/NATIVE_PARTICLE_RESOURCE_LIFETIME_ORCH4.md; docs/NATIVE_PARTICLE_RESOURCE_CACHE_REMOVAL_ORCH4.md; reports/native_particle_resource_cache_removal_orch4.json."
+      }
+    },
+    {
+      "address": "00afa100",
+      "annotation": {
+        "address": "00afa100",
+        "function_name": "BSP_ParticleDefinition_DestroyBase",
+        "comment": "[BSP reconstruction 00afa100]\nDescriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.\n\n[BSP reconstruction 00afa100] update\nDescriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated. | Complete raw-pool companion, seven ordered parameter returns, current forward retained rows and proven BD30E0 scalar chains; true name/base unwind. Full live/PE proof, strict Win32+3CTests and408B original/source probe passed. Original FH3/SEH/gameplay unvalidated. See docs/NATIVE_PARTICLE_EMITTER_BASE_LIFETIME_ORCH4.md and reports/native_particle_emitter_base_lifetime_orch4.json."
+      }
+    },
+    {
+      "address": "00af8a40",
+      "annotation": {
+        "address": "00af8a40",
+        "function_name": "BSP_ObjectParticleType_Destroy",
+        "comment": "[BSP reconstruction 00af8a40]\nDescriptive hypothesis, not a recovered symbol. Complete 182B live/PE-equal body; ECX actual Object definition; RET. Genuine raw pool/base providers; fixed CRT allocation/free; Object model terminals require callable native vtables. FH3 true-unwind member/base states preserved. See docs/NATIVE_PARTICLE_OBJECT_TRACER_LIFETIME_ORCH4.md and reports/native_particle_object_tracer_lifetime_orch4.json."
+      }
+    },
+    {
+      "address": "00af8bb0",
+      "annotation": {
+        "address": "00af8bb0",
+        "function_name": "BSP_ObjectParticleType_ScalarDeletingDestructor",
+        "comment": "[BSP reconstruction 00af8bb0]\nDescriptive hypothesis, not a recovered symbol. Complete 30B live/PE-equal body; ECX actual Object definition; stack flags; EAX original owner; RET4. Genuine raw pool/base providers; fixed CRT allocation/free; Object model terminals require callable native vtables. FH3 true-unwind member/base states preserved. See docs/NATIVE_PARTICLE_OBJECT_TRACER_LIFETIME_ORCH4.md and reports/native_particle_object_tracer_lifetime_orch4.json."
+      }
+    }
+  ],
+  "source_contract": "New C++ context composition; not the original native ABI. Borrow identical loading strings, F8D344 pool, and resource-container reference chain.",
+  "prior_reports": [
+    "reports/native_particle_resource_cache_orch4.json",
+    "reports/native_particle_resource_cache_removal_orch4.json",
+    "reports/native_particle_emitter_base_lifetime_orch4.json",
+    "reports/native_particle_object_tracer_lifetime_orch4.json"
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "Release/Win32",
+      "passed": true,
+      "ctest_passed": 3,
+      "log": "local/build_lifetime.log"
+    },
+    "call_rows": {
+      "command": "python tools/verify_report_calls.py reports/native_particle_loaded_lifetime_orch4.json",
+      "checked": 42,
+      "failed": 0
+    },
+    "fixture": {
+      "source": "local/loaded_lifetime_probe.cpp",
+      "source_sha256": "8696b95dc967d84283531aa86666593dd2377a13467420b780c7237dc6e11903",
+      "binary": "local/loaded_lifetime_probe.exe",
+      "binary_sha256": "960813c8660e56234db3cac5954a88978a4e95d2bd02d926c3ae9f03cd523058",
+      "compiler": "/O2 /W4 /WX /MD /MANIFEST:EMBED /BASE:0x20000000 /DYNAMICBASE:NO",
+      "exit_code": 0,
+      "output": "PASS: cache-owner and direct-base resource release -> Cone/Sphere/SmartArea -> Object -> genuine container chain; four shared-pool returns; single retained-item decrement; empty/nonzero model-domain boundaries; retained resource gate. Source composition only, not native ABI or gameplay.\n",
+      "scope": "source composition; manually constructed graph; exact numeric native container table data; no host replacement vtable",
+      "exploratory_failure": "Negative count FFFFFFFF with null model data reached the explicit domain exception, then existing AF89C0 unwind initialization faulted at data-4. That violates native vector storage requirements; runtime fixture restricted to valid count0/count1. Negative count !=0 predicate remains assembly/source-evidenced."
+    },
+    "abi_compatible": false,
+    "game_validated": false,
+    "original_body_differential": false
+  },
+  "status": "source_composition_build_and_focused_fixture_verified",
+  "files": [
+    "include/bsp/native_particle_resource_cache.hpp",
+    "include/bsp/native_particle_type_lifetime.hpp",
+    "src/native_particle_resource_cache.cpp",
+    "src/native_particle_resource_cache_removal.cpp",
+    "src/native_particle_emitter_definition_lifetime.cpp",
+    "src/native_particle_object_tracer_lifetime.cpp",
+    "docs/NATIVE_PARTICLE_LOADED_LIFETIME_ORCH4.md"
+  ],
+  "validated_file_sha256": {
+    "include/bsp/native_particle_resource_cache.hpp": "1c0a214a18cd38c1fbaf825ddb2aba4927cb5aa663dbc8704a39a6cc49c8eb1d",
+    "include/bsp/native_particle_type_lifetime.hpp": "7d6a855597371be696a2fce2cf5e86f11763a7ce4d91866a4cdd43135689c885",
+    "src/native_particle_resource_cache.cpp": "9e0c18674422a5a2a768c76f409b889ffef043bf3eecc5d9ba854b07507f09b2",
+    "src/native_particle_resource_cache_removal.cpp": "c0fcd39840890751845e26a16ce37b1d3a09594d9a9005c1599e57975aef0cd6",
+    "src/native_particle_emitter_definition_lifetime.cpp": "f13a0bc5250f138d11b9a1ba2c587e1ab50c0100f62115308df9d66d62450fe2",
+    "src/native_particle_object_tracer_lifetime.cpp": "301d155156e22200ba13c53d7dbc84b7cb69a07efb7c98077e45437a00304074",
+    "docs/NATIVE_PARTICLE_LOADED_LIFETIME_ORCH4.md": "8ef9d1f38a7f6473b177bcdb03bb697e7d9acd9dbd25a72c40c176597e9df54e"
+  },
+  "composition": {
+    "cache_context": "Append optional borrowed loaded_resource_lifetime; carry existing cache reference through all release/clear/inner/outer paths and ResourceUnwind.",
+    "particle_context": "Append optional borrowed resource_container_references; caller supplies SAME object used during Object model loading and SAME F8D344 pool.",
+    "nested_emitters": {
+      "00d5debc": "00b03b40",
+      "00d5de88": "00b02fb0",
+      "00d5de48": "00b01ea0"
+    },
+    "object_boundary": "After both parameter returns, nonzero DWORD model count requires concrete reference chain. Empty count needs no domain; negative bit patterns remain nonzero.",
+    "legacy": "Default-null cache lifetime retains old string-only/callable-emitter contract. No preemptive cache-domain check or alternate owner is introduced.",
+    "ownership": "Contexts borrow storage and must outlive the resource graph. Existing scalar bit0 frees, current field/profile/count reloads, and exception state transitions remain.",
+    "unwind": "C96110->AF4280 uses same loaded domain on cached-resource removal failure. Object state1 runs AF89C0 then B00FB0; base-emitter state1 name then refcounted base."
+  },
+  "limits": [
+    "No native FH3/SEH or hardware-fault equivalence claim",
+    "No original CRT ownership proof",
+    "No parser/load integration or gameplay proof",
+    "Unknown virtual profiles retain existing callable-entry requirements"
+  ]
+}

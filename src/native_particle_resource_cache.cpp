@@ -197,8 +197,11 @@ void release_native_particle_resource_00871420(void* resource,
             const std::uint32_t scalar_profile = word(resource);
             if (scalar_profile == 0x00d0d418)
                 delete_native_cached_particle_resource_00871fa0(resource, 1, context, strings);
-            else if (scalar_profile == 0x00d5d958)
-                delete_native_particle_resource_00af46e0(resource, 1, strings);
+            else if (scalar_profile == 0x00d5d958) {
+                if (context.loaded_resource_lifetime)
+                    delete_native_particle_resource_00af46e0(resource, 1, *context.loaded_resource_lifetime);
+                else delete_native_particle_resource_00af46e0(resource, 1, strings);
+            }
             else {
                 const std::uint32_t target = word(reinterpret_cast<void*>(scalar_profile), 4);
                 reinterpret_cast<void* (__thiscall*)(void*, std::uint32_t)>(target)(resource, 1);

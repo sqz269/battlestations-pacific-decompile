@@ -4,6 +4,7 @@
 namespace bsp {
 struct NativeStringRawPoolContext;
 class NativeWeakHandlePool;
+class NativeResourceContainerReferences;
 
 // Borrow the application's actual raw string publication/gate/manager cells
 // and SAME F8D344 parameter pool used by the parameter producers. This owns
@@ -11,6 +12,9 @@ class NativeWeakHandlePool;
 struct NativeParticleTypeLifetimeContext {
     NativeStringRawPoolContext& strings;
     NativeWeakHandlePool& parameter_pool_00f8d344;
+    // Borrow the SAME container-reference chain used by Object model loading.
+    // Required only when Object destruction reaches a nonempty model vector.
+    NativeResourceContainerReferences* resource_container_references = nullptr;
 };
 
 // AFFDF0: ECX actual0Ch parameter payload, RET. For current type1/2, free
