@@ -1,6 +1,6 @@
 {
   "packet": "native_platform_focus_r67",
-  "status": "integrated_candidate_source_and_original_fragment_differential_real_window_checked",
+  "status": "integrated_source_and_original_fragment_differential_real_window_checked",
   "game_rebuilt": false,
   "source_files": [
     "include/bsp/platform_window.hpp",
@@ -14971,5 +14971,102 @@
         "sha256": "65df336faf133b717496ad21d38c4218a7329c6f4e136e6dc570e7fc667fac03"
       }
     ]
+  },
+  "primary_integration": {
+    "source_commit": "0385925554dc40b1fd1f69658a6000685212045f",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "fixture_rerun_after_integration": false,
+    "archive": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r67\\platform-focus-main-r67.zip",
+    "sha256": "9fbdf6e0c837aec93975049fe4984f0cadf0180a2a72f521f713cc976968c87b",
+    "files": [
+      {
+        "path": "local/r67_integration.log",
+        "size": 1601,
+        "sha256": "6765d38e2db539f18f1a5a1b5a94f9ec4858ef707859b80392c996b1a885ae75"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "size": 153998,
+        "sha256": "cbffaa67fd8b074788153d395d987647be1cbc6b908374ddb6fe6a998e0b77ff"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "size": 232673,
+        "sha256": "92dca2f12da6e57d4069f93cf307c4dba31b690991fa6b851909fcd008d100bc"
+      },
+      {
+        "path": "build/win32/bsp_game.vcxproj",
+        "size": 63651,
+        "sha256": "9f30e8a181634fd954c9024f6d989b53f161a3f42b0334385868f0aef4aada62"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "size": 63907558,
+        "sha256": "ee31b62afb65e0f8d5496a23a868b1e66327f3b7ad46d064987c7398cd625390"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "size": 2337792,
+        "sha256": "e86d81f7552d4b1ad10f12e810d5224873c9aa1073d9d8a677262ffdf7c533e8"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "size": 2408,
+        "sha256": "e0a23136194246a94c9b69f2475c2e4d458e5c029ebc62c0870302dfb4b189cf"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/platform_window.obj",
+        "size": 46196,
+        "sha256": "acd03a8ec68e313193192a2bbe5e6e56b6b923439a474f81a18f41ee297ad6f4"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+        "size": 718788,
+        "sha256": "3c87d5eb2c05c3eabf261bab5dbcdbf2c537b7c6fe592074973c9453ea583f1b"
+      },
+      {
+        "path": "local/platform_focus_r67/annotations.log",
+        "size": 381,
+        "sha256": "b255131ee1f40626420e7485d9beea928c19c38c66ff5297f5ef1e68402abeb9"
+      },
+      {
+        "path": "local/platform_focus_r67/exports_after_annotations.log",
+        "size": 579,
+        "sha256": "c3b853a863b8c79b9d4e1750d4365fb8d552cf63c977024fda304bb5bb1f5985"
+      },
+      {
+        "path": "docs/NATIVE_PLATFORM_FOCUS_R67.md",
+        "size": 4705,
+        "sha256": "d1c737f766e3961940a3f146852ea73215620f8570478a67a108f827eda377f5"
+      },
+      {
+        "path": "reports/native_platform_focus_r67.json",
+        "size": 784466,
+        "sha256": "3b3f8a64a95ce0d8b995fb2bd6a3cb806fdabae5700eb673949cec980a3ea951"
+      },
+      {
+        "path": "include/bsp/platform_window.hpp",
+        "size": 13913,
+        "sha256": "174c223e923f3584f957a426b8ebdef55441140c6cab2469f629137e0e078384"
+      },
+      {
+        "path": "src/platform_window.cpp",
+        "size": 11783,
+        "sha256": "65df336faf133b717496ad21d38c4218a7329c6f4e136e6dc570e7fc667fac03"
+      },
+      {
+        "path": "src/game_hosts.cpp",
+        "size": 94864,
+        "sha256": "d50f41ceb40f4be3645878182ad805565f41bd2d1c2e906997a3ecd54ad8952f"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T214622Z.json",
+        "size": 26987,
+        "sha256": "fd0b66f855160fc56e467df19d902408c800b75ef6775489b62384fd3710e18d"
+      }
+    ],
+    "scope": "Combined integration build and CTests. Original/source fragment fixture and real two-frame application run are separately sealed in tested archive. Full renderer composition and gameplay remain open.",
+    "annotations": "Integrator bare owner deferred five addresses held by this worktree; the same five names/evidence had already been saved and force-exported under the owning worktree before integration."
   }
 }
