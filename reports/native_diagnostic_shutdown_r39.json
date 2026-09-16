@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "packet": "native_diagnostic_shutdown_r39",
+  "status": "complete_typed_source_strict_build_and_focused_raw_fixture",
+  "baseline": {
+    "published_phase1_source": "6831eef56",
+    "published_phase1_metadata": "75ee21ad0",
+    "published_host_admission_source": "93b4c0c5b",
+    "published_host_admission_evidence": "f927c92c3",
+    "source_commit": "298e3a75b",
+    "phase1_worker_main_merge": "8c283c04b",
+    "host_admission_worker_main_merge": "46e824388"
+  },
+  "scope": "Reconstruct only 007363B0 in the existing native diagnostic source pair. The entry borrows the same SoundLifetimeAccess and 0109CF14 cell, uses complete current-profile providers, and adds no application binding, host storage, shared deletion binding, CMake, ledger or Ghidra mutation.",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "installed_pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "language": "x86:LE:32:default",
+    "mode": "read_only"
+  },
+  "owned_routine": {
+    "address": "007363B0",
+    "span": "007363B0-00736453",
+    "length": 164,
+    "instruction_count": 44,
+    "sha256": "fb860e3c2072743125d42daf505a685ae23ae71d528a93edc2c3cc689c327ad5",
+    "live_ghidra_equal_installed_pe": true,
+    "original_abi": "cdecl, no native inputs, RET",
+    "call_rows": [
+      {"address": "007363D2", "target": "00415350 first manager lookup"},
+      {"address": "007363EB", "target": "CE2218 EnterCriticalSection"},
+      {"address": "00736406", "target": "00415350 second manager lookup"},
+      {"address": "00736414", "target": "00BCFCA0 unregister"},
+      {"address": "00736429", "target": "current profile slot zero"},
+      {"address": "0073643E", "target": "CE2210 LeaveCriticalSection"}
+    ],
+    "caller": "0073830F in 00737F30 BSP_Application_Shutdown",
+    "schedule": "Initial null fast return. First manager lookup and capture +10. Enter and increment captured section+18. Arm state0. Recheck publication. Second manager lookup before capturing current publication for unregister. Reload publication after unregister. If nonnull, load current profile slot zero and invoke flags1. Clear publication redundantly. Decrement and leave the captured section."
+  },
+  "provider_receipts": [
+    {
+      "address": "00BCFCA0",
+      "span": "00BCFCA0-00BCFD10",
+      "length": 113,
+      "sha256": "e3fc97e499913fd8fac8f1ebb0804b4ced06333e49c628b44ba06316e5cc6463",
+      "role": "Genuine raw/semantic adapter target; nulls the matching vector slot without erasing it."
+    },
+    {
+      "address": "004BBCA0",
+      "span": "004BBCA0-004BBCC8",
+      "length": 41,
+      "sha256": "f462bb0027b9bfdceed4ade23ced0707acf58aa56d643492b1984d21f4da9c58",
+      "role": "CE752C slot zero; clears 0109CF14, writes CE3818, frees for flags1."
+    },
+    {
+      "address": "00412440",
+      "span": "00412440-0041245E",
+      "length": 31,
+      "sha256": "61d4c09ccc46b0bf6c6f7f08a45e4e5e1d652ccba884505951000da209a35c1e",
+      "role": "CE3818 canonical base slot zero; writes CE3818 and frees for flags1."
+    }
+  ],
+  "source_contract": {
+    "signature": "void destroy_native_diagnostic_sink_007363b0(NativeDiagnosticSinkStorage* volatile&, SoundLifetimeAccess)",
+    "identity": "The caller supplies the same stable publication cell and manager domain used by the getter. The entry creates neither.",
+    "current_profile_dispatch": [
+      "00CE752C calls the complete existing delete_native_diagnostic_sink_004bbca0 provider with flags1 and the same publication cell.",
+      "00CE3818 calls the complete existing delete_native_singleton_base_00412440 provider with flags1; wrapper redundant clear follows."
+    ],
+    "unsupported_profile": "Any other nonnull current profile raises std::logic_error exactly where the original would dereference/call the current slot. Prior unregister mutation is retained and ordinary source EH releases the captured section.",
+    "null_after_unregister": "The publication is reloaded after unregister. A current null skips scalar dispatch and still receives the redundant clear.",
+    "no_fake_dispatch": "No executable integer vtable is called, and no missing profile is treated as a no-op."
+  },
+  "validation": {
+    "verify_seeds": "passed",
+    "build": "strict MSVC Win32 /MD passed",
+    "ctests": [
+      "reconstructed_math passed",
+      "native_math_differential passed",
+      "tool_tests passed"
+    ],
+    "coff": "Fresh primary and provider objects are x86 and DEFAULTLIB:MSVCRT. The primary object defines the typed shutdown symbol with ordinary EH metadata and references SoundLifetimeManagerView::unregister_object, delete_native_diagnostic_sink_004bbca0 and delete_native_singleton_base_00412440.",
+    "fixture": {
+      "result": "PASS diagnostic shutdown: null fast path, derived/base flags1 retirement, unregister reload, unsupported-profile effects, production host wrapper/fallback drain, released raw sections",
+      "manifest": "embedded .rsrc present",
+      "cases": [
+        "initial null leaves manager and publication null",
+        "genuine getter-created CE752C owner unregisters, clears its vector slot, scalar-frees and clears publication",
+        "genuine owner changed to canonical CE3818 unregisters and uses existing base scalar flags1 provider",
+        "publication view aliased to the genuine vector slot becomes null during unregister, so post-unregister reload skips scalar dispatch",
+        "unsupported profile throws after genuine unregister, retains publication, and releases the captured section",
+        "published GameSingletonHost getter followed by explicit R39 shutdown leaves a null diagnostic cell and empty host drain",
+        "a separate published GameSingletonHost raw drain retires an untouched CE752C owner through the admitted phase2 binding"
+      ],
+      "cleanup": "Retained owners in mutation/error cases are restored to CE752C and directly retired with the real 004BBCA0 provider; every genuine manager is destroyed only after its vector is empty.",
+      "mutation_limit": "The vector-slot alias is a focused deterministic reload observation, not a claimed production ownership arrangement.",
+      "host_linkage": "The fixture links fresh game_hosts_singletons.obj and game_observer_runtime.obj. It retains exact required GameHostLog leaves from src/game_hosts.cpp to avoid the unrelated application graph; it supplies no substitute manager, deletion dispatcher or terminal."
+    }
+  },
+  "evidence_files": [
+    "local/native_diagnostic_shutdown_r39_native_receipts.json",
+    "local/native_diagnostic_shutdown_r39_ghidra_007363b0.txt",
+    "local/native_diagnostic_shutdown_r39_ghidra_004bbca0.txt",
+    "local/native_diagnostic_shutdown_r39_ghidra_00412440.txt",
+    "local/native_diagnostic_shutdown_r39_ghidra_00bcfca0.txt",
+    "local/native_diagnostic_shutdown_r39_seeds.log",
+    "local/native_diagnostic_shutdown_r39_build.log",
+    "local/native_diagnostic_shutdown_r39_probe.cpp",
+    "local/native_diagnostic_shutdown_r39_probe_compile.log",
+    "local/native_diagnostic_shutdown_r39_probe.log",
+    "local/native_diagnostic_shutdown_r39_probe_status.json",
+    "local/native_diagnostic_shutdown_r39_toolchain.json",
+    "local/native_diagnostic_shutdown_r39_probe_headers.txt",
+    "local/native_diagnostic_shutdown_r39_coff_*.txt"
+  ],
+  "boundaries": {
+    "application": "0073830F is not bound in game/application source. Application ownership and native shutdown step-19 ordering remain a later audit.",
+    "host_and_drain": "No GameSingletonHost storage or NativeSingletonDeletionBindings change is included. Published R38 phase2 owns those independently; the ignored fixture consumes both its explicit cell and drain fallback.",
+    "profile_domain": "Only established CE752C and canonical CE3818 source providers are admitted. Arbitrary executable vtables and profiles remain unsupported.",
+    "abi": "The typed source entry is not the original no-argument cdecl function.",
+    "eh": "Ordinary C++ EH models the observed armed guard cleanup. Original FH3/SEH identity, hardware faults and second-exception behavior are unproved.",
+    "runtime": "No application execution, production shutdown, renderer/device behavior, game execution or gameplay validation is claimed.",
+    "metadata": "No Ghidra, ledger, name or tag mutation was performed."
+  },
+  "hash_provenance": "Native hashes and call rows were generated from exact installed-PE spans with pefile/capstone and accepted only after complete byte equality with fresh guarded Ghidra reads. Retained source, object, library, fixture and log hashes are generated from actual files by the immutable archive manifest.",
+  "artifact_archive": "local/native-diagnostic-shutdown-r39.zip; exact archive and member hashes are recorded after this report is committed"
+}
