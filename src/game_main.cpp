@@ -37,6 +37,7 @@
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_native_data_bootstrap.hpp"
 #include "bsp/game_native_mutable_crt_data.hpp"
+#include "bsp/game_native_particle_pools.hpp"
 #include "bsp/winmain_startup.hpp"
 
 namespace {
@@ -54,7 +55,7 @@ void attach_parent_console() {
 // consumed by the raw VFS entry path and the composed particle graph. The mapper
 // verifies the entire original PE before it admits any table/literal read.
 constexpr std::array<bsp::game::GameNativeDataSpan, 7> native_data_spans{{
-    {0x00ce0000u, 1}, {0x00cf0000u, 1}, {0x00d00000u, 1},
+    {0x00ce2000u, 1}, {0x00cf0000u, 1}, {0x00d00000u, 1},
     {0x00d10000u, 1}, {0x00d50000u, 1}, {0x00d60000u, 1},
     {0x00d70000u, 1}
 }};
@@ -372,6 +373,20 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         log.close();
         return 2;
     }
+
+    try {
+        auto& particle_pools = bsp::game::game_native_particle_pool_process();
+        const int model_atexit = particle_pools.initialize_model_once_00cd7830();
+        const int parameter_atexit = particle_pools.initialize_parameters_once_00cd78b0();
+        log.notef("native particle pools initialized: model_atexit=%d parameter_atexit=%d "
+            "storage=process_actual38h/actual38h", model_atexit, parameter_atexit);
+    } catch (const std::exception& failure) {
+        std::fprintf(stderr, "bsp_game: native particle pool startup failed: %s\n", failure.what());
+        log.notef("native particle pool startup failed: %s", failure.what());
+        log.close();
+        return 1;
+    }
+
     // docs/X87_CONTROL_WORD.md establishes statically that the CRT startup sets
     // the x87 precision field to 53 bits (`__setdefaultprecision` asks for
     // _PC_53 under _MCW_PC at 00c0683c) and that no game code changes it again,
