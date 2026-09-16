@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "packet": "native_diagnostic_raw_lifetime_audit_r37",
+  "status": "read_only_audit_complete_source_packet_ready",
+  "published_main_at_start": "d22e8009ec85b481c8503b98a95aa4bfa9980deb",
+  "worktree_main_merge": "1a64d2aef",
+  "scope": "Audit the actual 0109CF14 diagnostic publication, its raw 01090AA0 manager lifetime, the NativePhysicalBufferLockContext integration gap, and the smallest current-main source closure. No source, CMake, ledger, or Ghidra mutation is included.",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "live_function_count": 64147,
+    "installed_pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "mode": "read-only",
+    "verification": "Every live query used bsp.py ghidra against the guarded project and program; disk spans were read from the installed PE."
+  },
+  "initial_storage": {
+    "actual_diagnostic_publication": "0109CF14",
+    "actual_singleton_manager_publication": "01090AA0",
+    "live_values": {
+      "0109CF14": "00000000",
+      "01090AA0": "00000000"
+    },
+    "provenance": "Both cells are uninitialized image storage and therefore loader-zero. They have no raw PE bytes to interpret as initialized data.",
+    "complete_0109CF14_writer_set": [
+      "004C152E getter publication",
+      "004BBCA8 scalar deletion clear",
+      "0073642B explicit shutdown clear"
+    ],
+    "no_crt_entry": "No CRT initializer or atexit callback owns 0109CF14. Application initialization calls the lazy getter at 0073E14B; application shutdown calls 007363B0 at 0073830F."
+  },
+  "original_routines": [
+    {
+      "address": "004C14C0",
+      "name": "BSP_DiagnosticSink_GetOrCreate",
+      "span": "004C14C0-004C1569",
+      "length": 170,
+      "sha256": "d1ed3a68f63885476351cadb135979cb5433c62f21ddc2778425c5b4a103b505",
+      "abi": "cdecl, no native inputs, EAX final current 0109CF14 publication, RET",
+      "behavior": "Warm path returns the first publication read. Cold path performs first raw manager lookup, captures manager+10, enters and increments its physical +18 depth, rechecks 0109CF14, allocates four bytes, writes CE752C, publishes, performs a second manager lookup, reloads current 0109CF14 for BD0C30 registration, releases the captured section, and finally reloads 0109CF14."
+    },
+    {
+      "address": "004BBCA0",
+      "name": "BSP_DiagnosticSink_ScalarDeletingDestructor",
+      "span": "004BBCA0-004BBCC8",
+      "length": 41,
+      "sha256": "f462bb0027b9bfdceed4ade23ced0707acf58aa56d643492b1984d21f4da9c58",
+      "abi": "ECX owner, stacked flags, EAX original owner, RET 4",
+      "behavior": "Tests flags bit zero before mutation, clears current 0109CF14 unconditionally, writes base profile CE3818, frees the captured owner only when bit zero was set, and returns the original address. It never unregisters itself."
+    },
+    {
+      "address": "007363B0",
+      "name": "BSP_Singleton_Destroy_0109cf14",
+      "span": "007363B0-00736453",
+      "length": 164,
+      "sha256": "fb860e3c2072743125d42daf505a685ae23ae71d528a93edc2c3cc689c327ad5",
+      "abi": "cdecl, no native inputs, RET",
+      "behavior": "Fast null check; first manager lookup and captured manager+10 section; enter and depth increment; recheck; second manager lookup; unregister the current 0109CF14 through BCFCA0; reload current publication; call current virtual slot zero with flags1; clear 0109CF14; release the captured section."
+    },
+    {
+      "address": "00411EE0",
+      "name": "BSP_SystemSingletonGuard_Destroy",
+      "span": "00411EE0-00411EF8",
+      "length": 25,
+      "sha256": "bc62d20fb11c300342533b8e94fc0319bb550dcd5bb5ecd734f2e03c92cc3382",
+      "abi": "ECX actual eight-byte guard, RET",
+      "behavior": "Captures guard+04, writes CE37FC, then decrements captured section+18 and calls LeaveCriticalSection."
+    },
+    {
+      "address": "00BD0400",
+      "name": "raw singleton manager drain",
+      "span": "00BD0400-00BD04C4",
+      "length": 197,
+      "sha256": "6e73798d0366545ebbf2ebe6aa005e4630fd95238cdae48df6bc9f20240a3c36",
+      "abi": "ECX raw 14h manager, RET",
+      "behavior": "Pops a current registered slot before virtual slot-zero deletion with flags1, then recounts. CE752C therefore naturally reaches 004BBCA0 in the original."
+    }
+  ],
+  "construction_and_profiles": {
+    "allocation_bytes": 4,
+    "derived_profile": {
+      "address": "00CE752C",
+      "bytes": "A0 BC 4B 00",
+      "sha256": "b3542deaae74443b0e3a4e9381c557f5a13e86c64ace23dd7546f66478aa9fa5",
+      "slot_zero": "004BBCA0"
+    },
+    "base_profile": {
+      "address": "00CE3818",
+      "bytes": "40 24 41 00",
+      "sha256": "9b438ce3feae2fd62d0e9bbaf623d6c8501a0d858c6da7d06cc04ccc29ebd57f",
+      "slot_zero": "00412440 BSP_SingletonBase_ScalarDelete"
+    },
+    "base_reset": "00412430 writes CE3818 and returns.",
+    "constructor_conclusion": "There is no called standalone base or derived constructor for this four-byte owner. The optimized cold getter performs the complete derived construction as the single CE752C store at 004C1524. The derived scalar entry performs the base-profile transition directly; 00412430 is not called on that path."
+  },
+  "raw_manager_contract": {
+    "getter": "00415350 reads and, if needed, allocates/constructs/publishes the raw 14h manager through 01090AA0. It has no publication lock.",
+    "register": "00BD0C30 validates end >= begin, ignores null, and appends a nonnull current publication without AddRef, duplicate filtering, or an internal lock.",
+    "unregister": "00BCFCA0 linearly finds the current object and writes a null slot without shrinking the vector.",
+    "original_shutdown": "007363B0 unregisters before scalar deletion, so a normal later manager drain cannot delete the diagnostic twice.",
+    "source_fallback": "A reconstructed raw manager drain may delete CE752C directly after popping it; its finite deletion map must receive the same 0109CF14 cell so 004BBCA0 can clear it."
+  },
+  "failure_and_mutation_schedule": {
+    "getter_warm": "A nonnull first 0109CF14 read returns immediately and touches no manager or section.",
+    "getter_guard_arm": "State zero is armed only after EnterCriticalSection returns and the captured section+18 increment completes.",
+    "getter_recheck": "A publication installed during entry skips allocation and registration, but the same captured section is released and the final publication is reloaded.",
+    "getter_allocation": "There is no owned-allocation EH state because construction is only a profile store. A registration or second-manager failure retains the published allocation and invokes only the captured guard cleanup.",
+    "getter_registration": "The second manager result and the then-current 0109CF14 value are used. A mutation can therefore register a publication different from the object initially allocated.",
+    "getter_leave": "State zero remains armed through normal depth decrement and LeaveCriticalSection. A C++ exception after the real Leave operation reaches the same guard cleanup schedule; exact native asynchronous SEH and second-exception behavior are outside source parity.",
+    "shutdown": "007363B0 uses the same capture/enter/recheck pattern. Unregister failure leaves the publication and invokes guard cleanup. Successful scalar deletion is nonthrowing, clears the cell before the wrapper's final redundant clear, and frees only through flags1."
+  },
+  "original_direct_getter_uses": {
+    "callsite_count": 24,
+    "enclosing_function_count": 12,
+    "groups": [
+      {"function": "0073D410 BSP_Application_Initialize", "sites": ["0073E14B"]},
+      {"function": "004CA440 BSP_Game_Render", "sites": ["004CA67F"]},
+      {"function": "004C7070", "sites": ["004C70AC"]},
+      {"function": "004C70C0", "sites": ["004C7103"]},
+      {"function": "0093FF10", "sites": ["0094062D", "009406D4", "009406D9", "009406DE", "009406E3", "009406E8", "009406F9", "00940709", "0094071A"]},
+      {"function": "00A869B0", "sites": ["00A86A22", "00A86ABE"]},
+      {"function": "00B151E0", "sites": ["00B1546A", "00B155EE"]},
+      {"function": "00B1EF60", "sites": ["00B1F0F8"]},
+      {"function": "00B51000", "sites": ["00B5106C"]},
+      {"function": "00BE3BF0", "sites": ["00BE3E46"]},
+      {"function": "00B4B850 BSP_D3D9IndexBuffer_Lock", "sites": ["00B4B863", "00B4B89F"]},
+      {"function": "00B4BA00 BSP_D3D9VertexBuffer_Lock", "sites": ["00B4BA13", "00B4BA4F"]}
+    ],
+    "note": "The older semantic gui_startup comment says twenty call sites; live guarded xrefs establish twenty-four call instructions in twelve functions. No caller owns a second publication."
+  },
+  "current_main_source_state": {
+    "raw_manager_owner": "GameSingletonHost owns one stable source cell modeling actual 01090AA0, exposes SoundLifetimeAccess over that cell, and performs the 00BD0400-style raw drain before freeing and clearing the manager.",
+    "diagnostic_getter": "native_diagnostic_sink_get_or_create_004c14c0 takes an actual-looking 0109CF14 cell but a semantic SingletonLifetimeDomain. It cannot currently borrow GameSingletonHost's raw manager cell.",
+    "physical_lock": "NativePhysicalBufferLockContext has the same mixed contract: diagnostic publication reference plus semantic SingletonLifetimeDomain reference. Tracked source constructs no production instance; mapping, save, and restore only forward a borrowed context.",
+    "tracked_source_direct_use": "src/native_physical_buffer_lock.cpp is the only tracked source caller of the native diagnostic getter. Its four original call sites are represented by two shared source checks reached from index and vertex wrappers.",
+    "semantic_duplicate": "gui_startup DiagnosticSinkSingleton is a behavior-only state projection. It allocates no native four-byte owner, borrows no raw manager, registers no raw pointer, and is not the 0109CF14 producer.",
+    "missing_actual_owner": "No tracked current-main object owns a stable NativeDiagnosticSinkStorage* publication cell for 0109CF14. GameSingletonHost therefore cannot admit or clear CE752C today.",
+    "deletion_map": "NativeSingletonDeletionBindings ends with resource_support at offset104 and size108. The current CE752C profile has no delete_current_profile case.",
+    "support_boundary": "NativePhysicalBufferOwnerContext and NativeHardwareLayoutOwnerContext currently carry semantic lifetime references for resource support. The parent's separate support-context work can use NativeResourceSupportLifetime; that is independent of the diagnostic SoundLifetimeAccess route."
+  },
+  "current_main_source_hashes": {
+    "include/bsp/native_diagnostic_sink_lifetime.hpp": "17bf59a7aee1bda0ceb66989c177ed8e32f207c55087f10b5ecfaaa275791af6",
+    "src/native_diagnostic_sink_lifetime.cpp": "c74781854e773ffdf76f46b823b6751ca795709f277fefc874a2bdfdefd63131",
+    "include/bsp/native_physical_buffer_lock.hpp": "c921a67527c5b9018cf67cf0a36567f1a08e91bd997392a4432a63e1ab9551b2",
+    "include/bsp/sound_lifetime_access.hpp": "671982c50e334f3991871d750535e4a888e3c9f679b44c8bb4fe020e47ea9094",
+    "src/sound_lifetime_access.cpp": "a8d4db578602e2762b6f0defaca25b905bcc4c26e1c1c1a5134bb538d3402e0a",
+    "include/bsp/native_singleton_destruction.hpp": "594188b4cbf03645a1e91c4197f249f9237438018dfbd48048a4a4a0536a38cb",
+    "src/native_singleton_destruction.cpp": "b88f730eb0156dcfe8d51b79d36e1aae4620a22491af2ce8a40bff22711cc3e3",
+    "include/bsp/game_hosts_singletons.hpp": "545a472f94813a3f2f03257b361c913bf2ec56e99979becc04257bce9cf2d8f5",
+    "src/game_hosts_singletons.cpp": "8e3b32493cb44fce7935dda3afa306dd5d7e80c63931b23c7dfdc3810672237b"
+  },
+  "orch5_cross_branch_evidence": {
+    "branch": "agent/orch5-20260911",
+    "final_branch_commit": "769bdc3e3",
+    "implementation_commit": "c1d358ef33477386fe1c5e4645e303ee9440daea",
+    "prerequisite_commit": "1cfc67ad409c7db05da05c7a6f05d7e45fc4f424",
+    "implemented_route": "Changed the getter and NativePhysicalBufferLockContext to SoundLifetimeAccess, added SoundLifetimeManagerView::native_system_section_10, appended a CE752C deletion binding on its then-current layout, and added a focused cold/warm raw registration and drain probe.",
+    "historical_validation": "Strict Win32 build, two then-existing CTests, eight native seeds, sixteen direct call checks, and one source lifecycle probe passed on the orch5 baseline. This is historical cross-branch evidence, not a current-main build result.",
+    "reuse_limit": "Do not cherry-pick the commit wholesale. Its NativeSingletonDeletionBindings size108 reflected an older tail; current main already uses size108 with resource_support at +104. Its diagnostic field must append at +108, preserving resource_support and producing size112. Its Ghidra and ledger edits are also outside the proposed source packet.",
+    "producer_limit": "The cross-branch change supplies an adapter and drain binding but still does not add a canonical GameSingletonHost-owned 0109CF14 cell. Fixtures provide that cell locally."
+  },
+  "smallest_next_source_packet": {
+    "name": "native_diagnostic_raw_access_and_admission",
+    "goal": "Give the existing native diagnostic getter one canonical application-owned raw publication, borrow the existing GameSingletonHost AA0 manager, and admit CE752C to the existing raw drain without changing the physical/resource-support wrapper.",
+    "changes": [
+      "Add SoundLifetimeManagerView::native_system_section_10 so the getter captures the first resolved semantic or raw manager section without a second lookup.",
+      "Change native_diagnostic_sink_get_or_create_004c14c0 to take SoundLifetimeAccess by value and retain its current guard, recheck, second-getter, registration, leave, and final-reload schedule.",
+      "Change NativePhysicalBufferLockContext lifetime field to SoundLifetimeAccess. Its Win32 source size becomes 16 bytes: publication reference4, lifetime view8, sentinel4.",
+      "Append NativeDiagnosticSinkStorage* volatile* actual_diagnostic_publication_0109cf14 at NativeSingletonDeletionBindings offset108. Preserve resource_support at offset104 and update size to112.",
+      "Add CE752C to delete_current_profile; require the binding and call delete_native_diagnostic_sink_004bbca0 on the popped owner with the same publication cell and current flags.",
+      "Add one stable loader-zero diagnostic publication cell to GameSingletonHost, expose a borrowed reference for context composition, and bind its address before any owner can register. The cell and deletion bindings remain alive through shutdown's raw drain.",
+      "Rescan and update lifetime-identity guards after the parent's NativeResourceSupportLifetime work lands. Current d22e8009 source has address comparisons in native_stream_clone.cpp and native_mesh_buffer_fields.cpp; a newer generated-model consumer may add another. Do not compare adapter object addresses as manager identity."
+    ],
+    "owned_files": [
+      "include/bsp/sound_lifetime_access.hpp",
+      "src/sound_lifetime_access.cpp",
+      "include/bsp/native_diagnostic_sink_lifetime.hpp",
+      "src/native_diagnostic_sink_lifetime.cpp",
+      "include/bsp/native_physical_buffer_lock.hpp",
+      "include/bsp/native_singleton_destruction.hpp",
+      "src/native_singleton_destruction.cpp",
+      "include/bsp/game_hosts_singletons.hpp",
+      "src/game_hosts_singletons.cpp",
+      "compile-sensitive lifetime identity consumers found by a fresh source scan"
+    ],
+    "not_needed": [
+      "No new source file or CMake registration",
+      "No new singleton manager or semantic domain",
+      "No eager diagnostic construction or game_main startup call",
+      "No change to NativeResourceSupportRawContext or the resource_support tail binding",
+      "No port of 007363B0 is required for the first raw-context packet"
+    ],
+    "ordering": "Land after or coordinate with the parent's physical/hardware NativeResourceSupportLifetime conversion, then compose NativePhysicalBufferLockContext from GameSingletonHost's diagnostic cell and sound_lifetime view. First diagnostic demand remains lazy."
+  },
+  "fixture_prerequisites": {
+    "kind": "one ignored focused Win32 source lifecycle fixture",
+    "required_inputs": [
+      "One stable raw manager publication cell and one stable diagnostic publication cell",
+      "Existing get_native_singleton_manager_00415350, registration, raw manager drain, CRT allocation/free, and real Win32 section providers",
+      "NativePhysicalBufferLockContext built from SoundLifetimeAccess over that same manager cell",
+      "A 2Ch index owner and 2Ch vertex owner using the null-COM sentinel branch; no fake COM object is needed",
+      "NativeSingletonDeletionBindings with the appended diagnostic cell binding and all existing fields default-null"
+    ],
+    "schedule": [
+      "Trigger the cold bounds diagnostic through index Lock and verify exactly one CE752C owner and one raw registration.",
+      "Trigger a warm dynamic diagnostic through vertex Lock and a direct warm getter; verify identity and registration count remain unchanged.",
+      "Verify the raw manager section RecursionCount and tracked +18 depth return to zero.",
+      "Drain with destroy_native_singleton_manager_00bd0400; verify pop-before-delete, 004BBCA0 flags1 behavior, 0109CF14 null, and vector storage cleanup.",
+      "Free and clear the captured raw manager after drain while GameSingletonHost-equivalent cells and bindings are still alive."
+    ],
+    "failure_cases": [
+      "Registration validation failure retains the published diagnostic but releases the captured section; a later warm getter does not retry registration.",
+      "Entry-time publication mutation skips allocation and registration while returning the final publication.",
+      "Second-getter/current-publication mutation registers the reloaded identity.",
+      "A missing CE752C deletion binding fails as a source contract before pretending cleanup succeeded."
+    ],
+    "proof_boundary": "The fixture would validate current source ownership, registration, failure retention, and drain. It would not execute original 004C14C0/007363B0, D3D Lock, application shutdown order, native FH3/SEH, device Reset, rendering, or gameplay."
+  },
+  "source_vs_original_boundary": {
+    "exact_original_shutdown": "The executable destroys the diagnostic at Application_Shutdown step19 through 007363B0, before the later WinMain raw manager teardown.",
+    "proposed_source_shutdown": "GameSingletonHost's finite raw drain is a safe ownership closure and matches original pop-before-slot0 deletion, but it does not reproduce step19 timing. A later exact 007363B0 source port can unregister first; the raw drain then sees a null vector slot and remains a fallback.",
+    "abi": "All proposed interfaces are C++ source bindings. Native no-argument getter ABI, ECX/RET4 scalar ABI, original EH maps, asynchronous SEH, and arbitrary virtual dispatch are not claimed.",
+    "runtime": "No current-main build, fixture, game, device, renderer, or gameplay execution was performed for this evidence-only packet."
+  },
+  "missing_functions_or_tails": [],
+  "audit_artifacts": [
+    "local/native_diagnostic_raw_r37_call_context.json",
+    "local/native_diagnostic_raw_lifetime_orch5_c1d358ef3.json"
+  ]
+}
