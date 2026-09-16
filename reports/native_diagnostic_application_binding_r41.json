@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "packet": "native_diagnostic_application_binding_r41",
+  "status": "source_complete_validated",
+  "baseline": {
+    "main_commit": "6d3757320",
+    "r40_audit_commit": "c6a54734c7357b5e9d0187185daed32c7dc1921d",
+    "r40_integration_commit": "6d3757320"
+  },
+  "scope": "Bind the existing native diagnostic getter and shutdown wrapper to the current GameStartupHost path through the canonical GameSingletonHost publication and raw lifetime. Only src/game_hosts.cpp, this report, and the companion document change. No owner, manager, deletion rule, header, CMake, test, ledger, or Ghidra state changes.",
+  "original_receipts": {
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "initialize_context": {
+      "address": "0073E13C",
+      "length": 25,
+      "bytes": "E8 9F D9 FF FF B9 A8 F1 CF 00 E8 45 BB D8 FF E8 70 33 D8 FF 68 A0 71 00 00",
+      "sha256": "5c9036dd29332075c5213de7be410a1c89f135be1dc3e850b91e02419cf53980",
+      "sequence": "0073BAE0 font/GUI startup; 004C9C90 After InitGui trace stub; 004C14C0 diagnostic getter; following phase begins",
+      "live_ghidra_equal_installed_pe": true
+    },
+    "initialize_call": {
+      "address": "0073E14B",
+      "length": 5,
+      "bytes": "E8 70 33 D8 FF",
+      "sha256": "c6a0e2d725e7c0a289d836401087a80688e9069ccbe184dff02bbea0366452fc",
+      "target": "004C14C0"
+    },
+    "shutdown_context": {
+      "address": "0073830A",
+      "length": 15,
+      "bytes": "E8 F1 DF FF FF E8 9C E0 FF FF E8 B7 42 48 00",
+      "sha256": "9ff33f4c6e767bc4831674e3b5b530d188a39090bfc1e420c5964f35995d941e",
+      "sequence": "step18 00736300; step19 007363B0; step20 00BBC5D0",
+      "live_ghidra_equal_installed_pe": true
+    },
+    "shutdown_call": {
+      "address": "0073830F",
+      "length": 5,
+      "bytes": "E8 9C E0 FF FF",
+      "sha256": "f3fe8041fe1c3f92bd92ff3b23241f7b52dad5c27d2911f80553ba3d2fe58c5d",
+      "target": "007363B0"
+    },
+    "xref_conclusion": "The getter has 24 direct calls in 12 original functions; 0073E14B is its only direct application-initialize call. 007363B0 has exactly one direct caller, 0073830F in BSP_Application_Shutdown. An incidental earlier diagnostic/error path can make the explicit getter warm; no second owner is implied."
+  },
+  "source_changes": {
+    "file": "src/game_hosts.cpp",
+    "direct_include": "bsp/native_diagnostic_sink_lifetime.hpp",
+    "initialize": {
+      "method": "GameStartupHost::run_initialize_phases",
+      "placement": "Immediately after frontend_->run_font_and_gui_startup_0073bae0 returns and before font summary reads or the next reconstructed phase.",
+      "entry": "native_diagnostic_sink_get_or_create_004c14c0",
+      "arguments": [
+        "singletons_->diagnostic_publication_0109cf14()",
+        "singletons_->sound_lifetime()"
+      ],
+      "return": "Explicitly discarded, matching 0073E14B.",
+      "checkpoint": "The intervening original 004C9C90 After InitGui checkpoint is a bare retail stub and requires no source state transition."
+    },
+    "shutdown": {
+      "method": "GameStartupHost::application_shutdown",
+      "placement": "After current menu/frontend teardown and device release, before method return, application_destruct, and the shared raw-manager drain.",
+      "entry": "destroy_native_diagnostic_sink_007363b0",
+      "arguments": [
+        "singletons_->diagnostic_publication_0109cf14()",
+        "singletons_->sound_lifetime()"
+      ],
+      "full_teardown_marker": "The existing ApplicationShutdownHost::singleton_teardown log remains unimplemented."
+    },
+    "identity": "Both calls borrow the same stable GameSingletonHost 0109CF14 cell and the same SoundLifetimeAccess view of its 01090AA0 raw-manager cell. No alternate cell, adapter-owned storage, eager singleton, or manager is created.",
+    "semantic_projection": "DiagnosticSinkSingleton in gui_startup remains an independent behavior-only projection. It is not instantiated, redirected, or assigned native ownership by this packet."
+  },
+  "lifetime_and_failure_contract": {
+    "warm_getter": "A publication created by an earlier diagnostic route makes the application call a warm identity-preserving return with no manager lookup or duplicate registration.",
+    "cold_getter": "Allocation null remains a valid null result. Successful construction publishes the CE752C owner and registers the then-current publication in the shared raw manager.",
+    "getter_failure": "Registration or second-manager failure propagates. The existing getter retains its publication and releases the captured guard; R41 adds no cleanup, retry, or nonnull assertion.",
+    "normal_shutdown": "The explicit wrapper unregisters and scalar-deletes the owner. The later raw drain sees a retained null vector slot and cannot delete it twice.",
+    "fallback": "A still-registered owner is retired by the existing GameSingletonHost destructor/raw-drain fallback when a later initialization or earlier shutdown operation throws.",
+    "unregistered_failure_limit": "A publication retained after getter registration failure has no vector entry and is outside the raw-drain fallback, as before.",
+    "unsupported_profile": "The existing wrapper propagates its source contract error after genuine unregister, retains prior mutation, and releases the captured section. R41 adds no fake profile or repair.",
+    "repetition": "The getter and null shutdown wrapper are individually repeat-safe. GameStartupHost initialization and shutdown as complete methods are not established as repeatable and receive no new retry or reset behavior.",
+    "host_lifetime": "GameSingletonHost, its publication cell, SoundLifetimeAccess identity, and deletion bindings survive through explicit application shutdown and the final raw drain."
+  },
+  "partial_order_limit": {
+    "established": "The diagnostic owner is initialized after the current GUI startup and retired during application shutdown after current GUI/frontend and device teardown, before application destruction and raw drain.",
+    "not_established": "Current GameStartupHost does not implement original shutdown steps 1 through 18 or 20 through 42 as the recovered native sequence. R41 therefore does not claim exact adjacency to original 00736300 or 00BBC5D0 and preserves the full-teardown unimplemented marker."
+  },
+  "validation": {
+    "native_seeds": "passed",
+    "build": "Current main-based MSVC Win32 Release build passed with the project strict checks.",
+    "ctests": [
+      "reconstructed_math passed",
+      "native_math_differential passed",
+      "tool_tests passed"
+    ],
+    "object": {
+      "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+      "machine": "014C x86",
+      "runtime": "/DEFAULTLIB:MSVCRT (/MD family)",
+      "references": [
+        "typed native_diagnostic_sink_get_or_create_004c14c0",
+        "typed destroy_native_diagnostic_sink_007363b0"
+      ],
+      "receipt": "local/native_diagnostic_application_r41_game_hosts_obj.txt"
+    },
+    "link": "bsp_game.exe linked successfully against the existing bsp_core providers.",
+    "fixture": "No new fixture was added. R39 already proved the genuine GameSingletonHost getter, wrapper, vector hole, physical diagnostic path, and raw-drain fallback. A component-only repetition would not execute the new GameStartupHost placement."
+  },
+  "artifact_hashes": {
+    "src/game_hosts.cpp": {
+      "bytes": 87627,
+      "sha256": "ec6b1c99001b5d242a92df07ad600fd281b3a495ab89422a11ab9eed23ca131a"
+    },
+    "docs/NATIVE_DIAGNOSTIC_APPLICATION_BINDING_R41.md": {
+      "bytes": 6889,
+      "sha256": "9747a2b4f38d6fa3034da3544b9f123e612ea51c255d24e4601491c6c70ab755"
+    },
+    "local/native_diagnostic_application_r41_seeds.log": {
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    "local/native_diagnostic_application_r41_build.log": {
+      "bytes": 6839,
+      "sha256": "ee2c05a3bd7dceda6512dc7d8aec7d652ffa62f3cee6fae798c53a46ea3fff90"
+    },
+    "local/native_diagnostic_application_r41_game_hosts_obj.txt": {
+      "bytes": 2681209,
+      "sha256": "2f4ceb5182e0e427ed9888b09a89c2020f59ac43903dadbbe2b8303fe762f0c2"
+    },
+    "build/win32/bsp_game.dir/Release/game_hosts.obj": {
+      "bytes": 692860,
+      "sha256": "4cd62dfbf2e2a66d51e660eac8849fc396627f5fc53fcd2d877941499d2693b1"
+    },
+    "build/win32/Release/bsp_core.lib": {
+      "bytes": 63468386,
+      "sha256": "e1c78cd06a313c9f881029d13ccaec913bf45d1c5fa3593529cb0705c282d2df"
+    },
+    "build/win32/Release/bsp_game.exe": {
+      "bytes": 2263552,
+      "sha256": "8679055b2c948ce8c5eb8d3b943a72a966129901b308cc04f1cddda5d72658a8"
+    }
+  },
+  "evidence_files": [
+    "local/native_diagnostic_application_r41_seeds.log",
+    "local/native_diagnostic_application_r41_build.log",
+    "local/native_diagnostic_application_r41_game_hosts_obj.txt",
+    "local/native_diagnostic_application_r41_artifacts.json",
+    "local/native_diagnostic_application_r40_receipts.json"
+  ],
+  "artifact_archive": "local/native-diagnostic-application-binding-r41.zip; exact archive and member hashes are recorded after the report commit",
+  "boundaries": {
+    "abi": "The typed source calls are not the original no-argument cdecl ABI.",
+    "eh": "Failure propagation uses the already-established ordinary C++ guard model; original FH3/SEH identity, hardware faults, and second-exception behavior remain unproved.",
+    "shutdown": "The other 41 recovered application shutdown actions remain outside this packet.",
+    "runtime": "Compilation, object references, link success, and component evidence do not establish full GameStartupHost execution, renderer/device runtime, game execution, or gameplay.",
+    "metadata": "Ghidra was read-only. No name, ledger, tag, or export mutation was performed."
+  },
+  "hash_provenance": "Native hashes come from the R40 machine-generated installed-PE receipts that the parent independently verified. R41 source, log, object, library, and executable hashes were generated programmatically from the exact retained files after rebuilding the 6d3757320 baseline."
+}
