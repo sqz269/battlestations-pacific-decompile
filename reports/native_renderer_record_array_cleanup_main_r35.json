@@ -1,0 +1,235 @@
+{
+  "schema": 1,
+  "packet": "native_renderer_record_array_cleanup_main_r35",
+  "status": "adopted_exact_orch5_source_current_main_provider_abi_and_fresh_strict_win32_fixture_validated",
+  "baseline": {
+    "main_before_packet": "8d476b2a0e759bff0d6a5a708ced2a4273cd537e",
+    "source_commit": "7908392e909ede471a8b754bbb690942d3f5feee",
+    "adoption_commit": "1966b9e86d6db239b675af8d096425a19b1787af",
+    "source_branch": "agent/orch5-native-renderer-record-array-cleanup",
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "ghidra_program": "/battlestationspacific.exe",
+    "ghidra_mode": "read_only"
+  },
+  "adopted_files": [
+    {
+      "path": "include/bsp/native_renderer_record_array_cleanup.hpp",
+      "bytes": 1776,
+      "sha256": "197950ee4652d37af66e6eed0e6e0cbe5261b738100a9102a779c62a5a19099b",
+      "relationship": "exact source-commit bytes"
+    },
+    {
+      "path": "src/native_renderer_record_array_cleanup.cpp",
+      "bytes": 1425,
+      "sha256": "a453648b670e335eb7cf454bcaebddd7bb598c058e65ddb51f558ef10e7f26fd",
+      "relationship": "exact source-commit bytes"
+    },
+    {
+      "path": "docs/NATIVE_RENDERER_RECORD_ARRAY_CLEANUP.md",
+      "bytes": 5440,
+      "sha256": "363b75a822b6065815b21558032f363dae771f0c9380e404e235ee68dbf5d193",
+      "relationship": "exact source-commit bytes"
+    },
+    {
+      "path": "reports/native_renderer_record_array_cleanup.json",
+      "bytes": 61294,
+      "sha256": "5f7f05287422951a6a2b56ef7f537009214d761476b131b7ee8535302f57163b",
+      "relationship": "historical orch5 evidence adopted unchanged"
+    }
+  ],
+  "cmake": {
+    "path": "cmake/startup.cmake",
+    "change": "one bsp_core target_sources line for src/native_renderer_record_array_cleanup.cpp",
+    "lease": "claimed separately, committed and released before configuration/build",
+    "post_adoption_sha256": "d5ca6b14e8383effef375ef29e1d33765400b0ec87e272d40ee00505d5786c3b"
+  },
+  "routines": [
+    {
+      "address": "00B25CF0",
+      "end": "00B25D3F",
+      "bytes": 80,
+      "source": "resize_native_renderer_vertex_shader_registry_00b25cf0",
+      "provider": "resize_native_renderer_vertex_pointers_00b25940",
+      "abi": "native ECX actual0Ch header plus signed stack count, RET4; source __fastcall reserves explicit ignored EDX"
+    },
+    {
+      "address": "00B25D40",
+      "end": "00B25D8F",
+      "bytes": 80,
+      "source": "resize_native_renderer_pixel_shader_registry_00b25d40",
+      "provider": "resize_native_renderer_vertex_pointers_00b25940",
+      "abi": "native ECX actual0Ch header plus signed stack count, RET4; source __fastcall reserves explicit ignored EDX"
+    },
+    {
+      "address": "00B22E90",
+      "end": "00B22EDF",
+      "bytes": 80,
+      "source": "resize_native_renderer_third_state_cache_00b22e90",
+      "provider": "resize_native_renderer_vertex_pointers_00b25940",
+      "abi": "native ECX actual0Ch header plus signed stack count, RET4; source __fastcall reserves explicit ignored EDX"
+    },
+    {
+      "address": "00B29B60",
+      "end": "00B29B76",
+      "bytes": 23,
+      "source": "destroy_native_renderer_vertex_shader_registry_00b29b60",
+      "provider": "destroy_native_renderer_vertex_pointers_00b29b20",
+      "abi": "native ECX actual0Ch header, plain RET; source __fastcall single pointer argument"
+    },
+    {
+      "address": "00B29B80",
+      "end": "00B29B96",
+      "bytes": 23,
+      "source": "destroy_native_renderer_pixel_shader_registry_00b29b80",
+      "provider": "destroy_native_renderer_vertex_pointers_00b29b20",
+      "abi": "native ECX actual0Ch header, plain RET; source __fastcall single pointer argument"
+    },
+    {
+      "address": "00B28090",
+      "end": "00B280A6",
+      "bytes": 23,
+      "source": "destroy_native_renderer_third_state_cache_00b28090",
+      "provider": "destroy_native_renderer_vertex_pointers_00b29b20",
+      "abi": "native ECX actual0Ch header, plain RET; source __fastcall single pointer argument"
+    }
+  ],
+  "current_main_provider_check": {
+    "provider_commit": "a43527137d8e48c62c0d9e352bcc08d9bf77db41",
+    "header": {
+      "path": "include/bsp/native_renderer_pointer_array_destroy.hpp",
+      "sha256": "5c89c92aa62d71115d8d5c81353ab235b3317ca265929a656644e849e4d1f0ab",
+      "comparison": "byte-identical to the retained orch5 dependency input"
+    },
+    "source": {
+      "path": "src/native_renderer_pointer_array_destroy.cpp",
+      "sha256": "e8fbf2456ac9e3e2a7fb6996d0e991b50c5ea32b184c1d0a13d376cee3956f21",
+      "comparison": "byte-identical to the retained orch5 dependency input"
+    },
+    "compiled_object_receipt": [
+      "all six adopted symbols are external __fastcall definitions with the declared parameter lists",
+      "B25940 is an unresolved __fastcall(void*,unsigned int,int) dependency",
+      "B29B20 is an unresolved __fastcall(void*) dependency",
+      "the object requests /DEFAULTLIB:MSVCRT, confirming the /MD CRT domain"
+    ]
+  },
+  "original_evidence_preservation": {
+    "archive": "J:/PROG/battlestations-pacific-decompile-orch5-native-renderer-record-array-cleanup/local/native_renderer_record_array_cleanup_archive",
+    "manifest_sha256": "0c9320fa12f690bc9555074b14370318a35500513266bf102b6b5e2cf8d867e8",
+    "committed_report_sha256": "5f7f05287422951a6a2b56ef7f537009214d761476b131b7ee8535302f57163b",
+    "verified_rows": 48,
+    "verified_bytes": 94125671,
+    "mismatches": 0,
+    "committed_report_matches_git_7908392e9": true,
+    "timing": "verified before any current-worktree build or fixture link",
+    "boundary": "these receipts preserve the historical 2-CTest build and 21-case fixture; current-main results below are fresh and separate"
+  },
+  "fresh_native_receipts": {
+    "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ghidra_function_count": 64146,
+    "live_equals_PE": true,
+    "spans": [
+      ["00B25CF0", 80, "7cf8137663c8e2568c9ce4c3dd10d16fd355791d68d5a0d7661661e73cc646f9", "owned"],
+      ["00B25D40", 80, "aab7fb366dc9ba54dbf4419460e198a660b86462f11c17368df92941e7d61121", "owned"],
+      ["00B22E90", 80, "3107577e96b9747d4ddb223bff1085111b2486aa193cbae5f9cdf6409f7ce78e", "owned"],
+      ["00B29B60", 23, "d25aee3f94d45eb9e8522755cb79d9aff6c46b26f10e08a8a25c6dc2cd9d50e8", "owned"],
+      ["00B29B80", 23, "12929bea011798e3ac9cf7058f4a1a03e0fabd689a8e12cf7827ef8f3bc01706", "owned"],
+      ["00B28090", 23, "eb78c0cf6e275f63e47527785a337fa8eb8f8127f6eb8091f5e19b5c2c9e3243", "owned"],
+      ["00B22DD0", 95, "b32d7acad6820ca5a72905fb1f712945fd3a8360186307ccba25ac24099647e1", "dependency"],
+      ["00B22E30", 95, "1d2d48fb4446e930c3cd3769085811f152da6a9f9210cb237453bf0c18d13da6", "dependency"],
+      ["00B22650", 95, "a4546dc9aef64a47544db6414582ba04d65b81cef8b332353b0c15d14ef83c98", "dependency"],
+      ["00B25940", 80, "1de73759a45a6858f2823a68bd79a9f5f781393cd9dbab2358bfe2a39dd36f00", "dependency"],
+      ["00B29B20", 23, "0e5f6a014028bb11c0b90eb8c6375f038a7b478e9e963b8c09689e907470c687", "dependency"],
+      ["00B22D10", 95, "70c57d1530f440247d5a72624ff0c7567d13328133833ecaf2f0d260013034b6", "dependency"]
+    ],
+    "equivalence_groups": [
+      {
+        "members": ["00B22DD0", "00B22E30", "00B22650", "00B22D10"],
+        "length": 95,
+        "masked_call_offsets": [32, 76],
+        "all_other_bytes_identical": true
+      },
+      {
+        "members": ["00B25CF0", "00B25D40", "00B22E90", "00B25940"],
+        "length": 80,
+        "masked_call_offsets": [14],
+        "all_other_bytes_identical": true
+      },
+      {
+        "members": ["00B29B60", "00B29B80", "00B28090", "00B29B20"],
+        "length": 23,
+        "masked_call_offsets": [5, 13],
+        "all_other_bytes_identical": true
+      }
+    ],
+    "owned_bytes": 309,
+    "dependency_bytes": 483,
+    "report_call_audit": "20 call rows checked, 0 failed"
+  },
+  "fresh_validation": {
+    "seed_verification": "8/8 live Ghidra seed ranges equal installed PE",
+    "build": "scripts/build.ps1 passed with MSVC Win32 Release, /W4 /WX /fp:strict",
+    "crt": "/DEFAULTLIB:MSVCRT in adopted object; unchanged fixture links /MD",
+    "ctests": [
+      "reconstructed_math passed",
+      "native_math_differential passed",
+      "tool_tests passed"
+    ],
+    "fixture": {
+      "source_sha256": "c330a6aceafe488d66105ca5cb8f479e2cec87fa8a1690e76b48148775a99da8",
+      "build_script_sha256": "05534f07a1536447b0817d6ba72044dfdbb3a1a7fdc3fa74ce0628d51d3592ee",
+      "reference_sha256": "355279c9968e0a2d0488ad25ee5636f3bed2d6658adf636aa703cd5a7711da86",
+      "relationship": "unchanged historical fixture source/build script and freshly regenerated identical reference header",
+      "link": "freshly linked against current build/win32/Release/bsp_core.lib",
+      "flags": "/std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /link /MANIFEST:EMBED",
+      "machine": "014c",
+      "manifest_embedded": true,
+      "result": "PASS: three complete original member cleanup chains versus shared source; 21 comparisons",
+      "coverage": "12 resize scenarios and 9 cleanup scenarios across three independent native chains"
+    }
+  },
+  "fresh_archive": {
+    "path": "local/native_renderer_record_array_cleanup_main_r35_archive",
+    "manifest_sha256": "96fcaf27cd13493259a848dedf9a07f7e57c4bda5ac75c08fe2eb9de8b755ee3",
+    "artifact_count": 21,
+    "artifact_bytes": 63612218,
+    "critical_artifacts": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63298258,
+        "sha256": "17b5ff21527d4d9c44b31c4599ddd2e9114e0ec072e4e59fc89bffa98de23156"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_record_array_cleanup.obj",
+        "bytes": 2227,
+        "sha256": "f531f23fcfd0dff1314c288d19487cc5c22556e261e4e8e2f85a1dacedfc0b3f",
+        "machine": "014c"
+      },
+      {
+        "path": "local/native_renderer_member_probe.exe",
+        "bytes": 18432,
+        "sha256": "64b4062864513deba329e9710984c21a4ec23abe2c9ace62fa12aab72e899c17",
+        "machine": "014c",
+        "manifest_embedded": true
+      },
+      {
+        "path": "local/native_renderer_member_probe.obj",
+        "bytes": 36898,
+        "sha256": "2cdd619fde381fc3f2c33fb10319255de034443960f58234cb252acd24b57aba",
+        "machine": "014c"
+      }
+    ],
+    "remaining_receipts": "manifest lists exact hashes for adopted source, current providers, fixture inputs, byte spans, tools record and all validation logs"
+  },
+  "source_behavior": [
+    "The three resize entries delegate to the current complete B25940 source provider and preserve its signed count/capacity, current-base reload, zero-fill, shrink and final count behavior.",
+    "The three cleanup entries delegate to the current complete B29B20 source provider: resize0 completes before the current data pointer is reloaded and freed; stale data/capacity bits remain.",
+    "No pointee layout, record destructor, reference release, replacement storage model or original executable address is introduced."
+  ],
+  "boundaries": [
+    "Fresh live/PE equality and normalized instruction identity establish the reuse basis, not original-address execution by the source library.",
+    "The focused fixture validates relocated original bodies against source for its 21 cases; allocation failure was not injected.",
+    "The source exposes equivalent C++ entry points and is not proven as a drop-in original ABI, FH3/SEH or private-frame replacement.",
+    "No renderer startup, reset/recreation, application integration, game execution or gameplay result is claimed.",
+    "No Ghidra or shared-ledger mutation was performed in this packet."
+  ]
+}
