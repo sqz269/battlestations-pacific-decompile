@@ -68,6 +68,68 @@
         "program": "battlestationspacific.exe",
         "message": "Program saved successfully"
       }
+    },
+    {
+      "recreate": "00cbb120",
+      "previous": "Function: Unwind@00cbb120 at 00cbb120\nSignature: undefined Unwind@00cbb120(void)\nEntry: 00cbb120\nBody: 00cbb120 - 00cbb128",
+      "plate": null
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00cbb120"
+      },
+      "result": {
+        "success": true,
+        "address": "00cbb120",
+        "deleted_function": "Unwind@00cbb120",
+        "body_size": 9,
+        "message": "Function 'Unwind@00cbb120' deleted at 00cbb120"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00cbb120",
+        "end_address": "00cbb12b"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00cbb120",
+        "end_address": "00cbb12a",
+        "bytes_disassembled": 11,
+        "message": "Successfully disassembled 11 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00cbb120",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00cbb120",
+        "function_name": "Unwind@00cbb120",
+        "entry_point": "00cbb120",
+        "body_size": 11,
+        "message": "Function created successfully at 00cbb120"
+      }
+    },
+    {
+      "defined": "00cbb120",
+      "end": "00cbb12b",
+      "name": null,
+      "after": "Function: Unwind@00cbb120 at 00cbb120\nSignature: undefined Unwind@00cbb120(void)\nEntry: 00cbb120\nBody: 00cbb120 - 00cbb12a"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
     }
   ],
   "project": "C:/Users/sqz269/bsp.gpr",
@@ -85,6 +147,13 @@
       "end_exclusive": "00af407a",
       "bytes": 26,
       "sha256": "5879ca1ed99f578ea770568b4098897262e61195f4456305c9a31ee845cbebd3",
+      "live_disk_match": true
+    },
+    {
+      "address": "00cbb120",
+      "end_exclusive": "00cbb12b",
+      "bytes": 11,
+      "sha256": "f72baaa85c0ac705bdba458902b598a5996ec5cb0548a87a7a21f18be86f9f52",
       "live_disk_match": true
     }
   ],
@@ -371,8 +440,32 @@
         "labels": [],
         "completeness_score": 50.0
       }
+    },
+    {
+      "address": "00cbb120",
+      "documentation": {
+        "hash": "be77e5c62609df3e167c809a8220b349e0bc7e4a5be751952a8b2fddd2867ae2",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cbb120",
+        "function_name": "Unwind@00cbb120",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      }
     }
   ],
   "post_repair_flow": "00af4060: 12 listed instructions, 0 gap(s)\n00afad00: 413 listed instructions, 1 gap(s)\n  after JMP 0x00afadd0 at 00afadcb: 00afadcd..00afadd0 (3 bytes)  [not after a CALL; left alone]\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n",
-  "exports": "Both forced to refresh after locked save."
+  "exports": "Both forced to refresh after locked save.",
+  "reserve_funclet_post_repair_flow": "00cbb120: 5 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n",
+  "reserve_funclet_exports": "CBB120 and AFBDB0 forced after preserving Unwind@ name and locked save"
 }

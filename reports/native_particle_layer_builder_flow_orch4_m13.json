@@ -133,6 +133,56 @@
       "body_after": "Function: FUN_00af4060 at 00af4060\nSignature: undefined FUN_00af4060(void)\nEntry: 00af4060\nBody: 00af4060 - 00af406a",
       "stored_body_tail_complete": false,
       "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+    },
+    {
+      "function": "00cbb120",
+      "owner": "agent/orch4-20260915",
+      "when": "2026-09-16T01:42:09Z",
+      "decompile_lines_before": 10,
+      "gaps": [
+        {
+          "site": "00cbb124",
+          "mnemonic": "CALL",
+          "operands": "0x00bf6989",
+          "gap_start": "00cbb129",
+          "gap_end_exclusive": "00cbb12b",
+          "bytes": 2,
+          "after_call": true,
+          "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "00cbb124",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00cbb129",
+            "gap_end_exclusive": "00cbb12b",
+            "bytes": 2,
+            "after_call": true,
+            "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+          },
+          "clear": "Success: Cleared flow override at 00cbb124 (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 2 byte(s)"
+        },
+        {
+          "explicit_tail_call": "00cbb124",
+          "clear": {
+            "status": "success",
+            "message": "Success: Cleared flow override at 00cbb124 (was: NONE, now: NONE)"
+          }
+        }
+      ],
+      "explicit_tail_end_exclusive": "00cbb12b",
+      "explicit_tail_terminator": "ret",
+      "explicit_body_sha256": "f72baaa85c0ac705bdba458902b598a5996ec5cb0548a87a7a21f18be86f9f52",
+      "body_before": "Function: Unwind@00cbb120 at 00cbb120\nSignature: undefined Unwind@00cbb120(void)\nEntry: 00cbb120\nBody: 00cbb120 - 00cbb128",
+      "decompile_lines_after": 10,
+      "gaps_remaining": 1,
+      "body_after": "Function: Unwind@00cbb120 at 00cbb120\nSignature: undefined Unwind@00cbb120(void)\nEntry: 00cbb120\nBody: 00cbb120 - 00cbb128",
+      "stored_body_tail_complete": false,
+      "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
     }
   ],
   "project": "C:/Users/sqz269/bsp.gpr",
@@ -150,6 +200,13 @@
       "end_exclusive": "00af407a",
       "bytes": 26,
       "sha256": "5879ca1ed99f578ea770568b4098897262e61195f4456305c9a31ee845cbebd3",
+      "live_disk_match": true
+    },
+    {
+      "address": "00cbb120",
+      "end_exclusive": "00cbb12b",
+      "bytes": 11,
+      "sha256": "f72baaa85c0ac705bdba458902b598a5996ec5cb0548a87a7a21f18be86f9f52",
       "live_disk_match": true
     }
   ],
@@ -436,8 +493,32 @@
         "labels": [],
         "completeness_score": 50.0
       }
+    },
+    {
+      "address": "00cbb120",
+      "documentation": {
+        "hash": "be77e5c62609df3e167c809a8220b349e0bc7e4a5be751952a8b2fddd2867ae2",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00cbb120",
+        "function_name": "Unwind@00cbb120",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "unaff_EBP",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      }
     }
   ],
   "post_repair_flow": "00af4060: 12 listed instructions, 0 gap(s)\n00afad00: 413 listed instructions, 1 gap(s)\n  after JMP 0x00afadd0 at 00afadcb: 00afadcd..00afadd0 (3 bytes)  [not after a CALL; left alone]\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n",
-  "exports": "Both forced to refresh after locked save."
+  "exports": "Both forced to refresh after locked save.",
+  "reserve_funclet_post_repair_flow": "00cbb120: 5 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n",
+  "reserve_funclet_exports": "CBB120 and AFBDB0 forced after preserving Unwind@ name and locked save"
 }
