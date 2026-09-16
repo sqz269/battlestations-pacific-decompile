@@ -1,0 +1,789 @@
+{
+  "schema": 1,
+  "packet": "orch5_native_renderer_pointer_array_destroy",
+  "status": "complete_actual_pointer_array_cleanup_strict_win32_original_source_and_immutable_artifacts_checked",
+  "created_utc": "2026-09-14T07:40:11.854294+00:00",
+  "base_commit": "0a7c5c7035e01af98bc9136db86c5817a9dca690",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "owned_files": [
+    "include/bsp/native_renderer_pointer_array_destroy.hpp",
+    "src/native_renderer_pointer_array_destroy.cpp",
+    "docs/NATIVE_RENDERER_POINTER_ARRAY_DESTROY.md",
+    "reports/native_renderer_pointer_array_destroy.json"
+  ],
+  "shared_append": "one deferred target_sources line under short coordination.lease_transaction after unleased check",
+  "routines": [
+    {
+      "address": "00b22530",
+      "name": "reserve_native_renderer_query_pointers_00b22530",
+      "source": "src/native_renderer_pointer_array_destroy.cpp",
+      "coverage": "complete",
+      "end": "00b2258e",
+      "bytes": 95,
+      "original_ABI": "ECX actual0Ch header; one signed stack word; RET4; source fastcall has explicit ignored EDX"
+    },
+    {
+      "address": "00b22cc0",
+      "name": "resize_native_renderer_query_pointers_00b22cc0",
+      "source": "src/native_renderer_pointer_array_destroy.cpp",
+      "coverage": "complete",
+      "end": "00b22d0f",
+      "bytes": 80,
+      "original_ABI": "ECX actual0Ch header; one signed stack word; RET4; source fastcall has explicit ignored EDX"
+    },
+    {
+      "address": "00b25940",
+      "name": "resize_native_renderer_vertex_pointers_00b25940",
+      "source": "src/native_renderer_pointer_array_destroy.cpp",
+      "coverage": "complete",
+      "end": "00b2598f",
+      "bytes": 80,
+      "original_ABI": "ECX actual0Ch header; one signed stack word; RET4; source fastcall has explicit ignored EDX"
+    },
+    {
+      "address": "00b259d0",
+      "name": "resize_native_renderer_index_pointers_00b259d0",
+      "source": "src/native_renderer_pointer_array_destroy.cpp",
+      "coverage": "complete",
+      "end": "00b25a1f",
+      "bytes": 80,
+      "original_ABI": "ECX actual0Ch header; one signed stack word; RET4; source fastcall has explicit ignored EDX"
+    },
+    {
+      "address": "00b27f50",
+      "name": "destroy_native_renderer_query_pointers_00b27f50",
+      "source": "src/native_renderer_pointer_array_destroy.cpp",
+      "coverage": "complete",
+      "end": "00b27f66",
+      "bytes": 23,
+      "original_ABI": "ECX actual0Ch header; plain RET"
+    },
+    {
+      "address": "00b29b20",
+      "name": "destroy_native_renderer_vertex_pointers_00b29b20",
+      "source": "src/native_renderer_pointer_array_destroy.cpp",
+      "coverage": "complete",
+      "end": "00b29b36",
+      "bytes": 23,
+      "original_ABI": "ECX actual0Ch header; plain RET"
+    },
+    {
+      "address": "00b29b40",
+      "name": "destroy_native_renderer_index_pointers_00b29b40",
+      "source": "src/native_renderer_pointer_array_destroy.cpp",
+      "coverage": "complete",
+      "end": "00b29b56",
+      "bytes": 23,
+      "original_ABI": "ECX actual0Ch header; plain RET"
+    }
+  ],
+  "external_calls": [
+    {
+      "function": "00b22530",
+      "address": "00b22550",
+      "native": "00bf55be",
+      "source": "shared lifetime pointer_slots allocation via substantive existing B22D10 body"
+    },
+    {
+      "function": "00b22530",
+      "address": "00b2257c",
+      "native": "00bf6989",
+      "source": "current old data free before replacement publication, via substantive existing B22D10 body"
+    },
+    {
+      "function": "00b22cc0",
+      "address": "00b22cce",
+      "native": "00b22530",
+      "source": "actual query reserve named adapter"
+    },
+    {
+      "function": "00b25940",
+      "address": "00b2594e",
+      "native": "00b22d10",
+      "source": "existing actual native renderer pointer reserve"
+    },
+    {
+      "function": "00b259d0",
+      "address": "00b259de",
+      "native": "00b22d70",
+      "source": "existing actual native renderer index pointer reserve"
+    },
+    {
+      "function": "00b27f50",
+      "address": "00b27f55",
+      "native": "00b22cc0",
+      "source": "actual query resize0"
+    },
+    {
+      "function": "00b27f50",
+      "address": "00b27f5d",
+      "native": "00bf6989",
+      "source": "free current data after resize returns"
+    },
+    {
+      "function": "00b29b20",
+      "address": "00b29b25",
+      "native": "00b25940",
+      "source": "actual vertex resize0"
+    },
+    {
+      "function": "00b29b20",
+      "address": "00b29b2d",
+      "native": "00bf6989",
+      "source": "free current data after resize returns"
+    },
+    {
+      "function": "00b29b40",
+      "address": "00b29b45",
+      "native": "00b259d0",
+      "source": "actual index resize0"
+    },
+    {
+      "function": "00b29b40",
+      "address": "00b29b4d",
+      "native": "00bf6989",
+      "source": "free current data after resize returns"
+    }
+  ],
+  "fresh_guarded_spans": [
+    {
+      "address": "00b22530",
+      "end": "00b2258e",
+      "length": 95,
+      "bytes_hex": "56578b7c240c83ff018bf17d05bf01000000397e087d438d04bd000000005350e869300d008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e808440d0083c404891e897e085b5f5ec20400",
+      "sha256": "4cc3d23eb314adcbe9137e17fcdb8052e491c5c5fa35afb3d0071abad2849554",
+      "live_PE_match": true,
+      "ownership": "packet"
+    },
+    {
+      "address": "00b22cc0",
+      "end": "00b22d0f",
+      "length": 80,
+      "bytes_hex": "56578b7c240c8bf13b7e087e0657e85df8ffff8b46043bc77d1c8d9b000000008b0e8d0c8185c97406c7010000000083c0013bc77cea3b7e047d0d83c8ff8bff0146043b7e047cf8897e045f5ec20400",
+      "sha256": "965bae050482b01486a49bc7d4f7373c05d2ac94f9f5e2fe1d63c3369955ddb5",
+      "live_PE_match": true,
+      "ownership": "packet"
+    },
+    {
+      "address": "00b25940",
+      "end": "00b2598f",
+      "length": 80,
+      "bytes_hex": "56578b7c240c8bf13b7e087e0657e8bdd3ffff8b46043bc77d1c8d9b000000008b0e8d0c8185c97406c7010000000083c0013bc77cea3b7e047d0d83c8ff8bff0146043b7e047cf8897e045f5ec20400",
+      "sha256": "1de73759a45a6858f2823a68bd79a9f5f781393cd9dbab2358bfe2a39dd36f00",
+      "live_PE_match": true,
+      "ownership": "packet"
+    },
+    {
+      "address": "00b259d0",
+      "end": "00b25a1f",
+      "length": 80,
+      "bytes_hex": "56578b7c240c8bf13b7e087e0657e88dd3ffff8b46043bc77d1c8d9b000000008b0e8d0c8185c97406c7010000000083c0013bc77cea3b7e047d0d83c8ff8bff0146043b7e047cf8897e045f5ec20400",
+      "sha256": "2fdbdae2bca27ee4ea8e6a5a04d95c5f0371c8abbea14172fc835156ff139b01",
+      "live_PE_match": true,
+      "ownership": "packet"
+    },
+    {
+      "address": "00b27f50",
+      "end": "00b27f66",
+      "length": 23,
+      "bytes_hex": "566a008bf1e866adffff8b0650e827ea0c0083c4045ec3",
+      "sha256": "249814330ebbc694e581c1a16eb051c33ab442fefb59529a3fe3d96f1854e9e8",
+      "live_PE_match": true,
+      "ownership": "packet"
+    },
+    {
+      "address": "00b29b20",
+      "end": "00b29b36",
+      "length": 23,
+      "bytes_hex": "566a008bf1e816beffff8b0650e857ce0c0083c4045ec3",
+      "sha256": "0e5f6a014028bb11c0b90eb8c6375f038a7b478e9e963b8c09689e907470c687",
+      "live_PE_match": true,
+      "ownership": "packet"
+    },
+    {
+      "address": "00b29b40",
+      "end": "00b29b56",
+      "length": 23,
+      "bytes_hex": "566a008bf1e886beffff8b0650e837ce0c0083c4045ec3",
+      "sha256": "41d4c9696f81a04756283f9c6948508f827cfc1707572b37c475144500a785d6",
+      "live_PE_match": true,
+      "ownership": "packet"
+    },
+    {
+      "address": "00b22d10",
+      "end": "00b22d6e",
+      "length": 95,
+      "bytes_hex": "56578b7c240c83ff018bf17d05bf01000000397e087d438d04bd000000005350e889280d008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e8283c0d0083c404891e897e085b5f5ec20400",
+      "sha256": "70c57d1530f440247d5a72624ff0c7567d13328133833ecaf2f0d260013034b6",
+      "live_PE_match": true,
+      "ownership": "existing dependency"
+    },
+    {
+      "address": "00b22d70",
+      "end": "00b22dce",
+      "length": 95,
+      "bytes_hex": "56578b7c240c83ff018bf17d05bf01000000397e087d438d04bd000000005350e829280d008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e8c83b0d0083c404891e897e085b5f5ec20400",
+      "sha256": "047bfdd3c7e780bb9b5b7f10e050a44eebb835149679ee50eb6c230495654ad1",
+      "live_PE_match": true,
+      "ownership": "existing dependency"
+    }
+  ],
+  "new_complete_function_bytes": 404,
+  "existing_dependency_bytes": 190,
+  "substantive_reuse": {
+    "instruction_comparison": "Complete groups of reserve95, resize80 and destructor23 bytes identical after masking only rel32 CALL displacements",
+    "B22530": "delegates to existing reserve_native_renderer_pointer_array_00b22d10; identical instructions and allocator/free targets",
+    "B25940": "uses existing actual B22D10",
+    "B259D0": "uses existing actual B22D70",
+    "no_pointee_layout": "only DWORD cell storage; no pointee reads, releases or ownership"
+  },
+  "raw_order": {
+    "reserve": [
+      "clamp signed request>=1",
+      "signed capacity comparison",
+      "allocate wrapping requested*4 bytes",
+      "copy with current source base/count and null destination check",
+      "free current old base",
+      "publish replacement then capacity; count retained"
+    ],
+    "resize": [
+      "signed requested>current capacity calls actual reserve",
+      "capture current count as index after reserve",
+      "initialize with current base each iteration and captured index; skip null destination; count not published per cell",
+      "decrement current count while requested<count",
+      "publish requested count"
+    ],
+    "destroy": [
+      "resize0",
+      "reload current data after returning resize",
+      "free current backing; retain stale pointer/capacity/header"
+    ]
+  },
+  "failure_boundary": "Reserve failure prevents subsequent resize initialization/count publication and destructor free. Existing allocation-handler effects retained without rollback. Native SEH/static-CRT identity not ported.",
+  "parent_actions": [
+    {
+      "action": "00cbdf1e",
+      "header": "19a0",
+      "target": "00b27f50",
+      "operation": "load captured owner EBP-14h, add header offset, tail-jump"
+    },
+    {
+      "action": "00cbdf2c",
+      "header": "19b0",
+      "target": "00b29b20",
+      "operation": "load captured owner EBP-14h, add header offset, tail-jump"
+    },
+    {
+      "action": "00cbdf3a",
+      "header": "19c4",
+      "target": "00b29b40",
+      "operation": "load captured owner EBP-14h, add header offset, tail-jump"
+    },
+    {
+      "action": "00cbdf80",
+      "header": "1aac",
+      "target": "00b29b20",
+      "operation": "load captured owner EBP-14h, add header offset, tail-jump"
+    },
+    {
+      "action": "00cbdf8e",
+      "header": "1ab8",
+      "target": "00b29b40",
+      "operation": "load captured owner EBP-14h, add header offset, tail-jump"
+    }
+  ],
+  "returning_tail_corrections": [
+    {
+      "function": "00b22530",
+      "was": "max address already B2258E via early return; listing gap B22581..B22589 after free",
+      "is": "complete contiguous tail through 00b2258e",
+      "returning_call": "00b2257c",
+      "evidence": "complete live bytes equal installed PE; read-only flow reports9-byte publication gap for B22530"
+    },
+    {
+      "function": "00b27f50",
+      "was": "saved body ends 00b27f61 after free call",
+      "is": "complete contiguous tail through 00b27f66",
+      "returning_call": "00b27f5d",
+      "evidence": "complete live bytes equal installed PE; read-only flow reports9-byte publication gap for B22530"
+    },
+    {
+      "function": "00b29b20",
+      "was": "saved body ends 00b29b31 after free call",
+      "is": "complete contiguous tail through 00b29b36",
+      "returning_call": "00b29b2d",
+      "evidence": "complete live bytes equal installed PE; read-only flow reports9-byte publication gap for B22530"
+    },
+    {
+      "function": "00b29b40",
+      "was": "saved body ends 00b29b51 after free call",
+      "is": "complete contiguous tail through 00b29b56",
+      "returning_call": "00b29b4d",
+      "evidence": "complete live bytes equal installed PE; read-only flow reports9-byte publication gap for B22530"
+    }
+  ],
+  "ghidra_mutations": "None by worker; integrator owns returning overrides, old-value comments, names, save and refreshed exports after release. Three resize definitions already complete.",
+  "validation": {
+    "build": "./scripts/build.ps1 passed; MSVC Win32 Release /W4 /WX /fp:strict",
+    "seed_verification": "8 native seed ranges verified before configure",
+    "ctests": "2/2 passed: reconstructed_math and native_math_differential",
+    "fixture": "One focused executable; seven complete original bodies vs built bsp_core.lib source;24 comparisons:3 reserve,12 resize,9 destructor.",
+    "fixture_bindings": "Only11 CALL rel32 operands rebound. Original owned query reserve/resize children compose directly; existing source B22D10/B22D70 satisfy other reserves. Shared actual lifetime allocation/free. No original EXE address calls.",
+    "fixture_result": "Copy/clamp/no growth; zero initialization/retained removed cells; valid signed negative index storage; wrapping null-destination skip; current-free/stale header postimages; guards all pass.",
+    "fixture_stdout": "native_renderer_pointer_probe.cpp\nLOADED_RUNTIME|ucrtbase.dll|C:\\WINDOWS\\System32\\ucrtbase.dll|\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll|014c\nLOADED_RUNTIME|vcruntime140.dll|C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll|\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll|014c\nUNLOADED_RUNTIME|msvcp140.dll\nUNLOADED_RUNTIME|vcruntime140_1.dll\nPASS: seven complete original bodies versus built source; 24 pointer-array comparisons\n",
+    "fixture_build_flags": "/std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /link /MANIFEST:EMBED",
+    "fixture_source": "#include \"bsp/native_renderer_pointer_array_destroy.hpp\"\n#include \"bsp/native_logical_vertex_owner.hpp\"\n#include \"bsp/native_logical_index_owner.hpp\"\n#include \"bsp/singleton_lifetime.hpp\"\n#include \"native_renderer_pointer_reference.hpp\"\n#include <Windows.h>\n#include <array>\n#include <cstdio>\n#include <cstring>\n#include <stdexcept>\n\nnamespace {\nvoid require(bool value,const char* message) { if(!value) throw std::runtime_error(message); }\nusing Operation=void (__fastcall*)(void*,std::uint32_t,std::int32_t);\nusing Destroy=void (__fastcall*)(void*);\nstruct Header { void* data; std::int32_t count,capacity; };\nstatic_assert(sizeof(Header)==12);\nstruct Frame { std::uint32_t before=0x13579bdfu; Header header{}; std::uint32_t after=0x2468ace0u; };\nvoid guards(const Frame& f) { require(f.before==0x13579bdfu&&f.after==0x2468ace0u,\"header guards\"); }\nvoid* __cdecl allocate_original(std::uint32_t bytes) {\n    return bsp::singleton_lifetime_allocate({bsp::SingletonAllocationKind::pointer_slots,bytes,bytes});\n}\nvoid __cdecl free_original(void* data) noexcept { bsp::singleton_lifetime_free(data); }\nvoid __fastcall reserve_vertex(void* h,std::uint32_t,std::int32_t n) {\n    bsp::reserve_native_renderer_pointer_array_00b22d10(h,static_cast<std::uint32_t>(n));\n}\nvoid __fastcall reserve_index(void* h,std::uint32_t,std::int32_t n) {\n    bsp::reserve_native_renderer_index_pointer_array_00b22d70(h,static_cast<std::uint32_t>(n));\n}\nclass Original {\n    void* code_; std::size_t length_;\npublic:\n    template<std::size_t N> explicit Original(const unsigned char (&bytes)[N]):\n        code_(VirtualAlloc(nullptr,N,MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE)),length_(N) {\n        require(code_!=nullptr,\"VirtualAlloc\"); std::memcpy(code_,bytes,N);\n    }\n    ~Original() { VirtualFree(code_,0,MEM_RELEASE); }\n    template<class F> void bind(std::size_t offset,F target) {\n        auto* code=static_cast<unsigned char*>(code_);\n        require(code[offset]==0xe8,\"CALL relocation\");\n        const auto relative=static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(target)-reinterpret_cast<std::uintptr_t>(code+offset+5));\n        std::memcpy(code+offset+1,&relative,4);\n    }\n    void finish() {\n        DWORD previous;\n        require(VirtualProtect(code_,length_,PAGE_EXECUTE_READ,&previous)!=0,\"VirtualProtect\");\n        require(FlushInstructionCache(GetCurrentProcess(),code_,length_)!=0,\"FlushInstructionCache\");\n    }\n    Operation operation() const { return reinterpret_cast<Operation>(code_); }\n    Destroy destroy() const { return reinterpret_cast<Destroy>(code_); }\n};\nusing Outcome=std::array<std::uint32_t,7>;\nvoid allocate(Frame& frame,std::uint32_t count) {\n    frame.header.data=allocate_original(count*4u);\n    frame.header.count=static_cast<std::int32_t>(count);\n    frame.header.capacity=static_cast<std::int32_t>(count);\n    auto* cells=static_cast<std::uint32_t*>(frame.header.data);\n    for(std::uint32_t i=0;i<count;++i) cells[i]=0x12345678u+i;\n}\nOutcome run_reserve(Operation operation,int scenario) {\n    Frame f;\n    if(scenario!=1) allocate(f,2);\n    void* const old=f.header.data;\n    operation(&f.header,0,scenario==0?4:(scenario==1?0:1)); guards(f);\n    require(f.header.count==(scenario==1?0:2),\"reserve count retained\");\n    require(f.header.capacity==(scenario==0?4:(scenario==1?1:2)),\"reserve capacity\");\n    require((f.header.data==old)==(scenario==2),\"reserve publication\");\n    auto* cells=static_cast<std::uint32_t*>(f.header.data);\n    if(scenario!=1) require(cells[0]==0x12345678u&&cells[1]==0x12345679u,\"reserve raw cells\");\n    Outcome result{static_cast<std::uint32_t>(f.header.count),static_cast<std::uint32_t>(f.header.capacity),f.header.data==old,0,0,0,f.after};\n    free_original(f.header.data); return result;\n}\nOutcome run_resize(Operation operation,int scenario) {\n    Frame f; std::uint32_t prefix[4]={0x11111111u,0x22222222u,0x33333333u,0x44444444u};\n    if(scenario<2) allocate(f,scenario==0?1u:3u);\n    else if(scenario==2) f.header={prefix+1,-1,2};\n    else f.header={reinterpret_cast<void*>(4u),-1,0};\n    void* const old=f.header.data;\n    const std::int32_t request=scenario==0?3:(scenario==1?1:0);\n    operation(&f.header,0,request); guards(f);\n    require(f.header.count==request,\"resize count\");\n    Outcome result{static_cast<std::uint32_t>(f.header.count),static_cast<std::uint32_t>(f.header.capacity),f.header.data==old,0,0,0,f.after};\n    if(scenario<2) {\n        auto* cells=static_cast<std::uint32_t*>(f.header.data);\n        require(f.header.capacity==3,\"resize capacity\");\n        require((f.header.data==old)==(scenario==1),\"resize current allocation\");\n        require(cells[0]==0x12345678u,\"resize first cell retained\");\n        require(cells[1]==(scenario==0?0u:0x12345679u)&&cells[2]==(scenario==0?0u:0x1234567au),\"new cells zero, removed cells retained\");\n        result[3]=cells[0]; result[4]=cells[1]; result[5]=cells[2]; free_original(f.header.data);\n    } else if(scenario==2) {\n        require(prefix[0]==0&&prefix[1]==0x22222222u&&prefix[2]==0x33333333u&&prefix[3]==0x44444444u,\"signed negative index initialization\");\n        result[3]=prefix[0]; result[4]=prefix[1]; result[5]=prefix[3];\n    } else require(f.header.data==old&&f.header.capacity==0,\"null destination skip postimage\");\n    return result;\n}\nOutcome run_destroy(Destroy destroy,int scenario) {\n    Frame f;\n    if(scenario!=2) allocate(f,scenario==0?2u:1u);\n    if(scenario==1) f.header.capacity=-1;\n    void* const old=f.header.data;\n    destroy(&f.header); guards(f);\n    require(f.header.count==0,\"destroy final count\");\n    require(f.header.capacity==(scenario==0?2:(scenario==1?1:0)),\"destroy retained capacity\");\n    require((f.header.data==old)==(scenario!=1),\"destroy stale current data\");\n    return {0,static_cast<std::uint32_t>(f.header.capacity),f.header.data==old,f.header.data==nullptr,0,0,f.after};\n}\nvoid report_runtime_modules() {\n    const wchar_t* names[]={L\"ucrtbase.dll\",L\"vcruntime140.dll\",L\"msvcp140.dll\",L\"vcruntime140_1.dll\"};\n    for(const auto* name:names) {\n        HMODULE module=GetModuleHandleW(name);\n        if(module==nullptr) { std::printf(\"UNLOADED_RUNTIME|%ls\\n\",name); continue; }\n        wchar_t reported[1024],canonical[1024];\n        const auto length=GetModuleFileNameW(module,reported,1024);\n        require(length!=0&&length<1024,\"loaded module path\");\n        HANDLE file=CreateFileW(reported,GENERIC_READ,FILE_SHARE_READ|FILE_SHARE_WRITE|FILE_SHARE_DELETE,nullptr,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,nullptr);\n        require(file!=INVALID_HANDLE_VALUE,\"loaded module file\");\n        const auto final_length=GetFinalPathNameByHandleW(file,canonical,1024,FILE_NAME_NORMALIZED);\n        CloseHandle(file); require(final_length!=0&&final_length<1024,\"canonical module file\");\n        const auto* base=reinterpret_cast<const unsigned char*>(module);\n        const auto* dos=reinterpret_cast<const IMAGE_DOS_HEADER*>(base);\n        const auto* nt=reinterpret_cast<const IMAGE_NT_HEADERS32*>(base+dos->e_lfanew);\n        require(nt->FileHeader.Machine==IMAGE_FILE_MACHINE_I386,\"loaded runtime machine\");\n        std::printf(\"LOADED_RUNTIME|%ls|%ls|%ls|%04x\\n\",name,reported,canonical,static_cast<unsigned>(nt->FileHeader.Machine));\n    }\n}\n}\nint main() {\n    try {\n        Original reserve(original_00b22530);\n        reserve.bind(0x20,&allocate_original); reserve.bind(0x4c,&free_original); reserve.finish();\n        Original query_resize(original_00b22cc0),vertex_resize(original_00b25940),index_resize(original_00b259d0);\n        query_resize.bind(0xe,reserve.operation()); vertex_resize.bind(0xe,&reserve_vertex); index_resize.bind(0xe,&reserve_index);\n        query_resize.finish(); vertex_resize.finish(); index_resize.finish();\n        Original query_destroy(original_00b27f50),vertex_destroy(original_00b29b20),index_destroy(original_00b29b40);\n        query_destroy.bind(5,query_resize.operation()); vertex_destroy.bind(5,vertex_resize.operation()); index_destroy.bind(5,index_resize.operation());\n        for(auto* body:{&query_destroy,&vertex_destroy,&index_destroy}) { body->bind(13,&free_original); body->finish(); }\n        for(int scenario=0;scenario<3;++scenario)\n            require(run_reserve(reserve.operation(),scenario)==run_reserve(&bsp::reserve_native_renderer_query_pointers_00b22530,scenario),\"original/source reserve\");\n        const Operation originals[]={query_resize.operation(),vertex_resize.operation(),index_resize.operation()};\n        const Operation sources[]={&bsp::resize_native_renderer_query_pointers_00b22cc0,&bsp::resize_native_renderer_vertex_pointers_00b25940,&bsp::resize_native_renderer_index_pointers_00b259d0};\n        const Destroy old_destroy[]={query_destroy.destroy(),vertex_destroy.destroy(),index_destroy.destroy()};\n        const Destroy new_destroy[]={&bsp::destroy_native_renderer_query_pointers_00b27f50,&bsp::destroy_native_renderer_vertex_pointers_00b29b20,&bsp::destroy_native_renderer_index_pointers_00b29b40};\n        for(int kind=0;kind<3;++kind) {\n            for(int scenario=0;scenario<4;++scenario) require(run_resize(originals[kind],scenario)==run_resize(sources[kind],scenario),\"original/source resize\");\n            for(int scenario=0;scenario<3;++scenario) require(run_destroy(old_destroy[kind],scenario)==run_destroy(new_destroy[kind],scenario),\"original/source destroy\");\n        }\n        report_runtime_modules();\n        std::puts(\"PASS: seven complete original bodies versus built source; 24 pointer-array comparisons\");\n        return 0;\n    } catch(const std::exception& error) { std::fprintf(stderr,\"FAIL: %s\\n\",error.what()); return 1; }\n}\n",
+    "reference_header": "#pragma once\n#include <cstddef>\ninline constexpr unsigned char original_00b22530[] = {0x56,0x57,0x8b,0x7c,0x24,0x0c,0x83,0xff,0x01,0x8b,0xf1,0x7d,0x05,0xbf,0x01,0x00,0x00,0x00,0x39,0x7e,0x08,0x7d,0x43,0x8d,0x04,0xbd,0x00,0x00,0x00,0x00,0x53,0x50,0xe8,0x69,0x30,0x0d,0x00,0x8b,0xd8,0x33,0xc0,0x83,0xc4,0x04,0x39,0x46,0x04,0x7e,0x18,0x8b,0xcb,0x85,0xc9,0x74,0x07,0x8b,0x16,0x8b,0x14,0x82,0x89,0x11,0x83,0xc0,0x01,0x83,0xc1,0x04,0x3b,0x46,0x04,0x7c,0xea,0x8b,0x06,0x50,0xe8,0x08,0x44,0x0d,0x00,0x83,0xc4,0x04,0x89,0x1e,0x89,0x7e,0x08,0x5b,0x5f,0x5e,0xc2,0x04,0x00};\ninline constexpr unsigned char original_00b22cc0[] = {0x56,0x57,0x8b,0x7c,0x24,0x0c,0x8b,0xf1,0x3b,0x7e,0x08,0x7e,0x06,0x57,0xe8,0x5d,0xf8,0xff,0xff,0x8b,0x46,0x04,0x3b,0xc7,0x7d,0x1c,0x8d,0x9b,0x00,0x00,0x00,0x00,0x8b,0x0e,0x8d,0x0c,0x81,0x85,0xc9,0x74,0x06,0xc7,0x01,0x00,0x00,0x00,0x00,0x83,0xc0,0x01,0x3b,0xc7,0x7c,0xea,0x3b,0x7e,0x04,0x7d,0x0d,0x83,0xc8,0xff,0x8b,0xff,0x01,0x46,0x04,0x3b,0x7e,0x04,0x7c,0xf8,0x89,0x7e,0x04,0x5f,0x5e,0xc2,0x04,0x00};\ninline constexpr unsigned char original_00b25940[] = {0x56,0x57,0x8b,0x7c,0x24,0x0c,0x8b,0xf1,0x3b,0x7e,0x08,0x7e,0x06,0x57,0xe8,0xbd,0xd3,0xff,0xff,0x8b,0x46,0x04,0x3b,0xc7,0x7d,0x1c,0x8d,0x9b,0x00,0x00,0x00,0x00,0x8b,0x0e,0x8d,0x0c,0x81,0x85,0xc9,0x74,0x06,0xc7,0x01,0x00,0x00,0x00,0x00,0x83,0xc0,0x01,0x3b,0xc7,0x7c,0xea,0x3b,0x7e,0x04,0x7d,0x0d,0x83,0xc8,0xff,0x8b,0xff,0x01,0x46,0x04,0x3b,0x7e,0x04,0x7c,0xf8,0x89,0x7e,0x04,0x5f,0x5e,0xc2,0x04,0x00};\ninline constexpr unsigned char original_00b259d0[] = {0x56,0x57,0x8b,0x7c,0x24,0x0c,0x8b,0xf1,0x3b,0x7e,0x08,0x7e,0x06,0x57,0xe8,0x8d,0xd3,0xff,0xff,0x8b,0x46,0x04,0x3b,0xc7,0x7d,0x1c,0x8d,0x9b,0x00,0x00,0x00,0x00,0x8b,0x0e,0x8d,0x0c,0x81,0x85,0xc9,0x74,0x06,0xc7,0x01,0x00,0x00,0x00,0x00,0x83,0xc0,0x01,0x3b,0xc7,0x7c,0xea,0x3b,0x7e,0x04,0x7d,0x0d,0x83,0xc8,0xff,0x8b,0xff,0x01,0x46,0x04,0x3b,0x7e,0x04,0x7c,0xf8,0x89,0x7e,0x04,0x5f,0x5e,0xc2,0x04,0x00};\ninline constexpr unsigned char original_00b27f50[] = {0x56,0x6a,0x00,0x8b,0xf1,0xe8,0x66,0xad,0xff,0xff,0x8b,0x06,0x50,0xe8,0x27,0xea,0x0c,0x00,0x83,0xc4,0x04,0x5e,0xc3};\ninline constexpr unsigned char original_00b29b20[] = {0x56,0x6a,0x00,0x8b,0xf1,0xe8,0x16,0xbe,0xff,0xff,0x8b,0x06,0x50,0xe8,0x57,0xce,0x0c,0x00,0x83,0xc4,0x04,0x5e,0xc3};\ninline constexpr unsigned char original_00b29b40[] = {0x56,0x6a,0x00,0x8b,0xf1,0xe8,0x86,0xbe,0xff,0xff,0x8b,0x06,0x50,0xe8,0x37,0xce,0x0c,0x00,0x83,0xc4,0x04,0x5e,0xc3};\ninline constexpr unsigned char original_00b22d10[] = {0x56,0x57,0x8b,0x7c,0x24,0x0c,0x83,0xff,0x01,0x8b,0xf1,0x7d,0x05,0xbf,0x01,0x00,0x00,0x00,0x39,0x7e,0x08,0x7d,0x43,0x8d,0x04,0xbd,0x00,0x00,0x00,0x00,0x53,0x50,0xe8,0x89,0x28,0x0d,0x00,0x8b,0xd8,0x33,0xc0,0x83,0xc4,0x04,0x39,0x46,0x04,0x7e,0x18,0x8b,0xcb,0x85,0xc9,0x74,0x07,0x8b,0x16,0x8b,0x14,0x82,0x89,0x11,0x83,0xc0,0x01,0x83,0xc1,0x04,0x3b,0x46,0x04,0x7c,0xea,0x8b,0x06,0x50,0xe8,0x28,0x3c,0x0d,0x00,0x83,0xc4,0x04,0x89,0x1e,0x89,0x7e,0x08,0x5b,0x5f,0x5e,0xc2,0x04,0x00};\ninline constexpr unsigned char original_00b22d70[] = {0x56,0x57,0x8b,0x7c,0x24,0x0c,0x83,0xff,0x01,0x8b,0xf1,0x7d,0x05,0xbf,0x01,0x00,0x00,0x00,0x39,0x7e,0x08,0x7d,0x43,0x8d,0x04,0xbd,0x00,0x00,0x00,0x00,0x53,0x50,0xe8,0x29,0x28,0x0d,0x00,0x8b,0xd8,0x33,0xc0,0x83,0xc4,0x04,0x39,0x46,0x04,0x7e,0x18,0x8b,0xcb,0x85,0xc9,0x74,0x07,0x8b,0x16,0x8b,0x14,0x82,0x89,0x11,0x83,0xc0,0x01,0x83,0xc1,0x04,0x3b,0x46,0x04,0x7c,0xea,0x8b,0x06,0x50,0xe8,0xc8,0x3b,0x0d,0x00,0x83,0xc4,0x04,0x89,0x1e,0x89,0x7e,0x08,0x5b,0x5f,0x5e,0xc2,0x04,0x00};\n",
+    "build_script": "$ErrorActionPreference = 'Stop'\n$vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio/Installer/vswhere.exe'\n$vsPath = & $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath\n& (Join-Path $vsPath 'Common7/Tools/Launch-VsDevShell.ps1') -Arch x86 -HostArch amd64 -SkipAutomaticLocation | Out-Null\n$cmakeDirectory = Join-Path $vsPath 'Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin'\n$toolPaths = @{\n    compiler = (Get-Command cl.exe).Source\n    linker = (Get-Command link.exe).Source\n    librarian = (Get-Command lib.exe).Source\n    python = (Get-Command python.exe).Source\n    powershell = (Get-Process -Id $PID).Path\n    cmake = (Join-Path $cmakeDirectory 'cmake.exe')\n    ctest = (Join-Path $cmakeDirectory 'ctest.exe')\n}\n$toolRecords = foreach ($entry in $toolPaths.GetEnumerator()) {\n    $item = Get-Item -LiteralPath $entry.Value\n    [pscustomobject]@{ role=$entry.Key; path=$item.FullName; file_version=$item.VersionInfo.FileVersion; bytes=$item.Length }\n}\n[System.IO.File]::WriteAllText((Join-Path $PWD 'local/native_renderer_pointer_tools.json'),($toolRecords | ConvertTo-Json),[System.Text.UTF8Encoding]::new($false))\ncl /nologo /std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /I include /I local /Fo:local/native_renderer_pointer_probe.obj /Fe:local/native_renderer_pointer_probe.exe local/native_renderer_pointer_probe.cpp build/win32/Release/bsp_core.lib build/win32/Release/bsp_lua511.lib build/win32/Release/bsp_zlib121.lib /link /MANIFEST:EMBED user32.lib d3d9.lib shell32.lib kernel32.lib gdi32.lib winspool.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib\nif ($LASTEXITCODE) { throw 'Fixture compilation failed.' }\n& ./local/native_renderer_pointer_probe.exe\nif ($LASTEXITCODE) { throw 'Fixture failed.' }\n",
+    "report_call_gate": {
+      "command": "python tools/verify_report_calls.py reports/native_renderer_pointer_array_destroy.json",
+      "checked": 11,
+      "failed": 0,
+      "result": "reports/native_renderer_pointer_array_destroy.json: 11 call rows checked, 0 failed"
+    }
+  },
+  "artifact_archive": {
+    "root": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\local\\native_renderer_pointer_array_destroy_archive",
+    "policy": "copy absent paths only; existing paths require byte equality; copied bytes rechecked; no overwrites",
+    "artifact_manifest": [
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\include\\bsp\\native_renderer_pointer_array_destroy.hpp",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\include\\bsp\\native_renderer_pointer_array_destroy.hpp",
+        "bytes": 2071,
+        "sha256": "5c89c92aa62d71115d8d5c81353ab235b3317ca265929a656644e849e4d1f0ab"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\src\\native_renderer_pointer_array_destroy.cpp",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\src\\native_renderer_pointer_array_destroy.cpp",
+        "bytes": 2717,
+        "sha256": "e8fbf2456ac9e3e2a7fb6996d0e991b50c5ea32b184c1d0a13d376cee3956f21"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\docs\\NATIVE_RENDERER_POINTER_ARRAY_DESTROY.md",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\docs\\NATIVE_RENDERER_POINTER_ARRAY_DESTROY.md",
+        "bytes": 5510,
+        "sha256": "88018775d8ce84b6a12622886e8cf974e31417b0cf8d87813cd43c44b34fd494"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\cmake\\startup.cmake",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\cmake\\startup.cmake",
+        "bytes": 113266,
+        "sha256": "6484128c8aff516ab2de3606f001040c27dd3b7614e65421cc8fb3beaeeebd9a"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\include\\bsp\\native_logical_vertex_owner.hpp",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\include\\bsp\\native_logical_vertex_owner.hpp",
+        "bytes": 7242,
+        "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\src\\native_logical_vertex_owner.cpp",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\src\\native_logical_vertex_owner.cpp",
+        "bytes": 25341,
+        "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\include\\bsp\\native_logical_index_owner.hpp",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\include\\bsp\\native_logical_index_owner.hpp",
+        "bytes": 6804,
+        "sha256": "c0ae53059fba249f589990b7d41d1986a2134cd86b99cd5d6db7ab2c849b38cb"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\src\\native_logical_index_owner.cpp",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\src\\native_logical_index_owner.cpp",
+        "bytes": 20415,
+        "sha256": "d2de40f465f482dc1ad6511ed2a848e587718279bc47958c07b9763bc788a2a8"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\include\\bsp\\singleton_lifetime.hpp",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\include\\bsp\\singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\src\\singleton_lifetime.cpp",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\src\\singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\local\\native_renderer_pointer_reference.hpp",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\local\\native_renderer_pointer_reference.hpp",
+        "bytes": 3517,
+        "sha256": "baee2c7a0baf37ccc64ef536eda5d71bede64b7aa66299e14f3a869a678ee707"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\local\\native_renderer_pointer_probe.cpp",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\local\\native_renderer_pointer_probe.cpp",
+        "bytes": 9604,
+        "sha256": "a28bced6006564814901bb49b7cda39f1f5f772ed08c88fa60d8368d236250eb"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\local\\build_native_renderer_pointer_probe.ps1",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\local\\build_native_renderer_pointer_probe.ps1",
+        "bytes": 1820,
+        "sha256": "815dce217878665d172664aaca44b57ba811a2f55f96d4def0fef62c88428ecc"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\local\\prepare_native_renderer_pointer_arrays.py",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\local\\prepare_native_renderer_pointer_arrays.py",
+        "bytes": 3195,
+        "sha256": "0e6ea91ffc95080717571c28cb7eca345a2635a67db8fcce74b8f6050d1f05fd"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\local\\finalize_native_renderer_pointer_array_destroy.py",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\local\\finalize_native_renderer_pointer_array_destroy.py",
+        "bytes": 12100,
+        "sha256": "b5e06470c130d4808511fbe239593b66e63b7f3953256a2f6413d7db36ea0c08"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\local\\write_pointer_finalizer.py",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\local\\write_pointer_finalizer.py",
+        "bytes": 1654,
+        "sha256": "21c76100431b52655c85089aa573bed732b1afbd7b49ab172be2145c4c997423"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\local\\pointer_finalizer_body.py",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\local\\pointer_finalizer_body.py",
+        "bytes": 8202,
+        "sha256": "b51d4c8f2d49499083089bf87d041556a6e5098883307523022467d8567d18e2"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\local\\native_renderer_pointer_spans.json",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\local\\native_renderer_pointer_spans.json",
+        "bytes": 4268,
+        "sha256": "19429e02be8c5784c4937d1d94b5ad46c27f33606ee694344e6359e74d2c9064"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\local\\native_renderer_pointer_flow.log",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\local\\native_renderer_pointer_flow.log",
+        "bytes": 324,
+        "sha256": "425f6036291e6d6139c86279ab5a872517ce9cec3b88b18b270814684a1916e2"
+      },
+      {
+        "role": "executable",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\local\\native_renderer_pointer_probe.exe",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\local\\native_renderer_pointer_probe.exe",
+        "bytes": 18432,
+        "sha256": "69b9c7d5048f0562f22cf6d10a1f59ef03270579a7f77e96b59b8503a0ab162d",
+        "pe_machine": "014c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\local\\native_renderer_pointer_probe.obj",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\local\\native_renderer_pointer_probe.obj",
+        "bytes": 39491,
+        "sha256": "a89d3f505c0e207aaf7e8fe883014d198f9d0853c1f30c89e57163b6fd5f586c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\local\\native_renderer_pointer_probe.log",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\local\\native_renderer_pointer_probe.log",
+        "bytes": 411,
+        "sha256": "363875b5a3cffc57b1b8d7567c8409ad90eeeb55939a91091fd5b4f7edcb0c72"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\local\\native_renderer_pointer_build.log",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\local\\native_renderer_pointer_build.log",
+        "bytes": 46595,
+        "sha256": "84fcc49cfa4ab63bbf76d815e9b6edca5bb269e79fabf77b2879796b13ed1e73"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\local\\native_renderer_pointer_seeds.log",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\local\\native_renderer_pointer_seeds.log",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\local\\native_renderer_pointer_tools.json",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\local\\native_renderer_pointer_tools.json",
+        "bytes": 1456,
+        "sha256": "b0a84d9e90c27aec47345e2be9c696799dd0d2c05ca219872904c83ebd340984"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\local\\seed_reference.hpp",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\local\\seed_reference.hpp",
+        "bytes": 2995,
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\build\\win32\\Release\\bsp_core.lib",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 57634544,
+        "sha256": "357d1737d1e8204f009ed8b37727b27b9107eaf168010c3b068db05d4f5eab1b"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\build\\win32\\Release\\bsp_lua511.lib",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\build\\win32\\Release\\bsp_lua511.lib",
+        "bytes": 456056,
+        "sha256": "2f2a70786b3452b9509762edfad9f4e8226062eaba533cbd3c8adab2e0f5406f"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\build\\win32\\Release\\bsp_zlib121.lib",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\build\\win32\\Release\\bsp_zlib121.lib",
+        "bytes": 72206,
+        "sha256": "028b5e742fa5a9463eb01f12812cb35de4c06257d710a09e7e3498b8727e7bca"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\tools\\bsp.py",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\tools\\bsp.py",
+        "bytes": 63768,
+        "sha256": "848a26c48d64002df10da7e233d14968baa51f097fdd08474eb2169c4f0e9d61"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\tools\\ghidra_export.py",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\tools\\ghidra_export.py",
+        "bytes": 13401,
+        "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\tools\\verify_report_calls.py",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\tools\\verify_report_calls.py",
+        "bytes": 9233,
+        "sha256": "396e6d544dece7c9551ff10ee15ab234a0ad1c4a339fd118ddec20de1bb7a8cd"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\scripts\\build.ps1",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\scripts\\build.ps1",
+        "bytes": 1657,
+        "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+      }
+    ],
+    "executable_artifacts": [
+      {
+        "role": "executable",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-pointer-array-destroy\\local\\native_renderer_pointer_probe.exe",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\inputs\\local\\native_renderer_pointer_probe.exe",
+        "bytes": 18432,
+        "sha256": "69b9c7d5048f0562f22cf6d10a1f59ef03270579a7f77e96b59b8503a0ab162d",
+        "pe_machine": "014c"
+      }
+    ],
+    "observed_tool_executables": [
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\tools\\cmake\\cmake.exe",
+        "bytes": 14060088,
+        "sha256": "d8173552e9d943c20feadd74d0437371f49d45c3d53a20dae2655ecc2493392c",
+        "pe_machine": "8664",
+        "tool_role": "cmake",
+        "file_version": "4.2.3-msvc3"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\tools\\compiler\\cl.exe",
+        "bytes": 891752,
+        "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+        "pe_machine": "8664",
+        "tool_role": "compiler",
+        "file_version": "19.51.36244.0"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\tools\\ctest\\ctest.exe",
+        "bytes": 15152224,
+        "sha256": "4d00d31a10d004edb8d7f39bcd47d0a94da1cd4464e9d2246d199f0cf6c7852b",
+        "pe_machine": "8664",
+        "tool_role": "ctest",
+        "file_version": "4.2.3-msvc3"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\lib.exe",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\tools\\librarian\\lib.exe",
+        "bytes": 23424,
+        "sha256": "8c59e7b3642ad1c5719bdc5e567e89254ab1022b7d20f1933e79b92213c76ebc",
+        "pe_machine": "8664",
+        "tool_role": "librarian",
+        "file_version": "14.51.36244.0"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\tools\\linker\\link.exe",
+        "bytes": 3698016,
+        "sha256": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81",
+        "pe_machine": "8664",
+        "tool_role": "linker",
+        "file_version": "14.51.36244.0"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\tools\\powershell\\pwsh.exe",
+        "bytes": 301368,
+        "sha256": "362a356ce7f0940ec74f73a8fc2c990a2cc24a38a11c90bbd8eca947110ad139",
+        "pe_machine": "8664",
+        "tool_role": "powershell",
+        "file_version": "7.6.5.500"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\ProgramData\\miniconda3\\python.exe",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\tools\\python\\python.exe",
+        "bytes": 104264,
+        "sha256": "ec0ea8d6907787b76dcf8524aaa93e52e167ceee62fa8778e182ea637a3dbc1d",
+        "pe_machine": "8664",
+        "tool_role": "python",
+        "file_version": "3.13.11"
+      }
+    ]
+  },
+  "loaded_runtime_dll_evidence": {
+    "observation": "GetModuleHandleW/GetModuleFileNameW and loaded PE machine inside running Win32 fixture; canonical file from handle opened by that process",
+    "hash_basis": "post-run disk file and archived copy hash, not mapped-image hash",
+    "loaded_runtime_dlls": [
+      {
+        "role": "loaded_runtime_dll_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\runtime\\ucrtbase.dll",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "pe_machine": "014c",
+        "module_name": "ucrtbase.dll",
+        "reported_loaded_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "loaded_image_machine": "014c"
+      },
+      {
+        "role": "loaded_runtime_dll_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "archive_path": "local\\native_renderer_pointer_array_destroy_archive\\runtime\\vcruntime140.dll",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "pe_machine": "014c",
+        "module_name": "vcruntime140.dll",
+        "reported_loaded_path": "C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "loaded_image_machine": "014c"
+      }
+    ],
+    "checked_but_unloaded": [
+      "msvcp140.dll",
+      "vcruntime140_1.dll"
+    ]
+  },
+  "remaining_boundaries": [
+    "original caller/register/private-frame and native SEH/static-CRT identity",
+    "allocation failure ordering static/source only, not fault-injected",
+    "valid raw extents/lifetimes and native wrapping address domain; no malformed/concurrent-header guarantee",
+    "tools archived as observed executables, not every dependency",
+    "runtime disk hashes separate from executable and mapped-image evidence",
+    "no game integration or game validation"
+  ],
+  "integrated_validation": {
+    "code_commit": "87dad0906ab21f6498d68eebacd8995ea86ddead",
+    "checkpoint": {
+      "path": "local/checkpoints/87dad090/native-renderer-lifetime-followups/validation.json",
+      "sha256": "930898fb5129ef943689981be1fcdd48913c18e9154efa35665c19f74398bfc3",
+      "code_commit": "87dad0906ab21f6498d68eebacd8995ea86ddead",
+      "artifacts": 3413
+    },
+    "source_module": "native_renderer_pointer_array_destroy",
+    "worker_archive": {
+      "label": "pointers",
+      "commit": "556afdb28f03182d0ba3425e2a7652454adf69cf",
+      "path": "local/compiler-path-workers/renderer-lifetime-pointers/manifest.json",
+      "sha256": "eb8492e81d129b2453202ffe41f6e78a1481a0ffb4dd9f7b94323177a78ee258",
+      "artifacts": 52
+    },
+    "new_entry_bodies": 7,
+    "game_validated": false,
+    "limits": [
+      "Registry unwind packet is static evidence and a source plan only; raw constructor implementation remains a separate unintegrated packet",
+      "Full renderer constructor/destructor and canonical application adoption remain incomplete",
+      "Original private frames/CRT/FH3/SEH identity and gameplay remain unvalidated"
+    ],
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "fixture_scope": "Seven complete original bodies versus integrated source: 24 reserve/resize/destructor comparisons. Allocation failure remains static evidence.",
+    "direct_call_rows": 11,
+    "direct_call_failures": 0,
+    "per_entry_scope": {
+      "00b22530": {
+        "module": "native_renderer_pointer_array_destroy",
+        "scope": "Seven complete original bodies versus source: 24 reserve/resize/destructor comparisons. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only.",
+        "status": "raw_source_integrated_build_and_scoped_fixture_checked"
+      },
+      "00b22cc0": {
+        "module": "native_renderer_pointer_array_destroy",
+        "scope": "Seven complete original bodies versus source: 24 reserve/resize/destructor comparisons. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only.",
+        "status": "raw_source_integrated_build_and_scoped_fixture_checked"
+      },
+      "00b25940": {
+        "module": "native_renderer_pointer_array_destroy",
+        "scope": "Seven complete original bodies versus source: 24 reserve/resize/destructor comparisons. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only.",
+        "status": "raw_source_integrated_build_and_scoped_fixture_checked"
+      },
+      "00b259d0": {
+        "module": "native_renderer_pointer_array_destroy",
+        "scope": "Seven complete original bodies versus source: 24 reserve/resize/destructor comparisons. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only.",
+        "status": "raw_source_integrated_build_and_scoped_fixture_checked"
+      },
+      "00b27f50": {
+        "module": "native_renderer_pointer_array_destroy",
+        "scope": "Seven complete original bodies versus source: 24 reserve/resize/destructor comparisons. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only.",
+        "status": "raw_source_integrated_build_and_scoped_fixture_checked"
+      },
+      "00b29b20": {
+        "module": "native_renderer_pointer_array_destroy",
+        "scope": "Seven complete original bodies versus source: 24 reserve/resize/destructor comparisons. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only.",
+        "status": "raw_source_integrated_build_and_scoped_fixture_checked"
+      },
+      "00b29b40": {
+        "module": "native_renderer_pointer_array_destroy",
+        "scope": "Seven complete original bodies versus source: 24 reserve/resize/destructor comparisons. Actual 0Ch header and DWORD cells only; captured initialization index, CURRENT count/base loads, null destination skip, resize0 then CURRENT free and stale header preserved. Allocation failure has static evidence only.",
+        "status": "raw_source_integrated_build_and_scoped_fixture_checked"
+      }
+    },
+    "annotation_journal": "local/ghidra-annotations-20260914T152722Z.json",
+    "annotations_saved_and_read_back_preserving_previous_comments": true,
+    "exports_forced_after_snapshot_refresh": true,
+    "integrated_documentation_sha256": "af0f8eea5c594ff46b1c5c67b96cc7edd1072261add9fee2bce8709acc3f12e9"
+  }
+}

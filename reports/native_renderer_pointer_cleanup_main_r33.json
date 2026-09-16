@@ -1,0 +1,153 @@
+{
+  "packet": "renderer_pointer_cleanup_main_r33",
+  "generated_utc": "2026-09-16T09:52:31.5198646Z",
+  "initial_main": "0ab7c026698e00b4e992b039ee277377908ca9c4",
+  "final_main": "89b890308b41eb993389697525fa38d94897ca2c",
+  "cmake_commit": "ff0b56160f6f5f9abfeab1cbafad56a6727ab32c",
+  "source_commit": "a43527137d8e48c62c0d9e352bcc08d9bf77db41",
+  "final_main_merge": "35f9de359dda339ddba905aa225f015fa4de3b23",
+  "outcome": "The precise R32 blocker is closed: the six B25940/B29B20 provider-chain entries and their query/index siblings are adopted before the two dependent capability cleanup entries.",
+  "scope": {
+    "adopted_functions": 9,
+    "adopted_native_bytes": 507,
+    "read_only_provider_functions": 3,
+    "read_only_provider_bytes": 285,
+    "fresh_receipt_bytes": 792,
+    "parent_renderer_or_destructor_reconstruction": false,
+    "shared_owner_replacement": false
+  },
+  "historical_provenance": {
+    "source_branch": "agent/orch5-20260911",
+    "reviewed_tip": "769bdc3e3b8254f95867b11e2546d629f2a564b6",
+    "pointer_origin_commit": "556afdb28f03182d0ba3425e2a7652454adf69cf",
+    "capability_origin_commit": "247dc9192",
+    "source_blobs": {
+      "include/bsp/native_renderer_pointer_array_destroy.hpp": "b42f1838efe07ece6509247e2c1277690a350e37",
+      "src/native_renderer_pointer_array_destroy.cpp": "699877250b9f72a0039dfe17deb4dde075a09486",
+      "include/bsp/native_renderer_capability_array_cleanup.hpp": "82284bed31e70412f0c1737b229ec0757317c328",
+      "src/native_renderer_capability_array_cleanup.cpp": "87d945994314ac6c56a2a57e596790f6892c551b"
+    },
+    "source_identity": "All four adopted source/header blobs are byte-identical at their origin commits and reviewed tip.",
+    "retained_tip_evidence": {
+      "docs/NATIVE_RENDERER_POINTER_ARRAY_DESTROY.md": "358aa7bac90c9739af2d118109a9006034ad1d69",
+      "reports/native_renderer_pointer_array_destroy.json": "42ccefe7ddb7095dfcfffbeb80fc6aeafa71ae78",
+      "docs/NATIVE_RENDERER_CAPABILITY_ARRAY_CLEANUP.md": "b08b27bed45b7eb36c5cb5d7dc3d6a8748fc2274",
+      "reports/native_renderer_capability_array_cleanup.json": "ba96b278e8e1fcfeb7769baff71f6a3e7920fd75"
+    }
+  },
+  "current_provider_audit": {
+    "compatible": true,
+    "byte_identical_to_pointer_origin": {
+      "include/bsp/native_logical_vertex_owner.hpp": "f2c5a72e46f030f049f370eda07de9594a5f3816",
+      "src/native_logical_vertex_owner.cpp": "be3c28943b8b96b9c2e6829fb93546654271de62",
+      "include/bsp/native_logical_index_owner.hpp": "11d29b13d925881300e58513113e3baeb14b74f1",
+      "src/native_logical_index_owner.cpp": "b121f65bc4986b04c0958d2ababb1c7a6f00ad08",
+      "include/bsp/singleton_lifetime.hpp": "4d10f6c53a3b9be4745776df443f340ea1769936",
+      "src/singleton_lifetime.cpp": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+    },
+    "contracts": [
+      "B22530 delegates its byte-equivalent reserve body to current B22D10.",
+      "B25940 and B259D0 bind current B22D10 and B22D70 reserve services.",
+      "All destructor wrappers use current singleton_lifetime_free after the actual resize0 sequence.",
+      "Capability B260B0/B29E40 share the adopted B25940/B29B20 source chain without projected ownership or pointee cleanup."
+    ]
+  },
+  "functions": [
+    {"address": "00b22530", "end_inclusive": "00b2258e", "bytes": 95, "source_symbol": "reserve_native_renderer_query_pointers_00b22530", "original_abi": "ECX header; signed stack DWORD; RET4"},
+    {"address": "00b22cc0", "end_inclusive": "00b22d0f", "bytes": 80, "source_symbol": "resize_native_renderer_query_pointers_00b22cc0", "original_abi": "ECX header; signed stack DWORD; RET4"},
+    {"address": "00b25940", "end_inclusive": "00b2598f", "bytes": 80, "source_symbol": "resize_native_renderer_vertex_pointers_00b25940", "original_abi": "ECX header; signed stack DWORD; RET4"},
+    {"address": "00b259d0", "end_inclusive": "00b25a1f", "bytes": 80, "source_symbol": "resize_native_renderer_index_pointers_00b259d0", "original_abi": "ECX header; signed stack DWORD; RET4"},
+    {"address": "00b27f50", "end_inclusive": "00b27f66", "bytes": 23, "source_symbol": "destroy_native_renderer_query_pointers_00b27f50", "original_abi": "ECX header; RET"},
+    {"address": "00b29b20", "end_inclusive": "00b29b36", "bytes": 23, "source_symbol": "destroy_native_renderer_vertex_pointers_00b29b20", "original_abi": "ECX header; RET"},
+    {"address": "00b29b40", "end_inclusive": "00b29b56", "bytes": 23, "source_symbol": "destroy_native_renderer_index_pointers_00b29b40", "original_abi": "ECX header; RET"},
+    {"address": "00b260b0", "end_inclusive": "00b260ff", "bytes": 80, "source_symbol": "resize_native_capability_dwords_00b260b0", "original_abi": "ECX header; signed stack DWORD; RET4"},
+    {"address": "00b29e40", "end_inclusive": "00b29e56", "bytes": 23, "source_symbol": "destroy_native_capability_dwords_00b29e40", "original_abi": "ECX header; RET"}
+  ],
+  "behavior_review": {
+    "header": "Actual 0Ch header: current data+0, signed count+4, signed capacity+8; DWORD cells only; no pointee access or release.",
+    "resize": "Signed capacity gate, current count captured after reserve, current base reloaded per initialized cell, wrapping index arithmetic, null destination skip, shrink through current-count decrements, requested count published last.",
+    "destroy": "Resize0 completes before the current backing pointer is loaded and freed; stale pointer/capacity bits remain; exception bypasses the final free.",
+    "failure": "No rollback, malformed-header repair, overflow guard, cleanup retry, retained diagnostic operation or shared owner replacement was added."
+  },
+  "fresh_byte_receipt": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "span_count": 12,
+    "total_bytes": 792,
+    "all_live_disk_historical_match": true,
+    "aggregate_sha256": "727979b7f0aa273de14aa6d6edf194397d9f7936e9de8eb417ad33c246e35a2b",
+    "ranges": [
+      {"address": "00b22530", "length": 95, "end_exclusive": "00b2258f", "sha256": "4cc3d23eb314adcbe9137e17fcdb8052e491c5c5fa35afb3d0071abad2849554"},
+      {"address": "00b22cc0", "length": 80, "end_exclusive": "00b22d10", "sha256": "965bae050482b01486a49bc7d4f7373c05d2ac94f9f5e2fe1d63c3369955ddb5"},
+      {"address": "00b25940", "length": 80, "end_exclusive": "00b25990", "sha256": "1de73759a45a6858f2823a68bd79a9f5f781393cd9dbab2358bfe2a39dd36f00"},
+      {"address": "00b259d0", "length": 80, "end_exclusive": "00b25a20", "sha256": "2fdbdae2bca27ee4ea8e6a5a04d95c5f0371c8abbea14172fc835156ff139b01"},
+      {"address": "00b27f50", "length": 23, "end_exclusive": "00b27f67", "sha256": "249814330ebbc694e581c1a16eb051c33ab442fefb59529a3fe3d96f1854e9e8"},
+      {"address": "00b29b20", "length": 23, "end_exclusive": "00b29b37", "sha256": "0e5f6a014028bb11c0b90eb8c6375f038a7b478e9e963b8c09689e907470c687"},
+      {"address": "00b29b40", "length": 23, "end_exclusive": "00b29b57", "sha256": "41d4c9696f81a04756283f9c6948508f827cfc1707572b37c475144500a785d6"},
+      {"address": "00b22d10", "length": 95, "end_exclusive": "00b22d6f", "sha256": "70c57d1530f440247d5a72624ff0c7567d13328133833ecaf2f0d260013034b6", "kind": "current vertex reserve provider"},
+      {"address": "00b22d70", "length": 95, "end_exclusive": "00b22dcf", "sha256": "047bfdd3c7e780bb9b5b7f10e050a44eebb835149679ee50eb6c230495654ad1", "kind": "current index reserve provider"},
+      {"address": "00b260b0", "length": 80, "end_exclusive": "00b26100", "sha256": "e1b19b418d4f1ee861f80b8f89a2dec942773d0f9ce7f7d17bdf6c2e3201dc5a"},
+      {"address": "00b29e40", "length": 23, "end_exclusive": "00b29e57", "sha256": "123d3ea11b1348126d098e0c20478fd03210c2261a4d2b53d80f33bdb43d8636"},
+      {"address": "00b236b0", "length": 95, "end_exclusive": "00b2370f", "sha256": "ecb38f4ed11e350279e2e3f4667831275bb288bdd3613ef20496b4b66e77eb64", "kind": "current capability reserve provider"}
+    ],
+    "full_body_hex": "Retained in the two historical reports and local/r33_renderer_pointer_byte_receipt.json."
+  },
+  "call_rows": [
+    {"address": "00b22550", "native": "00bf55be", "function": "00b22530"},
+    {"address": "00b2257c", "native": "00bf6989", "function": "00b22530"},
+    {"address": "00b22cce", "native": "00b22530", "function": "00b22cc0"},
+    {"address": "00b2594e", "native": "00b22d10", "function": "00b25940"},
+    {"address": "00b259de", "native": "00b22d70", "function": "00b259d0"},
+    {"address": "00b27f55", "native": "00b22cc0", "function": "00b27f50"},
+    {"address": "00b27f5d", "native": "00bf6989", "function": "00b27f50"},
+    {"address": "00b29b25", "native": "00b25940", "function": "00b29b20"},
+    {"address": "00b29b2d", "native": "00bf6989", "function": "00b29b20"},
+    {"address": "00b29b45", "native": "00b259d0", "function": "00b29b40"},
+    {"address": "00b29b4d", "native": "00bf6989", "function": "00b29b40"},
+    {"address": "00b260be", "native": "00b236b0", "function": "00b260b0"},
+    {"address": "00b29e45", "native": "00b260b0", "function": "00b29e40"},
+    {"address": "00b29e4d", "native": "00bf6989", "function": "00b29e40"}
+  ],
+  "validation": {
+    "ghidra": "live function count 64144; snapshot 64144; all nine existing complete ranges/names/call graphs reviewed; worker read-only; no repair requested",
+    "verify_seeds": "PASS 8/8 live bytes equal installed PE after final main merge",
+    "historical_call_reports": "PASS pointer 11/11 and capability/dependency 10/10 exact rows",
+    "fresh_adopted_call_rows": "PASS 14/14 exact rows",
+    "build": "PASS after merge of final main 89b890308; MSVC Win32 Release /W4 /WX /fp:strict /MD",
+    "ctest": "PASS reconstructed_math, native_math_differential, tool_tests; 3/3",
+    "pointer_fixture": "PASS seven complete relocated original bodies versus built source; 24 comparisons",
+    "capability_fixture": "PASS complete original capability cleanup chain versus shared source; 7 comparisons",
+    "fixture_flags": "/std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict; /MANIFEST:EMBED; safe probe names",
+    "fixture_boundary": "Only retained CALL operands are rebound to the current source services; no original EXE address executes."
+  },
+  "artifact_receipts": [
+    {"path": "include/bsp/native_renderer_pointer_array_destroy.hpp", "sha256": "5c89c92aa62d71115d8d5c81353ab235b3317ca265929a656644e849e4d1f0ab"},
+    {"path": "src/native_renderer_pointer_array_destroy.cpp", "sha256": "e8fbf2456ac9e3e2a7fb6996d0e991b50c5ea32b184c1d0a13d376cee3956f21"},
+    {"path": "include/bsp/native_renderer_capability_array_cleanup.hpp", "sha256": "da6d469cc1d2e82eb10e269ced2b1a03c4091714be57d4c3969fbf9207109925"},
+    {"path": "src/native_renderer_capability_array_cleanup.cpp", "sha256": "e57ca2a1100c20604eb595054f2e1662a6d35550d5976967fdb68f4a59ff8574"},
+    {"path": "docs/NATIVE_RENDERER_POINTER_ARRAY_DESTROY.md", "sha256": "e597e5c60ea90c7fba63a3373d012cd9a8ee2eff23bc6198d3f8d5655ea0e401"},
+    {"path": "docs/NATIVE_RENDERER_CAPABILITY_ARRAY_CLEANUP.md", "sha256": "748d0b35f3e6d4a5e57456b52c2bcc445428d7c8c9bc4bf6d769befa072cfb20"},
+    {"path": "reports/native_renderer_pointer_array_destroy.json", "sha256": "5d358afe43d4c881c5eacb374825f809b8409216e88c01fc4fa724e12af49337"},
+    {"path": "reports/native_renderer_capability_array_cleanup.json", "sha256": "ed71bea1791db0980aa4a8d236d42f82eb67f7b8aed292f90a2aa4a99a19190a"},
+    {"path": "cmake/startup.cmake", "sha256": "8f795019a6c331da3c97852fb790cbb71b0bfe3a8e3bbb0f3fe65b55d8b682af"},
+    {"path": "build/win32/Release/bsp_core.lib", "sha256": "f4f30b7e91535a8cb1bded13d083e5dd7ec03ef83857cc7d53b5445c45e08792"},
+    {"path": "local/native_renderer_pointer_probe.exe", "sha256": "a94eb3894a7a25cd71c98a141e880bdbdf410897bb8434ea90004a09d355ff31"},
+    {"path": "local/native_renderer_pointer_probe.obj", "sha256": "89ad04e9d9011ee9f65ecb706254935376167c781e3c387f98b5b85a00029280"},
+    {"path": "local/native_renderer_capability_probe.exe", "sha256": "398c7734fcf6f0fe4f12f525796df3b29f5e1e642d7a5fe1cca8ce13e94f9b25"},
+    {"path": "local/native_renderer_capability_probe.obj", "sha256": "ff7d58142696b619cea663b6ba0efa74c0e2bb745a00ab4d18d499585fad4868"}
+  ],
+  "archive": {
+    "path": "local/evidence-r33/renderer-pointer-cleanup-r33-final.zip",
+    "bytes": 13374525,
+    "sha256": "278586d0ff93d1d946d37300e155c2b71c40aae60946012a02dfc952bb0bed82",
+    "archived_files": 36,
+    "manifest": "local/evidence-r33/renderer-pointer-cleanup-r33-final/manifest.json"
+  },
+  "annotation_status": "Worker performed no Ghidra mutation. Existing names, comments, saved complete ranges and refreshed exports are already present; parent owns current integration metadata.",
+  "limits": [
+    "Source interfaces do not reproduce original private frames, incidental registers, static CRT/FH3/SEH identity or hardware-fault unwind.",
+    "Fixtures are relocated native-code comparisons, not original EXE-address execution or gameplay validation.",
+    "Full renderer parents, renderer ownership/adoption and arbitrary malformed headers remain outside this closure."
+  ]
+}
