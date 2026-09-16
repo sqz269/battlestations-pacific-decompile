@@ -1,0 +1,157 @@
+{
+  "packet": "extra_item_type_storage_r30",
+  "base": "f30bf7343",
+  "cmake_commit": "e3719459532b04c7c4db8dbabe3047b7242d8e5d",
+  "implementation_commit": "ebd4764eb34a8f807a113a084231b6a4f73bc826",
+  "program": "/battlestationspacific.exe",
+  "source": [
+    "include/bsp/native_resource_extra_type_ids.hpp",
+    "src/native_resource_extra_type_ids.cpp",
+    "include/bsp/game_native_type_storage.hpp",
+    "src/game_native_type_storage.cpp",
+    "cmake/startup.cmake"
+  ],
+  "coverage": {
+    "complete_functions": 2,
+    "function_bytes": 158,
+    "crt_span_bytes": 64,
+    "name_bytes": 34,
+    "total_receipt_bytes": 256,
+    "exact_direct_call_rows": 4
+  },
+  "functions": [
+    {
+      "address": "00cd82f0",
+      "end_inclusive": "00cd833e",
+      "end_exclusive": "00cd833f",
+      "bytes": 79,
+      "source_symbol": "NativeResourceExtraTypeIds::initialize_animation_resource_00cd82f0",
+      "original_abi": "no ordinary arguments; current global cells; RET",
+      "guard": "01090264",
+      "descriptor": "01090268[4]",
+      "name": "00d63258 cAnimationResource"
+    },
+    {
+      "address": "00cd8340",
+      "end_inclusive": "00cd838e",
+      "end_exclusive": "00cd838f",
+      "bytes": 79,
+      "source_symbol": "NativeResourceExtraTypeIds::initialize_bone_resource_00cd8340",
+      "original_abi": "no ordinary arguments; current global cells; RET",
+      "guard": "01090265",
+      "descriptor": "01090278[4]",
+      "name": "00d6326c cBoneResource"
+    }
+  ],
+  "descriptor_layout": "[own_id, scene_id, root_id, native_name_address]",
+  "exact_order": [
+    "test current guard and return when nonzero",
+    "store guard 1",
+    "store native name address at descriptor[3]",
+    "call 00b869c0 with canonical scene descriptor 01090210",
+    "load current scene and root words before either destination store",
+    "store descriptor[1] and descriptor[2]",
+    "call 006fac20 and load current counter+4",
+    "store incremented counter+4",
+    "store captured old counter at descriptor[0]"
+  ],
+  "failure_state": "The guard precedes every fallible call. A failure leaves the guard/name and any later completed writes intact; subsequent calls return without repair, rollback, fallback, or cleanup.",
+  "profile_cell_resolution": [
+    {
+      "cell": "01090274",
+      "meaning": "animation descriptor[3], current native type-name address",
+      "initialized_value": "00d63258 cAnimationResource"
+    },
+    {
+      "cell": "01090284",
+      "meaning": "bone descriptor[3], current native type-name address",
+      "initialized_value": "00d6326c cBoneResource"
+    }
+  ],
+  "crt_order": [
+    {"entry": "00ce35b4", "target": "00cd82f0"},
+    {"entry": "00ce35b8", "target": "00cd8340"},
+    {"entry": "00ce35f0", "target": "00cd8690", "purpose": "relative-order boundary for mesh initializer"}
+  ],
+  "call_rows": [
+    {"address": "00cd830f", "native": "00b869c0", "function": "00cd82f0"},
+    {"address": "00cd832a", "native": "006fac20", "function": "00cd82f0"},
+    {"address": "00cd835f", "native": "00b869c0", "function": "00cd8340"},
+    {"address": "00cd837a", "native": "006fac20", "function": "00cd8340"}
+  ],
+  "byte_receipt": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "total_bytes": 256,
+    "all_match": true,
+    "aggregate_sha256": "574762145ff261a12997ce073ed80862aa4ac53586812242f027bb843385d2c3",
+    "ranges": [
+      {
+        "address": "00cd82f0",
+        "length": 79,
+        "end_exclusive": "00cd833f",
+        "kind": "complete_animation_resource_type_initializer",
+        "file_offset": 9274096,
+        "sha256": "676b6af25acb95cb63296e868173ec46ddcdda934e2a03f50e3aad371b7492cb",
+        "matches_disk": true,
+        "hex": "803d64020901007545b910020901c6056402090101c705740209015832d600e8ace6eaffa1100209018b0d14020901a36c020901890d70020901e8f128a2ff8b48048d5101895004890d68020901c3"
+      },
+      {
+        "address": "00cd8340",
+        "length": 79,
+        "end_exclusive": "00cd838f",
+        "kind": "complete_bone_resource_type_initializer",
+        "file_offset": 9274176,
+        "sha256": "84ff7461fbf20d2cad906db9c23bd43c2667efcf354059e1f598a3c285a5d15f",
+        "matches_disk": true,
+        "hex": "803d65020901007545b910020901c6056502090101c705840209016c32d600e85ce6eaffa1100209018b0d14020901a37c020901890d80020901e8a128a2ff8b48048d5101895004890d78020901c3"
+      },
+      {
+        "address": "00ce35b4",
+        "length": 64,
+        "end_exclusive": "00ce35f4",
+        "kind": "crt_entries_extras_through_mesh",
+        "file_offset": 9319860,
+        "sha256": "e5b074c795e9393018f00632233ade4cc7b75c7187e500d04d2ce5549579f359",
+        "matches_disk": true,
+        "hex": "f082cd004083cd009083cd00e083cd00f083cd001084cd006084cd008084cd00d084cd003085cd005085cd007085cd00d085cd002086cd004086cd009086cd00"
+      },
+      {
+        "address": "00d63258",
+        "length": 34,
+        "end_exclusive": "00d6327a",
+        "kind": "animation_and_bone_resource_names",
+        "file_offset": 9843288,
+        "sha256": "fd084428249ef7c9d47cbeb15b02529165feb5dfdf2a23dcd5870654a07ebe6c",
+        "matches_disk": true,
+        "hex": "63416e696d6174696f6e5265736f75726365000063426f6e655265736f7572636500"
+      }
+    ]
+  },
+  "validation": {
+    "ghidra_count": "live 64144; snapshot 64144; same",
+    "verify_seeds": "PASS 8/8 live bytes equal installed PE",
+    "build": "PASS scripts/build.ps1; MSVC Win32 Release; /W4 /WX /fp:strict /MD",
+    "ctest": "PASS reconstructed_math, native_math_differential, tool_tests; 3/3",
+    "focused_probe": "PASS animation=100 bone=700 current_parent=41/21 sticky_guard=1",
+    "probe_command": "cl /std:c++17 /EHsc /W4 /WX /fp:strict /MD; /MANIFEST:EMBED /MACHINE:X86; safe r30_extra_type_probe.exe",
+    "probe_scope": "Real source services over local process cells; verifies current scene/root capture, current counter selection, counter-before-ID publication result, and early guard return."
+  },
+  "artifact_receipts": [
+    {"path": "include/bsp/native_resource_extra_type_ids.hpp", "sha256": "896bf498aac4be2b63fd762d8b33f479c7ca24877f35b5fefad089c4d7e04bf5"},
+    {"path": "src/native_resource_extra_type_ids.cpp", "sha256": "377925a90466328541ed3cd3d5c04219f38b625dff0d0e13bb3a2fe22a60765b"},
+    {"path": "include/bsp/game_native_type_storage.hpp", "sha256": "9de949e5de1d00a702b9f2e62963cf29ef1f4615c83ff4220ba1004fbbb5a3b1"},
+    {"path": "src/game_native_type_storage.cpp", "sha256": "ffc9656790a68a8fd17087062014bd75605312f7dea0c7e0ec494a3cd274234a"},
+    {"path": "cmake/startup.cmake", "sha256": "585f1273c3bbde0c21846e70337795fdc67766cb48b1ac2615fa91b1180fed57"},
+    {"path": "build/win32/Release/bsp_core.lib", "sha256": "d5d93e3561883c896fef94e57b3a21abeea33d6b6b18bb91e22d376e85753b38"},
+    {"path": "local/r30_extra_type_probe.exe", "sha256": "74481b476e9342aa2242b8441e4e61e67df85f10c179ee34a9908842e1d63cf1"}
+  ],
+  "annotation_status": "Worker remained Ghidra read-only. Parent owns final names, comments, ledgers, saves, and refreshed exports.",
+  "limits": [
+    "Source interface, not a drop-in implementation of the original native entry ABI.",
+    "Focused probe uses local cells and existing C++ services; it is not execution inside the game process.",
+    "Native FH3/SEH, full CRT startup, arbitrary hardware faults, and gameplay remain unvalidated."
+  ]
+}
