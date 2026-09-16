@@ -2550,5 +2550,100 @@
     "bytes": 374628927,
     "all_entries_rehashed": true,
     "scope": "Full current source/build compiler input/output closure and actual VFS/Lua lifetime fixture and native/link evidence. Twenty-four same-process physical I386 modules; no active command runtime proof."
+  },
+  "primary_integration": {
+    "source_commit": "6aaaf29653c9258893c12ca20d5e20513f06602c",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "fixture_rerun_after_integration": false,
+    "archive": "local/evidence-r61/renderer-lua-main-r61.zip",
+    "sha256": "bb5195777e51592be466b4a499b795ac19a917a5fa1756e9567b775789275a8f",
+    "files": [
+      {
+        "path": "local/r61_integration.log",
+        "bytes": 1885,
+        "sha256": "9629fb4fc02ce5296fb6deb78b72de91c54b51471421d900e945042b93af9471"
+      },
+      {
+        "path": "src/native_renderer_lua_owner.cpp",
+        "bytes": 6785,
+        "sha256": "10d513a30dec5c8355f4c787f8a3205dee278d039a8fe5605c791d837dbd648a"
+      },
+      {
+        "path": "include/bsp/native_renderer_lua_owner.hpp",
+        "bytes": 2352,
+        "sha256": "0c4a9a175c954a3bc7513e056aae5f624fecd6f8c562062749db25ec7ecd644b"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "bytes": 18058,
+        "sha256": "19f0933bdcf7215faf14cdf6c52831e58d488e4a54e960e53d4440c10d66e338"
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "bytes": 11416,
+        "sha256": "d9dcc3987ab678a393a90cd9c916cede359329775d5704a7013afa26243bcc7a"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 151785,
+        "sha256": "1663408b948828f65998da153b1cdab0b8520ac6977ee548275e2449ff3c23f2"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "bytes": 231668,
+        "sha256": "8afbad656ff3d804cab32accf949ac14ef3af81d528a3b7e3e292ad52dfcab8b"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_lua_owner.obj",
+        "bytes": 15177,
+        "sha256": "5ea30311f47c9ac2e791cdcacb4e1fc649c51abf87abf34cb0e66d03ea2a08ca"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+        "bytes": 18898,
+        "sha256": "579c0c0e56f4e6995b45f421e1c3a95b57eb4621521138ed11848966bf9169c1"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63760726,
+        "sha256": "880515437b252b84b33fbd4796728853933ed4ad65b4a9f0c585754397479e01"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "bytes": 2269184,
+        "sha256": "9b6bbfb4d1f6782aae1324b0a55fd50f1e0442ec1fd6aa3b9d8b584edb788755"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2408,
+        "sha256": "35225a97a0cc3211725db3715c0221a95b9ba384354604a81fb8507e28169247"
+      },
+      {
+        "path": "local/renderer_lua_r61/call_gate.log",
+        "bytes": 76,
+        "sha256": "507ef2804674474de56bf83838a6a0e0da7217143232d3f8e52cb568df8c3e72"
+      },
+      {
+        "path": "local/renderer_lua_r61/annotations.log",
+        "bytes": 457,
+        "sha256": "800805a89ea3b212c153062f108870e1353c0e278010cbebfa23724badb17dd7"
+      },
+      {
+        "path": "local/renderer_lua_r61/exports.log",
+        "bytes": 783,
+        "sha256": "e62a6128d5c43aebf8f28fd7f33db78747fab8e866c9c1853b69bd8cbcecf2a1"
+      },
+      {
+        "path": "local/renderer_lua_r61/flow_repair.json",
+        "bytes": 1986,
+        "sha256": "1c22dc598af9cbcf1d1888860cae8eb6ace3bb2400fc316c3c9d9d3d1057868f"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T183250Z.json",
+        "bytes": 68625,
+        "sha256": "2eb8b986b550a1652d01543f5bec259688ccc68fb145081402ac547865f72e5e"
+      }
+    ]
   }
 }
