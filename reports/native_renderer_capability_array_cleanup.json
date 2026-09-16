@@ -1,0 +1,831 @@
+{
+  "schema": 1,
+  "packet": "orch5_native_renderer_capability_array_cleanup",
+  "status": "complete_actual_capability_dword_cleanup_shared_verified_raw_chain_strict_win32_original_source_and_immutable_evidence_checked",
+  "created_utc": "2026-09-14T15:34:38.664692+00:00",
+  "dependency_history": {
+    "published_base": "a9160919ec13ed56bceaf4c8e36c2ea57b818be2",
+    "dependency_commit": "556afdb28f03182d0ba3425e2a7652454adf69cf",
+    "private_dependency_merge": "95d33975d39572aa2cec7978002073734ea08921",
+    "merge_parents": [
+      "a9160919ec13ed56bceaf4c8e36c2ea57b818be2",
+      "556afdb28f03182d0ba3425e2a7652454adf69cf"
+    ],
+    "conflict_resolution": "Retained both disjoint CMake append sets and ledger rows; no existing records changed. CMake resolution under short unleased coordination transaction.",
+    "cherry_pick": false
+  },
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "owned_files": [
+    "include/bsp/native_renderer_capability_array_cleanup.hpp",
+    "src/native_renderer_capability_array_cleanup.cpp",
+    "docs/NATIVE_RENDERER_CAPABILITY_ARRAY_CLEANUP.md",
+    "reports/native_renderer_capability_array_cleanup.json"
+  ],
+  "shared_append": "one deferred source append under short coordination.lease_transaction after unleased check",
+  "routines": [
+    {
+      "address": "00b260b0",
+      "name": "resize_native_capability_dwords_00b260b0",
+      "source": "src/native_renderer_capability_array_cleanup.cpp",
+      "coverage": "complete",
+      "end": "00b260ff",
+      "bytes": 80,
+      "original_ABI": "ECX actual0Ch header; one signed stack word; RET4; new fastcall has explicit ignored EDX",
+      "shared_provider": "resize_native_renderer_vertex_pointers_00b25940"
+    },
+    {
+      "address": "00b29e40",
+      "name": "destroy_native_capability_dwords_00b29e40",
+      "source": "src/native_renderer_capability_array_cleanup.cpp",
+      "coverage": "complete",
+      "end": "00b29e56",
+      "bytes": 23,
+      "original_ABI": "ECX actual0Ch header; plain RET",
+      "shared_provider": "destroy_native_renderer_vertex_pointers_00b29b20"
+    }
+  ],
+  "external_calls": [
+    {
+      "function": "00b260b0",
+      "address": "00b260be",
+      "native": "00b236b0",
+      "source": "shared actual raw B25940/B29B20 chain with B22D10 allocator/free behavior"
+    },
+    {
+      "function": "00b29e40",
+      "address": "00b29e45",
+      "native": "00b260b0",
+      "source": "shared actual raw B25940/B29B20 chain with B22D10 allocator/free behavior"
+    },
+    {
+      "function": "00b29e40",
+      "address": "00b29e4d",
+      "native": "00bf6989",
+      "source": "shared actual raw B25940/B29B20 chain with B22D10 allocator/free behavior"
+    }
+  ],
+  "reused_dependency_calls": [
+    {
+      "function": "00b236b0",
+      "address": "00b236d0",
+      "native": "00bf55be",
+      "source": "read-only existing dependency equivalence evidence; no new source or ledger row"
+    },
+    {
+      "function": "00b236b0",
+      "address": "00b236fc",
+      "native": "00bf6989",
+      "source": "read-only existing dependency equivalence evidence; no new source or ledger row"
+    },
+    {
+      "function": "00b25940",
+      "address": "00b2594e",
+      "native": "00b22d10",
+      "source": "read-only existing dependency equivalence evidence; no new source or ledger row"
+    },
+    {
+      "function": "00b29b20",
+      "address": "00b29b25",
+      "native": "00b25940",
+      "source": "read-only existing dependency equivalence evidence; no new source or ledger row"
+    },
+    {
+      "function": "00b29b20",
+      "address": "00b29b2d",
+      "native": "00bf6989",
+      "source": "read-only existing dependency equivalence evidence; no new source or ledger row"
+    },
+    {
+      "function": "00b22d10",
+      "address": "00b22d30",
+      "native": "00bf55be",
+      "source": "read-only existing dependency equivalence evidence; no new source or ledger row"
+    },
+    {
+      "function": "00b22d10",
+      "address": "00b22d5c",
+      "native": "00bf6989",
+      "source": "read-only existing dependency equivalence evidence; no new source or ledger row"
+    }
+  ],
+  "fresh_guarded_spans": [
+    {
+      "address": "00b260b0",
+      "end": "00b260ff",
+      "length": 80,
+      "bytes_hex": "56578b7c240c8bf13b7e087e0657e8edd5ffff8b46043bc77d1c8d9b000000008b0e8d0c8185c97406c7010000000083c0013bc77cea3b7e047d0d83c8ff8bff0146043b7e047cf8897e045f5ec20400",
+      "sha256": "e1b19b418d4f1ee861f80b8f89a2dec942773d0f9ce7f7d17bdf6c2e3201dc5a",
+      "live_PE_match": true,
+      "ownership": "packet"
+    },
+    {
+      "address": "00b29e40",
+      "end": "00b29e56",
+      "length": 23,
+      "bytes_hex": "566a008bf1e866c2ffff8b0650e837cb0c0083c4045ec3",
+      "sha256": "123d3ea11b1348126d098e0c20478fd03210c2261a4d2b53d80f33bdb43d8636",
+      "live_PE_match": true,
+      "ownership": "packet"
+    },
+    {
+      "address": "00b236b0",
+      "end": "00b2370e",
+      "length": 95,
+      "bytes_hex": "56578b7c240c83ff018bf17d05bf01000000397e087d438d04bd000000005350e8e91e0d008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e888320d0083c404891e897e085b5f5ec20400",
+      "sha256": "ecb38f4ed11e350279e2e3f4667831275bb288bdd3613ef20496b4b66e77eb64",
+      "live_PE_match": true,
+      "ownership": "read-only existing dependency"
+    },
+    {
+      "address": "00b25940",
+      "end": "00b2598f",
+      "length": 80,
+      "bytes_hex": "56578b7c240c8bf13b7e087e0657e8bdd3ffff8b46043bc77d1c8d9b000000008b0e8d0c8185c97406c7010000000083c0013bc77cea3b7e047d0d83c8ff8bff0146043b7e047cf8897e045f5ec20400",
+      "sha256": "1de73759a45a6858f2823a68bd79a9f5f781393cd9dbab2358bfe2a39dd36f00",
+      "live_PE_match": true,
+      "ownership": "read-only existing dependency"
+    },
+    {
+      "address": "00b29b20",
+      "end": "00b29b36",
+      "length": 23,
+      "bytes_hex": "566a008bf1e816beffff8b0650e857ce0c0083c4045ec3",
+      "sha256": "0e5f6a014028bb11c0b90eb8c6375f038a7b478e9e963b8c09689e907470c687",
+      "live_PE_match": true,
+      "ownership": "read-only existing dependency"
+    },
+    {
+      "address": "00b22d10",
+      "end": "00b22d6e",
+      "length": 95,
+      "bytes_hex": "56578b7c240c83ff018bf17d05bf01000000397e087d438d04bd000000005350e889280d008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e8283c0d0083c404891e897e085b5f5ec20400",
+      "sha256": "70c57d1530f440247d5a72624ff0c7567d13328133833ecaf2f0d260013034b6",
+      "live_PE_match": true,
+      "ownership": "read-only existing dependency"
+    }
+  ],
+  "owned_complete_function_bytes": 103,
+  "reused_dependency_bytes": 293,
+  "exact_operand_masks": [
+    {
+      "function": "00b260b0",
+      "full_length": 80,
+      "masked_displacement_byte_offsets": [
+        [
+          15,
+          16,
+          17,
+          18
+        ]
+      ],
+      "actual_targets": [
+        "00b236b0"
+      ],
+      "all_other_bytes_compared": true
+    },
+    {
+      "function": "00b29e40",
+      "full_length": 23,
+      "masked_displacement_byte_offsets": [
+        [
+          6,
+          7,
+          8,
+          9
+        ],
+        [
+          14,
+          15,
+          16,
+          17
+        ]
+      ],
+      "actual_targets": [
+        "00b260b0",
+        "00bf6989"
+      ],
+      "all_other_bytes_compared": true
+    },
+    {
+      "function": "00b236b0",
+      "full_length": 95,
+      "masked_displacement_byte_offsets": [
+        [
+          33,
+          34,
+          35,
+          36
+        ],
+        [
+          77,
+          78,
+          79,
+          80
+        ]
+      ],
+      "actual_targets": [
+        "00bf55be",
+        "00bf6989"
+      ],
+      "all_other_bytes_compared": true
+    },
+    {
+      "function": "00b25940",
+      "full_length": 80,
+      "masked_displacement_byte_offsets": [
+        [
+          15,
+          16,
+          17,
+          18
+        ]
+      ],
+      "actual_targets": [
+        "00b22d10"
+      ],
+      "all_other_bytes_compared": true
+    },
+    {
+      "function": "00b29b20",
+      "full_length": 23,
+      "masked_displacement_byte_offsets": [
+        [
+          6,
+          7,
+          8,
+          9
+        ],
+        [
+          14,
+          15,
+          16,
+          17
+        ]
+      ],
+      "actual_targets": [
+        "00b25940",
+        "00bf6989"
+      ],
+      "all_other_bytes_compared": true
+    },
+    {
+      "function": "00b22d10",
+      "full_length": 95,
+      "masked_displacement_byte_offsets": [
+        [
+          33,
+          34,
+          35,
+          36
+        ],
+        [
+          77,
+          78,
+          79,
+          80
+        ]
+      ],
+      "actual_targets": [
+        "00bf55be",
+        "00bf6989"
+      ],
+      "all_other_bytes_compared": true
+    }
+  ],
+  "grouped_instruction_identity": [
+    {
+      "addresses": [
+        "00b236b0",
+        "00b22d10"
+      ],
+      "masked_call_offsets": [
+        32,
+        76
+      ],
+      "all_other_bytes_identical": true
+    },
+    {
+      "addresses": [
+        "00b260b0",
+        "00b25940"
+      ],
+      "masked_call_offsets": [
+        14
+      ],
+      "all_other_bytes_identical": true
+    },
+    {
+      "addresses": [
+        "00b29e40",
+        "00b29b20"
+      ],
+      "masked_call_offsets": [
+        5,
+        13
+      ],
+      "all_other_bytes_identical": true
+    }
+  ],
+  "substantive_reuse": {
+    "source_dependency": "src/native_renderer_pointer_array_destroy.cpp -> src/native_logical_vertex_owner.cpp -> src/singleton_lifetime.cpp",
+    "existing_capability_provider": "reserve_native_capability_dwords_00b236b0 in src/native_renderer_capability_array_reserves.cpp remains unchanged; complete95-byte original body verified against existing B22D10",
+    "native_leaf_equivalence": "B236B0 and B22D10 identical except CALL displacements, with exactly equal BF55BE/BF6989 targets",
+    "native_resize_equivalence": "B260B0 and B25940 identical except reserve CALL operand targeting equivalent leaf",
+    "native_destroy_equivalence": "B29E40 and B29B20 identical except resize CALL operand targeting equivalent body and same free target",
+    "storage": "actual0Ch header, DWORD cells; no pointee dereference/release, guessed record layout, projected storage, retained diagnostic operation, copied algorithm, or original EXE call"
+  },
+  "raw_order": {
+    "reserve": "signed clamp1/growth; wrapping allocation bytes; current base/count copy with null-destination check; free current old data then publish replacement/capacity; count retained",
+    "resize": "signed request/capacity comparison; reserve; capture current count as index; zero current-base cells without per-cell count publication; current-count shrink; final requested-count store",
+    "destroy": "resize0; load CURRENT data after returning resize; free backing; retain stale data/capacity/header"
+  },
+  "failure_boundary": "No catch or rollback added. Allocation failure skips later resize/count publication and destructor final free; prior allocator-handler effects retained. Original native CRT/private-frame/SEH identity unproven.",
+  "parent_action": {
+    "address": "00cbe052",
+    "verified_instructions": "MOV ECX,[EBP-10h]; ADD ECX,44h; JMP00b29e40",
+    "target": "00b29e40",
+    "integrator_member_mapping": "renderer+1B5C, implying captured renderer+1B18",
+    "boundary": "Action captured+44 form directly verified; full parent state/frame mapping remains integrator-owned"
+  },
+  "returning_tail_corrections": [
+    {
+      "function": "00b29e40",
+      "was": "saved body ends B29E51 after free CALL B29E4D",
+      "is": "complete23-byte body through B29E56, including five-byte stack cleanup/ESI restore/RET tail",
+      "returning_call": "00b29e4d",
+      "evidence": "full live bytes equal installed PE"
+    }
+  ],
+  "ghidra_mutations": "None by worker. Integrator owns returning override, names, preserved old values, save and refreshed exports after release. Resize and reserve definitions already complete.",
+  "validation": {
+    "build": "./scripts/build.ps1 passed; MSVC Win32 Release /W4 /WX /fp:strict",
+    "seed_verification": "8 native seed ranges verified before configure",
+    "ctests": "2/2 passed: reconstructed_math and native_math_differential",
+    "fixture": "One executable; complete original B236B0/B260B0/B29E40 chain vs shared source from built bsp_core.lib;7 comparisons:4 resize,3 cleanup.",
+    "fixture_bindings": "Only5 CALL rel32 operands rebound to relocated original children and actual shared allocation/free; no original EXE addresses called; all algorithm bytes retained.",
+    "fixture_result": "growth/shrink; removed-cell retention; valid negative-index initialization; wrapping null-destination skip; ordinary and negative-capacity cleanup; null/empty storage; all guards/postimages pass.",
+    "fixture_stdout": "native_renderer_capability_probe.cpp\nLOADED_RUNTIME|ucrtbase.dll|C:\\WINDOWS\\System32\\ucrtbase.dll|\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll|014c\nLOADED_RUNTIME|vcruntime140.dll|C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll|\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll|014c\nUNLOADED_RUNTIME|msvcp140.dll\nUNLOADED_RUNTIME|vcruntime140_1.dll\nPASS: complete original capability cleanup chain versus shared source; 7 comparisons\n",
+    "fixture_build_flags": "/std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /link /MANIFEST:EMBED",
+    "fixture_source": "#include \"bsp/native_renderer_capability_array_cleanup.hpp\"\n#include \"bsp/singleton_lifetime.hpp\"\n#include \"native_renderer_capability_reference.hpp\"\n#include <Windows.h>\n#include <array>\n#include <cstdio>\n#include <cstring>\n#include <stdexcept>\n\nnamespace {\nvoid require(bool value,const char* message) { if(!value) throw std::runtime_error(message); }\nusing Operation=void (__fastcall*)(void*,std::uint32_t,std::int32_t);\nusing Destroy=void (__fastcall*)(void*);\nstruct Header { void* data; std::int32_t count,capacity; };\nstatic_assert(sizeof(Header)==12);\nstruct Frame { std::uint32_t before=0x13579bdfu; Header header{}; std::uint32_t after=0x2468ace0u; };\nvoid guards(const Frame& f) { require(f.before==0x13579bdfu&&f.after==0x2468ace0u,\"header guards\"); }\nvoid* __cdecl allocate_original(std::uint32_t bytes) {\n    return bsp::singleton_lifetime_allocate({bsp::SingletonAllocationKind::pointer_slots,bytes,bytes});\n}\nvoid __cdecl free_original(void* data) noexcept { bsp::singleton_lifetime_free(data); }\nclass Original {\n    void* code_; std::size_t length_;\npublic:\n    template<std::size_t N> explicit Original(const unsigned char (&bytes)[N]):\n        code_(VirtualAlloc(nullptr,N,MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE)),length_(N) {\n        require(code_!=nullptr,\"VirtualAlloc\"); std::memcpy(code_,bytes,N);\n    }\n    ~Original() { VirtualFree(code_,0,MEM_RELEASE); }\n    template<class F> void bind(std::size_t offset,F target) {\n        auto* code=static_cast<unsigned char*>(code_);\n        require(code[offset]==0xe8,\"CALL relocation\");\n        const auto relative=static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(target)-reinterpret_cast<std::uintptr_t>(code+offset+5));\n        std::memcpy(code+offset+1,&relative,4);\n    }\n    void finish() {\n        DWORD previous;\n        require(VirtualProtect(code_,length_,PAGE_EXECUTE_READ,&previous)!=0,\"VirtualProtect\");\n        require(FlushInstructionCache(GetCurrentProcess(),code_,length_)!=0,\"FlushInstructionCache\");\n    }\n    Operation operation() const { return reinterpret_cast<Operation>(code_); }\n    Destroy destroy() const { return reinterpret_cast<Destroy>(code_); }\n};\nusing Outcome=std::array<std::uint32_t,7>;\nvoid allocate(Frame& frame,std::uint32_t count) {\n    frame.header.data=allocate_original(count*4u);\n    frame.header.count=static_cast<std::int32_t>(count);\n    frame.header.capacity=static_cast<std::int32_t>(count);\n    auto* cells=static_cast<std::uint32_t*>(frame.header.data);\n    for(std::uint32_t i=0;i<count;++i) cells[i]=0x12345678u+i;\n}\nOutcome run_resize(Operation operation,int scenario) {\n    Frame f; std::uint32_t prefix[4]={0x11111111u,0x22222222u,0x33333333u,0x44444444u};\n    if(scenario<2) allocate(f,scenario==0?1u:3u);\n    else if(scenario==2) f.header={prefix+1,-1,2};\n    else f.header={reinterpret_cast<void*>(4u),-1,0};\n    void* const old=f.header.data;\n    const std::int32_t request=scenario==0?3:(scenario==1?1:0);\n    operation(&f.header,0,request); guards(f);\n    require(f.header.count==request,\"resize count\");\n    Outcome result{static_cast<std::uint32_t>(f.header.count),static_cast<std::uint32_t>(f.header.capacity),f.header.data==old,0,0,0,f.after};\n    if(scenario<2) {\n        auto* cells=static_cast<std::uint32_t*>(f.header.data);\n        require(f.header.capacity==3,\"resize capacity\");\n        require((f.header.data==old)==(scenario==1),\"resize current allocation\");\n        require(cells[0]==0x12345678u,\"resize first cell retained\");\n        require(cells[1]==(scenario==0?0u:0x12345679u)&&cells[2]==(scenario==0?0u:0x1234567au),\"new cells zero, removed cells retained\");\n        result[3]=cells[0]; result[4]=cells[1]; result[5]=cells[2]; free_original(f.header.data);\n    } else if(scenario==2) {\n        require(prefix[0]==0&&prefix[1]==0x22222222u&&prefix[2]==0x33333333u&&prefix[3]==0x44444444u,\"signed negative index initialization\");\n        result[3]=prefix[0]; result[4]=prefix[1]; result[5]=prefix[3];\n    } else require(f.header.data==old&&f.header.capacity==0,\"null destination skip postimage\");\n    return result;\n}\nOutcome run_destroy(Destroy destroy,int scenario) {\n    Frame f;\n    if(scenario!=2) allocate(f,scenario==0?2u:1u);\n    if(scenario==1) f.header.capacity=-1;\n    void* const old=f.header.data;\n    destroy(&f.header); guards(f);\n    require(f.header.count==0,\"destroy final count\");\n    require(f.header.capacity==(scenario==0?2:(scenario==1?1:0)),\"destroy retained capacity\");\n    require((f.header.data==old)==(scenario!=1),\"destroy stale current data\");\n    return {0,static_cast<std::uint32_t>(f.header.capacity),f.header.data==old,f.header.data==nullptr,0,0,f.after};\n}\nvoid report_runtime_modules() {\n    const wchar_t* names[]={L\"ucrtbase.dll\",L\"vcruntime140.dll\",L\"msvcp140.dll\",L\"vcruntime140_1.dll\"};\n    for(const auto* name:names) {\n        HMODULE module=GetModuleHandleW(name);\n        if(module==nullptr) { std::printf(\"UNLOADED_RUNTIME|%ls\\n\",name); continue; }\n        wchar_t reported[1024],canonical[1024];\n        const auto length=GetModuleFileNameW(module,reported,1024);\n        require(length!=0&&length<1024,\"loaded module path\");\n        HANDLE file=CreateFileW(reported,GENERIC_READ,FILE_SHARE_READ|FILE_SHARE_WRITE|FILE_SHARE_DELETE,nullptr,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,nullptr);\n        require(file!=INVALID_HANDLE_VALUE,\"loaded module file\");\n        const auto final_length=GetFinalPathNameByHandleW(file,canonical,1024,FILE_NAME_NORMALIZED);\n        CloseHandle(file); require(final_length!=0&&final_length<1024,\"canonical module file\");\n        const auto* base=reinterpret_cast<const unsigned char*>(module);\n        const auto* dos=reinterpret_cast<const IMAGE_DOS_HEADER*>(base);\n        const auto* nt=reinterpret_cast<const IMAGE_NT_HEADERS32*>(base+dos->e_lfanew);\n        require(nt->FileHeader.Machine==IMAGE_FILE_MACHINE_I386,\"loaded runtime machine\");\n        std::printf(\"LOADED_RUNTIME|%ls|%ls|%ls|%04x\\n\",name,reported,canonical,static_cast<unsigned>(nt->FileHeader.Machine));\n    }\n}\n}\nint main() {\n    try {\n        Original reserve(original_00b236b0);\n        reserve.bind(0x20,&allocate_original); reserve.bind(0x4c,&free_original); reserve.finish();\n        Original resize(original_00b260b0);\n        resize.bind(0xe,reserve.operation()); resize.finish();\n        Original destroy(original_00b29e40);\n        destroy.bind(5,resize.operation()); destroy.bind(13,&free_original); destroy.finish();\n        for(int scenario=0;scenario<4;++scenario)\n            require(run_resize(resize.operation(),scenario)==run_resize(&bsp::resize_native_capability_dwords_00b260b0,scenario),\"original/source resize\");\n        for(int scenario=0;scenario<3;++scenario)\n            require(run_destroy(destroy.destroy(),scenario)==run_destroy(&bsp::destroy_native_capability_dwords_00b29e40,scenario),\"original/source destroy\");\n        report_runtime_modules();\n        std::puts(\"PASS: complete original capability cleanup chain versus shared source; 7 comparisons\");\n        return 0;\n    } catch(const std::exception& error) { std::fprintf(stderr,\"FAIL: %s\\n\",error.what()); return 1; }\n}\n",
+    "reference_header": "#pragma once\n#include <cstddef>\ninline constexpr unsigned char original_00b260b0[] = {0x56,0x57,0x8b,0x7c,0x24,0x0c,0x8b,0xf1,0x3b,0x7e,0x08,0x7e,0x06,0x57,0xe8,0xed,0xd5,0xff,0xff,0x8b,0x46,0x04,0x3b,0xc7,0x7d,0x1c,0x8d,0x9b,0x00,0x00,0x00,0x00,0x8b,0x0e,0x8d,0x0c,0x81,0x85,0xc9,0x74,0x06,0xc7,0x01,0x00,0x00,0x00,0x00,0x83,0xc0,0x01,0x3b,0xc7,0x7c,0xea,0x3b,0x7e,0x04,0x7d,0x0d,0x83,0xc8,0xff,0x8b,0xff,0x01,0x46,0x04,0x3b,0x7e,0x04,0x7c,0xf8,0x89,0x7e,0x04,0x5f,0x5e,0xc2,0x04,0x00};\ninline constexpr unsigned char original_00b29e40[] = {0x56,0x6a,0x00,0x8b,0xf1,0xe8,0x66,0xc2,0xff,0xff,0x8b,0x06,0x50,0xe8,0x37,0xcb,0x0c,0x00,0x83,0xc4,0x04,0x5e,0xc3};\ninline constexpr unsigned char original_00b236b0[] = {0x56,0x57,0x8b,0x7c,0x24,0x0c,0x83,0xff,0x01,0x8b,0xf1,0x7d,0x05,0xbf,0x01,0x00,0x00,0x00,0x39,0x7e,0x08,0x7d,0x43,0x8d,0x04,0xbd,0x00,0x00,0x00,0x00,0x53,0x50,0xe8,0xe9,0x1e,0x0d,0x00,0x8b,0xd8,0x33,0xc0,0x83,0xc4,0x04,0x39,0x46,0x04,0x7e,0x18,0x8b,0xcb,0x85,0xc9,0x74,0x07,0x8b,0x16,0x8b,0x14,0x82,0x89,0x11,0x83,0xc0,0x01,0x83,0xc1,0x04,0x3b,0x46,0x04,0x7c,0xea,0x8b,0x06,0x50,0xe8,0x88,0x32,0x0d,0x00,0x83,0xc4,0x04,0x89,0x1e,0x89,0x7e,0x08,0x5b,0x5f,0x5e,0xc2,0x04,0x00};\ninline constexpr unsigned char original_00b25940[] = {0x56,0x57,0x8b,0x7c,0x24,0x0c,0x8b,0xf1,0x3b,0x7e,0x08,0x7e,0x06,0x57,0xe8,0xbd,0xd3,0xff,0xff,0x8b,0x46,0x04,0x3b,0xc7,0x7d,0x1c,0x8d,0x9b,0x00,0x00,0x00,0x00,0x8b,0x0e,0x8d,0x0c,0x81,0x85,0xc9,0x74,0x06,0xc7,0x01,0x00,0x00,0x00,0x00,0x83,0xc0,0x01,0x3b,0xc7,0x7c,0xea,0x3b,0x7e,0x04,0x7d,0x0d,0x83,0xc8,0xff,0x8b,0xff,0x01,0x46,0x04,0x3b,0x7e,0x04,0x7c,0xf8,0x89,0x7e,0x04,0x5f,0x5e,0xc2,0x04,0x00};\ninline constexpr unsigned char original_00b29b20[] = {0x56,0x6a,0x00,0x8b,0xf1,0xe8,0x16,0xbe,0xff,0xff,0x8b,0x06,0x50,0xe8,0x57,0xce,0x0c,0x00,0x83,0xc4,0x04,0x5e,0xc3};\ninline constexpr unsigned char original_00b22d10[] = {0x56,0x57,0x8b,0x7c,0x24,0x0c,0x83,0xff,0x01,0x8b,0xf1,0x7d,0x05,0xbf,0x01,0x00,0x00,0x00,0x39,0x7e,0x08,0x7d,0x43,0x8d,0x04,0xbd,0x00,0x00,0x00,0x00,0x53,0x50,0xe8,0x89,0x28,0x0d,0x00,0x8b,0xd8,0x33,0xc0,0x83,0xc4,0x04,0x39,0x46,0x04,0x7e,0x18,0x8b,0xcb,0x85,0xc9,0x74,0x07,0x8b,0x16,0x8b,0x14,0x82,0x89,0x11,0x83,0xc0,0x01,0x83,0xc1,0x04,0x3b,0x46,0x04,0x7c,0xea,0x8b,0x06,0x50,0xe8,0x28,0x3c,0x0d,0x00,0x83,0xc4,0x04,0x89,0x1e,0x89,0x7e,0x08,0x5b,0x5f,0x5e,0xc2,0x04,0x00};\n",
+    "build_script": "$ErrorActionPreference = 'Stop'\n$vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio/Installer/vswhere.exe'\n$vsPath = & $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath\n& (Join-Path $vsPath 'Common7/Tools/Launch-VsDevShell.ps1') -Arch x86 -HostArch amd64 -SkipAutomaticLocation | Out-Null\n$cmakeDirectory = Join-Path $vsPath 'Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin'\n$toolPaths = @{\n    compiler = (Get-Command cl.exe).Source\n    linker = (Get-Command link.exe).Source\n    librarian = (Get-Command lib.exe).Source\n    python = (Get-Command python.exe).Source\n    powershell = (Get-Process -Id $PID).Path\n    cmake = (Join-Path $cmakeDirectory 'cmake.exe')\n    ctest = (Join-Path $cmakeDirectory 'ctest.exe')\n}\n$toolRecords = foreach ($entry in $toolPaths.GetEnumerator()) {\n    $item = Get-Item -LiteralPath $entry.Value\n    [pscustomobject]@{ role=$entry.Key; path=$item.FullName; file_version=$item.VersionInfo.FileVersion; bytes=$item.Length }\n}\n[System.IO.File]::WriteAllText((Join-Path $PWD 'local/native_renderer_capability_tools.json'),($toolRecords | ConvertTo-Json),[System.Text.UTF8Encoding]::new($false))\ncl /nologo /std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /I include /I local /Fo:local/native_renderer_capability_probe.obj /Fe:local/native_renderer_capability_probe.exe local/native_renderer_capability_probe.cpp build/win32/Release/bsp_core.lib build/win32/Release/bsp_lua511.lib build/win32/Release/bsp_zlib121.lib /link /MANIFEST:EMBED user32.lib d3d9.lib shell32.lib kernel32.lib gdi32.lib winspool.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib\nif ($LASTEXITCODE) { throw 'Fixture compilation failed.' }\n& ./local/native_renderer_capability_probe.exe\nif ($LASTEXITCODE) { throw 'Fixture failed.' }\n",
+    "report_call_gate": {
+      "command": "python tools/verify_report_calls.py reports/native_renderer_capability_array_cleanup.json",
+      "checked": 10,
+      "failed": 0,
+      "result": "reports/native_renderer_capability_array_cleanup.json: 10 call rows checked, 0 failed"
+    }
+  },
+  "artifact_archive": {
+    "root": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\native_renderer_capability_array_cleanup_archive",
+    "policy": "copy absent paths only; existing paths require byte equality; all copied bytes rechecked; no overwrites",
+    "artifact_manifest": [
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\include\\bsp\\native_renderer_capability_array_cleanup.hpp",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\include\\bsp\\native_renderer_capability_array_cleanup.hpp",
+        "bytes": 1378,
+        "sha256": "da6d469cc1d2e82eb10e269ced2b1a03c4091714be57d4c3969fbf9207109925"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\src\\native_renderer_capability_array_cleanup.cpp",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\src\\native_renderer_capability_array_cleanup.cpp",
+        "bytes": 713,
+        "sha256": "e57ca2a1100c20604eb595054f2e1662a6d35550d5976967fdb68f4a59ff8574"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\docs\\NATIVE_RENDERER_CAPABILITY_ARRAY_CLEANUP.md",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\docs\\NATIVE_RENDERER_CAPABILITY_ARRAY_CLEANUP.md",
+        "bytes": 5280,
+        "sha256": "cf9016b55180843b9965fc816fc16100340883d882830ed0c066458bd4a924ac"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\cmake\\startup.cmake",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\cmake\\startup.cmake",
+        "bytes": 113983,
+        "sha256": "561d13237f9c6280319f35be324246368a04407f79f5623e089bb98bf4b4b724"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\include\\bsp\\native_renderer_pointer_array_destroy.hpp",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\include\\bsp\\native_renderer_pointer_array_destroy.hpp",
+        "bytes": 2071,
+        "sha256": "5c89c92aa62d71115d8d5c81353ab235b3317ca265929a656644e849e4d1f0ab"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\src\\native_renderer_pointer_array_destroy.cpp",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\src\\native_renderer_pointer_array_destroy.cpp",
+        "bytes": 2717,
+        "sha256": "e8fbf2456ac9e3e2a7fb6996d0e991b50c5ea32b184c1d0a13d376cee3956f21"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\include\\bsp\\native_renderer_capability_array_reserves.hpp",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\include\\bsp\\native_renderer_capability_array_reserves.hpp",
+        "bytes": 1836,
+        "sha256": "2aee901abca68352c1addff6a22411c81e7e54c141fbe2821f6825a146cd1e85"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\src\\native_renderer_capability_array_reserves.cpp",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\src\\native_renderer_capability_array_reserves.cpp",
+        "bytes": 3727,
+        "sha256": "f42c3e0f8fd58a65da6b2b9368b8b361dd6b3c9a8d96f8a32659cf2981fc0722"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\include\\bsp\\native_logical_vertex_owner.hpp",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\include\\bsp\\native_logical_vertex_owner.hpp",
+        "bytes": 7242,
+        "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\src\\native_logical_vertex_owner.cpp",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\src\\native_logical_vertex_owner.cpp",
+        "bytes": 25341,
+        "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\include\\bsp\\singleton_lifetime.hpp",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\include\\bsp\\singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\src\\singleton_lifetime.cpp",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\src\\singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\native_renderer_capability_reference.hpp",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\local\\native_renderer_capability_reference.hpp",
+        "bytes": 2356,
+        "sha256": "1c063908da1617dc3e1f15e11002e34729469915d8d0782321fdb3cbe018c935"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\native_renderer_capability_probe.cpp",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\local\\native_renderer_capability_probe.cpp",
+        "bytes": 7110,
+        "sha256": "3903c39156946089e04f73284bba880e97cd33cdca4e77246b61ea144ad2cbbc"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\build_native_renderer_capability_probe.ps1",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\local\\build_native_renderer_capability_probe.ps1",
+        "bytes": 1835,
+        "sha256": "3af5857eb3f91d46607c11eb0905d405eb27238e9423acff7a29f5cf6d901ac3"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\prepare_native_renderer_capability_arrays.py",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\local\\prepare_native_renderer_capability_arrays.py",
+        "bytes": 2630,
+        "sha256": "7d7cdd2b5e89859037375ccaff7806f8df73f751279a16a2e3a9d51f3c23031c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\prepare_native_renderer_capability_probe.py",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\local\\prepare_native_renderer_capability_probe.py",
+        "bytes": 1891,
+        "sha256": "cd6892699b7533cd96032f53c94a48d3c22ace021d913e2bb4e740e0dc4dc0d3"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\append_native_renderer_capability_source.py",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\local\\append_native_renderer_capability_source.py",
+        "bytes": 694,
+        "sha256": "c9c0b6d7a1ba967a544d41b625571859c84b7e2d7893752874292d54657a5029"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\write_capability_finalizer.py",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\local\\write_capability_finalizer.py",
+        "bytes": 3616,
+        "sha256": "c1afd7897005a31bd3dff687fe1d6f1d0905c7ed82d558cc5f2239088756072e"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\capability_finalizer_body.py",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\local\\capability_finalizer_body.py",
+        "bytes": 8608,
+        "sha256": "6e98b1efec8b48b266ffc163da25231d9c112c18ded479ee1cdbf3129bfc4d30"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\finalize_native_renderer_capability_array_cleanup.py",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\local\\finalize_native_renderer_capability_array_cleanup.py",
+        "bytes": 12979,
+        "sha256": "fcf29b7160042fb8ec7baf73bf2f545d65b476bee66498781a7b17acdd14c23f"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\resolve_capability_dependency_merge.py",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\local\\resolve_capability_dependency_merge.py",
+        "bytes": 1561,
+        "sha256": "62234dba99271b44b68e01571fee47c985434dc2417afa6165c386103261958e"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\native_renderer_capability_spans.json",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\local\\native_renderer_capability_spans.json",
+        "bytes": 3620,
+        "sha256": "ff2624458f3303f8a1607301229120e7be5927109c172015531e8127d9d7a62b"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\native_renderer_capability_flow.log",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\local\\native_renderer_capability_flow.log",
+        "bytes": 127,
+        "sha256": "581e6103546231b553835d5c645d0c1f3fcd584ee720decc0ca0263ee33a5522"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\native_renderer_capability_parent_action.log",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\local\\native_renderer_capability_parent_action.log",
+        "bytes": 165,
+        "sha256": "809b6afb7e236b6415f7fec82e689b231aaf3bb288fe70a60390f844c65f7fbd"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\native_renderer_capability_dependency_history.json",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\local\\native_renderer_capability_dependency_history.json",
+        "bytes": 543,
+        "sha256": "c4bc8cecc83b239b86926e618194a047ead52f571824f9130060499bb628d4da"
+      },
+      {
+        "role": "executable",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\native_renderer_capability_probe.exe",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\local\\native_renderer_capability_probe.exe",
+        "bytes": 16384,
+        "sha256": "53efa88cf289a5d66535a4227387ff1920650cd759827f8123601c5af0dfa69c",
+        "pe_machine": "014c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\native_renderer_capability_probe.obj",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\local\\native_renderer_capability_probe.obj",
+        "bytes": 32471,
+        "sha256": "5ba1218bbab44045c548ddc22c76784b4c4513026ef9c655bf2f45fc205cdaf9"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\native_renderer_capability_probe.log",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\local\\native_renderer_capability_probe.log",
+        "bytes": 412,
+        "sha256": "28a3e8063458407098f6e4c6f73a11486a6a78466a59053bc5a3d6cc1035a90b"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\native_renderer_capability_build.log",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\local\\native_renderer_capability_build.log",
+        "bytes": 46960,
+        "sha256": "a1272e87eb3220c7f10ac0fde630e813eeba12a6c791e3a9aec41cd5787f3ac9"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\native_renderer_capability_seeds.log",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\local\\native_renderer_capability_seeds.log",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\native_renderer_capability_tools.json",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\local\\native_renderer_capability_tools.json",
+        "bytes": 1456,
+        "sha256": "320355eab0262856bfb59a789f36f8f7c28fb8c862d7eaf8490f0496f30c6d77"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\seed_reference.hpp",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\local\\seed_reference.hpp",
+        "bytes": 2995,
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\build\\win32\\Release\\bsp_core.lib",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\build\\win32\\Release\\bsp_core.lib",
+        "bytes": 57716304,
+        "sha256": "e6f6ce7888f35b845ae21a0b22d6dab4548d565569e7df1b3181297c9f989992"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\build\\win32\\Release\\bsp_lua511.lib",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\build\\win32\\Release\\bsp_lua511.lib",
+        "bytes": 456140,
+        "sha256": "e259f00d9a1d8937d489600655c4315a5154e1b96f3cfc9a9b9715b6ec9fb6e0"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\build\\win32\\Release\\bsp_zlib121.lib",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\build\\win32\\Release\\bsp_zlib121.lib",
+        "bytes": 72226,
+        "sha256": "0a915d4dd63b996588dfe4827d1bc629a38d6a76fa8b04e7c1edd437b80d2e3d"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\tools\\bsp.py",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\tools\\bsp.py",
+        "bytes": 63768,
+        "sha256": "848a26c48d64002df10da7e233d14968baa51f097fdd08474eb2169c4f0e9d61"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\tools\\ghidra_export.py",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\tools\\ghidra_export.py",
+        "bytes": 13401,
+        "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\tools\\verify_report_calls.py",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\tools\\verify_report_calls.py",
+        "bytes": 9233,
+        "sha256": "396e6d544dece7c9551ff10ee15ab234a0ad1c4a339fd118ddec20de1bb7a8cd"
+      },
+      {
+        "role": "source_library_probe_or_log",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\scripts\\build.ps1",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\scripts\\build.ps1",
+        "bytes": 1657,
+        "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+      }
+    ],
+    "executable_artifacts": [
+      {
+        "role": "executable",
+        "original_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-capability-array-cleanup\\local\\native_renderer_capability_probe.exe",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\inputs\\local\\native_renderer_capability_probe.exe",
+        "bytes": 16384,
+        "sha256": "53efa88cf289a5d66535a4227387ff1920650cd759827f8123601c5af0dfa69c",
+        "pe_machine": "014c"
+      }
+    ],
+    "observed_tool_executables": [
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\tools\\cmake\\cmake.exe",
+        "bytes": 14060088,
+        "sha256": "d8173552e9d943c20feadd74d0437371f49d45c3d53a20dae2655ecc2493392c",
+        "pe_machine": "8664",
+        "tool_role": "cmake",
+        "file_version": "4.2.3-msvc3"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\tools\\compiler\\cl.exe",
+        "bytes": 891752,
+        "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938",
+        "pe_machine": "8664",
+        "tool_role": "compiler",
+        "file_version": "19.51.36244.0"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\ctest.exe",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\tools\\ctest\\ctest.exe",
+        "bytes": 15152224,
+        "sha256": "4d00d31a10d004edb8d7f39bcd47d0a94da1cd4464e9d2246d199f0cf6c7852b",
+        "pe_machine": "8664",
+        "tool_role": "ctest",
+        "file_version": "4.2.3-msvc3"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\lib.exe",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\tools\\librarian\\lib.exe",
+        "bytes": 23424,
+        "sha256": "8c59e7b3642ad1c5719bdc5e567e89254ab1022b7d20f1933e79b92213c76ebc",
+        "pe_machine": "8664",
+        "tool_role": "librarian",
+        "file_version": "14.51.36244.0"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\tools\\linker\\link.exe",
+        "bytes": 3698016,
+        "sha256": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81",
+        "pe_machine": "8664",
+        "tool_role": "linker",
+        "file_version": "14.51.36244.0"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\tools\\powershell\\pwsh.exe",
+        "bytes": 301368,
+        "sha256": "362a356ce7f0940ec74f73a8fc2c990a2cc24a38a11c90bbd8eca947110ad139",
+        "pe_machine": "8664",
+        "tool_role": "powershell",
+        "file_version": "7.6.5.500"
+      },
+      {
+        "role": "observed_tool_executable",
+        "original_path": "C:\\ProgramData\\miniconda3\\python.exe",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\tools\\python\\python.exe",
+        "bytes": 104264,
+        "sha256": "ec0ea8d6907787b76dcf8524aaa93e52e167ceee62fa8778e182ea637a3dbc1d",
+        "pe_machine": "8664",
+        "tool_role": "python",
+        "file_version": "3.13.11"
+      }
+    ]
+  },
+  "loaded_runtime_dll_evidence": {
+    "observation": "GetModuleHandleW/GetModuleFileNameW and loaded PE machine inside running Win32 fixture; canonical file from handle opened by same process",
+    "hash_basis": "post-run disk file and archived copy hash, not mapped-image hash",
+    "loaded_runtime_dlls": [
+      {
+        "role": "loaded_runtime_dll_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\runtime\\ucrtbase.dll",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "pe_machine": "014c",
+        "module_name": "ucrtbase.dll",
+        "reported_loaded_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "loaded_image_machine": "014c"
+      },
+      {
+        "role": "loaded_runtime_dll_file",
+        "original_path": "\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "archive_path": "local\\native_renderer_capability_array_cleanup_archive\\runtime\\vcruntime140.dll",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "pe_machine": "014c",
+        "module_name": "vcruntime140.dll",
+        "reported_loaded_path": "C:\\WINDOWS\\SYSTEM32\\VCRUNTIME140.dll",
+        "canonical_path_from_running_x86_process": "\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "loaded_image_machine": "014c"
+      }
+    ],
+    "checked_but_unloaded": [
+      "msvcp140.dll",
+      "vcruntime140_1.dll"
+    ]
+  },
+  "remaining_boundaries": [
+    "allocation failure static/source only, not fault-injected",
+    "original caller/register/private-frame and native CRT/SEH identity",
+    "valid raw extents/lifetimes and wrapping addresses; no malformed/concurrent-header guarantee",
+    "full parent captured-frame/state mapping integrator-owned",
+    "observed tool executables do not cover every dependency",
+    "runtime disk/archive hashes separate from mapped-image identity",
+    "no game integration or game validation"
+  ],
+  "orch5_parent_dependency_integration": {
+    "code_commit": "aa836cddc1c64cad1664fe5c140312adab054544",
+    "checkpoint": {
+      "path": "local/checkpoints/aa836cdd/native-renderer-parent-dependencies/validation.json",
+      "sha256": "e6cbd24bb0166528f733e3075862ab1edb655ea9624b623e7cf08f6df90fdbc3",
+      "code_commit": "aa836cddc1c64cad1664fe5c140312adab054544",
+      "artifacts": 3583
+    },
+    "strict_msvc_win32_build": true,
+    "verified_native_seeds": 8,
+    "ctests_passed": 2,
+    "fixture_program": "local/native_renderer_parent_integration/renderer_cap_array_probe.exe",
+    "fixture_scope": "Two distinct actual entry adapters share the fully checked raw reserve/resize/free implementation. Seven original/source comparisons passed; allocation-failure behavior remains static.",
+    "packet_entry_extent_bytes_including_existing_raw_variants": 103,
+    "saved_annotation_journal": "local/ghidra-annotations-20260914T161950Z.json",
+    "fresh_native_byte_review": {
+      "spans": 59,
+      "bytes": 11642,
+      "scope": "combined packet and explicit dependency/context spans"
+    },
+    "call_site_review": {
+      "rows_checked": 503,
+      "failures": 0,
+      "scope": "combined direct and tail rows; row counts include explicit dependency duplicates, not unique sites"
+    },
+    "original_fh3_seh_abi_validated": false,
+    "game_validated": false
+  }
+}
