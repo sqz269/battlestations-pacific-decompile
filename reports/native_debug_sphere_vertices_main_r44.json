@@ -1,0 +1,376 @@
+{
+  "schema_version": 1,
+  "packet": "native_debug_sphere_vertices_r44",
+  "status": "isolated_fragment_source_build_object_and_relocated_native_fixture_checked",
+  "created_utc": "2026-09-16T12:55:09.591638+00:00",
+  "baseline_commit": "56ce8a944ff39a88df42a90653c07154bbf56ab6",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-debug-records24-contract-r41",
+  "source": "src/native_debug_sphere_vertices.cpp",
+  "header": "include/bsp/native_debug_sphere_vertices.hpp",
+  "documentation": "docs/NATIVE_DEBUG_SPHERE_VERTICES_R44.md",
+  "scope": "Adopt only the isolated sphere vertex interior. No parent debug-records24 context, raw-node body, new owner, permanent test, original-function creation, or Ghidra mutation.",
+  "fragment": {
+    "original_parent": "00b2bb90",
+    "start": "00b2bf60",
+    "end_inclusive": "00b2c142",
+    "end_exclusive": "00b2c143",
+    "span_bytes": 483,
+    "reachable_instruction_rows": 123,
+    "linear_disassembly_note": "The original 483-byte span includes eight unreachable alignment bytes skipped by B2C006. The reachable instruction graph contains 123 instructions.",
+    "calls": 0,
+    "separate_original_function": false,
+    "native_sha256": "75d96f117722131ef42cd699dd91790e006502a6c1405cf931160f0fd50c8c86",
+    "native_inputs": "Original EAX output, ECX color, parent private stack +50/+54/+58/+5C center/radius, and actual CEC730 double.",
+    "native_exit": "Falls through to B2C143 inside the parent; it has no independent original RET.",
+    "source_interface": "fastcall ECX destination, EDX center/radius DWORD pointer; stacked uint32 color and const volatile double* angle step; RET8. The wrapper preserves EBP and snapshots input into its own 98h scratch allocation.",
+    "new_original_function_credit": 0,
+    "new_original_function_bytes_credit": 0,
+    "fragment_coverage": "All 123 ordered reachable instruction rows and all 38 vertices in the documented source domain."
+  },
+  "provenance": {
+    "historical_commit": "a6b2884f2ef01c3a0b636b0853dc66ec7855aeba",
+    "historical_source": "src/native_renderer_debug_records24_leaves.cpp",
+    "historical_symbol": "write_native_debug_sphere_vertices_00b2bf60",
+    "adoption": "Extracted only the historical comment and full function body, byte-for-byte after LF normalization; added minimal independent header, Win32 compile guard and namespace/static_assert wrapper.",
+    "function_body_lf_sha256": "f5276d88ef42b2239dc69f2f11768b5371b79d10efde4ab987bb996f8e371713",
+    "historical_parent_evidence": "650d55491",
+    "historical_archive_manifest": "J:/PROG/battlestations-pacific-decompile-orch5-native-renderer-debug-records24/local/output/debug24_validated_artifacts_v2/manifest.json",
+    "historical_archive_manifest_sha256": "44a4e4e1d483b9829b414101dabca8637d4051c495a6f4d76797fc1a11cbd46f",
+    "historical_fixture_source": "artifacts/04507_6c0a54665eb6_debug24_probe.cpp",
+    "historical_fixture_source_sha256": "6c0a54665eb632b66a39a5c787aa8e7eb6ff7b9788b40f2ab9848f5758742c39",
+    "fixture_adaptation": "Retained historical vertex_case, original stack shim and loaded-module recorder. Removed parent/notification cases, changed header/paths and loaded the fresh isolated 483-byte native capture directly.",
+    "R41_integrated_baseline": "56ce8a944",
+    "R41_parent_archive_reference": {
+      "path": "local/evidence-r41/debug24-provider-contract-r41.zip",
+      "sha256": "561983cc4bab2b78adf9e3cf15ea24f4592d49389fd1363afe491d999d2ed5a2",
+      "verification": "Parent-supplied reference; this R44 packet does not rehash that separate archive."
+    }
+  },
+  "live_native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Each bsp.py ghidra bytes query verifies live project, program path, x86 language and image base through Client.verify. Both returned spans were independently compared to installed PE data.",
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sphere_live_equals_pe": true,
+    "step_live_equals_pe": true,
+    "step": {
+      "address": "00cec730",
+      "bytes": 8,
+      "hex": "0000004052c1e03f",
+      "sha256": "f9e6ffa7baa63fcae1e7a05cf87949fed958b744b09cb66d8350cc2e8b21af5f"
+    },
+    "mutations": 0,
+    "new_original_functions": 0
+  },
+  "object_verification": {
+    "object": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-debug-records24-contract-r41\\build\\win32\\bsp_core.dir\\Release\\native_debug_sphere_vertices.obj",
+    "machine": "014c",
+    "object_sha256": "ea6453092d0e81fb33b84a06918bdb6102054c2ea2fe6cd16183b85847862e2c",
+    "symbol": {
+      "name": "?write_native_debug_sphere_vertices_00b2bf60@bsp@@YIXPAXPBXIPDN@Z",
+      "value": 0,
+      "section": 3,
+      "kind": 32,
+      "storage": 2
+    },
+    "section": {
+      "name": ".text$mn",
+      "size": 537,
+      "pointer": 459,
+      "relocations": 0
+    },
+    "source_function_bytes": 537,
+    "source_interior_bytes": 461,
+    "native_span_bytes": 483,
+    "native_span_sha256": "75d96f117722131ef42cd699dd91790e006502a6c1405cf931160f0fd50c8c86",
+    "original_reachable_instructions": 123,
+    "source_interior_instructions": 123,
+    "instructions_and_operands_match": true,
+    "branch_targets_match_by_native_instruction": true,
+    "calls": 0,
+    "data_operand_adaptations": [
+      {
+        "native_address": "00b2bf74",
+        "native": "qword ptr [0xcec730]",
+        "source": "qword ptr [ebp]"
+      },
+      {
+        "native_address": "00b2c014",
+        "native": "qword ptr [0xcec730]",
+        "source": "qword ptr [ebp]"
+      },
+      {
+        "native_address": "00b2c0b4",
+        "native": "qword ptr [0xcec730]",
+        "source": "qword ptr [ebp]"
+      }
+    ],
+    "source_function_body_equals_historical": true,
+    "source_function_body_lf_sha256": "f5276d88ef42b2239dc69f2f11768b5371b79d10efde4ab987bb996f8e371713",
+    "return": "RET8",
+    "scope": "COFF source wrapper and interior arithmetic/branch comparison; no original parent ABI claim."
+  },
+  "behavior": {
+    "ring_counts": [
+      13,
+      12,
+      13
+    ],
+    "rings": [
+      "XY indices 0..12",
+      "YZ indices 1..12",
+      "XZ indices 0..12"
+    ],
+    "stride": 16,
+    "vertices": 38,
+    "output_bytes": 608,
+    "arithmetic": "Preserves all FILD32/FMUL64/FSTP32/FCOS/FSIN/radius multiply/addition/float-spill sequences and each ordered temporary/output write. No trigonometric library or SSE arithmetic replacement.",
+    "angle_step": "Three static FMUL64 instructions read the same borrowed actual CEC730 double in their loops. Object operands differ from original absolute memory only by the explicit [EBP] pointer binding.",
+    "color": "Caller color DWORD is copied verbatim into every vertex. The fixture uses FF0000FF, matching its historical case; arbitrary color behavior also follows the unchanged MOV instructions.",
+    "preimage_and_aliases": "Fixture inputs reproduce the historical two center/radius records and output preimage D15EA5ED. The source wrapper snapshots input words before output; private scratch words used by the kernel follow native writes, with no default fill. Arbitrary aliases into original parent-private scratch and ambient x87 faults are unproved. Angle-step/output aliasing is not exercised by the fixture."
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "build_exit": 0,
+    "command": "./scripts/build.ps1",
+    "compiler_runtime": "/MD",
+    "compiler_options": [
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "seed_matches": 8,
+    "ctests_passed": 3,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "fixture_exit": 0,
+    "fixture_cases": 8,
+    "rounding_modes": 4,
+    "input_records": [
+      [
+        "3fa00000",
+        "c0200000",
+        "80000000",
+        "40d00000"
+      ],
+      [
+        "00000000",
+        "7f000000",
+        "3f800000",
+        "80000000"
+      ]
+    ],
+    "fixture_comparison": "Two records under every x87 rounding mode; compare all 608 output bytes plus two four-byte canaries, and check all 38 color words. x87 control word restored afterward.",
+    "original_execution": "Copied exact original interior. Only the three absolute CEC730 operands are relocated to the same double supplied to source; one RET byte appended. Historical naked shim compensates for the inserted return address and exposes original register/stack inputs.",
+    "runtime_block_bytes": 484,
+    "runtime_relocations": [
+      {
+        "native_address": "00b2bf74",
+        "operand_offset": 22,
+        "expected_original": "00cec730"
+      },
+      {
+        "native_address": "00b2c014",
+        "operand_offset": 182,
+        "expected_original": "00cec730"
+      },
+      {
+        "native_address": "00b2c0b4",
+        "operand_offset": 342,
+        "expected_original": "00cec730"
+      }
+    ],
+    "source_link": "Probe map resolves the source symbol to bsp_core:native_debug_sphere_vertices.obj from the freshly built bsp_core.lib; no host stand-in body.",
+    "object_comparison": "123 reachable native instructions versus 123 compiled source kernel instructions; mnemonic/operand parity and mapped branch targets, with only the three explicit borrowed-angle operand substitutions. Zero calls and zero COFF section relocations.",
+    "permanent_tests_added": 0
+  },
+  "frozen_evidence": {
+    "manifest": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-debug-records24-contract-r41\\local\\output\\sphere_r44_validated_artifacts\\manifest.json",
+    "manifest_sha256": "2db7524a3cba270b053452dbdf089fac13ec6c40af3542885c26ded066abcc31",
+    "archive": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-debug-records24-contract-r41\\local\\output\\sphere_r44_validated_artifacts.zip",
+    "archive_sha256": "73fa81df4cbf428134b75a619335af5f62e2f4e70bd166c18040509142df9988",
+    "archive_bytes": 72887393,
+    "artifacts": 5062,
+    "artifact_bytes": 280419210,
+    "loaded_modules": 8
+  },
+  "frozen_closure_scope": "Modified owned source/header/CMake plus every existing observed BSP-core compiler/library read input from build tlogs, probe compiler includes/linker library search, compiler tools, output library/objects/probe, exact native spans and runtime modules are frozen by hash. Baseline commit alone is not the built-source identity.",
+  "frozen_closure_check": {
+    "zip_crc_passed": true,
+    "zip_entries": 5063,
+    "manifest_and_archive_sha256_rechecked": true,
+    "every_frozen_copy_sha256_checked_during_capture": true,
+    "selected_current_artifacts_equal_frozen_hashes": true
+  },
+  "selected_artifacts": [
+    {
+      "path": "include/bsp/native_debug_sphere_vertices.hpp",
+      "bytes": 729,
+      "sha256": "43417bf0d280e5b6432c3221a2042ae459f0b6c3faf8c381b9ca70f9b39534ba",
+      "frozen_path": "artifacts\\02539_43417bf0d280_native_debug_sphere_vertices.hpp"
+    },
+    {
+      "path": "src/native_debug_sphere_vertices.cpp",
+      "bytes": 6463,
+      "sha256": "c4bebda8b48e4cabdfad44f994ffcad9ba3597e6c087e97425b6c0d6ed5af499",
+      "frozen_path": "artifacts\\04057_c4bebda8b48e_native_debug_sphere_vertices.cpp"
+    },
+    {
+      "path": "docs/NATIVE_DEBUG_SPHERE_VERTICES_R44.md",
+      "bytes": 2727,
+      "sha256": "bca55f3ed60e5332d04d3394aa066814a64cf440867b5eda34ef0bedceecb29d",
+      "frozen_path": "artifacts\\02037_bca55f3ed60e_NATIVE_DEBUG_SPHERE_VERTICES_R44.md"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 150963,
+      "sha256": "0ba65a6608063cdfc1c154d45f743438024e2d080d9ce584776ed619a925b5c1",
+      "frozen_path": "artifacts\\02033_0ba65a660806_startup.cmake"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 63494502,
+      "sha256": "3fca2701b4f19df9618eb96488ea64fe842a6026bbd412d1a01e3a9de3fb0d45",
+      "frozen_path": "artifacts\\02028_3fca2701b4f1_bsp_core.lib"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_debug_sphere_vertices.obj",
+      "bytes": 1296,
+      "sha256": "ea6453092d0e81fb33b84a06918bdb6102054c2ea2fe6cd16183b85847862e2c",
+      "frozen_path": "artifacts\\01026_ea6453092d0e_native_debug_sphere_vertices.obj"
+    },
+    {
+      "path": "local/sphere_r44_probe.exe",
+      "bytes": 27648,
+      "sha256": "e21d57687282fa724ee5bb2829082992ae1b5d82560367971b48c3e6e0c29e7c",
+      "frozen_path": "artifacts\\03550_e21d57687282_sphere_r44_probe.exe"
+    },
+    {
+      "path": "local/sphere_r44_probe.obj",
+      "bytes": 132597,
+      "sha256": "c8dc60721773d9a4279c4bccd7a98a94c123ed01059556dea54d7b577a37cd9e",
+      "frozen_path": "artifacts\\03552_c8dc60721773_sphere_r44_probe.obj"
+    },
+    {
+      "path": "local/sphere_r44_probe.cpp",
+      "bytes": 4709,
+      "sha256": "051f5f1bb5eebbd18b005cb72f6c43bc01d7c58815c33bb673156203bd31d15d",
+      "frozen_path": "artifacts\\03549_051f5f1bb5ee_sphere_r44_probe.cpp"
+    },
+    {
+      "path": "local/sphere_r44_probe_build.cmd",
+      "bytes": 502,
+      "sha256": "36e0719010a5621427ddfb6843e4163ae3a3351623c9f7da792a3d694370ed14",
+      "frozen_path": "artifacts\\03553_36e0719010a5_sphere_r44_probe_build.cmd"
+    },
+    {
+      "path": "local/sphere_r44_probe_dependencies.json",
+      "bytes": 26880,
+      "sha256": "b8bdcc1bb382d2899a9afb832a80fe2527ac4ee56c77d24eb3eb55131ff1926d",
+      "frozen_path": "artifacts\\03555_b8bdcc1bb382_sphere_r44_probe_dependencies.json"
+    },
+    {
+      "path": "local/sphere_r44_probe.map",
+      "bytes": 60056,
+      "sha256": "9009e3495570d643cedd6dd6646655078a7e400444539d5afbc22775e43fe1de",
+      "frozen_path": "artifacts\\03551_9009e3495570_sphere_r44_probe.map"
+    },
+    {
+      "path": "local/sphere_r44_probe_build.log",
+      "bytes": 5073,
+      "sha256": "76b3549235c6fd44e771fb49905de37cae84b5f112e3dc5189920849519741d5",
+      "frozen_path": "artifacts\\03554_76b3549235c6_sphere_r44_probe_build.log"
+    },
+    {
+      "path": "local/sphere_r44_probe_run.log",
+      "bytes": 668,
+      "sha256": "e74758445b4c5852aa2511a7fe1922795bb1dc2132118107e58df26503d9cfb8",
+      "frozen_path": "artifacts\\03556_e74758445b4c_sphere_r44_probe_run.log"
+    },
+    {
+      "path": "local/sphere_r44_vertex_runtime.bin",
+      "bytes": 484,
+      "sha256": "acfa59efdec6dd11fb332a1c55ab00543466bf0cbf49b37338a84f0ae1c5d571",
+      "frozen_path": "artifacts\\03561_acfa59efdec6_sphere_r44_vertex_runtime.bin"
+    },
+    {
+      "path": "local/sphere_r44_sphere.bin",
+      "bytes": 483,
+      "sha256": "75d96f117722131ef42cd699dd91790e006502a6c1405cf931160f0fd50c8c86",
+      "frozen_path": "artifacts\\03558_75d96f117722_sphere_r44_sphere.bin"
+    },
+    {
+      "path": "local/sphere_r44_step.bin",
+      "bytes": 8,
+      "sha256": "f9e6ffa7baa63fcae1e7a05cf87949fed958b744b09cb66d8350cc2e8b21af5f",
+      "frozen_path": "artifacts\\03559_f9e6ffa7baa6_sphere_r44_step.bin"
+    },
+    {
+      "path": "local/sphere_r44_build.log",
+      "bytes": 58448,
+      "sha256": "12b8c67275017e1ace6c21e126ee6ee9022f09e8671a2425b0a560d6acf0b09f",
+      "frozen_path": "artifacts\\03544_12b8c6727501_sphere_r44_build.log"
+    },
+    {
+      "path": "local/sphere_r44_seeds.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "frozen_path": "artifacts\\03557_edd871f38f1f_sphere_r44_seeds.log"
+    },
+    {
+      "path": "local/sphere_r44_object_audit.json",
+      "bytes": 1663,
+      "sha256": "d3ad9a7d72ac3068d712687fcef9a43850c4ba3a933610ccf834401ed111f79d",
+      "frozen_path": "artifacts\\03546_d3ad9a7d72ac_sphere_r44_object_audit.json"
+    }
+  ],
+  "actually_loaded_modules": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-debug-records24-contract-r41\\local\\sphere_r44_probe.exe",
+      "sha256": "e21d57687282fa724ee5bb2829082992ae1b5d82560367971b48c3e6e0c29e7c"
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\ntdll.dll",
+      "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df"
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+      "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3"
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\KernelBase.dll",
+      "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253"
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\apphelp.dll",
+      "sha256": "a8109618c3bf3623be23e8e18f1e7184538600c953169297fd0009ed77564c6e"
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+      "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b"
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\msvcp140.dll",
+      "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a"
+    },
+    {
+      "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+      "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3"
+    }
+  ],
+  "integration": {
+    "cmake": "One additive bsp_core source registration in cmake/startup.cmake; short global CMake lease released after writing it.",
+    "ledger": "No worker ledger/name edits. Parent integrator owns any fragment record and address evidence update; B2BF60 must not become an original function.",
+    "next_parent_status": "This isolated fragment does not unblock full B2BB90 until its remaining genuine generated/gather/constants/pass context dependencies are adopted and composed."
+  },
+  "limits": [
+    "Different source ABI and private stack; no original parent callable ABI claim.",
+    "No injected hardware faults, original FH3/SEH, exception identity or full ambient x87-stack proof.",
+    "No active/cold debug-record parent, gather, pass, model-owner or full renderer execution.",
+    "No gameplay or visual validation.",
+    "Frozen library and unconsumed objects are build artifacts, not loaded runtime modules."
+  ]
+}
