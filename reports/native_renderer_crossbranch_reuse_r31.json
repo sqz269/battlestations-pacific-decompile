@@ -1,0 +1,959 @@
+{
+  "packet": "renderer_crossbranch_reuse_r31",
+  "generated_utc": "2026-09-16T02:15:00.355252-07:00",
+  "audit_kind": "read-only cross-branch source, contract and retained-evidence review; no integration or production edit",
+  "scope": {
+    "main_baseline": "cd5fe0a47753b76557f4abc37eac9b4f3119a272",
+    "initial_main_baseline": "c5262f065",
+    "source_branch": "agent/orch5-20260911",
+    "source_tip": "769bdc3e3b8254f95867b11e2546d629f2a564b6",
+    "source_tip_date": "2026-09-14T21:56:44-07:00",
+    "scoped_dependency_blobs_unchanged_during_main_advance": true,
+    "no_orch5_worktree_writes": true,
+    "no_compile_or_probe_execution": true,
+    "no_source_branch_merge_or_cherry_pick": true,
+    "no_ghidra_analysis_or_mutation": true,
+    "permitted_main_fast_forwards": [
+      "c5262f065",
+      "cd5fe0a47753b76557f4abc37eac9b4f3119a272"
+    ],
+    "observed_main_at_completion": "25b238304022088ab35fbbd93816e7e6c60bdeba"
+  },
+  "outcome": {
+    "recommended_first_reuse": "Nine-body native_renderer_base_lifetime pair alone.",
+    "base_source_compatible_with_main": true,
+    "assessment": "Static source/signature/dependency compatibility; not a fresh build or runtime proof.",
+    "duplicate_reconstruction_unnecessary": true,
+    "full_derived_adoption": "Defer; existing complete parent source schedules require unresolved provider/lifetime contracts and an application producer."
+  },
+  "base_only_subset": {
+    "source_files": [
+      {
+        "path": "include/bsp/native_renderer_base_lifetime.hpp",
+        "git_blob": "76cd63184c934baaf38bc49a8eccbf0109156d34",
+        "source_commit": "b521b0a5988081eaee24e9ab535e6055379bf5a7",
+        "main_present": false
+      },
+      {
+        "path": "src/native_renderer_base_lifetime.cpp",
+        "git_blob": "d7bb4de553673c7ee5d798341e7d3c96c883b438",
+        "source_commit": "b521b0a5988081eaee24e9ab535e6055379bf5a7",
+        "main_present": false
+      }
+    ],
+    "body_count": 9,
+    "ordinary_native_bytes": 640,
+    "functions": [
+      {
+        "address": "00b33a70",
+        "inclusive_end": "00b33a8c",
+        "byte_length": 29,
+        "byte_sha256": "70b8154d4318cd646764557c623558fdf8f4351d7c01404f2cc7ea0298314aee",
+        "matches_installed_executable": true,
+        "name": "construct_native_renderer_primary_base_00b33a70",
+        "coverage": "complete native normal body and C++ EH cleanup behavior",
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "address": "00b33d90",
+        "inclusive_end": "00b33d9d",
+        "byte_length": 14,
+        "byte_sha256": "aa162d48a96957a8074415cc267052a20110d3461f755ae7782dd806313f9d69",
+        "matches_installed_executable": true,
+        "name": "destroy_native_renderer_primary_base_00b33d90",
+        "coverage": "complete native normal body and C++ EH cleanup behavior",
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "address": "00b33e10",
+        "inclusive_end": "00b33e36",
+        "byte_length": 39,
+        "byte_sha256": "a2065d36e166e05403d4edf6520e886c3b5ffb85802d61f7b46ebd7ab4e412b7",
+        "matches_installed_executable": true,
+        "name": "delete_native_renderer_primary_base_00b33e10",
+        "coverage": "complete native normal body and C++ EH cleanup behavior",
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "address": "00b25f40",
+        "inclusive_end": "00b25fd7",
+        "byte_length": 152,
+        "byte_sha256": "126928885c0e94ac53db4fb2adbe8eecf81a4c48eea36608e184b86fc471738b",
+        "matches_installed_executable": true,
+        "name": "construct_native_renderer_singleton_subobject_00b25f40",
+        "coverage": "complete native normal body and C++ EH cleanup behavior",
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "address": "00b25fe0",
+        "inclusive_end": "00b26082",
+        "byte_length": 163,
+        "byte_sha256": "b5f37e141e85f1bd744744cb5f7d2c1774491452db7d272ab9f5f9b5563f98a5",
+        "matches_installed_executable": true,
+        "name": "destroy_native_renderer_singleton_subobject_00b25fe0",
+        "coverage": "complete native normal body and C++ EH cleanup behavior",
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "address": "00b26090",
+        "inclusive_end": "00b260ad",
+        "byte_length": 30,
+        "byte_sha256": "7f1092ea01aec8c34e3d6c54c90b64eb4db0b8dc147215248c5e607593ce0c74",
+        "matches_installed_executable": true,
+        "name": "delete_native_renderer_singleton_subobject_00b26090",
+        "coverage": "complete native normal body and C++ EH cleanup behavior",
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "address": "00b283f0",
+        "inclusive_end": "00b2844e",
+        "byte_length": 95,
+        "byte_sha256": "49e9a3587f545c07fafdee649c817373acf5903afb69fbcfebadcf50e810f44a",
+        "matches_installed_executable": true,
+        "name": "construct_native_renderer_base_00b283f0",
+        "coverage": "complete native normal body and C++ EH cleanup behavior",
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "address": "00b284e0",
+        "inclusive_end": "00b28537",
+        "byte_length": 88,
+        "byte_sha256": "bbb5df13669089e320b2e517b8a5188acccb93bbdb031841d912344f5a95120c",
+        "matches_installed_executable": true,
+        "name": "destroy_native_renderer_base_00b284e0",
+        "coverage": "complete native normal body and C++ EH cleanup behavior",
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "address": "00b28540",
+        "inclusive_end": "00b2855d",
+        "byte_length": 30,
+        "byte_sha256": "25ec71bd6b8a1d2114473b4caed5b5da7fd35e781291f407a7a8cb75b327a180",
+        "matches_installed_executable": true,
+        "name": "delete_native_renderer_base_00b28540",
+        "coverage": "complete native normal body and C++ EH cleanup behavior",
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "code_commit": "b521b0a5988081eaee24e9ab535e6055379bf5a7",
+    "evidence_commit": "3c85892ea6eab2e3663159c70ad9385a2fe38e45",
+    "historical_integrated_code_commit": "8f73fbf754bc47dfac527e898c3cf7a4cc6ebfa4",
+    "smallest_review_delta": [
+      "Add only include/bsp/native_renderer_base_lifetime.hpp and src/native_renderer_base_lifetime.cpp from b521b0a59.",
+      "Add one deferred bsp_core source registration for src/native_renderer_base_lifetime.cpp; preserve all current CMake entries.",
+      "Carry named base lifetime report/doc and existing flow-repair evidence; review ledger records individually later, without replacing shards.",
+      "Retain all current main provider files. No resource-support, gather-capabilities, SoundLifetimeAccess, native_model_owner or shared-deletion-table replacement is required."
+    ],
+    "providers": [
+      {
+        "symbol": "get_native_singleton_manager_00415350",
+        "header": "include/bsp/native_singleton_publication.hpp",
+        "source": "src/native_singleton_publication.cpp",
+        "main_header_blob": "efb55fd128088fa594c8f4c71a26017b9023c5ce",
+        "source_header_blob": "efb55fd128088fa594c8f4c71a26017b9023c5ce",
+        "main_source_blob": "2478972b6f3df07e9fb6c66e7ac04eebafa69bb8",
+        "source_source_blob": "2478972b6f3df07e9fb6c66e7ac04eebafa69bb8",
+        "header_and_source_identical": true
+      },
+      {
+        "symbol": "register_native_singleton_object_00bd0c30",
+        "header": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+        "source": "src/native_singleton_vector_registration_wrappers.cpp",
+        "main_header_blob": "9379a2a6cd97f13fabc2554b0b539363b85a5da2",
+        "source_header_blob": "9379a2a6cd97f13fabc2554b0b539363b85a5da2",
+        "main_source_blob": "4096dfcf1c693f3c509c8db5f1cfb621e523b0d0",
+        "source_source_blob": "4096dfcf1c693f3c509c8db5f1cfb621e523b0d0",
+        "header_and_source_identical": true
+      },
+      {
+        "symbol": "unregister_native_singleton_object_00bcfca0",
+        "header": "include/bsp/native_singleton_removal_reorder.hpp",
+        "source": "src/native_singleton_removal_reorder.cpp",
+        "main_header_blob": "f2a02b1b56d640d2fa144e22c01e95c623d7c3eb",
+        "source_header_blob": "f2a02b1b56d640d2fa144e22c01e95c623d7c3eb",
+        "main_source_blob": "1b5f0f7f5cae8159456bc0cab19cf5b5d102afd5",
+        "source_source_blob": "1b5f0f7f5cae8159456bc0cab19cf5b5d102afd5",
+        "header_and_source_identical": true
+      },
+      {
+        "symbol": "create_native_tracked_critical_section_00bd1860",
+        "header": "include/bsp/native_renderer_worker_lifetime.hpp",
+        "source": "src/native_renderer_worker_lifetime.cpp",
+        "main_header_blob": "484cbc12dfe5be998ee8e92c71afb59a57a806f4",
+        "source_header_blob": "484cbc12dfe5be998ee8e92c71afb59a57a806f4",
+        "main_source_blob": "5212269531c2f191f6feb01f6b00b9cdf53afa21",
+        "source_source_blob": "5212269531c2f191f6feb01f6b00b9cdf53afa21",
+        "header_and_source_identical": true
+      },
+      {
+        "symbol": "release_native_tracked_critical_section_0041cc80",
+        "header": "include/bsp/native_tracked_critical_section_release.hpp",
+        "source": "src/native_tracked_critical_section_release.cpp",
+        "main_header_blob": "b28278cb22f7f4a878324e704248594fa4cfd890",
+        "source_header_blob": "b28278cb22f7f4a878324e704248594fa4cfd890",
+        "main_source_blob": "f58ab65e3fbf08e58e05aa0fca231b1fa3883568",
+        "source_source_blob": "f58ab65e3fbf08e58e05aa0fca231b1fa3883568",
+        "header_and_source_identical": true
+      },
+      {
+        "symbol": "destroy_native_generic_singleton_base_00412430",
+        "header": "include/bsp/native_render_service_base.hpp",
+        "source": "src/native_render_service_base.cpp",
+        "main_header_blob": "ee7f5b12da69a44a80bf2dc460509a084af5b3c6",
+        "source_header_blob": "ee7f5b12da69a44a80bf2dc460509a084af5b3c6",
+        "main_source_blob": "f7d944a729cbb580238bc7d9719fb535a86ad1e9",
+        "source_source_blob": "f7d944a729cbb580238bc7d9719fb535a86ad1e9",
+        "header_and_source_identical": true
+      },
+      {
+        "symbol": "destroy_native_singleton_guard_00411ee0",
+        "header": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+        "source": "src/native_diagnostic_sink_lifetime.cpp",
+        "main_header_blob": "646e3ee0b3db2a052392e1f7ea74e8bf724daf6a",
+        "source_header_blob": "a9deb30b81e575ea396c5255534d555084d168ba",
+        "main_source_blob": "3e5c92357a44fa478f58b745423cc41195770840",
+        "source_source_blob": "b3c93e09b2a2c25a2791d068d5cb00fba8a74de5",
+        "header_and_source_identical": false,
+        "used_function_identical": true,
+        "used_function_sha256": "b2eaa33838c31cbd9858b4dadb304131611540d2cde5133a7a6979c0d0f9c625",
+        "resolution": "Retain main file. The changed 004C14C0 getter is unused by the base; the used 00411EE0 body/signature are identical."
+      },
+      {
+        "symbol": "singleton_lifetime_free",
+        "header": "include/bsp/singleton_lifetime.hpp",
+        "source": "src/singleton_lifetime.cpp",
+        "main_header_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+        "source_header_blob": "4d10f6c53a3b9be4745776df443f340ea1769936",
+        "main_source_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+        "source_source_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+        "header_and_source_identical": true
+      }
+    ],
+    "other_dependencies": [
+      "Win32 EnterCriticalSection/LeaveCriticalSection",
+      "std::memcpy, std::terminate and ordinary source C++ exception handling",
+      "TrackedCriticalSection declaration through current random_threads.hpp; current /MD allocation/free domain"
+    ],
+    "contract": [
+      "Borrow SAME actual00F8D394 and01090AA0 cells; raw manager14h and tracked section1Ch storage.",
+      "B25F40 publishes primary but registers primary+0C, captured before the second manager getter.",
+      "B25FE0 unregisters CURRENT publication+0C, captured before the second getter, then clears publication.",
+      "B26090 frees the passed subobject if flags bit0 is set; an interior primary+0C requires flags0.",
+      "Source context changes the original callable interface. Native FH3/SEH, original CRT identity and hardware faults remain unproved."
+    ],
+    "residual_application_gap": "No main or source-branch NativeSingletonDeletionBindings case admits renderer profilesD5E76C/D5F0A4. Direct base fixture teardown is evidenced; canonical application drain needs separately reviewed renderer terminal binding and derived primary/secondary route."
+  },
+  "retained_base_evidence": {
+    "validation_report": "reports/native_renderer_base_lifetime.json at 769bdc3e3b8254f95867b11e2546d629f2a564b6",
+    "historical_validation": {
+      "code_commit": "8f73fbf754bc47dfac527e898c3cf7a4cc6ebfa4",
+      "checkpoint": {
+        "path": "local/checkpoints/8f73fbf7/native-renderer-base-default/validation.json",
+        "sha256": "45925cb9c0b96ce1504ae19641da9d7c5b984ee2d44fb44a5303da7b2fb4d111",
+        "code_commit": "8f73fbf754bc47dfac527e898c3cf7a4cc6ebfa4",
+        "artifacts": 3229
+      },
+      "default_build": "MSVC Win32 Release",
+      "ctests_passed": 2,
+      "fixture_programs": 1,
+      "normal_bodies": 9,
+      "direct_call_rows_checked": 24,
+      "direct_call_failures": 0,
+      "saved_ghidra_annotations": 9,
+      "restored_stack_adjustments": 3,
+      "game_startup_adopted": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "fixture_scope": "Existing raw1D94h-owner fixture with compatible14h manager storage and real tracked sections; primary publication, secondary registration/current-slot unregister, field preimages and scalar frees",
+      "original_source_comparison_claimed": false
+    },
+    "checkpoint": {
+      "path": "J:/PROG/battlestations-pacific-decompile-orch5-20260911/local/checkpoints/8f73fbf7/native-renderer-base-default/validation.json",
+      "exists": true,
+      "bytes": 999213,
+      "sha256": "45925cb9c0b96ce1504ae19641da9d7c5b984ee2d44fb44a5303da7b2fb4d111",
+      "expected_sha256": "45925cb9c0b96ce1504ae19641da9d7c5b984ee2d44fb44a5303da7b2fb4d111",
+      "matches_expected": true
+    },
+    "archive_kind": "Directory archive, not a zip",
+    "archive_manifest": {
+      "path": "J:/PROG/battlestations-pacific-decompile-orch5-20260911/local/compiler-path-workers/raw-renderer-base/manifest.json",
+      "exists": true,
+      "bytes": 21101,
+      "sha256": "abae562dc7d7525864bbacebe0c81271c5e263fb80c12b7eb693b514eccb27c3",
+      "expected_sha256": "abae562dc7d7525864bbacebe0c81271c5e263fb80c12b7eb693b514eccb27c3",
+      "matches_expected": true
+    },
+    "archived_artifacts_verified": 66,
+    "archived_artifact_failures": 0,
+    "includes_full_worker_library": {
+      "path": "J:/PROG/battlestations-pacific-decompile-orch5-20260911/local/compiler-path-workers/raw-renderer-base/build/win32/Release/bsp_core.lib",
+      "exists": true,
+      "bytes": 57547538,
+      "sha256": "1b17d5e18a3e084c8e9617f831803750cdd951ca53bdaa45c45bf179d60c625a",
+      "expected_sha256": "1b17d5e18a3e084c8e9617f831803750cdd951ca53bdaa45c45bf179d60c625a",
+      "matches_expected": true
+    },
+    "selected_archived_probe_files": [
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch5-20260911/local/compiler-path-workers/raw-renderer-base/local/build_native_renderer_base_probe.cmd",
+        "exists": true,
+        "bytes": 925,
+        "sha256": "cbf42c257950df1a09d768ca6db58d7db381cdb88a3f455cea539791e2a22282",
+        "expected_sha256": "cbf42c257950df1a09d768ca6db58d7db381cdb88a3f455cea539791e2a22282",
+        "matches_expected": true
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch5-20260911/local/compiler-path-workers/raw-renderer-base/local/native_renderer_base_fixture_run.log",
+        "exists": true,
+        "bytes": 86,
+        "sha256": "87a0b647dc0dc97d4cdfb0255b2013d4cb0057b7893df3bb1c948bc6192013c0",
+        "expected_sha256": "87a0b647dc0dc97d4cdfb0255b2013d4cb0057b7893df3bb1c948bc6192013c0",
+        "matches_expected": true
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch5-20260911/local/compiler-path-workers/raw-renderer-base/local/native_renderer_base_probe.cpp",
+        "exists": true,
+        "bytes": 3383,
+        "sha256": "4e21a713a8ff2ca197a05dcead57d93f4334b7541dd137c067e55746ade2e68b",
+        "expected_sha256": "4e21a713a8ff2ca197a05dcead57d93f4334b7541dd137c067e55746ade2e68b",
+        "matches_expected": true
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch5-20260911/local/compiler-path-workers/raw-renderer-base/local/native_renderer_base_probe.exe",
+        "exists": true,
+        "bytes": 23552,
+        "sha256": "ea5ff0a8eb5471e8fa1e19448ef28bd092f311667a9d42c460c2a35ecde025fb",
+        "expected_sha256": "ea5ff0a8eb5471e8fa1e19448ef28bd092f311667a9d42c460c2a35ecde025fb",
+        "matches_expected": true
+      }
+    ],
+    "original_worker_path": "J:/PROG/battlestations-pacific-decompile-orch5-native-renderer-base",
+    "original_worker_selected_files": [
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch5-native-renderer-base/local/native_renderer_base_fixture_run.log",
+        "exists": true,
+        "bytes": 86,
+        "sha256": "87a0b647dc0dc97d4cdfb0255b2013d4cb0057b7893df3bb1c948bc6192013c0",
+        "expected_sha256": "87a0b647dc0dc97d4cdfb0255b2013d4cb0057b7893df3bb1c948bc6192013c0",
+        "matches_expected": true
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch5-native-renderer-base/local/native_renderer_base_probe.cpp",
+        "exists": true,
+        "bytes": 3383,
+        "sha256": "4e21a713a8ff2ca197a05dcead57d93f4334b7541dd137c067e55746ade2e68b",
+        "expected_sha256": "4e21a713a8ff2ca197a05dcead57d93f4334b7541dd137c067e55746ade2e68b",
+        "matches_expected": true
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch5-native-renderer-base/local/native_renderer_base_probe.exe",
+        "exists": true,
+        "bytes": 23552,
+        "sha256": "ea5ff0a8eb5471e8fa1e19448ef28bd092f311667a9d42c460c2a35ecde025fb",
+        "expected_sha256": "ea5ff0a8eb5471e8fa1e19448ef28bd092f311667a9d42c460c2a35ecde025fb",
+        "matches_expected": true
+      }
+    ],
+    "integrated_probe_path": "J:/PROG/battlestations-pacific-decompile-orch5-20260911/local/native_renderer_base_integration/renderer_base_probe.exe",
+    "integrated_probe_source_path": "J:/PROG/battlestations-pacific-decompile-orch5-20260911/local/native_renderer_base_integration/renderer_base_probe.cpp",
+    "fixture_observations": "Real Win32 tracked sections; raw14h manager; 1D94h storage preimages, primary publication, secondary registration, changed-current-publication unregister, primary cleanup and scalar frees. No original/source differential, actual application manager drain or derived renderer execution.",
+    "current_turn_boundary": "Existing checkpoint/archive/selected original artifacts verified by current hashes; historical build/fixture results were read, not re-executed."
+  },
+  "derived_existing_ports": {
+    "constructor": {
+      "address": "00b32410",
+      "bytes": 1256,
+      "source": "src/native_renderer_constructor.cpp",
+      "header": "include/bsp/native_renderer_constructor.hpp",
+      "code_commit": "00a12b5d0fa86494f6e9efccaa90c543c9bd3bef",
+      "validation": {
+        "code_commit": "425b3b4843efe2a3f7032340461002fb83798fc9",
+        "checkpoint": {
+          "path": "local/checkpoints/425b3b48/native-renderer-constructor-wave/validation.json",
+          "sha256": "64c19259048ada5f8868750e99c793c0b95674ea7f391b124b8ed2e613ae8fe0",
+          "code_commit": "425b3b4843efe2a3f7032340461002fb83798fc9",
+          "artifacts": 3439
+        },
+        "strict_msvc_win32_build": true,
+        "verified_native_seeds": 8,
+        "ctests_passed": 2,
+        "fixture_program": "local/native_renderer_constructor_integration/renderer_constructor_probe.exe",
+        "fixture_scope": "The complete constructor source passed final-library linking and import resolution. The probe did NOT invoke the constructor. Independent static review checked139 owner-store offsets/widths,134 constant/dataflow values, five nonconstant stores and all29 cleanup states.",
+        "saved_annotation_journal": "local/ghidra-annotations-20260914T170148Z.json",
+        "native_byte_review": {
+          "spans": 38,
+          "bytes": 5535,
+          "scope": "combined packet and explicit dependency/context spans; includes overlaps"
+        },
+        "call_site_review": {
+          "rows_checked": 118,
+          "failures": 0,
+          "scope": "combined numeric direct/tail rows; indirect dispatch and original exception execution excluded"
+        },
+        "constructor_executed": false,
+        "full_renderer_lifetime_validated": false,
+        "original_fh3_seh_abi_validated": false,
+        "game_validated": false
+      },
+      "declared_dependencies": [
+        {
+          "commit": "4f12d563679ad12fbc303610ce19d26cf93b20ee",
+          "purpose": "actual capabilities ownership",
+          "private_merge_commit": "7c98243c2cb31e03701205e93c003e0139101625"
+        },
+        {
+          "commit": "5e35e5705960a127b321cc497d02d4767981a171",
+          "purpose": "actual raw system constructor",
+          "private_merge_commit": "1aece8204f1f03ffe4d4f1f5913fbb1b79375629"
+        },
+        {
+          "commit": "556afdb28f03182d0ba3425e2a7652454adf69cf",
+          "purpose": "pointer array cleanup",
+          "private_merge_commit": "241f5122aaee9d59e7a5a414f95dc1be38ed9598"
+        },
+        {
+          "commit": "2bed1615e7370aad168ca9e9ddbdb30993e571c2",
+          "purpose": "remaining array cleanup",
+          "private_merge_commit": "8d8979272864fbff9f65fd2d7ecceabfa527f9da"
+        },
+        {
+          "commit": "7908392e909ede471a8b754bbb690942d3f5feee",
+          "purpose": "shader and state member arrays",
+          "private_merge_commit": "6a726f7b16d48e2da2976bef18b27baa73fce0a3"
+        },
+        {
+          "commit": "247dc9192029c9e4dc26e06e6593b24b3f9d3565",
+          "purpose": "capability arrays",
+          "private_merge_commit": "9a1c0bcea8441538def43e146ada864201051aa8"
+        },
+        {
+          "commit": "f1b43cfd7fe6d212e75c69d3fcb11d6c4dee46e7",
+          "purpose": "actual resolution enumeration and pair helpers",
+          "private_merge_commit": "848140436be9805a9a51fca484fac5a1a6019a94"
+        },
+        {
+          "commit": "aa836cddc1c64cad1664fe5c140312adab054544",
+          "purpose": "root reviewed original dependencies and five actual lower member cleanup providers",
+          "private_merge_commit": "66a259a52e34de13c0f368dc22afb582ea4335a6"
+        }
+      ]
+    },
+    "destructor": {
+      "addresses": [
+        "00b32920",
+        "00b339f0",
+        "00b32900"
+      ],
+      "bytes": [
+        4257,
+        30,
+        8
+      ],
+      "source": "src/native_renderer_destructor.cpp",
+      "header": "include/bsp/native_renderer_destructor.hpp",
+      "code_commit": "1e70442b46953b54737792ec4bfdbdb6057ba40d",
+      "validation": {
+        "code_commit": "7cbd532eca2ea23ac162bb80257c9e75c02f6594",
+        "checkpoint": {
+          "path": "local/checkpoints/7cbd532e/native-renderer-destructor-wave/validation.json",
+          "sha256": "559269e15cbe10ee773e9bc8dcd8372695dc890a33b9254553319ff8e6a39fb2",
+          "code_commit": "7cbd532eca2ea23ac162bb80257c9e75c02f6594",
+          "artifacts": 3422
+        },
+        "strict_msvc_win32_build": true,
+        "verified_native_seeds": 8,
+        "ctests_passed": 2,
+        "fixture_program": "local/native_renderer_destructor_integration/renderer_destructor_probe.exe",
+        "fixture_scope": "Complete renderer destructor and both deleting wrappers passed final-library linking and import resolution. The probe did NOT invoke the destructor. Independent static review checked all29 cleanup receivers, ten COM call patterns, thirteen inline array cleanup blocks, sixteen profiles and four model-return call gates.",
+        "saved_annotation_journal": "local/ghidra-annotations-20260914T174702Z.json",
+        "native_byte_review": {
+          "spans": 58,
+          "bytes": 6518,
+          "scope": "combined packet and explicit dependency/context spans; includes overlaps"
+        },
+        "call_site_review": {
+          "rows_checked": 134,
+          "failures": 0,
+          "scope": "combined numeric direct/tail rows; indirect dispatch and original exception execution excluded"
+        },
+        "saved_flow_and_definition_records": [
+          "reports/native_renderer_query_terminal_flow_repair.json",
+          "reports/native_resource_support_actual_flow_repair.json",
+          "reports/native_resource_support_actual_function_definitions.json",
+          "reports/native_resource_support_drain_flow_repair.json",
+          "reports/native_renderer_destructor_flow_repair.json",
+          "reports/native_renderer_destructor_function_definitions.json"
+        ],
+        "constructor_executed": false,
+        "destructor_executed": false,
+        "full_renderer_lifetime_validated": false,
+        "original_fh3_seh_abi_validated": false,
+        "game_validated": false
+      },
+      "declared_dependencies": [
+        {
+          "commit": "28651a648c661859d616025b0a54e832ddff0e3d",
+          "merge_commit": "ae489f66",
+          "role": "Actual query terminal/unregister",
+          "original_ancestry_preserved": true
+        },
+        {
+          "commit": "9246668c226bdad2f63cc3037d06069186145647",
+          "merge_commit": "2812389a",
+          "role": "Actual AA0 resource-support getter and four owner lifetime contexts",
+          "original_ancestry_preserved": true
+        },
+        {
+          "commit": "e2d96f611977756063ac38bd1e4b501a2ece49a5",
+          "merge_commit": "ec9ad0a1",
+          "role": "Canonical D62B64/B61D60 popped-owner drain and104-byte shared deletion bindings",
+          "original_ancestry_preserved": true
+        }
+      ]
+    },
+    "interpretation": "Both complete source schedules add EDX context and borrow actual raw providers. Constructor/destructor probes linked/imported symbols but explicitly did not invoke the parents, normal or exceptional. No native ABI/gameplay evidence."
+  },
+  "deferred_derived_source_candidate": {
+    "status": "Candidate source-unit closure for later review, not an applied or build-proven integration.",
+    "direct_inventory_counts": {
+      "different": 10,
+      "branch_only": 34,
+      "same": 30
+    },
+    "expanded_inventory_counts": {
+      "different": 16,
+      "branch_only": 36,
+      "same": 56
+    },
+    "inventory_rule": "Inspect direct includes of base/constructor/destructor; expand branch-only providers recursively. Existing changed providers were reviewed separately. No branch-wide history scan.",
+    "new_translation_unit_count": 18,
+    "new_translation_units": [
+      {
+        "path": "src/native_effect_registry_destroy.cpp",
+        "main_present": false,
+        "branch_present": true,
+        "status": "branch_only",
+        "main_lines": 0,
+        "branch_lines": 95,
+        "branch_last_commit": "0b3a8cac720172bfca88f12795913bd4a6fb78d1"
+      },
+      {
+        "path": "src/native_renderer_base_lifetime.cpp",
+        "main_present": false,
+        "branch_present": true,
+        "status": "branch_only",
+        "main_lines": 0,
+        "branch_lines": 209,
+        "branch_last_commit": "b521b0a5988081eaee24e9ab535e6055379bf5a7"
+      },
+      {
+        "path": "src/native_renderer_cache_cleanup.cpp",
+        "main_present": false,
+        "branch_present": true,
+        "status": "branch_only",
+        "main_lines": 0,
+        "branch_lines": 159,
+        "branch_last_commit": "8e1bdea084a82e0cb764a67757c83128dc4b8ff6"
+      },
+      {
+        "path": "src/native_renderer_capability_array_cleanup.cpp",
+        "main_present": false,
+        "branch_present": true,
+        "status": "branch_only",
+        "main_lines": 0,
+        "branch_lines": 15,
+        "branch_last_commit": "247dc9192029c9e4dc26e06e6593b24b3f9d3565"
+      },
+      {
+        "path": "src/native_renderer_constructor.cpp",
+        "main_present": false,
+        "branch_present": true,
+        "status": "branch_only",
+        "main_lines": 0,
+        "branch_lines": 292,
+        "branch_last_commit": "00a12b5d0fa86494f6e9efccaa90c543c9bd3bef"
+      },
+      {
+        "path": "src/native_renderer_container_lifetime.cpp",
+        "main_present": false,
+        "branch_present": true,
+        "status": "branch_only",
+        "main_lines": 0,
+        "branch_lines": 80,
+        "branch_last_commit": "c1a53b1874986d8eddb4854733efd525b66dffe3"
+      },
+      {
+        "path": "src/native_renderer_control_worker.cpp",
+        "main_present": false,
+        "branch_present": true,
+        "status": "branch_only",
+        "main_lines": 0,
+        "branch_lines": 221,
+        "branch_last_commit": "6641c05f524e29f9352f66ddbd017c64d2f99cee"
+      },
+      {
+        "path": "src/native_renderer_destructor.cpp",
+        "main_present": false,
+        "branch_present": true,
+        "status": "branch_only",
+        "main_lines": 0,
+        "branch_lines": 446,
+        "branch_last_commit": "1e70442b46953b54737792ec4bfdbdb6057ba40d"
+      },
+      {
+        "path": "src/native_renderer_lua_owner.cpp",
+        "main_present": false,
+        "branch_present": true,
+        "status": "branch_only",
+        "main_lines": 0,
+        "branch_lines": 180,
+        "branch_last_commit": "9447b175bae3c4befbce412356ec4dd8d5f2dc69"
+      },
+      {
+        "path": "src/native_renderer_parent_member_cleanup.cpp",
+        "main_present": false,
+        "branch_present": true,
+        "status": "branch_only",
+        "main_lines": 0,
+        "branch_lines": 70,
+        "branch_last_commit": "aa836cddc1c64cad1664fe5c140312adab054544"
+      },
+      {
+        "path": "src/native_renderer_pointer_array_destroy.cpp",
+        "main_present": false,
+        "branch_present": true,
+        "status": "branch_only",
+        "main_lines": 0,
+        "branch_lines": 63,
+        "branch_last_commit": "556afdb28f03182d0ba3425e2a7652454adf69cf"
+      },
+      {
+        "path": "src/native_renderer_query_terminal.cpp",
+        "main_present": false,
+        "branch_present": true,
+        "status": "branch_only",
+        "main_lines": 0,
+        "branch_lines": 107,
+        "branch_last_commit": "28651a648c661859d616025b0a54e832ddff0e3d"
+      },
+      {
+        "path": "src/native_renderer_record_array_cleanup.cpp",
+        "main_present": false,
+        "branch_present": true,
+        "status": "branch_only",
+        "main_lines": 0,
+        "branch_lines": 30,
+        "branch_last_commit": "7908392e909ede471a8b754bbb690942d3f5feee"
+      },
+      {
+        "path": "src/native_renderer_record_destroy.cpp",
+        "main_present": false,
+        "branch_present": true,
+        "status": "branch_only",
+        "main_lines": 0,
+        "branch_lines": 37,
+        "branch_last_commit": "10870d920fcad63be095912c5552600d6195c06e"
+      },
+      {
+        "path": "src/native_renderer_remaining_array_cleanup.cpp",
+        "main_present": false,
+        "branch_present": true,
+        "status": "branch_only",
+        "main_lines": 0,
+        "branch_lines": 42,
+        "branch_last_commit": "2bed1615e7370aad168ca9e9ddbdb30993e571c2"
+      },
+      {
+        "path": "src/native_renderer_resolution_enumeration.cpp",
+        "main_present": false,
+        "branch_present": true,
+        "status": "branch_only",
+        "main_lines": 0,
+        "branch_lines": 112,
+        "branch_last_commit": "f1b43cfd7fe6d212e75c69d3fcb11d6c4dee46e7"
+      },
+      {
+        "path": "src/native_system_registry_raw_terminal.cpp",
+        "main_present": false,
+        "branch_present": true,
+        "status": "branch_only",
+        "main_lines": 0,
+        "branch_lines": 46,
+        "branch_last_commit": "2e7f90cce3044dd398fddc59ad7a1c1b96606d28"
+      },
+      {
+        "path": "src/native_procedural_resource_lifetime.cpp",
+        "main_present": false,
+        "branch_present": true,
+        "status": "branch_only",
+        "main_lines": 0,
+        "branch_lines": 190,
+        "branch_last_commit": "16bdecc8a0ad504ebb9947bbdd2e7cc3ce01c79b"
+      }
+    ],
+    "each_new_unit_requires_matching_header": true,
+    "shared_additive_overloads": [
+      {
+        "path": "include/bsp/native_renderer_gather_capabilities.hpp",
+        "added_on_source": 19,
+        "removed_from_main": 0,
+        "main_blob": "853194f5ecf06ae332f3b3ebcc246aa09489b6d1",
+        "source_blob": "ce0185d6a0cf2e02bc6eb4960f8da88f406d774b"
+      },
+      {
+        "path": "src/native_renderer_gather_capabilities.cpp",
+        "added_on_source": 21,
+        "removed_from_main": 4,
+        "main_blob": "2456da9347d93501f2c78facc0eb49bb61cadede",
+        "source_blob": "f7dc8676b2416e37f01df335747b81e49663f649"
+      },
+      {
+        "path": "include/bsp/native_shader_state_definitions.hpp",
+        "added_on_source": 25,
+        "removed_from_main": 0,
+        "main_blob": "9848577081899dc0982083699390884618c1fbce",
+        "source_blob": "7d452ba054f5929e129fe27fee81d621c618488c"
+      },
+      {
+        "path": "src/native_shader_state_definitions.cpp",
+        "added_on_source": 48,
+        "removed_from_main": 17,
+        "main_blob": "d538fb6c8a5c30f2e9761573d97e02ecd34ccf4d",
+        "source_blob": "22dc596bc60e441fcd81c5127b47502ca7972860"
+      },
+      {
+        "path": "include/bsp/native_system_constant_registry.hpp",
+        "added_on_source": 48,
+        "removed_from_main": 0,
+        "main_blob": "a3506d445ca59ac43d1a490d3ff99986e1bba8f2",
+        "source_blob": "4a493157b9ce3a85dc451aa0c35fc19401255473"
+      },
+      {
+        "path": "src/native_system_constant_registry.cpp",
+        "added_on_source": 239,
+        "removed_from_main": 19,
+        "main_blob": "35d289d2ba4b88fb3c1c1c8d7c40d13ff7b3b338",
+        "source_blob": "507e39dda80331117f515750bb29e6e2bbbc125a"
+      },
+      {
+        "path": "include/bsp/native_compiled_shader_owner.hpp",
+        "added_on_source": 4,
+        "removed_from_main": 0,
+        "main_blob": "a1f234f8a2f08a8879f34c4c852b8e8f2d22640f",
+        "source_blob": "37286f1d196d1fd83f7c4679a6f5da79711cd06c"
+      },
+      {
+        "path": "src/native_compiled_shader_owner.cpp",
+        "added_on_source": 12,
+        "removed_from_main": 2,
+        "main_blob": "6379dff4c455158d878dd4ae6e8249a01e0d9b45",
+        "source_blob": "f3fc817f899b7efbc19c8996ff6b5c34eda110e3"
+      },
+      {
+        "path": "include/bsp/native_render_resource_record_array.hpp",
+        "added_on_source": 5,
+        "removed_from_main": 0,
+        "main_blob": "b6c53797bab8061c0658b7fb00fcacb303d06875",
+        "source_blob": "9bad670fe934415afb6eac8b238e5aa27d8bde76"
+      },
+      {
+        "path": "src/native_render_resource_record_array.cpp",
+        "added_on_source": 20,
+        "removed_from_main": 3,
+        "main_blob": "2b42e76a3e2c11bc629dbea5f31f8bbede98bdce",
+        "source_blob": "8ab5f4a8e872f7e5e90923607d6b43830292de0b"
+      }
+    ],
+    "shared_overload_commit_sources": [
+      "4f12d563679ad12fbc303610ce19d26cf93b20ee",
+      "e4aa2bff88cad4504d4c0d8f3218e0c2555ed9d2",
+      "5e35e5705960a127b321cc497d02d4767981a171",
+      "8e1bdea084"
+    ],
+    "source_unit_boundary": "18 new cpp/header pairs plus targeted additions in5 existing cpp/header pairs, with one derived model-provider contract requiring a new reviewed resolution. Keep main shared owners/support/drain. This is the smallest identified whole-source-unit candidate; linker closure was not recomputed.",
+    "not_needed_for_base_only": "Every derived unit/additive overload above other than native_renderer_base_lifetime."
+  },
+  "conflicts": [
+    {
+      "area": "resource support",
+      "paths": [
+        {
+          "path": "include/bsp/native_resource_support.hpp",
+          "added_on_source": 8,
+          "removed_from_main": 30,
+          "main_blob": "5f3aa02a80d5c3b878936e62160c378681d87ae1",
+          "source_blob": "0f64b60a8873a4fe1c9e8c792ec73c88addbc248"
+        },
+        {
+          "path": "src/native_resource_support.cpp",
+          "added_on_source": 27,
+          "removed_from_main": 105,
+          "main_blob": "4e0dd69bfef52acedaac29849435fe431fecab17",
+          "source_blob": "0a68c44ce4637c5816ddd3afaebc2b3be29c82a0"
+        }
+      ],
+      "issue": "Orch5 uses SoundLifetimeAccess and removes mainR27 NativeResourceSupportRawContext, NativeResourceSupportLifetime and its overloads. Whole-file replacement would delete the new actual raw route and callers.",
+      "resolution": "Keep main R27 implementation and SAME publication/raw context. Renderer base needs none of this migration; derived contexts must be adapted to retained main interfaces."
+    },
+    {
+      "area": "gather capabilities",
+      "paths": [
+        {
+          "path": "include/bsp/native_renderer_gather_capabilities.hpp",
+          "added_on_source": 19,
+          "removed_from_main": 0,
+          "main_blob": "853194f5ecf06ae332f3b3ebcc246aa09489b6d1",
+          "source_blob": "ce0185d6a0cf2e02bc6eb4960f8da88f406d774b"
+        },
+        {
+          "path": "src/native_renderer_gather_capabilities.cpp",
+          "added_on_source": 21,
+          "removed_from_main": 4,
+          "main_blob": "2456da9347d93501f2c78facc0eb49bb61cadede",
+          "source_blob": "f7dc8676b2416e37f01df335747b81e49663f649"
+        }
+      ],
+      "issue": "Current main has only semantic lifetime context; constructor selects missing NativeRendererGatherCapabilitiesActualContext overload.",
+      "resolution": "Later apply the focused4f12d5636 delta: add actual AA0 context and overload sharing one unchanged body through pool_lifetime; preserve existing semantic interface. Not needed for base-only."
+    },
+    {
+      "area": "model owner/renderer destructor",
+      "paths": [
+        {
+          "path": "include/bsp/native_model_owner.hpp",
+          "added_on_source": 0,
+          "removed_from_main": 10,
+          "main_blob": "e43819d121cfa9f6c7d51691c39b04f6d954ea4c",
+          "source_blob": "b7ee4edc837788632efc7b3d100b6f4301336195"
+        },
+        {
+          "path": "src/native_model_owner.cpp",
+          "added_on_source": 0,
+          "removed_from_main": 39,
+          "main_blob": "b959a8d937bdab01f9013f2cbd7e28ad320a0090",
+          "source_blob": "9675cf67d8c1731771b8294ed2c93f42073aae19"
+        }
+      ],
+      "issue": "Main raw B75030 overload requires actual_names==nullptr for persistent raw cleanup. Orch5 destructor unlink_model requires actual_names!=nullptr and raw runtime; such a main raw-produced model is rejected. Whole orch5 owner files remove main raw overload and cleanup.",
+      "resolution": "Retain main model files. Defer derived destructor until its canonical model/name-pool contract is reconciled without weakening identity/lifetime checks; do not simply delete the guard."
+    },
+    {
+      "area": "shared deletion bindings",
+      "paths": [
+        {
+          "path": "include/bsp/native_singleton_destruction.hpp",
+          "added_on_source": 27,
+          "removed_from_main": 30,
+          "main_blob": "5c36b6e58452ae6ab95d3454ed71fbd4b12ec290",
+          "source_blob": "276dd85b49093342698021f1e9e349cce01ceca4"
+        },
+        {
+          "path": "src/native_singleton_destruction.cpp",
+          "added_on_source": 41,
+          "removed_from_main": 31,
+          "main_blob": "a9d83dc8c6cd11ba4f12cc7d4bdbaa1e335c33bc",
+          "source_blob": "cdbbbe160fb57fe2d63313f5a777efac1b3b0e22"
+        }
+      ],
+      "issue": "Both current structs have sizeof108 but incompatible tail members. Main: resource_manager92,shadow_job96,resource_extra_parsers100,resource_support104. Orch5: online_lifetime92,system_constant_registry96,support_publication100,diagnostic_publication104.",
+      "resolution": "Never replace by size agreement. Preserve main append-only offsets; add only specifically needed future domains and static offset checks under separate ownership. Main already handles D62B64 from its raw context."
+    },
+    {
+      "area": "current canonical owners and alias cleanup",
+      "paths": [
+        {
+          "path": "include/bsp/native_render_context.hpp",
+          "added_on_source": 0,
+          "removed_from_main": 38,
+          "main_blob": "c2659850ea55864f3b0f1b6478cccd0845aadb8b",
+          "source_blob": "6d2065e5274d28ad48bbc9cd5f95e303a7c20e3b"
+        },
+        {
+          "path": "src/native_render_context.cpp",
+          "added_on_source": 0,
+          "removed_from_main": 78,
+          "main_blob": "e4a76da258d535272fe819112dab2f477f6446ec",
+          "source_blob": "ca2e79a20b60caa2fedfe48a035500fef999f443"
+        },
+        {
+          "path": "include/bsp/native_render_resource_record_construction.hpp",
+          "added_on_source": 0,
+          "removed_from_main": 6,
+          "main_blob": "3b1813c1754937bb0682b6ba86de275579482a02",
+          "source_blob": "91a90773b83f21344b48378f945f95de92aa06fd"
+        },
+        {
+          "path": "src/native_render_resource_record_construction.cpp",
+          "added_on_source": 3,
+          "removed_from_main": 21,
+          "main_blob": "b2db45cd7e8fcf7eb87235607401a16df825ce3b",
+          "source_blob": "68689fbea5aef3052915f5e8ae316e651342aeaa"
+        }
+      ],
+      "issue": "Orch5 versions lack main NativeRenderActualOwnerRegistry and raw alias-list overloads.",
+      "resolution": "Keep main files. Newly reused cleanup providers use compatible existing APIs; no wholesale reversal."
+    },
+    {
+      "area": "diagnostic and surface contexts",
+      "paths": [
+        {
+          "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+          "added_on_source": 4,
+          "removed_from_main": 3,
+          "main_blob": "646e3ee0b3db2a052392e1f7ea74e8bf724daf6a",
+          "source_blob": "a9deb30b81e575ea396c5255534d555084d168ba"
+        },
+        {
+          "path": "src/native_diagnostic_sink_lifetime.cpp",
+          "added_on_source": 4,
+          "removed_from_main": 6,
+          "main_blob": "3e5c92357a44fa478f58b745423cc41195770840",
+          "source_blob": "b3c93e09b2a2c25a2791d068d5cb00fba8a74de5"
+        },
+        {
+          "path": "include/bsp/native_surface_owner.hpp",
+          "added_on_source": 1,
+          "removed_from_main": 1,
+          "main_blob": "643b5a07b0679c66214fbf8b7f27089524048ef0",
+          "source_blob": "712dd192a73b21cc466e885ea5ad5619802a2621"
+        }
+      ],
+      "issue": "Unrelated branch diagnostic getter takes SoundLifetimeAccess; surface field changes main NativeResourceSupportLifetime to SoundLifetimeAccess.",
+      "resolution": "Retain main for base-only; its used411EE0 guard is byte-for-byte identical as source. Derived adoption needs explicit current-context composition, not branch snapshot replacement."
+    }
+  ],
+  "unresolved_application_requirements": [
+    "No concrete RendererStartupHost constructor implementation exists in either audited tree: the abstract host method and delegating allocation remain the only call sites; source native constructor has no production caller.",
+    "Main R30 GameNativeRendererScalarProcess owns synchronization/counter cells but explicitly does not construct or publish a renderer.",
+    "Constructing the derived1D94h owner additionally requires an actual live CameraPlaneSet at+17C0, native preimages, distinct10h/44Ch/770h mode/identifier/capability scratch, real D3D9 and complete child providers.",
+    "Control worker process context is only declared/defined, never bound by an application call in the source branch; it must remain valid through every worker join and native failure-retained worker.",
+    "EndFrameB2F4A0/B2D8E0 remains a required substantive callback; source control worker has no concrete application provider. Main only documents the hook in game_render_frame.hpp.",
+    "Primary F8D394 publication and registered primary+0C must belong to the SAME AA0 manager; derived deletion requires B32900 adjustor ->B339F0->B32920->base unregister/clear, then correct allocation free.",
+    "Canonical model bindings at19E0/19E4/19E8 must match current raw name-pool ownership;19E0 producer remains unproved in the source report.",
+    "Nested descriptor/sampler/material/physical diagnostic owner domains and inherited noexcept/retained-operation limits remain qualified in source reports; full renderer/material/VFS shutdown is not established.",
+    "A future derived adoption needs new merged-head build, current exact evidence review and a valid normal/failure runtime fixture; historical link/import checks do not supply those results."
+  ],
+  "named_evidence_documents": [
+    "docs/NATIVE_RENDERER_BASE_LIFETIME.md",
+    "reports/native_renderer_base_lifetime.json",
+    "reports/native_renderer_base_flow_repair.json",
+    "docs/NATIVE_RENDERER_CONSTRUCTOR.md",
+    "reports/native_renderer_constructor.json",
+    "docs/NATIVE_RENDERER_DESTRUCTOR.md",
+    "reports/native_renderer_destructor.json",
+    "reports/native_renderer_registry_bindings.json",
+    "reports/native_system_registry_raw_constructor.json",
+    "reports/native_resource_support_actual.json"
+  ],
+  "recommended_next_review": "Review base pair alone from b521b0a59 with its verified existing fixture/artifacts, then separately plan context-resolved derived reuse. This report authorizes no merge or implementation."
+}
