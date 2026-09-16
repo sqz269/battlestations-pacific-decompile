@@ -3,6 +3,7 @@
 
 #include "bsp/native_singleton_destruction.hpp"
 #include "bsp/native_game_resource_factory.hpp"
+#include "bsp/native_resource_support.hpp"
 #include <memory>
 
 namespace bsp::game {
@@ -31,6 +32,11 @@ public:
     // services. Bind their contexts before any corresponding owner registers.
     NativeSingletonDeletionBindings& native_deletion_bindings() noexcept {
         return deletion_bindings_;
+    }
+    // The surface/texture graph borrows this same raw lifetime and publication;
+    // the context remains alive through shutdown's registered-owner drain.
+    NativeResourceSupportRawContext& resource_support_context() noexcept {
+        return resource_support_context_;
     }
     // Attach before VFS core registration and retain through shutdown. The
     // runtime retires immediately after the raw drain while this host's table
@@ -82,6 +88,9 @@ private:
     void* volatile game_resource_factory_alias_00f8d31c_{nullptr};
     NativeGameResourceFactoryContext game_resource_factory_context_{
         manager_publication_01090aa0_, game_resource_factory_publication_00e19b90_};
+    NativeResourceSupportStorage* volatile resource_support_publication_0108fedc_{};
+    NativeResourceSupportRawContext resource_support_context_{
+        manager_publication_01090aa0_, resource_support_publication_0108fedc_};
     NativeSingletonDeletionBindings deletion_bindings_;
     GameNativeVfsRuntime* vfs_runtime_{};
     std::unique_ptr<GameObserverRuntime> observers_;

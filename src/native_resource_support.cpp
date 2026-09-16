@@ -1,6 +1,13 @@
 #include "bsp/native_resource_support.hpp"
+#include "bsp/native_diagnostic_sink_lifetime.hpp"
+#include "bsp/native_singleton_publication.hpp"
+#include "bsp/native_singleton_vector_registration_wrappers.hpp"
 
 #include <new>
+#include <stdexcept>
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
+#include <Windows.h>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native resource support reconstruction requires MSVC Win32.
@@ -81,6 +88,60 @@ NativeResourceSupportStorage* delete_native_resource_support_00b61d60(
         singleton_lifetime_free(original_address);
     }
     return original_address;
+}
+
+NativeResourceSupportStorage* resource_support_singleton_00b3e730(
+    NativeResourceSupportRawContext& context) {
+    if (auto* captured = context.actual_published_0108fedc) return captured;
+    void* const first_manager = get_native_singleton_manager_00415350(
+        context.actual_manager_publication_01090aa0);
+    const auto field = [](void* object, std::size_t offset) -> volatile std::uint32_t& {
+        return *reinterpret_cast<volatile std::uint32_t*>(static_cast<std::byte*>(object) + offset);
+    };
+    auto* const section = reinterpret_cast<CRITICAL_SECTION*>(field(first_manager, 0x10));
+    alignas(4) std::uint32_t guard[2]{0x00ce37fcu, reinterpret_cast<std::uint32_t>(section)};
+    if (section) {
+        EnterCriticalSection(section);
+        field(section, 0x18) = field(section, 0x18) + 1u;
+    }
+    try {
+        if (!context.actual_published_0108fedc) {
+            void* const allocation = singleton_lifetime_allocate({SingletonAllocationKind::object, 8, 8});
+            // B61D50 is a noexcept single profile store; its +04 bytes survive.
+            // Native state1 surrounds this constructor, then disarms before
+            // publication. Hardware-fault/FH3 cleanup is outside this source ABI.
+            context.actual_published_0108fedc = allocation
+                ? construct_native_resource_support_00b61d50(allocation) : nullptr;
+            void* const registration_manager = get_native_singleton_manager_00415350(
+                context.actual_manager_publication_01090aa0);
+            // Reload the publication AFTER the second manager getter.
+            auto* const current = context.actual_published_0108fedc;
+            register_native_singleton_object_00bd0c30(registration_manager, nullptr, current);
+        }
+    } catch (...) {
+        destroy_native_singleton_guard_00411ee0(guard);
+        throw;
+    }
+    if (section) {
+        field(section, 0x18) = field(section, 0x18) - 1u;
+        LeaveCriticalSection(section);
+    }
+    return context.actual_published_0108fedc;
+}
+
+NativeResourceSupportStorage* NativeResourceSupportLifetime::get(
+    NativeResourceSupportStorage* volatile& publication) const {
+    if (raw_) {
+        if (&publication != &raw_->actual_published_0108fedc)
+            throw std::invalid_argument("resource support requires the same actual publication cell");
+        return resource_support_singleton_00b3e730(*raw_);
+    }
+    return resource_support_singleton_00b3e730(publication, *semantic_);
+}
+
+NativeResourceSupportStorage* resource_support_singleton_00b3e730(
+    NativeResourceSupportStorage* volatile& publication, const NativeResourceSupportLifetime& lifetime) {
+    return lifetime.get(publication);
 }
 
 } // namespace bsp

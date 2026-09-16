@@ -15,6 +15,34 @@ struct NativeResourceSupportStorage {
 static_assert(sizeof(NativeResourceSupportStorage) == 8);
 static_assert(offsetof(NativeResourceSupportStorage, untouched_04) == 4);
 
+// Borrow the application's actual publication cells through the shared raw
+// manager drain. The D62B64 deletion binding must use this same context.
+struct NativeResourceSupportRawContext {
+    void* volatile& actual_manager_publication_01090aa0;
+    NativeResourceSupportStorage* volatile& actual_published_0108fedc;
+};
+
+NativeResourceSupportStorage* resource_support_singleton_00b3e730(
+    NativeResourceSupportRawContext&);
+
+// Borrow one lifetime domain. Existing semantic callers retain their interface;
+// render contexts can instead select the application's actual raw manager.
+// This adapter owns no manager, publication, lock or native allocation.
+class NativeResourceSupportLifetime final {
+public:
+    NativeResourceSupportLifetime(SingletonLifetimeDomain& lifetime) noexcept
+        : semantic_(&lifetime) {}
+    NativeResourceSupportLifetime(NativeResourceSupportRawContext& context) noexcept
+        : raw_(&context) {}
+    NativeResourceSupportStorage* get(NativeResourceSupportStorage* volatile&) const;
+private:
+    SingletonLifetimeDomain* semantic_{};
+    NativeResourceSupportRawContext* raw_{};
+};
+
+NativeResourceSupportStorage* resource_support_singleton_00b3e730(
+    NativeResourceSupportStorage* volatile&, const NativeResourceSupportLifetime&);
+
 // 00B61D50: ECX raw allocation; EAX same owner; RET. Writes only +00.
 NativeResourceSupportStorage* construct_native_resource_support_00b61d50(
     void* actual_allocation) noexcept;

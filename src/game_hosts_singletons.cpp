@@ -14,6 +14,7 @@ GameSingletonHost::GameSingletonHost(GameHostLog& log)
       observers_(std::make_unique<GameObserverRuntime>(*this, log)) {
     // Admit factory+4 before startup can register that exact subobject.
     deletion_bindings_.game_resource_factory = &game_resource_factory_context_;
+    deletion_bindings_.resource_support = &resource_support_context_;
 }
 
 GameSingletonHost::~GameSingletonHost() {
