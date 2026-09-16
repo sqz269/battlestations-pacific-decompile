@@ -8,7 +8,7 @@ current table cells; source code does not manufacture a native vtable.
 | --- | --- | --- | --- |
 | `08` | `00B8A060` | `00B8A140` | Read current DWORD at `01090268` / `01090278`. |
 | `0C` | `00B8A730` | `00B8A870` | Compare stacked token to the three current descriptor DWORDs in order; stop at first match. |
-| `14` | `00B8A070` | `00B8A150` | Read the separate fourth DWORD at `01090274` / `01090284`. Its wider meaning remains unassigned. |
+| `14` | `00B8A070` | `00B8A150` | Read the current type-name address at `01090274` / `01090284`. R30 recovered the initializer stores of `cAnimationResource` / `cBoneResource`; see [type initialization](NATIVE_RESOURCE_EXTRA_TYPE_IDS_R30.md). |
 | `18` | `00B8A080` | `00B8A160` | Call the instance's current slot `08` with `(item,node)`; record and creation word are unused. |
 
 The four six-byte getters reuse `read_native_mesh_binding_type_00b931b0` over

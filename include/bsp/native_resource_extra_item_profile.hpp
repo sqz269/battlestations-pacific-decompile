@@ -5,7 +5,8 @@
 namespace bsp {
 
 // Borrow the SAME live profiles and descriptor cells. Each descriptor has
-// three ordered type IDs followed by the separate slot14 word. Never copy
+// three ordered type IDs followed by the native type-name address at slot14.
+// CD82F0/CD8340 establish cAnimationResource/cBoneResource names. Never copy
 // startup values: later getter/predicate calls read the current cells.
 struct NativeResourceExtraItemProfileStorage {
     const volatile std::uint32_t* animation_profile_00d6328c;
@@ -53,6 +54,6 @@ void attach_native_extra_item_00b8a080(void* actual_item, void* actual_instance,
     NativeResourceExtraItemAttachContext&);
 
 // Source interfaces over genuine storage, not original callable ABI. The
-// slot14 word's wider meaning, arbitrary instance profiles, graph application
-// wiring, hardware faults, FH3/SEH and gameplay remain outside this packet.
+// arbitrary instance profiles, graph application wiring, hardware faults,
+// FH3/SEH and gameplay remain outside this packet.
 } // namespace bsp

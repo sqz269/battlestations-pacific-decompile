@@ -69,15 +69,41 @@
     }
   ],
   "crt_order": [
-    {"entry": "00ce35b4", "target": "00cd82f0"},
-    {"entry": "00ce35b8", "target": "00cd8340"},
-    {"entry": "00ce35f0", "target": "00cd8690", "purpose": "relative-order boundary for mesh initializer"}
+    {
+      "entry": "00ce35b4",
+      "target": "00cd82f0"
+    },
+    {
+      "entry": "00ce35b8",
+      "target": "00cd8340"
+    },
+    {
+      "entry": "00ce35f0",
+      "target": "00cd8690",
+      "purpose": "relative-order boundary for mesh initializer"
+    }
   ],
   "call_rows": [
-    {"address": "00cd830f", "native": "00b869c0", "function": "00cd82f0"},
-    {"address": "00cd832a", "native": "006fac20", "function": "00cd82f0"},
-    {"address": "00cd835f", "native": "00b869c0", "function": "00cd8340"},
-    {"address": "00cd837a", "native": "006fac20", "function": "00cd8340"}
+    {
+      "address": "00cd830f",
+      "native": "00b869c0",
+      "function": "00cd82f0"
+    },
+    {
+      "address": "00cd832a",
+      "native": "006fac20",
+      "function": "00cd82f0"
+    },
+    {
+      "address": "00cd835f",
+      "native": "00b869c0",
+      "function": "00cd8340"
+    },
+    {
+      "address": "00cd837a",
+      "native": "006fac20",
+      "function": "00cd8340"
+    }
   ],
   "byte_receipt": {
     "project": "C:/Users/sqz269/bsp.gpr",
@@ -140,18 +166,158 @@
     "probe_scope": "Real source services over local process cells; verifies current scene/root capture, current counter selection, counter-before-ID publication result, and early guard return."
   },
   "artifact_receipts": [
-    {"path": "include/bsp/native_resource_extra_type_ids.hpp", "sha256": "896bf498aac4be2b63fd762d8b33f479c7ca24877f35b5fefad089c4d7e04bf5"},
-    {"path": "src/native_resource_extra_type_ids.cpp", "sha256": "377925a90466328541ed3cd3d5c04219f38b625dff0d0e13bb3a2fe22a60765b"},
-    {"path": "include/bsp/game_native_type_storage.hpp", "sha256": "9de949e5de1d00a702b9f2e62963cf29ef1f4615c83ff4220ba1004fbbb5a3b1"},
-    {"path": "src/game_native_type_storage.cpp", "sha256": "ffc9656790a68a8fd17087062014bd75605312f7dea0c7e0ec494a3cd274234a"},
-    {"path": "cmake/startup.cmake", "sha256": "585f1273c3bbde0c21846e70337795fdc67766cb48b1ac2615fa91b1180fed57"},
-    {"path": "build/win32/Release/bsp_core.lib", "sha256": "d5d93e3561883c896fef94e57b3a21abeea33d6b6b18bb91e22d376e85753b38"},
-    {"path": "local/r30_extra_type_probe.exe", "sha256": "74481b476e9342aa2242b8441e4e61e67df85f10c179ee34a9908842e1d63cf1"}
+    {
+      "path": "include/bsp/native_resource_extra_type_ids.hpp",
+      "sha256": "896bf498aac4be2b63fd762d8b33f479c7ca24877f35b5fefad089c4d7e04bf5"
+    },
+    {
+      "path": "src/native_resource_extra_type_ids.cpp",
+      "sha256": "377925a90466328541ed3cd3d5c04219f38b625dff0d0e13bb3a2fe22a60765b"
+    },
+    {
+      "path": "include/bsp/game_native_type_storage.hpp",
+      "sha256": "9de949e5de1d00a702b9f2e62963cf29ef1f4615c83ff4220ba1004fbbb5a3b1"
+    },
+    {
+      "path": "src/game_native_type_storage.cpp",
+      "sha256": "ffc9656790a68a8fd17087062014bd75605312f7dea0c7e0ec494a3cd274234a"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "sha256": "585f1273c3bbde0c21846e70337795fdc67766cb48b1ac2615fa91b1180fed57"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "sha256": "d5d93e3561883c896fef94e57b3a21abeea33d6b6b18bb91e22d376e85753b38"
+    },
+    {
+      "path": "local/r30_extra_type_probe.exe",
+      "sha256": "74481b476e9342aa2242b8441e4e61e67df85f10c179ee34a9908842e1d63cf1"
+    }
   ],
   "annotation_status": "Worker remained Ghidra read-only. Parent owns final names, comments, ledgers, saves, and refreshed exports.",
   "limits": [
     "Source interface, not a drop-in implementation of the original native entry ABI.",
     "Focused probe uses local cells and existing C++ services; it is not execution inside the game process.",
     "Native FH3/SEH, full CRT startup, arbitrary hardware faults, and gameplay remain unvalidated."
-  ]
+  ],
+  "integration_archive": {
+    "path": "local/evidence-r30/extra-item-type-storage-r30.zip",
+    "sha256": "0339cb8594d96b9a7bf600457e9cf94d01f899bb553f68502763c12a47aedf09",
+    "worker_commit": "e09107148",
+    "files": [
+      {
+        "path": "include/bsp/native_resource_extra_type_ids.hpp",
+        "sha256": "896bf498aac4be2b63fd762d8b33f479c7ca24877f35b5fefad089c4d7e04bf5"
+      },
+      {
+        "path": "src/native_resource_extra_type_ids.cpp",
+        "sha256": "377925a90466328541ed3cd3d5c04219f38b625dff0d0e13bb3a2fe22a60765b"
+      },
+      {
+        "path": "include/bsp/game_native_type_storage.hpp",
+        "sha256": "9de949e5de1d00a702b9f2e62963cf29ef1f4615c83ff4220ba1004fbbb5a3b1"
+      },
+      {
+        "path": "src/game_native_type_storage.cpp",
+        "sha256": "ffc9656790a68a8fd17087062014bd75605312f7dea0c7e0ec494a3cd274234a"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "sha256": "585f1273c3bbde0c21846e70337795fdc67766cb48b1ac2615fa91b1180fed57"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "d5d93e3561883c896fef94e57b3a21abeea33d6b6b18bb91e22d376e85753b38"
+      },
+      {
+        "path": "local/r30_extra_type_probe.exe",
+        "sha256": "74481b476e9342aa2242b8441e4e61e67df85f10c179ee34a9908842e1d63cf1"
+      },
+      {
+        "path": "local/r30_extra_type_probe.cpp",
+        "sha256": "9f42ea8ce0c13d52de7856684945a08426c9b00647cc08330aaebef068230b9a"
+      },
+      {
+        "path": "local/r30_extra_type_probe.cmd",
+        "sha256": "98b4843bb561cf834a7c3b3313c2eff4dc6b5415e930ad6ba8605676f4e57240"
+      },
+      {
+        "path": "local/r30_extra_type_byte_receipt.json",
+        "sha256": "d0264e743df5ec305771db49c1ff21d7ac2756aa1e3fff73564e47aa41d25cdb"
+      },
+      {
+        "path": "reports/native_resource_extra_type_ids_r30.json",
+        "sha256": "306334a5285a4701642d24d4698b86174675b1c99df2d528a9ba3f51062d5709"
+      },
+      {
+        "path": "integration/combined_build.log",
+        "sha256": "3de256ff54d07c8954867eea6ebd1f6a48b78ca9923e169f0f4a52156dd40e59"
+      }
+    ]
+  },
+  "integration_validation": {
+    "commit": "cd5fe0a47",
+    "combined_build": "Strict Win32 build and 3/3 CTests passed.",
+    "review": "Both full 79-byte assembly bodies, literal name spans, CRT slots and application storage/call order reviewed; four direct call rows rechecked against saved Ghidra."
+  },
+  "integration_ghidra": {
+    "status": "Two initializer names/evidence applied; the earlier two getter names retained and descriptor-name meaning appended. Prior annotations captured, project saved, four exports refreshed.",
+    "prior_annotations": [
+      {
+        "address": "00b8a070",
+        "before": {
+          "address": "00b8a070",
+          "function_name": "BSP_AnimationChannelsItem_CurrentAuxiliaryWord",
+          "comment": "[BSP reconstruction 00b8a070]\n[BSP reconstruction 00B8A070] Complete 6-byte body. No consumed ECX/stack input; EAX current DWORD; RET. Read SAME current volatile DWORD 01090274; reuse existing complete getter with borrowed reference. No captured startup value. Wider meaning of the slot14 word is unassigned. Descriptive name is a hypothesis. No native callable ABI, application wiring, FH3/SEH or gameplay validation. R29:264 live/PE bytes;20 relocated-original getter/predicate pairs and source instance-publication fixture pass; combined strictWin32 build and3CTests pass. reports/native_resource_extra_item_profile.json."
+        },
+        "after": {
+          "address": "00b8a070",
+          "name": "BSP_AnimationChannelsItem_CurrentAuxiliaryWord",
+          "evidence": "[BSP reconstruction 00B8A070] Complete 6-byte body. No consumed ECX/stack input; EAX current DWORD; RET. Read SAME current volatile DWORD 01090274; reuse existing complete getter with borrowed reference. No captured startup value. Wider meaning of the slot14 word is unassigned. Descriptive name is a hypothesis. No native callable ABI, application wiring, FH3/SEH or gameplay validation. R29:264 live/PE bytes;20 relocated-original getter/predicate pairs and source instance-publication fixture pass; combined strictWin32 build and3CTests pass. reports/native_resource_extra_item_profile.json. | R30 follow-up: CD82F0/CD8340 establish fourth descriptor words 01090274/01090284 as native type-name addresses D63258(cAnimationResource)/D6326C(cBoneResource). GameNativeTypeStorage::resource_extra_types exposes these same stable descriptor blocks. reports/native_resource_extra_type_ids_r30.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b8a150",
+        "before": {
+          "address": "00b8a150",
+          "function_name": "BSP_BoneItem_CurrentAuxiliaryWord",
+          "comment": "[BSP reconstruction 00b8a150]\n[BSP reconstruction 00B8A150] Complete 6-byte body. No consumed ECX/stack input; EAX current DWORD; RET. Read SAME current volatile DWORD 01090284; reuse existing complete getter with borrowed reference. No captured startup value. Wider meaning of the slot14 word is unassigned. Descriptive name is a hypothesis. No native callable ABI, application wiring, FH3/SEH or gameplay validation. R29:264 live/PE bytes;20 relocated-original getter/predicate pairs and source instance-publication fixture pass; combined strictWin32 build and3CTests pass. reports/native_resource_extra_item_profile.json."
+        },
+        "after": {
+          "address": "00b8a150",
+          "name": "BSP_BoneItem_CurrentAuxiliaryWord",
+          "evidence": "[BSP reconstruction 00B8A150] Complete 6-byte body. No consumed ECX/stack input; EAX current DWORD; RET. Read SAME current volatile DWORD 01090284; reuse existing complete getter with borrowed reference. No captured startup value. Wider meaning of the slot14 word is unassigned. Descriptive name is a hypothesis. No native callable ABI, application wiring, FH3/SEH or gameplay validation. R29:264 live/PE bytes;20 relocated-original getter/predicate pairs and source instance-publication fixture pass; combined strictWin32 build and3CTests pass. reports/native_resource_extra_item_profile.json. | R30 follow-up: CD82F0/CD8340 establish fourth descriptor words 01090274/01090284 as native type-name addresses D63258(cAnimationResource)/D6326C(cBoneResource). GameNativeTypeStorage::resource_extra_types exposes these same stable descriptor blocks. reports/native_resource_extra_type_ids_r30.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cd82f0",
+        "before": {
+          "address": "00cd82f0",
+          "function_name": "FUN_00cd82f0"
+        },
+        "after": {
+          "address": "00cd82f0",
+          "name": "BSP_AnimationResourceType_InitializeStatic",
+          "evidence": "R30 full79-byte CRT initializer; guard 01090264, descriptor 01090268[4] [own,scene,root,name], name 00d63258 cAnimationResource. Early guard/name before B869C0; capture both current parent IDs before stores; increment current 6FAC20 counter before own-ID store. Interrupted initialization stays guarded, no retry repair. SAME application GameNativeTypeStorage/scene/root/counter in original selected CRT order before mesh types. 256 live/PE bytes, 4 exact call rows, strict combined Win32 build/3 CTests and focused source-cell fixture pass. Descriptive hypothesis, source ABI only; native FH3/SEH/full CRT/gameplay unproved. reports/native_resource_extra_type_ids_r30.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cd8340",
+        "before": {
+          "address": "00cd8340",
+          "function_name": "FUN_00cd8340"
+        },
+        "after": {
+          "address": "00cd8340",
+          "name": "BSP_BoneResourceType_InitializeStatic",
+          "evidence": "R30 full79-byte CRT initializer; guard 01090265, descriptor 01090278[4] [own,scene,root,name], name 00d6326c cBoneResource. Early guard/name before B869C0; capture both current parent IDs before stores; increment current 6FAC20 counter before own-ID store. Interrupted initialization stays guarded, no retry repair. SAME application GameNativeTypeStorage/scene/root/counter in original selected CRT order before mesh types. 256 live/PE bytes, 4 exact call rows, strict combined Win32 build/3 CTests and focused source-cell fixture pass. Descriptive hypothesis, source ABI only; native FH3/SEH/full CRT/gameplay unproved. reports/native_resource_extra_type_ids_r30.json."
+        },
+        "status": "applied"
+      }
+    ]
+  }
 }
