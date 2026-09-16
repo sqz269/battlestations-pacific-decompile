@@ -1,0 +1,959 @@
+{
+  "packet": "native_particle_properties_raw_orch4",
+  "status": "reconstructed_build_tested_bounded_native_probe_tested",
+  "source_revision": "a32256a9b",
+  "documentation": "docs/NATIVE_PARTICLE_PROPERTIES_RAW_ORCH4.md",
+  "source": "src/native_particle_type_property_raw.cpp",
+  "header": "include/bsp/native_particle_type_property_raw.hpp",
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mutations": false
+  },
+  "routines": [
+    {
+      "entry": "00b015c0",
+      "body": [
+        "00b015c0",
+        "00b01c11"
+      ],
+      "bytes": 1618,
+      "instructions": 556,
+      "coverage": "complete pseudocode and assembly read; complete raw source companion; normal source/native probe",
+      "abi": "ECX actual definition; one stacked pooled4h suffix header; RET4; AL recognized"
+    },
+    {
+      "entry": "00b00ce0",
+      "coverage": "complete151-instruction assembly read for final profile publication; existing factory source inspected; not modified"
+    },
+    {
+      "entry": "00af8bd0",
+      "coverage": "partial: call context for B015C0 only; caller whole body not claimed"
+    },
+    {
+      "entry": "00b064a0",
+      "coverage": "partial: call context for B015C0 only; caller whole body not claimed"
+    },
+    {
+      "entry": "00b07d60",
+      "coverage": "partial: call context for B015C0 only; caller whole body not claimed"
+    },
+    {
+      "entry": "00b08ac0",
+      "coverage": "partial: call context for B015C0 only; caller whole body not claimed"
+    },
+    {
+      "entry": "00b0ad50",
+      "coverage": "partial: call context for B015C0 only; caller whole body not claimed"
+    },
+    {
+      "entry": "00cbb4a0",
+      "body": [
+        "00cbb4a0",
+        "00cbb4a7"
+      ],
+      "coverage": "complete8B LEA/JMP action read; matching source unwind slot"
+    },
+    {
+      "entry": "00cbb4a8",
+      "body": [
+        "00cbb4a8",
+        "00cbb4af"
+      ],
+      "coverage": "complete8B LEA/JMP action read; matching source unwind slot"
+    },
+    {
+      "entry": "00cbb4b0",
+      "body": [
+        "00cbb4b0",
+        "00cbb4b7"
+      ],
+      "coverage": "complete8B LEA/JMP action read; matching source unwind slot"
+    },
+    {
+      "entry": "00cbb4b8",
+      "body": [
+        "00cbb4b8",
+        "00cbb4bf"
+      ],
+      "coverage": "complete8B LEA/JMP action read; matching source unwind slot"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00b015c0",
+      "address": "00b015eb",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b015f8",
+      "native": "00bf7fbf",
+      "contract": "CRT _stricmp, two cdecl DWORD arguments; ADD ESP,8. First five key comparisons."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01624",
+      "native": "00419cc0",
+      "contract": "Current actual sized-storage-pool getter; no stacked arguments; EAX is used as next return provider ECX."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b0162b",
+      "native": "00bd1510",
+      "contract": "ECX current actual sized storage pool; stack captured pointer,current strlen+1; RET8. Inline normal string return preserves the header."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b0163d",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b0164f",
+      "native": "00b01350",
+      "contract": "ECX actual definition; stack value bytes; RET4; returned AL ignored. Raw source uses embedded caller-retained texture/cache child."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01682",
+      "native": "00419cc0",
+      "contract": "Current actual sized-storage-pool getter; no stacked arguments; EAX is used as next return provider ECX."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01689",
+      "native": "00bd1510",
+      "contract": "ECX current actual sized storage pool; stack captured pointer,current strlen+1; RET8. Inline normal string return preserves the header."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b016ac",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b016b9",
+      "native": "00bf7fbf",
+      "contract": "CRT _stricmp, two cdecl DWORD arguments; ADD ESP,8. First five key comparisons."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b016e5",
+      "native": "00419cc0",
+      "contract": "Current actual sized-storage-pool getter; no stacked arguments; EAX is used as next return provider ECX."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b016ec",
+      "native": "00bd1510",
+      "contract": "ECX current actual sized storage pool; stack captured pointer,current strlen+1; RET8. Inline normal string return preserves the header."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01702",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01716",
+      "native": "00af5660",
+      "contract": "ECX local pooled4h copy header; stack current value bytes; RET4. Layer state1 before call, state3 after capturing original value pointer."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01742",
+      "native": "00419cc0",
+      "contract": "Current actual sized-storage-pool getter; no stacked arguments; EAX is used as next return provider ECX."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01749",
+      "native": "00bd1510",
+      "contract": "ECX current actual sized storage pool; stack captured pointer,current strlen+1; RET8. Inline normal string return preserves the header."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01764",
+      "native": "0041e870",
+      "contract": "ECX caller stack8h header; stack saved Layer copy pointer; RET4. Old argument28 is zeroed first; consumed header belongs to the following AF4360 argument."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b0176c",
+      "native": "00af4360",
+      "contract": "ECX current definition+14 layer owner; stacked by-value length,data header; RET8; EAX index stored +74 before disarm. Raw provider consumes current header data/length on normal return."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b017a2",
+      "native": "00419cc0",
+      "contract": "Current actual sized-storage-pool getter; no stacked arguments; EAX is used as next return provider ECX."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b017a9",
+      "native": "00bd1510",
+      "contract": "ECX current actual sized storage pool; stack captured pointer,current strlen+1; RET8. Inline normal string return preserves the header."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b017cc",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b017d9",
+      "native": "00bf7fbf",
+      "contract": "CRT _stricmp, two cdecl DWORD arguments; ADD ESP,8. First five key comparisons."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01805",
+      "native": "00419cc0",
+      "contract": "Current actual sized-storage-pool getter; no stacked arguments; EAX is used as next return provider ECX."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b0180c",
+      "native": "00bd1510",
+      "contract": "ECX current actual sized storage pool; stack captured pointer,current strlen+1; RET8. Inline normal string return preserves the header."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b0181e",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01843",
+      "native": "00aee2a0",
+      "contract": "ECX exact pooled4h header; RET. Return current bytes through same raw pool then zero that header. No implicit caller EH state on boolean arms."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01868",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01875",
+      "native": "00bf7fbf",
+      "contract": "CRT _stricmp, two cdecl DWORD arguments; ADD ESP,8. First five key comparisons."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01886",
+      "native": "00aee2a0",
+      "contract": "ECX exact pooled4h header; RET. Return current bytes through same raw pool then zero that header. No implicit caller EH state on boolean arms."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01898",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b018a0",
+      "native": "00bf8417",
+      "contract": "CRT atol, one cdecl DWORD; ADD ESP,4; signed EAX compared >0 and SETG replaces full destination byte."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b018b4",
+      "native": "00aee2a0",
+      "contract": "ECX exact pooled4h header; RET. Return current bytes through same raw pool then zero that header. No implicit caller EH state on boolean arms."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b018d3",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b018e0",
+      "native": "00bf7fbf",
+      "contract": "CRT _stricmp, two cdecl DWORD arguments; ADD ESP,8. First five key comparisons."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b018f1",
+      "native": "00aee2a0",
+      "contract": "ECX exact pooled4h header; RET. Return current bytes through same raw pool then zero that header. No implicit caller EH state on boolean arms."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01903",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b0190b",
+      "native": "00bf8417",
+      "contract": "CRT atol, one cdecl DWORD; ADD ESP,4; signed EAX compared >0 and SETG replaces full destination byte."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b0191f",
+      "native": "00aee2a0",
+      "contract": "ECX exact pooled4h header; RET. Return current bytes through same raw pool then zero that header. No implicit caller EH state on boolean arms."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b0193e",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b0194a",
+      "native": "00aedf80",
+      "contract": "ECX returned pooled4h key header; stack literal; RET4; AL equality. Last seven keys."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01955",
+      "native": "00aee2a0",
+      "contract": "ECX exact pooled4h header; RET. Return current bytes through same raw pool then zero that header. No implicit caller EH state on boolean arms."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01967",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b0196f",
+      "native": "00bf8417",
+      "contract": "CRT atol, one cdecl DWORD; ADD ESP,4; signed EAX compared >0 and SETG replaces full destination byte."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01983",
+      "native": "00aee2a0",
+      "contract": "ECX exact pooled4h header; RET. Return current bytes through same raw pool then zero that header. No implicit caller EH state on boolean arms."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b019a2",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b019ae",
+      "native": "00aedf80",
+      "contract": "ECX returned pooled4h key header; stack literal; RET4; AL equality. Last seven keys."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b019b9",
+      "native": "00aee2a0",
+      "contract": "ECX exact pooled4h header; RET. Return current bytes through same raw pool then zero that header. No implicit caller EH state on boolean arms."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b019cb",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b019d3",
+      "native": "00bf8417",
+      "contract": "CRT atol, one cdecl DWORD; ADD ESP,4; signed EAX compared >0 and SETG replaces full destination byte."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b019e7",
+      "native": "00aee2a0",
+      "contract": "ECX exact pooled4h header; RET. Return current bytes through same raw pool then zero that header. No implicit caller EH state on boolean arms."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01a08",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01a14",
+      "native": "00aedf80",
+      "contract": "ECX returned pooled4h key header; stack literal; RET4; AL equality. Last seven keys."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01a1f",
+      "native": "00aee2a0",
+      "contract": "ECX exact pooled4h header; RET. Return current bytes through same raw pool then zero that header. No implicit caller EH state on boolean arms."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01a31",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01a39",
+      "native": "00bf8417",
+      "contract": "CRT atol, one cdecl DWORD; ADD ESP,4; signed EAX compared >0 and SETG replaces full destination byte."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01a4d",
+      "native": "00aee2a0",
+      "contract": "ECX exact pooled4h header; RET. Return current bytes through same raw pool then zero that header. No implicit caller EH state on boolean arms."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01a6c",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01a78",
+      "native": "00aedf80",
+      "contract": "ECX returned pooled4h key header; stack literal; RET4; AL equality. Last seven keys."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01a83",
+      "native": "00aee2a0",
+      "contract": "ECX exact pooled4h header; RET. Return current bytes through same raw pool then zero that header. No implicit caller EH state on boolean arms."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01a95",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01a9d",
+      "native": "00bf8417",
+      "contract": "CRT atol, one cdecl DWORD; ADD ESP,4; signed EAX compared >0 and SETG replaces full destination byte."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01ab1",
+      "native": "00aee2a0",
+      "contract": "ECX exact pooled4h header; RET. Return current bytes through same raw pool then zero that header. No implicit caller EH state on boolean arms."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01ad0",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01adc",
+      "native": "00aedf80",
+      "contract": "ECX returned pooled4h key header; stack literal; RET4; AL equality. Last seven keys."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01ae7",
+      "native": "00aee2a0",
+      "contract": "ECX exact pooled4h header; RET. Return current bytes through same raw pool then zero that header. No implicit caller EH state on boolean arms."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01af9",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01b01",
+      "native": "00bf8417",
+      "contract": "CRT atol, one cdecl DWORD; ADD ESP,4; signed EAX compared >0 and SETG replaces full destination byte."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01b15",
+      "native": "00aee2a0",
+      "contract": "ECX exact pooled4h header; RET. Return current bytes through same raw pool then zero that header. No implicit caller EH state on boolean arms."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01b36",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01b42",
+      "native": "00aedf80",
+      "contract": "ECX returned pooled4h key header; stack literal; RET4; AL equality. Last seven keys."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01b4d",
+      "native": "00aee2a0",
+      "contract": "ECX exact pooled4h header; RET. Return current bytes through same raw pool then zero that header. No implicit caller EH state on boolean arms."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01b5f",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01b67",
+      "native": "00bf8417",
+      "contract": "CRT atol, one cdecl DWORD; ADD ESP,4; signed EAX compared >0 and SETG replaces full destination byte."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01b7b",
+      "native": "00aee2a0",
+      "contract": "ECX exact pooled4h header; RET. Return current bytes through same raw pool then zero that header. No implicit caller EH state on boolean arms."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01b9a",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01ba6",
+      "native": "00aedf80",
+      "contract": "ECX returned pooled4h key header; stack literal; RET4; AL equality. Last seven keys."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01bb1",
+      "native": "00aee2a0",
+      "contract": "ECX exact pooled4h header; RET. Return current bytes through same raw pool then zero that header. No implicit caller EH state on boolean arms."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01bc3",
+      "native": "00aee3c0",
+      "contract": "ECX pooled4h suffix; stack output4h header,index; RET8; returned EAX header used. Repeated token0 for each attempted property; token1 on match."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01bcb",
+      "native": "00bf8417",
+      "contract": "CRT atol, one cdecl DWORD; ADD ESP,4; signed EAX compared >0 and SETG replaces full destination byte."
+    },
+    {
+      "function": "00b015c0",
+      "address": "00b01bdf",
+      "native": "00aee2a0",
+      "contract": "ECX exact pooled4h header; RET. Return current bytes through same raw pool then zero that header. No implicit caller EH state on boolean arms."
+    },
+    {
+      "address": "00b01835",
+      "native": "00b089e0",
+      "function": "00b015c0",
+      "kind": "indirect_call",
+      "contract": "Current definition profile and +10 target captured atB01825/B01828 before state4 storeB0182D; ECX actual definition,stack token bytes,RET4. Three genuine raw setters and two actual RET4 no-op targets."
+    },
+    {
+      "address": "00b01835",
+      "native": "00b06210",
+      "function": "00b015c0",
+      "kind": "indirect_call",
+      "contract": "Current definition profile and +10 target captured atB01825/B01828 before state4 storeB0182D; ECX actual definition,stack token bytes,RET4. Three genuine raw setters and two actual RET4 no-op targets."
+    },
+    {
+      "address": "00b01835",
+      "native": "00b07c80",
+      "function": "00b015c0",
+      "kind": "indirect_call",
+      "contract": "Current definition profile and +10 target captured atB01825/B01828 before state4 storeB0182D; ECX actual definition,stack token bytes,RET4. Three genuine raw setters and two actual RET4 no-op targets."
+    },
+    {
+      "address": "00b01835",
+      "native": "00af80e0",
+      "function": "00b015c0",
+      "kind": "indirect_call",
+      "contract": "Current definition profile and +10 target captured atB01825/B01828 before state4 storeB0182D; ECX actual definition,stack token bytes,RET4. Three genuine raw setters and two actual RET4 no-op targets."
+    },
+    {
+      "address": "00b01835",
+      "native": "00b0a040",
+      "function": "00b015c0",
+      "kind": "indirect_call",
+      "contract": "Current definition profile and +10 target captured atB01825/B01828 before state4 storeB0182D; ECX actual definition,stack token bytes,RET4. Three genuine raw setters and two actual RET4 no-op targets."
+    },
+    {
+      "address": "00af8ce7",
+      "native": "00b015c0",
+      "function": "00af8bd0",
+      "contract": "Saved actual definition passed ECX, pooled suffix header pushed from EAX; callee RET4 and caller consumes AL. Caller-context evidence only."
+    },
+    {
+      "address": "00b065b2",
+      "native": "00b015c0",
+      "function": "00b064a0",
+      "contract": "Saved actual definition passed ECX, pooled suffix header pushed from EAX; callee RET4 and caller consumes AL. Caller-context evidence only."
+    },
+    {
+      "address": "00b07e72",
+      "native": "00b015c0",
+      "function": "00b07d60",
+      "contract": "Saved actual definition passed ECX, pooled suffix header pushed from EAX; callee RET4 and caller consumes AL. Caller-context evidence only."
+    },
+    {
+      "address": "00b08bdb",
+      "native": "00b015c0",
+      "function": "00b08ac0",
+      "contract": "Saved actual definition passed ECX, pooled suffix header pushed from EAX; callee RET4 and caller consumes AL. Caller-context evidence only."
+    },
+    {
+      "address": "00b0ae67",
+      "native": "00b015c0",
+      "function": "00b0ad50",
+      "contract": "Saved actual definition passed ECX, pooled suffix header pushed from EAX; callee RET4 and caller consumes AL. Caller-context evidence only."
+    },
+    {
+      "address": "00cbb4a3",
+      "native": "00aee2a0",
+      "function": "00cbb4a0",
+      "kind": "tail_jump",
+      "contract": "Entire8B unwind action: LEA ECX exact argument28 header then JMP AEE2A0."
+    },
+    {
+      "address": "00cbb4ab",
+      "native": "00aee2a0",
+      "function": "00cbb4a8",
+      "kind": "tail_jump",
+      "contract": "Entire8B unwind action: LEA ECX exact argument28 header then JMP AEE2A0."
+    },
+    {
+      "address": "00cbb4b3",
+      "native": "00aee2a0",
+      "function": "00cbb4b0",
+      "kind": "tail_jump",
+      "contract": "Entire8B unwind action: LEA ECX exact local10 header then JMP AEE2A0."
+    },
+    {
+      "address": "00cbb4bb",
+      "native": "00aee2a0",
+      "function": "00cbb4b8",
+      "kind": "tail_jump",
+      "contract": "Entire8B unwind action: LEA ECX exact argument28 header then JMP AEE2A0."
+    },
+    {
+      "address": "00b00d45",
+      "native": "00b08830",
+      "function": "00b00ce0",
+      "contract": "Profile producer context only: Sprite base constructor followed by final D5DD18 store atB00D4A. ECX allocation; name,actual layers,owner stacked; RET0Ch."
+    },
+    {
+      "address": "00b00d9a",
+      "native": "00b058e0",
+      "function": "00b00ce0",
+      "contract": "Profile producer context only: Axial base constructor followed by final D5DCC0 store atB00D9F. ECX allocation; name,actual layers,owner stacked; RET0Ch."
+    },
+    {
+      "address": "00b00dfc",
+      "native": "00b00770",
+      "function": "00b00ce0",
+      "contract": "Profile producer context only: Final Floating constructor. ECX allocation; name,actual layers,owner stacked; RET0Ch."
+    },
+    {
+      "address": "00b00e49",
+      "native": "00af89e0",
+      "function": "00b00ce0",
+      "contract": "Profile producer context only: Final Object constructor. ECX allocation; name,actual layers,owner stacked; RET0Ch."
+    },
+    {
+      "address": "00b00ea1",
+      "native": "00b0a0b0",
+      "function": "00b00ce0",
+      "contract": "Profile producer context only: Final Tracer constructor. ECX allocation; name,actual layers,owner stacked; RET0Ch."
+    }
+  ],
+  "read_dependencies": [
+    {
+      "entry": "00aee3c0",
+      "coverage": "complete body read; genuine existing raw token API reused"
+    },
+    {
+      "entry": "00aee2a0",
+      "coverage": "complete body read; genuine existing raw destructor reused"
+    },
+    {
+      "entry": "00af5660",
+      "coverage": "complete body read; genuine existing raw pooled-text constructor reused"
+    },
+    {
+      "entry": "0041e870",
+      "coverage": "existing raw counted-header source contract inspected; native dependency reused"
+    },
+    {
+      "entry": "00af4360",
+      "coverage": "complete body read; genuine raw consumed8h-header overload reused"
+    },
+    {
+      "entry": "00aedf80",
+      "coverage": "complete body read; genuine header equality helper reused"
+    },
+    {
+      "entry": "00b01350",
+      "coverage": "complete body reviewed in prior owned texture-provider audit; final raw source reviewed; caller-retained child reused"
+    },
+    {
+      "entry": "00b089e0",
+      "coverage": "complete body and existing raw setter source inspected"
+    },
+    {
+      "entry": "00b06210",
+      "coverage": "complete body and existing raw setter source inspected"
+    },
+    {
+      "entry": "00b07c80",
+      "coverage": "complete body and existing raw setter source inspected"
+    },
+    {
+      "entry": "00af80e0",
+      "coverage": "complete one-instruction RET4 body read"
+    },
+    {
+      "entry": "00b0a040",
+      "coverage": "complete one-instruction RET4 body read"
+    },
+    {
+      "entry": "00419cc0",
+      "coverage": "existing actual pool getter contract reused; no new native audit"
+    },
+    {
+      "entry": "00bd1510",
+      "coverage": "existing actual pool return provider contract reused; no new native audit"
+    },
+    {
+      "entry": "00bf7fbf",
+      "coverage": "existing CRT _stricmp boundary reused; callee body not re-audited"
+    },
+    {
+      "entry": "00bf8417",
+      "coverage": "existing CRT atol boundary reused; callee body not re-audited"
+    }
+  ],
+  "property_names": [
+    "Texture",
+    "Layer",
+    "Shader",
+    "Stops",
+    "RandomRotationDirection",
+    "EmitLight",
+    "Distort",
+    "AnimOnOff",
+    "AnimRndStartFrame",
+    "AnimRandomPlay",
+    "AnimLoop",
+    "AnimFade"
+  ],
+  "flag_offsets": {
+    "Stops": "28",
+    "RandomRotationDirection": "29",
+    "EmitLight": "64",
+    "Distort": "65",
+    "AnimOnOff": "4c",
+    "AnimRndStartFrame": "60",
+    "AnimRandomPlay": "61",
+    "AnimLoop": "62",
+    "AnimFade": "63"
+  },
+  "profiles": [
+    {
+      "type": "Sprite",
+      "profile": "00d5dd18",
+      "usual_target": "00b089e0"
+    },
+    {
+      "type": "Axial",
+      "profile": "00d5dcc0",
+      "usual_target": "00b06210"
+    },
+    {
+      "type": "Floating",
+      "profile": "00d5dcec",
+      "usual_target": "00b07c80"
+    },
+    {
+      "type": "Object",
+      "profile": "00d5db00",
+      "usual_target": "00af80e0"
+    },
+    {
+      "type": "Tracer",
+      "profile": "00d5e048",
+      "usual_target": "00b0a040"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Initial proposed context identified Sprite/Axial/Floating by constructor base tables D5DFF4/D5DF30/D5DFB0.",
+      "evidence": "B00CE0 inline MOV [EDI],D5DD18 atB00D4A and MOV [EDI],D5DCC0 atB00D9F after base constructors; other final constructors and current table+10 bytes checked. Base-only profiles have no admitted caller proof.",
+      "is": "Final source admits D5DD18/D5DCC0/D5DCEC and Object D5DB00/Tracer D5E048."
+    }
+  ],
+  "ownership": {
+    "strings": "Same actual NativeStringRawPoolContext for suffix/token/shader/layer and nested texture names/cache.",
+    "texture": "Borrowed optional context reached only for Texture. Embedded NativeParticleTypeTextureRawAcquired retains nested cache acquired state. Failed unresolved child must outlive caller unwind and cannot be reset/retried.",
+    "layer": "Saved ESI pointer is returned after AF4360, separately from its consumed by-value8h header. Source reloads definition+14 only after header construction; AF4360 captures current header length once and consumes current data.",
+    "model": "No Model branch in B015C0; no model callback added."
+  },
+  "exception_map": {
+    "handler": "00cbb4c0",
+    "func_info": "00df3514",
+    "unwind_map": "00df3538",
+    "entered_states": [
+      0,
+      1,
+      3,
+      4
+    ],
+    "unentered_state": 2,
+    "previous": [
+      -1,
+      -1,
+      1,
+      -1,
+      -1
+    ],
+    "actions": [
+      "00cbb4a0",
+      "00cbb4a8",
+      "00cbb4b0",
+      "00cbb4b0",
+      "00cbb4b8"
+    ],
+    "normal_disarm": {
+      "texture": "capture current token pointer; state=-1; return captured bytes",
+      "layer": "store found index+74; state=-1; return saved ESI bytes",
+      "shader": "state=-1; AEE2A0 value header",
+      "flags": "no armed value-token state"
+    },
+    "source_boundary": "C++ catch applies exact caller cleanup map and rethrows; cleanup throw terminates. Not a Windows FH3 ABI replacement."
+  },
+  "validation": {
+    "native_probe": {
+      "exit_code": 0,
+      "cases": 42,
+      "function": {
+        "address": "00b015c0",
+        "bytes": 1618,
+        "sha256": "649c1f85b0d9094f73ae6833a7cd8d0d6d2eff54f1854f1962f89a95f35fd494",
+        "live_equal": true,
+        "instructions": 556
+      },
+      "result": "PASS: 42 complete1618B original/source comparisons; all12 properties,9 byteflags negative/zero/positive,5 current finalshader profiles and redirectedcurrent slot,Layer hit/miss,unknown,realatlas Texture; exact98h owner bytes,record bytes and actual rawpool bump/live/peak. Native FH3 failures and renderer cache misses not executed.",
+      "scope": "Complete native B015C0 copied from installed PE and matched live Ghidra bytes. Direct child calls bridge genuine reconstructed raw-pool/atlas/shader/layer providers. Current-profile slot10 native calls use explicit ABI bridges to those same bodies. Native FH3 exceptions and cache miss not executed.",
+      "comparison": "Exact98h object bytes with relocated pointers normalized, actual1Ch record bytes and actual raw-pool bump/live/peak.",
+      "probe_sources": [
+        "local/particle_property_probe.cpp",
+        "local/run_particle_property_probe.py",
+        "local/run_particle_property_final_probe.py"
+      ],
+      "permanent_tests_added": 0,
+      "final_library": true,
+      "command": "python local/run_particle_property_final_probe.py",
+      "libraries": [
+        "build/win32/Release/bsp_core.lib",
+        "build/win32/Release/bsp_lua511.lib",
+        "build/win32/Release/bsp_zlib121.lib",
+        "shell32.lib"
+      ],
+      "compiler_flags": "/EHsc /std:c++17 /O2 /W4 /WX /MD /link /MANIFEST:EMBED"
+    },
+    "build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "platform": "MSVC Win32",
+      "standard": "C++17",
+      "warnings": "/W4 /WX",
+      "log": "local/particle_property_build_final.log"
+    },
+    "ctest": {
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "native_seeds": "python tools/ghidra_export.py verify-seeds: all8 match installed PE and live Ghidra"
+    },
+    "call_verification": {
+      "rows": 99,
+      "failed": 0,
+      "indirect_rows": 5,
+      "direct_body_calls": 80,
+      "command": "python tools/verify_report_calls.py reports/native_particle_properties_raw_orch4.json",
+      "limitation": "Mechanical check validates the indirect instruction but not its resolved target; final table-cell evidence supplies those targets."
+    },
+    "artifact_hashes": {
+      "src\\native_particle_type_property_raw.cpp": "523e7bc71f435a8c6a4d853c531e54c1175176f9213e0b863015e01cccef7fc2",
+      "include\\bsp\\native_particle_type_property_raw.hpp": "ddd858af6035e7aa55c069fdeb5defdca58be5199c860f0a778858f9aebfa81c",
+      "local\\particle_property_probe.exe": "faddd4e27bc3a6d704b5c0e7f698d84c3cde32b10b8be44cf851f6ed9ae2cf35",
+      "build\\win32\\Release\\bsp_core.lib": "0a7300b6b3a414066080752ca4d02b8e28146b642dfd450b0b05ffc7ae9071b9"
+    }
+  },
+  "previous_ledger_record": {
+    "address": "00b015c0",
+    "source": "src/native_particle_type_property.cpp",
+    "header": "include/bsp/native_particle_type_property.hpp",
+    "evidence": "AQ hypothesis, not recovered symbol. Full installed/live byte span verified; decoded calls and native stack cleanup inspected. Actual pooled string, raw atlas manager/item and1Ch particle record domains; real D3DXFloat32To16Array import. Strict Win32/native-byte differential passes supported normal paths. Original FH3/allocation-failure/malformed-buffer faults and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_PROPERTY.md and reports/native_particle_type_property.json. AR integration: Concrete dispatch of the five captured shader10 targets B089E0/B06210/B07C80/AF80E0/B0A040 over the same actual counted-string storage; unknown current targets retain the real shader service. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+    "name": "load_native_particle_type_property_00b015c0",
+    "status": "reconstructed_build_tested_bounded_fixture_tested",
+    "native_abi": "ECX actual definition; stack pooled4h suffix; RET4/AL recognized",
+    "kind": "function"
+  },
+  "prior_evidence": [
+    "docs/NATIVE_PARTICLE_TYPE_PROPERTY.md",
+    "reports/native_particle_type_property.json",
+    "docs/NATIVE_PARTICLE_TYPE_RESOURCES.md",
+    "reports/native_particle_type_resources.json",
+    "docs/NATIVE_PARTICLE_TEXTURE_PROVIDER_ORCH4.md",
+    "reports/native_particle_texture_provider_orch4.json",
+    "docs/NATIVE_PARTICLE_TEXTURE_RAW_ORCH4.md",
+    "reports/native_particle_texture_raw_orch4.json"
+  ],
+  "limits": [
+    "Native FH3 exception execution not tested.",
+    "Forced allocation/provider failures and malformed-input faults not tested.",
+    "Renderer cache miss not exercised by this property probe.",
+    "Raw context requires the same actual publications, pool and canonical owner domain.",
+    "Unknown current profile/target rejected as unsupported; no synthetic provider.",
+    "Not a drop-in native ABI replacement; full game not validated."
+  ],
+  "profile_evidence": {
+    "final_cell_addresses": [
+      "00d5dd28",
+      "00d5dcd0",
+      "00d5dcfc",
+      "00d5db10",
+      "00d5e058"
+    ],
+    "final_cell_values": [
+      "00b089e0",
+      "00b06210",
+      "00b07c80",
+      "00af80e0",
+      "00b0a040"
+    ],
+    "reads": "Current live vtable bytes and existing final constructor stores checked; B00CE0 inline stores independently rechecked."
+  }
+}
