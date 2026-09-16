@@ -11,6 +11,7 @@ struct NativeResourceSupportRawContext;
 struct NativeFrameClockLifetimeContext;
 struct NativeDiagnosticSinkStorage;
 struct NativeRendererRecordGuardContext;
+struct NativeRendererLuaOwnerContext;
 struct NativeRenderJobPublicationContext;
 class XLiveOwnerAllocation;
 struct NativeInputBackendOwnerContext;
@@ -143,6 +144,9 @@ struct NativeSingletonDeletionBindings {
     // CE7550 is the registered frame-job PRIMARY; D5E15C is the preparation
     // job SECONDARY at primary+4. Borrow their SAME raw publication context.
     NativeRenderJobPublicationContext* render_jobs{};
+    // D5E5A4/D5E5A8 own the renderer Lua cache. Both use the SAME actual
+    // AA0/F8D434 cells and Lua/string providers through final manager drain.
+    NativeRendererLuaOwnerContext* renderer_lua_owner{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -153,7 +157,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, frame_clock) == 108);
 static_assert(offsetof(NativeSingletonDeletionBindings, actual_diagnostic_publication_0109cf14) == 112);
 static_assert(offsetof(NativeSingletonDeletionBindings, renderer_record_guard) == 116);
 static_assert(offsetof(NativeSingletonDeletionBindings, render_jobs) == 120);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 124);
+static_assert(offsetof(NativeSingletonDeletionBindings, renderer_lua_owner) == 124);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 128);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

@@ -1,0 +1,2554 @@
+{
+  "schema_version": 1,
+  "packet": "native_renderer_lua_owner_r61",
+  "status": "reviewed_source_recovered_to_current_main_strict_build_actual_vfs_native_caller_and_shared_drain_checked",
+  "baseline_commit": "5ae0b746a762ff30464de5d249e3567169350216",
+  "provenance": {
+    "source_branch": "agent/orch5-native-renderer-lua-owner",
+    "commits": [
+      "952d8a2bc29088aaa040c379f3a2216bc5c7d982",
+      "9447b175bae3c4befbce412356ec4dd8d5f2dc69"
+    ],
+    "files": [
+      {
+        "path": "include/bsp/native_renderer_lua_owner.hpp",
+        "prior_commit": "9447b175bae3c4befbce412356ec4dd8d5f2dc69",
+        "prior_sha256": "0c4a9a175c954a3bc7513e056aae5f624fecd6f8c562062749db25ec7ecd644b",
+        "current_sha256": "0c4a9a175c954a3bc7513e056aae5f624fecd6f8c562062749db25ec7ecd644b",
+        "same_source_ignoring_line_endings": true
+      },
+      {
+        "path": "src/native_renderer_lua_owner.cpp",
+        "prior_commit": "9447b175bae3c4befbce412356ec4dd8d5f2dc69",
+        "prior_sha256": "10d513a30dec5c8355f4c787f8a3205dee278d039a8fe5605c791d837dbd648a",
+        "current_sha256": "10d513a30dec5c8355f4c787f8a3205dee278d039a8fe5605c791d837dbd648a",
+        "same_source_ignoring_line_endings": true
+      }
+    ],
+    "scope": "Only reviewed source/header reused; unrelated ancestor work not imported. Prior documentation/report/fixture retained in local exact archive as historical evidence, not fresh validation."
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "flow_repairs": {
+      "repairs": [
+        {
+          "function": "00b1bb70",
+          "owner": "agent/orch4-20260915",
+          "when": "2026-09-16T18:21:13Z",
+          "decompile_lines_before": 23,
+          "gaps": [
+            {
+              "site": "00b1bb80",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00b1bb85",
+              "gap_end_exclusive": "00b1bb88",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b1bb80",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00b1bb85",
+                "gap_end_exclusive": "00b1bb88",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 00b1bb80 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            }
+          ],
+          "decompile_lines_after": 20,
+          "gaps_remaining": 0
+        },
+        {
+          "function": "00b1bc50",
+          "owner": "agent/orch4-20260915",
+          "when": "2026-09-16T18:21:14Z",
+          "decompile_lines_before": 23,
+          "gaps": [
+            {
+              "site": "00b1bc60",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00b1bc65",
+              "gap_end_exclusive": "00b1bc68",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b1bc60",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00b1bc65",
+                "gap_end_exclusive": "00b1bc68",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 00b1bc60 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            }
+          ],
+          "decompile_lines_after": 20,
+          "gaps_remaining": 0
+        }
+      ]
+    },
+    "prior_annotations_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\ghidra-annotations-20260916T183250Z.json",
+    "prior_annotations": [
+      {
+        "address": "00b1ba30",
+        "before": {
+          "address": "00b1ba30",
+          "function_name": "BSP_RendererLuaBase_Construct",
+          "comment": "[BSP reconstruction 00b1ba30]\nProvisional descriptive name; live 145-byte listing B1BA30-B1BAC0, actual F8D434 publication through 415350/BD0C30; docs/NATIVE_RENDERER_LUA_OWNER.md. | Hypothesis, not a recovered symbol. Actual 4CCh owner and actual lazy 14h singleton manager publication. Preserve first captured section and second-getter-before-current-owner reload. Base and guard FH3 cleanup stages are represented by C++ guards, including Lua-construction failure. Real Lua fixture uses fixture-only bootstrap fundamentals, not game fundamentals. docs/NATIVE_RENDERER_LUA_OWNER.md; reports/native_renderer_lua_owner.json. Strict integrated Win32 build, two CTests and focused packet fixture passed at 6641c05f. Original whole-function ABI/FH3/SEH and gameplay compatibility remain unvalidated."
+        },
+        "after": {
+          "address": "00b1ba30",
+          "name": "BSP_RendererLuaBase_Construct",
+          "evidence": "R61 reviewed actual renderer Lua owner restored from source commit9447b175b to current main. Full4CCh allocation with embedded4C8h Lua+4. Same actualAA0/F8D434/raw string pool and canonical fundamentals/DoFile services. Full145B ECX fresh4CCh owner/EAXsame/RET. Write D5E5A4; state0 profile cleanup before first actual415350. Capture FIRST manager+10 section, real enter and depth+18 increment, state1 guard, publish F8D434; second actual415350 before rereading CURRENT F8D434 and genuine BD0C30 register. Decrement/leave captured first section; no private manager/pool. Bytes+4..4CB preserve allocation preimage. Full153B ECX owner/RET. WriteD5E5A4; state0 before first actual415350, capture firstmanager section and enter/depth, state1, secondgetter then CURRENT F8D434 -> genuine BCFCA0 unregister. Clear publication unconditionally, leave captured section, stampCE3818. Unregister clears FIRST matching slot but preserves array length/capacity and later duplicates; it does not require current publication to equal this owner. Full92B ECX fresh4CCh owner/EAXsame/RET. Genuine base construct; state0 base cleanup; D5E5A8; genuine B66BD0 on embedded +4 actual4C8h Lua owner; state1 Lua cleanup; genuine B6A020(mask1) with caller canonical fundamentals/DoFile services and same actual pool. Failure after Lua construction closes actual state then destroys base. No replacement script or successful fake provider. Full82B ECX owner/RET. D5E5A8; state0 base cleanup; genuine B669A0 closes embedded Lua; disarm state-1 BEFORE explicit base destructor so base failure is not retried. Unwind closes remaining base only. Second cleanup exception terminates. ScalarsB1BB70/B1BC50 destroy then ordinaryfree iff lowflagsbit0, returnoriginalbits. RawBD0400 adds two genuine scalar profiles with retained context at124/size128. Nine current full-native/source normal checks using actual application raw VFS/pool/manager and installed657B fundamentals pass; whole4CCh comparisons, flags0/2/3, real Lua close, unregister holes and full shared drain. StrictWin32/MD/W4/WX/fp:strict+3CTests. 28live/PE spans1076B,22directcall/tailrows. B1BB85/B1BC65 ADD ESP,4 restored after clearing local free CALL_RETURN overrides, no instruction gaps remain. Reached native helpers use genuine compiled source with ABI bridges; originalFH3/SEH/register/private-stack/fault and failure injection untested. Fullrenderer/application/gameplay unproved. docs/NATIVE_RENDERER_LUA_OWNER_R61.md; reports/native_renderer_lua_owner_r61.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b1bad0",
+        "before": {
+          "address": "00b1bad0",
+          "function_name": "BSP_RendererLuaBase_Destruct",
+          "comment": "[BSP reconstruction 00b1bad0]\nProvisional descriptive name; live B1BAD0-B1BB68 listing unregisters current F8D434 through 415350/BCFCA0 then clears; docs/NATIVE_RENDERER_LUA_OWNER.md. | Hypothesis, not a recovered symbol. Actual 4CCh owner and actual lazy 14h singleton manager publication. Preserve first captured section and second-getter-before-current-owner reload. Base and guard FH3 cleanup stages are represented by C++ guards, including Lua-construction failure. Real Lua fixture uses fixture-only bootstrap fundamentals, not game fundamentals. docs/NATIVE_RENDERER_LUA_OWNER.md; reports/native_renderer_lua_owner.json. Strict integrated Win32 build, two CTests and focused packet fixture passed at 6641c05f. Original whole-function ABI/FH3/SEH and gameplay compatibility remain unvalidated."
+        },
+        "after": {
+          "address": "00b1bad0",
+          "name": "BSP_RendererLuaBase_Destruct",
+          "evidence": "R61 reviewed actual renderer Lua owner restored from source commit9447b175b to current main. Full4CCh allocation with embedded4C8h Lua+4. Same actualAA0/F8D434/raw string pool and canonical fundamentals/DoFile services. Full145B ECX fresh4CCh owner/EAXsame/RET. Write D5E5A4; state0 profile cleanup before first actual415350. Capture FIRST manager+10 section, real enter and depth+18 increment, state1 guard, publish F8D434; second actual415350 before rereading CURRENT F8D434 and genuine BD0C30 register. Decrement/leave captured first section; no private manager/pool. Bytes+4..4CB preserve allocation preimage. Full153B ECX owner/RET. WriteD5E5A4; state0 before first actual415350, capture firstmanager section and enter/depth, state1, secondgetter then CURRENT F8D434 -> genuine BCFCA0 unregister. Clear publication unconditionally, leave captured section, stampCE3818. Unregister clears FIRST matching slot but preserves array length/capacity and later duplicates; it does not require current publication to equal this owner. Full92B ECX fresh4CCh owner/EAXsame/RET. Genuine base construct; state0 base cleanup; D5E5A8; genuine B66BD0 on embedded +4 actual4C8h Lua owner; state1 Lua cleanup; genuine B6A020(mask1) with caller canonical fundamentals/DoFile services and same actual pool. Failure after Lua construction closes actual state then destroys base. No replacement script or successful fake provider. Full82B ECX owner/RET. D5E5A8; state0 base cleanup; genuine B669A0 closes embedded Lua; disarm state-1 BEFORE explicit base destructor so base failure is not retried. Unwind closes remaining base only. Second cleanup exception terminates. ScalarsB1BB70/B1BC50 destroy then ordinaryfree iff lowflagsbit0, returnoriginalbits. RawBD0400 adds two genuine scalar profiles with retained context at124/size128. Nine current full-native/source normal checks using actual application raw VFS/pool/manager and installed657B fundamentals pass; whole4CCh comparisons, flags0/2/3, real Lua close, unregister holes and full shared drain. StrictWin32/MD/W4/WX/fp:strict+3CTests. 28live/PE spans1076B,22directcall/tailrows. B1BB85/B1BC65 ADD ESP,4 restored after clearing local free CALL_RETURN overrides, no instruction gaps remain. Reached native helpers use genuine compiled source with ABI bridges; originalFH3/SEH/register/private-stack/fault and failure injection untested. Fullrenderer/application/gameplay unproved. docs/NATIVE_RENDERER_LUA_OWNER_R61.md; reports/native_renderer_lua_owner_r61.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b1bb70",
+        "before": {
+          "address": "00b1bb70",
+          "function_name": "BSP_RendererLuaBase_ScalarDelete",
+          "comment": "[BSP reconstruction 00b1bb70]\nHypothesis, not a recovered symbol. Actual 4CCh owner and actual lazy 14h singleton manager publication. Preserve first captured section and second-getter-before-current-owner reload. Base and guard FH3 cleanup stages are represented by C++ guards, including Lua-construction failure. Real Lua fixture uses fixture-only bootstrap fundamentals, not game fundamentals. docs/NATIVE_RENDERER_LUA_OWNER.md; reports/native_renderer_lua_owner.json. Strict integrated Win32 build, two CTests and focused packet fixture passed at 6641c05f. Original whole-function ABI/FH3/SEH and gameplay compatibility remain unvalidated."
+        },
+        "after": {
+          "address": "00b1bb70",
+          "name": "BSP_RendererLuaBase_ScalarDelete",
+          "evidence": "R61 reviewed actual renderer Lua owner restored from source commit9447b175b to current main. Full4CCh allocation with embedded4C8h Lua+4. Same actualAA0/F8D434/raw string pool and canonical fundamentals/DoFile services. Full145B ECX fresh4CCh owner/EAXsame/RET. Write D5E5A4; state0 profile cleanup before first actual415350. Capture FIRST manager+10 section, real enter and depth+18 increment, state1 guard, publish F8D434; second actual415350 before rereading CURRENT F8D434 and genuine BD0C30 register. Decrement/leave captured first section; no private manager/pool. Bytes+4..4CB preserve allocation preimage. Full153B ECX owner/RET. WriteD5E5A4; state0 before first actual415350, capture firstmanager section and enter/depth, state1, secondgetter then CURRENT F8D434 -> genuine BCFCA0 unregister. Clear publication unconditionally, leave captured section, stampCE3818. Unregister clears FIRST matching slot but preserves array length/capacity and later duplicates; it does not require current publication to equal this owner. Full92B ECX fresh4CCh owner/EAXsame/RET. Genuine base construct; state0 base cleanup; D5E5A8; genuine B66BD0 on embedded +4 actual4C8h Lua owner; state1 Lua cleanup; genuine B6A020(mask1) with caller canonical fundamentals/DoFile services and same actual pool. Failure after Lua construction closes actual state then destroys base. No replacement script or successful fake provider. Full82B ECX owner/RET. D5E5A8; state0 base cleanup; genuine B669A0 closes embedded Lua; disarm state-1 BEFORE explicit base destructor so base failure is not retried. Unwind closes remaining base only. Second cleanup exception terminates. ScalarsB1BB70/B1BC50 destroy then ordinaryfree iff lowflagsbit0, returnoriginalbits. RawBD0400 adds two genuine scalar profiles with retained context at124/size128. Nine current full-native/source normal checks using actual application raw VFS/pool/manager and installed657B fundamentals pass; whole4CCh comparisons, flags0/2/3, real Lua close, unregister holes and full shared drain. StrictWin32/MD/W4/WX/fp:strict+3CTests. 28live/PE spans1076B,22directcall/tailrows. B1BB85/B1BC65 ADD ESP,4 restored after clearing local free CALL_RETURN overrides, no instruction gaps remain. Reached native helpers use genuine compiled source with ABI bridges; originalFH3/SEH/register/private-stack/fault and failure injection untested. Fullrenderer/application/gameplay unproved. docs/NATIVE_RENDERER_LUA_OWNER_R61.md; reports/native_renderer_lua_owner_r61.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b1bb90",
+        "before": {
+          "address": "00b1bb90",
+          "function_name": "BSP_RendererLuaOwner_Construct",
+          "comment": "[BSP reconstruction 00b1bb90]\nProvisional descriptive name; B1BB90-B1BBEB live listing, Lua B66BD0 and B6A020 at this+4; renderer B32410 allocates 4CCh; docs/NATIVE_RENDERER_LUA_OWNER.md. | Hypothesis, not a recovered symbol. Actual 4CCh owner and actual lazy 14h singleton manager publication. Preserve first captured section and second-getter-before-current-owner reload. Base and guard FH3 cleanup stages are represented by C++ guards, including Lua-construction failure. Real Lua fixture uses fixture-only bootstrap fundamentals, not game fundamentals. docs/NATIVE_RENDERER_LUA_OWNER.md; reports/native_renderer_lua_owner.json. Strict integrated Win32 build, two CTests and focused packet fixture passed at 6641c05f. Original whole-function ABI/FH3/SEH and gameplay compatibility remain unvalidated."
+        },
+        "after": {
+          "address": "00b1bb90",
+          "name": "BSP_RendererLuaOwner_Construct",
+          "evidence": "R61 reviewed actual renderer Lua owner restored from source commit9447b175b to current main. Full4CCh allocation with embedded4C8h Lua+4. Same actualAA0/F8D434/raw string pool and canonical fundamentals/DoFile services. Full145B ECX fresh4CCh owner/EAXsame/RET. Write D5E5A4; state0 profile cleanup before first actual415350. Capture FIRST manager+10 section, real enter and depth+18 increment, state1 guard, publish F8D434; second actual415350 before rereading CURRENT F8D434 and genuine BD0C30 register. Decrement/leave captured first section; no private manager/pool. Bytes+4..4CB preserve allocation preimage. Full153B ECX owner/RET. WriteD5E5A4; state0 before first actual415350, capture firstmanager section and enter/depth, state1, secondgetter then CURRENT F8D434 -> genuine BCFCA0 unregister. Clear publication unconditionally, leave captured section, stampCE3818. Unregister clears FIRST matching slot but preserves array length/capacity and later duplicates; it does not require current publication to equal this owner. Full92B ECX fresh4CCh owner/EAXsame/RET. Genuine base construct; state0 base cleanup; D5E5A8; genuine B66BD0 on embedded +4 actual4C8h Lua owner; state1 Lua cleanup; genuine B6A020(mask1) with caller canonical fundamentals/DoFile services and same actual pool. Failure after Lua construction closes actual state then destroys base. No replacement script or successful fake provider. Full82B ECX owner/RET. D5E5A8; state0 base cleanup; genuine B669A0 closes embedded Lua; disarm state-1 BEFORE explicit base destructor so base failure is not retried. Unwind closes remaining base only. Second cleanup exception terminates. ScalarsB1BB70/B1BC50 destroy then ordinaryfree iff lowflagsbit0, returnoriginalbits. RawBD0400 adds two genuine scalar profiles with retained context at124/size128. Nine current full-native/source normal checks using actual application raw VFS/pool/manager and installed657B fundamentals pass; whole4CCh comparisons, flags0/2/3, real Lua close, unregister holes and full shared drain. StrictWin32/MD/W4/WX/fp:strict+3CTests. 28live/PE spans1076B,22directcall/tailrows. B1BB85/B1BC65 ADD ESP,4 restored after clearing local free CALL_RETURN overrides, no instruction gaps remain. Reached native helpers use genuine compiled source with ABI bridges; originalFH3/SEH/register/private-stack/fault and failure injection untested. Fullrenderer/application/gameplay unproved. docs/NATIVE_RENDERER_LUA_OWNER_R61.md; reports/native_renderer_lua_owner_r61.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b1bbf0",
+        "before": {
+          "address": "00b1bbf0",
+          "function_name": "BSP_RendererLuaOwner_Destruct",
+          "comment": "[BSP reconstruction 00b1bbf0]\nProvisional descriptive name; live B1BBF0-B1BC41 listing closes embedded Lua at +4 through B669A0 then base B1BAD0; docs/NATIVE_RENDERER_LUA_OWNER.md. | Hypothesis, not a recovered symbol. Actual 4CCh owner and actual lazy 14h singleton manager publication. Preserve first captured section and second-getter-before-current-owner reload. Base and guard FH3 cleanup stages are represented by C++ guards, including Lua-construction failure. Real Lua fixture uses fixture-only bootstrap fundamentals, not game fundamentals. docs/NATIVE_RENDERER_LUA_OWNER.md; reports/native_renderer_lua_owner.json. Strict integrated Win32 build, two CTests and focused packet fixture passed at 6641c05f. Original whole-function ABI/FH3/SEH and gameplay compatibility remain unvalidated."
+        },
+        "after": {
+          "address": "00b1bbf0",
+          "name": "BSP_RendererLuaOwner_Destruct",
+          "evidence": "R61 reviewed actual renderer Lua owner restored from source commit9447b175b to current main. Full4CCh allocation with embedded4C8h Lua+4. Same actualAA0/F8D434/raw string pool and canonical fundamentals/DoFile services. Full145B ECX fresh4CCh owner/EAXsame/RET. Write D5E5A4; state0 profile cleanup before first actual415350. Capture FIRST manager+10 section, real enter and depth+18 increment, state1 guard, publish F8D434; second actual415350 before rereading CURRENT F8D434 and genuine BD0C30 register. Decrement/leave captured first section; no private manager/pool. Bytes+4..4CB preserve allocation preimage. Full153B ECX owner/RET. WriteD5E5A4; state0 before first actual415350, capture firstmanager section and enter/depth, state1, secondgetter then CURRENT F8D434 -> genuine BCFCA0 unregister. Clear publication unconditionally, leave captured section, stampCE3818. Unregister clears FIRST matching slot but preserves array length/capacity and later duplicates; it does not require current publication to equal this owner. Full92B ECX fresh4CCh owner/EAXsame/RET. Genuine base construct; state0 base cleanup; D5E5A8; genuine B66BD0 on embedded +4 actual4C8h Lua owner; state1 Lua cleanup; genuine B6A020(mask1) with caller canonical fundamentals/DoFile services and same actual pool. Failure after Lua construction closes actual state then destroys base. No replacement script or successful fake provider. Full82B ECX owner/RET. D5E5A8; state0 base cleanup; genuine B669A0 closes embedded Lua; disarm state-1 BEFORE explicit base destructor so base failure is not retried. Unwind closes remaining base only. Second cleanup exception terminates. ScalarsB1BB70/B1BC50 destroy then ordinaryfree iff lowflagsbit0, returnoriginalbits. RawBD0400 adds two genuine scalar profiles with retained context at124/size128. Nine current full-native/source normal checks using actual application raw VFS/pool/manager and installed657B fundamentals pass; whole4CCh comparisons, flags0/2/3, real Lua close, unregister holes and full shared drain. StrictWin32/MD/W4/WX/fp:strict+3CTests. 28live/PE spans1076B,22directcall/tailrows. B1BB85/B1BC65 ADD ESP,4 restored after clearing local free CALL_RETURN overrides, no instruction gaps remain. Reached native helpers use genuine compiled source with ABI bridges; originalFH3/SEH/register/private-stack/fault and failure injection untested. Fullrenderer/application/gameplay unproved. docs/NATIVE_RENDERER_LUA_OWNER_R61.md; reports/native_renderer_lua_owner_r61.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b1bc50",
+        "before": {
+          "address": "00b1bc50",
+          "function_name": "BSP_RendererLuaOwner_ScalarDelete",
+          "comment": "[BSP reconstruction 00b1bc50]\nHypothesis, not a recovered symbol. Actual 4CCh owner and actual lazy 14h singleton manager publication. Preserve first captured section and second-getter-before-current-owner reload. Base and guard FH3 cleanup stages are represented by C++ guards, including Lua-construction failure. Real Lua fixture uses fixture-only bootstrap fundamentals, not game fundamentals. docs/NATIVE_RENDERER_LUA_OWNER.md; reports/native_renderer_lua_owner.json. Strict integrated Win32 build, two CTests and focused packet fixture passed at 6641c05f. Original whole-function ABI/FH3/SEH and gameplay compatibility remain unvalidated."
+        },
+        "after": {
+          "address": "00b1bc50",
+          "name": "BSP_RendererLuaOwner_ScalarDelete",
+          "evidence": "R61 reviewed actual renderer Lua owner restored from source commit9447b175b to current main. Full4CCh allocation with embedded4C8h Lua+4. Same actualAA0/F8D434/raw string pool and canonical fundamentals/DoFile services. Full145B ECX fresh4CCh owner/EAXsame/RET. Write D5E5A4; state0 profile cleanup before first actual415350. Capture FIRST manager+10 section, real enter and depth+18 increment, state1 guard, publish F8D434; second actual415350 before rereading CURRENT F8D434 and genuine BD0C30 register. Decrement/leave captured first section; no private manager/pool. Bytes+4..4CB preserve allocation preimage. Full153B ECX owner/RET. WriteD5E5A4; state0 before first actual415350, capture firstmanager section and enter/depth, state1, secondgetter then CURRENT F8D434 -> genuine BCFCA0 unregister. Clear publication unconditionally, leave captured section, stampCE3818. Unregister clears FIRST matching slot but preserves array length/capacity and later duplicates; it does not require current publication to equal this owner. Full92B ECX fresh4CCh owner/EAXsame/RET. Genuine base construct; state0 base cleanup; D5E5A8; genuine B66BD0 on embedded +4 actual4C8h Lua owner; state1 Lua cleanup; genuine B6A020(mask1) with caller canonical fundamentals/DoFile services and same actual pool. Failure after Lua construction closes actual state then destroys base. No replacement script or successful fake provider. Full82B ECX owner/RET. D5E5A8; state0 base cleanup; genuine B669A0 closes embedded Lua; disarm state-1 BEFORE explicit base destructor so base failure is not retried. Unwind closes remaining base only. Second cleanup exception terminates. ScalarsB1BB70/B1BC50 destroy then ordinaryfree iff lowflagsbit0, returnoriginalbits. RawBD0400 adds two genuine scalar profiles with retained context at124/size128. Nine current full-native/source normal checks using actual application raw VFS/pool/manager and installed657B fundamentals pass; whole4CCh comparisons, flags0/2/3, real Lua close, unregister holes and full shared drain. StrictWin32/MD/W4/WX/fp:strict+3CTests. 28live/PE spans1076B,22directcall/tailrows. B1BB85/B1BC65 ADD ESP,4 restored after clearing local free CALL_RETURN overrides, no instruction gaps remain. Reached native helpers use genuine compiled source with ABI bridges; originalFH3/SEH/register/private-stack/fault and failure injection untested. Fullrenderer/application/gameplay unproved. docs/NATIVE_RENDERER_LUA_OWNER_R61.md; reports/native_renderer_lua_owner_r61.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bd0400",
+        "before": {
+          "address": "00bd0400",
+          "function_name": "BSP_SingletonLifetime_Destroy",
+          "comment": "[BSP reconstruction 00bd0400]\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463.\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation.\n\n[BSP reconstruction 00bd0400] update\nRaw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Raw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed.\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Raw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed. | docs/NATIVE_SINGLETON_INPUT_ONLINE.md. Extend finite raw deletion bindings to D24138/D2413C XLive allocation identities, D5B5F4/D5B5F8/D5B72C raw backend and D5B630 raw actions; current profile after pop. Primary archive-only nonempty/actual BD0400 fixtures passed. Required hardware/listener/application bindings remain; no original ABI claim.\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Raw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed. | docs/NATIVE_SINGLETON_INPUT_ONLINE.md. Extend finite raw deletion bindings to D24138/D2413C XLive allocation identities, D5B5F4/D5B5F8/D5B72C raw backend and D5B630 raw actions; current profile after pop. Primary archive-only nonempty/actual BD0400 fixtures passed. Required hardware/listener/application bindings remain; no original ABI claim. | AY source binding extension: canonical raw-manager deletion accepts CFEA1C MPAK factory+4 through735D30 and D6418C PAK registry+8 throughBB4FF0. Borrowed construction contexts; no private lifetime domain. New source binding struct is52bytes; this does not alter the original Win32 ABI or count another reconstructed body.\n\n[BSP reconstruction 00bd0400] update\nAQ extension: actual CF81CC slot0 was read as006AB800. Raw manager BD0485 pops then calls current profile slot0(flags1). Source NativeSingletonDeletionBindings now borrows the same NativeInputSettingsLifetimeContext through input_settings and dispatches scalar_delete_native_input_settings_006ab800 on the popped owner, without requiring publication identity. Source fixture drains populated installed-script settings, verifies pop before persistent Lua finalizer, section alive during close, differing publication cleared and all manager storage released. The settings routines have122545-word native comparison; this dispatch addition has source integration coverage, not an additional native-manager comparison. Required production container providers and application wiring remain open. Hypothesis, not recovered symbol. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json.\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Raw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed. | docs/NATIVE_SINGLETON_INPUT_ONLINE.md. Extend finite raw deletion bindings to D24138/D2413C XLive allocation identities, D5B5F4/D5B5F8/D5B72C raw backend and D5B630 raw actions; current profile after pop. Primary archive-only nonempty/actual BD0400 fixtures passed. Required hardware/listener/application bindings remain; no original ABI claim. | AY source binding extension: canonical raw-manager deletion accepts CFEA1C MPAK factory+4 through735D30 and D6418C PAK registry+8 throughBB4FF0. Borrowed construction contexts; no private lifetime domain. New source binding struct is52bytes; this does not alter the original Win32 ABI or count another reconstructed body. | AQ extension: actual CF81CC slot0 was read as006AB800. Raw manager BD0485 pops then calls current profile slot0(flags1). Source NativeSingletonDeletionBindings now borrows the same NativeInputSettingsLifetimeContext through input_settings and dispatches scalar_delete_native_input_settings_006ab800 on the popped owner, without requiring publication identity. Source fixture drains populated installed-script settings, verifies pop before persistent Lua finalizer, section alive during close, differing publication cleared and all manager storage released. The settings routines have122545-word native comparison; this dispatch addition has source integration coverage, not an additional native-manager comparison. Required production container providers and application wiring remain open. Hypothesis, not recovered symbol. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json. | Finite-map extension: D68B94 -> BE9600 exact debug owner; CFD84C -> 716520 exact factory+4, callee adjusts -4. Borrow construction contexts and same raw manager/pool. Existing pop/recount and all prior bindings preserved. Development strict Win32, two CTests and source-only actual drain passed; final exact-commit receipt separate.\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Raw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed. | docs/NATIVE_SINGLETON_INPUT_ONLINE.md. Extend finite raw deletion bindings to D24138/D2413C XLive allocation identities, D5B5F4/D5B5F8/D5B72C raw backend and D5B630 raw actions; current profile after pop. Primary archive-only nonempty/actual BD0400 fixtures passed. Required hardware/listener/application bindings remain; no original ABI claim. | AY source binding extension: canonical raw-manager deletion accepts CFEA1C MPAK factory+4 through735D30 and D6418C PAK registry+8 throughBB4FF0. Borrowed construction contexts; no private lifetime domain. New source binding struct is52bytes; this does not alter the original Win32 ABI or count another reconstructed body. | AQ extension: actual CF81CC slot0 was read as006AB800. Raw manager BD0485 pops then calls current profile slot0(flags1). Source NativeSingletonDeletionBindings now borrows the same NativeInputSettingsLifetimeContext through input_settings and dispatches scalar_delete_native_input_settings_006ab800 on the popped owner, without requiring publication identity. Source fixture drains populated installed-script settings, verifies pop before persistent Lua finalizer, section alive during close, differing publication cleared and all manager storage released. The settings routines have122545-word native comparison; this dispatch addition has source integration coverage, not an additional native-manager comparison. Required production container providers and application wiring remain open. Hypothesis, not recovered symbol. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json. | Finite-map extension: D68B94 -> BE9600 exact debug owner; CFD84C -> 716520 exact factory+4, callee adjusts -4. Borrow construction contexts and same raw manager/pool. Existing pop/recount and all prior bindings preserved. Development strict Win32, two CTests and source-only actual drain passed; final exact-commit receipt separate. | Current popped D62A3C/D626F4 profiles dispatch raw B5DF70/B5BB20 with borrowed actual0108FE94/01090AA0/01090AA8/01090AA4 context; no identity gate or retained Operation. Native manager body unchanged; dynamic pool recreation/drain checked. Source raw-terminal extension, source-only actual canonical fixture and exact native maps: docs/NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL.md. Original FH3/SEH/game execution unproved. | Hypothesis, not a recovered symbol. Two source workflows: actual registry/base canonical drain, pool recreation under live shutdown gate, and first array getter failure retaining native owner/data/section effects. Dispatch uses popped owner, no publication identity gate. Nonnegative current array count AND capacity required; unfinished legacy Operations excluded. Integrated code aa836cdd passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL.md; reports/native_system_registry_raw_terminal.json. Raw valid extents and borrowed current cells/providers are caller requirements. New source interfaces; original CRT/FH3/SEH/private-frame identity, full renderer adoption and gameplay unvalidated.\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Raw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed. | docs/NATIVE_SINGLETON_INPUT_ONLINE.md. Extend finite raw deletion bindings to D24138/D2413C XLive allocation identities, D5B5F4/D5B5F8/D5B72C raw backend and D5B630 raw actions; current profile after pop. Primary archive-only nonempty/actual BD0400 fixtures passed. Required hardware/listener/application bindings remain; no original ABI claim. | AY source binding extension: canonical raw-manager deletion accepts CFEA1C MPAK factory+4 through735D30 and D6418C PAK registry+8 throughBB4FF0. Borrowed construction contexts; no private lifetime domain. New source binding struct is52bytes; this does not alter the original Win32 ABI or count another reconstructed body. | AQ extension: actual CF81CC slot0 was read as006AB800. Raw manager BD0485 pops then calls current profile slot0(flags1). Source NativeSingletonDeletionBindings now borrows the same NativeInputSettingsLifetimeContext through input_settings and dispatches scalar_delete_native_input_settings_006ab800 on the popped owner, without requiring publication identity. Source fixture drains populated installed-script settings, verifies pop before persistent Lua finalizer, section alive during close, differing publication cleared and all manager storage released. The settings routines have122545-word native comparison; this dispatch addition has source integration coverage, not an additional native-manager comparison. Required production container providers and application wiring remain open. Hypothesis, not recovered symbol. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json. | Finite-map extension: D68B94 -> BE9600 exact debug owner; CFD84C -> 716520 exact factory+4, callee adjusts -4. Borrow construction contexts and same raw manager/pool. Existing pop/recount and all prior bindings preserved. Development strict Win32, two CTests and source-only actual drain passed; final exact-commit receipt separate. | Current popped D62A3C/D626F4 profiles dispatch raw B5DF70/B5BB20 with borrowed actual0108FE94/01090AA0/01090AA8/01090AA4 context; no identity gate or retained Operation. Native manager body unchanged; dynamic pool recreation/drain checked. Source raw-terminal extension, source-only actual canonical fixture and exact native maps: docs/NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL.md. Original FH3/SEH/game execution unproved. | Hypothesis, not a recovered symbol. Two source workflows: actual registry/base canonical drain, pool recreation under live shutdown gate, and first array getter failure retaining native owner/data/section effects. Dispatch uses popped owner, no publication identity gate. Nonnegative current array count AND capacity required; unfinished legacy Operations excluded. Integrated code aa836cdd passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL.md; reports/native_system_registry_raw_terminal.json. Raw valid extents and borrowed current cells/providers are caller requirements. New source interfaces; original CRT/FH3/SEH/private-frame identity, full renderer adoption and gameplay unvalidated. | Hypothesis, not a recovered symbol. Canonical actual-AA0 manager drain now dispatches D62B64 to substantive B61D60 without publication identity gate. Source actual getter registration and rebound-publication drain checked. Integrated code 7cbd532e passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_RESOURCE_SUPPORT_DRAIN.md; reports/native_resource_support_drain.json. Borrowed actual storage, live subobjects and scratch preimages remain caller requirements. Source interfaces; full parent execution, original CRT/FH3/SEH/register-ABI identity, application adoption and gameplay unvalidated.\n\n[BSP reconstruction 00bd0400] CB update\nCB raw resource manager lifetime:16 complete ordinary bodies2254physical bytes;785 ordinary+33 support executable instruction owners,81 direct transfers/3 indirect calls verified; three unreachable alignment spans excluded. Nine parser/cache instruction pairs and full44-byte erase EH group match. Actual28h constructor/getter, six raw parser registrations, complete map cleanup, default4h factory deletion and manager scalar/destructor are source-backed. Constructor failure cleans completed maps/base but retains default factory and published parsers; getter frees captured failed manager allocation and releases captured guard. Existing BD0400 finite source dispatcher adds managerD63128 and six parser-secondary profiles through actual borrowed publications. Strict Win32/two tests and one controlled child passed:16 original bodies/68 direct/13 absolute relocations, paired constructor/getter/partial erase/populated destruction, full canonical source drain and source name-failure cleanup. Original normal paths share canonical dependencies; fixture factory table reaches copiedB7D290; original exception paths guarded out. Native ABI/FH3/SEH/private spills/faults, lazy pool recreation, concrete parser bodies/nondefault factories, executable admission and gameplay remain open. Names hypotheses. docs/NATIVE_RESOURCE_MANAGER_LIFETIME_CB.md; reports/native_resource_manager_lifetime_cb.json. Existing BD0400 body gains seven finite source bindings; no newly reconstructed body claim.\n\n[BSP reconstruction 00bd0400] update\nECX manager,RET. While livecount nonzero, pop last before objectvirtual0(1), then rechecklivecount. Destroylock only afterdrain, freevector and zero fields. Raw post-free continuation verified. WinMain frees manager then clears01090aa0 at008f8463. | Validate tail; pop before actual owner deleting callback(flags1); reload count after each; skip holes; drain/delete/free owned section, free slots, clear fields. Native SEH cleanup identity not ported. Original ABI: ECX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_normal_flow_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation. | Raw source[197]: Captured/current slot validation, pop-before-delete(flags1), live count reread; actual critical-section release, current vector free/zero. Native state0 CC5450->BD0220 represented by actual source catch cleanup/rethrow. Finite CE3818/D0DA64/D5E594/D5E59C dispatch requires actual bindings; arbitrary native owner dispatch remains open. ABI: Native ECX raw14h manager, RET; source EDX stable NativeSingletonDeletionBindings reference and outer C++ exception scope. Fresh saved-BSP/disk296 owned bytes,62 EH and20 profile bytes;247 emitted normal bytes with named edges/mapped branches; source EH and eight archive provider bindings reviewed. Strict Win32/2 CTests/8 seeds passed; actual mixed base/effect fixture and180-frame raw executable shutdown passed. Only base/effect profiles exercised. Original FH3/SEH/private frame/caller ABI and full gameplay unproved. Names are hypotheses. reports/native_singleton_runtime_audit.json | Source integration refinement: docs/SOUND_SHARED_LIFETIME.md. Borrow the application raw01090AA0 manager; preserve getter-before-current-publication evaluation and captured section release. Concrete sound profiles D5B44C/D5B460/D5B478/D58F78 use real runtime ownership; no arbitrary virtual callback or native object ABI claim. Strict Win32 build,2 existing CTests and installed resource startup/drain/failure fixtures passed. | docs/NATIVE_SINGLETON_INPUT_ONLINE.md. Extend finite raw deletion bindings to D24138/D2413C XLive allocation identities, D5B5F4/D5B5F8/D5B72C raw backend and D5B630 raw actions; current profile after pop. Primary archive-only nonempty/actual BD0400 fixtures passed. Required hardware/listener/application bindings remain; no original ABI claim. | AY source binding extension: canonical raw-manager deletion accepts CFEA1C MPAK factory+4 through735D30 and D6418C PAK registry+8 throughBB4FF0. Borrowed construction contexts; no private lifetime domain. New source binding struct is52bytes; this does not alter the original Win32 ABI or count another reconstructed body. | AQ extension: actual CF81CC slot0 was read as006AB800. Raw manager BD0485 pops then calls current profile slot0(flags1). Source NativeSingletonDeletionBindings now borrows the same NativeInputSettingsLifetimeContext through input_settings and dispatches scalar_delete_native_input_settings_006ab800 on the popped owner, without requiring publication identity. Source fixture drains populated installed-script settings, verifies pop before persistent Lua finalizer, section alive during close, differing publication cleared and all manager storage released. The settings routines have122545-word native comparison; this dispatch addition has source integration coverage, not an additional native-manager comparison. Required production container providers and application wiring remain open. Hypothesis, not recovered symbol. See docs/NATIVE_INPUT_SETTINGS_LIFETIME.md and reports/native_input_settings_lifetime.json. | Finite-map extension: D68B94 -> BE9600 exact debug owner; CFD84C -> 716520 exact factory+4, callee adjusts -4. Borrow construction contexts and same raw manager/pool. Existing pop/recount and all prior bindings preserved. Development strict Win32, two CTests and source-only actual drain passed; final exact-commit receipt separate. | Current popped D62A3C/D626F4 profiles dispatch raw B5DF70/B5BB20 with borrowed actual0108FE94/01090AA0/01090AA8/01090AA4 context; no identity gate or retained Operation. Native manager body unchanged; dynamic pool recreation/drain checked. Source raw-terminal extension, source-only actual canonical fixture and exact native maps: docs/NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL.md. Original FH3/SEH/game execution unproved. | Hypothesis, not a recovered symbol. Two source workflows: actual registry/base canonical drain, pool recreation under live shutdown gate, and first array getter failure retaining native owner/data/section effects. Dispatch uses popped owner, no publication identity gate. Nonnegative current array count AND capacity required; unfinished legacy Operations excluded. Integrated code aa836cdd passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_SYSTEM_REGISTRY_RAW_TERMINAL.md; reports/native_system_registry_raw_terminal.json. Raw valid extents and borrowed current cells/providers are caller requirements. New source interfaces; original CRT/FH3/SEH/private-frame identity, full renderer adoption and gameplay unvalidated. | Hypothesis, not a recovered symbol. Canonical actual-AA0 manager drain now dispatches D62B64 to substantive B61D60 without publication identity gate. Source actual getter registration and rebound-publication drain checked. Integrated code 7cbd532e passed strict MSVC Win32 build, eight native seeds and both CTests. docs/NATIVE_RESOURCE_SUPPORT_DRAIN.md; reports/native_resource_support_drain.json. Borrowed actual storage, live subobjects and scratch preimages remain caller requirements. Source interfaces; full parent execution, original CRT/FH3/SEH/register-ABI identity, application adoption and gameplay unvalidated. | Raw diagnostic lifetime integration: docs/NATIVE_DIAGNOSTIC_RAW_LIFETIME.md; reports/native_diagnostic_raw_lifetime.json. Finite actual source deletion map now admits CE752C slot0->004BBCA0 using borrowed SAME0109CF14 publication. Existing pop-before-virtual0(1), recount, actual section release and vector cleanup remain unchanged. Real source raw manager drain clears diagnostic publication and vector in lifecycle capture. Strict Win32 rebuild,2CTests,8native seeds and one source lifecycle probe passed; complete five native bodies+profile756bytes freshly live/PE matched and16direct calls checked. No original body execution, D3D Lock/device Reset, allocation-failure/concurrency/nativeFH3/SEH/ABI or gameplay proof.\n\n[BSP reconstruction 00bd0400] update\nR24 source finite profile dispatch admits actual extra-parser secondary profiles CFEA34 and CFEA44 through reconstructed 735D90/735DC0 minus-four thunks and 737150/737190 primary deletes. Resource-manager and eight parser contexts borrow the same application string/lifetime domain and remain alive through shared drain. Production-object probes drain ten owners for phase6-before-core and fifteen after phase2, clearing all parser/manager/string publications; subsequent singleton-host-before-VFS destruction performs metadata cleanup only. Original BD0400 body unchanged. Strict Win32 build and three CTests passed; original ABI/FH3, concurrency and game validation remain open. docs/NATIVE_RESOURCE_APPLICATION_ORCH4.md; reports/native_resource_application_orch4.json. Existing function name retained.\n\n[BSP reconstruction 00bd0400] update\nR24 source finite profile dispatch admits actual extra-parser secondary profiles CFEA34 and CFEA44 through reconstructed 735D90/735DC0 minus-four thunks and 737150/737190 primary deletes. Resource-manager and eight parser contexts borrow the same application string/lifetime domain and remain alive through shared drain. Production-object probes drain ten owners for phase6-before-core and fifteen after phase2, clearing all parser/manager/string publications; subsequent singleton-host-before-VFS destruction performs metadata cleanup only. Original BD0400 body unchanged. Strict Win32 build and three CTests passed; original ABI/FH3, concurrency and game validation remain open. docs/NATIVE_RESOURCE_APPLICATION_ORCH4.md; reports/native_resource_application_orch4.json. Existing function name retained. | R38 finite raw-manager deletion admission extends current source dispatch for actual4B diagnostic profileCE752C -> existing004BBCA0 flags1. GameSingletonHost owns one stable loader-zero CF14cell, exposes a borrowed reference and installs its address before diagnostic demand; no eager allocation or alternate AA0 domain. Append diagnostic publication binding112,size116 preserving all prior fields including resource_support104 and frame_clock108. RawBD0400 loop unchanged: pop before currentprofile dispatch; scalar clears same currentcell, stamps poppedownerCE3818 and frees via established sourceCRT. Strict MSVC Win32 /MD build and3CTests pass. Focused realGameSingletonHost fixture passes recovered physical constructors, coldindex/warmvertex nullCOM locks, native nullCOM Unlock retained depth, released diagnostic section, one diagnostic registration, real physicaldestructors adding support and sharedCE752C/D62B64 drain clearing allhostcells. Sourceownershipclosure only; original7363B0 Application_Shutdown step19 timing, nativeABI/FH3/SEH, D3D/device/render/gameplay remain unproved. reports/native_diagnostic_host_admission_r38.json.\n\n[BSP reconstruction 00bd0400] update\nR24 source finite profile dispatch admits actual extra-parser secondary profiles CFEA34 and CFEA44 through reconstructed 735D90/735DC0 minus-four thunks and 737150/737190 primary deletes. Resource-manager and eight parser contexts borrow the same application string/lifetime domain and remain alive through shared drain. Production-object probes drain ten owners for phase6-before-core and fifteen after phase2, clearing all parser/manager/string publications; subsequent singleton-host-before-VFS destruction performs metadata cleanup only. Original BD0400 body unchanged. Strict Win32 build and three CTests passed; original ABI/FH3, concurrency and game validation remain open. docs/NATIVE_RESOURCE_APPLICATION_ORCH4.md; reports/native_resource_application_orch4.json. Existing function name retained. | R38 finite raw-manager deletion admission extends current source dispatch for actual4B diagnostic profileCE752C -> existing004BBCA0 flags1. GameSingletonHost owns one stable loader-zero CF14cell, exposes a borrowed reference and installs its address before diagnostic demand; no eager allocation or alternate AA0 domain. Append diagnostic publication binding112,size116 preserving all prior fields including resource_support104 and frame_clock108. RawBD0400 loop unchanged: pop before currentprofile dispatch; scalar clears same currentcell, stamps poppedownerCE3818 and frees via established sourceCRT. Strict MSVC Win32 /MD build and3CTests pass. Focused realGameSingletonHost fixture passes recovered physical constructors, coldindex/warmvertex nullCOM locks, native nullCOM Unlock retained depth, released diagnostic section, one diagnostic registration, real physicaldestructors adding support and sharedCE752C/D62B64 drain clearing allhostcells. Sourceownershipclosure only; original7363B0 Application_Shutdown step19 timing, nativeABI/FH3/SEH, D3D/device/render/gameplay remain unproved. reports/native_diagnostic_host_admission_r38.json. | R53 recovered complete raw renderer record guard B22360[17]/B23750[69]/B25BE0[189]/B26130[55]. SAME actualAA0/D5A0 cells, actual8B owner/D5E60C/section+4, genuine raw manager/allocator/section/register providers. Captured hot return and first-manager section; cold recheck, publication, current-manager/current-publication registration, final reload. Native FH3 maps confirm ctor base cleanup clear-before-profile, captured allocation free only on ctor throw, state0 guard cleanup through normal leave; registration throw retains published owner. Scalar releases actualslot, unconditionally clears current publication, optionally frees; no unregister. Shared source manager finite dispatch now accepts D5E60C with appended same-context binding. Fresh543B/15native spans and8live directcall rows; strictWin32/MD/W4/WX/fp:strict build+3CTests; copied full17Bbase and55Bscalar differential with flags0/2/1 and genuine depth2 section cleanup pass; source-only genuine rawmanager cold/hot/register/drain passes. Full original gate/ctor, injected exceptions, nativeFH3/private-frame/register/fault ABI, active renderer/app/visual/gameplay remain unproved. reports/native_renderer_record_guard_main_r53.json."
+        },
+        "after": {
+          "address": "00bd0400",
+          "name": "BSP_SingletonLifetime_Destroy",
+          "evidence": "R24 source finite profile dispatch admits actual extra-parser secondary profiles CFEA34 and CFEA44 through reconstructed 735D90/735DC0 minus-four thunks and 737150/737190 primary deletes. Resource-manager and eight parser contexts borrow the same application string/lifetime domain and remain alive through shared drain. Production-object probes drain ten owners for phase6-before-core and fifteen after phase2, clearing all parser/manager/string publications; subsequent singleton-host-before-VFS destruction performs metadata cleanup only. Original BD0400 body unchanged. Strict Win32 build and three CTests passed; original ABI/FH3, concurrency and game validation remain open. docs/NATIVE_RESOURCE_APPLICATION_ORCH4.md; reports/native_resource_application_orch4.json. Existing function name retained. | R38 finite raw-manager deletion admission extends current source dispatch for actual4B diagnostic profileCE752C -> existing004BBCA0 flags1. GameSingletonHost owns one stable loader-zero CF14cell, exposes a borrowed reference and installs its address before diagnostic demand; no eager allocation or alternate AA0 domain. Append diagnostic publication binding112,size116 preserving all prior fields including resource_support104 and frame_clock108. RawBD0400 loop unchanged: pop before currentprofile dispatch; scalar clears same currentcell, stamps poppedownerCE3818 and frees via established sourceCRT. Strict MSVC Win32 /MD build and3CTests pass. Focused realGameSingletonHost fixture passes recovered physical constructors, coldindex/warmvertex nullCOM locks, native nullCOM Unlock retained depth, released diagnostic section, one diagnostic registration, real physicaldestructors adding support and sharedCE752C/D62B64 drain clearing allhostcells. Sourceownershipclosure only; original7363B0 Application_Shutdown step19 timing, nativeABI/FH3/SEH, D3D/device/render/gameplay remain unproved. reports/native_diagnostic_host_admission_r38.json. | R53 recovered complete raw renderer record guard B22360[17]/B23750[69]/B25BE0[189]/B26130[55]. SAME actualAA0/D5A0 cells, actual8B owner/D5E60C/section+4, genuine raw manager/allocator/section/register providers. Captured hot return and first-manager section; cold recheck, publication, current-manager/current-publication registration, final reload. Native FH3 maps confirm ctor base cleanup clear-before-profile, captured allocation free only on ctor throw, state0 guard cleanup through normal leave; registration throw retains published owner. Scalar releases actualslot, unconditionally clears current publication, optionally frees; no unregister. Shared source manager finite dispatch now accepts D5E60C with appended same-context binding. Fresh543B/15native spans and8live directcall rows; strictWin32/MD/W4/WX/fp:strict build+3CTests; copied full17Bbase and55Bscalar differential with flags0/2/1 and genuine depth2 section cleanup pass; source-only genuine rawmanager cold/hot/register/drain passes. Full original gate/ctor, injected exceptions, nativeFH3/private-frame/register/fault ABI, active renderer/app/visual/gameplay remain unproved. reports/native_renderer_record_guard_main_r53.json. | R61 reviewed actual renderer Lua owner restored from source commit9447b175b to current main. Full4CCh allocation with embedded4C8h Lua+4. Same actualAA0/F8D434/raw string pool and canonical fundamentals/DoFile services. Full145B ECX fresh4CCh owner/EAXsame/RET. Write D5E5A4; state0 profile cleanup before first actual415350. Capture FIRST manager+10 section, real enter and depth+18 increment, state1 guard, publish F8D434; second actual415350 before rereading CURRENT F8D434 and genuine BD0C30 register. Decrement/leave captured first section; no private manager/pool. Bytes+4..4CB preserve allocation preimage. Full153B ECX owner/RET. WriteD5E5A4; state0 before first actual415350, capture firstmanager section and enter/depth, state1, secondgetter then CURRENT F8D434 -> genuine BCFCA0 unregister. Clear publication unconditionally, leave captured section, stampCE3818. Unregister clears FIRST matching slot but preserves array length/capacity and later duplicates; it does not require current publication to equal this owner. Full92B ECX fresh4CCh owner/EAXsame/RET. Genuine base construct; state0 base cleanup; D5E5A8; genuine B66BD0 on embedded +4 actual4C8h Lua owner; state1 Lua cleanup; genuine B6A020(mask1) with caller canonical fundamentals/DoFile services and same actual pool. Failure after Lua construction closes actual state then destroys base. No replacement script or successful fake provider. Full82B ECX owner/RET. D5E5A8; state0 base cleanup; genuine B669A0 closes embedded Lua; disarm state-1 BEFORE explicit base destructor so base failure is not retried. Unwind closes remaining base only. Second cleanup exception terminates. ScalarsB1BB70/B1BC50 destroy then ordinaryfree iff lowflagsbit0, returnoriginalbits. RawBD0400 adds two genuine scalar profiles with retained context at124/size128. Nine current full-native/source normal checks using actual application raw VFS/pool/manager and installed657B fundamentals pass; whole4CCh comparisons, flags0/2/3, real Lua close, unregister holes and full shared drain. StrictWin32/MD/W4/WX/fp:strict+3CTests. 28live/PE spans1076B,22directcall/tailrows. B1BB85/B1BC65 ADD ESP,4 restored after clearing local free CALL_RETURN overrides, no instruction gaps remain. Reached native helpers use genuine compiled source with ABI bridges; originalFH3/SEH/register/private-stack/fault and failure injection untested. Fullrenderer/application/gameplay unproved. docs/NATIVE_RENDERER_LUA_OWNER_R61.md; reports/native_renderer_lua_owner_r61.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "status": "Six source function rows and one manager profile fragment added; seven names/comments saved preserving prior values; exports forced fresh; two scalar call-return gaps repaired and live verified."
+  },
+  "evidence": {
+    "pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b1ba30",
+        "kind": "function",
+        "length": 145,
+        "end_exclusive": "00b1bac1",
+        "pe_offset": 7453232,
+        "sha256": "9e42d19c1d48cb3cd439972a2bf2059973f2e7ab4aabfde4e839e73af99d39f7",
+        "hex": "6aff6850c8cb0064a100000000506489250000000083ec0c56578bf9897c2408c744241c00000000c707a4e5d500e8ed988fff8b701085f6c744240cfc37ce0089742410740b56ff151822ce0083461801c644241c01893d34d4f800e8bf988fff8b0d34d4f800518bc8e891510b0085f6740b834618ff56ff151022ce008b4c24148bc75f5e64890d0000000083c418c3",
+        "relocations": [
+          [
+            47,
+            4281168
+          ],
+          [
+            93,
+            4281168
+          ],
+          [
+            107,
+            12389424
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00b1ba30",
+            "hex": "6aff",
+            "text": "push -1"
+          },
+          {
+            "address": "00b1ba32",
+            "hex": "6850c8cb00",
+            "text": "push 0xcbc850"
+          },
+          {
+            "address": "00b1ba37",
+            "hex": "64a100000000",
+            "text": "mov eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "00b1ba3d",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b1ba3e",
+            "hex": "64892500000000",
+            "text": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "address": "00b1ba45",
+            "hex": "83ec0c",
+            "text": "sub esp, 0xc"
+          },
+          {
+            "address": "00b1ba48",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b1ba49",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00b1ba4a",
+            "hex": "8bf9",
+            "text": "mov edi, ecx"
+          },
+          {
+            "address": "00b1ba4c",
+            "hex": "897c2408",
+            "text": "mov dword ptr [esp + 8], edi"
+          },
+          {
+            "address": "00b1ba50",
+            "hex": "c744241c00000000",
+            "text": "mov dword ptr [esp + 0x1c], 0"
+          },
+          {
+            "address": "00b1ba58",
+            "hex": "c707a4e5d500",
+            "text": "mov dword ptr [edi], 0xd5e5a4"
+          },
+          {
+            "address": "00b1ba5e",
+            "hex": "e8ed988fff",
+            "text": "call 0x415350"
+          },
+          {
+            "address": "00b1ba63",
+            "hex": "8b7010",
+            "text": "mov esi, dword ptr [eax + 0x10]"
+          },
+          {
+            "address": "00b1ba66",
+            "hex": "85f6",
+            "text": "test esi, esi"
+          },
+          {
+            "address": "00b1ba68",
+            "hex": "c744240cfc37ce00",
+            "text": "mov dword ptr [esp + 0xc], 0xce37fc"
+          },
+          {
+            "address": "00b1ba70",
+            "hex": "89742410",
+            "text": "mov dword ptr [esp + 0x10], esi"
+          },
+          {
+            "address": "00b1ba74",
+            "hex": "740b",
+            "text": "je 0xb1ba81"
+          },
+          {
+            "address": "00b1ba76",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b1ba77",
+            "hex": "ff151822ce00",
+            "text": "call dword ptr [0xce2218]"
+          },
+          {
+            "address": "00b1ba7d",
+            "hex": "83461801",
+            "text": "add dword ptr [esi + 0x18], 1"
+          },
+          {
+            "address": "00b1ba81",
+            "hex": "c644241c01",
+            "text": "mov byte ptr [esp + 0x1c], 1"
+          },
+          {
+            "address": "00b1ba86",
+            "hex": "893d34d4f800",
+            "text": "mov dword ptr [0xf8d434], edi"
+          },
+          {
+            "address": "00b1ba8c",
+            "hex": "e8bf988fff",
+            "text": "call 0x415350"
+          },
+          {
+            "address": "00b1ba91",
+            "hex": "8b0d34d4f800",
+            "text": "mov ecx, dword ptr [0xf8d434]"
+          },
+          {
+            "address": "00b1ba97",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00b1ba98",
+            "hex": "8bc8",
+            "text": "mov ecx, eax"
+          },
+          {
+            "address": "00b1ba9a",
+            "hex": "e891510b00",
+            "text": "call 0xbd0c30"
+          },
+          {
+            "address": "00b1ba9f",
+            "hex": "85f6",
+            "text": "test esi, esi"
+          },
+          {
+            "address": "00b1baa1",
+            "hex": "740b",
+            "text": "je 0xb1baae"
+          },
+          {
+            "address": "00b1baa3",
+            "hex": "834618ff",
+            "text": "add dword ptr [esi + 0x18], -1"
+          },
+          {
+            "address": "00b1baa7",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b1baa8",
+            "hex": "ff151022ce00",
+            "text": "call dword ptr [0xce2210]"
+          },
+          {
+            "address": "00b1baae",
+            "hex": "8b4c2414",
+            "text": "mov ecx, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00b1bab2",
+            "hex": "8bc7",
+            "text": "mov eax, edi"
+          },
+          {
+            "address": "00b1bab4",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "00b1bab5",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00b1bab6",
+            "hex": "64890d00000000",
+            "text": "mov dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "00b1babd",
+            "hex": "83c418",
+            "text": "add esp, 0x18"
+          },
+          {
+            "address": "00b1bac0",
+            "hex": "c3",
+            "text": "ret"
+          }
+        ],
+        "calls": [
+          {
+            "address": "00b1ba5e",
+            "hex": "e8ed988fff",
+            "text": "call 0x415350"
+          },
+          {
+            "address": "00b1ba77",
+            "hex": "ff151822ce00",
+            "text": "call dword ptr [0xce2218]"
+          },
+          {
+            "address": "00b1ba8c",
+            "hex": "e8bf988fff",
+            "text": "call 0x415350"
+          },
+          {
+            "address": "00b1ba9a",
+            "hex": "e891510b00",
+            "text": "call 0xbd0c30"
+          },
+          {
+            "address": "00b1baa8",
+            "hex": "ff151022ce00",
+            "text": "call dword ptr [0xce2210]"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b1bad0",
+        "kind": "function",
+        "length": 153,
+        "end_exclusive": "00b1bb69",
+        "pe_offset": 7453392,
+        "sha256": "2b300ad633ea1431f1c55becbc3c4f8e3f95495a8178edec2d009d34e021ad6f",
+        "hex": "6aff6870c8cb0064a100000000506489250000000083ec0c56578bf9897c2408c707a4e5d500c744241c00000000e84d988fff8b701085f6c744240cfc37ce0089742410740b56ff151822ce0083461801c644241c01e825988fff8b0d34d4f800518bc8e867410b00c70534d4f8000000000085f6740b834618ff56ff151022ce008b4c2414c7071838ce005f5e64890d0000000083c418c3",
+        "relocations": [
+          [
+            47,
+            4281168
+          ],
+          [
+            87,
+            4281168
+          ],
+          [
+            101,
+            12385440
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00b1bad0",
+            "hex": "6aff",
+            "text": "push -1"
+          },
+          {
+            "address": "00b1bad2",
+            "hex": "6870c8cb00",
+            "text": "push 0xcbc870"
+          },
+          {
+            "address": "00b1bad7",
+            "hex": "64a100000000",
+            "text": "mov eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "00b1badd",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b1bade",
+            "hex": "64892500000000",
+            "text": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "address": "00b1bae5",
+            "hex": "83ec0c",
+            "text": "sub esp, 0xc"
+          },
+          {
+            "address": "00b1bae8",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b1bae9",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00b1baea",
+            "hex": "8bf9",
+            "text": "mov edi, ecx"
+          },
+          {
+            "address": "00b1baec",
+            "hex": "897c2408",
+            "text": "mov dword ptr [esp + 8], edi"
+          },
+          {
+            "address": "00b1baf0",
+            "hex": "c707a4e5d500",
+            "text": "mov dword ptr [edi], 0xd5e5a4"
+          },
+          {
+            "address": "00b1baf6",
+            "hex": "c744241c00000000",
+            "text": "mov dword ptr [esp + 0x1c], 0"
+          },
+          {
+            "address": "00b1bafe",
+            "hex": "e84d988fff",
+            "text": "call 0x415350"
+          },
+          {
+            "address": "00b1bb03",
+            "hex": "8b7010",
+            "text": "mov esi, dword ptr [eax + 0x10]"
+          },
+          {
+            "address": "00b1bb06",
+            "hex": "85f6",
+            "text": "test esi, esi"
+          },
+          {
+            "address": "00b1bb08",
+            "hex": "c744240cfc37ce00",
+            "text": "mov dword ptr [esp + 0xc], 0xce37fc"
+          },
+          {
+            "address": "00b1bb10",
+            "hex": "89742410",
+            "text": "mov dword ptr [esp + 0x10], esi"
+          },
+          {
+            "address": "00b1bb14",
+            "hex": "740b",
+            "text": "je 0xb1bb21"
+          },
+          {
+            "address": "00b1bb16",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b1bb17",
+            "hex": "ff151822ce00",
+            "text": "call dword ptr [0xce2218]"
+          },
+          {
+            "address": "00b1bb1d",
+            "hex": "83461801",
+            "text": "add dword ptr [esi + 0x18], 1"
+          },
+          {
+            "address": "00b1bb21",
+            "hex": "c644241c01",
+            "text": "mov byte ptr [esp + 0x1c], 1"
+          },
+          {
+            "address": "00b1bb26",
+            "hex": "e825988fff",
+            "text": "call 0x415350"
+          },
+          {
+            "address": "00b1bb2b",
+            "hex": "8b0d34d4f800",
+            "text": "mov ecx, dword ptr [0xf8d434]"
+          },
+          {
+            "address": "00b1bb31",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00b1bb32",
+            "hex": "8bc8",
+            "text": "mov ecx, eax"
+          },
+          {
+            "address": "00b1bb34",
+            "hex": "e867410b00",
+            "text": "call 0xbcfca0"
+          },
+          {
+            "address": "00b1bb39",
+            "hex": "c70534d4f80000000000",
+            "text": "mov dword ptr [0xf8d434], 0"
+          },
+          {
+            "address": "00b1bb43",
+            "hex": "85f6",
+            "text": "test esi, esi"
+          },
+          {
+            "address": "00b1bb45",
+            "hex": "740b",
+            "text": "je 0xb1bb52"
+          },
+          {
+            "address": "00b1bb47",
+            "hex": "834618ff",
+            "text": "add dword ptr [esi + 0x18], -1"
+          },
+          {
+            "address": "00b1bb4b",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b1bb4c",
+            "hex": "ff151022ce00",
+            "text": "call dword ptr [0xce2210]"
+          },
+          {
+            "address": "00b1bb52",
+            "hex": "8b4c2414",
+            "text": "mov ecx, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00b1bb56",
+            "hex": "c7071838ce00",
+            "text": "mov dword ptr [edi], 0xce3818"
+          },
+          {
+            "address": "00b1bb5c",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "00b1bb5d",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00b1bb5e",
+            "hex": "64890d00000000",
+            "text": "mov dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "00b1bb65",
+            "hex": "83c418",
+            "text": "add esp, 0x18"
+          },
+          {
+            "address": "00b1bb68",
+            "hex": "c3",
+            "text": "ret"
+          }
+        ],
+        "calls": [
+          {
+            "address": "00b1bafe",
+            "hex": "e84d988fff",
+            "text": "call 0x415350"
+          },
+          {
+            "address": "00b1bb17",
+            "hex": "ff151822ce00",
+            "text": "call dword ptr [0xce2218]"
+          },
+          {
+            "address": "00b1bb26",
+            "hex": "e825988fff",
+            "text": "call 0x415350"
+          },
+          {
+            "address": "00b1bb34",
+            "hex": "e867410b00",
+            "text": "call 0xbcfca0"
+          },
+          {
+            "address": "00b1bb4c",
+            "hex": "ff151022ce00",
+            "text": "call dword ptr [0xce2210]"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b1bb70",
+        "kind": "function",
+        "length": 30,
+        "end_exclusive": "00b1bb8e",
+        "pe_offset": 7453552,
+        "sha256": "943417e64a43e198c0d26699c971ecfb8b9e55daa69f58ae25e7c2d01f313b43",
+        "hex": "568bf1e858fffffff644240801740956e827aa0d0083c4048bc65ec20400",
+        "relocations": [
+          [
+            4,
+            11647696
+          ],
+          [
+            17,
+            12543404
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00b1bb70",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b1bb71",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "00b1bb73",
+            "hex": "e858ffffff",
+            "text": "call 0xb1bad0"
+          },
+          {
+            "address": "00b1bb78",
+            "hex": "f644240801",
+            "text": "test byte ptr [esp + 8], 1"
+          },
+          {
+            "address": "00b1bb7d",
+            "hex": "7409",
+            "text": "je 0xb1bb88"
+          },
+          {
+            "address": "00b1bb7f",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b1bb80",
+            "hex": "e827aa0d00",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "00b1bb85",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "00b1bb88",
+            "hex": "8bc6",
+            "text": "mov eax, esi"
+          },
+          {
+            "address": "00b1bb8a",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00b1bb8b",
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ],
+        "calls": [
+          {
+            "address": "00b1bb73",
+            "hex": "e858ffffff",
+            "text": "call 0xb1bad0"
+          },
+          {
+            "address": "00b1bb80",
+            "hex": "e827aa0d00",
+            "text": "call 0xbf65ac"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b1bb90",
+        "kind": "function",
+        "length": 92,
+        "end_exclusive": "00b1bbec",
+        "pe_offset": 7453584,
+        "sha256": "814306b5ea55685a17de831248212f66c7ab9bace264f3d66a952fef772de9cc",
+        "hex": "6aff6893c8cb0064a100000000506489250000000051568bf15789742408e87dfeffff8d7e048bcfc744241400000000c706a8e5d500e805b004006a018bcfc644241801e847e404008b4c240c5f8bc65e64890d0000000083c410c3",
+        "relocations": [
+          [
+            31,
+            11647536
+          ],
+          [
+            55,
+            11955152
+          ],
+          [
+            69,
+            11968544
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00b1bb90",
+            "hex": "6aff",
+            "text": "push -1"
+          },
+          {
+            "address": "00b1bb92",
+            "hex": "6893c8cb00",
+            "text": "push 0xcbc893"
+          },
+          {
+            "address": "00b1bb97",
+            "hex": "64a100000000",
+            "text": "mov eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "00b1bb9d",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b1bb9e",
+            "hex": "64892500000000",
+            "text": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "address": "00b1bba5",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00b1bba6",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b1bba7",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "00b1bba9",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00b1bbaa",
+            "hex": "89742408",
+            "text": "mov dword ptr [esp + 8], esi"
+          },
+          {
+            "address": "00b1bbae",
+            "hex": "e87dfeffff",
+            "text": "call 0xb1ba30"
+          },
+          {
+            "address": "00b1bbb3",
+            "hex": "8d7e04",
+            "text": "lea edi, [esi + 4]"
+          },
+          {
+            "address": "00b1bbb6",
+            "hex": "8bcf",
+            "text": "mov ecx, edi"
+          },
+          {
+            "address": "00b1bbb8",
+            "hex": "c744241400000000",
+            "text": "mov dword ptr [esp + 0x14], 0"
+          },
+          {
+            "address": "00b1bbc0",
+            "hex": "c706a8e5d500",
+            "text": "mov dword ptr [esi], 0xd5e5a8"
+          },
+          {
+            "address": "00b1bbc6",
+            "hex": "e805b00400",
+            "text": "call 0xb66bd0"
+          },
+          {
+            "address": "00b1bbcb",
+            "hex": "6a01",
+            "text": "push 1"
+          },
+          {
+            "address": "00b1bbcd",
+            "hex": "8bcf",
+            "text": "mov ecx, edi"
+          },
+          {
+            "address": "00b1bbcf",
+            "hex": "c644241801",
+            "text": "mov byte ptr [esp + 0x18], 1"
+          },
+          {
+            "address": "00b1bbd4",
+            "hex": "e847e40400",
+            "text": "call 0xb6a020"
+          },
+          {
+            "address": "00b1bbd9",
+            "hex": "8b4c240c",
+            "text": "mov ecx, dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00b1bbdd",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "00b1bbde",
+            "hex": "8bc6",
+            "text": "mov eax, esi"
+          },
+          {
+            "address": "00b1bbe0",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00b1bbe1",
+            "hex": "64890d00000000",
+            "text": "mov dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "00b1bbe8",
+            "hex": "83c410",
+            "text": "add esp, 0x10"
+          },
+          {
+            "address": "00b1bbeb",
+            "hex": "c3",
+            "text": "ret"
+          }
+        ],
+        "calls": [
+          {
+            "address": "00b1bbae",
+            "hex": "e87dfeffff",
+            "text": "call 0xb1ba30"
+          },
+          {
+            "address": "00b1bbc6",
+            "hex": "e805b00400",
+            "text": "call 0xb66bd0"
+          },
+          {
+            "address": "00b1bbd4",
+            "hex": "e847e40400",
+            "text": "call 0xb6a020"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b1bbf0",
+        "kind": "function",
+        "length": 82,
+        "end_exclusive": "00b1bc42",
+        "pe_offset": 7453680,
+        "sha256": "7ba4855034253f1b71edde4a5073b5080d8721875c9dd0d70afe146449afe1eb",
+        "hex": "6aff68a8c8cb0064a100000000506489250000000051568bf189742404c706a8e5d5008d4e04c744241000000000e87dad04008bcec7442410ffffffffe89efeffff8b4c24085e64890d0000000083c410c3",
+        "relocations": [
+          [
+            47,
+            11954592
+          ],
+          [
+            62,
+            11647696
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00b1bbf0",
+            "hex": "6aff",
+            "text": "push -1"
+          },
+          {
+            "address": "00b1bbf2",
+            "hex": "68a8c8cb00",
+            "text": "push 0xcbc8a8"
+          },
+          {
+            "address": "00b1bbf7",
+            "hex": "64a100000000",
+            "text": "mov eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "00b1bbfd",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b1bbfe",
+            "hex": "64892500000000",
+            "text": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "address": "00b1bc05",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00b1bc06",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b1bc07",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "00b1bc09",
+            "hex": "89742404",
+            "text": "mov dword ptr [esp + 4], esi"
+          },
+          {
+            "address": "00b1bc0d",
+            "hex": "c706a8e5d500",
+            "text": "mov dword ptr [esi], 0xd5e5a8"
+          },
+          {
+            "address": "00b1bc13",
+            "hex": "8d4e04",
+            "text": "lea ecx, [esi + 4]"
+          },
+          {
+            "address": "00b1bc16",
+            "hex": "c744241000000000",
+            "text": "mov dword ptr [esp + 0x10], 0"
+          },
+          {
+            "address": "00b1bc1e",
+            "hex": "e87dad0400",
+            "text": "call 0xb669a0"
+          },
+          {
+            "address": "00b1bc23",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00b1bc25",
+            "hex": "c7442410ffffffff",
+            "text": "mov dword ptr [esp + 0x10], 0xffffffff"
+          },
+          {
+            "address": "00b1bc2d",
+            "hex": "e89efeffff",
+            "text": "call 0xb1bad0"
+          },
+          {
+            "address": "00b1bc32",
+            "hex": "8b4c2408",
+            "text": "mov ecx, dword ptr [esp + 8]"
+          },
+          {
+            "address": "00b1bc36",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00b1bc37",
+            "hex": "64890d00000000",
+            "text": "mov dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "00b1bc3e",
+            "hex": "83c410",
+            "text": "add esp, 0x10"
+          },
+          {
+            "address": "00b1bc41",
+            "hex": "c3",
+            "text": "ret"
+          }
+        ],
+        "calls": [
+          {
+            "address": "00b1bc1e",
+            "hex": "e87dad0400",
+            "text": "call 0xb669a0"
+          },
+          {
+            "address": "00b1bc2d",
+            "hex": "e89efeffff",
+            "text": "call 0xb1bad0"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00b1bc50",
+        "kind": "function",
+        "length": 30,
+        "end_exclusive": "00b1bc6e",
+        "pe_offset": 7453776,
+        "sha256": "1d6629be9e50c9f62858ba826137dc3189f115aa5b22d5961c90dd0f3772c5b2",
+        "hex": "568bf1e898fffffff644240801740956e847a90d0083c4048bc65ec20400",
+        "relocations": [
+          [
+            4,
+            11647984
+          ],
+          [
+            17,
+            12543404
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00b1bc50",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b1bc51",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "00b1bc53",
+            "hex": "e898ffffff",
+            "text": "call 0xb1bbf0"
+          },
+          {
+            "address": "00b1bc58",
+            "hex": "f644240801",
+            "text": "test byte ptr [esp + 8], 1"
+          },
+          {
+            "address": "00b1bc5d",
+            "hex": "7409",
+            "text": "je 0xb1bc68"
+          },
+          {
+            "address": "00b1bc5f",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b1bc60",
+            "hex": "e847a90d00",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "00b1bc65",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "00b1bc68",
+            "hex": "8bc6",
+            "text": "mov eax, esi"
+          },
+          {
+            "address": "00b1bc6a",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00b1bc6b",
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ],
+        "calls": [
+          {
+            "address": "00b1bc53",
+            "hex": "e898ffffff",
+            "text": "call 0xb1bbf0"
+          },
+          {
+            "address": "00b1bc60",
+            "hex": "e847a90d00",
+            "text": "call 0xbf65ac"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00bd0400",
+        "kind": "function",
+        "length": 197,
+        "end_exclusive": "00bd04c5",
+        "pe_offset": 8193024,
+        "sha256": "6e73798d0366545ebbf2ebe6aa005e4630fd95238cdae48df6bc9f20240a3c36",
+        "hex": "6aff685854cc0064a100000000506489250000000083ec0c53568bf18974240833db895c241ce8e5f4ffff85c07464578b7e08397e047605e8d66202008d47fc3b4608897c241477053b46047305e8c062020083c7fc3b7e087205e8b36202008b46043bc38b0f74128b56088bfa2bf8c1ff02740683c2fc8956083bcb74088b018b106a01ffd28bcee882f4ffff85c0759e5f8d4e10e8e5c784ff8b46043bc3740950e80461020083c4048b4c2414895e04895e08895e0c5e5b64890d0000000083c418c3",
+        "relocations": [
+          [
+            39,
+            12384528
+          ],
+          [
+            57,
+            12543763
+          ],
+          [
+            79,
+            12543763
+          ],
+          [
+            92,
+            12543763
+          ],
+          [
+            138,
+            12384528
+          ],
+          [
+            151,
+            4312192
+          ],
+          [
+            164,
+            12543404
+          ]
+        ],
+        "instructions": [
+          {
+            "address": "00bd0400",
+            "hex": "6aff",
+            "text": "push -1"
+          },
+          {
+            "address": "00bd0402",
+            "hex": "685854cc00",
+            "text": "push 0xcc5458"
+          },
+          {
+            "address": "00bd0407",
+            "hex": "64a100000000",
+            "text": "mov eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "00bd040d",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00bd040e",
+            "hex": "64892500000000",
+            "text": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "address": "00bd0415",
+            "hex": "83ec0c",
+            "text": "sub esp, 0xc"
+          },
+          {
+            "address": "00bd0418",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00bd0419",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00bd041a",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "00bd041c",
+            "hex": "89742408",
+            "text": "mov dword ptr [esp + 8], esi"
+          },
+          {
+            "address": "00bd0420",
+            "hex": "33db",
+            "text": "xor ebx, ebx"
+          },
+          {
+            "address": "00bd0422",
+            "hex": "895c241c",
+            "text": "mov dword ptr [esp + 0x1c], ebx"
+          },
+          {
+            "address": "00bd0426",
+            "hex": "e8e5f4ffff",
+            "text": "call 0xbcf910"
+          },
+          {
+            "address": "00bd042b",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "00bd042d",
+            "hex": "7464",
+            "text": "je 0xbd0493"
+          },
+          {
+            "address": "00bd042f",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00bd0430",
+            "hex": "8b7e08",
+            "text": "mov edi, dword ptr [esi + 8]"
+          },
+          {
+            "address": "00bd0433",
+            "hex": "397e04",
+            "text": "cmp dword ptr [esi + 4], edi"
+          },
+          {
+            "address": "00bd0436",
+            "hex": "7605",
+            "text": "jbe 0xbd043d"
+          },
+          {
+            "address": "00bd0438",
+            "hex": "e8d6620200",
+            "text": "call 0xbf6713"
+          },
+          {
+            "address": "00bd043d",
+            "hex": "8d47fc",
+            "text": "lea eax, [edi - 4]"
+          },
+          {
+            "address": "00bd0440",
+            "hex": "3b4608",
+            "text": "cmp eax, dword ptr [esi + 8]"
+          },
+          {
+            "address": "00bd0443",
+            "hex": "897c2414",
+            "text": "mov dword ptr [esp + 0x14], edi"
+          },
+          {
+            "address": "00bd0447",
+            "hex": "7705",
+            "text": "ja 0xbd044e"
+          },
+          {
+            "address": "00bd0449",
+            "hex": "3b4604",
+            "text": "cmp eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "00bd044c",
+            "hex": "7305",
+            "text": "jae 0xbd0453"
+          },
+          {
+            "address": "00bd044e",
+            "hex": "e8c0620200",
+            "text": "call 0xbf6713"
+          },
+          {
+            "address": "00bd0453",
+            "hex": "83c7fc",
+            "text": "add edi, -4"
+          },
+          {
+            "address": "00bd0456",
+            "hex": "3b7e08",
+            "text": "cmp edi, dword ptr [esi + 8]"
+          },
+          {
+            "address": "00bd0459",
+            "hex": "7205",
+            "text": "jb 0xbd0460"
+          },
+          {
+            "address": "00bd045b",
+            "hex": "e8b3620200",
+            "text": "call 0xbf6713"
+          },
+          {
+            "address": "00bd0460",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "00bd0463",
+            "hex": "3bc3",
+            "text": "cmp eax, ebx"
+          },
+          {
+            "address": "00bd0465",
+            "hex": "8b0f",
+            "text": "mov ecx, dword ptr [edi]"
+          },
+          {
+            "address": "00bd0467",
+            "hex": "7412",
+            "text": "je 0xbd047b"
+          },
+          {
+            "address": "00bd0469",
+            "hex": "8b5608",
+            "text": "mov edx, dword ptr [esi + 8]"
+          },
+          {
+            "address": "00bd046c",
+            "hex": "8bfa",
+            "text": "mov edi, edx"
+          },
+          {
+            "address": "00bd046e",
+            "hex": "2bf8",
+            "text": "sub edi, eax"
+          },
+          {
+            "address": "00bd0470",
+            "hex": "c1ff02",
+            "text": "sar edi, 2"
+          },
+          {
+            "address": "00bd0473",
+            "hex": "7406",
+            "text": "je 0xbd047b"
+          },
+          {
+            "address": "00bd0475",
+            "hex": "83c2fc",
+            "text": "add edx, -4"
+          },
+          {
+            "address": "00bd0478",
+            "hex": "895608",
+            "text": "mov dword ptr [esi + 8], edx"
+          },
+          {
+            "address": "00bd047b",
+            "hex": "3bcb",
+            "text": "cmp ecx, ebx"
+          },
+          {
+            "address": "00bd047d",
+            "hex": "7408",
+            "text": "je 0xbd0487"
+          },
+          {
+            "address": "00bd047f",
+            "hex": "8b01",
+            "text": "mov eax, dword ptr [ecx]"
+          },
+          {
+            "address": "00bd0481",
+            "hex": "8b10",
+            "text": "mov edx, dword ptr [eax]"
+          },
+          {
+            "address": "00bd0483",
+            "hex": "6a01",
+            "text": "push 1"
+          },
+          {
+            "address": "00bd0485",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00bd0487",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00bd0489",
+            "hex": "e882f4ffff",
+            "text": "call 0xbcf910"
+          },
+          {
+            "address": "00bd048e",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "00bd0490",
+            "hex": "759e",
+            "text": "jne 0xbd0430"
+          },
+          {
+            "address": "00bd0492",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "00bd0493",
+            "hex": "8d4e10",
+            "text": "lea ecx, [esi + 0x10]"
+          },
+          {
+            "address": "00bd0496",
+            "hex": "e8e5c784ff",
+            "text": "call 0x41cc80"
+          },
+          {
+            "address": "00bd049b",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "00bd049e",
+            "hex": "3bc3",
+            "text": "cmp eax, ebx"
+          },
+          {
+            "address": "00bd04a0",
+            "hex": "7409",
+            "text": "je 0xbd04ab"
+          },
+          {
+            "address": "00bd04a2",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00bd04a3",
+            "hex": "e804610200",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "00bd04a8",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "00bd04ab",
+            "hex": "8b4c2414",
+            "text": "mov ecx, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00bd04af",
+            "hex": "895e04",
+            "text": "mov dword ptr [esi + 4], ebx"
+          },
+          {
+            "address": "00bd04b2",
+            "hex": "895e08",
+            "text": "mov dword ptr [esi + 8], ebx"
+          },
+          {
+            "address": "00bd04b5",
+            "hex": "895e0c",
+            "text": "mov dword ptr [esi + 0xc], ebx"
+          },
+          {
+            "address": "00bd04b8",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00bd04b9",
+            "hex": "5b",
+            "text": "pop ebx"
+          },
+          {
+            "address": "00bd04ba",
+            "hex": "64890d00000000",
+            "text": "mov dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "00bd04c1",
+            "hex": "83c418",
+            "text": "add esp, 0x18"
+          },
+          {
+            "address": "00bd04c4",
+            "hex": "c3",
+            "text": "ret"
+          }
+        ],
+        "calls": [
+          {
+            "address": "00bd0426",
+            "hex": "e8e5f4ffff",
+            "text": "call 0xbcf910"
+          },
+          {
+            "address": "00bd0438",
+            "hex": "e8d6620200",
+            "text": "call 0xbf6713"
+          },
+          {
+            "address": "00bd044e",
+            "hex": "e8c0620200",
+            "text": "call 0xbf6713"
+          },
+          {
+            "address": "00bd045b",
+            "hex": "e8b3620200",
+            "text": "call 0xbf6713"
+          },
+          {
+            "address": "00bd0485",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00bd0489",
+            "hex": "e882f4ffff",
+            "text": "call 0xbcf910"
+          },
+          {
+            "address": "00bd0496",
+            "hex": "e8e5c784ff",
+            "text": "call 0x41cc80"
+          },
+          {
+            "address": "00bd04a3",
+            "hex": "e804610200",
+            "text": "call 0xbf65ac"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00412430",
+        "kind": "function",
+        "length": 7,
+        "end_exclusive": "00412437",
+        "pe_offset": 74800,
+        "sha256": "197860f577f6cbc985b15e4605cd24b4388d933d89eb449e8ef5d9ca60d86ea1",
+        "hex": "c7011838ce00c3",
+        "relocations": [],
+        "instructions": [
+          {
+            "address": "00412430",
+            "hex": "c7011838ce00",
+            "text": "mov dword ptr [ecx], 0xce3818"
+          },
+          {
+            "address": "00412436",
+            "hex": "c3",
+            "text": "ret"
+          }
+        ],
+        "calls": [],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00411ee0",
+        "kind": "function",
+        "length": 25,
+        "end_exclusive": "00411ef9",
+        "pe_offset": 73440,
+        "sha256": "bc62d20fb11c300342533b8e94fc0319bb550dcd5bb5ecd734f2e03c92cc3382",
+        "hex": "8b410485c0c701fc37ce00740b834018ff50ff151022ce00c3",
+        "relocations": [],
+        "instructions": [
+          {
+            "address": "00411ee0",
+            "hex": "8b4104",
+            "text": "mov eax, dword ptr [ecx + 4]"
+          },
+          {
+            "address": "00411ee3",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "00411ee5",
+            "hex": "c701fc37ce00",
+            "text": "mov dword ptr [ecx], 0xce37fc"
+          },
+          {
+            "address": "00411eeb",
+            "hex": "740b",
+            "text": "je 0x411ef8"
+          },
+          {
+            "address": "00411eed",
+            "hex": "834018ff",
+            "text": "add dword ptr [eax + 0x18], -1"
+          },
+          {
+            "address": "00411ef1",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00411ef2",
+            "hex": "ff151022ce00",
+            "text": "call dword ptr [0xce2210]"
+          },
+          {
+            "address": "00411ef8",
+            "hex": "c3",
+            "text": "ret"
+          }
+        ],
+        "calls": [
+          {
+            "address": "00411ef2",
+            "hex": "ff151022ce00",
+            "text": "call dword ptr [0xce2210]"
+          }
+        ],
+        "live_equals_pe": true,
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "address": "00d5e5a4",
+        "kind": "context",
+        "length": 8,
+        "end_exclusive": "00d5e5ac",
+        "pe_offset": 9823652,
+        "sha256": "8eb79b6a2fb256148ad37ebe25c5e1d9a2a5f48a2635bb3b59ddbbd5643e5220",
+        "hex": "70bbb10050bcb100",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00cbc850",
+        "kind": "context",
+        "length": 10,
+        "end_exclusive": "00cbc85a",
+        "pe_offset": 9160784,
+        "sha256": "760d9a5ddd7cc919bfa847df46d743f4442c00e2149b22b63377a2affd4dae28",
+        "hex": "b8184cdf00e9e9a2f3ff",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00df4c18",
+        "kind": "context",
+        "length": 36,
+        "end_exclusive": "00df4c3c",
+        "pe_offset": 10439704,
+        "sha256": "ed39eaac33210d05b13c48c3b07ed0cef8af76a3ce9db462ef241b5afba7eb77",
+        "hex": "2205931902000000084cdf00000000000000000000000000000000000000000001000000",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00df4c08",
+        "kind": "context",
+        "length": 16,
+        "end_exclusive": "00df4c18",
+        "pe_offset": 10439688,
+        "sha256": "88577d271990b62eea482914d75e3ffdb311360f2438da11c3adffc4f0affcb3",
+        "hex": "ffffffff40c8cb000000000048c8cb00",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00cbc840",
+        "kind": "context",
+        "length": 16,
+        "end_exclusive": "00cbc850",
+        "pe_offset": 9160768,
+        "sha256": "03c5f5ffb30f959ed23e754363f5ab8f8fa0905fc810b889c4d30ae7854664e0",
+        "hex": "8b4de8e9e85b75ff8d4dece9905675ff",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00cbc870",
+        "kind": "context",
+        "length": 10,
+        "end_exclusive": "00cbc87a",
+        "pe_offset": 9160816,
+        "sha256": "60708b76d857ef747058d129ea21c5b53325e2ee0299f95b8d2e34f63e7b1a97",
+        "hex": "b84c4cdf00e9c9a2f3ff",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00df4c4c",
+        "kind": "context",
+        "length": 36,
+        "end_exclusive": "00df4c70",
+        "pe_offset": 10439756,
+        "sha256": "fc77eb320bda707f4de690c286592c28fc43d404046b05d554b1f75755d2f0c2",
+        "hex": "22059319020000003c4cdf00000000000000000000000000000000000000000001000000",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00df4c3c",
+        "kind": "context",
+        "length": 16,
+        "end_exclusive": "00df4c4c",
+        "pe_offset": 10439740,
+        "sha256": "79f30ad8c99df0b78ab7af6a0925c0c20017726a3b1b5275caf85abb31f6eb15",
+        "hex": "ffffffff60c8cb000000000068c8cb00",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00cbc860",
+        "kind": "context",
+        "length": 16,
+        "end_exclusive": "00cbc870",
+        "pe_offset": 9160800,
+        "sha256": "c7d848bf7bb413ebfe1199aa8c7b4647a84f6be4b43b34e3a6fc5cc7b1050790",
+        "hex": "8b4de8e9c85b75ff8d4dece9705675ff",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00cbc893",
+        "kind": "context",
+        "length": 10,
+        "end_exclusive": "00cbc89d",
+        "pe_offset": 9160851,
+        "sha256": "7a7e63d675eb2530e483cf7bdec493b1ab1a85990260ba6abdfcda45890363de",
+        "hex": "b8804cdf00e9a6a2f3ff",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00df4c80",
+        "kind": "context",
+        "length": 36,
+        "end_exclusive": "00df4ca4",
+        "pe_offset": 10439808,
+        "sha256": "3b99082478cd66976f4d0b5f165cd4c14041d803f2467e1e0ca2b7e20de79eae",
+        "hex": "2205931902000000704cdf00000000000000000000000000000000000000000001000000",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00df4c70",
+        "kind": "context",
+        "length": 16,
+        "end_exclusive": "00df4c80",
+        "pe_offset": 10439792,
+        "sha256": "1c750c6257734b5d2f22f6d9c76792db39c20733eeb301322f69e1972b7857ed",
+        "hex": "ffffffff80c8cb000000000088c8cb00",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00cbc880",
+        "kind": "context",
+        "length": 19,
+        "end_exclusive": "00cbc893",
+        "pe_offset": 9160832,
+        "sha256": "5613b985ef660fc25653da37ea4d2c2c37fdefc7d7130ab7245116b8ed472e91",
+        "hex": "8b4df0e948f2e5ff8b4df083c104e90da1eaff",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00cbc8a8",
+        "kind": "context",
+        "length": 10,
+        "end_exclusive": "00cbc8b2",
+        "pe_offset": 9160872,
+        "sha256": "3a864bc2d82b6de16efdf9f131624e92e3dbe6c53fe9014c65bc873e85f19c7c",
+        "hex": "b8ac4cdf00e991a2f3ff",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00df4cac",
+        "kind": "context",
+        "length": 36,
+        "end_exclusive": "00df4cd0",
+        "pe_offset": 10439852,
+        "sha256": "3e702b48eb92e306421e2d1cb951f373f26ca0ab69228ddea6f018b69f5400b7",
+        "hex": "2205931901000000a44cdf00000000000000000000000000000000000000000001000000",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00df4ca4",
+        "kind": "context",
+        "length": 8,
+        "end_exclusive": "00df4cac",
+        "pe_offset": 10439844,
+        "sha256": "a8625a21c698e8d23f46a6c0d1eb5880dd24c8411bf696f91153a48e810a4181",
+        "hex": "ffffffffa0c8cb00",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00cbc8a0",
+        "kind": "context",
+        "length": 8,
+        "end_exclusive": "00cbc8a8",
+        "pe_offset": 9160864,
+        "sha256": "db154abf96ec8fbd15365a810441f0dcbec1eebc920728423969068d4e25ec7b",
+        "hex": "8b4df0e928f2e5ff",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00ce2218",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00ce221c",
+        "pe_offset": 9314840,
+        "sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+        "hex": "b856a000",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00ce2210",
+        "kind": "context",
+        "length": 4,
+        "end_exclusive": "00ce2214",
+        "pe_offset": 9314832,
+        "sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+        "hex": "8856a000",
+        "live_equals_pe": true
+      }
+    ]
+  },
+  "calls": [
+    {
+      "address": "00b1ba5e",
+      "function": "00b1ba30",
+      "native": "00415350"
+    },
+    {
+      "address": "00b1ba77",
+      "function": "00b1ba30",
+      "indirect": "dword ptr [0xce2218]"
+    },
+    {
+      "address": "00b1ba8c",
+      "function": "00b1ba30",
+      "native": "00415350"
+    },
+    {
+      "address": "00b1ba9a",
+      "function": "00b1ba30",
+      "native": "00bd0c30"
+    },
+    {
+      "address": "00b1baa8",
+      "function": "00b1ba30",
+      "indirect": "dword ptr [0xce2210]"
+    },
+    {
+      "address": "00b1bafe",
+      "function": "00b1bad0",
+      "native": "00415350"
+    },
+    {
+      "address": "00b1bb17",
+      "function": "00b1bad0",
+      "indirect": "dword ptr [0xce2218]"
+    },
+    {
+      "address": "00b1bb26",
+      "function": "00b1bad0",
+      "native": "00415350"
+    },
+    {
+      "address": "00b1bb34",
+      "function": "00b1bad0",
+      "native": "00bcfca0"
+    },
+    {
+      "address": "00b1bb4c",
+      "function": "00b1bad0",
+      "indirect": "dword ptr [0xce2210]"
+    },
+    {
+      "address": "00b1bb73",
+      "function": "00b1bb70",
+      "native": "00b1bad0"
+    },
+    {
+      "address": "00b1bb80",
+      "function": "00b1bb70",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "00b1bbae",
+      "function": "00b1bb90",
+      "native": "00b1ba30"
+    },
+    {
+      "address": "00b1bbc6",
+      "function": "00b1bb90",
+      "native": "00b66bd0"
+    },
+    {
+      "address": "00b1bbd4",
+      "function": "00b1bb90",
+      "native": "00b6a020"
+    },
+    {
+      "address": "00b1bc1e",
+      "function": "00b1bbf0",
+      "native": "00b669a0"
+    },
+    {
+      "address": "00b1bc2d",
+      "function": "00b1bbf0",
+      "native": "00b1bad0"
+    },
+    {
+      "address": "00b1bc53",
+      "function": "00b1bc50",
+      "native": "00b1bbf0"
+    },
+    {
+      "address": "00b1bc60",
+      "function": "00b1bc50",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "00bd0426",
+      "function": "00bd0400",
+      "native": "00bcf910"
+    },
+    {
+      "address": "00bd0438",
+      "function": "00bd0400",
+      "native": "00bf6713"
+    },
+    {
+      "address": "00bd044e",
+      "function": "00bd0400",
+      "native": "00bf6713"
+    },
+    {
+      "address": "00bd045b",
+      "function": "00bd0400",
+      "native": "00bf6713"
+    },
+    {
+      "address": "00bd0485",
+      "function": "00bd0400",
+      "indirect": "edx"
+    },
+    {
+      "address": "00bd0489",
+      "function": "00bd0400",
+      "native": "00bcf910"
+    },
+    {
+      "address": "00bd0496",
+      "function": "00bd0400",
+      "native": "0041cc80"
+    },
+    {
+      "address": "00bd04a3",
+      "function": "00bd0400",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "00411ef2",
+      "function": "00411ee0",
+      "indirect": "dword ptr [0xce2210]"
+    }
+  ],
+  "contracts": {
+    "00b1ba30": "Full145B ECX fresh4CCh owner/EAXsame/RET. Write D5E5A4; state0 profile cleanup before first actual415350. Capture FIRST manager+10 section, real enter and depth+18 increment, state1 guard, publish F8D434; second actual415350 before rereading CURRENT F8D434 and genuine BD0C30 register. Decrement/leave captured first section; no private manager/pool. Bytes+4..4CB preserve allocation preimage.",
+    "00b1bad0": "Full153B ECX owner/RET. WriteD5E5A4; state0 before first actual415350, capture firstmanager section and enter/depth, state1, secondgetter then CURRENT F8D434 -> genuine BCFCA0 unregister. Clear publication unconditionally, leave captured section, stampCE3818. Unregister clears FIRST matching slot but preserves array length/capacity and later duplicates; it does not require current publication to equal this owner.",
+    "00b1bb70": "Full30B ECX owner/stackflags/EAXoriginal/RET4. Genuine base destructor then ordinary free iff low flags bit0. Source flags is uint8. Original return address may designate freed storage.",
+    "00b1bb90": "Full92B ECX fresh4CCh owner/EAXsame/RET. Genuine base construct; state0 base cleanup; D5E5A8; genuine B66BD0 on embedded +4 actual4C8h Lua owner; state1 Lua cleanup; genuine B6A020(mask1) with caller canonical fundamentals/DoFile services and same actual pool. Failure after Lua construction closes actual state then destroys base. No replacement script or successful fake provider.",
+    "00b1bbf0": "Full82B ECX owner/RET. D5E5A8; state0 base cleanup; genuine B669A0 closes embedded Lua; disarm state-1 BEFORE explicit base destructor so base failure is not retried. Unwind closes remaining base only. Second cleanup exception terminates.",
+    "00b1bc50": "Full30B ECX owner/stackflags/EAXoriginal/RET4. Genuine derived destructor then ordinary free iff lowflags bit0; same returned address bits after free.",
+    "00bd0400": "Existing full197B raw manager now admits D5E5A4 and D5E5A8 through genuine B1BB70/B1BC50 source scalars. Borrowed NativeRendererLuaOwnerContext added at offset124, binding size128; SAME AA0/F8D434/string/bootstrap services retained through drain. Parent pops before current-profile dispatch flags1. Native owner unregister can therefore find no matching current slot; clearing holes and null publications are preserved.",
+    "exception_maps": "B1BA30 handlerCBC850/infoDF4C18/mapDF4C08 state0->-1 CBC840 ->412430, state1->0 CBC848 ->411EE0. B1BAD0 CBC870/DF4C4C/DF4C3C withCBC860 root andCBC868 guard. B1BB90 CBC893/DF4C80/DF4C70 state0->-1 CBC880 ->B1BAD0 andstate1->0 CBC888 +4 ->B669A0. B1BBF0 CBC8A8/DF4CAC/DF4CA4 state0->-1 CBC8A0 ->B1BAD0. New source C++ guard states; originalFH3/SEH not executed.",
+    "source_abi": "Explicit borrowed context and NativeStringStorage interface; original numeric profiles never invoked as host vtables. Raw actual pool adapter retains established returning-getter release/noexcept boundary. No original FH3/SEH/register/private-stack/hardware-fault or drop-in binary ABI claim."
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "flags": "/MD /W4 /WX /fp:strict",
+    "ctests_passed": 3,
+    "probe_pass_lines": 9,
+    "probe_output": [
+      "PASS full native/source base flags0 lane0 whole4CCh and registry",
+      "PASS full native/source base flags0 lane1 whole4CCh and registry",
+      "PASS full native/source base flags2 lane0 whole4CCh and registry",
+      "PASS full native/source base flags2 lane1 whole4CCh and registry",
+      "PASS full native/source derived lane0 installed fundamentals through actual VFS",
+      "PASS full native/source derived lane1 installed fundamentals through actual VFS",
+      "PASS full derived scalar flags3 lane0 real close/unregister/free",
+      "PASS full derived scalar flags3 lane1 real close/unregister/free",
+      "observer runtime after raw singleton drain: dispatch_owner=null lock_owner=null alias=retained",
+      "singleton lifetime drained: registered_slots=19 effect_publication=null manager_publication=null factory_publication=null factory_alias=00000000 storage=raw14h/raw10h/raw8h",
+      "PASS actual application shared drain base+derived Lua profiles; fundamentals bytes657",
+      "LOADED_RESOLVED 014c \\\\?\\J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\renderer_lua_r61\\lua_owner_probe.exe",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\kernel32.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\KernelBase.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\advapi32.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\msvcrt.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\sechost.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\rpcrt4.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\shell32.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\msvcp_win.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\user32.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\win32u.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\gdi32.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\gdi32full.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\imm32.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\SHCore.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\cryptsp.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\rsaenh.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\cryptbase.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\bcryptprimitives.dll",
+      "LOADED_RESOLVED 014c \\\\?\\C:\\Windows\\SysWOW64\\bcrypt.dll",
+      "RESULT PASS actual Lua owner normal lifetime with genuine raw VFS/pool/manager/fundamentals; native EH and full renderer unexecuted"
+    ],
+    "fixture": "One Win32 child uses GameNativeReadOnlyData handoff, GameSingletonHost, GameNativeVfsApplication.initialize_core, genuine phase2 loose mounts/search registrations, ActualNativeStringPoolStorage, NativeLuaFundamentalsContext and NativeLuaServiceBindings activation. Installed fundamentals is read through raw VFS and actual registered cache. Four full native/source base lanes flags0/2 verify entire4CCh preimage exceptprofile, publication, realregistration and zeroed-slot-with-unchanged-length. Two full derived lanes execute genuine Lua5.1.1/bootstrap/platform/region and compare whole4CCh storage after close. Two flags3 lanes verify real close/unregister/free and returned bits without freed-storage reads. Final source shared drain admits both base and derived owners, closes Lua, deletes fundamentals and drains actual VFS/pool/manager; publications null.",
+    "native_adaptation": "Copied complete six original Lua owner/base/scalar bodies. Publication and Win32 Enter/Leave IAT cells relocated. Base/derived local edges point to copied bodies. Manager getter/registration/unregister, embedded Lua construct/open/close and free target ABI bridges to genuine current source providers. FH3 handlers remain unrelocated and unexecuted; no fake fundamentals or DoFile. DoFile callback installed but not directly invoked by probe.",
+    "fundamentals_asset": {
+      "installed_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\fundamentals.lua",
+      "captured_vfs_bytes": 657,
+      "sha256": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526",
+      "exact_installed_file_match": true,
+      "scope": "Current installed loose script bytes; no claim of unmodified retail asset provenance."
+    },
+    "linked_machine": {
+      "exe": "local\\renderer_lua_r61\\lua_owner_probe.exe",
+      "sha256": "048fb568a3e936ee949105b974ab4b151e38a6887c207b66775eb5e414d21c1a",
+      "receipt": "local/renderer_lua_r61/machine_receipts.json",
+      "receipt_sha256": "d45a29a7bcd83e976c06c41c44cc238efc73e521d103aded2c7d0e0395e65258",
+      "intervals": [
+        {
+          "symbol": "?current_crt_invalid_parameter@?A0xd7ca6ffc@bsp@@YAXXZ",
+          "length": 16,
+          "sha256": "aa38ab4b7b733801ac0df085a803c7c5e23a2b1c0ce9cf87dfae832078c28ca0"
+        },
+        {
+          "symbol": "??1BaseOwnerUnwindCleanup@?A0xb65c7de8@bsp@@QAE@XZ",
+          "length": 85,
+          "sha256": "890e5f7ff1576d62ee57aa39eb64a6ca00b70109e6429874747dce978531241a"
+        },
+        {
+          "symbol": "__catch$??1BaseOwnerUnwindCleanup@?A0xb65c7de8@bsp@@QAE@XZ$0",
+          "length": 27,
+          "sha256": "f45b2919192574a4b6f710c7591c537e8d6b286d4e9363a7ed583f4d443212f3"
+        },
+        {
+          "symbol": "??1GuardUnwindCleanup@?A0xb65c7de8@bsp@@QAE@XZ",
+          "length": 82,
+          "sha256": "ec061607a8f4171867db6697c435e271ba1e081a702f31c5859a85f3fa41acbd"
+        },
+        {
+          "symbol": "__catch$??1GuardUnwindCleanup@?A0xb65c7de8@bsp@@QAE@XZ$0",
+          "length": 14,
+          "sha256": "fa06a9f36f2b1da1a83c6062792e465ce243fcf2ae76f83da946512bb71616ac"
+        },
+        {
+          "symbol": "??1LuaUnwindCleanup@?A0xb65c7de8@bsp@@QAE@XZ",
+          "length": 82,
+          "sha256": "e36c83deff05fb501cc66b7dc75759410cc0984d8c6cb318e162251d39c81b8b"
+        },
+        {
+          "symbol": "__catch$??1LuaUnwindCleanup@?A0xb65c7de8@bsp@@QAE@XZ$0",
+          "length": 14,
+          "sha256": "fa06a9f36f2b1da1a83c6062792e465ce243fcf2ae76f83da946512bb71616ac"
+        },
+        {
+          "symbol": "??1ProfileUnwindCleanup@?A0xb65c7de8@bsp@@QAE@XZ",
+          "length": 16,
+          "sha256": "693587a6816e18707e7cbcd7b4f6ec109b4695ceab3e227bca9bc3697b514b55"
+        },
+        {
+          "symbol": "?construct_native_renderer_lua_base_00b1ba30@bsp@@YAPAUNativeRendererLuaOwnerStorage@1@PAXAAUNativeRendererLuaOwnerContext@1@@Z",
+          "length": 208,
+          "sha256": "5da060e610a10d313f1b5fd5d4677539a626c1f7497a9c1e68a0a724cd2dd3d2"
+        },
+        {
+          "symbol": "?construct_native_renderer_lua_owner_00b1bb90@bsp@@YAPAUNativeRendererLuaOwnerStorage@1@PAXAAUNativeRendererLuaOwnerContext@1@@Z",
+          "length": 288,
+          "sha256": "286c546db1f8ff4e6cdcbdc63854f7a12f4003ab396cd8ceda43daea81825278"
+        },
+        {
+          "symbol": "?destroy_native_renderer_lua_base_00b1bad0@bsp@@YAXAAUNativeRendererLuaOwnerStorage@1@AAUNativeRendererLuaOwnerContext@1@@Z",
+          "length": 224,
+          "sha256": "da9e549bbcd14054342519f75b2adf15426362214f5a81c7dd86f7bbea35de1b"
+        },
+        {
+          "symbol": "?scalar_delete_native_renderer_lua_base_00b1bb70@bsp@@YAPAXPAUNativeRendererLuaOwnerStorage@1@EAAUNativeRendererLuaOwnerContext@1@@Z",
+          "length": 48,
+          "sha256": "b9bf009edc60994b1c778543b6e92910e9e4704e3186015675992ceae26d3ef7"
+        },
+        {
+          "symbol": "?scalar_delete_native_renderer_lua_owner_00b1bc50@bsp@@YAPAXPAUNativeRendererLuaOwnerStorage@1@EAAUNativeRendererLuaOwnerContext@1@@Z",
+          "length": 144,
+          "sha256": "6d60098c3442f5fc3575519bf1e46e201ffe4ce7bf0b81fb931e6345c952b0d8"
+        },
+        {
+          "symbol": "?delete_current_profile@?A0xd7ca6ffc@bsp@@YIXPAXABUNativeSingletonDeletionBindings@2@II@Z",
+          "length": 1904,
+          "sha256": "57400d4418dc3ac557c5781e201a9a8ef43d869711ed31771fb5d2a8fa606125"
+        },
+        {
+          "symbol": "?delete_native_singleton_base_00412440@bsp@@YIPAXPAX0I@Z",
+          "length": 32,
+          "sha256": "4b63369eb002d03c00f05694638fcc9886fce29659d5addb7d9a22f9544d0bac"
+        },
+        {
+          "symbol": "?destroy_manager_body@?A0xd7ca6ffc@bsp@@YIXPAXABUNativeSingletonDeletionBindings@2@@Z",
+          "length": 176,
+          "sha256": "e7a15d4b6424b32d3315b0691c33080a3c679df3c3355fd37db45868e0f49a26"
+        },
+        {
+          "symbol": "?destroy_native_singleton_manager_00bd0400@bsp@@YIXPAXABUNativeSingletonDeletionBindings@1@@Z",
+          "length": 76,
+          "sha256": "ffce436daaca614e71744896f5f9d56d130be2927a2de0c6dc13688aaa09521f"
+        },
+        {
+          "symbol": "__catch$?destroy_native_singleton_manager_00bd0400@bsp@@YIXPAXABUNativeSingletonDeletionBindings@1@@Z$0",
+          "length": 36,
+          "sha256": "78e26e8add1da675c3ff39f8300f6142a911ad62e80abaa6d87e62dc9d81fbbc"
+        },
+        {
+          "symbol": "__ehhandler$??1BaseOwnerUnwindCleanup@?A0xb65c7de8@bsp@@QAE@XZ",
+          "length": 32,
+          "sha256": "ab5d318543aebf35bbf6a709ededfa9634629dee16a7eabe130a3131ac0c5eca"
+        },
+        {
+          "symbol": "__ehhandler$??1GuardUnwindCleanup@?A0xb65c7de8@bsp@@QAE@XZ",
+          "length": 32,
+          "sha256": "32018b97dfe6240c04d243e1a370d08ee7255cad0ef773d6c5ff21f00f194b5c"
+        },
+        {
+          "symbol": "__ehhandler$??1LuaUnwindCleanup@?A0xb65c7de8@bsp@@QAE@XZ",
+          "length": 32,
+          "sha256": "2b06049f50f668da96555a1cd8b02c2aa226e755daec30e464db7aeefce3922a"
+        },
+        {
+          "symbol": "__unwindfunclet$?construct_native_renderer_lua_base_00b1ba30@bsp@@YAPAUNativeRendererLuaOwnerStorage@1@PAXAAUNativeRendererLuaOwnerContext@1@@Z$0",
+          "length": 8,
+          "sha256": "22c8196d4875bbb7379247667cf343c8e88df8c256bbfc0ee2ad52ca66060b54"
+        },
+        {
+          "symbol": "__unwindfunclet$?destroy_native_renderer_lua_base_00b1bad0@bsp@@YAXAAUNativeRendererLuaOwnerStorage@1@AAUNativeRendererLuaOwnerContext@1@@Z$0",
+          "length": 8,
+          "sha256": "22c8196d4875bbb7379247667cf343c8e88df8c256bbfc0ee2ad52ca66060b54"
+        },
+        {
+          "symbol": "__unwindfunclet$?construct_native_renderer_lua_base_00b1ba30@bsp@@YAPAUNativeRendererLuaOwnerStorage@1@PAXAAUNativeRendererLuaOwnerContext@1@@Z$1",
+          "length": 13,
+          "sha256": "da42b8efdeb7854d17609671fa20f97d9d05373615245a358240689b101a7b00"
+        },
+        {
+          "symbol": "__unwindfunclet$?destroy_native_renderer_lua_base_00b1bad0@bsp@@YAXAAUNativeRendererLuaOwnerStorage@1@AAUNativeRendererLuaOwnerContext@1@@Z$1",
+          "length": 13,
+          "sha256": "da42b8efdeb7854d17609671fa20f97d9d05373615245a358240689b101a7b00"
+        },
+        {
+          "symbol": "__ehhandler$?construct_native_renderer_lua_base_00b1ba30@bsp@@YAPAUNativeRendererLuaOwnerStorage@1@PAXAAUNativeRendererLuaOwnerContext@1@@Z",
+          "length": 43,
+          "sha256": "113cc5a478fdb86960d9cc8dfa04e78feea7a3a6691195687a96d381daf4dc6c"
+        },
+        {
+          "symbol": "__ehhandler$?destroy_native_renderer_lua_base_00b1bad0@bsp@@YAXAAUNativeRendererLuaOwnerStorage@1@AAUNativeRendererLuaOwnerContext@1@@Z",
+          "length": 43,
+          "sha256": "113cc5a478fdb86960d9cc8dfa04e78feea7a3a6691195687a96d381daf4dc6c"
+        },
+        {
+          "symbol": "__unwindfunclet$?construct_native_renderer_lua_owner_00b1bb90@bsp@@YAPAUNativeRendererLuaOwnerStorage@1@PAXAAUNativeRendererLuaOwnerContext@1@@Z$2",
+          "length": 8,
+          "sha256": "047914fc9958d0fd8433a0ab42f21b9536ecd12aa7b930091f9931b68300985b"
+        },
+        {
+          "symbol": "__unwindfunclet$?construct_native_renderer_lua_owner_00b1bb90@bsp@@YAPAUNativeRendererLuaOwnerStorage@1@PAXAAUNativeRendererLuaOwnerContext@1@@Z$3",
+          "length": 8,
+          "sha256": "68fbbfeda32af9a9268e05588b5b83a75108967b43724a3a8e78d976411d22f2"
+        },
+        {
+          "symbol": "__unwindfunclet$?construct_native_renderer_lua_owner_00b1bb90@bsp@@YAPAUNativeRendererLuaOwnerStorage@1@PAXAAUNativeRendererLuaOwnerContext@1@@Z$0",
+          "length": 8,
+          "sha256": "2f10a85d04e1a9f818c7004a64ef1e1db6adf450d08f04478548a62ad2ce6d49"
+        },
+        {
+          "symbol": "__unwindfunclet$?construct_native_renderer_lua_owner_00b1bb90@bsp@@YAPAUNativeRendererLuaOwnerStorage@1@PAXAAUNativeRendererLuaOwnerContext@1@@Z$1",
+          "length": 13,
+          "sha256": "0763afd8c0f328b7957d2cf30eaec7472583b2b64fdfd5458ae628a7b860f100"
+        },
+        {
+          "symbol": "__ehhandler$?construct_native_renderer_lua_owner_00b1bb90@bsp@@YAPAUNativeRendererLuaOwnerStorage@1@PAXAAUNativeRendererLuaOwnerContext@1@@Z",
+          "length": 43,
+          "sha256": "5eeef78021fbd0a972fde5a15a5ce2fa75681ab7d65808c711114614e411bc3b"
+        },
+        {
+          "symbol": "__unwindfunclet$?scalar_delete_native_renderer_lua_owner_00b1bc50@bsp@@YAPAXPAUNativeRendererLuaOwnerStorage@1@EAAUNativeRendererLuaOwnerContext@1@@Z$0",
+          "length": 13,
+          "sha256": "38a93fbcb4c30ca67e19b50d4b6d7754f93039d04bc2c529398bf4340f20c53d"
+        },
+        {
+          "symbol": "__ehhandler$?scalar_delete_native_renderer_lua_owner_00b1bc50@bsp@@YAPAXPAUNativeRendererLuaOwnerStorage@1@EAAUNativeRendererLuaOwnerContext@1@@Z",
+          "length": 35,
+          "sha256": "4065e31e03ea33d46ee024109e50495316eff51114348b48db04787c2542246e"
+        },
+        {
+          "symbol": "__ehhandler$?destroy_native_singleton_manager_00bd0400@bsp@@YIXPAXABUNativeSingletonDeletionBindings@1@@Z",
+          "length": 32,
+          "sha256": "3e7fa7ff81704aaf2c1860cbe5c1565bf85c828003a6cdefd7d64835cd5620bb"
+        }
+      ],
+      "constructor_edges_in_native_order": [
+        "get_native_singleton_manager_00415350",
+        "get_native_singleton_manager_00415350",
+        "register_native_singleton_object_00bd0c30",
+        "construct_native_lua_state_00b66bd0",
+        "open_native_lua_state_00b6a020"
+      ],
+      "scope": "Map intervals may include padding/auxiliary code. Constructor and two new manager deletion edges confirmed in actual linked Win32 image."
+    },
+    "physical_i386_modules": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\renderer_lua_r61\\lua_owner_probe.exe",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 566272,
+        "sha256": "048fb568a3e936ee949105b974ab4b151e38a6887c207b66775eb5e414d21c1a",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ntdll.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1822400,
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 687472,
+        "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\KernelBase.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 2974168,
+        "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\advapi32.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 537816,
+        "sha256": "06e6ee5fcd0601e181e5dd8f9a6328dd79b6bcc8fcdfc2b1a7832f0556d0d049",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\msvcrt.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 809472,
+        "sha256": "23a918921c545140d189ce6dc68590bacdeb0ab2f3e3a9a2d722c5aff45ce64f",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\sechost.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 538352,
+        "sha256": "bfb478f918ee80d1945237cb15db42e2c5e2e324fa00211de37511c1cc720ad4",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\rpcrt4.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 772776,
+        "sha256": "6e3f4e700f03dc415d0a52ffdaac0ce3dfe80a42cd5e27dd304ccc11afea11d8",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\shell32.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 6734832,
+        "sha256": "1d79d4611f64bb78c10a4688377cddd2e93b6dd12437c537f11d3d763772dea0",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\msvcp_win.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 505792,
+        "sha256": "2c3dd2c830375591addea061588f8183bcafdba501c638526b85215465ac905a",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\user32.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1972624,
+        "sha256": "bff75906f4abcc050cf85e38e20090ea0edf7dc33e0ed60cb74cf9e1bc007527",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\win32u.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 108120,
+        "sha256": "7183521868938b0f6c131ef58288aed6cb55e4bde34d27d9612616ddc4dc2b33",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\gdi32.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 132352,
+        "sha256": "7c3cb17bc41a00e5167a82aef67d0da4a09e73e6deba9addcdc8b20a90b5186c",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\gdi32full.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 950488,
+        "sha256": "579857a52f8e9cccff64a4c1c1eb5d2a4a8c6e19c30eab16bef63ed6d61e8806",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\msvcp140.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 618944,
+        "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\imm32.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 147856,
+        "sha256": "027d404ea547f446740336b90dc69b0cfa7c2bea4f1f366053251364f0eefe02",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\SHCore.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 852368,
+        "sha256": "6b5db294c55eb62f6dc0e038b858a60b90a80a5e2933d49e8b512b1491267225",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\cryptsp.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 76616,
+        "sha256": "ee4ea256f8edc949fc0ef9b9425d1afa22aea98faf7dbcc7c73161d93fa44c72",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\rsaenh.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 198888,
+        "sha256": "898179763b3fc4b288820ceb8ee24605375f7e0e98d0a27a2d95430b818d37e8",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\cryptbase.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 32696,
+        "sha256": "795b93001b5c00b4c6ad0806c12df0d4f3477cbed0c261a85b92e5f77ff64a94",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\bcryptprimitives.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 501136,
+        "sha256": "dfd29f2c1f28034949f0a3716a99f00816bda0bffd48a5a2750be4569e7d21ee",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\bcrypt.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 114240,
+        "sha256": "137cec7506fdb011ed03c5a7b51c6ea168cc75ec4359b8dc3f83855622d86bc3",
+        "resolution": "GetFinalPathNameByHandleW on file opened in same Win32 probe; loaded-memory and resolved disk PE Machine both verified I386"
+      }
+    ],
+    "native_spans": 28,
+    "native_bytes": 1076,
+    "direct_call_or_tail_rows": 22
+  },
+  "boundaries": [
+    "Full renderer B32410 constructor and retained application renderer owner graph remain unintegrated; this is its genuine Lua dependency",
+    "Native full callers use genuine source helper bodies; original helper/FH3/SEH/private-stack/register/hardware-fault behavior and failure injection not executed",
+    "Borrowed service activation and string adapter lifetimes must cover all Lua execution and singleton drain; raw string return retains established noexcept boundary",
+    "Probe constructs the real raw VFS/source ownership graph for the installed loose script; it does not run full game startup, active renderer, visual or gameplay validation"
+  ],
+  "ledger_receipts": [
+    "00b1ba30 function construct_native_renderer_lua_base_00b1ba30\n",
+    "00b1bad0 function destroy_native_renderer_lua_base_00b1bad0\n",
+    "00b1bb70 function scalar_delete_native_renderer_lua_base_00b1bb70\n",
+    "00b1bb90 function construct_native_renderer_lua_owner_00b1bb90\n",
+    "00b1bbf0 function destroy_native_renderer_lua_owner_00b1bbf0\n",
+    "00b1bc50 function scalar_delete_native_renderer_lua_owner_00b1bc50\n",
+    "00bd0400 fragment native_renderer_lua_singleton_profiles_r61\n"
+  ],
+  "archive": {
+    "path": "local/evidence-r61/renderer-lua-original-r61.zip",
+    "sha256": "539b026b62f8d03869a1ea24e9852e4979313ab22a70ed1965eedf5c5501364f",
+    "manifest_sha256": "23281720504d6204f78add2aea7037c04b20a196fcfd9e323a53e3e0399c3b70",
+    "artifact_count": 5790,
+    "bytes": 374628927,
+    "all_entries_rehashed": true,
+    "scope": "Full current source/build compiler input/output closure and actual VFS/Lua lifetime fixture and native/link evidence. Twenty-four same-process physical I386 modules; no active command runtime proof."
+  }
+}

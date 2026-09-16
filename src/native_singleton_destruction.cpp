@@ -33,6 +33,7 @@
 #include "bsp/native_frame_clock_lifetime.hpp"
 #include "bsp/native_diagnostic_sink_lifetime.hpp"
 #include "bsp/native_renderer_record_guard.hpp"
+#include "bsp/native_renderer_lua_owner.hpp"
 #include "bsp/native_render_job_publication.hpp"
 #include "bsp/native_frame_job_lifetime.hpp"
 #include "bsp/native_singleton_vector_leaves.hpp"
@@ -54,6 +55,22 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
     const NativeSingletonDeletionBindings& bindings, std::uint32_t profile,
     std::uint32_t flags) {
     switch (profile) {
+    case 0x00d5e5a4:
+        if (bindings.renderer_lua_owner != nullptr) {
+            scalar_delete_native_renderer_lua_base_00b1bb70(
+                static_cast<NativeRendererLuaOwnerStorage*>(owner),
+                static_cast<std::uint8_t>(flags), *bindings.renderer_lua_owner);
+            return;
+        }
+        break;
+    case 0x00d5e5a8:
+        if (bindings.renderer_lua_owner != nullptr) {
+            scalar_delete_native_renderer_lua_owner_00b1bc50(
+                static_cast<NativeRendererLuaOwnerStorage*>(owner),
+                static_cast<std::uint8_t>(flags), *bindings.renderer_lua_owner);
+            return;
+        }
+        break;
     case 0x00ce7550:
         if (bindings.render_jobs && bindings.render_jobs->frame_lifetime) {
             delete_native_frame_job_owner_004bfb30(
