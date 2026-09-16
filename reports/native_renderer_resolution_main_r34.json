@@ -1,0 +1,168 @@
+{
+  "packet": "native_renderer_resolution_main_r34",
+  "generated_utc": "2026-09-16T10:02:55.5454590Z",
+  "initial_main": "5655319d6",
+  "final_main": "98ef379fae8bb927a0dbbf08cd619ab0dc5bbab1",
+  "cmake_commit": "b014cc173ddfae74a7a5bea3cd7ce90da03c2c10",
+  "source_commit": "136320828d2d7b506cbc582656f615fbfa74dcd3",
+  "final_main_merge": "50d014e6d9ff5dff9d3a04ca79a005aa4d843d94",
+  "outcome": "Adopted the four complete raw renderer resolution bodies as an independent constructor prerequisite, preserving the existing projected settings APIs and stopping before renderer construction.",
+  "historical_provenance": {
+    "source_branch": "agent/orch5-20260911",
+    "reviewed_tip": "769bdc3e3b8254f95867b11e2546d629f2a564b6",
+    "origin_commit": "f1b43cfd7",
+    "source_blobs": {
+      "include/bsp/native_renderer_resolution_enumeration.hpp": "b07dd7a9a24dbaa734346e5b79c712607c999fed",
+      "src/native_renderer_resolution_enumeration.cpp": "be2389185077c5be8d726ec4a6453cd5cab9ac5e"
+    },
+    "source_identity": "Header/source are byte-identical at f1b43cfd7 and reviewed tip 769bdc3e3.",
+    "retained_tip_evidence": {
+      "docs/NATIVE_RENDERER_RESOLUTION_ENUMERATION.md": "b4a5e4acc9bc62e05af65ef361df74781c2c89f3",
+      "reports/native_renderer_resolution_enumeration.json": "758d6cb1d721ff57ea11da3bf15c9ce84b331f63"
+    }
+  },
+  "provider_audit": {
+    "compatible": true,
+    "singleton_header_blob_current_and_origin": "4d10f6c53a3b9be4745776df443f340ea1769936",
+    "singleton_source_blob_current_and_origin": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15",
+    "allocation_contract": "Reserve passes equal wrapping native/host byte counts to current singleton_lifetime_allocate and frees current old data through singleton_lifetime_free before publication.",
+    "crt_sort_boundary": "Enumeration calls current host qsort unconditionally with element size8 and the raw native comparator; original static-CRT private algorithm identity is not claimed.",
+    "existing_projection": "settings_capabilities.cpp remains unchanged. Its C++ SettingsRendererCapabilities path is a separate projected interface, not the actual renderer storage used here."
+  },
+  "functions": [
+    {
+      "address": "00b27d80",
+      "end_inclusive": "00b27e74",
+      "end_exclusive": "00b27e75",
+      "bytes": 245,
+      "source_symbol": "enumerate_native_renderer_resolutions_00b27d80",
+      "original_abi": "ECX actual renderer; RET; source adds explicit borrowed16-byte scratch in EDX"
+    },
+    {
+      "address": "008d46c0",
+      "end_inclusive": "008d4707",
+      "end_exclusive": "008d4708",
+      "bytes": 72,
+      "source_symbol": "find_native_resolution_pair_008d46c0",
+      "original_abi": "ECX actual pair header; stack key pointer; EAX index/-1; RET4"
+    },
+    {
+      "address": "008d4750",
+      "end_inclusive": "008d47b7",
+      "end_exclusive": "008d47b8",
+      "bytes": 104,
+      "source_symbol": "reserve_native_resolution_pairs_008d4750",
+      "original_abi": "ECX actual pair header; signed stack request; RET4"
+    },
+    {
+      "address": "00b1ffd0",
+      "end_inclusive": "00b1ffec",
+      "end_exclusive": "00b1ffed",
+      "bytes": 29,
+      "source_symbol": "compare_native_resolution_pairs_00b1ffd0",
+      "original_abi": "cdecl two raw row pointers; EAX signed wrapped difference; RET"
+    }
+  ],
+  "actual_storage": {
+    "renderer_api": "renderer+1990 current IDirect3D9 pointer",
+    "pair_header": "renderer+1C data, +20 count, +24 signed capacity; rows are two DWORDs",
+    "opaque_clear": "renderer+19DC is cleared after the initial interface is captured",
+    "scratch": "Caller supplies independent valid initialized DWORD-aligned16-byte storage. The source never clears it and returns all COM writes, including failed/positive-HRESULT partial writes."
+  },
+  "enumeration_contract": [
+    "Capture the initial interface and then call its current vtable slot18 once for adapter0/format16h; capture unsigned mode count once.",
+    "For every mode, reload current renderer+1990 and its vtable; call slot1C with the same caller-owned scratch.",
+    "Accept HRESULT exactly0; read width first and require unsigned width>=640 before reading/accepting height>=480.",
+    "Capture accepted width/height, suppress pairs already present, grow only when current count equals current capacity, reload current base/count, append, and increment count even when wrapping destination is null.",
+    "Capture current count before current data and call qsort unconditionally with row size8 and comparator00B1FFD0."
+  ],
+  "com_boundary": {
+    "indirect_calls": [
+      {
+        "site": "00b27da0",
+        "slot": "18",
+        "abi": "stdcall(this, adapter0, format16h)",
+        "role": "IDirect3D9::GetAdapterModeCount"
+      },
+      {
+        "site": "00b27dd6",
+        "slot": "1c",
+        "abi": "stdcall(this, adapter0, format16h, index, scratch16)",
+        "role": "IDirect3D9::EnumAdapterModes"
+      }
+    ],
+    "comparator_operand": {
+      "site": "00b27e5f",
+      "opcode": "PUSH imm32",
+      "target": "00b1ffd0",
+      "role": "qsort comparator data operand"
+    },
+    "fresh_real_d3d9_observation": {
+      "unique_pairs": 25,
+      "capacity": 32,
+      "adapters": 3,
+      "module": "C:/Windows/SysWOW64/d3d9.dll",
+      "machine": "014c",
+      "GetAdapterModeCount_run_address": "6ec13940",
+      "EnumAdapterModes_run_address": "6ec13620"
+    }
+  },
+  "call_rows": [
+    {"address": "00b27e06", "native": "008d46c0", "function": "00b27d80"},
+    {"address": "00b27e27", "native": "008d4750", "function": "00b27d80"},
+    {"address": "00b27e68", "native": "00bfc350", "function": "00b27d80"},
+    {"address": "008d4770", "native": "00bf55be", "function": "008d4750"},
+    {"address": "008d47a5", "native": "00bf6989", "function": "008d4750"}
+  ],
+  "fresh_byte_receipt": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "span_count": 4,
+    "total_bytes": 450,
+    "all_live_disk_historical_match": true,
+    "aggregate_sha256": "876125b3aa1f09ad24d47404aa191e7294ca5f8697855e3be8094d82fde09f65",
+    "ranges": [
+      {"address": "00b27d80", "length": 245, "end_exclusive": "00b27e75", "sha256": "b78a4a690e24b1c203f4b5d3ebd4917ada4aa46b33d2538fe0023ad44ae4d447"},
+      {"address": "008d46c0", "length": 72, "end_exclusive": "008d4708", "sha256": "00678c8757c9db19bee31322564d5abe8358b9e0b49176224ed920d4b8b025e9"},
+      {"address": "008d4750", "length": 104, "end_exclusive": "008d47b8", "sha256": "d95f6ef2410f3ec72c4679f9122dc876476dabc5508c7d0923d130ed3054df66"},
+      {"address": "00b1ffd0", "length": 29, "end_exclusive": "00b1ffed", "sha256": "03bbcf779db76a9712100c749dde55f17fbfb2045e85f47afeedcc8374c9eade"}
+    ],
+    "full_body_hex": "Retained in reports/native_renderer_resolution_enumeration.json and local/r34_renderer_resolution_byte_receipt.json."
+  },
+  "validation": {
+    "ghidra": "live function count 64146; snapshot 64146; complete repaired008D4750 tail through RET4 and all four saved ranges reviewed; worker read-only",
+    "verify_seeds": "PASS 8/8 live bytes equal installed PE after final main merge",
+    "direct_call_rows": "PASS 5/5 exact direct calls",
+    "build": "PASS after merge of final main98ef379fa; MSVC Win32 Release /W4 /WX /fp:strict /MD",
+    "ctest": "PASS reconstructed_math, native_math_differential, tool_tests; 3/3",
+    "fixture": "PASS all four relocated complete original bodies versus source for scripted COM rebinding/preimages, raw helper edges, and real Direct3D9 modes",
+    "scripted_scope": "Current interface rebound twice; failed and positive-nonzero writes retained into later partial-output success; callback mutates current array/count; duplicate suppression and sorted postimages checked.",
+    "fixture_flags": "/std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict; /MANIFEST:EMBED; safe probe name",
+    "fixture_boundary": "Only five direct CALL operands and the pushed comparator address are rebound; no original EXE address executes."
+  },
+  "artifact_receipts": [
+    {"path": "include/bsp/native_renderer_resolution_enumeration.hpp", "sha256": "478440bd42997d5839f78f06151d74ded1cf969b2dbc4f4d67ad0d8d6a05acae"},
+    {"path": "src/native_renderer_resolution_enumeration.cpp", "sha256": "d5ccb64e0a7668cfd86518d5f64af59cf6aa31ac2e5726776f526a38d81bf64c"},
+    {"path": "docs/NATIVE_RENDERER_RESOLUTION_ENUMERATION.md", "sha256": "30ea1a0529d74af0cd4819b52d46a3f21531d02430f4d57d5e8352dfe5f8f95f"},
+    {"path": "reports/native_renderer_resolution_enumeration.json", "sha256": "2c1ae00805b56c8e933da2c25b66d750ec2a9c4a49feaddfc3efc03d28d18094"},
+    {"path": "cmake/startup.cmake", "sha256": "ee91fec0ce1cdfa8905ab611755e6cbfe19d9aef101c29ab7c6e85ffc091e1df"},
+    {"path": "build/win32/Release/bsp_core.lib", "sha256": "9b0d78e07252cc469a81e42ba4a6acbd5f300b169fbbc52a93dab26ea72d0c2f"},
+    {"path": "local/native_renderer_resolution_probe.exe", "sha256": "252251366d2331968efe08059042002ea0fd724178c12f6057fd6ca65a42e64e"},
+    {"path": "local/native_renderer_resolution_probe.obj", "sha256": "dbfbb59d3b74205927ceaffdfe164268024d71d3f330d0a6042d9023f1ca8c67"}
+  ],
+  "archive": {
+    "path": "local/evidence-r34/renderer-resolution-r34-final.zip",
+    "bytes": 13343376,
+    "sha256": "9e744d8cb68c09e0bba03114d592255fe34493cd2da7f50ac488d02566097ec0",
+    "archived_files": 20,
+    "manifest": "local/evidence-r34/renderer-resolution-r34-final/manifest.json"
+  },
+  "annotation_status": "Worker performed no Ghidra mutation. The prior 008D4750 returning-call gap is already repaired and all four names/comments/ranges are present; parent owns integration metadata.",
+  "limits": [
+    "Source exposes caller-owned initialized scratch because native B27D80 uses uninitialized stack preimage; this is not a recovered second native argument.",
+    "Host qsort private behavior, original incidental registers, static CRT/FH3/SEH/private frames and hardware-fault unwind remain unvalidated.",
+    "The real D3D9 fixture is bounded host-runtime evidence, not game process execution or gameplay validation.",
+    "Renderer construction, device ownership, COM AddRef/Release and application adoption remain outside this packet."
+  ]
+}
