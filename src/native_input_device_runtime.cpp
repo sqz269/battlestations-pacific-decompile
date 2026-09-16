@@ -3,8 +3,10 @@
 #include "bsp/native_input_device_tail_virtuals.hpp"
 #include "bsp/input_focus_reset.hpp"
 #include "bsp/sound_system_update.hpp"
+#include "bsp/native_frame_clock_publication.hpp"
 
 #include <cstdlib>
+#include <cstring>
 #include <exception>
 #include <stdexcept>
 
@@ -143,7 +145,14 @@ float NativeInputDeviceRuntime::call_device_vslot24(void* d, std::uint32_t p, st
     return value_vslot24(d, p, code);
 }
 const ClockTimestamp& NativeInputDeviceRuntime::call_clock_01090ab0_vslot14() {
-    auto* const clock = services_.clock_01090ab0;
+    return services_.clock_01090ab0.current_slot14(clock_current_result_);
+}
+const ClockTimestamp& NativeInputClockBinding::current_slot14(ClockTimestamp& result) const {
+    if (actual_) {
+        std::memcpy(&result, current_published_native_frame_clock(*actual_), sizeof(result));
+        return result;
+    }
+    auto* const clock = *semantic_;
     if (!clock) throw std::logic_error("raw input current-clock publication is null");
     return *sound_frame_clock_current_00bee050(*clock);
 }

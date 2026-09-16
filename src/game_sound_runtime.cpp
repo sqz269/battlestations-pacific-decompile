@@ -83,7 +83,7 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost, SoundShutdownFmodHo
     }
 
     const ClockTimestamp* current_timestamp_slot14() override {
-        return sound_frame_clock_current_00bee050(services.clock);
+        return clock.current_timestamp_slot14();
     }
     void* current_alternate_00f8bbcc() override { return alternate; }
     void update_alternate_slot04(void* object, float dt) override {

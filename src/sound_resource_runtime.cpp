@@ -1,4 +1,5 @@
 #include "bsp/sound_resource_runtime.hpp"
+#include "bsp/native_frame_clock_publication.hpp"
 #include <cstring>
 #include <stdexcept>
 
@@ -63,14 +64,31 @@ void SoundResourceRuntime::remove_from_current_cache(const NativeString& name) {
     remove_sound_resource_cache_entry_00a85560(*owner, name, *this, strings_);
 }
 
-std::array<std::uint32_t, 4> FrameClockSoundStartupHost::sample_time_14() {
-    ClockTimestamp timestamp;
-    if (!sample_frame_clock_00bee080(clock_, timestamp))
-        throw std::runtime_error("Sound startup clock sample failed");
+std::array<std::uint32_t, 4> SoundClockBinding::startup_words_slot14() const {
     std::array<std::uint32_t, 4> words;
+    if (actual_) {
+        std::memcpy(words.data(), current_published_native_frame_clock(*actual_), sizeof(words));
+        return words;
+    }
+    ClockTimestamp timestamp;
+    if (!sample_frame_clock_00bee080(*semantic_, timestamp))
+        throw std::runtime_error("Sound startup clock sample failed");
     static_assert(sizeof(words) == sizeof(timestamp));
     std::memcpy(words.data(), &timestamp, sizeof(words));
     return words;
+}
+const ClockTimestamp* SoundClockBinding::current_slot14(ClockTimestamp& result) const {
+    if (actual_) {
+        std::memcpy(&result, current_published_native_frame_clock(*actual_), sizeof(result));
+        return &result;
+    }
+    return &semantic_->current; // same projected member, preserving const input
+}
+std::array<std::uint32_t, 4> FrameClockSoundStartupHost::sample_time_14() {
+    return clock_.startup_words_slot14();
+}
+const ClockTimestamp* FrameClockSoundStartupHost::current_timestamp_slot14() {
+    return clock_.current_slot14(current_result_);
 }
 
 VfsSoundConfigurationLuaOwner::VfsSoundConfigurationLuaOwner(VfsLuaScriptFiles& files,

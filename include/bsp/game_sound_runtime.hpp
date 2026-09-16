@@ -1,5 +1,6 @@
 #pragma once
 #include "bsp/sound_lifetime_access.hpp"
+#include "bsp/sound_resource_runtime.hpp"
 
 #include <array>
 #include <cstddef>
@@ -44,7 +45,9 @@ struct GameSoundRuntimeServices {
     VfsLuaScriptFiles& script_files;
     LuaScriptRuntime& script_runtime;
     const LuaRuntimeGlobals& script_globals;
-    FrameClock& clock;
+    // Additive semantic/raw borrowed binding. Field order and existing aggregate
+    // initializers remain valid; this changes source aggregate size, not a game ABI.
+    SoundClockBinding clock;
     NativeStringStorage& strings;
     ResourceLoadEventHost& load_events;
     SoundLifetimeAccess lifetime;
