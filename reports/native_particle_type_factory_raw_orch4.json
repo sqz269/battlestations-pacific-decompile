@@ -1,0 +1,343 @@
+{
+  "address": "00b00ce0",
+  "source": "src/native_particle_type_factory_raw.cpp",
+  "header": "include/bsp/native_particle_type_factory_raw.hpp",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "installed_binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verified_spans": [
+    {
+      "address": "00b00ce0",
+      "bytes": 505,
+      "sha256": "7457b9fd12faeae3a6a8788c03da370dff4d70e15d1d11a44713942124300253",
+      "live_equal": true
+    },
+    {
+      "address": "00cbb3d0",
+      "bytes": 65,
+      "sha256": "4d755ea5cf450c2c11dada81f52aae16ed4f0d56ecf4eec44d48470e9831060d",
+      "live_equal": true
+    },
+    {
+      "address": "00df33f4",
+      "bytes": 76,
+      "sha256": "246fe647b519be8683fb90358871af75159d778d315fbf15be6b431a7981371c",
+      "live_equal": true
+    },
+    {
+      "address": "00df3440",
+      "bytes": 40,
+      "sha256": "d7c1d2bd33a3de266da758bda6892ef3a1a5ac7816a0b9ecb72d864ae8ac1561",
+      "live_equal": true
+    },
+    {
+      "address": "00d5de48",
+      "bytes": 140,
+      "sha256": "5b7b7862e58cadbcf3f13c2cb116885d3e09e559f735dc2875b73a2c48cf4edb",
+      "live_equal": true
+    }
+  ],
+  "whole_body_instructions": 151,
+  "calls": [
+    {
+      "site": "00b00d09",
+      "target": "00bf7fbf",
+      "asm": "call 0xbf7fbf",
+      "contract": "Two cdecl C strings, caller ADD ESP,8; EAX==0 equality. Sprite reads kind+4 first and skips this call when null."
+    },
+    {
+      "site": "00b00d1f",
+      "target": "00bf681b",
+      "asm": "call 0xbf681b",
+      "contract": "One cdecl size (90h/A4h/8Ch/98h/E8h), caller ADD ESP,4; EAX raw allocation; state armed only after call."
+    },
+    {
+      "site": "00b00d45",
+      "target": "00b08830",
+      "asm": "call 0xb08830",
+      "contract": "ECX actual90h owner, stacked name8h/current parent+10/parent, RET0Ch/EAX owner. Native factory uses allocation identity and installs D5DD18 after return."
+    },
+    {
+      "site": "00b00d66",
+      "target": "00425850",
+      "asm": "call 0x425850",
+      "contract": "ECX actual8h kind, stacked literal, RET4/AL equality; helper rereads current header."
+    },
+    {
+      "site": "00b00d74",
+      "target": "00bf681b",
+      "asm": "call 0xbf681b",
+      "contract": "One cdecl size (90h/A4h/8Ch/98h/E8h), caller ADD ESP,4; EAX raw allocation; state armed only after call."
+    },
+    {
+      "site": "00b00d9a",
+      "target": "00b058e0",
+      "asm": "call 0xb058e0",
+      "contract": "ECX actualA4h owner, stacked name8h/current parent+10/parent, RET0Ch/EAX owner. Native factory uses allocation identity and installs D5DCC0 after return."
+    },
+    {
+      "site": "00b00dca",
+      "target": "00425850",
+      "asm": "call 0x425850",
+      "contract": "ECX actual8h kind, stacked literal, RET4/AL equality; helper rereads current header."
+    },
+    {
+      "site": "00b00dd8",
+      "target": "00bf681b",
+      "asm": "call 0xbf681b",
+      "contract": "One cdecl size (90h/A4h/8Ch/98h/E8h), caller ADD ESP,4; EAX raw allocation; state armed only after call."
+    },
+    {
+      "site": "00b00dfc",
+      "target": "00b00770",
+      "asm": "call 0xb00770",
+      "contract": "ECX actual8Ch owner, stacked name8h/current parent+10/parent, RET0Ch/EAX owner. Constructor installs D5DCEC."
+    },
+    {
+      "site": "00b00e17",
+      "target": "00425850",
+      "asm": "call 0x425850",
+      "contract": "ECX actual8h kind, stacked literal, RET4/AL equality; helper rereads current header."
+    },
+    {
+      "site": "00b00e25",
+      "target": "00bf681b",
+      "asm": "call 0xbf681b",
+      "contract": "One cdecl size (90h/A4h/8Ch/98h/E8h), caller ADD ESP,4; EAX raw allocation; state armed only after call."
+    },
+    {
+      "site": "00b00e49",
+      "target": "00af89e0",
+      "asm": "call 0xaf89e0",
+      "contract": "ECX actual98h owner, stacked name8h/current parent+10/parent, RET0Ch/EAX owner. Constructor installs D5DB00."
+    },
+    {
+      "site": "00b00e6f",
+      "target": "00425850",
+      "asm": "call 0x425850",
+      "contract": "ECX actual8h kind, stacked literal, RET4/AL equality; helper rereads current header."
+    },
+    {
+      "site": "00b00e7d",
+      "target": "00bf681b",
+      "asm": "call 0xbf681b",
+      "contract": "One cdecl size (90h/A4h/8Ch/98h/E8h), caller ADD ESP,4; EAX raw allocation; state armed only after call."
+    },
+    {
+      "site": "00b00ea1",
+      "target": "00b0a0b0",
+      "asm": "call 0xb0a0b0",
+      "contract": "ECX actualE8h owner, stacked name8h/current parent+10/parent, RET0Ch/EAX owner. Constructor installs D5E048."
+    },
+    {
+      "site": "00b00ec2",
+      "target": "edx",
+      "asm": "call edx",
+      "contract": "B00EBA captures current owner profile; B00EBC captures current slot+08; ECX owner, one stacked actual TextBuffer, captured EDX target, parser RET4, result ignored. State -1: no allocation cleanup on parser failure."
+    }
+  ],
+  "fh3": {
+    "address": "00df341c",
+    "magic": "19930522",
+    "max_state": 5,
+    "unwind_map": "00df3440",
+    "try_blocks": 0,
+    "try_map": 0,
+    "ip_map_entries": 0,
+    "ip_map": 0,
+    "estype": 0,
+    "flags": 1,
+    "actions": [
+      {
+        "state": 0,
+        "previous": -1,
+        "action": "00cbb3d0",
+        "instructions": [
+          "00cbb3d0: mov eax, dword ptr [ebp - 0x10]",
+          "00cbb3d3: push eax",
+          "00cbb3d4: call 0xbf65ac",
+          "00cbb3d9: pop ecx",
+          "00cbb3da: ret "
+        ]
+      },
+      {
+        "state": 1,
+        "previous": -1,
+        "action": "00cbb3db",
+        "instructions": [
+          "00cbb3db: mov eax, dword ptr [ebp - 0x10]",
+          "00cbb3de: push eax",
+          "00cbb3df: call 0xbf65ac",
+          "00cbb3e4: pop ecx",
+          "00cbb3e5: ret "
+        ]
+      },
+      {
+        "state": 2,
+        "previous": -1,
+        "action": "00cbb3e6",
+        "instructions": [
+          "00cbb3e6: mov eax, dword ptr [ebp - 0x10]",
+          "00cbb3e9: push eax",
+          "00cbb3ea: call 0xbf65ac",
+          "00cbb3ef: pop ecx",
+          "00cbb3f0: ret "
+        ]
+      },
+      {
+        "state": 3,
+        "previous": -1,
+        "action": "00cbb3f1",
+        "instructions": [
+          "00cbb3f1: mov eax, dword ptr [ebp - 0x10]",
+          "00cbb3f4: push eax",
+          "00cbb3f5: call 0xbf65ac",
+          "00cbb3fa: pop ecx",
+          "00cbb3fb: ret "
+        ]
+      },
+      {
+        "state": 4,
+        "previous": -1,
+        "action": "00cbb3fc",
+        "instructions": [
+          "00cbb3fc: mov eax, dword ptr [ebp - 0x10]",
+          "00cbb3ff: push eax",
+          "00cbb400: call 0xbf65ac",
+          "00cbb405: pop ecx",
+          "00cbb406: ret "
+        ]
+      }
+    ],
+    "handler": "00cbb407 MOV EAX,DF341C; JMP BF6B43"
+  },
+  "prior_ledger_records": {
+    "names": [
+      {
+        "address": "00b00ce0",
+        "name": "BSP_ParticleTypeDefinition_Create",
+        "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated. | AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated. AQ integration: when actual loading domains are supplied, all five reviewed current native parser08 targets call concrete Sprite/Axial/Floating/Object/Tracer parsers directly. Same owner/base domain identity is checked. Other targets and legacy callers without loading domains retain the required real current parser dispatcher. See docs/NATIVE_PARTICLE_TYPE_LOADING.md."
+      }
+    ],
+    "reconstruction": [
+      {
+        "address": "00b00ce0",
+        "source": "src/native_particle_type_factory.cpp",
+        "header": "include/bsp/native_particle_type_factory.hpp",
+        "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated. AQ integration: when actual loading domains are supplied, all five reviewed current native parser08 targets call concrete Sprite/Axial/Floating/Object/Tracer parsers directly. Same owner/base domain identity is checked. Other targets and legacy callers without loading domains retain the required real current parser dispatcher. See docs/NATIVE_PARTICLE_TYPE_LOADING.md.",
+        "name": "create_native_particle_type_definition_00b00ce0",
+        "status": "reconstructed_build_tested_bounded_fixture_tested",
+        "native_abi": "ECX actual8h kind; EDX actual8h name; stack(parent,text); RET8/EAX actual child",
+        "kind": "function"
+      }
+    ]
+  },
+  "status": "reconstructed_raw_build_tested_bounded_original_fixture_tested",
+  "native_abi": "ECX actual8h kind; EDX actual8h name; stack(parent,text); RET8/EAX actual child",
+  "current_target_dispatch": {
+    "known_targets": {
+      "00b08ac0": "Sprite",
+      "00b064a0": "Axial",
+      "00b07d60": "Floating",
+      "00af8bd0": "Object",
+      "00b0ad50": "Tracer"
+    },
+    "profile_cells": "Same current actual property context profile views; explicit current emitter table views. Owner stores numeric native identities; views are borrowed, never callable substitutes.",
+    "order": [
+      "allocate before reading current parent+10",
+      "constructor then Sprite/Axial final profile",
+      "state -1 before current owner profile read",
+      "current slot+08 capture before concrete target dispatch"
+    ],
+    "unknown_kind": "Reuse parent; known particle target dispatches concrete parser. Emitter record targets or unsupported target/profile raise explicit source boundary with retained identity, never fake success."
+  },
+  "unknown_emitter_parent": [
+    {
+      "caller": "00b02210",
+      "profile": "00d5de48",
+      "slot08": "00b01ce0",
+      "meaning": "108h record creation via AFE0A0; ECX owner, stack(model,time), RET8"
+    },
+    {
+      "caller": "00b02fd0",
+      "profile": "00d5de88",
+      "slot08": "00b02bc0",
+      "meaning": "108h record creation via AFE0A0; ECX owner, stack(model,time), RET8"
+    },
+    {
+      "caller": "00b03ec0",
+      "profile": "00d5debc",
+      "slot08": "00b03970",
+      "meaning": "108h record creation via AFE0A0; ECX owner, stack(model,time), RET8"
+    }
+  ],
+  "unknown_emitter_stack_mismatch": "Factory pushes one TextBuffer and expects RET4 parser. Record constructors read two stack args and RET8, consuming an extra caller stack word. Source does not invent model/time or execute malformed path; captures exact target then throws at B00EC2.",
+  "retention": {
+    "construction": "Factory state set after allocation. Callee unwind finishes first; one raw free in factory state0..4. Every state transitions directly -1.",
+    "parser": "No factory cleanup armed. Owner allocation and failed optional typed parser stay retained; no rollback or replay.",
+    "object_failed_vfs": "Failed VFS child has no discharge API; existing destructor terminates. Keep complete invocation/context graph alive for process life."
+  },
+  "prior_ghidra_comments": [
+    {
+      "address": "00b00ce0",
+      "annotation": {
+        "address": "00b00ce0",
+        "function_name": "BSP_ParticleTypeDefinition_Create",
+        "comment": "[BSP reconstruction 00b00ce0]\nAP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated.\n\n[BSP reconstruction 00b00ce0] update\nAP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated. | AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated. AQ integration: when actual loading domains are supplied, all five reviewed current native parser08 targets call concrete Sprite/Axial/Floating/Object/Tracer parsers directly. Same owner/base domain identity is checked. Other targets and legacy callers without loading domains retain the required real current parser dispatcher. See docs/NATIVE_PARTICLE_TYPE_LOADING.md."
+      }
+    }
+  ],
+  "validation": {
+    "build_command": "./scripts/build.ps1",
+    "build_exit_code": 0,
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "seed_verification": "all eight original seed spans match installed PE/saved Ghidra",
+    "permanent_tests_added": 0,
+    "syntax": "MSVC Win32 /EHsc /std:c++17 /O2 /W4 /WX /MD",
+    "probe": {
+      "command": "local/factory_probe.exe",
+      "exit_code": 0,
+      "elapsed_seconds": 0.0648,
+      "output": "PASS: five original/source factory cases through genuine constructors/parsers; native RET8; exact unknown emitter target; source parser-failure owner/child retention.\n",
+      "exe_sha256": "1684d518dd0a05a6912e25f7cb6608bd543ec16f6c6c92502d44ae44228360e5",
+      "manifest": "embedded asInvoker",
+      "library": "build/win32/Release/bsp_core.lib",
+      "library_sha256": "5c8fbc19e8509ea3fb218b1f190af56fb28ac6b3812a420ff7e539216cf22df7"
+    },
+    "probe_scope": "Complete original factory body, relocated direct calls/literals/final tables; dependencies call the same genuine raw constructors and concrete parser providers. No successful capture-only parser or semantic owner provider. Original dependency bodies remain separately validated in predecessor packets.",
+    "probe_observations": [
+      "native ECX/EDX arguments and RET8 balance",
+      "five mixed-case/known kinds and allocation family",
+      "constructed identity, current parent+10/name/parent fields",
+      "genuine common property/runtime curve parsing and family parameter",
+      "all28 record bytes including explicit18 residue",
+      "defined owner/parameter/name/text-cursor comparison; uninitialized owner bytes excluded",
+      "unknown Sphere parent exact current +08 target and explicit boundary",
+      "source parser failure preserves raw owner and failed property child"
+    ],
+    "probe_not_reached": [
+      "resource cache/model loading; fixture guard providers throw if reached",
+      "native FH3 dispatch and injected constructor failure",
+      "allocation failure/null fault",
+      "unsupported emitter record call or arbitrary unknown target execution"
+    ]
+  },
+  "artifact_sha256": {
+    "src/native_particle_type_factory_raw.cpp": "bc3e8b7157ca4c7f90260cd6e55f8a219d3332fe4150b84fb7199a785e991003",
+    "include/bsp/native_particle_type_factory_raw.hpp": "bae13e66d3b6426a9d0732e334b6349334c51043467e7de91d21c70e73502065",
+    "local/factory_probe.cpp": "920262dc246e942fa1ff7d821f6c7dd3b14295e1024c9eac49f9f68a085f44d0",
+    "local/factory_resource_fixture.inc": "063d8669d4c4698031942218d76266d5f5fcd43bd899e94b959e71a76bdb4ccf",
+    "local/factory_original.inc": "847128a52a53bfb30a328530bef31d0832727d8207aad91679fb0e4d1628fc9d",
+    "local/factory_probe.exe": "1684d518dd0a05a6912e25f7cb6608bd543ec16f6c6c92502d44ae44228360e5",
+    "build/win32/Release/bsp_core.lib": "5c8fbc19e8509ea3fb218b1f190af56fb28ac6b3812a420ff7e539216cf22df7"
+  },
+  "limits": [
+    "New C++ interface, not binary original register/FH3/SEH/fault replacement.",
+    "Known five parser targets compose genuine raw providers; actual shared-context identity remains caller obligation.",
+    "Unknown emitter-kind native path intentionally bounded before incompatible record call.",
+    "Concurrent mutation, arbitrary target providers, full application wiring and gameplay not validated.",
+    "Historical host factory capture-only fixture is prior evidence, not current raw parser proof."
+  ]
+}
