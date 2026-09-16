@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "packet": "native_particle_emitter_factory_raw_orch4",
+  "base_commit": "323c5d172",
+  "status": "reconstructed_pending_concrete_parser_dependencies",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "owned_addresses": [
+    "00af9fb0"
+  ],
+  "files": [
+    "include/bsp/native_particle_emitter_factory_raw.hpp",
+    "src/native_particle_emitter_factory_raw.cpp",
+    "docs/NATIVE_PARTICLE_EMITTER_FACTORY_RAW_ORCH4.md",
+    "reports/native_particle_emitter_factory_raw_orch4.json"
+  ],
+  "prior_reconstruction_records": [
+    {
+      "address": "00af9fb0",
+      "name": "create_native_particle_definition_00af9fb0",
+      "source": "src/native_particle_definition.cpp",
+      "header": "include/bsp/native_particle_definition.hpp",
+      "native_abi": "ECX actual kind8h; EDX actual name8h; stack(word10,word70,text); RET0C; EAX actual definition",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+      "status": "reconstructed_build_tested_bounded_fixture_tested",
+      "kind": "function"
+    }
+  ],
+  "prior_name_records": [
+    {
+      "address": "00af9fb0",
+      "name": "BSP_ParticleDefinition_CreateNamedType",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+    }
+  ],
+  "pre_change_annotations": [
+    {
+      "address": "00af9fb0",
+      "function_name": "BSP_ParticleDefinition_CreateNamedType",
+      "comment": "[BSP reconstruction 00af9fb0]\nDescriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+    }
+  ],
+  "byte_ranges": [
+    {
+      "address": "00af9fb0",
+      "end_inclusive": "00afa0f8",
+      "length": 329,
+      "sha256": "ab4869dd41d323153500cd24016a8eed143ca99960768740086d493c824bb91e",
+      "live_disk_equal": true,
+      "bytes_hex": "6aff68d1afcb0064a10000000050648925000000005156578bf98b470485c08bf2745768b8dbd50050e8e1df0f0083c40885c00f94c084c074406894000000e827c80f0083c4048944240885c0c74424140000000074708b4c24208b54241c6a005152568bc8e825990000c7442414ffffffff8bf0e9ac00000068a8dbd5008bcfe81ab892ff84c0744b688c000000e8d7c70f0083c4048944240885c0c74424140100000074208b4c24208b54241c6a005152568bc8e8258b0000c7442414ffffffff8bf0eb5f33c0c7442414ffffffff8bf0eb516894dbd5008bcfe8bfb792ff84c0743d6890000000e87cc70f0083c4048944240885c0c74424140200000074c58b4c24208b54241c6a005152568bc8e8ea7b0000c7442414ffffffff8bf0eb048b7424208b4c24248b068b5014518bceffd28b4c240c5f8bc65e64890d0000000083c410c20c00",
+      "instruction_count": 103,
+      "listing_gaps": 0,
+      "native_abi": "ECX actual kind8h; EDX actual name8h; stack(word10,word70,text); RET0C; EAX actual owner",
+      "last_instruction": {
+        "address": "00afa0f6",
+        "bytes": "c20c00",
+        "text": "ret 0xc"
+      }
+    },
+    {
+      "address": "00cbafb0",
+      "end_inclusive": "00cbafda",
+      "length": 43,
+      "sha256": "edd713d6be7ec3f30177f4f628ec88a6d3e56f50d22e6885e3732fc1ee702784",
+      "live_disk_equal": true,
+      "bytes_hex": "8b45f050e8f3b5f3ff59c38b45f050e8e8b5f3ff59c38b45f050e8ddb5f3ff59c3b8842edf00e968bbf3ff"
+    },
+    {
+      "address": "00df2e6c",
+      "end_inclusive": "00df2ea7",
+      "length": 60,
+      "sha256": "5b0bb8a07a3ac7f27997f347eacdf9fa803fac3452ad5955c38938f5cdab76af",
+      "live_disk_equal": true,
+      "bytes_hex": "ffffffffb0afcb00ffffffffbbafcb00ffffffffc6afcb0022059319030000006c2edf00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00d5debc",
+      "end_inclusive": "00d5ded3",
+      "length": 24,
+      "sha256": "cae5e5c1ae8eff4ee489a449ef8333d67ebd0081c236175d7615cbead2524b22",
+      "live_disk_equal": true,
+      "bytes_hex": "e030bd00403bb0007039b000603bb000c03ab000c03eb000"
+    },
+    {
+      "address": "00d5de88",
+      "end_inclusive": "00d5de9f",
+      "length": 24,
+      "sha256": "363aab474b0bd61be412b72d507df1cef6ec89502ff241dfa5d43ebc4a89a806",
+      "live_disk_equal": true,
+      "bytes_hex": "e030bd00b02fb000c02bb000e02cb000302fb000d02fb000"
+    },
+    {
+      "address": "00d5de48",
+      "end_inclusive": "00d5de5f",
+      "length": 24,
+      "sha256": "3215a00a5aa973580ac5653110e037d2324b836c1804801049631f0248b685f5",
+      "live_disk_equal": true,
+      "bytes_hex": "e030bd00a01eb000e01cb000c01eb000201eb0001022b000"
+    },
+    {
+      "address": "00d5db94",
+      "end_inclusive": "00d5dbc3",
+      "length": 48,
+      "sha256": "6959fd8ab0ab3c439788ef16f59f63beaf3832c1ef246fe2a8150245cd258c24",
+      "live_disk_equal": true,
+      "bytes_hex": "536d61727441726561456d697474657200000000537068657265456d6974746572000000436f6e65456d697474657200"
+    }
+  ],
+  "native_call_sites": [
+    {
+      "address": "00af9fd9",
+      "instruction": "call 0xbf7fbf"
+    },
+    {
+      "address": "00af9fef",
+      "instruction": "call 0xbf681b"
+    },
+    {
+      "address": "00afa016",
+      "instruction": "call 0xb03940"
+    },
+    {
+      "address": "00afa031",
+      "instruction": "call 0x425850"
+    },
+    {
+      "address": "00afa03f",
+      "instruction": "call 0xbf681b"
+    },
+    {
+      "address": "00afa066",
+      "instruction": "call 0xb02b90"
+    },
+    {
+      "address": "00afa08c",
+      "instruction": "call 0x425850"
+    },
+    {
+      "address": "00afa09a",
+      "instruction": "call 0xbf681b"
+    },
+    {
+      "address": "00afa0c1",
+      "instruction": "call 0xb01cb0"
+    },
+    {
+      "address": "00afa0e2",
+      "instruction": "call edx"
+    }
+  ],
+  "unwind": {
+    "handler": "00cbafd1",
+    "function_info": "00df2e84",
+    "unwind_map": "00df2e6c",
+    "states": [
+      {
+        "state": 0,
+        "next_state": -1,
+        "action": "00cbafb0",
+        "behavior": "free captured raw allocation [EBP-10h] through 00BF65AC"
+      },
+      {
+        "state": 1,
+        "next_state": -1,
+        "action": "00cbafbb",
+        "behavior": "free captured raw allocation [EBP-10h] through 00BF65AC"
+      },
+      {
+        "state": 2,
+        "next_state": -1,
+        "action": "00cbafc6",
+        "behavior": "free captured raw allocation [EBP-10h] through 00BF65AC"
+      }
+    ],
+    "listing_note": "Ghidra action listings stop at free; complete installed/live action bytes include POP ECX; RET."
+  },
+  "validation": {
+    "build": false,
+    "fixture": false,
+    "original_abi_compatible": false,
+    "game_validated": false
+  },
+  "concrete_dependencies": [
+    {
+      "address": "00b02fd0",
+      "header": "include/bsp/native_particle_sphere_raw.hpp",
+      "function": "load_native_sphere_emitter_definition_00b02fd0"
+    },
+    {
+      "address": "00b03ec0",
+      "header": "include/bsp/native_particle_cone_raw.hpp",
+      "function": "load_native_cone_emitter_definition_00b03ec0"
+    },
+    {
+      "address": "00b02210",
+      "header": "include/bsp/native_particle_smartarea_raw.hpp",
+      "function": "load_native_smartarea_emitter_definition_00b02210"
+    }
+  ],
+  "source_contract": {
+    "callbacks": false,
+    "allocator": "singleton_lifetime_allocate/free; native_bytes equals host_bytes",
+    "failure_retention": "Owner retained after parser failure; concrete acquired child retained without replay or destructor rollback",
+    "profile_read": "Current native profile token then borrowed current table[5], once each",
+    "incoming_parser_builder_kind": "Explicit acquired constructor argument forwarded to selected concrete parser acquired",
+    "unknown_kind": "word70 reused as actual owner",
+    "unsupported": "Unknown reached current profiles/targets or missing reached concrete context raise source boundary"
+  }
+}
