@@ -1,0 +1,2203 @@
+{
+  "schema": "bsp.native_frame_clock_publication.r38.v1",
+  "status": "reconstructed_source_adapters_strict_build_and_focused_fixture_pass_application_unbound",
+  "baseline_commit": "4f6c1ad6f",
+  "source_commit": "9bcbfb31ebc6f45038ed0bf4217f3c3d90da3d51",
+  "files": [
+    "include/bsp/native_frame_clock_publication.hpp",
+    "src/native_frame_clock_publication.cpp",
+    "docs/NATIVE_FRAME_CLOCK_PUBLICATION.md",
+    "reports/native_frame_clock_publication_r38.json"
+  ],
+  "cmake": "cmake/startup.cmake appends only src/native_frame_clock_publication.cpp to bsp_core; short lease released immediately after source commit, before build.",
+  "scope": {
+    "new_original_bodies": false,
+    "new_original_address_claims": [],
+    "ledger_or_ghidra_mutations": false,
+    "changes": "Five source dispatch adapters, one borrowed context, documentation and evidence. Existing R35/R33 providers and their guards remain unchanged.",
+    "unchanged": "Application, GameStartupHost, frame, sound, input, XLive, renderer callbacks, shared deletion layout, clock lifecycle and raw methods.",
+    "ownership": "No clock allocation, registration, ownership, process binding, synthetic vtable or independently advancing state. std::logic_error is a source failure mechanism and may use the C++ runtime; this is not an allocation-free failure ABI claim."
+  },
+  "public_context": {
+    "type": "NativeFrameClockPublicationContext",
+    "members": [
+      "void* volatile& actual_clock_01090ab0",
+      "const NativeFrameClockActualContext& methods"
+    ],
+    "lifetime": "Borrow the SAME persistent publication cell and method context. Published pointer must designate live, accessible, genuine80h storage; profile table must remain readable through every operation. No storage-size or dangling-pointer validation is claimed.",
+    "capture": "Each operation loads current AB0 exactly once into a local pointer. Calls made later independently reload the cell. No universal cached owner.",
+    "identity": "Require non-null clock and methods.profile_d68d50; read object profile DWORD and require D68D50; read the selected borrowed slot word and require its exact original target. Never execute that numeric target.",
+    "failure": "Null publication/profile, unsupported object profile or target, and null sample output raise std::logic_error at the source boundary. No native fault/FH3/SEH ABI equivalence. Existing R35/R33 failure behavior inside their providers is unchanged."
+  },
+  "operations": [
+    {
+      "source": "advance_published_native_frame_clock",
+      "slot_bytes": 8,
+      "slot_index": 2,
+      "target": "00bedc30",
+      "provider": "update_native_frame_clock_00bedc30",
+      "native_abi": "ECX=actual clock, RET; existing raw provider preserves recovered stack/x87 schedule.",
+      "result": "One invocation on captured current owner; no separate sample or success-BOOL branch."
+    },
+    {
+      "source": "current_published_native_frame_clock",
+      "slot_bytes": 20,
+      "slot_index": 5,
+      "target": "00bee050",
+      "provider": "get_raw_timer_current_00bee050",
+      "native_abi": "ECX=actual clock, EAX=clock+20h, RET.",
+      "result": "Borrow actual16B current member. No ClockTimestamp or FrameClock cast/copy inside the helper."
+    },
+    {
+      "source": "interval_published_native_frame_clock",
+      "slot_bytes": 28,
+      "slot_index": 7,
+      "target": "00bee070",
+      "provider": "get_raw_timer_interval_00bee070",
+      "native_abi": "ECX=actual clock, EAX=clock+40h, RET.",
+      "result": "Borrow actual16B interval member. The caller controls result lifetime and any timestamp value copy."
+    },
+    {
+      "source": "sample_published_native_frame_clock",
+      "slot_bytes": 32,
+      "slot_index": 8,
+      "target": "00bee080",
+      "provider": "sample_native_frame_clock_00bee080",
+      "native_abi": "Original ECX=clock, stack destination, EAX=destination, RET4. Existing source bridge adds unused EDX.",
+      "result": "Forward caller output pointer unchanged before raw sampler; fixed branch copies current, real branch samples QPC. No output initialization, QPC BOOL branch or duplicate sampler."
+    },
+    {
+      "source": "enable_fixed_published_native_frame_clock",
+      "slot_bytes": 36,
+      "slot_index": 9,
+      "target": "00bedb20",
+      "provider": "enable_fixed_native_frame_clock_00bedb20",
+      "native_abi": "Original ECX=clock, signed int32 milliseconds on stack, RET4. Existing source bridge adds unused EDX.",
+      "result": "Forward signed milliseconds unchanged; no conversion to seconds or unsigned value."
+    }
+  ],
+  "callsite_evidence": {
+    "prior_report": "reports/native_frame_clock_application_contract_r37.json",
+    "application_frame": "737AF6 captures AB0 for slot+08 at737B01;737B03 independently reloads it for slot+1C at737B0E.",
+    "sound_startup": "A887EA captures AB0, A887F2 loads slot+14, A887F5 calls current getter; subsequent fourDWORD copy is distinct from sampling slot+20.",
+    "fixed_mode": "73DAB3 captures AB0,73DABB reads slot+24,73DABE pushes signed50,73DAC0 calls target. This packet does not choose an application phase or enable fixed mode in the application.",
+    "captured_owner_boundary": "Camera-axis captureB46C89 must remain separate from later interval publication reloadB46CF9. These helpers cannot replace all earlier captured-owner accesses.",
+    "no_duplicate_body_entries": "R38 has no original game entry of its own. Existing raw providers and R35/R33 metadata remain the body reconstruction records."
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "seed_command": "python tools/ghidra_export.py verify-seeds",
+    "seed_result": "PASS; log archived",
+    "target": "MSVC Win32 Release, /MD (MultiThreadedDLL), /fp:strict, /W4 /WX",
+    "result": "PASS",
+    "ctests": [
+      {
+        "name": "reconstructed_math",
+        "result": "PASS"
+      },
+      {
+        "name": "native_math_differential",
+        "result": "PASS"
+      },
+      {
+        "name": "tool_tests",
+        "result": "PASS"
+      }
+    ],
+    "frozen_compile_inputs": 3121,
+    "unchanged_after_build": true,
+    "logs": [
+      {
+        "path": "local/frame_clock_publication_build_r38.log",
+        "bytes": 16122,
+        "sha256": "839e19952bd21a72d41fb06232bdfdd953bc1a1e73c6bb259dbef7d59fafadb1"
+      },
+      {
+        "path": "local/frame_clock_publication_verify_seeds_r38.log",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "bytes": 2523,
+        "sha256": "fce66306175099f3eb67d4ac4c84a7a0580f5c333be92734f684203dfb28ebde"
+      }
+    ]
+  },
+  "fixture": {
+    "kind": "One ignored focused Win32 genuine-storage dispatch fixture; no permanent tests added.",
+    "source": "local/frame_clock_publication_probe_r38.cpp",
+    "runner": "local/run_frame_clock_publication_probe_r38.py",
+    "compile": "cl /std:c++20 /EHsc /MD /O2 /fp:strict /W4 /WX; /MANIFEST:EMBED /MACHINE:X86; freshly links full bsp_core.lib and current Lua/zlib dependencies.",
+    "actual_storage": "Two genuine raw80h allocations constructed by R36, registered in the SAME real raw14h manager, with SAME actual AA0/AB0 cells, raw method context and NativeSingletonDeletionBindings. The two owners exist only to test publication replacement; module creates neither.",
+    "profile": "Copies freshly PE/live-verified44B D68D50 profile into a reserved numericD60000 band at addressD68D50, protects band read-only. Original words remain data; no original code executes. One negative target mutation is applied under VirtualProtect and restored before drain.",
+    "positive_checks": [
+      "A current/interval pointers equal actual A+20/A+40. One advance increments only A updates exactlyonce and calls real QPC exactlyonce; B remains unchanged.",
+      "After AB0 changes to genuine B, current/interval pointers equal B+20/B+40, proving no cached A binding.",
+      "An observing IAT shim checks destination16B preimage when QPC is entered, then forwards to real QPC. Sample returns same output pointer, observed ticks fall between real before/after queries, frequency equals actual initialized QPF.",
+      "Fixed slot accepts -7 and50 as signedmilliseconds. Expected increment uses existing timestamp arithmetic. Fixed sample copies exactly B current16B with no QPC call and no hidden advance.",
+      "Full existing BD0400 shared drain dispatches genuine BEE110 through frame_clock binding, frees each clock exactlyonce through observed real CRTfree, clears AB0, clears manager fields/section, and retains AA0 until caller frees manager."
+    ],
+    "negative_checks": [
+      "null sample output",
+      "null publication",
+      "unsupported object profile",
+      "null borrowed profile",
+      "unsupported sample target with unchanged output preimage"
+    ],
+    "instrumentation": "QueryPerformanceCounter/free IAT observers forward to the real functions and are restored by scope cleanup. QPF and QPC effects are real; no fake clock, allocator, registration or terminal destructor providers.",
+    "limitations": "No new injected QPC/QPF failure matrix; ignored-BOOL/arithmetic/x87 evidence remains R35. This fixture does not prove application startup/shutdown binding, original FH3/SEH, concurrent retirement, worker stop/join, active rendering or gameplay.",
+    "run_receipt": [
+      {
+        "fixture": "frame_clock_publication",
+        "source": "local/frame_clock_publication_probe_r38.cpp",
+        "exe": "local\\frame_clock_publication_probe_r38.exe",
+        "sha256": "c4763cd5826052b996ba4d378a9b585ae2d7b6962aa0aef61f4a3cd7a2043f3f",
+        "build_exit": 0,
+        "run_exit": 0,
+        "manifest_asInvoker": true,
+        "selected_output": [
+          "PASS genuine published A/B reload, borrowed current/interval, one advance, real QPC preimage, signed/fixed dispatch and contract rejection",
+          "PASS shared raw manager drain with genuine lifecycle/deletion and persistent same AA0/AB0/context"
+        ]
+      }
+    ],
+    "resolved_modules": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\local\\frame_clock_publication_probe_r38.exe",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 262144,
+        "sha256": "c4763cd5826052b996ba4d378a9b585ae2d7b6962aa0aef61f4a3cd7a2043f3f",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ntdll.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1822400,
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 687472,
+        "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\KernelBase.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 2974168,
+        "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\apphelp.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 710832,
+        "sha256": "a8109618c3bf3623be23e8e18f1e7184538600c953169297fd0009ed77564c6e",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\msvcp140.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 618944,
+        "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      }
+    ],
+    "module_identity": "The same 32-bit probe opens each Toolhelp path, resolves GetFinalPathNameByHandleW, and checks loaded-memory PE Machine I386. Python hashes that resolved file and independently checks diskMachine I386. Eight actual modules, including apphelp in this run, are recorded; no 64-bit System32 substitution."
+  },
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "collection": "BSP CLI verifies configured project/program for each read-only live byte batch; installed PE section offsets calculated independently. Shared assembly listings are resolved through tools/workspace.py, without a worktree symlink.",
+    "span_count": 6,
+    "bytes": 594,
+    "call_instructions": 10,
+    "all_live_equal_pe": true,
+    "selected_listing_gaps": {},
+    "spans": [
+      {
+        "label": "update",
+        "address": "00bedc30",
+        "length": 388,
+        "end_exclusive": "00beddb4",
+        "pe_offset": 8313904,
+        "sha256": "79a978ad1f7ad4e56891cc0626cfa01e9f60b96af08732c32a217dbd6e42a05c",
+        "hex": "83ec28568bf1807e6800742b83c640568d442410508bcee8442c94ff8b08890e8b50048956048b4808894e088b500c89560c5e83c428c3834608018b46208b4e248b562883560c00807e690053578d7e208d5e3089038b470c894b0489530889430c75538d4c240c51ff157022ce008b4424108b4e608b54240c89442418894c241c8d4610508d4c2428895424188b5664518d4c241c89542428e8c12b94ff8b1089178b4804894f048b50088957088b400c89470ceb508b4e70014e788b56748b467811567c8b4e7c8b5660894c24188d4e108954241c51894424188b46648d542428528d4c241c89442428e86f2b94ff8b08890f8b50048957048b4808894f088b500c89570c538d442428508bcfe84c2b94ff8b08894e408b50048956448b4808894e488b500c89564cdf6e40df6e48def9d95c240cd944240cd9eedff1ddd8763a8b038b4b048b530889078b430c894f04538d4c2428518957088bcf89470ce8fa2a94ff8b108956408b4804894e448b50088956488b400c89464c5f5b5e83c428c3",
+        "live_equals_pe": true,
+        "calls": [
+          {
+            "address": "00bedc47",
+            "hex": "e8442c94ff",
+            "text": "call 0x530890"
+          },
+          {
+            "address": "00bedc99",
+            "hex": "ff157022ce00",
+            "text": "call dword ptr [0xce2270]"
+          },
+          {
+            "address": "00bedcca",
+            "hex": "e8c12b94ff",
+            "text": "call 0x530890"
+          },
+          {
+            "address": "00bedd1c",
+            "hex": "e86f2b94ff",
+            "text": "call 0x530890"
+          },
+          {
+            "address": "00bedd3f",
+            "hex": "e84c2b94ff",
+            "text": "call 0x530890"
+          },
+          {
+            "address": "00bedd91",
+            "hex": "e8fa2a94ff",
+            "text": "call 0x530890"
+          }
+        ],
+        "listing_entry": "00bedc30",
+        "listing_missing_instruction_starts": [],
+        "instruction_count": 138,
+        "instruction_starts": [
+          "00bedc30",
+          "00bedc33",
+          "00bedc34",
+          "00bedc36",
+          "00bedc3a",
+          "00bedc3c",
+          "00bedc3f",
+          "00bedc40",
+          "00bedc44",
+          "00bedc45",
+          "00bedc47",
+          "00bedc4c",
+          "00bedc4e",
+          "00bedc50",
+          "00bedc53",
+          "00bedc56",
+          "00bedc59",
+          "00bedc5c",
+          "00bedc5f",
+          "00bedc62",
+          "00bedc63",
+          "00bedc66",
+          "00bedc67",
+          "00bedc6b",
+          "00bedc6e",
+          "00bedc71",
+          "00bedc74",
+          "00bedc78",
+          "00bedc7c",
+          "00bedc7d",
+          "00bedc7e",
+          "00bedc81",
+          "00bedc84",
+          "00bedc86",
+          "00bedc89",
+          "00bedc8c",
+          "00bedc8f",
+          "00bedc92",
+          "00bedc94",
+          "00bedc98",
+          "00bedc99",
+          "00bedc9f",
+          "00bedca3",
+          "00bedca6",
+          "00bedcaa",
+          "00bedcae",
+          "00bedcb2",
+          "00bedcb5",
+          "00bedcb6",
+          "00bedcba",
+          "00bedcbe",
+          "00bedcc1",
+          "00bedcc2",
+          "00bedcc6",
+          "00bedcca",
+          "00bedccf",
+          "00bedcd1",
+          "00bedcd3",
+          "00bedcd6",
+          "00bedcd9",
+          "00bedcdc",
+          "00bedcdf",
+          "00bedce2",
+          "00bedce5",
+          "00bedce7",
+          "00bedcea",
+          "00bedced",
+          "00bedcf0",
+          "00bedcf3",
+          "00bedcf6",
+          "00bedcf9",
+          "00bedcfc",
+          "00bedd00",
+          "00bedd03",
+          "00bedd07",
+          "00bedd08",
+          "00bedd0c",
+          "00bedd0f",
+          "00bedd13",
+          "00bedd14",
+          "00bedd18",
+          "00bedd1c",
+          "00bedd21",
+          "00bedd23",
+          "00bedd25",
+          "00bedd28",
+          "00bedd2b",
+          "00bedd2e",
+          "00bedd31",
+          "00bedd34",
+          "00bedd37",
+          "00bedd38",
+          "00bedd3c",
+          "00bedd3d",
+          "00bedd3f",
+          "00bedd44",
+          "00bedd46",
+          "00bedd49",
+          "00bedd4c",
+          "00bedd4f",
+          "00bedd52",
+          "00bedd55",
+          "00bedd58",
+          "00bedd5b",
+          "00bedd5e",
+          "00bedd61",
+          "00bedd63",
+          "00bedd67",
+          "00bedd6b",
+          "00bedd6d",
+          "00bedd6f",
+          "00bedd71",
+          "00bedd73",
+          "00bedd75",
+          "00bedd78",
+          "00bedd7b",
+          "00bedd7d",
+          "00bedd80",
+          "00bedd83",
+          "00bedd84",
+          "00bedd88",
+          "00bedd89",
+          "00bedd8c",
+          "00bedd8e",
+          "00bedd91",
+          "00bedd96",
+          "00bedd98",
+          "00bedd9b",
+          "00bedd9e",
+          "00bedda1",
+          "00bedda4",
+          "00bedda7",
+          "00beddaa",
+          "00beddad",
+          "00beddae",
+          "00beddaf",
+          "00beddb0",
+          "00beddb3"
+        ]
+      },
+      {
+        "label": "current",
+        "address": "00bee050",
+        "length": 4,
+        "end_exclusive": "00bee054",
+        "pe_offset": 8314960,
+        "sha256": "dadecdeeff0b9454fd9dc08c558a9148187b2b1bec017fe8b92430570b86012a",
+        "hex": "8d4120c3",
+        "live_equals_pe": true,
+        "calls": [],
+        "listing_entry": "00bee050",
+        "listing_missing_instruction_starts": [],
+        "instruction_count": 2,
+        "instruction_starts": [
+          "00bee050",
+          "00bee053"
+        ]
+      },
+      {
+        "label": "interval",
+        "address": "00bee070",
+        "length": 4,
+        "end_exclusive": "00bee074",
+        "pe_offset": 8314992,
+        "sha256": "9b5251af6794c76b2f519f4601eefe7c7f18622726ef5633ff8713cbcdf488fe",
+        "hex": "8d4140c3",
+        "live_equals_pe": true,
+        "calls": [],
+        "listing_entry": "00bee070",
+        "listing_missing_instruction_starts": [],
+        "instruction_count": 2,
+        "instruction_starts": [
+          "00bee070",
+          "00bee073"
+        ]
+      },
+      {
+        "label": "sample",
+        "address": "00bee080",
+        "length": 93,
+        "end_exclusive": "00bee0dd",
+        "pe_offset": 8315008,
+        "sha256": "7e990a52cc76f8cc7ef3b1607abf21f2250505786338e6a1b8a5949499a4f756",
+        "hex": "83ec08568bf1807e690074228b4424108b4e208b562489088b4e288950048b562c89480889500c5e83c408c204008d44240450ff157022ce008b4424108b4c24048b54240889088b4e608950048b566489480889500c5e83c408c20400",
+        "live_equals_pe": true,
+        "calls": [
+          {
+            "address": "00bee0b3",
+            "hex": "ff157022ce00",
+            "text": "call dword ptr [0xce2270]"
+          }
+        ],
+        "listing_entry": "00bee080",
+        "listing_missing_instruction_starts": [],
+        "instruction_count": 32,
+        "instruction_starts": [
+          "00bee080",
+          "00bee083",
+          "00bee084",
+          "00bee086",
+          "00bee08a",
+          "00bee08c",
+          "00bee090",
+          "00bee093",
+          "00bee096",
+          "00bee098",
+          "00bee09b",
+          "00bee09e",
+          "00bee0a1",
+          "00bee0a4",
+          "00bee0a7",
+          "00bee0a8",
+          "00bee0ab",
+          "00bee0ae",
+          "00bee0b2",
+          "00bee0b3",
+          "00bee0b9",
+          "00bee0bd",
+          "00bee0c1",
+          "00bee0c5",
+          "00bee0c7",
+          "00bee0ca",
+          "00bee0cd",
+          "00bee0d0",
+          "00bee0d3",
+          "00bee0d6",
+          "00bee0d7",
+          "00bee0da"
+        ]
+      },
+      {
+        "label": "fixed",
+        "address": "00bedb20",
+        "length": 61,
+        "end_exclusive": "00bedb5d",
+        "pe_offset": 8313632,
+        "sha256": "962c16ccbdc50f4bbea70b7156ecc985b2a657e3b59055badbf7574455c52659",
+        "hex": "568bf18d467850c6466901ff157022ce008b4424088b4e6499528b5660505152e8aba200006a0068e80300005250e8eda100008946708956745ec20400",
+        "live_equals_pe": true,
+        "calls": [
+          {
+            "address": "00bedb2b",
+            "hex": "ff157022ce00",
+            "text": "call dword ptr [0xce2270]"
+          },
+          {
+            "address": "00bedb40",
+            "hex": "e8aba20000",
+            "text": "call 0xbf7df0"
+          },
+          {
+            "address": "00bedb4e",
+            "hex": "e8eda10000",
+            "text": "call 0xbf7d40"
+          }
+        ],
+        "listing_entry": "00bedb20",
+        "listing_missing_instruction_starts": [],
+        "instruction_count": 24,
+        "instruction_starts": [
+          "00bedb20",
+          "00bedb21",
+          "00bedb23",
+          "00bedb26",
+          "00bedb27",
+          "00bedb2b",
+          "00bedb31",
+          "00bedb35",
+          "00bedb38",
+          "00bedb39",
+          "00bedb3a",
+          "00bedb3d",
+          "00bedb3e",
+          "00bedb3f",
+          "00bedb40",
+          "00bedb45",
+          "00bedb47",
+          "00bedb4c",
+          "00bedb4d",
+          "00bedb4e",
+          "00bedb53",
+          "00bedb56",
+          "00bedb59",
+          "00bedb5a"
+        ]
+      },
+      {
+        "label": "profile",
+        "address": "00d68d50",
+        "length": 44,
+        "end_exclusive": "00d68d7c",
+        "pe_offset": 9866576,
+        "sha256": "fed689db7f77645fa9f42e4b36aaf2c74312f0539c3cadf20ff28afe7c14e781",
+        "hex": "10e1be00d0dbbe0030dcbe00e0dabe00c0ddbe0050e0be0060e0be0070e0be0080e0be0020dbbe0060dbbe00",
+        "live_equals_pe": true
+      }
+    ]
+  },
+  "linked_source_machine": {
+    "exe_sha256": "c4763cd5826052b996ba4d378a9b585ae2d7b6962aa0aef61f4a3cd7a2043f3f",
+    "inspection": "MSVC map resolves linked function addresses and source object. Capstone decodes exact PE-backed spans bounded by next mapped function, including possible alignment. Each wrapper has exactly one direct call to its admitted existing source provider. These are source-machine receipts, not game-byte parity.",
+    "publication_load": "Reviewed all five compiled dispatch prefixes: load context argument, load address of AB0 cell, then exactly one publication load (MOV ECX,[EAX] in advance/current/fixed/interval; MOV ESI,[EAX] in sample), followed by null/object/profile-slot checks. Separate helper calls perform fresh loads. Source contains one volatile publication read per dispatch.",
+    "functions": [
+      {
+        "symbol": "?advance_published_native_frame_clock@bsp@@YAXABUNativeFrameClockPublicationContext@1@@Z",
+        "object": "bsp_core:native_frame_clock_publication.obj",
+        "address": "004023d0",
+        "end_exclusive": "00402440",
+        "length": 112,
+        "sha256": "a1eb8b8cecf348cad472dc8e9ac8f66dd8b8394a586f27847c52ead1183514f4",
+        "hex": "558bec8b550883ec0c8b028b0885c9742e8b420483380074268139508dd60075258b42048b0081780830dcbe0074076810d94200eb15e8e51900008be55dc368acd84200eb0568e0d842008d4df4e82dffffff68c8d043008d45f450e8ed910200cccccccccccccccccccccccccccccc",
+        "instructions": [
+          {
+            "address": "004023d0",
+            "hex": "55",
+            "text": "push ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "004023d1",
+            "hex": "8bec",
+            "text": "mov ebp, esp",
+            "resolved_target": null
+          },
+          {
+            "address": "004023d3",
+            "hex": "8b5508",
+            "text": "mov edx, dword ptr [ebp + 8]",
+            "resolved_target": null
+          },
+          {
+            "address": "004023d6",
+            "hex": "83ec0c",
+            "text": "sub esp, 0xc",
+            "resolved_target": null
+          },
+          {
+            "address": "004023d9",
+            "hex": "8b02",
+            "text": "mov eax, dword ptr [edx]",
+            "resolved_target": null
+          },
+          {
+            "address": "004023db",
+            "hex": "8b08",
+            "text": "mov ecx, dword ptr [eax]",
+            "resolved_target": null
+          },
+          {
+            "address": "004023dd",
+            "hex": "85c9",
+            "text": "test ecx, ecx",
+            "resolved_target": null
+          },
+          {
+            "address": "004023df",
+            "hex": "742e",
+            "text": "je 0x40240f",
+            "resolved_target": null
+          },
+          {
+            "address": "004023e1",
+            "hex": "8b4204",
+            "text": "mov eax, dword ptr [edx + 4]",
+            "resolved_target": null
+          },
+          {
+            "address": "004023e4",
+            "hex": "833800",
+            "text": "cmp dword ptr [eax], 0",
+            "resolved_target": null
+          },
+          {
+            "address": "004023e7",
+            "hex": "7426",
+            "text": "je 0x40240f",
+            "resolved_target": null
+          },
+          {
+            "address": "004023e9",
+            "hex": "8139508dd600",
+            "text": "cmp dword ptr [ecx], 0xd68d50",
+            "resolved_target": null
+          },
+          {
+            "address": "004023ef",
+            "hex": "7525",
+            "text": "jne 0x402416",
+            "resolved_target": null
+          },
+          {
+            "address": "004023f1",
+            "hex": "8b4204",
+            "text": "mov eax, dword ptr [edx + 4]",
+            "resolved_target": null
+          },
+          {
+            "address": "004023f4",
+            "hex": "8b00",
+            "text": "mov eax, dword ptr [eax]",
+            "resolved_target": null
+          },
+          {
+            "address": "004023f6",
+            "hex": "81780830dcbe00",
+            "text": "cmp dword ptr [eax + 8], 0xbedc30",
+            "resolved_target": null
+          },
+          {
+            "address": "004023fd",
+            "hex": "7407",
+            "text": "je 0x402406",
+            "resolved_target": null
+          },
+          {
+            "address": "004023ff",
+            "hex": "6810d94200",
+            "text": "push 0x42d910",
+            "resolved_target": null
+          },
+          {
+            "address": "00402404",
+            "hex": "eb15",
+            "text": "jmp 0x40241b",
+            "resolved_target": null
+          },
+          {
+            "address": "00402406",
+            "hex": "e8e5190000",
+            "text": "call 0x403df0",
+            "resolved_target": "?update_native_frame_clock_00bedc30@bsp@@YIXPAX@Z"
+          },
+          {
+            "address": "0040240b",
+            "hex": "8be5",
+            "text": "mov esp, ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "0040240d",
+            "hex": "5d",
+            "text": "pop ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "0040240e",
+            "hex": "c3",
+            "text": "ret",
+            "resolved_target": null
+          },
+          {
+            "address": "0040240f",
+            "hex": "68acd84200",
+            "text": "push 0x42d8ac",
+            "resolved_target": null
+          },
+          {
+            "address": "00402414",
+            "hex": "eb05",
+            "text": "jmp 0x40241b",
+            "resolved_target": null
+          },
+          {
+            "address": "00402416",
+            "hex": "68e0d84200",
+            "text": "push 0x42d8e0",
+            "resolved_target": null
+          },
+          {
+            "address": "0040241b",
+            "hex": "8d4df4",
+            "text": "lea ecx, [ebp - 0xc]",
+            "resolved_target": null
+          },
+          {
+            "address": "0040241e",
+            "hex": "e82dffffff",
+            "text": "call 0x402350",
+            "resolved_target": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "address": "00402423",
+            "hex": "68c8d04300",
+            "text": "push 0x43d0c8",
+            "resolved_target": null
+          },
+          {
+            "address": "00402428",
+            "hex": "8d45f4",
+            "text": "lea eax, [ebp - 0xc]",
+            "resolved_target": null
+          },
+          {
+            "address": "0040242b",
+            "hex": "50",
+            "text": "push eax",
+            "resolved_target": null
+          },
+          {
+            "address": "0040242c",
+            "hex": "e8ed910200",
+            "text": "call 0x42b61e",
+            "resolved_target": "__CxxThrowException@8"
+          },
+          {
+            "address": "00402431",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00402432",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00402433",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00402434",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00402435",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00402436",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00402437",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00402438",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00402439",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040243a",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040243b",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040243c",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040243d",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040243e",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040243f",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          }
+        ],
+        "note": "Linked source span bounded by next mapped function; may include alignment. This is not original-game byte parity.",
+        "direct_provider_transfers": [
+          {
+            "address": "00402406",
+            "hex": "e8e5190000",
+            "text": "call 0x403df0",
+            "resolved_target": "?update_native_frame_clock_00bedc30@bsp@@YIXPAX@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "?current_published_native_frame_clock@bsp@@YAPBXABUNativeFrameClockPublicationContext@1@@Z",
+        "object": "bsp_core:native_frame_clock_publication.obj",
+        "address": "00402440",
+        "end_exclusive": "004024b0",
+        "length": 112,
+        "sha256": "fec6c25232e6eda825831263717a627b16d3670ed45a744463f6a1236fa9a7fd",
+        "hex": "558bec8b550883ec0c8b028b0885c9742e8b420483380074268139508dd60075258b42048b0081781450e0be0074076810d94200eb15e8551800008be55dc368acd84200eb0568e0d842008d4df4e8bdfeffff68c8d043008d45f450e87d910200cccccccccccccccccccccccccccccc",
+        "instructions": [
+          {
+            "address": "00402440",
+            "hex": "55",
+            "text": "push ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "00402441",
+            "hex": "8bec",
+            "text": "mov ebp, esp",
+            "resolved_target": null
+          },
+          {
+            "address": "00402443",
+            "hex": "8b5508",
+            "text": "mov edx, dword ptr [ebp + 8]",
+            "resolved_target": null
+          },
+          {
+            "address": "00402446",
+            "hex": "83ec0c",
+            "text": "sub esp, 0xc",
+            "resolved_target": null
+          },
+          {
+            "address": "00402449",
+            "hex": "8b02",
+            "text": "mov eax, dword ptr [edx]",
+            "resolved_target": null
+          },
+          {
+            "address": "0040244b",
+            "hex": "8b08",
+            "text": "mov ecx, dword ptr [eax]",
+            "resolved_target": null
+          },
+          {
+            "address": "0040244d",
+            "hex": "85c9",
+            "text": "test ecx, ecx",
+            "resolved_target": null
+          },
+          {
+            "address": "0040244f",
+            "hex": "742e",
+            "text": "je 0x40247f",
+            "resolved_target": null
+          },
+          {
+            "address": "00402451",
+            "hex": "8b4204",
+            "text": "mov eax, dword ptr [edx + 4]",
+            "resolved_target": null
+          },
+          {
+            "address": "00402454",
+            "hex": "833800",
+            "text": "cmp dword ptr [eax], 0",
+            "resolved_target": null
+          },
+          {
+            "address": "00402457",
+            "hex": "7426",
+            "text": "je 0x40247f",
+            "resolved_target": null
+          },
+          {
+            "address": "00402459",
+            "hex": "8139508dd600",
+            "text": "cmp dword ptr [ecx], 0xd68d50",
+            "resolved_target": null
+          },
+          {
+            "address": "0040245f",
+            "hex": "7525",
+            "text": "jne 0x402486",
+            "resolved_target": null
+          },
+          {
+            "address": "00402461",
+            "hex": "8b4204",
+            "text": "mov eax, dword ptr [edx + 4]",
+            "resolved_target": null
+          },
+          {
+            "address": "00402464",
+            "hex": "8b00",
+            "text": "mov eax, dword ptr [eax]",
+            "resolved_target": null
+          },
+          {
+            "address": "00402466",
+            "hex": "81781450e0be00",
+            "text": "cmp dword ptr [eax + 0x14], 0xbee050",
+            "resolved_target": null
+          },
+          {
+            "address": "0040246d",
+            "hex": "7407",
+            "text": "je 0x402476",
+            "resolved_target": null
+          },
+          {
+            "address": "0040246f",
+            "hex": "6810d94200",
+            "text": "push 0x42d910",
+            "resolved_target": null
+          },
+          {
+            "address": "00402474",
+            "hex": "eb15",
+            "text": "jmp 0x40248b",
+            "resolved_target": null
+          },
+          {
+            "address": "00402476",
+            "hex": "e855180000",
+            "text": "call 0x403cd0",
+            "resolved_target": "?get_raw_timer_current_00bee050@bsp@@YIPBXPBX@Z"
+          },
+          {
+            "address": "0040247b",
+            "hex": "8be5",
+            "text": "mov esp, ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "0040247d",
+            "hex": "5d",
+            "text": "pop ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "0040247e",
+            "hex": "c3",
+            "text": "ret",
+            "resolved_target": null
+          },
+          {
+            "address": "0040247f",
+            "hex": "68acd84200",
+            "text": "push 0x42d8ac",
+            "resolved_target": null
+          },
+          {
+            "address": "00402484",
+            "hex": "eb05",
+            "text": "jmp 0x40248b",
+            "resolved_target": null
+          },
+          {
+            "address": "00402486",
+            "hex": "68e0d84200",
+            "text": "push 0x42d8e0",
+            "resolved_target": null
+          },
+          {
+            "address": "0040248b",
+            "hex": "8d4df4",
+            "text": "lea ecx, [ebp - 0xc]",
+            "resolved_target": null
+          },
+          {
+            "address": "0040248e",
+            "hex": "e8bdfeffff",
+            "text": "call 0x402350",
+            "resolved_target": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "address": "00402493",
+            "hex": "68c8d04300",
+            "text": "push 0x43d0c8",
+            "resolved_target": null
+          },
+          {
+            "address": "00402498",
+            "hex": "8d45f4",
+            "text": "lea eax, [ebp - 0xc]",
+            "resolved_target": null
+          },
+          {
+            "address": "0040249b",
+            "hex": "50",
+            "text": "push eax",
+            "resolved_target": null
+          },
+          {
+            "address": "0040249c",
+            "hex": "e87d910200",
+            "text": "call 0x42b61e",
+            "resolved_target": "__CxxThrowException@8"
+          },
+          {
+            "address": "004024a1",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "004024a2",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "004024a3",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "004024a4",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "004024a5",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "004024a6",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "004024a7",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "004024a8",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "004024a9",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "004024aa",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "004024ab",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "004024ac",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "004024ad",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "004024ae",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "004024af",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          }
+        ],
+        "note": "Linked source span bounded by next mapped function; may include alignment. This is not original-game byte parity.",
+        "direct_provider_transfers": [
+          {
+            "address": "00402476",
+            "hex": "e855180000",
+            "text": "call 0x403cd0",
+            "resolved_target": "?get_raw_timer_current_00bee050@bsp@@YIPBXPBX@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "?enable_fixed_published_native_frame_clock@bsp@@YAXABUNativeFrameClockPublicationContext@1@H@Z",
+        "object": "bsp_core:native_frame_clock_publication.obj",
+        "address": "004024b0",
+        "end_exclusive": "00402520",
+        "length": 112,
+        "sha256": "5416f1752c448ad253f137672a38b8dc073a900c8bd6686e886cd93e304689f8",
+        "hex": "558bec8b550883ec0c8b028b0885c974338b4204833800742b8139508dd600752a8b42048b0081782420dbbe0074076810d94200eb1aff750c33d2e8601700008be55dc368acd84200eb0568e0d842008d4df4e848feffff68c8d043008d45f450e808910200cccccccccccccccccccc",
+        "instructions": [
+          {
+            "address": "004024b0",
+            "hex": "55",
+            "text": "push ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "004024b1",
+            "hex": "8bec",
+            "text": "mov ebp, esp",
+            "resolved_target": null
+          },
+          {
+            "address": "004024b3",
+            "hex": "8b5508",
+            "text": "mov edx, dword ptr [ebp + 8]",
+            "resolved_target": null
+          },
+          {
+            "address": "004024b6",
+            "hex": "83ec0c",
+            "text": "sub esp, 0xc",
+            "resolved_target": null
+          },
+          {
+            "address": "004024b9",
+            "hex": "8b02",
+            "text": "mov eax, dword ptr [edx]",
+            "resolved_target": null
+          },
+          {
+            "address": "004024bb",
+            "hex": "8b08",
+            "text": "mov ecx, dword ptr [eax]",
+            "resolved_target": null
+          },
+          {
+            "address": "004024bd",
+            "hex": "85c9",
+            "text": "test ecx, ecx",
+            "resolved_target": null
+          },
+          {
+            "address": "004024bf",
+            "hex": "7433",
+            "text": "je 0x4024f4",
+            "resolved_target": null
+          },
+          {
+            "address": "004024c1",
+            "hex": "8b4204",
+            "text": "mov eax, dword ptr [edx + 4]",
+            "resolved_target": null
+          },
+          {
+            "address": "004024c4",
+            "hex": "833800",
+            "text": "cmp dword ptr [eax], 0",
+            "resolved_target": null
+          },
+          {
+            "address": "004024c7",
+            "hex": "742b",
+            "text": "je 0x4024f4",
+            "resolved_target": null
+          },
+          {
+            "address": "004024c9",
+            "hex": "8139508dd600",
+            "text": "cmp dword ptr [ecx], 0xd68d50",
+            "resolved_target": null
+          },
+          {
+            "address": "004024cf",
+            "hex": "752a",
+            "text": "jne 0x4024fb",
+            "resolved_target": null
+          },
+          {
+            "address": "004024d1",
+            "hex": "8b4204",
+            "text": "mov eax, dword ptr [edx + 4]",
+            "resolved_target": null
+          },
+          {
+            "address": "004024d4",
+            "hex": "8b00",
+            "text": "mov eax, dword ptr [eax]",
+            "resolved_target": null
+          },
+          {
+            "address": "004024d6",
+            "hex": "81782420dbbe00",
+            "text": "cmp dword ptr [eax + 0x24], 0xbedb20",
+            "resolved_target": null
+          },
+          {
+            "address": "004024dd",
+            "hex": "7407",
+            "text": "je 0x4024e6",
+            "resolved_target": null
+          },
+          {
+            "address": "004024df",
+            "hex": "6810d94200",
+            "text": "push 0x42d910",
+            "resolved_target": null
+          },
+          {
+            "address": "004024e4",
+            "hex": "eb1a",
+            "text": "jmp 0x402500",
+            "resolved_target": null
+          },
+          {
+            "address": "004024e6",
+            "hex": "ff750c",
+            "text": "push dword ptr [ebp + 0xc]",
+            "resolved_target": null
+          },
+          {
+            "address": "004024e9",
+            "hex": "33d2",
+            "text": "xor edx, edx",
+            "resolved_target": null
+          },
+          {
+            "address": "004024eb",
+            "hex": "e860170000",
+            "text": "call 0x403c50",
+            "resolved_target": "?enable_fixed_native_frame_clock_00bedb20@bsp@@YIXPAX0H@Z"
+          },
+          {
+            "address": "004024f0",
+            "hex": "8be5",
+            "text": "mov esp, ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "004024f2",
+            "hex": "5d",
+            "text": "pop ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "004024f3",
+            "hex": "c3",
+            "text": "ret",
+            "resolved_target": null
+          },
+          {
+            "address": "004024f4",
+            "hex": "68acd84200",
+            "text": "push 0x42d8ac",
+            "resolved_target": null
+          },
+          {
+            "address": "004024f9",
+            "hex": "eb05",
+            "text": "jmp 0x402500",
+            "resolved_target": null
+          },
+          {
+            "address": "004024fb",
+            "hex": "68e0d84200",
+            "text": "push 0x42d8e0",
+            "resolved_target": null
+          },
+          {
+            "address": "00402500",
+            "hex": "8d4df4",
+            "text": "lea ecx, [ebp - 0xc]",
+            "resolved_target": null
+          },
+          {
+            "address": "00402503",
+            "hex": "e848feffff",
+            "text": "call 0x402350",
+            "resolved_target": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "address": "00402508",
+            "hex": "68c8d04300",
+            "text": "push 0x43d0c8",
+            "resolved_target": null
+          },
+          {
+            "address": "0040250d",
+            "hex": "8d45f4",
+            "text": "lea eax, [ebp - 0xc]",
+            "resolved_target": null
+          },
+          {
+            "address": "00402510",
+            "hex": "50",
+            "text": "push eax",
+            "resolved_target": null
+          },
+          {
+            "address": "00402511",
+            "hex": "e808910200",
+            "text": "call 0x42b61e",
+            "resolved_target": "__CxxThrowException@8"
+          },
+          {
+            "address": "00402516",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00402517",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00402518",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00402519",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040251a",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040251b",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040251c",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040251d",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040251e",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040251f",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          }
+        ],
+        "note": "Linked source span bounded by next mapped function; may include alignment. This is not original-game byte parity.",
+        "direct_provider_transfers": [
+          {
+            "address": "004024eb",
+            "hex": "e860170000",
+            "text": "call 0x403c50",
+            "resolved_target": "?enable_fixed_native_frame_clock_00bedb20@bsp@@YIXPAX0H@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "?interval_published_native_frame_clock@bsp@@YAPBXABUNativeFrameClockPublicationContext@1@@Z",
+        "object": "bsp_core:native_frame_clock_publication.obj",
+        "address": "00402520",
+        "end_exclusive": "00402590",
+        "length": 112,
+        "sha256": "0e9627da38b37b566c2aaa976323057f768d1d1b49264ffb82c8e8ae0f7a1293",
+        "hex": "558bec8b550883ec0c8b028b0885c9742e8b420483380074268139508dd60075258b42048b0081781c70e0be0074076810d94200eb15e8851700008be55dc368acd84200eb0568e0d842008d4df4e8ddfdffff68c8d043008d45f450e89d900200cccccccccccccccccccccccccccccc",
+        "instructions": [
+          {
+            "address": "00402520",
+            "hex": "55",
+            "text": "push ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "00402521",
+            "hex": "8bec",
+            "text": "mov ebp, esp",
+            "resolved_target": null
+          },
+          {
+            "address": "00402523",
+            "hex": "8b5508",
+            "text": "mov edx, dword ptr [ebp + 8]",
+            "resolved_target": null
+          },
+          {
+            "address": "00402526",
+            "hex": "83ec0c",
+            "text": "sub esp, 0xc",
+            "resolved_target": null
+          },
+          {
+            "address": "00402529",
+            "hex": "8b02",
+            "text": "mov eax, dword ptr [edx]",
+            "resolved_target": null
+          },
+          {
+            "address": "0040252b",
+            "hex": "8b08",
+            "text": "mov ecx, dword ptr [eax]",
+            "resolved_target": null
+          },
+          {
+            "address": "0040252d",
+            "hex": "85c9",
+            "text": "test ecx, ecx",
+            "resolved_target": null
+          },
+          {
+            "address": "0040252f",
+            "hex": "742e",
+            "text": "je 0x40255f",
+            "resolved_target": null
+          },
+          {
+            "address": "00402531",
+            "hex": "8b4204",
+            "text": "mov eax, dword ptr [edx + 4]",
+            "resolved_target": null
+          },
+          {
+            "address": "00402534",
+            "hex": "833800",
+            "text": "cmp dword ptr [eax], 0",
+            "resolved_target": null
+          },
+          {
+            "address": "00402537",
+            "hex": "7426",
+            "text": "je 0x40255f",
+            "resolved_target": null
+          },
+          {
+            "address": "00402539",
+            "hex": "8139508dd600",
+            "text": "cmp dword ptr [ecx], 0xd68d50",
+            "resolved_target": null
+          },
+          {
+            "address": "0040253f",
+            "hex": "7525",
+            "text": "jne 0x402566",
+            "resolved_target": null
+          },
+          {
+            "address": "00402541",
+            "hex": "8b4204",
+            "text": "mov eax, dword ptr [edx + 4]",
+            "resolved_target": null
+          },
+          {
+            "address": "00402544",
+            "hex": "8b00",
+            "text": "mov eax, dword ptr [eax]",
+            "resolved_target": null
+          },
+          {
+            "address": "00402546",
+            "hex": "81781c70e0be00",
+            "text": "cmp dword ptr [eax + 0x1c], 0xbee070",
+            "resolved_target": null
+          },
+          {
+            "address": "0040254d",
+            "hex": "7407",
+            "text": "je 0x402556",
+            "resolved_target": null
+          },
+          {
+            "address": "0040254f",
+            "hex": "6810d94200",
+            "text": "push 0x42d910",
+            "resolved_target": null
+          },
+          {
+            "address": "00402554",
+            "hex": "eb15",
+            "text": "jmp 0x40256b",
+            "resolved_target": null
+          },
+          {
+            "address": "00402556",
+            "hex": "e885170000",
+            "text": "call 0x403ce0",
+            "resolved_target": "?get_raw_timer_interval_00bee070@bsp@@YIPBXPBX@Z"
+          },
+          {
+            "address": "0040255b",
+            "hex": "8be5",
+            "text": "mov esp, ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "0040255d",
+            "hex": "5d",
+            "text": "pop ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "0040255e",
+            "hex": "c3",
+            "text": "ret",
+            "resolved_target": null
+          },
+          {
+            "address": "0040255f",
+            "hex": "68acd84200",
+            "text": "push 0x42d8ac",
+            "resolved_target": null
+          },
+          {
+            "address": "00402564",
+            "hex": "eb05",
+            "text": "jmp 0x40256b",
+            "resolved_target": null
+          },
+          {
+            "address": "00402566",
+            "hex": "68e0d84200",
+            "text": "push 0x42d8e0",
+            "resolved_target": null
+          },
+          {
+            "address": "0040256b",
+            "hex": "8d4df4",
+            "text": "lea ecx, [ebp - 0xc]",
+            "resolved_target": null
+          },
+          {
+            "address": "0040256e",
+            "hex": "e8ddfdffff",
+            "text": "call 0x402350",
+            "resolved_target": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "address": "00402573",
+            "hex": "68c8d04300",
+            "text": "push 0x43d0c8",
+            "resolved_target": null
+          },
+          {
+            "address": "00402578",
+            "hex": "8d45f4",
+            "text": "lea eax, [ebp - 0xc]",
+            "resolved_target": null
+          },
+          {
+            "address": "0040257b",
+            "hex": "50",
+            "text": "push eax",
+            "resolved_target": null
+          },
+          {
+            "address": "0040257c",
+            "hex": "e89d900200",
+            "text": "call 0x42b61e",
+            "resolved_target": "__CxxThrowException@8"
+          },
+          {
+            "address": "00402581",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00402582",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00402583",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00402584",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00402585",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00402586",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00402587",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00402588",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00402589",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040258a",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040258b",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040258c",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040258d",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040258e",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040258f",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          }
+        ],
+        "note": "Linked source span bounded by next mapped function; may include alignment. This is not original-game byte parity.",
+        "direct_provider_transfers": [
+          {
+            "address": "00402556",
+            "hex": "e885170000",
+            "text": "call 0x403ce0",
+            "resolved_target": "?get_raw_timer_interval_00bee070@bsp@@YIPBXPBX@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "?sample_published_native_frame_clock@bsp@@YAPAUClockTimestamp@1@ABUNativeFrameClockPublicationContext@1@PAU21@@Z",
+        "object": "bsp_core:native_frame_clock_publication.obj",
+        "address": "00402590",
+        "end_exclusive": "00402610",
+        "length": 128,
+        "sha256": "5f8653af3afeaad927997ffb9a9fee2f0c6c8ca22811e9ed48c63a842c3597fe",
+        "hex": "558bec8b4d0883ec0c8b01568b3085f674428b4104833800743a813e508dd60075398b41048b0081782080e0be0074076810d94200eb298b450c85c075076840d94200eb1b5033d28bcee8a11900005e8be55dc368acd84200eb0568e0d842008d4df4e858fdffff68c8d043008d45f450e818900200cccccccccccccccccccc",
+        "instructions": [
+          {
+            "address": "00402590",
+            "hex": "55",
+            "text": "push ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "00402591",
+            "hex": "8bec",
+            "text": "mov ebp, esp",
+            "resolved_target": null
+          },
+          {
+            "address": "00402593",
+            "hex": "8b4d08",
+            "text": "mov ecx, dword ptr [ebp + 8]",
+            "resolved_target": null
+          },
+          {
+            "address": "00402596",
+            "hex": "83ec0c",
+            "text": "sub esp, 0xc",
+            "resolved_target": null
+          },
+          {
+            "address": "00402599",
+            "hex": "8b01",
+            "text": "mov eax, dword ptr [ecx]",
+            "resolved_target": null
+          },
+          {
+            "address": "0040259b",
+            "hex": "56",
+            "text": "push esi",
+            "resolved_target": null
+          },
+          {
+            "address": "0040259c",
+            "hex": "8b30",
+            "text": "mov esi, dword ptr [eax]",
+            "resolved_target": null
+          },
+          {
+            "address": "0040259e",
+            "hex": "85f6",
+            "text": "test esi, esi",
+            "resolved_target": null
+          },
+          {
+            "address": "004025a0",
+            "hex": "7442",
+            "text": "je 0x4025e4",
+            "resolved_target": null
+          },
+          {
+            "address": "004025a2",
+            "hex": "8b4104",
+            "text": "mov eax, dword ptr [ecx + 4]",
+            "resolved_target": null
+          },
+          {
+            "address": "004025a5",
+            "hex": "833800",
+            "text": "cmp dword ptr [eax], 0",
+            "resolved_target": null
+          },
+          {
+            "address": "004025a8",
+            "hex": "743a",
+            "text": "je 0x4025e4",
+            "resolved_target": null
+          },
+          {
+            "address": "004025aa",
+            "hex": "813e508dd600",
+            "text": "cmp dword ptr [esi], 0xd68d50",
+            "resolved_target": null
+          },
+          {
+            "address": "004025b0",
+            "hex": "7539",
+            "text": "jne 0x4025eb",
+            "resolved_target": null
+          },
+          {
+            "address": "004025b2",
+            "hex": "8b4104",
+            "text": "mov eax, dword ptr [ecx + 4]",
+            "resolved_target": null
+          },
+          {
+            "address": "004025b5",
+            "hex": "8b00",
+            "text": "mov eax, dword ptr [eax]",
+            "resolved_target": null
+          },
+          {
+            "address": "004025b7",
+            "hex": "81782080e0be00",
+            "text": "cmp dword ptr [eax + 0x20], 0xbee080",
+            "resolved_target": null
+          },
+          {
+            "address": "004025be",
+            "hex": "7407",
+            "text": "je 0x4025c7",
+            "resolved_target": null
+          },
+          {
+            "address": "004025c0",
+            "hex": "6810d94200",
+            "text": "push 0x42d910",
+            "resolved_target": null
+          },
+          {
+            "address": "004025c5",
+            "hex": "eb29",
+            "text": "jmp 0x4025f0",
+            "resolved_target": null
+          },
+          {
+            "address": "004025c7",
+            "hex": "8b450c",
+            "text": "mov eax, dword ptr [ebp + 0xc]",
+            "resolved_target": null
+          },
+          {
+            "address": "004025ca",
+            "hex": "85c0",
+            "text": "test eax, eax",
+            "resolved_target": null
+          },
+          {
+            "address": "004025cc",
+            "hex": "7507",
+            "text": "jne 0x4025d5",
+            "resolved_target": null
+          },
+          {
+            "address": "004025ce",
+            "hex": "6840d94200",
+            "text": "push 0x42d940",
+            "resolved_target": null
+          },
+          {
+            "address": "004025d3",
+            "hex": "eb1b",
+            "text": "jmp 0x4025f0",
+            "resolved_target": null
+          },
+          {
+            "address": "004025d5",
+            "hex": "50",
+            "text": "push eax",
+            "resolved_target": null
+          },
+          {
+            "address": "004025d6",
+            "hex": "33d2",
+            "text": "xor edx, edx",
+            "resolved_target": null
+          },
+          {
+            "address": "004025d8",
+            "hex": "8bce",
+            "text": "mov ecx, esi",
+            "resolved_target": null
+          },
+          {
+            "address": "004025da",
+            "hex": "e8a1190000",
+            "text": "call 0x403f80",
+            "resolved_target": "?sample_native_frame_clock_00bee080@bsp@@YIPAUClockTimestamp@1@PBXPAXPAU21@@Z"
+          },
+          {
+            "address": "004025df",
+            "hex": "5e",
+            "text": "pop esi",
+            "resolved_target": null
+          },
+          {
+            "address": "004025e0",
+            "hex": "8be5",
+            "text": "mov esp, ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "004025e2",
+            "hex": "5d",
+            "text": "pop ebp",
+            "resolved_target": null
+          },
+          {
+            "address": "004025e3",
+            "hex": "c3",
+            "text": "ret",
+            "resolved_target": null
+          },
+          {
+            "address": "004025e4",
+            "hex": "68acd84200",
+            "text": "push 0x42d8ac",
+            "resolved_target": null
+          },
+          {
+            "address": "004025e9",
+            "hex": "eb05",
+            "text": "jmp 0x4025f0",
+            "resolved_target": null
+          },
+          {
+            "address": "004025eb",
+            "hex": "68e0d84200",
+            "text": "push 0x42d8e0",
+            "resolved_target": null
+          },
+          {
+            "address": "004025f0",
+            "hex": "8d4df4",
+            "text": "lea ecx, [ebp - 0xc]",
+            "resolved_target": null
+          },
+          {
+            "address": "004025f3",
+            "hex": "e858fdffff",
+            "text": "call 0x402350",
+            "resolved_target": "??0logic_error@std@@QAE@PBD@Z"
+          },
+          {
+            "address": "004025f8",
+            "hex": "68c8d04300",
+            "text": "push 0x43d0c8",
+            "resolved_target": null
+          },
+          {
+            "address": "004025fd",
+            "hex": "8d45f4",
+            "text": "lea eax, [ebp - 0xc]",
+            "resolved_target": null
+          },
+          {
+            "address": "00402600",
+            "hex": "50",
+            "text": "push eax",
+            "resolved_target": null
+          },
+          {
+            "address": "00402601",
+            "hex": "e818900200",
+            "text": "call 0x42b61e",
+            "resolved_target": "__CxxThrowException@8"
+          },
+          {
+            "address": "00402606",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00402607",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00402608",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "00402609",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040260a",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040260b",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040260c",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040260d",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040260e",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          },
+          {
+            "address": "0040260f",
+            "hex": "cc",
+            "text": "int3",
+            "resolved_target": null
+          }
+        ],
+        "note": "Linked source span bounded by next mapped function; may include alignment. This is not original-game byte parity.",
+        "direct_provider_transfers": [
+          {
+            "address": "004025da",
+            "hex": "e8a1190000",
+            "text": "call 0x403f80",
+            "resolved_target": "?sample_native_frame_clock_00bee080@bsp@@YIPAUClockTimestamp@1@PBXPAXPAU21@@Z"
+          }
+        ]
+      }
+    ]
+  },
+  "artifacts": {
+    "source": [
+      {
+        "path": "include/bsp/native_frame_clock_publication.hpp",
+        "bytes": 1877,
+        "sha256": "5781316b10fc7d41027310c4ba39d34143b82eb0711d86860937456126a16a1b"
+      },
+      {
+        "path": "src/native_frame_clock_publication.cpp",
+        "bytes": 2012,
+        "sha256": "4759c3d76740d893f615ff72f3f7d3ecab251151325f119e5e452a8aac518a55"
+      },
+      {
+        "path": "docs/NATIVE_FRAME_CLOCK_PUBLICATION.md",
+        "bytes": 2593,
+        "sha256": "23daf5b8fc5440fd5bfb729809b556ee65a973535b2f781c3efa185278bdf485"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 149187,
+        "sha256": "30661c7c2af018e494bc2b8f435ec4c4d268fb0a7d1c45930c7bae695462fc72"
+      }
+    ],
+    "objects_and_library": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 63426372,
+        "sha256": "f5172d2af00dcf0a7c336df2df4243a755d9662a66fcbc49177d1db3d6857dcc"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_frame_clock_publication.obj",
+        "bytes": 9883,
+        "sha256": "99a1e16fb2bb459b04a0a9c39ef7395741b78d9f6327985a8df327e588da52af"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_frame_clock_actual.obj",
+        "bytes": 5405,
+        "sha256": "c62fa3463f57b4764f380273e8fe36756c38c70beb2457b1b3fc364bce114581"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_frame_clock_lifetime.obj",
+        "bytes": 10065,
+        "sha256": "a860aba54f7c332fd71e8a2b33c2212dd53aba0db34bfa1222e44b9d58046db6"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+        "bytes": 17867,
+        "sha256": "5b4fa0ae07cd00c726e769a29744ad700a9c3473ecff20ae94194198a402e80a"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_renderer_control_worker.obj",
+        "bytes": 15255,
+        "sha256": "4886c1f5f8708f3cc28ce2dccc553336dd2ea50d6618f33a897c8681d4667877"
+      }
+    ],
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\local\\checkpoints\\frame-clock-publication-r38-9bcbfb31e\\validated_artifacts.zip",
+      "sha256": "3f5cafe6770442f63aada5c77607721c903556e20f569b758c342fef893c7d49",
+      "bytes": 45445222,
+      "manifest": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\local\\checkpoints\\frame-clock-publication-r38-9bcbfb31e\\manifest.json",
+      "manifest_sha256": "1b35553bfc4ee110eb03e219d622b033e0cb19ae495552992c4e395aba6b2c11",
+      "artifacts": 3402,
+      "artifact_bytes": 157621700,
+      "all_entries_hash_verified": true,
+      "loaded_modules": 8,
+      "prior_r36_zip_unchanged": true,
+      "full_bsp_core_lib": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\build\\win32\\Release\\bsp_core.lib",
+        "archive_entry": "workspace/build/win32/Release/bsp_core.lib",
+        "bytes": 63426372,
+        "sha256": "f5172d2af00dcf0a7c336df2df4243a755d9662a66fcbc49177d1db3d6857dcc"
+      }
+    },
+    "archive_boundary": "Immutable archive includes full frozen sources/build inputs, full fresh library and related objects, fixture source/executable/manifest/dependencies/map, original bytes/listings, build/run logs, toolchain and resolved loaded modules. Final committed report references this archive; it is outside the archive to avoid a circular hash."
+  },
+  "remaining_frontier": [
+    "R37 packet B: concrete sound/input providers can use the now-stable header after integration; they must copy only timestamp values where their existing interfaces require them.",
+    "R37 packet C: application needs one raw owner/context lifetime, original non-null allocation gate, caller cleanup/failure policy, registration/drain ordering and fixed-rate phase placement. No part of that binding is activated here.",
+    "Worker, XLive, system-time/traceline and full OnMove remain independently unbound. Existing captured-owner semantics must not be replaced by generic current-publication reloads.",
+    "No prior source field offsets or shared deletion members changed. The baseline shared deletion table remains116 bytes with frame_clock at108 and diagnostic at112."
+  ],
+  "annotations": {
+    "new_original_names": [],
+    "requested_ghidra_changes": [],
+    "reason": "New source composition layer reuses established native providers; no duplicate original body/ledger record is appropriate."
+  }
+}
