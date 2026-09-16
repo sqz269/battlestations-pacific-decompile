@@ -1,0 +1,72 @@
+{
+  "packet": "native_resource_extra_parsers_r24",
+  "base": "af9ce1480",
+  "program": "/battlestationspacific.exe",
+  "source": [
+    "include/bsp/native_resource_extra_parser_singletons.hpp",
+    "src/native_resource_extra_parser_singletons.cpp"
+  ],
+  "coverage": {
+    "ordinary_functions": 8,
+    "ordinary_bytes": 610,
+    "getter_bytes": 412,
+    "primary_delete_bytes": 116,
+    "secondary_thunk_bytes": 16,
+    "name_bytes": 66,
+    "parse_targets_out_of_scope": ["00b8a910", "00b8a990"]
+  },
+  "table_dwords_00cfea34_00cfea57": [
+    "00735d90", "00737150", "00b8b050", "00b8a910",
+    "00735dc0", "00737190", "00b8b080", "00b8a990", "00737680"
+  ],
+  "families": [
+    {
+      "type": "AnimationChannels",
+      "getter": "00736dd0",
+      "publication": "01090298",
+      "eh_handler": "00c860c8",
+      "initial_profile": "00cfea08",
+      "primary_profile": "00cfea38",
+      "secondary_profile": "00cfea34",
+      "secondary_delete": "00735d90",
+      "primary_delete": "00737150",
+      "name": "00b8b050",
+      "literal": "00d633ac",
+      "parse_out_of_scope": "00b8a910"
+    },
+    {
+      "type": "Bone",
+      "getter": "00736ea0",
+      "publication": "0109029c",
+      "eh_handler": "00c860e8",
+      "initial_profile": "00cfea0c",
+      "primary_profile": "00cfea48",
+      "secondary_profile": "00cfea44",
+      "secondary_delete": "00735dc0",
+      "primary_delete": "00737190",
+      "name": "00b8b080",
+      "literal": "00d633c0",
+      "parse_out_of_scope": "00b8a990"
+    }
+  ],
+  "getter_direct_calls": ["00415350", "00bf681b", "00bd0c30"],
+  "getter_import_calls": ["EnterCriticalSection", "LeaveCriticalSection"],
+  "old_ghidra_metadata": [
+    {"address":"00735d90","name":"FUN_00735d90","comment":null},
+    {"address":"00736dd0","name":"BSP_AnimationChannelsParser_GetSingleton","comment":"[BSP reconstruction 00736dd0]\nLazily construct8-byte AnimationChannels parser singleton with primaryvtable00cfea38 and lifetime subobject+4 using existing lock/registration. Parser virtual+8 target00b8a910 remains separately reconstructed. Original ABI: No caller arguments; EAX singleton; plain RET. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."},
+    {"address":"00737150","name":"CG_scalar_deleting_dtor_00737150","comment":null},
+    {"address":"00b8b050","name":"BSP_AnimationChannelsParser_GetTypeName","comment":"[BSP reconstruction 00b8b050]\nConstruct exact native type literal AnimationChannels into hidden owned output string.33-byte complete body; spelling is native. Original ABI: Incoming parser ECX unused; hidden output string pointer stack; EAX output; RET4. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."},
+    {"address":"00735dc0","name":"FUN_00735dc0","comment":null},
+    {"address":"00736ea0","name":"BSP_BoneParser_GetSingleton","comment":"[BSP reconstruction 00736ea0]\nLazily construct8-byte Bone parser singleton with primaryvtable00cfea48 and lifetime subobject+4 using existing lock/registration. Parser virtual+8 target00b8a990 remains separately reconstructed. Original ABI: No caller arguments; EAX singleton; plain RET. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."},
+    {"address":"00737190","name":"CG_scalar_deleting_dtor_00737190","comment":null},
+    {"address":"00b8b080","name":"BSP_BoneParser_GetTypeName","comment":"[BSP reconstruction 00b8b080]\nConstruct exact native type literal Bone into hidden owned output string.33-byte complete body; spelling is native. Original ABI: Incoming parser ECX unused; hidden output string pointer stack; EAX output; RET4. Evidence: docs/RESOURCE_MANAGER_REGISTRATION.md; reports/resource_manager_registration_audit.json. Descriptive name is a hypothesis; no native ABI or gameplay validation."}
+  ],
+  "validation": {
+    "msvc_win32_strict_build": "passed",
+    "ctest_at_packet_base": "2/2 passed",
+    "ghidra_export_seeds": "8/8 matched disk",
+    "source_file_compiled": true,
+    "abi_compatible": false,
+    "game_validated": false
+  }
+}
