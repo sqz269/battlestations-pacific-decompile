@@ -18,8 +18,20 @@
       "original_abi": "ECX actual8h string; stack requested length,signed low-byte fill; RET8",
       "symbol": "resize_native_particle_string_fill_0043bbf0(void*,uint32_t,int8_t,NativeStringRawPoolContext&)",
       "coverage": "complete",
-      "old_documentation": {"hash": "92564b261fcb85623928413e03b718ae0e726ffd14b0528082a729ec2421468b", "name": "BSP_NativeString_ResizeAndFill", "completeness_score": 100.0},
-      "prior_reconstruction_records": [{"kind": "function", "name": "resize_native_particle_string_fill_0043bbf0", "source": "src/native_particle_type_property.cpp", "header": "include/bsp/native_particle_type_property.hpp", "status": "reconstructed_build_tested_bounded_fixture_tested"}]
+      "old_documentation": {
+        "hash": "92564b261fcb85623928413e03b718ae0e726ffd14b0528082a729ec2421468b",
+        "name": "BSP_NativeString_ResizeAndFill",
+        "completeness_score": 100.0
+      },
+      "prior_reconstruction_records": [
+        {
+          "kind": "function",
+          "name": "resize_native_particle_string_fill_0043bbf0",
+          "source": "src/native_particle_type_property.cpp",
+          "header": "include/bsp/native_particle_type_property.hpp",
+          "status": "reconstructed_build_tested_bounded_fixture_tested"
+        }
+      ]
     },
     {
       "address": "004cad40",
@@ -30,8 +42,20 @@
       "original_abi": "ECX actual8h string; stack search8h,replacement8h,count; RET0C",
       "symbol": "replace_native_particle_string_substrings_004cad40(void*,const void*,const void*,uint32_t,NativeStringRawPoolContext&)",
       "coverage": "complete",
-      "old_documentation": {"hash": "40518b695c0bc9681ad9d8b293740bf1c7c4729a6eb300d940dd62b7ad07dc5a", "name": "BSP_String_ReplaceSubstrings", "completeness_score": 100.0},
-      "prior_reconstruction_records": [{"kind": "function", "name": "replace_native_particle_string_substrings_004cad40", "source": "src/native_particle_type_property.cpp", "header": "include/bsp/native_particle_type_property.hpp", "status": "reconstructed_build_tested_bounded_fixture_tested"}]
+      "old_documentation": {
+        "hash": "40518b695c0bc9681ad9d8b293740bf1c7c4729a6eb300d940dd62b7ad07dc5a",
+        "name": "BSP_String_ReplaceSubstrings",
+        "completeness_score": 100.0
+      },
+      "prior_reconstruction_records": [
+        {
+          "kind": "function",
+          "name": "replace_native_particle_string_substrings_004cad40",
+          "source": "src/native_particle_type_property.cpp",
+          "header": "include/bsp/native_particle_type_property.hpp",
+          "status": "reconstructed_build_tested_bounded_fixture_tested"
+        }
+      ]
     },
     {
       "address": "00aefb20",
@@ -42,10 +66,27 @@
       "original_abi": "ECX actual atlas manager; stack filename; RET4/EAX borrowed raw30h item",
       "symbol": "find_native_particle_atlas_item_00aefb20(void*,const char*,NativeStringRawPoolContext&,const char*)",
       "coverage": "complete",
-      "old_documentation": {"hash": "85c0eef850bffd81499ec86e5dc8d535ebcc59f24e930fbefc4d8761e43adda1", "name": "BSP_TextureAtlas_FindItem", "completeness_score": 100.0},
+      "old_documentation": {
+        "hash": "85c0eef850bffd81499ec86e5dc8d535ebcc59f24e930fbefc4d8761e43adda1",
+        "name": "BSP_TextureAtlas_FindItem",
+        "completeness_score": 100.0
+      },
       "prior_reconstruction_records": [
-        {"kind": "fragment", "name": "find_native_particle_atlas_item_00aefb20", "source": "src/native_particle_type_property.cpp", "header": "include/bsp/native_particle_type_property.hpp", "status": "reconstructed_build_tested_bounded_fixture_tested", "scope": "complete native body refinement over actual storage/current globals; existing interface retained"},
-        {"kind": "function", "name": "find_texture_atlas_item", "source": "src/texture_atlas_lookup.cpp", "status": "semantic_installed_atlas_resolver_probe_checked", "abi_compatible": false}
+        {
+          "kind": "fragment",
+          "name": "find_native_particle_atlas_item_00aefb20",
+          "source": "src/native_particle_type_property.cpp",
+          "header": "include/bsp/native_particle_type_property.hpp",
+          "status": "reconstructed_build_tested_bounded_fixture_tested",
+          "scope": "complete native body refinement over actual storage/current globals; existing interface retained"
+        },
+        {
+          "kind": "function",
+          "name": "find_texture_atlas_item",
+          "source": "src/texture_atlas_lookup.cpp",
+          "status": "semantic_installed_atlas_resolver_probe_checked",
+          "abi_compatible": false
+        }
       ]
     },
     {
@@ -57,8 +98,20 @@
       "original_abi": "ECX output8h, EDX filename; RET/EAX output",
       "symbol": "construct_native_particle_texture_stem_00af37d0(void*,const char*,NativeStringRawPoolContext&)",
       "coverage": "complete",
-      "old_documentation": {"hash": "9409526bb820aeb1742af9e1825c2532be72cf4fb7ba6a94e6374e275e1866a7", "name": "BSP_ParticleTexture_ConstructStem", "completeness_score": 100.0},
-      "prior_reconstruction_records": [{"kind": "function", "name": "construct_native_particle_texture_stem_00af37d0", "source": "src/native_particle_type_property.cpp", "header": "include/bsp/native_particle_type_property.hpp", "status": "reconstructed_build_tested_bounded_fixture_tested"}]
+      "old_documentation": {
+        "hash": "9409526bb820aeb1742af9e1825c2532be72cf4fb7ba6a94e6374e275e1866a7",
+        "name": "BSP_ParticleTexture_ConstructStem",
+        "completeness_score": 100.0
+      },
+      "prior_reconstruction_records": [
+        {
+          "kind": "function",
+          "name": "construct_native_particle_texture_stem_00af37d0",
+          "source": "src/native_particle_type_property.cpp",
+          "header": "include/bsp/native_particle_type_property.hpp",
+          "status": "reconstructed_build_tested_bounded_fixture_tested"
+        }
+      ]
     },
     {
       "address": "00af38b0",
@@ -69,8 +122,20 @@
       "original_abi": "ECX output8h, EDX filename; RET/EAX output",
       "symbol": "construct_native_particle_texture_extension_00af38b0(void*,const char*,NativeStringRawPoolContext&)",
       "coverage": "complete",
-      "old_documentation": {"hash": "77fe0bc1bb76fd4a2f36d78dc3f87e90c92423330a700d3435abcc74beea8b07", "name": "BSP_ParticleTexture_ConstructExtension", "completeness_score": 100.0},
-      "prior_reconstruction_records": [{"kind": "function", "name": "construct_native_particle_texture_extension_00af38b0", "source": "src/native_particle_type_property.cpp", "header": "include/bsp/native_particle_type_property.hpp", "status": "reconstructed_build_tested_bounded_fixture_tested"}]
+      "old_documentation": {
+        "hash": "77fe0bc1bb76fd4a2f36d78dc3f87e90c92423330a700d3435abcc74beea8b07",
+        "name": "BSP_ParticleTexture_ConstructExtension",
+        "completeness_score": 100.0
+      },
+      "prior_reconstruction_records": [
+        {
+          "kind": "function",
+          "name": "construct_native_particle_texture_extension_00af38b0",
+          "source": "src/native_particle_type_property.cpp",
+          "header": "include/bsp/native_particle_type_property.hpp",
+          "status": "reconstructed_build_tested_bounded_fixture_tested"
+        }
+      ]
     },
     {
       "address": "00af3960",
@@ -81,8 +146,20 @@
       "original_abi": "ESI output8h, EAX stem; RET/EAX output; custom register storage required",
       "symbol": "construct_native_particle_texture_prefix_00af3960(void*,const char*,NativeStringRawPoolContext&)",
       "coverage": "complete",
-      "old_documentation": {"hash": "07ccc0bf7e95b282f1c044913466165199d1096425e531a57b528c5d2a77c3e6", "name": "BSP_ParticleTexture_ConstructPrefix", "completeness_score": 100.0},
-      "prior_reconstruction_records": [{"kind": "function", "name": "construct_native_particle_texture_prefix_00af3960", "source": "src/native_particle_type_property.cpp", "header": "include/bsp/native_particle_type_property.hpp", "status": "reconstructed_build_tested_bounded_fixture_tested"}]
+      "old_documentation": {
+        "hash": "07ccc0bf7e95b282f1c044913466165199d1096425e531a57b528c5d2a77c3e6",
+        "name": "BSP_ParticleTexture_ConstructPrefix",
+        "completeness_score": 100.0
+      },
+      "prior_reconstruction_records": [
+        {
+          "kind": "function",
+          "name": "construct_native_particle_texture_prefix_00af3960",
+          "source": "src/native_particle_type_property.cpp",
+          "header": "include/bsp/native_particle_type_property.hpp",
+          "status": "reconstructed_build_tested_bounded_fixture_tested"
+        }
+      ]
     },
     {
       "address": "00af3a20",
@@ -93,8 +170,20 @@
       "original_abi": "ECX filename; EDX unused; RET/EAX signed count",
       "symbol": "count_native_particle_texture_frames_00af3a20(const char*,NativeParticleTextureNamesRawContext&)",
       "coverage": "complete",
-      "old_documentation": {"hash": "9637454a6c92c41015a126b9cc3281d4c0d092213fa9ef430f326e98c30bcdb5", "name": "BSP_ParticleTexture_CountFrames", "completeness_score": 100.0},
-      "prior_reconstruction_records": [{"kind": "function", "name": "count_native_particle_texture_frames_00af3a20", "source": "src/native_particle_type_property.cpp", "header": "include/bsp/native_particle_type_property.hpp", "status": "reconstructed_build_tested_bounded_fixture_tested"}]
+      "old_documentation": {
+        "hash": "9637454a6c92c41015a126b9cc3281d4c0d092213fa9ef430f326e98c30bcdb5",
+        "name": "BSP_ParticleTexture_CountFrames",
+        "completeness_score": 100.0
+      },
+      "prior_reconstruction_records": [
+        {
+          "kind": "function",
+          "name": "count_native_particle_texture_frames_00af3a20",
+          "source": "src/native_particle_type_property.cpp",
+          "header": "include/bsp/native_particle_type_property.hpp",
+          "status": "reconstructed_build_tested_bounded_fixture_tested"
+        }
+      ]
     },
     {
       "address": "00af3b50",
@@ -105,112 +194,629 @@
       "original_abi": "ECX output8h, EDX filename, stack index; RET4/EAX output",
       "symbol": "construct_native_particle_texture_frame_name_00af3b50(void*,const char*,int32_t,NativeParticleTextureNamesRawContext&)",
       "coverage": "complete",
-      "old_documentation": {"hash": "0606b75ba6d1aee5b3a616e034b7fa86788248bb207ae97748ff96d349e3ec72", "name": "BSP_ParticleTexture_ConstructFrameName", "completeness_score": 100.0},
-      "prior_reconstruction_records": [{"kind": "function", "name": "construct_native_particle_texture_frame_name_00af3b50", "source": "src/native_particle_type_property.cpp", "header": "include/bsp/native_particle_type_property.hpp", "status": "reconstructed_build_tested_bounded_fixture_tested"}]
+      "old_documentation": {
+        "hash": "0606b75ba6d1aee5b3a616e034b7fa86788248bb207ae97748ff96d349e3ec72",
+        "name": "BSP_ParticleTexture_ConstructFrameName",
+        "completeness_score": 100.0
+      },
+      "prior_reconstruction_records": [
+        {
+          "kind": "function",
+          "name": "construct_native_particle_texture_frame_name_00af3b50",
+          "source": "src/native_particle_type_property.cpp",
+          "header": "include/bsp/native_particle_type_property.hpp",
+          "status": "reconstructed_build_tested_bounded_fixture_tested"
+        }
+      ]
     }
   ],
   "native_calls": [
-    {"function": "0043bbf0", "address": "0043bbfd", "native": "0041dd40", "contract": "actual-header resize; current raw pool"},
-    {"function": "0043bbf0", "address": "0043bc17", "native": "00bf79f0", "contract": "CRT memset"},
-    {"function": "004cad40", "address": "004cad70", "native": "00bf9440", "contract": "CRT strstr"},
-    {"function": "004cad40", "address": "004cadaa", "native": "00469840", "contract": "raw-header substring"},
-    {"function": "004cad40", "address": "004cadd5", "native": "004261a0", "contract": "raw-header concatenation"},
-    {"function": "004cad40", "address": "004cadfe", "native": "0041dd40", "contract": "actual-header resize"},
-    {"function": "004cad40", "address": "004cae13", "native": "00bf7680", "contract": "overlap-capable native byte copy"},
-    {"function": "004cad40", "address": "004cae33", "native": "00419cc0", "contract": "current string pool getter"},
-    {"function": "004cad40", "address": "004cae3a", "native": "00bd1510", "contract": "sized pool return"},
-    {"function": "00af37d0", "address": "00af37fd", "native": "0041e870", "contract": "construct nonnull C string header"},
-    {"function": "00af37d0", "address": "00af381e", "native": "0041dd40", "contract": "actual-header resize"},
-    {"function": "00af37d0", "address": "00af3839", "native": "00bf7680", "contract": "native byte copy"},
-    {"function": "00af37d0", "address": "00af384d", "native": "00467cf0", "contract": "reverse-find actual string header"},
-    {"function": "00af37d0", "address": "00af3863", "native": "00419cc0", "contract": "current string pool getter"},
-    {"function": "00af37d0", "address": "00af386a", "native": "00bd1510", "contract": "sized pool return"},
-    {"function": "00af37d0", "address": "00af3891", "native": "00bf79f0", "contract": "CRT memset"},
-    {"function": "00af38b0", "address": "00af3930", "native": "0041dd40", "contract": "actual-header resize"},
-    {"function": "00af38b0", "address": "00af3948", "native": "00bf7680", "contract": "native byte copy"},
-    {"function": "00af3960", "address": "00af39d5", "native": "0041dd40", "contract": "actual-header resize"},
-    {"function": "00af3960", "address": "00af39ed", "native": "00bf7680", "contract": "native byte copy"},
-    {"function": "00af3a20", "address": "00af3a40", "native": "00af37d0", "contract": "construct extension-stripped stem"},
-    {"function": "00af3a20", "address": "00af3a5c", "native": "00af3750", "contract": "three-zero suffix predicate"},
-    {"function": "00af3a20", "address": "00af3a78", "native": "00af3960", "contract": "construct numbered-frame prefix"},
-    {"function": "00af3a20", "address": "00af3a9f", "native": "00bf7a6a", "contract": "CRT sprintf; four caller arguments cleaned at 00af3aa4 ADD ESP,10h"},
-    {"function": "00af3a20", "address": "00af3ab2", "native": "00aefb20", "contract": "actual atlas lookup"},
-    {"function": "00af3a20", "address": "00af3ad4", "native": "00419cc0", "contract": "current string pool getter"},
-    {"function": "00af3a20", "address": "00af3adb", "native": "00bd1510", "contract": "sized pool return"},
-    {"function": "00af3b50", "address": "00af3b7e", "native": "00af37d0", "contract": "construct extension-stripped stem"},
-    {"function": "00af3b50", "address": "00af3b9c", "native": "00af3960", "contract": "construct numbered-frame prefix"},
-    {"function": "00af3b50", "address": "00af3bac", "native": "00af38b0", "contract": "construct filename extension"},
-    {"function": "00af3b50", "address": "00af3bc5", "native": "00bf7a6a", "contract": "CRT sprintf; three caller arguments cleaned at 00af3bce ADD ESP,0Ch"},
-    {"function": "00af3b50", "address": "00af3bf2", "native": "0041dd40", "contract": "actual-header resize"},
-    {"function": "00af3b50", "address": "00af3c0d", "native": "00bf7680", "contract": "native byte copy"},
-    {"function": "00af3b50", "address": "00af3c28", "native": "004261a0", "contract": "raw-header concatenation"},
-    {"function": "00af3b50", "address": "00af3ca1", "native": "00419cc0", "contract": "current string pool getter"},
-    {"function": "00af3b50", "address": "00af3ca8", "native": "00bd1510", "contract": "sized pool return"},
-    {"function": "00aefb20", "address": "00aefb61", "native": "0041e870", "contract": "construct nonnull C string header"},
-    {"function": "00aefb20", "address": "00aefb86", "native": "00467cf0", "contract": "reverse-find actual string header"},
-    {"function": "00aefb20", "address": "00aefba0", "native": "00419cc0", "contract": "current string pool getter"},
-    {"function": "00aefb20", "address": "00aefba7", "native": "00bd1510", "contract": "sized pool return"},
-    {"function": "00aefb20", "address": "00aefbb8", "native": "0043bbf0", "contract": "resize and fill query at last dot"},
-    {"function": "00aefb20", "address": "00aefbf6", "native": "004cad40", "contract": "replace backslashes with slashes"},
-    {"function": "00aefb20", "address": "00aefc62", "native": "00469840", "contract": "raw-header substring"},
-    {"function": "00aefb20", "address": "00aefc7c", "native": "0041dd40", "contract": "actual-header resize"},
-    {"function": "00aefb20", "address": "00aefc94", "native": "00bf7680", "contract": "native byte copy"},
-    {"function": "00aefb20", "address": "00aefccf", "native": "004bcc00", "contract": "ASCII lowercase over current header"},
-    {"function": "00aefb20", "address": "00aefced", "native": "00aee0f0", "contract": "actual atlas item/query name match"},
-    {"function": "00aefb20", "address": "00aefe68", "native": "00bf7fbf", "contract": "CRT case-insensitive comparison"},
-    {"function": "00aefb20", "address": "00aefe97", "native": "0043e9a0", "contract": "case-sensitive match at offset"},
-    {"function": "004cad40", "address": "004cadc3", "native": "00469840", "contract": "raw-header prefix substring"},
-    {"function": "004cad40", "address": "004cade7", "native": "004261a0", "contract": "append suffix to replacement head"},
-    {"function": "004cad40", "address": "004cae57", "native": "00419cc0", "contract": "current pool getter for head return"},
-    {"function": "004cad40", "address": "004cae5e", "native": "00bd1510", "contract": "head block return"},
-    {"function": "004cad40", "address": "004cae7b", "native": "00419cc0", "contract": "current pool getter for prefix return"},
-    {"function": "004cad40", "address": "004cae82", "native": "00bd1510", "contract": "prefix block return"},
-    {"function": "004cad40", "address": "004caea2", "native": "00419cc0", "contract": "current pool getter for suffix return"},
-    {"function": "004cad40", "address": "004caea9", "native": "00bd1510", "contract": "suffix block return"},
-    {"function": "004cad40", "address": "004caed4", "native": "00bf9440", "contract": "resume CRT strstr"},
-    {"function": "00af37d0", "address": "00af387b", "native": "0041dd40", "contract": "resize stem at last dot"},
-    {"function": "00af3a20", "address": "00af3afb", "native": "00419cc0", "contract": "current pool getter for stem return"},
-    {"function": "00af3a20", "address": "00af3b02", "native": "00bd1510", "contract": "stem block return"},
-    {"function": "00af3a20", "address": "00af3b31", "native": "00419cc0", "contract": "current pool getter for no-suffix stem return"},
-    {"function": "00af3a20", "address": "00af3b38", "native": "00bd1510", "contract": "no-suffix stem block return"},
-    {"function": "00af3b50", "address": "00af3c3f", "native": "004261a0", "contract": "append extension to numbered head"},
-    {"function": "00af3b50", "address": "00af3c64", "native": "0041dd40", "contract": "resize final output"},
-    {"function": "00af3b50", "address": "00af3c7a", "native": "00bf7680", "contract": "copy final output bytes"},
-    {"function": "00af3b50", "address": "00af3cc5", "native": "00419cc0", "contract": "current pool getter for head return"},
-    {"function": "00af3b50", "address": "00af3ccc", "native": "00bd1510", "contract": "head block return"},
-    {"function": "00af3b50", "address": "00af3ce5", "native": "00419cc0", "contract": "current pool getter for number return"},
-    {"function": "00af3b50", "address": "00af3cec", "native": "00bd1510", "contract": "number block return"},
-    {"function": "00af3b50", "address": "00af3d09", "native": "00419cc0", "contract": "current pool getter for extension return"},
-    {"function": "00af3b50", "address": "00af3d10", "native": "00bd1510", "contract": "extension block return"},
-    {"function": "00af3b50", "address": "00af3d2d", "native": "00419cc0", "contract": "current pool getter for prefix return"},
-    {"function": "00af3b50", "address": "00af3d34", "native": "00bd1510", "contract": "prefix block return"},
-    {"function": "00af3b50", "address": "00af3d51", "native": "00419cc0", "contract": "current pool getter for stem return"},
-    {"function": "00af3b50", "address": "00af3d58", "native": "00bd1510", "contract": "stem block return"},
-    {"function": "00aefb20", "address": "00aefb73", "native": "0041e870", "contract": "construct dot delimiter header"},
-    {"function": "00aefb20", "address": "00aefbc6", "native": "0041e870", "contract": "construct slash replacement header"},
-    {"function": "00aefb20", "address": "00aefbd9", "native": "0041e870", "contract": "construct backslash search header"},
-    {"function": "00aefb20", "address": "00aefc13", "native": "00419cc0", "contract": "current pool getter for backslash return"},
-    {"function": "00aefb20", "address": "00aefc1a", "native": "00bd1510", "contract": "backslash block return"},
-    {"function": "00aefb20", "address": "00aefc37", "native": "00419cc0", "contract": "current pool getter for slash return"},
-    {"function": "00aefb20", "address": "00aefc3e", "native": "00bd1510", "contract": "slash block return"},
-    {"function": "00aefb20", "address": "00aefcb4", "native": "00419cc0", "contract": "current pool getter for leading-slash suffix return"},
-    {"function": "00aefb20", "address": "00aefcbb", "native": "00bd1510", "contract": "leading-slash suffix block return"},
-    {"function": "00aefb20", "address": "00aefd12", "native": "0041dd40", "contract": "construct slash delimiter header through resize"},
-    {"function": "00aefb20", "address": "00aefd2d", "native": "00bf7680", "contract": "copy slash delimiter bytes"},
-    {"function": "00aefb20", "address": "00aefd43", "native": "00467cf0", "contract": "reverse-find basename slash"},
-    {"function": "00aefb20", "address": "00aefd55", "native": "00419cc0", "contract": "current pool getter for basename delimiter return"},
-    {"function": "00aefb20", "address": "00aefd5c", "native": "00bd1510", "contract": "basename delimiter block return"},
-    {"function": "00aefb20", "address": "00aefd7b", "native": "00469840", "contract": "construct basename suffix"},
-    {"function": "00aefb20", "address": "00aefd98", "native": "0041dd40", "contract": "resize query for basename assignment"},
-    {"function": "00aefb20", "address": "00aefdb0", "native": "00bf7680", "contract": "copy basename query bytes"},
-    {"function": "00aefb20", "address": "00aefdd0", "native": "00419cc0", "contract": "current pool getter for basename suffix return"},
-    {"function": "00aefb20", "address": "00aefdd7", "native": "00bd1510", "contract": "basename suffix block return"},
-    {"function": "00aefb20", "address": "00aefe32", "native": "00419cc0", "contract": "current pool getter before first-scan hit return"},
-    {"function": "00aefb20", "address": "00aefe39", "native": "00bd1510", "contract": "query block return before first-scan hit"},
-    {"function": "00aefb20", "address": "00aefecb", "native": "00419cc0", "contract": "current pool getter before miss return"},
-    {"function": "00aefb20", "address": "00aefed2", "native": "00bd1510", "contract": "query block return before miss"},
-    {"function": "00aefb20", "address": "00aeff12", "native": "00419cc0", "contract": "current pool getter before basename-hit return"},
-    {"function": "00aefb20", "address": "00aeff19", "native": "00bd1510", "contract": "query block return before basename hit"}
+    {
+      "function": "0043bbf0",
+      "address": "0043bbfd",
+      "native": "0041dd40",
+      "contract": "actual-header resize; current raw pool"
+    },
+    {
+      "function": "0043bbf0",
+      "address": "0043bc17",
+      "native": "00bf79f0",
+      "contract": "CRT memset"
+    },
+    {
+      "function": "004cad40",
+      "address": "004cad70",
+      "native": "00bf9440",
+      "contract": "CRT strstr"
+    },
+    {
+      "function": "004cad40",
+      "address": "004cadaa",
+      "native": "00469840",
+      "contract": "raw-header substring"
+    },
+    {
+      "function": "004cad40",
+      "address": "004cadd5",
+      "native": "004261a0",
+      "contract": "raw-header concatenation"
+    },
+    {
+      "function": "004cad40",
+      "address": "004cadfe",
+      "native": "0041dd40",
+      "contract": "actual-header resize"
+    },
+    {
+      "function": "004cad40",
+      "address": "004cae13",
+      "native": "00bf7680",
+      "contract": "overlap-capable native byte copy"
+    },
+    {
+      "function": "004cad40",
+      "address": "004cae33",
+      "native": "00419cc0",
+      "contract": "current string pool getter"
+    },
+    {
+      "function": "004cad40",
+      "address": "004cae3a",
+      "native": "00bd1510",
+      "contract": "sized pool return"
+    },
+    {
+      "function": "00af37d0",
+      "address": "00af37fd",
+      "native": "0041e870",
+      "contract": "construct nonnull C string header"
+    },
+    {
+      "function": "00af37d0",
+      "address": "00af381e",
+      "native": "0041dd40",
+      "contract": "actual-header resize"
+    },
+    {
+      "function": "00af37d0",
+      "address": "00af3839",
+      "native": "00bf7680",
+      "contract": "native byte copy"
+    },
+    {
+      "function": "00af37d0",
+      "address": "00af384d",
+      "native": "00467cf0",
+      "contract": "reverse-find actual string header"
+    },
+    {
+      "function": "00af37d0",
+      "address": "00af3863",
+      "native": "00419cc0",
+      "contract": "current string pool getter"
+    },
+    {
+      "function": "00af37d0",
+      "address": "00af386a",
+      "native": "00bd1510",
+      "contract": "sized pool return"
+    },
+    {
+      "function": "00af37d0",
+      "address": "00af3891",
+      "native": "00bf79f0",
+      "contract": "CRT memset"
+    },
+    {
+      "function": "00af38b0",
+      "address": "00af3930",
+      "native": "0041dd40",
+      "contract": "actual-header resize"
+    },
+    {
+      "function": "00af38b0",
+      "address": "00af3948",
+      "native": "00bf7680",
+      "contract": "native byte copy"
+    },
+    {
+      "function": "00af3960",
+      "address": "00af39d5",
+      "native": "0041dd40",
+      "contract": "actual-header resize"
+    },
+    {
+      "function": "00af3960",
+      "address": "00af39ed",
+      "native": "00bf7680",
+      "contract": "native byte copy"
+    },
+    {
+      "function": "00af3a20",
+      "address": "00af3a40",
+      "native": "00af37d0",
+      "contract": "construct extension-stripped stem"
+    },
+    {
+      "function": "00af3a20",
+      "address": "00af3a5c",
+      "native": "00af3750",
+      "contract": "three-zero suffix predicate"
+    },
+    {
+      "function": "00af3a20",
+      "address": "00af3a78",
+      "native": "00af3960",
+      "contract": "construct numbered-frame prefix"
+    },
+    {
+      "function": "00af3a20",
+      "address": "00af3a9f",
+      "native": "00bf7a6a",
+      "contract": "CRT sprintf; four caller arguments cleaned at 00af3aa4 ADD ESP,10h"
+    },
+    {
+      "function": "00af3a20",
+      "address": "00af3ab2",
+      "native": "00aefb20",
+      "contract": "actual atlas lookup"
+    },
+    {
+      "function": "00af3a20",
+      "address": "00af3ad4",
+      "native": "00419cc0",
+      "contract": "current string pool getter"
+    },
+    {
+      "function": "00af3a20",
+      "address": "00af3adb",
+      "native": "00bd1510",
+      "contract": "sized pool return"
+    },
+    {
+      "function": "00af3b50",
+      "address": "00af3b7e",
+      "native": "00af37d0",
+      "contract": "construct extension-stripped stem"
+    },
+    {
+      "function": "00af3b50",
+      "address": "00af3b9c",
+      "native": "00af3960",
+      "contract": "construct numbered-frame prefix"
+    },
+    {
+      "function": "00af3b50",
+      "address": "00af3bac",
+      "native": "00af38b0",
+      "contract": "construct filename extension"
+    },
+    {
+      "function": "00af3b50",
+      "address": "00af3bc5",
+      "native": "00bf7a6a",
+      "contract": "CRT sprintf; three caller arguments cleaned at 00af3bce ADD ESP,0Ch"
+    },
+    {
+      "function": "00af3b50",
+      "address": "00af3bf2",
+      "native": "0041dd40",
+      "contract": "actual-header resize"
+    },
+    {
+      "function": "00af3b50",
+      "address": "00af3c0d",
+      "native": "00bf7680",
+      "contract": "native byte copy"
+    },
+    {
+      "function": "00af3b50",
+      "address": "00af3c28",
+      "native": "004261a0",
+      "contract": "raw-header concatenation"
+    },
+    {
+      "function": "00af3b50",
+      "address": "00af3ca1",
+      "native": "00419cc0",
+      "contract": "current string pool getter"
+    },
+    {
+      "function": "00af3b50",
+      "address": "00af3ca8",
+      "native": "00bd1510",
+      "contract": "sized pool return"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefb61",
+      "native": "0041e870",
+      "contract": "construct nonnull C string header"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefb86",
+      "native": "00467cf0",
+      "contract": "reverse-find actual string header"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefba0",
+      "native": "00419cc0",
+      "contract": "current string pool getter"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefba7",
+      "native": "00bd1510",
+      "contract": "sized pool return"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefbb8",
+      "native": "0043bbf0",
+      "contract": "resize and fill query at last dot"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefbf6",
+      "native": "004cad40",
+      "contract": "replace backslashes with slashes"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefc62",
+      "native": "00469840",
+      "contract": "raw-header substring"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefc7c",
+      "native": "0041dd40",
+      "contract": "actual-header resize"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefc94",
+      "native": "00bf7680",
+      "contract": "native byte copy"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefccf",
+      "native": "004bcc00",
+      "contract": "ASCII lowercase over current header"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefced",
+      "native": "00aee0f0",
+      "contract": "actual atlas item/query name match"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefe68",
+      "native": "00bf7fbf",
+      "contract": "CRT case-insensitive comparison"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefe97",
+      "native": "0043e9a0",
+      "contract": "case-sensitive match at offset"
+    },
+    {
+      "function": "004cad40",
+      "address": "004cadc3",
+      "native": "00469840",
+      "contract": "raw-header prefix substring"
+    },
+    {
+      "function": "004cad40",
+      "address": "004cade7",
+      "native": "004261a0",
+      "contract": "append suffix to replacement head"
+    },
+    {
+      "function": "004cad40",
+      "address": "004cae57",
+      "native": "00419cc0",
+      "contract": "current pool getter for head return"
+    },
+    {
+      "function": "004cad40",
+      "address": "004cae5e",
+      "native": "00bd1510",
+      "contract": "head block return"
+    },
+    {
+      "function": "004cad40",
+      "address": "004cae7b",
+      "native": "00419cc0",
+      "contract": "current pool getter for prefix return"
+    },
+    {
+      "function": "004cad40",
+      "address": "004cae82",
+      "native": "00bd1510",
+      "contract": "prefix block return"
+    },
+    {
+      "function": "004cad40",
+      "address": "004caea2",
+      "native": "00419cc0",
+      "contract": "current pool getter for suffix return"
+    },
+    {
+      "function": "004cad40",
+      "address": "004caea9",
+      "native": "00bd1510",
+      "contract": "suffix block return"
+    },
+    {
+      "function": "004cad40",
+      "address": "004caed4",
+      "native": "00bf9440",
+      "contract": "resume CRT strstr"
+    },
+    {
+      "function": "00af37d0",
+      "address": "00af387b",
+      "native": "0041dd40",
+      "contract": "resize stem at last dot"
+    },
+    {
+      "function": "00af3a20",
+      "address": "00af3afb",
+      "native": "00419cc0",
+      "contract": "current pool getter for stem return"
+    },
+    {
+      "function": "00af3a20",
+      "address": "00af3b02",
+      "native": "00bd1510",
+      "contract": "stem block return"
+    },
+    {
+      "function": "00af3a20",
+      "address": "00af3b31",
+      "native": "00419cc0",
+      "contract": "current pool getter for no-suffix stem return"
+    },
+    {
+      "function": "00af3a20",
+      "address": "00af3b38",
+      "native": "00bd1510",
+      "contract": "no-suffix stem block return"
+    },
+    {
+      "function": "00af3b50",
+      "address": "00af3c3f",
+      "native": "004261a0",
+      "contract": "append extension to numbered head"
+    },
+    {
+      "function": "00af3b50",
+      "address": "00af3c64",
+      "native": "0041dd40",
+      "contract": "resize final output"
+    },
+    {
+      "function": "00af3b50",
+      "address": "00af3c7a",
+      "native": "00bf7680",
+      "contract": "copy final output bytes"
+    },
+    {
+      "function": "00af3b50",
+      "address": "00af3cc5",
+      "native": "00419cc0",
+      "contract": "current pool getter for head return"
+    },
+    {
+      "function": "00af3b50",
+      "address": "00af3ccc",
+      "native": "00bd1510",
+      "contract": "head block return"
+    },
+    {
+      "function": "00af3b50",
+      "address": "00af3ce5",
+      "native": "00419cc0",
+      "contract": "current pool getter for number return"
+    },
+    {
+      "function": "00af3b50",
+      "address": "00af3cec",
+      "native": "00bd1510",
+      "contract": "number block return"
+    },
+    {
+      "function": "00af3b50",
+      "address": "00af3d09",
+      "native": "00419cc0",
+      "contract": "current pool getter for extension return"
+    },
+    {
+      "function": "00af3b50",
+      "address": "00af3d10",
+      "native": "00bd1510",
+      "contract": "extension block return"
+    },
+    {
+      "function": "00af3b50",
+      "address": "00af3d2d",
+      "native": "00419cc0",
+      "contract": "current pool getter for prefix return"
+    },
+    {
+      "function": "00af3b50",
+      "address": "00af3d34",
+      "native": "00bd1510",
+      "contract": "prefix block return"
+    },
+    {
+      "function": "00af3b50",
+      "address": "00af3d51",
+      "native": "00419cc0",
+      "contract": "current pool getter for stem return"
+    },
+    {
+      "function": "00af3b50",
+      "address": "00af3d58",
+      "native": "00bd1510",
+      "contract": "stem block return"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefb73",
+      "native": "0041e870",
+      "contract": "construct dot delimiter header"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefbc6",
+      "native": "0041e870",
+      "contract": "construct slash replacement header"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefbd9",
+      "native": "0041e870",
+      "contract": "construct backslash search header"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefc13",
+      "native": "00419cc0",
+      "contract": "current pool getter for backslash return"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefc1a",
+      "native": "00bd1510",
+      "contract": "backslash block return"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefc37",
+      "native": "00419cc0",
+      "contract": "current pool getter for slash return"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefc3e",
+      "native": "00bd1510",
+      "contract": "slash block return"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefcb4",
+      "native": "00419cc0",
+      "contract": "current pool getter for leading-slash suffix return"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefcbb",
+      "native": "00bd1510",
+      "contract": "leading-slash suffix block return"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefd12",
+      "native": "0041dd40",
+      "contract": "construct slash delimiter header through resize"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefd2d",
+      "native": "00bf7680",
+      "contract": "copy slash delimiter bytes"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefd43",
+      "native": "00467cf0",
+      "contract": "reverse-find basename slash"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefd55",
+      "native": "00419cc0",
+      "contract": "current pool getter for basename delimiter return"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefd5c",
+      "native": "00bd1510",
+      "contract": "basename delimiter block return"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefd7b",
+      "native": "00469840",
+      "contract": "construct basename suffix"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefd98",
+      "native": "0041dd40",
+      "contract": "resize query for basename assignment"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefdb0",
+      "native": "00bf7680",
+      "contract": "copy basename query bytes"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefdd0",
+      "native": "00419cc0",
+      "contract": "current pool getter for basename suffix return"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefdd7",
+      "native": "00bd1510",
+      "contract": "basename suffix block return"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefe32",
+      "native": "00419cc0",
+      "contract": "current pool getter before first-scan hit return"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefe39",
+      "native": "00bd1510",
+      "contract": "query block return before first-scan hit"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefecb",
+      "native": "00419cc0",
+      "contract": "current pool getter before miss return"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aefed2",
+      "native": "00bd1510",
+      "contract": "query block return before miss"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aeff12",
+      "native": "00419cc0",
+      "contract": "current pool getter before basename-hit return"
+    },
+    {
+      "function": "00aefb20",
+      "address": "00aeff19",
+      "native": "00bd1510",
+      "contract": "query block return before basename hit"
+    }
   ],
   "context_mapping": {
     "strings": "actual 01090AA8 string-pool publication, 01090AA0 manager publication and 01090AA4 return gate through NativeStringRawPoolContext",
@@ -243,8 +849,16 @@
     }
   ],
   "listing_gaps": [
-    {"address": "00aefcdd", "bytes": "8d4900", "meaning": "lea ecx,[ecx] alignment after unconditional jump; no Ghidra mutation"},
-    {"address": "00aefded", "bytes": "8d4900", "meaning": "lea ecx,[ecx] alignment after unconditional jump; no Ghidra mutation"}
+    {
+      "address": "00aefcdd",
+      "bytes": "8d4900",
+      "meaning": "lea ecx,[ecx] alignment after unconditional jump; no Ghidra mutation"
+    },
+    {
+      "address": "00aefded",
+      "bytes": "8d4900",
+      "meaning": "lea ecx,[ecx] alignment after unconditional jump; no Ghidra mutation"
+    }
   ],
   "validation": {
     "build": "./scripts/build.ps1 passed MSVC Win32 Release and both existing CTests",
@@ -1350,5 +1964,18 @@
       "Only normal input sequence and two alias cases; constructor/cleanup failures and original FH3 unexecuted.",
       "No binary substitution/ABI compatibility of new C++ interfaces, concurrency/malformed data or gameplay proof."
     ]
+  },
+  "integrator_validation_r18": {
+    "main_after_merge": "74b8c27bc",
+    "build": "PASS Release MSVC Win32; all3 existing CTests passed",
+    "probe": {
+      "exit_code": 0,
+      "output": "PASS checkpoint initial (9098588 bytes)\nPASS checkpoint stem (9098588 bytes)\nPASS checkpoint extension (9098588 bytes)\nPASS checkpoint prefix (9098588 bytes)\nPASS checkpoint frame_name (9098588 bytes)\nPASS checkpoint atlas_hit (9098588 bytes)\nPASS checkpoint frame_count (9098588 bytes)\nPASS checkpoint fill (9098588 bytes)\nPASS checkpoint replacement (9098588 bytes)\nPASS checkpoint search_alias (9098588 bytes)\nPASS checkpoint replacement_alias (9098588 bytes)\nPASS checkpoint cleanup (9098588 bytes)\nPASS: eight complete original bodies (2992 bytes), 12 initialized-storage checkpoints; genuine raw pool; normal filename/atlas/frame flow and two value-alias cases. Eleven callee source bridges plus five CRT bridges; original FH3/error paths/gameplay excluded.\n",
+      "executable_machine": "IMAGE_FILE_MACHINE_I386",
+      "embedded_manifest": true,
+      "source_sha256": "fb57ea62196906006c62164ac2710bc4379273b9c065b54f8170baac5ea50761",
+      "library_sha256": "2a9fb1d6d272faf65242ffa887597185e6b8a5a56112250dc1a74de73faec8c5"
+    },
+    "note": "Same corrected source and final combined root bsp_core; existing12checkpoint probe reused without adding tests."
   }
 }

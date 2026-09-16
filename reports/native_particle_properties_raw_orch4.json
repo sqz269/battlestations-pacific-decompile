@@ -102,7 +102,7 @@
       "function": "00b015c0",
       "address": "00b0162b",
       "native": "00bd1510",
-      "contract": "ECX current actual sized storage pool; stack captured pointer,current strlen+1; RET8. Inline normal string return preserves the header."
+      "contract": "ECX current actual sized storage pool; stack captured pointer,current strlen+1,unused=1; RET0Ch. Inline normal string return preserves the header."
     },
     {
       "function": "00b015c0",
@@ -126,7 +126,7 @@
       "function": "00b015c0",
       "address": "00b01689",
       "native": "00bd1510",
-      "contract": "ECX current actual sized storage pool; stack captured pointer,current strlen+1; RET8. Inline normal string return preserves the header."
+      "contract": "ECX current actual sized storage pool; stack captured pointer,current strlen+1,unused=1; RET0Ch. Inline normal string return preserves the header."
     },
     {
       "function": "00b015c0",
@@ -150,7 +150,7 @@
       "function": "00b015c0",
       "address": "00b016ec",
       "native": "00bd1510",
-      "contract": "ECX current actual sized storage pool; stack captured pointer,current strlen+1; RET8. Inline normal string return preserves the header."
+      "contract": "ECX current actual sized storage pool; stack captured pointer,current strlen+1,unused=1; RET0Ch. Inline normal string return preserves the header."
     },
     {
       "function": "00b015c0",
@@ -174,7 +174,7 @@
       "function": "00b015c0",
       "address": "00b01749",
       "native": "00bd1510",
-      "contract": "ECX current actual sized storage pool; stack captured pointer,current strlen+1; RET8. Inline normal string return preserves the header."
+      "contract": "ECX current actual sized storage pool; stack captured pointer,current strlen+1,unused=1; RET0Ch. Inline normal string return preserves the header."
     },
     {
       "function": "00b015c0",
@@ -198,7 +198,7 @@
       "function": "00b015c0",
       "address": "00b017a9",
       "native": "00bd1510",
-      "contract": "ECX current actual sized storage pool; stack captured pointer,current strlen+1; RET8. Inline normal string return preserves the header."
+      "contract": "ECX current actual sized storage pool; stack captured pointer,current strlen+1,unused=1; RET0Ch. Inline normal string return preserves the header."
     },
     {
       "function": "00b015c0",
@@ -222,7 +222,7 @@
       "function": "00b015c0",
       "address": "00b0180c",
       "native": "00bd1510",
-      "contract": "ECX current actual sized storage pool; stack captured pointer,current strlen+1; RET8. Inline normal string return preserves the header."
+      "contract": "ECX current actual sized storage pool; stack captured pointer,current strlen+1,unused=1; RET0Ch. Inline normal string return preserves the header."
     },
     {
       "function": "00b015c0",
@@ -807,6 +807,12 @@
       "was": "Initial proposed context identified Sprite/Axial/Floating by constructor base tables D5DFF4/D5DF30/D5DFB0.",
       "evidence": "B00CE0 inline MOV [EDI],D5DD18 atB00D4A and MOV [EDI],D5DCC0 atB00D9F after base constructors; other final constructors and current table+10 bytes checked. Base-only profiles have no admitted caller proof.",
       "is": "Final source admits D5DD18/D5DCC0/D5DCEC and Object D5DB00/Tracer D5E048."
+    },
+    {
+      "kind": "documentation-only BD1510 ABI correction",
+      "prior_contract": "ECX current actual sized storage pool; stack captured pointer,current strlen+1; RET8. Inline normal string return preserves the header.",
+      "corrected_rows": 6,
+      "evidence": "BD156C RET0Ch; caller PUSH1,size,pointer. Source already uses genuine raw provider; no source behavior changed."
     }
   ],
   "ownership": {
