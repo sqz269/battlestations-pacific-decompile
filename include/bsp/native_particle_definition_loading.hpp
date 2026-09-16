@@ -5,6 +5,8 @@ namespace bsp {
 struct NativeParticleDefinitionBindings;
 struct NativeParticleParameterLoadingBindings;
 struct NativeParticleTypeFactoryBindings;
+struct NativeStringRawPoolContext;
+struct NativeParticleParameterRuntimeRawContext;
 
 // Borrow the SAME owner services and incoming native TextBuffer. The shared
 // scratch is the relocated F8C2C8 buffer; capacity and reentrancy are native
@@ -44,6 +46,29 @@ void set_native_particle_emit_emission_type_00afa4e0(void*, const char*,
 // ECX definition, stack four-byte pooled suffix header, RET4/AL bool.
 bool load_native_particle_definition_flag_00afa650(void*, const void*,
     NativeParticleDefinitionLoadingBindings&);
+
+// Complete raw-domain overloads of the same four bodies. Base-parameter input
+// is the actual definition, 4h pooled name, 10h builder and original binary32
+// scalar. The runtime context borrows the SAME F8D344 pool. The scale pointer
+// itself is retained for the invocation; its volatile D7A358 double is loaded
+// only AFTER each genuine conversion. BornRatio stores first-value ST0 directly;
+// curve multipliers use FLD32/FMUL64/FSTP32 without a C++ float-return spill.
+bool load_native_particle_base_parameter_00af9d00(void*, const void*, void*, float,
+    NativeParticleParameterRuntimeRawContext&, const volatile double* actual_00d7a358);
+
+// Borrow the SAME raw string-pool/manager/gate cells. Enum input is a nonnull
+// C string; flag input is an actual 4h pooled header. Enum stores target +74/+78;
+// flag bytes are +15/+1D/+1C. Looping true also writes CURRENT *(owner+10)+66.
+// Current pointer captures, length reloads and recovered true-unwind ownership
+// are retained. Normal getter exceptions propagate; secondary unwind exceptions
+// terminate. No validation, rollback or cleanup for unowned temporaries is added.
+// These are C++ interfaces, not native stack-slot/register/FH3 replacements.
+void set_native_particle_part_emission_type_00afa370(void*, const char*,
+    NativeStringRawPoolContext&);
+void set_native_particle_emit_emission_type_00afa4e0(void*, const char*,
+    NativeStringRawPoolContext&);
+bool load_native_particle_definition_flag_00afa650(void*, const void*,
+    NativeStringRawPoolContext&);
 
 // ECX actual derived definition, stack actual TextBuffer, RET4, AL=1 on every
 // normal completion (including EOF without braces). High EAX is unspecified.
