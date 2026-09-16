@@ -28,5 +28,10 @@ void reserve_native_render_resource_record_array_00b2ff00(
 void resize_native_render_resource_record_array_00b30340(
     void* actual_array_header, std::uint32_t requested_count,
     SizedStoragePool& actual_string_pool, const SingletonLifetimeCallbacks&);
+// Same raw body through current 419CC0/BD1510 publication and actual pool.
+// Keeps the existing release noexcept and source exception-domain boundary.
+void resize_native_render_resource_record_array_00b30340(
+    void* actual_array_header, std::uint32_t requested_count,
+    ActualNativeStringPoolStorage&, const SingletonLifetimeCallbacks&);
 
 } // namespace bsp

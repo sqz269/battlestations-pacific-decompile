@@ -1,0 +1,509 @@
+{
+  "schema": 1,
+  "packet": "orch5_native_renderer_cache_cleanup",
+  "status": "complete_actual_cache_cleanup_and_pool_overload_strict_win32_and_focused_original_source_checked",
+  "created_utc": "2026-09-14T07:03:19.910203+00:00",
+  "base_commit": "3c85892ea6eab2e3663159c70ad9385a2fe38e45",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-cache-cleanup",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "owned_files": [
+    "include/bsp/native_renderer_cache_cleanup.hpp",
+    "src/native_renderer_cache_cleanup.cpp",
+    "docs/NATIVE_RENDERER_CACHE_CLEANUP.md",
+    "reports/native_renderer_cache_cleanup.json",
+    "include/bsp/native_render_resource_record_array.hpp",
+    "src/native_render_resource_record_array.cpp"
+  ],
+  "shared_append": "one deferred target_sources line under coordination.lease_transaction with unleased check",
+  "routines": [
+    {
+      "address": "00b30340",
+      "name": "resize_native_render_resource_record_array_00b30340",
+      "coverage": "complete",
+      "source": "src/native_render_resource_record_array.cpp",
+      "original_ABI": "ECX actual 12-byte header; signed request on stack; RET4",
+      "role": "existing_function_actual_pool_overload",
+      "source_ABI": "explicit borrowed-context C++ interface; not original caller/register/private-frame/SEH ABI",
+      "end": "00b3040c",
+      "bytes": 205
+    },
+    {
+      "address": "00b30410",
+      "name": "resize_native_effect_records_00b30410",
+      "coverage": "complete",
+      "source": "src/native_renderer_cache_cleanup.cpp",
+      "original_ABI": "ECX actual 12-byte header; signed request on stack; RET4",
+      "role": "new_complete_function",
+      "source_ABI": "explicit borrowed-context C++ interface; not original caller/register/private-frame/SEH ABI",
+      "end": "00b304db",
+      "bytes": 204
+    },
+    {
+      "address": "00b316c0",
+      "name": "clear_native_renderer_resource_cache_00b316c0",
+      "coverage": "complete",
+      "source": "src/native_renderer_cache_cleanup.cpp",
+      "original_ABI": "ECX actual owner/header; plain RET; no semantic return",
+      "role": "new_complete_function",
+      "source_ABI": "explicit borrowed-context C++ interface; not original caller/register/private-frame/SEH ABI",
+      "end": "00b31729",
+      "bytes": 106
+    },
+    {
+      "address": "00b31730",
+      "name": "destroy_native_renderer_resource_array_00b31730",
+      "coverage": "complete",
+      "source": "src/native_renderer_cache_cleanup.cpp",
+      "original_ABI": "ECX actual owner/header; plain RET; no semantic return",
+      "role": "new_complete_function",
+      "source_ABI": "explicit borrowed-context C++ interface; not original caller/register/private-frame/SEH ABI",
+      "end": "00b31746",
+      "bytes": 23
+    },
+    {
+      "address": "00b32090",
+      "name": "destroy_native_renderer_resource_cache_00b32090",
+      "coverage": "complete",
+      "source": "src/native_renderer_cache_cleanup.cpp",
+      "original_ABI": "ECX actual owner/header; plain RET; no semantic return",
+      "role": "new_complete_function",
+      "source_ABI": "explicit borrowed-context C++ interface; not original caller/register/private-frame/SEH ABI",
+      "end": "00b320ee",
+      "bytes": 95
+    },
+    {
+      "address": "00b32370",
+      "name": "destroy_native_texture_resource_cache_00b32370",
+      "coverage": "complete",
+      "source": "src/native_renderer_cache_cleanup.cpp",
+      "original_ABI": "ECX actual owner/header; plain RET; no semantic return",
+      "role": "new_complete_function",
+      "source_ABI": "explicit borrowed-context C++ interface; not original caller/register/private-frame/SEH ABI",
+      "end": "00b32401",
+      "bytes": 146
+    }
+  ],
+  "external_calls": [
+    {
+      "function": "00b30340",
+      "address": "00b3036a",
+      "native": "00b2ff00",
+      "source": "existing reserve overload selected by actual/projected pool type",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00b30340",
+      "address": "00b303a0",
+      "native": "004c3020",
+      "source": "allocate_native_render_alias_sentinel_004c3020",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00b30340",
+      "address": "00b303ec",
+      "native": "00b2f990",
+      "source": "existing current record storage destructor",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00b30410",
+      "address": "00b3043a",
+      "native": "00b2ffe0",
+      "source": "existing reserve_native_effect_records_00b2ffe0 with caller actual bindings",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00b30410",
+      "address": "00b30470",
+      "native": "004c3020",
+      "source": "allocate_native_render_alias_sentinel_004c3020",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00b30410",
+      "address": "00b304bc",
+      "native": "00b2fa10",
+      "source": "destroy_native_effect_record_00b2fa10 in actual pool",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00b316c0",
+      "address": "00b316e2",
+      "native": "00b3ce30",
+      "source": "native_resource_accounted_size_00b3ce30; D61948 current +0C",
+      "dispatch": "indirect"
+    },
+    {
+      "function": "00b316c0",
+      "address": "00b316e2",
+      "native": "00a82250",
+      "source": "native_resource_zero_accounted_size_00a82250; D61870/D618B0 current +0C",
+      "dispatch": "indirect"
+    },
+    {
+      "function": "00b316c0",
+      "address": "00b316fc",
+      "native": "00b31da0",
+      "source": "release_native_render_actual_owner; D5F038/D5F088 current +10",
+      "dispatch": "indirect"
+    },
+    {
+      "function": "00b316c0",
+      "address": "00b3170f",
+      "native": "00b2f990",
+      "source": "existing current record storage destructor",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00b316c0",
+      "address": "00b31723",
+      "native": "00b30340",
+      "source": "new actual-pool overload of the shared complete resize",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00b31730",
+      "address": "00b31735",
+      "native": "00b30340",
+      "source": "actual resize0",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00b31730",
+      "address": "00b3173d",
+      "native": "00bf6989",
+      "source": "singleton_lifetime_free of current data after resize",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00b32090",
+      "address": "00b320bb",
+      "native": "00b316c0",
+      "source": "clear_native_renderer_resource_cache_00b316c0",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00b32090",
+      "address": "00b320cf",
+      "native": "00b30340",
+      "source": "normal B31730 source composition: actual resize0 before current-data free",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00b32090",
+      "address": "00b320d7",
+      "native": "00bf6989",
+      "source": "normal B31730 source composition: singleton_lifetime_free",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00b32370",
+      "address": "00b323a7",
+      "native": "InterlockedDecrement",
+      "source": "existing actual+04 atomic seq_cst release helper",
+      "dispatch": "import"
+    },
+    {
+      "function": "00b32370",
+      "address": "00b323b7",
+      "native": "current captured owner virtual0",
+      "source": "canonical actual-owner companion current-profile terminal only at zero",
+      "dispatch": "indirect"
+    },
+    {
+      "function": "00b32370",
+      "address": "00b323d6",
+      "native": "00419cc0",
+      "source": "ActualNativeStringPoolStorage current getter inside release",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00b32370",
+      "address": "00b323dd",
+      "native": "00bd1510",
+      "source": "ActualNativeStringPoolStorage release captured data/current length+1",
+      "dispatch": "direct"
+    },
+    {
+      "function": "00b32370",
+      "address": "00b323ec",
+      "native": "00b32090",
+      "source": "destroy_native_renderer_resource_cache_00b32090",
+      "dispatch": "direct"
+    }
+  ],
+  "fresh_guarded_spans": [
+    {
+      "address": "00b30340",
+      "end": "00b3040c",
+      "length": 205,
+      "bytes_hex": "6aff68b1dacb0064a100000000506489250000000083ec0c558b6c2420578bf93b6f08897c240c7e0655e891fbffff8b47043bc5894424087d5d535633db8bff8bf06bf62c033789742418895c24247431891e895e048d6e088bcdc644242401e87b2c99ff8945048b442410895d088b6c242c895e24895e20895e1c895e18895e1483c0013bc5c7442424ffffffff894424107cab5e5b3b6f047d1a8d642400834704ff8b4f046bc92c030fe89ff5ffff3b6f047cea8b4c2414896f045f5d64890d0000000083c418c20400cc",
+      "sha256": "33d53eeafd83c2831550c450bdc1dcdebceb30bce75a80a520cf74d2e598f86c",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b30410",
+      "end": "00b304db",
+      "length": 204,
+      "bytes_hex": "6aff68e1dacb0064a100000000506489250000000083ec0c558b6c2420578bf93b6f08897c240c7e0655e8a1fbffff8b47043bc5894424087d5d535633db8bff8bf06bf62c033789742418895c24247431891e895e048d6e088bcdc644242401e8ab2b99ff8945048b442410895d088b6c242c895e24895e20895e1c895e18895e1483c0013bc5c7442424ffffffff894424107cab5e5b3b6f047d1a8d642400834704ff8b4f046bc92c030fe84ff5ffff3b6f047cea8b4c2414896f045f5d64890d0000000083c418c20400",
+      "sha256": "2fa20617a7043cb17806a34da9f27d24dc008b893fb301a36a68c9142e2703b6",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b316c0",
+      "end": "00b31729",
+      "length": 106,
+      "bytes_hex": "568bf1837e080074558da424000000008b46088b4e046bc02c8b4c08fc8b118b420cffd02946108b46088b4e046bc02c8b4408fc8b168b5210508bceffd28b460885c074138b4e046bc02c8d4c08d4e87ce2ffff834608ff837e080075b26a008d4e04e818ecffff5ec3",
+      "sha256": "17d649b2d967539174142ded4193989fcbd2cec60c1e0263325604b5a2c32ca5",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b31730",
+      "end": "00b31746",
+      "length": 23,
+      "bytes_hex": "566a008bf1e806ecffff8b0650e847520c0083c4045ec3",
+      "sha256": "3639a21ad71e08f9934d30956715977c4ef2818668b8ac7d15d663eb60f8d3ba",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b32090",
+      "end": "00b320ee",
+      "length": 95,
+      "bytes_hex": "6aff68abdccb0064a100000000506489250000000051568bf189742404c70638f0d500c744241000000000e800f6ffff83c6046a008bcec7442414ffffffffe86ce2ffff8b0650e8ad480c008b4c240c83c4045e64890d0000000083c410c3",
+      "sha256": "862aabcbdb8afd2673f88f5ec98b89002a0ca904e04c7462525a29d0d3264f7a",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b32370",
+      "end": "00b32401",
+      "length": 146,
+      "bytes_hex": "6aff6813ddcb0064a100000000506489250000000051568bf15789742408c70688f0d5008b7e2085ffc744241401000000741d8d470450ff152022ce0085c075088b178b028bcfffd0c74620000000008b461885c0c64424140074168b4e146a0183c1015150e8e5788eff8bc8e82ef109008bcec7442414ffffffffe89ffcffff8b4c240c5f5e64890d0000000083c410c3",
+      "sha256": "bd883eafef756d8b5f782f5ebf658c14f8344e060bba020e1bbdf4bb38599098",
+      "live_PE_match": true
+    }
+  ],
+  "guarded_original_bytes": 779,
+  "new_complete_function_bytes": 574,
+  "extended_existing_function_bytes": 205,
+  "actual_dispatch": {
+    "cache_profiles": {
+      "00d5f038": {
+        "10": "00b31da0"
+      },
+      "00d5f088": {
+        "10": "00b31da0"
+      }
+    },
+    "child_profiles": {
+      "00d61948": {
+        "0c": "00b3ce30"
+      },
+      "00d61870": {
+        "0c": "00a82250"
+      },
+      "00d618b0": {
+        "0c": "00a82250"
+      }
+    },
+    "evidence": "Live D5F038..D5F09B bytes verify both cache +10 entries. Existing actual accounting-provider contracts supply the three child profiles. Current selected table is borrowed and checked, never executed as an original EXE address.",
+    "release": "B31DA0 complete observed B31DA0..B31DBE decrements captured+04, then current virtual0 only at zero. Reuses existing release_native_render_actual_owner and SAME atomic/canonical companion; no second count or owner map.",
+    "domain": "Reached actual cache/child tables and owner bindings must be valid and supported; no fallback success for unimplemented profiles. Terminal and actual-pool release keep inherited noexcept obligations."
+  },
+  "raw_order": [
+    "B30410/B30340: reserve if signed request>capacity, zero name before sentinel allocation, sentinel/count publication then descending five zeros; preserve +08/+28",
+    "resize shrink decrements current count before current-data row destruction; final count=request",
+    "B316C0: current last child size; subtract from current accounting; reload current last child/cache profile; release; current row destruction BEFORE decrement of post-destruction current count; final actual resize0",
+    "B31730: actual resize0 then free current data; stale pointer and capacity retained",
+    "B32090: publish D5F038; array unwind armed across clear; disarm before normal resize/free",
+    "B32370: publish D5F088; captured+20 decrement/terminal then clear; capture+18 before state0; return with current+14+1 leaving name bytes; disarm before base"
+  ],
+  "unwind_evidence": [
+    {
+      "owner": "00b30410",
+      "map": "00df63c8",
+      "states": [
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cbdad9",
+          "operation": "current partial row name through41DD20"
+        },
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbdac0",
+          "operation": "reload current header data for actual RET-only401130 placement delete"
+        }
+      ]
+    },
+    {
+      "owner": "00b32090",
+      "map": "00df662c",
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbdca0",
+          "operation": "B31730 on captured owner+4"
+        }
+      ]
+    },
+    {
+      "owner": "00b32370",
+      "map": "00df66b8",
+      "states": [
+        {
+          "state": 1,
+          "next": 0,
+          "action": "00cbdd08",
+          "operation": "current string owner+14 through41DD20"
+        },
+        {
+          "state": 0,
+          "next": -1,
+          "action": "00cbdd00",
+          "operation": "B32090 on captured owner"
+        }
+      ]
+    }
+  ],
+  "corrections": [
+    {
+      "was": "B31730 saved body ends B31741 after nonreturning-free analysis",
+      "is": "BF6989 call B3173D returns; body includes RET at B31746",
+      "evidence": "full23-byte guarded span matches installed PE"
+    },
+    {
+      "was": "B32090 saved body ends B320DB after nonreturning-free analysis",
+      "is": "BF6989 call B320D7 returns; body includes RET at B320EE",
+      "evidence": "full95-byte guarded span matches installed PE"
+    }
+  ],
+  "parent_evidence": "Saved B32920 B32BB4 supplies ECX renderer+1A74 to B316C0 at B32BBA. Parent reconstruction and full outer unwind are integrator-owned.",
+  "ghidra_mutations": "None by worker; root owns repair, old-value comments, names, save and exports after address lease release.",
+  "validation": {
+    "build": "./scripts/build.ps1: MSVC Win32 Release /W4 /WX /fp:strict passed",
+    "seed_verification": "8 live/PE math seeds match before build",
+    "ctests": "2/2 passed: reconstructed_math and native_math_differential",
+    "fixture": "One focused standalone original/source fixture linked against this worktree main bsp_core.lib and its existing CMake dependency libraries.",
+    "original_fixture_bodies": [
+      "00b30340 full205 bytes, normal reserved-capacity growth/shrink",
+      "00b316c0 full106 bytes, normal and terminal-callback data/count mutation",
+      "00b31730 full23 bytes, current data free and stale-header state"
+    ],
+    "original_relocations": "Seven external CALL operands bind existing actual source providers; original indirect cache/child calls use equivalent fixture vtable pointers while source uses numeric identities. No original algorithm instructions replaced. Normal B30340 retains its native SEH registration bytes; native exception execution is not claimed.",
+    "source_failure_checks": "Base canonical-lookup failure after actual+04 reaches zero retains accounting/reference effects and destroys/frees current array. Derived failure before +20 clear retains that pointer, executes current-name then base cleanup, and retains stale array pointer/capacity.",
+    "fixture_scope": "Names/alias lists empty; actual pool binding supplied but no lazy pool creation/nonnull-name return required. Terminal callbacks are fixture instrumentation of actual atomic ownership; not actual game texture destruction. B30410 has build/static evidence, not original differential execution.",
+    "fixture_stdout": "native_renderer_cache_probe.cpp\nPASS: original/source raw cache clear and current-storage mutation; full array destructor and actual-pool resize growth/shrink; source base/derived unwind retention\n",
+    "fixture_build_flags": "/std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /link /MANIFEST:EMBED",
+    "source_text": "#include \"bsp/native_renderer_cache_cleanup.hpp\"\n#include \"bsp/native_render_context.hpp\"\n#include \"bsp/native_render_resource_container_removal.hpp\"\n#include \"bsp/native_render_resource_record_array.hpp\"\n#include \"bsp/native_render_resource_record_construction.hpp\"\n#include \"bsp/native_string_pool_storage.hpp\"\n#include \"bsp/singleton_lifetime.hpp\"\n#include \"native_renderer_cache_reference.hpp\"\n#include <Windows.h>\n#include <array>\n#include <atomic>\n#include <cstdio>\n#include <cstring>\n#include <memory>\n#include <stdexcept>\n\nnamespace {\nvoid require(bool value, const char* text) { if (!value) throw std::runtime_error(text); }\nstd::uint32_t address(const void* p) { return reinterpret_cast<std::uint32_t>(p); }\nvoid* pointer(std::uint32_t value) { return reinterpret_cast<void*>(value); }\nusing NativeOne = void (__fastcall*)(void*, std::uint32_t);\nusing NativeResize = void (__fastcall*)(void*, std::uint32_t, std::uint32_t);\nbsp::NativeRendererCacheCleanupContext* active;\nvoid __fastcall resize_bridge(void* header, std::uint32_t, std::uint32_t count) {\n    bsp::resize_native_render_resource_record_array_00b30340(header, count, active->strings, active->validation);\n}\nvoid __fastcall reserve_bridge(void* header, std::uint32_t, std::uint32_t count) {\n    bsp::reserve_native_render_resource_record_array_00b2ff00(header, count, active->strings, active->validation);\n}\nvoid __fastcall destroy_record_bridge(void* row, std::uint32_t) {\n    bsp::destroy_native_render_resource_record_00b2f990(*static_cast<bsp::NativeRenderResourceRecord*>(row), active->strings);\n}\nvoid __cdecl free_bridge(void* p) { bsp::singleton_lifetime_free(p); }\nstd::uint32_t __fastcall size_bridge(void* child, std::uint32_t) {\n    return bsp::native_resource_accounted_size_00b3ce30(child);\n}\nvoid __fastcall release_bridge(void*, std::uint32_t, void* child) {\n    bsp::release_native_render_actual_owner(active->owners, child);\n}\nclass Original {\n    void* code_;\n    std::size_t size_;\npublic:\n    Original(const unsigned char* data, std::size_t length) :\n        code_(VirtualAlloc(nullptr,length,MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE)), size_(length) {\n        require(code_ != nullptr,\"VirtualAlloc\"); std::memcpy(code_,data,length);\n    }\n    ~Original() { VirtualFree(code_,0,MEM_RELEASE); }\n    template<class Fn> void call(std::size_t site, Fn target) {\n        auto* code=static_cast<unsigned char*>(code_);\n        require(code[site]==0xe8,\"CALL relocation\");\n        auto rel=static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(target)-reinterpret_cast<std::uintptr_t>(code+site+5));\n        std::memcpy(code+site+1,&rel,4);\n    }\n    void finish() {\n        DWORD old;\n        require(VirtualProtect(code_,size_,PAGE_EXECUTE_READ,&old)!=0,\"VirtualProtect\");\n        require(FlushInstructionCache(GetCurrentProcess(),code_,size_)!=0,\"FlushInstructionCache\");\n    }\n    NativeOne one() const { return reinterpret_cast<NativeOne>(code_); }\n    NativeResize resize() const { return reinterpret_cast<NativeResize>(code_); }\n};\nstruct Owner {\n    std::uint32_t profile{};\n    std::atomic<std::int32_t> references{2};\n    std::array<std::uint32_t,7> preserved{};\n    std::uint32_t size{};\n};\nstatic_assert(offsetof(Owner,size)==0x24);\nstruct State;\nstruct Companion final : bsp::RenderCommandReference {\n    State& state;\n    explicit Companion(State&,Owner&);\n    void release_zero_references() noexcept override;\n};\nstruct State final : bsp::NativeRenderActualOwners {\n    bsp::NativeStringPoolStorage* volatile pool=nullptr;\n    volatile std::uint32_t gate=1;\n    void* volatile manager=nullptr;\n    bsp::ActualNativeStringPoolStorage strings{pool,gate,manager};\n    bsp::SingletonLifetimeCallbacks validation{};\n    const std::array<std::uint32_t,4> accounting{0,0,0,0xb3ce30};\n    const std::array<std::uint32_t,5> cache_table{0,0,0,0,0xb31da0};\n    bsp::NativeRenderResourceAccountingTables accounting_tables{accounting.data(),nullptr,nullptr};\n    bsp::NativeRendererCacheCleanupContext context{strings,validation,*this,accounting_tables,cache_table.data(),cache_table.data()};\n    std::array<std::uint32_t,4> native_child_table{0,0,0,reinterpret_cast<std::uint32_t>(&size_bridge)};\n    std::array<std::uint32_t,5> native_cache_table{0,0,0,0,reinterpret_cast<std::uint32_t>(&release_bridge)};\n    std::array<std::uint32_t,10> cache{};\n    Owner first,second;\n    Companion first_companion{*this,first},second_companion{*this,second};\n    bsp::NativeRenderResourceRecord* rows{};\n    bsp::NativeRenderResourceRecord* spare{};\n    bool mutate{},fail_resolve{};\n    std::uint32_t terminals{};\n    State(bool native, bool mutation) : mutate(mutation) {\n        first.profile=second.profile=native?address(native_child_table.data()):0xd61948u;\n        first.size=7; second.size=17; second.references.store(1);\n        rows=make_rows(2); spare=make_rows(1);\n        rows[0].resource_28=&first; rows[1].resource_28=&second; spare[0].resource_28=&first;\n        cache[0]=native?address(native_cache_table.data()):0xd5f088u;\n        cache[1]=address(rows); cache[2]=2; cache[3]=2; cache[4]=50;\n        active=&context;\n    }\n    bsp::NativeRenderResourceRecord* make_rows(std::uint32_t count) {\n        const auto bytes=count*0x2cu;\n        auto* data=static_cast<bsp::NativeRenderResourceRecord*>(bsp::singleton_lifetime_allocate({bsp::SingletonAllocationKind::object,bytes,bytes}));\n        std::memset(data,0xa5,bytes);\n        for(std::uint32_t i=0;i<count;++i) {\n            data[i].name_length_00=0; data[i].name_data_04=nullptr;\n            data[i].sentinel_0c=bsp::allocate_native_render_alias_sentinel_004c3020(); data[i].alias_count_10=0;\n        }\n        return data;\n    }\n    void cleanup_rows(bsp::NativeRenderResourceRecord* data, std::uint32_t count, bool allocation_freed=false) {\n        if(allocation_freed) return;\n        for(std::uint32_t i=0;i<count;++i) if(data[i].sentinel_0c!=nullptr)\n            bsp::destroy_native_render_resource_record_00b2f990(data[i],strings);\n        bsp::singleton_lifetime_free(data);\n    }\n    bsp::RenderCommandReference& resolve_actual(void* raw) override {\n        if(fail_resolve) throw std::runtime_error(\"retained canonical terminal failure\");\n        require(raw==&first||raw==&second,\"canonical identity\");\n        return raw==&first?first_companion:second_companion;\n    }\n};\nCompanion::Companion(State& s,Owner& owner):RenderCommandReference(owner.references),state(s) {}\nvoid Companion::release_zero_references() noexcept {\n    ++state.terminals;\n    if(state.mutate) {\n        state.cache[1]=address(state.spare); state.cache[2]=1; state.cache[3]=1;\n        state.cache[4]+=3;\n    }\n}\nusing Outcome=std::array<std::uint32_t,8>;\nOutcome clear_case(bool native,bool mutate,Original& clear,Original& array) {\n    State s(native,mutate);\n    if(native) clear.one()(s.cache.data(),0); else bsp::clear_native_renderer_resource_cache_00b316c0(s.cache.data(),s.context);\n    Outcome out{s.cache[2],s.cache[3],s.cache[4],static_cast<std::uint32_t>(s.first.references.load()),static_cast<std::uint32_t>(s.second.references.load()),s.terminals,s.cache[1]==address(s.spare),s.spare[0].unknown_08};\n    require(s.cache[2]==0&&s.cache[4]==(mutate?36u:26u),\"clear publication/accounting\");\n    const auto retained_pointer=s.cache[1];\n    const auto retained_capacity=s.cache[3];\n    if(native) array.one()(&s.cache[1],0); else bsp::destroy_native_renderer_resource_array_00b31730(&s.cache[1],s.context);\n    require(s.cache[1]==retained_pointer&&s.cache[3]==retained_capacity,\"array stale pointer/capacity\");\n    s.cleanup_rows(s.rows,2,!mutate); s.cleanup_rows(s.spare,1,mutate);\n    return out;\n}\nvoid resize_case(Original& original) {\n    for(bool native:{true,false}) {\n        State s(false,false);\n        auto* raw=bsp::singleton_lifetime_allocate({bsp::SingletonAllocationKind::object,88,88});\n        std::memset(raw,0xa5,88);\n        std::array<std::uint32_t,3> header{address(raw),0,2};\n        if(native) original.resize()(header.data(),0,2); else bsp::resize_native_render_resource_record_array_00b30340(header.data(),2,s.strings,s.validation);\n        require(header[1]==2&&header[2]==2,\"actual resize growth publication\");\n        auto* rows=static_cast<bsp::NativeRenderResourceRecord*>(raw);\n        for(unsigned i=0;i<2;++i) {\n            require(rows[i].unknown_08==0xa5a5a5a5&&address(rows[i].resource_28)==0xa5a5a5a5,\"untouched record fields\");\n            require(rows[i].name_data_04==nullptr&&rows[i].name_length_00==0&&rows[i].alias_count_10==0,\"initialized name/list\");\n            require(rows[i].sentinel_0c->next_00==rows[i].sentinel_0c&&rows[i].sentinel_0c->previous_04==rows[i].sentinel_0c,\"actual sentinel\");\n            for(auto value:rows[i].payload_14_24) require(value==0,\"descending payload zeros\");\n        }\n        if(native) original.resize()(header.data(),0,0); else bsp::resize_native_render_resource_record_array_00b30340(header.data(),0,s.strings,s.validation);\n        require(header[1]==0&&header[0]==address(raw)&&rows[0].sentinel_0c==nullptr&&rows[1].sentinel_0c==nullptr,\"actual resize shrink\");\n        bsp::singleton_lifetime_free(raw); s.cleanup_rows(s.rows,2); s.cleanup_rows(s.spare,1);\n    }\n}\nvoid unwind_cases() {\n    {\n        State s(false,false); s.fail_resolve=true;\n        bool caught=false;\n        try { bsp::destroy_native_renderer_resource_cache_00b32090(s.cache.data(),s.context); }\n        catch(const std::runtime_error&) { caught=true; }\n        require(caught&&s.cache[0]==0xd5f038&&s.cache[1]==address(s.rows)&&s.cache[2]==0&&s.cache[3]==2&&s.cache[4]==33,\"base unwind array cleanup\");\n        require(s.second.references.load()==0&&s.first.references.load()==2,\"base unwind retains reference effects\");\n        s.cleanup_rows(s.spare,1);\n    }\n    {\n        State s(false,false); s.fail_resolve=true;\n        s.cleanup_rows(s.rows,2); s.cache[2]=0; s.cache[3]=1;\n        s.rows=static_cast<bsp::NativeRenderResourceRecord*>(bsp::singleton_lifetime_allocate({bsp::SingletonAllocationKind::object,44,44}));\n        s.cache[1]=address(s.rows); s.cache[8]=address(&s.second);\n        bool caught=false;\n        try { bsp::destroy_native_texture_resource_cache_00b32370(s.cache.data(),s.context); }\n        catch(const std::runtime_error&) { caught=true; }\n        require(caught&&s.cache[0]==0xd5f038&&s.cache[8]==address(&s.second)&&s.cache[1]==address(s.rows)&&s.cache[2]==0&&s.cache[3]==1,\"derived unwind preserves uncompleted child clear\");\n        s.cleanup_rows(s.spare,1);\n    }\n}\n}\nint main() {\n    try {\n        Original clear(original_00b316c0,sizeof original_00b316c0);\n        clear.call(0x4f,&destroy_record_bridge); clear.call(0x63,&resize_bridge); clear.finish();\n        Original array(original_00b31730,sizeof original_00b31730);\n        array.call(5,&resize_bridge); array.call(13,&free_bridge); array.finish();\n        Original resize(original_00b30340,sizeof original_00b30340);\n        resize.call(0x2a,&reserve_bridge); resize.call(0x60,&bsp::allocate_native_render_alias_sentinel_004c3020);\n        resize.call(0xac,&destroy_record_bridge); resize.finish();\n        require(clear_case(true,false,clear,array)==clear_case(false,false,clear,array),\"normal original/source clear\");\n        require(clear_case(true,true,clear,array)==clear_case(false,true,clear,array),\"reentrant original/source clear\");\n        resize_case(resize); unwind_cases();\n        std::puts(\"PASS: original/source raw cache clear and current-storage mutation; full array destructor and actual-pool resize growth/shrink; source base/derived unwind retention\");\n        return 0;\n    } catch(const std::exception& error) { std::fprintf(stderr,\"FAIL: %s\\n\",error.what()); return 1; }\n}\n",
+    "reference_header_text": "#pragma once\n#include <cstddef>\n#include <cstdint>\ninline constexpr unsigned char original_00b30340[] = {0x6a,0xff,0x68,0xb1,0xda,0xcb,0x00,0x64,0xa1,0x00,0x00,0x00,0x00,0x50,0x64,0x89,0x25,0x00,0x00,0x00,0x00,0x83,0xec,0x0c,0x55,0x8b,0x6c,0x24,0x20,0x57,0x8b,0xf9,0x3b,0x6f,0x08,0x89,0x7c,0x24,0x0c,0x7e,0x06,0x55,0xe8,0x91,0xfb,0xff,0xff,0x8b,0x47,0x04,0x3b,0xc5,0x89,0x44,0x24,0x08,0x7d,0x5d,0x53,0x56,0x33,0xdb,0x8b,0xff,0x8b,0xf0,0x6b,0xf6,0x2c,0x03,0x37,0x89,0x74,0x24,0x18,0x89,0x5c,0x24,0x24,0x74,0x31,0x89,0x1e,0x89,0x5e,0x04,0x8d,0x6e,0x08,0x8b,0xcd,0xc6,0x44,0x24,0x24,0x01,0xe8,0x7b,0x2c,0x99,0xff,0x89,0x45,0x04,0x8b,0x44,0x24,0x10,0x89,0x5d,0x08,0x8b,0x6c,0x24,0x2c,0x89,0x5e,0x24,0x89,0x5e,0x20,0x89,0x5e,0x1c,0x89,0x5e,0x18,0x89,0x5e,0x14,0x83,0xc0,0x01,0x3b,0xc5,0xc7,0x44,0x24,0x24,0xff,0xff,0xff,0xff,0x89,0x44,0x24,0x10,0x7c,0xab,0x5e,0x5b,0x3b,0x6f,0x04,0x7d,0x1a,0x8d,0x64,0x24,0x00,0x83,0x47,0x04,0xff,0x8b,0x4f,0x04,0x6b,0xc9,0x2c,0x03,0x0f,0xe8,0x9f,0xf5,0xff,0xff,0x3b,0x6f,0x04,0x7c,0xea,0x8b,0x4c,0x24,0x14,0x89,0x6f,0x04,0x5f,0x5d,0x64,0x89,0x0d,0x00,0x00,0x00,0x00,0x83,0xc4,0x18,0xc2,0x04,0x00,0xcc};\ninline constexpr unsigned char original_00b30410[] = {0x6a,0xff,0x68,0xe1,0xda,0xcb,0x00,0x64,0xa1,0x00,0x00,0x00,0x00,0x50,0x64,0x89,0x25,0x00,0x00,0x00,0x00,0x83,0xec,0x0c,0x55,0x8b,0x6c,0x24,0x20,0x57,0x8b,0xf9,0x3b,0x6f,0x08,0x89,0x7c,0x24,0x0c,0x7e,0x06,0x55,0xe8,0xa1,0xfb,0xff,0xff,0x8b,0x47,0x04,0x3b,0xc5,0x89,0x44,0x24,0x08,0x7d,0x5d,0x53,0x56,0x33,0xdb,0x8b,0xff,0x8b,0xf0,0x6b,0xf6,0x2c,0x03,0x37,0x89,0x74,0x24,0x18,0x89,0x5c,0x24,0x24,0x74,0x31,0x89,0x1e,0x89,0x5e,0x04,0x8d,0x6e,0x08,0x8b,0xcd,0xc6,0x44,0x24,0x24,0x01,0xe8,0xab,0x2b,0x99,0xff,0x89,0x45,0x04,0x8b,0x44,0x24,0x10,0x89,0x5d,0x08,0x8b,0x6c,0x24,0x2c,0x89,0x5e,0x24,0x89,0x5e,0x20,0x89,0x5e,0x1c,0x89,0x5e,0x18,0x89,0x5e,0x14,0x83,0xc0,0x01,0x3b,0xc5,0xc7,0x44,0x24,0x24,0xff,0xff,0xff,0xff,0x89,0x44,0x24,0x10,0x7c,0xab,0x5e,0x5b,0x3b,0x6f,0x04,0x7d,0x1a,0x8d,0x64,0x24,0x00,0x83,0x47,0x04,0xff,0x8b,0x4f,0x04,0x6b,0xc9,0x2c,0x03,0x0f,0xe8,0x4f,0xf5,0xff,0xff,0x3b,0x6f,0x04,0x7c,0xea,0x8b,0x4c,0x24,0x14,0x89,0x6f,0x04,0x5f,0x5d,0x64,0x89,0x0d,0x00,0x00,0x00,0x00,0x83,0xc4,0x18,0xc2,0x04,0x00};\ninline constexpr unsigned char original_00b316c0[] = {0x56,0x8b,0xf1,0x83,0x7e,0x08,0x00,0x74,0x55,0x8d,0xa4,0x24,0x00,0x00,0x00,0x00,0x8b,0x46,0x08,0x8b,0x4e,0x04,0x6b,0xc0,0x2c,0x8b,0x4c,0x08,0xfc,0x8b,0x11,0x8b,0x42,0x0c,0xff,0xd0,0x29,0x46,0x10,0x8b,0x46,0x08,0x8b,0x4e,0x04,0x6b,0xc0,0x2c,0x8b,0x44,0x08,0xfc,0x8b,0x16,0x8b,0x52,0x10,0x50,0x8b,0xce,0xff,0xd2,0x8b,0x46,0x08,0x85,0xc0,0x74,0x13,0x8b,0x4e,0x04,0x6b,0xc0,0x2c,0x8d,0x4c,0x08,0xd4,0xe8,0x7c,0xe2,0xff,0xff,0x83,0x46,0x08,0xff,0x83,0x7e,0x08,0x00,0x75,0xb2,0x6a,0x00,0x8d,0x4e,0x04,0xe8,0x18,0xec,0xff,0xff,0x5e,0xc3};\ninline constexpr unsigned char original_00b31730[] = {0x56,0x6a,0x00,0x8b,0xf1,0xe8,0x06,0xec,0xff,0xff,0x8b,0x06,0x50,0xe8,0x47,0x52,0x0c,0x00,0x83,0xc4,0x04,0x5e,0xc3};\ninline constexpr unsigned char original_00b32090[] = {0x6a,0xff,0x68,0xab,0xdc,0xcb,0x00,0x64,0xa1,0x00,0x00,0x00,0x00,0x50,0x64,0x89,0x25,0x00,0x00,0x00,0x00,0x51,0x56,0x8b,0xf1,0x89,0x74,0x24,0x04,0xc7,0x06,0x38,0xf0,0xd5,0x00,0xc7,0x44,0x24,0x10,0x00,0x00,0x00,0x00,0xe8,0x00,0xf6,0xff,0xff,0x83,0xc6,0x04,0x6a,0x00,0x8b,0xce,0xc7,0x44,0x24,0x14,0xff,0xff,0xff,0xff,0xe8,0x6c,0xe2,0xff,0xff,0x8b,0x06,0x50,0xe8,0xad,0x48,0x0c,0x00,0x8b,0x4c,0x24,0x0c,0x83,0xc4,0x04,0x5e,0x64,0x89,0x0d,0x00,0x00,0x00,0x00,0x83,0xc4,0x10,0xc3};\ninline constexpr unsigned char original_00b32370[] = {0x6a,0xff,0x68,0x13,0xdd,0xcb,0x00,0x64,0xa1,0x00,0x00,0x00,0x00,0x50,0x64,0x89,0x25,0x00,0x00,0x00,0x00,0x51,0x56,0x8b,0xf1,0x57,0x89,0x74,0x24,0x08,0xc7,0x06,0x88,0xf0,0xd5,0x00,0x8b,0x7e,0x20,0x85,0xff,0xc7,0x44,0x24,0x14,0x01,0x00,0x00,0x00,0x74,0x1d,0x8d,0x47,0x04,0x50,0xff,0x15,0x20,0x22,0xce,0x00,0x85,0xc0,0x75,0x08,0x8b,0x17,0x8b,0x02,0x8b,0xcf,0xff,0xd0,0xc7,0x46,0x20,0x00,0x00,0x00,0x00,0x8b,0x46,0x18,0x85,0xc0,0xc6,0x44,0x24,0x14,0x00,0x74,0x16,0x8b,0x4e,0x14,0x6a,0x01,0x83,0xc1,0x01,0x51,0x50,0xe8,0xe5,0x78,0x8e,0xff,0x8b,0xc8,0xe8,0x2e,0xf1,0x09,0x00,0x8b,0xce,0xc7,0x44,0x24,0x14,0xff,0xff,0xff,0xff,0xe8,0x9f,0xfc,0xff,0xff,0x8b,0x4c,0x24,0x0c,0x5f,0x5e,0x64,0x89,0x0d,0x00,0x00,0x00,0x00,0x83,0xc4,0x10,0xc3};\n",
+    "build_script_text": "$ErrorActionPreference = 'Stop'\n$vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio/Installer/vswhere.exe'\n$vsPath = & $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath\n& (Join-Path $vsPath 'Common7/Tools/Launch-VsDevShell.ps1') -Arch x86 -HostArch amd64 -SkipAutomaticLocation | Out-Null\ncl /nologo /std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /I include /I local /Fo:local/native_renderer_cache_probe.obj /Fe:local/native_renderer_cache_probe.exe local/native_renderer_cache_probe.cpp build/win32/Release/bsp_core.lib build/win32/Release/bsp_lua511.lib build/win32/Release/bsp_zlib121.lib /link /MANIFEST:EMBED user32.lib d3d9.lib shell32.lib kernel32.lib gdi32.lib winspool.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib\nif ($LASTEXITCODE) { throw 'Fixture compilation failed.' }\n& ./local/native_renderer_cache_probe.exe\nif ($LASTEXITCODE) { throw 'Fixture failed.' }\n",
+    "report_call_audit": "19 numeric call rows checked, 0 failed; 3 indirect resolutions require table evidence, and 2 import/current-terminal routes are not mechanically checked"
+  },
+  "remaining_boundaries": [
+    "original caller/register/private-frame and native SEH/CRT exception identity",
+    "inherited actual-pool release and canonical terminal noexcept failure obligations",
+    "unsupported cache/resource profile and malformed raw-storage preconditions",
+    "nonnull pooled-name and full effect-resize differential paths not fixture-tested",
+    "no game integration or game validation"
+  ],
+  "artifact_manifest": [
+    {
+      "path": "include/bsp/native_renderer_cache_cleanup.hpp",
+      "bytes": 3225,
+      "sha256": "a75a20e24832ebc7f4d9635e4e34845fec3c7a9cc12e03ef51fc037df075a042"
+    },
+    {
+      "path": "src/native_renderer_cache_cleanup.cpp",
+      "bytes": 7558,
+      "sha256": "16a4e2603938316a028d5ea6fda4505357089df52aa1993d505c34294eaab7f5"
+    },
+    {
+      "path": "docs/NATIVE_RENDERER_CACHE_CLEANUP.md",
+      "bytes": 7230,
+      "sha256": "11dc0fa72eed240e2a190d673e48852312731473e40de27d1f59204cc157d0d2"
+    },
+    {
+      "path": "include/bsp/native_render_resource_record_array.hpp",
+      "bytes": 2078,
+      "sha256": "ce90302f76ec165c3a1a77e6fdf5cde2399876ee2e9dc9a553866268037a2e79"
+    },
+    {
+      "path": "src/native_render_resource_record_array.cpp",
+      "bytes": 7847,
+      "sha256": "02d6cfa91481aa8d4c605460fb5cebdc2ba6d99b2971d797be22dd16e76f9afd"
+    },
+    {
+      "path": "cmake/startup.cmake",
+      "bytes": 112901,
+      "sha256": "4d180883f5a00904e5caaee288dd9e7c1fea47734e3f748bdc14b26011594748"
+    },
+    {
+      "path": "local/native_renderer_cache_reference.hpp",
+      "bytes": 4291,
+      "sha256": "1197af5ff76c5f485a443b690d8b8a9acd5efb1d7a9942308d0c5d52bbbaa5d7"
+    },
+    {
+      "path": "local/native_renderer_cache_probe.cpp",
+      "bytes": 11699,
+      "sha256": "7209f1d55d0217b576be38d1cccbee1fca184680e5ef06a8873bd7b06e44f461"
+    },
+    {
+      "path": "local/build_native_renderer_cache_probe.ps1",
+      "bytes": 973,
+      "sha256": "3ab8effc5a6c26f5c168737411f1dd4aea3986585382bc71ba7258d3a7a9730e"
+    },
+    {
+      "path": "local/native_renderer_cache_probe.exe",
+      "bytes": 197120,
+      "sha256": "1691320e25fb8bfe28691c6908a186e2208ab609b9b750ae0c91d4491e5eeb60"
+    },
+    {
+      "path": "local/native_renderer_cache_probe.obj",
+      "bytes": 53398,
+      "sha256": "a4a8934f887f2e00716e41fa8af8fd9e5ca3944419f04946cf6bab005caa12ab"
+    },
+    {
+      "path": "local/native_renderer_cache_probe.log",
+      "bytes": 199,
+      "sha256": "a431be5966f19672d02d1f9d49b39eff0b5e3474e0ee9e2563ec2e5c6207f21a"
+    },
+    {
+      "path": "local/native_renderer_cache_build.log",
+      "bytes": 46209,
+      "sha256": "e9dd7b5f9a2ac51ab128788be65d437a5fadb4b995fca1b61ddf48500042b0ae"
+    },
+    {
+      "path": "local/native_renderer_cache_seeds.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 57603408,
+      "sha256": "a2af6044cfd1c86ed5ba56712f71dc9f5c38eb0d59d301bc2c6907b343659906"
+    }
+  ],
+  "historical_scope": {
+    "commit": "8e1bdea084a82e0cb764a67757c83128dc4b8ff6",
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-cache-cleanup",
+    "note": "Historical worker and orch5 integrated validation. Fresh current-main receipt is native_renderer_cache_cleanup_main_r33.json."
+  }
+}
