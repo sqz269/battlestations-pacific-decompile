@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "packet": "orch4_emitter_construction_raw_n14",
+  "base_commit": "94d006412",
+  "status": "reconstructed_build_tested_bounded_fixture_tested",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "owned_addresses": ["00afa280", "00b03940", "00b02b90", "00b01cb0"],
+  "files": [
+    "include/bsp/native_particle_emitter_construction.hpp",
+    "src/native_particle_emitter_construction.cpp",
+    "docs/NATIVE_PARTICLE_EMITTER_CONSTRUCTION_ORCH4.md",
+    "reports/native_particle_emitter_construction_orch4.json"
+  ],
+  "prior_reconstruction_records": [
+    {
+      "address": "00afa280",
+      "name": "construct_native_particle_definition_00afa280",
+      "source": "src/native_particle_definition.cpp",
+      "header": "include/bsp/native_particle_definition.hpp",
+      "native_abi": "ECX actual owner; void * name, uint word10, uint word70, uint flag14; ret 0x10",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+      "status": "reconstructed_build_tested_bounded_fixture_tested",
+      "kind": "function"
+    },
+    {
+      "address": "00b03940",
+      "name": "construct_native_particle_cone_definition_00b03940",
+      "source": "src/native_particle_definition.cpp",
+      "header": "include/bsp/native_particle_definition.hpp",
+      "native_abi": "ECX actual owner; void * name, uint word10, uint word70, uint flag14; ret 0x10",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+      "status": "reconstructed_build_tested_bounded_fixture_tested",
+      "kind": "function"
+    },
+    {
+      "address": "00b02b90",
+      "name": "construct_native_particle_sphere_definition_00b02b90",
+      "source": "src/native_particle_definition.cpp",
+      "header": "include/bsp/native_particle_definition.hpp",
+      "native_abi": "ECX actual owner; void * name, uint word10, uint word70, uint flag14; ret 0x10",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+      "status": "reconstructed_build_tested_bounded_fixture_tested",
+      "kind": "function"
+    },
+    {
+      "address": "00b01cb0",
+      "name": "construct_native_particle_smartarea_definition_00b01cb0",
+      "source": "src/native_particle_definition.cpp",
+      "header": "include/bsp/native_particle_definition.hpp",
+      "native_abi": "ECX actual owner; void * name, uint word10, uint word70, uint flag14; ret 0x10",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+      "status": "reconstructed_build_tested_bounded_fixture_tested",
+      "kind": "function"
+    }
+  ],
+  "pre_change_annotations": [
+    {
+      "address": "00afa280",
+      "name": "BSP_ParticleDefinition_ConstructBase",
+      "comment": "[BSP reconstruction 00afa280]\nDescriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+    },
+    {
+      "address": "00b03940",
+      "name": "BSP_ConeEmissionDefinition_Construct",
+      "comment": "[BSP reconstruction 00b03940]\nDescriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+    },
+    {
+      "address": "00b02b90",
+      "name": "BSP_SphereEmissionDefinition_Construct",
+      "comment": "[BSP reconstruction 00b02b90]\nDescriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+    },
+    {
+      "address": "00b01cb0",
+      "name": "BSP_SmartAreaEmissionDefinition_Construct",
+      "comment": "[BSP reconstruction 00b01cb0]\nDescriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+    }
+  ],
+  "functions": [
+    {
+      "address": "00afa280",
+      "end_inclusive": "00afa34e",
+      "length": 207,
+      "sha256": "61a61758abe7966b66af1300bf6b79fde3b92b7b996791d5f5df226f0fed4003",
+      "live_disk_equal": true,
+      "native_abi": "ECX actual80h owner; stack name8h pointer, word10, word70, flag14; EAX owner; RET10",
+      "listed_instructions": 68,
+      "listing_gaps": 0,
+      "last_instruction": {"address": "00afa34c", "bytes": "c21000", "text": "ret 0x10"}
+    },
+    {
+      "address": "00b03940",
+      "end_inclusive": "00b03969",
+      "length": 42,
+      "sha256": "ef2611885619b7db1aa05d2cfd2e8ba77b35a0f06a515ac450bb94a01c83bb85",
+      "live_disk_equal": true,
+      "native_abi": "ECX actual94h Cone owner; same four stack words; EAX owner; RET10",
+      "listed_instructions": 16,
+      "listing_gaps": 0,
+      "last_instruction": {"address": "00b03967", "bytes": "c21000", "text": "ret 0x10"}
+    },
+    {
+      "address": "00b02b90",
+      "end_inclusive": "00b02bb9",
+      "length": 42,
+      "sha256": "fca9fc62600854aa303a87c4392d162aa3fd29679ef4f5c627cce231cd6cc64a",
+      "live_disk_equal": true,
+      "native_abi": "ECX actual8Ch Sphere owner; same four stack words; EAX owner; RET10",
+      "listed_instructions": 16,
+      "listing_gaps": 0,
+      "last_instruction": {"address": "00b02bb7", "bytes": "c21000", "text": "ret 0x10"}
+    },
+    {
+      "address": "00b01cb0",
+      "end_inclusive": "00b01cd9",
+      "length": 42,
+      "sha256": "3c86878e8badec401e8b0f614913725c87f35a7b48ae9a0756b4b4bda589bb0f",
+      "live_disk_equal": true,
+      "native_abi": "ECX actual90h SmartArea owner; same four stack words; EAX owner; RET10",
+      "listed_instructions": 16,
+      "listing_gaps": 0,
+      "last_instruction": {"address": "00b01cd7", "bytes": "c21000", "text": "ret 0x10"}
+    }
+  ],
+  "body_byte_total": 333,
+  "direct_calls": [
+    {"address": "00afa2e0", "native": "0041dd40", "function": "00afa280", "role": "resize actual destination name header"},
+    {"address": "00afa2f5", "native": "00bf7680", "function": "00afa280", "role": "overlap-safe current-field copy"},
+    {"address": "00b03959", "native": "00afa280", "function": "00b03940", "role": "Cone base constructor"},
+    {"address": "00b02ba9", "native": "00afa280", "function": "00b02b90", "role": "Sphere base constructor"},
+    {"address": "00b01cc9", "native": "00afa280", "function": "00b01cb0", "role": "SmartArea base constructor"}
+  ],
+  "eh": {
+    "handler": "00cbb013",
+    "handler_span": "00cbb013..00cbb01c",
+    "metadata": "00df2eec",
+    "magic": "19930522",
+    "max_state": 2,
+    "unwind_map": "00df2edc",
+    "try_blocks": 0,
+    "ip_map_entries": 0,
+    "flags": 1,
+    "actions": [
+      {"state": 1, "next": 0, "funclet": "00cbb008", "target": "0041dd20", "receiver_offset": "08"},
+      {"state": 0, "next": -1, "funclet": "00cbb000", "target": "00bd30f0", "receiver_offset": "00"}
+    ],
+    "derived_functions": "no registration, state, map or funclet; propagate AFA280 failure"
+  },
+  "composition": {
+    "strings": "NativeParticleTypeLifetimeContext.strings; genuine NativeStringRawPoolContext",
+    "parameter_pool": "NativeParticleTypeLifetimeContext.parameter_pool_00f8d344; retained for future destruction",
+    "callbacks_added": 0,
+    "factory_00af9fb0_in_scope": false,
+    "parser_dispatch_in_scope": false
+  },
+  "preserved": [
+    "all unlisted base bytes including 30/38 and row storage",
+    "derived bytes 80h and above",
+    "source name header and its allocation",
+    "existing NativeParticleDefinitionBindings APIs"
+  ],
+  "verification": {
+    "strict_build": "passed scripts/build.ps1; MSVC Win32 Release /W4 /WX /fp:strict",
+    "ctest": "passed 2/2: reconstructed_math and tool_tests",
+    "focused_probe": "passed five isolated cases: base, Cone, Sphere, SmartArea and base self-alias; each compares copied complete original bytes with source using the genuine raw string pool",
+    "focused_probe_source": "ignored local/emitter_construction_probe.cpp",
+    "focused_probe_compile": "/std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict; current build/win32/Release/bsp_core.lib",
+    "manifest": "/MANIFEST:EMBED"
+  },
+  "limitations": [
+    "original FH3 dispatcher and native throwing transport not executed",
+    "C++ overloads are not binary replacement entrypoints",
+    "AF9FB0 allocation/type selection/parser14 composition is separate",
+    "gameplay unvalidated"
+  ]
+}
