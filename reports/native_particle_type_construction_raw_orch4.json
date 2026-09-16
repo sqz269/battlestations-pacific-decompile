@@ -550,5 +550,15 @@
     "local/particle_type_construction/probe.log": "ac4e79325389d755045258728627815624242d84cc514d8bbacf4712fafae681",
     "local/particle_type_construction_build.txt": "0848ced38f840be6defb4e119526bb7e01e57114d55d6f6eaf430089111ab58e",
     "C:/Windows/SysWOW64/d3dx9_40.dll": "16fd909aeb68d0d1aca8529dc7f78880b97d6649d70ce8d03a2c858bc28e216b"
+  },
+  "parent_integration": {
+    "tested_cpp_revision": "00b1724a355b639f71853f14080d8993ed9ae97f",
+    "build": "scripts/build.ps1 combined strict Win32 passed",
+    "ctest": "3/3 passed: reconstructed_math, native_math_differential, tool_tests",
+    "game_validated": false,
+    "call_verification": {
+      "checked": 12,
+      "failed": 0
+    }
   }
 }

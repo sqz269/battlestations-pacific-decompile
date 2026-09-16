@@ -7,7 +7,12 @@
   "program": "/battlestationspacific.exe",
   "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
   "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
-  "owned_addresses": ["00afa280", "00b03940", "00b02b90", "00b01cb0"],
+  "owned_addresses": [
+    "00afa280",
+    "00b03940",
+    "00b02b90",
+    "00b01cb0"
+  ],
   "files": [
     "include/bsp/native_particle_emitter_construction.hpp",
     "src/native_particle_emitter_construction.cpp",
@@ -88,7 +93,11 @@
       "native_abi": "ECX actual80h owner; stack name8h pointer, word10, word70, flag14; EAX owner; RET10",
       "listed_instructions": 68,
       "listing_gaps": 0,
-      "last_instruction": {"address": "00afa34c", "bytes": "c21000", "text": "ret 0x10"}
+      "last_instruction": {
+        "address": "00afa34c",
+        "bytes": "c21000",
+        "text": "ret 0x10"
+      }
     },
     {
       "address": "00b03940",
@@ -99,7 +108,11 @@
       "native_abi": "ECX actual94h Cone owner; same four stack words; EAX owner; RET10",
       "listed_instructions": 16,
       "listing_gaps": 0,
-      "last_instruction": {"address": "00b03967", "bytes": "c21000", "text": "ret 0x10"}
+      "last_instruction": {
+        "address": "00b03967",
+        "bytes": "c21000",
+        "text": "ret 0x10"
+      }
     },
     {
       "address": "00b02b90",
@@ -110,7 +123,11 @@
       "native_abi": "ECX actual8Ch Sphere owner; same four stack words; EAX owner; RET10",
       "listed_instructions": 16,
       "listing_gaps": 0,
-      "last_instruction": {"address": "00b02bb7", "bytes": "c21000", "text": "ret 0x10"}
+      "last_instruction": {
+        "address": "00b02bb7",
+        "bytes": "c21000",
+        "text": "ret 0x10"
+      }
     },
     {
       "address": "00b01cb0",
@@ -121,16 +138,45 @@
       "native_abi": "ECX actual90h SmartArea owner; same four stack words; EAX owner; RET10",
       "listed_instructions": 16,
       "listing_gaps": 0,
-      "last_instruction": {"address": "00b01cd7", "bytes": "c21000", "text": "ret 0x10"}
+      "last_instruction": {
+        "address": "00b01cd7",
+        "bytes": "c21000",
+        "text": "ret 0x10"
+      }
     }
   ],
   "body_byte_total": 333,
   "direct_calls": [
-    {"address": "00afa2e0", "native": "0041dd40", "function": "00afa280", "role": "resize actual destination name header"},
-    {"address": "00afa2f5", "native": "00bf7680", "function": "00afa280", "role": "overlap-safe current-field copy"},
-    {"address": "00b03959", "native": "00afa280", "function": "00b03940", "role": "Cone base constructor"},
-    {"address": "00b02ba9", "native": "00afa280", "function": "00b02b90", "role": "Sphere base constructor"},
-    {"address": "00b01cc9", "native": "00afa280", "function": "00b01cb0", "role": "SmartArea base constructor"}
+    {
+      "address": "00afa2e0",
+      "native": "0041dd40",
+      "function": "00afa280",
+      "role": "resize actual destination name header"
+    },
+    {
+      "address": "00afa2f5",
+      "native": "00bf7680",
+      "function": "00afa280",
+      "role": "overlap-safe current-field copy"
+    },
+    {
+      "address": "00b03959",
+      "native": "00afa280",
+      "function": "00b03940",
+      "role": "Cone base constructor"
+    },
+    {
+      "address": "00b02ba9",
+      "native": "00afa280",
+      "function": "00b02b90",
+      "role": "Sphere base constructor"
+    },
+    {
+      "address": "00b01cc9",
+      "native": "00afa280",
+      "function": "00b01cb0",
+      "role": "SmartArea base constructor"
+    }
   ],
   "eh": {
     "handler": "00cbb013",
@@ -143,8 +189,20 @@
     "ip_map_entries": 0,
     "flags": 1,
     "actions": [
-      {"state": 1, "next": 0, "funclet": "00cbb008", "target": "0041dd20", "receiver_offset": "08"},
-      {"state": 0, "next": -1, "funclet": "00cbb000", "target": "00bd30f0", "receiver_offset": "00"}
+      {
+        "state": 1,
+        "next": 0,
+        "funclet": "00cbb008",
+        "target": "0041dd20",
+        "receiver_offset": "08"
+      },
+      {
+        "state": 0,
+        "next": -1,
+        "funclet": "00cbb000",
+        "target": "00bd30f0",
+        "receiver_offset": "00"
+      }
     ],
     "derived_functions": "no registration, state, map or funclet; propagate AFA280 failure"
   },
@@ -174,5 +232,15 @@
     "C++ overloads are not binary replacement entrypoints",
     "AF9FB0 allocation/type selection/parser14 composition is separate",
     "gameplay unvalidated"
-  ]
+  ],
+  "parent_integration": {
+    "tested_cpp_revision": "00b1724a355b639f71853f14080d8993ed9ae97f",
+    "build": "scripts/build.ps1 combined strict Win32 passed",
+    "ctest": "3/3 passed: reconstructed_math, native_math_differential, tool_tests",
+    "game_validated": false,
+    "call_verification": {
+      "checked": 5,
+      "failed": 0
+    }
+  }
 }

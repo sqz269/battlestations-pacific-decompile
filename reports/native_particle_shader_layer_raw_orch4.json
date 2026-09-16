@@ -903,5 +903,12 @@
     "Source interfaces add actual raw pool context and an explicit consumed stack-header address; not native binary replacements.",
     "Normal copied-body paths use the same genuine providers/current CRT; native FH3 failure paths and original CRT identity unvalidated.",
     "Invalid pointers, arbitrary native stack aliases, concurrent/reentrant mutations and gameplay unvalidated."
-  ]
+  ],
+  "parent_integration": {
+    "tested_cpp_revision": "00b1724a355b639f71853f14080d8993ed9ae97f",
+    "build": "scripts/build.ps1 combined strict Win32 passed",
+    "ctest": "3/3 passed: reconstructed_math, native_math_differential, tool_tests",
+    "game_validated": false,
+    "independent_review": "emitter_construction_n14: no findings in complete live shader spans, captured pointer/current length/state0 release order, AF4360 never-armed state0 and retained host APIs; native exceptional execution not tested."
+  }
 }

@@ -78,8 +78,20 @@ pool; see `NATIVE_PARTICLE_PREPARATION_RAW_ORCH4.md`.
 The full AF4BA0 resource parser and dependent 86BA60 loader remain absent.
 AF9FB0's three emitter parser targets (B03EC0, B02FD0, B02210), nested B00CE0
 particle parsers, and property/resource ownership domains still require complete
-raw composition. B01150 and derived particle constructors currently have bounded
-host-binding interfaces; their real raw construction remains a separate task.
+raw composition. The B01150 base and six derived particle constructors now have concrete raw
+companions with the actual string pool, record storage and named D3DX import;
+see `NATIVE_PARTICLE_TYPE_CONSTRUCTION_RAW_ORCH4.md`. The four emitter
+constructors are also complete through raw storage; see
+`NATIVE_PARTICLE_EMITTER_CONSTRUCTION_ORCH4.md`.
 Object resource loading must compose the existing VFS/name-resolution, resource
 manager/cache and actual renderer/model ownership domains. Generic callbacks or
 known function names do not establish those contracts or gameplay readiness.
+
+The runtime parameter converter and the four emitter parameter/enum/flag helpers
+are now complete raw compositions; see `NATIVE_PARTICLE_PARAMETER_RUNTIME_RAW_ORCH4.md`
+and `NATIVE_PARTICLE_EMITTER_HELPERS_RAW_ORCH4.md`. The three particle shader
+setters and consumed Layer-name lookup are also complete; see
+`NATIVE_PARTICLE_SHADER_LAYER_RAW_ORCH4.md`. These do not close B01350/B015C0
+texture/property loading: raw atlas/frame-name helpers, parameter-bound helpers,
+and real texture/model services still need composition before the five nested
+particle parsers and full resource parser can be connected.

@@ -139,3 +139,10 @@ record/vector cleanup propagated that exception and the outer base cleared
 publication and stamped CE3818. Original EH execution, OOM/fault cases and second
 exception termination were not dynamically tested. Probe source, build/run logs,
 and artifact hashes are referenced in the report; no permanent test was added.
+
+Additional raw dependencies are now reconstructed: AFBF60 runtime conversion,
+the four emitter constructors, seven particle constructors, four emitter
+parameter/enum/flag helpers, and the shader/Layer-name helpers. Their evidence
+is linked from `NATIVE_PARTICLE_RESOURCE_LOADING_ORCH4.md`. AF4BA0 and 86BA60
+remain blocked on full nested parser/property/resource composition; completing
+these companion interfaces does not establish a runnable particle system.
