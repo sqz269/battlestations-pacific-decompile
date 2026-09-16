@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "packet": "texture_memory_imports_r26",
+  "status": "source_build_ctest_and_real_image_info_smoke_passed",
+  "base_commit": "5dab344fd",
+  "source_registration_commit": "1875e8a32e941245b123c3a736e62ab2a9b39c92",
+  "module_policy": {
+    "ownership": "borrowed caller-owned actual HMODULE",
+    "caller_lifetime": "module remains loaded through every use of returned entries",
+    "fallback": "none",
+    "injected_callbacks": false,
+    "renderer_or_device_construction": false
+  },
+  "imports": [
+    {
+      "thunk": "00c2dfec",
+      "iat": "00ce23fc",
+      "export": "D3DXGetImageInfoFromFileInMemory",
+      "type": "ReadImageInfoFromMemory"
+    },
+    {
+      "thunk": "00c2dfe6",
+      "iat": "00ce2400",
+      "export": "D3DXCreateTextureFromFileInMemoryEx",
+      "type": "CreateTextureFromMemory"
+    },
+    {
+      "thunk": "00c2dfe0",
+      "iat": "00ce2404",
+      "export": "D3DXCreateCubeTextureFromFileInMemory",
+      "type": "CreateNativeCubeTextureFromMemory"
+    },
+    {
+      "thunk": "00c2dfda",
+      "iat": "00ce2408",
+      "export": "D3DXCreateVolumeTextureFromFileInMemory",
+      "type": "CreateNativeVolumeTextureFromMemory"
+    }
+  ],
+  "evidence": {
+    "pe": "dumpbin /imports:d3dx9_40.dll on the configured original executable listed all four exact exports",
+    "ghidra": "live /battlestationspacific.exe disassembly mapped the four thunks to CE23FC, CE2400, CE2404 and CE2408",
+    "seed_verification": "python tools/ghidra_export.py verify-seeds: 8/8 disk/live seed spans matched",
+    "build": "scripts/build.ps1: MSVC Win32 complete target passed",
+    "ctest": "3/3 passed: reconstructed_math, native_math_differential, tool_tests",
+    "smoke": {
+      "scope": "temporary manifest-embedded Win32 image-info call; no device or texture creation",
+      "module": "C:/Windows/SysWOW64/d3dx9_40.dll",
+      "module_sha256": "16FD909AEB68D0D1ACA8529DC7F78880B97D6649D70CE8D03A2C858BC28E216B",
+      "image": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/interface/textures/menu_dxt1_2.dds",
+      "image_sha256": "E2F1137CC8CF285B5C1108EA50030E183AC602241EC4D3213C622F1CE4CD7179",
+      "result": "S_OK",
+      "width": 1024,
+      "height": 1024,
+      "depth": 1,
+      "mip_levels": 1,
+      "resource_type": "D3DRTYPE_TEXTURE",
+      "ignored_receipt": "local/output/texture_memory_imports_r26_smoke.json"
+    }
+  },
+  "limits": [
+    "No real D3D9 device or texture creation was exercised.",
+    "Production texture loading/cache and device-recreation integration remain outside this packet.",
+    "No gameplay or visual validation was performed.",
+    "No Ghidra names, comments or ledgers were changed."
+  ]
+}

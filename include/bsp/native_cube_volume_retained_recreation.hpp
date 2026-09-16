@@ -12,6 +12,11 @@ namespace bsp {
 // Resolution failures throw during host construction, before native work.
 class NativeD3dx9CubeVolumeMemoryImports final {
 public:
+    using CubeEntry = HRESULT (WINAPI*)(IDirect3DDevice9*, const void*, UINT,
+        IDirect3DCubeTexture9**);
+    using VolumeEntry = HRESULT (WINAPI*)(IDirect3DDevice9*, const void*, UINT,
+        IDirect3DVolumeTexture9**);
+
     explicit NativeD3dx9CubeVolumeMemoryImports(HMODULE actual_d3dx9_40);
     NativeD3dx9CubeVolumeMemoryImports(const NativeD3dx9CubeVolumeMemoryImports&) = delete;
     NativeD3dx9CubeVolumeMemoryImports& operator=(const NativeD3dx9CubeVolumeMemoryImports&) = delete;
@@ -20,14 +25,12 @@ public:
         IDirect3DCubeTexture9** actual_output) const;
     HRESULT create_volume(IDirect3DDevice9*, const void*, UINT,
         IDirect3DVolumeTexture9** actual_output) const;
+    CubeEntry cube_entry() const noexcept { return cube_; }
+    VolumeEntry volume_entry() const noexcept { return volume_; }
 
 private:
-    using Cube = HRESULT (WINAPI*)(IDirect3DDevice9*, const void*, UINT,
-        IDirect3DCubeTexture9**);
-    using Volume = HRESULT (WINAPI*)(IDirect3DDevice9*, const void*, UINT,
-        IDirect3DVolumeTexture9**);
-    Cube cube_;
-    Volume volume_;
+    CubeEntry cube_;
+    VolumeEntry volume_;
 };
 
 // Borrow actual four-byte F8D394 publication storage (not a renderer snapshot),

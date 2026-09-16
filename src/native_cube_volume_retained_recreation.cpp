@@ -44,8 +44,8 @@ Function resolve(HMODULE module, const char* name) {
 
 NativeD3dx9CubeVolumeMemoryImports::NativeD3dx9CubeVolumeMemoryImports(HMODULE module) {
     if (module == nullptr) throw std::invalid_argument("actual d3dx9_40 module required");
-    cube_ = resolve<Cube>(module, "D3DXCreateCubeTextureFromFileInMemory");
-    volume_ = resolve<Volume>(module, "D3DXCreateVolumeTextureFromFileInMemory");
+    cube_ = resolve<CubeEntry>(module, "D3DXCreateCubeTextureFromFileInMemory");
+    volume_ = resolve<VolumeEntry>(module, "D3DXCreateVolumeTextureFromFileInMemory");
 }
 
 HRESULT NativeD3dx9CubeVolumeMemoryImports::create_cube(IDirect3DDevice9* device,
