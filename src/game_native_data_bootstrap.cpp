@@ -27,7 +27,11 @@ constexpr std::size_t band_bytes=0x10000;
 constexpr std::size_t ro_band_count=19;
 constexpr std::size_t band_count=21;
 constexpr std::uint32_t mutable_mask=(1u<<19)|(1u<<20);
-constexpr std::uint32_t canonical_ro_mask=0x18a;
+// Exact production startup set: CE, CF, D0, D1, D5, D6 and D7. Keep both
+// parent admission and child ownership transfer on this same seven-band plan.
+// The former four-band CRT fixture mask rejected game_main's expanded graph
+// before a child could start (see NATIVE_GRAPHICS_POOL_PROCESS_R65.md).
+constexpr std::uint32_t canonical_ro_mask=0x38f;
 constexpr std::array<DWORD,3> mutable_pages{0x00e15000,0x00e16000,0x0109e000};
 constexpr DWORD handoff_magic=0x48534442; // BDSH, source protocol only
 constexpr DWORD handoff_version_v1=1;

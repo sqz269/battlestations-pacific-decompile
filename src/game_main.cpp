@@ -41,6 +41,7 @@
 #include "bsp/game_native_resource_pools.hpp"
 #include "bsp/game_native_surface_pool.hpp"
 #include "bsp/game_native_texture_pool.hpp"
+#include "bsp/game_native_graphics_pools.hpp"
 #include "bsp/winmain_startup.hpp"
 
 namespace {
@@ -391,6 +392,20 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         const int texture_atexit = texture_pool.initialize_once_00cd7b60();
         log.notef("native texture2D pool initialized: atexit=%d storage=process_actual38h",
             texture_atexit);
+        auto& graphics_pools = bsp::game::game_native_graphics_pool_process();
+        using GraphicsPool = bsp::game::GameNativeGraphicsPool;
+        // Original initializer table CE3518..CE353C, before CD7E40's mesh pool.
+        constexpr std::array graphics_order{GraphicsPool::cube_texture,
+            GraphicsPool::volume_texture, GraphicsPool::material_pass,
+            GraphicsPool::vertex_declaration, GraphicsPool::layout_record,
+            GraphicsPool::physical_index, GraphicsPool::physical_vertex,
+            GraphicsPool::logical_vertex, GraphicsPool::logical_index,
+            GraphicsPool::hardware_layout};
+        for (const auto pool : graphics_order) {
+            const int pool_atexit = graphics_pools.initialize_once(pool);
+            log.notef("native graphics pool initialized: global=%08x atexit=%d "
+                "storage=process_actual38h", static_cast<unsigned>(pool), pool_atexit);
+        }
         auto& resource_pools = bsp::game::game_native_resource_pool_process();
         const int mesh_atexit = resource_pools.initialize_mesh_once_00cd7e40();
         const int section_atexit = resource_pools.initialize_section_once_00cd8250();
