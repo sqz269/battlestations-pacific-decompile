@@ -39,6 +39,7 @@
 #include "bsp/game_native_mutable_crt_data.hpp"
 #include "bsp/game_native_particle_pools.hpp"
 #include "bsp/game_native_resource_pools.hpp"
+#include "bsp/game_native_texture_pool.hpp"
 #include "bsp/winmain_startup.hpp"
 
 namespace {
@@ -381,6 +382,10 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         const int parameter_atexit = particle_pools.initialize_parameters_once_00cd78b0();
         log.notef("native particle pools initialized: model_atexit=%d parameter_atexit=%d "
             "storage=process_actual38h/actual38h", model_atexit, parameter_atexit);
+        auto& texture_pool = bsp::game::game_native_texture_pool_process();
+        const int texture_atexit = texture_pool.initialize_once_00cd7b60();
+        log.notef("native texture2D pool initialized: atexit=%d storage=process_actual38h",
+            texture_atexit);
         auto& resource_pools = bsp::game::game_native_resource_pool_process();
         const int mesh_atexit = resource_pools.initialize_mesh_once_00cd7e40();
         const int section_atexit = resource_pools.initialize_section_once_00cd8250();
