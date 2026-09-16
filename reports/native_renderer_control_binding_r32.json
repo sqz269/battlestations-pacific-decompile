@@ -1,0 +1,363 @@
+{
+  "packet": "renderer_control_binding_r32",
+  "kind": "read_only_cross_branch_lifetime_and_binding_audit",
+  "baseline": {
+    "main_commit": "44dfc5c31",
+    "worker_branch": "agent/orch5-20260911",
+    "worker_branch_head": "769bdc3e3b8254f95867b11e2546d629f2a564b6",
+    "worker_last_source_fix": "6641c05f524e29f9352f66ddbd017c64d2f99cee",
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "ghidra_program": "/battlestationspacific.exe"
+  },
+  "scope": {
+    "question": "When can the orch5 actual renderer control worker be bound to production application domains, and is its EndFrame callback currently substantive?",
+    "result": "The worker source is reusable but cannot be bound in production yet. No application binder exists, the required actual frame-clock and renderer producers are absent from current main, 0108D6E4 has no source owner, and the cross-branch EndFrame body still has an explicit substantive provider frontier.",
+    "mutations": "Report only. No source, CMake, ledger, Ghidra or branch mutation."
+  },
+  "source_inventory": {
+    "current_main": {
+      "control_worker_header": false,
+      "control_worker_source": false,
+      "end_frame_header": false,
+      "end_frame_source": false,
+      "begin_frame_source": true,
+      "event_owner_source": true,
+      "renderer_synchronization_source": true,
+      "renderer_scalar_process": true,
+      "renderer_base_lifetime_source": true,
+      "full_renderer_constructor": false,
+      "full_renderer_destructor": false,
+      "actual_application_control_binding": false
+    },
+    "orch5_worker": {
+      "header": "include/bsp/native_renderer_control_worker.hpp",
+      "header_blob": "9befb4279c4918fdfc46acca53235a8364021c85",
+      "source": "src/native_renderer_control_worker.cpp",
+      "source_blob": "2bf8f72451f8ddc16231b28f908681fdc844702b",
+      "status": "complete normal B33DA0/B33B50/B33C00/B33C20 and BEE080 source schedule with an explicit borrowed process context",
+      "binder_search": "git grep finds only the declaration and definition of bind_native_renderer_control_worker_process_context; there is no caller in include, src or tests"
+    },
+    "orch5_end_frame": {
+      "header": "include/bsp/native_renderer_end_frame.hpp",
+      "header_blob": "ca891ab16f72ad47b17eba84f03f3a92fcd8b2e9",
+      "source": "src/native_renderer_end_frame.cpp",
+      "source_blob": "75213d49966becd2ba0c5cee60191310d670a441",
+      "core_commit": "0c6c37b82",
+      "query_binding_commit": "33ac99a20",
+      "debug_line_binding_commit": "425b3b484",
+      "status": "complete observed B2D8E0/B2F4A0/B2F4B0 schedule behind borrowed contexts, but intentionally not a closed active EndFrame provider"
+    },
+    "orch5_renderer_constructor": {
+      "source_commit": "00a12b5d0fa86494f6e9efccaa90c543c9bd3bef",
+      "constructor_call_search": "No source caller of construct_native_renderer_00b32410 exists on agent/orch5-20260911.",
+      "binding_contract": "Its header requires the control-worker process context to be bound before B32410 and retained through every join."
+    }
+  },
+  "original_control_worker_evidence": {
+    "functions": [
+      {
+        "address": "00B33DA0",
+        "role": "construct 24h worker",
+        "xref_set": [
+          "00B328BC direct call from BSP_D3D9Renderer_Construct"
+        ],
+        "callsite": "B328A2 allocates 24h; B328B0 arms constructor cleanup state 28; B328BC calls B33DA0; B328C5 returns to parent state 24; B328CD stores the returned worker at renderer+1970h; B328D3 then creates the final renderer+199Ch section.",
+        "thread_creation": "B33DE2 pushes B33C20 as CreateThread entry after two BD1970 auto-reset event acquisitions. CreateThread is suspended; SetThreadPriority(-2) and ResumeThread follow using the returned handle.",
+        "source": "src/native_renderer_control_worker.cpp on orch5"
+      },
+      {
+        "address": "00B33C20",
+        "role": "Win32 worker thread entry",
+        "xref_set": [
+          "00B33DE2 data reference passed as CreateThread entry"
+        ],
+        "active_callsites": [
+          "00B33D3D calls current renderer vtable +0Ch, whose D5F0A8 entry is B2B200 BeginFrame",
+          "00B33D4A calls current renderer vtable +14h, whose D5F0A8 entry is B2F4A0 default EndFrame"
+        ],
+        "loop_boundary": "The inner run loop and the renderer lifecycle-busy loop do not test shutdown. Stop must clear run and receive the idle acknowledgement before destructor join.",
+        "source": "src/native_renderer_control_worker.cpp on orch5"
+      },
+      {
+        "address": "00B33B50",
+        "role": "worker destructor",
+        "xref_set": [
+          "00B33C03 direct call from scalar deleting wrapper B33C00"
+        ],
+        "schedule": "Capture wake, set shutdown, signal wake, WaitForSingleObject(thread, INFINITE), close and clear thread handle, then delete and clear wake and idle events.",
+        "source": "src/native_renderer_control_worker.cpp on orch5"
+      },
+      {
+        "address": "00B33C00",
+        "role": "worker scalar deletion",
+        "xref_set": [
+          "00D5F1F0 data slot 0"
+        ],
+        "renderer_destructor_callsite": "B32962 loads renderer+1970h; B3296E loads its table; B32970 loads slot 0; B32972 pushes flags 1; B32974 dispatches B33C00; B32976 clears renderer+1970h.",
+        "source": "src/native_renderer_control_worker.cpp on orch5"
+      },
+      {
+        "address": "00B21740 / 00B33BC0",
+        "role": "start protocol",
+        "evidence": "B21740 is D5F0A8 slot +118h through D5F1C0. If renderer+1970h exists it first sets synchronization mode 1, then B33BC0 stores callback+1Ch, context+20h and rate+18h, sets run+4, and signals wake+0Ch."
+      },
+      {
+        "address": "00B28A90 / 00B33BF0",
+        "role": "stop and idle acknowledgement",
+        "evidence": "B28A90 is D5F0A8 slot +11Ch through D5F1C4. B33BF0 clears run+4 and waits on idle event+10h; only afterward does B28A90 disable optional synchronization, clear the pipeline and Sleep(100)."
+      }
+    ],
+    "time_cell": {
+      "address": "0108D6E4",
+      "live_bytes": "00 00 00 00",
+      "original_storage": "same non-disk-backed .data virtual tail as the adjacent R29 scalar domains; loader-zero preimage",
+      "complete_xrefs": [
+        "00B33DC7 WRITE zero in worker construction",
+        "00B33C96 READ previous float bits in worker timing",
+        "00B33CEA WRITE accepted current float bits"
+      ],
+      "current_main_owner": false
+    }
+  },
+  "binding_timing_and_lifetime": {
+    "bind_before": [
+      "Any call to construct_native_renderer_00b32410 that can reach B328BC",
+      "Any direct call to construct_native_renderer_control_worker_00b33da0"
+    ],
+    "why_before_construction": "The source worker constructor resolves the immutable process context before placement construction, zeroes 0108D6E4 through it, creates events and resumes a thread. Binding after construction is already too late.",
+    "context_identity": "The branch module stores one context address with InterlockedCompareExchangePointer. Rebinding to a different address throws. There is no unbind operation.",
+    "must_outlive": [
+      "every worker thread and every possible worker callback",
+      "the stop/idle protocol",
+      "renderer destructor's B33C00 dispatch and B33B50 join",
+      "a worker retained after a late renderer-constructor failure",
+      "a worker whose CreateThread, priority or resume APIs retain native failure results"
+    ],
+    "normal_start_gate": "Do not invoke B21740 until a real renderer/device, actual clock, begin context and closed EndFrame context are all valid. The source worker deliberately throws for a reached missing provider; an exception escaping its Win32 thread entry is not a successful no-op.",
+    "normal_stop_order": [
+      "Call the actual B28A90/B33BF0 stop protocol so run becomes zero and the worker signals idle.",
+      "Only after idle acknowledgement may renderer/device and EndFrame borrowed domains begin teardown.",
+      "Keep the immutable context and every nested provider alive through B32974 -> B33C00 -> B33B50 thread join.",
+      "Renderer destruction clears F8D394 later through its base teardown; the binding itself remains installed because the worker module has no unbind."
+    ],
+    "critical_destructor_order": "Original B32920 destroys renderer+199Ch at B3295D before deleting renderer+1970h at B32974. A still-running worker polls the lifecycle section through renderer+199Ch. Therefore the application must complete the stop/idle protocol before entering renderer destruction; relying on the destructor's shutdown byte is insufficient.",
+    "failure_retention": [
+      "A missing process binding throws before raw worker placement; renderer state 28 frees the captured 24h allocation.",
+      "An event allocation/creation failure gains no invented rollback; an already acquired event can remain live according to the branch contract.",
+      "CreateThread, SetThreadPriority and ResumeThread failures are retained rather than translated into constructor failure. A null handle remains stored; a suspended but never resumed thread can make the destructor's infinite join permanent.",
+      "After successful worker construction, B328C5 returns parent cleanup to state 24 and B328CD publishes the worker. If final-section creation at B328D3 throws, the renderer constructor's state-24 unwind does not delete the completed control worker. The bound context must remain valid even for that retained worker."
+    ]
+  },
+  "borrowed_domain_audit": [
+    {
+      "domain": "control context object and reference cells",
+      "required_lifetime": "process-stable address from bind through all joins; publication cell addresses never move",
+      "current_main_producer": "none",
+      "availability": "The type and binder exist only on orch5."
+    },
+    {
+      "domain": "actual clock publication 01090AB0 and D68D50 clock object",
+      "required_lifetime": "publication cell and current clock object remain valid while a run loop may sample",
+      "current_main_producer": "not usable for this raw path",
+      "availability": "GameStartupHost owns a typed FrameClock projection and publishes its address, but FrameClock explicitly has no original vtable field and is not the D68D50 singleton ABI. The worker's profile check and raw BEE080 field reads reject it. No actual raw frame-clock process owner was found on orch5."
+    },
+    {
+      "domain": "actual renderer publication 00F8D394 and renderer+04/+199C lifecycle sections",
+      "required_lifetime": "real renderer must exist before run is enabled and remain through idle and join",
+      "current_main_producer": "none",
+      "availability": "Main has raw renderer base lifetime and scalar storage, but not B32410/B32920 application ownership. Orch5 has constructor/destructor source but no application caller or process binder."
+    },
+    {
+      "domain": "worker time bits 0108D6E4",
+      "required_lifetime": "stable DWORD shared by constructor and every worker sample",
+      "current_main_producer": "none",
+      "availability": "GameNativeRendererScalarProcess owns D6DC, D6E8, DAF8 and DAFC only. D6E4 is the adjacent missing loader-zero cell."
+    },
+    {
+      "domain": "renderer synchronization 0108D6DC..E3",
+      "required_lifetime": "same process record used by renderer start/stop, begin/end and buffer guards",
+      "current_main_producer": "GameNativeRendererScalarProcess",
+      "availability": "available, but no renderer application context currently borrows it"
+    },
+    {
+      "domain": "numeric profile tables D6821C, D68D50 and D5F0A8",
+      "required_lifetime": "read-only mapped bands outlive worker and callback contexts",
+      "current_main_producer": "conditional canonical read-only data service",
+      "availability": "GameNativeReadOnlyData maps the D5 and D6 64-KB bands when the canonical data owner initializes. A future binder can borrow numeric table data; the entries are validation tokens, never callable original addresses. No worker composer currently retrieves them."
+    },
+    {
+      "domain": "native event owners D6821C",
+      "required_lifetime": "wake and idle objects survive from B33DA0 until B33B50 deletes them after join",
+      "current_main_producer": "native_event_owner source",
+      "availability": "available through the shared singleton allocation domain; OS API failures retain native null/invalid fields"
+    },
+    {
+      "domain": "NativeRendererBeginFrameContext",
+      "required_lifetime": "context plus reset, F8D39C service publication and raw string domains outlive active worker calls",
+      "current_main_producer": "function source only",
+      "availability": "B2B200 source exists on main. No application composer exists, and the actual render-resource service publication F8D39C is still assigned to the future renderer owner."
+    },
+    {
+      "domain": "EndFrame callback and NativeRendererEndFrameContext",
+      "required_lifetime": "callback target, context and all nested queue/binding/cache/device/query/debug/XLive domains outlive active worker calls and join",
+      "current_main_producer": "none",
+      "availability": "Main has no end-frame module. Orch5 has a partial explicit-frontier implementation, not a production-ready callback."
+    }
+  ],
+  "end_frame_audit": {
+    "original_dispatch": [
+      "D5F0A8+10h at D5F0B8 contains B2F4B0; B2F4B0 is E9 2B E4 FF FF, a tail jump to B2D8E0 with the caller's save-header argument.",
+      "D5F0A8+14h at D5F0BC contains B2F4A0; B2F4A0 is 6A 00 E8 39 E4 FF FF C3, PUSH 0 / CALL B2D8E0 / RET.",
+      "The control worker uses +14h at B33D47/B33D4A after BeginFrame +0Ch at B33D3A/B33D3D.",
+      "BSP_Game_FinishRenderFrame 004CA1F0 uses +14h at 004CA272/004CA275 for the ordinary path and +10h at 004CA28C/004CA296 for screenshot capture. Its seven direct callers are 006ADCE9, 0060D626, 004CCC82, 004CAC93, 004E4B75, 004E4CC6 and 004E54EB."
+    ],
+    "current_main": {
+      "implementation": "No include/bsp/native_renderer_end_frame.hpp or src/native_renderer_end_frame.cpp exists.",
+      "available_evidence": "Ledger/export evidence records B2D8E0 and wrappers; source modules cover many leaves only.",
+      "usable_worker_callback": false
+    },
+    "orch5_implementation": {
+      "implemented": [
+        "B2D8E0 complete observed schedule and B2F4A0/B2F4B0 source wrappers",
+        "physical vertex/index rewind B232B0/B231C0 and logical leaves B48D40/B48DD0",
+        "actual query polling B5FCA0 through separate native_occlusion_query_poll source",
+        "actual debug-line drawing B28D00 through separate native_renderer_debug_lines source",
+        "existing main-compatible binding/cache/state/statistics/surface-save/clear leaves",
+        "real current COM EndScene and Present calls plus XLive ordinal 5002 import"
+      ],
+      "not_closed": [
+        "actual raw B1EBE0 render-command queue execution",
+        "B2BB90 debug-record drawing is still an abstract remaining callback in EndFrame even though substantive source exists later on orch5",
+        "B2B580 has no source provider on main or orch5"
+      ],
+      "main_missing_direct_dependencies": [
+        "include/bsp/native_occlusion_query_poll.hpp",
+        "src/native_occlusion_query_poll.cpp",
+        "include/bsp/native_renderer_debug_lines.hpp",
+        "src/native_renderer_debug_lines.cpp"
+      ],
+      "frontier_details": {
+        "B1EBE0": "Main's execute_render_command_queue_00b1ebe0 is a typed semantic projection over RenderCommandQueue/RenderCommandExecutor. Existing docs explicitly say it is not the actual raw queue provider and cannot satisfy EndFrame by reinterpretation.",
+        "B2BB90": "Orch5 commits 650d55491/5bcfb434b provide draw_native_renderer_debug_records24_00b2bb90 with caller-supplied per-record frames and a large actual model/material/pass dependency graph. EndFrame has not adopted that API.",
+        "B2B580": "Native 1549-byte body remains unported. Live lookup shows 17 callees spanning generated models, camera construction/pool, strings, material/system constants and render entry work."
+      },
+      "active_validation": "The branch reports only inactive EndFrame wrappers and component fixtures. No active full EndFrame, XLiveRender frame, application adoption or gameplay execution is established.",
+      "usable_worker_callback": false
+    },
+    "control_adapter": "NativeRendererControlWorkerContext expects void (*)(void*, void*) plus a borrowed context. end_native_renderer_frame_default_00b2f4a0 has a typed NativeRendererEndFrameContext* second argument. A final application binder needs a small typed adapter after the EndFrame frontier closes; casting numeric B2F4A0 or supplying a no-op is invalid."
+  },
+  "minimal_subsequent_source_packets": [
+    {
+      "order": 1,
+      "packet": "renderer_worker_time_scalar",
+      "addresses": [
+        "0108D6E4",
+        "00B33DC7",
+        "00B33C96",
+        "00B33CEA"
+      ],
+      "files": [
+        "include/bsp/game_native_renderer_scalars.hpp",
+        "src/game_native_renderer_scalars.cpp",
+        "own doc/report"
+      ],
+      "work": "Add exactly one zero-initialized process-lifetime DWORD and stable accessor for 0108D6E4 to the existing scalar owner. No CRT callback, reset, worker or renderer creation.",
+      "dependencies": "R30 scalar process already integrated; R32 establishes the complete three-xref writer set and zero preimage.",
+      "ready": true
+    },
+    {
+      "order": 2,
+      "packet": "renderer_control_worker_reuse",
+      "addresses": [
+        "00B33DA0",
+        "00B33B50",
+        "00B33C00",
+        "00B33C20",
+        "00BEE080"
+      ],
+      "files": [
+        "include/bsp/native_renderer_control_worker.hpp",
+        "src/native_renderer_control_worker.cpp",
+        "cmake/startup.cmake",
+        "adapted orch5 doc/report"
+      ],
+      "work": "Reuse the reviewed orch5 source and final clock-destination correction. Keep the immutable context unbound in production and preserve the explicit EndFrame provider requirement.",
+      "dependencies": "Main already has native_event_owner, begin-frame, synchronization and singleton allocation sources. Reconcile main interfaces normally; do not copy historical build artifacts.",
+      "ready": true
+    },
+    {
+      "order": 3,
+      "packet": "renderer_end_frame_reuse_frontier",
+      "addresses": [
+        "00B2D8E0",
+        "00B2F4A0",
+        "00B2F4B0",
+        "00B232B0",
+        "00B231C0",
+        "00B48D40",
+        "00B48DD0",
+        "00B5FCA0",
+        "00B28D00"
+      ],
+      "files": [
+        "include/bsp/native_renderer_end_frame.hpp",
+        "src/native_renderer_end_frame.cpp",
+        "include/bsp/native_occlusion_query_poll.hpp",
+        "src/native_occlusion_query_poll.cpp",
+        "include/bsp/native_renderer_debug_lines.hpp",
+        "src/native_renderer_debug_lines.cpp",
+        "cmake/startup.cmake",
+        "adapted orch5 docs/reports"
+      ],
+      "work": "Reuse the substantive partial EndFrame schedule with its remaining-provider interface intact. This is component integration, not permission to bind the worker callback.",
+      "dependencies": "The remaining B1EBE0, B2BB90 and B2B580 providers stay explicit. Main contains the other direct include dependencies checked by this audit.",
+      "ready": true
+    },
+    {
+      "order": 4,
+      "packet": "renderer_end_frame_provider_closure",
+      "addresses": [
+        "00B1EBE0",
+        "00B2BB90",
+        "00B2B580"
+      ],
+      "files": [
+        "separate provider-owned source/header/report files",
+        "then update native_renderer_end_frame context only after each provider is substantive"
+      ],
+      "work": "Close providers as separate bounded packets. Reuse orch5 B2BB90 source with its persistent frame/dependency contract; recover an actual raw B1EBE0 provider rather than the typed queue projection; treat B2B580 as its own large-body reconstruction.",
+      "dependencies": "Actual renderer/model/material/camera/string/pool graphs. Coordinate with existing model, cleanup and gather owners and avoid overlapping their fields or files.",
+      "ready": false,
+      "blocker": "B1EBE0 and B2B580 substantive raw providers are not available."
+    },
+    {
+      "order": 5,
+      "packet": "game_native_renderer_control_binding",
+      "addresses": [
+        "01090AB0",
+        "00F8D394",
+        "0108D6E4",
+        "0108D6DC",
+        "00B21740",
+        "00B28A90",
+        "00B32920"
+      ],
+      "files": [
+        "new game-native renderer control binding header/source",
+        "eventual renderer process composition file",
+        "own doc/report"
+      ],
+      "work": "Own one process-stable NativeRendererControlWorkerContext and typed EndFrame adapter; borrow canonical profile data, scalar cells, clock, renderer, begin and EndFrame contexts; bind once before B32410; start only after all providers are valid; stop/idle before renderer destruction; retain through join.",
+      "dependencies": "Actual raw D68D50 frame-clock process, actual renderer application process, actual F8D39C begin-frame service, closed EndFrame providers and integrated worker source.",
+      "ready": false,
+      "blocker": "None of the raw clock, renderer application, F8D39C composition or closed EndFrame producer is currently available on main."
+    }
+  ],
+  "decision": {
+    "bind_now": false,
+    "instantiate_fake_or_null_providers": false,
+    "reuse_numeric_original_addresses_as_calls": false,
+    "next_safe_work": "Integrate 0108D6E4 scalar ownership and the dormant orch5 worker component independently. Preserve the EndFrame callback as unsatisfied until its raw provider frontier and actual application owners close.",
+    "proof_boundary": "This audit establishes source availability, static callsites and lifetime ordering. It does not prove active worker rendering, failure-path liveness, original ABI/FH3/SEH, full EndFrame execution, application startup, rendering or gameplay."
+  }
+}
