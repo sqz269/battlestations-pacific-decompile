@@ -3,6 +3,7 @@
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_pooled_string_substring.hpp"
 #include "bsp/native_pooled_text.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <cstdio>
 #include <cstdlib>
@@ -43,6 +44,38 @@ void set_shader(void* definition,const char* name,NativeStringStorage& strings) 
     }
     store<std::uint32_t>(definition,0x7c,additive?1u:0u);
 }
+struct RawShaderName { std::uint32_t length; char* data; };
+static_assert(sizeof(RawShaderName)==8);
+void return_shader_name(char* data,std::uint32_t length,NativeStringRawPoolContext& strings) {
+    if(!data) return;
+    auto* pool=native_string_pool_get_or_create_00419cc0(
+        strings.actual_published_01090aa8,strings.actual_manager_publication_01090aa0);
+    return_native_string_pool_00bd1510(pool,data,length+1u,
+        strings.actual_small_returns_disabled_01090aa4);
+}
+void set_shader(void* definition,const char* name,NativeStringRawPoolContext& strings) {
+    RawShaderName expected{};
+    resize_native_string_header_0041dd40(&expected,strings,8,true);
+    char* const captured_expected=expected.data;
+    if(captured_expected) std::memmove(captured_expected,"Additive",expected.length+1u);
+    struct ExpectedUnwind {
+        RawShaderName& expected;
+        NativeStringRawPoolContext& strings;
+        bool armed=true;
+        ~ExpectedUnwind() noexcept {
+            if(armed) destroy_native_string_header_0041dd20(&expected,strings);
+        }
+    } unwind{expected,strings}; // state0 begins only before constructing input.
+    RawShaderName input;
+    void* const constructed=construct_native_string_header_0041e870(&input,strings,name);
+    const bool additive=equal_native_string_headers_00435c40(constructed,&expected);
+    // Input has no caller unwind state. If its normal release throws, only
+    // the CURRENT expected header is destroyed by state0.
+    return_shader_name(input.data,input.length,strings);
+    unwind.armed=false; // native state=-1 before the second getter.
+    return_shader_name(captured_expected,expected.length,strings);
+    store<std::uint32_t>(definition,0x7c,additive?1u:0u);
+}
 void append_model(void* definition,void* resource,NativeParticleTypeBaseBindings& b) {
     void* descriptor=at(definition,0x8c);
     const auto capacity=load<std::uint32_t>(descriptor,8);
@@ -69,10 +102,24 @@ void* fetch(const void* name,NativeParticleTypeResourceBindings& b) {
 void set_native_sprite_particle_shader_00b089e0(void* p,const char* s,NativeStringStorage& b){set_shader(p,s,b);}
 void set_native_axial_particle_shader_00b06210(void* p,const char* s,NativeStringStorage& b){set_shader(p,s,b);}
 void set_native_floating_particle_shader_00b07c80(void* p,const char* s,NativeStringStorage& b){set_shader(p,s,b);}
+void set_native_sprite_particle_shader_00b089e0(void* p,const char* s,NativeStringRawPoolContext& b){set_shader(p,s,b);}
+void set_native_axial_particle_shader_00b06210(void* p,const char* s,NativeStringRawPoolContext& b){set_shader(p,s,b);}
+void set_native_floating_particle_shader_00b07c80(void* p,const char* s,NativeStringRawPoolContext& b){set_shader(p,s,b);}
 void native_object_particle_shader_noop_00af80e0(void*,const char*) noexcept {}
 void native_tracer_particle_shader_noop_00b0a040(void*,const char*) noexcept {}
 bool dispatch_known_native_particle_shader(void* definition,std::uint32_t target,
     const char* name,NativeStringStorage& strings) {
+    switch(target){
+    case 0xb089e0:set_native_sprite_particle_shader_00b089e0(definition,name,strings);return true;
+    case 0xb06210:set_native_axial_particle_shader_00b06210(definition,name,strings);return true;
+    case 0xb07c80:set_native_floating_particle_shader_00b07c80(definition,name,strings);return true;
+    case 0xaf80e0:native_object_particle_shader_noop_00af80e0(definition,name);return true;
+    case 0xb0a040:native_tracer_particle_shader_noop_00b0a040(definition,name);return true;
+    default:return false;
+    }
+}
+bool dispatch_known_native_particle_shader(void* definition,std::uint32_t target,
+    const char* name,NativeStringRawPoolContext& strings) {
     switch(target){
     case 0xb089e0:set_native_sprite_particle_shader_00b089e0(definition,name,strings);return true;
     case 0xb06210:set_native_axial_particle_shader_00b06210(definition,name,strings);return true;

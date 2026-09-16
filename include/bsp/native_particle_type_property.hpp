@@ -2,6 +2,7 @@
 #include "bsp/native_particle_type_base.hpp"
 
 namespace bsp {
+struct NativeStringRawPoolContext;
 struct NativeParticleTypeResourceBindings;
 struct NativeParticleTypePropertyBindings {
     NativeParticleTypeBaseBindings& base; // SAME strings, parameter pool and native array domain
@@ -43,6 +44,12 @@ bool load_native_particle_type_texture_00b01350(void*, const char*,
 // Consumes/relinquishes the supplied string bytes; no match also returns zero.
 std::int32_t find_native_particle_layer_00af4360(void* actual_layer_owner,
     std::uint32_t name_length, char* consumed_name, NativeStringStorage&);
+// Raw companion receives the actual consumed BY-VALUE argument header. Capture
+// its length once, reload its data for comparisons and normal return. AF4360
+// keeps state=-1 throughout, so no extra exception cleanup is introduced. The
+// consumed header remains stale after its data is returned; do not release twice.
+std::int32_t find_native_particle_layer_00af4360(void* actual_layer_owner,
+    void* actual_consumed_name8h, NativeStringRawPoolContext&);
 // AF3A20 ECX filename, RET/EAX signed count. Counts contiguous atlas hits from
 // 000 only when the extension-stripped name ends in three zeroes after index0.
 std::int32_t count_native_particle_texture_frames_00af3a20(const char*,

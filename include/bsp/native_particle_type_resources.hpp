@@ -2,6 +2,7 @@
 #include "bsp/native_particle_type_base.hpp"
 
 namespace bsp {
+struct NativeStringRawPoolContext;
 struct NativeParticleTypeResourceBindings {
     NativeParticleTypeBaseBindings& base;
     void* context;
@@ -20,10 +21,17 @@ struct NativeParticleTypeResourceBindings {
 void set_native_sprite_particle_shader_00b089e0(void*,const char*,NativeStringStorage&);
 void set_native_axial_particle_shader_00b06210(void*,const char*,NativeStringStorage&);
 void set_native_floating_particle_shader_00b07c80(void*,const char*,NativeStringStorage&);
+// Raw companions retain the captured literal pointer and current length on
+// normal return. Only the literal header is armed for caller FH3 cleanup;
+// input cleanup is an explicit normal return, not another owned EH state.
+void set_native_sprite_particle_shader_00b089e0(void*,const char*,NativeStringRawPoolContext&);
+void set_native_axial_particle_shader_00b06210(void*,const char*,NativeStringRawPoolContext&);
+void set_native_floating_particle_shader_00b07c80(void*,const char*,NativeStringRawPoolContext&);
 void native_object_particle_shader_noop_00af80e0(void*,const char*) noexcept;
 void native_tracer_particle_shader_noop_00b0a040(void*,const char*) noexcept;
 // Return whether captured CURRENT target is one of the five reviewed entries.
 bool dispatch_known_native_particle_shader(void*,std::uint32_t,const char*,NativeStringStorage&);
+bool dispatch_known_native_particle_shader(void*,std::uint32_t,const char*,NativeStringRawPoolContext&);
 
 // AF8350 ECX actual0Ch descriptor, stack signed requested count, RET4.
 void reserve_native_object_particle_models_00af8350(void*,std::int32_t,

@@ -1,0 +1,907 @@
+{
+  "packet": "orch4_particle_shader_layer_raw_o15",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00b089e0",
+      "bytes": 220,
+      "sha256": "cd6860ea7e5e8ec98bad38f26e5cdf464a245f47f5f1825d752135dbef53f5d3",
+      "hex": "6aff6868b9cb0064a100000000506489250000000083ec105355566a018be96a088d4c2414c744241400000000c744241800000000e8265391ff8b74241085f674168b44240c83c00150685cdfd50056e84bec0e0083c40c8b4c242c518d4c2418c744242800000000e8225e91ff8d54240c528bc8e8e6d192ff8b4c241885c98ad874178b4424146a0183c0015051e84c1291ff8bc8e8958a0c0085f6c7442424ffffffff74178b44240c6a0183c0015056e8291291ff8bc8e8728a0c0033c984db0f95c15e894d7c8b4c24185d5b64890d0000000083c41cc20400",
+      "last_instruction": "00b08ab9 ret 4",
+      "end_exclusive": "00b08abc",
+      "live_disk_match": true,
+      "old_documentation": {
+        "hash": "63bdb09bc244b5ba210bc31fb0df756c67a1a3e862b99d610669ade535147b93",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b089e0",
+        "function_name": "BSP_NativeParticleSprite_SetShader",
+        "return_type": "void",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00b089e0]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00b089e0..00b08abb; ECX actual definition; stack C string; RET4; actual8h temporaries released before definition+7C write. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "name",
+            "type": "char *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_18",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "local_1c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pvVar3",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 88,
+            "name": "LAB_00b08a38"
+          },
+          {
+            "relative_offset": 155,
+            "name": "LAB_00b08a7b"
+          },
+          {
+            "relative_offset": 190,
+            "name": "LAB_00b08a9e"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_name": {
+        "address": "00b089e0",
+        "name": "BSP_NativeParticleSprite_SetShader",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00b089e0..00b08abb; ECX actual definition; stack C string; RET4; actual8h temporaries released before definition+7C write. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md."
+      },
+      "prior_reconstruction_records": [
+        {
+          "address": "00b089e0",
+          "source": "src/native_particle_type_resources.cpp",
+          "header": "include/bsp/native_particle_type_resources.hpp",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00b089e0..00b08abb; ECX actual definition; stack C string; RET4; actual8h temporaries released before definition+7C write. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+          "name": "set_native_sprite_particle_shader_00b089e0",
+          "status": "reconstructed_build_tested_bounded_fixture_tested",
+          "native_abi": "ECX actual definition; stack C string; RET4; actual8h temporaries released before definition+7C write.",
+          "kind": "function"
+        }
+      ],
+      "original_abi": "ECX actual definition; stack C string; RET4",
+      "coverage": "complete"
+    },
+    {
+      "address": "00b06210",
+      "bytes": 220,
+      "sha256": "7e6295131bb84b1fe6517eafc6aa52f6b745e718f0cab3771212f607d04d5c41",
+      "hex": "6aff6808b8cb0064a100000000506489250000000083ec105355566a018be96a088d4c2414c744241400000000c744241800000000e8f67a91ff8b74241085f674168b44240c83c00150685cdfd50056e81b140f0083c40c8b4c242c518d4c2418c744242800000000e8f28591ff8d54240c528bc8e8b6f992ff8b4c241885c98ad874178b4424146a0183c0015051e81c3a91ff8bc8e865b20c0085f6c7442424ffffffff74178b44240c6a0183c0015056e8f93991ff8bc8e842b20c0033c984db0f95c15e894d7c8b4c24185d5b64890d0000000083c41cc20400",
+      "last_instruction": "00b062e9 ret 4",
+      "end_exclusive": "00b062ec",
+      "live_disk_match": true,
+      "old_documentation": {
+        "hash": "63bdb09bc244b5ba210bc31fb0df756c67a1a3e862b99d610669ade535147b93",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b06210",
+        "function_name": "BSP_NativeParticleAxial_SetShader",
+        "return_type": "void",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00b06210]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00b06210..00b062eb; ECX actual definition; stack C string; RET4; exact case-insensitive Additive comparison through435C40/BF7FBF. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "name",
+            "type": "char *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "local_1c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "local_18",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_14",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pvVar3",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 88,
+            "name": "LAB_00b06268"
+          },
+          {
+            "relative_offset": 155,
+            "name": "LAB_00b062ab"
+          },
+          {
+            "relative_offset": 190,
+            "name": "LAB_00b062ce"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_name": {
+        "address": "00b06210",
+        "name": "BSP_NativeParticleAxial_SetShader",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00b06210..00b062eb; ECX actual definition; stack C string; RET4; exact case-insensitive Additive comparison through435C40/BF7FBF. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md."
+      },
+      "prior_reconstruction_records": [
+        {
+          "address": "00b06210",
+          "source": "src/native_particle_type_resources.cpp",
+          "header": "include/bsp/native_particle_type_resources.hpp",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00b06210..00b062eb; ECX actual definition; stack C string; RET4; exact case-insensitive Additive comparison through435C40/BF7FBF. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+          "name": "set_native_axial_particle_shader_00b06210",
+          "status": "reconstructed_build_tested_bounded_fixture_tested",
+          "native_abi": "ECX actual definition; stack C string; RET4; exact case-insensitive Additive comparison through435C40/BF7FBF.",
+          "kind": "function"
+        }
+      ],
+      "original_abi": "ECX actual definition; stack C string; RET4",
+      "coverage": "complete"
+    },
+    {
+      "address": "00b07c80",
+      "bytes": 220,
+      "sha256": "1e1ee835d6f47e4cbe3d8314d17171aa2e2b71edbc7a3570d6d33ae80ead4e27",
+      "hex": "6aff68d8b8cb0064a100000000506489250000000083ec105355566a018be96a088d4c2414c744241400000000c744241800000000e8866091ff8b74241085f674168b44240c83c00150685cdfd50056e8abf90e0083c40c8b4c242c518d4c2418c744242800000000e8826b91ff8d54240c528bc8e846df92ff8b4c241885c98ad874178b4424146a0183c0015051e8ac1f91ff8bc8e8f5970c0085f6c7442424ffffffff74178b44240c6a0183c0015056e8891f91ff8bc8e8d2970c0033c984db0f95c15e894d7c8b4c24185d5b64890d0000000083c41cc20400",
+      "last_instruction": "00b07d59 ret 4",
+      "end_exclusive": "00b07d5c",
+      "live_disk_match": true,
+      "old_documentation": {
+        "hash": "63bdb09bc244b5ba210bc31fb0df756c67a1a3e862b99d610669ade535147b93",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b07c80",
+        "function_name": "BSP_NativeParticleFloating_SetShader",
+        "return_type": "void",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00b07c80]\nDescriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00b07c80..00b07d5b; ECX actual definition; stack C string; RET4; exact case-insensitive Additive comparison through435C40/BF7FBF. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "name",
+            "type": "char *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          },
+          {
+            "name": "local_10",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "uVar4",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffd4, 4)"
+          },
+          {
+            "name": "local_18",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffe8, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(register, 0x0, 1)"
+          },
+          {
+            "name": "local_14",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffec, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "local_1c",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "pvVar3",
+            "type": "void *",
+            "storage": "(stack, 0xffffffffffffffcc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 88,
+            "name": "LAB_00b07cd8"
+          },
+          {
+            "relative_offset": 155,
+            "name": "LAB_00b07d1b"
+          },
+          {
+            "relative_offset": 190,
+            "name": "LAB_00b07d3e"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_name": {
+        "address": "00b07c80",
+        "name": "BSP_NativeParticleFloating_SetShader",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00b07c80..00b07d5b; ECX actual definition; stack C string; RET4; exact case-insensitive Additive comparison through435C40/BF7FBF. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md."
+      },
+      "prior_reconstruction_records": [
+        {
+          "address": "00b07c80",
+          "source": "src/native_particle_type_resources.cpp",
+          "header": "include/bsp/native_particle_type_resources.hpp",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/disk-equal body 00b07c80..00b07d5b; ECX actual definition; stack C string; RET4; exact case-insensitive Additive comparison through435C40/BF7FBF. See docs/NATIVE_PARTICLE_TYPE_RESOURCES.md.",
+          "name": "set_native_floating_particle_shader_00b07c80",
+          "status": "reconstructed_build_tested_bounded_fixture_tested",
+          "native_abi": "ECX actual definition; stack C string; RET4; exact case-insensitive Additive comparison through435C40/BF7FBF.",
+          "kind": "function"
+        }
+      ],
+      "original_abi": "ECX actual definition; stack C string; RET4",
+      "coverage": "complete"
+    },
+    {
+      "address": "00af4360",
+      "bytes": 234,
+      "sha256": "f334b09f093ec758e7e1ff4e7bd15959cd6da457e6fa81120f851ae147cfe63d",
+      "hex": "64a1000000006aff6898abcb005064892500000000535556578bd98b43548b6c242033ff85c07e4e8d7334eb038d49008b068b480883c0083bcd752f85c975088bc5f7d81bc0eb1a85ed75058d4501eb118b4c24248b50045152e8003c100083c40885c00f94c084c0754583c70183c6043b7b547cba8b44242485c0c7442418ffffffff74136a0183c5015550e8ce5892ff8bc8e817d10d0033c08b4c241064890d000000005f5e5d5b83c40cc208008b44242485c0c7442418ffffffff74136a0183c5015550e8945892ff8bc8e8ddd00d008b4c24108bc75f5e5d64890d000000005b83c40cc20800",
+      "last_instruction": "00af4447 ret 8",
+      "end_exclusive": "00af444a",
+      "live_disk_match": true,
+      "old_documentation": {
+        "hash": "4c4273e81f616fcf34e5015e80c131ac2101174a7d1b9ec362e2a962ae7381ac",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af4360",
+        "function_name": "BSP_ParticleLayer_FindConsumedName",
+        "return_type": "int",
+        "calling_convention": "__thiscall",
+        "plate_comment": "[BSP reconstruction 00af4360]\nAQ hypothesis, not recovered symbol. Full installed/live byte span verified; decoded calls and native stack cleanup inspected. Actual pooled string, raw atlas manager/item and1Ch particle record domains; real D3DXFloat32To16Array import. Strict Win32/native-byte differential passes supported normal paths. Original FH3/allocation-failure/malformed-buffer faults and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_PROPERTY.md and reports/native_particle_type_property.json.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "this",
+            "type": "void *"
+          },
+          {
+            "ordinal": 1,
+            "name": "name_length",
+            "type": "uint"
+          },
+          {
+            "ordinal": 2,
+            "name": "consumed_name",
+            "type": "char *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "uVar1",
+            "type": "uint",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(register, 0x18, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x14, 4)"
+          },
+          {
+            "name": "local_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "uVar5",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe0, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 48,
+            "name": "LAB_00af4390"
+          },
+          {
+            "relative_offset": 72,
+            "name": "LAB_00af43a8"
+          },
+          {
+            "relative_offset": 81,
+            "name": "LAB_00af43b1"
+          },
+          {
+            "relative_offset": 98,
+            "name": "LAB_00af43c2"
+          },
+          {
+            "relative_offset": 107,
+            "name": "LAB_00af43cb"
+          },
+          {
+            "relative_offset": 118,
+            "name": "LAB_00af43d6"
+          },
+          {
+            "relative_offset": 153,
+            "name": "LAB_00af43f9"
+          },
+          {
+            "relative_offset": 176,
+            "name": "LAB_00af4410"
+          },
+          {
+            "relative_offset": 211,
+            "name": "LAB_00af4433"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "old_name": {
+        "address": "00af4360",
+        "name": "BSP_ParticleLayer_FindConsumedName",
+        "evidence": "AQ hypothesis, not recovered symbol. Full installed/live byte span verified; decoded calls and native stack cleanup inspected. Actual pooled string, raw atlas manager/item and1Ch particle record domains; real D3DXFloat32To16Array import. Strict Win32/native-byte differential passes supported normal paths. Original FH3/allocation-failure/malformed-buffer faults and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_PROPERTY.md and reports/native_particle_type_property.json."
+      },
+      "prior_reconstruction_records": [
+        {
+          "address": "00af4360",
+          "source": "src/native_particle_type_property.cpp",
+          "header": "include/bsp/native_particle_type_property.hpp",
+          "evidence": "AQ hypothesis, not recovered symbol. Full installed/live byte span verified; decoded calls and native stack cleanup inspected. Actual pooled string, raw atlas manager/item and1Ch particle record domains; real D3DXFloat32To16Array import. Strict Win32/native-byte differential passes supported normal paths. Original FH3/allocation-failure/malformed-buffer faults and gameplay unvalidated. See docs/NATIVE_PARTICLE_TYPE_PROPERTY.md and reports/native_particle_type_property.json.",
+          "name": "find_native_particle_layer_00af4360",
+          "status": "reconstructed_build_tested_bounded_fixture_tested",
+          "native_abi": "ECX layer owner; BY-VALUE stack length,data; RET8/EAX index, consumes string",
+          "kind": "function"
+        }
+      ],
+      "original_abi": "ECX actual resource; by-value length/data; EAX index; RET8",
+      "coverage": "complete"
+    }
+  ],
+  "calls": [
+    {
+      "function": "00b089e0",
+      "address": "00b08a15",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00b089e0",
+      "address": "00b08a30",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00b089e0",
+      "address": "00b08a49",
+      "native": "0041e870"
+    },
+    {
+      "function": "00b089e0",
+      "address": "00b08a55",
+      "native": "00435c40"
+    },
+    {
+      "function": "00b089e0",
+      "address": "00b08a6f",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b089e0",
+      "address": "00b08a76",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b089e0",
+      "address": "00b08a92",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b089e0",
+      "address": "00b08a99",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b06210",
+      "address": "00b06245",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00b06210",
+      "address": "00b06260",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00b06210",
+      "address": "00b06279",
+      "native": "0041e870"
+    },
+    {
+      "function": "00b06210",
+      "address": "00b06285",
+      "native": "00435c40"
+    },
+    {
+      "function": "00b06210",
+      "address": "00b0629f",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b06210",
+      "address": "00b062a6",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b06210",
+      "address": "00b062c2",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b06210",
+      "address": "00b062c9",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b07c80",
+      "address": "00b07cb5",
+      "native": "0041dd40"
+    },
+    {
+      "function": "00b07c80",
+      "address": "00b07cd0",
+      "native": "00bf7680"
+    },
+    {
+      "function": "00b07c80",
+      "address": "00b07ce9",
+      "native": "0041e870"
+    },
+    {
+      "function": "00b07c80",
+      "address": "00b07cf5",
+      "native": "00435c40"
+    },
+    {
+      "function": "00b07c80",
+      "address": "00b07d0f",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b07c80",
+      "address": "00b07d16",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00b07c80",
+      "address": "00b07d32",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00b07c80",
+      "address": "00b07d39",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00af4360",
+      "address": "00af43ba",
+      "native": "00bf7fbf"
+    },
+    {
+      "function": "00af4360",
+      "address": "00af43ed",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00af4360",
+      "address": "00af43f4",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00af4360",
+      "address": "00af4427",
+      "native": "00419cc0"
+    },
+    {
+      "function": "00af4360",
+      "address": "00af442e",
+      "native": "00bd1510"
+    },
+    {
+      "function": "00cbb960",
+      "address": "00cbb963",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbb800",
+      "address": "00cbb803",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbb8d0",
+      "address": "00cbb8d3",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbab90",
+      "address": "00cbab93",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    }
+  ],
+  "extra_byte_evidence": [
+    {
+      "address": "00cbb960",
+      "end_exclusive": "00cbb972",
+      "bytes": 18,
+      "sha256": "0873f313119f5f46455fa8f304f3fd5faba2585243a07a4d938476af13b22811",
+      "live_disk_match": true,
+      "hex": "8d4de4e9b82376ffb8243bdf00e9d1b1f3ff"
+    },
+    {
+      "address": "00cbb800",
+      "end_exclusive": "00cbb812",
+      "bytes": 18,
+      "sha256": "72b96eb80b47eb8331771cb7ecea68b1821761edd8bd0eea3ddaafd4796c1617",
+      "live_disk_match": true,
+      "hex": "8d4de4e9182576ffb85c39df00e931b3f3ff"
+    },
+    {
+      "address": "00cbb8d0",
+      "end_exclusive": "00cbb8e2",
+      "bytes": 18,
+      "sha256": "6aa3cc530dbc20eeab0f609ac564a647638ddc9c2146052a2218e6c628324e56",
+      "live_disk_match": true,
+      "hex": "8d4de4e9482476ffb8703adf00e961b2f3ff"
+    },
+    {
+      "address": "00cbab90",
+      "end_exclusive": "00cbaba2",
+      "bytes": 18,
+      "sha256": "481dd2e53241a0e7a73a31676fd005f57e234ffb1bf05c66826f9b4fd283f37f",
+      "live_disk_match": true,
+      "hex": "8d4d04e9883176ffb8d829df00e9a1bff3ff"
+    },
+    {
+      "address": "00df3b1c",
+      "end_exclusive": "00df3b48",
+      "bytes": 44,
+      "sha256": "734a0d4fa42c602e40b1e8a429e980283b374fa1e2154557d8a8363c19683ab3",
+      "live_disk_match": true,
+      "hex": "ffffffff60b9cb0022059319010000001c3bdf00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00df3954",
+      "end_exclusive": "00df3980",
+      "bytes": 44,
+      "sha256": "a4b75d5035c503cb192b06d6c2492170eb1acae91788f45f5560c503efdb8e2b",
+      "live_disk_match": true,
+      "hex": "ffffffff00b8cb0022059319010000005439df00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00df3a68",
+      "end_exclusive": "00df3a94",
+      "bytes": 44,
+      "sha256": "0e6c38be8321f6cad8da4f06b9286afdfd6e73f1094805cfe11ac9fc7fcaedc8",
+      "live_disk_match": true,
+      "hex": "ffffffffd0b8cb002205931901000000683adf00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00df29d0",
+      "end_exclusive": "00df29fc",
+      "bytes": 44,
+      "sha256": "67506aff7dce0cbe2bcb6640b5597e434e55c36aa91939ce1a74d853283d5073",
+      "live_disk_match": true,
+      "hex": "ffffffff90abcb002205931901000000d029df00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00d5df5c",
+      "end_exclusive": "00d5df65",
+      "bytes": 9,
+      "sha256": "a1f59d8c865140ef81ddf9e74dfb932d713ed03ae7e57a77e75fa167c708367d",
+      "live_disk_match": true,
+      "hex": "416464697469766500"
+    }
+  ],
+  "eh": [
+    {
+      "function": "00b089e0",
+      "handler": "00cbb968",
+      "func_info": "00df3b24",
+      "states": 1,
+      "map": "00df3b1c",
+      "unwind_rows": "ffffffff60b9cb00"
+    },
+    {
+      "function": "00b06210",
+      "handler": "00cbb808",
+      "func_info": "00df395c",
+      "states": 1,
+      "map": "00df3954",
+      "unwind_rows": "ffffffff00b8cb00"
+    },
+    {
+      "function": "00b07c80",
+      "handler": "00cbb8d8",
+      "func_info": "00df3a70",
+      "states": 1,
+      "map": "00df3a68",
+      "unwind_rows": "ffffffffd0b8cb00"
+    },
+    {
+      "function": "00af4360",
+      "handler": "00cbab98",
+      "func_info": "00df29d8",
+      "states": 1,
+      "map": "00df29d0",
+      "unwind_rows": "ffffffff90abcb00"
+    }
+  ],
+  "shader_equivalence": {
+    "bodies": [
+      "00b089e0",
+      "00b06210",
+      "00b07c80"
+    ],
+    "instructions": 69,
+    "normalized": [
+      "push -1",
+      "push handler",
+      "mov eax, dword ptr fs:[0]",
+      "push eax",
+      "mov dword ptr fs:[0], esp",
+      "sub esp, 0x10",
+      "push ebx",
+      "push ebp",
+      "push esi",
+      "push 1",
+      "mov ebp, ecx",
+      "push 8",
+      "lea ecx, [esp + 0x14]",
+      "mov dword ptr [esp + 0x14], 0",
+      "mov dword ptr [esp + 0x18], 0",
+      "call 0x41dd40",
+      "mov esi, dword ptr [esp + 0x10]",
+      "test esi, esi",
+      "je body+0x58",
+      "mov eax, dword ptr [esp + 0xc]",
+      "add eax, 1",
+      "push eax",
+      "push 0xd5df5c",
+      "push esi",
+      "call 0xbf7680",
+      "add esp, 0xc",
+      "mov ecx, dword ptr [esp + 0x2c]",
+      "push ecx",
+      "lea ecx, [esp + 0x18]",
+      "mov dword ptr [esp + 0x28], 0",
+      "call 0x41e870",
+      "lea edx, [esp + 0xc]",
+      "push edx",
+      "mov ecx, eax",
+      "call 0x435c40",
+      "mov ecx, dword ptr [esp + 0x18]",
+      "test ecx, ecx",
+      "mov bl, al",
+      "je body+0x9b",
+      "mov eax, dword ptr [esp + 0x14]",
+      "push 1",
+      "add eax, 1",
+      "push eax",
+      "push ecx",
+      "call 0x419cc0",
+      "mov ecx, eax",
+      "call 0xbd1510",
+      "test esi, esi",
+      "mov dword ptr [esp + 0x24], 0xffffffff",
+      "je body+0xbe",
+      "mov eax, dword ptr [esp + 0xc]",
+      "push 1",
+      "add eax, 1",
+      "push eax",
+      "push esi",
+      "call 0x419cc0",
+      "mov ecx, eax",
+      "call 0xbd1510",
+      "xor ecx, ecx",
+      "test bl, bl",
+      "setne cl",
+      "pop esi",
+      "mov dword ptr [ebp + 0x7c], ecx",
+      "mov ecx, dword ptr [esp + 0x18]",
+      "pop ebp",
+      "pop ebx",
+      "mov dword ptr fs:[0], ecx",
+      "add esp, 0x1c",
+      "ret 4"
+    ]
+  },
+  "validation": {
+    "build": "scripts/build.ps1 strict Win32 plus3/3 existing CTests passed",
+    "probe": {
+      "exit_code": 0,
+      "output": "PASS: 17 complete894B original/raw comparisons; three shaders/case/empty/miss; consumed Layer-name found/missing/empty/zero/negative count; sparse owner and real pool bump/live/peak; unchanged consumed header. Original FH3 failures not executed.\n",
+      "external_literal_relocations": [
+        [
+          11569632,
+          75
+        ],
+        [
+          11559440,
+          75
+        ],
+        [
+          11566208,
+          75
+        ]
+      ]
+    },
+    "artifact_hashes": {
+      "include/bsp/native_particle_type_resources.hpp": "c26e172eb14ad6f6de4ba651e4ba0095a5a2e6bf2835037b044ef595741d6c7b",
+      "src/native_particle_type_resources.cpp": "fedbd1211e796a612e03307080cc7bd597e76176ba4349859b9e8baa63b14e43",
+      "include/bsp/native_particle_type_property.hpp": "1b00bb8fee5f497167238b12136d025cc298ae1b356d131d72624bad176fc212",
+      "src/native_particle_type_property.cpp": "8ad7f75e706fa28a4f2a5de287b5b4400a33bbb4779f17de84ed0abbe19c324b",
+      "local/particle_shader_layer_probe.cpp": "c73f95f60ec1e01407e60ef35849dd53e13f65136a6eb6b88c048eaaff321d02",
+      "local/run_particle_shader_layer_probe.py": "d96a0e24a4e3dd7700bd53d603fa099c1809f04395f43c90ac8f81b8f6a5758f",
+      "build/win32/Release/bsp_core.lib": "36fe317b37b17c3c6e7cdaf29fe866cbe5ef714db07d342d9e82e8c448485f5d"
+    },
+    "call_verification": {
+      "checked": 33,
+      "failed": 0,
+      "includes": "29 body CALL rows and4 owned string-destructor funclet JMP rows; compiler handlers recorded as raw byte spans"
+    }
+  },
+  "limits": [
+    "Source interfaces add actual raw pool context and an explicit consumed stack-header address; not native binary replacements.",
+    "Normal copied-body paths use the same genuine providers/current CRT; native FH3 failure paths and original CRT identity unvalidated.",
+    "Invalid pointers, arbitrary native stack aliases, concurrent/reentrant mutations and gameplay unvalidated."
+  ]
+}

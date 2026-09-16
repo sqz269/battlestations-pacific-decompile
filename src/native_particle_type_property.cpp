@@ -4,6 +4,7 @@
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_pooled_string_substring.hpp"
 #include "bsp/native_pooled_text.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -347,6 +348,30 @@ std::int32_t find_native_particle_layer_00af4360(void* owner,
         }
     }
     if (consumed) storage.release(consumed,length+1u);
+    return found;
+}
+
+std::int32_t find_native_particle_layer_00af4360(void* owner,
+    void* consumed, NativeStringRawPoolContext& strings) {
+    const auto length=read<std::uint32_t>(consumed);
+    std::int32_t found=0;
+    void* row=at(owner,0x34);
+    for(std::uint32_t i=0;static_cast<std::int32_t>(i)<
+        *reinterpret_cast<const volatile std::int32_t*>(at(owner,0x54));++i,row=at(row,4)) {
+        void* entry=read<void*>(row);
+        if(read<std::uint32_t>(entry,8)==length &&
+            (!length || _stricmp(read<const char*>(entry,12),read<const char*>(consumed,4))==0)) {
+            found=static_cast<std::int32_t>(i); break;
+        }
+    }
+    // No state0 store exists in the complete native body. In particular,
+    // normal getter failure must not retry the by-value argument destructor.
+    if(void* data=read<void*>(consumed,4)) {
+        auto* pool=native_string_pool_get_or_create_00419cc0(
+            strings.actual_published_01090aa8,strings.actual_manager_publication_01090aa0);
+        return_native_string_pool_00bd1510(pool,data,length+1u,
+            strings.actual_small_returns_disabled_01090aa4);
+    }
     return found;
 }
 
