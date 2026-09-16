@@ -1,0 +1,281 @@
+{
+  "packet": "orch4-particle-date-raw-r22",
+  "status": "additional_raw_pool_source_interface_strict_Win32_and_native_composition_checked",
+  "utc": "2026-09-16T05:30:22.943802+00:00",
+  "base_main_commit": "be55d7e1e",
+  "early_interface_commit": "23c6971eb",
+  "implementation_commit": "575cffb98",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_home": "J:/tools/ghidra_12.0.4_PUBLIC",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00bdd340",
+      "native_end_exclusive": "00bdd439",
+      "native_bytes": 249,
+      "name": "query_native_vfs_file_date_00bdd340_raw_pool",
+      "cpp_symbol": "bsp::query_native_vfs_file_date_00bdd340(void*, void*, const void*, NativeVfsDateRouteContext&, NativeStringRawPoolContext&)",
+      "source": "src/native_vfs_date_route.cpp",
+      "original_abi": "ECX captured manager; stack output/name; EAX output; RET8",
+      "additional_source_interface": true,
+      "new_unique_native_functions": 0,
+      "previous_reconstruction_preserved": true
+    }
+  ],
+  "interface_extension": {
+    "owner": "GameNativeVfsRuntime::Impl::date_context",
+    "view": "GameNativeVfsRawServices::dates",
+    "storage": "borrowed reference; no new context, lifetime domain, manager or pool",
+    "requirement": "raw string publication cells must identify the same actual pool as dates.physical.strings"
+  },
+  "fresh_byte_parity": {
+    "count": 16,
+    "total_bytes": 1732,
+    "checks": [
+      {
+        "address": "00bdd340",
+        "length": 249,
+        "sha256": "9f20ec71fc7f1ed6b819301a928b75b8b7e58e4d76f6a9901855ebbcfc61be61",
+        "live_matches_PE": true,
+        "fixture_matches_PE": true,
+        "hex": "6aff681063cc0064a100000000506489250000000083ec205333db56578bf9c7442414b083d600895c2428895c2424895c2420895c241c895c24188b7424408d44240c3bc6895c2434895c240c895c241074288b066a01508d4c2414e89f0984ff391e74168b4c240c8b56048b442410515250e8c8a2010083c40c8d4c240cc644243401e8c71201008d4c2414518d542410528bcfe8c6fcffff8b74243c8b4424188b4c241c8b54242089068b442424894e048b4c242889560889460c894e108b4c24103bcb885c243474178b44240c6a0183c0015051e8a4c883ff8bc8e8ed40ffff8b4c242c5f8bc65e5b64890d0000000083c42cc20800"
+      },
+      {
+        "address": "00bdd0a0",
+        "length": 672,
+        "sha256": "6688eee94e647c22020b87083766a158686a073c47ff9d89162e5440bd5d3397",
+        "live_matches_PE": true,
+        "fixture_matches_PE": true,
+        "hex": "558bec83e4f86aff68e962cc0064a100000000506489250000000083ec3853568b750833db57895c24108d4424183bc68bf9c74718ffffffff895c2418895c241c74288b066a01508d4c2420e84f0c84ff391e74168b4c24188b56048b44241c515250e878a5010083c40c8b47408d4f3c8b38895c244c8bd9894c2414897c242c895c242885db8b710474043bd97405e8de9501003bfe0f84c801000085db7505e8cd9501003b7b047505e8c39501008b471083c71085c0743839442418762e506a008d4c2438518d4c2424e8cfc688ff834c241001578bc8e8c28a85ff84c0740c8b078b54241c803c022f740432dbeb02b301f64424100174248b4c243483642410fe85c974178b4424306a0183c0015051e808cb83ff8bc8e85143ffff84db0f84ed0000008b0785c0742568ffffff7f83c001508d442440508d4c2424e85cc688ff8bf0834c241002c644244c01eb048d74241833db8d4c24203bce895c2420895c242474248b066a0150e82e0b84ff391e74168b5424208b46048b4c2424525051e857a4010083c40cf644241002c744244c0300000074248b4c243c83642410fd3bcb74178b4424386a0183c0015051e868ca83ff8bc8e8b142ffff8b54242c8b4424283b50047505e8a29401008b750c8b168b52048d44242050578bceffd28b068b50088bceffd284c08b4c2424c644244c0075353bcb74178b4424206a0183c0015051e813ca83ff8bc8e85c42ffff8d4c2428e823c5ffff8b7c242c8b4c24148b5c2428e957feffff3bcb74178b4424206a0183c0015051e8dec983ff8bc8e82742ffff8b44241c3bc3c744244cffffffff74338b4c24186a0183c10151eb1a8b44241c85c0c744244cffffffff74178b5424186a0183c2015250e89bc983ff8bc8e8e441ffff8b4c24445f5e64890d000000005b8be55dc20800"
+      },
+      {
+        "address": "00bd9e80",
+        "length": 66,
+        "sha256": "bfa504eb0267ba8079f71c9a078e6b345e591dbaae13fab1c1669bb4e48c5b86",
+        "live_matches_PE": true,
+        "fixture_matches_PE": true,
+        "hex": "8b44240483ec14568bf18b48088b4424208b118b5220508d44240850ffd28b08894e048b50048956088b4808894e0c8b500c8956108b40108946145e83c414c20800"
+      },
+      {
+        "address": "00bd9f00",
+        "length": 39,
+        "sha256": "19e6ee7dc147e981a1499d6581de77a8ccbd392710777cb022c21adbd6d3345a",
+        "live_matches_PE": true,
+        "fixture_matches_PE": true,
+        "hex": "83790400751b83790800751583790c00750f83791000750983791400750333c0c3b801000000c3"
+      },
+      {
+        "address": "00bd90b0",
+        "length": 7,
+        "sha256": "2672881af9acdfb8418aa3830c63b835602bbd1c3860e2999af54696121d8c04",
+        "live_matches_PE": true,
+        "fixture_matches_PE": true,
+        "hex": "c7018083d600c3"
+      },
+      {
+        "address": "00bd97e0",
+        "length": 99,
+        "sha256": "038e8ecbedd6a49934410cbc5130f110d1ce98c4b8b7e8ad4830cbbc6aee1c9e",
+        "live_matches_PE": true,
+        "fixture_matches_PE": true,
+        "hex": "568bf1833e007505e826cf01008b46048078210074065ee917cf01008b480880792100751a8b0180782100750d8d49008bc88b018078210074f6894e045ec38b40048078210075168b4e043b4808750e8946048bd08b42048078210074ea8946045ec3"
+      },
+      {
+        "address": "00443d00",
+        "length": 81,
+        "sha256": "27301d40c436429db8b8537a7d62d230661837d45c3197510469311e73823ec6",
+        "live_matches_PE": true,
+        "fixture_matches_PE": true,
+        "hex": "8b4c24048339008b44240875128b00f7d81bc033c985c00f9cc18ac1c208008338007511b80100000033c985c00f9cc18ac1c208008b50048b41045250e87d427b0033c983c40885c00f9cc18ac1c20800"
+      },
+      {
+        "address": "00be54d0",
+        "length": 83,
+        "sha256": "5bdcf1cde7eca209d12843f8b773035de68ccef488273a8e44ef4cc61b9a0da7",
+        "live_matches_PE": true,
+        "fixture_matches_PE": true,
+        "hex": "8b410453568b7004807e19008bd8753e578b7c2410837e0c0075088b07f7d81bc0eb15833f0074198b47048b4e105051e8ba2a010083c40885c07d058b7608eb048bde8b36807e190074ca8bc35f5e5bc20400"
+      },
+      {
+        "address": "00be5a50",
+        "length": 102,
+        "sha256": "d9a94ec386e2f4f69beaff64deff4a8a63156fb32e8ec8b9e3d94f0514e948e9",
+        "live_matches_PE": true,
+        "fixture_matches_PE": true,
+        "hex": "83ec10538b5c241c5657538bf1e86efaffff85f68bf8897c24107505e8a20c01003b7e048974240c741683c70c57538bcee87ae285ff84c075068d4c240ceb0f8b460489442418897424148d4c24148b118b4424208b49045f5e89108948045b83c410c20800"
+      },
+      {
+        "address": "00be5c80",
+        "length": 109,
+        "sha256": "8cb4f7cce85ddcdf689be651496d27dc184df5f083e9eb2f07c30beb5ada9741",
+        "live_matches_PE": true,
+        "fixture_matches_PE": true,
+        "hex": "83ec108b41185355568b742420578d79148b4c242833ed518d54241c528bcf896e10896e0c896e08896e04892e8944241ce89afdffff8bd88b033bc574043bc77405e84c0a01008b442414394304741183c8ff89461089460c89460889460489065f8bc65e5d5b83c410c20800"
+      },
+      {
+        "address": "00bb9d50",
+        "length": 23,
+        "sha256": "43a4fe4be93b647f42859db4995e29d6a9661d11f1b27a014656c2a6a15537db",
+        "live_matches_PE": true,
+        "fixture_matches_PE": true,
+        "hex": "8b44240433c989481089480c8948088948048908c20800"
+      },
+      {
+        "address": "00bbb640",
+        "length": 23,
+        "sha256": "43a4fe4be93b647f42859db4995e29d6a9661d11f1b27a014656c2a6a15537db",
+        "live_matches_PE": true,
+        "fixture_matches_PE": true,
+        "hex": "8b44240433c989481089480c8948088948048908c20800"
+      },
+      {
+        "address": "00435c40",
+        "length": 89,
+        "sha256": "cd558dc4dd6db3ac479faa61b7e9618e5fa496d7102fb1efcce661bc38e84d8d",
+        "live_matches_PE": true,
+        "fixture_matches_PE": true,
+        "hex": "8b11568b7424088b063bd0740632c05ec2040085d2750ff7d81bc085c00f94c28ac25ec2040085c07512b80100000033d285c00f94c28ac25ec204008b46048b49045051e836237c0083c40833d285c00f94c28ac25ec20400"
+      },
+      {
+        "address": "00cc6300",
+        "length": 26,
+        "sha256": "c88d50c830f0c4383472101896580b03f4b52e17c5a490752beef0fd6928bc60",
+        "live_matches_PE": true,
+        "fixture_matches_PE": null,
+        "hex": "8d4ddce9a82df1ff8d4dd4e9107a75ffb87807e000e92908f3ff"
+      },
+      {
+        "address": "00e00768",
+        "length": 52,
+        "sha256": "2f34bdac8eb8decf0de7934d33b2d4982a3de5b495706d1aa56e44d8baa01021",
+        "live_matches_PE": true,
+        "fixture_matches_PE": null,
+        "hex": "ffffffff0063cc00000000000863cc0022059319020000006807e000000000000000000000000000000000000000000001000000"
+      },
+      {
+        "address": "00d683b0",
+        "length": 12,
+        "sha256": "b68b8ef46d77cf713d6836ad9c8b4bf81dec10d0998c7f6c1238063b63906d8b",
+        "live_matches_PE": true,
+        "fixture_matches_PE": null,
+        "hex": "309fbd00809ebd00009fbd00"
+      }
+    ]
+  },
+  "unwind_evidence": {
+    "handler": "00cc6310",
+    "info": "00e00778",
+    "map": "00e00768",
+    "state0": "CC6300 -> BD90B0 visitor reset; next state -1",
+    "state1": "CC6308 -> 41DD20 copied name destruction; next state 0",
+    "armed_after_initial_copy": "00bdd3bf",
+    "normal_name_release_disarmed_before_getter": "00bdd406",
+    "second_failure_policy": "noexcept destructor during active C++ unwind terminates",
+    "dynamically_fault_injected": false
+  },
+  "validation": {
+    "strict_Win32_build": true,
+    "command": "./scripts/build.ps1",
+    "strict_flags": [
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "seeds": {
+      "matched": 8,
+      "total": 8
+    },
+    "existing_CTests_passed": 3,
+    "build_log": "local/particle_date_raw_build.log",
+    "probe_command": "./local/build_particle_date_raw_probe.ps1",
+    "probe_log": "local/particle_date_raw_probe.log",
+    "probe_result": "PASS original/raw-overload route compositions=11; original_bodies=13 bytes=1642; full arena/pool/return parity; returning CRT head repair; actual physical UTC/current-manager checks; visitor stop/reset",
+    "native_composition_scenarios": 11,
+    "fixture_original_bodies": 13,
+    "fixture_original_body_bytes": 1642,
+    "fixture_origin": "main checkout local/vfs_date_route_primary/vfs_date_route_probe.cpp",
+    "fixture_changes": "same actual raw pool publication cells for owning bridge/getter; new five-argument query call",
+    "fixture_boundaries": "synthetic mount/profile storage; original dependency call sites bridge to real rebuilt children; not independent whole-original execution",
+    "permanent_tests_added": false
+  },
+  "scope": {
+    "BDD0A0_and_BD9E80_unchanged": true,
+    "physical_and_other_providers_unchanged": true,
+    "old_query_overload_unchanged": true,
+    "ghidra_mutated": false,
+    "suggested_plate_append": "Additional BDD340 source overload uses actual raw string-pool publication cells for its own name copy/normalization/return. E00768 state1 owns name, state0 visitor; normal return disarms name before getter and omits visitor reset. Existing qualified BDD0A0/provider routes remain. docs/NATIVE_PARTICLE_DATE_RAW_ORCH4.md; 16 fresh PE/live spans and 11 native composition cases; no added native function or ABI/SEH/gameplay claim."
+  },
+  "build_tested": true,
+  "native_composition_fixture_tested": true,
+  "abi_compatible": false,
+  "native_SEH_validated": false,
+  "raw_getter_failure_dynamically_validated": false,
+  "game_validated": false,
+  "artifacts": [
+    {
+      "path": "include/bsp/native_vfs_date_route.hpp",
+      "bytes": 3357,
+      "sha256": "33c3707a013a34cc0895dc0bb2c797b49eb7ba45bff49423a2cc6a36bfb56244"
+    },
+    {
+      "path": "src/native_vfs_date_route.cpp",
+      "bytes": 12153,
+      "sha256": "a39ad07085b0c7a40ca3955e44b13148162663ac24d251fcde1b0717947c459a"
+    },
+    {
+      "path": "include/bsp/game_native_vfs_runtime.hpp",
+      "bytes": 7824,
+      "sha256": "456b81c7df1825e891f4c97a75ddae610a25584217cf52a4346b97f80890ed81"
+    },
+    {
+      "path": "src/game_native_vfs_runtime.cpp",
+      "bytes": 31623,
+      "sha256": "97d141f98d78f5a7f795dbf7224817a9497ea6117e0229b41c7e2bfe398f8bea"
+    },
+    {
+      "path": "local/particle_date_raw_probe.cpp",
+      "bytes": 10623,
+      "sha256": "e99b0255e063aa9e403dbf4a1e0cb3747670a353591a072e930e6cbdf040cb4a"
+    },
+    {
+      "path": "local/vfs_date_route_original_bytes.hpp",
+      "bytes": 9720,
+      "sha256": "177e9eba95613852cf0f248e2c0fa82d95dcaaabe166206736cde9081782fde3"
+    },
+    {
+      "path": "local/particle_date_raw_probe.exe",
+      "bytes": 39424,
+      "sha256": "4fcafda6e845a71ad5c60c92c54d114a5ec7d8667b7aebf96ce6c7deffdbfe14"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 62477620,
+      "sha256": "412928c6bb77594bfae3abc5c8f10a85d40177b3ec0baa614b8119c6f60ce836"
+    },
+    {
+      "path": "build/win32/bsp_core.dir/Release/native_vfs_date_route.obj",
+      "bytes": 20375,
+      "sha256": "3eaef3f09503795a31ea69852f086abf7aa5d4c9ced6711f7c81d9ff6df47332"
+    },
+    {
+      "path": "local/particle_date_raw_build.log",
+      "bytes": 56331,
+      "sha256": "89ee9182f830dc9929e013fcd38b585f07e3f59db98188a17437faae49471587"
+    },
+    {
+      "path": "local/particle_date_raw_probe.log",
+      "bytes": 232,
+      "sha256": "73ee3ca76624918702e6bf92ebbafba25e1a74dbd8d213d201e67ec7496a946f"
+    }
+  ]
+}
