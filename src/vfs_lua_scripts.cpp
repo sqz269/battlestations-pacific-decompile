@@ -1,5 +1,6 @@
 #include "bsp/vfs_lua_scripts.hpp"
 #include "bsp/memory_stream.hpp"
+#include "bsp/native_lua_bootstrap.hpp"
 #include <limits>
 #include <stdexcept>
 
@@ -27,7 +28,8 @@ void append_lua_script_overrides_00bdef90(const std::string& path,
     }
 }
 VfsLuaScriptFiles::VfsLuaScriptFiles(VfsMountContext& vfs,
-    const std::vector<std::string>& suffixes) noexcept : vfs_(vfs), suffixes_(suffixes) {}
+    const std::vector<std::string>& suffixes, const NativeLuaBootstrapInputs* native_bootstrap) noexcept
+    : vfs_(vfs), suffixes_(suffixes), native_bootstrap_(native_bootstrap) {}
 bool VfsLuaScriptFiles::read_file_00b66ca0(const std::string& path, std::uint32_t mode,
     std::vector<char>& output) {
     if (mode != 2) throw std::invalid_argument("Native Lua reads use VFS mode2");
@@ -55,7 +57,16 @@ std::vector<std::string> VfsLuaScriptFiles::override_paths_00bdef90(const std::s
     }, result);
     return result;
 }
-const std::string& VfsLuaScriptFiles::cached_fundamentals_00884770() {
+std::string VfsLuaScriptFiles::cached_fundamentals_00884770() {
+    if (native_bootstrap_) {
+        // B6A020 captures size from the first00884770 call and data from the
+        // second. This is an input copy for the existing semantic Lua owner;
+        // no second file/cache owner or replacement read is introduced.
+        const auto& native = *native_bootstrap_;
+        const auto size = native.get_fundamentals_00884770(native.fundamentals_context)->size_08;
+        const auto* data = native.get_fundamentals_00884770(native.fundamentals_context)->bytes_04;
+        return size == 0 ? std::string{} : std::string(data, size);
+    }
     if (!fundamentals_) {
         std::vector<char> source;
         if (!read_file_00b66ca0("Scripts\\fundamentals.lua", 2, source))
@@ -70,8 +81,8 @@ LuaStateOwnerEnvironment VfsLuaScriptFiles::owner_environment(LuaScriptRuntime& 
     result.fundamentals = cached_fundamentals_00884770();
     result.do_file = &LuaScriptRuntime::do_file;
     result.do_file_context = &runtime;
-    result.x360comp = globals.x360comp;
-    result.region = globals.region;
+    result.x360comp = globals.x360comp != 0;
+    result.region = globals.region.data() ? globals.region.data() : "";
     return result;
 }
 }

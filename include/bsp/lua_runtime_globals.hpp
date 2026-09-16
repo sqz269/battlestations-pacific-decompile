@@ -8,7 +8,7 @@ struct GameSettingsBlock;
 
 // The image's zero-initialized 0108ff20 byte and 0108ff24/0108ff28
 // NativeString, before the first input singleton call at 0073da94. Empty
-// region projects the native null pointer: owner open emits no REGION chunk.
+// region has the actual native null pointer: owner open emits no REGION chunk.
 // This factory belongs to process startup; do not reset live globals with it.
 LuaRuntimeGlobals make_initial_lua_runtime_globals_0108ff20();
 
@@ -27,6 +27,8 @@ const char* publish_lua_xbox_compatibility_008d44c0(
 
 // 008d612f..008d6153 within ApplyAll: assign the C-string result of 00439100
 // to the global NativeString. Existing open Lua states are not rewritten.
-void publish_lua_region_008d6132(LuaRuntimeGlobals&, const std::string& region);
+// The actual raw pool preserves getter exceptions and current-header reloads.
+void publish_lua_region_008d6132(LuaRuntimeGlobals&, const std::string& region,
+    NativeStringRawPoolContext&);
 
 } // namespace bsp

@@ -11,7 +11,7 @@ namespace bsp {
 
 LuaRuntimeGlobals make_initial_lua_runtime_globals_0108ff20() {
     // PE zero-fill; 00cd7ce0 only registers destructor 00ce0d60 with atexit.
-    return LuaRuntimeGlobals{false, std::string{}};
+    return LuaRuntimeGlobals{};
 }
 
 const char* user_geography_region_00439100() noexcept {
@@ -39,8 +39,15 @@ const char* publish_lua_xbox_compatibility_008d44c0(
     return command;
 }
 
-void publish_lua_region_008d6132(LuaRuntimeGlobals& globals, const std::string& region) {
-    globals.region.assign(region.c_str()); // native strlen/resize/memcpy
+void publish_lua_region_008d6132(LuaRuntimeGlobals& globals, const std::string& region,
+    NativeStringRawPoolContext& strings) {
+    const char* const source = region.c_str();
+    const auto length = static_cast<std::uint32_t>(std::strlen(source));
+    // 008D612F pushes preserve=0. Read destination and count after the raw
+    // resize/getter sequence, as at008D613C/6145. BF7680 permits overlap.
+    resize_native_string_header_0041dd40(&globals.region, strings, length, false);
+    if (globals.region.data())
+        std::memmove(globals.region.data(), source, globals.region.length());
 }
 
 } // namespace bsp

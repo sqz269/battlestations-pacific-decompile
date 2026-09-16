@@ -145,20 +145,21 @@ private:
 
 // Settings startup over the retained game state, mounted catalog and recovered
 // D3D9 capability operations. See docs/SETTINGS_STARTUP_OWNER.md.
-// Persistent VFS, runtime, globals and input owner. The interpreter closes before
+// Persistent VFS/runtime/input owner, borrowing canonical process globals. The interpreter closes before
 // its DoFile runtime/files are destroyed; the mounted VFS and suffix list outlive
 // this aggregate. Other startup Lua consumers can borrow the same services.
+class GameNativeLuaServices;
 class GameScriptHost {
 public:
     GameScriptHost(GameHostLog&, VfsMountContext&, const std::vector<std::string>&,
-        LuaRuntimeGlobals globals);
+        GameNativeLuaServices&);
     InputScriptStartup& input() noexcept { return input_; }
     VfsLuaScriptFiles& files() noexcept { return files_; }
     LuaScriptRuntime& runtime() noexcept { return runtime_; }
     LuaRuntimeGlobals& globals() noexcept { return globals_; }
     const LuaRuntimeGlobals& globals() const noexcept { return globals_; }
 private:
-    LuaRuntimeGlobals globals_;
+    LuaRuntimeGlobals& globals_; // canonical process cells, borrowed through all Lua closes
     VfsLuaScriptFiles files_;
     LuaScriptRuntime runtime_;
     InputScriptStartup input_;

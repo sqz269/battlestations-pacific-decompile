@@ -1,4 +1,5 @@
 #include "bsp/game_hosts_singletons.hpp"
+#include "bsp/game_native_string_process.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_observer_runtime.hpp"
 #include "bsp/game_native_vfs_runtime.hpp"
@@ -10,7 +11,8 @@
 namespace bsp::game {
 
 GameSingletonHost::GameSingletonHost(GameHostLog& log)
-    : log_(log), deletion_bindings_{&effect_publication_00f87664_, nullptr},
+    : log_(log), manager_publication_01090aa0_(game_native_string_process().manager_01090aa0()),
+      deletion_bindings_{&effect_publication_00f87664_, nullptr},
       observers_(std::make_unique<GameObserverRuntime>(*this, log)) {
     // Admit factory+4 before startup can register that exact subobject.
     deletion_bindings_.game_resource_factory = &game_resource_factory_context_;

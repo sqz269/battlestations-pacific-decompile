@@ -1,4 +1,5 @@
 #include "bsp/game_native_vfs_application.hpp"
+#include "bsp/game_native_string_process.hpp"
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_singletons.hpp"
@@ -45,8 +46,10 @@ struct GameNativeVfsApplication::Impl {
     void* volatile stream_pool_0109dc28{};
     NativeRenderBatchPoolStorage* volatile batch_pool_0108fe8c{};
     NativeRenderBatchLockOwner* volatile batch_lock_0109dbbc{};
-    NativeStringPoolStorage* volatile string_pool_01090aa8{};
-    volatile std::uint32_t string_returns_disabled_01090aa4{};
+    NativeStringPoolStorage* volatile& string_pool_01090aa8{
+        game_native_string_process().pool_01090aa8()};
+    volatile std::uint32_t& string_returns_disabled_01090aa4{
+        game_native_string_process().returns_disabled_01090aa4()};
     TypeIdCounterStorage* volatile type_counter_0109db7c{};
     NativeVfsPublicationCells cells;
     SingletonLifetimeCallbacks validation{nullptr, nullptr, &reject_native_vfs_parameter};

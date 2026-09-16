@@ -3,6 +3,7 @@
 // docs/GAME_EXECUTABLE.md. No native behaviour is invented here: whatever is not
 // reconstructed goes through GameHostLog::unimplemented with its native call site.
 #include "bsp/game_hosts_vfs.hpp"
+#include "bsp/game_native_lua_services.hpp"
 
 #include <d3d9.h>
 #include <shlobj.h>
@@ -226,8 +227,8 @@ const GameVfsProbeResult& GameVfsHost::probe(const std::string& requested) {
 // ---------------------------------------------------------------------------
 
 GameScriptHost::GameScriptHost(GameHostLog& log, VfsMountContext& mounts,
-    const std::vector<std::string>& suffixes, LuaRuntimeGlobals globals)
-    : globals_(std::move(globals)), files_(mounts, suffixes), runtime_(files_),
+    const std::vector<std::string>& suffixes, GameNativeLuaServices& lua)
+    : globals_(lua.globals()), files_(mounts, suffixes, &lua.bootstrap()), runtime_(files_),
       input_(files_, runtime_, globals_) {
     // The singleton constructor loads immediately; the explicit call at
     // 0073da9b observes +4 already set and keeps the same persistent state.

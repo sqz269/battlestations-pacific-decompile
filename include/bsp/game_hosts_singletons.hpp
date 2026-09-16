@@ -85,7 +85,7 @@ public:
 private:
     void retire_vfs_after_drain() noexcept;
     GameHostLog& log_;
-    void* volatile manager_publication_01090aa0_{nullptr};
+    void* volatile& manager_publication_01090aa0_; // canonical process cell
     void* volatile input_settings_publication_00e198e8_{nullptr};
     void* volatile effect_publication_00f87664_{nullptr};
     void* volatile game_resource_factory_publication_00e19b90_{nullptr};

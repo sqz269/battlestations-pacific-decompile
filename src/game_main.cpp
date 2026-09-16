@@ -43,6 +43,7 @@
 #include "bsp/game_native_texture_pool.hpp"
 #include "bsp/game_native_graphics_pools.hpp"
 #include "bsp/game_native_hardware_layout_tree.hpp"
+#include "bsp/game_native_lua_globals.hpp"
 #include "bsp/winmain_startup.hpp"
 
 namespace {
@@ -411,6 +412,10 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
             log.notef("native graphics pool initialized: global=%08x atexit=%d "
                 "storage=process_actual38h", static_cast<unsigned>(pool), pool_atexit);
         }
+        auto& lua_globals = bsp::game::game_native_lua_globals_process();
+        const int lua_region_atexit = lua_globals.initialize_once_00cd7ce0();
+        log.notef("native Lua globals initialized: region_atexit=%d storage=process_actual0ch",
+            lua_region_atexit);
         auto& resource_pools = bsp::game::game_native_resource_pool_process();
         const int mesh_atexit = resource_pools.initialize_mesh_once_00cd7e40();
         const int section_atexit = resource_pools.initialize_section_once_00cd8250();

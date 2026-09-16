@@ -67,6 +67,7 @@ class GameVfsHost;
 class GameNativeReadOnlyData;
 class GameSettingsBinding;
 class GameScriptHost;
+class GameNativeLuaServices;
 class GameLocaleHost;
 class GameFontHost;
 // Milestone 2b, defined in bsp/game_hosts_frontend.hpp.
@@ -598,6 +599,8 @@ private:
     void ensure_frame_clock_0073d480();
     const NativeFrameClockPublicationContext& require_frame_clock_context() const;
     void exit_if_frame_clock_failed() noexcept;
+    void exit_if_native_lua_interrupted() noexcept;
+    std::unique_ptr<GameNativeLuaServices> lua_services_;
     struct SoundServices;
     std::unique_ptr<SoundServices> sound_;
     struct InputServices;

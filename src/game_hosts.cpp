@@ -2,6 +2,9 @@
 // and docs/GAME_EXECUTABLE.md. No native behaviour is invented here: whatever is not
 // reconstructed is routed through GameHostLog::unimplemented with its native call site.
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_native_lua_globals.hpp"
+#include "bsp/game_native_lua_services.hpp"
+#include "bsp/game_native_vfs_runtime.hpp"
 #include "bsp/native_renderer_reset_process.hpp"
 #include "bsp/native_renderer_reset_readiness.hpp"
 #include "bsp/settings_initial_state.hpp"
@@ -1163,7 +1166,20 @@ void GameStartupHost::exit_if_native_vfs_interrupted() noexcept {
     std::_Exit(1);
 }
 
+void GameStartupHost::exit_if_native_lua_interrupted() noexcept {
+    if (!lua_services_ || !lua_services_->native_operation_interrupted()) return;
+    try {
+        log_.note("native Lua fundamentals getter interrupted; partial native ownership is retained until process exit");
+        log_.close();
+    } catch (...) {
+        std::fputs("bsp_game: interrupted native Lua getter requires process exit\n", stderr);
+        std::fflush(stderr);
+    }
+    std::_Exit(1); // no guessed raw-manager rollback or CRT cleanup of partial state
+}
+
 GameStartupHost::~GameStartupHost() {
+    exit_if_native_lua_interrupted();
     exit_if_frame_clock_failed();
     exit_if_native_vfs_interrupted();
     delete loop_callbacks_;
@@ -1200,6 +1216,7 @@ GameStartupHost::~GameStartupHost() {
     delete locale_;
     delete fonts_;
     delete scripts_;
+    lua_services_.reset(); // after every Lua close/shared drain, before VFS bindings die
     delete settings_host_;
     delete device_;
     delete renderer_parameters_;
@@ -1268,6 +1285,7 @@ void GameStartupHost::game_explorer_release() {
 }
 
 void GameStartupHost::exit_process(int code) {
+    exit_if_native_lua_interrupted();
     exit_if_frame_clock_failed();
     exit_if_native_vfs_interrupted();
     log_.implemented("StartupHost::exit_process", "008f82f0");
@@ -1464,6 +1482,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // Renderer constructor0073da88, input getter0073da94/loader0073da9b,
     // then settings0073daa5. The same Direct3D API survives into device creation.
     if (!vfs_->ready()) throw std::runtime_error("Script/settings startup requires the mounted VFS");
+    lua_services_ = std::make_unique<GameNativeLuaServices>(*singletons_, vfs_->borrow_raw_services());
     renderer_api_ = Direct3DCreate9(D3D_SDK_VERSION);
     if (!renderer_api_) throw std::runtime_error("Renderer Direct3DCreate9 failed");
     log_.implemented("RendererHost::direct3d_create", "00b32410");
@@ -1485,7 +1504,9 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         renderer_full_capabilities_.declaration_types_1b5c.size());
 
     scripts_ = new GameScriptHost(log_, vfs_->context(), content_suffixes_,
-        make_initial_lua_runtime_globals_0108ff20());
+        *lua_services_);
+    log_.notef("native Lua fundamentals: published=%d getters=%u storage=raw0ch shared_globals=actual0ch",
+        lua_services_->fundamentals_published() ? 1 : 0, lua_services_->fundamentals_getter_calls());
     summary_.input_scripts_ready = scripts_->input().data_tables_started();
     summary_.input_devices = scripts_->input().settings().devices.size();
     summary_.input_names = scripts_->input().settings().input_names.size();
@@ -1811,6 +1832,7 @@ void GameStartupHost::release_platform_window() noexcept {
 }
 
 void GameStartupHost::application_shutdown() {
+    exit_if_native_lua_interrupted();
     exit_if_frame_clock_failed();
     exit_if_native_vfs_interrupted();
     // Native00737f30's full singleton teardown remains unbound. Retained C++
@@ -1909,10 +1931,15 @@ void GameStartupHost::application_destruct() {
 }
 
 void GameStartupHost::destroy_singleton_lifetime_manager() {
+    exit_if_native_lua_interrupted();
     exit_if_frame_clock_failed();
     exit_if_native_vfs_interrupted();
     log_.implemented("StartupHost::destroy_singleton_lifetime_manager", "008f8449");
     singletons_->shutdown();
+    if (lua_services_)
+        log_.notef("native Lua after raw singleton drain: fundamentals=%s getters=%u",
+            lua_services_->fundamentals_published() ? "non-null" : "null",
+            lua_services_->fundamentals_getter_calls());
     if (clock_services_) clock_services_->phase = ClockServices::Phase::drained;
     if (input_) input_->core.release_sdk_after_native_drain();
     if (sound_) {

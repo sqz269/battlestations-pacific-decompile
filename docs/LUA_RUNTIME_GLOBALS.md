@@ -124,3 +124,14 @@ integrator was given its exclusive end `00cd7cec` for definition before names
 are applied. This worker used Ghidra read-only. Existing comments were preserved
 by appended ledger evidence; name application, project save and refreshed
 annotated exports belong to integration. See `reports/lua_runtime_globals.json`.
+
+## Correction from docs/NATIVE_LUA_PROCESS_LIFETIME_R68.md
+
+R68 replaces the application's bool/std::string projection with canonical native
+byte/NativeString cells and real CD7CE0/CE0D60 CRT registration/cleanup. The shared
+manager/string-pool publications now survive application destruction; nonempty
+region cleanup and its late getter were executed at real CRT exit. Production
+Lua environments also borrow the actual fundamentals cache. CD7CE0 is already
+defined in current Ghidra. See the R68 document/report for exact scope, original
+instruction comparison, application evidence and remaining interpreter/gameplay
+boundaries; the earlier projection/definition statements above are historical.
