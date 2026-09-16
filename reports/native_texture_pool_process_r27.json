@@ -29,17 +29,60 @@
     }
   ],
   "call_sites": [
-    {"function": "00cd7b60", "address": "00cd7b65", "native": "00b3ee80"},
-    {"function": "00cd7b60", "address": "00cd7b6f", "native": "00bf6ff5"},
-    {"function": "00ce0ca0", "address": "00ce0ca5", "native": "00b3e430", "kind": "tail_jump"}
+    {
+      "function": "00cd7b60",
+      "address": "00cd7b65",
+      "native": "00b3ee80"
+    },
+    {
+      "function": "00cd7b60",
+      "address": "00cd7b6f",
+      "native": "00bf6ff5"
+    },
+    {
+      "function": "00ce0ca0",
+      "address": "00ce0ca5",
+      "native": "00b3e430",
+      "kind": "tail_jump"
+    }
   ],
   "selected_crt_table": [
-    {"address": "00ce34ec", "target": "00cd7830", "sha256": "f4324158d522f33f2ea7536be614627628cd5eebba2c29c941d30a6871545cec", "live_disk_match": true},
-    {"address": "00ce34f4", "target": "00cd78b0", "sha256": "e86cc0c615b24bfea24b94bcee8600d0e89b801359dcd12472ca3c6491b7fcc0", "live_disk_match": true},
-    {"address": "00ce3514", "target": "00cd7b60", "sha256": "606c5df9cc70c2c7d7cef8b6476e4584c9d86d1693208b30aa7c563967c193e5", "live_disk_match": true},
-    {"address": "00ce3564", "target": "00cd7e40", "sha256": "da8c8cd4ad8743df193e1a5e4066a01c594d8318314265b511d79b0f3f6e2998", "live_disk_match": true},
-    {"address": "00ce35a4", "target": "00cd8250", "sha256": "b00889714bdaf13a975059020feaa31b821f9f0774804b83b28b7a3b339b9c03", "live_disk_match": true},
-    {"address": "00ce35b0", "target": "00cd82d0", "sha256": "c4da8509ab49f0dc471aa33e31a030b70342f2c6f55a62302dec579a9c5a7093", "live_disk_match": true}
+    {
+      "address": "00ce34ec",
+      "target": "00cd7830",
+      "sha256": "f4324158d522f33f2ea7536be614627628cd5eebba2c29c941d30a6871545cec",
+      "live_disk_match": true
+    },
+    {
+      "address": "00ce34f4",
+      "target": "00cd78b0",
+      "sha256": "e86cc0c615b24bfea24b94bcee8600d0e89b801359dcd12472ca3c6491b7fcc0",
+      "live_disk_match": true
+    },
+    {
+      "address": "00ce3514",
+      "target": "00cd7b60",
+      "sha256": "606c5df9cc70c2c7d7cef8b6476e4584c9d86d1693208b30aa7c563967c193e5",
+      "live_disk_match": true
+    },
+    {
+      "address": "00ce3564",
+      "target": "00cd7e40",
+      "sha256": "da8c8cd4ad8743df193e1a5e4066a01c594d8318314265b511d79b0f3f6e2998",
+      "live_disk_match": true
+    },
+    {
+      "address": "00ce35a4",
+      "target": "00cd8250",
+      "sha256": "b00889714bdaf13a975059020feaa31b821f9f0774804b83b28b7a3b339b9c03",
+      "live_disk_match": true
+    },
+    {
+      "address": "00ce35b0",
+      "target": "00cd82d0",
+      "sha256": "c4da8509ab49f0dc471aa33e31a030b70342f2c6f55a62302dec579a9c5a7093",
+      "live_disk_match": true
+    }
   ],
   "validation": {
     "verify_seeds": "passed",
@@ -65,10 +108,38 @@
     "game_validated": false
   },
   "artifacts": [
-    {"path": "local/texture_pool_process_probe.cpp", "sha256": "9f4f392b251757ec08ebd671c0e534350ec07b4c1fad824f52c47335ed0389f3"},
-    {"path": "local/build_texture_pool_process_probe.cmd", "sha256": "4a8c1e2d6ed6a3ffd8bc1bc0f4a9865f42a835ff225f386f21ab97bcd658196a"},
-    {"path": "local/texture_pool_process_probe.exe", "sha256": "2955b765068c884ed1d0c5ce7e1e6810ed46e07201935e42ecb8b5edf19d0e99"},
-    {"path": "build/win32/Release/bsp_core.lib", "sha256": "6422a8a47db561621dc78363f5f424a8343d6a22cb2aecb238bd485db704eb97"},
-    {"path": "build/win32/Release/bsp_game.exe", "sha256": "0a28b811eed3a2fc971f9d6763f56c8338f224401968cb72d3a8f5ce99f97a60"}
-  ]
+    {
+      "path": "local/texture_pool_process_probe.cpp",
+      "sha256": "9f4f392b251757ec08ebd671c0e534350ec07b4c1fad824f52c47335ed0389f3"
+    },
+    {
+      "path": "local/build_texture_pool_process_probe.cmd",
+      "sha256": "4a8c1e2d6ed6a3ffd8bc1bc0f4a9865f42a835ff225f386f21ab97bcd658196a"
+    },
+    {
+      "path": "local/texture_pool_process_probe.exe",
+      "sha256": "2955b765068c884ed1d0c5ce7e1e6810ed46e07201935e42ecb8b5edf19d0e99"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "sha256": "6422a8a47db561621dc78363f5f424a8343d6a22cb2aecb238bd485db704eb97"
+    },
+    {
+      "path": "build/win32/Release/bsp_game.exe",
+      "sha256": "0a28b811eed3a2fc971f9d6763f56c8338f224401968cb72d3a8f5ce99f97a60"
+    }
+  ],
+  "integration": {
+    "commit": "acb671b7a96a2db5a548c430ef440841d5d772e6",
+    "parent_review": "Complete process owner and selected startup placement reviewed; all three exact calls rechecked.",
+    "combined_build": "strict Win32 passed; 3/3 existing CTests",
+    "build_log": "local/r27_texture_pool_integration.log",
+    "build_log_sha256": "312cdd8163338e10968743950f75769b3f95c6b11d05073dced55516b239613e",
+    "parent_probe": "Exact worker executable rerun successfully: seven real CRT callbacks in reverse selected startup order; final list empty.",
+    "parent_probe_log": "local/r27_texture_pool_parent_probe.log",
+    "parent_probe_log_sha256": "1fcd95a95ce878eba5581d5153559cecc58ee280654187859d403e2719cfd1b6",
+    "archive": "local/evidence-r27/texture-pool-process-r27.zip",
+    "archive_sha256": "f1921ba46da3452140a7f169e5b2be1d30a9bac2dcadc2361a49ff7fed04af0b",
+    "archived_files": 8
+  }
 }
