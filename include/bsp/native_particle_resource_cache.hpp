@@ -3,12 +3,16 @@
 
 namespace bsp {
 struct NativeStringRawPoolContext;
+struct NativeParticleTypeLifetimeContext;
 
 // Borrow the application's actual manager and particle-cache publication cells.
 // No alternate owner, allocator, registration list or resource-loader service.
 struct NativeParticleResourceCacheContext {
     void* volatile& actual_manager_publication_01090aa0;
     void* volatile& actual_cache_publication_00f87668;
+    // Source composition only: SAME strings, F8D344 parameter pool and model
+    // reference chain used by loading. Borrowed through clear and owner unwind.
+    NativeParticleTypeLifetimeContext* loaded_resource_lifetime = nullptr;
 };
 
 // 871400/871420: incoming ECX ignored, stack resource, RET4. Retain returns
@@ -57,14 +61,15 @@ void* get_native_particle_resource_cache_owner_00871bd0(
     NativeParticleResourceCacheContext&);
 
 // Profiles D0DAF0/D0DB40/D0DB54 remain original identity DWORDs, not source
-// callable vtables. 86BA60 (resource construction/loading/parsing) is absent:
-// no complete cache virtual surface or executable resource-acquisition path
-// is claimed. These C++ entry points do not reproduce FH3/SEH stack identity,
+// callable vtables. These cache entry points alone do not provide the resource
+// loading/parsing path or a complete native cache virtual surface.
+// These C++ entry points do not reproduce FH3/SEH stack identity,
 // hardware-fault cleanup, original CRT domain or the original callable ABI.
 
 // Context-aware concrete resource lifetime. On zero references, current native
 // D0D418/D5D958 identity invokes its proved BD30E0 -> current scalar(flags1)
-// chain using real cache/string publications. Other profiles still require
+// chain using real cache/string publications and, when supplied, the loaded
+// resource lifetime domain above. Other profiles still require
 // callable current slot0. No duplicate decrement or generic destructor callback.
 void release_native_particle_resource_00871420(void*, NativeParticleResourceCacheContext&, NativeStringRawPoolContext&);
 void destroy_native_particle_resource_cache_00871480(void*, NativeParticleResourceCacheContext&, NativeStringRawPoolContext&);

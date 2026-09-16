@@ -1,4 +1,5 @@
 #include "bsp/native_particle_emitter_definition_lifetime.hpp"
+#include "bsp/native_particle_emitter_derived_lifetimes.hpp"
 #include "bsp/native_particle_type_lifetime.hpp"
 #include "bsp/native_particle_three_lifetimes.hpp"
 #include "bsp/native_particle_object_tracer_lifetime.hpp"
@@ -30,7 +31,8 @@ bool has_known_terminal(Word profile) noexcept {
     switch (profile) {
     case 0x00d5ddc0: case 0x00d5db00: case 0x00d5df30: case 0x00d5dcc0:
     case 0x00d5dfb0: case 0x00d5dcec: case 0x00d5dff4: case 0x00d5dd18:
-    case 0x00d5e048: case 0x00d5dc38: case 0x00d5dbc4: return true;
+    case 0x00d5e048: case 0x00d5dc38: case 0x00d5dbc4:
+    case 0x00d5debc: case 0x00d5de88: case 0x00d5de48: return true;
     default: return false;
     }
 }
@@ -50,6 +52,9 @@ void invoke_current_scalar(void* child, NativeParticleTypeLifetimeContext& conte
     case 0x00d5e048: delete_native_tracer_particle_type_00b0a820(child, 1, context); return;
     case 0x00d5dc38: scalar_delete_native_particle_layer_00aface0(child, 1, context.strings); return;
     case 0x00d5dbc4: delete_native_particle_definition_00afa350(child, 1, context); return;
+    case 0x00d5debc: delete_native_particle_cone_definition_00b03b40(child, 1, context); return;
+    case 0x00d5de88: delete_native_particle_sphere_definition_00b02fb0(child, 1, context); return;
+    case 0x00d5de48: delete_native_particle_smartarea_definition_00b01ea0(child, 1, context); return;
     default:
         using Scalar = void* (__thiscall*)(void*, Word);
         field<Scalar>(reinterpret_cast<void*>(profile), 4)(child, 1);

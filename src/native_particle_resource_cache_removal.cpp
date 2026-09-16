@@ -26,9 +26,15 @@ struct NameUnwind {
 };
 struct ResourceUnwind {
     void* resource;
+    NativeParticleResourceCacheContext& cache;
     NativeStringRawPoolContext& strings;
     bool active = true;
-    ~ResourceUnwind() noexcept { if (active) destroy_native_particle_resource_00af4280(resource, strings); }
+    void destroy_base() {
+        if (cache.loaded_resource_lifetime)
+            destroy_native_particle_resource_00af4280(resource, *cache.loaded_resource_lifetime);
+        else destroy_native_particle_resource_00af4280(resource, strings);
+    }
+    ~ResourceUnwind() noexcept { if (active) destroy_base(); }
 };
 const void* diagnostic_text(const void* p) { return p ? p : reinterpret_cast<void*>(0x00f8766c); }
 // Complete004254B0 is precisely C3. Preserve argument evaluation, no fake log.
@@ -131,11 +137,11 @@ void remove_native_particle_resource_by_alias_008714e0(void* cache, const void* 
 void destroy_native_cached_particle_resource_00871ca0(void* resource,
     NativeParticleResourceCacheContext& cache, NativeStringRawPoolContext& strings) {
     field<U>(resource, 0) = 0x00d0d418;
-    ResourceUnwind unwind{resource, strings};
+    ResourceUnwind unwind{resource, cache, strings};
     auto* const owner = get_native_particle_resource_cache_owner_00871bd0(cache);
     remove_native_particle_resource_by_alias_008714e0(at(owner, 4), at(resource, 8), strings);
     unwind.active = false;
-    destroy_native_particle_resource_00af4280(resource, strings);
+    unwind.destroy_base();
 }
 
 void* delete_native_cached_particle_resource_00871fa0(void* resource, U flags,
