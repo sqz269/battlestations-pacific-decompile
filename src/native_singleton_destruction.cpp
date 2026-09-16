@@ -31,6 +31,7 @@
 #include "bsp/native_resource_extra_parser_singletons.hpp"
 #include "bsp/native_resource_support.hpp"
 #include "bsp/native_frame_clock_lifetime.hpp"
+#include "bsp/native_diagnostic_sink_lifetime.hpp"
 #include "bsp/native_singleton_vector_leaves.hpp"
 #include "bsp/native_tracked_critical_section_release.hpp"
 #include "bsp/singleton_lifetime.hpp"
@@ -50,6 +51,14 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
     const NativeSingletonDeletionBindings& bindings, std::uint32_t profile,
     std::uint32_t flags) {
     switch (profile) {
+    case 0x00ce752c:
+        if (bindings.actual_diagnostic_publication_0109cf14 != nullptr) {
+            delete_native_diagnostic_sink_004bbca0(
+                *static_cast<NativeDiagnosticSinkStorage*>(owner), flags,
+                *bindings.actual_diagnostic_publication_0109cf14);
+            return;
+        }
+        break;
     case 0x00d68d50:
         if (bindings.frame_clock != nullptr) {
             delete_native_frame_clock_00bee110(owner, *bindings.frame_clock, flags);

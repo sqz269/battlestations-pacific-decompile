@@ -7,10 +7,11 @@
 namespace bsp {
 struct NativePhysicalBufferLockContext {
     NativeDiagnosticSinkStorage* volatile& actual_diagnostic_0109cf14;
-    SingletonLifetimeDomain& actual_lifetime_01090aa0;
+    SoundLifetimeAccess actual_lifetime_01090aa0;
     // ADDRESS of the actual sentinel bytes, not a pointer loaded from them.
     void* const actual_null_buffer_sentinel_00f8d4b8;
 };
+static_assert(sizeof(NativePhysicalBufferLockContext) == 16);
 
 // Original: ECX actual 2Ch owner; stack bytes, extra offset, unused DWORD,
 // output DWORD address, read-only byte; EAX data pointer; RET 14h. These new

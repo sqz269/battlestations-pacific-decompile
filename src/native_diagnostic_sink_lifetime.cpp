@@ -41,13 +41,11 @@ void destroy_native_singleton_guard_00411ee0(void* actual_8byte_guard) {
 
 NativeDiagnosticSinkStorage* native_diagnostic_sink_get_or_create_004c14c0(
     NativeDiagnosticSinkStorage* volatile& actual_published_0109cf14,
-    SingletonLifetimeDomain& actual_lifetime) {
+    SoundLifetimeAccess actual_lifetime) {
     if (auto* owner = actual_published_0109cf14) return owner;
 
-    auto* const projection = actual_lifetime.get_manager_00415350()
-        ->system_owner().section_10;
-    auto* const captured = projection
-        ? static_cast<CRITICAL_SECTION*>(projection->native_section) : nullptr;
+    auto* const captured = static_cast<CRITICAL_SECTION*>(
+        actual_lifetime.get_manager_00415350().native_system_section_10());
     NativeGuard guard{0x00ce37fcu, captured};
     if (captured) {
         EnterCriticalSection(captured);
@@ -63,7 +61,7 @@ NativeDiagnosticSinkStorage* native_diagnostic_sink_get_or_create_004c14c0(
                 ? ::new (allocation) NativeDiagnosticSinkStorage : nullptr;
             if (owner) owner->native_vtable_00 = 0x00ce752cu;
             actual_published_0109cf14 = owner;
-            auto* const manager = actual_lifetime.get_manager_00415350();
+            auto manager = actual_lifetime.get_manager_00415350();
             manager->register_object(actual_published_0109cf14);
         }
         // The normal path uses the captured section directly and keeps state 0

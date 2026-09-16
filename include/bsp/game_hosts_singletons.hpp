@@ -56,6 +56,11 @@ public:
     void* volatile& manager_publication_01090aa0() noexcept {
         return manager_publication_01090aa0_;
     }
+    // Lazy diagnostic access and physical Lock contexts borrow this one cell
+    // with sound_lifetime(). Its deletion binding outlives the raw drain.
+    NativeDiagnosticSinkStorage* volatile& diagnostic_publication_0109cf14() noexcept {
+        return diagnostic_publication_0109cf14_;
+    }
     // Borrow WinMain's existing alias cell. Native owner deletion clears the
     // separate E19B90 publication and deliberately leaves these alias bits.
     void* volatile& game_resource_factory_alias_00f8d31c() noexcept {
@@ -91,6 +96,7 @@ private:
     NativeResourceSupportStorage* volatile resource_support_publication_0108fedc_{};
     NativeResourceSupportRawContext resource_support_context_{
         manager_publication_01090aa0_, resource_support_publication_0108fedc_};
+    NativeDiagnosticSinkStorage* volatile diagnostic_publication_0109cf14_{};
     NativeSingletonDeletionBindings deletion_bindings_;
     GameNativeVfsRuntime* vfs_runtime_{};
     std::unique_ptr<GameObserverRuntime> observers_;

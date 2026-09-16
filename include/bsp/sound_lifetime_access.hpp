@@ -11,6 +11,10 @@ class CapturedSoundLifetimeSection;
 class SoundLifetimeManagerView final {
 public:
     SoundLifetimeManagerView* operator->() noexcept { return this; }
+    // Capture this resolved manager's native +10h critical-section pointer.
+    // This neither re-fetches the manager nor enters the section. A semantic
+    // domain supplies its existing native_section; actual storage reads +10h.
+    void* native_system_section_10() const noexcept;
     void register_object(void*);
     void unregister_object(void*);
     void move_object_after_00bd0d70(void*, void* anchor);
@@ -32,6 +36,14 @@ public:
     SoundLifetimeAccess(void* volatile& actual_publication) noexcept : actual_(&actual_publication) {}
     SoundLifetimeManagerView get_manager_00415350() const;
     bool uses_actual_storage() const noexcept { return actual_ != nullptr; }
+    // Compare the borrowed semantic object or raw publication CELL identity.
+    // Current pointer values are irrelevant, so distinct null raw cells differ.
+    bool borrows_same_domain(const SingletonLifetimeDomain& domain) const noexcept {
+        return semantic_ == &domain;
+    }
+    bool borrows_same_domain(void* volatile& publication) const noexcept {
+        return actual_ == &publication;
+    }
 private:
     SingletonLifetimeDomain* semantic_{};
     void* volatile* actual_{};

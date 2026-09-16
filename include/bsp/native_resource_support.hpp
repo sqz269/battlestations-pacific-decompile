@@ -6,6 +6,7 @@
 #include <cstdint>
 
 namespace bsp {
+class SoundLifetimeAccess;
 
 // Native allocation size is eight bytes. No observed operation interprets +04.
 struct NativeResourceSupportStorage {
@@ -43,6 +44,9 @@ public:
     bool borrows_same_domain(void* volatile& publication) const noexcept {
         return raw_ && &raw_->actual_manager_publication_01090aa0 == &publication;
     }
+    // Cross-adapter comparison still uses the same semantic object or raw AA0
+    // CELL identity. The adapters retain their separate service contracts.
+    bool borrows_same_domain(const SoundLifetimeAccess& lifetime) const noexcept;
 private:
     SingletonLifetimeDomain* semantic_{};
     NativeResourceSupportRawContext* raw_{};

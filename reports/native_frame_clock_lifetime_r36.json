@@ -861,5 +861,95 @@
         "status": "applied"
       }
     ]
+  },
+  "primary_resolved_module_receipt": {
+    "reason": "Original Toolhelp32 szExePath strings can retain System32 paths subject to WOW64 redirection. Reading those paths from 64-bit Python does not prove loaded DLL identity; the earlier immutable archives remain file receipts only for those module paths.",
+    "change": "Only ignored fixture module reporting changed: same-process CreateFileW/GetFinalPathNameByHandleW resolves final paths, and each loaded memory PE header is checked for IMAGE_FILE_MACHINE_I386.",
+    "behavior_cases": "Same five previously passed groups; no production or case changes. Fresh relink and run exit0 against same combined-main libraries.",
+    "library_sha256": "cb1e95fa86ec8e80938edd4b72c5c8d443adff16b1c2785ddb40a36decff9b46",
+    "archive": "local/evidence-r36/frame-clock-lifetime-resolved-modules-r36.zip",
+    "archive_sha256": "f01f78db6a3151febb1f4bc8120af46562f5d3aafcb60399600d5beb0ccdbf4d",
+    "loaded_modules": [
+      {
+        "path": "\\\\?\\J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\frame_clock_lifetime_probe_r36.exe",
+        "bytes": 262144,
+        "sha256": "7b1d399825817f18ba4dda53705427acd209350a0f76f753958ac219d37c1a22",
+        "archive_entry": "resolved/frame_clock_lifetime_probe_r36.exe"
+      },
+      {
+        "path": "\\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll",
+        "bytes": 1822400,
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+        "archive_entry": "resolved/ntdll.dll"
+      },
+      {
+        "path": "\\\\?\\C:\\Windows\\SysWOW64\\kernel32.dll",
+        "bytes": 687472,
+        "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "archive_entry": "resolved/kernel32.dll"
+      },
+      {
+        "path": "\\\\?\\C:\\Windows\\SysWOW64\\KernelBase.dll",
+        "bytes": 2974168,
+        "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253",
+        "archive_entry": "resolved/KernelBase.dll"
+      },
+      {
+        "path": "\\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "archive_entry": "resolved/ucrtbase.dll"
+      },
+      {
+        "path": "\\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll",
+        "bytes": 618944,
+        "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a",
+        "archive_entry": "resolved/msvcp140.dll"
+      },
+      {
+        "path": "\\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "archive_entry": "resolved/vcruntime140.dll"
+      }
+    ],
+    "files": [
+      {
+        "path": "local/frame_clock_lifetime_probe_r36.cpp",
+        "sha256": "c6e32006541427d17ab122ffd5cf183be257bf0b86e7dee71b179de1cd7853e1"
+      },
+      {
+        "path": "local/frame_clock_lifetime_probe_r36.cmd",
+        "sha256": "9add2330b8a9476961bf8d8f5f1602a5f32aaf20902778b18f3dd7a1dcf39caa"
+      },
+      {
+        "path": "local/frame_clock_lifetime_probe_r36.exe",
+        "sha256": "7b1d399825817f18ba4dda53705427acd209350a0f76f753958ac219d37c1a22"
+      },
+      {
+        "path": "local/frame_clock_lifetime_probe_r36.obj",
+        "sha256": "d171f350004d712dd583dd80a34c99344dc402f3bd97430098c1f57e959dc695"
+      },
+      {
+        "path": "local/frame_clock_lifetime_probe_r36.map",
+        "sha256": "58e817e2e825073f6aa6418ac5119376280e62088e12c3a7978efbb7e206fd53"
+      },
+      {
+        "path": "local/frame_clock_lifetime_original_r36.hpp",
+        "sha256": "28a36ed6f2c2685a7b5cb77f06f76f5aadb91186e62ee849c889a3441e0ca5c2"
+      },
+      {
+        "path": "local/frame_clock_lifetime_probe_r36_dependencies.json",
+        "sha256": "6f14de381ffc23429ec0b2d9c3b1c8e363452800620d72a5f80031cfacdae98c"
+      },
+      {
+        "path": "local/r36_frame_clock_lifetime_resolved_build.log",
+        "sha256": "c983e8d2da2c3a346a5e6cd83607bdd8f23f03d07a5a6103f43211bf793961e2"
+      },
+      {
+        "path": "local/r36_frame_clock_lifetime_resolved_run.log",
+        "sha256": "d7e6c86b1e2cc43cd5020a7ae2bb276186be748c29f6c7073f8e10993582960b"
+      }
+    ]
   }
 }
