@@ -1,0 +1,425 @@
+{
+  "schema_version": 1,
+  "packet": "native_renderer_debug_records40_append_contract_r52",
+  "status": "native_contract_reviewed_source_prerequisites_identified",
+  "baseline_commit": "2128148a36243944d2cc24a6e2c67f8fa0ee42ee",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "queries": "bsp.py ghidra verified project/program; full CLI bytes independently matched installed PE"
+  },
+  "evidence": {
+    "pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b25be0",
+        "length": 189,
+        "sha256": "40943764e215e165b894ded19fd13fabfed64e34d5345885b0f8c061bf21abaa",
+        "hex": "64a1000000006aff68d3d0cb005064892500000000a1a0d5080183ec0c85c00f858900000056e845f78eff8b701085f6c7442408fc37ce008974240c740b56ff151822ce0083461801c744241800000000833da0d5080100753f6a08e8da0b0d0083c4048944240485c0c64424180174098bc8e8f8daffffeb0233c0c644241800a3a0d50801e8e5f68eff8b0da0d50801518bc8e8b7af0a0085f6740b834618ff56ff151022ce00a1a0d508015e8b4c240c64890d0000000083c418c3",
+        "live_capture": "local/r52_append_gate_bytes.txt"
+      },
+      {
+        "address": "00b257b0",
+        "length": 114,
+        "sha256": "3867f5678dfd4e69111c9f8aefbec1de8739213d5aa3d531383cc31ef33a3e87",
+        "hex": "568bf18b4608394604751203c083f8017f05b80100000050e8a3d2ffff8b46048b0e8d04808d04c185c0743e8b4c24088b118910d94104d95804d94108d95808d9410cd9580cd94110d958108b5114895014d94118d95818d9411cd9581cd94120d95820d94124d95824834604015ec20400",
+        "live_capture": "local/r52_append_copy_bytes.txt"
+      },
+      {
+        "address": "00b29330",
+        "length": 255,
+        "sha256": "583b376be410453356cc3217dc561f168a310ee710ca96b17fc8b1acd260ef73",
+        "hex": "6aff68d8d2cb0064a100000000506489250000000083ec3056578bf9e88fc8ffff8b700485f6c7442408fc37ce008974240c740b56ff151822ce00834618018b44244885c0c744244000000000c744241000000000740e8944241083c00450ff151c22ce00f30f1044244c8b44245cf30f11442414f30f10442450f30f11442418f30f10442454f30f1144241cf30f10442458f30f11442420f30f10442460f30f11442428f30f10442464f30f1144242cf30f104424688d4c2410f30f11442430f30f1044246c518d8f181d000089442428f30f11442438e8a3c3ffff85f6740b834618ff56ff151022ce008b4c24385f5e64890d0000000083c43cc22800",
+        "live_capture": "local/r52_append_public_bytes.txt"
+      },
+      {
+        "address": "00b23750",
+        "length": 69,
+        "sha256": "8af794a2ada380d02fb74c601fca45c4a8e8cae08f464a88006fad4f303711bb",
+        "hex": "6aff68b8cecb0064a100000000506489250000000051568bf189742404c744241000000000c7060ce6d500e8e0e00a008b4c24088946048bc65e64890d0000000083c410c3",
+        "live_capture": "local/r52_guard_constructor_bytes.txt"
+      },
+      {
+        "address": "00b26130",
+        "length": 55,
+        "sha256": "5ae3bd6092fd6a2c69197ed08d72d35c38b16cdc974ee588aa2af70c325d4f64",
+        "hex": "568bf18d4e04c7060ce6d500e83f6b8ffff644240801c705a0d5080100000000c7061838ce00740956e84e040d0083c4048bc65ec20400",
+        "live_capture": "local/r52_guard_delete_bytes.txt"
+      },
+      {
+        "address": "00d5f17c",
+        "length": 4,
+        "sha256": "f5546d6024e574197bd5a26fbc7846bb623b9ee5e5cc7aa8ea289491d4f625e9",
+        "hex": "3093b200",
+        "live_capture": "local/r52_renderer_slot_bytes.txt"
+      },
+      {
+        "address": "00d5e60c",
+        "length": 4,
+        "sha256": "e946095a37e9f6f02a37a3a53c622fb1ddd4890fca562c90d649056d9f4291c9",
+        "hex": "3061b200",
+        "live_capture": "local/r52_guard_profile_bytes.txt"
+      }
+    ]
+  },
+  "routines": [
+    {
+      "address": "00b25be0",
+      "bytes": 189,
+      "instructions": 51,
+      "direct_calls": [
+        {
+          "address": "00b25c06",
+          "native": "00415350",
+          "function": "00b25be0",
+          "hex": "e845f78eff"
+        },
+        {
+          "address": "00b25c3c",
+          "native": "00bf681b",
+          "function": "00b25be0",
+          "hex": "e8da0b0d00"
+        },
+        {
+          "address": "00b25c53",
+          "native": "00b23750",
+          "function": "00b25be0",
+          "hex": "e8f8daffff"
+        },
+        {
+          "address": "00b25c66",
+          "native": "00415350",
+          "function": "00b25be0",
+          "hex": "e8e5f68eff"
+        },
+        {
+          "address": "00b25c74",
+          "native": "00bd0c30",
+          "function": "00b25be0",
+          "hex": "e8b7af0a00"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "address": "00b25c1f",
+          "operand": "dword ptr [0xce2218]",
+          "hex": "ff151822ce00"
+        },
+        {
+          "address": "00b25c82",
+          "operand": "dword ptr [0xce2210]",
+          "hex": "ff151022ce00"
+        }
+      ],
+      "x87_instructions": 0
+    },
+    {
+      "address": "00b257b0",
+      "bytes": 114,
+      "instructions": 41,
+      "direct_calls": [
+        {
+          "address": "00b257c8",
+          "native": "00b22a70",
+          "function": "00b257b0",
+          "hex": "e8a3d2ffff"
+        }
+      ],
+      "indirect_calls": [],
+      "x87_instructions": 16
+    },
+    {
+      "address": "00b29330",
+      "bytes": 255,
+      "instructions": 60,
+      "direct_calls": [
+        {
+          "address": "00b2934c",
+          "native": "00b25be0",
+          "function": "00b29330",
+          "hex": "e88fc8ffff"
+        },
+        {
+          "address": "00b29408",
+          "native": "00b257b0",
+          "function": "00b29330",
+          "hex": "e8a3c3ffff"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "address": "00b29365",
+          "operand": "dword ptr [0xce2218]",
+          "hex": "ff151822ce00"
+        },
+        {
+          "address": "00b2938f",
+          "operand": "dword ptr [0xce221c]",
+          "hex": "ff151c22ce00"
+        },
+        {
+          "address": "00b29416",
+          "operand": "dword ptr [0xce2210]",
+          "hex": "ff151022ce00"
+        }
+      ],
+      "x87_instructions": 0
+    },
+    {
+      "address": "00b23750",
+      "bytes": 69,
+      "instructions": 19,
+      "direct_calls": [
+        {
+          "address": "00b2377b",
+          "native": "00bd1860",
+          "function": "00b23750",
+          "hex": "e8e0e00a00"
+        }
+      ],
+      "indirect_calls": [],
+      "x87_instructions": 0
+    },
+    {
+      "address": "00b26130",
+      "bytes": 55,
+      "instructions": 15,
+      "direct_calls": [
+        {
+          "address": "00b2613c",
+          "native": "0041cc80",
+          "function": "00b26130",
+          "hex": "e83f6b8fff"
+        },
+        {
+          "address": "00b26159",
+          "native": "00bf65ac",
+          "function": "00b26130",
+          "hex": "e84e040d00"
+        }
+      ],
+      "indirect_calls": [],
+      "x87_instructions": 0
+    }
+  ],
+  "contracts": {
+    "00b25be0": {
+      "name": "BSP_RendererRecordGuard_GetSingleton",
+      "abi": "No stack arguments, EAX current publication, RET. Native FS/FH3 frame.",
+      "behavior": [
+        "Capture0108D5A0; nonnull hot path returns that captured value without touching manager.",
+        "Cold path captures first current AA0 manager+10 section; enters and increments tracked section+18, then rechecks publication.",
+        "If still null allocate8B, conditionally call B23750 with ECX allocation, publish returned owner/null after constructor. Then fetch current AA0 again and register current publication.",
+        "Leave the captured first manager section and reload current publication for cold return.",
+        "Native EH state0 guard and state1 captured allocation are visible; full funclet cleanup must be checked before source implementation."
+      ]
+    },
+    "00b257b0": {
+      "name": "BSP_RendererRecords40_Append",
+      "abi": "ECX actual12B header; one stack pointer to40B input, RET4.",
+      "behavior": [
+        "Capture capacity+8, compare used+4 for equality. If equal double captured capacity with DWORD wrap, signed compare doubled value>1 else choose1, then call current B22A70 reserve.",
+        "Reload used and data after reserve; compute data+used*28h with DWORD wrap. Skip all input reads/copies if computed destination is null, but increment current used anyway.",
+        "For nonnull destination interleave reads/writes in native order: DWORD00, x87 FLD/FSTP04/08/0C/10, DWORD14, x87 FLD/FSTP18/1C/20/24. No memcpy, SSE substitute, pre-copied input or new refcount increment.",
+        "Finally increment current header+4 after copies; input/header/output alias and x87 exception/NaN behavior require instruction-order preservation."
+      ]
+    },
+    "00b29330": {
+      "name": "BSP_Renderer_AppendDebugRecord40",
+      "abi": "ECX renderer captured in EDI; ten stack DWORDs, RET28h. Current renderer D5F0A8+D4 points here.",
+      "behavior": [
+        "Call B25BE0 and capture returned guard owner+4 section; enter/increment its tracked count.",
+        "Initialize local record+00 to zero. For nonnull first argument retain pointer and InterlockedIncrement(pointer+4) before copying remaining arguments.",
+        "Use SSE bit moves for x/y/width/height and trailing four DWORDs; color argument6 is captured earlier and stored at record+14 after pushing input pointer.",
+        "Call B257B0 with ECX renderer+1D18 and pointer to stack record. No record owner decrement on normal return; matching consumer B2B580 eventually decrements and conditionally dispatches current owner virtual0.",
+        "Leave captured section normally. Only guard state0 appears in parent listing; complete FH3 map/funclet validation remains required before claiming throw behavior."
+      ],
+      "opaque_retained_owner": "Argument1 is not assigned a concrete recovered type. Producer reveals +4 reference count and consumer virtual0 terminal only; do not infer texture/model ownership."
+    },
+    "00b23750": {
+      "abi": "ECX actual8B owner, EAX same owner, RET.",
+      "behavior": "Store profileD5E60C, invoke existing BD1860 tracked-section factory, store returned section+4; no additional semantic owner."
+    },
+    "00b26130": {
+      "abi": "ECX owner, one stack flags DWORD with low bit of flags tested, RET4; return captured owner in EAX after optional free.",
+      "behavior": "Write D5E60C, release owner+4 through41CC80, capture flag test, clear actual0108D5A0, restoreCE3818, optionally free, restoreEAX owner. No manager unregistration is visible here.",
+      "listing_issue": "Repaired only erroneous CALL_RETURN atB26159 through supported locked tool. Fresh live/PE bytes83C404 decode ADD ESP,4 atB2615E; full55B body retained,15 instructions now listed, no remaining call gap. Callee no-return flag unchanged."
+    }
+  },
+  "providers": {
+    "present": [
+      "reserve_native_renderer_records40_00b22a70: current x87-aware28h reserve provider",
+      "get_native_singleton_manager_00415350 and register_native_singleton_object_00bd0c30 with same actual AA0",
+      "create_native_tracked_critical_section_00bd1860 and release_native_tracked_critical_section_0041cc80",
+      "singleton_lifetime_allocate/free and native guard cleanup"
+    ],
+    "absent": [
+      "B23750/B25BE0/B26130 actual0108D5A0 guard owner family",
+      "B257B0 append and B29330 guarded renderer method",
+      "Application0108D5A0 cell binding and exact shared manager deletion profile routing",
+      "Concrete opaque first-argument type/zero-ref terminal origin"
+    ]
+  },
+  "next_packets": [
+    {
+      "id": "native_renderer_record_guard",
+      "addresses": [
+        "00b23750",
+        "00b25be0",
+        "00b26130"
+      ],
+      "contract": "Same actual0108D5A0/AA0 cells, existing tracked critical sections, captured allocations, original cleanup map and current singleton delete profile. No new renderer owner or extra application activation."
+    },
+    {
+      "id": "native_renderer_debug40_append",
+      "addresses": [
+        "00b257b0",
+        "00b29330"
+      ],
+      "requires": "guard provider and current B22A70",
+      "worker": "Astra xhigh: eight x87 load/store pairs and register-sensitive wrapper",
+      "contract": "Actual renderer+1D18 header, retained reference transfer only on native schedule, exact DWORD/x87 copy sequence and post-callback reloads. Preserve unresolved original exception limits."
+    }
+  ],
+  "validation": {
+    "native_live_equals_pe": true,
+    "spans": 7,
+    "bytes": 690,
+    "instructions_decoded": 186,
+    "source_changed": false,
+    "build_or_fixture_run": false,
+    "original_abi_validated": false,
+    "game_validated": false,
+    "unique_direct_calls_verified": 11
+  },
+  "boundaries": [
+    "This is evidence and prerequisite work, not reconstructed source or runtime validation.",
+    "Data xref identifies a vtable route; zero direct callers in the current index does not establish that the method is unused.",
+    "Application renderer publication, real producer invocation and gameplay are not established."
+  ],
+  "flow_repair": {
+    "repairs": [
+      {
+        "function": "00b26130",
+        "owner": "agent/orch4-20260915",
+        "when": "2026-09-16T13:51:47Z",
+        "decompile_lines_before": 17,
+        "gaps": [
+          {
+            "site": "00b26159",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "00b2615e",
+            "gap_end_exclusive": "00b26161",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "00b26159",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00b2615e",
+              "gap_end_exclusive": "00b26161",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            },
+            "clear": "Success: Cleared flow override at 00b26159 (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 3 byte(s)"
+          }
+        ],
+        "decompile_lines_after": 14,
+        "gaps_remaining": 0
+      }
+    ]
+  },
+  "annotations": {
+    "names": {
+      "00b25be0": "BSP_RendererRecordGuard_GetSingleton",
+      "00b257b0": "BSP_RendererRecords40_Append",
+      "00b29330": "BSP_Renderer_AppendDebugRecord40",
+      "00b23750": "BSP_RendererRecordGuard_Construct",
+      "00b26130": "CG_scalar_deleting_dtor_00b26130"
+    },
+    "status": "Four evidence-backed descriptive hypotheses; correct deleting-destructor library classification retained. Existing comments preserved, prior values journaled, project saved and exports refreshed. No reconstruction ledger rows added.",
+    "prior_annotations": [
+      {
+        "address": "00b23750",
+        "before": {
+          "address": "00b23750",
+          "function_name": "FUN_00b23750"
+        },
+        "after": {
+          "address": "00b23750",
+          "name": "BSP_RendererRecordGuard_Construct",
+          "evidence": "R52 producer/guard contract audit only, no reconstructed source or runtime claim. Seven full live/PE spans690B,186 decoded instructions,11 unique direct calls verified and5 import sites reviewed. B29330 is actual D5F0A8+D4 target: capture renderer, acquire0108D5A0 owner section, increment nonnull record owner+4, copy ten arguments to40B record, append at renderer+1D18, normal guard release; concrete retained-owner type unresolved. B257B0 doubles capacity with signed threshold, reloads current data/used after genuine B22A70 reserve, interleaves two DWORD copies and eight x87 FLD/FSTP pairs, increments current count even on computed null output. B25BE0 same actual0108D5A0/AA0 singleton publication; B23750 creates tracked section in8B owner. B26130 keeps library deleting-destructor name; supported locked repair restores reachable ADD ESP,4 atB2615E after erroneous B26159 CALL_RETURN, preserving body/callee flags. Full FH3 maps, guard source, app deletion dispatch and renderer invocation remain prerequisites. reports/native_renderer_debug_records40_append_contract_r52.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b257b0",
+        "before": {
+          "address": "00b257b0",
+          "function_name": "FUN_00b257b0"
+        },
+        "after": {
+          "address": "00b257b0",
+          "name": "BSP_RendererRecords40_Append",
+          "evidence": "R52 producer/guard contract audit only, no reconstructed source or runtime claim. Seven full live/PE spans690B,186 decoded instructions,11 unique direct calls verified and5 import sites reviewed. B29330 is actual D5F0A8+D4 target: capture renderer, acquire0108D5A0 owner section, increment nonnull record owner+4, copy ten arguments to40B record, append at renderer+1D18, normal guard release; concrete retained-owner type unresolved. B257B0 doubles capacity with signed threshold, reloads current data/used after genuine B22A70 reserve, interleaves two DWORD copies and eight x87 FLD/FSTP pairs, increments current count even on computed null output. B25BE0 same actual0108D5A0/AA0 singleton publication; B23750 creates tracked section in8B owner. B26130 keeps library deleting-destructor name; supported locked repair restores reachable ADD ESP,4 atB2615E after erroneous B26159 CALL_RETURN, preserving body/callee flags. Full FH3 maps, guard source, app deletion dispatch and renderer invocation remain prerequisites. reports/native_renderer_debug_records40_append_contract_r52.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b25be0",
+        "before": {
+          "address": "00b25be0",
+          "function_name": "FUN_00b25be0"
+        },
+        "after": {
+          "address": "00b25be0",
+          "name": "BSP_RendererRecordGuard_GetSingleton",
+          "evidence": "R52 producer/guard contract audit only, no reconstructed source or runtime claim. Seven full live/PE spans690B,186 decoded instructions,11 unique direct calls verified and5 import sites reviewed. B29330 is actual D5F0A8+D4 target: capture renderer, acquire0108D5A0 owner section, increment nonnull record owner+4, copy ten arguments to40B record, append at renderer+1D18, normal guard release; concrete retained-owner type unresolved. B257B0 doubles capacity with signed threshold, reloads current data/used after genuine B22A70 reserve, interleaves two DWORD copies and eight x87 FLD/FSTP pairs, increments current count even on computed null output. B25BE0 same actual0108D5A0/AA0 singleton publication; B23750 creates tracked section in8B owner. B26130 keeps library deleting-destructor name; supported locked repair restores reachable ADD ESP,4 atB2615E after erroneous B26159 CALL_RETURN, preserving body/callee flags. Full FH3 maps, guard source, app deletion dispatch and renderer invocation remain prerequisites. reports/native_renderer_debug_records40_append_contract_r52.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b26130",
+        "before": {
+          "address": "00b26130",
+          "function_name": "CG_scalar_deleting_dtor_00b26130"
+        },
+        "after": {
+          "address": "00b26130",
+          "name": "CG_scalar_deleting_dtor_00b26130",
+          "evidence": "R52 producer/guard contract audit only, no reconstructed source or runtime claim. Seven full live/PE spans690B,186 decoded instructions,11 unique direct calls verified and5 import sites reviewed. B29330 is actual D5F0A8+D4 target: capture renderer, acquire0108D5A0 owner section, increment nonnull record owner+4, copy ten arguments to40B record, append at renderer+1D18, normal guard release; concrete retained-owner type unresolved. B257B0 doubles capacity with signed threshold, reloads current data/used after genuine B22A70 reserve, interleaves two DWORD copies and eight x87 FLD/FSTP pairs, increments current count even on computed null output. B25BE0 same actual0108D5A0/AA0 singleton publication; B23750 creates tracked section in8B owner. B26130 keeps library deleting-destructor name; supported locked repair restores reachable ADD ESP,4 atB2615E after erroneous B26159 CALL_RETURN, preserving body/callee flags. Full FH3 maps, guard source, app deletion dispatch and renderer invocation remain prerequisites. reports/native_renderer_debug_records40_append_contract_r52.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b29330",
+        "before": {
+          "address": "00b29330",
+          "function_name": "FUN_00b29330"
+        },
+        "after": {
+          "address": "00b29330",
+          "name": "BSP_Renderer_AppendDebugRecord40",
+          "evidence": "R52 producer/guard contract audit only, no reconstructed source or runtime claim. Seven full live/PE spans690B,186 decoded instructions,11 unique direct calls verified and5 import sites reviewed. B29330 is actual D5F0A8+D4 target: capture renderer, acquire0108D5A0 owner section, increment nonnull record owner+4, copy ten arguments to40B record, append at renderer+1D18, normal guard release; concrete retained-owner type unresolved. B257B0 doubles capacity with signed threshold, reloads current data/used after genuine B22A70 reserve, interleaves two DWORD copies and eight x87 FLD/FSTP pairs, increments current count even on computed null output. B25BE0 same actual0108D5A0/AA0 singleton publication; B23750 creates tracked section in8B owner. B26130 keeps library deleting-destructor name; supported locked repair restores reachable ADD ESP,4 atB2615E after erroneous B26159 CALL_RETURN, preserving body/callee flags. Full FH3 maps, guard source, app deletion dispatch and renderer invocation remain prerequisites. reports/native_renderer_debug_records40_append_contract_r52.json."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "archive": {
+    "path": "local/evidence-r52/append-contract-r52.zip",
+    "sha256": "c6a69e314dbe374c1ad8ad424c7a9ba03f4f359408f336f12f79700c6a0f5991",
+    "artifacts": 37,
+    "all_members_rehashed": true,
+    "note": "Report inside archive is preseal; final annotation receipts and exports are separate captured members. No build or runtime module evidence claimed."
+  }
+}
