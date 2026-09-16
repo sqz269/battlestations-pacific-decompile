@@ -1,0 +1,323 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "packet": "orch4_particle_text_loader_j10",
+  "source": "src/native_particle_text_loader.cpp",
+  "header": "include/bsp/native_particle_text_loader.hpp",
+  "functions": [
+    {
+      "address": "00af5850",
+      "end_exclusive": "00af592d",
+      "bytes": 221,
+      "instructions": 88,
+      "bridge_stale_instruction_statistic": 81,
+      "sha256": "bc317e80fcf735d91974dbb5a4424e6a0ce21dac8cb4c6ba2c713d401791900f",
+      "live_disk_match": true,
+      "name": "load_native_particle_text_buffer_00af5850",
+      "proposed_name": "ParticleTextBuffer_LoadFile_00AF5850",
+      "coverage": "complete",
+      "status": "complete_native_storage_source_build_and_original_provider_fixture_checked",
+      "original_abi": "ECX actual1Ch TextBuffer; stack nullable C-string; EAX actual read count or zero; RET4",
+      "exception_contract": "No EH frame in original AF5850. Existing resolver owns its native temporary cleanup and requires caller-retained acquired frame and actual name/header/data after failed resolution. Other exceptions propagate with no added loader cleanup.",
+      "old_documentation": {
+        "hash": "fd1baee883da4f5056739596b3f2b446c7c388cecb9a46b6833b417c4829d713",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00af5850",
+        "function_name": "FUN_00af5850",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "this",
+            "type": "size_t *",
+            "storage": "(unique, 0x6600, 4)"
+          },
+          {
+            "name": "iVar6",
+            "type": "int",
+            "storage": "(stack, 0xfffffffffffffff0, 4)"
+          },
+          {
+            "name": "LVar5",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "iVar4",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "piVar3",
+            "type": "int *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "length",
+            "type": "uint",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "pcVar2",
+            "type": "char *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "cVar1",
+            "type": "char",
+            "storage": "(unique, 0x17000, 1)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 21,
+            "name": "LAB_00af5865"
+          },
+          {
+            "relative_offset": 34,
+            "name": "LAB_00af5872"
+          },
+          {
+            "relative_offset": 36,
+            "name": "LAB_00af5874"
+          },
+          {
+            "relative_offset": 66,
+            "name": "LAB_00af5892"
+          },
+          {
+            "relative_offset": 189,
+            "name": "LAB_00af590d"
+          },
+          {
+            "relative_offset": 211,
+            "name": "LAB_00af5923"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "evidence": "Hypothesis, not recovered symbol. Complete AF5850[221] ECX actual1Ch text, nullable C-string stack, RET4/EAX read count or zero. Actual raw string cells and current0109CEEC publication; genuine BDF4C0 resolver and concrete VFS bindings. Ignore resolver AL; open32h; lowDWORD slot30 extent; exactly one current slot24 read; output count starts as incoming name pointer bits; mismatch frees current text+14 and clears without releasing stream; success decrements once/current terminal then returns current count. Caller retains acquired resolver frame AND actual text/name storage after failed resolution. No local frame, synthetic callback, retry or EH cleanup. Full PE/live SHA256 bc317e80fcf735d91974dbb5a4424e6a0ce21dac8cb4c6ba2c713d401791900f. Strict Win32+2CTests and original-byte/source genuine physical VFS probe657B pass. Runtime private context exposure remains separate; exceptional paths, other profiles, native ABI/SEH and gameplay unvalidated. See docs/NATIVE_PARTICLE_TEXT_LOADER_ORCH4.md and reports/native_particle_text_loader_orch4.json."
+    }
+  ],
+  "byte_evidence": [
+    {
+      "start": "00af5850",
+      "end_exclusive": "00af592d",
+      "length": 221,
+      "disk_sha256": "bc317e80fcf735d91974dbb5a4424e6a0ce21dac8cb4c6ba2c713d401791900f",
+      "live_sha256": "bc317e80fcf735d91974dbb5a4424e6a0ce21dac8cb4c6ba2c713d401791900f",
+      "equal": true,
+      "bytes": "558b6c240885ed568bf1578d7e0c74128bc58d50018a0883c00184c975f72bc2eb0233c06a00508bcfe8c28492ff8b470485c0740d8b0f515550e8f11d100083c40c8b0decce090157e8229c0e008b0decce09018b118b42046a3257ffd08bf88b178b42308bcfffd0508906894608c7460400000000c7461800000000e8ecfc0f0083c4048d4c2410518b0e8946148b178b522451508bcfffd28b4424103b06741b8b4e1451e88e10100083c4045fc74614000000005e33c05dc204008d570452ff152022ce0085c075088b078b108bcfffd28b4424105f5e5dc20400",
+      "instruction_count": 88
+    },
+    {
+      "start": "00bf55be",
+      "end_exclusive": "00bf55c3",
+      "length": 5,
+      "disk_sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "live_sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "equal": true,
+      "bytes": "e958120000",
+      "instruction_count": 1
+    },
+    {
+      "start": "00d685b4",
+      "end_exclusive": "00d685bc",
+      "length": 8,
+      "disk_sha256": "a449adb1f0cc3ef42c2835b25f72a2c9f239364129f516b34e7dd078697fb4f8",
+      "live_sha256": "a449adb1f0cc3ef42c2835b25f72a2c9f239364129f516b34e7dd078697fb4f8",
+      "equal": true,
+      "bytes": "c025be0010f3bd00"
+    },
+    {
+      "start": "00d68d04",
+      "end_exclusive": "00d68d0c",
+      "length": 8,
+      "disk_sha256": "0cd443dfc1ed1b78fd5f31817e21eac8289558129dec17dd9d71eecc46736bf4",
+      "live_sha256": "0cd443dfc1ed1b78fd5f31817e21eac8289558129dec17dd9d71eecc46736bf4",
+      "equal": true,
+      "bytes": "c0dabe0010f3bd00"
+    },
+    {
+      "start": "00d691b0",
+      "end_exclusive": "00d691e4",
+      "length": 52,
+      "disk_sha256": "505e0357703c7ae51672dd9b1cc7a1ce59fc8346783760d7e9f32fd697306fff",
+      "live_sha256": "505e0357703c7ae51672dd9b1cc7a1ce59fc8346783760d7e9f32fd697306fff",
+      "equal": true,
+      "bytes": "a055bf009050bf00e04ebf00f04fbf00209d6f00f04ebf002050bf00204fbf00404fbf003050bf00504fbf00a04fbf00904fbf00"
+    },
+    {
+      "start": "00d642c0",
+      "end_exclusive": "00d642f4",
+      "length": 52,
+      "disk_sha256": "2b1932e6aa0f9ed1ee97f2a8450cf5e9afebc6ba651116eea1b2245e1ef6e566",
+      "live_sha256": "2b1932e6aa0f9ed1ee97f2a8450cf5e9afebc6ba651116eea1b2245e1ef6e566",
+      "equal": true,
+      "bytes": "e030bd00908fbb00a0f4be00608fbb00209d6f00b0f4be00c0f4be0040f5be0080f5be0090f5be00f0f5be00a041be0000f6be00"
+    },
+    {
+      "start": "00d68db0",
+      "end_exclusive": "00d68de4",
+      "length": 52,
+      "disk_sha256": "24a19cd7fc9b6ab713bef80143dcab517e7d017d8ee83d5997408b8d749e4d20",
+      "live_sha256": "24a19cd7fc9b6ab713bef80143dcab517e7d017d8ee83d5997408b8d749e4d20",
+      "equal": true,
+      "bytes": "e030bd004012bf008040be00808bbb00209d6f009040be009010bf00e010bf008010bf000010bf004010bf00a041be00a010bf00"
+    },
+    {
+      "start": "00d64400",
+      "end_exclusive": "00d64434",
+      "length": 52,
+      "disk_sha256": "fff0804328137d63f33430d6155050957151f4fe2597e676eb8912362d0f7b75",
+      "live_sha256": "fff0804328137d63f33430d6155050957151f4fe2597e676eb8912362d0f7b75",
+      "equal": true,
+      "bytes": "e030bd00e0c3bb008040be00808bbb00209d6f009040be00c0bdbb0060c0bb0050bebb0040c1bb00c0c1bb00a041be00d0bdbb00"
+    }
+  ],
+  "call_sites": [
+    {
+      "function": "00af5850",
+      "address": "00af5879",
+      "native": "0041dd40",
+      "kind": "direct",
+      "contract": "ECX=text+C; stack captured nullable input length, preserve0; raw41DD40 actual pool context"
+    },
+    {
+      "function": "00af5850",
+      "address": "00af588a",
+      "native": "00bf7680",
+      "kind": "direct",
+      "contract": "cdecl current destination/name/current header length; BF7680 overlap behavior source memmove, library name retained"
+    },
+    {
+      "function": "00af5850",
+      "address": "00af5899",
+      "native": "00bdf4c0",
+      "kind": "direct",
+      "contract": "ECX=captured current0109CEEC; stack text+C; ignoreAL; concrete BDF4C0 caller-owned invocation"
+    },
+    {
+      "function": "00af5850",
+      "address": "00af58ac",
+      "native": "eax",
+      "kind": "indirect",
+      "contract": "current0109CEEC reloaded; current manager slot4 captured; ECX manager; stack name,flags32h; concrete BDF310"
+    },
+    {
+      "function": "00af5850",
+      "address": "00af58b7",
+      "native": "eax",
+      "kind": "indirect",
+      "contract": "captured stream current slot30; ECX stream; EDX:EAX length; high DWORD ignored"
+    },
+    {
+      "function": "00af5850",
+      "address": "00af58cd",
+      "native": "00bf55be",
+      "kind": "direct",
+      "contract": "cdecl captured low32 extent; BF55BE JMP BF681B; source existing allocation provider"
+    },
+    {
+      "function": "00af5850",
+      "address": "00af58e8",
+      "native": "edx",
+      "kind": "indirect",
+      "contract": "current stream slot24; ECX captured stream; stack allocated buffer,current text0 captured before buffer publish,&incoming-name-argument-word; one read"
+    },
+    {
+      "function": "00af5850",
+      "address": "00af58f6",
+      "native": "00bf6989",
+      "kind": "direct",
+      "contract": "cdecl CURRENT text+14 buffer on mismatch; clear pointer after free; no stream release"
+    },
+    {
+      "function": "00af5850",
+      "address": "00af5911",
+      "native": "dword ptr [0xce2220]",
+      "kind": "indirect",
+      "contract": "IAT00CE2220 InterlockedDecrement(captured stream+4); success path only"
+    },
+    {
+      "function": "00af5850",
+      "address": "00af5921",
+      "native": "edx",
+      "kind": "indirect",
+      "contract": "current stream slot0 after decrement reaches zero; ECX captured stream; no flags argument; physicalBF55A0 or source supportedBD30E0 dispatch"
+    },
+    {
+      "function": "00bf55be",
+      "address": "00bf55be",
+      "native": "00bf681b",
+      "kind": "tail_jump",
+      "contract": "Allocation thunk only; existing singleton_lifetime_allocate reproduces concrete CRT allocation contract"
+    }
+  ],
+  "field_layout": {
+    "00": "current extent DWORD",
+    "04": "cursor/position DWORD zeroed",
+    "08": "extent copy DWORD",
+    "0c": "native string length",
+    "10": "native string data",
+    "14": "data buffer pointer",
+    "18": "zeroed DWORD"
+  },
+  "provider_contracts": {
+    "raw_string": "NativeStringRawPoolContext over existing01090AA8/01090AA4/01090AA0 cells; VFS ActualNativeStringPoolStorage must share them",
+    "name_resolution": "NativeVfsNameResolutionContext plus fresh caller-owned NativeVfsNameResolutionAcquired; retain frame and actual text/name storage after failed resolution",
+    "manager": "current actual0109CEEC; NativeVfsRuntimeBindings::open_manager_entry(BDF310)",
+    "length": "NativeVfsRuntimeBindings::stream_length_entry from current slot30, not stream_size_low slot2C",
+    "read": "NativeVfsRuntimeBindings::source_read from current slot24",
+    "terminal": "NativeVfsRuntimeBindings::source_zero_reference from current slot0 only after one InterlockedDecrement returns0"
+  },
+  "runtime_frontier": "GameNativeVfsRuntime private bindings/name_resolution_context are not exposed. Caller must already own the genuine borrowed context graph. AF4BA0 and86BA60 remain outside packet.",
+  "validation": {
+    "strict_build": {
+      "command": "./scripts/build.ps1",
+      "result": "passed",
+      "ctests": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "log": "local/particle_text_loader_j10_build.log"
+    },
+    "focused_probe": {
+      "source": "local/particle_text_loader_probe.cpp",
+      "build": "local/build_particle_text_loader_probe.cmd",
+      "result": "PASS original AF5850/source 657 bytes: genuine resolver, manager open32h, pooled physical stream length/read/recycle, normalized name and exact buffer parity; raw singleton/pool drain.",
+      "original_redirects": [
+        "five direct rel32 calls to genuine source providers",
+        "two absolute0109CEEC operands to same fixture publication cell",
+        "CE2220 import operand to Win32InterlockedDecrement adapter",
+        "numeric BDF310/BF4F90/BF5030/BF55A0 targets via x86 JMP adapters; original manager/stream table bytes unchanged"
+      ],
+      "build_flags": "/std:c++20 /EHsc /W4 /WX /O2 /MD /fp:strict /link /MANIFEST:EMBED /BASE:0x30000000 /DYNAMICBASE:NO /FIXED",
+      "coverage": "normal installed loose-file path only; no permanent tests added"
+    },
+    "not_claimed": [
+      "short-read or throwing-provider execution",
+      "callback-mutated slots/publications in fixture",
+      "other supported stream profiles in loader fixture",
+      "original caller-stack alias identity",
+      "binary ABI/CRT/SEH equivalence",
+      "game validation"
+    ],
+    "source_sha256": "ca5b120e1207bc0e48846f8b2f33b238c2e390781f1286c2113ff0044dc89448",
+    "header_sha256": "69544ee7987a02aa817fdfe18ff4926f6078eb522dabd0ce30747b0b4aad966d",
+    "probe_sha256": "1c6a5b25883c2efd2899ed70ea4549d67bd56bd31006e8f4045fdf9af20e5d66",
+    "build_log_sha256": "5128ce71802a35f3c19bd611e25d37d84577869c12c49e1da8edcdf70f0e8ebd",
+    "call_verification": {
+      "command": "python tools/verify_report_calls.py reports/native_particle_text_loader_orch4.json",
+      "checked_direct_or_tail_rows": 6,
+      "failed": 0,
+      "indirect_body_sites": 5,
+      "indirect_proof": "separately full PE/live instruction bytes, actual immutable profile words and explicit captured-entry provider contracts"
+    },
+    "independent_review": "Parent and independent resource worker reviewed the complete221B listing/source/header and concrete provider route; no findings reported."
+  }
+}
