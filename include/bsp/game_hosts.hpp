@@ -51,6 +51,7 @@ namespace bsp {
 struct NativeInputActionRecordCalls;
 struct NativeRendererParametersOwner;
 struct CameraAxesCrtAccess;
+struct NativeFrameClockPublicationContext;
 class XLiveLibrary;
 }
 
@@ -333,7 +334,7 @@ private:
 // The loading queue and the rest of GGame::OnMove retain their explicit boundaries.
 class GameFrameHost final : public ApplicationFrameHost {
 public:
-    GameFrameHost(GameHostLog& log, FrameClock& clock, Win32PlatformState& platform,
+    GameFrameHost(GameHostLog& log, const NativeFrameClockPublicationContext& clock, Win32PlatformState& platform,
         PlatformLoopState& loop, GameStateSlot& game_state, GameFrameProfiler* profiler,
         GameMenuHost* menu, GameVfsHost& vfs)
         : log_(log), clock_(clock), platform_(platform), loop_(loop),
@@ -362,7 +363,8 @@ public:
 
 private:
     GameHostLog& log_;
-    FrameClock& clock_;
+    const NativeFrameClockPublicationContext& clock_;
+    ClockTimestamp interval_result_; // immediate 16B result, not another clock
     Win32PlatformState& platform_;
     PlatformLoopState& loop_;
     GameStateSlot& game_state_;
@@ -593,6 +595,9 @@ public:
 private:
     void run_initialize_phases(const char* mode);
     void release_platform_window() noexcept;
+    void ensure_frame_clock_0073d480();
+    const NativeFrameClockPublicationContext& require_frame_clock_context() const;
+    void exit_if_frame_clock_failed() noexcept;
     struct SoundServices;
     std::unique_ptr<SoundServices> sound_;
     struct InputServices;
@@ -601,7 +606,9 @@ private:
     void* volatile input_actions_00f8bbf8_{};
     GameInputRuntime* volatile input_runtime_{}; // nonowning source service publication
     NativeInputActionRecordCalls* volatile input_listener_calls_{};
-    FrameClock* volatile clock_publication_01090ab0_{};
+    void* volatile clock_publication_01090ab0_{};
+    struct ClockServices;
+    std::unique_ptr<ClockServices> clock_services_;
 
     GameHostLog& log_;
     HINSTANCE instance_{};
@@ -616,7 +623,6 @@ private:
     RandomThreads* random_threads_{};
     Win32PlatformState platform_;
     PlatformLoopState loop_;
-    FrameClock clock_;
     ObjectHandleResolverSlots object_resolvers_;
     ApplicationFrameState frame_state_;
     FrameMarkerColor frame_color_;

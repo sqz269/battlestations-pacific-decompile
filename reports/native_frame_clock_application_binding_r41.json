@@ -1,0 +1,1005 @@
+{
+  "packet": "native_frame_clock_application_binding_r41",
+  "status": "bounded_application_owner_binding_built_and_genuine_host_fixture_verified",
+  "source_commit": "47af884c750d0187c283498970399eb4d1284372",
+  "baseline_commit": "f93acf6712744222e383dc181f849965c0770b25",
+  "owned_files": [
+    "include/bsp/game_hosts.hpp",
+    "src/game_hosts.cpp",
+    "docs/NATIVE_FRAME_CLOCK_APPLICATION_BINDING_R41.md",
+    "reports/native_frame_clock_application_binding_r41.json"
+  ],
+  "owned_callsites": [
+    "0073d480",
+    "0073dab3",
+    "00737af6",
+    "00737b03"
+  ],
+  "scope": {
+    "change": "Replace embedded semantic FrameClock with exactly one existing raw80h BEDFB0 owner and persistent contexts; connect existing required sound/input/frame providers.",
+    "excluded": [
+      "No game_main, singleton deletion layout, raw method/lifecycle provider, sound/input provider, worker, online, renderer or CMake edits.",
+      "No full application OnMove or startup completion claim.",
+      "No second raw/semantic advancing clock; immediate ClockTimestamp results contain only copied16B data."
+    ]
+  },
+  "provenance": {
+    "prerequisites": [
+      "reports/native_frame_clock_actual_r35.json",
+      "reports/native_frame_clock_lifetime_r36.json",
+      "reports/native_frame_clock_application_contract_r37.json",
+      "reports/native_frame_clock_publication_r38.json",
+      "reports/native_frame_clock_consumer_providers_r39.json",
+      "reports/native_frame_clock_host_failure_contract_r40.json"
+    ],
+    "parent_audit_commit": "c8ce27346",
+    "preserved_diagnostic_commits": [
+      "cdb60c49f",
+      "b15f32289"
+    ],
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "ghidra_program": "/battlestationspacific.exe",
+    "ghidra_read_only": true,
+    "snapshot_function_count": 64147,
+    "original_pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "original_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "ownership": {
+    "actual_storage_bytes": 128,
+    "publication": "Same private GameStartupHost void* volatile AB0 cell, published only by existing BEDE00 constructor and cleared only by existing lifecycle/drain.",
+    "manager": "Existing GameSingletonHost actual AA0 publication, raw14h manager and substantive raw BD0400 shared drain.",
+    "profile": "All11 words of original44B D68D50 validated before raw allocation; borrowed from existing GameNativeReadOnlyData numeric readonly D60000 band. Existing game_main native_data_spans already includes the band.",
+    "expected_profile_words": [
+      "00bee110",
+      "00bedbd0",
+      "00bedc30",
+      "00bedae0",
+      "00beddc0",
+      "00bee050",
+      "00bee060",
+      "00bee070",
+      "00bee080",
+      "00bedb20",
+      "00bedb60"
+    ],
+    "contexts": "Private persistent ClockServices owns const method/publication contexts and lifecycle context, installed into deletion.frame_clock before raw allocation and retained through GameSingletonHost destructor/fallback drain.",
+    "deletion_binding_offset": 108,
+    "deletion_binding_total_bytes": 116,
+    "other_deletion_fields": "All existing fields including diagnostic+112 unchanged.",
+    "storage_owner": "Existing singleton allocator returns actual80h allocation; successful lifetime is owned by registered raw manager. Host stores no independent owning semantic clock.",
+    "constructor_captured_section_current_manager_schedule": "Unchanged existing R36 provider; host neither emulates registration nor assigns AB0 around it."
+  },
+  "states": {
+    "states": [
+      "unattempted",
+      "constructing",
+      "constructed",
+      "failed",
+      "drained"
+    ],
+    "prevalidation": "Context/profile failure before persistent publication does not invent failed graph ownership; existing initialized host owners drain normally.",
+    "unexpected_nonnull": "Before first attempt, unexpected AB0 marks failed before throwing. Guard does not dereference or drain unknown ownership.",
+    "allocation_throw": "Marks failed before rethrow. Constructor try is separate; no allocation returned and no free call is made.",
+    "null_allocation": "Defensive native skip: remains unattempted; no constructor/publication/fallback owner. Current source allocator retries or throws, so this branch is source-reviewed only.",
+    "constructor_throw": "Marks failed, frees only captured allocation whose constructor threw, and rethrows. Does not inspect/clear/repair AB0. Matches local native caller cleanup obligation only.",
+    "constructed": "Repeated local ensure admits current raw publication through current helper then skips allocation. Admission failure marks failed. Whole application reinitialization remains unsupported.",
+    "drained": "Set only after successful singleton shutdown; further consumer-context requests reject. ClockServices remains alive until after GameSingletonHost destruction.",
+    "failure_policy": "Destructor, application_shutdown, destroy_singleton_lifetime_manager and exit_process call private guard first; failed/constructing state logs/closes defensively and std::_Exit(1) retains unproved graph without manager or CRT cleanup. This is a conservative source contract, not native FH3 equivalence."
+  },
+  "consumer_bindings": {
+    "sound": "R39 borrowed publication binding; startup uses current slot14, runtime current snapshots borrow same AB0/context. Legacy source provider path remains available elsewhere.",
+    "input": "R39 NativeInputClockBinding borrows same publication context; immediate16B slot14 result with previously accepted serialized/live/disjoint snapshot boundary.",
+    "frame": "GameFrameHost borrows publication context; advance invokes R38 slot08; frame_interval copies exact slot1C result16B into immediate member result. No reinterpretation to FrameClock.",
+    "fixed_mode": "Signed milliseconds50 through slot24 immediately after load_game_settings_008d8190 and before sound construction. Only local settings->fixed->sound ordering claimed; original preceding renderer phase remains partial.",
+    "optional": "Captured-owner consumers and unbound renderer/online/system-time/traceline consumers are not activated or universally redirected."
+  },
+  "native_contracts": [
+    {
+      "entry": "0073d410",
+      "range": "0073d480..0073d4bc",
+      "contract": "AB0 null gate, PUSH80, allocator at73D494, captured local, BEDFB0 at73D4B1. Constructor owns publication; caller adds no AB0 store.",
+      "abi": "Original Application_Init body and original thiscall constructor; source host is not binary ABI-compatible."
+    },
+    {
+      "entry": "0073d410",
+      "range": "0073daa5..0073dac1",
+      "contract": "Settings call73DAA5, fixed flag gate, AB0 reload73DAB3, slot24 lookup, PUSH32h, CALL EAX73DAC0. Sound follows later in native body.",
+      "abi": "Slot24 original ECX self, signed stack int32 milliseconds, RET4 as retained R35 evidence."
+    },
+    {
+      "entry": "00737a50",
+      "range": "00737af6..00737b2a",
+      "contract": "AB0 capture and slot08 call00737B01; separate AB0 reload00737B03 and slot1C call00737B0E; interval scaled then passed to GGame OnMove00737B26.",
+      "abi": "Getter returns borrowed16B raw member. Source immediate snapshot has serialized/live-storage boundary, no concurrent/fault schedule parity claim."
+    },
+    {
+      "entry": "008f81f0",
+      "range": "008f8429..008f846c",
+      "contract": "Init, main loop, Application_Shutdown, Application_Destruct, then captured manager BD0400 at008F8455 and free008F845B. Shutdown prefix loads F8D394 at00737F58/65 and calls its+0C/+14 slots at00737F63/70; those calls neither directly delete the clock nor establish a source worker join.",
+      "abi": "Normal order evidence only; bounded app shutdown prefix is not complete shutdown exception graph."
+    },
+    {
+      "entry": "00c86cba",
+      "range": "handler+FuncInfo DB609C/unwind DB60C0",
+      "contract": "FH3 handler references FuncInfo; first two unwind rows preserved. Clock allocation cleanup C86A3E loads captured EBP-130, calls BF65AC atC86A45, no AB0 repair.",
+      "abi": "Raw native EH data preserved; source C++ catch plus terminal-retention policy is not native FH3/register/SEH equivalence."
+    }
+  ],
+  "native_evidence": {
+    "spans": [
+      {
+        "label": "application_shutdown_prefix",
+        "address": "00737f30",
+        "length": 66,
+        "end_exclusive": "00737f72",
+        "pe_offset": 3374896,
+        "sha256": "561b84c7529797e7caa9497396b13408369271f5232fddd5408250975d5f20ca",
+        "hex": "64a1000000006aff68e062c800506489250000000083ec1053568bf1e85f93d8ff8bc8e8189036008b0d94d3f8008b018b500cffd28b0d94d3f8008b018b5014ffd2",
+        "live_equals_pe": true,
+        "calls": [
+          {
+            "address": "00737f4c",
+            "hex": "e85f93d8ff",
+            "text": "call 0x4c12b0"
+          },
+          {
+            "address": "00737f53",
+            "hex": "e818903600",
+            "text": "call 0xaa0f70"
+          },
+          {
+            "address": "00737f63",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00737f70",
+            "hex": "ffd2",
+            "text": "call edx"
+          }
+        ],
+        "listing_entry": "00737f30",
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "label": "startup_phase0",
+        "address": "0073d410",
+        "length": 178,
+        "end_exclusive": "0073d4c2",
+        "pe_offset": 3396624,
+        "sha256": "836def208fa5872591b0c896d1d79760c5e1c2f7d9c3789c3a92cb0d0ed3bb13",
+        "hex": "6aff68ba6cc80064a100000000506489250000000081ec2c010000535556578bf16a1033ff6a1089742434897c2428e83c43490083c40450e85343490083c408c6461801c6461900e8e3bbcfff6a0ce8b7934b0083c404894424183bc789bc244401000074078bc8e883544a0083cbff393db00a0901899c2444010000752e6880000000e882934b0083c404894424183bc7c78424440100000100000074078bc8e8fa0a4b00899c2444010000e80efcf6ff",
+        "live_equals_pe": true,
+        "calls": [
+          {
+            "address": "0073d43f",
+            "hex": "e83c434900",
+            "text": "call 0xbd1780"
+          },
+          {
+            "address": "0073d448",
+            "hex": "e853434900",
+            "text": "call 0xbd17a0"
+          },
+          {
+            "address": "0073d458",
+            "hex": "e8e3bbcfff",
+            "text": "call 0x439040"
+          },
+          {
+            "address": "0073d45f",
+            "hex": "e8b7934b00",
+            "text": "call 0xbf681b"
+          },
+          {
+            "address": "0073d478",
+            "hex": "e883544a00",
+            "text": "call 0xbe2900"
+          },
+          {
+            "address": "0073d494",
+            "hex": "e882934b00",
+            "text": "call 0xbf681b"
+          },
+          {
+            "address": "0073d4b1",
+            "hex": "e8fa0a4b00",
+            "text": "call 0xbedfb0"
+          },
+          {
+            "address": "0073d4bd",
+            "hex": "e80efcf6ff",
+            "text": "call 0x6ad0d0"
+          }
+        ],
+        "listing_entry": "0073d410",
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "label": "fixed_mode",
+        "address": "0073da66",
+        "length": 92,
+        "end_exclusive": "0073dac2",
+        "pe_offset": 3398246,
+        "sha256": "7a511a73318979996c92bf0c3fbcbe7b43b93570dfd25f65305c20ae7ed0e9a1",
+        "hex": "68941d0000e8ab8d4b0083c404894424103bc7c78424440100001000000074078bc8e883493f00899c2444010000e8376de1ff8bc8e840a1f6ffb98089f800e8e6a61900803d81aee10000740f8b0db00a09018b118b42246a32ffd0",
+        "live_equals_pe": true,
+        "calls": [
+          {
+            "address": "0073da6b",
+            "hex": "e8ab8d4b00",
+            "text": "call 0xbf681b"
+          },
+          {
+            "address": "0073da88",
+            "hex": "e883493f00",
+            "text": "call 0xb32410"
+          },
+          {
+            "address": "0073da94",
+            "hex": "e8376de1ff",
+            "text": "call 0x5547d0"
+          },
+          {
+            "address": "0073da9b",
+            "hex": "e840a1f6ff",
+            "text": "call 0x6a7be0"
+          },
+          {
+            "address": "0073daa5",
+            "hex": "e8e6a61900",
+            "text": "call 0x8d8190"
+          },
+          {
+            "address": "0073dac0",
+            "hex": "ffd0",
+            "text": "call eax"
+          }
+        ],
+        "listing_entry": "0073d410",
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "label": "startup_handler",
+        "address": "00c86cba",
+        "length": 10,
+        "end_exclusive": "00c86cc4",
+        "pe_offset": 8940730,
+        "sha256": "7dcc60aaf653ef840c139e429219e059b4a4febe03365acc54120d6ca96f2f93",
+        "hex": "b89c60db00e97ffef6ff",
+        "live_equals_pe": true,
+        "calls": []
+      },
+      {
+        "label": "allocation_cleanup_actions",
+        "address": "00c86a30",
+        "length": 28,
+        "end_exclusive": "00c86a4c",
+        "pe_offset": 8940080,
+        "sha256": "e8d988e0b885370d861c8368265d4b7937e15d481f35bd1bd00c49e25d391b0a",
+        "hex": "8b85d0feffff50e870fbf6ff59c38b85d0feffff50e862fbf6ff59c3",
+        "live_equals_pe": true,
+        "calls": [
+          {
+            "address": "00c86a37",
+            "hex": "e870fbf6ff",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "00c86a45",
+            "hex": "e862fbf6ff",
+            "text": "call 0xbf65ac"
+          }
+        ]
+      },
+      {
+        "label": "startup_funcinfo",
+        "address": "00db609c",
+        "length": 36,
+        "end_exclusive": "00db60c0",
+        "pe_offset": 10182812,
+        "sha256": "14beb8044a80e1663ec517b799fbfc0a724a07100d6554125b0681dcd06ba5f3",
+        "hex": "2205931931000000c060db00000000000000000000000000000000000000000001000000",
+        "live_equals_pe": true
+      },
+      {
+        "label": "startup_first_two_unwind_entries",
+        "address": "00db60c0",
+        "length": 16,
+        "end_exclusive": "00db60d0",
+        "pe_offset": 10182848,
+        "sha256": "e75d77dd4e1a39b4acc28fc7a1ac652ef1b2e63dd03cb44b822a43a2b5c7dc6c",
+        "hex": "ffffffff306ac800ffffffff3e6ac800",
+        "live_equals_pe": true
+      },
+      {
+        "label": "winmain_shutdown",
+        "address": "008f8429",
+        "length": 68,
+        "end_exclusive": "008f846d",
+        "pe_offset": 5211177,
+        "sha256": "a557907d84bd4eab51b8620adfac4c625ba97c102908121551e5c3d707718890",
+        "hex": "e8e24fe4ff8d4c2420e8c9232f008d4c2420e8f0fae3ff8d4c2420e857f5e3ff8b0da00a090185c9741a8bf9e8a67f2d0057e84ce12f0083c404c705a00a090100000000",
+        "live_equals_pe": true,
+        "calls": [
+          {
+            "address": "008f8429",
+            "hex": "e8e24fe4ff",
+            "text": "call 0x73d410"
+          },
+          {
+            "address": "008f8432",
+            "hex": "e8c9232f00",
+            "text": "call 0xbea800"
+          },
+          {
+            "address": "008f843b",
+            "hex": "e8f0fae3ff",
+            "text": "call 0x737f30"
+          },
+          {
+            "address": "008f8444",
+            "hex": "e857f5e3ff",
+            "text": "call 0x7379a0"
+          },
+          {
+            "address": "008f8455",
+            "hex": "e8a67f2d00",
+            "text": "call 0xbd0400"
+          },
+          {
+            "address": "008f845b",
+            "hex": "e84ce12f00",
+            "text": "call 0xbf65ac"
+          }
+        ],
+        "listing_entry": "008f81f0",
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "label": "application_frame_clock",
+        "address": "00737af6",
+        "length": 53,
+        "end_exclusive": "00737b2b",
+        "pe_offset": 3373814,
+        "sha256": "0d499fc6fbfeb1a6b9783e378d229ea49d4512ad9e84d36cf74d15f626ccf158",
+        "hex": "8b0db00a09018b118b4208ffd08b0db00a09018b118b421cffd0df28df6808518b4e14def9d95c2410d9442410d91c24e815cfdaff",
+        "live_equals_pe": true,
+        "calls": [
+          {
+            "address": "00737b01",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00737b0e",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00737b26",
+            "hex": "e815cfdaff",
+            "text": "call 0x4e4a40"
+          }
+        ],
+        "listing_entry": "00737a50",
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "label": "sound_startup_current",
+        "address": "00a887ea",
+        "length": 52,
+        "end_exclusive": "00a8881e",
+        "pe_offset": 6850538,
+        "sha256": "7bd9177eb9d3476ca361395f3497c493424f328dc5834f91728268adde0ec316",
+        "hex": "8b0db00a09018b118b4214ffd08b08898e180100008b500489961c0100008b4808898e200100008b500c8d7e4857899624010000",
+        "live_equals_pe": true,
+        "calls": [
+          {
+            "address": "00a887f5",
+            "hex": "ffd0",
+            "text": "call eax"
+          }
+        ],
+        "listing_entry": "00a88770",
+        "listing_missing_instruction_starts": []
+      },
+      {
+        "label": "game_accumulation_fragment",
+        "address": "004e4d4a",
+        "length": 28,
+        "end_exclusive": "004e4d66",
+        "pe_offset": 937290,
+        "sha256": "463fab30daed110ad2298f1cd7c3243ff17c89bde10b86cf2c7db7d300fa76d7",
+        "hex": "d986f0210000a1b00a0901d95c241cd944241c51d840048bced95804",
+        "live_equals_pe": true,
+        "calls": []
+      },
+      {
+        "label": "profile",
+        "address": "00d68d50",
+        "length": 44,
+        "end_exclusive": "00d68d7c",
+        "pe_offset": 9866576,
+        "sha256": "fed689db7f77645fa9f42e4b36aaf2c74312f0539c3cadf20ff28afe7c14e781",
+        "hex": "10e1be00d0dbbe0030dcbe00e0dabe00c0ddbe0050e0be0060e0be0070e0be0080e0be0020dbbe0060dbbe00",
+        "live_equals_pe": true
+      }
+    ],
+    "span_count": 12,
+    "total_bytes": 671,
+    "call_count": 30,
+    "all_live_equals_pe": true,
+    "listing_missing_instruction_starts": [],
+    "machine_derivation": "BSP read-only live bytes compared byte-for-byte to PE section offsets; Capstone full span decoding; every decoded instruction start of function-backed spans occurs in current exported listing. EH/profile data are preserved bytes, not disassembled as code.",
+    "receipt": "local/frame_clock_application_bytes_r41.json"
+  },
+  "source_machine_evidence": {
+    "executable": "local\\frame_clock_application_probe_r41.exe",
+    "sha256": "df1c80210f4b98bffcc48545860d2574b8cd1c1ba7009e15169565e08b88a613",
+    "map_intervals_total": 72,
+    "selected_host_intervals": [
+      {
+        "symbol": "??1GameStartupHost@game@bsp@@UAE@XZ",
+        "object": "game_hosts.obj",
+        "address": "0040bef0",
+        "end_exclusive": "0040c01f",
+        "length": 303,
+        "sha256": "15483966ee74a131823e7a963f536de62ba73c8d11e74b68723c0d9ca0e9a612",
+        "note": "Linked source span bounded by next mapped function; may include alignment. This is not original-game byte parity.",
+        "calls": [
+          {
+            "address": "0040bf2d",
+            "hex": "e88e310000",
+            "text": "call 0x40f0c0",
+            "resolved_target": "?exit_if_frame_clock_failed@GameStartupHost@game@bsp@@AAEXXZ"
+          }
+        ]
+      },
+      {
+        "symbol": "?advance_frame_clock@GameFrameHost@game@bsp@@UAEXXZ",
+        "object": "game_hosts.obj",
+        "address": "0040dd50",
+        "end_exclusive": "0040dda0",
+        "length": 80,
+        "sha256": "3ebcf181de0358d9b700a1b8eb6d027a175e71fd9b1958b2690ef648dd061851",
+        "note": "Linked source span bounded by next mapped function; may include alignment. This is not original-game byte parity.",
+        "calls": [
+          {
+            "address": "0040dd91",
+            "hex": "e83ab30900",
+            "text": "call 0x4a90d0",
+            "resolved_target": "?advance_published_native_frame_clock@bsp@@YAXABUNativeFrameClockPublicationContext@1@@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "?application_shutdown@GameStartupHost@game@bsp@@UAEXXZ",
+        "object": "game_hosts.obj",
+        "address": "0040e0b0",
+        "end_exclusive": "0040e5a0",
+        "length": 1264,
+        "sha256": "0b42055fd4197c7ff60f65c4ffd1263625a5bcfcc3a1e56aec29f7c0e37d5899",
+        "note": "Linked source span bounded by next mapped function; may include alignment. This is not original-game byte parity.",
+        "calls": [
+          {
+            "address": "0040e0ba",
+            "hex": "e801100000",
+            "text": "call 0x40f0c0",
+            "resolved_target": "?exit_if_frame_clock_failed@GameStartupHost@game@bsp@@AAEXXZ"
+          }
+        ]
+      },
+      {
+        "symbol": "?destroy_singleton_lifetime_manager@GameStartupHost@game@bsp@@UAEXXZ",
+        "object": "game_hosts.obj",
+        "address": "0040ec60",
+        "end_exclusive": "0040ed30",
+        "length": 208,
+        "sha256": "99fce24f89d57901cea7592262a90ec4c0d3a98cd4b6f6f8ef10736907b3b62f",
+        "note": "Linked source span bounded by next mapped function; may include alignment. This is not original-game byte parity.",
+        "calls": [
+          {
+            "address": "0040ec6a",
+            "hex": "e851040000",
+            "text": "call 0x40f0c0",
+            "resolved_target": "?exit_if_frame_clock_failed@GameStartupHost@game@bsp@@AAEXXZ"
+          }
+        ]
+      },
+      {
+        "symbol": "?ensure@ClockServices@GameStartupHost@game@bsp@@QAEXXZ",
+        "object": "i game_hosts.obj",
+        "address": "0040ed40",
+        "end_exclusive": "0040ee1d",
+        "length": 221,
+        "sha256": "53e651c58b0ecfd7a963dde1e2f01b4863191b85adbef7819d9a2bfa36f936f6",
+        "note": "Linked source span bounded by next mapped function; may include alignment. This is not original-game byte parity.",
+        "calls": [
+          {
+            "address": "0040ed86",
+            "hex": "e8b5a30900",
+            "text": "call 0x4a9140",
+            "resolved_target": "?current_published_native_frame_clock@bsp@@YAPBXABUNativeFrameClockPublicationContext@1@@Z"
+          },
+          {
+            "address": "0040ee0c",
+            "hex": "e8ffbb0a00",
+            "text": "call 0x4baa10",
+            "resolved_target": "?construct_native_frame_clock_00bedfb0@bsp@@YIPAXPAXAAUNativeFrameClockLifetimeContext@1@@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "?ensure_frame_clock_0073d480@GameStartupHost@game@bsp@@AAEXXZ",
+        "object": "game_hosts.obj",
+        "address": "0040eea0",
+        "end_exclusive": "0040f030",
+        "length": 400,
+        "sha256": "486382fd00f9bccd374b1caaf61e67afaed5c86909bc9d4d8dd172e7a59c8f6a",
+        "note": "Linked source span bounded by next mapped function; may include alignment. This is not original-game byte parity.",
+        "calls": []
+      },
+      {
+        "symbol": "?exit_if_frame_clock_failed@GameStartupHost@game@bsp@@AAEXXZ",
+        "object": "game_hosts.obj",
+        "address": "0040f0c0",
+        "end_exclusive": "0040f100",
+        "length": 64,
+        "sha256": "7f98b4e32410b0e599b29f8d8d06692e109d617cdf3a6ea584dd3764b60dd600",
+        "note": "Linked source span bounded by next mapped function; may include alignment. This is not original-game byte parity.",
+        "calls": []
+      },
+      {
+        "symbol": "?exit_process@GameStartupHost@game@bsp@@UAEXH@Z",
+        "object": "game_hosts.obj",
+        "address": "0040f140",
+        "end_exclusive": "0040f170",
+        "length": 48,
+        "sha256": "5cc990812f60153045c3f4ec9c6950a5e0e21ce147eeedd8b23a1df473857270",
+        "note": "Linked source span bounded by next mapped function; may include alignment. This is not original-game byte parity.",
+        "calls": [
+          {
+            "address": "0040f146",
+            "hex": "e875ffffff",
+            "text": "call 0x40f0c0",
+            "resolved_target": "?exit_if_frame_clock_failed@GameStartupHost@game@bsp@@AAEXXZ"
+          }
+        ]
+      },
+      {
+        "symbol": "?frame_interval@GameFrameHost@game@bsp@@UAEABUClockTimestamp@3@XZ",
+        "object": "game_hosts.obj",
+        "address": "0040f3e0",
+        "end_exclusive": "0040f440",
+        "length": 96,
+        "sha256": "6bc0e37baa96ea88a78764e680b1f2bee5d1382d0488742604a79f7ac55b05e8",
+        "note": "Linked source span bounded by next mapped function; may include alignment. This is not original-game byte parity.",
+        "calls": [
+          {
+            "address": "0040f421",
+            "hex": "e8fa9d0900",
+            "text": "call 0x4a9220",
+            "resolved_target": "?interval_published_native_frame_clock@bsp@@YAPBXABUNativeFrameClockPublicationContext@1@@Z"
+          }
+        ]
+      },
+      {
+        "symbol": "?require_frame_clock_context@GameStartupHost@game@bsp@@ABEABUNativeFrameClockPublicationContext@3@XZ",
+        "object": "game_hosts.obj",
+        "address": "004105e0",
+        "end_exclusive": "00410620",
+        "length": 64,
+        "sha256": "4e53e9382e06bb9df4a43600de0cdd51f5f14624fe4d6a0d44470b9602d11894",
+        "note": "Linked source span bounded by next mapped function; may include alignment. This is not original-game byte parity.",
+        "calls": []
+      },
+      {
+        "symbol": "?run_initialize_phases@GameStartupHost@game@bsp@@AAEXPBD@Z",
+        "object": "game_hosts.obj",
+        "address": "00410fd0",
+        "end_exclusive": "00413a50",
+        "length": 10880,
+        "sha256": "fd49db3989ae1fcfedbe0f54ec062aecb747f3a73ec81c2c50dd54636a379e23",
+        "note": "Linked source span bounded by next mapped function; may include alignment. This is not original-game byte parity.",
+        "calls": [
+          {
+            "address": "00411a6a",
+            "hex": "e871100a00",
+            "text": "call 0x4b2ae0",
+            "resolved_target": "?load_game_settings_008d8190@bsp@@YAXAAUGameSettingsBlock@1@AAVGameSettingsHost@1@@Z"
+          },
+          {
+            "address": "00411a7f",
+            "hex": "e85cebffff",
+            "text": "call 0x4105e0",
+            "resolved_target": "?require_frame_clock_context@GameStartupHost@game@bsp@@ABEABUNativeFrameClockPublicationContext@3@XZ"
+          },
+          {
+            "address": "00411a85",
+            "hex": "e826770900",
+            "text": "call 0x4a91b0",
+            "resolved_target": "?enable_fixed_published_native_frame_clock@bsp@@YAXABUNativeFrameClockPublicationContext@1@H@Z"
+          }
+        ]
+      }
+    ],
+    "interval_boundary": "Map symbol-to-next-symbol intervals can include alignment or auxiliary code and are not inferred native function boundaries. Full hex/instructions/host EH intervals are archived.",
+    "source_interface": "GameStartupHost member layout and GameFrameHost context constructor changed only as source interfaces. Native80h layout and deletion table116 bytes unchanged.",
+    "fixture_access": "Explicit-template-instantiation private member-pointer access calls exact built ensure/context accessor and reads actual singleton pointer; no production hooks, macro access rewrite or copied host implementation."
+  },
+  "validation": {
+    "verify_seeds": {
+      "exit": 0,
+      "log": "local/frame_clock_application_verify_seeds_r41.log",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    "strict_build": {
+      "command": "./scripts/build.ps1",
+      "exit": 0,
+      "compiler": "MSVC Win32 /MD /fp:strict /W4 /WX",
+      "ctests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "passed": 3,
+      "failed": 0,
+      "log": "local/frame_clock_application_build_r41.log",
+      "sha256": "6e1a961e62287aeab7a4dd9f97983a4a04174eea6ecf3de3f3dd4d1bb31c1a8e",
+      "frozen_inputs": 3125
+    },
+    "fixture": [
+      {
+        "fixture": "frame_clock_application",
+        "source": "local/frame_clock_application_probe_r41.cpp",
+        "exe": "local\\frame_clock_application_probe_r41.exe",
+        "sha256": "df1c80210f4b98bffcc48545860d2574b8cd1c1ba7009e15169565e08b88a613",
+        "build_exit": 0,
+        "run_exit": 0,
+        "manifest_asInvoker": true,
+        "selected_output": [
+          "PASS genuine host single raw80h allocation, exact shared registration, numeric profile and repeated ensure",
+          "PASS same-owner sound/input current, signed50 fixed and one frame provider advance",
+          "PASS public shared drain and retained contexts; drained consumer admission; normal host destructor follows"
+        ]
+      },
+      {
+        "fixture": "genuine_host_constructor_failure",
+        "run_exit": 1,
+        "log": "local/frame_clock_application_probe_failure_r41.log",
+        "output": [
+          "host ObserverRuntime::initialize_dispatch [00ccd6a0] concrete",
+          "observer runtime initialized: dispatch_owner=present alias=owner+4 lock=lazy manager=application_raw14h storage=raw14h/raw8h",
+          "pending entity CRT owners initialized: destroy=present kill=present counts=0/0 atexit=0/0 storage=process_raw24h",
+          "CLOCK_FREE 00828A60 stamp=00ce3818 count=1",
+          "PASS genuine registration exception; no AB0 dereference; entering terminal guard",
+          "raw application clock construction failed; manager graph cleanup is unproved; retaining application and mapped data until process exit"
+        ]
+      }
+    ],
+    "fixture_link": "Fresh full bsp_core/lua/zlib libraries plus all fresh bsp_game application objects except game_main. game_hosts.cpp belongs to bsp_game executable, not bsp_core. /MANIFEST:EMBED asInvoker, I386, /MD strict; fixed imagebase400000 fixture-only.",
+    "numeric_mapping": "Existing real GameNativeDataBootstrapChild reserves D60000 before child CRT startup; child accepts genuine handoff and constructs hash-verifying GameNativeReadOnlyData. Direct post-CRT mapping could find the band occupied even with fixed image base, so the existing production reservation protocol is used.",
+    "genuine_domain": "Actual GameStartupHost constructor, real observer/pending CRT owners, same genuine14h manager, raw80h clock and readonly original44B profile; QPC/QPF/free observations forward to real imports without fabricated success values.",
+    "normal_case": "Private local phase0 ensure creates/registers one raw owner; repeated ensure preserves pointer/count/QPC/QPF; current/interval exact storage, sound startup/input immediate current results, signed50 and one R38 frame advance; public manager drain frees clock once, clears cells, and drained admission rejects before normal host destructor.",
+    "failure_case": "Separate bootstrap child corrupts only its genuine manager end to trigger real existing SDK invalid-parameter C++ exception during registration; handler throws ExpectedFailure. Host catch forwards exactly one free while stamp isCE3818, leaves AB0 bits untouched, QPF/QPC not reached, tracked section released. Public manager-destruction guard exits1; installed CRT atexit sentinel does not run.",
+    "remaining_case_limits": [
+      "No allocator-failure injection, unexpected-nonnull or profile-mismatch runtime case; these paths are source/machine reviewed.",
+      "GameFrameHost methods and fixed startup gate are built/machine-call reviewed; fixture invokes R38 frame/fixed providers directly to avoid manufacturing the required VFS owner reference.",
+      "Full run_initialize_phases, GameSoundRuntime SDK construction, DirectInput devices, full frame loop, active worker and online graph are not exercised."
+    ],
+    "loaded_modules": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\local\\frame_clock_application_probe_r41.exe",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 2151424,
+        "sha256": "df1c80210f4b98bffcc48545860d2574b8cd1c1ba7009e15169565e08b88a613",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ntdll.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1822400,
+        "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 687472,
+        "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\KernelBase.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 2974168,
+        "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\user32.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1972624,
+        "sha256": "bff75906f4abcc050cf85e38e20090ea0edf7dc33e0ed60cb74cf9e1bc007527",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\win32u.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 108120,
+        "sha256": "7183521868938b0f6c131ef58288aed6cb55e4bde34d27d9612616ddc4dc2b33",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\gdi32.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 132352,
+        "sha256": "7c3cb17bc41a00e5167a82aef67d0da4a09e73e6deba9addcdc8b20a90b5186c",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\gdi32full.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 950488,
+        "sha256": "579857a52f8e9cccff64a4c1c1eb5d2a4a8c6e19c30eab16bef63ed6d61e8806",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\msvcp_win.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 505792,
+        "sha256": "2c3dd2c830375591addea061588f8183bcafdba501c638526b85215465ac905a",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ucrtbase.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1114240,
+        "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\shell32.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 6734832,
+        "sha256": "1d79d4611f64bb78c10a4688377cddd2e93b6dd12437c537f11d3d763772dea0",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\ole32.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1406032,
+        "sha256": "d178e227ede5073ecfed4528199b03327e1c2edff9ddd09d79d4af821fdde968",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\combase.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 2711704,
+        "sha256": "3f152587249ff6623eb0023cf52cad64aac02f6d8117d8754349f83768f9a6f8",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\rpcrt4.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 772776,
+        "sha256": "6e3f4e700f03dc415d0a52ffdaac0ce3dfe80a42cd5e27dd304ccc11afea11d8",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\advapi32.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 537816,
+        "sha256": "06e6ee5fcd0601e181e5dd8f9a6328dd79b6bcc8fcdfc2b1a7832f0556d0d049",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\msvcrt.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 809472,
+        "sha256": "23a918921c545140d189ce6dc68590bacdeb0ab2f3e3a9a2d722c5aff45ce64f",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\sechost.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 538352,
+        "sha256": "bfb478f918ee80d1945237cb15db42e2c5e2e324fa00211de37511c1cc720ad4",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\d3d9.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1528480,
+        "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\msvcp140.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 618944,
+        "sha256": "f0cda2a0cf1fe6fbbf579b9098462329d3aaa7513a207af2e0f33b01456e388a",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\dinput8.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 176640,
+        "sha256": "2a746ccf3922aecced0387f3c6e21e55c6df786df8164c482f2a2e6165edd395",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\vcruntime140.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 123328,
+        "sha256": "2fa6efc053203460a23d3a25158f227d895d2dadc63acc1a372da97c3a4281c3",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\version.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 28976,
+        "sha256": "4f66b88731e84be8e1545eefc589a79e701cca426ce916e4ac9322e60ea9680b",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\dwmapi.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 132936,
+        "sha256": "b57e484bf23ac0c23c97040939924896de7801524abfc29dd59cff2ba08c3ef5",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\DXCore.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 210384,
+        "sha256": "848382e31f21c5d7b98fd3047efb94d8e9ab6e8780edf0e55c1cdac290833881",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\imm32.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 147856,
+        "sha256": "027d404ea547f446740336b90dc69b0cfa7c2bea4f1f366053251364f0eefe02",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\InputHost.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 1516072,
+        "sha256": "b0d67681c9030e157311202c0b78409249ba97b65ea1d85e5806761ea09d777c",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\CoreMessaging.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 916904,
+        "sha256": "93ed751bc4b65c61c85d4552ad91a4cd3bb8d60616c869e8511971db6a41901a",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\SHCore.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 852368,
+        "sha256": "6b5db294c55eb62f6dc0e038b858a60b90a80a5e2933d49e8b512b1491267225",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\bcryptprimitives.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 501136,
+        "sha256": "dfd29f2c1f28034949f0a3716a99f00816bda0bffd48a5a2750be4569e7d21ee",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\cryptbase.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 32696,
+        "sha256": "795b93001b5c00b4c6ad0806c12df0d4f3477cbed0c261a85b92e5f77ff64a94",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\kernel.appcore.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 74552,
+        "sha256": "b1d3e1c0cd752be86ab59e151b9627f703a30c6d4d43bcb14522ea738b1886f4",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\cryptsp.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 76616,
+        "sha256": "ee4ea256f8edc949fc0ef9b9425d1afa22aea98faf7dbcc7c73161d93fa44c72",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\rsaenh.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 198888,
+        "sha256": "898179763b3fc4b288820ceb8ee24605375f7e0e98d0a27a2d95430b818d37e8",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      },
+      {
+        "path": "C:\\Windows\\SysWOW64\\bcrypt.dll",
+        "loaded_memory_machine": "014c",
+        "disk_machine": "014c",
+        "bytes": 114240,
+        "sha256": "137cec7506fdb011ed03c5a7b51c6ea168cc75ec4359b8dc3f83855622d86bc3",
+        "resolution": "GetFinalPathNameByHandleW on file opened by the same Win32 probe"
+      }
+    ],
+    "loaded_identity": "34 loaded modules captured from same Win32 child: GetFinalPathNameByHandleW on opened module files plus loaded-memory and archived-file I386 machine checks. No Toolhelp-only System32 identity claim.",
+    "permanent_tests_added": 0
+  },
+  "immutable_archive": {
+    "prior_r39_zip_unchanged": true,
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\local\\checkpoints\\frame-clock-application-r41-47af884c7\\validated_artifacts.zip",
+    "sha256": "e9729d1f20506829596a89c46ff659f0b338d03b38c48e8a699d71f99985719e",
+    "bytes": 61739827,
+    "manifest": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\local\\checkpoints\\frame-clock-application-r41-47af884c7\\manifest.json",
+    "manifest_sha256": "c4f37010b610a7805a4c62ee1eb99f5cd1fec78ee7622c07c9260098d975e5af",
+    "artifacts": 3610,
+    "artifact_bytes": 207378842,
+    "all_entries_hash_verified": true,
+    "loaded_modules": 34,
+    "prior_r38_zip_unchanged": true,
+    "full_bsp_core_lib": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260916-extra-item-profile-r29\\build\\win32\\Release\\bsp_core.lib",
+      "archive_entry": "workspace/build/win32/Release/bsp_core.lib",
+      "bytes": 63482022,
+      "sha256": "114810aa6e44b925561eca0a2c09b239203308a42f95add4dc1e2d8908ccf97b"
+    }
+  },
+  "retained_boundaries": [
+    "R35/R36 establish bounded native arithmetic/lifecycle semantics; no duplicate method implementation or new raw-method ledger entries.",
+    "R38/R39 admission and immediate result snapshot guards retained without broader resolver acceptance.",
+    "Readonly mapped data, publication/method/lifecycle contexts and current manager must outlive users and successful drain.",
+    "No complete original application ownership/failure graph, FH3/SEH ABI, concurrent publication schedule, active renderer/worker, gameplay or full initialization proof."
+  ],
+  "ghidra_annotations": {
+    "mutations": false,
+    "new_function_definitions": false,
+    "new_raw_method_ledger_entries": false,
+    "proposed": "Parent may annotate application callsite binding after review; native provider names and original comments remain unchanged."
+  },
+  "handoff": {
+    "source_commit": "47af884c750d0187c283498970399eb4d1284372",
+    "report_commit": "the commit containing this report",
+    "lease": "native_frame_clock_application_binding_r41",
+    "archive_immutable": true
+  }
+}
