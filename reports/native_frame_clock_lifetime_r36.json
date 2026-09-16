@@ -660,5 +660,206 @@
     "Native73D410 caller allocation/gating and actual application startup ownership remain outside this packet.",
     "Transient D68D20 base-profile slot targets/purecalls are recorded only; no synthetic success methods or base deletion admission added."
   ],
-  "proposed_annotations": "Rename four current FUN entries to the proposed descriptive lifecycle names only after parent review. Preserve existing comments/old names and add actual80h, captured/current publication schedule, unchanged R35 method reuse, source ABI/EH/fixture boundaries. Parent owns all Ghidra/ledger annotation."
+  "proposed_annotations": "Primary renamed three FUN lifecycle entries and one verified destructor thunk; retained existing BSP_FrameClock_Construct. Prior annotations preserved, evidence appended, project saved and five exports refreshed.",
+  "primary_integration": {
+    "source_merge": "613cf288b",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "log": "local/r36_frame_clock_lifetime_integration.log",
+    "review": "Complete source/header and deletion append diff reviewed; all15 native bytes/hash spans and3409 frozen artifact receipts independently verified.",
+    "primary_fixture": {
+      "build_exit": 0,
+      "run_exit": 0,
+      "unchanged_source": true,
+      "build_log": "local/r36_frame_clock_lifetime_primary_build.log",
+      "run_log": "local/r36_frame_clock_lifetime_primary_run.log",
+      "pass_groups": 5
+    },
+    "worker_archive_retained": "local/evidence-r36/frame-clock-lifetime-original-r36.zip"
+  },
+  "primary_derived_cleanup_thunk": {
+    "address": "00bedfa0",
+    "length": 5,
+    "hex": "e9fbfeffff",
+    "sha256": "9dddea87b38bb2b72eaa40f5738b6c57dbb1ef3fa62d3ca201da507a79fcaeec",
+    "live_instruction": "JMP 0x00bedea0",
+    "source_effect": "CC7540 -> BEDFA0 -> BEDEA0; direct source base cleanup has same established body target."
+  },
+  "primary_archive": {
+    "path": "local/evidence-r36/frame-clock-lifetime-main-r36.zip",
+    "sha256": "5403f9ecdba5a649a141bf587c3b6a7c357c3537969336252164dae74855d6a9",
+    "files": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "cb1e95fa86ec8e80938edd4b72c5c8d443adff16b1c2785ddb40a36decff9b46"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "sha256": "db83167c8c7d24461ef2bf60363b96264fd2406929d0e72a8909287d79b96a17"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_frame_clock_lifetime.obj",
+        "sha256": "8ab3c0ff0bb167b5457eee2dfd37afbefbc81332d351b8c663656f18162ed686"
+      },
+      {
+        "path": "include/bsp/native_frame_clock_lifetime.hpp",
+        "sha256": "4373852fa08f86469a72840f2aeb187ff86dd4c871335f7d9fce851492a560fc"
+      },
+      {
+        "path": "src/native_frame_clock_lifetime.cpp",
+        "sha256": "3c2261b760e9a471965bbad4d475f6051d52b33fa56d6ece3b1c02c0e455a5a3"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+        "sha256": "2ae9654858c5888d992ac891fb84f4ecf41200e1b4fe196f87d066c1d645910a"
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "sha256": "cb318b30c9b8c360620151fc6c05f6421038bad84954634924145d6947f94120"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "sha256": "f582c93709835c32ce40695ce0600f17a7c8a652fbe0b742334150fdd355a876"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_frame_clock_actual.obj",
+        "sha256": "f8d63dcb4362dae77ba4ff61973a125c12db0e13920140baf2ba5d33ca2ab957"
+      },
+      {
+        "path": "include/bsp/native_frame_clock_actual.hpp",
+        "sha256": "c41caab7f31fffd54a151438fa5f50198d5a66db6c193c10db66c7e745037ba1"
+      },
+      {
+        "path": "src/native_frame_clock_actual.cpp",
+        "sha256": "77ea51332e27408544aa7c39848a6af5c562fefb08c42c9f469eb8385f9e25e6"
+      },
+      {
+        "path": "local/frame_clock_lifetime_probe_r36.cpp",
+        "sha256": "e149fb29d12aadca355936ed672025adc0990618a919bb243adc39918498f2a7"
+      },
+      {
+        "path": "local/frame_clock_lifetime_probe_r36.cmd",
+        "sha256": "9add2330b8a9476961bf8d8f5f1602a5f32aaf20902778b18f3dd7a1dcf39caa"
+      },
+      {
+        "path": "local/frame_clock_lifetime_probe_r36.exe",
+        "sha256": "9a09ed36df068a99c9041be7e12682123072562f9e81b1ce7290baf52a80d4ad"
+      },
+      {
+        "path": "local/frame_clock_lifetime_probe_r36.obj",
+        "sha256": "854a900a6945cbe6044b8cfd7d8fdd302a68f9c883442e1e42bf0aa1168e35b6"
+      },
+      {
+        "path": "local/frame_clock_lifetime_probe_r36.map",
+        "sha256": "3ab2c30a76dcafb4f76dfd4188d47186c75745f25e7b4308e98010226f168e63"
+      },
+      {
+        "path": "local/frame_clock_lifetime_original_r36.hpp",
+        "sha256": "28a36ed6f2c2685a7b5cb77f06f76f5aadb91186e62ee849c889a3441e0ca5c2"
+      },
+      {
+        "path": "local/frame_clock_lifetime_probe_r36_dependencies.json",
+        "sha256": "6f14de381ffc23429ec0b2d9c3b1c8e363452800620d72a5f80031cfacdae98c"
+      },
+      {
+        "path": "local/r36_frame_clock_lifetime_integration.log",
+        "sha256": "2798e74559c85917b575c186e51f3b32733ae8d4535b639f67779a0a3be8587f"
+      },
+      {
+        "path": "local/r36_frame_clock_lifetime_primary_build.log",
+        "sha256": "c983e8d2da2c3a346a5e6cd83607bdd8f23f03d07a5a6103f43211bf793961e2"
+      },
+      {
+        "path": "local/r36_frame_clock_lifetime_primary_run.log",
+        "sha256": "63035f931afbd92f969b10fd0d0e3c44cde80d0be359da0d375ef83eae582ee6"
+      },
+      {
+        "path": "local/r36_frame_clock_lifetime_annotations.log",
+        "sha256": "bab48ca44d35bd0b85ce7766329931883f6ed00c53f1c34632e1e2f5d98c762b"
+      },
+      {
+        "path": "local/r36_frame_clock_lifetime_exports.log",
+        "sha256": "a63543d27d6353e5b60f5fed2818e6fdb5d2aeb009d0135af2850a8a2aedf9cd"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T111239Z.json",
+        "sha256": "4b861daa7b7fe6208d5de5372140b538dbcf0c31ecde7401978667d2668acfc7"
+      }
+    ]
+  },
+  "primary_annotations": {
+    "status": "Five descriptive names with evidence, four raw-source records; existing typed constructor source record preserved. Saved project and refreshed all five exports.",
+    "prior_annotations": [
+      {
+        "address": "00bede00",
+        "before": {
+          "address": "00bede00",
+          "function_name": "FUN_00bede00"
+        },
+        "after": {
+          "address": "00bede00",
+          "name": "BSP_FrameClockBase_Construct",
+          "evidence": "R36 actual80h clock lifecycle recovered with shared raw14h AA0 manager and SAME mutable AB0 publication. Base construction/destruction retain captured first section and current second manager/publication reloads; registration failure retains publication/allocation and releases guard then stamps root. Derived ordered DWORD stores preserve6A..6F/70/78 and invoke existing R35 real QPF/QPC init with two updates; scalar keeps exact36B stamp/base/flags-bit0/free/return schedule. Shared deletion appends borrowed context at108,size112 and admits D68D50. Four bodies490B/140 instructions/14 calls, three EH maps/funclets and profiles verified in15 PE/live spans; parent independently verified all15 PE byte/hash receipts and3409 immutable archive artifacts. Parent additionally verified BEDFA0[5] JMP BEDEA0, the CC7540 derived cleanup target. Worker and combined main strict /MD build/3 CTests pass. Primary freshly relinked unchanged genuine-storage fixture passes real QPF/QPC construction/shared drain/free, scalar native/source flags0/1/100/101, changed publications/current managers, captured locks and actual SDK registration C++ failure cleanup. No process owner, application binding or second clock added. Original FH3/SEH, derived-init exception induction, binary replacement and gameplay remain unproved. reports/native_frame_clock_lifetime_r36.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bedea0",
+        "before": {
+          "address": "00bedea0",
+          "function_name": "FUN_00bedea0"
+        },
+        "after": {
+          "address": "00bedea0",
+          "name": "BSP_FrameClockBase_Destroy",
+          "evidence": "R36 actual80h clock lifecycle recovered with shared raw14h AA0 manager and SAME mutable AB0 publication. Base construction/destruction retain captured first section and current second manager/publication reloads; registration failure retains publication/allocation and releases guard then stamps root. Derived ordered DWORD stores preserve6A..6F/70/78 and invoke existing R35 real QPF/QPC init with two updates; scalar keeps exact36B stamp/base/flags-bit0/free/return schedule. Shared deletion appends borrowed context at108,size112 and admits D68D50. Four bodies490B/140 instructions/14 calls, three EH maps/funclets and profiles verified in15 PE/live spans; parent independently verified all15 PE byte/hash receipts and3409 immutable archive artifacts. Parent additionally verified BEDFA0[5] JMP BEDEA0, the CC7540 derived cleanup target. Worker and combined main strict /MD build/3 CTests pass. Primary freshly relinked unchanged genuine-storage fixture passes real QPF/QPC construction/shared drain/free, scalar native/source flags0/1/100/101, changed publications/current managers, captured locks and actual SDK registration C++ failure cleanup. No process owner, application binding or second clock added. Original FH3/SEH, derived-init exception induction, binary replacement and gameplay remain unproved. reports/native_frame_clock_lifetime_r36.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bedfa0",
+        "before": {
+          "address": "00bedfa0",
+          "function_name": "FUN_00bedfa0"
+        },
+        "after": {
+          "address": "00bedfa0",
+          "name": "BSP_FrameClockBase_DestroyThunk",
+          "evidence": "R36 live/PE E9FBFEFFFF (five bytes) at BEDFA0 tail-jumps to BEDEA0. CC7540 derived clock unwind funclet uses this thunk; new C++ BaseCleanup directly calls recovered base destructor. No distinct source body or native EH ABI replacement claimed. R36 actual80h clock lifecycle recovered with shared raw14h AA0 manager and SAME mutable AB0 publication. Base construction/destruction retain captured first section and current second manager/publication reloads; registration failure retains publication/allocation and releases guard then stamps root. Derived ordered DWORD stores preserve6A..6F/70/78 and invoke existing R35 real QPF/QPC init with two updates; scalar keeps exact36B stamp/base/flags-bit0/free/return schedule. Shared deletion appends borrowed context at108,size112 and admits D68D50. Four bodies490B/140 instructions/14 calls, three EH maps/funclets and profiles verified in15 PE/live spans; parent independently verified all15 PE byte/hash receipts and3409 immutable archive artifacts. Parent additionally verified BEDFA0[5] JMP BEDEA0, the CC7540 derived cleanup target. Worker and combined main strict /MD build/3 CTests pass. Primary freshly relinked unchanged genuine-storage fixture passes real QPF/QPC construction/shared drain/free, scalar native/source flags0/1/100/101, changed publications/current managers, captured locks and actual SDK registration C++ failure cleanup. No process owner, application binding or second clock added. Original FH3/SEH, derived-init exception induction, binary replacement and gameplay remain unproved. reports/native_frame_clock_lifetime_r36.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bedfb0",
+        "before": {
+          "address": "00bedfb0",
+          "function_name": "BSP_FrameClock_Construct",
+          "comment": "[BSP reconstruction 00bedfb0]\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073d4b1 under DAT_01090ab0 == 0; delegates to BSP_FrameClock_Initialize and then fills an object with vtable PTR_FUN_00d68d50. Only the timing role is evidenced; the exact class is unknown. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json.\n\n[BSP reconstruction 00bedfb0] update\nHypothesis, not a recovered symbol. Replaces the provisional BSP_TimerService_Construct: this is not a separate timer service. __fastcall(ECX=this), returns this, RET; 0x80-byte object allocated at 0073d48f under gate DAT_01090ab0 == 0. Base 00bede00 publishes it into DAT_01090ab0 under the singleton-manager lock; vtable 00d68d50. Every field it writes lands on a member of the FrameClock already reconstructed in include/bsp/frame_clock.hpp at the same offset: +4 accumulated, +8 update count, and five ClockTimestamp pairs at +10, +20, +30, +40 and +50, each with its frequency word set to 1 and tick word zeroed, plus +68 and +69 cleared. The tail call is 00bedbd0, initialize_frame_clock_00bedbd0. The fixed-step fields at +70 and +78 are deliberately left untouched. Vtable slots: +4 00bedbd0, +8 00bedc30, +c 00bedae0, +10 00beddc0, +24 00bedb20, +28 00bedb60, which resolves the map's unresolved indirect CALL EAX at 0073dac0 as enable_fixed_clock_00bedb20 with a 50 ms fixed step. Evidence: docs/APP_INIT_PLATFORM.md; reports/app_init_platform.json."
+        },
+        "after": {
+          "address": "00bedfb0",
+          "name": "BSP_FrameClock_Construct",
+          "evidence": "Hypothesis, not a recovered symbol. Replaces the provisional BSP_TimerService_Construct: this is not a separate timer service. __fastcall(ECX=this), returns this, RET; 0x80-byte object allocated at 0073d48f under gate DAT_01090ab0 == 0. Base 00bede00 publishes it into DAT_01090ab0 under the singleton-manager lock; vtable 00d68d50. Every field it writes lands on a member of the FrameClock already reconstructed in include/bsp/frame_clock.hpp at the same offset: +4 accumulated, +8 update count, and five ClockTimestamp pairs at +10, +20, +30, +40 and +50, each with its frequency word set to 1 and tick word zeroed, plus +68 and +69 cleared. The tail call is 00bedbd0, initialize_frame_clock_00bedbd0. The fixed-step fields at +70 and +78 are deliberately left untouched. Vtable slots: +4 00bedbd0, +8 00bedc30, +c 00bedae0, +10 00beddc0, +24 00bedb20, +28 00bedb60, which resolves the map's unresolved indirect CALL EAX at 0073dac0 as enable_fixed_clock_00bedb20 with a 50 ms fixed step. Evidence: docs/APP_INIT_PLATFORM.md; reports/app_init_platform.json. | R36 actual80h clock lifecycle recovered with shared raw14h AA0 manager and SAME mutable AB0 publication. Base construction/destruction retain captured first section and current second manager/publication reloads; registration failure retains publication/allocation and releases guard then stamps root. Derived ordered DWORD stores preserve6A..6F/70/78 and invoke existing R35 real QPF/QPC init with two updates; scalar keeps exact36B stamp/base/flags-bit0/free/return schedule. Shared deletion appends borrowed context at108,size112 and admits D68D50. Four bodies490B/140 instructions/14 calls, three EH maps/funclets and profiles verified in15 PE/live spans; parent independently verified all15 PE byte/hash receipts and3409 immutable archive artifacts. Parent additionally verified BEDFA0[5] JMP BEDEA0, the CC7540 derived cleanup target. Worker and combined main strict /MD build/3 CTests pass. Primary freshly relinked unchanged genuine-storage fixture passes real QPF/QPC construction/shared drain/free, scalar native/source flags0/1/100/101, changed publications/current managers, captured locks and actual SDK registration C++ failure cleanup. No process owner, application binding or second clock added. Original FH3/SEH, derived-init exception induction, binary replacement and gameplay remain unproved. reports/native_frame_clock_lifetime_r36.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bee110",
+        "before": {
+          "address": "00bee110",
+          "function_name": "FUN_00bee110"
+        },
+        "after": {
+          "address": "00bee110",
+          "name": "BSP_FrameClock_ScalarDelete",
+          "evidence": "R36 actual80h clock lifecycle recovered with shared raw14h AA0 manager and SAME mutable AB0 publication. Base construction/destruction retain captured first section and current second manager/publication reloads; registration failure retains publication/allocation and releases guard then stamps root. Derived ordered DWORD stores preserve6A..6F/70/78 and invoke existing R35 real QPF/QPC init with two updates; scalar keeps exact36B stamp/base/flags-bit0/free/return schedule. Shared deletion appends borrowed context at108,size112 and admits D68D50. Four bodies490B/140 instructions/14 calls, three EH maps/funclets and profiles verified in15 PE/live spans; parent independently verified all15 PE byte/hash receipts and3409 immutable archive artifacts. Parent additionally verified BEDFA0[5] JMP BEDEA0, the CC7540 derived cleanup target. Worker and combined main strict /MD build/3 CTests pass. Primary freshly relinked unchanged genuine-storage fixture passes real QPF/QPC construction/shared drain/free, scalar native/source flags0/1/100/101, changed publications/current managers, captured locks and actual SDK registration C++ failure cleanup. No process owner, application binding or second clock added. Original FH3/SEH, derived-init exception induction, binary replacement and gameplay remain unproved. reports/native_frame_clock_lifetime_r36.json."
+        },
+        "status": "applied"
+      }
+    ]
+  }
 }
