@@ -90,8 +90,17 @@ PE. The report records each range hash, all call instructions, the final RET,
 prior ledger records and the prior Ghidra comment. Ghidra mutations and ledger
 integration are reserved for the primary integrator.
 
-The body/EH audit is complete. Strict MSVC Win32 compilation with `/W4 /WX`
-passes against the genuine parser declarations. Full-cycle linking and fixture
-validation are pending. These are new source-level interfaces, not native FH3/SEH or
-binary replacements; unrestricted faults, concurrent mutation and gameplay
-behavior have not been validated.
+The complete cycle passes the strict MSVC Win32 build and all three existing
+CTest checks. The focused copied-original fixture passes five normal-path
+pairs: all three named types, unknown-kind Sphere owner reuse, and a Cone
+profile whose current +14h slot is changed to the genuine Sphere parser.
+It checks allocation sizes, native RET0C, defined owner bytes, payloads and
+text position. Source-only checks confirm failed-parser owner/frame retention
+and rejection of replay. The final fixture links only the integrated core
+library and its existing dependency libraries, with no stand-in parser bodies.
+
+The copied body uses nine direct-call ABI bridges to genuine raw providers and
+four absolute relocations. Its original FH3 handler is not executed. Only
+defined owner bytes are compared; allocator preimages and unrestricted fault
+paths are excluded. These are new source-level interfaces, not native FH3/SEH
+or binary replacements; concurrent mutation and gameplay remain unvalidated.

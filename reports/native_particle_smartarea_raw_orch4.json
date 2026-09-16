@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "native_particle_smartarea_raw_orch4",
-  "status": "reconstructed_strict_compile_tested_pending_cycle_build",
+  "status": "reconstructed_build_tested_bounded_fixture_tested",
   "base_commit": "834ea4a0d",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
@@ -675,10 +675,29 @@
   },
   "validation": {
     "strict_win32_compile": true,
-    "full_cycle_build": false,
-    "copied_original_fixture": false,
+    "full_cycle_build": true,
+    "copied_original_fixture": true,
     "original_abi_compatible": false,
     "game_validated": false,
-    "strict_flags": "/std:c++20 /permissive- /W4 /WX /EHsc /c"
-  }
+    "strict_flags": "/std:c++20 /permissive- /W4 /WX /EHsc /c",
+    "ctest_passed": 3,
+    "seed_verification": "all eight live/disk seeds match",
+    "integrated_build_artifacts": {
+      "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\emitter_raw_cycle_build.log": "57002807cfc138094af3d4964848b0272851d388ddaa15d445c16adfee7a3467",
+      "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\emitter_raw_probe_final_run.log": "59a2af7e36cd753b1774fc8d68e70bd91e3594dc8b4e8863b083178058c5e4d3",
+      "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\emitter_raw_probe.cpp": "ac3d88b22c52cc9230a45e72e8392f4aee0b65263c2fd8f1c2a42ac461b44577",
+      "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\emitter_raw_originals.inc": "3f06c987e333278e794d00b68b69270720b33179081354884eb8e14ef809d489",
+      "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\Release\\bsp_core.lib": "e53efca0cd1d0216eaa338d18901cf53eead6017e40597281e372f9584e98d9e"
+    }
+  },
+  "shared_emitter_fixture": {
+    "passed": true,
+    "total_pairs": 18,
+    "smartarea_pairs": 6,
+    "cases": "all common/own properties in four x87 rounding modes; three nested emitters plus Sprite; EOF",
+    "original_fh3_executed": false,
+    "children": "genuine source factories/parsers",
+    "output": "PASS 18 complete original/source shape comparisons: actual pools, all shape/common properties, four x87 rounding modes, nested three emitters and Sprite, EOF cursor and source cleanup/replay boundary. Children bridged to genuine source; original FH3/CRT/gameplay excluded.\n"
+  },
+  "evidence_summary": "Complete 2325-byte/734-instruction raw SmartArea parser; actual string/builder/runtime domains and recursive factories, fifteen native cleanup states, persistent child headers, separate own/child builder residues and late x87 double scale. Live/installed 2666-byte span checked; strict Win32 build and three CTests and 18 shared complete-original/source shape pairs pass (six SmartArea). New source ABI; original FH3/fault/gameplay unvalidated."
 }
