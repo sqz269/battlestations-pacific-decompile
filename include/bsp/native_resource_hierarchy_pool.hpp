@@ -18,7 +18,8 @@ void* allocate_static_native_hierarchy_slot_00b87a90();
 
 // Complete CD82D0-CD82E5. Original no arguments, RET, EAX atexit result.
 // Initialize via B18340 BEFORE real atexit registration. Registration failure
-// adds no rollback. This function is explicit; no process startup wiring added.
+// adds no rollback. GameNativeResourcePoolProcess invokes this explicit startup
+// once for the application's canonical pool and shared allocator-list domain.
 int initialize_static_native_hierarchy_pool_00cd82d0();
 
 // Complete CE0ED0-CE0ED9. Original selects 109022C and tail-jumps B18470.

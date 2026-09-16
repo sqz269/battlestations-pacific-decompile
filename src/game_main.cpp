@@ -38,6 +38,7 @@
 #include "bsp/game_native_data_bootstrap.hpp"
 #include "bsp/game_native_mutable_crt_data.hpp"
 #include "bsp/game_native_particle_pools.hpp"
+#include "bsp/game_native_resource_pools.hpp"
 #include "bsp/winmain_startup.hpp"
 
 namespace {
@@ -380,9 +381,13 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         const int parameter_atexit = particle_pools.initialize_parameters_once_00cd78b0();
         log.notef("native particle pools initialized: model_atexit=%d parameter_atexit=%d "
             "storage=process_actual38h/actual38h", model_atexit, parameter_atexit);
+        auto& resource_pools = bsp::game::game_native_resource_pool_process();
+        const int hierarchy_atexit = resource_pools.initialize_hierarchy_once_00cd82d0();
+        log.notef("native resource hierarchy pool initialized: atexit=%d storage=process_actual38h "
+            "slots=actual88h", hierarchy_atexit);
     } catch (const std::exception& failure) {
-        std::fprintf(stderr, "bsp_game: native particle pool startup failed: %s\n", failure.what());
-        log.notef("native particle pool startup failed: %s", failure.what());
+        std::fprintf(stderr, "bsp_game: native pool startup failed: %s\n", failure.what());
+        log.notef("native pool startup failed: %s", failure.what());
         log.close();
         return 1;
     }
