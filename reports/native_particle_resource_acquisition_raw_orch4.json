@@ -1,0 +1,411 @@
+{
+  "schema_version": 1,
+  "packet": "orch4-particle-cache-acquire-r22",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_particle_resource_acquisition_raw.cpp",
+  "header": "include/bsp/native_particle_resource_acquisition_raw.hpp",
+  "address": "00870dd0",
+  "end_exclusive": "0087130a",
+  "bytes": 1338,
+  "ghidra_listed_instructions": 446,
+  "capstone_instructions_including_alignment": 447,
+  "proposed_name": "BSP_ParticleResourceCache_Acquire",
+  "pre_change_annotations": [
+    {
+      "address": "00870dd0",
+      "annotation": {
+        "address": "00870dd0",
+        "function_name": "FUN_00870dd0"
+      }
+    }
+  ],
+  "byte_ranges": [
+    {
+      "address": "00870dd0",
+      "end_exclusive": "0087130a",
+      "bytes": 1338,
+      "sha256": "5107c14361aa44df7709df4da20efeb2f627ec52ea495486d68a00aacd19e928",
+      "live_disk_match": true
+    },
+    {
+      "address": "00c95ff0",
+      "end_exclusive": "00c96022",
+      "bytes": 50,
+      "sha256": "dc4a004ead80e231b0401a06ed06c9f6cbea7f64528875110f5ba50493e3ec28",
+      "live_disk_match": true
+    },
+    {
+      "address": "00dc7fa0",
+      "end_exclusive": "00dc7fec",
+      "bytes": 76,
+      "sha256": "53c4ef13ba892c54863bea289b3b769b9f1a2493037c27bfb4addc6066728ca7",
+      "live_disk_match": true
+    },
+    {
+      "address": "00d0daf0",
+      "end_exclusive": "00d0db08",
+      "bytes": 24,
+      "sha256": "7a45134b559fc7cb71d921b95cc29ba122a2bf5a3e0a98452e2b827e1a3aea0d",
+      "live_disk_match": true
+    },
+    {
+      "address": "00d0db40",
+      "end_exclusive": "00d0db58",
+      "bytes": 24,
+      "sha256": "a03299c63f5309d9e1c168bbbefca129667e0e97c054680fe9f1fdbdd155f1c4",
+      "live_disk_match": true
+    }
+  ],
+  "call_rows": [
+    {
+      "address": "00870df8",
+      "native": "00beccd0",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00870e20",
+      "native": "0041dd40",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00870e37",
+      "native": "00bf7680",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00870e47",
+      "native": "00bee690",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00870e77",
+      "native": "00bf6713",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00870e85",
+      "native": "00bf6713",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00870eb3",
+      "native": "00bf7fbf",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00870ec9",
+      "native": "00bf6713",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00870f43",
+      "native": "0041dd40",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00870f5a",
+      "native": "00bf7680",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00870f7a",
+      "native": "00419cc0",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00870f81",
+      "native": "00bd1510",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00870f8a",
+      "native": "00bee690",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00870faf",
+      "native": "00bf7fbf",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00870fd8",
+      "native": "00bf6713",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00871006",
+      "native": "00bf7fbf",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00871062",
+      "native": "004c3020",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00871093",
+      "native": "0041dd40",
+      "function": "00870dd0"
+    },
+    {
+      "address": "008710ad",
+      "native": "00bf7680",
+      "function": "00870dd0"
+    },
+    {
+      "address": "008710ca",
+      "native": "004ce6f0",
+      "function": "00870dd0"
+    },
+    {
+      "address": "008710d7",
+      "native": "004ce780",
+      "function": "00870dd0"
+    },
+    {
+      "address": "008710f3",
+      "native": "00bdd340",
+      "function": "00870dd0"
+    },
+    {
+      "address": "0087113d",
+      "native": "004ce6f0",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00871148",
+      "native": "004ce780",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00871190",
+      "native": "00bf7fbf",
+      "function": "00870dd0"
+    },
+    {
+      "address": "008711b1",
+      "native": "004ce6f0",
+      "function": "00870dd0"
+    },
+    {
+      "address": "008711be",
+      "native": "004ce780",
+      "function": "00870dd0"
+    },
+    {
+      "address": "008711da",
+      "native": "00870ac0",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00871202",
+      "native": "0086fcf0",
+      "function": "00870dd0"
+    },
+    {
+      "address": "0087121f",
+      "native": "00419cc0",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00871226",
+      "native": "00bd1510",
+      "function": "00870dd0"
+    },
+    {
+      "address": "0087123f",
+      "native": "0086fcf0",
+      "function": "00870dd0"
+    },
+    {
+      "address": "0087125c",
+      "native": "00419cc0",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00871263",
+      "native": "00bd1510",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00871283",
+      "native": "00419cc0",
+      "function": "00870dd0"
+    },
+    {
+      "address": "0087128a",
+      "native": "00bd1510",
+      "function": "00870dd0"
+    },
+    {
+      "address": "008712c0",
+      "native": "00419cc0",
+      "function": "00870dd0"
+    },
+    {
+      "address": "008712c7",
+      "native": "00bd1510",
+      "function": "00870dd0"
+    },
+    {
+      "address": "008712e7",
+      "native": "00419cc0",
+      "function": "00870dd0"
+    },
+    {
+      "address": "008712ee",
+      "native": "00bd1510",
+      "function": "00870dd0"
+    },
+    {
+      "address": "00c95ff3",
+      "native": "0041dd20",
+      "function": "00c95ff0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c95ffb",
+      "native": "0041dd20",
+      "function": "00c95ff8",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c96003",
+      "native": "0041dd20",
+      "function": "00c96000",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c9600b",
+      "native": "0041dd20",
+      "function": "00c96008",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00c96013",
+      "native": "0086fcf0",
+      "function": "00c96010",
+      "kind": "tail_jump"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "address": "00870f29",
+      "operand": "edx"
+    },
+    {
+      "address": "0087104d",
+      "operand": "edx"
+    },
+    {
+      "address": "00871176",
+      "operand": "edx"
+    },
+    {
+      "address": "008711f5",
+      "operand": "edx"
+    }
+  ],
+  "original_abi": "ECX actual14h innercache; stack name8h, forwardedDWORD, retain-new lowbyte, allow-load lowbyte; RET10/EAX resource",
+  "frame": "23 DWORD native local storage before optional loader; slot0 savedowner,1/2 tempkey/result,3/4 resolvedkey,5/6 input,7..11 date,12..22 record",
+  "fh3": {
+    "handler": "00c96018",
+    "funcinfo": "00dc7fa0",
+    "map": "00dc7fc4",
+    "words": [
+      "19930522",
+      "00000005",
+      "00dc7fc4",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000001"
+    ],
+    "previous": [
+      -1,
+      0,
+      1,
+      1,
+      1
+    ],
+    "actions": [
+      "00c95ff0",
+      "00c95ff8",
+      "00c96000",
+      "00c96008",
+      "00c96010"
+    ],
+    "cleanup": [
+      "input8h",
+      "resolved8h",
+      "temporarykey8h",
+      "temporaryrecord.name8h",
+      "wholetemporaryrecord"
+    ],
+    "alignment_gap": "00870e6d..00870e6f is after unconditional jump; no flow repair",
+    "handler_tail": {
+      "site": "00c9601d",
+      "target": "00bf6b43",
+      "evidence": "Full10B installed/live handler bytes agree. Site has no containing Ghidra function, so it is not included among45 live call-verifier rows."
+    }
+  },
+  "validation": {
+    "strict_build": "local/particle_r22_acquire_integrate.log; MSVC Win32 /W4 /WX /MD /fp:strict;3existingCTestsPASS",
+    "probe": {
+      "exit_code": 0,
+      "output": "PASS7: complete copied1338B/source acquisition; real VFS date/load/parser, miss/load flags, first/later alias hits, null cached rows, retain gates, byte flags, native RET10, cleanup/drain; source binding boundaries/replay.\n",
+      "seconds": 0.10221589999855496
+    },
+    "probe_sources": [
+      "local/particle_acquisition_probe.cpp",
+      "local/prepare_acquisition_probe.py",
+      "local/particle_acquisition_original.inc",
+      "local/build_particle_acquisition_probe.cmd"
+    ],
+    "probe_cases": [
+      "miss loading disabled",
+      "new load unretained",
+      "new load retained",
+      "first alias hit loading disabled",
+      "later alias hit",
+      "null resource row followed by hit",
+      "null resource row followed by new load"
+    ],
+    "source_only": [
+      "unsupported platform identity before locals/state-1",
+      "unknown cache profile atstate1 with realnamecleanup",
+      "one-shot rejection"
+    ],
+    "observations": [
+      "actual realfile VFS date/load/parse",
+      "current cache count/capacity",
+      "all record names/aliases/datepayloads/resourcecounts",
+      "singleloadpump",
+      "lowbyte flags",
+      "RET10",
+      "genuine singleton/pool drain"
+    ],
+    "bridges": "All40original direct CALLs and4indirect virtual dispatches reach genuine source providers. Original profile slots use fixture callable bridge addresses; source consumes unmodified installed numeric table words. Two publication operands are relocated to the same live fixture cells. Platform host is an explicit policy observer with genuine Win32 load-message pump.",
+    "independent_review": "particle_component_r22 compared complete source/full259line pseudocode/447line listing; no discrepancy"
+  },
+  "limits": [
+    "No original child-body execution in this parent probe or original FH3/SEH/CRT/ABI/game proof",
+    "Second resolved-key alias path statically reviewed; native86BA10 normal key is identical after normalization",
+    "Allocation/provider failures and second exception termination not fault-injected",
+    "Unknown current profiles/targets and unmatched actual platform publication stop at explicit source boundaries",
+    "BDD340 raw own-name operations compose existing actual-storage traversal/providers; both string services must refer to the same actual pool",
+    "Acquired-frame allocation is source metadata; failed VFS frames retain process-lifetime requirements"
+  ],
+  "source_sha256": "6041375fac78fe70a0789cdfc8a649d934dc54fef9e02bdf78e8f8f98eb6d0d6",
+  "header_sha256": "1d00245879332e86c52740f2dbfaf28676cbddbefee64dfe38021f43122d598d",
+  "artifact_sha256": {
+    "local/particle_acquisition_probe.exe": "45cbc1236c818d6379ee72ce21de7ee46ae88dc3915367f02c7d836d63b0ccc4",
+    "build/win32/Release/bsp_core.lib": "610f165253a50331e47b66c8de41fb19b3816754ec86fa81e3d08276347d4691"
+  },
+  "evidence": "Descriptive hypothesis; complete1338B actual particle cache acquisition, ECX innercache and FOUR stack args(name,forwarded word,retain-new,allow-load), RET10/EAXresource. Pump captured platform; current alias scans/key/loader/retain slots; cached hits always retain, new loads conditionally retain; actual date and record insertion. Five native owning states DC7FA0/DC7FC4; persistent23DWORD frame with retained typed loader. No alias/resource rollback on later failure. Full1512B body/EH/maps/tables disk/live parity;45direct/tail rows; strictWin32/3CTests;7 complete copied1338B/source actualVFS/date/loader comparisons plus sourcebinding/replay cases. Resolved-key alias insertion, allocation faults and original EH are statically reviewed, not independently executed. Existing date child retains actual-storage provider boundary. New C++ API, borrowed exact profile/platform bindings; no original FH3/SEH/ABI/CRT/gameplay claim. docs/NATIVE_PARTICLE_RESOURCE_ACQUISITION_RAW_ORCH4.md; reports/native_particle_resource_acquisition_raw_orch4.json."
+}
