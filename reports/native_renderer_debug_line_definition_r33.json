@@ -1,0 +1,402 @@
+{
+  "packet": "orch4_renderer_debug_line_definition_r33",
+  "status": "defined_named_saved_full_body_and_handler_live_pe_cfg_checked",
+  "previous_state": "Live proto atB2B270 andCBD458 found no function; existing instructions present. Comments query fails because no containing function; prior tool response retained.",
+  "address": "00b2b270",
+  "end_exclusive": "00b2b576",
+  "body_bytes": 774,
+  "instruction_count": 221,
+  "cfg": {
+    "direct_branches": [
+      {
+        "address": "00b2b293",
+        "mnemonic": "je",
+        "target": "00b2b564"
+      },
+      {
+        "address": "00b2b2a3",
+        "mnemonic": "jne",
+        "target": "00b2b3f3"
+      },
+      {
+        "address": "00b2b316",
+        "mnemonic": "je",
+        "target": "00b2b32d"
+      },
+      {
+        "address": "00b2b338",
+        "mnemonic": "je",
+        "target": "00b2b350"
+      },
+      {
+        "address": "00b2b35e",
+        "mnemonic": "je",
+        "target": "00b2b376"
+      },
+      {
+        "address": "00b2b53d",
+        "mnemonic": "jge",
+        "target": "00b2b548"
+      },
+      {
+        "address": "00b2b54c",
+        "mnemonic": "jle",
+        "target": "00b2b55a"
+      },
+      {
+        "address": "00b2b558",
+        "mnemonic": "jg",
+        "target": "00b2b550"
+      }
+    ],
+    "all_targets_are_internal_instruction_starts": true,
+    "all_instructions_reachable_when_calls_return": true,
+    "single_ret4": "00b2b573",
+    "no_jump_table_or_external_tail": true
+  },
+  "byte_receipts": [
+    {
+      "address": "00b2b270",
+      "length": 774,
+      "role": "complete candidate body",
+      "sha256": "85a09c2e3ea427a8a61341de3dc4cc3777e6f01903ba957b23a70ac60ac5cf69",
+      "live_pe_match": true
+    },
+    {
+      "address": "00cbd440",
+      "length": 34,
+      "role": "three string unwind actions and FH3 handler",
+      "sha256": "2658306dcc753d2d575a9d280e4605c282c5181bf88419a04cd1d045ddc7de33",
+      "live_pe_match": true
+    },
+    {
+      "address": "00df5cb0",
+      "length": 60,
+      "role": "three-state unwind map and FuncInfo",
+      "sha256": "2a0f790db239305189d7c75bd06ea82108e4a7e7deb4f05df1851562f2b825ec",
+      "live_pe_match": true
+    },
+    {
+      "address": "00d5f160",
+      "length": 4,
+      "role": "actual renderer vtable slot B8",
+      "sha256": "ba0d1f5fe451c5017334777126e36044b6d5db01a379c90876038afb38d53416",
+      "live_pe_match": true
+    }
+  ],
+  "total_live_pe_bytes": 872,
+  "call_sites": [
+    {
+      "address": "00b2b2b2",
+      "native": "0041e870"
+    },
+    {
+      "address": "00b2b2c8",
+      "native": "0041e870"
+    },
+    {
+      "address": "00b2b2df",
+      "native": "0041e870"
+    },
+    {
+      "address": "00b2b301",
+      "native": "00b4c700"
+    },
+    {
+      "address": "00b2b321",
+      "native": "00419cc0"
+    },
+    {
+      "address": "00b2b328",
+      "native": "00bd1510"
+    },
+    {
+      "address": "00b2b344",
+      "native": "00419cc0"
+    },
+    {
+      "address": "00b2b34b",
+      "native": "00bd1510"
+    },
+    {
+      "address": "00b2b36a",
+      "native": "00419cc0"
+    },
+    {
+      "address": "00b2b371",
+      "native": "00bd1510"
+    },
+    {
+      "address": "00b2b3f1",
+      "native": "edx"
+    },
+    {
+      "address": "00b2b3fd",
+      "native": "00b74640"
+    },
+    {
+      "address": "00b2b404",
+      "native": "00b73260"
+    },
+    {
+      "address": "00b2b41b",
+      "native": "eax"
+    },
+    {
+      "address": "00b2b435",
+      "native": "00bf7680"
+    },
+    {
+      "address": "00b2b447",
+      "native": "00b74640"
+    },
+    {
+      "address": "00b2b44e",
+      "native": "00b73260"
+    },
+    {
+      "address": "00b2b45a",
+      "native": "eax"
+    },
+    {
+      "address": "00b2b473",
+      "native": "00b74640"
+    },
+    {
+      "address": "00b2b47a",
+      "native": "00b732c0"
+    },
+    {
+      "address": "00b2b492",
+      "native": "00b74640"
+    },
+    {
+      "address": "00b2b499",
+      "native": "00b732c0"
+    },
+    {
+      "address": "00b2b4a9",
+      "native": "00b46a70"
+    },
+    {
+      "address": "00b2b4bb",
+      "native": "dword ptr [0xce221c]"
+    },
+    {
+      "address": "00b2b4e5",
+      "native": "00b74640"
+    },
+    {
+      "address": "00b2b4f5",
+      "native": "00b74640"
+    },
+    {
+      "address": "00b2b4fc",
+      "native": "00b732c0"
+    },
+    {
+      "address": "00b2b50a",
+      "native": "00b51a20"
+    },
+    {
+      "address": "00b2b519",
+      "native": "00b74640"
+    },
+    {
+      "address": "00b2b520",
+      "native": "00b732c0"
+    },
+    {
+      "address": "00b2b537",
+      "native": "edx"
+    },
+    {
+      "address": "00b2b543",
+      "native": "00b228b0"
+    }
+  ],
+  "native_abi": "ECX actual renderer; one stack DWORD forwarded to B46A70 and render-entry initialization; RET4. Caller register/argument meaning beyond observed forwarding remains provisional.",
+  "behavior_evidence": [
+    "nonzero renderer+1CF8 enables path; current+19E0 null gates lazyB4C700 DebugLines model kind2 with zero counts",
+    "B2B301 call result stored+19E0 atB2B306 before releasing three temporary names",
+    "renderer+1CF4 data/count describes16-byte records copied to current model vertex storage; primitive count uses signed count/2",
+    "render entry initialization/submission precedes queue count reset; negative capacity reaches completeB228B0 reserve"
+  ],
+  "eh": {
+    "handler": "00cbd458",
+    "end_exclusive": "00cbd462",
+    "FuncInfo": "00df5cc8",
+    "unwind_map": "00df5cb0",
+    "states": [
+      {
+        "state": 2,
+        "next": 1,
+        "action": "00cbd450",
+        "name_header_ebp_offset": "-64"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "action": "00cbd448",
+        "name_header_ebp_offset": "-5c"
+      },
+      {
+        "state": 0,
+        "next": -1,
+        "action": "00cbd440",
+        "name_header_ebp_offset": "-54"
+      }
+    ],
+    "actions": "Each tail-jumps41DD20. State2 after third successful string construction; states lowered before each normal name return."
+  },
+  "incoming_reference": "Live xrefs query returned actual renderer profile tableD5F160 (+B8 fromD5F0A8) containingB2B270; this is static Ghidra reference evidence, not indirect alias proof.",
+  "limits": [
+    "Analysis/function-definition packet only; no C++ body reconstructed here.",
+    "Complete source ABI/FH3, child profiles and active rendering/gameplay remain unvalidated.",
+    "Name is a behavior hypothesis, not a recovered original symbol."
+  ],
+  "definition_events": "reports/native_renderer_debug_line_definition_events_r33.json",
+  "post_definition": {
+    "body": "00b2b270..00b2b575",
+    "body_instructions": 221,
+    "handler": "00cbd458..00cbd461",
+    "handler_instructions": 2,
+    "listing_gaps": 0,
+    "flow_overrides_changed": false,
+    "direct_calls_passed": 27,
+    "indirect_import_calls_recorded": 5,
+    "prototype_handling": "No manual prototype mutation. Observed ECX receiver, forwarded stack DWORD and RET4 recorded without asserting recovered parameter types; decompiler may infer its own interface."
+  },
+  "read_only_flow_properties_limit": "run_script_inline property query returned no rows; raw response retained in local/r33_debug_line_prior_flow.json and diagnostic response. No mutation fallback. Complete post-definition flow listing has zero gaps.",
+  "ghidra_annotations": {
+    "prior_annotations": [
+      {
+        "address": "00b2b270",
+        "before": {
+          "address": "00b2b270",
+          "function_name": "FUN_00b2b270"
+        },
+        "after": {
+          "address": "00b2b270",
+          "name": "BSP_Renderer_DrawDebugLineRecords",
+          "evidence": "R33 full live/PE body B2B270..B2B575 (774B,221 instructions), complete internal-branch CFG and actual D5F0A8+B8 profile slot D5F160 establish the debug-line record method. Nonzero +1CF8 count gates lazy B4C700 DebugLines model kind2; B2B306 publishes +19E0 before three temporary string returns. Current +1CF4 16-byte records copied to model vertex storage, signed count/2 primitive count, render-entry initialization/submission, then queue count reset. Native ECX renderer, one forwarded stack DWORD, RET4; parameter meaning beyond observed forwarding remains provisional. FH3 handler CBD458 -> FuncInfo DF5CC8, three string unwind actions at CBD440/448/450. Total872B body/EH/profile match live/PE. Defined missing function and handler under write lock;221/2 listed instructions, zero gaps;27 direct calls checked,5 indirect/import rows explicit. Behavior name is a hypothesis. Analysis/export only; no source reconstruction, binary ABI, native exception or gameplay proof. reports/native_renderer_debug_line_definition_r33.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cbd458",
+        "before": {
+          "address": "00cbd458",
+          "function_name": "FUN_00cbd458"
+        },
+        "after": {
+          "address": "00cbd458",
+          "name": "BSP_Renderer_DrawDebugLineRecords_EHHandler",
+          "evidence": "Verified complete10-byte MSVC FH3 descriptor thunk: MOV EAX,DF5CC8; JMP BF6B43. FuncInfo has three-state temporary-string unwind map DF5CB0. Parent B2B270 body saves this handler in native frame. R33 defined missing function under write lock;2 listed instructions, zero gaps. Behavior hypothesis name; original native exception transport is not tested. reports/native_renderer_debug_line_definition_r33.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "saved": true,
+    "exports_refreshed": [
+      "00b2b270",
+      "00cbd458"
+    ],
+    "function_count_before": 64144,
+    "function_count_after": 64146
+  },
+  "evidence_archive": {
+    "path": "local/evidence-r33/renderer-debug-line-definition-r33.zip",
+    "sha256": "e4fa3d0a0de2d5725f2dfc13319623ea1a8ddf35154a362899084b26e6aa9790",
+    "files": [
+      {
+        "path": "local/r33_debug_line_00b2b270_bytes.txt",
+        "sha256": "58c509d92a15089895c0b1be59cbd1744c8b37f6a9fd3832c5e5b295c3310f37"
+      },
+      {
+        "path": "local/r33_debug_line_00b2b370_bytes.txt",
+        "sha256": "b1f170471c31a7aa441219197f9bf95bf4d33ae69e63f69edc4d23429c1e9b76"
+      },
+      {
+        "path": "local/r33_debug_line_00b2b470_bytes.txt",
+        "sha256": "19c12e1ee05de64483cbce7d1b88458d632bb85455158c8c3c34fbecf03b8c65"
+      },
+      {
+        "path": "local/r33_debug_line_00b2b570_bytes.txt",
+        "sha256": "ec9a5f396dc8b61f236bfbc1f761f7a8f19f438e60169e4caf8fdf81c8456a75"
+      },
+      {
+        "path": "local/r33_debug_line_00cbd440_bytes.txt",
+        "sha256": "e4eab7db496225265b5bdf86825649eefc4dcbef0aed3f1c95657fb12a3c7dff"
+      },
+      {
+        "path": "local/r33_debug_line_00d5f160_bytes.txt",
+        "sha256": "85dc23290078278df334cdbac8c6406e783c4c9f6e2e386aaa4964d09fe19374"
+      },
+      {
+        "path": "local/r33_debug_line_00df5cb0_bytes.txt",
+        "sha256": "6b9bad2b697b8dcbcce90af9b5f189149780bbcc39c1b3b7fbbc1ebcdf2b3bf0"
+      },
+      {
+        "path": "local/r33_debug_line_annotations.log",
+        "sha256": "ee23d89ff7a206d3b95f73bf1a1e048d9689038e7d15bc066ee17ec6fceb4f63"
+      },
+      {
+        "path": "local/r33_debug_line_calls.log",
+        "sha256": "0004e686a56f824cf966cc875fdab6f40f8d6f258de7770b566221540e09fb38"
+      },
+      {
+        "path": "local/r33_debug_line_candidate_listing.txt",
+        "sha256": "e8ee2517ffec87b24fc459e35f6b5acad1dbe0106eee14a60977c436e2e8b153"
+      },
+      {
+        "path": "local/r33_debug_line_exports.log",
+        "sha256": "c771b455f82f18499fa921a359bc943e7ca759475a80128650ebe53ef8541457"
+      },
+      {
+        "path": "local/r33_debug_line_flow_diagnostic.json",
+        "sha256": "32620e2f31e1935157cd32bb3d222b036253b803ac7e78876d1288c58933d327"
+      },
+      {
+        "path": "local/r33_debug_line_handler_listing.txt",
+        "sha256": "877fe6cfa900279d191212d3f7d54bd3d53b62aca751115b0b5f88d656ac2b64"
+      },
+      {
+        "path": "local/r33_debug_line_post_flow.log",
+        "sha256": "8068cd56c5d030b63ced62d27485602020f061c4c07a4ef7de5f26f8913b1a45"
+      },
+      {
+        "path": "local/r33_debug_line_prior_comments.txt",
+        "sha256": "fd4a32fa25c5319cb58e34ed25c8c16bd31f789c15af5e1dabbe81dbb87f74c0"
+      },
+      {
+        "path": "local/r33_debug_line_prior_context.json",
+        "sha256": "365206bc260799487e3b5c1cc74bfb3395731207235f9b7950b1e95125d9799f"
+      },
+      {
+        "path": "local/r33_debug_line_prior_context.log",
+        "sha256": "2f4c7e4ccdf4ecd8b2613829d80b6d577db13524f3ec4aa57474a0a83574a326"
+      },
+      {
+        "path": "local/r33_debug_line_prior_flow.json",
+        "sha256": "bbf787d30f780c4ee60ca231a528de42ff99d7571d22176d4128993a6369a96d"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T095203Z.json",
+        "sha256": "04a90cf418df19343338f97ad3f14ab6382adb7fc67b4415b1f875e2b17b9606"
+      },
+      {
+        "path": "local/verify_debug_line_definition_r33.py",
+        "sha256": "e4123c1872d23e1dd008a7e03f13eb1fcf04e5a25a45af1e0a4d3e29e9de2674"
+      },
+      {
+        "path": "local/finalize_debug_line_definition_r33.py",
+        "sha256": "b0843f88754458b26e6662d2db18100d2e8dc2b9ede0d3d6d3d24fa50f4385f6"
+      },
+      {
+        "path": "reports/native_renderer_debug_line_definition_events_r33.json",
+        "sha256": "edc74c000157df976f4810cb699ffc33568a6443e0a25819077e2cd93574d826"
+      }
+    ]
+  }
+}
