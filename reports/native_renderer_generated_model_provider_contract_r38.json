@@ -1,0 +1,246 @@
+{
+  "packet": "native_renderer_generated_model_provider_contract_r38",
+  "status": "audit_complete_source_closure_ready_with_one_narrow_mesh_api_addition",
+  "baseline_main": "586e1bdf35c787988a977858ca1f1c7f94477023",
+  "owned_addresses": [
+    "00b4c700"
+  ],
+  "source_mutation": false,
+  "ghidra_mutation": false,
+  "native_identity": {
+    "project": "C:\\Users\\sqz269\\bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "body_receipt": {
+    "address": "00b4c700",
+    "length": 462,
+    "end_exclusive": "00b4c8ce",
+    "file_offset": 7653120,
+    "instructions": 169,
+    "sha256": "f0db9d4b323b45ee0e7f9e7670cd95197a538c53217aff5178e42481ec3f605a",
+    "live_equals_pe": true,
+    "matches_historical": true,
+    "last_bytes": "5b64890d0000000083c414c21400",
+    "abi": "ECX=model-name NativeString header; EDX=layout-name NativeString header; stack(effect-name header, section kind, vertex count, section primitive count, index count); EAX=constructed model; RET14h."
+  },
+  "call_sites": [
+    {"address":"00b4c725","function":"00b4c700","bytes":"e886870200","native":"00b74eb0","kind":"direct_call"},
+    {"address":"00b4c73b","function":"00b4c700","bytes":"e8f0880200","native":"00b75030","kind":"direct_call"},
+    {"address":"00b4c756","function":"00b4c700","bytes":"e805740200","native":"00b73b60","kind":"direct_call"},
+    {"address":"00b4c76d","function":"00b4c700","bytes":"e8fe750200","native":"00b73d70","kind":"direct_call"},
+    {"address":"00b4c792","function":"00b4c700","bytes":"e8d9890200","native":"00b75170","kind":"direct_call"},
+    {"address":"00b4c7e5","function":"00b4c700","bytes":"e8c6730200","native":"00b73bb0","kind":"direct_call"},
+    {"address":"00b4c804","function":"00b4c700","bytes":"e8178b9eff","native":"00535320","kind":"direct_call"},
+    {"address":"00b4c834","function":"00b4c700","bytes":"e837730200","native":"00b73b70","kind":"direct_call"},
+    {"address":"00b4c839","function":"00b4c700","bytes":"e862779eff","native":"00533fa0","kind":"direct_call"},
+    {"address":"00b4c85c","function":"00b4c700","bytes":"e83f9d0300","native":"00b865a0","kind":"direct_call"},
+    {"address":"00b4c864","function":"00b4c700","bytes":"e8579c0300","native":"00b864c0","kind":"direct_call"},
+    {"address":"00b4c86c","function":"00b4c700","bytes":"e8ef730200","native":"00b73c60","kind":"direct_call"}
+  ],
+  "indirect_schedule": [
+    {"site":"00b4c7a3","operation":"current renderer slot38 declaration factory"},
+    {"site":"00b4c7c6","operation":"current renderer slot5C vertex factory"},
+    {"site":"00b4c7ce/00b4c7de","operation":"captured declaration decrement and zero terminal"},
+    {"site":"00b4c7ee/00b4c7fe","operation":"captured vertex creator decrement and zero terminal"},
+    {"site":"00b4c82f","operation":"current renderer slot60 index factory, only for nonzero index count"},
+    {"site":"00b4c87f/00b4c88b","operation":"captured nonnull material decrement and zero terminal"},
+    {"site":"00b4c891/00b4c89d","operation":"captured section decrement and zero terminal"},
+    {"site":"00b4c8a7/00b4c8b3","operation":"captured nonnull mesh decrement and zero terminal"}
+  ],
+  "x87_schedule": {
+    "source": "actual DWORD 00d7a260, observed BF800000",
+    "instructions": [
+      "00b4c778 FLD source once",
+      "00b4c785 FST second float",
+      "00b4c78d FSTP first float"
+    ],
+    "consumer": "00b75170(0, mesh, first, second)",
+    "source_requirement": "Retain one FLD/FST/FSTP sequence; do not replace it with two volatile C++ loads."
+  },
+  "historical_provenance": {
+    "draft_commit": "c43d211b0",
+    "withdrawal_commit": "aa163cf80",
+    "artifact_source_commit": "0212603dd3c5b4fb5f8c4a1117906aed16d8714a",
+    "manifest_path": "J:\\PROG\\battlestations-pacific-decompile-orch5-native-renderer-generated-model\\local\\output\\generated_model_validated_artifacts\\manifest.json",
+    "manifest_entries": 4423,
+    "manifest_sha256": "8862fb2fb8562206e737861b603ac048d054508f486689e6ea5bc0c0dd747251",
+    "archived_source_sha256": "e83a0a80fe6bd04b46b20739cc18300816f1e0944f49796ccf81802c4c7bd4b8",
+    "archived_header_sha256": "514ef56de89eaf299d6d7b23a2207fad5683bbb9fff621c81d260dfefc87f70c",
+    "archived_object_sha256": "85db39f4bc104de0b70dd0da32cf93f41076fb73f81a9e50f41863ed59c49b34",
+    "archived_library_sha256": "33a535aae1ec79d831fb1b3ec079fb18346ced8b37060c32f9ceff0e2eff7667",
+    "recorded_primary_zip": "local/evidence-r36/generated-model-original-r36.zip",
+    "recorded_primary_zip_sha256": "e3262fa5ae150ba51ea74fd38aca562357d7af1e835e3f19438e0c661b747428",
+    "zip_rehashed_this_audit": false,
+    "note": "The original validation manifest remains readable and was rehashed. The recorded primary ZIP was absent from the primary checkout and this worktree, so its historical digest is reported but not revalidated."
+  },
+  "current_provider_mapping": [
+    {
+      "native_step": "B74EB0 raw model allocation, B75030 construction, state0 B748C0 allocation return",
+      "current_api": "allocate_native_model_slot_00b74eb0; NativeInstanceGeometryAccess prepare_model/retire_failed_model/bind_completed_model; construct_native_model_00b75030; return_native_model_slot_00b748c0",
+      "disposition": "reuse",
+      "contract": "Prepare host bookkeeping over the exact raw slot. On constructor/preparation failure retire only the host companion, then return the raw slot. After construction, bind without a protective native rollback; a bind failure leaves the completed model in the acquired frame."
+    },
+    {
+      "native_step": "B73B60 raw mesh allocation, B73D70 construction, state1 B72F70 allocation return",
+      "current_api": "no exact public current helper",
+      "disposition": "one narrow addition required",
+      "contract": "Add GuiNativeGeometryOwners::create_native_mesh_00b73b60(GuiNativeMeshAcquired&). It uses allocate_native_mesh_slot_00b73b60 and return_native_mesh_slot_00b72f70 for constructor unwind, then the existing canonical mesh companion/bind domain. Completed creator, owner record and companion remain in the acquired frame after host allocation/bind failure. It performs no pair publication and no completed-object rollback."
+    },
+    {
+      "native_step": "B75170 model geometry publication",
+      "current_api": "set_native_model_geometry_00b75170",
+      "disposition": "reuse"
+    },
+    {
+      "native_step": "renderer slot38 B317E0 declaration creation and later captured release",
+      "current_api": "load_native_renderer_vertex_declaration_00b317e0 plus GuiNativeGeometryOwners::register_native_declaration_reference and release_native_render_actual_owner",
+      "disposition": "reuse",
+      "contract": "Reload the current renderer immediately before slot38. Registration is metadata only. Release the captured declaration after the vertex factory returns."
+    },
+    {
+      "native_step": "renderer slot5C B287C0 vertex creation, B73BB0 mesh set, captured creator release",
+      "current_api": "create_native_registered_vertex_stream_00b287c0; R37 GuiNativeGeometryOwners::register_stream_clone_creator(acquired, NativeLogicalVertexOwnerContext&, NativeLogicalIndexCreationContext&); set_native_mesh_vertex_stream_00b73bb0",
+      "disposition": "reuse",
+      "contract": "Reload the current renderer immediately before slot5C. Publish the factory creator into NativeStreamCloneAcquired before renderer registration, register with the direct overload, set mesh slot0, then clear the acquired creator immediately before its captured release."
+    },
+    {
+      "native_step": "535320 material creation through current renderer slot48 B318B0",
+      "current_api": "create_native_material_from_effect_cache_00535320 then GuiNativeGeometryOwners::register_native_material_creator",
+      "disposition": "reuse",
+      "contract": "Use one NativeMaterialFactoryAcquired in the outer acquired frame. Its persistent cache child records loader/effect failures. The factory releases the effect only on its original normal path; host registration adds no retain, release or rollback. Do not restore NativeMaterialFactoryRawContext or the obsolete raw-material overload."
+    },
+    {
+      "native_step": "optional renderer slot60 B288B0 index creation and B73B70 mesh set",
+      "current_api": "create_native_registered_index_stream_00b288b0; R37 direct stream registration overload; set_native_mesh_index_stream_00b73b70",
+      "disposition": "reuse",
+      "contract": "Reload the current renderer immediately before slot60. Use format66 when vertex_count is unsigned-greater than FFFF, otherwise65. Preserve the creator in acquired after B73B70; native B4C700 performs no balancing creator release."
+    },
+    {
+      "native_step": "533FA0 section creation",
+      "current_api": "GuiNativeGeometryOwners::create_native_section_00533fa0(GuiNativeSectionAcquired&)",
+      "disposition": "reuse exact current helper",
+      "contract": "The completed creator and any companion survive host metadata/bind failure; there is no destructor rollback."
+    },
+    {
+      "native_step": "section stores, B865A0 layout, B864C0 material, B73C60 append",
+      "current_api": "direct stores plus rebuild_native_mesh_section_vertex_layout_00b865a0, set_native_mesh_section_material_00b864c0, append_native_mesh_draw_section_00b73c60",
+      "disposition": "reuse",
+      "contract": "Store +08 kind, +0C zero, +10 vertex count, +14 zero, +18 primitive count. Preserve layout, material, append order."
+    }
+  ],
+  "mesh_section_helper_finding": {
+    "create_native_mesh_and_publish": "not reusable: it models B94710, calls the B73A10 pool core, publishes actual pair[0], and records B947xx state sites absent from B4C700",
+    "create_mesh": "not reusable: it has no caller acquired frame and releases/erases a completed creator or companion after added host allocation/bind failure",
+    "create_native_section_00533fa0": "reusable: exact native callee and caller-owned acquired frame, with completed state retained after added host failures"
+  },
+  "proposed_acquired_frame": {
+    "fields": [
+      "bool started",
+      "bool complete",
+      "uint32 active_call_site",
+      "void* raw_model",
+      "NativeModelOwner* model_owner",
+      "NativeModelReference* model_reference",
+      "GuiNativeMeshAcquired mesh",
+      "GuiNativeDeclarationAcquired declaration",
+      "NativeStreamCloneAcquired vertex",
+      "NativeMaterialFactoryAcquired material",
+      "NativeStreamCloneAcquired index",
+      "GuiNativeSectionAcquired section"
+    ],
+    "rules": "Caller-owned and one-shot. No destructor performs native rollback. Keep it and every provider context alive until all recorded failed or outstanding native acquisitions are explicitly resolved. Replace the historical separate effect/material frames with the single current persistent NativeMaterialFactoryAcquired."
+  },
+  "normal_order": [
+    "allocate model; arm state0; prepare; construct; disarm state0; bind completed model",
+    "allocate mesh; arm state1; construct; disarm state1; bind completed mesh",
+    "load D7A260 once through FLD/FST/FSTP and set model geometry",
+    "reload renderer; create/register declaration",
+    "reload renderer; create/register vertex; release captured declaration; set mesh vertex; release captured vertex creator",
+    "create material with persistent factory frame; register material companion",
+    "if index_count nonzero: reload renderer; create/register index; set mesh index; retain creator outstanding",
+    "create/register section; write five fields; rebuild layout; set material; append section",
+    "release captured material, then section, then mesh",
+    "return model with its creator reference outstanding"
+  ],
+  "failure_ownership": [
+    {"boundary":"model allocation/construction","ownership":"Only native state0 returns the raw allocation. retire_failed_model removes host bookkeeping before return. No complete-model destructor."},
+    {"boundary":"mesh allocation/construction","ownership":"Only native state1 returns the raw allocation. The completed model survives. No state0 chaining."},
+    {"boundary":"model or mesh companion allocation/bind","ownership":"Added host boundary. Preserve completed native creator and any constructed companion in acquired; no release or pool return."},
+    {"boundary":"declaration load/registration","ownership":"Preserve the caller reference and any companion in acquired. Earlier model and mesh remain live."},
+    {"boundary":"vertex or index factory/registration","ownership":"The factory publishes a completed creator before renderer append. Preserve it and any companion; do not retry or roll back earlier effects."},
+    {"boundary":"material effect load/allocation/construction","ownership":"NativeMaterialFactoryAcquired records the persistent cache child, effect, raw slot, and material phases. Constructor failure returns only the raw material slot and leaves the acquired effect outstanding; normal completion releases the effect."},
+    {"boundary":"material or section host registration","ownership":"Preserve completed creator, owner record and any companion. No broad rollback of earlier model/mesh/stream effects."},
+    {"boundary":"later native setter/layout/append/release","ownership":"No enclosing B4C700 cleanup. Clear an acquired creator immediately before a potentially throwing terminal so it cannot be released twice."}
+  ],
+  "success_ownership": {
+    "returned_model": "one creator reference remains outstanding",
+    "optional_index": "one creator reference remains outstanding even though B73B70 retains the stream; do not add a balancing release",
+    "declaration_vertex_material_section_mesh": "released in the exact captured order shown above",
+    "host_companions": "borrow the same native +04 counts and remain in the canonical registry until the corresponding actual owners reach their real terminals"
+  },
+  "raw_context_resolution": {
+    "resource_support": "resolved: NativePhysicalBufferOwnerContext uses NativeResourceSupportLifetime, whose raw mode can prove the same actual 01090AA0 publication identity through borrows_same_domain(void* volatile&)",
+    "stream_registration": "resolved by R37: the direct geometry overload requires only the current vertex and index creation contexts, so B4C700 does not require NativeStreamCloneServices.mapping",
+    "sibling_r38_diagnostic_context": "NativePhysicalBufferLockContext remains a future application dependency for lock/mapping paths. The sibling packet changes its diagnostic lifetime to SoundLifetimeAccess and adds cross-adapter identity, but it does not compose NativePhysicalBufferOwnerContext. B4C700 creates streams without mapping them, so this context is not a direct source prerequisite.",
+    "application_followup": "Canonical GameSingletonHost CF14 publication/accessor and CE752C drain admission remain deferred; this limits application binding and a genuine full factory fixture, not compilation of the bounded B4C700 source."
+  },
+  "proposed_source_contract": {
+    "context": "Retain NativeInstanceGeometryAccess, NativeVertexDeclarationCacheContext, NativeLogicalIndexCreationContext, NativeMaterialEffectCacheContext, GuiTextNativeLayoutServices, the actual current renderer publication reference, and the actual 01090AA0 manager publication reference. Validate shared actual owners, strings, renderer, synchronization, physical owner, material parameter names, model sentinel and raw support identities.",
+    "raw_model_overload": "Retain the explicit raw model binding: null NativeModelEnvironment.actual_names, same caller model-name header address, NativeStringRawPoolContext AA8/AA4/AA0 identities and caller-provided NativeNodeRawConstants. Do not invent another model owner or ID domain.",
+    "current_pointer_behavior": "Reload the renderer publication separately before slots38,5C and60. The current material factory performs its own one-time renderer capture for slot48. Reference releases use the captured owner identities, never a reloaded resource pointer.",
+    "null_boundary": "The source may throw when a native allocation/factory returns null before the original later null dereference. Record this as a source-domain diagnostic boundary and do not synthesize a successful null result or cleanup."
+  },
+  "next_packet_ownership": {
+    "addresses": [
+      "00b4c700"
+    ],
+    "files": [
+      "include/bsp/native_renderer_generated_model.hpp",
+      "src/native_renderer_generated_model.cpp",
+      "include/bsp/gui_native_geometry.hpp",
+      "src/gui_native_geometry.cpp",
+      "docs/NATIVE_RENDERER_GENERATED_MODEL.md",
+      "reports/native_renderer_generated_model_main_r39.json",
+      "cmake/startup.cmake"
+    ],
+    "no_changes_needed": [
+      "include/bsp/native_material_factory.hpp",
+      "src/native_material_factory.cpp",
+      "include/bsp/native_resource_support.hpp",
+      "include/bsp/native_physical_buffer_lock.hpp",
+      "all application owners and renderer construction"
+    ]
+  },
+  "current_source_receipts": [
+    {"path":"include/bsp/gui_native_geometry.hpp","sha256":"c4eb78a5c91fe3687209c6c1ad52af081cb231aef281364b94d78d7a097bf8fd"},
+    {"path":"src/gui_native_geometry.cpp","sha256":"31be3e91201a8388cb9c25bd56e6b9b750f19ab474cd2808fab47605e54d53c0"},
+    {"path":"include/bsp/native_instance_geometry.hpp","sha256":"d636744a916ce5acad921606f43f76e9edbe8cb855d4580e936afca162b3cb03"},
+    {"path":"include/bsp/native_material_factory.hpp","sha256":"fa8a45423c10da368d803d5df7fb583a5bc91e9f3c3ac59722607e4a95d90b71"},
+    {"path":"src/native_material_factory.cpp","sha256":"92261291bd48c98e561e93b0e3ca0a439e9ae88daa9510cc56a32baf0c744eb9"},
+    {"path":"include/bsp/native_resource_support.hpp","sha256":"dbbab5a5b01537c8683cd69435d159807fbce6eb0e616fae0f61ca051ebcf687"},
+    {"path":"include/bsp/native_model_pool.hpp","sha256":"30e4945729d723ec450a6eebaf28968c976dcd50f366ba193aa591d751709144"},
+    {"path":"include/bsp/native_mesh_pool.hpp","sha256":"e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52"},
+    {"path":"include/bsp/native_stream_clone.hpp","sha256":"a333d180afcf21084068a671d60c34ee8e1b18ea980a6c03b115a32ce2ff3e6a"},
+    {"path":"include/bsp/native_logical_vertex_owner.hpp","sha256":"f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"},
+    {"path":"include/bsp/native_logical_index_owner.hpp","sha256":"c0ae53059fba249f589990b7d41d1986a2134cd86b99cd5d6db7ab2c849b38cb"}
+  ],
+  "validation": {
+    "live_pe_body_hash": "PASS",
+    "historical_body_hash": "PASS",
+    "direct_call_rows": "12/12 current bytes match historical rows",
+    "original_manifest_hash": "PASS",
+    "current_provider_source_review": "PASS",
+    "source_compiled": false,
+    "fixture_executed": false,
+    "original_fh3_seh_abi_validated": false,
+    "gameplay_validated": false
+  },
+  "limitations": [
+    "Audit only: no generated-model source, provider source, CMake, Ghidra or ledger mutation was performed.",
+    "The old focused fixture did not execute B4C700 normal flow, the renderer, or the raw material path; a next packet needs a freshly linked genuine constructor/creator fixture.",
+    "Original FH3/SEH, unmasked x87 faults, native null dereferences, mutable caller/frame aliases and game/visual behavior remain outside the source contract.",
+    "A cold material load still depends on the existing material compiler continuation boundary recorded by the historical report.",
+    "The caller19E0 producer remains unidentified."
+  ]
+}
