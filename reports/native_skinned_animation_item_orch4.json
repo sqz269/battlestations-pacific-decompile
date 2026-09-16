@@ -1,0 +1,635 @@
+{
+  "packet": "native_skinned_animation_item_orch4",
+  "base_revision": "122158d13",
+  "documentation": "docs/NATIVE_SKINNED_ANIMATION_ITEM_ORCH4.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": [
+    "include/bsp/native_skinned_animation_item.hpp",
+    "src/native_skinned_animation_item.cpp"
+  ],
+  "routines": [
+    {
+      "address": "00b92300",
+      "body": [
+        "00b92300",
+        "00b92381"
+      ],
+      "bytes": 130,
+      "instructions": 44,
+      "coverage": "complete",
+      "source_symbol": "read_native_animation_values_00b92300",
+      "proposed_name": "BSP_ReadNativeAnimationValues_00b92300",
+      "original_abi": "ECX actual output30h; EDX actual handle; EAX output; RET",
+      "pe_live_match": true,
+      "sha256": "b1fc9013feec16c9520fd9b15202a6f14c42a6fb645773e56c7d51914874fb62",
+      "previous_name": "FUN_00b92300"
+    },
+    {
+      "address": "00b92440",
+      "body": [
+        "00b92440",
+        "00b924be"
+      ],
+      "bytes": 127,
+      "instructions": 51,
+      "coverage": "complete",
+      "source_symbol": "reserve_native_animation_values_00b92440",
+      "proposed_name": "BSP_ReserveNativeAnimationValues_00b92440",
+      "original_abi": "ECX actual vector; stacked signed capacity; RET4",
+      "pe_live_match": true,
+      "sha256": "be7e2c1e4993eac83a967470d97d08a9ff29a7b70a903970a9963a5b6c3e18d3",
+      "previous_name": "FUN_00b92440"
+    },
+    {
+      "address": "00b926e0",
+      "body": [
+        "00b926e0",
+        "00b92789"
+      ],
+      "bytes": 170,
+      "instructions": 62,
+      "coverage": "complete",
+      "source_symbol": "assign_native_animation_values_00b926e0",
+      "proposed_name": "BSP_AssignNativeAnimationValues_00b926e0",
+      "original_abi": "ECX actual destination vector; stacked source vector; EAX destination; RET4",
+      "pe_live_match": true,
+      "sha256": "279e288121225cebd365802b6b4f2296e3fd4c997595b12112a7f4fd55925a2f",
+      "previous_name": "FUN_00b926e0"
+    },
+    {
+      "address": "00b928b0",
+      "body": [
+        "00b928b0",
+        "00b92941"
+      ],
+      "bytes": 146,
+      "instructions": 46,
+      "coverage": "complete",
+      "source_symbol": "destroy_native_animation_record_00b928b0",
+      "proposed_name": "BSP_DestroyNativeAnimationRecord_00b928b0",
+      "original_abi": "ECX actual record18h; RET",
+      "pe_live_match": true,
+      "sha256": "cfe90b2a4d90d9ecd688bf3cbea2fd84d32172d1e1750a8d19a4e87bad4df2bb",
+      "previous_name": "FUN_00b928b0"
+    },
+    {
+      "address": "00b92970",
+      "body": [
+        "00b92970",
+        "00b92a13"
+      ],
+      "bytes": 164,
+      "instructions": 58,
+      "coverage": "complete",
+      "source_symbol": "construct_native_animation_record_00b92970",
+      "proposed_name": "BSP_ConstructNativeAnimationRecord_00b92970",
+      "original_abi": "ECX actual record; stacked float32 and owned by-value name8h; EAX record; RET12",
+      "pe_live_match": true,
+      "sha256": "503ce0d143acb3b48c01463d61693e8a45a0b80745bf2fd4b4a142c8301e2bcc",
+      "previous_name": "FUN_00b92970"
+    },
+    {
+      "address": "00b92a50",
+      "body": [
+        "00b92a50",
+        "00b92ade"
+      ],
+      "bytes": 143,
+      "instructions": 55,
+      "coverage": "complete",
+      "source_symbol": "copy_native_animation_record_00b92a50",
+      "proposed_name": "BSP_CopyNativeAnimationRecord_00b92a50",
+      "original_abi": "ECX actual destination record; stacked source; EAX destination; RET4",
+      "pe_live_match": true,
+      "sha256": "40bb9dac8f2cb535fb292bfcfc99fd4c0db434a9b62446f092c2109b6024bb68",
+      "previous_name": "FUN_00b92a50"
+    },
+    {
+      "address": "00b92ae0",
+      "body": [
+        "00b92ae0",
+        "00b92bbf"
+      ],
+      "bytes": 224,
+      "instructions": 76,
+      "coverage": "complete",
+      "source_symbol": "reserve_native_animation_records_00b92ae0",
+      "proposed_name": "BSP_ReserveNativeAnimationRecords_00b92ae0",
+      "original_abi": "ECX actual vector; stacked signed capacity; RET4",
+      "pe_live_match": true,
+      "sha256": "2376e114acf0dd5573f45754e2476c89dc953ea588c186087155f26e40dc753a",
+      "previous_name": "FUN_00b92ae0"
+    },
+    {
+      "address": "00b92bc0",
+      "body": [
+        "00b92bc0",
+        "00b92c35"
+      ],
+      "bytes": 118,
+      "instructions": 47,
+      "coverage": "complete",
+      "source_symbol": "resize_native_animation_records_00b92bc0",
+      "proposed_name": "BSP_ResizeNativeAnimationRecords_00b92bc0",
+      "original_abi": "ECX actual vector; stacked signed count; RET4",
+      "pe_live_match": true,
+      "sha256": "17b2b8b66e6590b8ea3445bd27467817dfd8a6b8dd5595fe83830882dfe88871",
+      "previous_name": "FUN_00b92bc0"
+    },
+    {
+      "address": "00b92c40",
+      "body": [
+        "00b92c40",
+        "00b92cb3"
+      ],
+      "bytes": 116,
+      "instructions": 35,
+      "coverage": "complete",
+      "source_symbol": "append_native_animation_record_00b92c40",
+      "proposed_name": "BSP_AppendNativeAnimationRecord_00b92c40",
+      "original_abi": "ECX actual vector; stacked source record; RET4",
+      "pe_live_match": true,
+      "sha256": "e4a95242449747c9e756cda7ee5dd36bd52af089207b2f7ae5d69de90a196441",
+      "previous_name": "FUN_00b92c40"
+    },
+    {
+      "address": "00b92cd0",
+      "body": [
+        "00b92cd0",
+        "00b92e4c"
+      ],
+      "bytes": 381,
+      "instructions": 124,
+      "coverage": "complete",
+      "source_symbol": "read_native_skinned_animation_item_00b92cd0",
+      "proposed_name": "BSP_ReadNativeSkinnedAnimationItem_00b92cd0",
+      "original_abi": "ECX actual item18h; stacked handle; RET4",
+      "pe_live_match": true,
+      "sha256": "7c9a4d7b3f85e0abf902505bab83387cd1cc4383214dfd7019f5968a86b551a5",
+      "previous_name": "FUN_00b92cd0"
+    },
+    {
+      "address": "00b92ec0",
+      "body": [
+        "00b92ec0",
+        "00b92f1c"
+      ],
+      "bytes": 93,
+      "instructions": 28,
+      "coverage": "complete",
+      "source_symbol": "destroy_native_skinned_animation_item_00b92ec0",
+      "proposed_name": "BSP_DestroyNativeSkinnedAnimationItem_00b92ec0",
+      "original_abi": "ECX actual item18h; RET",
+      "pe_live_match": true,
+      "sha256": "85c6bf5598ad56efbaed75c30a96cc06a3512ad1e48df89b32e07fa62dd30ef8",
+      "previous_name": "FUN_00b92ec0"
+    },
+    {
+      "address": "00b92f20",
+      "body": [
+        "00b92f20",
+        "00b92f94"
+      ],
+      "bytes": 117,
+      "instructions": 37,
+      "coverage": "complete",
+      "source_symbol": "parse_native_skinned_animation_item_00b92f20",
+      "proposed_name": "BSP_ParseNativeSkinnedAnimationItem_00b92f20",
+      "original_abi": "Incoming ECX parser unused; stacked handle; EAX item; RET4",
+      "pe_live_match": true,
+      "sha256": "63f419c29c848724b4b727940c526d9dcec605e7131419a4c7e7335ba662f781",
+      "previous_name": "FUN_00b92f20"
+    },
+    {
+      "address": "00b92fa0",
+      "body": [
+        "00b92fa0",
+        "00b92fbd"
+      ],
+      "bytes": 30,
+      "instructions": 11,
+      "coverage": "complete",
+      "source_symbol": "delete_native_skinned_animation_item_00b92fa0",
+      "proposed_name": "BSP_DeleteNativeSkinnedAnimationItem_00b92fa0",
+      "original_abi": "ECX actual item18h; stacked flags; EAX original item; RET4",
+      "pe_live_match": true,
+      "sha256": "50dd0475293f46a8b11a888ba673d2d148d1d796ee971c6437cfdb7180a8ffb3",
+      "previous_name": "CG_scalar_deleting_dtor_00b92fa0"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b92308",
+      "native": "00be99d0",
+      "function": "00b92300",
+      "contract": "existing actual-node x87 float read; CURRENT node budget; RET"
+    },
+    {
+      "address": "00b92311",
+      "native": "00be99d0",
+      "function": "00b92300",
+      "contract": "existing actual-node x87 float read; CURRENT node budget; RET"
+    },
+    {
+      "address": "00b9231b",
+      "native": "00be99d0",
+      "function": "00b92300",
+      "contract": "existing actual-node x87 float read; CURRENT node budget; RET"
+    },
+    {
+      "address": "00b92325",
+      "native": "00be99d0",
+      "function": "00b92300",
+      "contract": "existing actual-node x87 float read; CURRENT node budget; RET"
+    },
+    {
+      "address": "00b9232f",
+      "native": "00be99d0",
+      "function": "00b92300",
+      "contract": "existing actual-node x87 float read; CURRENT node budget; RET"
+    },
+    {
+      "address": "00b92339",
+      "native": "00be99d0",
+      "function": "00b92300",
+      "contract": "existing actual-node x87 float read; CURRENT node budget; RET"
+    },
+    {
+      "address": "00b92343",
+      "native": "00be99d0",
+      "function": "00b92300",
+      "contract": "existing actual-node x87 float read; CURRENT node budget; RET"
+    },
+    {
+      "address": "00b9234d",
+      "native": "00be99d0",
+      "function": "00b92300",
+      "contract": "existing actual-node x87 float read; CURRENT node budget; RET"
+    },
+    {
+      "address": "00b92357",
+      "native": "00be99d0",
+      "function": "00b92300",
+      "contract": "existing actual-node x87 float read; CURRENT node budget; RET"
+    },
+    {
+      "address": "00b92361",
+      "native": "00be99d0",
+      "function": "00b92300",
+      "contract": "existing actual-node x87 float read; CURRENT node budget; RET"
+    },
+    {
+      "address": "00b9236b",
+      "native": "00be99d0",
+      "function": "00b92300",
+      "contract": "existing actual-node x87 float read; CURRENT node budget; RET"
+    },
+    {
+      "address": "00b92375",
+      "native": "00be99d0",
+      "function": "00b92300",
+      "contract": "existing actual-node x87 float read; CURRENT node budget; RET"
+    },
+    {
+      "address": "00b92468",
+      "native": "00bf55be",
+      "function": "00b92440",
+      "contract": "current CRT throwing allocation/new-handler boundary; cdecl size"
+    },
+    {
+      "address": "00b924aa",
+      "native": "00bf6989",
+      "function": "00b92440",
+      "contract": "current CRT free boundary; cdecl pointer"
+    },
+    {
+      "address": "00b926ee",
+      "native": "00b92440",
+      "function": "00b926e0",
+      "contract": "reserve_native_animation_values_00b92440"
+    },
+    {
+      "address": "00b92715",
+      "native": "00b92440",
+      "function": "00b926e0",
+      "contract": "reserve_native_animation_values_00b92440"
+    },
+    {
+      "address": "00b9274e",
+      "native": "00b92440",
+      "function": "00b926e0",
+      "contract": "reserve_native_animation_values_00b92440"
+    },
+    {
+      "address": "00b928e3",
+      "native": "00b92440",
+      "function": "00b928b0",
+      "contract": "reserve_native_animation_values_00b92440"
+    },
+    {
+      "address": "00b92904",
+      "native": "00bf6989",
+      "function": "00b928b0",
+      "contract": "current CRT free boundary; cdecl pointer"
+    },
+    {
+      "address": "00b92925",
+      "native": "00419cc0",
+      "function": "00b928b0",
+      "contract": "existing actual shared string-pool getter"
+    },
+    {
+      "address": "00b9292c",
+      "native": "00bd1510",
+      "function": "00b928b0",
+      "contract": "existing actual sized string-pool return; RET12"
+    },
+    {
+      "address": "00b929b4",
+      "native": "0041dd40",
+      "function": "00b92970",
+      "contract": "existing actual-header pooled-string resize; RET8"
+    },
+    {
+      "address": "00b929c9",
+      "native": "00bf7680",
+      "function": "00b92970",
+      "contract": "current CRT overlap-aware byte-copy boundary; cdecl 3 arguments"
+    },
+    {
+      "address": "00b929f1",
+      "native": "00419cc0",
+      "function": "00b92970",
+      "contract": "existing actual shared string-pool getter"
+    },
+    {
+      "address": "00b929f8",
+      "native": "00bd1510",
+      "function": "00b92970",
+      "contract": "existing actual sized string-pool return; RET12"
+    },
+    {
+      "address": "00b92a91",
+      "native": "0041dd40",
+      "function": "00b92a50",
+      "contract": "existing actual-header pooled-string resize; RET8"
+    },
+    {
+      "address": "00b92aa6",
+      "native": "00bf7680",
+      "function": "00b92a50",
+      "contract": "current CRT overlap-aware byte-copy boundary; cdecl 3 arguments"
+    },
+    {
+      "address": "00b92ac3",
+      "native": "00b926e0",
+      "function": "00b92a50",
+      "contract": "assign_native_animation_values_00b926e0"
+    },
+    {
+      "address": "00b92b26",
+      "native": "00bf55be",
+      "function": "00b92ae0",
+      "contract": "current CRT throwing allocation/new-handler boundary; cdecl size"
+    },
+    {
+      "address": "00b92b61",
+      "native": "00b92a50",
+      "function": "00b92ae0",
+      "contract": "copy_native_animation_record_00b92a50"
+    },
+    {
+      "address": "00b92b87",
+      "native": "00b928b0",
+      "function": "00b92ae0",
+      "contract": "destroy_native_animation_record_00b928b0"
+    },
+    {
+      "address": "00b92b9e",
+      "native": "00bf6989",
+      "function": "00b92ae0",
+      "contract": "current CRT free boundary; cdecl pointer"
+    },
+    {
+      "address": "00b92bcf",
+      "native": "00b92ae0",
+      "function": "00b92bc0",
+      "contract": "reserve_native_animation_records_00b92ae0"
+    },
+    {
+      "address": "00b92c23",
+      "native": "00b928b0",
+      "function": "00b92bc0",
+      "contract": "destroy_native_animation_record_00b928b0"
+    },
+    {
+      "address": "00b92c74",
+      "native": "00b92ae0",
+      "function": "00b92c40",
+      "contract": "reserve_native_animation_records_00b92ae0"
+    },
+    {
+      "address": "00b92c99",
+      "native": "00b92a50",
+      "function": "00b92c40",
+      "contract": "copy_native_animation_record_00b92a50"
+    },
+    {
+      "address": "00b92cf4",
+      "native": "00be9a00",
+      "function": "00b92cd0",
+      "contract": "existing actual-node DWORD read and CURRENT budget debit; RET"
+    },
+    {
+      "address": "00b92d12",
+      "native": "00be99d0",
+      "function": "00b92cd0",
+      "contract": "existing actual-node x87 float read; CURRENT node budget; RET"
+    },
+    {
+      "address": "00b92d22",
+      "native": "00bea010",
+      "function": "00b92cd0",
+      "contract": "existing actual-node pooled name read; stacked output8h; RET4"
+    },
+    {
+      "address": "00b92d4a",
+      "native": "0041dd40",
+      "function": "00b92cd0",
+      "contract": "existing actual-header pooled-string resize; RET8"
+    },
+    {
+      "address": "00b92d61",
+      "native": "00bf7680",
+      "function": "00b92cd0",
+      "contract": "current CRT overlap-aware byte-copy boundary; cdecl 3 arguments"
+    },
+    {
+      "address": "00b92d75",
+      "native": "00b92970",
+      "function": "00b92cd0",
+      "contract": "construct_native_animation_record_00b92970"
+    },
+    {
+      "address": "00b92d82",
+      "native": "00b92c40",
+      "function": "00b92cd0",
+      "contract": "append_native_animation_record_00b92c40"
+    },
+    {
+      "address": "00b92d90",
+      "native": "00b928b0",
+      "function": "00b92cd0",
+      "contract": "destroy_native_animation_record_00b928b0"
+    },
+    {
+      "address": "00b92d97",
+      "native": "00be9a00",
+      "function": "00b92cd0",
+      "contract": "existing actual-node DWORD read and CURRENT budget debit; RET"
+    },
+    {
+      "address": "00b92db6",
+      "native": "00b92300",
+      "function": "00b92cd0",
+      "contract": "read_native_animation_values_00b92300"
+    },
+    {
+      "address": "00b92dd7",
+      "native": "00b92440",
+      "function": "00b92cd0",
+      "contract": "reserve_native_animation_values_00b92440"
+    },
+    {
+      "address": "00b92e20",
+      "native": "00419cc0",
+      "function": "00b92cd0",
+      "contract": "existing actual shared string-pool getter"
+    },
+    {
+      "address": "00b92e27",
+      "native": "00bd1510",
+      "function": "00b92cd0",
+      "contract": "existing actual sized string-pool return; RET12"
+    },
+    {
+      "address": "00b92eed",
+      "native": "00b92bc0",
+      "function": "00b92ec0",
+      "contract": "resize_native_animation_records_00b92bc0"
+    },
+    {
+      "address": "00b92ef5",
+      "native": "00bf6989",
+      "function": "00b92ec0",
+      "contract": "current CRT free boundary; cdecl pointer"
+    },
+    {
+      "address": "00b92f07",
+      "native": "00b86890",
+      "function": "00b92ec0",
+      "contract": "existing actual resource-item reference-base destructor"
+    },
+    {
+      "address": "00b92f3a",
+      "native": "00bf681b",
+      "function": "00b92f20",
+      "contract": "current CRT throwing allocation/new-handler boundary; cdecl size"
+    },
+    {
+      "address": "00b92f54",
+      "native": "00b868b0",
+      "function": "00b92f20",
+      "contract": "existing actual resource-item reference-base constructor"
+    },
+    {
+      "address": "00b92f7b",
+      "native": "00b92cd0",
+      "function": "00b92f20",
+      "contract": "read_native_skinned_animation_item_00b92cd0"
+    },
+    {
+      "address": "00b92fa3",
+      "native": "00b92ec0",
+      "function": "00b92fa0",
+      "contract": "destroy_native_skinned_animation_item_00b92ec0"
+    },
+    {
+      "address": "00b92fb0",
+      "native": "00bf65ac",
+      "function": "00b92fa0",
+      "contract": "current CRT free boundary; cdecl pointer"
+    }
+  ],
+  "layout": {
+    "item18h": {
+      "+0": "D63700 profile",
+      "+4": "reference count",
+      "+8": "uninterpreted serialized DWORD",
+      "+c/+10/+14": "actual pointer/count/capacity, record18h vector"
+    },
+    "record18h": {
+      "+0": "serialized float32 value; interpretation unproven",
+      "+4/+8": "actual pooled name length/data",
+      "+c/+10/+14": "actual pointer/count/capacity, values30h vector"
+    },
+    "values30h": "twelve sequential float32 stores; semantic matrix interpretation unproven"
+  },
+  "corrections": [
+    {
+      "was": "Pseudocode appeared to end at free, omitting publication or lifetime cleanup",
+      "is": "Full PE tails publish vectors and release name/reference base; parent repaired saved Ghidra before final report validation",
+      "evidence": "B924AF..B924B8;B92909..B92941;B92BA3..B92BAC;B92EFA..B92F1C. Four full bodies match live bytes after repairs."
+    },
+    {
+      "was": "Scalar deleting destructor listing omitted post-free stack cleanup atB92FB5",
+      "is": "Primary integrator repaired returning-free flow and restored ADD ESP,4 within unchanged30B body",
+      "evidence": "reports/native_animation_item_scalar_flow_q17.json; root commit7c4dd64ad; full body PE/live preflight. No worker Ghidra mutation."
+    }
+  ],
+  "exception_evidence": {
+    "record_destructor": "state0 DFC3A8 -> CC2C70 returns name through41DD20",
+    "record_constructor": "state0 DFC3D4 -> CC2C90 returns by-value argument name; no incomplete destination-name cleanup",
+    "record_copy": "state0 DFC400 -> CC2CB0 returns completed destination name only",
+    "outer_reserve": "state0 DFC42C -> CC2CD0 calls no-op placement delete401130; no prefix/storage rollback",
+    "outer_append": "state0 DFC458 -> CC2D00 calls no-op placement delete401130",
+    "reader": "state1 DFC48C -> CC2D38 record destructor then state0 DFC484 -> CC2D30 local name destructor",
+    "item_destructor": "state0 DFC4B8 -> CC2D50 baseB86890",
+    "parser": "Native state0 atB92F4C covers base constructor and stores throughB92F68. State-1 atB92F73 disarms allocation cleanup before readerB92F7B. State0 DFC4E4 -> CC2D70 frees allocation. Source base constructor is pure noexcept stores; no original SEH/hardware-fault transport claim."
+  },
+  "limitations": [
+    "New C++ source interfaces, not original register ABI replacements.",
+    "Native FH3/SEH, private frame aliases, CRT identity and hardware faults remain outside this source boundary.",
+    "All normal parser/item/lifetime bodies complete; dispatch binding remains parent integration work.",
+    "No game-log/runtime/render validation claimed."
+  ],
+  "validation": {
+    "full_pe_live_bodies": true,
+    "body_count": 13,
+    "body_bytes": 1959,
+    "direct_call_rows": 57,
+    "build": "PASS scripts/build.ps1 Release MSVC Win32",
+    "probe": "PASS: 2 copied original vector bodies, 5 relocations; reserve/copy/self-assignment parity; source parser two records, outer relocation, 24 values, embedded NUL, empty inner capacity, full budget debit, flag2/base/name cleanup; injected read failure retains appended record and cleans temporaries.",
+    "existing_ctest": "3/3 PASS: reconstructed_math, native_math_differential, tool_tests",
+    "standalone_compile": "PASS MSVC Win32 /std:c++20 /W4 /WX /EHsc /MD /O2",
+    "call_validation": "57 rows checked, 0 failed",
+    "probe_original_bodies": [
+      "00b92440",
+      "00b926e0"
+    ],
+    "probe_original_call_relocations": 5,
+    "parser_fixture": "source-only actual pool, actual structured-node/read context; normal and mid-values failure paths",
+    "native_abi_compatible": false,
+    "game_validated": false,
+    "local_receipts": [
+      "local/skinned_animation_build.log",
+      "local/skinned_animation_probe_compile.log",
+      "local/skinned_animation_probe_run.log",
+      "local/skinned_animation_report_calls.log"
+    ],
+    "probe_source_sha256": "564aece0153d13387b12e0b795b04bb155085b8751d20d528231fc324e198fc6",
+    "probe_note": "First fixture assertion misinterpreted pool live counter as outstanding allocations. Corrected to sum reusable free-ring classes and compare their total bytes to the arena bump; both normal and failure teardown account for all bytes. No implementation change was required.",
+    "body_instructions": 674
+  }
+}
