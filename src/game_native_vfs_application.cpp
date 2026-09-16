@@ -88,7 +88,12 @@ struct GameNativeVfsApplication::Impl {
                   mapped.data_at(0x00d15ad8, sizeof(std::uint32_t))),
               static_cast<const volatile std::uint32_t*>(
                   mapped.data_at(0x00d642c0, sizeof(std::uint32_t)))},
-          duplicates(log) {}
+          duplicates(log) {
+        // Borrowed raw string services are available before VFS core startup.
+        // Bind their actual shared-drain contexts before any such consumer can
+        // create the string pool or another owner through those services.
+        owner_services.bind_deletion(singleton_host.native_deletion_bindings());
+    }
 
     void initialize_core() {
         if (initialization_attempted)
@@ -96,7 +101,6 @@ struct GameNativeVfsApplication::Impl {
         initialization_attempted = true;
 
         auto& deletion = singleton_host.native_deletion_bindings();
-        owner_services.bind_deletion(deletion); // before any type getter/registration
         type_storage.initialize_resource_types(owner_services.types(), common_types);
         type_storage.initialize_memory_00cd8fc0(owner_services.types(), common_types);
         auto& process_pool = game_native_physical_pool_process();
