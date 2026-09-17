@@ -27,6 +27,10 @@ public:
     void publish_game_resource_factory_008f840b();
     void probe_gameplay_effect_memory(const char* label);
     SoundLifetimeAccess sound_lifetime() noexcept;
+    // Lazily compose the scene/camera weak base over the process pool and
+    // canonical manager. Explicit CD8A60 startup must already have returned.
+    // This domain and its deletion binding survive the complete raw drain.
+    NativeWeakOwnerDomain& weak_owners();
     void bind_sound_runtime(GameSoundRuntime*) noexcept;
     // Borrow the same application dispatch table when composing raw VFS
     // services. Bind their contexts before any corresponding owner registers.
@@ -98,6 +102,7 @@ private:
         manager_publication_01090aa0_, resource_support_publication_0108fedc_};
     NativeDiagnosticSinkStorage* volatile diagnostic_publication_0109cf14_{};
     NativeSingletonDeletionBindings deletion_bindings_;
+    std::unique_ptr<NativeWeakOwnerDomain> weak_owners_;
     GameNativeVfsRuntime* vfs_runtime_{};
     std::unique_ptr<GameObserverRuntime> observers_;
 };

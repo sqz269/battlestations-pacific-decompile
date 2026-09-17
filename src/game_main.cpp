@@ -38,6 +38,7 @@
 #include "bsp/game_native_data_bootstrap.hpp"
 #include "bsp/game_native_mutable_crt_data.hpp"
 #include "bsp/game_native_particle_pools.hpp"
+#include "bsp/game_native_weak_pool.hpp"
 #include "bsp/game_native_resource_pools.hpp"
 #include "bsp/game_native_surface_pool.hpp"
 #include "bsp/game_native_texture_pool.hpp"
@@ -424,6 +425,12 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         const int hierarchy_atexit = resource_pools.initialize_hierarchy_once_00cd82d0();
         log.notef("native resource hierarchy pool initialized: atexit=%d storage=process_actual38h "
             "slots=actual88h", hierarchy_atexit);
+        // CD8A60 is at CE363C in the original initializer table, after CD82D0
+        // and before CD9010's physical provider pool (started by VFS).
+        auto& weak_pool = bsp::game::game_native_weak_pool_process();
+        const int weak_atexit = weak_pool.initialize_once_00cd8a60();
+        log.notef("native weak-handle pool initialized: atexit=%d storage=process_actual38h",
+            weak_atexit);
     } catch (const std::exception& failure) {
         std::fprintf(stderr, "bsp_game: native pool startup failed: %s\n", failure.what());
         log.notef("native pool startup failed: %s", failure.what());

@@ -1,5 +1,6 @@
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/game_native_string_process.hpp"
+#include "bsp/game_native_weak_pool.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_observer_runtime.hpp"
 #include "bsp/game_native_vfs_runtime.hpp"
@@ -28,6 +29,15 @@ GameSingletonHost::~GameSingletonHost() {
 
 SoundLifetimeAccess GameSingletonHost::sound_lifetime() noexcept {
     return SoundLifetimeAccess(manager_publication_01090aa0_);
+}
+NativeWeakOwnerDomain& GameSingletonHost::weak_owners() {
+    if (!weak_owners_) {
+        auto& process = game_native_weak_pool_process();
+        weak_owners_ = std::make_unique<NativeWeakOwnerDomain>(sound_lifetime(),
+            process.lock_publication_0109ce90(), process.pool_0109ce94());
+        deletion_bindings_.weak_owner_domain = weak_owners_.get();
+    }
+    return *weak_owners_;
 }
 void GameSingletonHost::bind_sound_runtime(GameSoundRuntime* runtime) noexcept {
     deletion_bindings_.sound_runtime = runtime;

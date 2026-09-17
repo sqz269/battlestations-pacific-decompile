@@ -1,0 +1,1718 @@
+{
+  "packet": "native_weak_pool_process_r85",
+  "owned_files": [
+    "cmake/startup.cmake",
+    "config/names/00cd0000.jsonl",
+    "config/names/00ce0000.jsonl",
+    "config/reconstruction/00cd0000.jsonl",
+    "config/reconstruction/00ce0000.jsonl",
+    "docs/NATIVE_WEAK_POOL_PROCESS_R85.md",
+    "include/bsp/game_hosts_singletons.hpp",
+    "include/bsp/game_native_weak_pool.hpp",
+    "reports/native_weak_pool_process_r85.json",
+    "src/game_hosts_singletons.cpp",
+    "src/game_main.cpp",
+    "src/game_native_weak_pool.cpp"
+  ],
+  "contracts": {
+    "00cd8a60": {
+      "name": "BSP_WeakHandlePool_InitializeStatic",
+      "source_name": "initialize_static_native_weak_pool_00cd8a60",
+      "source": "src/native_weak_owner.cpp",
+      "abi": "No arguments; EAX atexit result; RET. Sets ECX0109CE94 for B004B0; pushes CE1040 for BF6FF5.",
+      "contract": "Existing full22B wrapper bound to process actual38h storage and shared E188B4 allocator list. Explicit application startup, no second initialization, real CRT cleanup registration; preserve first registration status and no rollback on nonzero result."
+    },
+    "00ce1040": {
+      "name": "BSP_WeakHandlePool_DestroyStatic",
+      "source_name": "destroy_static_native_weak_pool_00ce1040",
+      "source": "src/native_weak_owner.cpp",
+      "abi": "No arguments; ECX0109CE94; tail JMP B002C0.",
+      "contract": "Existing full10B exit thunk targets the same process pool; real source CRT cleanup precedes companion and shared-list destruction. Existing pool destructor frees slabs/table and unlinks without clearing stale pool fields."
+    }
+  },
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_spans": [
+    {
+      "address": "00cd8a60",
+      "kind": "function",
+      "length": 22,
+      "hex": "b994ce0901e8467ae2ff684010ce00e881e5f1ff59c3",
+      "sha256": "9869b6836b6c5db2a900e8746625e159998ccb426cc4a4c2b6d0aabdb9f0e949",
+      "live_equals_pe": true,
+      "section": ".text",
+      "pe_raw_backed": true,
+      "unlisted_padding": [],
+      "instructions": [
+        {
+          "address": "00cd8a60",
+          "hex": "b994ce0901",
+          "text": "mov ecx, 0x109ce94"
+        },
+        {
+          "address": "00cd8a65",
+          "hex": "e8467ae2ff",
+          "text": "call 0xb004b0"
+        },
+        {
+          "address": "00cd8a6a",
+          "hex": "684010ce00",
+          "text": "push 0xce1040"
+        },
+        {
+          "address": "00cd8a6f",
+          "hex": "e881e5f1ff",
+          "text": "call 0xbf6ff5"
+        },
+        {
+          "address": "00cd8a74",
+          "hex": "59",
+          "text": "pop ecx"
+        },
+        {
+          "address": "00cd8a75",
+          "hex": "c3",
+          "text": "ret "
+        }
+      ]
+    },
+    {
+      "address": "00ce1040",
+      "kind": "function",
+      "length": 10,
+      "hex": "b994ce0901e976f2e1ff",
+      "sha256": "e943985a272152d0f8b35b552323f8229780e2ff7fac760ce0772d8b404cc7ae",
+      "live_equals_pe": true,
+      "section": ".text",
+      "pe_raw_backed": true,
+      "unlisted_padding": [],
+      "instructions": [
+        {
+          "address": "00ce1040",
+          "hex": "b994ce0901",
+          "text": "mov ecx, 0x109ce94"
+        },
+        {
+          "address": "00ce1045",
+          "hex": "e976f2e1ff",
+          "text": "jmp 0xb002c0"
+        }
+      ]
+    },
+    {
+      "address": "00ce35b0",
+      "kind": "hierarchy_initializer_table_entry",
+      "length": 4,
+      "hex": "d082cd00",
+      "sha256": "c4da8509ab49f0dc471aa33e31a030b70342f2c6f55a62302dec579a9c5a7093",
+      "live_equals_pe": true,
+      "section": ".rdata",
+      "pe_raw_backed": true,
+      "unlisted_padding": [],
+      "instructions": []
+    },
+    {
+      "address": "00ce3634",
+      "kind": "weak_initializer_table_neighbors",
+      "length": 20,
+      "hex": "108acd00308acd00608acd00808acd00c08acd00",
+      "sha256": "2162da6b6f4ad9cb1fcff491757a4933b7d80e72a9202de5fd082459f9275bfe",
+      "live_equals_pe": true,
+      "section": ".rdata",
+      "pe_raw_backed": true,
+      "unlisted_padding": [],
+      "instructions": []
+    },
+    {
+      "address": "00ce369c",
+      "kind": "physical_initializer_table_entry",
+      "length": 4,
+      "hex": "1090cd00",
+      "sha256": "5bd5b6ad54f9620cbb9bbe0bee5049a3e7aa61980672d52eaa37898a6b2e96d3",
+      "live_equals_pe": true,
+      "section": ".rdata",
+      "pe_raw_backed": true,
+      "unlisted_padding": [],
+      "instructions": []
+    },
+    {
+      "address": "0109ce90",
+      "kind": "loader_zero",
+      "length": 60,
+      "hex": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "sha256": "5dcc1b5872dd9ff1c234501f1fefda01f664164e1583c3e1bb3dbea47588ab31",
+      "live_equals_pe": true,
+      "section": ".data",
+      "pe_raw_backed": false,
+      "unlisted_padding": [],
+      "instructions": []
+    }
+  ],
+  "live_pe_verified_bytes": 120,
+  "newly_reconstructed_code_bytes": 0,
+  "calls": [
+    {
+      "address": "00cd8a65",
+      "function": "00cd8a60",
+      "native": "00b004b0"
+    },
+    {
+      "address": "00cd8a6f",
+      "function": "00cd8a60",
+      "native": "00bf6ff5"
+    },
+    {
+      "address": "00ce1045",
+      "function": "00ce1040",
+      "native": "00b002c0",
+      "kind": "tail_jump"
+    }
+  ],
+  "no_ghidra_function": [],
+  "validation": {
+    "strict_build": true,
+    "ctests_passed": 3,
+    "build_log": "local/r85_build.log",
+    "source_sha256": {
+      "include/bsp/game_native_weak_pool.hpp": "42d20499ef1b2c1820f1a037c76f949eb60c7101b0325ee910c3289997745ac4",
+      "src/game_native_weak_pool.cpp": "bb30d57a65dcc2f7ee3844a54f5473987f91bae1d3830cd0ea2cabaad3fd6075",
+      "include/bsp/game_hosts_singletons.hpp": "ca23e974d747d7df836b22f0a40f1ace991f5b3d5af973793be3d0171a0af26b",
+      "src/game_hosts_singletons.cpp": "84d61ec3c49de7698685f2a0e203a921df0da94a7874c14d41b72c8f3c669904",
+      "src/game_main.cpp": "7c52f2d9dbb467b57cde7aa1b83d1db19b60898af413d593d0594ccef7ba2530"
+    },
+    "library_sha256": "eff486cc45e6121fb4df8dfd2c3d8ac86e2822a15114f040a01c3b452b53bdcf",
+    "game_sha256": "62560bcc7a0e7038e2a2e811cbd4e12c6949efd53ac22e8db5102133ad51264b",
+    "probe_sha256": "9e815d2654f7a0fa7a3a208f71b98ef83715a2d14e5e515b3f33fc37abefcfef",
+    "probe_exit": 0,
+    "original_source_scene_cases": 6,
+    "new_repository_tests": 0,
+    "process_pool_actual_crt_exit": true,
+    "probe_scope": "R84 copied original scene normal bodies, concrete source weak/string adapters, production pool and singleton-host domain. Retained handles, shared raw manager drain, actual CRT cleanup/unlink; no native EH.",
+    "run_log": "PASS explicit process startup, real atexit registration, same-list actual38h storage and repeat startup\nPASS real format=21 HRESULT=00000000 result=1\nPASS real format=111 HRESULT=00000000 result=1\nPASS real format=112 HRESULT=00000000 result=1\nPASS real format=114 HRESULT=00000000 result=1\nPASS six recorded original/source HRESULT cases: zero, nonzero success and failure; exact arguments, renderer untouched\nPASS original scene length=0: whole24h fields, raw name, actual weak handle, retained-handle cleanup\nPASS source scene length=0: whole24h fields, raw name, actual weak handle, retained-handle cleanup\nPASS original scene length=12: whole24h fields, raw name, actual weak handle, retained-handle cleanup\nPASS source scene length=12: whole24h fields, raw name, actual weak handle, retained-handle cleanup\nPASS original scene length=513: whole24h fields, raw name, actual weak handle, retained-handle cleanup\nPASS source scene length=513: whole24h fields, raw name, actual weak handle, retained-handle cleanup\nobserver runtime after raw singleton drain: dispatch_owner=null lock_owner=null alias=retained\nsingleton lifetime drained: registered_slots=2 effect_publication=null manager_publication=null factory_publication=null factory_alias=00000000 storage=raw14h/raw10h/raw8h\nRESULT PASS four real format pairs, six HRESULT fixtures, six raw-scene constructor/lifetime cases; weak mutex/string pool/shared manager cleared, process pool retained for actual CRT exit, final API=0. Root/lighting branches, native EH and full distortion initializer NOT executed.\n",
+    "launch_log": "CHILD_EXIT 0\n",
+    "exit_log": "PASS actual CRT CE1040 returned; shared allocator head restored, weak mutex null; companion still alive\n",
+    "application_run": {
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\Release\\bsp_game.exe",
+        "--frames",
+        "2",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\application_r85\\application.log",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--settings-personal-root",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\application_r85\\personal",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--screenshot",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\application_r85\\frontend.png"
+      ],
+      "runtime_sha256": {
+        "xlive.dll": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385",
+        "msidcrl40.dll": "623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee",
+        "ppcrlconfig.dll": "649557d6349ea0658808952c1bbf9a111ec2283c29345c7f904919fd599e5d61",
+        "xlivefnt.dll": "a07e20c09a0c3eac2ed3e6288d67060e82b70595053153866b1cfb4f9958f9a4"
+      },
+      "exe_sha256": "62560bcc7a0e7038e2a2e811cbd4e12c6949efd53ac22e8db5102133ad51264b",
+      "started_utc": "2026-09-17T05:01:48.494572+00:00",
+      "pid": 76784,
+      "returncode": 1,
+      "exit_hex": "00000001",
+      "elapsed": 0.38861970001016743
+    },
+    "baseline_application_run": {
+      "args": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\application_r85_baseline\\bsp_game.exe",
+        "--frames",
+        "2",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\application_r85_baseline\\application.log",
+        "--game-root",
+        "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+        "--settings-personal-root",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\application_r85_baseline\\personal",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--screenshot",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\application_r85_baseline\\frontend.png"
+      ],
+      "runtime_sha256": {
+        "xlive.dll": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385",
+        "msidcrl40.dll": "623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee",
+        "ppcrlconfig.dll": "649557d6349ea0658808952c1bbf9a111ec2283c29345c7f904919fd599e5d61",
+        "xlivefnt.dll": "a07e20c09a0c3eac2ed3e6288d67060e82b70595053153866b1cfb4f9958f9a4"
+      },
+      "exe_sha256": "9d03445ec13f1dc4b213478a78ca5c0ebfd1942ef04ebb6cc82742a28225f6cb",
+      "started_utc": "2026-09-17T05:02:56.727458+00:00",
+      "pid": 39840,
+      "returncode": 1,
+      "exit_hex": "00000001",
+      "elapsed": 0.2836045000003651
+    },
+    "application_log": "native-data handoff mapped verified original image I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe\nnative particle pools initialized: model_atexit=0 parameter_atexit=0 storage=process_actual38h/actual38h\nnative hardware-layout tree initialized: atexit=0 storage=process_actual0ch\nnative D3D9 surface pool initialized: atexit=0 storage=process_actual38h\nnative texture2D pool initialized: atexit=0 storage=process_actual38h\nnative graphics pool initialized: global=0108db70 atexit=0 storage=process_actual38h\nnative graphics pool initialized: global=0108dba8 atexit=0 storage=process_actual38h\nnative graphics pool initialized: global=0108fbf8 atexit=0 storage=process_actual38h\nnative graphics pool initialized: global=0108fd38 atexit=0 storage=process_actual38h\nnative graphics pool initialized: global=0108fd70 atexit=0 storage=process_actual38h\nnative graphics pool initialized: global=0108fda8 atexit=0 storage=process_actual38h\nnative graphics pool initialized: global=0108fde0 atexit=0 storage=process_actual38h\nnative graphics pool initialized: global=0108fe18 atexit=0 storage=process_actual38h\nnative graphics pool initialized: global=0108fe50 atexit=0 storage=process_actual38h\nnative graphics pool initialized: global=0108fe9c atexit=0 storage=process_actual38h\nnative Lua globals initialized: region_atexit=0 storage=process_actual0ch\nnative geometry pools initialized: mesh_atexit=0 section_atexit=0 storage=process_actual38h/actual38h\nnative resource hierarchy pool initialized: atexit=0 storage=process_actual38h slots=actual88h\nnative weak-handle pool initialized: atexit=0 storage=process_actual38h\nx87 precision before Direct3D: 53-bit (double) (_controlfp_s & _MCW_PC = 0x00010000)\nbsp_game milestone 2l, frames=2 press_start_frame=-1 screenshot_frame=-1 screenshot_mission_frame=-1 menu_select=(none) mission_frames=0 mission_complete_frame=-1 order_frame=-1 order=throttle 0.000 rudder 0.000 mission_frame_seconds=0.0000 trajectory_csv=(none) log=J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\application_r85\\application.log\ngame root I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\nhost ObserverRuntime::initialize_dispatch [00ccd6a0] concrete\nobserver runtime initialized: dispatch_owner=present alias=owner+4 lock=lazy manager=application_raw14h storage=raw14h/raw8h\npending entity CRT owners initialized: destroy=present kill=present counts=0/0 atexit=0/0 storage=process_raw24h\nhost StartupHost::com_initialize [008f81f8] concrete\nhost StartupHost::com_initialize_security [008f820a] concrete\nhost StartupHost::game_explorer_create [008f8245] concrete\nhost StartupHost::current_directory [008f8254] concrete\nhost StartupHost::game_explorer_verify_access [008f82aa] concrete\nhost StartupHost::game_explorer_release [008f82c4] concrete\nhost StartupHost::com_uninitialize [008f82cc] concrete\nhost StartupHost::random_threads_initialize [00bd2e20] concrete\nhost StartupHost::allocate_thread_slot [00bf681b] concrete\nhost StartupHost::random_threads_register_current [00bd2fe0] concrete\nhost StartupHost::create_single_instance_mutex [008f8301] concrete\nhost StartupHost::set_thread_affinity_to_first_processor [008f83fc] concrete\ngame resource factory published: owner=006C2588 alias=006C2588 storage=raw8h\nhost StartupHost::publish_game_resource_factory [008f840b] concrete\nhost StartupHost::application_construct [00737970] concrete\nhost StartupHost::application_initialize [0073d410] concrete\ninitialize flags=0 mode=cachedload\nhost Phase 0 capture_module_directory [00439040] concrete\nmodule directory j:\\prog\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\release\\\nhost Phase 0 construct_allocation_stats [00be2900] concrete\nhost Phase 0 ensure_actual_frame_clock [0073d480] concrete\nhost Phase 0 install_object_handle_resolvers [006ad0d0] concrete\nhardware profile incomplete under HKLM\\SOFTWARE\\Eidos\\BSM_HWD; the probe returns without comparing anything\nhost Phase 2 actual VFS mount/scan/search [0073d604] concrete\nnative VFS loose mounts=3 fresh package scans=2; package entry counts unrecorded\nhost Phase 3 construct_win32_platform [00becda0] concrete\nhost SaveStorageHost::special_folder_path [00beb2f3] concrete\nhost SaveStorageHost::create_directory [00beb35e] concrete\nhost Phase 3 initialize_save_storage [00beb2c0] concrete\nsave directory C:\\Users\\sqz269\\Documents\\Battlestations-Pacific\\save\nhost Phase 3 parse_command_line [0073ce20] concrete\ncommand line cached_load=1 fixed_frame_rate=0 file_access_log=0\nhost Factory tail actual MPAK registry/cache/lock [0073d94f] concrete\nvfs loose mounts requested=3 created=3 package scans=2\nnative renderer constructed: owner=007068B8 api=00708660 lua=03F13670 worker=52676 storage=actual1d94h\nrenderer capabilities from actual owner api=00708660 pixel_version=0x0300 shader_ceiling=2 resolutions=25\nhost Phase 5 input_script_tables [006ab6b0/006a7be0] concrete\ninput scripts devices=4 input_names=16 controller_names=12 presets_lua=03EF1680 data_tables_started=1 runtime_settings_loaded=0\nnative Lua fundamentals: published=1 getters=6 storage=raw0ch shared_globals=actual0ch\nhost GameSettingsHost::build_language_catalog [008d7bc0] concrete\nsettings catalog entries=1\nsettings native resolution pairs=25 shader ceiling=2 pixel version=0x0300\nhost GameSettingsHost::rebuild_antialias_levels [00b295c0] concrete\nsettings AA surface format=113 supported levels=4\nhost Phase 5 load_game_settings [008d8190] concrete\noptions file J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\application_r85\\personal\\Battlestations-Pacific\\options.txt loaded\nsettings resolution=800x600 index=3 fullscreen=0 vsync=0 antialias=0 shader_model=2 language=englishauthentic\nstartup failed: FMOD bank raw-length output unavailable\nsummary window_created=0 device_created=0 device_hr=0x80004005 back_buffer=0x0 frames_presented=0 presents_skipped=0 loop_finished=0 exit_code=1\nsummary vfs_ready=1 loose_mounts=3/3 package_scans=2 cachedload=1 probes=0/0\nsummary options_file=1 path=J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\application_r85\\personal\\Battlestations-Pacific\\options.txt language=englishauthentic resolution=800x600 fullscreen=0 vsync=0 antialias=0\nsummary input_scripts_ready=1 devices=4 input_names=16 controller_names=12 renderer_api_shared=0 locale_keys=0 locale_files=0\nsummary fonts_loaded=0 font_resource_opens=0 fingerprint_defined_bytes=0\nsummary gui_resources=0 pages=0/0 widgets=0 widgets_with_texture=0\nsummary bridge_open=0 atlas=(none) atlas_items=0 textures=0 quads=0 frames=0\nsummary init_tail hardware_probe=0 stored_values=0 factories=0 parsers=0 pak_registry=0 pak_lock=0 decals=0\nsummary frontend title_init=0 press_start_slot=-1 screens=0 screen_pages=0 pump_frames=0 enters=0 exits=0 commits=0\nsummary mainmenu press_start_frame=-1 injected=0 shell=0 manager=0 screen=0 step=PressStartPoll state=0\nsummary text bridge=0 widgets=0 runs=0 glyphs=0 quads=0\nhost methods 31 concrete, 0 unimplemented\n  ObserverRuntime::initialize_dispatch                     00ccd6a0             concrete      calls=1\n  StartupHost::com_initialize                              008f81f8             concrete      calls=1\n  StartupHost::com_initialize_security                     008f820a             concrete      calls=1\n  StartupHost::game_explorer_create                        008f8245             concrete      calls=1\n  StartupHost::current_directory                           008f8254             concrete      calls=1\n  StartupHost::game_explorer_verify_access                 008f82aa             concrete      calls=1\n  StartupHost::game_explorer_release                       008f82c4             concrete      calls=1\n  StartupHost::com_uninitialize                            008f82cc             concrete      calls=1\n  StartupHost::random_threads_initialize                   00bd2e20             concrete      calls=1\n  StartupHost::allocate_thread_slot                        00bf681b             concrete      calls=1\n  StartupHost::random_threads_register_current             00bd2fe0             concrete      calls=1\n  StartupHost::create_single_instance_mutex                008f8301             concrete      calls=1\n  StartupHost::set_thread_affinity_to_first_processor      008f83fc             concrete      calls=1\n  StartupHost::publish_game_resource_factory               008f840b             concrete      calls=1\n  StartupHost::application_construct                       00737970             concrete      calls=1\n  StartupHost::application_initialize                      0073d410             concrete      calls=1\n  Phase 0 capture_module_directory                         00439040             concrete      calls=1\n  Phase 0 construct_allocation_stats                       00be2900             concrete      calls=1\n  Phase 0 ensure_actual_frame_clock                        0073d480             concrete      calls=1\n  Phase 0 install_object_handle_resolvers                  006ad0d0             concrete      calls=1\n  Phase 2 actual VFS mount/scan/search                     0073d604             concrete      calls=1\n  Phase 3 construct_win32_platform                         00becda0             concrete      calls=1\n  SaveStorageHost::special_folder_path                     00beb2f3             concrete      calls=1\n  SaveStorageHost::create_directory                        00beb35e             concrete      calls=2\n  Phase 3 initialize_save_storage                          00beb2c0             concrete      calls=1\n  Phase 3 parse_command_line                               0073ce20             concrete      calls=1\n  Factory tail actual MPAK registry/cache/lock             0073d94f             concrete      calls=1\n  Phase 5 input_script_tables                              006ab6b0/006a7be0    concrete      calls=1\n  GameSettingsHost::build_language_catalog                 008d7bc0             concrete      calls=1\n  GameSettingsHost::rebuild_antialias_levels               00b295c0             concrete      calls=1\n  Phase 5 load_game_settings                               008d8190             concrete      calls=1\nnative renderer incomplete; actual destructor requires completed device/default surfaces, retaining native ownership until exit\n",
+    "baseline_application_log": "native-data handoff mapped verified original image I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe\nnative particle pools initialized: model_atexit=0 parameter_atexit=0 storage=process_actual38h/actual38h\nnative hardware-layout tree initialized: atexit=0 storage=process_actual0ch\nnative D3D9 surface pool initialized: atexit=0 storage=process_actual38h\nnative texture2D pool initialized: atexit=0 storage=process_actual38h\nnative graphics pool initialized: global=0108db70 atexit=0 storage=process_actual38h\nnative graphics pool initialized: global=0108dba8 atexit=0 storage=process_actual38h\nnative graphics pool initialized: global=0108fbf8 atexit=0 storage=process_actual38h\nnative graphics pool initialized: global=0108fd38 atexit=0 storage=process_actual38h\nnative graphics pool initialized: global=0108fd70 atexit=0 storage=process_actual38h\nnative graphics pool initialized: global=0108fda8 atexit=0 storage=process_actual38h\nnative graphics pool initialized: global=0108fde0 atexit=0 storage=process_actual38h\nnative graphics pool initialized: global=0108fe18 atexit=0 storage=process_actual38h\nnative graphics pool initialized: global=0108fe50 atexit=0 storage=process_actual38h\nnative graphics pool initialized: global=0108fe9c atexit=0 storage=process_actual38h\nnative Lua globals initialized: region_atexit=0 storage=process_actual0ch\nnative geometry pools initialized: mesh_atexit=0 section_atexit=0 storage=process_actual38h/actual38h\nnative resource hierarchy pool initialized: atexit=0 storage=process_actual38h slots=actual88h\nx87 precision before Direct3D: 53-bit (double) (_controlfp_s & _MCW_PC = 0x00010000)\nbsp_game milestone 2l, frames=2 press_start_frame=-1 screenshot_frame=-1 screenshot_mission_frame=-1 menu_select=(none) mission_frames=0 mission_complete_frame=-1 order_frame=-1 order=throttle 0.000 rudder 0.000 mission_frame_seconds=0.0000 trajectory_csv=(none) log=J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\application_r85_baseline\\application.log\ngame root I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\nhost ObserverRuntime::initialize_dispatch [00ccd6a0] concrete\nobserver runtime initialized: dispatch_owner=present alias=owner+4 lock=lazy manager=application_raw14h storage=raw14h/raw8h\npending entity CRT owners initialized: destroy=present kill=present counts=0/0 atexit=0/0 storage=process_raw24h\nhost StartupHost::com_initialize [008f81f8] concrete\nhost StartupHost::com_initialize_security [008f820a] concrete\nhost StartupHost::game_explorer_create [008f8245] concrete\nhost StartupHost::current_directory [008f8254] concrete\nhost StartupHost::game_explorer_verify_access [008f82aa] concrete\nhost StartupHost::game_explorer_release [008f82c4] concrete\nhost StartupHost::com_uninitialize [008f82cc] concrete\nhost StartupHost::random_threads_initialize [00bd2e20] concrete\nhost StartupHost::allocate_thread_slot [00bf681b] concrete\nhost StartupHost::random_threads_register_current [00bd2fe0] concrete\nhost StartupHost::create_single_instance_mutex [008f8301] concrete\nhost StartupHost::set_thread_affinity_to_first_processor [008f83fc] concrete\ngame resource factory published: owner=00640E30 alias=00640E30 storage=raw8h\nhost StartupHost::publish_game_resource_factory [008f840b] concrete\nhost StartupHost::application_construct [00737970] concrete\nhost StartupHost::application_initialize [0073d410] concrete\ninitialize flags=0 mode=cachedload\nhost Phase 0 capture_module_directory [00439040] concrete\nmodule directory j:\\prog\\battlestations-pacific-decompile-orch4-20260915\\local\\application_r85_baseline\\\nhost Phase 0 construct_allocation_stats [00be2900] concrete\nhost Phase 0 ensure_actual_frame_clock [0073d480] concrete\nhost Phase 0 install_object_handle_resolvers [006ad0d0] concrete\nhardware profile incomplete under HKLM\\SOFTWARE\\Eidos\\BSM_HWD; the probe returns without comparing anything\nhost Phase 2 actual VFS mount/scan/search [0073d604] concrete\nnative VFS loose mounts=3 fresh package scans=2; package entry counts unrecorded\nhost Phase 3 construct_win32_platform [00becda0] concrete\nhost SaveStorageHost::special_folder_path [00beb2f3] concrete\nhost SaveStorageHost::create_directory [00beb35e] concrete\nhost Phase 3 initialize_save_storage [00beb2c0] concrete\nsave directory C:\\Users\\sqz269\\Documents\\Battlestations-Pacific\\save\nhost Phase 3 parse_command_line [0073ce20] concrete\ncommand line cached_load=1 fixed_frame_rate=0 file_access_log=0\nhost Factory tail actual MPAK registry/cache/lock [0073d94f] concrete\nvfs loose mounts requested=3 created=3 package scans=2\nnative renderer constructed: owner=00681CD8 api=00683A80 lua=03E27150 worker=73712 storage=actual1d94h\nrenderer capabilities from actual owner api=00683A80 pixel_version=0x0300 shader_ceiling=2 resolutions=25\nhost Phase 5 input_script_tables [006ab6b0/006a7be0] concrete\ninput scripts devices=4 input_names=16 controller_names=12 presets_lua=03E5FDF8 data_tables_started=1 runtime_settings_loaded=0\nnative Lua fundamentals: published=1 getters=6 storage=raw0ch shared_globals=actual0ch\nhost GameSettingsHost::build_language_catalog [008d7bc0] concrete\nsettings catalog entries=1\nsettings native resolution pairs=25 shader ceiling=2 pixel version=0x0300\nhost GameSettingsHost::rebuild_antialias_levels [00b295c0] concrete\nsettings AA surface format=113 supported levels=4\nhost Phase 5 load_game_settings [008d8190] concrete\noptions file J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\application_r85_baseline\\personal\\Battlestations-Pacific\\options.txt loaded\nsettings resolution=800x600 index=3 fullscreen=0 vsync=0 antialias=0 shader_model=2 language=englishauthentic\nstartup failed: FMOD bank raw-length output unavailable\nsummary window_created=0 device_created=0 device_hr=0x80004005 back_buffer=0x0 frames_presented=0 presents_skipped=0 loop_finished=0 exit_code=1\nsummary vfs_ready=1 loose_mounts=3/3 package_scans=2 cachedload=1 probes=0/0\nsummary options_file=1 path=J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\application_r85_baseline\\personal\\Battlestations-Pacific\\options.txt language=englishauthentic resolution=800x600 fullscreen=0 vsync=0 antialias=0\nsummary input_scripts_ready=1 devices=4 input_names=16 controller_names=12 renderer_api_shared=0 locale_keys=0 locale_files=0\nsummary fonts_loaded=0 font_resource_opens=0 fingerprint_defined_bytes=0\nsummary gui_resources=0 pages=0/0 widgets=0 widgets_with_texture=0\nsummary bridge_open=0 atlas=(none) atlas_items=0 textures=0 quads=0 frames=0\nsummary init_tail hardware_probe=0 stored_values=0 factories=0 parsers=0 pak_registry=0 pak_lock=0 decals=0\nsummary frontend title_init=0 press_start_slot=-1 screens=0 screen_pages=0 pump_frames=0 enters=0 exits=0 commits=0\nsummary mainmenu press_start_frame=-1 injected=0 shell=0 manager=0 screen=0 step=PressStartPoll state=0\nsummary text bridge=0 widgets=0 runs=0 glyphs=0 quads=0\nhost methods 31 concrete, 0 unimplemented\n  ObserverRuntime::initialize_dispatch                     00ccd6a0             concrete      calls=1\n  StartupHost::com_initialize                              008f81f8             concrete      calls=1\n  StartupHost::com_initialize_security                     008f820a             concrete      calls=1\n  StartupHost::game_explorer_create                        008f8245             concrete      calls=1\n  StartupHost::current_directory                           008f8254             concrete      calls=1\n  StartupHost::game_explorer_verify_access                 008f82aa             concrete      calls=1\n  StartupHost::game_explorer_release                       008f82c4             concrete      calls=1\n  StartupHost::com_uninitialize                            008f82cc             concrete      calls=1\n  StartupHost::random_threads_initialize                   00bd2e20             concrete      calls=1\n  StartupHost::allocate_thread_slot                        00bf681b             concrete      calls=1\n  StartupHost::random_threads_register_current             00bd2fe0             concrete      calls=1\n  StartupHost::create_single_instance_mutex                008f8301             concrete      calls=1\n  StartupHost::set_thread_affinity_to_first_processor      008f83fc             concrete      calls=1\n  StartupHost::publish_game_resource_factory               008f840b             concrete      calls=1\n  StartupHost::application_construct                       00737970             concrete      calls=1\n  StartupHost::application_initialize                      0073d410             concrete      calls=1\n  Phase 0 capture_module_directory                         00439040             concrete      calls=1\n  Phase 0 construct_allocation_stats                       00be2900             concrete      calls=1\n  Phase 0 ensure_actual_frame_clock                        0073d480             concrete      calls=1\n  Phase 0 install_object_handle_resolvers                  006ad0d0             concrete      calls=1\n  Phase 2 actual VFS mount/scan/search                     0073d604             concrete      calls=1\n  Phase 3 construct_win32_platform                         00becda0             concrete      calls=1\n  SaveStorageHost::special_folder_path                     00beb2f3             concrete      calls=1\n  SaveStorageHost::create_directory                        00beb35e             concrete      calls=2\n  Phase 3 initialize_save_storage                          00beb2c0             concrete      calls=1\n  Phase 3 parse_command_line                               0073ce20             concrete      calls=1\n  Factory tail actual MPAK registry/cache/lock             0073d94f             concrete      calls=1\n  Phase 5 input_script_tables                              006ab6b0/006a7be0    concrete      calls=1\n  GameSettingsHost::build_language_catalog                 008d7bc0             concrete      calls=1\n  GameSettingsHost::rebuild_antialias_levels               00b295c0             concrete      calls=1\n  Phase 5 load_game_settings                               008d8190             concrete      calls=1\nnative renderer incomplete; actual destructor requires completed device/default surfaces, retaining native ownership until exit\n",
+    "application_success": false,
+    "application_failure_predates_change": true,
+    "call_verification": {
+      "direct_calls": 2,
+      "tail_jumps": 1,
+      "checked": 3,
+      "failed": 0,
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\reports\\native_weak_pool_process_r85.json: 3 call rows checked, 0 failed\n"
+    }
+  },
+  "unproved": [
+    "Full distortion/post20/material/camera paths and populated scene roots/lighting",
+    "Original CRT machine execution/native entry ABI/FH3/SEH and failure-injected registration/constructor cleanup",
+    "Current successful application startup and gameplay; both current and sealed R84 fail at FMOD bank raw-length query"
+  ],
+  "follow_up": [
+    "Investigate FMOD bank raw-length failure without neutralizing native outputs",
+    "Execute complete post/material/camera path and bind B107F0",
+    "Validate application and gameplay"
+  ],
+  "evidence_scope": "Production process/application wiring and normal scene/CRT lifetime; current application startup failure reproduced with immutable prior executable.",
+  "ghidra_annotations": {
+    "prior_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\ghidra-annotations-20260917T050707Z.json",
+    "prior_values": [
+      {
+        "address": "00cd8a60",
+        "before": {
+          "address": "00cd8a60",
+          "function_name": "BSP_WeakHandlePool_InitializeStatic",
+          "comment": "[BSP reconstruction 00cd8a60]\nHypothesis; No arguments; EAX atexit result; RET; sets ECX0109CE94 for shared constructor. Native[00cd8a60,00cd8a76) fully byte-matches installed PE. Actual weak owner/pool storage; new C++ ABI. Strict Win32 build, existing2CTests and one host fixture passed; no weak-owner native differential/game claim. docs/NATIVE_WEAK_OWNER.md; reports/native_weak_owner.json. Ghidra read-only; old names/comments and pending annotation recorded."
+        },
+        "after": {
+          "address": "00cd8a60",
+          "name": "BSP_WeakHandlePool_InitializeStatic",
+          "evidence": "Hypothesis; No arguments; EAX atexit result; RET; sets ECX0109CE94 for shared constructor. Native[00cd8a60,00cd8a76) fully byte-matches installed PE. Actual weak owner/pool storage; new C++ ABI. Strict Win32 build, existing2CTests and one host fixture passed; no weak-owner native differential/game claim. docs/NATIVE_WEAK_OWNER.md; reports/native_weak_owner.json. Ghidra read-only; old names/comments and pending annotation recorded. | Descriptive hypothesis, not a recovered symbol. Existing full22B wrapper bound to process actual38h storage and shared E188B4 allocator list. Explicit application startup, no second initialization, real CRT cleanup registration; preserve first registration status and no rollback on nonzero result. No arguments; EAX atexit result; RET. Sets ECX0109CE94 for B004B0; pushes CE1040 for BF6FF5. R85:120 selected live/PE bytes and3 direct transfers checked; strict Win32/3CTests pass. Six original/source scene cases use process pool and application raw manager; retained handles and actual CRT exit/unlink pass. Current application weak-pool registration returns0, then fails at FMOD bank raw-length query; immutable R84 executable reproduces failure. Full resource initialization/nativeEH/gameplay unproved. docs/NATIVE_WEAK_POOL_PROCESS_R85.md; reports/native_weak_pool_process_r85.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ce1040",
+        "before": {
+          "address": "00ce1040",
+          "function_name": "BSP_WeakHandlePool_DestroyStatic",
+          "comment": "[BSP inventory 00ce1040] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)\n\n[BSP reconstruction 00ce1040]\nHypothesis; No arguments; sets ECX0109CE94; tail JMP00B002C0. Native[00ce1040,00ce104a) fully byte-matches installed PE. Actual weak owner/pool storage; new C++ ABI. Strict Win32 build, existing2CTests and one host fixture passed; no weak-owner native differential/game claim. docs/NATIVE_WEAK_OWNER.md; reports/native_weak_owner.json. Ghidra read-only; old names/comments and pending annotation recorded."
+        },
+        "after": {
+          "address": "00ce1040",
+          "name": "BSP_WeakHandlePool_DestroyStatic",
+          "evidence": "Hypothesis; No arguments; sets ECX0109CE94; tail JMP00B002C0. Native[00ce1040,00ce104a) fully byte-matches installed PE. Actual weak owner/pool storage; new C++ ABI. Strict Win32 build, existing2CTests and one host fixture passed; no weak-owner native differential/game claim. docs/NATIVE_WEAK_OWNER.md; reports/native_weak_owner.json. Ghidra read-only; old names/comments and pending annotation recorded. | Descriptive hypothesis, not a recovered symbol. Existing full10B exit thunk targets the same process pool; real source CRT cleanup precedes companion and shared-list destruction. Existing pool destructor frees slabs/table and unlinks without clearing stale pool fields. No arguments; ECX0109CE94; tail JMP B002C0. R85:120 selected live/PE bytes and3 direct transfers checked; strict Win32/3CTests pass. Six original/source scene cases use process pool and application raw manager; retained handles and actual CRT exit/unlink pass. Current application weak-pool registration returns0, then fails at FMOD bank raw-length query; immutable R84 executable reproduces failure. Full resource initialization/nativeEH/gameplay unproved. docs/NATIVE_WEAK_POOL_PROCESS_R85.md; reports/native_weak_pool_process_r85.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "prior_ledger_records": {
+      "00cd8a60": {
+        "names": [
+          {
+            "address": "00cd8a60",
+            "name": "BSP_WeakHandlePool_InitializeStatic",
+            "evidence": "Hypothesis; No arguments; EAX atexit result; RET; sets ECX0109CE94 for shared constructor. Native[00cd8a60,00cd8a76) fully byte-matches installed PE. Actual weak owner/pool storage; new C++ ABI. Strict Win32 build, existing2CTests and one host fixture passed; no weak-owner native differential/game claim. docs/NATIVE_WEAK_OWNER.md; reports/native_weak_owner.json. Ghidra read-only; old names/comments and pending annotation recorded."
+          }
+        ],
+        "reconstruction": [
+          {
+            "address": "00cd8a60",
+            "name": "initialize_static_native_weak_pool_00cd8a60",
+            "cpp_symbol": "initialize_static_native_weak_pool_00cd8a60",
+            "source": "src/native_weak_owner.cpp",
+            "native_end_exclusive": "00cd8a76",
+            "last_instruction": "00cd8a75",
+            "last_instruction_length": 1,
+            "original_abi": "No arguments; EAX atexit result; RET; sets ECX0109CE94 for shared constructor.",
+            "status": "actual_storage_reconstructed_strict_win32_build_and_focused_host_fixture_passed",
+            "evidence": "Hypothesis; No arguments; EAX atexit result; RET; sets ECX0109CE94 for shared constructor. Native[00cd8a60,00cd8a76) fully byte-matches installed PE. Actual weak owner/pool storage; new C++ ABI. Strict Win32 build, existing2CTests and one host fixture passed; no weak-owner native differential/game claim. docs/NATIVE_WEAK_OWNER.md; reports/native_weak_owner.json. Ghidra read-only; old names/comments and pending annotation recorded.",
+            "abi_compatible": false,
+            "game_validated": false,
+            "remaining": "Ghidra annotation/false-free repairs; remaining weak virtuals; native owner differential and game validation.",
+            "kind": "function"
+          }
+        ]
+      },
+      "00ce1040": {
+        "names": [
+          {
+            "address": "00ce1040",
+            "name": "BSP_WeakHandlePool_DestroyStatic",
+            "evidence": "Hypothesis; No arguments; sets ECX0109CE94; tail JMP00B002C0. Native[00ce1040,00ce104a) fully byte-matches installed PE. Actual weak owner/pool storage; new C++ ABI. Strict Win32 build, existing2CTests and one host fixture passed; no weak-owner native differential/game claim. docs/NATIVE_WEAK_OWNER.md; reports/native_weak_owner.json. Ghidra read-only; old names/comments and pending annotation recorded."
+          }
+        ],
+        "reconstruction": [
+          {
+            "address": "00ce1040",
+            "name": "destroy_static_native_weak_pool_00ce1040",
+            "cpp_symbol": "destroy_static_native_weak_pool_00ce1040",
+            "source": "src/native_weak_owner.cpp",
+            "native_end_exclusive": "00ce104a",
+            "last_instruction": "00ce1045",
+            "last_instruction_length": 5,
+            "original_abi": "No arguments; sets ECX0109CE94; tail JMP00B002C0.",
+            "status": "actual_storage_reconstructed_strict_win32_build_and_focused_host_fixture_passed",
+            "evidence": "Hypothesis; No arguments; sets ECX0109CE94; tail JMP00B002C0. Native[00ce1040,00ce104a) fully byte-matches installed PE. Actual weak owner/pool storage; new C++ ABI. Strict Win32 build, existing2CTests and one host fixture passed; no weak-owner native differential/game claim. docs/NATIVE_WEAK_OWNER.md; reports/native_weak_owner.json. Ghidra read-only; old names/comments and pending annotation recorded.",
+            "abi_compatible": false,
+            "game_validated": false,
+            "remaining": "Ghidra annotation/false-free repairs; remaining weak virtuals; native owner differential and game validation.",
+            "kind": "function"
+          }
+        ]
+      }
+    },
+    "status": "Existing two names retained, evidence appended and saved through locked tool; both exports forced."
+  },
+  "ledger_receipts": [
+    "00cd8a60 -> BSP_WeakHandlePool_InitializeStatic\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00cd8a60\", \"name\": \"BSP_WeakHandlePool_InitializeStatic\", \"evidence\": \"Hypothesis; No arguments; EAX atexit result; RET; sets ECX0109CE94 for shared constructor. Native[00cd8a60,00cd8a76) fully byte-matches installed PE. Actual weak owner/pool storage; new C++ ABI. Strict Win32 build, existing2CTests and one host fixture passed; no weak-owner native differential/game claim. docs/NATIVE_WEAK_OWNER.md; reports/native_weak_owner.json. Ghidra read-only; old names/comments and pending annotation recorded.\"})\n",
+    "00cd8a60 function initialize_static_native_weak_pool_00cd8a60\nreplaced (previous record stays in git history): {\"address\": \"00cd8a60\", \"name\": \"initialize_static_native_weak_pool_00cd8a60\", \"cpp_symbol\": \"initialize_static_native_weak_pool_00cd8a60\", \"source\": \"src/native_weak_owner.cpp\", \"native_end_exclusive\": \"00cd8a76\", \"last_instruction\": \"00cd8a75\", \"last_instruction_length\": 1, \"original_abi\": \"No arguments; EAX atexit result; RET; sets ECX0109CE94 for shared constructor.\", \"status\": \"actual_storage_reconstructed_strict_win32_build_and_focused_host_fixture_passed\", \"evidence\": \"Hypothesis; No arguments; EAX atexit result; RET; sets ECX0109CE94 for shared constructor. Native[00cd8a60,00cd8a76) fully byte-matches installed PE. Actual weak owner/pool storage; new C++ ABI. Strict Win32 build, existing2CTests and one host fixture passed; no weak-owner native differential/game claim. docs/NATIVE_WEAK_OWNER.md; reports/native_weak_owner.json. Ghidra read-only; old names/comments and pending annotation recorded.\", \"abi_compatible\": false, \"game_validated\": false, \"remaining\": \"Ghidra annotation/false-free repairs; remaining weak virtuals; native owner differential and game validation.\", \"kind\": \"function\"}\n",
+    "00ce1040 -> BSP_WeakHandlePool_DestroyStatic\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00ce1040\", \"name\": \"BSP_WeakHandlePool_DestroyStatic\", \"evidence\": \"Hypothesis; No arguments; sets ECX0109CE94; tail JMP00B002C0. Native[00ce1040,00ce104a) fully byte-matches installed PE. Actual weak owner/pool storage; new C++ ABI. Strict Win32 build, existing2CTests and one host fixture passed; no weak-owner native differential/game claim. docs/NATIVE_WEAK_OWNER.md; reports/native_weak_owner.json. Ghidra read-only; old names/comments and pending annotation recorded.\"})\n",
+    "00ce1040 function destroy_static_native_weak_pool_00ce1040\nreplaced (previous record stays in git history): {\"address\": \"00ce1040\", \"name\": \"destroy_static_native_weak_pool_00ce1040\", \"cpp_symbol\": \"destroy_static_native_weak_pool_00ce1040\", \"source\": \"src/native_weak_owner.cpp\", \"native_end_exclusive\": \"00ce104a\", \"last_instruction\": \"00ce1045\", \"last_instruction_length\": 5, \"original_abi\": \"No arguments; sets ECX0109CE94; tail JMP00B002C0.\", \"status\": \"actual_storage_reconstructed_strict_win32_build_and_focused_host_fixture_passed\", \"evidence\": \"Hypothesis; No arguments; sets ECX0109CE94; tail JMP00B002C0. Native[00ce1040,00ce104a) fully byte-matches installed PE. Actual weak owner/pool storage; new C++ ABI. Strict Win32 build, existing2CTests and one host fixture passed; no weak-owner native differential/game claim. docs/NATIVE_WEAK_OWNER.md; reports/native_weak_owner.json. Ghidra read-only; old names/comments and pending annotation recorded.\", \"abi_compatible\": false, \"game_validated\": false, \"remaining\": \"Ghidra annotation/false-free repairs; remaining weak virtuals; native owner differential and game validation.\", \"kind\": \"function\"}\n"
+  ],
+  "tested_artifact_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r85\\native-weak-pool-process-tested-r85.zip",
+    "sha256": "9896261ac2b617dec417819782355b77c133af9e1f5b225e5ebb1524f9cb9cb3",
+    "files": 266,
+    "uncompressed_bytes": 85282012,
+    "utc": "2026-09-17T05:07:35.448090+00:00",
+    "head": "9f02c66d90d86998d01369f606b4f9483363fd13",
+    "manifest": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/game_native_weak_pool.obj",
+        "size": 16098,
+        "sha256": "2808a68205919b181c972faed2c6bdb71bea3583e0241a204848d221e56a8d47"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/gui_camera_store_owner.obj",
+        "size": 42305,
+        "sha256": "1e12f8926754e236f6ea2321592d01d54d9cb7d8ae6ca353a6b317cd3a11b475"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+        "size": 22461,
+        "sha256": "3c14b11311cdf8597e723405890743f03cc56ee26b36332d5f9219c1ec147f27"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_weak_owner.obj",
+        "size": 33294,
+        "sha256": "f71f9f5c0ea05c19f98cf547840e00910b9db610f611d5107e9871e812091291"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "size": 234388,
+        "sha256": "c679e324e3fa65fb63a346fa3f0f6e499ea59bcf89cf5965ee3ca36a92f6fcb4"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ai_group_think.obj",
+        "size": 6132,
+        "sha256": "1a5a954ca13857d528fff56b252c7be08a9f4de0e0d73853671c1070ee911008"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ai_planners.obj",
+        "size": 12369,
+        "sha256": "d85f084da30a7494577929480a64aa46635e89f538773f6d8c0478202f713744"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/airfield_taxi.obj",
+        "size": 4203,
+        "sha256": "1521ca61bcfdcb643b238bdd083aebfe6e918137a84000c89a7a359846d7334f"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/command_completion.obj",
+        "size": 77478,
+        "sha256": "d9b010aaa9af434b45383c157da901103ee1a78226809ae35bb6b80ff061e6e0"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_avoid_zone_runtime.obj",
+        "size": 359966,
+        "sha256": "71973a6cc32f5f9f95474440ebe9bc9778af996815102011941c42c446607b30"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+        "size": 727351,
+        "sha256": "2c5dce3407e9b7f0de3594975cd75de1cdab9664ccfe4968a35e916e79515521"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_commands.obj",
+        "size": 338899,
+        "sha256": "1802b816c50f89f261934c4f6a758cf497902e02b4a6f56ef66099ebf0e42fb8"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_fixed_step.obj",
+        "size": 40556,
+        "sha256": "c1f438cce0dcac0a69480784bb00c36ef80aec43b36e17d7ff9820cccdf40a0a"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_fonts.obj",
+        "size": 147019,
+        "sha256": "2d90f4bb9b28ce23d0960891387bf1169af56fa9cdf30b98d2e56b8de203283e"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_frontend.obj",
+        "size": 705704,
+        "sha256": "7cd237e44ecf86f5ce1613d94336d720442e1fd3093c308ce01e17398d9ff8b4"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_gunnery.obj",
+        "size": 671166,
+        "sha256": "6700bdb8f62b05048410274b172682ed6ca6ab63a45d930f848541770d769a3a"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_hud.obj",
+        "size": 210381,
+        "sha256": "7873f59430db1e04a6913b4a2be23b6ac0e30a8b0f611c670d2ac1ecfe5f30ff"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_hud_world.obj",
+        "size": 222447,
+        "sha256": "7ce99912d39d416c3b61fbd191360c19842ace2b921e97c4bf006184086895bb"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_init_tail.obj",
+        "size": 123530,
+        "sha256": "0cc88a0d0ab35711dca98cc398ee186eb5c6ca214ce9d77937717fab7358c0bd"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_lua.obj",
+        "size": 579966,
+        "sha256": "cd490e309ce749fcb7fc64f6f1f8736ad70bfb8f7b0737b39988bf68f1eb6f12"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_menu.obj",
+        "size": 518796,
+        "sha256": "64f135c7c963561fc7f664a42772fc5d69fbed2c78eb28158475986b06988963"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_mission.obj",
+        "size": 763776,
+        "sha256": "ed317a0f0efa7dcbfc6e9a8293a841172a6f07ebf30b072a71565949324e3216"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_mission_frame.obj",
+        "size": 572403,
+        "sha256": "a8f773dc5961a425ca8c027a684b67c5b56b9ffb95477b9cd0b1527eb11c99a3"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_mission_result.obj",
+        "size": 241504,
+        "sha256": "b639795d6d4a5d60116eaaeec0de244b5b4dee5bd2e2dd381ff218fcca6d02d3"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_ready.obj",
+        "size": 215770,
+        "sha256": "3edfe61fa275249b0982a46efc8a85702f271541f3f3d0efc0fa17540eed399b"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_scene_contents.obj",
+        "size": 930357,
+        "sha256": "88469f6fcab6ff323f655cd8bc19c407aeeec797d335b8a59277000411a792b9"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_script_orders.obj",
+        "size": 305820,
+        "sha256": "32e80dc1d2f077b65f8442e1e8327de0baebaf5a375b322e2381afd1feebc41d"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_ship_ai.obj",
+        "size": 707939,
+        "sha256": "6cb64297174f6d1ca310b13e0f7be80f1aa0ad44f157ae2b9b5bbcc9ac2c92ed"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+        "size": 22015,
+        "sha256": "1d0a9b2287f3d267b05eca11e7774ad622af0cf45bfa93a572e9dcf0508109ff"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_text.obj",
+        "size": 148586,
+        "sha256": "dfb54f019d0447ddaebc80d8f6718bfeac2527fb8bafebc6355a5b44333fc9f4"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_trajectory.obj",
+        "size": 122707,
+        "sha256": "9a8ee419088d395941dde95927eb771b4571735e8d04cd009bf5b12d48a22eb0"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_units.obj",
+        "size": 469397,
+        "sha256": "e1f07ed689b20b227abdc3d5a9c15c88ccc00f2474c56d18cf8ee73b7b860836"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_vfs.obj",
+        "size": 422799,
+        "sha256": "151cdaf391085205e6e38cdfa9ecd568f398871d1304b0ca5cb3df6b05a51d2e"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_world.obj",
+        "size": 103418,
+        "sha256": "774060466890bd9a46924424a100a436df21d3b01ce185dfe44cfc3f023e6382"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_main.obj",
+        "size": 297244,
+        "sha256": "4af10d6cdf4b2642725c16cd2b57aaebfb522d1ffa865bbb7db4c8f9bd2f3a1f"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_graphics_pools.obj",
+        "size": 27852,
+        "sha256": "1206517652b072b6d6aaba6b95a6225339bda61cc4a64107016d5b5dcc91a905"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_hardware_layout_tree.obj",
+        "size": 12732,
+        "sha256": "2a2ea9960a191a4197d201ae68ad6e5501534492f47e7eb0b13e92d6490804f6"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_lua_globals.obj",
+        "size": 15945,
+        "sha256": "932075a1c004dbcc5d423665c91329e2975439efbb27e4a725b84d5b65a032f6"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_lua_services.obj",
+        "size": 23118,
+        "sha256": "53e26d46dd46f430cd0c2dd8e085da9013228ddd65f8691e06ccc953dccea87f"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_renderer_application.obj",
+        "size": 188619,
+        "sha256": "6df0580ceac48d37d0ddb40fc8d27a91ed366cc04f9d66ff295863f58555513d"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_string_process.obj",
+        "size": 4101,
+        "sha256": "790f75ee44bff156efae3528e02ca87bd52f54d7ce74ad9a6b2ecdc5445334ef"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_vertex_declarations.obj",
+        "size": 17104,
+        "sha256": "e57ec85125fc203a949fd2dbb3bef7f632796387af75c5f650a5a43b2650fc60"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_vfs_application.obj",
+        "size": 51971,
+        "sha256": "86b4d85777bc3a55ac183d8ef416182837c626b6ff2721eacc3fd896e8c9f7db"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_observer_runtime.obj",
+        "size": 15861,
+        "sha256": "95bfe2f95c0bc93f959c17990c662c2888d58696d6c5f80f3a4dbd10dbf0026b"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/gameplay_loose_ends_2.obj",
+        "size": 1758,
+        "sha256": "6cef5ac34b229195f2d1d5da12829627f2b48227fd88a7d2d15cd34b261b2a42"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/geom_mesh_resource.obj",
+        "size": 261705,
+        "sha256": "e536b9089157b35b3c8494cfbf0d7fa85726d9ce82b2b4ab47c4e13d515c8035"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/hit_hull_segment.obj",
+        "size": 1836,
+        "sha256": "cd16b3a2c47c636a204fd4e622a4d0cd7f8c75d11091ca91fe67a394c3383538"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/kill_credit.obj",
+        "size": 33830,
+        "sha256": "2b42314fff614f7eb65ce4f58110a76ed78a679f360edefbdbb9afb3fc090351"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/narrowphase_unit_part_shape.obj",
+        "size": 2080,
+        "sha256": "7f5bbfc6210b33a0c452bb3601d04c9e7e5b0c1abcccf2ea6de669b291730d9a"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/part_damage_reachability.obj",
+        "size": 4156,
+        "sha256": "51f9c07e73db9914a4707775e8b5b76f13c8ff56bf380da1771e86fd72d65a33"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/pilot_command_path.obj",
+        "size": 8846,
+        "sha256": "062707a15f8ce177c4dcfb9f1c35c062c62a980d0f62100e5b541ae40d543fb2"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/plane_ground_ops.obj",
+        "size": 13388,
+        "sha256": "65b619e02850c012e3a0a5c6529b27f6c9447450f2f82274bc76c483d60a8a65"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ship_hit_record.obj",
+        "size": 7923,
+        "sha256": "6b1e0d411c1ba316a9f14fda39de96daaa30eff2c469dd20fcc54edfea4c5278"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ship_sub_entity_list.obj",
+        "size": 1477,
+        "sha256": "2666c7f4077143bd9dd5e8bd9c14c5cd3da243c4805cbab30a66e1a3ae9aa7aa"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/unit_gunnery_pass.obj",
+        "size": 11746,
+        "sha256": "f85d451504ab8259bf3e1278f96ca2ca3fde61a590064bad3867293d37d9c557"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/unit_message_arms.obj",
+        "size": 25782,
+        "sha256": "e1f10761f7e50ba10b3538e34ea2d7b889d97a0a7f659a5f7aae7d007ab17557"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/unit_neighbour_fields.obj",
+        "size": 1330,
+        "sha256": "26c8631b91ce225ffc008e150f64e0efbd711587708a3f8ed7db26d180c8665f"
+      },
+      {
+        "path": "build/win32/bsp_game.vcxproj",
+        "size": 64257,
+        "sha256": "b0e4bec4bd85016b40bb6ca1addc3ac3b32bc742c7b99ed55ab33893349525ee"
+      },
+      {
+        "path": "build/win32/CMakeCache.txt",
+        "size": 19565,
+        "sha256": "d44e9a96208c5743219aa6ee30bf4f5768813c415ab257b5af16350b3179b9f3"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "size": 64243708,
+        "sha256": "eff486cc45e6121fb4df8dfd2c3d8ac86e2822a15114f040a01c3b452b53bdcf"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "size": 2608640,
+        "sha256": "62560bcc7a0e7038e2a2e811cbd4e12c6949efd53ac22e8db5102133ad51264b"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "size": 455244,
+        "sha256": "db83167c8c7d24461ef2bf60363b96264fd2406929d0e72a8909287d79b96a17"
+      },
+      {
+        "path": "build/win32/Release/bsp_math_tests.exe",
+        "size": 753664,
+        "sha256": "1adb34fec889e9a203d595a4de60924a89aa0c5fdb395ae6a5a45826481b62f7"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "size": 71906,
+        "sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "size": 2408,
+        "sha256": "a5dadca102dc081477b32cbe0b3da59a3b006a19c917720238198ef254be1993"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "size": 156270,
+        "sha256": "e1324308cd189db64cf3069f6870f345c031d484548528c5361f2eb286cd3505"
+      },
+      {
+        "path": "config/names/00cd0000.jsonl",
+        "size": 63888,
+        "sha256": "70a7a682d73cd1016c19580f866304f688abfe30489edbd6997e06b616762428"
+      },
+      {
+        "path": "config/names/00ce0000.jsonl",
+        "size": 41773,
+        "sha256": "5f1bf34b2a2a321c6d68003e0a698b32878a5f54cd2e044e8e9875cfcf0266b0"
+      },
+      {
+        "path": "config/reconstruction/00cd0000.jsonl",
+        "size": 78953,
+        "sha256": "8594e2f5e5cc39bd6fd3d93390d9a3e9ea01e29e62ec7cac4d20270c01869e3f"
+      },
+      {
+        "path": "config/reconstruction/00ce0000.jsonl",
+        "size": 54386,
+        "sha256": "a8aabf4e6edb36fe980163b6b16c6b0476f2c5ddc711e2a986b0585c89aeef38"
+      },
+      {
+        "path": "config/target.json",
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "docs/NATIVE_WEAK_POOL_PROCESS_R85.md",
+        "size": 4707,
+        "sha256": "eab04299c3ef28d4409740357380120e34543b1eb8118e2d150fa5feaf3389aa"
+      },
+      {
+        "path": "include/bsp/allocator_list.hpp",
+        "size": 1781,
+        "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8"
+      },
+      {
+        "path": "include/bsp/app_bootstrap.hpp",
+        "size": 13989,
+        "sha256": "1e57895243715aab107367bd7b8fd93099a3d2caee43161917719d38bfc2a3e0"
+      },
+      {
+        "path": "include/bsp/app_frame.hpp",
+        "size": 3465,
+        "sha256": "b74741c8e369d1b2555bbe757f585b709d2830ef5a082b1703a4f4ed93d0f16a"
+      },
+      {
+        "path": "include/bsp/app_frame_game_state.hpp",
+        "size": 10431,
+        "sha256": "9880630d3c2d9041eedb6618a5c6335766188818de3b93b673ac451f6364902a"
+      },
+      {
+        "path": "include/bsp/archive_text_writer.hpp",
+        "size": 3015,
+        "sha256": "e592546c43bf2f0d4e73daba4d39308efce00ea43e5398a7c66ef44aae9042b1"
+      },
+      {
+        "path": "include/bsp/building_instance.hpp",
+        "size": 2328,
+        "sha256": "ad3c055dee4b5b4ec77784db03552e173644d57b154b3fd0a26dd5dff1ad1c4e"
+      },
+      {
+        "path": "include/bsp/camera_frame_state.hpp",
+        "size": 8365,
+        "sha256": "3908727ef594797d30acfba72d87366683c61d7768e7cf3038f5a0164f7428df"
+      },
+      {
+        "path": "include/bsp/camera_look_at.hpp",
+        "size": 1199,
+        "sha256": "3e00ba8542c13e7647f6421bb566203f9960298d3ab7aa9565b462229694e32c"
+      },
+      {
+        "path": "include/bsp/camera_pose.hpp",
+        "size": 2584,
+        "sha256": "c53442a1acb1b41669c907ba70adcc547d25df0b1ebbf3d93e9fc4e49805be92"
+      },
+      {
+        "path": "include/bsp/camera_projection.hpp",
+        "size": 2413,
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "path": "include/bsp/camera_transform.hpp",
+        "size": 7028,
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+      },
+      {
+        "path": "include/bsp/camera_type_bootstrap.hpp",
+        "size": 1745,
+        "sha256": "7e6ad15a2ae0e84e2255b65e61ea0872e1bf85de0b249a29dad6bc940e5f51af"
+      },
+      {
+        "path": "include/bsp/d3d9_buffers.hpp",
+        "size": 3262,
+        "sha256": "e8bc19c4630661b83969b53cac94134748f3c9af2a98002f1f2906ed93dedc83"
+      },
+      {
+        "path": "include/bsp/d3d9_startup.hpp",
+        "size": 1362,
+        "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843"
+      },
+      {
+        "path": "include/bsp/d3d9_states.hpp",
+        "size": 15076,
+        "sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288"
+      },
+      {
+        "path": "include/bsp/d3d9_surface_pool.hpp",
+        "size": 3168,
+        "sha256": "58e4dd6d58a99d6b5cbc1685de6e83fc65512c94b02778a4f8e2b883da068467"
+      },
+      {
+        "path": "include/bsp/d3d9_texture2d_pool.hpp",
+        "size": 3214,
+        "sha256": "7d583076d37c842891946514ecdd69eb9a0d331d488e2753588e225f542b75f3"
+      },
+      {
+        "path": "include/bsp/d3d9_vertex_layout.hpp",
+        "size": 1257,
+        "sha256": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef"
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "size": 2475,
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+      },
+      {
+        "path": "include/bsp/frontend_prompts.hpp",
+        "size": 8614,
+        "sha256": "ba11e0c866cb414881296390f7bd4717b3547322055e134eb95e4f2c1a400cb1"
+      },
+      {
+        "path": "include/bsp/frontend_screen_animation.hpp",
+        "size": 14105,
+        "sha256": "5bf3429e1c6032def440ccebd3d804fd087896401ec16bf94b456b1dc73865e0"
+      },
+      {
+        "path": "include/bsp/frontend_states.hpp",
+        "size": 8240,
+        "sha256": "3a3d31cc9538aa74645baea4560d29917aa3414ae36f9cead4e8c690002df496"
+      },
+      {
+        "path": "include/bsp/game_entry.hpp",
+        "size": 5510,
+        "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+      },
+      {
+        "path": "include/bsp/game_hosts.hpp",
+        "size": 32495,
+        "sha256": "085aff4b27ce64d98cf2945bed19f1a03cd574096ca7ad7445370d6adaf270fe"
+      },
+      {
+        "path": "include/bsp/game_hosts_singletons.hpp",
+        "size": 5998,
+        "sha256": "ca23e974d747d7df836b22f0a40f1ace991f5b3d5af973793be3d0171a0af26b"
+      },
+      {
+        "path": "include/bsp/game_native_data_bootstrap.hpp",
+        "size": 4111,
+        "sha256": "13e7a4a85d6096f3f0b4be04fce0d065d5e196c4119d914ae2af268026c7642a"
+      },
+      {
+        "path": "include/bsp/game_native_hardware_layout_tree.hpp",
+        "size": 1760,
+        "sha256": "38c5be48f970c5de7b428a07213da490709f7b72f86250a8b98659b9dfdd3c22"
+      },
+      {
+        "path": "include/bsp/game_native_mutable_crt_data.hpp",
+        "size": 3200,
+        "sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1"
+      },
+      {
+        "path": "include/bsp/game_native_physical_pool.hpp",
+        "size": 2268,
+        "sha256": "9ca8763821cffb6cc6ab1c7a26411855b4466acff191db61d13fd54dce72a36e"
+      },
+      {
+        "path": "include/bsp/game_native_readonly_data.hpp",
+        "size": 2713,
+        "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+      },
+      {
+        "path": "include/bsp/game_native_renderer_scalars.hpp",
+        "size": 2270,
+        "sha256": "88025af462e56caa18f62c1f83e4e0c5a24efdc74025faeca2375cab9448083d"
+      },
+      {
+        "path": "include/bsp/game_native_string_process.hpp",
+        "size": 1513,
+        "sha256": "34a9a53a8a0970e948b047bf4ceab71f4baf1614f748160122d9697831c0278a"
+      },
+      {
+        "path": "include/bsp/game_native_surface_pool.hpp",
+        "size": 1449,
+        "sha256": "0ae70dddd6e28cfe8d067fdfede34dd88165d2e97366256b5ccc0dec50c91286"
+      },
+      {
+        "path": "include/bsp/game_native_texture_pool.hpp",
+        "size": 1461,
+        "sha256": "59a8ef28eb72f8391801e20c9085c513805377e20868c1d03f65543a6b8a845a"
+      },
+      {
+        "path": "include/bsp/game_native_weak_pool.hpp",
+        "size": 1675,
+        "sha256": "42d20499ef1b2c1820f1a037c76f949eb60c7101b0325ee910c3289997745ac4"
+      },
+      {
+        "path": "include/bsp/game_settings.hpp",
+        "size": 18657,
+        "sha256": "8b1d37ce0ccdcde0da4b6690237f655cae6f31fa89bc1b810191c7fb80f4c9f8"
+      },
+      {
+        "path": "include/bsp/generated_model_lifetime.hpp",
+        "size": 12600,
+        "sha256": "bb6171641666552aea3fcaa9757d13074f229e79d5793a3b044b980f4a3d3ef9"
+      },
+      {
+        "path": "include/bsp/gui_camera_store_owner.hpp",
+        "size": 4970,
+        "sha256": "2696e141fd8973db186fa7329e9894abc40e88fabe5bac9018c067cebb28103f"
+      },
+      {
+        "path": "include/bsp/gui_layout_loader.hpp",
+        "size": 20811,
+        "sha256": "3ede9dc470a4d5a3285d1578483428b548025b0b2eba9ab6ecc79967b242d8b1"
+      },
+      {
+        "path": "include/bsp/gui_lua_reader.hpp",
+        "size": 23275,
+        "sha256": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433"
+      },
+      {
+        "path": "include/bsp/gui_native_geometry.hpp",
+        "size": 10778,
+        "sha256": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf"
+      },
+      {
+        "path": "include/bsp/gui_render_order.hpp",
+        "size": 12433,
+        "sha256": "50803f55da67e9e0aa983edeeeadc8c5d1d2bc052d8cba556efc3abf1e6f3eed"
+      },
+      {
+        "path": "include/bsp/gui_widget.hpp",
+        "size": 13391,
+        "sha256": "846d1f6378e3459fb585917289d2f3342de37ba98dafc7fc952c9c48ea8061f9"
+      },
+      {
+        "path": "include/bsp/instance_geometry.hpp",
+        "size": 3989,
+        "sha256": "02bd2ae826198ca341a2a14fbf0f58ced99ccd20a5833a6eef48a11f932b75d4"
+      },
+      {
+        "path": "include/bsp/instance_grouping.hpp",
+        "size": 4008,
+        "sha256": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308"
+      },
+      {
+        "path": "include/bsp/instance_sort.hpp",
+        "size": 4479,
+        "sha256": "c3a892e5b69db70699daaa5c301f5b00aa17fe4f93f929fdc43dcc16e797b1f3"
+      },
+      {
+        "path": "include/bsp/instance_upload.hpp",
+        "size": 6532,
+        "sha256": "271e956b6dd3801fff1edab447fb03bb929ec562e227ae0357debbe95c1239fb"
+      },
+      {
+        "path": "include/bsp/light_type_bootstrap.hpp",
+        "size": 3214,
+        "sha256": "7856c5bbb320d6d5e1dd0df2f4969314cd2d7365134741702e187a901456333f"
+      },
+      {
+        "path": "include/bsp/locale_tables.hpp",
+        "size": 9471,
+        "sha256": "8a71acfda63ce30feb69b93005d0ffc0ff86e71b9622950c64a7b5089faa5abf"
+      },
+      {
+        "path": "include/bsp/material_lighting.hpp",
+        "size": 1642,
+        "sha256": "b56091a2688d0a7cf52401396efa68b9f02de215e9bd89e4bf20d93d83600da8"
+      },
+      {
+        "path": "include/bsp/material_sort_metadata.hpp",
+        "size": 3332,
+        "sha256": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212"
+      },
+      {
+        "path": "include/bsp/mission_progress.hpp",
+        "size": 4615,
+        "sha256": "884d17c1e0ec7ad2cf228f7d2b0b710c91ae928b08f17498e1653604bb639ae9"
+      },
+      {
+        "path": "include/bsp/native_camera_owner.hpp",
+        "size": 6271,
+        "sha256": "527c605fcc55eedd421271a5c4b27d45947e325c391838f14f3cab6d75e1f808"
+      },
+      {
+        "path": "include/bsp/native_camera_pool.hpp",
+        "size": 3029,
+        "sha256": "1e084ad1aefc6df32be13fec3ff9fdc94d727378173fd1a24e9324727c630038"
+      },
+      {
+        "path": "include/bsp/native_camera_reference.hpp",
+        "size": 2840,
+        "sha256": "5920175404a18b464c3ce826162c8279b98c12405ac28d52363241cd2d79415e"
+      },
+      {
+        "path": "include/bsp/native_cube_texture_owner_array_reserve.hpp",
+        "size": 578,
+        "sha256": "a5067ec38c18e1844c83ee71a12ab06a7103d9a05258c4c6a5fae83c44a7a319"
+      },
+      {
+        "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+        "size": 2257,
+        "sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1"
+      },
+      {
+        "path": "include/bsp/native_frame_target_owner.hpp",
+        "size": 3495,
+        "sha256": "5bcab0e6bf05a51b8e8a215117ca5621f3c5a51a1aec131eb4b7f86b33246ca8"
+      },
+      {
+        "path": "include/bsp/native_frame_target_vector.hpp",
+        "size": 2285,
+        "sha256": "85a84c0d17e194d461c5804354d381ca15e2b2032d86c094f7bd388ca9bf065e"
+      },
+      {
+        "path": "include/bsp/native_game_resource_factory.hpp",
+        "size": 2885,
+        "sha256": "27af016f519be76ea85b7fcb81a5fb7372c6b99dc257e30e43ef1c56ea8505e5"
+      },
+      {
+        "path": "include/bsp/native_logical_buffer_device_restore.hpp",
+        "size": 2649,
+        "sha256": "2e79708e49c1559f706602b9fe761791776f11fee1c5b3efa69d7fbb2bd57c45"
+      },
+      {
+        "path": "include/bsp/native_logical_buffer_mapping.hpp",
+        "size": 2420,
+        "sha256": "d3ee48a208b6636dc70941c6a62967407d657ad18f1ae971f2d900c752fcaef0"
+      },
+      {
+        "path": "include/bsp/native_logical_index_owner.hpp",
+        "size": 6804,
+        "sha256": "c0ae53059fba249f589990b7d41d1986a2134cd86b99cd5d6db7ab2c849b38cb"
+      },
+      {
+        "path": "include/bsp/native_logical_vertex_owner.hpp",
+        "size": 7242,
+        "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+      },
+      {
+        "path": "include/bsp/native_material_factory.hpp",
+        "size": 3753,
+        "sha256": "fa8a45423c10da368d803d5df7fb583a5bc91e9f3c3ac59722607e4a95d90b71"
+      },
+      {
+        "path": "include/bsp/native_material_owner.hpp",
+        "size": 5986,
+        "sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320"
+      },
+      {
+        "path": "include/bsp/native_material_pools.hpp",
+        "size": 10219,
+        "sha256": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715"
+      },
+      {
+        "path": "include/bsp/native_mesh_clone.hpp",
+        "size": 2821,
+        "sha256": "0fbe93a15ed525fd128257ca58ac4c4d8da4b4a533dd345c6c856bce5d839d5e"
+      },
+      {
+        "path": "include/bsp/native_mesh_owner.hpp",
+        "size": 6760,
+        "sha256": "540fa95aafcd3b67697998361f9a6b1689bf90348c9c0cdc09bdeb6b9c6ac42c"
+      },
+      {
+        "path": "include/bsp/native_mesh_pool.hpp",
+        "size": 2929,
+        "sha256": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52"
+      },
+      {
+        "path": "include/bsp/native_mesh_section.hpp",
+        "size": 9555,
+        "sha256": "c99901d53b195ab67c0da51c7b39657f42b7b60ba1f5509eec200b6ff29f3e2e"
+      },
+      {
+        "path": "include/bsp/native_model_owner.hpp",
+        "size": 6717,
+        "sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e"
+      },
+      {
+        "path": "include/bsp/native_model_pool.hpp",
+        "size": 3166,
+        "sha256": "30e4945729d723ec450a6eebaf28968c976dcd50f366ba193aa591d751709144"
+      },
+      {
+        "path": "include/bsp/native_node_construction.hpp",
+        "size": 6451,
+        "sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098"
+      },
+      {
+        "path": "include/bsp/native_node_destruction.hpp",
+        "size": 5997,
+        "sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833"
+      },
+      {
+        "path": "include/bsp/native_physical_buffer_lock.hpp",
+        "size": 1561,
+        "sha256": "519c67bd123883490af70464ab81cec74d5de948a39eada540cf5b8529e18340"
+      },
+      {
+        "path": "include/bsp/native_physical_buffer_owner.hpp",
+        "size": 4248,
+        "sha256": "1277b747e0963be41fdee456092ea42b3c191d7aa165eeeec772de3cad354e56"
+      },
+      {
+        "path": "include/bsp/native_physical_provider_pool.hpp",
+        "size": 2319,
+        "sha256": "117ea86d6010a74151de7a4916ebb8ace4ef1e813d3fd971dc621a6cf5d316da"
+      },
+      {
+        "path": "include/bsp/native_point_light_links.hpp",
+        "size": 4633,
+        "sha256": "e106191d74ea6960befb5f36e74e89076efb5fec4122a5b3d87482823dc07ba7"
+      },
+      {
+        "path": "include/bsp/native_post_effect_owner_20h.hpp",
+        "size": 4115,
+        "sha256": "d1175b7041aa203a35b9e04a3d18a38759e646a73fa7b4d0b55a75b2dbed80ad"
+      },
+      {
+        "path": "include/bsp/native_ref_counted.hpp",
+        "size": 1226,
+        "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82"
+      },
+      {
+        "path": "include/bsp/native_render_context.hpp",
+        "size": 6924,
+        "sha256": "1c8d834d50cbf8ee7f660e7803efe6bad43fe70bbe87fd5cdf3375f6e68ef56d"
+      },
+      {
+        "path": "include/bsp/native_render_effect_lifetime.hpp",
+        "size": 3287,
+        "sha256": "dc8e55714d1e652bc411acc7df29f703c828a6e180c03db175a2d367588933f1"
+      },
+      {
+        "path": "include/bsp/native_render_pointer_arrays.hpp",
+        "size": 4572,
+        "sha256": "d9cf406a178986114205fe9a154a2b74c0f8dd857b6186d7d840d8fe398ae881"
+      },
+      {
+        "path": "include/bsp/native_render_resource_container_removal.hpp",
+        "size": 2497,
+        "sha256": "1610798bb00b9c8d99938e212c7c50ab455e35027fba4885fdad074ea37182e4"
+      },
+      {
+        "path": "include/bsp/native_render_resources_surfaces.hpp",
+        "size": 4673,
+        "sha256": "70e34fb2098da5ccccb3d9b5f81e129d98c28efec7576c5677071b45cede6a0e"
+      },
+      {
+        "path": "include/bsp/native_render_texture_surface_owner.hpp",
+        "size": 3366,
+        "sha256": "9851dd2c64ab50fdf09d2d52f36c3bf7fd7ae3389d8179637ac2e134a975d812"
+      },
+      {
+        "path": "include/bsp/native_renderer_format_check.hpp",
+        "size": 2437,
+        "sha256": "dc57e08ee4680bed7ad802bf29e4c5c2b2438c8114331b24b0811d6767f1f827"
+      },
+      {
+        "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+        "size": 2877,
+        "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+      },
+      {
+        "path": "include/bsp/native_renderer_texture_name_notification.hpp",
+        "size": 2292,
+        "sha256": "5157ead757f9082a87a57fe9f06694025ac2bc5888b244156b6e2526aa9407a4"
+      },
+      {
+        "path": "include/bsp/native_resource_support.hpp",
+        "size": 3479,
+        "sha256": "fb1506aba45e7801bcb638a6d836ce52972cf49e6d8120f7a07f8dc74d36b8f7"
+      },
+      {
+        "path": "include/bsp/native_retained_memory_owners.hpp",
+        "size": 3829,
+        "sha256": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c"
+      },
+      {
+        "path": "include/bsp/native_runtime_texture_creation.hpp",
+        "size": 3958,
+        "sha256": "cdd67fa2014a43540c4a986c3129ceb2e9071ff895bdedce27ea1beff1bdec80"
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "size": 13335,
+        "sha256": "6fbcea24bc1afb882bc4658afbec1bfd19d7acb50ff066fceadfa8b3153ad4f7"
+      },
+      {
+        "path": "include/bsp/native_singleton_vector_leaves.hpp",
+        "size": 3101,
+        "sha256": "18ccc9155d016d979489e00a900628816bd31a013815c299b9b8b565878c7d8b"
+      },
+      {
+        "path": "include/bsp/native_stream_clone.hpp",
+        "size": 3283,
+        "sha256": "a333d180afcf21084068a671d60c34ee8e1b18ea980a6c03b115a32ce2ff3e6a"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "size": 8771,
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+      },
+      {
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "size": 5893,
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "size": 2805,
+        "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+      },
+      {
+        "path": "include/bsp/native_surface_owner.hpp",
+        "size": 4982,
+        "sha256": "e5515e193057b574de0d0b55ff3f0b512f8b2c2cb9002ba3eb62de106a4bbe66"
+      },
+      {
+        "path": "include/bsp/native_texture_2d_owner.hpp",
+        "size": 3247,
+        "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc"
+      },
+      {
+        "path": "include/bsp/native_texture_surface_getter.hpp",
+        "size": 1851,
+        "sha256": "958bab84aaa61abb9cceeb290805bf51faec2010543f46ace4b28385fb182d87"
+      },
+      {
+        "path": "include/bsp/native_viewport_owner.hpp",
+        "size": 5507,
+        "sha256": "0fbadd5eab924627e321a7896bd9796c0aaa17062bbf3953de118fbe2b3867d5"
+      },
+      {
+        "path": "include/bsp/native_viewport_registry.hpp",
+        "size": 4059,
+        "sha256": "250decc6520abb9d3085670129d0884b087465f4eec1027cb210375619e8d486"
+      },
+      {
+        "path": "include/bsp/native_weak_owner.hpp",
+        "size": 4547,
+        "sha256": "c9eaa00aa67d55132789209bed9ee037e879c710f3b5eeca9c081f181d8355b4"
+      },
+      {
+        "path": "include/bsp/object_handle_resolvers.hpp",
+        "size": 3175,
+        "sha256": "46459014e65cbf8c64cab2cc9414032c410967553d5d353764089a1adb2c91c8"
+      },
+      {
+        "path": "include/bsp/platform_loop.hpp",
+        "size": 765,
+        "sha256": "ac4c7389744b8ac8734c863aeef096314fcddb1b45529c6427c584e9a2d29929"
+      },
+      {
+        "path": "include/bsp/platform_window.hpp",
+        "size": 13913,
+        "sha256": "174c223e923f3584f957a426b8ebdef55441140c6cab2469f629137e0e078384"
+      },
+      {
+        "path": "include/bsp/profile_archive.hpp",
+        "size": 2764,
+        "sha256": "202e05fc1a1a035a94fe39ba70b92474d224c23219acdcc50cd52ed8beace3f8"
+      },
+      {
+        "path": "include/bsp/profile_manager.hpp",
+        "size": 3265,
+        "sha256": "27ed1638e5c8b02f719da7fe6bea871ecd20fe8ca0fa25449504082f1bb5736f"
+      },
+      {
+        "path": "include/bsp/profile_persistence.hpp",
+        "size": 4175,
+        "sha256": "9d883e12d92573c583a8f69e311ac35babd05fafd662b489249f92df8dfbd4ac"
+      },
+      {
+        "path": "include/bsp/profile_reset.hpp",
+        "size": 6328,
+        "sha256": "c3425b070358beda660a478165c1f10ff4c4ea8763433e6735839d0bccabf1be"
+      },
+      {
+        "path": "include/bsp/profile_unlock.hpp",
+        "size": 5636,
+        "sha256": "bf19e9b5b7ab4ee72b148ad1b585a6dbdcca46ad4f10c932ff8c2fc9a603e716"
+      },
+      {
+        "path": "include/bsp/profile_write.hpp",
+        "size": 2357,
+        "sha256": "78569574d25dbc3df7367a2178ac845cd1c78013570f370a514a99bdfdf03894"
+      },
+      {
+        "path": "include/bsp/random.hpp",
+        "size": 791,
+        "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+      },
+      {
+        "path": "include/bsp/random_threads.hpp",
+        "size": 1446,
+        "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+      },
+      {
+        "path": "include/bsp/render_command_queue.hpp",
+        "size": 10656,
+        "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a"
+      },
+      {
+        "path": "include/bsp/render_tail.hpp",
+        "size": 15566,
+        "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+      },
+      {
+        "path": "include/bsp/renderer_capabilities.hpp",
+        "size": 3396,
+        "sha256": "bf8a2533b35ffa45f8d6d36aa446549765786f8902eb0413b882d44ff5503863"
+      },
+      {
+        "path": "include/bsp/scene_attachment.hpp",
+        "size": 9700,
+        "sha256": "d2bb5d004129a418961bf13e60c0f8324a077b5647ca8450602421190841d322"
+      },
+      {
+        "path": "include/bsp/settings_capabilities.hpp",
+        "size": 4349,
+        "sha256": "57348eb3ff1545b939a45c01274b8733efd23d21f772a4474d98182055d1355d"
+      },
+      {
+        "path": "include/bsp/settings_text.hpp",
+        "size": 2578,
+        "sha256": "ab3707a3239c80d77ce56e92331a81562f33ba7a37bd013313082e9008d41653"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "size": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "include/bsp/sound_lifetime_access.hpp",
+        "size": 3039,
+        "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+      },
+      {
+        "path": "include/bsp/storage_operation.hpp",
+        "size": 3510,
+        "sha256": "2ea1409c326cc8e9fab822402633e37224696391ae22219a9688b98f91357ed7"
+      },
+      {
+        "path": "include/bsp/storage_pool.hpp",
+        "size": 5571,
+        "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+      },
+      {
+        "path": "include/bsp/system_camera_axes.hpp",
+        "size": 3402,
+        "sha256": "abfa9300a54975dcdb7489f466d941b9341991af3f027ebb764a19cbb08124d5"
+      },
+      {
+        "path": "include/bsp/system_fog_constants.hpp",
+        "size": 1915,
+        "sha256": "9378d355dad5f5ee78ce8fa41cb6275f9e5b00e9bcbd07592f051c147a0d0663"
+      },
+      {
+        "path": "include/bsp/system_fog_slot.hpp",
+        "size": 1869,
+        "sha256": "778ddcf121dd7b693a2104c43ad8dd1224eb401e06ba4fb48e7aa18617d9b1fb"
+      },
+      {
+        "path": "include/bsp/system_lighting_constants.hpp",
+        "size": 8718,
+        "sha256": "9c98d892bac479fdf3d661c98c996333df0821a3daea26a5e36ba40339b722c9"
+      },
+      {
+        "path": "include/bsp/system_lighting_owners.hpp",
+        "size": 5141,
+        "sha256": "ab7c5207fe29837974f6596e2c5ae31bd3d83ba297548a2f831ef1d118bc43cd"
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "size": 4800,
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+      },
+      {
+        "path": "include/bsp/vertex_declaration.hpp",
+        "size": 1462,
+        "sha256": "0f03c6a960da3547644b3e5bc8b5934a35fe26f42abc2746559a31f0af2452a0"
+      },
+      {
+        "path": "include/bsp/winmain_startup.hpp",
+        "size": 9647,
+        "sha256": "44ed9f390e22fad4b15c4841f4bb07fb40dee4c1950736b7f32638ccd21006af"
+      },
+      {
+        "path": "local/annotate_weak_process_r85.py",
+        "size": 3599,
+        "sha256": "8324154a8b09d874bc3aba20fdcd6aa5da35882fc83d67d7a6cf9bef37c4debf"
+      },
+      {
+        "path": "local/application_r85/application.log",
+        "size": 10401,
+        "sha256": "da67e3b7199c6d5f3fb53dde53f662d192f7b3026e04737c926bec9da15e6369"
+      },
+      {
+        "path": "local/application_r85/personal/Battlestations-Pacific/options.txt",
+        "size": 61,
+        "sha256": "f7285347c0b8126cce9fb052f5d375ac278118f97a4ae40f612d5a6b7f95bcca"
+      },
+      {
+        "path": "local/application_r85/process.json",
+        "size": 1424,
+        "sha256": "d973f30a3d98812c69217e3ab57592c827e42b3484fa8f6717ece3ebb63f6474"
+      },
+      {
+        "path": "local/application_r85/result.json",
+        "size": 1506,
+        "sha256": "99a1f87eb948f3c66dd0c2cea7963759b28e18901ed6f30e5ed205d52ae7e13d"
+      },
+      {
+        "path": "local/application_r85/stderr.log",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "local/application_r85/stdout.log",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "local/application_r85_baseline/application.log",
+        "size": 10366,
+        "sha256": "76b047651f97dd2c69725a554a6312a20c6da7994505cd231e27333452537048"
+      },
+      {
+        "path": "local/application_r85_baseline/bsp_game.exe",
+        "size": 2607616,
+        "sha256": "9d03445ec13f1dc4b213478a78ca5c0ebfd1942ef04ebb6cc82742a28225f6cb"
+      },
+      {
+        "path": "local/application_r85_baseline/personal/Battlestations-Pacific/options.txt",
+        "size": 61,
+        "sha256": "f7285347c0b8126cce9fb052f5d375ac278118f97a4ae40f612d5a6b7f95bcca"
+      },
+      {
+        "path": "local/application_r85_baseline/process.json",
+        "size": 1461,
+        "sha256": "ced8883e36088e57210f04cc3a512d7a12801ea664d24e56a696ecd5a96724f4"
+      },
+      {
+        "path": "local/application_r85_baseline/result.json",
+        "size": 1542,
+        "sha256": "90d6f662e376ce6f447915f4594271f9bf849ba62a33cdc83cdcb0157895811e"
+      },
+      {
+        "path": "local/application_r85_baseline/stderr.log",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "local/application_r85_baseline/stdout.log",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "local/collect_weak_process_r85.py",
+        "size": 4035,
+        "sha256": "906163f87ccf9c55b5d7f6c54d646b52442b2d84fe19fa1697da043b079cae18"
+      },
+      {
+        "path": "local/commit_weak_process_r85.py",
+        "size": 2035,
+        "sha256": "581698b7cb5470945a10034936c23e439fe87aed3a70feebdb5e3e1b26b9bc59"
+      },
+      {
+        "path": "local/ghidra-annotations-20260917T050707Z.json",
+        "size": 4232,
+        "sha256": "33ddf23d9f10365d3d4e9ffe0dfc58ab4da0316c17d0c27043a90e8577f0a660"
+      },
+      {
+        "path": "local/prepare_weak_process_r85.py",
+        "size": 4362,
+        "sha256": "d4a966e62a754d090da467382f126fa0c5e55a084d894acd04ce6d2a3621ae52"
+      },
+      {
+        "path": "local/r85_annotation_closeout.log",
+        "size": 171,
+        "sha256": "e75796328734695d5f9a930692bd25bc5105c1d15329ff63150081ab05849c59"
+      },
+      {
+        "path": "local/r85_build.log",
+        "size": 2891,
+        "sha256": "a4d92661fd32cedf43f1370264f8ef614b20147e48cc2cbf0e826d5523bf84bf"
+      },
+      {
+        "path": "local/r85_collection.log",
+        "size": 131,
+        "sha256": "22a3da0460c386a41eb439f51e83a342d314e9e72fd1672ccdf9f12c0ee1b8b6"
+      },
+      {
+        "path": "local/report_weak_process_r85.py",
+        "size": 5386,
+        "sha256": "88229dc07e8f584a697d29ae62cef3c2f3ee8eb52c52d40d300d3eec818b6e9a"
+      },
+      {
+        "path": "local/run_application_r85.py",
+        "size": 2385,
+        "sha256": "93d44f6029ba170c83c991b7c6f39fef13a3777d7efda98ae092c7ed3d8b61ac"
+      },
+      {
+        "path": "local/run_baseline_application_r85.py",
+        "size": 1002,
+        "sha256": "35511be20b7d40d7fcf5587802bc533ecbe41ab8cd4a4bd20be4306ae0658ab8"
+      },
+      {
+        "path": "local/run_baseline_application_r85_generated.py",
+        "size": 2373,
+        "sha256": "d67cc1bdc3f5e17f39089e3fe7ad270900cd6d07ba005df2672b9b608f11894a"
+      },
+      {
+        "path": "local/seal_weak_process_r85.py",
+        "size": 4116,
+        "sha256": "a7484cdf17ed412354d4be94ee662c737206d4deb865971a133d48e7adb504f7"
+      },
+      {
+        "path": "local/weak_process_r85/annotations.log",
+        "size": 244,
+        "sha256": "72a947544a5e05a3846ee43a5b423002b599f782fa143df200dee1672cb394cf"
+      },
+      {
+        "path": "local/weak_process_r85/call_verification.log",
+        "size": 130,
+        "sha256": "bb5a46764d140272e0540a3a4b6fa300b4f76648ed60c2afd6957b2d6ffe6e91"
+      },
+      {
+        "path": "local/weak_process_r85/compile.log",
+        "size": 47744,
+        "sha256": "59486314cb4d3134ed938fd70bb9ac9b965101328a5d7757c75ae19b3b26e9d8"
+      },
+      {
+        "path": "local/weak_process_r85/dependencies.json",
+        "size": 51967,
+        "sha256": "212acb5d0155b25fca86a9a65d22fe4b88952b469fc4fe0eaf5a4efba4923b1a"
+      },
+      {
+        "path": "local/weak_process_r85/exit.log",
+        "size": 105,
+        "sha256": "dca3b700eb8817365e5267eaa1e82a589eee99df07cefaebe341af3be89a3efd"
+      },
+      {
+        "path": "local/weak_process_r85/exports_after_annotations.log",
+        "size": 250,
+        "sha256": "1b1b5b16f7f98c2c7028b5b3bd4db9633481244faf588c70488a34af68edf9bd"
+      },
+      {
+        "path": "local/weak_process_r85/game_objects.rsp",
+        "size": 5948,
+        "sha256": "3a618a9a8e741b70dfcce111c03c40a70f090f3b6ab1c7d222de9e31a361e534"
+      },
+      {
+        "path": "local/weak_process_r85/host.log",
+        "size": 269,
+        "sha256": "d0447d1af2b74c16a778aec29e54425163ef9a00a78813a56ab406866dab9ef3"
+      },
+      {
+        "path": "local/weak_process_r85/index.log",
+        "size": 16,
+        "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+      },
+      {
+        "path": "local/weak_process_r85/launch.log",
+        "size": 14,
+        "sha256": "c93e8418a878953ddb9fda9e0e2d81b7e66f6b5c49cd41062f6a413cb881ab67"
+      },
+      {
+        "path": "local/weak_process_r85/listing-00cd8a60.txt",
+        "size": 148,
+        "sha256": "8416f7a7f3258ba8b04d5ec316747cb2baaa1191193ad987d6ed94d4e7b83853"
+      },
+      {
+        "path": "local/weak_process_r85/listing-00ce1040.txt",
+        "size": 57,
+        "sha256": "97f44f44232904c79eb6d2a215dd4a9c919e31a2c9c2860ce75787f15647725d"
+      },
+      {
+        "path": "local/weak_process_r85/native.json",
+        "size": 3635,
+        "sha256": "bacfd2a28dead6d41ea981b7006bcbf9f7b83e4cbe4920f19ff43ec1c8acf12a"
+      },
+      {
+        "path": "local/weak_process_r85/original.inc",
+        "size": 14,
+        "sha256": "aecb9819eb04bf5ad6cd2535cfac9b1bed5ef7946e551eff2224759862e16294"
+      },
+      {
+        "path": "local/weak_process_r85/original_bodies.inc",
+        "size": 3141,
+        "sha256": "2d7312e13e2991e836e70ffedc2ecaf17f221025805aa5ef68e774da3e82584a"
+      },
+      {
+        "path": "local/weak_process_r85/prior-ledgers.json",
+        "size": 3707,
+        "sha256": "cc58d5490fd76ed35d8cd944d256e88bd9861d19d78997601f72784c24b1af60"
+      },
+      {
+        "path": "local/weak_process_r85/probe.cmd",
+        "size": 794,
+        "sha256": "c461ff8eb0c5d990453d98b040527b2ef12cf1816d682e7ae5013c0ba3f7ba41"
+      },
+      {
+        "path": "local/weak_process_r85/probe.cpp",
+        "size": 15299,
+        "sha256": "5e52c1806908bb9f00ee8d0bd2daa86273a892392170be6fa3a60add2e01ee87"
+      },
+      {
+        "path": "local/weak_process_r85/probe.map",
+        "size": 1063200,
+        "sha256": "861d2ac78bd3c6cf60cb6a70554933c8dff15e79f2fbf3c3a55e77b5212ab5cf"
+      },
+      {
+        "path": "local/weak_process_r85/probe.obj",
+        "size": 205580,
+        "sha256": "a9d9b1ec3a7e0686bed56cb9c87c6be503ac6cfe67a465f9287864a69aa16ba4"
+      },
+      {
+        "path": "local/weak_process_r85/proto-00cd8a60.txt",
+        "size": 719,
+        "sha256": "7da5ad1372c90f314aac0961ce286bde7e4c3c08236ae2503cba9bb7b7c98686"
+      },
+      {
+        "path": "local/weak_process_r85/proto-00ce1040.txt",
+        "size": 764,
+        "sha256": "d5a685fb1123bd6324d36c15b36bbccc6b7c2e1cd5f7aa5f4db9fdcf7eb59c71"
+      },
+      {
+        "path": "local/weak_process_r85/run.log",
+        "size": 1582,
+        "sha256": "491e8685dc82a270f8488a6f8ada3714ab6ed8e6ef6611d51d91353bdc00dcfc"
+      },
+      {
+        "path": "local/weak_process_r85/scene-native.json",
+        "size": 31038,
+        "sha256": "5a5eefb9c9a4ac8cb89b5f313a1968f98a88d17a57ab144b15629ce858490365"
+      },
+      {
+        "path": "local/weak_process_r85/snapshot.log",
+        "size": 230,
+        "sha256": "1921a4916044fda9a827f07dd96321947c95e69a980a8102d8c8ab3fbc88d295"
+      },
+      {
+        "path": "local/weak_process_r85/weak_process_probe.exe",
+        "size": 555008,
+        "sha256": "9e815d2654f7a0fa7a3a208f71b98ef83715a2d14e5e515b3f33fc37abefcfef"
+      },
+      {
+        "path": "reports/native_weak_pool_process_r85.json",
+        "size": 46656,
+        "sha256": "1059982f3eb94503986a0f63ca5c3be7a91b80a2b2dd4f68766035a0f606da06"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "size": 1820,
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+      },
+      {
+        "path": "src/game_hosts_singletons.cpp",
+        "size": 4804,
+        "sha256": "84d61ec3c49de7698685f2a0e203a921df0da94a7874c14d41b72c8f3c669904"
+      },
+      {
+        "path": "src/game_main.cpp",
+        "size": 28142,
+        "sha256": "7c52f2d9dbb467b57cde7aa1b83d1db19b60898af413d593d0594ccef7ba2530"
+      },
+      {
+        "path": "src/game_native_weak_pool.cpp",
+        "size": 1440,
+        "sha256": "bb30d57a65dcc2f7ee3844a54f5473987f91bae1d3830cd0ea2cabaad3fd6075"
+      },
+      {
+        "path": "src/gui_camera_store_owner.cpp",
+        "size": 8992,
+        "sha256": "4769ed5f6fa722489196512b1d62b11767b324e8929140b9d69a89f3409e7f76"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "size": 21316,
+        "sha256": "5b76b1791c58ece68f399ceb6a5f65376fa0704eb336f49553c06cc6539b2e1c"
+      },
+      {
+        "path": "src/native_weak_owner.cpp",
+        "size": 16030,
+        "sha256": "632fc52513516017d92295d682ec5236bb0422162bca64d5848936cb6667ae27"
+      }
+    ],
+    "scope": "Strict build/3CTests, selected native bytes, scene/process/actual CRT probe, scoped source/headers/ledgers and linked binaries. Includes current and sealed R84 application failures before window/device; no full source/toolchain/game-data closure or gameplay proof."
+  }
+}
