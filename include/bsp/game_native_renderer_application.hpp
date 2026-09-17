@@ -27,6 +27,7 @@ struct NativeShaderDescriptorReadContext;
 class NativeShaderDescriptorReadOperation;
 }
 namespace bsp::game {
+struct GameNativeMaterialCompilerOwners;
 class GameSingletonHost;
 class GameVfsHost;
 class GameNativeReadOnlyData;
@@ -70,6 +71,9 @@ public:
     void create_shader_cache();
     void release_shader_cache();
     NativeShaderBinaryCacheContext& shader_cache_context() noexcept;
+    // Same pass/reflection/shader domains for the actual compiler. The caller
+    // supplies its persistent native operation frames and retains failed work.
+    GameNativeMaterialCompilerOwners material_compiler_owners();
     // Full B43B00 over a caller-owned initialized110h descriptor. The caller
     // keeps descriptor/name/operation alive and retires descriptor children
     // before this graph. Unknown native stack inputs are never synthesized.

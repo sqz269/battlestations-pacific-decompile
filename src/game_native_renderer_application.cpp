@@ -72,6 +72,8 @@
 #include "bsp/game_native_shader_process.hpp"
 #include "bsp/native_shader_binary_cache.hpp"
 #include "bsp/native_shader_descriptor_reader.hpp"
+#include "bsp/game_native_material_compiler_owners.hpp"
+#include "bsp/native_d3d9_shader_lifetime.hpp"
 // Constructor, device startup, frame and destructor borrow one application graph.
 #include "bsp/game_native_renderer_application.hpp"
 #include "bsp/game_native_renderer_scalars.hpp"
@@ -112,6 +114,7 @@ struct CanonicalProfiles {
 #include "game_native_renderer_camera.inc"
 #include "game_native_renderer_shaders.inc"
 #include "game_native_renderer_descriptors.inc"
+#include "game_native_renderer_compiler_owners.inc"
 #include "game_native_renderer_resources.inc"
 #include "game_native_renderer_frame.inc"
 } // namespace
@@ -155,6 +158,7 @@ struct GameNativeRendererApplication::Impl {
     CameraGraph cameras;
     ShaderGraph shaders;
     DescriptorGraph descriptors;
+    CompilerOwnersGraph compiler_owners;
     RenderResourcesGraph resources;
     std::unique_ptr<FrameGraph> frames;
     Phase phase{Phase::prepared};
@@ -189,6 +193,8 @@ struct GameNativeRendererApplication::Impl {
           cameras(graph,renderer,files.native_owners().types(),files.native_types().camera_types()),
           shaders(vfs,raw,cameras,profiles),
           descriptors(vfs.strings,services,definitions),
+          compiler_owners(owners,profiles,vfs,raw,*host.native_deletion_bindings().resource_support,
+              renderer,system_publication,devices.d3dx),
           resources(graph,cameras,texture_loading,host,raw,vfs,owners) {
         auto& deletion=host.native_deletion_bindings();
         check(!deletion.renderer_owner && !deletion.renderer_lua_owner,"renderer lifetime already bound");
@@ -230,6 +236,10 @@ NativeShaderBinaryCacheContext& GameNativeRendererApplication::shader_cache_cont
 }
 NativeShaderDescriptorReadContext& GameNativeRendererApplication::shader_descriptor_reader() noexcept {
     return impl_->descriptors.reader;
+}
+GameNativeMaterialCompilerOwners GameNativeRendererApplication::material_compiler_owners() {
+    check(impl_->phase==Impl::Phase::ready,"material compiler owners require the ready application renderer");
+    return impl_->compiler_owners.borrowed();
 }
 void GameNativeRendererApplication::read_shader_descriptor(NativeShaderDescriptorStorage& descriptor,
     const void* name,U generation,NativeShaderDescriptorReadOperation& operation) {
@@ -411,6 +421,7 @@ void GameNativeRendererApplication::after_native_drain() {
     check(!p.frames || !p.frames->queue,"native render queue survived drain");
     check(p.shaders.quiescent() && !p.shaders.process.cache_0108d6ec(),"native shader cache survived preload bracket");
     p.resources.after_native_drain();
+    check(p.compiler_owners.quiescent(),"material compiler owners survived native drain");
     check(WaitForSingleObject(p.observed_worker,0)==WAIT_OBJECT_0,"native renderer worker did not join");
     p.phase=Impl::Phase::drained;
     p.log.note("native renderer after raw drain: owner=null lua=null definitions=null system=null entry_cache=null queue=null worker=joined");
