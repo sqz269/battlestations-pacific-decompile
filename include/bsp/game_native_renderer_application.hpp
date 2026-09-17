@@ -19,6 +19,8 @@ struct NativeCameraEnvironment;
 struct NativeNodeRawConstants;
 class NativeViewportRegistry;
 struct NativeCockpitViewportReleaseContext;
+struct NativeRenderResourcesLifetimeContext;
+class NativeRenderResourcesConstructionAcquired;
 }
 namespace bsp::game {
 class GameSingletonHost;
@@ -65,6 +67,13 @@ public:
     const NativeNodeRawConstants& node_constants() noexcept;
     NativeViewportRegistry& viewport_registry() noexcept;
     const NativeCockpitViewportReleaseContext& cockpit_viewport_release() noexcept;
+    // Full B14A10 after device startup; preserves allocation preimages.
+    // Caller must complete the later native resource initialization before
+    // ordinary destruction (B14A10 leaves +70 unwritten). Normal startup is
+    // still gated on that B107F0 integration; this is the shared provider API.
+    void* construct_render_resources();
+    NativeRenderResourcesLifetimeContext& render_resources_lifetime() noexcept;
+    const NativeRenderResourcesConstructionAcquired& render_resources_construction() const noexcept;
     bool requires_process_retention() const noexcept;
     void drain_singletons();
     void after_native_drain();

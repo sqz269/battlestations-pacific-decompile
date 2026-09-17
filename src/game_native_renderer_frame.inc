@@ -2,7 +2,7 @@
 // pool, manager, publication and synchronization domains through native drain.
 struct FrameGraph {
  NativeRenderCommandQueueStorage* volatile queue{};
- void* volatile service{}; // Actual F8D39C service is not constructed yet.
+ void* volatile& service; // Shared actual F8D39C cell, read on every begin.
  volatile std::uint8_t in_end_frame=0,clear_request=1; // PE 108D4CC / E1306C.
  NativeRendererStopPipelineContext stop;
  NativeRenderQueueConstructorContext queue_constructor;
@@ -20,8 +20,8 @@ struct FrameGraph {
 
  FrameGraph(DestructionGraph& g,DeviceGraph& d,NativeRendererConstructorContext& c,
   GameSingletonHost& host,ActualNativeStringPoolStorage& strings,NativeStringRawPoolContext& raw,
-  void* const volatile& counter,const XLiveLibrary& library)
-  :stop{g.reset,g.cache,g.profiles(0xd6821c)},
+  void* const volatile& counter,const XLiveLibrary& library,void* volatile& render_service)
+  :service(render_service),stop{g.reset,g.cache,g.profiles(0xd6821c)},
    queue_constructor{d.renderer,queue,stop,strings},
    queue_getter{host.manager_publication_01090aa0(),queue_constructor,g.profiles(0xd5e5ac),g.profiles(0xd62064)},
    queue_destruction{queue,strings,nullptr,nullptr},

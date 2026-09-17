@@ -13,6 +13,7 @@ struct NativeDiagnosticSinkStorage;
 struct NativeRendererRecordGuardContext;
 struct NativeRendererLuaOwnerContext;
 struct NativeRendererDestructorContext;
+struct NativeRenderResourcesLifetimeContext;
 struct NativeRenderEntryCacheContext;
 struct NativeRenderQueueDestructionContext;
 struct NativeRenderJobPublicationContext;
@@ -171,6 +172,9 @@ struct NativeSingletonDeletionBindings {
     // D190B4 -> 925430: same weak-owner domain and actual0109CE90 cell used
     // by construction; this binding must outlive the shared manager drain.
     NativeWeakOwnerDomain* weak_owner_domain{};
+    // D5E480 -> B151C0. Use the same raw F8D39C publication, strings,
+    // canonical child companions and frame context as the actual constructor.
+    NativeRenderResourcesLifetimeContext* render_resources{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -186,7 +190,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, renderer_owner) == 128);
 static_assert(offsetof(NativeSingletonDeletionBindings, render_entry_cache) == 132);
 static_assert(offsetof(NativeSingletonDeletionBindings, render_queue) == 136);
 static_assert(offsetof(NativeSingletonDeletionBindings, weak_owner_domain) == 140);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 144);
+static_assert(offsetof(NativeSingletonDeletionBindings, render_resources) == 144);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 148);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

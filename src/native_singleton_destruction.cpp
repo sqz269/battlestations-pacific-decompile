@@ -37,6 +37,7 @@
 #include "bsp/native_renderer_record_guard.hpp"
 #include "bsp/native_renderer_lua_owner.hpp"
 #include "bsp/native_renderer_destructor.hpp"
+#include "bsp/native_render_resources_lifetime.hpp"
 #include "bsp/native_render_entry_cache.hpp"
 #include "bsp/native_render_queue_destruction.hpp"
 #include "bsp/native_shader_state_definitions.hpp"
@@ -62,6 +63,12 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
     const NativeSingletonDeletionBindings& bindings, std::uint32_t profile,
     std::uint32_t flags) {
     switch (profile) {
+    case 0x00d5e480:
+        if (bindings.render_resources != nullptr) {
+            delete_native_render_resources_00b151c0(owner,flags,*bindings.render_resources);
+            return;
+        }
+        break;
     case 0x00d5e5f4:
         if (bindings.render_queue != nullptr) {
             delete_native_render_queue_00b1f6b0(

@@ -82,6 +82,7 @@
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/system_camera_axes.hpp"
 #include "bsp/native_cockpit_helper_construction.hpp"
+#include "bsp/native_render_resources_lifetime.hpp"
 #include <array>
 #include <cstring>
 #include <filesystem>
@@ -106,11 +107,12 @@ struct CanonicalProfiles {
 #include "game_native_renderer_device.inc"
 #include "game_native_renderer_textures.inc"
 #include "game_native_renderer_camera.inc"
+#include "game_native_renderer_resources.inc"
 #include "game_native_renderer_frame.inc"
 } // namespace
 
 struct GameNativeRendererApplication::Impl {
-    enum class Phase { prepared, constructing, constructed, starting_device, initializing_window_cache, ready, rendering, draining, failed, drained };
+    enum class Phase { prepared, constructing, constructed, starting_device, initializing_window_cache, initializing_resources, ready, rendering, draining, failed, drained };
     GameHostLog& log;
     GameSingletonHost& singletons;
     GameNativeLuaServices& lua_services;
@@ -146,6 +148,7 @@ struct GameNativeRendererApplication::Impl {
     DeviceGraph devices;
     TextureLoadingGraph texture_loading;
     CameraGraph cameras;
+    RenderResourcesGraph resources;
     std::unique_ptr<FrameGraph> frames;
     Phase phase{Phase::prepared};
     IDirect3D9* retained_api{};
@@ -176,14 +179,17 @@ struct GameNativeRendererApplication::Impl {
               validation,accounting,data,files.native_owners().types(),files.native_types().light_types(),vfs.retained_memory),
           devices(graph,constructor,host,vfs.strings,platform),
           texture_loading(graph,devices,owners,vfs,platform_events,validation,accounting),
-          cameras(graph,renderer,files.native_owners().types(),files.native_types().camera_types()) {
+          cameras(graph,renderer,files.native_owners().types(),files.native_types().camera_types()),
+          resources(graph,cameras,texture_loading,host,raw,vfs,owners) {
         auto& deletion=host.native_deletion_bindings();
         check(!deletion.renderer_owner && !deletion.renderer_lua_owner,"renderer lifetime already bound");
         check(!deletion.render_entry_cache,"render-entry cache lifetime already bound");
+        check(!deletion.render_resources,"render-resource lifetime already bound");
         bind_native_renderer_control_worker_process_context(control);
         deletion.renderer_owner=&graph.destructor;
         deletion.renderer_lua_owner=&lua;
         deletion.render_entry_cache=&entry_cache;
+        deletion.render_resources=&resources.lifetime;
     }
     ~Impl() {
         if(phase!=Phase::prepared && phase!=Phase::drained) std::terminate();
@@ -198,6 +204,23 @@ GameNativeRendererApplication::GameNativeRendererApplication(GameHostLog& log,Ga
     void* const volatile& clock,const void* platform)
     :impl_(std::make_unique<Impl>(log,host,files,lua,data,clock,platform)) {}
 GameNativeRendererApplication::~GameNativeRendererApplication()=default;
+void* GameNativeRendererApplication::construct_render_resources() {
+    auto& p=*impl_;check(p.phase==Impl::Phase::ready,"render resources require ready renderer/device");
+    p.phase=Impl::Phase::initializing_resources;
+    try {
+        auto* owner=p.resources.construct();
+        p.phase=Impl::Phase::ready;
+        p.log.notef("native render resources B14A10: owner=%p textures=%p cockpit=%p",owner,
+            owner ? get<void*>(owner,0x34) : nullptr,owner ? get<void*>(owner,0x0c) : nullptr);
+        return owner;
+    } catch(...) {p.phase=Impl::Phase::failed;throw;}
+}
+NativeRenderResourcesLifetimeContext& GameNativeRendererApplication::render_resources_lifetime() noexcept {
+    return impl_->resources.lifetime;
+}
+const NativeRenderResourcesConstructionAcquired& GameNativeRendererApplication::render_resources_construction() const noexcept {
+    return impl_->resources.acquired;
+}
 NativeCameraEnvironment& GameNativeRendererApplication::camera_environment() noexcept {
     return impl_->cameras.environment;
 }
@@ -243,7 +266,7 @@ void GameNativeRendererApplication::bind_platform_services(ResourceLoadEventHost
     auto& p=*impl_;check(p.phase==Impl::Phase::constructed,"renderer platform services order");
     check(!p.frames && !p.singletons.native_deletion_bindings().render_queue,"renderer frame graph already bound");
     p.frames=std::make_unique<FrameGraph>(p.graph,p.devices,p.constructor,p.singletons,
-        p.vfs.strings,p.raw,p.entry_cache_publication,library);
+        p.vfs.strings,p.raw,p.entry_cache_publication,library,p.resources.publication);
     p.singletons.native_deletion_bindings().render_queue=&p.frames->queue_destruction;
     p.control.begin_frame=&p.frames->begin;
     p.control.end_frame_00b2f4a0=&FrameGraph::worker_finish;
@@ -348,6 +371,7 @@ void GameNativeRendererApplication::after_native_drain() {
     check(!p.renderer && !p.lua_publication && !p.system_publication && !p.definitions,"native renderer children survived drain");
     check(!p.entry_cache_publication,"native render-entry cache survived drain");
     check(!p.frames || !p.frames->queue,"native render queue survived drain");
+    p.resources.after_native_drain();
     check(WaitForSingleObject(p.observed_worker,0)==WAIT_OBJECT_0,"native renderer worker did not join");
     p.phase=Impl::Phase::drained;
     p.log.note("native renderer after raw drain: owner=null lua=null definitions=null system=null entry_cache=null queue=null worker=joined");
