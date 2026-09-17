@@ -3003,5 +3003,1108 @@
       }
     ],
     "scope": "Strict build/3CTests, selected native bytes, isolated instrumented source bank traces, unchanged R85 success and final2/8-frame app runs/screenshots, scoped source and linked binaries. Earlier failures remain in immutable R85 archive. No full source/toolchain/game-data closure, audio-failure cause or gameplay proof."
+  },
+  "primary_integration": {
+    "source_commit": "2a191951deec240a78c04b50c0fa6221e7c8e756",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "artifact_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r86\\native-sound-startup-main-r86.zip",
+      "sha256": "76535f9ec855125c2506c687f357bf545af90cff0eedff8d47a6db5c2a4a3461",
+      "files": 216,
+      "uncompressed_bytes": 95904556,
+      "utc": "2026-09-17T05:22:19.503926+00:00",
+      "head": "2a191951deec240a78c04b50c0fa6221e7c8e756",
+      "manifest": [
+        {
+          "path": "build/win32/bsp_core.dir/Release/fmod_configuration_library.obj",
+          "size": 382954,
+          "sha256": "ca34180bff2816587756a48c71ca196e341116ac8682aa7df33e88d126a27f58"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/sound_resource_asset.obj",
+          "size": 88996,
+          "sha256": "c10e32f552c1c1d36ca27087b4541c8f0bb10f1ac9e85492fd0b0150c17835c3"
+        },
+        {
+          "path": "build/win32/bsp_core.vcxproj",
+          "size": 234388,
+          "sha256": "c679e324e3fa65fb63a346fa3f0f6e499ea59bcf89cf5965ee3ca36a92f6fcb4"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/ai_group_think.obj",
+          "size": 6132,
+          "sha256": "1a5a954ca13857d528fff56b252c7be08a9f4de0e0d73853671c1070ee911008"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/ai_planners.obj",
+          "size": 12369,
+          "sha256": "d85f084da30a7494577929480a64aa46635e89f538773f6d8c0478202f713744"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/airfield_taxi.obj",
+          "size": 4203,
+          "sha256": "1521ca61bcfdcb643b238bdd083aebfe6e918137a84000c89a7a359846d7334f"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/command_completion.obj",
+          "size": 77478,
+          "sha256": "d9b010aaa9af434b45383c157da901103ee1a78226809ae35bb6b80ff061e6e0"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_avoid_zone_runtime.obj",
+          "size": 359966,
+          "sha256": "71973a6cc32f5f9f95474440ebe9bc9778af996815102011941c42c446607b30"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+          "size": 729490,
+          "sha256": "4db9475d3c56c0e16260219c89f5613a85a5f515a5adf7fc39fae2596c99ed9b"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_commands.obj",
+          "size": 338899,
+          "sha256": "1802b816c50f89f261934c4f6a758cf497902e02b4a6f56ef66099ebf0e42fb8"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_fixed_step.obj",
+          "size": 40556,
+          "sha256": "c1f438cce0dcac0a69480784bb00c36ef80aec43b36e17d7ff9820cccdf40a0a"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_fonts.obj",
+          "size": 147019,
+          "sha256": "2d90f4bb9b28ce23d0960891387bf1169af56fa9cdf30b98d2e56b8de203283e"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_frontend.obj",
+          "size": 705704,
+          "sha256": "7cd237e44ecf86f5ce1613d94336d720442e1fd3093c308ce01e17398d9ff8b4"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_gunnery.obj",
+          "size": 671166,
+          "sha256": "6700bdb8f62b05048410274b172682ed6ca6ab63a45d930f848541770d769a3a"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_hud.obj",
+          "size": 210381,
+          "sha256": "7873f59430db1e04a6913b4a2be23b6ac0e30a8b0f611c670d2ac1ecfe5f30ff"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_hud_world.obj",
+          "size": 222447,
+          "sha256": "7ce99912d39d416c3b61fbd191360c19842ace2b921e97c4bf006184086895bb"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_init_tail.obj",
+          "size": 123530,
+          "sha256": "0cc88a0d0ab35711dca98cc398ee186eb5c6ca214ce9d77937717fab7358c0bd"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_lua.obj",
+          "size": 579966,
+          "sha256": "cd490e309ce749fcb7fc64f6f1f8736ad70bfb8f7b0737b39988bf68f1eb6f12"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_menu.obj",
+          "size": 518796,
+          "sha256": "64f135c7c963561fc7f664a42772fc5d69fbed2c78eb28158475986b06988963"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_mission.obj",
+          "size": 763776,
+          "sha256": "ed317a0f0efa7dcbfc6e9a8293a841172a6f07ebf30b072a71565949324e3216"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_mission_frame.obj",
+          "size": 572403,
+          "sha256": "a8f773dc5961a425ca8c027a684b67c5b56b9ffb95477b9cd0b1527eb11c99a3"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_mission_result.obj",
+          "size": 241504,
+          "sha256": "b639795d6d4a5d60116eaaeec0de244b5b4dee5bd2e2dd381ff218fcca6d02d3"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_ready.obj",
+          "size": 215770,
+          "sha256": "3edfe61fa275249b0982a46efc8a85702f271541f3f3d0efc0fa17540eed399b"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_scene_contents.obj",
+          "size": 930357,
+          "sha256": "88469f6fcab6ff323f655cd8bc19c407aeeec797d335b8a59277000411a792b9"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_script_orders.obj",
+          "size": 305820,
+          "sha256": "32e80dc1d2f077b65f8442e1e8327de0baebaf5a375b322e2381afd1feebc41d"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_ship_ai.obj",
+          "size": 707939,
+          "sha256": "6cb64297174f6d1ca310b13e0f7be80f1aa0ad44f157ae2b9b5bbcc9ac2c92ed"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+          "size": 22015,
+          "sha256": "1d0a9b2287f3d267b05eca11e7774ad622af0cf45bfa93a572e9dcf0508109ff"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_text.obj",
+          "size": 148586,
+          "sha256": "dfb54f019d0447ddaebc80d8f6718bfeac2527fb8bafebc6355a5b44333fc9f4"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_trajectory.obj",
+          "size": 122707,
+          "sha256": "9a8ee419088d395941dde95927eb771b4571735e8d04cd009bf5b12d48a22eb0"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_units.obj",
+          "size": 469397,
+          "sha256": "e1f07ed689b20b227abdc3d5a9c15c88ccc00f2474c56d18cf8ee73b7b860836"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_vfs.obj",
+          "size": 422799,
+          "sha256": "151cdaf391085205e6e38cdfa9ecd568f398871d1304b0ca5cb3df6b05a51d2e"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_world.obj",
+          "size": 103418,
+          "sha256": "774060466890bd9a46924424a100a436df21d3b01ce185dfe44cfc3f023e6382"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_main.obj",
+          "size": 297244,
+          "sha256": "4af10d6cdf4b2642725c16cd2b57aaebfb522d1ffa865bbb7db4c8f9bd2f3a1f"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_graphics_pools.obj",
+          "size": 27852,
+          "sha256": "1206517652b072b6d6aaba6b95a6225339bda61cc4a64107016d5b5dcc91a905"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_hardware_layout_tree.obj",
+          "size": 12732,
+          "sha256": "2a2ea9960a191a4197d201ae68ad6e5501534492f47e7eb0b13e92d6490804f6"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_lua_globals.obj",
+          "size": 15945,
+          "sha256": "932075a1c004dbcc5d423665c91329e2975439efbb27e4a725b84d5b65a032f6"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_lua_services.obj",
+          "size": 23118,
+          "sha256": "53e26d46dd46f430cd0c2dd8e085da9013228ddd65f8691e06ccc953dccea87f"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_renderer_application.obj",
+          "size": 188619,
+          "sha256": "6df0580ceac48d37d0ddb40fc8d27a91ed366cc04f9d66ff295863f58555513d"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_string_process.obj",
+          "size": 4101,
+          "sha256": "790f75ee44bff156efae3528e02ca87bd52f54d7ce74ad9a6b2ecdc5445334ef"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_vertex_declarations.obj",
+          "size": 17104,
+          "sha256": "e57ec85125fc203a949fd2dbb3bef7f632796387af75c5f650a5a43b2650fc60"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_vfs_application.obj",
+          "size": 51971,
+          "sha256": "86b4d85777bc3a55ac183d8ef416182837c626b6ff2721eacc3fd896e8c9f7db"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_observer_runtime.obj",
+          "size": 15861,
+          "sha256": "95bfe2f95c0bc93f959c17990c662c2888d58696d6c5f80f3a4dbd10dbf0026b"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/gameplay_loose_ends_2.obj",
+          "size": 1758,
+          "sha256": "6cef5ac34b229195f2d1d5da12829627f2b48227fd88a7d2d15cd34b261b2a42"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/geom_mesh_resource.obj",
+          "size": 261705,
+          "sha256": "e536b9089157b35b3c8494cfbf0d7fa85726d9ce82b2b4ab47c4e13d515c8035"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/hit_hull_segment.obj",
+          "size": 1836,
+          "sha256": "cd16b3a2c47c636a204fd4e622a4d0cd7f8c75d11091ca91fe67a394c3383538"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/kill_credit.obj",
+          "size": 33830,
+          "sha256": "2b42314fff614f7eb65ce4f58110a76ed78a679f360edefbdbb9afb3fc090351"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/narrowphase_unit_part_shape.obj",
+          "size": 2080,
+          "sha256": "7f5bbfc6210b33a0c452bb3601d04c9e7e5b0c1abcccf2ea6de669b291730d9a"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/part_damage_reachability.obj",
+          "size": 4156,
+          "sha256": "51f9c07e73db9914a4707775e8b5b76f13c8ff56bf380da1771e86fd72d65a33"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/pilot_command_path.obj",
+          "size": 8846,
+          "sha256": "062707a15f8ce177c4dcfb9f1c35c062c62a980d0f62100e5b541ae40d543fb2"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/plane_ground_ops.obj",
+          "size": 13388,
+          "sha256": "65b619e02850c012e3a0a5c6529b27f6c9447450f2f82274bc76c483d60a8a65"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/ship_hit_record.obj",
+          "size": 7923,
+          "sha256": "6b1e0d411c1ba316a9f14fda39de96daaa30eff2c469dd20fcc54edfea4c5278"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/ship_sub_entity_list.obj",
+          "size": 1477,
+          "sha256": "2666c7f4077143bd9dd5e8bd9c14c5cd3da243c4805cbab30a66e1a3ae9aa7aa"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/unit_gunnery_pass.obj",
+          "size": 11746,
+          "sha256": "f85d451504ab8259bf3e1278f96ca2ca3fde61a590064bad3867293d37d9c557"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/unit_message_arms.obj",
+          "size": 25782,
+          "sha256": "e1f10761f7e50ba10b3538e34ea2d7b889d97a0a7f659a5f7aae7d007ab17557"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/unit_neighbour_fields.obj",
+          "size": 1330,
+          "sha256": "26c8631b91ce225ffc008e150f64e0efbd711587708a3f8ed7db26d180c8665f"
+        },
+        {
+          "path": "build/win32/bsp_game.vcxproj",
+          "size": 64257,
+          "sha256": "b0e4bec4bd85016b40bb6ca1addc3ac3b32bc742c7b99ed55ab33893349525ee"
+        },
+        {
+          "path": "build/win32/CMakeCache.txt",
+          "size": 19565,
+          "sha256": "d44e9a96208c5743219aa6ee30bf4f5768813c415ab257b5af16350b3179b9f3"
+        },
+        {
+          "path": "build/win32/Release/bsp_core.lib",
+          "size": 64265576,
+          "sha256": "2cc55f0e4e38e406dee71938b69eda12d5ed45cabf64bb3748a2fb739b18ac2c"
+        },
+        {
+          "path": "build/win32/Release/bsp_game.exe",
+          "size": 2610176,
+          "sha256": "6413ba6ebcc9a68f06d5e8924d5d81cd258b22914191e22eb3c70ec220a91452"
+        },
+        {
+          "path": "build/win32/Release/bsp_lua511.lib",
+          "size": 455244,
+          "sha256": "db83167c8c7d24461ef2bf60363b96264fd2406929d0e72a8909287d79b96a17"
+        },
+        {
+          "path": "build/win32/Release/bsp_math_tests.exe",
+          "size": 753664,
+          "sha256": "03cc25406a1ea02c386db469f5f8ca77c3b362f1417279409d972d6ebd24091d"
+        },
+        {
+          "path": "build/win32/Release/bsp_zlib121.lib",
+          "size": 71906,
+          "sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5"
+        },
+        {
+          "path": "build/win32/Testing/Temporary/LastTest.log",
+          "size": 2408,
+          "sha256": "59ade476f77829943fa07a1ccb868998ef007e7ef414c8a55ecd03d5dc6bf908"
+        },
+        {
+          "path": "cmake/startup.cmake",
+          "size": 156270,
+          "sha256": "e1324308cd189db64cf3069f6870f345c031d484548528c5361f2eb286cd3505"
+        },
+        {
+          "path": "config/names/00a80000.jsonl",
+          "size": 101018,
+          "sha256": "be2a26ca064674d8bcad2f7d48303558dceb1dced1b726bdbcd8000670e6d853"
+        },
+        {
+          "path": "config/reconstruction/00a80000.jsonl",
+          "size": 179381,
+          "sha256": "8410b2265a7cfeb4d2117d8bd7c94c405c86ae1d6c7b3d8fd3cb88981ef3fc6e"
+        },
+        {
+          "path": "config/target.json",
+          "size": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        {
+          "path": "docs/NATIVE_SOUND_STARTUP_FAILURE_R86.md",
+          "size": 4798,
+          "sha256": "f275ca473cd4f5df52d2f0a1990ee2ccd39b01e049f12c51e00c539d60a63ed4"
+        },
+        {
+          "path": "include/bsp/audio_online_startup.hpp",
+          "size": 17176,
+          "sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821"
+        },
+        {
+          "path": "include/bsp/camera_projection.hpp",
+          "size": 2413,
+          "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+        },
+        {
+          "path": "include/bsp/camera_transform.hpp",
+          "size": 7028,
+          "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+        },
+        {
+          "path": "include/bsp/frame_clock.hpp",
+          "size": 2475,
+          "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+        },
+        {
+          "path": "include/bsp/frontend_screen_animation.hpp",
+          "size": 14105,
+          "sha256": "5bf3429e1c6032def440ccebd3d804fd087896401ec16bf94b456b1dc73865e0"
+        },
+        {
+          "path": "include/bsp/game_entry.hpp",
+          "size": 5510,
+          "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+        },
+        {
+          "path": "include/bsp/gui_layout_loader.hpp",
+          "size": 20811,
+          "sha256": "3ede9dc470a4d5a3285d1578483428b548025b0b2eba9ab6ecc79967b242d8b1"
+        },
+        {
+          "path": "include/bsp/gui_lua_reader.hpp",
+          "size": 23275,
+          "sha256": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433"
+        },
+        {
+          "path": "include/bsp/gui_widget.hpp",
+          "size": 13391,
+          "sha256": "846d1f6378e3459fb585917289d2f3342de37ba98dafc7fc952c9c48ea8061f9"
+        },
+        {
+          "path": "include/bsp/memory_stream.hpp",
+          "size": 3813,
+          "sha256": "19c1175ea33d69f91fd1a6cd723a8c01d17a7c0527e19a356c0b5c8cc15f4f5f"
+        },
+        {
+          "path": "include/bsp/native_pooled_string_substring.hpp",
+          "size": 2047,
+          "sha256": "6243c6ba8acb0e1b7f0358a456d6e65ac1b9303cc79b1f1dfd5be01d05b985ff"
+        },
+        {
+          "path": "include/bsp/native_string.hpp",
+          "size": 8771,
+          "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+        },
+        {
+          "path": "include/bsp/panel_sequence_types.hpp",
+          "size": 2031,
+          "sha256": "49ba6e71c04f1c0a2e248e8b14c46164dc489f87204c232d16915d47026d1a43"
+        },
+        {
+          "path": "include/bsp/physical_file.hpp",
+          "size": 1754,
+          "sha256": "6ee5bd45b642f537b3d0edb836ae6ec28a88db3ff473024d12ffa1bcbb8cb306"
+        },
+        {
+          "path": "include/bsp/physical_pending_reads.hpp",
+          "size": 4601,
+          "sha256": "5bc2cfbebf0df7d6826c4251018c8f4541fd28f16e21863cb1eb37e89eeb0595"
+        },
+        {
+          "path": "include/bsp/render_tail.hpp",
+          "size": 15566,
+          "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+        },
+        {
+          "path": "include/bsp/resource_lookup.hpp",
+          "size": 535,
+          "sha256": "8e410e293d0df1b98c69cb7bb911a643033c628d99d7fe4bfbcd91e4e86bb79a"
+        },
+        {
+          "path": "include/bsp/singleton_lifetime.hpp",
+          "size": 4372,
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        },
+        {
+          "path": "include/bsp/sound_class_ownership.hpp",
+          "size": 4116,
+          "sha256": "d1a5733899f1f6e51e06e838561682aa2564a9f693124df7749e8cd937a074d6"
+        },
+        {
+          "path": "include/bsp/sound_configuration.hpp",
+          "size": 6716,
+          "sha256": "06f3585b512506defb15fce912350febdefd09353efd832bdfe48c6aa9272874"
+        },
+        {
+          "path": "include/bsp/sound_lifetime_access.hpp",
+          "size": 3039,
+          "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+        },
+        {
+          "path": "include/bsp/sound_listener.hpp",
+          "size": 4732,
+          "sha256": "331718caa3413b8886778fb0232a2178b02ed8aa47db893de8f35ad787f070d6"
+        },
+        {
+          "path": "include/bsp/sound_manager_levels.hpp",
+          "size": 3581,
+          "sha256": "a7014dd57a52bd4f40715da662e4481c7dd365d3ce08a4a91a96de8fcb238d78"
+        },
+        {
+          "path": "include/bsp/sound_resource_asset.hpp",
+          "size": 5042,
+          "sha256": "ac1b148939d7c85092254a1998f05dbfcdb70d9f06e95a1c9706c90ec2a3ac5f"
+        },
+        {
+          "path": "include/bsp/sound_system_owner.hpp",
+          "size": 9465,
+          "sha256": "68206cebc39f894e3653d55a76018ecf07f105cac5fed614515cd24029b5d215"
+        },
+        {
+          "path": "include/bsp/storage_pool.hpp",
+          "size": 5571,
+          "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+        },
+        {
+          "path": "include/bsp/system_time_constants.hpp",
+          "size": 4800,
+          "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+        },
+        {
+          "path": "include/bsp/vfs_candidates.hpp",
+          "size": 1368,
+          "sha256": "d76c86474555f735601a4c4e747529031d37c0668437c6ca774379e5a0f5c793"
+        },
+        {
+          "path": "include/bsp/vfs_mounts.hpp",
+          "size": 5434,
+          "sha256": "712ffeef33b98768dffd15117c0e66bc9eeac066e362b9afda4a5801041b1b30"
+        },
+        {
+          "path": "local/annotate_sound_failure_r86.py",
+          "size": 3637,
+          "sha256": "085caa8bd16141192990b97856dfc89f66849ce554854ae73bfef208dfb93a8f"
+        },
+        {
+          "path": "local/application_r86_diagnostic/application.log",
+          "size": 47565,
+          "sha256": "c4d004fd78459ee3d3c00b735e595a6c7ea9dfe8112072e21f499e1eb75396e2"
+        },
+        {
+          "path": "local/application_r86_diagnostic/frontend.png",
+          "size": 723815,
+          "sha256": "776f1d756f5a3012f7af10aca5146e9ed7d8a6c895e6567cd8fe66d89942071b"
+        },
+        {
+          "path": "local/application_r86_diagnostic/personal/Battlestations-Pacific/options.txt",
+          "size": 61,
+          "sha256": "f7285347c0b8126cce9fb052f5d375ac278118f97a4ae40f612d5a6b7f95bcca"
+        },
+        {
+          "path": "local/application_r86_diagnostic/process.json",
+          "size": 1463,
+          "sha256": "55a4f0ae6ba6b43bbb06b8eb6aed72513fbae157321982c9aef85161c2202fd9"
+        },
+        {
+          "path": "local/application_r86_diagnostic/result.json",
+          "size": 1544,
+          "sha256": "82d80d08c51f81eefbdcbb39e9e253657e52f59890be110f2e417e7c2312b985"
+        },
+        {
+          "path": "local/application_r86_diagnostic/stderr.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "local/application_r86_diagnostic/stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "local/application_r86_final/application.log",
+          "size": 47536,
+          "sha256": "163ed9198c0b80a22a96fe0ab6191df7791fe14883fd474c2d02f108191e8a93"
+        },
+        {
+          "path": "local/application_r86_final/frontend.png",
+          "size": 723787,
+          "sha256": "a240e71532aabbf873835416bf2ccfc1de8bb0fa9c8bd8126733e7d7eab3088b"
+        },
+        {
+          "path": "local/application_r86_final/menu/application.log",
+          "size": 61120,
+          "sha256": "2ac4dfc465977ee527400a283b2cb6a31826247579dfed9aaac22d9471aba2eb"
+        },
+        {
+          "path": "local/application_r86_final/menu/frontend.png",
+          "size": 376235,
+          "sha256": "f279d2d7c757d878d1ca82f3f5483e830fff59433d88e965af29a698f7a0f7d9"
+        },
+        {
+          "path": "local/application_r86_final/menu/personal/Battlestations-Pacific/options.txt",
+          "size": 61,
+          "sha256": "f7285347c0b8126cce9fb052f5d375ac278118f97a4ae40f612d5a6b7f95bcca"
+        },
+        {
+          "path": "local/application_r86_final/menu/process.json",
+          "size": 1498,
+          "sha256": "3c9b1acae6256cedc966bcd3791910e917ae71eef4a4af81cd7a9aaaa6bf7522"
+        },
+        {
+          "path": "local/application_r86_final/menu/result.json",
+          "size": 1579,
+          "sha256": "e32f38d59c9ab5b32955f1616f96e1ad72c534ed1302b8815bba7a439a1a0540"
+        },
+        {
+          "path": "local/application_r86_final/menu/stderr.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "local/application_r86_final/menu/stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "local/application_r86_final/personal/Battlestations-Pacific/options.txt",
+          "size": 61,
+          "sha256": "f7285347c0b8126cce9fb052f5d375ac278118f97a4ae40f612d5a6b7f95bcca"
+        },
+        {
+          "path": "local/application_r86_final/process.json",
+          "size": 1442,
+          "sha256": "11c7686b922a2cca9afb0406c1bce42228a67c0eb15b531c7dad9a36ff91b935"
+        },
+        {
+          "path": "local/application_r86_final/result.json",
+          "size": 1523,
+          "sha256": "f1613814e688820623935b3be345fccaca1bcafe4c875f4746531ed1b9c693da"
+        },
+        {
+          "path": "local/application_r86_final/stderr.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "local/application_r86_final/stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "local/application_r86_repeat_0/application.log",
+          "size": 47555,
+          "sha256": "b15e787f4a503665fea8f5ae3fe764490b47c0357d8df89e248c134013988c69"
+        },
+        {
+          "path": "local/application_r86_repeat_0/frontend.png",
+          "size": 723827,
+          "sha256": "5da3786b26ca85477473c7c440b6ac6830e4031bc576f38090b31ccc1760f2ea"
+        },
+        {
+          "path": "local/application_r86_repeat_0/personal/Battlestations-Pacific/options.txt",
+          "size": 61,
+          "sha256": "f7285347c0b8126cce9fb052f5d375ac278118f97a4ae40f612d5a6b7f95bcca"
+        },
+        {
+          "path": "local/application_r86_repeat_0/process.json",
+          "size": 1457,
+          "sha256": "fa12d50ac5528933f55e81dba98784504474686b337914516a6f85c2b07138a2"
+        },
+        {
+          "path": "local/application_r86_repeat_0/result.json",
+          "size": 1537,
+          "sha256": "4d13c91c5f91cba12a03006e0959bdd5fa50a3c9cbfad979682a4235139635a6"
+        },
+        {
+          "path": "local/application_r86_repeat_0/stderr.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "local/application_r86_repeat_0/stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "local/application_r86_repeat_1/application.log",
+          "size": 47554,
+          "sha256": "2ed115b5dc0c1a2304a330f7d7e15263f6d0a6fd15afb0b415be1619578a2604"
+        },
+        {
+          "path": "local/application_r86_repeat_1/frontend.png",
+          "size": 723706,
+          "sha256": "f2bc68e3074058f8c5477e16e098d3ddd7f8fc8cb86bdc9913a4ef73acf3a1f8"
+        },
+        {
+          "path": "local/application_r86_repeat_1/personal/Battlestations-Pacific/options.txt",
+          "size": 61,
+          "sha256": "f7285347c0b8126cce9fb052f5d375ac278118f97a4ae40f612d5a6b7f95bcca"
+        },
+        {
+          "path": "local/application_r86_repeat_1/process.json",
+          "size": 1457,
+          "sha256": "2ac0e56fbbfadf9442f510bff10b6ce70f9ceb1cc6c6b1467675d6870ebc4012"
+        },
+        {
+          "path": "local/application_r86_repeat_1/result.json",
+          "size": 1538,
+          "sha256": "f0651f6bd3eb077b2844628bbc9629e93e38ff503667a834e20e8ab9123a1149"
+        },
+        {
+          "path": "local/application_r86_repeat_1/stderr.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "local/application_r86_repeat_1/stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "local/application_r86_repeat_2/application.log",
+          "size": 47555,
+          "sha256": "d28372fc48f0ca2578a87200eedf3372abbd51adebaa5e5a3a61a970f980cfaf"
+        },
+        {
+          "path": "local/application_r86_repeat_2/frontend.png",
+          "size": 723842,
+          "sha256": "270e71b40197b8803f83a1852f0fa5c8a0495c1e2f4271ad6c37490aa6cfc7d4"
+        },
+        {
+          "path": "local/application_r86_repeat_2/personal/Battlestations-Pacific/options.txt",
+          "size": 61,
+          "sha256": "f7285347c0b8126cce9fb052f5d375ac278118f97a4ae40f612d5a6b7f95bcca"
+        },
+        {
+          "path": "local/application_r86_repeat_2/process.json",
+          "size": 1457,
+          "sha256": "2a4ffef8efb15166d756f2285e3e37056ba6002643b0a75242e170bac6fa12d7"
+        },
+        {
+          "path": "local/application_r86_repeat_2/result.json",
+          "size": 1538,
+          "sha256": "8ba872a22b3edb0ad59fcb5d6301e1d20e279be0f39e6a70ea7cf4c6857480dc"
+        },
+        {
+          "path": "local/application_r86_repeat_2/stderr.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "local/application_r86_repeat_2/stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "local/application_r86_repeat_3/application.log",
+          "size": 47555,
+          "sha256": "83e98ad0d6adaf612384eeec17bd1a97df0c31439429c9ad9241ddab5a2c71de"
+        },
+        {
+          "path": "local/application_r86_repeat_3/frontend.png",
+          "size": 723827,
+          "sha256": "5da3786b26ca85477473c7c440b6ac6830e4031bc576f38090b31ccc1760f2ea"
+        },
+        {
+          "path": "local/application_r86_repeat_3/personal/Battlestations-Pacific/options.txt",
+          "size": 61,
+          "sha256": "f7285347c0b8126cce9fb052f5d375ac278118f97a4ae40f612d5a6b7f95bcca"
+        },
+        {
+          "path": "local/application_r86_repeat_3/process.json",
+          "size": 1457,
+          "sha256": "530da53b1545c92b9c8853c4deac47e4033124144fa5a89a5b0edffa7d206cbb"
+        },
+        {
+          "path": "local/application_r86_repeat_3/result.json",
+          "size": 1537,
+          "sha256": "1aac7aa0ac41e996db989223944a04bece8c94397ca54b974491c3e542dff9fd"
+        },
+        {
+          "path": "local/application_r86_repeat_3/stderr.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "local/application_r86_repeat_3/stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "local/application_r86_repeat_4/application.log",
+          "size": 47555,
+          "sha256": "e55e8927bc498631fac5501b8c1a3bc306972cd4231787b95bd8f504dd6174db"
+        },
+        {
+          "path": "local/application_r86_repeat_4/frontend.png",
+          "size": 723899,
+          "sha256": "afaa6f888eb31e9479944a0f5dabf639347f504cad464dddfcb89514dc841837"
+        },
+        {
+          "path": "local/application_r86_repeat_4/personal/Battlestations-Pacific/options.txt",
+          "size": 61,
+          "sha256": "f7285347c0b8126cce9fb052f5d375ac278118f97a4ae40f612d5a6b7f95bcca"
+        },
+        {
+          "path": "local/application_r86_repeat_4/process.json",
+          "size": 1457,
+          "sha256": "49797e27ba404256ff291cb20830d137a7a6e2e3eb146cc724301235ff40a53f"
+        },
+        {
+          "path": "local/application_r86_repeat_4/result.json",
+          "size": 1538,
+          "sha256": "3c9e22179ddf474c1ded4f738e391074efa7d787e63b6074c2c44e8a93db2fa8"
+        },
+        {
+          "path": "local/application_r86_repeat_4/stderr.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "local/application_r86_repeat_4/stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "local/application_r86_repeat_5/application.log",
+          "size": 47555,
+          "sha256": "d21bb53248678d815a4c5c8169636e1753d1f8b9df3728334816f06b79e0d3bb"
+        },
+        {
+          "path": "local/application_r86_repeat_5/frontend.png",
+          "size": 723782,
+          "sha256": "c2a0db01c1446afa2201be137b1bde37998908270835aedacc85a64026b76e7c"
+        },
+        {
+          "path": "local/application_r86_repeat_5/personal/Battlestations-Pacific/options.txt",
+          "size": 61,
+          "sha256": "f7285347c0b8126cce9fb052f5d375ac278118f97a4ae40f612d5a6b7f95bcca"
+        },
+        {
+          "path": "local/application_r86_repeat_5/process.json",
+          "size": 1457,
+          "sha256": "72e09fd9a1b2d53ba33892f7ecc1d51ad1350f1321845a029764cad575d58f1a"
+        },
+        {
+          "path": "local/application_r86_repeat_5/result.json",
+          "size": 1538,
+          "sha256": "fb10226dba4f7fc04284a9b1d07ad657f13ce478ed8dd384d6a12b38cdd77f28"
+        },
+        {
+          "path": "local/application_r86_repeat_5/stderr.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "local/application_r86_repeat_5/stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "local/application_r86_unmodified/application.log",
+          "size": 47561,
+          "sha256": "ae209148e1012759b62515380b4057b90db0bdc78c1b0632336cc398b4e0a8b3"
+        },
+        {
+          "path": "local/application_r86_unmodified/frontend.png",
+          "size": 723722,
+          "sha256": "0a0b6744c9837e407601aa6ef1dddfe2a43b592f5843bb0910f47e06c6dfe9f4"
+        },
+        {
+          "path": "local/application_r86_unmodified/personal/Battlestations-Pacific/options.txt",
+          "size": 61,
+          "sha256": "f7285347c0b8126cce9fb052f5d375ac278118f97a4ae40f612d5a6b7f95bcca"
+        },
+        {
+          "path": "local/application_r86_unmodified/process.json",
+          "size": 1457,
+          "sha256": "9ca9d8206bda4c4b0d6f9e1c82700cb6e9bb4b246b75e6fac5748e3da35c79ab"
+        },
+        {
+          "path": "local/application_r86_unmodified/result.json",
+          "size": 1538,
+          "sha256": "4d3db20461f20fc37a8a248929fac47f75144e1f3ba3d2fddb259120e862f634"
+        },
+        {
+          "path": "local/application_r86_unmodified/stderr.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "local/application_r86_unmodified/stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "local/collect_sound_failure_r86.py",
+          "size": 3940,
+          "sha256": "e57b4f9ce8f74ded64da0f08203e00f6cd3d2b5e1a5d23a8b8d9e7fe7ed1d6fe"
+        },
+        {
+          "path": "local/commit_sound_failure_r86.py",
+          "size": 1943,
+          "sha256": "7b4d207c0647e8b5141d40021f3eed32ece4e173a72626697c96606e6f81bcd3"
+        },
+        {
+          "path": "local/ghidra-annotations-20260917T052053Z.json",
+          "size": 2156,
+          "sha256": "9c69910c7c2795cf04d3fedc7719e38450a200c70cf74c55b5c4f9d053c8a30e"
+        },
+        {
+          "path": "local/prepare_sound_closeout_r86.py",
+          "size": 1071,
+          "sha256": "94ea17bd80ac9f2f0ed669a2f8dbd1b9c636d4e5a1f3c93e50607d1633b4a15c"
+        },
+        {
+          "path": "local/prepare_sound_failure_r86.py",
+          "size": 3136,
+          "sha256": "d99df9c042927fbc8c6d19004843ec599d5b33086ef6680c6e8f21c082ccd9e4"
+        },
+        {
+          "path": "local/r86_annotation_closeout.log",
+          "size": 164,
+          "sha256": "33e5c26c8cce536df0b98af8d1588c647811e16239e23c197dd1e86711803424"
+        },
+        {
+          "path": "local/r86_build.log",
+          "size": 2601,
+          "sha256": "c321cf2a9a36cf945f16a466bfcf32cf7c22b49a32304f17cd7992289e4bcb36"
+        },
+        {
+          "path": "local/r86_collection.log",
+          "size": 78,
+          "sha256": "1e1ff2c596ab5ecdbef3ff9cffe6b4a27ad0272b9fbbe6de45cc01f02947126d"
+        },
+        {
+          "path": "local/r86_integration.log",
+          "size": 1037,
+          "sha256": "fb30a02fe26244e94abc94fc76483f0f17f764776482cff31ae0d836408ff0dd"
+        },
+        {
+          "path": "local/repeat_sound_application_r86.py",
+          "size": 681,
+          "sha256": "0351c793318c0c06e75dd83ad6d47259ff3b7c04f11774d56f923a7eff2c8f94"
+        },
+        {
+          "path": "local/report_sound_failure_r86.py",
+          "size": 5139,
+          "sha256": "b879b15e91f447bcae133974f367d828b015acb81ac8ae715a2a3ea93c880ad7"
+        },
+        {
+          "path": "local/run_final_menu_r86.py",
+          "size": 2422,
+          "sha256": "317edbb507d16454037c788b92150fb19c8bc5085d7f83824e24cd25d173b164"
+        },
+        {
+          "path": "local/run_final_short_r86.py",
+          "size": 2391,
+          "sha256": "3a0127320401b4d5745a75f27f826600dbe777e5d49ab25fa22ea9574be04fed"
+        },
+        {
+          "path": "local/run_sound_failure_r86.py",
+          "size": 2403,
+          "sha256": "52be9b42905d5f449dd2b203b3fcdb147a2c90e325b96155f990dc1b6bbac33a"
+        },
+        {
+          "path": "local/run_sound_repeat_r86_0.py",
+          "size": 2401,
+          "sha256": "3e92ef780d61696a2f27b3e11b091cd508e0699ffd6d94746a7926d80d65b9d8"
+        },
+        {
+          "path": "local/run_sound_repeat_r86_1.py",
+          "size": 2401,
+          "sha256": "d4478b588e17222e4cc767ba6fae0604272c7fe67b7c5cf3cf20787e03bcabaa"
+        },
+        {
+          "path": "local/run_sound_repeat_r86_2.py",
+          "size": 2401,
+          "sha256": "9c5aa564e281ea4057ca79d54a1e83706296a0a7206f9f520ca91e958437dd56"
+        },
+        {
+          "path": "local/run_sound_repeat_r86_3.py",
+          "size": 2401,
+          "sha256": "a8c677b409548dba3bc87f2fb0534cfabf45c08b22d1d0dab89c50fd69881497"
+        },
+        {
+          "path": "local/run_sound_repeat_r86_4.py",
+          "size": 2401,
+          "sha256": "d86c5bb0cd33dff2ec0e2096198dbe1abf7a7d39091f195dec0ddd24fad2377d"
+        },
+        {
+          "path": "local/run_sound_repeat_r86_5.py",
+          "size": 2401,
+          "sha256": "6b3cf175737a7838bcba54ce5474ffbe8a1d882fac90c72a225aa3279f63c345"
+        },
+        {
+          "path": "local/run_unmodified_application_r86.py",
+          "size": 2398,
+          "sha256": "af502d8aa31261783a54ba065524215bd8d622628018b842fa28b450832d022a"
+        },
+        {
+          "path": "local/seal_sound_failure_r86.py",
+          "size": 4030,
+          "sha256": "2920f7fc6a2dfd54c37af8f1a147a985eb44081d74601bdb0d62eaa5e2886ce7"
+        },
+        {
+          "path": "local/sound_failure_r86/annotations.log",
+          "size": 204,
+          "sha256": "50d49131ae621aa6adc026129d2c6d065d1e8eea72dd294310ac1f4f4c8abf21"
+        },
+        {
+          "path": "local/sound_failure_r86/bank.bin",
+          "size": 2688,
+          "sha256": "247374fbb9cfcb9e3867f054c72e0663f346ee858ecc1ea1ffa4c4fff32fb555"
+        },
+        {
+          "path": "local/sound_failure_r86/bank.log",
+          "size": 1330,
+          "sha256": "53a810eda8c9b0b67159eaceed7312d3de921598edf97d197fa3068267c41e68"
+        },
+        {
+          "path": "local/sound_failure_r86/call_verification.log",
+          "size": 135,
+          "sha256": "9f16ff994b04061f5655836fe93f59d6a95a6a073dc8bfcbdb3c438c32182cde"
+        },
+        {
+          "path": "local/sound_failure_r86/compile.log",
+          "size": 33134,
+          "sha256": "d8302c97d896d3a09379683b9590638745f4d230172f493fc3f4b9059667a95a"
+        },
+        {
+          "path": "local/sound_failure_r86/dependencies.json",
+          "size": 31678,
+          "sha256": "b99f4208db32102dd5f5ce54bd34313a28e1924326fc689fca9c32a0ceb1ad7e"
+        },
+        {
+          "path": "local/sound_failure_r86/exports_after_annotations.log",
+          "size": 125,
+          "sha256": "86dc276980cfa9eb3566e71dbad10e8941a7ab3ff5a3f38efdd7f9fcfb1eb42d"
+        },
+        {
+          "path": "local/sound_failure_r86/game_objects.rsp",
+          "size": 6054,
+          "sha256": "d83d0f300cbec16dcc6c8e84ef03d768c6402997f5fb80a04c7a29491b6022fe"
+        },
+        {
+          "path": "local/sound_failure_r86/index.log",
+          "size": 16,
+          "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+        },
+        {
+          "path": "local/sound_failure_r86/listing-00a823f0.txt",
+          "size": 7350,
+          "sha256": "b484f3cc5f9e6ef393539910b0c3740869c43c3e862864520506eb4b6cf7fca1"
+        },
+        {
+          "path": "local/sound_failure_r86/native.json",
+          "size": 33382,
+          "sha256": "0521e0fd1f43f9b78fa7efdb0267ebb97f35179ba08c40d2e7d4f336ecd5808d"
+        },
+        {
+          "path": "local/sound_failure_r86/original.inc",
+          "size": 14,
+          "sha256": "aecb9819eb04bf5ad6cd2535cfac9b1bed5ef7946e551eff2224759862e16294"
+        },
+        {
+          "path": "local/sound_failure_r86/prior-ledgers.json",
+          "size": 1421,
+          "sha256": "c7f6579dc9eb0b523068636e7a66fcb5801e4b827a8eb567ee96d0ce8fec8390"
+        },
+        {
+          "path": "local/sound_failure_r86/probe.cmd",
+          "size": 856,
+          "sha256": "25726ee0da7f3af1a4b8e0f147e12a836d870c7eda423d589052cb0242ed98e3"
+        },
+        {
+          "path": "local/sound_failure_r86/probe.map",
+          "size": 4787504,
+          "sha256": "47a6717be9133481267ffaa3ac7ecbad25fdc9d9778ad158ef34ebb3b394b635"
+        },
+        {
+          "path": "local/sound_failure_r86/proto-00a823f0.txt",
+          "size": 766,
+          "sha256": "466ec12cbc7ef1a20de710327d83f04de2f2dfb340b6713f4ee48339e4f9498d"
+        },
+        {
+          "path": "local/sound_failure_r86/repeat-results.json",
+          "size": 10803,
+          "sha256": "635c28c235e7ce07d98f1a04c54947f566aebc998636ca3b2d3090fa2866f01d"
+        },
+        {
+          "path": "local/sound_failure_r86/snapshot.log",
+          "size": 230,
+          "sha256": "5b3faf8802bc4660f1c12de9a4bc65c063567063968ffa6062e8928e1e81c9a3"
+        },
+        {
+          "path": "local/sound_failure_r86/sound_asset.cpp",
+          "size": 12102,
+          "sha256": "60c4bec3ea677acf05a3363ba23cdb29a348854dcb7899270a2127677ce2bdad"
+        },
+        {
+          "path": "local/sound_failure_r86/sound_asset.obj",
+          "size": 141248,
+          "sha256": "d6271c4d2244adca8f9fa9d76ec7cea9cf933b32279605408d05c18b29a8b806"
+        },
+        {
+          "path": "local/sound_failure_r86/sound_probe.exe",
+          "size": 2614272,
+          "sha256": "5eb8d531b09c5fc2d02a8a36d034d4dba9befec36d19947f27de699bce0c5146"
+        },
+        {
+          "path": "reports/native_sound_startup_failure_r86.json",
+          "size": 219300,
+          "sha256": "7a588ea49d213004d1625b9bd55152e2f668517947cc865fb3db4acf3d8393c4"
+        },
+        {
+          "path": "scripts/build.ps1",
+          "size": 1820,
+          "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+        },
+        {
+          "path": "src/fmod_configuration_library.cpp",
+          "size": 24627,
+          "sha256": "dc7c1cd3403ab4aa0439ce9b296326b43cc4dd69393fb4c763befec70fbf3d10"
+        },
+        {
+          "path": "src/game_hosts.cpp",
+          "size": 98614,
+          "sha256": "30726364a38e749f21e7fd44bac44fa078bcc66a9ff074262623477bcfd79ee9"
+        },
+        {
+          "path": "src/sound_resource_asset.cpp",
+          "size": 11484,
+          "sha256": "0c651691506dff63690ca237c4f8f88d172c4fd6ee8a0a398e5a53f77b945782"
+        }
+      ],
+      "scope": "Strict build/3CTests, selected native bytes, isolated instrumented source bank traces, unchanged R85 success and final2/8-frame app runs/screenshots, scoped source and linked binaries. Earlier failures remain in immutable R85 archive. No full source/toolchain/game-data closure, audio-failure cause or gameplay proof."
+    },
+    "source_identical_to_tested": true,
+    "library_identical_to_preintegration_build": true,
+    "game_identical_to_preintegration_build": true,
+    "application_rerun_after_integration": false,
+    "finite_application_success": true,
+    "earlier_audio_failure_cause_identified": false,
+    "annotations": "Owning-worktree locked annotation saved and force-exported before integration; bare-owner helper deferral leaves no outstanding annotation."
   }
 }
