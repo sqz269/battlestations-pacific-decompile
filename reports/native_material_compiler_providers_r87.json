@@ -1,0 +1,1828 @@
+{
+  "packet": "native_material_compiler_providers_r87",
+  "status": "restored_reviewed_source_current_strict_build_leaf_differential_passed_pass_runtime_open",
+  "base_commit": "f881951f71cdec1593755b64a51d7f0b6064d56b",
+  "provenance": {
+    "branch": "agent/orch5-20260911",
+    "commit": "769bdc3e3b8254f95867b11e2546d629f2a564b6",
+    "original_implementation": "0097f52be23a5c1584ae20eff5963e5d8c353f11",
+    "source_and_header_identical": true,
+    "prior_report": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\compiler_providers_r87\\prior-report.json",
+    "prior_report_sha256": "123a74aa3a4ed11844a48329de996dfc8a9eb893ae258b0f456a031d3245411e",
+    "historical_runtime_claims_not_relabelled_current": true
+  },
+  "source": "src/native_material_compiler_providers.cpp",
+  "header": "include/bsp/native_material_compiler_providers.hpp",
+  "document": "docs/NATIVE_MATERIAL_COMPILER_PROVIDERS_R87.md",
+  "contracts": {
+    "00be40d0": {
+      "name": "BSP_Stream_WriteDword",
+      "source_name": "write_native_compiler_stream_word_00be40d0",
+      "abi": "ECX stream; stack DWORD/output count; RET8",
+      "contract": "Current physical stream+28 writes four bytes through actual BF4F50."
+    },
+    "00be4460": {
+      "name": "BSP_Stream_WriteLengthPrefixedString",
+      "source_name": "write_native_compiler_stream_string_00be4460",
+      "abi": "ECX stream; stack actual string/output count; RET8",
+      "contract": "Capture length; current+54 writes the prefix; reload data; current+28 writes payload with captured length and same count output."
+    },
+    "00b1ff50": {
+      "name": "BSP_D3D9Renderer_GetCapabilityRecord",
+      "source_name": "get_native_compiler_renderer_capabilities_00b1ff50",
+      "abi": "ECX renderer; EAX wrapping32 renderer+1B18; RET",
+      "contract": "Return capability storage address without reading the receiver."
+    },
+    "00b44b10": {
+      "name": "BSP_MaterialPass_Construct",
+      "source_name": "initialize_native_compiler_pass_00b44b10",
+      "abi": "ECX actual88h pass; EAX same pass; RET",
+      "contract": "Construct actual base and fields; current numeric D5F0A8+64 selects actual B319B0 white.tga cache acquisition; transfer to84 then return temporary string storage. Persistent failed child state remains explicit."
+    }
+  },
+  "routines": [
+    {
+      "address": "00BE40D0",
+      "end_inclusive": "00BE40ED",
+      "bytes": 30,
+      "sha256": "c4b1729eae860355347fe73436308a010b4d4b633d068a4ff2935de563d6519c",
+      "coverage": "complete normal source; see explicit runtime and exception limits"
+    },
+    {
+      "address": "00BE4460",
+      "end_inclusive": "00BE4497",
+      "bytes": 56,
+      "sha256": "ee5a5a00d2bfecc6033a2644c354c943d1aad9ee06507ac76c505c4c4679d575",
+      "coverage": "complete normal source; see explicit runtime and exception limits"
+    },
+    {
+      "address": "00B1FF50",
+      "end_inclusive": "00B1FF56",
+      "bytes": 7,
+      "sha256": "cd366d3921b557c28b1796fa74b32facaa1cc00026445ce8c5983c3c5b6a17a4",
+      "coverage": "complete normal source; see explicit runtime and exception limits"
+    },
+    {
+      "address": "00B44B10",
+      "end_inclusive": "00B44BE5",
+      "bytes": 214,
+      "sha256": "3d94a7c3884c78acd7b8e84878996666c0ea40cd9f1427d68344ad74a4db9ca3",
+      "coverage": "complete normal source; see explicit runtime and exception limits"
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00BE40E9",
+      "function": "00BE40D0",
+      "instruction": "CALL edx",
+      "native": "dynamic: edx",
+      "coverage": "current native operand; numeric call checker does not prove virtual resolution"
+    },
+    {
+      "address": "00BE4477",
+      "function": "00BE4460",
+      "instruction": "CALL edx",
+      "native": "dynamic: edx",
+      "coverage": "current native operand; numeric call checker does not prove virtual resolution"
+    },
+    {
+      "address": "00BE448F",
+      "function": "00BE4460",
+      "instruction": "CALL eax",
+      "native": "dynamic: eax",
+      "coverage": "current native operand; numeric call checker does not prove virtual resolution"
+    },
+    {
+      "address": "00B44B30",
+      "function": "00B44B10",
+      "instruction": "CALL 0xb5f720",
+      "native": "00B5F720"
+    },
+    {
+      "address": "00B44B6F",
+      "function": "00B44B10",
+      "instruction": "CALL 0x41dd40",
+      "native": "0041DD40"
+    },
+    {
+      "address": "00B44B8A",
+      "function": "00B44B10",
+      "instruction": "CALL 0xbf7680",
+      "native": "00BF7680"
+    },
+    {
+      "address": "00B44BA8",
+      "function": "00B44B10",
+      "instruction": "CALL edx",
+      "native": "dynamic: edx",
+      "coverage": "current native operand; numeric call checker does not prove virtual resolution"
+    },
+    {
+      "address": "00B44BC7",
+      "function": "00B44B10",
+      "instruction": "CALL 0x419cc0",
+      "native": "00419CC0"
+    },
+    {
+      "address": "00B44BCE",
+      "function": "00B44B10",
+      "instruction": "CALL 0xbd1510",
+      "native": "00BD1510"
+    }
+  ],
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00be4460",
+        "kind": "function",
+        "length": 56,
+        "hex": "538b5c2408558b6c241056578b3b8bf18b068b50545557ffd28b430485c07505b864db09018b165557508b42288bceffd05f5e5d5bc20800",
+        "sha256": "ee5a5a00d2bfecc6033a2644c354c943d1aad9ee06507ac76c505c4c4679d575",
+        "live_equals_pe": true,
+        "section": ".text",
+        "pe_raw_backed": true,
+        "unlisted_padding": [],
+        "instructions": [
+          {
+            "address": "00be4460",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00be4461",
+            "hex": "8b5c2408",
+            "text": "mov ebx, dword ptr [esp + 8]"
+          },
+          {
+            "address": "00be4465",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "00be4466",
+            "hex": "8b6c2410",
+            "text": "mov ebp, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00be446a",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00be446b",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00be446c",
+            "hex": "8b3b",
+            "text": "mov edi, dword ptr [ebx]"
+          },
+          {
+            "address": "00be446e",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "00be4470",
+            "hex": "8b06",
+            "text": "mov eax, dword ptr [esi]"
+          },
+          {
+            "address": "00be4472",
+            "hex": "8b5054",
+            "text": "mov edx, dword ptr [eax + 0x54]"
+          },
+          {
+            "address": "00be4475",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "00be4476",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00be4477",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00be4479",
+            "hex": "8b4304",
+            "text": "mov eax, dword ptr [ebx + 4]"
+          },
+          {
+            "address": "00be447c",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "00be447e",
+            "hex": "7505",
+            "text": "jne 0xbe4485"
+          },
+          {
+            "address": "00be4480",
+            "hex": "b864db0901",
+            "text": "mov eax, 0x109db64"
+          },
+          {
+            "address": "00be4485",
+            "hex": "8b16",
+            "text": "mov edx, dword ptr [esi]"
+          },
+          {
+            "address": "00be4487",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "00be4488",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00be4489",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00be448a",
+            "hex": "8b4228",
+            "text": "mov eax, dword ptr [edx + 0x28]"
+          },
+          {
+            "address": "00be448d",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "00be448f",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "00be4491",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "00be4492",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00be4493",
+            "hex": "5d",
+            "text": "pop ebp"
+          },
+          {
+            "address": "00be4494",
+            "hex": "5b",
+            "text": "pop ebx"
+          },
+          {
+            "address": "00be4495",
+            "hex": "c20800",
+            "text": "ret 8"
+          }
+        ]
+      },
+      {
+        "address": "00be40d0",
+        "kind": "function",
+        "length": 30,
+        "hex": "8b4424048b118b5228894424048b442408506a048d44240c50ffd2c20800",
+        "sha256": "c4b1729eae860355347fe73436308a010b4d4b633d068a4ff2935de563d6519c",
+        "live_equals_pe": true,
+        "section": ".text",
+        "pe_raw_backed": true,
+        "unlisted_padding": [],
+        "instructions": [
+          {
+            "address": "00be40d0",
+            "hex": "8b442404",
+            "text": "mov eax, dword ptr [esp + 4]"
+          },
+          {
+            "address": "00be40d4",
+            "hex": "8b11",
+            "text": "mov edx, dword ptr [ecx]"
+          },
+          {
+            "address": "00be40d6",
+            "hex": "8b5228",
+            "text": "mov edx, dword ptr [edx + 0x28]"
+          },
+          {
+            "address": "00be40d9",
+            "hex": "89442404",
+            "text": "mov dword ptr [esp + 4], eax"
+          },
+          {
+            "address": "00be40dd",
+            "hex": "8b442408",
+            "text": "mov eax, dword ptr [esp + 8]"
+          },
+          {
+            "address": "00be40e1",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00be40e2",
+            "hex": "6a04",
+            "text": "push 4"
+          },
+          {
+            "address": "00be40e4",
+            "hex": "8d44240c",
+            "text": "lea eax, [esp + 0xc]"
+          },
+          {
+            "address": "00be40e8",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00be40e9",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00be40eb",
+            "hex": "c20800",
+            "text": "ret 8"
+          }
+        ]
+      },
+      {
+        "address": "00b1ff50",
+        "kind": "function",
+        "length": 7,
+        "hex": "8d81181b0000c3",
+        "sha256": "cd366d3921b557c28b1796fa74b32facaa1cc00026445ce8c5983c3c5b6a17a4",
+        "live_equals_pe": true,
+        "section": ".text",
+        "pe_raw_backed": true,
+        "unlisted_padding": [],
+        "instructions": [
+          {
+            "address": "00b1ff50",
+            "hex": "8d81181b0000",
+            "text": "lea eax, [ecx + 0x1b18]"
+          },
+          {
+            "address": "00b1ff56",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "address": "00b44b10",
+        "kind": "function",
+        "length": 214,
+        "hex": "6aff68d0f3cb0064a100000000506489250000000083ec0c53568bf189742408e8ebab010033db83c8ff6a01c706e81bd600895e6c6a098d4c2414895c2424895e70895e7489467889467c889e80000000899e84000000895c2414895c2418e8cc918dff8b4424103bc374168b4c240c83c1015168a477ce0050e8f12a0b0083c40c8b0d94d3f8008b118b5264538d44241050c644242401ffd28b4c24103bcb898684000000885c241c74178b44240c6a0183c0015051e8f4508dff8bc8e83dc908008b4c24148bc65e5b64890d0000000083c418c3",
+        "sha256": "3d94a7c3884c78acd7b8e84878996666c0ea40cd9f1427d68344ad74a4db9ca3",
+        "live_equals_pe": true,
+        "section": ".text",
+        "pe_raw_backed": true,
+        "unlisted_padding": [],
+        "instructions": [
+          {
+            "address": "00b44b10",
+            "hex": "6aff",
+            "text": "push -1"
+          },
+          {
+            "address": "00b44b12",
+            "hex": "68d0f3cb00",
+            "text": "push 0xcbf3d0"
+          },
+          {
+            "address": "00b44b17",
+            "hex": "64a100000000",
+            "text": "mov eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "00b44b1d",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b44b1e",
+            "hex": "64892500000000",
+            "text": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "address": "00b44b25",
+            "hex": "83ec0c",
+            "text": "sub esp, 0xc"
+          },
+          {
+            "address": "00b44b28",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b44b29",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b44b2a",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "00b44b2c",
+            "hex": "89742408",
+            "text": "mov dword ptr [esp + 8], esi"
+          },
+          {
+            "address": "00b44b30",
+            "hex": "e8ebab0100",
+            "text": "call 0xb5f720"
+          },
+          {
+            "address": "00b44b35",
+            "hex": "33db",
+            "text": "xor ebx, ebx"
+          },
+          {
+            "address": "00b44b37",
+            "hex": "83c8ff",
+            "text": "or eax, 0xffffffff"
+          },
+          {
+            "address": "00b44b3a",
+            "hex": "6a01",
+            "text": "push 1"
+          },
+          {
+            "address": "00b44b3c",
+            "hex": "c706e81bd600",
+            "text": "mov dword ptr [esi], 0xd61be8"
+          },
+          {
+            "address": "00b44b42",
+            "hex": "895e6c",
+            "text": "mov dword ptr [esi + 0x6c], ebx"
+          },
+          {
+            "address": "00b44b45",
+            "hex": "6a09",
+            "text": "push 9"
+          },
+          {
+            "address": "00b44b47",
+            "hex": "8d4c2414",
+            "text": "lea ecx, [esp + 0x14]"
+          },
+          {
+            "address": "00b44b4b",
+            "hex": "895c2424",
+            "text": "mov dword ptr [esp + 0x24], ebx"
+          },
+          {
+            "address": "00b44b4f",
+            "hex": "895e70",
+            "text": "mov dword ptr [esi + 0x70], ebx"
+          },
+          {
+            "address": "00b44b52",
+            "hex": "895e74",
+            "text": "mov dword ptr [esi + 0x74], ebx"
+          },
+          {
+            "address": "00b44b55",
+            "hex": "894678",
+            "text": "mov dword ptr [esi + 0x78], eax"
+          },
+          {
+            "address": "00b44b58",
+            "hex": "89467c",
+            "text": "mov dword ptr [esi + 0x7c], eax"
+          },
+          {
+            "address": "00b44b5b",
+            "hex": "889e80000000",
+            "text": "mov byte ptr [esi + 0x80], bl"
+          },
+          {
+            "address": "00b44b61",
+            "hex": "899e84000000",
+            "text": "mov dword ptr [esi + 0x84], ebx"
+          },
+          {
+            "address": "00b44b67",
+            "hex": "895c2414",
+            "text": "mov dword ptr [esp + 0x14], ebx"
+          },
+          {
+            "address": "00b44b6b",
+            "hex": "895c2418",
+            "text": "mov dword ptr [esp + 0x18], ebx"
+          },
+          {
+            "address": "00b44b6f",
+            "hex": "e8cc918dff",
+            "text": "call 0x41dd40"
+          },
+          {
+            "address": "00b44b74",
+            "hex": "8b442410",
+            "text": "mov eax, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00b44b78",
+            "hex": "3bc3",
+            "text": "cmp eax, ebx"
+          },
+          {
+            "address": "00b44b7a",
+            "hex": "7416",
+            "text": "je 0xb44b92"
+          },
+          {
+            "address": "00b44b7c",
+            "hex": "8b4c240c",
+            "text": "mov ecx, dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00b44b80",
+            "hex": "83c101",
+            "text": "add ecx, 1"
+          },
+          {
+            "address": "00b44b83",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00b44b84",
+            "hex": "68a477ce00",
+            "text": "push 0xce77a4"
+          },
+          {
+            "address": "00b44b89",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b44b8a",
+            "hex": "e8f12a0b00",
+            "text": "call 0xbf7680"
+          },
+          {
+            "address": "00b44b8f",
+            "hex": "83c40c",
+            "text": "add esp, 0xc"
+          },
+          {
+            "address": "00b44b92",
+            "hex": "8b0d94d3f800",
+            "text": "mov ecx, dword ptr [0xf8d394]"
+          },
+          {
+            "address": "00b44b98",
+            "hex": "8b11",
+            "text": "mov edx, dword ptr [ecx]"
+          },
+          {
+            "address": "00b44b9a",
+            "hex": "8b5264",
+            "text": "mov edx, dword ptr [edx + 0x64]"
+          },
+          {
+            "address": "00b44b9d",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b44b9e",
+            "hex": "8d442410",
+            "text": "lea eax, [esp + 0x10]"
+          },
+          {
+            "address": "00b44ba2",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b44ba3",
+            "hex": "c644242401",
+            "text": "mov byte ptr [esp + 0x24], 1"
+          },
+          {
+            "address": "00b44ba8",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "00b44baa",
+            "hex": "8b4c2410",
+            "text": "mov ecx, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00b44bae",
+            "hex": "3bcb",
+            "text": "cmp ecx, ebx"
+          },
+          {
+            "address": "00b44bb0",
+            "hex": "898684000000",
+            "text": "mov dword ptr [esi + 0x84], eax"
+          },
+          {
+            "address": "00b44bb6",
+            "hex": "885c241c",
+            "text": "mov byte ptr [esp + 0x1c], bl"
+          },
+          {
+            "address": "00b44bba",
+            "hex": "7417",
+            "text": "je 0xb44bd3"
+          },
+          {
+            "address": "00b44bbc",
+            "hex": "8b44240c",
+            "text": "mov eax, dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00b44bc0",
+            "hex": "6a01",
+            "text": "push 1"
+          },
+          {
+            "address": "00b44bc2",
+            "hex": "83c001",
+            "text": "add eax, 1"
+          },
+          {
+            "address": "00b44bc5",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b44bc6",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00b44bc7",
+            "hex": "e8f4508dff",
+            "text": "call 0x419cc0"
+          },
+          {
+            "address": "00b44bcc",
+            "hex": "8bc8",
+            "text": "mov ecx, eax"
+          },
+          {
+            "address": "00b44bce",
+            "hex": "e83dc90800",
+            "text": "call 0xbd1510"
+          },
+          {
+            "address": "00b44bd3",
+            "hex": "8b4c2414",
+            "text": "mov ecx, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00b44bd7",
+            "hex": "8bc6",
+            "text": "mov eax, esi"
+          },
+          {
+            "address": "00b44bd9",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00b44bda",
+            "hex": "5b",
+            "text": "pop ebx"
+          },
+          {
+            "address": "00b44bdb",
+            "hex": "64890d00000000",
+            "text": "mov dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "00b44be2",
+            "hex": "83c418",
+            "text": "add esp, 0x18"
+          },
+          {
+            "address": "00b44be5",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "address": "00bf4f50",
+        "kind": "function",
+        "length": 55,
+        "hex": "8b542404566a008bf18b4c24108d442410508b4608515250ff159022ce008b44240c0146108b4c24108356140085c95e74028901c20c00",
+        "sha256": "e8838d6848776f0b6138f7e0db9363d671153207f78ed8f428bcefb9ae71bc6a",
+        "live_equals_pe": true,
+        "section": ".text",
+        "pe_raw_backed": true,
+        "unlisted_padding": [],
+        "instructions": [
+          {
+            "address": "00bf4f50",
+            "hex": "8b542404",
+            "text": "mov edx, dword ptr [esp + 4]"
+          },
+          {
+            "address": "00bf4f54",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00bf4f55",
+            "hex": "6a00",
+            "text": "push 0"
+          },
+          {
+            "address": "00bf4f57",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "00bf4f59",
+            "hex": "8b4c2410",
+            "text": "mov ecx, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00bf4f5d",
+            "hex": "8d442410",
+            "text": "lea eax, [esp + 0x10]"
+          },
+          {
+            "address": "00bf4f61",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00bf4f62",
+            "hex": "8b4608",
+            "text": "mov eax, dword ptr [esi + 8]"
+          },
+          {
+            "address": "00bf4f65",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00bf4f66",
+            "hex": "52",
+            "text": "push edx"
+          },
+          {
+            "address": "00bf4f67",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00bf4f68",
+            "hex": "ff159022ce00",
+            "text": "call dword ptr [0xce2290]"
+          },
+          {
+            "address": "00bf4f6e",
+            "hex": "8b44240c",
+            "text": "mov eax, dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00bf4f72",
+            "hex": "014610",
+            "text": "add dword ptr [esi + 0x10], eax"
+          },
+          {
+            "address": "00bf4f75",
+            "hex": "8b4c2410",
+            "text": "mov ecx, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00bf4f79",
+            "hex": "83561400",
+            "text": "adc dword ptr [esi + 0x14], 0"
+          },
+          {
+            "address": "00bf4f7d",
+            "hex": "85c9",
+            "text": "test ecx, ecx"
+          },
+          {
+            "address": "00bf4f7f",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00bf4f80",
+            "hex": "7402",
+            "text": "je 0xbf4f84"
+          },
+          {
+            "address": "00bf4f82",
+            "hex": "8901",
+            "text": "mov dword ptr [ecx], eax"
+          },
+          {
+            "address": "00bf4f84",
+            "hex": "c20c00",
+            "text": "ret 0xc"
+          }
+        ]
+      },
+      {
+        "address": "00d69204",
+        "kind": "physical_word_slot",
+        "length": 4,
+        "hex": "d040be00",
+        "sha256": "906915ef38fd0315e244d5867d26657ce22100727be02297e425dbd4cf3d18ac",
+        "live_equals_pe": true,
+        "section": ".rdata",
+        "pe_raw_backed": true,
+        "unlisted_padding": [],
+        "instructions": []
+      },
+      {
+        "address": "00d69214",
+        "kind": "physical_string_slot",
+        "length": 4,
+        "hex": "6044be00",
+        "sha256": "dde49a5e951564edb817ef559186d1dba275605af9045697a78affccca9b64a5",
+        "live_equals_pe": true,
+        "section": ".rdata",
+        "pe_raw_backed": true,
+        "unlisted_padding": [],
+        "instructions": []
+      },
+      {
+        "address": "00d691d8",
+        "kind": "physical_write_slot",
+        "length": 4,
+        "hex": "504fbf00",
+        "sha256": "4688be33d6280f6705a307d5832c6181e6518648d5422578bf51c936c367b640",
+        "live_equals_pe": true,
+        "section": ".rdata",
+        "pe_raw_backed": true,
+        "unlisted_padding": [],
+        "instructions": []
+      },
+      {
+        "address": "00d5f10c",
+        "kind": "renderer_texture_slot",
+        "length": 4,
+        "hex": "b019b300",
+        "sha256": "3bf23a2a570b0465a222bfee39bed02f795cb8adb12d02bd11650ca61edf84e5",
+        "live_equals_pe": true,
+        "section": ".rdata",
+        "pe_raw_backed": true,
+        "unlisted_padding": [],
+        "instructions": []
+      },
+      {
+        "address": "00cbf3c0",
+        "kind": "pass_unwind_actions_and_handler",
+        "length": 26,
+        "hex": "8b4de8e94801eaff8d4dece950e975ffb8247ddf00e96977f3ff",
+        "sha256": "cef05b7e486bb9811584596d55b1cdfc024e2215198533a1e7d7c2916bfe156a",
+        "live_equals_pe": true,
+        "section": ".text",
+        "pe_raw_backed": true,
+        "unlisted_padding": [],
+        "instructions": []
+      },
+      {
+        "address": "00df7d14",
+        "kind": "pass_unwind_map_and_info",
+        "length": 48,
+        "hex": "ffffffffc0f3cb0000000000c8f3cb002205931902000000147ddf000000000000000000000000000000000000000000",
+        "sha256": "8397f3fc55f2aed4c2e7b9f9544d9e9f757d2310b2eb34b1e54ee36518c1a4d3",
+        "live_equals_pe": true,
+        "section": ".rdata",
+        "pe_raw_backed": true,
+        "unlisted_padding": [],
+        "instructions": []
+      },
+      {
+        "address": "00ce77a4",
+        "kind": "white_texture_literal",
+        "length": 10,
+        "hex": "77686974652e74676100",
+        "sha256": "53aa3f7487d39522ef125316fe165fc20a9b3a1a906c2f182379509bb59a2008",
+        "live_equals_pe": true,
+        "section": ".rdata",
+        "pe_raw_backed": true,
+        "unlisted_padding": [],
+        "instructions": []
+      },
+      {
+        "address": "0109db64",
+        "kind": "loader_zero",
+        "length": 1,
+        "hex": "00",
+        "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+        "live_equals_pe": true,
+        "section": ".data",
+        "pe_raw_backed": false,
+        "unlisted_padding": [],
+        "instructions": []
+      }
+    ]
+  },
+  "unproved": [
+    "Full B44B10 pass construction, cold texture load, generated-source compiler, original parent machine code and gameplay were not executed in R87.",
+    "Source supports the recovered numeric D691B0 stream and D5F0A8 renderer profiles; it has an explicit C++ interface, not original ABI/FH3/SEH.",
+    "The existing B319B0 texture cache still borrows ResourceLoadEventHost. Actual raw platform replacement timing and full pass teardown need later integration.",
+    "Pass failures retain native acquisitions and child frames; this source does not emulate native FH3 cleanup or invent successful fallback owners.",
+    "Two original absolute operands are relocated in the private fixture: empty literal and WriteFile import cell. Original stream calls execute copied machine code; source uses the current CMake library.",
+    "The prior whole compiler remains absent from main. Its missing online/input/sampler/shader dependencies must be reviewed and integrated before full post-effect construction."
+  ],
+  "owned_files": [
+    "cmake/startup.cmake",
+    "config/names/00b10000.jsonl",
+    "config/names/00b40000.jsonl",
+    "config/names/00be0000.jsonl",
+    "config/reconstruction/00b10000.jsonl",
+    "config/reconstruction/00b40000.jsonl",
+    "config/reconstruction/00be0000.jsonl",
+    "docs/NATIVE_MATERIAL_COMPILER_PROVIDERS_R87.md",
+    "include/bsp/native_material_compiler_providers.hpp",
+    "reports/native_material_compiler_providers_r87.json",
+    "src/native_material_compiler_providers.cpp"
+  ],
+  "validation": {
+    "strict_win32": true,
+    "ctests_passed": 3,
+    "build_log": "local/r87_build.log",
+    "native_bytes": 463,
+    "native_spans": 13,
+    "seed_matches": 8,
+    "source_sha256": {
+      "src/native_material_compiler_providers.cpp": "a782bc95e420e54553c0e9b00d50def12d49edfd3b57fa7ad9ecae840a9ce410",
+      "include/bsp/native_material_compiler_providers.hpp": "91e171c613975045058c377de34277310140ad1a9c90ed710448a4962edd997c"
+    },
+    "library_sha256": "91bd9d20ca00fba52f4a7d9d77229fbf006de3923608688fe0d74db97d95fcaf",
+    "game_sha256": "a53a3978fdcba97cdcf83de8c78dc1ff193f6cd96f86b7629592f415edccfa83",
+    "object_sha256": "43afaf7f3b66a8bf1554ed6ba3e19eeff65c663d9542ae3c76c4007483cda6fb",
+    "probe_exe_sha256": "aadce7f50aea2be1cf0b4a69d9538796a4c6005f43230fc299ae8c25595a3ea5",
+    "runtime_log": "PASS 2 original/source cache writes: native sized-string + native word + original physical WriteFile; payload/position carry/null output; 3 raw capability pointer cases\nLINK numeric material pass constructor retained from current CMake library; not executed\nLIMIT full compiler source/cached path, pass construction and exception unwinding not executed; no game validation\nLOADED \\\\?\\J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\compiler_providers_r87\\provider_probe.exe\nLOADED \\\\?\\C:\\Windows\\SysWOW64\\ntdll.dll\nLOADED \\\\?\\C:\\Windows\\SysWOW64\\kernel32.dll\nLOADED \\\\?\\C:\\Windows\\SysWOW64\\KernelBase.dll\nLOADED \\\\?\\C:\\Windows\\SysWOW64\\apphelp.dll\nLOADED \\\\?\\C:\\Windows\\SysWOW64\\ucrtbase.dll\nLOADED \\\\?\\C:\\Windows\\SysWOW64\\user32.dll\nLOADED \\\\?\\C:\\Windows\\SysWOW64\\win32u.dll\nLOADED \\\\?\\C:\\Windows\\SysWOW64\\msvcp140.dll\nLOADED \\\\?\\C:\\Windows\\SysWOW64\\gdi32.dll\nLOADED \\\\?\\C:\\Windows\\SysWOW64\\gdi32full.dll\nLOADED \\\\?\\C:\\Windows\\SysWOW64\\vcruntime140.dll\nLOADED \\\\?\\C:\\Windows\\SysWOW64\\msvcp_win.dll\nLOADED \\\\?\\C:\\Windows\\SysWOW64\\imm32.dll\n",
+    "probe_build_driver": "@echo off\ncall \"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvarsall.bat\" x86\nif errorlevel 1 exit /b %errorlevel%\ncl /nologo /Bv /sourceDependencies local\\compiler_providers_r87\\probe_dependencies.json /std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /I include local\\compiler_providers_r87\\provider_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /Folocal\\compiler_providers_r87\\provider_probe.obj /Felocal\\compiler_providers_r87\\provider_probe.exe /link /MANIFEST:EMBED /INCREMENTAL:NO /DYNAMICBASE:NO /BASE:0x20000000 /OPT:REF /MAP:local\\compiler_providers_r87\\provider_probe.map kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib d3d9.lib\nexit /b %errorlevel%\n\n\n\n",
+    "link_map_members": [
+      "0001:00000e70       ?get_native_compiler_renderer_capabilities_00b1ff50@bsp@@YIPBXPBX@Z 20001e70 f   bsp_core:native_material_compiler_providers.obj",
+      "0001:00000e80       ?initialize_native_compiler_pass_00b44b10@bsp@@YAPAUNativeMaterialPassStorage@1@PAXAAUNativeMaterialPassConstructionAccess@1@AAUNativeTextureCacheContext@1@PDIAAUNativeMaterialCompilerPassConstructionFrame@1@@Z 20001e80 f   bsp_core:native_material_compiler_providers.obj",
+      "0001:000010b0       ?write_native_compiler_stream_string_00be4460@bsp@@YAIPAXPBXPAIPDIPBD@Z 200020b0 f   bsp_core:native_material_compiler_providers.obj",
+      "0001:00001150       ?write_native_compiler_stream_word_00be40d0@bsp@@YAIPAXIPAIPDI@Z 20002150 f   bsp_core:native_material_compiler_providers.obj"
+    ],
+    "source_library_used": true,
+    "original_source_stream_comparisons": 2,
+    "original_source_capability_cases": 3,
+    "pass_constructor_linked": true,
+    "pass_constructor_executed": false,
+    "full_application_rerun": false,
+    "game_validated": false,
+    "call_verification": {
+      "total": 9,
+      "direct_checked": 5,
+      "indirect": 4,
+      "failed": 0,
+      "log": "  indirect  report.call_sites[0]: native='dynamic: edx' (not checked)\n  indirect  report.call_sites[1]: native='dynamic: edx' (not checked)\n  indirect  report.call_sites[2]: native='dynamic: eax' (not checked)\n  indirect  report.call_sites[6]: native='dynamic: edx' (not checked)\nreports/native_material_compiler_providers_r87.json: 5 call rows checked, 0 failed\n"
+    }
+  },
+  "ghidra_annotations": {
+    "prior_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\ghidra-annotations-20260917T054335Z.json",
+    "prior_values": [
+      {
+        "address": "00b1ff50",
+        "before": {
+          "address": "00b1ff50",
+          "function_name": "BSP_D3D9Renderer_GetCapabilityRecord",
+          "comment": "[BSP reconstruction 00b1ff50]\nHypothesis, not a recovered symbol. Renderer virtual +104h: lea eax,[ecx+1B18h]; ret. Returns the capability record the caps gather fills from GetDeviceCaps; record +28h is LOWORD(D3DCAPS9.PixelShaderVersion) (docs/APP_INIT_RENDERER.md). Defined from disk-verified bytes by the integrator.\n\n[BSP reconstruction 00b1ff50] update\nHypothesis, not a recovered symbol. Renderer virtual +104h: lea eax,[ecx+1B18h]; ret. Returns the capability record the caps gather fills from GetDeviceCaps; record +28h is LOWORD(D3DCAPS9.PixelShaderVersion) (docs/APP_INIT_RENDERER.md). Defined from disk-verified bytes by the integrator. | Hypothesis, not a recovered symbol. Complete seven-byte LEA EAX,[ECX+1B18];RET. No read/null guard; original/source pointer arithmetic matched null, ordinary and wrapping inputs. Integrated code b0a4ddb4 passed strict MSVC Win32,2 existing CTests,8 native seeds,130 numeric rows and39 live/PE spans totaling5904 bytes. Physical runtime modules, actual CMake compiler object/library and retained fixtures are frozen separately. Private native stack/register aliases, FH3/SEH, complete platform/effect construction, teardown, drawing and game are not claimed. docs/NATIVE_MATERIAL_PROGRAM_COMPILER_ACTUAL.md; docs/NATIVE_MATERIAL_COMPILER_PROVIDERS.md; reports/native_material_compiler_runtime.json."
+        },
+        "after": {
+          "address": "00b1ff50",
+          "name": "BSP_D3D9Renderer_GetCapabilityRecord",
+          "evidence": "Hypothesis, not a recovered symbol. Renderer virtual +104h: lea eax,[ecx+1B18h]; ret. Returns the capability record the caps gather fills from GetDeviceCaps; record +28h is LOWORD(D3DCAPS9.PixelShaderVersion) (docs/APP_INIT_RENDERER.md). Defined from disk-verified bytes by the integrator. | Descriptive hypothesis, not a recovered symbol. Return capability storage address without reading the receiver. ECX renderer; EAX wrapping32 renderer+1B18; RET R87 restores identical reviewed source from orch5 commit769bdc3e3 into current main lineage. 463 live/PE bytes, strict Win32/3CTests, two original/source physical stream comparisons and three capability cases pass. Numeric B44B10 constructor linked but not executed in R87; full compiler/platform/FH3/gameplay remain open. docs/NATIVE_MATERIAL_COMPILER_PROVIDERS_R87.md; reports/native_material_compiler_providers_r87.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b44b10",
+        "before": {
+          "address": "00b44b10",
+          "function_name": "BSP_MaterialPass_Construct",
+          "comment": "[BSP reconstruction 00b44b10]\nBSP bounded fragment 00b44b35..00b44bb5: Setpass+78/+7C=-1,+84=0; renderer+64 calls00b319b0 onwhite.tga withflags0; assignreturnedretainedtextureto+84 withoutadditionalAddRef or temporaryRelease. ABI: ECX pass; no stack arguments; EAX this; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction. Original ABI: ECX pass; no stack arguments; EAX this; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b44b10] update\nBSP bounded fragment 00b44b35..00b44bb5: Setpass+78/+7C=-1,+84=0; renderer+64 calls00b319b0 onwhite.tga withflags0; assignreturnedretainedtextureto+84 withoutadditionalAddRef or temporaryRelease. ABI: ECX pass; no stack arguments; EAX this; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction. Original ABI: ECX pass; no stack arguments; EAX this; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation. | Descriptive hypothesis, not a recovered symbol. Complete214-byte constructor now accompanies prior fallback fragment. Full5Ch base; D61BE8; clear6C/70/74/80/84, set78/7C=-1. Four binding pointers5C..68 and padding81..83 UNWRITTEN. Current renderer+64 acquires owned white.tga directly into84 before temporary release. DF7D24 unwind cleans armed temporary then actual base. Host canonical state metadata registered before throwing operations, without extra ownership. docs/NATIVE_MATERIAL_PASS_OWNER.md; reports/native_material_pass_owner.json.\n\n[BSP reconstruction 00b44b10] update\nBSP bounded fragment 00b44b35..00b44bb5: Setpass+78/+7C=-1,+84=0; renderer+64 calls00b319b0 onwhite.tga withflags0; assignreturnedretainedtextureto+84 withoutadditionalAddRef or temporaryRelease. ABI: ECX pass; no stack arguments; EAX this; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction. Original ABI: ECX pass; no stack arguments; EAX this; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation. | Descriptive hypothesis, not a recovered symbol. Complete214-byte constructor now accompanies prior fallback fragment. Full5Ch base; D61BE8; clear6C/70/74/80/84, set78/7C=-1. Four binding pointers5C..68 and padding81..83 UNWRITTEN. Current renderer+64 acquires owned white.tga directly into84 before temporary release. DF7D24 unwind cleans armed temporary then actual base. Host canonical state metadata registered before throwing operations, without extra ownership. docs/NATIVE_MATERIAL_PASS_OWNER.md; reports/native_material_pass_owner.json. | Hypothesis, not a recovered symbol. Actual numeric D5F0A8+64 constructor overload reaches complete B319B0 with persistent child state established before white.tga load. Preserve raw pass/state owners, profile/publication order and transfer acquired texture to+84 without an added retain. Cached compiler fixture executed canonical constructor, state registrations and hot white reference1-to2; failed original FH3 cleanup is not claimed. Integrated code b0a4ddb4 passed strict MSVC Win32,2 existing CTests,8 native seeds,130 numeric rows and39 live/PE spans totaling5904 bytes. Physical runtime modules, actual CMake compiler object/library and retained fixtures are frozen separately. Private native stack/register aliases, FH3/SEH, complete platform/effect construction, teardown, drawing and game are not claimed. docs/NATIVE_MATERIAL_PROGRAM_COMPILER_ACTUAL.md; docs/NATIVE_MATERIAL_COMPILER_PROVIDERS.md; reports/native_material_compiler_runtime.json."
+        },
+        "after": {
+          "address": "00b44b10",
+          "name": "BSP_MaterialPass_Construct",
+          "evidence": "BSP bounded fragment 00b44b35..00b44bb5: Setpass+78/+7C=-1,+84=0; renderer+64 calls00b319b0 onwhite.tga withflags0; assignreturnedretainedtextureto+84 withoutadditionalAddRef or temporaryRelease. ABI: ECX pass; no stack arguments; EAX this; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction. Original ABI: ECX pass; no stack arguments; EAX this; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation. | Descriptive hypothesis, not a recovered symbol. Complete214-byte constructor now accompanies prior fallback fragment. Full5Ch base; D61BE8; clear6C/70/74/80/84, set78/7C=-1. Four binding pointers5C..68 and padding81..83 UNWRITTEN. Current renderer+64 acquires owned white.tga directly into84 before temporary release. DF7D24 unwind cleans armed temporary then actual base. Host canonical state metadata registered before throwing operations, without extra ownership. docs/NATIVE_MATERIAL_PASS_OWNER.md; reports/native_material_pass_owner.json. | Descriptive hypothesis, not a recovered symbol. Construct actual base and fields; current numeric D5F0A8+64 selects actual B319B0 white.tga cache acquisition; transfer to84 then return temporary string storage. Persistent failed child state remains explicit. ECX actual88h pass; EAX same pass; RET R87 restores identical reviewed source from orch5 commit769bdc3e3 into current main lineage. 463 live/PE bytes, strict Win32/3CTests, two original/source physical stream comparisons and three capability cases pass. Numeric B44B10 constructor linked but not executed in R87; full compiler/platform/FH3/gameplay remain open. docs/NATIVE_MATERIAL_COMPILER_PROVIDERS_R87.md; reports/native_material_compiler_providers_r87.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00be40d0",
+        "before": {
+          "address": "00be40d0",
+          "function_name": "BSP_Stream_WriteDword",
+          "comment": "[BSP reconstruction 00be40d0]\nHypothesis, not a recovered symbol. Complete30-byte word write: original caller DWORD argument-cell address, size4 and optional output-count forwarded to current stream+28; RET8. Actual physical producer and native WriteFile fixture matched. Integrated code b0a4ddb4 passed strict MSVC Win32,2 existing CTests,8 native seeds,130 numeric rows and39 live/PE spans totaling5904 bytes. Physical runtime modules, actual CMake compiler object/library and retained fixtures are frozen separately. Private native stack/register aliases, FH3/SEH, complete platform/effect construction, teardown, drawing and game are not claimed. docs/NATIVE_MATERIAL_PROGRAM_COMPILER_ACTUAL.md; docs/NATIVE_MATERIAL_COMPILER_PROVIDERS.md; reports/native_material_compiler_runtime.json."
+        },
+        "after": {
+          "address": "00be40d0",
+          "name": "BSP_Stream_WriteDword",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Current physical stream+28 writes four bytes through actual BF4F50. ECX stream; stack DWORD/output count; RET8 R87 restores identical reviewed source from orch5 commit769bdc3e3 into current main lineage. 463 live/PE bytes, strict Win32/3CTests, two original/source physical stream comparisons and three capability cases pass. Numeric B44B10 constructor linked but not executed in R87; full compiler/platform/FH3/gameplay remain open. docs/NATIVE_MATERIAL_COMPILER_PROVIDERS_R87.md; reports/native_material_compiler_providers_r87.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00be4460",
+        "before": {
+          "address": "00be4460",
+          "function_name": "BSP_Stream_WriteLengthPrefixedString",
+          "comment": "[BSP reconstruction 00be4460]\nHypothesis, not a recovered symbol. Complete56-byte sized-string write. Capture name length before current stream+54, reload data before current+28 and overwrite the same optional output-count. Original/source actual physical WriteFile fixture covers nonempty and zero-length/null-data names, position carry and serialized bytes. Integrated code b0a4ddb4 passed strict MSVC Win32,2 existing CTests,8 native seeds,130 numeric rows and39 live/PE spans totaling5904 bytes. Physical runtime modules, actual CMake compiler object/library and retained fixtures are frozen separately. Private native stack/register aliases, FH3/SEH, complete platform/effect construction, teardown, drawing and game are not claimed. docs/NATIVE_MATERIAL_PROGRAM_COMPILER_ACTUAL.md; docs/NATIVE_MATERIAL_COMPILER_PROVIDERS.md; reports/native_material_compiler_runtime.json."
+        },
+        "after": {
+          "address": "00be4460",
+          "name": "BSP_Stream_WriteLengthPrefixedString",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Capture length; current+54 writes the prefix; reload data; current+28 writes payload with captured length and same count output. ECX stream; stack actual string/output count; RET8 R87 restores identical reviewed source from orch5 commit769bdc3e3 into current main lineage. 463 live/PE bytes, strict Win32/3CTests, two original/source physical stream comparisons and three capability cases pass. Numeric B44B10 constructor linked but not executed in R87; full compiler/platform/FH3/gameplay remain open. docs/NATIVE_MATERIAL_COMPILER_PROVIDERS_R87.md; reports/native_material_compiler_providers_r87.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "prior_ledger_records": {
+      "00be40d0": {
+        "names": [],
+        "reconstruction": []
+      },
+      "00be4460": {
+        "names": [],
+        "reconstruction": []
+      },
+      "00b1ff50": {
+        "names": [
+          {
+            "address": "00b1ff50",
+            "name": "BSP_D3D9Renderer_GetCapabilityRecord",
+            "evidence": "Hypothesis, not a recovered symbol. Renderer virtual +104h: lea eax,[ecx+1B18h]; ret. Returns the capability record the caps gather fills from GetDeviceCaps; record +28h is LOWORD(D3DCAPS9.PixelShaderVersion) (docs/APP_INIT_RENDERER.md). Defined from disk-verified bytes by the integrator."
+          }
+        ],
+        "reconstruction": []
+      },
+      "00b44b10": {
+        "names": [
+          {
+            "address": "00b44b10",
+            "name": "BSP_MaterialPass_Construct",
+            "evidence": "BSP bounded fragment 00b44b35..00b44bb5: Setpass+78/+7C=-1,+84=0; renderer+64 calls00b319b0 onwhite.tga withflags0; assignreturnedretainedtextureto+84 withoutadditionalAddRef or temporaryRelease. ABI: ECX pass; no stack arguments; EAX this; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction. Original ABI: ECX pass; no stack arguments; EAX this; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation. | Descriptive hypothesis, not a recovered symbol. Complete214-byte constructor now accompanies prior fallback fragment. Full5Ch base; D61BE8; clear6C/70/74/80/84, set78/7C=-1. Four binding pointers5C..68 and padding81..83 UNWRITTEN. Current renderer+64 acquires owned white.tga directly into84 before temporary release. DF7D24 unwind cleans armed temporary then actual base. Host canonical state metadata registered before throwing operations, without extra ownership. docs/NATIVE_MATERIAL_PASS_OWNER.md; reports/native_material_pass_owner.json."
+          }
+        ],
+        "reconstruction": [
+          {
+            "address": "00b44b10",
+            "name": "initialize_native_material_pass_00b44b10",
+            "source": "src/native_material_pass_owner.cpp",
+            "status": "actual_storage_reconstructed_build_and_original_instruction_fixture_tested",
+            "original_abi": "ECX fresh88h pass; EAX same address; RET",
+            "abi_compatible": false,
+            "evidence": "docs/NATIVE_MATERIAL_PASS_OWNER.md; reports/native_material_pass_owner.json",
+            "remaining": "Full pass copy, shader/texture loading, original exception delivery, binary ABI, drawing and gameplay remain open.",
+            "kind": "function"
+          }
+        ]
+      }
+    },
+    "status": "Existing provisional names preserved; evidence appended under write lock, project saved and exports forced.",
+    "readback_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\compiler_providers_r87\\comments-after.json",
+    "readback_sha256": "ff5fc7bba9c98d163f6e8b039b2362f9dd139672d5222fc6cad81258778635b8"
+  },
+  "ledger_receipts": [
+    "00be40d0 -> BSP_Stream_WriteDword\n",
+    "00be40d0 function write_native_compiler_stream_word_00be40d0\n",
+    "00be4460 -> BSP_Stream_WriteLengthPrefixedString\n",
+    "00be4460 function write_native_compiler_stream_string_00be4460\n",
+    "00b1ff50 -> BSP_D3D9Renderer_GetCapabilityRecord\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b1ff50\", \"name\": \"BSP_D3D9Renderer_GetCapabilityRecord\", \"evidence\": \"Hypothesis, not a recovered symbol. Renderer virtual +104h: lea eax,[ecx+1B18h]; ret. Returns the capability record the caps gather fills from GetDeviceCaps; record +28h is LOWORD(D3DCAPS9.PixelShaderVersion) (docs/APP_INIT_RENDERER.md). Defined from disk-verified bytes by the integrator.\"})\n",
+    "00b1ff50 function get_native_compiler_renderer_capabilities_00b1ff50\n",
+    "00b44b10 -> BSP_MaterialPass_Construct\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00b44b10\", \"name\": \"BSP_MaterialPass_Construct\", \"evidence\": \"BSP bounded fragment 00b44b35..00b44bb5: Setpass+78/+7C=-1,+84=0; renderer+64 calls00b319b0 onwhite.tga withflags0; assignreturnedretainedtextureto+84 withoutadditionalAddRef or temporaryRelease. ABI: ECX pass; no stack arguments; EAX this; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Preserve existing comments; this is not a complete parent-function reconstruction. Original ABI: ECX pass; no stack arguments; EAX this; plainRET. Evidence: docs/MATERIAL_SHADOW_SAMPLERS.md; reports/material_shadow_samplers_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation. | Descriptive hypothesis, not a recovered symbol. Complete214-byte constructor now accompanies prior fallback fragment. Full5Ch base; D61BE8; clear6C/70/74/80/84, set78/7C=-1. Four binding pointers5C..68 and padding81..83 UNWRITTEN. Current renderer+64 acquires owned white.tga directly into84 before temporary release. DF7D24 unwind cleans armed temporary then actual base. Host canonical state metadata registered before throwing operations, without extra ownership. docs/NATIVE_MATERIAL_PASS_OWNER.md; reports/native_material_pass_owner.json.\"})\n",
+    "00b44b10 function initialize_native_compiler_pass_00b44b10\n"
+  ],
+  "tested_artifact_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r87\\native-compiler-providers-tested-r87.zip",
+    "sha256": "ca874ddf17b689555ff3cff19f6ca07c129c82674cd64e52add424676bb55937",
+    "files": 139,
+    "uncompressed_bytes": 71663507,
+    "utc": "2026-09-17T05:45:02.810939+00:00",
+    "head": "f881951f71cdec1593755b64a51d7f0b6064d56b",
+    "manifest": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_material_compiler_providers.obj",
+        "size": 21728,
+        "sha256": "43afaf7f3b66a8bf1554ed6ba3e19eeff65c663d9542ae3c76c4007483cda6fb"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "size": 234516,
+        "sha256": "c7128490590497832a8d735494473416a441c559a1da7600f479105d71fd4bc5"
+      },
+      {
+        "path": "build/win32/CMakeCache.txt",
+        "size": 19565,
+        "sha256": "d44e9a96208c5743219aa6ee30bf4f5768813c415ab257b5af16350b3179b9f3"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "size": 64288764,
+        "sha256": "91bd9d20ca00fba52f4a7d9d77229fbf006de3923608688fe0d74db97d95fcaf"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "size": 2610176,
+        "sha256": "a53a3978fdcba97cdcf83de8c78dc1ff193f6cd96f86b7629592f415edccfa83"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "size": 455244,
+        "sha256": "db83167c8c7d24461ef2bf60363b96264fd2406929d0e72a8909287d79b96a17"
+      },
+      {
+        "path": "build/win32/Release/bsp_math_tests.exe",
+        "size": 753664,
+        "sha256": "4febbdb22f2fbcf08fa662397e735c6ed57bf7f1cf926f38abef744fc0abf419"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "size": 71906,
+        "sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "size": 2408,
+        "sha256": "6dfc0c5278a4e29de0896885015ea2698c7ef839d1496a919ecd5dfad07d54a0"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "size": 156405,
+        "sha256": "f22f177ed0a98dd445094570650ace323341b6d46e82c234a9d0e61e96a987fc"
+      },
+      {
+        "path": "config/names/00b10000.jsonl",
+        "size": 288145,
+        "sha256": "ab229435f2d289c5d113cbddfd13f0eb6efb7b618bd284e9e2741c33b76eb26c"
+      },
+      {
+        "path": "config/names/00b40000.jsonl",
+        "size": 240609,
+        "sha256": "c481976c33e4bf10211b30bb9909543341dc85dafb8f5180ad41b35a11a23034"
+      },
+      {
+        "path": "config/names/00be0000.jsonl",
+        "size": 280362,
+        "sha256": "4f96c73d6c157c356dd9ea52377558fd54c0a734493467786e84dd284bab4fae"
+      },
+      {
+        "path": "config/reconstruction/00b10000.jsonl",
+        "size": 294005,
+        "sha256": "e13c1ad0a066922c3039306ab01f25846f5f16fabf3bda8386bcc90337367145"
+      },
+      {
+        "path": "config/reconstruction/00b40000.jsonl",
+        "size": 238888,
+        "sha256": "232b3783013630e77befb5dbcfccb04b480bac753a71ab3132e0a3f77305d30f"
+      },
+      {
+        "path": "config/reconstruction/00be0000.jsonl",
+        "size": 283420,
+        "sha256": "a365f3de277a7a036646cb5f06d277bc6de7f07c988d203ee8ca804d8d90269f"
+      },
+      {
+        "path": "config/target.json",
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "docs/NATIVE_MATERIAL_COMPILER_PROVIDERS_R87.md",
+        "size": 4410,
+        "sha256": "0ef1bf3054223f9ac4db2eb674c863949017cc419eb3456a75b7ef8c8384737b"
+      },
+      {
+        "path": "include/bsp/allocator_list.hpp",
+        "size": 1781,
+        "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8"
+      },
+      {
+        "path": "include/bsp/building_instance.hpp",
+        "size": 2328,
+        "sha256": "ad3c055dee4b5b4ec77784db03552e173644d57b154b3fd0a26dd5dff1ad1c4e"
+      },
+      {
+        "path": "include/bsp/camera_projection.hpp",
+        "size": 2413,
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "path": "include/bsp/camera_transform.hpp",
+        "size": 7028,
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+      },
+      {
+        "path": "include/bsp/d3d9_buffers.hpp",
+        "size": 3262,
+        "sha256": "e8bc19c4630661b83969b53cac94134748f3c9af2a98002f1f2906ed93dedc83"
+      },
+      {
+        "path": "include/bsp/d3d9_startup.hpp",
+        "size": 1362,
+        "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843"
+      },
+      {
+        "path": "include/bsp/d3d9_states.hpp",
+        "size": 15076,
+        "sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288"
+      },
+      {
+        "path": "include/bsp/d3d9_surface_pool.hpp",
+        "size": 3168,
+        "sha256": "58e4dd6d58a99d6b5cbc1685de6e83fc65512c94b02778a4f8e2b883da068467"
+      },
+      {
+        "path": "include/bsp/d3d9_texture.hpp",
+        "size": 4535,
+        "sha256": "feca623271fc53076df9026b7041c69dcdddeab0b4e007230480d787653bbc7d"
+      },
+      {
+        "path": "include/bsp/d3d9_texture2d_pool.hpp",
+        "size": 3214,
+        "sha256": "7d583076d37c842891946514ecdd69eb9a0d331d488e2753588e225f542b75f3"
+      },
+      {
+        "path": "include/bsp/d3d9_vertex_layout.hpp",
+        "size": 1257,
+        "sha256": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef"
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "size": 2475,
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+      },
+      {
+        "path": "include/bsp/game_entry.hpp",
+        "size": 5510,
+        "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+      },
+      {
+        "path": "include/bsp/generated_model_lifetime.hpp",
+        "size": 12600,
+        "sha256": "bb6171641666552aea3fcaa9757d13074f229e79d5793a3b044b980f4a3d3ef9"
+      },
+      {
+        "path": "include/bsp/gui_native_geometry.hpp",
+        "size": 10778,
+        "sha256": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf"
+      },
+      {
+        "path": "include/bsp/instance_geometry.hpp",
+        "size": 3989,
+        "sha256": "02bd2ae826198ca341a2a14fbf0f58ced99ccd20a5833a6eef48a11f932b75d4"
+      },
+      {
+        "path": "include/bsp/instance_grouping.hpp",
+        "size": 4008,
+        "sha256": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308"
+      },
+      {
+        "path": "include/bsp/instance_sort.hpp",
+        "size": 4479,
+        "sha256": "c3a892e5b69db70699daaa5c301f5b00aa17fe4f93f929fdc43dcc16e797b1f3"
+      },
+      {
+        "path": "include/bsp/instance_upload.hpp",
+        "size": 6532,
+        "sha256": "271e956b6dd3801fff1edab447fb03bb929ec562e227ae0357debbe95c1239fb"
+      },
+      {
+        "path": "include/bsp/material_lighting.hpp",
+        "size": 1642,
+        "sha256": "b56091a2688d0a7cf52401396efa68b9f02de215e9bd89e4bf20d93d83600da8"
+      },
+      {
+        "path": "include/bsp/material_sort_metadata.hpp",
+        "size": 3332,
+        "sha256": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212"
+      },
+      {
+        "path": "include/bsp/native_cube_texture_owner.hpp",
+        "size": 2750,
+        "sha256": "d770a6d64fdbc2dbb6770bfca5cbadcb501cc39abbcdc6053e717abcb8095645"
+      },
+      {
+        "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+        "size": 2257,
+        "sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1"
+      },
+      {
+        "path": "include/bsp/native_logical_buffer_device_restore.hpp",
+        "size": 2649,
+        "sha256": "2e79708e49c1559f706602b9fe761791776f11fee1c5b3efa69d7fbb2bd57c45"
+      },
+      {
+        "path": "include/bsp/native_logical_buffer_mapping.hpp",
+        "size": 2420,
+        "sha256": "d3ee48a208b6636dc70941c6a62967407d657ad18f1ae971f2d900c752fcaef0"
+      },
+      {
+        "path": "include/bsp/native_logical_index_owner.hpp",
+        "size": 6804,
+        "sha256": "c0ae53059fba249f589990b7d41d1986a2134cd86b99cd5d6db7ab2c849b38cb"
+      },
+      {
+        "path": "include/bsp/native_logical_vertex_owner.hpp",
+        "size": 7242,
+        "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+      },
+      {
+        "path": "include/bsp/native_material_compiler_providers.hpp",
+        "size": 3050,
+        "sha256": "91e171c613975045058c377de34277310140ad1a9c90ed710448a4962edd997c"
+      },
+      {
+        "path": "include/bsp/native_material_factory.hpp",
+        "size": 3753,
+        "sha256": "fa8a45423c10da368d803d5df7fb583a5bc91e9f3c3ac59722607e4a95d90b71"
+      },
+      {
+        "path": "include/bsp/native_material_owner.hpp",
+        "size": 5986,
+        "sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320"
+      },
+      {
+        "path": "include/bsp/native_material_pass_base.hpp",
+        "size": 5388,
+        "sha256": "ff2143aa1f9265bbeed7b38c24a23ab2c504bc1dfe8b96d4c7767f095a318a70"
+      },
+      {
+        "path": "include/bsp/native_material_pass_owner.hpp",
+        "size": 5800,
+        "sha256": "30ce7e9a5eb8247e4988a947a39427deeecf4991c42cdb969c2ad403f27a4e18"
+      },
+      {
+        "path": "include/bsp/native_material_pass_states.hpp",
+        "size": 5387,
+        "sha256": "4b0b577fb905790cbfa2c47dcddeef2ba7c111667a3b4d3cdf770c85ea52cab9"
+      },
+      {
+        "path": "include/bsp/native_material_pools.hpp",
+        "size": 10219,
+        "sha256": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715"
+      },
+      {
+        "path": "include/bsp/native_mesh_clone.hpp",
+        "size": 2821,
+        "sha256": "0fbe93a15ed525fd128257ca58ac4c4d8da4b4a533dd345c6c856bce5d839d5e"
+      },
+      {
+        "path": "include/bsp/native_mesh_owner.hpp",
+        "size": 6760,
+        "sha256": "540fa95aafcd3b67697998361f9a6b1689bf90348c9c0cdc09bdeb6b9c6ac42c"
+      },
+      {
+        "path": "include/bsp/native_mesh_pool.hpp",
+        "size": 2929,
+        "sha256": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52"
+      },
+      {
+        "path": "include/bsp/native_mesh_section.hpp",
+        "size": 9555,
+        "sha256": "c99901d53b195ab67c0da51c7b39657f42b7b60ba1f5509eec200b6ff29f3e2e"
+      },
+      {
+        "path": "include/bsp/native_model_owner.hpp",
+        "size": 6717,
+        "sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e"
+      },
+      {
+        "path": "include/bsp/native_model_pool.hpp",
+        "size": 3166,
+        "sha256": "30e4945729d723ec450a6eebaf28968c976dcd50f366ba193aa591d751709144"
+      },
+      {
+        "path": "include/bsp/native_named_special_textures.hpp",
+        "size": 3613,
+        "sha256": "e45d4b6240621387599ecf4e0d27d65e1f3abe4d6528d761d58db5df4e6f043e"
+      },
+      {
+        "path": "include/bsp/native_node_construction.hpp",
+        "size": 6451,
+        "sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098"
+      },
+      {
+        "path": "include/bsp/native_node_destruction.hpp",
+        "size": 5997,
+        "sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833"
+      },
+      {
+        "path": "include/bsp/native_physical_buffer_lock.hpp",
+        "size": 1561,
+        "sha256": "519c67bd123883490af70464ab81cec74d5de948a39eada540cf5b8529e18340"
+      },
+      {
+        "path": "include/bsp/native_physical_buffer_owner.hpp",
+        "size": 4248,
+        "sha256": "1277b747e0963be41fdee456092ea42b3c191d7aa165eeeec772de3cad354e56"
+      },
+      {
+        "path": "include/bsp/native_point_light_links.hpp",
+        "size": 4633,
+        "sha256": "e106191d74ea6960befb5f36e74e89076efb5fec4122a5b3d87482823dc07ba7"
+      },
+      {
+        "path": "include/bsp/native_render_context.hpp",
+        "size": 6924,
+        "sha256": "1c8d834d50cbf8ee7f660e7803efe6bad43fe70bbe87fd5cdf3375f6e68ef56d"
+      },
+      {
+        "path": "include/bsp/native_render_pointer_arrays.hpp",
+        "size": 4572,
+        "sha256": "d9cf406a178986114205fe9a154a2b74c0f8dd857b6186d7d840d8fe398ae881"
+      },
+      {
+        "path": "include/bsp/native_render_resource_container_removal.hpp",
+        "size": 2497,
+        "sha256": "1610798bb00b9c8d99938e212c7c50ab455e35027fba4885fdad074ea37182e4"
+      },
+      {
+        "path": "include/bsp/native_render_resource_record.hpp",
+        "size": 4218,
+        "sha256": "5aa38d6351388c4fc6e97799712f9b7e85b6f65468aa51d37563793208930e11"
+      },
+      {
+        "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+        "size": 2877,
+        "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+      },
+      {
+        "path": "include/bsp/native_renderer_texture_name_notification.hpp",
+        "size": 2292,
+        "sha256": "5157ead757f9082a87a57fe9f06694025ac2bc5888b244156b6e2526aa9407a4"
+      },
+      {
+        "path": "include/bsp/native_resource_support.hpp",
+        "size": 3479,
+        "sha256": "fb1506aba45e7801bcb638a6d836ce52972cf49e6d8120f7a07f8dc74d36b8f7"
+      },
+      {
+        "path": "include/bsp/native_retained_memory_owners.hpp",
+        "size": 3829,
+        "sha256": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c"
+      },
+      {
+        "path": "include/bsp/native_stream_clone.hpp",
+        "size": 3283,
+        "sha256": "a333d180afcf21084068a671d60c34ee8e1b18ea980a6c03b115a32ce2ff3e6a"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "size": 8771,
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+      },
+      {
+        "path": "include/bsp/native_surface_owner.hpp",
+        "size": 4982,
+        "sha256": "e5515e193057b574de0d0b55ff3f0b512f8b2c2cb9002ba3eb62de106a4bbe66"
+      },
+      {
+        "path": "include/bsp/native_texture_2d_owner.hpp",
+        "size": 3247,
+        "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc"
+      },
+      {
+        "path": "include/bsp/native_texture_loading_cache.hpp",
+        "size": 11040,
+        "sha256": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d"
+      },
+      {
+        "path": "include/bsp/native_volume_texture_owner.hpp",
+        "size": 2610,
+        "sha256": "fa2f4f8cebe11eb431dfec3a399080d114c0a5ecc260320f23682adff5fab28f"
+      },
+      {
+        "path": "include/bsp/random.hpp",
+        "size": 791,
+        "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+      },
+      {
+        "path": "include/bsp/random_threads.hpp",
+        "size": 1446,
+        "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+      },
+      {
+        "path": "include/bsp/render_command_queue.hpp",
+        "size": 10656,
+        "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a"
+      },
+      {
+        "path": "include/bsp/render_tail.hpp",
+        "size": 15566,
+        "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+      },
+      {
+        "path": "include/bsp/scene_attachment.hpp",
+        "size": 9700,
+        "sha256": "d2bb5d004129a418961bf13e60c0f8324a077b5647ca8450602421190841d322"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "size": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "include/bsp/sound_lifetime_access.hpp",
+        "size": 3039,
+        "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+      },
+      {
+        "path": "include/bsp/storage_pool.hpp",
+        "size": 5571,
+        "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+      },
+      {
+        "path": "include/bsp/system_lighting_constants.hpp",
+        "size": 8718,
+        "sha256": "9c98d892bac479fdf3d661c98c996333df0821a3daea26a5e36ba40339b722c9"
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "size": 4800,
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+      },
+      {
+        "path": "include/bsp/vertex_declaration.hpp",
+        "size": 1462,
+        "sha256": "0f03c6a960da3547644b3e5bc8b5934a35fe26f42abc2746559a31f0af2452a0"
+      },
+      {
+        "path": "local/annotate_compiler_providers_r87.py",
+        "size": 3481,
+        "sha256": "0d7fa7243ad8f17724c75aaeea1d3a75ae7e25e5057df11c3974220a19edb466"
+      },
+      {
+        "path": "local/collect_compiler_providers_r87.py",
+        "size": 4199,
+        "sha256": "f39298ee213dd9d39eb55acb8121ec6f13d86f96ca98fe88690309e4db294ecc"
+      },
+      {
+        "path": "local/commit_compiler_providers_r87.py",
+        "size": 1879,
+        "sha256": "3317951a293696ec3be922b1efceb41418e047cb28e40f70e038c0eb6028180c"
+      },
+      {
+        "path": "local/compiler_dependencies_r87.json",
+        "size": 10457,
+        "sha256": "8328a889c419eb55cdd306c78c7ae6b814c6b5655e610ace3654766c78d30c94"
+      },
+      {
+        "path": "local/compiler_providers_r87/annotations.log",
+        "size": 324,
+        "sha256": "8908c195bfb7d4df3e1a3b52a6336f205911d635c88085204ffcd1a176a6d18c"
+      },
+      {
+        "path": "local/compiler_providers_r87/build_probe.cmd",
+        "size": 833,
+        "sha256": "36f36eacefbbcbb24f8ba4ef5df68a26fc5bfa84e0a4db57c86cd09d19416212"
+      },
+      {
+        "path": "local/compiler_providers_r87/call_verification.log",
+        "size": 368,
+        "sha256": "6366ba31b85a958ad3ab2586b8c228bd477f47c4dc3f21d1d9140e2038b96771"
+      },
+      {
+        "path": "local/compiler_providers_r87/comments-after.json",
+        "size": 12071,
+        "sha256": "ff5fc7bba9c98d163f6e8b039b2362f9dd139672d5222fc6cad81258778635b8"
+      },
+      {
+        "path": "local/compiler_providers_r87/exports_after_annotations.log",
+        "size": 477,
+        "sha256": "0192cb5e9690d7d42c19296b64c5b6f14f5ba40b33ebefffd6554046c6a7334d"
+      },
+      {
+        "path": "local/compiler_providers_r87/index.log",
+        "size": 16,
+        "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+      },
+      {
+        "path": "local/compiler_providers_r87/inputs/physical_write.bin",
+        "size": 55,
+        "sha256": "e8838d6848776f0b6138f7e0db9363d671153207f78ed8f428bcefb9ae71bc6a"
+      },
+      {
+        "path": "local/compiler_providers_r87/inputs/renderer_caps.bin",
+        "size": 7,
+        "sha256": "cd366d3921b557c28b1796fa74b32facaa1cc00026445ce8c5983c3c5b6a17a4"
+      },
+      {
+        "path": "local/compiler_providers_r87/inputs/stream_string.bin",
+        "size": 56,
+        "sha256": "ee5a5a00d2bfecc6033a2644c354c943d1aad9ee06507ac76c505c4c4679d575"
+      },
+      {
+        "path": "local/compiler_providers_r87/inputs/stream_word.bin",
+        "size": 30,
+        "sha256": "c4b1729eae860355347fe73436308a010b4d4b633d068a4ff2935de563d6519c"
+      },
+      {
+        "path": "local/compiler_providers_r87/listing-00b1ff50.txt",
+        "size": 51,
+        "sha256": "11a39d4447c0e55d45b5de72ea1a99654e4f39391995fb9ab3e8881a2f9f5bbb"
+      },
+      {
+        "path": "local/compiler_providers_r87/listing-00b44b10.txt",
+        "size": 2035,
+        "sha256": "530b5f822e16a700ce9f31dbe089814baac03346c5f4babeacb4e8db49c1fe68"
+      },
+      {
+        "path": "local/compiler_providers_r87/listing-00be40d0.txt",
+        "size": 341,
+        "sha256": "d1bd712688b553298e5afa17fbd175c245a53c4facfade99cd164a5d7468214d"
+      },
+      {
+        "path": "local/compiler_providers_r87/listing-00be4460.txt",
+        "size": 782,
+        "sha256": "81e90929e6e45d0d5aaa3381923b394315f2a5efd7a92c18616ec5baa9ed8111"
+      },
+      {
+        "path": "local/compiler_providers_r87/listing-00bf4f50.txt",
+        "size": 648,
+        "sha256": "257f8aa01b2755fdaee76a07fefb62f8f419825d37b714a3b857488d0c29747d"
+      },
+      {
+        "path": "local/compiler_providers_r87/native.json",
+        "size": 21731,
+        "sha256": "588813329b8cbdb26f93d6fcfea9e11489c781633e878dc96141e804eed38f02"
+      },
+      {
+        "path": "local/compiler_providers_r87/native_cache.bin",
+        "size": 8,
+        "sha256": "ea526dd0217d0ede3cc35aa0b9d8538986d348fe8d91c99300409bbba20b1e3a"
+      },
+      {
+        "path": "local/compiler_providers_r87/original.inc",
+        "size": 14,
+        "sha256": "aecb9819eb04bf5ad6cd2535cfac9b1bed5ef7946e551eff2224759862e16294"
+      },
+      {
+        "path": "local/compiler_providers_r87/prior-ledgers.json",
+        "size": 2680,
+        "sha256": "383c11372c0b97be01d72975b0ac9cdf3b1cc9d381a81ae9362cf9d5975d80ed"
+      },
+      {
+        "path": "local/compiler_providers_r87/prior-report.json",
+        "size": 40338,
+        "sha256": "123a74aa3a4ed11844a48329de996dfc8a9eb893ae258b0f456a031d3245411e"
+      },
+      {
+        "path": "local/compiler_providers_r87/probe_build.log",
+        "size": 1545,
+        "sha256": "66ee93f2d38ed6f334537f5cf4064fa670d0009be0911951b85668dd6363126d"
+      },
+      {
+        "path": "local/compiler_providers_r87/probe_dependencies.json",
+        "size": 38767,
+        "sha256": "843de0746bb520a8986b5c4cd767df871df71e904fafdda21cf981bc77a808c2"
+      },
+      {
+        "path": "local/compiler_providers_r87/probe_run.log",
+        "size": 1071,
+        "sha256": "2c6a131c2b2d004b691ac16e6f1b601006a1eaef6b390380be53541ed1f2b787"
+      },
+      {
+        "path": "local/compiler_providers_r87/proto-00b1ff50.txt",
+        "size": 700,
+        "sha256": "94545789dec9cd4f11d70dd17b3d0f2e837815336f59f39e3fc322330274c8c7"
+      },
+      {
+        "path": "local/compiler_providers_r87/proto-00b44b10.txt",
+        "size": 731,
+        "sha256": "92967864acc762077d5d30da4f51e887ac859c5ca04ab222129080c079fbecf2"
+      },
+      {
+        "path": "local/compiler_providers_r87/proto-00be40d0.txt",
+        "size": 645,
+        "sha256": "49a5a9c0523646526d3b593457762f0c4b74bc4cd4e037e7338fd97f26eb02ff"
+      },
+      {
+        "path": "local/compiler_providers_r87/proto-00be4460.txt",
+        "size": 755,
+        "sha256": "88197e3df988dd6c7c941b0ab570f11b264708b351eae1be4a5e984dc4a98dac"
+      },
+      {
+        "path": "local/compiler_providers_r87/proto-00bf4f50.txt",
+        "size": 720,
+        "sha256": "80a3abda271c2e03b68055fb88410a9bcf1fc96df48adbb1f116dd26b8c0fa00"
+      },
+      {
+        "path": "local/compiler_providers_r87/provider_probe.cpp",
+        "size": 6080,
+        "sha256": "84fa6c34c7e93a51c4476a81deaf7d442c8a72127a7bb91df744d51b1b2d2965"
+      },
+      {
+        "path": "local/compiler_providers_r87/provider_probe.exe",
+        "size": 296448,
+        "sha256": "aadce7f50aea2be1cf0b4a69d9538796a4c6005f43230fc299ae8c25595a3ea5"
+      },
+      {
+        "path": "local/compiler_providers_r87/provider_probe.exp",
+        "size": 774,
+        "sha256": "56c3f68a275ed03035305c4a1a5801b2a2f3b39aff645f114293b301fa4abb8e"
+      },
+      {
+        "path": "local/compiler_providers_r87/provider_probe.lib",
+        "size": 1924,
+        "sha256": "80b7518a168499295660d8e0f0ef9cd7a76669c82af8a4a886e1ca7ca93dc54c"
+      },
+      {
+        "path": "local/compiler_providers_r87/provider_probe.map",
+        "size": 462304,
+        "sha256": "8cf8eea01e036282b1f55266d5e638aa36660d0676b485d4621b7969ec2f0a78"
+      },
+      {
+        "path": "local/compiler_providers_r87/provider_probe.obj",
+        "size": 56329,
+        "sha256": "5f786ab2786697ea56ca089cbdd73a20665b3253e970d907a5f1280dfc88e09f"
+      },
+      {
+        "path": "local/compiler_providers_r87/snapshot.log",
+        "size": 230,
+        "sha256": "04b8c1efe23657cef168be8a42b2afbe99631b47193dae8db0fe718c7060f057"
+      },
+      {
+        "path": "local/compiler_providers_r87/source_cache.bin",
+        "size": 8,
+        "sha256": "ea526dd0217d0ede3cc35aa0b9d8538986d348fe8d91c99300409bbba20b1e3a"
+      },
+      {
+        "path": "local/ghidra-annotations-20260917T054335Z.json",
+        "size": 12466,
+        "sha256": "552800101540726e9ac3bd100cc2eb39ef9b7b7a8112d9619c8aceff48e96704"
+      },
+      {
+        "path": "local/inspect_compiler_dependencies_r87.py",
+        "size": 1303,
+        "sha256": "ddf8fa4561e01246cb42d95076748aa64854ce03e175002deb42312ea4086368"
+      },
+      {
+        "path": "local/prepare_compiler_providers_r87.py",
+        "size": 1928,
+        "sha256": "fcf8a485fb437d41ceaec59bc54e8ba224ca90274a2e20b6c598c0c0fba4fed7"
+      },
+      {
+        "path": "local/prepare_provider_probe_r87.py",
+        "size": 2172,
+        "sha256": "804d9cf691f59124efd989cf8742cf7d8875a7d82a5a4fa39af32efaa64b879e"
+      },
+      {
+        "path": "local/r87_build.log",
+        "size": 2597,
+        "sha256": "749c01f3bea6f3b5215f77433a6da50725a0d750fe7036091bbea3ac7c866425"
+      },
+      {
+        "path": "local/report_compiler_providers_r87.py",
+        "size": 9466,
+        "sha256": "cda246e10b5cc5f2fd828b1cc0d322e112e8e2db0d79882c1b22a806d09cb4d3"
+      },
+      {
+        "path": "local/seal_compiler_providers_r87.py",
+        "size": 4008,
+        "sha256": "1dc81dc9de5c1a359f3a9b46eca09bf95f7dd68a696d798dbf57a8ad27c5511c"
+      },
+      {
+        "path": "reports/native_material_compiler_providers_r87.json",
+        "size": 52916,
+        "sha256": "859ae89ac412eee1b8c7144e427511d6482aa08f0e18195233e067478e52f6bc"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "size": 1820,
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+      },
+      {
+        "path": "src/native_material_compiler_providers.cpp",
+        "size": 4582,
+        "sha256": "a782bc95e420e54553c0e9b00d50def12d49edfd3b57fa7ad9ecae840a9ce410"
+      }
+    ],
+    "scope": "Scoped source/header/ledger/native evidence, current library and leaf probe, exact retained predecessor report, build and3CTests. No complete toolchain/game-data closure or full pass/compiler runtime."
+  }
+}
