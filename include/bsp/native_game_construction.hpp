@@ -5,6 +5,7 @@
 #include "bsp/native_game_embedded_state.hpp"
 #include "bsp/native_game_array_elements.hpp"
 #include "bsp/native_game_dynamics.hpp"
+#include "bsp/native_game_tables.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>
@@ -37,12 +38,12 @@ struct NativeGameConstructionCalls : NativeGameEmbeddedStateCalls,NativeGameArra
     virtual void call_0076ede0(void* embedded,const NativeGameEmbeddedStateConstants&,
         NativeGameEmbeddedStateOperation&);
     virtual void* call_004c1a40(); // allocate0Ch list head, links0/4=self
-    virtual void call_008d9150()=0;
+    virtual void call_008d9150(NativeGameTablesContext&);
     virtual void* call_00432650()=0;
     virtual void call_0087d7b0(void* captured_configuration)=0;
     virtual void call_00717e80()=0;
     virtual void* call_0070bd70(void* allocation,float argument)=0;
-    virtual void call_00727bd0()=0;
+    virtual void call_00727bd0(NativeGameTablesContext&);
     virtual void* call_008882d0(void* allocation);
     virtual std::uint32_t call_00be4800();
     virtual void* call_00c55f50(const std::uint32_t* worker_count,const DynEngineRuntimeContext&);
@@ -75,6 +76,7 @@ struct NativeGameConstructionContext {
     NativeGameEmbeddedStateConstants embedded_constants;
     NativeGameArrayConstants array_constants;
     NativeGameDynamicsContext dynamics;
+    NativeGameTablesContext& tables;
 };
 struct NativeGameConstructionOperation final {
     enum class Phase { fresh,running,complete,failed,diagnostic_retired };

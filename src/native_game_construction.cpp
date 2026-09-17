@@ -64,6 +64,8 @@ void* NativeGameConstructionCalls::call_004c1950(){return allocate_native_game_l
 void* NativeGameConstructionCalls::call_004c1a40(){return allocate_native_game_list_004c1a40(*this);}
 void NativeGameConstructionCalls::call_007ff9d0(void* p){initialize_native_race_storage_007ff9d0(p);}
 void* NativeGameConstructionCalls::call_008882d0(void* p){return construct_native_mission_lua_owner_008882d0(p,*this);}
+void NativeGameConstructionCalls::call_008d9150(NativeGameTablesContext& c){append_native_unit_conversions_008d9150(c);}
+void NativeGameConstructionCalls::call_00727bd0(NativeGameTablesContext& c){build_native_gunnery_ranks_00727bd0(c.preferences_00e092c8,c.ranks_00e19bf8);}
 std::uint32_t NativeGameConstructionCalls::call_00be4800(){
     return static_cast<std::uint32_t>(frame_job_processor_count_00be4800());
 }
@@ -157,7 +159,7 @@ NativeGameStorage* construct_native_game_004ddb90(NativeGameStorage& storage,
                 a.native_site=0x004ddf99;std::memcpy(target,source,count);
             }
         }
-        a.native_site=0x004ddfa1;calls.call_008d9150();
+        a.native_site=0x004ddfa1;calls.call_008d9150(c.tables);
         word(game,0x618,4);word(game,0x614,4);byte(game,0x61c);
         a.native_site=0x004ddfbd;void* const configuration=calls.call_00432650();
         a.native_site=0x004ddfc4;calls.call_0087d7b0(configuration);
@@ -174,7 +176,7 @@ NativeGameStorage* construct_native_game_004ddb90(NativeGameStorage& storage,
         a.unwind_state=39;value=nullptr;
         if(a.current_allocation){const float argument=spill(c.constants.argument_00ce7d1c);a.native_site=0x004de062;value=calls.call_0070bd70(a.current_allocation,argument);}
         a.unwind_state=36;c.actual_00e19b04=value;
-        a.native_site=0x004de075;calls.call_00727bd0();
+        a.native_site=0x004de075;calls.call_00727bd0(c.tables);
         a.native_site=0x004de07c;a.current_allocation=calls.allocate_00bf681b(0x14);
         a.unwind_state=40;value=nullptr;
         if(a.current_allocation){a.native_site=0x004de093;value=calls.call_008882d0(a.current_allocation);}
