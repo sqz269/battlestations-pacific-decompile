@@ -4694,5 +4694,118 @@
         "sha256": "6b4ddf0169480fed8e17903242aa821dbd06fe55e2304311b8c5e98855fdaaf5"
       }
     ]
+  },
+  "primary_integration": {
+    "source_commit": "11461b1d9adc21643288129cb135efda380268f9",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "archive": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r79\\native-bloom-initializer-main-r79.zip",
+    "sha256": "e82853ab5639c1a4edc25dbbca75fa44f96e58f6d645d55e70fc9293afeae14f",
+    "files": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "size": 64066610,
+        "sha256": "f667e335ed8de44b1ebbf90bf762eed13193510afcded464008a522d6a5aba3d"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "size": 2607104,
+        "sha256": "4a34d3c58b1cfdbd732f9619c0cc174835316f53f109103b9bc01d9b79ff05e7"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "size": 2408,
+        "sha256": "5061697189e1c0689b25d9cb124c9bad109d38abb961ded1a0374d8e5e8fc5e4"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_bloom_initializer.obj",
+        "size": 28783,
+        "sha256": "56804d16806b507832908f769896398da0ba5ff96ee63855207a88921d9492b0"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "size": 233790,
+        "sha256": "61beb0dfc6299c4c37c3c5172d3c5189e9c83e2d54bda27b61cfde9e91baa680"
+      },
+      {
+        "path": "build/win32/bsp_game.vcxproj",
+        "size": 64257,
+        "sha256": "b0e4bec4bd85016b40bb6ca1addc3ac3b32bc742c7b99ed55ab33893349525ee"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "size": 155638,
+        "sha256": "9e02182a2bb9fcc1a8ac00e47be54f59b62644280ed04cb81c43daa5ba372a1d"
+      },
+      {
+        "path": "config/names/00b50000.jsonl",
+        "size": 138728,
+        "sha256": "f4aed4a10305affb93ed503424f8073f7055aff8a6f620633a59280372e2c943"
+      },
+      {
+        "path": "config/reconstruction/00b50000.jsonl",
+        "size": 183306,
+        "sha256": "3949fd4d15a0c741f32369ab6f166f082b61c4dbdfef0e827ec1a43927fe8698"
+      },
+      {
+        "path": "docs/NATIVE_BLOOM_INITIALIZER_R79.md",
+        "size": 8980,
+        "sha256": "364f22620d811e65ea834c59a35807741494b166b270dc07502ea7e31c8a57f9"
+      },
+      {
+        "path": "docs/NATIVE_DOWNSCALE_PASS_INITIALIZERS_R78.md",
+        "size": 8185,
+        "sha256": "c8de149b1d90d449a41c1d76833bb21f37c0bbd863d9c2327ae5959c7026774c"
+      },
+      {
+        "path": "include/bsp/native_bloom_initializer.hpp",
+        "size": 4733,
+        "sha256": "d529803da55f15b3c4b258e2359acc1559be186bb6587cc2d1be866231f4f013"
+      },
+      {
+        "path": "local/bloom_r79/annotations.log",
+        "size": 195,
+        "sha256": "75149148bf0a03046068fcada027fe37f7de3b5b21c99763c35aedb00e2a590a"
+      },
+      {
+        "path": "local/bloom_r79/call_verification.log",
+        "size": 131,
+        "sha256": "52c0a2813514e7309f3adc7f34afab4ac14f6868c96ca6b95c4d26e1673c7e19"
+      },
+      {
+        "path": "local/bloom_r79/exports_after_annotations.log",
+        "size": 125,
+        "sha256": "4f11779700858f24cf8ee042d2b2a0f706be4f167b470a5a116c319ef17e8f11"
+      },
+      {
+        "path": "local/ghidra-annotations-20260917T030514Z.json",
+        "size": 1482,
+        "sha256": "021d70360e7b90c6b97bbacaef2f5b2044a386f81c91a05e02d04b686381f79d"
+      },
+      {
+        "path": "local/r79_integration.log",
+        "size": 1037,
+        "sha256": "4d6b8cf6486f239f37f4d8135db881eeac66a7d5709a7014f204aeb47c2acd01"
+      },
+      {
+        "path": "reports/native_bloom_initializer_r79.json",
+        "size": 176251,
+        "sha256": "04eff50b5b8ecb70b13d2301dfc6fa9d344a6229737b4a6509d337e230479357"
+      },
+      {
+        "path": "src/native_bloom_initializer.cpp",
+        "size": 12273,
+        "sha256": "6b4ddf0169480fed8e17903242aa821dbd06fe55e2304311b8c5e98855fdaaf5"
+      }
+    ],
+    "library_sha256": "f667e335ed8de44b1ebbf90bf762eed13193510afcded464008a522d6a5aba3d",
+    "library_identical_to_probe_link_input": true,
+    "game_sha256": "4a34d3c58b1cfdbd732f9619c0cc174835316f53f109103b9bc01d9b79ff05e7",
+    "game_identical_to_preintegration_build": true,
+    "source_identical_to_probe_tested": true,
+    "probe_rerun_after_integration": false,
+    "application_rerun_after_integration": false,
+    "scope": "Combined strict build and existing CTests. Exact real-D3Dprefix/numeric probe and its link inputs are separately sealed in the tested archive. No source changes at integration. Library equality is recorded separately from probe/runtime proof. The complete bloom initializer remains unexecuted and unbound to application resource initialization and gameplay.",
+    "annotations": "The owning-worktree annotation was saved and force-exported before integration. Bare-owner deferral by the integration helper does not leave annotation work outstanding."
   }
 }
