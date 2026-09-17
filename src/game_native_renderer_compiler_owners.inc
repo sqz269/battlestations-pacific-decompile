@@ -9,6 +9,12 @@ struct CompilerOwnersGraph {
  NativeCompiledShaderReflectionContext reflection;
  NativeD3d9ShaderConstructionActualContext shaders;
  NativeD3d9ShaderLifetimeContext shader_lifetime;
+ NativeShaderConstantHeaderContext lines;
+ NativeShaderFieldInitializationContext source;
+ NativeVertexShaderD3dxImports vertex_import;
+ NativePixelShaderD3dxImports pixel_import;
+ NativeVertexShaderCompilationContext vertex;
+ NativePixelShaderCompilationContext pixel;
  std::atomic<std::uint32_t> live_companions{0};
 
  template<class Reference,class Disposal> struct Companion {
@@ -66,10 +72,18 @@ struct CompilerOwnersGraph {
    reflection{vfs.strings,constants,reflection_import},
    shaders{raw,support.actual_published_0108fedc,renderer},
    shader_lifetime{support.actual_published_0108fedc,NativeResourceSupportLifetime(support),
-       renderer,registry,profiles(0xd62a60),profiles(0xd62a70)} {}
+       renderer,registry,profiles(0xd62a60),profiles(0xd62a70)},
+   lines{vfs.strings,constants,game_native_shader_process().system_register_limit_00e13078(),
+       game_native_shader_process().format_scratch_0108d6f8(),
+       game_native_shader_process().source_empty_0108d6f2()},
+   source{lines,game_native_shader_process().instance_empty_00e17654()},
+   vertex_import(d3dx),pixel_import(d3dx),
+   vertex{vfs.strings,renderer,vfs.actual_vfs_publication_0109ceec,vfs.bindings,vertex_import},
+   pixel{vfs.strings,renderer,vfs.actual_vfs_publication_0109ceec,vfs.bindings,pixel_import} {}
  GameNativeMaterialCompilerOwners borrowed() noexcept {
   return {passes,reflection,shaders,{this,&bind_pass,&bind_reflection,&bind_shader}};
  }
+ GameNativeMaterialCompilerSources borrowed_sources() noexcept {return {source,vertex,pixel};}
  bool quiescent() const noexcept {return live_companions.load(std::memory_order_relaxed)==0;}
  ~CompilerOwnersGraph(){if(!quiescent())std::terminate();}
 };

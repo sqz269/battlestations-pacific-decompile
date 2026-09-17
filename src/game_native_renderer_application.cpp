@@ -73,6 +73,7 @@
 #include "bsp/native_shader_binary_cache.hpp"
 #include "bsp/native_shader_descriptor_reader.hpp"
 #include "bsp/game_native_material_compiler_owners.hpp"
+#include "bsp/game_native_material_compiler_sources.hpp"
 #include "bsp/native_d3d9_shader_lifetime.hpp"
 // Constructor, device startup, frame and destructor borrow one application graph.
 #include "bsp/game_native_renderer_application.hpp"
@@ -240,6 +241,10 @@ NativeShaderDescriptorReadContext& GameNativeRendererApplication::shader_descrip
 GameNativeMaterialCompilerOwners GameNativeRendererApplication::material_compiler_owners() {
     check(impl_->phase==Impl::Phase::ready,"material compiler owners require the ready application renderer");
     return impl_->compiler_owners.borrowed();
+}
+GameNativeMaterialCompilerSources GameNativeRendererApplication::material_compiler_sources() {
+    check(impl_->phase==Impl::Phase::ready,"material compiler sources require the ready application renderer");
+    return impl_->compiler_owners.borrowed_sources();
 }
 void GameNativeRendererApplication::read_shader_descriptor(NativeShaderDescriptorStorage& descriptor,
     const void* name,U generation,NativeShaderDescriptorReadOperation& operation) {

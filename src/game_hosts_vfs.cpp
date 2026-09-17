@@ -22,6 +22,10 @@
 #include "bsp/winmain_startup.hpp"
 
 namespace bsp::game {
+void* GameVfsHost::mount(const char* system,const char* virtual_path,
+    std::uint32_t priority,std::uint32_t flags,std::uint32_t device_id) {
+    return invoke_native([&] {return active_runtime().mount(system,virtual_path,priority,flags,device_id);});
+}
 GameVfsHost::GameVfsHost(GameHostLog& log, GameSingletonHost& singletons,
     GameNativeReadOnlyData& data, const std::filesystem::path& original_executable,
     bool hardware_probe_commit)

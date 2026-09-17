@@ -115,6 +115,10 @@ public:
     // retained runtime and is rejected after an interrupted native operation.
     NativeStringRawPoolContext& raw_strings() noexcept;
     GameNativeVfsRawServices borrow_raw_services();
+    // Original BE1890 over this same manager/factory/provider/lifetime graph.
+    // The mount remains owned by the native manager until its normal drain.
+    void* mount(const char* system_path,const char* virtual_path,
+        std::uint32_t priority,std::uint32_t flags,std::uint32_t device_id);
     NativeVfsOwnerServices& native_owners() noexcept;
     GameNativeTypeStorage& native_types() noexcept;
 
