@@ -5,6 +5,7 @@
 #include "bsp/native_logical_vertex_owner.hpp"
 #include "bsp/native_vertex_declaration_cache.hpp"
 #include "bsp/gui_text_native_layout.hpp"
+#include "bsp/native_material_factory.hpp"
 #include <array>
 #include <optional>
 
@@ -23,6 +24,8 @@ struct NativePostEffectConstructionContext {
     NativeMeshSectionEnvironment& sections;
     const volatile std::uint32_t& section_bounds_w_00ce4970;
     NativeMaterialDestructionAccess& materials;
+    // Required numeric D5F0A8/+48 provider, sharing this owner's live domains.
+    NativeMaterialEffectCacheContext& material_effects;
     GuiNativeGeometryOwners& declaration_companions;
     NativeVertexDeclarationCacheContext& declarations;
     NativeLogicalVertexOwnerContext& streams;
@@ -50,6 +53,9 @@ struct NativePostEffectConstructionContext {
 // reference pointers are published here before registration can fail, permitting
 // disposition through the exact unregistered companion; they add no ownership.
 struct NativePostEffectConstructionAcquired {
+    // Stable per-attempt factory/cache/loader frame, including creators acquired
+    // before a failing final effect release. No automatic rollback is supplied.
+    NativeMaterialFactoryAcquired* material_factory{};
     void* actual_owner{};
     bool native_completed{};
     int native_state{-1};
@@ -102,6 +108,9 @@ public:
     // raw creators and every semantic view/cache borrow have ended. References
     // must be retired, owners dead, and both viewport records nonlive. Unbound
     // completed-owner diagnostics cannot be silently discarded by this call.
+    // The material factory must be unused or complete, with every completed
+    // material retired. A failed factory frame must remain alive; this API does
+    // not implement its native failure recovery or authorize discarding it.
     void reset_after_host_quiescence() noexcept;
 private:
     friend void* construct_native_post_effect_00b4e840(void*, std::size_t,
@@ -123,6 +132,7 @@ private:
     NativePostEffectConstructionContext* context_{};
     Phase phase_{Phase::idle};
     NativePostEffectConstructionAcquired acquired_;
+    std::optional<NativeMaterialFactoryAcquired> material_factory_;
     std::array<void*, slot_count> keys_{};
     std::array<RenderCommandReference*, slot_count> references_{};
     std::array<bool, slot_count> registered_{};

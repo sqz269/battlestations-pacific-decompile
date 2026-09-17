@@ -188,3 +188,15 @@ receiver identity through the first allocation: CEB130, one count1 store,
 D61EC8, +0C/+10/+14 zero, +20 original count, with no count0 store. The generated
 seven x87 operations preserve the load/spill and intervening field-read order.
 This evidence does not execute the new constructor or prove the failure paths.
+
+## Correction from docs/NATIVE_POST_EFFECT_NUMERIC_MATERIAL_R91.md
+
+R91 replaces this constructor's legacy callable renderer+48 material factory
+with the concrete numeric D5F0A8/B318B0 cache composition. Its context requires
+the same owner/string/renderer domains, and its construction block retains a
+per-attempt factory/cache/loader frame, including completed material identity
+before a failing final effect release. Reset refuses unresolved factory frames
+and unretired materials. Earlier callable-provider and hidden-material-identity
+limitations above are superseded by R91; native failure recovery, full post-effect
+execution, application wiring, FH3 and gameplay remain unproved. See the R91
+document/report for current build, listing and object-relocation evidence.

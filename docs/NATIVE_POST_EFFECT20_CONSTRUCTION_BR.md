@@ -127,3 +127,15 @@ the checks actually configured in this isolated worktree. It does not execute
 this constructor, establish full native FH3, prove a binary replacement, or
 validate the runnable game. The renderer-service +70 producer/callable wiring
 and failed-initialization preimage remain named integration work.
+
+## Correction from docs/NATIVE_POST_EFFECT_NUMERIC_MATERIAL_R91.md
+
+R91 replaces this constructor's legacy callable renderer+48 material factory
+with the concrete numeric D5F0A8/B318B0 cache composition. Its context requires
+the same owner/string/renderer domains, and its construction block retains a
+per-attempt factory/cache/loader frame, including completed material identity
+before a failing final effect release. Reset refuses unresolved factory frames
+and unretired materials. Earlier callable-provider and hidden-material-identity
+limitations above are superseded by R91; native failure recovery, full post-effect
+execution, application wiring, FH3 and gameplay remain unproved. See the R91
+document/report for current build, listing and object-relocation evidence.

@@ -1,6 +1,7 @@
 #include "bsp/native_post_effect_construction.hpp"
 #include "bsp/native_instance_collection.hpp"
 #include "bsp/native_material_factory.hpp"
+#include "bsp/native_material_effect_cache.hpp"
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
@@ -101,6 +102,14 @@ NativePostEffectConstructionBlock::~NativePostEffectConstructionBlock() noexcept
 void NativePostEffectConstructionBlock::validate() const {
     auto& c = *context_;
     auto& owners = c.destruction.actual_owners;
+    require(&c.material_effects.effects.owners.actual_owners() == &owners &&
+        &c.material_effects.strings == &c.strings &&
+        &c.material_effects.effects.construction.strings == &c.strings &&
+        &c.material_effects.effects.construction.current_renderer_00f8d394 ==
+            &c.actual_renderer_00f8d394 &&
+        c.material_effects.effects.renderer_profile_00d5f0a8 == c.renderer_profile_00d5f0a8 &&
+        c.material_effects.effects.cache == &c.material_effects,
+        "post-effect material cache must borrow the same owners, strings and renderer publication");
     require(&c.meshes.retained_owners == &owners && &c.sections.retained_owners == &owners &&
         &c.materials.retained_owners == &owners && &c.streams.actual_owners == &owners &&
         &c.models.retained_owners == &owners && &c.declaration_companions.actual_owners() == &owners,
@@ -138,6 +147,8 @@ void NativePostEffectConstructionBlock::prepare(NativePostEffectConstructionCont
     phase_ = Phase::preparing;
     try {
         validate();
+        material_factory_.emplace();
+        acquired_.material_factory = &*material_factory_;
         camera_scene_ = context.cameras.nodes.scenes.reserve_binding();
         camera_lifetime_ = context.cameras.nodes.attachments.reserve_binding();
         viewport_admissions_[0] = context.viewports.admit(viewport_records_[0]);
@@ -150,6 +161,8 @@ void NativePostEffectConstructionBlock::cancel_preparation() noexcept {
     camera_scene_.cancel(); camera_lifetime_.cancel();
     for (auto& admission : viewport_admissions_) admission.cancel();
     for (auto& record : viewport_records_) context_->viewports.forget_quiescent(record);
+    material_factory_.reset();
+    acquired_.material_factory = nullptr;
     context_ = nullptr;
     phase_ = Phase::idle;
 }
@@ -190,6 +203,12 @@ BSP_BO_RETIRE(retire_owner, NativePostEffectReference, owner)
 
 void NativePostEffectConstructionBlock::reset_after_host_quiescence() noexcept {
     if (phase_ != Phase::settled) std::terminate();
+    // Failed factory/cache frames retain unresolved native obligations. Even a
+    // successful factory may precede a failed material companion registration.
+    if (!material_factory_ ||
+        (material_factory_->phase != NativeMaterialFactoryAcquired::Phase::empty &&
+         material_factory_->phase != NativeMaterialFactoryAcquired::Phase::complete) ||
+        (material_factory_->material && !retired_[material])) std::terminate();
     for (std::size_t i = 0; i != slot_count; ++i)
         if (references_[i] && !retired_[i]) std::terminate();
     if ((model_owner_ && model_owner_->phase != NativeModelOwner::Phase::dead) ||
@@ -207,6 +226,7 @@ void NativePostEffectConstructionBlock::reset_after_host_quiescence() noexcept {
     declaration_name_.~NativeString(); new (&declaration_name_) NativeString;
     model_name_.~NativeString(); new (&model_name_) NativeString;
     camera_name_.~NativeString(); new (&camera_name_) NativeString;
+    material_factory_.reset();
     keys_ = {}; references_ = {}; registered_ = {}; retired_ = {}; acquired_ = {};
     context_ = nullptr;
     phase_ = Phase::idle;
@@ -331,8 +351,9 @@ void* construct_native_post_effect_00b4e840(void* actual, std::size_t allocation
         require(mesh != nullptr, "native post-effect mesh dereference requires successful allocation");
         set_native_mesh_vertex_stream_00b73bb0(*mesh, c.destruction.actual_owners, 0, current_stream);
 
-        NativeMaterialStorage* material = create_native_material_for_effect_00535320(effect_name,
-            c.actual_renderer_00f8d394, c.materials.material_slots, c.destruction.actual_owners);
+        NativeMaterialStorage* material = create_native_material_from_effect_cache_00535320(effect_name,
+            c.materials.material_slots, c.destruction.actual_owners,
+            c.material_effects, *block.material_factory_); // B4E99C
         acquired.material_created = material;
         put(actual, 0x14, bits(material)); // B4E9A5
         require(material != nullptr, "native post-effect material dereference requires successful allocation");
