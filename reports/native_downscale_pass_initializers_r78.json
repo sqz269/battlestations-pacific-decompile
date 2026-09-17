@@ -3822,5 +3822,133 @@
         "sha256": "ec57fea235870e22573a0c5518e4ccfc093ad4bcda70bb17fd890eeb10436c69"
       }
     ]
+  },
+  "primary_integration": {
+    "source_commit": "6e74211be3a130f9ae34f143aa4769a819956816",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "archive": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r78\\native-downscale-pass-initializers-main-r78.zip",
+    "sha256": "1dc8bd0d7380fba41a4440e96e3bf0a0ea6e7c156fef8154654d17b5a8b8393f",
+    "files": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "size": 64033906,
+        "sha256": "2d8e7e84f09afd2ba6e5c84be67bc54f54d48076ab02f2fd8dfbcc5ce8ddeb0b"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "size": 2607104,
+        "sha256": "d042ffa0914f4f17928309ab7dc5a5669241c86c8dc7a60c8a778e7da0b9fb69"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "size": 2408,
+        "sha256": "c49ae339ebc621491a7a42b12e8f3ef6326604b404fbc2c9243ce1a6f053d518"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_downscale_pass_initializers.obj",
+        "size": 17196,
+        "sha256": "f285c5353a04db46d1aded268dbdbb280f310a24e1babcba95740428a7e6a685"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "size": 233672,
+        "sha256": "769629e8784901c524a4dd0ca075ab1720c404fda88fb9e25e199a67dadabfe3"
+      },
+      {
+        "path": "build/win32/bsp_game.vcxproj",
+        "size": 64257,
+        "sha256": "b0e4bec4bd85016b40bb6ca1addc3ac3b32bc742c7b99ed55ab33893349525ee"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "size": 155513,
+        "sha256": "35e858cd585c3e5c4310f4f11c7b26df00c76da1993f7d2cc0da6548bab01ad0"
+      },
+      {
+        "path": "config/names/00b40000.jsonl",
+        "size": 233231,
+        "sha256": "2cf4ec3b7238d3cc15306ad7e6a0c96f516d651da0453da2973b82365868c64f"
+      },
+      {
+        "path": "config/names/00b50000.jsonl",
+        "size": 137437,
+        "sha256": "d8d66b80338c9fde421f8214648ca4a53b5f8b2226e255d7d29b0ffb0a290425"
+      },
+      {
+        "path": "config/reconstruction/00b40000.jsonl",
+        "size": 226195,
+        "sha256": "56f92f4ba7fd499b0912f1674354bf2a9a0ec3300ffe1406d946d60c1011baa3"
+      },
+      {
+        "path": "config/reconstruction/00b50000.jsonl",
+        "size": 181604,
+        "sha256": "b383a3ae2f7282fca5897e5b1ee9f7599b99921ea4c8141f6eeb2c7a5208a69f"
+      },
+      {
+        "path": "docs/NATIVE_DOWNSCALE_PASS_INITIALIZERS_R78.md",
+        "size": 7821,
+        "sha256": "3dd8caedf239c8fe91483fc02cb5c6ff4668e025850930ea8a019fd665e48e17"
+      },
+      {
+        "path": "docs/NATIVE_RENDER_PASS_INITIALIZERS_R77.md",
+        "size": 8883,
+        "sha256": "c2093483026962ba5963418c5969edcc98593114fff3697190fec67eab698cfd"
+      },
+      {
+        "path": "include/bsp/native_downscale_pass_initializers.hpp",
+        "size": 2844,
+        "sha256": "69b78d15434cd987f225b3c4eb66f64a7d7934c8a8d71d94db46cfb91d598c46"
+      },
+      {
+        "path": "include/bsp/native_render_pass_initializers.hpp",
+        "size": 6348,
+        "sha256": "40c703a87c1d95c35118d2070cb1fdbd19059144915113e6f4a9b9bc6ffaff73"
+      },
+      {
+        "path": "local/downscale_r78/annotations.log",
+        "size": 288,
+        "sha256": "71cded53119465a6f854ab1a0d166b2bc9d61cc58e5a8a3f05dc2f3f536bb3b1"
+      },
+      {
+        "path": "local/downscale_r78/call_verification.log",
+        "size": 141,
+        "sha256": "d60a24b5cacf8bd43696b778268e34d75b23dd1ba5b6aa8dec8ddf707771ae94"
+      },
+      {
+        "path": "local/downscale_r78/exports_after_annotations.log",
+        "size": 375,
+        "sha256": "8f6c75da1d140a984cfa022706c3a21d48622f0f46ef60ea46403cd0c526c1d2"
+      },
+      {
+        "path": "local/ghidra-annotations-20260917T024051Z.json",
+        "size": 4000,
+        "sha256": "4a9055a9048329cd412f6d86ea21eae44a7c59b59c258a90a584f028e43ca278"
+      },
+      {
+        "path": "local/r78_integration.log",
+        "size": 1319,
+        "sha256": "3b6fff85e4415626770232cf763809bf0bb2a928ac8876c1941d3f879a1f4a5b"
+      },
+      {
+        "path": "reports/native_downscale_pass_initializers_r78.json",
+        "size": 154852,
+        "sha256": "f46225d467d2ebbf5ceab8768782fe7291cd4edda3a3560eb36a1bffcf8c3458"
+      },
+      {
+        "path": "src/native_downscale_pass_initializers.cpp",
+        "size": 8717,
+        "sha256": "ec57fea235870e22573a0c5518e4ccfc093ad4bcda70bb17fd890eeb10436c69"
+      }
+    ],
+    "library_sha256": "2d8e7e84f09afd2ba6e5c84be67bc54f54d48076ab02f2fd8dfbcc5ce8ddeb0b",
+    "library_identical_to_probe_link_input": true,
+    "game_sha256": "d042ffa0914f4f17928309ab7dc5a5669241c86c8dc7a60c8a778e7da0b9fb69",
+    "game_identical_to_preintegration_build": true,
+    "source_identical_to_probe_tested": true,
+    "probe_rerun_after_integration": false,
+    "application_rerun_after_integration": false,
+    "scope": "Combined strict build and existing CTests. Exact fullnumeric/fragment probe and its link inputs are separately sealed in the tested archive. No source changes at integration. Library equality is recorded separately from probe/runtime proof. Both complete initializers remain unexecuted and unbound to application resource initialization and gameplay.",
+    "annotations": "All three owning-worktree annotations were saved and force-exported before integration. Bare-owner deferral by the integration helper does not leave annotation work outstanding."
   }
 }
