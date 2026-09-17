@@ -16,14 +16,23 @@ void increment(void* p,U offset) noexcept {
 template<class T> bool unresolved(const std::optional<T>& value) noexcept {
     return value&&(value->phase==T::Phase::running||value->phase==T::Phase::failed);
 }
+void record_stack(const NativeMaterialDescriptorSamplersContext& c,U word) noexcept {
+    c.stack_b_minus_16=word;
+    if(c.stack_knowledge)c.stack_knowledge->known=true;
+}
 void consume_release_stack(Op& a,NativeMaterialDescriptorSamplerStep& s) {
     const auto& c=*a.context;
-    if(a.release_stack_index>=c.release_stack_count||!c.release_stack)
+    if(a.release_stack_index>=c.release_stack_count||!c.release_stack) {
+        if(c.stack_knowledge){c.stack_knowledge->known=false;return;}
         throw std::logic_error("successful sampler release requires its native B-16 residue");
+    }
     const auto& residue=c.release_stack[a.release_stack_index];
+    if(c.stack_knowledge&&residue.sampler_index>s.sampler_index){
+        c.stack_knowledge->known=false;return;
+    }
     if(residue.sampler_index!=s.sampler_index||residue.released_owner_identity!=s.captured_owner)
         throw std::logic_error("native sampler release stack residue identity/order mismatch");
-    c.stack_b_minus_16=residue.word_b_minus_16;
+    record_stack(c,residue.word_b_minus_16);
     ++a.release_stack_index;
 }
 }
@@ -61,7 +70,7 @@ void append_native_material_descriptor_samplers_00b3b280(NativeMaterialProgramBu
                 s.captured_owner=load_native_sampler_with_default_options_00b1b4d0(
                     s.loader,&sampler->source_name_18,c.loader,*s.load);
                 // At B-16 the wrapper's PUSH CBC760 remains after its RET4.
-                c.stack_b_minus_16=0x00cbc760;
+                record_stack(c,0x00cbc760);
                 if(s.captured_owner) {
                     s.owner_obligation=true;
                     const U word=read<U>(&builder,0x8c);
@@ -69,7 +78,7 @@ void append_native_material_descriptor_samplers_00b3b280(NativeMaterialProgramBu
                     append_native_material_pass_binding_00b44cf0(pass,word,s.captured_owner,
                         sampler->source_name_18,c.pass_lifetime,*s.binding);
                     // Three pushed arguments put B44CF0's return PC at B-16.
-                    c.stack_b_minus_16=0x00b3b2e4;
+                    record_stack(c,0x00b3b2e4);
                     *reinterpret_cast<volatile std::uint8_t*>(&pass.byte_80)=1;
                     a.native_site=s.native_site=0x00b3b2ef;s.release_entered=true;
                     release_native_render_actual_owner(c.pass_lifetime.retained_owners,s.captured_owner);
@@ -83,14 +92,17 @@ void append_native_material_descriptor_samplers_00b3b280(NativeMaterialProgramBu
                 s.effect_name.emplace();a.native_site=s.native_site=0x00b3b313;
                 // B18FC9 saves caller ESI at B-16; no later callee write reaches
                 // above that saved register. Its upper bytes are not padding.
-                c.stack_b_minus_16=reinterpret_cast<U>(sampler);
+                record_stack(c,reinterpret_cast<U>(sampler));
                 set_native_material_effect_texture_name_00b18fb0(effect->base,effect_index,
                     sampler->source_name_18,c.pass_lifetime.strings,*s.effect_name);
                 texture_index=0xffffffffu-read<U>(sampler,0x20);append_reference=true;
             }
             if(append_reference) {
                 const auto stage=read<std::uint8_t>(sampler,0xc);
-                s.reference.emplace();a.native_site=s.native_site=0x00b3b328;
+                a.native_site=s.native_site=0x00b3b328;
+                if(c.stack_knowledge&&!c.stack_knowledge->known)
+                    throw std::logic_error("material texture reference consumes unknown native B-16 residue");
+                s.reference.emplace();
                 append_native_material_texture_reference_00b5f100(pass.base,texture_index,stage,
                     c.stack_b_minus_16,*s.reference);
                 increment(&builder,0x8c);
@@ -104,7 +116,7 @@ void append_native_material_descriptor_samplers_00b3b280(NativeMaterialProgramBu
                 const U state=read<U>(read<void*>(s.current_states),state_index*8u);
                 a.native_site=s.native_site=0x00b3b369;
                 // Native CALL writes B-16 before entering the three-arg setter.
-                c.stack_b_minus_16=0x00b3b36e;
+                record_stack(c,0x00b3b36e);
                 set_native_material_sampler_state_00b5ed60(&pass,slot,state,value);
                 s.current_states=read<NativeShaderStateListStorage*>(sampler,0x24);
                 ++state_index;

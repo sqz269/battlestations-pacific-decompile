@@ -8,12 +8,20 @@
 namespace bsp {
 // Native B3B280 steady ESP is B. B5F100 copies the DWORD at B-16 after
 // writing only its low byte. Original OS/current-owner release frames can
-// leave different upper bytes there. Each successful source1 release consumes
-// one captured native residue, with ordering/identity checked AFTER release.
+// leave different upper bytes there. The legacy path consumes one captured
+// residue per successful source1 release, checked AFTER release. The optional
+// knowledge path below permits omission until the native word is consumed.
 struct NativeMaterialDescriptorSamplerReleaseScratch {
     std::uint32_t sampler_index;
     const void* released_owner_identity;
     std::uint32_t word_b_minus_16;
+};
+// Host evidence about the SAME borrowed B-16 word, not substitute stack bytes.
+// An unknown entry or uncaptured release stays unknown until an established
+// native write replaces it. B5F100 must never consume an unknown word. A caller
+// may carry this state across calls only when their native B-16 slot is the same.
+struct NativeMaterialDescriptorSamplerStackKnowledge {
+    bool known{};
 };
 struct NativeMaterialDescriptorSamplersContext {
     NativeMaterialPassDestructionAccess& pass_lifetime;
@@ -23,6 +31,11 @@ struct NativeMaterialDescriptorSamplersContext {
     volatile std::uint32_t& stack_b_minus_16;
     const NativeMaterialDescriptorSamplerReleaseScratch* release_stack;
     std::size_t release_stack_count;
+    // Null preserves the original strict captured-preimage interface. Nonnull
+    // allows sparse release captures, ordered by sampler index, and requires
+    // known=true only at actual B5F100 consumption. Missing captures invalidate
+    // knowledge; they do not supply zero, previous contents or a default value.
+    NativeMaterialDescriptorSamplerStackKnowledge* stack_knowledge{};
 };
 struct NativeMaterialDescriptorSamplerStep final {
     std::uint32_t sampler_index{},state_index{},native_site{};
