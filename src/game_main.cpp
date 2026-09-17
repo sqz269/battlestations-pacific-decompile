@@ -215,10 +215,10 @@ int run_bootstrap_parent(const bsp::game::GameExecutableOptions& options) {
 
 void report_summary(bsp::game::GameHostLog& log, const bsp::game::GameRunSummary& summary) {
     log.notef("summary window_created=%d device_created=%d device_hr=0x%08lx "
-        "back_buffer=%ux%u frames_presented=%llu loop_finished=%d exit_code=%d",
+        "back_buffer=%ux%u frames_presented=%llu presents_skipped=%llu loop_finished=%d exit_code=%d",
         summary.window_created ? 1 : 0, summary.device_created ? 1 : 0,
         static_cast<unsigned long>(summary.device_result), summary.back_buffer_width,
-        summary.back_buffer_height, summary.frames_presented,
+        summary.back_buffer_height, summary.frames_presented, summary.presents_skipped,
         summary.loop_finished ? 1 : 0, summary.exit_code);
     log.notef("summary vfs_ready=%d loose_mounts=%zu/%zu package_scans=%zu "
         "cachedload=%d probes=%zu/%zu", summary.vfs_ready ? 1 : 0, summary.mounts_created,
@@ -502,11 +502,14 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     host->exit_if_native_vfs_interrupted();
     bsp::game::GameRunSummary summary = host->summary();
     summary.exit_code = result;
-    // A run that asked for a frame count only succeeds when the device presented them.
+    // --frames counts loop ticks. A completed native frame can inhibit Present
+    // during startup/reset; report that separately from a successful HRESULT.
+    // A reached Present with a failed HRESULT counts in neither category.
     // Milestone 2g is the one exception: a mission that ended through the debrief path
     // finishes the run where the game does, which is before the frame count is reached.
     if (options.frame_limit > 0 && !summary.mission_exit_completed
-        && summary.frames_presented < static_cast<unsigned long long>(options.frame_limit)) {
+        && summary.frames_presented + summary.presents_skipped
+            < static_cast<unsigned long long>(options.frame_limit)) {
         summary.exit_code = 1;
     }
     // A --vfs-probe that did not read bytes fails the run, so a scripted check needs only the

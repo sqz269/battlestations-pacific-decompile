@@ -216,7 +216,12 @@ void end_native_renderer_frame_00b2d8e0(void* renderer, const void* save_header,
         if (native_render_is_frame_active_00b1fe20(renderer) == 0) {
             auto* const device = static_cast<IDirect3DDevice9*>(pointer(word(renderer, 0x1a10)));
             const auto call = reinterpret_cast<Present>(word(pointer(word(device)), 0x44));
-            if (static_cast<Word>(call(device, nullptr, nullptr, nullptr, nullptr)) == 0x88760868u)
+            const auto result = static_cast<Word>(call(device, nullptr, nullptr, nullptr, nullptr));
+            if (c.present_observation) {
+                c.present_observation->result = result;
+                c.present_observation->returned = true;
+            }
+            if (result == 0x88760868u)
                 c.actual_present_failure_0108d4b9 = 1;
         }
     }

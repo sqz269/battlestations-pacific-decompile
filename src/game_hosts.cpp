@@ -5,6 +5,7 @@
 #include "bsp/game_native_lua_globals.hpp"
 #include "bsp/game_native_lua_services.hpp"
 #include "bsp/game_native_renderer_application.hpp"
+#include "bsp/native_renderer_end_frame.hpp"
 #include "bsp/native_xlive_device_adapter.hpp"
 #include "bsp/game_native_vfs_runtime.hpp"
 #include "bsp/native_renderer_reset_process.hpp"
@@ -92,8 +93,7 @@ Win32PlatformState* volatile g_active_platform = nullptr;
 // Window title and class name, the temporary string 00becee0 receives as argument 2.
 const char kWindowName[] = "Battlestations Pacific";
 
-// Clear colour of the milestone frame. Not a recovered value: the native renderer frame
-// routine behind renderer virtual +20h is not reconstructed.
+// Host-selected frontend background; the color is not a recovered game value.
 const D3DCOLOR kMilestoneClearColor = D3DCOLOR_ARGB(255, 12, 24, 48);
 
 std::string trim_copy(const std::string& text) {
@@ -695,22 +695,23 @@ bool GameDeviceHost::clear_and_present() {
         log_.unimplemented("RendererHost::present_frame", "00b32410+vtable20");
         return false;
     }
-    // Direct Direct3D 9 calls: the native renderer frame routine is not reconstructed,
-    // so this is the milestone's own clear and present, not a recovered sequence.
-    log_.implemented("RendererHost::clear_and_present", "milestone");
-    HRESULT result = device_->Clear(0, nullptr,
-        D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, kMilestoneClearColor, 1.0f, 0);
-    if (SUCCEEDED(result)) result = device_->BeginScene();
-    if (SUCCEEDED(result) && overlay_) overlay_(*device_);
-    if (SUCCEEDED(result)) result = device_->EndScene();
-    // The capture runs on the finished back buffer, before Present makes its
-    // contents driver dependent.
-    if (SUCCEEDED(result) && capture_) {
+    log_.implemented("RendererHost::clear_and_present", "00b2b200/00b21430/00b2f4a0");
+    renderer_.begin_frame(kMilestoneClearColor);
+    if (overlay_) overlay_(*device_);
+    // Diagnostic frontend capture before native EndFrame. Later native debug,
+    // XLive and clear-request work can change the finally presented pixels.
+    if (capture_) {
         std::function<void(IDirect3DDevice9&)> capture = std::move(capture_);
         capture_ = nullptr;
         capture(*device_);
     }
-    if (SUCCEEDED(result)) result = device_->Present(nullptr, nullptr, nullptr, nullptr);
+    const auto present = renderer_.end_frame();
+    if (!present.returned) {
+        ++presents_skipped_;
+        log_.note("native frame skipped Present");
+        return false;
+    }
+    const auto result = static_cast<HRESULT>(present.result);
     if (FAILED(result)) {
         log_.notef("present failed hr=0x%08lx", static_cast<unsigned long>(result));
         return false;
@@ -1633,7 +1634,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
 
     // Device creation after window/online, corresponding to0073DD12.
     native_renderer_->bind_platform_services(sound_->platform.load_events(),
-        reinterpret_cast<const volatile std::uint32_t*>(&sound_->online_00f8abe8), &sound_->device_adapter);
+        reinterpret_cast<const volatile std::uint32_t*>(&sound_->online_00f8abe8), &sound_->device_adapter,sound_->xlive);
     device_ = new GameDeviceHost(log_, *native_renderer_);
     if (summary_.window_created && renderer_request_.requested) {
         summary_.device_created = device_->create(renderer_request_);
@@ -1814,6 +1815,7 @@ void GameStartupHost::platform_run_loop_dispatch() {
     platform_run_loop_00bec1a0(loop_, *loop_callbacks_);
     summary_.loop_finished = loop_.loop_finished;
     summary_.frames_presented = device_ != nullptr ? device_->presented() : 0ull;
+    summary_.presents_skipped = device_ != nullptr ? device_->presents_skipped() : 0ull;
     log_.notef("loop finished=%d frames=%llu presented=%llu", summary_.loop_finished ? 1 : 0,
         loop_callbacks_->frames(), summary_.frames_presented);
 }

@@ -285,7 +285,7 @@ private:
 
 // Device ownership for the milestone. Creation is the reconstructed prefix of 00b2aeb0;
 // Device creation uses the complete native renderer startup. Per-frame clear
-// and present remain the bridge until the full native frame path is composed.
+// and present use the native frame graph around the existing frontend bridge.
 class GameDeviceHost {
 public:
     // Borrow the full native renderer and its retained COM references through
@@ -297,21 +297,20 @@ public:
     ~GameDeviceHost();
 
     bool create(const RendererInitRequest& request);
-    // Clears to the milestone background and presents. Counts one presented frame.
+    // Native begin/clear/end; counts successful Present and native skips separately.
     bool clear_and_present();
-    // Milestone 2c: runs once, between EndScene and Present of the next frame, so a
-    // capture sees the finished back buffer. Executable plumbing, not a native routine.
+    // Diagnostic frontend capture before native EndFrame. Later debug/XLive/clear
+    // work can change the presented pixels. Executable plumbing, not native capture.
     void request_capture(std::function<void(IDirect3DDevice9&)> capture);
-    // Milestone 2b: what the milestone's own present draws between BeginScene and
-    // EndScene. The renderer frame routine behind renderer virtual +20h is still not
-    // reconstructed, so anything installed here is an executable-side bridge, not a
-    // recovered draw path.
+    // Existing executable frontend draw between native begin and end. Full native
+    // frontend scene/resource/command composition remains separate work.
     void set_overlay(std::function<void(IDirect3DDevice9&)> overlay);
     void release();
 
     bool created() const noexcept { return device_ != nullptr; }
     HRESULT creation_result() const noexcept { return creation_result_; }
     unsigned long long presented() const noexcept { return presented_; }
+    unsigned long long presents_skipped() const noexcept { return presents_skipped_; }
     const D3DPRESENT_PARAMETERS& parameters() const noexcept { return parameters_; }
     IDirect3DDevice9* device() const noexcept { return device_; }
     IDirect3D9& renderer_api();
@@ -325,6 +324,7 @@ private:
     D3DPRESENT_PARAMETERS parameters_{};
     HRESULT creation_result_{E_FAIL};
     unsigned long long presented_{};
+    unsigned long long presents_skipped_{};
 };
 
 // ApplicationFrameHost for 00737a50. Milestone 2c turns six of its methods concrete: the
@@ -424,6 +424,7 @@ struct GameRunSummary {
     unsigned int back_buffer_width{};
     unsigned int back_buffer_height{};
     unsigned long long frames_presented{};
+    unsigned long long presents_skipped{};
     bool loop_finished{};
     int exit_code{};
     // Milestone 2a. Phase 2 (00beda60, 00be1890, 0073cb10) and phase 5 (008d8190).

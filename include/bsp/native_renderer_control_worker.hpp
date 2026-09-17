@@ -35,8 +35,8 @@ static_assert(offsetof(NativeRendererControlWorkerStorage,callback_context_20)==
 // Stable process bindings, with CURRENT publication values read at each native
 // global access. Original-token tables are data, never callable EXE addresses.
 // The actual begin context must carry its existing substantive providers.
-// EndFrame B2F4A0 -> B2D8E0 has no complete actual provider in this packet:
-// callers must supply a real implementation before that path can execute.
+// EndFrame B2F4A0 -> B2D8E0 requires the complete native end-frame provider
+// with the same actual owner domains before that path can execute.
 struct NativeRendererControlWorkerContext {
     void* const volatile& actual_clock_01090ab0;
     void* const volatile& actual_renderer_00f8d394;

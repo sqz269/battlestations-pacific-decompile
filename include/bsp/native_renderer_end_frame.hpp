@@ -47,6 +47,14 @@ struct NativeRendererDebugRecords24Frame;
 struct NativeRendererDebugRecords40Context;
 class NativeRendererDebugRecords40Frame;
 
+// Optional source-host observation of the one real Present call. This storage
+// is not native state or an original return value. It must not alias the native
+// graph; reset it before a call to distinguish a skipped Present from S_OK.
+struct NativeRendererPresentObservation {
+    bool returned{};
+    std::uint32_t result{};
+};
+
 struct NativeRendererEndFrameContext {
     NativeRenderBatchPreparationContext& actual_queue_getter;
     NativeRendererBindingResetContext& actual_bindings;
@@ -80,6 +88,7 @@ struct NativeRendererEndFrameContext {
     NativeRendererDebugRecords40Context* actual_debug_records40{};
     NativeRendererDebugRecords40Frame* actual_debug_records40_frame{};
     NativeRenderQueueExecutionFrame* actual_queue_frame{};
+    NativeRendererPresentObservation* present_observation{};
 };
 
 // Complete B2D8E0 call schedule through B2DBCC, including direct raw queue execution.

@@ -63,8 +63,10 @@
 #include "bsp/legacy_crt_math.hpp"
 #include "bsp/native_texture_2d_retained_recreation.hpp"
 #include "bsp/native_cube_volume_retained_recreation.hpp"
-// The full raw constructor, device startup and destructor share one application
-// lifetime. Rendering between startup and drain is still the milestone bridge.
+#include "bsp/native_renderer_begin_frame.hpp"
+#include "bsp/native_renderer_end_frame.hpp"
+#include "bsp/native_render_queue_destruction.hpp"
+// Constructor, device startup, frame and destructor borrow one application graph.
 #include "bsp/game_native_renderer_application.hpp"
 #include "bsp/game_native_renderer_scalars.hpp"
 #include "bsp/game_hosts_vfs.hpp"
@@ -98,10 +100,11 @@ struct CanonicalProfiles {
 };
 #include "game_native_renderer_lifetime.inc"
 #include "game_native_renderer_device.inc"
+#include "game_native_renderer_frame.inc"
 } // namespace
 
 struct GameNativeRendererApplication::Impl {
-    enum class Phase { prepared, constructing, constructed, starting_device, initializing_window_cache, ready, draining, failed, drained };
+    enum class Phase { prepared, constructing, constructed, starting_device, initializing_window_cache, ready, rendering, draining, failed, drained };
     GameHostLog& log;
     GameSingletonHost& singletons;
     GameNativeLuaServices& lua_services;
@@ -135,6 +138,7 @@ struct GameNativeRendererApplication::Impl {
     NativeRendererConstructorContext constructor;
     DestructionGraph graph;
     DeviceGraph devices;
+    std::unique_ptr<FrameGraph> frames;
     Phase phase{Phase::prepared};
     IDirect3D9* retained_api{};
     IDirect3DDevice9* retained_device{};
@@ -207,8 +211,15 @@ void GameNativeRendererApplication::construct() {
     } catch(...) {p.phase=Impl::Phase::failed;throw;}
 }
 void GameNativeRendererApplication::bind_platform_services(ResourceLoadEventHost& events,
-    const volatile U* online,const NativeXLiveDeviceAdapter* adapter) {
+    const volatile U* online,const NativeXLiveDeviceAdapter* adapter,const XLiveLibrary& library) {
     auto& p=*impl_;check(p.phase==Impl::Phase::constructed,"renderer platform services order");
+    check(!p.frames && !p.singletons.native_deletion_bindings().render_queue,"renderer frame graph already bound");
+    p.frames=std::make_unique<FrameGraph>(p.graph,p.devices,p.constructor,p.singletons,
+        p.vfs.strings,p.raw,p.entry_cache_publication,library);
+    p.singletons.native_deletion_bindings().render_queue=&p.frames->queue_destruction;
+    p.control.begin_frame=&p.frames->begin;
+    p.control.end_frame_00b2f4a0=&FrameGraph::worker_finish;
+    p.control.end_frame_context=&p.frames->worker_end;
     p.platform_events=&events;p.devices.recreation.actual_online_publication_00f8abe8=online;
     p.devices.recreation.online_device=adapter;
 }
@@ -256,6 +267,33 @@ void GameNativeRendererApplication::copy_settings_capabilities(SettingsRendererC
     output.pixel_shader_version_28=get<U>(p.renderer,0x1b40);
     output.max_shader_model=get<int>(p.renderer,0x1b48);
 }
+void GameNativeRendererApplication::begin_frame(U clear_color) {
+    auto& p=*impl_;
+    check(p.phase==Impl::Phase::ready && p.frames && p.entry_cache_publication,"native frame startup order");
+    p.phase=Impl::Phase::rendering;
+    try {
+        NativeLuaServiceBindings::Activation activation(p.lua_services.binding());
+        (void)begin_native_renderer_frame_00b2b200(p.renderer,p.frames->begin);
+        clear_native_renderer_00b21430(p.renderer,&p.frames->clear,0,nullptr,
+            D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,&clear_color,1.0f,0);
+    } catch(...) {p.phase=Impl::Phase::failed;throw;}
+}
+NativeRendererPresentObservation GameNativeRendererApplication::end_frame() {
+    auto& p=*impl_;check(p.phase==Impl::Phase::rendering,"native frame end order");
+    try {
+        NativeLuaServiceBindings::Activation activation(p.lua_services.binding());
+        p.frames->present={};
+        end_native_renderer_frame_default_00b2f4a0(p.renderer,&p.frames->end);
+        p.phase=Impl::Phase::ready;
+        p.log.notef("native frame complete: frame=%lu queue=%p commands=%ld entry_used=%lu present=%d hr=%08lx clear_request=%u inhibit=%lu unavailable=%u",
+            static_cast<unsigned long>(get<U>(p.renderer,0x14)),p.frames->queue,
+            static_cast<long>(p.frames->queue->commands_14.count_04),
+            static_cast<unsigned long>(get<U>(p.entry_cache_publication,8)),p.frames->present.returned,
+            static_cast<unsigned long>(p.frames->present.result),p.frames->clear_request,
+            static_cast<unsigned long>(get<U>(p.renderer,0x1d90)),get<std::uint8_t>(p.renderer,0x1d8a));
+        return p.frames->present;
+    } catch(...) {p.phase=Impl::Phase::failed;throw;}
+}
 IDirect3D9& GameNativeRendererApplication::api() const {check(impl_->retained_api!=nullptr,"native renderer API unavailable");return *impl_->retained_api;}
 IDirect3DDevice9* GameNativeRendererApplication::device() const noexcept {return impl_->retained_device;}
 NativeRendererParametersOwner& GameNativeRendererApplication::parameters() const {
@@ -281,8 +319,9 @@ void GameNativeRendererApplication::after_native_drain() {
     auto& p=*impl_;if(p.phase==Impl::Phase::drained || p.phase==Impl::Phase::prepared)return;
     check(!p.renderer && !p.lua_publication && !p.system_publication && !p.definitions,"native renderer children survived drain");
     check(!p.entry_cache_publication,"native render-entry cache survived drain");
+    check(!p.frames || !p.frames->queue,"native render queue survived drain");
     check(WaitForSingleObject(p.observed_worker,0)==WAIT_OBJECT_0,"native renderer worker did not join");
     p.phase=Impl::Phase::drained;
-    p.log.note("native renderer after raw drain: owner=null lua=null definitions=null system=null entry_cache=null worker=joined");
+    p.log.note("native renderer after raw drain: owner=null lua=null definitions=null system=null entry_cache=null queue=null worker=joined");
 }
 } // namespace bsp::game

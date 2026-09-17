@@ -11,6 +11,8 @@ struct NativeRendererParametersOwner;
 struct SettingsRendererCapabilities;
 struct ResourceLoadEventHost;
 class NativeXLiveDeviceAdapter;
+class XLiveLibrary;
+struct NativeRendererPresentObservation;
 }
 namespace bsp::game {
 class GameSingletonHost;
@@ -35,7 +37,11 @@ public:
     // the registered cache and its source bindings through the shared drain.
     void initialize_window_render_entry_cache();
     void bind_platform_services(ResourceLoadEventHost&, const volatile std::uint32_t* online,
-        const NativeXLiveDeviceAdapter*);
+        const NativeXLiveDeviceAdapter*, const XLiveLibrary&);
+    // Full native begin/clear/end around the current frontend draw. The color
+    // is a host choice; the raw frame providers retain their native branches.
+    void begin_frame(std::uint32_t clear_color);
+    NativeRendererPresentObservation end_frame();
     void copy_settings_capabilities(SettingsRendererCapabilities&) const;
     IDirect3D9& api() const;
     IDirect3DDevice9* device() const noexcept;
