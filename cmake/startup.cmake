@@ -1319,3 +1319,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_online_mana
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_online_startup_sdk.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_online_ipc.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_online_manager_lifetime.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_construction.cpp)
