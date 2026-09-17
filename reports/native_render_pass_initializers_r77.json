@@ -4011,5 +4011,128 @@
         "sha256": "862b08ea6e7115a8a158827d89928d3145a52147274b6e0998d64f1b02a222b9"
       }
     ]
+  },
+  "primary_integration": {
+    "source_commit": "dddb54adfdb09420dffb1464b9b3a7148467eda8",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "archive": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r77\\native-render-pass-initializers-main-r77.zip",
+    "sha256": "5473c4ad777e0ae77f1588f983aa04ef8086f57fa0a6e1c0107949bb7efb2703",
+    "files": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "size": 64014574,
+        "sha256": "13f1abd020f8c9e02f5be3a646be51adfb6dfc0ef593f42d783e8aca95a85f88"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "size": 2607104,
+        "sha256": "59218f00e9dbeb0fa4c0203b7c2975f12ed665aaa678da407bb238f9ced45aa4"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "size": 2408,
+        "sha256": "8f4a5fdd66a224d1531e611db230662c870a55f1222ccf24490d59db47f22cfe"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_render_pass_initializers.obj",
+        "size": 24890,
+        "sha256": "b34f47114e2e86d94aea412614d81dccc14c1a95ce6a086b651da3cf4fe21699"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "size": 233544,
+        "sha256": "0183e4bf8d2abb8451520a78e5eac3aabe2fdcdd519c0a1226d03c02cce1f610"
+      },
+      {
+        "path": "build/win32/bsp_game.vcxproj",
+        "size": 64257,
+        "sha256": "b0e4bec4bd85016b40bb6ca1addc3ac3b32bc742c7b99ed55ab33893349525ee"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "size": 155378,
+        "sha256": "0a130d2693b98e899fa513e7526226d362a809d40665415dc5f7e7e30ae8fc1d"
+      },
+      {
+        "path": "config/names/00b40000.jsonl",
+        "size": 232173,
+        "sha256": "38412cb37fe7ab9e8457b417ec5a27b2761116ae303730a5e167840e8b11e65f"
+      },
+      {
+        "path": "config/names/00b50000.jsonl",
+        "size": 135062,
+        "sha256": "e719c7aeaa03ce1250cd764be99e363ea7162256cac115a5efd4c5a329d1d0fe"
+      },
+      {
+        "path": "config/reconstruction/00b40000.jsonl",
+        "size": 224807,
+        "sha256": "72fd834a06fc1183d6f1d68ae6827f1e1bcfdcac70a28949f3f3965685cb580d"
+      },
+      {
+        "path": "config/reconstruction/00b50000.jsonl",
+        "size": 178410,
+        "sha256": "74ad7f8a5bf9167fae1f23f49ebf88908bcb6017ccc9aec0bcbfe3db17f7e169"
+      },
+      {
+        "path": "docs/NATIVE_RENDER_EFFECT_LIFETIME_R76.md",
+        "size": 7001,
+        "sha256": "3cfcdf44b346491ba50edd86fd0818ed0012273c21915952910185fc16dc96c4"
+      },
+      {
+        "path": "docs/NATIVE_RENDER_PASS_INITIALIZERS_R77.md",
+        "size": 8493,
+        "sha256": "5e3e555441dc46883ef2bd7d4b7c7c204940259372875d3bae589110fd3a8ff2"
+      },
+      {
+        "path": "include/bsp/native_render_pass_initializers.hpp",
+        "size": 5713,
+        "sha256": "0e04f676f8daeb8818ae5f43bea811db2d649728caea0629d594e837653dc225"
+      },
+      {
+        "path": "local/ghidra-annotations-20260917T022530Z.json",
+        "size": 5178,
+        "sha256": "1a6a1f29ec342719ac9c673044673d94b6131ecdd98bfb86d4f27f41022256a9"
+      },
+      {
+        "path": "local/r77_integration.log",
+        "size": 1460,
+        "sha256": "83d9a2c0c3a95d745842673fbd2c83b87bd0b86bf24b6e765380e5ada2a2ed6d"
+      },
+      {
+        "path": "local/render_pass_r77/annotations.log",
+        "size": 348,
+        "sha256": "3d6854a3031bbe353f3b1653b487200f5d5ffc0c6bba8f4bd79c1b92a479d31a"
+      },
+      {
+        "path": "local/render_pass_r77/call_verification.log",
+        "size": 138,
+        "sha256": "4ec4f2879a5ff89a60e7abfdd297429a6cad7842277c9a9580f85a45e53ac0ac"
+      },
+      {
+        "path": "local/render_pass_r77/exports_after_annotations.log",
+        "size": 477,
+        "sha256": "20a659b17fc43ade5e9c148ff7bcc000e977b9fdde3fcc8b69aedf80c117223f"
+      },
+      {
+        "path": "reports/native_render_pass_initializers_r77.json",
+        "size": 162318,
+        "sha256": "0706e92c10e728a011d8a7846d2df317e67a1b79ede5483016226a1af61b558a"
+      },
+      {
+        "path": "src/native_render_pass_initializers.cpp",
+        "size": 11387,
+        "sha256": "862b08ea6e7115a8a158827d89928d3145a52147274b6e0998d64f1b02a222b9"
+      }
+    ],
+    "library_sha256": "13f1abd020f8c9e02f5be3a646be51adfb6dfc0ef593f42d783e8aca95a85f88",
+    "library_identical_to_probe_link_input": true,
+    "game_sha256": "59218f00e9dbeb0fa4c0203b7c2975f12ed665aaa678da407bb238f9ced45aa4",
+    "game_identical_to_preintegration_build": true,
+    "source_identical_to_probe_tested": true,
+    "probe_rerun_after_integration": false,
+    "application_rerun_after_integration": false,
+    "scope": "Combined strict build and existing CTests. Exact arithmetic-fragment and small-helper real-D3D probe and its link inputs are separately sealed in the tested archive. No source changes at integration. Library equality is recorded separately from probe/runtime proof. Both complete initializers remain unexecuted and unbound to application resource initialization and gameplay.",
+    "annotations": "All four owning-worktree annotations were saved and force-exported before integration. Bare-owner deferral by the integration helper does not leave annotation work outstanding."
   }
 }
