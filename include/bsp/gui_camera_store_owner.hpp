@@ -50,11 +50,19 @@ public:
 private:
     friend NativeGuiSceneOwner* allocate_native_gui_scene_00b724e0(
         NativeGuiSceneEnvironment&, const NativeString&);
+    friend NativeGuiSceneOwner* construct_native_gui_scene_00b724e0(
+        void*, NativeGuiSceneEnvironment&, const NativeString&);
     NativeGuiSceneOwner(NativeGuiSceneStorage&, NativeGuiSceneEnvironment&) noexcept;
     bool live_{};
 };
 NativeGuiSceneOwner* allocate_native_gui_scene_00b724e0(
     NativeGuiSceneEnvironment&, const NativeString&);
+// Same native body over caller-owned raw24h storage. Never frees that storage
+// on constructor failure: the caller's new-expression cleanup owns it. A
+// successful canonical companion owns normal zero-reference destruction/free.
+// Host companion allocation can throw before entering the native weak base.
+NativeGuiSceneOwner* construct_native_gui_scene_00b724e0(
+    void*, NativeGuiSceneEnvironment&, const NativeString&);
 // Construction, constructor cleanup and terminal name destruction use the
 // SAME node runtime's configured name domain. Raw runtimes use the actual
 // string singleton/pool operations; semantic runtimes retain their existing

@@ -63,11 +63,11 @@ NativeGuiSceneOwner::NativeGuiSceneOwner(NativeGuiSceneStorage& actual,
 NativeGuiSceneOwner::~NativeGuiSceneOwner() {
     if (live_) std::terminate();
 }
-NativeGuiSceneOwner* allocate_native_gui_scene_00b724e0(
-    NativeGuiSceneEnvironment& environment, const NativeString& name) {
+NativeGuiSceneOwner* construct_native_gui_scene_00b724e0(
+    void* raw, NativeGuiSceneEnvironment& environment, const NativeString& name) {
     require_scene_profile(environment);
-    void* raw = singleton_lifetime_allocate({SingletonAllocationKind::object, 0x24, 0x24});
-    if (!raw) throw std::bad_alloc();
+    if (!raw || (reinterpret_cast<std::uintptr_t>(raw) & 3u))
+        throw std::invalid_argument("scene constructor requires aligned caller-owned24h storage");
     // Establish typed lifetime but restore constructor preimage before the
     // weak-base callback can inspect bytes B724E0 has not initialized yet.
     std::byte preimage[0x24];
@@ -98,9 +98,16 @@ NativeGuiSceneOwner* allocate_native_gui_scene_00b724e0(
         if (base_constructed) environment.weak_base.destroy_00925540(*actual);
         delete owner;
         actual->~NativeGuiSceneStorage();
-        singleton_lifetime_free(raw);
         throw;
     }
+}
+NativeGuiSceneOwner* allocate_native_gui_scene_00b724e0(
+    NativeGuiSceneEnvironment& environment, const NativeString& name) {
+    require_scene_profile(environment);
+    void* raw = singleton_lifetime_allocate({SingletonAllocationKind::object, 0x24, 0x24});
+    if (!raw) throw std::bad_alloc();
+    try { return construct_native_gui_scene_00b724e0(raw, environment, name); }
+    catch (...) { singleton_lifetime_free(raw); throw; }
 }
 void NativeGuiSceneOwner::release_zero_references() noexcept {
     if (!live_ || storage.vtable_00 != 0x00d62d48u) std::terminate();
