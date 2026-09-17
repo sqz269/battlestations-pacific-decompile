@@ -14,8 +14,9 @@ void reserve_native_shader_field_pointers_00b34680(NativeShaderDescriptorArray& 
         if(cursor)*reinterpret_cast<void**>(cursor)=static_cast<void**>(rows.data_00)[i];
     singleton_lifetime_free(rows.data_00);rows.data_00=data;rows.capacity_08=request;
 }
-NativeShaderFieldStorage* read_native_shader_field_00b573f0(NativeLuaObjectStorage& table,
-    NativeStringStorage& strings,const bool& mode,NativeShaderFieldStackPreimage frame){
+static NativeShaderFieldStorage* read_field(NativeLuaObjectStorage& table,
+    NativeStringStorage& strings,const bool& mode,NativeShaderFieldStackPreimage frame,
+    std::uint32_t defined){
     NativeShaderFieldStorage* output=nullptr;
     NativeLuaObjectStorage key;construct_native_lua_object_00b65f50(&key);
     __try {
@@ -33,14 +34,15 @@ NativeShaderFieldStorage* read_native_shader_field_00b573f0(NativeLuaObjectStora
                                 copy_native_string_header_00be0a30_fragment(&name,strings,&temporary);
                                 captured_length=name.length();captured_data=name.data();
                             } __finally {destroy_native_string_header_0041dd20(&temporary,strings);}
-                        }else if(ordinal==1)frame.scalar_type=native_lua_integer_00b66290(value,mode);
-                        else if(ordinal==2)frame.component_count=native_lua_integer_or_00b66380(value,0,mode);
-                        else if(ordinal==3)frame.semantic=native_lua_integer_00b66290(value,mode);
+                        }else if(ordinal==1){frame.scalar_type=native_lua_integer_00b66290(value,mode);defined|=1;}
+                        else if(ordinal==2){frame.component_count=native_lua_integer_or_00b66380(value,0,mode);defined|=2;}
+                        else if(ordinal==3){frame.semantic=native_lua_integer_00b66290(value,mode);defined|=4;}
                         else if(ordinal==4)semantic_index=native_lua_integer_or_00b66380(value,0,mode);
                         ++ordinal;
                     }
                     native_lua_iterate_next_00b67190(table,key,value);
                 }
+                if(defined!=7)throw std::logic_error("shader field consumes an unwritten scalar; native stack preimage required");
                 void* const raw=singleton_lifetime_allocate({SingletonAllocationKind::object,0x1c,0x1c});
                 bool complete=false;
                 __try {
@@ -60,10 +62,19 @@ NativeShaderFieldStorage* read_native_shader_field_00b573f0(NativeLuaObjectStora
     } __finally {destroy_native_lua_object_00b67700(key);}
     return output;
 }
+NativeShaderFieldStorage* read_native_shader_field_00b573f0(NativeLuaObjectStorage& table,
+    NativeStringStorage& strings,const bool& mode,NativeShaderFieldStackPreimage frame){
+    return read_field(table,strings,mode,frame,7);
+}
+NativeShaderFieldStorage* read_native_shader_field_from_written_ordinals_00b573f0(
+    NativeLuaObjectStorage& table,NativeStringStorage& strings,const bool& mode){
+    // The value-initialized host cells are never published unless the native
+    // ordinal stores overwrite them; defined is the admission proof.
+    return read_field(table,strings,mode,{},0);
+}
 void append_native_shader_field_table_00b419b0(NativeLuaObjectStorage& shader,
     NativeShaderDescriptorArray& rows,const NativeString& field,NativeStringStorage& strings,
     const bool& mode,const NativeShaderFieldStackInputs& stack){
-    if(!stack.for_entry)throw std::invalid_argument("field reader requires explicit native stack preimage inputs");
     NativeLuaObjectStorage gate;native_lua_get_by_string_00b68100(shader,&gate,field);bool present=false;
     __try {present=native_lua_is_table_00b661b0(gate);} __finally {destroy_native_lua_object_00b67700(gate);}
     if(!present)return;
@@ -75,8 +86,9 @@ void append_native_shader_field_table_00b419b0(NativeLuaObjectStorage& shader,
             __try {
                 native_lua_iterate_first_00b67080(table,key,value);
                 while(!native_lua_is_unbound_00b66420(value)){
-                    const auto preimage=stack.for_entry(stack.context,value);
-                    auto* const entry=read_native_shader_field_00b573f0(value,strings,mode,preimage);
+                    auto* const entry=stack.for_entry
+                        ? read_native_shader_field_00b573f0(value,strings,mode,stack.for_entry(stack.context,value))
+                        : read_native_shader_field_from_written_ordinals_00b573f0(value,strings,mode);
                     if(rows.count_04==rows.capacity_08){
                         auto next=static_cast<std::int32_t>(static_cast<std::uint32_t>(rows.capacity_08)+5u);
                         if(next<=10)next=10;reserve_native_shader_field_pointers_00b34680(rows,next);

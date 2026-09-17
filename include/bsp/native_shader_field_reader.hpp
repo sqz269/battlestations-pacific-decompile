@@ -20,8 +20,9 @@ static_assert(offsetof(NativeShaderFieldStorage,semantic_index_18)==0x18);
 struct NativeShaderFieldStackPreimage {
     std::int32_t scalar_type,component_count,semantic;
 };
-// Supplies the original uninitialized stack inputs independently for each
-// outer entry. This is a host input boundary, not a recovered game callback.
+// Optional explicit native stack inputs for each outer entry. A null callback
+// selects the written-ordinal path below; it never supplies default values.
+// This is a host input boundary, not a recovered game callback.
 struct NativeShaderFieldStackInputs {
     void* context;
     NativeShaderFieldStackPreimage (*for_entry)(void*,NativeLuaObjectStorage&);
@@ -34,6 +35,11 @@ void reserve_native_shader_field_pointers_00b34680(NativeShaderDescriptorArray&,
 // Raw allocation is freed if output-name copying fails, without a name dtor.
 NativeShaderFieldStorage* read_native_shader_field_00b573f0(NativeLuaObjectStorage&,
     NativeStringStorage&,const bool& crt_sse2_conversion,NativeShaderFieldStackPreimage);
+// Same native traversal; track which scalar locals were actually assigned.
+// All three must be written before output allocation. Missing ordinals require
+// the explicit-preimage overload; this path throws instead of guessing bytes.
+NativeShaderFieldStorage* read_native_shader_field_from_written_ordinals_00b573f0(
+    NativeLuaObjectStorage&,NativeStringStorage&,const bool& crt_sse2_conversion);
 // FullB419B0: ECX unused; stack Shader/output-header/NativeString field-name;
 // RET0C. Fresh lookup after table gate; EVERY outer value becomes a field,
 // regardless of its key. Preserve existing rows, grow max(capacity+5,10).

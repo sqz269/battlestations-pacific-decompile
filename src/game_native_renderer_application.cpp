@@ -71,6 +71,7 @@
 #include "bsp/game_native_resource_pools.hpp"
 #include "bsp/game_native_shader_process.hpp"
 #include "bsp/native_shader_binary_cache.hpp"
+#include "bsp/native_shader_descriptor_reader.hpp"
 // Constructor, device startup, frame and destructor borrow one application graph.
 #include "bsp/game_native_renderer_application.hpp"
 #include "bsp/game_native_renderer_scalars.hpp"
@@ -110,6 +111,7 @@ struct CanonicalProfiles {
 #include "game_native_renderer_textures.inc"
 #include "game_native_renderer_camera.inc"
 #include "game_native_renderer_shaders.inc"
+#include "game_native_renderer_descriptors.inc"
 #include "game_native_renderer_resources.inc"
 #include "game_native_renderer_frame.inc"
 } // namespace
@@ -152,6 +154,7 @@ struct GameNativeRendererApplication::Impl {
     TextureLoadingGraph texture_loading;
     CameraGraph cameras;
     ShaderGraph shaders;
+    DescriptorGraph descriptors;
     RenderResourcesGraph resources;
     std::unique_ptr<FrameGraph> frames;
     Phase phase{Phase::prepared};
@@ -185,6 +188,7 @@ struct GameNativeRendererApplication::Impl {
           texture_loading(graph,devices,owners,vfs,platform_events,validation,accounting),
           cameras(graph,renderer,files.native_owners().types(),files.native_types().camera_types()),
           shaders(vfs,raw,cameras,profiles),
+          descriptors(vfs.strings,services,definitions),
           resources(graph,cameras,texture_loading,host,raw,vfs,owners) {
         auto& deletion=host.native_deletion_bindings();
         check(!deletion.renderer_owner && !deletion.renderer_lua_owner,"renderer lifetime already bound");
@@ -223,6 +227,19 @@ void GameNativeRendererApplication::release_shader_cache() {
 }
 NativeShaderBinaryCacheContext& GameNativeRendererApplication::shader_cache_context() noexcept {
     return impl_->shaders.cache;
+}
+NativeShaderDescriptorReadContext& GameNativeRendererApplication::shader_descriptor_reader() noexcept {
+    return impl_->descriptors.reader;
+}
+void GameNativeRendererApplication::read_shader_descriptor(NativeShaderDescriptorStorage& descriptor,
+    const void* name,U generation,NativeShaderDescriptorReadOperation& operation) {
+    auto& p=*impl_;check(p.phase==Impl::Phase::ready,"shader descriptor requires ready application renderer");
+    p.phase=Impl::Phase::initializing_resources;
+    NativeLuaServiceBindings::Activation activation(p.lua_services.binding());
+    try {
+        read_native_shader_descriptor_00b43b00(descriptor,name,generation,p.descriptors.reader,operation);
+        p.phase=Impl::Phase::ready;
+    }catch(...) {p.phase=Impl::Phase::failed;throw;}
 }
 void* GameNativeRendererApplication::construct_render_resources() {
     auto& p=*impl_;check(p.phase==Impl::Phase::ready,"render resources require ready renderer/device");

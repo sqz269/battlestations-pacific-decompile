@@ -11,7 +11,8 @@ namespace bsp {
 // All borrowed inputs belong to the SAME actual Lua/string/VFS/descriptor
 // lifetime. Bootstrap and file services must install the SAME DoFile callback.
 // Sampler binding/pool and published definitions outlive every parsed sampler.
-// Stack preimages remain explicit inputs for the existing ordinal readers; no
+// Ordinal readers may omit preimages when every required scalar is written by
+// the parsed table. Unwritten values still require explicit native inputs; no
 // defaults are invented for missing combiner/field ordinals.
 struct NativeShaderDescriptorReadContext {
     NativeStringStorage& strings;

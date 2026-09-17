@@ -2,7 +2,9 @@
 #include "bsp/native_lua_objects.hpp"
 namespace bsp {
 // Native B437F0 leaves mode unwritten if ordinal0 has no integral-number key.
-// The caller supplies its original stack input. Every selected slots+mode*8
+// A nonnull callback supplies the original stack input. With a null callback,
+// ordinal0 must actually write mode; missing values remain an explicit error.
+// Every selected slots+mode*8
 // must address a valid native string; the native routine does no bounds check.
 struct NativeShaderCombinerStackInputs {
     void* context;
@@ -13,6 +15,8 @@ struct NativeShaderCombinerStackInputs {
 // mode13; ordinal1 exact STRING elseempty. Duplicates overwrite the same slot.
 void read_native_shader_combiner_00b437f0(NativeString* slots,NativeLuaObjectStorage&,
     NativeStringStorage&,const bool& crt_sse2_conversion,std::int32_t mode_preimage);
+void read_native_shader_combiner_from_written_ordinal_00b437f0(NativeString* slots,
+    NativeLuaObjectStorage&,NativeStringStorage&,const bool& crt_sse2_conversion);
 // ECX descriptor passthrough (unused by inner routine), stack slots/Shader/name,
 // RET0C. Fresh table lookup after gate; outer keys must pass integral-number
 // predicate. Preserve prior slots and Lua order; no clearing or deduplication.

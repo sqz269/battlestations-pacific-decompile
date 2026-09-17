@@ -22,6 +22,9 @@ struct NativeCockpitViewportReleaseContext;
 struct NativeRenderResourcesLifetimeContext;
 class NativeRenderResourcesConstructionAcquired;
 struct NativeShaderBinaryCacheContext;
+struct NativeShaderDescriptorStorage;
+struct NativeShaderDescriptorReadContext;
+class NativeShaderDescriptorReadOperation;
 }
 namespace bsp::game {
 class GameSingletonHost;
@@ -67,6 +70,12 @@ public:
     void create_shader_cache();
     void release_shader_cache();
     NativeShaderBinaryCacheContext& shader_cache_context() noexcept;
+    // Full B43B00 over a caller-owned initialized110h descriptor. The caller
+    // keeps descriptor/name/operation alive and retires descriptor children
+    // before this graph. Unknown native stack inputs are never synthesized.
+    NativeShaderDescriptorReadContext& shader_descriptor_reader() noexcept;
+    void read_shader_descriptor(NativeShaderDescriptorStorage&,const void* actual_name,
+        std::uint32_t generation,NativeShaderDescriptorReadOperation&);
     // One camera domain shares the application's pool, type counter, node
     // lifetimes and current raw renderer. Retire native cameras/viewports and
     // forget quiescent construction records before destroying this graph.

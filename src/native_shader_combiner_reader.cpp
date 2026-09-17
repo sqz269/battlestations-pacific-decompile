@@ -3,8 +3,8 @@
 #include <stdexcept>
 #include <Windows.h>
 namespace bsp {
-void read_native_shader_combiner_00b437f0(NativeString* slots,NativeLuaObjectStorage& entry,
-    NativeStringStorage& strings,const bool& numeric_mode,std::int32_t mode){
+static void read_combiner(NativeString* slots,NativeLuaObjectStorage& entry,
+    NativeStringStorage& strings,const bool& numeric_mode,std::int32_t mode,bool defined){
     NativeLuaObjectStorage key;construct_native_lua_object_00b65f50(&key);
     __try {
         NativeLuaObjectStorage value;construct_native_lua_object_00b65f50(&value);
@@ -14,7 +14,7 @@ void read_native_shader_combiner_00b437f0(NativeString* slots,NativeLuaObjectSto
                 native_lua_iterate_first_00b67080(entry,key,value);
                 while(!native_lua_is_unbound_00b66420(value)){
                     if(native_lua_is_integer_number_00b66a60(key)){
-                        if(ordinal==0)mode=native_lua_integer_or_00b66380(value,13,numeric_mode);
+                        if(ordinal==0){mode=native_lua_integer_or_00b66380(value,13,numeric_mode);defined=true;}
                         else if(ordinal==1){
                             NativeString temporary;native_lua_string_or_00b685c0(value,&temporary,"",strings);
                             __try {
@@ -24,6 +24,7 @@ void read_native_shader_combiner_00b437f0(NativeString* slots,NativeLuaObjectSto
                     }
                     ++ordinal;native_lua_iterate_next_00b67190(entry,key,value);
                 }
+                if(!defined)throw std::logic_error("shader combiner consumes an unwritten mode; native stack preimage required");
                 auto* const destination=reinterpret_cast<NativeString*>(reinterpret_cast<std::uintptr_t>(slots)+static_cast<std::uint32_t>(mode)*8u);
                 if(destination!=&name){
                     resize_native_string_header_0041dd40(destination,strings,cached_length,true);
@@ -34,9 +35,16 @@ void read_native_shader_combiner_00b437f0(NativeString* slots,NativeLuaObjectSto
         } __finally {destroy_native_lua_object_00b67700(value);}
     } __finally {destroy_native_lua_object_00b67700(key);}
 }
+void read_native_shader_combiner_00b437f0(NativeString* slots,NativeLuaObjectStorage& entry,
+    NativeStringStorage& strings,const bool& numeric_mode,std::int32_t mode){
+    read_combiner(slots,entry,strings,numeric_mode,mode,true);
+}
+void read_native_shader_combiner_from_written_ordinal_00b437f0(NativeString* slots,
+    NativeLuaObjectStorage& entry,NativeStringStorage& strings,const bool& numeric_mode){
+    read_combiner(slots,entry,strings,numeric_mode,0,false);
+}
 void read_native_shader_combiner_table_00b439c0(NativeString* slots,NativeLuaObjectStorage& shader,
     const NativeString& field,NativeStringStorage& strings,const bool& mode,const NativeShaderCombinerStackInputs& stack){
-    if(!stack.mode_for_entry)throw std::invalid_argument("combiner reader requires explicit native mode stack inputs");
     NativeLuaObjectStorage gate;native_lua_get_by_string_00b68100(shader,&gate,field);bool present=false;
     __try {present=native_lua_is_table_00b661b0(gate);} __finally {destroy_native_lua_object_00b67700(gate);}
     if(!present)return;
@@ -48,8 +56,11 @@ void read_native_shader_combiner_table_00b439c0(NativeString* slots,NativeLuaObj
             __try {
                 native_lua_iterate_first_00b67080(table,key,value);
                 while(!native_lua_is_unbound_00b66420(value)){
-                    if(native_lua_is_integer_number_00b66a60(key))
-                        read_native_shader_combiner_00b437f0(slots,value,strings,mode,stack.mode_for_entry(stack.context,value));
+                    if(native_lua_is_integer_number_00b66a60(key)){
+                        if(stack.mode_for_entry)
+                            read_native_shader_combiner_00b437f0(slots,value,strings,mode,stack.mode_for_entry(stack.context,value));
+                        else read_native_shader_combiner_from_written_ordinal_00b437f0(slots,value,strings,mode);
+                    }
                     native_lua_iterate_next_00b67190(table,key,value);
                 }
             } __finally {destroy_native_lua_object_00b67700(value);}
