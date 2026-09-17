@@ -15,7 +15,9 @@ static_assert(sizeof(void*) == 4 && sizeof(NativeMaterialParameterPoolStorage) =
 }
 
 GameNativeResourcePoolProcess::GameNativeResourcePoolProcess()
-    : mesh_(game_native_physical_pool_process().allocator_list_domain_00e188b4(),
+    : camera_(game_native_physical_pool_process().allocator_list_domain_00e188b4(),
+          camera_storage_0108ffb0_),
+      mesh_(game_native_physical_pool_process().allocator_list_domain_00e188b4(),
           mesh_storage_0108fff8_),
       section_(game_native_physical_pool_process().allocator_list_domain_00e188b4(),
           section_storage_010901d4_),
@@ -25,6 +27,25 @@ GameNativeResourcePoolProcess::GameNativeResourcePoolProcess()
 GameNativeResourcePoolProcess& game_native_resource_pool_process() {
     static GameNativeResourcePoolProcess process;
     return process;
+}
+
+int GameNativeResourcePoolProcess::initialize_camera_once_00cd7dd0() {
+    std::lock_guard lock(startup_mutex_);
+    if (camera_state_ == StartupState::returned) return camera_registration_status_;
+    if (camera_state_ == StartupState::threw)
+        throw std::logic_error("resource camera pool startup previously threw");
+    camera_state_ = StartupState::threw;
+    bind_static_native_camera_pool_0108ffb0(camera_);
+    camera_registration_status_ = initialize_static_native_camera_pool_00cd7dd0();
+    camera_state_ = StartupState::returned;
+    return camera_registration_status_;
+}
+
+NativeCameraPool& GameNativeResourcePoolProcess::camera_pool_0108ffb0() {
+    std::lock_guard lock(startup_mutex_);
+    if (camera_state_ != StartupState::returned)
+        throw std::logic_error("resource camera pool requires completed explicit startup");
+    return camera_;
 }
 
 int GameNativeResourcePoolProcess::initialize_mesh_once_00cd7e40() {

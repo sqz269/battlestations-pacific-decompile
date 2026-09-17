@@ -9,6 +9,7 @@ GameNativeTypeStorage::GameNativeTypeStorage() noexcept
           node_guard_0108ff54_, node_0108ff90_,
           light_guard_0109010d_, light_0109018c_,
           directional_guard_0109010e_, directional_0109019c_},
+      camera_types_{camera_guard_0108ff9c_, camera_0108ffa0_},
       stream_types_{file_guard_0109db54_, file_0109db58_,
           memory_guard_0109db94_, memory_0109dba0_,
           physical_guard_0109dc2c_, physical_0109dc30_},
@@ -43,6 +44,8 @@ void GameNativeTypeStorage::initialize_resource_types(
     selectors.initialize_convex_object_00ccec00();
     selectors.initialize_aux_00ccf740();
     selectors.initialize_geom_mesh_00ccf980();
+    CameraTypeBootstrap camera(existing_counter, common_root_bootstrap, camera_types_);
+    camera.initialize_static_00cd7d80();
     NativeResourceExtraTypeIds extra(existing_counter, mesh, resource_extra_types_);
     extra.initialize_animation_resource_00cd82f0();
     extra.initialize_bone_resource_00cd8340();

@@ -15,6 +15,10 @@ class XLiveLibrary;
 struct NativeRendererPresentObservation;
 struct NativeTextureCacheContext;
 class NativeRenderActualOwnerRegistry;
+struct NativeCameraEnvironment;
+struct NativeNodeRawConstants;
+class NativeViewportRegistry;
+struct NativeCockpitViewportReleaseContext;
 }
 namespace bsp::game {
 class GameSingletonHost;
@@ -54,6 +58,13 @@ public:
     // its own fallback reference follows the native cache cleanup schedule.
     NativeTextureCacheContext& texture_cache() noexcept;
     NativeRenderActualOwnerRegistry& actual_owners() noexcept;
+    // One camera domain shares the application's pool, type counter, node
+    // lifetimes and current raw renderer. Retire native cameras/viewports and
+    // forget quiescent construction records before destroying this graph.
+    NativeCameraEnvironment& camera_environment() noexcept;
+    const NativeNodeRawConstants& node_constants() noexcept;
+    NativeViewportRegistry& viewport_registry() noexcept;
+    const NativeCockpitViewportReleaseContext& cockpit_viewport_release() noexcept;
     bool requires_process_retention() const noexcept;
     void drain_singletons();
     void after_native_drain();

@@ -418,6 +418,8 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         log.notef("native Lua globals initialized: region_atexit=%d storage=process_actual0ch",
             lua_region_atexit);
         auto& resource_pools = bsp::game::game_native_resource_pool_process();
+        const int camera_atexit = resource_pools.initialize_camera_once_00cd7dd0();
+        log.notef("native camera pool CRT CD7DD0: atexit=%d", camera_atexit);
         const int mesh_atexit = resource_pools.initialize_mesh_once_00cd7e40();
         const int section_atexit = resource_pools.initialize_section_once_00cd8250();
         log.notef("native geometry pools initialized: mesh_atexit=%d section_atexit=%d "

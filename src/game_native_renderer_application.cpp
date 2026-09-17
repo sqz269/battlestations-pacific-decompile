@@ -81,6 +81,7 @@
 #include "bsp/native_xlive_device_adapter.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/system_camera_axes.hpp"
+#include "bsp/native_cockpit_helper_construction.hpp"
 #include <array>
 #include <cstring>
 #include <filesystem>
@@ -104,6 +105,7 @@ struct CanonicalProfiles {
 #include "game_native_renderer_lifetime.inc"
 #include "game_native_renderer_device.inc"
 #include "game_native_renderer_textures.inc"
+#include "game_native_renderer_camera.inc"
 #include "game_native_renderer_frame.inc"
 } // namespace
 
@@ -143,6 +145,7 @@ struct GameNativeRendererApplication::Impl {
     DestructionGraph graph;
     DeviceGraph devices;
     TextureLoadingGraph texture_loading;
+    CameraGraph cameras;
     std::unique_ptr<FrameGraph> frames;
     Phase phase{Phase::prepared};
     IDirect3D9* retained_api{};
@@ -172,7 +175,8 @@ struct GameNativeRendererApplication::Impl {
           graph(constructor,vfs.strings,raw,*host.native_deletion_bindings().resource_support,owners,
               validation,accounting,data,files.native_owners().types(),files.native_types().light_types(),vfs.retained_memory),
           devices(graph,constructor,host,vfs.strings,platform),
-          texture_loading(graph,devices,owners,vfs,platform_events,validation,accounting) {
+          texture_loading(graph,devices,owners,vfs,platform_events,validation,accounting),
+          cameras(graph,renderer,files.native_owners().types(),files.native_types().camera_types()) {
         auto& deletion=host.native_deletion_bindings();
         check(!deletion.renderer_owner && !deletion.renderer_lua_owner,"renderer lifetime already bound");
         check(!deletion.render_entry_cache,"render-entry cache lifetime already bound");
@@ -194,6 +198,18 @@ GameNativeRendererApplication::GameNativeRendererApplication(GameHostLog& log,Ga
     void* const volatile& clock,const void* platform)
     :impl_(std::make_unique<Impl>(log,host,files,lua,data,clock,platform)) {}
 GameNativeRendererApplication::~GameNativeRendererApplication()=default;
+NativeCameraEnvironment& GameNativeRendererApplication::camera_environment() noexcept {
+    return impl_->cameras.environment;
+}
+const NativeNodeRawConstants& GameNativeRendererApplication::node_constants() noexcept {
+    return impl_->cameras.node_constants;
+}
+NativeViewportRegistry& GameNativeRendererApplication::viewport_registry() noexcept {
+    return impl_->cameras.viewports;
+}
+const NativeCockpitViewportReleaseContext& GameNativeRendererApplication::cockpit_viewport_release() noexcept {
+    return impl_->cameras.viewport_release;
+}
 NativeTextureCacheContext& GameNativeRendererApplication::texture_cache() noexcept {
     return impl_->texture_loading.cache;
 }
