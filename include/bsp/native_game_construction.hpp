@@ -2,6 +2,7 @@
 #include "bsp/dyn_world_settings.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/native_player_profile_owner.hpp"
+#include "bsp/native_game_embedded_state.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>
@@ -14,11 +15,11 @@ struct alignas(4) NativeGameStorage final { std::byte bytes[0x71a0]; };
 static_assert(sizeof(NativeGameStorage)==0x71a0);
 static_assert(std::is_trivially_default_constructible_v<NativeGameStorage>);
 
-// Required external bodies, identified by native address. No default, no-op,
-// projected owner or success fallback is supplied. Container allocation and
+// Remaining required external bodies are identified by native address.
+// Embedded state and critical-section creation have concrete defaults. Container allocation and
 // CRT array iteration remain library contracts, not new STL/CRT ports.
 // A concrete application must bind ALL reached calls to their real services.
-struct NativeGameConstructionCalls {
+struct NativeGameConstructionCalls : NativeGameEmbeddedStateCalls {
     virtual ~NativeGameConstructionCalls()=default;
     virtual void array_construct_00bf7cd1(void* base,std::uint32_t stride,
         std::uint32_t count,std::uint32_t constructor,std::uint32_t destructor)=0;
@@ -29,7 +30,8 @@ struct NativeGameConstructionCalls {
     virtual void* call_004c1950()=0; // allocate24h list head, links0/4=self
     virtual void* call_004c26b0()=0; // existing raw18h tree leaf
     virtual void call_007ff9d0(void* race_record)=0;
-    virtual void call_0076ede0(void* embedded)=0;
+    virtual void call_0076ede0(void* embedded,const NativeGameEmbeddedStateConstants&,
+        NativeGameEmbeddedStateOperation&);
     virtual void* call_004c1a40()=0; // allocate0Ch list head, links0/4=self
     virtual void call_008d9150()=0;
     virtual void* call_00432650()=0;
@@ -43,7 +45,6 @@ struct NativeGameConstructionCalls {
     virtual void* call_00c55f50(const std::uint32_t* worker_count)=0;
     virtual void* call_00c420e0(void* captured_engine,const DynWorldDescriptor&)=0;
     virtual void call_00c31a40(void* captured_world,void* observer)=0;
-    virtual void* call_00bd1860()=0;
 };
 
 struct NativeGameConstructionConstants {
@@ -68,6 +69,7 @@ struct NativeGameConstructionContext {
     NativeGameConstructionConstants constants;
     NativePlayerProfileContext& profile;
     NativeGameConstructionCalls& calls;
+    NativeGameEmbeddedStateConstants embedded_constants;
 };
 struct NativeGameConstructionOperation final {
     enum class Phase { fresh,running,complete,failed,diagnostic_retired };
@@ -80,6 +82,7 @@ struct NativeGameConstructionOperation final {
     std::uint32_t worker_count;
     DynWorldDescriptor descriptor;
     NativePlayerProfileOperation profile;
+    NativeGameEmbeddedStateOperation embedded;
     NativeGameConstructionOperation() noexcept=default;
     ~NativeGameConstructionOperation();
     NativeGameConstructionOperation(const NativeGameConstructionOperation&)=delete;

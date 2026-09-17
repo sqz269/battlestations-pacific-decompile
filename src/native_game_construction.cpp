@@ -53,11 +53,15 @@ void descriptor_word(DynWorldDescriptor& d,Word offset,Word value) noexcept {
     std::memcpy(static_cast<std::byte*>(static_cast<void*>(&d))+offset,&value,4);
 }
 }
+void NativeGameConstructionCalls::call_0076ede0(void* owner,
+    const NativeGameEmbeddedStateConstants& constants,NativeGameEmbeddedStateOperation& operation){
+    construct_native_game_embedded_state_0076ede0(owner,constants,*this,operation);
+}
 NativeGameConstructionOperation::~NativeGameConstructionOperation(){
     if(phase==Phase::running||phase==Phase::failed)std::terminate();
 }
 void NativeGameConstructionOperation::acknowledge_diagnostic_cleanup() noexcept {
-    if(phase==Phase::failed){profile.acknowledge_diagnostic_cleanup();phase=Phase::diagnostic_retired;}
+    if(phase==Phase::failed){profile.acknowledge_diagnostic_cleanup();embedded.acknowledge_diagnostic_cleanup();phase=Phase::diagnostic_retired;}
 }
 
 NativeGameStorage* construct_native_game_004ddb90(NativeGameStorage& storage,
@@ -101,7 +105,8 @@ NativeGameStorage* construct_native_game_004ddb90(NativeGameStorage& storage,
         for(Word offset=0x19d4;offset<=0x19e4;offset+=4)word(game,offset);
         a.unwind_state=28;word(game,0x19e8);a.native_site=0x004dde9b;
         construct_native_lua_state_00b66bd0(at(game,0x1a0c));
-        a.unwind_state=29;a.native_site=0x004ddeab;calls.call_0076ede0(at(game,0x1ef0));
+        a.unwind_state=29;a.native_site=0x004ddeab;
+        calls.call_0076ede0(at(game,0x1ef0),c.embedded_constants,a.embedded);
         byte(game,0x2194,1);word(game,0x2198);word(game,0x219c);a.unwind_state=31;
         word(game,0x21f4);word(game,0x21f8);word(game,0x21fc);word(game,0x2200);
         byte(game,0x22dc,1);a.native_site=0x004ddefc;
