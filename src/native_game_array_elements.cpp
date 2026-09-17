@@ -1,3 +1,4 @@
+#include "bsp/detail/native_blank_container_storage.hpp"
 #include "bsp/native_game_array_elements.hpp"
 #include "bsp/native_renderer_worker_lifetime.hpp"
 #include "bsp/native_hardware_layout_tree_insert.hpp"
@@ -22,10 +23,8 @@ template<class T>void put(void* p,Word n,T v) noexcept {*static_cast<volatile T*
 void word(void* p,Word n,Word v=0) noexcept {put(p,n,v);}
 void byte(void* p,Word n,std::uint8_t v=0) noexcept {put(p,n,v);}
 void* list_head(Word size,NativeGameArrayCalls& calls,Stage& stage,Word site){
-    stage.storage_site=site;void* const node=calls.allocate_00bf681b(size);
-    if(node)put(node,0,node);
-    void* const previous=at(node,4);if(previous)put(previous,0,node);
-    return node;
+    stage.storage_site=site;
+    return detail::allocate_self_linked_list_storage(size,[&](Word n){return calls.allocate_00bf681b(n);});
 }
 struct CompletedMessage {
     NativeLegacySboStringStorage& value;

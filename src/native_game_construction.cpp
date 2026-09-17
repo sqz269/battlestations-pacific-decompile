@@ -1,4 +1,5 @@
 #include "bsp/native_game_construction.hpp"
+#include "bsp/native_game_storage_defaults.hpp"
 #include "bsp/native_input_configuration_owner.hpp"
 #include "bsp/native_lua_objects.hpp"
 #include <cstring>
@@ -53,6 +54,15 @@ void descriptor_word(DynWorldDescriptor& d,Word offset,Word value) noexcept {
     std::memcpy(static_cast<std::byte*>(static_cast<void*>(&d))+offset,&value,4);
 }
 }
+void* NativeGameConstructionCalls::call_004c2700(){return allocate_native_game_tree_004c2700(*this);}
+void* NativeGameConstructionCalls::call_004c2750(){return allocate_native_game_tree_004c2750(*this);}
+void* NativeGameConstructionCalls::call_004c27a0(){return allocate_native_game_tree_004c27a0(*this);}
+void* NativeGameConstructionCalls::call_004c2830(){return allocate_native_game_tree_004c2830(*this);}
+void* NativeGameConstructionCalls::call_004c26b0(){return allocate_native_game_tree_004c26b0(*this);}
+void* NativeGameConstructionCalls::call_004c1950(){return allocate_native_game_list_004c1950(*this);}
+void* NativeGameConstructionCalls::call_004c1a40(){return allocate_native_game_list_004c1a40(*this);}
+void NativeGameConstructionCalls::call_007ff9d0(void* p){initialize_native_race_storage_007ff9d0(p);}
+void* NativeGameConstructionCalls::call_008882d0(void* p){return construct_native_mission_lua_owner_008882d0(p,*this);}
 void NativeGameConstructionCalls::call_0076ede0(void* owner,
     const NativeGameEmbeddedStateConstants& constants,NativeGameEmbeddedStateOperation& operation){
     construct_native_game_embedded_state_0076ede0(owner,constants,*this,operation);

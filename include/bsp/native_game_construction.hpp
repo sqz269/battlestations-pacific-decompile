@@ -17,7 +17,8 @@ static_assert(sizeof(NativeGameStorage)==0x71a0);
 static_assert(std::is_trivially_default_constructible_v<NativeGameStorage>);
 
 // Remaining required external bodies are identified by native address.
-// Embedded state and critical-section creation have concrete defaults. Container allocation and
+// Embedded state, raw race/Lua owner and container allocation have concrete defaults.
+// Container allocation and
 // CRT array iteration remain library contracts, not new STL/CRT ports.
 // A concrete application must bind ALL reached calls to their real services.
 struct NativeGameConstructionCalls : NativeGameEmbeddedStateCalls,NativeGameArrayCalls {
@@ -25,23 +26,23 @@ struct NativeGameConstructionCalls : NativeGameEmbeddedStateCalls,NativeGameArra
     virtual void array_construct_00bf7cd1(void* base,std::uint32_t stride,
         std::uint32_t count,std::uint32_t constructor,std::uint32_t destructor,
         const NativeGameArrayConstants&,NativeGameArrayOperation&);
-    virtual void* call_004c2700()=0; // allocate14h tree node, flags10/11
-    virtual void* call_004c2750()=0; // allocate28h tree node, flags24/25
-    virtual void* call_004c27a0()=0; // allocate18h tree node, flags14/15
-    virtual void* call_004c2830()=0; // allocate18h tree node, flags14/15
-    virtual void* call_004c1950()=0; // allocate24h list head, links0/4=self
-    virtual void* call_004c26b0()=0; // existing raw18h tree leaf
-    virtual void call_007ff9d0(void* race_record)=0;
+    virtual void* call_004c2700(); // allocate14h tree node, flags10/11
+    virtual void* call_004c2750(); // allocate28h tree node, flags24/25
+    virtual void* call_004c27a0(); // allocate18h tree node, flags14/15
+    virtual void* call_004c2830(); // allocate18h tree node, flags14/15
+    virtual void* call_004c1950(); // allocate24h list head, links0/4=self
+    virtual void* call_004c26b0(); // existing raw18h tree leaf
+    virtual void call_007ff9d0(void* race_record);
     virtual void call_0076ede0(void* embedded,const NativeGameEmbeddedStateConstants&,
         NativeGameEmbeddedStateOperation&);
-    virtual void* call_004c1a40()=0; // allocate0Ch list head, links0/4=self
+    virtual void* call_004c1a40(); // allocate0Ch list head, links0/4=self
     virtual void call_008d9150()=0;
     virtual void* call_00432650()=0;
     virtual void call_0087d7b0(void* captured_configuration)=0;
     virtual void call_00717e80()=0;
     virtual void* call_0070bd70(void* allocation,float argument)=0;
     virtual void call_00727bd0()=0;
-    virtual void* call_008882d0(void* allocation)=0;
+    virtual void* call_008882d0(void* allocation);
     virtual std::uint32_t call_00be4800()=0;
     virtual void* call_00c55f50(const std::uint32_t* worker_count)=0;
     virtual void* call_00c420e0(void* captured_engine,const DynWorldDescriptor&)=0;

@@ -1,3 +1,4 @@
+#include "bsp/detail/native_blank_container_storage.hpp"
 #include "bsp/native_profile_collections.hpp"
 #include "bsp/native_mission_score_record.hpp"
 #include "bsp/singleton_lifetime.hpp"
@@ -28,11 +29,7 @@ const void* at(const void* p,Word n) noexcept {return reinterpret_cast<const voi
 template<class T>T read(const void* p,Word n=0) noexcept {return *static_cast<const volatile T*>(at(p,n));}
 template<class T>void put(void* p,Word n,T value) noexcept {*static_cast<volatile T*>(at(p,n))=value;}
 void* blank_node(Word bytes,Word color,NativeProfileCollectionCalls& calls){
-    void* const p=calls.allocate_00bf681b(bytes);
-    // Original leaves use independent wrapped-address guards, including their
-    // later fault when a returning allocator supplies null. No early success.
-    for(Word n=0;n<=8;n+=4)if(address(p)+n!=0)put<Word>(p,n,0);
-    put<std::uint8_t>(p,color,1);put<std::uint8_t>(p,color+1,0);return p;
+    return detail::allocate_blank_tree_storage(bytes,color,[&](Word n){return calls.allocate_00bf681b(n);});
 }
 bool nil(const void* node,Word offset) noexcept {return read<std::uint8_t>(node,offset)!=0;}
 void* finish_full_range(void* tree,void* output) noexcept {
