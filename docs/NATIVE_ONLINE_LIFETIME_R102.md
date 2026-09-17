@@ -79,3 +79,14 @@ material/preload startup, binary ABI and gameplay validation remain open.
 
 Evidence: `reports/native_online_lifetime_r102.json`; immutable local tested and
 combined-build archives are recorded there with hashes and artifact manifests.
+
+## Correction from docs/NATIVE_ONLINE_STARTUP_R103.md
+
+R103 recovered an older, unintegrated constructor/SDK/raw-IPC implementation.
+Its complete lifetime modules now supersede R102's standalone source/header.
+The shared drain keeps the `native_online` binding at offset148, borrowing the
+complete lifetime with raw2Ch IPC services and the matching allocation domain.
+R102's fixture and archives remain historical evidence for its tested source;
+R103 records fresh verification of the consolidated implementation. In
+particular, the canonical native IPC allocation contains no appended service
+pointers; those services remain outside its 2Ch storage.

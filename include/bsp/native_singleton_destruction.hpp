@@ -9,7 +9,7 @@ struct NativeResourceManagerContext;
 struct NativeResourceExtraParserContexts;
 struct NativeResourceSupportRawContext;
 struct NativeFrameClockLifetimeContext;
-struct NativeOnlineLifetimeContext;
+struct NativeOnlineManagerLifetimeContext;
 struct NativeDiagnosticSinkStorage;
 struct NativeRendererRecordGuardContext;
 struct NativeRendererLuaOwnerContext;
@@ -180,7 +180,7 @@ struct NativeSingletonDeletionBindings {
     // D24138/D2413C: actual 3F0h owner; same AA0/F8ABE8 cells as construction.
     // Mutually exclusive with xlive_owner. Do not require owner==F8ABE8:
     // the recovered destructor reloads/unregisters the current publication.
-    NativeOnlineLifetimeContext* native_online{};
+    NativeOnlineManagerLifetimeContext* native_online{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
