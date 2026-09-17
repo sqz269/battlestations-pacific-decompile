@@ -7,7 +7,8 @@ namespace bsp {
 // Table pointers view current original numeric code words, not host vtables.
 struct NativeD3d9ShaderLifetimeContext {
     NativeResourceSupportStorage* volatile& actual_support_0108fedc;
-    SingletonLifetimeDomain& actual_lifetime;
+    // The raw support context and its cells stay alive through owner destruction.
+    NativeResourceSupportLifetime actual_lifetime;
     void* const volatile& actual_renderer_00f8d394;
     NativeRenderActualOwners& owners;
     const volatile std::uint32_t* actual_pixel_profile_00d62a60;

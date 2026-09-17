@@ -43,7 +43,9 @@ struct NativeD3d9ShaderRegistryOperation final {
 struct NativeD3d9ShaderConstructionContext {
     NativeStringStorage& strings;
     NativeResourceSupportStorage* volatile& actual_support_0108fedc;
-    SingletonLifetimeDomain& actual_lifetime;
+    // Borrow an existing semantic domain or the application's raw support context.
+    // A raw context and its publication cells outlive this retained operation.
+    NativeResourceSupportLifetime actual_lifetime;
     void* const volatile& actual_renderer_00f8d394;
     NativeRenderActualOwners& owners;
 };
