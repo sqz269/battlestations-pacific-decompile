@@ -1,0 +1,213 @@
+{
+  "packet": "native_game_array_elements_r111",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "vector_definition": {
+    "events": [
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "004d3730",
+          "end_address": "004d373e"
+        },
+        "result": {
+          "success": true,
+          "start_address": "004d3730",
+          "end_address": "004d373d",
+          "bytes_disassembled": 14,
+          "message": "Successfully disassembled 14 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "004d3730",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "004d3730",
+          "function_name": "FUN_004d3730",
+          "entry_point": "004d3730",
+          "body_size": 14,
+          "message": "Function created successfully at 004d3730"
+        }
+      },
+      {
+        "defined": "004d3730",
+        "end": "004d373e",
+        "name": null,
+        "after": "Function: FUN_004d3730 at 004d3730\nSignature: undefined FUN_004d3730(void)\nEntry: 004d3730\nBody: 004d3730 - 004d373d"
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "error": "Unable to lock due to active transaction"
+        }
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "success": true,
+          "program": "battlestationspacific.exe",
+          "message": "Program saved successfully"
+        }
+      }
+    ]
+  },
+  "list_insert_body_recreation": {
+    "events": [
+      {
+        "recreate": "004d0d50",
+        "previous": "Function: FUN_004d0d50 at 004d0d50\nSignature: undefined FUN_004d0d50(void)\nEntry: 004d0d50\nBody: 004d0d50 - 004d0e0a",
+        "plate": null
+      },
+      {
+        "endpoint": "delete_function",
+        "body": {
+          "address": "004d0d50"
+        },
+        "result": {
+          "success": true,
+          "address": "004d0d50",
+          "deleted_function": "FUN_004d0d50",
+          "body_size": 120,
+          "message": "Function 'FUN_004d0d50' deleted at 004d0d50"
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "004d0d50",
+          "end_address": "004d0e0b"
+        },
+        "result": {
+          "success": true,
+          "start_address": "004d0d50",
+          "end_address": "004d0e0a",
+          "bytes_disassembled": 187,
+          "message": "Successfully disassembled 187 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "004d0d50",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "004d0d50",
+          "function_name": "FUN_004d0d50",
+          "entry_point": "004d0d50",
+          "body_size": 120,
+          "message": "Function created successfully at 004d0d50"
+        }
+      },
+      {
+        "defined": "004d0d50",
+        "end": "004d0e0b",
+        "name": null,
+        "after": "Function: FUN_004d0d50 at 004d0d50\nSignature: undefined FUN_004d0d50(void)\nEntry: 004d0d50\nBody: 004d0d50 - 004d0e0a"
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "success": true,
+          "program": "battlestationspacific.exe",
+          "message": "Program saved successfully"
+        }
+      }
+    ]
+  },
+  "result": "Defined previously missing14-byte4D3730..4D373D callback. Initial interpretation of4D0D50 as a truncated187-byte body was wrong:120-byte normal-body membership excludes the separately defined67-byte Catch_All4D0DB5..4D0DF7. Recreation preserved the correct120-byte membership; no restoration needed. Three exception CALL rows were reassigned to4D0DB5 after the initial audit caught the attribution error. The contiguous copied187-byte envelope includes both, counted once. Source implements normal loop only. Locked tools, disassemble_first=false, preserved names/comments, saved/exported/snapshot; no no-return flag changes.",
+  "unlisted_alignment": [
+    {
+      "address": "007fde59",
+      "length": 7,
+      "hex": "8da42400000000",
+      "kind": "unreachable_alignment_LEA_same_register"
+    },
+    {
+      "address": "007fd66f",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "0058d8df",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "0058adbf",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "0058ae8f",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "0058afaf",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "0058b07f",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "0058b14f",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "0058f17f",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "00591aaf",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "00591c7f",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "00592f8f",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "005931ff",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "0077859a",
+      "length": 6,
+      "hex": "8d9b00000000",
+      "kind": "unreachable_alignment_LEA_same_register"
+    }
+  ]
+}

@@ -57,11 +57,18 @@ void NativeGameConstructionCalls::call_0076ede0(void* owner,
     const NativeGameEmbeddedStateConstants& constants,NativeGameEmbeddedStateOperation& operation){
     construct_native_game_embedded_state_0076ede0(owner,constants,*this,operation);
 }
+void NativeGameConstructionCalls::array_construct_00bf7cd1(void* base,Word stride,Word count,
+    Word constructor,Word destructor,const NativeGameArrayConstants& constants,NativeGameArrayOperation& operation){
+    construct_native_game_array_00bf7cd1(base,stride,count,constructor,destructor,constants,*this,operation);
+}
 NativeGameConstructionOperation::~NativeGameConstructionOperation(){
     if(phase==Phase::running||phase==Phase::failed)std::terminate();
 }
 void NativeGameConstructionOperation::acknowledge_diagnostic_cleanup() noexcept {
-    if(phase==Phase::failed){profile.acknowledge_diagnostic_cleanup();embedded.acknowledge_diagnostic_cleanup();phase=Phase::diagnostic_retired;}
+    if(phase==Phase::failed){
+        profile.acknowledge_diagnostic_cleanup();embedded.acknowledge_diagnostic_cleanup();
+        for(auto& array:arrays)array.acknowledge_diagnostic_cleanup();phase=Phase::diagnostic_retired;
+    }
 }
 
 NativeGameStorage* construct_native_game_004ddb90(NativeGameStorage& storage,
@@ -75,7 +82,7 @@ NativeGameStorage* construct_native_game_004ddb90(NativeGameStorage& storage,
         a.unwind_state=0;a.native_site=0x004ddbe2;
         construct_native_input_configuration_00698680(at(game,0x3c));
         a.unwind_state=1;a.native_site=0x004ddc01;
-        calls.array_construct_00bf7cd1(at(game,0x560),0x10,5,0x004d3730,0x004cafd0);
+        calls.array_construct_00bf7cd1(at(game,0x560),0x10,5,0x004d3730,0x004cafd0,c.array_constants,a.arrays[0]);
         a.unwind_state=2;a.native_site=0x004ddc13;
         sentinel(at(game,0x5b0),calls.call_004c2700(),0x11);
         a.unwind_state=3;a.native_site=0x004ddc40;
@@ -93,9 +100,9 @@ NativeGameStorage* construct_native_game_004ddb90(NativeGameStorage& storage,
         a.unwind_state=10;a.native_site=0x004ddd4a;
         construct_native_player_profile_007fee20(at(game,0x650),c.profile,a.profile);
         a.unwind_state=11;a.native_site=0x004ddd6c;
-        calls.array_construct_00bf7cd1(at(game,0x748),0x118,8,0x004d6ba0,0x004cb2f0);
+        calls.array_construct_00bf7cd1(at(game,0x748),0x118,8,0x004d6ba0,0x004cb2f0,c.array_constants,a.arrays[1]);
         a.unwind_state=12;a.native_site=0x004ddd8e;
-        calls.array_construct_00bf7cd1(at(game,0x1008),0x118,8,0x004d6ba0,0x004cb2f0);
+        calls.array_construct_00bf7cd1(at(game,0x1008),0x118,8,0x004d6ba0,0x004cb2f0,c.array_constants,a.arrays[2]);
         a.unwind_state=13;a.native_site=0x004ddda0;
         sentinel(at(game,0x1930),calls.call_004c26b0(),0x15);
         a.unwind_state=14;word(game,0x1940);a.native_site=0x004dddd1;
@@ -110,7 +117,7 @@ NativeGameStorage* construct_native_game_004ddb90(NativeGameStorage& storage,
         byte(game,0x2194,1);word(game,0x2198);word(game,0x219c);a.unwind_state=31;
         word(game,0x21f4);word(game,0x21f8);word(game,0x21fc);word(game,0x2200);
         byte(game,0x22dc,1);a.native_site=0x004ddefc;
-        calls.array_construct_00bf7cd1(at(game,0x7134),0xc,4,0x004c8140,0x004c4600);
+        calls.array_construct_00bf7cd1(at(game,0x7134),0xc,4,0x004c8140,0x004c4600,c.array_constants,a.arrays[3]);
         void* const destination=at(game,0x7164);word(destination,0);word(destination,4);
         a.unwind_state=33;a.native_site=0x004ddf17;
         put(game,0x7170,calls.call_004c1a40());word(game,0x7174);word(game,0x7178);

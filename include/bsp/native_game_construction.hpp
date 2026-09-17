@@ -3,6 +3,7 @@
 #include "bsp/native_string.hpp"
 #include "bsp/native_player_profile_owner.hpp"
 #include "bsp/native_game_embedded_state.hpp"
+#include "bsp/native_game_array_elements.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>
@@ -19,10 +20,11 @@ static_assert(std::is_trivially_default_constructible_v<NativeGameStorage>);
 // Embedded state and critical-section creation have concrete defaults. Container allocation and
 // CRT array iteration remain library contracts, not new STL/CRT ports.
 // A concrete application must bind ALL reached calls to their real services.
-struct NativeGameConstructionCalls : NativeGameEmbeddedStateCalls {
+struct NativeGameConstructionCalls : NativeGameEmbeddedStateCalls,NativeGameArrayCalls {
     virtual ~NativeGameConstructionCalls()=default;
     virtual void array_construct_00bf7cd1(void* base,std::uint32_t stride,
-        std::uint32_t count,std::uint32_t constructor,std::uint32_t destructor)=0;
+        std::uint32_t count,std::uint32_t constructor,std::uint32_t destructor,
+        const NativeGameArrayConstants&,NativeGameArrayOperation&);
     virtual void* call_004c2700()=0; // allocate14h tree node, flags10/11
     virtual void* call_004c2750()=0; // allocate28h tree node, flags24/25
     virtual void* call_004c27a0()=0; // allocate18h tree node, flags14/15
@@ -37,7 +39,6 @@ struct NativeGameConstructionCalls : NativeGameEmbeddedStateCalls {
     virtual void* call_00432650()=0;
     virtual void call_0087d7b0(void* captured_configuration)=0;
     virtual void call_00717e80()=0;
-    virtual void* allocate_00bf681b(std::uint32_t bytes)=0;
     virtual void* call_0070bd70(void* allocation,float argument)=0;
     virtual void call_00727bd0()=0;
     virtual void* call_008882d0(void* allocation)=0;
@@ -70,6 +71,7 @@ struct NativeGameConstructionContext {
     NativePlayerProfileContext& profile;
     NativeGameConstructionCalls& calls;
     NativeGameEmbeddedStateConstants embedded_constants;
+    NativeGameArrayConstants array_constants;
 };
 struct NativeGameConstructionOperation final {
     enum class Phase { fresh,running,complete,failed,diagnostic_retired };
@@ -83,6 +85,7 @@ struct NativeGameConstructionOperation final {
     DynWorldDescriptor descriptor;
     NativePlayerProfileOperation profile;
     NativeGameEmbeddedStateOperation embedded;
+    NativeGameArrayOperation arrays[4];
     NativeGameConstructionOperation() noexcept=default;
     ~NativeGameConstructionOperation();
     NativeGameConstructionOperation(const NativeGameConstructionOperation&)=delete;

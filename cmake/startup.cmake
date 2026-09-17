@@ -1327,3 +1327,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_mission_sco
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_profile_counter_map.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_profile_settings.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_embedded_state.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_array_elements.cpp)
