@@ -137,3 +137,10 @@ blocks. Continue B107F0's remaining graph, including B544F0/B546F0 and B54F90,
 without replacing constructors or resource loaders with empty producers.
 Full initializer execution, failure/FH3/SEH, application startup and gameplay
 are still required before any broader reconstruction-completion claim.
+
+## Correction from docs/NATIVE_DOWNSCALE_PASS_INITIALIZERS_R78.md
+
+R78 adds complete B544F0/B546F0 source and full B4CD30 numeric-helper source.
+The existing R77 persistent cleanup block is reused without changing its data
+layout or the R77 initializer bodies. Numeric comparisons pass; complete pass
+initializer execution, B54F90 bloom initialization and application binding remain open.

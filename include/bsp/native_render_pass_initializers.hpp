@@ -4,6 +4,7 @@
 #include "bsp/native_material_parameters.hpp"
 
 namespace bsp {
+struct NativeDownscalePassInitializationContext;
 struct NativeRenderPassInitializationContext {
     NativePostEffect20ConstructionContext& post_effects;
     NativeRenderTextureSurfaceOwnerContext& holders;
@@ -71,12 +72,20 @@ public:
     // ends all parameter-source borrows and resets post_effect() first.
     void reset_after_host_quiescence() noexcept;
 private:
+    friend void initialize_native_downscale4x4_pass_00b544f0(void*,std::size_t,
+        NativeDepthDownscalePassArguments,const NativeDownscalePassInitializationContext&,
+        NativeRenderPassInitializationBlock&);
+    friend void initialize_native_downscale2x2_pass_00b546f0(void*,std::size_t,
+        NativeDepthDownscalePassArguments,const NativeDownscalePassInitializationContext&,
+        NativeRenderPassInitializationBlock&);
     friend void initialize_native_depth_downscale_pass_00b540b0(void*,std::size_t,
         NativeDepthDownscalePassArguments,NativeRenderPassInitializationBlock&);
     friend void initialize_native_particle_blend_pass_00b542d0(void*,std::size_t,
         NativeParticleBlendPassArguments,NativeRenderPassInitializationBlock&);
     void execute(void*,std::size_t,bool,const NativeDepthDownscalePassArguments&,
         const NativeParticleBlendPassArguments&);
+    void execute_downscale(void*,std::size_t,bool,const NativeDepthDownscalePassArguments&,
+        const NativeDownscalePassInitializationContext&);
     void set_state(int) noexcept;
     void return_effect_name();
     void return_parameter_name();
