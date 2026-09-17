@@ -1,6 +1,7 @@
 #pragma once
 #include "bsp/dyn_world_settings.hpp"
 #include "bsp/native_string.hpp"
+#include "bsp/native_player_profile_owner.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>
@@ -26,7 +27,6 @@ struct NativeGameConstructionCalls {
     virtual void* call_004c27a0()=0; // allocate18h tree node, flags14/15
     virtual void* call_004c2830()=0; // allocate18h tree node, flags14/15
     virtual void* call_004c1950()=0; // allocate24h list head, links0/4=self
-    virtual void call_007fee20(void* profile)=0;
     virtual void* call_004c26b0()=0; // existing raw18h tree leaf
     virtual void call_007ff9d0(void* race_record)=0;
     virtual void call_0076ede0(void* embedded)=0;
@@ -66,6 +66,7 @@ struct NativeGameConstructionContext {
     void* volatile& actual_movie_00e18d48;
     NativeStringStorage& strings;
     NativeGameConstructionConstants constants;
+    NativePlayerProfileContext& profile;
     NativeGameConstructionCalls& calls;
 };
 struct NativeGameConstructionOperation final {
@@ -78,6 +79,7 @@ struct NativeGameConstructionOperation final {
     void* current_allocation{};
     std::uint32_t worker_count;
     DynWorldDescriptor descriptor;
+    NativePlayerProfileOperation profile;
     NativeGameConstructionOperation() noexcept=default;
     ~NativeGameConstructionOperation();
     NativeGameConstructionOperation(const NativeGameConstructionOperation&)=delete;
@@ -88,7 +90,8 @@ struct NativeGameConstructionOperation final {
 
 // Full4DDB90 normal parent schedule. Native ECX=71A0 game, stack=actual8h
 // string header pointer, EAX=same game, RET4. Real input/Lua/string primitives
-// are reused; remaining callees above are required dependencies. The input
+// and the raw profile constructor/reset are reused; remaining callees above
+// and the profile's remaining services are required dependencies. The input
 // header may alias game+7164, which is initialized BEFORE the self-copy test.
 // Current game publication happens late at4DE105, BEFORE Dyn initialization.
 // Source exceptions retain the frame/partial graph and prohibit replay; this

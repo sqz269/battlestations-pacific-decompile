@@ -57,7 +57,7 @@ NativeGameConstructionOperation::~NativeGameConstructionOperation(){
     if(phase==Phase::running||phase==Phase::failed)std::terminate();
 }
 void NativeGameConstructionOperation::acknowledge_diagnostic_cleanup() noexcept {
-    if(phase==Phase::failed)phase=Phase::diagnostic_retired;
+    if(phase==Phase::failed){profile.acknowledge_diagnostic_cleanup();phase=Phase::diagnostic_retired;}
 }
 
 NativeGameStorage* construct_native_game_004ddb90(NativeGameStorage& storage,
@@ -86,7 +86,8 @@ NativeGameStorage* construct_native_game_004ddb90(NativeGameStorage& storage,
         sentinel(at(game,0x628),calls.call_004c2830(),0x15);
         a.unwind_state=9;byte(game,0x634);byte(game,0x635);a.native_site=0x004ddd34;
         put(game,0x63c,calls.call_004c1950());word(game,0x640);
-        a.unwind_state=10;a.native_site=0x004ddd4a;calls.call_007fee20(at(game,0x650));
+        a.unwind_state=10;a.native_site=0x004ddd4a;
+        construct_native_player_profile_007fee20(at(game,0x650),c.profile,a.profile);
         a.unwind_state=11;a.native_site=0x004ddd6c;
         calls.array_construct_00bf7cd1(at(game,0x748),0x118,8,0x004d6ba0,0x004cb2f0);
         a.unwind_state=12;a.native_site=0x004ddd8e;
