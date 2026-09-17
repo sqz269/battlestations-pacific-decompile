@@ -66,6 +66,9 @@
 #include "bsp/native_renderer_begin_frame.hpp"
 #include "bsp/native_renderer_end_frame.hpp"
 #include "bsp/native_render_queue_destruction.hpp"
+#include "bsp/native_texture_loading_cache.hpp"
+#include "bsp/native_material_effect_runtime.hpp"
+#include "bsp/game_native_resource_pools.hpp"
 // Constructor, device startup, frame and destructor borrow one application graph.
 #include "bsp/game_native_renderer_application.hpp"
 #include "bsp/game_native_renderer_scalars.hpp"
@@ -100,6 +103,7 @@ struct CanonicalProfiles {
 };
 #include "game_native_renderer_lifetime.inc"
 #include "game_native_renderer_device.inc"
+#include "game_native_renderer_textures.inc"
 #include "game_native_renderer_frame.inc"
 } // namespace
 
@@ -138,6 +142,7 @@ struct GameNativeRendererApplication::Impl {
     NativeRendererConstructorContext constructor;
     DestructionGraph graph;
     DeviceGraph devices;
+    TextureLoadingGraph texture_loading;
     std::unique_ptr<FrameGraph> frames;
     Phase phase{Phase::prepared};
     IDirect3D9* retained_api{};
@@ -166,7 +171,8 @@ struct GameNativeRendererApplication::Impl {
               mode.data(),identifier.data(),gather.data()},
           graph(constructor,vfs.strings,raw,*host.native_deletion_bindings().resource_support,owners,
               validation,accounting,data,files.native_owners().types(),files.native_types().light_types(),vfs.retained_memory),
-          devices(graph,constructor,host,vfs.strings,platform) {
+          devices(graph,constructor,host,vfs.strings,platform),
+          texture_loading(graph,devices,owners,vfs,platform_events,validation,accounting) {
         auto& deletion=host.native_deletion_bindings();
         check(!deletion.renderer_owner && !deletion.renderer_lua_owner,"renderer lifetime already bound");
         check(!deletion.render_entry_cache,"render-entry cache lifetime already bound");
@@ -188,6 +194,12 @@ GameNativeRendererApplication::GameNativeRendererApplication(GameHostLog& log,Ga
     void* const volatile& clock,const void* platform)
     :impl_(std::make_unique<Impl>(log,host,files,lua,data,clock,platform)) {}
 GameNativeRendererApplication::~GameNativeRendererApplication()=default;
+NativeTextureCacheContext& GameNativeRendererApplication::texture_cache() noexcept {
+    return impl_->texture_loading.cache;
+}
+NativeRenderActualOwnerRegistry& GameNativeRendererApplication::actual_owners() noexcept {
+    return impl_->owners;
+}
 void GameNativeRendererApplication::construct() {
     auto& p=*impl_;check(p.phase==Impl::Phase::prepared,"renderer constructor is once-only");
     p.phase=Impl::Phase::constructing;

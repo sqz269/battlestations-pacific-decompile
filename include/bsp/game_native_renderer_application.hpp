@@ -13,6 +13,8 @@ struct ResourceLoadEventHost;
 class NativeXLiveDeviceAdapter;
 class XLiveLibrary;
 struct NativeRendererPresentObservation;
+struct NativeTextureCacheContext;
+class NativeRenderActualOwnerRegistry;
 }
 namespace bsp::game {
 class GameSingletonHost;
@@ -47,6 +49,11 @@ public:
     IDirect3DDevice9* device() const noexcept;
     NativeRendererParametersOwner& parameters() const;
     const _D3DPRESENT_PARAMETERS_& presentation() const;
+    // The actual renderer's loading domain. Keep acquisition frames alive and
+    // release ordinary returned references before the shared renderer drain;
+    // its own fallback reference follows the native cache cleanup schedule.
+    NativeTextureCacheContext& texture_cache() noexcept;
+    NativeRenderActualOwnerRegistry& actual_owners() noexcept;
     bool requires_process_retention() const noexcept;
     void drain_singletons();
     void after_native_drain();

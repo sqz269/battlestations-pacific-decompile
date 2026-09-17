@@ -590,6 +590,7 @@ public:
     GameDecalTable* decal_table() const noexcept { return decals_; }
     const ObjectHandleResolverSlots& object_handle_resolvers() const noexcept { return object_resolvers_; }
     NativeRendererParametersOwner* renderer_parameters() const noexcept { return renderer_parameters_; }
+    GameNativeRendererApplication* native_renderer() const noexcept { return native_renderer_.get(); }
     GameInputRuntime* input_runtime() const noexcept { return input_runtime_; }
     void* volatile& input_backend_publication() noexcept { return input_backend_00f8bbf4_; }
 
