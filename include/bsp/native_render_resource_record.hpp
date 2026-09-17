@@ -9,6 +9,7 @@ namespace bsp {
 
 struct SingletonLifetimeCallbacks;
 class ActualNativeStringPoolStorage;
+class NativeStringStorage;
 struct NativeStringRawPoolContext;
 
 struct NativeRenderResourceAliasNode {
@@ -81,5 +82,8 @@ void destroy_native_render_resource_record_00b2f990(
 // Complete raw publication variant. Every nonnull return resolves the current
 // pool and can throw before freeing its node; actual owner reloads are retained.
 void clear_native_render_resource_aliases_004d05e0(void*, NativeStringRawPoolContext&);
+// Same raw list body through the existing caller-supplied string service.
+// Retains its noexcept release boundary; no private pool or shadow list.
+void clear_native_render_resource_aliases_004d05e0(void*, NativeStringStorage&);
 
 }

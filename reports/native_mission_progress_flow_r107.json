@@ -1,0 +1,390 @@
+{
+  "packet": "native_mission_progress_owner_r107",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "read_only_properties_attempt": {
+    "utc": "2026-09-17T20:26:09.709421+00:00",
+    "addresses": [
+      "007fd780",
+      "007fd510",
+      "007fa880"
+    ],
+    "read_only": true,
+    "endpoint": "run_script_inline",
+    "verified_before": [
+      {
+        "project_name": "bsp",
+        "current_folder": "/",
+        "folders": [],
+        "files": [
+          {
+            "name": "battlestationspacific.exe",
+            "path": "/battlestationspacific.exe",
+            "content_type": "Program",
+            "version": 3101,
+            "is_read_only": false,
+            "is_versioned": false
+          }
+        ]
+      },
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "executable_format": "Portable Executable (PE)",
+        "language": "x86:LE:32:default",
+        "compiler": "windows",
+        "address_size": 32,
+        "image_base": "00400000",
+        "min_address": "00400000",
+        "max_address": "ffdfffff",
+        "memory_size": 14876380,
+        "function_count": 64149,
+        "symbol_count": 144637,
+        "data_type_count": 795,
+        "creation_date": "Mon May 04 16:56:25 PDT 2026",
+        "memory_block_count": 6,
+        "address_spaces": [
+          {
+            "name": "ram",
+            "start": "00000000",
+            "end": "ffffffff",
+            "size": 4294967296,
+            "addressable_unit_size": 1,
+            "size_bytes": 4294967296,
+            "address_size_bits": 32,
+            "is_default": true
+          }
+        ],
+        "has_multiple_address_spaces": false
+      }
+    ],
+    "verified_after": [
+      {
+        "project_name": "bsp",
+        "current_folder": "/",
+        "folders": [],
+        "files": [
+          {
+            "name": "battlestationspacific.exe",
+            "path": "/battlestationspacific.exe",
+            "content_type": "Program",
+            "version": 3101,
+            "is_read_only": false,
+            "is_versioned": false
+          }
+        ]
+      },
+      {
+        "name": "battlestationspacific.exe",
+        "path": "/battlestationspacific.exe",
+        "executable_path": "/I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "executable_format": "Portable Executable (PE)",
+        "language": "x86:LE:32:default",
+        "compiler": "windows",
+        "address_size": 32,
+        "image_base": "00400000",
+        "min_address": "00400000",
+        "max_address": "ffdfffff",
+        "memory_size": 14876380,
+        "function_count": 64149,
+        "symbol_count": 144637,
+        "data_type_count": 795,
+        "creation_date": "Mon May 04 16:56:25 PDT 2026",
+        "memory_block_count": 6,
+        "address_spaces": [
+          {
+            "name": "ram",
+            "start": "00000000",
+            "end": "ffffffff",
+            "size": 4294967296,
+            "addressable_unit_size": 1,
+            "size_bytes": 4294967296,
+            "address_size_bits": 32,
+            "is_default": true
+          }
+        ],
+        "has_multiple_address_spaces": false
+      }
+    ],
+    "query_source": "\nimport ghidra.app.script.GhidraScript;\nimport ghidra.program.model.address.Address;\nimport ghidra.program.model.listing.CodeUnit;\nimport ghidra.program.model.listing.Function;\nimport ghidra.program.model.listing.Instruction;\n\npublic class BspFlowProperties_20260917202609663663 extends GhidraScript {\n    private String q(Object value) {\n        if (value == null) return \"null\";\n        String s = value.toString();\n        return \"\\\"\" + s.replace(\"\\\\\", \"\\\\\\\\\").replace(\"\\\"\", \"\\\\\\\"\")\n            .replace(\"\\n\", \"\\\\n\").replace(\"\\r\", \"\\\\r\").replace(\"\\t\", \"\\\\t\") + \"\\\"\";\n    }\n    private void field(StringBuilder row, String name, Object value) {\n        if (row.length() > 1) row.append(',');\n        row.append(q(name)).append(':').append(q(value));\n    }\n    @Override public void run() throws Exception {\n        if (!currentProgram.getDomainFile().getPathname().equals(\"/battlestationspacific.exe\") ||\n            !currentProgram.getLanguageID().toString().equals(\"x86:LE:32:default\") ||\n            currentProgram.getImageBase().getOffset() != 4194304L)\n            throw new IllegalStateException(\"Wrong BSP target inside read-only query\");\n        String[] addresses = {\"007fd780\",\"007fd510\",\"007fa880\"};\n        StringBuilder output = new StringBuilder(\"[\");\n        for (String value : addresses) {\n            Address address = currentProgram.getAddressFactory().getAddress(value);\n            Instruction instruction = currentProgram.getListing().getInstructionAt(address);\n            Instruction containing = currentProgram.getListing().getInstructionContaining(address);\n            CodeUnit unit = currentProgram.getListing().getCodeUnitAt(address);\n            Function function = currentProgram.getFunctionManager().getFunctionContaining(address);\n            Function thunk = function != null && function.isThunk() ? function.getThunkedFunction(false) : null;\n            StringBuilder row = new StringBuilder(\"{\");\n            field(row, \"address\", address);\n            field(row, \"instruction\", instruction);\n            field(row, \"instruction_start\", containing == null ? null : containing.getAddress());\n            field(row, \"code_unit_class\", unit == null ? null : unit.getClass().getName());\n            field(row, \"code_unit_length\", unit == null ? null : unit.getLength());\n            field(row, \"flow_override\", instruction == null ? null : instruction.getFlowOverride());\n            field(row, \"default_flow_type\", instruction == null ? null : instruction.getPrototype().getFlowType(instruction.getInstructionContext()));\n            field(row, \"effective_flow_type\", instruction == null ? null : instruction.getFlowType());\n            field(row, \"default_fallthrough\", instruction == null ? null : instruction.getDefaultFallThrough());\n            field(row, \"fallthrough\", instruction == null ? null : instruction.getFallThrough());\n            field(row, \"fallthrough_overridden\", instruction == null ? null : instruction.isFallThroughOverridden());\n            field(row, \"flows\", instruction == null ? null : java.util.Arrays.toString(instruction.getFlows()));\n            field(row, \"function_entry\", function == null ? null : function.getEntryPoint());\n            field(row, \"function_name\", function == null ? null : function.getName());\n            field(row, \"function_body\", function == null ? null : function.getBody());\n            field(row, \"function_no_return\", function == null ? null : function.hasNoReturn());\n            field(row, \"function_is_thunk\", function == null ? null : function.isThunk());\n            field(row, \"thunk_target\", thunk == null ? null : thunk.getEntryPoint());\n            field(row, \"thunk_target_name\", thunk == null ? null : thunk.getName());\n            field(row, \"thunk_target_no_return\", thunk == null ? null : thunk.hasNoReturn());\n            row.append('}');\n            if (output.length() > 1) output.append(',');\n            output.append(row);\n        }\n        output.append(']');\n        println(\"BSP_FLOW_PROPERTIES_BEGIN\");\n        println(output.toString());\n        println(\"BSP_FLOW_PROPERTIES_END\");\n    }\n}\n",
+    "http_status": 200,
+    "raw_response": "{\"error\":\"Script execution disabled. Set GHIDRA_MCP_ALLOW_SCRIPTS=1 (and GHIDRA_MCP_AUTH_TOKEN if exposing beyond loopback) to enable. /run_script_inline executes arbitrary Java against the Ghidra process.\"}",
+    "decoded_response": {
+      "error": "Script execution disabled. Set GHIDRA_MCP_ALLOW_SCRIPTS=1 (and GHIDRA_MCP_AUTH_TOKEN if exposing beyond loopback) to enable. /run_script_inline executes arbitrary Java against the Ghidra process."
+    },
+    "properties": null
+  },
+  "initial_tail_attempt": {
+    "repairs": [
+      {
+        "function": "007fd780",
+        "owner": "agent/orch4-20260915",
+        "when": "2026-09-17T20:26:10Z",
+        "decompile_lines_before": 44,
+        "gaps": [
+          {
+            "site": "007fd7c5",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "007fd7ca",
+            "gap_end_exclusive": "007fd844",
+            "bytes": 122,
+            "after_call": true,
+            "sha256": "f35b35c9128ea0db27f1ced921fb6f94edad5210731161552973fb2f2c19a1a4"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "007fd7c5",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "007fd7ca",
+              "gap_end_exclusive": "007fd844",
+              "bytes": 122,
+              "after_call": true,
+              "sha256": "f35b35c9128ea0db27f1ced921fb6f94edad5210731161552973fb2f2c19a1a4"
+            },
+            "clear": "Success: Cleared flow override at 007fd7c5 (was: NONE, now: NONE)",
+            "disassemble": "Successfully disassembled 122 byte(s)"
+          },
+          {
+            "explicit_tail_call": "007fd7c5",
+            "clear": {
+              "status": "success",
+              "message": "Success: Cleared flow override at 007fd7c5 (was: NONE, now: NONE)"
+            }
+          },
+          {
+            "explicit_tail_call": "007fd7f5",
+            "clear": {
+              "status": "success",
+              "message": "Success: Cleared flow override at 007fd7f5 (was: NONE, now: NONE)"
+            }
+          },
+          {
+            "explicit_tail_call": "007fd824",
+            "clear": {
+              "status": "success",
+              "message": "Success: Cleared flow override at 007fd824 (was: NONE, now: NONE)"
+            }
+          }
+        ],
+        "explicit_tail_end_exclusive": "007fd844",
+        "explicit_tail_terminator": "ret",
+        "explicit_body_sha256": "fd7cdefcb5e6b175d92f9b1b7597b6abc6ccf401029c96cc8ef6c4565d523fcf",
+        "body_before": "Function: BSP_MissionProgress_Destroy at 007fd780\nSignature: undefined BSP_MissionProgress_Destroy(void)\nEntry: 007fd780\nBody: 007fd780 - 007fd7c9",
+        "decompile_lines_after": 44,
+        "gaps_remaining": 1,
+        "body_after": "Function: BSP_MissionProgress_Destroy at 007fd780\nSignature: undefined BSP_MissionProgress_Destroy(void)\nEntry: 007fd780\nBody: 007fd780 - 007fd7c9",
+        "stored_body_tail_complete": false,
+        "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+      }
+    ]
+  },
+  "body_recreation": {
+    "events": [
+      {
+        "recreate": "007fd780",
+        "previous": "Function: BSP_MissionProgress_Destroy at 007fd780\nSignature: undefined BSP_MissionProgress_Destroy(void)\nEntry: 007fd780\nBody: 007fd780 - 007fd7c9",
+        "plate": "[BSP reconstruction 007fd780]\nHypothesis, not a recovered symbol. Packet orch2_game_profile_reset. Evidence docs/GAME_PROFILE_RESET.md; reports/game_profile_reset.json. Read-only worker; normal-flow C++ projection, not native ABI or game validation. Analyzed only. ECX24h object, RET. Raw body destroys trees+18,+C,+0 and frees sentinels in reverse order; final007FD843 RET length1. Export remains truncated at007FD7C9 despite primary decoding tail/clearing three free overrides. Use raw listing; no full Ghidra repair claim."
+      },
+      {
+        "endpoint": "delete_function",
+        "body": {
+          "address": "007fd780"
+        },
+        "result": {
+          "success": true,
+          "address": "007fd780",
+          "deleted_function": "BSP_MissionProgress_Destroy",
+          "body_size": 74,
+          "message": "Function 'BSP_MissionProgress_Destroy' deleted at 007fd780"
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "007fd780",
+          "end_address": "007fd844"
+        },
+        "result": {
+          "success": true,
+          "start_address": "007fd780",
+          "end_address": "007fd843",
+          "bytes_disassembled": 196,
+          "message": "Successfully disassembled 196 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "007fd780",
+          "disassemble_first": false,
+          "name": "BSP_MissionProgress_Destroy"
+        },
+        "result": {
+          "success": true,
+          "address": "007fd780",
+          "function_name": "BSP_MissionProgress_Destroy",
+          "entry_point": "007fd780",
+          "body_size": 196,
+          "message": "Function created successfully at 007fd780",
+          "warnings": [
+            "Function name 'BSP_MissionProgress_Destroy' \u2014 main part 'MissionProgress_Destroy' is not PascalCase. Expected: MissionprogressDestroy",
+            "Function name 'BSP_MissionProgress_Destroy' \u2014 main part 'MissionProgress_Destroy' contains underscores. Use PascalCase after the module prefix.",
+            "Function name 'BSP_MissionProgress_Destroy' does not start with a recognized verb. First word 'Mission' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+          ]
+        }
+      },
+      {
+        "endpoint": "set_plate_comment",
+        "body": {
+          "address": "007fd780",
+          "comment": "[BSP reconstruction 007fd780]\nHypothesis, not a recovered symbol. Packet orch2_game_profile_reset. Evidence docs/GAME_PROFILE_RESET.md; reports/game_profile_reset.json. Read-only worker; normal-flow C++ projection, not native ABI or game validation. Analyzed only. ECX24h object, RET. Raw body destroys trees+18,+C,+0 and frees sentinels in reverse order; final007FD843 RET length1. Export remains truncated at007FD7C9 despite primary decoding tail/clearing three free overrides. Use raw listing; no full Ghidra repair claim."
+        },
+        "result": {
+          "status": "success",
+          "message": "Set plate comment for function at 007fd780",
+          "warnings": [
+            "Plate comment missing Algorithm section",
+            "Plate comment missing Parameters section",
+            "Plate comment missing Returns section"
+          ]
+        }
+      },
+      {
+        "defined": "007fd780",
+        "end": "007fd844",
+        "name": "BSP_MissionProgress_Destroy",
+        "after": "Function: BSP_MissionProgress_Destroy at 007fd780\nSignature: undefined BSP_MissionProgress_Destroy(void)\nEntry: 007fd780\nBody: 007fd780 - 007fd843"
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "success": true,
+          "program": "battlestationspacific.exe",
+          "message": "Program saved successfully"
+        }
+      }
+    ]
+  },
+  "collection_repairs": {
+    "repairs": [
+      {
+        "function": "007fd510",
+        "owner": "agent/orch4-20260915",
+        "when": "2026-09-17T20:27:10Z",
+        "decompile_lines_before": 41,
+        "gaps": [
+          {
+            "site": "007fd589",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "007fd58e",
+            "gap_end_exclusive": "007fd59c",
+            "bytes": 14,
+            "after_call": true,
+            "sha256": "552f02267736f4e13683822b8fcbd045acb8d036ed05f02a70e35e37653a1772"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "007fd589",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "007fd58e",
+              "gap_end_exclusive": "007fd59c",
+              "bytes": 14,
+              "after_call": true,
+              "sha256": "552f02267736f4e13683822b8fcbd045acb8d036ed05f02a70e35e37653a1772"
+            },
+            "clear": "Success: Cleared flow override at 007fd589 (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 14 byte(s)"
+          }
+        ],
+        "decompile_lines_after": 49,
+        "gaps_remaining": 0
+      },
+      {
+        "function": "007fa880",
+        "owner": "agent/orch4-20260915",
+        "when": "2026-09-17T20:27:11Z",
+        "decompile_lines_before": 13,
+        "gaps": [
+          {
+            "site": "007fa8a7",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "007fa8ac",
+            "gap_end_exclusive": "007fa8b7",
+            "bytes": 11,
+            "after_call": true,
+            "sha256": "ca213c75a17ca211c92d58390598e3989ea05ccb53c05f2df794181da6cdcc78"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "007fa8a7",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "007fa8ac",
+              "gap_end_exclusive": "007fa8b7",
+              "bytes": 11,
+              "after_call": true,
+              "sha256": "ca213c75a17ca211c92d58390598e3989ea05ccb53c05f2df794181da6cdcc78"
+            },
+            "clear": "Success: Cleared flow override at 007fa8a7 (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 11 byte(s)"
+          }
+        ],
+        "decompile_lines_after": 19,
+        "gaps_remaining": 0
+      }
+    ]
+  },
+  "result": "Initial destructor tail disassembly left stored body truncated at7FD7C9. Subsequent locked delete/recreate restored existing function7FD780..7FD843, preserving reviewed name and plate comment, disassemble_first=false, saved. Free-site CALL_RETURN overrides at7FD589/7FA8A7 cleared and14/11-byte loop tails restored. Forced snapshot after body change. No callee no-return flags changed. Inline read script endpoint stayed disabled.",
+  "function_count_change": 0,
+  "destructor_final_inclusive_end": "007fd843",
+  "unlisted_alignment": [
+    {
+      "address": "007fde59",
+      "length": 7,
+      "hex": "8da42400000000",
+      "kind": "unreachable_alignment_LEA_same_register"
+    },
+    {
+      "address": "007fd66f",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET14"
+    },
+    {
+      "address": "0058d8df",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET14"
+    }
+  ],
+  "final_live_pe_function_bodies": [
+    {
+      "address": "007fd780",
+      "length": 196,
+      "sha256": "fd7cdefcb5e6b175d92f9b1b7597b6abc6ccf401029c96cc8ef6c4565d523fcf"
+    },
+    {
+      "address": "007fd510",
+      "length": 161,
+      "sha256": "efcde8000059b5ff50dbd922ef611474cb81df0546f7f4da9b7d445ca7d7c2da"
+    },
+    {
+      "address": "007fa880",
+      "length": 61,
+      "sha256": "ea09e1128e252ade59792d4cf56b512d2d32c12cfc1a8c300f58a2491c9e9df9"
+    }
+  ]
+}

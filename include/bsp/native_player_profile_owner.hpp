@@ -1,5 +1,6 @@
 #pragma once
 #include "bsp/native_string.hpp"
+#include "bsp/native_mission_progress_owner.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>
@@ -15,25 +16,21 @@ static_assert(std::is_trivially_default_constructible_v<NativePlayerProfileStora
 // Known leaves have concrete existing source bindings. Other bodies are
 // required services, with actual raw receivers; no projected profile or
 // success fallback. Library allocation/collection calls remain contracts.
-struct NativePlayerProfileCalls {
+struct NativePlayerProfileCalls : NativeProfileCollectionCalls {
     virtual ~NativePlayerProfileCalls()=default;
     virtual void* call_004c3020();
     virtual void* call_007f82f0();
     virtual void* call_004c26b0();
-    virtual void* call_007f8540()=0;
-    virtual void* call_005826b0()=0;
-    virtual void call_007fd780(void* progress)=0;
-    virtual void free_00bf65ac(void* allocation);
-    virtual void* allocate_00bf681b(std::uint32_t bytes);
-    virtual void* call_00920e10(void* allocation)=0;
+    virtual void* call_007f8540();
+    virtual void* call_005826b0();
     virtual void call_004cec60(void* tree,void* node,NativeStringStorage&);
-    virtual void call_0058b520(void* tree,void* node)=0;
+    virtual void call_0058b520(void* tree,void* node,NativeStringStorage&);
     virtual void call_00bf6713();
     virtual void* call_004954f0(void* vector,void* output,void* first_owner,
         void* first,void* last_owner,void* last,NativeStringStorage&);
-    virtual void call_007fa880(void* tree,void* node)=0;
+    virtual void call_007fa880(void* tree,void* node,NativeStringStorage&);
     virtual std::uint32_t* call_005070c0(void* map,const void* key_header)=0;
-    virtual void call_004d05e0(void* list)=0;
+    virtual void call_004d05e0(void* list,NativeStringStorage&);
     virtual void* call_007f8390(void* next,void* previous,const std::uint8_t* gate);
     virtual std::uint32_t call_007fa3a0(void* list,std::uint32_t increment);
     virtual void call_008d4820(void* actual_settings_00f88980)=0;
@@ -65,6 +62,8 @@ struct NativePlayerProfileOperation final {
     std::uint32_t captured_first{};
     std::uint32_t lobby_index{};
     std::uint8_t gate;
+    NativeMissionProgressOperation progress_destruction;
+    NativeMissionProgressOperation progress_construction;
     NativePlayerProfileOperation() noexcept=default;
     ~NativePlayerProfileOperation();
     NativePlayerProfileOperation(const NativePlayerProfileOperation&)=delete;

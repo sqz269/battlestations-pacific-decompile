@@ -40,6 +40,10 @@ void release_alias_string(ActualNativeStringPoolStorage& strings, char* data,
     std::uint32_t size) noexcept {
     strings.release(data, size); // Repeats current 419CC0 -> BD1510 for this return.
 }
+void release_alias_string(NativeStringStorage& strings, char* data,
+    std::uint32_t size) noexcept {
+    strings.release(data, size);
+}
 
 template<class T>
 volatile T& list_field(void* actual_owner, std::size_t offset) {
@@ -230,6 +234,9 @@ void destroy_native_render_resource_record_00b2f990(
 
 
 void clear_native_render_resource_aliases_004d05e0(void* owner, NativeStringRawPoolContext& strings) {
+    clear_aliases_with_pool(owner, strings);
+}
+void clear_native_render_resource_aliases_004d05e0(void* owner, NativeStringStorage& strings) {
     clear_aliases_with_pool(owner, strings);
 }
 
