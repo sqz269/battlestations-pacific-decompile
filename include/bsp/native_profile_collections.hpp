@@ -8,6 +8,7 @@ namespace bsp {
 struct NativeProfileCollectionCalls {
     virtual ~NativeProfileCollectionCalls()=default;
     virtual void* allocate_00bf681b(std::uint32_t bytes);
+    virtual void* allocate_00bf55be(std::uint32_t bytes);
     virtual void free_00bf65ac(void* allocation);
     virtual void call_00593570(void* actual_score_record,NativeStringStorage&);
 };

@@ -1,6 +1,7 @@
 #pragma once
 #include "bsp/native_string.hpp"
 #include "bsp/native_mission_progress_owner.hpp"
+#include "bsp/native_profile_settings.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>
@@ -13,9 +14,9 @@ struct alignas(4) NativePlayerProfileStorage final { std::byte bytes[0xf8]; };
 static_assert(sizeof(NativePlayerProfileStorage)==0xf8);
 static_assert(std::is_trivially_default_constructible_v<NativePlayerProfileStorage>);
 
-// Known leaves have concrete existing source bindings. Other bodies are
-// required services, with actual raw receivers; no projected profile or
-// success fallback. Library allocation/collection calls remain contracts.
+// Concrete normal raw profile dependencies. The selected-user settings branch
+// uses the supplied actual publications and SDK import context. No projected
+// profile or success fallback; library allocation/collection calls are contracts.
 struct NativePlayerProfileCalls : NativeProfileCollectionCalls {
     virtual ~NativePlayerProfileCalls()=default;
     virtual void* call_004c3020();
@@ -29,12 +30,12 @@ struct NativePlayerProfileCalls : NativeProfileCollectionCalls {
     virtual void* call_004954f0(void* vector,void* output,void* first_owner,
         void* first,void* last_owner,void* last,NativeStringStorage&);
     virtual void call_007fa880(void* tree,void* node,NativeStringStorage&);
-    virtual std::uint32_t* call_005070c0(void* map,const void* key_header)=0;
+    virtual std::uint32_t* call_005070c0(void* map,const void* key_header,NativeStringStorage&);
     virtual void call_004d05e0(void* list,NativeStringStorage&);
     virtual void* call_007f8390(void* next,void* previous,const std::uint8_t* gate);
     virtual std::uint32_t call_007fa3a0(void* list,std::uint32_t increment);
-    virtual void call_008d4820(void* actual_settings_00f88980)=0;
-    virtual void call_008d41c0(void* actual_settings_00f88980)=0;
+    virtual void call_008d4820(void* actual_settings_00f88980,NativeProfileSettingsContext&);
+    virtual void call_008d41c0(void* actual_settings_00f88980);
 };
 struct NativePlayerProfileContext {
     NativeStringStorage& strings;
@@ -43,6 +44,7 @@ struct NativePlayerProfileContext {
     const char* const empty_00ce3a0c;
     const char* const new_player_00cef794;
     const char* const rank_00cef15c;
+    NativeProfileSettingsContext settings;
 };
 struct NativePlayerProfileOperation final {
     enum class Phase { fresh,running,complete,failed,diagnostic_retired };

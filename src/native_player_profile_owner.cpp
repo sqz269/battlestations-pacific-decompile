@@ -1,4 +1,5 @@
 #include "bsp/native_player_profile_owner.hpp"
+#include "bsp/native_profile_counter_map.hpp"
 #include "bsp/native_checked_string_storage.hpp"
 #include "bsp/native_fileblock_gate_list.hpp"
 #include "bsp/native_render_resource_record_construction.hpp"
@@ -30,6 +31,13 @@ void NativePlayerProfileCalls::call_0058b520(void* tree,void* node,NativeStringS
 void NativePlayerProfileCalls::call_007fa880(void* tree,void* node,NativeStringStorage& strings){
     erase_native_profile_transient_subtree_007fa880(tree,node,strings,*this);
 }
+std::uint32_t* NativePlayerProfileCalls::call_005070c0(void* tree,const void* key,NativeStringStorage& strings){
+    return index_native_profile_counter_005070c0(tree,key,strings,*this);
+}
+void NativePlayerProfileCalls::call_008d4820(void* settings,NativeProfileSettingsContext& context){
+    reset_native_profile_control_defaults_008d4820(settings,context,*this);
+}
+void NativePlayerProfileCalls::call_008d41c0(void* settings){reset_native_profile_game_defaults_008d41c0(settings);}
 void NativePlayerProfileCalls::call_004d05e0(void* list,NativeStringStorage& strings){
     clear_native_render_resource_aliases_004d05e0(list,strings);
 }
@@ -118,7 +126,7 @@ void reset_body(void* profile,NativePlayerProfileContext& c,Op& a) {
     if(a.captured_rank_buffer){const Word bytes=read<Word>(&a.temporary)+1;a.native_site=0x007fddcc;
         std::memmove(a.captured_rank_buffer,c.rank_00cef15c,bytes);}
     a.unwind_state=2;a.native_site=0x007fdde3;
-    put<Word>(calls.call_005070c0(counters,&a.temporary),0,1);a.unwind_state=-1;
+    put<Word>(calls.call_005070c0(counters,&a.temporary,c.strings),0,1);a.unwind_state=-1;
     if(a.captured_rank_buffer){const Word bytes=read<Word>(&a.temporary)+1;a.native_site=0x007fde05;
         c.strings.release(a.captured_rank_buffer,bytes);}
     a.native_site=0x007fde14;calls.call_004d05e0(at(profile,8),c.strings);
@@ -138,7 +146,7 @@ void reset_body(void* profile,NativePlayerProfileContext& c,Op& a) {
     word(profile,0x30,0xffffffff);word(profile,0xf0);word(profile,0xec);
     a.native_site=0x007fdec2;calls.call_004d05e0(at(profile,0xcc),c.strings);
     word(profile,0xd8);word(profile,0xdc);
-    a.native_site=0x007fded8;calls.call_008d4820(c.actual_settings_00f88980);
+    a.native_site=0x007fded8;calls.call_008d4820(c.actual_settings_00f88980,c.settings);
     a.native_site=0x007fdee2;calls.call_008d41c0(c.actual_settings_00f88980);
 }
 void enter(void* owner,NativePlayerProfileContext& c,Op& a,bool construction){

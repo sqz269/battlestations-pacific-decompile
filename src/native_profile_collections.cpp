@@ -11,6 +11,10 @@ namespace bsp {
 void* NativeProfileCollectionCalls::allocate_00bf681b(std::uint32_t n){
     return singleton_lifetime_allocate({SingletonAllocationKind::object,n,n});
 }
+void* NativeProfileCollectionCalls::allocate_00bf55be(std::uint32_t n){
+    // BF55BE jumps to BF681B; both use the existing malloc/new-handler domain.
+    return singleton_lifetime_allocate({SingletonAllocationKind::object,n,n});
+}
 void NativeProfileCollectionCalls::free_00bf65ac(void* p){singleton_lifetime_free(p);}
 void NativeProfileCollectionCalls::call_00593570(void* record,NativeStringStorage& strings){
     destroy_native_mission_score_record_00593570(record,strings,*this);

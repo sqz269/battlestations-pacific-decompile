@@ -1,0 +1,192 @@
+{
+  "packet": "native_profile_defaults_r109",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "settings_tail_repair": {
+    "repairs": [
+      {
+        "function": "008d45d0",
+        "owner": "agent/orch4-20260915",
+        "when": "2026-09-17T21:24:38Z",
+        "decompile_lines_before": 54,
+        "gaps": [
+          {
+            "site": "008d469e",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "008d46a3",
+            "gap_end_exclusive": "008d46a6",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "008d469e",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "008d46a3",
+              "gap_end_exclusive": "008d46a6",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            },
+            "clear": "Success: Cleared flow override at 008d469e (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 3 byte(s)"
+          }
+        ],
+        "decompile_lines_after": 53,
+        "gaps_remaining": 0
+      }
+    ]
+  },
+  "settings_body_recreation": {
+    "events": [
+      {
+        "recreate": "008d45d0",
+        "previous": "Function: FUN_008d45d0 at 008d45d0\nSignature: undefined FUN_008d45d0(void)\nEntry: 008d45d0\nBody: 008d45d0 - 008d46ab",
+        "plate": null
+      },
+      {
+        "endpoint": "delete_function",
+        "body": {
+          "address": "008d45d0"
+        },
+        "result": {
+          "success": true,
+          "address": "008d45d0",
+          "deleted_function": "FUN_008d45d0",
+          "body_size": 217,
+          "message": "Function 'FUN_008d45d0' deleted at 008d45d0"
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "008d45d0",
+          "end_address": "008d46ac"
+        },
+        "result": {
+          "success": true,
+          "start_address": "008d45d0",
+          "end_address": "008d46ab",
+          "bytes_disassembled": 220,
+          "message": "Successfully disassembled 220 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "008d45d0",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "008d45d0",
+          "function_name": "FUN_008d45d0",
+          "entry_point": "008d45d0",
+          "body_size": 220,
+          "message": "Function created successfully at 008d45d0"
+        }
+      },
+      {
+        "defined": "008d45d0",
+        "end": "008d46ac",
+        "name": null,
+        "after": "Function: FUN_008d45d0 at 008d45d0\nSignature: undefined FUN_008d45d0(void)\nEntry: 008d45d0\nBody: 008d45d0 - 008d46ab"
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "success": true,
+          "program": "battlestationspacific.exe",
+          "message": "Program saved successfully"
+        }
+      }
+    ]
+  },
+  "result": "Restored ADD ESP,4 at8D46A3..8D46A6 after free8D469E. Recreated complete220-byte8D45D0..8D46AB under write lock, disassemble_first=false; actual old body_size217 despite full endpoint range. Preserved prior name/comments, saved/force-exported/snapshot. No callee no-return flag changes.",
+  "unlisted_alignment": [
+    {
+      "address": "007fde59",
+      "length": 7,
+      "hex": "8da42400000000",
+      "kind": "unreachable_alignment_LEA_same_register"
+    },
+    {
+      "address": "007fd66f",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "0058d8df",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "0058adbf",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "0058ae8f",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "0058afaf",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "0058b07f",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "0058b14f",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "0058f17f",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "00591aaf",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "00591c7f",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "00592f8f",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    },
+    {
+      "address": "005931ff",
+      "length": 1,
+      "hex": "90",
+      "kind": "unreachable_alignment_NOP_after_RET"
+    }
+  ]
+}
