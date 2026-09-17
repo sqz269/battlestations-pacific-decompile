@@ -1,0 +1,3391 @@
+{
+  "packet": "native_shader_preload_r99",
+  "base_commit": "f7253ae276fb0ec5ce4213ed43f34b9a4bdd7569",
+  "status": "two_new_full_normal_preload_and_pointer_vector_bodies_strict_build_vector_original_differential_preload_runtime_open",
+  "contracts": {
+    "0073bf80": {
+      "name": "BSP_ShaderCache_PreloadFromScript",
+      "source_name": "preload_native_application_shaders_0073bf80",
+      "source": "src/native_shader_preload.cpp",
+      "kind": "function",
+      "new_body": true,
+      "abi": "ECX actual application; no stack arguments; RET at0073C21D; no useful return established.",
+      "contract": "Full670-byte normal body: actual cache bracket, Lua mask1 and native shaderpreload.lua/FileNames iteration, current renderer+48 B318B0 material loading, append returned owned/null pointers to existing application+08 vector, current name cleanup, cache release before reverse value/key/table/Lua cleanup. Persistent cache/Lua/material frames retain failure. Compiled and instruction-reviewed; full-loop runtime remains open.",
+      "coverage": "New full normal source body.95-byte reserve is original-instruction differential-tested;670-byte preload is build-tested and assembly-reviewed with existing concrete child providers, not runtime-validated. No original FH3/SEH/binary ABI or gameplay claim."
+    },
+    "00735ec0": {
+      "name": "BSP_AppPointerVector_Reserve",
+      "source_name": "reserve_native_application_pointer_vector_00735ec0",
+      "source": "src/native_shader_preload.cpp",
+      "kind": "function",
+      "new_body": true,
+      "abi": "ECX actual0Ch pointer header; stack signed request; RET4 at00735F1C; no useful return established.",
+      "contract": "Full95-byte normal reserve: min1, signed capacity gate, wrapping allocation bytes, current source/count per copy, free CURRENT old data before publishing fresh pointer/capacity; count preserved including callback mutations. Original/source95-byte differential verifies minimum1, mutated header/copy/free schedule and no-growth.",
+      "coverage": "New full normal source body.95-byte reserve is original-instruction differential-tested;670-byte preload is build-tested and assembly-reviewed with existing concrete child providers, not runtime-validated. No original FH3/SEH/binary ABI or gameplay claim."
+    }
+  },
+  "new_unique_functions": 2,
+  "new_unique_body_bytes": 765,
+  "new_fragments": 0,
+  "host_steps": [
+    {
+      "address": "0073bfa6",
+      "native": "00b3a600",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xb3a600"
+    },
+    {
+      "address": "0073bfaf",
+      "native": "00b66bd0",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xb66bd0"
+    },
+    {
+      "address": "0073bfc3",
+      "native": "00b6a020",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xb6a020"
+    },
+    {
+      "address": "0073bfd8",
+      "native": "0041dd40",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "0073bff3",
+      "native": "00bf7680",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "0073c00d",
+      "native": "00b69d40",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xb69d40"
+    },
+    {
+      "address": "0073c02c",
+      "native": "00419cc0",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "0073c033",
+      "native": "00bd1510",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "0073c041",
+      "native": "00b67980",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xb67980"
+    },
+    {
+      "address": "0073c05a",
+      "native": "00b67800",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xb67800"
+    },
+    {
+      "address": "0073c06b",
+      "native": "00b67700",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xb67700"
+    },
+    {
+      "address": "0073c074",
+      "native": "00b65f50",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xb65f50"
+    },
+    {
+      "address": "0073c085",
+      "native": "00b65f50",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xb65f50"
+    },
+    {
+      "address": "0073c097",
+      "native": "004254b0",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0x4254b0"
+    },
+    {
+      "address": "0073c0ad",
+      "native": "00b67080",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xb67080"
+    },
+    {
+      "address": "0073c0bb",
+      "native": "00b66420",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xb66420"
+    },
+    {
+      "address": "0073c0d4",
+      "native": "00b662b0",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xb662b0"
+    },
+    {
+      "address": "0073c0f8",
+      "native": "0041dd40",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "0073c10f",
+      "native": "00bf7680",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "0073c12f",
+      "native": "0073bf80+vtable48",
+      "function": "0073bf80",
+      "kind": "indirect",
+      "instruction": "call eax"
+    },
+    {
+      "address": "0073c14a",
+      "native": "00735ec0",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0x735ec0"
+    },
+    {
+      "address": "0073c17c",
+      "native": "00419cc0",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0x419cc0"
+    },
+    {
+      "address": "0073c183",
+      "native": "00bd1510",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xbd1510"
+    },
+    {
+      "address": "0073c196",
+      "native": "00b67190",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xb67190"
+    },
+    {
+      "address": "0073c1a4",
+      "native": "00b66420",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xb66420"
+    },
+    {
+      "address": "0073c1b6",
+      "native": "004254b0",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0x4254b0"
+    },
+    {
+      "address": "0073c1be",
+      "native": "00b3b140",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xb3b140"
+    },
+    {
+      "address": "0073c1cf",
+      "native": "00b67700",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xb67700"
+    },
+    {
+      "address": "0073c1e0",
+      "native": "00b67700",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xb67700"
+    },
+    {
+      "address": "0073c1f0",
+      "native": "00b67700",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xb67700"
+    },
+    {
+      "address": "0073c204",
+      "native": "00b669a0",
+      "function": "0073bf80",
+      "kind": "direct",
+      "instruction": "call 0xb669a0"
+    },
+    {
+      "address": "00735ee0",
+      "native": "00bf55be",
+      "function": "00735ec0",
+      "kind": "direct",
+      "instruction": "call 0xbf55be"
+    },
+    {
+      "address": "00735f0c",
+      "native": "00bf6989",
+      "function": "00735ec0",
+      "kind": "direct",
+      "instruction": "call 0xbf6989"
+    }
+  ],
+  "native_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "0073bf80",
+        "kind": "function",
+        "length": 670,
+        "hex": "558bec83e4f86aff68ad68c80064a100000000506489250000000081ec280500005356578bf1e855e63f008d4c2468e81cac420033db6a018d4c246c899c2440050000e858e042006a016a1a8d4c2418895c2418895c241ce8631dceff8b4424143bc374168b4c241083c101516800f1cf0050e888b64b0083c40c538d542414528d4c2470c684244405000001e82edd42008b4c24143bcb889c243c05000074178b4424106a0183c0015051e88fdccdff8bc8e8d85449008d442454508d4c246ce83ab9420068f4f0cf008d4c2430518bc8c684244405000002e8a1b742008d4c2454c684243c05000004e890b642008d4c2440e8d79e42008d4c2418c684243c05000005e8c69e420068d4f0cf00c684244005000006e81494ceff83c4048d542418528d442444508d4c2434e8ceaf42008d4c2418518d4c2430e860a3420084c00f85e900000083c608eb038d49008d4c2418e8d7a142008bf8895c2410895c24148d50018a0883c0013acb75f72bc26a01508d4c2418e8431cceff8b4424143bc374128b54241083c201525750e86cb54b0083c40c8b0d94d3f8008b018b40488d54241052c684244005000007ffd08bf88b4608394604751403c083f8017f05b801000000508bcee8719dffff8b4e048b168d048a3bc3740289388b442414834604013bc3c684243c0500000674178b4c24106a0183c1015150e83fdbcdff8bc8e8885349008d442418508d4c2444518d4c2434e8f5af42008d542418528d4c2430e877a2420084c00f841fffffff68b8f0cf00e8f592ceff83c404e87def3f008d4c2418c684243c05000005e82cb542008d4c2440c684243c05000004e81bb542008d4c242c889c243c050000e80bb542008d4c2468c784243c050000ffffffffe897a742008b8c24340500005f5e64890d000000005b8be55dc3",
+        "sha256": "b85890ad675a8840f271f339d05c7ed81545f129cf73ce339a27d38d7b854999",
+        "live_equals_pe": true,
+        "section": ".text",
+        "pe_raw_backed": true,
+        "unlisted_padding": [
+          {
+            "address": "0073c0cd",
+            "length": 3,
+            "hex": "8d4900",
+            "kind": "unreachable_alignment_LEA_same_register"
+          }
+        ],
+        "instructions": [
+          {
+            "address": "0073bf80",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "0073bf81",
+            "hex": "8bec",
+            "text": "mov ebp, esp"
+          },
+          {
+            "address": "0073bf83",
+            "hex": "83e4f8",
+            "text": "and esp, 0xfffffff8"
+          },
+          {
+            "address": "0073bf86",
+            "hex": "6aff",
+            "text": "push -1"
+          },
+          {
+            "address": "0073bf88",
+            "hex": "68ad68c800",
+            "text": "push 0xc868ad"
+          },
+          {
+            "address": "0073bf8d",
+            "hex": "64a100000000",
+            "text": "mov eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "0073bf93",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0073bf94",
+            "hex": "64892500000000",
+            "text": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "address": "0073bf9b",
+            "hex": "81ec28050000",
+            "text": "sub esp, 0x528"
+          },
+          {
+            "address": "0073bfa1",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "0073bfa2",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "0073bfa3",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "0073bfa4",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "0073bfa6",
+            "hex": "e855e63f00",
+            "text": "call 0xb3a600"
+          },
+          {
+            "address": "0073bfab",
+            "hex": "8d4c2468",
+            "text": "lea ecx, [esp + 0x68]"
+          },
+          {
+            "address": "0073bfaf",
+            "hex": "e81cac4200",
+            "text": "call 0xb66bd0"
+          },
+          {
+            "address": "0073bfb4",
+            "hex": "33db",
+            "text": "xor ebx, ebx"
+          },
+          {
+            "address": "0073bfb6",
+            "hex": "6a01",
+            "text": "push 1"
+          },
+          {
+            "address": "0073bfb8",
+            "hex": "8d4c246c",
+            "text": "lea ecx, [esp + 0x6c]"
+          },
+          {
+            "address": "0073bfbc",
+            "hex": "899c2440050000",
+            "text": "mov dword ptr [esp + 0x540], ebx"
+          },
+          {
+            "address": "0073bfc3",
+            "hex": "e858e04200",
+            "text": "call 0xb6a020"
+          },
+          {
+            "address": "0073bfc8",
+            "hex": "6a01",
+            "text": "push 1"
+          },
+          {
+            "address": "0073bfca",
+            "hex": "6a1a",
+            "text": "push 0x1a"
+          },
+          {
+            "address": "0073bfcc",
+            "hex": "8d4c2418",
+            "text": "lea ecx, [esp + 0x18]"
+          },
+          {
+            "address": "0073bfd0",
+            "hex": "895c2418",
+            "text": "mov dword ptr [esp + 0x18], ebx"
+          },
+          {
+            "address": "0073bfd4",
+            "hex": "895c241c",
+            "text": "mov dword ptr [esp + 0x1c], ebx"
+          },
+          {
+            "address": "0073bfd8",
+            "hex": "e8631dceff",
+            "text": "call 0x41dd40"
+          },
+          {
+            "address": "0073bfdd",
+            "hex": "8b442414",
+            "text": "mov eax, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "0073bfe1",
+            "hex": "3bc3",
+            "text": "cmp eax, ebx"
+          },
+          {
+            "address": "0073bfe3",
+            "hex": "7416",
+            "text": "je 0x73bffb"
+          },
+          {
+            "address": "0073bfe5",
+            "hex": "8b4c2410",
+            "text": "mov ecx, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "0073bfe9",
+            "hex": "83c101",
+            "text": "add ecx, 1"
+          },
+          {
+            "address": "0073bfec",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "0073bfed",
+            "hex": "6800f1cf00",
+            "text": "push 0xcff100"
+          },
+          {
+            "address": "0073bff2",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0073bff3",
+            "hex": "e888b64b00",
+            "text": "call 0xbf7680"
+          },
+          {
+            "address": "0073bff8",
+            "hex": "83c40c",
+            "text": "add esp, 0xc"
+          },
+          {
+            "address": "0073bffb",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "0073bffc",
+            "hex": "8d542414",
+            "text": "lea edx, [esp + 0x14]"
+          },
+          {
+            "address": "0073c000",
+            "hex": "52",
+            "text": "push edx"
+          },
+          {
+            "address": "0073c001",
+            "hex": "8d4c2470",
+            "text": "lea ecx, [esp + 0x70]"
+          },
+          {
+            "address": "0073c005",
+            "hex": "c684244405000001",
+            "text": "mov byte ptr [esp + 0x544], 1"
+          },
+          {
+            "address": "0073c00d",
+            "hex": "e82edd4200",
+            "text": "call 0xb69d40"
+          },
+          {
+            "address": "0073c012",
+            "hex": "8b4c2414",
+            "text": "mov ecx, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "0073c016",
+            "hex": "3bcb",
+            "text": "cmp ecx, ebx"
+          },
+          {
+            "address": "0073c018",
+            "hex": "889c243c050000",
+            "text": "mov byte ptr [esp + 0x53c], bl"
+          },
+          {
+            "address": "0073c01f",
+            "hex": "7417",
+            "text": "je 0x73c038"
+          },
+          {
+            "address": "0073c021",
+            "hex": "8b442410",
+            "text": "mov eax, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "0073c025",
+            "hex": "6a01",
+            "text": "push 1"
+          },
+          {
+            "address": "0073c027",
+            "hex": "83c001",
+            "text": "add eax, 1"
+          },
+          {
+            "address": "0073c02a",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0073c02b",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "0073c02c",
+            "hex": "e88fdccdff",
+            "text": "call 0x419cc0"
+          },
+          {
+            "address": "0073c031",
+            "hex": "8bc8",
+            "text": "mov ecx, eax"
+          },
+          {
+            "address": "0073c033",
+            "hex": "e8d8544900",
+            "text": "call 0xbd1510"
+          },
+          {
+            "address": "0073c038",
+            "hex": "8d442454",
+            "text": "lea eax, [esp + 0x54]"
+          },
+          {
+            "address": "0073c03c",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0073c03d",
+            "hex": "8d4c246c",
+            "text": "lea ecx, [esp + 0x6c]"
+          },
+          {
+            "address": "0073c041",
+            "hex": "e83ab94200",
+            "text": "call 0xb67980"
+          },
+          {
+            "address": "0073c046",
+            "hex": "68f4f0cf00",
+            "text": "push 0xcff0f4"
+          },
+          {
+            "address": "0073c04b",
+            "hex": "8d4c2430",
+            "text": "lea ecx, [esp + 0x30]"
+          },
+          {
+            "address": "0073c04f",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "0073c050",
+            "hex": "8bc8",
+            "text": "mov ecx, eax"
+          },
+          {
+            "address": "0073c052",
+            "hex": "c684244405000002",
+            "text": "mov byte ptr [esp + 0x544], 2"
+          },
+          {
+            "address": "0073c05a",
+            "hex": "e8a1b74200",
+            "text": "call 0xb67800"
+          },
+          {
+            "address": "0073c05f",
+            "hex": "8d4c2454",
+            "text": "lea ecx, [esp + 0x54]"
+          },
+          {
+            "address": "0073c063",
+            "hex": "c684243c05000004",
+            "text": "mov byte ptr [esp + 0x53c], 4"
+          },
+          {
+            "address": "0073c06b",
+            "hex": "e890b64200",
+            "text": "call 0xb67700"
+          },
+          {
+            "address": "0073c070",
+            "hex": "8d4c2440",
+            "text": "lea ecx, [esp + 0x40]"
+          },
+          {
+            "address": "0073c074",
+            "hex": "e8d79e4200",
+            "text": "call 0xb65f50"
+          },
+          {
+            "address": "0073c079",
+            "hex": "8d4c2418",
+            "text": "lea ecx, [esp + 0x18]"
+          },
+          {
+            "address": "0073c07d",
+            "hex": "c684243c05000005",
+            "text": "mov byte ptr [esp + 0x53c], 5"
+          },
+          {
+            "address": "0073c085",
+            "hex": "e8c69e4200",
+            "text": "call 0xb65f50"
+          },
+          {
+            "address": "0073c08a",
+            "hex": "68d4f0cf00",
+            "text": "push 0xcff0d4"
+          },
+          {
+            "address": "0073c08f",
+            "hex": "c684244005000006",
+            "text": "mov byte ptr [esp + 0x540], 6"
+          },
+          {
+            "address": "0073c097",
+            "hex": "e81494ceff",
+            "text": "call 0x4254b0"
+          },
+          {
+            "address": "0073c09c",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "0073c09f",
+            "hex": "8d542418",
+            "text": "lea edx, [esp + 0x18]"
+          },
+          {
+            "address": "0073c0a3",
+            "hex": "52",
+            "text": "push edx"
+          },
+          {
+            "address": "0073c0a4",
+            "hex": "8d442444",
+            "text": "lea eax, [esp + 0x44]"
+          },
+          {
+            "address": "0073c0a8",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0073c0a9",
+            "hex": "8d4c2434",
+            "text": "lea ecx, [esp + 0x34]"
+          },
+          {
+            "address": "0073c0ad",
+            "hex": "e8ceaf4200",
+            "text": "call 0xb67080"
+          },
+          {
+            "address": "0073c0b2",
+            "hex": "8d4c2418",
+            "text": "lea ecx, [esp + 0x18]"
+          },
+          {
+            "address": "0073c0b6",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "0073c0b7",
+            "hex": "8d4c2430",
+            "text": "lea ecx, [esp + 0x30]"
+          },
+          {
+            "address": "0073c0bb",
+            "hex": "e860a34200",
+            "text": "call 0xb66420"
+          },
+          {
+            "address": "0073c0c0",
+            "hex": "84c0",
+            "text": "test al, al"
+          },
+          {
+            "address": "0073c0c2",
+            "hex": "0f85e9000000",
+            "text": "jne 0x73c1b1"
+          },
+          {
+            "address": "0073c0c8",
+            "hex": "83c608",
+            "text": "add esi, 8"
+          },
+          {
+            "address": "0073c0cb",
+            "hex": "eb03",
+            "text": "jmp 0x73c0d0"
+          },
+          {
+            "address": "0073c0d0",
+            "hex": "8d4c2418",
+            "text": "lea ecx, [esp + 0x18]"
+          },
+          {
+            "address": "0073c0d4",
+            "hex": "e8d7a14200",
+            "text": "call 0xb662b0"
+          },
+          {
+            "address": "0073c0d9",
+            "hex": "8bf8",
+            "text": "mov edi, eax"
+          },
+          {
+            "address": "0073c0db",
+            "hex": "895c2410",
+            "text": "mov dword ptr [esp + 0x10], ebx"
+          },
+          {
+            "address": "0073c0df",
+            "hex": "895c2414",
+            "text": "mov dword ptr [esp + 0x14], ebx"
+          },
+          {
+            "address": "0073c0e3",
+            "hex": "8d5001",
+            "text": "lea edx, [eax + 1]"
+          },
+          {
+            "address": "0073c0e6",
+            "hex": "8a08",
+            "text": "mov cl, byte ptr [eax]"
+          },
+          {
+            "address": "0073c0e8",
+            "hex": "83c001",
+            "text": "add eax, 1"
+          },
+          {
+            "address": "0073c0eb",
+            "hex": "3acb",
+            "text": "cmp cl, bl"
+          },
+          {
+            "address": "0073c0ed",
+            "hex": "75f7",
+            "text": "jne 0x73c0e6"
+          },
+          {
+            "address": "0073c0ef",
+            "hex": "2bc2",
+            "text": "sub eax, edx"
+          },
+          {
+            "address": "0073c0f1",
+            "hex": "6a01",
+            "text": "push 1"
+          },
+          {
+            "address": "0073c0f3",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0073c0f4",
+            "hex": "8d4c2418",
+            "text": "lea ecx, [esp + 0x18]"
+          },
+          {
+            "address": "0073c0f8",
+            "hex": "e8431cceff",
+            "text": "call 0x41dd40"
+          },
+          {
+            "address": "0073c0fd",
+            "hex": "8b442414",
+            "text": "mov eax, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "0073c101",
+            "hex": "3bc3",
+            "text": "cmp eax, ebx"
+          },
+          {
+            "address": "0073c103",
+            "hex": "7412",
+            "text": "je 0x73c117"
+          },
+          {
+            "address": "0073c105",
+            "hex": "8b542410",
+            "text": "mov edx, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "0073c109",
+            "hex": "83c201",
+            "text": "add edx, 1"
+          },
+          {
+            "address": "0073c10c",
+            "hex": "52",
+            "text": "push edx"
+          },
+          {
+            "address": "0073c10d",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "0073c10e",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0073c10f",
+            "hex": "e86cb54b00",
+            "text": "call 0xbf7680"
+          },
+          {
+            "address": "0073c114",
+            "hex": "83c40c",
+            "text": "add esp, 0xc"
+          },
+          {
+            "address": "0073c117",
+            "hex": "8b0d94d3f800",
+            "text": "mov ecx, dword ptr [0xf8d394]"
+          },
+          {
+            "address": "0073c11d",
+            "hex": "8b01",
+            "text": "mov eax, dword ptr [ecx]"
+          },
+          {
+            "address": "0073c11f",
+            "hex": "8b4048",
+            "text": "mov eax, dword ptr [eax + 0x48]"
+          },
+          {
+            "address": "0073c122",
+            "hex": "8d542410",
+            "text": "lea edx, [esp + 0x10]"
+          },
+          {
+            "address": "0073c126",
+            "hex": "52",
+            "text": "push edx"
+          },
+          {
+            "address": "0073c127",
+            "hex": "c684244005000007",
+            "text": "mov byte ptr [esp + 0x540], 7"
+          },
+          {
+            "address": "0073c12f",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "0073c131",
+            "hex": "8bf8",
+            "text": "mov edi, eax"
+          },
+          {
+            "address": "0073c133",
+            "hex": "8b4608",
+            "text": "mov eax, dword ptr [esi + 8]"
+          },
+          {
+            "address": "0073c136",
+            "hex": "394604",
+            "text": "cmp dword ptr [esi + 4], eax"
+          },
+          {
+            "address": "0073c139",
+            "hex": "7514",
+            "text": "jne 0x73c14f"
+          },
+          {
+            "address": "0073c13b",
+            "hex": "03c0",
+            "text": "add eax, eax"
+          },
+          {
+            "address": "0073c13d",
+            "hex": "83f801",
+            "text": "cmp eax, 1"
+          },
+          {
+            "address": "0073c140",
+            "hex": "7f05",
+            "text": "jg 0x73c147"
+          },
+          {
+            "address": "0073c142",
+            "hex": "b801000000",
+            "text": "mov eax, 1"
+          },
+          {
+            "address": "0073c147",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0073c148",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "0073c14a",
+            "hex": "e8719dffff",
+            "text": "call 0x735ec0"
+          },
+          {
+            "address": "0073c14f",
+            "hex": "8b4e04",
+            "text": "mov ecx, dword ptr [esi + 4]"
+          },
+          {
+            "address": "0073c152",
+            "hex": "8b16",
+            "text": "mov edx, dword ptr [esi]"
+          },
+          {
+            "address": "0073c154",
+            "hex": "8d048a",
+            "text": "lea eax, [edx + ecx*4]"
+          },
+          {
+            "address": "0073c157",
+            "hex": "3bc3",
+            "text": "cmp eax, ebx"
+          },
+          {
+            "address": "0073c159",
+            "hex": "7402",
+            "text": "je 0x73c15d"
+          },
+          {
+            "address": "0073c15b",
+            "hex": "8938",
+            "text": "mov dword ptr [eax], edi"
+          },
+          {
+            "address": "0073c15d",
+            "hex": "8b442414",
+            "text": "mov eax, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "0073c161",
+            "hex": "83460401",
+            "text": "add dword ptr [esi + 4], 1"
+          },
+          {
+            "address": "0073c165",
+            "hex": "3bc3",
+            "text": "cmp eax, ebx"
+          },
+          {
+            "address": "0073c167",
+            "hex": "c684243c05000006",
+            "text": "mov byte ptr [esp + 0x53c], 6"
+          },
+          {
+            "address": "0073c16f",
+            "hex": "7417",
+            "text": "je 0x73c188"
+          },
+          {
+            "address": "0073c171",
+            "hex": "8b4c2410",
+            "text": "mov ecx, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "0073c175",
+            "hex": "6a01",
+            "text": "push 1"
+          },
+          {
+            "address": "0073c177",
+            "hex": "83c101",
+            "text": "add ecx, 1"
+          },
+          {
+            "address": "0073c17a",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "0073c17b",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0073c17c",
+            "hex": "e83fdbcdff",
+            "text": "call 0x419cc0"
+          },
+          {
+            "address": "0073c181",
+            "hex": "8bc8",
+            "text": "mov ecx, eax"
+          },
+          {
+            "address": "0073c183",
+            "hex": "e888534900",
+            "text": "call 0xbd1510"
+          },
+          {
+            "address": "0073c188",
+            "hex": "8d442418",
+            "text": "lea eax, [esp + 0x18]"
+          },
+          {
+            "address": "0073c18c",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0073c18d",
+            "hex": "8d4c2444",
+            "text": "lea ecx, [esp + 0x44]"
+          },
+          {
+            "address": "0073c191",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "0073c192",
+            "hex": "8d4c2434",
+            "text": "lea ecx, [esp + 0x34]"
+          },
+          {
+            "address": "0073c196",
+            "hex": "e8f5af4200",
+            "text": "call 0xb67190"
+          },
+          {
+            "address": "0073c19b",
+            "hex": "8d542418",
+            "text": "lea edx, [esp + 0x18]"
+          },
+          {
+            "address": "0073c19f",
+            "hex": "52",
+            "text": "push edx"
+          },
+          {
+            "address": "0073c1a0",
+            "hex": "8d4c2430",
+            "text": "lea ecx, [esp + 0x30]"
+          },
+          {
+            "address": "0073c1a4",
+            "hex": "e877a24200",
+            "text": "call 0xb66420"
+          },
+          {
+            "address": "0073c1a9",
+            "hex": "84c0",
+            "text": "test al, al"
+          },
+          {
+            "address": "0073c1ab",
+            "hex": "0f841fffffff",
+            "text": "je 0x73c0d0"
+          },
+          {
+            "address": "0073c1b1",
+            "hex": "68b8f0cf00",
+            "text": "push 0xcff0b8"
+          },
+          {
+            "address": "0073c1b6",
+            "hex": "e8f592ceff",
+            "text": "call 0x4254b0"
+          },
+          {
+            "address": "0073c1bb",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "0073c1be",
+            "hex": "e87def3f00",
+            "text": "call 0xb3b140"
+          },
+          {
+            "address": "0073c1c3",
+            "hex": "8d4c2418",
+            "text": "lea ecx, [esp + 0x18]"
+          },
+          {
+            "address": "0073c1c7",
+            "hex": "c684243c05000005",
+            "text": "mov byte ptr [esp + 0x53c], 5"
+          },
+          {
+            "address": "0073c1cf",
+            "hex": "e82cb54200",
+            "text": "call 0xb67700"
+          },
+          {
+            "address": "0073c1d4",
+            "hex": "8d4c2440",
+            "text": "lea ecx, [esp + 0x40]"
+          },
+          {
+            "address": "0073c1d8",
+            "hex": "c684243c05000004",
+            "text": "mov byte ptr [esp + 0x53c], 4"
+          },
+          {
+            "address": "0073c1e0",
+            "hex": "e81bb54200",
+            "text": "call 0xb67700"
+          },
+          {
+            "address": "0073c1e5",
+            "hex": "8d4c242c",
+            "text": "lea ecx, [esp + 0x2c]"
+          },
+          {
+            "address": "0073c1e9",
+            "hex": "889c243c050000",
+            "text": "mov byte ptr [esp + 0x53c], bl"
+          },
+          {
+            "address": "0073c1f0",
+            "hex": "e80bb54200",
+            "text": "call 0xb67700"
+          },
+          {
+            "address": "0073c1f5",
+            "hex": "8d4c2468",
+            "text": "lea ecx, [esp + 0x68]"
+          },
+          {
+            "address": "0073c1f9",
+            "hex": "c784243c050000ffffffff",
+            "text": "mov dword ptr [esp + 0x53c], 0xffffffff"
+          },
+          {
+            "address": "0073c204",
+            "hex": "e897a74200",
+            "text": "call 0xb669a0"
+          },
+          {
+            "address": "0073c209",
+            "hex": "8b8c2434050000",
+            "text": "mov ecx, dword ptr [esp + 0x534]"
+          },
+          {
+            "address": "0073c210",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "0073c211",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "0073c212",
+            "hex": "64890d00000000",
+            "text": "mov dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "0073c219",
+            "hex": "5b",
+            "text": "pop ebx"
+          },
+          {
+            "address": "0073c21a",
+            "hex": "8be5",
+            "text": "mov esp, ebp"
+          },
+          {
+            "address": "0073c21c",
+            "hex": "5d",
+            "text": "pop ebp"
+          },
+          {
+            "address": "0073c21d",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "address": "00735ec0",
+        "kind": "function",
+        "length": 95,
+        "hex": "56578b7c240c83ff018bf17d05bf01000000397e087d438d04bd000000005350e8d9f64b008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e8780a4c0083c404891e897e085b5f5ec20400",
+        "sha256": "f4ac9801ae9e08b9b64f7a983913dc8e53f3f2afd677f03531e4d00403c9c8b6",
+        "live_equals_pe": true,
+        "section": ".text",
+        "pe_raw_backed": true,
+        "unlisted_padding": [],
+        "instructions": [
+          {
+            "address": "00735ec0",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00735ec1",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00735ec2",
+            "hex": "8b7c240c",
+            "text": "mov edi, dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00735ec6",
+            "hex": "83ff01",
+            "text": "cmp edi, 1"
+          },
+          {
+            "address": "00735ec9",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "00735ecb",
+            "hex": "7d05",
+            "text": "jge 0x735ed2"
+          },
+          {
+            "address": "00735ecd",
+            "hex": "bf01000000",
+            "text": "mov edi, 1"
+          },
+          {
+            "address": "00735ed2",
+            "hex": "397e08",
+            "text": "cmp dword ptr [esi + 8], edi"
+          },
+          {
+            "address": "00735ed5",
+            "hex": "7d43",
+            "text": "jge 0x735f1a"
+          },
+          {
+            "address": "00735ed7",
+            "hex": "8d04bd00000000",
+            "text": "lea eax, [edi*4]"
+          },
+          {
+            "address": "00735ede",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00735edf",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00735ee0",
+            "hex": "e8d9f64b00",
+            "text": "call 0xbf55be"
+          },
+          {
+            "address": "00735ee5",
+            "hex": "8bd8",
+            "text": "mov ebx, eax"
+          },
+          {
+            "address": "00735ee7",
+            "hex": "33c0",
+            "text": "xor eax, eax"
+          },
+          {
+            "address": "00735ee9",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "00735eec",
+            "hex": "394604",
+            "text": "cmp dword ptr [esi + 4], eax"
+          },
+          {
+            "address": "00735eef",
+            "hex": "7e18",
+            "text": "jle 0x735f09"
+          },
+          {
+            "address": "00735ef1",
+            "hex": "8bcb",
+            "text": "mov ecx, ebx"
+          },
+          {
+            "address": "00735ef3",
+            "hex": "85c9",
+            "text": "test ecx, ecx"
+          },
+          {
+            "address": "00735ef5",
+            "hex": "7407",
+            "text": "je 0x735efe"
+          },
+          {
+            "address": "00735ef7",
+            "hex": "8b16",
+            "text": "mov edx, dword ptr [esi]"
+          },
+          {
+            "address": "00735ef9",
+            "hex": "8b1482",
+            "text": "mov edx, dword ptr [edx + eax*4]"
+          },
+          {
+            "address": "00735efc",
+            "hex": "8911",
+            "text": "mov dword ptr [ecx], edx"
+          },
+          {
+            "address": "00735efe",
+            "hex": "83c001",
+            "text": "add eax, 1"
+          },
+          {
+            "address": "00735f01",
+            "hex": "83c104",
+            "text": "add ecx, 4"
+          },
+          {
+            "address": "00735f04",
+            "hex": "3b4604",
+            "text": "cmp eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "00735f07",
+            "hex": "7cea",
+            "text": "jl 0x735ef3"
+          },
+          {
+            "address": "00735f09",
+            "hex": "8b06",
+            "text": "mov eax, dword ptr [esi]"
+          },
+          {
+            "address": "00735f0b",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00735f0c",
+            "hex": "e8780a4c00",
+            "text": "call 0xbf6989"
+          },
+          {
+            "address": "00735f11",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "00735f14",
+            "hex": "891e",
+            "text": "mov dword ptr [esi], ebx"
+          },
+          {
+            "address": "00735f16",
+            "hex": "897e08",
+            "text": "mov dword ptr [esi + 8], edi"
+          },
+          {
+            "address": "00735f19",
+            "hex": "5b",
+            "text": "pop ebx"
+          },
+          {
+            "address": "00735f1a",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "00735f1b",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00735f1c",
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ]
+      },
+      {
+        "address": "004254b0",
+        "kind": "function",
+        "length": 1,
+        "hex": "c3",
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "live_equals_pe": true,
+        "section": ".text",
+        "pe_raw_backed": true,
+        "unlisted_padding": [],
+        "instructions": [
+          {
+            "address": "004254b0",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "address": "00cff0b8",
+        "kind": "preload_literals",
+        "length": 99,
+        "hex": "2d2d2d20534841444552204c4f4144494e4720454e4420202d2d2d002d2d2d20534841444552204c4f4144494e4720424547494e202d2d2d0000000046696c654e616d657300000073686164657266782f7368616465727072656c6f61642e6c756100",
+        "sha256": "5de3d244126f8171e96a35cc5e72fc3c0413d1bb5cc84ba2e5556623db9d4704",
+        "live_equals_pe": true,
+        "section": ".rdata",
+        "pe_raw_backed": true,
+        "unlisted_padding": [],
+        "instructions": []
+      },
+      {
+        "address": "00d5f0f0",
+        "kind": "renderer_material_slot",
+        "length": 4,
+        "hex": "b018b300",
+        "sha256": "e89a1508cc08e9292930840c7019bae8332bf67f60a49973d268d618b6ac9032",
+        "live_equals_pe": true,
+        "section": ".rdata",
+        "pe_raw_backed": true,
+        "unlisted_padding": [],
+        "instructions": []
+      }
+    ]
+  },
+  "flow_repairs": {
+    "repairs": [
+      {
+        "function": "00735ec0",
+        "owner": "agent/orch4-20260915",
+        "when": "2026-09-17T16:54:35Z",
+        "decompile_lines_before": 28,
+        "gaps": [
+          {
+            "site": "00735f0c",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00735f11",
+            "gap_end_exclusive": "00735f1a",
+            "bytes": 9,
+            "after_call": true,
+            "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "00735f0c",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00735f11",
+              "gap_end_exclusive": "00735f1a",
+              "bytes": 9,
+              "after_call": true,
+              "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1"
+            },
+            "clear": "Success: Cleared flow override at 00735f0c (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 9 byte(s)"
+          }
+        ],
+        "decompile_lines_after": 31,
+        "gaps_remaining": 0
+      }
+    ]
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "new_repository_tests": 0,
+    "focused_local_probe": 1,
+    "source_sha256": {
+      "include/bsp/native_shader_preload.hpp": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "src/native_shader_preload.cpp": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "cmake/startup.cmake": "dc8f47697cb4b751dd0a77da090b9c88c8d31d853fad11aafb4a981f82a8a06a"
+    },
+    "source_lf_sha256": {
+      "include/bsp/native_shader_preload.hpp": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9",
+      "src/native_shader_preload.cpp": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff",
+      "cmake/startup.cmake": "64549ae90bae495c0b6a65e0dae4261207bc4dfd04e58b7bee529890b2cafb3c"
+    },
+    "existing_dependency_sha256": {
+      "include/bsp/allocator_list.hpp": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8",
+      "include/bsp/building_instance.hpp": "ad3c055dee4b5b4ec77784db03552e173644d57b154b3fd0a26dd5dff1ad1c4e",
+      "include/bsp/camera_projection.hpp": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+      "include/bsp/camera_transform.hpp": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+      "include/bsp/d3d9_buffers.hpp": "e8bc19c4630661b83969b53cac94134748f3c9af2a98002f1f2906ed93dedc83",
+      "include/bsp/d3d9_startup.hpp": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843",
+      "include/bsp/d3d9_states.hpp": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288",
+      "include/bsp/d3d9_surface_pool.hpp": "58e4dd6d58a99d6b5cbc1685de6e83fc65512c94b02778a4f8e2b883da068467",
+      "include/bsp/d3d9_texture.hpp": "feca623271fc53076df9026b7041c69dcdddeab0b4e007230480d787653bbc7d",
+      "include/bsp/d3d9_texture2d_pool.hpp": "7d583076d37c842891946514ecdd69eb9a0d331d488e2753588e225f542b75f3",
+      "include/bsp/d3d9_vertex_layout.hpp": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef",
+      "include/bsp/frame_clock.hpp": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b",
+      "include/bsp/frontend_screen_animation.hpp": "5bf3429e1c6032def440ccebd3d804fd087896401ec16bf94b456b1dc73865e0",
+      "include/bsp/game_entry.hpp": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f",
+      "include/bsp/generated_model_lifetime.hpp": "bb6171641666552aea3fcaa9757d13074f229e79d5793a3b044b980f4a3d3ef9",
+      "include/bsp/gui_layout_loader.hpp": "3ede9dc470a4d5a3285d1578483428b548025b0b2eba9ab6ecc79967b242d8b1",
+      "include/bsp/gui_lua_reader.hpp": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433",
+      "include/bsp/gui_native_geometry.hpp": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf",
+      "include/bsp/gui_widget.hpp": "846d1f6378e3459fb585917289d2f3342de37ba98dafc7fc952c9c48ea8061f9",
+      "include/bsp/instance_geometry.hpp": "02bd2ae826198ca341a2a14fbf0f58ced99ccd20a5833a6eef48a11f932b75d4",
+      "include/bsp/instance_grouping.hpp": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308",
+      "include/bsp/instance_sort.hpp": "c3a892e5b69db70699daaa5c301f5b00aa17fe4f93f929fdc43dcc16e797b1f3",
+      "include/bsp/instance_upload.hpp": "271e956b6dd3801fff1edab447fb03bb929ec562e227ae0357debbe95c1239fb",
+      "include/bsp/lua_numeric.hpp": "a8de255e2aaaad540cec67717e7d0efd7cc5f50d206bdd2137cabe1ed81acf60",
+      "include/bsp/material_lighting.hpp": "b56091a2688d0a7cf52401396efa68b9f02de215e9bd89e4bf20d93d83600da8",
+      "include/bsp/material_sort_metadata.hpp": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212",
+      "include/bsp/native_adopted_substream.hpp": "a5d41d65fb462fbe64b002ab38c646a8cb5f066c80415f33523b454100c302d8",
+      "include/bsp/native_alias_count_growth.hpp": "d19316380a60b5ba2cf962bb079e75995ffe31de2c0d7cd18467fa05aba6fde5",
+      "include/bsp/native_cube_texture_owner.hpp": "d770a6d64fdbc2dbb6770bfca5cbadcb501cc39abbcdc6053e717abcb8095645",
+      "include/bsp/native_diagnostic_sink_lifetime.hpp": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+      "include/bsp/native_instance_collection.hpp": "6c60d147f14ca210aa96529e9c45d523053fbf13a103e6dfd705caec54fc2f54",
+      "include/bsp/native_legacy_exception_owner.hpp": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "include/bsp/native_legacy_sbo_string.hpp": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+      "include/bsp/native_logical_buffer_device_restore.hpp": "2e79708e49c1559f706602b9fe761791776f11fee1c5b3efa69d7fbb2bd57c45",
+      "include/bsp/native_logical_buffer_mapping.hpp": "d3ee48a208b6636dc70941c6a62967407d657ad18f1ae971f2d900c752fcaef0",
+      "include/bsp/native_logical_index_owner.hpp": "c0ae53059fba249f589990b7d41d1986a2134cd86b99cd5d6db7ab2c849b38cb",
+      "include/bsp/native_logical_vertex_owner.hpp": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c",
+      "include/bsp/native_lua_bootstrap.hpp": "b9c5bad802213d87665c1c4f82320184ef8970902dcd9dd7b22b40ce4493a45c",
+      "include/bsp/native_lua_file_loading.hpp": "13bcab4bbc7eb973b7ccceb87b198e19326bed0320d2d3dca7b32ae91cba3108",
+      "include/bsp/native_lua_objects.hpp": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d",
+      "include/bsp/native_lua_vfs_dispatch.hpp": "da795f3a43a6acf1664d6ac00474a170d7196bf4383ca1695960ab685c67bfb2",
+      "include/bsp/native_material_compiler_providers.hpp": "91e171c613975045058c377de34277310140ad1a9c90ed710448a4962edd997c",
+      "include/bsp/native_material_effect_cache.hpp": "3fe74fa562bf64176c898ea86048ed1d618df04afcb5401fa16dca54cbe914b8",
+      "include/bsp/native_material_effect_loading.hpp": "9aeead0e98e998cb43b895da50bc1c03eb26aee4ae4cc69804765c975cdc2608",
+      "include/bsp/native_material_effect_owner.hpp": "197df420b08345803c36b5ef20cfaa725ccfa02c8ccc4a3fbfb76adada7bdedf",
+      "include/bsp/native_material_effect_programs.hpp": "2c6d817e2ec089f6513c0e77582745dacdc8bd4791ae84756209ba271abcd658",
+      "include/bsp/native_material_factory.hpp": "fa8a45423c10da368d803d5df7fb583a5bc91e9f3c3ac59722607e4a95d90b71",
+      "include/bsp/native_material_owner.hpp": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+      "include/bsp/native_material_pass_base.hpp": "ff2143aa1f9265bbeed7b38c24a23ab2c504bc1dfe8b96d4c7767f095a318a70",
+      "include/bsp/native_material_pass_copy.hpp": "91759de34783c49066d70a643bdc4f985b98d4231673b59fc2b6e3cbca291aff",
+      "include/bsp/native_material_pass_owner.hpp": "30ce7e9a5eb8247e4988a947a39427deeecf4991c42cdb969c2ad403f27a4e18",
+      "include/bsp/native_material_pass_states.hpp": "4b0b577fb905790cbfa2c47dcddeef2ba7c111667a3b4d3cdf770c85ea52cab9",
+      "include/bsp/native_material_pools.hpp": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715",
+      "include/bsp/native_mesh_clone.hpp": "0fbe93a15ed525fd128257ca58ac4c4d8da4b4a533dd345c6c856bce5d839d5e",
+      "include/bsp/native_mesh_owner.hpp": "540fa95aafcd3b67697998361f9a6b1689bf90348c9c0cdc09bdeb6b9c6ac42c",
+      "include/bsp/native_mesh_pool.hpp": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52",
+      "include/bsp/native_mesh_section.hpp": "c99901d53b195ab67c0da51c7b39657f42b7b60ba1f5509eec200b6ff29f3e2e",
+      "include/bsp/native_model_owner.hpp": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e",
+      "include/bsp/native_model_pool.hpp": "30e4945729d723ec450a6eebaf28968c976dcd50f366ba193aa591d751709144",
+      "include/bsp/native_named_special_textures.hpp": "e45d4b6240621387599ecf4e0d27d65e1f3abe4d6528d761d58db5df4e6f043e",
+      "include/bsp/native_node_construction.hpp": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098",
+      "include/bsp/native_node_destruction.hpp": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+      "include/bsp/native_particle_definition.hpp": "3a8500ab45353cb0d701fa3c0b2b1d85a301c982c14af23d82d31b379b8cd898",
+      "include/bsp/native_particle_type_base.hpp": "28afa3e93f423326a0943350de5fbb518657b475708ba084c8aa78ddc2fd3e99",
+      "include/bsp/native_particle_type_property.hpp": "995506392dee5bf538cebf001b979b3f7a661c40d815671d328643af1d989415",
+      "include/bsp/native_physical_buffer_lock.hpp": "519c67bd123883490af70464ab81cec74d5de948a39eada540cf5b8529e18340",
+      "include/bsp/native_physical_buffer_owner.hpp": "1277b747e0963be41fdee456092ea42b3c191d7aa165eeeec772de3cad354e56",
+      "include/bsp/native_physical_file_date.hpp": "158161430fea02951e7449c8c5d1c8ae2fb5f75df70d4b0b0606cf6abcf5ad2f",
+      "include/bsp/native_point_light_links.hpp": "e106191d74ea6960befb5f36e74e89076efb5fec4122a5b3d87482823dc07ba7",
+      "include/bsp/native_pooled_resource_path.hpp": "c9bf86591a7af5df77018a03e433e70832c89d71b8894b05cead9d7830f17d0c",
+      "include/bsp/native_render_context.hpp": "1c8d834d50cbf8ee7f660e7803efe6bad43fe70bbe87fd5cdf3375f6e68ef56d",
+      "include/bsp/native_render_pointer_arrays.hpp": "d9cf406a178986114205fe9a154a2b74c0f8dd857b6186d7d840d8fe398ae881",
+      "include/bsp/native_render_resource_alias_nodes.hpp": "84494dd08830e1d38c7ce90a26516b2fb4a9fdd66ab3b7e62ff7e37dae19a570",
+      "include/bsp/native_render_resource_container_removal.hpp": "1610798bb00b9c8d99938e212c7c50ab455e35027fba4885fdad074ea37182e4",
+      "include/bsp/native_render_resource_record.hpp": "5aa38d6351388c4fc6e97799712f9b7e85b6f65468aa51d37563793208930e11",
+      "include/bsp/native_render_resource_record_construction.hpp": "49cbc1e7fcbf1581e24a874203e40dba0929acb8f333645bb7b967d1c8bb451a",
+      "include/bsp/native_renderer_synchronization_actual.hpp": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0",
+      "include/bsp/native_renderer_texture_name_notification.hpp": "5157ead757f9082a87a57fe9f06694025ac2bc5888b244156b6e2526aa9407a4",
+      "include/bsp/native_resource_stream_reads.hpp": "a9705ea1d2ef8596131352c3f7b1bc6d97d821b1668c39ab35305d245b78113d",
+      "include/bsp/native_resource_support.hpp": "fb1506aba45e7801bcb638a6d836ce52972cf49e6d8120f7a07f8dc74d36b8f7",
+      "include/bsp/native_retained_memory_owners.hpp": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c",
+      "include/bsp/native_shader_binary_cache.hpp": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c",
+      "include/bsp/native_shader_compiler_lookups.hpp": "ff8bf5af6dab08f28a81a8c0e517463443c81ca65c906b42f928c6f4a2bf7559",
+      "include/bsp/native_shader_descriptor_owner.hpp": "4846aaf3f02e8967ae57c00135455b2ee3b6b913c82d790ba32dab80545b2d2e",
+      "include/bsp/native_shader_sampler_owner.hpp": "8a01ca946332bbcc7e4b7130f53cb2070c4cca082d33d75951d69fe152625a93",
+      "include/bsp/native_stream_clone.hpp": "a333d180afcf21084068a671d60c34ee8e1b18ea980a6c03b115a32ce2ff3e6a",
+      "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "include/bsp/native_string_vector.hpp": "38a48cf86dc70e46bdb184b1d7738e4221f55ddd045429fa4f47c74cc6b9c2e9",
+      "include/bsp/native_surface_owner.hpp": "e5515e193057b574de0d0b55ff3f0b512f8b2c2cb9002ba3eb62de106a4bbe66",
+      "include/bsp/native_texture_2d_owner.hpp": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+      "include/bsp/native_texture_loading_cache.hpp": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d",
+      "include/bsp/native_traceline_render.hpp": "eec43d439a9ddcf4d5aa96954434c469b607c4ac198f54b6cb55339a0365caf4",
+      "include/bsp/native_vfs_date_route.hpp": "33c3707a013a34cc0895dc0bb2c797b49eb7ba45bff49423a2cc6a36bfb56244",
+      "include/bsp/native_vfs_factory_selection.hpp": "2e448a1fa5f2a346074454c0ab6855140a8e06c22323d9ee80f2d42014ad8add",
+      "include/bsp/native_vfs_manager_lifetime.hpp": "65a07959ad3e0e74b7249363ca1b1767bfa0ab16f236c4dab351336201bd019d",
+      "include/bsp/native_vfs_pending_routes.hpp": "6a836f8ddedbc18aa331f817d22e228ccc22a0e37335fa77b6521a593575464e",
+      "include/bsp/native_vfs_runtime_bindings.hpp": "1b2ef8bd680361642fd8c7bd402837e5de8e8cea96a19f817c8abf93b049ba6f",
+      "include/bsp/native_volume_texture_owner.hpp": "fa2f4f8cebe11eb431dfec3a399080d114c0a5ecc260320f23682adff5fab28f",
+      "include/bsp/platform_loop.hpp": "ac4c7389744b8ac8734c863aeef096314fcddb1b45529c6427c584e9a2d29929",
+      "include/bsp/random.hpp": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c",
+      "include/bsp/random_threads.hpp": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "include/bsp/render_command_queue.hpp": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+      "include/bsp/render_tail.hpp": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+      "include/bsp/resource_load_events.hpp": "c3cc6e658a94392a8264b584a892cdd39f36a0bb4f76b3f3812287c6401bdd20",
+      "include/bsp/scene_attachment.hpp": "d2bb5d004129a418961bf13e60c0f8324a077b5647ca8450602421190841d322",
+      "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "include/bsp/sound_lifetime_access.hpp": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b",
+      "include/bsp/storage_pool.hpp": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+      "include/bsp/system_lighting_constants.hpp": "9c98d892bac479fdf3d661c98c996333df0821a3daea26a5e36ba40339b722c9",
+      "include/bsp/system_time_constants.hpp": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+      "include/bsp/vertex_declaration.hpp": "0f03c6a960da3547644b3e5bc8b5934a35fe26f42abc2746559a31f0af2452a0",
+      "src/native_lua_bootstrap.cpp": "61bce46a66102ae24c8781ce30d6a03c914f5f6b5852c85453427cc8227b6a3a",
+      "src/native_lua_file_loading.cpp": "5429158efe57f0c14d3829562ee38ca63ab8c526f3282476d419babdeac959ac",
+      "src/native_lua_objects.cpp": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5",
+      "src/native_material_effect_cache.cpp": "d881c76ca80e2b61142ebaeeea281c941499bc8c3273e42afb3b05d285289e98",
+      "src/native_material_effect_loading.cpp": "a8e81adfda0b0e4aeaab407585895f4888b9700b88a43b70783324e0a72e4c7d",
+      "src/native_shader_binary_cache.cpp": "6fd37c5f18b8a673886f0b349fe62fddd4de2726b303d3aca7f9baf3b8752dab",
+      "src/native_string.cpp": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    },
+    "existing_dependency_lf_sha256": {
+      "include/bsp/allocator_list.hpp": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8",
+      "include/bsp/building_instance.hpp": "ad3c055dee4b5b4ec77784db03552e173644d57b154b3fd0a26dd5dff1ad1c4e",
+      "include/bsp/camera_projection.hpp": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+      "include/bsp/camera_transform.hpp": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+      "include/bsp/d3d9_buffers.hpp": "e8bc19c4630661b83969b53cac94134748f3c9af2a98002f1f2906ed93dedc83",
+      "include/bsp/d3d9_startup.hpp": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843",
+      "include/bsp/d3d9_states.hpp": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288",
+      "include/bsp/d3d9_surface_pool.hpp": "58e4dd6d58a99d6b5cbc1685de6e83fc65512c94b02778a4f8e2b883da068467",
+      "include/bsp/d3d9_texture.hpp": "feca623271fc53076df9026b7041c69dcdddeab0b4e007230480d787653bbc7d",
+      "include/bsp/d3d9_texture2d_pool.hpp": "7d583076d37c842891946514ecdd69eb9a0d331d488e2753588e225f542b75f3",
+      "include/bsp/d3d9_vertex_layout.hpp": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef",
+      "include/bsp/frame_clock.hpp": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b",
+      "include/bsp/frontend_screen_animation.hpp": "5bf3429e1c6032def440ccebd3d804fd087896401ec16bf94b456b1dc73865e0",
+      "include/bsp/game_entry.hpp": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f",
+      "include/bsp/generated_model_lifetime.hpp": "bb6171641666552aea3fcaa9757d13074f229e79d5793a3b044b980f4a3d3ef9",
+      "include/bsp/gui_layout_loader.hpp": "3ede9dc470a4d5a3285d1578483428b548025b0b2eba9ab6ecc79967b242d8b1",
+      "include/bsp/gui_lua_reader.hpp": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433",
+      "include/bsp/gui_native_geometry.hpp": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf",
+      "include/bsp/gui_widget.hpp": "846d1f6378e3459fb585917289d2f3342de37ba98dafc7fc952c9c48ea8061f9",
+      "include/bsp/instance_geometry.hpp": "02bd2ae826198ca341a2a14fbf0f58ced99ccd20a5833a6eef48a11f932b75d4",
+      "include/bsp/instance_grouping.hpp": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308",
+      "include/bsp/instance_sort.hpp": "c3a892e5b69db70699daaa5c301f5b00aa17fe4f93f929fdc43dcc16e797b1f3",
+      "include/bsp/instance_upload.hpp": "271e956b6dd3801fff1edab447fb03bb929ec562e227ae0357debbe95c1239fb",
+      "include/bsp/lua_numeric.hpp": "a8de255e2aaaad540cec67717e7d0efd7cc5f50d206bdd2137cabe1ed81acf60",
+      "include/bsp/material_lighting.hpp": "b56091a2688d0a7cf52401396efa68b9f02de215e9bd89e4bf20d93d83600da8",
+      "include/bsp/material_sort_metadata.hpp": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212",
+      "include/bsp/native_adopted_substream.hpp": "a5d41d65fb462fbe64b002ab38c646a8cb5f066c80415f33523b454100c302d8",
+      "include/bsp/native_alias_count_growth.hpp": "d19316380a60b5ba2cf962bb079e75995ffe31de2c0d7cd18467fa05aba6fde5",
+      "include/bsp/native_cube_texture_owner.hpp": "d770a6d64fdbc2dbb6770bfca5cbadcb501cc39abbcdc6053e717abcb8095645",
+      "include/bsp/native_diagnostic_sink_lifetime.hpp": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1",
+      "include/bsp/native_instance_collection.hpp": "6c60d147f14ca210aa96529e9c45d523053fbf13a103e6dfd705caec54fc2f54",
+      "include/bsp/native_legacy_exception_owner.hpp": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727",
+      "include/bsp/native_legacy_sbo_string.hpp": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+      "include/bsp/native_logical_buffer_device_restore.hpp": "2e79708e49c1559f706602b9fe761791776f11fee1c5b3efa69d7fbb2bd57c45",
+      "include/bsp/native_logical_buffer_mapping.hpp": "d3ee48a208b6636dc70941c6a62967407d657ad18f1ae971f2d900c752fcaef0",
+      "include/bsp/native_logical_index_owner.hpp": "c0ae53059fba249f589990b7d41d1986a2134cd86b99cd5d6db7ab2c849b38cb",
+      "include/bsp/native_logical_vertex_owner.hpp": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c",
+      "include/bsp/native_lua_bootstrap.hpp": "b9c5bad802213d87665c1c4f82320184ef8970902dcd9dd7b22b40ce4493a45c",
+      "include/bsp/native_lua_file_loading.hpp": "13bcab4bbc7eb973b7ccceb87b198e19326bed0320d2d3dca7b32ae91cba3108",
+      "include/bsp/native_lua_objects.hpp": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d",
+      "include/bsp/native_lua_vfs_dispatch.hpp": "da795f3a43a6acf1664d6ac00474a170d7196bf4383ca1695960ab685c67bfb2",
+      "include/bsp/native_material_compiler_providers.hpp": "91e171c613975045058c377de34277310140ad1a9c90ed710448a4962edd997c",
+      "include/bsp/native_material_effect_cache.hpp": "3fe74fa562bf64176c898ea86048ed1d618df04afcb5401fa16dca54cbe914b8",
+      "include/bsp/native_material_effect_loading.hpp": "9aeead0e98e998cb43b895da50bc1c03eb26aee4ae4cc69804765c975cdc2608",
+      "include/bsp/native_material_effect_owner.hpp": "197df420b08345803c36b5ef20cfaa725ccfa02c8ccc4a3fbfb76adada7bdedf",
+      "include/bsp/native_material_effect_programs.hpp": "2c6d817e2ec089f6513c0e77582745dacdc8bd4791ae84756209ba271abcd658",
+      "include/bsp/native_material_factory.hpp": "fa8a45423c10da368d803d5df7fb583a5bc91e9f3c3ac59722607e4a95d90b71",
+      "include/bsp/native_material_owner.hpp": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+      "include/bsp/native_material_pass_base.hpp": "ff2143aa1f9265bbeed7b38c24a23ab2c504bc1dfe8b96d4c7767f095a318a70",
+      "include/bsp/native_material_pass_copy.hpp": "91759de34783c49066d70a643bdc4f985b98d4231673b59fc2b6e3cbca291aff",
+      "include/bsp/native_material_pass_owner.hpp": "30ce7e9a5eb8247e4988a947a39427deeecf4991c42cdb969c2ad403f27a4e18",
+      "include/bsp/native_material_pass_states.hpp": "4b0b577fb905790cbfa2c47dcddeef2ba7c111667a3b4d3cdf770c85ea52cab9",
+      "include/bsp/native_material_pools.hpp": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715",
+      "include/bsp/native_mesh_clone.hpp": "0fbe93a15ed525fd128257ca58ac4c4d8da4b4a533dd345c6c856bce5d839d5e",
+      "include/bsp/native_mesh_owner.hpp": "540fa95aafcd3b67697998361f9a6b1689bf90348c9c0cdc09bdeb6b9c6ac42c",
+      "include/bsp/native_mesh_pool.hpp": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52",
+      "include/bsp/native_mesh_section.hpp": "c99901d53b195ab67c0da51c7b39657f42b7b60ba1f5509eec200b6ff29f3e2e",
+      "include/bsp/native_model_owner.hpp": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e",
+      "include/bsp/native_model_pool.hpp": "30e4945729d723ec450a6eebaf28968c976dcd50f366ba193aa591d751709144",
+      "include/bsp/native_named_special_textures.hpp": "e45d4b6240621387599ecf4e0d27d65e1f3abe4d6528d761d58db5df4e6f043e",
+      "include/bsp/native_node_construction.hpp": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098",
+      "include/bsp/native_node_destruction.hpp": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833",
+      "include/bsp/native_particle_definition.hpp": "3a8500ab45353cb0d701fa3c0b2b1d85a301c982c14af23d82d31b379b8cd898",
+      "include/bsp/native_particle_type_base.hpp": "28afa3e93f423326a0943350de5fbb518657b475708ba084c8aa78ddc2fd3e99",
+      "include/bsp/native_particle_type_property.hpp": "995506392dee5bf538cebf001b979b3f7a661c40d815671d328643af1d989415",
+      "include/bsp/native_physical_buffer_lock.hpp": "519c67bd123883490af70464ab81cec74d5de948a39eada540cf5b8529e18340",
+      "include/bsp/native_physical_buffer_owner.hpp": "1277b747e0963be41fdee456092ea42b3c191d7aa165eeeec772de3cad354e56",
+      "include/bsp/native_physical_file_date.hpp": "158161430fea02951e7449c8c5d1c8ae2fb5f75df70d4b0b0606cf6abcf5ad2f",
+      "include/bsp/native_point_light_links.hpp": "e106191d74ea6960befb5f36e74e89076efb5fec4122a5b3d87482823dc07ba7",
+      "include/bsp/native_pooled_resource_path.hpp": "c9bf86591a7af5df77018a03e433e70832c89d71b8894b05cead9d7830f17d0c",
+      "include/bsp/native_render_context.hpp": "1c8d834d50cbf8ee7f660e7803efe6bad43fe70bbe87fd5cdf3375f6e68ef56d",
+      "include/bsp/native_render_pointer_arrays.hpp": "d9cf406a178986114205fe9a154a2b74c0f8dd857b6186d7d840d8fe398ae881",
+      "include/bsp/native_render_resource_alias_nodes.hpp": "84494dd08830e1d38c7ce90a26516b2fb4a9fdd66ab3b7e62ff7e37dae19a570",
+      "include/bsp/native_render_resource_container_removal.hpp": "1610798bb00b9c8d99938e212c7c50ab455e35027fba4885fdad074ea37182e4",
+      "include/bsp/native_render_resource_record.hpp": "5aa38d6351388c4fc6e97799712f9b7e85b6f65468aa51d37563793208930e11",
+      "include/bsp/native_render_resource_record_construction.hpp": "49cbc1e7fcbf1581e24a874203e40dba0929acb8f333645bb7b967d1c8bb451a",
+      "include/bsp/native_renderer_synchronization_actual.hpp": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0",
+      "include/bsp/native_renderer_texture_name_notification.hpp": "5157ead757f9082a87a57fe9f06694025ac2bc5888b244156b6e2526aa9407a4",
+      "include/bsp/native_resource_stream_reads.hpp": "a9705ea1d2ef8596131352c3f7b1bc6d97d821b1668c39ab35305d245b78113d",
+      "include/bsp/native_resource_support.hpp": "fb1506aba45e7801bcb638a6d836ce52972cf49e6d8120f7a07f8dc74d36b8f7",
+      "include/bsp/native_retained_memory_owners.hpp": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c",
+      "include/bsp/native_shader_binary_cache.hpp": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c",
+      "include/bsp/native_shader_compiler_lookups.hpp": "ff8bf5af6dab08f28a81a8c0e517463443c81ca65c906b42f928c6f4a2bf7559",
+      "include/bsp/native_shader_descriptor_owner.hpp": "4846aaf3f02e8967ae57c00135455b2ee3b6b913c82d790ba32dab80545b2d2e",
+      "include/bsp/native_shader_sampler_owner.hpp": "8a01ca946332bbcc7e4b7130f53cb2070c4cca082d33d75951d69fe152625a93",
+      "include/bsp/native_stream_clone.hpp": "a333d180afcf21084068a671d60c34ee8e1b18ea980a6c03b115a32ce2ff3e6a",
+      "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "include/bsp/native_string_vector.hpp": "38a48cf86dc70e46bdb184b1d7738e4221f55ddd045429fa4f47c74cc6b9c2e9",
+      "include/bsp/native_surface_owner.hpp": "e5515e193057b574de0d0b55ff3f0b512f8b2c2cb9002ba3eb62de106a4bbe66",
+      "include/bsp/native_texture_2d_owner.hpp": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+      "include/bsp/native_texture_loading_cache.hpp": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d",
+      "include/bsp/native_traceline_render.hpp": "eec43d439a9ddcf4d5aa96954434c469b607c4ac198f54b6cb55339a0365caf4",
+      "include/bsp/native_vfs_date_route.hpp": "33c3707a013a34cc0895dc0bb2c797b49eb7ba45bff49423a2cc6a36bfb56244",
+      "include/bsp/native_vfs_factory_selection.hpp": "2e448a1fa5f2a346074454c0ab6855140a8e06c22323d9ee80f2d42014ad8add",
+      "include/bsp/native_vfs_manager_lifetime.hpp": "65a07959ad3e0e74b7249363ca1b1767bfa0ab16f236c4dab351336201bd019d",
+      "include/bsp/native_vfs_pending_routes.hpp": "6a836f8ddedbc18aa331f817d22e228ccc22a0e37335fa77b6521a593575464e",
+      "include/bsp/native_vfs_runtime_bindings.hpp": "1b2ef8bd680361642fd8c7bd402837e5de8e8cea96a19f817c8abf93b049ba6f",
+      "include/bsp/native_volume_texture_owner.hpp": "fa2f4f8cebe11eb431dfec3a399080d114c0a5ecc260320f23682adff5fab28f",
+      "include/bsp/platform_loop.hpp": "ac4c7389744b8ac8734c863aeef096314fcddb1b45529c6427c584e9a2d29929",
+      "include/bsp/random.hpp": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c",
+      "include/bsp/random_threads.hpp": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+      "include/bsp/render_command_queue.hpp": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+      "include/bsp/render_tail.hpp": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+      "include/bsp/resource_load_events.hpp": "c3cc6e658a94392a8264b584a892cdd39f36a0bb4f76b3f3812287c6401bdd20",
+      "include/bsp/scene_attachment.hpp": "d2bb5d004129a418961bf13e60c0f8324a077b5647ca8450602421190841d322",
+      "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "include/bsp/sound_lifetime_access.hpp": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b",
+      "include/bsp/storage_pool.hpp": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+      "include/bsp/system_lighting_constants.hpp": "9c98d892bac479fdf3d661c98c996333df0821a3daea26a5e36ba40339b722c9",
+      "include/bsp/system_time_constants.hpp": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+      "include/bsp/vertex_declaration.hpp": "0f03c6a960da3547644b3e5bc8b5934a35fe26f42abc2746559a31f0af2452a0",
+      "src/native_lua_bootstrap.cpp": "61bce46a66102ae24c8781ce30d6a03c914f5f6b5852c85453427cc8227b6a3a",
+      "src/native_lua_file_loading.cpp": "5429158efe57f0c14d3829562ee38ca63ab8c526f3282476d419babdeac959ac",
+      "src/native_lua_objects.cpp": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5",
+      "src/native_material_effect_cache.cpp": "d881c76ca80e2b61142ebaeeea281c941499bc8c3273e42afb3b05d285289e98",
+      "src/native_material_effect_loading.cpp": "a8e81adfda0b0e4aeaab407585895f4888b9700b88a43b70783324e0a72e4c7d",
+      "src/native_shader_binary_cache.cpp": "6fd37c5f18b8a673886f0b349fe62fddd4de2726b303d3aca7f9baf3b8752dab",
+      "src/native_string.cpp": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    },
+    "build_log": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\r99_build.log",
+    "build_log_sha256": "be326a69d2bac9b3ca8ba41ce7e14eafff4d29f57638457d2d888cfb45e6e67b",
+    "library_sha256": "6f0e88c07bdb7f1c66e60da8096779917b2de34e7e522290085876dda4c2021c",
+    "game_sha256": "0d57b743e18bc144bbec7c91b23a3e83be49d8073986e350ecf2f0db06411969",
+    "application_objects": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\ai_group_think.obj",
+        "sha256": "1a5a954ca13857d528fff56b252c7be08a9f4de0e0d73853671c1070ee911008"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\ai_planners.obj",
+        "sha256": "d85f084da30a7494577929480a64aa46635e89f538773f6d8c0478202f713744"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\airfield_taxi.obj",
+        "sha256": "1521ca61bcfdcb643b238bdd083aebfe6e918137a84000c89a7a359846d7334f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\command_completion.obj",
+        "sha256": "d9b010aaa9af434b45383c157da901103ee1a78226809ae35bb6b80ff061e6e0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_avoid_zone_runtime.obj",
+        "sha256": "478e8bfb0627bb27226cee12677743f145a0483314ba576bf663b44b5383d643"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts.obj",
+        "sha256": "b809b71c926b44df2d810e2ef2e31b85c9000898b9c8996b82348896162d384c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_commands.obj",
+        "sha256": "0ed8f8db2560ccb0c1ce485f21d81a2286ad76c39362035ee29f081f33c53768"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_fixed_step.obj",
+        "sha256": "027551260c8644a56c9d519f623fff8fa24e23b1365b8b81a7149a7cf308c43e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_fonts.obj",
+        "sha256": "deb97e6dcc32d78d6646d6e21f4131eb6fcdb6e5a21311a529c0e8c5eda4e537"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_frontend.obj",
+        "sha256": "3052e929b0a5df6016952e67ca36f6e7ea57b1b84c6f1787a2d69acdbfb90eea"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_gunnery.obj",
+        "sha256": "938cde4ead3d1a71dbab0f776397d1d2e1623ad0631b81e1b5779decd84896ca"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_hud.obj",
+        "sha256": "cfad81714271505aec05c49f573fbc98192ab816dd5c55f383bbed24e837a786"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_hud_world.obj",
+        "sha256": "7c2a91669e4d28f77333e695c04416787e91f664055f5d77026f4fa95a388df2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_init_tail.obj",
+        "sha256": "e8efb02bcc30e1edcd93c2860d1b4ebf98cb796bce0384f46f153fd6f3a05d8b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_lua.obj",
+        "sha256": "6ee6138258e0c29345ba2a0dd5cc0c8e938976a213c93f8e0daefaf038b3405c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_menu.obj",
+        "sha256": "b568380739f4359bde499e9b2c1efab96243c3db3330956d2a6f84f620181fa7"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_mission.obj",
+        "sha256": "2b0b8c8f8ba7b41094b3deb3498b9322e6375d6c890933c950f9b06b0a908cb6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_mission_frame.obj",
+        "sha256": "806224df56976a0c4430144b24c3165d5f5faeda33c4eb10abfbc35bd790146b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_mission_result.obj",
+        "sha256": "bfb2fab09d7b3da5dbaf053b7e81ad68d0543534ab59b8eac24d0673c98048de"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_ready.obj",
+        "sha256": "77dae5cccaa6f80d4652c68332f60dcf1a5b32b9f61bac05127bd02e82c39e10"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_scene_contents.obj",
+        "sha256": "1089b0f19411a0ed7f44c624a3c4d19c64e007ecd832fec4e3a08b7979576abf"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_script_orders.obj",
+        "sha256": "b7d3502b0775640ff8d36472987b016fa7ef6d89290827f9337ec7a38713b791"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_ship_ai.obj",
+        "sha256": "39fe3316d55083358315da9f76953a927d1f3d725cd94927a0a386028726726d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_singletons.obj",
+        "sha256": "f130195fe6cb26e67885269303837303fcf5f8d6f4783f0c10cef7dedf4f3b62"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_text.obj",
+        "sha256": "d04bee92aa204353b561c0ac3b900bc8e73a8768b322134940948dbc9dd140ed"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_trajectory.obj",
+        "sha256": "54673f155c25808f43b1cc588df5115c96b650432818c710dd91628629b06f82"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_units.obj",
+        "sha256": "2b0b75bdaff899e92768daaf428b6f1685d279258065a458224ec9004f1d527e"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_vfs.obj",
+        "sha256": "f3c11175652053a7d0989da7d9e3b028019888db04341df1b2347190b0ac2d04"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_hosts_world.obj",
+        "sha256": "52e10c697e310cda83473fa186214177625fe6b5a000c48c6c969a7491c09382"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_native_graphics_pools.obj",
+        "sha256": "1206517652b072b6d6aaba6b95a6225339bda61cc4a64107016d5b5dcc91a905"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_native_hardware_layout_tree.obj",
+        "sha256": "2a2ea9960a191a4197d201ae68ad6e5501534492f47e7eb0b13e92d6490804f6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_native_lua_globals.obj",
+        "sha256": "932075a1c004dbcc5d423665c91329e2975439efbb27e4a725b84d5b65a032f6"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_native_lua_services.obj",
+        "sha256": "0f8983d67d020a890d2c5c12d23fd949932dec166c99a2f977a0382b6a2f9016"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_native_renderer_application.obj",
+        "sha256": "cba2a45da4ee2c682195e89aaafe08305b48cf3709ebcc053316c16d2d3bd69f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_native_shader_process.obj",
+        "sha256": "8a29c896d54290aaddf65df9c57da6a38464462bde011d4946c96f873cefba91"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_native_string_process.obj",
+        "sha256": "790f75ee44bff156efae3528e02ca87bd52f54d7ce74ad9a6b2ecdc5445334ef"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_native_vertex_declarations.obj",
+        "sha256": "e57ec85125fc203a949fd2dbb3bef7f632796387af75c5f650a5a43b2650fc60"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_native_vfs_application.obj",
+        "sha256": "55bd61bfa4e82e4fd020b1bfd46f94fbb064606c50c9ca72efc79dc2fa0747c1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\game_observer_runtime.obj",
+        "sha256": "1d7b49f318195f4d9fd519062bda6e48c13017884c920b06e6c938f78a5bf471"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\gameplay_loose_ends_2.obj",
+        "sha256": "6cef5ac34b229195f2d1d5da12829627f2b48227fd88a7d2d15cd34b261b2a42"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\geom_mesh_resource.obj",
+        "sha256": "e536b9089157b35b3c8494cfbf0d7fa85726d9ce82b2b4ab47c4e13d515c8035"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\hit_hull_segment.obj",
+        "sha256": "cd16b3a2c47c636a204fd4e622a4d0cd7f8c75d11091ca91fe67a394c3383538"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\kill_credit.obj",
+        "sha256": "2b42314fff614f7eb65ce4f58110a76ed78a679f360edefbdbb9afb3fc090351"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\narrowphase_unit_part_shape.obj",
+        "sha256": "7f5bbfc6210b33a0c452bb3601d04c9e7e5b0c1abcccf2ea6de669b291730d9a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\part_damage_reachability.obj",
+        "sha256": "51f9c07e73db9914a4707775e8b5b76f13c8ff56bf380da1771e86fd72d65a33"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\pilot_command_path.obj",
+        "sha256": "062707a15f8ce177c4dcfb9f1c35c062c62a980d0f62100e5b541ae40d543fb2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\plane_ground_ops.obj",
+        "sha256": "65b619e02850c012e3a0a5c6529b27f6c9447450f2f82274bc76c483d60a8a65"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\ship_hit_record.obj",
+        "sha256": "6b1e0d411c1ba316a9f14fda39de96daaa30eff2c469dd20fcc54edfea4c5278"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\ship_sub_entity_list.obj",
+        "sha256": "2666c7f4077143bd9dd5e8bd9c14c5cd3da243c4805cbab30a66e1a3ae9aa7aa"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\unit_gunnery_pass.obj",
+        "sha256": "f85d451504ab8259bf3e1278f96ca2ca3fde61a590064bad3867293d37d9c557"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\unit_message_arms.obj",
+        "sha256": "e1f10761f7e50ba10b3538e34ea2d7b889d97a0a7f659a5f7aae7d007ab17557"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_game.dir\\Release\\unit_neighbour_fields.obj",
+        "sha256": "26c8631b91ce225ffc008e150f64e0efbd711587708a3f8ed7db26d180c8665f"
+      }
+    ],
+    "runs": {
+      "application": {
+        "args": [
+          "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\Release\\bsp_game.exe",
+          "--frames",
+          "2",
+          "--log",
+          "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\shader_preload_r99\\application\\application.log",
+          "--game-root",
+          "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+          "--settings-personal-root",
+          "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\shader_preload_r99\\application\\personal",
+          "--xlive-dll",
+          "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\gfwl-private-runtime\\xlive.dll",
+          "--xlive-dependency",
+          "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\gfwl-private-runtime\\msidcrl40.dll"
+        ],
+        "runtime_sha256": {
+          "xlive.dll": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385",
+          "msidcrl40.dll": "623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee",
+          "ppcrlconfig.dll": "649557d6349ea0658808952c1bbf9a111ec2283c29345c7f904919fd599e5d61",
+          "xlivefnt.dll": "a07e20c09a0c3eac2ed3e6288d67060e82b70595053153866b1cfb4f9958f9a4"
+        },
+        "exe_sha256": "0d57b743e18bc144bbec7c91b23a3e83be49d8073986e350ecf2f0db06411969",
+        "started_utc": "2026-09-17T17:04:38.444619+00:00",
+        "pid": 74552,
+        "returncode": 0,
+        "exit_hex": "00000000",
+        "elapsed": 1.8866754999908153,
+        "log_sha256": "cd1e9bf2b064bc9f7953f46337bdea21c0e7fb3999519d3c9e9e77e71d1c4d93",
+        "frames": 2,
+        "presents": 1,
+        "worker_joined": true,
+        "final_device_api_references": [
+          0,
+          0
+        ],
+        "scope": "Unmodified application smoke; new preload body is not wired into startup."
+      }
+    },
+    "vector_differential": {
+      "exit": 0,
+      "sha256": "5A8815410E2EB83ED2C872E70D7748553A4554E975C5970A95648FF40D257630",
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\shader_preload_r99\\preload-vector-probe.exe",
+      "log_sha256": "9e29d2aa4619792ccaefae4e413d22edeee31fd95c2f756b7069ef741210a12f",
+      "native_bytes": 95,
+      "shared_allocator_free_adapters": 2,
+      "scope": "One stateful sequence: minimum1, grow with allocator-mutated source/count and free-mutated count, no-grow. Both worlds retire all tracked allocations at end. No full-preload runtime test."
+    },
+    "full_preload_runtime_verified": false,
+    "assembly_review": {
+      "preload_extent": "0073bf80..0073c21d",
+      "reserve_extent": "00735ec0..00735f1e",
+      "script_path_length": 26,
+      "all_lua_keys_iterated": true,
+      "null_loader_results_appended": true,
+      "current_renderer_reloaded_per_entry": true,
+      "owned_results_stored_without_extra_retain": true,
+      "vector_live_count_data_preserved": true,
+      "cache_release_before_lua_cleanup": true,
+      "trace_leaf_ret_only": true
+    },
+    "call_verification": {
+      "total_calls": 33,
+      "direct_checked": 32,
+      "indirect": 1,
+      "failed": 0,
+      "log": "  indirect  report.host_steps[19]: native='0073bf80+vtable48' (not checked)\nreports/native_shader_preload_r99.json: 32 call rows checked, 0 failed\n"
+    }
+  },
+  "owned_files": [
+    "cmake/startup.cmake",
+    "config/names/00730000.jsonl",
+    "config/reconstruction/00730000.jsonl",
+    "docs/NATIVE_SHADER_PRELOAD_R99.md",
+    "include/bsp/native_shader_preload.hpp",
+    "reports/native_shader_preload_r99.json",
+    "src/native_shader_preload.cpp"
+  ],
+  "unproved": [
+    "Full73BF80 normal source is compiled and instruction-reviewed but not runtime-tested; no fabricated/preseeded material results or no-op material-load callback was used to claim the loop ran",
+    "Ordinary application startup does not yet invoke this body; actual application+08 vector lifetime and complete shared material-effect/compiler providers must be connected before admission",
+    "Compiler caller stack-word production for first observed sampler references remains unresolved; R98 knowledge tracking only removes captures overwritten before consumption",
+    "Material reference retirement belongs to application vector lifetime; this operation neither releases preload entries nor substitutes a private owning vector",
+    "Native helper normal allocator/free and readable extents are preconditions; native new-handler/CRT identities, original local SEH/FH3, nonlocal Lua errors and exceptional whole-loop unwind are unproved",
+    "Native4254B0 bracket calls are RET-only and are elided without adding logs; original literal/native profile bytes were verified",
+    "Unmodified application2 ticks/1 Present and vector differential do not prove full preload, rendered scene, gameplay or whole-game parity"
+  ],
+  "ghidra_annotations": {
+    "prior_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\ghidra-annotations-20260917T170955Z.json",
+    "prior_values": [
+      {
+        "address": "00735ec0",
+        "before": {
+          "address": "00735ec0",
+          "function_name": "FUN_00735ec0"
+        },
+        "after": {
+          "address": "00735ec0",
+          "name": "BSP_AppPointerVector_Reserve",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Full95-byte normal reserve: min1, signed capacity gate, wrapping allocation bytes, current source/count per copy, free CURRENT old data before publishing fresh pointer/capacity; count preserved including callback mutations. Original/source95-byte differential verifies minimum1, mutated header/copy/free schedule and no-growth. R99 native shader preload. Full normal73BF80 and735EC0 now have actual-storage source with concrete cache/Lua/material child providers; no fake material callback. Corrected returning-free gap at735F0C, preserving data/capacity publication after free. Strict Win32/3 CTests and95-byte helper original/source differential pass; whole670-byte preload loop is compiled/instruction-reviewed but NOT runtime-validated or connected to application startup. Compiler initial sampler stack words, actual application vector lifetime, native FH3/SEH/binary ABI and gameplay remain open. Evidence: docs/NATIVE_SHADER_PRELOAD_R99.md and reports/native_shader_preload_r99.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0073bf80",
+        "before": {
+          "address": "0073bf80",
+          "function_name": "BSP_ShaderCache_PreloadFromScript",
+          "comment": "[BSP reconstruction 0073bf80]\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073dd12. References shaderfx/shaderpreload.lua, the table key FileNames and the bracket log lines '--- SHADER LOADING BEGIN ---' and '--- SHADER LOADING END  ---'. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json.\n\n[BSP reconstruction 0073bf80] update\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073dd12. References shaderfx/shaderpreload.lua, the table key FileNames and the bracket log lines '--- SHADER LOADING BEGIN ---' and '--- SHADER LOADING END  ---'. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json. | Packet app_init_renderer_device: thiscall(this), plain RET at 0073c21d, void. this is the APPLICATION object, not the renderer: 0073dd09 loads it from the initializer frame slot [ESP+2Ch] that 0073d437 filled with the incoming ECX. Builds the 1Ah-byte name shaderfx/shaderpreload.lua, runs it through 00b69d40, opens table key FileNames via 00b67800, logs '--- SHADER LOADING BEGIN ---', then iterates with 00b67080/00b67190/00b66420/00b662b0. Each entry name goes to renderer virtual +48h (00b318b0, RET 4), the effect loader that rewrites .mshd to .shfx and resolves through the registry at renderer+1A98h (docs/MATERIAL_DISPATCH.md), so the 'shader cache' is the renderer effect registry rather than a separate object. Each returned handle is appended to the application vector at +8h data, +0Ch size, +10h capacity, grown by doubling through 00735ec0 with a floor of 1. Closes with '--- SHADER LOADING END  ---'. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json."
+        },
+        "after": {
+          "address": "0073bf80",
+          "name": "BSP_ShaderCache_PreloadFromScript",
+          "evidence": "Hypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073dd12. References shaderfx/shaderpreload.lua, the table key FileNames and the bracket log lines '--- SHADER LOADING BEGIN ---' and '--- SHADER LOADING END  ---'. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json. | Packet app_init_renderer_device: thiscall(this), plain RET at 0073c21d, void. this is the APPLICATION object, not the renderer: 0073dd09 loads it from the initializer frame slot [ESP+2Ch] that 0073d437 filled with the incoming ECX. Builds the 1Ah-byte name shaderfx/shaderpreload.lua, runs it through 00b69d40, opens table key FileNames via 00b67800, logs '--- SHADER LOADING BEGIN ---', then iterates with 00b67080/00b67190/00b66420/00b662b0. Each entry name goes to renderer virtual +48h (00b318b0, RET 4), the effect loader that rewrites .mshd to .shfx and resolves through the registry at renderer+1A98h (docs/MATERIAL_DISPATCH.md), so the 'shader cache' is the renderer effect registry rather than a separate object. Each returned handle is appended to the application vector at +8h data, +0Ch size, +10h capacity, grown by doubling through 00735ec0 with a floor of 1. Closes with '--- SHADER LOADING END  ---'. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json. | Descriptive hypothesis, not a recovered symbol. Full670-byte normal body: actual cache bracket, Lua mask1 and native shaderpreload.lua/FileNames iteration, current renderer+48 B318B0 material loading, append returned owned/null pointers to existing application+08 vector, current name cleanup, cache release before reverse value/key/table/Lua cleanup. Persistent cache/Lua/material frames retain failure. Compiled and instruction-reviewed; full-loop runtime remains open. R99 native shader preload. Full normal73BF80 and735EC0 now have actual-storage source with concrete cache/Lua/material child providers; no fake material callback. Corrected returning-free gap at735F0C, preserving data/capacity publication after free. Strict Win32/3 CTests and95-byte helper original/source differential pass; whole670-byte preload loop is compiled/instruction-reviewed but NOT runtime-validated or connected to application startup. Compiler initial sampler stack words, actual application vector lifetime, native FH3/SEH/binary ABI and gameplay remain open. Evidence: docs/NATIVE_SHADER_PRELOAD_R99.md and reports/native_shader_preload_r99.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "prior_ledger_records": {
+      "0073bf80": {
+        "names": [
+          {
+            "address": "0073bf80",
+            "name": "BSP_ShaderCache_PreloadFromScript",
+            "evidence": "Hypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073dd12. References shaderfx/shaderpreload.lua, the table key FileNames and the bracket log lines '--- SHADER LOADING BEGIN ---' and '--- SHADER LOADING END  ---'. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json. | Packet app_init_renderer_device: thiscall(this), plain RET at 0073c21d, void. this is the APPLICATION object, not the renderer: 0073dd09 loads it from the initializer frame slot [ESP+2Ch] that 0073d437 filled with the incoming ECX. Builds the 1Ah-byte name shaderfx/shaderpreload.lua, runs it through 00b69d40, opens table key FileNames via 00b67800, logs '--- SHADER LOADING BEGIN ---', then iterates with 00b67080/00b67190/00b66420/00b662b0. Each entry name goes to renderer virtual +48h (00b318b0, RET 4), the effect loader that rewrites .mshd to .shfx and resolves through the registry at renderer+1A98h (docs/MATERIAL_DISPATCH.md), so the 'shader cache' is the renderer effect registry rather than a separate object. Each returned handle is appended to the application vector at +8h data, +0Ch size, +10h capacity, grown by doubling through 00735ec0 with a floor of 1. Closes with '--- SHADER LOADING END  ---'. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json."
+          }
+        ],
+        "reconstruction": []
+      },
+      "00735ec0": {
+        "names": [],
+        "reconstruction": []
+      }
+    },
+    "status": "Owning-worktree locked annotations saved; preload name preserved,735EC0 descriptively named; prior comments retained; affected exports refreshed",
+    "readback_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\shader_preload_r99\\comments-after.json",
+    "readback_sha256": "3b3c6105db655f6749361e3b0c753dac1d4a6470dcd706cf51966df2e988e26f",
+    "prior_comments_preserved": true
+  },
+  "ledger_receipts": [
+    "0073bf80 -> BSP_ShaderCache_PreloadFromScript\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"0073bf80\", \"name\": \"BSP_ShaderCache_PreloadFromScript\", \"evidence\": \"Hypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. Called at 0073dd12. References shaderfx/shaderpreload.lua, the table key FileNames and the bracket log lines '--- SHADER LOADING BEGIN ---' and '--- SHADER LOADING END  ---'. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json. | Packet app_init_renderer_device: thiscall(this), plain RET at 0073c21d, void. this is the APPLICATION object, not the renderer: 0073dd09 loads it from the initializer frame slot [ESP+2Ch] that 0073d437 filled with the incoming ECX. Builds the 1Ah-byte name shaderfx/shaderpreload.lua, runs it through 00b69d40, opens table key FileNames via 00b67800, logs '--- SHADER LOADING BEGIN ---', then iterates with 00b67080/00b67190/00b66420/00b662b0. Each entry name goes to renderer virtual +48h (00b318b0, RET 4), the effect loader that rewrites .mshd to .shfx and resolves through the registry at renderer+1A98h (docs/MATERIAL_DISPATCH.md), so the 'shader cache' is the renderer effect registry rather than a separate object. Each returned handle is appended to the application vector at +8h data, +0Ch size, +10h capacity, grown by doubling through 00735ec0 with a floor of 1. Closes with '--- SHADER LOADING END  ---'. Evidence: docs/APP_INIT_RENDERER.md; reports/app_init_renderer.json.\"})\n",
+    "0073bf80 function preload_native_application_shaders_0073bf80\n",
+    "00735ec0 -> BSP_AppPointerVector_Reserve\n",
+    "00735ec0 function reserve_native_application_pointer_vector_00735ec0\n"
+  ],
+  "tested_artifact_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r99\\native-shader-preload-tested-r99.zip",
+    "sha256": "b953c26a61eb7058645b200159e2b2994e4e564ca9da97737e97cdd8b264808f",
+    "files": 248,
+    "uncompressed_bytes": 82523760,
+    "utc": "2026-09-17T17:15:05.859881+00:00",
+    "head": "f7253ae276fb0ec5ce4213ed43f34b9a4bdd7569",
+    "manifest": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_lua_bootstrap.obj",
+        "size": 15593,
+        "sha256": "a96c868c7191a95c049dc7345ce852f89575d348f009c451aae9f7d661037996"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_lua_file_loading.obj",
+        "size": 15642,
+        "sha256": "98b88dedf1e18d7b9984134d981e5f18abe5f0df6c3fe9a3f2c99fe68d6577cf"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_lua_objects.obj",
+        "size": 27578,
+        "sha256": "3626998cc5c205d5bd4e183fba54b2c76564296d3b1224a043406a7a791bf4c6"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_material_effect_cache.obj",
+        "size": 39029,
+        "sha256": "ef65e3534c9f76083ae2013aaef1340b6bf7b6f5fa7a90379af603d03c8c1ada"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_material_effect_loading.obj",
+        "size": 110027,
+        "sha256": "315627944b690846f007eaa9cdb0f57cb21a7ff5eedcf69381ae22520c203d8f"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_shader_binary_cache.obj",
+        "size": 21939,
+        "sha256": "12b32439ed7e08681c90bcaa3f3c1cb15898b85dfeec0c0108e379139cd684ac"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_shader_preload.obj",
+        "size": 58647,
+        "sha256": "478d127a1dc28aede41d7659847479a1d5f863ac2d5d67923c8e4a6401d8a096"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_string.obj",
+        "size": 18814,
+        "sha256": "96e6a624d4d1a61d9aa93b5badad8ead7e2718e5ab09c923c836e3ff81134abc"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ai_group_think.obj",
+        "size": 6132,
+        "sha256": "1a5a954ca13857d528fff56b252c7be08a9f4de0e0d73853671c1070ee911008"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ai_planners.obj",
+        "size": 12369,
+        "sha256": "d85f084da30a7494577929480a64aa46635e89f538773f6d8c0478202f713744"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/airfield_taxi.obj",
+        "size": 4203,
+        "sha256": "1521ca61bcfdcb643b238bdd083aebfe6e918137a84000c89a7a359846d7334f"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/command_completion.obj",
+        "size": 77478,
+        "sha256": "d9b010aaa9af434b45383c157da901103ee1a78226809ae35bb6b80ff061e6e0"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_avoid_zone_runtime.obj",
+        "size": 359966,
+        "sha256": "478e8bfb0627bb27226cee12677743f145a0483314ba576bf663b44b5383d643"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+        "size": 730732,
+        "sha256": "b809b71c926b44df2d810e2ef2e31b85c9000898b9c8996b82348896162d384c"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_commands.obj",
+        "size": 338899,
+        "sha256": "0ed8f8db2560ccb0c1ce485f21d81a2286ad76c39362035ee29f081f33c53768"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_fixed_step.obj",
+        "size": 40556,
+        "sha256": "027551260c8644a56c9d519f623fff8fa24e23b1365b8b81a7149a7cf308c43e"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_fonts.obj",
+        "size": 147019,
+        "sha256": "deb97e6dcc32d78d6646d6e21f4131eb6fcdb6e5a21311a529c0e8c5eda4e537"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_frontend.obj",
+        "size": 705704,
+        "sha256": "3052e929b0a5df6016952e67ca36f6e7ea57b1b84c6f1787a2d69acdbfb90eea"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_gunnery.obj",
+        "size": 671166,
+        "sha256": "938cde4ead3d1a71dbab0f776397d1d2e1623ad0631b81e1b5779decd84896ca"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_hud.obj",
+        "size": 210381,
+        "sha256": "cfad81714271505aec05c49f573fbc98192ab816dd5c55f383bbed24e837a786"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_hud_world.obj",
+        "size": 222447,
+        "sha256": "7c2a91669e4d28f77333e695c04416787e91f664055f5d77026f4fa95a388df2"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_init_tail.obj",
+        "size": 123530,
+        "sha256": "e8efb02bcc30e1edcd93c2860d1b4ebf98cb796bce0384f46f153fd6f3a05d8b"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_lua.obj",
+        "size": 579966,
+        "sha256": "6ee6138258e0c29345ba2a0dd5cc0c8e938976a213c93f8e0daefaf038b3405c"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_menu.obj",
+        "size": 518796,
+        "sha256": "b568380739f4359bde499e9b2c1efab96243c3db3330956d2a6f84f620181fa7"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_mission.obj",
+        "size": 763776,
+        "sha256": "2b0b8c8f8ba7b41094b3deb3498b9322e6375d6c890933c950f9b06b0a908cb6"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_mission_frame.obj",
+        "size": 572403,
+        "sha256": "806224df56976a0c4430144b24c3165d5f5faeda33c4eb10abfbc35bd790146b"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_mission_result.obj",
+        "size": 241504,
+        "sha256": "bfb2fab09d7b3da5dbaf053b7e81ad68d0543534ab59b8eac24d0673c98048de"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_ready.obj",
+        "size": 215770,
+        "sha256": "77dae5cccaa6f80d4652c68332f60dcf1a5b32b9f61bac05127bd02e82c39e10"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_scene_contents.obj",
+        "size": 930357,
+        "sha256": "1089b0f19411a0ed7f44c624a3c4d19c64e007ecd832fec4e3a08b7979576abf"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_script_orders.obj",
+        "size": 305820,
+        "sha256": "b7d3502b0775640ff8d36472987b016fa7ef6d89290827f9337ec7a38713b791"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_ship_ai.obj",
+        "size": 707939,
+        "sha256": "39fe3316d55083358315da9f76953a927d1f3d725cd94927a0a386028726726d"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+        "size": 22025,
+        "sha256": "f130195fe6cb26e67885269303837303fcf5f8d6f4783f0c10cef7dedf4f3b62"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_text.obj",
+        "size": 148586,
+        "sha256": "d04bee92aa204353b561c0ac3b900bc8e73a8768b322134940948dbc9dd140ed"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_trajectory.obj",
+        "size": 122707,
+        "sha256": "54673f155c25808f43b1cc588df5115c96b650432818c710dd91628629b06f82"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_units.obj",
+        "size": 469397,
+        "sha256": "2b0b75bdaff899e92768daaf428b6f1685d279258065a458224ec9004f1d527e"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_vfs.obj",
+        "size": 422799,
+        "sha256": "f3c11175652053a7d0989da7d9e3b028019888db04341df1b2347190b0ac2d04"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_world.obj",
+        "size": 103418,
+        "sha256": "52e10c697e310cda83473fa186214177625fe6b5a000c48c6c969a7491c09382"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_main.obj",
+        "size": 298088,
+        "sha256": "bb05e266a061f5bc562b262e4dade2fd83b030b4698ee8459beef57a90197e24"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_graphics_pools.obj",
+        "size": 27852,
+        "sha256": "1206517652b072b6d6aaba6b95a6225339bda61cc4a64107016d5b5dcc91a905"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_hardware_layout_tree.obj",
+        "size": 12732,
+        "sha256": "2a2ea9960a191a4197d201ae68ad6e5501534492f47e7eb0b13e92d6490804f6"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_lua_globals.obj",
+        "size": 15945,
+        "sha256": "932075a1c004dbcc5d423665c91329e2975439efbb27e4a725b84d5b65a032f6"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_lua_services.obj",
+        "size": 23118,
+        "sha256": "0f8983d67d020a890d2c5c12d23fd949932dec166c99a2f977a0382b6a2f9016"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_renderer_application.obj",
+        "size": 273216,
+        "sha256": "cba2a45da4ee2c682195e89aaafe08305b48cf3709ebcc053316c16d2d3bd69f"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_shader_process.obj",
+        "size": 20534,
+        "sha256": "8a29c896d54290aaddf65df9c57da6a38464462bde011d4946c96f873cefba91"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_string_process.obj",
+        "size": 4101,
+        "sha256": "790f75ee44bff156efae3528e02ca87bd52f54d7ce74ad9a6b2ecdc5445334ef"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_vertex_declarations.obj",
+        "size": 17104,
+        "sha256": "e57ec85125fc203a949fd2dbb3bef7f632796387af75c5f650a5a43b2650fc60"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_vfs_application.obj",
+        "size": 51971,
+        "sha256": "55bd61bfa4e82e4fd020b1bfd46f94fbb064606c50c9ca72efc79dc2fa0747c1"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_observer_runtime.obj",
+        "size": 15861,
+        "sha256": "1d7b49f318195f4d9fd519062bda6e48c13017884c920b06e6c938f78a5bf471"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/gameplay_loose_ends_2.obj",
+        "size": 1758,
+        "sha256": "6cef5ac34b229195f2d1d5da12829627f2b48227fd88a7d2d15cd34b261b2a42"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/geom_mesh_resource.obj",
+        "size": 261705,
+        "sha256": "e536b9089157b35b3c8494cfbf0d7fa85726d9ce82b2b4ab47c4e13d515c8035"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/hit_hull_segment.obj",
+        "size": 1836,
+        "sha256": "cd16b3a2c47c636a204fd4e622a4d0cd7f8c75d11091ca91fe67a394c3383538"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/kill_credit.obj",
+        "size": 33830,
+        "sha256": "2b42314fff614f7eb65ce4f58110a76ed78a679f360edefbdbb9afb3fc090351"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/narrowphase_unit_part_shape.obj",
+        "size": 2080,
+        "sha256": "7f5bbfc6210b33a0c452bb3601d04c9e7e5b0c1abcccf2ea6de669b291730d9a"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/part_damage_reachability.obj",
+        "size": 4156,
+        "sha256": "51f9c07e73db9914a4707775e8b5b76f13c8ff56bf380da1771e86fd72d65a33"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/pilot_command_path.obj",
+        "size": 8846,
+        "sha256": "062707a15f8ce177c4dcfb9f1c35c062c62a980d0f62100e5b541ae40d543fb2"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/plane_ground_ops.obj",
+        "size": 13388,
+        "sha256": "65b619e02850c012e3a0a5c6529b27f6c9447450f2f82274bc76c483d60a8a65"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ship_hit_record.obj",
+        "size": 7923,
+        "sha256": "6b1e0d411c1ba316a9f14fda39de96daaa30eff2c469dd20fcc54edfea4c5278"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/ship_sub_entity_list.obj",
+        "size": 1477,
+        "sha256": "2666c7f4077143bd9dd5e8bd9c14c5cd3da243c4805cbab30a66e1a3ae9aa7aa"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/unit_gunnery_pass.obj",
+        "size": 11746,
+        "sha256": "f85d451504ab8259bf3e1278f96ca2ca3fde61a590064bad3867293d37d9c557"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/unit_message_arms.obj",
+        "size": 25782,
+        "sha256": "e1f10761f7e50ba10b3538e34ea2d7b889d97a0a7f659a5f7aae7d007ab17557"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/unit_neighbour_fields.obj",
+        "size": 1330,
+        "sha256": "26c8631b91ce225ffc008e150f64e0efbd711587708a3f8ed7db26d180c8665f"
+      },
+      {
+        "path": "build/win32/bsp_game.vcxproj",
+        "size": 64377,
+        "sha256": "1dd49b45ea4b3b140bba9bf1859ef8c7065c688d357b2d4b280de6179632ee18"
+      },
+      {
+        "path": "build/win32/CMakeCache.txt",
+        "size": 19565,
+        "sha256": "d44e9a96208c5743219aa6ee30bf4f5768813c415ab257b5af16350b3179b9f3"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "size": 65400130,
+        "sha256": "6f0e88c07bdb7f1c66e60da8096779917b2de34e7e522290085876dda4c2021c"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "size": 2636800,
+        "sha256": "0d57b743e18bc144bbec7c91b23a3e83be49d8073986e350ecf2f0db06411969"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "size": 455244,
+        "sha256": "db83167c8c7d24461ef2bf60363b96264fd2406929d0e72a8909287d79b96a17"
+      },
+      {
+        "path": "build/win32/Release/bsp_math_tests.exe",
+        "size": 757760,
+        "sha256": "2b0fa34d16002759fb398fe946878e667ea40a61f96bc3ea5315a4092645c612"
+      },
+      {
+        "path": "build/win32/Release/bsp_native_math_tests.exe",
+        "size": 18432,
+        "sha256": "f96d4fdb661a527bbd903a2ea56a6adbe57346060890cff999cd5a9d0990379f"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "size": 71906,
+        "sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "size": 2408,
+        "sha256": "ebd64758cf8511734096bea43d7701d7cd26a7fb6c1b4451d94a02074c9224f9"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "size": 159119,
+        "sha256": "dc8f47697cb4b751dd0a77da090b9c88c8d31d853fad11aafb4a981f82a8a06a"
+      },
+      {
+        "path": "CMakeLists.txt",
+        "size": 15689,
+        "sha256": "754522100c9579ee50d4f36ce078b1d7ba643fc9879d2748460b12f7b90feb03"
+      },
+      {
+        "path": "config/names/00730000.jsonl",
+        "size": 74666,
+        "sha256": "3e3fa5b34a5cb88be5f76943d471d1455834b95549bb4711fb3267d585f5e618"
+      },
+      {
+        "path": "config/reconstruction/00730000.jsonl",
+        "size": 56322,
+        "sha256": "eee9b093744e8083366388250d366c1afb1d028b0d10120322291ba5babe5eb7"
+      },
+      {
+        "path": "config/target.json",
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+      },
+      {
+        "path": "docs/NATIVE_SHADER_PRELOAD_R99.md",
+        "size": 4858,
+        "sha256": "860c9d79aa6115d0d18a7e19bb5f8dfb57114e2ade158f5d142ef6f91f69e981"
+      },
+      {
+        "path": "include/bsp/allocator_list.hpp",
+        "size": 1781,
+        "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8"
+      },
+      {
+        "path": "include/bsp/building_instance.hpp",
+        "size": 2328,
+        "sha256": "ad3c055dee4b5b4ec77784db03552e173644d57b154b3fd0a26dd5dff1ad1c4e"
+      },
+      {
+        "path": "include/bsp/camera_projection.hpp",
+        "size": 2413,
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "path": "include/bsp/camera_transform.hpp",
+        "size": 7028,
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+      },
+      {
+        "path": "include/bsp/d3d9_buffers.hpp",
+        "size": 3262,
+        "sha256": "e8bc19c4630661b83969b53cac94134748f3c9af2a98002f1f2906ed93dedc83"
+      },
+      {
+        "path": "include/bsp/d3d9_startup.hpp",
+        "size": 1362,
+        "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843"
+      },
+      {
+        "path": "include/bsp/d3d9_states.hpp",
+        "size": 15076,
+        "sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288"
+      },
+      {
+        "path": "include/bsp/d3d9_surface_pool.hpp",
+        "size": 3168,
+        "sha256": "58e4dd6d58a99d6b5cbc1685de6e83fc65512c94b02778a4f8e2b883da068467"
+      },
+      {
+        "path": "include/bsp/d3d9_texture.hpp",
+        "size": 4535,
+        "sha256": "feca623271fc53076df9026b7041c69dcdddeab0b4e007230480d787653bbc7d"
+      },
+      {
+        "path": "include/bsp/d3d9_texture2d_pool.hpp",
+        "size": 3214,
+        "sha256": "7d583076d37c842891946514ecdd69eb9a0d331d488e2753588e225f542b75f3"
+      },
+      {
+        "path": "include/bsp/d3d9_vertex_layout.hpp",
+        "size": 1257,
+        "sha256": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef"
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "size": 2475,
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+      },
+      {
+        "path": "include/bsp/frontend_screen_animation.hpp",
+        "size": 14105,
+        "sha256": "5bf3429e1c6032def440ccebd3d804fd087896401ec16bf94b456b1dc73865e0"
+      },
+      {
+        "path": "include/bsp/game_entry.hpp",
+        "size": 5510,
+        "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+      },
+      {
+        "path": "include/bsp/generated_model_lifetime.hpp",
+        "size": 12600,
+        "sha256": "bb6171641666552aea3fcaa9757d13074f229e79d5793a3b044b980f4a3d3ef9"
+      },
+      {
+        "path": "include/bsp/gui_layout_loader.hpp",
+        "size": 20811,
+        "sha256": "3ede9dc470a4d5a3285d1578483428b548025b0b2eba9ab6ecc79967b242d8b1"
+      },
+      {
+        "path": "include/bsp/gui_lua_reader.hpp",
+        "size": 23275,
+        "sha256": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433"
+      },
+      {
+        "path": "include/bsp/gui_native_geometry.hpp",
+        "size": 10778,
+        "sha256": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf"
+      },
+      {
+        "path": "include/bsp/gui_widget.hpp",
+        "size": 13391,
+        "sha256": "846d1f6378e3459fb585917289d2f3342de37ba98dafc7fc952c9c48ea8061f9"
+      },
+      {
+        "path": "include/bsp/instance_geometry.hpp",
+        "size": 3989,
+        "sha256": "02bd2ae826198ca341a2a14fbf0f58ced99ccd20a5833a6eef48a11f932b75d4"
+      },
+      {
+        "path": "include/bsp/instance_grouping.hpp",
+        "size": 4008,
+        "sha256": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308"
+      },
+      {
+        "path": "include/bsp/instance_sort.hpp",
+        "size": 4479,
+        "sha256": "c3a892e5b69db70699daaa5c301f5b00aa17fe4f93f929fdc43dcc16e797b1f3"
+      },
+      {
+        "path": "include/bsp/instance_upload.hpp",
+        "size": 6532,
+        "sha256": "271e956b6dd3801fff1edab447fb03bb929ec562e227ae0357debbe95c1239fb"
+      },
+      {
+        "path": "include/bsp/lua_numeric.hpp",
+        "size": 1086,
+        "sha256": "a8de255e2aaaad540cec67717e7d0efd7cc5f50d206bdd2137cabe1ed81acf60"
+      },
+      {
+        "path": "include/bsp/material_lighting.hpp",
+        "size": 1642,
+        "sha256": "b56091a2688d0a7cf52401396efa68b9f02de215e9bd89e4bf20d93d83600da8"
+      },
+      {
+        "path": "include/bsp/material_sort_metadata.hpp",
+        "size": 3332,
+        "sha256": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212"
+      },
+      {
+        "path": "include/bsp/native_adopted_substream.hpp",
+        "size": 4690,
+        "sha256": "a5d41d65fb462fbe64b002ab38c646a8cb5f066c80415f33523b454100c302d8"
+      },
+      {
+        "path": "include/bsp/native_alias_count_growth.hpp",
+        "size": 1950,
+        "sha256": "d19316380a60b5ba2cf962bb079e75995ffe31de2c0d7cd18467fa05aba6fde5"
+      },
+      {
+        "path": "include/bsp/native_cube_texture_owner.hpp",
+        "size": 2750,
+        "sha256": "d770a6d64fdbc2dbb6770bfca5cbadcb501cc39abbcdc6053e717abcb8095645"
+      },
+      {
+        "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+        "size": 2257,
+        "sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1"
+      },
+      {
+        "path": "include/bsp/native_instance_collection.hpp",
+        "size": 4710,
+        "sha256": "6c60d147f14ca210aa96529e9c45d523053fbf13a103e6dfd705caec54fc2f54"
+      },
+      {
+        "path": "include/bsp/native_legacy_exception_owner.hpp",
+        "size": 3232,
+        "sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727"
+      },
+      {
+        "path": "include/bsp/native_legacy_sbo_string.hpp",
+        "size": 2115,
+        "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422"
+      },
+      {
+        "path": "include/bsp/native_logical_buffer_device_restore.hpp",
+        "size": 2649,
+        "sha256": "2e79708e49c1559f706602b9fe761791776f11fee1c5b3efa69d7fbb2bd57c45"
+      },
+      {
+        "path": "include/bsp/native_logical_buffer_mapping.hpp",
+        "size": 2420,
+        "sha256": "d3ee48a208b6636dc70941c6a62967407d657ad18f1ae971f2d900c752fcaef0"
+      },
+      {
+        "path": "include/bsp/native_logical_index_owner.hpp",
+        "size": 6804,
+        "sha256": "c0ae53059fba249f589990b7d41d1986a2134cd86b99cd5d6db7ab2c849b38cb"
+      },
+      {
+        "path": "include/bsp/native_logical_vertex_owner.hpp",
+        "size": 7242,
+        "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+      },
+      {
+        "path": "include/bsp/native_lua_bootstrap.hpp",
+        "size": 1658,
+        "sha256": "b9c5bad802213d87665c1c4f82320184ef8970902dcd9dd7b22b40ce4493a45c"
+      },
+      {
+        "path": "include/bsp/native_lua_file_loading.hpp",
+        "size": 1992,
+        "sha256": "13bcab4bbc7eb973b7ccceb87b198e19326bed0320d2d3dca7b32ae91cba3108"
+      },
+      {
+        "path": "include/bsp/native_lua_objects.hpp",
+        "size": 10058,
+        "sha256": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d"
+      },
+      {
+        "path": "include/bsp/native_lua_vfs_dispatch.hpp",
+        "size": 1569,
+        "sha256": "da795f3a43a6acf1664d6ac00474a170d7196bf4383ca1695960ab685c67bfb2"
+      },
+      {
+        "path": "include/bsp/native_material_compiler_providers.hpp",
+        "size": 3050,
+        "sha256": "91e171c613975045058c377de34277310140ad1a9c90ed710448a4962edd997c"
+      },
+      {
+        "path": "include/bsp/native_material_effect_cache.hpp",
+        "size": 5853,
+        "sha256": "3fe74fa562bf64176c898ea86048ed1d618df04afcb5401fa16dca54cbe914b8"
+      },
+      {
+        "path": "include/bsp/native_material_effect_loading.hpp",
+        "size": 5376,
+        "sha256": "9aeead0e98e998cb43b895da50bc1c03eb26aee4ae4cc69804765c975cdc2608"
+      },
+      {
+        "path": "include/bsp/native_material_effect_owner.hpp",
+        "size": 8745,
+        "sha256": "197df420b08345803c36b5ef20cfaa725ccfa02c8ccc4a3fbfb76adada7bdedf"
+      },
+      {
+        "path": "include/bsp/native_material_effect_programs.hpp",
+        "size": 7157,
+        "sha256": "2c6d817e2ec089f6513c0e77582745dacdc8bd4791ae84756209ba271abcd658"
+      },
+      {
+        "path": "include/bsp/native_material_factory.hpp",
+        "size": 3753,
+        "sha256": "fa8a45423c10da368d803d5df7fb583a5bc91e9f3c3ac59722607e4a95d90b71"
+      },
+      {
+        "path": "include/bsp/native_material_owner.hpp",
+        "size": 5986,
+        "sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320"
+      },
+      {
+        "path": "include/bsp/native_material_pass_base.hpp",
+        "size": 5388,
+        "sha256": "ff2143aa1f9265bbeed7b38c24a23ab2c504bc1dfe8b96d4c7767f095a318a70"
+      },
+      {
+        "path": "include/bsp/native_material_pass_copy.hpp",
+        "size": 3595,
+        "sha256": "91759de34783c49066d70a643bdc4f985b98d4231673b59fc2b6e3cbca291aff"
+      },
+      {
+        "path": "include/bsp/native_material_pass_owner.hpp",
+        "size": 5800,
+        "sha256": "30ce7e9a5eb8247e4988a947a39427deeecf4991c42cdb969c2ad403f27a4e18"
+      },
+      {
+        "path": "include/bsp/native_material_pass_states.hpp",
+        "size": 5387,
+        "sha256": "4b0b577fb905790cbfa2c47dcddeef2ba7c111667a3b4d3cdf770c85ea52cab9"
+      },
+      {
+        "path": "include/bsp/native_material_pools.hpp",
+        "size": 10219,
+        "sha256": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715"
+      },
+      {
+        "path": "include/bsp/native_mesh_clone.hpp",
+        "size": 2821,
+        "sha256": "0fbe93a15ed525fd128257ca58ac4c4d8da4b4a533dd345c6c856bce5d839d5e"
+      },
+      {
+        "path": "include/bsp/native_mesh_owner.hpp",
+        "size": 6760,
+        "sha256": "540fa95aafcd3b67697998361f9a6b1689bf90348c9c0cdc09bdeb6b9c6ac42c"
+      },
+      {
+        "path": "include/bsp/native_mesh_pool.hpp",
+        "size": 2929,
+        "sha256": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52"
+      },
+      {
+        "path": "include/bsp/native_mesh_section.hpp",
+        "size": 9555,
+        "sha256": "c99901d53b195ab67c0da51c7b39657f42b7b60ba1f5509eec200b6ff29f3e2e"
+      },
+      {
+        "path": "include/bsp/native_model_owner.hpp",
+        "size": 6717,
+        "sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e"
+      },
+      {
+        "path": "include/bsp/native_model_pool.hpp",
+        "size": 3166,
+        "sha256": "30e4945729d723ec450a6eebaf28968c976dcd50f366ba193aa591d751709144"
+      },
+      {
+        "path": "include/bsp/native_named_special_textures.hpp",
+        "size": 3613,
+        "sha256": "e45d4b6240621387599ecf4e0d27d65e1f3abe4d6528d761d58db5df4e6f043e"
+      },
+      {
+        "path": "include/bsp/native_node_construction.hpp",
+        "size": 6451,
+        "sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098"
+      },
+      {
+        "path": "include/bsp/native_node_destruction.hpp",
+        "size": 5997,
+        "sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833"
+      },
+      {
+        "path": "include/bsp/native_particle_definition.hpp",
+        "size": 4889,
+        "sha256": "3a8500ab45353cb0d701fa3c0b2b1d85a301c982c14af23d82d31b379b8cd898"
+      },
+      {
+        "path": "include/bsp/native_particle_type_base.hpp",
+        "size": 3353,
+        "sha256": "28afa3e93f423326a0943350de5fbb518657b475708ba084c8aa78ddc2fd3e99"
+      },
+      {
+        "path": "include/bsp/native_particle_type_property.hpp",
+        "size": 6372,
+        "sha256": "995506392dee5bf538cebf001b979b3f7a661c40d815671d328643af1d989415"
+      },
+      {
+        "path": "include/bsp/native_physical_buffer_lock.hpp",
+        "size": 1561,
+        "sha256": "519c67bd123883490af70464ab81cec74d5de948a39eada540cf5b8529e18340"
+      },
+      {
+        "path": "include/bsp/native_physical_buffer_owner.hpp",
+        "size": 4248,
+        "sha256": "1277b747e0963be41fdee456092ea42b3c191d7aa165eeeec772de3cad354e56"
+      },
+      {
+        "path": "include/bsp/native_physical_file_date.hpp",
+        "size": 5969,
+        "sha256": "158161430fea02951e7449c8c5d1c8ae2fb5f75df70d4b0b0606cf6abcf5ad2f"
+      },
+      {
+        "path": "include/bsp/native_point_light_links.hpp",
+        "size": 4633,
+        "sha256": "e106191d74ea6960befb5f36e74e89076efb5fec4122a5b3d87482823dc07ba7"
+      },
+      {
+        "path": "include/bsp/native_pooled_resource_path.hpp",
+        "size": 1901,
+        "sha256": "c9bf86591a7af5df77018a03e433e70832c89d71b8894b05cead9d7830f17d0c"
+      },
+      {
+        "path": "include/bsp/native_render_context.hpp",
+        "size": 6924,
+        "sha256": "1c8d834d50cbf8ee7f660e7803efe6bad43fe70bbe87fd5cdf3375f6e68ef56d"
+      },
+      {
+        "path": "include/bsp/native_render_pointer_arrays.hpp",
+        "size": 4572,
+        "sha256": "d9cf406a178986114205fe9a154a2b74c0f8dd857b6186d7d840d8fe398ae881"
+      },
+      {
+        "path": "include/bsp/native_render_resource_alias_nodes.hpp",
+        "size": 3096,
+        "sha256": "84494dd08830e1d38c7ce90a26516b2fb4a9fdd66ab3b7e62ff7e37dae19a570"
+      },
+      {
+        "path": "include/bsp/native_render_resource_container_removal.hpp",
+        "size": 2497,
+        "sha256": "1610798bb00b9c8d99938e212c7c50ab455e35027fba4885fdad074ea37182e4"
+      },
+      {
+        "path": "include/bsp/native_render_resource_record.hpp",
+        "size": 4218,
+        "sha256": "5aa38d6351388c4fc6e97799712f9b7e85b6f65468aa51d37563793208930e11"
+      },
+      {
+        "path": "include/bsp/native_render_resource_record_construction.hpp",
+        "size": 3399,
+        "sha256": "49cbc1e7fcbf1581e24a874203e40dba0929acb8f333645bb7b967d1c8bb451a"
+      },
+      {
+        "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+        "size": 2877,
+        "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+      },
+      {
+        "path": "include/bsp/native_renderer_texture_name_notification.hpp",
+        "size": 2292,
+        "sha256": "5157ead757f9082a87a57fe9f06694025ac2bc5888b244156b6e2526aa9407a4"
+      },
+      {
+        "path": "include/bsp/native_resource_stream_reads.hpp",
+        "size": 2462,
+        "sha256": "a9705ea1d2ef8596131352c3f7b1bc6d97d821b1668c39ab35305d245b78113d"
+      },
+      {
+        "path": "include/bsp/native_resource_support.hpp",
+        "size": 3479,
+        "sha256": "fb1506aba45e7801bcb638a6d836ce52972cf49e6d8120f7a07f8dc74d36b8f7"
+      },
+      {
+        "path": "include/bsp/native_retained_memory_owners.hpp",
+        "size": 3829,
+        "sha256": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c"
+      },
+      {
+        "path": "include/bsp/native_shader_binary_cache.hpp",
+        "size": 4300,
+        "sha256": "97bdd44bb5047a5389caee8cb09a456462ce333ada28618fc9d0402cf96e485c"
+      },
+      {
+        "path": "include/bsp/native_shader_compiler_lookups.hpp",
+        "size": 3966,
+        "sha256": "ff8bf5af6dab08f28a81a8c0e517463443c81ca65c906b42f928c6f4a2bf7559"
+      },
+      {
+        "path": "include/bsp/native_shader_descriptor_owner.hpp",
+        "size": 4068,
+        "sha256": "4846aaf3f02e8967ae57c00135455b2ee3b6b913c82d790ba32dab80545b2d2e"
+      },
+      {
+        "path": "include/bsp/native_shader_preload.hpp",
+        "size": 3737,
+        "sha256": "1ba8808ac04590cf15fa1cacdf135aa17cb220a83397d665ccff5b8c7ad713e9"
+      },
+      {
+        "path": "include/bsp/native_shader_sampler_owner.hpp",
+        "size": 5020,
+        "sha256": "8a01ca946332bbcc7e4b7130f53cb2070c4cca082d33d75951d69fe152625a93"
+      },
+      {
+        "path": "include/bsp/native_stream_clone.hpp",
+        "size": 3283,
+        "sha256": "a333d180afcf21084068a671d60c34ee8e1b18ea980a6c03b115a32ce2ff3e6a"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "size": 8771,
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+      },
+      {
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "size": 5893,
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "size": 2805,
+        "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+      },
+      {
+        "path": "include/bsp/native_string_vector.hpp",
+        "size": 1820,
+        "sha256": "38a48cf86dc70e46bdb184b1d7738e4221f55ddd045429fa4f47c74cc6b9c2e9"
+      },
+      {
+        "path": "include/bsp/native_surface_owner.hpp",
+        "size": 4982,
+        "sha256": "e5515e193057b574de0d0b55ff3f0b512f8b2c2cb9002ba3eb62de106a4bbe66"
+      },
+      {
+        "path": "include/bsp/native_texture_2d_owner.hpp",
+        "size": 3247,
+        "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc"
+      },
+      {
+        "path": "include/bsp/native_texture_loading_cache.hpp",
+        "size": 11040,
+        "sha256": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d"
+      },
+      {
+        "path": "include/bsp/native_traceline_render.hpp",
+        "size": 7210,
+        "sha256": "eec43d439a9ddcf4d5aa96954434c469b607c4ac198f54b6cb55339a0365caf4"
+      },
+      {
+        "path": "include/bsp/native_vfs_date_route.hpp",
+        "size": 3357,
+        "sha256": "33c3707a013a34cc0895dc0bb2c797b49eb7ba45bff49423a2cc6a36bfb56244"
+      },
+      {
+        "path": "include/bsp/native_vfs_factory_selection.hpp",
+        "size": 1558,
+        "sha256": "2e448a1fa5f2a346074454c0ab6855140a8e06c22323d9ee80f2d42014ad8add"
+      },
+      {
+        "path": "include/bsp/native_vfs_manager_lifetime.hpp",
+        "size": 3262,
+        "sha256": "65a07959ad3e0e74b7249363ca1b1767bfa0ab16f236c4dab351336201bd019d"
+      },
+      {
+        "path": "include/bsp/native_vfs_pending_routes.hpp",
+        "size": 4816,
+        "sha256": "6a836f8ddedbc18aa331f817d22e228ccc22a0e37335fa77b6521a593575464e"
+      },
+      {
+        "path": "include/bsp/native_vfs_runtime_bindings.hpp",
+        "size": 5963,
+        "sha256": "1b2ef8bd680361642fd8c7bd402837e5de8e8cea96a19f817c8abf93b049ba6f"
+      },
+      {
+        "path": "include/bsp/native_volume_texture_owner.hpp",
+        "size": 2610,
+        "sha256": "fa2f4f8cebe11eb431dfec3a399080d114c0a5ecc260320f23682adff5fab28f"
+      },
+      {
+        "path": "include/bsp/platform_loop.hpp",
+        "size": 765,
+        "sha256": "ac4c7389744b8ac8734c863aeef096314fcddb1b45529c6427c584e9a2d29929"
+      },
+      {
+        "path": "include/bsp/random.hpp",
+        "size": 791,
+        "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+      },
+      {
+        "path": "include/bsp/random_threads.hpp",
+        "size": 1446,
+        "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+      },
+      {
+        "path": "include/bsp/render_command_queue.hpp",
+        "size": 10656,
+        "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a"
+      },
+      {
+        "path": "include/bsp/render_tail.hpp",
+        "size": 15566,
+        "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+      },
+      {
+        "path": "include/bsp/resource_load_events.hpp",
+        "size": 697,
+        "sha256": "c3cc6e658a94392a8264b584a892cdd39f36a0bb4f76b3f3812287c6401bdd20"
+      },
+      {
+        "path": "include/bsp/scene_attachment.hpp",
+        "size": 9700,
+        "sha256": "d2bb5d004129a418961bf13e60c0f8324a077b5647ca8450602421190841d322"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "size": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "include/bsp/sound_lifetime_access.hpp",
+        "size": 3039,
+        "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+      },
+      {
+        "path": "include/bsp/storage_pool.hpp",
+        "size": 5571,
+        "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+      },
+      {
+        "path": "include/bsp/system_lighting_constants.hpp",
+        "size": 8718,
+        "sha256": "9c98d892bac479fdf3d661c98c996333df0821a3daea26a5e36ba40339b722c9"
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "size": 4800,
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+      },
+      {
+        "path": "include/bsp/vertex_declaration.hpp",
+        "size": 1462,
+        "sha256": "0f03c6a960da3547644b3e5bc8b5934a35fe26f42abc2746559a31f0af2452a0"
+      },
+      {
+        "path": "local/annotate_shader_preload_r99.py",
+        "size": 4397,
+        "sha256": "7256ff86d5b23cbf50f9c667c79973e1677a1f885c303085195c5da8e90af902"
+      },
+      {
+        "path": "local/build_preload_vector_probe_r99.ps1",
+        "size": 1899,
+        "sha256": "5146659db73cbb7778ddb888c3b9e49d28e453e351ddcf4921cfe2fe6a24c061"
+      },
+      {
+        "path": "local/collect_shader_preload_r99.py",
+        "size": 4065,
+        "sha256": "eac47701c3fb2d16f15e7335f0290038f18a6d9de63f98a908d2d0f8969a86a2"
+      },
+      {
+        "path": "local/commit_shader_preload_r99.py",
+        "size": 1986,
+        "sha256": "b432882ca43354c0edac9c322da2c54b9e837ff8060e442413671dfc9da6bf57"
+      },
+      {
+        "path": "local/ghidra-annotations-20260917T170955Z.json",
+        "size": 6001,
+        "sha256": "55777710e930ec5fd2ec693e57c4c3c99f7966826cecb9df49eed6f3bc7821b4"
+      },
+      {
+        "path": "local/prepare_preload_vector_probe_r99.py",
+        "size": 1876,
+        "sha256": "70f188b7c6f74a914d090805cd390678f16fe22e8b70e6773a5eeb3af22fd6b5"
+      },
+      {
+        "path": "local/prepare_shader_preload_publication_r99.py",
+        "size": 3442,
+        "sha256": "9baf49e253548b92c1b2628807f4f9c4750e72175553a47fd0cd2a4ad7e8f11d"
+      },
+      {
+        "path": "local/prepare_shader_preload_r99.py",
+        "size": 810,
+        "sha256": "a033ca512f7f8652098c77863b79e5917ac4d7448b14747edd6d9da8a4b7ebb0"
+      },
+      {
+        "path": "local/r99_annotations.log",
+        "size": 198,
+        "sha256": "be25cfe4ee073321ec2368266076638b5f1d51bb9cc63575c6d7b942f91088a9"
+      },
+      {
+        "path": "local/r99_build.log",
+        "size": 2584,
+        "sha256": "be326a69d2bac9b3ca8ba41ce7e14eafff4d29f57638457d2d888cfb45e6e67b"
+      },
+      {
+        "path": "local/r99_build_before_domain_guard.log",
+        "size": 2584,
+        "sha256": "c71cb1894c16b6cf26051af9a77dfd9f312151d9a1da1cec3cf1a09179d165a1"
+      },
+      {
+        "path": "local/r99_collect.log",
+        "size": 114,
+        "sha256": "aad060a3df9d828292569495ac94490cf770b8a068863f6baf0941f3c0cbe6d9"
+      },
+      {
+        "path": "local/r99_domain_guard_compile_error.log",
+        "size": 1132,
+        "sha256": "c01981c7228a7769020d2e56c215342eee8e090833ceb9314b8691b751b9a04a"
+      },
+      {
+        "path": "local/report_shader_preload_r99.py",
+        "size": 8020,
+        "sha256": "4a757324e6a41d93ddc3c9afd411e31d4001306200e375ed2c0688af860b7989"
+      },
+      {
+        "path": "local/run_shader_preload_application_r99.py",
+        "size": 2355,
+        "sha256": "20f38668860b4faddca9f7b26a625fdac39a1865d6058d8a2db3db9d99df37b6"
+      },
+      {
+        "path": "local/seal_shader_preload_r99.py",
+        "size": 5451,
+        "sha256": "408a2f408bd68f4a3043520ae8b4f64c9d69d84254fcf1467270efc0470fc81e"
+      },
+      {
+        "path": "local/shader_preload_r99/annotations.log",
+        "size": 238,
+        "sha256": "d23c12e1cf7182cbf73344ca4412a9f9249d7d1f4df20e7db1374423c1ec38dd"
+      },
+      {
+        "path": "local/shader_preload_r99/application/application.log",
+        "size": 47511,
+        "sha256": "cd1e9bf2b064bc9f7953f46337bdea21c0e7fb3999519d3c9e9e77e71d1c4d93"
+      },
+      {
+        "path": "local/shader_preload_r99/application/personal/Battlestations-Pacific/options.txt",
+        "size": 61,
+        "sha256": "f7285347c0b8126cce9fb052f5d375ac278118f97a4ae40f612d5a6b7f95bcca"
+      },
+      {
+        "path": "local/shader_preload_r99/application/process.json",
+        "size": 1331,
+        "sha256": "69f526fd747d80d15017eab724d44db5709ee3638e5a3e4aa9f9f7a31edabaea"
+      },
+      {
+        "path": "local/shader_preload_r99/application/result.json",
+        "size": 1412,
+        "sha256": "3c282d2d2c0736c73b3a931e61a885c35e29ed0773bba69e8408d63ee1e546b2"
+      },
+      {
+        "path": "local/shader_preload_r99/application/stderr.log",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "local/shader_preload_r99/application/stdout.log",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "local/shader_preload_r99/call_verification.log",
+        "size": 149,
+        "sha256": "a6f0cee5d96c4db0112c6dc999e4f9d95d02a0cd237a58fa231d8ad5d00138e0"
+      },
+      {
+        "path": "local/shader_preload_r99/comments-after.json",
+        "size": 5828,
+        "sha256": "3b3c6105db655f6749361e3b0c753dac1d4a6470dcd706cf51966df2e988e26f"
+      },
+      {
+        "path": "local/shader_preload_r99/compile.log",
+        "size": 14298,
+        "sha256": "e1697fc01686aa392b56f79f131f65d27d6ef350859fd54971169f94b8a6ecfd"
+      },
+      {
+        "path": "local/shader_preload_r99/dependencies.json",
+        "size": 39186,
+        "sha256": "b327cec73c6dff2a47ae6bcb08e2ba594a75cd1dbb912dc91a5788d4e8457678"
+      },
+      {
+        "path": "local/shader_preload_r99/exports_after_annotations.log",
+        "size": 250,
+        "sha256": "b4944c2b01a45c090927070ced7c22a5b7871ee3adf99b9eecf8919e08138370"
+      },
+      {
+        "path": "local/shader_preload_r99/index.log",
+        "size": 16,
+        "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+      },
+      {
+        "path": "local/shader_preload_r99/listing-004254b0.txt",
+        "size": 16,
+        "sha256": "535312dd985c4f64ef6f4996d194d59459edb00e6986c17569565a26411ed677"
+      },
+      {
+        "path": "local/shader_preload_r99/listing-00735ec0.txt",
+        "size": 1075,
+        "sha256": "b32600f6f561e15e5964c6524107615cb7bc06b054e18d7952c71be78b39118d"
+      },
+      {
+        "path": "local/shader_preload_r99/listing-0073bf80.txt",
+        "size": 5535,
+        "sha256": "45944a97d071e020449fcbd0316f3a655a427a00d446fb8e05edff99064c9f4a"
+      },
+      {
+        "path": "local/shader_preload_r99/native.json",
+        "size": 32104,
+        "sha256": "520d8bd99516fd7a631f0bbfbe0d9a0debe73129d7069d9bf3ccbedf6e97909e"
+      },
+      {
+        "path": "local/shader_preload_r99/original.inc",
+        "size": 14,
+        "sha256": "aecb9819eb04bf5ad6cd2535cfac9b1bed5ef7946e551eff2224759862e16294"
+      },
+      {
+        "path": "local/shader_preload_r99/preload-vector-probe.cpp",
+        "size": 4455,
+        "sha256": "ed547237b2b0928be05862a045b32b6c2130685af88f02599062d184202d36fa"
+      },
+      {
+        "path": "local/shader_preload_r99/preload-vector-probe.exe",
+        "size": 212480,
+        "sha256": "5a8815410e2eb83ed2c872e70d7748553a4554e975c5970a95648ff40d257630"
+      },
+      {
+        "path": "local/shader_preload_r99/preload-vector-probe.obj",
+        "size": 89486,
+        "sha256": "99b0bebfddd3faa12ea9e914b18a66757abe6ad03f66e85f7da977a6ed372476"
+      },
+      {
+        "path": "local/shader_preload_r99/prior-ledgers.json",
+        "size": 1658,
+        "sha256": "83a2acb1107d70d42a737041631aa65a552ac3e6c83fadb157ab21aebfa2f6b3"
+      },
+      {
+        "path": "local/shader_preload_r99/probe.map",
+        "size": 287084,
+        "sha256": "1ccda0b1fa465b4e9c520eb8abaf9e5080f2dd10953b61af9254f8ff05a9b346"
+      },
+      {
+        "path": "local/shader_preload_r99/proto-004254b0.txt",
+        "size": 646,
+        "sha256": "8fb63651cebf04a0534da56184b502b43a56312695733736b89e1c64b49add84"
+      },
+      {
+        "path": "local/shader_preload_r99/proto-00735ec0.txt",
+        "size": 618,
+        "sha256": "560f23873d751a4ad4d61e76266786cec811457e9f18c23a9caaa4d67dfd879b"
+      },
+      {
+        "path": "local/shader_preload_r99/proto-0073bf80.txt",
+        "size": 767,
+        "sha256": "5b89bd1cc0ad7aac9c32c077e69d499926d44c9efcdbc4af10f37700f7bf1392"
+      },
+      {
+        "path": "local/shader_preload_r99/snapshot.log",
+        "size": 230,
+        "sha256": "16a02525b483f6c842669acef9b44c4f9fcf84489618ff270c6ac75176c998b7"
+      },
+      {
+        "path": "local/shader_preload_r99/toolchain.json",
+        "size": 1517,
+        "sha256": "60bb6486371d9ba6986830045f56b43c674a107145a1ed914ace18104406a9ac"
+      },
+      {
+        "path": "local/shader_preload_r99/vector-run.log",
+        "size": 317,
+        "sha256": "9e29d2aa4619792ccaefae4e413d22edeee31fd95c2f756b7069ef741210a12f"
+      },
+      {
+        "path": "local/shader_preload_r99/vector-status.json",
+        "size": 100,
+        "sha256": "92aed7ed9fc636807d923959f591c3ca5613f9efbf01d752d83bca01cf64d58f"
+      },
+      {
+        "path": "local/shader_preload_r99/vector_original.inc",
+        "size": 399,
+        "sha256": "ac803f1dbfa95fd782543d7b30fef2dc28fa2f08360ce2e1de27f7734fbe5b9d"
+      },
+      {
+        "path": "local/shader_preload_r99_flow_repairs.json",
+        "size": 1003,
+        "sha256": "0dc63f7b278ddf3062a74baca1a7fb437a95ac75cc8f734b7e6e0cf143c0dbf9"
+      },
+      {
+        "path": "reports/native_shader_preload_r99.json",
+        "size": 101398,
+        "sha256": "3dcaa1a2dfaa782b494b857147057222ac8a0659ae25037c5890fcb16e52b0f5"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "size": 1820,
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+      },
+      {
+        "path": "src/native_lua_bootstrap.cpp",
+        "size": 2985,
+        "sha256": "61bce46a66102ae24c8781ce30d6a03c914f5f6b5852c85453427cc8227b6a3a"
+      },
+      {
+        "path": "src/native_lua_file_loading.cpp",
+        "size": 4399,
+        "sha256": "5429158efe57f0c14d3829562ee38ca63ab8c526f3282476d419babdeac959ac"
+      },
+      {
+        "path": "src/native_lua_objects.cpp",
+        "size": 17434,
+        "sha256": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5"
+      },
+      {
+        "path": "src/native_material_effect_cache.cpp",
+        "size": 20949,
+        "sha256": "d881c76ca80e2b61142ebaeeea281c941499bc8c3273e42afb3b05d285289e98"
+      },
+      {
+        "path": "src/native_material_effect_loading.cpp",
+        "size": 14139,
+        "sha256": "a8e81adfda0b0e4aeaab407585895f4888b9700b88a43b70783324e0a72e4c7d"
+      },
+      {
+        "path": "src/native_shader_binary_cache.cpp",
+        "size": 8615,
+        "sha256": "6fd37c5f18b8a673886f0b349fe62fddd4de2726b303d3aca7f9baf3b8752dab"
+      },
+      {
+        "path": "src/native_shader_preload.cpp",
+        "size": 9265,
+        "sha256": "8aeb6457c833e715175594eab808ae15e0b5e2931c068f6799d598403ac437ff"
+      },
+      {
+        "path": "src/native_string.cpp",
+        "size": 9121,
+        "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+      }
+    ],
+    "scope": "Two new full normal shader-preload/pointer-vector source bodies765 bytes,869 live native bytes including RET/literals/profile,32 direct calls and1 renderer virtual call, saved flow repair and annotations, strict build/3 CTests,95-byte vector original/source differential with live-header mutations, unmodified application2 ticks/1 Present/exit0. Full670-byte preload loop is not runtime-validated or wired into startup; concrete material/compiler graph, first sampler stack-word production, native FH3/SEH/application reference lifetime and gameplay remain open."
+  }
+}
