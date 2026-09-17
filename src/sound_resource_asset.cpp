@@ -154,13 +154,23 @@ void load_sound_bank_00a823f0(SoundOwnedResource& resource,
     fmod.memory_get_stats(&before, nullptr);
     auto result = fmod.create_sound(context.system, file.bytes.get(), mode,
         &extra, &resource.fsb_bank_0c);
+    const auto create_result = result;
     check_memory(result, fmod);
     fmod.memory_get_stats(&after, nullptr);
     // Native debug print 004254B0 has an empty body; before/after otherwise unused.
     std::uint32_t raw_size;
     result = fmod.sound_get_length(resource.fsb_bank_0c, &raw_size, 8);
     check_memory(result, fmod);
-    require_output(result, "FMOD bank raw-length output unavailable");
+    if (result != FmodResult::ok) {
+        // Existing host-domain guard: preserve the failing SDK results without
+        // reading its unwritten output or changing the native FMOD call order.
+        throw std::runtime_error("FMOD bank raw-length output unavailable: path="
+            + string_value(resource.name_14) + " bytes=" + std::to_string(file.size)
+            + " mode=" + std::to_string(mode)
+            + " create_result=" + std::to_string(static_cast<std::uint32_t>(create_result))
+            + " length_result=" + std::to_string(static_cast<std::uint32_t>(result))
+            + " bank_returned=" + (resource.fsb_bank_0c ? "1" : "0"));
+    }
     resource.size_28 = raw_size;
     file.bytes.reset(); // native VFS +14 / 00BD91F0, before subsound queries
     std::int32_t subsound_count;

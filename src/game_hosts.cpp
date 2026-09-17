@@ -1538,7 +1538,18 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
 
     bind_legacy_crt_math_runtime(application_math_runtime);
     sound_ = std::make_unique<SoundServices>(*this);
-    sound_->core.startup(!settings_.audio.enabled_24);
+    try {
+        sound_->core.startup(!settings_.audio.enabled_24);
+    } catch (...) {
+        // Read the existing SDK call journal; do not issue further FMOD calls
+        // while reporting a constructor or its recovery failure.
+        for (const auto& call : sound_->core.fmod().calls()) {
+            if (call.result != FmodResult::ok)
+                log_.notef("sound startup FMOD failure: %s result=%u",
+                    call.function, static_cast<unsigned>(call.result));
+        }
+        throw;
+    }
     log_.implemented("Phase 5 sound_system_initialize", "0073dafd");
     sound_->dialog.startup();
     log_.implemented("Phase 5 streamed_dialog_initialize", "0073db2b");
