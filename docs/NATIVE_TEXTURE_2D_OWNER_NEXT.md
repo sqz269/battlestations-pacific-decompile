@@ -243,3 +243,13 @@ unwind paths should execute complete original owner/dependency instructions, wit
 allocation/Win32/COM boundaries observed explicitly; unsupported profiles should
 remain outside the stated domain. Build and fixture evidence do not establish
 binary ABI compatibility, GPU behavior or game validation.
+
+## Correction from docs/NATIVE_TEXTURE_SURFACE_GETTER_R74.md
+
+R74 reconstructs the full retained level-surface getter with the canonical
+surface pool, concrete surface owner and native cache storage. Live Ghidra and
+original PE establish B3FD80..B3FE87 inclusive (264 bytes); B3FE88 is the
+exclusive end. Strict build, three CTests and 16 original/source real-D3D getter
+calls pass cached/uncached ownership and teardown checks. Native unwind,
+application resource creation and gameplay remain unproved; see the R74 doc
+and report for the exact fixture scope.
