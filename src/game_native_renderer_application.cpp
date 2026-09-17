@@ -69,6 +69,8 @@
 #include "bsp/native_texture_loading_cache.hpp"
 #include "bsp/native_material_effect_runtime.hpp"
 #include "bsp/game_native_resource_pools.hpp"
+#include "bsp/game_native_shader_process.hpp"
+#include "bsp/native_shader_binary_cache.hpp"
 // Constructor, device startup, frame and destructor borrow one application graph.
 #include "bsp/game_native_renderer_application.hpp"
 #include "bsp/game_native_renderer_scalars.hpp"
@@ -107,6 +109,7 @@ struct CanonicalProfiles {
 #include "game_native_renderer_device.inc"
 #include "game_native_renderer_textures.inc"
 #include "game_native_renderer_camera.inc"
+#include "game_native_renderer_shaders.inc"
 #include "game_native_renderer_resources.inc"
 #include "game_native_renderer_frame.inc"
 } // namespace
@@ -148,6 +151,7 @@ struct GameNativeRendererApplication::Impl {
     DeviceGraph devices;
     TextureLoadingGraph texture_loading;
     CameraGraph cameras;
+    ShaderGraph shaders;
     RenderResourcesGraph resources;
     std::unique_ptr<FrameGraph> frames;
     Phase phase{Phase::prepared};
@@ -180,6 +184,7 @@ struct GameNativeRendererApplication::Impl {
           devices(graph,constructor,host,vfs.strings,platform),
           texture_loading(graph,devices,owners,vfs,platform_events,validation,accounting),
           cameras(graph,renderer,files.native_owners().types(),files.native_types().camera_types()),
+          shaders(vfs,raw,cameras,profiles),
           resources(graph,cameras,texture_loading,host,raw,vfs,owners) {
         auto& deletion=host.native_deletion_bindings();
         check(!deletion.renderer_owner && !deletion.renderer_lua_owner,"renderer lifetime already bound");
@@ -204,6 +209,21 @@ GameNativeRendererApplication::GameNativeRendererApplication(GameHostLog& log,Ga
     void* const volatile& clock,const void* platform)
     :impl_(std::make_unique<Impl>(log,host,files,lua,data,clock,platform)) {}
 GameNativeRendererApplication::~GameNativeRendererApplication()=default;
+void GameNativeRendererApplication::create_shader_cache() {
+    auto& p=*impl_;check(p.phase==Impl::Phase::ready,"shader cache requires ready application renderer");
+    p.phase=Impl::Phase::initializing_resources;
+    try {p.shaders.create();p.phase=Impl::Phase::ready;}
+    catch(...) {p.phase=Impl::Phase::failed;throw;}
+}
+void GameNativeRendererApplication::release_shader_cache() {
+    auto& p=*impl_;check(p.phase==Impl::Phase::ready,"shader cache release requires ready application renderer");
+    p.phase=Impl::Phase::initializing_resources;
+    try {p.shaders.release();p.phase=Impl::Phase::ready;}
+    catch(...) {p.phase=Impl::Phase::failed;throw;}
+}
+NativeShaderBinaryCacheContext& GameNativeRendererApplication::shader_cache_context() noexcept {
+    return impl_->shaders.cache;
+}
 void* GameNativeRendererApplication::construct_render_resources() {
     auto& p=*impl_;check(p.phase==Impl::Phase::ready,"render resources require ready renderer/device");
     p.phase=Impl::Phase::initializing_resources;
@@ -357,7 +377,8 @@ const D3DPRESENT_PARAMETERS& GameNativeRendererApplication::presentation() const
 }
 bool GameNativeRendererApplication::requires_process_retention() const noexcept {
     const auto phase=impl_->phase;
-    return phase!=Impl::Phase::prepared && phase!=Impl::Phase::ready && phase!=Impl::Phase::drained;
+    return (phase!=Impl::Phase::prepared && phase!=Impl::Phase::ready && phase!=Impl::Phase::drained)
+        || !impl_->shaders.quiescent();
 }
 void GameNativeRendererApplication::drain_singletons() {
     check(!requires_process_retention(),"incomplete native renderer cannot be drained");
@@ -371,6 +392,7 @@ void GameNativeRendererApplication::after_native_drain() {
     check(!p.renderer && !p.lua_publication && !p.system_publication && !p.definitions,"native renderer children survived drain");
     check(!p.entry_cache_publication,"native render-entry cache survived drain");
     check(!p.frames || !p.frames->queue,"native render queue survived drain");
+    check(p.shaders.quiescent() && !p.shaders.process.cache_0108d6ec(),"native shader cache survived preload bracket");
     p.resources.after_native_drain();
     check(WaitForSingleObject(p.observed_worker,0)==WAIT_OBJECT_0,"native renderer worker did not join");
     p.phase=Impl::Phase::drained;

@@ -5,6 +5,7 @@
 #include "bsp/game_native_lua_globals.hpp"
 #include "bsp/game_native_lua_services.hpp"
 #include "bsp/game_native_renderer_application.hpp"
+#include "bsp/game_native_shader_process.hpp"
 #include "bsp/native_renderer_end_frame.hpp"
 #include "bsp/native_xlive_device_adapter.hpp"
 #include "bsp/game_native_vfs_runtime.hpp"
@@ -1438,6 +1439,15 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
 
     install_object_handle_resolvers_006ad0d0(object_resolvers_);
     log_.implemented("Phase 0 install_object_handle_resolvers", "006ad0d0");
+
+    if(!native_data_)throw std::runtime_error("Native shader startup modes require verified data");
+    auto& shader_process=game_native_shader_process();
+    shader_process.configure_startup_modes(mode,*native_data_);
+    const auto& shader_modes=shader_process.modes();
+    log_.notef("native startup shader modes73D4C2: variants=%u source=%u hires=%u reload=%u pooled_copies=%u",
+        static_cast<unsigned>(shader_modes.load_variants_0108d6f0),static_cast<unsigned>(shader_modes.source_mode_0108d6f1),
+        static_cast<unsigned>(shader_modes.hires_mode_0108d4ba),static_cast<unsigned>(shader_modes.reload_resources_0108d4bb),
+        shader_process.mode_operation().completed_copies);
 
     // Phase 2, VFS, mounts and packages (0073d604-0073d899). The hardware probe at 0073d610
     // is inside this gate, not before it; milestone 1 recorded it one phase early.

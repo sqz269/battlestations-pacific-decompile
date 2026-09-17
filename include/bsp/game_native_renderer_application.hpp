@@ -21,6 +21,7 @@ class NativeViewportRegistry;
 struct NativeCockpitViewportReleaseContext;
 struct NativeRenderResourcesLifetimeContext;
 class NativeRenderResourcesConstructionAcquired;
+struct NativeShaderBinaryCacheContext;
 }
 namespace bsp::game {
 class GameSingletonHost;
@@ -60,6 +61,12 @@ public:
     // its own fallback reference follows the native cache cleanup schedule.
     NativeTextureCacheContext& texture_cache() noexcept;
     NativeRenderActualOwnerRegistry& actual_owners() noexcept;
+    //73BF80's cache bracket over canonical process cells and this SAME VFS.
+    // Keep it alive through material compilation, release before singleton drain.
+    // Full preload loop remains separate; these entrypoints perform real I/O.
+    void create_shader_cache();
+    void release_shader_cache();
+    NativeShaderBinaryCacheContext& shader_cache_context() noexcept;
     // One camera domain shares the application's pool, type counter, node
     // lifetimes and current raw renderer. Retire native cameras/viewports and
     // forget quiescent construction records before destroying this graph.
