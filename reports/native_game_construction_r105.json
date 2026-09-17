@@ -4803,5 +4803,924 @@
       }
     ],
     "scope": "Full normal game constructor parent over required services;1881 live/PE bytes,41 direct calls, strict Win32/3 CTests, four original/source cases135 observations6144440 bytes. Current application smoke failed existing null-device path; independent D3D returns8876086A. Subsystem providers/app game owner/native EH/gameplay open."
+  },
+  "primary_integration": {
+    "source_commit": "cddd5dd82244c84d8468cffd91d2832426bbe3d1",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "artifact_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r105\\native-game-construction-main-r105.zip",
+      "sha256": "500a28b20d5b42295964073844c44eb6e16fc8f4f98942e9e73182c10859560a",
+      "files": 179,
+      "uncompressed_bytes": 100640142,
+      "utc": "2026-09-17T19:52:34.617110+00:00",
+      "head": "cddd5dd82244c84d8468cffd91d2832426bbe3d1",
+      "manifest": [
+        {
+          "path": "build/win32/bsp_core.dir/Release/dyn_world_settings.obj",
+          "size": 1948,
+          "sha256": "ae9ad7688fb879c2134c15610940e52361f10b82a357d31b6fee5c67c10dd7cc"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_game_construction.obj",
+          "size": 14132,
+          "sha256": "b9b7a6a194962fb9f468b06702720dd0602b22fe5dcf6ce097abefb20741e3ed"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_input_configuration_owner.obj",
+          "size": 4455,
+          "sha256": "a7e770e67fd820d86dfc959660867ca23d5cc1e5e53ba9020e5c2b87828264c5"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_lua_objects.obj",
+          "size": 27578,
+          "sha256": "3626998cc5c205d5bd4e183fba54b2c76564296d3b1224a043406a7a791bf4c6"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_string.obj",
+          "size": 18814,
+          "sha256": "96e6a624d4d1a61d9aa93b5badad8ead7e2718e5ab09c923c836e3ff81134abc"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/ai_group_think.obj",
+          "size": 6132,
+          "sha256": "1a5a954ca13857d528fff56b252c7be08a9f4de0e0d73853671c1070ee911008"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/ai_planners.obj",
+          "size": 12369,
+          "sha256": "d85f084da30a7494577929480a64aa46635e89f538773f6d8c0478202f713744"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/airfield_taxi.obj",
+          "size": 4203,
+          "sha256": "1521ca61bcfdcb643b238bdd083aebfe6e918137a84000c89a7a359846d7334f"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/command_completion.obj",
+          "size": 77478,
+          "sha256": "d9b010aaa9af434b45383c157da901103ee1a78226809ae35bb6b80ff061e6e0"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_avoid_zone_runtime.obj",
+          "size": 359966,
+          "sha256": "4b74f863ed16d70e19a40a13510db65fd56a0f0894f5c921477c55a90be3ae16"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+          "size": 732718,
+          "sha256": "7cb1910b642742811a3de8b76451e00eb9c8e5914d1f763f38673757f701e116"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_commands.obj",
+          "size": 338899,
+          "sha256": "72d82f09a31e5188ea49421d6c936df5b16eb03bcd1c5ad3400b0e410959fba5"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_fixed_step.obj",
+          "size": 40556,
+          "sha256": "8e8d1a9aa7294274698e4bbaf6f53984fa5b3f899e084f0ff15d3863dfe9308c"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_fonts.obj",
+          "size": 147019,
+          "sha256": "2bf5d8c05b5082d4888049ad92ff6b4ecfcc2619666a6899717f34431118bd20"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_frontend.obj",
+          "size": 705704,
+          "sha256": "6ba9c52331060ed6f9ef3940fc9ee248e9e666ec3d8a7a3cdd8559ce42ec4949"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_gunnery.obj",
+          "size": 671166,
+          "sha256": "4bd47519b7c179ee0f4e5bb506c4db387d775ad31800f5d3c0ae6ca098a22e8c"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_hud.obj",
+          "size": 210381,
+          "sha256": "cbf109ec2a9d8051af100078d74c92e4577d61a39b738cc512f4fb8a6da77792"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_hud_world.obj",
+          "size": 222447,
+          "sha256": "8eec3d8f63ac3ab16d9ee7626edb78b6c397dcabb176b45ea8d50128fdcb99fc"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_init_tail.obj",
+          "size": 123530,
+          "sha256": "2d4ad8d08cda7fd62bc3f2d30ebd9456eabaaa3ba360665f4974ec71b3900385"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_lua.obj",
+          "size": 579966,
+          "sha256": "880ac17d236ab8b4eb661cf1090a0dfc2659a5467c0214d3d89eb21000b6c330"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_menu.obj",
+          "size": 518796,
+          "sha256": "6ecb78a331470441b7ec1e1003063e93b219a7b25292cf31508b9d2a9658f2ce"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_mission.obj",
+          "size": 763776,
+          "sha256": "4f2857923d93075f255f70520bcd0a9602c9795396dac6ebfcf67d457188d953"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_mission_frame.obj",
+          "size": 572403,
+          "sha256": "d0f725bfc3add0d3a9bc4fe96821970531b5c8ce90ad77fc568bc939de8e5213"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_mission_result.obj",
+          "size": 241504,
+          "sha256": "0e66510fc8c1911fd35a2651275aefd0cb0a4ffb745c7c074597595814e66bd5"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_ready.obj",
+          "size": 215770,
+          "sha256": "911f5ee7a179a21a8fbd5bdc132a0e3e88b0fd02f42531b1a00bf15305e98ca9"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_scene_contents.obj",
+          "size": 930357,
+          "sha256": "71fcae5c4ce92b78d6c4605788241485ab123bb154947f17715c7c71dff00c60"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_script_orders.obj",
+          "size": 305820,
+          "sha256": "945f63ee62e8d865be1540e0d53188b1af37efc67feedd8b9ee6aeda2b45acaa"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_ship_ai.obj",
+          "size": 707939,
+          "sha256": "60ddeedac02a52d1a2035da27adaa85dcbbc812b7a20e26a7b340aa0ae864321"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+          "size": 22035,
+          "sha256": "e4ebfc7796181b07e2917280f9467c13af7ff0231f533eaf6c7b532f9aeea4f1"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_text.obj",
+          "size": 148586,
+          "sha256": "600be5590174df1dc3f8ffe4a49a41b641fe5d2a4d17442d77a82e86dbf61f4a"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_trajectory.obj",
+          "size": 122707,
+          "sha256": "8860754b9c8aa4561fa4f0e826508a091152260898bf73f944945347bd865d3e"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_units.obj",
+          "size": 469397,
+          "sha256": "855d3c42fa79d49c4b7c639a5d3648d24783eb8887b8143091cb0fcf096ab6c2"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_vfs.obj",
+          "size": 425516,
+          "sha256": "979de98f729f3727f2cc9ea8cee2c1c45b837f1537c53f4242d3a046418de665"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_world.obj",
+          "size": 103418,
+          "sha256": "ec4cdc360703687ab9eb305e0fa06f06eef505b9981441fbc42d4a21efbd65b9"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_main.obj",
+          "size": 298088,
+          "sha256": "d556b57ea04bf041e02ba1da48708e23bec1a54e541085fb58285d27741c7f89"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_graphics_pools.obj",
+          "size": 27852,
+          "sha256": "1206517652b072b6d6aaba6b95a6225339bda61cc4a64107016d5b5dcc91a905"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_hardware_layout_tree.obj",
+          "size": 12732,
+          "sha256": "2a2ea9960a191a4197d201ae68ad6e5501534492f47e7eb0b13e92d6490804f6"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_lua_globals.obj",
+          "size": 15945,
+          "sha256": "932075a1c004dbcc5d423665c91329e2975439efbb27e4a725b84d5b65a032f6"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_lua_services.obj",
+          "size": 23118,
+          "sha256": "69a064157078a7a40b7387bbec2c5ebff8886c11e9bae61777e50c92fb4174f6"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_renderer_application.obj",
+          "size": 300703,
+          "sha256": "b27b2340e36c4f29138cb67f086c887696d5400a582dc9cc0062de0224e8f049"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_shader_process.obj",
+          "size": 20636,
+          "sha256": "1be924e6250eb4accbff8314e2f9125766fdeb76cd74c43c5a9ad49ba8ee8fa5"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_string_process.obj",
+          "size": 4101,
+          "sha256": "790f75ee44bff156efae3528e02ca87bd52f54d7ce74ad9a6b2ecdc5445334ef"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_vertex_declarations.obj",
+          "size": 17104,
+          "sha256": "e57ec85125fc203a949fd2dbb3bef7f632796387af75c5f650a5a43b2650fc60"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_vfs_application.obj",
+          "size": 51971,
+          "sha256": "ac4dd07b7c80a1909e0193f34e91f426f17702a7e54118733160bc399834ed54"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_observer_runtime.obj",
+          "size": 15861,
+          "sha256": "dd0ccf1ab8043939d3f19c1c7c14095e6ecf7e6c7cf19c44680b1346450059f2"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/gameplay_loose_ends_2.obj",
+          "size": 1758,
+          "sha256": "6cef5ac34b229195f2d1d5da12829627f2b48227fd88a7d2d15cd34b261b2a42"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/geom_mesh_resource.obj",
+          "size": 261705,
+          "sha256": "e536b9089157b35b3c8494cfbf0d7fa85726d9ce82b2b4ab47c4e13d515c8035"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/hit_hull_segment.obj",
+          "size": 1836,
+          "sha256": "cd16b3a2c47c636a204fd4e622a4d0cd7f8c75d11091ca91fe67a394c3383538"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/kill_credit.obj",
+          "size": 33830,
+          "sha256": "2b42314fff614f7eb65ce4f58110a76ed78a679f360edefbdbb9afb3fc090351"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/narrowphase_unit_part_shape.obj",
+          "size": 2080,
+          "sha256": "7f5bbfc6210b33a0c452bb3601d04c9e7e5b0c1abcccf2ea6de669b291730d9a"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/part_damage_reachability.obj",
+          "size": 4156,
+          "sha256": "51f9c07e73db9914a4707775e8b5b76f13c8ff56bf380da1771e86fd72d65a33"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/pilot_command_path.obj",
+          "size": 8846,
+          "sha256": "062707a15f8ce177c4dcfb9f1c35c062c62a980d0f62100e5b541ae40d543fb2"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/plane_ground_ops.obj",
+          "size": 13388,
+          "sha256": "65b619e02850c012e3a0a5c6529b27f6c9447450f2f82274bc76c483d60a8a65"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/ship_hit_record.obj",
+          "size": 7923,
+          "sha256": "6b1e0d411c1ba316a9f14fda39de96daaa30eff2c469dd20fcc54edfea4c5278"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/ship_sub_entity_list.obj",
+          "size": 1477,
+          "sha256": "2666c7f4077143bd9dd5e8bd9c14c5cd3da243c4805cbab30a66e1a3ae9aa7aa"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/unit_gunnery_pass.obj",
+          "size": 11746,
+          "sha256": "f85d451504ab8259bf3e1278f96ca2ca3fde61a590064bad3867293d37d9c557"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/unit_message_arms.obj",
+          "size": 25782,
+          "sha256": "e1f10761f7e50ba10b3538e34ea2d7b889d97a0a7f659a5f7aae7d007ab17557"
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/unit_neighbour_fields.obj",
+          "size": 1330,
+          "sha256": "26c8631b91ce225ffc008e150f64e0efbd711587708a3f8ed7db26d180c8665f"
+        },
+        {
+          "path": "build/win32/bsp_game.map",
+          "size": 4874982,
+          "sha256": "9337626bd732cc5efd2371a3b18061c7fcbd5b3d0708456d9b61a17f994d98ac"
+        },
+        {
+          "path": "build/win32/CMakeCache.txt",
+          "size": 19565,
+          "sha256": "d44e9a96208c5743219aa6ee30bf4f5768813c415ab257b5af16350b3179b9f3"
+        },
+        {
+          "path": "build/win32/Release/bsp_core.lib",
+          "size": 65541278,
+          "sha256": "879fbe76a7556644d82e951a71e439b8433d0b9066d249ae81517a0a451359e9"
+        },
+        {
+          "path": "build/win32/Release/bsp_d3d9_probe.exe",
+          "size": 1034752,
+          "sha256": "8f34fbc97739892b5d2109a8af1de40ebad588a9d553dbc07cd93edfbf1be2bf"
+        },
+        {
+          "path": "build/win32/Release/bsp_game.exe",
+          "size": 2649600,
+          "sha256": "ee721afd0b2943e1aac54fb76487998ba6cd39006973b9dba80e390c3537f2e9"
+        },
+        {
+          "path": "build/win32/Release/bsp_lua511.lib",
+          "size": 455244,
+          "sha256": "db83167c8c7d24461ef2bf60363b96264fd2406929d0e72a8909287d79b96a17"
+        },
+        {
+          "path": "build/win32/Release/bsp_math_tests.exe",
+          "size": 758784,
+          "sha256": "c35a274d121ee83cc998cec57c114c004cbb48416b0229c6b88e75373df24c83"
+        },
+        {
+          "path": "build/win32/Release/bsp_native_math_tests.exe",
+          "size": 18432,
+          "sha256": "8d634b766964c7f270c944a2ab18a6414d8d5ba22cad0c75e6450ecbfeced3da"
+        },
+        {
+          "path": "build/win32/Release/bsp_zlib121.lib",
+          "size": 71906,
+          "sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5"
+        },
+        {
+          "path": "build/win32/Testing/Temporary/LastTest.log",
+          "size": 2408,
+          "sha256": "b14eef64ff1d8082af06bbd335c4c52358a3157d4a957ae0bf7f8ffb9e24d226"
+        },
+        {
+          "path": "cmake/startup.cmake",
+          "size": 159582,
+          "sha256": "f66ec9d3aaec6c2f71ab23ab017ff46cd3074cb10c687677a8444ebae97f2a1f"
+        },
+        {
+          "path": "CMakeLists.txt",
+          "size": 15689,
+          "sha256": "754522100c9579ee50d4f36ce078b1d7ba643fc9879d2748460b12f7b90feb03"
+        },
+        {
+          "path": "config/names/004d0000.jsonl",
+          "size": 96502,
+          "sha256": "8da7bb7d0e4044d3511649c7edc16cfb8ffcc3883a7a6cae1d22a94bf1e73b9a"
+        },
+        {
+          "path": "config/names/00730000.jsonl",
+          "size": 76007,
+          "sha256": "19305fd1cecad120bd1e1041fee5c74b06011108b10210bc76111d83d8d3d5b9"
+        },
+        {
+          "path": "config/reconstruction/004d0000.jsonl",
+          "size": 71964,
+          "sha256": "88e5118e8e87b247ff9def6fdf1da2b1f5085d06d3ac1a44bf0c4c716cb4637f"
+        },
+        {
+          "path": "config/reconstruction/00730000.jsonl",
+          "size": 59498,
+          "sha256": "285d6b99ae2a0b5ec29bf7a6928432301ac8b98169fdeec71288dc8aa2f170ed"
+        },
+        {
+          "path": "config/target.json",
+          "size": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        {
+          "path": "docs/NATIVE_GAME_CONSTRUCTION_R105.md",
+          "size": 7427,
+          "sha256": "3d5a043474330b25128e388a770b5d6fd1f28dc9bd018021546e34bb97ecd9dc"
+        },
+        {
+          "path": "include/bsp/camera_projection.hpp",
+          "size": 2413,
+          "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+        },
+        {
+          "path": "include/bsp/camera_transform.hpp",
+          "size": 7028,
+          "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+        },
+        {
+          "path": "include/bsp/dyn_world_settings.hpp",
+          "size": 7233,
+          "sha256": "b00dde4b4a80912c7c255d9080d56213028f6723810499f3d54be157c1c34b33"
+        },
+        {
+          "path": "include/bsp/frame_clock.hpp",
+          "size": 2475,
+          "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+        },
+        {
+          "path": "include/bsp/frontend_screen_animation.hpp",
+          "size": 14105,
+          "sha256": "5bf3429e1c6032def440ccebd3d804fd087896401ec16bf94b456b1dc73865e0"
+        },
+        {
+          "path": "include/bsp/game_entry.hpp",
+          "size": 5510,
+          "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+        },
+        {
+          "path": "include/bsp/gui_layout_loader.hpp",
+          "size": 20811,
+          "sha256": "3ede9dc470a4d5a3285d1578483428b548025b0b2eba9ab6ecc79967b242d8b1"
+        },
+        {
+          "path": "include/bsp/gui_lua_reader.hpp",
+          "size": 23275,
+          "sha256": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433"
+        },
+        {
+          "path": "include/bsp/gui_widget.hpp",
+          "size": 13391,
+          "sha256": "846d1f6378e3459fb585917289d2f3342de37ba98dafc7fc952c9c48ea8061f9"
+        },
+        {
+          "path": "include/bsp/lua_numeric.hpp",
+          "size": 1086,
+          "sha256": "a8de255e2aaaad540cec67717e7d0efd7cc5f50d206bdd2137cabe1ed81acf60"
+        },
+        {
+          "path": "include/bsp/native_game_construction.hpp",
+          "size": 5049,
+          "sha256": "8a65b2939b57749ae7aa62f975a2e21a06afabc4670b081012f1db1cb1a432ff"
+        },
+        {
+          "path": "include/bsp/native_input_configuration_owner.hpp",
+          "size": 2076,
+          "sha256": "fb218a898acedfbf309cfecabe5f0c0f697754134f4d25d35dccb8078a956681"
+        },
+        {
+          "path": "include/bsp/native_lua_objects.hpp",
+          "size": 10058,
+          "sha256": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d"
+        },
+        {
+          "path": "include/bsp/native_string.hpp",
+          "size": 8771,
+          "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+        },
+        {
+          "path": "include/bsp/native_string_pool_owner.hpp",
+          "size": 5893,
+          "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+        },
+        {
+          "path": "include/bsp/native_string_pool_storage.hpp",
+          "size": 2805,
+          "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+        },
+        {
+          "path": "include/bsp/render_tail.hpp",
+          "size": 15566,
+          "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+        },
+        {
+          "path": "include/bsp/rigid_body_integration.hpp",
+          "size": 8112,
+          "sha256": "07cb2142f73cb94cd0bd3d903f2482816cc7924be69247ae1ac1707e4df62f11"
+        },
+        {
+          "path": "include/bsp/singleton_lifetime.hpp",
+          "size": 4372,
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        },
+        {
+          "path": "include/bsp/storage_pool.hpp",
+          "size": 5571,
+          "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+        },
+        {
+          "path": "include/bsp/system_time_constants.hpp",
+          "size": 4800,
+          "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+        },
+        {
+          "path": "include/bsp/world_ocean.hpp",
+          "size": 8932,
+          "sha256": "00a1c385e2e46fe0a7372c4dec7d0f8039935823bc02e0a29982c93c5360429b"
+        },
+        {
+          "path": "local/annotate_game_construction_r105.py",
+          "size": 7320,
+          "sha256": "69fa1ef9741438cf2791d396d3de1adcad0e4f05899b222843dcd068e63cd4b0"
+        },
+        {
+          "path": "local/annotate_game_construction_r105_initial.py",
+          "size": 6875,
+          "sha256": "58fc3eb8fc0352bdb73742ed24663733c90d85691bd153eba863a0502efeb62a"
+        },
+        {
+          "path": "local/audit_game_construction_r105.py",
+          "size": 1709,
+          "sha256": "bc3313ca42cb24a2c72cd618b9d512dad722a932ef58ef9c2df8bd849e5d09c7"
+        },
+        {
+          "path": "local/collect_game_construction_r105.py",
+          "size": 4145,
+          "sha256": "836a50547e85a2124001a3b2aba06481654d1ca33932d426751e487aafd484a0"
+        },
+        {
+          "path": "local/collect_online_startup_r103.py",
+          "size": 4283,
+          "sha256": "569a2b89dfdcacfb3ff4683a0ec43cee1b3ab519330bc76dceb0f71cde9438be"
+        },
+        {
+          "path": "local/commit-msg-r105.txt",
+          "size": 937,
+          "sha256": "d35c1ca7de4590a47521f0467f344b2f48e7bb08e54ff0b4b36ceebabd803f1e"
+        },
+        {
+          "path": "local/commit_game_construction_r105.py",
+          "size": 2246,
+          "sha256": "63e21af02ec237059eddb8553808503157a6dab00c51ec6e5e4f7998fdef094b"
+        },
+        {
+          "path": "local/compare_game_application_r105.py",
+          "size": 1255,
+          "sha256": "d94222f3aada37a1efef362689e9759d77d9f6ea362ea0eb387b10e950e5604a"
+        },
+        {
+          "path": "local/debug_game_construction_application_r105.py",
+          "size": 6093,
+          "sha256": "37e30033e2a4121d56cc7657e0fde4136396a52dc376ce65192f51ed92d5e81a"
+        },
+        {
+          "path": "local/debug_renderer_application_r69.py",
+          "size": 5955,
+          "sha256": "cbfba26ae535ff7158591f7ae74d47bdf436069affa284517617b0c619e41be4"
+        },
+        {
+          "path": "local/game_construction_r105/annotations.log",
+          "size": 234,
+          "sha256": "c22fa13a3438333ddfd6096402b790b0b07b01163bc4b8a47dadd13cb46b109f"
+        },
+        {
+          "path": "local/game_construction_r105/application/application.log",
+          "size": 7953,
+          "sha256": "6777909a0c27ac25b1b6f5dc40e0b8905d110e3a0f15b5780742c2bd186fa05b"
+        },
+        {
+          "path": "local/game_construction_r105/application/personal/Battlestations-Pacific/options.txt",
+          "size": 61,
+          "sha256": "f7285347c0b8126cce9fb052f5d375ac278118f97a4ae40f612d5a6b7f95bcca"
+        },
+        {
+          "path": "local/game_construction_r105/application/process.json",
+          "size": 1339,
+          "sha256": "fed0c37474b71c7c2df518a056daf885b98365cf045eae5d303c528c0d963671"
+        },
+        {
+          "path": "local/game_construction_r105/application/result.json",
+          "size": 1430,
+          "sha256": "f933398833dc6e1425cb865f3627f96433fd90abbebe4f2dd6de3486d3fe36f0"
+        },
+        {
+          "path": "local/game_construction_r105/application/stderr.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "local/game_construction_r105/application/stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "local/game_construction_r105/application-debug/application_debug.log",
+          "size": 7965,
+          "sha256": "17e3d1d78659a6b8935ed87c7b7e2eb7ab932e5b466cb8a80fe22da2796b52ef"
+        },
+        {
+          "path": "local/game_construction_r105/application-debug/application_debug_events.json",
+          "size": 36691,
+          "sha256": "1fe4975ba96def466da39a77707cc2a1caa405ab50cb8bdacb66d7cc43994eab"
+        },
+        {
+          "path": "local/game_construction_r105/application-exe-comparison.json",
+          "size": 10702,
+          "sha256": "2db6194a8447dbd211ef48f7612701778624ac89eef412d2fb0be58371e5e653"
+        },
+        {
+          "path": "local/game_construction_r105/call_verification.log",
+          "size": 76,
+          "sha256": "b71a2f515e9747d73bbf71d14af261af2c64b1abd641c54da90413c2f3bb4e3c"
+        },
+        {
+          "path": "local/game_construction_r105/comments-after.json",
+          "size": 26515,
+          "sha256": "dc073c953cf91e56b310bd27169d14223cdf7c2f6364163a1af2a627de2901d4"
+        },
+        {
+          "path": "local/game_construction_r105/comments-before.json",
+          "size": 19441,
+          "sha256": "de6ebb2712acca61318aec60180a2f07d478312eb7551eba8c39fb3fcc897a6c"
+        },
+        {
+          "path": "local/game_construction_r105/d3d9-probe.log",
+          "size": 2060,
+          "sha256": "2f86a899ad4450b05b9bbe7c96942bf49188fbbef8c5ac8ca53c1f6b934710b6"
+        },
+        {
+          "path": "local/game_construction_r105/documentation-before.json",
+          "size": 4460,
+          "sha256": "522111dfc509ea3cbcbdb4d29754603198213cca39488616dc30b2ae02f53ea4"
+        },
+        {
+          "path": "local/game_construction_r105/exports_after_annotations.log",
+          "size": 250,
+          "sha256": "2b397d11444312d96a40130f190438ac118ce3354fe9797d9a9c5f4481272572"
+        },
+        {
+          "path": "local/game_construction_r105/fixture-inputs.json",
+          "size": 172,
+          "sha256": "c53faffcff94d2ed6372079256f54ac9846f079050d6d0163d40a87d8b2546f6"
+        },
+        {
+          "path": "local/game_construction_r105/fixture_data.inc",
+          "size": 962,
+          "sha256": "e7d7b49b542dd10c487eaf8cb727bfe0ad238a3812a7a63a039adff7158461d1"
+        },
+        {
+          "path": "local/game_construction_r105/game_construction_probe.cpp",
+          "size": 11724,
+          "sha256": "474c011a10d86d72b5ba18c4581391132c9abc2b6f462e0ad78bc5fb32ad5480"
+        },
+        {
+          "path": "local/game_construction_r105/index.log",
+          "size": 16,
+          "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+        },
+        {
+          "path": "local/game_construction_r105/listing-004ddb90.txt",
+          "size": 14569,
+          "sha256": "363e78ae32ad251a53a041ce2342afdd7f0dd5c9e3a75219d96bf504bc07ed65"
+        },
+        {
+          "path": "local/game_construction_r105/native.json",
+          "size": 64667,
+          "sha256": "4217ffb1902bd04e66295c957e5983c412107542d913a6d934d8449ead2fd01c"
+        },
+        {
+          "path": "local/game_construction_r105/original.inc",
+          "size": 5648,
+          "sha256": "397b78465cb7540f5291c4e5a41d219befa4fd8b2f88ca936fab6c97605c3d4e"
+        },
+        {
+          "path": "local/game_construction_r105/prior-ledgers.json",
+          "size": 15697,
+          "sha256": "8d657df6aadb16ae8a7a9518c7a066d1f41a59aac1bc93be17ed4e40273a8088"
+        },
+        {
+          "path": "local/game_construction_r105/proto-004ddb90.txt",
+          "size": 742,
+          "sha256": "ae0acf99ee7c07d9b7326b2e096d37c205d6c72230e615182e1c244c0a7c5932"
+        },
+        {
+          "path": "local/game_construction_r105/raw-game-parent/build.log",
+          "size": 10164,
+          "sha256": "4a59cd0e0f80afd2e3ca1f30625cddf6b1324dfda3b40316831e74619ea8c08a"
+        },
+        {
+          "path": "local/game_construction_r105/raw-game-parent/case-0-original.bin",
+          "size": 1593000,
+          "sha256": "a7054d0140789c0f8e28957b575a1e3c9d5524d0dff6ed984fa4cd77ad4de7be"
+        },
+        {
+          "path": "local/game_construction_r105/raw-game-parent/case-0-source.bin",
+          "size": 1593000,
+          "sha256": "a7054d0140789c0f8e28957b575a1e3c9d5524d0dff6ed984fa4cd77ad4de7be"
+        },
+        {
+          "path": "local/game_construction_r105/raw-game-parent/case-1-original.bin",
+          "size": 1547488,
+          "sha256": "91953c67fbba79adac4d5e26d5cba892cdd395aaba7663eb5bf4f3801231253b"
+        },
+        {
+          "path": "local/game_construction_r105/raw-game-parent/case-1-source.bin",
+          "size": 1547488,
+          "sha256": "91953c67fbba79adac4d5e26d5cba892cdd395aaba7663eb5bf4f3801231253b"
+        },
+        {
+          "path": "local/game_construction_r105/raw-game-parent/case-2-original.bin",
+          "size": 1410952,
+          "sha256": "b142cee5a548a91440ee755807d364b08372e98778edcc10cd6ea5c28fc051fc"
+        },
+        {
+          "path": "local/game_construction_r105/raw-game-parent/case-2-source.bin",
+          "size": 1410952,
+          "sha256": "b142cee5a548a91440ee755807d364b08372e98778edcc10cd6ea5c28fc051fc"
+        },
+        {
+          "path": "local/game_construction_r105/raw-game-parent/case-3-original.bin",
+          "size": 1593000,
+          "sha256": "b73f9cf6dfa9b95370556be7bdaf792380b11aca51c8b612744a9867d626f25b"
+        },
+        {
+          "path": "local/game_construction_r105/raw-game-parent/case-3-source.bin",
+          "size": 1593000,
+          "sha256": "b73f9cf6dfa9b95370556be7bdaf792380b11aca51c8b612744a9867d626f25b"
+        },
+        {
+          "path": "local/game_construction_r105/raw-game-parent/dependencies.json",
+          "size": 24837,
+          "sha256": "115412572d32ee5aede946bf4ee1301462dc6b87961ed765bd6ba09b0e9b1b0e"
+        },
+        {
+          "path": "local/game_construction_r105/raw-game-parent/online_probe.exe",
+          "size": 215040,
+          "sha256": "1edd21ac34c5de6f358d096aa98e48ba2715a713f7cd860345fe08095ec8e12e"
+        },
+        {
+          "path": "local/game_construction_r105/raw-game-parent/probe.map",
+          "size": 296754,
+          "sha256": "c8e185514296df07c774495c6162112e2fa5e3a826dede322cb8f09805738321"
+        },
+        {
+          "path": "local/game_construction_r105/raw-game-parent/probe.obj",
+          "size": 93230,
+          "sha256": "8887f4cceff1d1c073f23238e2149c213e64f4946d5d05fd9997b364ffd8bd06"
+        },
+        {
+          "path": "local/game_construction_r105/raw-game-parent/result.json",
+          "size": 193,
+          "sha256": "8c07a519988c83b329c77ff159e27848d25dee50d2cc1d9191880d48f36fb547"
+        },
+        {
+          "path": "local/game_construction_r105/raw-game-parent/run.log",
+          "size": 385,
+          "sha256": "f076b5117b6a1166c4765e5f973e0468d7427f0f39d181f44e1bd640c0e9ce73"
+        },
+        {
+          "path": "local/game_construction_r105/snapshot.log",
+          "size": 230,
+          "sha256": "981416e500ccdd828593827a4983db8d85dad71f4a24f66d39f5d71b8750d104"
+        },
+        {
+          "path": "local/game_construction_r105/toolchain.json",
+          "size": 422,
+          "sha256": "95b2ea1f69377555f67611c5735d4c59f983b589301f3736e6b582f826997977"
+        },
+        {
+          "path": "local/ghidra-annotations-20260917T194905Z.json",
+          "size": 26698,
+          "sha256": "37d2a3fa0bbbdbcbf60d4b5a03d40cd5df6c1c81a0e9cde189fd6468599c8f0a"
+        },
+        {
+          "path": "local/inspect_game_construction_r105.py",
+          "size": 1050,
+          "sha256": "e3c9eb78c75819dafb8de1d1b9282dec07f9fd1f8733adeb64de3c5c099a0e49"
+        },
+        {
+          "path": "local/prepare_game_application_debug_r105.py",
+          "size": 1811,
+          "sha256": "ac29f6e4c0200952ad1eb5d67f9b6d85a69d7180bcd893d1d053d9f8055dbd92"
+        },
+        {
+          "path": "local/prepare_game_construction_r105.py",
+          "size": 1271,
+          "sha256": "ab8f47181298b84930385ed7c95dd991a5257cbc27bb0f15a840516aa8cc5f4f"
+        },
+        {
+          "path": "local/prepare_game_fixture_data_r105.py",
+          "size": 1103,
+          "sha256": "60e8a0cc1ae9a2af26bd38d531e9275cb8184ea1f031b7e47277ca1580862601"
+        },
+        {
+          "path": "local/r105_annotations.log",
+          "size": 279,
+          "sha256": "de83e40d8b9098a79ccb907e7462cc9bd42fc468b867be3a5d124d652905ed81"
+        },
+        {
+          "path": "local/r105_annotations_readback.log",
+          "size": 216,
+          "sha256": "1536c3a8df54a93671f19c2a5d550ead1381ecc65d1dc6988165aef44cc26d89"
+        },
+        {
+          "path": "local/r105_build.log",
+          "size": 2587,
+          "sha256": "2f7451ccb26a5ea6f35eb004332f1350e51424a0911a774fbb556e9b32e7f5ff"
+        },
+        {
+          "path": "local/r105_callee_protos.txt",
+          "size": 2627,
+          "sha256": "10f628e2ea4bede9174800586aa2790291c2ab4f942f32f246ffe7342ff24618"
+        },
+        {
+          "path": "local/r105_collect.log",
+          "size": 233,
+          "sha256": "1315b48f482a3ee73464a04348a54b72894fb7a8d179cc5ea44f553f2f3b8636"
+        },
+        {
+          "path": "local/r105_fixture.log",
+          "size": 208,
+          "sha256": "17f35caaf4cec9c03a7a7b413124008d5abf3872793a5b01ef4df2336b754ed4"
+        },
+        {
+          "path": "local/r105_game_xrefs.txt",
+          "size": 8618,
+          "sha256": "81d7bbd1d9cfabdfbb317f80badde1cd695de93c37e0306e7ed8dddceabcf310"
+        },
+        {
+          "path": "local/r105_initial_cmake_failure.log",
+          "size": 340,
+          "sha256": "3c4ced2b78b1924fcdd49bb6b8b1d37151143dcca532bbb5d9ffe6ea46c980ca"
+        },
+        {
+          "path": "local/r105_initial_inline_asm_failure.log",
+          "size": 2164,
+          "sha256": "6d64143aa80a689589717165c068699c8a692006329f28fa62a9b53302d38310"
+        },
+        {
+          "path": "local/r105_integration.log",
+          "size": 1178,
+          "sha256": "696e04c2517ee293e413aa08f1f595db035a7b6438490c4caee02721c9b3698e"
+        },
+        {
+          "path": "local/repair_game_annotation_readback_r105.py",
+          "size": 1542,
+          "sha256": "ec360c8144183b00db8ae9b8881c0475382929fc90437737b3096c162506f859"
+        },
+        {
+          "path": "local/report_game_construction_r105.py",
+          "size": 9119,
+          "sha256": "cc915913694e356210ffa5665bdabbe05af6321a1345df9a491f2767e18edadf"
+        },
+        {
+          "path": "local/run_game_construction_application_r105.py",
+          "size": 2372,
+          "sha256": "57b7bf9752a3959acf8907dca48e24031caccdece2d5acd39af5ec96607c416a"
+        },
+        {
+          "path": "local/run_game_construction_fixture_r105.ps1",
+          "size": 2250,
+          "sha256": "2f190284be45a147f5929b07ef0e502d197e312aeeaeabb921e274d85376814e"
+        },
+        {
+          "path": "local/run_online_consumers_application_r104.py",
+          "size": 2371,
+          "sha256": "34b9555118e5703c13545354f4424751e2427d1c5efc7a0850819ac67952f33f"
+        },
+        {
+          "path": "local/seal_game_construction_r105.py",
+          "size": 5348,
+          "sha256": "986808a1283b46101958ea768fb4a7f843a756b523afd55c472c813a6cec85f9"
+        },
+        {
+          "path": "local/summarize_game_application_debug_r105.py",
+          "size": 355,
+          "sha256": "fdb53a98f368e98781e70ff83c89861e0194752d2e3a4c6730ec73ab9222da09"
+        },
+        {
+          "path": "reports/native_game_construction_r105.json",
+          "size": 211619,
+          "sha256": "eb29c2661118d9be451ac1b9bbff45b5c30ee79e216f82112d77cf646bb6e926"
+        },
+        {
+          "path": "scripts/build.ps1",
+          "size": 1820,
+          "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+        },
+        {
+          "path": "src/dyn_world_settings.cpp",
+          "size": 4222,
+          "sha256": "f9466be1338c3ea03dc7adea234f956e229a4454d35fb46647c8aa3d900aac68"
+        },
+        {
+          "path": "src/native_game_construction.cpp",
+          "size": 10187,
+          "sha256": "ac761fa7014debe8fd6cc1c3d4bac831458e0d0c1af382cfc3aabdc4955f4462"
+        },
+        {
+          "path": "src/native_input_configuration_owner.cpp",
+          "size": 2812,
+          "sha256": "9f328ea49dfe2dd42428a1a33372f86620e41a3f92588ba0ae6def64f9c90d33"
+        },
+        {
+          "path": "src/native_lua_objects.cpp",
+          "size": 17434,
+          "sha256": "f2d2a7a0a3d3f1141be23b9b0ca3db9f4d561780ed618a74fd6061d5e6a62bf5"
+        },
+        {
+          "path": "src/native_string.cpp",
+          "size": 9121,
+          "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+        }
+      ],
+      "scope": "Full normal game constructor parent over required services;1881 live/PE bytes,41 direct calls, strict Win32/3 CTests, four original/source cases135 observations6144440 bytes. Current application smoke failed existing null-device path; independent D3D returns8876086A. Subsystem providers/app game owner/native EH/gameplay open."
+    },
+    "worktree_source_bytes_identical_to_tested": true,
+    "main_source_identical_after_lf_normalization": true,
+    "descriptor_ledger_fragment_correction_preserved": true,
+    "library_identical_to_tested": true,
+    "game_identical_to_tested": true,
+    "all53_application_objects_identical_to_tested": true,
+    "runtime_rerun_after_integration": false,
+    "annotations": "Applied/saved/read back/force-exported under owning-worktree lease before integration; original empty-comment readback corrected without replaying mutations."
   }
 }
