@@ -2706,5 +2706,138 @@
         "sha256": "c997043a8760583251f8951f69781251556bf336e63a801d252191f86c679c78"
       }
     ]
+  },
+  "primary_integration": {
+    "source_commit": "c46637bf0c8dd9f3ec20a2cc8537eac390027c20",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "archive": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r75\\native-render-texture-owner-main-r75.zip",
+    "sha256": "64d64d973958f294e6d7745f49de0cd30e496955ed8a3c376bae1757fde31ca6",
+    "files": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "size": 63962750,
+        "sha256": "64a2dfee93be0aafb9eb4354ea29cd4c6961437c6837f9c7d0f16dcee458241e"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "size": 2607104,
+        "sha256": "e0af344de512bcbc6ab07035a243d54f7f4ee6a21d54495e5aab032f10ebd198"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "size": 2408,
+        "sha256": "b48a18c4fc3aa4a4e928e50b096c5a6036f17b4dc1654323e3630b6b5e3486e1"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_render_texture_surface_owner.obj",
+        "size": 19786,
+        "sha256": "44fb6726f07f416a7c770482256c7a5e9254ed5acda1946d4807c02b7743f135"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "size": 233296,
+        "sha256": "99073c00b83078d1ce8f64a8cb55911b84aad60812de0e969f0f6891c2d8b826"
+      },
+      {
+        "path": "build/win32/bsp_game.vcxproj",
+        "size": 64257,
+        "sha256": "b0e4bec4bd85016b40bb6ca1addc3ac3b32bc742c7b99ed55ab33893349525ee"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "size": 155116,
+        "sha256": "e8717ce87e47102ab5659250e7d9e9655eb2ffa7655bf699778ba74b381a23ab"
+      },
+      {
+        "path": "config/names/00b30000.jsonl",
+        "size": 209020,
+        "sha256": "b6ab3ca66a86ca0b149488fb9885093254f580423d5df0d423d760ad6e8f93aa"
+      },
+      {
+        "path": "config/names/00b40000.jsonl",
+        "size": 230270,
+        "sha256": "c6964b66f034a526db2cb927c118652dc9856c447a8f7c7834642b8d7f3f45e9"
+      },
+      {
+        "path": "config/reconstruction/00b30000.jsonl",
+        "size": 220412,
+        "sha256": "bad1686a624f81362170ccc8f859266ca2195e0163600023e7e51a758f0740ab"
+      },
+      {
+        "path": "config/reconstruction/00b40000.jsonl",
+        "size": 222332,
+        "sha256": "848d033695a54b05dafdcdc9c614f717ce6a47a90a86c9daf84db41b49cad073"
+      },
+      {
+        "path": "docs/NATIVE_RENDER_TEXTURE_SURFACE_OWNER_R75.md",
+        "size": 9395,
+        "sha256": "80d43168262656fe80d4195b47c3ce7e35d103f06c8225a15eaf90b6888951bd"
+      },
+      {
+        "path": "docs/NATIVE_TEXTURE_SURFACE_GETTER_R74.md",
+        "size": 7976,
+        "sha256": "fc0db9543d1b86f4678341dc2cd21616828bafd8da341fd32fb998817d38c769"
+      },
+      {
+        "path": "include/bsp/native_render_texture_surface_owner.hpp",
+        "size": 3366,
+        "sha256": "9851dd2c64ab50fdf09d2d52f36c3bf7fd7ae3389d8179637ac2e134a975d812"
+      },
+      {
+        "path": "local/ghidra-annotations-20260917T014030Z.json",
+        "size": 5947,
+        "sha256": "fc2b27149414b4badcf4c1d84e586619efea10308fd00557932e2d7c619203bf"
+      },
+      {
+        "path": "local/r75_integration.log",
+        "size": 1460,
+        "sha256": "d619e762dfd0df9e3e11dc8d9cfba497e449e37c28046aff63183829b0969bf6"
+      },
+      {
+        "path": "local/render_texture_owner_r75/annotations.log",
+        "size": 372,
+        "sha256": "14b0578d95eb839d45a8803d085df54faa4e27873ff1c9f40095f724018dcbbd"
+      },
+      {
+        "path": "local/render_texture_owner_r75/call_verification.log",
+        "size": 141,
+        "sha256": "ca5c802bff05609139089895696f113c97c4588bea166f67750978f9658a8db9"
+      },
+      {
+        "path": "local/render_texture_owner_r75/exports_after_annotations.log",
+        "size": 477,
+        "sha256": "24f1b2b699a4ee6b296d42432dcbfb7b4dec8b4bb409c98d0b5cfa5cdef0dc2e"
+      },
+      {
+        "path": "reports/native_render_texture_surface_owner_r75.json",
+        "size": 120336,
+        "sha256": "58ec734b5c76fa0fd156fc4fa5115352804791f6d816be2f9ab7ccdc2340df62"
+      },
+      {
+        "path": "reports/native_render_texture_surface_owner_r75_definitions.json",
+        "size": 1191,
+        "sha256": "1414e0a7fd15dc5e8d5c5cb154d320eb6596d1d712605266a29776f9798e4fe4"
+      },
+      {
+        "path": "reports/native_render_texture_surface_owner_r75_flow_repair.json",
+        "size": 1003,
+        "sha256": "5202726a1a40c6ccdd595340e86a2624f544a20821d8ddeb7286e3562f04cb9d"
+      },
+      {
+        "path": "src/native_render_texture_surface_owner.cpp",
+        "size": 7054,
+        "sha256": "c997043a8760583251f8951f69781251556bf336e63a801d252191f86c679c78"
+      }
+    ],
+    "library_sha256": "64a2dfee93be0aafb9eb4354ea29cd4c6961437c6837f9c7d0f16dcee458241e",
+    "library_identical_to_probe_link_input": true,
+    "game_sha256": "e0af344de512bcbc6ab07035a243d54f7f4ee6a21d54495e5aab032f10ebd198",
+    "game_identical_to_preintegration_build": true,
+    "source_identical_to_probe_tested": true,
+    "probe_rerun_after_integration": false,
+    "application_rerun_after_integration": false,
+    "scope": "Combined strict build and existing CTests. Exact normal-path real-D3D probe and its link inputs are separately sealed in the tested archive. No source changes at integration. Library equality is recorded separately from probe/runtime proof. These routines remain unbound to application resource initialization and gameplay.",
+    "annotations": "All four owning-worktree annotations were saved and force-exported before integration. Bare-owner deferral by the integration helper does not leave annotation work outstanding."
   }
 }
