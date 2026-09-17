@@ -3,6 +3,7 @@
 #include "bsp/gui_camera_store_owner.hpp"
 #include "bsp/random_threads.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/sound_lifetime_access.hpp"
 #include <cstdlib>
 
 namespace bsp {
@@ -78,6 +79,8 @@ class NativeWeakOwnerDomain final : public NativeGuiSceneWeakBase {
 public:
     NativeWeakOwnerDomain(SingletonLifetimeDomain&,
         NativeWeakMutexOwner* volatile& global_0109ce90, NativeWeakHandlePool&) noexcept;
+    NativeWeakOwnerDomain(SoundLifetimeAccess,
+        NativeWeakMutexOwner* volatile& global_0109ce90, NativeWeakHandlePool&) noexcept;
     NativeWeakOwnerDomain(const NativeWeakOwnerDomain&) = delete;
     NativeWeakOwnerDomain& operator=(const NativeWeakOwnerDomain&) = delete;
     void construct_00925490(NativeGuiSceneStorage&) override;
@@ -94,7 +97,7 @@ public:
     void retain_handle(NativeWeakHandle&) noexcept;
     void release_handle(NativeWeakHandle&) noexcept;
 private:
-    SingletonLifetimeDomain& lifetime_;
+    SoundLifetimeAccess lifetime_;
     NativeWeakMutexOwner* volatile& global_0109ce90_;
     NativeWeakHandlePool& pool_;
 };

@@ -1,4 +1,5 @@
 #include "bsp/native_singleton_destruction.hpp"
+#include "bsp/native_weak_owner.hpp"
 #include "bsp/observer_lifetime.hpp"
 #include "bsp/observer_dispatch_owner.hpp"
 #include "bsp/native_pending_entity_lock.hpp"
@@ -354,6 +355,13 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
         if (bindings.mpak_factory != nullptr) {
             delete_native_mpak_factory_secondary_00735d30(owner, flags,
                 *bindings.mpak_factory);
+            return;
+        }
+        break;
+    case 0x00d190b4:
+        if (bindings.weak_owner_domain != nullptr) {
+            bindings.weak_owner_domain->delete_lock_owner_00925430(
+                static_cast<NativeWeakMutexOwner*>(owner), flags);
             return;
         }
         break;

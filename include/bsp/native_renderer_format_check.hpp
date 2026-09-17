@@ -36,4 +36,11 @@ bool check_native_renderer_device_format_00b21ec0(
 bool check_native_renderer_vertex_texture_render_target_00b20190(
     void* actual_renderer, std::uint32_t check_format);
 
+// Complete B20160..B20189, ECX renderer/stack format/RET4. Same actual
+// factory/table loads, adapter0/HAL1/X8R8G8B8 and texture kind3. Usage80001h
+// combines render-target and post-pixel-shader-blending queries. Only zero
+// HRESULT returns true; nonzero success is false, unlike B21EC0 above.
+bool check_native_renderer_post_blend_render_target_00b20160(
+    void* actual_renderer, std::uint32_t check_format);
+
 } // namespace bsp

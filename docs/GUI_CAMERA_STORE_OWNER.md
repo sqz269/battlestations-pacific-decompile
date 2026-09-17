@@ -1,5 +1,14 @@
 # GUI camera store and outer scene ownership
 
+## Correction from docs/NATIVE_DISTORTION_PROVIDERS_R83.md
+
+R83 adds the existing node runtime's raw string domain to scene construction,
+constructor cleanup and name destruction, and connects the concrete weak owner
+to the shared raw singleton manager. The original semantic interfaces remain.
+Current Ghidra has no B72580 listing gap. Original/source cases verify names of
+length0/12/513 and retained weak-handle invalidation with null roots/lighting;
+native exception and complete GUI/distortion initialization remain unproved.
+
 Packet `orch2_gui_camera_store_n`, 2026-09-11. Names are descriptive hypotheses,
 not recovered symbols. Source: `include/bsp/gui_camera_store_owner.hpp`,
 `src/gui_camera_store_owner.cpp`, and the narrow `GuiCameraStoreMap` erase method.

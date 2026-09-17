@@ -35,6 +35,7 @@ struct NativeMpakFactoryContext;
 struct NativeMpkgFactoryContext;
 struct NativePakRegistryContext;
 class NativeObserverLifetime;
+class NativeWeakOwnerDomain;
 struct NativeObserverDispatchOwner;
 namespace game { class GameSoundRuntime; }
 
@@ -167,6 +168,9 @@ struct NativeSingletonDeletionBindings {
     // Borrow the same publication, strings and persistent execution frames;
     // do not replace the ordinary destructor with a command deletion loop.
     NativeRenderQueueDestructionContext* render_queue{};
+    // D190B4 -> 925430: same weak-owner domain and actual0109CE90 cell used
+    // by construction; this binding must outlive the shared manager drain.
+    NativeWeakOwnerDomain* weak_owner_domain{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -181,7 +185,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, renderer_lua_owner) == 1
 static_assert(offsetof(NativeSingletonDeletionBindings, renderer_owner) == 128);
 static_assert(offsetof(NativeSingletonDeletionBindings, render_entry_cache) == 132);
 static_assert(offsetof(NativeSingletonDeletionBindings, render_queue) == 136);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 140);
+static_assert(offsetof(NativeSingletonDeletionBindings, weak_owner_domain) == 140);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 144);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

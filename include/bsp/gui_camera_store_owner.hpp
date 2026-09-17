@@ -6,8 +6,8 @@
 namespace bsp {
 
 // The outer cScene is 24h bytes; GuiLights is the DIFFERENT 3Ch resource
-// referenced at +1C. Pointer fields use existing host hierarchy companions,
-// as NativeNodeStorage does. This is a new C++ ABI, not a binary replacement.
+// referenced at +1C. Root/lighting fields use existing host companions.
+// This is a new C++ ABI, not a binary replacement.
 struct NativeGuiSceneStorage {
     std::uint32_t vtable_00;
     std::atomic<std::int32_t> references_04;
@@ -55,6 +55,11 @@ private:
 };
 NativeGuiSceneOwner* allocate_native_gui_scene_00b724e0(
     NativeGuiSceneEnvironment&, const NativeString&);
+// Construction, constructor cleanup and terminal name destruction use the
+// SAME node runtime's configured name domain. Raw runtimes use the actual
+// string singleton/pool operations; semantic runtimes retain their existing
+// SizedStoragePool path. This does not change root/lighting companion ABI or
+// establish original native exception equivalence.
 void release_native_gui_scene_00b72250(NativeGuiSceneOwner&) noexcept;
 // Real B723F0 publication/retain/release on the outer scene's actual +1C.
 void set_native_gui_scene_lighting_00b723f0(

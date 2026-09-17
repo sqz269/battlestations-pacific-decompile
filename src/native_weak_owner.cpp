@@ -57,23 +57,6 @@ void leave(TrackedCriticalSection* lock) noexcept {
         LeaveCriticalSection(&lock->native);
     }
 }
-class ManagerGuard final {
-public:
-    explicit ManagerGuard(SystemSingletonCriticalSection* lock) : lock_(lock) {
-        if (lock_) {
-            singleton_enter_critical_section(*lock_);
-            ++lock_->recursion_18;
-        }
-    }
-    ~ManagerGuard() {
-        if (lock_) {
-            --lock_->recursion_18;
-            singleton_leave_critical_section(*lock_);
-        }
-    }
-private:
-    SystemSingletonCriticalSection* lock_;
-};
 std::byte** allocate_table(std::uint32_t capacity) {
     const std::uint32_t bytes = capacity * 4u;
     return static_cast<std::byte**>(singleton_lifetime_allocate({
@@ -257,6 +240,9 @@ void destroy_static_native_weak_pool_00ce1040() {
 
 NativeWeakOwnerDomain::NativeWeakOwnerDomain(SingletonLifetimeDomain& lifetime,
     NativeWeakMutexOwner* volatile& publication, NativeWeakHandlePool& pool) noexcept
+    : NativeWeakOwnerDomain(SoundLifetimeAccess(lifetime), publication, pool) {}
+NativeWeakOwnerDomain::NativeWeakOwnerDomain(SoundLifetimeAccess lifetime,
+    NativeWeakMutexOwner* volatile& publication, NativeWeakHandlePool& pool) noexcept
     : lifetime_(lifetime), global_0109ce90_(publication), pool_(pool) {}
 NativeWeakMutexOwner* NativeWeakOwnerDomain::initialize_lock_owner_00924050(void* raw) {
     auto* owner = ::new (raw) NativeWeakMutexOwner;
@@ -275,7 +261,7 @@ NativeWeakMutexOwner* NativeWeakOwnerDomain::initialize_lock_owner_00924050(void
 NativeWeakMutexOwner* NativeWeakOwnerDomain::lock_owner_00924480() {
     if (auto* current = global_0109ce90_) return current;
     {
-        ManagerGuard guard(lifetime_.get_manager_00415350()->system_owner().section_10);
+        CapturedSoundLifetimeSection guard(lifetime_);
         if (!global_0109ce90_) {
             void* raw = singleton_lifetime_allocate({SingletonAllocationKind::object, 8, 8});
             NativeWeakMutexOwner* owner = nullptr;
