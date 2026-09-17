@@ -1,6 +1,6 @@
 {
   "packet": "native_render_queue_destruction_r71",
-  "status": "complete_raw_queue_destructor_build_and_bounded_original_normal_paths_checked",
+  "status": "integrated_complete_raw_queue_destruction_bounded_original_normal_paths_checked",
   "game_rebuilt": false,
   "owned_files": [
     "cmake/startup.cmake",
@@ -5488,5 +5488,128 @@
         "sha256": "9e0917ea77bb7b2b208a925c1584896ce6260be21fb69a5adb71fd2356d8ba5b"
       }
     ]
+  },
+  "primary_integration": {
+    "source_commit": "f49f3ab3a8abcfc21183af27156a175dff44d728",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "fixture_rerun_after_integration": false,
+    "application_rerun_after_integration": false,
+    "archive": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r71\\render-queue-destruction-main-r71.zip",
+    "sha256": "29a6d84f0157b2ebfaafca17e2deda48f33de68972b1b8ef6b73b43459b5650c",
+    "files": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "size": 63903712,
+        "sha256": "d1193648a9c2e697cc8ef87843959be1f79618dd6e24e69da619869c641eb033"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "size": 2467840,
+        "sha256": "357323c77d68277885173fe4f0326582ff6392af19bfb465659750596b46c999"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "size": 2408,
+        "sha256": "69ad6a3a787b9adae0cfbfd36f378b133b4c7826850cd54f1f6b12c69f2fade8"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_render_command_execution.obj",
+        "size": 20108,
+        "sha256": "1d7f566001c6947f299c3cc1d9749a722df8c6bd21a0f17928ff7eb7956f3097"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_render_queue_destruction.obj",
+        "size": 6359,
+        "sha256": "ce69b952ee0b3ceb55ab386566babba412be416bdcbafb8d9877a1964c09aac2"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_render_queue_execution.obj",
+        "size": 12387,
+        "sha256": "578dbe46d93e661d617436608f2d0123bb057269ec31acf48097b62c7a064544"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+        "size": 22307,
+        "sha256": "928b0c667b1eeb1182e888115bdb68eeb2df6d64af9dee2d0c408f376f5a656a"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "size": 232919,
+        "sha256": "775c42c78119cee7d55333b02d295c1834b883499564e13a69596573fc633537"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+        "size": 726416,
+        "sha256": "abfc2d274a254a49b9fbd4985cc1c79d0a504cc3542446e328193dc4c72f471e"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+        "size": 12980,
+        "sha256": "c62c14b9f6c59817450135507164d85df82f737e14471b75c3d3fa598c0fd2f9"
+      },
+      {
+        "path": "build/win32/bsp_game.vcxproj",
+        "size": 64257,
+        "sha256": "b0e4bec4bd85016b40bb6ca1addc3ac3b32bc742c7b99ed55ab33893349525ee"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "size": 154719,
+        "sha256": "a79f38d2548c70f38fa86b49492a35c5a07dd3be3ea26057bbb8a4079ad1fb4e"
+      },
+      {
+        "path": "docs/NATIVE_RENDER_QUEUE_DESTRUCTION_R71.md",
+        "size": 5675,
+        "sha256": "4cb6533860811d3427df531b7f513ecdc3e2c6cabefd5a55c74324c27007f699"
+      },
+      {
+        "path": "include/bsp/native_render_queue_destruction.hpp",
+        "size": 2184,
+        "sha256": "a86da6f2073bca046ded8597e1dfb129b5a1cb8d8a4128896a5503b013c32f04"
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "size": 13021,
+        "sha256": "ed405587b60492be95fd0c1428c48e5ca2f3821a5608140353e1c24108139fc1"
+      },
+      {
+        "path": "local/ghidra-annotations-20260916T235721Z.json",
+        "size": 74846,
+        "sha256": "bc34a3456cdc4dfa502eacca3b6745fd430381baca2047806b12599025132259"
+      },
+      {
+        "path": "local/r71_integration.log",
+        "size": 1319,
+        "sha256": "abdd228344b30a390b7d4f98de0ddcc5ba72999bc082775dd6feead9a6d8cb0b"
+      },
+      {
+        "path": "local/render_queue_destruction_r71/annotations.log",
+        "size": 285,
+        "sha256": "548e3cd201c47a24a714d14b048228ad26673f51e75f779b0b8a7abf2aa33fd5"
+      },
+      {
+        "path": "local/render_queue_destruction_r71/exports_after_annotations.log",
+        "size": 375,
+        "sha256": "eff4d8866bf49abaee808114fee4db987c209dccb38741c81c86ed1533a07c1f"
+      },
+      {
+        "path": "reports/native_render_queue_destruction_r71.json",
+        "size": 315277,
+        "sha256": "aad1a81b16ff9cb12272300fa6264c3ac99c8d7e3e31cc26c11194166468ffdf"
+      },
+      {
+        "path": "src/native_render_queue_destruction.cpp",
+        "size": 2647,
+        "sha256": "bfba6f2883e58caca8da7769561c938a565712d3d4f16cb84b00c1f1d6bfd00c"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "size": 21025,
+        "sha256": "9e0917ea77bb7b2b208a925c1584896ce6260be21fb69a5adb71fd2356d8ba5b"
+      }
+    ],
+    "scope": "Combined integration build and CTests. Full original168B normal-body/source queue destructor and raw-manager dispatch probe is separately sealed in tested archive. Active rendering, application queue lifetime and gameplay remain unexecuted.",
+    "annotations": "Three annotations already saved and force-exported under owning worktree before integration; integrator bare-owner deferral does not leave annotation work outstanding."
   }
 }
