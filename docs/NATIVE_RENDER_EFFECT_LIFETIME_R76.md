@@ -104,3 +104,10 @@ Unproved: native failure/exception execution, arbitrary profiles, import mutatio
 nonempty node/material/draw-record destruction in this fixture, full initializers,
 application resource-service wiring and gameplay. The next dependency work is the
 remaining B107F0 subordinate initializer graph, retaining these concrete lifetimes.
+
+## Correction from docs/NATIVE_RENDER_PASS_INITIALIZERS_R77.md
+
+R77 supplies complete source bodies for B540B0 depth-downscale and B542D0
+particle-blend initialization, plus the primary-surface/color-target helpers.
+Strict build and arithmetic/helper comparisons pass; full initializer execution,
+the remaining pass/bloom initializers and application binding remain open.
