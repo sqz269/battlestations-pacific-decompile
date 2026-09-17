@@ -25,6 +25,7 @@
 #include "bsp/native_string_pool_owner.hpp"
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/xlive_owner_lifetime.hpp"
+#include "bsp/native_online_lifetime.hpp"
 
 #include "bsp/native_gameplay_effect_destruction.hpp"
 #include "bsp/native_int_pointer_tree18_leaves.hpp"
@@ -237,6 +238,12 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
         }
         break;
     case 0x00d24138:
+        if (bindings.native_online != nullptr && bindings.xlive_owner == nullptr) {
+            delete_native_online_base_00a3f670(static_cast<NativeOnlineManagerStorage*>(owner),
+                *bindings.native_online, flags);
+            return;
+        }
+        if (bindings.native_online != nullptr) break;
         if (bindings.xlive_owner != nullptr && bindings.xlive_owner->owns_identity(owner)) {
             delete_xlive_manager_base_00a3f670(*bindings.xlive_owner,
                 static_cast<std::uint8_t>(flags));
@@ -244,6 +251,12 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
         }
         break;
     case 0x00d2413c:
+        if (bindings.native_online != nullptr && bindings.xlive_owner == nullptr) {
+            delete_native_online_00a3fdc0(static_cast<NativeOnlineManagerStorage*>(owner),
+                *bindings.native_online, flags);
+            return;
+        }
+        if (bindings.native_online != nullptr) break;
         if (bindings.xlive_owner != nullptr && bindings.xlive_owner->owns_identity(owner)) {
             delete_xlive_manager_00a3fdc0(*bindings.xlive_owner,
                 static_cast<std::uint8_t>(flags));

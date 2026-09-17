@@ -9,6 +9,7 @@ struct NativeResourceManagerContext;
 struct NativeResourceExtraParserContexts;
 struct NativeResourceSupportRawContext;
 struct NativeFrameClockLifetimeContext;
+struct NativeOnlineLifetimeContext;
 struct NativeDiagnosticSinkStorage;
 struct NativeRendererRecordGuardContext;
 struct NativeRendererLuaOwnerContext;
@@ -52,8 +53,9 @@ namespace game { class GameSoundRuntime; }
 // CFD84C, D62C18, D68EC0, D5E5DC, D5E5D4, CFB6C4, CFEA10, D63128,
 // D63084, D63094, D630A4, D630B4, D630C4, D630D4, CFEA34, CFEA44, D62B64, D5B56C, D68D50, CE752C, D5E60C, CE7550, D5E15C or CE44DC. D0DA64
 // requires its actual publication cell; registry and sound profiles require
-// their concrete borrowed bindings. Sound and XLive owners retain C++ projected
-// storage; XLive additionally requires the exact allocation identity. Input
+// their concrete borrowed bindings. Sound retains C++ projected storage.
+// XLive accepts either its legacy projection with exact allocation identity or
+// actual 3F0h storage with native_online, exclusively. Input
 // contexts borrow the same raw manager/publications as construction and must
 // outlive drain. Input dispatch does not require current-publication identity:
 // native destructors themselves implement its reload/unregister/clear rules.
@@ -175,6 +177,10 @@ struct NativeSingletonDeletionBindings {
     // D5E480 -> B151C0. Use the same raw F8D39C publication, strings,
     // canonical child companions and frame context as the actual constructor.
     NativeRenderResourcesLifetimeContext* render_resources{};
+    // D24138/D2413C: actual 3F0h owner; same AA0/F8ABE8 cells as construction.
+    // Mutually exclusive with xlive_owner. Do not require owner==F8ABE8:
+    // the recovered destructor reloads/unregisters the current publication.
+    NativeOnlineLifetimeContext* native_online{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -191,7 +197,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, render_entry_cache) == 1
 static_assert(offsetof(NativeSingletonDeletionBindings, render_queue) == 136);
 static_assert(offsetof(NativeSingletonDeletionBindings, weak_owner_domain) == 140);
 static_assert(offsetof(NativeSingletonDeletionBindings, render_resources) == 144);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 148);
+static_assert(offsetof(NativeSingletonDeletionBindings, native_online) == 148);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 152);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting
