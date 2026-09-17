@@ -5327,5 +5327,938 @@
       }
     ],
     "scope": "Scoped constructor/material/cache source and header closure, build inputs, current libraries/game, original native bodies, COFF relocations, saved/read-back annotations, strict build and3 existing CTests. No whole post-effect execution/failure fixture, full application context, complete external build-environment closure, FH3/SEH/teardown/gameplay proof."
+  },
+  "integration_ghidra_readback": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\post_effect_numeric_material_r91\\comments-after-integration.json",
+    "sha256": "53e2446a63f372727823d677e694b157b4527c0cd3e7db25ff917e7f354bc326",
+    "prior_path": "J:\\PROG\\battlestations-pacific-decompile\\local\\ghidra-annotations-20260917T134416Z.json",
+    "prior_values": [
+      {
+        "address": "00b4e470",
+        "before": {
+          "address": "00b4e470",
+          "function_name": "BSP_PostEffect20h_Construct",
+          "comment": "[BSP reconstruction 00b4e470]\nDescriptive hypothesis, not recovered symbol. Complete body 00b4e470..00b4e83d; ECX actual20h/32-byte receiver; stack actual8h effect-name header,vertex-count DWORD,optional size input; EAX captured receiver; RET0Ch at B4E83B; EBX/EBP/ESI/EDI saved. Actual20h/32-byte D61EC0 constructor with fixed four-entry stream, separate creator release after mesh attachment, draw+18/input+1C, exact current loads and x87 schedule. All27 observed callers pass count3/null; complete admitted branches remain implemented. MSVC Win32 Release and both existing math CTests passed at 32e81952f34ffd0afe2e98afdb146aee50cf4d9b. Independent peer source/listing/EH review completed; generated code and live/PE/call-site evidence recorded. Evidence: docs/NATIVE_POST_EFFECT20_CONSTRUCTION_BR.md; docs/NATIVE_POST_EFFECT_BR_BS_INTEGRATION.md; reports/native_post_effect_br_bs_review.json. No new constructor/initializer execution, original-byte fixture, injected cleanup failure, drop-in ABI, unrestricted FH3/SEH or game validation. Provider and external-quiescence boundaries remain explicit.\n\n[BSP reconstruction 00b4e470] update\nDescriptive hypothesis, not recovered symbol. Complete body 00b4e470..00b4e83d; ECX actual20h/32-byte receiver; stack actual8h effect-name header,vertex-count DWORD,optional size input; EAX captured receiver; RET0Ch at B4E83B; EBX/EBP/ESI/EDI saved. Actual20h/32-byte D61EC0 constructor with fixed four-entry stream, separate creator release after mesh attachment, draw+18/input+1C, exact current loads and x87 schedule. All27 observed callers pass count3/null; complete admitted branches remain implemented. MSVC Win32 Release and both existing math CTests passed at 32e81952f34ffd0afe2e98afdb146aee50cf4d9b. Independent peer source/listing/EH review completed; generated code and live/PE/call-site evidence recorded. Evidence: docs/NATIVE_POST_EFFECT20_CONSTRUCTION_BR.md; docs/NATIVE_POST_EFFECT_BR_BS_INTEGRATION.md; reports/native_post_effect_br_bs_review.json. No new constructor/initializer execution, original-byte fixture, injected cleanup failure, drop-in ABI, unrestricted FH3/SEH or game validation. Provider and external-quiescence boundaries remain explicit. | Descriptive hypothesis, not a recovered symbol. Existing full post-effect source body now composes numeric renderer48 B318B0 through535320 with a persistent per-attempt factory/cache frame and shared actual domains. Original call/publication order retained; failed factory state is not discarded. ECX actual 20h storage; stack actual8h effect-name header,count,optional size input; EAX captured receiver; RET0Ch. R91 corrects the post-effect material-provider composition: numeric D5F0A8/+48 B318B0 cache through00535320, persistent per-attempt factory/cache/loader diagnostics, same actual owner/string/renderer publication domains. Native returned-pointer publication remains after the call; failed factory frames and unretired completed materials cannot be discarded by reset. Strict Win32 build/3 existing CTests,2046 live/PE bytes,66 direct calls,compiled numeric-factory relocations pass. No new whole post-effect runtime/failure fixture, full application context, FH3/SEH, teardown or gameplay proof. docs/NATIVE_POST_EFFECT_NUMERIC_MATERIAL_R91.md; reports/native_post_effect_numeric_material_r91.json."
+        },
+        "after": {
+          "address": "00b4e470",
+          "name": "BSP_PostEffect20h_Construct",
+          "evidence": "Descriptive hypothesis, not recovered symbol. Complete body 00b4e470..00b4e83d; ECX actual20h/32-byte receiver; stack actual8h effect-name header,vertex-count DWORD,optional size input; EAX captured receiver; RET0Ch at B4E83B; EBX/EBP/ESI/EDI saved. Actual20h/32-byte D61EC0 constructor with fixed four-entry stream, separate creator release after mesh attachment, draw+18/input+1C, exact current loads and x87 schedule. All27 observed callers pass count3/null; complete admitted branches remain implemented. MSVC Win32 Release and both existing math CTests passed at 32e81952f34ffd0afe2e98afdb146aee50cf4d9b. Independent peer source/listing/EH review completed; generated code and live/PE/call-site evidence recorded. Evidence: docs/NATIVE_POST_EFFECT20_CONSTRUCTION_BR.md; docs/NATIVE_POST_EFFECT_BR_BS_INTEGRATION.md; reports/native_post_effect_br_bs_review.json. No new constructor/initializer execution, original-byte fixture, injected cleanup failure, drop-in ABI, unrestricted FH3/SEH or game validation. Provider and external-quiescence boundaries remain explicit. | Descriptive hypothesis, not a recovered symbol. Existing full post-effect source body now composes numeric renderer48 B318B0 through535320 with a persistent per-attempt factory/cache frame and shared actual domains. Original call/publication order retained; failed factory state is not discarded. ECX actual 20h storage; stack actual8h effect-name header,count,optional size input; EAX captured receiver; RET0Ch. R91 corrects the post-effect material-provider composition: numeric D5F0A8/+48 B318B0 cache through00535320, persistent per-attempt factory/cache/loader diagnostics, same actual owner/string/renderer publication domains. Native returned-pointer publication remains after the call; failed factory frames and unretired completed materials cannot be discarded by reset. Strict Win32 build/3 existing CTests,2046 live/PE bytes,66 direct calls,compiled numeric-factory relocations pass. No new whole post-effect runtime/failure fixture, full application context, FH3/SEH, teardown or gameplay proof. docs/NATIVE_POST_EFFECT_NUMERIC_MATERIAL_R91.md; reports/native_post_effect_numeric_material_r91.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b4e840",
+        "before": {
+          "address": "00b4e840",
+          "function_name": "BSP_PostEffect24h_Construct",
+          "comment": "[BSP reconstruction 00b4e840]\nDescriptive hypothesis, not recovered symbol. Complete body 00b4e840..00b4ebf3; ECX actual24h/36-byte receiver; stack name header, primitive count, optional size input; EAX captured receiver; RET0Ch; saves EBX/EBP/ESI/EDI. Actual24h D61EC8 post-effect constructor: same-counter child providers, persistent caller-owned preparation and companion records, exact publication and12-state logical cleanup schedule, current-field loads and x87 spill order. Renderer callable binding and nested43C130 nonthrowing cleanup remain prerequisites; secondary cleanup failure is an explicit C++ policy outside native FH3 equivalence. MSVC Win32 Release and both existing math CTests passed at fb6d43da11fa65b13c48f86140bc8feb6c08bdff. Primary independently reviewed worker source, full constructor listing, EH map and generated COFF. Evidence: docs/NATIVE_POST_EFFECT_CONSTRUCTION_BO.md; docs/NATIVE_POST_EFFECT_CONSTRUCTION_INTEGRATION_BO.md; reports/native_post_effect_construction_review_bo.json. No new native fixture, constructor execution, drop-in ABI, unrestricted FH3/SEH or gameplay validation.\n\n[BSP reconstruction 00b4e840] update\nDescriptive hypothesis, not recovered symbol. Complete body 00b4e840..00b4ebf3; ECX actual24h/36-byte receiver; stack name header, primitive count, optional size input; EAX captured receiver; RET0Ch; saves EBX/EBP/ESI/EDI. Actual24h D61EC8 post-effect constructor: same-counter child providers, persistent caller-owned preparation and companion records, exact publication and12-state logical cleanup schedule, current-field loads and x87 spill order. Renderer callable binding and nested43C130 nonthrowing cleanup remain prerequisites; secondary cleanup failure is an explicit C++ policy outside native FH3 equivalence. MSVC Win32 Release and both existing math CTests passed at fb6d43da11fa65b13c48f86140bc8feb6c08bdff. Primary independently reviewed worker source, full constructor listing, EH map and generated COFF. Evidence: docs/NATIVE_POST_EFFECT_CONSTRUCTION_BO.md; docs/NATIVE_POST_EFFECT_CONSTRUCTION_INTEGRATION_BO.md; reports/native_post_effect_construction_review_bo.json. No new native fixture, constructor execution, drop-in ABI, unrestricted FH3/SEH or gameplay validation. | BQ source adoption changes the camera-name prefix call from the typed pool adapter to the existing raw pool context. This removes the nested43C130 nonthrowing-cleanup prerequisite in this source domain; other renderer/material/provider and external-quiescence limits remain. Win32 Release and both existing math CTests passed at dae81c7bbfb50c9b9675a7e42c6938f2d629c2da. One reviewed real-pool source probe passed normal prefix, backward overlap, right/output alias, explicit returns and pool shutdown. Secondary cleanup failure follows an explicit C++ policy outside native FH3; no injected cleanup exception, new original-byte fixture, constructor execution, ABI/SEH or gameplay proof. Zero new body credit; historical fixture evidence keeps its prior scope. Evidence: docs/NATIVE_STRING_PREFIX_RAW_INTEGRATION_BQ.md; reports/native_string_prefix_raw_review_bq.json.\n\n[BSP reconstruction 00b4e840] update\nDescriptive hypothesis, not recovered symbol. Complete body 00b4e840..00b4ebf3; ECX actual24h/36-byte receiver; stack name header, primitive count, optional size input; EAX captured receiver; RET0Ch; saves EBX/EBP/ESI/EDI. Actual24h D61EC8 post-effect constructor: same-counter child providers, persistent caller-owned preparation and companion records, exact publication and12-state logical cleanup schedule, current-field loads and x87 spill order. Renderer callable binding and nested43C130 nonthrowing cleanup remain prerequisites; secondary cleanup failure is an explicit C++ policy outside native FH3 equivalence. MSVC Win32 Release and both existing math CTests passed at fb6d43da11fa65b13c48f86140bc8feb6c08bdff. Primary independently reviewed worker source, full constructor listing, EH map and generated COFF. Evidence: docs/NATIVE_POST_EFFECT_CONSTRUCTION_BO.md; docs/NATIVE_POST_EFFECT_CONSTRUCTION_INTEGRATION_BO.md; reports/native_post_effect_construction_review_bo.json. No new native fixture, constructor execution, drop-in ABI, unrestricted FH3/SEH or gameplay validation. | BQ source adoption changes the camera-name prefix call from the typed pool adapter to the existing raw pool context. This removes the nested43C130 nonthrowing-cleanup prerequisite in this source domain; other renderer/material/provider and external-quiescence limits remain. Win32 Release and both existing math CTests passed at dae81c7bbfb50c9b9675a7e42c6938f2d629c2da. One reviewed real-pool source probe passed normal prefix, backward overlap, right/output alias, explicit returns and pool shutdown. Secondary cleanup failure follows an explicit C++ policy outside native FH3; no injected cleanup exception, new original-byte fixture, constructor execution, ABI/SEH or gameplay proof. Zero new body credit; historical fixture evidence keeps its prior scope. Evidence: docs/NATIVE_STRING_PREFIX_RAW_INTEGRATION_BQ.md; reports/native_string_prefix_raw_review_bq.json. | Descriptive hypothesis, not a recovered symbol. Existing full post-effect source body now composes numeric renderer48 B318B0 through535320 with a persistent per-attempt factory/cache frame and shared actual domains. Original call/publication order retained; failed factory state is not discarded. ECX actual 24h storage; stack actual8h effect-name header,count,optional size input; EAX captured receiver; RET0Ch. R91 corrects the post-effect material-provider composition: numeric D5F0A8/+48 B318B0 cache through00535320, persistent per-attempt factory/cache/loader diagnostics, same actual owner/string/renderer publication domains. Native returned-pointer publication remains after the call; failed factory frames and unretired completed materials cannot be discarded by reset. Strict Win32 build/3 existing CTests,2046 live/PE bytes,66 direct calls,compiled numeric-factory relocations pass. No new whole post-effect runtime/failure fixture, full application context, FH3/SEH, teardown or gameplay proof. docs/NATIVE_POST_EFFECT_NUMERIC_MATERIAL_R91.md; reports/native_post_effect_numeric_material_r91.json."
+        },
+        "after": {
+          "address": "00b4e840",
+          "name": "BSP_PostEffect24h_Construct",
+          "evidence": "Descriptive hypothesis, not recovered symbol. Complete body 00b4e840..00b4ebf3; ECX actual24h/36-byte receiver; stack name header, primitive count, optional size input; EAX captured receiver; RET0Ch; saves EBX/EBP/ESI/EDI. Actual24h D61EC8 post-effect constructor: same-counter child providers, persistent caller-owned preparation and companion records, exact publication and12-state logical cleanup schedule, current-field loads and x87 spill order. Renderer callable binding and nested43C130 nonthrowing cleanup remain prerequisites; secondary cleanup failure is an explicit C++ policy outside native FH3 equivalence. MSVC Win32 Release and both existing math CTests passed at fb6d43da11fa65b13c48f86140bc8feb6c08bdff. Primary independently reviewed worker source, full constructor listing, EH map and generated COFF. Evidence: docs/NATIVE_POST_EFFECT_CONSTRUCTION_BO.md; docs/NATIVE_POST_EFFECT_CONSTRUCTION_INTEGRATION_BO.md; reports/native_post_effect_construction_review_bo.json. No new native fixture, constructor execution, drop-in ABI, unrestricted FH3/SEH or gameplay validation. | BQ source adoption changes the camera-name prefix call from the typed pool adapter to the existing raw pool context. This removes the nested43C130 nonthrowing-cleanup prerequisite in this source domain; other renderer/material/provider and external-quiescence limits remain. Win32 Release and both existing math CTests passed at dae81c7bbfb50c9b9675a7e42c6938f2d629c2da. One reviewed real-pool source probe passed normal prefix, backward overlap, right/output alias, explicit returns and pool shutdown. Secondary cleanup failure follows an explicit C++ policy outside native FH3; no injected cleanup exception, new original-byte fixture, constructor execution, ABI/SEH or gameplay proof. Zero new body credit; historical fixture evidence keeps its prior scope. Evidence: docs/NATIVE_STRING_PREFIX_RAW_INTEGRATION_BQ.md; reports/native_string_prefix_raw_review_bq.json. | Descriptive hypothesis, not a recovered symbol. Existing full post-effect source body now composes numeric renderer48 B318B0 through535320 with a persistent per-attempt factory/cache frame and shared actual domains. Original call/publication order retained; failed factory state is not discarded. ECX actual 24h storage; stack actual8h effect-name header,count,optional size input; EAX captured receiver; RET0Ch. R91 corrects the post-effect material-provider composition: numeric D5F0A8/+48 B318B0 cache through00535320, persistent per-attempt factory/cache/loader diagnostics, same actual owner/string/renderer publication domains. Native returned-pointer publication remains after the call; failed factory frames and unretired completed materials cannot be discarded by reset. Strict Win32 build/3 existing CTests,2046 live/PE bytes,66 direct calls,compiled numeric-factory relocations pass. No new whole post-effect runtime/failure fixture, full application context, FH3/SEH, teardown or gameplay proof. docs/NATIVE_POST_EFFECT_NUMERIC_MATERIAL_R91.md; reports/native_post_effect_numeric_material_r91.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "owning_worktree_comments_preserved": true,
+    "status": "Integration helper reapplied and saved the2 names/comments after the original lease expired; post-integration readback preserves owning-worktree evidence. No deferred annotations."
+  },
+  "primary_integration": {
+    "source_commit": "a042b74fa1c45a5c46bfcb2a228eba97bd08603f",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "artifact_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r91\\native-post-effect-numeric-material-main-r91.zip",
+      "sha256": "72a5d0a029c84c0fa47f2fbeec3cda3ba7da7602a6a23cb9688a5ba972119f71",
+      "files": 175,
+      "uncompressed_bytes": 71407531,
+      "utc": "2026-09-17T13:46:02.793236+00:00",
+      "head": "a042b74fa1c45a5c46bfcb2a228eba97bd08603f",
+      "manifest": [
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_material_factory.obj",
+          "size": 29281,
+          "sha256": "10c5071d0ee3765bbf43326550b34e286de441dd7e092ca549a807cd5a700c84"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_post_effect20_construction.obj",
+          "size": 108323,
+          "sha256": "2063fbd8f59df89ee0e4ccc3ae49801ec144be89ff622614d364a5a49fc79933"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_post_effect_construction.obj",
+          "size": 106054,
+          "sha256": "f0b1cdb5e61078d30adc92004a51992a5050f062075871904e67ac042d936463"
+        },
+        {
+          "path": "build/win32/bsp_core.vcxproj",
+          "size": 236480,
+          "sha256": "0ddb928bb4c8cb36b060647bf359c14ab9cb7b698db45191366f76e37d2d5e63"
+        },
+        {
+          "path": "build/win32/CMakeCache.txt",
+          "size": 19565,
+          "sha256": "d44e9a96208c5743219aa6ee30bf4f5768813c415ab257b5af16350b3179b9f3"
+        },
+        {
+          "path": "build/win32/Release/bsp_core.lib",
+          "size": 65260826,
+          "sha256": "4f857c134222c5b16a4caeb9387c7061929879e679e0d79cc289191f94a09e3b"
+        },
+        {
+          "path": "build/win32/Release/bsp_game.exe",
+          "size": 2610176,
+          "sha256": "fa3e7aa3408c6c975c1e739bfb9711e2b7cb30c1577b70ae24101e5193a889a3"
+        },
+        {
+          "path": "build/win32/Release/bsp_lua511.lib",
+          "size": 455244,
+          "sha256": "db83167c8c7d24461ef2bf60363b96264fd2406929d0e72a8909287d79b96a17"
+        },
+        {
+          "path": "build/win32/Release/bsp_math_tests.exe",
+          "size": 753664,
+          "sha256": "fccccb8a13e5d164cc856be406c6d2498f26b42028edb9c0e4f16af3b3983e64"
+        },
+        {
+          "path": "build/win32/Release/bsp_native_math_tests.exe",
+          "size": 18432,
+          "sha256": "5003a2d826bbfcc9a5538911b0f01162ea96d944ef2c9dfdc8edb3410912554c"
+        },
+        {
+          "path": "build/win32/Release/bsp_zlib121.lib",
+          "size": 71906,
+          "sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5"
+        },
+        {
+          "path": "build/win32/Testing/Temporary/LastTest.log",
+          "size": 2408,
+          "sha256": "7e942fae974ebd9fb60328e8215d6a3f465ec80d1222968f9f1e196062325380"
+        },
+        {
+          "path": "cmake/startup.cmake",
+          "size": 158491,
+          "sha256": "09cc6a8f0d04c3b0bbeba56b61b7b6348434b1eaf29fda2cfba50c166bcf93b6"
+        },
+        {
+          "path": "CMakeLists.txt",
+          "size": 15689,
+          "sha256": "754522100c9579ee50d4f36ce078b1d7ba643fc9879d2748460b12f7b90feb03"
+        },
+        {
+          "path": "config/names/00b40000.jsonl",
+          "size": 242835,
+          "sha256": "5d1ecccd8582fe3ab15acf74af37478058fb88404ddd44be8b811694bc840d52"
+        },
+        {
+          "path": "config/reconstruction/00b40000.jsonl",
+          "size": 239030,
+          "sha256": "17bdae667c591b71fdd6048eeb3bfaf7a6af20b2db94e0dca55710725213fc3e"
+        },
+        {
+          "path": "config/target.json",
+          "size": 455,
+          "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb"
+        },
+        {
+          "path": "docs/NATIVE_POST_EFFECT20_CONSTRUCTION_BR.md",
+          "size": 10409,
+          "sha256": "45e94a0bc814192756aa1554edd58702ab910161d644404e6e1b1f000e67ee09"
+        },
+        {
+          "path": "docs/NATIVE_POST_EFFECT_CONSTRUCTION_BO.md",
+          "size": 13964,
+          "sha256": "e4d8bf8d079862873b4c5bcb79192f9402723d5f969b2a25a7fe34c1560e43a0"
+        },
+        {
+          "path": "docs/NATIVE_POST_EFFECT_NUMERIC_MATERIAL_R91.md",
+          "size": 4485,
+          "sha256": "ea677a1bd8bc67b16ac22e26764092068a5079b6e8e472db9bce1491d5766366"
+        },
+        {
+          "path": "include/bsp/allocator_list.hpp",
+          "size": 1781,
+          "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8"
+        },
+        {
+          "path": "include/bsp/building_instance.hpp",
+          "size": 2328,
+          "sha256": "ad3c055dee4b5b4ec77784db03552e173644d57b154b3fd0a26dd5dff1ad1c4e"
+        },
+        {
+          "path": "include/bsp/camera_frame_state.hpp",
+          "size": 8365,
+          "sha256": "3908727ef594797d30acfba72d87366683c61d7768e7cf3038f5a0164f7428df"
+        },
+        {
+          "path": "include/bsp/camera_look_at.hpp",
+          "size": 1199,
+          "sha256": "3e00ba8542c13e7647f6421bb566203f9960298d3ab7aa9565b462229694e32c"
+        },
+        {
+          "path": "include/bsp/camera_pose.hpp",
+          "size": 2584,
+          "sha256": "c53442a1acb1b41669c907ba70adcc547d25df0b1ebbf3d93e9fc4e49805be92"
+        },
+        {
+          "path": "include/bsp/camera_projection.hpp",
+          "size": 2413,
+          "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+        },
+        {
+          "path": "include/bsp/camera_transform.hpp",
+          "size": 7028,
+          "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+        },
+        {
+          "path": "include/bsp/camera_type_bootstrap.hpp",
+          "size": 1745,
+          "sha256": "7e6ad15a2ae0e84e2255b65e61ea0872e1bf85de0b249a29dad6bc940e5f51af"
+        },
+        {
+          "path": "include/bsp/d3d9_buffers.hpp",
+          "size": 3262,
+          "sha256": "e8bc19c4630661b83969b53cac94134748f3c9af2a98002f1f2906ed93dedc83"
+        },
+        {
+          "path": "include/bsp/d3d9_startup.hpp",
+          "size": 1362,
+          "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843"
+        },
+        {
+          "path": "include/bsp/d3d9_states.hpp",
+          "size": 15076,
+          "sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288"
+        },
+        {
+          "path": "include/bsp/d3d9_surface_pool.hpp",
+          "size": 3168,
+          "sha256": "58e4dd6d58a99d6b5cbc1685de6e83fc65512c94b02778a4f8e2b883da068467"
+        },
+        {
+          "path": "include/bsp/d3d9_texture.hpp",
+          "size": 4535,
+          "sha256": "feca623271fc53076df9026b7041c69dcdddeab0b4e007230480d787653bbc7d"
+        },
+        {
+          "path": "include/bsp/d3d9_texture2d_pool.hpp",
+          "size": 3214,
+          "sha256": "7d583076d37c842891946514ecdd69eb9a0d331d488e2753588e225f542b75f3"
+        },
+        {
+          "path": "include/bsp/d3d9_vertex_layout.hpp",
+          "size": 1257,
+          "sha256": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef"
+        },
+        {
+          "path": "include/bsp/frame_clock.hpp",
+          "size": 2475,
+          "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+        },
+        {
+          "path": "include/bsp/game_entry.hpp",
+          "size": 5510,
+          "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+        },
+        {
+          "path": "include/bsp/generated_model_lifetime.hpp",
+          "size": 12600,
+          "sha256": "bb6171641666552aea3fcaa9757d13074f229e79d5793a3b044b980f4a3d3ef9"
+        },
+        {
+          "path": "include/bsp/gui_native_geometry.hpp",
+          "size": 10778,
+          "sha256": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf"
+        },
+        {
+          "path": "include/bsp/gui_text_native_layout.hpp",
+          "size": 2855,
+          "sha256": "cc831cc840c16567c92e326115341eb9196fa821936e82a3c6cd5341d3f67651"
+        },
+        {
+          "path": "include/bsp/instance_geometry.hpp",
+          "size": 3989,
+          "sha256": "02bd2ae826198ca341a2a14fbf0f58ced99ccd20a5833a6eef48a11f932b75d4"
+        },
+        {
+          "path": "include/bsp/instance_grouping.hpp",
+          "size": 4008,
+          "sha256": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308"
+        },
+        {
+          "path": "include/bsp/instance_sort.hpp",
+          "size": 4479,
+          "sha256": "c3a892e5b69db70699daaa5c301f5b00aa17fe4f93f929fdc43dcc16e797b1f3"
+        },
+        {
+          "path": "include/bsp/instance_upload.hpp",
+          "size": 6532,
+          "sha256": "271e956b6dd3801fff1edab447fb03bb929ec562e227ae0357debbe95c1239fb"
+        },
+        {
+          "path": "include/bsp/light_type_bootstrap.hpp",
+          "size": 3214,
+          "sha256": "7856c5bbb320d6d5e1dd0df2f4969314cd2d7365134741702e187a901456333f"
+        },
+        {
+          "path": "include/bsp/material_lighting.hpp",
+          "size": 1642,
+          "sha256": "b56091a2688d0a7cf52401396efa68b9f02de215e9bd89e4bf20d93d83600da8"
+        },
+        {
+          "path": "include/bsp/material_sort_metadata.hpp",
+          "size": 3332,
+          "sha256": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212"
+        },
+        {
+          "path": "include/bsp/native_alias_count_growth.hpp",
+          "size": 1950,
+          "sha256": "d19316380a60b5ba2cf962bb079e75995ffe31de2c0d7cd18467fa05aba6fde5"
+        },
+        {
+          "path": "include/bsp/native_camera_owner.hpp",
+          "size": 6271,
+          "sha256": "527c605fcc55eedd421271a5c4b27d45947e325c391838f14f3cab6d75e1f808"
+        },
+        {
+          "path": "include/bsp/native_camera_pool.hpp",
+          "size": 3029,
+          "sha256": "1e084ad1aefc6df32be13fec3ff9fdc94d727378173fd1a24e9324727c630038"
+        },
+        {
+          "path": "include/bsp/native_camera_reference.hpp",
+          "size": 2840,
+          "sha256": "5920175404a18b464c3ce826162c8279b98c12405ac28d52363241cd2d79415e"
+        },
+        {
+          "path": "include/bsp/native_cube_texture_owner.hpp",
+          "size": 2750,
+          "sha256": "d770a6d64fdbc2dbb6770bfca5cbadcb501cc39abbcdc6053e717abcb8095645"
+        },
+        {
+          "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+          "size": 2257,
+          "sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1"
+        },
+        {
+          "path": "include/bsp/native_frame_target_owner.hpp",
+          "size": 3495,
+          "sha256": "5bcab0e6bf05a51b8e8a215117ca5621f3c5a51a1aec131eb4b7f86b33246ca8"
+        },
+        {
+          "path": "include/bsp/native_frame_target_vector.hpp",
+          "size": 2285,
+          "sha256": "85a84c0d17e194d461c5804354d381ca15e2b2032d86c094f7bd388ca9bf065e"
+        },
+        {
+          "path": "include/bsp/native_hardware_layout_construct.hpp",
+          "size": 2237,
+          "sha256": "63f4780ba2106fee5ac6ea2737ee546c48ddd82fa7c2fa89eb34dff6d03df798"
+        },
+        {
+          "path": "include/bsp/native_hardware_layout_factory.hpp",
+          "size": 1755,
+          "sha256": "9349fc0e2e88249243f1af07b063397d6b220b4a815ac26e19b0a185f00133d3"
+        },
+        {
+          "path": "include/bsp/native_hardware_layout_fields.hpp",
+          "size": 1855,
+          "sha256": "11a8ce32277f04e322d95d12e5b047dfd783be33d47769136b7a339635534472"
+        },
+        {
+          "path": "include/bsp/native_hardware_layout_owner.hpp",
+          "size": 3993,
+          "sha256": "57c6e2ad4a2b612969901001efc4c6b8bb8ec3702bcafe180ebc3926cdde5870"
+        },
+        {
+          "path": "include/bsp/native_instance_collection.hpp",
+          "size": 4710,
+          "sha256": "6c60d147f14ca210aa96529e9c45d523053fbf13a103e6dfd705caec54fc2f54"
+        },
+        {
+          "path": "include/bsp/native_legacy_exception_owner.hpp",
+          "size": 3232,
+          "sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727"
+        },
+        {
+          "path": "include/bsp/native_legacy_sbo_string.hpp",
+          "size": 2115,
+          "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422"
+        },
+        {
+          "path": "include/bsp/native_logical_buffer_device_restore.hpp",
+          "size": 2649,
+          "sha256": "2e79708e49c1559f706602b9fe761791776f11fee1c5b3efa69d7fbb2bd57c45"
+        },
+        {
+          "path": "include/bsp/native_logical_buffer_mapping.hpp",
+          "size": 2420,
+          "sha256": "d3ee48a208b6636dc70941c6a62967407d657ad18f1ae971f2d900c752fcaef0"
+        },
+        {
+          "path": "include/bsp/native_logical_index_owner.hpp",
+          "size": 6804,
+          "sha256": "c0ae53059fba249f589990b7d41d1986a2134cd86b99cd5d6db7ab2c849b38cb"
+        },
+        {
+          "path": "include/bsp/native_logical_vertex_owner.hpp",
+          "size": 7242,
+          "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+        },
+        {
+          "path": "include/bsp/native_material_effect_cache.hpp",
+          "size": 5853,
+          "sha256": "3fe74fa562bf64176c898ea86048ed1d618df04afcb5401fa16dca54cbe914b8"
+        },
+        {
+          "path": "include/bsp/native_material_effect_loading.hpp",
+          "size": 5376,
+          "sha256": "9aeead0e98e998cb43b895da50bc1c03eb26aee4ae4cc69804765c975cdc2608"
+        },
+        {
+          "path": "include/bsp/native_material_effect_owner.hpp",
+          "size": 8745,
+          "sha256": "197df420b08345803c36b5ef20cfaa725ccfa02c8ccc4a3fbfb76adada7bdedf"
+        },
+        {
+          "path": "include/bsp/native_material_effect_programs.hpp",
+          "size": 7157,
+          "sha256": "2c6d817e2ec089f6513c0e77582745dacdc8bd4791ae84756209ba271abcd658"
+        },
+        {
+          "path": "include/bsp/native_material_factory.hpp",
+          "size": 3753,
+          "sha256": "fa8a45423c10da368d803d5df7fb583a5bc91e9f3c3ac59722607e4a95d90b71"
+        },
+        {
+          "path": "include/bsp/native_material_owner.hpp",
+          "size": 5986,
+          "sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320"
+        },
+        {
+          "path": "include/bsp/native_material_pass_base.hpp",
+          "size": 5388,
+          "sha256": "ff2143aa1f9265bbeed7b38c24a23ab2c504bc1dfe8b96d4c7767f095a318a70"
+        },
+        {
+          "path": "include/bsp/native_material_pass_copy.hpp",
+          "size": 3595,
+          "sha256": "91759de34783c49066d70a643bdc4f985b98d4231673b59fc2b6e3cbca291aff"
+        },
+        {
+          "path": "include/bsp/native_material_pass_owner.hpp",
+          "size": 5800,
+          "sha256": "30ce7e9a5eb8247e4988a947a39427deeecf4991c42cdb969c2ad403f27a4e18"
+        },
+        {
+          "path": "include/bsp/native_material_pass_states.hpp",
+          "size": 5387,
+          "sha256": "4b0b577fb905790cbfa2c47dcddeef2ba7c111667a3b4d3cdf770c85ea52cab9"
+        },
+        {
+          "path": "include/bsp/native_material_pools.hpp",
+          "size": 10219,
+          "sha256": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715"
+        },
+        {
+          "path": "include/bsp/native_mesh_clone.hpp",
+          "size": 2821,
+          "sha256": "0fbe93a15ed525fd128257ca58ac4c4d8da4b4a533dd345c6c856bce5d839d5e"
+        },
+        {
+          "path": "include/bsp/native_mesh_owner.hpp",
+          "size": 6760,
+          "sha256": "540fa95aafcd3b67697998361f9a6b1689bf90348c9c0cdc09bdeb6b9c6ac42c"
+        },
+        {
+          "path": "include/bsp/native_mesh_pool.hpp",
+          "size": 2929,
+          "sha256": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52"
+        },
+        {
+          "path": "include/bsp/native_mesh_section.hpp",
+          "size": 9555,
+          "sha256": "c99901d53b195ab67c0da51c7b39657f42b7b60ba1f5509eec200b6ff29f3e2e"
+        },
+        {
+          "path": "include/bsp/native_model_owner.hpp",
+          "size": 6717,
+          "sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e"
+        },
+        {
+          "path": "include/bsp/native_model_pool.hpp",
+          "size": 3166,
+          "sha256": "30e4945729d723ec450a6eebaf28968c976dcd50f366ba193aa591d751709144"
+        },
+        {
+          "path": "include/bsp/native_named_special_textures.hpp",
+          "size": 3613,
+          "sha256": "e45d4b6240621387599ecf4e0d27d65e1f3abe4d6528d761d58db5df4e6f043e"
+        },
+        {
+          "path": "include/bsp/native_node_construction.hpp",
+          "size": 6451,
+          "sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098"
+        },
+        {
+          "path": "include/bsp/native_node_destruction.hpp",
+          "size": 5997,
+          "sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833"
+        },
+        {
+          "path": "include/bsp/native_particle_definition.hpp",
+          "size": 4889,
+          "sha256": "3a8500ab45353cb0d701fa3c0b2b1d85a301c982c14af23d82d31b379b8cd898"
+        },
+        {
+          "path": "include/bsp/native_particle_type_base.hpp",
+          "size": 3353,
+          "sha256": "28afa3e93f423326a0943350de5fbb518657b475708ba084c8aa78ddc2fd3e99"
+        },
+        {
+          "path": "include/bsp/native_particle_type_property.hpp",
+          "size": 6372,
+          "sha256": "995506392dee5bf538cebf001b979b3f7a661c40d815671d328643af1d989415"
+        },
+        {
+          "path": "include/bsp/native_physical_buffer_lock.hpp",
+          "size": 1561,
+          "sha256": "519c67bd123883490af70464ab81cec74d5de948a39eada540cf5b8529e18340"
+        },
+        {
+          "path": "include/bsp/native_physical_buffer_owner.hpp",
+          "size": 4248,
+          "sha256": "1277b747e0963be41fdee456092ea42b3c191d7aa165eeeec772de3cad354e56"
+        },
+        {
+          "path": "include/bsp/native_physical_file_date.hpp",
+          "size": 5969,
+          "sha256": "158161430fea02951e7449c8c5d1c8ae2fb5f75df70d4b0b0606cf6abcf5ad2f"
+        },
+        {
+          "path": "include/bsp/native_point_light_links.hpp",
+          "size": 4633,
+          "sha256": "e106191d74ea6960befb5f36e74e89076efb5fec4122a5b3d87482823dc07ba7"
+        },
+        {
+          "path": "include/bsp/native_pooled_resource_path.hpp",
+          "size": 1901,
+          "sha256": "c9bf86591a7af5df77018a03e433e70832c89d71b8894b05cead9d7830f17d0c"
+        },
+        {
+          "path": "include/bsp/native_post_effect20_construction.hpp",
+          "size": 9275,
+          "sha256": "63a44476984e0dac87792170f55a6c402c66f1f5fe1cd856cc6000a43ea898f7"
+        },
+        {
+          "path": "include/bsp/native_post_effect_construction.hpp",
+          "size": 9107,
+          "sha256": "599a3d3660307bb6d6172403fb2cc9613d5bbf5a7a230e09a3435f1f4a14e6c2"
+        },
+        {
+          "path": "include/bsp/native_post_effect_draw_record.hpp",
+          "size": 1157,
+          "sha256": "aa789a071b89943f1f7110c41b84d349d485eb68f083c08c27c9bc033f4df1e4"
+        },
+        {
+          "path": "include/bsp/native_post_effect_owner.hpp",
+          "size": 4104,
+          "sha256": "b23ead881361ba39679b0418f52ffd32e69bdee59932afb6f47399e3c1095e3a"
+        },
+        {
+          "path": "include/bsp/native_post_effect_owner_20h.hpp",
+          "size": 4115,
+          "sha256": "d1175b7041aa203a35b9e04a3d18a38759e646a73fa7b4d0b55a75b2dbed80ad"
+        },
+        {
+          "path": "include/bsp/native_render_context.hpp",
+          "size": 6924,
+          "sha256": "1c8d834d50cbf8ee7f660e7803efe6bad43fe70bbe87fd5cdf3375f6e68ef56d"
+        },
+        {
+          "path": "include/bsp/native_render_pointer_arrays.hpp",
+          "size": 4572,
+          "sha256": "d9cf406a178986114205fe9a154a2b74c0f8dd857b6186d7d840d8fe398ae881"
+        },
+        {
+          "path": "include/bsp/native_render_resource_alias_nodes.hpp",
+          "size": 3096,
+          "sha256": "84494dd08830e1d38c7ce90a26516b2fb4a9fdd66ab3b7e62ff7e37dae19a570"
+        },
+        {
+          "path": "include/bsp/native_render_resource_container_removal.hpp",
+          "size": 2497,
+          "sha256": "1610798bb00b9c8d99938e212c7c50ab455e35027fba4885fdad074ea37182e4"
+        },
+        {
+          "path": "include/bsp/native_render_resource_record.hpp",
+          "size": 4218,
+          "sha256": "5aa38d6351388c4fc6e97799712f9b7e85b6f65468aa51d37563793208930e11"
+        },
+        {
+          "path": "include/bsp/native_render_resource_record_construction.hpp",
+          "size": 3399,
+          "sha256": "49cbc1e7fcbf1581e24a874203e40dba0929acb8f333645bb7b967d1c8bb451a"
+        },
+        {
+          "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+          "size": 2877,
+          "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+        },
+        {
+          "path": "include/bsp/native_renderer_texture_name_notification.hpp",
+          "size": 2292,
+          "sha256": "5157ead757f9082a87a57fe9f06694025ac2bc5888b244156b6e2526aa9407a4"
+        },
+        {
+          "path": "include/bsp/native_resource_support.hpp",
+          "size": 3479,
+          "sha256": "fb1506aba45e7801bcb638a6d836ce52972cf49e6d8120f7a07f8dc74d36b8f7"
+        },
+        {
+          "path": "include/bsp/native_retained_memory_owners.hpp",
+          "size": 3829,
+          "sha256": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c"
+        },
+        {
+          "path": "include/bsp/native_shader_descriptor_owner.hpp",
+          "size": 4068,
+          "sha256": "4846aaf3f02e8967ae57c00135455b2ee3b6b913c82d790ba32dab80545b2d2e"
+        },
+        {
+          "path": "include/bsp/native_stream_clone.hpp",
+          "size": 3283,
+          "sha256": "a333d180afcf21084068a671d60c34ee8e1b18ea980a6c03b115a32ce2ff3e6a"
+        },
+        {
+          "path": "include/bsp/native_string.hpp",
+          "size": 8771,
+          "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+        },
+        {
+          "path": "include/bsp/native_string_pool_owner.hpp",
+          "size": 5893,
+          "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+        },
+        {
+          "path": "include/bsp/native_string_pool_storage.hpp",
+          "size": 2805,
+          "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+        },
+        {
+          "path": "include/bsp/native_surface_owner.hpp",
+          "size": 4982,
+          "sha256": "e5515e193057b574de0d0b55ff3f0b512f8b2c2cb9002ba3eb62de106a4bbe66"
+        },
+        {
+          "path": "include/bsp/native_texture_2d_owner.hpp",
+          "size": 3247,
+          "sha256": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc"
+        },
+        {
+          "path": "include/bsp/native_texture_loading_cache.hpp",
+          "size": 11040,
+          "sha256": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d"
+        },
+        {
+          "path": "include/bsp/native_traceline_render.hpp",
+          "size": 7210,
+          "sha256": "eec43d439a9ddcf4d5aa96954434c469b607c4ac198f54b6cb55339a0365caf4"
+        },
+        {
+          "path": "include/bsp/native_vertex_declaration_cache.hpp",
+          "size": 4248,
+          "sha256": "14123aa649c71cae8c4c35bad989533402ae66daeaa25bff86dcfd017b2768d1"
+        },
+        {
+          "path": "include/bsp/native_vertex_declaration_loading.hpp",
+          "size": 5700,
+          "sha256": "9ef3f5c6bd9d535215cfb90630e7d90a7bee00d7988c66243226d8a423248227"
+        },
+        {
+          "path": "include/bsp/native_vfs_date_route.hpp",
+          "size": 3357,
+          "sha256": "33c3707a013a34cc0895dc0bb2c797b49eb7ba45bff49423a2cc6a36bfb56244"
+        },
+        {
+          "path": "include/bsp/native_viewport_owner.hpp",
+          "size": 5507,
+          "sha256": "0fbadd5eab924627e321a7896bd9796c0aaa17062bbf3953de118fbe2b3867d5"
+        },
+        {
+          "path": "include/bsp/native_viewport_registry.hpp",
+          "size": 4059,
+          "sha256": "250decc6520abb9d3085670129d0884b087465f4eec1027cb210375619e8d486"
+        },
+        {
+          "path": "include/bsp/native_volume_texture_owner.hpp",
+          "size": 2610,
+          "sha256": "fa2f4f8cebe11eb431dfec3a399080d114c0a5ecc260320f23682adff5fab28f"
+        },
+        {
+          "path": "include/bsp/platform_loop.hpp",
+          "size": 765,
+          "sha256": "ac4c7389744b8ac8734c863aeef096314fcddb1b45529c6427c584e9a2d29929"
+        },
+        {
+          "path": "include/bsp/random.hpp",
+          "size": 791,
+          "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+        },
+        {
+          "path": "include/bsp/random_threads.hpp",
+          "size": 1446,
+          "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+        },
+        {
+          "path": "include/bsp/render_command_queue.hpp",
+          "size": 10656,
+          "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a"
+        },
+        {
+          "path": "include/bsp/render_tail.hpp",
+          "size": 15566,
+          "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+        },
+        {
+          "path": "include/bsp/resource_load_events.hpp",
+          "size": 697,
+          "sha256": "c3cc6e658a94392a8264b584a892cdd39f36a0bb4f76b3f3812287c6401bdd20"
+        },
+        {
+          "path": "include/bsp/scene_attachment.hpp",
+          "size": 9700,
+          "sha256": "d2bb5d004129a418961bf13e60c0f8324a077b5647ca8450602421190841d322"
+        },
+        {
+          "path": "include/bsp/singleton_lifetime.hpp",
+          "size": 4372,
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        },
+        {
+          "path": "include/bsp/sound_lifetime_access.hpp",
+          "size": 3039,
+          "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+        },
+        {
+          "path": "include/bsp/storage_pool.hpp",
+          "size": 5571,
+          "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+        },
+        {
+          "path": "include/bsp/system_camera_axes.hpp",
+          "size": 3402,
+          "sha256": "abfa9300a54975dcdb7489f466d941b9341991af3f027ebb764a19cbb08124d5"
+        },
+        {
+          "path": "include/bsp/system_fog_constants.hpp",
+          "size": 1915,
+          "sha256": "9378d355dad5f5ee78ce8fa41cb6275f9e5b00e9bcbd07592f051c147a0d0663"
+        },
+        {
+          "path": "include/bsp/system_fog_slot.hpp",
+          "size": 1869,
+          "sha256": "778ddcf121dd7b693a2104c43ad8dd1224eb401e06ba4fb48e7aa18617d9b1fb"
+        },
+        {
+          "path": "include/bsp/system_lighting_constants.hpp",
+          "size": 8718,
+          "sha256": "9c98d892bac479fdf3d661c98c996333df0821a3daea26a5e36ba40339b722c9"
+        },
+        {
+          "path": "include/bsp/system_time_constants.hpp",
+          "size": 4800,
+          "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+        },
+        {
+          "path": "include/bsp/vertex_declaration.hpp",
+          "size": 1462,
+          "sha256": "0f03c6a960da3547644b3e5bc8b5934a35fe26f42abc2746559a31f0af2452a0"
+        },
+        {
+          "path": "local/annotate_post_effect_r91.py",
+          "size": 4595,
+          "sha256": "8daac70104e339efedd0f0f05eb37dea94faad9f1f630eb6e2f62c34766986ef"
+        },
+        {
+          "path": "local/check_post_effect_integration_r91.py",
+          "size": 1568,
+          "sha256": "de44bf63e2a523560fb5b4f8c84bfc0e269540b47581881be8b5e6f4ab77aae9"
+        },
+        {
+          "path": "local/collect_post_effect_r91.py",
+          "size": 3912,
+          "sha256": "d2974540f4a8c06867a437fb542366cbf6bb38a92e8c4fea800481be79a85b2f"
+        },
+        {
+          "path": "local/commit_post_effect_r91.py",
+          "size": 1733,
+          "sha256": "476c66994b0f78361cc872fc2dc4ccc756a5169ea287e500ff2e422669cccea7"
+        },
+        {
+          "path": "local/ghidra-annotations-20260917T070417Z.json",
+          "size": 10092,
+          "sha256": "66f31c0047ac529fa1e48cdfc9b05ed060b91aee57fec927fc78be496d67d53c"
+        },
+        {
+          "path": "local/inspect_post_effect_objects_r91.py",
+          "size": 2340,
+          "sha256": "0b8bbdb2e61504e9ea321e81934b34a5f7347c585c761b7a852bbec98aab4d3c"
+        },
+        {
+          "path": "local/post_effect_numeric_material_r91/annotations.log",
+          "size": 231,
+          "sha256": "8420f2ea033afb10432e9929484aa4ed53b06e9c003164738858b2a87da55939"
+        },
+        {
+          "path": "local/post_effect_numeric_material_r91/call_verification.log",
+          "size": 2315,
+          "sha256": "cded0304e4c907ee1c1b610b8a698d7e005dbfb9ba3f7615f817c9d9d65b9761"
+        },
+        {
+          "path": "local/post_effect_numeric_material_r91/comments-after-integration.json",
+          "size": 9900,
+          "sha256": "53e2446a63f372727823d677e694b157b4527c0cd3e7db25ff917e7f354bc326"
+        },
+        {
+          "path": "local/post_effect_numeric_material_r91/comments-after.json",
+          "size": 9900,
+          "sha256": "53e2446a63f372727823d677e694b157b4527c0cd3e7db25ff917e7f354bc326"
+        },
+        {
+          "path": "local/post_effect_numeric_material_r91/exports_after_annotations.log",
+          "size": 250,
+          "sha256": "f7547f95fcdc95e578728fdb649c56e74946acb34b9e9ac2dcd7873f85714ef4"
+        },
+        {
+          "path": "local/post_effect_numeric_material_r91/index.log",
+          "size": 16,
+          "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+        },
+        {
+          "path": "local/post_effect_numeric_material_r91/listing-00535320.txt",
+          "size": 1210,
+          "sha256": "84bba2994e112b0af9b8ee9f7a69a20615a3c1a6de629d4d74a3b795744687f4"
+        },
+        {
+          "path": "local/post_effect_numeric_material_r91/listing-00b4e470.txt",
+          "size": 9765,
+          "sha256": "a483ef56dfd57247b1ccb5dafa8d77bd64eed44aacfbc41b23d5a1441aa95151"
+        },
+        {
+          "path": "local/post_effect_numeric_material_r91/listing-00b4e840.txt",
+          "size": 9500,
+          "sha256": "64fbd96be6fbb7392b0a8efbdd73b9abbc8a04850128de6e2a97b8e421934930"
+        },
+        {
+          "path": "local/post_effect_numeric_material_r91/native.json",
+          "size": 89831,
+          "sha256": "3d58807bd358e3a2833f72cbe2b00c11206db6430712a7435400b66242d8372b"
+        },
+        {
+          "path": "local/post_effect_numeric_material_r91/object-relocations.json",
+          "size": 1601,
+          "sha256": "f7a0de83c1a7fa38ce6102efd0483c62e5cfc5187520df62a2e642c08b652b0d"
+        },
+        {
+          "path": "local/post_effect_numeric_material_r91/original.inc",
+          "size": 14,
+          "sha256": "aecb9819eb04bf5ad6cd2535cfac9b1bed5ef7946e551eff2224759862e16294"
+        },
+        {
+          "path": "local/post_effect_numeric_material_r91/prior-ledgers.json",
+          "size": 9824,
+          "sha256": "1fe1f64a4e9fff124b3f7073b7c92e47d1cce4d70a63dc085a3a80b653837e69"
+        },
+        {
+          "path": "local/post_effect_numeric_material_r91/proto-00535320.txt",
+          "size": 754,
+          "sha256": "f9bab4c9ee963987c2c6749f129b15671277c2a2d4e7b9e7e1358b41dc1d8432"
+        },
+        {
+          "path": "local/post_effect_numeric_material_r91/proto-00b4e470.txt",
+          "size": 854,
+          "sha256": "1a730e2ca82da73ce5ef239cdaecfd3b053af54e8218e93d68389a99bf2f41c4"
+        },
+        {
+          "path": "local/post_effect_numeric_material_r91/proto-00b4e840.txt",
+          "size": 857,
+          "sha256": "a20f1244f7495db7920f6c6f9979b9b48d79c7d0d13250194451c03f3db204aa"
+        },
+        {
+          "path": "local/post_effect_numeric_material_r91/snapshot.log",
+          "size": 230,
+          "sha256": "78e2913129043eab8361e880fce61e75e7114bc6e20ff57b0976bc69c809056e"
+        },
+        {
+          "path": "local/prepare_post_effect_r91.py",
+          "size": 549,
+          "sha256": "2470e36bebd6464c5e44a02c7e59abe11df3b29fca140b8efa88a3abb48beb7f"
+        },
+        {
+          "path": "local/r91_build.log",
+          "size": 2918,
+          "sha256": "9661fa934061e5a0f2994affe72eac3840b0c53afd84f7322f10c59053574732"
+        },
+        {
+          "path": "local/r91_integration.log",
+          "size": 1106,
+          "sha256": "ea60c89cc665e62da2019d1e911acfc34f7133014908fb0e6cae10882024cd7c"
+        },
+        {
+          "path": "local/report_post_effect_r91.py",
+          "size": 5039,
+          "sha256": "7e8d4f8a8e23f31fa7ec2fa017c437d622104c55d1c45f487b541bed30a900f5"
+        },
+        {
+          "path": "local/seal_post_effect_r91.py",
+          "size": 4013,
+          "sha256": "71e99a9429a15f7b6c1ec38f4b901d793865ceadb1844ae9fc995cb9e1dd1a0a"
+        },
+        {
+          "path": "reports/native_post_effect_numeric_material_r91.json",
+          "size": 215486,
+          "sha256": "12f84e57fbab8cfa15e56876db15901bfb8a4cf809b24f861ae781514c7bc45e"
+        },
+        {
+          "path": "scripts/build.ps1",
+          "size": 1820,
+          "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62"
+        },
+        {
+          "path": "src/native_material_effect_cache.cpp",
+          "size": 20949,
+          "sha256": "d881c76ca80e2b61142ebaeeea281c941499bc8c3273e42afb3b05d285289e98"
+        },
+        {
+          "path": "src/native_material_effect_loading.cpp",
+          "size": 14139,
+          "sha256": "a8e81adfda0b0e4aeaab407585895f4888b9700b88a43b70783324e0a72e4c7d"
+        },
+        {
+          "path": "src/native_material_factory.cpp",
+          "size": 4384,
+          "sha256": "92261291bd48c98e561e93b0e3ca0a439e9ae88daa9510cc56a32baf0c744eb9"
+        },
+        {
+          "path": "src/native_post_effect20_construction.cpp",
+          "size": 29855,
+          "sha256": "399bba7681cd5012a231399fefc4bedbb5b4db0d0c757bba91916826950a711b"
+        },
+        {
+          "path": "src/native_post_effect_construction.cpp",
+          "size": 28960,
+          "sha256": "058791f1e9092ba6d6b2e0a43115218eacc882a08355f85aa721533b2b77c8cb"
+        }
+      ],
+      "scope": "Scoped constructor/material/cache source and header closure, build inputs, current libraries/game, original native bodies, COFF relocations, saved/read-back annotations, strict build and3 existing CTests. No whole post-effect execution/failure fixture, full application context, complete external build-environment closure, FH3/SEH/teardown/gameplay proof."
+    },
+    "source_identical_to_tested": true,
+    "library_identical_to_preintegration_build": true,
+    "game_identical_to_preintegration_build": true,
+    "application_rerun_after_integration": false,
+    "annotations": "Integration helper reapplied and saved the2 names/comments after the original lease expired; post-integration readback preserves owning-worktree evidence. No deferred annotations."
   }
 }
