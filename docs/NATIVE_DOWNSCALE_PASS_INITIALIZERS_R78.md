@@ -131,3 +131,10 @@ domains before application resource-service binding. Continue B107F0's remaining
 subordinates, especially B54F90 bloom initialization, preserving concrete
 constructors and lifetime blocks. Native failure/unwind, unmasked FP exceptions,
 application startup and gameplay remain open.
+
+## Correction from docs/NATIVE_BLOOM_INITIALIZER_R79.md
+
+R79 supplies complete B54F90 bloom initializer source, with original/source
+numeric and real-D3D creation-prefix evidence. The full initializer remains
+unexecuted. Its native +430 float4 registration extends one DWORD beyond the
+43Ch requested allocation; the later consumer/padding contract remains open.
