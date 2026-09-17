@@ -1,4 +1,5 @@
 #include "bsp/native_profile_collections.hpp"
+#include "bsp/native_mission_score_record.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <cstddef>
 
@@ -11,6 +12,9 @@ void* NativeProfileCollectionCalls::allocate_00bf681b(std::uint32_t n){
     return singleton_lifetime_allocate({SingletonAllocationKind::object,n,n});
 }
 void NativeProfileCollectionCalls::free_00bf65ac(void* p){singleton_lifetime_free(p);}
+void NativeProfileCollectionCalls::call_00593570(void* record,NativeStringStorage& strings){
+    destroy_native_mission_score_record_00593570(record,strings,*this);
+}
 namespace {
 using Word=std::uint32_t;
 static_assert(sizeof(void*)==4);
@@ -65,7 +69,7 @@ void erase_native_mission_score_subtree_007fd510(void* tree,void* node,
     while(!nil(node,0x29d)){
         erase_native_mission_score_subtree_007fd510(tree,read<void*>(node,8),strings,calls);
         void* const next=read<void*>(node);
-        calls.call_00593570(at(node,0x14));
+        calls.call_00593570(at(node,0x14),strings);
         if(char* const data=read<char*>(node,0x10)){const Word bytes=read<Word>(node,0xc)+1;strings.release(data,bytes);}
         calls.free_00bf65ac(node);node=next;
     }

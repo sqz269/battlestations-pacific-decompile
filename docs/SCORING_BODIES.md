@@ -310,3 +310,15 @@ at `00910410` (`MOV EDI,0x2`) is the last entry, a multiplier of exactly 1. `009
 - **Was:** 0091BDA0's per-slot string counters are over game+18CCh..18ECh
   **Is:** that range is the loop cursor over the player-record pointers; the counters are the two loss maps in the eight scoring records, at record+1ECh and record+1F8h
   **Evidence:** 0091bf6e ADD EDI,0x284 beside 0091bf68 ADD EBX,0x4, EDI seeded manager+1FCh at 0091be85
+
+## Correction from docs/NATIVE_MISSION_SCORE_RECORD_R108.md
+
+`00593570` is now reconstructed over its complete normal body, `00593570..00593C9F`
+(1,840 bytes). Its previous stored end at `0059363F` hid cleanup of most fields.
+The locked body repair preserved the original comment; the raw implementation
+releases three strings at +264/+25C/+254, 36 trees including nested counter maps,
+and three vectors. It preserves scalar/opaque words and does not free the record.
+`7FD510` now calls this real raw destructor by default. Normal cleanup was compared
+through 39 copied original bodies; native FH3 rollback, raw record construction,
+application ownership and gameplay remain open. See the R108 document and report
+for exact scope and evidence; the earlier analyzed-only row above is historical.

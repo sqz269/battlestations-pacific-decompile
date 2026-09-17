@@ -3,13 +3,13 @@
 #include <cstdint>
 
 namespace bsp {
-// Source CRT allocation/free bindings and the one unresolved score payload
-// destructor. No synthetic score record or successful destruction fallback.
+// Source CRT allocation/free bindings and the actual raw score-record destructor.
+// No synthetic record projection or successful destruction fallback.
 struct NativeProfileCollectionCalls {
     virtual ~NativeProfileCollectionCalls()=default;
     virtual void* allocate_00bf681b(std::uint32_t bytes);
     virtual void free_00bf65ac(void* allocation);
-    virtual void call_00593570(void* actual_score_record)=0;
+    virtual void call_00593570(void* actual_score_record,NativeStringStorage&);
 };
 
 // Native library storage contracts: allocate1Ch/2Ch/2A0h, initialize links
@@ -33,7 +33,7 @@ void erase_native_profile_transient_subtree_007fa880(void* tree,void* node,
     NativeStringStorage&,NativeProfileCollectionCalls&);
 // 7FD510: same traversal over2A0h nodes, nil+29D. Captured left survives score
 // record+14 destruction; then reread/release key+0C and free node. The payload
-// destructor is required even though empty startup trees never reach it.
+// destructor now has a concrete raw-storage default, including nested maps.
 void erase_native_mission_score_subtree_007fd510(void* tree,void* node,
     NativeStringStorage&,NativeProfileCollectionCalls&);
 
