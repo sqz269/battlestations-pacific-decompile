@@ -4,6 +4,7 @@
 #include "bsp/native_player_profile_owner.hpp"
 #include "bsp/native_game_embedded_state.hpp"
 #include "bsp/native_game_array_elements.hpp"
+#include "bsp/native_game_dynamics.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>
@@ -43,10 +44,10 @@ struct NativeGameConstructionCalls : NativeGameEmbeddedStateCalls,NativeGameArra
     virtual void* call_0070bd70(void* allocation,float argument)=0;
     virtual void call_00727bd0()=0;
     virtual void* call_008882d0(void* allocation);
-    virtual std::uint32_t call_00be4800()=0;
-    virtual void* call_00c55f50(const std::uint32_t* worker_count)=0;
-    virtual void* call_00c420e0(void* captured_engine,const DynWorldDescriptor&)=0;
-    virtual void call_00c31a40(void* captured_world,void* observer)=0;
+    virtual std::uint32_t call_00be4800();
+    virtual void* call_00c55f50(const std::uint32_t* worker_count,const DynEngineRuntimeContext&);
+    virtual void* call_00c420e0(void* captured_engine,const DynWorldDescriptor&,const DynWorldRuntimeContext&);
+    virtual void call_00c31a40(void* captured_world,void* observer);
 };
 
 struct NativeGameConstructionConstants {
@@ -73,6 +74,7 @@ struct NativeGameConstructionContext {
     NativeGameConstructionCalls& calls;
     NativeGameEmbeddedStateConstants embedded_constants;
     NativeGameArrayConstants array_constants;
+    NativeGameDynamicsContext dynamics;
 };
 struct NativeGameConstructionOperation final {
     enum class Phase { fresh,running,complete,failed,diagnostic_retired };

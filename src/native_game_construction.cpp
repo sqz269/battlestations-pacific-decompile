@@ -1,5 +1,6 @@
 #include "bsp/native_game_construction.hpp"
 #include "bsp/native_game_storage_defaults.hpp"
+#include "bsp/native_frame_job_lifetime.hpp"
 #include "bsp/native_input_configuration_owner.hpp"
 #include "bsp/native_lua_objects.hpp"
 #include <cstring>
@@ -63,6 +64,18 @@ void* NativeGameConstructionCalls::call_004c1950(){return allocate_native_game_l
 void* NativeGameConstructionCalls::call_004c1a40(){return allocate_native_game_list_004c1a40(*this);}
 void NativeGameConstructionCalls::call_007ff9d0(void* p){initialize_native_race_storage_007ff9d0(p);}
 void* NativeGameConstructionCalls::call_008882d0(void* p){return construct_native_mission_lua_owner_008882d0(p,*this);}
+std::uint32_t NativeGameConstructionCalls::call_00be4800(){
+    return static_cast<std::uint32_t>(frame_job_processor_count_00be4800());
+}
+void* NativeGameConstructionCalls::call_00c55f50(const std::uint32_t* workers,const DynEngineRuntimeContext& context){
+    return dyn_engine_ensure_00c55f50(workers,context);
+}
+void* NativeGameConstructionCalls::call_00c420e0(void* engine,const DynWorldDescriptor& descriptor,const DynWorldRuntimeContext& context){
+    return dyn_engine_create_world_00c420e0(*static_cast<DynEngineStorage*>(engine),descriptor,context);
+}
+void NativeGameConstructionCalls::call_00c31a40(void* world,void* observer){
+    set_native_dyn_world_callback_owner_00c31a40(world,observer);
+}
 void NativeGameConstructionCalls::call_0076ede0(void* owner,
     const NativeGameEmbeddedStateConstants& constants,NativeGameEmbeddedStateOperation& operation){
     construct_native_game_embedded_state_0076ede0(owner,constants,*this,operation);
@@ -172,7 +185,7 @@ NativeGameStorage* construct_native_game_004ddb90(NativeGameStorage& storage,
         byte(game,0x1ee4);byte(game,0x1ee1);c.actual_game_00e188a8=game;
         a.unwind_state=36;word(game,0x34);a.worker_count=1;
         a.native_site=0x004de11c;a.worker_count=calls.call_00be4800();
-        a.native_site=0x004de129;void* const engine=calls.call_00c55f50(&a.worker_count);
+        a.native_site=0x004de129;void* const engine=calls.call_00c55f50(&a.worker_count,c.dynamics.engine);
         const Word solver=c.constants.bits_00ce7480;
         const Word half=c.constants.bits_00ce3800;
         descriptor_word(a.descriptor,0x30,solver);
@@ -187,7 +200,7 @@ NativeGameStorage* construct_native_game_004ddb90(NativeGameStorage& storage,
         descriptor_word(a.descriptor,0x28,0);descriptor_word(a.descriptor,0x04,0);
         descriptor_word(a.descriptor,0x08,gravity);descriptor_word(a.descriptor,0x0c,0);
         descriptor_word(a.descriptor,0x14,0);descriptor_word(a.descriptor,0x18,0);
-        a.native_site=0x004de1d3;void* const world=calls.call_00c420e0(engine,a.descriptor);
+        a.native_site=0x004de1d3;void* const world=calls.call_00c420e0(engine,a.descriptor,c.dynamics.world);
         put(game,0x18,world);a.native_site=0x004de1de;calls.call_00c31a40(world,at(game,0x1c));
         a.native_site=0x004de1e5;value=calls.allocate_00bf681b(0x20);
         if(value){word(value,4);word(value,8);word(value,0xc);word(value,0x14);word(value,0x18);word(value,0x1c);}
