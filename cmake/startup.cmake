@@ -1311,3 +1311,4 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_platform_load_messages.cpp)
 
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_render_resources_lifetime.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/native_shader_binary_cache.cpp)
