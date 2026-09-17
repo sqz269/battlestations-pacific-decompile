@@ -3092,5 +3092,138 @@
         "sha256": "96ab5f0a86e3955a9651725033c1a7eec3146255672652d8cc532620de25a576"
       }
     ]
+  },
+  "primary_integration": {
+    "source_commit": "a18b8d8c3b0ae5b169b49d04e5a91ed3eaed2a0c",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "archive": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r76\\native-render-effect-lifetime-main-r76.zip",
+    "sha256": "3088f2fd9fbb8c3a05b2698db612f38b5e44f1d833ed24becb1a8cfa54921c87",
+    "files": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "size": 63985792,
+        "sha256": "a73e622ac4e291ff9494449f290b33baa8bb739b5ccae3733eaf3dcdd61798a8"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "size": 2607104,
+        "sha256": "68389b7dcbc9ba930becf54d3cbe92f2a358d097ba313ff6516195359a69e0df"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "size": 2408,
+        "sha256": "245403e78119ad57a1f9832d872f1ce94e36ecd7df489736fef73c9b4963dfbf"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_render_effect_lifetime.obj",
+        "size": 20818,
+        "sha256": "542ee5edf413352ea44a078b3d90c3df5730ec8101648144a9bdd3b34e49b05f"
+      },
+      {
+        "path": "build/win32/bsp_core.vcxproj",
+        "size": 233419,
+        "sha256": "029fe9d767db2537aa3bd2bbac2de89cf5dde131ce359f1eeb0ce9caf062af6f"
+      },
+      {
+        "path": "build/win32/bsp_game.vcxproj",
+        "size": 64257,
+        "sha256": "b0e4bec4bd85016b40bb6ca1addc3ac3b32bc742c7b99ed55ab33893349525ee"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "size": 155246,
+        "sha256": "4f0e3f1444966ab13953b8c38ffbbe6b81c23e614420726ab530ffbf20806458"
+      },
+      {
+        "path": "config/names/00b00000.jsonl",
+        "size": 128496,
+        "sha256": "b956572ab21b08480d2f6e0eae64e28c4f46237a4728e20e715eca88e5741e29"
+      },
+      {
+        "path": "config/names/00b10000.jsonl",
+        "size": 287559,
+        "sha256": "1b2a7e00be5646bcc25f004b67a7849d33d1d2ce7604b2ff186062d1e799e034"
+      },
+      {
+        "path": "config/names/00b50000.jsonl",
+        "size": 132548,
+        "sha256": "b173820ee26a51c9a2191b75ed3706d45fd3b11d00673727f637d376b2a368eb"
+      },
+      {
+        "path": "config/reconstruction/00b00000.jsonl",
+        "size": 168018,
+        "sha256": "f23fca59750fed1bd734829fb75dc8877e6f72d3ad5365cb17adf3ddd56be03d"
+      },
+      {
+        "path": "config/reconstruction/00b10000.jsonl",
+        "size": 291941,
+        "sha256": "0bc238c7c1968c1851daa2688ffa05aa80851d3fc54c726b11b2d1aad3326a94"
+      },
+      {
+        "path": "config/reconstruction/00b50000.jsonl",
+        "size": 175068,
+        "sha256": "09280a69bd31cbc7deec4dbb8feb01990466e0585b4d7fbcc2d3a42d13cfc68c"
+      },
+      {
+        "path": "docs/NATIVE_RENDER_EFFECT_LIFETIME_R76.md",
+        "size": 6628,
+        "sha256": "8e36fb3e058a007744859f9deab2444e04a036fc9f5d0777c7b016ab06429df7"
+      },
+      {
+        "path": "include/bsp/native_render_effect_lifetime.hpp",
+        "size": 3287,
+        "sha256": "dc8e55714d1e652bc411acc7df29f703c828a6e180c03db175a2d367588933f1"
+      },
+      {
+        "path": "local/ghidra-annotations-20260917T020616Z.json",
+        "size": 10469,
+        "sha256": "b7c870c321a129e9d99f13142fd4fced81d836d7ce18f167716b427fb043581f"
+      },
+      {
+        "path": "local/r76_integration.log",
+        "size": 2024,
+        "sha256": "8e62f5ddcb3c090d6e6d2d4d3f1c6b763ebce75346cdf47b65cc452dfe8bc726"
+      },
+      {
+        "path": "local/render_effect_r76/annotations.log",
+        "size": 553,
+        "sha256": "e7315b4f69e6066ac23114a756fdbb21227cc1a98a377da04018331ed512d7c5"
+      },
+      {
+        "path": "local/render_effect_r76/call_verification.log",
+        "size": 136,
+        "sha256": "52bc4b5698bd9f367e2bf950efa20b1d6d8b43367c9e3785654c5dd8c50d10bb"
+      },
+      {
+        "path": "local/render_effect_r76/exports_after_annotations.log",
+        "size": 885,
+        "sha256": "475e73fba06a1130a23636ad27a716a8bbdedcf7afbdce32668cb818ed8269f2"
+      },
+      {
+        "path": "reports/native_render_effect_lifetime_r76.json",
+        "size": 140754,
+        "sha256": "bf31b75131f81534d9951daff8eb964cdf20db2a59ed702b371581a1e1f8b638"
+      },
+      {
+        "path": "reports/native_render_effect_lifetime_r76_flow_repair.json",
+        "size": 4935,
+        "sha256": "9a2a5deee31e29b155dcd98eff133acaa553b137b09e01fa6c3997e381309726"
+      },
+      {
+        "path": "src/native_render_effect_lifetime.cpp",
+        "size": 5372,
+        "sha256": "96ab5f0a86e3955a9651725033c1a7eec3146255672652d8cc532620de25a576"
+      }
+    ],
+    "library_sha256": "a73e622ac4e291ff9494449f290b33baa8bb739b5ccae3733eaf3dcdd61798a8",
+    "library_identical_to_probe_link_input": true,
+    "game_sha256": "68389b7dcbc9ba930becf54d3cbe92f2a358d097ba313ff6516195359a69e0df",
+    "game_identical_to_preintegration_build": true,
+    "source_identical_to_probe_tested": true,
+    "probe_rerun_after_integration": false,
+    "application_rerun_after_integration": false,
+    "scope": "Combined strict build and existing CTests. Exact normal-path real-D3D probe and its link inputs are separately sealed in the tested archive. No source changes at integration. Library equality is recorded separately from probe/runtime proof. These routines remain unbound to application resource initialization and gameplay.",
+    "annotations": "All eight owning-worktree annotations were saved and force-exported before integration. Bare-owner deferral by the integration helper does not leave annotation work outstanding."
   }
 }
