@@ -129,3 +129,12 @@ creation and this full retained surface getter. Its B3D640 operation still needs
 a verified function boundary and behavior; holder lifetime and resource-service
 composition also remain open. Do not replace that operation with a no-op or
 claim render-resource initialization merely from this getter's fixture result.
+
+## Correction from docs/NATIVE_RENDER_TEXTURE_SURFACE_OWNER_R75.md
+
+R75 defines B3D640 as its genuine three-byte RET4 leaf and implements the full
+B4E020/B4E140/B4E410 holder constructor and lifetime. The leaf performs no pixel
+operation; the earlier unknown operation is now resolved. Six original/source
+real-D3D lanes pass all three construction modes and ordinary/scalar teardown.
+Full resource-service construction, native failure/unwind and gameplay remain
+open; see the R75 evidence boundaries.
