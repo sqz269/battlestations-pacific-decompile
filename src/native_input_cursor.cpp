@@ -113,15 +113,16 @@ void reset_native_input_focus_00beca40(NativeInputCursorContext& c) {
 
 void update_native_input_cursor_00becb20(Win32PlatformState& platform, bool loading,
     NativeInputCursorContext& c) {
-    if (!c.calls.current_platform_manager_00f8abe8()) return;
+    auto& legacy = dynamic_cast<NativeInputCursorCalls&>(c.calls);
+    if (!legacy.current_platform_manager_00f8abe8()) return;
     void* const initial_backend = c.backend_00f8bbf4;
     if (!initial_backend) return;
     if (!c.calls.call_004ba6d0(initial_backend, 1, 0)) return;
     if (loading)
-        c.calls.pump_platform_manager_00a409f0(*c.calls.current_platform_manager_00f8abe8());
+        legacy.pump_platform_manager_00a409f0(*legacy.current_platform_manager_00f8abe8());
 
     const bool focused = platform.byte_041;
-    const bool system_ui = c.calls.current_platform_manager_00f8abe8()->system_ui_visible;
+    const bool system_ui = legacy.current_platform_manager_00f8abe8()->system_ui_visible;
     const bool should_show = !focused || system_ui;
     bool focus_was_reset = false;
     auto& globals = c.globals;

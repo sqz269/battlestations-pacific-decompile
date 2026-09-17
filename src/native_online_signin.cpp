@@ -1,4 +1,5 @@
 #include "bsp/native_online_signin.hpp"
+#include "bsp/native_frame_clock_publication.hpp"
 #include "bsp/xlive_library.hpp"
 #include <cstring>
 #include <stdexcept>
@@ -60,7 +61,12 @@ std::uint32_t ordinal(void* module, std::uint16_t number, Args... args) {
 
 NativeOnlineSigninRuntime::NativeOnlineSigninRuntime(const XLiveLibrary& library,
     FrameClock* volatile& clock_slot)
-    : module_(library.module_handle()), clock_slot_(clock_slot) {
+    : module_(library.module_handle()), projected_clock_slot_(&clock_slot) {
+    if (!module_) throw std::invalid_argument("Native sign-in needs the live XLive library");
+}
+NativeOnlineSigninRuntime::NativeOnlineSigninRuntime(const XLiveLibrary& library,
+    const NativeFrameClockPublicationContext& clock)
+    : module_(library.module_handle()), actual_clock_(&clock) {
     if (!module_) throw std::invalid_argument("Native sign-in needs the live XLive library");
 }
 std::uint32_t NativeOnlineSigninRuntime::user_get_signin_state_00a4d572(std::uint32_t user) {
@@ -85,7 +91,11 @@ void NativeOnlineSigninRuntime::call_callback20(std::uint32_t target, std::uint3
     static_cast<void>(ordinal(module_, 5277, ecx, 0x8001u, 6u));
 }
 void NativeOnlineSigninRuntime::sample_clock_vslot20(ClockTimestamp& output) {
-    FrameClock* const clock = clock_slot_;
+    if (actual_clock_) {
+        sample_published_native_frame_clock(*actual_clock_, &output);
+        return;
+    }
+    FrameClock* const clock = *projected_clock_slot_;
     if (!clock) throw std::runtime_error("Native online clock singleton is unavailable");
     if (!sample_frame_clock_00bee080(*clock, output))
         throw std::runtime_error("QPC failed: native unspecified output is not reproduced");

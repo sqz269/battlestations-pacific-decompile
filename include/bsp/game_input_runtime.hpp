@@ -2,9 +2,9 @@
 #include "bsp/native_input_device_runtime.hpp"
 #include "bsp/native_input_action_records.hpp"
 #include "bsp/native_input_cursor.hpp"
+#include "bsp/native_platform_load_messages.hpp"
 #include <memory>
 
-namespace bsp { struct XLiveManagerOwner; }
 namespace bsp::game {
 
 using GameRawInputDeviceLookup = void* (*)(void*, std::uint32_t, std::uint32_t);
@@ -22,7 +22,11 @@ struct GameInputRuntimeBindings {
     // actual D5B610 listeners to their recovered finite deletion bodies.
     NativeInputActionRecordCalls* volatile& listener_calls;
     PlatformCursorGlobals cursor_globals;
-    XLiveManagerOwner* volatile& online_00f8abe8;
+    NativeOnlineManagerStorage* volatile& online_00f8abe8;
+    // Source-service publication, distinct from the single actual native owner
+    // cell above. Reloaded for every cursor operation; must match its receiver.
+    NativeOnlinePumpContext* volatile& online_pump;
+    XLiveLibrary& xlive;
     const volatile float& loading_step_00d7a2f0;
     NativeInputShowCursorCall const& show_cursor;
     GameRawInputDeviceLookup lookup_device_004ba6d0;
@@ -40,6 +44,8 @@ public:
     NativeInputBackendOwnerContext& backend_context() noexcept;
     NativeInputActionOwnerContext& action_context() noexcept;
     NativeInputActionRecordsContext& records_context() noexcept;
+    NativeInputCursorContext& cursor_context() noexcept;
+    NativePlatformLoadMessagesContext& platform_load_context() noexcept;
     NativeInputDeviceRuntime& devices() noexcept;
     // Native allocation/constructor, publication reload/callback write/reset.
     void startup();
@@ -48,6 +54,9 @@ public:
     void initialize_classes_004dd6a8();
     void set_rumble_enabled_00a94c50(bool enabled);
     void update_cursor(bool loading);
+    // BECE70 keeps its platform receiver across the application-frame call.
+    // Load callers above instead capture the current platform publication.
+    void update_cursor(Win32PlatformState& captured_platform, bool loading);
     void update_backend(float seconds);
     // Entry for a raw caller which already captured its receiver/profile.
     void backend_update_vslot04(void*, std::uint32_t captured_profile, float seconds);

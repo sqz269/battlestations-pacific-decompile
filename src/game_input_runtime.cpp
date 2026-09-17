@@ -4,12 +4,12 @@
 #include "bsp/native_input_class_configuration.hpp"
 #include "bsp/native_input_action_listener_owner.hpp"
 #include "bsp/native_gamepad_rumble.hpp"
-#include "bsp/xlive_manager_owner.hpp"
+#include <optional>
 #include <stdexcept>
 
 namespace bsp::game {
 struct GameInputRuntime::Impl final : NativeInputBackendBindingsCalls,
-    NativeInputBackendSlotActivation, NativeInputCursorCalls,
+    NativeInputBackendSlotActivation, NativeInputCursorDeviceCalls,
     NativeInputActionRecordCalls, NativeGamepadRumbleOutput {
     GameInputRuntimeBindings bound;
     NativeInputDeviceRuntime device_runtime;
@@ -22,6 +22,8 @@ struct GameInputRuntime::Impl final : NativeInputBackendBindingsCalls,
     NativeInputActionStorageCalls record_storage;
     NativeInputActionOwnerContext actions;
     NativeInputCursorContext cursor;
+    NativePlatformLoadMessagesContext platform_load;
+    std::optional<NativePlatformLoadMessagesOperation> cursor_operation{std::in_place};
     NativeGamepadRumbleContext rumble;
     bool started{};
 
@@ -33,6 +35,8 @@ struct GameInputRuntime::Impl final : NativeInputBackendBindingsCalls,
           actions{b.actions_00f8bbf8, b.lifetime, record_storage},
           cursor{b.backend_00f8bbf4, actions, b.cursor_globals,
               b.loading_step_00d7a2f0, b.show_cursor, *this},
+          platform_load{b.online_00f8abe8, b.backend_00f8bbf4,
+              b.online_pump, &cursor, b.xlive},
           rumble{b.backend_00f8bbf4, b.rumble_enabled_00e12f2c, device_runtime, *this} {
         if (!b.lookup_device_004ba6d0 || !b.show_cursor)
             throw std::invalid_argument("input runtime requires its real lookup and ShowCursor providers");
@@ -58,16 +62,6 @@ struct GameInputRuntime::Impl final : NativeInputBackendBindingsCalls,
     }
     void activate_slot_00a91620(void* p, std::uint32_t type, std::uint32_t slot) override {
         activate_native_input_device_slot_00a91620(p, type, slot, bindings);
-    }
-    PlatformManagerFlags* current_platform_manager_00f8abe8() noexcept override {
-        auto* const online = bound.online_00f8abe8;
-        return online ? &online->context.flags : nullptr;
-    }
-    void pump_platform_manager_00a409f0(PlatformManagerFlags& flags) override {
-        auto* const online = bound.online_00f8abe8;
-        if (!online || &online->context.flags != &flags)
-            throw std::logic_error("input cursor requires its current published online owner");
-        pump_xlive_system_00a409f0(online->context);
     }
     void* call_004ba6d0(void* p, std::int32_t type, std::uint32_t index) override {
         return bound.lookup_device_004ba6d0(p, static_cast<std::uint32_t>(type), index);
@@ -111,6 +105,11 @@ GameInputRuntime::~GameInputRuntime() = default;
 NativeInputBackendOwnerContext& GameInputRuntime::backend_context() noexcept { return impl_->backend; }
 NativeInputActionOwnerContext& GameInputRuntime::action_context() noexcept { return impl_->actions; }
 NativeInputActionRecordsContext& GameInputRuntime::records_context() noexcept { return impl_->records; }
+NativeInputCursorContext& GameInputRuntime::cursor_context() noexcept { return impl_->cursor; }
+NativePlatformLoadMessagesContext& GameInputRuntime::platform_load_context() noexcept {
+    impl_->platform_load.online = impl_->bound.online_pump;
+    return impl_->platform_load;
+}
 NativeInputDeviceRuntime& GameInputRuntime::devices() noexcept { return impl_->device_runtime; }
 void GameInputRuntime::startup() {
     if (impl_->started || impl_->bound.backend_00f8bbf4)
@@ -131,7 +130,17 @@ void GameInputRuntime::set_rumble_enabled_00a94c50(bool enabled) {
 void GameInputRuntime::update_cursor(bool loading) {
     auto* const platform = impl_->bound.devices.platform_0109cf04;
     if (!platform) throw std::logic_error("input cursor requires the canonical platform publication");
-    update_native_input_cursor_00becb20(*platform, loading, impl_->cursor);
+    update_cursor(*platform, loading);
+}
+void GameInputRuntime::update_cursor(Win32PlatformState& platform, bool loading) {
+    using Phase = NativePlatformLoadMessagesOperation::Phase;
+    if (impl_->cursor_operation->phase == Phase::complete)
+        impl_->cursor_operation.emplace();
+    else if (impl_->cursor_operation->phase != Phase::fresh)
+        throw std::logic_error("input cursor cannot replay an interrupted native operation");
+    // Cursor-only entry never reads MSG. Preserve its untouched caller preimage.
+    update_native_platform_load_cursor_00becb20(&platform.native_window_focus(),
+        static_cast<std::uint8_t>(loading), platform_load_context(), *impl_->cursor_operation);
 }
 void GameInputRuntime::update_backend(float seconds) {
     void* const backend = impl_->bound.backend_00f8bbf4;

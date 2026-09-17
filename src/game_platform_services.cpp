@@ -4,7 +4,7 @@
 
 namespace bsp::game {
 GamePlatformServices::GamePlatformServices(void* volatile& input,
-    GameInputRuntime* volatile& runtime, XLiveManagerOwner* volatile& online,
+    GameInputRuntime* volatile& runtime, NativeOnlineManagerStorage* volatile& online,
     XLiveLibrary& library) noexcept
     : input_(input), runtime_(runtime), online_(online), load_events_(*this, library) {}
 

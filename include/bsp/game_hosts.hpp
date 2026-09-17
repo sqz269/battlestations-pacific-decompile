@@ -52,6 +52,7 @@ struct NativeInputActionRecordCalls;
 struct NativeRendererParametersOwner;
 struct CameraAxesCrtAccess;
 struct NativeFrameClockPublicationContext;
+class NativeOnlineSigninCalls;
 class XLiveLibrary;
 }
 
@@ -383,10 +384,12 @@ public:
     GameLoopCallbacks(GameHostLog& log, ApplicationFrameState& frame_state,
         FrameMarkerColor& color, GameFrameHost& frame_host, GameDeviceHost& device,
         PlatformLoopState& loop, long frame_limit, XLiveLibrary& xlive,
+        Win32PlatformState& platform, GameInputRuntime& input,
         std::function<void(IDirect3DDevice9&)> capture = {}, long screenshot_frame = -1,
         long screenshot_mission_frame = -1)
         : log_(log), frame_state_(frame_state), color_(color), frame_host_(frame_host),
           device_(device), loop_(loop), frame_limit_(frame_limit), xlive_(xlive),
+          platform_(platform), input_(input),
           capture_(std::move(capture)), screenshot_frame_(screenshot_frame),
           screenshot_mission_frame_(screenshot_mission_frame) {}
 
@@ -404,6 +407,8 @@ private:
     PlatformLoopState& loop_;
     long frame_limit_{-1};
     XLiveLibrary& xlive_;
+    Win32PlatformState& platform_;
+    GameInputRuntime& input_;
     std::function<void(IDirect3DDevice9&)> capture_;
     // --screenshot-frame N, milestone 2d: the frame index to capture. Negative keeps the
     // last-frame (or close-request) rule the switch shipped with.
@@ -592,6 +597,9 @@ public:
     NativeRendererParametersOwner* renderer_parameters() const noexcept { return renderer_parameters_; }
     GameNativeRendererApplication* native_renderer() const noexcept { return native_renderer_.get(); }
     GameInputRuntime* input_runtime() const noexcept { return input_runtime_; }
+    // Borrow the application's loaded-library/current-raw-clock provider.
+    // Null before SoundServices exists; it owns no online manager or account.
+    NativeOnlineSigninCalls* online_signin_calls() const noexcept;
     void* volatile& input_backend_publication() noexcept { return input_backend_00f8bbf4_; }
 
 private:

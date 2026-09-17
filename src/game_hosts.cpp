@@ -8,6 +8,7 @@
 #include "bsp/game_native_shader_process.hpp"
 #include "bsp/native_renderer_end_frame.hpp"
 #include "bsp/native_xlive_device_adapter.hpp"
+#include "bsp/native_online_signin.hpp"
 #include "bsp/game_native_vfs_runtime.hpp"
 #include "bsp/native_renderer_reset_process.hpp"
 #include "bsp/native_renderer_reset_readiness.hpp"
@@ -883,6 +884,10 @@ bool GameLoopCallbacks::pretranslate(MSG& message) {
 
 void GameLoopCallbacks::frame() {
     run_application_frame(frame_state_, color_, frame_host_);
+    // BECE70 retains its platform receiver across application virtual+10,
+    // then BECB20(false) reloads the shared raw online/input publications.
+    input_.update_cursor(platform_, false);
+    log_.implemented("PlatformLoopCallbacks::cursor_after_application_frame", "00bece81");
     // --screenshot saves the back buffer of the last frame: the frame the count
     // names, or the frame on which the close request was observed.
     const bool last_frame = frame_limit_ >= 0
@@ -1025,9 +1030,11 @@ struct GameStartupHost::SoundServices {
     // at73DC7C and input backend construction at73DD8E, after sound/window.
     // Until those owners exist, these verified loader-zero slots stay null.
     // No independent online/input/action owner is constructed for sound loads.
-    XLiveManagerOwner* volatile online_00f8abe8{};
+    NativeOnlineManagerStorage* volatile online_00f8abe8{};
+    NativeOnlinePumpContext* volatile online_pump{};
     std::uint8_t cursor_shown_0109db8e{}, focus_reset_pending_0109db8f{}, previous_ui_0109db90{};
     XLiveLibrary xlive;
+    NativeOnlineSigninRuntime signin;
     NativeXLiveDeviceAdapter device_adapter;
     GamePlatformServices platform;
     void* volatile alternate_00f8bbcc{};
@@ -1042,6 +1049,7 @@ struct GameStartupHost::SoundServices {
     explicit SoundServices(GameStartupHost& app)
         : xlive(selected_library_path(app.options_.xlive_dll, L"xlive.dll"),
               app.options_.xlive_dependencies),
+          signin(xlive, app.require_frame_clock_context()),
           device_adapter(xlive),
           platform(app.input_backend_00f8bbf4_, app.input_runtime_, online_00f8abe8, xlive),
           dialog({alternate_00f8bbcc, format_counts_00e12ef0, one_00d7a24c,
@@ -1059,6 +1067,10 @@ struct GameStartupHost::SoundServices {
         app.singletons_->bind_sound_runtime(&core);
     }
 };
+
+NativeOnlineSigninCalls* GameStartupHost::online_signin_calls() const noexcept {
+    return sound_ ? &sound_->signin : nullptr;
+}
 
 struct GameStartupHost::InputServices {
     // Source storage initialized from the verified image words. Mutable settings
@@ -1113,7 +1125,8 @@ struct GameStartupHost::InputServices {
               app.sound_->one_00d7a24c, app.input_listener_calls_,
               {app.sound_->cursor_shown_0109db8e, app.sound_->focus_reset_pending_0109db8f,
                   app.sound_->previous_ui_0109db90},
-              app.sound_->online_00f8abe8, loading_step_00d7a2f0, show_cursor,
+              app.sound_->online_00f8abe8, app.sound_->online_pump, app.sound_->xlive,
+              loading_step_00d7a2f0, show_cursor,
               &gui_raw_input_device_004ba6d0, rumble_00e12f2c}) {
         app.singletons_->bind_input_backend(&core.backend_context());
         app.singletons_->bind_input_actions(&core.action_context());
@@ -1653,7 +1666,8 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // shared raw lifetime and IPC owner composition. Keep its publication null.
     log_.unimplemented("Phase 5 online_manager_initialize", "0073dc7c");
 
-    // Device creation after window/online, corresponding to0073DD12.
+    // Device creation after window/online. The separate 0073DD12 site calls
+    // material preloading (0073BF80), whose application composition is pending.
     native_renderer_->bind_platform_services(sound_->platform.load_events(),
         reinterpret_cast<const volatile std::uint32_t*>(&sound_->online_00f8abe8), &sound_->device_adapter,sound_->xlive);
     device_ = new GameDeviceHost(log_, *native_renderer_);
@@ -1820,7 +1834,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         };
     }
     loop_callbacks_ = new GameLoopCallbacks(log_, frame_state_, frame_color_, *frame_host_,
-        *device_, loop_, options_.frame_limit, sound_->xlive, std::move(capture),
+        *device_, loop_, options_.frame_limit, sound_->xlive, platform_, *input_runtime_, std::move(capture),
         options_.screenshot_frame, options_.screenshot_mission_frame);
 }
 

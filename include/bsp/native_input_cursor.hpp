@@ -7,13 +7,10 @@ namespace bsp {
 
 using NativeInputShowCursorCall = int (__stdcall*)(int visible);
 
-// Source services over the actual raw input allocations. The online/platform
-// objects stay the existing canonical source owners; no guessed raw layout is
-// imposed on them. Plain publication accessors must not synthesize state.
-struct NativeInputCursorCalls {
-    virtual ~NativeInputCursorCalls() = default;
-    virtual PlatformManagerFlags* current_platform_manager_00f8abe8() noexcept = 0;
-    virtual void pump_platform_manager_00a409f0(PlatformManagerFlags&) = 0;
+// Device services shared by the raw and legacy projected online cursor paths.
+// This interface does not impose a projected owner on actual online storage.
+struct NativeInputCursorDeviceCalls {
+    virtual ~NativeInputCursorDeviceCalls() = default;
     // Externally owned getter: actual backend+6C+class*24h binding vectors,
     // signed class, unsigned index. Never the fixed attachment table.
     virtual void* call_004ba6d0(void* backend, std::int32_t device_class,
@@ -32,6 +29,13 @@ struct NativeInputCursorCalls {
     virtual void call_00a9a140(void* mouse, std::uint32_t flags) = 0;
 };
 
+// Compatibility provider for update_native_input_cursor_00becb20 only. The raw
+// online path borrows actual publications through NativePlatformLoadMessagesContext.
+struct NativeInputCursorCalls : NativeInputCursorDeviceCalls {
+    virtual PlatformManagerFlags* current_platform_manager_00f8abe8() noexcept = 0;
+    virtual void pump_platform_manager_00a409f0(PlatformManagerFlags&) = 0;
+};
+
 struct NativeInputCursorContext {
     void* volatile& backend_00f8bbf4;
     NativeInputActionOwnerContext& actions;
@@ -40,7 +44,7 @@ struct NativeInputCursorContext {
     // Borrow the actual ShowCursor binding. Each loop captures it once before
     // changing DB8E. A concrete application supplies the real Windows export.
     NativeInputShowCursorCall const& show_cursor_00ce2344;
-    NativeInputCursorCalls& calls;
+    NativeInputCursorDeviceCalls& calls;
 };
 
 // Actual24h action owner,30h action rows,34h bindings and14h modifiers. Changes
@@ -55,6 +59,8 @@ void reset_native_input_focus_00beca40(NativeInputCursorContext&);
 
 // Native ECX platform, stack loading byte, RET4. Canonical source platform/UI
 // state is borrowed; all input receivers remain actual raw allocations.
+// Requires the legacy NativeInputCursorCalls provider; a device-only provider
+// belongs to update_native_platform_load_cursor_00becb20 instead.
 void update_native_input_cursor_00becb20(Win32PlatformState&, bool loading,
     NativeInputCursorContext&);
 

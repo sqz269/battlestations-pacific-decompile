@@ -7,6 +7,7 @@
 
 namespace bsp {
 class XLiveLibrary;
+struct NativeFrameClockPublicationContext;
 using NativeOnlineName128 = std::array<std::byte, 128>;
 
 // One method per native external call. Name output is the actual 128-byte
@@ -31,15 +32,17 @@ public:
 };
 
 // Genuine ordinal forwarding through the SAME borrowed library and canonical
-// FrameClock slot used by frame/system-time services. Slot and library outlive
+// clock publication used by frame/system-time services. Context and library outlive
 // this object. No account, DLL, manager or clock is constructed or substituted.
 // Installed callback 00735510 executes real XUserSetContext(ECX,8001h,6).
 // Other identities throw; custom callbacks require another Calls binding.
-// The existing clock sampler reports QPC failure: this binding throws rather
-// than inventing the native failed-QPC uninitialized local output.
+// The raw-clock overload admits the current native profile/slot and preserves
+// BEE080's ignored QPC BOOL. The legacy projected-clock overload still reports
+// QPC failure rather than inventing the native unspecified output.
 class NativeOnlineSigninRuntime final : public NativeOnlineSigninCalls {
 public:
     NativeOnlineSigninRuntime(const XLiveLibrary&, FrameClock* volatile& clock_slot);
+    NativeOnlineSigninRuntime(const XLiveLibrary&, const NativeFrameClockPublicationContext&);
     std::uint32_t user_get_signin_state_00a4d572(std::uint32_t) override;
     std::uint32_t user_get_name_00a4d566(std::uint32_t,
         NativeOnlineName128&, std::uint32_t) override;
@@ -50,7 +53,8 @@ public:
     void sample_clock_vslot20(ClockTimestamp&) override;
 private:
     void* module_;
-    FrameClock* volatile& clock_slot_;
+    FrameClock* volatile* projected_clock_slot_{};
+    const NativeFrameClockPublicationContext* actual_clock_{};
 };
 
 // Full normal bodies over the actual 3F0h byte storage, not the projected
