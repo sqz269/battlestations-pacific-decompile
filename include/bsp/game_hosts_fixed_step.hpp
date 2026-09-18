@@ -28,6 +28,7 @@ namespace bsp::game {
 
 class GameHostLog;
 class GameStepSubsystemsHost;
+class GameNativeGameRuntime;
 
 // What the run's fixed steps did.
 struct GameFixedStepSummary {
@@ -45,6 +46,7 @@ struct GameFixedStepSummary {
     unsigned long long tail_gate_open{0};
     unsigned long long tail_gate_closed{0};
     std::size_t buoyancy_records{0};         // records the last 004462d0 walked
+    unsigned long long native_physics_steps{0};
 };
 
 // The sixteen per-step calls, the four waves and the tail hook, as one owner.
@@ -60,6 +62,8 @@ public:
     // the load's own load_scene_contents row, because row 16 walks the entity
     // chain that step creates.
     void attach_subsystems(GameStepSubsystemsHost* subsystems) noexcept;
+    // Borrow the completed actual game owner through its last fixed step.
+    void attach_native_game(GameNativeGameRuntime* game) noexcept;
 
     // 00875cc0..00875dfc, waves 1..3 over the five groups, inside the step loop.
     void run_job_waves_00875cc0(std::uint8_t run_pass);
@@ -122,6 +126,7 @@ private:
     GameHostLog& log_;
     bsp::GameDynamicsState& dynamics_;
     GameStepSubsystemsHost* subsystems_{nullptr};
+    GameNativeGameRuntime* native_game_{nullptr};
     GameFixedStepSummary summary_{};
     bool first_step_reported_{false};
     bool groups_reported_{false};
