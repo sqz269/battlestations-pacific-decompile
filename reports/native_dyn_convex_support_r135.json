@@ -4417,5 +4417,966 @@
       }
     ],
     "scope": "920 new normal support bytes;4464 exact FP native/source cases1196352bytes;36 production-table physics pairs20777328bytes;ordinary application admission and gameplay open"
+  },
+  "primary_integration": {
+    "source_commit": "631b6168bc4b6ef205a1be473cd7fc25bc153740",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "artifact_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r135\\native-dyn-convex-support-main-r135.zip",
+      "sha256": "31efe090988b49aedf6564814c461f99575f5ccdf848956e943c469c69bfe087",
+      "files": 174,
+      "uncompressed_bytes": 162847483,
+      "utc": "2026-09-18T09:05:20.061409+00:00",
+      "head": "631b6168bc4b6ef205a1be473cd7fc25bc153740",
+      "manifest": [
+        {
+          "path": "build/win32/bsp_core.dir/Release/dyn_body_creation.obj",
+          "size": 29583,
+          "sha256": "cfe368fa7b12cfc8223ffbcc81741e7cbf354e8d507e7e00cf323cd33a735f95"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_dyn_convex_support.obj",
+          "size": 5294,
+          "sha256": "fa6ebaf582cafacd57005e574fe93a97e1fe3b70ce4435b9f0f8a98ab6711f44"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_dyn_shape_lifetime.obj",
+          "size": 1485,
+          "sha256": "83a1a384ee831de2a81ee801fdaf1c5117026da3a6b1ed9614b96c9f1484f07e"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_render_batch_keys.obj",
+          "size": 2618,
+          "sha256": "8f83a3ef5545c599fdb51ac91d2dfe34524efaeefa196f9a3192345be9c6e5e2"
+        },
+        {
+          "path": "build/win32/Release/bsp_core.lib",
+          "size": 66334148,
+          "sha256": "50aabf734b9ca5f42ffd8ab9509356e17d0eac82aa2ec9ee232f9a7c9e37e3d5"
+        },
+        {
+          "path": "build/win32/Release/bsp_game.exe",
+          "size": 2721792,
+          "sha256": "8a846aefb57e8e6a2745cd55c27d5e808264d87d1afa37a6a7adf4870c8afe62"
+        },
+        {
+          "path": "build/win32/Release/bsp_lua511.lib",
+          "size": 455244,
+          "sha256": "db83167c8c7d24461ef2bf60363b96264fd2406929d0e72a8909287d79b96a17"
+        },
+        {
+          "path": "build/win32/Release/bsp_math_tests.exe",
+          "size": 763392,
+          "sha256": "fe5922f22e85b063f7bf74aa0f5c9c7e69ba5953009edef174e2040f72cde81e"
+        },
+        {
+          "path": "build/win32/Release/bsp_native_math_tests.exe",
+          "size": 18432,
+          "sha256": "ced876ffe99c58581193e62ca03d85840036a476ab35fbbdb219616e425e208d"
+        },
+        {
+          "path": "build/win32/Release/bsp_zlib121.lib",
+          "size": 71906,
+          "sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5"
+        },
+        {
+          "path": "cmake/startup.cmake",
+          "size": 162185,
+          "sha256": "cb052fac79d2b580af5ab5a336eed9c8afdf074cc6821dae8dcb22912806a3fb"
+        },
+        {
+          "path": "config/names/00400000.jsonl",
+          "size": 26230,
+          "sha256": "5956300f5f5f07d457fb4a0e76ee429a2da8d1ba85e3bc1f86ab019f5458c855"
+        },
+        {
+          "path": "config/names/00c30000.jsonl",
+          "size": 34193,
+          "sha256": "572d264158170a3d408bd07edaf4bd49f4aa49e503342309be8034653dda7de5"
+        },
+        {
+          "path": "config/names/00c50000.jsonl",
+          "size": 29432,
+          "sha256": "903008e00806fb6d9809860fb4d4a98ea2169ff6308cccb8458af468831a7916"
+        },
+        {
+          "path": "config/reconstruction/00400000.jsonl",
+          "size": 41257,
+          "sha256": "e5505de9f8779386ff8f0d39bf8e355baeabda42dbdddf80f9b909dc2c7fb5c8"
+        },
+        {
+          "path": "config/reconstruction/00c30000.jsonl",
+          "size": 49131,
+          "sha256": "94ea94ab051c6c7088ab3096d49fd2eb57e4a4ad3ec329d850400e540e140f1a"
+        },
+        {
+          "path": "config/reconstruction/00c50000.jsonl",
+          "size": 37249,
+          "sha256": "8b57f15739aefdfeb581d2a48d3708d0d323f1e213d39a359a53b3a9cb8700c5"
+        },
+        {
+          "path": "docs/NATIVE_DYN_CONVEX_SUPPORT_R135.md",
+          "size": 5358,
+          "sha256": "7e0d9d45f8e678360714460e44c9a90b1f61075ae077471fc191eb9a4acacd0d"
+        },
+        {
+          "path": "docs/NATIVE_DYN_SHAPE_LIFETIME_R134.md",
+          "size": 4808,
+          "sha256": "54758ce39afe62855cfe36fb68f6fd5aad2c16f026cf6281cd29f0b589ec518a"
+        },
+        {
+          "path": "include/bsp/avoid_zone_dyn_hull.hpp",
+          "size": 3575,
+          "sha256": "c4b13f13e5cb94a4e1423c0c96aa725935615f92d2cb65a823c36572bf1f2c3a"
+        },
+        {
+          "path": "include/bsp/camera_projection.hpp",
+          "size": 2413,
+          "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+        },
+        {
+          "path": "include/bsp/camera_transform.hpp",
+          "size": 7028,
+          "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+        },
+        {
+          "path": "include/bsp/dyn_body_creation.hpp",
+          "size": 5100,
+          "sha256": "771890801179db08b6ec963a2145cb05c4346da8f79d402514770aae2210535b"
+        },
+        {
+          "path": "include/bsp/dyn_engine_runtime.hpp",
+          "size": 2552,
+          "sha256": "059c3367a5d71532c076a29895b62394e1d88d71fa6cd828c5a540604359d82a"
+        },
+        {
+          "path": "include/bsp/dyn_scene_runtime.hpp",
+          "size": 2802,
+          "sha256": "55bbd6bda1cbdde923b48381c85998db05f4db9ce96e60d9f964c2d2b6be378c"
+        },
+        {
+          "path": "include/bsp/dyn_task_manager.hpp",
+          "size": 2343,
+          "sha256": "3c6736d8c7ee289631f9fdebd02f9c0915688389ec29a782357183ee2f54c147"
+        },
+        {
+          "path": "include/bsp/dyn_world_factory.hpp",
+          "size": 1225,
+          "sha256": "4e32f788fd38fdf5acbef4a530c43b709c2e62e8017e428a58e0539d257c0b29"
+        },
+        {
+          "path": "include/bsp/dyn_world_runtime.hpp",
+          "size": 1331,
+          "sha256": "fe53091179272be0d15c1e69a80174d69f9c9e5199a5bc61329be0490ba18a19"
+        },
+        {
+          "path": "include/bsp/dyn_world_settings.hpp",
+          "size": 7233,
+          "sha256": "b00dde4b4a80912c7c255d9080d56213028f6723810499f3d54be157c1c34b33"
+        },
+        {
+          "path": "include/bsp/frame_clock.hpp",
+          "size": 2475,
+          "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+        },
+        {
+          "path": "include/bsp/game_entry.hpp",
+          "size": 5510,
+          "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+        },
+        {
+          "path": "include/bsp/native_award_registry_lifetime.hpp",
+          "size": 3153,
+          "sha256": "1558f07a0c50f2e5a28a355b5aa151f0c8466352e59e78efb2d668c04fcab26b"
+        },
+        {
+          "path": "include/bsp/native_dyn_convex_support.hpp",
+          "size": 2636,
+          "sha256": "6a6b3028657c8e8732e9d81b74172be60b78a565082cf102dfb8e48f0093160b"
+        },
+        {
+          "path": "include/bsp/native_dyn_sap_lifetime.hpp",
+          "size": 3135,
+          "sha256": "371a1fd7b7f1fb8a089704fb25204453b6ac18862a4412b16a120ca62449ebc1"
+        },
+        {
+          "path": "include/bsp/native_dyn_shape_lifetime.hpp",
+          "size": 680,
+          "sha256": "9d03579c4046d19aa2cdc57e0bdee8c9536e59f138f6196e23ababa5a460e0e9"
+        },
+        {
+          "path": "include/bsp/native_game_array_lifetime.hpp",
+          "size": 3035,
+          "sha256": "296271866c2b7f47893ccc3687cc6148345b376d6bb0d0d35d11495c64a1f7aa"
+        },
+        {
+          "path": "include/bsp/native_game_class_cleanup.hpp",
+          "size": 6159,
+          "sha256": "9be5dd2f28906897af1707d56a385bb1a597c6479037a7f0be71f5c13fcdfd76"
+        },
+        {
+          "path": "include/bsp/native_game_container_lifetime.hpp",
+          "size": 4531,
+          "sha256": "e733c7a80433639dd18bf0d791f688a9334b158da1ef24557d7cae8ba1cd6e87"
+        },
+        {
+          "path": "include/bsp/native_game_dynamics.hpp",
+          "size": 819,
+          "sha256": "a3e10519df0f4bb2327ee46713069f0aa761630ca1c633f438db09bb41668290"
+        },
+        {
+          "path": "include/bsp/native_game_embedded_lifetime.hpp",
+          "size": 3447,
+          "sha256": "7471f546612018324a42748fb484af08e38f4567684bcba3bc80003a3cf7c42a"
+        },
+        {
+          "path": "include/bsp/native_game_lifetime.hpp",
+          "size": 9110,
+          "sha256": "840df3841c1cd7e87579c8cd62fe24702a54b7cb978d0c817d24f62b7b10a4bb"
+        },
+        {
+          "path": "include/bsp/native_game_lua_globals_lifetime.hpp",
+          "size": 2744,
+          "sha256": "286ba341fe3538746e5d2ac0ae3bc92a5fa19815b5db51a568fb9cfaa5a7fcd4"
+        },
+        {
+          "path": "include/bsp/native_game_physics_lifetime.hpp",
+          "size": 6288,
+          "sha256": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e"
+        },
+        {
+          "path": "include/bsp/native_game_profile_lifetime.hpp",
+          "size": 4493,
+          "sha256": "d7680ba1d4266ce48f125f01594bf7f2506637206e98982792f2d29e75ae503a"
+        },
+        {
+          "path": "include/bsp/native_game_singleton_lifetime.hpp",
+          "size": 2916,
+          "sha256": "76ca3babd50d2102fd0f5d08ba931e327e3570aef60286fd634eaa365cace35c"
+        },
+        {
+          "path": "include/bsp/native_game_tree_lifetime.hpp",
+          "size": 2023,
+          "sha256": "526bb4017c0eb2c4344690bed0d7d5e839718e63a95f10fe03b2551442af2888"
+        },
+        {
+          "path": "include/bsp/native_mission_progress_owner.hpp",
+          "size": 1980,
+          "sha256": "bff5ea00ed24a064c8251420a11a068eab39b01d10ba0ec9ce76ff01feccb394"
+        },
+        {
+          "path": "include/bsp/native_profile_collections.hpp",
+          "size": 2989,
+          "sha256": "29292e811a8562f988ca17c721fa3a74f2640c9578839ade9355bd0a080a8ae0"
+        },
+        {
+          "path": "include/bsp/native_render_batch_keys.hpp",
+          "size": 1858,
+          "sha256": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1"
+        },
+        {
+          "path": "include/bsp/native_string.hpp",
+          "size": 8771,
+          "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+        },
+        {
+          "path": "include/bsp/native_string_pool_owner.hpp",
+          "size": 5893,
+          "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+        },
+        {
+          "path": "include/bsp/native_string_pool_storage.hpp",
+          "size": 2805,
+          "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+        },
+        {
+          "path": "include/bsp/render_tail.hpp",
+          "size": 15566,
+          "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+        },
+        {
+          "path": "include/bsp/rigid_body_integration.hpp",
+          "size": 8112,
+          "sha256": "07cb2142f73cb94cd0bd3d903f2482816cc7924be69247ae1ac1707e4df62f11"
+        },
+        {
+          "path": "include/bsp/ship_hull_body.hpp",
+          "size": 9286,
+          "sha256": "a9417d7dc66f6eeda4aee783cd87c3d403b91693a142d8d1c255ebe3ba2c9c0b"
+        },
+        {
+          "path": "include/bsp/ship_hull_shapes.hpp",
+          "size": 17222,
+          "sha256": "58a35e261aa87778c225ff550fea23218f24fc0c7f5982d87b50fc1ef7a9877a"
+        },
+        {
+          "path": "include/bsp/singleton_lifetime.hpp",
+          "size": 4372,
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        },
+        {
+          "path": "include/bsp/storage_pool.hpp",
+          "size": 5571,
+          "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+        },
+        {
+          "path": "include/bsp/system_time_constants.hpp",
+          "size": 4800,
+          "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+        },
+        {
+          "path": "include/bsp/world_ocean.hpp",
+          "size": 8932,
+          "sha256": "00a1c385e2e46fe0a7372c4dec7d0f8039935823bc02e0a29982c93c5360429b"
+        },
+        {
+          "path": "local/annotate_dyn_convex_support_r135.py",
+          "size": 4047,
+          "sha256": "39db43f3823c12af06b23603d228ee5e0059e57f5b8fa0c5092fdb230901e5a1"
+        },
+        {
+          "path": "local/collect_dyn_convex_support_r135.py",
+          "size": 532,
+          "sha256": "323c95ebb955ecaea0ffc44b6f81757c3e045b4f683cf749cbe9a8afa18f952d"
+        },
+        {
+          "path": "local/commit_dyn_convex_support_r135.py",
+          "size": 2197,
+          "sha256": "b40196d6b61e532cb2644e18589bc5158af0d3d024dbc330beb6910bbdb3e236"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/annotations.log",
+          "size": 424,
+          "sha256": "5f2afd7488c4ba1d873956227469bd5087543529ac485c1e21953f7c31d26d0b"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/build.log",
+          "size": 2588,
+          "sha256": "fc7222f8c47eef0ee8915c64a9356993b9e3cfb7d9b241d37e036ed69ab942aa"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/dependencies.json",
+          "size": 23861,
+          "sha256": "c5c163b3b5471d03ea1b1340509a9f9a81a07bc68f21bbcba3b0076fc40d8c9f"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/dyn_convex_support_probe.exe",
+          "size": 61952,
+          "sha256": "4d170ffea0d79f54680f8fe0b453451b3f3af91a731e07a62628f081e1de6ba6"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/fixture-image.json",
+          "size": 1680,
+          "sha256": "10cbb26afe445447d5c9f8b4bf6d2d5b4ec0d36135998104d73735339b204145"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/original-build.inc",
+          "size": 1466,
+          "sha256": "a9dfe41c8c7e4fd3af81c11f265d39df7dda7abbb567aa257dd838ca228d4da2"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/original-hooks.inc",
+          "size": 2,
+          "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/original.bin",
+          "size": 1196352,
+          "sha256": "b07963772455dfb30ae2105a0d287576b14347f13a4ebaaad80c15c96b766dfa"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/original.inc",
+          "size": 3900,
+          "sha256": "7d2617e888e0f3fe2f38b1d5f7f0d852c72a57dbe7cb4ca82973b1b5ad6f51a6"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/dependencies.json",
+          "size": 28467,
+          "sha256": "ad5f369c9ba6cd21345a41d2a293df690f9736a942efdff7112690a78539216a"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/dyn_convex_runtime_physics_probe.exe",
+          "size": 312320,
+          "sha256": "83852568d27523be4d5c244cd6c39e7cdcf10fc8fb2254c739f07ea8b8e95479"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/fixture-image.json",
+          "size": 12845,
+          "sha256": "4a3fa19ad686e089b3f33bbd0c0ac338318501041876f02127a720ca65bfc352"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/original-build.inc",
+          "size": 12566,
+          "sha256": "6ccfc969d7282569f507788101dd535f65b9526ca9c3e6f3230d15b01cecbcec"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/original-hooks.inc",
+          "size": 3588,
+          "sha256": "599587f26b4c808dfde0bfbf454c86c0542243c96c4453abbaca439bc375bad5"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/original.bin",
+          "size": 20777328,
+          "sha256": "d545ad1a19b90f07194317b06a77a0efda1e4ea0a80a673d5c767e64d8a77836"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/original.inc",
+          "size": 11763,
+          "sha256": "305708ff2e5889fe707b1012ffd56f9f49148dad1f11095f164639ceb7735ed9"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/probe-run.log",
+          "size": 1416,
+          "sha256": "f3db6e485542692df5a4f537adc1e4b67843717302ca86289b907a653bebd355"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/probe.cpp",
+          "size": 25107,
+          "sha256": "83a16c3e2c9b947443a5c9314db560efa8f1fcf1a59b3506baf5b6902e36d1ac"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/probe.map",
+          "size": 449887,
+          "sha256": "2bc192096f18f8e24fc637224c9d8bf6f9e0d69277619541a313ac23fe312440"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/probe.obj",
+          "size": 433922,
+          "sha256": "3f81b2a3e49b1bf8ed009601c7bd967e85740aef1983c67075093220377558c5"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/result.json",
+          "size": 528,
+          "sha256": "b594fdf1ba0345a298fef961a472c3accb744f3262d0d15dc489bc735785c42d"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/source.bin",
+          "size": 20777328,
+          "sha256": "d545ad1a19b90f07194317b06a77a0efda1e4ea0a80a673d5c767e64d8a77836"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/probe-run.log",
+          "size": 174,
+          "sha256": "2b3d2805f388d5f34e53b24e7cf658cebe0c90ceb08a8240858a7325f5934724"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/probe.cpp",
+          "size": 9612,
+          "sha256": "4c362894d8f58c6e27c3f8ac773296f82a984ffed7cbc30af918ccd361b62b02"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/probe.map",
+          "size": 80099,
+          "sha256": "cf5fbe896b799640142002109f89610bef7b67723515cc0469f8bb848719afc9"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/probe.obj",
+          "size": 201686,
+          "sha256": "4eeeb4b83945ffc6094b2b1cce5f143c741c9123dabe7ce6895a2f29f570870e"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/result.json",
+          "size": 528,
+          "sha256": "13b00819b026ee9a6391417ef5dfe604fece00e173c13b3f91b4e63c70029fbe"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/source.bin",
+          "size": 1196352,
+          "sha256": "b07963772455dfb30ae2105a0d287576b14347f13a4ebaaad80c15c96b766dfa"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/comments-after.json",
+          "size": 13443,
+          "sha256": "e0d2a52a496b740835a5cda135e5a1023b51a570911d7cc85fa4d995d4c02315"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/comments-after.log",
+          "size": 79,
+          "sha256": "2aabb833393e0163eb0d637da996befb90fef26dd94823f718a12ea79bf00b9f"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/decompile-004062c0.txt",
+          "size": 1420,
+          "sha256": "0dbb2d1d596ba572cd189286ca2d3ba07b3cb8f4de928eadc17a7a5febacb825"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/decompile-00bf7420.txt",
+          "size": 4667,
+          "sha256": "c327f97661a0ce5985b11d4cdf122f07dde0d8fbc099cd4b72db7569665aa1f1"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/decompile-00bf7456.txt",
+          "size": 4343,
+          "sha256": "2a4ab71bbd9b7511ba5bf8f655fe00a335d07a8d2eb0973e61747e61cef4f414"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/decompile-00c358a0.txt",
+          "size": 2192,
+          "sha256": "e7e9bf830b42f559bd6623e6b7b5d62d793de2e3499bf47be5b8ed62172154cf"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/decompile-00c385b0.txt",
+          "size": 1326,
+          "sha256": "a4a958b02469449fb9b9210bad9536697d450d80fac3981364d6e439f62b5f49"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/decompile-00c386e0.txt",
+          "size": 1293,
+          "sha256": "ad30610914e17908db3c0601a7ce10c0efe18a3ecdb972d5f446ba7e592718e9"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/decompile-00c57c40.txt",
+          "size": 6018,
+          "sha256": "dd058411a8e7cffc378a6cb68026b15c361014581e2f27bb0079ded6dbc0b47c"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/dependencies.json",
+          "size": 23831,
+          "sha256": "c04ed5b8ba06d145fce1d590a72e591509ade24a33ab56264571bc99a242f565"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/disasm-004062c0.txt",
+          "size": 270,
+          "sha256": "c4ca47f818b82a254ec96514bd6ca6119cc300998b2a09599d68c2e979398d73"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/disasm-00bf7420.txt",
+          "size": 279,
+          "sha256": "e63fe473fa7894a85935c88e56c83f0ddc91b6f7ade6ff4ed522e452bc015d36"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/disasm-00bf7456.txt",
+          "size": 1131,
+          "sha256": "b49d5e78620009dfc956f7853df9d4e20b3b38909e6dbc229a28de319c2c1146"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/disasm-00c358a0.txt",
+          "size": 3555,
+          "sha256": "bbca39193f522fe0f4a3c2b9caa23beafa1326adc8822e9af8bfc843b89b0b17"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/disasm-00c385b0.txt",
+          "size": 3191,
+          "sha256": "7308a347334f28c08910840ff4ed4a128b2fa70e6e011dd7eccd01fd7149098b"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/disasm-00c386e0.txt",
+          "size": 3121,
+          "sha256": "fffc3ed53b8ff05bd81fef2c77144c29bd4218963f2acf17da3065f80c2948fe"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/disasm-00c57c40.txt",
+          "size": 8052,
+          "sha256": "1a685ec74ce8faf32c4e48480ba2a8b5d07fc97bea8158a7bb0480bb2cbe3b4a"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/dyn_convex_support_probe.exe",
+          "size": 61952,
+          "sha256": "971a176786baf2a58b2dfa3dcbd4d479d9313c763deb350f8691921697ab9e55"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/exports-after.log",
+          "size": 579,
+          "sha256": "ea3c6c1a6d475e730e01a37e197741e66145ca13e45a4748bcadd70f9d065c6b"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/fixture-image.json",
+          "size": 1680,
+          "sha256": "10cbb26afe445447d5c9f8b4bf6d2d5b4ec0d36135998104d73735339b204145"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/flow_verified.log",
+          "size": 912,
+          "sha256": "d657534ae6f6ee6c72f92491910217d69cf11cd04460d580132b73337191e588"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/index.log",
+          "size": 16,
+          "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/native.json",
+          "size": 85391,
+          "sha256": "fd4d5cb964373710806639d9550667130ba5ad8b5349bd9db031834f7a38a872"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/original-build.inc",
+          "size": 1466,
+          "sha256": "a9dfe41c8c7e4fd3af81c11f265d39df7dda7abbb567aa257dd838ca228d4da2"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/original-hooks.inc",
+          "size": 2,
+          "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/original.bin",
+          "size": 1196352,
+          "sha256": "b07963772455dfb30ae2105a0d287576b14347f13a4ebaaad80c15c96b766dfa"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/original.inc",
+          "size": 3900,
+          "sha256": "7d2617e888e0f3fe2f38b1d5f7f0d852c72a57dbe7cb4ca82973b1b5ad6f51a6"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/dependencies.json",
+          "size": 28427,
+          "sha256": "dd815303af38845739857898a2447e04f12760b7354d1fccd6714c95c6d7224a"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/dyn_convex_runtime_physics_probe.exe",
+          "size": 312320,
+          "sha256": "3983e72caaaee3c5a0f31680a42998cc29842d11c3a92db7add04f23c5fda6ff"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/fixture-image.json",
+          "size": 12845,
+          "sha256": "4a3fa19ad686e089b3f33bbd0c0ac338318501041876f02127a720ca65bfc352"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/native.json",
+          "size": 145176,
+          "sha256": "2d10788146b37e387cbe33a35ebdc0bb59a03b10246a8c13b3368676b57d2e0b"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/original-build.inc",
+          "size": 12566,
+          "sha256": "6ccfc969d7282569f507788101dd535f65b9526ca9c3e6f3230d15b01cecbcec"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/original-hooks.inc",
+          "size": 3588,
+          "sha256": "599587f26b4c808dfde0bfbf454c86c0542243c96c4453abbaca439bc375bad5"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/original.bin",
+          "size": 20777328,
+          "sha256": "d545ad1a19b90f07194317b06a77a0efda1e4ea0a80a673d5c767e64d8a77836"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/original.inc",
+          "size": 11763,
+          "sha256": "305708ff2e5889fe707b1012ffd56f9f49148dad1f11095f164639ceb7735ed9"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/probe-run.log",
+          "size": 1416,
+          "sha256": "f3db6e485542692df5a4f537adc1e4b67843717302ca86289b907a653bebd355"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/probe.cpp",
+          "size": 25107,
+          "sha256": "83a16c3e2c9b947443a5c9314db560efa8f1fcf1a59b3506baf5b6902e36d1ac"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/probe.map",
+          "size": 449887,
+          "sha256": "c2ce2d09beb7ad909ea2add778416b956fafc06634b79c8d3c07823bd0fe805f"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/probe.obj",
+          "size": 433910,
+          "sha256": "8678229affd5b212a6c0148aadd2193ca955b2e621c0cc1b3b616e1be84ea57b"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/result.json",
+          "size": 528,
+          "sha256": "7df3f7a782c8028a53efc600ac7af93b06242e4eafc682087d23eb3143137cdc"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/source.bin",
+          "size": 20777328,
+          "sha256": "d545ad1a19b90f07194317b06a77a0efda1e4ea0a80a673d5c767e64d8a77836"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/probe-run.log",
+          "size": 174,
+          "sha256": "2b3d2805f388d5f34e53b24e7cf658cebe0c90ceb08a8240858a7325f5934724"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/probe.cpp",
+          "size": 9612,
+          "sha256": "4c362894d8f58c6e27c3f8ac773296f82a984ffed7cbc30af918ccd361b62b02"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/probe.map",
+          "size": 80099,
+          "sha256": "ec2ab8443fd376e3e38c51cbbb12dfc5eb06274a392547b2940fdb0fadc89a02"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/probe.obj",
+          "size": 201674,
+          "sha256": "be0dada6dc91b58099b22ce9c3616df1c2ba2875dad0ce7b514e2c9a67f5d92a"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/proto-004062c0.txt",
+          "size": 722,
+          "sha256": "6780c45ecb1726e1fcd51315d9259fa220947038c6f454bc15129f5e915882d4"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/proto-00bf7420.txt",
+          "size": 722,
+          "sha256": "ccd9833c4be969b3ed39cc38e3be14cc912953527f8af97e9464e0382b4fa5d0"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/proto-00bf7456.txt",
+          "size": 723,
+          "sha256": "27c275812635de4845aa4aecacb3742aa3ee043b08dbdf6a8ce329c37f6b7bd9"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/proto-00c358a0.txt",
+          "size": 648,
+          "sha256": "1c9bfd31aafd2aa90165be5179681046b416c9b5a5d1a65a1a1ae519705514c3"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/proto-00c385b0.txt",
+          "size": 661,
+          "sha256": "a63e34eeb2fafb0b921054a30c3a3e06c376b49a7bcd9a31a78b29ffdeba60a5"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/proto-00c386e0.txt",
+          "size": 661,
+          "sha256": "ff25a5517e52c2da03314cb3f5015565c1dfb7e2bbc0ac9de1a3abcff149774c"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/proto-00c57c40.txt",
+          "size": 687,
+          "sha256": "eb922a39cb6c4c2aca1caf6928d8379d5ab9878bb0d269245a405d274e8a732b"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/result.json",
+          "size": 528,
+          "sha256": "5d97a46c40cf9c8d3cb2a6198db4694bdcf33e21c15ba6d7a05b15fe874ec80c"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/snapshot.log",
+          "size": 230,
+          "sha256": "0cd465e5bafeae80d5a3503da3d1369c73460c4fea5d9575b99f55ec6254a395"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/source.bin",
+          "size": 1196352,
+          "sha256": "b07963772455dfb30ae2105a0d287576b14347f13a4ebaaad80c15c96b766dfa"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/unreached-methods.inc",
+          "size": 2,
+          "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/verify-calls.log",
+          "size": 133,
+          "sha256": "af5388defc36f9b2ee2b13b87b5e257bbe85107ccfb33fa88fe8d5b0917e86e9"
+        },
+        {
+          "path": "local/ghidra-annotations-20260918T090234Z.json",
+          "size": 13948,
+          "sha256": "9218b5d1384d89cbc48050a3eb6dd019de44d05a9d8b4f5a8f44fba4d6e7948b"
+        },
+        {
+          "path": "local/prepare_convex_runtime_physics_r135.py",
+          "size": 1938,
+          "sha256": "f361d1f49806abeaceb5313dc77cd8d64c1e1b3231cd6a76db83f454107e1965"
+        },
+        {
+          "path": "local/prepare_dyn_convex_support_closeout_r135.py",
+          "size": 3750,
+          "sha256": "097808b1a1c94cc466016f86520070b095af31acc8de84408ae40eacf0fb1121"
+        },
+        {
+          "path": "local/prepare_dyn_convex_support_combined_r135.py",
+          "size": 859,
+          "sha256": "ff62cfbd86eee6bac48133bada12887e062093d8354158eae37bda87439c9588"
+        },
+        {
+          "path": "local/prepare_dyn_convex_support_r135.py",
+          "size": 1513,
+          "sha256": "56afdddd7b65fec85c7b29a5f097587b3f1f62f70b5e0ae33c9bf101fd60e0ba"
+        },
+        {
+          "path": "local/r135_integration.log",
+          "size": 1106,
+          "sha256": "993497397c4b318ddcae5a845afc70ef98fe031eb15a09fa50e6e5f26597ecee"
+        },
+        {
+          "path": "local/report_dyn_convex_support_r135.py",
+          "size": 7662,
+          "sha256": "98fcc7a2cb316c33ea9ef0969ff407dc58dcfc622315d2cd6f5264a990c69510"
+        },
+        {
+          "path": "local/run_convex_runtime_physics_combined_r135.ps1",
+          "size": 1722,
+          "sha256": "cbc5f57e4df549374d33d0d93109139f32ff70f6d6d61c0966bac8c40166350a"
+        },
+        {
+          "path": "local/run_convex_runtime_physics_r135.ps1",
+          "size": 1713,
+          "sha256": "cc3775249884c06c0cb437281bb16c785e6e9510fadcf3a572143195eb490483"
+        },
+        {
+          "path": "local/run_dyn_convex_support_combined_r135.ps1",
+          "size": 1690,
+          "sha256": "345346daa734948e575fa236481b6d4a1f2a806e2bee9b2c30685b7542d3bea7"
+        },
+        {
+          "path": "local/run_dyn_convex_support_r135.ps1",
+          "size": 1681,
+          "sha256": "23601ace2285be7ad295bc7788286e79f335c0a1b23bfca16e0a9b1b5169e39d"
+        },
+        {
+          "path": "local/seal_dyn_convex_support_r135.py",
+          "size": 5882,
+          "sha256": "dfb7ea9373c946a753d28fc2c64a0ca0d68e4ac295e3df8f8a56eed213bf37c9"
+        },
+        {
+          "path": "local/write_dyn_convex_support_r135.py",
+          "size": 6047,
+          "sha256": "c70e3a6aaadf28c1d1da143085910901e255064c5ec280007948f0e656682f76"
+        },
+        {
+          "path": "reports/native_dyn_convex_support_r135.json",
+          "size": 154299,
+          "sha256": "122d26b6586910ccd6ee240ef3718ec5fae84b8908d80a934dc61fe4f083af13"
+        },
+        {
+          "path": "src/avoid_zone_dyn_hull.cpp",
+          "size": 21629,
+          "sha256": "e4be35881ddd46bcbf3110b05309745df565951e1f41656080aea3c1777edf45"
+        },
+        {
+          "path": "src/dyn_body_creation.cpp",
+          "size": 15270,
+          "sha256": "e915e3325ceca411c14df2424129c7e82bebf6bc272921205e62d43744d4c93c"
+        },
+        {
+          "path": "src/native_dyn_convex_support.cpp",
+          "size": 17894,
+          "sha256": "a2884a94389396afecaef01b8cd914eb22ae04c8e4ed5bc9ce9b37a3d0fdb239"
+        },
+        {
+          "path": "src/native_dyn_sap_lifetime.cpp",
+          "size": 6697,
+          "sha256": "89c8be58800b2a6e738fc8e626c7169de57fc11ae3b7676563e4bc19d8d7142b"
+        },
+        {
+          "path": "src/native_dyn_shape_lifetime.cpp",
+          "size": 452,
+          "sha256": "7889e45f9e9687f25a9e1f07bb2fe77e080bfb8a636819402c3cbb1f7e01649a"
+        },
+        {
+          "path": "src/native_game_lifetime.cpp",
+          "size": 21606,
+          "sha256": "bbbbd038bedc93aa8919863f366523080296da8c6fc70798f11b00ffa4e25daf"
+        },
+        {
+          "path": "src/native_game_physics_lifetime.cpp",
+          "size": 13632,
+          "sha256": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4"
+        },
+        {
+          "path": "src/native_render_batch_keys.cpp",
+          "size": 5004,
+          "sha256": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1"
+        }
+      ],
+      "scope": "920 new normal support bytes;4464 exact FP native/source cases1196352bytes;36 production-table physics pairs20777328bytes;ordinary application admission and gameplay open"
+    },
+    "source_identical_to_tested": true,
+    "main_source_equal_after_lf_normalization": true,
+    "owned_object_comparison": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_convex_support.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789721508,
+        "combined_timestamp": 1789721508,
+        "tested_sha256": "fa6ebaf582cafacd57005e574fe93a97e1fe3b70ce4435b9f0f8a98ab6711f44",
+        "combined_sha256": "fa6ebaf582cafacd57005e574fe93a97e1fe3b70ce4435b9f0f8a98ab6711f44"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/dyn_body_creation.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789501522,
+        "combined_timestamp": 1789501522,
+        "tested_sha256": "cfe368fa7b12cfc8223ffbcc81741e7cbf354e8d507e7e00cf323cd33a735f95",
+        "combined_sha256": "cfe368fa7b12cfc8223ffbcc81741e7cbf354e8d507e7e00cf323cd33a735f95"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_shape_lifetime.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789720261,
+        "combined_timestamp": 1789720261,
+        "tested_sha256": "83a1a384ee831de2a81ee801fdaf1c5117026da3a6b1ed9614b96c9f1484f07e",
+        "combined_sha256": "83a1a384ee831de2a81ee801fdaf1c5117026da3a6b1ed9614b96c9f1484f07e"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_render_batch_keys.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789557834,
+        "combined_timestamp": 1789557834,
+        "tested_sha256": "8f83a3ef5545c599fdb51ac91d2dfe34524efaeefa196f9a3192345be9c6e5e2",
+        "combined_sha256": "8f83a3ef5545c599fdb51ac91d2dfe34524efaeefa196f9a3192345be9c6e5e2"
+      }
+    ],
+    "combined_probes": [
+      {
+        "label": "support",
+        "result": {
+          "exe_sha256": "4D170FFEA0D79F54680F8FE0B453451B3F3AF91A731E07A62628F081E1DE6BA6",
+          "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+          "library_sha256": "50AABF734B9CA5F42FFD8AB9509356E17D0EAC82AA2EC9EE232F9A7C9E37E3D5",
+          "exit": 0,
+          "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+          "linker": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe"
+        },
+        "comparison_sha256": "b07963772455dfb30ae2105a0d287576b14347f13a4ebaaad80c15c96b766dfa",
+        "comparison_bytes": 1196352,
+        "log": "all four production table slots called;mutable CRT mode and original pool reuse passed\npaired_cases=4464 matching_bytes=1196352;exact outputs,graph writes,CW/SW/tags/MXCSR\n",
+        "probe_source_sha256": "4c362894d8f58c6e27c3f8ac773296f82a984ffed7cbc30af918ccd361b62b02"
+      },
+      {
+        "label": "physics",
+        "result": {
+          "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+          "library_sha256": "50AABF734B9CA5F42FFD8AB9509356E17D0EAC82AA2EC9EE232F9A7C9E37E3D5",
+          "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+          "exit": 0,
+          "exe_sha256": "83852568D27523BE4D5C244CD6C39E7CDCF10FC8FB2254C739F07EA8B8E95479",
+          "linker": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe"
+        },
+        "comparison_sha256": "d545ad1a19b90f07194317b06a77a0efda1e4ea0a80a673d5c767e64d8a77836",
+        "comparison_bytes": 20777328,
+        "log": "scenario0 matched 1484 bytes\nscenario1 matched 939784 bytes\nscenario2 matched 1561028 bytes\nscenario3 matched 3051952 bytes\nscenario4 matched 3049488 bytes\nscenario5 matched 1561448 bytes\nscenario6 matched 1944 bytes\nscenario7 matched 3051952 bytes\nscenario8 matched 227676 bytes\nscenario9 matched 227696 bytes\nscenario10 matched 227676 bytes\nscenario11 matched 227696 bytes\nscenario12 matched 227676 bytes\nscenario13 matched 227696 bytes\nscenario14 matched 227676 bytes\nscenario15 matched 227696 bytes\nscenario16 matched 227364 bytes\nscenario17 matched 227384 bytes\nscenario18 matched 227364 bytes\nscenario19 matched 227384 bytes\nscenario20 matched 138048 bytes\nscenario21 matched 207036 bytes\nscenario22 matched 138048 bytes\nscenario23 matched 207036 bytes\nscenario24 matched 138048 bytes\nscenario25 matched 207036 bytes\nscenario26 matched 138048 bytes\nscenario27 matched 207036 bytes\nscenario28 matched 275824 bytes\nscenario29 matched 413692 bytes\nscenario30 matched 275824 bytes\nscenario31 matched 413692 bytes\nscenario32 matched 413600 bytes\nscenario33 matched 620348 bytes\nscenario34 matched 413600 bytes\nscenario35 matched 620348 bytes\nsource attachment failure, no replay and missing-context guard passed\nmissing convex pool/table rejected before graph access;absent/foreign binding retains actual virtual dispatch\npaired_cases=36 snapshots=790 matching_bytes=20777328\n",
+        "probe_source_sha256": "83a16c3e2c9b947443a5c9314db560efa8f1fcf1a59b3506baf5b6902e36d1ac"
+      }
+    ],
+    "library_identical_to_tested": false,
+    "game_identical_to_tested": false,
+    "ordinary_application_runtime_rerun": false
   }
 }
