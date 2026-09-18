@@ -46,8 +46,8 @@ void normal(NativeGameStorage& game,NativeGameLifetimeContext& x,NativeGameLifet
     scalar(x.publication_00e1930c,0xc,0x4dd08e);scalar(x.publication_00e198bc,0,0x4dd0a6);
     if(void* p=pointer(g,0x19c8)) {o.native_site=0x4dd0bf;c.virtual_scalar(p,0xc,1);word(g,0x19c8,0);}
     scalar(x.movie_00e18d48,0xc,0x4dd0d8);
-    o.native_site=0x4dd0e1;c.call_004c0c30();o.native_site=0x4dd0e6;c.call_004c0ce0();
-    o.native_site=0x4dd0eb;c.call_00b6cf90();o.native_site=0x4dd0f0;c.call_004c0d90();
+    o.native_site=0x4dd0e1;c.call_004c0c30(x.singletons,o.singletons[0]);o.native_site=0x4dd0e6;c.call_004c0ce0(x.singletons,o.singletons[1]);
+    o.native_site=0x4dd0eb;c.call_00b6cf90();o.native_site=0x4dd0f0;c.call_004c0d90(x.singletons,o.singletons[2]);
     if(void* p=pointer(g,0x21f4))terminal(p,0x4dd109,0x4dd115,c,o); // field remains untouched
     o.native_site=0x4dd11e;c.free_00bf65ac(pointer(g,0x2200));
     o.native_site=0x4dd126;void* manager=c.call_004c1400();
@@ -127,8 +127,22 @@ void NativeGameLifetimeOperation::acknowledge_diagnostic_cleanup() noexcept {
         if(embedded.phase==NativeGameEmbeddedLifetimeOperation::Phase::running||embedded.phase==NativeGameEmbeddedLifetimeOperation::Phase::failed)std::terminate();
         if(profile.phase==NativeGameProfileLifetimeOperation::Phase::running||profile.phase==NativeGameProfileLifetimeOperation::Phase::failed)std::terminate();
         if(awards.phase==NativeAwardRegistryLifetimeOperation::Phase::running||awards.phase==NativeAwardRegistryLifetimeOperation::Phase::failed)std::terminate();
+        for(const auto& singleton:singletons)if(singleton.phase==NativeGameSingletonLifetimeOperation::Phase::running||singleton.phase==NativeGameSingletonLifetimeOperation::Phase::failed)std::terminate();
         phase=Phase::diagnostic_retired;
     }
+}
+void NativeGameLifetimeCalls::call_008d88f0(){native_game_cleanup_noop_008d88f0();}
+void NativeGameLifetimeCalls::call_004c0c30(NativeGameSingletonLifetimeContext* c,NativeGameSingletonLifetimeOperation& o){
+    if(!c||&c->calls!=this)throw std::invalid_argument("native singleton deletion requires the game's actual context");
+    delete_native_game_singleton_004c0c30(*c,o);
+}
+void NativeGameLifetimeCalls::call_004c0ce0(NativeGameSingletonLifetimeContext* c,NativeGameSingletonLifetimeOperation& o){
+    if(!c||&c->calls!=this)throw std::invalid_argument("native singleton deletion requires the game's actual context");
+    delete_native_game_singleton_004c0ce0(*c,o);
+}
+void NativeGameLifetimeCalls::call_004c0d90(NativeGameSingletonLifetimeContext* c,NativeGameSingletonLifetimeOperation& o){
+    if(!c||&c->calls!=this)throw std::invalid_argument("native singleton deletion requires the game's actual context");
+    delete_native_game_singleton_004c0d90(*c,o);
 }
 void NativeGameLifetimeCalls::array_destroy_00bf7c6e(void* p,U stride,U count,U destructor,
     NativeGameArrayLifetimeContext* context,NativeGameArrayLifetimeOperation& operation){

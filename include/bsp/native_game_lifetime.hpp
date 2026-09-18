@@ -5,24 +5,25 @@
 #include "bsp/native_game_container_lifetime.hpp"
 #include "bsp/native_award_registry_lifetime.hpp"
 #include "bsp/native_game_tree_lifetime.hpp"
+#include "bsp/native_game_singleton_lifetime.hpp"
 #include <cstdint>
 
 namespace bsp {
 struct NativeGameStorage;
 // Address-named dependencies deliberately require real bindings. No successful
 // empty cleanup is supplied. The parent does not establish these callee bodies.
-struct NativeGameLifetimeCalls : NativeGameArrayLifetimeCalls,NativeGameEmbeddedLifetimeCalls,NativeGameProfileLifetimeCalls,NativeGameContainerLifetimeCalls {
+struct NativeGameLifetimeCalls : NativeGameArrayLifetimeCalls,NativeGameEmbeddedLifetimeCalls,NativeGameProfileLifetimeCalls,NativeGameContainerLifetimeCalls,NativeGameSingletonLifetimeCalls {
     virtual ~NativeGameLifetimeCalls()=default;
     virtual void call_00c4dde0(void*)=0;
     virtual void call_0076a760(void*,NativeGameEmbeddedLifetimeContext*);
-    virtual void call_008d88f0()=0;
+    virtual void call_008d88f0();
     virtual void call_004bf930(void*,NativeGameContainerLifetimeProgress&);
     virtual void call_004a9ac0()=0;
     virtual void call_006b9380(void*,NativeGameProfileLifetimeContext*,NativeAwardRegistryLifetimeOperation&);
-    virtual void call_004c0c30()=0;
-    virtual void call_004c0ce0()=0;
+    virtual void call_004c0c30(NativeGameSingletonLifetimeContext*,NativeGameSingletonLifetimeOperation&);
+    virtual void call_004c0ce0(NativeGameSingletonLifetimeContext*,NativeGameSingletonLifetimeOperation&);
     virtual void call_00b6cf90()=0;
-    virtual void call_004c0d90()=0;
+    virtual void call_004c0d90(NativeGameSingletonLifetimeContext*,NativeGameSingletonLifetimeOperation&);
     virtual void* call_004c1400()=0;
     virtual void call_00b806f0(void*)=0;
     virtual void call_004c7dd0(void*,NativeGameContainerLifetimeProgress&);
@@ -82,6 +83,10 @@ struct NativeGameLifetimeContext {
     NativeGameArrayLifetimeContext* arrays;
     NativeGameEmbeddedLifetimeContext* embedded;
     NativeGameProfileLifetimeContext* profile;
+    // Borrow the game's actual publication cells and the same raw manager
+    // publication used by its string/profile services. Context must outlive
+    // parent/child diagnostics. Missing or foreign call services fail on use.
+    NativeGameSingletonLifetimeContext* singletons{};
 };
 struct NativeGameLifetimeProgress {
     std::uint32_t native_site{};
@@ -98,6 +103,7 @@ struct NativeGameLifetimeOperation final : NativeGameLifetimeProgress {
     NativeGameContainerLifetimeProgress containers;
     NativeAwardRegistryLifetimeOperation awards;
     NativeGameTreeLifetimeProgress trees;
+    NativeGameSingletonLifetimeOperation singletons[3];
     NativeGameLifetimeOperation()=default;
     ~NativeGameLifetimeOperation();
     NativeGameLifetimeOperation(const NativeGameLifetimeOperation&)=delete;

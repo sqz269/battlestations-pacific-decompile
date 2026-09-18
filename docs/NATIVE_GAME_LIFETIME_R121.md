@@ -211,3 +211,20 @@ frees are not instrumented. The controlled parent still passes52 cases/3,537
 snapshots/141,402,076 bytes and four failure/replay cases. Strict Win32/three
 CTests pass. Fourteen context/partial-range guards and one partial-tree source
 failure pass. Native exception ABI,application admission and gameplay remain open.
+
+## Correction from docs/NATIVE_GAME_SINGLETON_LIFETIME_R128.md
+
+R128 supplies three explicit singleton deletion defaults and the verified one-byte
+8D88F0 no-op. Parent sites4DD0E1/4DD0E6/4DD0F0 pass the actual borrowed publication
+context and three separate retained child operations. The488-byte deletion bodies
+preserve adjusted-before-getter versus unadjusted-after-getter object reads,
+actual manager unregister, current scalar receiver and captured exit lock.
+Payload virtual bodies remain required. Source failure retains partial state
+and entered lock and prohibits replay; parent retirement checks child status.
+
+All489 live/PE bytes match.49 paired cases/324 observations/94,392 normalized
+bytes pass with actual raw manager and Win32 locks. Three source failure/replay
+and six context guards pass. The controlled parent retains52 cases/3,537
+snapshots/141,402,076 bytes and four failure/replay cases. Strict Win32/three
+CTests pass. Native FH3/SEH,remaining dependencies,raw-game admission and gameplay
+remain open.
