@@ -188,3 +188,13 @@ only its vtable word, preserving scratch and padding. A focused original-body
 probe checks guarded standalone and aggregate owners: 64 pairs and 60,288
 identical bytes, with neighboring objects unchanged. The ray method remains an
 original reference in this packet; its source implementation is still pending.
+
+## Follow-up from docs/NATIVE_DYN_CONVEX_RAY_R144.md
+
+R144 supplies the complete C44780 ray-intersection body and the one-slot
+NativeDynConvexRayRuntime table for the A0h owner corrected in R143. Explicit
+and table-entry comparisons pass 24,576 original/source pairs across all12
+masked x87 controls, with owner scratch and adjacent objects checked. The
+compiled instruction audit covers the entire body and three consumed math
+leaves. Terrain/convex, world task and ray-query consumers, application
+admission and gameplay remain open.
