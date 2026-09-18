@@ -6,6 +6,7 @@
 #include "bsp/native_game_array_elements.hpp"
 #include "bsp/native_game_dynamics.hpp"
 #include "bsp/native_game_tables.hpp"
+#include "bsp/native_global_config_load.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>
@@ -39,8 +40,9 @@ struct NativeGameConstructionCalls : NativeGameEmbeddedStateCalls,NativeGameArra
         NativeGameEmbeddedStateOperation&);
     virtual void* call_004c1a40(); // allocate0Ch list head, links0/4=self
     virtual void call_008d9150(NativeGameTablesContext&);
-    virtual void* call_00432650()=0;
-    virtual void call_0087d7b0(void* captured_configuration)=0;
+    virtual void* call_00432650(GlobalConfigContext&);
+    virtual void call_0087d7b0(void* captured_configuration,NativeGlobalConfigLoadContext&,
+        NativeGlobalConfigLoadOperation&);
     virtual void call_00717e80()=0;
     virtual void* call_0070bd70(void* allocation,float argument)=0;
     virtual void call_00727bd0(NativeGameTablesContext&);
@@ -77,6 +79,8 @@ struct NativeGameConstructionContext {
     NativeGameArrayConstants array_constants;
     NativeGameDynamicsContext dynamics;
     NativeGameTablesContext& tables;
+    GlobalConfigContext& global_configuration;
+    NativeGlobalConfigLoadContext& global_configuration_load;
 };
 struct NativeGameConstructionOperation final {
     enum class Phase { fresh,running,complete,failed,diagnostic_retired };
@@ -91,7 +95,8 @@ struct NativeGameConstructionOperation final {
     NativePlayerProfileOperation profile;
     NativeGameEmbeddedStateOperation embedded;
     NativeGameArrayOperation arrays[4];
-    NativeGameConstructionOperation() noexcept=default;
+    NativeGlobalConfigLoadOperation global_configuration;
+    NativeGameConstructionOperation()=default;
     ~NativeGameConstructionOperation();
     NativeGameConstructionOperation(const NativeGameConstructionOperation&)=delete;
     NativeGameConstructionOperation& operator=(const NativeGameConstructionOperation&)=delete;
