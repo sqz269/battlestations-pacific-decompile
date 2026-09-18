@@ -444,6 +444,51 @@ struct PilotBotRollResult {
 PilotBotRollResult pilot_plan_roll_0099e2ba(const PilotBotRollInputs& in);
 
 // ---------------------------------------------------------------------------
+// 0099E26E-0099E39D, the OTHER entry to the roll region: the servo arm.
+//
+// The mode-2 path 0099DE93-0099E25C computes a bank target and writes it to
+// plan+2C4h; pilot_plan_roll_0099e2ba above models that one. A task that leaves
+// plan+2CCh at anything but 2 reaches 0099E26E by the JNZ at 0099DE8D, PAST the
+// planner's own MOV [ESI+2CCh],1 at 0099E264, and this arm runs instead: it
+// computes NO target and servos toward whatever plan+2C4h already holds.
+// docs/DIVE_BOMB_TASK.md, "The roll-arm gate".
+//
+// The dive-bomb turndown 009C44F0 is the caller that matters: at 009C4646 it
+// writes plan+2C4h = pi and at 009C464E plan+2CCh = 1, handing the planner a
+// 180-degree bank target to finish the roll to inverted.
+//
+// Jump senses from the branch bytes: 0099E2EB `76` JBE, 0099E312 `76` JBE,
+// 0099E330 `76` JBE.
+// ---------------------------------------------------------------------------
+struct PilotBotRollServoInputs {
+    // plan+2C4h, the target the task wrote. 0099E2C5 loads it as the first
+    // argument to BSP_Math_SubtractWrappedAngle at 0099E2CE.
+    float bank_target_2c4 = 0.0f;
+    // The measured bank the error is taken against, [ESP+34h] at 0099E2BA.
+    float bank = 0.0f;
+    // [ESP+28h] at 0099E2D3, the scale on the raw error.
+    float error_scale = 1.0f;
+    // The three tuning floats the arm reads off EBX: +40h the band inside which
+    // the proportional gain +44h applies, and +48h the constant rate outside it.
+    float band_40 = 0.0f;
+    float gain_44 = 1.0f;
+    float rate_48 = 0.0f;
+    // The rate limit 0099E344-0099E367 builds: (desc+1A8h / desc+1BCh / EBX[0])
+    // times desc+1A8h. Supplied whole because its three fields are a contract.
+    float rate_limit = 1.0f;
+    // [ESP+2Ch] at 0099E36B, the fifth argument to BSP_Math_InterpolateClamped.
+    float interpolant = 0.0f;
+};
+struct PilotBotRollServoResult {
+    float bank_error = 0.0f;   // SubtractWrappedAngle(target, bank) * scale
+    bool used_gain = false;    // the 0099E314 arm rather than 0099E332/0099E337
+    float desired_290 = 0.0f;  // plan+290h, the roll command
+};
+// 0099E2BA-0099E39D.
+PilotBotRollServoResult pilot_roll_servo_0099e26e(const PilotBotRollServoInputs& in);
+
+
+// ---------------------------------------------------------------------------
 // 0099D300's throttle arms. The plan's throttle slot is index 0 of five, so its
 // `current` is plan+274h, its `desired` plan+278h and its `active` byte
 // plan+27Ch (base plan+274h, stride 0Ch). An exhaustive store census over 278h
