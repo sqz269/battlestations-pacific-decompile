@@ -167,6 +167,14 @@ constant without a producer, it is the firepower query block's damage cap and `0
 none. `006EB060` and `00956C20` are both existing Ghidra functions, and the two `009F1BC0` writers
 are inside that function's body.
 
+## Corrections from packet cc8_ship_ai_approach_slot_tune
+
+Appended, not a rewrite.
+
+| was | is | evidence |
+| --- | --- | --- |
+| Follow-up `ship_ai_approach_slot_tune`: "the next blocking input ... with the tune block zero every slot scores alike, `009E76D0` keeps slot 0, the commanded heading never changes and no gunnery number can move." | Half right. The block is found and bound with its real values, and the commanded heading does move during the run, but the winning slot is still 0 for every ship and the gunnery census is unchanged. The tune block was not the last blocker; the four per-slot scorers behind `slot+18h` are. | `docs/SHIP_AI_APPROACH_SLOT_TUNE.md`, Validation, with a control build whose tune values were zeroed. `009E7FC0` writes `slot+2Ch = slot+18h / running_max * tune+0h`, and multiplying a tie by `10.0` leaves a tie. |
+
 ## Follow-up packets
 
 - `ship_ai_approach_slot_tune`: **the next blocking input.** `009E7489` (`tune+4h`, the slot
