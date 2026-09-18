@@ -1,0 +1,180 @@
+{
+ "packet": "cc8_recon_sensor_pass_rule_c",
+ "owner": "agent/cc8-ship-rudder-hop",
+ "project": "C:/Users/sqz269/bsp.gpr",
+ "program": "/battlestationspacific.exe",
+ "ghidra_access": "read-only: no rename, comment, prototype, function creation or save",
+ "doc": "docs/RECON_SENSOR_PASS.md",
+ "source": "include/bsp/recon_sensor_pass.hpp, src/recon_sensor_pass.cpp, cmake/startup.cmake; src/game_hosts_ship_ai.cpp and include/bsp/game_hosts_ship_ai.hpp for the retired driven= counter",
+ "build": "scripts/build.ps1, Win32 Release, /W4 /WX clean; ctest 2/2; no test added",
+ "status": "PARTIAL BY DECISION: the driver is landed and builds; the host wiring is a written contract, not a commit",
+ "note": "Rule (c) was never unanalysed. 008048A0 and 00806840 were projected twice before this packet, by cc2_recon_slot_lists into src/recon_slot_lists.cpp and by cc7_gunnery_recon_detection into src/gunnery_recon_detection.cpp, and docs/GUNNERY_RECON_DETECTION.md carries the range rule, the row index, the bearing arc, the accumulate and reset calls, the publish and the drain. What was missing is a CALLER: a search of src and tests for either entry point finds only the file that defines them. This packet wrote the driver those rules lacked and traced every input to a producer this process can supply. It stopped before the host wiring at a clean commit, on the standing long-context instruction; the contract is complete and no input is blocked.",
+ "routines": [
+  {
+   "address": "008073c0",
+   "native": "008073c0",
+   "name": "BSP_Recon_RebuildSlotLists, the 00806840 loop only",
+   "abi": "__thiscall, body 008073C0-..., cited from docs/GUNNERY_RECON_DETECTION.md; not re-read here",
+   "coverage": "none re-read; the driver reproduces its loop shape only",
+   "rule": "runs all 97 class buckets through 00806840 (00807556 enemy, 00807574 neutral), flattens at 00807615 and drains once at 00807634. The driver keeps gunnery_recon_detection's per-target drain composition instead, and walks sides rather than a recon slot's own triple, because this process builds no slot",
+   "reconstruction": "bsp::recon_sensor_pass_step_008073c0"
+  },
+  {
+   "address": "00806840",
+   "native": "00806840",
+   "name": "BSP_Recon_RunSensorPass (existing name and reconstruction; not re-read)",
+   "abi": "__thiscall void(ReconSlot* ECX, UnitList* targets, UnitList* observers), RET 8 at 0080699A",
+   "coverage": "complete, by packet cc7_gunnery_recon_detection",
+   "rule": "cited from docs/GUNNERY_RECON_DETECTION.md and the Ghidra plate comment",
+   "reconstruction": "existing, bsp::gunnery_recon_detect_00806840"
+  },
+  {
+   "address": "008048a0",
+   "native": "008048a0",
+   "name": "BSP_Recon_EvaluateSensors (existing name and reconstruction; not re-read)",
+   "abi": "__fastcall bool(ECX=observer, EDX=target, int mask, float dt, float* outGain), RET 0Ch, body 008048A0-00804BD3",
+   "coverage": "complete, by packets cc2_recon_slot_lists and cc7_gunnery_recon_detection",
+   "rule": "env^2 * reconModifier^2 * m74^2, times m78^2 for a submerged submarine; cited, not re-derived",
+   "reconstruction": "existing, bsp::gunnery_recon_observe_008048a0 and bsp::recon_evaluate_sensor_row_008048a0"
+  },
+  {
+   "address": "0074e190",
+   "native": "0074e190",
+   "name": "BSP_SensorCategory_Air (existing name; read here to verify the category constants)",
+   "abi": "__thiscall int(void), RET 0 at 0074E192, body 0074E190-0074E192",
+   "coverage": "complete",
+   "rule": "XOR EAX,EAX; RET. SensorCategory::air = 0",
+   "reconstruction": "none needed"
+  },
+  {
+   "address": "006dfd20",
+   "native": "006dfd20",
+   "name": "BSP_SensorCategory_SurfaceShip (existing name; read here)",
+   "abi": "__thiscall int(void), RET 0 at 006DFD25, body 006DFD20-006DFD25",
+   "coverage": "complete",
+   "rule": "MOV EAX,1; RET. SensorCategory::surface = 1",
+   "reconstruction": "none needed"
+  },
+  {
+   "address": "004f1740",
+   "native": "004f1740",
+   "name": "BSP_SensorCategory_Unclassified (existing name; read here)",
+   "abi": "__thiscall int(void), RET 0 at 004F1745, body 004F1740-004F1745",
+   "coverage": "complete",
+   "rule": "MOV EAX,6; RET. SensorCategory::unclassified = 6",
+   "reconstruction": "none needed"
+  }
+ ],
+ "call_sites": [
+  {
+   "routine": "008073c0",
+   "address": "00807556",
+   "native": "00806840",
+   "note": "the enemy bucket loop: 00807552 PUSH EBX (observers), 00807553 PUSH EDI (targets), 00807554 MOV ECX,ESI, 00807556 CALL, 61h iterations from 00807569. The neutral loop is the same shape at 00807574"
+  },
+  {
+   "routine": "00806840",
+   "address": "008068e7",
+   "native": "008048a0",
+   "note": "mask 0FFh and dt from [slot+30h]; the only call site of the range rule"
+  },
+  {
+   "routine": "00806840",
+   "address": "0080693d",
+   "native": "00805af0",
+   "note": "BSP_Recon_AccumulateDetection(det, bestGain, 1, bestObserverUnit) when any observer applied"
+  },
+  {
+   "routine": "00806840",
+   "address": "00806957",
+   "native": "00805be0",
+   "note": "BSP_Recon_ResetDetection(det), snapping value and level to zero: no hysteresis"
+  },
+  {
+   "routine": "00808f90",
+   "address": "none",
+   "native": "008082a0",
+   "kind": "cited",
+   "note": "BSP_SensorClassTable_Resolve is 008082A0's only caller; not re-read here"
+  }
+ ],
+ "host_steps": [
+  {
+   "routine": "008073c0",
+   "address": "00807556",
+   "native": "00806840",
+   "kind": "call",
+   "function": "008073c0",
+   "method": "ReconSensorPassHost (nineteen methods)",
+   "note": "CONTRACT ONLY: recon_sensor_pass_step_008073c0 has no caller yet. The six-point wiring is in the doc"
+  }
+ ],
+ "missing_inputs": [
+  {
+   "input": "ReconModifier, the class signature",
+   "native": "[[unit+538h]+B8h], evidence 009623A9",
+   "state": "reachable but not plumbed: src/vehicle_class_fields.cpp lists the field at +B8h, but GameVehicleClassRow does not carry it and GameMissionLuaHost has read_vehicle_class_integer only. kGunneryReconModifierSqDefault = 1.0f until a float reader exists. This is the only input with no one-line answer, and it is a plumbing gap, not an unread value"
+  },
+  {
+   "input": "the submarine sensor categories",
+   "native": "00852B90 and 0085EA40",
+   "state": "the periscope half is src/submarine_model.cpp's submarine_periscope_sensor_state; the depth thresholds are unread"
+  }
+ ],
+ "corrections": [
+  {
+   "document": "the packet brief, and docs/SENSOR_TABLE_DATA.md's standing follow-up 'Drive rule (c) from this data'",
+   "was": "implies rule (c) still needs projecting from 00806840 / 008048A0 / 008082A0",
+   "is": "the rules were projected twice before this packet and are complete; the gap is that nothing calls them",
+   "evidence": "src/gunnery_recon_detection.cpp and src/recon_slot_lists.cpp; no other reference in src or tests",
+   "how": "stated in the new document; no other packet's text is edited"
+  },
+  {
+   "document": "src/game_hosts_ship_ai.cpp and include/bsp/game_hosts_ship_ai.hpp",
+   "was": "the ship AI ring census line ended with driven=%zu, fed by units_driven",
+   "is": "retired. units_driven was never incremented anywhere in the tree, so driven=0 read as a gate on a chain that runs",
+   "evidence": "docs/SHIP_AI_HEADING_TO_RUDDER.md; live_pair_changes is the field that measures it",
+   "how": "field and format token removed, with a comment recording why"
+  }
+ ],
+ "no_ghidra_function": [],
+ "validation": {
+  "build": "scripts/build.ps1 Win32 Release /W4 /WX: clean",
+  "tests": "ctest --test-dir build/win32 -C Release: 2/2 pass; no case added",
+  "usn02": "not run: recon_sensor_pass_step_008073c0 has no caller, so no run-time path changed",
+  "usn01": "not run, same reason",
+  "attribution": "nothing is attributable and nothing is claimed. The measurement the packet asks for - detected counts by level per side, the visibility flag true count per ship, the standoff and gunnery censuses - belongs with the binding contract, because only the binding can move any of them"
+ },
+ "follow_up_packets": [
+  {
+   "id": "recon_sensor_pass_binding",
+   "addresses": [
+    "008073c0",
+    "008048a0"
+   ],
+   "what": "land the six-point contract in docs/RECON_SENSOR_PASS.md and take the USN02 before/after this packet did not"
+  },
+  {
+   "id": "vehicle_class_number_reader",
+   "addresses": [
+    "009623a9"
+   ],
+   "what": "the float twin of read_vehicle_class_integer; ReconModifier is the first caller"
+  },
+  {
+   "id": "recon_sensor_category_producer",
+   "addresses": [
+    "00852b90",
+    "0085ea40"
+   ],
+   "what": "the three submarine category states and their depth thresholds"
+  }
+ ],
+ "uncertainties": [
+  "The driver walks sides rather than a recon slot's own triple, because this process builds no slot object. env.slot_index is set to the observing side, which 00804B2F indexes the target's detection record with, but the native slot index and the party coincide only inside the native rebuild.",
+  "The drain runs per target here, following gunnery_recon_detection's composition, while natively 008073C0 drains the flattened list once at 00807634.",
+  "kReconDetectionUnknownLevel is identified on purpose, so a side the pass never covers keeps the permissive pre-rule-(c) answer. A binder that wants a strict answer must change that constant deliberately.",
+  "008048A0, 00806840, 008073C0 and 008082A0 were NOT re-read by this packet. Everything about them here is cited from docs/GUNNERY_RECON_DETECTION.md, docs/RECON_SLOT_LISTS.md and the Ghidra plate comment at 00806840.",
+  "The sensor rows come from the authored tables in src/sensor_table_data.cpp, not from a live 008082A0 run, so a mission script that edits a sensor table at run time would diverge."
+ ]
+}

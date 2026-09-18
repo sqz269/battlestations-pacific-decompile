@@ -294,7 +294,6 @@ struct GameShipAiSummary {
     unsigned long long rudder_law_calls{0};
     unsigned long long rudder_deadbands{0};
     unsigned long long live_pair_changes{0};
-    std::size_t units_driven{0};
     // Milestone 2o, second pass.
     unsigned long long state_steps_real{0};
     unsigned long long goal_sets{0};
