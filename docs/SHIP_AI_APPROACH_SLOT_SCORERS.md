@@ -113,3 +113,17 @@ none.
   is now produced and waiting on it.
 - `ship_ai_can_bear_arc`: `0085B7D0`'s Function 7 traverse filter and its gravity-arc solve.
 - `ship_ai_approach_point_zone`: `00864BA0`, the no-target arm of the visibility gate, still false.
+
+## Correction appended by packet `cc8_ship_ai_goal_vector_visibility`
+
+The follow-up above asked why `brain+0B28h` is never true. Answer: nothing in `009F1420` was
+wrong. Both of the narrowing tests it calls, `009DFBE0` through `008053C0` and `00922DC0`, were
+recorded refusals in `src/game_hosts_ship_ai.cpp`, and the flag opens only if one of them answers
+true. Both are answerable; `009DFBE0` walks the recon slot's union triple at `slot+0E0Ch` and
+alone opens the gate on every scan. With them bound, `flag_stops` falls from 600 of 600 to 0 of
+600 on all fourteen ships and this packet's scorers run for the first time: `firepower` 0 to
+504000. See `docs/SHIP_AI_GOAL_VECTOR_VISIBILITY.md`.
+
+That packet also found that the `slot_first` / `slot_last` column above cannot report a winner:
+it reads `ShipAiApproachState::committed_slot_11e8`, which `src/ship_ai_approach_update.cpp` reads
+twice and never writes, so the 0 is the field's initial value and not a selection result.
