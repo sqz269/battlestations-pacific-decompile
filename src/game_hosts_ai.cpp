@@ -22,6 +22,7 @@
 #include "bsp/ai_tuning_globals.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/plane_squadron_entity.hpp"
 #include "bsp/unit_gunnery_pass.hpp"
 
 namespace bsp::game {
@@ -114,6 +115,119 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
 
     // Which group holds a unit, so entity_has_group answers entity+16Ch.
     std::vector<Group*> group_of_unit;
+
+    // The plane squadron layer. The native scene creates a PlaneSquadronGen
+    // (004F0AD0) and its slot-39 attach 007F4580 fills the five-slot member
+    // array at +3D0h with WingCount planes; the AI then groups the SQUADRON,
+    // because 009FE080 admits class 18h and never the plane base 0Fh. This
+    // process creates one unit per scene entity, so each aircraft entity
+    // yields a squadron of one wing: the member array is real, the extra
+    // wings are not spawned because unit creation is owned elsewhere.
+    // Labelled substitution for 007F4580's per-wing loop.
+    struct Squadron {
+        bsp::PlaneSquadronEntity entity;
+        std::vector<std::size_t> member_units;  // unit indices in +3D0h order
+    };
+    std::vector<Squadron> squadrons;
+    // A plane the squadron owns is NOT an AI candidate of its own. The native
+    // seeds the scene's PlaneSquadronGen entities; the planes exist only in the
+    // member array at +3D0h, and 009FE080 would refuse them anyway (009FE0A5
+    // pushes the ship base 6, never the plane base 0Fh). Keeping both in a
+    // group double-orders the same aircraft.
+    std::vector<bool> unit_owned_by_squadron;
+
+    // The native 0077D600 REPLACES an entity's outstanding order; this
+    // process's order ring appends, so the follower pass 00A10DC0, which calls
+    // 00A02020 on every fixed step and whose only native gate is the squared
+    // distance at 00A0205C, would append one order per member per step for the
+    // whole mission. What is suppressed here is the DUPLICATE, never a change:
+    // a new token, a new target or a point that moved more than a metre is
+    // always issued. Labelled substitution for the ring's replace semantics,
+    // not a native rule, and the census counts what it suppressed.
+    struct LastOrder {
+        std::string token;
+        std::string target;
+        float point[3]{0.0f, 0.0f, 0.0f};
+        bool valid{false};
+    };
+    std::vector<LastOrder> last_order;
+    static constexpr float kOrderRepeatEpsilonSquared = 1.0f;  // one metre
+    bool order_is_repeat(std::size_t index, const std::string& token,
+                         const std::string& target, const float point[3]) {
+        if (last_order.size() <= index) last_order.resize(index + 1u);
+        LastOrder& prev = last_order[index];
+        const bool same = prev.valid && prev.token == token && prev.target == target &&
+            (point == nullptr ||
+             ((prev.point[0] - point[0]) * (prev.point[0] - point[0]) +
+              (prev.point[1] - point[1]) * (prev.point[1] - point[1]) +
+              (prev.point[2] - point[2]) * (prev.point[2] - point[2]))
+                 < kOrderRepeatEpsilonSquared);
+        if (same) {
+            ++summary.orders_suppressed;
+            return true;
+        }
+        prev.valid = true;
+        prev.token = token;
+        prev.target = target;
+        if (point != nullptr) {
+            prev.point[0] = point[0];
+            prev.point[1] = point[1];
+            prev.point[2] = point[2];
+        } else {
+            prev.point[0] = prev.point[1] = prev.point[2] = 0.0f;
+        }
+        return false;
+    }
+    bool seed_admits(std::size_t index) const {
+        if (index >= unit_owned_by_squadron.size()) return true;
+        return !unit_owned_by_squadron[index];
+    }
+    std::size_t next_admitted_seed(std::size_t from) const {
+        while (from < candidate_count() && !seed_admits(from)) ++from;
+        return from;
+    }
+
+    // Candidate indices [0, units.count()) are units; the squadrons follow.
+    std::size_t candidate_count() const {
+        return units.count() + squadrons.size();
+    }
+    bool is_squadron(std::size_t index) const {
+        return index >= units.count() && index < candidate_count();
+    }
+    Squadron* squadron_of(std::size_t index) {
+        if (!is_squadron(index)) return nullptr;
+        return &squadrons[index - units.count()];
+    }
+    const Squadron* squadron_of(std::size_t index) const {
+        if (!is_squadron(index)) return nullptr;
+        return &squadrons[index - units.count()];
+    }
+    // Every geometric, team and liveness query on a squadron answers from
+    // its FLIGHT LEADER, the plane at +3D0h that 007ED610 rotates into slot
+    // 0; that is the point the native's formation and leader reads take.
+    std::size_t proxy(std::size_t index) const {
+        const Squadron* s = squadron_of(index);
+        if (s == nullptr || s->member_units.empty()) return index;
+        return s->member_units.front();
+    }
+    std::size_t proxy(void* entity) const { return proxy(unit_index_of(entity)); }
+
+    // 007EDA90's three reads, taken on the squadron's flight leader.
+    bsp::PlaneSquadronLeadPlaneFacts squadron_lead_facts(const Squadron& s) const {
+        bsp::PlaneSquadronLeadPlaneFacts lead;
+        if (s.member_units.empty()) return lead;          // 007EDA99 JZ
+        const std::size_t leader = s.member_units.front();
+        lead.has_lead_plane = true;
+        // 007EDAA0 PUSH 17h through the leader's vtable[+5Ch].
+        lead.lead_is_kamikaze_17 =
+            units.unit_is_kind_of(leader, bsp::kPlaneSquadronKamikazeKindId);
+        // 007EDAAA, the byte at leader+C24h. docs/ATTACK_GATE_TAILS.md
+        // establishes it as the authored `PilotFires`, written once at load
+        // by FUN_007CD930 from BSP_Plane_ReadPropertyBag. This process has
+        // no reader for it, so it stays clear and is labelled here.
+        lead.lead_pilot_fires_0c24 = false;
+        return lead;
+    }
 
     // 00A335D0's record for this run's mode, read back through 00A371A0.
     bsp::AiTuningBlock tuning{};
@@ -232,8 +346,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         kept.reserve(before);
         for (const std::size_t unit : g->members) {
             bsp::AiGroupCandidateFlags flags = unit_flags(unit);
-            if (bsp::ai_group_member_still_belongs(flags, units.unit_side_0054(unit), g->party,
-                    units.unit_side_0054(unit), g->team)) {
+            const int side = units.unit_side_0054(proxy(unit));
+            if (bsp::ai_group_member_still_belongs(flags, side, g->party, side, g->team)) {
                 kept.push_back(unit);
             } else if (unit < group_of_unit.size()) {
                 group_of_unit[unit] = nullptr;
@@ -289,7 +403,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         const std::size_t unit = unit_index_of(first_member);
         groups.push_back(std::make_unique<Group>());
         Group* g = groups.back().get();
-        g->team = units.unit_side_0054(unit);
+        g->team = units.unit_side_0054(proxy(unit));
         if (g->team < 0 || g->team > bsp::kAiGroupMaxSeedTeam) g->team = 0;
         g->party = g->team;   // this process files a group under its own team
         registry.push_back(g);
@@ -327,6 +441,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // 009FE120, a tail forward of entity->vtable[+5Ch](6).
     bool group_has_ship(Group* g) {
         for (const std::size_t unit : g->members) {
+            if (is_squadron(unit)) continue;   // never the 009FE0A5 arm
             if (units.unit_is_kind_of(unit, bsp::kUnitGunneryKindShipBase)) return true;
         }
         return false;
@@ -335,6 +450,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // IsKindOf(0Fh) then IsKindOf(18h).
     bool group_has_air(Group* g) {
         for (const std::size_t unit : g->members) {
+            if (is_squadron(unit)) return true;   // 009FE0F0's IsKindOf(18h)
             if (units.unit_is_kind_of(unit, 0x0F) || units.unit_is_kind_of(unit, 0x18)) {
                 return true;
             }
@@ -345,6 +461,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // 00A2C600 over a group's members, through 009FE0B0's three class ids.
     bool group_matches_009fe0b0(Group* g) {
         for (const std::size_t unit : g->members) {
+            if (is_squadron(unit)) continue;   // 18h is none of 1Bh/45h/46h
             if (bsp::ai_entity_class_matches_009fe0b0(units.unit_is_kind_of(unit, 0x1B),
                                                       units.unit_is_kind_of(unit, 0x45),
                                                       units.unit_is_kind_of(unit, 0x46))) {
@@ -465,8 +582,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // back, so a live unit stands in for a non-null director and the two
         // readers below take the unit index. Labelled substitution.
         if (member == nullptr) return nullptr;
-        const std::size_t unit = unit_index_of(member);
-        if (!units.unit_active(unit)) return nullptr;
+        if (!units.unit_active(proxy(member))) return nullptr;
         return member;
     }
     void* director_target_descriptor(void* director) override {
@@ -559,10 +675,10 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return tick_member_position(candidate, out);
     }
     int close_candidate_team(void* candidate) override {
-        return units.unit_side_0054(unit_index_of(candidate));
+        return units.unit_side_0054(proxy(candidate));
     }
     bool close_candidate_alive(void* candidate) override {
-        return units.unit_alive_and_visible(unit_index_of(candidate));
+        return units.unit_alive_and_visible(proxy(candidate));
     }
     float close_target_weight(void* member, void* candidate) override {
         // 00A0F810, which wraps 00A08460 BSP_Ai_TargetWeight with a health and
@@ -584,7 +700,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     void* close_member_current_target(void* member) override {
         // The member's vtable[+114h] then 0071EB60, then 00521EA0 to resolve
         // the descriptor into an instance.
-        const std::size_t unit = unit_index_of(member);
+        // 00A2C790 reads the member's vtable[+114h]; for a squadron that is
+        // 007ECFD0, `MOV EAX,[ECX+348h]`, the 0x22C block 007F4FE6 allocates
+        // and 007F5009 stores. This process holds no such block, so the
+        // flight leader's own descriptor stands in. Labelled.
+        const std::size_t unit = proxy(member);
         bsp::SceneCommandTarget target;
         int mode = 0;
         if (!units.active_command_descriptor_0071eb60(unit, target, mode)) return nullptr;
@@ -600,12 +720,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         const std::string token =
             command_class == bsp::kAiSceneCommandAttackMove ? "attackmove" : "settarget";
         const std::string target_name = unit_name(unit_index_of(target));
-        const std::string name = unit_name(unit);
-        if (name.empty() || target_name.empty()) {
-            ++summary.commands_refused;
-            return false;
-        }
-        if (!units.issue_player_command(token, target_name, name)) {
+        if (target_name.empty() || !issue_order(unit, token, target_name)) {
             ++summary.commands_refused;
             return false;
         }
@@ -626,6 +741,16 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
 
     // 009FDF30 alone, without 009FFD80's ship and group-class multipliers.
     float unit_class_weight(std::size_t unit) {
+        if (is_squadron(unit)) {
+            // 009FFD80 on a squadron: its +C4h is 18h and 009FE0A5's ship
+            // test is false, so only the class weight for 18h applies.
+            const std::uint32_t squadron_offset =
+                bsp::ai_entity_class_weight_offset_009fdf30(
+                    bsp::kPlaneSquadronClassId);
+            return bsp::ai_entity_leader_weight_009ffd80(
+                squadron_offset == 0xFFFFFFFFu ? 1.0f : tuning.at(squadron_offset),
+                false, false);
+        }
         const std::uint32_t offset =
             bsp::ai_entity_class_weight_offset_009fdf30(units.unit_class_id(unit));
         return offset == 0xFFFFFFFFu ? 1.0f : tuning.at(offset);
@@ -659,20 +784,29 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         out[0] = out[1] = out[2] = 0.0f;
         if (member == nullptr) return false;
         float y = 0.0f;
-        units.unit_position_00fc(unit_index_of(member), out[0], y, out[2]);
+        units.unit_position_00fc(proxy(member), out[0], y, out[2]);
         out[1] = y;
         return true;
     }
     bool tick_member_is_ship_base(void* member) override {
-        return member != nullptr &&
-            units.unit_is_kind_of(unit_index_of(member), bsp::kUnitGunneryKindShipBase);
+        if (member == nullptr) return false;
+        // 009FE0A0's tail is unreachable for a squadron: its IsKindOf(18h)
+        // already answered, so a squadron is never a ship base.
+        if (is_squadron(unit_index_of(member))) return false;
+        return units.unit_is_kind_of(unit_index_of(member),
+                                     bsp::kUnitGunneryKindShipBase);
     }
     bool tick_member_is_plane_squadron(void* member) override {
-        return member != nullptr && units.unit_is_kind_of(unit_index_of(member), 0x18);
+        if (member == nullptr) return false;
+        if (is_squadron(unit_index_of(member))) return true;   // +C4h == 18h
+        return units.unit_is_kind_of(unit_index_of(member), 0x18);
     }
     bool tick_squadron_excluded_007eda90(void* member) override {
         if (member == nullptr) return false;
-        return bsp::ai_squadron_excluded_007eda90(combatant_facts(unit_index_of(member)));
+        const bool excluded =
+            bsp::ai_squadron_excluded_007eda90(combatant_facts(unit_index_of(member)));
+        if (excluded) ++summary.squadron_excluded;
+        return excluded;
     }
     bool tick_squadron_excluded_009ffeb0(void* member) override {
         // 009FFEB0 is a second squadron-carrier exclusion, not 007EDA90: it
@@ -694,7 +828,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         if (member == nullptr) return false;
         const std::size_t unit = unit_index_of(member);
         bsp::SceneCommandTarget target;
-        target.kind = 0;             // a position
+        target.kind = 0;             // a position (squadron arm below)
         target.position_valid = 1;   // 00A0214B stores 0x0100 over the pair
         target.object_id = 0;
         target.object = nullptr;
@@ -702,9 +836,25 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         target.position[1] = position[1];
         target.position[2] = position[2];
         target.trailing = 0.0f;
-        if (units.issue_script_command(unit, bsp::kAiSceneCommandMoveTo, target,
-                                       bsp::kAiSceneCommandFlags, "ai_command_tick",
-                                       unit_name(unit)) == nullptr) {
+        if (order_is_repeat(unit, "moveto", std::string(), position)) return true;
+        std::size_t placed = 0;
+        if (const std::vector<std::size_t>* members = squadron_member_units(unit)) {
+            // 007ECF80's shape again: one moveto per live member plane.
+            for (const std::size_t plane : *members) {
+                if (units.issue_script_command(plane, bsp::kAiSceneCommandMoveTo, target,
+                                               bsp::kAiSceneCommandFlags, "ai_command_tick",
+                                               unit_name(plane)) != nullptr) {
+                    ++placed;
+                    ++summary.squadron_member_orders;
+                }
+            }
+            if (placed != 0) ++summary.squadron_commands;
+        } else if (units.issue_script_command(unit, bsp::kAiSceneCommandMoveTo, target,
+                                              bsp::kAiSceneCommandFlags, "ai_command_tick",
+                                              unit_name(unit)) != nullptr) {
+            placed = 1;
+        }
+        if (placed == 0) {
             ++summary.commands_refused;
             return false;
         }
@@ -793,13 +943,13 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     void* first_seed_candidate(int collection) override {
         if (collection != 0) return nullptr;
         record("AiGroups::seed_collection", 0x00a2e835u);
-        seed_cursor = 0;
-        return units.count() == 0 ? nullptr : &seed_cursor;
+        seed_cursor = next_admitted_seed(0);
+        return seed_cursor < candidate_count() ? &seed_cursor : nullptr;
     }
     void* next_seed_candidate(void* cursor) override {
         if (cursor != &seed_cursor) return nullptr;
-        ++seed_cursor;
-        return seed_cursor < units.count() ? &seed_cursor : nullptr;
+        seed_cursor = next_admitted_seed(seed_cursor + 1u);
+        return seed_cursor < candidate_count() ? &seed_cursor : nullptr;
     }
     void* seed_candidate_entity(void* cursor) override {
         if (cursor != &seed_cursor) return nullptr;
@@ -816,7 +966,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return unit < group_of_unit.size() && group_of_unit[unit] != nullptr;
     }
     int entity_team(void* entity) override {
-        return units.unit_side_0054(unit_index_of(entity));
+        return units.unit_side_0054(proxy(entity));
     }
 
     double group_leader_order_key(void* group) override {
@@ -1095,6 +1245,12 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // this process: nothing creates a PlaneSquadronGen, so is_plane_squadron is
     // false for every unit and the ship-base tail is the whole answer.
     bsp::AiGroupableCombatantFacts combatant_facts(std::size_t unit) {
+        if (const Squadron* s = squadron_of(unit)) {
+            // The 009FE092 arm, on a real squadron for the first time in
+            // this process: 009FE088's IsKindOf(18h) holds, so the answer is
+            // the negation of 007EDA90 and the ship tail is never reached.
+            return bsp::plane_squadron_combatant_facts(squadron_lead_facts(*s));
+        }
         bsp::AiGroupableCombatantFacts facts;
         facts.is_plane_squadron = units.unit_is_kind_of(unit, 0x18);
         facts.is_ship_base = units.unit_is_kind_of(unit, bsp::kUnitGunneryKindShipBase);
@@ -1102,6 +1258,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
 
     bsp::AiGroupCandidateFlags unit_flags(std::size_t unit) {
+        // A squadron is as alive as its flight leader: 007F3970 removes a
+        // dead plane from +3D0h and 007F3A45 flags the last one out.
+        unit = proxy(unit);
         bsp::AiGroupCandidateFlags flags;
         bsp::SceneNodeFlags node;
         bool pending = false;
@@ -1117,7 +1276,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
 
     void attach(Group* g, std::size_t unit) {
-        if (unit >= units.count()) return;
+        if (unit >= candidate_count()) return;
         if (std::find(g->members.begin(), g->members.end(), unit) != g->members.end()) return;
         g->members.push_back(unit);
         // 00A2D8E0's sorted insert, now on the native key: the list is ordered
@@ -1129,7 +1288,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 return bsp::ai_group_member_sorts_before_00a2d8e0(
                     unit_leader_weight(a), unit_leader_weight(b));
             });
-        if (group_of_unit.size() < units.count()) group_of_unit.resize(units.count(), nullptr);
+        if (group_of_unit.size() < candidate_count())
+            group_of_unit.resize(candidate_count(), nullptr);
         group_of_unit[unit] = g;
         ++summary.members_added;
     }
@@ -1150,26 +1310,73 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
 
     std::string unit_name(std::size_t unit) const {
-        const GameUnitRow* row = units.unit_row(unit);
+        const GameUnitRow* row = units.unit_row(proxy(unit));
         return row != nullptr ? row->name : std::string();
+    }
+
+    // 007ECF80, vtable 00D087C0 slot +128h: the squadron walks its own
+    // member array and calls the same slot on every live plane. This is the
+    // shape a squadron-level order takes down to its planes; the native's
+    // order fan-out itself (the arms of the +164h dispatcher 007F0030 other
+    // than BCh and BEh) is contract: unread, so this is a labelled
+    // substitution for it, not a reconstruction of it.
+    const std::vector<std::size_t>* squadron_member_units(std::size_t index) const {
+        const Squadron* s = squadron_of(index);
+        if (s == nullptr || s->member_units.empty()) return nullptr;
+        return &s->member_units;
     }
 
     void issue_to_member(std::size_t member, const std::string& token,
         const std::string& target_name, int party);
+    bool issue_named_order(std::size_t unit, const std::string& token,
+        const std::string& target_name);
+    std::size_t fan_out_to_members(std::size_t member, const std::string& token,
+        const std::string& target_name);
+    bool issue_order(std::size_t member, const std::string& token,
+        const std::string& target_name);
+    void build_squadrons();
 };
 
-void GameAiCoordinatorHost::Impl::issue_to_member(std::size_t member,
-    const std::string& token, const std::string& target_name, int party) {
-    const std::string name = unit_name(member);
-    if (name.empty() || target_name.empty()) {
-        ++summary.commands_refused;
-        if (party >= 0) ++party_row(party).commands_refused;
-        return;
-    }
+bool GameAiCoordinatorHost::Impl::issue_named_order(std::size_t unit,
+    const std::string& token, const std::string& target_name) {
+    const std::string name = unit_name(unit);
+    if (name.empty() || target_name.empty()) return false;
     // The same 0046AAB0 registry resolve and 0077D600 message hop a scripted
     // order takes, so the plane task machinery and the ship order ring see the
     // AI's decision as a native order. docs/ENTITY_LUA_ORDER_PATH.md.
-    if (!units.issue_player_command(token, target_name, name)) {
+    return units.issue_player_command(token, target_name, name);
+}
+
+std::size_t GameAiCoordinatorHost::Impl::fan_out_to_members(std::size_t member,
+    const std::string& token, const std::string& target_name) {
+    // 007ECF80, vtable 00D087C0 slot +128h: the squadron walks its own +3D0h
+    // array up to +3CCh and calls the same slot on every live member. The
+    // squadron itself has no scene-registry name in this process, so what
+    // reaches 0077D600 is one order per member plane. Labelled substitution
+    // for the unread order arms of the +164h dispatcher 007F0030.
+    const std::vector<std::size_t>* members = squadron_member_units(member);
+    if (members == nullptr) return 0;
+    std::size_t reached = 0;
+    for (const std::size_t plane : *members) {
+        if (issue_named_order(plane, token, target_name)) {
+            ++reached;
+            ++summary.squadron_member_orders;
+        }
+    }
+    if (reached != 0) ++summary.squadron_commands;
+    return reached;
+}
+
+bool GameAiCoordinatorHost::Impl::issue_order(std::size_t member,
+    const std::string& token, const std::string& target_name) {
+    if (order_is_repeat(member, token, target_name, nullptr)) return true;
+    if (is_squadron(member)) return fan_out_to_members(member, token, target_name) != 0;
+    return issue_named_order(member, token, target_name);
+}
+
+void GameAiCoordinatorHost::Impl::issue_to_member(std::size_t member,
+    const std::string& token, const std::string& target_name, int party) {
+    if (!issue_order(member, token, target_name)) {
         ++summary.commands_refused;
         if (party >= 0) ++party_row(party).commands_refused;
         return;
@@ -1240,7 +1447,8 @@ void GameAiCoordinatorHost::create_00a32350() {
     Impl& host = *impl_;
     if (host.created) return;
     host.created = true;
-    host.group_of_unit.assign(host.units.count(), nullptr);
+    host.build_squadrons();
+    host.group_of_unit.assign(host.candidate_count(), nullptr);
     host.next_think.fill(0.0f);
     host.party_record.fill(false);
     // The party records the mission's `SetParty` binding fills. This process
@@ -1279,6 +1487,60 @@ void GameAiCoordinatorHost::create_00a32350() {
     }
     host.record("AiController::create", 0x00a32350u);
     host.record("AiController::construct", 0x00a31730u);
+}
+
+void GameAiCoordinatorHost::Impl::build_squadrons() {
+    // 004F0AD0 BSP_SceneUnit_CreatePlaneSquadronGen allocates the 0x414 block
+    // and 007F2C60 stamps +C4h = 18h and zeroes the five member slots at
+    // 007F2DA3..007F2DBB; the slot-39 attach 007F4580 then reads `WingCount`
+    // (007F4735 default 3, 007F4754 max(1, authored)) and runs the per-wing
+    // loop whose tail 007F4B43..007F4B6E fills +3D0h and bumps +3CCh.
+    //
+    // This process creates exactly one unit per scene entity, and a scene
+    // aircraft entity IS a PlaneSquadronGen, so the unit the loader made is the
+    // squadron's first wing. What is built here is therefore the squadron
+    // object and a one-wing member array; the remaining wings are NOT spawned,
+    // because unit creation belongs to the units host. Labelled substitution
+    // for 007F4580's loop, complete for the member array and the class id.
+    squadrons.clear();
+    unit_owned_by_squadron.assign(units.count(), false);
+    for (std::size_t unit = 0; unit < units.count(); ++unit) {
+        // 009FE0F0's air test: the plane base 0Fh. A squadron's own members are
+        // planes, and nothing else in the scene produces one.
+        if (!units.unit_is_kind_of(unit, bsp::kPlaneSquadronMemberKindId)) continue;
+        Squadron s;
+        // 007F4778 stores the wing count at +3C8h. No bag is read here, so the
+        // absent-key arm 007F4735 is the one that applies.
+        s.entity.wing_count =
+            bsp::plane_squadron_wing_count_007f4754(false, 0);
+        int spawn_index = 0;
+        if (!bsp::plane_squadron_attach_plane_007f4b43(
+                s.entity, handle(unit), &spawn_index)) {
+            continue;
+        }
+        s.member_units.push_back(unit);
+        if (unit_owned_by_squadron.size() <= unit) {
+            unit_owned_by_squadron.resize(unit + 1u, false);
+        }
+        unit_owned_by_squadron[unit] = true;
+        squadrons.push_back(std::move(s));
+        ++summary.squadrons_built;
+        ++summary.squadron_members;
+    }
+    if (!squadrons.empty()) {
+        log.notef("ai squadrons: %llu PlaneSquadronGen objects built over %llu member "
+            "planes (004F0AD0 + 007F2C60 + 007F4580's +3D0h tail); each carries class "
+            "id 18h, so 009FE080's 009FE088 arm now answers for them and its 009FE092 "
+            "negation of 007EDA90 is what admits them",
+            static_cast<unsigned long long>(summary.squadrons_built),
+            static_cast<unsigned long long>(summary.squadron_members));
+    } else {
+        log.notef("ai squadrons: this mission created no unit answering IsKindOf(0Fh), "
+            "so no PlaneSquadronGen is built and 009FE080 falls to its ship tail");
+    }
+    record("SceneUnit::create_plane_squadron_gen", 0x004f0ad0u);
+    record("PlaneSquadron::construct", 0x007f2c60u);
+    record("PlaneSquadron::attach_planes", 0x007f4580u);
 }
 
 void GameAiCoordinatorHost::fixed_step(float step_seconds) {
@@ -1339,6 +1601,27 @@ void GameAiCoordinatorHost::report() {
         s.planner_spawn_arms, s.attack_orders, s.attack_cautious, s.attack_movetoattack,
         s.commands_issued, s.commands_refused, s.units_with_task,
         static_cast<double>(s.first_command_seconds));
+    {
+        // How many group members are squadrons, counted over the live registry.
+        unsigned long long squadron_group_members = 0;
+        for (const Impl::Group* g : host.registry) {
+            if (g == nullptr) continue;
+            for (const std::size_t member : g->members) {
+                if (host.is_squadron(member)) ++squadron_group_members;
+            }
+        }
+        host.summary.squadron_group_members = squadron_group_members;
+    }
+    host.log.notef("summary mission ai squadrons built=%llu members=%llu "
+        "group_members=%llu excluded_007eda90=%llu squadron_commands=%llu "
+        "member_orders=%llu (004F0AD0 / 007F2C60 / 007F4580 +3D0h; 009FE080's "
+        "18h arm; 007ECF80 fan-out)",
+        host.summary.squadrons_built, host.summary.squadron_members,
+        host.summary.squadron_group_members, host.summary.squadron_excluded,
+        host.summary.squadron_commands, host.summary.squadron_member_orders);
+    host.log.notef("summary mission ai order dedupe suppressed=%llu (duplicate re-issues "
+        "of the same token/target/point; 0077D600 replaces, this ring appends)",
+        host.summary.orders_suppressed);
     for (const GameAiPartyRow& row : host.parties) {
         host.log.notef("  ai party %d record=%d ai_enabled=%d brain=%d thinks=%llu "
             "claims=%llu planner_ticks=%llu attacks=%llu commands=%llu refused=%llu",
