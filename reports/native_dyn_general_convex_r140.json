@@ -63676,5 +63676,1235 @@
       }
     ],
     "scope": "7224 new normal bytes, complete general-convex table, 20663 union live/PE bytes; 14040 exact chain/table pairs and192 normalized scene pairs; all12 FP controls; 2137 instruction/43 branch/13 constant audit. Application/gameplay open."
+  },
+  "primary_integration": {
+    "source_commit": "8c48be5be8adf2528f85c7f6ff7a3c8bf938db3c",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "artifact_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r140\\native-dyn-general-convex-main-r140.zip",
+      "sha256": "f209ce037176e6455b82707873640df7111cfde876d0806b2c053af1470d4017",
+      "files": 222,
+      "uncompressed_bytes": 571805250,
+      "utc": "2026-09-18T11:09:37.442170+00:00",
+      "head": "8c48be5be8adf2528f85c7f6ff7a3c8bf938db3c",
+      "manifest": [
+        {
+          "path": "build/win32/bsp_core.dir/Release/dyn_body_creation.obj",
+          "size": 29583,
+          "sha256": "cfe368fa7b12cfc8223ffbcc81741e7cbf354e8d507e7e00cf323cd33a735f95"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/dyn_dispatch_initialization.obj",
+          "size": 15047,
+          "sha256": "c1c51bf8ac5fa2831dcb86e009db0e24bc647a061fa45b31d66da0797a597e4b"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_dyn_convex_simplex.obj",
+          "size": 10716,
+          "sha256": "54b38aa7f25d18b37091748f1a76f2ed46bb37bfc2ef33a44393462b2fce4234"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_dyn_convex_support.obj",
+          "size": 5294,
+          "sha256": "fa6ebaf582cafacd57005e574fe93a97e1fe3b70ce4435b9f0f8a98ab6711f44"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_dyn_general_convex.obj",
+          "size": 13587,
+          "sha256": "3b2e2b06e1f8333f589d31d95ea121c5cb07dbb27a6a221d2b862fa7729f2d27"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_dyn_narrow_phase.obj",
+          "size": 11623,
+          "sha256": "50fe951f2558510b5e74b8260d178ef1b36d7cd00aa1a949cb5a86b2dda1c8c8"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/system_camera_axes.obj",
+          "size": 16446,
+          "sha256": "be236e32e8060c6197ad4085d54355a1de89d2ea52355944ec8aa704cd07c272"
+        },
+        {
+          "path": "build/win32/Release/bsp_core.lib",
+          "size": 66402596,
+          "sha256": "756a702eca1a7a4d0c0bf81a032bd5b83a1f67477fc5ac22002747131945b83b"
+        },
+        {
+          "path": "build/win32/Release/bsp_game.exe",
+          "size": 2722816,
+          "sha256": "19d5bb3e0ebe641324e8cff172322373b3a946940f25047ffb3ae260d0d59796"
+        },
+        {
+          "path": "build/win32/Release/bsp_lua511.lib",
+          "size": 455244,
+          "sha256": "db83167c8c7d24461ef2bf60363b96264fd2406929d0e72a8909287d79b96a17"
+        },
+        {
+          "path": "build/win32/Release/bsp_math_tests.exe",
+          "size": 763392,
+          "sha256": "2ebfc592c2a52e3d6e38bd433f1f431a55195513b90a2331d4530ab9853e658b"
+        },
+        {
+          "path": "build/win32/Release/bsp_native_math_tests.exe",
+          "size": 18432,
+          "sha256": "368f21ad0accf1ebadabe7c6cc6b37f3f73c9aea1a169edb104d0af83b9f3d5d"
+        },
+        {
+          "path": "build/win32/Release/bsp_zlib121.lib",
+          "size": 71906,
+          "sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5"
+        },
+        {
+          "path": "cmake/startup.cmake",
+          "size": 164358,
+          "sha256": "dcee2ee5e59e6866339f2bebaac143e5bd358b4751711afa1e736dd218e61bd5"
+        },
+        {
+          "path": "config/names/00c40000.jsonl",
+          "size": 44691,
+          "sha256": "ad128119c25838ebf6f2d0820439b5a764f1a85f934d8a780339146e11f75f33"
+        },
+        {
+          "path": "config/names/00c50000.jsonl",
+          "size": 36026,
+          "sha256": "6cf36438fca916fa6a05e5a4c77f9c0f289c352187d99d888c5db3988b735238"
+        },
+        {
+          "path": "config/reconstruction/00c40000.jsonl",
+          "size": 59654,
+          "sha256": "92802b1216c5f07738947c6520a9f5ab28fdec289fa3f0a4515691f149e15bc0"
+        },
+        {
+          "path": "config/reconstruction/00c50000.jsonl",
+          "size": 47157,
+          "sha256": "55ef4aa4348cea780014bd443d85c391a4c53f0b73d60c545d2e46d463b68210"
+        },
+        {
+          "path": "docs/DYN_DISPATCH_INITIALIZATION.md",
+          "size": 9091,
+          "sha256": "825c82e07f67a8dc5bd653e33f4a54d58b5ae2bc033d05de0fef151c46ce4a46"
+        },
+        {
+          "path": "docs/NATIVE_DYN_CONVEX_SIMPLEX_R139.md",
+          "size": 6505,
+          "sha256": "5dcf3afa020ba624cccc5693f431ad6e2cbe6377e17177a4f50d3f839852cb29"
+        },
+        {
+          "path": "docs/NATIVE_DYN_GENERAL_CONVEX_R140.md",
+          "size": 7550,
+          "sha256": "f7648cff149e93fe1c8115a7ba313e124f9beba1cbf4126778a3fa8b418fc0f1"
+        },
+        {
+          "path": "include/bsp/avoid_zone_dyn_hull.hpp",
+          "size": 3575,
+          "sha256": "c4b13f13e5cb94a4e1423c0c96aa725935615f92d2cb65a823c36572bf1f2c3a"
+        },
+        {
+          "path": "include/bsp/camera_frame_state.hpp",
+          "size": 8365,
+          "sha256": "3908727ef594797d30acfba72d87366683c61d7768e7cf3038f5a0164f7428df"
+        },
+        {
+          "path": "include/bsp/camera_projection.hpp",
+          "size": 2413,
+          "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+        },
+        {
+          "path": "include/bsp/camera_transform.hpp",
+          "size": 7028,
+          "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+        },
+        {
+          "path": "include/bsp/d3d9_buffers.hpp",
+          "size": 3262,
+          "sha256": "e8bc19c4630661b83969b53cac94134748f3c9af2a98002f1f2906ed93dedc83"
+        },
+        {
+          "path": "include/bsp/d3d9_startup.hpp",
+          "size": 1362,
+          "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843"
+        },
+        {
+          "path": "include/bsp/d3d9_states.hpp",
+          "size": 15076,
+          "sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288"
+        },
+        {
+          "path": "include/bsp/d3d9_vertex_layout.hpp",
+          "size": 1257,
+          "sha256": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef"
+        },
+        {
+          "path": "include/bsp/dyn_body_creation.hpp",
+          "size": 5100,
+          "sha256": "771890801179db08b6ec963a2145cb05c4346da8f79d402514770aae2210535b"
+        },
+        {
+          "path": "include/bsp/dyn_dispatch_initialization.hpp",
+          "size": 4759,
+          "sha256": "6511497f51a59ae26f76a36e6e2fd58d14e0d0873c89103842165239c7ac25ee"
+        },
+        {
+          "path": "include/bsp/dyn_scene_runtime.hpp",
+          "size": 2802,
+          "sha256": "55bbd6bda1cbdde923b48381c85998db05f4db9ce96e60d9f964c2d2b6be378c"
+        },
+        {
+          "path": "include/bsp/material_sort_metadata.hpp",
+          "size": 3332,
+          "sha256": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212"
+        },
+        {
+          "path": "include/bsp/native_dyn_convex_simplex.hpp",
+          "size": 964,
+          "sha256": "a93b31b64dc0d61db11841dc8d77b5b120e52d032c8027833d65d26a143c2f85"
+        },
+        {
+          "path": "include/bsp/native_dyn_convex_support.hpp",
+          "size": 2636,
+          "sha256": "6a6b3028657c8e8732e9d81b74172be60b78a565082cf102dfb8e48f0093160b"
+        },
+        {
+          "path": "include/bsp/native_dyn_general_convex.hpp",
+          "size": 2359,
+          "sha256": "671d4e1e49afe177c17329da705dd7445add240c4afc60eadac38b27c6e86306"
+        },
+        {
+          "path": "include/bsp/native_dyn_narrow_phase.hpp",
+          "size": 2879,
+          "sha256": "fa3f6390cadbb1e23954f58524215a0cd67fb69a5c9921f2cf95deff72a926db"
+        },
+        {
+          "path": "include/bsp/native_dyn_shape_lifetime.hpp",
+          "size": 680,
+          "sha256": "9d03579c4046d19aa2cdc57e0bdee8c9536e59f138f6196e23ababa5a460e0e9"
+        },
+        {
+          "path": "include/bsp/random.hpp",
+          "size": 791,
+          "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+        },
+        {
+          "path": "include/bsp/random_threads.hpp",
+          "size": 1446,
+          "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+        },
+        {
+          "path": "include/bsp/rigid_body_integration.hpp",
+          "size": 8112,
+          "sha256": "07cb2142f73cb94cd0bd3d903f2482816cc7924be69247ae1ac1707e4df62f11"
+        },
+        {
+          "path": "include/bsp/ship_hull_body.hpp",
+          "size": 9286,
+          "sha256": "a9417d7dc66f6eeda4aee783cd87c3d403b91693a142d8d1c255ebe3ba2c9c0b"
+        },
+        {
+          "path": "include/bsp/ship_hull_shapes.hpp",
+          "size": 17222,
+          "sha256": "58a35e261aa87778c225ff550fea23218f24fc0c7f5982d87b50fc1ef7a9877a"
+        },
+        {
+          "path": "include/bsp/system_camera_axes.hpp",
+          "size": 3402,
+          "sha256": "abfa9300a54975dcdb7489f466d941b9341991af3f027ebb764a19cbb08124d5"
+        },
+        {
+          "path": "include/bsp/system_fog_constants.hpp",
+          "size": 1915,
+          "sha256": "9378d355dad5f5ee78ce8fa41cb6275f9e5b00e9bcbd07592f051c147a0d0663"
+        },
+        {
+          "path": "include/bsp/system_fog_slot.hpp",
+          "size": 1869,
+          "sha256": "778ddcf121dd7b693a2104c43ad8dd1224eb401e06ba4fb48e7aa18617d9b1fb"
+        },
+        {
+          "path": "include/bsp/vertex_declaration.hpp",
+          "size": 1462,
+          "sha256": "0f03c6a960da3547644b3e5bc8b5934a35fe26f42abc2746559a31f0af2452a0"
+        },
+        {
+          "path": "include/bsp/world_ocean.hpp",
+          "size": 8932,
+          "sha256": "00a1c385e2e46fe0a7372c4dec7d0f8039935823bc02e0a29982c93c5360429b"
+        },
+        {
+          "path": "local/annotate_dyn_general_convex_r140.py",
+          "size": 4767,
+          "sha256": "7a1392a8698f163fdaba4a7a63d102787145e1d014da85b96c70e2d78df2f109"
+        },
+        {
+          "path": "local/annotate_game_tree_lifetime_r127.py",
+          "size": 7061,
+          "sha256": "02ed6b2c78c8a0bd3307b8db9b43a5a89b140c62e3b517b521ca82ed74d7b6cd"
+        },
+        {
+          "path": "local/audit_dyn_convex_simplex_r139.py",
+          "size": 4019,
+          "sha256": "a7d0822eefc9311f6b996cf813edd3de5c2d2ea494affb9820544495724cf268"
+        },
+        {
+          "path": "local/audit_dyn_general_convex_r140.py",
+          "size": 4499,
+          "sha256": "3c2c3be70c95083f7d46f9b3258b397f2f6e036e01309adba12fc428f0bb89a0"
+        },
+        {
+          "path": "local/collect_dyn_convex_simplex_r139.py",
+          "size": 981,
+          "sha256": "931db9070da65e3c841d3d25c990d18663f4d42109efe6339f63143556866124"
+        },
+        {
+          "path": "local/collect_dyn_general_convex_r140.py",
+          "size": 433,
+          "sha256": "abbdb7790f5cc1f871318a9728a3287fb00e05b938a61808b1707aa9d97c202a"
+        },
+        {
+          "path": "local/collect_dyn_general_convex_scene_r140.py",
+          "size": 713,
+          "sha256": "ee6d96334250f03feae1d49c189a98be8fa2855417a972d2ef8e856125f221f9"
+        },
+        {
+          "path": "local/collect_game_grid_r120.py",
+          "size": 2437,
+          "sha256": "241fa70bf100af567e2ead281d715b1df175d6cc773e9c2087e731e37884cebd"
+        },
+        {
+          "path": "local/commit-msg-r140.txt",
+          "size": 749,
+          "sha256": "95cd19e213806a1d77633e0a782f6b856b9f532a29ddf5752cebd850b1bbdd62"
+        },
+        {
+          "path": "local/commit_dyn_general_convex_r140.py",
+          "size": 2030,
+          "sha256": "a0e3311d56a18343f31a2bb3b08d551d9665659257099eca515734b273c8c383"
+        },
+        {
+          "path": "local/dyn_convex_simplex_r139/instruction-audit.json",
+          "size": 1426,
+          "sha256": "3dc42806280ff356bdc01b9f1d443179724835e81c14c13a3035c9fb7c4746a7"
+        },
+        {
+          "path": "local/dyn_convex_simplex_r139/native.json",
+          "size": 608856,
+          "sha256": "785280702e6656fbf0891402aa7079dd3370fa61299337ddda18751b02c6a64c"
+        },
+        {
+          "path": "local/dyn_convex_simplex_r139/probe.cpp",
+          "size": 8476,
+          "sha256": "dc281b5698595ff8ab8ad947747d480762020667de464baa18bf9da191d60334"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/annotations.log",
+          "size": 429,
+          "sha256": "a851d5877ab2b726b5f7eeaeb032f5aca89f54316bdc28e31d4cd052bdc57102"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/build.log",
+          "size": 2588,
+          "sha256": "96741b6784de61a98bf73b473def53b255266e454c28d51b315989211d49e140"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/combined/dependencies.json",
+          "size": 30253,
+          "sha256": "a9823e181b64a3f716f153f7af96e5386c622ed42de4f49c5c9df6f7bb9abe81"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/combined/dyn_general_convex_probe.exe",
+          "size": 71680,
+          "sha256": "8259ca673c4175c6046639165fb670750f0abbc65da85503b7a28126f1bd0f36"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/combined/fixture-image.json",
+          "size": 114310,
+          "sha256": "eceb316c8932ea972d75004dab3d5a311ce49291bbdef4b9722e6a86fe6064d7"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/combined/original-build.inc",
+          "size": 3686,
+          "sha256": "d58b1a3352d21438e97085aec9ca4baaabe6130b3a218a7fbc44699d3f7ba2a5"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/combined/original.bin",
+          "size": 12214800,
+          "sha256": "a967c1a517a56a5a0c256900e6af95ae0f9f4c7b62812997bba2182aa82aa9a5"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/combined/original.inc",
+          "size": 55979,
+          "sha256": "08ebf3a8aa972c45b8cecfcd2fc617da91488887d0ddcfadcb51e0dffaca1ef1"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/combined/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/combined/probe-run.log",
+          "size": 655,
+          "sha256": "b3dd228105b9e8453160c3fc89029686a54dfbaf194aa92e63bd71907856f2c1"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/combined/probe.cpp",
+          "size": 8545,
+          "sha256": "c3e31d3477e65f52cb4528eb801cb3e218ecde410a90c68a89eefb861cdc9334"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/combined/probe.map",
+          "size": 59890,
+          "sha256": "85c78881770aa117f2ecba7e8ae06eddc81c6024f050348f22e9802266f5acac"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/combined/probe.obj",
+          "size": 199378,
+          "sha256": "175b73af7d9a55284dd11470bbdc8d50636668296a54c050ee798f3825e557b4"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/combined/result.json",
+          "size": 528,
+          "sha256": "6672b413537a9ea891fef70e5d711d9b78e6766e4efbb18b9646c65c3aed18d0"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/combined/source.bin",
+          "size": 12214800,
+          "sha256": "a967c1a517a56a5a0c256900e6af95ae0f9f4c7b62812997bba2182aa82aa9a5"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/comments-after.json",
+          "size": 8831,
+          "sha256": "05f7ef49a31fda1641bcca1762410bca324576a971d4f42dd1297dc417c74902"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/comments-after.log",
+          "size": 79,
+          "sha256": "92f27c7f05391fb2c0b617672f860e3dfeb8320b6b8f59d5d0ef3f237ec953cd"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/decompile-00401c20.txt",
+          "size": 479,
+          "sha256": "9c0488a9ea60e0dc38f35402726fb34c3f33c72542a95611edce85785c3a5d8d"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/decompile-00401cd0.txt",
+          "size": 304,
+          "sha256": "1036d34e6c98bfa33454d993e36bd7a65913fd7738c580b59284d0068a9f83f8"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/decompile-00c3cc30.txt",
+          "size": 52537,
+          "sha256": "ea653ef0b43fb86c9a95443a1e024a07bf50be2651d98f24c1b538cc6d52f967"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/decompile-00c48be0.txt",
+          "size": 3514,
+          "sha256": "ddf07bea145b7738e2d58115246bf4e234abdb4c60f16a602603f2aa9a9b79a4"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/decompile-00c51c20.txt",
+          "size": 4285,
+          "sha256": "1d791705b73c7cefde69a09a973984180e2863f2c4e6e498aaa8449c0f868492"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/decompile-00c51ef0.txt",
+          "size": 21647,
+          "sha256": "65f71ac7d5eaeab78a303f5a6332b49b90b8cc4edeec6cac9dbc8c8091348765"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/decompile-00c53010.txt",
+          "size": 9533,
+          "sha256": "c7b3af509b61b8e9f53c8655deab191a6032314961d04f7caf32b2e9b795a933"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/decompile-00c535e0.txt",
+          "size": 444,
+          "sha256": "edd6ebc88da9c9743c4b85bac3756c8a936d53144f49aa22cc38806d31c82dd4"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/dependencies.json",
+          "size": 30223,
+          "sha256": "a2a10dfc2502b1ae4a5c52698ccc1d206b00ff896160218927d07b72e475f924"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/disasm-00401c20.txt",
+          "size": 639,
+          "sha256": "ac10b22f7df3eb83614c1b99c83b668d5be4582b7300346266b581ab9ec01013"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/disasm-00401cd0.txt",
+          "size": 346,
+          "sha256": "65ca4464e561bd732561a71eaf9c087f99f3dfbf47e5627b6af5ddc24c90d9b1"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/disasm-00c3cc30.txt",
+          "size": 31965,
+          "sha256": "f668136f9881f99add6498dbfd3082a3860273db630a5c4308f5a5eb592dd95d"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/disasm-00c48be0.txt",
+          "size": 5558,
+          "sha256": "2ed8b6dcb3a9b9e8f9b5750ed9de1fe303bfbda39b056c282741fdd6a075ceda"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/disasm-00c51c20.txt",
+          "size": 7489,
+          "sha256": "eb4c78b7d2f72aba89a7941eaf536361a57fa2cde60da586f5f98f35f7e6b9f1"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/disasm-00c51ef0.txt",
+          "size": 30058,
+          "sha256": "1bb8ecc5b4be74c1b01598381dfa7542958193d8354a1bd1192268e68e9972a0"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/disasm-00c53010.txt",
+          "size": 14928,
+          "sha256": "1004a74de07104240149d32352539baff8747f22ef400d7728caa339ed25dce8"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/disasm-00c535e0.txt",
+          "size": 649,
+          "sha256": "6b648de9df9f3d0ad10f524d3fd60d74b2f365f6c239aa240bdb950776119ec2"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/dyn_general_convex_probe.exe",
+          "size": 71680,
+          "sha256": "3cc0eba8f9bc458207c903c4967242982641e04942b160362f4d08b727127435"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/exports-after.log",
+          "size": 579,
+          "sha256": "40a3fcdf27ec28a3a3ac895abfa43e1ef9239222a6008cbcfe55f1053925aca2"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/fixture-image.json",
+          "size": 114310,
+          "sha256": "eceb316c8932ea972d75004dab3d5a311ce49291bbdef4b9722e6a86fe6064d7"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/flow_verified.log",
+          "size": 653,
+          "sha256": "098095a339599a52281b6a604303e9f051050a2ab53044a0e80c75ceb3891d31"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/index.log",
+          "size": 16,
+          "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/instruction-audit.json",
+          "size": 1889,
+          "sha256": "d30e0599be104fd409ac1f6b732be9911f6a64dd27676793a0e8eb8a25a928e9"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/native.json",
+          "size": 609039,
+          "sha256": "81a1f93e81635786d96bdd8459c1075661d95b569bd66518791b87b5d12074f7"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/original-build.inc",
+          "size": 3686,
+          "sha256": "d58b1a3352d21438e97085aec9ca4baaabe6130b3a218a7fbc44699d3f7ba2a5"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/original.bin",
+          "size": 12214800,
+          "sha256": "a967c1a517a56a5a0c256900e6af95ae0f9f4c7b62812997bba2182aa82aa9a5"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/original.inc",
+          "size": 55979,
+          "sha256": "08ebf3a8aa972c45b8cecfcd2fc617da91488887d0ddcfadcb51e0dffaca1ef1"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/probe-run.log",
+          "size": 655,
+          "sha256": "b3dd228105b9e8453160c3fc89029686a54dfbaf194aa92e63bd71907856f2c1"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/probe.cpp",
+          "size": 8545,
+          "sha256": "c3e31d3477e65f52cb4528eb801cb3e218ecde410a90c68a89eefb861cdc9334"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/probe.map",
+          "size": 59890,
+          "sha256": "05cd3bb5ece23992e0b3ca6476a4a5e2e0a8598b20a1baf3d835d69eb7127c3a"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/probe.obj",
+          "size": 199366,
+          "sha256": "17252d9470da9d62d7575afc682e681defebf8958b2ea381e21efb377db7d843"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/proto-00401c20.txt",
+          "size": 662,
+          "sha256": "f141393f4fdc47a08e4f583212780d827cfa0ae5fbfa3326b7894ef04e8cb049"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/proto-00401cd0.txt",
+          "size": 712,
+          "sha256": "36bcebd2a10a5762d01677200c14d875e52c04d13724da1a759ed9960b96e941"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/proto-00c3cc30.txt",
+          "size": 734,
+          "sha256": "973cd1b5ce12ecea636f05baf68be2ec0e953dcfb69d2527ab22181151497d32"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/proto-00c48be0.txt",
+          "size": 647,
+          "sha256": "7a252c279b1ac5a7eab6c7e11c89fe61bba38ed942bdf17d54106e6e1fde90b7"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/proto-00c51c20.txt",
+          "size": 630,
+          "sha256": "babefe5c4350299f90b35b0bc04a5413c2b91e47ddea9e797ca8b48279696579"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/proto-00c51ef0.txt",
+          "size": 693,
+          "sha256": "1fefd9b2a9e1065c74e1c2bbbd250b18485ab500cc2bd417efb1c38f124f5d4c"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/proto-00c53010.txt",
+          "size": 695,
+          "sha256": "87ab4613cef3f0d17a82eb7622cb2b5d5229f5389d3c0d356bb792aa84bd5b3a"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/proto-00c535e0.txt",
+          "size": 683,
+          "sha256": "6a3d74c8bd946893d1d855064d0a8efd1fa1fc821a473cc5b1eeda3fd3d599c2"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/result.json",
+          "size": 528,
+          "sha256": "023593c5384394a2ce10b9da398a2a03e3a66840ab3e8e04231129139a62d256"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/combined/dependencies.json",
+          "size": 30415,
+          "sha256": "1480ae2d50341f5b876d2b5e8287775433b7c5b0461861046a4ddd608fa73d60"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/combined/dyn_general_convex_scene_probe.exe",
+          "size": 99328,
+          "sha256": "ca57d28104660d92fc1b3d2f25c5057562c1963bfacad7497fe43f70f27ed416"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/combined/fixture-image.json",
+          "size": 147679,
+          "sha256": "669c7e7d90cb07df24dcf8e2198935cd38087f87d3611a9343f628d3e6686477"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/combined/original-build.inc",
+          "size": 8243,
+          "sha256": "9721c094bf3e515bcd732ca84de0de52e0f41ff61761f48556a48cbd6908b1a2"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/combined/original-hooks.inc",
+          "size": 505,
+          "sha256": "29c039e08d33d2440f5295d7cead87eab222e0437b3e3e54bfe552a545748c16"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/combined/original.bin",
+          "size": 111079056,
+          "sha256": "5fed71bcbb7297516151f23455e43703d95305ef33dfc807b594fccdf7b27f05"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/combined/original.inc",
+          "size": 69117,
+          "sha256": "9e81980cbed8a4a08f6a13a384a4a284a2d5179a089a6753dcfca2cffd332ebf"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/combined/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/combined/probe-run.log",
+          "size": 10398,
+          "sha256": "096b6662a158ca60b11ba244f5e72107c5df9ff29981abc39124e83efafaa4fe"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/combined/probe.cpp",
+          "size": 15401,
+          "sha256": "65fd8afba7b9d89145381fc8b03e617b72e1c55ca19d905248b156d5cecdc344"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/combined/probe.map",
+          "size": 73259,
+          "sha256": "494bfee0c890285b12969d7831fa5247c1dec94556b87707d52f4f7b2a4569ca"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/combined/probe.obj",
+          "size": 282569,
+          "sha256": "0113193921ec1ffb366f00f66d4093fd040894f80af101480b9f404e0b67f1b1"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/combined/result.json",
+          "size": 528,
+          "sha256": "a7de0820f9609e323d8e001eab9868eaf41ba0dcf8b0b5420341ccb7a23f4b1c"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/combined/source.bin",
+          "size": 111079056,
+          "sha256": "5fed71bcbb7297516151f23455e43703d95305ef33dfc807b594fccdf7b27f05"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/decompile-00401170.txt",
+          "size": 239,
+          "sha256": "cfcae62a9f7fee737a45b3c9a45312f6b72127a9175d5b58e9b6caec453791be"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/decompile-00401c20.txt",
+          "size": 479,
+          "sha256": "9c0488a9ea60e0dc38f35402726fb34c3f33c72542a95611edce85785c3a5d8d"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/decompile-00401cd0.txt",
+          "size": 304,
+          "sha256": "1036d34e6c98bfa33454d993e36bd7a65913fd7738c580b59284d0068a9f83f8"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/decompile-00403cc0.txt",
+          "size": 1323,
+          "sha256": "09ec125a88e05894df8104cae1d4fb344395008154f0cfa2397a7cd03b4a1e75"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/decompile-00c35260.txt",
+          "size": 2381,
+          "sha256": "939ab113b96cc1f009c3fc0be543733b1980ebed26e7df8724b2003e941f4e07"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/decompile-00c3cc30.txt",
+          "size": 52537,
+          "sha256": "ea653ef0b43fb86c9a95443a1e024a07bf50be2651d98f24c1b538cc6d52f967"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/decompile-00c3f4d0.txt",
+          "size": 3802,
+          "sha256": "8a5aa9f6d743ea005acb58ac9b64048981e51b1d2f55ba5c27c2d96d835b6345"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/decompile-00c3f650.txt",
+          "size": 3370,
+          "sha256": "5b10800d261772bb3b377b8c6da4d5fb6aeae9dbebedafdb47a0ef99df63e4cc"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/decompile-00c3f760.txt",
+          "size": 13874,
+          "sha256": "a15339b9b419caa2e0bc8ed4401ba12c5eeae762fd28c76f08810e351074ad5a"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/decompile-00c44090.txt",
+          "size": 7861,
+          "sha256": "d0167c5ea7d866500c2871684fc1bbc86bea934f42d45d49ec54b703e94a2515"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/decompile-00c48be0.txt",
+          "size": 3514,
+          "sha256": "ddf07bea145b7738e2d58115246bf4e234abdb4c60f16a602603f2aa9a9b79a4"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/decompile-00c51c20.txt",
+          "size": 4285,
+          "sha256": "1d791705b73c7cefde69a09a973984180e2863f2c4e6e498aaa8449c0f868492"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/decompile-00c51ef0.txt",
+          "size": 21647,
+          "sha256": "65f71ac7d5eaeab78a303f5a6332b49b90b8cc4edeec6cac9dbc8c8091348765"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/decompile-00c53010.txt",
+          "size": 9533,
+          "sha256": "c7b3af509b61b8e9f53c8655deab191a6032314961d04f7caf32b2e9b795a933"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/decompile-00c535e0.txt",
+          "size": 444,
+          "sha256": "edd6ebc88da9c9743c4b85bac3756c8a936d53144f49aa22cc38806d31c82dd4"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/dependencies.json",
+          "size": 30375,
+          "sha256": "3746a38f05a33a824024afe56b11541515ccf2572f65059b967ce54061523d9f"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/disasm-00401170.txt",
+          "size": 296,
+          "sha256": "d668dad25d3db111248071a65a66639213895b57d51e3b69fc4c6f637e26c2c1"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/disasm-00401c20.txt",
+          "size": 639,
+          "sha256": "ac10b22f7df3eb83614c1b99c83b668d5be4582b7300346266b581ab9ec01013"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/disasm-00401cd0.txt",
+          "size": 346,
+          "sha256": "65ca4464e561bd732561a71eaf9c087f99f3dfbf47e5627b6af5ddc24c90d9b1"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/disasm-00403cc0.txt",
+          "size": 233,
+          "sha256": "d5313889bcde6138c9495cd0e3927f778c506cef28a3c69808ea896e9a74e9dc"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/disasm-00c35260.txt",
+          "size": 1319,
+          "sha256": "09cc1909e198a832332673cedbc578636d27809e45a8d1b06a2e26bc9ae7d704"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/disasm-00c3cc30.txt",
+          "size": 31965,
+          "sha256": "f668136f9881f99add6498dbfd3082a3860273db630a5c4308f5a5eb592dd95d"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/disasm-00c3f4d0.txt",
+          "size": 3578,
+          "sha256": "b219d5a7d39968e4e4b4644c4894d56b8ef5444917cbd8f8848d178944561b0d"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/disasm-00c3f650.txt",
+          "size": 2618,
+          "sha256": "5a05ded168a46c1bc5f9b0827b2731d7025afc1dcdf4ce06130c66eac93f313a"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/disasm-00c3f760.txt",
+          "size": 22974,
+          "sha256": "12bcfa0d1cd86088422ddbdd9c38a6c758da5d97b8bb6d46a4a79064011c7846"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/disasm-00c44090.txt",
+          "size": 6868,
+          "sha256": "ac044d3ae7ce075cf4be2f147d5fe0946c5ffc2e46a3217b302f25a20474a783"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/disasm-00c48be0.txt",
+          "size": 5558,
+          "sha256": "2ed8b6dcb3a9b9e8f9b5750ed9de1fe303bfbda39b056c282741fdd6a075ceda"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/disasm-00c51c20.txt",
+          "size": 7489,
+          "sha256": "eb4c78b7d2f72aba89a7941eaf536361a57fa2cde60da586f5f98f35f7e6b9f1"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/disasm-00c51ef0.txt",
+          "size": 30058,
+          "sha256": "1bb8ecc5b4be74c1b01598381dfa7542958193d8354a1bd1192268e68e9972a0"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/disasm-00c53010.txt",
+          "size": 14928,
+          "sha256": "1004a74de07104240149d32352539baff8747f22ef400d7728caa339ed25dce8"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/disasm-00c535e0.txt",
+          "size": 649,
+          "sha256": "6b648de9df9f3d0ad10f524d3fd60d74b2f365f6c239aa240bdb950776119ec2"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/dyn_general_convex_scene_probe.exe",
+          "size": 99328,
+          "sha256": "398a5e6d40d8cbd530d0e43d443566ee07789517425e19db49563ae1de00fc78"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/fixture-image.json",
+          "size": 147679,
+          "sha256": "669c7e7d90cb07df24dcf8e2198935cd38087f87d3611a9343f628d3e6686477"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/native.json",
+          "size": 769237,
+          "sha256": "7517485335e8e0ef4946c89669eac0cd7030998ee8544c3cf6aa061280fee20e"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/original-build.inc",
+          "size": 8243,
+          "sha256": "9721c094bf3e515bcd732ca84de0de52e0f41ff61761f48556a48cbd6908b1a2"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/original-hooks.inc",
+          "size": 505,
+          "sha256": "29c039e08d33d2440f5295d7cead87eab222e0437b3e3e54bfe552a545748c16"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/original.bin",
+          "size": 111079056,
+          "sha256": "5fed71bcbb7297516151f23455e43703d95305ef33dfc807b594fccdf7b27f05"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/original.inc",
+          "size": 69117,
+          "sha256": "9e81980cbed8a4a08f6a13a384a4a284a2d5179a089a6753dcfca2cffd332ebf"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/probe-run.log",
+          "size": 10398,
+          "sha256": "096b6662a158ca60b11ba244f5e72107c5df9ff29981abc39124e83efafaa4fe"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/probe.cpp",
+          "size": 15401,
+          "sha256": "65fd8afba7b9d89145381fc8b03e617b72e1c55ca19d905248b156d5cecdc344"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/probe.map",
+          "size": 73259,
+          "sha256": "ca47ad86066bd4f5805f9025d8c10134be5c0135b6c98964e4d79e906771c31c"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/probe.obj",
+          "size": 282561,
+          "sha256": "96d109e40d898b0442228825e05184ed1e348c42c14d3a88d9be842f2dac3154"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/proto-00401170.txt",
+          "size": 633,
+          "sha256": "a4f0787e7587aaca31aedba74f85778a7e03cafe5de71f9d0c5bb821d34356d9"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/proto-00401c20.txt",
+          "size": 662,
+          "sha256": "f141393f4fdc47a08e4f583212780d827cfa0ae5fbfa3326b7894ef04e8cb049"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/proto-00401cd0.txt",
+          "size": 712,
+          "sha256": "36bcebd2a10a5762d01677200c14d875e52c04d13724da1a759ed9960b96e941"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/proto-00403cc0.txt",
+          "size": 807,
+          "sha256": "84038351cfbf36dc1533548a1e8fae426cdf2d7eaa2bf633e194485d35810a0d"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/proto-00c35260.txt",
+          "size": 705,
+          "sha256": "02a3c051d594829c57b0d94cbb57c67cacb9cd81f74f3c70d77a5c7c91758318"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/proto-00c3cc30.txt",
+          "size": 734,
+          "sha256": "973cd1b5ce12ecea636f05baf68be2ec0e953dcfb69d2527ab22181151497d32"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/proto-00c3f4d0.txt",
+          "size": 730,
+          "sha256": "4becf1ea845b467acef7d7f2d0b08cbb8754d115c5831a1c1c70c0cef2ba290d"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/proto-00c3f650.txt",
+          "size": 656,
+          "sha256": "aef63557270a0a28133081bb1ca5ec94dbbdab2e6d0e141834779a316fd3cbc1"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/proto-00c3f760.txt",
+          "size": 707,
+          "sha256": "2515384bd8f355564e991ba1497bd1b68495c7db5a21ae8e91f5364d89a7017d"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/proto-00c44090.txt",
+          "size": 751,
+          "sha256": "9485fb2af93f96d7303e0cc38df39453bc266cd7e9bee87a88dc9ec225ed2dec"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/proto-00c48be0.txt",
+          "size": 647,
+          "sha256": "7a252c279b1ac5a7eab6c7e11c89fe61bba38ed942bdf17d54106e6e1fde90b7"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/proto-00c51c20.txt",
+          "size": 630,
+          "sha256": "babefe5c4350299f90b35b0bc04a5413c2b91e47ddea9e797ca8b48279696579"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/proto-00c51ef0.txt",
+          "size": 693,
+          "sha256": "1fefd9b2a9e1065c74e1c2bbbd250b18485ab500cc2bd417efb1c38f124f5d4c"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/proto-00c53010.txt",
+          "size": 695,
+          "sha256": "87ab4613cef3f0d17a82eb7622cb2b5d5229f5389d3c0d356bb792aa84bd5b3a"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/proto-00c535e0.txt",
+          "size": 683,
+          "sha256": "6a3d74c8bd946893d1d855064d0a8efd1fa1fc821a473cc5b1eeda3fd3d599c2"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/result.json",
+          "size": 528,
+          "sha256": "1154df9ed83a6c29d3d59ff4732ef288272105f4420ea4017193272f5cadae7f"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/scene/source.bin",
+          "size": 111079056,
+          "sha256": "5fed71bcbb7297516151f23455e43703d95305ef33dfc807b594fccdf7b27f05"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/snapshot.log",
+          "size": 230,
+          "sha256": "c5fc1976c5e5046efafc537f0858b09cd7598dcf5baaa7daa96ed3735b959611"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/source.bin",
+          "size": 12214800,
+          "sha256": "a967c1a517a56a5a0c256900e6af95ae0f9f4c7b62812997bba2182aa82aa9a5"
+        },
+        {
+          "path": "local/dyn_general_convex_r140/verify-calls.log",
+          "size": 133,
+          "sha256": "01410afb28af103609c3323bcfc0c2efd1c65ec5a2ebc414561f49beff59717d"
+        },
+        {
+          "path": "local/dyn_general_convex_tail_r140.txt",
+          "size": 2213,
+          "sha256": "5dce0d20a2ed9c050de0f26da5ab9d0f95f43d38384b72cc71f564a3ce56c576"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/native.json",
+          "size": 160716,
+          "sha256": "c84d2c3d959142c58d3b6ef1ccf958eff8f18385992515d1ef3eb8ca51b5b9cd"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/probe.cpp",
+          "size": 14338,
+          "sha256": "40f3fd0d35e2af03e4018530eb99e0e89b580e1d68d7c2c33a3cdace85f59c09"
+        },
+        {
+          "path": "local/ghidra-annotations-20260918T110600Z.json",
+          "size": 9324,
+          "sha256": "dd17d24ae1e18661bcdfc711fe9b806b0c485d5f8a6506bc5c9163a325c8fb73"
+        },
+        {
+          "path": "local/prepare_dyn_convex_simplex_r139.py",
+          "size": 3521,
+          "sha256": "18fa48271d1efaa54d6556a1530dc0c27eb52157e3b0fcda3f0eef1781bc50e8"
+        },
+        {
+          "path": "local/prepare_dyn_general_convex_combined_r140.py",
+          "size": 687,
+          "sha256": "bf1e104b3cd6954e46095c9f73ef65c0b9861d18d0f71a50491085df1830dd34"
+        },
+        {
+          "path": "local/prepare_dyn_general_convex_r140.py",
+          "size": 3412,
+          "sha256": "fdfa0348d0e6e892912b2b56f8b3a87afe433b37a4321771f993b3f29d094b35"
+        },
+        {
+          "path": "local/prepare_dyn_general_convex_scene_r140.py",
+          "size": 4908,
+          "sha256": "7f4d5dbf2e9c0986be5fa885ef719ef0295658ef7bfa39229fe23cf1b5926830"
+        },
+        {
+          "path": "local/r140_integration.log",
+          "size": 1106,
+          "sha256": "f3831915255af6859f3bdf3e96263b163861f1f8483797ec033cc634bfe885a0"
+        },
+        {
+          "path": "local/report_dyn_general_convex_r140.py",
+          "size": 6319,
+          "sha256": "6873bbca6ce77a1a682f309485c4534ad39b77cced026dcc89ee8c4ee31cb531"
+        },
+        {
+          "path": "local/run_dyn_convex_simplex_r139.ps1",
+          "size": 1681,
+          "sha256": "199e7fe0c9d6181ecb24deae83973cf1db23284b1ce86762aefd37844bfdc52d"
+        },
+        {
+          "path": "local/run_dyn_general_convex_combined_r140.ps1",
+          "size": 1690,
+          "sha256": "301db13df5f7aad70fb013812bf7934e7fb423aa0dc7f712030fda2750afdb5d"
+        },
+        {
+          "path": "local/run_dyn_general_convex_r140.ps1",
+          "size": 1681,
+          "sha256": "30953985d40e0bed9498a51cba5fd5f8217d744f27cf9b4132d4e964da519a7d"
+        },
+        {
+          "path": "local/run_dyn_general_convex_scene_combined_r140.ps1",
+          "size": 1726,
+          "sha256": "9641e45952518ef2ab1cd7d7012cad02d11a301d712980874b914053fc1c54f0"
+        },
+        {
+          "path": "local/run_dyn_general_convex_scene_r140.ps1",
+          "size": 1717,
+          "sha256": "3e1fbdbc3553899de1fb37040e0bf0355d172e1ee156beee1e9b96e4829ec8be"
+        },
+        {
+          "path": "local/run_dyn_narrow_phase_r138.ps1",
+          "size": 1673,
+          "sha256": "5ca9bdddcc523bbb371ec8ad650461b6235a01c20008dc4f3bfedb6951efd6ac"
+        },
+        {
+          "path": "local/seal_dyn_general_convex_r140.py",
+          "size": 6208,
+          "sha256": "bbe4b95c0036d07a01b960998fda1b2e8dcd17d517dc2806a5a65e3e6b6a4236"
+        },
+        {
+          "path": "local/write_dyn_general_convex_r140.py",
+          "size": 4134,
+          "sha256": "b2214f5bf561368247b30d2940e9ce451348a6c30fc0a004ecc8c1338b1859a8"
+        },
+        {
+          "path": "reports/native_dyn_general_convex_r140.json",
+          "size": 1991319,
+          "sha256": "498894b9e5f26d5cc060bf62d3ed8c550cfb1636f87c88cbd6a08761ebdc4070"
+        },
+        {
+          "path": "src/dyn_body_creation.cpp",
+          "size": 15270,
+          "sha256": "e915e3325ceca411c14df2424129c7e82bebf6bc272921205e62d43744d4c93c"
+        },
+        {
+          "path": "src/dyn_dispatch_initialization.cpp",
+          "size": 9053,
+          "sha256": "75829e5d8da162c35cf29ac9f083e76a881c8b08ba808aba7d3c25b9e764302a"
+        },
+        {
+          "path": "src/native_dyn_convex_simplex.cpp",
+          "size": 101860,
+          "sha256": "bf90c6408136c4c1969132fa0284be20da012fd068b1f718fc729982567056c9"
+        },
+        {
+          "path": "src/native_dyn_convex_support.cpp",
+          "size": 17894,
+          "sha256": "a2884a94389396afecaef01b8cd914eb22ae04c8e4ed5bc9ce9b37a3d0fdb239"
+        },
+        {
+          "path": "src/native_dyn_general_convex.cpp",
+          "size": 96695,
+          "sha256": "0042c2fe7ab8c30dfd42e499482d0b55112e3d473d006bd69a43eb18b390b8aa"
+        },
+        {
+          "path": "src/native_dyn_narrow_phase.cpp",
+          "size": 60634,
+          "sha256": "f90fcac23fad20f5a51838d2a5c2a4e222d6822b9940d60167d9ee6827f71bcd"
+        },
+        {
+          "path": "src/system_camera_axes.cpp",
+          "size": 15864,
+          "sha256": "2682460d77fd18e19909c946ddd58ed60e63234e441c2f5badafc2c2815f0415"
+        }
+      ],
+      "scope": "7224 new normal bytes, complete general-convex table, 20663 union live/PE bytes; 14040 exact chain/table pairs and192 normalized scene pairs; all12 FP controls; 2137 instruction/43 branch/13 constant audit. Application/gameplay open."
+    },
+    "source_identical_to_tested": true,
+    "main_source_equal_after_lf_normalization": true,
+    "owned_object_comparison": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_general_convex.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789728576,
+        "combined_timestamp": 1789728576,
+        "tested_sha256": "3b2e2b06e1f8333f589d31d95ea121c5cb07dbb27a6a221d2b862fa7729f2d27",
+        "combined_sha256": "3b2e2b06e1f8333f589d31d95ea121c5cb07dbb27a6a221d2b862fa7729f2d27"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_convex_simplex.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789727578,
+        "combined_timestamp": 1789727578,
+        "tested_sha256": "54b38aa7f25d18b37091748f1a76f2ed46bb37bfc2ef33a44393462b2fce4234",
+        "combined_sha256": "54b38aa7f25d18b37091748f1a76f2ed46bb37bfc2ef33a44393462b2fce4234"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_convex_support.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789721508,
+        "combined_timestamp": 1789721508,
+        "tested_sha256": "fa6ebaf582cafacd57005e574fe93a97e1fe3b70ce4435b9f0f8a98ab6711f44",
+        "combined_sha256": "fa6ebaf582cafacd57005e574fe93a97e1fe3b70ce4435b9f0f8a98ab6711f44"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_narrow_phase.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789726417,
+        "combined_timestamp": 1789726417,
+        "tested_sha256": "50fe951f2558510b5e74b8260d178ef1b36d7cd00aa1a949cb5a86b2dda1c8c8",
+        "combined_sha256": "50fe951f2558510b5e74b8260d178ef1b36d7cd00aa1a949cb5a86b2dda1c8c8"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/dyn_body_creation.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789501522,
+        "combined_timestamp": 1789501522,
+        "tested_sha256": "cfe368fa7b12cfc8223ffbcc81741e7cbf354e8d507e7e00cf323cd33a735f95",
+        "combined_sha256": "cfe368fa7b12cfc8223ffbcc81741e7cbf354e8d507e7e00cf323cd33a735f95"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/dyn_dispatch_initialization.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789501522,
+        "combined_timestamp": 1789501522,
+        "tested_sha256": "c1c51bf8ac5fa2831dcb86e009db0e24bc647a061fa45b31d66da0797a597e4b",
+        "combined_sha256": "c1c51bf8ac5fa2831dcb86e009db0e24bc647a061fa45b31d66da0797a597e4b"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/system_camera_axes.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789501416,
+        "combined_timestamp": 1789501416,
+        "tested_sha256": "be236e32e8060c6197ad4085d54355a1de89d2ea52355944ec8aa704cd07c272",
+        "combined_sha256": "be236e32e8060c6197ad4085d54355a1de89d2ea52355944ec8aa704cd07c272"
+      }
+    ],
+    "combined_probes": [
+      {
+        "label": "chain",
+        "result": {
+          "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+          "exe_sha256": "8259CA673C4175C6046639165FB670750F0ABBC65DA85503B7A28126F1BD0F36",
+          "linker": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe",
+          "library_sha256": "756A702ECA1A7A4D0C0BF81A032BD5B83A1F67477FC5AC22002747131945B83B",
+          "exit": 0,
+          "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED"
+        },
+        "pairs": 14040,
+        "comparison_sha256": "a967c1a517a56a5a0c256900e6af95ae0f9f4c7b62812997bba2182aa82aa9a5",
+        "comparison_bytes": 12214800,
+        "log": "cw7f complete chain and production table passed\ncw47f complete chain and production table passed\ncw87f complete chain and production table passed\ncwc7f complete chain and production table passed\ncw27f complete chain and production table passed\ncw67f complete chain and production table passed\ncwa7f complete chain and production table passed\ncwe7f complete chain and production table passed\ncw37f complete chain and production table passed\ncw77f complete chain and production table passed\ncwb7f complete chain and production table passed\ncwf7f complete chain and production table passed\n14040 complete-chain/table pairs; 12214800 exact bytes\n",
+        "probe_source_sha256": "c3e31d3477e65f52cb4528eb801cb3e218ecde410a90c68a89eefb861cdc9334"
+      },
+      {
+        "label": "scene",
+        "result": {
+          "library_sha256": "756A702ECA1A7A4D0C0BF81A032BD5B83A1F67477FC5AC22002747131945B83B",
+          "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+          "exit": 0,
+          "linker": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe",
+          "exe_sha256": "CA57D28104660D92FC1B3D2F25C5057562C1963BFACAD7497FE43F70F27ED416",
+          "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe"
+        },
+        "pairs": 192,
+        "comparison_sha256": "5fed71bcbb7297516151f23455e43703d95305ef33dfc807b594fccdf7b27f05",
+        "comparison_bytes": 111079056,
+        "log": "scenario2 cw7f matched 664818 bytes; replace mask0\nscenario3 cw7f matched 473746 bytes; replace mask0\nscenario4 cw7f matched 473746 bytes; replace mask0\nscenario5 cw7f matched 473746 bytes; replace mask0\nscenario6 cw7f matched 473746 bytes; replace mask0\nscenario7 cw7f matched 525698 bytes; replace mask0\nscenario8 cw7f matched 525698 bytes; replace mask0\nscenario9 cw7f matched 675690 bytes; replace mask0\nscenario10 cw7f matched 675690 bytes; replace mask0\nscenario11 cw7f matched 675690 bytes; replace mask0\nscenario12 cw7f matched 664818 bytes; replace mask0\nscenario13 cw7f matched 675690 bytes; replace mask0\nscenario14 cw7f matched 675690 bytes; replace mask0\nscenario15 cw7f matched 645110 bytes; replace mask0\nscenario16 cw7f matched 473746 bytes; replace mask0\nscenario17 cw7f matched 483266 bytes; replace mask0\nscenario2 cw47f matched 664818 bytes; replace mask0\nscenario3 cw47f matched 473746 bytes; replace mask0\nscenario4 cw47f matched 473746 bytes; replace mask0\nscenario5 cw47f matched 473746 bytes; replace mask0\nscenario6 cw47f matched 473746 bytes; replace mask0\nscenario7 cw47f matched 525698 bytes; replace mask0\nscenario8 cw47f matched 525698 bytes; replace mask0\nscenario9 cw47f matched 675690 bytes; replace mask0\nscenario10 cw47f matched 675690 bytes; replace mask0\nscenario11 cw47f matched 675690 bytes; replace mask0\nscenario12 cw47f matched 664818 bytes; replace mask0\nscenario13 cw47f matched 675690 bytes; replace mask0\nscenario14 cw47f matched 675690 bytes; replace mask0\nscenario15 cw47f matched 645110 bytes; replace mask0\nscenario16 cw47f matched 473746 bytes; replace mask0\nscenario17 cw47f matched 483266 bytes; replace mask0\nscenario2 cw87f matched 664818 bytes; replace mask0\nscenario3 cw87f matched 473746 bytes; replace mask0\nscenario4 cw87f matched 473746 bytes; replace mask0\nscenario5 cw87f matched 473746 bytes; replace mask0\nscenario6 cw87f matched 473746 bytes; replace mask0\nscenario7 cw87f matched 525698 bytes; replace mask0\nscenario8 cw87f matched 525698 bytes; replace mask0\nscenario9 cw87f matched 675690 bytes; replace mask0\nscenario10 cw87f matched 675690 bytes; replace mask0\nscenario11 cw87f matched 675690 bytes; replace mask0\nscenario12 cw87f matched 664818 bytes; replace mask0\nscenario13 cw87f matched 675690 bytes; replace mask0\nscenario14 cw87f matched 675690 bytes; replace mask0\nscenario15 cw87f matched 645110 bytes; replace mask0\nscenario16 cw87f matched 473746 bytes; replace mask0\nscenario17 cw87f matched 483266 bytes; replace mask0\nscenario2 cwc7f matched 664818 bytes; replace mask0\nscenario3 cwc7f matched 473746 bytes; replace mask0\nscenario4 cwc7f matched 473746 bytes; replace mask0\nscenario5 cwc7f matched 473746 bytes; replace mask0\nscenario6 cwc7f matched 473746 bytes; replace mask0\nscenario7 cwc7f matched 525698 bytes; replace mask0\nscenario8 cwc7f matched 525698 bytes; replace mask0\nscenario9 cwc7f matched 675690 bytes; replace mask0\nscenario10 cwc7f matched 675690 bytes; replace mask0\nscenario11 cwc7f matched 675690 bytes; replace mask0\nscenario12 cwc7f matched 664818 bytes; replace mask0\nscenario13 cwc7f matched 675690 bytes; replace mask0\nscenario14 cwc7f matched 675690 bytes; replace mask0\nscenario15 cwc7f matched 645110 bytes; replace mask0\nscenario16 cwc7f matched 473746 bytes; replace mask0\nscenario17 cwc7f matched 483266 bytes; replace mask0\nscenario2 cw27f matched 664818 bytes; replace mask0\nscenario3 cw27f matched 473746 bytes; replace mask0\nscenario4 cw27f matched 473746 bytes; replace mask0\nscenario5 cw27f matched 473746 bytes; replace mask0\nscenario6 cw27f matched 473746 bytes; replace mask0\nscenario7 cw27f matched 525698 bytes; replace mask0\nscenario8 cw27f matched 525698 bytes; replace mask0\nscenario9 cw27f matched 675690 bytes; replace mask0\nscenario10 cw27f matched 675690 bytes; replace mask0\nscenario11 cw27f matched 675690 bytes; replace mask0\nscenario12 cw27f matched 664818 bytes; replace mask0\nscenario13 cw27f matched 675690 bytes; replace mask0\nscenario14 cw27f matched 675690 bytes; replace mask0\nscenario15 cw27f matched 645110 bytes; replace mask0\nscenario16 cw27f matched 473746 bytes; replace mask0\nscenario17 cw27f matched 483266 bytes; replace mask0\nscenario2 cw67f matched 664818 bytes; replace mask0\nscenario3 cw67f matched 473746 bytes; replace mask0\nscenario4 cw67f matched 473746 bytes; replace mask0\nscenario5 cw67f matched 473746 bytes; replace mask0\nscenario6 cw67f matched 473746 bytes; replace mask0\nscenario7 cw67f matched 525698 bytes; replace mask0\nscenario8 cw67f matched 525698 bytes; replace mask0\nscenario9 cw67f matched 675690 bytes; replace mask0\nscenario10 cw67f matched 675690 bytes; replace mask0\nscenario11 cw67f matched 675690 bytes; replace mask0\nscenario12 cw67f matched 664818 bytes; replace mask0\nscenario13 cw67f matched 675690 bytes; replace mask0\nscenario14 cw67f matched 675690 bytes; replace mask0\nscenario15 cw67f matched 645110 bytes; replace mask0\nscenario16 cw67f matched 473746 bytes; replace mask0\nscenario17 cw67f matched 483266 bytes; replace mask0\nscenario2 cwa7f matched 664818 bytes; replace mask0\nscenario3 cwa7f matched 473746 bytes; replace mask0\nscenario4 cwa7f matched 473746 bytes; replace mask0\nscenario5 cwa7f matched 473746 bytes; replace mask0\nscenario6 cwa7f matched 473746 bytes; replace mask0\nscenario7 cwa7f matched 525698 bytes; replace mask0\nscenario8 cwa7f matched 525698 bytes; replace mask0\nscenario9 cwa7f matched 675690 bytes; replace mask0\nscenario10 cwa7f matched 675690 bytes; replace mask0\nscenario11 cwa7f matched 675690 bytes; replace mask0\nscenario12 cwa7f matched 664818 bytes; replace mask0\nscenario13 cwa7f matched 675690 bytes; replace mask0\nscenario14 cwa7f matched 675690 bytes; replace mask0\nscenario15 cwa7f matched 645110 bytes; replace mask0\nscenario16 cwa7f matched 473746 bytes; replace mask0\nscenario17 cwa7f matched 483266 bytes; replace mask0\nscenario2 cwe7f matched 664818 bytes; replace mask0\nscenario3 cwe7f matched 473746 bytes; replace mask0\nscenario4 cwe7f matched 473746 bytes; replace mask0\nscenario5 cwe7f matched 473746 bytes; replace mask0\nscenario6 cwe7f matched 473746 bytes; replace mask0\nscenario7 cwe7f matched 525698 bytes; replace mask0\nscenario8 cwe7f matched 525698 bytes; replace mask0\nscenario9 cwe7f matched 675690 bytes; replace mask0\nscenario10 cwe7f matched 675690 bytes; replace mask0\nscenario11 cwe7f matched 675690 bytes; replace mask0\nscenario12 cwe7f matched 664818 bytes; replace mask0\nscenario13 cwe7f matched 675690 bytes; replace mask0\nscenario14 cwe7f matched 675690 bytes; replace mask0\nscenario15 cwe7f matched 645110 bytes; replace mask0\nscenario16 cwe7f matched 473746 bytes; replace mask0\nscenario17 cwe7f matched 483266 bytes; replace mask0\nscenario2 cw37f matched 664818 bytes; replace mask0\nscenario3 cw37f matched 473746 bytes; replace mask0\nscenario4 cw37f matched 473746 bytes; replace mask0\nscenario5 cw37f matched 473746 bytes; replace mask0\nscenario6 cw37f matched 473746 bytes; replace mask0\nscenario7 cw37f matched 525698 bytes; replace mask0\nscenario8 cw37f matched 525698 bytes; replace mask0\nscenario9 cw37f matched 675690 bytes; replace mask0\nscenario10 cw37f matched 675690 bytes; replace mask0\nscenario11 cw37f matched 675690 bytes; replace mask0\nscenario12 cw37f matched 664818 bytes; replace mask0\nscenario13 cw37f matched 675690 bytes; replace mask0\nscenario14 cw37f matched 675690 bytes; replace mask0\nscenario15 cw37f matched 645110 bytes; replace mask0\nscenario16 cw37f matched 473746 bytes; replace mask0\nscenario17 cw37f matched 483266 bytes; replace mask0\nscenario2 cw77f matched 664818 bytes; replace mask0\nscenario3 cw77f matched 473746 bytes; replace mask0\nscenario4 cw77f matched 473746 bytes; replace mask0\nscenario5 cw77f matched 473746 bytes; replace mask0\nscenario6 cw77f matched 473746 bytes; replace mask0\nscenario7 cw77f matched 525698 bytes; replace mask0\nscenario8 cw77f matched 525698 bytes; replace mask0\nscenario9 cw77f matched 675690 bytes; replace mask0\nscenario10 cw77f matched 675690 bytes; replace mask0\nscenario11 cw77f matched 675690 bytes; replace mask0\nscenario12 cw77f matched 664818 bytes; replace mask0\nscenario13 cw77f matched 675690 bytes; replace mask0\nscenario14 cw77f matched 675690 bytes; replace mask0\nscenario15 cw77f matched 645110 bytes; replace mask0\nscenario16 cw77f matched 473746 bytes; replace mask0\nscenario17 cw77f matched 483266 bytes; replace mask0\nscenario2 cwb7f matched 664818 bytes; replace mask0\nscenario3 cwb7f matched 473746 bytes; replace mask0\nscenario4 cwb7f matched 473746 bytes; replace mask0\nscenario5 cwb7f matched 473746 bytes; replace mask0\nscenario6 cwb7f matched 473746 bytes; replace mask0\nscenario7 cwb7f matched 525698 bytes; replace mask0\nscenario8 cwb7f matched 525698 bytes; replace mask0\nscenario9 cwb7f matched 675690 bytes; replace mask0\nscenario10 cwb7f matched 675690 bytes; replace mask0\nscenario11 cwb7f matched 675690 bytes; replace mask0\nscenario12 cwb7f matched 664818 bytes; replace mask0\nscenario13 cwb7f matched 675690 bytes; replace mask0\nscenario14 cwb7f matched 675690 bytes; replace mask0\nscenario15 cwb7f matched 645110 bytes; replace mask0\nscenario16 cwb7f matched 473746 bytes; replace mask0\nscenario17 cwb7f matched 483266 bytes; replace mask0\nscenario2 cwf7f matched 664818 bytes; replace mask0\nscenario3 cwf7f matched 473746 bytes; replace mask0\nscenario4 cwf7f matched 473746 bytes; replace mask0\nscenario5 cwf7f matched 473746 bytes; replace mask0\nscenario6 cwf7f matched 473746 bytes; replace mask0\nscenario7 cwf7f matched 525698 bytes; replace mask0\nscenario8 cwf7f matched 525698 bytes; replace mask0\nscenario9 cwf7f matched 675690 bytes; replace mask0\nscenario10 cwf7f matched 675690 bytes; replace mask0\nscenario11 cwf7f matched 675690 bytes; replace mask0\nscenario12 cwf7f matched 664818 bytes; replace mask0\nscenario13 cwf7f matched 675690 bytes; replace mask0\nscenario14 cwf7f matched 675690 bytes; replace mask0\nscenario15 cwf7f matched 645110 bytes; replace mask0\nscenario16 cwf7f matched 473746 bytes; replace mask0\nscenario17 cwf7f matched 483266 bytes; replace mask0\n192 pairs; 111079056 matching bytes; 27492 service events; 384 snapshots; 0 controlled dispatcher calls (unused); replacement mask0 (unused)\n",
+        "probe_source_sha256": "65fd8afba7b9d89145381fc8b03e617b72e1c55ca19d905248b156d5cecdc344"
+      }
+    ],
+    "library_identical_to_tested": true,
+    "game_identical_to_tested": true,
+    "ordinary_application_runtime_rerun": false
   }
 }
