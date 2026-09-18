@@ -54,6 +54,7 @@ class GameHostLog;
 class GameUnitsHost;
 class GameSceneContentsHost;
 class GameMissionLuaHost;
+class GameGunneryHost;
 
 // 009F3D00's own dispatch, read from the image at 009F3D04..009F3DA0. Each row
 // is one `CMP EAX,<command>` and the `LEA EDI,[ESI+<ai offset>]` it takes; the
@@ -188,6 +189,11 @@ struct GameShipAiRow {
     unsigned long long standoff_choices{0};  // 009E6E80 bodies
     float standoff_range_first{0.0f};        // nested+11E4h after the first
     float standoff_range_last{0.0f};         // nested+11E4h after the last
+    // Packet cc8_ship_ai_firepower_inputs: how much of each 60-sample curve
+    // 0095F080 actually filled, counted at the last refill.
+    int curve_own_nonzero{0};                // nested+12C0h samples > 0
+    int curve_target_nonzero{0};             // nested+13B0h samples > 0
+    float unit_max_weapon_range{0.0f};       // unit+494h as the host answers it
     unsigned long long controller_updates{0};  // 0071F290 bodies
     bool controller_update_session_gate{false};
     unsigned long long path_picks{0};        // 009EE580 bodies that passed the gate
@@ -317,6 +323,8 @@ struct GameShipAiSummary {
     unsigned long long firepower_ratings{0};    // 0095EB40
     unsigned long long standoff_choices{0};     // 009E6E80
     unsigned long long approach_curve_refreshes{0}; // 0095F080 at 009F2F11 / 009F2FB1
+    unsigned long long firepower_gate_stops{0}; // 0095EB6E, b[0] >= unit+494h
+    unsigned long long firepower_mounts{0};     // gun list nodes 0095EB40 walked
     unsigned long long path_follower_points{0}; // 009E3C00 through the full follower
     unsigned long long path_follower_corners{0};
     unsigned long long path_follower_advances{0};
@@ -332,6 +340,15 @@ public:
 
     // Borrow the actual session participant owner; it must outlive this host.
     void bind_session_participants(const bsp::SessionParticipantPools& owner) noexcept;
+
+    // Packet cc8_ship_ai_firepower_inputs. Borrow the gunnery host so the
+    // firepower rating 0095EB40 can read the tables 00956C20 built: the max
+    // weapon range at unit+494h that gates its whole body (0095EB62), the
+    // per-category counts at unit+394h and ranges at unit+430h, and the
+    // category gun lists at unit+398h. GameGunneryHost::set_ship_ai calls this,
+    // so the two hosts are wired wherever that already is. It must outlive this
+    // host.
+    void bind_gunnery(const GameGunneryHost* gunnery) noexcept;
 
     // One controller per created instance, in creation order. Called once,
     // after the instantiate pass and after the authored commands were issued.

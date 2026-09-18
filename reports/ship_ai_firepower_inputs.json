@@ -1,0 +1,155 @@
+{
+  "packet": "cc8_ship_ai_firepower_inputs",
+  "owner": "agent/cc8-ship-approach-curves",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read-only: no rename, comment, prototype, function creation or save",
+  "doc": "docs/SHIP_AI_FIREPOWER_INPUTS.md",
+  "source": "src/game_hosts_ship_ai.cpp, src/game_hosts_gunnery.cpp",
+  "build": "scripts/build.ps1, Win32 Release, /W4 /WX clean; ctest 2/2",
+  "note": "The standoff scan now chooses on produced inputs. unit+494h, the gate 0095EB40 returns at, is the maximum 00956C20 writes at 00956E59; the gunnery host already ran that rebuild and was discarding the value. Wiring it plus the per-category counts, ranges and gun lists fills both 60-sample curves completely and the fourteen attacking ships stop agreeing on 300 m. nested+1284h is not a scan constant at all: it is word 2 of the own unit's firepower query block at nested+127Ch, the per-shot damage cap, whose producer is 009F2A44 from [target+370h] with 10000.0f at 009F2AA9 when there is no target.",
+  "routines": [
+    {
+      "address": "006eb060",
+      "native": "006eb060",
+      "name": "BSP_Weapon_HitProbabilityForRange",
+      "abi": "__thiscall(ProjectileClass* this, float range, float target_length), result in ST0",
+      "coverage": "complete",
+      "rule": "0 when [this+60h] <= range; else 008386F0(function, target_length, range/[this+60h]) with the function chosen by the sub-type at [this+8h]: 4/5/6/7 -> 3, 0Ah -> 7, 0Bh/13h -> 8, 1/2/3/10h -> 1; any other sub-type returns 1.0f without reading the settings"
+    },
+    {
+      "address": "00956c20",
+      "native": "00956c20",
+      "name": "BSP_Unit_RebuildWeaponCategoryIndex",
+      "abi": "__fastcall(Unit*), RET 0",
+      "coverage": "read from docs/GUNNERY_TABLES.md, not re-read",
+      "rule": "unit+430h + cat*4 is the longest 00731020 range among that category's live guns, floored at 10.0f; unit+490h is the same over Functions 2, 3, 4 and 6; unit+494h (00956E59) is the maximum over every category, seeded to 10.0f at 00956D51"
+    },
+    {
+      "address": "009f1bc0",
+      "native": "009f1bc0",
+      "name": "BSP_ShipAi_ApproachFrameState",
+      "abi": "__thiscall(nested)(float seconds)",
+      "coverage": "partial: only the query-block stores at 009F2A10-009F2AC9 were read here",
+      "rule": "the populated arm writes nested+1288h from [[target+538h]+4Ch], nested+128Ch from that object's vtable[24h](), nested+1284h from [target+370h] and nested+1280h from [[target+538h]+0A0h]; the no-target arm at 009F2A91 writes 0, 0, the 10000.0f at 00CE3D64 and the 100.0f at 00CE3D08"
+    }
+  ],
+  "call_sites": [
+    {
+      "routine": "006eb060",
+      "address": "006eb0b4",
+      "native": "008386f0",
+      "note": "one of the four profile arms; 006EB099 and 006EB0C2 are the BSP_GameSettings_GetSingleton calls before them"
+    },
+    {
+      "routine": "0095eb40",
+      "address": "0095edc9",
+      "native": "006eb060",
+      "note": "the hit probability the mount contribution multiplies by"
+    },
+    {
+      "routine": "0095f080",
+      "address": "0095f109",
+      "native": "0095eb40",
+      "note": "the sixty samples of one curve"
+    }
+  ],
+  "host_steps": [
+    {
+      "routine": "0095eb40",
+      "address": "0095eb62",
+      "native": null,
+      "kind": "field_read",
+      "function": "0095eb40",
+      "method": "FirepowerBinding::unit_max_weapon_range",
+      "note": "GameGunneryUnitRow::any_weapon_max_range, captured from 00956C20's own store"
+    },
+    {
+      "routine": "0095eb40",
+      "address": "0095ebb3",
+      "native": null,
+      "kind": "field_read",
+      "function": "0095eb40",
+      "method": "FirepowerBinding::category_device_count",
+      "note": "the per-category list sizes 00956C20 built"
+    },
+    {
+      "routine": "0095eb40",
+      "address": "0095ebc4",
+      "native": null,
+      "kind": "field_read",
+      "function": "0095eb40",
+      "method": "FirepowerBinding::category_max_range",
+      "note": "GameGunneryUnitRow::category_ranges"
+    },
+    {
+      "routine": "0095eb40",
+      "address": "0095ec24",
+      "native": null,
+      "kind": "field_read",
+      "function": "0095eb40",
+      "method": "FirepowerBinding::category_list_head",
+      "note": "the gun indices in that category, walked by position"
+    },
+    {
+      "routine": "0095eb40",
+      "address": "0095ecdb",
+      "native": null,
+      "kind": "field_read",
+      "function": "0095eb40",
+      "method": "FirepowerBinding::ammo_projectile_class",
+      "note": "the authored Bullets row, with the sub-type from the image's own Type chain"
+    },
+    {
+      "routine": "0095eb40",
+      "address": "0095edc9",
+      "native": "006eb060",
+      "function": "0095eb40",
+      "method": "FirepowerBinding::weapon_hit_probability",
+      "note": "006EB060's rule with the 00836EF0 default profile, every slot 0.5f"
+    },
+    {
+      "routine": "009e6e80",
+      "address": "009e7284",
+      "native": null,
+      "kind": "field_read",
+      "function": "009e6e80",
+      "method": "StandoffBinding::nested_scan_scale_1284",
+      "note": "the damage cap; the 10000.0f of 009F2AA9 stands in for [target+370h]"
+    }
+  ],
+  "corrections": [
+    {
+      "where": "docs/SHIP_AI_APPROACH_CURVES.md, Follow-up packets",
+      "was": "ship_ai_approach_scan_scale_1284: nested+1284h, the numerator of the scan's middle factor, has no producer in this process",
+      "is": "it has one, and it is not a scan constant: nested+1284h is word 2 of the firepower query block at nested+127Ch, the per-shot damage cap, written by 009F2A44 from [target+370h] and defaulted to 10000.0f at 009F2AA9. The same block's words 1, 3 and 4 are written beside it. docs/SHIP_AI_BEARING_RATING.md already named this producer in the ShipAiFirepowerQuery field comment; this packet confirmed it independently with a displacement scan.",
+      "evidence": "scan-bytes '84 12 00 00' finds 009E7286 (the reader in 009E6E80) and two writers, 009F2A4E and 009F2AAD, both inside 009F1BC0, against 30 other hits elsewhere in .text as the positive control. 009F2A44 FLD [EBX+370h] then 009F2A4C FSTP [EBP+1284h]; 009F2AA2 MOVUPS from 00CE3D64 (float 10000.0) then 009F2AA9 MOVSS [EBP+1284h]. EBP is nested: 009F2AD1 MOV ECX,[EBP] then 009F2AD4 MOV ECX,[ECX+0AA8h] is the brain's unit."
+    },
+    {
+      "where": "docs/SHIP_AI_APPROACH_CURVES.md, Follow-up packets",
+      "was": "ship_ai_firepower_device_list: until a unit's gunnery categories reach the ship AI host, the standoff scan cannot choose anything but its 300 m seed",
+      "is": "done. The gunnery host already ran 00956C20 per unit and was discarding store_any_weapon_max_range and store_artillery_max_range; capturing them and exposing the category lists fills all sixty samples of both curves and the scan now chooses 1450 m, 1550 m or 200 m per ship instead of the 300 m seed.",
+      "evidence": "the USN02 census below; curve_own_nonzero=60 and curve_target_nonzero=60 for every one of the fourteen ships, max_weapon_range=6136.0"
+    }
+  ],
+  "no_ghidra_function": [],
+  "validation": {
+    "usn02_before": "the previous packet's after-run: shots=734 hull=180 deaths=2 total_damage=18525.6; standoff choices=8400, every ship first=300.0 last=300.0 with both curves empty",
+    "usn02_after": "shots=734 hull=180 deaths=2 total_damage=18525.6, unchanged; standoff choices=8400 curve_refreshes=2450 with curve_own_nonzero=60 and curve_target_nonzero=60 for all fourteen ships and max_weapon_range=6136.0; Haguro chose 1450.0, Jintsu 1550.0 and the twelve destroyers 200.0, first and last alike",
+    "attribution": "the standoff range moved because unit+494h stopped being zero: the rating no longer returns at 0095EB6E, all sixty samples of both profiles are positive, and the scan's minimum is a real one. Nothing downstream moved: the gunnery aim line is identical to the character (angle_sets=1169733 refusals=185667 shots=734) and so are the three ship AI summary lines and every per-unit ring-scan row. The ring scan's winner is slot 0 in both runs with the same commanded heading, so the standoff range reaches the slot weights and stops there.",
+    "usn01": "not re-run for this packet; the previous packet recorded hull=23 deaths=1 total_damage=220.0 with standoff choices=0, and nothing here changes a mission whose ships never enter the approach sub-state",
+    "run_exit_code": "1, from 'present failed hr=0x88760868' (D3DERR_DEVICELOST) during shutdown after 3187 presents. The mission ran all 3000 frames and printed every census; the run is judged by the log."
+  },
+  "follow_up_packets": [
+    "ship_ai_approach_slot_tune: 009E7489 (tune+4h, the slot scorer's weight) and 009E784B (tune+4h again, the selection's reject threshold) are both UNIMPLEMENTED with 8400 calls each. This is now the blocking input: the standoff range reaches 009E6870's four floats, but with the tune block zero every slot scores alike and 009E76D0 keeps slot 0, so the commanded heading never changes and no gunnery number can move.",
+    "weapon_hit_accuracy_load: nothing in this process loads ShipGlobals[\"WeaponHitAccuracy\"], so weapon_hit_probability uses the 00836EF0 defaults, whose twenty slots are all 0.5f. 008386F0's own sampling, which is how target length picks between the small and large curves, was not read.",
+    "ship_ai_firepower_allow_bytes: the query's four allow bytes come from [0080E160(unit)+220h..+223h] (009F2AE7, 009F2B20, 009F2BC2, 009F2B6D). With no producer they are all set here, which rates every category; the real rule may exclude some.",
+    "ship_ai_approach_target_fields: [target+370h], [[target+538h]+4Ch] and [[target+538h]+0A0h], the damage cap, armour and length of the ship being rated."
+  ],
+  "uncertainties": [
+    "Six host answers are labelled substitutions, each recorded so the log names them: the turning-gun class test (0095EC46), 00729F10's three operational flags (0095EC52), the ready-round timers 00727D70 counts (0095EC84, every barrel counts as ready), the ammunition cycle period (0095EE07, the gun's reload time stands in for [ammo+2Ch]), the four allow bytes, and the four target fields of the query block. Each is a place where the rating is optimistic rather than wrong in form.",
+    "blast_damage_min (+B4h) is the one projectile field the gunnery host does not carry, so it stays zero.",
+    "The hit probability uses the 00836EF0 default profile. Because all twenty of its slots are 0.5f the answer does not depend on 008386F0's unread interpolation, but it will the moment the authored table is loaded.",
+    "00956C20 itself was not re-read for this packet; its rule is taken from docs/GUNNERY_TABLES.md, which read it whole, and the value is consumed through the gunnery host's existing binding of it rather than reimplemented."
+  ]
+}
