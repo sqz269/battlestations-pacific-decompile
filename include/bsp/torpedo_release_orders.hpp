@@ -214,6 +214,60 @@ struct ReleaseOrderIssueResult {
 ReleaseOrderIssueResult torpedo_issue_release_orders_007c0d90(
     TorpedoReleaseOrderHost& host);
 
+// ---------------------------------------------------------------------------
+// ctl+370h, the pilot control block's attack mode. Three values: 0 hold,
+// 1 attack, 2 forced. 009D3F69/009D3F71 and 009D40CB/009D40D2 both send an
+// engaged torpedo task to `prepare` only while it is 0, and 009D49A0 arms the
+// release countdown only in `prepare`.
+//
+// An exhaustive census of every store form at a +370h field (28 sites image
+// wide, positive control on the two known ones) finds exactly three on this
+// object, and an exhaustive rel32 scan of the two setters finds four call
+// sites. docs/TORPEDO_ATTACK_MODE.md has the table.
+// ---------------------------------------------------------------------------
+namespace pilot_attack_mode {
+inline constexpr int kHold = 0;
+inline constexpr int kAttack = 1;
+inline constexpr int kForced = 2;
+inline constexpr int kMessageSetMode = 0xBC;   // 007F0204/007F01E8 -> 007F005B
+inline constexpr float kForcedRearmSeconds = 2.0f;  // 00CE3958, 009A2872
+}  // namespace pilot_attack_mode
+
+// 007ED3F0-007ED3FA, `void __thiscall(ctl, int mode)`, RET 4. An unconditional
+// store at 007ED3F4.
+int pilot_control_set_attack_mode_007ed3f0(int mode) noexcept;
+
+// 007ED430-007ED442, `void __thiscall(ctl, int mode)`, RET 4. 007ED434 compares
+// and 007ED43A JGE skips, so it only ever raises: a signed `<`.
+int pilot_control_raise_attack_mode_007ed430(int current, int mode) noexcept;
+
+// 007F0030's message arm at 007F005B-007F0068, reached for message id BCh.
+// 007F005B loads the byte payload at msg+20h, and the NEG/SBB/AND 2 idiom turns
+// it into 2 when non-zero and 0 when zero. This is the only route to 0 that
+// does not go through the closetoship task.
+int pilot_control_attack_mode_from_message_007f0068(
+    unsigned char payload) noexcept;
+
+struct CloseToShipModeCountdown {
+    float timer_550 = 0.0f;    // task+550h
+    bool latch_43c = false;    // task+43Ch
+    int mode_370 = 0;          // ctl+370h, read only on the expired arm
+    float dt = 0.0f;
+};
+
+struct CloseToShipModeResult {
+    float timer_550 = 0.0f;
+    bool latch_43c = false;
+    bool lower_to_hold = false;   // 009A285E, the tail jump to 007ED3F0(ctl, 0)
+    bool rearmed = false;         // 009A2881
+};
+
+// 009A2810-009A288A, `void __thiscall(task, float dt)`, RET 4. The countdown
+// the closetoship task's vtable +64h arm (009A2B00, at 009A2B56) runs. It is
+// the ONLY path in the image that calls 007ED3F0 with 0.
+CloseToShipModeResult closetoship_attack_mode_countdown_009a2810(
+    const CloseToShipModeCountdown& in) noexcept;
+
 }  // namespace bsp
 
 #endif  // BSP_TORPEDO_RELEASE_ORDERS_HPP
