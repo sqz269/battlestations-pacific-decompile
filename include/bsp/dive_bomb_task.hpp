@@ -399,6 +399,21 @@ DiveBombArmResult dive_bomb_arm_drop_009c8200(const DiveBombArmInputs& in) noexc
 float dive_bomb_turn_direction_009c7800(int sign, float magnitude_draw) noexcept;
 
 // ---------------------------------------------------------------------------
+// 009C62B0, the flyabove tick. Ghidra had no function; this packet defined one
+// over 009C62B0-009C7085, 3542 bytes. Its can-dive flag is recovered; the
+// roll-in flag is not. docs/DIVE_BOMB_TASK.md has the flag census.
+// ---------------------------------------------------------------------------
+
+// 009C67C7-009C680E: flyabove+18h, the can-dive decision the transition rule
+// reads at 009C8563. The height above the target comes from 009C647D-009C6493,
+// the same quantity the aimdive tick forms at 009C59D6: the double at [ESP+10h]
+// minus the y of the point approach->vtable[0] returns. `JBE` at 009C67F6 takes
+// the zero arm, so the flag is set only when the height strictly exceeds the
+// release range.
+bool dive_bomb_flyabove_can_dive_009c680e(float height_above_target,
+                                          float release_range_d4) noexcept;
+
+// ---------------------------------------------------------------------------
 // 009C4220, the attackrun tick (vtable 00D20C68 slot +Ch), Ghidra body
 // 009C4220-009C447D, __thiscall(state, float dt), RET 4.
 //
