@@ -315,3 +315,10 @@ rejects a null or self argument, an empty population on either side, and the fam
 | `ai_command_tick_helpers` | `00A10EC0`, `00A10DC0`, `00A11070` | the three bodies `NONCONTROL` and `IDLE` share at `vt+0Ch`, and whether any of them issues a scene command |
 | `ai_command_move_family_tick` | `00A124E0`, `00A152B0`, `00A126C0`, `00A15500` | the `MOVETO`, `CAUTIOUSMOVE`, `REGROUPINGMOVE` and `DEFENDPOSITION` ticks, the only remaining path from a command to a unit |
 | `ai_entity_class_ids` | `009FE0B0`, `vtable+5Ch` | which entity classes `0x1B`, `0x45` and `0x46` name |
+
+## Correction from the cc8 integration: the two listing-only routines are defined (2026-09-18)
+
+The `no_ghidra_function` list above was true when the packet read them. At integration
+`00A0FC50`-`00A0FC72` (RET 8) and the five-byte thunk `00A11F70`-`00A11F74` (JMP `00A10EC0`) were
+defined in Ghidra (record `reports/ai_command_object_function_definitions.json`, commit
+`e985ff1f3`) and their ledger names applied; `00A0FC90` was already `BSP_AiCommand_NotifyEntityCommand_NoOp`.

@@ -462,3 +462,16 @@ bot task's `vtable[24h]` answers. The task's release slot and the bomb platform'
 vtable `00CFE308` are still unread.
 
 Full evidence, layout and ABIs: `docs/TORPEDO_RELEASE_SPAWN.md`.
+
+## Correction, second addendum: the release cannot come from the aiming path
+(packet cc8_torpedo_gun_assignment)
+
+Appended, not a rewrite. The door-command reading recorded above is reinforced by the gunnery
+tables. A bomb platform is category 0Ah, whose per-category preference row at `00E0A1F0` is **all
+zeros in the image**. `00863990`'s rank test refuses every candidate whose class ranks zero, so a
+bomb platform is never assigned a gunnery target, on any tick, in any mission. Measured: 81
+BOMBPLATFORM guns in USN01 take 234327 aim ticks and 0 assignments.
+
+Aerial ordnance therefore has exactly one producer, and it is the chain this section describes:
+`007BBBA0` -> `unit+C20h` -> `007CEA82` -> `007C0D90` -> `007EEF30` -> `007BCBE0` -> `unit+C58h`,
+spent at `0099AFB6`. Full evidence: `docs/TORPEDO_GUN_ASSIGNMENT.md`.
