@@ -1885,6 +1885,24 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         // the same event as angle_refusals_targeted and the two always match. Kept
         // only so the decomposition below reads completely; it is the counter to
         // drop first. docs/AA_VERTICAL_WINDOW.md.
+        // Packet cc8_torpedo_release_spawn. The torpedo gate census: the same
+        // conjuncts as `want_fire` below, restricted to guns whose round can
+        // swim. Read as a funnel - the first counter that collapses names the
+        // gate that keeps torpedoes out of the water.
+        const bool torpedo_gun = gun.swim_speed > 0.0f;
+        if (torpedo_gun) {
+            ++summary.torpedo_gun_ticks;
+            if (have_target) {
+                ++summary.torpedo_gun_targeted;
+                if (accepted) {
+                    ++summary.torpedo_gun_accepted;
+                    if (settled) {
+                        ++summary.torpedo_gun_settled;
+                        if (may_fire_here) ++summary.torpedo_gun_window;
+                    }
+                }
+            }
+        }
         if (have_target && !accepted) ++summary.want_fire_no_accept;
         if (have_target && accepted && !settled) ++summary.want_fire_no_settle;
         if (have_target && accepted && settled && !may_fire_here) {
@@ -1905,6 +1923,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
 
         const bool sent = bsp::gun_fixed_step_tick_0072d130(gun.fire, fire_host, dt);
         done("Gun::fixed_step_tick_0072d130", 0x0072d130u);
+        if (torpedo_gun && sent) ++summary.torpedo_gun_sent;
         if (!sent) continue;
 
         // 0072D860, the 0ADh arm: gun->vtable[1DCh] FireIfReady 00727E30, which
@@ -1944,6 +1963,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         ++gun.shots;
         ++state.row.shots;
         ++summary.shots;
+        if (torpedo_gun) ++summary.torpedo_gun_shots;
         if (gun.first_shot_seconds < 0.0f) gun.first_shot_seconds = clock_seconds;
         if (summary.first_shot_seconds < 0.0f) {
             summary.first_shot_seconds = clock_seconds;
@@ -2693,6 +2713,20 @@ void GameGunneryHost::report() {
         s.torpedo_ranges_derived, s.torpedo_swims_started,
         s.torpedo_heading_snaps, s.bullet_ranges_derived,
         s.gun_pending_timers_live, s.gun_pending_timers_expired);
+    {
+        // Packet cc8_torpedo_release_spawn: the funnel that says where a round
+        // that could swim actually stops. Counted over gun rows, so a unit with
+        // several tubes contributes one entry per tube.
+        unsigned long long torpedo_guns = 0;
+        for (const GameGunRow& row : host.guns) {
+            if (row.swim_speed > 0.0f) ++torpedo_guns;
+        }
+        host.log.notef("summary mission gunnery torpedo_gate guns=%llu ticks=%llu "
+            "targeted=%llu accepted=%llu settled=%llu window=%llu sent=%llu shots=%llu",
+            torpedo_guns, s.torpedo_gun_ticks, s.torpedo_gun_targeted,
+            s.torpedo_gun_accepted, s.torpedo_gun_settled, s.torpedo_gun_window,
+            s.torpedo_gun_sent, s.torpedo_gun_shots);
+    }
     host.log.notef("summary mission gunnery contacts considered=%llu side=%llu "
         "invisible=%llu dead=%llu kind=%llu admit_ship=%llu admit_plane=%llu",
         s.contact_considered, s.contact_reject_side, s.contact_reject_visible,
