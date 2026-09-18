@@ -170,11 +170,61 @@ rin.scale.caps_rate_at_one =
 
 `rin.dt_scale = 1.0f` needs **no** change, per §3.
 
+## The predicate, landed
+
+`src/game_hosts_units.cpp` is free, so the contract is now code:
+
+```cpp
+rin.scale.caps_rate_at_one =
+    bsp::unit_is_kind_of(unit_.class_id, 0x10) ||   // MPlaneBomber
+    bsp::unit_is_kind_of(unit_.class_id, 0x16);     // MLargeReconPlane
+```
+
+and the dead `rin.small_turn_roll_limit = false` is deleted. On the merged tree
+(`c73713111` plus the torpedo release-order wiring in the same file) this reproduces run **D**
+aircraft for aircraft: `closed_mean = 4028.3 m`, `worst_closed = 3840.0 m`,
+`range_last_mean = 799.1 m`, with Mav1 at 4006.0 m and Mav4 at 4219.8 m closed. `USN02` is
+unchanged at `shots=734`, `hull=180`, `deaths=2`, `total_damage=18525.6`. No number moved against
+the measured run, so the merge brought nothing that touches this arm.
+
+## Audit: every `InterpolateClamped` call in `0099D300`
+
+`00419010` clamps between its two **`y`** endpoints in whichever order they arrive, so a reversed
+pair produces a plausible curve instead of an error. That makes the failure silent by construction
+and worth auditing by the push order rather than by reading the result. `grep "CALL 0x00419010"`
+over the function's listing gives **nine** sites, not the five named in the previous follow-up —
+that list was wrong, because `0099E4CC` is `FMUL float ptr [ESP+40h]` and `0099E5FC` is
+`FSTP float ptr [ESP+54h]`. Neither is a call.
+
+| site | `x0` | `y0` | `x1` | `y1` | `x` | verdict |
+| --- | --- | --- | --- | --- | --- | --- |
+| `0099E022` | `tuning+7Ch` | `1.0f` | `tuning+80h` | `0.0f` | `\|bank\|` | **correct** |
+| `0099E07E` | `tuning+8Ch` | `0.0f` | `tuning+90h` | `1.0f` | `\|h\|` | **correct** |
+| `0099E17B` | `-C` | `-0.3C` | `+C` | `+0.3C` | `h` | **correct** |
+| `0099E1CC` | `tuning+6Ch` | `tuning+78h` | `tuning+70h` | `tuning+74h` | pitch error | **WAS REVERSED**, fixed |
+| `0099E390` | `-t` | `+1.0f` | `+t` | `-1.0f` | `A` | **correct** |
+
+Push addresses for the four confirmed sites, so the verdicts are checkable without re-deriving:
+
+* `0099E022` — `0099E01C` `x0 = EBX+7Ch` `YawTurnRollRange/1`, `0099E016` `FLD1` `y0`,
+  `0099E00C` `x1 = EBX+80h` `/2`, `0099E006` `FLDZ` `y1`, `0099E002` `x = [ESP+1Ch]` `|bank|`.
+  A descending fade, 1 below `/1` and 0 above `/2`, which is what
+  `yaw_base_gain_0099dffb` implements.
+* `0099E07E` — `0099E075` `x0 = EBX+8Ch` `PitchTurnHdgRange/1`, `0099E06F` `FLDZ` `y0`,
+  `0099E065` `x1 = EBX+90h` `/2`, `0099E05F` `FLD1` `y1`, `0099E05B` `x = |h|` from the
+  `-0.0f` idiom at `0099E042`. Ascending, and the reconstruction matches.
+* `0099E390` — `0099E38B` `FCHS` then `FSTP [ESP]` gives `x0 = -t`, `0099E385` `FLD1` `y0 = +1.0f`,
+  `0099E37D` `FST [ESP+8]` `x1 = +t` (the `FST` keeps `t` live for the `FCHS`), `0099E373`
+  `[00D7A260] = -1.0f` `y1`, `0099E36B` `x = [ESP+2Ch]`. `t` itself is built at
+  `0099E344`-`0099E367` as `RollSpd · (RollSpd / (RollAccel · WaggleLimit))`.
+
+The remaining four sites are outside this packet's arms and were enumerated but **not** audited:
+`0099D95C` and `0099DB9E` in the power and air-brake arms, `0099DD35` in the pitch-target slew
+(`docs/PILOT_PLANNER_PITCH_ROLL.md` §2a, which already records the `PUSH ECX` at `0099DD31`
+shifting its arguments), and `0099E8C8` in the yaw arm. Labelled partial.
+
 ## Follow-up
 
-1. **`heading_error_last_mean`.** With the flight now arriving, a terminal-geometry metric would say
-   more than a last-frame heading error. That is a harness question, not a reconstruction one.
-2. **The other `InterpolateClamped` call sites in `0099D300`** deserve the same endpoint audit that
-   found this one: `0099E07E`, `0099E17B`, `0099E4CC` and `0099E5FC`. Only `0099E1CC` was wrong
-   here, but the failure mode is silent by construction, because the routine clamps between its `y`
-   endpoints in whichever order they arrive.
+1. **The four unaudited sites above**, each in its owning packet.
+2. **`heading_error_last_mean`.** With the flight now arriving, a terminal-geometry metric would
+   say more than a last-frame heading error. That is a harness question, not a reconstruction one.
