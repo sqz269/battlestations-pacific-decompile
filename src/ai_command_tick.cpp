@@ -52,6 +52,55 @@ AiOrderBridgeResult ai_order_bridge_00a02020(bool is_plane_squadron, bool squadr
     return result;
 }
 
+std::uint32_t ai_entity_class_weight_offset_009fdf30(int class_id) noexcept {
+    // The jump table at 009FDFF0, one entry per class id 6..1Ch, resolved arm
+    // by arm from the bodies at 009FDF43..009FDFE4. 14h, 18h, 19h and 1Ah point
+    // at the FLD1 default, as does any id outside the range.
+    switch (class_id) {
+    case 0x06: return 0x044u;  // OtherShip,       arm 009FDFD2
+    case 0x07: return 0x014u;  // Destroyer,       arm 009FDF66
+    case 0x08: return 0x018u;  // Submarine,       arm 009FDF6F
+    case 0x09: return 0x000u;  // MotherShip,      arm 009FDF43
+    case 0x0A: return 0x010u;  // Cruiser,         arm 009FDF5D
+    case 0x0B: return 0x020u;  // Cargo,           arm 009FDF81
+    case 0x0C: return 0x01Cu;  // LandingShip,     arm 009FDF78
+    case 0x0D: return 0x004u;  // BattleShip,      arm 009FDF4B
+    case 0x0E: return 0x024u;  // TBoat,           arm 009FDF8A
+    case 0x0F: return 0x048u;  // OtherPlane,      arm 009FDFDB
+    case 0x10: return 0x028u;  // LevelBomber,     arm 009FDF93
+    case 0x11: return 0x030u;  // TorpedoBomber,   arm 009FDFA5
+    case 0x12: return 0x034u;  // DiveBomber,      arm 009FDFAE
+    case 0x13: return 0x038u;  // Fighter,         arm 009FDFB7
+    case 0x15: return 0x03Cu;  // ReconPlaneSmall, arm 009FDFC0
+    case 0x16: return 0x040u;  // ReconPlaneLarge, arm 009FDFC9
+    case 0x17: return 0x02Cu;  // KamikazePlane,   arm 009FDF9C
+    case 0x1B: return 0x00Cu;  // Landfort,        arm 009FDFE4
+    case 0x1C: return 0x008u;  // CommandBuilding, arm 009FDF54
+    default: return 0xFFFFFFFFu;  // 009FDFED, FLD1
+    }
+}
+
+float ai_entity_leader_weight_009ffd80(float class_weight, bool is_ship_base,
+                                       bool is_one_of_three_group_classes) noexcept {
+    // 009FFD81 loads the 1.0f default, 009FFD9F replaces it with 100.0f on the
+    // IsKindOf(6) arm, 009FFDD6 with 0.01f on the 1Bh/45h/46h arm, and 009FFDEF
+    // multiplies the class weight by whichever survived.
+    float multiplier = kAiLeaderWeightDefaultMultiplier;
+    if (is_ship_base) {
+        multiplier = kAiLeaderWeightShipMultiplier;
+    } else if (is_one_of_three_group_classes) {
+        multiplier = kAiLeaderWeightGroupClassMultiplier;
+    }
+    return class_weight * multiplier;
+}
+
+bool ai_group_member_sorts_before_00a2d8e0(float candidate_weight,
+                                           float existing_weight) noexcept {
+    // 00A2D94A FCOMPI with the candidate in ST0, 00A2D94E JA. JA needs both CF
+    // and ZF clear, so an equal weight does not stop the walk.
+    return candidate_weight > existing_weight;
+}
+
 bool ai_group_leader_point_is_origin_00a10c20(std::uint32_t population) noexcept {
     // 00A10C20 CMP [ECX+5644h],0 / JNE, and the zero arm returns 00F87574.
     return population == 0u;

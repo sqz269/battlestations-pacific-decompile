@@ -1,0 +1,135 @@
+{
+  "packet": "cc8_torpedo_release_geometry",
+  "owner": "agent/cc8-torpedo-drop",
+  "doc": "docs/TORPEDO_RELEASE_GEOMETRY.md",
+  "tree_base": "7105166a3",
+  "supersedes_note": "cc8_torpedo_gun_assignment (7806064db) is superseded as a ROUTE to the release; its finding stands as the reason the gunnery route is impossible (00E0A1F0 is an empty preference row).",
+  "question": "Why does unit_forward_speed_0092d730 read 0.0 for a flying plane, and what altitude does the native fly a torpedo run-in at?",
+  "answer": "0092D730 dots the body's LINEAR VELOCITY from 00C31F40 with the third row of the body axis matrix from 00C32000. It reads the one body velocity and nothing else. In this host that field had a single writer, the ship hydro path through 00C37E50; the plane free-flight arm kept its velocity in a separate field and never published it, so every flying plane answered 0.0 while every ship answered correctly. That is exactly why USN02's ship torpedoes swim and USN01's air drop inherited no velocity. Fixed by publishing the plane's world velocity into the same field at both of its writers: verified 0.0 m/s before, -6.8 m/s after. The native run-in altitude is authored in scripts/datatables/robots.lua as TorpReleaseAlt, 12 m for SPNormal and 5 to 12 m across the rows; its Hungarian comment reads 'ilyen magasrol dobja a torpedot', the height it drops the torpedo from, so it is metres and not a scale. The host commands 700 m.",
+  "coverage": "complete for 0092D730 and the authored row; the commanded run-in altitude's producer is unread",
+  "calls": [],
+  "named_routines": [
+    {
+      "address": "0092d730",
+      "native": "0092d730",
+      "name": "BSP_UnitController_GetBodyAxisSpeed",
+      "abi": "float __thiscall(controller), RET 0, result on the x87 stack",
+      "coverage": "complete, body 0092D730-0092D76E"
+    }
+  ],
+  "no_ghidra_function": [],
+  "host_methods": [
+    {
+      "method": "plane body-velocity publish at the spawn seed and the free-flight integration",
+      "file": "src/game_hosts_units.cpp",
+      "native": "00c31f40",
+      "kind": "binding"
+    },
+    {
+      "method": "run-profile seed from the authored SPNormal row",
+      "file": "src/game_hosts_units.cpp",
+      "native": "009d0484",
+      "kind": "substitution",
+      "note": "the difficulty index at [[unit+DF4h]+34h] is unmodelled, so the row is named rather than chosen"
+    },
+    {
+      "method": "alt_margin_78 from TorpReleaseAlt",
+      "file": "src/game_hosts_units.cpp",
+      "native": "009d046a",
+      "kind": "substitution"
+    },
+    {
+      "method": "the three authored constants",
+      "file": "include/bsp/torpedo_release_spawn.hpp",
+      "native": null,
+      "kind": "authored data"
+    }
+  ],
+  "authored_rows": {
+    "source": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/datatables/robots.lua",
+    "SPNormal": {
+      "TorpReleaseAlt": 12,
+      "TorpReleaseDistNear": 450,
+      "TorpReleaseDistFar": 650
+    },
+    "SPVeteran": {
+      "TorpReleaseAlt": 5,
+      "TorpReleaseDistNear": 800,
+      "TorpReleaseDistFar": 1200
+    },
+    "MPNormal": {
+      "TorpReleaseAlt": 10,
+      "TorpReleaseDistNear": 800,
+      "TorpReleaseDistFar": 1200
+    },
+    "MPVeteran": {
+      "TorpReleaseAlt": 10,
+      "TorpReleaseDistNear": 800,
+      "TorpReleaseDistFar": 1200
+    }
+  },
+  "contracts": [
+    {
+      "what": "the PilotBot registry reference in the units host",
+      "status": "worked around, not closed",
+      "why": "wiring it touches src/game_hosts.cpp, which this worker may not edit; the values are named from the authored row instead"
+    },
+    {
+      "what": "desc.MaxSpd and Pilot/Torpedo/ReferenceSpeed",
+      "status": "unloaded",
+      "why": "the run-in speed; section 3 shows altitude alone cannot clear MaxWaterHitVel without it"
+    },
+    {
+      "what": "the producer of the commanded 700 m run-in altitude",
+      "status": "unread",
+      "why": "the floor pair is capped below 100 at 009D3489 so it cannot command 700; the source is elsewhere"
+    }
+  ],
+  "validation": {
+    "runner": "tools/run_game.ps1, 3200 frames, --mission-frames 3000 at 0.05 s, from this worktree",
+    "note": "The before run is this branch at 7806064db, before the merge of main 7105166a3 and before these changes. USN02 was not rerun: this packet's changes touch the plane path and the torpedo run profile, and USN02 carries no torpedo-armed aircraft, so its 71 torpedo guns are all ship tubes on the unchanged ship path. That is a stated scope reduction, not a measurement.",
+    "runs": [
+      {
+        "mission": "USN01",
+        "phase": "before",
+        "log": "local/usn01_geom_before.log",
+        "release_altitude_m": 700.0,
+        "release_speed_mps": 0.0,
+        "entry_speed_mps": 117.2,
+        "max_water_hit_vel_mps": 100.0,
+        "water_entry_breakups": 1,
+        "torpedo_drops": 1,
+        "swims_started": 0,
+        "torpedo_hits": 0,
+        "torpedo_damage": 0.0
+      },
+      {
+        "mission": "USN01",
+        "phase": "after",
+        "log": "local/usn01_geom_after.log",
+        "release_altitude_m": 700.0,
+        "release_speed_mps": -6.8,
+        "entry_speed_mps": 117.4,
+        "max_water_hit_vel_mps": 100.0,
+        "water_entry_breakups": 1,
+        "torpedo_drops": 1,
+        "swims_started": 0,
+        "torpedo_hits": 0,
+        "torpedo_damage": 0.0,
+        "plane_motion": {
+          "seed_mps": 141.67,
+          "distance_moved_m": 2132014.42,
+          "pose_rotations": 28129,
+          "heading_change_rad": 28.565
+        }
+      }
+    ],
+    "next_gate": {
+      "what": "the aircraft's velocity and its nose have come apart",
+      "native": "0092d730",
+      "value": "the dot product answers -6.8 m/s at the release instant while the mission seeds every plane at 141.67 m/s along its forward axis and moves 2132014 m over 60000 steps with 28129 pose rotations; a dot product near zero against a velocity of that magnitude means the two vectors are roughly perpendicular",
+      "next_measurement": "the magnitude of plane_world_velocity and its angle to pose_row2 at the release instant: near 141 m/s means the free-flight arm rotates the pose without turning the velocity, near zero means the aircraft has been decelerated to nothing",
+      "arithmetic": "at the authored 12 m release the fall contributes sqrt(2*9.81*12)=15.3 m/s, so a 50 m/s run-in enters at about 52 m/s and clears the 100 m/s limit, while a 141.67 m/s run-in enters at about 142 m/s and breaks up regardless of altitude"
+    }
+  }
+}

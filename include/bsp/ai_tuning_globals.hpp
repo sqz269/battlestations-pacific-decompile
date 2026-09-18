@@ -66,8 +66,15 @@ inline constexpr std::uint32_t kAiTuningFreeAttackObjectiveTargetMul = 0x1CC;
 inline constexpr std::uint32_t kAiTuningFreeAttackNearDist = 0x1D0;
 inline constexpr std::uint32_t kAiTuningFreeAttackFarDist = 0x1D4;
 inline constexpr std::uint32_t kAiTuningFreeAttackExistingTargetMul = 0x1D8;
+inline constexpr std::uint32_t kAiTuningCautionMoveDist = 0x1F0;
+inline constexpr std::uint32_t kAiTuningCloseAttackCollectDist = 0x1F4;
+inline constexpr std::uint32_t kAiTuningCloseAttackNearDist = 0x1F8;
+inline constexpr std::uint32_t kAiTuningCloseAttackFarDist = 0x1FC;
+inline constexpr std::uint32_t kAiTuningCloseAttackExistingTargetMul = 0x200;
+inline constexpr std::uint32_t kAiTuningCloseAttackTargetGroupMemberMul = 0x204;
 inline constexpr std::uint32_t kAiTuningAutoMergeMergeDist = 0x208;
 inline constexpr std::uint32_t kAiTuningAutoMergeLeaveDist = 0x20C;
+inline constexpr std::uint32_t kAiTuningFormationUnitDist = 0x210;
 
 // One key of the reconstructed subset. `image_default` is the float
 // BSP_LuaReference_GetFloatOrDefault (00B66330) answers when the key is absent,
@@ -78,7 +85,7 @@ struct AiTuningKey {
     float image_default;
 };
 
-inline constexpr std::size_t kAiTuningKeyCount = 6;
+inline constexpr std::size_t kAiTuningKeyCount = 33;
 const AiTuningKey* ai_tuning_keys() noexcept;
 
 // The block, addressed by record offset. Every slot outside the reconstructed
@@ -129,7 +136,25 @@ struct AiTuningAuthoredRow {
     float free_attack_existing_target_mul;
     float auto_merge_merge_dist;
     float auto_merge_leave_dist;
+    // The contiguous GetFloatOrDefault run 00A335D0 loads at +1F0h..+204h and
+    // +210h, added by packet cc8_ai_command_inputs so the move and attack ticks
+    // read real numbers.
+    float caution_move_dist;
+    float close_attack_collect_dist;
+    float close_attack_near_dist;
+    float close_attack_far_dist;
+    float close_attack_existing_target_mul;
+    float close_attack_target_group_member_mul;
+    float formation_unit_dist;
+    // +0h..+4Ch, the twenty per-unit-class target weights 009FDF30 indexes.
+    // These are GetNumber keys with no image default, so an unloaded block
+    // leaves them at zero and every leader weight collapses to zero with it.
+    float class_weight[20];
 };
+
+// The twenty per-class weight offsets, in record order.
+inline constexpr std::uint32_t kAiTuningClassWeightBase = 0x000u;
+inline constexpr std::size_t kAiTuningClassWeightCount = 20;
 
 const AiTuningAuthoredRow* ai_tuning_authored_row(AiTuningMode mode) noexcept;
 

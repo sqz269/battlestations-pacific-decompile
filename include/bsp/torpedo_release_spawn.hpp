@@ -14,6 +14,18 @@
 
 namespace bsp {
 
+// The PilotBot `SPNormal` row of the installed scripts/datatables/robots.lua,
+// the three torpedo-run values the aim tick's profile seed wants. Authored
+// content, not recovered code: the registry that would carry them into the
+// units host is not reachable from there, and the difficulty index at
+// [[unit+DF4h]+34h] that would pick the row is unmodelled, so the row is named
+// rather than chosen. SPVeteran authors 5 / 800 / 1200 and the two MP rows
+// 10 / 800 / 1200. docs/TORPEDO_RELEASE_GEOMETRY.md.
+inline constexpr float kTorpReleaseAltSPNormal = 12.0f;       // "TorpReleaseAlt", metres
+inline constexpr float kTorpReleaseDistNearSPNormal = 450.0f; // "TorpReleaseDistNear", metres
+inline constexpr float kTorpReleaseDistFarSPNormal = 650.0f;  // "TorpReleaseDistFar", metres
+
+
 // One channel of the block. The field names are hypotheses; the offsets are the
 // ones 007DE1E0 reads, relative to the channel base.
 struct PlaneActuatorChannel {

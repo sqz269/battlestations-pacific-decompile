@@ -1785,6 +1785,12 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
                     slot->plane_world_velocity[2] = 141.666672f;
                 }
             }
+            // The same mirror as the integration step: the body velocity field
+            // 0092D730 reads has to hold the seed too, or the first frames of a
+            // plane's life answer 0.0 m/s. docs/TORPEDO_RELEASE_GEOMETRY.md.
+            slot->motion.linear_velocity = bsp::OceanVec3{
+                slot->plane_world_velocity[0], slot->plane_world_velocity[1],
+                slot->plane_world_velocity[2]};
             slot->plane_velocity_seeded = true;
             host.log.notef("plane spawn: unit=%s heading=%.2f deg forward=(%.4f %.4f %.4f)"
                 " seed=(%.2f %.2f %.2f)", row.name.c_str(),
@@ -2491,6 +2497,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plane_world_velocity[i] += world_accel[i] * step;
                             unit_.motion.position[i] += unit_.plane_world_velocity[i] * step;
                         }
+                        // 0092D730 takes the body's linear velocity from
+                        // 00C31F40 and dots it with the third row of the body
+                        // axis matrix. It does not care what moved the body, so
+                        // the ONE body velocity field has to carry a plane's
+                        // motion as well as a ship's. Only the ship hydro path
+                        // wrote it (set_linear_velocity_00c37e50), so
+                        // unit_forward_speed_0092d730 answered 0.0 for every
+                        // flying plane, and an air-dropped torpedo inherited no
+                        // velocity at all. docs/TORPEDO_RELEASE_GEOMETRY.md.
+                        unit_.motion.linear_velocity = bsp::OceanVec3{
+                            unit_.plane_world_velocity[0],
+                            unit_.plane_world_velocity[1],
+                            unit_.plane_world_velocity[2]};
                         // The 3D step length. The seed no longer lies along
                         // world +Z, so one component would understate it.
                         const float* const wv = unit_.plane_world_velocity;
@@ -3238,14 +3257,43 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // PilotBot registry, which this units host cannot
                             // reach, and desc.MaxSpd, which the Lua row does not
                             // load. Both are the contract in the doc.
+                            // SUBSTITUTION, labelled, replacing an older one.
+                            // The registry is still out of reach, but the values
+                            // the registry would carry are authored in the
+                            // installed scripts/datatables/robots.lua and can be
+                            // named exactly instead of stood in for by an
+                            // altitude default. The `SPNormal` row:
+                            //   TorpReleaseDistNear 450  -> approach+7Ch
+                            //   TorpReleaseDistFar  650  -> approach+80h
+                            //   TorpReleaseAlt       12  -> scales approach+78h
+                            // The row's own Hungarian comment on TorpReleaseAlt
+                            // reads "ilyen magasrol dobja a torpedot", the height
+                            // it drops the torpedo from, so it is metres of
+                            // release altitude and not a scale factor on one.
+                            //
+                            // WHICH row is the substitution: the difficulty index
+                            // at [[unit+DF4h]+34h] is unmodelled, so SPNormal is
+                            // picked and named. SPVeteran authors 5/800/1200 and
+                            // the MP rows 10/800/1200, so the altitude this host
+                            // commands is within a factor of about two of any of
+                            // them and the distances within a factor of two.
+                            // docs/TORPEDO_RELEASE_GEOMETRY.md.
                             owner_.log.unimplemented(
                                 "TorpedoApproach::run_profile_record_14h", "009d0484");
                             const bsp::TorpedoRunSpeeds seeded =
                                 bsp::torpedo_seed_run_speeds_009d0484(
-                                    bsp::kPilotTorpedoCruisingAltDefault,
-                                    bsp::kPilotTorpedoCruisingAltDefault, 1.0f);
+                                    kTorpReleaseDistNearSPNormal,
+                                    kTorpReleaseDistFarSPNormal, 1.0f);
                             ap.speed_early_80 = seeded.speed_early_80;
                             ap.speed_late_7c = seeded.speed_late_7c;
+                            // 009D046A scales approach+78h by the row's
+                            // TorpReleaseAlt. approach+74h stays where
+                            // 009D3489 puts it, from the control block's
+                            // second altitude under the ceiling of 100 at
+                            // 00D7A220, so the floor the aim tick reads is
+                            // alt_floor_74 + alt_margin_78 and this is the
+                            // margin half of it.
+                            ap.alt_margin_78 = kTorpReleaseAltSPNormal;
                             // ctl+3D0h[0], the flight leader: the only task
                             // whose 0099B740 raises the shared attack mode.
                             bool lead_taken = false;
