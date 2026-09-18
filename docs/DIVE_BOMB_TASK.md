@@ -594,3 +594,16 @@ census above stands; USN01 was run with the fix in and shows the identical patte
 | `approach+D4h`, `+50h`, `(approach+14h)->+5Ch`, `->+60h` all zero or one | no producer read. The lead stays 0 and the gain 1, so the aim error is the bare along-track miss | `009C5C20`, `009C5C69` |
 | the flyabove tick's three flags | `009C62B0` has no Ghidra function; the host stands in with the planar range against `Pilot/DiveBomb/SafeDist` | `009C62B0` |
 | two rounds per aircraft | `006E3500`'s per-device count is unread; this is the cap the aimglide salvo loop clamps against | `007C1DB0` |
+
+### USN02 after: the wiring is provably inert
+
+`local/usn02_after.log`. The mission carries no aircraft, and the run's own line is
+`summary mission pilot attack: no unit was ever ordered at a target the yaw arm could plan for`.
+The dive-bomb census prints nothing at all: zero `divebomb` lines and no
+`summary mission dive-bomb task`. That is identity by construction rather than by comparison, since
+`run_dive_bomb_task_arm_009c8790` returns before doing anything when `command_target_plus_one` is 0,
+which is the first test in its body. The gunnery, damage and world-unit summaries are the standing
+USN02 ones (`queued_hits=168 deaths=3 total_damage=20721.4`, `world units=32`).
+
+An earlier USN02 attempt was refused rather than run: `tools/run_game.ps1` gave up after 900 s with
+the machine-wide lock held by `cc8-ai-squadron`. That attempt produced no log and is discarded.
