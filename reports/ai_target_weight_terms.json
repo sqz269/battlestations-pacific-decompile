@@ -26,19 +26,31 @@
    "address": "00a04560",
    "name": "BSP_Ai_EntityRecordBuild",
    "abi": "__fastcall(ECX = out, EDX = entity) -> record, RET 4, body 00a04560..00a046b5",
-   "coverage": "partial; the body's steps are read but the mapping of its seven pushed arguments onto 00A00020's slots is not settled"
+   "coverage": "complete for the body and for the seven-argument mapping, settled with tools/frame_slot_census.py --pop 00a04615=4 --pop 00a0462c=4 --pop 00a0465b=4 --pop 00a04672=4; 00A04240 is unread"
   },
   {
    "address": "00a00020",
    "name": "BSP_Ai_EntityRecordConstruct",
    "abi": "__thiscall(record, 7 stack args), body 00a00020..00a0009b",
-   "coverage": "partial; every store is read by offset, the argument order is not, because 00A00031 PUSH ESI shifts the slots between the first three reads and the rest"
+   "coverage": "complete; the seven reads fall on seven consecutive slots K=-4 through K=-28, which is arguments one to seven in order"
   },
   {
    "address": "00a08460",
    "name": "BSP_Ai_TargetWeight",
    "abi": "cited from docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md",
    "coverage": "not re-read; this packet supplies its host and the switch that runs it"
+  },
+  {
+   "address": "0072ab80",
+   "name": "BSP_GunClass_MuzzleCount",
+   "abi": "__thiscall(gunClass) -> int, RET 0, body 0072ab80..0072abd1",
+   "coverage": "complete"
+  },
+  {
+   "address": "00a04240",
+   "name": "(unnamed)",
+   "abi": "__thiscall(entity) -> float in ST0",
+   "coverage": "call site only; contract: unread"
   }
  ],
  "host_calls": [
@@ -147,13 +159,13 @@
    "record": "the AI per-entity record",
    "size": "at least 0x20",
    "producer": "00a04560 then 00a00020",
-   "fields": "+0h the first stack argument (00A00038); +4h and +8h the pose X and Z from the pointer argument (00A00040, 00A0004A); +0Ch a byte (00A0005B); +10h the second stack argument (00A0005E); +14h the third, a float (00A0004D); +1Ch a later one (00A00061). The argument ORDER is not settled"
+   "fields": "SETTLED. +0h the CLASS DESCRIPTOR, entity+538h for a unit base or entity+35Ch for a plane squadron; +4h and +8h the pose X and Z; +0Ch the byte 1; +10h ALWAYS ZERO, from 00A04650 XOR EDI,EDI, which is the attacker_class key field 00A0F83C reads; +14h 009FDF30's class weight for the entity's +C4h class id times 00A04240(entity); +18h the 00419010 interpolation over 00A371A0's [record+50h] and [record+54h], re-rolled through 00BD2F10 when it is negative; +1Ch the SETNZ of CMP [entity+54h],2, the side being two or more, which is what 00A08460 receives as target_is_neutral"
   },
   {
    "record": "GameAiWeaponFacts",
    "size": "host-side",
-   "producer": "nothing yet; one publish call from the gunnery host",
-   "fields": "per unit: hit_points for target+48h, capture_state for target+4Ch, and a flattened barrel list of reload, accuracy and shots for the 48h-stride entries at subsystem+74h/+78h that 00A095E3's walk reaches"
+   "producer": "GameGunneryHost::Impl::publish_ai_weapon_facts, called at the end of GameGunneryHost::fixed_step where the rows are complete for the step",
+   "fields": "per unit: hit_points from the gunnery row's max_health for target+48h, capture_state zero for target+4Ch, and one barrel entry per gun row carrying the reload time and the muzzle count from gun+448h as the shots argument. The accuracy 009FE270 computes is the one input with no producer, so inputs_complete stays false"
   }
  ],
  "constants": [
@@ -180,6 +192,18 @@
    "was": "the virtual at vtable +110h floored at zero, with the zero also written back to +164h",
    "is": "the floor is right and the ceiling is missing: 00923C27 compares against 1.0f and 00923C34 clamps down, and BOTH arms cache, not only the zero one",
    "evidence": "00923C21..00923C41"
+  },
+  {
+   "doc": "the ledger record for 0072AB80, in the same packet's own earlier line",
+   "was": "the magic 2AAAAAABh with SAR EDX,1 divides the byte difference by six",
+   "is": "it divides by twelve, as the cc7_gun_mount_positions record already said. The consequence is that the count is stored to gun+448h, which this host carries as GameGunRow::barrel_num, so the shots argument IS available and is published",
+   "evidence": "2AAAAAABh / 2^33 = 1/0Ch; 0072E71A stores the result to gun+448h"
+  },
+  {
+   "doc": "docs/AI_TARGET_WEIGHT.md and this packet's term 2",
+   "was": "the candidate's class weight from 009FDF30 stands in for 00A08460's base term",
+   "is": "the class weight is natively one factor of record+14h, the target scale, not the inner weight. It moves to target_scale and the base term becomes the identity 1.0f, so the product is unchanged and it cannot be double-counted when the model turns on",
+   "evidence": "00A045EE reads entity+C4h, 00A045F4 calls 009FDF30, 00A04604 multiplies, 00A0460F stores argument three"
   }
  ],
  "validation": {
@@ -190,14 +214,15 @@
    "torn_down_targets": "0; a non-zero value means the liveness filter above the weight is not doing what term 1 claims",
    "model_runs": "0 until the gunnery host publishes weapon rows",
    "class_stand_ins": "equal to the query count, the complement of model_runs",
-   "weapon_rows": "0",
+   "weapon_rows": "non-zero once a mission has guns; the publish call is in the gunnery step now. model_runs stays zero while inputs_complete is false",
    "served_attackmove_settarget": "unchanged from docs/AI_TARGET_WEIGHT.md: term 1 halves every weight uniformly and terms 2 to 4 are inert, so no ordering moves"
   }
  },
  "remaining": [
-  "00A00020's argument order, which blocks the meaning of record +14h, +18h and +1Ch and therefore terms 3 and 4. It needs the same frame-walk treatment 00A0F810 got, because 00A00031 PUSH ESI shifts the slots mid-body",
-  "one publish call from the gunnery host into game_ai_weapon_facts(), which turns term 2 on",
+  "009FE270, the per-barrel accuracy, the one model input still without a producer",
+  "00A04240, the second factor of record+14h",
   "the attacker vtable[+18h] type-group codes, shared with AiTargetWeightModelHost::entity_is_type; settling one settles both",
+  "00A371A0's [record+50h] and [record+54h], the two tuning offsets record+18h interpolates over",
   "009FE200 the distance falloff, 00424C40+3B0h the capture scale, and the 00A03B90/00A079B0 memo pair",
   "the six-mission census, blocked on the machine's audio endpoint"
  ]
