@@ -418,7 +418,15 @@ inline constexpr float kLatchBank = 2.6179940700531006f;   // 00D1FED0, 150 deg
 inline constexpr float kPitchHoldBand = 0.3490658700466156f;  // 00CE398C, 20 deg
 inline constexpr float kEaseOffAngle = 0.5235987901687622f;   // 00CEC724, 30 deg
 inline constexpr float kFullPitchAngle = 0.05235987901687622f;  // 00D0CBA0, 3 deg
-inline constexpr float kSpeedTuning = 0.0f;  // tuning+24Ch, read by 007C47F0
+// 007C47F0 = tuning+24Ch * classDesc+184h. Both halves are named elsewhere:
+// docs/GAME_TUNING_SINGLETON.md row +24Ch is Dynamics/SpdMultipliers/LevelFlight,
+// default 1.8, and docs/PLANE_FLIGHT.md row +184h is the authored StallSpd,
+// default 17.5. docs/PLANE_GROUND_OPS.md step 6 already forms the same product.
+// So the turndown's desired speed is the level-flight speed, about 31.5 m/s on
+// a default class. The record at approach+8h is the plane class descriptor:
+// 009C7A94 reads its +188h MaxSpd through the same pointer.
+inline constexpr float kLevelFlightMultiplier = 1.8f;   // tuning+24Ch
+inline constexpr float kStallSpeedDefault = 17.5f;      // classDesc+184h
 }  // namespace dive_bomb_turndown_constant
 
 struct DiveBombTurnDownInputs {
@@ -426,7 +434,8 @@ struct DiveBombTurnDownInputs {
     float pitch_c64 = 0.0f;      // pose+C64h, 009C4666
     bool rolled_latch_1c = false;  // state+1Ch, 009C45A9
     float roll_command_18 = 0.0f;  // state+18h, what 009C7800 wrote
-    // 007C47F0(approach+8h) = tuning+24Ch * (approach+8h)->+184h, 009C450D.
+    // 007C47F0(approach+8h) at 009C450D: LevelFlight * StallSpd, the
+    // level-flight speed. approach+8h is the plane class descriptor.
     float desired_speed = 0.0f;
 };
 struct DiveBombTurnDownResult {

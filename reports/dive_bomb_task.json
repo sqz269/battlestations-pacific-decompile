@@ -464,7 +464,7 @@
     {
       "address": "007c47f0",
       "native": "007c47f0",
-      "name": "BSP_BotApproach_DesiredSpeedFromClass"
+      "name": "BSP_PlaneClass_LevelFlightSpeed"
     }
   ],
   "no_ghidra_function": [
@@ -556,7 +556,8 @@
     "00d7a264": "float pi, written to cmd+2C4h when the roll axis is released",
     "00d1fed0": "float 2.6179941 (150 deg), the turndown latch",
     "00ce398c": "float 0.34906587 (20 deg), the turndown pitch/altitude split",
-    "00d0cba0": "float 0.052359879 (3 deg), full nose-down stick"
+    "00d0cba0": "float 0.052359879 (3 deg), full nose-down stick",
+    "00...24c": "tuning+24Ch Dynamics/SpdMultipliers/LevelFlight, default 1.8, one half of the turndown's desired speed; classDesc+184h StallSpd, default 17.5, is the other"
   },
   "uncertainty": "The aimdive release gate's units are SETTLED: 009C59D6 writes the aircraft's height above the target (aircraft.y - targetPoint.y), both BSP_Math_InterpolateClamped calls (009C5C49, 009C5C92) are keyed on it over the window [approach+A8h + 100.0, approach+ACh + approach+50h], and 009C5C97 multiplies the second call's dimensionless gain into cos(bearingError) * planarDistance - lead. So the quantity at 009C5C9B is a signed along-track miss distance in metres and the 25.0 at 00CE3880 is a 25-metre release window, not an angle. What remains open: the two y endpoints (approach->+14h)->+5Ch and +60h have no producer read, and approach+D4h and approach+B8h, the ranges the dive abort and the in-range latch key on, have none either. The aimglide release's four frame slots ([ESP+10h], [ESP+14h], [ESP+18h], [ESP+20h]) were not traced to their producers; its gates, its constants and its salvo loop are transcribed, the geometry behind them is not. The approach update's tail 009C7C5B-009C7E9E is read for its outputs only. The flyabove, turndown, goaway and attackrun ticks are censused for their writes, not transcribed.",
   "validation": {
