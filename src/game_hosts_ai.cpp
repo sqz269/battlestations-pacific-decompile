@@ -615,6 +615,28 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // here; NONCONTROL and IDLE still reach 00A10EC0, which was not read.
         bsp::AiCommandObject* cmd = static_cast<bsp::AiCommandObject*>(command);
         if (cmd == nullptr) return;
+        // 00A12A90's gate, instrumented: MOVETOATTACK promotes to CLOSEATTACK
+        // only when the leader stops being a groupable combatant or the two
+        // leader points close to within CloseAttack_CollectDist. A group that
+        // never closes never reaches 00A13B60 at all.
+        if (cmd->type == bsp::AiCommandType::MoveToAttack && diag_moveto_lines < 20) {
+            ++diag_moveto_lines;
+            Group* g = group_at(cmd->owner_group);
+            float own[3] = {0.0f, 0.0f, 0.0f};
+            float tgt[3] = {0.0f, 0.0f, 0.0f};
+            if (g != nullptr) tick_leader_point(g, own);
+            if (cmd->target_group != nullptr) tick_leader_point(cmd->target_group, tgt);
+            log.notef("  ai diag movetoattack leader=%s dist=%.1f collect=%.1f groupable=%d "
+                "members=%zu",
+                (g == nullptr || g->members.empty())
+                    ? "" : unit_name(g->members.front()).c_str(),
+                static_cast<double>(tick_horizontal_distance(own, tgt)),
+                static_cast<double>(tuning.at(bsp::kAiTuningCloseAttackCollectDist)),
+                (g == nullptr || g->members.empty()) ? 0
+                    : (bsp::ai_entity_is_groupable_combatant_009fe080(
+                           combatant_facts(g->members.front())) ? 1 : 0),
+                g == nullptr ? std::size_t{0} : g->members.size());
+        }
         const bsp::AiCommandTickResult tick = bsp::ai_command_tick_vt000c(*this, *cmd);
         // 00A15490 and 00A15500 both end in 00A13B60, with the target group's
         // leader point and 1.5f for CLOSEATTACK and the own group's and 1.0f
@@ -649,7 +671,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // ---- bsp::AiCloseAttackTickHost, one method per native call -----------
     std::size_t close_member_count(void* group) override { return group_member_count(group); }
     void* close_member_at(void* group, std::size_t index) override {
-        return group_member_at(group, index);
+        void* member = group_member_at(group, index);
+        if (member != nullptr) diag_close_member(member);
+        return member;
     }
     bool close_member_is_ship_base(void* member) override {
         return tick_member_is_ship_base(member);
@@ -659,6 +683,21 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
     bool close_member_squadron_excluded(void* member) override {
         return tick_squadron_excluded_007eda90(member);
+    }
+    // 00A143ED PUSH 18h, 00A14402 PUSH 17h, 00A1440C the +C24h byte, 00A14413
+    // JE, then the other arm's 00A14427 PUSH 6 and 00A1443D vtable[+2Ch]. One
+    // line per member with every input's value on this run.
+    void diag_close_member(void* member) {
+        if (diag_member_lines >= 48) return;
+        ++diag_member_lines;
+        const std::size_t index = unit_index_of(member);
+        const bool squadron = tick_member_is_plane_squadron(member);
+        const bool excluded = squadron && tick_squadron_excluded_007eda90(member);
+        const bool ship = tick_member_is_ship_base(member);
+        log.notef("  ai diag close member=%s squadron_18h=%d excluded_007eda90=%d "
+            "ship_base_6=%d busy=%d served=%d",
+            unit_name(index).c_str(), squadron ? 1 : 0, excluded ? 1 : 0, ship ? 1 : 0, 0,
+            bsp::ai_close_attack_member_served(squadron, excluded, ship, false) ? 1 : 0);
     }
     bool close_member_controller_busy(void* member) override {
         // member+538h through its vtable[+2Ch] at 00A1443D; contract unread.
@@ -957,6 +996,13 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return handle(seed_cursor);
     }
     std::size_t seed_cursor{0};
+    // Packet cc8_ai_squadron_served: a bounded diagnostic of the inputs the
+    // close-attack member gate 00A143ED and the planner's owned-group walk
+    // read. Bounded so a 3000-step run cannot flood the log.
+    int diag_planner_lines{0};
+    int diag_member_lines{0};
+    int diag_order_lines{0};
+    int diag_moveto_lines{0};
 
     bsp::AiGroupCandidateFlags entity_flags(void* entity) override {
         return unit_flags(unit_index_of(entity));
@@ -1071,6 +1117,18 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         in.first_owned_group = p->owned.empty() ? nullptr : static_cast<void*>(p->owned.front());
         in.own_team = current_party;
         ticking_planner = p;
+        if (diag_planner_lines < 24) {
+            ++diag_planner_lines;
+            Group* first = p->owned.empty() ? nullptr : p->owned.front();
+            log.notef("  ai diag planner kind=%d owned=%zu first_group_members=%zu "
+                "first_leader=%s first_command=%d enemy_groups=%u",
+                static_cast<int>(p->kind), p->owned.size(),
+                first == nullptr ? std::size_t{0} : first->members.size(),
+                (first == nullptr || first->members.empty())
+                    ? "" : unit_name(first->members.front()).c_str(),
+                first == nullptr ? -1 : static_cast<int>(first->command.type),
+                enemy_team_group_count(bsp::ai_enemy_team_index(current_party)));
+        }
         bsp::ai_mode_planner_tick(*this, in);
         ticking_planner = nullptr;
         record("AiPlanners::planner_tick", 0x00a26510u);
@@ -1110,12 +1168,27 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return false;
     }
     bool group_has_member_in_world_set(void* group, int set_index) override {
-        // 00A2C450, body read in full. The world sets are the entity
-        // collections this process does not build, so the answer is the group's
-        // own team against the brain's set index.
-        Group* g = group_at(group);
+        // 00A2C450, body read in full: it walks the group's member list at
+        // +563Ch/+5640h and calls 008DDF90 BSP_SzurkeNyil_ContainsUnit on each
+        // member against the entity set [00E188A8] + set_index*4 + 21A4h,
+        // returning true at 00A2C4AB on the first member found in it and false
+        // at 00A2C4B4 when the walk ends.
+        //
+        // This process builds no entity set at world+21A4h. Running the native
+        // routine against an empty set finds no member, so its answer here is
+        // FALSE, and false is what this returns. The earlier stand-in answered
+        // "the group's own team equals the brain's set index", which is true
+        // for every group a brain walks, and that is the one answer 00A2C450
+        // could not give against an empty set. Its consequence was visible:
+        // 00A18269 JNZ then sends every group of the party to the FIRST planner
+        // (brain+0h) instead of the fourth (brain+0Ch), so one planner owned
+        // both of IJN01's party-0 groups and 00A1CB80 orders only the first of
+        // them, which after 00A2E260's split is the non-groupable remainder.
+        // docs/AI_SQUADRON_SERVED.md carries the measurement.
+        (void)group;
+        (void)set_index;
         record("AiParties::group_has_member_in_world_set", 0x00a2c450u);
-        return g != nullptr && g->team == set_index;
+        return false;
     }
     void planner_claim_group(void* planner, void* group) override {
         Planner* p = static_cast<Planner*>(planner);
@@ -1414,6 +1487,16 @@ void GameAiCoordinatorHost::Impl::order_attack(void* group, void* target, float 
     replacement.owner_group = g;
     replacement.target_group = t;
     g->command = replacement;
+    if (diag_order_lines < 12) {
+        ++diag_order_lines;
+        log.notef("  ai diag order_attack group_members=%zu group_leader=%s "
+            "target_members=%zu target_leader=%s cautious=%d",
+            g->members.size(),
+            g->members.empty() ? "" : unit_name(g->members.front()).c_str(),
+            t->members.size(),
+            t->members.empty() ? "" : unit_name(t->members.front()).c_str(),
+            cautious ? 1 : 0);
+    }
     ++summary.attack_orders;
     if (cautious) ++summary.attack_cautious;
     else ++summary.attack_movetoattack;

@@ -498,3 +498,20 @@ did not say, and both matter to anyone wiring the torpedo chain:
 
 Measured: with step 4's altitude half bound, USN01 goes from 0 torpedo drops to 5, with the rest of
 the mission unchanged to the tenth of a damage point. `docs/TORPEDO_RUN_IN_DESCENT.md`.
+
+## Correction from docs/DIVE_BOMB_TASK.md (packet `cc8_dive_bomb_task`)
+
+The open question "whether `cmd->+2A8h`/`+2ACh` (written `0` and `1` by both `attackrun` ticks) is
+a second weapon channel" is answered: it is not a weapon channel. `docs/PILOT_CONTROLS.md` row 4
+pairs `+2A4h`/`+2A8h`/`+2ACh` with `unit+9F4h`, and `docs/PILOT_COMMAND_PATH.md` names `unit+9F4h`
+`airBrakeInput`. The dive-bomb `aimdive` tick writes it at `009C6071` in the same breath as the
+throttle at `009C605F`, which is what an air brake on a dive is for. This packet did not re-read
+`009A3770` or `009D07B0`, so the claim is about the field, not about those two sites.
+
+The command-block offset table can be extended with the three raw axes the dive-bomb `aimdive` tick
+`009C58D0` writes, which no state read by the earlier packets touches: `+29Ch`/`+2A0h` pitch with
+mode `+2D0h` (`009C5CFA`, `009C5D15`, `009C5D1C`), `+290h`/`+294h` roll with mode `+2CCh`
+(`009C5DA3`, `009C5DAB`, `009C5DB2`) and `+284h`/`+288h` yaw with mode `+2D4h` (`009C5E5D`,
+`009C5E3F`, `009C5E63`). The dive commands every axis directly with mode `0`; the `aimglide` tick
+`009C5180` uses the autopilot fields `+2BCh`/`+2C0h`/`+2C4h` instead. That contrast is the whole
+difference between the class's dive and its glide.

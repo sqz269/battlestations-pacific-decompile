@@ -169,3 +169,22 @@ Attribution.
 | `ai_candidate_target_weight` | `00A0F810`, `00A08460` | the real target weight, so the choice stops running on a class-weight stand-in |
 | `ai_cautious_approach_pass` | `00A14DD0`-`00A152A7` | the third base's pass and why it issues `clearorders` |
 | `ai_group_plane_squadrons` | the seed phase, `009FE0B0` | why IJN01's and USN01's attack groups are loose aircraft rather than squadrons, which is what keeps both missions' ticks idle |
+
+## Correction from docs/PLANE_SQUADRON_ENTITY.md
+
+Appended by packet `cc8_plane_squadron_entity`. The text above is left as written.
+
+The plane-squadron row of the member-gate table (the one reading "served unless the carrier link
+passes `007EDA90`'s shape inline", with the sites `00A143ED`, `00A14402` `PUSH 17h`, `00A1440C`
+`+C24h`, `00A14413` `JE`) describes the inline copy of `007EDA90` correctly but names its object
+wrongly. `[squadron+3D0h]` is the squadron's **flight leader**, the first entry of its five-slot
+member plane array, not a carrier; `17h` is `MPlaneKamikaze`; and the byte at `+C24h` is the
+authored `PilotFires`. The evidence is in `docs/PLANE_SQUADRON_ENTITY.md` sections 1 and 2 and is
+repeated in the correction appended to `docs/AI_COMMAND_LIFETIME.md`.
+
+The follow-up row `ai_group_plane_squadrons` ("why IJN01's and USN01's attack groups are loose
+aircraft rather than squadrons") was answered by packet `cc8_plane_squadron_entity`: this process
+created no `PlaneSquadronGen` at all, because the scene loader makes one unit per scene entity and
+an aircraft scene entity **is** a squadron. Both missions now build squadrons (33 on IJN01, 20 on
+USN01) and both hold them as group members. That did **not** make `served` non-zero; packet
+`cc8_ai_squadron_served` and `docs/AI_SQUADRON_SERVED.md` carry what does.
