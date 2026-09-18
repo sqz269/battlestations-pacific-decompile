@@ -357,6 +357,14 @@ float dive_bomb_turn_direction_009c7800(int sign, float magnitude_draw) noexcept
     return magnitude_draw * side;
 }
 
+// 009C67C7-009C680E.
+bool dive_bomb_flyabove_can_dive_009c680e(float height_above_target,
+                                          float release_range_d4) noexcept {
+    // 009C67EA FLD [approach+D4h], 009C67F0 FXCH, 009C67F2 FCOMIP ST0,ST1 with
+    // ST0 = the height and ST1 = the range, 009C67F6 JBE to the XOR EAX,EAX.
+    return height_above_target > release_range_d4;
+}
+
 // 009C4220-009C447D, the attackrun tick.
 DiveBombAttackRunResult dive_bomb_attackrun_tick_009c4220(
     const DiveBombAttackRunInputs& in) noexcept {
