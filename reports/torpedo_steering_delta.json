@@ -308,5 +308,16 @@
     "1_degenerate_substitution": "slot.motion.max_speed (VehicleClass+500h) is 0.0f on an aircraft. The class row exists - the run reports all 77 units carrying one - but planes take no speed from it. 009D1500's speed == 0 guard then returns F0C = 0.0000 every tick, so clause 2 fires on the FIRST aim tick. local/usn01_after.log: goaway entries 96 -> 208 per aircraft, transitions 176 -> 419. Closest approach did improve, 920.9 m -> 473.5 m, because the aircraft stop orbiting and press in, but a time-to-target of zero at 2196 m is not defensible and the value was reverted.",
     "2_dimensional_argument_does_not_hold": "009D1500's third arm divides by the double 600.0 at 00D20198, which is not a physical aircraft speed. F0C is an urgency number, not an ETA, and clause 2 compares it against radians. So the right magnitude for the speed slots cannot be argued from dimensions, and 500 may sit in the range the native intends. What stays true: the host takes the number from Pilot/Torpedo/CruisingAlt, an altitude constant that is not evidence for any speed, while the native takes it from an unread run profile record.",
     "what_the_census_settled": "unit+C6Ch and the hull heading are the same number to four decimals on every census row, on all five aircraft at every sample. That confirms the rule 1 and 2 convention analysis empirically and confirms the prediction that the unit_heading_vtable50 producer fix is numerically neutral. Separately, at aim tick 51 of the degenerate run the delta was already 0.8948 rad with cone_open=1, so the cone is not the binding constraint and the nose does come round; clause 2 is what ends the run-in."
+  },
+  "blocking_follow_up": {
+    "what": "the producer of approach+14h (a float table pointer) and approach+24h (its scale)",
+    "record_layout_as_read_by_009d0380": {
+      "record+0h": "009D046A FMUL [EDI], scales the draw that becomes approach+78h",
+      "record+4h": "009D0484, approach+7Ch = record+4h * approach+24h, the late run speed",
+      "record+8h": "009D0494, approach+80h = record+8h * approach+24h, the early run speed",
+      "record+Ch": "009D049D, the next slot in the same chain"
+    },
+    "why_unread": "neither +14h nor +24h is written anywhere in 009D0380-009D066F, and a scan of the whole torpedo bot band 009D0000-009D5200 finds no writer of the approach's +14h. The five mov [reg+14h] hits there are 009D06B1, 009D06F8, 009D0B91, 009D1249 and 009D2F22; the nearest in shape, 009D06F8 in BSP_BotStateTorpedoAttackRun_Construct, stores EAX after 009D06F0 XOR EAX,EAX and so zero-initialises a DIFFERENT object. The producer is outside the band.",
+    "consequence": "until it is read, no value for the two speed slots has any evidence behind it. The host keeps a labelled placeholder rather than a second guess, after the first guess (max_speed) measured as degenerate."
   }
 }

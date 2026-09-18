@@ -421,8 +421,29 @@ the aircraft's commanded heading reverses about every 1.7 s.
 
 ## Follow-up packets
 
-0. **Seed the two run speeds with a speed.** The fix rule 4 establishes, in
-   `src/game_hosts_units.cpp:3105-3106`, once that file is free. Expect it to move the
+0. **Read the producer of `approach+14h` and `approach+24h`. This is the blocking
+   follow-up and the packet could not close without it.** `+14h` is a pointer to a small
+   float table and `+24h` a scalar that multiplies two of its fields. The table's layout,
+   as far as `BSP_BotApproachTorpedo_Reset` reads it:
+
+   | Field | Read at | Used for |
+   |---|---|---|
+   | `record+0h` | `009D046A` `FMUL [EDI]` | scales the draw that becomes `approach+78h` |
+   | `record+4h` | `009D0484` | `approach+7Ch = record+4h * approach+24h`, the late run speed |
+   | `record+8h` | `009D0494` | `approach+80h = record+8h * approach+24h`, the early run speed |
+   | `record+Ch` | `009D049D` | the next slot in the same chain |
+
+   Neither `+14h` nor `+24h` is written anywhere in `009D0380`-`009D066F`, and a scan of
+   the whole torpedo bot band `009D0000`-`009D5200` finds no writer of the approach's
+   `+14h` either: the four `mov [reg+14h]` hits there are `009D06B1`, `009D06F8`,
+   `009D0B91`, `009D1249` and `009D2F22`, and the one nearest in shape, `009D06F8` in
+   `BSP_BotStateTorpedoAttackRun_Construct`, stores `EAX` after `009D06F0 XOR EAX,EAX`,
+   so it zero-initialises a **different** object. The producer is outside the band and
+   unread. Until it is read, no value for these two slots has any evidence behind it, and
+   the host keeps a labelled placeholder rather than a second guess.
+
+1. **Seeding the two run speeds** then follows from that, in
+   `src/game_hosts_units.cpp`. Expect it to move the
    clause-2 break-off from 1268 m to about 890 m and to stop the aim/goaway cycle. Do
    **not** expect a release from it alone: at the aggregate turn rate this run shows,
    0.039 rad/s if all 29.086 rad of `heading_change` belongs to the five bombers, closing
