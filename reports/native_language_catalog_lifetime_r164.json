@@ -1,0 +1,788 @@
+{
+  "packet": "orch4_native_language_catalog_lifetime_r164",
+  "status": "three_complete_normal_catalog_lifetime_bodies_native_compared",
+  "scope": {
+    "addresses": [
+      "008d5aa0",
+      "00cd2da0",
+      "00cdeea0"
+    ],
+    "native_body_bytes": 150,
+    "vector_header_bytes": 12,
+    "ordinary_application_bound": false
+  },
+  "contract": "Actual signed resize with wrapped slot arithmetic,zero construction,pre-destruction count decrement and current row reload;shutdown reload/free leaving dead fields;static atexit registration with returned status. Explicit source failure operation,not original ABI.",
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "entry": "008d5aa0",
+        "length": 113,
+        "kind": "resize",
+        "hex": "5356578b7c24108bf13b7e087e0657e80cffffff8b46043bc77d308bc88bd7c1e1052bd033db8b0603c17417891889580489580889580c89581089581489581889581c83c12083ea0175db3b7e047d1883cbff015e048b4e04c1e105030ee84df4ffff3b7e047ceb897e045f5e5bc20400",
+        "sha256": "8d23e213a8a3dc6d59e1429968f2919cbc8bc9ea086a18b4f2bbaed3f31baf8b",
+        "instructions": [
+          {
+            "address": "008d5aa0",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "008d5aa1",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "008d5aa2",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "008d5aa3",
+            "hex": "8b7c2410",
+            "text": "mov edi, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "008d5aa7",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "008d5aa9",
+            "hex": "3b7e08",
+            "text": "cmp edi, dword ptr [esi + 8]"
+          },
+          {
+            "address": "008d5aac",
+            "hex": "7e06",
+            "text": "jle 0x8d5ab4"
+          },
+          {
+            "address": "008d5aae",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "008d5aaf",
+            "hex": "e80cffffff",
+            "text": "call 0x8d59c0"
+          },
+          {
+            "address": "008d5ab4",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "008d5ab7",
+            "hex": "3bc7",
+            "text": "cmp eax, edi"
+          },
+          {
+            "address": "008d5ab9",
+            "hex": "7d30",
+            "text": "jge 0x8d5aeb"
+          },
+          {
+            "address": "008d5abb",
+            "hex": "8bc8",
+            "text": "mov ecx, eax"
+          },
+          {
+            "address": "008d5abd",
+            "hex": "8bd7",
+            "text": "mov edx, edi"
+          },
+          {
+            "address": "008d5abf",
+            "hex": "c1e105",
+            "text": "shl ecx, 5"
+          },
+          {
+            "address": "008d5ac2",
+            "hex": "2bd0",
+            "text": "sub edx, eax"
+          },
+          {
+            "address": "008d5ac4",
+            "hex": "33db",
+            "text": "xor ebx, ebx"
+          },
+          {
+            "address": "008d5ac6",
+            "hex": "8b06",
+            "text": "mov eax, dword ptr [esi]"
+          },
+          {
+            "address": "008d5ac8",
+            "hex": "03c1",
+            "text": "add eax, ecx"
+          },
+          {
+            "address": "008d5aca",
+            "hex": "7417",
+            "text": "je 0x8d5ae3"
+          },
+          {
+            "address": "008d5acc",
+            "hex": "8918",
+            "text": "mov dword ptr [eax], ebx"
+          },
+          {
+            "address": "008d5ace",
+            "hex": "895804",
+            "text": "mov dword ptr [eax + 4], ebx"
+          },
+          {
+            "address": "008d5ad1",
+            "hex": "895808",
+            "text": "mov dword ptr [eax + 8], ebx"
+          },
+          {
+            "address": "008d5ad4",
+            "hex": "89580c",
+            "text": "mov dword ptr [eax + 0xc], ebx"
+          },
+          {
+            "address": "008d5ad7",
+            "hex": "895810",
+            "text": "mov dword ptr [eax + 0x10], ebx"
+          },
+          {
+            "address": "008d5ada",
+            "hex": "895814",
+            "text": "mov dword ptr [eax + 0x14], ebx"
+          },
+          {
+            "address": "008d5add",
+            "hex": "895818",
+            "text": "mov dword ptr [eax + 0x18], ebx"
+          },
+          {
+            "address": "008d5ae0",
+            "hex": "89581c",
+            "text": "mov dword ptr [eax + 0x1c], ebx"
+          },
+          {
+            "address": "008d5ae3",
+            "hex": "83c120",
+            "text": "add ecx, 0x20"
+          },
+          {
+            "address": "008d5ae6",
+            "hex": "83ea01",
+            "text": "sub edx, 1"
+          },
+          {
+            "address": "008d5ae9",
+            "hex": "75db",
+            "text": "jne 0x8d5ac6"
+          },
+          {
+            "address": "008d5aeb",
+            "hex": "3b7e04",
+            "text": "cmp edi, dword ptr [esi + 4]"
+          },
+          {
+            "address": "008d5aee",
+            "hex": "7d18",
+            "text": "jge 0x8d5b08"
+          },
+          {
+            "address": "008d5af0",
+            "hex": "83cbff",
+            "text": "or ebx, 0xffffffff"
+          },
+          {
+            "address": "008d5af3",
+            "hex": "015e04",
+            "text": "add dword ptr [esi + 4], ebx"
+          },
+          {
+            "address": "008d5af6",
+            "hex": "8b4e04",
+            "text": "mov ecx, dword ptr [esi + 4]"
+          },
+          {
+            "address": "008d5af9",
+            "hex": "c1e105",
+            "text": "shl ecx, 5"
+          },
+          {
+            "address": "008d5afc",
+            "hex": "030e",
+            "text": "add ecx, dword ptr [esi]"
+          },
+          {
+            "address": "008d5afe",
+            "hex": "e84df4ffff",
+            "text": "call 0x8d4f50"
+          },
+          {
+            "address": "008d5b03",
+            "hex": "3b7e04",
+            "text": "cmp edi, dword ptr [esi + 4]"
+          },
+          {
+            "address": "008d5b06",
+            "hex": "7ceb",
+            "text": "jl 0x8d5af3"
+          },
+          {
+            "address": "008d5b08",
+            "hex": "897e04",
+            "text": "mov dword ptr [esi + 4], edi"
+          },
+          {
+            "address": "008d5b0b",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "008d5b0c",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "008d5b0d",
+            "hex": "5b",
+            "text": "pop ebx"
+          },
+          {
+            "address": "008d5b0e",
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ]
+      },
+      {
+        "entry": "00cd2da0",
+        "length": 12,
+        "kind": "registration",
+        "hex": "68a0eecd00e84b42f2ff59c3",
+        "sha256": "22bf2bacba36b18e236a587de5113d2f1f49dc2b6e5366a639fb5ef38e2404db",
+        "instructions": [
+          {
+            "address": "00cd2da0",
+            "hex": "68a0eecd00",
+            "text": "push 0xcdeea0"
+          },
+          {
+            "address": "00cd2da5",
+            "hex": "e84b42f2ff",
+            "text": "call 0xbf6ff5"
+          },
+          {
+            "address": "00cd2daa",
+            "hex": "59",
+            "text": "pop ecx"
+          },
+          {
+            "address": "00cd2dab",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "entry": "00cdeea0",
+        "length": 25,
+        "kind": "shutdown",
+        "hex": "6a00b97489f800e8f46bbfffa17489f80050e8d27af1ff59c3",
+        "sha256": "ed2577424eb896c1ec283303eef2460b776401ce59eb5713797152353d1cf909",
+        "instructions": [
+          {
+            "address": "00cdeea0",
+            "hex": "6a00",
+            "text": "push 0"
+          },
+          {
+            "address": "00cdeea2",
+            "hex": "b97489f800",
+            "text": "mov ecx, 0xf88974"
+          },
+          {
+            "address": "00cdeea7",
+            "hex": "e8f46bbfff",
+            "text": "call 0x8d5aa0"
+          },
+          {
+            "address": "00cdeeac",
+            "hex": "a17489f800",
+            "text": "mov eax, dword ptr [0xf88974]"
+          },
+          {
+            "address": "00cdeeb1",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00cdeeb2",
+            "hex": "e8d27af1ff",
+            "text": "call 0xbf6989"
+          },
+          {
+            "address": "00cdeeb7",
+            "hex": "59",
+            "text": "pop ecx"
+          },
+          {
+            "address": "00cdeeb8",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "entry": "00f88974",
+        "length": 12,
+        "kind": "data",
+        "hex": "000000000000000000000000",
+        "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+        "instructions": []
+      }
+    ],
+    "live_verified_bytes": 162,
+    "call_rows": [
+      {
+        "address": "008d5aaf",
+        "native": "008d59c0",
+        "function": "008d5aa0",
+        "kind": "call"
+      },
+      {
+        "address": "008d5afe",
+        "native": "008d4f50",
+        "function": "008d5aa0",
+        "kind": "call"
+      },
+      {
+        "address": "00cd2da5",
+        "native": "00bf6ff5",
+        "function": "00cd2da0",
+        "kind": "call"
+      },
+      {
+        "address": "00cdeea7",
+        "native": "008d5aa0",
+        "function": "00cdeea0",
+        "kind": "call"
+      },
+      {
+        "address": "00cdeeb2",
+        "native": "00bf6989",
+        "function": "00cdeea0",
+        "kind": "call"
+      }
+    ],
+    "flow_check": "008d5aa0: 46 listed instructions, 0 gap(s)\n00cd2da0: 4 listed instructions, 0 gap(s)\n00cdeea0: 8 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n",
+    "definition_and_tail_receipts": {
+      "definition": {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00cd2da0",
+              "end_address": "00cd2dac"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00cd2da0",
+              "end_address": "00cd2dab",
+              "bytes_disassembled": 12,
+              "message": "Successfully disassembled 12 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00cd2da0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00cd2da0",
+              "function_name": "FUN_00cd2da0",
+              "entry_point": "00cd2da0",
+              "body_size": 12,
+              "message": "Function created successfully at 00cd2da0"
+            }
+          },
+          {
+            "defined": "00cd2da0",
+            "end": "00cd2dac",
+            "name": null,
+            "after": "Function: FUN_00cd2da0 at 00cd2da0\nSignature: undefined FUN_00cd2da0(void)\nEntry: 00cd2da0\nBody: 00cd2da0 - 00cd2dab"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      },
+      "shutdown_definition": {
+        "events": [
+          {
+            "recreate": "00cdeea0",
+            "previous": "Function: CG_static_init_00cdeea0 at 00cdeea0\nSignature: undefined CG_static_init_00cdeea0(void)\nEntry: 00cdeea0\nBody: 00cdeea0 - 00cdeeb6",
+            "plate": "[BSP inventory 00cdeea0] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00cdeea0"
+            },
+            "result": {
+              "success": true,
+              "address": "00cdeea0",
+              "deleted_function": "CG_static_init_00cdeea0",
+              "body_size": 23,
+              "message": "Function 'CG_static_init_00cdeea0' deleted at 00cdeea0"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00cdeea0",
+              "end_address": "00cdeeb9"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00cdeea0",
+              "end_address": "00cdeeb8",
+              "bytes_disassembled": 25,
+              "message": "Successfully disassembled 25 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00cdeea0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00cdeea0",
+              "function_name": "CG_static_init_00cdeea0",
+              "entry_point": "00cdeea0",
+              "body_size": 23,
+              "message": "Function created successfully at 00cdeea0"
+            }
+          },
+          {
+            "endpoint": "set_plate_comment",
+            "body": {
+              "address": "00cdeea0",
+              "comment": "[BSP inventory 00cdeea0] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+            },
+            "result": {
+              "status": "success",
+              "message": "Set plate comment for function at 00cdeea0",
+              "warnings": [
+                "Plate comment missing Algorithm section",
+                "Plate comment missing Parameters section",
+                "Plate comment missing Returns section"
+              ]
+            }
+          },
+          {
+            "defined": "00cdeea0",
+            "end": "00cdeeb9",
+            "name": null,
+            "after": "Function: CG_static_init_00cdeea0 at 00cdeea0\nSignature: undefined CG_static_init_00cdeea0(void)\nEntry: 00cdeea0\nBody: 00cdeea0 - 00cdeeb6"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "recreate": "00cdeea0",
+            "previous": "Function: CG_static_init_00cdeea0 at 00cdeea0\nSignature: undefined CG_static_init_00cdeea0(void)\nEntry: 00cdeea0\nBody: 00cdeea0 - 00cdeeb6",
+            "plate": "[BSP inventory 00cdeea0] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00cdeea0"
+            },
+            "result": {
+              "success": true,
+              "address": "00cdeea0",
+              "deleted_function": "CG_static_init_00cdeea0",
+              "body_size": 23,
+              "message": "Function 'CG_static_init_00cdeea0' deleted at 00cdeea0"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00cdeea0",
+              "end_address": "00cdeeb9"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00cdeea0",
+              "end_address": "00cdeeb8",
+              "bytes_disassembled": 25,
+              "message": "Successfully disassembled 25 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00cdeea0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00cdeea0",
+              "function_name": "CG_static_init_00cdeea0",
+              "entry_point": "00cdeea0",
+              "body_size": 25,
+              "message": "Function created successfully at 00cdeea0"
+            }
+          },
+          {
+            "endpoint": "set_plate_comment",
+            "body": {
+              "address": "00cdeea0",
+              "comment": "[BSP inventory 00cdeea0] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+            },
+            "result": {
+              "status": "success",
+              "message": "Set plate comment for function at 00cdeea0",
+              "warnings": [
+                "Plate comment missing Algorithm section",
+                "Plate comment missing Parameters section",
+                "Plate comment missing Returns section"
+              ]
+            }
+          },
+          {
+            "defined": "00cdeea0",
+            "end": "00cdeeb9",
+            "name": null,
+            "after": "Function: CG_static_init_00cdeea0 at 00cdeea0\nSignature: undefined CG_static_init_00cdeea0(void)\nEntry: 00cdeea0\nBody: 00cdeea0 - 00cdeeb8"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      },
+      "tail": {
+        "repairs": [
+          {
+            "function": "00cdeea0",
+            "owner": "agent/orch4-20260915",
+            "when": "2026-09-18T21:52:58Z",
+            "decompile_lines_before": 12,
+            "gaps": [
+              {
+                "site": "00cdeeb2",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00cdeeb7",
+                "gap_end_exclusive": "00cdeeb9",
+                "bytes": 2,
+                "after_call": true,
+                "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00cdeeb2",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00cdeeb7",
+                  "gap_end_exclusive": "00cdeeb9",
+                  "bytes": 2,
+                  "after_call": true,
+                  "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+                },
+                "clear": "Success: Cleared flow override at 00cdeeb2 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 2 byte(s)"
+              },
+              {
+                "explicit_tail_call": "00cdeeb2",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00cdeeb2 (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "00cdeeb9",
+            "explicit_tail_terminator": "ret",
+            "explicit_body_sha256": "ed2577424eb896c1ec283303eef2460b776401ce59eb5713797152353d1cf909",
+            "body_before": "Function: CG_static_init_00cdeea0 at 00cdeea0\nSignature: undefined CG_static_init_00cdeea0(void)\nEntry: 00cdeea0\nBody: 00cdeea0 - 00cdeeb6",
+            "decompile_lines_after": 12,
+            "gaps_remaining": 1,
+            "body_after": "Function: CG_static_init_00cdeea0 at 00cdeea0\nSignature: undefined CG_static_init_00cdeea0(void)\nEntry: 00cdeea0\nBody: 00cdeea0 - 00cdeeb6",
+            "stored_body_tail_complete": false,
+            "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+          }
+        ]
+      }
+    },
+    "forced_snapshot": "function count 64185 -> 64186; taking snapshot\nInventory 63744/64186\ncall graph missing or older than the snapshot: running tools/callgraph_sweep.py\nbuilt local/bsp_index.sqlite: {'functions': 63744, 'calls': 133443, 'datarefs': 33028, 'segments': 98, 'docs': 2267, 'doc_addresses': 77127}\n"
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "result": {
+      "library_sha256": "43BED7910490D10DD8FC72B2032238A6FCFD1DF639A83225439288B8088E689E",
+      "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+      "exit": 0,
+      "exe_sha256": "0F9E1F7A11D0B2CDE17B3DEF3EFB11EDF4C98D96C16102819B8FD8BAD8FA992A"
+    },
+    "paired_groups": 11,
+    "matching_observed_bytes": 768,
+    "resize_groups": 6,
+    "shutdown_groups": 3,
+    "registration_groups": 2,
+    "observed": "header count/capacity,live row strings and dead row headers,pooled return identity/order,allocation/free trace,callback identity and return EAX,explicit unused-row preimage preservation",
+    "normalization": "allocation presence and reclaimed row-member identity;controlled negative-count backing and zero-slot inputs",
+    "source_retained_failure_cases": 1,
+    "replay_rejected": true,
+    "raw_pool_drained": true,
+    "source_bin_sha256": "c901580bcb961f7cbdf5cf0ec4c724e033556eca0605753363fba81aedc8af32",
+    "source_sha256_by_path": {
+      "include/bsp/native_language_catalog_lifetime.hpp": "183c438d2b781196cc916b09aaabf4868466f2a0f188f751680d31c4383d4d92",
+      "src/native_language_catalog_lifetime.cpp": "38b774b3503e72d0817743bc6e127657bda716ff96858b520a355b0ea9c46802",
+      "cmake/startup.cmake": "e4c1f95602b18f3ce9970c347740eb13c9d33416fd88be2a7322c46055628fc5"
+    },
+    "source_lf_sha256": {
+      "include/bsp/native_language_catalog_lifetime.hpp": "183c438d2b781196cc916b09aaabf4868466f2a0f188f751680d31c4383d4d92",
+      "src/native_language_catalog_lifetime.cpp": "38b774b3503e72d0817743bc6e127657bda716ff96858b520a355b0ea9c46802",
+      "cmake/startup.cmake": "e4c1f95602b18f3ce9970c347740eb13c9d33416fd88be2a7322c46055628fc5"
+    },
+    "dependency_sha256": {
+      "local/language_catalog_lifetime_r164/probe.cpp": "e57924b8ec35d42fd46b8a1e3562c3415e6e4755947dc23097cb6ddea1140c2a",
+      "include/bsp/native_language_catalog_lifetime.hpp": "183c438d2b781196cc916b09aaabf4868466f2a0f188f751680d31c4383d4d92",
+      "include/bsp/native_language_catalog_storage.hpp": "8f97115eb96e6c75802024832e0a634ba52ef814ed39ec0cba6bd75c120ff021",
+      "include/bsp/native_stream_text_scanner.hpp": "9c89098d70ef5d6e0929cd93d3e0ea4850e47507a08e42bde63a2241195f40e5",
+      "include/bsp/native_string.hpp": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414",
+      "include/bsp/storage_pool.hpp": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+      "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "include/bsp/native_string_pool_owner.hpp": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff",
+      "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "include/bsp/game_entry.hpp": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f",
+      "include/bsp/system_time_constants.hpp": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+      "include/bsp/frame_clock.hpp": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b",
+      "include/bsp/render_tail.hpp": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+      "include/bsp/camera_transform.hpp": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+      "include/bsp/camera_projection.hpp": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+      "include/bsp/native_singleton_publication.hpp": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5",
+      "include/bsp/native_singleton_destruction.hpp": "bbe4031ec975a4fd14be3419f5cb5f9cf6929374e6bf84dc400b123006880389",
+      "local/language_catalog_lifetime_r164/original.inc": "5700f5e6d447e3c51174a88cb3c02e098617efa856a2f9c7b56e6b5f31747afc"
+    },
+    "library_sha256": "43bed7910490d10dd8fc72b2032238a6fcfd1df639a83225439288b8088e689e",
+    "game_sha256": "b5cb873958e727d74ea8cd9f1da120ec0cdd71ab4480d984f5a2af88f22649ba",
+    "call_verification": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\reports\\native_language_catalog_lifetime_r164.json: 5 call rows checked, 0 failed\n"
+  },
+  "limits": [
+    "Both lanes share existing R162 reserve/row destruction and actual source raw pool/manager helpers;only three new caller bodies are copied here",
+    "Callback registration inspected and invoked explicitly;host CRT atexit internals and process-exit ordering not compared",
+    "Controlled allocation/global/free preimages;no asynchronous mutation or hardware faults",
+    "No original ABI,FH3/SEH,private stack alias,ordinary application binding or gameplay proof",
+    "Raw producer008D7BC0 and actual settings/application ownership remain open"
+  ],
+  "owned_files": [
+    "include/bsp/native_language_catalog_lifetime.hpp",
+    "src/native_language_catalog_lifetime.cpp",
+    "cmake/startup.cmake",
+    "docs/NATIVE_LANGUAGE_CATALOG_LIFETIME_R164.md",
+    "reports/native_language_catalog_lifetime_r164.json",
+    "config/names/008d0000.jsonl",
+    "config/reconstruction/008d0000.jsonl",
+    "config/names/00cd0000.jsonl",
+    "config/reconstruction/00cd0000.jsonl"
+  ],
+  "ghidra_annotations": {
+    "prior_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\ghidra-annotations-20260918T220041Z.json",
+    "prior_values": [
+      {
+        "address": "008d5aa0",
+        "before": {
+          "address": "008d5aa0",
+          "function_name": "FUN_008d5aa0"
+        },
+        "after": {
+          "address": "008d5aa0",
+          "name": "BSP_LanguageEntryVector_Resize",
+          "evidence": "Complete113B,ECXactual0Chheader,stack signedcount,RET4. Signedcapacitycomparison/reserve8D5AAF. Capturepost-reservecount,wrappedrowoffset,zero8wordspernonzeroslot. Shrink decrementsCURRENTcount BEFOREcurrentlastrow8D4F50 at8D5AFE,thenreloads count. Publishrequestedcountlast. No addednegativeguard. Descriptive hypothesis,not recovered symbol. R164 three complete normal bodies150B,162live/PEbytes,5CALLrows. CD2DA0 defined;CDEEA0 free continuation CDEEB7 POP ECX,CDEEB8 RET repaired under lock then stored body recreated,saved/exported/snapshot refreshed. StrictWin32/3CTests;11pairedgroups768matchingobservedbytes. Shared R162 reserve/rowdestructor and actual source pool/manager;controlled preimages and callbacks. Source-only post-shrink freefailure retained/replayrejected/manuallycleaned. Not originalABI,FH3/SEH,private-stack alias,asynchronous race,hardware-fault,host atexit internals,ordinary binding or gameplay proof. docs/NATIVE_LANGUAGE_CATALOG_LIFETIME_R164.md;reports/native_language_catalog_lifetime_r164.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cd2da0",
+        "before": {
+          "address": "00cd2da0",
+          "function_name": "FUN_00cd2da0"
+        },
+        "after": {
+          "address": "00cd2da0",
+          "name": "BSP_LanguageCatalog_RegisterShutdown",
+          "evidence": "Complete12B,noinputs,RET,EAXatexitresult. PushCDEEA0,callBF6FF5 atCD2DA5,popECX,return. No headerconstruction/stores. Sourcecaller suppliesstableboundshutdownthunk. Descriptive hypothesis,not recovered symbol. R164 three complete normal bodies150B,162live/PEbytes,5CALLrows. CD2DA0 defined;CDEEA0 free continuation CDEEB7 POP ECX,CDEEB8 RET repaired under lock then stored body recreated,saved/exported/snapshot refreshed. StrictWin32/3CTests;11pairedgroups768matchingobservedbytes. Shared R162 reserve/rowdestructor and actual source pool/manager;controlled preimages and callbacks. Source-only post-shrink freefailure retained/replayrejected/manuallycleaned. Not originalABI,FH3/SEH,private-stack alias,asynchronous race,hardware-fault,host atexit internals,ordinary binding or gameplay proof. docs/NATIVE_LANGUAGE_CATALOG_LIFETIME_R164.md;reports/native_language_catalog_lifetime_r164.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cdeea0",
+        "before": {
+          "address": "00cdeea0",
+          "function_name": "CG_static_init_00cdeea0",
+          "comment": "[BSP inventory 00cdeea0] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+        },
+        "after": {
+          "address": "00cdeea0",
+          "name": "BSP_LanguageCatalog_Shutdown",
+          "evidence": "Complete25B,noinputs,RET. ResizeactualF88974 tozero atCDEEA7;reloadCURRENTbacking atCDEEAC;BF6989 atCDEEB2. Leavepointer/capacitydead and preserve callbackstores. FinalPOP/RET restored;previousgenericstatic-initname corrected. Descriptive hypothesis,not recovered symbol. R164 three complete normal bodies150B,162live/PEbytes,5CALLrows. CD2DA0 defined;CDEEA0 free continuation CDEEB7 POP ECX,CDEEB8 RET repaired under lock then stored body recreated,saved/exported/snapshot refreshed. StrictWin32/3CTests;11pairedgroups768matchingobservedbytes. Shared R162 reserve/rowdestructor and actual source pool/manager;controlled preimages and callbacks. Source-only post-shrink freefailure retained/replayrejected/manuallycleaned. Not originalABI,FH3/SEH,private-stack alias,asynchronous race,hardware-fault,host atexit internals,ordinary binding or gameplay proof. docs/NATIVE_LANGUAGE_CATALOG_LIFETIME_R164.md;reports/native_language_catalog_lifetime_r164.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "readback_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\language_catalog_lifetime_r164\\comments-after.json",
+    "readback_sha256": "4e235dfd3334c1ba05b69eaae5fc677f780a504a035068dd16fd6f6495621e62",
+    "status": "Three catalog lifetime bodies saved under write lock;prior values preserved,readback checked,exports refreshed"
+  },
+  "ledger_receipts": [
+    "008d5aa0 -> BSP_LanguageEntryVector_Resize\n",
+    "008d5aa0 function resize_native_language_catalog_008d5aa0\n",
+    "00cd2da0 -> BSP_LanguageCatalog_RegisterShutdown\n",
+    "00cd2da0 function register_native_language_catalog_shutdown_00cd2da0\n",
+    "00cdeea0 -> BSP_LanguageCatalog_Shutdown\n",
+    "00cdeea0 function shutdown_native_language_catalog_00cdeea0\n"
+  ],
+  "tested_artifact_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r164\\native-language-catalog-lifetime-tested-r164.zip",
+    "sha256": "e7cc5114f298a8e4e1d48b0bc0b038e32d90672400b7bb2cd8bd84b9f1577c0c",
+    "files": 88,
+    "head": "b02ea638d64031425791ae3428d143816813db46"
+  }
+}
