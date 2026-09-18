@@ -217,3 +217,50 @@ baseline, where the ordered aircraft start 1488 m from their targets and enter `
    substitution.
 3. **`task+438h`'s producer.**
 4. **The plan throttle slot's writers**, image-wide, which needs the plan record's slot-0 offset.
+
+
+## Correction from its own follow-up 4: the throttle census is done
+
+Appended, not rewriting section 6.
+
+Section 6 leaves "what sets a bot plane's throttle" open and says an image-wide census "would need
+the plan record's byte offset for slot 0's `desired`, which this packet did not establish". The
+offset is `plan+278h` - base `plan+274h`, stride `0Ch`, slot 0 - from
+`docs/PILOT_PLAN_SLOT_PIPELINE.md`'s own table, and the census is run.
+
+The writer is `0099D300 BSP_PilotBot_PlanControls`, in four places: a centred-stick arm that sets
+1.0, a speed-hold arm, a floor and a **ceiling at 0.6**. No task state writes the slot, which is why
+this tick and the attack-run tick and the aim tick all came up empty. `docs/PILOT_BOT_THROTTLE_ARM.md`.
+
+
+## Correction from packet `cc8_torpedo_aim_alt_and_safe_dist`: both substitutions were the depth charge's
+
+Appended, not rewriting sections 3 and 5.
+
+Section 3 takes the move-to state's `+30h`/`+34h`/`+38h` for the torpedo task from
+`docs/BOT_TASK_STATES.md` line 160. **That line is step 3 of "The depth-charge per-tick,
+`009A66C0`"**, not of the torpedo arm, so its `approach+3Ch + approach+34h` and its `task+438h` are
+the depth charge's fields and this doc carried them across wrongly.
+
+The torpedo task's own call is at `009D48CF` inside `009D4850 BSP_BotTaskTorpedo_TickArm`:
+
+```
+009d4884  JBE   009d4890                  ; approach+134h vs 15.0 [00CF3F20]
+009d4886  MOVSS XMM0,[EDI + 0x80]         ; TorpReleaseDistFar,  before 15 s
+009d4890  MOVSS XMM0,[EDI + 0x7c]         ; TorpReleaseDistNear, at or after
+009d48af  FADD  [EDI + 0x74]              ; approach+78h + approach+74h
+009d48cf  CALL  009bde80
+```
+
+so `+30h` and `+34h` are the **release altitude** `approach+74h + approach+78h`, 12 m in this
+installation, and `+38h` is the **release distance**, 450 or 650 on the 15-second switch. The
+constructor `009D2DA0` builds the same expressions at `009D2E14`-`009D2E2E`, so a state that is
+never refreshed still gets them.
+
+**And the 700 is a coincidence.** An exhaustive census over offset `438h` finds two writers below
+`00A00000`: the tuning loader's `Pilot/Torpedo/SafeDist`, and `009BCEB8 MOV dword ptr [ESI+0x438],
+0x00D20900` - an immediate data pointer, so the task record's `+438h` is not a float.
+
+Section 5 items 3 and 4 are therefore **retired**: the glide slope can be wired with no
+substitution, from values this host already computes.
+`docs/TORPEDO_AIM_ALT_AND_SAFE_DIST.md`.

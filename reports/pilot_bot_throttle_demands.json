@@ -1,0 +1,75 @@
+{
+ "packet": "cc8_pilot_throttle_demands",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/PILOT_BOT_THROTTLE_DEMANDS.md",
+ "tree_base": "6f3a7f799",
+ "result": "Pure function added; no caller yet. CORRECTS docs/PILOT_BOT_THROTTLE_ARM.md's headline.",
+ "question": "What are the four throttle arms of 0099D300 computed from, and what gates each?",
+ "answer": "They are four arms with four different gates, and two of them are ground handling. 0099D8FD CMP [EDX+900h],5 and 0099D904 JNZ 0099DC9E put both the demand at 0099DC31 and the cap at 0099DC8F inside unit+900h == 5, a ground-roll state, so a flying plane never reaches either - the 0.6 at 00CE3D30 is a TAXI CAP, not an in-flight cut, which corrects docs/PILOT_BOT_THROTTLE_ARM.md. The centred-stick arm at 0099D399 is gated on plan+26Ch == 2 and the per-slot byte at [unit + 9C2h + 8*[00F876B8]] being set on both plan+2F0h and plan+270h; it writes every axis to zero and the throttle to 1.0. The one-shot at 0099D8CF is gated on plan+2D8h != 0 at 0099D7A5 - which is what leaves 0.001f from 00D7A23C in XMM0 and jumps to the arm - then plan+2D8h == 1 and 0.001f > plan+2B4h; XMM0 is that CONSTANT and not a demand, because 0099D8BF JMP 0099D8F7 means the arm is reached only by those jumps. 0.001f is below the 0.01f thrust gate at 007DB76C, so the arm switches the engine off, deploys the air brake and clears plan+2D8h at 0099D8EB. It is the only throttle write a plane in state 7 can reach besides the centred-stick arm. The ground demand is one signed value seeded from the slot's own current or desired at 0099D977-0099D998, accumulated at 0099DBC3, clamped into [-1, 1] by 00415690 and split by two 00415550 calls: the throttle takes max(0.001f, d) and the air brake max(0.0f, -d), so one axis drives both controls.",
+ "coverage": "complete for all four gates and for three of the four arms' rules; PARTIAL for the ground demand's increment chain 0099D9A3-0099DBAB (about 130 instructions, not transcribed) and for XMM3 at 0099D8DD.",
+ "calls": [
+  {
+   "address": "0099d99e",
+   "native": "007d99c0",
+   "function": "0099d300",
+   "what": "the forward speed the ground demand's increment starts from; 0099D9A3 divides it by [EBP]"
+  },
+  {
+   "address": "0099dbf4",
+   "native": "00415690",
+   "function": "0099d300",
+   "what": "BSP_Math_ClampFloatByRef, the demand into [-1.0 (00D7A260), 1.0 (00D7A24C)]"
+  },
+  {
+   "address": "0099dc2c",
+   "native": "00415550",
+   "function": "0099d300",
+   "what": "BSP_Math_MaxFloatByRef against 0.001f; 0099DC31 stores the result as the throttle"
+  },
+  {
+   "address": "0099dc46",
+   "native": "00415550",
+   "function": "0099d300",
+   "what": "the same against 0.0f over the negated demand; 0099DC4B stores it as the air brake"
+  }
+ ],
+ "named_routines": [
+  {
+   "native": "0099d300",
+   "name": "BSP_PilotBot_PlanControls",
+   "abi": "__thiscall(plan), Ghidra body 0099D300-0099EBAB; ESI is the plan from 0099D305 and EDI is zero from 0099D307",
+   "coverage": "complete for the four throttle gates and three of the four rules; the ground increment chain is partial",
+   "what": "the four throttle arms and their gates, as the answer records. The state test at 0099D8FD is what makes two of them ground handling."
+  }
+ ],
+ "no_ghidra_function": [],
+ "host_methods": [
+  {
+   "host": "pilot_plan_throttle_0099d300",
+   "file": "src/plane_ai_control.cpp",
+   "kind": "reconstruction, ground increment partial",
+   "note": "no caller yet; the binding waits for src/game_hosts_units.cpp with the glide-slope wiring"
+  }
+ ],
+ "contracts": [
+  "The ground demand's increment chain, 0099D9A3-0099DBAB, and the speed reference [EBP] at 0099D9A3.",
+  "XMM3 at 0099D8DD, the one-shot's air-brake value. 0099DC59 sets XMM3 to 1.0 from 00D7A24C on the ground path, the only load this packet read.",
+  "plan+2B4h, the one-shot's threshold.",
+  "What raises plan+2D8h to 1. Every torpedo-chain site read so far writes zero (009D0AC5, 009D1F6B).",
+  "plan+26Ch == 2 and the unit+9C2h per-slot byte the centred-stick gate reads.",
+  "plan+270h and plan+2F0h as two distinct unit pointers."
+ ],
+ "corrections": [
+  {
+   "target": "docs/PILOT_BOT_THROTTLE_ARM.md sections 2 and 3",
+   "was": "the native cuts a bot's throttle to 0.6, and the host's full-throttle dives are a missing cut",
+   "is": "the 0.6 and the ground demand are both inside unit+900h == 5, so they are taxi handling; a flying plane reaches only the centred-stick arm and the plan+2D8h one-shot, and the image's flying bots hold their throttle too",
+   "evidence": "0099D8FD, 0099D904, 0099DC7A-0099DC8F, 0099D7A5-0099D8EB",
+   "status": "appended and verified present"
+  }
+ ],
+ "validation": {
+  "runner": "none",
+  "note": "The pure function has no caller. The census it will move is reserved for the combined wiring commit, against docs/PLANE_ALTITUDE_HOLD_AND_SURFACE.md's numbers as the before column - and on this packet's evidence it will NOT move the dive numbers unless the plan+2D8h raiser is found too."
+ }
+}

@@ -215,3 +215,26 @@ computation that shapes the approach descent at the move-to site.
 That does not change anything here: the attack-run site still passes `approach+90h` as both
 arguments, its `scale` is still discarded, and passing a zero range pair there is still exactly
 right. `009A3770` and `009A4010` remain unread. `docs/TORPEDO_MOVETO_TICK.md`.
+
+
+## Correction from the `cc8_torpedo_moveto_tick` follow-up: the planner writes the throttle
+
+Appended, not rewriting section 3.
+
+Section 3 says "**No routine in the torpedo chain read so far writes it**" and the contracts list
+"what sets a bot's throttle at all" as open. The first half is right and stays right; the question
+is now answered, and the answer is that no *task* arm writes it - the **planner** does.
+
+An exhaustive `store_census` over the throttle slot's `desired` at `plan+278h`
+(base `plan+274h`, stride `0Ch`, slot 0) returns four writes inside
+`0099D300 BSP_PilotBot_PlanControls`, on the `ESI` that `0099D305 MOV ESI,ECX` makes the plan:
+
+* `0099D399`, the centred-stick arm, writes `[00D7A24C]` = **1.0** and raises the slot's `active`
+  byte at `0099D3A1` - which is the pair that proves the record is the plan;
+* `0099D8CF`, the speed-hold arm, writes a demand that exceeded `plan+2B4h`, with the air brake
+  beside it at `0099D8DD`;
+* `0099DC31`, a floor through `00415550 BSP_Math_MaxFloatByRef`;
+* `0099DC8F`, a **ceiling that pins the throttle to `[00CE3D30]` = 0.6**.
+
+**So the native does cut a bot's throttle, and this doc looked for it in the right spirit and the
+wrong place.** `docs/PILOT_BOT_THROTTLE_ARM.md`.

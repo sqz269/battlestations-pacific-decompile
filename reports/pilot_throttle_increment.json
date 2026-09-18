@@ -1,0 +1,73 @@
+{
+ "packet": "cc8_pilot_throttle_increment",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/PILOT_THROTTLE_CUT_RAISER.md, appended section",
+ "tree_base": "3050a2ce9 plus main",
+ "result": "The increment chain is read; the pure arm derives it instead of taking it.",
+ "question": "What is the ground demand's increment computed from, with what sign, clamp order and frame-time factor?",
+ "answer": "It is a proportional speed controller. 0099D99E takes 007D99C0's measured forward speed, 0099D9A3 divides it by plan+2B8h, and 0099DA58 subtracts that ratio from the desired speed plan+2B4h - so the error is DESIRED MINUS MEASURED and a bot flying too fast gets a negative increment, which 0099DC46's max(0, -d) turns into air brake. 0099DAC8 subtracts a correction built at 0099DA97-0099DAC4 from the unit's vtable+38h value less 0042B2F0 over the vec3 at unit+AE0h, scaled by the double 20.0 at 00CE3D88 and by the pending magnitude. 0099DB9E maps the error through InterpolateClamped(-6.9444 [00D1F3DC], -2.0 [00CE7D7C], +6.9444 [00D0686C], +2.0 [00CE3958]) - the endpoints are minus and plus 25 km/h - 0099DBB1 scales only the positive side by the double 0.6 at 00CEFF98, 0099DBBF scales by the pending magnitude, and 0099DBC3 accumulates onto the seed. The [-1, 1] clamp at 0099DBF4 is on the ACCUMULATED DEMAND, never on the increment. There is NO frame-time factor: [ESP+0x6c] is written at 0099D7E8-0099D81E as |slot value - plan+274h|, how far the slot has already been asked to move, which is zero for a slot whose desired equals its current - every slot out of 0099B450's reset. A dead band at 0099DB29-0099DB56 skips the increment entirely when |error| <= 0.83333 (00D09450), ratio >= 1.0, desired/|ratio| <= 1.5 (00CE380C) and 0.5 (00CE3800) > desired/|ratio| all hold.",
+ "coverage": "complete for the chain's arithmetic, its constants, its sign and its clamp order; the correction term's two inputs (the unit vtable+38h slot and the vec3 at unit+AE0h) and plan+2B8h's own producer are unread.",
+ "calls": [
+  {
+   "address": "0099d99e",
+   "native": "007d99c0",
+   "function": "0099d300",
+   "what": "the measured forward speed, divided by plan+2B8h at 0099D9A3"
+  },
+  {
+   "address": "0099daa1",
+   "native": "0042b2f0",
+   "function": "0099d300",
+   "what": "over the vec3 at unit+AE0h..AE8h; 0099DAA6 subtracts it from the vtable+38h value to form the correction"
+  },
+  {
+   "address": "0099db65",
+   "native": "00415510",
+   "function": "0099d300",
+   "what": "BSP_Math_MinFloatByRef, plan+2ECh against 0.16 at 00E0E2F0, just before the interpolation"
+  },
+  {
+   "address": "0099db9e",
+   "native": "00419010",
+   "function": "0099d300",
+   "what": "the proportional map: -6.9444 to -2.0 and +6.9444 to +2.0, i.e. plus or minus 25 km/h of error onto plus or minus 2"
+  }
+ ],
+ "named_routines": [
+  {
+   "native": "0099d300",
+   "name": "BSP_PilotBot_PlanControls",
+   "abi": "as recorded",
+   "coverage": "the increment chain now complete; the correction's two inputs are contracts",
+   "what": "the demand's increment is a proportional speed controller with the error desired minus measured, saturating at 25 km/h, its positive side scaled by 0.6, the whole scaled by |slot desired - current|, accumulated onto the slot's own value and only then clamped to [-1, 1] and split into throttle and air brake"
+  }
+ ],
+ "no_ghidra_function": [],
+ "host_methods": [
+  {
+   "host": "pilot_plan_throttle_0099d300",
+   "file": "src/plane_ai_control.cpp",
+   "kind": "reconstruction, correction term substituted",
+   "note": "now takes the measured speed, the scale, the desired speed, the pending magnitude, the correction and the dead-band flag, and derives the increment; still no caller"
+  }
+ ],
+ "contracts": [
+  "0099DA97's unit vtable+38h call and the vec3 at unit+AE0h..AE8h that 0042B2F0 reduces. docs/PILOT_PLANNER_PITCH_ROLL.md note 9 already lists that vec3's producer as open.",
+  "plan+2B8h's own producer, 0099D756-0099D79A and 0099D970.",
+  "plan+2ECh, which 0099DB65 mins against 0.16 just before the interpolation.",
+  "Whether the dead band's four conditions can hold together in practice."
+ ],
+ "corrections": [
+  {
+   "target": "docs/PILOT_THROTTLE_CUT_RAISER.md section 4",
+   "was": "plan+2B8h is a reference speed",
+   "is": "a scale the measured speed is divided by; for 0099DA58's subtraction to be sound with an error in m/s it has to be near-dimensionless",
+   "evidence": "0099DA58 against the interpolation endpoints 00D1F3DC and 00D0686C, which are plus and minus 25 km/h",
+   "status": "appended to the same doc and verified present"
+  }
+ ],
+ "validation": {
+  "runner": "none",
+  "note": "Reading plus a pure function with no caller."
+ }
+}
