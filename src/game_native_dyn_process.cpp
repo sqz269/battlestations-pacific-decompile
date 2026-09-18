@@ -55,6 +55,13 @@ struct GameNativeDynProcess::Impl {
     DynSceneRuntimeContext scene;
     DynWorldRuntimeContext world;
     NativeGameDynamicsContext bindings;
+    NativeDynWorldStepCalls step_calls;
+    NativeDynContactGroupCalls group_calls;
+    NativeDynCollisionPassContext collision_context;
+    NativeDynContactGroupContext group_context;
+    NativeDynWorldStepContext step_context;
+    NativeGameContactReportCalls report_calls;
+    NativeGameContactReportRuntime reports;
     std::mutex startup_mutex;
     enum class StartupState { unattempted,returned,threw };
     StartupState state{StartupState::unattempted};
@@ -87,7 +94,10 @@ struct GameNativeDynProcess::Impl {
          scene{memory,&engine_0109e9fc,&general_convex_0109e9f4,
              dyn_scene_dispatch_objects(dispatch),sap.table(),intersect.table()},
          world{&scene,base_task_table,solver0.table(),solver1.table()},
-         bindings{engine,world} {
+         bindings{engine,world},
+         collision_context{memory,profile_context,&engine_0109e9fc,step_calls},
+         group_context{memory,group_calls},step_context{collision_context,group_context,crt,step_calls},
+         reports(memory,report_calls) {
         if(!memory.allocate||!memory.release||!crt.dispatch_bypass_0109dd78||!crt.except_00c27489)
             throw std::invalid_argument("Dyn process requires actual allocator and CRT services");
         bind_dyn_dispatch_static_objects(dispatch,tables);
@@ -125,6 +135,12 @@ int GameNativeDynProcess::initialize_once_00cc8950(){
 }
 const NativeGameDynamicsContext& GameNativeDynProcess::dynamics(){
     auto& i=*impl_;std::lock_guard lock(i.startup_mutex);i.require_initialized();return i.bindings;
+}
+const NativeDynWorldStepContext& GameNativeDynProcess::world_step(){
+    auto& i=*impl_;std::lock_guard lock(i.startup_mutex);i.require_initialized();return i.step_context;
+}
+const NativeGameContactReportRuntime& GameNativeDynProcess::contact_reports(){
+    auto& i=*impl_;std::lock_guard lock(i.startup_mutex);i.require_initialized();return i.reports;
 }
 const DynDispatchVtables& GameNativeDynProcess::dispatch_tables(){
     auto& i=*impl_;std::lock_guard lock(i.startup_mutex);i.require_initialized();return i.tables;

@@ -106,6 +106,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_array_
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_array_lifetime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_class_cleanup.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_construction.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_contact_reports.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_container_lifetime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_dynamics.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_embedded_lifetime.cpp)
