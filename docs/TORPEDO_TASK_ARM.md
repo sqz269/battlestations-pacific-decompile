@@ -349,3 +349,21 @@ define and which this worker may not create (Ghidra is read-only for the packet)
 in `reports/torpedo_task_arm.json` under `calls_in_undefined_regions`, keyed `site`/`callee` so
 the checker skips them, with their enclosing undefined region named on every row. The seven rows
 the checker can validate pass: `5 call rows checked, 0 failed`, two more reported `indirect`.
+
+## Correction from docs/TORPEDO_APPROACH_UPDATE.md (packet cc8_torpedo_approach_update)
+
+1. Section (1) step 4 calls `approach->+78h + approach->+74h` "the moveto ranges". The aim tick
+   `009D15F0` reads the same sum at `009D1631` as a floor on the commanded **altitude**, next to
+   the over-water `5.0` and over-land `30.0` constants and the ground height; for the torpedo class
+   the pair is an altitude band.
+2. Follow-up packet 1 lists `+98h` among `009D3420`'s writes. `009D3420` only reads it;
+   `009D1360` writes it at `009D14E7`, as the torpedo's own run time from release to impact.
+3. The Validation section names `009D3420` as the USN01 blocking gate because `approach+8Ch`/`+90h`
+   were both `0.0f`. `+90h` was zero because the host had no approach object to run, and `+8Ch` is
+   not `009D3420`'s output at all: its one producer in the image is `009D4A70`, the task's cruise
+   profile, which clamps it to `Pilot/Torpedo/AttackDist` times a speed ratio. The host binding of
+   this packet also filled `TorpedoEngagedInputs::engage_range_scale` with `1.0f` where the native
+   multiplies by the double `2.2` at `009D324F` (`[00D05AC8]`); that alone kept every tick blocked
+   and is corrected on `main`. With `009D3420` wired, USN01's five ordered aircraft leave `moveto`
+   for `prepare`, and the gate that remains is `unit+C58h` at `0099AF53`, the queued release-order
+   count, zero on every tick.
