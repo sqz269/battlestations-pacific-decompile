@@ -779,19 +779,57 @@ same file still substitutes the row's `TravelSpeed` and labels `007C47F0` unread
 routine is read, that site can take the real product too. Left alone here because it belongs to the
 packet that wrote it.
 
-### The identity run could not be taken: `main` crashes before the mission
+### The identity run: a transient crash, wrongly called a `main` regression
 
-`tools/run_game.ps1` on IJN01 exits `0xC0000005` twice in a row. The log stops at
+Two consecutive IJN01 runs at 13:26 exited `0xC0000005` with the log stopping at
 
 ```
 host Phase 5 online_manager_initialize [0073dc7c] UNIMPLEMENTED, returning a neutral value
 ```
 
-which is immediately before `native renderer device startup` in a good run, thousands of lines
-before any mission state and before the dive-bomb arm can run at all.
+the line immediately before `native renderer device startup` in a good run. With every change of
+this packet stashed, the same worktree at merge `78af19721` failed identically, and this doc
+recorded that as a regression on `main`. **That was wrong**, and the bisect says so plainly.
 
-**It is not this packet's.** With every change of this packet stashed, at merge commit `78af19721`,
-a plain `--frames 300 --press-start-frame 30` run stops at the identical line with the identical
-exit code. The regression is on `main`, somewhere in the native renderer startup path, and the
-identity column stays open until it is fixed. Nothing here can produce it, and nothing here needs
-to change for it.
+In a throwaway `git worktree add --detach` tree, four builds and four
+`--frames 300 --press-start-frame 30` runs all finished with `EXITCODE=0` and
+`frames_presented=299`:
+
+| commit | what it is | result |
+| --- | --- | --- |
+| `4668b0e96` | after the scene tokenizer, before the settings commit | clean |
+| `82986e455` | the raw settings vector assignment and language selection | clean |
+| `cccf31e11` | the torpedo worker's throttle arm, speed setter and glide slope | clean |
+| `78af19721` | `main`'s tip, the merge itself | clean |
+
+A fifth run, in this packet's own worktree at its own HEAD with every change in place, is also
+clean. So neither Codex commit is at fault, the torpedo wiring is not, the merge is not, and this
+packet is not.
+
+**What the stash test actually proved** was narrower than the conclusion drawn from it: it ruled out
+this packet's *source changes*, not the tree or the machine state in that two-minute window. The
+most likely cause is the collision `bsp_game` is known for, two processes and a single-instance
+mutex, since another agent's runs were queueing on the machine lock either side of that window. The
+lesson for the next reader is the general one: a crash that reproduces twice in one tree within two
+minutes is not yet evidence about a commit. Only a run in a fresh tree at the suspect commit is.
+
+### The identity run, taken
+
+`local/ijn01_gate.log`, IJN01, 3000 mission frames at 0.05 s, with the class gate and the turndown
+binding in. It was run to confirm identity, not to look for movement: the result was known in
+advance from the order census, and the point is that the new gate costs nothing.
+
+**Zero dive-bomb lines.** No `divebomb` per-aircraft row and no `summary mission dive-bomb task`,
+because no IJN01 aircraft ever receives the divebomb class. The 27 installs the loose gate produced
+are gone.
+
+Every other summary is unchanged against both earlier IJN01 runs:
+
+| measure | before | after (loose gate) | after (class gate) |
+| --- | --- | --- | --- |
+| `plane motion distance_moved` | 347370.56 m | 347370.56 m | 347370.56 m |
+| `pilot attack ordered` | 33 | 33 | 33 |
+| `pilot attack final_pitch_mean` | 0.027 rad | 0.027 rad | 0.027 rad |
+| `torpedo task` | 6 aircraft, 0 releases | 6, 0 | 6, 0 |
+| `gunnery ordnance general_bomb` | 27 | 27 | 27 |
+| `fixed steps` | 3000 at 0.05 s | 3000 | 3000 |
