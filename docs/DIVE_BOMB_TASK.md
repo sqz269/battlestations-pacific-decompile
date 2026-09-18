@@ -972,7 +972,13 @@ inverted, where the 150-degree latch at `009C4654` closes.
 
 The host was missing both halves: it wrote the planner's own bank target unconditionally, and the
 turndown binding set the mode without the target. Both are now gated at `0099E25C` and written at
-the hand-over. The confirming run is queued.
+the hand-over.
+
+**The confirming run is BLOCKED, and not on anything in this repository.** The machine's
+remote-desktop session is disconnected, so it has no audio endpoint, FMOD's output init fails and
+the executable cannot reach a window at all; `docs/GAME_EXECUTABLE.md` carries the signature and the
+evidence. The hand-over change is reasoned from the listing and committed, and it stays **unverified**
+until a session is connected and one USN04 run can be taken.
 
 ### The hand-over run is blocked by a startup failure, twice, with a clean environment
 
