@@ -244,6 +244,142 @@ USN02, same tree and same settings, `local/usn02_before.log`, `loop_finished=1`,
 could plan for". So USN02 cannot show a regression in the aim tick either way, and with no
 source change there is nothing for it to regress.
 
+## Rule 4: the thrash is an altitude used as a speed
+
+The aim state hands over to goaway when `state+2Ch` is set, and `state+2Ch` is
+`(F34 > F14 - ramp) || (F18 > F0C)`. Every aircraft fires on the second clause, so the
+question is what keeps `|delta| > F0C` quiet during a native run-in.
+
+`F0C` is `009D1500`, and it has **three** arms, not one:
+
+```
+009d154e  jbe 0x9d15b1   ; t = range/speed, returned as is when t <= 1.0
+009d1570  jbe 0x9d15b9   ; t again when speed >= the float 600.0 at 00CE4BC4
+009d1598  fsub  [esp]    ; otherwise (range - speed)
+009d159b  fdiv  qword [0xd20198]   ; / 600.0
+009d15a1  fadd  qword [0xd7a210]   ; + 1.0
+```
+
+The reconstruction in `src/torpedo_approach_update.cpp:110-125` carries all three
+faithfully. So invert the third arm on the before-run's own numbers:
+
+| Aircraft | F14 range | F0C | implied speed |
+|---|---|---|---|
+| Mav2 | 1239.16 | 2.2319 | 500.00 |
+| Mav4 | 1263.31 | 2.2722 | 500.00 |
+| Mav5 | 1274.31 | 2.2905 | 500.00 |
+
+**500.0 is `kPilotTorpedoCruisingAltDefault`**, `Pilot/Torpedo/CruisingAlt`, tuning
+singleton `+430h`. It is an altitude in metres, and `src/game_hosts_units.cpp:3105-3106`
+assigns it to both approach **speed** slots. The same constant is used correctly two
+hundred lines earlier for `ctl.second_altitude_398`.
+
+The native seeds those slots from a speed, at `009D0484`-`009D0497` inside
+`BSP_BotApproachTorpedo_Reset` (`009D0380`-`009D066F`): `+7Ch = record[+4] * scale` and
+`+80h = record[+8] * scale`, where the record is `approach+14h` and the scale
+`approach+24h`. Neither is written in that body, so both arrive already set and this host
+models neither. `009D3445`'s clamp cannot rescue it: the ceiling at `00CE4C04` is 9999.0
+and never bites.
+
+The aircraft actually fly about 122 m/s (`distance_moved` 366414 m over 20 planes and
+150 s). Clause 2 fires when `range < 600*(|delta| - 1) + speed`, which at `|delta|` 2.28 is
+1268 m with speed 500. 1268 m is exactly the `F14` of 1239-1274 the run reports, so the
+slot really does hold 500 and really is the altitude constant.
+
+### Correction: what the fix attempt then showed, and what it did not
+
+Two things I asserted before measuring turned out to be wrong, and the per-tick census is
+what caught them.
+
+**The obvious substitution is degenerate.** `slot.motion.max_speed`, the VehicleClass
+`+500h` field, is **0.0f on an aircraft**. The class row exists, and the run reports all 77
+units carrying one, but planes take no speed from it. `009D1500`'s `speed == 0` guard then
+returns `F0C = 0.0000` on every tick, which makes clause 2 fire on the **first** aim tick of
+every run. Measured in `local/usn01_after.log`: goaway entries went from 96 to 208 per
+aircraft and transitions from 176 to 419. Closest approach did improve, 920.9 m to 473.5 m,
+because the aircraft stop orbiting and press straight in, but a time-to-target of exactly
+zero at a range of 2196 m is not a defensible number and the value was reverted.
+
+**The dimensional argument does not hold.** `009D1500`'s third arm divides by the double
+`600.0` at `00D20198`, which is not a physical aircraft speed. So `F0C` is an urgency
+number rather than an ETA, clause 2 compares it against radians, and **the right magnitude
+for these slots cannot be argued from dimensions alone**. 500 may well sit in the range the
+native intends. What stays true is narrower and still worth fixing: the host takes that
+number from `Pilot/Torpedo/CruisingAlt`, a constant that is an altitude and is not evidence
+for any speed, while the native takes it from a run profile record nobody has read yet.
+
+So the packet leaves the placeholder in place, routed through
+`torpedo_seed_run_speeds_009d0484` and logged as unimplemented, and names the record's
+producer as the blocking follow-up rather than guessing again.
+
+### What the census did settle
+
+`unit+C6Ch` and the hull heading are **the same number to four decimals on every census
+row**, on all five aircraft and at every sample. That is the empirical confirmation of the
+convention analysis in rules 1 and 2, and it confirms the prediction made there that the
+`unit_heading_vtable50` producer fix would be numerically neutral. It is.
+
+The cone is also not the binding constraint. At aim tick 51 of the degenerate run the delta
+was already down to 0.8948 rad and `cone_open=1`. The nose does come round. Clause 2 is what
+ends the run-in, which is why the speed slot is the thing worth getting right.
+
+## Rule 5: the break-off quantity is not the defect
+
+`009D3150` ends `FLD [ESP]` (the break-off `state+24h`), `FLD [ECX+90h]` (the range),
+`FCOMPI ST(1)`, `JBE`, so it returns true when **range > break-off**, with an optional
+`FMUL 0.4` at `009D3183` behind the always-engage pair. With the range at 697-766 m and the
+break-off at 700, goaway completes on or near the tick it is entered: Mav4 spends 87 ticks
+in goaway across 87 entries, one tick each. That is correct behaviour, not a bug. An
+aircraft already outside the safe distance has nothing to go away from.
+
+So the cycle is aim for roughly fourteen ticks, clause 2 fires, one tick of goaway, back to
+the attack run. Fix clause 2 and the cycle stops; the break-off needs no change.
+
+### The break-off quantity, read to the store
+
+`BSP_BotStateTorpedoGoAway_Enter` (`009D0D90`-`009D0F04`) is the only producer of
+`state+24h`, and the formula is exactly the one `docs/TORPEDO_GOAWAY_RELEASE.md` records:
+
+```
+009d0dc1  call 0x42e740                ; the tuning singleton
+009d0dc9  mov  edi, [ecx+0xcc]         ; approach+CCh, the target entity
+009d0dd1  movss xmm0, [eax+0x438]      ; Pilot/Torpedo/SafeDist = 700.0
+009d0ddf  je   0x9d0e15                ; no target -> SafeDist alone
+009d0de3  mov  eax, [edx+0x5c]
+009d0de6  push 5
+009d0dea  call eax                     ; target->IsKindOf(5)
+009d0df2  call 0x7b5be0                ; the target's largest extent
+009d0e03  fcompi st(1) / ja            ; base = max(SafeDist, extent)
+009d0e27  fld1                         ; first argument 1.0
+009d0e15  fld  dword [0xd20ce4]        ; second argument 1.15
+009d0e2c  call 0xbd2f10                ; UniformFloatRange(1.0, 1.15)
+009d0e31  fmul dword ptr [esp+8]       ; * base
+009d0e37  fstp dword ptr [esi+0x24]    ; state+24h
+```
+
+`00BD2F10` cleans its two arguments, which is why no `add esp, 8` follows either this call
+or the one at `009D05CC`. `FUN_007B5BE0`, named here
+`BSP_UnitInstance_GetLargestExtent`, returns the largest of `unit+434h`, `unit+444h` and
+`unit+448h` through the `LEA`/`FCOMPI` pair at `007B5BED`-`007B5C0A`, with plain `RET`s at
+`007B5C12` and `007B5C19`.
+
+The side `state+2Ch` comes from the same enter: `009D0DBC` stores `-1.0` (`00D7A260`) or
+`+1.0` (`00D7A24C`) by the parity of the global at `00F876B0`.
+
+**The host is faithful here, with two substitutions it already labels.** At
+`src/game_hosts_units.cpp:2970-2979` the extent is absent (`has_extent_target = false`,
+because `007B5BE0` needs `approach+CCh`'s entity bounds, which this host does not model)
+and the jitter is pinned to the low end (`kDistanceJitterLo` = 1.0). So the break-off is
+700.0 exactly where the native would draw 700 to 805, or the target's extent if that were
+larger. Taking the low end of every draw is a systematic bias worth naming, but it makes
+the break-off smaller, which makes goaway complete *sooner*, so it cannot be what keeps the
+aircraft cycling.
+
+And `+90h` is the right quantity: it is the 2D range to the target **point** that
+`009D35C0` also takes the bearing to, and the host's `range_90` is built from the same
+`target_xz`. The native compares that point range against a distance derived from the
+target **entity**'s extent, which is the native's own choice and the host mirrors it.
+
 ## Corrections
 
 To append to `docs/TORPEDO_AIM_TICK.md`, not to rewrite: the frame table's `F=10h` entry
@@ -285,7 +421,39 @@ the aircraft's commanded heading reverses about every 1.7 s.
 
 ## Follow-up packets
 
-1. **The aim/goaway hysteresis. This is the gate now, by address and value.**
+0. **Read the producer of `approach+14h` and `approach+24h`. This is the blocking
+   follow-up and the packet could not close without it.** `+14h` is a pointer to a small
+   float table and `+24h` a scalar that multiplies two of its fields. The table's layout,
+   as far as `BSP_BotApproachTorpedo_Reset` reads it:
+
+   | Field | Read at | Used for |
+   |---|---|---|
+   | `record+0h` | `009D046A` `FMUL [EDI]` | scales the draw that becomes `approach+78h` |
+   | `record+4h` | `009D0484` | `approach+7Ch = record+4h * approach+24h`, the late run speed |
+   | `record+8h` | `009D0494` | `approach+80h = record+8h * approach+24h`, the early run speed |
+   | `record+Ch` | `009D049D` | the next slot in the same chain |
+
+   Neither `+14h` nor `+24h` is written anywhere in `009D0380`-`009D066F`, and a scan of
+   the whole torpedo bot band `009D0000`-`009D5200` finds no writer of the approach's
+   `+14h` either: the four `mov [reg+14h]` hits there are `009D06B1`, `009D06F8`,
+   `009D0B91`, `009D1249` and `009D2F22`, and the one nearest in shape, `009D06F8` in
+   `BSP_BotStateTorpedoAttackRun_Construct`, stores `EAX` after `009D06F0 XOR EAX,EAX`,
+   so it zero-initialises a **different** object. The producer is outside the band and
+   unread. Until it is read, no value for these two slots has any evidence behind it, and
+   the host keeps a labelled placeholder rather than a second guess.
+
+1. **Seeding the two run speeds** then follows from that, in
+   `src/game_hosts_units.cpp`. Expect it to move the
+   clause-2 break-off from 1268 m to about 890 m and to stop the aim/goaway cycle. Do
+   **not** expect a release from it alone: at the aggregate turn rate this run shows,
+   0.039 rad/s if all 29.086 rad of `heading_change` belongs to the five bombers, closing
+   2.28 rad would take 58 s, while 1268 m to 890 m at 122 m/s is 3.1 s. That aggregate is
+   not conclusive, because a nose re-commanded ninety times nets out to far less than its
+   instantaneous rate, which is exactly why the per-tick census is needed before anyone
+   concludes the flight model turns too slowly.
+
+1. **The aim/goaway hysteresis, once the speed is fixed. Superseded as the primary gate by
+   rule 4, kept because the predicate itself is now read.**
    `BSP_BotStateTorpedoGoAway_IsComplete` (`009D3150`, body `009D3150`-`009D31A5`,
    `__fastcall(state)`, sole caller `009D4030 BSP_BotTaskTorpedo_TransitionRule`) returns
    `state+24h < approach+90h`: goaway ends only once the range exceeds the break-off
