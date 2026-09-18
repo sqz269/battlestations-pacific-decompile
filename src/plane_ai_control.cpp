@@ -539,4 +539,73 @@ PilotBotRollResult pilot_plan_roll_0099e2ba(const PilotBotRollInputs& in) {
     return out;
 }
 
+// ---------------------------------------------------------------------------
+// 0099D300's four throttle arms, in the order the listing tests them.
+// ---------------------------------------------------------------------------
+PilotBotThrottleResult pilot_plan_throttle_0099d300(const PilotBotThrottleInputs& in) {
+    PilotBotThrottleResult out;
+
+    // 0099D309-0099D34D, the centred-stick gate, then 0099D34F-0099D3B7.
+    if (in.centred_mode_26c && in.centred_byte_2f0 && in.centred_block_270 &&
+        in.centred_byte_270) {
+        out.centred_all_axes = true;          // yaw, pitch, roll, air brake -> 0.0
+        out.wrote_throttle = true;
+        out.throttle_desired = 1.0f;          // 00D7A24C, 0099D399
+        out.wrote_air_brake = true;
+        out.air_brake_desired = 0.0f;         // 0099D3A8
+        out.clears_air_brake_mode = true;     // 0099D3B7 stores EDI, which is 0
+        return out;
+    }
+
+    // 0099D79F-0099D7AF then 0099D8C1-0099D8EB. The jump that reaches this arm
+    // is what leaves 0.001f in XMM0, so the compared value and the stored value
+    // are the same constant.
+    if (in.air_brake_mode != 0) {
+        if (in.air_brake_mode == 1 && kPilotThrottleCutValue > in.one_shot_threshold) {
+            out.wrote_throttle = true;
+            out.throttle_desired = kPilotThrottleCutValue;  // 00D7A23C
+            out.wrote_air_brake = true;
+            // 0099D8DD stores XMM3. Its producer was not traced; 0099DC59 sets
+            // XMM3 to 1.0 from 00D7A24C on the ground path, which is the only
+            // load of it this packet read. PARTIAL.
+            out.air_brake_desired = 1.0f;
+            out.clears_air_brake_mode = true;               // 0099D8EB
+        }
+        return out;
+    }
+
+    // 0099D8FD: every arm below is inside unit+900h == 5.
+    if (in.flight_state != 5) {
+        return out;
+    }
+
+    if (!in.slot_active) {
+        // 0099DC7A-0099DC97, the ground cap.
+        if (in.slot_current > kPilotThrottleGroundCap) {   // 00CE3D30 = 0.6
+            out.wrote_throttle = true;
+            out.throttle_desired = kPilotThrottleGroundCap;
+        }
+        return out;
+    }
+
+    // 0099D977-0099D998 seeds the demand from the slot's own value, and
+    // 0099DBC3 adds the increment onto it.
+    const float seed = in.slot_active ? in.slot_desired : in.slot_current;
+    float demand = seed + in.ground_increment;
+    // 0099DBF4 00415690 BSP_Math_ClampFloatByRef against -1.0 (00D7A260) and
+    // 1.0 (00D7A24C).
+    if (demand < -1.0f) demand = -1.0f;
+    if (demand > 1.0f) demand = 1.0f;
+    // 0099DC2C and 0099DC46, both 00415550 BSP_Math_MaxFloatByRef: the positive
+    // part becomes the throttle with 0.001f as its floor, and the negative part
+    // becomes the air brake.
+    out.wrote_throttle = true;
+    out.throttle_desired = demand > kPilotThrottleCutValue ? demand : kPilotThrottleCutValue;
+    out.wrote_air_brake = true;
+    const float braking = 0.0f - demand;                    // 0099DC01, 00D7A208
+    out.air_brake_desired = braking > 0.0f ? braking : 0.0f;
+    out.clears_air_brake_mode = true;                       // 0099DC6B
+    return out;
+}
+
 }  // namespace bsp
