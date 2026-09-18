@@ -231,6 +231,44 @@ dist=9792.3 collect=3000.0 groupable=0 members=8`. A non-groupable leader promot
   `member=Warhawk1 squadron_18h=1 excluded_007eda90=0 ship_base_6=0 busy=0 served=1`, and the same
   for `Dauntless1`, `B-17 01` and `B-17 02`.
 
+### USN01's gunnery drop is not the squadron work
+
+Asked whether the squadron packets caused USN01's gunnery census to fall to zero. **It is not
+zero in any configuration this worker can run, and the squadron work moves it the other way.**
+Four builds of the same mission, same 3000 mission frames:
+
+| Build | shots | projectiles | entity impacts | water | hits | damage | first hit |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `f5400e43f`, before both packets | - | - | - | - | 23 | 220.0 | 4.70 s |
+| `7c1036d5f`, the squadron packet | - | - | - | - | 36 | 241.0 | 4.70 s |
+| `2eb86d8c4`, plus the served fix | 14676 | 14676 | 45 | 42 | 45 | 563.5 | 4.70 s |
+| `8f3370237`, main alone | 13699 | 13699 | 10 | 42 | 10 | 313.4 | 58.60 s |
+| `af098961a`, main merged into this branch | 13823 | 13828 | 10 | 166 | 10 | 346.0 | 58.60 s |
+
+Read down the two packets' own column: 23 hits become 36 and then 45, and 220.0 damage becomes
+563.5. Neither packet removed a hit from that mission.
+
+The fall from 45 to 10 belongs to work merged into `main` between `f5400e43f` and `8f3370237`,
+and it reproduces on **main alone**, without this branch's served fix. Its shape is not a
+targeting change: the guns still fire almost as much (13699 shots against 14676, a 7% drop), but
+of the shells that land, entity impacts fall from 45 to 10 while the shot count barely moves.
+First hit slips from 4.70 s to 58.60 s and the mission's one kill disappears
+(`deaths=1 kill_credits=1` becomes `deaths=0 kill_credits=0`), as does the contact census's
+`dead=2840`, which becomes `dead=0` because nothing dies. That is projectiles missing, not guns
+refusing to shoot.
+
+Merging `main` into this branch changes only the damage total, 313.4 to 346.0, and moves the
+aircraft's mean closure from 92.3 m to 1342.6 m: the served fix gives the combatant group an
+attack order it did not have, which shifts the firing geometry (`arc_blocks` 0 to 1100, water
+impacts 42 to 166) without changing the impact count.
+
+**Verdict: a regression in what the shells can hit, introduced on `main` by something other than
+these two packets.** It is not an artefact of aircraft flying attack tasks instead of strafing
+paths, because the shot count is nearly unchanged and the losses are all on the impact side.
+Locating it needs a bisect over `main` between those two commits, which this packet did not do.
+Logs: `local/usn01_before.log`, `local/usn01_after.log`, `local/usn01_served.log`,
+`local/usn01_mainonly.log`, `local/usn01_merged.log`.
+
 ## 7. Follow-up packets
 
 * `00A2E835`, the five world collections at `world+19CCh`: the remaining reason a party's

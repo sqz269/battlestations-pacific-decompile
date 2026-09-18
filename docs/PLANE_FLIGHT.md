@@ -520,3 +520,57 @@ demand of exactly `0.0000` and levels off wherever it happens to be. Measured: a
 of the mission. Nothing in this routine can lift it back, and in the image an aircraft at the water
 would have left free flight for the `ctl+FCh` water arm `007DC205`-`007DC68C`, which this host does
 not have. `docs/TORPEDO_RUN_IN_DESCENT.md`.
+
+
+## Correction from packet `cc8_plane_altitude_hold_and_surface`: `classDesc+1ECh` is derived
+
+Appended, not rewriting the section above.
+
+"`009FB800`, the pitch command from an altitude error" says: *"`classDesc+1ECh` has no producer...
+So the field is zero for every shipped class, the climb `limit` falls back to the `DEG(40)` floor,
+and `min(0 * t, DEG(40))` makes the climb arm command **nothing**."*
+
+**The field is derived at class load, not authored, and the climb arm does command a climb.**
+
+```
+007c4bc5  CALL 0042e740                 ; the tuning singleton
+007c4bca  FLD  float ptr [EAX + 0x24c]  ; Dynamics/SpdMultipliers/LevelFlight
+007c4bd0  FMUL float ptr [ESI + 0x184]  ; * desc+184h StallSpd
+007c4be4  CALL 007d98f0
+007c4be9  FSTP float ptr [ESI + 0x1e4]
+007c4c08  FLD  float ptr [ESI + 0x1e4]
+007c4c0e  FMUL double ptr [0x00ceff98]  ; 0.6
+007c4c14  FSTP float ptr [ESI + 0x1ec]
+```
+
+That is why the `.text` scan came up empty: it looked for a Lua key and a loader store, and
+`desc+1ECh` has neither. Its only writer in the plane range is inside `007C4850`, the same routine
+that derives `desc+50Ch` as `Accel / MaxSpd²`. An exhaustive `store_census` over offset `1ECh`
+returns 42 sites across the image and exactly one, `007C4C14`, is a plane descriptor.
+
+`007D98F0` is a bisection on `[0, DEG(80)]` to a `DEG(0.01)` tolerance whose predicate `007D9360`
+runs the flight law for ten steps of 0.04 s and answers with the speed left; the angle is accepted
+when that is at least the probe speed. So `desc+1E4h` is the steepest climb the aircraft can hold
+at `LevelFlight · StallSpd`, `desc+1E8h` the same at `TravelSpeed`, and the climb gain is 0.6 of
+the first. For USN01's `Mav` row that is **0.1855 rad**, and at a 412 m altitude error the climb arm
+commands the `DEG(40)` floor rather than zero. `docs/PLANE_ALTITUDE_HOLD_AND_SURFACE.md`.
+
+
+## Correction from packet `cc8_torpedo_moveto_tick`: `class+518h` is `tan(DropAngle)`
+
+Appended, not rewriting the section above.
+
+"`009FBA50`, the cruising-altitude command" step 4 reads `base += span * scale * classDesc->+518h`
+and leaves `+518h` unidentified. It is derived at class load, in the same `007C4850` that derives
+`desc+50Ch`, `desc+1E4h`, `desc+1ECh` and `desc+508h`:
+
+```
+007c4a27  FLD  float ptr [ESI + 0x1f0]   ; desc+1F0h DropAngle
+007c4a3f  CALL 00412e20                  ; BSP_Math_TangentX87Float: FLD / FSINCOS / FDIVP
+007c4a44  FSTP float ptr [ESI + 0x518]
+```
+
+so `class+518h = tan(DropAngle)`, and `007C4A62` derives `class+51Ch` the same way from
+`DropAngle * [00CEFFA0]`. That makes step 4's whole term `horizontalDistance * tan(angle)` - a
+height above a straight glide path - rather than an opaque per-class gain.
+`docs/TORPEDO_MOVETO_TICK.md`.

@@ -260,3 +260,41 @@ not because of anything here.
 3. **The rest of `009D07B0`**: the countdown, period and lateral offset at `state+18h`/`+1Ch`/`+20h`
    and step 4's throttle half.
 4. **`0099DCE0`'s mode-2 pitch arm** and `unit+C84h`, which is what `cmd+2D0h = 2` selects.
+
+
+## Correction from packet `cc8_plane_altitude_hold_and_surface`: the climb arm is not silent
+
+Appended, not rewriting sections 1 and 4.
+
+Section 1 repeats `docs/PLANE_FLIGHT.md`'s "`class+1ECh` has **no producer in any shipped row**...
+So `min(0 · t, DEG(40))` is zero and **the climb arm commands nothing**", and section 4 makes that
+the first of its two reasons for the -400 m overshoot. **Both are refuted.** `desc+1ECh` is derived
+at class load by `007C4C08`-`007C4C14` as `desc+1E4h · 0.6`, with `desc+1E4h` the steepest
+sustainable climb angle that the `007D98F0` bisection solves for at `007C4BE9`.
+
+Section 4's second reason stands and is now exact. The surface is not gated by `ctl+FCh`, which a
+store census shows each of the three law entry points writing **on entry** as a tag; the gate is
+`unit+900h` through `0074E210`, and the free-flight arm carries its own water line at
+`007CC523`-`007CC562`, handing a contact to `007CB7F0`, whose tail at `007CB92C` calls
+`BSP_Plane_SetFlightState(6)`. `docs/PLANE_ALTITUDE_HOLD_AND_SURFACE.md`.
+
+
+## Correction from packet `cc8_torpedo_throttle_cut`: there is no throttle half to bind
+
+Appended, not rewriting the sections above.
+
+Section 2 labels the binding partial in part because "step 4's throttle half ... [is] not run", and
+follow-up 3 lists it as work. **There is no throttle half.** `009D0A6B` stores the interpolation's
+result as `009FBA50`'s fourth argument, `scale`, and both of the range arguments this tick passes
+are `approach+90h` (`009D07E4`, `009D0A08`), so `span` is zero, `009FBAD2`'s term is skipped and the
+value is discarded at the `RET`.
+
+That also means the binding's `command_altitude_and_throttle(approach, base, 0.0f, 0.0f, 0.0f)` is
+**exactly right**: passing a zero range pair gives the same commanded altitude as the native's own
+arguments do. It was right for a reason it did not know.
+
+Section 4's remaining question, why the aircraft dives at the `DEG(60)` cap the whole way down, is
+answered in `docs/TORPEDO_THROTTLE_CUT.md` section 4: the commanded 12 m is the image's own number
+for a torpedo bomber, because `approach+74h` comes from a field constructed zero at `00939E83` whose
+only gameplay writer is the dive-bomb task's `009C89CE`. What is missing is the `moveto` tick
+`009C18C0`, which would bring the aircraft to `Pilot/Torpedo/CruisingAlt` before the run begins.

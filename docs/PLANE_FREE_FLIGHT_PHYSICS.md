@@ -710,3 +710,31 @@ left in that state.
 Closing it means running the planner for a plane with no commanded target, which needs the
 task kinds this reconstruction has not read - `docs/PILOT_TASK_HEADING_ARM.md` covers 2 of 14 arms.
 It does not affect any validated result: combat outcomes in all three missions are unchanged.
+
+
+## Correction from packet `cc8_plane_altitude_hold_and_surface`: the arm has its own exit test
+
+Appended, not rewriting the sections above.
+
+No section of this doc records that `007CC2F0 BSP_Plane_FreeFlightArm` carries a **water line**,
+and it does. After the law and the control chain it samples the sea under the aircraft and hands a
+contact to the handler:
+
+```
+007cc523  CALL 0078CF20                  ; h, from unit+0FCh and unit+104h
+007cc542  FLD  float ptr [EDI + 0x194]   ; desc+194h SwimHeight
+007cc548  FADD float ptr [ESP + 0x44]    ; + h
+007cc54c  FADD float ptr [EDI + 0x508]
+007cc55a  FCOMIP ST0,ST1                 ; against unit+100h
+007cc55e  JBE  007cc567
+007cc562  CALL 007cb7f0
+```
+
+`007C4CF8`-`007C4D03` derives `desc+508h` as `-[EDI+4] - desc+194h`, so the two `SwimHeight` terms
+cancel and the line is the model's lowest point against the sea. `007CB7F0`'s tail at `007CB92C`
+calls `BSP_Plane_SetFlightState(6)` when the state is 7, 4 or 5, which makes `0074E210`'s
+free-flight gate false and takes the aircraft to the surface arm.
+
+**This is the exit a host must carry.** Without it a commanded descent has no floor: a plane
+commanded to 12 m flew to -400 m and held it for the rest of the mission.
+`docs/PLANE_ALTITUDE_HOLD_AND_SURFACE.md`.

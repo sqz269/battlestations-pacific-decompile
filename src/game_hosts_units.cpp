@@ -553,6 +553,16 @@ struct GameUnitSlot {
     float plane_air_brake_drag{0.0f};
     // desc+1F0h DropAngle, 009FB800's dive gain and cap.
     float plane_drop_angle{0.0f};
+    // desc+1E4h and desc+1ECh, the two 007C4850 derives with the 007D98F0
+    // climb-angle solver at 007C4BE9 and 007C4C14. desc+1ECh is the climb arm's
+    // gain, and it is 0.6 * desc+1E4h, NOT zero: docs/PLANE_FLIGHT.md read it as
+    // having no producer because it is derived rather than authored.
+    float plane_climb_angle_1e4{0.0f};
+    float plane_climb_angle_1ec{0.0f};
+    // desc+194h SwimHeight, one of the two terms of the free-flight arm's water
+    // line at 007CC4E8.
+    float plane_swim_height{0.0f};
+    int plane_water_contacts{0};
     // The altitude 009FBA50 was last commanded with, and the pitch 009FB800
     // answered, kept for the census only.
     float plane_commanded_altitude{-1.0f};
@@ -2105,6 +2115,28 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             slot->plane_drag_pitch_ratio = lua_row.drag_pitch_ratio;
             slot->plane_air_brake_drag = lua_row.air_brake_drag;
             slot->plane_drop_angle = lua_row.drop_angle;
+            slot->plane_swim_height = lua_row.swim_height;
+            // 007C4BC5-007C4C14. The probe speed of the first call is
+            // tuning+24Ch LevelFlight times desc+184h StallSpd, which is the
+            // same product the lift term caps its q at, and 007C4C0E scales the
+            // answer by the double 0.6 at 00CEFF98 into desc+1ECh.
+            {
+                bsp::PlaneClimbAngleInputs cai;
+                cai.accel = slot->plane_accel;
+                cai.max_spd = slot->plane_max_spd;
+                float level_flight = 1.8f;      // tuning+24Ch
+                float accel_cheat_mul = 1.5f;   // tuning+31Ch
+                if (host.lua.plane_globals_loaded()) {
+                    const bsp::GameTuningBlock& g = host.lua.plane_globals();
+                    level_flight = g.dynamics_spd_multipliers_level_flight;
+                    accel_cheat_mul = g.dynamics_accel_cheat_mul;
+                }
+                cai.accel_cheat_mul = accel_cheat_mul;
+                cai.probe_speed = level_flight * slot->plane_stall_spd;
+                slot->plane_climb_angle_1e4 =
+                    bsp::max_sustainable_climb_angle_007d98f0(cai);
+                slot->plane_climb_angle_1ec = slot->plane_climb_angle_1e4 * 0.6f;
+            }
             // The spawn airspeed. docs/PLANE_FLIGHT_CORE_LAW.md measures the
             // seed at 141.67 m/s, and the acceptance test in tests/math_tests.cpp
             // pins lift against gravity at exactly that value and at
@@ -3002,6 +3034,61 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // the copy is taken at the committed pose, which is
                         // 007D8230 with its step at zero.
                         GameUnitsHost::Impl::publish_pose(unit_);
+                        // 007CC523-007CC562, the free-flight arm own water
+                        // test, and the answer to why a plane here could fly to
+                        // -400 m. The arm samples the sea under the aircraft and
+                        // hands a contact to 007CB7F0:
+                        //
+                        //   h = 0078CF20(unit+0FCh, unit+104h)
+                        //   if (unit+100h < desc+194h + h + desc+508h) 007CB7F0()
+                        //
+                        // 007C4CF8-007C4D03 derives desc+508h as
+                        // `-[EDI+4] - desc+194h`, so the two SwimHeight terms
+                        // cancel and the real line is `h - [EDI+4]`, the
+                        // aircraft's lowest point touching the water.
+                        // SUBSTITUTION, labelled: [EDI+4] is the model bound
+                        // this host does not carry, so it stands at zero and the
+                        // test is the ORIGIN crossing the sea rather than the
+                        // belly. For a torpedo bomber that is a metre or two.
+                        //
+                        // 007CB7F0's tail at 007CB92C is what matters: when
+                        // unit+900h is 7, 4 or 5 it calls BSP_Plane_SetFlightState(6),
+                        // and 0074E210's free-flight gate is unit+900h == 7, so
+                        // the aircraft leaves this arm for the water surface law
+                        // 007DCDD0. docs/PLANE_ALTITUDE_HOLD_AND_SURFACE.md.
+                        if (unit_.plane_control_mode_900 == 7) {
+                            OceanFieldBinding sea(owner_);
+                            const float water = bsp::ocean_water_height_0078cf20(
+                                unit_.motion.position[0], unit_.motion.position[2], sea);
+                            const float line = water + unit_.plane_swim_height
+                                + (0.0f - unit_.plane_swim_height);
+                            if (unit_.motion.position[1] < line) {
+                                ++unit_.plane_water_contacts;
+                                // 007CB92C: 7, 4 and 5 all go to 6. The
+                                // "powerlost" effect, the 0090F6C0(unit, 3)
+                                // damage call and the 0C3h session message are
+                                // contracts, unread here.
+                                unit_.plane_control_mode_900 = 6;
+                                owner_.record("Plane::water_contact_007cb7f0", 0x007cb7f0u);
+                                if (unit_.plane_water_contacts == 1) {
+                                    owner_.log.notef("plane water contact: unit=%s "
+                                        "alt=%.2f water=%.2f |v|=%.2f state 7 -> 6 "
+                                        "(007CB7F0 tail 007CB92C); the free-flight "
+                                        "gate 0074E210 is now false and the water "
+                                        "surface law 007DCDD0 is a contract",
+                                        unit_.row.name.c_str(),
+                                        static_cast<double>(unit_.motion.position[1]),
+                                        static_cast<double>(water),
+                                        static_cast<double>(std::sqrt(
+                                            unit_.plane_world_velocity[0]
+                                                * unit_.plane_world_velocity[0]
+                                            + unit_.plane_world_velocity[1]
+                                                * unit_.plane_world_velocity[1]
+                                            + unit_.plane_world_velocity[2]
+                                                * unit_.plane_world_velocity[2])));
+                                }
+                            }
+                        }
                         // The release-order issue used to run here. It does not
                         // belong to the free-flight arm: 007CEA8D sits at
                         // 007CE9FD, past the latch 007CE96F and past the arm
@@ -3473,11 +3560,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 pin.climb_dist = g.pilot_general_climb_dist;
                                 pin.drop_dist = g.pilot_general_drop_dist;
                             }
-                            // class+1ECh has no producer in any shipped row, so
-                            // the climb arm commands nothing and only the dive
-                            // arm can move an aircraft. That is the image's own
-                            // behaviour, not a host gap.
-                            pin.class_climb_angle = 0.0f;
+                            // class+1ECh DOES have a producer, and
+                            // docs/PLANE_FLIGHT.md's "no producer, so the climb
+                            // arm commands nothing" is refuted: it is DERIVED
+                            // rather than authored, at 007C4C08-007C4C14, as
+                            // 0.6 times desc+1E4h, which 007C4BE9 fills with the
+                            // 007D98F0 climb-angle solver. A .text scan for a
+                            // store into a plane descriptor finds it only inside
+                            // 007C4850, which is also where desc+50Ch comes
+                            // from. docs/PLANE_ALTITUDE_HOLD_AND_SURFACE.md.
+                            pin.class_climb_angle = slot_.plane_climb_angle_1ec;
                             pin.class_drop_angle = slot_.plane_drop_angle;
                             const float demand = bsp::pitch_command_009fb800(pin);
                             slot_.plane_commanded_altitude = c.clamped_altitude;
@@ -4199,7 +4291,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 owner_.log.notef("  torpedo %-12s descent census "
                                     "n=%d base=%.2f (74h=%.2f 78h=%.2f) "
                                     "commanded=%.2f live_alt=%.1f pitch_demand=%.4f "
-                                    "pitch=%.4f drop_angle=%.4f",
+                                    "pitch=%.4f drop_angle=%.4f climb_1ec=%.4f",
                                     unit_.row.name.c_str(),
                                     unit_.torpedo_attackrun_altitude_commands,
                                     static_cast<double>(ap.alt_margin_78 + ap.alt_floor_74),
@@ -4209,7 +4301,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     static_cast<double>(unit_.motion.position[1]),
                                     static_cast<double>(unit_.plane_commanded_pitch),
                                     static_cast<double>(unit_.plane_pitch_angle_c64),
-                                    static_cast<double>(unit_.plane_drop_angle));
+                                    static_cast<double>(unit_.plane_drop_angle),
+                                    static_cast<double>(unit_.plane_climb_angle_1ec));
                             }
                         }
                         // The flag is deliberately NOT cleared when the task

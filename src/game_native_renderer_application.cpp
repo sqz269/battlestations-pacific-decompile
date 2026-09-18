@@ -89,6 +89,8 @@
 #include "bsp/system_camera_axes.hpp"
 #include "bsp/native_cockpit_helper_construction.hpp"
 #include "bsp/native_render_resources_lifetime.hpp"
+#include "bsp/native_game_grid.hpp"
+#include "bsp/game_native_geometry_globals.hpp"
 #include <array>
 #include <cstring>
 #include <filesystem>
@@ -109,9 +111,22 @@ struct CanonicalProfiles {
     GameNativeReadOnlyData& data;
     const U* operator()(U address) const { return static_cast<const U*>(data.data_at(address,80*4)); }
 };
+NativeVertexDeclarationLoadingContext application_declaration_loading(
+    GameNativeReadOnlyData& data,NativeStringStorage& strings) {
+    auto& process=game_native_vertex_declarations_process(data).loading();
+    // VFS and the process owner use separate wrappers over the canonical pool
+    // cells. The renderer's borrowed decoder context uses its VFS wrapper;
+    // tables, pool, live counts and process-owned atexit callbacks stay shared.
+    return {strings,process.pool_0108fd38,process.type_sizes_00d61cc0,
+        process.declaration_vtable_00d61d1c,process.usages_0108d678,
+        process.types_0108d5a8,process.initialized_0108d6d8,
+        process.usage_count_00e13074,process.type_count_00e13070,
+        process.atexit_context,process.register_atexit};
+}
 #include "game_native_renderer_lifetime.inc"
 #include "game_native_renderer_device.inc"
 #include "game_native_renderer_textures.inc"
+#include "game_native_renderer_grid.inc"
 #include "game_native_renderer_camera.inc"
 #include "game_native_renderer_shaders.inc"
 #include "game_native_renderer_descriptors.inc"
@@ -145,6 +160,7 @@ struct GameNativeRendererApplication::Impl {
     NativeRenderResourceAccountingTables accounting;
     NativeRendererCacheCleanupContext textures;
     ResourceLoadEventHost* volatile platform_events{};
+    NativeVertexDeclarationLoadingContext declaration_loading;
     NativeVertexDeclarationCacheContext declaration_cache;
     NativeVertexDeclarationRegistryLifetimeContext declarations;
     // Explicit readable zero preimages for source-private COM output frames.
@@ -156,6 +172,7 @@ struct GameNativeRendererApplication::Impl {
     DestructionGraph graph;
     DeviceGraph devices;
     TextureLoadingGraph texture_loading;
+    GameGridGraph game_grids;
     CameraGraph cameras;
     ShaderGraph shaders;
     DescriptorGraph descriptors;
@@ -180,7 +197,8 @@ struct GameNativeRendererApplication::Impl {
           effects{records,owners,profiles(0xd5f04c),profiles(0xd5f074),profiles(0xd5e534),profiles(0xd61a00)},
           accounting{profiles(0xd61948),profiles(0xd61870),profiles(0xd618b0)},
           textures{vfs.strings,validation,owners,accounting,profiles(0xd5f038),profiles(0xd5f088)},
-          declaration_cache{vfs.strings,validation,game_native_vertex_declarations_process(data).loading(),
+        declaration_loading(application_declaration_loading(data,vfs.strings)),
+        declaration_cache{vfs.strings,validation,declaration_loading,
               vfs.dates,platform_events,profiles(0xd5f060),&raw_allocate,&raw_free},
           declarations{declaration_cache,owners,profiles(0xd5f024)},
           constructor{host.manager_publication_01090aa0(),raw.actual_published_01090aa8,
@@ -190,7 +208,8 @@ struct GameNativeRendererApplication::Impl {
           graph(constructor,vfs.strings,raw,*host.native_deletion_bindings().resource_support,owners,
               validation,accounting,data,files.native_owners().types(),files.native_types().light_types(),vfs.retained_memory),
           devices(graph,constructor,host,vfs.strings,platform),
-          texture_loading(graph,devices,owners,vfs,platform_events,validation,accounting),
+        texture_loading(graph,devices,owners,vfs,platform_events,validation,accounting),
+        game_grids(graph,devices,texture_loading,declaration_cache,vfs.strings,renderer),
           cameras(graph,renderer,files.native_owners().types(),files.native_types().camera_types()),
           shaders(vfs,raw,cameras,profiles),
           descriptors(vfs.strings,services,definitions),
@@ -290,6 +309,9 @@ NativeTextureCacheContext& GameNativeRendererApplication::texture_cache() noexce
 }
 NativeRenderActualOwnerRegistry& GameNativeRendererApplication::actual_owners() noexcept {
     return impl_->owners;
+}
+NativeGameGridContext& GameNativeRendererApplication::game_grid_context() noexcept {
+    return impl_->game_grids.context;
 }
 void GameNativeRendererApplication::construct() {
     auto& p=*impl_;check(p.phase==Impl::Phase::prepared,"renderer constructor is once-only");
