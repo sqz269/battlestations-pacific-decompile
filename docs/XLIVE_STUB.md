@@ -287,8 +287,7 @@ context receives one already built. It is therefore not on the run path and is
 not added here; when that constructor is bound, 5331 needs a row and an export
 of its own.
 
-Validation: the cc8 worktree at `dd0d274df`'s parent `47f2321e1` plus this
-change builds clean (Win32, warnings as errors) and passes both CTests; the
+Validation: the cc8 worktree at main `47f2321e1` plus this change builds clean (Win32, warnings as errors) and passes both CTests; the
 standing gunnery baseline `--frames 3200 --press-start-frame 30 --menu-select
 USN02 --mission-frames 3000 --mission-frame-seconds 0.05` with the rebuilt
 stand-in runs to completion (`device_created=1`, `frames_presented=3199`,
