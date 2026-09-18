@@ -1049,6 +1049,12 @@ private:
 // bsp::ShipAiApproachPointHost, the call sites inside 009F1BC0's frame state.
 // Packet ship_ai_approach_update landed on main at 89d4bb77 during this
 // packet's turn and was merged in before validation.
+// 009E46F0's path arm, defined after PathFollowerBinding below because it needs
+// it. Returns false on the arms 009E46F0 answers with FLDZ at 009E485B.
+bool ship_ai_arc_centre_next_point_009e46f0(GameShipAiHost::Impl& owner,
+                                            GameShipAiHost::Impl::Controller& ctl,
+                                            std::size_t index, float& x, float& z);
+
 class ApproachPointBinding final : public bsp::ShipAiApproachPointHost {
 public:
     ApproachPointBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
@@ -1058,6 +1064,14 @@ public:
     float unit_heading_vtable_0050() override {
         owner_.done("ShipAiApproachPoint::unit_heading", 0x009f1c24u);
         return owner_.units.unit_heading_radians(index_);
+    }
+    bool arc_centre_next_point_009e46f0(float& x, float& z) override {
+        // 009F27C6, 009E46F0 with ECX = brain+8h. Packet
+        // cc8_ship_ai_ring_winner: nested+11DCh had no producer here, which
+        // collapsed both standoff-arc edges onto bearing 0 and made slot 0's
+        // arc cost 0/0.
+        owner_.done("ShipAiApproachPoint::arc_centre_009e46f0", 0x009e46f0u);
+        return ship_ai_arc_centre_next_point_009e46f0(owner_, ctl_, index_, x, z);
     }
     void refresh_unit_pose_00414db0() override {
         owner_.record("ShipAiApproachPoint::refresh_unit_pose", 0x00414db0u);
@@ -3174,6 +3188,59 @@ private:
     std::size_t index_;
 };
 
+// 009E46F0's path arm, forward-declared above ApproachPointBinding.
+//
+// The image tests [blk+2F4h]+1Ch at 009E46FC and takes the path arm when it is
+// non-zero: 009D5AE0 and 009D5B90 fill nested+11D4h / +11D5h, 009E3C00 walks the
+// plan for the next point, and the caller stores the bearing to it. The other
+// arm, 009E4707, uses the command entity at blk+3FCh and 0071EB60's target
+// descriptor; this host does not answer it and records the address instead.
+bool ship_ai_arc_centre_next_point_009e46f0(GameShipAiHost::Impl& owner,
+                                            GameShipAiHost::Impl::Controller& ctl,
+                                            std::size_t index, float& x, float& z) {
+    if (index >= owner.rows.size()) return false;
+    bsp::ShipAiPathPlanBlock& live = (ctl.plan_front == 0) ? ctl.plan_a : ctl.plan_b;
+    float unit_x = 0.0f, unit_y = 0.0f, unit_z = 0.0f;
+    owner.units.unit_position_00fc(index, unit_x, unit_y, unit_z);
+    if (live.node_count == 0) {
+        // 009E4707's arm: no path plan, so the source is the active command's
+        // own target descriptor. 009E4754 0071EB60 on the object
+        // [blk+3FCh]->vtable[114h]() returns it; 009E4759 tests descriptor+1h
+        // and 009E475F takes descriptor+8h, its position, or else the global
+        // vector at 00F87574, which the image ships as twelve zero bytes, so
+        // that arm is the world origin and not an unknown.
+        bsp::SceneCommandTarget descriptor{};
+        int mode = 0;
+        if (!owner.units.active_command_descriptor_0071eb60(index, descriptor, mode)) {
+            owner.record("ShipAiApproachPoint::arc_centre_no_command", 0x009e4726u);
+            return false;
+        }
+        owner.done("ShipAiApproachPoint::arc_centre_command_arm", 0x009e4707u);
+        const float src_x = descriptor.position_valid != 0 ? descriptor.position[0] : 0.0f;
+        const float src_z = descriptor.position_valid != 0 ? descriptor.position[2] : 0.0f;
+        // 009E477A and 009E4788: the descriptor's position comes first.
+        x = src_x;
+        z = src_z;
+        return true;
+    }
+    bsp::ShipAiPathPointRecord record{};
+    // 009E47F3..009E480D: the query is the unit's own world x and z, the pair
+    // 009F1BC0 handed 009E46F0.
+    record.query_x_00 = unit_x;
+    record.query_z_04 = unit_z;
+    PathFollowerBinding point(owner, owner.rows[index], index);
+    const bsp::ShipAiPathFollowerResult result =
+        bsp::ship_ai_path_follower_point_009e3c00(live, record, point);
+    static_cast<void>(result);
+    // The image does not test this: it subtracts whatever 009E3C00 left in the
+    // record. Refusing on an unwritten point is a deliberate divergence, since
+    // the alternative here is a bearing computed from a zeroed output field.
+    if (record.node_18 == 0) return false;
+    x = record.point_x_08;
+    z = record.point_z_0c;
+    return true;
+}
+
 // Milestone 2r: bsp::ShipAiThrottleProfileHost, the call sites of 009E04E0.
 // The contact-track list is empty in this process, so the routine's list walk
 // does nothing, the avoidance vector blk+34Ch/+350h is cleared every step and
@@ -4900,18 +4967,28 @@ bool GameShipAiHost::promote_order_00825f2c(std::size_t unit_index) {
     host.done("ShipAiOrder::copy_slot", 0x00811d10u);
     ++host.rows[unit_index].promotions;
     ++host.summary.promotions;
-    // 00825F7C..00826D6B: whatever reads the promoted slot's +40h, +44h and +48h
-    // and turns them into the order ring's +148h / +14Ch. docs/UNIT_AUTOPILOT_PAIR.md
-    // states the negative result - no reader of those three fields was found -
-    // and names the packet that is reading it.
+    // 00825F7C..00826D6B. The name of this record is stale and packet
+    // cc8_ship_ai_ring_winner corrects it rather than renaming the census line
+    // mid-run: docs/UNIT_AI_ORDER_SLOT_READER.md has since read the range and
+    // it is NOT an AI publisher. It carries the hop from the ring's own
+    // rudder at +984h through 00811890 to unit->vtable[50h] (00826C61,
+    // 00826C75, 00826CDB) and, gated on unit+61h, the manual-autopilot ring
+    // setters at 008266CE. That doc also supersedes the negative result quoted
+    // here from docs/UNIT_AUTOPILOT_PAIR.md: readers of slot+40h / +44h / +48h
+    // do exist, twelve of them, and its rel32 scan for 00816A40 and 0080DAD0
+    // finds the ring's write cursor filled only from three HUD order routines.
+    // On the image's evidence the AI never writes the order ring at all, so
+    // what is unimplemented here is the hop above, not a missing publisher.
     host.record("ShipAiOrder::slot_to_order_ring", 0x00825f7cu);
     if (!host.logged_position) {
         host.logged_position = true;
         host.log.notef("the promoted AI order slot reaches no order ring: 009f4d10 publishes "
             "the heading target and the two distances into unit+0aech - 84*[unit+0b40h], "
-            "00825f2c flips the index and 00811d10 copies the slot across, and no reader of "
-            "slot+40h / +44h / +48h was found (docs/UNIT_AUTOPILOT_PAIR.md). The last hop is "
-            "packet cc_ai_order_hop, worker agent/cc-ai-order-hop");
+            "00825f2c flips the index and 00811d10 copies the slot across. Readers of "
+            "slot+40h / +44h / +48h DO exist - twelve sites in "
+            "docs/UNIT_AI_ORDER_SLOT_READER.md, which supersedes "
+            "docs/UNIT_AUTOPILOT_PAIR.md's negative - and none is on the ring path: on the "
+            "image's evidence the AI never writes the order ring");
     }
     return true;
 }

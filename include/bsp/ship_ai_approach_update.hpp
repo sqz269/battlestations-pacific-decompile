@@ -736,7 +736,31 @@ struct ShipAiApproachPointHost {
     // Body unread (it belongs to the obstacle-tables packet): contract unread.
     virtual ShipAiAttackMoveXZ zone_exit_point_00417b10(
         const ShipAiApproachPoint& from, float radius) = 0;
+    // 009F27C6, 009E46F0 with ECX = brain+8h and (the unit's world x/z, and
+    // out pointers for nested+11D4h and nested+11D5h). Its float result is
+    // stored to nested+11DCh at 009F27CB, which is the arc centre 009E6870
+    // scores every ring slot against.
+    //
+    // The routine has two arms. With a path plan ([blk+2F4h]+1Ch non-zero) it
+    // takes 009E3C00's next path point, which is what this host answers; with
+    // none it falls to the command entity at blk+3FCh and 0071EB60's target
+    // descriptor. Returning false takes the 009E485B FLDZ arm.
+    virtual bool arc_centre_next_point_009e46f0(float& x, float& z) = 0;
 };
+
+// 009E46F0's tail, the part both arms share: the squared planar distance is
+// compared against 00D7A3A0 at 009E4851 and only the strictly-reached side runs
+// atan2 (009E4865) and the pi/2 wrap at 009E4872..009E4890, which is
+// ship_ai_approach_heading_from_delta. Everything else returns 0.0f.
+//
+// nested+11DCh is therefore a bearing, and 0.0f only when the unit is already
+// on its point. A host that leaves it unwritten collapses both edges of the
+// standoff arc onto bearing 0, which puts ring slot 0 exactly on the edge; with
+// a zero span the divide at 009E6935 is then 0/0 and slot+30h is NaN.
+float ship_ai_approach_arc_centre_009e46f0(bool have_point, float dx, float dz) noexcept;
+
+// 009E4851's threshold, the double at 00D7A3A0: 0.1f widened.
+inline constexpr double kApproachArcCentreEpsilonSq = 0.10000000149011612;
 
 // Covers 009F1BC0-009F1DBF and 009F1E60-009F1F47 only: the frame timers, the
 // goal range, the turn radius, the retarget timer and the approach point.
