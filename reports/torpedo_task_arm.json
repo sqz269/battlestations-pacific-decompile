@@ -234,7 +234,7 @@
     "usn01": "five aircraft ordered by PilotSetTarget; 007EEC50 -> 00e08f18 (torpedo) with torp=1 for all five",
     "usn01_torpedo_census": "Mav1..Mav5 each arm_ticks=1299 transitions=0 states[moveto=1299] releases=0; aircraft=5 releases=0 blocked_engaged_009d3210=6495 blocked_arm_009d49a0=0",
     "blocking_gate": "009D3210 at 009D325B: task+484h * [00D05AC8] <= task+488h with both at 0.0f, and task+529h = 0. All three are outputs of the unread 009D3420.",
-    "harness_note": "main at dd0d274df does not run: e5a4842ec made src/native_renderer_end_frame.cpp resolve XLive ordinal 5002 and tools/xlive_stub/xlive_stub.def does not export it. That file is leased to agent/cc8-bank-inputs, so the runs above used a throwaway copy under local/xstub/ with XLiveRender @5002 added."
+    "harness_note": "At the time of these runs main at dd0d274df did not run: e5a4842ec made src/native_renderer_end_frame.cpp resolve XLive ordinal 5002 and tools/xlive_stub/xlive_stub.def did not export it. That file was leased to agent/cc8-bank-inputs, so the runs above used a throwaway copy under local/xstub/ with XLiveRender @5002 added. The stub was fixed on agent/cc8 (651b58bd1, docs/XLIVE_STUB.md); the fixed-stub USN02 baseline reproduces these numbers exactly."
   },
   "files": [
     "docs/TORPEDO_TASK_ARM.md",

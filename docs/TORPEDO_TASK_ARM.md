@@ -300,12 +300,14 @@ Routines named from the raw listing that Ghidra does not define, with inclusive 
 `./scripts/build.ps1` (MSVC Win32, `/W4 /WX`) succeeds; `ctest` passes both existing suites
 (`reconstructed_math`, `tool_tests`). No test was added.
 
-Runtime validation needed a local XLive stand-in. `main` at `dd0d274df` does not run: commit
-`e5a4842ec` made `src/native_renderer_end_frame.cpp` resolve ordinal `5002` out of the XLive
-library, and `tools/xlive_stub/xlive_stub.def` does not export it, so every fresh build dies with
-`startup failed: loaded XLive library lacks ordinal 5002`. That file is leased to
-`agent/cc8-bank-inputs`, so this packet did not touch it; the runs below use a throwaway copy of
-the stub with `XLiveRender @5002` added, built under `local/xstub/` and never installed.
+Runtime validation needed a local XLive stand-in at the time these runs were made. `main` at
+`dd0d274df` did not run: commit `e5a4842ec` made `src/native_renderer_end_frame.cpp` resolve
+ordinal `5002` out of the XLive library and `tools/xlive_stub/xlive_stub.def` did not export it,
+so every fresh build died with `startup failed: loaded XLive library lacks ordinal 5002`. That
+file was leased to `agent/cc8-bank-inputs`, so this packet did not touch it; the runs below used
+a throwaway copy of the stub with `XLiveRender @5002` added, built under `local/xstub/` and never
+installed. The stub itself was fixed on `agent/cc8` (`651b58bd1`, see `docs/XLIVE_STUB.md`), and
+the fixed-stub USN02 baseline reproduces these numbers exactly.
 
 | run | result |
 | --- | --- |
