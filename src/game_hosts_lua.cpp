@@ -263,6 +263,7 @@ GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
             row.glide_rate = number("GlideRate");
             row.drag_pitch_ratio = number("DragPitchRatio");
             row.air_brake_drag = number("AirBrakeDrag");
+            row.drop_angle = number("DropAngle");
             // 00960363 uses bare GetNumber, including numeric strings and
             // the native float32 spill. Other row readers keep their scope.
             ::lua_getfield(state_, -1, "Width");
