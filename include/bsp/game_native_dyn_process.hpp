@@ -2,6 +2,8 @@
 #include "bsp/native_game_dynamics.hpp"
 #include "bsp/dyn_dispatch_initialization.hpp"
 #include "bsp/allocator_list.hpp"
+#include "bsp/native_dyn_world_step.hpp"
+#include "bsp/native_game_contact_reports.hpp"
 #include <memory>
 
 namespace bsp::game {
@@ -22,6 +24,8 @@ public:
         const volatile std::uint32_t& actual_0109eea4);
     const DynBodyCreationContext& body_creation();
     const NativeGameDynamicsContext& dynamics();
+    const NativeDynWorldStepContext& world_step();
+    const NativeGameContactReportRuntime& contact_reports();
     const DynDispatchVtables& dispatch_tables();
 private:
     friend GameNativeDynProcess& game_native_dyn_process(const CameraAxesCrtAccess&,
