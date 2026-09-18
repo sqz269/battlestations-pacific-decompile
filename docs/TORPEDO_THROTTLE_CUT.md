@@ -197,3 +197,21 @@ explains both of those numbers as the image's own rather than as host gaps, whic
    any passes a real range pair and makes the `scale` term live.
 3. **What sets a bot's throttle at all**, if anything does. The plan's throttle slot has no writer
    in the torpedo chain, and `0099B450` only reseeds it from the live value.
+
+
+## Correction from packet `cc8_torpedo_moveto_tick`: the first open question is answered
+
+Appended, not rewriting the sections above.
+
+The Uncertainty section asks "whether some **other** caller of `009FBA50` passes a real range pair,
+which would make the `scale` term live and the `009D0A63` interpolation meaningful for them".
+
+**`009C18C0` does.** Its call at `009C1B17` passes `this+38h` as `rangeLow` and the live distance to
+the target as `rangeHigh`, so `span` is positive for the whole approach and `009FBAD2`'s term drives
+a glide slope: `span * t * class+518h`, with `class+518h` derived as `tan(desc+1F0h DropAngle)` at
+`007C4A44`. So the interpolation shape this doc found dead at the attack-run site is the same
+computation that shapes the approach descent at the move-to site.
+
+That does not change anything here: the attack-run site still passes `approach+90h` as both
+arguments, its `scale` is still discarded, and passing a zero range pair there is still exactly
+right. `009A3770` and `009A4010` remain unread. `docs/TORPEDO_MOVETO_TICK.md`.

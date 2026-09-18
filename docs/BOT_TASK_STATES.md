@@ -538,3 +538,36 @@ to those same two locals and are in fact the interpolation's own argument slots.
 `009D07B0` therefore commands **no throttle at all**, and neither does the aim tick: the throttle a
 bot flies is the plan's throttle slot, which `0099B450` reseeds from the live value and which no
 routine in the torpedo chain writes. `docs/TORPEDO_THROTTLE_CUT.md`.
+
+
+## Correction from packet `cc8_torpedo_moveto_tick`: step 5, and what `+30h`/`+34h`/`+38h` are
+
+Appended, not rewriting the section above.
+
+"The shared `moveto` and `follow` states" names `009C2AC0`'s last three parameters `near`, `far` and
+`mode`, stored at `+30h`, `+34h` and `+38h`, and its step table stops at step 4. The tick's own use
+settles what they are, and step 5 is where the descent lives.
+
+* `+30h` and `+34h` are **altitudes**. `009C1B17`'s call is
+  `009FBA50(max(this+34h + targetY, this+30h), this+38h, distance, t)`, and line 160's refresher
+  `009BDE80` passes `approach+3Ch + approach+34h` into both, which line 262 already identifies as
+  the task's aim altitude.
+* `+38h` is a **distance**, not a mode: it is `009FBA50`'s `rangeLow`, so
+  `span = max(distance - this+38h, 0)`.
+
+**Step 5 commands a glide slope**, and it is the only place in the torpedo chain that descends an
+aircraft gradually:
+
+```
+t        = InterpolateClamped(0.05 [00CE7638], 0.35 [00CF6560], 0.4 [00CE7804], 1.6 [00D06BB4],
+                              max(1400 - unit+100h, 50) / clamp(distance - 1000, 50, 2000))
+altitude = aimAlt + targetY + max(distance - this+38h, 0) * t * class+518h
+```
+
+and `class+518h` is `tan(desc+1F0h DropAngle)`, derived at `007C4A3F`/`007C4A44` through
+`00412E20 BSP_Math_TangentX87Float`. So the bias is `horizontalDistance * tan(angle)`: a straight
+glide path at `atan(t * tan(DropAngle))`. Step 5 then calls `009F9E40` for the heading at
+`009C1B23`, writes `Pilot/AutoStrafeAngle/Angle_MoveTo` into `approach+1Ch -> +40h` at `009C1B2D`,
+and makes three tail calls at `009C1B45`, `009C1B50` and `009C1B5B` that are unread.
+
+`docs/TORPEDO_MOVETO_TICK.md`.
