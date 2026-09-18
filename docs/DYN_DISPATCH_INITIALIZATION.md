@@ -168,3 +168,12 @@ the complete narrow-phase task. The geometry fixtures use producer-verified
 record fields without invoking primitive shape construction or lifetime.
 Box/box, terrain/convex, convex/ray, remaining world tasks and application
 admission/gameplay are still open.
+
+## Follow-up from docs/NATIVE_DYN_BOX_BOX_R142.md
+
+R142 closes C49A30 and all six face-contact/polygon-clipping dependencies,
+supplying the complete `NativeDynBoxBoxRuntime` table for the actual static
+owner. Direct/table and narrow-phase scene comparisons pass, including native
+zero-through-eight contact counts. Terrain/convex and convex/ray are the two
+remaining dispatcher classes. Primitive class production/lifetime, remaining
+world tasks and application admission/gameplay are still open.
