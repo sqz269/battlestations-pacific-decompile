@@ -555,3 +555,27 @@ have Ghidra functions and names.
    binding, so `0099E888`'s coordinated-turn block never runs and the yaw demand collapses to
    zero whenever the bank exceeds `tuning+80h`. `yaw_turn_numerator_0099e69b` is reconstructed
    and unused.
+
+## Correction, packet cc8_torpedo_run_profile
+
+Appended, not a rewrite of anything above.
+
+Two sections above are now settled by reading the producer this packet named as blocking.
+
+**"The dimensional argument does not hold"** concluded that the right magnitude for
+`approach+7Ch` and `+80h` could not be argued from dimensions. It can, the other way round.
+Those slots are **release distances in metres**, not speeds: `009F9CFF`-`009F9D22` points
+`approach+14h` at `&PilotBotConfig.levels[idx]` and `009D0484`-`009D0497` takes
+`TorpReleaseDistNear` into `+7Ch` and `TorpReleaseDistFar` into `+80h`, both scaled by
+`approach+24h` = `max(1.0, desc.MaxSpd / Pilot/Torpedo/ReferenceSpeed)`. So the 500 the host
+had been using is at least the right **kind** of quantity and a plausible magnitude, which
+is why the host behaved sensibly with it. What was wrong was the source key, not the scale
+of the number.
+
+It also explains the `600.0` at `00D20198` that no aircraft speed could make sense of: it
+is a distance scale. `009D1500` returns a range ratio, not a time, so clause 2 comparing it
+against a steering delta in radians is dimensionless on both sides and never was a unit
+error.
+
+**The "blocking follow-up"** section, the producer of `approach+14h` and `+24h`, is closed.
+`docs/TORPEDO_RUN_PROFILE.md` has it, with the evidence and the remaining binding contract.
