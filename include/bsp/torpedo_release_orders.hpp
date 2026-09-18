@@ -103,13 +103,38 @@ struct ReleaseOrderSetInputs {
 };
 int release_order_count_007bcbe0(const ReleaseOrderSetInputs& in) noexcept;
 
+// 007CCF5 FMUL double [00CEFFB0]: the scale 0079CBD0 applies to the class
+// descriptor field when it seeds ctl+390h, the issue threshold.
+inline constexpr double kIssueThresholdScale_00ceffb0 = 0.95;
+
+// 007EE7F0, `void __thiscall(ctl, unit)`, the hook 007EEF30 runs first at
+// 007EEF3B. It recomputes ctl+374h, the fraction of the flight that still has
+// rounds left, and clears ctl+3ECh. 007C1F60 sums the remaining rounds over the
+// unit's droppable devices (class 25h, ordnance 2Ah, 006E3500 per device), and
+// the CALLING unit discounts one round of its own, because it is about to
+// spend it.
+struct FlightArmedFractionInputs {
+    int controlled_count_3cc = 0;
+    // Per controlled unit, in ctl+3D0h order: the scene-node enabled byte
+    // unit+5Ch, the remaining round count 007C1F60(unit), and whether this is
+    // the unit 007EEF30 was called for.
+    const bool* unit_enabled_5c = nullptr;
+    const int* unit_rounds_007c1f60 = nullptr;
+    const bool* unit_is_caller = nullptr;
+};
+float flight_armed_fraction_007ee7f0(const FlightArmedFractionInputs& in) noexcept;
+
 // 007EEF30, `void __thiscall(ctl, unit)`: the issuer. It hands
 // kReleaseOrderCount_007eef78 to every unit in the control block's array.
 struct ReleaseOrderIssueInputs {
     // 007EEF40-007EEF50: FCOMIP on ctl->+390h against ctl->+374h; the whole
-    // loop is skipped unless the first is strictly greater.
-    float authorise_value_390 = 0.0f;
-    float authorise_threshold_374 = 0.0f;
+    // loop is skipped unless the first is strictly greater. +390h is the
+    // threshold 0079CD36 seeds from the class descriptor at unit+538h, field
+    // +A0h, times 0.95; +374h is the armed fraction 007EE7F0 recomputes on
+    // every call. So a flight issues release orders only while enough of it has
+    // already spent its load, which throttles a large formation.
+    float authorise_value_390 = 0.0f;      // ctl+390h, the threshold
+    float authorise_threshold_374 = 0.0f;  // ctl+374h, the armed fraction
     int controlled_count_3cc = 0;       // 007EEF54
     bool force_flag_378 = false;        // 007EEF62
 };

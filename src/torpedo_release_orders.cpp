@@ -52,6 +52,27 @@ int release_order_count_007bcbe0(const ReleaseOrderSetInputs& in) noexcept {
     return in.requested_count;                      // 007BCBFD
 }
 
+float flight_armed_fraction_007ee7f0(const FlightArmedFractionInputs& in) noexcept {
+    // 007EE7F0's loop: total counts the enabled aircraft, armed counts those
+    // with a round left.
+    float armed = 0.0f;
+    float total = 0.0f;
+    if (in.unit_enabled_5c == nullptr || in.unit_rounds_007c1f60 == nullptr ||
+        in.unit_is_caller == nullptr) {
+        return 0.0f;
+    }
+    for (int i = 0; i < in.controlled_count_3cc; ++i) {
+        if (!in.unit_enabled_5c[i]) continue;
+        total += 1.0f;
+        int rounds = in.unit_rounds_007c1f60[i];
+        // The caller is about to spend one, so it does not count itself.
+        if (in.unit_is_caller[i]) --rounds;
+        if (rounds > 0) armed += 1.0f;
+    }
+    // The empty-flight arm stores zero rather than dividing.
+    return total > 0.0f ? armed / total : 0.0f;
+}
+
 bool release_orders_should_issue_007eef30(const ReleaseOrderIssueInputs& in) noexcept {
     // 007EEF4C FCOMIP ST0,ST1 with ST0 = ctl->+390h and ST1 = ctl->+374h;
     // 007EEF50 JBE skips the whole loop.
