@@ -1,0 +1,142 @@
+{
+  "packet": "cc8_ship_ai_approach_slot_scorers",
+  "owner": "agent/cc8-ship-approach-curves",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read-only: no rename, comment, prototype, function creation or save",
+  "doc": "docs/SHIP_AI_APPROACH_SLOT_SCORERS.md",
+  "source": "src/game_hosts_ship_ai.cpp, include/bsp/game_hosts_ship_ai.hpp",
+  "build": "scripts/build.ps1, Win32 Release, /W4 /WX clean; ctest 2/2",
+  "note": "The four scorers did not need reconstructing: 009E5DA0, 009E6400, 009E6870 and 009E6640 are already whole in include/bsp/ship_ai_ring_scan.hpp and src/ship_ai_ring_scan*.cpp from packet cc_ai_ring_scan, and slot+18h is simply what 0095EB40 returns through the 009E5DA0 adapter. The run says that adapter is never reached: firepower=0 against ring_scans=8400. 009E7FC0 returns at its FIRST mode-0 gate, 009E80B0, on 600 of 600 scans for every ship.",
+  "routines": [
+    {
+      "address": "009e5da0",
+      "native": "009e5da0",
+      "name": "BSP_ShipAi_RingScanClassScore",
+      "abi": "__thiscall(slot)(a 44h-byte block by value), RET 44h",
+      "coverage": "already complete on main (packet cc_ai_ring_scan); not re-read",
+      "rule": "a thin adapter: it replaces word 5 of its own copy with wrap(word5 - slot.angle_08) and calls 0095EB40 with ECX = [slot+0h]; the answer is slot+18h"
+    },
+    {
+      "address": "009e7fc0",
+      "native": "009e7fc0",
+      "name": "BSP_ShipAi_ApproachResetScores",
+      "abi": "__thiscall(nested)(bool has_target)",
+      "coverage": "already complete on main; this packet read only its mode-0 gate chain",
+      "rule": "009E80AB probes the target kind and discards it; 009E80B0 returns unless brain+0B28h; 009E80BD and 009E80CD compare nested+127Ch against [unit+494h] and 009E80DF returns when the first exceeds the second; 009E8116 or 009E8130 asks the visibility gate; only then does 009E81A7 score the sixty slots"
+    },
+    {
+      "address": "0085b7d0",
+      "native": "0085b7d0",
+      "name": "BSP_Gun_CanBearAtRange",
+      "abi": "__thiscall(device, float projectile_class, float bearing, float range)",
+      "coverage": "partial: the first two arms only",
+      "rule": "0085B7E0 reads the weapon Function at [[device+3F4h]+80h] and Function 8 returns 1 at 0085B7E5 with no test; 0085B7F1 wraps everything else in `range <= [projectile+60h]`, so a range past the class maximum falls through to 0; Function 7 then uses BSP_TurningGun_FilterHeadingToTraverse and everything else the gravity-arc solve, neither of which this packet read"
+    }
+  ],
+  "call_sites": [
+    {
+      "routine": "009e7fc0",
+      "address": "009e81a7",
+      "native": "009e5da0",
+      "note": "the per-slot scorer, never reached in this process"
+    },
+    {
+      "routine": "0095eb40",
+      "address": "0095edfa",
+      "native": "0085b7d0",
+      "note": "the mount bearing test, reached only when require_bearing is set, which the ring path does at 009E8171"
+    },
+    {
+      "routine": "009e5da0",
+      "address": "009e5dc4",
+      "native": "0095eb40",
+      "note": "the rating that becomes slot+18h"
+    }
+  ],
+  "host_steps": [
+    {
+      "routine": "009e7fc0",
+      "address": "009e80b0",
+      "native": null,
+      "kind": "field_read",
+      "function": "009e7fc0",
+      "method": "ScoreResetBinding::brain_flag_0b28",
+      "note": "was false unconditionally; now the produced goal-vector flag, which the sibling binding at 009E8747 already read. Still false in play: see validation"
+    },
+    {
+      "routine": "009e7fc0",
+      "address": "009e80bd",
+      "native": null,
+      "kind": "field_read",
+      "function": "009e7fc0",
+      "method": "ScoreResetBinding::nested_reference_127c",
+      "note": "was nested+1290h; now nested+11E0h, which is word 0 of the block at nested+127Ch"
+    },
+    {
+      "routine": "009e7fc0",
+      "address": "009e80cd",
+      "native": null,
+      "kind": "field_read",
+      "function": "009e7fc0",
+      "method": "ScoreResetBinding::unit_lookahead_0494",
+      "note": "was 0.0f; now the gunnery host's any_weapon_max_range, the same unit+494h 0095EB62 gates on"
+    },
+    {
+      "routine": "009e7fc0",
+      "address": "009e8116",
+      "native": null,
+      "kind": "field_read",
+      "function": "009e7fc0",
+      "method": "ScoreResetBinding::zone_allows_target_00864fd0",
+      "note": "00864FD0 is a thunk onto BSP_UnitGunneryVisibility_Test (00864D90); was false, now true, which is the answer src/game_hosts_gunnery.cpp already gives that same routine for the same stated reason"
+    },
+    {
+      "routine": "009e7fc0",
+      "address": "009e8197",
+      "native": null,
+      "kind": "field_read",
+      "function": "009e7fc0",
+      "method": "ScoreResetBinding::score_slot_009e5da0",
+      "note": "the seventeen-dword block was all zero; now built the way 009E7FC0 does, with word 0 from nested+11E0h, word 5 from nested+11DCh, words 6 and 7 the 20.0f and 60.0f of 009E814B and 009E8161, and the two bytes of 009E8171 and 009E8178"
+    }
+  ],
+  "corrections": [
+    {
+      "where": "docs/SHIP_AI_APPROACH_SLOT_TUNE.md, Follow-up packets",
+      "was": "ship_ai_approach_slot_scorers: the real blocker. Until slot+18h has a producer, every slot ties and slot 0 wins whatever the tune block says.",
+      "is": "slot+18h has had a producer since the firepower packet; the scorer that would fill it is never called. 009E7FC0 returns at 009E80B0, its first mode-0 gate, before it scores a single slot.",
+      "evidence": "firepower=0 against ring_scans=8400 in every run of this chain; the gate census added here reports flag_0b28=0 with flag_stops=600 of 600 for all fourteen ships, and ref_127c and look_0494 are never read"
+    },
+    {
+      "where": "src/game_hosts_ship_ai.cpp, two bindings of one field each",
+      "was": "ScoreResetBinding answered brain+0B28h with false while the attack binding read the produced goal-vector flag, and answered 00864FD0 with false while src/game_hosts_gunnery.cpp answers the same routine with true",
+      "is": "both aligned with their siblings. Neither changed the census, because the first gate's produced value is itself false.",
+      "evidence": "009E8747 and 009E80B0 read the same brain+0B28h; 00864FD0 is a thunk onto 00864D90, which visible_00864d90 in the gunnery host answers"
+    },
+    {
+      "where": "docs/SHIP_AI_RING_SCAN.md, the nested+127Ch block",
+      "was": "a producer was established for only three of the seventeen words",
+      "is": "words 0 to 4 have producers too, from packet cc8_ship_ai_firepower_inputs: word 0 is nested+11E0h (009F2A04), and words 1 to 4 are the target's length, damage cap, armour and torpedo armour (009F2A2C..009F2A54), with the no-target constants of 009F2A91..009F2AC1.",
+      "evidence": "docs/SHIP_AI_FIREPOWER_INPUTS.md, the query-block table"
+    }
+  ],
+  "no_ghidra_function": [],
+  "validation": {
+    "usn02_before": "the tune packet's after-run: winner slot 0 everywhere, standoff 1450 / 1550 / 200, shots=734 hull=180 deaths=2 total_damage=18525.6, heading_changes 78 / 67 / 94 / 83",
+    "usn02_after": "identical on every one of those numbers, and firepower=0 both times",
+    "attribution": "nothing moved because nothing downstream ran. Four wrong host answers were replaced with produced ones and a fifth was given the block the image copies, but 009E7FC0 still returns at 009E80B0: brain+0B28h is false on 600 of 600 scans for every ship, so 009E80BD and 009E80CD are never even read (ref_127c=0.0 look_0494=0.0 in the census) and 009E81A7 never runs.",
+    "next_blocking_input": "brain+0B28h, read at 009E80B0 and maintained by 009F1420. Value: false, 600 of 600 scans, every ship. Its producer is ship_ai_goal_vector.cpp lines 135-146, which sets it true on arms whose conditions do not hold in this process; nothing clears it after use, so it is simply never set."
+  },
+  "follow_up_packets": [
+    "ship_ai_goal_vector_visibility: why brain+0B28h is never true. It is the single gate between four packets of produced inputs and the ring scan that would use them.",
+    "ship_ai_can_bear_arc: 0085B7D0's Function 7 traverse filter and its gravity-arc solve, the one arm of the mount bearing test this packet left as a substitution.",
+    "ship_ai_approach_point_zone: 00864BA0, the no-target arm of the same gate, still false."
+  ],
+  "uncertainties": [
+    "The four scorers were not re-read. They are complete on main from packet cc_ai_ring_scan and this packet's question was which host inputs starve them, so their bodies are cited from the existing header, not re-derived.",
+    "0085B7D0 is partial: two arms transcribed, two not. A mount in range that is not Function 8 is allowed to bear, which is optimistic.",
+    "The ring query block's words 1 to 4 use the image's no-target constants on both arms, the same labelled substitution the range-profile path makes.",
+    "brain+0B28h's own producer arms in ship_ai_goal_vector.cpp were read only far enough to establish that nothing clears the flag after use."
+  ]
+}
