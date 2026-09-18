@@ -1,0 +1,240 @@
+{
+  "packet": "cc8_torpedo_first_release_authority",
+  "owner": "agent/cc8-torpedo-timing",
+  "question": "With the flight-wide budget unit+C58h following an ordnance-release request rather than preceding it, which call site of 007BBBA0 BSP_Unit_RequestOrdnanceRelease needs no budget, so that the loop can start at all?",
+  "answer": "The aim state's own release timer. 009D15F0 BSP_BotStateTorpedoAim_Tick holds a timer at state+18h, arms it at 009D2287 when all five release flags coincide and the ground probe 00903860 answers below 1.0, and ticks it at 009D2027 through 009FA3A0, which calls 007BBBA0 at 009FA3D0 behind nothing but 007BB110, the unit's own can-release predicate. No queued release order, no prepare state, no manual passthrough count. The arm leaves the countdown at ZERO (009D2282 XORPS/MOVSS), so the drop lands on the next aim tick. Two further budget-free authorities exist and are both the player's: message 0C4h on 007CCFA0 BSP_Plane_HandleMessage, whose arm at 007CD0B2-007CD0C0 has no guard at all, and the manual passthrough task+424h, whose raiser is 009C822C ADD dword [ESI+424h], EAX with EAX=1 from 009C8227 behind the device predicate [unit+72Ch]->vtable[38h].",
+  "coverage": "reconstructed for 009FA3A0 and the 009D2287 arm; census complete for the 34 call sites of 007BBBA0 with every torpedo-owned site read to its end; partial for the depth-charge trio and the twenty-one other callers, which are named but not read; partial for FUN_009C8200's own callers; contract: unread for 007BB110's device model, the reseed bounds timer+4h/+8h and the slot byte at 9C0h",
+  "doc": "docs/TORPEDO_FIRST_RELEASE.md",
+  "tree_base": {
+    "merge_base_with_main": "0fc6c89c9",
+    "note": "main was NOT merged: no confirmation had arrived when this packet started, so the baseline is this tree's own previous after-run, local/usn01_after.log at 0fc6c89c9."
+  },
+  "census_method": {
+    "callsite_census_007bbba0": "python tools/callsite_census.py 007bbba0 - 34 sites, rel32 and absolute dword, image wide.",
+    "store_census_0x378": "python tools/store_census.py 0x378 - 27 sites; three on the pilot control block, 007F2D1E (the constructor, raises to 1), 007ED3C7 and 007EFB4C.",
+    "exhaustive_disp_scan_0x424": "local/scan_disp.py 0x424 - 85 sites, reads included. The raiser 009C822C is an ADD with a register source, which a MOV-only store census misses, the same failure mode that hid 007BBC00 from the previous packet.",
+    "immediate_scan_0xc4": "local/scan_imm.py 0xc4 - 11 instructions carry 0C4h as an immediate, none of them building a message. So the unguarded arm at 007CD0B4 is reached only with a message whose kind byte comes from a variable.",
+    "state_names": "009D2DA0's BSP_BotStateRegistry_Add calls name every torpedo state. param_1+0xD2 is 'torpedo/prepare' and carries the vtable at 00D21320 whose slots are 009D2570 and 009D2720, so the ledger's BSP_BotStateTorpedoDone_* names were wrong."
+  },
+  "calls": [
+    {
+      "address": "007cd0b4",
+      "native": "007bbba0",
+      "function": "007ccfa0",
+      "role": "message 0C4h: MOV ECX,EDI then CALL, with no guard of any kind"
+    },
+    {
+      "address": "009fa3d0",
+      "native": "007bbba0",
+      "function": "009fa3a0",
+      "role": "the aim state's release timer, the AI's budget-free authority"
+    },
+    {
+      "address": "009fa3c5",
+      "native": "007bb110",
+      "function": "009fa3a0",
+      "role": "the can-release predicate, the only thing in front of the release"
+    },
+    {
+      "address": "009fa3ea",
+      "native": "00bd2f10",
+      "function": "009fa3a0",
+      "role": "the uniform reseed draw over timer+4h and timer+8h"
+    },
+    {
+      "address": "009d2027",
+      "native": "009fa3a0",
+      "function": "009d15f0",
+      "role": "the aim tick's call, ECX = state+18h from the LEA at 009D2019"
+    },
+    {
+      "address": "009d2265",
+      "native": "00903860",
+      "function": "009d15f0",
+      "role": "the ground probe the arm compares 1.0 against"
+    },
+    {
+      "address": "009d4956",
+      "native": "007bbba0",
+      "function": "009d4850",
+      "role": "the manual passthrough, behind task+424h and the device predicate"
+    },
+    {
+      "address": "009d3eb6",
+      "native": "007bbba0",
+      "function": "009d3e80",
+      "role": "the drain of task+424h"
+    },
+    {
+      "address": "009d27a6",
+      "native": "009d25a0",
+      "function": "009d2720",
+      "role": "the prepare tick's gated release, the only caller of 009D25A0"
+    },
+    {
+      "address": "009b944d",
+      "native": "007ed3c0",
+      "function": "009b9420",
+      "kind": "no_ghidra_function",
+      "role": "the stand-down at vtable 00D206AC clears the count and the force flag"
+    },
+    {
+      "address": "009b9493",
+      "native": "007efb30",
+      "function": "009b9480",
+      "kind": "no_ghidra_function",
+      "role": "the free-fire at vtable 00D206B0 tail-jumps the force-flag raiser"
+    },
+    {
+      "address": "007efb35",
+      "native": "007ee7f0",
+      "function": "007efb30",
+      "role": "BSP_PilotControl_RefreshArmedFraction, called with PUSH 0 at 007EFB31 before the force-flag test at 007EFB46"
+    }
+  ],
+  "named_routines": [
+    {
+      "address": "009fa3a0",
+      "native": "009fa3a0",
+      "name": "BSP_ReleaseTimer_Tick",
+      "role": "void __thiscall(timer, float dt), RET 4 at 009FA40A, body 009FA3A0-009FA40A"
+    },
+    {
+      "address": "007bb110",
+      "native": "007bb110",
+      "name": "BSP_Unit_CanReleaseOrdnance",
+      "role": "the predicate form of 007BBBA0's own head"
+    },
+    {
+      "address": "007ccfa0",
+      "native": "007ccfa0",
+      "name": "BSP_Plane_HandleMessage",
+      "role": "body 007CCFA0-007CD1AB; the 0C4h arm is the unguarded release"
+    },
+    {
+      "address": "009d2720",
+      "native": "009d2720",
+      "name": "BSP_BotStateTorpedoPrepare_Tick",
+      "role": "renamed from BSP_BotStateTorpedoDone_Tick, per the registry in 009D2DA0"
+    },
+    {
+      "address": "009d25a0",
+      "native": "009d25a0",
+      "name": "BSP_BotStateTorpedoPrepare_ReleaseGated",
+      "role": "renamed from BSP_BotStateTorpedoDone_ReleaseGated"
+    },
+    {
+      "address": "009d2570",
+      "native": "009d2570",
+      "name": "BSP_BotStateTorpedoPrepare_Exit",
+      "role": "renamed from BSP_BotStateTorpedoDone_Exit"
+    },
+    {
+      "address": "007efb30",
+      "native": "007efb30",
+      "name": "BSP_PilotControl_RaiseForceReleaseFlag",
+      "role": "ctl+378h = 1 when ctl+390h <= ctl+374h"
+    },
+    {
+      "address": "009c8200",
+      "native": "009c8200",
+      "name": "BSP_BotTask_AccumulateManualReleaseRequest",
+      "role": "009C822C raises task+424h by one behind the device predicate"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "009b9420",
+      "end": "009b947b",
+      "role": "the stand-down at vtable slot 00D206AC; INT3 padding 009B9411-009B941F before and 009B947C-009B947F after"
+    },
+    {
+      "address": "009b9480",
+      "end": "009b9498",
+      "role": "the free-fire at vtable slot 00D206B0; INT3 padding from 009B9499"
+    }
+  ],
+  "host_methods": [
+    {
+      "address": "009fa3a0",
+      "native": "009fa3a0",
+      "name": "bsp::release_timer_tick_009fa3a0",
+      "role": "src/torpedo_first_release.cpp"
+    },
+    {
+      "address": "009d2287",
+      "native": "009d2287",
+      "name": "bsp::release_timer_arm_009d2287",
+      "role": "src/torpedo_first_release.cpp",
+      "in_function": "009d15f0"
+    },
+    {
+      "address": "007bbba0",
+      "native": "007bbba0",
+      "name": "GameUnitsHost::Impl::release_ordnance_007bbba0",
+      "role": "the single host path that raises unit+C20h, now shared by both release call sites"
+    }
+  ],
+  "contracts": [
+    {
+      "address": "007bb110",
+      "native": "007bb110",
+      "name": "Unit::can_release_007bb110",
+      "role": "the device at unit+DECh; a torpedo-armed aircraft with a round left stands in"
+    },
+    {
+      "address": "009fa3ea",
+      "native": "009fa3ea",
+      "name": "ReleaseTimer::reseed_bounds",
+      "role": "timer+4h and timer+8h, unread on this object",
+      "in_function": "009fa3a0"
+    },
+    {
+      "address": "009fa3fb",
+      "native": "009fa3fb",
+      "name": "Unit::slot_byte_9c0",
+      "role": "unit+9C0h + slot*8",
+      "in_function": "009fa3a0"
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 clean, Win32 /W4 /WX",
+    "tests": "ctest --test-dir build/win32 -C Release: 2/2 passed. No new case: neither rule has an arm this run reaches, so a test would only restate the code.",
+    "usn01_before": {
+      "log": "local/usn01_after.log (this tree at 0fc6c89c9)",
+      "per_aircraft": "Mav1..Mav5: release_arm_009D2287=0, timer_009FA3A0=37.20 (the old accumulator), releases=0, peak unit+C58h=0"
+    },
+    "usn01_after": {
+      "log": "local/usn01_release.log",
+      "per_aircraft": "Mav1..Mav5: release_arm_009D2287=0 timer_on=0 timer_fires=0 timer_blocked_007BB110=0 first_fire_at_aim_tick=-1 timer_009FA3A0=0.00",
+      "request_path_taken": "none: no aircraft reached the arm, so the timer never started and 007BBBA0 was never called",
+      "c20_after_first_request": "not reached",
+      "flight_handout": "not reached; unit+C58h stayed 0",
+      "prepare_entries": "Mav2 and Mav3 on arm tick 1, unchanged",
+      "countdown": "prepare+98h = -1.0 throughout, unchanged",
+      "releases_007bbba0": 0,
+      "gunnery": "hull=23 total_damage=220.0 deaths=1, unchanged",
+      "note": "timer_009FA3A0 reading 0.00 rather than 37.20 is the sign fix: 009FA3A3 returns before the countdown when the enable byte is clear, so a disabled timer no longer advances"
+    },
+    "next_gate": "The cone flag of the five-flag release chain at 009D2209. The arm at 009D2287 needs all five flags; the aim census gives F18, the turn magnitude, as 2.28 to 2.34 rad on all five aircraft, while the interpolated cone is at most a few tens of degrees, so cone_rad > F18 is never true. That is a steering result, not an authority one: heading_error_last_mean is 0.918 rad at range_last_mean 920.9 m.",
+    "usn02_before": {
+      "log": "local/usn02_after.log",
+      "lines": [
+        "summary mission gunnery ordnance units_with torpedo=29 general_bomb=0 drop_kamikaze=0 paratrooper=0 (of 32 units with guns)",
+        "summary mission gunnery damage queued_hits=126 dispatched=126 hit_records=126 hull=125 part=0 fires=0 floods=0 attributions=126 deaths=3 kill_credits=3 total_damage=13673.7 first_hit=41.85 s",
+        "host methods 707 concrete, 489 unimplemented"
+      ]
+    },
+    "usn02_after": {
+      "log": "local/usn02_release.log",
+      "lines": [
+        "summary mission gunnery ordnance units_with torpedo=29 general_bomb=0 drop_kamikaze=0 paratrooper=0 (of 32 units with guns)",
+        "summary mission gunnery damage queued_hits=126 dispatched=126 hit_records=126 hull=125 part=0 fires=0 floods=0 attributions=126 deaths=3 kill_credits=3 total_damage=13673.7 first_hit=41.85 s",
+        "host methods 707 concrete, 489 unimplemented"
+      ],
+      "identical": true,
+      "attribution": "nothing to attribute: USN02 has no ordered aircraft carrying torpedo ordnance, so 0099A170 builds no kind Eh task and the aim tick never runs",
+      "note": "the first attempt at this run was cut off at frame 1679 of 3200 and never reached the mission summary, so it was discarded and the mission re-run to completion"
+    }
+  }
+}

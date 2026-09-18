@@ -1,0 +1,847 @@
+// The AI coordinator's fixed-step tick, bound to this process's units.
+// docs/AI_COORDINATOR_TICK.md. See include/bsp/game_hosts_ai.hpp for the
+// addresses and for every stand-in this file makes.
+
+#include "bsp/game_hosts_ai.hpp"
+
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <cstdio>
+#include <map>
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "bsp/ai_command_lifetime.hpp"
+#include "bsp/ai_group_think.hpp"
+#include "bsp/ai_planners.hpp"
+#include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_units.hpp"
+#include "bsp/unit_gunnery_pass.hpp"
+
+namespace bsp::game {
+namespace {
+
+// 004BCA50 BSP_Game_GetEffectiveGameMode returns [world+614h], remapped by the
+// 004BCA5F/004BCA68 arms. This process runs a single-player campaign mission,
+// which is mode 0, and mode 0 is what makes ai_party_think_mode answer
+// GroupWalk and 009FFE50 admit party slots 0 and 4 only. The value is a
+// labelled substitution: the world singleton's +614h has no producer here.
+constexpr int kCampaignGameMode = 0;
+
+// The AI command class 00A2CBD0 chooses between, and the scene command token
+// this process issues for it. Neither 00A10890 nor 00A109B0 builds a scene
+// command natively; the group's AI command drives its members through
+// 00A2C790's member->vtable[+114h], which is unread. Issuing a real order is
+// this file's substitution for that dispatch, so the class only selects which
+// token and how aggressively.
+enum class AiAttackArm { MoveToAttack, CautiousAttack };
+
+}  // namespace
+
+struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
+                                     public bsp::AiPlannerHost {
+    Impl(GameHostLog& log_in, GameUnitsHost& units_in) : log(log_in), units(units_in) {}
+
+    void record(const char* method, std::uint32_t address) {
+        char text[16];
+        std::snprintf(text, sizeof(text), "%08lx", static_cast<unsigned long>(address));
+        log.unimplemented(method, text);
+    }
+    void done(const char* method, std::uint32_t address) {
+        char text[16];
+        std::snprintf(text, sizeof(text), "%08lx", static_cast<unsigned long>(address));
+        log.implemented(method, text);
+    }
+
+    GameHostLog& log;
+    GameUnitsHost& units;
+
+    // --- the records every void* in the two host interfaces points at -------
+
+    struct Planner;
+
+    struct Group {
+        int team{0};                  // group+5638h, the seed entity's +54h
+        int party{0};                 // the party slot this process files it under
+        std::vector<std::size_t> members;   // the +563Ch list, by unit index
+        Planner* claimed_by{nullptr}; // group+5654h
+        bool has_command{false};      // group+564Ch
+        Group* command_target{nullptr};     // command+1Ch
+        AiAttackArm command_arm{AiAttackArm::MoveToAttack};
+        bool emptied{false};
+        bool destroyed{false};
+        std::string tag;              // the planner spawn tag, when one made it
+        float leader_position[3]{0.0f, 0.0f, 0.0f};  // the +C8h cache
+        double leader_order_key{0.0}; // 009FFD70 on the leader
+        const std::vector<Group*>* walk_list{nullptr};  // the list a walk found it in
+        std::size_t walk_at{0};
+    };
+
+    struct Planner {
+        bsp::AiPlannerKind kind{bsp::AiPlannerKind::Siege};
+        int slot{0};
+        std::vector<Group*> owned;
+    };
+
+    struct Brain {
+        int party_slot{0};            // brain+20h
+        int world_set{0};             // brain+24h
+        std::array<Planner, 8> planners{};  // brain+0h..+1Ch
+    };
+
+    // Groups are held by pointer so a void* handed to a sequence stays valid
+    // across a phase that appends.
+    std::vector<std::unique_ptr<Group>> groups;
+    std::vector<Group*> registry;                  // 00F8AA70, every live group
+    std::array<std::vector<Group*>, 3> by_team;    // g_aiGroupsByTeam, 00F8AA48 + t*0Ch
+    std::vector<Group*> emptied;                   // 00F8AA7C / 00F8AA80
+    std::array<std::unique_ptr<Brain>, bsp::kAiGroupPartySlotCount> brains{};
+    std::array<float, bsp::kAiGroupPartySlotCount> next_think{};
+    std::array<bool, bsp::kAiGroupPartySlotCount> party_record{};
+    int current_party{-1};           // 00E0E344
+    float clock_seconds{0.0f};       // 00F876A4
+    std::uint32_t rng{0x2545F491u};  // 00BD2F10's stream, one per run
+    bool created{false};
+
+    // Which group holds a unit, so entity_has_group answers entity+16Ch.
+    std::vector<Group*> group_of_unit;
+
+    GameAiSummary summary{};
+    std::vector<GameAiPartyRow> parties;
+
+    // Every void* this file hands a sequence is a Group*, never a separate
+    // cursor object, because the two sequences mix list walks with handles they
+    // were given directly (a planner's owned group, the emptied-list head) and
+    // a caller cannot tell the two apart. The walk position therefore lives on
+    // the group: `first_*` publishes it, `next_group` reads it back.
+    //
+    // Nested walks over one list are safe: phase 4 runs an inner walk over the
+    // same party list as the outer, and a group re-published by the inner walk
+    // gets the same list and the same index it already held. Walks over
+    // different lists never overlap, because a group is in exactly one
+    // g_aiGroupsByTeam list and the party think's inner walk is over the enemy
+    // team's list.
+    void* open(const std::vector<Group*>& list) {
+        return advance(list, 0);
+    }
+    void* advance(const std::vector<Group*>& list, std::size_t at) {
+        while (at < list.size() && list[at]->destroyed) ++at;
+        if (at >= list.size()) return nullptr;
+        Group* g = list[at];
+        g->walk_list = &list;
+        g->walk_at = at;
+        return g;
+    }
+    static Group* group_at(void* handle) { return static_cast<Group*>(handle); }
+
+    GameAiPartyRow& party_row(int party) {
+        for (GameAiPartyRow& row : parties) {
+            if (row.party == party) return row;
+        }
+        GameAiPartyRow row;
+        row.party = party;
+        parties.push_back(row);
+        return parties.back();
+    }
+
+    float random_00bd2f10(float low, float high) {
+        rng = rng * 1664525u + 1013904223u;
+        const float unit = static_cast<float>((rng >> 8) & 0xFFFFFFu)
+            / static_cast<float>(0x1000000u);
+        return low + (high - low) * unit;
+    }
+
+    // --- AiGroupThinkHost ---------------------------------------------------
+
+    bool high_level_ai_enabled() override {
+        // 00E0E34C's absolute address occurs once in the image, at the read
+        // 00A32D52, and its static value is 1, so the gate is always open.
+        return true;
+    }
+
+    std::uint32_t emptied_group_count() override {
+        return static_cast<std::uint32_t>(emptied.size());
+    }
+    void* first_emptied_group() override {
+        return emptied.empty() ? nullptr : static_cast<void*>(emptied.front());
+    }
+    void* first_group_of_global_registry() override { return open(registry); }
+    void* first_group_of_proximity_list() override { return open(by_team[2]); }
+
+    void release_group_reference(void* holder, void* group) override {
+        // 00A2B8F0 __thiscall(group+24h)(emptyGroup), contract: unread. The
+        // only reference this process holds between groups is a command target.
+        Group* h = group_at(holder);
+        Group* g = group_at(group);
+        if (h != nullptr && h->command_target == g) {
+            h->command_target = nullptr;
+            h->has_command = false;
+        }
+        record("AiGroups::release_group_reference", 0x00a2b8f0u);
+    }
+    void unlink_and_free_emptied_node(void* group) override {
+        Group* g = group_at(group);
+        emptied.erase(std::remove(emptied.begin(), emptied.end(), g), emptied.end());
+        done("AiGroups::unlink_emptied_node", 0x00a2e7bfu);
+    }
+    void destroy_group(void* group) override {
+        // slot 0 of 00D23084 is 00A2D8C0, which calls 00A2D440, the unregister.
+        // contract: partial. The unregister is the list removals below.
+        Group* g = group_at(group);
+        if (g == nullptr || g->destroyed) return;
+        g->destroyed = true;
+        registry.erase(std::remove(registry.begin(), registry.end(), g), registry.end());
+        for (std::vector<Group*>& list : by_team) {
+            list.erase(std::remove(list.begin(), list.end(), g), list.end());
+        }
+        for (const std::unique_ptr<Brain>& brain : brains) {
+            if (brain == nullptr) continue;
+            for (Planner& planner : brain->planners) {
+                planner.owned.erase(std::remove(planner.owned.begin(), planner.owned.end(), g),
+                    planner.owned.end());
+            }
+        }
+        for (std::size_t i = 0; i < group_of_unit.size(); ++i) {
+            if (group_of_unit[i] == g) group_of_unit[i] = nullptr;
+        }
+        ++summary.groups_destroyed;
+        record("AiGroups::destroy_group", 0x00a2d8c0u);
+    }
+
+    void evict_invalid_members(void* group) override {
+        // 00A2DDE0, body read in full: a member whose gate bytes fail, or whose
+        // party or team no longer matches the group's, leaves the list.
+        Group* g = group_at(group);
+        if (g == nullptr) return;
+        const std::size_t before = g->members.size();
+        std::vector<std::size_t> kept;
+        kept.reserve(before);
+        for (const std::size_t unit : g->members) {
+            bsp::AiGroupCandidateFlags flags = unit_flags(unit);
+            if (bsp::ai_group_member_still_belongs(flags, units.unit_side_0054(unit), g->party,
+                    units.unit_side_0054(unit), g->team)) {
+                kept.push_back(unit);
+            } else if (unit < group_of_unit.size()) {
+                group_of_unit[unit] = nullptr;
+            }
+        }
+        summary.members_evicted += before - kept.size();
+        g->members.swap(kept);
+        if (g->members.empty() && !g->emptied) {
+            g->emptied = true;
+            emptied.push_back(g);
+        }
+        done("AiGroups::evict_invalid_members", 0x00a2dde0u);
+    }
+
+    void split_detached_members(void* group) override {
+        // 00A2E260, body read in full: build the subset of members for which
+        // 009FE080 holds and move it into a NEW group, but only when the subset
+        // is non-empty and strictly smaller than the population (00A2E334 JBE,
+        // 00A2E342 JNC, both unsigned). This is the group multiplier. Leaving
+        // it a no-op, as packet cc8_ai_coordinator_tick did, is why that
+        // packet measured one group per team and therefore one attack order:
+        // with a single enemy group the planner re-picks the same target every
+        // think and 00A2CBD0's second test skips it.
+        ++summary.splits;
+        Group* g = group_at(group);
+        if (g == nullptr) return;
+        std::vector<std::size_t> groupable;
+        for (const std::size_t unit : g->members) {
+            if (bsp::ai_entity_is_groupable_combatant_009fe080(combatant_facts(unit))) {
+                groupable.push_back(unit);
+            }
+        }
+        if (!bsp::ai_group_split_runs_00a2e260(groupable.size(), g->members.size())) {
+            done("AiGroups::split_detached_members", 0x00a2e260u);
+            return;
+        }
+        std::vector<std::size_t> kept;
+        for (const std::size_t unit : g->members) {
+            if (std::find(groupable.begin(), groupable.end(), unit) == groupable.end()) {
+                kept.push_back(unit);
+            }
+        }
+        g->members.swap(kept);
+        // 00A2E42A: the first split member creates the new group with 00A2DFA0,
+        // the rest are added with 00A2D8E0.
+        Group* made = static_cast<Group*>(create_group(handle(groupable.front())));
+        for (std::size_t i = 1; i < groupable.size(); ++i) attach(made, groupable[i]);
+        ++summary.splits_taken;
+        done("AiGroups::split_detached_members", 0x00a2e260u);
+    }
+
+    void* create_group(void* first_member) override {
+        const std::size_t unit = unit_index_of(first_member);
+        groups.push_back(std::make_unique<Group>());
+        Group* g = groups.back().get();
+        g->team = units.unit_side_0054(unit);
+        if (g->team < 0 || g->team > bsp::kAiGroupMaxSeedTeam) g->team = 0;
+        g->party = g->team;   // this process files a group under its own team
+        registry.push_back(g);
+        // 00A2E086-00A2E0BD: every group appends itself to
+        // g_aiGroupsByTeam[group+5638h] unconditionally.
+        by_team[static_cast<std::size_t>(g->team)].push_back(g);
+        ++summary.groups_created;
+        attach(g, unit);
+        done("AiGroups::create_group", 0x00a2dfa0u);
+        return g;
+    }
+
+    void add_group_member(void* group, void* entity) override {
+        Group* g = group_at(group);
+        if (g == nullptr) return;
+        attach(g, unit_index_of(entity));
+        done("AiGroups::add_group_member", 0x00a2d8e0u);
+    }
+
+    bool can_auto_merge(void* into, void* from) override {
+        // 00A2C8D0 delegates to from+564Ch vtable[+14h], which is unread. This
+        // process has no AI command object, so the merge predicate cannot be
+        // answered and no auto-merge is taken.
+        (void)into;
+        (void)from;
+        record("AiGroups::can_auto_merge", 0x00a2c8d0u);
+        return false;
+    }
+
+    void merge_group(void* into, void* from) override {
+        Group* a = group_at(into);
+        Group* b = group_at(from);
+        if (a == nullptr || b == nullptr || a == b) return;
+        for (const std::size_t unit : b->members) attach(a, unit);
+        b->members.clear();
+        if (!b->emptied) {
+            b->emptied = true;
+            emptied.push_back(b);
+        }
+        ++summary.proximity_merges;
+        done("AiGroups::merge_group", 0x00a2db80u);
+    }
+
+    void group_member_pass(void* group) override {
+        // 00A2C790, head read only: walks members and calls
+        // member->vtable[+114h]. contract: partial. Nothing is dispatched here;
+        // the command a planner chose is issued at order_attack instead.
+        Group* g = group_at(group);
+        if (g == nullptr) return;
+        summary.member_passes += g->members.size();
+        record("AiGroups::group_member_pass", 0x00a2c790u);
+    }
+
+    float auto_merge_dist() override {
+        // 00A371A0()+208h, AutoMerge_MergeDist, loaded by 00A335D0 from the AI
+        // globals script. No tuning block is loaded in this process.
+        record("AiGroups::auto_merge_dist", 0x00a371a0u);
+        return 0.0f;
+    }
+
+    int game_mode() override { return kCampaignGameMode; }
+
+    // Phase 3's five world collections. This process has one flat unit list, so
+    // collection 0 yields every created unit and 1 to 4 are empty.
+    void* first_seed_candidate(int collection) override {
+        if (collection != 0) return nullptr;
+        record("AiGroups::seed_collection", 0x00a2e835u);
+        seed_cursor = 0;
+        return units.count() == 0 ? nullptr : &seed_cursor;
+    }
+    void* next_seed_candidate(void* cursor) override {
+        if (cursor != &seed_cursor) return nullptr;
+        ++seed_cursor;
+        return seed_cursor < units.count() ? &seed_cursor : nullptr;
+    }
+    void* seed_candidate_entity(void* cursor) override {
+        if (cursor != &seed_cursor) return nullptr;
+        ++summary.seed_candidates;
+        return handle(seed_cursor);
+    }
+    std::size_t seed_cursor{0};
+
+    bsp::AiGroupCandidateFlags entity_flags(void* entity) override {
+        return unit_flags(unit_index_of(entity));
+    }
+    bool entity_has_group(void* entity) override {
+        const std::size_t unit = unit_index_of(entity);
+        return unit < group_of_unit.size() && group_of_unit[unit] != nullptr;
+    }
+    int entity_team(void* entity) override {
+        return units.unit_side_0054(unit_index_of(entity));
+    }
+
+    double group_leader_order_key(void* group) override {
+        // 009FFD70 is an adjustor thunk onto 009FDF30 with the leader's +C4h;
+        // contract: unread. The key only has to order a pair consistently, so
+        // this process uses the leader's unit index.
+        Group* g = group_at(group);
+        record("AiGroups::group_leader_order_key", 0x009ffd70u);
+        return (g == nullptr || g->members.empty())
+            ? 0.0 : static_cast<double>(g->members.front());
+    }
+    const float* group_leader_position(void* group) override {
+        Group* g = group_at(group);
+        if (g == nullptr || g->members.empty()) return nullptr;
+        float y = 0.0f;
+        units.unit_position_00fc(g->members.front(), g->leader_position[0], y,
+            g->leader_position[2]);
+        g->leader_position[1] = y;
+        return g->leader_position;
+    }
+
+    float fixed_step_clock() override { return clock_seconds; }
+    float random_think_interval(float lo, float hi) override {
+        return random_00bd2f10(lo, hi);
+    }
+    void* party_brain(int party_slot) override {
+        if (party_slot < 0 || party_slot >= bsp::kAiGroupPartySlotCount) return nullptr;
+        return brains[static_cast<std::size_t>(party_slot)].get();
+    }
+    void store_party_brain(int party_slot, void* brain) override {
+        if (party_slot < 0 || party_slot >= bsp::kAiGroupPartySlotCount) return;
+        if (brain == nullptr) brains[static_cast<std::size_t>(party_slot)].reset();
+    }
+    float next_think_time(int party_slot) override {
+        if (party_slot < 0 || party_slot >= bsp::kAiGroupPartySlotCount) return 0.0f;
+        return next_think[static_cast<std::size_t>(party_slot)];
+    }
+    void store_next_think_time(int party_slot, float when) override {
+        if (party_slot < 0 || party_slot >= bsp::kAiGroupPartySlotCount) return;
+        next_think[static_cast<std::size_t>(party_slot)] = when;
+    }
+    bool party_record_enabled(int party_slot) override {
+        if (party_slot < 0 || party_slot >= bsp::kAiGroupPartySlotCount) return false;
+        return party_record[static_cast<std::size_t>(party_slot)];
+    }
+    bool brain_wants_immediate_think(void* brain) override {
+        // 00A15970's four mode arms read brain+10h..+1Ch vtable[+30h], the
+        // replan virtuals. No planner in this process sets a replan request.
+        (void)brain;
+        record("AiGroups::brain_wants_immediate_think", 0x00a15970u);
+        return false;
+    }
+    void* create_party_brain(int party_slot) override {
+        if (party_slot < 0 || party_slot >= bsp::kAiGroupPartySlotCount) return nullptr;
+        auto brain = std::make_unique<Brain>();
+        brain->party_slot = party_slot;
+        brain->world_set = party_slot;
+        for (int slot = 0; slot < 8; ++slot) {
+            brain->planners[static_cast<std::size_t>(slot)].slot = slot;
+            brain->planners[static_cast<std::size_t>(slot)].kind = planner_kind_for_slot(slot);
+        }
+        Brain* raw = brain.get();
+        brains[static_cast<std::size_t>(party_slot)] = std::move(brain);
+        party_row(party_slot).brain_created = true;
+        record("AiGroups::create_party_brain", 0x00a15a70u);
+        return raw;
+    }
+    void destroy_party_brain(void* brain) override {
+        (void)brain;
+        record("AiGroups::destroy_party_brain", 0x00a16490u);
+    }
+    void set_current_party(int party_slot) override { current_party = party_slot; }
+    void party_brain_think(void* brain) override {
+        ++summary.parties_thought;
+        Brain* b = static_cast<Brain*>(brain);
+        if (b != nullptr) ++party_row(b->party_slot).thinks;
+        bsp::ai_party_brain_think_00a181a0(*this, brain);
+        done("AiParties::party_brain_think", 0x00a181a0u);
+    }
+
+    void* brain_planner(void* brain, int slot) override {
+        Brain* b = static_cast<Brain*>(brain);
+        if (b == nullptr || slot < 0 || slot >= 8) return nullptr;
+        return &b->planners[static_cast<std::size_t>(slot)];
+    }
+    int brain_party_slot(void* brain) override {
+        Brain* b = static_cast<Brain*>(brain);
+        return b != nullptr ? b->party_slot : 0;
+    }
+    int brain_world_set_index(void* brain) override {
+        Brain* b = static_cast<Brain*>(brain);
+        return b != nullptr ? b->world_set : 0;
+    }
+    void planner_tick(void* planner) override {
+        Planner* p = static_cast<Planner*>(planner);
+        if (p == nullptr) return;
+        ++summary.planner_ticks;
+        if (current_party >= 0) ++party_row(current_party).planner_ticks;
+        bsp::AiModePlannerTickInputs in;
+        in.kind = p->kind;
+        in.owned_group_count = static_cast<std::uint32_t>(p->owned.size());
+        in.first_owned_group = p->owned.empty() ? nullptr : static_cast<void*>(p->owned.front());
+        in.own_team = current_party;
+        ticking_planner = p;
+        bsp::ai_mode_planner_tick(*this, in);
+        ticking_planner = nullptr;
+        record("AiPlanners::planner_tick", 0x00a26510u);
+    }
+    void* first_group_of_party(int party_slot) override {
+        if (party_slot < 0 || party_slot >= static_cast<int>(by_team.size())) return nullptr;
+        return open(by_team[static_cast<std::size_t>(party_slot)]);
+    }
+    void* next_group(void* cursor) override {
+        Group* g = group_at(cursor);
+        if (g == nullptr || g->walk_list == nullptr) return nullptr;
+        return advance(*g->walk_list, g->walk_at + 1u);
+    }
+    std::uint32_t group_population(void* group) override {
+        Group* g = group_at(group);
+        return g != nullptr ? static_cast<std::uint32_t>(g->members.size()) : 0u;
+    }
+    void* group_claiming_planner(void* group) override {
+        Group* g = group_at(group);
+        return g != nullptr ? static_cast<void*>(g->claimed_by) : nullptr;
+    }
+    bool group_has_groupable_combatant(void* group) override {
+        // 00A2C5A0 walks the member list at group+563Ch and calls 009FE080 on
+        // each member's +8h (00A2C5CE), so the group answer is the disjunction
+        // of the SAME predicate the split uses. It does not admit the plane
+        // base 0Fh: only a ship base, or a plane squadron 18h whose carrier
+        // link fails 007EDA90.
+        Group* g = group_at(group);
+        if (g == nullptr) return false;
+        for (const std::size_t unit : g->members) {
+            if (bsp::ai_entity_is_groupable_combatant_009fe080(combatant_facts(unit))) {
+                done("AiParties::group_has_groupable_combatant", 0x00a2c5a0u);
+                return true;
+            }
+        }
+        done("AiParties::group_has_groupable_combatant", 0x00a2c5a0u);
+        return false;
+    }
+    bool group_has_member_in_world_set(void* group, int set_index) override {
+        // 00A2C450, body read in full. The world sets are the entity
+        // collections this process does not build, so the answer is the group's
+        // own team against the brain's set index.
+        Group* g = group_at(group);
+        record("AiParties::group_has_member_in_world_set", 0x00a2c450u);
+        return g != nullptr && g->team == set_index;
+    }
+    void planner_claim_group(void* planner, void* group) override {
+        Planner* p = static_cast<Planner*>(planner);
+        Group* g = group_at(group);
+        if (p == nullptr || g == nullptr || g->claimed_by != nullptr) return;
+        g->claimed_by = p;
+        p->owned.push_back(g);
+        ++summary.planner_claims;
+        if (current_party >= 0) ++party_row(current_party).groups_claimed;
+        done("AiParties::planner_claim_group", 0x00a22750u);
+    }
+    void party_brain_plan_tail(void* brain) override {
+        // 00A179E0, the brain's engagement pass. contract: unread, body
+        // 00A179E0-00A18195.
+        (void)brain;
+        record("AiParties::party_brain_plan_tail", 0x00a179e0u);
+    }
+
+    // --- AiPlannerHost ------------------------------------------------------
+
+    Planner* ticking_planner{nullptr};
+
+    std::uint32_t enemy_team_group_count(int enemy_team) override {
+        if (enemy_team < 0 || enemy_team >= static_cast<int>(by_team.size())) return 0u;
+        return static_cast<std::uint32_t>(by_team[static_cast<std::size_t>(enemy_team)].size());
+    }
+    void* first_enemy_team_group(int enemy_team) override {
+        if (enemy_team < 0 || enemy_team >= static_cast<int>(by_team.size())) return nullptr;
+        return open(by_team[static_cast<std::size_t>(enemy_team)]);
+    }
+    bool group_is_end(int enemy_team, void* node) override {
+        (void)enemy_team;
+        return node == nullptr;
+    }
+    bsp::AiCommandType group_command_type(void* group) override {
+        Group* g = group_at(group);
+        // 00A2CBD0 installs 00A10890 (MoveToAttack, class 7) or 00A109B0
+        // (CautiousAttack, class 8); the planner's already-on-it test asks the
+        // command's vtable +4h for its type. NonControl is what a group with
+        // no command answers.
+        if (g == nullptr || !g->has_command) return bsp::AiCommandType::NonControl;
+        return g->command_arm == AiAttackArm::CautiousAttack
+            ? bsp::AiCommandType::CautiousAttack
+            : bsp::AiCommandType::MoveToAttack;
+    }
+    void* group_command_target(void* group) override {
+        Group* g = group_at(group);
+        return (g != nullptr && g->has_command) ? static_cast<void*>(g->command_target) : nullptr;
+    }
+    void clear_group_target_cache(void* group) override {
+        (void)group;
+        done("AiPlanners::clear_group_target_cache", 0x00a1cb80u);
+    }
+    float candidate_base_weight(void* group) override {
+        // 00A0F970 weighs the candidate by what it holds. This process weighs
+        // it by population, which is the only member fact it can supply.
+        Group* g = group_at(group);
+        record("AiPlanners::candidate_base_weight", 0x00a0f970u);
+        return g != nullptr ? static_cast<float>(g->members.size()) : 0.0f;
+    }
+    float squared_planar_distance(void* a, void* b) override {
+        if (group_leader_position(a) == nullptr) return 0.0f;
+        if (group_leader_position(b) == nullptr) return 0.0f;
+        Group* ga = group_at(a);
+        Group* gb = group_at(b);
+        if (ga == nullptr || gb == nullptr) return 0.0f;
+        const float dx = ga->leader_position[0] - gb->leader_position[0];
+        const float dz = ga->leader_position[2] - gb->leader_position[2];
+        return dx * dx + dz * dz;
+    }
+    float near_radius_squared() override { return bsp::kAiEngagementRadiusSquaredValue; }
+    float tuning_field(std::uint32_t offset) override {
+        // 00A371A0 + offset, the block 00A335D0 loads. No tuning script runs in
+        // this process, so every field is the zero the block is constructed to.
+        (void)offset;
+        record("AiPlanners::tuning_field", 0x00a371a0u);
+        return 0.0f;
+    }
+    float range_interpolation(float near_value, float far_value, float distance) override {
+        const float span = bsp::kAiEngagementRadiusSquaredValue;
+        if (span <= 0.0f) return near_value;
+        float t = distance / span;
+        if (t < 0.0f) t = 0.0f;
+        if (t > 1.0f) t = 1.0f;
+        return near_value + (far_value - near_value) * t;
+    }
+    bool candidate_has_member_in_own_set(void* group, int own_team) override {
+        Group* g = group_at(group);
+        return g != nullptr && g->team == own_team;
+    }
+    void order_attack(void* group, void* target, float aggressive) override;
+    void quick_spawn_named_group(const char* tag) override {
+        // 00A25B90 spawns a tagged group for a planner that owns nothing. This
+        // process creates no unit at run time, so the spawn is recorded and the
+        // planner keeps owning nothing.
+        (void)tag;
+        ++summary.planner_spawn_arms;
+        record("AiPlanners::quick_spawn_named_group", 0x00a25b90u);
+    }
+    void publish_spawn_bias(float bias) override {
+        (void)bias;
+        record("AiPlanners::publish_spawn_bias", 0x00a16450u);
+    }
+    bool reset_target_flag() override {
+        // [00F8A9E0] == 3. Nothing in this process writes it.
+        return false;
+    }
+
+    // --- helpers ------------------------------------------------------------
+
+    void* handle(std::size_t unit) { return reinterpret_cast<void*>(unit + 1u); }
+    static std::size_t unit_index_of(void* entity) {
+        return reinterpret_cast<std::size_t>(entity) - 1u;
+    }
+
+    static bsp::AiPlannerKind planner_kind_for_slot(int slot) {
+        switch (slot) {
+        case 0: return bsp::AiPlannerKind::Attack;
+        case 1: return bsp::AiPlannerKind::Defend;
+        case 2: return bsp::AiPlannerKind::Capture;
+        case 3: return bsp::AiPlannerKind::Duel;
+        case 4: return bsp::AiPlannerKind::Escort;
+        case 5: return bsp::AiPlannerKind::Siege;
+        default: return bsp::AiPlannerKind::Competitive;
+        }
+    }
+
+    // 009FE080's inputs. The squadron arm's three reads have no producer in
+    // this process: nothing creates a PlaneSquadronGen, so is_plane_squadron is
+    // false for every unit and the ship-base tail is the whole answer.
+    bsp::AiGroupableCombatantFacts combatant_facts(std::size_t unit) {
+        bsp::AiGroupableCombatantFacts facts;
+        facts.is_plane_squadron = units.unit_is_kind_of(unit, 0x18);
+        facts.is_ship_base = units.unit_is_kind_of(unit, bsp::kUnitGunneryKindShipBase);
+        return facts;
+    }
+
+    bsp::AiGroupCandidateFlags unit_flags(std::size_t unit) {
+        bsp::AiGroupCandidateFlags flags;
+        bsp::SceneNodeFlags node;
+        bool pending = false;
+        if (units.unit_scene_node_flags(unit, node) &&
+            units.unit_pending_destroy_0060(unit, pending)) {
+            flags.active = node.active;
+            flags.flag_5d = node.torn_down;
+            flags.flag_5e = node.destroyed;
+            flags.flag_60 = pending;
+        }
+        if (!units.unit_active(unit)) flags.active = false;
+        return flags;
+    }
+
+    void attach(Group* g, std::size_t unit) {
+        if (unit >= units.count()) return;
+        if (std::find(g->members.begin(), g->members.end(), unit) != g->members.end()) return;
+        g->members.push_back(unit);
+        // 009FFD80's sorted insert: the native list is kept ordered by the
+        // member's own key, and this process orders it by unit index.
+        std::sort(g->members.begin(), g->members.end());
+        if (group_of_unit.size() < units.count()) group_of_unit.resize(units.count(), nullptr);
+        group_of_unit[unit] = g;
+        ++summary.members_added;
+    }
+
+    std::string unit_name(std::size_t unit) const {
+        const GameUnitRow* row = units.unit_row(unit);
+        return row != nullptr ? row->name : std::string();
+    }
+
+    void issue_to_member(std::size_t member, const std::string& token,
+        const std::string& target_name, int party);
+};
+
+void GameAiCoordinatorHost::Impl::issue_to_member(std::size_t member,
+    const std::string& token, const std::string& target_name, int party) {
+    const std::string name = unit_name(member);
+    if (name.empty() || target_name.empty()) {
+        ++summary.commands_refused;
+        if (party >= 0) ++party_row(party).commands_refused;
+        return;
+    }
+    // The same 0046AAB0 registry resolve and 0077D600 message hop a scripted
+    // order takes, so the plane task machinery and the ship order ring see the
+    // AI's decision as a native order. docs/ENTITY_LUA_ORDER_PATH.md.
+    if (!units.issue_player_command(token, target_name, name)) {
+        ++summary.commands_refused;
+        if (party >= 0) ++party_row(party).commands_refused;
+        return;
+    }
+    ++summary.commands_issued;
+    if (party >= 0) ++party_row(party).commands_issued;
+    if (summary.first_command_seconds < 0.0f) summary.first_command_seconds = clock_seconds;
+    done("AiPlanners::issue_member_order", 0x0077d600u);
+}
+
+void GameAiCoordinatorHost::Impl::order_attack(void* group, void* target, float aggressive) {
+    // 00A2CBD0, body 00A2CBD0-00A2CCE8, read in full:
+    //   if (group+5644h == 0) return
+    //   if (command->IsType(ATTACK) && command+1Ch == target) return
+    //   member = first member; if (member->vtable[5Ch](6) == 0 && ... &&
+    //       00BD2F40() > aggressive) CAUTIOUSATTACK else MOVETOATTACK
+    Group* g = group_at(group);
+    Group* t = group_at(target);
+    if (g == nullptr || t == nullptr) return;
+    if (g->members.empty()) return;                      // +5644h == 0
+    if (g->has_command && g->command_target == t) return; // already on it
+    // A higher aggressive ratio makes CAUTIOUSATTACK less likely, because
+    // 00BD2F40's uniform draw is compared against it.
+    const bool cautious = random_00bd2f10(0.0f, 1.0f) > aggressive;
+    g->command_arm = cautious ? AiAttackArm::CautiousAttack : AiAttackArm::MoveToAttack;
+    g->has_command = true;
+    g->command_target = t;
+    ++summary.attack_orders;
+    if (cautious) ++summary.attack_cautious;
+    else ++summary.attack_movetoattack;
+    if (current_party >= 0) ++party_row(current_party).attack_orders;
+    done("AiPlanners::order_attack", 0x00a2cbd0u);
+
+    // The substitution for 00A2C790's unread member->vtable[+114h]: each member
+    // gets the order as a scene command. The token is the member's own weapon
+    // kind, because the 26-row registry has no single "attack": a plane takes
+    // `dogfight` against a plane group and `attackmove` against a surface one,
+    // and a ship takes `artillery`. docs/ENTITY_LUA_ORDER_PATH.md.
+    const std::string target_name = t->members.empty() ? std::string()
+        : unit_name(t->members.front());
+    const bool target_is_air = !t->members.empty() &&
+        units.unit_is_kind_of(t->members.front(), bsp::kUnitGunneryKindPlaneBase);
+    for (const std::size_t member : g->members) {
+        const bool member_is_air = units.unit_is_kind_of(member,
+            bsp::kUnitGunneryKindPlaneBase);
+        const char* token = "artillery";
+        if (member_is_air) token = target_is_air ? "dogfight" : "attackmove";
+        issue_to_member(member, token, target_name, current_party);
+    }
+}
+
+GameAiCoordinatorHost::GameAiCoordinatorHost(GameHostLog& log, GameUnitsHost& units)
+    : impl_(std::make_unique<Impl>(log, units)) {}
+
+GameAiCoordinatorHost::~GameAiCoordinatorHost() = default;
+
+void GameAiCoordinatorHost::create_00a32350() {
+    Impl& host = *impl_;
+    if (host.created) return;
+    host.created = true;
+    host.group_of_unit.assign(host.units.count(), nullptr);
+    host.next_think.fill(0.0f);
+    host.party_record.fill(false);
+    // The party records the mission's `SetParty` binding fills. This process
+    // has no party record block, so a party slot is enabled when at least one
+    // created unit carries that side. record +0h is the native gate.
+    for (std::size_t i = 0; i < host.units.count(); ++i) {
+        const int side = host.units.unit_side_0054(i);
+        if (side >= 0 && side < bsp::kAiGroupPartySlotCount) {
+            host.party_record[static_cast<std::size_t>(side)] = true;
+        }
+    }
+    host.summary.game_mode = host.game_mode();
+    for (int party = 0; party < bsp::kAiGroupPartySlotCount; ++party) {
+        if (!host.party_record[static_cast<std::size_t>(party)]) continue;
+        GameAiPartyRow& row = host.party_row(party);
+        row.record_enabled = true;
+        // 009FFE50 BSP_Ai_IsPartyAiEnabled: in game modes 0 to 3 only slots 0
+        // and 4 are enabled; above 3 every slot is.
+        row.ai_enabled = bsp::ai_party_ai_enabled(host.game_mode(), party);
+    }
+    host.record("AiController::create", 0x00a32350u);
+    host.record("AiController::construct", 0x00a31730u);
+}
+
+void GameAiCoordinatorHost::fixed_step(float step_seconds) {
+    Impl& host = *impl_;
+    if (!host.created) return;
+    host.clock_seconds += step_seconds;
+    ++host.summary.compose_passes;
+    ++host.summary.party_think_calls;
+    // 00A32D50: the gate, then 00A2E720, then 00A182C0. The float is discarded.
+    bsp::ai_coordinator_fixed_step_00a32d50(host);
+    host.done("AiController::fixed_step", 0x00a32d50u);
+}
+
+const GameAiSummary& GameAiCoordinatorHost::summary() const noexcept {
+    return impl_->summary;
+}
+
+const std::vector<GameAiPartyRow>& GameAiCoordinatorHost::party_rows() const noexcept {
+    return impl_->parties;
+}
+
+void GameAiCoordinatorHost::report() {
+    Impl& host = *impl_;
+    const GameAiSummary& s = host.summary;
+    std::size_t with_task = 0;
+    for (const Impl::Group* g : host.registry) {
+        if (g != nullptr && g->has_command) with_task += g->members.size();
+    }
+    host.summary.units_with_task = static_cast<unsigned long long>(with_task);
+    host.log.notef("summary mission ai coordinator game_mode=%d compose=%llu seeds=%llu "
+        "groups_created=%llu destroyed=%llu members_added=%llu evicted=%llu splits=%llu "
+        "splits_taken=%llu auto_merges=%llu prox_merges=%llu member_passes=%llu",
+        s.game_mode, s.compose_passes, s.seed_candidates, s.groups_created,
+        s.groups_destroyed, s.members_added, s.members_evicted, s.splits,
+        s.splits_taken, s.auto_merges, s.proximity_merges, s.member_passes);
+    host.log.notef("summary mission ai parties calls=%llu thought=%llu planner_ticks=%llu "
+        "claims=%llu spawn_arms=%llu attack_orders=%llu cautious=%llu movetoattack=%llu "
+        "commands=%llu refused=%llu units_with_task=%llu first_command=%.2f s",
+        s.party_think_calls, s.parties_thought, s.planner_ticks, s.planner_claims,
+        s.planner_spawn_arms, s.attack_orders, s.attack_cautious, s.attack_movetoattack,
+        s.commands_issued, s.commands_refused, s.units_with_task,
+        static_cast<double>(s.first_command_seconds));
+    for (const GameAiPartyRow& row : host.parties) {
+        host.log.notef("  ai party %d record=%d ai_enabled=%d brain=%d thinks=%llu "
+            "claims=%llu planner_ticks=%llu attacks=%llu commands=%llu refused=%llu",
+            row.party, row.record_enabled ? 1 : 0, row.ai_enabled ? 1 : 0,
+            row.brain_created ? 1 : 0, row.thinks, row.groups_claimed, row.planner_ticks,
+            row.attack_orders, row.commands_issued, row.commands_refused);
+    }
+    for (const Impl::Group* g : host.registry) {
+        if (g == nullptr) continue;
+        host.log.notef("  ai group team=%d party=%d members=%zu claimed=%d command=%d "
+            "arm=%s", g->team, g->party, g->members.size(), g->claimed_by != nullptr ? 1 : 0,
+            g->has_command ? 1 : 0,
+            g->command_arm == AiAttackArm::CautiousAttack ? "cautious" : "movetoattack");
+    }
+}
+
+}  // namespace bsp::game

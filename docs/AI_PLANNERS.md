@@ -352,3 +352,44 @@ per native call site. Nothing here is ABI-compatible.
 - **Was:** the Lua key names of tuning fields +1CCh, +1D0h, +1D4h, +1D8h and +208h's neighbours are unknown
   **Is:** all seven are already named in docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md's record table; that open question is stale, not open
   **Evidence:** 00A371A0 returns coordinator + 4 + mode*23Ch, so a reader-side tuning+N is that table's `record +N` column; +1CCh FreeAttack_ObjectiveTargetMul, +1D0h FreeAttack_NearDist, +1D4h FreeAttack_FarDist, +1D8h FreeAttack_ExistingTargetMul, +204h CloseAttack_TargetGroupMemberMul, +208h AutoMerge_MergeDist, +20Ch AutoMerge_LeaveDist
+
+## Correction appended by cc8_ai_coordinator_tick
+
+`ai_planner_choose_attack_target` and `ai_mode_planner_tick` now have a caller:
+`GameAiCoordinatorHost` in `src/game_hosts_ai.cpp` ticks planners 0 to 3 from the party think.
+`docs/AI_COORDINATOR_TICK.md` carries the binding and the measurement. The text above is left as
+written.
+
+**The `00F8AA60` filler section is confirmed by the binding**, not corrected: reproducing the
+`00A2E086`-`00A2E0BD` append inside the host's `create_group` is enough to make the proximity
+list fill itself, and the compose pass walks it.
+
+**`00A2CBD0`'s second test is why one attack order lands per mission and never a second.** A
+group whose command is already `Attack` on the same target returns early. This process has no AI
+command object, so nothing ever clears the command, and the planner re-picks the same target for
+the rest of the run. Measured: `attack_orders=1` with `thought=39` and `planner_ticks=156` on
+IJN01, USN01 and USN02 alike. `00A13340`, the command factory, is the packet that unblocks it.
+
+**The spawn arm is unreachable in this process.** `00A25B90` creates a tagged group for a planner
+that owns nothing, and nothing in this process creates a unit at run time, so the arm is recorded
+and the planner keeps owning nothing: `spawn_arms=78` per mission against `claims=1`.
+
+## Second correction appended by cc8_ai_command_lifetime
+
+The correction above says `00A2CBD0`'s second test "is why one attack order lands per mission
+and never a second" and points at `00A13340`. That is wrong and is withdrawn. The same section
+of this document already transcribes `00A2CBD0` deleting the old command through its vtable slot
+0 with flag 1 before `group+564Ch` takes the new one: a different target lands a different
+order, with no clear needed and no command factory required.
+
+The real caps, in the order they bite, are in `docs/AI_COMMAND_LIFETIME.md`:
+
+1. **"The mode planners' think" above is the hard cap.** `00A26510` and `00A265F0` call
+   `00A1CB80(planner)(firstOwnedGroup, 1.0f, ...)`, so a planner holding several groups orders
+   one of them per think, whatever the target set holds. Measured: two claims, two owned groups,
+   still one order.
+2. **A target set of one element**, which was the coordinator host's own doing and is fixed
+   there by implementing `00A2E260`'s split.
+
+`00A13340` is still worth reading, for `00A2C8D0`'s merge predicate at `vtable[+14h]`, not for
+the order count.
