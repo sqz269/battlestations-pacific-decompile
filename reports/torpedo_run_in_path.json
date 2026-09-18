@@ -1,0 +1,120 @@
+{
+  "packet": "cc8_torpedo_run_in_path",
+  "baseline_commit": "59584b58f",
+  "worktree": "agent/cc8-torpedo-approach",
+  "documentation": "docs/TORPEDO_RUN_IN_PATH.md",
+  "status": "sampler_bound_and_scan_live_but_behaviourally_neutral_on_open_water_next_gate_is_state_2ch",
+  "production_cpp_changed": true,
+  "ghidra_mutated": false,
+  "new_native_body_reconstructed": true,
+  "original_abi": {
+    "0041bc20": "ECX avoid-zone layer (ctl+34Ch); two stacked floats, SUB ESP,8 at 009D3699; ST0 result",
+    "0041bae0": "ECX layer; two stacked ints; ST0 result; clamps both to [0, layer+8h - 1]",
+    "00903bc0": "ECX [00E188A8]+19CCh; two stacked float3 pointers at 009D39C1 and 009D39D2; AL result",
+    "00903860": "ECX world; a float3 pointer and a float out-pointer; AL result",
+    "007df360": "ECX unit+C50h; two stacked arguments at 009D36EC and 009D36ED; AL result",
+    "007f1d90": "ECX squadron; a float slope and an int flag; body 007F1D90-007F1DD6",
+    "009d31b0": "ECX state; no stack arguments; AL result; body 009D31B0-009D31C2",
+    "source": "stack cleanup at each RET plus the push count at every call site listed below"
+  },
+  "calls": [
+    {
+      "address": "009d36a9",
+      "native": "0041bc20",
+      "note": "the avoid-zone layer height under the aircraft; over 10.0f raises approach+A9h",
+      "host_method": "terrain_height_0041bc20"
+    },
+    {
+      "address": "009d386d",
+      "native": "0041bc20",
+      "note": "the layer height under the target, floored at 20.0 below the double 20.0 at 00CE3D88",
+      "host_method": "terrain_height_0041bc20"
+    },
+    {
+      "address": "009d3a42",
+      "native": "0041bc20",
+      "note": "the layer height at each scan probe past 450 units",
+      "host_method": "terrain_height_0041bc20"
+    },
+    {
+      "address": "009d39d3",
+      "native": "00903bc0",
+      "note": "the segment test inside 450 units, ECX = [00E188A8]+19CCh loaded at 009D39CC",
+      "host_method": "segment_blocked_00903bc0"
+    },
+    {
+      "address": "009d36ee",
+      "native": "007df360",
+      "note": "overwrites approach+A9h outright at 009D36F3 when unit+C50h is set",
+      "host_method": "target_reachable_007df360"
+    }
+  ],
+  "calls_in_undefined_regions": [],
+  "no_ghidra_function": [],
+  "writer_census_ctl_34ch": {
+    "method": "disp32 store scans C7 ?? 4C 03 00 00 and 89 ?? 4C 03 00 00 over .text, eleven sites",
+    "007f1dca": "MOV [ESI+34Ch],EAX in BSP_PlaneSquadron_SelectAvoidZoneLayers, the producer, from BSP_AvoidZoneRegistry_SelectLayerBySlope([00CE380C] = 1.5f, 1). It is a store, not a CALL, so it is recorded here rather than under calls",
+    "007f2cdb": "MOV [ESI+34Ch],EBX in BSP_PlaneSquadronTickableEntity_Construct, the positive control: the same object and offset, so the scan form is known to occur",
+    "others": "BSP_MainMenuScreen_BindLayout, BSP_PlaneSquadron_AttachLuaSelfAndSpawnPlanes, BSP_UnitTickableEntity_Construct and Destruct, BSP_TickableGameEntity_Construct, BSP_TickableGameEntity_InstallCollision and 009A94E0 write the same offset on other object types",
+    "identification": "BSP_PlaneSquadronTickableEntity_Construct also writes +370h at 007F2DC1, the attack mode of docs/TORPEDO_RELEASE_ORDERS.md, and 009D4A70 writes +394h and +398h on the same block, so the pilot control block IS the plane squadron"
+  },
+  "sampler_identity": {
+    "0041bc20": "bilinear over the avoid-zone layer grid: 00417FA0 maps world to cell, 0041BAE0 fetches four clamped cells between layer+1Ch and layer+20h with side layer+8h",
+    "0087fa20": "a thunk, the +24h virtual of the object at parent+3D0h",
+    "same_heightfield": false,
+    "evidence": "a full-image dword scan for 0041BC20 finds it in no vtable, so it is not the body behind 0087FA20 slot +24h",
+    "00903860": "walks the world list at +34Ch and takes the MAX over the +28h virtual of each node +3D0h sub-object, seeded with [00D7A240] = -1000.0f; this DOES share the +3D0h geometry interface that 0087FA20 dispatches, which is the binding the host uses"
+  },
+  "coverage": {
+    "0041bc20": "full",
+    "0041bae0": "full",
+    "00903bc0": "partial - the two ground tests in full; the occluder sweep through the +3Ch virtual is a contract",
+    "00903860": "full",
+    "007df360": "partial - the ABI, the receiver and the first stage; the list walk is not read",
+    "007f1d90": "full, and already documented by docs/PLANE_SQUADRON.md",
+    "009d31b0": "full",
+    "009d15f0": "partial - the aim-complete test at 009D235A and 009D2368 is read as far as its shape; its two stack operands need a frame walk that was not done, so no rule is guessed and state+2Ch is left unproduced"
+  },
+  "validation": {
+    "build": "scripts/build.ps1 MSVC Win32 /W4 /WX clean",
+    "tests": "ctest 2/2 passing (reconstructed_math, tool_tests); no test added",
+    "usn01_baseline_after_planner_fix": "states[moveto=139..268 attackrun=586..624 aim=445..535], two aircraft touching prepare for one tick, releases=0, closest range 5.8 to 206.1 against 8Ch=2200; blocked_engaged_009d3210=1020",
+    "usn01_with_scan_live": "identical state and range figures; scan 009D37AE reports runs=1 clear_sectors=36 of 36 home_sector=0 turn_5c=0.0000 rad on every aircraft",
+    "usn01_orders": "unchanged: peak_C58h=999 arm_offers=1298 attack_mode_370=1 drop_timer_98=-1.0",
+    "usn01_next_gate": "the aim-complete byte state+2Ch. 009D31B0 returns it at 009D31BF and 009D4030 step 11 needs it to leave aim; 009D15F0 writes it at 009D236E under the two-clause test at 009D235A and 009D2368, which is the unread part of the aim tick",
+    "usn02": "shots=734 first_shot=1.40 s hull=180 part=0 deaths=2 total_damage=18525.6 - the milestone 2t baseline",
+    "behavioural_effect": "none, and that is the finding: 009D3C5A treats 36 clear sectors exactly like 0 clear sectors, so an open-water mission leaves approach+5Ch at zero whether or not the scan has a sampler"
+  },
+  "corrections": [
+    "docs/TORPEDO_APPROACH_UPDATE.md calls 0041BC20 the terrain height sampler and ctl+34Ch the terrain sampler; 0041BC20 samples the avoid-zone layer BSP_AvoidZoneRegistry_SelectLayerBySlope returns, and ctl is the plane squadron",
+    "docs/TORPEDO_APPROACH_UPDATE.md follow-up 4 says the scan cannot run without the sampler so approach+5Ch stays zero; +5Ch stays zero on open water even with the scan running, because 009D3C5A treats 36 clear sectors like 0",
+    "docs/TORPEDO_RELEASE_ORDERS.md names the in-range latch as the gate on a closest approach of 2906; a pilot-planner fix merged to main afterwards closes the same five aircraft to between 5.8 and 206.1 metres, so that section numbers are superseded"
+  ],
+  "open_questions": [
+    "the two stack operands of the aim-complete test at 009D235A and 009D2368 in 009D15F0; this is the last gate before a release",
+    "the avoid-zone registry and its layer grid, for a mission with land where the sector scan would produce a non-zero turn",
+    "the 007DF360 list walk, and the occluder sweep behind the +3Ch virtual"
+  ],
+  "names_added": [
+    {
+      "address": "0041bc20",
+      "name": "BSP_AvoidZoneLayer_SampleBilinear"
+    },
+    {
+      "address": "0041bae0",
+      "name": "BSP_AvoidZoneLayer_CellHeight"
+    },
+    {
+      "address": "00903bc0",
+      "name": "BSP_World_SegmentBlockedByGround"
+    },
+    {
+      "address": "00903860",
+      "name": "BSP_World_GroundHeightAt"
+    },
+    {
+      "address": "009d31b0",
+      "name": "BSP_BotStateTorpedoAim_IsComplete"
+    }
+  ]
+}
