@@ -1,0 +1,171 @@
+{
+ "packet": "cc8_ai_target_weight",
+ "owner": "agent/cc8-ai-squadron",
+ "doc": "docs/AI_TARGET_WEIGHT.md",
+ "sources": [
+  "include/bsp/ai_close_attack_tick.hpp",
+  "src/ai_close_attack_tick.cpp",
+  "src/game_hosts_ai.cpp",
+  "include/bsp/game_hosts_ai.hpp"
+ ],
+ "classification": "discovery plus reconstruction; 00A0F810's four multipliers, the stack-slot reuse that inverts a naive reading, and the binding that replaces the class-weight stand-in in the close-attack candidate loop",
+ "routines": [
+  {
+   "address": "00a0f810",
+   "name": "BSP_AiCommand_CandidateTargetWeight",
+   "abi": "__fastcall(ECX = attacker owner, EDX = target) -> float in ST0, body 00a0f810..00a0f961",
+   "coverage": "complete"
+  },
+  {
+   "address": "00a08460",
+   "name": "BSP_Ai_TargetWeight",
+   "abi": "cited from docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md",
+   "coverage": "not re-read; its inputs are named as the one term still stood in for"
+  },
+  {
+   "address": "00a04560",
+   "name": "BSP_Ai_EntityRecord",
+   "abi": "__fastcall(out, entity, int) -> record",
+   "coverage": "call sites only; +10h, +14h, +18h and +1Ch are named by their readers"
+  },
+  {
+   "address": "00923be0",
+   "name": "(unnamed)",
+   "abi": "__thiscall(target) -> float in ST0",
+   "coverage": "call site only; contract: unread"
+  }
+ ],
+ "host_calls": [
+  {
+   "address": "00a0f843",
+   "native": "00a08460",
+   "containing": "00a0f810",
+   "name": "GameAiCoordinatorHost::Impl::close_target_weight",
+   "note": "the base term only; still the 009FDF30 class weight, labelled"
+  },
+  {
+   "address": "00a0f8b5",
+   "native": "008ddf90",
+   "containing": "00a0f810",
+   "name": "GameAiCoordinatorHost::Impl::close_target_weight",
+   "note": "objective set 0 or 4 by the party comparison at 00A0F87E, not the brain's slot"
+  },
+  {
+   "address": "00a0f8ce",
+   "native": "00923be0",
+   "containing": "00a0f810",
+   "name": "(not modelled)",
+   "note": "slot D's term; the factor stays the constant 2.0"
+  },
+  {
+   "address": "00a0f821",
+   "native": "00a04560",
+   "containing": "00a0f810",
+   "name": "(not modelled)",
+   "note": "the target record"
+  },
+  {
+   "address": "00a0f830",
+   "native": "00a04560",
+   "containing": "00a0f810",
+   "name": "(not modelled)",
+   "note": "the attacker record"
+  }
+ ],
+ "indirect_call_sites": [
+  {
+   "address": "00a0f85b",
+   "containing": "00a0f810",
+   "target": "[[attacker]+18h]",
+   "role": "PUSH 1Ch; with 00A0F84C's record flag it zeroes the weight. Assumed RET 4 for the frame walk, which is what --indirect-pops 4 supplies"
+  },
+  {
+   "address": "00a0f8f4",
+   "containing": "00a0f810",
+   "target": "[[target]+5Ch]",
+   "role": "IsKindOf(1Bh)"
+  },
+  {
+   "address": "00a0f903",
+   "containing": "00a0f810",
+   "target": "[[target]+5Ch]",
+   "role": "IsKindOf(45h)"
+  },
+  {
+   "address": "00a0f912",
+   "containing": "00a0f810",
+   "target": "[[target]+5Ch]",
+   "role": "IsKindOf(46h)"
+  },
+  {
+   "address": "00a0f92f",
+   "containing": "00a0f810",
+   "target": "[[target]+5Ch]",
+   "role": "IsKindOf(1Ch)"
+  }
+ ],
+ "no_ghidra_function": [],
+ "raw_listing_call_sites": [],
+ "record_layouts": [
+  {
+   "record": "the 00A0F810 stack frame, normalised",
+   "size": "0x50 plus four pushes",
+   "producer": "tools/stack_frame_walk.py 00a0f810 --indirect-pops 4",
+   "fields": "slot A the raw 00A08460 weight then reused as the class multiplier (00A0F848 at depth 104, 00A0F8EE at depth 108, both normalise to A); slot B the two record factors then reused as the objective multiplier (00A0F889, 00A0F8C6); slot C the scaled product (00A0F89E); slot D the 2.0 minus 00923BE0 term (00A0F8E6). The epilogue 00A0F943..00A0F956 multiplies B * C * D * A"
+  }
+ ],
+ "constants": [
+  {
+   "name": "default multiplier",
+   "value": "1.0f",
+   "evidence": "00D7A24C, bytes 00 00 80 3F"
+  },
+  {
+   "name": "objective multiplier",
+   "value": "10.0f",
+   "evidence": "00CE38B8, bytes 00 00 20 41"
+  },
+  {
+   "name": "009FE0B0 trio multiplier",
+   "value": "0.1f",
+   "evidence": "00D7A2F0, bytes CD CC CC 3D"
+  },
+  {
+   "name": "trio non-command weight",
+   "value": "0.01f",
+   "evidence": "00D228A0, bytes 0B D7 23 3C"
+  },
+  {
+   "name": "range term base",
+   "value": "2.0 (double)",
+   "evidence": "00D7A308"
+  }
+ ],
+ "corrections": [
+  {
+   "doc": "docs/AI_CLOSE_ATTACK_TICK.md",
+   "was": "follow-up ai_candidate_target_weight: the real target weight, so the choice stops running on a class-weight stand-in",
+   "is": "partly answered; the wrapper 00A0F810 is bound with its four multipliers and only 00A08460's innermost term is still stood in for",
+   "evidence": "00A0F810..00A0F961 read in full"
+  }
+ ],
+ "validation": {
+  "status": "BLOCKED, not measured",
+  "reason": "every run on this host fails before the window with: startup failed: FMOD bank raw-length output unavailable: path=sound/gui/error.fsb bytes=2688 mode=2634 create_result=78 length_result=37 bank_returned=0. The device_hr=0x80004005 in the run summary is the renderer never starting, not a D3D fault",
+  "evidence_it_is_the_host": "it began mid-session on an UNCHANGED binary after two 3000-frame runs completed on merge e7ccd20c0; it reproduces on every mission over four clean attempts with no bsp_game alive, no lock file, the bank file present and all eight Win32_SoundDevice endpoints OK; and it is not the launcher race fixed in d8dfc77be, with no access violation, no mutex, a clean exit 1 and no clearing on retry",
+  "what_is_established": "the build is clean at /W4 /WX and both existing ctest cases pass",
+  "expected_movement": {
+   "IJN01": "the mission that should move: 239 land forts and 2450 served members each scoring 321 candidates, so scored keeps 465500 while every land-fort candidate drops to a hundredth of its class weight unless it is a command building; the attackmove/settarget split should leave 2250/150 and the pilot-attack table should change membership",
+   "USN02": "the ship control: fourteen party-0 members, no land forts, so the trio never fires and 616 served with 559 attackmove should be unchanged",
+   "USN01": "the null check: zero served for the native distance gate, nothing here can move it",
+   "objective_hits": "zero on all three, because the eight sets hold no units; a non-zero value would contradict docs/MISSION_OBJECTIVES.md"
+  }
+ },
+ "remaining": [
+  "00A08460's per-barrel reload, accuracy and shot count, and a route from the gunnery host to the AI coordinator that avoids a wiring line in src/game_hosts.cpp",
+  "00A04560, the per-entity AI record whose +10h, +14h, +18h and +1Ch this routine reads",
+  "00923BE0, slot D's term",
+  "the attacker's vtable[+18h], which 00A0F859 asks with 1Ch and which is not the +5Ch class test",
+  "the six-run census, blocked on the machine's FMOD startup failure"
+ ]
+}
