@@ -1,0 +1,226 @@
+{
+ "packet": "cc8_plane_altitude_hold_and_surface",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/PLANE_ALTITUDE_HOLD_AND_SURFACE.md",
+ "tree_base": "6af4b0b53",
+ "question": "What fills desc+1ECh natively, and what makes a plane leave free flight at the water?",
+ "answer": "desc+1ECh is DERIVED at class load, not authored: 007C4C08-007C4C14 sets it to desc+1E4h * 0.6 (the double at 00CEFF98), and 007C4BE9 fills desc+1E4h with 007D98F0(desc, tuning+24Ch LevelFlight * desc+184h StallSpd). 007D98F0 is a bisection on [0, DEG(80)] to a DEG(0.01) tolerance whose predicate 007D9360 is a ten-step trial integration answering with the speed the aircraft still has, so the search returns the steepest sustainable climb angle. That REFUTES docs/PLANE_FLIGHT.md's 'classDesc+1ECh has no producer... the climb arm commands nothing': a scan for a Lua key or a loader store finds nothing because the field is derived, and its only writer in the plane range is inside 007C4850, the same routine that derives desc+50Ch. The surface is not gated by ctl+FCh: a store census shows ctl+FCh written by each of the three law entry points on entry, so it is a tag the arm sets. The gate is unit+900h through 0074E210, and what changes it lives in the free-flight arm itself, which samples the sea at 007CC523 and at 007CC562 hands a contact to 007CB7F0 when unit+100h < desc+194h SwimHeight + h + desc+508h. 007C4CF8-007C4D03 derives desc+508h as -[EDI+4] - SwimHeight, so the two SwimHeight terms cancel and the real line is the aircraft's lowest point touching the water. 007CB7F0's tail at 007CB92C calls BSP_Plane_SetFlightState(6) when the state is 7, 4 or 5, which closes the free-flight gate.",
+ "coverage": "complete for 007D98F0's bisection shape, for the 007C4850 derivations of desc+1E4h/+1ECh/+508h, for the water test in 007CC2F0 and for 007CB7F0's state change; PARTIAL elsewhere - 007D9360's body, 007CB7F0's damage and effect paths, the surface law 007CBA50 and the water arm 007DC205-007DC68C are unread.",
+ "calls": [
+  {
+   "address": "007c4be4",
+   "native": "007d98f0",
+   "function": "007c4850",
+   "what": "the climb-angle solver at LevelFlight * StallSpd; 007C4BE9 stores it into desc+1E4h"
+  },
+  {
+   "address": "007c4bfb",
+   "native": "007d98f0",
+   "function": "007c4850",
+   "what": "the same solver at TravelSpeed; 007C4C00 stores it into desc+1E8h"
+  },
+  {
+   "address": "007c4bc5",
+   "native": "0042e740",
+   "function": "007c4850",
+   "what": "the tuning singleton, whose +24Ch LevelFlight scales StallSpd into the first probe speed"
+  },
+  {
+   "address": "007cc523",
+   "native": "0078cf20",
+   "function": "007cc2f0",
+   "what": "the sea height under the aircraft, the free-flight arm's own water test"
+  },
+  {
+   "address": "007cc562",
+   "native": "007cb7f0",
+   "function": "007cc2f0",
+   "what": "the contact handler, entered when unit+100h is below the water line"
+  }
+ ],
+ "named_routines": [
+  {
+   "native": "007d98f0",
+   "name": "BSP_PlaneClass_SolveMaxClimbAngle",
+   "abi": "float __thiscall(desc, float probeSpeed), body 007D98F0-007D99B6",
+   "coverage": "complete as a bisection; its predicate 007D9360 is unread",
+   "what": "bisection on [0, DEG(80)] - 00CF8858 float and 00D05A28 double are both 1.39626 - with the double 0.5 at 00D7A280 as the midpoint and the double 1.745e-4 = DEG(0.01) at 00D06850 as the tolerance. The predicate is 007D9360(mid, probeSpeed, 0.04f [00CE3910], 10) and the angle is accepted when the speed it answers with is at least the probe speed, so the result is the steepest climb the aircraft can hold at that speed. The early out compares DEG(80) - 0.0 against the tolerance and never fires."
+  },
+  {
+   "native": "007d9360",
+   "name": "BSP_PlaneClass_TrialIntegrateAtClimbAngle",
+   "abi": "__fastcall with ECX an out slot and EDX a second pointer, plus (float angle, float probeSpeed, float step, int steps); body 007D9360-007D9892",
+   "coverage": "none beyond its head and its role",
+   "what": "the bisection's predicate. It copies matrices through 004134F0 and 0085DEA0 and runs the flight law for `steps` steps of `step` seconds, leaving the resulting speed in the caller's slot. Its head at 007D936C negates the angle argument through [00D7A208]."
+  },
+  {
+   "native": "007cb7f0",
+   "name": "BSP_Plane_OnWaterContact",
+   "abi": "void __fastcall(unit), body 007CB7F0-007CB9D2",
+   "coverage": "partial: the tail 007CB92C is read; the damage and effect paths are contracts",
+   "what": "the free-flight arm's water-contact handler. It early-returns for a seaplane (desc+198h MinWaterSpd non-zero) when 007BC5B0 also answers false; otherwise it may call 0090F6C0(unit, 3) under a chain that includes unit+1B0h < 8 and BSP_UnitInstance_IsAliveAndVisible, may raise a 'powerlost' effect, and at 007CB92C reads unit+900h and, when it is 7, 4 or 5, calls BSP_Plane_SetFlightState(6) - or routes session message 0C3h carrying the old state when the session mode is not 2. State 6 makes 0074E210's free-flight gate false."
+  },
+  {
+   "native": "007c4850",
+   "name": "BSP_PlaneClass_DeriveFlightConstants",
+   "abi": "body 007C4850-007C4D86",
+   "coverage": "partial: 007C4BC5-007C4C14 and 007C4CF8-007C4D03",
+   "what": "desc+1E4h and desc+1E8h from the climb-angle solver, desc+1ECh = desc+1E4h * 0.6 (00CEFF98), and desc+508h = -[EDI+4] - desc+194h SwimHeight, which is what makes the free-flight arm's water line reduce to the model's lowest point against the sea."
+  }
+ ],
+ "no_ghidra_function": [],
+ "host_methods": [
+  {
+   "host": "max_sustainable_climb_angle_007d98f0",
+   "file": "src/plane_flight.cpp",
+   "kind": "binding, predicate substituted",
+   "note": "keeps the native bounds, midpoint, tolerance and acceptance test; 007D9360 is replaced by the closed-form sign of dv/dt in this host's own law, and the trial throttle is taken as full"
+  },
+  {
+   "host": "desc+1E4h and desc+1ECh derived at spawn",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "binding"
+  },
+  {
+   "host": "pin.class_climb_angle",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "binding",
+   "note": "009FB800's climb gain, which was hard-coded to 0.0f on the strength of the refuted claim"
+  },
+  {
+   "host": "the water line and the flight-state change",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "binding, [EDI+4] substituted",
+   "note": "the model bound stands at zero, so the test is the aircraft's origin crossing the sea rather than its belly"
+  },
+  {
+   "host": "SwimHeight row key",
+   "file": "src/game_hosts_lua.cpp",
+   "kind": "binding"
+  }
+ ],
+ "authored_rows": [
+  {
+   "file": "scripts/datatables/autoload/vehicleclasses.lua",
+   "row": "VehicleClass[112] TBD Devastator",
+   "values": {
+    "SwimHeight": 0.1,
+    "Accel": 6,
+    "MaxSpd": 69.444443,
+    "StallSpd": 19.444445
+   }
+  },
+  {
+   "file": "scripts/datatables/planeglobals.lua",
+   "row": "Dynamics",
+   "values": {
+    "LevelFlight": 1.8,
+    "AccelCheatMul": 1.5
+   }
+  }
+ ],
+ "contracts": [
+  "007D9360's body, and so the exact quantization of desc+1E4h.",
+  "007D9360's trial throttle, taken as full.",
+  "[EDI+4], the model bound in the water line.",
+  "The surface law 007CBA50 and the water arm 007DC205-007DC68C: an aircraft in state 6 is not integrated at all in this host, because surface_007cba50 is a counter.",
+  "007CB7F0's 0090F6C0(unit, 3) damage call, its 'powerlost' effect and the 0C3h session message.",
+  "desc+1E8h, the TravelSpeed climb angle, is derived but has no reader in anything read so far."
+ ],
+ "corrections": [
+  {
+   "target": "docs/PLANE_FLIGHT.md, '009FB800, the pitch command from an altitude error'",
+   "was": "classDesc+1ECh has no producer, so the field is zero for every shipped class and the climb arm commands nothing",
+   "is": "the field is DERIVED at 007C4C14 as desc+1E4h * 0.6, with desc+1E4h from the 007D98F0 climb-angle solver at 007C4BE9; a scan for a Lua key or a loader store finds nothing because it is derived rather than authored",
+   "evidence": "007C4BC5-007C4C14, the double 0.6 at 00CEFF98, and an exhaustive store census over offset 1ECh whose only plane-descriptor site is 007C4C14",
+   "status": "appended and verified present"
+  },
+  {
+   "target": "docs/TORPEDO_RUN_IN_DESCENT.md sections 1 and 4",
+   "was": "the climb arm commands nothing, which is the first of the two reasons for the -400 m overshoot",
+   "is": "it commands a climb of up to the DEG(40) floor once desc+1ECh is derived; the overshoot's remaining cause is the late flare and the absent contact arm",
+   "evidence": "as above",
+   "status": "appended and verified present"
+  },
+  {
+   "target": "docs/PLANE_FREE_FLIGHT_PHYSICS.md",
+   "was": "no section records an exit test in the free-flight arm",
+   "is": "007CC2F0 carries its own water line at 007CC523-007CC562 and hands a contact to 007CB7F0, which takes the aircraft out of free flight into state 6",
+   "evidence": "007CC523, 007CC542, 007CC54C, 007CC55A, 007CC562, 007CB92C",
+   "status": "appended and verified present"
+  }
+ ],
+ "validation": {
+  "runner": "tools/run_game.ps1, 3200 frames, --mission-frames 3000 at 0.05 s, from this worktree at 6af4b0b53. The before column is the same source with the climb gain forced to zero and the water test switched off by a temporary compile-time constant, removed before the commit. NOT comparable with docs/TORPEDO_RUN_IN_DESCENT.md's baselines: the merge of main that produced 6af4b0b53 moved USN01's ordered aircraft from 4117 m to 1488 m from their targets and took the mission to zero hits and zero damage in BOTH columns, where the descent packet measured 68 and 660.0.",
+  "runs": [
+   {
+    "mission": "USN01",
+    "phase": "before",
+    "log": "local/usn01_alt_before.log",
+    "derived_climb_gain_1ec_rad": 0.1854,
+    "climb_gain_used": false,
+    "torpedo_drops": 5,
+    "water_entry_breakups": 0,
+    "swims_started": 0,
+    "torpedo_hits": 0,
+    "torpedo_damage": 0.0,
+    "plane_arm_free_flight": 60000,
+    "plane_arm_surface": 0,
+    "water_contacts": 0,
+    "lowest_altitude_m": -401.2,
+    "distance_moved_m": 186433.76,
+    "pose_rotations": 10463,
+    "mission_hits": 0,
+    "kills": 0,
+    "mission_damage": 0.0
+   },
+   {
+    "mission": "USN01",
+    "phase": "after",
+    "log": "local/usn01_alt_after.log",
+    "derived_climb_gain_1ec_rad": 0.1854,
+    "climb_gain_used": true,
+    "torpedo_drops": 0,
+    "water_entry_breakups": 0,
+    "swims_started": 0,
+    "torpedo_hits": 0,
+    "torpedo_damage": 0.0,
+    "plane_arm_free_flight": 48189,
+    "plane_arm_surface": 11811,
+    "water_contacts": 5,
+    "lowest_altitude_m": -5.78,
+    "water_contact_speed_mps": [
+     141.72,
+     141.46,
+     141.61,
+     141.5,
+     141.63
+    ],
+    "max_spd_mps": 69.444443,
+    "descent_trace_alt_m": [
+     800.0,
+     686.6,
+     194.9
+    ],
+    "pitch_demand_rad": -1.0472,
+    "distance_moved_m": 145330.9,
+    "pose_rotations": 2870,
+    "mission_hits": 0,
+    "kills": 0,
+    "mission_damage": 0.0
+   },
+   {
+    "mission": "USN02",
+    "phase": "after",
+    "log": "local/usn02_alt_after.log",
+    "mission_hits": 168,
+    "kills": 3,
+    "mission_damage": 20721.4,
+    "swims_started": 44,
+    "water_contacts": 0
+   }
+  ],
+  "attribution": "The water line works: five aircraft cross it and take the 007CB92C transition from state 7 to state 6, the surface arm is selected 11811 times where it was selected zero times, and the lowest altitude any aircraft reaches goes from -401.2 m to -5.8 m. The derived climb gain is confirmed at 0.1854 rad, the analytic answer for the Mav row to four places, but it never acts because the aircraft never climbs: 009FB800 holds the DEG(60) cap for the whole descent. The drops go from 5 to 0 because the aircraft now stop at the surface in state 6, where this host's surface_007cba50 is a counter, instead of carrying 141 m/s through to -230 m and releasing there. That release was never going to swim, and an aircraft that ditches at the water is what the image does with one that arrives there. Mission hits, kills and damage are zero in both columns.",
+  "no_swim_next_gate": "Step 4's throttle half of 009D07B0, which docs/TORPEDO_RUN_IN_DESCENT.md left unbound. The aircraft arrive at the sea at 141.5 m/s, twice their MaxSpd of 69.44, because a 60-degree dive held for 800 m at full throttle outruns the drag. docs/BOT_TASK_STATES.md records the throttle as InterpolateClamped([00D7A2F0] 0.1, [00CF6560], [00CE7804] 0.4, [00CE74F8], .) over the height margin [00D1F8D0] - unitY clamped against min(approach+90h, [00CF0DD8]), and 007D9050's thrust is gated at 007DB76C on the latched throttle exceeding 0.01f, so the native's throttle cut is what keeps the dive in hand. The aim state cannot save it: 009D20B4's release gate lies between 25 and 40 m and an aircraft crossing that band at 141 m/s is inside it for 0.1 s, less than the 0.09 s pilot think interval."
+ }
+}

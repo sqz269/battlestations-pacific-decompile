@@ -260,3 +260,20 @@ not because of anything here.
 3. **The rest of `009D07B0`**: the countdown, period and lateral offset at `state+18h`/`+1Ch`/`+20h`
    and step 4's throttle half.
 4. **`0099DCE0`'s mode-2 pitch arm** and `unit+C84h`, which is what `cmd+2D0h = 2` selects.
+
+
+## Correction from packet `cc8_plane_altitude_hold_and_surface`: the climb arm is not silent
+
+Appended, not rewriting sections 1 and 4.
+
+Section 1 repeats `docs/PLANE_FLIGHT.md`'s "`class+1ECh` has **no producer in any shipped row**...
+So `min(0 · t, DEG(40))` is zero and **the climb arm commands nothing**", and section 4 makes that
+the first of its two reasons for the -400 m overshoot. **Both are refuted.** `desc+1ECh` is derived
+at class load by `007C4C08`-`007C4C14` as `desc+1E4h · 0.6`, with `desc+1E4h` the steepest
+sustainable climb angle that the `007D98F0` bisection solves for at `007C4BE9`.
+
+Section 4's second reason stands and is now exact. The surface is not gated by `ctl+FCh`, which a
+store census shows each of the three law entry points writing **on entry** as a tag; the gate is
+`unit+900h` through `0074E210`, and the free-flight arm carries its own water line at
+`007CC523`-`007CC562`, handing a contact to `007CB7F0`, whose tail at `007CB92C` calls
+`BSP_Plane_SetFlightState(6)`. `docs/PLANE_ALTITUDE_HOLD_AND_SURFACE.md`.
