@@ -196,10 +196,14 @@ or `AirField` (`006d3110`). The unit that follows has a creator that is not amon
 | `PlaneSquadronGen` | 3 | - |
 | `SubmarineGen`, `AirField`, `Path` | 1 each | - |
 
-Every `Stationary` row (`StationaryTypes:Barakk1=50`, `Barakk2Fort=683`, and so on) registers through
-`SceneContents::class_registration_creator` (`004e5b00`), which the host leaves unimplemented and
-which the log records as called 192 times, matching the 189 stationary instances plus three. The
-classes therefore never register, so the first stationary unit has no creator and scene load stops.
+**RETRACTED.** This paragraph originally blamed `SceneContents::class_registration_creator`
+(`004E5B00`), which the host records as unimplemented 192 times. `004E5B00` is a single `RET`
+between `INT3` padding: a no-op stub shared by eight scene classes, and implementing it would
+change nothing. The 192 records are records of a routine that does nothing. The real cause is one
+layer further on and is set out in `docs/SCENE_STATIONARY_REGISTRATION.md`: a scene row typed from
+`StationaryTypes` resolves to a `StationaryClass`, and this installation's 220 `StationaryClass`
+rows carry no `Type` literal at all, so the vehicle-class chain at `00964790` returns a null
+descriptor, the unit's creator is `0`, and the observer lookup for creator `0` throws.
 
 USN04 starts because it has no stationary rows at all: its scene types are `DestroyerGen`,
 `MotherShipGen`, `PlaneSquadronGen`, `TBoatGen` and `Path`, and `class_registration_creator` is never
@@ -214,13 +218,12 @@ out to measure. Both fail earlier, on a different unimplemented host method each
 | --- | --- | --- |
 | USN01 | starts inside the 4840 m engaged threshold (`range_first_mean = 1490.8 m`) | none; a real geometry result |
 | USN04 | carrier strike never launches; mission think aborts every tick | `GetProperty`, `0088bf80` |
-| USN22 | scene load refuses; 189 stationary units have no registered class | `class_registration_creator`, `004e5b00` |
+| USN22 | scene load refuses; a stationary unit has no vehicle-class descriptor | none; `004E5B00` was the wrong answer, see section 7 |
 
-So the request to the Codex side stated in Follow-up item 3 stands, and it is now two named natives
-rather than a general capability. Either one alone would open a mission: `0088bf80` returning the
-`slots` table would let USN04's carrier strike launch and be ordered at launch range, and `004e5b00`
-would let Ormoc Bay load with its single `TBM_1` Avenger already targeted at `Mission.FinConvoy[5]`.
-Of the two, `0088bf80` is the smaller piece of work and reaches the geometry this survey wanted.
+One named native came out of this, not two. `0088BF80` returning the `slots` table is real work
+and is done: see `docs/MISSION_LUA_GETPROPERTY.md`. The USN22 half was wrong, as section 7 now
+says, and Ormoc Bay needs a stationary unit path rather than a native body. Neither of those is
+Codex's; both are in Claude-lineage files.
 
 ## Uncertainty
 
@@ -237,6 +240,11 @@ Of the two, `0088bf80` is the smaller piece of work and reaches the geometry thi
 
 ## Corrections
 
+* **Retraction, section 7 and section 8.** `004E5B00` was named as the native whose absence stops
+  USN22 loading. It is a one-byte `RET`, a no-op stub, and its 192 `UNIMPLEMENTED` records are
+  records of a routine that does nothing. The real cause is a stationary class carrying no `Type`,
+  in `docs/SCENE_STATIONARY_REGISTRATION.md`. The error was counting a summary's calls to an
+  unimplemented record without reading what the routine is.
 * Section 3's USN22 row credited `Mission.KatKillers` to Ormoc Bay. It is not there: the only
   definitions of `Mission.KatKillers` in this installation's campaign scripts are
   `usn_1_marshall.lua:954`-`959`, which is USN01. USN22's torpedo aircraft is `Mission.Avenger`
@@ -259,12 +267,12 @@ the harness: the measurement is of this reconstruction's behaviour, not the reta
 Items 1 and 2 are done; sections 6 and 7 hold their results. What remains is item 3, and the two
 runs have made it specific.
 
-1. **For the Codex side, either of two natives opens a mission.** `MissionLuaNative::GetProperty`
-   (`0088bf80`) returning, for the key `slots`, a Lua array of tables each carrying a `squadron`
-   field (nil for an empty slot) is the smaller piece and the one that reaches the geometry: it
-   would let USN04's carrier strike launch and be ordered at launch range.
-   `SceneContents::class_registration_creator` (`004e5b00`) for the `Stationary` scene type would let
-   USN22 load, with its `TBM_1` Avenger already targeted.
+1. **`MissionLuaNative::GetProperty` (`0088BF80`) is done**, in
+   `docs/MISSION_LUA_GETPROPERTY.md`. It stops USN04's mission think aborting. It does not launch
+   the strike: `IsReadyToSendPlanes` and `LaunchSquadron` both need an air-operations block this
+   process does not build, and `006CADD0 BSP_AirOps_LoadFromScene` is what would give all three
+   real data. The `004E5B00` half of this item is withdrawn; see section 7 and
+   `docs/SCENE_STATIONARY_REGISTRATION.md`.
 2. **The general capability is still worth having** and is unchanged from the original wording: a
    harness switch that issues `PilotSetTarget` to a named unit at a chosen frame, or a scene-file
    reader that reports authored positions, would let this reconstruction exercise `moveto` without

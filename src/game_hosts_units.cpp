@@ -2249,8 +2249,30 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         if (host.observer_runtime != nullptr) {
             if (!host.observer_runtime->has_live_dispatch_owner())
                 throw std::logic_error("unit creation requires the live bound observer owner");
-            if (!slot->observer_prefix_ready)
-                throw std::logic_error("unit observer creator projection is unavailable");
+            if (!slot->observer_prefix_ready) {
+                // The message used to name neither the unit nor the creator,
+                // which cost a whole survey a wrong cause: a zero creator and an
+                // unmapped one are different failures and read identically.
+                // Zero means no vehicle-class descriptor was found at all, which
+                // is what a scene row typed from `StationaryTypes` produces: the
+                // 220 rows of this installation's stationaryclasses.lua are
+                // `StationaryClass`, not `VehicleClass`, and not one of them
+                // carries the `Type` literal that 00964790's chain compares, so
+                // the factory returns a null descriptor and there is nothing to
+                // map. A non-zero creator means the class resolved but is absent
+                // from the 22 rows in src/native_unit_observer_endpoint.cpp.
+                // docs/SCENE_STATIONARY_REGISTRATION.md.
+                char detail[192];
+                std::snprintf(detail, sizeof(detail),
+                    "unit observer creator projection is unavailable: unit=%s creator=%08lx (%s)",
+                    row.name.c_str(),
+                    static_cast<unsigned long>(slot->motion_dispatch.creator),
+                    slot->motion_dispatch.creator == 0
+                        ? "no vehicle-class descriptor; a StationaryClass row carries no Type"
+                        : "resolved class with no observer table row");
+                host.log.notef("%s", detail);
+                throw std::logic_error(detail);
+            }
         }
         host.log.notef("unit motion dispatch: unit=%s creator=%08lx tick_vtable=%08lx "
             "entry=%08lx coverage=%s", row.name.c_str(),

@@ -1,0 +1,81 @@
+{
+ "packet": "cc8_scene_stationary_registration",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/SCENE_STATIONARY_REGISTRATION.md",
+ "tree_base": "560841342",
+ "result": "The packet's premise is void and this report retracts the claim that created it. 004E5B00 is a single RET between INT3 padding, a no-op stub shared by eight scene classes, so there is nothing to implement and implementing it would not load USN22. The real cause of the refusal is that a scene row typed from StationaryTypes resolves to a StationaryClass, and this installation's 220 StationaryClass rows carry no Type literal, so the vehicle-class chain returns a null descriptor, the unit's creator is 0 and the observer lookup for creator 0 throws.",
+ "question": "Read 004E5B00 whole and implement it so USN22 loads.",
+ "answer": "004E5B00 cannot be implemented: disasm-raw over the image shows 004E5AFC RET, three INT3, then 004E5B00 RET followed by INT3 padding. It is one byte. src/scene_entity_factory.cpp already records it as the registration creator for NavPoint, MovieCamPos, MovieCamLookat, LandingPoint, Stationary, Wreck, WaterMine and Landscape, none of which has anything to register. The 192 UNIMPLEMENTED records against it in the USN22 run are records of a routine that does nothing. The refusal comes from src/game_hosts_units.cpp, where publish_unit_leaf_observer_tables_for_creator finds no row for the unit's creator. That creator is VehicleClassDescriptorRow::allocate_instance, vtable slot +28h, and the descriptor is chosen by the VehicleClass.Type literal through the case-insensitive chain at 00964790. A stationary class has no Type: scripts/datatables/autoload/stationaryclasses.lua of this installation (13 Jul 2024, bulk install date) defines 220 rows under StationaryClass and the string Type does not occur in the file once. The chain takes no branch, the creator is 0 and the lookup throws. USN22 meets it because six of its LandFort scene rows are typed from StationaryTypes; USN04 never does because it has no stationary rows at all.",
+ "coverage": "complete for what 004E5B00 is and for why USN22 refuses; how the original creates a stationary unit is unread and is the contract.",
+ "calls": [],
+ "named_routines": [
+  {
+   "native": "004e5b00",
+   "ledger_name": "a one-byte RET, not a missing native body",
+   "evidence": "004E5AFC RET, 004E5AFD-FF INT3, 004E5B00 RET, 004E5B01+ INT3, read from the image with disasm-raw; Ghidra has no function here and assigns the byte to the range of FUN_004E5980",
+   "status": "read whole; nothing to implement"
+  },
+  {
+   "native": "004f0be0",
+   "ledger_name": "the Stationary class instantiate address",
+   "evidence": "src/scene_entity_factory.cpp row {0x36, Stationary, 0x004f0be0, 0x004e5b00}",
+   "status": "not read; named as where the stationary unit path starts"
+  },
+  {
+   "native": "004f1460",
+   "ledger_name": "the Landscape class instantiate address",
+   "evidence": "the USN22 log's first SceneContents::class_creator record is 004f1460 with 215 calls, and those units are skipped rather than created",
+   "status": "not read"
+  },
+  {
+   "native": "00964790",
+   "ledger_name": "the vehicle-class factory chain",
+   "evidence": "009648EC..00964EEC compares the Type literal with 00425850, case-insensitively",
+   "status": "previously reconstructed, unchanged here"
+  }
+ ],
+ "no_ghidra_function": [
+  "004e5b00"
+ ],
+ "host_methods": [],
+ "authored_rows": [
+  {
+   "file": "scripts/datatables/autoload/stationaryclasses.lua of this installation (mtime 2024-07-13, the bulk install date, not locally modified)",
+   "row": "the stationary class table",
+   "values": {
+    "StationaryClass rows": 220,
+    "occurrences of the string Type": 0,
+    "Stat_kate keys": "Mesh, HPBlack, Armor, ExplosionEfx"
+   }
+  },
+  {
+   "file": "the USN22 run log, local/usn22_glide.log",
+   "row": "the LandFort scene rows, which carry the stationary types",
+   "values": {
+    "LandFortClasses:Hangar_new1=586": 1,
+    "LandFortClasses:cargo_wreck_a=215": 1,
+    "LandFortClasses:coastal_gun_us=460": 7,
+    "LandFortClasses:light_aa_jap_sandbag=630": 2,
+    "StationaryTypes:Stat_kate=595": 3,
+    "StationaryTypes:Stat_zero=602": 7
+   }
+  }
+ ],
+ "contracts": [
+  "How the original creates a stationary unit is not established. It plainly does, so there is a path that does not go through the VehicleClass descriptor chain. 004F0BE0, the Stationary class's own instantiate address, is where to start, and it was not read here.",
+  "Whether Wreck, WaterMine, Landscape and NavPoint take that same path or are never units at all is unread. Landscape is recorded 215 times in the USN22 run and skipped, so it at least never reaches unit creation.",
+  "DummyTargetVehicle is the one Type literal in src/vehicle_class.cpp with no observer row and no motion-dispatch row. That is a separate, smaller gap and no mission in this survey exercised it."
+ ],
+ "corrections": [
+  "RETRACTION. This thread published, in docs/TORPEDO_MISSION_SURVEY.md sections 7 and 8 and in reports/torpedo_usn04.json, that 004E5B00 SceneContents::class_registration_creator is the native whose absence stops USN22 loading, and named it as one of two natives that would open a mission. Both are withdrawn. The error was reading a summary's call count against an UNIMPLEMENTED record as a count of failures, without reading the routine: a one-byte RET reads in a summary exactly like a native body that has not been written. Both files are corrected in the same commit as this report.",
+  "A consequence of the retraction: the survey's conclusion now names one native that came out of it, 0088BF80, not two."
+ ],
+ "validation": {
+  "runner": "tools/run_game.ps1",
+  "outcome": "blocked",
+  "build": "clean, both ctest suites pass",
+  "reason": "Session 1, where the agents run, is disconnected, so no window, D3D device or FMOD output can be created. See docs/MISSION_LUA_GETPROPERTY.md for the evidence that separates the machine from any tree.",
+  "command": "./tools/run_game.ps1 -Log local/usn22_stationary.log -WaitSeconds 2400 -- --frames 3200 --press-start-frame 30 --menu-select USN22 --mission-frames 3000 --mission-frame-seconds 0.05",
+  "expected": "Still a refusal, not a fix. The changed message should name the unit after Hangar1 with creator=00000000 and the stationary reason, which is the confirmation this reading wants."
+ }
+}

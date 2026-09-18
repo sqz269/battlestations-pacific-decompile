@@ -180,9 +180,20 @@ None.
 
 ## Validation
 
-**Blocked, not skipped.** The USN04 run could not be made. Two consecutive attempts on a clean
-environment failed identically before any window was created, and so did a run of another
-worktree's binary, which separates the machine from this tree:
+**Blocked, not skipped.** The run is one call once the session is back:
+
+```
+./tools/run_game.ps1 -Log local\usn04_getproperty.log -WaitSeconds 2400 -- --frames 3200 `
+    --press-start-frame 30 --menu-select USN04 --mission-frames 3000 --mission-frame-seconds 0.05
+```
+
+What it should show: `summary mission getproperty 0088bf80` with `served` greater than zero and
+`unserved` carrying the keys section 6 counts; no `script call Think failed` line at
+`commandhelpers.lua:2496`; and the mission running its full 3000 frames instead of aborting its
+think 41 times. It should **not** show a launched strike, for the reason section 8 gives.
+
+Two consecutive attempts on a clean environment failed identically before any window was created,
+and so did a run of another worktree's binary, which separates the machine from this tree:
 
 ```
 startup failed: FMOD bank raw-length output unavailable: path=sound/gui/error.fsb
