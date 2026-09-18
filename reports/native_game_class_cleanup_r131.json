@@ -8036,7 +8036,7 @@
     ],
     "combined_probes": [
       {
-        "label": "resource_cache",
+        "label": "class_cleanup",
         "result": {
           "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
           "exit": 0,
@@ -8069,5 +8069,8 @@
     "library_identical_to_tested": false,
     "game_identical_to_tested": false,
     "ordinary_application_runtime_rerun": false
-  }
+  },
+  "report_corrections": [
+    "Combined probe label corrected from the reused resource_cache template to class_cleanup. Probe files, results, comparisons and immutable archive hashes are unchanged."
+  ]
 }
