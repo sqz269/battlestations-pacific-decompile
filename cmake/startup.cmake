@@ -63,6 +63,8 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_settin
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_tokenizer.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_scene_token_values.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_settings_choices.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_stream_text_scanner.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_language_catalog_storage.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_resource_application.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_resource_pools.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_surface_pool.cpp)

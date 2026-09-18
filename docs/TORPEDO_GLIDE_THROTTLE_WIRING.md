@@ -156,3 +156,44 @@ None.
 1. **`009D3210`'s engaged test and its range fields**, which is why move-to never ticks here.
 2. **`[ESP+0x6c]`'s real value** at `0099DBBF`, from `0099D85E`-`0099D892`.
 3. **`007C47F0` and `009BECD0`**, the desired speed itself.
+
+
+## Correction from packet `cc8_attack_run_descent`: the plunge is explained, not a defect
+
+Appended, not rewriting section 5.
+
+Section 5 calls the 800 m plunge unexplained and asks for "the native's own answer for why an
+attack run from 800 m does not plunge". **The answer is that it does plunge.**
+
+`docs/ATTACK_RUN_DESCENT.md` reads the whole pitch path and finds nothing that stops a 60-degree
+dive for an aircraft level and on heading. Pitch mode 2 gives `min(commanded, held + inc)` at
+`0099DD4C`, which lets a dive through untouched and only limits a climb. The nose-up floor at
+`0099E4FE` is `max(target, PitchTurnMaxPitch - 2.5 * (1 - q))`, and with the authored
+`PitchTurnMaxPitch` of `DEG(6)` that is **-2.395 rad** for a level aircraft on heading - 1.35
+radians below the `DEG(60)` cap it would have to reach.
+
+So the image's own chain produces the same `-1.0472` rad this run measured, and the host's
+reconstruction matches it stage for stage with no substitution. There is no fix to make in the
+descent law, and section 5's second option - giving the attack-run branch the glide slope's shape -
+is not just unfounded but unnecessary.
+
+What is left of the question is upstream and about altitude rather than pitch: the aim tick expects
+an aircraft already at tens of metres, and USN01 authors these bombers at 800, 700 and 400.
+`docs/ATTACK_RUN_DESCENT.md`.
+
+
+## Correction from packet `cc8_bot_speed_class_rows`: step 2's substitution was the wrong field
+
+Appended, not rewriting section 1.
+
+Section 1 lists the move-to setter's desired speed as a labelled substitution, "the row's authored
+`TravelSpeed`", because `007C47F0` and `009BECD0` were unread.
+
+`007C47F0` is read now, and it is **not** `TravelSpeed`: it is
+`tuning+24Ch Dynamics/SpdMultipliers/LevelFlight` times `classDesc+184h StallSpd`, the same product
+the dive-bomb turndown takes through the same call. So substituting `TravelSpeed` was not a
+plausible stand-in for the right quantity, it was **a different class field**. For USN01's `Mav`
+row the commanded speed moves from 66.67 m/s to 34.92.
+
+What remains substituted there is `009BECD0`'s shaping of that product against the distance, which
+is still unread. `docs/BOT_SPEED_CLASS_ROWS.md`.

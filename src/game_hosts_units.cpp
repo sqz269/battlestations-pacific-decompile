@@ -586,6 +586,7 @@ struct GameUnitSlot {
     // answered, kept for the census only.
     float plane_commanded_altitude{-1.0f};
     float plane_commanded_pitch{0.0f};
+    float plane_dive_probe_timer{0.0f};
     // unit+0BBCh and unit+0BB0h+10h, the latched throttle and air brake. The
     // latch 007B9783 copies the whole live block, not just the three stick
     // axes, and both of these are drag or thrust inputs.
@@ -1160,6 +1161,20 @@ struct GameUnitsHost::Impl {
     // RET 0 getter with no reconstruction, so this is the executable's own
     // value: atan2 over pose row 2, the same convention the trajectory dump and
     // the run log print in degrees.
+    // 007C47F0(approach+8h): tuning+24Ch Dynamics/SpdMultipliers/LevelFlight
+    // times classDesc+184h StallSpd. Both halves are real here: the tuning row
+    // comes from the PlaneGlobals mirror and the stall speed from the unit's own
+    // vehicle-class row, which src/game_hosts_lua.cpp loads and the free-flight
+    // arm already reads at 007DB760. docs/BOT_SPEED_CLASS_ROWS.md.
+    float bot_desired_speed_007c47f0(const GameUnitSlot& slot) const {
+        float level_flight = 1.8f;                    // tuning+24Ch
+        if (lua.plane_globals_loaded()) {
+            level_flight = lua.plane_globals().dynamics_spd_multipliers_level_flight;
+        }
+        const float stall = slot.plane_stall_spd > 0.0f ? slot.plane_stall_spd : 17.5f;
+        return level_flight * stall;
+    }
+
     // The three numbers docs/TORPEDO_RELEASE_GEOMETRY.md section 3 asked for
     // and did not take: |v|, the angle between v and the forward pose row, and
     // the body-axis speed 0092D730 itself computes (the dot of the body's
@@ -2983,6 +2998,82 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::accumulate_free_flight_007db680(state, cls, tuning, step);
                         const bsp::PlaneBodyAcceleration body =
                             bsp::fold_world_into_body_007d8470(acc, state.world_to_body);
+                        // Packet cc8_plane_dive_instrumented. docs/PLANE_DIVE_RESPONSE.md
+                        // section 3 shows the host's own terms capping any dive at about
+                        // 129 m/s while two runs measured 141.5 to 141.9 at the water.
+                        // This prints the four accumulator triples before the fold, the
+                        // folded body total, and the three gravity candidates the doc
+                        // named by address, once a second for a diving aircraft.
+                        unit_.plane_dive_probe_timer += step;
+                        if (unit_.torpedo_task_installed &&
+                            unit_.plane_pitch_angle_c64 < -0.3f &&
+                            unit_.plane_dive_probe_timer >= 1.0f) {
+                            unit_.plane_dive_probe_timer = 0.0f;
+                            const float* const wv = unit_.plane_world_velocity;
+                            const float spd = std::sqrt(wv[0] * wv[0] + wv[1] * wv[1] +
+                                                        wv[2] * wv[2]);
+                            const float* const fwd = unit_.motion.pose_row2;
+                            // the along-path share of each term, which is what the
+                            // 1D model in local/dive_sim.py compares against
+                            const float nx = spd > 1e-6f ? wv[0] / spd : 0.0f;
+                            const float ny = spd > 1e-6f ? wv[1] / spd : 0.0f;
+                            const float nz = spd > 1e-6f ? wv[2] / spd : 0.0f;
+                            // 007D8470 returns a BODY acceleration; the arm rotates it
+                            // back through the transpose of the pose rows. That rotation
+                            // is gravity candidate 3.
+                            const float* const probe_rows[3] = {unit_.motion.pose_row0,
+                                unit_.motion.pose_row1, unit_.motion.pose_row2};
+                            float wa[3] = {0.0f, 0.0f, 0.0f};
+                            for (int c = 0; c < 3; ++c) {
+                                for (int r = 0; r < 3; ++r) {
+                                    wa[c] += probe_rows[r][c] * body.total[r];
+                                }
+                            }
+                            const float along = wa[0] * nx + wa[1] * ny + wa[2] * nz;
+                            owner_.log.notef(
+                                "  dive probe %-12s alt=%.1f spd=%.2f pitch=%.4f "
+                                "path=%.4f aoa=%.4f | along=%.3f thrust=%.3f drag=%.3f "
+                                "| damp=(%.3f %.3f %.3f) wdrag=(%.3f %.3f %.3f) "
+                                "lift=(%.3f %.3f %.3f) grav=(%.3f %.3f %.3f) "
+                                "| body=(%.3f %.3f %.3f) world=(%.3f %.3f %.3f) "
+                                "| fwd=(%.3f %.3f %.3f) cheat=%.2f",
+                                unit_.row.name.c_str(),
+                                static_cast<double>(unit_.motion.position[1]),
+                                static_cast<double>(spd),
+                                static_cast<double>(unit_.plane_pitch_angle_c64),
+                                static_cast<double>(std::atan2(
+                                    static_cast<double>(wv[1]),
+                                    std::sqrt(static_cast<double>(wv[0]) * wv[0] +
+                                              static_cast<double>(wv[2]) * wv[2]))),
+                                static_cast<double>(std::acos(std::max(-1.0, std::min(1.0,
+                                    static_cast<double>(nx * fwd[0] + ny * fwd[1] +
+                                                        nz * fwd[2]))))),
+                                static_cast<double>(along),
+                                static_cast<double>(state.thrust_accel),
+                                static_cast<double>(state.drag_accel),
+                                static_cast<double>(acc.body_damping[0]),
+                                static_cast<double>(acc.body_damping[1]),
+                                static_cast<double>(acc.body_damping[2]),
+                                static_cast<double>(acc.world_drag[0]),
+                                static_cast<double>(acc.world_drag[1]),
+                                static_cast<double>(acc.world_drag[2]),
+                                static_cast<double>(acc.body_lift[0]),
+                                static_cast<double>(acc.body_lift[1]),
+                                static_cast<double>(acc.body_lift[2]),
+                                static_cast<double>(acc.world_gravity[0]),
+                                static_cast<double>(acc.world_gravity[1]),
+                                static_cast<double>(acc.world_gravity[2]),
+                                static_cast<double>(body.total[0]),
+                                static_cast<double>(body.total[1]),
+                                static_cast<double>(body.total[2]),
+                                static_cast<double>(wa[0]),
+                                static_cast<double>(wa[1]),
+                                static_cast<double>(wa[2]),
+                                static_cast<double>(fwd[0]),
+                                static_cast<double>(fwd[1]),
+                                static_cast<double>(fwd[2]),
+                                static_cast<double>(tuning.accel_cheat_mul));
+                        }
                         // 007D8470 returns a BODY-frame acceleration - its own
                         // name says so, and free_flight_world_up_acceleration in
                         // the same header rotates the result back "through the
@@ -4066,13 +4157,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         in.rolled_latch_1c = unit_.db_turndown_latch_1c;
                         in.roll_command_18 = unit_.db_turn_roll_18;
                         // 007C47F0(approach+8h): tuning+24Ch LevelFlight times
-                        // classDesc+184h StallSpd. The class descriptor is not
-                        // modelled here, so the tuning half comes from the Lua
-                        // globals when they loaded and the stall speed is the
-                        // authored default; labelled at its address.
-                        in.desired_speed =
-                            bsp::dive_bomb_turndown_constant::kLevelFlightMultiplier *
-                            bsp::dive_bomb_turndown_constant::kStallSpeedDefault;
+                        // classDesc+184h StallSpd. Both halves are now the real
+                        // ones - the tuning row from the PlaneGlobals mirror and
+                        // the stall speed from this unit's own vehicle-class row,
+                        // the same desc+184h the free-flight arm reads at
+                        // 007DB760 - so the substitution that stood here is
+                        // retired. docs/BOT_SPEED_CLASS_ROWS.md.
+                        in.desired_speed = owner_.bot_desired_speed_007c47f0(unit_);
                         const bsp::DiveBombTurnDownResult r =
                             bsp::dive_bomb_turndown_tick_009c44f0(in);
                         ++unit_.db_turndown_ticks;
@@ -4713,13 +4804,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // Step 2, 009C1850 BSP_BotStateMoveTo_SetDesiredSpeed.
                         // 009C189A writes cmd+2B4h, 009C18A0 clears the byte
                         // cmd+2B0h and 009C18A7 raises cmd+2D8h, with NO
-                        // condition. SUBSTITUTION, labelled: the speed itself
-                        // comes from 007C47F0 and 009BECD0, both unread, so the
-                        // row's authored TravelSpeed stands in - the cruise the
-                        // aircraft is seeded at, which is what a bot moving to a
-                        // point should want.
-                        unit_.plane_desired_speed_2b4 = unit_.plane_travel_speed > 0.0f
-                            ? unit_.plane_travel_speed : 141.666672f;
+                        // condition. The speed is 007C47F0's product, tuning+24Ch
+                        // LevelFlight times this unit's own classDesc+184h
+                        // StallSpd, which the dive-bomb turndown reads through the
+                        // same call - so the earlier substitution here, the row's
+                        // TravelSpeed, was the wrong FIELD and not merely a stand
+                        // -in value. 009BECD0 then shapes that product against the
+                        // distance and is still unread, so what remains
+                        // substituted is the shaping, not the speed.
+                        // docs/BOT_SPEED_CLASS_ROWS.md.
+                        unit_.plane_desired_speed_2b4 =
+                            owner_.bot_desired_speed_007c47f0(unit_);
                         unit_.plane_air_brake_mode_2d8 = 1;
                         ++unit_.plane_speed_commands;
                         owner_.record("BotStateMoveTo::set_desired_speed", 0x009c1850u);
@@ -4781,7 +4876,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             owner_.log.notef("  torpedo %-12s glide census n=%d "
                                 "range=%.1f base=%.2f low=%.1f t=%.3f gain=%.3f "
                                 "commanded=%.1f live_alt=%.1f pitch_demand=%.4f "
-                                "desired_spd=%.2f |v|=%.2f throttle=%.3f",
+                                "desired_spd=%.2f (level_flight*stall) stall=%.2f "
+                                "|v|=%.2f throttle=%.3f",
                                 unit_.row.name.c_str(), unit_.plane_speed_commands,
                                 static_cast<double>(distance),
                                 static_cast<double>(base),
@@ -4791,6 +4887,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 static_cast<double>(unit_.motion.position[1]),
                                 static_cast<double>(demand),
                                 static_cast<double>(unit_.plane_desired_speed_2b4),
+                                static_cast<double>(unit_.plane_stall_spd),
                                 static_cast<double>(std::sqrt(
                                     unit_.plane_world_velocity[0] * unit_.plane_world_velocity[0] +
                                     unit_.plane_world_velocity[1] * unit_.plane_world_velocity[1] +

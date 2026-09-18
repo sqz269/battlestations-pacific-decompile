@@ -129,6 +129,10 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         std::vector<std::size_t> member_units;  // unit indices in +3D0h order
     };
     std::vector<Squadron> squadrons;
+    // game+21A4h..+21C0h, the eight per-player-slot objective sets.
+    // Filled by 008CD440 Objectives_Add / 008CDD60 Objectives_AddUnit,
+    // both unimplemented in this process, so all eight stay empty.
+    std::array<std::vector<std::size_t>, 8> objective_sets{};
     // A plane the squadron owns is NOT an AI candidate of its own. The native
     // seeds the scene's PlaneSquadronGen entities; the planes exist only in the
     // member array at +3D0h, and 009FE080 would refuse them anyway (009FE0A5
@@ -1170,24 +1174,49 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     bool group_has_member_in_world_set(void* group, int set_index) override {
         // 00A2C450, body read in full: it walks the group's member list at
         // +563Ch/+5640h and calls 008DDF90 BSP_SzurkeNyil_ContainsUnit on each
-        // member against the entity set [00E188A8] + set_index*4 + 21A4h,
-        // returning true at 00A2C4AB on the first member found in it and false
-        // at 00A2C4B4 when the walk ends.
+        // member against the set [00E188A8] + set_index*4 + 21A4h, returning
+        // true at 00A2C4AB on the first member found and false at 00A2C4B4
+        // when the walk ends.
         //
-        // This process builds no entity set at world+21A4h. Running the native
-        // routine against an empty set finds no member, so its answer here is
-        // FALSE, and false is what this returns. The earlier stand-in answered
-        // "the group's own team equals the brain's set index", which is true
-        // for every group a brain walks, and that is the one answer 00A2C450
-        // could not give against an empty set. Its consequence was visible:
-        // 00A18269 JNZ then sends every group of the party to the FIRST planner
-        // (brain+0h) instead of the fourth (brain+0Ch), so one planner owned
-        // both of IJN01's party-0 groups and 00A1CB80 orders only the first of
-        // them, which after 00A2E260's split is the non-groupable remainder.
-        // docs/AI_SQUADRON_SERVED.md carries the measurement.
-        (void)group;
-        (void)set_index;
+        // What those eight sets ARE is settled by packet cc8_ai_world_sets:
+        // 004DF90F..004DF959 in BSP_Game_ConstructWorld builds exactly eight
+        // of them, `operator new(30h)` each, constructed by 008DF900(set, i)
+        // with the loop index and then 008DA160; 004DE20A..004DE234 in
+        // BSP_Game_ConstructActualStorage only nulls the eight slots. They are
+        // the per-PLAYER-SLOT objective sets (class string "SzurkeNyil" at
+        // 00D16100, vtable 00D1610C), one per player, holding Objective
+        // records whose own +20h unit lists carry the units.
+        // docs/OBJECTIVE_UNIT_LIST.md and docs/LOCAL_PLAYER_UNIT_LISTS.md.
+        //
+        // Their producer is the mission Lua: 008CD440 Objectives_Add and
+        // 008CDD60 Objectives_AddUnit. BOTH ARE UNIMPLEMENTED in this process
+        // (the run log carries "MissionLuaNative::Objectives_Add [008cd440]
+        // UNIMPLEMENTED"), so no objective and no objective unit exists, every
+        // set is empty, and 008DDF90 finds nothing for any member. The native
+        // routine's answer here is therefore its 00A2C4B4 walk-ended arm for
+        // every group, which is what this returns. The lookup is wired through
+        // the table below so that when Objectives_Add lands the answer becomes
+        // real without another change here.
+        ++summary.world_set_queries;
+        Group* g = group_at(group);
         record("AiParties::group_has_member_in_world_set", 0x00a2c450u);
+        if (g == nullptr || set_index < 0 ||
+            static_cast<std::size_t>(set_index) >= objective_sets.size()) {
+            return false;
+        }
+        const std::vector<std::size_t>& set =
+            objective_sets[static_cast<std::size_t>(set_index)];
+        if (set.empty()) return false;          // 00A2C4B4, every run so far
+        for (const std::size_t member : g->members) {
+            // 00A2C486 takes the node's +8h, the member entity, and 00A2C491
+            // asks the set. A squadron answers for its flight leader, because
+            // that is the unit an objective would name.
+            const std::size_t unit = proxy(member);
+            if (std::find(set.begin(), set.end(), unit) != set.end()) {
+                ++summary.world_set_hits;
+                return true;                    // 00A2C4AB
+            }
+        }
         return false;
     }
     void planner_claim_group(void* planner, void* group) override {
@@ -1705,6 +1734,19 @@ void GameAiCoordinatorHost::report() {
     host.log.notef("summary mission ai order dedupe suppressed=%llu (duplicate re-issues "
         "of the same token/target/point; 0077D600 replaces, this ring appends)",
         host.summary.orders_suppressed);
+    {
+        unsigned long long units = 0;
+        for (const std::vector<std::size_t>& set : host.objective_sets) {
+            units += static_cast<unsigned long long>(set.size());
+        }
+        host.summary.objective_set_units = units;
+    }
+    host.log.notef("summary mission ai world sets queries=%llu hits=%llu objective_units=%llu "
+        "(00A2C450 over game+21A4h..+21C0h, the eight per-player-slot SzurkeNyil objective "
+        "sets; their producer 008CD440 Objectives_Add is unimplemented here, so every set is "
+        "empty and the native's 00A2C4B4 arm is the answer)",
+        host.summary.world_set_queries, host.summary.world_set_hits,
+        host.summary.objective_set_units);
     for (const GameAiPartyRow& row : host.parties) {
         host.log.notef("  ai party %d record=%d ai_enabled=%d brain=%d thinks=%llu "
             "claims=%llu planner_ticks=%llu attacks=%llu commands=%llu refused=%llu",
