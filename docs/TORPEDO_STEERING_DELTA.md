@@ -283,8 +283,45 @@ and never bites.
 
 The aircraft actually fly about 122 m/s (`distance_moved` 366414 m over 20 planes and
 150 s). Clause 2 fires when `range < 600*(|delta| - 1) + speed`, which at `|delta|` 2.28 is
-1268 m with speed 500 and 890 m with the real speed. 1268 m is exactly the `F14` of
-1239-1274 the run reports. Aim therefore gives up about a kilometre too early, every cycle.
+1268 m with speed 500. 1268 m is exactly the `F14` of 1239-1274 the run reports, so the
+slot really does hold 500 and really is the altitude constant.
+
+### Correction: what the fix attempt then showed, and what it did not
+
+Two things I asserted before measuring turned out to be wrong, and the per-tick census is
+what caught them.
+
+**The obvious substitution is degenerate.** `slot.motion.max_speed`, the VehicleClass
+`+500h` field, is **0.0f on an aircraft**. The class row exists, and the run reports all 77
+units carrying one, but planes take no speed from it. `009D1500`'s `speed == 0` guard then
+returns `F0C = 0.0000` on every tick, which makes clause 2 fire on the **first** aim tick of
+every run. Measured in `local/usn01_after.log`: goaway entries went from 96 to 208 per
+aircraft and transitions from 176 to 419. Closest approach did improve, 920.9 m to 473.5 m,
+because the aircraft stop orbiting and press straight in, but a time-to-target of exactly
+zero at a range of 2196 m is not a defensible number and the value was reverted.
+
+**The dimensional argument does not hold.** `009D1500`'s third arm divides by the double
+`600.0` at `00D20198`, which is not a physical aircraft speed. So `F0C` is an urgency
+number rather than an ETA, clause 2 compares it against radians, and **the right magnitude
+for these slots cannot be argued from dimensions alone**. 500 may well sit in the range the
+native intends. What stays true is narrower and still worth fixing: the host takes that
+number from `Pilot/Torpedo/CruisingAlt`, a constant that is an altitude and is not evidence
+for any speed, while the native takes it from a run profile record nobody has read yet.
+
+So the packet leaves the placeholder in place, routed through
+`torpedo_seed_run_speeds_009d0484` and logged as unimplemented, and names the record's
+producer as the blocking follow-up rather than guessing again.
+
+### What the census did settle
+
+`unit+C6Ch` and the hull heading are **the same number to four decimals on every census
+row**, on all five aircraft and at every sample. That is the empirical confirmation of the
+convention analysis in rules 1 and 2, and it confirms the prediction made there that the
+`unit_heading_vtable50` producer fix would be numerically neutral. It is.
+
+The cone is also not the binding constraint. At aim tick 51 of the degenerate run the delta
+was already down to 0.8948 rad and `cone_open=1`. The nose does come round. Clause 2 is what
+ends the run-in, which is why the speed slot is the thing worth getting right.
 
 ## Rule 5: the break-off quantity is not the defect
 
