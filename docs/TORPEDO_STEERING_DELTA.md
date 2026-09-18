@@ -244,6 +244,60 @@ USN02, same tree and same settings, `local/usn02_before.log`, `loop_finished=1`,
 could plan for". So USN02 cannot show a regression in the aim tick either way, and with no
 source change there is nothing for it to regress.
 
+## Rule 4: the thrash is an altitude used as a speed
+
+The aim state hands over to goaway when `state+2Ch` is set, and `state+2Ch` is
+`(F34 > F14 - ramp) || (F18 > F0C)`. Every aircraft fires on the second clause, so the
+question is what keeps `|delta| > F0C` quiet during a native run-in.
+
+`F0C` is `009D1500`, and it has **three** arms, not one:
+
+```
+009d154e  jbe 0x9d15b1   ; t = range/speed, returned as is when t <= 1.0
+009d1570  jbe 0x9d15b9   ; t again when speed >= the float 600.0 at 00CE4BC4
+009d1598  fsub  [esp]    ; otherwise (range - speed)
+009d159b  fdiv  qword [0xd20198]   ; / 600.0
+009d15a1  fadd  qword [0xd7a210]   ; + 1.0
+```
+
+The reconstruction in `src/torpedo_approach_update.cpp:110-125` carries all three
+faithfully. So invert the third arm on the before-run's own numbers:
+
+| Aircraft | F14 range | F0C | implied speed |
+|---|---|---|---|
+| Mav2 | 1239.16 | 2.2319 | 500.00 |
+| Mav4 | 1263.31 | 2.2722 | 500.00 |
+| Mav5 | 1274.31 | 2.2905 | 500.00 |
+
+**500.0 is `kPilotTorpedoCruisingAltDefault`**, `Pilot/Torpedo/CruisingAlt`, tuning
+singleton `+430h`. It is an altitude in metres, and `src/game_hosts_units.cpp:3105-3106`
+assigns it to both approach **speed** slots. The same constant is used correctly two
+hundred lines earlier for `ctl.second_altitude_398`.
+
+The native seeds those slots from a speed, at `009D0484`-`009D0497` inside
+`BSP_BotApproachTorpedo_Reset` (`009D0380`-`009D066F`): `+7Ch = record[+4] * scale` and
+`+80h = record[+8] * scale`, where the record is `approach+14h` and the scale
+`approach+24h`. Neither is written in that body, so both arrive already set and this host
+models neither. `009D3445`'s clamp cannot rescue it: the ceiling at `00CE4C04` is 9999.0
+and never bites.
+
+The aircraft actually fly about 122 m/s (`distance_moved` 366414 m over 20 planes and
+150 s). Clause 2 fires when `range < 600*(|delta| - 1) + speed`, which at `|delta|` 2.28 is
+1268 m with speed 500 and 890 m with the real speed. 1268 m is exactly the `F14` of
+1239-1274 the run reports. Aim therefore gives up about a kilometre too early, every cycle.
+
+## Rule 5: the break-off quantity is not the defect
+
+`009D3150` ends `FLD [ESP]` (the break-off `state+24h`), `FLD [ECX+90h]` (the range),
+`FCOMPI ST(1)`, `JBE`, so it returns true when **range > break-off**, with an optional
+`FMUL 0.4` at `009D3183` behind the always-engage pair. With the range at 697-766 m and the
+break-off at 700, goaway completes on or near the tick it is entered: Mav4 spends 87 ticks
+in goaway across 87 entries, one tick each. That is correct behaviour, not a bug. An
+aircraft already outside the safe distance has nothing to go away from.
+
+So the cycle is aim for roughly fourteen ticks, clause 2 fires, one tick of goaway, back to
+the attack run. Fix clause 2 and the cycle stops; the break-off needs no change.
+
 ## Corrections
 
 To append to `docs/TORPEDO_AIM_TICK.md`, not to rewrite: the frame table's `F=10h` entry

@@ -134,6 +134,12 @@
       "native": "0099deb8",
       "name": "bsp::yaw_base_numerator_0099de8a",
       "role": "src/plane_ai_control.cpp:216, fed term.heading_error = wrapped_angle_subtract_00438b10(desired_heading, unit_.plane_heading_c6c). Correct. Unchanged."
+    },
+    {
+      "address": "009d0380",
+      "native": "009d0380",
+      "name": "bsp::torpedo_seed_run_speeds_009d0484",
+      "role": "src/torpedo_approach_update.cpp, NEW in this packet. Reconstructs the seed at 009D0484-009D0497 inside this body: +7Ch = record[+4]*scale, +80h = record[+8]*scale. The host must supply a speed for the unmodelled record at approach+14h; slot_.motion.max_speed (Lua class+500h) is the proposed substitution and is labelled one."
     }
   ],
   "contracts": [
@@ -147,7 +153,7 @@
       "address": "009d3445",
       "native": "009d3445",
       "name": "TorpedoApproach::speed_ceiling_39c",
-      "role": "the pilot control block's +39Ch has no modelled input, so the clamp on approach+80h and the rescale of +7Ch never fire and 009D1500 divides by a raw class speed. F0C reads about 2.27 s at a range of 1263 m, implying roughly 556 m/s. It does not change the cone, which is already at its 15-degree floor at that range for any plausible speed, but it lets the 009D229D countdown gate pass where the true value would fail it."
+      "role": "SUPERSEDED by thrash_root_cause and now the packet's main finding. The control block's +39Ch ceiling is 00CE4C04 = 9999.0, so the clamp at 009D3445 never bites and cannot mask a wrong speed. The wrong speed is upstream: the host seeds both slots with the cruising ALTITUDE. The native seeds them at 009D0484-009D0497 from the run profile record at approach+14h scaled by approach+24h, neither of which this host models, so any host value is a substitution and must be labelled one."
     },
     {
       "address": "0099d300",
@@ -255,5 +261,21 @@
     "rule": "returns state+24h < approach+90h; body 009D3150-009D31A5, __fastcall(state), sole caller 009D4030 BSP_BotTaskTorpedo_TransitionRule",
     "values_in_the_before_run": "state+24h = 700.0 on all five (0042E740+438h). approach+90h peaks inside goaway at 697.4 (Mav1), 702.3 (Mav2), 697.0 (Mav3), 766.5 (Mav4), 700.4 (Mav5). Four of five never satisfy the predicate, yet goaway is entered 87-98 times each, so the aircraft leave goaway by some route other than this predicate and re-enter at once.",
     "why_it_is_the_gate": "the commanded heading reverses about every 1.7 s, so no cone width closes. The cone at 009D2209 is correct and its 0.262 rad floor is unreachable while this cycles."
+  },
+  "thrash_root_cause": {
+    "address": "009d0380",
+    "native": "009d0380",
+    "name": "BSP_BotApproachTorpedo_Reset",
+    "finding": "An altitude is used as the run speed. src/game_hosts_units.cpp:3105-3106 assigns kPilotTorpedoCruisingAltDefault (500.0, Pilot/Torpedo/CruisingAlt, tuning singleton +430h) to BOTH approach speed slots +80h and +7Ch. The native seeds them from a speed at 009D0484-009D0497: 009D046C takes the run profile record at approach+14h, 009D047D the scale at approach+24h, 009D048B FLD ST(0) duplicates the scale, and the pair lands as +7Ch = record[+4]*scale (009D0491) and +80h = record[+8]*scale (009D0497). Neither +14h nor +24h is written in the body 009D0380-009D066F. 009D3445's clamp never bites because the ceiling 00CE4C04 is 9999.0.",
+    "proof_from_the_run": "009D1500's third arm is (range - speed)/600.0 + 1.0, with 00D20198 = 600.0 and 00D7A210 = 1.0. Inverting it on the before-run gives speed = 500.00 exactly on Mav2 ((1239.16-500)/600+1 = 2.2319 = F0C), Mav4 ((1263.31-500)/600+1 = 2.2722 = F0C) and Mav5 ((1274.31-500)/600+1 = 2.2905 = F0C).",
+    "effect": "clause 2 of the aim-complete rule is |delta| > F0C. It fires when range < 600*(|delta|-1) + speed, which at |delta| 2.28 is 1268 m with speed 500 and 890 m with the aircraft's real 122 m/s. 1268 m is exactly the F14 of 1239-1274 the run reports, so aim hands over to goaway about a kilometre too early on every cycle.",
+    "three_arms_of_009d1500": "t = range/speed returned directly when t <= 1.0 (009D154E/009D15B1); t again when speed >= the float 600.0 at 00CE4BC4 (009D1570/009D15B9); otherwise (range - speed)/600.0 + 1.0 at 009D1598-009D15A1. The reconstruction at src/torpedo_approach_update.cpp:110-125 carries all three faithfully."
+  },
+  "break_off_is_not_the_defect": {
+    "address": "009d3150",
+    "native": "009d3150",
+    "name": "BSP_BotStateTorpedoGoAway_IsComplete",
+    "finding": "009D318C FLD [ESP] (break-off state+24h), 009D318F FLD [ECX+90h] (range), 009D3195 FCOMPI ST(1), 009D3199 JBE: returns true when range > break-off, with an optional FMUL by the double 0.4 at 00CE65D0 (009D3183) behind the always-engage pair ctl+369h and [00E17BF2]. With the range at 697-766 m and the break-off at 700, goaway completes on or near the tick it is entered: Mav4 spends 87 ticks in goaway across 87 entries, one tick each. That is correct behaviour; an aircraft already outside the safe distance has nothing to go away from. The break-off quantity needs no change.",
+    "cycle": "aim for roughly fourteen arm ticks, clause 2 fires, one tick of goaway, back to the attack run. 87-98 entries per aircraft in 150 s, about one reversal every 1.7 s."
   }
 }

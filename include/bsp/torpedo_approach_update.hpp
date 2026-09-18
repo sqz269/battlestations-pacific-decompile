@@ -204,6 +204,37 @@ float torpedo_engagement_eta_009d3c93(const TorpedoApproachState& s,
 float torpedo_commanded_speed_009d3c99(float elapsed_134, float speed_late_7c,
                                        float speed_early_80) noexcept;
 
+// The pair the two speed slots are seeded from, and where they come from.
+struct TorpedoRunSpeeds {
+    float speed_late_7c{0.0f};   // +7Ch
+    float speed_early_80{0.0f};  // +80h
+};
+
+// 009D0484-009D0497, inside BSP_BotApproachTorpedo_Reset (009D0380-009D066F).
+// The seed of both speed slots, and the producer this packet had to find:
+//
+//   009d046c  mov  eax, [esi+14h]      ; the run profile record
+//   009d047d  fld  dword ptr [esi+24h] ; the scale
+//   009d0484  fld  dword ptr [eax+4]
+//   009d048d  fmulp st(2)
+//   009d0491  fstp dword ptr [esi+7Ch] ; +7Ch = record[+4] * scale
+//   009d0494  fmul dword ptr [eax+8]
+//   009d0497  fstp dword ptr [esi+80h] ; +80h = record[+8] * scale
+//
+// So both are SPEEDS drawn from the run profile at approach+14h, scaled by
+// approach+24h. Neither +14h nor +24h is written anywhere in 009D0380; both
+// arrive already set. 009D05ED and 009D0625 then jitter the pair through two
+// 00BD2F10 draws, and 009D3445 clamps +80h to the control block's ceiling
+// 00CE4C04, which is 9999.0 and therefore never bites.
+//
+// This matters because 009D1500 divides the range by whichever of the two the
+// 15-second switch selects, and the aim tick's clause 2 at 009D22D9 compares
+// that time against the steering delta in radians. A speed slot that is too
+// large shortens the time and breaks the run off early.
+TorpedoRunSpeeds torpedo_seed_run_speeds_009d0484(float profile_late_4,
+                                                  float profile_early_8,
+                                                  float scale_24) noexcept;
+
 // 009D1500: the time-to-target metric the done/prepare tick and the aim tick
 // both read. The first second covers `speed` units, every second after it
 // covers 600.
