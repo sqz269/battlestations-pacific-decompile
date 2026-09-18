@@ -117,8 +117,8 @@ NativeGameStorage* construct_native_game_004ddb90(NativeGameStorage& storage,
     a.owner=&storage;a.context=&c;a.phase=Op::Phase::running;
     auto& calls=c.calls;void* const game=&storage;
     try {
-        word(game,0,0x00ce7cb8);byte(game,8,1);word(game,0xc,0xffffffff);byte(game,0x10);
-        word(game,0x1c,0x00ce78c0);word(game,0x24);word(game,0x28);word(game,0x2c);
+        word(game,0,c.source_tables?reinterpret_cast<Word>(c.source_tables->primary_00ce7cb8):0x00ce7cb8);byte(game,8,1);word(game,0xc,0xffffffff);byte(game,0x10);
+        word(game,0x1c,c.source_tables?reinterpret_cast<Word>(c.source_tables->reports_00ce78c0):0x00ce78c0);word(game,0x24);word(game,0x28);word(game,0x2c);
         a.unwind_state=0;a.native_site=0x004ddbe2;
         construct_native_input_configuration_00698680(at(game,0x3c));
         a.unwind_state=1;a.native_site=0x004ddc01;

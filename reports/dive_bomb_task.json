@@ -1,0 +1,525 @@
+{
+  "packet": "cc8_dive_bomb_task",
+  "baseline_commit": "0976324b9",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-cc8-dive-bomb",
+  "documentation": "docs/DIVE_BOMB_TASK.md",
+  "status": "analyzed and reconstructed; host wiring deferred to a separate commit",
+  "production_cpp_changed": [
+    "src/dive_bomb_task.cpp",
+    "include/bsp/dive_bomb_task.hpp",
+    "cmake/startup.cmake"
+  ],
+  "ghidra_mutated": false,
+  "new_native_body_reconstructed": true,
+  "original_abi": {
+    "009c8790": "ECX task; one stacked float dt; RET 4; no Ghidra function, body 009C8790-009C88D5 inclusive, INT3 from 009C88D6",
+    "009c83e0": "ECX task; one stacked float dt the body never reads; RET 4; body 009C83E0-009C8785",
+    "009c8310": "ECX task; no stacked argument; RET 0 / tail JMP; body 009C8310-009C83D2",
+    "009c82d0": "ECX task; one stacked state pointer; RET 4; body 009C82D0-009C82FF",
+    "009c7910": "ECX task; one stacked state pointer; RET 4 at 009C7966 and 009C796B; body 009C7910-009C796B",
+    "009c7a80": "ECX approach (task+3F8h); stacked float dt then a bool; RET 8, established from the arm's frame at 009C87EF where only an 8-byte cleanup keeps [ESP+10h] on dt; body 009C7A80-009C7E9E",
+    "009c8200": "ECX task; no stacked argument; RET 0; body 009C8200-009C8255",
+    "009c7ff0": "ECX task; no stacked argument; RET 0 / tail JMP; body 009C7FF0-009C8057",
+    "009c88e0": "ECX task; one stacked out-pointer; RET 4; no Ghidra function, body 009C88E0-009C8916 inclusive",
+    "009c58d0": "ECX aimdive state; one stacked float dt; RET 4 at 009C5B51 and 009C615F; body 009C58D0-009C6161",
+    "009c5180": "ECX aimglide state; one stacked float dt; RET 4; body 009C5180-009C580B",
+    "009c7270": "ECX done/prepare state; one stacked float dt; CALL 009C1FD0 at 009C7278 then RET 4 at 009C727D, not a tail jump; no Ghidra function, body 009C7270-009C727F inclusive",
+    "009c7240": "ECX done/prepare state; no stacked argument; tail JMP 009BED80; no Ghidra function, body 009C7240-009C725B inclusive",
+    "009c7260": "ECX done/prepare state; bare JMP 009BDE40; no Ghidra function, body 009C7260-009C7264 inclusive",
+    "009c7800": "ECX turndown state; one stacked int sign; body 009C7800-009C7849",
+    "009c7ea0": "ECX state; no stacked argument; body 009C7EA0-009C7EF2",
+    "009c7f00": "ECX state; no stacked argument; body 009C7F00-009C7FE8",
+    "007c1db0": "ECX unit; no stacked argument; body 007C1DB0-007C1DE4"
+  },
+  "calls": [
+    {
+      "address": "009c60f1",
+      "native": "007bbba0",
+      "note": "the aimdive release, one bomb per gate; approach+2Ch -= 1 at 009C60FB",
+      "host_method": "request_ordnance_release"
+    },
+    {
+      "address": "009c5777",
+      "native": "007bbba0",
+      "note": "the aimglide salvo, inside the loop 009C5771-009C5784; one approach+2Ch decrement per pass",
+      "host_method": "request_ordnance_release"
+    },
+    {
+      "address": "009c8026",
+      "native": "007bbba0",
+      "note": "the teardown dump, task vtable slot +58h; drains every remaining task+424h round",
+      "host_method": "request_ordnance_release"
+    },
+    {
+      "address": "009c575d",
+      "native": "007c1db0",
+      "note": "sizes the aimglide salvo",
+      "host_method": "rounds_remaining_007c1db0"
+    },
+    {
+      "address": "009c6114",
+      "native": "00bd2f10",
+      "note": "aimdive re-arm draw, Uniform(0.5, 1.0); ECX = 1",
+      "host_method": "uniform_between"
+    },
+    {
+      "address": "009c579e",
+      "native": "00bd2f10",
+      "note": "aimglide re-arm draw, Uniform(0.2, 0.5); ECX = 1",
+      "host_method": "uniform_between"
+    },
+    {
+      "address": "009c859e",
+      "native": "00bd2f10",
+      "note": "the turn-side coin range, Uniform(0.0, 1024.0)",
+      "host_method": "uniform_between"
+    },
+    {
+      "address": "009c7839",
+      "native": "00bd2f10",
+      "note": "the turndown roll magnitude, Uniform(0.8, 1.0)",
+      "host_method": "uniform_between"
+    },
+    {
+      "address": "009c85a3",
+      "native": "00bf7420",
+      "note": "LIBCRT rand; >= 0x200 picks +1, else -1",
+      "host_method": "uniform_between"
+    },
+    {
+      "address": "009c8371",
+      "native": "009c82d0",
+      "note": "the entry chooser's done arm",
+      "host_method": "set_dive_bomb_state"
+    },
+    {
+      "address": "009c8574",
+      "native": "009c7800",
+      "note": "flyabove -> turndown, side -1",
+      "host_method": "write_turn_direction"
+    },
+    {
+      "address": "009c85c1",
+      "native": "009c7800",
+      "note": "flyabove -> turndown, side from the coin",
+      "host_method": "write_turn_direction"
+    },
+    {
+      "address": "009c8613",
+      "native": "009c7ea0",
+      "note": "turndown -> aimdive",
+      "host_method": "read_transition_inputs"
+    },
+    {
+      "address": "009c8695",
+      "native": "009c7850",
+      "note": "aimglide -> goaway when the bombs are gone",
+      "host_method": "read_transition_inputs"
+    },
+    {
+      "address": "009c86e1",
+      "native": "009c7f00",
+      "note": "goaway -> flyabove or done",
+      "host_method": "read_transition_inputs"
+    },
+    {
+      "address": "009c83eb",
+      "native": "009c7910",
+      "note": "the attacking test at the head of the transition rule",
+      "host_method": "read_transition_inputs"
+    },
+    {
+      "address": "009c841f",
+      "native": "007b8ad0",
+      "note": "picks moveto+4F0h or follow+52Ch",
+      "host_method": "unit_has_no_follow_target"
+    },
+    {
+      "address": "009c8a96",
+      "native": "0099c230",
+      "note": "the break-off base, called first by 009C8A90",
+      "host_method": "should_break_off"
+    },
+    {
+      "address": "009c8926",
+      "native": "0099b660",
+      "note": "the empty cruise-profile base",
+      "host_method": "update_approach"
+    },
+    {
+      "address": "009c5c92",
+      "native": "00419010",
+      "note": "BSP_Math_InterpolateClamped; three pushed floats feed the aimdive pitch error; coverage: partial",
+      "host_method": "read_aimdive_inputs"
+    },
+    {
+      "address": "009c7afe",
+      "native": "007b9320",
+      "note": "BSP_WeaponController_HasGeneralBombOrdnance; writes approach+D1h = task+4C9h. Kind 2Ah excluding 2Ch/31h/2Bh/33h/2Dh",
+      "host_method": "approach_has_bomb_ordnance"
+    },
+    {
+      "address": "009c5af1",
+      "native": "00438b10",
+      "note": "BSP_Math_SubtractWrappedAngle in the aimdive bearing chain",
+      "host_method": "read_aimdive_inputs"
+    },
+    {
+      "address": "009c5ab4",
+      "native": "00bf701a",
+      "note": "LIBCRT atan2 in the aimdive bearing chain",
+      "host_method": "read_aimdive_inputs"
+    },
+    {
+      "address": "009c5a66",
+      "native": "00bf701a",
+      "note": "LIBCRT atan2, the aim-point bearing",
+      "host_method": "read_aimdive_inputs"
+    },
+    {
+      "address": "009c59fe",
+      "native": "00bf7030",
+      "note": "LIBCRT sqrt, the planar distance to the aim point",
+      "host_method": "read_aimdive_inputs"
+    },
+    {
+      "address": "009c73e0",
+      "native": "00411e20",
+      "note": "the dive-bomb task constructor's base helper",
+      "host_method": "register_state_name"
+    },
+    {
+      "address": "009c7751",
+      "native": "009c73a0",
+      "note": "the constructor builds the approach, which registers all ten states",
+      "host_method": "register_state_name"
+    },
+    {
+      "address": "009c5c49",
+      "native": "00419010",
+      "note": "the lead interpolation, y from 0 to (approach+14h)->+5Ch over the height above the target",
+      "host_method": "read_aimdive_inputs"
+    }
+  ],
+  "calls_in_undefined_regions": [
+    {
+      "site": "009c87a3",
+      "callee": "-",
+      "enclosing_no_ghidra_function": "009c8790",
+      "note": "task+4C4h = 0FFh, the per-tick plan scratch",
+      "host_method": "set_plan_step_scratch"
+    },
+    {
+      "site": "009c87ea",
+      "callee": "009c7a80",
+      "enclosing_no_ghidra_function": "009c8790",
+      "note": "the approach update, with the diving predicate as its third argument",
+      "host_method": "update_dive_bomb_approach_009c7a80"
+    },
+    {
+      "site": "009c8825",
+      "callee": "009bde80",
+      "enclosing_no_ghidra_function": "009c8790",
+      "note": "refresh the moveto ranges with (task+4A4h - 100.0, task+4A4h, task+4ACh)",
+      "host_method": "refresh_move_to_ranges"
+    },
+    {
+      "site": "009c8834",
+      "callee": "009c83e0",
+      "enclosing_no_ghidra_function": "009c8790",
+      "note": "the transition rule, before the state's own tick",
+      "host_method": "read_transition_inputs"
+    },
+    {
+      "site": "009c884c",
+      "callee": "-",
+      "enclosing_no_ghidra_function": "009c8790",
+      "note": "state->vtable[+Ch](dt), an indirect call",
+      "host_method": "tick_state"
+    },
+    {
+      "site": "009c885b",
+      "callee": "-",
+      "enclosing_no_ghidra_function": "009c8790",
+      "note": "task+2E4h = task+4C4h, the plan-step commit",
+      "host_method": "commit_plan_step_result"
+    },
+    {
+      "site": "009c887c",
+      "callee": "-",
+      "enclosing_no_ghidra_function": "009c8790",
+      "note": "(unit+72Ch)->vtable[+38h](), an indirect call",
+      "host_method": "manual_release_requested"
+    },
+    {
+      "site": "009c88c4",
+      "callee": "007bbba0",
+      "enclosing_no_ghidra_function": "009c8790",
+      "note": "the manual passthrough release. tools/callsite_census.py attributes it to 009C83E0, whose Ghidra body ends at 009C8785; the enclosing routine is the arm",
+      "host_method": "request_ordnance_release"
+    },
+    {
+      "site": "009c7278",
+      "callee": "009c1fd0",
+      "enclosing_no_ghidra_function": "009c7270",
+      "note": "the done/prepare tick's whole body",
+      "host_method": "tick_state"
+    },
+    {
+      "site": "009c7257",
+      "callee": "009bed80",
+      "enclosing_no_ghidra_function": "009c7240",
+      "note": "the done/prepare enter's tail jump, after -1.0f into state+98h",
+      "host_method": "enter_state"
+    },
+    {
+      "site": "009c7260",
+      "callee": "009bde40",
+      "enclosing_no_ghidra_function": "009c7260",
+      "note": "the done/prepare exit is a bare JMP; no release",
+      "host_method": "exit_state"
+    },
+    {
+      "site": "009c588b",
+      "callee": "-",
+      "enclosing_no_ghidra_function": "009c5870",
+      "note": "unit+844h = 0 on entering the dive",
+      "host_method": "enter_state"
+    },
+    {
+      "site": "009c58a6",
+      "callee": "-",
+      "enclosing_no_ghidra_function": "009c58a0",
+      "note": "unit+844h = 1 on leaving the dive",
+      "host_method": "exit_state"
+    },
+    {
+      "site": "009c88f5",
+      "callee": "-",
+      "enclosing_no_ghidra_function": "009c88e0",
+      "note": "(task+3F8h)->vtable[0](), an indirect call for the target point",
+      "host_method": "read_transition_inputs"
+    }
+  ],
+  "calls_in_undefined_regions_note": "Rows whose enclosing routine Ghidra never defined. tools/verify_report_calls.py cannot resolve a containing function for them, so they are kept out of `calls`.",
+  "named_routines": [
+    {
+      "address": "009c8790",
+      "native": "009c8790",
+      "name": "BSP_BotTaskDiveBomb_TickArm",
+      "no_ghidra_function": true,
+      "end_inclusive": "009c88d5"
+    },
+    {
+      "address": "009c83e0",
+      "native": "009c83e0",
+      "name": "BSP_BotTaskDiveBomb_UpdateStateTransition"
+    },
+    {
+      "address": "009c8310",
+      "native": "009c8310",
+      "name": "BSP_BotTaskDiveBomb_ChooseEntryState"
+    },
+    {
+      "address": "009c82d0",
+      "native": "009c82d0",
+      "name": "BSP_BotTaskDiveBomb_SetState"
+    },
+    {
+      "address": "009c7910",
+      "native": "009c7910",
+      "name": "BSP_BotTaskDiveBomb_IsAttackingState"
+    },
+    {
+      "address": "009c7a80",
+      "native": "009c7a80",
+      "name": "BSP_BotTaskDiveBombApproach_Update"
+    },
+    {
+      "address": "009c8200",
+      "native": "009c8200",
+      "name": "BSP_BotTask_AccumulateManualReleaseRequest",
+      "note": "existing name kept; evidence appended"
+    },
+    {
+      "address": "009c7ff0",
+      "native": "009c7ff0",
+      "name": "BSP_BotTaskDiveBomb_DumpRemainingRounds"
+    },
+    {
+      "address": "009c88e0",
+      "native": "009c88e0",
+      "name": "BSP_BotTaskDiveBomb_GetTargetPoint",
+      "no_ghidra_function": true,
+      "end_inclusive": "009c8916"
+    },
+    {
+      "address": "009c58d0",
+      "native": "009c58d0",
+      "name": "BSP_BotStateDiveBombAimDive_Tick"
+    },
+    {
+      "address": "009c5870",
+      "native": "009c5870",
+      "name": "BSP_BotStateDiveBombAimDive_Enter",
+      "no_ghidra_function": true,
+      "end_inclusive": "009c5892"
+    },
+    {
+      "address": "009c58a0",
+      "native": "009c58a0",
+      "name": "BSP_BotStateDiveBombAimDive_Exit",
+      "no_ghidra_function": true,
+      "end_inclusive": "009c58ad"
+    },
+    {
+      "address": "009c5180",
+      "native": "009c5180",
+      "name": "BSP_BotStateDiveBombAimGlide_Tick"
+    },
+    {
+      "address": "009c7270",
+      "native": "009c7270",
+      "name": "BSP_BotStateDiveBombDone_Tick",
+      "no_ghidra_function": true,
+      "end_inclusive": "009c727f"
+    },
+    {
+      "address": "009c7240",
+      "native": "009c7240",
+      "name": "BSP_BotStateDiveBombDone_Enter",
+      "no_ghidra_function": true,
+      "end_inclusive": "009c725b"
+    },
+    {
+      "address": "009c7260",
+      "native": "009c7260",
+      "name": "BSP_BotStateDiveBombDone_Exit",
+      "no_ghidra_function": true,
+      "end_inclusive": "009c7264"
+    },
+    {
+      "address": "009c7800",
+      "native": "009c7800",
+      "name": "BSP_BotStateDiveBombTurnDown_SetRollDirection"
+    },
+    {
+      "address": "009c7ea0",
+      "native": "009c7ea0",
+      "name": "BSP_BotStateDiveBombTurnDown_IsComplete"
+    },
+    {
+      "address": "009c7850",
+      "native": "009c7850",
+      "name": "BSP_BotStateDiveBombAimGlide_OutOfBombs"
+    },
+    {
+      "address": "009c7f00",
+      "native": "009c7f00",
+      "name": "BSP_BotStateDiveBombGoAway_IsComplete"
+    },
+    {
+      "address": "007c1db0",
+      "native": "007c1db0",
+      "name": "BSP_Unit_CountRemainingOrdnanceRounds"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "009c8790",
+      "end_inclusive": "009c88d5",
+      "name": "BSP_BotTaskDiveBomb_TickArm"
+    },
+    {
+      "start": "009c88e0",
+      "end_inclusive": "009c8916",
+      "name": "BSP_BotTaskDiveBomb_GetTargetPoint"
+    },
+    {
+      "start": "009c5870",
+      "end_inclusive": "009c5892",
+      "name": "BSP_BotStateDiveBombAimDive_Enter"
+    },
+    {
+      "start": "009c58a0",
+      "end_inclusive": "009c58ad",
+      "name": "BSP_BotStateDiveBombAimDive_Exit"
+    },
+    {
+      "start": "009c7240",
+      "end_inclusive": "009c725b",
+      "name": "BSP_BotStateDiveBombDone_Enter"
+    },
+    {
+      "start": "009c7260",
+      "end_inclusive": "009c7264",
+      "name": "BSP_BotStateDiveBombDone_Exit"
+    },
+    {
+      "start": "009c7270",
+      "end_inclusive": "009c727f",
+      "name": "BSP_BotStateDiveBombDone_Tick"
+    },
+    {
+      "start": "009c62b0",
+      "end_inclusive": "unread",
+      "name": "the flyabove tick, vtable 00D20D04 slot +Ch; censused for its writes only"
+    }
+  ],
+  "vtables": {
+    "00d20e18": "the dive-bomb task vtable; +Ch 009C88E0, +1Ch 009C8A90 break-off, +24h 009C8200 arm, +54h 009C8920 cruise profile, +58h 009C7FF0 teardown, +64h 009C8790 tick arm",
+    "00d20d28": "done and prepare share one vtable: +0 009C7280, +4h 009C7240, +8h 009C7260, +Ch 009C7270, +10h 007B3DE0, +14h 009BE590",
+    "00d20ca0": "goaway: +4h 009C4950, +8h 007B3DC0, +Ch 009C4A40",
+    "00d20ce8": "aimdive: +4h 009C5870, +8h 009C58A0, +Ch 009C58D0",
+    "00d20cc8": "aimglide: +4h 009C4F00, +8h 007B3DC0, +Ch 009C5180",
+    "00d20d04": "flyabove: +4h 009C6270, +8h 009C6210, +Ch 009C62B0",
+    "00d20c84": "turndown: +4h 009C44C0, +8h 009C44E0, +Ch 009C44F0",
+    "00d20c68": "attackrun: +4h 009C4200, +8h 007B3DC0, +Ch 009C4220"
+  },
+  "constants": {
+    "00ce3830": "double 1.5707963705062866 (pi/2), the bearing base",
+    "00ce3828": "double 6.2831854820251465 (2pi), the bearing wrap",
+    "00ce3820": "double 1e-10, the zero-distance epsilon",
+    "00d7a220": "double 100.0, the moveto near-range bias and the in-range hysteresis band",
+    "00d7a208": "float -0.0f, the abs fold",
+    "00d7a218": "float 0.0f",
+    "00d7a260": "float -1.0f; also the -1.0f the done/prepare enter writes to state+98h",
+    "00d7a24c": "float 1.0f",
+    "00d7a270": "double 0.05, the dive-altitude decay",
+    "00ce4c04": "float 9999.0f, the third cruise altitude ctl+39Ch",
+    "00ce3880": "double 25.0, the aimdive release error limit",
+    "00d7a280": "double 0.5, the pull-out altitude fraction",
+    "00ce3800": "float 0.5f; the aimdive re-arm high bound and the aimglide re-arm low",
+    "00ce54a0": "float 0.2f, the aimglide re-arm low bound",
+    "00cec724": "float 0.5235988f (30 deg), the aimglide dive-angle limit",
+    "00ce3938": "double 50.0, the aimglide height margin",
+    "00d1f3f8": "double 120.0, the aimglide lateral limit",
+    "00d7a370": "double 5.0, the aimglide lead margin",
+    "00d7a2b0": "double 3.0, the aimglide lead scale",
+    "00d04690": "double 0.3499999940395355, the aimglide travel accumulator feed",
+    "00d20338": "float -1.0471976f (-60 deg), the dive-abort roll floor",
+    "00ce3dc8": "double 0.30000001192092896, the dive-abort range slope",
+    "00ce3dd8": "double 150.0, the dive-abort range bias",
+    "00ce74f8": "float 0.8f, the turndown roll magnitude low bound",
+    "00d05b54": "float 1024.0f, the turn-side coin range",
+    "00d1f98c": "float -1.2999999523162842f, the turndown roll gate",
+    "00d20e80": "float 2.356194496154785f (135 deg), the turndown pitch gate",
+    "00ce3850": "float 5.0f, the arm countdown written to prepare+98h",
+    "00d7a390": "double 0.8999999761581421, the goaway distance scale",
+    "00ce3d08": "float 100.0f, the follow-state construct argument"
+  },
+  "uncertainty": "The aimdive release gate's units are SETTLED: 009C59D6 writes the aircraft's height above the target (aircraft.y - targetPoint.y), both BSP_Math_InterpolateClamped calls (009C5C49, 009C5C92) are keyed on it over the window [approach+A8h + 100.0, approach+ACh + approach+50h], and 009C5C97 multiplies the second call's dimensionless gain into cos(bearingError) * planarDistance - lead. So the quantity at 009C5C9B is a signed along-track miss distance in metres and the 25.0 at 00CE3880 is a 25-metre release window, not an angle. What remains open: the two y endpoints (approach->+14h)->+5Ch and +60h have no producer read, and approach+D4h and approach+B8h, the ranges the dive abort and the in-range latch key on, have none either. The aimglide release's four frame slots ([ESP+10h], [ESP+14h], [ESP+18h], [ESP+20h]) were not traced to their producers; its gates, its constants and its salvo loop are transcribed, the geometry behind them is not. The approach update's tail 009C7C5B-009C7E9E is read for its outputs only. The flyabove, turndown, goaway and attackrun ticks are censused for their writes, not transcribed.",
+  "validation": {
+    "build": "scripts/build.ps1, MSVC Win32, /W4 /WX, succeeds before and after the merge of main",
+    "tests": "ctest: reconstructed_math and tool_tests both pass; no test added",
+    "host_wiring": "deferred: src/bot_task_states.cpp, include/bsp/bot_task_states.hpp and src/game_hosts_units.cpp are held by another worker for this window",
+    "ijn01_before": "local/ijn01_before.log on 9cff2668d: 33 ordered aircraft (8 A7M, 9 JudySpawn dive bombers, 12 JillSpawn, Warhawk1, Dauntless1, 2 B-17); 27 units carry general bomb ordnance; 44 BOMBPLATFORM guns fired 0 shots; torpedo task aircraft=6 releases=0. No dive-bomb instrumentation exists yet, so the task's own state counts are unmeasured."
+  },
+  "files": [
+    "docs/DIVE_BOMB_TASK.md",
+    "include/bsp/dive_bomb_task.hpp",
+    "src/dive_bomb_task.cpp",
+    "reports/dive_bomb_task.json",
+    "cmake/startup.cmake"
+  ]
+}

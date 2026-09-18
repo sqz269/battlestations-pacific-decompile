@@ -458,3 +458,22 @@ ordnance-arming entry: it raises the done/prepare state's release countdown `sta
 `BSP_PilotBot_Tick` `0099ACD0` calls the slot at `0099AF9B` over the bot's whole task vector,
 which is also the consumer of `unit+C58h`. The torpedo per-tick arm (slot `+64h`) is
 `009D4850`-`009D4965` and the transition rule `009D4030`; both are Ghidra functions now.
+
+## Correction from docs/DIVE_BOMB_TASK.md (packet `cc8_dive_bomb_task`)
+
+The `divebomb` row of the registrar table gives the `009C2AC0` arguments as
+`approach->+A8h - [00D7A220]`, then `approach->+A8h`, with the fifth `contract: unread`. That is
+right for the constructor `009C73A0` at `009C7460`, where the fifth argument is `approach->+B4h`.
+The per-tick refresh in the arm uses a different pair: `009C87EF`-`009C8825` passes
+`task+4A4h - [00D7A220]`, `task+4A4h` and `task+4ACh`, that is `approach+ACh` and `approach+B4h`.
+`approach+ACh` is `ctl->+398h`, which the approach update `009C7A80` copies every tick, so the
+`moveto` range tracks the live `BeginAltRange` rather than the constructor's snapshot.
+
+Slot `+24h` of the task vtable is listed as `contract: unread` for every class. For `divebomb` it
+is `009C8200` (`00D20E3C`), the arming entry: gated on `task+4C9h`, the unit and
+`(unit+72Ch)->vtable[+38h]`, it raises `task+424h` by one and, in `prepare`, writes
+`task+65Ch` = `prepare+98h` = `[00CE3850]` = `5.0f`. Nothing in the dive-bomb class ever spends
+that countdown: the `done`/`prepare` tick `009C7270`-`009C727F` calls `009C1FD0` at `009C7278` and
+returns at `009C727D`, and the exit
+`009C7260` is a bare `JMP 009BDE40`, so the torpedo's `009D2720`/`009D2570` drop has no
+counterpart here. Every path of `009C8200` returns `1`, unlike the torpedo's `009D49A0`.

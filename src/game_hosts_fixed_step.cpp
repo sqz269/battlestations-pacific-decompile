@@ -23,6 +23,7 @@
 // See include/bsp/game_hosts_fixed_step.hpp for the address list.
 
 #include "bsp/game_hosts_fixed_step.hpp"
+#include "bsp/game_native_game_runtime.hpp"
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_ready.hpp"
@@ -203,11 +204,20 @@ void GameFixedStepHost::run_subsystems_00875e0c(float step, bool world_active) {
 }
 
 void GameFixedStepHost::simulate_physics_world_00c5c540(float step) {
-    static_cast<void>(step);
     ++summary_.fanout_calls;
-    // The mitengine Dynamics world at [game+18h]; its own substep loop is a
-    // third-party library body with no reconstruction.
-    record("FixedStepFanout::simulate_physics_world", 0x00875e0cu);
+    if(!native_game_) {
+        // The full body exists; ordinary application admission must provide
+        // the completed native game and its actual publication first.
+        record("FixedStepFanout::simulate_physics_world", 0x00875e0cu);
+        return;
+    }
+    native_game_->simulate_physics_00875e0c(step);
+    ++summary_.native_physics_steps;
+    done("FixedStepFanout::simulate_physics_world", 0x00875e0cu);
+}
+
+void GameFixedStepHost::attach_native_game(GameNativeGameRuntime* game) noexcept {
+    native_game_=game;
 }
 
 void GameFixedStepHost::apply_dynamics_buoyancy_004462d0(float step) {

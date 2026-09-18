@@ -95,6 +95,9 @@ struct NativeGameLifetimeContext {
     NativeResourceManagerContext* resources{};
     NativeGameClassCleanupContext* classes{};
     NativeGamePhysicsLifetimeContext* physics{};
+    // The same primary source table used by construction, or null for the
+    // original CE7CB8 identity in raw reconstruction diagnostics.
+    const void* source_primary_table{};
 };
 struct NativeGameLifetimeProgress {
     std::uint32_t native_site{};
