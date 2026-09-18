@@ -1076,3 +1076,31 @@ worth guessing, so the host's stand-in for `+19h` and `+1Ah` **stands**.
 The host binding for `+18h` is not switched over yet either: `src/game_hosts_units.cpp` is leased to
 `cc8-torpedo-run-in`. The pure rule is in place and the one-line swap is the next edit when the file
 frees.
+
+## `approach+A8h`: the rule is recovered, the record is not
+
+`009C3F1C`-`009C3F2E`, inside the approach seed `009C3EA0`:
+
+```
+EAX = approach->+14h                      ; 009C3EFD
+FLD [EAX+3Ch]  -> arg2                    ; 009C3F1C
+FLD [EAX+38h]  -> arg1                    ; 009C3F23
+CALL BSP_Random_UniformFloatRange, ECX=1  ; 009C3F29
+FSTP [ESI+A8h]                            ; 009C3F2E
+```
+
+So **`approach->+A8h = Uniform((approach->+14h)->+38h, (approach->+14h)->+3Ch)`**, a per-aircraft
+random dive floor drawn once at construction between two bounds carried by the record at
+`approach+14h`. The next field is the contrast: `009C3F34`-`009C3F3F` takes `approach->+ACh`
+straight from `tuning+4CCh`, `Pilot/DiveBomb/BeginAltRange/1`.
+
+**The record is not identified.** `approach+14h` is read at `009C3EFD` with no writer in this
+function: the head calls `0042E740` for `tuning+4D8h` `Pilot/DiveBomb/ReferenceSpeed` and hands it
+to the base approach constructor `009F9CE0` at `009C3ED5`, so the field is written there. It is the
+same record the aimdive interpolations read `+5Ch` and `+60h` from, so one trace into `009F9CE0`
+would settle three unknowns at once.
+
+Until then the host keeps its labelled substitution of `800` for `approach+A8h`, and the
+`Follow-up packets` entry becomes specific: **trace `approach+14h` to its producer in `009F9CE0`**.
+
+`006E3500`'s per-device round count was not reached in this packet and stays untouched.
