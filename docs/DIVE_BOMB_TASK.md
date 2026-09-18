@@ -762,3 +762,36 @@ Without it, no run of IJN01 or USN01 can exercise the dive-bomb state machine pa
 because neither mission's script ever calls `PilotSetTarget` on a bomb-carrying aircraft: IJN01
 makes no `PilotSetTarget` call at all, and USN01's five all name `Mav1`..`Mav5`, which are torpedo
 armed and take the torpedo class.
+
+## The class gate and the turndown binding, landed
+
+`src/game_hosts_units.cpp` now gates the arm on `dive_bomb_task_installed_for_class` and runs
+`009C44F0` through `dive_bomb_turndown_tick_009c44f0` whenever the state is `turndown`. The class
+reaches the unit from `GameScriptOrdersHost::run_pilot_set_target`, which stores it beside the
+`0099A170` install through the new `GameUnitsHost::store_unit_attack_command_class`. The turndown
+census prints the tick count, the roll and pitch write counts, the tick the `state+1Ch` latch fired
+on, and the last bank, roll, pitch and commanded speed.
+
+One labelled substitution in the binding: `007C47F0`'s two inputs are read and named, but this host
+builds no plane class descriptor, so the product uses the tuning default `1.8` and the authored
+default `StallSpd` `17.5` rather than the unit's own class row. `009C1850`'s move-to setter in the
+same file still substitutes the row's `TravelSpeed` and labels `007C47F0` unread; now that the
+routine is read, that site can take the real product too. Left alone here because it belongs to the
+packet that wrote it.
+
+### The identity run could not be taken: `main` crashes before the mission
+
+`tools/run_game.ps1` on IJN01 exits `0xC0000005` twice in a row. The log stops at
+
+```
+host Phase 5 online_manager_initialize [0073dc7c] UNIMPLEMENTED, returning a neutral value
+```
+
+which is immediately before `native renderer device startup` in a good run, thousands of lines
+before any mission state and before the dive-bomb arm can run at all.
+
+**It is not this packet's.** With every change of this packet stashed, at merge commit `78af19721`,
+a plain `--frames 300 --press-start-frame 30` run stops at the identical line with the identical
+exit code. The regression is on `main`, somewhere in the native renderer startup path, and the
+identity column stays open until it is fixed. Nothing here can produce it, and nothing here needs
+to change for it.

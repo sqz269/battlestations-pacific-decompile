@@ -1,0 +1,55 @@
+{
+ "packet": "cc8_attack_run_descent",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/ATTACK_RUN_DESCENT.md",
+ "tree_base": "main 103a67984 merged",
+ "result": "NEGATIVE, and it retires a hypothesis. Nothing in the pitch path stops a 60-degree dive; the host is faithful. No code changed and there is no fix location in claimable files.",
+ "question": "In the native, what stops an attack run from 800 m plunging at the 60-degree cap?",
+ "answer": "Nothing does, for an aircraft level and on heading. Pitch mode 2 at 0099DCE0-0099DD4E gives plan+2BCh = min(commanded, unit+C84h + inc): 0099DD4C is JBE, so a commanded value at or below the sum is KEPT, and a dive command is far below it, so mode 2 limits only a climb. It also demotes to mode 1 below the float 2.7778 at 00D1F3D8, 10 km/h, which no flying aircraft reaches. The nose-up floor at 0099E490-0099E512 is plan+2BCh = max(target, PitchTurnMaxPitch - 2.5 * (1 - q)) with q = clamp(|bank|/class+25Ch TurnRoll, 0, 1) times the heading ramp, the 2.5 being the double at 00CE3DE0. With the authored PitchTurnMaxPitch of DEG(6) the floor is -2.395 rad for a level aircraft on heading, 1.35 radians below the DEG(60) cap at 00D05AAC, so it cannot bite; it only rises to +DEG(6) in a hard banked turn past DEG(50) of heading error, which is what it is for. So the image's chain produces the same -1.0472 rad the host measured, every constant is an image constant or an authored row, and src/plane_ai_control.cpp and src/plane_flight.cpp match the listing at every stage.",
+ "coverage": "complete for the pitch path from the altitude command through the mode-2 arm and the floor to plan+2BCh; 007C4810 (mode 2's increment) and [EBX+0x88] (the heading ramp) were not re-derived because neither affects a dive.",
+ "calls": [
+  {
+   "address": "0099dd35",
+   "native": "00419010",
+   "function": "0099d300",
+   "what": "mode 2's increment, from the speed against DEG(5) at 00CEDF5C and DEG(20) at 00CE398C; 0099DD42 adds it to the held pitch unit+C84h"
+  },
+  {
+   "address": "0099dd2c",
+   "native": "007c4810",
+   "function": "0099d300",
+   "what": "the increment's first argument; unread, and it cannot affect a dive because mode 2 only caps from above"
+  }
+ ],
+ "named_routines": [
+  {
+   "native": "0099d300",
+   "name": "BSP_PilotBot_PlanControls",
+   "abi": "as recorded",
+   "coverage": "the pitch path now complete",
+   "what": "pitch mode 2 is min(commanded, held + inc) at 0099DD4C, a climb limiter that demotes to mode 1 below 2.7778 m/s; the floor at 0099E4FE is max(target, DEG(6) - 2.5*(1-q)), which is -2.395 rad level and on heading and therefore cannot stop a DEG(60) dive"
+  }
+ ],
+ "no_ghidra_function": [],
+ "host_methods": [],
+ "contracts": [
+  "007C4810 and therefore mode 2's exact increment; it cannot affect a dive.",
+  "[EBX+0x88] at 0099E4C2, the heading ramp, taken from docs/PILOT_PLANNER_PITCH_ROLL.md rather than re-derived.",
+  "unit+C84h's producer.",
+  "What the image does with an aircraft that reaches the sea in a 60-degree dive: the water arm 007DC205-007DC68C, unread."
+ ],
+ "corrections": [
+  {
+   "target": "docs/TORPEDO_GLIDE_THROTTLE_WIRING.md section 5",
+   "was": "the 800 m plunge is unexplained, and the native's own answer for why an attack run does not plunge is unread",
+   "is": "it does plunge; nothing in the pitch path stops a DEG(60) dive for a level aircraft on heading, and the host matches the image stage for stage",
+   "evidence": "0099DD4C, 0099E4FE, the authored DEG(6) PitchTurnMaxPitch and the double 2.5 at 00CE3DE0",
+   "status": "appended and verified present"
+  }
+ ],
+ "validation": {
+  "runner": "none",
+  "note": "Nothing changed. docs/PLANE_ALTITUDE_HOLD_AND_SURFACE.md's -1.0472 rad demand and 141.7 m/s water arrival are now explained rather than merely measured.",
+  "fix_location": "None in claimable files. The descent law is correct at every stage. The next change that could matter is the water arm 007DC205-007DC68C behind the flight-state gate, which needs reading before it can be bound."
+ }
+}

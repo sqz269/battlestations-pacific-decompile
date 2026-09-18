@@ -8,6 +8,8 @@
     "src/dive_bomb_task.cpp",
     "include/bsp/dive_bomb_task.hpp",
     "src/game_hosts_units.cpp",
+    "include/bsp/game_hosts_units.hpp",
+    "src/game_hosts_script_orders.cpp",
     "cmake/startup.cmake"
   ],
   "ghidra_mutated": false,
@@ -569,7 +571,9 @@
     "usn01_after": "local/usn01_after.log on 86ef889c4 plus the attitude fix: 5 aircraft (ScoutDauntless, ConSBD1..3, KatSBD), the same state pattern, releases=0.",
     "gates": "Gate 1: approach+BCh is 0.0 m against approach+B8h = 1100.0 m on every dive bomber, because the commanded target resolves to a coincident position. The pilot-attack census reports the same range 0.0 -> 0.0 m independently over all three axes, so it is upstream of the task. Gate 2: 009C7EA0 at 009C8613 never completes. It returns 0 while pose+C64h >= -1.2999999523162842 (00D1F98C) and pose+C64h >= -1.0, and the measured pose+C64h is about 0.027 rad. The producer that would open it is the turndown tick 009C44F0, which is not bound.",
     "bug_found_by_the_run": "The first IJN01 after-run passed 009C7EA0's two pose angles in axis-name order rather than offset order. Fixed at the call site and the reconstruction's parameters renamed to attitude_c64 / attitude_c68. At the measured attitudes either ordering returns the same answer, so that census stands; USN01 ran with the fix and shows the identical pattern.",
-    "usn02_after": "local/usn02_after.log: no aircraft, no dive-bomb census lines at all, and the run's own 'no unit was ever ordered' line. Identity by construction: the arm returns at its first test when command_target_plus_one is 0. Standing summaries unchanged (queued_hits=168 deaths=3 total_damage=20721.4, world units=32). An earlier attempt was refused after a 900 s wait on the machine lock held by cc8-ai-squadron and produced no log."
+    "usn02_after": "local/usn02_after.log: no aircraft, no dive-bomb census lines at all, and the run's own 'no unit was ever ordered' line. Identity by construction: the arm returns at its first test when command_target_plus_one is 0. Standing summaries unchanged (queued_hits=168 deaths=3 total_damage=20721.4, world units=32). An earlier attempt was refused after a 900 s wait on the machine lock held by cc8-ai-squadron and produced no log.",
+    "class_gate_and_turndown_binding": "Landed. The arm gates on dive_bomb_task_installed_for_class, the class reaches the unit from GameScriptOrdersHost::run_pilot_set_target through the new store_unit_attack_command_class, and the turndown tick 009C44F0 runs whenever the state is turndown. Build green, both ctest suites pass. One labelled substitution: 007C47F0's product uses the tuning default 1.8 and the authored StallSpd default 17.5, because this host builds no plane class descriptor.",
+    "ijn01_identity_run": "BLOCKED, and not by this packet. tools/run_game.ps1 on IJN01 exits 0xC0000005 twice, with the log stopping at 'Phase 5 online_manager_initialize', immediately before 'native renderer device startup' in a good run and thousands of lines before any mission state. With every change of this packet stashed, at merge commit 78af19721, a plain --frames 300 run stops at the identical line with the identical exit code. The regression is on main in the native renderer startup path."
   },
   "files": [
     "docs/DIVE_BOMB_TASK.md",

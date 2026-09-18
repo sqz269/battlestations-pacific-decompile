@@ -530,6 +530,10 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
         ScriptOrderAttackCommandHost bot_host(units_, log_, chosen, target_token);
         const std::uint32_t task =
             bsp::bot_install_command_task_0099a170(unit_token, bot_host);
+        // The class the task was built from, kept on the unit so a per-class
+        // arm can ask whether its own task exists rather than guessing from
+        // ordnance. docs/DIVE_BOMB_TASK.md, "The class gate".
+        if (task != 0u) units_.store_unit_attack_command_class(row.unit_index, chosen);
         if (task != 0u) ++pilot_set_target_tasks_;
         log_.notef("  PilotSetTarget task: 0099A170 -> %u (unit=%s command=%08lx "
             "target_token=%u refusals=%u)", task, row.unit.c_str(),

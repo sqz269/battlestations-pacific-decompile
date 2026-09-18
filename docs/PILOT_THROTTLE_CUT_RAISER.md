@@ -285,3 +285,25 @@ the wrong sense implied.
 
 `desired/|ratio|` is formed at `0099DAEC`-`0099DAFF`: `FLD plan+2B4h` then `FDIV [ESP+0x38]`, where
 `[ESP+0x38]` is `|ratio|` from `0099DAD0`-`0099DAE6`.
+
+
+## Correction from packet `cc8_torpedo_glide_throttle_wiring`: the multiplier claim is withdrawn
+
+Appended, not rewriting the increment section.
+
+That section says `[ESP+0x6c]`, the multiplier at `0099DBBF` and `0099DAC4`, is
+`|slot value - plan+274h|` from `0099D7E8`-`0099D81E`, and concludes that there is **no frame-time
+factor** and that the multiplier is zero for a slot straight out of `0099B450`'s reset.
+
+**Both are withdrawn.** I drew them from a `grep` for that slot whose output was capped at eight
+lines. The full list has a further write at **`0099D87E`**, between the read I based the claim on
+and the increment, inside the block at `0099D85E`-`0099D892` that takes a running minimum against
+`XMM4 - [ESP+0x24]`. So the value the increment is multiplied by is **not established**, and
+neither is the absence of a frame-time factor.
+
+`include/bsp/plane_ai_control.hpp` still documents the old reading in
+`PilotBotThrottleInputs::pending`, and the units host still computes `|desired - current|` for it.
+Both are now **labelled substitutions** rather than readings, and resolving `0099D85E`-`0099D892`
+is the way to retire them.
+
+`docs/TORPEDO_GLIDE_THROTTLE_WIRING.md`.

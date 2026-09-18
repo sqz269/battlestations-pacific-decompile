@@ -323,6 +323,9 @@ struct GameUnitSlot {
     // The dive-bomb bot task (kind 8) this ordered aircraft runs, when its
     // class carries general bomb ordnance (kind 2Ah, 007ED7E0 -> 007B9320) and
     // the command arm at 007EE9C5 chose class 00E08F20. docs/DIVE_BOMB_TASK.md.
+    // The class 007EEC50 chose, stored by the PilotSetTarget path. 0 means no
+    // attack order, which is what every aircraft in IJN01 and USN01 has.
+    unsigned int attack_command_class{0};
     bool dive_bomb_task_installed{false};
     bsp::DiveBombState dive_bomb_state{bsp::DiveBombState::kNone};
     int dive_bomb_state_ticks[10]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -355,6 +358,14 @@ struct GameUnitSlot {
     bool db_flyabove_can_dive_18{false};
     bool db_flyabove_leave_1a{false};
     float db_turn_roll_18{0.0f};     // turndown state+18h, 009C7800's output
+    bool db_turndown_latch_1c{false};  // turndown state+1Ch, 009C465D
+    int db_turndown_ticks{0};
+    int db_turndown_roll_writes{0};
+    int db_turndown_pitch_writes{0};
+    int db_turndown_latched_tick{-1};
+    float db_turndown_bank_last{0.0f};
+    float db_turndown_roll_last{0.0f};
+    float db_turndown_pitch_last{0.0f};
     // Census.
     float db_dive_entry_alt{-1.0f};
     float db_dive_entry_pitch{0.0f};
@@ -553,6 +564,14 @@ struct GameUnitSlot {
     float plane_air_brake_drag{0.0f};
     // desc+1F0h DropAngle, 009FB800's dive gain and cap.
     float plane_drop_angle{0.0f};
+    // plan+2B4h and plan+2D8h. 009C1850 writes the first at 009C189A and raises
+    // the second at 009C18A7, and 0099D300's throttle arms read both. They live
+    // on the slot rather than in PilotPlanState because that header belongs to
+    // another packet. docs/PILOT_THROTTLE_CUT_RAISER.md.
+    float plane_desired_speed_2b4{0.0f};
+    int plane_air_brake_mode_2d8{0};
+    float plane_throttle_last{1.0f};
+    int plane_speed_commands{0};
     // desc+1E4h and desc+1ECh, the two 007C4850 derives with the 007D98F0
     // climb-angle solver at 007C4BE9 and 007C4C14. desc+1ECh is the climb arm's
     // gain, and it is 0.6 * desc+1E4h, NOT zero: docs/PLANE_FLIGHT.md read it as
@@ -3935,17 +3954,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // whose class carries general bomb ordnance and is not
                     // IsKindOf(10h) (docs/ATTACK_COMMANDS.md, 007EE9C5).
                     void run_dive_bomb_task_arm_009c8790(float dt) {
-                        const bsp::OrdnanceKindSet set{unit_.ordnance_mask};
-                        if (unit_.command_target_plus_one == 0) return;
-                        if (!bsp::ordnance_has_general_bomb_2ah(set)) return;
-                        // 007EE946 tries levelbomb first and it needs
-                        // IsKindOf(10h); 007EE9C5 needs the unit NOT to answer
-                        // it, so exactly one of the two applies. This host has
-                        // no IsKindOf, so a torpedo-armed aircraft is excluded
-                        // instead: 007EEA40 would have taken it first only if
-                        // divebomb had refused, and the ordered Jill aircraft
-                        // already run the torpedo task above.
-                        if (bsp::ordnance_has_torpedo_2bh(set)) return;
+                        // 0099A170 builds a task from the class 007EEC50
+                        // chose, so the only correct test is that the class IS
+                        // the divebomb one. An earlier revision gated on
+                        // "has a commanded target and carries bomb ordnance",
+                        // which installed the task on 27 IJN01 aircraft the
+                        // image gives `attackmove`: their commanded target is
+                        // their authored `moveto` row, not an attack order.
+                        // docs/DIVE_BOMB_TASK.md, "Gate 1".
+                        if (!bsp::dive_bomb_task_installed_for_class(
+                                unit_.attack_command_class)) {
+                            return;
+                        }
                         if (!unit_.dive_bomb_task_installed) {
                             unit_.dive_bomb_task_installed = true;
                             // 009C7710 leaves +310h on the moveto/follow pair
@@ -4030,6 +4050,56 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.db_aim_rearm_1c = 0.0f;
                             unit_.db_aim_pull_out_18 = !unit_.db_has_bomb_d1;
                             unit_.db_aim_alive_19 = true;
+                        }
+                        if (ctx.current == bsp::DiveBombState::kTurnDown) {
+                            run_dive_bomb_turndown_tick_009c44f0();
+                        }
+                    }
+
+                    // 009C44F0, the turndown tick, vtable 00D20C84 slot +Ch.
+                    // The arm reaches it through state->vtable[+Ch] at
+                    // 009C884C. docs/DIVE_BOMB_TASK.md carries the body.
+                    void run_dive_bomb_turndown_tick_009c44f0() {
+                        bsp::DiveBombTurnDownInputs in;
+                        in.bank_c68 = unit_.plane_bank_angle_c68;
+                        in.pitch_c64 = unit_.plane_pitch_angle_c64;
+                        in.rolled_latch_1c = unit_.db_turndown_latch_1c;
+                        in.roll_command_18 = unit_.db_turn_roll_18;
+                        // 007C47F0(approach+8h): tuning+24Ch LevelFlight times
+                        // classDesc+184h StallSpd. The class descriptor is not
+                        // modelled here, so the tuning half comes from the Lua
+                        // globals when they loaded and the stall speed is the
+                        // authored default; labelled at its address.
+                        in.desired_speed =
+                            bsp::dive_bomb_turndown_constant::kLevelFlightMultiplier *
+                            bsp::dive_bomb_turndown_constant::kStallSpeedDefault;
+                        const bsp::DiveBombTurnDownResult r =
+                            bsp::dive_bomb_turndown_tick_009c44f0(in);
+                        ++unit_.db_turndown_ticks;
+                        unit_.db_turndown_bank_last = r.folded_bank;
+                        if (r.latch_1c_set) {
+                            if (!unit_.db_turndown_latch_1c) {
+                                unit_.db_turndown_latched_tick =
+                                    unit_.dive_bomb_arm_ticks;
+                            }
+                            unit_.db_turndown_latch_1c = true;
+                        }
+                        // 009C4512-009C4524, the desired-speed pair and the
+                        // one-shot docs/PILOT_THROTTLE_CUT_RAISER.md names.
+                        unit_.plane_desired_speed_2b4 = r.speed_2b4;
+                        unit_.plane_air_brake_mode_2d8 = 1;
+                        ++unit_.plane_speed_commands;
+                        if (r.wrote_roll) {
+                            ++unit_.db_turndown_roll_writes;
+                            unit_.db_turndown_roll_last = r.roll_290;
+                            unit_.plan_slots[bsp::kPilotSlotRoll].desired = r.roll_290;
+                            unit_.plan_slots[bsp::kPilotSlotRoll].active = 1;
+                        }
+                        if (r.wrote_pitch) {
+                            ++unit_.db_turndown_pitch_writes;
+                            unit_.db_turndown_pitch_last = r.pitch_29c;
+                            unit_.plan_slots[bsp::kPilotSlotPitch].desired = r.pitch_29c;
+                            unit_.plan_slots[bsp::kPilotSlotPitch].active = 1;
                         }
                     }
 
@@ -4266,6 +4336,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // sector scan chose. docs/TORPEDO_APPROACH_UPDATE.md.
                         if (ctx.current == bsp::TorpedoState::kAim) {
                             run_torpedo_aim_tick_009d15f0(dt);
+                        } else if (ctx.current == bsp::TorpedoState::kMoveTo ||
+                                   ctx.current == bsp::TorpedoState::kFollow) {
+                            run_move_to_tick_009c18c0();
                         } else if (ctx.current == bsp::TorpedoState::kAttackRun) {
                             // Step 4 of the attackrun tick 009D07B0, the half
                             // that commands the altitude: "altitude
@@ -4625,6 +4698,106 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         GameUnitSlot& s_;
                         float heading_{0.0f};
                     };
+
+                    // 009C18C0's steps 2 and 5, the two halves that matter to a
+                    // torpedo bomber's approach. docs/TORPEDO_MOVETO_TICK.md and
+                    // docs/TORPEDO_AIM_ALT_AND_SAFE_DIST.md.
+                    void run_move_to_tick_009c18c0() {
+                        const bsp::TorpedoApproachState& ap = unit_.torpedo_approach;
+                        // Step 1: the planar separation. approach+90h already
+                        // carries it, which is what 009C196C's square root
+                        // produces and holds in EBX to the 009FBA50 call.
+                        const float distance = ap.range_90;
+                        if (!(distance > 0.0f)) return;
+
+                        // Step 2, 009C1850 BSP_BotStateMoveTo_SetDesiredSpeed.
+                        // 009C189A writes cmd+2B4h, 009C18A0 clears the byte
+                        // cmd+2B0h and 009C18A7 raises cmd+2D8h, with NO
+                        // condition. SUBSTITUTION, labelled: the speed itself
+                        // comes from 007C47F0 and 009BECD0, both unread, so the
+                        // row's authored TravelSpeed stands in - the cruise the
+                        // aircraft is seeded at, which is what a bot moving to a
+                        // point should want.
+                        unit_.plane_desired_speed_2b4 = unit_.plane_travel_speed > 0.0f
+                            ? unit_.plane_travel_speed : 141.666672f;
+                        unit_.plane_air_brake_mode_2d8 = 1;
+                        ++unit_.plane_speed_commands;
+                        owner_.record("BotStateMoveTo::set_desired_speed", 0x009c1850u);
+
+                        // Step 5, the glide slope. 009C1B17 calls 009FBA50 with
+                        // base = max(state+34h + targetY, state+30h), rangeLow =
+                        // state+38h and rangeHigh = the distance, and the torpedo
+                        // arm 009D48CF fills those three with the RELEASE
+                        // ALTITUDE approach+74h + approach+78h in both altitude
+                        // slots and the release distance approach+7Ch or +80h in
+                        // the third, on the approach+134h >= 15.0 switch.
+                        const float base = ap.alt_floor_74 + ap.alt_margin_78;
+                        const float range_low = ap.elapsed_134 >= 15.0f
+                            ? ap.speed_late_7c : ap.speed_early_80;
+                        // 009C1AF3: Interp(0.05, 0.35, 0.4, 1.6, margin/denom),
+                        // with margin = max(1400 - unit+100h, 50) and denom the
+                        // distance less 1000, clamped into [50, 2000].
+                        float margin = 1400.0f - unit_.motion.position[1];
+                        if (margin < 50.0f) margin = 50.0f;
+                        float denom = distance - 1000.0f;
+                        if (denom < 50.0f) denom = 50.0f;
+                        if (denom >= 2000.0f) denom = 2000.0f;
+                        const float t = bsp::clamped_interpolate_00419010(
+                            0.05f, 0.35f, 0.4f, 1.6f, margin / denom);
+                        // class+518h, derived at 007C4A44 as tan(DropAngle), so
+                        // the span term is horizontalDistance * tan(angle).
+                        const float gain = static_cast<float>(
+                            std::tan(static_cast<double>(unit_.plane_drop_angle)));
+                        bsp::PlaneCruiseAltitudeInputs cin;
+                        cin.base_altitude = base;
+                        cin.range_low = range_low;
+                        cin.range_high = distance;
+                        cin.scale = t;
+                        cin.class_gain = gain;
+                        cin.has_squadron = false;
+                        if (owner_.lua.plane_globals_loaded()) {
+                            cin.ceiling = owner_.lua.plane_globals().dynamics_ceiling;
+                        }
+                        const bsp::PlaneCruiseAltitudeResult c =
+                            bsp::cruise_altitude_command_009fba50(cin);
+                        bsp::PlanePitchCommandInputs pin;
+                        pin.desired_altitude = c.clamped_altitude;
+                        pin.reference = c.unclamped_altitude;
+                        pin.unit_world_y = unit_.motion.position[1];
+                        pin.ceiling = cin.ceiling;
+                        if (owner_.lua.plane_globals_loaded()) {
+                            const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                            pin.climb_dist = g.pilot_general_climb_dist;
+                            pin.drop_dist = g.pilot_general_drop_dist;
+                        }
+                        pin.class_climb_angle = unit_.plane_climb_angle_1ec;
+                        pin.class_drop_angle = unit_.plane_drop_angle;
+                        const float demand = bsp::pitch_command_009fb800(pin);
+                        unit_.plane_commanded_altitude = c.clamped_altitude;
+                        unit_.plane_commanded_pitch = demand;
+                        unit_.plan_state.pitch_target_2bc = demand;
+                        owner_.record("BotStateMoveTo::glide_slope", 0x009c18c0u);
+                        if ((unit_.plane_speed_commands % 50) == 1) {
+                            owner_.log.notef("  torpedo %-12s glide census n=%d "
+                                "range=%.1f base=%.2f low=%.1f t=%.3f gain=%.3f "
+                                "commanded=%.1f live_alt=%.1f pitch_demand=%.4f "
+                                "desired_spd=%.2f |v|=%.2f throttle=%.3f",
+                                unit_.row.name.c_str(), unit_.plane_speed_commands,
+                                static_cast<double>(distance),
+                                static_cast<double>(base),
+                                static_cast<double>(range_low),
+                                static_cast<double>(t), static_cast<double>(gain),
+                                static_cast<double>(c.clamped_altitude),
+                                static_cast<double>(unit_.motion.position[1]),
+                                static_cast<double>(demand),
+                                static_cast<double>(unit_.plane_desired_speed_2b4),
+                                static_cast<double>(std::sqrt(
+                                    unit_.plane_world_velocity[0] * unit_.plane_world_velocity[0] +
+                                    unit_.plane_world_velocity[1] * unit_.plane_world_velocity[1] +
+                                    unit_.plane_world_velocity[2] * unit_.plane_world_velocity[2])),
+                                static_cast<double>(unit_.plane_live_throttle));
+                        }
+                    }
 
                     void run_torpedo_aim_tick_009d15f0(float dt) {
                         const bsp::TorpedoApproachState& ap = unit_.torpedo_approach;
@@ -5138,6 +5311,56 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plan_slots[bsp::kPilotSlotPitch].desired =
                             bsp::plan_pitch_0099e68d(pitch.demand);
                         unit_.plan_slots[bsp::kPilotSlotPitch].active = 1;  // 0099E741
+                        // 0099D300's throttle arms. The demand arm is reachable
+                        // in flight through 0099D8CD, which jumps past the
+                        // flight-state test at 0099D8FD.
+                        // docs/PILOT_THROTTLE_CUT_RAISER.md.
+                        {
+                            bsp::PilotBotThrottleInputs tin;
+                            const bsp::PilotPlanSlot& th =
+                                unit_.plan_slots[bsp::kPilotSlotThrottle];
+                            tin.slot_current = th.current;
+                            tin.slot_desired = th.desired;
+                            tin.slot_active = th.active != 0;
+                            tin.flight_state = unit_.plane_control_mode_900;
+                            tin.air_brake_mode = unit_.plane_air_brake_mode_2d8;
+                            tin.one_shot_threshold = unit_.plane_desired_speed_2b4;
+                            tin.measured_speed = std::sqrt(
+                                unit_.plane_world_velocity[0] * unit_.plane_world_velocity[0] +
+                                unit_.plane_world_velocity[1] * unit_.plane_world_velocity[1] +
+                                unit_.plane_world_velocity[2] * unit_.plane_world_velocity[2]);
+                            // plan+2B8h. Its producer, 0099D756-0099D79A and
+                            // 0099D970, is unread; 1.0 leaves the error in m/s,
+                            // which is the unit the interpolation's +-6.9444
+                            // endpoints are in. SUBSTITUTION, labelled.
+                            tin.speed_scale = 1.0f;
+                            tin.desired_speed = unit_.plane_desired_speed_2b4;
+                            const float pend = th.active != 0
+                                ? th.desired - th.current : 0.0f;
+                            tin.pending = pend < 0.0f ? -pend : pend;
+                            // Both inputs of 0099DAC8's correction - unit+B1Ch
+                            // and the vector at unit+AE0h - have no displacement
+                            // writer anywhere in the image, so the term is taken
+                            // as zero. SUBSTITUTION, labelled.
+                            tin.error_correction = 0.0f;
+                            tin.dead_band_skips = false;
+                            const bsp::PilotBotThrottleResult tr =
+                                bsp::pilot_plan_throttle_0099d300(tin);
+                            if (tr.wrote_throttle) {
+                                unit_.plan_slots[bsp::kPilotSlotThrottle].desired =
+                                    tr.throttle_desired;
+                                unit_.plan_slots[bsp::kPilotSlotThrottle].active = 1;
+                                unit_.plane_throttle_last = tr.throttle_desired;
+                            }
+                            if (tr.wrote_air_brake) {
+                                unit_.plan_slots[bsp::kPilotSlotAirBrake].desired =
+                                    tr.air_brake_desired;
+                                unit_.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
+                            }
+                            if (tr.clears_air_brake_mode) {
+                                unit_.plane_air_brake_mode_2d8 = 0;   // 0099DC6B
+                            }
+                        }
                         owner_.record("PilotBot::plan_controls", 0x0099d300u);
                         return true;
                     }
@@ -5584,6 +5807,12 @@ void GameUnitsHost::store_unit_command_target(std::size_t index,
                                               std::size_t target_plus_one) noexcept {
     if (index >= impl_->slots.size()) return;
     impl_->slots[index]->command_target_plus_one = target_plus_one;
+}
+
+void GameUnitsHost::store_unit_attack_command_class(std::size_t index,
+                                                    unsigned int cls) noexcept {
+    if (index >= impl_->slots.size()) return;
+    impl_->slots[index]->attack_command_class = cls;
 }
 
 void GameUnitsHost::store_unit_ordnance(std::size_t index, std::uint64_t mask) noexcept {
@@ -6404,6 +6633,19 @@ void GameUnitsHost::report() {
                     slot->dive_bomb_rounds_remaining);
                 // The first gate check the packet asks for: approach+BCh
                 // against approach+B8h in the latch at 009C7C31.
+                if (slot->db_turndown_ticks > 0) {
+                    host.log.notef("  divebomb %-12s turndown 009C44F0: ticks=%d "
+                        "roll_writes=%d pitch_writes=%d latched_at_tick=%d "
+                        "|bank|=%.4f rad roll=%.4f pitch=%.4f speed_2b4=%.1f",
+                        slot->row.name.c_str(), slot->db_turndown_ticks,
+                        slot->db_turndown_roll_writes,
+                        slot->db_turndown_pitch_writes,
+                        slot->db_turndown_latched_tick,
+                        static_cast<double>(slot->db_turndown_bank_last),
+                        static_cast<double>(slot->db_turndown_roll_last),
+                        static_cast<double>(slot->db_turndown_pitch_last),
+                        static_cast<double>(slot->plane_desired_speed_2b4));
+                }
                 host.log.notef("  divebomb %-12s gate 009C7C31: "
                     "approach+BCh=%.1f m approach+B8h=%.1f m latch_D0h=%d "
                     "bomb_D1h=%d | ticks without latch=%d without bombs=%d",
