@@ -56,7 +56,25 @@ this packet did not establish.
 Both install-site attributions above were wrong in this packet's first draft, which read
 them off `bsp.py lookup`; that reports the nearest preceding function, not containment.
 `tools/verify_report_calls.py` resolved the real enclosing bodies and is what corrected
-them.
+them. Ghidra's own body range then confirmed the rest: `BSP_PlaneUnitInstance_Construct`
+is `007CFD20`-`007D0344`, so `007CFD78` is inside it and `007D03C1` is past its end,
+which settles the correction independently.
+
+Four of the nine vtables carrying `0074E260` are attributed to named aircraft
+constructors, each storing the vtable 13 to 15 bytes into its body:
+
+| Vtable | Store site | Constructor | Ghidra body |
+|---|---|---|---|
+| `00D00070` | `0074E0FF` | `BSP_ReconPlaneUnitInstance_Construct` | `0074E0F0`-`0074E15E` |
+| `00D00308` | `0074E2DD` | `BSP_LargeReconPlaneUnitInstance_Construct` | `0074E2D0`-`0074E33C` |
+| `00D05F20` | `007CFD78` | `BSP_PlaneUnitInstance_Construct` | `007CFD20`-`007D0344` |
+| `00D0BA80` | `0084C92D` | `BSP_SmallReconPlaneUnitInstance_Construct` | `0084C920`-`0084C98C` |
+
+The other five are the same shape with unnamed constructors: `00D06638` at `007D772F` in
+`FUN_007D7720` (`007D7720`-`007D778E`), `00D06920` at `007DD9BF` in `FUN_007DD9B0`
+(`007DD9B0`-`007DDA1E`), and `00D19D28`, `00D1A000`, `00D1A2D8` at `00951B6F`, `00951C4F`
+and `00951D2F`. Every containment above is Ghidra's body range, not `lookup`'s nearest
+preceding function.
 
 RTTI is stripped in this executable: the dword before each vtable base is zero or unrelated
 data, and following it as a Complete Object Locator yields no class name. The vtable bases
@@ -219,8 +237,12 @@ steps, `heading_change=29.086 rad`, `yaw_plans=6495`. The five ordered aircraft 
 1299 yaw plans each. A nose that is commanded to reverse every 1.7 s cannot converge into a
 15-degree cone, whatever the delta's convention.
 
-USN02: see `local/usn02_before.log` in this worktree; it is a reference only, since no
-source change was made.
+USN02, same tree and same settings, `local/usn02_before.log`, `loop_finished=1`,
+`exit_code=0`. It exercises none of this path: `summary mission plane motion` reads
+`distance_moved=0.00 m pose_rotations=0 thinks=0 commits=0 yaw_plans=0`, and
+`summary mission pilot attack` reads "no unit was ever ordered at a target the yaw arm
+could plan for". So USN02 cannot show a regression in the aim tick either way, and with no
+source change there is nothing for it to regress.
 
 ## Corrections
 
