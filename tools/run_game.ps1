@@ -27,7 +27,7 @@ param(
     [string]$XLiveDll = '',
     [string]$Log = 'local\game_run.log',
     [string]$Lock = "$env:USERPROFILE\.bsp\bsp_game.lock",
-    [int]$WaitSeconds = 900,
+    [int]$WaitSeconds = 2400,
     [Parameter(ValueFromRemainingArguments = $true)]
     [string[]]$GameArgs = @()
 )

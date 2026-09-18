@@ -218,6 +218,31 @@ that `false` is right, the producer that would make it sometimes true, and the s
 answer to the owned-group walk in section 3.
 
 
+### Correction to section 4: the USN01 fall is not a regression
+
+Appended after the lead's bisect closed it. Section 4's verdict ("a regression in what the shells
+can hit") is **wrong**, and so is the follow-up row that asks for a bisect. The cause is tree
+ancestry, not a defect: the 23/36/45 column was measured on branches cut **before** `fb8c0ff76`,
+the plane-physics packets that first made aircraft move, and every tree showing 10 contains it.
+Frozen aircraft were the targets those shells were hitting. `docs/GAME_EXECUTABLE.md`, section
+"The USN01 gunnery bisect", carries the bisect table and the ancestry checks, and it records the
+same mission falling from 23 hits to 1 on the morning those packets landed. The shape reading in
+section 4 (shots nearly unchanged, impacts collapsing) is correct as a description and points at
+exactly this: the shells still fly, and the things they used to hit have moved away.
+
+### Correction to section 2: the producer is bound now
+
+Appended by packet `cc8_mission_objectives`. Section 2 says the eight sets are empty "because
+their Lua producer is not bound". `008CD440 Objectives_Add`, `008CDD60 Objectives_AddUnit` and
+`008CE510 Objectives_RemoveUnit` **are bound now**, and the sets fill: three objective records on
+IJN01, two on USN01, four on USN02, all at slot mask `0x01`.
+
+They still hold **no units**, and `00A2C450` still answers its walk-ended arm, for a different and
+sharper reason: every `Objectives_Add` call on these three missions carries `argc=6`, which is
+arguments 0 through 5 and no target block, and `Objectives_AddUnit` is never called at all. That is
+a property of the authored mission scripts, not of the host. `docs/MISSION_OBJECTIVES.md` has the
+argument order, the census and the fifteen other readers the negative arm hides.
+
 ## 8. Follow-up packets
 
 * `008CD440 Objectives_Add` and `008CDD60 Objectives_AddUnit`: binding them fills the eight sets and

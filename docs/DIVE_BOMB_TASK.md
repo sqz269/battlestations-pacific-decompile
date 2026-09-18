@@ -813,3 +813,77 @@ Every other summary is unchanged against both earlier IJN01 runs:
 | `torpedo task` | 6 aircraft, 0 releases | 6, 0 | 6, 0 |
 | `gunnery ordnance general_bomb` | 27 | 27 | 27 |
 | `fixed steps` | 3000 at 0.05 s | 3000 | 3000 |
+
+## The attack-run tick `009C4220`, and the state walk it unlocked
+
+Vtable `00D20C68` slot `+Ch`, Ghidra body `009C4220`-`009C447D`, `__thiscall(state, float dt)`,
+`RET 4`. `EDI` is the state, `ESI` is `state+4h`, and `[ESI]` is the approach. It is the
+`009D07B0`/`009A3770` shape `docs/BOT_TASK_STATES.md` tabulates, with dive-bomb constants.
+
+| step | rule | address |
+| --- | --- | --- |
+| 1 | `dt < state+1Ch` keeps the countdown, `state+1Ch -= dt`; otherwise re-roll | `009C424A`-`009C4255`, `009C4333` |
+| 2 | the re-roll adds rather than resets: `state+1Ch = (state+18h - dt) + state+1Ch` | `009C427B` |
+| 3 | a new lateral offset from `007F0280(ctl, pose, ...)`, last argument **1** (the torpedo passes 0), negated and scaled by the double `0.5235988` at `00CEC730` | `009C42B8`-`009C42D9` |
+| 4 | `cmd->+2C0h = AddWrappedAngle(approach->+C0h, state->+20h)`, `cmd->+2CCh = 2` | `009C42FF`, `009C4305` |
+| 5 | `d = min(approach->+BCh, 2000.0)` | `009C4311`-`009C4342` |
+| 6 | `m = max(1400.0 - altitude, 50.0)` | `009C435B`-`009C438B` |
+| 7 | throttle `= InterpolateClamped(0.1, 0.4, 0.35, 1.0, m / d)` | `009C4397`-`009C43CD` |
+| 8 | `009FBA50(approach->+ACh + approach->+50h, approach->+B4h, ., throttle)` | `009C43ED`-`009C4401` |
+| 9 | `cmd->+278h = 1.0f`, `+27Ch = 1`, `+2A8h = 0.0f`, `+2ACh = 1`, `+2D8h = 0` | `009C4413`-`009C4434` |
+| 10 | `approach->+1Ch->+40h = tuning+670h`, then `009A1A20(cmd, 0099B630(cmd))` and `009FABE0(approach->+1Ch, .)` | `009C443E`-`009C4471` |
+
+Jump senses from the branch bytes: `009C424F` `0F 82` `JC`, `009C4329` `76` `JBE`, `009C4379` `76`
+`JBE`.
+
+### The run: the machine walks four states
+
+`local/usn04_long.log`, USN04, 4800 mission frames. Environment before the run: two `bsp_game`
+processes and the lock held by `cc8-ai-squadron`, so the launcher queued and ran.
+
+| measure | value |
+| --- | --- |
+| arm ticks | 2370 |
+| transitions | 3 |
+| states | `attackrun` 1480, `flyabove` 144, `turndown` 746 |
+| the latch `approach+D0h` | **closed at tick 1481** |
+| attackrun re-rolls | 149 |
+| commanded heading | 3.2247 rad |
+| commanded throttle | 1.000 |
+| altitude base | 1000.0 m |
+| range, per sample | 11044 11031 11003 10964 10919 10871 10823 10771 10715 10657 10595 10531 10464 10396 10328 10259 |
+| turndown ticks | 746, with **746 roll writes and 746 pitch writes** |
+| bank reached | **0.1364 rad** |
+| roll commanded | -0.8000 |
+| releases | 0 |
+
+So the run-in works. The aircraft closes from 11044 m, the latch arms at tick 1481, the entry
+chooser takes `flyabove`, the roll-in fires, and `turndown` gets 746 live ticks with its roll and
+pitch commands written every one of them. That is the whole chain this packet reconstructed,
+running on live inputs for the first time.
+
+### `009C7EA0`'s window is not met, and the reason is the think order
+
+The turndown latch needs `|bank| > 150 degrees` at `009C4654`, and the bank reaches
+**0.1364 rad, 7.8 degrees**, despite 746 roll commands of `-0.8`.
+
+The roll never develops because **the planner's own roll arm overwrites the slot**. The think order
+is: reset the plan, run the task arm, then `plan_yaw_0099d300`, then `pilot_plan_roll_0099e2ba`,
+which writes `plan_slots[kPilotSlotRoll]` at the site labelled `0099E3AE`. The turndown writes the
+same slot earlier in the same think, so its command is discarded before the slot is evaluated.
+
+**That is the next gate, and it is not another unread tick.** It is a question about the image:
+
+> `0099E2BA`'s roll arm is unconditional in this host. In the image it writes the same slot the
+> turndown writes, so either it is gated on something the turndown clears, most likely the mode word
+> `cmd->+2CCh` which the turndown sets to `0` while the planner's own path uses `2`, or the native
+> turndown's roll is equally overwritten and the bank comes from somewhere else. Reading `0099E2BA`'s
+> entry condition decides it, and nothing downstream can be trusted until it does.
+
+Until then the dive-bomb chain is complete up to the roll-in and stops there.
+
+### One labelled substitution in the binding
+
+`007F0280` at `009C42B8` is a contract, so the host's run-in flies straight at the target rather
+than weaving. Its three float arguments are the `80.0` at `00CE5444`, the `60.0` at `00CEB4B0` and
+the `120.0` at `00D05804`, which the listing pushes; the body was not read.
