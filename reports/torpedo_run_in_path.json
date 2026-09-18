@@ -83,7 +83,8 @@
     "usn01_orders": "unchanged: peak_C58h=999 arm_offers=1298 attack_mode_370=1 drop_timer_98=-1.0",
     "usn01_next_gate": "the aim-complete byte state+2Ch. 009D31B0 returns it at 009D31BF and 009D4030 step 11 needs it to leave aim; 009D15F0 writes it at 009D236E under the two-clause test at 009D235A and 009D2368, which is the unread part of the aim tick",
     "usn02": "shots=734 first_shot=1.40 s hull=180 part=0 deaths=2 total_damage=18525.6 - the milestone 2t baseline",
-    "behavioural_effect": "none, and that is the finding: 009D3C5A treats 36 clear sectors exactly like 0 clear sectors, so an open-water mission leaves approach+5Ch at zero whether or not the scan has a sampler"
+    "behavioural_effect": "none, and that is the finding: 009D3C5A treats 36 clear sectors exactly like 0 clear sectors, so an open-water mission leaves approach+5Ch at zero whether or not the scan has a sampler",
+    "usn01_with_armed_fraction_gate": "byte-identical to usn01_with_scan_live; the gate reports ctl+390h=0.9500 ctl+374h=0.8000 open=1"
   },
   "corrections": [
     "docs/TORPEDO_APPROACH_UPDATE.md calls 0041BC20 the terrain height sampler and ctl+34Ch the terrain sampler; 0041BC20 samples the avoid-zone layer BSP_AvoidZoneRegistry_SelectLayerBySlope returns, and ctl is the plane squadron",
@@ -93,7 +94,8 @@
   "open_questions": [
     "the two stack operands of the aim-complete test at 009D235A and 009D2368 in 009D15F0; this is the last gate before a release",
     "the avoid-zone registry and its layer grid, for a mission with land where the sector scan would produce a non-zero turn",
-    "the 007DF360 list walk, and the occluder sweep behind the +3Ch virtual"
+    "the 007DF360 list walk, and the occluder sweep behind the +3Ch virtual",
+    "the class descriptor field at unit+538h +A0h and 007C1F60's device round counts, the two values still substituted on the issue gate"
   ],
   "names_added": [
     {
@@ -116,5 +118,16 @@
       "address": "009d31b0",
       "name": "BSP_BotStateTorpedoAim_IsComplete"
     }
-  ]
+  ],
+  "issue_gate_swap": {
+    "what": "the stub in read_issue_inputs is replaced by flight_armed_fraction_007ee7f0",
+    "ctl_374h": "computed by the reconstructed 007EE7F0 rule",
+    "ctl_390h": "1.0 * kIssueThresholdScale_00ceffb0 (0.95), a labelled substitution for *(float*)(unit->+538h + A0h) * 0.95 seeded at 0079CD36",
+    "substitutions": [
+      "007C1F60's per-unit round sum: a torpedo-armed aircraft stands in with one round until it releases, because this host has no device model",
+      "the class descriptor field at unit+538h +A0h: the value stands in at 1.0, because offset +A0h is shared by too many object types for a byte scan to name it"
+    ],
+    "measured": "ctl+390h=0.9500 ctl+374h=0.8000 open=1 on every aircraft, the arithmetic predicted from the listing in docs/TORPEDO_RELEASE_ORDERS.md section (5)",
+    "behavioural_effect": "none today: the USN01 census is byte-identical to the run before the swap, so it is attributable on its own. It stops being neutral once aircraft release, when the fraction falls"
+  }
 }

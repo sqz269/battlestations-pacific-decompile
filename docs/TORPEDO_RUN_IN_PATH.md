@@ -129,6 +129,27 @@ this packet did not complete. **`coverage: partial`, and this packet does not gu
 the reconstruction in `torpedo_approach_update.hpp` leaves `state+2Ch` unproduced and the census
 names the gate by address instead.
 
+## (6) The issue gate, now computed rather than assumed
+
+`docs/TORPEDO_RELEASE_ORDERS.md` read `ctl+374h` and `ctl+390h` after the host had already been
+wired with a stub that took the gate as open. That stub is replaced here.
+
+`ctl+374h` now runs through `flight_armed_fraction_007ee7f0`, the reconstruction of `007EE7F0`:
+the fraction of the flight's enabled aircraft that still hold a round, with the caller's own next
+round deducted. Two substitutions stand in its inputs, both labelled and logged:
+
+| native | substitution | why |
+| --- | --- | --- |
+| `007C1F60`, the per-unit round sum over the class `25h` devices holding ordnance `2Ah` | a torpedo-armed aircraft holds one round until it releases | this host has no device model |
+| `*(float*)(unit->+538h + A0h)`, the class descriptor field `0079CD36` scales by `0.95` | the descriptor value stands in at `1.0`; the `0.95` from `[00CEFFB0]` is the native's own | offset `+A0h` is shared by too many object types for a byte scan to name it, and the scan returns six unrelated readers |
+
+The run below reports `ctl+390h=0.9500 ctl+374h=0.8000 open=1` on every aircraft, which is the
+arithmetic section (5) of `docs/TORPEDO_RELEASE_ORDERS.md` predicted from the listing alone: five
+loaded aircraft, the caller deducting itself, `4/5 = 0.8` against `1.0 * 0.95`. The whole USN01
+census is byte-identical to the run before the swap, so the change is **behaviour-neutral today**
+and attributable on its own. It stops being neutral the moment aircraft begin releasing, because
+the fraction then falls and the gate keeps issuing rather than being pinned open.
+
 ## ABI summary
 
 | address | ABI | evidence |
@@ -187,6 +208,7 @@ was added.
 | USN01 baseline, `main` after the planner fix | five aircraft, `states[moveto=139..268 attackrun=586..624 aim=445..535]`, two touching `prepare` for one tick, `releases=0`, closest range 5.8 to 206.1 against `8Ch=2200` |
 | USN01 with the scan live | **identical** state and range figures; the scan reports `runs=1 clear_sectors=36 of 36 home_sector=0 turn_5c=0.0000 rad` on every aircraft |
 | USN01 orders | unchanged: `peak_C58h=999 arm_offers=1298 attack_mode_370=1 drop_timer_98=-1.0` |
+| USN01 with the armed-fraction gate | **byte-identical** to the row above; the gate reports `ctl+390h=0.9500 ctl+374h=0.8000 open=1` on every aircraft |
 | USN02 | `shots=734 first_shot=1.40 s`, `hull=180 part=0 deaths=2 total_damage=18525.6` - the milestone 2t baseline |
 
 The scan now runs and costs nothing in behaviour, which is the point: **the sampler was never the
@@ -203,3 +225,4 @@ the blocker now is the aim-complete byte of section (5), which the census names 
 3. **The avoid-zone registry**, `BSP_AvoidZoneRegistry_SelectLayerBySlope` and the layer grid, for a
    mission with land where the sector scan would produce a non-zero turn.
 4. **`007DF360`'s list walk** and the occluder sweep behind `vtable[+3Ch]`.
+5. **The class descriptor field at `unit+538h`, `+A0h`**, the one number still substituted on the issue gate, and `007C1F60`'s device round counts.
