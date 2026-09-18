@@ -223,9 +223,9 @@
     "The seven other plan+2C8h writers (009B183C, 009B61AE, 009B9A80, 009C66CB, 009D2B1D, 009A3F66, 009B96CE) were located by byte scan but not read. PARTIAL.",
     "0099ABE56 appeared in the plan+2E8h MOVSS scan but the stored listing has no instruction at that address; not resolved.",
     "The installed vehicleclasses.lua carries local modifications, so every quoted class value is what this installation loads, not a retail value.",
-    "src/game_hosts_units.cpp:2516 still assigns the now-ignored small_turn_roll_limit and never sets caps_rate_at_one. The file belongs to another worker this turn; the change is stated as a contract, not made.",
     "USN02 needs the single-instance mutex and a peer agent's bsp_game held it through three attempts (create_single_instance_mutex then error_message_box, exit 255). Both reported runs waited for it to clear.",
-    "The ordinal-5002 XLiveRender stub export needed to run at all is the team lead's fix on main (651b58bd1, merged 407e914b4); this packet commits no tools/xlive_stub change. The reported runs used a local copy of the same export, and the lead's baseline against the merged stub reproduces the USN02 after-run exactly."
+    "The ordinal-5002 XLiveRender stub export needed to run at all is the team lead's fix on main (651b58bd1, merged 407e914b4); this packet commits no tools/xlive_stub change. The reported runs used a local copy of the same export, and the lead's baseline against the merged stub reproduces the USN02 after-run exactly.",
+    "The unit-host contract is measured but deliberately not landed: applying the true caps_rate_at_one sends two USN01 aircraft 60 km off mission. src/game_hosts_units.cpp is left unchanged."
   ],
   "store_sites": [
     {
@@ -238,5 +238,14 @@
       "enclosing_function": "0099b450",
       "note": "not a call: MOVSS [ECX+2C8h],XMM0 seeding plan+2C8h = 00CE3930 = 20.0f"
     }
-  ]
+  ],
+  "validation": {
+    "host_contract": "WRITTEN AND MEASURED, NOT LANDED.",
+    "change": "rin.scale.caps_rate_at_one = unit_is_kind_of(class_id, 0x10) || unit_is_kind_of(class_id, 0x16), with the dead rin.small_turn_roll_limit = false deleted.",
+    "build": "Win32 Release /W4 /WX clean, both tests pass.",
+    "usn02": "bit-identical (candidates=3421, shots=734, hull=180, deaths=2, total_damage=18525.6).",
+    "usn01": "REGRESSION. closed_mean -321.6 m -> -24611.7 m, worst_closed -3952.0 m -> -64529.4 m, heading_error_last_mean 0.147 -> 0.477 rad. Mav1 and Mav5 leave the map.",
+    "attribution": "Class 10h is MPlaneBomber and 16h is MLargeReconPlane (src/unit_kind_query.cpp rows at 0x10/0x16). USN01 ordered flight Mav1-Mav5 is class 16h: world registration primary vtable 00D00308 matches MLargeReconPlane, hull input reports kind=22 with a 40 m span. So the native predicate really does cap the heading-diff rate at 1.0f for these aircraft, the wiring reproduces it, and the regression is a pre-existing defect in the roll arm that the true gain exposes. Not landed for that reason.",
+    "next": "Follow-up packet 5 in the doc: sign of C at 0099E180, the soft zone at 0099E17B, and the host pinning dt_scale to 1.0f where the original uses max(unit+340h*0.4, 1.0)."
+  }
 }
