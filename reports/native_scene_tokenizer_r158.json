@@ -3372,5 +3372,89 @@
     "sha256": "d6a27294d08cca87a9307aab4cdc0772c856565ea1f7f8b70b8f4d2097e644a7",
     "files": 89,
     "head": "c498984a3ba38478839900e741ee3fbed64725f4"
+  },
+  "primary_integration": {
+    "commit": "01201dc45e8448bd1b90fdcd82e404370130684d",
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "coff_checks": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_scene_tokenizer.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "650593d578244943b689c0778d34ed96c4acacfdcd655074993506f4d7379d83",
+        "combined_sha256": "650593d578244943b689c0778d34ed96c4acacfdcd655074993506f4d7379d83"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_memory_stream.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "ae80a4056593dacc4b7623bea553297108aea064d9bcd521f3dbf9b582ae1d38",
+        "combined_sha256": "ae80a4056593dacc4b7623bea553297108aea064d9bcd521f3dbf9b582ae1d38"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_retained_memory_owners.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "292c378159b3638fd751fb8146bc42942d9baabaf323b09b560aa69a1dc2aed4",
+        "combined_sha256": "292c378159b3638fd751fb8146bc42942d9baabaf323b09b560aa69a1dc2aed4"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_string.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "96e6a624d4d1a61d9aa93b5badad8ead7e2718e5ab09c923c836e3ff81134abc",
+        "combined_sha256": "96e6a624d4d1a61d9aa93b5badad8ead7e2718e5ab09c923c836e3ff81134abc"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_string_pool_storage.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "dab9746705cf936f5bda61c9b048d34c1a6425b9d33698fa29669fd1e93bb726",
+        "combined_sha256": "dab9746705cf936f5bda61c9b048d34c1a6425b9d33698fa29669fd1e93bb726"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_string_pool_owner.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "43ec239c5962d3760701e0f5ac010272e75dbc5db9624cddfc4cf0d7f33dd55f",
+        "combined_sha256": "43ec239c5962d3760701e0f5ac010272e75dbc5db9624cddfc4cf0d7f33dd55f"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_publication.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "cbab15894a83dbe8d516165a3c70a837251199efdd145375acf4e425f044d8df",
+        "combined_sha256": "cbab15894a83dbe8d516165a3c70a837251199efdd145375acf4e425f044d8df"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_removal_reorder.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "342343aa286c46643453c766178b8770a7ff40e06cd2380f16b105a5266468d2",
+        "combined_sha256": "342343aa286c46643453c766178b8770a7ff40e06cd2380f16b105a5266468d2"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "9613c7142534ec9a2d045cad5dc95e6735dafe6b140b805d78c90c4f02c7ba50",
+        "combined_sha256": "9613c7142534ec9a2d045cad5dc95e6735dafe6b140b805d78c90c4f02c7ba50"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "d6f6dbc057817a5b1c935b03d88108a60ac97eb28262fc24ab96cebbc7547bd6",
+        "combined_sha256": "d6f6dbc057817a5b1c935b03d88108a60ac97eb28262fc24ab96cebbc7547bd6"
+      }
+    ],
+    "result": {
+      "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+      "exe_sha256": "DEE5BCA354BB263BF08FC6CDC4DA7E7BD282A0F491F789C099F463DA8C205EC0",
+      "library_sha256": "EA0AB65F1075F05EF6390E7F3F8B5D424171DB08A4001A5058240DD0CCB36746",
+      "exit": 0
+    },
+    "paired_cases": 8,
+    "paired_observations": 183,
+    "matching_bytes": 416044,
+    "log_sha256": "f392b8343ac185d6d4a53b27f1d5e14e6cb81fd178200a6d49c3ed8b0d6c95e0",
+    "game_sha256": "05b2238620549c93fef54dc081cf80cc575edff92dbe28e8fa2fa1dd31695475",
+    "artifact_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r158\\native-scene-tokenizer-main-r158.zip",
+      "sha256": "3de9889cf6e1c6bc92ff6b77f9c871ab2d17a10b1964c92ec5534335e449e590",
+      "files": 104,
+      "head": "01201dc45e8448bd1b90fdcd82e404370130684d"
+    }
   }
 }
