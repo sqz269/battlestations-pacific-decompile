@@ -279,3 +279,22 @@ Logs: `local/usn01_before.log`, `local/usn01_after.log`, `local/usn01_served.log
   natively, still open.
 * `00A179E0 BSP_AiPartyBrain_EngagementPass`, body `00A179E0`-`00A18195`, still unread.
 * `00A1443D`, the controller-busy test through the member's `vtable[+2Ch]`, still a neutral value.
+
+## Correction from docs/AI_WORLD_SETS.md
+
+Appended by packet `cc8_ai_world_sets`. The text above is left as written, and the answer it
+installed is unchanged and still correct.
+
+Section 3 says of `00A2C450` that "this process builds no entity set at `world+21A4h`". **It does
+build them.** `004DF90F`-`004DF959` in `BSP_Game_ConstructWorld` allocates exactly eight, `30h`
+each, constructs each with `008DF900(set, i)` carrying the loop index, stores the pointer into
+`game+21A4h + i*4` and calls `008DA160`; `004DE20A`-`004DE234` in `BSP_Game_ConstructActualStorage`
+only nulls the same eight slots. An exhaustive census of every addressing form of the displacement
+`21A4h`..`21C0h` in `.text` (50 sites, positive control `004DE20A`) finds no other writer.
+
+They are the **per-player-slot objective sets**, class string `"SzurkeNyil"` at `00D16100`, vtable
+`00D1610C`, holding `Objective` records whose own `+20h` unit lists carry the units. The right
+reason the answer here is `false` is that their producers, the mission Lua bindings
+`008CD440 Objectives_Add` and `008CDD60 Objectives_AddUnit`, are **unimplemented in this process**,
+so every set is empty and `008DDF90` finds nothing. The host no longer hardcodes the `false`: it
+walks a real eight-slot table that nothing fills yet.

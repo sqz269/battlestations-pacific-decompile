@@ -120,6 +120,10 @@ struct GameAiSummary {
     unsigned long long squadron_commands{0};      // a command landed on one
     unsigned long long squadron_member_orders{0}; // 007ECF80 reached a plane
     unsigned long long orders_suppressed{0};      // a duplicate re-issue
+    // 00A2C450, the per-player-slot objective-set test. docs/AI_WORLD_SETS.md.
+    unsigned long long world_set_queries{0};
+    unsigned long long world_set_hits{0};
+    unsigned long long objective_set_units{0};   // total across the eight sets
     float first_command_seconds{-1.0f};
 };
 
