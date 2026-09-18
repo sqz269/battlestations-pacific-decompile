@@ -1,0 +1,366 @@
+{
+ "packet": "cc8_ai_world_sets",
+ "owner": "agent/cc8-ai-squadron",
+ "doc": "docs/AI_WORLD_SETS.md",
+ "sources": [
+  "src/game_hosts_ai.cpp",
+  "include/bsp/game_hosts_ai.hpp"
+ ],
+ "classification": "discovery; what the eight sets at game+21A4h are, who builds and fills them, and the settled answer that both mode planners order exactly one owned group",
+ "routines": [
+  {
+   "address": "008df900",
+   "name": "BSP_ObjectiveSet_Construct",
+   "abi": "__thiscall(set, int slotIndex), body 008df900..008df97e",
+   "coverage": "partial; 008df900..008df959 read, the EH tail was not"
+  },
+  {
+   "address": "00a26510",
+   "name": "BSP_AiPlanner_SiegeThink",
+   "abi": "__thiscall(planner), RET 0, body 00a26510..00a265e8",
+   "coverage": "complete"
+  },
+  {
+   "address": "00a265f0",
+   "name": "BSP_AiPlanner_CompetitiveThink",
+   "abi": "__thiscall(planner), RET 0, body 00a265f0..00a266b7",
+   "coverage": "complete"
+  },
+  {
+   "address": "00a2c450",
+   "name": "BSP_AiGroup_HasMemberInWorldSet",
+   "abi": "__thiscall(group, int setIndex) -> bool, RET 4, body 00a2c450..00a2c4b7",
+   "coverage": "complete; read in the predecessor packet, its set operand settled here"
+  },
+  {
+   "address": "004de610",
+   "name": "BSP_Game_ConstructWorld",
+   "abi": "body 004de610..004dfafc",
+   "coverage": "partial; only the set loop 004df90f..004df959 was read"
+  },
+  {
+   "address": "004ddb90",
+   "name": "BSP_Game_ConstructActualStorage",
+   "abi": "body 004ddb90..004de266",
+   "coverage": "partial; only the eight nulls 004de20a..004de234 were read"
+  },
+  {
+   "address": "008cd440",
+   "name": "MissionLuaNative_Objectives_Add",
+   "abi": "not read",
+   "coverage": "named as the producer only; unimplemented in this process"
+  }
+ ],
+ "host_calls": [
+  {
+   "address": "00a18262",
+   "native": "00a2c450",
+   "containing": "00a181a0",
+   "name": "GameAiCoordinatorHost::Impl::group_has_member_in_world_set",
+   "note": "now walks the group's members against the indexed objective set"
+  },
+  {
+   "address": "00a2c491",
+   "native": "008ddf90",
+   "containing": "00a2c450",
+   "name": "GameAiCoordinatorHost::Impl::group_has_member_in_world_set",
+   "note": "the per-member set lookup; the set is empty because 008CD440 is unimplemented"
+  },
+  {
+   "address": "004df937",
+   "native": "008df900",
+   "containing": "004de610",
+   "name": "(not modelled)",
+   "note": "the eight-set construction loop, host sets are plain vectors"
+  },
+  {
+   "address": "004df919",
+   "native": "00bf681b",
+   "containing": "004de610",
+   "name": "(not modelled)",
+   "note": "operator new(0x30) per set"
+  },
+  {
+   "address": "00a265d3",
+   "native": "00a1cb80",
+   "containing": "00a26510",
+   "name": "bsp::ai_mode_planner_tick",
+   "note": "the single call; no back edge, so one owned group per think"
+  },
+  {
+   "address": "00a266a2",
+   "native": "00a1cb80",
+   "containing": "00a265f0",
+   "name": "bsp::ai_mode_planner_tick",
+   "note": "the same shape in the competitive think"
+  },
+  {
+   "address": "004df94b",
+   "native": "008da160",
+   "containing": "004de610",
+   "name": "(not modelled)",
+   "note": "called on each set after construction; contract: unread"
+  }
+ ],
+ "indirect_call_sites": [],
+ "no_ghidra_function": [],
+ "raw_listing_call_sites": [],
+ "record_layouts": [
+  {
+   "record": "SzurkeNyil objective set",
+   "size": "0x30",
+   "producer": "008df900, from the loop at 004df917",
+   "fields": "+0h vtable 00D1610C (class string \"SzurkeNyil\" at 00D16100); +4h/+8h/+0Ch zero; +10h byte zero; +11h the container nil byte; +14h the PLAYER SLOT index, the loop counter 008DF92D/008DF940; +18h the container head built by 008DB7B0"
+  }
+ ],
+ "constants": [
+  {
+   "name": "the world-set array",
+   "value": "game+21A4h..+21C0h, eight pointers",
+   "evidence": "004DE20A..004DE234 nulls exactly eight; 004DF956 CMP EDI,8 bounds the loop"
+  },
+  {
+   "name": "the set size",
+   "value": "0x30",
+   "evidence": "004DF917 PUSH 30h"
+  }
+ ],
+ "censuses": [
+  {
+   "what": "every addressing form of disp32 21A4h..21C0h in .text",
+   "tool": "local/scan21a4.py",
+   "sites": 50,
+   "positive_control": "004DE20A, the known store. The first run of the scan returned ZERO because the displacement of MOV r/m32,r32 begins two bytes after the opcode, not six; the control is what caught the vacuous negative",
+   "result": "8 stores, all nulls in 004DDB90; 2 LEA (004DF911 the allocator, 004D2C95 in BSP_Game_DestroyWorld); 40 reads. No other writer of a set pointer exists"
+  }
+ ],
+ "corrections": [
+  {
+   "doc": "docs/AI_COMMAND_LIFETIME.md",
+   "was": "open follow-up ai_planner_owned_group_walk: whether a planner that owns several groups orders only the first natively",
+   "is": "it does; both mode planners take the first node of the owned-group list, call 00A1CB80 once and return, with no back edge",
+   "evidence": "00A265AC..00A265E8 and 00A26685..00A266B7"
+  },
+  {
+   "doc": "docs/AI_SQUADRON_SERVED.md",
+   "was": "this process builds no entity set at world+21A4h",
+   "is": "it builds eight, at 004DF917; they are empty because their Lua producer 008CD440 Objectives_Add is unimplemented. The answer that packet installed is unchanged",
+   "evidence": "004DF90F..004DF959 and the run log's Objectives_Add UNIMPLEMENTED line"
+  }
+ ],
+ "validation": {
+  "command": "./tools/run_game.ps1 -- --frames 3200 --press-start-frame 30 --menu-select <M> --mission-frames 3000 --mission-frame-seconds 0.05",
+  "before_tree": "7c2f34c12, this branch with current main merged, logs local/ws_<m>_before.log",
+  "after_logs": "local/ws_<m>_after.log",
+  "expectation": "identical: the predicate answers 00A2C450's walk-ended arm either way, because every objective set is empty. The change replaces a hardcoded false with the real walk",
+  "missions": [
+   {
+    "mission": "IJN01",
+    "before": {
+     "gun_candidates": "1959",
+     "gun_assigns": "3020",
+     "proj_created": "39143",
+     "proj_entity_impacts": "17",
+     "proj_water": "70",
+     "dmg_queued_hits": "17",
+     "dmg_deaths": "3",
+     "dmg_total_damage": "793.2",
+     "groups_created": "3",
+     "members_added": "221",
+     "splits_taken": "1",
+     "tick_orders": "41",
+     "promotions": "2",
+     "served": "2450",
+     "attackmove": "2250",
+     "settarget": "150",
+     "scored": "465500",
+     "parties_claims": "2",
+     "parties_attack_orders": "2",
+     "parties_commands": "2515",
+     "parties_units_with_task": "79",
+     "sq_built": "33",
+     "sq_group_members": "33",
+     "sq_excluded_007eda90": "0",
+     "sq_member_orders": "56",
+     "pilot_ordered": "33",
+     "pilot_closed_mean_m": "0.0"
+    },
+    "after": {
+     "gun_candidates": "1959",
+     "gun_assigns": "3020",
+     "proj_created": "39143",
+     "proj_entity_impacts": "17",
+     "proj_water": "70",
+     "dmg_queued_hits": "17",
+     "dmg_deaths": "3",
+     "dmg_total_damage": "793.2",
+     "groups_created": "3",
+     "members_added": "221",
+     "splits_taken": "1",
+     "tick_orders": "41",
+     "promotions": "2",
+     "served": "2450",
+     "attackmove": "2250",
+     "settarget": "150",
+     "scored": "465500",
+     "parties_claims": "2",
+     "parties_attack_orders": "2",
+     "parties_commands": "2515",
+     "parties_units_with_task": "79",
+     "sq_built": "33",
+     "sq_group_members": "33",
+     "sq_excluded_007eda90": "0",
+     "sq_member_orders": "56",
+     "ws_queries": "1",
+     "ws_hits": "0",
+     "ws_objective_units": "0",
+     "pilot_ordered": "33",
+     "pilot_closed_mean_m": "0.0"
+    }
+   },
+   {
+    "mission": "USN01",
+    "before": {
+     "gun_candidates": "1506",
+     "gun_assigns": "1095",
+     "proj_created": "13699",
+     "proj_entity_impacts": "10",
+     "proj_water": "42",
+     "dmg_queued_hits": "10",
+     "dmg_deaths": "0",
+     "dmg_total_damage": "313.4",
+     "groups_created": "4",
+     "members_added": "109",
+     "splits_taken": "2",
+     "tick_orders": "507",
+     "promotions": "1",
+     "served": "0",
+     "attackmove": "0",
+     "settarget": "0",
+     "scored": "0",
+     "parties_claims": "2",
+     "parties_attack_orders": "2",
+     "parties_commands": "475",
+     "parties_units_with_task": "24",
+     "sq_built": "20",
+     "sq_group_members": "20",
+     "sq_excluded_007eda90": "0",
+     "sq_member_orders": "459",
+     "pilot_ordered": "14",
+     "pilot_closed_mean_m": "92.3"
+    },
+    "after": {
+     "gun_candidates": "1506",
+     "gun_assigns": "1095",
+     "proj_created": "13699",
+     "proj_entity_impacts": "10",
+     "proj_water": "42",
+     "dmg_queued_hits": "10",
+     "dmg_deaths": "0",
+     "dmg_total_damage": "313.4",
+     "groups_created": "4",
+     "members_added": "109",
+     "splits_taken": "2",
+     "tick_orders": "507",
+     "promotions": "1",
+     "served": "0",
+     "attackmove": "0",
+     "settarget": "0",
+     "scored": "0",
+     "parties_claims": "2",
+     "parties_attack_orders": "2",
+     "parties_commands": "475",
+     "parties_units_with_task": "24",
+     "sq_built": "20",
+     "sq_group_members": "20",
+     "sq_excluded_007eda90": "0",
+     "sq_member_orders": "459",
+     "ws_queries": "1",
+     "ws_hits": "0",
+     "ws_objective_units": "0",
+     "pilot_ordered": "14",
+     "pilot_closed_mean_m": "92.3"
+    }
+   },
+   {
+    "mission": "USN02",
+    "before": {
+     "gun_candidates": "3135",
+     "gun_assigns": "5146",
+     "proj_created": "900",
+     "proj_entity_impacts": "168",
+     "proj_water": "638",
+     "dmg_queued_hits": "168",
+     "dmg_deaths": "3",
+     "dmg_total_damage": "20721.4",
+     "groups_created": "2",
+     "members_added": "50",
+     "splits_taken": "0",
+     "tick_orders": "5",
+     "promotions": "1",
+     "served": "616",
+     "attackmove": "559",
+     "settarget": "0",
+     "scored": "4004",
+     "parties_claims": "1",
+     "parties_attack_orders": "1",
+     "parties_commands": "635",
+     "parties_units_with_task": "14",
+     "sq_built": "0",
+     "sq_group_members": "0",
+     "sq_excluded_007eda90": "0",
+     "sq_member_orders": "0",
+     "pilot_ordered": "0",
+     "pilot_closed_mean_m": null
+    },
+    "after": {
+     "gun_candidates": "3135",
+     "gun_assigns": "5146",
+     "proj_created": "900",
+     "proj_entity_impacts": "168",
+     "proj_water": "638",
+     "dmg_queued_hits": "168",
+     "dmg_deaths": "3",
+     "dmg_total_damage": "20721.4",
+     "groups_created": "2",
+     "members_added": "50",
+     "splits_taken": "0",
+     "tick_orders": "5",
+     "promotions": "1",
+     "served": "616",
+     "attackmove": "559",
+     "settarget": "0",
+     "scored": "4004",
+     "parties_claims": "1",
+     "parties_attack_orders": "1",
+     "parties_commands": "635",
+     "parties_units_with_task": "14",
+     "sq_built": "0",
+     "sq_group_members": "0",
+     "sq_excluded_007eda90": "0",
+     "sq_member_orders": "0",
+     "ws_queries": "1",
+     "ws_hits": "0",
+     "ws_objective_units": "0",
+     "pilot_ordered": "0",
+     "pilot_closed_mean_m": null
+    }
+   }
+  ],
+  "usn01_gunnery_attribution": {
+   "question": "is USN01's gunnery zero a consequence of the squadron work",
+   "answer": "it is not zero on any build this worker can run, and the squadron packets moved it UP: 23 hits and 220.0 damage at f5400e43f, 36 and 241.0 at 7c1036d5f, 45 and 563.5 at 2eb86d8c4. The fall to 10 hits and 313.4 reproduces on main ALONE at 8f3370237 and again on current main 7c2f34c12",
+   "shape": "shots 14676 -> 13699 (-7%), entity impacts 45 -> 10 (-78%), water impacts 42 -> 42, first hit 4.70 s -> 58.60 s, deaths 1 -> 0, contact census dead 2840 -> 0",
+   "verdict": "a regression in what the shells can hit, on main, from something other than these packets. NOT the artefact reading: aircraft flying attack tasks instead of strafing paths would cut the shot count, and it does not",
+   "not_done": "a bisect of main between f5400e43f and 8f3370237"
+  }
+ },
+ "remaining": [
+  "008CD440 Objectives_Add and 008CDD60 Objectives_AddUnit: binding them fills the eight sets",
+  "008DA160, called on each set after construction",
+  "008DDF00 and 008DD310, the set find",
+  "00F8A9E0, the global 00A265B2 compares against 3 for the reset-target flag",
+  "00A179E0 BSP_AiPartyBrain_EngagementPass, body 00A179E0..00A18195",
+  "a bisect of main between f5400e43f and 8f3370237 for USN01's impact regression"
+ ]
+}

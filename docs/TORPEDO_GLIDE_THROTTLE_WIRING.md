@@ -180,3 +180,20 @@ is not just unfounded but unnecessary.
 What is left of the question is upstream and about altitude rather than pitch: the aim tick expects
 an aircraft already at tens of metres, and USN01 authors these bombers at 800, 700 and 400.
 `docs/ATTACK_RUN_DESCENT.md`.
+
+
+## Correction from packet `cc8_bot_speed_class_rows`: step 2's substitution was the wrong field
+
+Appended, not rewriting section 1.
+
+Section 1 lists the move-to setter's desired speed as a labelled substitution, "the row's authored
+`TravelSpeed`", because `007C47F0` and `009BECD0` were unread.
+
+`007C47F0` is read now, and it is **not** `TravelSpeed`: it is
+`tuning+24Ch Dynamics/SpdMultipliers/LevelFlight` times `classDesc+184h StallSpd`, the same product
+the dive-bomb turndown takes through the same call. So substituting `TravelSpeed` was not a
+plausible stand-in for the right quantity, it was **a different class field**. For USN01's `Mav`
+row the commanded speed moves from 66.67 m/s to 34.92.
+
+What remains substituted there is `009BECD0`'s shaping of that product against the distance, which
+is still unread. `docs/BOT_SPEED_CLASS_ROWS.md`.
