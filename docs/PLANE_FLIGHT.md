@@ -554,3 +554,23 @@ when that is at least the probe speed. So `desc+1E4h` is the steepest climb the 
 at `LevelFlight · StallSpd`, `desc+1E8h` the same at `TravelSpeed`, and the climb gain is 0.6 of
 the first. For USN01's `Mav` row that is **0.1855 rad**, and at a 412 m altitude error the climb arm
 commands the `DEG(40)` floor rather than zero. `docs/PLANE_ALTITUDE_HOLD_AND_SURFACE.md`.
+
+
+## Correction from packet `cc8_torpedo_moveto_tick`: `class+518h` is `tan(DropAngle)`
+
+Appended, not rewriting the section above.
+
+"`009FBA50`, the cruising-altitude command" step 4 reads `base += span * scale * classDesc->+518h`
+and leaves `+518h` unidentified. It is derived at class load, in the same `007C4850` that derives
+`desc+50Ch`, `desc+1E4h`, `desc+1ECh` and `desc+508h`:
+
+```
+007c4a27  FLD  float ptr [ESI + 0x1f0]   ; desc+1F0h DropAngle
+007c4a3f  CALL 00412e20                  ; BSP_Math_TangentX87Float: FLD / FSINCOS / FDIVP
+007c4a44  FSTP float ptr [ESI + 0x518]
+```
+
+so `class+518h = tan(DropAngle)`, and `007C4A62` derives `class+51Ch` the same way from
+`DropAngle * [00CEFFA0]`. That makes step 4's whole term `horizontalDistance * tan(angle)` - a
+height above a straight glide path - rather than an opaque per-class gain.
+`docs/TORPEDO_MOVETO_TICK.md`.
