@@ -23,6 +23,11 @@ void resize_native_checked_dword_storage(void*, std::uint32_t, std::uint32_t,
 // consistent storage and a source pair independent of invalidated old backing.
 // This is a source storage contract, not a general original STL/iterator ABI.
 void append_native_checked_pair_storage(void*, const void* source_pair);
+// Float end-insertion specialization used by0045A120/00459CE0. Capture bits
+// without conversion; move the existing range bytewise; fill new elements
+// with native x87 FLD/FSTP32 AFTER allocation/copy. This quiets signaling NaNs
+// and preserves native x87 status effects. Publish begin/capacity/end.
+void append_native_checked_float_storage(void*, std::uint32_t value_bits);
 // Actual14h packed-bit storage: bit count0, opaque4, word begin8/endC/capacity10.
 // Only the low byte of the fill value is boolean. Shrink masks unused high bits.
 void resize_native_input_settings_bits_0049df50(void*, std::uint32_t, std::uint32_t);

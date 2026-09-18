@@ -9,10 +9,10 @@ namespace bsp {
 namespace {
 using Word = std::uint32_t;
 static_assert(sizeof(void*) == 4);
-enum class Kind { word, descriptor, string, words, strings, pairs, raw_pair };
+enum class Kind { word, descriptor, string, words, strings, pairs, raw_pair, floating_word };
 Word width(Kind kind) noexcept {
     switch (kind) {
-    case Kind::word: return 4;
+    case Kind::word: case Kind::floating_word: return 4;
     case Kind::descriptor: return 20;
     case Kind::string: return 8;
     case Kind::raw_pair: return 8;
@@ -67,7 +67,14 @@ void copy_vector(Kind kind, void* destination, const void* source, NativeStringS
     write(destination,8,completed);
 }
 void construct(Kind kind, void* destination, const void* source, NativeStringStorage* strings) {
-    if (kind==Kind::word || kind==Kind::descriptor || kind==Kind::raw_pair) {
+    if (kind==Kind::floating_word) {
+        __asm {
+            mov eax, source
+            mov edx, destination
+            fld dword ptr [eax]
+            fstp dword ptr [edx]
+        }
+    } else if (kind==Kind::word || kind==Kind::descriptor || kind==Kind::raw_pair) {
         if (destination) std::memcpy(destination,source,width(kind));
     } else if (kind==Kind::string) {
         if (!destination) return;
@@ -77,7 +84,10 @@ void construct(Kind kind, void* destination, const void* source, NativeStringSto
     } else copy_vector(child(kind),destination,source,strings);
 }
 void relocate(Kind kind, void* destination, void* source, NativeStringStorage* strings) {
-    if (kind==Kind::words || kind==Kind::strings || kind==Kind::pairs) {
+    if (kind==Kind::floating_word) {
+        //00456CE0 copies old floats through memmove_s, without x87 conversion.
+        std::memcpy(destination,source,4);
+    } else if (kind==Kind::words || kind==Kind::strings || kind==Kind::pairs) {
         // 006A2310/006A3200/006A6D20 construct an empty header, then swap
         // begin, end and capacity individually. Existing nested buffers retain
         // both their identity and spare capacity; the old element becomes empty.
@@ -89,7 +99,7 @@ void relocate(Kind kind, void* destination, void* source, NativeStringStorage* s
     } else construct(kind,destination,source,strings);
 }
 void destroy(Kind kind, void* value, NativeStringStorage* strings) noexcept {
-    if (kind==Kind::word || kind==Kind::descriptor || kind==Kind::raw_pair) return;
+    if (kind==Kind::word || kind==Kind::floating_word || kind==Kind::descriptor || kind==Kind::raw_pair) return;
     if (kind==Kind::string) { destroy_native_string_header_0041dd20(value,*strings);return; }
     const Word first=read(value,4);
     if (first) {
@@ -122,7 +132,10 @@ void resize(Kind kind, void* header, Word requested, const void* value, NativeSt
     // Original count-insertion copies the value even when spare capacity
     // suffices. The incoming wrapper value remains independently owned.
     alignas(4) unsigned char saved[20];
-    construct(kind,saved,value,strings);
+    //00459CE0 captures its float argument using MOVSS before any allocation;
+    //the later fill helpers, not this temporary copy, perform FLD/FSTP32.
+    if (kind==Kind::floating_word) std::memcpy(saved,value,4);
+    else construct(kind,saved,value,strings);
     OwnedValue temporary{kind,saved,strings};
     const Word maximum=0xffffffffu/width(kind);
     const Word added=requested-old_size;
@@ -154,9 +167,9 @@ void resize(Kind kind, void* header, Word requested, const void* value, NativeSt
         destroy_range(kind,pointer(old_first),pointer(read(header,8)),strings);
         singleton_lifetime_free(pointer(read(header,4)));
     }
-    // The scalar DWORD instantiations publish begin first; descriptors and
+    // The four-byte scalar instantiations publish begin first; descriptors and
     // owning nested/string instantiations publish it after capacity and end.
-    const bool begin_first = kind==Kind::word &&
+    const bool begin_first = (kind==Kind::word || kind==Kind::floating_word) &&
         publication==NativeCheckedDwordPublication::begin_capacity_end;
     if (begin_first) write(header,4,address(fresh));
     write(header,12,address(fresh)+bytes);write(header,8,address(fresh)+final_size*width(kind));
@@ -177,6 +190,10 @@ void resize_native_checked_dword_storage(void* header, Word count, Word value,
 void append_native_checked_pair_storage(void* header, const void* value) {
     resize(Kind::raw_pair,header,size(header,Kind::raw_pair)+1u,value,nullptr,
         NativeCheckedDwordPublication::capacity_end_begin);
+}
+void append_native_checked_float_storage(void* header, Word value_bits) {
+    resize(Kind::floating_word,header,size(header,Kind::floating_word)+1u,&value_bits,nullptr,
+        NativeCheckedDwordPublication::begin_capacity_end);
 }
 void resize_native_input_settings_bits_0049df50(void* header, Word count, Word value) {
     const Word old=read(header,0);if (count==old) return;
