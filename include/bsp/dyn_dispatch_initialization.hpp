@@ -18,10 +18,32 @@ static_assert(offsetof(DynGeneralConvexIntersectStorage, support_directions_08) 
 static_assert(offsetof(DynGeneralConvexIntersectStorage, critical_section_278) == 0x278);
 static_assert(sizeof(DynGeneralConvexIntersectStorage) == 0x290);
 
-// Each static PE object is exactly one actual vtable pointer. The vtables have
-// one virtual collision/ray entry and adjacent RTTI, not lifecycle slots.
+// Storage for the six stateless companion dispatchers. Their vtables have one
+// virtual collision/ray entry and adjacent RTTI, not lifecycle slots.
 struct DynStaticDispatchObjectStorage { const void* vtable; };
 static_assert(sizeof(DynStaticDispatchObjectStorage) == 4);
+
+// Full initialized PE owner at 00E17448..00E174E7. Unlike the stateless owners,
+// 00C44780 uses persistent simplex/ray scratch through the double at +98h.
+// The PE image initializes only the table word; the remaining 9Ch bytes are zero.
+// Field names describe observed use, not recovered symbols. The two padding
+// words are untouched by the method. See docs/DYN_CONVEX_RAY_OWNER_R143.md.
+struct alignas(8) DynConvexRayIntersectionStorage {
+    const void* vtable;
+    std::uint32_t padding_04;
+    double simplex_points_08[4][3];
+    std::uint32_t simplex_count_68;
+    std::uint32_t padding_6c;
+    double ray_point_70[3];
+    double search_direction_88[3];
+};
+static_assert(offsetof(DynConvexRayIntersectionStorage, vtable) == 0);
+static_assert(offsetof(DynConvexRayIntersectionStorage, simplex_points_08) == 0x08);
+static_assert(offsetof(DynConvexRayIntersectionStorage, simplex_count_68) == 0x68);
+static_assert(offsetof(DynConvexRayIntersectionStorage, ray_point_70) == 0x70);
+static_assert(offsetof(DynConvexRayIntersectionStorage, search_direction_88) == 0x88);
+static_assert(alignof(DynConvexRayIntersectionStorage) == 8);
+static_assert(sizeof(DynConvexRayIntersectionStorage) == 0xa0);
 
 // Complete actual callable tables, supplied by their owning runtime. This
 // module does not manufacture callback tables or substitute collision methods.
@@ -45,7 +67,7 @@ struct DynDispatchGlobalsStorage {
     DynStaticDispatchObjectStorage terrain_convex_mesh{};
     DynStaticDispatchObjectStorage sphere_sphere{};
     DynStaticDispatchObjectStorage box_sphere{};
-    DynStaticDispatchObjectStorage convex_ray{};
+    DynConvexRayIntersectionStorage convex_ray{};
     DynStaticDispatchObjectStorage box_ray{};
     DynStaticDispatchObjectStorage sphere_ray{};
     DynGeneralConvexIntersectStorage general_convex{};

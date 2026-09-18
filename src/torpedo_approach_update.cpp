@@ -88,6 +88,18 @@ float torpedo_commanded_speed_009d3c99(float elapsed_134, float speed_late_7c,
                                                               : speed_early_80;
 }
 
+TorpedoRunSpeeds torpedo_seed_run_speeds_009d0484(float profile_late_4,
+                                                  float profile_early_8,
+                                                  float scale_24) noexcept {
+    // 009D0484-009D0497. The scale is loaded once at 009D047D and duplicated by
+    // 009D048B FLD ST(0), so the same approach+24h multiplies both fields; the
+    // FXCH at 009D048F is what keeps the copy alive for the second FMUL.
+    TorpedoRunSpeeds out;
+    out.speed_late_7c = profile_late_4 * scale_24;
+    out.speed_early_80 = scale_24 * profile_early_8;
+    return out;
+}
+
 float torpedo_engagement_eta_009d3c93(const TorpedoApproachState& s,
                                       float unit_speed) noexcept {
     const float speed = torpedo_commanded_speed_009d3c99(

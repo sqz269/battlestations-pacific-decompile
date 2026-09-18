@@ -139,3 +139,52 @@ PE static words match, and a different live owner is rejected. Collision methods
 are not executed. Reports include exact input generation, code/image/artifact
 hashes and logs. No mission, gameplay, full-task execution or native binary/EH
 compatibility claim follows from these checks.
+
+## Follow-up from docs/NATIVE_DYN_CONVEX_SIMPLEX_R139.md
+
+R139 reconstructs the complete 9,541-byte C3CC30 simplex reducer used by
+C51EF0. It preserves the native x87 schedule, point/witness copies and all four
+count paths. Exact comparisons pass directly and inside the copied general-
+convex parent chain using the existing convex support methods. C51EF0,
+C53010, C51C20, C48BE0 and C535E0 remain read-only native references in this
+packet; the complete general-convex source dispatcher is still pending.
+
+## Follow-up from docs/NATIVE_DYN_GENERAL_CONVEX_R140.md
+
+R140 closes those five general-convex bodies and supplies the complete one-slot
+`NativeDynGeneralConvexRuntime` table for the existing actual owner. Direct
+native comparisons and serial scene comparisons through the complete narrow-
+phase task pass with real convex support calls. The table borrows CRT state;
+its runtime and actual owner must remain alive while scenes use them. Remaining
+dispatcher classes, world tasks, application admission and gameplay are open.
+
+## Follow-up from docs/NATIVE_DYN_PRIMITIVE_DISPATCH_R141.md
+
+R141 supplies the complete sphere/sphere, box/sphere, sphere/ray and box/ray
+normal bodies and four independent one-slot source tables through
+`NativeDynPrimitiveDispatchRuntime`. Original/source comparisons pass directly
+and through the production tables; sphere/sphere and box/sphere also pass in
+the complete narrow-phase task. The geometry fixtures use producer-verified
+record fields without invoking primitive shape construction or lifetime.
+Box/box, terrain/convex, convex/ray, remaining world tasks and application
+admission/gameplay are still open.
+
+## Follow-up from docs/NATIVE_DYN_BOX_BOX_R142.md
+
+R142 closes C49A30 and all six face-contact/polygon-clipping dependencies,
+supplying the complete `NativeDynBoxBoxRuntime` table for the actual static
+owner. Direct/table and narrow-phase scene comparisons pass, including native
+zero-through-eight contact counts. Terrain/convex and convex/ray are the two
+remaining dispatcher classes. Primitive class production/lifetime, remaining
+world tasks and application admission/gameplay are still open.
+
+## Correction from docs/DYN_CONVEX_RAY_OWNER_R143.md
+
+The earlier description of all seven companion owners as one-word objects is
+incorrect for ConvexRayIntersection. C44780 writes simplex/ray scratch through
+owner+98h; the native E17448 owner occupies A0h, ending before E174E8.
+DynDispatchGlobalsStorage now reserves that full record. Binding still changes
+only its vtable word, preserving scratch and padding. A focused original-body
+probe checks guarded standalone and aggregate owners: 64 pairs and 60,288
+identical bytes, with neighboring objects unchanged. The ray method remains an
+original reference in this packet; its source implementation is still pending.

@@ -231,3 +231,14 @@ probe is unchanged by this packet and no new probe was added.
 | start | inclusive end | evidence |
 | --- | --- | --- |
 | none | | Every address named or reconstructed in this document lies inside an existing Ghidra function body, checked with `python tools/bsp.py ghidra proto <addr> --brief` for `00C57070`, `00C549D0`, `00C35480`, `00403CC0`, `00C44090`, `00C3F760`, `00C3F650` and `00C38070`. |
+
+## Correction from docs/NATIVE_DYN_NARROW_PHASE_R138.md
+
+R138 supplies separate complete native-storage source bodies for C44090,
+C3F4D0, C35260, C3F650, C3F760 and the 403CC0 task contract. This includes
+pool/reference/event growth and the previously partial four-contact reduction
+path; the semantic projections above remain separate. The task has a complete
+one-slot callable source table. Copied-native comparisons cover 205 cases,
+126,716,636 matching bytes after identified pointer normalization, all four
+replacement slots and all 12 x87 precision/rounding settings. Dispatcher geometry,
+parallel scheduling and application/gameplay admission remain unproved.

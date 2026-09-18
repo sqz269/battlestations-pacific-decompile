@@ -66,11 +66,14 @@ try {
     # that remain. Processes from other worktrees are never touched.
     $exeRoot = (Resolve-Path $Exe).Path
     $treeRoot = (Get-Location).Path
+    # A worker has seen the pipe close while this run's processes were still
+    # alive, so the wait is long: a live mission run is never killed inside it.
+    # Twenty minutes is past any 3200-frame run; only a wedged process is stopped.
     $waited = 0
-    while ($waited -lt 30) {
+    while ($waited -lt 1200) {
         $mine = Get-Process bsp_game -ErrorAction SilentlyContinue | Where-Object { $_.Path -and $_.Path.StartsWith($treeRoot, [System.StringComparison]::OrdinalIgnoreCase) }
         if (-not $mine) { break }
-        Start-Sleep -Seconds 1; $waited += 1
+        Start-Sleep -Seconds 2; $waited += 2
     }
     if ($mine) {
         $mine | Stop-Process -Force -ErrorAction SilentlyContinue

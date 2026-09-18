@@ -132,3 +132,11 @@ complete convex table to the application's actual physics context, then recover
 remaining class/allocator dependencies and test the admitted runtime path.
 See `reports/native_dyn_sap_processing_r137.json` and its flow companion for
 byte/call evidence, annotation provenance, build inputs and sealed artifacts.
+
+## Follow-up from docs/NATIVE_DYN_NARROW_PHASE_R138.md
+
+R138 supplies the next scene dependency: the complete IntersectTask2 source
+table and pair-to-manifold/contact/event storage path. Actual collision
+dispatcher methods, other world tasks and application context admission remain
+open. The new narrow-phase fixture uses controlled dispatcher candidates and
+does not establish geometry or full simulation behavior.

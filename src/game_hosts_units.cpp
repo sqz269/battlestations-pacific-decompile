@@ -3110,11 +3110,61 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             ap.replan_timer_12c = 0.0f;
                             ap.elapsed_134 = 0.0f;
                             ap.in_range_latch_131 = false;
-                            // 009D05ED interpolates the two speeds; without the
-                            // random draw they take the class profile's own
-                            // cruising speed.
-                            ap.speed_early_80 = bsp::kPilotTorpedoCruisingAltDefault;
-                            ap.speed_late_7c = bsp::kPilotTorpedoCruisingAltDefault;
+                            // 009D0484-009D0497 seeds the two run speeds inside
+                            // BSP_BotApproachTorpedo_Reset, and they are SPEEDS:
+                            //   009D046C  mov  eax, [esi+14h]   the run profile
+                            //   009D047D  fld  [esi+24h]        the scale
+                            //   009D0491  fstp [esi+7Ch]        record[+4]*scale
+                            //   009D0497  fstp [esi+80h]        record[+8]*scale
+                            // 009D05ED and 009D0625 then jitter the pair.
+                            //
+                            // These two lines used to assign
+                            // kPilotTorpedoCruisingAltDefault, which is
+                            // Pilot/Torpedo/CruisingAlt = 500 and an ALTITUDE in
+                            // metres, not a speed. 009D1500 divides the range by
+                            // whichever slot the 15 s switch picks, and the aim
+                            // tick's clause 2 compares that time against the
+                            // steering delta in radians, so the oversized slot
+                            // broke every run off at 1268 m: inverting
+                            // 009D1500's third arm on the before-run gives
+                            // (1239.16-500)/600+1 = 2.2319 and
+                            // (1263.31-500)/600+1 = 2.2722, exactly the F0C the
+                            // census reported. docs/TORPEDO_STEERING_DELTA.md.
+                            //
+                            // SUBSTITUTION, and an unevidenced one. Neither
+                            // approach+14h nor +24h is written anywhere in
+                            // 009D0380-009D066F, so this host models neither and
+                            // has no value with any evidence behind it.
+                            //
+                            // MEASURED, do not repeat: slot.motion.max_speed
+                            // (VehicleClass+500h) was tried here and is 0.0f on
+                            // an aircraft. The class row exists - the run reports
+                            // all 77 units carrying one - but planes take no
+                            // speed from it, and 009D1500's `speed == 0` guard
+                            // then returns F0C = 0.0000 on every tick. That made
+                            // clause 2 (|delta| > F0C) fire on the first aim tick
+                            // of every run and pushed goaway entries from 96 to
+                            // 208 per aircraft. local/usn01_after.log.
+                            //
+                            // So the placeholder stands until the record's
+                            // producer is read. It is NOT a speed: it is
+                            // Pilot/Torpedo/CruisingAlt, an altitude in metres,
+                            // and it is here only because it is the value this
+                            // host has always used and the one the before-run
+                            // was measured against. Note the native's own metric
+                            // divides by 600.0 (00D20198) a second, which is not
+                            // a physical aircraft speed either, so F0C is an
+                            // urgency number rather than an ETA and the right
+                            // magnitude for these slots cannot be argued from
+                            // dimensions alone. docs/TORPEDO_STEERING_DELTA.md.
+                            owner_.log.unimplemented(
+                                "TorpedoApproach::run_profile_record_14h", "009d0484");
+                            const bsp::TorpedoRunSpeeds seeded =
+                                bsp::torpedo_seed_run_speeds_009d0484(
+                                    bsp::kPilotTorpedoCruisingAltDefault,
+                                    bsp::kPilotTorpedoCruisingAltDefault, 1.0f);
+                            ap.speed_early_80 = seeded.speed_early_80;
+                            ap.speed_late_7c = seeded.speed_late_7c;
                             // ctl+3D0h[0], the flight leader: the only task
                             // whose 0099B740 raises the shared attack mode.
                             bool lead_taken = false;
@@ -3412,6 +3462,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 s_.torpedo_approach);
                         }
                         float unit_heading_vtable50() override {
+                            // 009D1679 CALL EDX with EDX = [[approach+4]+50h].
+                            // Slot 50h on an aircraft is 0074E260
+                            // BSP_PlaneUnitInstance_GetHeading, FLD [ECX+0C6Ch]
+                            // / RET, not the ship override 006DFD60 FLD
+                            // [ECX+1050h]. 00D05F20 is the vtable
+                            // BSP_PlaneUnitInstance_Construct installs at
+                            // 007CFD78, and 0074E260 is its slot 50h.
+                            // docs/TORPEDO_STEERING_DELTA.md.
                             return heading_;
                         }
                         // approach+CCh's target entity is not modelled, so the
@@ -3492,7 +3550,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void run_torpedo_aim_tick_009d15f0(float dt) {
                         const bsp::TorpedoApproachState& ap = unit_.torpedo_approach;
                         AimTickBinding binding(owner_, unit_);
-                        binding.heading_ = owner_.pose_heading_radians(unit_);
+                        // unit+C6Ch, which 007C1900 writes and the pilot planner
+                        // subtracts at 0099DEB8. It used to be
+                        // pose_heading_radians, a bare atan2 over pose row 2,
+                        // which is the producer of the SHIP field unit+1050h.
+                        // Both reduce to atan2(fx, fz) on a well-formed pose, so
+                        // this does not move the delta; what it restores is
+                        // 007C1900's latch, which leaves the previous heading in
+                        // place when the forward axis is near vertical.
+                        binding.heading_ = unit_.plane_heading_c6c;
                         bsp::TorpedoAimTickState in;
                         in.range_90 = ap.range_90;
                         in.bearing_94 = ap.bearing_94;
@@ -3528,6 +3594,39 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const bsp::TorpedoAimTickResult r =
                             bsp::torpedo_aim_tick_full_009d15f0(binding, in, dt);
                         ++unit_.torpedo_aim_ticks;
+                        // Packet cc8_torpedo_steering_delta's per-tick census.
+                        // Every heading in one row so the convention question is
+                        // answerable from a run rather than from arithmetic:
+                        // the aim tick's own heading (slot 50h, unit+C6Ch), the
+                        // ship-convention hull heading it used to be given, the
+                        // bearing the delta is measured from, the delta itself
+                        // and the cone it is tested against at 009D2209.
+                        if ((unit_.torpedo_aim_ticks % 50) == 1) {
+                            owner_.log.notef("  torpedo %-12s aim census tick=%d "
+                                "cmd_2C0=%.4f yaw_C6C=%.4f hull_1050=%.4f "
+                                "bearing_94=%.4f delta_F10=%.4f |delta|_F18=%.4f "
+                                "F0C=%.4f F14=%.1f cone_open=%d "
+                                "yaw_desired=%.4f yaw_current=%.4f range_90=%.1f",
+                                unit_.row.name.c_str(), unit_.torpedo_aim_ticks,
+                                static_cast<double>(r.commanded_heading_2c0),
+                                static_cast<double>(unit_.plane_heading_c6c),
+                                static_cast<double>(
+                                    owner_.pose_heading_radians(unit_)),
+                                static_cast<double>(ap.bearing_94),
+                                static_cast<double>(
+                                    bsp::wrapped_angle_subtract_00438b10(
+                                        r.commanded_heading_2c0,
+                                        unit_.plane_heading_c6c)),
+                                static_cast<double>(r.turn_magnitude_f18),
+                                static_cast<double>(r.time_to_target_f0c),
+                                static_cast<double>(r.range_f14),
+                                r.gate_cone ? 1 : 0,
+                                static_cast<double>(
+                                    unit_.plan_slots[bsp::kPilotSlotYaw].desired),
+                                static_cast<double>(
+                                    unit_.plan_slots[bsp::kPilotSlotYaw].current),
+                                static_cast<double>(ap.range_90));
+                        }
                         unit_.torpedo_aim_heading_last = r.commanded_heading_2c0;
                         // 009D1D16 / 009D1D1E write plan+2C0h and plan+2CCh.
                         // docs/PILOT_TASK_HEADING_ARM.md: that pair is the plan
