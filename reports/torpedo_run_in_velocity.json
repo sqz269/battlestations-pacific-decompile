@@ -1,0 +1,254 @@
+{
+ "packet": "cc8_torpedo_run_in_velocity",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/TORPEDO_RUN_IN_VELOCITY.md",
+ "tree_base": "ace4632df",
+ "question": "Why had the plane's velocity come apart from its nose at the torpedo release instant, and what commands the run-in speed and altitude?",
+ "answer": "The velocity left the nose because the ONLY term that couples them was multiplied by zero. 007DBD3A/007DBD50 damp the body lateral velocity ctl+3Ch by desc+174h XDrag and the body vertical velocity ctl+40h by desc+170h YDrag, scaled by 007D92B0's response curve; nothing else in the native brings a rotated plane's velocity back onto its nose, because 0085E4D0 turns the pose and leaves the velocity where it is. PlaneFreeFlightClass declares x_drag and y_drag 0.0f and this host never filled them, so src/plane_flight.cpp:348-349 computed the right rule times zero. Fixed at the producer: the vehicle-class row reader now loads XDrag/YDrag/MaxSpd/TravelSpeed and the free-flight arm fills the class. The run-in SPEED is the spawn seed and nothing else: the host hard-coded 141.666672 m/s, which is the TravelSpeed of four rows in this installation, while both torpedo bombers author 61.111111 (220 km/h). There is no thrust or drag term in this host (PlaneFreeFlightState::thrust_accel and drag_accel are never set), so the commanded throttle cannot move a plane's speed even when it is published, and it is not published: r.commanded_throttle_2c8 is stored into a field nothing reads. Nothing commands an ALTITUDE at all - the aim tick's cmd+2BCh/cmd+2D0h outputs are dropped and command_altitude_and_throttle is an empty override - so the plane holds its 700 m spawn altitude. cmd+278h/+27Ch are NOT the altitude pair: 009D1F4A writes the constant 1.0 from 00D7A24C and 009D1F55 the byte 1.",
+ "coverage": "complete for the body-damping block 007DBD37-007DBE0D and the throttle product 009D1BB8-009D1D39 read to cmd+2C8h; partial for the B fold's input slot [ESP+14h], which was taken by frame position and not traced through every PUSH/POP; desc+A4h, the altitude fold's knee, is unread.",
+ "calls": [
+  {
+   "address": "007dbd61",
+   "native": "007d92b0",
+   "function": "007db680",
+   "what": "r = AeroResponseCurve(forward_speed / StallSpd), the scale on both damping terms"
+  },
+  {
+   "address": "007dbdbd",
+   "native": "00419010",
+   "function": "007db680",
+   "what": "the vertical damping clamp bound, Interp(0.5, 1.0, 20.0, 100.0, unit+908h)"
+  },
+  {
+   "address": "009d1bcc",
+   "native": "00438aa0",
+   "function": "009d15f0",
+   "what": "the commanded heading, wrapped into [0, 2pi), stored to cmd+2C0h at 009D1D16"
+  },
+  {
+   "address": "009d1c0b",
+   "native": "00419010",
+   "function": "009d15f0",
+   "what": "throttle fold A: Interp(-1.0, 2.2, -0.2, 1.0, unit+C64h), the pitch boost"
+  },
+  {
+   "address": "009d1c42",
+   "native": "00419010",
+   "function": "009d15f0",
+   "what": "throttle fold B: Interp(1.5, 0.1, 2.0, 1.0, [ESP+14h]), the time cut"
+  },
+  {
+   "address": "009d1cca",
+   "native": "00419010",
+   "function": "009d15f0",
+   "what": "throttle fold D: Interp(desc+A4h, 0.1, 3*desc+A4h, 1.6, unit+100h), the altitude cut"
+  },
+  {
+   "address": "009d20b4",
+   "native": "00419010",
+   "function": "009d15f0",
+   "what": "the release altitude gate value, Interp(0.4, 40.0, 1.0, 25.0, time_to_target); 009D20C4 passes only below it, so 700 m cannot arm the aim tick's release"
+  }
+ ],
+ "named_routines": [
+  {
+   "native": "007db680",
+   "name": "BSP_PlaneFlight_CoreLaw",
+   "abi": "__thiscall(controller, float step, float, float, int), Ghidra body 007DB680-007DC82A",
+   "coverage": "the damping block 007DBD37-007DBE0D complete; the rest as docs/PLANE_FREE_FLIGHT_PHYSICS.md records",
+   "what": "007DBD3A pairs desc+174h XDrag with the body lateral velocity ctl+3Ch (EBX, written once at 007DB6AE as ESI+3Ch and pushed at 007DB6B1) and 007DBD50 pairs desc+170h YDrag with ctl+40h. dyn+04h and dyn+08h take the products scaled by 007D92B0's return. This is the only velocity-to-nose coupling in the free-flight law."
+  },
+  {
+   "native": "007d92b0",
+   "name": "BSP_PlaneFlight_AeroResponseCurve",
+   "abi": "(float speedRatio) on the stack, RET 4, body 007D92B0-007D9358",
+   "coverage": "complete, unchanged from cc7_plane_flight_core_law",
+   "what": "the scale on both damping terms; 1.0 at any speed above DragRangeMax * StallSpd, which 61.1 m/s clears for both torpedo bombers"
+  },
+  {
+   "native": "009d15f0",
+   "name": "BSP_BotStateTorpedoAim_Tick",
+   "abi": "void __thiscall(BotStateTorpedoAim*, float dt), RET 4, Ghidra body 009D15F0-009D2379",
+   "coverage": "partial: the throttle product 009D1BB8-009D1D39 and the altitude gate 009D20B4-009D20C4 read to their end here; the rest as docs/TORPEDO_AIM_TICK.md records",
+   "what": "cmd+2C8h = min(1.2 [00CE3814], A*B*C*D) with A the unit+C64h pitch fold, B the [ESP+14h] time fold, C desc+25Ch * 1.2 [00CEC160] and D the unit+100h altitude fold. 009D1CAF is D8 C9 FMUL ST0,ST1, which is what leaves desc+A4h as the fold's x0 and 3*desc+A4h as its x1."
+  },
+  {
+   "native": "007c6340",
+   "name": "BSP_Plane_ChooseSpawnFlightState",
+   "abi": "__fastcall(unit), body 007C6340-007C64F5",
+   "coverage": "unchanged from cc2_plane_ground_ops; this packet only binds its seed field",
+   "what": "seeds the spawn airspeed from desc+18Ch TravelSpeed. This installation authors 61.111111 for both torpedo bombers, not the 141.666672 this host hard-coded."
+  },
+  {
+   "native": "0092d730",
+   "name": "BSP_UnitController_GetBodyAxisSpeed",
+   "abi": "float __thiscall(controller), RET 0, body 0092D730-0092D76E",
+   "coverage": "complete, unchanged from cc8_torpedo_release_geometry",
+   "what": "the measurement the packet is about: the dot of 00C31F40's linear velocity with row 3 of 00C32000's axis matrix"
+  },
+  {
+   "native": "009f9ce0",
+   "name": "BSP_BotApproach_ConstructSpeedReference",
+   "abi": "as the existing ledger record; 009F9D30 is inside its body",
+   "coverage": "partial: only the ratio max(1.0, desc+188h / ReferenceSpeed) is used here",
+   "what": "the run profile's approach+24h scale on the release distances at 009D0484. desc+188h MaxSpd is now loaded; the divisor is still substituted."
+  }
+ ],
+ "no_ghidra_function": [],
+ "host_methods": [
+  {
+   "host": "GameMissionLuaHost vehicle-class row: XDrag, YDrag, MaxSpd, TravelSpeed",
+   "file": "src/game_hosts_lua.cpp",
+   "kind": "binding",
+   "note": "the spellings src/plane_class_fields.cpp:279-292 records against 007D2189, 007D2150, 007D238A and 007D23C3"
+  },
+  {
+   "host": "free-flight arm fills PlaneFreeFlightClass",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "binding",
+   "note": "cls.x_drag, cls.y_drag and cls.stall_spd, the three class fields 007DBD3A, 007DBD50 and 007DB760 read"
+  },
+  {
+   "host": "spawn airspeed from the row's TravelSpeed",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "binding",
+   "note": "007C6340 seeds from desc+18Ch"
+  },
+  {
+   "host": "approach+24h from MaxSpd / Pilot/Torpedo/ReferenceSpeed",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "binding, divisor substituted",
+   "note": "009F9CE0's ratio; the divisor is the authored KMH(300) = 83.333336 recorded against PilotBot +440h in include/bsp/bot_tasks.hpp:266, and the registry is unreachable from the units host"
+  },
+  {
+   "host": "velocity-versus-nose census, per 50 aim ticks and at every release",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "census",
+   "note": "observes 0092D730's own quantity"
+  }
+ ],
+ "authored_rows": [
+  {
+   "file": "scripts/datatables/autoload/vehicleclasses.lua (this installation, locally modified)",
+   "row": "VehicleClass[112] TBD Devastator",
+   "values": {
+    "TravelSpeed": 61.111111,
+    "MaxSpd": 69.444443,
+    "StallSpd": 19.444445,
+    "XDrag": 7,
+    "YDrag": 7,
+    "SlideRatio": 0.4,
+    "TurnRoll": 1.047198
+   }
+  },
+  {
+   "file": "scripts/datatables/autoload/vehicleclasses.lua",
+   "row": "VehicleClass[113] TBF Avenger",
+   "values": {
+    "TravelSpeed": 61.111111,
+    "MaxSpd": 72.222221,
+    "StallSpd": 18.611111,
+    "XDrag": 7,
+    "YDrag": 7
+   }
+  }
+ ],
+ "contracts": [
+  "desc+A4h, the altitude fold's knee, is unread and not in the plane class field table.",
+  "[ESP+14h], the B fold's input, is the time-to-target slot by frame position only.",
+  "PlaneFreeFlightState::thrust_accel and drag_accel (007D9050, unit+CC8h, 007D9140) are unmodelled, so no throttle command can change a plane's speed in this host.",
+  "The commanded altitude cmd+2BCh / cmd+2D0h is computed and dropped; command_altitude_and_throttle is an empty override."
+ ],
+ "corrections": [
+  {
+   "target": "src/torpedo_approach_update.cpp torpedo_aim_tick_009d15f0 (no caller in this host)",
+   "was": "cmd+2BCh = the altitude floor; cmd+2E8h = 0.0",
+   "is": "009D1EDD stores the quotient 009D1E9A produces, clamped to [00D21318]=0.05625 and [00D057E0]=0.872665; 009D1CFA loads [00D06874]=1.4 into cmd+2E8h",
+   "evidence": "listing 009D1E8E-009D1EE5 and 009D1CFA-009D1D02"
+  },
+  {
+   "target": "include/bsp/torpedo_aim_tick.hpp:226-227 and src/game_hosts_units.cpp:3833-3834",
+   "was": "unit+C64h named unit_bank_c64 and fed plane_latched_controls[0] (the latched yaw axis); unit+C68h named unit_bank_rate_c68 and fed 0.0f",
+   "is": "unit+C64h is the PITCH angle (007C1966 FSTP [ESI+0C64h]) and unit+C68h the BANK angle (007C1A94), per docs/PLANE_ATTITUDE_ANGLES.md sections 1 and 3",
+   "evidence": "007C1966, 007C1A94; consumers 009D1BDB, 009D1DE6, 009D2165",
+   "status": "reported, NOT applied - it moves the release gates and belongs to the aim-tick owner"
+  }
+ ],
+ "validation": {
+  "runner": "tools/run_game.ps1, 3200 frames, --mission-frames 3000 at 0.05 s, both columns from this worktree; the before column is this branch with the three bindings switched off in a temporary compile-time constant that was removed before the commit, so both columns share one source tree and one census.",
+  "runs": [
+   {
+    "mission": "USN01",
+    "phase": "before",
+    "log": "local/usn01_before.log",
+    "release_unit": "ConTBD1",
+    "release_velocity_magnitude_mps": 688.59,
+    "release_angle_to_pose_row2_deg": 90.6,
+    "release_body_axis_speed_0092d730_mps": -6.76,
+    "release_altitude_motion_position_m": -14556.0,
+    "release_altitude_published_pose_m": 700.0,
+    "torpedo_drops": 1,
+    "water_entry_breakups": 1,
+    "swims_started": 0,
+    "torpedo_hits": 0,
+    "torpedo_damage": 0.0,
+    "mission_hits": 25,
+    "kills": 1,
+    "mission_damage": 229.5,
+    "distance_moved_m": 2132014.42,
+    "pose_rotations": 28129,
+    "worst_airspeed_in_census_mps": 688.59
+   },
+   {
+    "mission": "USN01",
+    "phase": "after",
+    "log": "local/usn01_after.log",
+    "release_unit": null,
+    "angle_to_pose_row2_deg_tick1": 0.2,
+    "angle_to_pose_row2_deg_tick351": 0.6,
+    "worst_airspeed_in_census_mps": 64.5,
+    "altitude_at_tick351_m": "873 to 877",
+    "torpedo_drops": 0,
+    "water_entry_breakups": 0,
+    "swims_started": 0,
+    "torpedo_hits": 0,
+    "torpedo_damage": 0.0,
+    "mission_hits": 23,
+    "kills": 1,
+    "mission_damage": 220.0,
+    "distance_moved_m": 2180805.38,
+    "pose_rotations": 11907
+   },
+   {
+    "mission": "USN02",
+    "phase": "before",
+    "log": "local/usn02_before.log",
+    "mission_hits": 161,
+    "kills": 3,
+    "mission_damage": 19061.0,
+    "first_hit_s": 31.8,
+    "swims_started": 44,
+    "torpedo_drops": 0,
+    "snaps": 54920,
+    "plane_distance_moved_m": 0.0,
+    "pose_rotations": 0
+   },
+   {
+    "mission": "USN02",
+    "phase": "after",
+    "log": "local/usn02_after.log",
+    "mission_hits": 161,
+    "kills": 3,
+    "mission_damage": 19061.0,
+    "first_hit_s": 31.8,
+    "swims_started": 44,
+    "torpedo_drops": 0,
+    "snaps": 54920,
+    "plane_distance_moved_m": 0.0,
+    "pose_rotations": 0
+   }
+  ],
+  "attribution": "USN02 is bit-identical in every printed figure and carries no aircraft at all (distance_moved 0.00 m, pose_rotations 0, thinks 0), so nothing in this packet can reach it; its 44 ship-tube swims are the no-regression evidence. In USN01 the velocity-to-nose angle goes from 84-91 degrees to 0.2 degrees and the worst airspeed from 688.59 m/s to 64.50 m/s, which also terminates the banked-plane spiral docs/PLANE_FREE_FLIGHT_PHYSICS.md left open: XDrag/YDrag were the missing damping. The one before-run drop was made by an aircraft at -14556 m doing 688 m/s and produced no torpedo damage in either column, so it is an artefact of that spiral rather than a lost capability. The 9.5 points of mission damage (229.5 to 220.0) is the strafing geometry moving with every plane's trajectory; no torpedo damage exists in either column.",
+  "no_swim_next_gate": "publish_pose has two call sites in src/game_hosts_units.cpp - unit creation and the ship body path - and the plane path never republishes. Every consumer of unit_pose, including the gunnery drop origin, sees each aircraft frozen at its spawn placement, which is what produced the '700 m' release altitude in a log whose own census read -14556 m at the same instant. No air-dropped round can leave from where the aircraft is until that call exists."
+ }
+}
