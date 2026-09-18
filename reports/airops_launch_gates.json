@@ -1,0 +1,133 @@
+{
+ "packet": "cc8_airops_launch_gates",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/AIROPS_LAUNCH_GATES.md",
+ "tree_base": "main merged at the start of the packet",
+ "result": "Both gates read whole and implemented. IsReadyToSendPlanes takes its false arm only when the class test against 45h passes AND the entity+720h byte is set, so a mother ship never takes it; everything else is 006BF620's five tests over the block. LaunchSquadron delegates to 006CC690 and returns its slot index plus one, which is the 1-based index into the same slots array GetProperty publishes. 006CC690 writes the slot and asks 006C7490 to start the launch; it creates no squadron.",
+ "question": "Read 00895D20 and 0089E3C0 whole, each with the class test through vtable+5Ch against 45h cited, and implement them.",
+ "answer": "00895D20: 00895E39 takes the block with the entity in ECX and DL zero; 00895E44 loads vtable+5Ch and 00895E47 pushes 45h; 00895E4F jumps to the block test when the class test fails and 00895E58 when the byte at entity+720h is clear, so only both together push false at 00895E5A. Otherwise 00895E5F calls 006BF620 with the block in ECX. 006BF620 requires block+1Ch clear, block+1Dh clear, block+7Ch non-null, that object's +5Dh clear and block+38h zero. block+1Ch is runwayFailure and block+1Dh is hangarFailure, named from 006CADD0 mode 3, whose LEA descriptors at 006CBE20 and 006CBE62 sit immediately before the terminators carrying those names at 006CBE35 and 006CBE77. block+38h is the launch already in progress, named because 006BF620 requires it zero and 006CC690 branches on it. 0089E3C0: argument 0 is the entity, argument 1 the class token through 00964790, and the arm starts as class+134h and is replaced by argument 3 only when the argument count is 4; argument 2 is the count. It calls 006BF620 again, then 006CC690, then BSP_SEntity_InitAll, and pushes the result plus one. 006CC690: 006CC6D6 picks a slot with 006C7210, 006CC6E6 forms slot = index * 58h + block[4Ch], 006CC6E9 resolves the class, 006CC6F5 writes it only when it differs and 006CC704 then sets slot+10h to class+134h, 006CC70F writes the count to slot+8h and 006CC712 overwrites slot+10h with the argument so the argument always wins. 006CC715 branches on block+38h: zero reaches 006CC733 CALL 006C7490 with the block in ECX and the slot index and a zero pushed, non-zero reaches 006CC71F CALL 006CA770 to put the stock back and 006CC727 CALL 006CA640 to queue. 006C7210 walks the slots at stride 58h while the index is below block+50h and takes the first whose state at slot+2Ch is 1 or 5, continuing into the growth path when none is.",
+ "coverage": "complete for both bindings, for 006BF620, 006CC690 and 006C7210; 006C7490, 006CA640, 006CA770 and what block+7Ch points at are contracts.",
+ "calls": [
+  {
+   "address": "00895e3b",
+   "native": "006bcd20",
+   "note": "the air-operations block getter"
+  },
+  {
+   "address": "00895e5f",
+   "native": "006bf620",
+   "note": "the block readiness test"
+  },
+  {
+   "address": "006cc6d6",
+   "native": "006c7210",
+   "note": "the slot pick"
+  },
+  {
+   "address": "006cc6e9",
+   "native": "007b8a80",
+   "note": "resolves the class token"
+  },
+  {
+   "address": "006cc71f",
+   "native": "006ca770",
+   "note": "puts the stock back when queueing"
+  },
+  {
+   "address": "006cc727",
+   "native": "006ca640",
+   "note": "queues the request"
+  },
+  {
+   "address": "006cc733",
+   "native": "006c7490",
+   "note": "starts the launch"
+  }
+ ],
+ "named_routines": [
+  {
+   "native": "00895d20",
+   "ledger_name": "IsReadyToSendPlanes",
+   "evidence": "the listing above; the false arm needs both the 45h class test and entity+720h",
+   "status": "read whole and implemented"
+  },
+  {
+   "native": "0089e3c0",
+   "ledger_name": "LaunchSquadron",
+   "evidence": "delegates to 006CC690 and pushes its result plus one",
+   "status": "read whole and implemented"
+  },
+  {
+   "native": "006bf620",
+   "ledger_name": "the block readiness test",
+   "evidence": "five tests: block+1Ch, +1Dh, +7Ch, that object's +5Dh, and +38h",
+   "status": "read whole and implemented"
+  },
+  {
+   "native": "006c7210",
+   "ledger_name": "the launch slot pick",
+   "evidence": "first slot whose state at +2Ch is 1 or 5, stride 58h, bounded by block+50h",
+   "status": "read for its rule and implemented"
+  },
+  {
+   "native": "006cc690",
+   "ledger_name": "the launch request",
+   "evidence": "writes slot+4h, +8h and +10h, then branches on block+38h",
+   "status": "read whole and implemented"
+  },
+  {
+   "native": "006c7490",
+   "ledger_name": "the launch start",
+   "evidence": "called at 006CC733 with the block in ECX and the slot index and a zero pushed",
+   "status": "not read; it is what fills slot+28h and is the next packet"
+  }
+ ],
+ "no_ghidra_function": [],
+ "host_methods": [
+  {
+   "method": "bsp::air_ops_is_ready_to_send_planes_00895d20",
+   "native": "00895d20",
+   "file": "src/air_operations.cpp"
+  },
+  {
+   "method": "bsp::air_ops_pick_launch_slot_006c7210",
+   "native": "006c7210",
+   "file": "src/air_operations.cpp"
+  },
+  {
+   "method": "bsp::air_ops_launch_squadron_006cc690",
+   "native": "006cc690",
+   "file": "src/air_operations.cpp"
+  },
+  {
+   "method": "GameMissionLuaHost::run_is_ready_to_send_planes_00895d20",
+   "native": "00895d20",
+   "file": "src/game_hosts_lua.cpp"
+  },
+  {
+   "method": "GameMissionLuaHost::run_launch_squadron_0089e3c0",
+   "native": "0089e3c0",
+   "file": "src/game_hosts_lua.cpp"
+  }
+ ],
+ "authored_rows": [],
+ "contracts": [
+  "block+7Ch is a substitution: the object it points at has no counterpart here, so a deck the scene loaded reports it present and unblocked. Without it readiness could never be true and the gate would be answered by an absence rather than by the rule.",
+  "class+134h is not authored under any key in this installation's vehicleclasses.lua, so the arm defaults to zero for a three-argument call where the native would use the class's own value.",
+  "entity+720h is not modelled, so the airfield arm of 00895D20 never fires here.",
+  "006C7490 is unread, so nothing fills slot+28h and the Lua `squadron` key stays absent. The mission script's line after LaunchSquadron reads that key, so the expected outcome of the next run is progress past commandhelpers.lua:2496 and possibly a new failure there, not a launched strike.",
+  "The 006C0F00 count clamp from the previous packet is still not modelled."
+ ],
+ "corrections": [
+  "Caught before commit: the document's first draft gave addresses for 006CC690 taken from the decompiler rather than a listing, and they were wrong. They are replaced with the listing's own, and the call rows below are the verified ones.",
+  "No retraction of a native-behaviour claim in this packet."
+ ],
+ "validation": {
+  "runner": "tools/run_game.ps1",
+  "outcome": "blocked",
+  "build": "clean, both ctest suites pass",
+  "reason": "Session 1, where the agents run, is disconnected, so no window, D3D device or FMOD output can be created.",
+  "command": "./tools/run_game.ps1 -Log local/usn04_gates.log -WaitSeconds 2400 -- --frames 3200 --press-start-frame 30 --menu-select USN04 --mission-frames 3000 --mission-frame-seconds 0.05",
+  "expected": "`summary mission airops gates` with ready_calls above zero if the script reached the gate, ready_true above zero if a deck answered yes, and started above zero if a slot was written; then whether `script call Think failed` has moved off commandhelpers.lua:2496. Progress, not a launched strike."
+ }
+}
