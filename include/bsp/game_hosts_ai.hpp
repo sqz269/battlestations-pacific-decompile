@@ -68,6 +68,12 @@ struct GameAiPartyRow {
 
 struct GameAiSummary {
     int game_mode{0};
+    // 00A335D0's record, as 009FFC80 selected it. docs/AI_TUNING_GLOBALS.md.
+    int tuning_mode{0};
+    float tuning_merge_dist{0.0f};   // record +208h, AutoMerge_MergeDist
+    float tuning_near_dist{0.0f};    // record +1D0h, FreeAttack_NearDist
+    float tuning_far_dist{0.0f};     // record +1D4h, FreeAttack_FarDist
+    float tuning_sticky{0.0f};       // record +1D8h, FreeAttack_ExistingTargetMul
     unsigned long long compose_passes{0};
     unsigned long long seed_candidates{0};
     unsigned long long groups_created{0};
