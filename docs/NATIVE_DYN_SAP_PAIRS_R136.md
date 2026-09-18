@@ -100,3 +100,12 @@ malformed storage, raw-game admission or gameplay. Callback-driven mutation of
 storage and the retained C40D80 unsigned-underflow branch were not exercised here.
 See `reports/native_dyn_sap_pairs_r136.json` and its flow companion for exact
 CALL rows, byte evidence, annotations, build provenance and sealed artifacts.
+
+## Correction from docs/NATIVE_DYN_SAP_PROCESSING_R137.md
+
+R137 supplies the eight endpoint/update/dispatch bodies, including the distinct
+>50 pending batch path, and a complete eight-slot SAP source runtime table. All
+slots are exercised in 34 native/source paired runs matching 280,433,704 bytes
+after manager table-identity normalization. The table remains a caller-owned
+runtime contract; application context admission, native exception/RTTI metadata
+and gameplay remain open.

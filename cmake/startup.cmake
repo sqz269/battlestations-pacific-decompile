@@ -1355,3 +1355,4 @@ cmake_language(DEFER CALL include "${CMAKE_SOURCE_DIR}/cmake/native_data_placeme
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_shape_lifetime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_convex_support.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_sap_pairs.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_sap_processing.cpp)
