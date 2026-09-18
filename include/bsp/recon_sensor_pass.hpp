@@ -142,7 +142,33 @@ private:
 inline constexpr ReconDetectionLevel kReconDetectionUnknownLevel =
     ReconDetectionLevel::identified;
 
-// 008073C0's loop over 00806840, once per tick.
+// How often the native rebuild actually runs, and why a caller must not step
+// this per frame.
+//
+// 008079B0 BSP_Recon_ServicePeriodicRefresh is the only periodic caller of
+// 008073C0 (the other four are load, scene apply and two placement paths).
+// It holds a countdown at [00F874B8]: 008079B6 subtracts the frame delta,
+// 008079C8 returns while the result is still above zero, and 008079CE reloads
+// it by adding the double at 00D7A2B0, which is 3.0, clamped at 0.0 by
+// 008079EA. Only then does it walk the slot list at [00F874BC] and call
+// 008073C0 on each.
+//
+// The pass's own dt is the measured gap, not the frame delta: 008073C1 loads
+// the clock at [00F876A4], 008073CC subtracts the slot's last-pass stamp at
+// slot+2Ch and 008073D6 stores the difference into slot+30h, which is the dt
+// 00804B35 multiplies the gain by.
+//
+// This matters because the detection value does NOT carry across passes.
+// 00807480..00807490 calls 00805BE0 BSP_Recon_ResetDetection on every record
+// first, and 00805BF9 zeroes the value at record+0Ch while 00805BFE clears the
+// level at +4h. So one pass has to reach a threshold on its own: the shipped
+// `Gain` of 1.0 per second is halved to 0.5 by 00808626, and 0.5 * 3.0 = 1.5
+// clears the 0.25 blip threshold and saturates the 1.0 cap, while 0.5 * 0.05
+// (a 20 Hz frame) is 0.025 and can never clear anything. A host that steps
+// this every frame publishes `none` for every target in the world.
+inline constexpr float kReconSensorPassRefreshPeriod = 3.0f;
+
+// 008073C0's loop over 00806840, once per refresh period.
 //
 // For each side that has at least one present observer-class unit, the step
 // builds that side's observer array and runs every present unit of a different
