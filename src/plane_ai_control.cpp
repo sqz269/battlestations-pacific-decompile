@@ -602,7 +602,25 @@ PilotBotThrottleResult pilot_plan_throttle_0099d300(const PilotBotThrottleInputs
     // 0099D977-0099D998 seeds the demand from the slot's own value, and
     // 0099DBC3 adds the increment onto it.
     const float seed = in.slot_active ? in.slot_desired : in.slot_current;
-    float demand = seed + in.ground_increment;
+    float increment = 0.0f;
+    if (!in.dead_band_skips) {
+        // 0099D9A3 then 0099DA58: the error is the desired speed less the
+        // measured speed over its scale, corrected at 0099DAC8.
+        const float ratio = in.speed_scale != 0.0f
+            ? in.measured_speed / in.speed_scale : 0.0f;
+        const float error = (in.desired_speed - ratio) - in.error_correction;
+        // 0099DB9E: 00D1F3DC = -6.9444f, 00CE7D7C = -2.0f, 00D0686C = +6.9444f,
+        // 00CE3958 = +2.0f. 25 km/h of error saturates it.
+        increment = interpolate_clamped(kPilotThrottleErrorLow, -2.0f,
+                                        kPilotThrottleErrorHigh, 2.0f, error);
+        // 0099DBAB-0099DBB7: the positive side only, by the double at 00CEFF98.
+        if (increment > 0.0f) {
+            increment *= 0.6f;
+        }
+        // 0099DBBF: and by how far the slot has already been asked to move.
+        increment *= in.pending;
+    }
+    float demand = seed + increment;
     // 0099DBF4 00415690 BSP_Math_ClampFloatByRef against -1.0 (00D7A260) and
     // 1.0 (00D7A24C).
     if (demand < -1.0f) demand = -1.0f;

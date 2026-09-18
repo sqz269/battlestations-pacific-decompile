@@ -148,3 +148,69 @@ No run: reading only.
 1. **The increment chain** `0099D9A3`-`0099DBAB`, so the pure arm loses its input parameter.
 2. **`009BECD0` and `007C47F0`**, the desired speed itself.
 3. **The 25 other raising sites**, if any of them matters to a torpedo bomber.
+
+
+## The increment chain, read (packet `cc8_pilot_throttle_increment`)
+
+Appended to this doc rather than given its own, because it completes section 4's
+"remaining follow-up".
+
+`0099D99E`-`0099DBC7` is a **proportional speed controller**, and every constant on the path is
+below.
+
+```
+0099d99e  CALL 007d99c0                        ; the measured forward speed
+0099d9a3  FDIV  float ptr [EBP]                ; / plan+2B8h
+0099d9b5  FSTP  float ptr [ESP + 0x14]         ; the ratio
+0099da52  FLD   float ptr [ESI + 0x2b4]        ; the desired speed 009C189A wrote
+0099da58  FSUB  float ptr [ESP + 0x14]         ; error = desired - ratio
+0099da97  CALL  EAX                            ; unit vtable+38h
+0099daa1  CALL  0042b2f0                       ; over the vec3 at unit+AE0h..AE8h
+0099daa6  FSUBR float ptr [ESP + 0x44]         ; vtable38() - that
+0099dabe  FMUL  double ptr [0x00ce3d88]        ; * 20.0
+0099dac4  FMUL  float ptr [ESP + 0x6c]         ; * pending
+0099dac8  FSUBR double ptr [ESP + 0x54]        ; error -= the correction
+0099db29  FCOMIP                               ; the dead band, four conditions
+0099db56  JBE   0099dbcb                       ;   all four -> SKIP the increment
+0099db65  CALL  00415510                       ; plan+2ECh = min(plan+2ECh, 0.16)
+0099db9e  CALL  00419010                       ; Interp(-6.9444, -2.0, +6.9444, +2.0, error)
+0099dbb1  FMUL  double ptr [0x00ceff98]        ; positive side only, * 0.6
+0099dbbf  FMUL  float ptr [ESP + 0x6c]         ; * pending
+0099dbc3  FADD  float ptr [ESP + 0x18]         ; accumulate onto the seed
+```
+
+**The sign convention**, which is what the arm's behaviour turns on: `0099DA58` is
+`desired - measured`, so a bot flying **too fast** produces a **negative** error, the interpolation
+returns a negative increment, the demand falls, and `0099DC46`'s `max(0, -d)` turns it into air
+brake. Too slow gives a positive increment and throttle. The error enters the map in **metres per
+second** and its endpoints are `00D1F3DC` = -6.9444 and `00D0686C` = +6.9444, which are -25 and
++25 km/h, onto `00CE7D7C` = -2.0 and `00CE3958` = +2.0. So the controller saturates at 25 km/h of
+error, well inside a cruise mistake.
+
+**The clamp order** is: interpolate first, scale the positive side by `0.6`, scale by `pending`,
+accumulate, and only then clamp the accumulated demand into `[-1, 1]` at `0099DBF4` and split it at
+`0099DC2C`/`0099DC46`. The `[-1, 1]` clamp is on the demand, never on the increment.
+
+**There is no frame-time factor.** `[ESP+0x6c]`, which multiplies both the correction and the
+increment, is written at `0099D7E8`-`0099D81E` as `|slot value - plan+274h|`: the slot's `desired`
+when its `active` byte is set, its `current` otherwise, less `current`, then made positive. So it is
+**how far the slot has already been asked to move**, and it is exactly zero for a slot whose
+`desired` equals its `current` - which is every slot straight out of `0099B450`'s reset. A host that
+wires this arm and sees no throttle movement should look there first.
+
+**The dead band**, `0099DB29`-`0099DB56`, skips the whole increment when four conditions hold at
+once: `|error| <= 0.83333` (the double at `00D09450`), `ratio >= 1.0`, `desired/|ratio| <= 1.5`
+(`00CE380C`) and `0.5` (`00CE3800`) `> desired/|ratio|`. The last two together are a narrow window,
+so the band is tight.
+
+**`plan+2B8h` is a scale, not a reference speed.** `docs/PILOT_THROTTLE_CUT_RAISER.md` section 4
+calls it "a reference speed". For the subtraction at `0099DA58` to be dimensionally sound with an
+error in m/s, `plan+2B8h` has to be near-dimensionless, so "the scale the measured speed is divided
+by" is the accurate phrasing. Its own producer, `0099D756`-`0099D79A` and `0099D970`, is unread.
+
+**Still substituted**: `0099DA97`'s unit `vtable+38h` call and the vec3 at `unit+AE0h..AE8h` that
+`0042B2F0` reduces. `docs/PILOT_PLANNER_PITCH_ROLL.md`'s note 9 already lists that vec3's producer
+as open. The pure function takes the correction term as an input and says so.
+
+`pilot_plan_throttle_0099d300` now takes the measured speed, the scale, the desired speed, the
+pending magnitude, the correction and the dead-band flag, and derives the increment itself.

@@ -479,6 +479,8 @@ PilotBotRollResult pilot_plan_roll_0099e2ba(const PilotBotRollInputs& in);
 // from 0099D769, is the reference the demand divides the forward speed by.
 // docs/PILOT_BOT_THROTTLE_DEMANDS.md.
 inline constexpr float kPilotThrottleCutValue = 0.001f;    // 00D7A23C
+inline constexpr float kPilotThrottleErrorLow = -6.9444447f;  // 00D1F3DC, -25 km/h
+inline constexpr float kPilotThrottleErrorHigh = 6.9444447f;  // 00D0686C, +25 km/h
 inline constexpr float kPilotThrottleGroundCap = 0.6f;     // 00CE3D30
 
 struct PilotBotThrottleInputs {
@@ -498,11 +500,35 @@ struct PilotBotThrottleInputs {
     bool centred_block_270 = false;    // plan+270h non-null
     bool centred_byte_270 = false;     // [plan+270h + 9C2h + 8*index]
 
-    // PARTIAL: the ground demand's increment. 0099D99E-0099DBBF derives it from
-    // 007D99C0's forward speed over [EBP] and roughly 130 instructions this
-    // packet did not transcribe, with the positive branch scaled by the double
-    // 0.6 at 00CEFF98 (0099DBB1). The caller supplies the accumulated increment.
-    float ground_increment = 0.0f;
+    // The demand's increment, 0099D99E-0099DBC7, now derived here rather than
+    // supplied. It is a proportional speed controller:
+    //
+    //   ratio = measured_speed / speed_scale                 ; 0099D99E, 0099D9A3
+    //   error = desired_speed - ratio                        ; 0099DA52, 0099DA58
+    //   error -= correction                                  ; 0099DAC8
+    //   inc    = Interp(-6.9444, -2.0, +6.9444, +2.0, error) ; 0099DB9E
+    //   if (inc > 0) inc *= 0.6                              ; 0099DBB1, 00CEFF98
+    //   inc   *= pending                                     ; 0099DBBF
+    //
+    // The interpolation's endpoints are +-6.9444 m/s, which is 25 km/h, mapped
+    // onto +-2.0, so the controller saturates a quarter of the way to a typical
+    // cruise error. `pending` is |slot value - plan+274h| from 0099D7E8-0099D81E,
+    // so the increment is scaled by how far the slot has already been asked to
+    // move and is ZERO for a slot whose desired equals its current - which is
+    // every slot straight out of 0099B450's reset.
+    float measured_speed = 0.0f;   // 007D99C0's forward speed
+    float speed_scale = 1.0f;      // plan+2B8h, EBP from 0099D769
+    float desired_speed = 0.0f;    // plan+2B4h, which 009C189A writes
+    float pending = 0.0f;          // |slot value - plan+274h|, 0099D7E8-0099D81E
+    // SUBSTITUTION, labelled: 0099DA97's unit vtable+38h call minus 0042B2F0
+    // over the vec3 at unit+AE0h, scaled by the double 20.0 at 00CE3D88 and by
+    // `pending`, is subtracted from the error at 0099DAC8. Neither the vtable
+    // slot nor that vec3's producer is read, so the caller supplies the term.
+    float error_correction = 0.0f;
+    // 0099DB29-0099DB56, the dead band: when all four of |error| <= 0.8333
+    // (00D09450), ratio >= 1.0, desired/|ratio| <= 1.5 (00CE380C) and
+    // 0.5 (00CE3800) > desired/|ratio| hold, 0099DB56 skips the whole increment.
+    bool dead_band_skips = false;
 };
 
 struct PilotBotThrottleResult {
