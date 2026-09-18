@@ -94,7 +94,7 @@
   "limitations": [
     "heading_error_last_mean rises from 0.147 to 1.191 rad across the fix. It is a last-frame sample and the flight now arrives at 800 m and manoeuvres instead of still running in from 5.1 km; two of the five aircraft end at 0.015 and 0.048 rad. Not independently attributed beyond that reading.",
     "unit+340h's constructor default was not located; no store form reaches it in BSP_PlaneUnitInstance_Construct, so it is zero-fill or untouched. Either way the max() pins dtScale to 1.0.",
-    "Four of the nine InterpolateClamped call sites in 0099D300 (0099D95C, 0099DB9E, 0099DD35, 0099E8C8) are outside this packet's arms and were enumerated but not audited. PARTIAL."
+    "0099D95C's y1 is a value carried in on the x87 stack from before the block; it was not traced to its producer, because the power arm is not reconstructed. A packet that reconstructs that arm must establish it first. PARTIAL."
   ],
   "interpolate_clamped_audit": {
     "note": "00419010 clamps between its two y endpoints in whichever order they arrive, so a reversed pair is silent. Nine call sites in 0099D300, not the five the earlier follow-up named: 0099E4CC is FMUL [ESP+40h] and 0099E5FC is FSTP [ESP+54h], neither is a call.",
@@ -123,25 +123,28 @@
         "site": "0099e390",
         "args": "x0=-t y0=+1.0f x1=+t y1=-1.0f x=A",
         "verdict": "correct"
-      }
-    ],
-    "not_audited": [
+      },
       {
         "site": "0099d95c",
-        "owner": "the power arm"
+        "args": "x0=-(tuning+B0h) via XMM4=-0.0f y0=tuning+B4h x1=0.0f y1=x87 carry-in x=[ESP+24h]",
+        "verdict": "listing recorded; the power arm has no reconstruction, nothing to reverse"
       },
       {
         "site": "0099db9e",
-        "owner": "the air-brake arm"
+        "args": "x0=00D1F3DC=-6.94444466 y0=00CE7D7C=-2.0f x1=00D0686C=+6.94444466 y1=00CE3958=+2.0f x=[ESP+24h]",
+        "verdict": "listing recorded; the air-brake arm has no reconstruction, nothing to reverse"
       },
       {
         "site": "0099dd35",
-        "owner": "docs/PILOT_PLANNER_PITCH_ROLL.md section 2a, the pitch-target slew"
+        "args": "x0=007C4810's result y0=5deg (00CEDF5C) x1=class+18Ch TravelSpeed y1=20deg (00CE398C) x=speed",
+        "verdict": "correct; confirms PILOT_PLANNER_PITCH_ROLL section 2a on the 0099DD31 PUSH ECX shift, and is unreconstructed"
       },
       {
         "site": "0099e8c8",
-        "owner": "the yaw arm"
+        "args": "x0=tuning+7Ch y0=0.0f x1=tuning+80h y1=3.0f (00CE3854) x=|bank|",
+        "verdict": "correct; matches plan_yaw_0099e81a"
       }
-    ]
+    ],
+    "result": "All nine sites in 0099D300 now carry a verdict. One was reversed (0099E1CC, fixed). Four are correct. Three are in arms with no reconstruction, so their listing order is recorded for whoever reconstructs them. No source change came out of the final four, so no run to attribute."
   }
 }

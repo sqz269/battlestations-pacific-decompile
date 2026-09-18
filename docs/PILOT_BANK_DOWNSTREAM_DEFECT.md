@@ -218,10 +218,34 @@ Push addresses for the four confirmed sites, so the verdicts are checkable witho
   `[00D7A260] = -1.0f` `y1`, `0099E36B` `x = [ESP+2Ch]`. `t` itself is built at
   `0099E344`-`0099E367` as `RollSpd · (RollSpd / (RollAccel · WaggleLimit))`.
 
-The remaining four sites are outside this packet's arms and were enumerated but **not** audited:
-`0099D95C` and `0099DB9E` in the power and air-brake arms, `0099DD35` in the pitch-target slew
-(`docs/PILOT_PLANNER_PITCH_ROLL.md` §2a, which already records the `PUSH ECX` at `0099DD31`
-shifting its arguments), and `0099E8C8` in the yaw arm. Labelled partial.
+The remaining four sites are now audited too (packet `cc8_planner_interp_audit`), so all nine have
+a checkable verdict:
+
+| site | `x0` | `y0` | `x1` | `y1` | `x` | verdict |
+| --- | --- | --- | --- | --- | --- | --- |
+| `0099D95C` | `-(tuning+B0h)` | `tuning+B4h` | `0.0f` | x87 carry-in | `[ESP+24h]` | listing recorded, **no reconstruction** |
+| `0099DB9E` | `-6.94444466` | `-2.0f` | `+6.94444466` | `+2.0f` | `[ESP+24h]` | listing recorded, **no reconstruction** |
+| `0099DD35` | `007C4810`'s result | `5°` | `class+18Ch` `TravelSpeed` | `20°` | speed | **correct**, and unreconstructed |
+| `0099E8C8` | `tuning+7Ch` | `0.0f` | `tuning+80h` | `3.0f` | `\|bank\|` | **correct** |
+
+Only `0099E8C8` has a reconstruction, in `plan_yaw_0099e81a`, and its argument order matches the
+pushes at `0099E8C2`, `0099E8BC`, `0099E8B2`, `0099E8A8` and `0099E8A4`. No source change came out
+of this audit, so there is no run to attribute.
+
+Notes on the three unreconstructed ones, recorded so a later packet does not have to re-derive them:
+
+* `0099D95C` (the power arm). The bytes settle a listing that reads oddly:
+  `0099D943 D9 5C 24 0C` really is `FSTP [ESP+0Ch]`, and the value it pops is **carried in on the
+  x87 stack** from before `0099D92D`, not produced in the block. `x0` is the SSE store at
+  `0099D957` of `XMM4 - tuning+B0h`, and `XMM4` is `00D7A208` = `-0.0f` throughout this function,
+  so `x0 = -(tuning+B0h)`. Anyone reconstructing this arm has to establish the carry-in first.
+* `0099DB9E` (the air-brake arm). All four endpoints are literals:
+  `00D1F3DC = -6.94444466`, `00CE7D7C = -2.0f`, `00D0686C = +6.94444466`, `00CE3958 = +2.0f`. A
+  symmetric ramp, so a reversed pair here would flip the sign of the result rather than hide.
+* `0099DD35` (the pitch-target slew). The order confirms
+  `docs/PILOT_PLANNER_PITCH_ROLL.md` §2a: `007C4810`'s result is `x0`, because the `PUSH ECX` at
+  `0099DD31` shifts the four floats stored under `SUB ESP,0x10` up by one slot, and `00419010`'s
+  `RET 14h` then balances the `0x10 + 4` exactly.
 
 ## Follow-up
 
