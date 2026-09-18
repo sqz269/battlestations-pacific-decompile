@@ -1,0 +1,3642 @@
+{
+  "packet": "orch4-native-game-container-lifetime-r125",
+  "status": "nine_complete_normal_bodies_original_compared_seven_actual_parent_defaults_bound",
+  "scope": {
+    "routines": [
+      {
+        "address": "004bf8e0",
+        "inclusive_end": "004bf925",
+        "bytes": 70,
+        "coverage": "complete normal body"
+      },
+      {
+        "address": "004bf930",
+        "inclusive_end": "004bf994",
+        "bytes": 101,
+        "coverage": "complete normal body"
+      },
+      {
+        "address": "004c2ce0",
+        "inclusive_end": "004c2d25",
+        "bytes": 70,
+        "coverage": "complete normal body"
+      },
+      {
+        "address": "004c4a50",
+        "inclusive_end": "004c4ab7",
+        "bytes": 104,
+        "coverage": "complete normal body"
+      },
+      {
+        "address": "004cf3f0",
+        "inclusive_end": "004cf445",
+        "bytes": 86,
+        "coverage": "complete normal body"
+      },
+      {
+        "address": "004c4b40",
+        "inclusive_end": "004c4b87",
+        "bytes": 72,
+        "coverage": "complete normal body"
+      },
+      {
+        "address": "004c8180",
+        "inclusive_end": "004c8184",
+        "bytes": 5,
+        "coverage": "complete normal body"
+      },
+      {
+        "address": "004cb220",
+        "inclusive_end": "004cb29d",
+        "bytes": 126,
+        "coverage": "complete normal body"
+      },
+      {
+        "address": "004c86a0",
+        "inclusive_end": "004c8793",
+        "bytes": 244,
+        "coverage": "complete normal body"
+      }
+    ],
+    "reconstructed_native_bytes": 878,
+    "parent_default_methods": 7,
+    "parent_sites": 14,
+    "application_admission": false
+  },
+  "contract": "All entries ECX raw owner;reserve4C86A0 and resize4CB220 have one stack DWORD and RET4;others have no stack args and RET,including5B JMP thunk4C8180. Explicit C++ interfaces and borrowed diagnostic progress,not native FH3/SEH ABI.",
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "entry": "004bf8e0",
+        "length": 70,
+        "kind": "unit_links",
+        "hex": "568bf1833e00743c8b46048b0885c974088b5004895104eb068b4804894e048378040074098b50048b08890aeb058b108956088306ff50e8906c730083c404833e0075c45ec3",
+        "sha256": "d2bcd01aa9aa3c30eae420c969b256957f769149e7e8bc59be5029d2e473c9d3",
+        "instructions": [
+          {
+            "address": "004bf8e0",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "004bf8e1",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "004bf8e3",
+            "hex": "833e00",
+            "text": "cmp dword ptr [esi], 0"
+          },
+          {
+            "address": "004bf8e6",
+            "hex": "743c",
+            "text": "je 0x4bf924"
+          },
+          {
+            "address": "004bf8e8",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004bf8eb",
+            "hex": "8b08",
+            "text": "mov ecx, dword ptr [eax]"
+          },
+          {
+            "address": "004bf8ed",
+            "hex": "85c9",
+            "text": "test ecx, ecx"
+          },
+          {
+            "address": "004bf8ef",
+            "hex": "7408",
+            "text": "je 0x4bf8f9"
+          },
+          {
+            "address": "004bf8f1",
+            "hex": "8b5004",
+            "text": "mov edx, dword ptr [eax + 4]"
+          },
+          {
+            "address": "004bf8f4",
+            "hex": "895104",
+            "text": "mov dword ptr [ecx + 4], edx"
+          },
+          {
+            "address": "004bf8f7",
+            "hex": "eb06",
+            "text": "jmp 0x4bf8ff"
+          },
+          {
+            "address": "004bf8f9",
+            "hex": "8b4804",
+            "text": "mov ecx, dword ptr [eax + 4]"
+          },
+          {
+            "address": "004bf8fc",
+            "hex": "894e04",
+            "text": "mov dword ptr [esi + 4], ecx"
+          },
+          {
+            "address": "004bf8ff",
+            "hex": "83780400",
+            "text": "cmp dword ptr [eax + 4], 0"
+          },
+          {
+            "address": "004bf903",
+            "hex": "7409",
+            "text": "je 0x4bf90e"
+          },
+          {
+            "address": "004bf905",
+            "hex": "8b5004",
+            "text": "mov edx, dword ptr [eax + 4]"
+          },
+          {
+            "address": "004bf908",
+            "hex": "8b08",
+            "text": "mov ecx, dword ptr [eax]"
+          },
+          {
+            "address": "004bf90a",
+            "hex": "890a",
+            "text": "mov dword ptr [edx], ecx"
+          },
+          {
+            "address": "004bf90c",
+            "hex": "eb05",
+            "text": "jmp 0x4bf913"
+          },
+          {
+            "address": "004bf90e",
+            "hex": "8b10",
+            "text": "mov edx, dword ptr [eax]"
+          },
+          {
+            "address": "004bf910",
+            "hex": "895608",
+            "text": "mov dword ptr [esi + 8], edx"
+          },
+          {
+            "address": "004bf913",
+            "hex": "8306ff",
+            "text": "add dword ptr [esi], -1"
+          },
+          {
+            "address": "004bf916",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "004bf917",
+            "hex": "e8906c7300",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "004bf91c",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "004bf91f",
+            "hex": "833e00",
+            "text": "cmp dword ptr [esi], 0"
+          },
+          {
+            "address": "004bf922",
+            "hex": "75c4",
+            "text": "jne 0x4bf8e8"
+          },
+          {
+            "address": "004bf924",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "004bf925",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "entry": "004bf930",
+        "length": 101,
+        "kind": "scene_records",
+        "hex": "578bf9833f00745b568da424000000008b77048b4e0885c9740f8b018b106a01ffd2c74608000000008b0685c074088b4e04894804eb068b5604895704837e040074098b46048b0e8908eb058b168957088307ff56e8226c730083c404833f0075ae5e5fc3",
+        "sha256": "6b0ed1bc32b6ef58236564fcf93ce7be447aa1b7eb349a2f05c2a913ae33a477",
+        "instructions": [
+          {
+            "address": "004bf930",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "004bf931",
+            "hex": "8bf9",
+            "text": "mov edi, ecx"
+          },
+          {
+            "address": "004bf933",
+            "hex": "833f00",
+            "text": "cmp dword ptr [edi], 0"
+          },
+          {
+            "address": "004bf936",
+            "hex": "745b",
+            "text": "je 0x4bf993"
+          },
+          {
+            "address": "004bf938",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "004bf939",
+            "hex": "8da42400000000",
+            "text": "lea esp, [esp]"
+          },
+          {
+            "address": "004bf940",
+            "hex": "8b7704",
+            "text": "mov esi, dword ptr [edi + 4]"
+          },
+          {
+            "address": "004bf943",
+            "hex": "8b4e08",
+            "text": "mov ecx, dword ptr [esi + 8]"
+          },
+          {
+            "address": "004bf946",
+            "hex": "85c9",
+            "text": "test ecx, ecx"
+          },
+          {
+            "address": "004bf948",
+            "hex": "740f",
+            "text": "je 0x4bf959"
+          },
+          {
+            "address": "004bf94a",
+            "hex": "8b01",
+            "text": "mov eax, dword ptr [ecx]"
+          },
+          {
+            "address": "004bf94c",
+            "hex": "8b10",
+            "text": "mov edx, dword ptr [eax]"
+          },
+          {
+            "address": "004bf94e",
+            "hex": "6a01",
+            "text": "push 1"
+          },
+          {
+            "address": "004bf950",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "004bf952",
+            "hex": "c7460800000000",
+            "text": "mov dword ptr [esi + 8], 0"
+          },
+          {
+            "address": "004bf959",
+            "hex": "8b06",
+            "text": "mov eax, dword ptr [esi]"
+          },
+          {
+            "address": "004bf95b",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "004bf95d",
+            "hex": "7408",
+            "text": "je 0x4bf967"
+          },
+          {
+            "address": "004bf95f",
+            "hex": "8b4e04",
+            "text": "mov ecx, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004bf962",
+            "hex": "894804",
+            "text": "mov dword ptr [eax + 4], ecx"
+          },
+          {
+            "address": "004bf965",
+            "hex": "eb06",
+            "text": "jmp 0x4bf96d"
+          },
+          {
+            "address": "004bf967",
+            "hex": "8b5604",
+            "text": "mov edx, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004bf96a",
+            "hex": "895704",
+            "text": "mov dword ptr [edi + 4], edx"
+          },
+          {
+            "address": "004bf96d",
+            "hex": "837e0400",
+            "text": "cmp dword ptr [esi + 4], 0"
+          },
+          {
+            "address": "004bf971",
+            "hex": "7409",
+            "text": "je 0x4bf97c"
+          },
+          {
+            "address": "004bf973",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004bf976",
+            "hex": "8b0e",
+            "text": "mov ecx, dword ptr [esi]"
+          },
+          {
+            "address": "004bf978",
+            "hex": "8908",
+            "text": "mov dword ptr [eax], ecx"
+          },
+          {
+            "address": "004bf97a",
+            "hex": "eb05",
+            "text": "jmp 0x4bf981"
+          },
+          {
+            "address": "004bf97c",
+            "hex": "8b16",
+            "text": "mov edx, dword ptr [esi]"
+          },
+          {
+            "address": "004bf97e",
+            "hex": "895708",
+            "text": "mov dword ptr [edi + 8], edx"
+          },
+          {
+            "address": "004bf981",
+            "hex": "8307ff",
+            "text": "add dword ptr [edi], -1"
+          },
+          {
+            "address": "004bf984",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "004bf985",
+            "hex": "e8226c7300",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "004bf98a",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "004bf98d",
+            "hex": "833f00",
+            "text": "cmp dword ptr [edi], 0"
+          },
+          {
+            "address": "004bf990",
+            "hex": "75ae",
+            "text": "jne 0x4bf940"
+          },
+          {
+            "address": "004bf992",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "004bf993",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "004bf994",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "entry": "004c2ce0",
+        "length": 70,
+        "kind": "scene_links",
+        "hex": "568bf1833e00743c8b46048b0885c974088b5004895104eb068b4804894e048378040074098b50048b08890aeb058b108956088306ff50e89038730083c404833e0075c45ec3",
+        "sha256": "fc61d248105002e12fdd805ac3b5903a80d1a779ee991916483d0a38364aff89",
+        "instructions": [
+          {
+            "address": "004c2ce0",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "004c2ce1",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "004c2ce3",
+            "hex": "833e00",
+            "text": "cmp dword ptr [esi], 0"
+          },
+          {
+            "address": "004c2ce6",
+            "hex": "743c",
+            "text": "je 0x4c2d24"
+          },
+          {
+            "address": "004c2ce8",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004c2ceb",
+            "hex": "8b08",
+            "text": "mov ecx, dword ptr [eax]"
+          },
+          {
+            "address": "004c2ced",
+            "hex": "85c9",
+            "text": "test ecx, ecx"
+          },
+          {
+            "address": "004c2cef",
+            "hex": "7408",
+            "text": "je 0x4c2cf9"
+          },
+          {
+            "address": "004c2cf1",
+            "hex": "8b5004",
+            "text": "mov edx, dword ptr [eax + 4]"
+          },
+          {
+            "address": "004c2cf4",
+            "hex": "895104",
+            "text": "mov dword ptr [ecx + 4], edx"
+          },
+          {
+            "address": "004c2cf7",
+            "hex": "eb06",
+            "text": "jmp 0x4c2cff"
+          },
+          {
+            "address": "004c2cf9",
+            "hex": "8b4804",
+            "text": "mov ecx, dword ptr [eax + 4]"
+          },
+          {
+            "address": "004c2cfc",
+            "hex": "894e04",
+            "text": "mov dword ptr [esi + 4], ecx"
+          },
+          {
+            "address": "004c2cff",
+            "hex": "83780400",
+            "text": "cmp dword ptr [eax + 4], 0"
+          },
+          {
+            "address": "004c2d03",
+            "hex": "7409",
+            "text": "je 0x4c2d0e"
+          },
+          {
+            "address": "004c2d05",
+            "hex": "8b5004",
+            "text": "mov edx, dword ptr [eax + 4]"
+          },
+          {
+            "address": "004c2d08",
+            "hex": "8b08",
+            "text": "mov ecx, dword ptr [eax]"
+          },
+          {
+            "address": "004c2d0a",
+            "hex": "890a",
+            "text": "mov dword ptr [edx], ecx"
+          },
+          {
+            "address": "004c2d0c",
+            "hex": "eb05",
+            "text": "jmp 0x4c2d13"
+          },
+          {
+            "address": "004c2d0e",
+            "hex": "8b10",
+            "text": "mov edx, dword ptr [eax]"
+          },
+          {
+            "address": "004c2d10",
+            "hex": "895608",
+            "text": "mov dword ptr [esi + 8], edx"
+          },
+          {
+            "address": "004c2d13",
+            "hex": "8306ff",
+            "text": "add dword ptr [esi], -1"
+          },
+          {
+            "address": "004c2d16",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "004c2d17",
+            "hex": "e890387300",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "004c2d1c",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "004c2d1f",
+            "hex": "833e00",
+            "text": "cmp dword ptr [esi], 0"
+          },
+          {
+            "address": "004c2d22",
+            "hex": "75c4",
+            "text": "jne 0x4c2ce8"
+          },
+          {
+            "address": "004c2d24",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "004c2d25",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "entry": "004c4a50",
+        "length": 104,
+        "kind": "pointer_blocks",
+        "hex": "53568bf133db395e10741eeb038d49008b46103bc3740d83c0ff3bc38946107503895e0c395e1075e7578b7e083bfb761d8b460483ef01391cb88d04b8740b8b0851e8151b730083c4043bfb77e38b46043bc35f740950e8001b730083c404895e04895e085e5bc3",
+        "sha256": "4c4c3f4ade6f6269b0d7908ee0fd4ac23baa8e74386edf68bda71f1a2e7ceeaf",
+        "instructions": [
+          {
+            "address": "004c4a50",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "004c4a51",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "004c4a52",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "004c4a54",
+            "hex": "33db",
+            "text": "xor ebx, ebx"
+          },
+          {
+            "address": "004c4a56",
+            "hex": "395e10",
+            "text": "cmp dword ptr [esi + 0x10], ebx"
+          },
+          {
+            "address": "004c4a59",
+            "hex": "741e",
+            "text": "je 0x4c4a79"
+          },
+          {
+            "address": "004c4a5b",
+            "hex": "eb03",
+            "text": "jmp 0x4c4a60"
+          },
+          {
+            "address": "004c4a5d",
+            "hex": "8d4900",
+            "text": "lea ecx, [ecx]"
+          },
+          {
+            "address": "004c4a60",
+            "hex": "8b4610",
+            "text": "mov eax, dword ptr [esi + 0x10]"
+          },
+          {
+            "address": "004c4a63",
+            "hex": "3bc3",
+            "text": "cmp eax, ebx"
+          },
+          {
+            "address": "004c4a65",
+            "hex": "740d",
+            "text": "je 0x4c4a74"
+          },
+          {
+            "address": "004c4a67",
+            "hex": "83c0ff",
+            "text": "add eax, -1"
+          },
+          {
+            "address": "004c4a6a",
+            "hex": "3bc3",
+            "text": "cmp eax, ebx"
+          },
+          {
+            "address": "004c4a6c",
+            "hex": "894610",
+            "text": "mov dword ptr [esi + 0x10], eax"
+          },
+          {
+            "address": "004c4a6f",
+            "hex": "7503",
+            "text": "jne 0x4c4a74"
+          },
+          {
+            "address": "004c4a71",
+            "hex": "895e0c",
+            "text": "mov dword ptr [esi + 0xc], ebx"
+          },
+          {
+            "address": "004c4a74",
+            "hex": "395e10",
+            "text": "cmp dword ptr [esi + 0x10], ebx"
+          },
+          {
+            "address": "004c4a77",
+            "hex": "75e7",
+            "text": "jne 0x4c4a60"
+          },
+          {
+            "address": "004c4a79",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "004c4a7a",
+            "hex": "8b7e08",
+            "text": "mov edi, dword ptr [esi + 8]"
+          },
+          {
+            "address": "004c4a7d",
+            "hex": "3bfb",
+            "text": "cmp edi, ebx"
+          },
+          {
+            "address": "004c4a7f",
+            "hex": "761d",
+            "text": "jbe 0x4c4a9e"
+          },
+          {
+            "address": "004c4a81",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004c4a84",
+            "hex": "83ef01",
+            "text": "sub edi, 1"
+          },
+          {
+            "address": "004c4a87",
+            "hex": "391cb8",
+            "text": "cmp dword ptr [eax + edi*4], ebx"
+          },
+          {
+            "address": "004c4a8a",
+            "hex": "8d04b8",
+            "text": "lea eax, [eax + edi*4]"
+          },
+          {
+            "address": "004c4a8d",
+            "hex": "740b",
+            "text": "je 0x4c4a9a"
+          },
+          {
+            "address": "004c4a8f",
+            "hex": "8b08",
+            "text": "mov ecx, dword ptr [eax]"
+          },
+          {
+            "address": "004c4a91",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "004c4a92",
+            "hex": "e8151b7300",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "004c4a97",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "004c4a9a",
+            "hex": "3bfb",
+            "text": "cmp edi, ebx"
+          },
+          {
+            "address": "004c4a9c",
+            "hex": "77e3",
+            "text": "ja 0x4c4a81"
+          },
+          {
+            "address": "004c4a9e",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004c4aa1",
+            "hex": "3bc3",
+            "text": "cmp eax, ebx"
+          },
+          {
+            "address": "004c4aa3",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "004c4aa4",
+            "hex": "7409",
+            "text": "je 0x4c4aaf"
+          },
+          {
+            "address": "004c4aa6",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "004c4aa7",
+            "hex": "e8001b7300",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "004c4aac",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "004c4aaf",
+            "hex": "895e04",
+            "text": "mov dword ptr [esi + 4], ebx"
+          },
+          {
+            "address": "004c4ab2",
+            "hex": "895e08",
+            "text": "mov dword ptr [esi + 8], ebx"
+          },
+          {
+            "address": "004c4ab5",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "004c4ab6",
+            "hex": "5b",
+            "text": "pop ebx"
+          },
+          {
+            "address": "004c4ab7",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "entry": "004cf3f0",
+        "length": 86,
+        "kind": "small_string_nodes",
+        "hex": "5356578bf98b47048b3089008b470489400433db3b7704895f087436558d4900837e20108b2e720c8b460c50e88b71720083c404c746200f000000895e1c56885e0ce87571720083c4043b6f048bf575cf5d5f5e5bc3",
+        "sha256": "3de2ff32923a44a29edce717ecbd4f04bd1b0e683b9a0a61d6a9cd3d038f41b8",
+        "instructions": [
+          {
+            "address": "004cf3f0",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "004cf3f1",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "004cf3f2",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "004cf3f3",
+            "hex": "8bf9",
+            "text": "mov edi, ecx"
+          },
+          {
+            "address": "004cf3f5",
+            "hex": "8b4704",
+            "text": "mov eax, dword ptr [edi + 4]"
+          },
+          {
+            "address": "004cf3f8",
+            "hex": "8b30",
+            "text": "mov esi, dword ptr [eax]"
+          },
+          {
+            "address": "004cf3fa",
+            "hex": "8900",
+            "text": "mov dword ptr [eax], eax"
+          },
+          {
+            "address": "004cf3fc",
+            "hex": "8b4704",
+            "text": "mov eax, dword ptr [edi + 4]"
+          },
+          {
+            "address": "004cf3ff",
+            "hex": "894004",
+            "text": "mov dword ptr [eax + 4], eax"
+          },
+          {
+            "address": "004cf402",
+            "hex": "33db",
+            "text": "xor ebx, ebx"
+          },
+          {
+            "address": "004cf404",
+            "hex": "3b7704",
+            "text": "cmp esi, dword ptr [edi + 4]"
+          },
+          {
+            "address": "004cf407",
+            "hex": "895f08",
+            "text": "mov dword ptr [edi + 8], ebx"
+          },
+          {
+            "address": "004cf40a",
+            "hex": "7436",
+            "text": "je 0x4cf442"
+          },
+          {
+            "address": "004cf40c",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "004cf40d",
+            "hex": "8d4900",
+            "text": "lea ecx, [ecx]"
+          },
+          {
+            "address": "004cf410",
+            "hex": "837e2010",
+            "text": "cmp dword ptr [esi + 0x20], 0x10"
+          },
+          {
+            "address": "004cf414",
+            "hex": "8b2e",
+            "text": "mov ebp, dword ptr [esi]"
+          },
+          {
+            "address": "004cf416",
+            "hex": "720c",
+            "text": "jb 0x4cf424"
+          },
+          {
+            "address": "004cf418",
+            "hex": "8b460c",
+            "text": "mov eax, dword ptr [esi + 0xc]"
+          },
+          {
+            "address": "004cf41b",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "004cf41c",
+            "hex": "e88b717200",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "004cf421",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "004cf424",
+            "hex": "c746200f000000",
+            "text": "mov dword ptr [esi + 0x20], 0xf"
+          },
+          {
+            "address": "004cf42b",
+            "hex": "895e1c",
+            "text": "mov dword ptr [esi + 0x1c], ebx"
+          },
+          {
+            "address": "004cf42e",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "004cf42f",
+            "hex": "885e0c",
+            "text": "mov byte ptr [esi + 0xc], bl"
+          },
+          {
+            "address": "004cf432",
+            "hex": "e875717200",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "004cf437",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "004cf43a",
+            "hex": "3b6f04",
+            "text": "cmp ebp, dword ptr [edi + 4]"
+          },
+          {
+            "address": "004cf43d",
+            "hex": "8bf5",
+            "text": "mov esi, ebp"
+          },
+          {
+            "address": "004cf43f",
+            "hex": "75cf",
+            "text": "jne 0x4cf410"
+          },
+          {
+            "address": "004cf441",
+            "hex": "5d",
+            "text": "pop ebp"
+          },
+          {
+            "address": "004cf442",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "004cf443",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "004cf444",
+            "hex": "5b",
+            "text": "pop ebx"
+          },
+          {
+            "address": "004cf445",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "entry": "004c4b40",
+        "length": 72,
+        "kind": "pointer_list",
+        "hex": "568bf18b4e048b0189098b4e048949043b4604c74608000000007417578d49008b3850e8441a730083c4043b7e048bc775ee5f8b460450e8301a730083c404c74604000000005ec3",
+        "sha256": "21b08e13bd8c0b06059f3579f1a51585565615522e23f0d60711c5899dfff1af",
+        "instructions": [
+          {
+            "address": "004c4b40",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "004c4b41",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "004c4b43",
+            "hex": "8b4e04",
+            "text": "mov ecx, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004c4b46",
+            "hex": "8b01",
+            "text": "mov eax, dword ptr [ecx]"
+          },
+          {
+            "address": "004c4b48",
+            "hex": "8909",
+            "text": "mov dword ptr [ecx], ecx"
+          },
+          {
+            "address": "004c4b4a",
+            "hex": "8b4e04",
+            "text": "mov ecx, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004c4b4d",
+            "hex": "894904",
+            "text": "mov dword ptr [ecx + 4], ecx"
+          },
+          {
+            "address": "004c4b50",
+            "hex": "3b4604",
+            "text": "cmp eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004c4b53",
+            "hex": "c7460800000000",
+            "text": "mov dword ptr [esi + 8], 0"
+          },
+          {
+            "address": "004c4b5a",
+            "hex": "7417",
+            "text": "je 0x4c4b73"
+          },
+          {
+            "address": "004c4b5c",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "004c4b5d",
+            "hex": "8d4900",
+            "text": "lea ecx, [ecx]"
+          },
+          {
+            "address": "004c4b60",
+            "hex": "8b38",
+            "text": "mov edi, dword ptr [eax]"
+          },
+          {
+            "address": "004c4b62",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "004c4b63",
+            "hex": "e8441a7300",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "004c4b68",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "004c4b6b",
+            "hex": "3b7e04",
+            "text": "cmp edi, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004c4b6e",
+            "hex": "8bc7",
+            "text": "mov eax, edi"
+          },
+          {
+            "address": "004c4b70",
+            "hex": "75ee",
+            "text": "jne 0x4c4b60"
+          },
+          {
+            "address": "004c4b72",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "004c4b73",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004c4b76",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "004c4b77",
+            "hex": "e8301a7300",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "004c4b7c",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "004c4b7f",
+            "hex": "c7460400000000",
+            "text": "mov dword ptr [esi + 4], 0"
+          },
+          {
+            "address": "004c4b86",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "004c4b87",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "entry": "004c8180",
+        "length": 5,
+        "kind": "thunk",
+        "hex": "e9bbc9ffff",
+        "sha256": "ae4b619a8c170ec65b23268a597a78429bdec33facb12b292cbfd6a26c14a6aa",
+        "instructions": [
+          {
+            "address": "004c8180",
+            "hex": "e9bbc9ffff",
+            "text": "jmp 0x4c4b40"
+          }
+        ]
+      },
+      {
+        "entry": "004cb220",
+        "length": 126,
+        "kind": "resize",
+        "hex": "558b6c2408568bf13b6e087e0655e86dd4ffff8b46043bc57d1c8d9b000000008b0e8d0c8185c97406c7010000000083c0013bc57cea3b6e047d3b53578d4900834604ff8b46048b168b3c8285ff8d1c82741c8d470450ff152022ce0085c075088b178b028bcfffd0c703000000003b6e047ccc5f5b896e045e5dc20400",
+        "sha256": "d12a81c2e1bf6175cd9cda929fb5dbea13ee8e8e9d543b250d7c60397f49e7ef",
+        "instructions": [
+          {
+            "address": "004cb220",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "004cb221",
+            "hex": "8b6c2408",
+            "text": "mov ebp, dword ptr [esp + 8]"
+          },
+          {
+            "address": "004cb225",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "004cb226",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "004cb228",
+            "hex": "3b6e08",
+            "text": "cmp ebp, dword ptr [esi + 8]"
+          },
+          {
+            "address": "004cb22b",
+            "hex": "7e06",
+            "text": "jle 0x4cb233"
+          },
+          {
+            "address": "004cb22d",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "004cb22e",
+            "hex": "e86dd4ffff",
+            "text": "call 0x4c86a0"
+          },
+          {
+            "address": "004cb233",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004cb236",
+            "hex": "3bc5",
+            "text": "cmp eax, ebp"
+          },
+          {
+            "address": "004cb238",
+            "hex": "7d1c",
+            "text": "jge 0x4cb256"
+          },
+          {
+            "address": "004cb23a",
+            "hex": "8d9b00000000",
+            "text": "lea ebx, [ebx]"
+          },
+          {
+            "address": "004cb240",
+            "hex": "8b0e",
+            "text": "mov ecx, dword ptr [esi]"
+          },
+          {
+            "address": "004cb242",
+            "hex": "8d0c81",
+            "text": "lea ecx, [ecx + eax*4]"
+          },
+          {
+            "address": "004cb245",
+            "hex": "85c9",
+            "text": "test ecx, ecx"
+          },
+          {
+            "address": "004cb247",
+            "hex": "7406",
+            "text": "je 0x4cb24f"
+          },
+          {
+            "address": "004cb249",
+            "hex": "c70100000000",
+            "text": "mov dword ptr [ecx], 0"
+          },
+          {
+            "address": "004cb24f",
+            "hex": "83c001",
+            "text": "add eax, 1"
+          },
+          {
+            "address": "004cb252",
+            "hex": "3bc5",
+            "text": "cmp eax, ebp"
+          },
+          {
+            "address": "004cb254",
+            "hex": "7cea",
+            "text": "jl 0x4cb240"
+          },
+          {
+            "address": "004cb256",
+            "hex": "3b6e04",
+            "text": "cmp ebp, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004cb259",
+            "hex": "7d3b",
+            "text": "jge 0x4cb296"
+          },
+          {
+            "address": "004cb25b",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "004cb25c",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "004cb25d",
+            "hex": "8d4900",
+            "text": "lea ecx, [ecx]"
+          },
+          {
+            "address": "004cb260",
+            "hex": "834604ff",
+            "text": "add dword ptr [esi + 4], -1"
+          },
+          {
+            "address": "004cb264",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004cb267",
+            "hex": "8b16",
+            "text": "mov edx, dword ptr [esi]"
+          },
+          {
+            "address": "004cb269",
+            "hex": "8b3c82",
+            "text": "mov edi, dword ptr [edx + eax*4]"
+          },
+          {
+            "address": "004cb26c",
+            "hex": "85ff",
+            "text": "test edi, edi"
+          },
+          {
+            "address": "004cb26e",
+            "hex": "8d1c82",
+            "text": "lea ebx, [edx + eax*4]"
+          },
+          {
+            "address": "004cb271",
+            "hex": "741c",
+            "text": "je 0x4cb28f"
+          },
+          {
+            "address": "004cb273",
+            "hex": "8d4704",
+            "text": "lea eax, [edi + 4]"
+          },
+          {
+            "address": "004cb276",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "004cb277",
+            "hex": "ff152022ce00",
+            "text": "call dword ptr [0xce2220]"
+          },
+          {
+            "address": "004cb27d",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "004cb27f",
+            "hex": "7508",
+            "text": "jne 0x4cb289"
+          },
+          {
+            "address": "004cb281",
+            "hex": "8b17",
+            "text": "mov edx, dword ptr [edi]"
+          },
+          {
+            "address": "004cb283",
+            "hex": "8b02",
+            "text": "mov eax, dword ptr [edx]"
+          },
+          {
+            "address": "004cb285",
+            "hex": "8bcf",
+            "text": "mov ecx, edi"
+          },
+          {
+            "address": "004cb287",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "004cb289",
+            "hex": "c70300000000",
+            "text": "mov dword ptr [ebx], 0"
+          },
+          {
+            "address": "004cb28f",
+            "hex": "3b6e04",
+            "text": "cmp ebp, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004cb292",
+            "hex": "7ccc",
+            "text": "jl 0x4cb260"
+          },
+          {
+            "address": "004cb294",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "004cb295",
+            "hex": "5b",
+            "text": "pop ebx"
+          },
+          {
+            "address": "004cb296",
+            "hex": "896e04",
+            "text": "mov dword ptr [esi + 4], ebp"
+          },
+          {
+            "address": "004cb299",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "004cb29a",
+            "hex": "5d",
+            "text": "pop ebp"
+          },
+          {
+            "address": "004cb29b",
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ]
+      },
+      {
+        "entry": "004c86a0",
+        "length": 244,
+        "kind": "reserve",
+        "hex": "64a1000000006aff68e752c600508b4424106489250000000083ec0c83f801568bf17d0cc7442420010000008b4424203946080f8da9000000535503c003c05750e8d8ce720033db83c404395e04894424187e3c8bf883cdff8da4240000000085ff741d8b0e8d0499c707000000008b0085c0740c890783c00450ff151c22ce0083c30183c7043b5e04896c24247cd033ed396e047e308b168b3caa85ff8d1caa741c8d470450ff152022ce0085c075088b178b028bcfffd0c7030000000083c5013b6e047cd08b0e51e81ae272008b54241c8b44243083c4045f5d89168946085b8b4c24105e64890d0000000083c418c20400",
+        "sha256": "2a8521b7ef61e809b37e4ab0defbb3a3f541de625c1d0c643c161c923fccd57f",
+        "instructions": [
+          {
+            "address": "004c86a0",
+            "hex": "64a100000000",
+            "text": "mov eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "004c86a6",
+            "hex": "6aff",
+            "text": "push -1"
+          },
+          {
+            "address": "004c86a8",
+            "hex": "68e752c600",
+            "text": "push 0xc652e7"
+          },
+          {
+            "address": "004c86ad",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "004c86ae",
+            "hex": "8b442410",
+            "text": "mov eax, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "004c86b2",
+            "hex": "64892500000000",
+            "text": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "address": "004c86b9",
+            "hex": "83ec0c",
+            "text": "sub esp, 0xc"
+          },
+          {
+            "address": "004c86bc",
+            "hex": "83f801",
+            "text": "cmp eax, 1"
+          },
+          {
+            "address": "004c86bf",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "004c86c0",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "004c86c2",
+            "hex": "7d0c",
+            "text": "jge 0x4c86d0"
+          },
+          {
+            "address": "004c86c4",
+            "hex": "c744242001000000",
+            "text": "mov dword ptr [esp + 0x20], 1"
+          },
+          {
+            "address": "004c86cc",
+            "hex": "8b442420",
+            "text": "mov eax, dword ptr [esp + 0x20]"
+          },
+          {
+            "address": "004c86d0",
+            "hex": "394608",
+            "text": "cmp dword ptr [esi + 8], eax"
+          },
+          {
+            "address": "004c86d3",
+            "hex": "0f8da9000000",
+            "text": "jge 0x4c8782"
+          },
+          {
+            "address": "004c86d9",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "004c86da",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "004c86db",
+            "hex": "03c0",
+            "text": "add eax, eax"
+          },
+          {
+            "address": "004c86dd",
+            "hex": "03c0",
+            "text": "add eax, eax"
+          },
+          {
+            "address": "004c86df",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "004c86e0",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "004c86e1",
+            "hex": "e8d8ce7200",
+            "text": "call 0xbf55be"
+          },
+          {
+            "address": "004c86e6",
+            "hex": "33db",
+            "text": "xor ebx, ebx"
+          },
+          {
+            "address": "004c86e8",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "004c86eb",
+            "hex": "395e04",
+            "text": "cmp dword ptr [esi + 4], ebx"
+          },
+          {
+            "address": "004c86ee",
+            "hex": "89442418",
+            "text": "mov dword ptr [esp + 0x18], eax"
+          },
+          {
+            "address": "004c86f2",
+            "hex": "7e3c",
+            "text": "jle 0x4c8730"
+          },
+          {
+            "address": "004c86f4",
+            "hex": "8bf8",
+            "text": "mov edi, eax"
+          },
+          {
+            "address": "004c86f6",
+            "hex": "83cdff",
+            "text": "or ebp, 0xffffffff"
+          },
+          {
+            "address": "004c86f9",
+            "hex": "8da42400000000",
+            "text": "lea esp, [esp]"
+          },
+          {
+            "address": "004c8700",
+            "hex": "85ff",
+            "text": "test edi, edi"
+          },
+          {
+            "address": "004c8702",
+            "hex": "741d",
+            "text": "je 0x4c8721"
+          },
+          {
+            "address": "004c8704",
+            "hex": "8b0e",
+            "text": "mov ecx, dword ptr [esi]"
+          },
+          {
+            "address": "004c8706",
+            "hex": "8d0499",
+            "text": "lea eax, [ecx + ebx*4]"
+          },
+          {
+            "address": "004c8709",
+            "hex": "c70700000000",
+            "text": "mov dword ptr [edi], 0"
+          },
+          {
+            "address": "004c870f",
+            "hex": "8b00",
+            "text": "mov eax, dword ptr [eax]"
+          },
+          {
+            "address": "004c8711",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "004c8713",
+            "hex": "740c",
+            "text": "je 0x4c8721"
+          },
+          {
+            "address": "004c8715",
+            "hex": "8907",
+            "text": "mov dword ptr [edi], eax"
+          },
+          {
+            "address": "004c8717",
+            "hex": "83c004",
+            "text": "add eax, 4"
+          },
+          {
+            "address": "004c871a",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "004c871b",
+            "hex": "ff151c22ce00",
+            "text": "call dword ptr [0xce221c]"
+          },
+          {
+            "address": "004c8721",
+            "hex": "83c301",
+            "text": "add ebx, 1"
+          },
+          {
+            "address": "004c8724",
+            "hex": "83c704",
+            "text": "add edi, 4"
+          },
+          {
+            "address": "004c8727",
+            "hex": "3b5e04",
+            "text": "cmp ebx, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004c872a",
+            "hex": "896c2424",
+            "text": "mov dword ptr [esp + 0x24], ebp"
+          },
+          {
+            "address": "004c872e",
+            "hex": "7cd0",
+            "text": "jl 0x4c8700"
+          },
+          {
+            "address": "004c8730",
+            "hex": "33ed",
+            "text": "xor ebp, ebp"
+          },
+          {
+            "address": "004c8732",
+            "hex": "396e04",
+            "text": "cmp dword ptr [esi + 4], ebp"
+          },
+          {
+            "address": "004c8735",
+            "hex": "7e30",
+            "text": "jle 0x4c8767"
+          },
+          {
+            "address": "004c8737",
+            "hex": "8b16",
+            "text": "mov edx, dword ptr [esi]"
+          },
+          {
+            "address": "004c8739",
+            "hex": "8b3caa",
+            "text": "mov edi, dword ptr [edx + ebp*4]"
+          },
+          {
+            "address": "004c873c",
+            "hex": "85ff",
+            "text": "test edi, edi"
+          },
+          {
+            "address": "004c873e",
+            "hex": "8d1caa",
+            "text": "lea ebx, [edx + ebp*4]"
+          },
+          {
+            "address": "004c8741",
+            "hex": "741c",
+            "text": "je 0x4c875f"
+          },
+          {
+            "address": "004c8743",
+            "hex": "8d4704",
+            "text": "lea eax, [edi + 4]"
+          },
+          {
+            "address": "004c8746",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "004c8747",
+            "hex": "ff152022ce00",
+            "text": "call dword ptr [0xce2220]"
+          },
+          {
+            "address": "004c874d",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "004c874f",
+            "hex": "7508",
+            "text": "jne 0x4c8759"
+          },
+          {
+            "address": "004c8751",
+            "hex": "8b17",
+            "text": "mov edx, dword ptr [edi]"
+          },
+          {
+            "address": "004c8753",
+            "hex": "8b02",
+            "text": "mov eax, dword ptr [edx]"
+          },
+          {
+            "address": "004c8755",
+            "hex": "8bcf",
+            "text": "mov ecx, edi"
+          },
+          {
+            "address": "004c8757",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "004c8759",
+            "hex": "c70300000000",
+            "text": "mov dword ptr [ebx], 0"
+          },
+          {
+            "address": "004c875f",
+            "hex": "83c501",
+            "text": "add ebp, 1"
+          },
+          {
+            "address": "004c8762",
+            "hex": "3b6e04",
+            "text": "cmp ebp, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004c8765",
+            "hex": "7cd0",
+            "text": "jl 0x4c8737"
+          },
+          {
+            "address": "004c8767",
+            "hex": "8b0e",
+            "text": "mov ecx, dword ptr [esi]"
+          },
+          {
+            "address": "004c8769",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "004c876a",
+            "hex": "e81ae27200",
+            "text": "call 0xbf6989"
+          },
+          {
+            "address": "004c876f",
+            "hex": "8b54241c",
+            "text": "mov edx, dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "004c8773",
+            "hex": "8b442430",
+            "text": "mov eax, dword ptr [esp + 0x30]"
+          },
+          {
+            "address": "004c8777",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "004c877a",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "004c877b",
+            "hex": "5d",
+            "text": "pop ebp"
+          },
+          {
+            "address": "004c877c",
+            "hex": "8916",
+            "text": "mov dword ptr [esi], edx"
+          },
+          {
+            "address": "004c877e",
+            "hex": "894608",
+            "text": "mov dword ptr [esi + 8], eax"
+          },
+          {
+            "address": "004c8781",
+            "hex": "5b",
+            "text": "pop ebx"
+          },
+          {
+            "address": "004c8782",
+            "hex": "8b4c2410",
+            "text": "mov ecx, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "004c8786",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "004c8787",
+            "hex": "64890d00000000",
+            "text": "mov dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "004c878e",
+            "hex": "83c418",
+            "text": "add esp, 0x18"
+          },
+          {
+            "address": "004c8791",
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ]
+      }
+    ],
+    "call_rows": [
+      {
+        "address": "004bf917",
+        "native": "00bf65ac",
+        "function": "004bf8e0"
+      },
+      {
+        "address": "004bf985",
+        "native": "00bf65ac",
+        "function": "004bf930"
+      },
+      {
+        "address": "004c2d17",
+        "native": "00bf65ac",
+        "function": "004c2ce0"
+      },
+      {
+        "address": "004c4a92",
+        "native": "00bf65ac",
+        "function": "004c4a50"
+      },
+      {
+        "address": "004c4aa7",
+        "native": "00bf65ac",
+        "function": "004c4a50"
+      },
+      {
+        "address": "004cf41c",
+        "native": "00bf65ac",
+        "function": "004cf3f0"
+      },
+      {
+        "address": "004cf432",
+        "native": "00bf65ac",
+        "function": "004cf3f0"
+      },
+      {
+        "address": "004c4b63",
+        "native": "00bf65ac",
+        "function": "004c4b40"
+      },
+      {
+        "address": "004c4b77",
+        "native": "00bf65ac",
+        "function": "004c4b40"
+      },
+      {
+        "address": "004cb22e",
+        "native": "004c86a0",
+        "function": "004cb220"
+      },
+      {
+        "address": "004c86e1",
+        "native": "00bf55be",
+        "function": "004c86a0"
+      },
+      {
+        "address": "004c876a",
+        "native": "00bf6989",
+        "function": "004c86a0"
+      },
+      {
+        "address": "004dcfee",
+        "native": "004bf930",
+        "function": "004dcf90"
+      },
+      {
+        "address": "004dd1d8",
+        "native": "004cb220",
+        "function": "004dcf90"
+      },
+      {
+        "address": "004dd1ee",
+        "native": "004c4b40",
+        "function": "004dcf90"
+      },
+      {
+        "address": "004dd346",
+        "native": "004bf8e0",
+        "function": "004dcf90"
+      },
+      {
+        "address": "004dd351",
+        "native": "004bf8e0",
+        "function": "004dcf90"
+      },
+      {
+        "address": "004dd35c",
+        "native": "004bf8e0",
+        "function": "004dcf90"
+      },
+      {
+        "address": "004dd367",
+        "native": "004bf8e0",
+        "function": "004dcf90"
+      },
+      {
+        "address": "004dd372",
+        "native": "004bf8e0",
+        "function": "004dcf90"
+      },
+      {
+        "address": "004dd37d",
+        "native": "004bf8e0",
+        "function": "004dcf90"
+      },
+      {
+        "address": "004dd388",
+        "native": "004bf8e0",
+        "function": "004dcf90"
+      },
+      {
+        "address": "004dd393",
+        "native": "004bf8e0",
+        "function": "004dcf90"
+      },
+      {
+        "address": "004dd42f",
+        "native": "004cf3f0",
+        "function": "004dcf90"
+      },
+      {
+        "address": "004dd4a7",
+        "native": "004c2ce0",
+        "function": "004dcf90"
+      },
+      {
+        "address": "004dd4b2",
+        "native": "004c4a50",
+        "function": "004dcf90"
+      }
+    ],
+    "indirect_calls": [
+      {
+        "address": "004bf950",
+        "instruction": "call edx",
+        "function": "004bf930"
+      },
+      {
+        "address": "004cb277",
+        "instruction": "call dword ptr [0xce2220]",
+        "function": "004cb220"
+      },
+      {
+        "address": "004cb287",
+        "instruction": "call eax",
+        "function": "004cb220"
+      },
+      {
+        "address": "004c871b",
+        "instruction": "call dword ptr [0xce221c]",
+        "function": "004c86a0"
+      },
+      {
+        "address": "004c8747",
+        "instruction": "call dword ptr [0xce2220]",
+        "function": "004c86a0"
+      },
+      {
+        "address": "004c8757",
+        "instruction": "call eax",
+        "function": "004c86a0"
+      }
+    ],
+    "fixture": [
+      {
+        "entry": "004bf8e0",
+        "original_bytes": 70,
+        "relocated_bytes": 92,
+        "patches": [
+          [
+            74,
+            "hook",
+            "delete_004bf917"
+          ]
+        ],
+        "returns": [
+          [
+            78,
+            4978967
+          ]
+        ]
+      },
+      {
+        "entry": "004bf930",
+        "original_bytes": 101,
+        "relocated_bytes": 127,
+        "patches": [
+          [
+            108,
+            "hook",
+            "delete_004bf985"
+          ]
+        ],
+        "returns": [
+          [
+            42,
+            4979024
+          ],
+          [
+            112,
+            4979077
+          ]
+        ]
+      },
+      {
+        "entry": "004c2ce0",
+        "original_bytes": 70,
+        "relocated_bytes": 92,
+        "patches": [
+          [
+            74,
+            "hook",
+            "delete_004c2d17"
+          ]
+        ],
+        "returns": [
+          [
+            78,
+            4992279
+          ]
+        ]
+      },
+      {
+        "entry": "004c4a50",
+        "original_bytes": 104,
+        "relocated_bytes": 139,
+        "patches": [
+          [
+            94,
+            "hook",
+            "delete_004c4a92"
+          ],
+          [
+            123,
+            "hook",
+            "delete_004c4aa7"
+          ]
+        ],
+        "returns": [
+          [
+            98,
+            4999826
+          ],
+          [
+            127,
+            4999847
+          ]
+        ]
+      },
+      {
+        "entry": "004cf3f0",
+        "original_bytes": 86,
+        "relocated_bytes": 98,
+        "patches": [
+          [
+            53,
+            "hook",
+            "delete_004cf41c"
+          ],
+          [
+            75,
+            "hook",
+            "delete_004cf432"
+          ]
+        ],
+        "returns": [
+          [
+            57,
+            5043228
+          ],
+          [
+            79,
+            5043250
+          ]
+        ]
+      },
+      {
+        "entry": "004c4b40",
+        "original_bytes": 72,
+        "relocated_bytes": 80,
+        "patches": [
+          [
+            40,
+            "hook",
+            "delete_004c4b63"
+          ],
+          [
+            64,
+            "hook",
+            "delete_004c4b77"
+          ]
+        ],
+        "returns": [
+          [
+            44,
+            5000035
+          ],
+          [
+            68,
+            5000055
+          ]
+        ]
+      },
+      {
+        "entry": "004c8180",
+        "original_bytes": 5,
+        "relocated_bytes": 5,
+        "patches": [
+          [
+            1,
+            "image",
+            5000000
+          ]
+        ],
+        "returns": []
+      },
+      {
+        "entry": "004cb220",
+        "original_bytes": 126,
+        "relocated_bytes": 158,
+        "patches": [
+          [
+            19,
+            "image",
+            5015200
+          ],
+          [
+            113,
+            "absolute",
+            "decrement_cell"
+          ]
+        ],
+        "returns": [
+          [
+            23,
+            5026350
+          ],
+          [
+            117,
+            5026423
+          ],
+          [
+            133,
+            5026439
+          ]
+        ]
+      },
+      {
+        "entry": "004c86a0",
+        "original_bytes": 244,
+        "relocated_bytes": 280,
+        "patches": [
+          [
+            70,
+            "hook",
+            "allocate_004c86e1"
+          ],
+          [
+            141,
+            "absolute",
+            "increment_cell"
+          ],
+          [
+            197,
+            "absolute",
+            "decrement_cell"
+          ],
+          [
+            239,
+            "hook",
+            "free_004c876a"
+          ]
+        ],
+        "returns": [
+          [
+            74,
+            5015265
+          ],
+          [
+            145,
+            5015323
+          ],
+          [
+            201,
+            5015367
+          ],
+          [
+            217,
+            5015383
+          ],
+          [
+            243,
+            5015402
+          ]
+        ]
+      }
+    ],
+    "flow_repairs": "reports/native_game_container_lifetime_r125_flow.json",
+    "body_repairs": "reports/native_game_container_lifetime_r125_bodies.json",
+    "returning_call_gaps": 8,
+    "repaired_bytes": 70,
+    "final_flow": "004bf930: 40 listed instructions, 0 gap(s)\n004bf8e0: 29 listed instructions, 0 gap(s)\n004c2ce0: 29 listed instructions, 0 gap(s)\n004c4a50: 44 listed instructions, 1 gap(s)\n  after JMP 0x004c4a60 at 004c4a5b: 004c4a5d..004c4a60 (3 bytes)  [not after a CALL; left alone]\n004cf3f0: 36 listed instructions, 0 gap(s)\n004c4b40: 27 listed instructions, 0 gap(s)\n004c8180: 1 listed instructions, 0 gap(s)\n004cb220: 50 listed instructions, 0 gap(s)\n004c86a0: 84 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n",
+    "producers": [
+      {
+        "address": "004c1950",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\game_container_lifetime_r125\\producer-004c1950.txt",
+        "sha256": "2e68868494dfb69edcc71634fa260a9e3653811e30cba1ea0bba79eecea8f5e1",
+        "conclusion": "24h self-linked sentinel producer;consumed string-node fields C/1C/20"
+      },
+      {
+        "address": "004c1a40",
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\game_container_lifetime_r125\\producer-004c1a40.txt",
+        "sha256": "daed1b0b7cd886d536085ffc4cb6e7020be5e084779baa5085ae6ec0d3d76099",
+        "conclusion": "0Ch self-linked sentinel producer;raw pointer-list header is opaque0/head4/count8"
+      }
+    ],
+    "corrections": [
+      "4C4B40 previously ended4C4B7B;verified final free returns,decoded12B tail and recreated throughRET4C4B87 preserving prior metadata.4C8180 thunk survived recreation and was read back.",
+      "Eight returning-call gaps70B restored across five functions.Unreachable3B padding after4C4A5B JMP deliberately retained.",
+      "4BF8E0 new raw implementation uses actual count/head/tail;existing vector<UnitRef> semantic projection remains separately scoped.",
+      "Parent fourteen reached sites now pass the same retained operation.containers record to seven concrete default methods."
+    ]
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "probe": {
+      "linker": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe",
+      "exit": 0,
+      "library_sha256": "334EAD9515AB90D19E4A8C407D1549237C79794209A2790EEED207869F55E93D",
+      "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+      "exe_sha256": "F861A96F184C5DCB72DBB2A65B07761D45DE2FD8C14232FF61FE8023CD1262CF",
+      "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe"
+    },
+    "paired_cases": 71,
+    "boundary_observations": 315,
+    "comparison_bytes": 46400,
+    "comparison_sha256": "d2213fa28ecfd4d16e1005612117d14aa3ccf9843b71328ee4867cebc89011bd",
+    "source_failure_cases": 2,
+    "parent": {
+      "probe": {
+        "exit": 0,
+        "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+        "linker": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe",
+        "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+        "library_sha256": "334EAD9515AB90D19E4A8C407D1549237C79794209A2790EEED207869F55E93D",
+        "exe_sha256": "10A1C7AC35A0641FA4A3DC17DE40C0E2974A0B45A94F7755BEAD055AD15EC097"
+      },
+      "paired_cases": 52,
+      "boundary_snapshots": 3537,
+      "comparison_bytes": 141402076,
+      "comparison_sha256": "180cd9c8185353dc7d7a5f3c44e386cc1112fbce79dead8792f7ee3b6b3b3498",
+      "source_failure_cases": 4,
+      "retained_container_progress_identity_checked": true,
+      "container_calls_controlled": true
+    },
+    "shared_real_services": [
+      "singleton allocator,CRT delete/free and Win32 InterlockedIncrement/Decrement",
+      "existing actual0Ch/24h sentinel allocation helpers",
+      "seven actual NativeGameLifetimeCalls defaults;other parent pure dependencies reject if reached"
+    ],
+    "fixture_domain": [
+      "counted list0/1/3/4,empty count preserves head/tail,payload-null and scalar-delete cases",
+      "scene callback replaces node payload and reduces current count before unlink",
+      "sentinel list/thunk0/1/3;callback replaces current head/count",
+      "SSO capacities15/16/FFFFFFFF;data callback changes node.next after capture;head substitution",
+      "pointer blocks count0/1/3,depth0/1/3;reverse order,captured count,reloaded base;callback changes depth after drain",
+      "resize shrink/equal/grow within and beyond capacity;null slots and refs0/1/2/FFFFFFFF",
+      "reserve clamp0/FFFFFFFF/80000000 to1;capacity gate;retain before release;zero-count and nonempty growth",
+      "resize terminal callback replaces current base/count while source clears captured old cell",
+      "source allocation failure retains unchanged graph;old-buffer free failure retains zeroed old cells and populated replacement before publication;explicit diagnostic cleanup"
+    ],
+    "concrete_parent_defaults_exercised": true,
+    "source_sha256_by_path": {
+      "include/bsp/native_game_container_lifetime.hpp": "6df6f4a3cde7eb849d4d57d221518020be4f1184948502f3ee7d1aeab430b1d1",
+      "src/native_game_container_lifetime.cpp": "6c5b4cfe901bb45c741765179f282a799eaa536af78be9b2c1f922fb1dff7700",
+      "include/bsp/native_game_lifetime.hpp": "a3308f07fb7cbb19e5885cc2d08daeba73cb5477ad6a07ae4fecb1ffb810062f",
+      "src/native_game_lifetime.cpp": "c2317c51a2b977d08e0509a3743f60d14b755b90f7b64fee1cc54f7c88ed7c85"
+    },
+    "source_lf_sha256": {
+      "include/bsp/native_game_container_lifetime.hpp": "6df6f4a3cde7eb849d4d57d221518020be4f1184948502f3ee7d1aeab430b1d1",
+      "src/native_game_container_lifetime.cpp": "6c5b4cfe901bb45c741765179f282a799eaa536af78be9b2c1f922fb1dff7700",
+      "include/bsp/native_game_lifetime.hpp": "a3308f07fb7cbb19e5885cc2d08daeba73cb5477ad6a07ae4fecb1ffb810062f",
+      "src/native_game_lifetime.cpp": "c2317c51a2b977d08e0509a3743f60d14b755b90f7b64fee1cc54f7c88ed7c85"
+    },
+    "dependency_sha256": {
+      "src/native_game_storage_defaults.cpp": "ede332a11793811f92aca8b69a708597b24729d9201c1b44d5963c8012762a99",
+      "src/native_game_array_elements.cpp": "be6f4651bba8e17e3a6778e81d44a5e3329907de6d4d403b0eb9092177b6d1d6",
+      "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "src/native_game_array_lifetime.cpp": "b0940cc57a6e22d6e3808fa9b71372762c5546cff3c3dfbe15a83255bfcfe19e",
+      "src/native_game_embedded_lifetime.cpp": "3e5dff12ffd864f86d15af9f7089b14709f30fb4607934d9938d8d1fdc9815b9",
+      "src/native_game_profile_lifetime.cpp": "3e5701fb07afa7df4fc97a1781656e7cece27f151a9fc4c7d1c8e28a6734d8e4"
+    },
+    "probe_source_sha256": "60a4b344b10adaa6590b68022ec412527148153766bf541f80d6ef9c2945cabc",
+    "fixture_sha256": "e3852115941331eff20ba4fd0c0b011e35c305a94e2a492bad302469aebd1c93",
+    "library_sha256": "334ead9515ab90d19e4a8c407d1549237c79794209a2790eeed207869f55e93d",
+    "game_sha256": "f89b9b7c0b4c8d488e41223871bb2010e3769f7b724d876766fcdd57641becc8",
+    "ordinary_application_runtime_rerun": false,
+    "call_verification": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\reports\\native_game_container_lifetime_r125.json: 26 call rows checked, 0 failed\n"
+  },
+  "limits": [
+    "Payload scalar/terminal virtual bodies are explicit fixture methods;real scene/unit/profile object destruction is not established by this packet.",
+    "Known pointers normalized;freed bytes and native private stack omitted;all retained fixture allocations explicitly drained.",
+    "Helpers are repeatable raw operations with borrowed progress,not owning transactions;failed growth may retain a replacement and partially moved references.",
+    "Parent comparison controls container calls;separate body comparator reaches seven actual defaults.",
+    "Source failure retention is not original FH3/SEH cleanup.",
+    "No arbitrary invalid pointers/counts,allocation-size wrap stress,concurrency,hardware-fault,drop-in ABI,ordinary raw-game admission or gameplay proof."
+  ],
+  "owned_files": [
+    "include/bsp/native_game_container_lifetime.hpp",
+    "src/native_game_container_lifetime.cpp",
+    "include/bsp/native_game_lifetime.hpp",
+    "src/native_game_lifetime.cpp",
+    "cmake/startup.cmake",
+    "docs/NATIVE_GAME_CONTAINER_LIFETIME_R125.md",
+    "docs/NATIVE_GAME_LIFETIME_R121.md",
+    "reports/native_game_container_lifetime_r125.json",
+    "reports/native_game_container_lifetime_r125_flow.json",
+    "reports/native_game_container_lifetime_r125_bodies.json",
+    "config/names/004b0000.jsonl",
+    "config/reconstruction/004b0000.jsonl",
+    "config/names/004c0000.jsonl",
+    "config/reconstruction/004c0000.jsonl",
+    "config/names/004d0000.jsonl",
+    "config/reconstruction/004d0000.jsonl"
+  ],
+  "no_ghidra_function": [],
+  "ghidra_annotations": {
+    "prior_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\ghidra-annotations-20260918T045812Z.json",
+    "prior_values": [
+      {
+        "address": "004bf8e0",
+        "before": {
+          "address": "004bf8e0",
+          "function_name": "BSP_UnitList_Clear",
+          "comment": "[BSP reconstruction 004bf8e0]\nHypothesis, not a recovered symbol. Packet cc_unit_lists, read-only analysis. __thiscall void(List*), body 004bf8e0-004bf925, RET. Erases and frees every node of a {count at +0, head at +4, tail at +8} list: unlink the head (node prev at +0, next at +4), fix head or tail, --count, free 00BF65AC, repeat while count != 0 (back edge 004bf922 JNZ 004bf8e8). Corrects the earlier reading in docs/IN_MISSION_SUBSYSTEM_TICK.md that 004BFDF0 pops one element per list. docs/LOCAL_PLAYER_UNIT_LISTS.md"
+        },
+        "after": {
+          "address": "004bf8e0",
+          "name": "BSP_UnitList_Clear",
+          "evidence": "Hypothesis, not a recovered symbol. Packet cc_unit_lists, read-only analysis. __thiscall void(List*), body 004bf8e0-004bf925, RET. Erases and frees every node of a {count at +0, head at +4, tail at +8} list: unlink the head (node prev at +0, next at +4), fix head or tail, --count, free 00BF65AC, repeat while count != 0 (back edge 004bf922 JNZ 004bf8e8). Corrects the earlier reading in docs/IN_MISSION_SUBSYSTEM_TICK.md that 004BFDF0 pops one element per list. docs/LOCAL_PLAYER_UNIT_LISTS.md | Complete70B raw ECX{count0,head4,tail8},node{prev0,next4,payload8};RET. While CURRENTcount nonzero,capturehead,reloadlinks,unlink,decrementcount,free4BF917. Payload retained;emptycount leaveshead/tail. Existing vector<UnitRef> source remains semantic projection,separate from this actual raw implementation. Descriptive hypothesis,not a recovered symbol;retain existing correct library names. R125: nine complete normal bodies878B;71 copied-original cases,315 observations,46400 matching normalized bytes. Seven actual parent defaults,real CRT/Win32 atomics and raw sentinel producers;payload virtual bodies are fixture methods.52 controlled parent cases/141402076bytes;strict Win32/3CTests. Two source-only growth failures retain observed partial graphs;borrowed progress is not owning rollback. No native FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-in ABI,raw-game admission or gameplay proof. docs/NATIVE_GAME_CONTAINER_LIFETIME_R125.md;reports/native_game_container_lifetime_r125.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004bf930",
+        "before": {
+          "address": "004bf930",
+          "function_name": "BSP_SceneRecordList_DestroyAll",
+          "comment": "[BSP reconstruction 004bf930]\nHypothesis, not a recovered symbol. Packet cc_mission_load, read-only analysis. __thiscall void(SceneRecordList* this), ECX=list (004bf931 MOV EDI,ECX), no stack arguments, RET. The list header is three words {int count; Node* head; Node* tail} and a node is {Node* prev; Node* next; void* payload}. Pops head until count is zero: calls the payload's virtual +0h with 1 (004bf950 CALL EDX after PUSH 1), nulls node+8h, unlinks, decrements the count and frees the node. 004e2770 calls it with ECX=game+5F0h to empty the scene record list before building the pending scene; three other callers use it on lists of the same shape. docs/MISSION_LOAD_PATH.md"
+        },
+        "after": {
+          "address": "004bf930",
+          "name": "BSP_SceneRecordList_DestroyAll",
+          "evidence": "Hypothesis, not a recovered symbol. Packet cc_mission_load, read-only analysis. __thiscall void(SceneRecordList* this), ECX=list (004bf931 MOV EDI,ECX), no stack arguments, RET. The list header is three words {int count; Node* head; Node* tail} and a node is {Node* prev; Node* next; void* payload}. Pops head until count is zero: calls the payload's virtual +0h with 1 (004bf950 CALL EDX after PUSH 1), nulls node+8h, unlinks, decrements the count and frees the node. 004e2770 calls it with ECX=game+5F0h to empty the scene record list before building the pending scene; three other callers use it on lists of the same shape. docs/MISSION_LOAD_PATH.md | Complete101B,ECX counted raw list,RET. Capturehead;nonnullnode8 captured scalar slot0/flags1 at4BF950,clear node8 AFTERcallback,then readlinks/unlink/decrement/free4BF985. Currentcount loop. Descriptive hypothesis,not a recovered symbol;retain existing correct library names. R125: nine complete normal bodies878B;71 copied-original cases,315 observations,46400 matching normalized bytes. Seven actual parent defaults,real CRT/Win32 atomics and raw sentinel producers;payload virtual bodies are fixture methods.52 controlled parent cases/141402076bytes;strict Win32/3CTests. Two source-only growth failures retain observed partial graphs;borrowed progress is not owning rollback. No native FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-in ABI,raw-game admission or gameplay proof. docs/NATIVE_GAME_CONTAINER_LIFETIME_R125.md;reports/native_game_container_lifetime_r125.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004c2ce0",
+        "before": {
+          "address": "004c2ce0",
+          "function_name": "FUN_004c2ce0"
+        },
+        "after": {
+          "address": "004c2ce0",
+          "name": "BSP_SceneLinkList_ClearActualStorage",
+          "evidence": "Complete70B ECX{count0,head4,tail8},RET. Same actual raw counted-list unlink as4BF8E0;free4C2D17,payload retained,currentcount loop.8B returning-free gap repaired. Descriptive hypothesis,not a recovered symbol;retain existing correct library names. R125: nine complete normal bodies878B;71 copied-original cases,315 observations,46400 matching normalized bytes. Seven actual parent defaults,real CRT/Win32 atomics and raw sentinel producers;payload virtual bodies are fixture methods.52 controlled parent cases/141402076bytes;strict Win32/3CTests. Two source-only growth failures retain observed partial graphs;borrowed progress is not owning rollback. No native FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-in ABI,raw-game admission or gameplay proof. docs/NATIVE_GAME_CONTAINER_LIFETIME_R125.md;reports/native_game_container_lifetime_r125.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004c4a50",
+        "before": {
+          "address": "004c4a50",
+          "function_name": "FUN_004c4a50"
+        },
+        "after": {
+          "address": "004c4a50",
+          "name": "BSP_GamePointerBlocks_DestroyActualStorage",
+          "evidence": "Complete104B,ECX owner,RET. DrainDWORD10;clearC onlyontransitiontozero. Captureunsignedcount8;reverseindex,reloadbase4 eachslot,test/reloadpayload,free4C4A92. FreeCURRENTbase4 at4C4AA7,clear4/8. Callbackchangesdepthnotredrained;countnotrecaptured.6B returning-free gaps repaired;3B unreachablepadding retained. Descriptive hypothesis,not a recovered symbol;retain existing correct library names. R125: nine complete normal bodies878B;71 copied-original cases,315 observations,46400 matching normalized bytes. Seven actual parent defaults,real CRT/Win32 atomics and raw sentinel producers;payload virtual bodies are fixture methods.52 controlled parent cases/141402076bytes;strict Win32/3CTests. Two source-only growth failures retain observed partial graphs;borrowed progress is not owning rollback. No native FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-in ABI,raw-game admission or gameplay proof. docs/NATIVE_GAME_CONTAINER_LIFETIME_R125.md;reports/native_game_container_lifetime_r125.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004c4b40",
+        "before": {
+          "address": "004c4b40",
+          "function_name": "FUN_004c4b40"
+        },
+        "after": {
+          "address": "004c4b40",
+          "name": "BSP_GamePointerList_DestroyActualStorage",
+          "evidence": "Complete72B,ECX{opaque0,head4,count8},RET. Resetheadnext,reloadhead/resetprev,capturecomparisonbeforezeroingcount. Capturenextbeforefree4C4B63,compareCURRENT head aftercall. FreeCURRENThead4C4B77,clearowner4.4C1A40produces0Ch sentinel.No payload destructor.11Bgapplus12Btail repaired;bodyrecreatedthrough4C4B87 preservingmetadata. Descriptive hypothesis,not a recovered symbol;retain existing correct library names. R125: nine complete normal bodies878B;71 copied-original cases,315 observations,46400 matching normalized bytes. Seven actual parent defaults,real CRT/Win32 atomics and raw sentinel producers;payload virtual bodies are fixture methods.52 controlled parent cases/141402076bytes;strict Win32/3CTests. Two source-only growth failures retain observed partial graphs;borrowed progress is not owning rollback. No native FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-in ABI,raw-game admission or gameplay proof. docs/NATIVE_GAME_CONTAINER_LIFETIME_R125.md;reports/native_game_container_lifetime_r125.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004c8180",
+        "before": {
+          "address": "004c8180",
+          "function_name": "FUN_004c8180"
+        },
+        "after": {
+          "address": "004c8180",
+          "name": "BSP_GamePointerList_DestroyActualStorageThunk",
+          "evidence": "Complete5B JMP4C4B40,ECX owner,no stackargs. Thunk survivedtargetrecreation;range/jumpreverified. Descriptive hypothesis,not a recovered symbol;retain existing correct library names. R125: nine complete normal bodies878B;71 copied-original cases,315 observations,46400 matching normalized bytes. Seven actual parent defaults,real CRT/Win32 atomics and raw sentinel producers;payload virtual bodies are fixture methods.52 controlled parent cases/141402076bytes;strict Win32/3CTests. Two source-only growth failures retain observed partial graphs;borrowed progress is not owning rollback. No native FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-in ABI,raw-game admission or gameplay proof. docs/NATIVE_GAME_CONTAINER_LIFETIME_R125.md;reports/native_game_container_lifetime_r125.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004c86a0",
+        "before": {
+          "address": "004c86a0",
+          "function_name": "FUN_004c86a0"
+        },
+        "after": {
+          "address": "004c86a0",
+          "name": "BSP_GameReferenceSlots_ReserveActualStorage",
+          "evidence": "Complete244B ECX{base0,count4,capacity8},one stackDWORD,RET4. Signedrequested<1clamps1;signedcapacitygate. Wrappedrequested*4allocate4C86E1. AscendCURRENTcount:zero newcell BEFOREoldcellload,copythenincrement4C871B. AscendCURRENTcount again:capturedoldcell/value decrement4C8747,terminalslot0noargs4C8757 onzero,clearCAPTUREDcell aftercallback. FreeCURRENTbase4C876A;publishCAPTUREDreplacement/capacityonlyafterreturn.19Bfreegap repaired;sourcefailurekeepsreplacementdiagnostic. Descriptive hypothesis,not a recovered symbol;retain existing correct library names. R125: nine complete normal bodies878B;71 copied-original cases,315 observations,46400 matching normalized bytes. Seven actual parent defaults,real CRT/Win32 atomics and raw sentinel producers;payload virtual bodies are fixture methods.52 controlled parent cases/141402076bytes;strict Win32/3CTests. Two source-only growth failures retain observed partial graphs;borrowed progress is not owning rollback. No native FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-in ABI,raw-game admission or gameplay proof. docs/NATIVE_GAME_CONTAINER_LIFETIME_R125.md;reports/native_game_container_lifetime_r125.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004cb220",
+        "before": {
+          "address": "004cb220",
+          "function_name": "FUN_004cb220"
+        },
+        "after": {
+          "address": "004cb220",
+          "name": "BSP_GameReferenceSlots_ResizeActualStorage",
+          "evidence": "Complete126B ECX{base0,count4,capacity8},one stackDWORD,RET4. Signedrequested>capacityreserve4CB22E;ascendingnewslotszero. ShrinkCURRENTcount bydecrementingbeforecellcapture;decrementpayload4CB277,terminalslot0noargs4CB287 onzero,clearCAPTUREDcell aftercallback. RecheckCURRENTcount thenfinalcount=requested. Parent4DD1D8usesrequested0;fullgrowthbodyalsocompared. Descriptive hypothesis,not a recovered symbol;retain existing correct library names. R125: nine complete normal bodies878B;71 copied-original cases,315 observations,46400 matching normalized bytes. Seven actual parent defaults,real CRT/Win32 atomics and raw sentinel producers;payload virtual bodies are fixture methods.52 controlled parent cases/141402076bytes;strict Win32/3CTests. Two source-only growth failures retain observed partial graphs;borrowed progress is not owning rollback. No native FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-in ABI,raw-game admission or gameplay proof. docs/NATIVE_GAME_CONTAINER_LIFETIME_R125.md;reports/native_game_container_lifetime_r125.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004cf3f0",
+        "before": {
+          "address": "004cf3f0",
+          "function_name": "FUN_004cf3f0"
+        },
+        "after": {
+          "address": "004cf3f0",
+          "name": "BSP_GameSmallStringNodeList_ClearActualStorage",
+          "evidence": "Complete86B ECX{opaque0,head4,count8},RET. Sentinelreset/currentheadcomparison,butretainhead. Unsignednode20>=16 thencapturenext BEFOREfreecurrentnodeC at4CF41C;setnode20=15,node1C=0,onlybyteC=0;free4CF432.4C1950produces24h sentinel;consumedfieldsnotnewSTLtype.14Breturning-freegaps repaired. Descriptive hypothesis,not a recovered symbol;retain existing correct library names. R125: nine complete normal bodies878B;71 copied-original cases,315 observations,46400 matching normalized bytes. Seven actual parent defaults,real CRT/Win32 atomics and raw sentinel producers;payload virtual bodies are fixture methods.52 controlled parent cases/141402076bytes;strict Win32/3CTests. Two source-only growth failures retain observed partial graphs;borrowed progress is not owning rollback. No native FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-in ABI,raw-game admission or gameplay proof. docs/NATIVE_GAME_CONTAINER_LIFETIME_R125.md;reports/native_game_container_lifetime_r125.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004dcf90",
+        "before": {
+          "address": "004dcf90",
+          "function_name": "BSP_Game_DestroyActualStorage",
+          "comment": "[BSP reconstruction 004dcf90]\nComplete1559B normal parent schedule. ECX actual71A0 game, RET. StampCE7CB8; disable small string returns before cleanup. Preserve publication capture/reload/clear-after-callback order; capture first grid before clearing E188A8. Keep21F4 field after terminal release, clear five19D4..19E4 fields after callbacks. Captured vector range then free CURRENT buffer; strings capture pointer/length+1; checked trees free CURRENT heads. Required address-named callee contracts, no successful empty defaults. Ordinary destructor, not vector-deleting destructor. Descriptive hypothesis, not a recovered symbol. R121: four complete normal bodies, 1729 live/PE bytes; parent callee closure remains open. 52 copied-original cases, 3537 controlled-boundary snapshots, 141402076 matching bytes. Required external callees are controlled observers/mutators, not validated implementations. Four source failure/replay observations. Strict Win32 build and three CTests pass. No native FH3/SEH, private-stack alias, hardware-fault, concurrency, drop-in ABI, application admission or gameplay proof. docs/NATIVE_GAME_LIFETIME_R121.md; reports/native_game_lifetime_r121.json.\n\n[BSP reconstruction 004dcf90] update\nComplete1559B normal parent schedule. ECX actual71A0 game, RET. StampCE7CB8; disable small string returns before cleanup. Preserve publication capture/reload/clear-after-callback order; capture first grid before clearing E188A8. Keep21F4 field after terminal release, clear five19D4..19E4 fields after callbacks. Captured vector range then free CURRENT buffer; strings capture pointer/length+1; checked trees free CURRENT heads. Required address-named callee contracts, no successful empty defaults. Ordinary destructor, not vector-deleting destructor. Descriptive hypothesis, not a recovered symbol. R121: four complete normal bodies, 1729 live/PE bytes; parent callee closure remains open. 52 copied-original cases, 3537 controlled-boundary snapshots, 141402076 matching bytes. Required external callees are controlled observers/mutators, not validated implementations. Four source failure/replay observations. Strict Win32 build and three CTests pass. No native FH3/SEH, private-stack alias, hardware-fault, concurrency, drop-in ABI, application admission or gameplay proof. docs/NATIVE_GAME_LIFETIME_R121.md; reports/native_game_lifetime_r121.json. | R122: four BF7C6E sites4DD230/4DD3F5/4DD412/4DD56B now use concrete normal defaults for listC/4,participant118/8 twice,vector10/5. Explicit actual string/observer/call context;same service identity required;four retained child operations. Missing context fails when reached. Parent diagnostic acknowledgement refuses failed/running children. Remaining cleanup callees and application admission open. Descriptive hypothesis, not a recovered symbol. R122: seven complete normal bodies460B;60 copied-original array cases,499 free/terminal observations,1306184 matching normalized bytes. Real raw string pool and same raw singleton manager, observer lock/pairs/dispatch/canonical edge deletion;all created domains drained. Virtual reference payloads are fixture allocations, not game-profile proof. Existing string/observer implementations and normal CRT iteration are shared dependencies.52 controlled parent cases/141402076 bytes;strict Win32/3CTests. Source failures retain graph/reject replay. No native CRT/FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-inABI,rawgame admission or gameplay proof. docs/NATIVE_GAME_ARRAY_LIFETIME_R122.md;reports/native_game_array_lifetime_r122.json.\n\n[BSP reconstruction 004dcf90] update\nComplete1559B normal parent schedule. ECX actual71A0 game, RET. StampCE7CB8; disable small string returns before cleanup. Preserve publication capture/reload/clear-after-callback order; capture first grid before clearing E188A8. Keep21F4 field after terminal release, clear five19D4..19E4 fields after callbacks. Captured vector range then free CURRENT buffer; strings capture pointer/length+1; checked trees free CURRENT heads. Required address-named callee contracts, no successful empty defaults. Ordinary destructor, not vector-deleting destructor. Descriptive hypothesis, not a recovered symbol. R121: four complete normal bodies, 1729 live/PE bytes; parent callee closure remains open. 52 copied-original cases, 3537 controlled-boundary snapshots, 141402076 matching bytes. Required external callees are controlled observers/mutators, not validated implementations. Four source failure/replay observations. Strict Win32 build and three CTests pass. No native FH3/SEH, private-stack alias, hardware-fault, concurrency, drop-in ABI, application admission or gameplay proof. docs/NATIVE_GAME_LIFETIME_R121.md; reports/native_game_lifetime_r121.json. | R122: four BF7C6E sites4DD230/4DD3F5/4DD412/4DD56B now use concrete normal defaults for listC/4,participant118/8 twice,vector10/5. Explicit actual string/observer/call context;same service identity required;four retained child operations. Missing context fails when reached. Parent diagnostic acknowledgement refuses failed/running children. Remaining cleanup callees and application admission open. Descriptive hypothesis, not a recovered symbol. R122: seven complete normal bodies460B;60 copied-original array cases,499 free/terminal observations,1306184 matching normalized bytes. Real raw string pool and same raw singleton manager, observer lock/pairs/dispatch/canonical edge deletion;all created domains drained. Virtual reference payloads are fixture allocations, not game-profile proof. Existing string/observer implementations and normal CRT iteration are shared dependencies.52 controlled parent cases/141402076 bytes;strict Win32/3CTests. Source failures retain graph/reject replay. No native CRT/FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-inABI,rawgame admission or gameplay proof. docs/NATIVE_GAME_ARRAY_LIFETIME_R122.md;reports/native_game_array_lifetime_r122.json. | R123:4DCFDE/4DD268 use concrete disable/destruction through same actual embedded context/call service;retained child operation,missing/wrong context fails when reached,parent refuses diagnostic acknowledgement while child running/failed.41CC80,B669A0,4DCEB0 parent methods now existing concrete raw lock/Lua/input cleanup defaults. Remaining virtual/profile/parent cleanup contracts and application admission open. Descriptive hypothesis, not a recovered symbol. R123: four complete normal bodies713B;86 copied-original cases,1000 observations,5789856 matching normalized bytes,175 dispatches,two returning diagnostics. Actual existing embedded constructor,Win32 locks,CRT allocation/free;virtual peer/payload implementations are fixtures,not game profiles. Concrete parent defaults also checked with recursive-lock drain,owned/borrowed Lua5.1.1 GC and real input nested/flat storage plus Lua cleanup.52 controlled parent cases/141402076bytes;strict Win32/3CTests. Source failure retains graph/entered lock and rejects replay. No native FH3/SEH,private-stack alias,hardware-fault,concurrency,oversized key list,drop-in ABI,rawgame admission or gameplay proof. docs/NATIVE_GAME_EMBEDDED_LIFETIME_R123.md;reports/native_game_embedded_lifetime_r123.json.\n\n[BSP reconstruction 004dcf90] update\nComplete1559B normal parent schedule. ECX actual71A0 game, RET. StampCE7CB8; disable small string returns before cleanup. Preserve publication capture/reload/clear-after-callback order; capture first grid before clearing E188A8. Keep21F4 field after terminal release, clear five19D4..19E4 fields after callbacks. Captured vector range then free CURRENT buffer; strings capture pointer/length+1; checked trees free CURRENT heads. Required address-named callee contracts, no successful empty defaults. Ordinary destructor, not vector-deleting destructor. Descriptive hypothesis, not a recovered symbol. R121: four complete normal bodies, 1729 live/PE bytes; parent callee closure remains open. 52 copied-original cases, 3537 controlled-boundary snapshots, 141402076 matching bytes. Required external callees are controlled observers/mutators, not validated implementations. Four source failure/replay observations. Strict Win32 build and three CTests pass. No native FH3/SEH, private-stack alias, hardware-fault, concurrency, drop-in ABI, application admission or gameplay proof. docs/NATIVE_GAME_LIFETIME_R121.md; reports/native_game_lifetime_r121.json. | R122: four BF7C6E sites4DD230/4DD3F5/4DD412/4DD56B now use concrete normal defaults for listC/4,participant118/8 twice,vector10/5. Explicit actual string/observer/call context;same service identity required;four retained child operations. Missing context fails when reached. Parent diagnostic acknowledgement refuses failed/running children. Remaining cleanup callees and application admission open. Descriptive hypothesis, not a recovered symbol. R122: seven complete normal bodies460B;60 copied-original array cases,499 free/terminal observations,1306184 matching normalized bytes. Real raw string pool and same raw singleton manager, observer lock/pairs/dispatch/canonical edge deletion;all created domains drained. Virtual reference payloads are fixture allocations, not game-profile proof. Existing string/observer implementations and normal CRT iteration are shared dependencies.52 controlled parent cases/141402076 bytes;strict Win32/3CTests. Source failures retain graph/reject replay. No native CRT/FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-inABI,rawgame admission or gameplay proof. docs/NATIVE_GAME_ARRAY_LIFETIME_R122.md;reports/native_game_array_lifetime_r122.json. | R123:4DCFDE/4DD268 use concrete disable/destruction through same actual embedded context/call service;retained child operation,missing/wrong context fails when reached,parent refuses diagnostic acknowledgement while child running/failed.41CC80,B669A0,4DCEB0 parent methods now existing concrete raw lock/Lua/input cleanup defaults. Remaining virtual/profile/parent cleanup contracts and application admission open. Descriptive hypothesis, not a recovered symbol. R123: four complete normal bodies713B;86 copied-original cases,1000 observations,5789856 matching normalized bytes,175 dispatches,two returning diagnostics. Actual existing embedded constructor,Win32 locks,CRT allocation/free;virtual peer/payload implementations are fixtures,not game profiles. Concrete parent defaults also checked with recursive-lock drain,owned/borrowed Lua5.1.1 GC and real input nested/flat storage plus Lua cleanup.52 controlled parent cases/141402076bytes;strict Win32/3CTests. Source failure retains graph/entered lock and rejects replay. No native FH3/SEH,private-stack alias,hardware-fault,concurrency,oversized key list,drop-in ABI,rawgame admission or gameplay proof. docs/NATIVE_GAME_EMBEDDED_LIFETIME_R123.md;reports/native_game_embedded_lifetime_r123.json. | R124 binds7FD8A0 at4DD422,7FF9F0 at4DD3A3 and direct419CC0/BD1510 pairs to explicit actual profile/string context. Same call-service identity required;retained profile child/mission operation and context-owned ActualNativeStringPoolStorage bridge. Parent diagnostic acknowledgement refuses running/failed profile child. Other cleanup contracts and application admission open. Descriptive hypothesis,not a recovered symbol;retain existing correct library names. R124: four complete normal bodies889B plus201B reference library body;56 copied-original composition cases,427 observations,1553004 matching normalized bytes. Actual raw profile construction,pool/manager,mission owner and populated collection services;score tree empty,SDK selected-user branch gated off.52 controlled parent cases/141402076bytes;strict Win32/3CTests. Context retains actual string bridge and mission child;source failure retains graph/rejects replay. No general partial7FB230 port,native FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-in ABI,raw-game admission or gameplay proof. docs/NATIVE_GAME_PROFILE_LIFETIME_R124.md;reports/native_game_profile_lifetime_r124.json."
+        },
+        "after": {
+          "address": "004dcf90",
+          "name": "BSP_Game_DestroyActualStorage",
+          "evidence": "Complete1559B normal parent schedule. ECX actual71A0 game, RET. StampCE7CB8; disable small string returns before cleanup. Preserve publication capture/reload/clear-after-callback order; capture first grid before clearing E188A8. Keep21F4 field after terminal release, clear five19D4..19E4 fields after callbacks. Captured vector range then free CURRENT buffer; strings capture pointer/length+1; checked trees free CURRENT heads. Required address-named callee contracts, no successful empty defaults. Ordinary destructor, not vector-deleting destructor. Descriptive hypothesis, not a recovered symbol. R121: four complete normal bodies, 1729 live/PE bytes; parent callee closure remains open. 52 copied-original cases, 3537 controlled-boundary snapshots, 141402076 matching bytes. Required external callees are controlled observers/mutators, not validated implementations. Four source failure/replay observations. Strict Win32 build and three CTests pass. No native FH3/SEH, private-stack alias, hardware-fault, concurrency, drop-in ABI, application admission or gameplay proof. docs/NATIVE_GAME_LIFETIME_R121.md; reports/native_game_lifetime_r121.json. | R122: four BF7C6E sites4DD230/4DD3F5/4DD412/4DD56B now use concrete normal defaults for listC/4,participant118/8 twice,vector10/5. Explicit actual string/observer/call context;same service identity required;four retained child operations. Missing context fails when reached. Parent diagnostic acknowledgement refuses failed/running children. Remaining cleanup callees and application admission open. Descriptive hypothesis, not a recovered symbol. R122: seven complete normal bodies460B;60 copied-original array cases,499 free/terminal observations,1306184 matching normalized bytes. Real raw string pool and same raw singleton manager, observer lock/pairs/dispatch/canonical edge deletion;all created domains drained. Virtual reference payloads are fixture allocations, not game-profile proof. Existing string/observer implementations and normal CRT iteration are shared dependencies.52 controlled parent cases/141402076 bytes;strict Win32/3CTests. Source failures retain graph/reject replay. No native CRT/FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-inABI,rawgame admission or gameplay proof. docs/NATIVE_GAME_ARRAY_LIFETIME_R122.md;reports/native_game_array_lifetime_r122.json. | R123:4DCFDE/4DD268 use concrete disable/destruction through same actual embedded context/call service;retained child operation,missing/wrong context fails when reached,parent refuses diagnostic acknowledgement while child running/failed.41CC80,B669A0,4DCEB0 parent methods now existing concrete raw lock/Lua/input cleanup defaults. Remaining virtual/profile/parent cleanup contracts and application admission open. Descriptive hypothesis, not a recovered symbol. R123: four complete normal bodies713B;86 copied-original cases,1000 observations,5789856 matching normalized bytes,175 dispatches,two returning diagnostics. Actual existing embedded constructor,Win32 locks,CRT allocation/free;virtual peer/payload implementations are fixtures,not game profiles. Concrete parent defaults also checked with recursive-lock drain,owned/borrowed Lua5.1.1 GC and real input nested/flat storage plus Lua cleanup.52 controlled parent cases/141402076bytes;strict Win32/3CTests. Source failure retains graph/entered lock and rejects replay. No native FH3/SEH,private-stack alias,hardware-fault,concurrency,oversized key list,drop-in ABI,rawgame admission or gameplay proof. docs/NATIVE_GAME_EMBEDDED_LIFETIME_R123.md;reports/native_game_embedded_lifetime_r123.json. | R124 binds7FD8A0 at4DD422,7FF9F0 at4DD3A3 and direct419CC0/BD1510 pairs to explicit actual profile/string context. Same call-service identity required;retained profile child/mission operation and context-owned ActualNativeStringPoolStorage bridge. Parent diagnostic acknowledgement refuses running/failed profile child. Other cleanup contracts and application admission open. Descriptive hypothesis,not a recovered symbol;retain existing correct library names. R124: four complete normal bodies889B plus201B reference library body;56 copied-original composition cases,427 observations,1553004 matching normalized bytes. Actual raw profile construction,pool/manager,mission owner and populated collection services;score tree empty,SDK selected-user branch gated off.52 controlled parent cases/141402076bytes;strict Win32/3CTests. Context retains actual string bridge and mission child;source failure retains graph/rejects replay. No general partial7FB230 port,native FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-in ABI,raw-game admission or gameplay proof. docs/NATIVE_GAME_PROFILE_LIFETIME_R124.md;reports/native_game_profile_lifetime_r124.json. | R125 supplies seven concrete defaults at fourteen reached parent sites:4BF930,4BF8E0,4C2CE0,4C4A50,4CF3F0,4C4B40,4CB220. Each receives same retained operation.containers. Raw-owner application admission,other cleanup contracts and actual payload virtual bindings remainopen. Descriptive hypothesis,not a recovered symbol;retain existing correct library names. R125: nine complete normal bodies878B;71 copied-original cases,315 observations,46400 matching normalized bytes. Seven actual parent defaults,real CRT/Win32 atomics and raw sentinel producers;payload virtual bodies are fixture methods.52 controlled parent cases/141402076bytes;strict Win32/3CTests. Two source-only growth failures retain observed partial graphs;borrowed progress is not owning rollback. No native FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-in ABI,raw-game admission or gameplay proof. docs/NATIVE_GAME_CONTAINER_LIFETIME_R125.md;reports/native_game_container_lifetime_r125.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "readback_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\game_container_lifetime_r125\\comments-after.json",
+    "readback_sha256": "18f1e089e65b57c2eaec86b937d39c236ff6fef70f6a095f6d74b1fd26fce63f",
+    "status": "Nine body names and parent evidence saved under write lock;prior values preserved,readback checked,exports refreshed"
+  },
+  "ledger_receipts": [
+    "004bf8e0 -> BSP_UnitList_Clear\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"004bf8e0\", \"name\": \"BSP_UnitList_Clear\", \"evidence\": \"Hypothesis, not a recovered symbol. Packet cc_unit_lists, read-only analysis. __thiscall void(List*), body 004bf8e0-004bf925, RET. Erases and frees every node of a {count at +0, head at +4, tail at +8} list: unlink the head (node prev at +0, next at +4), fix head or tail, --count, free 00BF65AC, repeat while count != 0 (back edge 004bf922 JNZ 004bf8e8). Corrects the earlier reading in docs/IN_MISSION_SUBSYSTEM_TICK.md that 004BFDF0 pops one element per list. docs/LOCAL_PLAYER_UNIT_LISTS.md\"})\n",
+    "004bf8e0 function clear_native_game_unit_links_004bf8e0\n",
+    "004bf930 -> BSP_SceneRecordList_DestroyAll\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"004bf930\", \"name\": \"BSP_SceneRecordList_DestroyAll\", \"evidence\": \"Hypothesis, not a recovered symbol. Packet cc_mission_load, read-only analysis. __thiscall void(SceneRecordList* this), ECX=list (004bf931 MOV EDI,ECX), no stack arguments, RET. The list header is three words {int count; Node* head; Node* tail} and a node is {Node* prev; Node* next; void* payload}. Pops head until count is zero: calls the payload's virtual +0h with 1 (004bf950 CALL EDX after PUSH 1), nulls node+8h, unlinks, decrements the count and frees the node. 004e2770 calls it with ECX=game+5F0h to empty the scene record list before building the pending scene; three other callers use it on lists of the same shape. docs/MISSION_LOAD_PATH.md\"})\n",
+    "004bf930 function destroy_native_game_scene_records_004bf930\n",
+    "004c2ce0 -> BSP_SceneLinkList_ClearActualStorage\n",
+    "004c2ce0 function clear_native_game_scene_links_004c2ce0\n",
+    "004c4a50 -> BSP_GamePointerBlocks_DestroyActualStorage\n",
+    "004c4a50 function destroy_native_game_pointer_blocks_004c4a50\n",
+    "004c4b40 -> BSP_GamePointerList_DestroyActualStorage\n",
+    "004c4b40 function destroy_native_game_pointer_list_004c4b40\n",
+    "004c8180 -> BSP_GamePointerList_DestroyActualStorageThunk\n",
+    "004c8180 function destroy_native_game_pointer_list_thunk_004c8180\n",
+    "004cf3f0 -> BSP_GameSmallStringNodeList_ClearActualStorage\n",
+    "004cf3f0 function clear_native_game_small_string_nodes_004cf3f0\n",
+    "004c86a0 -> BSP_GameReferenceSlots_ReserveActualStorage\n",
+    "004c86a0 function reserve_native_game_reference_slots_004c86a0\n",
+    "004cb220 -> BSP_GameReferenceSlots_ResizeActualStorage\n",
+    "004cb220 function resize_native_game_reference_slots_004cb220\n",
+    "004dcf90 -> BSP_Game_DestroyActualStorage\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"004dcf90\", \"name\": \"BSP_Game_DestroyActualStorage\", \"evidence\": \"Complete1559B normal parent schedule. ECX actual71A0 game, RET. StampCE7CB8; disable small string returns before cleanup. Preserve publication capture/reload/clear-after-callback order; capture first grid before clearing E188A8. Keep21F4 field after terminal release, clear five19D4..19E4 fields after callbacks. Captured vector range then free CURRENT buffer; strings capture pointer/length+1; checked trees free CURRENT heads. Required address-named callee contracts, no successful empty defaults. Ordinary destructor, not vector-deleting destructor. Descriptive hypothesis, not a recovered symbol. R121: four complete normal bodies, 1729 live/PE bytes; parent callee closure remains open. 52 copied-original cases, 3537 controlled-boundary snapshots, 141402076 matching bytes. Required external callees are controlled observers/mutators, not validated implementations. Four source failure/replay observations. Strict Win32 build and three CTests pass. No native FH3/SEH, private-stack alias, hardware-fault, concurrency, drop-in ABI, application admission or gameplay proof. docs/NATIVE_GAME_LIFETIME_R121.md; reports/native_game_lifetime_r121.json. | R122: four BF7C6E sites4DD230/4DD3F5/4DD412/4DD56B now use concrete normal defaults for listC/4,participant118/8 twice,vector10/5. Explicit actual string/observer/call context;same service identity required;four retained child operations. Missing context fails when reached. Parent diagnostic acknowledgement refuses failed/running children. Remaining cleanup callees and application admission open. Descriptive hypothesis, not a recovered symbol. R122: seven complete normal bodies460B;60 copied-original array cases,499 free/terminal observations,1306184 matching normalized bytes. Real raw string pool and same raw singleton manager, observer lock/pairs/dispatch/canonical edge deletion;all created domains drained. Virtual reference payloads are fixture allocations, not game-profile proof. Existing string/observer implementations and normal CRT iteration are shared dependencies.52 controlled parent cases/141402076 bytes;strict Win32/3CTests. Source failures retain graph/reject replay. No native CRT/FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-inABI,rawgame admission or gameplay proof. docs/NATIVE_GAME_ARRAY_LIFETIME_R122.md;reports/native_game_array_lifetime_r122.json. | R123:4DCFDE/4DD268 use concrete disable/destruction through same actual embedded context/call service;retained child operation,missing/wrong context fails when reached,parent refuses diagnostic acknowledgement while child running/failed.41CC80,B669A0,4DCEB0 parent methods now existing concrete raw lock/Lua/input cleanup defaults. Remaining virtual/profile/parent cleanup contracts and application admission open. Descriptive hypothesis, not a recovered symbol. R123: four complete normal bodies713B;86 copied-original cases,1000 observations,5789856 matching normalized bytes,175 dispatches,two returning diagnostics. Actual existing embedded constructor,Win32 locks,CRT allocation/free;virtual peer/payload implementations are fixtures,not game profiles. Concrete parent defaults also checked with recursive-lock drain,owned/borrowed Lua5.1.1 GC and real input nested/flat storage plus Lua cleanup.52 controlled parent cases/141402076bytes;strict Win32/3CTests. Source failure retains graph/entered lock and rejects replay. No native FH3/SEH,private-stack alias,hardware-fault,concurrency,oversized key list,drop-in ABI,rawgame admission or gameplay proof. docs/NATIVE_GAME_EMBEDDED_LIFETIME_R123.md;reports/native_game_embedded_lifetime_r123.json. | R124 binds7FD8A0 at4DD422,7FF9F0 at4DD3A3 and direct419CC0/BD1510 pairs to explicit actual profile/string context. Same call-service identity required;retained profile child/mission operation and context-owned ActualNativeStringPoolStorage bridge. Parent diagnostic acknowledgement refuses running/failed profile child. Other cleanup contracts and application admission open. Descriptive hypothesis,not a recovered symbol;retain existing correct library names. R124: four complete normal bodies889B plus201B reference library body;56 copied-original composition cases,427 observations,1553004 matching normalized bytes. Actual raw profile construction,pool/manager,mission owner and populated collection services;score tree empty,SDK selected-user branch gated off.52 controlled parent cases/141402076bytes;strict Win32/3CTests. Context retains actual string bridge and mission child;source failure retains graph/rejects replay. No general partial7FB230 port,native FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-in ABI,raw-game admission or gameplay proof. docs/NATIVE_GAME_PROFILE_LIFETIME_R124.md;reports/native_game_profile_lifetime_r124.json.\"})\n",
+    "004dcf90 fragment native_game_container_lifetime_binding_r125\n"
+  ],
+  "tested_artifact_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r125\\native-game-container-lifetime-tested-r125.zip",
+    "sha256": "ebd5359690295366c8efe96566228602bd14710ec7023235de30ca39bdfc9731",
+    "files": 216,
+    "uncompressed_bytes": 356686385,
+    "utc": "2026-09-18T04:59:09.875767+00:00",
+    "head": "c20ddc9c24914691f1b8224942db3a86f1d52b59",
+    "manifest": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_game_container_lifetime.obj",
+        "size": 7558,
+        "sha256": "c3e5309ec3655f0b6d8e9e169b7edd52e9df71d8d4fa3d37910695e2951c3d13"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_game_lifetime.obj",
+        "size": 31813,
+        "sha256": "4b97a238ee151fdc9dd11a150d4c3a9d42b759ecd384434c5e73369419c752b9"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "size": 66011722,
+        "sha256": "334ead9515ab90d19e4a8c407d1549237c79794209a2790eeed207869f55e93d"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "size": 2679296,
+        "sha256": "f89b9b7c0b4c8d488e41223871bb2010e3769f7b724d876766fcdd57641becc8"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "size": 455244,
+        "sha256": "db83167c8c7d24461ef2bf60363b96264fd2406929d0e72a8909287d79b96a17"
+      },
+      {
+        "path": "build/win32/Release/bsp_math_tests.exe",
+        "size": 760832,
+        "sha256": "effa85f86631519f9679a7eca59535f8b82471504c0709fad395cc2d90bd12f1"
+      },
+      {
+        "path": "build/win32/Release/bsp_native_math_tests.exe",
+        "size": 18432,
+        "sha256": "ccbb82d3ab88740a7e6c938d3947dd95a478b5664b4b7b27d48e54a6f8394055"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "size": 71906,
+        "sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "size": 160728,
+        "sha256": "2d8b5a770d4f30c4094b1303bd47ca6ab34a3881b3c42499fd1cbee206dbe729"
+      },
+      {
+        "path": "config/names/004b0000.jsonl",
+        "size": 61156,
+        "sha256": "cb25cab71e99b5fd022a9b273a97dcbd5b676578e96cefea6504dd574bae2317"
+      },
+      {
+        "path": "config/names/004c0000.jsonl",
+        "size": 127238,
+        "sha256": "ea714ba357301f826222c5ca9d1d8ef161607d8a732062d27ec43c6ddba73227"
+      },
+      {
+        "path": "config/names/004d0000.jsonl",
+        "size": 129963,
+        "sha256": "c525d75a66b31a769ae0e53b58969c1ff5f43c13742fa77f023d261ba5bedb52"
+      },
+      {
+        "path": "config/reconstruction/004b0000.jsonl",
+        "size": 55610,
+        "sha256": "0470dfc3e62fb5f92c9180a2cdd58ba31467ad9daa44dcf57414caac6d349d66"
+      },
+      {
+        "path": "config/reconstruction/004c0000.jsonl",
+        "size": 131687,
+        "sha256": "7c1d168dcb61fea7ba9d97ead226c5b1e7aedb52e04d96870bd0afcb80b571ce"
+      },
+      {
+        "path": "config/reconstruction/004d0000.jsonl",
+        "size": 135557,
+        "sha256": "d3d6844a4738ae34f9de056c50b8b6111f606a31821a14805ee41aa12edbb4a3"
+      },
+      {
+        "path": "docs/NATIVE_GAME_CONTAINER_LIFETIME_R125.md",
+        "size": 5607,
+        "sha256": "c5a3dd620371b38c3a87bbc47bb372bc6eb0f608670c76eb4c9c2f8d81690f62"
+      },
+      {
+        "path": "docs/NATIVE_GAME_LIFETIME_R121.md",
+        "size": 10916,
+        "sha256": "1e2144c4d56b19ec6345e51f436ae1e47084f084a679f8b983d3a4c9de2edf56"
+      },
+      {
+        "path": "include/bsp/allocator_list.hpp",
+        "size": 1781,
+        "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8"
+      },
+      {
+        "path": "include/bsp/audio_online_startup.hpp",
+        "size": 17176,
+        "sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821"
+      },
+      {
+        "path": "include/bsp/avoid_zone_dyn_hull.hpp",
+        "size": 3575,
+        "sha256": "c4b13f13e5cb94a4e1423c0c96aa725935615f92d2cb65a823c36572bf1f2c3a"
+      },
+      {
+        "path": "include/bsp/building_instance.hpp",
+        "size": 2328,
+        "sha256": "ad3c055dee4b5b4ec77784db03552e173644d57b154b3fd0a26dd5dff1ad1c4e"
+      },
+      {
+        "path": "include/bsp/camera_projection.hpp",
+        "size": 2413,
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "path": "include/bsp/camera_transform.hpp",
+        "size": 7028,
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+      },
+      {
+        "path": "include/bsp/d3d9_buffers.hpp",
+        "size": 3262,
+        "sha256": "e8bc19c4630661b83969b53cac94134748f3c9af2a98002f1f2906ed93dedc83"
+      },
+      {
+        "path": "include/bsp/d3d9_startup.hpp",
+        "size": 1362,
+        "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843"
+      },
+      {
+        "path": "include/bsp/d3d9_states.hpp",
+        "size": 15076,
+        "sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288"
+      },
+      {
+        "path": "include/bsp/d3d9_vertex_layout.hpp",
+        "size": 1257,
+        "sha256": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef"
+      },
+      {
+        "path": "include/bsp/dyn_body_creation.hpp",
+        "size": 5100,
+        "sha256": "771890801179db08b6ec963a2145cb05c4346da8f79d402514770aae2210535b"
+      },
+      {
+        "path": "include/bsp/dyn_engine_runtime.hpp",
+        "size": 2552,
+        "sha256": "059c3367a5d71532c076a29895b62394e1d88d71fa6cd828c5a540604359d82a"
+      },
+      {
+        "path": "include/bsp/dyn_scene_runtime.hpp",
+        "size": 2802,
+        "sha256": "55bbd6bda1cbdde923b48381c85998db05f4db9ce96e60d9f964c2d2b6be378c"
+      },
+      {
+        "path": "include/bsp/dyn_world_factory.hpp",
+        "size": 1225,
+        "sha256": "4e32f788fd38fdf5acbef4a530c43b709c2e62e8017e428a58e0539d257c0b29"
+      },
+      {
+        "path": "include/bsp/dyn_world_runtime.hpp",
+        "size": 1331,
+        "sha256": "fe53091179272be0d15c1e69a80174d69f9c9e5199a5bc61329be0490ba18a19"
+      },
+      {
+        "path": "include/bsp/dyn_world_settings.hpp",
+        "size": 7233,
+        "sha256": "b00dde4b4a80912c7c255d9080d56213028f6723810499f3d54be157c1c34b33"
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "size": 2475,
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+      },
+      {
+        "path": "include/bsp/frontend_screen_animation.hpp",
+        "size": 14105,
+        "sha256": "5bf3429e1c6032def440ccebd3d804fd087896401ec16bf94b456b1dc73865e0"
+      },
+      {
+        "path": "include/bsp/game_entry.hpp",
+        "size": 5510,
+        "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+      },
+      {
+        "path": "include/bsp/gameplay_effect_definition.hpp",
+        "size": 5105,
+        "sha256": "5ea6bc9afc8f44e24abc29e79b281f9a354ae5ca3f45cfb27fe7cb52e13ba198"
+      },
+      {
+        "path": "include/bsp/gameplay_effect_manager.hpp",
+        "size": 2366,
+        "sha256": "27b54b5be98ea6784d4b0a73abd295b06f161dd925d9c3946974650bb664eeef"
+      },
+      {
+        "path": "include/bsp/generated_model_lifetime.hpp",
+        "size": 12600,
+        "sha256": "bb6171641666552aea3fcaa9757d13074f229e79d5793a3b044b980f4a3d3ef9"
+      },
+      {
+        "path": "include/bsp/global_config.hpp",
+        "size": 3836,
+        "sha256": "27644005624b594fbbc8b1c771223f9f7f36edfb05aa3d47ac2a3be5c1b9c5cd"
+      },
+      {
+        "path": "include/bsp/gui_layout_loader.hpp",
+        "size": 20811,
+        "sha256": "3ede9dc470a4d5a3285d1578483428b548025b0b2eba9ab6ecc79967b242d8b1"
+      },
+      {
+        "path": "include/bsp/gui_lua_reader.hpp",
+        "size": 23275,
+        "sha256": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433"
+      },
+      {
+        "path": "include/bsp/gui_native_geometry.hpp",
+        "size": 10778,
+        "sha256": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf"
+      },
+      {
+        "path": "include/bsp/gui_text_native_renderer.hpp",
+        "size": 1778,
+        "sha256": "51e0dc41b0bdcd3941bc6b2e4e2e41d12111027e6864bc457eb96bc15dbf38cf"
+      },
+      {
+        "path": "include/bsp/gui_widget.hpp",
+        "size": 13391,
+        "sha256": "846d1f6378e3459fb585917289d2f3342de37ba98dafc7fc952c9c48ea8061f9"
+      },
+      {
+        "path": "include/bsp/instance_geometry.hpp",
+        "size": 3989,
+        "sha256": "02bd2ae826198ca341a2a14fbf0f58ced99ccd20a5833a6eef48a11f932b75d4"
+      },
+      {
+        "path": "include/bsp/instance_grouping.hpp",
+        "size": 4008,
+        "sha256": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308"
+      },
+      {
+        "path": "include/bsp/instance_sort.hpp",
+        "size": 4479,
+        "sha256": "c3a892e5b69db70699daaa5c301f5b00aa17fe4f93f929fdc43dcc16e797b1f3"
+      },
+      {
+        "path": "include/bsp/instance_upload.hpp",
+        "size": 6532,
+        "sha256": "271e956b6dd3801fff1edab447fb03bb929ec562e227ae0357debbe95c1239fb"
+      },
+      {
+        "path": "include/bsp/material_lighting.hpp",
+        "size": 1642,
+        "sha256": "b56091a2688d0a7cf52401396efa68b9f02de215e9bd89e4bf20d93d83600da8"
+      },
+      {
+        "path": "include/bsp/material_sort_metadata.hpp",
+        "size": 3332,
+        "sha256": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212"
+      },
+      {
+        "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+        "size": 2257,
+        "sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1"
+      },
+      {
+        "path": "include/bsp/native_game_array_elements.hpp",
+        "size": 2529,
+        "sha256": "c649a43f9f5d79d7e1f73bed13d28bce4c973672e1b185b4c4305c5dae886609"
+      },
+      {
+        "path": "include/bsp/native_game_array_lifetime.hpp",
+        "size": 3035,
+        "sha256": "296271866c2b7f47893ccc3687cc6148345b376d6bb0d0d35d11495c64a1f7aa"
+      },
+      {
+        "path": "include/bsp/native_game_construction.hpp",
+        "size": 6896,
+        "sha256": "f52c3b24e55c5ab0a96254d13bc18eb051f8731b07733dde7f231ca9659d37a0"
+      },
+      {
+        "path": "include/bsp/native_game_container_lifetime.hpp",
+        "size": 4037,
+        "sha256": "6df6f4a3cde7eb849d4d57d221518020be4f1184948502f3ee7d1aeab430b1d1"
+      },
+      {
+        "path": "include/bsp/native_game_dynamics.hpp",
+        "size": 819,
+        "sha256": "a3e10519df0f4bb2327ee46713069f0aa761630ca1c633f438db09bb41668290"
+      },
+      {
+        "path": "include/bsp/native_game_embedded_lifetime.hpp",
+        "size": 3447,
+        "sha256": "7471f546612018324a42748fb484af08e38f4567684bcba3bc80003a3cf7c42a"
+      },
+      {
+        "path": "include/bsp/native_game_embedded_state.hpp",
+        "size": 2369,
+        "sha256": "c915da207b5212ae77559082be9bf39de180e0db228294ebec8fdcd1de29e64d"
+      },
+      {
+        "path": "include/bsp/native_game_grid.hpp",
+        "size": 5494,
+        "sha256": "6ad37763b462847bee9f77b0d31bdcd76cc5920f207fa7d2d98225210b629726"
+      },
+      {
+        "path": "include/bsp/native_game_lifetime.hpp",
+        "size": 6856,
+        "sha256": "a3308f07fb7cbb19e5885cc2d08daeba73cb5477ad6a07ae4fecb1ffb810062f"
+      },
+      {
+        "path": "include/bsp/native_game_profile_lifetime.hpp",
+        "size": 4493,
+        "sha256": "d7680ba1d4266ce48f125f01594bf7f2506637206e98982792f2d29e75ae503a"
+      },
+      {
+        "path": "include/bsp/native_game_resource_parsers.hpp",
+        "size": 4741,
+        "sha256": "0bac11abb6c9291aeccc3fdc38966a87be2cf9ca685a7fc4cfff1b1b3877eddd"
+      },
+      {
+        "path": "include/bsp/native_game_storage_defaults.hpp",
+        "size": 1401,
+        "sha256": "b3c73d5fea2b21e9fc03490e2849baf5bef62ee6ccd0e21f746897344fc214f6"
+      },
+      {
+        "path": "include/bsp/native_game_tables.hpp",
+        "size": 1985,
+        "sha256": "35e156043ec28f28b6c47944e26d0d6f05ef1c3acac18849922358be99be63f9"
+      },
+      {
+        "path": "include/bsp/native_global_config_fields.hpp",
+        "size": 1473,
+        "sha256": "c8b78c0382a8d994d37107c969acf691dc6f781e409523691fe821042b435803"
+      },
+      {
+        "path": "include/bsp/native_global_config_load.hpp",
+        "size": 2389,
+        "sha256": "c487698f7d3d5bfe435b506affa43179a1e5f6cf04ba858cd9ae2b639b3a800e"
+      },
+      {
+        "path": "include/bsp/native_logical_buffer_device_restore.hpp",
+        "size": 2649,
+        "sha256": "2e79708e49c1559f706602b9fe761791776f11fee1c5b3efa69d7fbb2bd57c45"
+      },
+      {
+        "path": "include/bsp/native_logical_buffer_mapping.hpp",
+        "size": 2420,
+        "sha256": "d3ee48a208b6636dc70941c6a62967407d657ad18f1ae971f2d900c752fcaef0"
+      },
+      {
+        "path": "include/bsp/native_logical_index_owner.hpp",
+        "size": 6804,
+        "sha256": "c0ae53059fba249f589990b7d41d1986a2134cd86b99cd5d6db7ab2c849b38cb"
+      },
+      {
+        "path": "include/bsp/native_logical_vertex_owner.hpp",
+        "size": 7242,
+        "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+      },
+      {
+        "path": "include/bsp/native_lua_bootstrap.hpp",
+        "size": 1658,
+        "sha256": "b9c5bad802213d87665c1c4f82320184ef8970902dcd9dd7b22b40ce4493a45c"
+      },
+      {
+        "path": "include/bsp/native_lua_file_loading.hpp",
+        "size": 1992,
+        "sha256": "13bcab4bbc7eb973b7ccceb87b198e19326bed0320d2d3dca7b32ae91cba3108"
+      },
+      {
+        "path": "include/bsp/native_lua_objects.hpp",
+        "size": 10058,
+        "sha256": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d"
+      },
+      {
+        "path": "include/bsp/native_lua_vfs_dispatch.hpp",
+        "size": 1569,
+        "sha256": "da795f3a43a6acf1664d6ac00474a170d7196bf4383ca1695960ab685c67bfb2"
+      },
+      {
+        "path": "include/bsp/native_material_factory.hpp",
+        "size": 3753,
+        "sha256": "fa8a45423c10da368d803d5df7fb583a5bc91e9f3c3ac59722607e4a95d90b71"
+      },
+      {
+        "path": "include/bsp/native_material_owner.hpp",
+        "size": 5986,
+        "sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320"
+      },
+      {
+        "path": "include/bsp/native_material_pools.hpp",
+        "size": 10219,
+        "sha256": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715"
+      },
+      {
+        "path": "include/bsp/native_mesh_clone.hpp",
+        "size": 2821,
+        "sha256": "0fbe93a15ed525fd128257ca58ac4c4d8da4b4a533dd345c6c856bce5d839d5e"
+      },
+      {
+        "path": "include/bsp/native_mesh_owner.hpp",
+        "size": 6760,
+        "sha256": "540fa95aafcd3b67697998361f9a6b1689bf90348c9c0cdc09bdeb6b9c6ac42c"
+      },
+      {
+        "path": "include/bsp/native_mesh_pool.hpp",
+        "size": 2929,
+        "sha256": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52"
+      },
+      {
+        "path": "include/bsp/native_mesh_section.hpp",
+        "size": 9555,
+        "sha256": "c99901d53b195ab67c0da51c7b39657f42b7b60ba1f5509eec200b6ff29f3e2e"
+      },
+      {
+        "path": "include/bsp/native_mission_progress_owner.hpp",
+        "size": 1980,
+        "sha256": "bff5ea00ed24a064c8251420a11a068eab39b01d10ba0ec9ce76ff01feccb394"
+      },
+      {
+        "path": "include/bsp/native_model_owner.hpp",
+        "size": 6717,
+        "sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e"
+      },
+      {
+        "path": "include/bsp/native_model_pool.hpp",
+        "size": 3166,
+        "sha256": "30e4945729d723ec450a6eebaf28968c976dcd50f366ba193aa591d751709144"
+      },
+      {
+        "path": "include/bsp/native_node_construction.hpp",
+        "size": 6451,
+        "sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098"
+      },
+      {
+        "path": "include/bsp/native_node_destruction.hpp",
+        "size": 5997,
+        "sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833"
+      },
+      {
+        "path": "include/bsp/native_physical_buffer_lock.hpp",
+        "size": 1561,
+        "sha256": "519c67bd123883490af70464ab81cec74d5de948a39eada540cf5b8529e18340"
+      },
+      {
+        "path": "include/bsp/native_physical_buffer_owner.hpp",
+        "size": 4248,
+        "sha256": "1277b747e0963be41fdee456092ea42b3c191d7aa165eeeec772de3cad354e56"
+      },
+      {
+        "path": "include/bsp/native_player_profile_owner.hpp",
+        "size": 4505,
+        "sha256": "3bb853af8712fdb9d8b1bcca8e27cb48ede6b2219ca20648f0c1a8675ef139a8"
+      },
+      {
+        "path": "include/bsp/native_point_light_links.hpp",
+        "size": 4633,
+        "sha256": "e106191d74ea6960befb5f36e74e89076efb5fec4122a5b3d87482823dc07ba7"
+      },
+      {
+        "path": "include/bsp/native_profile_collections.hpp",
+        "size": 2989,
+        "sha256": "29292e811a8562f988ca17c721fa3a74f2640c9578839ade9355bd0a080a8ae0"
+      },
+      {
+        "path": "include/bsp/native_profile_settings.hpp",
+        "size": 2526,
+        "sha256": "2dd92ab3c7dc33673fa830d1d4382da40c45852c2cd04b868f26f8734c95d5b9"
+      },
+      {
+        "path": "include/bsp/native_render_context.hpp",
+        "size": 6924,
+        "sha256": "1c8d834d50cbf8ee7f660e7803efe6bad43fe70bbe87fd5cdf3375f6e68ef56d"
+      },
+      {
+        "path": "include/bsp/native_render_pointer_arrays.hpp",
+        "size": 4572,
+        "sha256": "d9cf406a178986114205fe9a154a2b74c0f8dd857b6186d7d840d8fe398ae881"
+      },
+      {
+        "path": "include/bsp/native_render_resource_record.hpp",
+        "size": 4475,
+        "sha256": "6e1d8e4817325dab095e27588f9a5aa79cb5e32130b3fe1bc52d9d3f44de4d92"
+      },
+      {
+        "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+        "size": 2877,
+        "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+      },
+      {
+        "path": "include/bsp/native_resource_manager_lifetime.hpp",
+        "size": 4222,
+        "sha256": "59f9f3ef4431664664f7f3732e10defcdc3a222eca3cd554e477aba31179d26a"
+      },
+      {
+        "path": "include/bsp/native_resource_parser_registration.hpp",
+        "size": 4225,
+        "sha256": "ecd38e6bfea430c734ff9fccebf59d2ea2a52f2b1be98ba9f0e85f714e2bbf0f"
+      },
+      {
+        "path": "include/bsp/native_resource_parser_singletons.hpp",
+        "size": 5692,
+        "sha256": "7f55afc5dd483f98b7e531a65743777adefe3b93f9c061cd2e9262e68818c2e3"
+      },
+      {
+        "path": "include/bsp/native_resource_support.hpp",
+        "size": 3479,
+        "sha256": "fb1506aba45e7801bcb638a6d836ce52972cf49e6d8120f7a07f8dc74d36b8f7"
+      },
+      {
+        "path": "include/bsp/native_stream_clone.hpp",
+        "size": 3283,
+        "sha256": "a333d180afcf21084068a671d60c34ee8e1b18ea980a6c03b115a32ce2ff3e6a"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "size": 8771,
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+      },
+      {
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "size": 5893,
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "size": 2805,
+        "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+      },
+      {
+        "path": "include/bsp/native_string_vector.hpp",
+        "size": 1820,
+        "sha256": "38a48cf86dc70e46bdb184b1d7738e4221f55ddd045429fa4f47c74cc6b9c2e9"
+      },
+      {
+        "path": "include/bsp/native_vertex_declaration_cache.hpp",
+        "size": 4248,
+        "sha256": "14123aa649c71cae8c4c35bad989533402ae66daeaa25bff86dcfd017b2768d1"
+      },
+      {
+        "path": "include/bsp/panel_sequence_types.hpp",
+        "size": 2031,
+        "sha256": "49ba6e71c04f1c0a2e248e8b14c46164dc489f87204c232d16915d47026d1a43"
+      },
+      {
+        "path": "include/bsp/random.hpp",
+        "size": 791,
+        "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+      },
+      {
+        "path": "include/bsp/random_threads.hpp",
+        "size": 1446,
+        "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+      },
+      {
+        "path": "include/bsp/render_command_queue.hpp",
+        "size": 10656,
+        "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a"
+      },
+      {
+        "path": "include/bsp/render_tail.hpp",
+        "size": 15566,
+        "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+      },
+      {
+        "path": "include/bsp/rigid_body_integration.hpp",
+        "size": 8112,
+        "sha256": "07cb2142f73cb94cd0bd3d903f2482816cc7924be69247ae1ac1707e4df62f11"
+      },
+      {
+        "path": "include/bsp/scene_attachment.hpp",
+        "size": 9700,
+        "sha256": "d2bb5d004129a418961bf13e60c0f8324a077b5647ca8450602421190841d322"
+      },
+      {
+        "path": "include/bsp/ship_hull_body.hpp",
+        "size": 9286,
+        "sha256": "a9417d7dc66f6eeda4aee783cd87c3d403b91693a142d8d1c255ebe3ba2c9c0b"
+      },
+      {
+        "path": "include/bsp/ship_hull_shapes.hpp",
+        "size": 17222,
+        "sha256": "58a35e261aa87778c225ff550fea23218f24fc0c7f5982d87b50fc1ef7a9877a"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "size": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "include/bsp/sound_class_ownership.hpp",
+        "size": 4116,
+        "sha256": "d1a5733899f1f6e51e06e838561682aa2564a9f693124df7749e8cd937a074d6"
+      },
+      {
+        "path": "include/bsp/sound_configuration.hpp",
+        "size": 6716,
+        "sha256": "06f3585b512506defb15fce912350febdefd09353efd832bdfe48c6aa9272874"
+      },
+      {
+        "path": "include/bsp/sound_lifetime_access.hpp",
+        "size": 3039,
+        "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+      },
+      {
+        "path": "include/bsp/sound_listener.hpp",
+        "size": 4732,
+        "sha256": "331718caa3413b8886778fb0232a2178b02ed8aa47db893de8f35ad787f070d6"
+      },
+      {
+        "path": "include/bsp/sound_manager_levels.hpp",
+        "size": 3581,
+        "sha256": "a7014dd57a52bd4f40715da662e4481c7dd365d3ce08a4a91a96de8fcb238d78"
+      },
+      {
+        "path": "include/bsp/sound_sample_cache.hpp",
+        "size": 2596,
+        "sha256": "2fbe6d92bbfa4d04c2ed03124fb5e739bb883568547be174a112f0b9c17213e2"
+      },
+      {
+        "path": "include/bsp/sound_system_owner.hpp",
+        "size": 9465,
+        "sha256": "68206cebc39f894e3653d55a76018ecf07f105cac5fed614515cd24029b5d215"
+      },
+      {
+        "path": "include/bsp/storage_pool.hpp",
+        "size": 5571,
+        "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+      },
+      {
+        "path": "include/bsp/system_lighting_constants.hpp",
+        "size": 8718,
+        "sha256": "9c98d892bac479fdf3d661c98c996333df0821a3daea26a5e36ba40339b722c9"
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "size": 4800,
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+      },
+      {
+        "path": "include/bsp/vertex_declaration.hpp",
+        "size": 1462,
+        "sha256": "0f03c6a960da3547644b3e5bc8b5934a35fe26f42abc2746559a31f0af2452a0"
+      },
+      {
+        "path": "include/bsp/world_ocean.hpp",
+        "size": 8932,
+        "sha256": "00a1c385e2e46fe0a7372c4dec7d0f8039935823bc02e0a29982c93c5360429b"
+      },
+      {
+        "path": "local/annotate_game_container_lifetime_r125.py",
+        "size": 7209,
+        "sha256": "b0c70fad2557630bfa3731baef6b673dc19912935f885254a395b3c3bf9f2974"
+      },
+      {
+        "path": "local/collect_game_container_lifetime_r125.py",
+        "size": 503,
+        "sha256": "686dd8f8465a4364b95d0785ac1473b709843a5ebf99970c04d4ae5805165b31"
+      },
+      {
+        "path": "local/commit_game_container_lifetime_r125.py",
+        "size": 2228,
+        "sha256": "f1861be6ee2bb35228810538f8236df1ed07bd2faeeaad9cbf56088b1934a9ea"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/annotations.log",
+        "size": 660,
+        "sha256": "ecf17fc6ea08c2fdd3f2c6ee05928e26acac3e5cc9c7b5d2553d02f7ed2744e0"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/comments-after.json",
+        "size": 31045,
+        "sha256": "18f1e089e65b57c2eaec86b937d39c236ff6fef70f6a095f6d74b1fd26fce63f"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/comments-after.log",
+        "size": 85,
+        "sha256": "ca9bfb4c8c5358b66b31ad3fb3d9716ee9976f0aa5c554a896040cc2aad27540"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/decompile-004bf8e0.txt",
+        "size": 1075,
+        "sha256": "4adb78d1c794f7095616d1973e98d09c34f2e52f8afe83794dca67f83031f5ca"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/decompile-004bf930.txt",
+        "size": 1387,
+        "sha256": "15f97a85318ae7cfbad9ea2e2f7772fa892358b6495d23fae948ba0f5996f7e6"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/decompile-004c2ce0.txt",
+        "size": 511,
+        "sha256": "0d038a7e88fc35c4ca85fe80b8d6066bbfc487fa90d40e1b43a2ec146fc3bb45"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/decompile-004c4a50.txt",
+        "size": 762,
+        "sha256": "ffd0b5bb64a3422572b7434221150b5c8acce6a310be851147b374365c120fea"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/decompile-004c4b40.txt",
+        "size": 562,
+        "sha256": "ff7fa9bc0757e3941b2020aba28891ad8ae60c01307bd5b5cd7b23273167ff0b"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/decompile-004c8180.txt",
+        "size": 562,
+        "sha256": "d003b2c3627624a9597b2ca0a8e53b5648c60c6afb515a3c3b330a1073629b70"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/decompile-004c86a0.txt",
+        "size": 1539,
+        "sha256": "610b7984d2cdeb3217098e5ff160b2e2ae56b21bfca26715045498729a9a9ba5"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/decompile-004cb220.txt",
+        "size": 854,
+        "sha256": "08aeeb3f1eab8c32ed79a643da2212626b16083160c55a7c4ac1c15d0d736f09"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/decompile-004cf3f0.txt",
+        "size": 661,
+        "sha256": "e9f4a2eaa7ea7c691b99a3298ad3a05161a5e57dc8c141de09f7e0cdfdc9b912"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/dependencies.json",
+        "size": 36100,
+        "sha256": "fe9ec203fdcc6f60a018e530f173aaa7dc3de30b661766c5ab6f2ae4819c186a"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/disasm-004bf8e0.txt",
+        "size": 927,
+        "sha256": "1e40a1696ff6e6cee65da9d221ee460478198b40705c91aadb429a84b410d2fd"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/disasm-004bf930.txt",
+        "size": 1243,
+        "sha256": "bfeb32cebff1db37a1c73d947d37eebf47437731a06c09206617d0e16fc61804"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/disasm-004c2ce0.txt",
+        "size": 927,
+        "sha256": "2962fd01ce7ea4ef24d76bcdaf59761d1e103297064b645f4d92eb0ff4e36e81"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/disasm-004c4a50.txt",
+        "size": 1282,
+        "sha256": "1b66a69d7ebb09172a9f612fc326a43a1ef2284eb751d98e6452699c34acbef4"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/disasm-004c4b40.txt",
+        "size": 815,
+        "sha256": "6bbd27fc77008e6cc30f871df798bc56cf6d2ce80a023e4030fe7b0020e84f34"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/disasm-004c8180.txt",
+        "size": 27,
+        "sha256": "966220e25ecf932f436ae87a6260df99663737d44a475cd228621ecd82efa6f2"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/disasm-004c86a0.txt",
+        "size": 2513,
+        "sha256": "c2339d19971e1ff3fc8bf86a1c29b656d78a315babe7b1fe4370a0068f3fcb8a"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/disasm-004cb220.txt",
+        "size": 1477,
+        "sha256": "6fe0ec956b4919b4607c0d71ed2c0fc60acf83334322fd15e73c1082bb4fdddb"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/disasm-004cf3f0.txt",
+        "size": 1075,
+        "sha256": "c5735900f92dd1059b7869b3345d7942a2149309a2b9618d361c9fb2188d087c"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/exports-after.log",
+        "size": 1093,
+        "sha256": "94b45fec062e052c7780990ef8f3b5dbe389b5bf654f1d6317c7f8250dc4094d"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/fixture-image.json",
+        "size": 3377,
+        "sha256": "e3852115941331eff20ba4fd0c0b011e35c305a94e2a492bad302469aebd1c93"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/flow_verified.log",
+        "size": 577,
+        "sha256": "f66cf546b343865b4bc7bf7271dca1e6c15ff67f70c919ba3ce238902bf31220"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/game_container_lifetime_probe.exe",
+        "size": 255488,
+        "sha256": "f861a96f184c5dcb72dbb2a65b07761d45de2fd8c14232ff61fe8023cd1262cf"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/index.log",
+        "size": 16,
+        "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/native.json",
+        "size": 46041,
+        "sha256": "9f99c24262fa04f427da8ff1eff934a407ded9cc6fa39c856acf37460bf773d9"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/original-build.inc",
+        "size": 3099,
+        "sha256": "f2daf5706853d4c5cad995d2224deb3e98dd8e8a9d773b285a5f79d37698fc87"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/original-hooks.inc",
+        "size": 815,
+        "sha256": "8134a669add062938428e32ed9202f3fb3acb26cf728d83b1610a8714737af03"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/original.bin",
+        "size": 46400,
+        "sha256": "d2213fa28ecfd4d16e1005612117d14aa3ccf9843b71328ee4867cebc89011bd"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/original.inc",
+        "size": 3668,
+        "sha256": "20d87bfe63cc784ae361991ac77621ca52084846c1ea9044728966bb32ff90fb"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/parent/dependencies.json",
+        "size": 50094,
+        "sha256": "e53d1e159225a54764cab1f23d59bc8e41831055ead28e86785e74263523db8b"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/parent/game_lifetime_probe.exe",
+        "size": 246784,
+        "sha256": "10a1c7ac35a0641fa4a3dc17de40c0e2974a0b45a94f7755bead055ad15ec097"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/parent/original.bin",
+        "size": 141402076,
+        "sha256": "180cd9c8185353dc7d7a5f3c44e386cc1112fbce79dead8792f7ee3b6b3b3498"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/parent/probe-build.log",
+        "size": 11,
+        "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/parent/probe-run.log",
+        "size": 104,
+        "sha256": "d60916d8461d5f79074d423bd767b88ad1898abc9b81e32d6cd25a004307e4d8"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/parent/probe.cpp",
+        "size": 54624,
+        "sha256": "d809fcbda4f4801dd35ab8e5e97fb0845925e6a261ebd28f6deaf0e553b23d8e"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/parent/probe.map",
+        "size": 347089,
+        "sha256": "7d57fda3128973eea0f11f0deb9adcbef82248daa8f780f7ac8901e6c83493d4"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/parent/probe.obj",
+        "size": 222351,
+        "sha256": "570bdced604908ac071c4fb89210981a40443035ae15585af5ca0d94eeae55c4"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/parent/result.json",
+        "size": 528,
+        "sha256": "928b8685b02c695dd05fc4ab3c0f42adc9973f88f217609fc1143f6d43ef7e55"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/parent/source.bin",
+        "size": 141402076,
+        "sha256": "180cd9c8185353dc7d7a5f3c44e386cc1112fbce79dead8792f7ee3b6b3b3498"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/probe-build.log",
+        "size": 11,
+        "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/probe-run.log",
+        "size": 226,
+        "sha256": "e8a2f3c206169a6f110840375db4841c9c4a08841270cc933c007e3846d22b79"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/probe.cpp",
+        "size": 13718,
+        "sha256": "60a4b344b10adaa6590b68022ec412527148153766bf541f80d6ef9c2945cabc"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/probe.map",
+        "size": 371792,
+        "sha256": "f3dd60fc3cc6da2a1a4680e81637587956752a41d505f888c73941b29c31a62f"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/probe.obj",
+        "size": 366600,
+        "sha256": "a6df21734e5ec1e7f9a846364fdc2d53d4a5ca35dfdd6467539d73742f19f2fd"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/producer-004c1950.txt",
+        "size": 2169,
+        "sha256": "2e68868494dfb69edcc71634fa260a9e3653811e30cba1ea0bba79eecea8f5e1"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/producer-004c1a40.txt",
+        "size": 2168,
+        "sha256": "daed1b0b7cd886d536085ffc4cb6e7020be5e084779baa5085ae6ec0d3d76099"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/proto-004bf8e0.txt",
+        "size": 621,
+        "sha256": "6d94dfe2fa1dd1b8d90c21be586c73a382a836402cab934fab66b81692b57f75"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/proto-004bf930.txt",
+        "size": 659,
+        "sha256": "dbcf19595676d3f73429211176b8012bbc62771f6066de26615d13e3a32ae516"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/proto-004c2ce0.txt",
+        "size": 603,
+        "sha256": "7d7aaa5e4f562c55b74910113729f571590aed8c22b243d7d22d58af58a21f54"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/proto-004c4a50.txt",
+        "size": 605,
+        "sha256": "acc4a1d1b7dde93fc6b294c028c8b3234666445bf1147cb1c3d3d8f3a4d09e11"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/proto-004c4b40.txt",
+        "size": 600,
+        "sha256": "c17d896e030fc380e9dd9d3aa621a43d30921c32b65d5d24be848ab283aab9f5"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/proto-004c8180.txt",
+        "size": 628,
+        "sha256": "161cffdac8fb195d2eb8cc93d675abe36830159e87d01f6cdfa7b9418d9c692e"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/proto-004c86a0.txt",
+        "size": 620,
+        "sha256": "1f00d0e536e3446c773452609549be39ae8768be23e8130a516ba8c6a4275fe6"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/proto-004cb220.txt",
+        "size": 613,
+        "sha256": "5cc8d965a7a963c359beab6277c520ecf195ceaf3a4224864fceb0e74a709dd0"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/proto-004cf3f0.txt",
+        "size": 604,
+        "sha256": "e53bfe1fef9dcad4198a872edd42bf2c956d977a17019e688bfc555b7ec3a0f0"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/result.json",
+        "size": 528,
+        "sha256": "ba12e799fc1b7d1db2edf4dfed67269fe1bbeb88a11626596877494d9595d88f"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/snapshot.log",
+        "size": 230,
+        "sha256": "9af043fdaab4537d252fc8c4705c863c741006e371cce7e6d1015ce717d08e9d"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/source.bin",
+        "size": 46400,
+        "sha256": "d2213fa28ecfd4d16e1005612117d14aa3ccf9843b71328ee4867cebc89011bd"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/unreached-methods.inc",
+        "size": 1652,
+        "sha256": "e3ca66470e3ce915884fb7a38e8a08831c50ed238cc947a7ff5e4438c936910b"
+      },
+      {
+        "path": "local/game_container_lifetime_r125/verify-calls.log",
+        "size": 138,
+        "sha256": "a5e9e7dc6789a32d1aa38495becad069c026e86fc10471b0afcf2b2d189d474b"
+      },
+      {
+        "path": "local/ghidra-annotations-20260918T045812Z.json",
+        "size": 31826,
+        "sha256": "fda1bc0fd7c64ad491165d888cb75cbe0000c4d0622a501fd703dd602320576f"
+      },
+      {
+        "path": "local/prepare_game_container_lifetime_closeout_r125.py",
+        "size": 811,
+        "sha256": "21f7fc8b3ae2a6b159833e5e5e056e65819bf3bcbde7f8b49e7ff9b44b90819e"
+      },
+      {
+        "path": "local/prepare_game_container_lifetime_combined_r125.py",
+        "size": 795,
+        "sha256": "5912ecc1f9bc64ee18a0ef5ded58ab261abc997680ef86756272c85cd0b23ecb"
+      },
+      {
+        "path": "local/prepare_game_container_lifetime_parent_r125.py",
+        "size": 939,
+        "sha256": "2ebd4a88a62f95bd63da7a61ac4e17bbc31975267004ba578ba3c6ac125f0d03"
+      },
+      {
+        "path": "local/prepare_game_container_lifetime_r125.py",
+        "size": 4394,
+        "sha256": "89133389469c342c4410331d4c7f35628dbba926f65f304685f2d31dde196674"
+      },
+      {
+        "path": "local/r125_build.log",
+        "size": 2643,
+        "sha256": "6f4211b3ffe3749d6322d63a7b81d738952b55cad37ed76b7351a6668656c56b"
+      },
+      {
+        "path": "local/report_game_container_lifetime_r125.py",
+        "size": 7191,
+        "sha256": "4716edbefab6f87d821b13c11b27e1be5ad7bb36992826627292b6abd6c4dd77"
+      },
+      {
+        "path": "local/run_game_container_lifetime_parent_r125.ps1",
+        "size": 1692,
+        "sha256": "67d26e96b155254ed70bd3dcd54e14bb117b28e87e25da4c19369501793fcda9"
+      },
+      {
+        "path": "local/run_game_container_lifetime_r125.ps1",
+        "size": 1701,
+        "sha256": "e10b2252ef191a09e0f17f65142ca2e358ce181873c11faae362e361bae2d586"
+      },
+      {
+        "path": "local/seal_game_container_lifetime_r125.py",
+        "size": 5658,
+        "sha256": "2224db821678a43d22803770ad4d19dc5b450aa2ac4d421b6642e06a17ec8b80"
+      },
+      {
+        "path": "reports/native_game_container_lifetime_r125.json",
+        "size": 109797,
+        "sha256": "d05b763d12db46a24d613799d936286c71debe454f0cd4b0a34113d1b2f62d6b"
+      },
+      {
+        "path": "reports/native_game_container_lifetime_r125_bodies.json",
+        "size": 1847,
+        "sha256": "0faeb5356d9f3d54492fb328e07102d96090cf80acad819a391b5ada0966527f"
+      },
+      {
+        "path": "reports/native_game_container_lifetime_r125_flow.json",
+        "size": 8468,
+        "sha256": "5df2efa0544264ddfba1e2d95f1e5e733c2529dac610787f72e4d32b72791443"
+      },
+      {
+        "path": "src/native_game_array_elements.cpp",
+        "size": 6577,
+        "sha256": "be6f4651bba8e17e3a6778e81d44a5e3329907de6d4d403b0eb9092177b6d1d6"
+      },
+      {
+        "path": "src/native_game_array_lifetime.cpp",
+        "size": 5559,
+        "sha256": "b0940cc57a6e22d6e3808fa9b71372762c5546cff3c3dfbe15a83255bfcfe19e"
+      },
+      {
+        "path": "src/native_game_container_lifetime.cpp",
+        "size": 6266,
+        "sha256": "6c5b4cfe901bb45c741765179f282a799eaa536af78be9b2c1f922fb1dff7700"
+      },
+      {
+        "path": "src/native_game_embedded_lifetime.cpp",
+        "size": 6650,
+        "sha256": "3e5dff12ffd864f86d15af9f7089b14709f30fb4607934d9938d8d1fdc9815b9"
+      },
+      {
+        "path": "src/native_game_lifetime.cpp",
+        "size": 13794,
+        "sha256": "c2317c51a2b977d08e0509a3743f60d14b755b90f7b64fee1cc54f7c88ed7c85"
+      },
+      {
+        "path": "src/native_game_profile_lifetime.cpp",
+        "size": 8812,
+        "sha256": "3e5701fb07afa7df4fc97a1781656e7cece27f151a9fc4c7d1c8e28a6734d8e4"
+      },
+      {
+        "path": "src/native_game_storage_defaults.cpp",
+        "size": 1800,
+        "sha256": "ede332a11793811f92aca8b69a708597b24729d9201c1b44d5963c8012762a99"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "size": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      }
+    ],
+    "scope": "Nine normal bodies878B;71 copied-original actual-default cases46400bytes;52 controlled parent cases141402076bytes;ordinary application admission and gameplay open"
+  }
+}

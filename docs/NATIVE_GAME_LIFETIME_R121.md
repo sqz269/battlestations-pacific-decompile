@@ -159,3 +159,22 @@ child. Four normal bodies889bytes and the consumed full-range library branch
 have copied-original composition evidence. General partial transient-tree erase,
 remaining parent cleanup services, native exceptions and ordinary admission remain
 open; see the R124 report for the exact fixture domain.
+
+## Correction from docs/NATIVE_GAME_CONTAINER_LIFETIME_R125.md
+
+R125 supplies nine complete normal bodies (878 bytes), binding seven previously
+required parent methods at fourteen sites: `4BF930`, `4BF8E0`, `4C2CE0`, `4C4A50`,
+`4CF3F0`, `4C4B40` and `4CB220`. They share the retained `operation.containers`
+progress record. The source preserves current list-head/count/base reloads,
+captured cells across virtual callbacks, reverse pointer-block frees and reference
+retains before old-storage release. Progress owns nothing and performs no rollback.
+
+Eight returning-call gaps (70 bytes) and the truncated `4C4B40` body were repaired;
+its `4C8180` thunk survived. A 71-case comparison of the copied original bodies
+against seven actual parent defaults matches 315 observations and 46,400 normalized
+bytes using real CRT/Win32 atomics and actual raw sentinel producers. Two source
+failure cases retain the expected allocation/cell graph. The separate controlled
+parent comparator still passes 52 cases, 3,537 snapshots, 141,402,076 bytes and four
+failure/replay cases, including shared progress identity. Strict build/three CTests
+pass. Actual payload virtual methods, remaining parent dependencies, native
+exception ABI, application admission and gameplay remain open.
