@@ -395,6 +395,16 @@ line by line and **not changed**: the skip test at `009E723C` really does load `
 after `FLDZ` (`009E7236`, `009E7238`), so `JBE` skips a non-positive own sample, which is what the
 reconstruction already had.
 
+## Corrections from packet cc8_ship_ai_approach_slot_tune
+
+Appended, not a rewrite. Evidence in `docs/SHIP_AI_APPROACH_SLOT_TUNE.md`.
+
+| was | is | evidence |
+| --- | --- | --- |
+| `tune` is read as if it were a block at `brain+0AB0h`. | `brain+0AB0h` holds a **pointer** to the block. The block itself is `[unit+73Ch]`, so it belongs to the unit and outlives any brain record, and every reader takes two steps. | `009E6EBD MOV ECX,[ESI]`, `009E6EBF MOV EAX,[ECX+0AB0h]`, `009E6EC5 MOVSS XMM0,[EAX+1Ch]`. The one store to `brain+0AB0h` in the image is `009F11AA MOV [ESI+0AB0h],EAX` in `BSP_ShipAi_BrainRecordConstruct`, from `009F11A4 MOV EAX,[EDI+73Ch]`. A wildcard scan for `89 ?? b0 0a 00 00` over `.text` returns that one hit; the plain displacement occurs in dozens of other functions as the positive control. |
+| The eight tune floats had no established values. | `+0h` is `10.0`, `+4h` `4.0`, `+8h` `3.0`, `+0Ch` `1000.0`, `+10h` `1.0`, `+14h` `0.25`, `+18h` `1.0471976` (`pi/3`) and `+1Ch` `-1.0`. They are immediates compiled into `BSP_UnitVehicleBase_Construct`, not authored rows, so every unit gets the same block and no Lua key names any of them. | `0081F200` allocates, `0081F214..0081F27D` writes the ten constants from `00CE38B8`, `00CE3D34`, `00CE3854`, `00CE3804`, `00D7A24C`, `00CE3868`, `00D05AAC` and `00D7A260`, and `0081F28C` stores the pointer. |
+| The `009E6ECA` arm was described as "`tune+1Ch >= 0.0f`" without its installed value. | The installed value is `-1.0f`, so that arm is never taken and the 119-step curve scan always runs. The override exists for something that overwrites the field later; nothing in this process does. | `0081F26E MOVSS [EAX+1Ch],XMM0` from `00D7A260` (`BF800000`); `009E6ECA COMISS XMM0,[00D7A218]` then `009E6ED1 JC`. |
+
 ## Follow-up packets
 
 - `ship_ai_approach_slot_scorers`: `009E5DA0`, `009E6640`, `009E6870` and `009E6400`, the four
