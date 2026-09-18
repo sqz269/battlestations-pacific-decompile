@@ -5,6 +5,7 @@
 
 namespace bsp {
 struct NativeGameClassCleanupContext;
+struct NativeProfileHintsOwnerContext;
 struct NativeResourceRegistryDeleteBindings;
 struct NativeResourceManagerContext;
 struct NativeResourceExtraParserContexts;
@@ -189,6 +190,9 @@ struct NativeSingletonDeletionBindings {
     // CE6C68 owns the actual10h class registry. Borrow its original publication
     // and raw string/manager cells through drain; mapped payloads are borrowed.
     NativeGameClassCleanupContext* game_classes{};
+    // CE3A44 is the actual50h profile-hints owner. Retain its publication
+    // binding and concrete allocation services through the shared drain.
+    NativeProfileHintsOwnerContext* native_profile_hints{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -208,7 +212,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, render_resources) == 144
 static_assert(offsetof(NativeSingletonDeletionBindings, native_online) == 148);
 static_assert(offsetof(NativeSingletonDeletionBindings, game_resource_parsers) == 152);
 static_assert(offsetof(NativeSingletonDeletionBindings, game_classes) == 156);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 160);
+static_assert(offsetof(NativeSingletonDeletionBindings, native_profile_hints) == 160);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 164);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

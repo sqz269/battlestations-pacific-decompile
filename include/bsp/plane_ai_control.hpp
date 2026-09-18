@@ -443,4 +443,118 @@ struct PilotBotRollResult {
 
 PilotBotRollResult pilot_plan_roll_0099e2ba(const PilotBotRollInputs& in);
 
+// ---------------------------------------------------------------------------
+// 0099D300's throttle arms. The plan's throttle slot is index 0 of five, so its
+// `current` is plan+274h, its `desired` plan+278h and its `active` byte
+// plan+27Ch (base plan+274h, stride 0Ch). An exhaustive store census over 278h
+// finds four writes in this routine, and they are NOT one arm: each has its own
+// gate, and two of them run only while the aircraft is on the ground.
+//
+//   0099D399  the centred-stick arm. Gate: plan+26Ch == 2 (0099D309), the byte
+//             at [plan+2F0h + 9C2h + 8*[00F876B8]] set (0099D329), plan+270h
+//             non-null (0099D33D) and the same byte on it set (0099D345).
+//             Writes yaw, pitch, roll and air brake to 0.0 with their active
+//             bytes and modes, and the throttle to [00D7A24C] = 1.0.
+//   0099D8CF  the one-shot engine cut. Gate: plan+2D8h != 0 at 0099D7A5 (which
+//             is what puts 0.001f from [00D7A23C] in XMM0 and jumps to the arm),
+//             then plan+2D8h == 1 at 0099D8C1 and 0.001f > plan+2B4h at
+//             0099D8C6. Writes the throttle 0.001f - below the 0.01f thrust gate
+//             at 007DB76C, so the engine is off - and the air brake, then clears
+//             plan+2D8h at 0099D8EB. NOT state gated: this is the only throttle
+//             arm a FLYING plane can reach.
+//   0099DC31  the ground demand. Inside `unit+900h == 5` (0099D8FD) and the
+//             slot already active (0099D90A). One signed demand, seeded from the
+//             slot's own value at 0099D977-0099D998 and accumulated at 0099DBC3,
+//             is clamped to [-1, 1] by 00415690 and split: the throttle takes
+//             max(0.001f, d) through 00415550 and the air brake max(0.0f, -d).
+//   0099DC8F  the ground cap. Same state gate, slot NOT active. Reads the
+//             slot's `current` and, when it exceeds [00CE3D30] = 0.6, commands
+//             0.6.
+//
+// So the 0.6 CAP is ground only. The DEMAND is not: 0099D8CD's taken side jumps to
+// 0099D924, which is past the state test at 0099D8FD, so a one-shot armed with a
+// desired speed at or above 0.001f reaches the demand arm in any flight state.
+// plan+2B4h is that desired speed - 009C1850 writes it at 009C189A and raises
+// plan+2D8h at 009C18A7 in the same breath - and plan+2B8h, which EBP addresses
+// from 0099D769, is the reference the demand divides the forward speed by.
+// docs/PILOT_BOT_THROTTLE_DEMANDS.md.
+inline constexpr float kPilotThrottleCutValue = 0.001f;    // 00D7A23C
+inline constexpr float kPilotThrottleErrorLow = -6.9444447f;  // 00D1F3DC, -25 km/h
+inline constexpr float kPilotThrottleErrorHigh = 6.9444447f;  // 00D0686C, +25 km/h
+inline constexpr float kPilotThrottleGroundCap = 0.6f;     // 00CE3D30
+
+struct PilotBotThrottleInputs {
+    // The slot, read the way 0099D977-0099D998 and 0099DC7A read it.
+    float slot_current = 0.0f;   // plan+274h
+    float slot_desired = 0.0f;   // plan+278h
+    bool slot_active = false;    // plan+27Ch
+
+    int flight_state = 7;        // unit+900h; only 5 reaches the ground arms
+    int air_brake_mode = 0;      // plan+2D8h; 1 arms the one-shot engine cut
+    float one_shot_threshold = 0.0f;  // plan+2B4h, compared against 0.001f
+
+    // The centred-stick gate, as four already-evaluated conditions so the caller
+    // supplies the two per-slot bytes rather than this function chasing them.
+    bool centred_mode_26c = false;     // plan+26Ch == 2
+    bool centred_byte_2f0 = false;     // [plan+2F0h + 9C2h + 8*index]
+    bool centred_block_270 = false;    // plan+270h non-null
+    bool centred_byte_270 = false;     // [plan+270h + 9C2h + 8*index]
+
+    // The demand's increment, 0099D99E-0099DBC7, now derived here rather than
+    // supplied. It is a proportional speed controller:
+    //
+    //   ratio = measured_speed / speed_scale                 ; 0099D99E, 0099D9A3
+    //   error = desired_speed - ratio                        ; 0099DA52, 0099DA58
+    //   error -= correction                                  ; 0099DAC8
+    //   inc    = Interp(-6.9444, -2.0, +6.9444, +2.0, error) ; 0099DB9E
+    //   if (inc > 0) inc *= 0.6                              ; 0099DBB1, 00CEFF98
+    //   inc   *= pending                                     ; 0099DBBF
+    //
+    // The interpolation's endpoints are +-6.9444 m/s, which is 25 km/h, mapped
+    // onto +-2.0, so the controller saturates a quarter of the way to a typical
+    // cruise error. `pending` is |slot value - plan+274h| from 0099D7E8-0099D81E,
+    // so the increment is scaled by how far the slot has already been asked to
+    // move and is ZERO for a slot whose desired equals its current - which is
+    // every slot straight out of 0099B450's reset.
+    float measured_speed = 0.0f;   // 007D99C0's forward speed
+    float speed_scale = 1.0f;      // plan+2B8h, EBP from 0099D769
+    float desired_speed = 0.0f;    // plan+2B4h, which 009C189A writes
+    // SUBSTITUTION, labelled: |slot value - plan+274h| from 0099D7E8-0099D81E
+    // was read as the whole story and is not. 0099D87E writes this slot again,
+    // between that block and the increment, taking a running minimum against
+    // XMM4 - [ESP+0x24] at 0099D85E-0099D892. Until that is read the multiplier
+    // is a stand-in. docs/TORPEDO_GLIDE_THROTTLE_WIRING.md.
+    float pending = 0.0f;
+    // 0099DA97's unit vtable+38h is 007B8E60 in all nine plane vtables, and
+    // 007B8E60 is `FLD [ECX+0B1Ch]; RET` - a cached float, not a computed
+    // speed. 0042B2F0 is the 3D length of the vec3 at unit+AE0h. The term
+    // 0099DAC8 subtracts is (unit+B1Ch - |unit+AE0h|) * 20.0 (00CE3D88) *
+    // `pending`.
+    //
+    // SUBSTITUTION, labelled: exhaustive store censuses over B1Ch and AE0h find
+    // no unit-range writer at all - five and three sites, all elsewhere in the
+    // image. A store through a base already offset into the object would not
+    // appear, so this is "no literal displacement writer", not "never written".
+    // If both are in fact zero the whole term vanishes; the caller supplies it
+    // so a run can decide.
+    float error_correction = 0.0f;
+    // 0099DB29-0099DB56, the dead band. 0099DB56 is JBE, so the skip needs
+    // 0.5 AT OR BELOW desired/|ratio|, not above it: all four of
+    // |error| <= 0.83333 (the double at 00D09450), ratio >= 1.0 (00D7A24C),
+    // desired/|ratio| <= 1.5 (00CE380C) and desired/|ratio| >= 0.5 (00CE3800).
+    // desired/|ratio| is formed at 0099DAEC-0099DAFF.
+    bool dead_band_skips = false;
+};
+
+struct PilotBotThrottleResult {
+    bool wrote_throttle = false;
+    float throttle_desired = 0.0f;   // plan+278h
+    bool wrote_air_brake = false;
+    float air_brake_desired = 0.0f;  // plan+2A8h
+    bool clears_air_brake_mode = false;  // plan+2D8h = 0
+    bool centred_all_axes = false;   // the 0099D399 arm zeroed the other four
+};
+
+PilotBotThrottleResult pilot_plan_throttle_0099d300(const PilotBotThrottleInputs& in);
+
 }  // namespace bsp

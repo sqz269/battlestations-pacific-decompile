@@ -1,0 +1,107 @@
+{
+ "packet": "cc8_plane_dive_instrumented",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/PLANE_DIVE_RESPONSE.md, appended section",
+ "tree_base": "instrumentation on agent/cc8-torpedo-run-in; the run from a detached 48f293197 with the instrumentation cherry-picked",
+ "result": "RESOLVED, and it retracts the previous packet's headline. There is no divergence: the surplus is the authored fall-acceleration cheat, which the host had bound and my models omitted. Nothing to fix.",
+ "question": "Which term carries the 13 to 20 m/s surplus between the host's law and the host's measurement?",
+ "answer": "The thrust, and it is authored rather than anomalous. The probe prints thrust = 15.600 m/s^2 at a settled 60-degree dive, not the 6.0 my models used: 007D9050 multiplies desc+164h Accel by 1 + (AccelCheatFallMul - 1) * sin(Interp(FallPitchRange1, 0, FallPitchRange2, pi/2, -pitch)), and this installation authors AccelCheatFallMul 2.6 with the range DEG(10) to DEG(60), so past 60 degrees nose-down the sine saturates and the multiplier is the full 2.6, giving 6 * 2.6 = 15.6 exactly. The host bound that in cc8_plane_pose_throttle_altitude; local/dive_sim.py and local/dive_sim2.py did not, and docs/PLANE_DIVE_RESPONSE.md section 3 published the gap as though it were the host's. All three gravity candidates are exonerated by the same run: grav is (0, -14.715, 0) on every line, exactly AccelCheatMul * 9.81 world down with cheat 1.50, and the folded body total rotates back through the transpose consistently. Re-running the model with the fall cheat gives a 150.9 m/s terminal and a 144.7 m/s arrival against the measured 141.5 to 141.9, the residual being the pitch ramp the constant-angle model does not carry. The angle of attack stays between 0.018 and 0.041 rad throughout, which is the body damping working and why the vector treatment changed nothing.",
+ "coverage": "complete: the run answers the question the previous packet left open.",
+ "calls": [],
+ "named_routines": [],
+ "no_ghidra_function": [],
+ "host_methods": [
+  {
+   "host": "the dive probe in the free-flight arm",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "census",
+   "note": "once a second for a diving ordered aircraft: altitude, speed, pitch, flight-path angle, angle of attack, the along-path acceleration, thrust and drag, all four dyn triples before the fold, the folded body total, the same rotated back to world, the forward pose row and AccelCheatMul"
+  }
+ ],
+ "contracts": [
+  "The water arm's three force formulas, unchanged from the previous packet.",
+  "007D20C6's in-place scale of desc+164h Accel, still substituted and still unable to explain anything here."
+ ],
+ "corrections": [
+  {
+   "target": "docs/PLANE_DIVE_RESPONSE.md section 3 and its report",
+   "was": "the host's own law cannot produce the speed the host's own run recorded, at any dive angle; the unvalidated term is gravity's share",
+   "is": "the law produces it once the authored fall-acceleration cheat is included. The thrust is 15.600 at a settled 60-degree dive, not 6.0, and the three gravity candidates are all exonerated by the probe",
+   "evidence": "the dive probe in local/usn01_dive_probe.log; 007D9050's fall cheat with AccelCheatFallMul 2.6 and AccelCheatFallPitchRange DEG(10) to DEG(60)",
+   "status": "appended to the same doc and verified present"
+  }
+ ],
+ "validation": {
+  "runner": "tools/run_game.ps1, 3200 frames, --mission-frames 3000 at 0.05 s.",
+  "tree": "The culprit of the startup crash was not known to me, so the run used the lead's second option: a DETACHED checkout of 48f293197 in my own worktree with the instrumentation commit cherry-picked, built and run there, then `git checkout agent/cc8-torpedo-run-in` to restore. Nothing from the detached state was committed to the branch.",
+  "log": "local/usn01_dive_probe.log, 50 probe lines",
+  "trace_mav3": [
+   {
+    "alt": 782.4,
+    "spd": 72.24,
+    "pitch": -0.3037,
+    "path": -0.2721,
+    "aoa": 0.0339,
+    "along": 4.976,
+    "thrust": 8.212,
+    "drag": -7.143
+   },
+   {
+    "alt": 712.3,
+    "spd": 89.12,
+    "pitch": -0.6614,
+    "path": -0.624,
+    "aoa": 0.0384,
+    "along": 10.873,
+    "thrust": 13.377,
+    "drag": -10.869
+   },
+   {
+    "alt": 567.0,
+    "spd": 112.02,
+    "pitch": -0.9845,
+    "path": -0.9542,
+    "aoa": 0.0348,
+    "along": 10.77,
+    "thrust": 15.539,
+    "drag": -16.373
+   },
+   {
+    "alt": 361.6,
+    "spd": 129.26,
+    "pitch": -1.0678,
+    "path": -1.048,
+    "aoa": 0.03,
+    "along": 6.608,
+    "thrust": 15.6,
+    "drag": -21.263
+   },
+   {
+    "alt": 245.7,
+    "spd": 134.96,
+    "pitch": -1.0754,
+    "path": -1.0694,
+    "aoa": 0.0182,
+    "along": 5.029,
+    "thrust": 15.6,
+    "drag": -23.268
+   }
+  ],
+  "gravity_every_line": [
+   0.0,
+   -14.715,
+   0.0
+  ],
+  "accel_cheat_mul": 1.5,
+  "model_with_fall_cheat": {
+   "thrust_at_60deg": 15.6,
+   "terminal_mps": 150.9,
+   "arrival_60deg_mps": 144.7
+  },
+  "measured_arrival_mps": [
+   141.5,
+   141.9
+  ],
+  "verdict": "No divergence and no fix. The 141.7 m/s arrival is the image's own behaviour on this placement."
+ }
+}

@@ -280,6 +280,17 @@ Logs: `local/usn01_before.log`, `local/usn01_after.log`, `local/usn01_served.log
 * `00A179E0 BSP_AiPartyBrain_EngagementPass`, body `00A179E0`-`00A18195`, still unread.
 * `00A1443D`, the controller-busy test through the member's `vtable[+2Ch]`, still a neutral value.
 
+## Correction from the integrator's bisect (2026-09-18): the fall from 45 to 10 is not a regression
+
+The four-build table above compares two different measurements. This branch's base `f5400e43f`
+predates `fb8c0ff76`, the plane-physics packets that first made aircraft move; every hit in the
+23, 36 and 45 column was scored against aircraft frozen at their spawn pose, which is the artefact
+`docs/GAME_EXECUTABLE.md` records as USN01's move from 23 hits to 1 at `fb8c0ff76`. `main`'s 10
+hits at `8f3370237` are scored against moving aircraft, and no commit between `f5400e43f` and
+`8f3370237` removed hits from that profile (the bisect table is in `docs/GAME_EXECUTABLE.md`,
+section "The USN01 gunnery bisect"). The packets' own claim stands: neither removed a hit from
+the mission, and on the moving-aircraft profile they and the AI coordinator raise it from 1 to 10.
+
 ## Correction from docs/AI_WORLD_SETS.md
 
 Appended by packet `cc8_ai_world_sets`. The text above is left as written, and the answer it

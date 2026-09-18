@@ -535,3 +535,281 @@ or `aimglide`, which needs `engaged` at `009C83F8` to answer, which needs `appro
 in-range latch at `009C7C31`, which needs `approach+BCh < approach+B8h`. The torpedo aircraft in
 this run sit in `goaway` with their engage pair at zero, so the dive bomb's first measurement should
 be `approach+B8h` and `approach+BCh` per ordered Judy.
+
+## Validation: the wiring, and the two gates the runs expose
+
+`src/game_hosts_units.cpp` runs the kind 8 task on the pilot think, right after the torpedo arm,
+for every ordered aircraft whose class carries general bomb ordnance and no torpedo. The release
+binding is the torpedo's own `release_ordnance_007bbba0`, so a drop goes down the same chain to the
+gun spawn `0072F830`; `rounds_remaining_007c1db0` is the only new one.
+
+| run | commit | aircraft on the task | states | releases | bombs spawned |
+| --- | --- | --- | --- | --- | --- |
+| IJN01 after, `local/ijn01_after.log` | `86ef889c4` | 27 | `flyabove` 1, `turndown` 1499 each | 0 | 0 |
+| USN01 after, `local/usn01_after.log` | `86ef889c4` + the attitude fix | 5 | the same | 0 | 0 |
+
+IJN01's 27 are every general-bomb carrier except the six Jills the torpedo task already took, which
+matches the run's own `general_bomb=27`. USN01's five are `ScoutDauntless`, `ConSBD1..3` and
+`KatSBD`. Every other IJN01 summary is bit-identical to the before-run, including
+`plane motion distance_moved=347370.56 m` and `pilot attack ordered=33`, so the wiring moved nothing
+else.
+
+### Gate 1: the commanded target is coincident, so `approach+BCh` is 0
+
+Every dive bomber reports `approach+BCh = 0.0 m` against `approach+B8h = 1100.0 m`. That is not the
+task's doing: the pilot-attack census, which resolves the same `command_target_plus_one` over all
+three axes, independently reports `range 0.0 -> 0.0 m` for all 33 ordered IJN01 aircraft and for
+each of the five USN01 dive bombers. The approach geometry is degenerate before the task sees it.
+
+With a zero range the machine still runs, and runs the way the rules say it should: the latch
+`approach+D0h` arms at `009C7C31` because `1100 > 0`, `engaged` answers at `009C83F8`, the entry
+chooser takes the `flyabove` arm at `009C8379` because the latch is set, and the roll-in at
+`009C8563` fires on the first tick.
+
+### Gate 2: `009C7EA0` never completes, so the state stays in `turndown`
+
+All 1499 remaining ticks sit in `turndown`. `009C7EA0` returns 0 while
+`pose+C64h >= [00D1F98C] = -1.2999999523162842` and `pose+C64h >= -1.0`, and the measured
+`pose+C64h` is about `0.027 rad` (the run's own `final_pitch_mean`). Nothing ever rolls the
+aircraft past the gate because the producer that would, the turndown tick `009C44F0`
+(vtable `00D20C84` slot `+Ch`, censused here for its command-block writes only), is not bound.
+
+**So the next gate is `009C7EA0` at `009C8613`, value `pose+C64h = 0.027 rad` against
+`-1.2999999523162842` at `00D1F98C`, and the work that opens it is binding `009C44F0`.**
+
+### A reversed pair, found by the run and fixed
+
+The first IJN01 after-run passed `009C7EA0` its two pose angles in axis-name order rather than
+offset order: `plane_bank_angle_c68` where the body reads `pose+C64h`. Fixed at the call site, and
+the reconstruction's parameters renamed to `attitude_c64`/`attitude_c68` so the names carry the
+offsets rather than a claim about which axis each holds. At the attitudes both runs measured, with
+both angles near zero and above `-1.0`, either ordering returns the same answer, so the IJN01
+census above stands; USN01 was run with the fix in and shows the identical pattern.
+
+### The substitutions in the wiring, each labelled at its address
+
+| what | why | where |
+| --- | --- | --- |
+| `approach+A8h = 800` | `009C3ED8` draws it from `(approach+14h)->+38h..+3Ch`, an unread class record. 800 is `BeginAltRange/1 - (BeginAltRange/2 - /1)`, built from the two rows the seed itself reads, and it satisfies the interpolation window's `approach+A8h + 100 < approach+ACh` | `009C3ED8` |
+| `approach+D4h`, `+50h`, `(approach+14h)->+5Ch`, `->+60h` all zero or one | no producer read. The lead stays 0 and the gain 1, so the aim error is the bare along-track miss | `009C5C20`, `009C5C69` |
+| the flyabove tick's three flags | `009C62B0` has no Ghidra function; the host stands in with the planar range against `Pilot/DiveBomb/SafeDist` | `009C62B0` |
+| two rounds per aircraft | `006E3500`'s per-device count is unread; this is the cap the aimglide salvo loop clamps against | `007C1DB0` |
+
+### USN02 after: the wiring is provably inert
+
+`local/usn02_after.log`. The mission carries no aircraft, and the run's own line is
+`summary mission pilot attack: no unit was ever ordered at a target the yaw arm could plan for`.
+The dive-bomb census prints nothing at all: zero `divebomb` lines and no
+`summary mission dive-bomb task`. That is identity by construction rather than by comparison, since
+`run_dive_bomb_task_arm_009c8790` returns before doing anything when `command_target_plus_one` is 0,
+which is the first test in its body. The gunnery, damage and world-unit summaries are the standing
+USN02 ones (`queued_hits=168 deaths=3 total_damage=20721.4`, `world units=32`).
+
+An earlier USN02 attempt was refused rather than run: `tools/run_game.ps1` gave up after 900 s with
+the machine-wide lock held by `cc8-ai-squadron`. That attempt produced no log and is discarded.
+
+## `009C44F0`, the turndown tick (packet `cc8_dive_bomb_turndown`)
+
+Vtable `00D20C84` slot `+Ch`, body `009C44F0`-`009C4736`, `__thiscall(state, float dt)`, `RET 4`.
+The `dt` is never read. `ESI` is the state, `[ESI+4]` the approach, `approach->+18h` the command
+block. Every jump sense below was read from the branch byte: `009C45BB` `76` `JBE`, `009C465B` `76`
+`JBE`, `009C4687` `76` `JBE`.
+
+### The speed command, before any branch
+
+| address | write |
+| --- | --- |
+| `009C44FD` | `approach->+CCh = 0`, the weapon selector |
+| `009C4512` | `cmd->+2B4h = 007C47F0(approach->+8h)` = `tuning+24Ch` `Dynamics/SpdMultipliers/LevelFlight` (1.8) x `classDesc+184h` `StallSpd` (17.5), the **level-flight speed**, about 31.5 m/s on a default class |
+| `009C4518` | `cmd->+2B0h = 0` |
+| `009C4524` | `cmd->+2D8h = 1` |
+
+`approach+8h` is the plane class descriptor: `009C7A94` reads its `+188h` `MaxSpd` through the same
+pointer. Both halves of the product are already named, `docs/GAME_TUNING_SINGLETON.md` row `+24Ch`
+and `docs/PLANE_FLIGHT.md` row `+184h`, and `docs/PLANE_GROUND_OPS.md` step 6 forms the identical
+product at `007CBD7F`, so the turndown asks for exactly the speed the ground-ops water check calls
+level flight.
+
+That answers the throttle question directly: the turndown **does not touch** the throttle slot
+`plan+278h`/`+27Ch`. It writes the desired-speed pair, and `docs/PILOT_THROTTLE_CUT_RAISER.md`
+shows `(+2B4h, +2D8h)` is one command, "here is the speed I want, act on it once", with `+2D8h` the
+one-shot `BSP_PilotBot_PlanControls` spends. `009C4512`-`009C4524` is the same three-instruction
+shape that doc records at `009C189A`-`009C18A7`, so the turndown is one of the states that raises
+the one-shot.
+
+### The bank, wrapped and folded
+
+`009C4530`-`009C4575`: `00BF857A` with `ST(1)` = `pose+C68h` and `ST(0)` = the `2pi` at `00CE3828`,
+so `fmod(bank, 2pi)`, then the pair of compares that pulls it into `(-pi, pi]` using the doubles
+`-pi` at `00CE3D18` and `+pi` at `00CE3D28`. `009C457D`-`009C45A5` folds it to `|bank|` with the
+usual `-0.0f` subtract at `00D7A208`. `009C45BD` then forms `pi - |bank|`, the angle still to roll
+through to inverted, floored at zero by `009C45C7`-`009C45DD`.
+
+### The two arms, on `state+1Ch`
+
+**Not latched** (`009C45A9` `CMP byte [ESI+1Ch],0`, `JNZ`):
+
+| test | arm |
+| --- | --- |
+| `\|bank\| < [00CE3D40] = 0.8 rad` (45.8 deg) | roll: `cmd->+290h = InterpolateClamped(30 deg, 1.0, 0.0, 0.0, pi - \|bank\|) * state->+18h`, `cmd->+294h = 1`, `cmd->+2CCh = 0`. At these banks the interpolation clamps at `1.0`, so the command is the full signed magnitude `009C7800` drew |
+| otherwise | `009C4637`: hand the roll axis back, `cmd->+2C4h = [00D7A264] = pi`, `cmd->+2CCh = 1` |
+
+Then on both arms: `009C4654` latches `state+1Ch = 1` once `|bank| > [00D1FED0] = 2.618 rad`
+(150 deg), and `009C4660`-`009C4687` splits on `|pose+C64h|` against `[00CE398C] = 20 deg`. Inside
+the band it writes `cmd->+29Ch = 0`, `cmd->+2A0h = 1`, `cmd->+2D0h = 0`; at or above it writes
+`cmd->+2BCh = 0` with `cmd->+2D0h = 2`.
+
+**Latched** (`009C46C9`-`009C4736`): release the roll the same way, then pull the nose down.
+`cmd->+29Ch = InterpolateClamped(30 deg, 0.0, [00D0CBA0] = 3 deg, 1.0, pi - |bank|)`, with
+`cmd->+2A0h = 1` and `cmd->+2D0h = 0`. The closer to inverted, the more nose-down stick: zero at
+30 degrees from inverted, full at 3 degrees.
+
+### Why it never reaches `009C7EA0`'s window
+
+`009C7EA0` ends the turndown only when `pose+C64h` falls below `-1.3` at `00D1F98C`. The tick's own
+pitch command is the only thing that would take it there, and the pitch arm is gated behind
+`state+1Ch`, which is gated behind `|bank| > 150 degrees`, which is gated behind the roll command
+at `cmd->+290h` actually rolling the aircraft. The host binds none of that yet, which is exactly
+what the after-runs measured.
+
+## Gate 1, read: the dive-bomb task does not exist in either mission
+
+`approach+BCh`'s producer is `009C7B4F`-`009C7B80` inside the approach update `009C7A80`: the planar
+distance between the point `approach->vtable[0]` returns and the pose's world position, with an
+early `approach+D0h = 0` and return at `009C7B0A` when the latched target `approach+48h` is null.
+The target position is **not** a command-block field. The arm never dereferences one: it goes
+through `approach->vtable[0]`, and the object is whatever `approach+48h` holds.
+
+What the runs show is upstream of all of that:
+
+| run | `PilotSetTarget` orders | command classes chosen |
+| --- | --- | --- |
+| USN01 | 5, all to `Mav1`..`Mav5` | `00E08F18` torpedo, every one |
+| IJN01 | 0 | none |
+
+**No aircraft in either mission ever receives the divebomb class `00E08F20`.** The dive bombers'
+authored order is `artillery`, which `0046AAB0` resolves to `attackmove` `00E08F78` outright
+(`docs/ATTACK_COMMANDS.md`). `attackmove` never reaches `007EEC50`'s ordnance chooser, so
+`0099A170` builds no attack task at all, and nothing latches `approach+48h`. The five aircraft that
+do report a real range, `Mav1`..`Mav5` at about 4259 m, are the ones holding a `PilotSetTarget`
+order, and they got the torpedo task, not this one.
+
+So the 27 IJN01 and 5 USN01 installs in the after-runs are the **host's**, not the image's.
+
+### The fix location
+
+`run_dive_bomb_task_arm_009c8790` in `src/game_hosts_units.cpp` gates on
+`command_target_plus_one != 0` plus the ordnance test. It should gate on the divebomb command class
+having actually been chosen, the analogue of the `PilotSetTarget task: 0099A170` record the torpedo
+path already emits. With that gate no aircraft in IJN01 or USN01 runs the task, which is the
+image's own behaviour. Reaching a bomb release needs a mission that issues a `PilotSetTarget` to a
+bomb-carrying aircraft that does not answer `IsKindOf(10h)`, or the `--order` injection
+`src/game_hosts.cpp` provides.
+
+**Closed.** The non-zero `command_target_plus_one` comes from the aircraft's authored **`moveto`**
+row, not from an attack order. IJN01's authored-token census reports `moveto` x142 and
+`summary mission commands` reports `resolved=142`, an exact match; the `artillery` x30 rows resolve
+to `attackmove`, carry no target and print `current=0`, so `store_unit_command_target` skips them.
+USN01 is the same shape with `resolved=34`.
+
+So a dive bomber's commanded target is a **movement** target, and it is co-located with the
+aircraft, which is why both the pilot-attack range and `approach+BCh` difference to exactly `0.0`.
+That is the third reason the loose host gate was wrong: `command_target_plus_one != 0` is true for
+any unit with a `moveto`, which is most of the mission.
+
+## The class gate, and the host contract for it
+
+`include/bsp/dive_bomb_task.hpp` now carries `kDiveBombCommandClass` = `00E08F20` and
+`dive_bomb_task_installed_for_class`. The host edit that uses them is three lines:
+
+1. `GameUnitSlot` gains `unsigned int attack_command_class{0};`.
+2. `GameUnitsHost` gains `void store_unit_attack_command_class(std::size_t index, unsigned int c)`,
+   the same shape as `store_unit_command_target`.
+3. `GameScriptOrdersHost::run_pilot_set_target` calls it right beside
+   `bsp::bot_install_command_task_0099a170`, where `chosen` is already in hand
+   (`src/game_hosts_script_orders.cpp` around the `PilotSetTarget task:` line).
+4. `run_dive_bomb_task_arm_009c8790` replaces its `command_target_plus_one != 0` and ordnance tests
+   with `bsp::dive_bomb_task_installed_for_class(unit_.attack_command_class)`.
+
+With that gate **IJN01 and USN01 both install zero dive-bomb tasks**, and that is the correct
+result: neither mission ever hands an aircraft the divebomb class. Saying so plainly is the point.
+The 27 and 5 installs the earlier census reported were the loose gate, not the game.
+
+## The `--order` injection cannot express a `PilotSetTarget`
+
+Read only; `src/game_hosts.cpp`, `src/game_hosts_mission_frame.cpp` and
+`src/game_hosts_script_orders.cpp` are the Codex orchestrator's and were not edited.
+
+`--order <token>:<target> --order-unit <name> --order-frame N` reaches
+`GameUnitsHost::issue_player_command` (`src/game_hosts_units.cpp`), which resolves the token against
+the **scene-command registry** the way `0046AAB0` does and places a command row. `settarget` is a
+registry row (`src/entity_orders.cpp`, class `00E08EF8`), so the switch does place an order.
+
+What it does not do is run the chooser. `007EEC50` and the `0099A170` install live only in
+`GameScriptOrdersHost::run_pilot_set_target` (`src/game_hosts_script_orders.cpp`), reached from the
+Lua binding `PilotSetTarget` `008A4C90` that a mission script calls. That is where the run's
+`PilotSetTarget choose: 007EEC50 -> ...` and `PilotSetTarget task: 0099A170 -> 1` lines come from,
+and nothing on the command line drives it.
+
+**What the injection lacks, exactly:** a route from a command-line switch to
+`GameScriptOrdersHost::run_pilot_set_target`, or to its tail `bsp::attack_command_choose` plus
+`bsp::bot_install_command_task_0099a170`. Either a new switch such as
+`--pilot-set-target <unit>:<target>`, or an `--order` token routed through the script-orders host
+instead of the scene-command registry, would do it. Both are edits to files this packet does not
+own, so this is a request to the Codex side rather than a change here.
+
+Without it, no run of IJN01 or USN01 can exercise the dive-bomb state machine past `turndown`,
+because neither mission's script ever calls `PilotSetTarget` on a bomb-carrying aircraft: IJN01
+makes no `PilotSetTarget` call at all, and USN01's five all name `Mav1`..`Mav5`, which are torpedo
+armed and take the torpedo class.
+
+## The class gate and the turndown binding, landed
+
+`src/game_hosts_units.cpp` now gates the arm on `dive_bomb_task_installed_for_class` and runs
+`009C44F0` through `dive_bomb_turndown_tick_009c44f0` whenever the state is `turndown`. The class
+reaches the unit from `GameScriptOrdersHost::run_pilot_set_target`, which stores it beside the
+`0099A170` install through the new `GameUnitsHost::store_unit_attack_command_class`. The turndown
+census prints the tick count, the roll and pitch write counts, the tick the `state+1Ch` latch fired
+on, and the last bank, roll, pitch and commanded speed.
+
+One labelled substitution in the binding: `007C47F0`'s two inputs are read and named, but this host
+builds no plane class descriptor, so the product uses the tuning default `1.8` and the authored
+default `StallSpd` `17.5` rather than the unit's own class row. `009C1850`'s move-to setter in the
+same file still substitutes the row's `TravelSpeed` and labels `007C47F0` unread; now that the
+routine is read, that site can take the real product too. Left alone here because it belongs to the
+packet that wrote it.
+
+### An intermittent startup crash, wrongly called a `main` regression
+
+Two IJN01 runs at 13:27:01 and 13:27:37 exited `0xC0000005` with a 107-line log ending at
+`Phase 5 online_manager_initialize`. This doc first recorded that as a regression on `main`.
+**It was wrong**, and `docs/GAME_EXECUTABLE.md` carries the full table and the method errors.
+
+The short of it: four builds and four 300-frame runs in a throwaway detached tree, at `4668b0e96`,
+`82986e455`, `cccf31e11` and `main`'s tip `78af19721`, all exited `0` with `frames_presented=299`,
+and two further clean runs in this worktree at its own HEAD confirm it. The 107-line signature is
+the discriminator: the `cc8-ai-squadron` worker hit the identical one the same day on a tree
+containing none of the suspects, and a retry cleared it both times. The two crashes here were 36
+seconds apart, so under a rule that a step fails only on two consecutive crashes with a clean
+environment between them, that step never failed.
+
+### The identity run, taken
+
+`local/ijn01_gate.log`, IJN01, 3000 mission frames at 0.05 s, with the class gate and the turndown
+binding in. It was run to confirm identity, not to look for movement: the result was known in
+advance from the order census, and the point is that the new gate costs nothing.
+
+**Zero dive-bomb lines.** No `divebomb` per-aircraft row and no `summary mission dive-bomb task`,
+because no IJN01 aircraft ever receives the divebomb class. The 27 installs the loose gate produced
+are gone.
+
+Every other summary is unchanged against both earlier IJN01 runs:
+
+| measure | before | after (loose gate) | after (class gate) |
+| --- | --- | --- | --- |
+| `plane motion distance_moved` | 347370.56 m | 347370.56 m | 347370.56 m |
+| `pilot attack ordered` | 33 | 33 | 33 |
+| `pilot attack final_pitch_mean` | 0.027 rad | 0.027 rad | 0.027 rad |
+| `torpedo task` | 6 aircraft, 0 releases | 6, 0 | 6, 0 |
+| `gunnery ordnance general_bomb` | 27 | 27 | 27 |
+| `fixed steps` | 3000 at 0.05 s | 3000 | 3000 |

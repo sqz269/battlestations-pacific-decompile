@@ -8506,3 +8506,112 @@ run (mean airspeed 59 m/s) and the ordered flight's mean closure +1250 m, agains
 total_damage=220.0` before, when the aircraft covered 2181 km (727 m/s) while every gun computed its
 ranges against poses frozen at spawn. The old USN01 numbers were an artefact of that frozen pose,
 not a baseline to preserve; the columns above for USN02 are unaffected (no aircraft fly there).
+
+### The USN01 gunnery bisect (2026-09-18): the fall from 45 to 10 hits is `fb8c0ff76`
+
+`docs/AI_SQUADRON_SERVED.md` measured USN01 at 45 hits on its own branch (`2eb86d8c4`, base
+`f5400e43f`) and 10 hits on `main` alone at `8f3370237`, and read the difference as a regression
+merged into `main` in that window. Two bisect points in a detached worktree, same command
+(`--frames 3200 --press-start-frame 30 --menu-select USN01 --mission-frames 3000
+--mission-frame-seconds 0.05`), plus the table's own rows:
+
+| Build | shots | entity impacts | water | hits | damage | first hit | deaths | has `fb8c0ff76` |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `f5400e43f`, squadron base | - | - | - | 23 | 220.0 | 4.70 s | 1 | no |
+| `2eb86d8c4`, squadron branch | 14676 | 45 | 42 | 45 | 563.5 | 4.70 s | 1 | no |
+| `f11fd8c19`, after the native Dyn world step `51d365edb` | 1369 | 68 | 0 | 68 | 660.0 | 26.80 s | 3 | yes |
+| `0c50b0a88`, after the native contact reports `83b6306e9` | 13645 | 0 | 0 | 0 | 0.0 | never | 0 | yes |
+| `8f3370237`, main | 13699 | 10 | 42 | 10 | 313.4 | 58.60 s | 0 | yes |
+
+The column that explains the fall is the last one. `fb8c0ff76` (the plane-physics packets: pose
+publish, engine, bank cap) is the commit the section above records as moving USN01 from
+`hull=23 deaths=1 total_damage=220.0` to `hull=1 deaths=0 total_damage=9.3`, because the mission's
+guns fire at aircraft and until then every aircraft sat at its spawn pose. The squadron branch was
+cut before it, so its 23, 36 and 45 hits were all scored against frozen aircraft, and `main`'s 10
+are scored against aircraft that move (and, at that commit, dive into the sea at twice `MaxSpd`).
+The two are not the same measurement, and no commit in the window took hits away from the
+moving-aircraft profile; the squadron packets and the AI coordinator raised it from 1 to 10.
+
+The two intermediate points are not a regression trail either. Both sit inside the Codex
+`orch4` native world-simulation series (`51d365edb` Dyn world step, `83b6306e9` contact reports,
+`7a9e2f609` fixed-step physics, `a90f21670` grids), whose intermediate commits carry a
+different shell profile each (a tenfold shot drop, then zero impacts of any kind, then the
+`main` profile with water impacts restored); their own records (`reports/native_*_r153..r156`)
+validate host objects and builds, not the mission census. Only the profile at the series' head
+is on `main`. Any future USN01 gunnery comparison must use a before-run that contains
+`fb8c0ff76`, or the moving-aircraft column above, never the 23/36/45 column.
+
+## An intermittent startup crash at native renderer device startup (packet `cc8_dive_bomb_turndown`)
+
+**No commit is named, and none should be.** The crash is environmental and intermittent, and the
+bisect that chased it never had a failing step once the fail signal was corrected.
+
+### The signature
+
+Exit `0xC0000005` (`EXITCODE=-1073741819`) with a **107-line** log ending at
+
+```
+host Phase 5 online_manager_initialize [0073dc7c] UNIMPLEMENTED, returning a neutral value
+```
+
+the line immediately before `native renderer device startup` in a good run. A clean 300-frame run
+of the same command writes **975** lines, so the line count alone separates the two.
+
+That 107-line signature is the discriminator. The `cc8-ai-squadron` worker hit the identical one
+twice on the same day on a tree containing **none** of the commits under suspicion, and a plain
+retry succeeded both times after stray processes were stopped and the lock cleared. Two independent
+trees producing a byte-identical failure shape is a property of the machine, not of a commit.
+
+### The runs
+
+| step | tree | result |
+| --- | --- | --- |
+| `78af19721` (`main` tip) | `cc8-dive-bomb`, 13:27:01 | crash, 107 lines |
+| `78af19721` (`main` tip) | `cc8-dive-bomb`, 13:27:37 | crash, 107 lines |
+| `4668b0e96` | fresh detached | clean, `EXITCODE=0`, 299 frames |
+| `82986e455` | fresh detached | clean, `EXITCODE=0`, 299 frames |
+| `cccf31e11` | fresh detached | clean, `EXITCODE=0`, 299 frames |
+| `78af19721` | fresh detached | clean, `EXITCODE=0`, 299 frames |
+| `78af19721` + packet | `cc8-dive-bomb`, 14:02 | clean, 975 lines |
+| `78af19721` + packet | `cc8-dive-bomb`, 14:18, 3000 mission frames | clean, 34201 lines |
+
+The two crashes were **36 seconds apart**, so they are not independent trials: they can share one
+stray process. Under a rule that a step fails only after two consecutive crashes with a clean
+environment between them, that step never failed at all, and three full clean runs on trees
+containing `78af19721` pass it.
+
+### Checking the environment before a run
+
+`Get-Process bsp_game` prints `Path`, which names the tree each live process belongs to, and
+`%USERPROFILE%\.bspsp_game.lock` names the holder. Both are worth reading before a run and worth
+recording with its result. Sampled while writing this, both live processes and the lock belonged to
+`battlestations-pacific-decompile-cc8-ai-squadron`, which is the tree running most often today.
+
+Whether a process from the Codex tree `battlestations-pacific-decompile-orch4-20260915` was alive
+during the 13:27 window **cannot be determined retroactively** and is not claimed; that side does
+not use the launcher, so its runs would not appear in the lock file. Every live `bsp_game` observed
+from this packet has belonged to `cc8-ai-squadron`.
+
+### Two method errors worth keeping
+
+1. **Stashing proves less than it looks.** Stashing a packet's changes and seeing the crash persist
+   rules out that packet's *source*. It does not rule out its tree, its build directory, or the
+   machine state in that window. This packet reported a `main` regression on exactly that basis and
+   was wrong.
+2. **One crash is not a failing step.** With an intermittent failure, a single crash per bisect step
+   lands the bisect on whichever commit happened to be under test. A step fails only on two
+   consecutive crashes with a verified-clean environment between them, and passes on one full clean
+   run.
+
+#### Cause found: the launcher's lock was taken by test-then-write (`d8dfc77be`)
+
+`tools/run_game.ps1` acquired the machine-wide lock by testing for the file and then writing it,
+polling every ten seconds. Two launchers queued behind the same run could both observe the lock
+absent and no live `bsp_game.exe` in the same poll, both write the lock (the later write
+overwrote the earlier holder line) and both start; the loser's child then met the single-instance
+mutex during native renderer device startup, which is the 107-line signature above. Every crash
+recorded in this section happened while at least one other launcher was queued. Since
+`d8dfc77be` the lock is created with `FileMode.CreateNew`, a launcher that loses the race keeps
+waiting on the `IOException`, and a winner that finds a live process after acquiring hands the
+lock back and waits. No further crash of this shape should be attributed to a commit unless it
+reproduces with that launcher and an empty `Get-Process bsp_game` at launch.

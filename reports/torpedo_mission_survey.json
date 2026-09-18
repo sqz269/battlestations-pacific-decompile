@@ -1,0 +1,63 @@
+{
+ "packet": "cc8_torpedo_mission_survey",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/TORPEDO_MISSION_SURVEY.md",
+ "tree_base": "main 60f89a411 merged",
+ "result": "Reachability settled: the harness reaches all 143 missions by id, so it is not the constraint. USN04 recommended. No run: the startup crash is unresolved and the safe-base method is gone.",
+ "question": "Which mission drives a torpedo-armed aircraft through move-to into a release above the sea, and can the harness reach it?",
+ "answer": "The harness can reach any of the 143 missions: USN01's own run prints tree=1 groups=5 missions=143 and --menu-select resolves against missiontree.lua's id strings, so reachability is not the constraint. The order call is PilotSetTarget, and across this installation's base campaign the torpedo-armed ordered groups are Mission.MavisGang (USN01, 5 calls), launchedStriker (USN04, 12), and Mission.Avenger with Mission.KatKillers (USN22, 3). USN01 is measured and fails: range_first_mean is 1490.8 m against the 4840 m threshold. USN04 is the recommendation, because its strike is launched from the Zuikaku and Shokaku slots and ordered AT LAUNCH (usn_19_coralus.lua lines 1409 to 1446), which is the one geometry with no reason to be inside the threshold - a carrier stands off. USN22 is the fallback. What could not be established is the range at order time for anything but USN01: it is the product of two authored positions in the binary scene files, and this reconstruction has no scene reader, so the cheap path is one run per candidate reading range_first_mean. The threshold is uniform across missions: AttackDist comes from the tuning singleton and a grep of the campaign scripts finds no mission writing it.",
+ "coverage": "complete for reachability, the order call, the id mapping and the candidate set; the ranges and altitudes are contracts.",
+ "calls": [],
+ "named_routines": [],
+ "no_ghidra_function": [],
+ "host_methods": [],
+ "authored_rows": [
+  {
+   "file": "scripts/datatables/missiontree.lua (this installation, dated 2 Jun 2025, locally modified against the 13 Jul 2024 datatables)",
+   "row": "scene to id",
+   "values": {
+    "USN/usn_1_marshall.scn": "USN01",
+    "USN/usn_19_coralus.scn": "USN04",
+    "usn/usn_ormoc.scn": "USN22"
+   }
+  },
+  {
+   "file": "scripts/missions/usn/usn_1_marshall.lua (13 Jul 2024)",
+   "row": "PilotSetTarget lines 659 to 662",
+   "values": {
+    "group": "Mission.MavisGang",
+    "measured_range_first_mean_m": 1490.8
+   }
+  },
+  {
+   "file": "scripts/missions/usn/usn_19_coralus.lua",
+   "row": "PilotSetTarget lines 1409 to 1446",
+   "values": {
+    "group": "launchedStriker",
+    "ordered": "at launch from Zuikaku and Shokaku slots"
+   }
+  },
+  {
+   "file": "scripts/missions/usn/usn_ormoc.lua",
+   "row": "PilotSetTarget line 1288",
+   "values": {
+    "group": "Mission.Avenger",
+    "target": "Mission.FinConvoy[5]"
+   }
+  }
+ ],
+ "contracts": [
+  "The range at order time for USN04 and USN22: two authored positions in the binary scene files, with no scene reader here. One run per candidate reading range_first_mean settles it.",
+  "The altitudes, same source and same answer.",
+  "Whether USN04's launchedStriker groups are torpedo-armed specifically; the script names them only through the carrier's slots squadron property and the class resolves at run time.",
+  "The modded COTP-USN, COTP-IJN and multi missions were counted but not examined."
+ ],
+ "corrections": [],
+ "validation": {
+  "runner": "none",
+  "reason": "The startup crash on main past 48F293197 is still under the dive-bomb bisect and no all-clear has arrived; the safe-base method is no longer available now that this branch's wiring is on main.",
+  "command": "./tools/run_game.ps1 -Log local\\usn04_glide.log -- --frames 3200 --press-start-frame 30 --menu-select USN04 --mission-frames 3000 --mission-frame-seconds 0.05",
+  "decider": "summary mission pilot attack: range_first_mean. Above 4840 m the aircraft occupy moveto and the glide census, the commanded speed pair, the release altitude and the drop counters all follow in the same log.",
+  "handover_if_none_reachable": "A way to place or order an aircraft at a chosen range for a test: either a harness switch that issues PilotSetTarget to a named unit at a chosen frame, or a scene-file reader that reports authored positions. Either would let this reconstruction exercise moveto without depending on a mission's authored geometry."
+ }
+}

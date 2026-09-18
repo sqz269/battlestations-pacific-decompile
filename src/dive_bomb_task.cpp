@@ -263,7 +263,7 @@ bool dive_bomb_dive_abort_009c5b43(const DiveBombDiveAbortInputs& in) noexcept {
     if (!(in.release_range_d4 + in.extra_range_50 > in.slant_range)) {
         return false;  // 009C5B18
     }
-    if (!(in.unit_roll_c64 > dive_bomb_constant::kAbortRollFloor)) {
+    if (!(in.unit_attitude_c64 > dive_bomb_constant::kAbortRollFloor)) {
         return false;  // 009C5B2C
     }
     const float bound =
@@ -348,15 +348,92 @@ float dive_bomb_turn_direction_009c7800(int sign, float magnitude_draw) noexcept
     return magnitude_draw * side;
 }
 
-// 009C7EA0-009C7EF2, __fastcall(state) -> bool.
-bool dive_bomb_turndown_complete_009c7ea0(float roll_c64, float pitch_c68) noexcept {
-    float pitch = pitch_c68;
-    if (pitch <= dive_bomb_constant::kZero) {
-        pitch = dive_bomb_constant::kNegativeZero - pitch;
+// 009C4530-009C4575. 00BF857A is the CRT x87 helper with ST(1) = x and
+// ST(0) = y, so the call is fmod(bank, 2pi); the pair of compares that follows
+// pulls the result into (-pi, pi].
+float dive_bomb_wrap_signed_pi_009c4551(float angle) noexcept {
+    float a = static_cast<float>(
+        std::fmod(static_cast<double>(angle), dive_bomb_constant::kTwoPi));
+    // 009C4557 FCOMIP(-pi, a) then 009C4561 JC: the add runs when -pi >= a.
+    if (!(dive_bomb_turndown_constant::kWrapLow < static_cast<double>(a))) {
+        a = static_cast<float>(static_cast<double>(a) + dive_bomb_constant::kTwoPi);
+    } else if (!(static_cast<double>(a) <= dive_bomb_turndown_constant::kWrapHigh)) {
+        // 009C456B FCOMI(a, pi) then 009C456D JBE: the subtract runs when a > pi.
+        a = static_cast<float>(static_cast<double>(a) - dive_bomb_constant::kTwoPi);
     }
-    if (roll_c64 >= dive_bomb_constant::kTurnDownRollGate &&
-        (roll_c64 >= dive_bomb_constant::kMinusOne ||
-         pitch <= dive_bomb_constant::kTurnDownPitchGate)) {
+    return a;
+}
+
+// 009C44F0-009C4736, the turndown tick.
+DiveBombTurnDownResult dive_bomb_turndown_tick_009c44f0(
+    const DiveBombTurnDownInputs& in) noexcept {
+    DiveBombTurnDownResult out;
+
+    // 009C4512-009C4524, before any branch: the level-flight speed command and the
+    // one-shot the planner spends. docs/PILOT_THROTTLE_CUT_RAISER.md shows the
+    // pair (+2B4h, +2D8h) is one command; nothing here touches +278h/+27Ch.
+    out.speed_2b4 = in.desired_speed;
+
+    const float wrapped = dive_bomb_wrap_signed_pi_009c4551(in.bank_c68);
+    out.folded_bank = fold_abs(wrapped);  // 009C457D-009C45A5
+    // 009C45BD FSUBP with ST1 = pi: the angle still to roll through to inverted.
+    const float to_inverted =
+        dive_bomb_turndown_constant::kPi - out.folded_bank;
+    // 009C45C7-009C45DD: negatives are floored at zero.
+    out.angle_to_inverted = (to_inverted >= 0.0f) ? to_inverted : 0.0f;
+
+    if (!in.rolled_latch_1c) {  // 009C45A9 CMP / JNZ
+        // 009C45B9 FCOMIP(0.8, |bank|) then 009C45BB JBE: the roll arm runs
+        // only while the bank is still under 45.8 degrees.
+        if (static_cast<double>(out.folded_bank) <
+            dive_bomb_turndown_constant::kRollHandOver) {
+            // 009C45EA-009C460F. The interpolation eases the roll off inside
+            // 30 degrees of inverted; at these banks it clamps at 1.0, so the
+            // command is the full signed magnitude 009C7800 drew.
+            const float gain = dive_bomb_interpolate_clamped_00419010(
+                dive_bomb_turndown_constant::kEaseOffAngle, 1.0f, 0.0f, 0.0f,
+                out.angle_to_inverted);
+            out.wrote_roll = true;
+            out.roll_290 = gain * in.roll_command_18;
+        } else {
+            // 009C4637: hand the roll axis back, +2C4h = pi and mode 1.
+            out.released_roll = true;
+        }
+        // 009C4654 COMISS then 009C465B JBE: latch once past 150 degrees.
+        if (out.folded_bank > dive_bomb_turndown_constant::kLatchBank) {
+            out.latch_1c_set = true;
+        }
+        // 009C4660-009C4687, run on both arms. 009C4687 JBE sends the 20 degree
+        // band and above to the altitude arm.
+        if (fold_abs(in.pitch_c64) < dive_bomb_turndown_constant::kPitchHoldBand) {
+            out.wrote_pitch = true;   // 009C4689: +29Ch = 0, +2A0h = 1, +2D0h = 0
+            out.pitch_29c = 0.0f;
+        } else {
+            out.wrote_altitude_hold = true;  // 009C46AA: +2BCh = 0, +2D0h = 2
+        }
+        return out;
+    }
+
+    // 009C46C9-009C4736, once latched: release the roll and pull the nose down.
+    out.released_roll = true;
+    out.wrote_pitch = true;
+    out.pitch_29c = dive_bomb_interpolate_clamped_00419010(
+        dive_bomb_turndown_constant::kEaseOffAngle, 0.0f,
+        dive_bomb_turndown_constant::kFullPitchAngle, 1.0f,
+        out.angle_to_inverted);
+    return out;
+}
+
+// 009C7EA0-009C7EF2, __fastcall(state) -> bool.
+bool dive_bomb_turndown_complete_009c7ea0(float attitude_c64,
+                                          float attitude_c68) noexcept {
+    float folded = attitude_c68;
+    if (folded <= dive_bomb_constant::kZero) {
+        folded = dive_bomb_constant::kNegativeZero - folded;
+    }
+    if (attitude_c64 >= dive_bomb_constant::kTurnDownRollGate &&
+        (attitude_c64 >= dive_bomb_constant::kMinusOne ||
+         folded <= dive_bomb_constant::kTurnDownPitchGate)) {
         return false;
     }
     return true;

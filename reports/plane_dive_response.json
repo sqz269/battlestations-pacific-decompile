@@ -1,0 +1,55 @@
+{
+ "packet": "cc8_plane_dive_response",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/PLANE_DIVE_RESPONSE.md",
+ "tree_base": "main 51a8d977a merged",
+ "result": "Every stage of the response chain matches the listing; the host's own law cannot produce the speed the host's own run recorded, at any dive angle. Named, not resolved. No code changed.",
+ "question": "What does the water arm do, and what does the native aircraft do with a -60 degree pitch command?",
+ "answer": "The water arm 007DC205-007DC68C is selected by ctl+FCh == 2, which only 007DCDD0 sets at 007DCDDC, so it runs after the flight state has already changed and no pull-out, altitude-floor override or speed cap can live in it or on its way in. Its head is a damage fade, 1 - 0.5 * the DeadMeat timer at unit+C3Ch clamped at zero, and its body adds three force triples into the same dyn accumulators the free-flight arm uses, at 007DC448/451/45B, 007DC4AC/4B5/4BF and 007DC601/60A/614; every write is an FADD of the slot followed by an FSTP back into it, so it accumulates and never assigns, and it touches neither the pose nor unit+900h. For the response chain, fourteen stages were compared from the pitch command through the quantiser, the latch, the rate law and the attitude integration to the free-flight law, and every one matches the listing; the velocity follows the nose through the body damping at 007DBD37 rather than directly, and lift acts body-up while gravity acts world-down. Mode 2's target limit is substituted and inert for a dive because it caps only a climb, and 007D20C6's in-place scale of desc+164h Accel is substituted - a real term, since this installation authors AccelCheatMul 1.5 and AccelCheatMulMul 1.15, but one that would LOWER the modelled dive terminal to about 104 m/s and so cannot explain a measurement that is too high. Integrating the host's own terms from the census's own start, 806 m at 63.2 m/s with the Mav row, gives a level-flight equilibrium of exactly MaxSpd 69.44 - which validates the thrust and drag magnitudes - and a 60-degree dive arriving at 118.3 m/s against a 122.74 m/s terminal, with even a vertical dive topping out near 129. The runs measured 141.5 to 141.9. So no dive angle in this law reaches the measured speed, and the one term the level-flight check cannot validate is gravity's share, because lift cancels it there.",
+ "coverage": "complete for the water arm's shape, destination and gate; PARTIAL for its three force formulas (316 lines, untranscribed). Complete for the fourteen-stage comparison. The 20 per cent gap is named, not resolved.",
+ "calls": [],
+ "named_routines": [
+  {
+   "native": "007db680",
+   "name": "BSP_PlaneFlight_CoreLaw",
+   "abi": "as recorded",
+   "coverage": "the water arm's shape added; its formulas partial",
+   "what": "the water arm 007DC205-007DC68C accumulates three force triples into the same dyn slots the free-flight arm uses and writes no pose, velocity or flight state. It is gated on ctl+FCh == 2, set only by 007DCDD0 on entry, so it cannot hold any pre-contact behaviour."
+  }
+ ],
+ "no_ghidra_function": [],
+ "host_methods": [],
+ "contracts": [
+  "The water arm's three force formulas: shape and destination only.",
+  "007D20C6's in-place scale of desc+164h Accel by tuning+31Ch * tuning+320h; this installation authors AccelCheatMul 1.5 and AccelCheatMulMul 1.15.",
+  "Pitch mode 2's increment, inert for a dive.",
+  "THE GAP: the runs measure 141.5 to 141.9 m/s at the water where the host's own terms cap any dive at about 129. Candidates by address are 007DB990's AccelCheatMul scale, the fold 007D8470 and the transpose the free-flight arm applies to body.total before integrating."
+ ],
+ "corrections": [],
+ "validation": {
+  "runner": "none; main past 48F293197 is under the startup-crash bisect",
+  "method": "local/dive_sim.py integrates the host's own terms - the same thrust, the same desc+50Ch = Accel / MaxSpd^2, the same AccelCheatMul * 9.81 gravity share - from the census's own starting point.",
+  "numbers": {
+   "drag_coefficient": 0.001244,
+   "level_flight_equilibrium_mps": 69.44,
+   "max_spd_mps": 69.444443,
+   "lift_gate_mps": 34.92,
+   "terminal_60deg_mps": 122.74,
+   "sea_level_speed_by_angle": {
+    "30": 103.0,
+    "45": 112.5,
+    "60": 118.3,
+    "75": 121.4
+   },
+   "measured_mps": [
+    141.5,
+    141.9
+   ],
+   "measured_logs": [
+    "local/usn01_alt_after.log",
+    "local/usn01_wire_after.log"
+   ]
+  },
+  "verdict": "The level-flight equilibrium landing exactly on MaxSpd validates the thrust and drag magnitudes, because that is where they balance. It says nothing about gravity, which lift cancels in level flight. So the unvalidated term is gravity's share, and settling the gap needs one instrumented run printing the along-path acceleration and the four dyn triples once a second for a diving aircraft."
+ }
+}
