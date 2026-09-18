@@ -1,0 +1,108 @@
+{
+  "packet": "cc8_torpedo_run_profile",
+  "owner": "agent/cc8-run-profile",
+  "question": "Nothing in BSP_BotApproachTorpedo_Reset writes approach+14h (a record pointer) or approach+24h (its scale), so no value for the two slots they seed had any evidence behind it. Where do they come from, and what should the slots hold?",
+  "answer": "BSP_BotApproach_ConstructSpeedReference (009F9CE0-009F9D77, __thiscall(approach), RET 8, two stack arguments) sets both, and BSP_BotApproachTorpedo_Reset is its only torpedo caller at 009D03B7. approach+14h = &PilotBotConfig.levels[[[unit+DF4h]+34h]], from 009F9D08 MOV EDX,[EAX+0DF4h] / 009F9D0E MOV EDX,[EDX+34h] / 009F9D11 IMUL EDX,EDX,248h / 009F9D18 MOV ESI,[00F8A30C] / 009F9D1E LEA EDX,[EDX+ESI+0Ch] / 009F9D22. Both constants are corroborated by include/bsp/robot_config.hpp, which already asserts sizeof(PilotBotParameters)==0x248 and offsetof(PilotBotConfig,levels)==0x0c. approach+24h = max(1.0, desc.MaxSpd / arg2), from 009F9D30 MOV EAX,[EAX+538h] / 009F9D37 FLD [EAX+188h] / 009F9D3D FDIV [ESP+8] / FLD1 / 009F9D4B FCOMPI / 009F9D4F JBE to the 1.0 at 00D7A24C / 009F9D61. desc+188h is MaxSpd by the Lua key string pushed before the store at 007D23A1, with +184h StallSpd, +1A8h RollSpd, +1ACh PitchSpd, +1B0h YawSpd and +1C8h TurnRollSpd as the positive control because this repository already carries those names. arg2 is tuning+440h Pilot/Torpedo/ReferenceSpeed, default KMH(300), pushed by the reset at 009D03A6 after 009D03A1 CALL 0042E740; src/game_tuning_singleton.cpp already names it. THE ANSWER CHANGES WHAT THE SLOTS ARE: 009D0484-009D0497 takes record+4h TorpReleaseDistNear into approach+7Ch and record+8h TorpReleaseDistFar into approach+80h, so they are RELEASE DISTANCES in metres, not speeds. record+0h is TorpReleaseAlt and 009D046A scales approach+78h with it, which is the same altitude pair 009D1647-009D1650 loads as the aim tick's altitude floor, so the group cannot be anything else. src/robot_config.cpp already names all four row fields from the loader's key pushes at 00997B7A, 00997BB0 and 00997BE6. Consequently 009D1500 is not a time to target: it divides the range by the selected release distance and returns a RANGE RATIO, which retires the steering packet's open question about clause 2 comparing it against radians - both sides are dimensionless, and the 600.0 at 00D20198 is a distance scale rather than a speed.",
+  "coverage": "analyzed-only for the producer, which is complete: 009F9CE0 read to its RET, both stores traced to their sources, both Lua keys recovered from the pushed strings, and the caller's argument order read off the push sequence. Complete for 009D1500's three arms and their reinterpretation. Partial for the difficulty index [[unit+DF4h]+34h]: it is read but its writer is not, and the six levels are asserted to be difficulty tiers from the array size and the PilotBot descriptor name rather than from a producer. Not covered: record+Ch TorpReleaseDropCloserMul, read at 009D049D into a slot this packet did not follow. Not landed: binding the real values, which needs two pieces outside this lease.",
+  "doc": "docs/TORPEDO_RUN_PROFILE.md",
+  "tree_base": {
+    "worktree_note": "the previous worktree agent/cc8-torpedo-steering was removed by the integrator after its report, so this packet runs in a fresh worktree agent/cc8-run-profile. Its orphaned lease was released with an explicit --owner before re-claiming. All of the steering packet's commits are on main; the F=1Ch fix and the per-tick census were verified present before starting.",
+    "merge_base_with_main": "main as fetched at the start of this packet, carrying the steering packet's merge"
+  },
+  "census_method": {
+    "constructor_store_scan": "local/scan_stores.py over the three candidate constructors 009F9CE0, 009D2DA0 and 009D3050, printing every store to [reg+14h], [reg+18h], [reg+24h] and [reg+8Ch] plus every call. Only 009F9CE0 writes the approach's +14h and +24h; 009D2F22's [edi+14h] in FUN_009d2da0 stores EAX right after XOR EAX,EAX and belongs to a different object, and its [edi+24h] is a BYTE store.",
+    "descriptor_key_recovery": "local/desc_keys.py walks 007D2200-007D2700 remembering the last pushed .rdata pointer that resolves to a printable C string and prints it against each float store into the descriptor. It recovers 22 fields; +184h StallSpd, +1A8h RollSpd, +1ACh PitchSpd, +1B0h YawSpd and +1C8h TurnRollSpd match names this repository already carries, which is the positive control for +188h MaxSpd.",
+    "bot_row_key_recovery": "local/botcfg_keys.py does the same over read_PilotBot_parameters_009973b0 (009973B0-0099952A), 124 fields. Offsets 0xC, 0x10, 0x14 and 0x18 come back TorpReleaseAlt, TorpReleaseDistNear, TorpReleaseDistFar and TorpReleaseDropCloserMul; the strings were then read directly at 00D1EFF8, 00D1EFE4 and 00D1EFD0 to confirm them rather than trusting the last-push heuristic.",
+    "global_xref": "python tools/bsp.py scan-bytes '0c a3 f8 00' - 12 references to 00F8A30C, among them load_robot_config_00901610 and read_PilotBot_parameters_009973b0, which identifies the table as the pilot-bot configuration."
+  },
+  "calls": [
+    {
+      "address": "009d03b7",
+      "native": "009f9ce0",
+      "function": "009d0380",
+      "role": "the reset's only call to the producer; 009D03B1 stores tuning+440h into the float slot and 009D03B4 pushes the unit below it, matching 009F9CE0's [ESP+4] unit and [ESP+8] divisor"
+    },
+    {
+      "address": "009d03a1",
+      "native": "0042e740",
+      "function": "009d0380",
+      "role": "the tuning singleton, whose +440h is read at 009D03A6 as the reference speed"
+    }
+  ],
+  "named_routines": [
+    {
+      "address": "009f9ce0",
+      "native": "009f9ce0",
+      "name": "BSP_BotApproach_ConstructSpeedReference",
+      "role": "pre-existing name, confirmed and now explained: __thiscall(approach), [ESP+4] unit and [ESP+8] float reference speed, RET 8 at 009F9D75, EAX = the approach. Sets +4h unit, +8h unit+538h, +Ch unit+9D4h, +10h unit+DF4h, +14h the profile row, +18h/+1Ch/+20h zero, +24h the scale, +28h -1.0 (00D7A260)."
+    },
+    {
+      "address": "009d0380",
+      "native": "009d0380",
+      "name": "BSP_BotApproachTorpedo_Reset",
+      "role": "pre-existing name; this packet adds that 009D0484-009D0497 seeds release DISTANCES, not speeds, and that the record and scale arrive from 009F9CE0"
+    },
+    {
+      "address": "009d1500",
+      "native": "009d1500",
+      "name": "BSP_BotApproachTorpedo_TimeToTarget",
+      "role": "pre-existing name, now known to be WRONG in what it names: the quantity is a range ratio, not a time. Left in place because renaming it reaches three source files; the rename is a follow-up."
+    },
+    {
+      "address": "009973b0",
+      "native": "009973b0",
+      "name": "read_PilotBot_parameters_009973b0",
+      "role": "pre-existing name, confirmed: the Lua loader for the PilotBotParameters row, body 009973B0-0099952A, 124 float fields recovered by key string"
+    }
+  ],
+  "no_ghidra_function": [],
+  "host_methods": [
+    {
+      "address": "009d0380",
+      "native": "009d0380",
+      "name": "bsp::torpedo_seed_run_speeds_009d0484",
+      "role": "src/torpedo_approach_update.cpp; comment corrected to say the two arguments are TorpReleaseDistNear and TorpReleaseDistFar and the scale is max(1.0, MaxSpd/ReferenceSpeed). The name still says speed."
+    },
+    {
+      "address": "009d1500",
+      "native": "009d1500",
+      "name": "bsp::torpedo_time_to_target_009d1500",
+      "role": "src/torpedo_approach_update.cpp; reconstruction unchanged and still faithful, comment corrected to say range ratio. The name still says time."
+    },
+    {
+      "address": "009973b0",
+      "native": "009973b0",
+      "name": "bsp::PilotBotParameters",
+      "role": "include/bsp/robot_config.hpp, pre-existing and correct: the four TorpRelease fields at 0x00c/0x010/0x014/0x018 with sizeof 0x248 and levels at 0x0c"
+    }
+  ],
+  "contracts": [
+    {
+      "address": "009f9ce0",
+      "native": "009f9ce0",
+      "name": "GameUnitsHost::pilot_bot_registry",
+      "role": "UNLANDED. src/robot_config.cpp builds the PilotBot descriptor and src/global_subsystems.cpp loads it, but GameUnitsHost holds no reference to RobotConfigRegistry, so the seed site cannot read levels[idx].torp_release_dist_near_010. Wiring it touches src/game_hosts.cpp, which this worker is not permitted to edit.",
+      "global": "00f8a30c"
+    },
+    {
+      "address": "007d23a1",
+      "native": "007d23a1",
+      "name": "GameHostsLua::plane_row_max_spd",
+      "role": "UNLANDED. src/game_hosts_lua.cpp:244 reads StallSpd into the plane row and there is no MaxSpd, so desc.MaxSpd is unavailable and the scale cannot be computed. A two-line change to that file and its header, both currently unleased."
+    },
+    {
+      "address": "009f9ce0",
+      "native": "009f9ce0",
+      "name": "PilotBot::difficulty_level_index",
+      "role": "UNLANDED and unread. [[unit+DF4h]+34h] selects one of the six levels; its writer was not found in this packet, so a binding would have to pick a level and say which.",
+      "read_site": "009f9d0e"
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1, Win32 /W4 /WX, succeeded.",
+    "tests": "ctest --test-dir build/win32 -C Release: 2/2 passed (reconstructed_math, tool_tests). No new case: this packet changes no behaviour.",
+    "source_change": "comments only. include/bsp/torpedo_approach_update.hpp documents what the two slots are with the listing; src/torpedo_approach_update.cpp corrects the seed helper's and 009D1500's comments; src/game_hosts_units.cpp corrects the placeholder's rationale. No expression changed.",
+    "runs": "none taken, and none would show anything: nothing in this packet alters behaviour. The steering packet's runs stand as the measured state, local/usn01_merged_before.log, local/usn01_merged_after.log, local/usn02_merged_after.log and local/usn01_speeds.log in the previous worktree, all reported on main.",
+    "why_no_binding_run": "the two contract items above block it. Binding would need the PilotBot registry in the units host and MaxSpd in the Lua plane row, and the difficulty index is unread, so any value bound today would be a third guess rather than the recovered one."
+  }
+}

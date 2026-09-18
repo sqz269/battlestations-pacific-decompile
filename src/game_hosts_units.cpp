@@ -3146,17 +3146,27 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // of every run and pushed goaway entries from 96 to
                             // 208 per aircraft. local/usn01_after.log.
                             //
-                            // So the placeholder stands until the record's
-                            // producer is read. It is NOT a speed: it is
-                            // Pilot/Torpedo/CruisingAlt, an altitude in metres,
-                            // and it is here only because it is the value this
-                            // host has always used and the one the before-run
-                            // was measured against. Note the native's own metric
-                            // divides by 600.0 (00D20198) a second, which is not
-                            // a physical aircraft speed either, so F0C is an
-                            // urgency number rather than an ETA and the right
-                            // magnitude for these slots cannot be argued from
-                            // dimensions alone. docs/TORPEDO_STEERING_DELTA.md.
+                            // PRODUCER NOW READ, packet cc8_torpedo_run_profile.
+                            // These slots are RELEASE DISTANCES in metres, not
+                            // speeds. 009F9CFF-009F9D22 points approach+14h at
+                            // &PilotBotConfig.levels[[[unit+DF4h]+34h]] and
+                            // 009D0484-009D0497 takes record+4h
+                            // TorpReleaseDistNear into +7Ch and record+8h
+                            // TorpReleaseDistFar into +80h, both times
+                            // approach+24h = max(1.0, desc.MaxSpd /
+                            // Pilot/Torpedo/ReferenceSpeed) from 009F9D30.
+                            // 009D1500 therefore returns a range ratio, not a
+                            // time, which is why clause 2 compares it against
+                            // radians. docs/TORPEDO_RUN_PROFILE.md.
+                            //
+                            // The placeholder still stands, but for a different
+                            // reason than before: the value wanted is a distance
+                            // in metres and 500 is a plausible one, so it is no
+                            // longer known to be the wrong KIND of quantity, only
+                            // the wrong SOURCE. Binding the real pair needs the
+                            // PilotBot registry, which this units host cannot
+                            // reach, and desc.MaxSpd, which the Lua row does not
+                            // load. Both are the contract in the doc.
                             owner_.log.unimplemented(
                                 "TorpedoApproach::run_profile_record_14h", "009d0484");
                             const bsp::TorpedoRunSpeeds seeded =
@@ -3606,7 +3616,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 "cmd_2C0=%.4f yaw_C6C=%.4f hull_1050=%.4f "
                                 "bearing_94=%.4f delta_F10=%.4f |delta|_F18=%.4f "
                                 "F0C=%.4f F14=%.1f cone_open=%d "
-                                "yaw_desired=%.4f yaw_current=%.4f range_90=%.1f",
+                                "yaw_desired=%.4f yaw_current=%.4f range_90=%.1f "
+                                "speed_80=%.1f class_max_speed=%.1f stall=%.1f",
                                 unit_.row.name.c_str(), unit_.torpedo_aim_ticks,
                                 static_cast<double>(r.commanded_heading_2c0),
                                 static_cast<double>(unit_.plane_heading_c6c),
@@ -3625,7 +3636,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     unit_.plan_slots[bsp::kPilotSlotYaw].desired),
                                 static_cast<double>(
                                     unit_.plan_slots[bsp::kPilotSlotYaw].current),
-                                static_cast<double>(ap.range_90));
+                                static_cast<double>(ap.range_90),
+                                // The two candidates for the unmodelled run
+                                // profile record at approach+14h, printed so the
+                                // substitution question is settled from a run
+                                // rather than argued. 009D0484-009D0497.
+                                static_cast<double>(ap.speed_early_80),
+                                static_cast<double>(unit_.motion.max_speed),
+                                static_cast<double>(unit_.plane_stall_spd));
                         }
                         unit_.torpedo_aim_heading_last = r.commanded_heading_2c0;
                         // 009D1D16 / 009D1D1E write plan+2C0h and plan+2CCh.

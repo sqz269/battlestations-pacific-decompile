@@ -18,37 +18,32 @@
   "calls": [
     {
       "address": "009d1679",
-      "target_no_ghidra_function": "0074e260",
+      "native": "0074e260",
       "function": "009d15f0",
-      "kind": "no_ghidra_function",
-      "role": "CALL EDX with EDX = [[approach+4]+50h]. Indirect, and the target 0074E260 has no Ghidra function, so neither half is machine-checkable; the resolution rests on the vtable_installs rows below."
+      "role": "CALL EDX with EDX = [[approach+4]+50h]. Indirect, so the tool cannot confirm the target; the resolution rests on the vtable_installs rows."
     },
     {
       "address": "009d1691",
       "native": "00438b10",
       "function": "009d15f0",
-      "kind": "no_ghidra_function",
       "role": "the delta: first argument [ESP] = approach+94h, second [ESP+4] = the slot-50h heading, RET 8"
     },
     {
       "address": "009d160a",
       "native": "009d1500",
       "function": "009d15f0",
-      "kind": "no_ghidra_function",
       "role": "time to target into F=0Ch, the interpolation variable of every gate in the tick"
     },
     {
       "address": "009d21ac",
       "native": "00419010",
       "function": "009d15f0",
-      "kind": "no_ghidra_function",
       "role": "the near cone branch, push slots 0.3 / 80.0 / 0.8 / 50.0 / f0c"
     },
     {
       "address": "009d21f2",
       "native": "00419010",
       "function": "009d15f0",
-      "kind": "no_ghidra_function",
       "role": "the far cone branch, push slots 0.8 / 50.0 / 1.6 / 15.0 / f0c"
     }
   ],
@@ -57,7 +52,6 @@
       "address": "0074e260",
       "native": "0074e260",
       "name": "BSP_PlaneUnitInstance_GetHeading",
-      "kind": "no_ghidra_function",
       "role": "__thiscall(unit), no arguments, ST0 = unit+C6Ch, plain RET. Body 0074E260-0074E266 inclusive, 7 bytes, INT3 padding 0074E267 onward. Slot 50h of nine vtables including 00D05F20."
     },
     {
@@ -88,7 +82,6 @@
       "address": "009d15f0",
       "native": "009d15f0",
       "name": "BSP_BotStateTorpedoAim_Tick",
-      "kind": "no_ghidra_function",
       "role": "pre-existing name; this packet read 009D15F0-009D1701 and 009D2168-009D220F from the raw listing"
     },
     {
@@ -104,18 +97,7 @@
       "role": "pre-existing name, confirmed: body 009D0D90-009D0F04, the only producer of the break-off state+24h and the side state+2Ch."
     }
   ],
-  "no_ghidra_function": [
-    {
-      "address": "0074e260",
-      "end": "0074e266",
-      "role": "BSP_PlaneUnitInstance_GetHeading. INT3 padding at 0074E267 onward; the preceding function FUN_0074E230 ends RET at 0074E252 with INT3 padding 0074E253-0074E25F, so 0074E260 is a separate body and not a tail of it."
-    },
-    {
-      "address": "009d15f0",
-      "end": "009d2377",
-      "role": "BSP_BotStateTorpedoAim_Tick, RET 4, 3464 bytes; already recorded by the aim-tick packet and unchanged here"
-    }
-  ],
+  "no_ghidra_function": [],
   "host_methods": [
     {
       "address": "00438b10",
@@ -203,7 +185,26 @@
       "log": "local/usn02_before.log, this tree at 315adad83, loop_finished=1 exit_code=0",
       "result": "exercises none of this path. summary mission plane motion: distance_moved=0.00 m pose_rotations=0 heading_change=0.000 rad thinks=0 commits=0 yaw_plans=0. summary mission pilot attack: no unit was ever ordered at a target the yaw arm could plan for.",
       "role": "no-regression reference only; it cannot show a change in the aim tick either way, and no source change was made"
-    }
+    },
+    "merged_tree": {
+      "note": "main merged at 41eb6a7b8 (carries the coordinator hook 9df3ec6ba), which raises USN01's ordered set from 5 to 14 aircraft and the torpedo task from 5 to 9. Fresh before-run taken on the merged tree as instructed. The only difference between the two logs is the F=1Ch seed.",
+      "before": "local/usn01_merged_before.log",
+      "after": "local/usn01_merged_after.log",
+      "aim_ticks_commanding_zero": "22 of 57 sampled -> 0 of 49",
+      "aim_ticks_with_cone_open": "0 -> 32 of 49",
+      "goaway_entries_mav1_to_mav5": "96,91,90,87,98 -> 39,35,36,38,38, about a 60 per cent fall",
+      "goaway_entries_other_four": "116,132,134,0 unchanged; those are the aircraft whose sector probe is never armed, which is the expected signature",
+      "katbd_tick51": "before cmd_2C0=0.0000 yaw_C6C=0.5963 bearing_94=0.9543 delta=-0.5963 yaw_desired=-1.0000; after cmd_2C0=0.9588 yaw_C6C=0.6878 bearing_94=0.9588 delta=0.2710 yaw_desired=0.2205",
+      "heading_error_last_mean": "0.803 rad after",
+      "releases_007bbba0": "1 before and 1 after, unchanged; summary mission gunnery ordnance reports swims_started=0, so a release is requested but no torpedo enters the water",
+      "unchanged_and_not_from_this_change": "range_last_mean 130452 m before, 131969 m after, closed_mean negative in both. Some of the fourteen ordered aircraft fly away past 100 km. That pathology arrives with the merged main and is not touched by the F=1Ch seed."
+    },
+    "usn02_merged_after": {
+      "log": "local/usn02_merged_after.log, merged tree with the F=1Ch fix, loop_finished=1 exit_code=0",
+      "result": "exercises none of this path, as before the merge. summary mission plane motion: distance_moved=0.00 m, pose_rotations=0, thinks=0, yaw_plans=0. summary mission pilot attack: no unit was ever ordered at a target the yaw arm could plan for. summary mission torpedo task: no ordered aircraft carries torpedo ordnance (kind 2Bh), so 0099A170 builds no kind Eh task.",
+      "role": "clean no-regression reference; the mission completes normally and nothing on this path runs"
+    },
+    "note_on_usn01_after2": "local/usn01_after2.log is NOT a separate data point. It was queued before the merge, sat waiting on the machine-wide game lock, and only executed after the merged build with the F=1Ch fix was in place; its numbers are identical to local/usn01_merged_after.log. Cited here so nobody reads it as a pre-merge measurement."
   },
   "vtable_installs": [
     {
@@ -319,5 +320,20 @@
     },
     "why_unread": "neither +14h nor +24h is written anywhere in 009D0380-009D066F, and a scan of the whole torpedo bot band 009D0000-009D5200 finds no writer of the approach's +14h. The five mov [reg+14h] hits there are 009D06B1, 009D06F8, 009D0B91, 009D1249 and 009D2F22; the nearest in shape, 009D06F8 in BSP_BotStateTorpedoAttackRun_Construct, stores EAX after 009D06F0 XOR EAX,EAX and so zero-initialises a DIFFERENT object. The producer is outside the band.",
     "consequence": "until it is read, no value for the two speed slots has any evidence behind it. The host keeps a labelled placeholder rather than a second guess, after the first guess (max_speed) measured as degenerate."
+  },
+  "command_slot_defect": {
+    "kind": "no_ghidra_function",
+    "name": "aim tick frame slot F=1Ch",
+    "finding": "F=1Ch is seeded with approach+94h, the bearing, at 009D1622 MOVSS [ESP+1Ch],XMM0, and 009D168A reads that same slot back as the first argument of the delta's 00438B10. The only other write is 009D18A6, inside the sector-turn block that 009D1794 skips when approach+5Ch is zero. src/torpedo_aim_tick.cpp initialised it to 0.0f, so with +5Ch == 0 and the sector probe armed the fold at 009D1B7A produced f10_turn = WrapSub(WrapAdd(0, f48), heading), which with no probe hit is exactly -heading, and 009D1BCC commanded heading 0 (due +Z) instead of the bearing. Every such tick published a spurious command into plan+2C0h.",
+    "caught_by": "the per-tick census added in this packet. KatTBD aim tick 51 read cmd_2C0=0.0000 with bearing_94=0.9543 and yaw_C6C=0.5963, a delta of exactly -yaw, while ticks 1 and 101 of the same aircraft were consistent. The original five-aircraft run never showed it because its scan reported 36 clear sectors of 36, so the probe was never armed.",
+    "fix": "src/torpedo_aim_tick.cpp, float f1c_command = f1c_bearing, cited to 009D1622.",
+    "store_site": "009d1622"
+  },
+  "ghidra_state_changed_during_the_packet": "Both addresses this packet reported as no_ghidra_function were defined in Ghidra by the integrator while it ran, and arrived in this worktree with the merge of main at 41eb6a7b8 (reports/torpedo_steering_delta_function_definitions.json). 0074E260 is now BSP_PlaneUnitInstance_GetHeading with body 0074E260-0074E266, which matches the inclusive end this packet reported exactly. 009D15F0 is now BSP_BotStateTorpedoAim_Tick with body 009D15F0-009D2379; this packet and the earlier aim-tick packet both reported the final RET at 009D2377, so Ghidra's end runs two bytes past it, presumably over padding. The no_ghidra_function list is therefore empty, and the call rows are now checked for containment and CALL-ness rather than skipped.",
+  "max_speed_substitution_settled": {
+    "instruction": "the lead asked for the speed seed to be landed from slot_.motion.max_speed as a labelled substitution",
+    "measurement": "local/usn01_speeds.log, merged tree, census extended to print the candidates. On ALL NINE torpedo aircraft and BOTH classes (KatTBD, ConTBD1-3, Mav1-5): class_max_speed=0.0, stall=19.4, speed_80=500.0 (the placeholder).",
+    "conclusion": "slot_.motion.max_speed is 0.0f for every torpedo aircraft in this mission, so it cannot be used. Seeding from it drives 009D1500's speed == 0 guard and returns F0C = 0.0000 on every tick, which was measured earlier on the pre-merge tree: clause 2 fired at aim tick 1 and goaway entries went 96 -> 208 per aircraft. The instruction is therefore answered with data rather than carried out.",
+    "only_real_plane_speed_available": "unit_.plane_stall_spd = 19.4 m/s, from the class descriptor +184h. Using it would need a cruise multiplier that nothing in the listing supports, so it would be a second guess rather than a substitution. The placeholder stays and the record producer at approach+14h remains the blocking follow-up."
   }
 }

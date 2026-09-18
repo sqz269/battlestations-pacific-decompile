@@ -94,6 +94,13 @@ TorpedoRunSpeeds torpedo_seed_run_speeds_009d0484(float profile_late_4,
     // 009D0484-009D0497. The scale is loaded once at 009D047D and duplicated by
     // 009D048B FLD ST(0), so the same approach+24h multiplies both fields; the
     // FXCH at 009D048F is what keeps the copy alive for the second FMUL.
+    //
+    // CORRECTED by packet cc8_torpedo_run_profile: the two arguments are
+    // TorpReleaseDistNear (record+4h) and TorpReleaseDistFar (record+8h) from
+    // PilotBotConfig.levels[idx], and the scale is
+    // max(1.0, desc.MaxSpd / Pilot/Torpedo/ReferenceSpeed) from 009F9D30-009F9D61.
+    // They are DISTANCES in metres. The parameter and field names still say
+    // speed; renaming reaches past this packet's lease and is a follow-up.
     TorpedoRunSpeeds out;
     out.speed_late_7c = profile_late_4 * scale_24;
     out.speed_early_80 = scale_24 * profile_early_8;
@@ -119,13 +126,21 @@ float torpedo_engagement_eta_009d3c93(const TorpedoApproachState& s,
     return eta;
 }
 
+// CORRECTED by packet cc8_torpedo_run_profile. The name says time to target and
+// the quantity is not one. The divisor is the release distance the 15 s switch
+// selects, TorpReleaseDistNear or TorpReleaseDistFar scaled by approach+24h, so
+// this returns a RANGE RATIO: how many release distances out the aircraft still
+// is. That is why the aim tick's clause 2 at 009D22D9 compares it against a
+// steering delta in radians and why the 600.0 at 00D20198 is not a speed. The
+// name is kept because it is load bearing across three files; renaming it is a
+// follow-up. docs/TORPEDO_RUN_PROFILE.md has the producer.
 float torpedo_time_to_target_009d1500(const TorpedoApproachState& s) noexcept {
     const float speed = torpedo_commanded_speed_009d3c99(
         s.elapsed_134, s.speed_late_7c, s.speed_early_80);
     if (speed == 0.0f) return 0.0f;
-    // 009D1538: the range over the commanded speed.
+    // 009D1538: the range over the selected release distance.
     const float t = s.range_90 / speed;
-    // 009D1547: at or under one second the quotient stands.
+    // 009D1547: at or under one release distance the quotient stands.
     if (t <= 1.0f) return t;
     // 009D1565-009D1595: below the float 600 at 00CE4BC4 the metric switches to
     // one second for the first `speed` units and 600 units a second after it.
