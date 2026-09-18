@@ -1,0 +1,259 @@
+{
+  "packet": "cc8_torpedo_steering_delta",
+  "owner": "agent/cc8-torpedo-steering",
+  "question": "The torpedo aim tick's steering delta at 009D1699 sits at 2.28-2.34 rad for the whole run while the cone flag at 009D2209 needs it far smaller, so no aircraft ever arms the release timer at 009D2287. Is the delta measured against a heading the planner does not steer, or in a different convention (compass versus mathematical, a pi or pi/2 offset, a sign flip)? Fix it at the producer.",
+  "answer": "There is no convention mismatch, and the delta is correct. Slot 50h of the unit vtable is a per-family heading getter with two overrides, both two-instruction leaves. 006DFD60 BSP_UnitInstance_GetHullHeading is FLD [ECX+1050h] / RET and holds slot 50h in nine ship vtables. 0074E260 is FLD [ECX+0C6Ch] / RET and holds slot 50h in nine others, among them 00D05F20, the vtable BSP_PlaneUnitInstance_Construct (007CFD20) installs at 007CFD78; the destructor 007D03A0 re-installs the same vtable at 007D03C1. So the aim tick's CALL EDX at 009D1679 returns unit+C6Ch on an aircraft, and 00438B10 (FLD [ESP+4] / FSUB [ESP+8], RET 8) makes the delta stored at 009D1699 exactly WrapPi(approach+94h - unit+C6Ch). The pilot planner's yaw base at 0099DEB8 subtracts the same unit+C6Ch from plan+2C0h, and 009D1BCC writes plan+2C0h = WrapAdd(unit+C6Ch, delta), so the planner's heading error and the aim tick's delta are the same number by construction. Every heading on the path is the compass angle from +Z toward +X: approach+94h is pi/2 - atan2(dz, dx) at 009D35C0, unit+C6Ch is pi/2 - atan2(flat_fz, flat_fx) at 007C1900. Same zero, same sense, no offset, no sign flip. What actually blocks the drop is two things the packet brief did not have. First, the cone at 009D2209 is not a few tens of degrees: 009D21AC interpolates 80 degrees at 0.3 s down to 50 degrees at 0.8 s, and 009D21F2 interpolates 50 degrees down to 15 degrees at 1.6 s, so for every part of a run-in more than 1.6 s from the target the gate demands the nose within 0.262 rad. Second, the aircraft thrash: goaway 009D0D90 is entered 87-98 times per aircraft in 150 s, and four of the five never clear the 700.0 m break-off at +24h while in it, so the commanded heading reverses about every 1.7 s and cannot converge into a 15-degree cone whatever its convention. One real host divergence exists at this hop and is small: AimTickBinding::unit_heading_vtable50 binds the native's slot-50h call to pose_heading_radians, the producer of the SHIP field unit+1050h, rather than to unit_.plane_heading_c6c. Both reduce to atan2(fx, fz) over the same forward row, so it does not move the delta; it is a faithfulness fix and it restores 007C1900's near-vertical latch. It is stated as a contract because src/game_hosts_units.cpp was leased to agent/cc8-recon-binding for this packet's whole turn.",
+  "coverage": "analyzed-only; no source change was made because no reconstruction on this path is wrong. Complete for the vtable slot attribution of 0074E260 and 006DFD60 (all 18 occurrences of the two functions in .rdata, every one on slot 0x50), for 00438B10 read to both its RETs, for the delta production 009D15F0-009D1699 read instruction by instruction, and for the cone gate 009D2168-009D220F read to the flag store. Four of the nine vtables carrying 0074E260 are attributed to named aircraft constructors with Ghidra body ranges: 00D00070 (BSP_ReconPlaneUnitInstance_Construct), 00D00308 (BSP_LargeReconPlaneUnitInstance_Construct), 00D05F20 (BSP_PlaneUnitInstance_Construct) and 00D0BA80 (BSP_SmallReconPlaneUnitInstance_Construct). Partial for the remaining five, whose constructors are unnamed FUN_ bodies of the same shape; they are asserted aircraft on the strength of unit+C6Ch being a plane-only field. Partial for 009D15F0 as a whole, which the aim-tick packet already records as a partial raw-listing transcription. Not covered: the per-tick census the packet asked for, because --trajectory-csv is ship-only and the host file needed to add one was leased elsewhere.",
+  "doc": "docs/TORPEDO_STEERING_DELTA.md",
+  "tree_base": {
+    "merge_base_with_main": "315adad83",
+    "note": "worktree created from main at 315adad83; no merge of main during the packet. The before-run local/usn01_before.log is this tree at that commit, and it is also the only run, since no source change was made."
+  },
+  "census_method": {
+    "vtable_slot_census": "local/vtable_base.py - 3311 vtable bases recovered from the mov dword ptr [reg(+disp8)],imm32 stores in .text whose imm32 lands in .rdata, then for each occurrence of a getter the largest base at or below it. Both getters land on slot 0x50 in all 18 occurrences, which cross-checks the base rule. RTTI is stripped: local/rtti_probe.py and local/rtti_probe2.py both return no class name because the dword before each base is zero or unrelated data.",
+    "vtable_owner_census": "local/vtable_owner.py - the .text addresses whose imm32 store installs each of the 18 bases, then tools/verify_report_calls.py for the enclosing Ghidra body of each store site. 00D05F20: 007CFD78 inside 007CFD20 BSP_PlaneUnitInstance_Construct, and 007D03C1 inside 007D03A0 CG_vector_deleting_dtor_007d03a0. 00D09678: 0081ED80 inside 0081ED40 BSP_UnitVehicleBase_Construct, and 0081F3C2, whose enclosing body this packet did not establish. The first draft of this report attributed 007D03C1 to the constructor and 0081ED80 to a function start; both were wrong and the verifier caught them.",
+    "byte_scan": "python tools/bsp.py scan-bytes 'd9 81 6c 0c 00 00' - one hit, 0074E260, the only FLD [ECX+0C6Ch] in the image. Positive control: the same scan for the little-endian pointers '60 e2 74 00' and '60 fd 6d 00' returns nine .rdata hits each, so the pattern is known to occur.",
+    "trajectory_census_failed": "local/steering_census.py over local/usn01_traj.csv. All 3001 rows for each Mavis carry the spawn x,z and heading 0.0: refresh_row is never called on the plane path, so the CSV is ship-only and could not produce the per-tick delta."
+  },
+  "calls": [
+    {
+      "address": "009d1679",
+      "target_no_ghidra_function": "0074e260",
+      "function": "009d15f0",
+      "kind": "no_ghidra_function",
+      "role": "CALL EDX with EDX = [[approach+4]+50h]. Indirect, and the target 0074E260 has no Ghidra function, so neither half is machine-checkable; the resolution rests on the vtable_installs rows below."
+    },
+    {
+      "address": "009d1691",
+      "native": "00438b10",
+      "function": "009d15f0",
+      "kind": "no_ghidra_function",
+      "role": "the delta: first argument [ESP] = approach+94h, second [ESP+4] = the slot-50h heading, RET 8"
+    },
+    {
+      "address": "009d160a",
+      "native": "009d1500",
+      "function": "009d15f0",
+      "kind": "no_ghidra_function",
+      "role": "time to target into F=0Ch, the interpolation variable of every gate in the tick"
+    },
+    {
+      "address": "009d21ac",
+      "native": "00419010",
+      "function": "009d15f0",
+      "kind": "no_ghidra_function",
+      "role": "the near cone branch, push slots 0.3 / 80.0 / 0.8 / 50.0 / f0c"
+    },
+    {
+      "address": "009d21f2",
+      "native": "00419010",
+      "function": "009d15f0",
+      "kind": "no_ghidra_function",
+      "role": "the far cone branch, push slots 0.8 / 50.0 / 1.6 / 15.0 / f0c"
+    }
+  ],
+  "named_routines": [
+    {
+      "address": "0074e260",
+      "native": "0074e260",
+      "name": "BSP_PlaneUnitInstance_GetHeading",
+      "kind": "no_ghidra_function",
+      "role": "__thiscall(unit), no arguments, ST0 = unit+C6Ch, plain RET. Body 0074E260-0074E266 inclusive, 7 bytes, INT3 padding 0074E267 onward. Slot 50h of nine vtables including 00D05F20."
+    },
+    {
+      "address": "006dfd60",
+      "native": "006dfd60",
+      "name": "BSP_UnitInstance_GetHullHeading",
+      "role": "pre-existing name, confirmed: __thiscall(unit), ST0 = unit+1050h, plain RET at 006DFD66. Slot 50h of nine ship vtables."
+    },
+    {
+      "address": "00438b10",
+      "native": "00438b10",
+      "name": "BSP_Math_SubtractWrappedAngle",
+      "role": "pre-existing name, confirmed: FLD [ESP+4] / FSUB [ESP+8], then an add loop at 00438B2A and a subtract loop at 00438B5D that wrap into (00CE3D18, 00CE3D28]. RET 8 at 00438B4C and 00438B7B, so the callee cleans both arguments."
+    },
+    {
+      "address": "007cfd20",
+      "native": "007cfd20",
+      "name": "BSP_PlaneUnitInstance_Construct",
+      "role": "pre-existing name, confirmed by the vtable install at 007CFD78, which the verifier places inside this body. The second store of the same vtable at 007D03C1 is inside 007D03A0, the vector deleting destructor, not here."
+    },
+    {
+      "address": "009d1500",
+      "native": "009d1500",
+      "name": "BSP_BotApproachTorpedo_TimeToTarget",
+      "role": "pre-existing name, confirmed: approach+90h divided by +80h or +7Ch, chosen by +134h against the double at 00CF3F20"
+    },
+    {
+      "address": "009d15f0",
+      "native": "009d15f0",
+      "name": "BSP_BotStateTorpedoAim_Tick",
+      "kind": "no_ghidra_function",
+      "role": "pre-existing name; this packet read 009D15F0-009D1701 and 009D2168-009D220F from the raw listing"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "0074e260",
+      "end": "0074e266",
+      "role": "BSP_PlaneUnitInstance_GetHeading. INT3 padding at 0074E267 onward; the preceding function FUN_0074E230 ends RET at 0074E252 with INT3 padding 0074E253-0074E25F, so 0074E260 is a separate body and not a tail of it."
+    },
+    {
+      "address": "009d15f0",
+      "end": "009d2377",
+      "role": "BSP_BotStateTorpedoAim_Tick, RET 4, 3464 bytes; already recorded by the aim-tick packet and unchanged here"
+    }
+  ],
+  "host_methods": [
+    {
+      "address": "00438b10",
+      "native": "00438b10",
+      "name": "bsp::torpedo_aim_tick_full_009d15f0",
+      "role": "src/torpedo_aim_tick.cpp:120, f10_turn = wrapped_angle_subtract_00438b10(f1c_bearing, f20_heading), the reconstruction of the CALL at 009D1691 whose result 009D1699 stores. Argument order matches the push slots. Unchanged."
+    },
+    {
+      "address": "009d2209",
+      "native": "009d2209",
+      "name": "bsp::torpedo_aim_tick_full_009d15f0 cone gate",
+      "role": "src/torpedo_aim_tick.cpp:312-320. Both interpolation argument orders and the pi/180 conversion verified against 009D217D-009D2209. Unchanged."
+    },
+    {
+      "address": "009d35c0",
+      "native": "009d35c0",
+      "name": "bsp::torpedo_approach_bearing_009d3586",
+      "role": "src/torpedo_approach_update.cpp:55-67, pi/2 - atan2(dz, dx) with one 2*pi add. Convention confirmed the same as unit+C6Ch. Unchanged."
+    },
+    {
+      "address": "007c1900",
+      "native": "007c1900",
+      "name": "bsp::plane_attitude_angles_007c1900",
+      "role": "src/plane_attitude_angles.cpp:67-68, heading = WrapPi(pi/2 - atan2(flat_fz, flat_fx)). The flatten rotates by -pitch about (-fz,0,fx)/h, which preserves the horizontal direction with a positive factor, so the heading equals atan2(fx, fz). Unchanged."
+    },
+    {
+      "address": "0099deb8",
+      "native": "0099deb8",
+      "name": "bsp::yaw_base_numerator_0099de8a",
+      "role": "src/plane_ai_control.cpp:216, fed term.heading_error = wrapped_angle_subtract_00438b10(desired_heading, unit_.plane_heading_c6c). Correct. Unchanged."
+    }
+  ],
+  "contracts": [
+    {
+      "address": "007c1900",
+      "native": "007c1900",
+      "name": "AimTickBinding::unit_heading_vtable50",
+      "role": "UNLANDED. src/game_hosts_units.cpp:3403 and :3484 bind the slot-50h call to owner_.pose_heading_radians(unit_), which is atan2(motion.pose_row2[0], motion.pose_row2[2]) - the producer of the ship field unit+1050h. On a plane the slot is 0074E260 and the value is unit+C6Ch, which this host already caches as unit_.plane_heading_c6c. The file was leased to agent/cc8-recon-binding:cc8_ai_coordinator_hook until 2026-09-18T12:23, the whole of this packet's turn. Expected effect on the delta: none, since both expressions reduce to atan2(fx, fz); the gain is faithfulness and 007C1900's near-vertical latch."
+    },
+    {
+      "address": "009d3445",
+      "native": "009d3445",
+      "name": "TorpedoApproach::speed_ceiling_39c",
+      "role": "the pilot control block's +39Ch has no modelled input, so the clamp on approach+80h and the rescale of +7Ch never fire and 009D1500 divides by a raw class speed. F0C reads about 2.27 s at a range of 1263 m, implying roughly 556 m/s. It does not change the cone, which is already at its 15-degree floor at that range for any plausible speed, but it lets the 009D229D countdown gate pass where the true value would fail it."
+    },
+    {
+      "address": "0099d300",
+      "native": "0099d300",
+      "name": "PilotBot::yaw_turn_numerator",
+      "role": "scratch.turn_num is hardcoded to 0.0f at the planner binding inside 0099D300's reconstruction, so the coordinated-turn block the native enters at 0099E888 never runs and the yaw demand collapses to zero whenever the bank exceeds tuning+80h. bsp::yaw_turn_numerator_0099e69b models 0099E69B, which is inside 0099D300's body rather than a function start, and is unused. Noted, not this packet's to land."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1, Win32 /W4 /WX, succeeded. No source change was made after it.",
+    "tests": "ctest --test-dir build/win32 -C Release: 2/2 passed (reconstructed_math, tool_tests). No new case added: the packet changed no code, and a test of a convention that is already correct would only restate it.",
+    "source_change": "none. The packet's verdict is that every reconstruction on this path is faithful; the one host divergence is in a file leased elsewhere and is stated as a contract.",
+    "usn01_before": {
+      "log": "local/usn01_before.log, this tree at 315adad83",
+      "pilot_attack": "ordered=5 range_first_mean=4827.3 m range_last_mean=920.9 m closed_mean=3906.4 m heading_error_first_mean=2.188 rad heading_error_last_mean=0.918 rad",
+      "per_aircraft_at_first_aim_complete": "Mav1 tick 276 F18=2.2811 F0C=2.2792 F14=1267.52; Mav2 tick 267 F18=2.2801 F0C=2.2319 F14=1239.16; Mav3 tick 276 F18=2.3390 F0C=2.2537 F14=1252.22; Mav4 tick 271 F18=2.2808 F0C=2.2722 F14=1263.31; Mav5 tick 275 F18=2.2906 F0C=2.2905 F14=1274.31. All five on the |delta| clause.",
+      "cone_at_those_values": "f0c above 1.6 s on all five, so the 009D2209 cone is the 15-degree floor, 0.262 rad. |delta| is 8.7 times it.",
+      "arms_and_releases": "release_arm_009D2287=0, timer_on=0, timer_fires=0, releases=0 on all five. summary mission torpedo task: aircraft=5 releases=0.",
+      "goaway": "Mav1 96 enters peak 697.4; Mav2 91 peak 702.3; Mav3 90 peak 697.0; Mav4 87 peak 766.5; Mav5 98 peak 700.4; break_off_24h=700.0 on all five. Four of five never clear the break-off while in goaway.",
+      "plane_motion": "pose_rotations=12799 of 60000 steps, heading_change=29.086 rad over 150 s, yaw_plans=6495 (1299 per ordered aircraft), thinks=30000, commits=30000",
+      "ordnance": "no release, so there is no torpedo swims_started line to report. gunnery damage: queued_hits=23 dispatched=23 total_damage=220.0 deaths=1, all from the ship gunnery path, none attributed to a torpedo."
+    },
+    "usn01_after": "none: no source change was made, so an after-run would be the same binary.",
+    "usn02_before": {
+      "log": "local/usn02_before.log, this tree at 315adad83, loop_finished=1 exit_code=0",
+      "result": "exercises none of this path. summary mission plane motion: distance_moved=0.00 m pose_rotations=0 heading_change=0.000 rad thinks=0 commits=0 yaw_plans=0. summary mission pilot attack: no unit was ever ordered at a target the yaw arm could plan for.",
+      "role": "no-regression reference only; it cannot show a change in the aim tick either way, and no source change was made"
+    }
+  },
+  "vtable_installs": [
+    {
+      "vtable": "00d00070",
+      "store_site": "0074e0ff",
+      "in_function": "0074e0f0 BSP_ReconPlaneUnitInstance_Construct",
+      "ghidra_body": "0074e0f0-0074e15e"
+    },
+    {
+      "vtable": "00d00308",
+      "store_site": "0074e2dd",
+      "in_function": "0074e2d0 BSP_LargeReconPlaneUnitInstance_Construct",
+      "ghidra_body": "0074e2d0-0074e33c"
+    },
+    {
+      "vtable": "00d05f20",
+      "store_site": "007cfd78",
+      "in_function": "007cfd20 BSP_PlaneUnitInstance_Construct",
+      "ghidra_body": "007cfd20-007d0344",
+      "role": "the vtable the torpedo aim tick's slot-50h call resolves through"
+    },
+    {
+      "vtable": "00d05f20",
+      "store_site": "007d03c1",
+      "in_function": "007d03a0 CG_vector_deleting_dtor_007d03a0",
+      "role": "CORRECTION to this packet's first draft, which attributed this store to 007CFD20. It is past that body's end 007D0344; the destructor re-installs its own class vtable, which corroborates the class but is not a second constructor install."
+    },
+    {
+      "vtable": "00d0ba80",
+      "store_site": "0084c92d",
+      "in_function": "0084c920 BSP_SmallReconPlaneUnitInstance_Construct",
+      "ghidra_body": "0084c920-0084c98c"
+    },
+    {
+      "vtable": "00d06638",
+      "store_site": "007d772f",
+      "in_function": "007d7720 FUN_007d7720",
+      "ghidra_body": "007d7720-007d778e",
+      "role": "unnamed constructor, same shape"
+    },
+    {
+      "vtable": "00d06920",
+      "store_site": "007dd9bf",
+      "in_function": "007dd9b0 FUN_007dd9b0",
+      "ghidra_body": "007dd9b0-007dda1e",
+      "role": "unnamed constructor, same shape"
+    },
+    {
+      "vtable": "00d19d28",
+      "store_site": "00951b6f",
+      "in_function": "00951b60 FUN_00951b60",
+      "role": "unnamed, containment not established"
+    },
+    {
+      "vtable": "00d1a000",
+      "store_site": "00951c4f",
+      "in_function": "00951c40 FUN_00951c40",
+      "role": "unnamed, containment not established"
+    },
+    {
+      "vtable": "00d1a2d8",
+      "store_site": "00951d2f",
+      "in_function": "00951d20 FUN_00951d20",
+      "role": "unnamed, containment not established"
+    },
+    {
+      "vtable": "00d09678",
+      "store_site": "0081ed80",
+      "in_function": "0081ed40 BSP_UnitVehicleBase_Construct",
+      "role": "CORRECTION: the ship-side control. Slot 50h of this vtable is 006DFD60 FLD [ECX+1050h]."
+    }
+  ],
+  "next_gate": {
+    "address": "009d3150",
+    "native": "009d3150",
+    "name": "BSP_BotStateTorpedoGoAway_IsComplete",
+    "rule": "returns state+24h < approach+90h; body 009D3150-009D31A5, __fastcall(state), sole caller 009D4030 BSP_BotTaskTorpedo_TransitionRule",
+    "values_in_the_before_run": "state+24h = 700.0 on all five (0042E740+438h). approach+90h peaks inside goaway at 697.4 (Mav1), 702.3 (Mav2), 697.0 (Mav3), 766.5 (Mav4), 700.4 (Mav5). Four of five never satisfy the predicate, yet goaway is entered 87-98 times each, so the aircraft leave goaway by some route other than this predicate and re-enter at once.",
+    "why_it_is_the_gate": "the commanded heading reverses about every 1.7 s, so no cone width closes. The cone at 009D2209 is correct and its 0.262 rad floor is unreachable while this cycles."
+  }
+}
