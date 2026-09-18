@@ -3606,7 +3606,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 "cmd_2C0=%.4f yaw_C6C=%.4f hull_1050=%.4f "
                                 "bearing_94=%.4f delta_F10=%.4f |delta|_F18=%.4f "
                                 "F0C=%.4f F14=%.1f cone_open=%d "
-                                "yaw_desired=%.4f yaw_current=%.4f range_90=%.1f",
+                                "yaw_desired=%.4f yaw_current=%.4f range_90=%.1f "
+                                "speed_80=%.1f class_max_speed=%.1f stall=%.1f",
                                 unit_.row.name.c_str(), unit_.torpedo_aim_ticks,
                                 static_cast<double>(r.commanded_heading_2c0),
                                 static_cast<double>(unit_.plane_heading_c6c),
@@ -3625,7 +3626,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     unit_.plan_slots[bsp::kPilotSlotYaw].desired),
                                 static_cast<double>(
                                     unit_.plan_slots[bsp::kPilotSlotYaw].current),
-                                static_cast<double>(ap.range_90));
+                                static_cast<double>(ap.range_90),
+                                // The two candidates for the unmodelled run
+                                // profile record at approach+14h, printed so the
+                                // substitution question is settled from a run
+                                // rather than argued. 009D0484-009D0497.
+                                static_cast<double>(ap.speed_early_80),
+                                static_cast<double>(unit_.motion.max_speed),
+                                static_cast<double>(unit_.plane_stall_spd));
                         }
                         unit_.torpedo_aim_heading_last = r.commanded_heading_2c0;
                         // 009D1D16 / 009D1D1E write plan+2C0h and plan+2CCh.

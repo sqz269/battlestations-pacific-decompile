@@ -329,8 +329,15 @@ slot really does hold 500 and really is the altitude constant.
 Two things I asserted before measuring turned out to be wrong, and the per-tick census is
 what caught them.
 
-**The obvious substitution is degenerate.** `slot.motion.max_speed`, the VehicleClass
-`+500h` field, is **0.0f on an aircraft**. The class row exists, and the run reports all 77
+**The obvious substitution is degenerate, and the census now proves it on every
+aircraft.** With the census extended to print the candidates, `local/usn01_speeds.log` on
+the merged tree reads the same three values on all nine torpedo aircraft and both classes:
+
+| Aircraft | `speed_80` in use | `class_max_speed` | `stall` |
+|---|---|---|---|
+| KatTBD, ConTBD1-3, Mav1-5 | 500.0 | **0.0** | 19.4 |
+
+`slot.motion.max_speed`, the VehicleClass `+500h` field, is **0.0f on every one of them**. The class row exists, and the run reports all 77
 units carrying one, but planes take no speed from it. `009D1500`'s `speed == 0` guard then
 returns `F0C = 0.0000` on every tick, which makes clause 2 fire on the **first** aim tick of
 every run. Measured in `local/usn01_after.log`: goaway entries went from 96 to 208 per
