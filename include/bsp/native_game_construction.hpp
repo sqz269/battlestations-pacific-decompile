@@ -8,6 +8,7 @@
 #include "bsp/native_game_tables.hpp"
 #include "bsp/native_global_config_load.hpp"
 #include "bsp/native_game_resource_parsers.hpp"
+#include "bsp/native_game_grid.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>
@@ -45,7 +46,8 @@ struct NativeGameConstructionCalls : NativeGameEmbeddedStateCalls,NativeGameArra
     virtual void call_0087d7b0(void* captured_configuration,NativeGlobalConfigLoadContext&,
         NativeGlobalConfigLoadOperation&);
     virtual void call_00717e80(NativeGameResourceParsersContext&);
-    virtual void* call_0070bd70(void* allocation,float argument)=0;
+    virtual void* call_0070bd70(void* allocation,float argument,NativeGameGridContext*,
+        const NativeGameGridDescriptorPreimage&,NativeGameGridOperation&);
     virtual void call_00727bd0(NativeGameTablesContext&);
     virtual void* call_008882d0(void* allocation);
     virtual std::uint32_t call_00be4800();
@@ -83,6 +85,11 @@ struct NativeGameConstructionContext {
     GlobalConfigContext& global_configuration;
     NativeGlobalConfigLoadContext& global_configuration_load;
     NativeGameResourceParsersContext& resource_parsers;
+    // Required by the default70BD70 implementation. A null binding fails at
+    // the reached call; it never fabricates a grid. Explicit preimages retain
+    // the two otherwise-uninitialized descriptor words for each of three calls.
+    NativeGameGridContext* grids;
+    NativeGameGridDescriptorPreimage grid_descriptor_preimages[3];
 };
 struct NativeGameConstructionOperation final {
     enum class Phase { fresh,running,complete,failed,diagnostic_retired };
@@ -98,6 +105,7 @@ struct NativeGameConstructionOperation final {
     NativeGameEmbeddedStateOperation embedded;
     NativeGameArrayOperation arrays[4];
     NativeGlobalConfigLoadOperation global_configuration;
+    NativeGameGridOperation grids[3];
     NativeGameConstructionOperation()=default;
     ~NativeGameConstructionOperation();
     NativeGameConstructionOperation(const NativeGameConstructionOperation&)=delete;
