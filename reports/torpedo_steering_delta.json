@@ -195,5 +195,13 @@
       "installs": "00d09678",
       "role": "CORRECTION: the ship-side control. Slot 50h of 00D09678 is 006DFD60 FLD [ECX+1050h]. The install is in BSP_UnitVehicleBase_Construct, not at 0081ED80 as a function start."
     }
-  ]
+  ],
+  "next_gate": {
+    "address": "009d3150",
+    "native": "009d3150",
+    "name": "BSP_BotStateTorpedoGoAway_IsComplete",
+    "rule": "returns state+24h < approach+90h; body 009D3150-009D31A5, __fastcall(state), sole caller 009D4030 BSP_BotTaskTorpedo_TransitionRule",
+    "values_in_the_before_run": "state+24h = 700.0 on all five (0042E740+438h). approach+90h peaks inside goaway at 697.4 (Mav1), 702.3 (Mav2), 697.0 (Mav3), 766.5 (Mav4), 700.4 (Mav5). Four of five never satisfy the predicate, yet goaway is entered 87-98 times each, so the aircraft leave goaway by some route other than this predicate and re-enter at once.",
+    "why_it_is_the_gate": "the commanded heading reverses about every 1.7 s, so no cone width closes. The cone at 009D2209 is correct and its 0.262 rad floor is unreachable while this cycles."
+  }
 }

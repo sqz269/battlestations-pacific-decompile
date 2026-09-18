@@ -263,9 +263,17 @@ the aircraft's commanded heading reverses about every 1.7 s.
 
 ## Follow-up packets
 
-1. **The aim/goaway hysteresis.** `009D0D90` / `009D3150` break off at `+24h` = 700.0 from
-   `0042E740+438h` and the aircraft never clears it. Establish the re-entry condition and
-   whether the native has a hysteresis band this host drops. This is the gate now.
+1. **The aim/goaway hysteresis. This is the gate now, by address and value.**
+   `BSP_BotStateTorpedoGoAway_IsComplete` (`009D3150`, body `009D3150`-`009D31A5`,
+   `__fastcall(state)`, sole caller `009D4030 BSP_BotTaskTorpedo_TransitionRule`) returns
+   `state+24h < approach+90h`: goaway ends only once the range exceeds the break-off
+   distance. In the USN01 before-run `state+24h` is 700.0 on all five aircraft, from
+   `0042E740+438h`, and `approach+90h` peaks inside goaway at 697.4, 702.3, 697.0, 766.5 and
+   700.4. Four of the five never satisfy it, yet goaway is still entered 87-98 times each,
+   so the aircraft are leaving goaway by some route other than this predicate and
+   re-entering at once. Find that route in `009D4030` and establish whether the native has a
+   hysteresis band this host drops. Until the commanded heading holds for more than 1.7 s,
+   no cone of any width will close.
 2. **The approach speed ceiling.** Model `ctl+39Ch` so `009D3445` clamps `+80h` and rescales
    `+7Ch`, then re-measure `F0C` and the `009D229D` countdown gate.
 3. **The plane row refresh.** Call `refresh_row` on the plane motion path so
