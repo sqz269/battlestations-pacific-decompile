@@ -162,6 +162,11 @@ struct GameAiSummary {
     unsigned long long world_set_queries{0};
     unsigned long long world_set_hits{0};
     unsigned long long objective_set_units{0};   // total across the eight sets
+    // 00A0F810, the candidate target weight. docs/AI_TARGET_WEIGHT.md.
+    unsigned long long weight_queries{0};
+    unsigned long long weight_objective_hits{0};    // 008DDF90 answered true
+    unsigned long long weight_fort_targets{0};      // the 009FE0B0 trio
+    unsigned long long weight_non_command_targets{0}; // trio, not 1Ch
     float first_command_seconds{-1.0f};
 };
 
