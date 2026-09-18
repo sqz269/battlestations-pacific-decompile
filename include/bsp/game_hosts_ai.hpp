@@ -167,6 +167,7 @@ struct GameAiSummary {
     unsigned long long weight_objective_hits{0};    // 008DDF90 answered true
     unsigned long long weight_fort_targets{0};      // the 009FE0B0 trio
     unsigned long long weight_non_command_targets{0}; // trio, not 1Ch
+    unsigned long long weight_torn_down_targets{0};   // 00923BE4's arm
     float first_command_seconds{-1.0f};
 };
 

@@ -844,10 +844,24 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             ++summary.weight_fort_targets;
             if (!in.target_is_command_building) ++summary.weight_non_command_targets;
         }
-        // 00A0F8CE 00923BE0(target) subtracted from 2.0. Its body is unread and
-        // this process has no producer for it, so the term stays 0 and the
-        // factor is the constant 2.0. Labelled.
-        in.target_term = 0.0f;
+        // 00A0F8CE 00923BE0(target), subtracted from 2.0. The routine is read
+        // in full now (docs/AI_TARGET_WEIGHT_TERMS.md): the torn-down byte
+        // +5Dh answers 0, otherwise the class fraction is clamped into [0, 1]
+        // and cached at +164h. This process reaches the torn-down byte through
+        // the scene node flags, but not the fraction, which is
+        // `unit+370h / unit+36Ch` and lives with the gunnery host; so a live
+        // candidate takes the full-health value 1.0f and the term is 1.0, not
+        // the 2.0 an earlier reading of this packet left. Labelled: the clamp
+        // and the torn-down arm are the native's, the fraction is not.
+        bsp::SceneNodeFlags target_node;
+        const bool have_node = units.unit_scene_node_flags(target, target_node);
+        in.target_term = bsp::ai_unit_health_00923be0(
+            have_node && target_node.torn_down, 0.0f, false);
+        // The torn-down arm cannot actually be reached from here: 00A13B60's
+        // candidate loop already drops a candidate that fails
+        // close_candidate_alive, so every candidate scored is live. The arm is
+        // modelled because the native has it, and the census counts any hit.
+        if (in.target_term == 0.0f) ++summary.weight_torn_down_targets;
         ++summary.weight_queries;
         done("AiCommand::close_target_weight", 0x00a0f810u);
         return bsp::ai_candidate_target_weight_00a0f810(in);
@@ -1866,6 +1880,10 @@ void GameAiCoordinatorHost::report() {
         "0.1 for the 009FE0B0 trio, 0.01 when that trio is not a command building)",
         host.summary.weight_queries, host.summary.weight_objective_hits,
         host.summary.weight_fort_targets, host.summary.weight_non_command_targets);
+    host.log.notef("summary mission ai target weight health torn_down_targets=%llu "
+        "(00923BE0's +5Dh arm; the fraction unit+370h/unit+36Ch has no producer here, so a live "
+        "candidate takes the full-health 1.0 and slot D is 1.0)",
+        host.summary.weight_torn_down_targets);
     for (const GameAiPartyRow& row : host.parties) {
         host.log.notef("  ai party %d record=%d ai_enabled=%d brain=%d thinks=%llu "
             "claims=%llu planner_ticks=%llu attacks=%llu commands=%llu refused=%llu",
