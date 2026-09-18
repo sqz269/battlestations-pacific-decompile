@@ -200,6 +200,12 @@ struct GameGunneryUnitRow {
     std::size_t guns{0};
     std::array<int, bsp::kUnitGunneryCategoryCount> category_guns{};
     std::array<float, bsp::kUnitGunneryCategoryCount> category_ranges{};
+    // Packet cc8_ship_ai_firepower_inputs: the two extra maxima 00956C20
+    // writes beside unit+430h, which the rebuild binding used to discard.
+    // 0095EB40 gates its whole body on unit+494h at 0095EB62, so the ship AI
+    // cannot rate a range without it.
+    float artillery_max_range{0.0f};  // unit+490h, Function 2, 3, 4 and 6 only
+    float any_weapon_max_range{0.0f}; // unit+494h, every category
     bool pass_attached{false};
     bool pass_enabled{false};         // pass+58h
     unsigned long long think_bodies{0};    // 00864FE0 bodies past the throttle
@@ -333,6 +339,13 @@ public:
     void fixed_step(float step_seconds);
 
     const std::vector<GameGunRow>& guns() const noexcept;
+    // Packet cc8_ship_ai_firepower_inputs: the gun indices 00956C20 put in one
+    // unit's category list, in insertion order. The ship AI's firepower host
+    // walks these where the image walks the list at unit+398h + category*0Ch.
+    const std::vector<std::size_t>* unit_category_guns(
+        std::size_t unit_index, int category) const noexcept;
+    // The authored Bullets row a gun fires, by GameGunRow::bullet_class.
+    const GameBulletClassRow* bullet_class_row(int id) const noexcept;
     const std::vector<GameGunneryUnitRow>& unit_rows() const noexcept;
     const GameGunnerySummary& summary() const noexcept;
 

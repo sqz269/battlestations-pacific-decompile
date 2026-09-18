@@ -233,6 +233,17 @@ none. All four addresses are the start of an existing Ghidra function, and every
 - `FUN_009E8360`'s call to `00954940` at `009E839E` was not read. It is in the traffic-record
   follow-up packet's territory, and whether it clears a third instance of this class is unknown.
 
+## Corrections from packet cc8_ship_ai_firepower_inputs
+
+Appended, not a rewrite. This packet's own follow-up list was right about one blocker and wrong
+about the other. Evidence is in `docs/SHIP_AI_FIREPOWER_INPUTS.md`.
+
+| was | is | evidence |
+| --- | --- | --- |
+| Follow-up `ship_ai_approach_scan_scale_1284`: "`nested+1284h`, the numerator of the scan's middle factor, has no producer in this process either." | It has one, and it is not a scan constant. `nested+1284h` is word 2 of the own unit's firepower query block at `nested+127Ch`, the per-shot damage cap, and it also caps every profile sample through `ship_ai_firepower_output_cap`. `009F1BC0` writes it, along with words 1, 3 and 4 beside it. | `scan-bytes "84 12 00 00"` finds `009E7286` (the reader) and two writers, `009F2A4E` and `009F2AAD`, both inside `009F1BC0`, against thirty other hits in `.text` as the positive control. `009F2A44 FLD [EBX+370h]` then `009F2A4C FSTP [EBP+1284h]`; `009F2AA2 MOVUPS` from `00CE3D64` (float `10000.0`) then `009F2AA9 MOVSS [EBP+1284h]`. `EBP` is `nested`: `009F2AD1 MOV ECX,[EBP]` then `009F2AD4 MOV ECX,[ECX+0AA8h]`. `docs/SHIP_AI_BEARING_RATING.md` had already named it in the `damage_cap` field comment. |
+| Follow-up `ship_ai_firepower_device_list`: "until a unit's gunnery categories reach the ship AI host, the standoff scan cannot choose anything but its 300 m seed." | Correct, and now done. The gunnery host already ran `00956C20` per unit and was discarding `store_any_weapon_max_range` and `store_artillery_max_range`. Capturing them and exposing the category gun lists fills all sixty samples of both curves. | The USN02 census: `curve_own_nonzero=60 curve_target_nonzero=60 max_weapon_range=6136.0` for all fourteen ships, and the chosen range becomes 1450 m for Haguro, 1550 m for Jintsu and 200 m for the twelve destroyers, in place of 300 m for every one of them. |
+| Validation: "The gunnery census did not move, and it should not have ... the curve rules run, but their input is zero." | The input is no longer zero and the census still does not move, for a different and further-along reason: the standoff range reaches `009E6870`'s slot weights and stops there. The ring scan's winner is slot 0 in both runs with the same commanded heading, because the tune block at `009E7489` and `009E784B` has no producer and every slot therefore scores alike. | The gunnery aim line is identical to the character across the two runs (`angle_sets=1169733 refusals=185667 shots=734`), as are the three ship AI summary lines and every per-unit ring-scan row. `ShipAiApproach::tune_slot_04 [009e7489]` and `ShipAiApproach::select_tune_reject_04 [009e784b]` are both `UNIMPLEMENTED calls=8400`. |
+
 ## Follow-up packets
 
 - `ship_ai_firepower_device_list`: the ship AI host's `FirepowerBinding` answers `unit+494h` with
