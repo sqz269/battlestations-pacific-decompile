@@ -1,0 +1,40 @@
+{
+ "packet": "cc8_torpedo_engaged_test",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/TORPEDO_ENGAGED_TEST.md",
+ "tree_base": "main 78af19721 merged",
+ "result": "NEGATIVE, and the lead's stop condition applies. The host's engaged inputs are right; no code changed and src/game_hosts_units.cpp was never claimed.",
+ "question": "Does the native keep USN01's ordered torpedo bombers in move-to for any part of the run?",
+ "answer": "No. 009D3210 is 22 instructions and five clauses, complete: the in-range latch task+529h at 009D3213 returns engaged; a null engage target task+4C4h at 009D321C returns not engaged; pilot control mode 2 at 009D322B returns engaged; a follow target through 007B8AD0 at 009D323A returns not engaged; and 009D3243-009D3259 compares the live range task+488h against the engage distance task+484h times the double 2.2 at 00D05AC8, returning engaged when the product is greater. There is NO hysteresis, timer, heading gate, altitude gate or aim-command clause, and the one latch pushes the answer toward engaged rather than away. The engage distance is the authored Pilot/Torpedo/AttackDist of 2200 m, which 009D4A70 sets and the run's own log prints, so the threshold is 4840 m. USN01's ordered aircraft start at range_first_mean 1490.8 m with worst_closed 0.0, so they are inside the threshold on the first arm tick and stay inside for the whole run. 009D4030 returns the approach state only when this predicate is false (009D41C4, 009D4053), so they go to attackrun immediately and never occupy moveto. Every input is the image's own - the authored 2200, the image's 2.2, and a range the mission placement fixes - so there is no host substitution to correct.",
+ "coverage": "complete for 009D3210; task+4C4h and task+529h's own producers were not chased because neither can hold an aircraft in move-to.",
+ "calls": [
+  {
+   "address": "009d323a",
+   "native": "007b8ad0",
+   "function": "009d3210",
+   "what": "the follow-target test, unit+9D8h == 0; a false answer returns not engaged"
+  }
+ ],
+ "named_routines": [
+  {
+   "native": "009d3210",
+   "name": "BSP_BotTaskTorpedo_IsEngaged",
+   "abi": "bool __fastcall(task) with the result in AL, Ghidra body 009D3210-009D3265, 22 instructions",
+   "coverage": "complete",
+   "what": "five clauses and no hysteresis: the in-range latch task+529h (engaged), a null engage target task+4C4h (not engaged), pilot control mode 2 at [task+404h]+370h (engaged), a follow target through 007B8AD0 (not engaged), and finally task+484h * 2.2 [00D05AC8] > task+488h. Nothing in it can hold an aircraft in move-to except distance, a missing target or a follow target. src/torpedo_task_arm.cpp's reconstruction already had all five clauses and the right senses."
+  }
+ ],
+ "no_ghidra_function": [],
+ "host_methods": [],
+ "contracts": [
+  "Whether any shipped mission places torpedo bombers beyond 2.2 * AttackDist = 4840 m of their targets.",
+  "task+4C4h, the engage target, and task+529h's producer; neither can hold an aircraft in move-to, which is why this packet did not chase them."
+ ],
+ "corrections": [],
+ "validation": {
+  "runner": "none",
+  "note": "Nothing changed. The two numbers the question turns on come from docs/TORPEDO_GLIDE_THROTTLE_WIRING.md's USN01 run: range_first_mean 1490.8 m, and the log's own line recording 009D4A70 setting task+484h = 2200.0 from Pilot/Torpedo/AttackDist.",
+  "arithmetic": "2200 * 2.2 = 4840 m against a 1490.8 m start, so the fifth clause is true from the first arm tick and worst_closed 0.0 says no aircraft ever exceeded its start range.",
+  "no_swim_next_gate": "Why an attack run from 800 m does not plunge in the image. The attack-run tick commands 12 m and 009FB800 saturates at its DEG(60) cap, and docs/TORPEDO_THROTTLE_CUT.md proved that site passes a zero range pair so the glide slope's shape is not available there. The native's own answer is unread, and inventing one is what this packet declines to do."
+ }
+}
