@@ -92,6 +92,10 @@ struct GameAiSummary {
     unsigned long long command_ticks{0};         // command vt+0Ch, on the 2-4 s draw
     unsigned long long commands_replaced{0};     // 00A2BD00 deleted an outgoing one
     unsigned long long commands_retargeted{0};   // 00A2DB80 phase A rebound one
+    unsigned long long tick_orders{0};           // 00A02020 reached 0077D600
+    unsigned long long tick_formation_requests{0};  // 0077C8D0
+    unsigned long long tick_followers{0};        // 00A10DC0 walked one
+    unsigned long long command_promotions{0};    // MOVETOATTACK became CLOSEATTACK
     unsigned long long party_think_calls{0};
     unsigned long long parties_thought{0};
     unsigned long long planner_ticks{0};
