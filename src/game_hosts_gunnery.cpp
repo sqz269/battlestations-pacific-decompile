@@ -577,6 +577,12 @@ void GameGunneryHost::Impl::build_guns() {
                 b.range = gun.max_range;
                 b.water_travel_speed = gun.water_travel_speed;
                 b.swim_speed = gun.swim_speed;
+                // 008568E0's two water-entry limits, read from the same Bullets
+                // row the range derivation above reads. docs/TORPEDO_TICK.md.
+                b.max_water_hit_vel = lua.read_bullet_class_number(
+                    gun.bullet_class, "MaxWaterHitVel", 0.0f);
+                b.max_fall = lua.read_bullet_class_number(
+                    gun.bullet_class, "MaxFall", 0.0f);
                 b.damage_min = flat_scaled(type_id, make("dmin"), kMilliScale, 0.0f);
                 b.damage_max = flat_scaled(type_id, make("dmax"), kMilliScale, 0.0f);
                 b.water_damage = flat_scaled(type_id, make("wdmg"), kMilliScale, 0.0f);
@@ -2199,6 +2205,30 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
             // launches ended as `water`. docs/TORPEDO_LAUNCH_ACCURACY.md.
             const GameBulletClassRow* const entry = bullet(shot.bullet_class);
             const float swim = entry != nullptr ? entry->swim_speed : 0.0f;
+            // 008568E0's first limit: the round breaks up if it hits the sea
+            // faster than `MaxWaterHitVel` (classDesc+0DCh). This is why a
+            // torpedo bomber has to release low and slow. The second limit,
+            // `shot[+0Ch] < -classDesc[+0ECh]`, is the MaxFall-derived fall
+            // speed against the round's own depth field and is NOT applied
+            // here: this host has no such field on the shot.
+            // docs/TORPEDO_TICK.md, docs/TORPEDO_RELEASE_SPAWN.md.
+            const float entry_velocity[3] = {shot.flight.velocity.x,
+                shot.flight.velocity.y, shot.flight.velocity.z};
+            const float entry_speed = length3(entry_velocity);
+            const float hit_limit = entry != nullptr ? entry->max_water_hit_vel : 0.0f;
+            if (swim > 0.0f && !shot.swimming && hit_limit > 0.0f
+                && entry_speed > hit_limit) {
+                ++summary.water_entry_breakups;
+                if (summary.water_entry_breakups <= 4) {
+                    log.notef("gunnery: water entry broke the round up at %.1f m/s, "
+                        "MaxWaterHitVel %.1f m/s (008568E0)",
+                        static_cast<double>(entry_speed),
+                        static_cast<double>(hit_limit));
+                }
+                ++summary.impacts_static;
+                shot.alive = false;
+                continue;
+            }
             if (swim > 0.0f && !shot.swimming) {
                 shot.swimming = true;
                 // Level the round onto the surface plane at the swim speed,
@@ -2613,6 +2643,63 @@ const GameGunnerySummary& GameGunneryHost::summary() const noexcept {
     return impl_->summary;
 }
 
+bool GameGunneryHost::release_ordnance_drop(std::size_t unit_index) {
+    Impl& h = *impl_;
+    // The unit's torpedo-capable gun rows. `swim_speed > 0` is the same test the
+    // water crossing uses to decide that a round swims instead of dying at the
+    // surface, so a row selected here is exactly a row whose round can reach the
+    // swim model.
+    const GameGunRow* chosen = nullptr;
+    for (const GameGunRow& gun : h.guns) {
+        if (gun.unit_index != unit_index) continue;
+        if (gun.swim_speed <= 0.0f) continue;
+        chosen = &gun;
+        break;
+    }
+    if (chosen == nullptr) {
+        ++h.summary.torpedo_drop_refusals;
+        return false;
+    }
+
+    float right[3], up[3], forward[3], origin[3];
+    h.unit_pose(unit_index, right, up, forward, origin);
+    // 0092D730 over the unit's body axis and linear velocity, not the cached
+    // GameUnitRow field the Impl's own unit_velocity reads: that field is zero
+    // for a plane, which made the first drop a pure free fall.
+    const float speed = h.units.unit_forward_speed_0092d730(unit_index);
+    const float velocity[3] = {forward[0] * speed, forward[1] * speed,
+        forward[2] * speed};
+
+    GameProjectileRow shot;
+    shot.gun_row = static_cast<std::size_t>(chosen - h.guns.data());
+    shot.owner_unit = unit_index + 1;
+    shot.owner_side = h.units.unit_side_0054(unit_index);
+    shot.bullet_class = chosen->bullet_class;
+    shot.alive = true;
+    for (int i = 0; i < 3; ++i) shot.position[i] = origin[i];
+    // SUBSTITUTION, labelled: the release geometry. The native mount node and
+    // the platform's own release slot are unread, so the round leaves from the
+    // plane's origin along its forward axis at the plane's own forward speed.
+    // A drop inherits the aircraft's velocity; it is not given a muzzle speed,
+    // which is why `projectile_launch_velocity_006e8430` is not used here.
+    shot.flight.velocity = bsp::TickPoint3{velocity[0], velocity[1], velocity[2]};
+    shot.flight.snapshot_current = bsp::TickPoint3{origin[0], origin[1], origin[2]};
+    shot.flight.local_position = shot.flight.snapshot_current;
+    shot.flight.mode = bsp::ProjectileMotionMode::kBallistic;
+    shot.flight.class_disables_gravity = false;
+    h.shots.push_back(shot);
+    ++h.summary.projectiles;
+    ++h.summary.torpedo_drops;
+    if (h.summary.torpedo_drops <= 4) {
+        h.log.notef("gunnery: torpedo drop %llu by %s at %.0f m, speed %.1f m/s, "
+            "bullet %d, swim %.1f m/s",
+            h.summary.torpedo_drops, chosen->unit_name.c_str(),
+            static_cast<double>(origin[1]), static_cast<double>(speed),
+            chosen->bullet_class, static_cast<double>(chosen->swim_speed));
+    }
+    return true;
+}
+
 const bsp::ReconSensorPassState& GameGunneryHost::recon_sensor_pass_state() const noexcept {
     return impl_->recon_pass;
 }
@@ -2726,6 +2813,9 @@ void GameGunneryHost::report() {
             torpedo_guns, s.torpedo_gun_ticks, s.torpedo_gun_targeted,
             s.torpedo_gun_accepted, s.torpedo_gun_settled, s.torpedo_gun_window,
             s.torpedo_gun_sent, s.torpedo_gun_shots);
+        host.log.notef("summary mission gunnery torpedo_drop drops=%llu refusals=%llu "
+            "water_entry_breakups=%llu",
+            s.torpedo_drops, s.torpedo_drop_refusals, s.water_entry_breakups);
     }
     host.log.notef("summary mission gunnery contacts considered=%llu side=%llu "
         "invisible=%llu dead=%llu kind=%llu admit_ship=%llu admit_plane=%llu",
