@@ -42,7 +42,7 @@ namespace {
 // both reach the same export.
 enum Slot {
     kWsaStartup, kWsaCleanup, kSocketNtohs, kNetSetSystemLinkPort,
-    kNotifyGetNext, kGetOverlappedExtendedError, kGetOverlappedResult,
+    kNotifyGetNext, kGetOverlappedExtendedError, kGetOverlappedResult, kLiveRender,
     kLiveOnCreateDevice, kLiveOnDestroyDevice, kLiveGetUpdateInformation,
     kLiveUpdateSystem, kLivePreTranslateMessage, kShowSigninUi, kUserGetXuid,
     kUserGetSigninState, kUserGetName, kUserCheckPrivilege, kShowMessageBoxUi,
@@ -61,6 +61,7 @@ const struct { const char* name; int ordinal; } kSlots[kSlotCount] = {
     { "XNotifyGetNext", 651 },
     { "XGetOverlappedExtendedError", 1082 },
     { "XGetOverlappedResult", 1083 },
+    { "XLiveRender", 5002 },
     { "XLiveOnCreateDevice", 5005 },
     { "XLiveOnDestroyDevice", 5006 },
     { "XLiveGetUpdateInformation", 5022 },
@@ -244,6 +245,20 @@ HRESULT __stdcall XLiveUpdateSystem(const wchar_t* path) {
 }
 
 // ---- src/native_xlive_device_adapter.cpp -------------------------------------
+
+// Ordinal 5002, XLiveRender, thunk 00c2f1cc over IAT cell 00ce25d8.  RET 0.
+// The original calls it unconditionally from BSP_D3D9Renderer_EndFrameAndPresent at 00b2daa2,
+// right after the end-of-frame render-state restores (the 00b24460 calls
+// ending at 00b2da9d) and ahead of the device call the present path makes,
+// so the Live guide overlay can draw over the finished frame.  With no
+// overlay there is nothing to draw; the frame is untouched.
+// The host resolves it once at renderer startup
+// (src/native_renderer_end_frame.cpp, NativeXLiveRenderImport) and refuses
+// to start without it, which is why the stand-in must export it.
+HRESULT __stdcall XLiveRender() {
+    note(kLiveRender);
+    return S_OK;
+}
 
 // RET 8.  The original hands the D3D9 device to the Live overlay; with no
 // overlay there is nothing to attach and the renderer's device is untouched.
