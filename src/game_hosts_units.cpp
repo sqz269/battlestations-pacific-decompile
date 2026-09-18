@@ -380,9 +380,22 @@ struct GameUnitSlot {
     float torpedo_aim_f0c_time{0.0f};
     float torpedo_aim_ramp{0.0f};
     float torpedo_aim_floor{0.0f};
+    // 009D0D90, the goaway enter: the break-off distance 009D3150 compares the
+    // range against, and the alternating side byte. docs/TORPEDO_GOAWAY_RELEASE.md.
+    float torpedo_goaway_distance_24{0.0f};
+    float torpedo_goaway_side_2c{1.0f};
+    int torpedo_goaway_enters{0};
+    bool torpedo_goaway_done_last{false};
+    float torpedo_goaway_range_peak{-1.0f};
     int torpedo_aim_run_time_updates{0};   // 009D19A4
     int torpedo_aim_release_arms{0};       // 009D2287
     float torpedo_aim_timer{0.0f};         // 009D2027, 009FA3A0(state+18h, dt)
+    // plan+2C0h / +2CCh. docs/PILOT_TASK_HEADING_ARM.md: the arm writes the
+    // bearing and mode 2, and a bot state's tick may overwrite the pair. The
+    // torpedo aim tick does at 009D1D16 / 009D1D1E.
+    float plan_heading_2c0{0.0f};
+    int plan_heading_mode_2cc{0};
+    bool plan_heading_2c0_written{false};
     float plane_live_throttle{1.0f};
     float plane_live_air_brake{0.0f};
     float plane_latched_controls[3]{0.0f, 0.0f, 0.0f};
@@ -2842,12 +2855,67 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             in.aim_hold_009d31b0 =
                                 slot_.torpedo_approach.has_ordnance_132 &&
                                 slot_.torpedo_aim_complete_2c;
-                            in.goaway_done_009d3150 = false;
+                            // 009D3150, now computed. ctl+369h is 0 in this
+                            // host (read_control_block), so the 0.4 scaling and
+                            // the ordnance refusal are both skipped and the test
+                            // is the bare range comparison at 009D3195.
+                            bsp::TorpedoGoAwayCompleteInputs gc;
+                            gc.range_90 = slot_.torpedo_approach.range_90;
+                            gc.break_off_distance_24 =
+                                slot_.torpedo_goaway_distance_24;
+                            gc.has_ordnance_132 =
+                                slot_.torpedo_approach.has_ordnance_132;
+                            gc.control_flag_369 = false;
+                            gc.global_e17bf2 = false;
+                            in.goaway_done_009d3150 =
+                                bsp::torpedo_goaway_complete_009d3150(gc);
+                            slot_.torpedo_goaway_done_last =
+                                in.goaway_done_009d3150;
+                            if (slot_.torpedo_state == bsp::TorpedoState::kGoAway &&
+                                slot_.torpedo_approach.range_90 >
+                                    slot_.torpedo_goaway_range_peak) {
+                                slot_.torpedo_goaway_range_peak =
+                                    slot_.torpedo_approach.range_90;
+                            }
                             return in;
                         }
                         void set_state(void*, bsp::TorpedoState next) override {
+                            // 009D0D90, the goaway state's vtable slot +4h. The
+                            // registrar never writes goaway+24h, so this enter
+                            // is its only producer and 009D3150 reads whatever
+                            // it leaves.
+                            if (next == bsp::TorpedoState::kGoAway &&
+                                slot_.torpedo_state != bsp::TorpedoState::kGoAway) {
+                                bsp::TorpedoGoAwayEnterInputs gin;
+                                gin.safe_distance_438 = safe_distance_438();
+                                // 007B5BE0's target extent needs approach+CCh's
+                                // entity bounds, which this host does not model.
+                                gin.has_extent_target = false;
+                                gin.target_extent = 0.0f;
+                                // 00BD2F10 UniformFloatRange(1.0, 1.15). This
+                                // host's torpedo binding takes the low end of
+                                // every draw, as random_between already does.
+                                gin.distance_jitter =
+                                    bsp::torpedo_goaway::kDistanceJitterLo;
+                                gin.side_bit = (slot_.torpedo_goaway_enters & 1) != 0;
+                                const bsp::TorpedoGoAwayState g =
+                                    bsp::torpedo_goaway_enter_009d0d90(gin);
+                                slot_.torpedo_goaway_distance_24 =
+                                    g.break_off_distance_24;
+                                slot_.torpedo_goaway_side_2c = g.break_off_side_2c;
+                                ++slot_.torpedo_goaway_enters;
+                                slot_.torpedo_goaway_range_peak = -1.0f;
+                            }
                             slot_.torpedo_state = next;
                             ++slot_.torpedo_transitions;
+                        }
+                        float safe_distance_438() const {
+                            // 0042E740()+438h, Pilot/Torpedo/SafeDist.
+                            if (owner_.lua.plane_globals_loaded()) {
+                                return owner_.lua.plane_globals()
+                                    .pilot_torpedo_safe_dist;
+                            }
+                            return 0.0f;
                         }
                         float time_to_target_009d1500(void*) override {
                             // 009D2A44-009D2A52 recomputes the same metric
@@ -2995,6 +3063,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (ctx.current == bsp::TorpedoState::kAim) {
                             run_torpedo_aim_tick_009d15f0(dt);
                         }
+                        // The flag is deliberately NOT cleared when the task
+                        // leaves aim. plan+2C0h is a persistent plan field, and
+                        // the state that follows aim writes it too: the goaway
+                        // tick 009D0F10 stores it at 009D110C and 009D11A5 with
+                        // mode 2 at 009D1112/009D11AB. That tick is not
+                        // reconstructed, so the plan keeps the aim tick's last
+                        // heading through goaway. Clearing the flag would fall
+                        // back to the raw target bearing, which is the one
+                        // heading the native never flies here.
                         // 0099AF53-0099AFAF, the ordnance-arming loop of
                         // BSP_PilotBot_Tick: it spends one queued release order
                         // per tick by offering it to each task's vtable +24h,
@@ -3169,6 +3246,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::torpedo_aim_tick_full_009d15f0(binding, in, dt);
                         ++unit_.torpedo_aim_ticks;
                         unit_.torpedo_aim_heading_last = r.commanded_heading_2c0;
+                        // 009D1D16 / 009D1D1E write plan+2C0h and plan+2CCh.
+                        // docs/PILOT_TASK_HEADING_ARM.md: that pair is the plan
+                        // the yaw arm 0099D300 reads, so publishing it here is
+                        // what lets the aircraft fly the run-in the tick plans.
+                        unit_.plan_heading_2c0 = r.commanded_heading_2c0;
+                        unit_.plan_heading_mode_2cc = r.heading_mode_2cc;
+                        unit_.plan_heading_2c0_written = true;
                         unit_.torpedo_aim_throttle_last = r.commanded_throttle_2c8;
                         unit_.torpedo_approach.aim_solution_130 = r.aim_solution_130;
                         if (r.aim_complete_2c && !unit_.torpedo_aim_complete_2c) {
@@ -3329,9 +3413,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
 
                         const float* const target_pos =
                             owner_.slots[target_index]->motion.position;
-                        const float desired_heading =
+                        // 009AC40B writes the bearing into plan+2C0h with mode
+                        // 2 at 009AC41B, and a bot state's tick may overwrite
+                        // the same pair - the torpedo aim tick does at 009D1D16.
+                        // 0099DEB8 reads plan+2C0h, never the raw bearing, so
+                        // the state's heading wins whenever it has written one.
+                        const float arm_heading =
                             bsp::plane_bearing_to_target_009ac190(
                                 unit_.motion.position, target_pos);
+                        const float desired_heading =
+                            (unit_.plan_heading_2c0_written &&
+                             unit_.plan_heading_mode_2cc == 2)
+                                ? unit_.plan_heading_2c0
+                                : arm_heading;
                         {
                             const double dx = target_pos[0] - unit_.motion.position[0];
                             const double dy = target_pos[1] - unit_.motion.position[1];
@@ -4822,6 +4916,21 @@ void GameUnitsHost::report() {
                         slot->torpedo_aim_run_time_updates,
                         slot->torpedo_aim_release_arms,
                         static_cast<double>(slot->torpedo_aim_timer));
+                    // 009D0D90 / 009D3150, the goaway break-off.
+                    host.log.notef("  torpedo %-12s goaway 009D0D90/009D3150: "
+                        "enters=%d break_off_24h=%.1f side_2Ch=%+.0f "
+                        "range_peak_in_goaway=%.1f done_last=%d "
+                        "(SafeDist 0042E740+438h=%.1f)",
+                        slot->row.name.c_str(),
+                        slot->torpedo_goaway_enters,
+                        static_cast<double>(slot->torpedo_goaway_distance_24),
+                        static_cast<double>(slot->torpedo_goaway_side_2c),
+                        static_cast<double>(slot->torpedo_goaway_range_peak),
+                        slot->torpedo_goaway_done_last ? 1 : 0,
+                        static_cast<double>(
+                            host.lua.plane_globals_loaded()
+                                ? host.lua.plane_globals().pilot_torpedo_safe_dist
+                                : 0.0f));
                 } else {
                     host.log.notef("  torpedo %-12s approach 009D3420: "
                         "ticks=%d no_target=%d replans=%d aim_ticks=%d | "
@@ -4925,21 +5034,31 @@ void GameUnitsHost::report() {
                                     static_cast<double>(engage), arm_offers,
                                     aim_total);
                             } else {
+                                int goaway_done = 0;
+                                float peak = -1.0f;
+                                float breakoff = 0.0f;
+                                for (const auto& s3 : host.slots) {
+                                    if (!s3->torpedo_task_installed) continue;
+                                    if (s3->torpedo_goaway_done_last) ++goaway_done;
+                                    if (s3->torpedo_goaway_range_peak > peak) {
+                                        peak = s3->torpedo_goaway_range_peak;
+                                    }
+                                    breakoff = s3->torpedo_goaway_distance_24;
+                                }
                                 host.log.notef("summary mission torpedo task: no "
-                                    "release. 009D15F0 now writes the "
-                                    "aim-complete byte state+2Ch at 009D236E "
-                                    "(%d of %zu aircraft), 009D31B0 returns it "
-                                    "at 009D31BF and 009D4030 step 11 leaves "
-                                    "aim for goaway. The next gate is the "
-                                    "goaway-done predicate 009D3150: it returns "
-                                    "approach+90h > goaway+24h at 009D3195, and "
-                                    "the host binding still reports a constant "
-                                    "false, so 009D4132 never promotes goaway to "
-                                    "done or back to aim and 009D49A0 never "
-                                    "reaches prepare+98h for 009D2720/007BBBA0. "
-                                    "closest range %.1f against 8Ch=%.1f, %d "
-                                    "offers, aim ran %d ticks",
+                                    "release. 009D15F0 writes the aim-complete "
+                                    "byte state+2Ch at 009D236E (%d of %zu "
+                                    "aircraft) and 009D4030 step 11 leaves aim "
+                                    "for goaway. 009D3150 is now computed from "
+                                    "the 009D0D90 break-off distance "
+                                    "goaway+24h=%.1f; it went true for %d "
+                                    "aircraft, and the furthest any got inside "
+                                    "goaway was %.1f m. closest approach %.1f "
+                                    "against 8Ch=%.1f, %d offers, aim ran %d "
+                                    "ticks",
                                     aim_done, tasked,
+                                    static_cast<double>(breakoff), goaway_done,
+                                    static_cast<double>(peak),
                                     static_cast<double>(worst_range),
                                     static_cast<double>(engage), arm_offers,
                                     aim_total);

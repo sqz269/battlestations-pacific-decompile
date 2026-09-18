@@ -289,3 +289,20 @@ USN02 gunnery numbers move to `shots=853 hull=119 deaths=3 total_damage=12463.2`
 3. **`007F0280`** - the obstacle probe, 611 instructions, `RET 18h`, six arguments.
 4. **`approach+8h`** - the aircraft description fields `+268h`, `+26Ch`, `+25Ch`, `+A4h`, `+188h`,
    `+1ACh`, all read by this tick.
+
+## Correction from `docs/TORPEDO_GOAWAY_RELEASE.md` (packet `cc8_torpedo_goaway_release`)
+
+Appended, not rewritten. The two follow-ups this document opened are answered there.
+
+* **Follow-up 1, `goaway_state+24h`.** Its only producer is the goaway state's enter,
+  `009D0D90`, which stores it at `009D0E37` as
+  `UniformFloatRange(1.0, 1.15) * max(Pilot/Torpedo/SafeDist at 0042E740()+438h, 007B5BE0(target))`.
+  The registrar's inline construction at `009D2ECC`-`009D2F09` skips the field and the vtable's
+  other entry slot `009D0C00` is a bare `RET`, so nothing else writes it.
+* **Follow-up 2, the `cmd+2C0h` consumer.** `plan+2C0h` with `plan+2CCh = 2` is the plan pair the
+  pilot planner's yaw base term reads at `0099DEB8`; the aim tick writes exactly that pair at
+  `009D1D16`/`009D1D1E`. The host now carries it and the yaw arm prefers it over the raw target
+  bearing, which is the native's own precedence.
+
+The Uncertainty note above, that the host exercises clause 2 while the native would likely
+exercise clause 1, is measured in that document's Validation section.

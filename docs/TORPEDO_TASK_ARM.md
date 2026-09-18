@@ -367,3 +367,17 @@ the checker can validate pass: `5 call rows checked, 0 failed`, two more reporte
    and is corrected on `main`. With `009D3420` wired, USN01's five ordered aircraft leave `moveto`
    for `prepare`, and the gate that remains is `unit+C58h` at `0099AF53`, the queued release-order
    count, zero on every tick.
+
+## Correction from `docs/TORPEDO_GOAWAY_RELEASE.md` (packet `cc8_torpedo_goaway_release`)
+
+Appended, not rewritten. This document records `009D3150` as returning `d < approach+90h` without
+saying what `d` is. `d` is `goaway+24h`, the break-off distance, written once per entry into
+`goaway` by the state's enter `009D0D90` at `009D0E37`:
+
+```
+d = BSP_Random_UniformFloatRange(1.0f, 1.15f) * max(0042E740()+438h, 007B5BE0(target))
+```
+
+`0042E740()+438h` is `Pilot/Torpedo/SafeDist`, default 700, so the break-off distance is 700 to 805
+metres at the stock tuning, raised to the target's own extent when the target is larger. The
+`009D3183` scale on the `ctl+369h` / `[00E17BF2]` arm is the double `0.4` at `00CE65D0`.
