@@ -1,0 +1,397 @@
+{
+  "packet": "cc8_torpedo_task_arm",
+  "baseline_commit": "dd0d274df",
+  "worktree": "agent/cc8-torpedo-task",
+  "documentation": "docs/TORPEDO_TASK_ARM.md",
+  "status": "arm_transition_rule_release_gates_and_arming_entry_read_reconstructed_built_and_run_validated_release_blocked_by_009d3420",
+  "production_cpp_changed": true,
+  "ghidra_mutated": false,
+  "new_native_body_reconstructed": true,
+  "original_abi": {
+    "009d4850": "ECX task; one stacked float dt; RET4; no Ghidra function, body 009D4850-009D4965 inclusive",
+    "009d4030": "ECX task; one stacked float dt the body ignores; RET4; body 009D4030-009D4222",
+    "009d3f60": "ECX task; no stack arguments; RET0; body 009D3F60-009D4023",
+    "009d3e40": "ECX task; one stacked state pointer; RET4; body 009D3E40-009D3E70",
+    "009d3210": "ECX task; no stack arguments; AL result; body 009D3210-009D3265",
+    "009d31d0": "ECX task; one stacked state pointer; AL result; body 009D31D0-009D320F",
+    "009d31b0": "ECX state; no stack arguments; AL result; body 009D31B0-009D31C2",
+    "009d3150": "ECX state; no stack arguments; AL result; body 009D3150-009D31A5",
+    "009d49a0": "ECX task; no stack arguments; AL result; RET0; body 009D49A0-009D49DE",
+    "009d2720": "ECX state; one stacked float dt; RET4; no Ghidra function, body 009D2720-009D2CF1 inclusive",
+    "009d25a0": "ECX state; one stacked char force; RET4; body 009D25A0-009D2719",
+    "009d2570": "ECX state; no stack arguments; body 009D2570-009D259D",
+    "009d24e0": "ECX state; one stacked owner; EAX this; RET4; no Ghidra function, body 009D24E0-009D2510 inclusive",
+    "009d2530": "ECX state; no stack arguments; RET0; no Ghidra function, body 009D2530-009D256E inclusive",
+    "009d3e80": "ECX task; no stack arguments; body 009D3E80-009D3EE7",
+    "009d15f0": "ECX state; one stacked float dt; RET4; no Ghidra function, body 009D15F0-009D2377 inclusive",
+    "009d15d0": "ECX state; no stack arguments; body 009D15D0-009D15EE",
+    "007bbba0": "ECX unit; no stack arguments; established by docs/BOT_TASK_STATES.md",
+    "source": "stack cleanup at each RET plus the push count at every call site listed below"
+  },
+  "calls": [
+    {
+      "address": "009d25b3",
+      "native": "007bbba0",
+      "note": "the forced release arm of 009D25A0; no caller passes force != 0",
+      "host_method": "request_ordnance_release"
+    },
+    {
+      "address": "009d26f8",
+      "native": "007bbba0",
+      "note": "the gated release arm of 009D25A0",
+      "host_method": "request_ordnance_release"
+    },
+    {
+      "address": "009d258a",
+      "native": "007bbba0",
+      "note": "the done/prepare exit slot, when state+98h >= 0.0f",
+      "host_method": "torpedo_exit_drop_009d2570"
+    },
+    {
+      "address": "009d3eb6",
+      "native": "007bbba0",
+      "note": "task vtable slot +58h, dumps every remaining task+424h round",
+      "host_method": "not modelled"
+    },
+    {
+      "address": "009d49c2",
+      "native": "-",
+      "note": "prepare+98h = [00CE3D34]; the only writer that raises the countdown",
+      "host_method": "write_drop_timer"
+    },
+    {
+      "address": "0099af9b",
+      "native": "-",
+      "note": "task->vtable[24h]() over the bot task vector; the caller of 009D49A0",
+      "host_method": "torpedo_arm_drop_009d49a0"
+    },
+    {
+      "address": "0099a30f",
+      "native": "009d4e30",
+      "note": "BSP_Bot_InstallCommandTask builds the kind Eh task; its only caller",
+      "host_method": "not modelled"
+    }
+  ],
+  "named_routines": [
+    {
+      "address": "009d4850",
+      "native": "009d4850",
+      "name": "BSP_BotTaskTorpedo_TickArm",
+      "no_ghidra_function": true,
+      "end_inclusive": "009d4965"
+    },
+    {
+      "address": "009d4030",
+      "native": "009d4030",
+      "name": "BSP_BotTaskTorpedo_TransitionRule"
+    },
+    {
+      "address": "009d3f60",
+      "native": "009d3f60",
+      "name": "BSP_BotTaskTorpedo_ChooseEntryState"
+    },
+    {
+      "address": "009d3e40",
+      "native": "009d3e40",
+      "name": "BSP_BotTaskTorpedo_SetState"
+    },
+    {
+      "address": "009d3210",
+      "native": "009d3210",
+      "name": "BSP_BotTaskTorpedo_IsEngaged"
+    },
+    {
+      "address": "009d31d0",
+      "native": "009d31d0",
+      "name": "BSP_BotTaskTorpedo_IsAttackState"
+    },
+    {
+      "address": "009d31b0",
+      "native": "009d31b0",
+      "name": "BSP_BotStateTorpedoAim_HoldFlag"
+    },
+    {
+      "address": "009d3150",
+      "native": "009d3150",
+      "name": "BSP_BotStateTorpedoGoAway_IsComplete"
+    },
+    {
+      "address": "009d49a0",
+      "native": "009d49a0",
+      "name": "BSP_BotTaskTorpedo_ArmOrdnanceRelease"
+    },
+    {
+      "address": "009d2720",
+      "native": "009d2720",
+      "name": "BSP_BotStateTorpedoDone_Tick",
+      "no_ghidra_function": true,
+      "end_inclusive": "009d2cf1"
+    },
+    {
+      "address": "009d25a0",
+      "native": "009d25a0",
+      "name": "BSP_BotStateTorpedoDone_ReleaseGated"
+    },
+    {
+      "address": "009d24e0",
+      "native": "009d24e0",
+      "name": "BSP_BotStateTorpedoDone_Construct",
+      "no_ghidra_function": true,
+      "end_inclusive": "009d2510"
+    },
+    {
+      "address": "009d2530",
+      "native": "009d2530",
+      "name": "BSP_BotStateTorpedoDone_Enter",
+      "no_ghidra_function": true,
+      "end_inclusive": "009d256e"
+    },
+    {
+      "address": "009d3e80",
+      "native": "009d3e80",
+      "name": "BSP_BotTaskTorpedo_DumpRemainingRounds"
+    },
+    {
+      "address": "009d15f0",
+      "native": "009d15f0",
+      "name": "BSP_BotStateTorpedoAim_Tick",
+      "no_ghidra_function": true,
+      "end_inclusive": "009d2377",
+      "coverage": "partial"
+    },
+    {
+      "address": "009d15d0",
+      "native": "009d15d0",
+      "name": "BSP_BotStateTorpedoAim_Enter"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "009d4850",
+      "end_inclusive": "009d4965",
+      "name": "BSP_BotTaskTorpedo_TickArm"
+    },
+    {
+      "start": "009d2720",
+      "end_inclusive": "009d2cf1",
+      "name": "BSP_BotStateTorpedoDone_Tick"
+    },
+    {
+      "start": "009d15f0",
+      "end_inclusive": "009d2377",
+      "name": "BSP_BotStateTorpedoAim_Tick"
+    },
+    {
+      "start": "009d24e0",
+      "end_inclusive": "009d2510",
+      "name": "BSP_BotStateTorpedoDone_Construct"
+    },
+    {
+      "start": "009d2530",
+      "end_inclusive": "009d256e",
+      "name": "BSP_BotStateTorpedoDone_Enter"
+    },
+    {
+      "start": "009d2520",
+      "end_inclusive": "009d2523",
+      "name": "unnamed two-instruction getter, returns this->+4h"
+    }
+  ],
+  "vtables": {
+    "00d213c8": "the torpedo task vtable; +1Ch 009D4C10 break-off, +24h 009D49A0 arm, +54h 009D4A70, +58h 009D3E80, +64h 009D4850",
+    "00d212c4": "attackrun: +4h 009D0790, +8h 007B3DC0, +Ch 009D07B0",
+    "00d212e0": "a second torpedo state: +4h 009D0D90, +8h 009D0C00, +Ch 009D0F10",
+    "00d212fc": "aim: +4h 009D15D0, +8h 009D1350, +Ch 009D15F0",
+    "00d21320": "done and prepare: +4h 009D2530, +8h 009D2570, +Ch 009D2720, +14h 009BE590, +18h 009A4860"
+  },
+  "constants": {
+    "00cf87c8": "2.5f, the abort time-to-target",
+    "00cf8858": "1.3962635f, 80 degrees, the abort bearing",
+    "00ce380c": "1.5f, the in-cone entry time",
+    "00ce3800": "0.5f / 00d05aac 1.0471976f (60 deg) / 00ce3814 1.2f / 00d05aa8 0.2617994f (15 deg): the tick cone",
+    "00cec724": "0.52359879f, 30 degrees, the bank cap at the in-cone release",
+    "00ce3958": "2.0f and 00ce74f4 0.61086529f (35 deg): the 009D25A0 cone",
+    "00ce69c8": "0.3f, the committed throttle written to cmd+2C8h",
+    "00d7a260": "-1.0f, the disarmed countdown",
+    "00d7a218": "0.0f, the exit-slot drop threshold",
+    "00cf3f20": "the double 15.0, the arm's speed switch"
+  },
+  "uncertainty": [
+    "009D3420 (009D3420-009D3E3F, 2592 bytes) is unread. It produces every input of the state machine: approach+131h/+132h = task+529h/+52Ah, approach+8Ch/+90h = task+484h/+488h, +74h/+78h, +7Ch/+80h, +134h.",
+    "009D1500 and 009D1360 are unread; the time-to-target reading comes from the inline recomputation at 009D2A35-009D2A52, not from 009D1500 itself.",
+    "009D15F0 is coverage: partial - scanned for its writes, calls and end address, not transcribed.",
+    "009D2720's disarmed branch (009D29E0-009D2CF1) is coverage: partial; its interpolation chain is transcribed only as far as its constants.",
+    "The value at 00CE3D34 that 009D49A0 writes into prepare+98h was not decoded.",
+    "007B9140 and the unit+5Ch byte in the 0099ACD0 gate chain are unread.",
+    "009FC7C0, 009FD0E0 and 009A17D0 are contracts with ABI only; 009FD0E0 calls 007BBBA0 on a path independent of the task states.",
+    "The device at unit+DECh and the projectile spawn behind dev->+11h are this packet's contract."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1, MSVC Win32, /W4 /WX, succeeds",
+    "tests": "ctest: reconstructed_math and tool_tests both pass; no test added",
+    "usn02_baseline_after": "shots=734 first_shot=1.40s hull=180 part=0 deaths=2 total_damage=18525.6 projectiles=734 - identical to the milestone 2t baseline",
+    "usn02_torpedo_census": "no ordered aircraft carries torpedo ordnance, so 0099A170 builds no kind Eh task",
+    "usn01": "five aircraft ordered by PilotSetTarget; 007EEC50 -> 00e08f18 (torpedo) with torp=1 for all five",
+    "usn01_torpedo_census": "Mav1..Mav5 each arm_ticks=1299 transitions=0 states[moveto=1299] releases=0; aircraft=5 releases=0 blocked_engaged_009d3210=6495 blocked_arm_009d49a0=0",
+    "blocking_gate": "009D3210 at 009D325B: task+484h * [00D05AC8] <= task+488h with both at 0.0f, and task+529h = 0. All three are outputs of the unread 009D3420.",
+    "harness_note": "main at dd0d274df does not run: e5a4842ec made src/native_renderer_end_frame.cpp resolve XLive ordinal 5002 and tools/xlive_stub/xlive_stub.def does not export it. That file is leased to agent/cc8-bank-inputs, so the runs above used a throwaway copy under local/xstub/ with XLiveRender @5002 added."
+  },
+  "files": [
+    "docs/TORPEDO_TASK_ARM.md",
+    "reports/torpedo_task_arm.json",
+    "include/bsp/torpedo_task_arm.hpp",
+    "src/torpedo_task_arm.cpp",
+    "src/game_hosts_units.cpp",
+    "cmake/startup.cmake"
+  ],
+  "calls_in_undefined_regions": [
+    {
+      "site": "009d4865",
+      "callee": "-",
+      "enclosing_no_ghidra_function": "009d4850",
+      "note": "task+49Ch = 0FFh, the per-tick plan scratch",
+      "host_method": "set_plan_step_scratch"
+    },
+    {
+      "site": "009d486f",
+      "callee": "009d3420",
+      "enclosing_no_ghidra_function": "009d4850",
+      "note": "the torpedo approach update, contract: unread body",
+      "host_method": "update_torpedo_approach_009d3420"
+    },
+    {
+      "site": "009d48cf",
+      "callee": "009bde80",
+      "enclosing_no_ghidra_function": "009d4850",
+      "note": "refresh the moveto ranges with approach+78h + approach+74h twice and the selected speed",
+      "host_method": "refresh_move_to_ranges"
+    },
+    {
+      "site": "009d48de",
+      "callee": "009d4030",
+      "enclosing_no_ghidra_function": "009d4850",
+      "note": "the transition rule, before the state tick",
+      "host_method": "read_transition_inputs + set_state"
+    },
+    {
+      "site": "009d48f6",
+      "callee": "-",
+      "enclosing_no_ghidra_function": "009d4850",
+      "note": "state->vtable[0Ch](dt) on task+310h",
+      "host_method": "tick_state"
+    },
+    {
+      "site": "009d4926",
+      "callee": "-",
+      "enclosing_no_ghidra_function": "009d4850",
+      "note": "(unit+72Ch)->vtable[38h](); ECX is unit+72Ch itself, an embedded sub-object",
+      "host_method": "manual_release_requested"
+    },
+    {
+      "site": "009d4956",
+      "callee": "007bbba0",
+      "enclosing_no_ghidra_function": "009d4850",
+      "note": "the manual-release passthrough, outside aim/attackrun/prepare",
+      "host_method": "request_ordnance_release"
+    },
+    {
+      "site": "009d2731",
+      "callee": "009c1fd0",
+      "enclosing_no_ghidra_function": "009d2720",
+      "note": "the follow base tick, first thing in the done/prepare tick",
+      "host_method": "follow_base_tick_009c1fd0"
+    },
+    {
+      "site": "009d27a6",
+      "callee": "009d25a0",
+      "enclosing_no_ghidra_function": "009d2720",
+      "note": "the gated release helper, force = 0, on countdown expiry",
+      "host_method": "torpedo_release_gate_009d25a0"
+    },
+    {
+      "site": "009d27d1",
+      "callee": "009d1360",
+      "enclosing_no_ghidra_function": "009d2720",
+      "note": "the committed hook, contract: unread body",
+      "host_method": "approach_committed_hook_009d1360"
+    },
+    {
+      "site": "009d27e6",
+      "callee": "00414db0",
+      "enclosing_no_ghidra_function": "009d2720",
+      "note": "BSP_EntityPose_RefreshWorld before reading the unit position",
+      "host_method": "not modelled"
+    },
+    {
+      "site": "009d281f",
+      "callee": "00bf701a",
+      "enclosing_no_ghidra_function": "009d2720",
+      "note": "LIBCRT_atan2 over the target offset",
+      "host_method": "bearing_error_to_target"
+    },
+    {
+      "site": "009d2865",
+      "callee": "00438b10",
+      "enclosing_no_ghidra_function": "009d2720",
+      "note": "BSP_Math_SubtractWrappedAngle(bearing, heading)",
+      "host_method": "bearing_error_to_target"
+    },
+    {
+      "site": "009d289a",
+      "callee": "009d1500",
+      "enclosing_no_ghidra_function": "009d2720",
+      "note": "the time-to-target metric both cones are keyed on",
+      "host_method": "time_to_target_009d1500"
+    },
+    {
+      "site": "009d2913",
+      "callee": "00419010",
+      "enclosing_no_ghidra_function": "009d2720",
+      "note": "BSP_Math_InterpolateClamped(0.5, 60deg, 1.2, 15deg, t), the in-cone gate",
+      "host_method": "torpedo_done_prepare_tick_009d2720"
+    },
+    {
+      "site": "009d2938",
+      "callee": "007bbba0",
+      "enclosing_no_ghidra_function": "009d2720",
+      "note": "the in-cone release; clears the countdown to -1.0f",
+      "host_method": "request_ordnance_release"
+    },
+    {
+      "site": "009d29b7",
+      "callee": "009f9e40",
+      "enclosing_no_ghidra_function": "009d2720",
+      "note": "steer to the target point while the countdown is at or above 1.0f",
+      "host_method": "steer_toward_target_009f9e40"
+    },
+    {
+      "site": "009d29cb",
+      "callee": "007bbba0",
+      "enclosing_no_ghidra_function": "009d2720",
+      "note": "the abort release when t > 2.5 s or the bearing error exceeds 80 degrees",
+      "host_method": "request_ordnance_release"
+    },
+    {
+      "site": "009d2a35",
+      "callee": "00414c60",
+      "enclosing_no_ghidra_function": "009d2720",
+      "note": "BSP_Vector2f_LengthWithCutoff, the planar distance the time metric divides",
+      "host_method": "time_to_target_009d1500"
+    },
+    {
+      "site": "009d2acf",
+      "callee": "0042e740",
+      "enclosing_no_ghidra_function": "009d2720",
+      "note": "BSP_GameTuning_GetSingleton on the disarmed branch",
+      "host_method": "not modelled"
+    },
+    {
+      "site": "009d160a",
+      "callee": "009d1500",
+      "enclosing_no_ghidra_function": "009d15f0",
+      "note": "the aim tick reads the same time metric",
+      "host_method": "time_to_target_009d1500"
+    }
+  ],
+  "calls_in_undefined_regions_note": "tools/verify_report_calls.py rule 2 requires a call site to lie inside a Ghidra function. These sites lie inside 009D4850, 009D2720 and 009D15F0, which Ghidra does not define and which this packet may not create (Ghidra is read-only for this worker). They are keyed site/callee so the checker skips them rather than reporting a failure it cannot resolve; each was read from the raw listing at the address given, with the enclosing body range established by its RET and INT3 padding."
+}
