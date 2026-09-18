@@ -999,3 +999,45 @@ merge that followed brought `main` up several commits. **This packet does not na
 lesson from the earlier bisect is that a failure in one tree is not evidence about a commit until a
 fresh tree at the suspect commit reproduces it. The measured result above stands on the run that
 completed; the hand-over remains unverified.
+
+## `009C62B0`, the flyabove tick: defined, bounded, and its flags censused
+
+Ghidra had no function here. `tools/ghidra_define_function.py 009c62b0 009c7086` defined one over
+**`009C62B0`-`009C7085` inclusive, 3542 bytes**, with `INT3` padding from `009C7086`. The end is
+two exits sharing one epilogue: `RET 4` at `009C706C` and at `009C7083`, both after
+`ADD ESP,88h`. It is the largest routine in the class, half again the aimdive tick.
+
+`ESI` is the state and `EDI` is `&state->approach`.
+
+### The four flags, with their writers
+
+| flag | writer | rule |
+| --- | --- | --- |
+| `+18h` | `009C659F` | `0` |
+| `+18h` | `009C680E` | `AL`, where `009C67EA`-`009C67F8` set `1` when `approach->+D4h` exceeds the frame value in `ST1` and `009C6808` clears it |
+| `+19h` | `009C66E7` | `0` |
+| `+19h` | `009C67B0` | `1`, reached by `009C67A3` `FCOMIP`/`JA` or by `009C67A9` `COMISS`/`JC` falling through |
+| `+19h` | `009C6826` | `[ESP+43h]` |
+| `+19h` | `009C6A30` | **copied from `+18h`**, gated on `[00CF180C] > cos(...) * [ESP+28h]` at `009C6A27` |
+| `+1Ah` | `009C66E3` | `1` |
+| `+1Ah` | `009C66F2`, `009C6822` | `0` |
+| `+1Bh` | `009C6813` | `DL`, only when `+1Ah` is set. **A fourth flag** the transition rule does not read |
+
+`009C6690` writes `approach->+CCh = 3`, the weapon selector, as already recorded.
+
+So the shape is confirmed: `+18h` is the can-dive decision and it is a **range** test on
+`approach->+D4h`; `+19h` is the roll-in permission and its main writer copies `+18h` once the
+over-target geometry closes; `+1Ah` is the separate break-off request.
+
+**`coverage: partial`.** The frame slots behind the two compares, `ST1` at `009C67F2` and
+`[ESP+30h]` at `009C67A9`, were not traced to their producers, so the host substitution for these
+three flags **stands** and is not yet replaced. Replacing it needs those two traces, which is a
+packet rather than a tail: this routine is 3542 bytes and a CFG fixpoint over it is the same kind of
+work the aim tick took.
+
+### Why the other two substitutions are also not closed here
+
+`approach+A8h` comes from `009C3ED8`'s `Random((approach+14h)->+38h, (approach+14h)->+3Ch)`, and
+`006E3500` is the per-device round count. Both are small reads on their own, but the record at
+`approach+14h` has no producer yet and the device list behind `006E3500` is the gunnery host's, so
+each is a trace rather than a transcription. They are listed in "Follow-up packets" unchanged.
