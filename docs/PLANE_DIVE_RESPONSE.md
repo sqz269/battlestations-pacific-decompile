@@ -157,3 +157,70 @@ in `local/usn01_alt_after.log` and `local/usn01_wire_after.log`.
 2. **`007D20C6`'s `Accel` scale**, which is a real unmodelled term even though it cannot explain
    this gap.
 3. **The water arm's three force formulas**, if an aircraft on the water ever needs to behave.
+
+
+## Resolved by the instrumented run: the surplus is the authored fall cheat (packet `cc8_plane_dive_instrumented`)
+
+**Section 3's contradiction is mine, not the host's.** The run says the host is faithful and both
+of my models were missing a term the host had bound all along.
+
+### The measurement
+
+One aircraft, `Mav3`, from the 60-degree command to the water, once a second:
+
+| alt | speed | pitch | path | aoa | along | thrust | drag |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 782.4 | 72.24 | -0.3037 | -0.2721 | 0.034 | 4.976 | **8.212** | -7.143 |
+| 755.6 | 79.17 | -0.4800 | -0.4456 | 0.036 | 8.673 | **11.017** | -8.577 |
+| 712.3 | 89.12 | -0.6614 | -0.6240 | 0.038 | 10.873 | **13.377** | -10.869 |
+| 649.7 | 100.46 | -0.8444 | -0.8045 | 0.041 | 11.506 | **14.968** | -13.655 |
+| 567.0 | 112.02 | -0.9845 | -0.9542 | 0.035 | 10.770 | **15.539** | -16.373 |
+| 468.9 | 121.27 | -1.0179 | -1.0093 | 0.028 | 8.816 | **15.587** | -18.671 |
+| 361.6 | 129.26 | -1.0678 | -1.0480 | 0.030 | 6.608 | **15.600** | -21.263 |
+| 245.7 | 134.96 | -1.0754 | -1.0694 | 0.018 | 5.029 | **15.600** | -23.268 |
+
+### The three gravity candidates are exonerated
+
+`grav=(0.000 -14.715 0.000)` on every line, which is exactly `AccelCheatMul * 9.81` world down with
+`cheat=1.50`, so `007DB990`'s scale is right. The folded body total rotates back through the
+transpose to a world vector consistent with it, so `007D8470` and the transpose are right too. None
+of the three carries a surplus.
+
+### The surplus is the thrust, and it is authored
+
+**`thrust` is 15.600, not 6.0.** `007D9050`'s fall cheat multiplies `Accel` by
+`1 + (AccelCheatFallMul - 1) * sin(Interp(FallPitchRange1, 0, FallPitchRange2, pi/2, -pitch))`, and
+this installation authors `AccelCheatFallMul = 2.6` with `AccelCheatFallPitchRange = { DEG(10),
+DEG(60) }`. Past `DEG(60)` of nose-down the sine saturates, so the multiplier is the full `2.6` and
+`6 * 2.6 = 15.6` - the probe's number to three decimals. `planeglobals.lua`'s own comment says so:
+*"lefele repulve, a zuhanas szogenek fuggvenyeben, max ennyivel nagyobb gyorsulassal megy lefele"*,
+flying downward it accelerates by up to this much more, as a function of the dive angle.
+
+**The host bound this correctly in `cc8_plane_pose_throttle_altitude`.** It was my arithmetic in
+`local/dive_sim.py` and `local/dive_sim2.py` that used the raw `Accel`, and section 3 published the
+gap as though it were the host's.
+
+Re-running the model with the fall cheat:
+
+| quantity | value |
+| --- | --- |
+| thrust at -60 degrees | **15.600**, matching the probe exactly |
+| terminal in a 60-degree dive | 150.9 m/s |
+| modelled arrival, 60 degrees | **144.7 m/s** |
+| measured arrival | **141.5 to 141.9 m/s** |
+
+The residual three metres per second is the pitch ramp: the probe's own trace shows the aircraft
+shallower than 60 degrees for the first three seconds, which the constant-angle model does not
+carry.
+
+### So there is no divergence, and nothing to fix
+
+Every stage of section 2 matched, gravity matches, the fold matches, and the thrust matches once
+the authored cheat is included. **The 141.7 m/s arrival is the image's own behaviour on this
+placement**, and `docs/ATTACK_RUN_DESCENT.md`'s conclusion stands unqualified: the aircraft is
+commanded into a 60-degree dive from 800 m and the physics carries it to the water at about
+142 m/s.
+
+One incidental confirmation: the angle of attack stays between 0.018 and 0.041 radians for the whole
+dive, which is `docs/TORPEDO_RUN_IN_VELOCITY.md`'s body damping doing its job and is why
+`local/dive_sim2.py`'s vector treatment made no difference.
