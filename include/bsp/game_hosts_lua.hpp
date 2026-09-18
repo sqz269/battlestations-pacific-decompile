@@ -234,6 +234,17 @@ public:
     int read_vehicle_class_integer(int index, const char* key, const char* nested_key,
         int fallback);
 
+    // The float twin of the reader above, for the `VehicleClass[index]` fields
+    // 00960230 BSP_VehicleClass_ReadLuaFields stores as floats rather than
+    // integers. The first caller is `ReconModifier`: 0096239A pushes the key at
+    // 00D1AAF4, 009623A9 fetches the field, 009623AE FLD1 supplies the 1.0f
+    // default, and 009623CF FMUL ST0,ST0 squares it before 009623D9 stores it
+    // at class+B8h. Squaring is the CALLER's job here, because the field table
+    // in src/vehicle_class_fields.cpp records the Lua value, not the square.
+    // src/vehicle_class_fields.cpp lists the other float fields at 009623A9's
+    // sibling offsets; this reader serves all of them.
+    float read_vehicle_class_number(int index, const char* key, float fallback);
+
     // `Bullets[index][key]` from the live Lua state - the bullet class table that
     // Scripts/datatables/autoload/bulletclasses.lua publishes. Used for the
     // fields the flattened per-platform BSPGun table does not carry, notably

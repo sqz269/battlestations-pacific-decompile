@@ -6,7 +6,9 @@
 
 #include "bsp/game_hosts_gunnery.hpp"
 
+#include <array>
 #include <map>
+#include <memory>
 
 #include <algorithm>
 #include <cmath>
@@ -29,8 +31,13 @@
 #include "bsp/gun_bot_ticks.hpp"
 #include "bsp/hit_narrowphase.hpp"
 #include "bsp/kill_credit.hpp"
+#include "bsp/attack_target_classify.hpp"
 #include "bsp/projectile_impact.hpp"
+#include "bsp/recon_sensor_pass.hpp"
+#include "bsp/sensor_table_data.hpp"
 #include "bsp/ship_hit_record.hpp"
+#include "bsp/submarine_model.hpp"
+#include "bsp/unit_kind_query.hpp"
 #include "bsp/unit_damage.hpp"
 #include "bsp/unit_hit_path.hpp"
 #include "bsp/unit_weapons.hpp"
@@ -189,6 +196,52 @@ struct GameGunneryHost::Impl {
     void apply_hit(std::size_t shooter, std::size_t gun_row, std::size_t victim,
         const float point[3], const float direction[3]);
     void kill_unit(std::size_t victim);
+
+    // --- rule (c), the sensor pass ------------------------------------------
+    // docs/RECON_SENSOR_PASS_BINDING.md. 008073C0 runs once per tick over every
+    // side, not once per firing unit, so the state and its per-class sensor
+    // records live on the host and the step runs in fixed_step.
+
+    // One 008082A0 record per distinct `ReconClass` id seen, plus the 56
+    // addressable rows 008048A0 indexes with sensor_list_index_008085aa. The
+    // record is held by pointer so that adding a class never moves the entry
+    // arrays a live GunneryReconSensorRow points at.
+    struct ReconClassRecord {
+        bsp::SensorClassTable table;
+        std::array<std::vector<bsp::ReconSensorEntry>, bsp::kSensorListCount> entries;
+        std::array<bsp::GunneryReconSensorRow, bsp::kSensorListCount> rows;
+    };
+    std::map<int, std::unique_ptr<ReconClassRecord>> recon_classes;
+    // Per unit, resolved once from the authored row: the class's `ReconClass`
+    // record and the SQUARE of its `ReconModifier`, which is what class+B8h
+    // holds (009623CF FMUL ST0,ST0 before the 009623D9 store).
+    std::vector<const ReconClassRecord*> unit_recon_record;
+    std::vector<float> unit_recon_modifier_sq;
+    bsp::ReconSensorPassState recon_pass;
+    // [00F874B8], the refresh countdown, and slot+2Ch, the last-pass stamp the
+    // pass subtracts from the clock to get its own dt. Starting the countdown
+    // at zero makes the first tick run a pass, as a freshly zeroed native
+    // timer does.
+    float recon_refresh_timer{0.0f};
+    float recon_last_pass_seconds{0.0f};
+    unsigned long long recon_classes_missing{0};   // `ReconClass` absent from the row
+    unsigned long long recon_modifier_absent{0};   // `ReconModifier` absent from the row
+
+    // The published level per observing side, summed over every tick and every
+    // (side, target) pair the pass covered. It sums to the state's own flat
+    // detected_* counters; the split is what attributes a contact drop to a
+    // side rather than to the run as a whole.
+    struct ReconSideCensus {
+        int side{0};
+        unsigned long long none_level{0};
+        unsigned long long blip{0};
+        unsigned long long identified{0};
+    };
+    std::vector<ReconSideCensus> recon_side_census;
+
+    const ReconClassRecord* recon_record_for_class(int recon_class_id);
+    void resolve_recon_inputs();
+    void step_recon_sensor_pass_008073c0(float dt);
 
     void unit_pose(std::size_t index, float right[3], float up[3], float forward[3],
         float origin[3]) const {
@@ -858,6 +911,17 @@ public:
                 ++owner_.summary.contact_reject_kind;
                 continue;
             }
+            // docs/RECON_SLOT_LISTS.md rule (c): the level the sensor pass
+            // published for (own side, this target). `none` means the entry
+            // drained out of every published list, so the sweep must not see
+            // it. A side the pass never covered keeps
+            // kReconDetectionUnknownLevel, the permissive answer the tree used
+            // before rule (c) ran.
+            const bsp::ReconDetectionLevel level = owner_.recon_pass.level(own_side, i);
+            if (level == bsp::ReconDetectionLevel::none) {
+                ++owner_.summary.contact_reject_recon_level;
+                continue;
+            }
             if (plane_base) ++owner_.summary.contact_admit_plane;
             else ++owner_.summary.contact_admit_ship;
             contacts_.push_back(i);
@@ -1151,6 +1215,275 @@ void GameGunneryHost::Impl::refresh_command_targets() {
         // drifting apart.
         units.store_unit_command_target(i, command_target_by_unit[i]);
     }
+}
+
+// ---------------------------------------------------------------------------
+// docs/RECON_SLOT_LISTS.md rule (c), the sensor pass. 008073C0 over 00806840.
+// ---------------------------------------------------------------------------
+
+// scripts/datatables/autoload/reconclasses.lua takes `RealisticTable` only when
+// the global `GameMode` is 1 and falls through to `ArcadeTable` otherwise. The
+// installed scripts tree carries no gamemode.lua for that autoload's DoFile to
+// define `GameMode` from, so the else arm is the one this process can reach.
+inline constexpr bsp::ReconTableVariant kReconVariant = bsp::ReconTableVariant::arcade;
+
+const GameGunneryHost::Impl::ReconClassRecord*
+GameGunneryHost::Impl::recon_record_for_class(int recon_class_id) {
+    auto found = recon_classes.find(recon_class_id);
+    if (found != recon_classes.end()) return found->second.get();
+    auto made = std::make_unique<ReconClassRecord>();
+    // 008082A0 on the authored rows. An id outside 1..12 gives the empty record
+    // the loader leaves behind, which 008048A0 then reads as "no entries".
+    made->table = bsp::build_sensor_class_table_008082a0(kReconVariant, recon_class_id);
+    for (std::size_t i = 0; i < bsp::kSensorListCount; ++i) {
+        const std::vector<bsp::SensorTableEntry>& src = made->table.lists[i];
+        std::vector<bsp::ReconSensorEntry>& dst = made->entries[i];
+        dst.reserve(src.size());
+        for (const bsp::SensorTableEntry& row : src) {
+            // Field for field onto the 1Ch entry 008048A0 walks. The loader has
+            // already squared Dist (008085F1), halved Gain (00808626) and
+            // turned MaxLevel into the cap (0080866B), so nothing is re-derived
+            // here: this is the record layout change only.
+            bsp::ReconSensorEntry entry;
+            entry.authored_distance = row.dist;             // +0h
+            entry.max_normalized_distance_sq = row.dist_sq; // +4h
+            entry.gain_per_second = row.gain_per_second;    // +8h
+            entry.cap = row.max_value;                      // +0Ch
+            entry.mask_bit = row.raw_type;                  // +10h
+            entry.max_bearing_error = row.half_angle;       // +14h
+            entry.bearing_limited = row.bearing_limited;    // +18h
+            dst.push_back(entry);
+        }
+        made->rows[i].entries = dst.empty() ? nullptr : dst.data();
+        made->rows[i].count = dst.size();
+    }
+    const ReconClassRecord* raw = made.get();
+    recon_classes.emplace(recon_class_id, std::move(made));
+    return raw;
+}
+
+void GameGunneryHost::Impl::resolve_recon_inputs() {
+    const std::size_t count = units.count();
+    if (unit_recon_record.size() == count) return;
+    unit_recon_record.assign(count, nullptr);
+    unit_recon_modifier_sq.assign(count, bsp::kGunneryReconModifierSqDefault);
+    for (std::size_t i = 0; i < count; ++i) {
+        // The `VehicleClass` table index, which is GameUnitRow::type_id and NOT
+        // GameUnitsHost::unit_class_id: the latter is the entity class id the
+        // IsKindOf chain walks (06h ship base, 0Fh plane base), and indexing
+        // the authored table with it resolves every unit to one wrong row.
+        // build_guns takes type_id for the same reason.
+        const GameUnitRow* row = units.unit_row(i);
+        const int class_id = row != nullptr ? row->type_id : -1;
+        if (class_id < 0) continue;
+        // `ReconClass` is the integer field 00962... reads next to
+        // `ReconModifier`; the row selects which ReconClass[] record the unit's
+        // class+B4h table pointer ends up at. 637 of the installed rows carry
+        // it, across the twelve ids the shipped table defines.
+        const int recon_class = lua.read_vehicle_class_integer(class_id, "ReconClass",
+            nullptr, -1);
+        if (recon_class < 0) {
+            ++recon_classes_missing;
+        } else {
+            unit_recon_record[i] = recon_record_for_class(recon_class);
+        }
+        // 009623A9 with the 009623AE FLD1 default, squared at 009623CF.
+        const float sentinel = -1.0f;
+        const float modifier = lua.read_vehicle_class_number(class_id, "ReconModifier",
+            sentinel);
+        if (modifier == sentinel) {
+            ++recon_modifier_absent;
+            unit_recon_modifier_sq[i] = bsp::kGunneryReconModifierSqDefault;
+        } else {
+            unit_recon_modifier_sq[i] = modifier * modifier;
+        }
+    }
+}
+
+namespace {
+
+// Everything 008048A0 and 00806840 read, answered out of the gunnery host's own
+// unit state. One method per native read; nothing is defaulted silently.
+class GunneryReconSensorPassHost final : public bsp::ReconSensorPassHost {
+public:
+    explicit GunneryReconSensorPassHost(GameGunneryHost::Impl& owner) : owner_(owner) {}
+
+    std::size_t unit_count() override { return owner_.units.count(); }
+
+    bool unit_present(std::size_t index) override {
+        // Rule (b), the same 0043F080 gate bytes the contact sweep uses, plus
+        // the world-registry membership the scan walks.
+        if (!owner_.units.unit_alive_and_visible(index)) return false;
+        if (!owner_.units.unit_active(index)) return false;
+        if (index < owner_.unit_state.size() && owner_.unit_state[index].dead) return false;
+        return true;
+    }
+
+    int unit_side(std::size_t index) override { return owner_.units.unit_side_0054(index); }
+
+    bool unit_is_observer_class(std::size_t index) override {
+        return owner_.units.unit_is_kind_of(index, bsp::kUnitKindQueryUnit);
+    }
+    bool unit_is_unit_base(std::size_t index) override {
+        return owner_.units.unit_is_kind_of(index, bsp::kUnitKindQueryUnit);
+    }
+    bool unit_is_submarine(std::size_t index) override {
+        return owner_.units.unit_is_kind_of(index, bsp::kUnitKindQuerySubmarine);
+    }
+    bool unit_is_surface_target(std::size_t index) override {
+        // 00922DC0's thunk into 00922C80, filled from the same facts the ship
+        // AI's target_is_surface_00922dc0 fills. The set branch 008DDF90 is not
+        // built in this process, so its tail is taken, as there.
+        bsp::EntityTargetFacts tf;
+        tf.present = true;
+        tf.not_engageable = owner_.units.unit_flag_005d(index);
+        tf.is_plane = owner_.units.unit_is_kind_of(index, 0x0f);
+        tf.is_plane_squadron = owner_.units.unit_is_kind_of(index, 0x18);
+        tf.is_ship_family = owner_.units.unit_is_kind_of(index, 0x06);
+        tf.is_submarine = owner_.units.unit_is_kind_of(index, 0x08);
+        tf.is_airfield = owner_.units.unit_is_kind_of(index, 0x45);
+        tf.is_shipyard = owner_.units.unit_is_kind_of(index, 0x46);
+        tf.is_command_building = owner_.units.unit_is_kind_of(index, 0x1c);
+        tf.is_dummy_target = owner_.units.unit_is_kind_of(index, 0x35);
+        tf.is_land_fort = owner_.units.unit_is_kind_of(index, 0x1b);
+        float px = 0.0f, py = 0.0f, pz = 0.0f;
+        owner_.units.unit_position_00fc(index, px, py, pz);
+        tf.world_y = py;
+        const bsp::SurfaceTargetAnswer answer = bsp::entity_is_surface_target_00922c80(tf);
+        if (answer == bsp::SurfaceTargetAnswer::kUnreadSetBranch) {
+            return bsp::entity_surface_target_tail_00922c80(tf, true);
+        }
+        return answer == bsp::SurfaceTargetAnswer::kYes;
+    }
+
+    bsp::SensorCategory unit_sensor_category(std::size_t index) override {
+        // unit->[+1E4h]->vtable[1](). The installed getters are constants, so
+        // the answer is the unit's kind: 0074E190 air for the plane base,
+        // 006DFD20 surface for the ship base and its three land siblings
+        // (0074DD50, 006D1D30, 006F57B0), 004F1740 unclassified otherwise.
+        if (owner_.units.unit_is_kind_of(index, bsp::kUnitKindQuerySubmarine)) {
+            // 00852B90's three states depend on the periscope and on depth
+            // bands this process does not read; the periscope half is
+            // reconstructed and answers periscope_in for a stowed periscope,
+            // which is the state a submarine that nothing has raised is in.
+            owner_.record("Recon::submarine_sensor_state_00852b90", 0x00852b90u);
+            return bsp::submarine_periscope_sensor_state(false);
+        }
+        if (owner_.units.unit_is_kind_of(index, bsp::kUnitGunneryKindPlaneBase)) {
+            return bsp::kSensorCategoryPlane_0074e190;
+        }
+        if (owner_.units.unit_is_kind_of(index, bsp::kUnitGunneryKindShipBase) ||
+            owner_.units.unit_is_kind_of(index, 0x45) ||
+            owner_.units.unit_is_kind_of(index, 0x1b)) {
+            return bsp::kSensorCategoryShip_006dfd20;
+        }
+        return bsp::kSensorCategoryDefault_004f1740;
+    }
+
+    void unit_world_xz(std::size_t index, float& x, float& z) override {
+        float y = 0.0f;
+        owner_.units.unit_position_00fc(index, x, y, z);
+    }
+
+    float unit_heading(std::size_t index) override {
+        return owner_.units.unit_heading_radians(index);
+    }
+
+    float unit_recon_modifier_sq(std::size_t index) override {
+        if (index >= owner_.unit_recon_modifier_sq.size()) {
+            return bsp::kGunneryReconModifierSqDefault;
+        }
+        return owner_.unit_recon_modifier_sq[index];
+    }
+
+    const bsp::GunneryReconSensorRow* unit_sensor_rows(std::size_t index,
+        std::size_t& count) override {
+        count = 0;
+        if (index >= owner_.unit_recon_record.size()) return nullptr;
+        const GameGunneryHost::Impl::ReconClassRecord* record =
+            owner_.unit_recon_record[index];
+        if (record == nullptr) return nullptr;  // 008048C1's early false
+        count = bsp::kSensorListCount;
+        return record->rows.data();
+    }
+
+    float unit_environment_factor(std::size_t) override {
+        // 008E6430(0Ch, observer) is gated on [00E0C978] and [[00F88C30]+118h].
+        // This process builds no gameplay-modifier list, which is the same
+        // empty-list 1.0f the hit path already takes at 008E6430.
+        return bsp::kReconSensorDefaultFactor;
+    }
+
+    bool unit_detection_forced(std::size_t) override { return false; }
+    bsp::ReconDetectionLevel unit_forced_level(std::size_t) override {
+        return bsp::ReconDetectionLevel::none;
+    }
+
+    float simplified_recon_multiplier() override {
+        // [game+21C4h]+74h, 1.0f from 00444D20 unless a mission script called
+        // 008B24A0. Neither USN01 nor USN02 does.
+        return 1.0f;
+    }
+    float simplified_sonar_multiplier() override { return 1.0f; }
+
+    int network_role() override {
+        // [00E188A8]+1FE4h. This process runs the single originating session,
+        // so the pass is never the kGunneryReconNonOriginatingRole skip.
+        return 0;
+    }
+
+private:
+    GameGunneryHost::Impl& owner_;
+};
+
+}  // namespace
+
+void GameGunneryHost::Impl::step_recon_sensor_pass_008073c0(float frame_dt) {
+    // 008079B0 BSP_Recon_ServicePeriodicRefresh's countdown at [00F874B8]:
+    // subtract the frame delta, return while it is still positive, otherwise
+    // reload by adding 3.0 (00D7A2B0), clamped at zero, and run the pass.
+    // Stepping 008073C0 every frame instead would publish `none` for every
+    // target, because 00805BE0 zeroes each record's value before the pass and
+    // one 20 Hz frame of the shipped gain cannot reach the blip threshold.
+    recon_refresh_timer -= frame_dt;
+    if (recon_refresh_timer > 0.0f) return;
+    recon_refresh_timer += bsp::kReconSensorPassRefreshPeriod;
+    if (recon_refresh_timer < 0.0f) recon_refresh_timer = 0.0f;
+    // 008073C1/008073CC/008073D6: dt is the measured gap since this slot's
+    // previous rebuild, [00F876A4] minus slot+2Ch, not the frame delta.
+    const float dt = clock_seconds - recon_last_pass_seconds;
+    recon_last_pass_seconds = clock_seconds;
+    resolve_recon_inputs();
+    GunneryReconSensorPassHost host(*this);
+    bsp::recon_sensor_pass_step_008073c0(recon_pass, dt, host);
+    // The published answer per observing side, tallied over the pairs the pass
+    // covered this tick.
+    const std::size_t count = units.count();
+    for (std::size_t observer = 0; observer < count; ++observer) {
+        const int side = units.unit_side_0054(observer);
+        if (!recon_pass.side_covered(side)) continue;
+        bool seen = false;
+        for (const ReconSideCensus& row : recon_side_census) {
+            if (row.side == side) { seen = true; break; }
+        }
+        if (seen) continue;
+        ReconSideCensus row;
+        row.side = side;
+        recon_side_census.push_back(row);
+    }
+    for (ReconSideCensus& row : recon_side_census) {
+        for (std::size_t target = 0; target < count; ++target) {
+            if (units.unit_side_0054(target) == row.side) continue;
+            if (!host.unit_present(target)) continue;
+            switch (recon_pass.level(row.side, target)) {
+                case bsp::ReconDetectionLevel::none: ++row.none_level; break;
+                case bsp::ReconDetectionLevel::blip: ++row.blip; break;
+                case bsp::ReconDetectionLevel::identified: ++row.identified; break;
+            }
+        }
+    }
+    done("Recon::sensor_pass", 0x008073c0u);
+    done("Recon::evaluate_sensors", 0x008048a0u);
 }
 
 void GameGunneryHost::Impl::run_gunnery_pass(std::size_t index, float dt) {
@@ -2222,6 +2555,10 @@ void GameGunneryHost::fixed_step(float step_seconds) {
     if (host.guns.empty()) return;
     host.clock_seconds += step_seconds;
     ++host.step_index;
+    // 008073C0 runs once over every side before the per-unit pass, because it
+    // is O(sides * observers * targets); running it inside the contact sweep
+    // would repeat the whole pass once per firing unit.
+    host.step_recon_sensor_pass_008073c0(step_seconds);
     for (std::size_t i = 0; i < host.unit_state.size(); ++i) {
         host.run_gunnery_pass(i, step_seconds);
     }
@@ -2256,6 +2593,10 @@ const GameGunnerySummary& GameGunneryHost::summary() const noexcept {
     return impl_->summary;
 }
 
+const bsp::ReconSensorPassState& GameGunneryHost::recon_sensor_pass_state() const noexcept {
+    return impl_->recon_pass;
+}
+
 void GameGunneryHost::log_sample(unsigned long long step_index,
     unsigned long long interval) {
     Impl& host = *impl_;
@@ -2279,6 +2620,39 @@ void GameGunneryHost::report() {
         s.bridge_applies, s.recon_sweeps, s.candidates, s.candidates_rejected,
         s.assignment_passes, s.gun_evaluations, s.gun_slot_rejects, s.assigns,
         s.clears);
+    {
+        // docs/RECON_SLOT_LISTS.md rule (c). The pass's own counters over the
+        // run, then the published level per observing side, then the contact
+        // drops rule (c) is responsible for.
+        const bsp::ReconSensorPassState& pass = host.recon_pass;
+        host.log.notef("summary mission recon sensor_pass passes=%llu observers=%llu "
+            "targets=%llu forced=%llu no_table=%llu blip=%llu identified=%llu none=%llu "
+            "classes=%zu class_missing=%llu modifier_absent=%llu suppressed=%d "
+            "contact_reject_level=%llu",
+            pass.passes, pass.observers_admitted, pass.targets_tested,
+            pass.targets_skipped_forced, pass.no_sensor_table, pass.detected_blip,
+            pass.detected_identified, pass.detected_none, host.recon_classes.size(),
+            host.recon_classes_missing, host.recon_modifier_absent,
+            pass.suppressed_by_network_role ? 1 : 0, s.contact_reject_recon_level);
+        for (const Impl::ReconSideCensus& row : host.recon_side_census) {
+            host.log.notef("  recon side %d levels none=%llu blip=%llu identified=%llu",
+                row.side, row.none_level, row.blip, row.identified);
+        }
+        for (const auto& entry : host.recon_classes) {
+            // Which ReconClass[] record each id resolved to, and how many of
+            // the 56 lists 008082A0 actually filled. An id whose record is
+            // empty is the loader's own answer for a class outside 1..12.
+            std::size_t filled = 0, rows = 0;
+            for (std::size_t i = 0; i < bsp::kSensorListCount; ++i) {
+                if (entry.second->rows[i].count != 0) {
+                    ++filled;
+                    rows += entry.second->rows[i].count;
+                }
+            }
+            host.log.notef("  recon class %d lists=%zu entries=%zu", entry.first,
+                filled, rows);
+        }
+    }
     host.log.notef("summary mission gunnery source arm=%llu recon=%llu "
         "arm_mean_reach=%.3f recon_mean_reach=%.3f arm_beyond_half=%llu "
         "recon_beyond_half=%llu",

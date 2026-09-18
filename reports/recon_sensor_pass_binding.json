@@ -1,0 +1,141 @@
+{
+  "packet": "cc8_recon_sensor_pass_binding",
+  "owner": "agent/cc8-recon-binding",
+  "base": "3512280b088255ffaebe53e476ac6f787193fe77",
+  "summary": "Landed the six-point host contract of docs/RECON_SENSOR_PASS.md so that rule (c) of docs/RECON_SLOT_LISTS.md drives what each side can see, and measured USN02 and USN01 before and after. Two corrections fell out of the measurement: the VehicleClass index is GameUnitRow::type_id and not the entity class id, and the native sensor pass runs on a 3-second cadence with the elapsed gap as its dt, not once per frame.",
+  "ghidra_writes": "none. Read-only analysis; two existing ledger names gained appended evidence.",
+  "calls": [
+    {
+      "address": "008073c0",
+      "native": "BSP_Recon_RebuildSlotLists",
+      "role": "the driver this packet bound. Stepped from GameGunneryHost::fixed_step through Impl::step_recon_sensor_pass_008073c0, which calls bsp::recon_sensor_pass_step_008073c0.",
+      "evidence": "008073C1 FLD [00F876A4] (the clock), 008073CC FSUB [esi+2Ch] (the slot's last-pass stamp), 008073D6 FSTP [esi+30h]: the pass's own dt is the measured gap since this slot's previous rebuild, not a frame delta.",
+      "census_row": "Recon::sensor_pass"
+    },
+    {
+      "address": "008048a0",
+      "native": "the per-observer sensor row evaluation",
+      "role": "reached through gunnery_recon_detect_00806840 inside the pass; already reconstructed by cc7_gunnery_recon_detection and not re-read here.",
+      "evidence": "src/gunnery_recon_detection.cpp; docs/GUNNERY_RECON_DETECTION.md.",
+      "census_row": "Recon::evaluate_sensors"
+    },
+    {
+      "address": "009623a9",
+      "native": "the ReconModifier field read inside 00960230 BSP_VehicleClass_ReadLuaFields",
+      "role": "the producer contract point 1 names. GameMissionLuaHost::read_vehicle_class_number is its twin in this process; the caller squares the value.",
+      "evidence": "0096239A PUSH 00D1AAF4 = the string \"ReconModifier\"; 009623A9 CALL 00B67800 fetches the field; 009623AE FLD1 supplies the 1.0f default to 00B66330; 009623CF FMUL ST0,ST0 squares it; 009623D9 FSTP [edi+B8h] stores the square at class+B8h."
+    },
+    {
+      "address": "008079b0",
+      "native": "BSP_Recon_ServicePeriodicRefresh",
+      "role": "read to settle the cadence the host must step the pass at. Not reconstructed; its countdown is reproduced in Impl::step_recon_sensor_pass_008073c0.",
+      "evidence": "008079B6 FSUB the frame delta from [00F874B8]; 008079C8 FCOMI returns while the result is still positive; 008079CE FADD the double at 00D7A2B0 = 3.0 reloads it, clamped at zero by the 008079EA XORPS arm; 00807A00..00807A08 walks the slot list at [00F874BC] and calls 008073C0 on each. A callsite census of 008073C0 shows this is its only periodic caller; the other four are 004C9E82, 004E059B, 006EDB99 and 007C631C."
+    },
+    {
+      "address": "00805be0",
+      "native": "BSP_Recon_ResetDetection",
+      "role": "read to settle whether the detection value carries across passes. It does not, which is why the cadence and the dt decide the answer.",
+      "evidence": "Called at 00807490 from 008073C0's pre-pass loop. 00805BF2 XORPS XMM0, 00805BF9 MOVSS [rec+0Ch] zeroes the detection value and 00805BFE clears the level at rec+4h."
+    },
+    {
+      "address": "00922dc0",
+      "native": "BSP_Entity_IsSurfaceTarget thunk into 00922C80",
+      "role": "answers ReconSensorPassHost::unit_is_surface_target from the same facts GameShipAiHost's target_is_surface_00922dc0 fills.",
+      "evidence": "bsp::entity_is_surface_target_00922c80 in include/bsp/attack_target_classify.hpp; the 008DDF90 set branch is not built in this process, so its tail is taken, as in the ship AI host."
+    },
+    {
+      "address": "00852b90",
+      "native": "the submarine sensor-category getter",
+      "role": "PARTIAL. ReconSensorPassHost::unit_sensor_category answers bsp::submarine_periscope_sensor_state(false) for a submarine and records the call as unimplemented, because the depth bands 00852B90 switches on are unread in this process.",
+      "evidence": "docs/RECON_SENSOR_PASS.md's input table; include/bsp/submarine_model.hpp. No submarine appears in USN01 or USN02, so the arm is not exercised by either measurement.",
+      "census_row": "Recon::submarine_sensor_state_00852b90"
+    },
+    {
+      "address": "008053c0",
+      "native": "BSP_Recon_EnsureSlot, the side's published contact list",
+      "role": "contract point 4. The gunnery host's contact sweep now drops a target whose published level is none, counted apart from the rule (a) and (b) gates.",
+      "evidence": "src/game_hosts_gunnery.cpp recon_contact_count_008053c0; GameGunnerySummary::contact_reject_recon_level."
+    },
+    {
+      "address": "009dfbe0",
+      "native": "the recon union-list membership read",
+      "role": "contract point 5. GameShipAiHost's recon_knows_target_009dfbe0 now takes the published level for (own side, target) instead of assuming identified.",
+      "evidence": "src/game_hosts_ship_ai.cpp; docs/SHIP_AI_GOAL_VECTOR_VISIBILITY.md."
+    },
+    {
+      "address": "008082a0",
+      "native": "the ReconClass record loader",
+      "role": "contract point 2. One bsp::SensorClassTable per distinct ReconClass id, built once with build_sensor_class_table_008082a0 and converted field for field to the 56 GunneryReconSensorRow entries 008048A0 indexes.",
+      "evidence": "include/bsp/sensor_table_data.hpp; src/sensor_table_data.cpp."
+    }
+  ],
+  "contract_points": [
+    {
+      "point": 1,
+      "landed": "GameMissionLuaHost::read_vehicle_class_number(int index, const char* key, float fallback) in include/bsp/game_hosts_lua.hpp and src/game_hosts_lua.cpp. The gunnery host reads ReconModifier with it and squares the result before handing it to unit_recon_modifier_sq.",
+      "installed_data": "Only 14 of the 637 VehicleClass rows that carry ReconClass also carry ReconModifier in this installation, and every one of those 14 is exactly 1. The reader is therefore correct and required by the contract but changes no value here: both runs report modifier_absent equal to the whole unit count (32 on USN02, 77 on USN01), and the rule falls back to kGunneryReconModifierSqDefault = 1.0f, which is the same number 009623AE FLD1 supplies natively."
+    },
+    {
+      "point": 2,
+      "landed": "GameGunneryHost::Impl::ReconClassRecord, held by unique_ptr in a map keyed by ReconClass id so that adding a class never moves a live entry array. dist_sq to max_normalized_distance_sq, gain_per_second across, max_value to cap, half_angle to max_bearing_error, raw_type to mask_bit, dist to authored_distance, bearing_limited across."
+    },
+    {
+      "point": 3,
+      "landed": "Impl::step_recon_sensor_pass_008073c0, called from GameGunneryHost::fixed_step before the per-unit pass loop, not per firing unit.",
+      "correction": "The contract said once per tick. 008079B0 shows the native cadence is once every 3 seconds, and 00805BE0 shows the detection value is zeroed before each pass, so the per-pass dt decides the answer. Stepping per frame publishes none for every target in the world: measured, that run reported blip=0 identified=0 none=94880 and recon-sourced gun assignments fell from 879 to 0 on USN02. The host now reproduces the countdown and passes the measured gap."
+    },
+    {
+      "point": 4,
+      "landed": "recon_contact_count_008053c0 drops a target whose published level is none, after the existing side, visibility, dead and kind rejections, counting GameGunnerySummary::contact_reject_recon_level."
+    },
+    {
+      "point": 5,
+      "landed": "recon_knows_target_009dfbe0 takes GameGunneryHost::recon_sensor_pass_state().level(own_side, target). The rule (c) absent comment and the PARTIAL note above it are gone; the binding travels through GameShipAiHost::bind_gunnery, which GameGunneryHost::set_ship_ai already calls."
+    },
+    {
+      "point": 6,
+      "landed": "Census rows Recon::sensor_pass at 0x008073c0 and Recon::evaluate_sensors at 0x008048a0, plus summary mission recon sensor_pass with the state's counters, one recon side line per observing side and one recon class line per resolved ReconClass id."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "resolve_recon_inputs indexed the authored VehicleClass table with GameUnitsHost::unit_class_id",
+      "is": "unit_class_id is the entity class id the IsKindOf chain walks (06h ship base, 0Fh plane base), not the VehicleClass row index. The index is GameUnitRow::type_id, which is what build_guns already takes.",
+      "how_found": "Run-time. The first USN02 after-run reported classes=1 with class_missing=0 for 32 units and published none for every target."
+    },
+    {
+      "was": "docs/RECON_SENSOR_PASS.md's driver section, dt from slot+30h with no cadence named, and the contract's step it once per tick",
+      "is": "008079B0 runs the pass every 3 seconds and 008073C0 computes its own dt as clock minus slot+2Ch. The 3-second period was already on record in the ledger under BSP_Recon_ServicePeriodicRefresh from packet cc_unit_lists; the driver packet did not carry it into the contract.",
+      "how_found": "Read after the corrected class index still published none for every target."
+    }
+  ],
+  "no_ghidra_function": "none. 008073C0, 008048A0, 008079B0, 00805BE0, 00960230, 008082A0, 00922DC0 and 00852B90 all have Ghidra functions.",
+  "validation": {
+    "build": "./scripts/build.ps1, Win32 /W4 /WX: clean.",
+    "tests": "ctest --test-dir build/win32 -C Release: 2/2 pass. No test added; the behaviour this packet changes is only observable against the installed data and both missions measure it.",
+    "usn02": {
+      "before": "shots=872 hull=125 deaths=3 total_damage=13673.7 first_shot=1.40 first_hit=41.85; gunnery assigns=5188 arm=4309 recon=879; contacts considered=217527 side=107665 dead=1364 kind=0 admit_ship=108498 admit_plane=0; ship AI standoff choices=8400 curve_refreshes=2450, ring_scans=8400; every visible row recon=75 surface=0 flag_true=600",
+      "after": "shots=872 hull=125 deaths=3 total_damage=13673.7 first_shot=1.40 first_hit=41.85; gunnery assigns=5188 arm=4309 recon=879; contacts considered=217527 side=107665 dead=1364 kind=0 admit_ship=105490 admit_plane=0; ship AI standoff choices=8400 curve_refreshes=2450, ring_scans=8400; every visible row recon=74 surface=1 flag_true=600",
+      "recon_census": "passes=100 observers=1583 targets=1583 forced=0 no_table=0 blip=19 identified=1532 none=32 classes=2 class_missing=0 modifier_absent=32 suppressed=0 contact_reject_level=3008; side 0 none=18 blip=19 identified=856; side 1 none=14 blip=0 identified=676; class 2 lists=3 entries=5; class 3 lists=5 entries=8",
+      "attribution": "Rule (c) rejected 3008 contact considerations, which is exactly the admit_ship fall of 108498 to 105490. It moved one of each ship's 75 union-list reads from recon to surface. It changed no gun assignment, no shot, no hit and no death: at 3-second granularity the USN02 sides are inside each other's authored sensor ranges for all but the first pass."
+    },
+    "usn01": {
+      "before": "shots=8992 hull=23 deaths=1 total_damage=220.0 first_shot=0.25 first_hit=0.60; gunnery assigns=1191 arm=0 recon=1191 candidates=1048 rejected=43985; contacts considered=472644 side=151917 dead=2920 kind=214705 admit_ship=43533 admit_plane=59569; no ship AI visible rows (ring_scans=0, firepower=0)",
+      "after": "shots=8711 hull=23 deaths=1 total_damage=220.0 first_shot=4.35 first_hit=4.70; gunnery assigns=1067 arm=0 recon=1067 candidates=928 rejected=28159; contacts considered=473100 side=152055 dead=2840 kind=214915 admit_ship=15789 admit_plane=46801; no ship AI visible rows",
+      "recon_census": "passes=150 observers=3802 targets=7604 forced=0 no_table=0 blip=60 identified=5398 none=2146 classes=8 class_missing=0 modifier_absent=77 suppressed=0 contact_reject_level=40700; side 0 none=284 blip=60 identified=2306; side 1 none=435 blip=0 identified=2017; side 2 none=1427 blip=0 identified=1075; classes 1,2,3,5,6,8,9,12",
+      "attribution": "Rule (c) rejected 40700 contact considerations: admit_ship fell 43533 to 15789 and admit_plane 59569 to 46801. Gun assignments fell 1191 to 1067 and shots 8992 to 8711, all of them recon-sourced because USN01's arm source is zero. The first shot moved from 0.25 s to 4.35 s, which is the pass's own cadence: nothing is detected until the first 3-second refresh publishes a level. Damage, hits and deaths are unchanged at 220.0, 23 and 1. Side 2 is the side rule (c) blinds most, 1427 none against 1075 identified, and it is the side with the aircraft: USN01 is the mission where sensor categories differ."
+    }
+  },
+  "installed_data_gaps": [
+    "ReconModifier: 14 of 637 ReconClass-carrying VehicleClass rows have it and all 14 are 1. Every unit in both missions falls back to kGunneryReconModifierSqDefault = 1.0f, which equals the native FLD1 default, so the rule is unaffected.",
+    "GameMode: scripts/datatables/autoload/reconclasses.lua takes RealisticTable only when the global GameMode is 1, and the installation carries no gamemode.lua for that autoload's DoFile to define it from, so the arcade table is the one this process can reach. The host uses ReconTableVariant::arcade.",
+    "Every ReconClass id resolved in both missions is inside 1..12 and has authored rows; class_missing is 0 and no_sensor_table is 0 in both runs, so no unit fell through the 008048C1 early false."
+  ],
+  "uncertainties": [
+    "The submarine sensor category takes the periscope-in state unconditionally, because the depth bands of 00852B90 are unread. Neither mission has a submarine, so the arm is unmeasured.",
+    "unit_environment_factor answers 1.0f: this process builds no gameplay-modifier list, which is the same empty-list answer the hit path already takes at 008E6430.",
+    "The simplified recon and sonar multipliers answer 1.0f. Neither mission script calls 008B24A0 or 008B2770.",
+    "network_role answers 0. This process runs the single originating session, so the 00806871 skip arm is unmeasured.",
+    "The drain stays folded per target, as the driver packet chose; that composition difference is unchanged by this packet."
+  ]
+}

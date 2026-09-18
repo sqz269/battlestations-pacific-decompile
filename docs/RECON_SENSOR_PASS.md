@@ -147,3 +147,36 @@ none. `00806840`, `008048A0`, `008073C0`, `008082A0`, `0074E190`, `006DFD20`, `0
 | `recon_sensor_pass_binding` | `008073C0`, `008048A0` | Land the six-point contract and take the USN02 before/after the packet asks for: detected counts by level per side, the visibility flag true count per ship, the standoff and gunnery censuses, every change attributed to the detection rule |
 | `vehicle_class_number_reader` | `009623A9` | The float twin of `read_vehicle_class_integer`. `ReconModifier` is the first caller; the field table in `src/vehicle_class_fields.cpp` lists others at float offsets that `GameVehicleClassRow` does not carry |
 | `recon_sensor_category_producer` | `00852B90`, `0085EA40` | The three submarine category states, which depend on periscope and depth. `src/submarine_model.cpp` has the periscope half; the depth thresholds are unread |
+
+## Correction appended by cc8_recon_sensor_pass_binding
+
+The binding contract above is landed on the same branch. Two of its statements needed
+correcting before the pass would publish anything, and both are in
+`docs/RECON_SENSOR_PASS_BINDING.md` with the listing behind them. The text above is left as it
+was written.
+
+**"State of the packet" is superseded.** The host wiring is no longer "not landed": points 1
+to 6 are in `src/game_hosts_lua.cpp`, `src/game_hosts_gunnery.cpp` and
+`src/game_hosts_ship_ai.cpp`, and both missions were run before and after.
+
+**Contract point 3, "step it once per tick", is wrong.** `008079B0`
+BSP_Recon_ServicePeriodicRefresh is `008073C0`'s only periodic caller and runs it every 3.0
+seconds (the double at `00D7A2B0`, against the countdown at `[00F874B8]`). The pass computes
+its own dt as `[00F876A4]` minus slot+2Ch, the measured gap. This matters because `00805BE0`
+zeroes each record's value at +0Ch before the pass, so one pass must reach a threshold
+unaided: the shipped `Gain` of 1.0/s halved by `00808626` gives 0.5 * 3.0 = 1.5, which clears
+the 0.25 blip threshold, while 0.5 * 0.05 gives 0.025, which never does. A per-frame step was
+measured on USN02 and published `none` for all 94880 target evaluations.
+
+Both facts were already in the ledger, under `008079B0` from packet `cc_unit_lists` and under
+`00805BE0` from `cc2_recon_slot_lists`. They are now also
+`bsp::kReconSensorPassRefreshPeriod` in `include/bsp/recon_sensor_pass.hpp`, with the listing
+in the comment above it, so the next caller cannot step the pass per frame by accident.
+
+**The input table's `ReconClass` row needs one word.** It is reachable through
+`GameMissionLuaHost::read_vehicle_class_integer`, but the index is `GameUnitRow::type_id`, not
+`GameUnitsHost::unit_class_id`, which is the entity class id the IsKindOf chain walks.
+
+**The one gap is closed.** `GameMissionLuaHost::read_vehicle_class_number` exists and reads
+`ReconModifier`. In this installation only 14 of the 637 `ReconClass`-carrying rows have the
+key and all 14 are 1, so every unit still takes `kGunneryReconModifierSqDefault`.
