@@ -502,6 +502,12 @@ public:
     // 00895D20 IsReadyToSendPlanes and 0089E3C0 LaunchSquadron, the two gates
     // between the carrier deck and the mission script's launch line.
     // docs/AIROPS_LAUNCH_GATES.md.
+    // 00851CB0's lookup: the globals, then `StationaryClass`, then the row by
+    // the type's own text. A name that answers there is a stationary prop and
+    // has no `VehicleClass` row by construction.
+    // docs/SCENE_STATIONARY_UNITS.md.
+    bool stationary_class_exists(const std::string& name);
+
     int run_is_ready_to_send_planes_00895d20(lua_State* state, int argument_count);
     int run_launch_squadron_0089e3c0(lua_State* state, int argument_count);
     void note_created_script(std::string name);

@@ -68,4 +68,11 @@ bool publish_unit_leaf_observer_tables_for_creator(
     unit.callback_10.native_vtable_00 = row->callback_table;
     return true;
 }
+
+void publish_stationary_prop_observer_tables_00748a40(
+    NativeUnitObserverPrefixStorage& unit) noexcept {
+    // 00748A64 and 00748A6A, the same two slots the keyed rows take.
+    unit.observed_00.native_vtable_00 = 0x00cff678u;
+    unit.callback_10.native_vtable_00 = 0x00cff65cu;
+}
 } // namespace bsp
