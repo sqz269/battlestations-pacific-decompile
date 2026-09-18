@@ -75,7 +75,8 @@ inline constexpr int kRoundsRemaining = 0x2C;  // every release does -= 1
 inline constexpr int kTarget = 0x48;          // 009C7B0A: no target -> clear the latch
 inline constexpr int kExtraRange = 0x50;      // added to +D4h and +ACh in three tests
 inline constexpr int kDriftRate = 0x64;       // 009C7A8C, per-tick timer feed
-inline constexpr int kDiveAltitude = 0xA8;    // the aimdive release floor
+inline constexpr int kDiveAltitude = 0xA8;    // the aimdive release floor,
+// Uniform(dive_bomb_release_alt_1_044, dive_bomb_release_alt_2_048) at 009C3F29
 inline constexpr int kBeginAltitude = 0xAC;   // = ctl->+398h every tick
 inline constexpr int kAttackDistance = 0xB4;  // the moveto speed argument
 inline constexpr int kInRangeDistance = 0xB8;  // the latch threshold
@@ -307,8 +308,13 @@ struct DiveBombAimErrorInputs {
     float dive_altitude_a8 = 0.0f;     // approach+A8h
     float begin_altitude_ac = 0.0f;    // approach+ACh
     float extra_range_50 = 0.0f;       // approach+50h
-    float lead_at_high_5c = 0.0f;      // (approach->+14h)->+5Ch, 009C5C20
-    float gain_at_high_60 = 0.0f;      // (approach->+14h)->+60h, 009C5C69
+    // (approach->+14h) is &PilotBotConfig.levels[difficultyIndex], a
+    // PilotBotParameters row; include/bsp/robot_config.hpp names its members and
+    // a row offset N is the member whose suffix is N + 0Ch. So these two are the
+    // authored, difficulty-scaled aiming imprecision, which is why the release
+    // gate is a 25-metre window rather than an angle.
+    float lead_at_high_5c = 0.0f;   // dive_bomb_aim_prec_dist_068, 009C5C20
+    float gain_at_high_60 = 0.0f;   // dive_bomb_aim_prec_mul_06c, 009C5C69
     float bearing_error = 0.0f;        // BSP_Math_SubtractWrappedAngle, 009C5AF1
     float planar_distance = 0.0f;      // the sqrt at 009C5A40
 };
