@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "bsp/ai_command_object.hpp"
+#include "bsp/lua_binding_mission.hpp"
 #include "bsp/ai_tuning_globals.hpp"
 
 // 00A13B60, the CLOSEATTACK and DEFENDPOSITION tick: the routine that gives a
@@ -215,7 +216,7 @@ float ai_unit_health_00923be0(bool torn_down, float fraction,
 // unit+164h, where both arms of 00923BE0 cache the clamped result. Seeded by
 // 0087BD09 in BSP_UnitInstance_InitHealthAndParts; the only other writers are
 // 00923BE0's own two stores (tools/store_census.py 0x164).
-inline constexpr std::size_t kUnitHealthCacheOffset = 0x164;
+// kUnitHealthCacheOffset (0x164, 00923C16) is defined once, in bsp/lua_binding_mission.hpp.
 
 // 00D7A24C, the seed of both reused slots.
 inline constexpr float kAiCandidateWeightDefaultMultiplier = 1.0f;
