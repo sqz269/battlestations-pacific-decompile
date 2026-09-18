@@ -33,6 +33,7 @@
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/torpedo_release_spawn.hpp"
+#include "bsp/bot_tasks.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/unit_hull_extents.hpp"
 
@@ -82,6 +83,13 @@ namespace bsp::game {
 namespace {
 
 constexpr double kPi = 3.14159265358979323846;
+
+// SUBSTITUTION, labelled: Pilot/Torpedo/ReferenceSpeed, the divisor of
+// 009F9D30's run-profile speed ratio. The PilotBot tuning block is not
+// reachable from this host, so the value is the authored one recorded against
+// offset +440h in include/bsp/bot_tasks.hpp:266, KMH(300).
+constexpr float kTorpedoReferenceSpeedAuthored = 83.333336f;
+
 
 // Dispatch coverage only; direct_ship_body retains the existing partial
 // 00825F20 reconstruction described in SHIP_MOTION.md.
@@ -479,6 +487,17 @@ struct GameUnitSlot {
     // desc+184h StallSpd, the divisor the control authority ramp uses. The
     // PlaneFreeFlightClass default stands in when the row does not carry it.
     float plane_stall_spd{17.5f};
+    // desc+174h XDrag and desc+170h YDrag, the two body-frame damping
+    // coefficients 007DBD3A and 007DBD50 multiply the body lateral and body
+    // vertical velocity by. PlaneFreeFlightClass declares them 0.0f and this
+    // host never filled them, which switched off the ONLY term that turns a
+    // plane's velocity onto its nose. docs/TORPEDO_RUN_IN_VELOCITY.md.
+    float plane_x_drag{0.0f};
+    float plane_y_drag{0.0f};
+    // desc+188h MaxSpd, the numerator of 009F9D30's run-profile speed ratio.
+    float plane_max_spd{0.0f};
+    // desc+18Ch TravelSpeed, the airspeed 007C6340 seeds a plane with.
+    float plane_travel_speed{0.0f};
     // The union of this unit's guns' projectile descriptor answer sets, stored
     // by the gunnery host at load. docs/ORDNANCE_KIND_IDENTITY.md.
     std::uint64_t ordnance_mask{0};
@@ -772,6 +791,25 @@ struct GameUnitsHost::Impl {
         } else {
             ++slot.torpedo_bay_requests_refused;
         }
+        // The release instant, which is the sample the water-entry arithmetic
+        // is built on. Printed for the first four releases only, like the
+        // gunnery host's own drop line.
+        if (slot.torpedo_releases < 4) {
+            float vn[3];
+            velocity_versus_nose(slot, vn);
+            log.notef("release census: unit=%s alt=%.1f m |v|=%.2f m/s "
+                "angle_to_nose=%.1f deg body_fwd_0092d730=%.2f m/s "
+                "travel_spd=%.2f x_drag=%.2f y_drag=%.2f max_spd=%.2f",
+                slot.row.name.c_str(),
+                static_cast<double>(slot.motion.position[1]),
+                static_cast<double>(vn[0]),
+                static_cast<double>(vn[1]) * 180.0 / kPi,
+                static_cast<double>(vn[2]),
+                static_cast<double>(slot.plane_travel_speed),
+                static_cast<double>(slot.plane_x_drag),
+                static_cast<double>(slot.plane_y_drag),
+                static_cast<double>(slot.plane_max_spd));
+        }
         ++slot.torpedo_releases;
         ++slot.torpedo_release_requests_007bbba0;
         slot.torpedo_issue_requests_c20 =
@@ -817,6 +855,31 @@ struct GameUnitsHost::Impl {
     // RET 0 getter with no reconstruction, so this is the executable's own
     // value: atan2 over pose row 2, the same convention the trajectory dump and
     // the run log print in degrees.
+    // The three numbers docs/TORPEDO_RELEASE_GEOMETRY.md section 3 asked for
+    // and did not take: |v|, the angle between v and the forward pose row, and
+    // the body-axis speed 0092D730 itself computes (the dot of the body's
+    // linear velocity from 00C31F40 with row 3 of the axis matrix 00C32000).
+    // out[0] = magnitude, out[1] = angle in radians, out[2] = body-axis speed.
+    static void velocity_versus_nose(const GameUnitSlot& slot, float out[3]) {
+        const float v[3] = {slot.motion.linear_velocity.x,
+            slot.motion.linear_velocity.y, slot.motion.linear_velocity.z};
+        const float* const fwd = slot.motion.pose_row2;
+        const float mag = std::sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+        const float fwd_len =
+            std::sqrt(fwd[0] * fwd[0] + fwd[1] * fwd[1] + fwd[2] * fwd[2]);
+        const float dot = v[0] * fwd[0] + v[1] * fwd[1] + v[2] * fwd[2];
+        out[0] = mag;
+        out[2] = dot;   // 0092D730's own answer
+        if (mag > 1e-6f && fwd_len > 1e-6f) {
+            float c = dot / (mag * fwd_len);
+            if (c > 1.0f) c = 1.0f;
+            if (c < -1.0f) c = -1.0f;
+            out[1] = static_cast<float>(std::acos(static_cast<double>(c)));
+        } else {
+            out[1] = 0.0f;
+        }
+    }
+
     static float pose_heading_radians(const GameUnitSlot& slot) {
         return static_cast<float>(std::atan2(static_cast<double>(slot.motion.pose_row2[0]),
             static_cast<double>(slot.motion.pose_row2[2])));
@@ -1758,6 +1821,12 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
                 // an authored row wins.
                 slot->plane_stall_spd = lua_row.plane_stall_spd;
             }
+            // desc+174h / desc+170h. Zero on a ship row, which is what a ship
+            // should read; 7.0 on this installation's TBD Devastator row.
+            slot->plane_x_drag = lua_row.x_drag;
+            slot->plane_y_drag = lua_row.y_drag;
+            slot->plane_max_spd = lua_row.max_spd;
+            slot->plane_travel_speed = lua_row.travel_speed;
             // The spawn airspeed. docs/PLANE_FLIGHT_CORE_LAW.md measures the
             // seed at 141.67 m/s, and the acceptance test in tests/math_tests.cpp
             // pins lift against gravity at exactly that value and at
@@ -1775,14 +1844,27 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
                 const float* const fwd = slot->motion.pose_row2;
                 const float len = std::sqrt(fwd[0] * fwd[0] + fwd[1] * fwd[1] +
                                             fwd[2] * fwd[2]);
+                // The magnitude is desc+18Ch TravelSpeed, which
+                // docs/PLANE_FLIGHT_CORE_LAW.md already named as the field
+                // 007C6340 seeds from - it was just stood in for by one row's
+                // value. 141.666672 is the TravelSpeed of four rows in this
+                // installation's vehicleclasses.lua; the torpedo bombers
+                // author 61.111111 (TBD Devastator and TBF Avenger alike), and
+                // running them at 141.67 is what put an air-dropped torpedo
+                // into the water above MaxWaterHitVel no matter how low it was
+                // released. The constant stays as the fallback for a row that
+                // carries no TravelSpeed, which is every ship row.
+                // docs/TORPEDO_RUN_IN_VELOCITY.md.
+                const float seed_speed = slot->plane_travel_speed > 0.0f
+                    ? slot->plane_travel_speed : 141.666672f;
                 if (len > 1e-6f) {
                     for (int i = 0; i < 3; ++i) {
-                        slot->plane_world_velocity[i] = 141.666672f * fwd[i] / len;
+                        slot->plane_world_velocity[i] = seed_speed * fwd[i] / len;
                     }
                 } else {
                     // A degenerate authored frame keeps the old world-+Z seed
                     // rather than propagating a NaN through every lift term.
-                    slot->plane_world_velocity[2] = 141.666672f;
+                    slot->plane_world_velocity[2] = seed_speed;
                 }
             }
             // The same mirror as the integration step: the body velocity field
@@ -2419,6 +2501,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // is the only authored one; everything else is a
                         // PlaneGlobals default the mirror fills at load.
                         bsp::PlaneFreeFlightClass cls;
+                        // desc+184h, desc+174h, desc+170h - the three class
+                        // fields 007DB760, 007DBD3A and 007DBD50 read. Leaving
+                        // x_drag and y_drag at their 0.0f declaration multiplied
+                        // the whole body-damping block by zero, so a plane's
+                        // velocity kept whatever direction it was seeded with
+                        // while advance_pose_0085e4d0 turned the nose away from
+                        // it: at the torpedo release instant 0092D730 read
+                        // -6.8 m/s against a 141 m/s velocity, the two vectors
+                        // almost perpendicular. docs/TORPEDO_RUN_IN_VELOCITY.md.
+                        if (unit_.plane_stall_spd > 0.0f) {
+                            cls.stall_spd = unit_.plane_stall_spd;
+                        }
+                        cls.x_drag = unit_.plane_x_drag;
+                        cls.y_drag = unit_.plane_y_drag;
                         bsp::PlaneFreeFlightTuning tuning;
                         // Every field of PlaneFreeFlightTuning is a Dynamics/*
                         // row inside the 00F872F0 mirror, and the mirror is now
@@ -3280,10 +3376,30 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // docs/TORPEDO_RELEASE_GEOMETRY.md.
                             owner_.log.unimplemented(
                                 "TorpedoApproach::run_profile_record_14h", "009d0484");
+                            // approach+24h. 009F9D30 is
+                            // bot_task_speed_ratio(desc+188h MaxSpd,
+                            // Pilot/Torpedo/ReferenceSpeed) with a floor of
+                            // 1.0, and desc+188h is now loaded, so the third
+                            // argument is no longer a bare placeholder. The
+                            // divisor is the PilotBot tuning float at +440h,
+                            // authored KMH(300) = 83.333336 m/s
+                            // (include/bsp/bot_tasks.hpp:266); the registry
+                            // itself is still unreachable from this host, so
+                            // the DIVISOR remains a labelled substitution while
+                            // the numerator is real. For this installation's
+                            // torpedo bombers MaxSpd is 69.444443 (TBD) and
+                            // 72.222221 (TBF), both below the reference, so the
+                            // floor wins and the ratio is 1.0 either way.
+                            const float ratio_24h =
+                                unit_.plane_max_spd > 0.0f
+                                    ? bsp::bot_task_speed_ratio(
+                                          unit_.plane_max_spd,
+                                          kTorpedoReferenceSpeedAuthored)
+                                    : 1.0f;
                             const bsp::TorpedoRunSpeeds seeded =
                                 bsp::torpedo_seed_run_speeds_009d0484(
                                     kTorpReleaseDistNearSPNormal,
-                                    kTorpReleaseDistFarSPNormal, 1.0f);
+                                    kTorpReleaseDistFarSPNormal, ratio_24h);
                             ap.speed_early_80 = seeded.speed_early_80;
                             ap.speed_late_7c = seeded.speed_late_7c;
                             // 009D046A scales approach+78h by the row's
@@ -3763,6 +3879,27 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 static_cast<double>(ap.speed_early_80),
                                 static_cast<double>(unit_.motion.max_speed),
                                 static_cast<double>(unit_.plane_stall_spd));
+                            // Packet cc8_torpedo_run_in_velocity: the velocity
+                            // frame, sampled on the same cadence. |v| is the
+                            // world-velocity magnitude, angle is its angle to
+                            // pose row 2 in degrees, and body_fwd is what
+                            // 0092D730 answers. With XDrag/YDrag wired the
+                            // angle collapses to near zero and body_fwd tracks
+                            // |v|; with them zero the angle sat near 90 deg.
+                            float vn[3];
+                            GameUnitsHost::Impl::velocity_versus_nose(unit_, vn);
+                            owner_.log.notef("  torpedo %-12s velocity census "
+                                "tick=%d |v|=%.2f angle=%.1f deg body_fwd=%.2f "
+                                "alt=%.1f travel_spd=%.2f x_drag=%.2f "
+                                "max_spd=%.2f",
+                                unit_.row.name.c_str(), unit_.torpedo_aim_ticks,
+                                static_cast<double>(vn[0]),
+                                static_cast<double>(vn[1]) * 180.0 / kPi,
+                                static_cast<double>(vn[2]),
+                                static_cast<double>(unit_.motion.position[1]),
+                                static_cast<double>(unit_.plane_travel_speed),
+                                static_cast<double>(unit_.plane_x_drag),
+                                static_cast<double>(unit_.plane_max_spd));
                         }
                         unit_.torpedo_aim_heading_last = r.commanded_heading_2c0;
                         // 009D1D16 / 009D1D1E write plan+2C0h and plan+2CCh.

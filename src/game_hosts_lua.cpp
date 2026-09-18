@@ -244,6 +244,15 @@ GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
             row.plane_stall_spd = number("StallSpd");
             row.turn_roll_spd = number("TurnRollSpd");
             row.turn_roll = number("TurnRoll");
+            // The aerodynamic trio. XDrag and YDrag are the body-frame damping
+            // 007DBD37-007DBE0D applies, TravelSpeed is the airspeed 007C6340
+            // seeds a plane with, and MaxSpd is the numerator of the run
+            // profile's speed ratio at 009F9D30. A ship row carries none of
+            // them and reads zero, which is the right answer for a ship.
+            row.x_drag = number("XDrag");
+            row.y_drag = number("YDrag");
+            row.max_spd = number("MaxSpd");
+            row.travel_speed = number("TravelSpeed");
             // 00960363 uses bare GetNumber, including numeric strings and
             // the native float32 spill. Other row readers keep their scope.
             ::lua_getfield(state_, -1, "Width");
