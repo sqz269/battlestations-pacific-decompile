@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "bsp/ai_command_lifetime.hpp"
+#include "bsp/ai_command_object.hpp"
 #include "bsp/ai_group_think.hpp"
 #include "bsp/ai_planners.hpp"
 #include "bsp/ai_tuning_globals.hpp"
@@ -31,18 +32,18 @@ namespace {
 // labelled substitution: the world singleton's +614h has no producer here.
 constexpr int kCampaignGameMode = 0;
 
-// The AI command class 00A2CBD0 chooses between, and the scene command token
-// this process issues for it. Neither 00A10890 nor 00A109B0 builds a scene
-// command natively; the group's AI command drives its members through
-// 00A2C790's member->vtable[+114h], which is unread. Issuing a real order is
-// this file's substitution for that dispatch, so the class only selects which
-// token and how aggressively.
-enum class AiAttackArm { MoveToAttack, CautiousAttack };
+// 00A2C790's per-member chain reaches the member's own weapon director through
+// the ENTITY's vtable[+114h] and reports its state back to the group's AI
+// command, whose vt+24h (00A0FC90) discards it. Neither 00A10890 nor 00A109B0
+// builds a scene command, and no class in the block acts on the report, so
+// issuing a real order at order_attack stays this file's substitution for the
+// per-class tick at vt+0Ch, which was not read.
 
 }  // namespace
 
 struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
-                                     public bsp::AiPlannerHost {
+                                     public bsp::AiPlannerHost,
+                                     public bsp::AiCommandMemberPassHost {
     Impl(GameHostLog& log_in, GameUnitsHost& units_in) : log(log_in), units(units_in) {}
 
     void record(const char* method, std::uint32_t address) {
@@ -68,9 +69,10 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         int party{0};                 // the party slot this process files it under
         std::vector<std::size_t> members;   // the +563Ch list, by unit index
         Planner* claimed_by{nullptr}; // group+5654h
-        bool has_command{false};      // group+564Ch
-        Group* command_target{nullptr};     // command+1Ch
-        AiAttackArm command_arm{AiAttackArm::MoveToAttack};
+        // group+564Ch. Every group carries one from its constructor, so the
+        // object is held by value and `has_command` is not a separate state.
+        bsp::AiCommandObject command{};
+        float member_pass_due{0.0f};  // group+5650h, 0.0f from the constructor
         bool emptied{false};
         bool destroyed{false};
         std::string tag;              // the planner spawn tag, when one made it
@@ -179,9 +181,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // only reference this process holds between groups is a command target.
         Group* h = group_at(holder);
         Group* g = group_at(group);
-        if (h != nullptr && h->command_target == g) {
-            h->command_target = nullptr;
-            h->has_command = false;
+        if (h != nullptr && h->command.target_group == static_cast<void*>(g)) {
+            // Natively the released group leaves a dangling command+1Ch. This
+            // process cannot hold one, so the command reverts to the class the
+            // constructor installed. Labelled substitution, not a native rule.
+            h->command = initial_command_for(h);
         }
         record("AiGroups::release_group_reference", 0x00a2b8f0u);
     }
@@ -288,6 +292,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // 00A2E086-00A2E0BD: every group appends itself to
         // g_aiGroupsByTeam[group+5638h] unconditionally.
         by_team[static_cast<std::size_t>(g->team)].push_back(g);
+        // group+564Ch, the eight-byte NONCONTROL or IDLE instance the
+        // constructor installs before the first member is added.
+        g->command = initial_command_for(g);
         ++summary.groups_created;
         attach(g, unit);
         done("AiGroups::create_group", 0x00a2dfa0u);
@@ -301,20 +308,113 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         done("AiGroups::add_group_member", 0x00a2d8e0u);
     }
 
-    bool can_auto_merge(void* into, void* from) override {
-        // 00A2C8D0 delegates to from+564Ch vtable[+14h], which is unread. This
-        // process has no AI command object, so the merge predicate cannot be
-        // answered and no auto-merge is taken.
-        (void)into;
-        (void)from;
-        record("AiGroups::can_auto_merge", 0x00a2c8d0u);
+    // The group constructor's install at group+564Ch. 009FFE50 admits party
+    // slots 0 and 4 in campaign mode, which ai_party_think_mode already knows.
+    bsp::AiCommandObject initial_command_for(Group* g) const {
+        bsp::AiCommandObject cmd;
+        const int slot = g->party;
+        cmd.type = bsp::ai_command_initial_type(
+            slot, bsp::ai_party_ai_enabled(kCampaignGameMode, slot));
+        cmd.owner_group = g;
+        return cmd;
+    }
+
+    // 00A2C6C0, the ship half of the merge family gate: the member list through
+    // 009FE120, a tail forward of entity->vtable[+5Ch](6).
+    bool group_has_ship(Group* g) {
+        for (const std::size_t unit : g->members) {
+            if (units.unit_is_kind_of(unit, bsp::kUnitGunneryKindShipBase)) return true;
+        }
         return false;
+    }
+    // 00A2C660, the air half: the member list through 009FE0F0, which asks
+    // IsKindOf(0Fh) then IsKindOf(18h).
+    bool group_has_air(Group* g) {
+        for (const std::size_t unit : g->members) {
+            if (units.unit_is_kind_of(unit, 0x0F) || units.unit_is_kind_of(unit, 0x18)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 00A2C600 over a group's members, through 009FE0B0's three class ids.
+    bool group_matches_009fe0b0(Group* g) {
+        for (const std::size_t unit : g->members) {
+            if (bsp::ai_entity_class_matches_009fe0b0(units.unit_is_kind_of(unit, 0x1B),
+                                                      units.unit_is_kind_of(unit, 0x45),
+                                                      units.unit_is_kind_of(unit, 0x46))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool can_auto_merge(void* into, void* from) override {
+        // 00A2C8D0's own gates live in ai_group_can_auto_merge; what this
+        // method answers is the delegated half, from+564Ch's vtable[+14h].
+        Group* a = group_at(into);
+        Group* b = group_at(from);
+        // 00A2C8D0's own gates. The sequence does not apply them, so the whole
+        // routine is this method's contract: a null or self argument, an empty
+        // population on either side, and the family test. The +5648h
+        // grouping-enabled byte is 1 from the group constructor and this
+        // process has no producer that clears it.
+        if (a == nullptr || b == nullptr || a == b || a->members.empty() ||
+            b->members.empty()) {
+            done("AiGroups::can_auto_merge", 0x00a2c8d0u);
+            return false;
+        }
+        // 00A2C6C0 HasShip walks the members through 009FE120, IsKindOf(6);
+        // 00A2C660 HasAir walks them through 009FE0F0, IsKindOf(0Fh) or (18h).
+        if (!bsp::ai_group_families_may_merge(group_has_ship(a), group_has_air(a),
+                                              group_has_ship(b), group_has_air(b))) {
+            done("AiGroups::can_auto_merge", 0x00a2c8d0u);
+            return false;
+        }
+        bsp::AiCommandMergeFacts facts;
+        facts.type = b->command.type;              // the absorbed group's command
+        facts.other_group_present = true;          // `into` is the argument
+        facts.other_population = static_cast<std::uint32_t>(a->members.size());
+        facts.own_population = static_cast<std::uint32_t>(b->members.size());
+        facts.own_has_groupable_combatant = group_has_groupable_combatant(from);
+        facts.other_has_groupable_combatant = group_has_groupable_combatant(into);
+        if (facts.type == bsp::AiCommandType::Idle) {
+            facts.own_matches_009fe0b0 = group_matches_009fe0b0(b);
+            facts.other_matches_009fe0b0 = group_matches_009fe0b0(a);
+        }
+        facts.own_leader_weight = static_cast<float>(group_leader_order_key(from));
+        facts.other_leader_weight = static_cast<float>(group_leader_order_key(into));
+        // 00A10C60 substitutes the zero vector at 00F87574 for an empty group.
+        static const float kOrigin[3] = {0.0f, 0.0f, 0.0f};
+        const float* own_leader = group_leader_position(from);
+        const float* other_leader = group_leader_position(into);
+        if (own_leader == nullptr) own_leader = kOrigin;
+        if (other_leader == nullptr) other_leader = kOrigin;
+        for (int i = 0; i < 3; ++i) {
+            facts.own_leader_position[i] = own_leader[i];
+            facts.other_leader_position[i] = other_leader[i];
+        }
+        facts.auto_merge_dist = tuning.at(bsp::kAiTuningAutoMergeMergeDist);
+        const bool ok = bsp::ai_command_can_merge_with(facts);
+        done("AiGroups::can_auto_merge", 0x00a2c8d0u);
+        return ok;
     }
 
     void merge_group(void* into, void* from) override {
         Group* a = group_at(into);
         Group* b = group_at(from);
         if (a == nullptr || b == nullptr || a == b) return;
+        // 00A2DBC1-00A2DD0E, phase A: every command in the registry that is an
+        // ATTACK aimed at the absorbed group keeps its class and is rebound to
+        // the absorber through 00A2BD00.
+        for (Group* g : registry) {
+            if (g->members.empty()) continue;
+            if (!bsp::ai_command_is_type(g->command.type, bsp::AiCommandType::Attack)) continue;
+            if (g->command.target_group != static_cast<void*>(b)) continue;
+            g->command.target_group = a;
+            ++summary.commands_retargeted;
+        }
         for (const std::size_t unit : b->members) attach(a, unit);
         b->members.clear();
         if (!b->emptied) {
@@ -326,13 +426,92 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
 
     void group_member_pass(void* group) override {
-        // 00A2C790, head read only: walks members and calls
-        // member->vtable[+114h]. contract: partial. Nothing is dispatched here;
-        // the command a planner chose is issued at order_attack instead.
+        // 00A2C790, body 00A2C790-00A2C8C6, read in full. The members report
+        // their weapon directors' state to the group's AI command, whose vt+24h
+        // is 00A0FC90 in all sixteen classes and discards it; then the command
+        // ticks on its own 2-4 s schedule.
         Group* g = group_at(group);
         if (g == nullptr) return;
-        summary.member_passes += g->members.size();
-        record("AiGroups::group_member_pass", 0x00a2c790u);
+        const bsp::AiCommandMemberPassResult pass =
+            bsp::ai_command_member_pass_00a2c790(*this, group);
+        summary.member_passes += pass.members_walked;
+        summary.member_reports += pass.notifications_sent;
+        if (pass.ticked) ++summary.command_ticks;
+        done("AiGroups::group_member_pass", 0x00a2c790u);
+    }
+
+    // ---- bsp::AiCommandMemberPassHost, one method per native call ----------
+    // group_population and fixed_step_clock are the AiGroupThinkHost overrides
+    // further down; the two interfaces declare them identically.
+    std::size_t group_member_count(void* group) override {
+        Group* g = group_at(group);
+        return g == nullptr ? 0u : g->members.size();
+    }
+    void* group_member_at(void* group, std::size_t index) override {
+        Group* g = group_at(group);
+        if (g == nullptr || index >= g->members.size()) return nullptr;
+        return handle(g->members[index]);
+    }
+    void* group_command(void* group) override {
+        Group* g = group_at(group);
+        return g == nullptr ? nullptr : static_cast<void*>(&g->command);
+    }
+    void* member_weapon_director(void* member) override {
+        // member->vtable[+114h]. This process has no director object to hand
+        // back, so a live unit stands in for a non-null director and the two
+        // readers below take the unit index. Labelled substitution.
+        if (member == nullptr) return nullptr;
+        const std::size_t unit = unit_index_of(member);
+        if (!units.unit_active(unit)) return nullptr;
+        return member;
+    }
+    void* director_target_descriptor(void* director) override {
+        // 0071EB60. The descriptor is read for its side effect on the census
+        // only; the notification that would consume it is discarded natively.
+        const std::size_t unit = unit_index_of(director);
+        bsp::SceneCommandTarget target;
+        int mode = 0;
+        if (!units.active_command_descriptor_0071eb60(unit, target, mode)) return nullptr;
+        ++summary.member_descriptors;
+        return director;
+    }
+    void* director_current_command(void* director) override {
+        const std::size_t unit = unit_index_of(director);  // 0071BE40
+        const std::uint32_t command = units.director_current_command_0071be40(unit);
+        if (command != 0u) ++summary.member_scene_commands;
+        return reinterpret_cast<void*>(static_cast<std::uintptr_t>(command));
+    }
+    void command_notify_member(void* command, void* current_command,
+                               void* target_descriptor) override {
+        // vtable[+24h] is 00A0FC90, `RET 8`, in every one of the sixteen
+        // vtables between 00D22968 and 00D22C68. Nothing is done with either
+        // argument, natively or here.
+        (void)command;
+        (void)current_command;
+        (void)target_descriptor;
+    }
+    void command_tick(void* command) override {
+        // vtable[+0Ch]. NONCONTROL tail-calls 00A10EC0 and IDLE runs 00A10EC0,
+        // 00A10DC0 and 00A11070; none of the three was read, so nothing is
+        // executed here beyond the census.
+        (void)command;
+        record("AiCommand::tick_000c", 0x00a10ec0u);
+    }
+    void command_pass_interval(void* command, float* low, float* high) override {
+        (void)command;  // 00A0FC50, shared by all sixteen classes
+        *low = bsp::kAiCommandMemberPassIntervalLow;
+        *high = bsp::kAiCommandMemberPassIntervalHigh;
+    }
+    float member_pass_due(void* group) override {
+        Group* g = group_at(group);
+        return g == nullptr ? 0.0f : g->member_pass_due;
+    }
+    void store_member_pass_due(void* group, float when) override {
+        Group* g = group_at(group);
+        if (g != nullptr) g->member_pass_due = when;
+    }
+    float random_interval(float low, float high) override {
+        return random_00bd2f10(low, high);  // the same stream 00BD2F10 drives
     }
 
     float auto_merge_dist() override {
@@ -561,14 +740,12 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // (CautiousAttack, class 8); the planner's already-on-it test asks the
         // command's vtable +4h for its type. NonControl is what a group with
         // no command answers.
-        if (g == nullptr || !g->has_command) return bsp::AiCommandType::NonControl;
-        return g->command_arm == AiAttackArm::CautiousAttack
-            ? bsp::AiCommandType::CautiousAttack
-            : bsp::AiCommandType::MoveToAttack;
+        if (g == nullptr) return bsp::AiCommandType::NonControl;
+        return g->command.type;
     }
     void* group_command_target(void* group) override {
         Group* g = group_at(group);
-        return (g != nullptr && g->has_command) ? static_cast<void*>(g->command_target) : nullptr;
+        return g != nullptr ? g->command.target_group : nullptr;
     }
     void clear_group_target_cache(void* group) override {
         (void)group;
@@ -726,13 +903,23 @@ void GameAiCoordinatorHost::Impl::order_attack(void* group, void* target, float 
     Group* t = group_at(target);
     if (g == nullptr || t == nullptr) return;
     if (g->members.empty()) return;                      // +5644h == 0
-    if (g->has_command && g->command_target == t) return; // already on it
+    // command->vtable[+8h](ATTACK) and command+1Ch == target.
+    if (bsp::ai_command_is_type(g->command.type, bsp::AiCommandType::Attack) &&
+        g->command.target_group == static_cast<void*>(t)) {
+        return;  // already on it
+    }
     // A higher aggressive ratio makes CAUTIOUSATTACK less likely, because
     // 00BD2F40's uniform draw is compared against it.
     const bool cautious = random_00bd2f10(0.0f, 1.0f) > aggressive;
-    g->command_arm = cautious ? AiAttackArm::CautiousAttack : AiAttackArm::MoveToAttack;
-    g->has_command = true;
-    g->command_target = t;
+    // 00A2BD00: the outgoing command is destroyed through its vtable[+0h] with
+    // flag 1 and the new pointer is stored at group+564Ch.
+    if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
+    bsp::AiCommandObject replacement;
+    replacement.type = cautious ? bsp::AiCommandType::CautiousAttack
+                                : bsp::AiCommandType::MoveToAttack;
+    replacement.owner_group = g;
+    replacement.target_group = t;
+    g->command = replacement;
     ++summary.attack_orders;
     if (cautious) ++summary.attack_cautious;
     else ++summary.attack_movetoattack;
@@ -831,7 +1018,9 @@ void GameAiCoordinatorHost::report() {
     const GameAiSummary& s = host.summary;
     std::size_t with_task = 0;
     for (const Impl::Group* g : host.registry) {
-        if (g != nullptr && g->has_command) with_task += g->members.size();
+        if (g != nullptr && bsp::ai_group_command_is_engaged(g->command.type, 0.0f, 0.0f)) {
+            with_task += g->members.size();
+        }
     }
     host.summary.units_with_task = static_cast<unsigned long long>(with_task);
     host.log.notef("summary mission ai coordinator game_mode=%d compose=%llu seeds=%llu "
@@ -864,10 +1053,11 @@ void GameAiCoordinatorHost::report() {
     }
     for (const Impl::Group* g : host.registry) {
         if (g == nullptr) continue;
-        host.log.notef("  ai group team=%d party=%d members=%zu claimed=%d command=%d "
-            "arm=%s", g->team, g->party, g->members.size(), g->claimed_by != nullptr ? 1 : 0,
-            g->has_command ? 1 : 0,
-            g->command_arm == AiAttackArm::CautiousAttack ? "cautious" : "movetoattack");
+        host.log.notef("  ai group team=%d party=%d members=%zu claimed=%d command=%s "
+            "target=%d", g->team, g->party, g->members.size(),
+            g->claimed_by != nullptr ? 1 : 0,
+            bsp::ai_command_type_name(g->command.type),
+            g->command.target_group != nullptr ? 1 : 0);
     }
 }
 
