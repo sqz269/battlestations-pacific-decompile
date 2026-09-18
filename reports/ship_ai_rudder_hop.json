@@ -1,0 +1,385 @@
+{
+ "packet": "cc8_ship_ai_rudder_hop",
+ "owner": "agent/cc8-ship-rudder-hop",
+ "project": "C:/Users/sqz269/bsp.gpr",
+ "program": "/battlestationspacific.exe",
+ "ghidra_access": "read-only: no rename, comment, prototype, function creation or save",
+ "doc": "docs/SHIP_AI_RUDDER_HOP.md",
+ "source": "include/bsp/ship_ai_rudder_hop.hpp, src/ship_ai_rudder_hop.cpp, src/game_hosts_ship_ai.cpp (comment and log note only), cmake/startup.cmake",
+ "build": "scripts/build.ps1, Win32 Release, /W4 /WX clean; ctest all existing cases pass; no test added",
+ "note": "The packet's premise does not survive the listing. Unit vtable slot 50h has ONE ABI at all four call sites, __thiscall float(void) RET 0, concrete target 006DFD60 = FLD [ECX+1050h]; RET, installed at 00CFC420. The float at 00826CD5 is the third argument of 00810190, which is RET 0Ch. And 00826C34..00826D69 is not an AI-heading-to-rudder hop: the ordered rudder unit+984h was already applied to the body at 00826B54 by 0092E8C0, 00826C75's yaw rate is only wake-trail metadata, and unit+1050h is WRITTEN here at 00826C56 from atan2 over world row 2, so the hull heading is an output of the tick. The range is reconstructed complete as the motion tail; its host binding belongs to src/game_hosts_units.cpp, leased elsewhere, so it is a contract and nothing changes at run time.",
+ "routines": [
+  {
+   "address": "00825f20",
+   "native": "00825f20",
+   "name": "BSP_UnitInstance_UpdateShipMotion, the tail 00826C34..00826D69 only",
+   "abi": "inside 00825F20, void __thiscall(unit, float dt), RET 4 at 00826D69; frame base restored by POP EDI/ESI/EBP/EBX + ADD ESP,0B0h at 00826D5F..00826D63",
+   "coverage": "complete for 00826C34..00826D69; the three inlined world-matrix copies at 00826B86/00826BE0/00826C7A sit below the range and are a host method",
+   "rule": "00826C3B heading = atan2(unit+0ECh, unit+0F4h) = atan2(worldRow2.x, worldRow2.z); 00826C56 unit+1050h = heading; 00826C5C 0092E5B0(unit+1018h, 0); 00826C75 yawRate = 00811890(unit, unit+984h); 00826C7A refresh unit+0CCh; 00826CDB heading2 = unit->vtable[50h](); 00826CEE 00810190(unit+0BD0h, &unit+0FCh, heading2, yawRate); 00826CF5 if 00778890(unit): t = unit+1158h - dt, unit+1158h = t, if t < 0 then unit+1158h = t + 00424C40()->[430h] and 0070DB60([unit+284h]); 00826D4B if unit+308h != [00D7A218] then 0077A650(unit)",
+   "reconstruction": "bsp::ship_motion_tail_00826c34 and bsp::ship_hull_heading_00826c3b"
+  },
+  {
+   "address": "006dfd60",
+   "native": "006dfd60",
+   "name": "BSP_UnitInstance_GetHullHeading (ledger name added by this packet)",
+   "abi": "__thiscall float(void), RET 0 at 006DFD66, body 006DFD60-006DFD66, seven bytes",
+   "coverage": "complete",
+   "rule": "returns unit+1050h. Unit vtable 00CFC3D0 slot 50h: 00CFC420 holds 60 fd 6d 00",
+   "reconstruction": "ShipMotionTailHost::unit_heading_vtable50"
+  },
+  {
+   "address": "00810190",
+   "native": "00810190",
+   "name": "BSP_UnitWake_AppendSample (ledger name added by this packet)",
+   "abi": "__thiscall(vec3* worldPos, float heading, float yawRate), RET 0Ch at 0081062C, body 00810190-0081062E",
+   "coverage": "PARTIAL: argument roles, RET 0Ch and the record layout only. The drift offset at this+3D0h and the reseat branch under the this+3CCh flag are read but not reconstructed",
+   "rule": "appends to a 40-entry ring of 18h-byte records at this+8, write cursor this+3C8h; record fields position +0/+4/+8, heading +14h, cumulative segment length +18h, yaw rate +1Ch; a minimum squared-distance gate returns early",
+   "reconstruction": "none; ShipMotionTailHost::append_wake_sample_00810190"
+  },
+  {
+   "address": "00778890",
+   "native": "00778890",
+   "name": "BSP_UnitInstance_IsOccupantOwner (ledger name added by this packet)",
+   "abi": "__thiscall bool(void), RET 0 at 0077889C and 007788A7, body 00778890-007788A7, seventeen bytes",
+   "coverage": "complete",
+   "rule": "MOV EAX,[ECX+284h]; if zero return false; return [EAX+14h] == ECX",
+   "reconstruction": "ShipMotionTailHost::occupant_owns_unit_00778890"
+  },
+  {
+   "address": "0077a650",
+   "native": "0077a650",
+   "name": "unnamed; read whole, not named because unit+308h's meaning is not established",
+   "abi": "__thiscall void(void), RET 0 at 0077A689, body 0077A650-0077A689",
+   "coverage": "complete as read",
+   "rule": "if (unit+308h >= [00F876A4]) and ([[00E188A8]+1FE4h] != 2): 0090EBF0([[00E188A8]+21A0h], unit); 00926D90(unit, 3)",
+   "reconstruction": "ShipMotionTailHost::field_308_crossed_0077a650"
+  },
+  {
+   "address": "00811960",
+   "native": "00811960",
+   "name": "BSP_UnitHeadingCommand_SetLimitedTarget (existing name, re-read for the slot-50h question)",
+   "abi": "__thiscall void(float desired), RET 4 at 00811A22, body 00811960-00811A22",
+   "coverage": "read whole for its ABI and its slot-50h call; reconstruction owned by docs/UNIT_RUDDER_CURVE.md",
+   "rule": "this+50h is a unit (00811975 MOV ECX,[EAX+1018h] then 0092D730). current = unit->vtable[50h](); if 0092D730(unit+1018h) <= [00D7A260] then current = 00438AA0(current, [00D7A264]) - 00811980 FLD [00D7A260]; FCOMIP st(1) compares the constant with the speed and JB at 0081198A skips the add when the constant is the smaller, so the add is the sternway arm; d = 00438B10(current, desired); clamp d to [-pi/4 (00D09448), +pi/4 (00CEDCD0)]; this+44h = 00438B10(current, d); this+4Ch = 1",
+   "reconstruction": "existing, docs/UNIT_RUDDER_CURVE.md"
+  },
+  {
+   "address": "00811940",
+   "native": "00811940",
+   "name": "BSP_UnitInstance_GetCurrentCommandYawRate (existing name, cited as the packaged form)",
+   "abi": "__thiscall float(void), RET 0 at 00811959, body 00811940-00811959",
+   "coverage": "complete as read",
+   "rule": "return 00811890(this, this+984h) - the same two instructions as 00826C61..00826C81",
+   "reconstruction": "none needed; bsp::unit_yaw_rate_00811890 covers the callee"
+  }
+ ],
+ "call_sites": [
+  {
+   "routine": "00825f20",
+   "address": "00826c41",
+   "native": "00bf701a",
+   "note": "LIBCRT_atan2, x87 entry. ST1 = unit+0ECh pushed at 00826C3B, ST0 = unit+0F4h pushed at 00826C3E"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826c5c",
+   "native": "0092e5b0",
+   "note": "ECX = [EDI+0D08h] = unit+1018h, the controller; PUSH 0 at 00826C54. Body not read"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826c75",
+   "native": "00811890",
+   "note": "ECX = ESI = unit, one float pushed by PUSH ECX / FSTP [ESP] at 00826C6B / 00826C72; RET 4, result FSTP [ESP+18h]"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826c8e",
+   "native": "00414db0",
+   "note": "third inlined world-matrix copy: ECX = [ESI+3Ch], the parent, when non-zero"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826ca8",
+   "native": "00413920",
+   "note": "ECX = ESI+74h, two pushes: [ESI+3Ch]+0CCh and LEA EAX,[ESP+44h]"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826cb9",
+   "native": "004134f0",
+   "note": "ECX = ESI+0CCh, one push; then MOV byte [ESI+0C8h],1 and byte [ESI+10Ch],0"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826cdb",
+   "native": "006dfd60",
+   "note": "indirect, CALL EAX with EAX = [[ESI]+50h] read at 00826CCC/00826CD2. Nothing of its own is pushed: RET 0. The FSTP [ESP] at 00826CD8 fills 00810190's third argument slot"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826cee",
+   "native": "00810190",
+   "note": "ECX = EDI+8C0h = unit+0BD0h; three stack arguments, RET 0Ch: LEA ECX,[ESI+0FCh], the heading, the yaw rate"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826cf5",
+   "native": "00778890",
+   "note": "ECX = ESI = unit; TEST AL,AL then JE 00826D43 gates the timer block"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826d21",
+   "native": "00424c40",
+   "note": "the settings singleton; FLD [EAX+430h] at 00826D26 is the timer refill"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826d3e",
+   "native": "0070db60",
+   "note": "ECX = [EDI-8Ch] = [unit+284h], the occupant record. Body not read"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826d5a",
+   "native": "0077a650",
+   "note": "ECX = ESI = unit; reached only when UCOMISS at 00826D4B says unit+308h != [00D7A218]"
+  },
+  {
+   "routine": "00811960",
+   "address": "0081196c",
+   "native": "006dfd60",
+   "note": "indirect, CALL EDX with EDX = [[ESI+50h]+50h]. Nothing pushed; 0081196E FSTP [ESP+4] needs ESP unchanged, so RET 0"
+  },
+  {
+   "routine": "00811960",
+   "address": "0081197b",
+   "native": "0092d730",
+   "note": "ECX = [[ESI+50h]+1018h], the unit controller: this+50h is a unit, so both sites share vtable 00CFC3D0"
+  },
+  {
+   "routine": "00811960",
+   "address": "008119a0",
+   "native": "00438aa0",
+   "note": "BSP_Math_AddWrappedAngle(current, [00D7A264]), two stack floats, RET 8"
+  },
+  {
+   "routine": "00811960",
+   "address": "008119bb",
+   "native": "00438b10",
+   "note": "BSP_Math_SubtractWrappedAngle(current, desired); arg1 at [ESP] is current, arg2 at [ESP+4] the incoming float"
+  },
+  {
+   "routine": "00811960",
+   "address": "00811a14",
+   "native": "00438b10",
+   "note": "the same routine again with the clamped difference; 00811A19 FSTP [ESI+44h]"
+  },
+  {
+   "routine": "00811940",
+   "address": "00811953",
+   "native": "00811890",
+   "note": "the packaged form of 00826C61..00826C81; ECX is already this"
+  },
+  {
+   "routine": "009f4034",
+   "address": "009f407b",
+   "native": "006dfd60",
+   "note": "indirect through [ESI+3FCh]; nothing pushed, 009F407D FSTP [ESP+1Ch]. Third independent RET 0 witness"
+  },
+  {
+   "routine": "00937440",
+   "address": "00937572",
+   "native": "none",
+   "kind": "field_read",
+   "note": "MOV EDX,[EDI+1Ch]; FLD [EDX+984h] - where the ordered rudder actually steers the ship, multiplied with settings+588h"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826b54",
+   "native": "0092e8c0",
+   "note": "cited from docs/SHIP_MOTION.md, not re-read: the steering application of unit+984h, forty instructions before the tail"
+  },
+  {
+   "routine": "00810190",
+   "address": "00810645",
+   "native": "none",
+   "kind": "field_read",
+   "note": "00810630 BSP_UnitWake_SampleAtDistance reads the same cursor [ECX+3C8h], which is the evidence for the wake family name"
+  }
+ ],
+ "host_steps": [
+  {
+   "routine": "00825f20",
+   "address": "00826c5c",
+   "native": "0092e5b0",
+   "kind": "call",
+   "function": "00825f20",
+   "method": "ShipMotionTailHost::controller_0092e5b0",
+   "note": "CONTRACT ONLY: src/game_hosts_units.cpp is leased elsewhere, nothing is bound this packet"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826c75",
+   "native": "00811890",
+   "kind": "call",
+   "function": "00825f20",
+   "method": "ShipMotionTailHost::yaw_rate_from_rudder_00811890",
+   "note": "CONTRACT ONLY; bsp::unit_yaw_rate_00811890 already reconstructs the callee"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826cb9",
+   "native": "004134f0",
+   "kind": "call",
+   "function": "00825f20",
+   "method": "ShipMotionTailHost::refresh_world_matrix",
+   "note": "CONTRACT ONLY; one method for the whole inlined accessor at 00826C7A..00826CC5"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826cdb",
+   "native": "006dfd60",
+   "kind": "call",
+   "function": "00825f20",
+   "method": "ShipMotionTailHost::unit_heading_vtable50",
+   "note": "CONTRACT ONLY; must return the unit+1050h this tail just wrote"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826cee",
+   "native": "00810190",
+   "kind": "call",
+   "function": "00825f20",
+   "method": "ShipMotionTailHost::append_wake_sample_00810190",
+   "note": "CONTRACT ONLY; no reconstruction of the callee exists"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826cf5",
+   "native": "00778890",
+   "kind": "call",
+   "function": "00825f20",
+   "method": "ShipMotionTailHost::occupant_owns_unit_00778890",
+   "note": "CONTRACT ONLY"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826d21",
+   "native": "00424c40",
+   "kind": "call",
+   "function": "00825f20",
+   "method": "ShipMotionTailHost::occupant_timer_refill_00424c40_430",
+   "note": "CONTRACT ONLY"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826d3e",
+   "native": "0070db60",
+   "kind": "call",
+   "function": "00825f20",
+   "method": "ShipMotionTailHost::occupant_tick_0070db60",
+   "note": "CONTRACT ONLY"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826d5a",
+   "native": "0077a650",
+   "kind": "call",
+   "function": "00825f20",
+   "method": "ShipMotionTailHost::field_308_crossed_0077a650",
+   "note": "CONTRACT ONLY"
+  }
+ ],
+ "corrections": [
+  {
+   "document": "docs/UNIT_AI_ORDER_SLOT_READER.md",
+   "was": "the two call sites of unit vtable slot 50h disagree on the prototype; 00826CD5 sets up one outgoing float",
+   "is": "all four sites are __thiscall float(void) RET 0, concrete target 006DFD60; the float is 00810190's third argument",
+   "evidence": "0081062C RET 0Ch; the epilogue balance at 00826D5F..00826D69; 00CFC420 = 006DFD60",
+   "how": "appended section, original text untouched"
+  },
+  {
+   "document": "docs/UNIT_AI_ORDER_SLOT_READER.md",
+   "was": "00826C61..00826CDB carries the hop from the ring's rudder to the unit's heading",
+   "is": "the rudder is applied at 00826B54 by 0092E8C0; 00826C75's yaw rate is wake-trail metadata; unit+1050h is written at 00826C56 from atan2 over world row 2",
+   "evidence": "00826C56 FSTP [EDI+0D40h]; 006DFD60 FLD [ECX+1050h]; docs/SHIP_MOTION.md's 00826B54 row",
+   "how": "appended section, original text untouched"
+  },
+  {
+   "document": "docs/SHIP_AI_RING_WINNER.md",
+   "was": "follow-up packet ship_ai_vtable50_prototype: until that is settled the rudder-to-yaw hop cannot be bound",
+   "is": "settled, and there is no such hop to bind; the packet is closed",
+   "evidence": "the same",
+   "how": "appended section, original text untouched"
+  },
+  {
+   "document": "src/game_hosts_ship_ai.cpp",
+   "was": "the comment and log note at the ShipAiOrder::slot_to_order_ring record, quoting the hop claim",
+   "is": "corrected in place with the superseded claim quoted in the new text; the census key is deliberately NOT renamed, so counts stay comparable",
+   "evidence": "docs/SHIP_AI_RUDDER_HOP.md",
+   "how": "in-place edit of the comment and the log note only"
+  }
+ ],
+ "no_ghidra_function": [],
+ "validation": {
+  "build": "scripts/build.ps1 Win32 Release /W4 /WX: clean",
+  "tests": "ctest --test-dir build/win32 -C Release: all existing cases pass; no case added, the reconstruction has no caller yet",
+  "usn02": "--frames 3200 --press-start-frame 30 --menu-select USN02 --mission-frames 3000 --mission-frame-seconds 0.05: queued_hits=126 dispatched=126 hull=125 part=0 fires=0 floods=0 attributions=126 deaths=3 kill_credits=3 total_damage=13673.7 first_hit=41.85 s; ship ai ring hops=96000 writes=96000 rudder_law=93000 deadbands=17810 live_pair_changes=35010 driven=0; host methods 707 concrete, 489 unimplemented. Identical to the standing census at main 9ac3fcbb7, which is the expected result: nothing is bound, so nothing can move",
+  "usn01": "same settings, for the record; see the report text",
+  "attribution": "this packet changed no run-time path. Every census figure is unchanged by construction, not by coincidence"
+ },
+ "follow_up_packets": [
+  {
+   "id": "ship_motion_tail_binding",
+   "addresses": [
+    "00826c34",
+    "00810190"
+   ],
+   "what": "land the ShipMotionTailHost contract in src/game_hosts_units.cpp once the file is free; one commit, no new analysis"
+  },
+  {
+   "id": "unit_wake_trail_00810190",
+   "addresses": [
+    "00810190",
+    "00810160",
+    "00810630"
+   ],
+   "what": "the wake ring proper: the drift offset at +3D0h, the reseat branch under the +3CCh flag, and what reads the forty records"
+  },
+  {
+   "id": "ship_ai_heading_to_rudder",
+   "addresses": [
+    "009f4d10",
+    "00811960",
+    "00937572",
+    "0092e8c0"
+   ],
+   "what": "the gap this packet proves is still open: 00811A19 writes the limited heading target to cmd+44h and nothing established turns it into unit+984h"
+  },
+  {
+   "id": "unit_controller_0092e5b0",
+   "addresses": [
+    "0092e5b0"
+   ],
+   "what": "the one call in this tail whose body is unread; gated on controller+60h, reads the physics body through 00C31F40"
+  },
+  {
+   "id": "unit_occupant_record_284",
+   "addresses": [
+    "00778890",
+    "0070db60",
+    "0077a650"
+   ],
+   "what": "what unit+284h is, what the settings+430h timer drives, and what unit+308h is compared against"
+  }
+ ],
+ "uncertainties": [
+  "00810190's name BSP_UnitWake_AppendSample rests on the shared cursor [ECX+3C8h] with 00810630 BSP_UnitWake_SampleAtDistance and on adjacency. Nothing read here shows the ring being drawn, so 'wake' is inherited, not proven by this packet.",
+  "0092E5B0 and 0070DB60 are named by address in the host on purpose: their bodies were not read.",
+  "unit+308h and unit+284h have no established meaning. 0077A650 and 00778890 are described by what they do, not by what they are for.",
+  "The disp32 census for unit+984h finds no literal-displacement writer. That is an absence over one addressing idiom; docs/MOTION_DIFFERENTIAL.md puts the writers at 0080DA3A and 0082674C through the ring base, which the census cannot see.",
+  "Whether every unit class that reaches 00826CDB carries vtable 00CFC3D0 is not proven exhaustively. Four call sites were checked and all four are RET 0; ShipMotionTailStep reports hull_heading and heading_read_back separately so a binder can detect a class whose slot 50h is not 006DFD60."
+ ]
+}

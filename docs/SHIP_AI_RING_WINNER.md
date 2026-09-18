@@ -157,3 +157,16 @@ none. `00825F7C` has no function of its own and was not read here; it lies insid
   writes into `nested+11D4h` / `nested+11D5h`. No ship on USN02 takes that arm, so it is untested
   here.
 - `recon_sensor_pass_rule_c`: `00806840` and `008048A0`, still open.
+
+## Correction appended by packet `cc8_ship_ai_rudder_hop` (2026-09-18)
+
+The section "Half 2, where the AI's order actually goes" quotes
+`docs/UNIT_AI_ORDER_SLOT_READER.md` for the claim that `00825F7C..00826D6B` "carries the
+hop from the ring's own ordered rudder at `+984h` (`00826C61`) through `00811890`
+(`00826C75`) to `unit->vtable[50h]` (`00826CDB`)", and its follow-up row
+`ship_ai_vtable50_prototype` says that hop cannot be bound until the prototype is settled.
+
+Both are superseded by `docs/SHIP_AI_RUDDER_HOP.md`. The prototype is settled - all four
+sites are `RET 0` with no arguments, concrete target `006DFD60` - and there is no hop to
+bind, because the rudder is applied at `00826B54` and `00826C75`'s yaw rate only becomes
+wake-trail metadata through `00810190`. `ship_ai_vtable50_prototype` is closed.
