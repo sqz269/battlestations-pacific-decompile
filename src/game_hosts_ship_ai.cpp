@@ -32,6 +32,7 @@
 #include "bsp/director_update_arms.hpp"
 #include "bsp/ship_ai_approach_update.hpp"
 #include "bsp/ship_ai_attackmove_substates.hpp"
+#include "bsp/ship_ai_approach_curves.hpp"
 #include "bsp/ship_ai_bearing_rating.hpp"
 #include "bsp/ship_ai_ring_scan.hpp"
 #include "bsp/ship_ai_clearance_profile.hpp"
@@ -393,6 +394,17 @@ struct GameShipAiHost::Impl {
         bsp::ShipAiAttackMoveRingSlot approach_ring[bsp::kAttackMoveRingSlotCount]{};
         bsp::ShipAiApproachSlotScore approach_scores[bsp::kShipAiApproachSlotCount]{};
         bool approach_ring_built{false};
+        // Packet cc8_ship_ai_approach_curves: the two 60-sample range curves at
+        // nested+12C0h and nested+13B0h, cleared by 00954940 at 009E55C3 and
+        // 009E55CE. The first is the own unit's expected damage against the
+        // target at 50*(i+1) metres, the second the target's against us.
+        // 009F1BC0 refills them at 009F2F11 and 009F2FB1 through 0095F080; the
+        // countdowns that gate the refill are nested+1220h and nested+1224h,
+        // which the projection of 009F1BC0 already counts down at 009F1C07 and
+        // 009F1C13 but, its tail being unread, never re-arms.
+        bsp::ShipAiApproachRangeCurve approach_curve_own{};    // nested+12C0h
+        bsp::ShipAiApproachRangeCurve approach_curve_target{}; // nested+13B0h
+        bool approach_curves_built{false};
     };
     std::vector<Controller> controllers;
     std::vector<GameShipAiRow> rows;
@@ -416,6 +428,30 @@ struct GameShipAiHost::Impl {
                 static_cast<std::uint32_t>(index) + 1u);
         }
         done("ShipAiApproach::build_ring_009e5530", 0x009e5530u);
+    }
+
+    // 009E55C3 and 009E55CE, the two 00954940 clears; then the refill 009F1BC0
+    // performs at 009F2F11 (the own unit, prefer_long_range = 1, re-arming
+    // nested+1220h with 1.5f at 009F2F16) and 009F2FB1 (the target,
+    // prefer_long_range = 0, re-arming nested+1224h with 2.0f at 009F2FB6).
+    // Both sites are in the span of 009F1BC0 that packet
+    // ship_ai_approach_frame_state_tail still owns, so the countdown and the
+    // re-arm live here rather than in src/ship_ai_approach_update.cpp.
+    //
+    // The query blocks at nested+127Ch and nested+1238h have no producer in
+    // this process beyond the two window constants 009F2EA1 and 009F2EB1 write,
+    // so only those are set; everything else is the zero the block is born
+    // with. Whatever 0095EB40 then answers, the curve rules around it are the
+    // image's.
+    // The refill itself needs FirepowerBinding, which is declared far below, so
+    // it lives in ApproachUpdateBinding::refresh_approach_curves. This clear is
+    // all Impl can do on its own.
+    void ensure_approach_curves(Controller& ctl) {
+        if (ctl.approach_curves_built) return;
+        ctl.approach_curves_built = true;
+        bsp::ship_ai_approach_curve_clear_00954940(ctl.approach_curve_own);
+        bsp::ship_ai_approach_curve_clear_00954940(ctl.approach_curve_target);
+        done("ShipAiApproach::curve_clear_00954940", 0x00954940u);
     }
 
     void record(const char* method, std::uint32_t address) {
@@ -1314,19 +1350,23 @@ public:
         owner_.record("ShipAiApproach::random_stream1_00bd2f10", 0x00bd2f10u);
         return low;
     }
+    // Packet cc8_ship_ai_approach_curves. 009E71A5 puts nested+13B0h (the
+    // target's curve) in EBX and 009E71B9 puts nested+12C0h (the own curve) in
+    // EBP; 009E71AE calls 00952530 on EBX, 009E71EF calls 009523C0 on EBP,
+    // 009E721A samples EBP and 009E722D samples EBX.
     float curve_base_00952530() override {
-        owner_.record("ShipAiApproach::curve_base_00952530", 0x00952530u);
-        return 0.0f;
+        return bsp::ship_ai_approach_curve_effective_range_00952530(
+            ctl_.approach_curve_target);
     }
     float curve_reference_009523c0() override {
-        owner_.record("ShipAiApproach::curve_reference_009523c0", 0x009523c0u);
-        return 0.0f;
+        return bsp::ship_ai_approach_curve_peak_009523c0(ctl_.approach_curve_own);
     }
-    float curve_primary_00955a40(float) override {
-        owner_.record("ShipAiApproach::curve_primary_00955a40", 0x00955a40u);
-        return 0.0f;
+    float curve_primary_00955a40(float x) override {
+        return bsp::ship_ai_approach_curve_sample_00955a40(ctl_.approach_curve_own, x);
     }
-    float curve_secondary_00955a40(float) override { return 0.0f; }
+    float curve_secondary_00955a40(float x) override {
+        return bsp::ship_ai_approach_curve_sample_00955a40(ctl_.approach_curve_target, x);
+    }
     float nested_scan_scale_1284() override {
         owner_.record("ShipAiApproach::nested_scan_scale_1284", 0x009e7284u);
         return 0.0f;
@@ -1548,6 +1588,11 @@ public:
         owner_.record("ShipAiApproach::target_zone_object_0740", 0x009f1e36u);
         bsp::ship_ai_approach_frame_state_009f1bc0(ctl_.approach, has_target, false,
                                                    seconds, point);
+        // 009F2F11 and 009F2FB1, the two 0095F080 refills of the curve objects
+        // the standoff scan then samples. They sit in the span of 009F1BC0 the
+        // projection does not cover, and the countdowns they re-arm are the
+        // ones 009F1C07 and 009F1C13 have just decremented.
+        refresh_approach_curves(has_target);
         owner_.done("ShipAiApproach::frame_state", 0x009f1bc0u);
         owner_.record("ShipAiApproach::frame_state_unread_spans", 0x009f1dbfu);
         ++row_.approach_frames;
@@ -1573,6 +1618,15 @@ public:
         bsp::ship_ai_approach_choose_standoff_009e6e80(ctl_.approach,
             ctl_.goal_vector.raw_target_0b20 != 0u, standoff);
         owner_.done("ShipAiApproach::choose_standoff_range", 0x009e6e80u);
+        // Packet cc8_ship_ai_approach_curves: what the scan actually chose,
+        // nested+11E4h after 009E6E80.
+        const float chosen = ctl_.approach.standoff_range_11e4;
+        if (row_.standoff_choices == 0) {
+            row_.standoff_range_first = chosen;
+        }
+        row_.standoff_range_last = chosen;
+        ++row_.standoff_choices;
+        ++owner_.summary.standoff_choices;
     }
     void refresh_avoidance_009e9190(float seconds) override {
         AvoidBinding avoid(owner_, ctl_, index_);
@@ -1607,6 +1661,44 @@ public:
     }
 
 private:
+    // 009F2F11 and 009F2FB1, the two 0095F080 refills inside 009F1BC0. The own
+    // curve takes prefer_long_range = 1 and re-arms nested+1220h with 1.5f
+    // (009F2F16); the target's takes 0 and re-arms nested+1224h with 2.0f
+    // (009F2FB6). The query blocks at nested+127Ch and nested+1238h have no
+    // producer in this process beyond the two window constants 009F2EA1 and
+    // 009F2EB1 write, so only those two are set and the rest of the block is
+    // the zero it is born with. The curve rules around the answer are the
+    // image's; the answer itself is only as good as FirepowerBinding, whose
+    // device list is empty in this process.
+    void refresh_approach_curves(bool has_target) {
+        owner_.ensure_approach_curves(ctl_);
+
+        bsp::ShipAiFirepowerQuery query{};
+        query.window_seconds = 20.0f;        // 009F2EA1, 00CE3930
+        query.ready_horizon_seconds = 30.0f; // 009F2EB1, 00CE38C8
+        FirepowerBinding firepower(owner_, index_);
+
+        if (ctl_.approach.timer_1220 <= 0.0f) {
+            bsp::ship_ai_firepower_range_profile_0095f080(query,
+                ctl_.approach_curve_own.samples, true, firepower);
+            ctl_.approach.timer_1220 = 1.5f;
+            owner_.done("ShipAiApproach::curve_refresh_own_0095f080", 0x009f2f11u);
+            ++owner_.summary.approach_curve_refreshes;
+        }
+        if (ctl_.approach.timer_1224 <= 0.0f) {
+            // 009F2F3C, target->vtable[5Ch](5): no such probe in this process,
+            // so the presence of a target stands in for it.
+            owner_.record("ShipAiApproach::curve_target_kind_005c", 0x009f2f3cu);
+            if (has_target) {
+                bsp::ship_ai_firepower_range_profile_0095f080(query,
+                    ctl_.approach_curve_target.samples, false, firepower);
+                owner_.done("ShipAiApproach::curve_refresh_target_0095f080", 0x009f2fb1u);
+                ++owner_.summary.approach_curve_refreshes;
+            }
+            ctl_.approach.timer_1224 = 2.0f;
+        }
+    }
+
     GameShipAiHost::Impl& owner_;
     GameShipAiHost::Impl::Controller& ctl_;
     GameShipAiRow& row_;
@@ -4581,6 +4673,18 @@ void GameShipAiHost::report() {
         host.summary.ring_scan_bearings, host.summary.firepower_ratings,
         host.summary.path_follower_points, host.summary.path_follower_corners,
         host.summary.path_follower_advances);
+    // Packet cc8_ship_ai_approach_curves: what the 119-step scan at 009E71A5
+    // chose once the two curve objects behind it were real.
+    host.log.notef("summary mission ship ai standoff choices=%llu curve_refreshes=%llu "
+        "(009e6e80 writes nested+11e4h; 0095f080 fills nested+12c0h and nested+13b0h)",
+        host.summary.standoff_choices, host.summary.approach_curve_refreshes);
+    for (const GameShipAiRow& row : host.rows) {
+        if (row.standoff_choices == 0) continue;
+        host.log.notef("  standoff %-20s choices=%llu first=%.1f last=%.1f",
+            row.unit.c_str(), row.standoff_choices,
+            static_cast<double>(row.standoff_range_first),
+            static_cast<double>(row.standoff_range_last));
+    }
     host.log.notef("summary mission ship ai command completion events=%llu callbacks=%llu "
         "end_commands=%llu queue_advances=%llu",
         host.summary.command_events, host.summary.command_event_callbacks,
