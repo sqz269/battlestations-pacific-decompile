@@ -620,9 +620,15 @@ block. Every jump sense below was read from the branch byte: `009C45BB` `76` `JB
 | address | write |
 | --- | --- |
 | `009C44FD` | `approach->+CCh = 0`, the weapon selector |
-| `009C4512` | `cmd->+2B4h = 007C47F0(approach->+8h)` = `tuning+24Ch * (approach->+8h)->+184h` |
+| `009C4512` | `cmd->+2B4h = 007C47F0(approach->+8h)` = `tuning+24Ch` `Dynamics/SpdMultipliers/LevelFlight` (1.8) x `classDesc+184h` `StallSpd` (17.5), the **level-flight speed**, about 31.5 m/s on a default class |
 | `009C4518` | `cmd->+2B0h = 0` |
 | `009C4524` | `cmd->+2D8h = 1` |
+
+`approach+8h` is the plane class descriptor: `009C7A94` reads its `+188h` `MaxSpd` through the same
+pointer. Both halves of the product are already named, `docs/GAME_TUNING_SINGLETON.md` row `+24Ch`
+and `docs/PLANE_FLIGHT.md` row `+184h`, and `docs/PLANE_GROUND_OPS.md` step 6 forms the identical
+product at `007CBD7F`, so the turndown asks for exactly the speed the ground-ops water check calls
+level flight.
 
 That answers the throttle question directly: the turndown **does not touch** the throttle slot
 `plan+278h`/`+27Ch`. It writes the desired-speed pair, and `docs/PILOT_THROTTLE_CUT_RAISER.md`

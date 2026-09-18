@@ -369,7 +369,7 @@ DiveBombTurnDownResult dive_bomb_turndown_tick_009c44f0(
     const DiveBombTurnDownInputs& in) noexcept {
     DiveBombTurnDownResult out;
 
-    // 009C4512-009C4524, before any branch: the desired-speed command and the
+    // 009C4512-009C4524, before any branch: the level-flight speed command and the
     // one-shot the planner spends. docs/PILOT_THROTTLE_CUT_RAISER.md shows the
     // pair (+2B4h, +2D8h) is one command; nothing here touches +278h/+27Ch.
     out.speed_2b4 = in.desired_speed;
