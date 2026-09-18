@@ -1,0 +1,78 @@
+{
+  "packet": "cc8_ai_tuning_globals",
+  "owner": "agent/cc8-recon-binding",
+  "summary": "Filled the AI coordinator's tuning block, which answered zero for every field. Six of the 143 record slots are reconstructed: the four ai_planner_choose_attack_target reads and the two merge distances. The block loads on all three missions and no other number moves, and each consumer's reason for that is separate and named by address.",
+  "ghidra_writes": "none. Read-only analysis.",
+  "calls": [
+    {
+      "address": "00a335d0",
+      "native": "the AI globals loader",
+      "role": "its per-record loop over the reconstructed subset is bsp::ai_tuning_load_00a335d0, over an injected AiTuningLuaReader.",
+      "evidence": "docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md read it in full and carries the 143-slot key table. Verified for this packet: it runs Scripts\\global\\luaMW_init.lua then Scripts\\datatables\\HighLvlAIGlobals.lua at 00A33600 and 00A3365C, takes the HighLvlAIGlobals global, and loops seven times (XOR EDI,EDI at 00A3374B, CMP EDI,7 / JL at 00A370D4).",
+      "census_row": "AiController::load_tuning"
+    },
+    {
+      "address": "00a371a0",
+      "native": "the tuning reader",
+      "role": "GameAiCoordinatorHost::auto_merge_dist and ::tuning_field now read the loaded block through it; both are `done` rather than `record`.",
+      "evidence": "00A338DD IMUL EDX,EDX,23Ch and 00A338E3 LEA ESI,[EDX+ECX] against 00A371B3 LEA EAX,[EAX+ESI*1+4]: seven records of 23Ch bytes based at coordinator+4, so a loader store at +004h is record +000h.",
+      "census_row": "AiGroups::auto_merge_dist"
+    },
+    {
+      "address": "009ffc80",
+      "native": "BSP_Ai_EffectiveGameModeIndex",
+      "role": "reconstructed as ai_tuning_mode_009ffc80. It picks which of the seven records a rule reads.",
+      "evidence": "009FFC8D CALL 004BCA50, 009FFC92 CMP EAX,7 / JA to the zero at 009FFCF4, then 009FFC97 JMP [EAX*4 + 009FFCFC]. The jump table sends game modes 0, 1, 2 and 3 to the difficulty arm at 009FFC9E, which calls 00A15950 and clamps into 0..2; modes 4, 5, 6 and 7 take the literals 3, 4, 5 and 6 at 009FFCD0, 009FFCD9, 009FFCE2 and 009FFCEB."
+    },
+    {
+      "address": "00b66330",
+      "native": "BSP_LuaReference_GetFloatOrDefault",
+      "role": "its absent-key arm is the default path in ai_tuning_load_00a335d0.",
+      "evidence": "docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md, section Getters: it takes a float by value and answers it when the key is absent; the default column of that document's key table is that value, read out of the image."
+    },
+    {
+      "address": "00a37130",
+      "native": "CG_array_ctor_helper_00a37130",
+      "role": "one of the loader's two callers. Not reached in this process.",
+      "evidence": "Callsite census of 00A335D0: CALL 00A3717C here, JMP 00A371C7 in 00A371C0 BSP_AiGlobals_Reload. Two sites, no others."
+    },
+    {
+      "address": "00a15950",
+      "native": "the difficulty the 009FFC9E arm clamps",
+      "role": "NOT read. Nothing in this process produces a difficulty, so 0 is passed and mode 0 is taken.",
+      "evidence": "The three IslandCapture rows carry identical values for all six reconstructed fields, so the choice changes no number in this packet."
+    }
+  ],
+  "open_question_answered": {
+    "was": "docs/AI_PLANNERS.md: 'The Lua key names of tuning fields +1CCh, +1D0h, +1D4h, +1D8h, +208h's neighbours. The loader 00A335D0 has the store sites; they were not searched.'",
+    "is": "+1CCh FreeAttack_ObjectiveTargetMul, +1D0h FreeAttack_NearDist, +1D4h FreeAttack_FarDist, +1D8h FreeAttack_ExistingTargetMul, +208h AutoMerge_MergeDist, +20Ch AutoMerge_LeaveDist. The store sites were already searched by docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md; the open question is stale rather than unanswerable.",
+    "note": "Three of the four guessed names in bsp/ai_planners.hpp are confirmed: RangeNear, RangeFar and StickyFactor are the near distance, the far distance and the existing-target multiplier. OwnSetFactor is off: +1CCh is the multiplier applied to a target that is an objective, not a set-membership factor."
+  },
+  "installed_data": {
+    "file": "scripts/datatables/highlvlaiglobals.lua of the installed game, 1194 lines, modified 2024-07-13, which is that installation's untouched bulk date, the same as reconclasses.lua. This installation is modded and this file is not one of the modified ones; the values are this installation's and are not called retail.",
+    "sub_table_lines": "3, 191, 377, 563, 718, 887, 1042, in the loader's own mode order",
+    "values": "Every mode carries ObjectiveTargetMul 2, ExistingTargetMul 2, MergeDist 650 and LeaveDist 1200. NearDist and FarDist are 5000 and 12000 in every mode except EscortParams, which widens them to 9000 and 15000.",
+    "why_it_matters": "Two of the six shipped values are NOT the image default: ExistingTargetMul is 2 against a 1.5 default, and EscortParams widens the distances. A block filled from the image defaults alone would be wrong, which is why the script is read rather than assumed."
+  },
+  "scope": "The block is filled from authored rows transcribed into src/ai_tuning_globals.cpp, not by running the script on a Lua state, because reaching GameMissionLuaHost from this host needs a constructor argument in src/game_hosts_units.cpp, which packet cc8_torpedo_steering_delta holds. The rules take an injected reader so a live one is a one-line swap. Six of 143 slots are reconstructed; the other 137 stay at the zero an unloaded block holds.",
+  "validation": {
+    "build": "./scripts/build.ps1, Win32 /W4 /WX: clean.",
+    "tests": "ctest --test-dir build/win32 -C Release: 2/2 pass. No test added.",
+    "runs": "All six on this branch over main at 315adad83, the before side with the wiring stashed, the three after runs taken serially with the game process stopped between them.",
+    "loaded": "summary mission ai tuning mode=0 (IslandCaptureParams_Rookie) merge_dist=650.0 near=5000.0 far=12000.0 sticky=2.00, on all three missions.",
+    "ijn01": "before and after identical: groups 4, splits taken 2, auto merges 0, proximity merges 0, claims 2, attack orders 1, commands 34, gunnery shots 34 hull 4 deaths 2 damage 500.0, plane yaw_plans 5904",
+    "usn01": "before and after identical: groups 4, splits taken 2, auto merges 0, proximity merges 0, claims 2, attack orders 1, commands 17, gunnery shots 3838 hull 24 deaths 1 damage 229.5, plane yaw_plans 19563",
+    "usn02": "before and after identical: groups 2, splits taken 0, auto merges 0, proximity merges 0, claims 1, attack orders 1, commands 14, gunnery shots 562 hull 168 deaths 3 damage 19723.2",
+    "attribution": [
+      "AutoMerge_MergeDist = 650 is never compared. Phase 5 walks first_group_of_proximity_list, which is g_aiGroupsByTeam[2], the list 00A2EB11 and its four siblings read. Every group here takes its team from its first member's side and these missions carry sides 0 and 1 only, so list 2 is empty and the loop body never runs. docs/AI_GROUP_THINK.md already carries 'what value +54h takes for a group to land in g_aiGroupsByTeam[2]' as an open question.",
+      "can_auto_merge is still false, so phase 4 takes nothing regardless of tuning. It delegates to the absorbed group's +564Ch vtable[+14h] and this process builds no AI command object; docs/AI_COMMAND_LIFETIME.md names 00A13340.",
+      "The four planner fields changed the scores and not the argmax. One attack order lands per mission, at the same target as before, so the commands and the outcome are unchanged to the digit. The sticky multiplier of 2, the value furthest from its 1.5 default, would start to matter with a larger target set."
+    ]
+  },
+  "tool_problems": "tools/run_game.ps1 from main still leaves the game process alive after it returns. On an earlier pass a survivor held both the log file and bsp_game.exe, failing a link with LNK1104 and making one log read return a previous run's contents. Two bsp_game.exe processes created at 03:24:10 and again at 03:56:28 were still running minutes after the wrapper printed its summary and exited, parented to the wrapper's own pwsh.exe. Every run reported here was followed by an explicit stop before the next began.",
+  "uncertainties": [
+    "137 of the 143 record slots are still zero. Only the six the coordinator's own rules read are reconstructed.",
+    "The difficulty is 0 by substitution; 00A15950 has no producer here. All three IslandCapture rows agree on the six reconstructed fields, so it changes no number yet.",
+    "The block is transcribed rather than loaded from the live Lua state, so a mod that edits highlvlaiglobals.lua would not be picked up until the live reader lands."
+  ]
+}

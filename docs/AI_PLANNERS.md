@@ -393,3 +393,32 @@ The real caps, in the order they bite, are in `docs/AI_COMMAND_LIFETIME.md`:
 
 `00A13340` is still worth reading, for `00A2C8D0`'s merge predicate at `vtable[+14h]`, not for
 the order count.
+
+## Third correction appended by cc8_ai_tuning_globals
+
+**The open question "the Lua key names of tuning fields `+1CCh`, `+1D0h`, `+1D4h`, `+1D8h`,
+`+208h`'s neighbours. The loader `00A335D0` has the store sites; they were not searched" is
+stale.** The store sites were already searched, by `docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md`, whose
+key table carries all 143 slots with their defaults. The four offsets this document's planner
+reads are:
+
+| record | the name here | the shipped key | image default |
+| --- | --- | --- | --- |
+| `+1CCh` | `kAiPlannerTuningOwnSetFactor` | `FreeAttack_ObjectiveTargetMul` | 2 (`00CE3958`) |
+| `+1D0h` | `kAiPlannerTuningRangeNear` | `FreeAttack_NearDist` | 5000 (`00D1AF84`) |
+| `+1D4h` | `kAiPlannerTuningRangeFar` | `FreeAttack_FarDist` | 12000 (`00CE3968`) |
+| `+1D8h` | `kAiPlannerTuningStickyFactor` | `FreeAttack_ExistingTargetMul` | 1.5 (`00CE380C`) |
+
+and `+208h`'s neighbours are `CloseAttack_ExistingTargetMul` (`+200h`),
+`CloseAttack_TargetGroupMemberMul` (`+204h`), `AutoMerge_MergeDist` (`+208h`) and
+`AutoMerge_LeaveDist` (`+20Ch`).
+
+Three of the four guessed names hold: `RangeNear`, `RangeFar` and `StickyFactor` are the near
+distance, the far distance and the existing-target multiplier. **`OwnSetFactor` is wrong**:
+`+1CCh` is the multiplier applied to a target that is an objective, not a set-membership factor.
+The constant is left named as it is so no other packet's reference breaks;
+`docs/AI_TUNING_GLOBALS.md` carries the real key.
+
+The block these fields live in is now loaded by `GameAiCoordinatorHost`, so the planner scores
+against real numbers. It changed no outcome: one attack order lands per mission at the same
+target, so the scores moved and the argmax did not.
