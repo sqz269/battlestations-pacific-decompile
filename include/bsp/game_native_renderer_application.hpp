@@ -25,6 +25,7 @@ struct NativeShaderBinaryCacheContext;
 struct NativeShaderDescriptorStorage;
 struct NativeShaderDescriptorReadContext;
 class NativeShaderDescriptorReadOperation;
+struct NativeGameGridContext;
 }
 namespace bsp::game {
 struct GameNativeMaterialCompilerOwners;
@@ -66,6 +67,11 @@ public:
     // its own fallback reference follows the native cache cleanup schedule.
     NativeTextureCacheContext& texture_cache() noexcept;
     NativeRenderActualOwnerRegistry& actual_owners() noexcept;
+    // Borrowed until renderer teardown. Callers retain their actual grid
+    // storage, operation records and explicit descriptor preimages, and must
+    // release grids before draining this renderer. Uses the same VFS strings,
+    // declaration cache, stream owners and live process vector as the graph.
+    NativeGameGridContext& game_grid_context() noexcept;
     //73BF80's cache bracket over canonical process cells and this SAME VFS.
     // Keep it alive through material compilation, release before singleton drain.
     // Full preload loop remains separate; these entrypoints perform real I/O.

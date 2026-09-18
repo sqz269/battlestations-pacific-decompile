@@ -84,9 +84,9 @@ AiGroupableCombatantFacts plane_squadron_combatant_facts(
     // ship-base tail is never reached and is_ship_base stays false.
     facts.is_plane_squadron = true;
     facts.is_ship_base = false;
-    facts.squadron_has_carrier = lead.has_lead_plane;
-    facts.squadron_carrier_is_kind_17 = lead.lead_is_kamikaze_17;
-    facts.squadron_carrier_flag_0c24 = lead.lead_pilot_fires_0c24;
+    facts.squadron_has_flight_leader = lead.has_lead_plane;
+    facts.leader_is_kamikaze_kind_17 = lead.lead_is_kamikaze_17;
+    facts.leader_pilot_fires_0c24 = lead.lead_pilot_fires_0c24;
     return facts;
 }
 
