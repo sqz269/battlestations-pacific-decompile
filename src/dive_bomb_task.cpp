@@ -357,6 +357,19 @@ float dive_bomb_turn_direction_009c7800(int sign, float magnitude_draw) noexcept
     return magnitude_draw * side;
 }
 
+// 009C673F-009C67B0.
+bool dive_bomb_flyabove_roll_in_009c67b0(float bearing_error,
+                                         float clamped_slot) noexcept {
+    // 009C6796 stores the folded error; 009C67A3 FCOMIP against the 1.6 and
+    // 009C67A7 JA set the flag when the error is the larger.
+    if (static_cast<double>(fold_abs(bearing_error)) > kFlyAboveRollInBearing) {
+        return true;
+    }
+    // 009C67A9 COMISS 0, slot with 009C67AE JC skipping when the slot is
+    // positive. The slot is already max(x, 0), so this is x <= 0.
+    return !(clamped_slot > 0.0f);
+}
+
 // 009C67C7-009C680E.
 bool dive_bomb_flyabove_can_dive_009c680e(float height_above_target,
                                           float release_range_d4) noexcept {

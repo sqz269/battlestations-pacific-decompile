@@ -413,6 +413,21 @@ float dive_bomb_turn_direction_009c7800(int sign, float magnitude_draw) noexcept
 bool dive_bomb_flyabove_can_dive_009c680e(float height_above_target,
                                           float release_range_d4) noexcept;
 
+// 009C673F-009C67B0: flyabove+19h, the roll-in permission the transition rule
+// reads at 009C854D. The bearing error comes from the wrap into [0, 2pi) at
+// 009C6749 and BSP_Math_SubtractWrappedAngle at 009C6765, folded to its
+// absolute value at 009C6796. `JA` at 009C67A7 sets the flag when that error
+// exceeds the double 1.6 at 00CE3D48, 91.7 degrees: the target is behind the
+// wing line, which is when a dive bomber rolls in.
+//
+// The second arm, `COMISS`/`JC` at 009C67A9, sets it when the clamped quantity
+// at frame slot K=104 is not positive. That slot is max(x, 0) from
+// 009C65E3-009C65FD, and x's own producer is one level further back and NOT
+// established, so the caller passes it and the host still substitutes.
+inline constexpr double kFlyAboveRollInBearing = 1.600000023841858;  // 00CE3D48
+bool dive_bomb_flyabove_roll_in_009c67b0(float bearing_error,
+                                         float clamped_slot) noexcept;
+
 // ---------------------------------------------------------------------------
 // 009C4220, the attackrun tick (vtable 00D20C68 slot +Ch), Ghidra body
 // 009C4220-009C447D, __thiscall(state, float dt), RET 4.

@@ -1104,3 +1104,51 @@ Until then the host keeps its labelled substitution of `800` for `approach+A8h`,
 `Follow-up packets` entry becomes specific: **trace `approach+14h` to its producer in `009F9CE0`**.
 
 `006E3500`'s per-device round count was not reached in this packet and stays untouched.
+
+## `+19h` recovered: the roll-in fires once the target is behind the wing line
+
+The earlier reading said this slot had no writer. **That was the ESP-depth trap**, and
+`tools/frame_slot_census.py` with the call cleanups supplied finds it at once: frame slot **K=104**
+groups `[ESP+30h]` at `009C67A9` with `[ESP+44h]` at `009C65FD`, the same slot at two depths. A
+naive grep for the literal offset cannot see that, which is exactly what
+`docs/WORKER_VERIFICATION_CHECKLIST.md` means by tracing values rather than offsets.
+
+The chain to the first and decisive condition:
+
+| address | step |
+| --- | --- |
+| `009C673F`-`009C674F` | wrap the angle into `[0, 2pi)` by adding the `2pi` at `00CE3828` when it is negative |
+| `009C6765` | `BSP_Math_SubtractWrappedAngle(other, that)`, giving the bearing error |
+| `009C676A` | store it |
+| `009C6774`-`009C678A` | fold it to its absolute value with the usual `-0.0f` subtract |
+| `009C6796` | store the folded error |
+| `009C67A3` | `FCOMIP` it against the **double `1.600000023841858`** at `00CE3D48` |
+| `009C67A7` | `JA` sets `flyabove+19h = 1` |
+
+So:
+
+```
+flyabove->+19h = 1   when |bearingError| > 1.6 rad  (91.7 degrees)
+                or   when the clamped slot K=104 is not positive
+```
+
+**1.6 radians is 91.7 degrees: the target is behind the wing line.** That is precisely when a dive
+bomber rolls in, and it explains the state's name: `flyabove` flies over the target and waits until
+it has passed before committing.
+
+The second arm is `009C67A9` `COMISS`/`009C67AE` `JC`, and the slot it tests is `max(x, 0)` from
+`009C65E3`-`009C65FD`, so the arm is `x <= 0`. **`x`'s own producer is one level further back and is
+not established**, so `dive_bomb_flyabove_roll_in_009c67b0` takes it as a caller-supplied input and
+the host still substitutes for that half.
+
+### The census run that found it
+
+```
+python tools/frame_slot_census.py 009c62b0 --pop 009c62cf=4 --pop 009c6342=4 --pop 009c63bf=0 \
+  --pop 009c6404=0 --pop 009c647b=4 --pop 009c64ec=4 --pop 009c6705=4 --pop 009c6728=0 \
+  --pop 009c6b3a=24
+```
+
+Without the cleanups the walker refuses after the first indirect call and the depths are not
+comparable; the pops are the four-byte `RET 4` of each virtual call, zero for the two `00BF701A`
+x87 helpers, and twenty-four for `007F0280`, which the attackrun tick calls with six pushes.
