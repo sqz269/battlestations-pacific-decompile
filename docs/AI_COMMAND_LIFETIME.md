@@ -183,3 +183,27 @@ The three field names in `include/bsp/ai_command_lifetime.hpp` were renamed acco
 `squadron_carrier_flag_0c24` is now `leader_pilot_fires_0c24`. The follow-up row
 `ai_squadron_carrier_link` in the table above is superseded: there is no carrier link to produce,
 and the input that has no producer in this process is the authored `PilotFires` byte.
+
+## Correction from docs/AI_WORLD_SETS.md
+
+Appended by packet `cc8_ai_world_sets`. The text above is left as written.
+
+The follow-up row `ai_planner_owned_group_walk` ("whether a planner that owns several groups orders
+only the first natively too, or whether `00A179E0`'s engagement pass orders the rest") is
+**answered: it orders only the first, and `00A179E0` orders nothing.**
+
+Both mode planners were read to their `RET`. `00A26510 BSP_AiPlanner_SiegeThink`, body
+`00A26510`-`00A265E8`: `00A265AC` loads the owned-group list sentinel from `[ESI+24h]`, `00A265B0`
+takes its **first** node, `00A265B5` guards the empty list, `00A265CA` reads that one node's `+8h`
+group and `00A265D3` calls `00A1CB80` with it; `00A265D8`-`00A265E8` is the epilogue and the `RET`.
+`00A265F0 BSP_AiPlanner_CompetitiveThink`, body `00A265F0`-`00A266B7`, has the identical shape at
+`00A26685`-`00A266A2`. **Neither has a back edge over the list.**
+
+`00A179E0 BSP_AiPartyBrain_EngagementPass` calls neither `00A2CBD0` nor `00A22750`, so it issues no
+order and claims no group; it records own/enemy group pairs. That was established in
+`docs/AI_SQUADRON_SERVED.md` from its callee list.
+
+Two arguments of `00A1CB80` are recorded here for whoever reconstructs it: the weight factor is
+`FLD1`, a literal `1.0f`, in both planners (`00A265C6`, `00A26694`), and the reset-target flag is
+`00A265B2 SETZ CL` over `CMP [00F8A9E0],3` in Siege but the immediate `0` at `00A26699` in
+Competitive. `contract: unread` for `00F8A9E0`.
