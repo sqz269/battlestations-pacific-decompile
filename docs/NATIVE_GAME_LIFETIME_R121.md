@@ -178,3 +178,19 @@ parent comparator still passes 52 cases, 3,537 snapshots, 141,402,076 bytes and 
 failure/replay cases, including shared progress identity. Strict build/three CTests
 pass. Actual payload virtual methods, remaining parent dependencies, native
 exception ABI, application admission and gameplay remain open.
+
+## Correction from docs/NATIVE_AWARD_REGISTRY_LIFETIME_R126.md
+
+R126 reconstructs six complete normal bodies (767 bytes) and consumes only the
+current full-range branch of the 201-byte6B91F0 library entry. Parent4DD037 now
+uses actual award-registry tree/record/list/string cleanup with the existing raw
+string context and retained awards child. Parent4DD134 now performs the four game
+lists' payload pass before node cleanup, retaining their sentinels for the later
+array destructor. Parent diagnostic retirement refuses a running/failed award child.
+
+Seven returning-call gaps139 bytes, two truncated functions and the removed489CA0
+thunk were repaired/restored with evidence. The nested comparison passes79 cases,
+989 observations and4,796,352 normalized bytes using real pool/manager/string-range
+services. The parent still passes52 cases/3,537 snapshots/141,402,076 bytes and four
+failure/replay cases. Strict Win32/three CTests pass. Native exception ABI, actual
+registry construction/session, remaining dependencies and gameplay stay open.

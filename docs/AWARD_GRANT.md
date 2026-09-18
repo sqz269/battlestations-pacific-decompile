@@ -265,3 +265,15 @@ needed defining.
 - `xenon_signin_state_machine`: `00a40510`, `00a40020`, `00a3e6a0`, `00a3ed10`, files
   `docs/XENON_SIGNIN.md`. Contract: the eight states at `manager+3B0h`, the `XShowSigninUI` /
   `XShowMessageBoxUI` prompts and which one sets `+119h`, `+11Ah` and `+11Ch`.
+
+## Correction from docs/NATIVE_AWARD_REGISTRY_LIFETIME_R126.md
+
+The map at registry+10h has its size counter at registry+18h, not+1Ch.
+The constructor initializes18h as the map count; full-range6B91F0 resets tree+8
+(registry18h), and6B9380 clears14h/18h after sentinel destruction. Registry1Ch is
+a separate parsed-row counter and is preserved by that destructor. Its constructor
+increment starts at6B9C53 (`ADD dword ptr [EAX+1Ch],1`); the earlier6B9C56 citation
+identified the final byte rather than the instruction start. Value+30h is the
+Index list header, with its sentinel pointer at+34h. Record cleanup501FA0 frees
+buffer48h, destroys that list, then releases five string headers28h/1Ch/14h/0Ch/0.
+The complete normal cleanup is reconstructed; the Lua/data constructor is not.

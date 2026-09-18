@@ -38,7 +38,7 @@ void normal(NativeGameStorage& game,NativeGameLifetimeContext& x,NativeGameLifet
     scalar(x.publication_00e18678,0,0x4dd005);scalar(x.publication_00e1867c,0,0x4dd01d);
     o.native_site=0x4dd026;c.call_004a9ac0();
     if(void* p=x.publication_00e19900) {
-        o.native_site=0x4dd037;c.call_006b9380(p);
+        o.native_site=0x4dd037;c.call_006b9380(p,x.profile,o.awards);
         o.native_site=0x4dd03d;c.free_00bf65ac(p);x.publication_00e19900=nullptr;
     }
     scalar(x.publication_00e18db0,0xc,0x4dd05c);scalar(x.publication_00e19698,0xc,0x4dd075);
@@ -51,7 +51,7 @@ void normal(NativeGameStorage& game,NativeGameLifetimeContext& x,NativeGameLifet
     o.native_site=0x4dd11e;c.free_00bf65ac(pointer(g,0x2200));
     o.native_site=0x4dd126;void* manager=c.call_004c1400();
     o.native_site=0x4dd12d;c.call_00b806f0(manager);
-    o.native_site=0x4dd134;c.call_004c7dd0(g);
+    o.native_site=0x4dd134;c.call_004c7dd0(g,o.containers);
     // Native captures the first grid BEFORE clearing the game publication.
     void* first_grid=x.grid_00e19b0c;x.game_00e188a8=nullptr;
     if(first_grid){o.native_site=0x4dd14f;c.virtual_scalar(first_grid,0,1);x.grid_00e19b0c=nullptr;}
@@ -125,6 +125,7 @@ void NativeGameLifetimeOperation::acknowledge_diagnostic_cleanup() noexcept {
         for(const auto& array:arrays)if(array.phase==NativeGameArrayLifetimeOperation::Phase::running||array.phase==NativeGameArrayLifetimeOperation::Phase::failed)std::terminate();
         if(embedded.phase==NativeGameEmbeddedLifetimeOperation::Phase::running||embedded.phase==NativeGameEmbeddedLifetimeOperation::Phase::failed)std::terminate();
         if(profile.phase==NativeGameProfileLifetimeOperation::Phase::running||profile.phase==NativeGameProfileLifetimeOperation::Phase::failed)std::terminate();
+        if(awards.phase==NativeAwardRegistryLifetimeOperation::Phase::running||awards.phase==NativeAwardRegistryLifetimeOperation::Phase::failed)std::terminate();
         phase=Phase::diagnostic_retired;
     }
 }
@@ -145,6 +146,11 @@ void NativeGameLifetimeCalls::call_0041cc80(void* p){NativeGameEmbeddedLifetimeC
 void NativeGameLifetimeCalls::call_00b669a0(void* p){close_native_lua_state_00b669a0(*static_cast<NativeLuaStateStorage*>(p));}
 void NativeGameLifetimeCalls::call_004dceb0(void* p){destroy_native_input_configuration_004dceb0(p);}
 void* NativeGameLifetimeCalls::allocate_00bf55be(U n){return NativeGameContainerLifetimeCalls::allocate_00bf55be(n);}
+void NativeGameLifetimeCalls::call_004c7dd0(void* p,NativeGameContainerLifetimeProgress& o){clear_native_game_payload_lists_004c7dd0(p,*this,o);}
+void NativeGameLifetimeCalls::call_006b9380(void* p,NativeGameProfileLifetimeContext* c,NativeAwardRegistryLifetimeOperation& o){
+    if(!c||&c->calls!=this)throw std::invalid_argument("award registry destruction requires the game's actual string context");
+    destroy_native_award_registry_006b9380(p,*c,o);
+}
 void NativeGameLifetimeCalls::call_004bf930(void* p,NativeGameContainerLifetimeProgress& o){destroy_native_game_scene_records_004bf930(p,*this,o);}
 void NativeGameLifetimeCalls::call_004bf8e0(void* p,NativeGameContainerLifetimeProgress& o){clear_native_game_unit_links_004bf8e0(p,*this,o);}
 void NativeGameLifetimeCalls::call_004c2ce0(void* p,NativeGameContainerLifetimeProgress& o){clear_native_game_scene_links_004c2ce0(p,*this,o);}

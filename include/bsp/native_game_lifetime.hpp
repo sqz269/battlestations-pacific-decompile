@@ -3,6 +3,7 @@
 #include "bsp/native_game_embedded_lifetime.hpp"
 #include "bsp/native_game_profile_lifetime.hpp"
 #include "bsp/native_game_container_lifetime.hpp"
+#include "bsp/native_award_registry_lifetime.hpp"
 #include <cstdint>
 
 namespace bsp {
@@ -16,14 +17,14 @@ struct NativeGameLifetimeCalls : NativeGameArrayLifetimeCalls,NativeGameEmbedded
     virtual void call_008d88f0()=0;
     virtual void call_004bf930(void*,NativeGameContainerLifetimeProgress&);
     virtual void call_004a9ac0()=0;
-    virtual void call_006b9380(void*)=0;
+    virtual void call_006b9380(void*,NativeGameProfileLifetimeContext*,NativeAwardRegistryLifetimeOperation&);
     virtual void call_004c0c30()=0;
     virtual void call_004c0ce0()=0;
     virtual void call_00b6cf90()=0;
     virtual void call_004c0d90()=0;
     virtual void* call_004c1400()=0;
     virtual void call_00b806f0(void*)=0;
-    virtual void call_004c7dd0(void*)=0;
+    virtual void call_004c7dd0(void*,NativeGameContainerLifetimeProgress&);
     virtual void call_0041cc80(void*);
     virtual void call_004cb220(void*,std::uint32_t,NativeGameContainerLifetimeProgress&);
     virtual void call_004c4b40(void*,NativeGameContainerLifetimeProgress&);
@@ -94,6 +95,7 @@ struct NativeGameLifetimeOperation final : NativeGameLifetimeProgress {
     NativeGameEmbeddedLifetimeOperation embedded;
     NativeGameProfileLifetimeOperation profile;
     NativeGameContainerLifetimeProgress containers;
+    NativeAwardRegistryLifetimeOperation awards;
     NativeGameLifetimeOperation()=default;
     ~NativeGameLifetimeOperation();
     NativeGameLifetimeOperation(const NativeGameLifetimeOperation&)=delete;

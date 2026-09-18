@@ -41,6 +41,7 @@ void Calls::free_00bf65ac(void* p){::operator delete(p);}
 void Calls::free_00bf6989(void* p){std::free(p);}
 I Calls::interlocked_increment(volatile I* p){return InterlockedIncrement(reinterpret_cast<volatile LONG*>(p));}
 I Calls::interlocked_decrement(volatile I* p){return InterlockedDecrement(reinterpret_cast<volatile LONG*>(p));}
+void Calls::container_invalid_parameter_00bf6713(){_invalid_parameter_noinfo();}
 void clear_native_game_unit_links_004bf8e0(void* p,Calls& c,Progress& o){clear_links(p,c,o,0x004bf917,false);}
 void clear_native_game_scene_links_004c2ce0(void* p,Calls& c,Progress& o){clear_links(p,c,o,0x004c2d17,false);}
 void destroy_native_game_scene_records_004bf930(void* p,Calls& c,Progress& o){clear_links(p,c,o,0x004bf985,true);}
@@ -89,5 +90,20 @@ void resize_native_game_reference_slots_004cb220(void* p,U requested,Calls& c,Pr
     while(signed_bits(index)<signed_bits(requested)){void* cell=at(pointer(p),index*4);if(cell)word(cell,0,0);++index;}
     while(signed_bits(requested)<signed_bits(word(p,4))){word(p,4,word(p,4)-1);o.index=word(p,4);void* cell=at(pointer(p),o.index*4);release_cell(cell,c,o,0x004cb277,0x004cb287);}
     word(p,4,requested);
+}
+void clear_native_game_payload_lists_004c7dd0(void* game,Calls& c,Progress& o){
+    begin(game,o);
+    for(U index=0;index<4;++index){o.index=index;void* p=at(game,0x7134+index*0xc);void* cursor=pointer(pointer(p,4));
+        while(cursor!=pointer(p,4)){
+            o.cursor=cursor;
+            if(cursor==pointer(p,4)){o.native_site=0x004c7e03;c.container_invalid_parameter_00bf6713();}
+            o.native_site=0x004c7e0c;c.free_00bf65ac(pointer(cursor,8));
+            if(cursor==pointer(p,4)){o.native_site=0x004c7e18;c.container_invalid_parameter_00bf6713();}
+            cursor=pointer(cursor);
+        }
+        void* head=pointer(p,4);cursor=pointer(head);word(head,0,reinterpret_cast<U>(head));head=pointer(p,4);word(head,4,reinterpret_cast<U>(head));
+        const bool nonempty=cursor!=pointer(p,4);word(p,8,0);
+        if(nonempty)for(;;){o.cursor=cursor;void* next=pointer(cursor);o.native_site=0x004c7e3a;c.free_00bf65ac(cursor);const bool more=next!=pointer(p,4);cursor=next;if(!more)break;}
+    }
 }
 } // namespace bsp
