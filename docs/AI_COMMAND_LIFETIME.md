@@ -146,3 +146,40 @@ Appended to `docs/AI_PLANNERS.md` and to `docs/AI_COORDINATOR_TICK.md`, never re
 | `ai_planner_owned_group_walk` | `00A1CB80`, `00A26510`, `00A265F0` | whether a planner that owns several groups orders only the first natively too, or whether `00A179E0`'s engagement pass orders the rest. This is now the only cap left on the order count |
 | `ai_squadron_carrier_link` | `007EDA90`, `+3D0h`, `+C24h` | the squadron's carrier link, so the four squadron members stop being admitted by default |
 | `ai_command_object` | `00A13340`, `00A2C8D0` | still worth doing, but for the merge predicate at `vtable[+14h]`, not for the order count |
+
+## Correction from docs/PLANE_SQUADRON_ENTITY.md
+
+Appended by packet `cc8_plane_squadron_entity`. The text above is left as written; this section
+records what a later read of the listing settled. **The rule this document states is correct; the
+naming of `007EDA90`'s three inputs is not.**
+
+`[squadron+3D0h]` is **not a carrier link**. It is `members[0]` of the squadron's five-slot member
+plane array, which is to say the **flight leader**. Three witnesses:
+
+| Witness | Site | What it shows |
+| --- | --- | --- |
+| the constructor | `007F2DA3..007F2DBB` | zeroes exactly five dwords, `+3D0h`, `+3D4h`, `+3D8h`, `+3DCh`, `+3E0h` |
+| the spawn tail | `007F4B55`, `007F4B60` | `MOV [ESI+EDI*4+3D0h],EAX` with `EAX` the plane just created, then `+3CCh += 1` |
+| the leader rotation | `007ED618`, `007ED621` | `MOV ESI,[ECX+EDX*4+3D0h]` indexed by `EDX`, bounded by `CMP [ECX+3CCh],EDX` |
+
+A carrier link cannot be indexed by a member counter, and `007ED610`
+`BSP_PlaneSquadron_PromoteFlightLeader` exists to move a chosen member into slot `0`.
+
+So the three reads at `007EDAA0`, `007EDAA8` and `007EDAAA` are all taken on the flight leader:
+
+* `IsKindOf(17h)` is `MPlaneKamikaze` (`docs/ENTITY_CLASS_IDS.md` row 17, class test `009534A0`,
+  chain `{17h, 0Fh, 05, 04, 02, 01, 0}`), not a carrier class.
+* `leader+C24h` is the authored `PilotFires` byte (`docs/ATTACK_GATE_TAILS.md` section "Gate 2":
+  two write sites, both in `FUN_007CD930`, whose single caller is `007D673E` in
+  `BSP_Plane_ReadPropertyBag`, so it is a load-time constant).
+
+`007EDA90` is therefore the same shape as the `kamikaze` attack gate `00604A50`, applied to a
+flight's leader: **"is this a kamikaze flight whose pilot does not fire"**. `009FE080` negates it,
+so a plane squadron is a groupable combatant unless it is an uncommitted kamikaze flight.
+
+The three field names in `include/bsp/ai_command_lifetime.hpp` were renamed accordingly by packet
+`cc8_ai_squadron_served`: `squadron_has_carrier` is now `squadron_has_flight_leader`,
+`squadron_carrier_is_kind_17` is now `leader_is_kamikaze_kind_17`, and
+`squadron_carrier_flag_0c24` is now `leader_pilot_fires_0c24`. The follow-up row
+`ai_squadron_carrier_link` in the table above is superseded: there is no carrier link to produce,
+and the input that has no producer in this process is the authored `PilotFires` byte.

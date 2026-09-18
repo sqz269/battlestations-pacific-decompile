@@ -244,3 +244,22 @@ the rest of the mission. This is measured, not inferred: for Mav2 and Mav3 the f
 3. **`ctl+3D0h`, the flight array.** `0099B740` raises the mode only when the task's unit is
    `ctl->+3D0h[0]`, and `007ED610` rotates that array. When the array is populated relative to the
    first cruise tick decides whether a `prepare` window exists at all.
+
+## Correction from docs/PLANE_SQUADRON_ENTITY.md
+
+Appended by packet `cc8_plane_squadron_entity`. The text above is left as written, and its
+decoding of the `BCh` and `BEh` arms is unaffected.
+
+This document calls `007F0030` "the pilot control block's message dispatcher". `ghidra xrefs
+007f0030` returns exactly one reference, the `.rdata` dword at `00D08924`. That is offset `+164h`
+of `00D087C0`, the **plane squadron's primary vtable** (`docs/ENTITY_CLASS_IDS.md` row 18,
+`PlaneSquadronGen`). So the "pilot control block" this dispatcher serves is the squadron object
+itself, and the document's `ctl` is the squadron throughout.
+
+The same identification settles the `ctl+3D0h` reading in the follow-up section: `ctl+3D0h` **is**
+the flight array with count `ctl+3CCh`, exactly as this document says, and
+`docs/AI_COMMAND_LIFETIME.md`'s competing reading of it as a carrier link is the one that was
+wrong. Two further slots of the same vtable belong with `007F0030`: `+114h` is `007ECFD0`
+(`MOV EAX,[ECX+348h]; RET`, the squadron's AI command block) and `+128h` is `007ECF80`, a loop over
+`+3D0h` bounded by `+3CCh` that calls the same slot on every member plane. Neither has a Ghidra
+function; both are decoded in `docs/PLANE_SQUADRON_ENTITY.md` section 4.
