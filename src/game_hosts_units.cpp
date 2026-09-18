@@ -1161,6 +1161,20 @@ struct GameUnitsHost::Impl {
     // RET 0 getter with no reconstruction, so this is the executable's own
     // value: atan2 over pose row 2, the same convention the trajectory dump and
     // the run log print in degrees.
+    // 007C47F0(approach+8h): tuning+24Ch Dynamics/SpdMultipliers/LevelFlight
+    // times classDesc+184h StallSpd. Both halves are real here: the tuning row
+    // comes from the PlaneGlobals mirror and the stall speed from the unit's own
+    // vehicle-class row, which src/game_hosts_lua.cpp loads and the free-flight
+    // arm already reads at 007DB760. docs/BOT_SPEED_CLASS_ROWS.md.
+    float bot_desired_speed_007c47f0(const GameUnitSlot& slot) const {
+        float level_flight = 1.8f;                    // tuning+24Ch
+        if (lua.plane_globals_loaded()) {
+            level_flight = lua.plane_globals().dynamics_spd_multipliers_level_flight;
+        }
+        const float stall = slot.plane_stall_spd > 0.0f ? slot.plane_stall_spd : 17.5f;
+        return level_flight * stall;
+    }
+
     // The three numbers docs/TORPEDO_RELEASE_GEOMETRY.md section 3 asked for
     // and did not take: |v|, the angle between v and the forward pose row, and
     // the body-axis speed 0092D730 itself computes (the dot of the body's
@@ -4143,13 +4157,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         in.rolled_latch_1c = unit_.db_turndown_latch_1c;
                         in.roll_command_18 = unit_.db_turn_roll_18;
                         // 007C47F0(approach+8h): tuning+24Ch LevelFlight times
-                        // classDesc+184h StallSpd. The class descriptor is not
-                        // modelled here, so the tuning half comes from the Lua
-                        // globals when they loaded and the stall speed is the
-                        // authored default; labelled at its address.
-                        in.desired_speed =
-                            bsp::dive_bomb_turndown_constant::kLevelFlightMultiplier *
-                            bsp::dive_bomb_turndown_constant::kStallSpeedDefault;
+                        // classDesc+184h StallSpd. Both halves are now the real
+                        // ones - the tuning row from the PlaneGlobals mirror and
+                        // the stall speed from this unit's own vehicle-class row,
+                        // the same desc+184h the free-flight arm reads at
+                        // 007DB760 - so the substitution that stood here is
+                        // retired. docs/BOT_SPEED_CLASS_ROWS.md.
+                        in.desired_speed = owner_.bot_desired_speed_007c47f0(unit_);
                         const bsp::DiveBombTurnDownResult r =
                             bsp::dive_bomb_turndown_tick_009c44f0(in);
                         ++unit_.db_turndown_ticks;
@@ -4790,13 +4804,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // Step 2, 009C1850 BSP_BotStateMoveTo_SetDesiredSpeed.
                         // 009C189A writes cmd+2B4h, 009C18A0 clears the byte
                         // cmd+2B0h and 009C18A7 raises cmd+2D8h, with NO
-                        // condition. SUBSTITUTION, labelled: the speed itself
-                        // comes from 007C47F0 and 009BECD0, both unread, so the
-                        // row's authored TravelSpeed stands in - the cruise the
-                        // aircraft is seeded at, which is what a bot moving to a
-                        // point should want.
-                        unit_.plane_desired_speed_2b4 = unit_.plane_travel_speed > 0.0f
-                            ? unit_.plane_travel_speed : 141.666672f;
+                        // condition. The speed is 007C47F0's product, tuning+24Ch
+                        // LevelFlight times this unit's own classDesc+184h
+                        // StallSpd, which the dive-bomb turndown reads through the
+                        // same call - so the earlier substitution here, the row's
+                        // TravelSpeed, was the wrong FIELD and not merely a stand
+                        // -in value. 009BECD0 then shapes that product against the
+                        // distance and is still unread, so what remains
+                        // substituted is the shaping, not the speed.
+                        // docs/BOT_SPEED_CLASS_ROWS.md.
+                        unit_.plane_desired_speed_2b4 =
+                            owner_.bot_desired_speed_007c47f0(unit_);
                         unit_.plane_air_brake_mode_2d8 = 1;
                         ++unit_.plane_speed_commands;
                         owner_.record("BotStateMoveTo::set_desired_speed", 0x009c1850u);
@@ -4858,7 +4876,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             owner_.log.notef("  torpedo %-12s glide census n=%d "
                                 "range=%.1f base=%.2f low=%.1f t=%.3f gain=%.3f "
                                 "commanded=%.1f live_alt=%.1f pitch_demand=%.4f "
-                                "desired_spd=%.2f |v|=%.2f throttle=%.3f",
+                                "desired_spd=%.2f (level_flight*stall) stall=%.2f "
+                                "|v|=%.2f throttle=%.3f",
                                 unit_.row.name.c_str(), unit_.plane_speed_commands,
                                 static_cast<double>(distance),
                                 static_cast<double>(base),
@@ -4868,6 +4887,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 static_cast<double>(unit_.motion.position[1]),
                                 static_cast<double>(demand),
                                 static_cast<double>(unit_.plane_desired_speed_2b4),
+                                static_cast<double>(unit_.plane_stall_spd),
                                 static_cast<double>(std::sqrt(
                                     unit_.plane_world_velocity[0] * unit_.plane_world_velocity[0] +
                                     unit_.plane_world_velocity[1] * unit_.plane_world_velocity[1] +
