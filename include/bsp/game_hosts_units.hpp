@@ -339,6 +339,10 @@ public:
     // or 0 for none. Pushed rather than pulled so the two hosts agree by
     // construction on which entity a command names.
     void store_unit_command_target(std::size_t index, std::size_t target_plus_one) noexcept;
+    // The command class 007EEC50 chose for this unit, stored where 0099A170
+    // turns it into a bot task. A unit with no attack order keeps 0.
+    // docs/DIVE_BOMB_TASK.md, "The class gate".
+    void store_unit_attack_command_class(std::size_t index, unsigned int cls) noexcept;
     std::uint64_t unit_ordnance(std::size_t index) const noexcept;
     bool unit_flag_0061(std::size_t index) const;
     // 0092d730 over the unit's body axis and linear velocity, the same value the
