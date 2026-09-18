@@ -1,0 +1,95 @@
+{
+ "packet": "cc8_torpedo_throttle_cut",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/TORPEDO_THROTTLE_CUT.md",
+ "tree_base": "5ee71603f",
+ "result": "NEGATIVE. There is no attack-run throttle cut to bind, and no host code changed.",
+ "question": "What does step 4 of 009D07B0 command besides the altitude, what consumes it, and why does a torpedo bomber dive at the DEG(60) cap the whole way down?",
+ "answer": "Step 4 commands no throttle. docs/BOT_TASK_STATES.md row 4 calls its second value a throttle; 009D0A6B stores it as 009FBA50's FOURTH float argument, `scale`, which 009FBA50 reads only inside `if (span > 0)` at 009FBAD2 and otherwise leaves in ST0 at the RET for the caller to discard. And span is always zero from this call site: both range arguments are approach+90h, written into the rangeLow local at 009D07E4 and into the rangeHigh local at 009D0A08. The frame was checked across the EBX push at 009D07FE / pop at 009D08C3 and across 009D0868's SUB ESP,14h, because 009D08A4 and 009D08AE look like writes to those locals and are the interpolation's own argument slots. So the interpolation is computed every tick and reaches nothing. The throttle a bot flies is the plan's throttle slot, which reaches unit+9F0h through 007BB6E0's cmd+14h == 0 path at 007BB83A, and no routine in the torpedo chain writes it. The steep dive is not a throttle problem: 009FB800 saturates at the DEG(60) cap for any altitude error above about 80 m, and the commanded 12 m is the image's own number, because approach+74h comes from approach+398h, which 00939E83 constructs as zero (00939E77 XORPS) and which has exactly one gameplay writer in the image, 009C89CE inside the DIVE BOMB task's 009C8920. What is missing is upstream: the aircraft enter attackrun at their 800 m spawn altitude because this host ticks only aim and attackrun, never moveto, whose 009C18C0 would command Pilot/Torpedo/CruisingAlt 500.",
+ "coverage": "complete for step 4's argument marshalling and its frame, for 009FBA50's use of `scale`, and for approach+398h's producers; partial for 009D07B0 as a whole and for 009C8920's conditions.",
+ "calls": [
+  {
+   "address": "009d0a63",
+   "native": "00419010",
+   "function": "009d07b0",
+   "what": "t = InterpolateClamped(0.1 [00D7A2F0], 0.35 [00CF6560], 0.4 [00CE7804], 0.8 [00CE74F8], (1400 - unit+100h) / min(approach+90h, 2000)); 009D0A6B stores it as 009FBA50's `scale`"
+  },
+  {
+   "address": "009d0a92",
+   "native": "009fba50",
+   "function": "009d07b0",
+   "what": "the altitude command, with base = approach+78h + approach+74h and BOTH range arguments approach+90h, so span is zero and `scale` is never read"
+  },
+  {
+   "address": "009d08bb",
+   "native": "00419010",
+   "function": "009d07b0",
+   "what": "step 2's bias interpolation. The FLD at 009D0888 inside its SUB ESP,14h window reads [ESP+0x24], which is the function's rangeLow local, and that is what proves 009D08A4 and 009D08AE are this call's argument slots rather than those locals"
+  },
+  {
+   "address": "009d094c",
+   "native": "00414db0",
+   "function": "009d07b0",
+   "what": "the pose refresh before 009D0951 reads unit+100h for the height margin"
+  }
+ ],
+ "named_routines": [
+  {
+   "native": "009d07b0",
+   "name": "BSP_BotStateTorpedoAttackRun_Tick",
+   "abi": "void __thiscall(state, float dt), Ghidra body 009D07B0-009D0B0E; SUB ESP,3Ch / PUSH ESI / PUSH EDI, with EBX pushed at 009D07FE and popped at 009D08C3",
+   "coverage": "partial overall; step 4's argument marshalling complete",
+   "what": "commands no throttle. Its five command-block writes are +278h (1.0 from 00D7A24C), +27Ch, +2A8h, +2ACh and +2D8h, plus +2C0h/+2CCh for the heading and, through 009FBA50, +2BCh/+2D0h for the pitch. The interpolation at 009D0A63 becomes 009FBA50's `scale` and is unreachable because span is zero."
+  },
+  {
+   "native": "009fba50",
+   "name": "BSP_PilotBot_CommandCruiseAltitude",
+   "abi": "float __thiscall(this, float base, float rangeLow, float rangeHigh, float scale), RET 10h",
+   "coverage": "complete for this call site",
+   "what": "`scale` is read only inside if (span > 0) at 009FBAD2, where it multiplies span and class+518h into the base; 009FBAC5's FLD leaves it in ST0 at the RET and every call site discards it. With rangeLow == rangeHigh the whole term vanishes."
+  },
+  {
+   "native": "009c8920",
+   "name": "BSP_BotTaskDiveBomb_UpdateCruiseProfile",
+   "abi": "as the existing record",
+   "coverage": "partial: only the +398h write and its guard",
+   "what": "009C89CE sets approach+398h to a uniform random in [0, 00CE5380] plus the tuning float at +4CCh, and raises the byte +3ADh. It is the ONLY gameplay writer of +398h in an exhaustive store census, and it belongs to the dive-bomb task, so a torpedo bomber's +398h keeps the zero 00939E83 constructs and its approach+74h is zero."
+  }
+ ],
+ "no_ghidra_function": [],
+ "host_methods": [],
+ "contracts": [
+  "Whether another caller of 009FBA50 - 009C18C0, 009A3770 or 009A4010 - passes a real range pair and makes the `scale` term live. Only 009D07B0's site was read.",
+  "009C8920's conditions and whether a torpedo-task twin writes +398h through a pointer rather than a displacement.",
+  "class+518h, 009FBA50's per-class gain, still unmodelled and still unreachable here.",
+  "What sets a bot's throttle at all: the plan's throttle slot has no writer in the torpedo chain."
+ ],
+ "corrections": [
+  {
+   "target": "docs/BOT_TASK_STATES.md, 'The torpedo run' row 4",
+   "was": "throttle from InterpolateClamped(...) over the height margin",
+   "is": "the interpolation's result is 009FBA50's fourth argument `scale`, read only when span > 0, and both range arguments from this site are approach+90h so span is always zero",
+   "evidence": "009D0A6B, 009D07E4, 009D0A08, 009FBAD2, 009FBAC5; the frame checked across 009D07FE/009D08C3 and 009D0868",
+   "status": "appended and verified present"
+  },
+  {
+   "target": "docs/TORPEDO_RUN_IN_DESCENT.md section 2 and follow-up 3",
+   "was": "step 4's throttle half is not run, and running it is future work",
+   "is": "there is no throttle half; passing rangeLow = rangeHigh = 0 gives the same commanded altitude as the native's own arguments, so that binding was right for a reason it did not know",
+   "evidence": "as above",
+   "status": "appended and verified present"
+  },
+  {
+   "target": "docs/PLANE_ALTITUDE_HOLD_AND_SURFACE.md follow-up 0",
+   "was": "step 4's throttle cut is the gate that would keep a 60-degree dive in hand",
+   "is": "void; the arrival at 141.5 m/s is caused by entering attackrun at the 800 m spawn altitude, because this host never ticks moveto",
+   "evidence": "009D0A6B, 00939E83, 009C89CE, 009D3489",
+   "status": "appended and verified present"
+  }
+ ],
+ "validation": {
+  "runner": "none",
+  "note": "This packet changes no behaviour, so a before and after pair would be the same binary. It reasons from docs/PLANE_ALTITUDE_HOLD_AND_SURFACE.md's measurements, whose descent census printed base=12.00 (74h=0.00 78h=12.00) and a -1.0472 rad demand held from 800 m to the water. Section 4 shows both of those are the image's own values rather than host gaps, which is the packet's result.",
+  "no_swim_next_gate": "The moveto and follow state ticks, 009C18C0 above all. This host runs the state machine's per-state tick for aim and attackrun and for nothing else, so no aircraft is ever brought to Pilot/Torpedo/CruisingAlt (authored 500 in kTorpedoCruiseProfile) before the attack run begins; they enter it at their 800 m spawn altitude. 009FB800 saturates at the DEG(60) cap for any altitude error above about 80 m, so the whole descent is flown at the cap."
+ }
+}

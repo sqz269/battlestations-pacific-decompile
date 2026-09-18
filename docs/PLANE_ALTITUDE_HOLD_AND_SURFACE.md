@@ -282,3 +282,19 @@ interval plus its own jitter. Slowing the run-in is what puts the release gate b
 3. **`007CB7F0`'s damage path**, `0090F6C0(unit, 3)` and the `"powerlost"` effect.
 4. **The model bound `[EDI+4]`**, which is the difference between the belly and the origin in the
    water line.
+
+
+## Correction from packet `cc8_torpedo_throttle_cut`: follow-up 0 is void
+
+Appended, not rewriting the sections above.
+
+Follow-up 0 names "step 4's throttle half of `009D07B0`" as the gate, on the reasoning that the
+native's throttle cut is what keeps a 60-degree dive in hand. **There is no throttle cut.**
+`009D0A6B` stores step 4's interpolation as `009FBA50`'s `scale` argument, which is read only when
+`span > 0`, and both range arguments from this call site are `approach+90h`, so it is discarded.
+No routine in the torpedo chain writes the plan's throttle slot.
+
+The measured arrival at 141.5 m/s therefore has a different cause, and the Validation section's
+reading of it stands otherwise: the aircraft enter `attackrun` at their 800 m spawn altitude,
+because this host ticks only the `aim` and `attackrun` states and never `moveto`, whose `009C18C0`
+would command `Pilot/Torpedo/CruisingAlt`. `docs/TORPEDO_THROTTLE_CUT.md`.

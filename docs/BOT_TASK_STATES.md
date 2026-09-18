@@ -515,3 +515,26 @@ mode `+2D0h` (`009C5CFA`, `009C5D15`, `009C5D1C`), `+290h`/`+294h` roll with mod
 `009C5E3F`, `009C5E63`). The dive commands every axis directly with mode `0`; the `aimglide` tick
 `009C5180` uses the autopilot fields `+2BCh`/`+2C0h`/`+2C4h` instead. That contrast is the whole
 difference between the class's dive and its glide.
+
+
+## Correction from packet `cc8_torpedo_throttle_cut`: row 4's second value is not a throttle
+
+Appended, not rewriting the table above.
+
+"The torpedo run" row 4 reads *"...throttle from `InterpolateClamped([00D7A2F0], [00CF6560],
+[00CE7804], [00CE74F8], .)` over the height margin..."*. The interpolation and its inputs are
+transcribed correctly - the constants are `0.1`, `0.35`, `0.4`, `0.8` and the doubles `1400.0`,
+`2000.0` and `15.0` - but its **result is not a throttle**. `009D0A6B` stores it as `009FBA50`'s
+fourth float argument, `scale`, which that routine reads only inside `if (span > 0)` at `009FBAD2`
+and otherwise leaves in `ST0` at the `RET` for the caller to discard.
+
+**And `span` is always zero from this call site.** Both range arguments are `approach+90h`:
+`009D07E4` writes it into the `rangeLow` local at the head and `009D0A08` writes it into the
+`rangeHigh` local just before the call. So the interpolation is computed every tick and reaches
+nothing. The frame was checked across the `EBX` push at `009D07FE` and its pop at `009D08C3` and
+across `009D0868`'s `SUB ESP,14h`, because the stores at `009D08A4` and `009D08AE` look like writes
+to those same two locals and are in fact the interpolation's own argument slots.
+
+`009D07B0` therefore commands **no throttle at all**, and neither does the aim tick: the throttle a
+bot flies is the plan's throttle slot, which `0099B450` reseeds from the live value and which no
+routine in the torpedo chain writes. `docs/TORPEDO_THROTTLE_CUT.md`.
