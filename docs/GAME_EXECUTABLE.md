@@ -8540,3 +8540,37 @@ different shell profile each (a tenfold shot drop, then zero impacts of any kind
 validate host objects and builds, not the mission census. Only the profile at the series' head
 is on `main`. Any future USN01 gunnery comparison must use a before-run that contains
 `fb8c0ff76`, or the moving-aircraft column above, never the 23/36/45 column.
+
+## A transient startup crash, and why it was not a regression (packet `cc8_dive_bomb_turndown`)
+
+On 2026-09-18 two consecutive runs from the `cc8-dive-bomb` worktree exited `0xC0000005`
+(`EXITCODE=-1073741819`) with the log stopping at
+
+```
+host Phase 5 online_manager_initialize [0073dc7c] UNIMPLEMENTED, returning a neutral value
+```
+
+which in a good run is the line immediately before `native renderer device startup`, thousands of
+lines before any mission state. Stashing every change of the packet and rebuilding the same worktree
+at merge `78af19721` failed identically, and that was reported as a regression on `main`.
+
+The bisect says otherwise. In a throwaway `git worktree add --detach` tree, four separate builds and
+four `--frames 300 --press-start-frame 30` runs through `tools/run_game.ps1` all finished with
+`EXITCODE=0` and `frames_presented=299`:
+
+| commit | what it is | result |
+| --- | --- | --- |
+| `4668b0e96` | after the scene tokenizer `7a9f122ce`, before the settings commit | clean |
+| `82986e455` | raw settings vector assignment and language selection | clean |
+| `cccf31e11` | the torpedo throttle arm, speed setter and glide slope | clean |
+| `78af19721` | `main`'s tip, the merge itself | clean |
+
+A fifth probe, in the original worktree at its own HEAD with every change back in place, is also
+clean. So no commit in the range is at fault.
+
+**The method error worth keeping.** Stashing a packet's changes and seeing the crash persist rules
+out that packet's *source*, not its tree or the machine state in that window. Another agent's runs
+were queueing on the machine-wide lock either side of the two-minute window, and `bsp_game` is
+single-instance across two processes (`docs/GAME_EXECUTABLE.md` and the run script's own lock), so a
+collision is the likely cause. A crash that reproduces twice in one tree within two minutes is not
+yet evidence about a commit; only a run in a fresh tree at the suspect commit is.
