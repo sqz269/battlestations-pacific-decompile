@@ -352,6 +352,10 @@ struct GameUnitSlot {
     int torpedo_clear_sectors_last{-1};
     int torpedo_home_sector_last{-1};
     float torpedo_turn_offset_last{0.0f};
+    // The issue gate 007EEF40 compares, as the host last evaluated it.
+    float torpedo_issue_threshold_390{0.0f};
+    float torpedo_armed_fraction_374{0.0f};
+    bool torpedo_issue_gate_open{false};
     // The approach object embedded at task+3F8h.
     bsp::TorpedoApproachState torpedo_approach{};
     int torpedo_approach_ticks{0};
@@ -2422,20 +2426,71 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 "PilotControl::pre_issue_hook", "007ee7f0");
                         }
                         bsp::ReleaseOrderIssueInputs read_issue_inputs() override {
-                            // 007EEF40 gates on ctl+390h > ctl+374h. Neither
-                            // field has a writer on the control block in this
-                            // image (the C7 scan at that displacement finds only
-                            // BSP_Gun_CreateAiBots and BSP_UnitGameObject_
-                            // Construct), so the pair is contract: unread and
-                            // the gate is taken as open for an ordered flight.
-                            owner_.log.unimplemented(
-                                "PilotControl::issue_authorisation_374_390",
-                                "007eef40");
+                            // 007EEF40 gates on ctl+390h > ctl+374h.
+                            // docs/TORPEDO_RELEASE_ORDERS.md section (5).
                             bsp::ReleaseOrderIssueInputs in;
-                            in.authorise_value_390 = 1.0f;
-                            in.authorise_threshold_374 = 0.0f;
-                            in.controlled_count_3cc = controlled_unit_count();
-                            in.force_flag_378 = false;
+                            const int count = controlled_unit_count();
+                            in.controlled_count_3cc = count;
+                            in.force_flag_378 = false;   // ctl+378h
+
+                            // ctl+374h: 007EE7F0's armed fraction, through the
+                            // reconstructed rule rather than a constant. The
+                            // per-unit round count is 007C1F60, which sums
+                            // 006E3500 over the aircraft's class 25h devices
+                            // holding ordnance 2Ah. This host has no device
+                            // model, so a torpedo-armed aircraft stands in with
+                            // one round until it releases: a SUBSTITUTION for
+                            // 007C1F60, not a reading of it.
+                            std::vector<bool> enabled;
+                            std::vector<int> rounds;
+                            std::vector<bool> is_caller;
+                            for (int i = 0; i < count; ++i) {
+                                const GameUnitSlot* const u = controlled(i);
+                                enabled.push_back(u != nullptr);
+                                int n = 0;
+                                if (u != nullptr) {
+                                    const bsp::OrdnanceKindSet set{u->ordnance_mask};
+                                    if (bsp::ordnance_has_torpedo_2bh(set)) {
+                                        n = 1 - u->torpedo_releases;
+                                        if (n < 0) n = 0;
+                                    }
+                                }
+                                rounds.push_back(n);
+                                is_caller.push_back(u == &slot_);
+                            }
+                            // std::vector<bool> is a bit proxy, so copy out.
+                            std::vector<unsigned char> enabled_bytes(
+                                enabled.begin(), enabled.end());
+                            std::vector<unsigned char> caller_bytes(
+                                is_caller.begin(), is_caller.end());
+                            static_assert(sizeof(bool) == sizeof(unsigned char),
+                                          "bool and unsigned char must share a size");
+                            bsp::FlightArmedFractionInputs frac;
+                            frac.controlled_count_3cc = count;
+                            frac.unit_enabled_5c =
+                                reinterpret_cast<const bool*>(enabled_bytes.data());
+                            frac.unit_rounds_007c1f60 = rounds.data();
+                            frac.unit_is_caller =
+                                reinterpret_cast<const bool*>(caller_bytes.data());
+                            in.authorise_threshold_374 =
+                                bsp::flight_armed_fraction_007ee7f0(frac);
+
+                            // ctl+390h: 0079CD36 seeds it with
+                            // *(float*)(unit->+538h + A0h) * 0.95. The class
+                            // descriptor field is unread - offset +A0h is shared
+                            // by too many object types for a byte scan to name it
+                            // - so the descriptor value stands in at 1.0 while
+                            // the 0.95 scale is the native's own. SUBSTITUTION,
+                            // with the address.
+                            owner_.log.unimplemented(
+                                "PlaneClass::issue_threshold_a0", "0079cd36");
+                            in.authorise_value_390 = static_cast<float>(
+                                1.0 * bsp::kIssueThresholdScale_00ceffb0);
+
+                            slot_.torpedo_issue_threshold_390 =
+                                in.authorise_value_390;
+                            slot_.torpedo_armed_fraction_374 =
+                                in.authorise_threshold_374;
                             return in;
                         }
                         int controlled_unit_count() override {
@@ -2973,6 +3028,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         TorpedoReleaseOrderBinding binding(owner_, unit_);
                         const bsp::ReleaseOrderIssueResult r =
                             bsp::torpedo_issue_release_orders_007c0d90(binding);
+                        unit_.torpedo_issue_gate_open = r.gate_passed;
                         if (!r.walk_found_device) return;
                         ++unit_.torpedo_orders_issue_ticks;
                         unit_.torpedo_orders_issued += r.units_raised;
@@ -4647,6 +4703,12 @@ void GameUnitsHost::report() {
                         static_cast<int>(slot->torpedo_attack_mode_370),
                         slot->torpedo_attack_mode_raised_tick,
                         static_cast<double>(slot->torpedo_drop_timer));
+                    host.log.notef("  torpedo %-12s issue gate 007EEF40: "
+                        "ctl+390h=%.4f ctl+374h=%.4f open=%d",
+                        slot->row.name.c_str(),
+                        static_cast<double>(slot->torpedo_issue_threshold_390),
+                        static_cast<double>(slot->torpedo_armed_fraction_374),
+                        slot->torpedo_issue_gate_open ? 1 : 0);
                 } else {
                     host.log.notef("  torpedo %-12s approach 009D3420: "
                         "ticks=%d no_target=%d replans=%d aim_ticks=%d | "
