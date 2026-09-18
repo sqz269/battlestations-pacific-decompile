@@ -3,7 +3,7 @@
  "owner": "agent/cc8-torpedo-run-in",
  "doc": "docs/TORPEDO_MISSION_SURVEY.md",
  "tree_base": "main merged; see the commit on agent/cc8-torpedo-run-in",
- "result": "Negative on both candidates, and neither fails on the geometry. USN04's carrier strike never launches because GetProperty (0088bf80) is unimplemented and the mission think aborts every tick. USN22 does not start at all: 189 stationary units register through class_registration_creator (004e5b00), which is also unimplemented, so scene load refuses after four units. The torpedo move-to state remains unreachable in this harness.",
+ "result": "Negative on both candidates, and neither fails on the geometry. USN04's carrier strike never launches because GetProperty (0088bf80) is unimplemented and the mission think aborts every tick. USN22 does not start at all: a stationary unit has no vehicle-class descriptor, so its creator is 0 and the observer lookup throws after four units. An earlier version of this report blamed 004e5b00; that is retracted, see the corrections. The torpedo move-to state remains unreachable in this harness.",
  "question": "Does USN04's launched strike sit outside the 4840 m engaged threshold, so that the torpedo move-to state and the glide slope, throttle arm and speed setter wired for it finally execute?",
  "answer": "Unanswerable from this mission. range_first_mean came back 0.0 m over ordered=2, and those two are dive bombers that took the kind 8 task at mission frame 62. The twelve launchedStriker aircraft never exist, because MissionLuaNative::GetProperty (0088bf80) is unimplemented and returns a neutral value; nil reaches pairs in luaGetSlotsAndSquads and the mission think aborts 41 times with one identical message, so IsReadyToSendPlanes, LaunchSquadron and PilotSetTarget on the launched striker are never reached. Neither LaunchSquadron nor IsReadyToSendPlanes appears anywhere in the log. The USN22 fallback was run the same way and exited 1 with 'startup failed: unit observer creator projection is unavailable' and frames_presented=0. That is a std::logic_error from src/game_hosts_units.cpp:2241, not an access violation and not the startup crash under investigation elsewhere; it is deterministic, so no retry was spent. USN04 starts only because it has no Stationary scene rows and never calls 004e5b00.",
  "coverage": "complete for the run and its cause; the range and altitude at order time for USN04 remain contracts, now unmeasurable without the GetProperty reconstruction.",
@@ -29,9 +29,9 @@
   },
   {
    "native": "004e5b00",
-   "ledger_name": "SceneContents::class_registration_creator",
-   "evidence": "192 calls in the USN22 log against 189 stationary instances plus three; the four units that do register are LandFort 00747000 and AirField 006d3110, both present in the 22-row creator table in src/native_unit_observer_endpoint.cpp",
-   "status": "unimplemented in the host, named by the host's own record"
+   "ledger_name": "a no-op RET, not a missing native body",
+   "evidence": "one byte at 004E5B00 between INT3 padding, read from the image with disasm-raw; shared as the registration creator by eight scene classes",
+   "status": "RETRACTED: named as the USN22 blocker, which it is not"
   }
  ],
  "no_ghidra_function": [],
@@ -64,11 +64,12 @@
   }
  ],
  "contracts": [
-  "A reconstruction of 004e5b00 for the Stationary scene type would let USN22 load, with its single TBM_1 Avenger already targeted at Mission.FinConvoy[5]. Of the two openings, 0088bf80 is the smaller and is the one that reaches the order-range geometry.",
+  "USN22 needs a stationary unit path, not a native body: this installation's 220 StationaryClass rows carry no Type literal, so the vehicle-class chain at 00964790 returns a null descriptor. How the original creates a stationary unit is unread; 004F0BE0 is where to start. docs/SCENE_STATIONARY_REGISTRATION.md.",
   "A reconstruction of 0088bf80 that returns, for the key 'slots', a Lua array of tables each carrying a squadron field (nil for an empty slot). That is the only shape luaGetSlotsAndSquads requires, and it would let USN04's carrier strike launch.",
   "The plane type ids 158 and 162 that the striker launch picks from are not resolved to class names here, so whether the launched strike is torpedo-armed is still open even after the launch is fixed."
  ],
  "corrections": [
+  "RETRACTION. This report named 004E5B00 SceneContents::class_registration_creator as the native whose absence stops USN22 loading. It is a one-byte RET, a no-op stub, and its 192 UNIMPLEMENTED records are records of a routine that does nothing. The error was reading a summary's call count against an unimplemented record as a count of failures without reading the routine.",
   "This thread's own survey credited Mission.KatKillers to USN22. It is defined only in usn_1_marshall.lua lines 954 to 959, which is USN01. USN22's torpedo aircraft is the single TBM_1 Avenger. The survey doc is corrected.",
   "This thread's own survey called USN04 the best candidate on its launch geometry. The geometry was never tested, because the launch does not run.",
   "No retraction of a native-behaviour claim in this packet."
