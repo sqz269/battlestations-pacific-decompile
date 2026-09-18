@@ -3,6 +3,7 @@
 #include "bsp/native_lua_objects.hpp"
 #include "bsp/native_input_configuration_owner.hpp"
 #include "bsp/native_input_settings_tree_cleanup.hpp"
+#include "bsp/native_resource_manager_lifetime.hpp"
 #include <Windows.h>
 #include <cstdlib>
 #include <cstring>
@@ -18,6 +19,18 @@ void* at(void* p,U n) noexcept {return static_cast<char*>(p)+n;}
 U word(void* p,U n) noexcept {U v;std::memcpy(&v,at(p,n),4);return v;}
 void word(void* p,U n,U v) noexcept {std::memcpy(at(p,n),&v,4);}
 void* pointer(void* p,U n) noexcept {return reinterpret_cast<void*>(word(p,n));}
+NativeResourceManagerContext& resource_context(NativeGameLifetimeCalls& calls,
+    NativeResourceManagerContext* resources,NativeGameProfileLifetimeContext* profile){
+    if(!resources||!profile||&profile->calls!=&calls)
+        throw std::invalid_argument("native game resource cleanup requires its actual contexts");
+    auto& r=resources->strings;auto& p=profile->strings;
+    if(&resources->actual_lifetime_manager_01090aa0!=&p.actual_manager_publication_01090aa0||
+       &r.actual_manager_publication_01090aa0!=&p.actual_manager_publication_01090aa0||
+       &r.actual_published_01090aa8!=&p.actual_published_01090aa8||
+       &r.actual_small_returns_disabled_01090aa4!=&p.actual_small_returns_disabled_01090aa4)
+        throw std::invalid_argument("native game resources must share its actual string and lifetime publications");
+    return *resources;
+}
 void terminal(void* p,U dec_site,U terminal_site,NativeGameLifetimeCalls& c,
     NativeGameLifetimeProgress& o) {
     o.native_site=dec_site;
@@ -50,8 +63,8 @@ void normal(NativeGameStorage& game,NativeGameLifetimeContext& x,NativeGameLifet
     o.native_site=0x4dd0eb;c.call_00b6cf90(x.lua_globals,x.profile,o.lua_globals);o.native_site=0x4dd0f0;c.call_004c0d90(x.singletons,o.singletons[2]);
     if(void* p=pointer(g,0x21f4))terminal(p,0x4dd109,0x4dd115,c,o); // field remains untouched
     o.native_site=0x4dd11e;c.free_00bf65ac(pointer(g,0x2200));
-    o.native_site=0x4dd126;void* manager=c.call_004c1400();
-    o.native_site=0x4dd12d;c.call_00b806f0(manager);
+    o.native_site=0x4dd126;void* manager=c.call_004c1400(x.resources,x.profile);
+    o.native_site=0x4dd12d;c.call_00b806f0(manager,x.resources,x.profile);
     o.native_site=0x4dd134;c.call_004c7dd0(g,o.containers);
     // Native captures the first grid BEFORE clearing the game publication.
     void* first_grid=x.grid_00e19b0c;x.game_00e188a8=nullptr;
@@ -133,6 +146,12 @@ void NativeGameLifetimeOperation::acknowledge_diagnostic_cleanup() noexcept {
     }
 }
 void NativeGameLifetimeCalls::call_008d88f0(){native_game_cleanup_noop_008d88f0();}
+void* NativeGameLifetimeCalls::call_004c1400(NativeResourceManagerContext* r,NativeGameProfileLifetimeContext* p){
+    return get_native_resource_manager_004c1400(resource_context(*this,r,p));
+}
+void NativeGameLifetimeCalls::call_00b806f0(void* manager,NativeResourceManagerContext* r,NativeGameProfileLifetimeContext* p){
+    clear_native_resource_manager_cache_00b806f0(manager,resource_context(*this,r,p));
+}
 void NativeGameLifetimeCalls::call_00b6cf90(NativeGameLuaGlobalsLifetimeContext* c,NativeGameProfileLifetimeContext* p,NativeGameLuaGlobalsLifetimeOperation& o){
     if(!c||&c->calls!=this||!p||&p->calls!=this)throw std::invalid_argument("native Lua globals cleanup requires the game's actual contexts");
     clear_native_game_lua_globals_00b6cf90(*c,*p,o);

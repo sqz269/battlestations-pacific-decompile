@@ -55,6 +55,13 @@ void* construct_native_resource_manager_00b81040(void*, NativeResourceManagerCon
 // Registration failure retains publication/allocation; both release the guard.
 void* get_native_resource_manager_004c1400(NativeResourceManagerContext&);
 
+// Complete B806F0[44]: ECX actual manager, plain RET. Destroy its captured
+// cache root through B7FF20, then reset CURRENT head root/count/left/right in
+// native order. Retain sentinel/debug word, parser tree, factory and work words.
+// Mapped resource pointers are borrowed and are never released by this path.
+// Failure leaves a partial tree; no rollback or safe retry is implied.
+void clear_native_resource_manager_cache_00b806f0(void*, NativeResourceManagerContext&);
+
 // Complete B80F10[187]: ECX manager, RET. Delete current default factory through
 // its captured current slot0 with flags1, clear/free cache then parser trees,
 // clear publication, stampCE3818. Preserve factory4 and work20/24 values.

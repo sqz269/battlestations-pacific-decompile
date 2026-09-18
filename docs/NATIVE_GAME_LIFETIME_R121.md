@@ -246,3 +246,21 @@ replay cases andfour contextguards pass.
 The parent stillmatches52 cases/3,537 snapshots/141,402,076 bytes andfour failure
 cases. Strict Win32/three CTests pass. Producer/session integration,native
 exception ABI,remaining world/physics/resource bindings andgameplay remainopen.
+
+## Correction from docs/NATIVE_GAME_RESOURCE_CACHE_LIFETIME_R130.md
+
+R130 supplies both resource defaults:4DD126 delegates existing complete4C1400,
+and4DD12D invokes the new44B B806F0 cacheclear through the existing actualB7FF20
+subtree service. Both receive actualresource/profile contexts and require the
+same pool,returngate andraw lifetimepublication cells. The capturedgetterreturn
+remains the clear receiver evenwhen resourcepublication differs. Sentinel,
+parser/factory/work state andborrowed mappedresources survive cacheclear.
+
+44new+271existingreference bytes matchlivePE.24 copied-original pairs match168
+snapshots/220,280 normalizedbytes usingactualmanagerconstruction,sixparsers,
+rawpool/locks andsingletondrain. Sourceinternal frees/getterboundaries are not
+instrumented;graphs arefixtureprovided. Fourteen contextguards pass. The parent
+stillmatches52 cases/3,537 snapshots/141,402,076bytes andfour failure/replay cases.
+Strict Win32/three CTests pass. Remainingaddress dependencies are world/physics;
+payload virtualbindings,ordinaryrawgameadmission,nativeexceptionABI andgameplay
+remainopen.

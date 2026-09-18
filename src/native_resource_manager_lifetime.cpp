@@ -66,6 +66,20 @@ void destroy_native_resource_manager_base_00b7d2c0(void* manager,
     word(manager) = 0x00ce3818u;
 }
 
+void clear_native_resource_manager_cache_00b806f0(void* manager,
+    NativeResourceManagerContext& context) {
+    void* head = pointer(manager, 0x18);
+    void* const tree = at(manager, 0x14);
+    destroy_native_resource_cache_subtree_00b7ff20(tree, pointer(head, 4), context.strings);
+    head = pointer(tree, 4);
+    pointer(head, 4) = head;
+    head = pointer(tree, 4);
+    word(tree, 8) = 0;
+    pointer(head) = head;
+    head = pointer(tree, 4);
+    pointer(head, 8) = head;
+}
+
 void* construct_native_resource_manager_00b81040(void* manager, NativeResourceManagerContext& context) {
     int state = 0;
     try {
