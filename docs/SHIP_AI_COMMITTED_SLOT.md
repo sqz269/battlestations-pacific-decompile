@@ -124,6 +124,11 @@ of the sixty slots for the whole mission.
 
 USN01 for the record: clean run, `hull=23 deaths=1 total_damage=220.0`.
 
+Re-measured after merging `main` at `2cee62395` into this branch, which brought in the torpedo,
+native-lifetime and frame-slot work of the same day: build clean, tests 2 of 2, and USN02
+reproduces every number above exactly, including `committed_first=30 committed_last=28
+heading_changes=532` on Haguro and `pen_30=-nan(ind)` with the other five words finite.
+
 ## The next input, by address and value
 
 The ring winner is genuinely slot 0 on every scan, and the census now says why:
