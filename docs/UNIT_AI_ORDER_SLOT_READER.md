@@ -179,3 +179,67 @@ never writes it.
 | `ship_ai_order_consumer` | `009D8CE0`, `009D8D2C`, `009E3C00`, `009E3DB0`, `00811D80`, `00815F30` | Read the three consumers of the published triple and settle what a ship does with another ship's published heading and distances. `009D8CE0`'s caller has to be found first; it has none in the call graph |
 | `ship_ai_throttle_to_ring` | `009F43D6`, `009F443B`, `009F4466`, `009F4486`, `009F449D`, `009F46D6`, `009F4711`, `009F4810`, `009E7B53`, `009EA839`, `009F4DA0` | Where `blk+1D0h` and `blk+1D4h` go for a unit the player is not steering. Nothing on the per-frame chain `009F51C6..009F5227` consumes them, and the ring is a player and network path, so either step 16 `009F4DA0` or one of the `009F42xx..009F48xx` readers of `+1D0h`/`+1D4h` closes the loop. This is the packet's biggest open question |
 | `unit_heading_vtable_0050` | `00826CDB`, `0081196C`, `009ED95D`, `009EE8C7` | Slot `50h` of the vtable reached through the object at each site. Three sites call it with no argument and take a float back; `00826CDB` passes a yaw rate. Find the installed function for each class and settle whether the four sites share one vtable. Until then every reconstruction that models it as a heading getter is provisional |
+
+## Correction appended by packet `cc8_ship_ai_rudder_hop` (2026-09-18)
+
+`docs/SHIP_AI_RUDDER_HOP.md` has since read `00826C34..00826D69` instruction by
+instruction. Two claims in the section "What `00825F7C..00826D6B` actually contains on the
+steering path" and in the `unit_heading_vtable_0050` follow-up row do not survive it.
+
+* **The two call sites of vtable slot `50h` do not disagree.** All four sites are
+  `__thiscall float(void)`, `RET 0`, `ST0` result, and the concrete target is `006DFD60`,
+  `FLD dword [ECX+1050h]; RET`, installed at `00CFC420` = unit vtable `00CFC3D0` slot
+  `50h`. The float this document saw at `00826CD5` is the **third argument of
+  `00810190`**, which is `RET 0Ch` at `0081062C` and takes three stack arguments while only
+  two are pushed after the virtual call. With `RET 4` at `00826CDB` the function's own
+  epilogue at `00826D5F..00826D69` no longer balances.
+* **`00826C61..00826CDB` is not a hop from the rudder to the heading.** The ordered rudder
+  reaches the body at `00826B54` through `0092E8C0`, which `docs/SHIP_MOTION.md`
+  reconstructed in 2026-09; `00826C75`'s yaw rate is only `00810190`'s fourth argument,
+  stored in a wake-trail record at `+1Ch`; and `unit+1050h` - the field slot `50h` returns
+  - is **written** at `00826C56` from `atan2(worldRow2.x, worldRow2.z)`, so the hull
+  heading is an output of the motion tick rather than a steering input.
+
+The rest of this document stands, including its central negative: the AI never writes the
+order ring. The gap it identifies is real and still open; it is just not at `00825F7C`.
+`ship_ai_heading_to_rudder` in the other document's follow-up table is the packet for it.
+
+## Second correction appended by packet `cc8_ship_ai_heading_to_rudder` (2026-09-18)
+
+This document's central negative does not hold. It says: "Scanning `.text` for every `E8`
+`rel32` reaching `00816A40` or `0080DAD0` finds exactly those four sites and no other, so on
+the evidence in the image the ring is a player-order and network path and **the AI never
+writes the order ring**."
+
+The scan is correct and the conclusion does not follow, because the AI uses neither entry
+point. `009F3F80 BSP_ShipAi_DriveOrderRing` ends with
+
+```
+009F4CDE  PUSH ECX ; MOV ECX,[ESI+3FCh] ; FSTP [ESP] ; 009F4CE8 CALL 0080E190
+009F4CED  FLD [ESP+20h] ; PUSH ECX ; MOV ECX,[ESI+3FCh] ; FSTP [ESP] ; 009F4CFB CALL 0080E170
+```
+
+and both callees are five instructions that write the ring's write slot straight from the
+unit: `MOV EAX,[ECX+97Ch]; MOVSS XMM0,[ESP+4]; SHL EAX,5; MOVSS [EAX+ECX+838h or +83Ch],XMM0;
+RET 4`. `unit+838h` is the ring base and `unit+97Ch` is `ring+144h`, the write cursor.
+`00813020` then clamps `slot[ring+140h]`, steps `ring+148h`/`+14Ch` toward it through two
+`0042AC60` calls whose `ECX` comes from `008130D1`/`00813104`, copies the write slot forward
+with a `REP MOVSD` at `0081317C`, and at `00813197` sets the read cursor to the write cursor.
+In a single-player session the live pair therefore follows what the AI wrote one tick
+earlier; the client branch at `008131B0` walks the read cursor instead, which is the network
+playback regime.
+
+Two more rows in this document change with it:
+
+* `ship_ai_throttle_to_ring`, called here "the packet's biggest open question", was not
+  open when this document was written. `docs/SHIP_AI_THROTTLE_TO_RING.md`, packet
+  `cc_ai_throttle_ring`, answered it on 2026-09-12: `blk+1D0h` and `blk+1D4h` go to
+  `slot[write]+0` and `slot[write]+4` after the deadbands and the slew at
+  `009F4BA7..009F4C12`. `src/ship_ai_throttle_ring.cpp` reconstructs `009F4B99..009F4D04`
+  and both setters, and the host binds them.
+* "`009D8CE0`'s caller is unknown - Ghidra records none" - it records one, `009F3E30`,
+  which itself has no caller in the graph.
+
+The twelve readers of `slot+40h`/`+44h`/`+48h` stand, and so does the conclusion that none
+of them steers: `009F40BB` takes the heading target from `blk+324h`, not from `slot+44h`.
+The published triple is inter-unit state, and this document's own reading of it is right.

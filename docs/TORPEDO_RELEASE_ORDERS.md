@@ -376,3 +376,22 @@ heading has no planned run-in, and the `moveto` state's own steering is what car
    a mission script on USN01 takes it.
 5. **`007D681E`**, the `LEA` that takes a pointer to `unit+C58h` inside
    `BSP_Plane_ReadPropertyBag`, the one site the store scans cannot cover.
+
+## Correction to section (4) from `docs/TORPEDO_ATTACK_MODE.md` (packet `cc8_torpedo_attack_mode_lowering`)
+
+Appended, not rewritten. Section (4)'s three values and its readings of `0099B740` and the Lua
+binding hold, but its writer census is incomplete twice over.
+
+* It scanned only `89 ?? 70 03 00 00` and `C7 ?? 70 03 00 00`. A census over every store form that
+  can reach a `+370h` field, disp8 and disp32, with the two known sites as a positive control,
+  finds a **third writer on this object**: `007F0068`, the `BCh` arm of the control block's message
+  dispatcher `007F0030`, which sets the mode to `2` or **`0`** from the byte at `msg+20h`. There is
+  no float or byte writer anywhere.
+* It used `ghidra callers`, which under-reports. An exhaustive rel32 scan of the two setters finds
+  **four** call sites, not three: the missing one is `0084DB86`, inside the undefined routine
+  `0084DB50`-`0084DB8D`, which raises the mode to `1`.
+
+So the sentence "`009A2810` … is the only route back down to `0`" is wrong. The `BCh` message is a
+second route, and the only one that does not need a `closetoship` task. Section (4) is otherwise
+confirmed, including that `009A2810` arms only from mode `2` and belongs to the `closetoship`
+task's vtable `+64h` arm.

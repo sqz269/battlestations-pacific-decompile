@@ -256,3 +256,16 @@ attribute and no damage from a torpedo.
 2. `007B5BE0` and the entity extents `+444h`/`+448h`, which raise the break-off distance against a
    large target.
 3. The goaway tick `009D0F10` proper, including `+28h`'s countdown and `+30h`/`+34h`.
+
+## Correction from `docs/TORPEDO_ATTACK_MODE.md` (packet `cc8_torpedo_attack_mode_lowering`)
+
+Appended, not rewritten. This document's follow-up 1 asks what lowers `ctl+370h`. The answer is
+that **nothing a torpedo task runs does**. Both routes to `0` belong to other objects: the
+`closetoship` task's countdown `009A2810`, which arms only after Lua's `PilotStopCloseToShip` sets
+mode `2`, and the `BCh` message arm at `007F0068`, whose producer is unread. On USN01 neither
+fires, in the native as much as in the host.
+
+Measured consequence: the mode is `0` for exactly one arm tick, before the flight leader's raise
+propagates, and two of the five aircraft enter `prepare` on that tick. It is also the one tick the
+release-order queue `unit+C58h` is empty, so `009D49A0` takes its no-order arm and `prepare+98h` is
+never set.

@@ -4967,18 +4967,48 @@ bool GameShipAiHost::promote_order_00825f2c(std::size_t unit_index) {
     host.done("ShipAiOrder::copy_slot", 0x00811d10u);
     ++host.rows[unit_index].promotions;
     ++host.summary.promotions;
-    // 00825F7C..00826D6B. The name of this record is stale and packet
-    // cc8_ship_ai_ring_winner corrects it rather than renaming the census line
-    // mid-run: docs/UNIT_AI_ORDER_SLOT_READER.md has since read the range and
-    // it is NOT an AI publisher. It carries the hop from the ring's own
-    // rudder at +984h through 00811890 to unit->vtable[50h] (00826C61,
-    // 00826C75, 00826CDB) and, gated on unit+61h, the manual-autopilot ring
-    // setters at 008266CE. That doc also supersedes the negative result quoted
-    // here from docs/UNIT_AUTOPILOT_PAIR.md: readers of slot+40h / +44h / +48h
-    // do exist, twelve of them, and its rel32 scan for 00816A40 and 0080DAD0
-    // finds the ring's write cursor filled only from three HUD order routines.
-    // On the image's evidence the AI never writes the order ring at all, so
-    // what is unimplemented here is the hop above, not a missing publisher.
+    // 00825F7C..00826D6B. The name of this record is stale. Two packets have
+    // now corrected it without renaming the census line mid-run, because the
+    // counts stay comparable across runs that way.
+    //
+    // cc8_ship_ai_ring_winner said, quoting docs/UNIT_AI_ORDER_SLOT_READER.md:
+    // "It carries the hop from the ring's own rudder at +984h through 00811890
+    // to unit->vtable[50h] (00826C61, 00826C75, 00826CDB)". Packet
+    // cc8_ship_ai_rudder_hop has since read 00826C34..00826D69 instruction by
+    // instruction and that is not what those three sites are
+    // (docs/SHIP_AI_RUDDER_HOP.md):
+    //   - the ordered rudder was already applied to the body at 00826B54 by
+    //     0092E8C0, forty instructions earlier, and docs/SHIP_MOTION.md has
+    //     reconstructed that call since 2026-09-11;
+    //   - 00826C75's yaw rate is the THIRD argument of 00810190 at 00826CEE,
+    //     the wake-trail sampler, and reaches nothing else;
+    //   - unit+1050h, the field vtable slot 50h returns, is WRITTEN here at
+    //     00826C56 from atan2 over world row 2, so the heading is an output of
+    //     the tick, not a steering input.
+    // There is consequently no missing AI-heading-to-rudder hop at this
+    // address. What is unimplemented here is the motion tail:
+    // bsp/ship_ai_rudder_hop.hpp reconstructs it and names the eight host calls
+    // it needs, all of which belong to the ShipMotionHost binding in
+    // src/game_hosts_units.cpp.
+    //
+    // A third correction, packet cc8_ship_ai_heading_to_rudder
+    // (docs/SHIP_AI_HEADING_TO_RUDDER.md). The older note said: "the rel32 scan
+    // for 00816A40 and 0080DAD0 finds the ring's write cursor filled only from
+    // three HUD order routines. On the image's evidence the AI never writes the
+    // order ring at all." That is WRONG, and the scan is why: the AI uses
+    // neither entry point. 009F3F80 BSP_ShipAi_DriveOrderRing ends with
+    // 009F4CE8 0080E190(unit, rudder) and 009F4CFB 0080E170(unit, throttle),
+    // five-instruction setters that write slot[ring+144h]+4 and +0 with
+    // ECX = [blk+3FCh], the unit. 00813020 then clamps slot[ring+140h] and
+    // steps unit+984h toward it, and 00813197 sets the read cursor to the write
+    // cursor, so in a single-player session the live pair follows what the AI
+    // wrote one tick earlier. Both setters are already reconstructed in
+    // src/ship_ai_throttle_ring.cpp and bound as ShipAiRing::set_write_slot_*,
+    // which is why this run reports writes=96000 and total_path=41584.83.
+    //
+    // Readers of slot+40h / +44h / +48h do exist, twelve of them, but the
+    // steering does not use them: 009F40BB takes the heading target from
+    // blk+324h, not from slot+44h. The published triple is inter-unit state.
     host.record("ShipAiOrder::slot_to_order_ring", 0x00825f7cu);
     if (!host.logged_position) {
         host.logged_position = true;
@@ -4987,8 +5017,17 @@ bool GameShipAiHost::promote_order_00825f2c(std::size_t unit_index) {
             "00825f2c flips the index and 00811d10 copies the slot across. Readers of "
             "slot+40h / +44h / +48h DO exist - twelve sites in "
             "docs/UNIT_AI_ORDER_SLOT_READER.md, which supersedes "
-            "docs/UNIT_AUTOPILOT_PAIR.md's negative - and none is on the ring path: on the "
-            "image's evidence the AI never writes the order ring");
+            "docs/UNIT_AUTOPILOT_PAIR.md's negative - and none is on the steering path, "
+            "because 009f40bb takes the heading target from blk+324h. The AI DOES write the "
+            "order ring, through 0080e190 at 009f4ce8 and 0080e170 at 009f4cfb, which the "
+            "old rel32 scan for 00816a40 and 0080dad0 could not see "
+            "(docs/SHIP_AI_HEADING_TO_RUDDER.md). The name of this record "
+            "is stale for a second reason: 00826c34..00826d69 is the motion TAIL, not an "
+            "ai-to-rudder hop. The ordered rudder is applied at 00826b54 by 0092e8c0, "
+            "00826c75's yaw rate is only the third argument of the wake sampler 00810190, "
+            "and unit+1050h - what vtable slot 50h returns - is written at 00826c56 from "
+            "atan2 over world row 2, so the heading is an output of the tick "
+            "(docs/SHIP_AI_RUDDER_HOP.md)");
     }
     return true;
 }
