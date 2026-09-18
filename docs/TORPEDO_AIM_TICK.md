@@ -306,3 +306,28 @@ Appended, not rewritten. The two follow-ups this document opened are answered th
 
 The Uncertainty note above, that the host exercises clause 2 while the native would likely
 exercise clause 1, is measured in that document's Validation section.
+
+## Correction, packet cc8_torpedo_steering_delta
+
+Appended, not a rewrite of anything above.
+
+The frame table's `F=10h` entry names the subtrahend of the delta at `009D1699` as the
+unit's heading through vtable slot `50h`, and slot `50h` was recorded as
+`006DFD60 BSP_UnitInstance_GetHullHeading`, `FLD [ECX+1050h]`. That is the **ship**
+override. Slot `50h` has a second override:
+
+```
+0074e260  d9 81 6c 0c 00 00   fld dword ptr [ecx + 0xc6c]
+0074e266  c3                  ret
+```
+
+`0074E260 BSP_PlaneUnitInstance_GetHeading` is slot `50h` of nine vtables, one of which is
+`00D05F20`, the vtable `BSP_PlaneUnitInstance_Construct` (`007CFD20`) installs at `007CFD78`.
+So on an aircraft the `CALL EDX` at `009D1679` returns `unit+C6Ch`, the plane heading
+`007C1900` writes, not `unit+1050h`.
+
+That matters because `unit+C6Ch` is exactly the field the pilot planner subtracts at
+`0099DEB8`. The aim tick's delta and the planner's yaw heading error are the same number by
+construction, so there is no convention mismatch between the bot state and the planner.
+
+docs/TORPEDO_STEERING_DELTA.md has the vtable census and the ABI.
