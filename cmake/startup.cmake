@@ -1394,3 +1394,5 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_game_r
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_language_catalog_lifetime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_language_catalog_producer.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_settings_text.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_settings_renderer.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_settings_loader.cpp)
