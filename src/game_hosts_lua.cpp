@@ -1392,6 +1392,21 @@ std::int32_t air_ops_integer_argument(lua_State* state, int index, bool& present
 }
 } // namespace
 
+bool GameMissionLuaHost::stationary_class_exists(const std::string& name) {
+    if (state_ == nullptr || name.empty()) return false;
+    const int top = ::lua_gettop(state_);
+    bool found = false;
+    // 00851CB0: BSP_LuaStateOwner_GetGlobals, BSP_LuaObject_GetByName with the
+    // literal, then BSP_LuaObject_GetByNativeString with the type's own text.
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "StationaryClass");
+    if (::lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_getfield(state_, -1, name.c_str());
+        found = ::lua_type(state_, -1) == LUA_TTABLE;
+    }
+    ::lua_settop(state_, top);
+    return found;
+}
+
 int GameMissionLuaHost::run_is_ready_to_send_planes_00895d20(lua_State* state,
     int argument_count) {
     static_cast<void>(argument_count);

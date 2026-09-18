@@ -247,6 +247,11 @@ struct GameUnitSlot {
     GameUnitRow row;
     bsp::NativeUnitObserverPrefixStorage observer_prefix;
     bool observer_prefix_ready{false};
+    // The unit took 004F0FB0's stationary arm: no vehicle-class descriptor, so
+    // no creator to key the observer tables on, and no motion dispatch either
+    // because the 1ACh prop has no slot at 310h.
+    // docs/SCENE_STATIONARY_UNITS.md.
+    bool stationary_prop{false};
     UnitMotionDispatch motion_dispatch;
     GameUnitWorldLists* world_parent_0030{};
     std::size_t process_index{}; // metadata, not a native unit field
@@ -2122,6 +2127,16 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         row.class_row_name = lua_row.name;
         const bsp::VehicleClassDescriptorRow* kind = lua_row.found
             ? bsp::vehicle_class_kind_row(lua_row.type.c_str()) : nullptr;
+        // 004F0FB0's stationary arm. The native reaches its own factory for
+        // these: 00851CB0 fetches the globals, takes `StationaryClass` by name
+        // and then the row by the type's own text, so the class lives in a
+        // different table from `VehicleClass` and carries no `Type` literal for
+        // 00964790's chain to match. A unit whose type resolves there is a
+        // stationary prop, and it has no descriptor by construction rather than
+        // by a gap in this process. docs/SCENE_STATIONARY_UNITS.md.
+        if (kind == nullptr && host.lua.stationary_class_exists(row.type_symbol)) {
+            slot->stationary_prop = true;
+        }
         slot->motion_dispatch = unit_motion_dispatch(kind);
         if (slot->motion_dispatch.entry == 0x007ce040u) {
             // 007C6340's fall-through at 007C6481 sets unit+900h = 7 and
@@ -2246,6 +2261,12 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         bsp::publish_game_entity_observer_tables_00928662(slot->observer_prefix);
         slot->observer_prefix_ready = bsp::publish_unit_leaf_observer_tables_for_creator(
             slot->observer_prefix, slot->motion_dispatch.creator);
+        if (!slot->observer_prefix_ready && slot->stationary_prop) {
+            // The prop's own pair, from its constructor rather than from a
+            // creator row, because it has no descriptor to be keyed by.
+            bsp::publish_stationary_prop_observer_tables_00748a40(slot->observer_prefix);
+            slot->observer_prefix_ready = true;
+        }
         if (host.observer_runtime != nullptr) {
             if (!host.observer_runtime->has_live_dispatch_owner())
                 throw std::logic_error("unit creation requires the live bound observer owner");
