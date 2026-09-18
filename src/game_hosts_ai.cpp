@@ -15,6 +15,7 @@
 
 #include "bsp/ai_command_lifetime.hpp"
 #include "bsp/ai_command_object.hpp"
+#include "bsp/ai_command_tick.hpp"
 #include "bsp/ai_group_think.hpp"
 #include "bsp/ai_planners.hpp"
 #include "bsp/ai_tuning_globals.hpp"
@@ -43,7 +44,8 @@ constexpr int kCampaignGameMode = 0;
 
 struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                                      public bsp::AiPlannerHost,
-                                     public bsp::AiCommandMemberPassHost {
+                                     public bsp::AiCommandMemberPassHost,
+                                     public bsp::AiCommandTickHost {
     Impl(GameHostLog& log_in, GameUnitsHost& units_in) : log(log_in), units(units_in) {}
 
     void record(const char* method, std::uint32_t address) {
@@ -491,11 +493,152 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         (void)target_descriptor;
     }
     void command_tick(void* command) override {
-        // vtable[+0Ch]. NONCONTROL tail-calls 00A10EC0 and IDLE runs 00A10EC0,
-        // 00A10DC0 and 00A11070; none of the three was read, so nothing is
-        // executed here beyond the census.
-        (void)command;
-        record("AiCommand::tick_000c", 0x00a10ec0u);
+        // vtable[+0Ch]. The five bodies packet cc8_ai_command_tick read run
+        // here; NONCONTROL and IDLE still reach 00A10EC0, which was not read.
+        bsp::AiCommandObject* cmd = static_cast<bsp::AiCommandObject*>(command);
+        if (cmd == nullptr) return;
+        const bsp::AiCommandTickResult tick = bsp::ai_command_tick_vt000c(*this, *cmd);
+        summary.tick_orders += tick.orders_issued;
+        summary.tick_formation_requests += tick.formation_requests;
+        summary.tick_followers += tick.followers_walked;
+        if (tick.promoted) ++summary.command_promotions;
+        if (cmd->type == bsp::AiCommandType::NonControl ||
+            cmd->type == bsp::AiCommandType::Idle) {
+            record("AiCommand::tick_000c", 0x00a10ec0u);
+        } else {
+            done("AiCommand::tick_000c", 0x00a02020u);
+        }
+    }
+
+    // ---- bsp::AiCommandTickHost, one method per native call ----------------
+    std::uint32_t tick_group_population(void* group) override {
+        return group_population(group);
+    }
+    std::size_t tick_member_count(void* group) override { return group_member_count(group); }
+    void* tick_member_at(void* group, std::size_t index) override {
+        return group_member_at(group, index);
+    }
+    bool tick_leader_point(void* group, float out[3]) override {
+        // 00A10C20: the first member's +FCh pose, or 00F87574 when empty.
+        Group* g = group_at(group);
+        out[0] = out[1] = out[2] = 0.0f;
+        if (g == nullptr ||
+            bsp::ai_group_leader_point_is_origin_00a10c20(
+                static_cast<std::uint32_t>(g->members.size()))) {
+            return false;
+        }
+        const float* p = group_leader_position(group);
+        if (p == nullptr) return false;
+        out[0] = p[0];
+        out[1] = p[1];
+        out[2] = p[2];
+        return true;
+    }
+    bool tick_member_position(void* member, float out[3]) override {
+        out[0] = out[1] = out[2] = 0.0f;
+        if (member == nullptr) return false;
+        float y = 0.0f;
+        units.unit_position_00fc(unit_index_of(member), out[0], y, out[2]);
+        out[1] = y;
+        return true;
+    }
+    bool tick_member_is_ship_base(void* member) override {
+        return member != nullptr &&
+            units.unit_is_kind_of(unit_index_of(member), bsp::kUnitGunneryKindShipBase);
+    }
+    bool tick_member_is_plane_squadron(void* member) override {
+        return member != nullptr && units.unit_is_kind_of(unit_index_of(member), 0x18);
+    }
+    bool tick_squadron_excluded_007eda90(void* member) override {
+        if (member == nullptr) return false;
+        return bsp::ai_squadron_excluded_007eda90(combatant_facts(unit_index_of(member)));
+    }
+    bool tick_squadron_excluded_009ffeb0(void* member) override {
+        // 009FFEB0 is a second squadron-carrier exclusion, not 007EDA90: it
+        // returns false outright when the byte at 00E17BF2 is set, and that
+        // byte is 00 in the image, so the carrier arm is what runs. That arm
+        // was not read. This process holds no carrier link, so the answer here
+        // matches what 007EDA90 answers, which is false.
+        record("AiCommand::squadron_excluded_009ffeb0", 0x009ffeb0u);
+        return tick_squadron_excluded_007eda90(member);
+    }
+    bool tick_member_is_groupable_combatant(void* member) override {
+        if (member == nullptr) return false;
+        return bsp::ai_entity_is_groupable_combatant_009fe080(
+            combatant_facts(unit_index_of(member)));
+    }
+    bool tick_issue_moveto(void* member, const float position[3]) override {
+        // 00A02020's tail: 0077D600 with the `moveto` class descriptor
+        // 00E08F68 and a position descriptor, flags 1.
+        if (member == nullptr) return false;
+        const std::size_t unit = unit_index_of(member);
+        bsp::SceneCommandTarget target;
+        target.kind = 0;             // a position
+        target.position_valid = 1;   // 00A0214B stores 0x0100 over the pair
+        target.object_id = 0;
+        target.object = nullptr;
+        target.position[0] = position[0];
+        target.position[1] = position[1];
+        target.position[2] = position[2];
+        target.trailing = 0.0f;
+        if (units.issue_script_command(unit, bsp::kAiSceneCommandMoveTo, target,
+                                       bsp::kAiSceneCommandFlags, "ai_command_tick",
+                                       unit_name(unit)) == nullptr) {
+            ++summary.commands_refused;
+            return false;
+        }
+        ++summary.commands_issued;
+        if (current_party >= 0) ++party_row(current_party).commands_issued;
+        if (summary.first_command_seconds < 0.0f) summary.first_command_seconds = clock_seconds;
+        done("AiCommand::issue_moveto", 0x00a02020u);
+        return true;
+    }
+    bool tick_request_join_formation(void* follower, void* leader) override {
+        // 0077C8D0 BSP_Entity_RequestJoinFormation, contract: unread. This
+        // process has no formation ring to join, so the request is recorded.
+        (void)follower;
+        (void)leader;
+        record("AiCommand::request_join_formation", 0x0077c8d0u);
+        return true;
+    }
+    bool tick_avoid_zone_point(void* member, const float target[3], float out[2]) override {
+        // 00417B10 BSP_AvoidZoneGroup_OffsetPointSequential, contract: unread.
+        // Without it a ship is sent at the requested point itself.
+        (void)member;
+        out[0] = target[0];
+        out[1] = target[2];
+        record("AiCommand::avoid_zone_offset_point", 0x00417b10u);
+        return false;
+    }
+    float tick_tuning_field(std::uint32_t offset) override { return tuning.at(offset); }
+    float tick_horizontal_distance(const float a[3], const float b[3]) override {
+        // 009FFC10 BSP_Math_HorizontalLength on the difference, x and z only.
+        const float dx = a[0] - b[0];
+        const float dz = a[2] - b[2];
+        return std::sqrt(dx * dx + dz * dz);
+    }
+    void tick_replace_command(void* group, bsp::AiCommandType type) override {
+        // 00A12C1B: new(20h) + 00A10710(group, target), vtable 00D22C44, then
+        // 00A2BD00 deletes the outgoing command and stores the replacement.
+        Group* g = group_at(group);
+        if (g == nullptr) return;
+        if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
+        float own[3] = {0.0f, 0.0f, 0.0f};
+        float tgt[3] = {0.0f, 0.0f, 0.0f};
+        tick_leader_point(g, own);
+        if (g->command.target_group != nullptr) tick_leader_point(g->command.target_group, tgt);
+        bool groupable = false;
+        if (!g->members.empty()) {
+            groupable = bsp::ai_entity_is_groupable_combatant_009fe080(
+                combatant_facts(g->members.front()));
+        }
+        log.notef("  ai command promote group members=%zu groupable=%d dist=%.1f "
+            "collect=%.1f", g->members.size(), groupable ? 1 : 0,
+            static_cast<double>(tick_horizontal_distance(own, tgt)),
+            static_cast<double>(tuning.at(bsp::kAiTuningCloseAttackCollectDist)));
+        g->command.type = type;
+        g->command.owner_group = g;
+        done("AiCommand::promote_to_close_attack", 0x00a2bd00u);
     }
     void command_pass_interval(void* command, float* low, float* high) override {
         (void)command;  // 00A0FC50, shared by all sixteen classes
@@ -1025,10 +1168,15 @@ void GameAiCoordinatorHost::report() {
     host.summary.units_with_task = static_cast<unsigned long long>(with_task);
     host.log.notef("summary mission ai coordinator game_mode=%d compose=%llu seeds=%llu "
         "groups_created=%llu destroyed=%llu members_added=%llu evicted=%llu splits=%llu "
-        "splits_taken=%llu auto_merges=%llu prox_merges=%llu member_passes=%llu",
+        "splits_taken=%llu auto_merges=%llu prox_merges=%llu member_passes=%llu "
+        "tick_orders=%llu tick_followers=%llu formation_requests=%llu promotions=%llu "
+        "collect_dist=%.1f",
         s.game_mode, s.compose_passes, s.seed_candidates, s.groups_created,
         s.groups_destroyed, s.members_added, s.members_evicted, s.splits,
-        s.splits_taken, s.auto_merges, s.proximity_merges, s.member_passes);
+        s.splits_taken, s.auto_merges, s.proximity_merges, s.member_passes,
+        s.tick_orders, s.tick_followers, s.tick_formation_requests,
+        s.command_promotions,
+        static_cast<double>(host.tuning.at(bsp::kAiTuningCloseAttackCollectDist)));
     host.log.notef("summary mission ai tuning mode=%d (%s) merge_dist=%.1f "
         "near=%.1f far=%.1f sticky=%.2f",
         s.tuning_mode, bsp::ai_tuning_mode_table_name(
