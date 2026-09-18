@@ -553,6 +553,14 @@ struct GameUnitSlot {
     float plane_air_brake_drag{0.0f};
     // desc+1F0h DropAngle, 009FB800's dive gain and cap.
     float plane_drop_angle{0.0f};
+    // plan+2B4h and plan+2D8h. 009C1850 writes the first at 009C189A and raises
+    // the second at 009C18A7, and 0099D300's throttle arms read both. They live
+    // on the slot rather than in PilotPlanState because that header belongs to
+    // another packet. docs/PILOT_THROTTLE_CUT_RAISER.md.
+    float plane_desired_speed_2b4{0.0f};
+    int plane_air_brake_mode_2d8{0};
+    float plane_throttle_last{1.0f};
+    int plane_speed_commands{0};
     // desc+1E4h and desc+1ECh, the two 007C4850 derives with the 007D98F0
     // climb-angle solver at 007C4BE9 and 007C4C14. desc+1ECh is the climb arm's
     // gain, and it is 0.6 * desc+1E4h, NOT zero: docs/PLANE_FLIGHT.md read it as
@@ -4266,6 +4274,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // sector scan chose. docs/TORPEDO_APPROACH_UPDATE.md.
                         if (ctx.current == bsp::TorpedoState::kAim) {
                             run_torpedo_aim_tick_009d15f0(dt);
+                        } else if (ctx.current == bsp::TorpedoState::kMoveTo ||
+                                   ctx.current == bsp::TorpedoState::kFollow) {
+                            run_move_to_tick_009c18c0();
                         } else if (ctx.current == bsp::TorpedoState::kAttackRun) {
                             // Step 4 of the attackrun tick 009D07B0, the half
                             // that commands the altitude: "altitude
@@ -4625,6 +4636,106 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         GameUnitSlot& s_;
                         float heading_{0.0f};
                     };
+
+                    // 009C18C0's steps 2 and 5, the two halves that matter to a
+                    // torpedo bomber's approach. docs/TORPEDO_MOVETO_TICK.md and
+                    // docs/TORPEDO_AIM_ALT_AND_SAFE_DIST.md.
+                    void run_move_to_tick_009c18c0() {
+                        const bsp::TorpedoApproachState& ap = unit_.torpedo_approach;
+                        // Step 1: the planar separation. approach+90h already
+                        // carries it, which is what 009C196C's square root
+                        // produces and holds in EBX to the 009FBA50 call.
+                        const float distance = ap.range_90;
+                        if (!(distance > 0.0f)) return;
+
+                        // Step 2, 009C1850 BSP_BotStateMoveTo_SetDesiredSpeed.
+                        // 009C189A writes cmd+2B4h, 009C18A0 clears the byte
+                        // cmd+2B0h and 009C18A7 raises cmd+2D8h, with NO
+                        // condition. SUBSTITUTION, labelled: the speed itself
+                        // comes from 007C47F0 and 009BECD0, both unread, so the
+                        // row's authored TravelSpeed stands in - the cruise the
+                        // aircraft is seeded at, which is what a bot moving to a
+                        // point should want.
+                        unit_.plane_desired_speed_2b4 = unit_.plane_travel_speed > 0.0f
+                            ? unit_.plane_travel_speed : 141.666672f;
+                        unit_.plane_air_brake_mode_2d8 = 1;
+                        ++unit_.plane_speed_commands;
+                        owner_.record("BotStateMoveTo::set_desired_speed", 0x009c1850u);
+
+                        // Step 5, the glide slope. 009C1B17 calls 009FBA50 with
+                        // base = max(state+34h + targetY, state+30h), rangeLow =
+                        // state+38h and rangeHigh = the distance, and the torpedo
+                        // arm 009D48CF fills those three with the RELEASE
+                        // ALTITUDE approach+74h + approach+78h in both altitude
+                        // slots and the release distance approach+7Ch or +80h in
+                        // the third, on the approach+134h >= 15.0 switch.
+                        const float base = ap.alt_floor_74 + ap.alt_margin_78;
+                        const float range_low = ap.elapsed_134 >= 15.0f
+                            ? ap.speed_late_7c : ap.speed_early_80;
+                        // 009C1AF3: Interp(0.05, 0.35, 0.4, 1.6, margin/denom),
+                        // with margin = max(1400 - unit+100h, 50) and denom the
+                        // distance less 1000, clamped into [50, 2000].
+                        float margin = 1400.0f - unit_.motion.position[1];
+                        if (margin < 50.0f) margin = 50.0f;
+                        float denom = distance - 1000.0f;
+                        if (denom < 50.0f) denom = 50.0f;
+                        if (denom >= 2000.0f) denom = 2000.0f;
+                        const float t = bsp::clamped_interpolate_00419010(
+                            0.05f, 0.35f, 0.4f, 1.6f, margin / denom);
+                        // class+518h, derived at 007C4A44 as tan(DropAngle), so
+                        // the span term is horizontalDistance * tan(angle).
+                        const float gain = static_cast<float>(
+                            std::tan(static_cast<double>(unit_.plane_drop_angle)));
+                        bsp::PlaneCruiseAltitudeInputs cin;
+                        cin.base_altitude = base;
+                        cin.range_low = range_low;
+                        cin.range_high = distance;
+                        cin.scale = t;
+                        cin.class_gain = gain;
+                        cin.has_squadron = false;
+                        if (owner_.lua.plane_globals_loaded()) {
+                            cin.ceiling = owner_.lua.plane_globals().dynamics_ceiling;
+                        }
+                        const bsp::PlaneCruiseAltitudeResult c =
+                            bsp::cruise_altitude_command_009fba50(cin);
+                        bsp::PlanePitchCommandInputs pin;
+                        pin.desired_altitude = c.clamped_altitude;
+                        pin.reference = c.unclamped_altitude;
+                        pin.unit_world_y = unit_.motion.position[1];
+                        pin.ceiling = cin.ceiling;
+                        if (owner_.lua.plane_globals_loaded()) {
+                            const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                            pin.climb_dist = g.pilot_general_climb_dist;
+                            pin.drop_dist = g.pilot_general_drop_dist;
+                        }
+                        pin.class_climb_angle = unit_.plane_climb_angle_1ec;
+                        pin.class_drop_angle = unit_.plane_drop_angle;
+                        const float demand = bsp::pitch_command_009fb800(pin);
+                        unit_.plane_commanded_altitude = c.clamped_altitude;
+                        unit_.plane_commanded_pitch = demand;
+                        unit_.plan_state.pitch_target_2bc = demand;
+                        owner_.record("BotStateMoveTo::glide_slope", 0x009c18c0u);
+                        if ((unit_.plane_speed_commands % 50) == 1) {
+                            owner_.log.notef("  torpedo %-12s glide census n=%d "
+                                "range=%.1f base=%.2f low=%.1f t=%.3f gain=%.3f "
+                                "commanded=%.1f live_alt=%.1f pitch_demand=%.4f "
+                                "desired_spd=%.2f |v|=%.2f throttle=%.3f",
+                                unit_.row.name.c_str(), unit_.plane_speed_commands,
+                                static_cast<double>(distance),
+                                static_cast<double>(base),
+                                static_cast<double>(range_low),
+                                static_cast<double>(t), static_cast<double>(gain),
+                                static_cast<double>(c.clamped_altitude),
+                                static_cast<double>(unit_.motion.position[1]),
+                                static_cast<double>(demand),
+                                static_cast<double>(unit_.plane_desired_speed_2b4),
+                                static_cast<double>(std::sqrt(
+                                    unit_.plane_world_velocity[0] * unit_.plane_world_velocity[0] +
+                                    unit_.plane_world_velocity[1] * unit_.plane_world_velocity[1] +
+                                    unit_.plane_world_velocity[2] * unit_.plane_world_velocity[2])),
+                                static_cast<double>(unit_.plane_live_throttle));
+                        }
+                    }
 
                     void run_torpedo_aim_tick_009d15f0(float dt) {
                         const bsp::TorpedoApproachState& ap = unit_.torpedo_approach;
@@ -5138,6 +5249,56 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plan_slots[bsp::kPilotSlotPitch].desired =
                             bsp::plan_pitch_0099e68d(pitch.demand);
                         unit_.plan_slots[bsp::kPilotSlotPitch].active = 1;  // 0099E741
+                        // 0099D300's throttle arms. The demand arm is reachable
+                        // in flight through 0099D8CD, which jumps past the
+                        // flight-state test at 0099D8FD.
+                        // docs/PILOT_THROTTLE_CUT_RAISER.md.
+                        {
+                            bsp::PilotBotThrottleInputs tin;
+                            const bsp::PilotPlanSlot& th =
+                                unit_.plan_slots[bsp::kPilotSlotThrottle];
+                            tin.slot_current = th.current;
+                            tin.slot_desired = th.desired;
+                            tin.slot_active = th.active != 0;
+                            tin.flight_state = unit_.plane_control_mode_900;
+                            tin.air_brake_mode = unit_.plane_air_brake_mode_2d8;
+                            tin.one_shot_threshold = unit_.plane_desired_speed_2b4;
+                            tin.measured_speed = std::sqrt(
+                                unit_.plane_world_velocity[0] * unit_.plane_world_velocity[0] +
+                                unit_.plane_world_velocity[1] * unit_.plane_world_velocity[1] +
+                                unit_.plane_world_velocity[2] * unit_.plane_world_velocity[2]);
+                            // plan+2B8h. Its producer, 0099D756-0099D79A and
+                            // 0099D970, is unread; 1.0 leaves the error in m/s,
+                            // which is the unit the interpolation's +-6.9444
+                            // endpoints are in. SUBSTITUTION, labelled.
+                            tin.speed_scale = 1.0f;
+                            tin.desired_speed = unit_.plane_desired_speed_2b4;
+                            const float pend = th.active != 0
+                                ? th.desired - th.current : 0.0f;
+                            tin.pending = pend < 0.0f ? -pend : pend;
+                            // Both inputs of 0099DAC8's correction - unit+B1Ch
+                            // and the vector at unit+AE0h - have no displacement
+                            // writer anywhere in the image, so the term is taken
+                            // as zero. SUBSTITUTION, labelled.
+                            tin.error_correction = 0.0f;
+                            tin.dead_band_skips = false;
+                            const bsp::PilotBotThrottleResult tr =
+                                bsp::pilot_plan_throttle_0099d300(tin);
+                            if (tr.wrote_throttle) {
+                                unit_.plan_slots[bsp::kPilotSlotThrottle].desired =
+                                    tr.throttle_desired;
+                                unit_.plan_slots[bsp::kPilotSlotThrottle].active = 1;
+                                unit_.plane_throttle_last = tr.throttle_desired;
+                            }
+                            if (tr.wrote_air_brake) {
+                                unit_.plan_slots[bsp::kPilotSlotAirBrake].desired =
+                                    tr.air_brake_desired;
+                                unit_.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
+                            }
+                            if (tr.clears_air_brake_mode) {
+                                unit_.plane_air_brake_mode_2d8 = 0;   // 0099DC6B
+                            }
+                        }
                         owner_.record("PilotBot::plan_controls", 0x0099d300u);
                         return true;
                     }
