@@ -188,3 +188,22 @@ created no `PlaneSquadronGen` at all, because the scene loader makes one unit pe
 an aircraft scene entity **is** a squadron. Both missions now build squadrons (33 on IJN01, 20 on
 USN01) and both hold them as group members. That did **not** make `served` non-zero; packet
 `cc8_ai_squadron_served` and `docs/AI_SQUADRON_SERVED.md` carry what does.
+
+## Correction from docs/AI_TARGET_WEIGHT.md
+
+Appended by packet `cc8_ai_target_weight`. The text above is left as written.
+
+The follow-up row `ai_candidate_target_weight` ("the real target weight, so the choice stops
+running on a class-weight stand-in") is **partly answered**. `00A0F810`, body
+`00A0F810`-`00A0F961`, is read in full and its four multipliers are bound: an objective target is
+worth ten times (`00CE38B8`), a target answering the `009FE0B0` trio a tenth (`00D7A2F0`), and a
+tenth becomes a hundredth (`00D228A0`) when that trio target is not also a command building.
+Only `00A08460`'s own innermost weight is still stood in for, because it needs the per-barrel
+reload, accuracy and shot count that live in the gunnery host.
+
+One warning for anyone re-reading that routine: its stack slots shift across the two class tests'
+argument pushes. Written as-is, `00A0F8EE` looks like it overwrites the objective multiplier
+`00A0F8C6` just set, which would make the objective arm dead code. It does not. It runs four bytes
+deeper and lands on the slot that held the raw weight, which is free because `00A0F897` already
+consumed it. `tools/stack_frame_walk.py 00a0f810 --indirect-pops 4` normalises the frame;
+without the pop assumption every offset after `00A0F85B` is four bytes out.

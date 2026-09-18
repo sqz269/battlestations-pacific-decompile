@@ -8615,3 +8615,58 @@ recorded in this section happened while at least one other launcher was queued. 
 waiting on the `IOException`, and a winner that finds a live process after acquiring hands the
 lock back and waits. No further crash of this shape should be attributed to a commit unless it
 reproduces with that launcher and an empty `Get-Process bsp_game` at launch.
+
+## An FMOD startup failure that is environmental, not a commit (packet `cc8_pilot_roll_arm_gate`)
+
+A second, different startup failure from the intermittent renderer crash above. It stops **before
+the window exists**:
+
+```
+EXITCODE=1
+startup failed: FMOD bank raw-length output unavailable: path=sound/gui/error.fsb
+  bytes=2688 mode=2634 create_result=78 length_result=37 bank_returned=0
+summary window_created=0 device_created=0 device_hr=0x80004005 back_buffer=0x0 frames_presented=0
+```
+
+Distinguish it from the renderer crash by three things: the exit code is `1` rather than
+`0xC0000005`, `window_created` is `0` rather than `1`, and the log carries an explicit
+`startup failed` line instead of stopping silently at `online_manager_initialize`.
+
+### The bisect stopped at step one
+
+| step | tree | environment before | result |
+| --- | --- | --- | --- |
+| `d3cd4b6d8`, the last known-good base | fresh detached | 0 processes, no lock | **fail**, the signature above |
+| `d3cd4b6d8`, second consecutive | the same tree | 0 processes, no lock | **fail**, identical |
+
+Under the rule of the section above, two consecutive failures with a verified-clean environment is a
+failing step. **The known-good base fails, so the failure is environmental and no commit is named.**
+The two Codex commits under suspicion, `87d4f58d1` and `a07c5e09e`, were never reached and are not
+implicated. The remaining steps `cf47cd539` and `5e958d425` were not run, because a base that fails
+makes them uninformative.
+
+### What is and is not wrong with the machine
+
+* `sound/gui/error.fsb` **is present**, 2688 bytes, mtime 13 Jul 2024, which matches the `bytes=2688`
+  the loader reports. The file is found and read; the failure is inside FMOD's bank creation, at
+  `create_result=78`.
+* Eight audio endpoints enumerate with `Status = OK`, so there is no missing device.
+* The identical commit ran clean from another tree about ninety minutes earlier the same day.
+
+### The cause: a disconnected remote-desktop session has no audio endpoint
+
+Settled. `query session` shows the interactive session in state **`Disc`** from about 15:55, and a
+disconnected session has no audio endpoint at all. FMOD's output init fails, and the reconstructed
+startup then trips on the first bank it asks for, which is `sound/gui/error.fsb`.
+
+The `cc8-ai-squadron` tree, whose `main` base is `dcc8ec7de` and which therefore contains **neither**
+Codex commit under suspicion, hit the identical signature twice at 16:01 and 16:02, with
+`_FMOD_EventSystem_Init@20 result=61` ahead of the `CreateSound` `78` and `GetLength` `37` on the
+same bank. Two trees with disjoint contents failing the same way at the same minute is the machine.
+
+Nothing a run can pass bypasses it: the native's only no-sound path is the `SoundEnabled` setting,
+whose token has no handler in this reconstruction.
+
+**So: no run can start while the session is disconnected.** A run that hits this signature should
+check `query session` first. Retrying, changing trees or bisecting commits cannot help, and the
+earlier steps of this packet's bisect are recorded above only to show that the base fails too.

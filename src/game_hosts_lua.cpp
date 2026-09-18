@@ -12,6 +12,7 @@
 
 #include "bsp/game_hosts_lua.hpp"
 
+#include "bsp/air_operations.hpp"
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/objective_units.hpp"
 
@@ -164,8 +165,9 @@ int binding_trampoline(lua_State* state) {
     const bool avoidance_setting = dispatch_row.address == 0x008d0740u;
     const bool objective_row = dispatch_row.address == 0x008cd440u
         || dispatch_row.address == 0x008cdd60u || dispatch_row.address == 0x008ce510u;
-    const bool handled = avoidance_setting || objective_row || (orders != nullptr
-        && GameScriptOrdersHost::handles(dispatch_row.name));
+    const bool get_property_row = dispatch_row.address == 0x0088bf80u;
+    const bool handled = avoidance_setting || objective_row || get_property_row
+        || (orders != nullptr && GameScriptOrdersHost::handles(dispatch_row.name));
     // The replay of a failed named call, which the executable makes only to
     // recover the error message, must not count a second time.
     if (!host->error_replay()) {
@@ -234,6 +236,9 @@ int binding_trampoline(lua_State* state) {
         }
         host->note_objective_binding(dispatch_row.name, name, mask, units_touched);
         return 0;
+    }
+    if (get_property_row && !host->error_replay()) {
+        return host->run_get_property_0088bf80(state, argc);
     }
     if (avoidance_setting) {
         // 008D0849 uses bare 00B66250, which is lua_toboolean with no type
@@ -1362,6 +1367,128 @@ void GameMissionLuaHost::note_objective_binding(const char* binding,
     log_.implemented("MissionLuaNative::Objectives", "008cd440");
 }
 
+namespace {
+// 006C6681, 006C6695 and 006C690D compare the key with 00425850
+// BSP_NativeString_EqualsCStringInsensitive, which delegates to the CRT
+// stricmp, and the `planes` arm at 006C6667 calls 00BF7FBF __stricmp directly.
+// Every key this reader matches is therefore matched without regard to case,
+// which is why the shipped scripts' `NumSlots` and `Stock` reach the same arms
+// as the binary's `numSlots` and `stock`.
+bool get_property_key_is(const char* key, const char* name) noexcept {
+    if (key == nullptr || name == nullptr) return false;
+    for (;; ++key, ++name) {
+        const unsigned char a = static_cast<unsigned char>(*key);
+        const unsigned char b = static_cast<unsigned char>(*name);
+        const unsigned char la = (a >= 'A' && a <= 'Z') ? static_cast<unsigned char>(a + 32) : a;
+        const unsigned char lb = (b >= 'A' && b <= 'Z') ? static_cast<unsigned char>(b + 32) : b;
+        if (la != lb) return false;
+        if (la == 0) return true;
+    }
+}
+
+// 006C6714 through 006C68A6 build one table per slot in this key order. The
+// field offsets are the slot record's own, cross-checked against
+// include/bsp/air_operations.hpp: classid slot+4h (006C6782), count slot+8h
+// (006C67D2), equipment slot+10h (006C681F), squadron slot+28h (006C6895) and
+// state slot+2Ch (006C672A). 006C68D9 advances the cursor by 58h.
+void push_air_ops_slot_entry(lua_State* state, const bsp::AirOpsSlot& slot) {
+    ::lua_createtable(state, 0, 5);
+    ::lua_pushinteger(state, static_cast<lua_Integer>(slot.state));
+    ::lua_setfield(state, -2, "state");
+    ::lua_pushinteger(state, static_cast<lua_Integer>(slot.vehicle_class));
+    ::lua_setfield(state, -2, "classid");
+    ::lua_pushinteger(state, static_cast<lua_Integer>(slot.assigned_count));
+    ::lua_setfield(state, -2, "count");
+    ::lua_pushinteger(state, static_cast<lua_Integer>(slot.class_field_134));
+    ::lua_setfield(state, -2, "equipment");
+    // 006C6895 pushes the launched squadron entity, not a number, and the whole
+    // point of the key for luaGetSlotsAndSquads is that it is nil until a launch
+    // fills slot+28h. An unlaunched slot therefore carries no `squadron` field.
+    if (slot.launched_squadron != 0u) {
+        ::lua_pushinteger(state, static_cast<lua_Integer>(slot.launched_squadron));
+        ::lua_setfield(state, -2, "squadron");
+    }
+}
+} // namespace
+
+int GameMissionLuaHost::run_get_property_0088bf80(lua_State* state, int argument_count) {
+    ++summary_.get_property_calls;
+    if (state == nullptr) return 0;
+    // 0088C09D reads argument 0 and hands it to 00888AA0
+    // BSP_ObjectHandle_FromLuaTable; 0088C0A1 reads argument 1 and 0088C0B1
+    // takes its string. 0088C0C0 then loads the entity's vtable and calls the
+    // reader at +138h with (frame, key). This body stands in for that reader,
+    // and like the native it pushes nothing of its own.
+    const char* key = (argument_count >= 2 && ::lua_type(state, 2) == LUA_TSTRING)
+        ? ::lua_tolstring(state, 2, nullptr) : nullptr;
+    // 00D112FC "luaMW_GetProperty failed:" is built at 0088BFB3 and released at
+    // 0088BFDA on every call, with no arm that reports it: the shipped build
+    // constructs the message and throws it away. The marker is kept here
+    // because it is the only name the native carries for the unanswered key.
+    if (key == nullptr) {
+        ++summary_.get_property_unserved;
+        log_.notef("  GetProperty 0088bf80: no string key (argc=%d), "
+            "luaMW_GetProperty failed:", argument_count);
+        return 0;
+    }
+
+    // The air-operations reader 006C6630 sits at vtable+138h for both classes
+    // that own a deck: 00D01768 for the mother ship (00758340 -> 00815870 then
+    // 006C6630) and 00CF8D40 for the airfield (006D0E60). It answers exactly
+    // four keys and pushes nothing for any other, which leaves the caller with
+    // nil. docs/MISSION_LUA_GETPROPERTY.md.
+    const bool wants_slots = get_property_key_is(key, "slots");
+    const bool wants_num_slots = get_property_key_is(key, "numSlots");
+    const bool wants_stock = get_property_key_is(key, "stock") || get_property_key_is(key, "planes");
+    if (!wants_slots && !wants_num_slots && !wants_stock) {
+        ++summary_.get_property_unserved;
+        if (summary_.get_property_unserved <= 12) {
+            log_.notef("  GetProperty 0088bf80: key \"%s\" reaches no reconstructed reader "
+                "(luaMW_GetProperty failed:), so the call returns no value, which is what "
+                "006C6B26 does for an unmatched key", key);
+        }
+        return 0;
+    }
+
+    // This process builds no air-operations block. Nothing here calls 006CADD0
+    // BSP_AirOps_LoadFromScene, no host holds an AirOpsSlot array, and the
+    // entity handle 00888AA0 stands in for cannot name a class, so the deck is
+    // empty for every entity rather than for the ones that own one. The walk
+    // below is the native's; with no block it runs zero times.
+    const bsp::AirOpsSlot* slots = nullptr;
+    int slot_count = 0;
+    static_cast<void>(slots);
+
+    if (wants_num_slots) {
+        // 006C6929 loads the live slot count at block+50h and 006C693B pushes it
+        // with 00B664B0 BSP_LuaObject_PushInteger.
+        ++summary_.get_property_served;
+        ::lua_pushinteger(state, static_cast<lua_Integer>(slot_count));
+        log_.implemented("MissionLuaNative::GetProperty", "0088bf80");
+        return 1;
+    }
+    if (wants_slots) {
+        // 006C66ED seeds the Lua index at 1 and 006C68D3 advances it, so the
+        // array the script indexes with LaunchSquadron's return is 1-based.
+        ++summary_.get_property_served;
+        ::lua_createtable(state, slot_count, 0);
+        for (int index = 0; index < slot_count; ++index) {
+            push_air_ops_slot_entry(state, slots[index]);
+            ::lua_rawseti(state, -2, index + 1);
+            ++summary_.get_property_slots_rows;
+        }
+        log_.implemented("MissionLuaNative::GetProperty", "0088bf80");
+        return 1;
+    }
+    // 006C6949 serves `stock` and `planes` from the same list, one entry per
+    // stock record with `classid` and `count` (006C6A0F and 006C6A93). This
+    // process holds no stock list either, so the list is empty.
+    ++summary_.get_property_served;
+    ::lua_createtable(state, 0, 0);
+    log_.implemented("MissionLuaNative::GetProperty", "0088bf80");
+    return 1;
+}
+
 int GameMissionLuaHost::read_vehicle_class_integer(int index, const char* key,
     const char* nested_key, int fallback) {
     if (state_ == nullptr || index < 0 || key == nullptr) return fallback;
@@ -2069,6 +2196,12 @@ void GameMissionLuaHost::report_mission_script_state() {
     log_.notef("summary mission script state: %s entity_resolves=%llu "
         "self_table_entities=%zu recon_own_categories=%d", line.c_str(),
         summary_.entity_resolves, summary_.self_table_entities, own_categories);
+    // 0088BF80's own line. `slots_rows` counts the slot tables the reader built,
+    // which stays at zero for as long as this process holds no air-operations
+    // block. docs/MISSION_LUA_GETPROPERTY.md.
+    log_.notef("summary mission getproperty 0088bf80: calls=%llu served=%llu unserved=%llu "
+        "slots_rows=%llu", summary_.get_property_calls, summary_.get_property_served,
+        summary_.get_property_unserved, summary_.get_property_slots_rows);
 }
 
 void GameMissionLuaHost::report_natives(std::size_t limit) {

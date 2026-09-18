@@ -1,0 +1,150 @@
+{
+ "packet": "cc8_mission_lua_getproperty",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/MISSION_LUA_GETPROPERTY.md",
+ "tree_base": "560841342",
+ "result": "0088BF80 read whole and implemented. It is a dispatcher with no property knowledge: it resolves argument 0 to an entity, takes argument 1 as the key, and calls the entity's own reader at vtable+138h, returning that reader's result count. The air-operations reader 006C6630 sits in that slot for the two classes that own a deck and answers four keys case-insensitively. The host now runs the row.",
+ "question": "How does GetProperty decode its arguments, which object kinds does it serve and through which lookup, and what does it push for the keys luaGetSlotsAndSquads, LaunchSquadron and IsReadyToSendPlanes read?",
+ "answer": "Arguments: 0088C09D hands argument 0 to 00888AA0 BSP_ObjectHandle_FromLuaTable and 0088C0A1/0088C0B1 take argument 1 as a string. Dispatch: 0088C0C2 loads vtable+138h and 0088C0DC calls it as __thiscall(entity, frame, key); the reader's own prologue (006C6630 reading [EBP+8] and [EBP+0Ch], RET 8) fixes that ABI. Object kinds: the reader is per class, and the two that own a deck are MotherShip, whose 00758340 sits at 00D01768, and AirField, whose 006D0E60 sits at 00CF8D40. Both are exactly 138h past their observer tables, which proves the dispatch from the data side. Keys: 006C6630 answers planes and stock from one arm, slots, and numSlots, and pushes nothing for anything else. slots is a 1-based array of tables with state at slot+2Ch, classid at +4h, count at +8h, equipment at +10h and squadron at +28h, stride 58h, array at block+4Ch and count at block+50h. Every comparison is case-insensitive because 00425850 delegates to the CRT stricmp and the planes arm calls 00BF7FBF __stricmp directly, which is why the scripts' NumSlots and Stock reach the same arms. The luaMW_GetProperty failed: literal at 00D112FC is built and released on every call with no arm that reports it; it is dead in the shipped build.",
+ "coverage": "complete for 0088BF80, for the vtable+138h dispatch and for the four keys 006C6630 answers; the stock record layout, 00815870 and the block's own construction are contracts.",
+ "calls": [
+  {
+   "address": "006c6697",
+   "native": "00425850",
+   "note": "the slots key compared with BSP_NativeString_EqualsCStringInsensitive"
+  },
+  {
+   "address": "006c6667",
+   "native": "00bf7fbf",
+   "note": "the planes arm compares with __stricmp directly"
+  },
+  {
+   "address": "006c693b",
+   "native": "00b664b0",
+   "note": "numSlots pushed with BSP_LuaObject_PushInteger"
+  },
+  {
+   "address": "0088c0a1",
+   "native": "00b677e0",
+   "note": "argument 1 taken from the call frame"
+  },
+  {
+   "address": "0088c0b1",
+   "native": "00b662b0",
+   "note": "that argument read as a string"
+  },
+  {
+   "address": "0088c0dc",
+   "native": "vtable+138h",
+   "note": "the reader call itself is indirect"
+  }
+ ],
+ "named_routines": [
+  {
+   "native": "0088bf80",
+   "ledger_name": "FUN_0088bf80 (unnamed)",
+   "evidence": "the luaMW_GetProperty failed: literal at 00D112FC and the vtable+138h dispatch",
+   "status": "read whole, not renamed: the ledger name is the lead's to place"
+  },
+  {
+   "native": "006c6630",
+   "ledger_name": "FUN_006c6630 (unnamed)",
+   "evidence": "the air-operations Lua property reader; answers planes, stock, slots, numSlots",
+   "status": "read whole, not renamed"
+  },
+  {
+   "native": "006c19d0",
+   "ledger_name": "FUN_006c19d0 (unnamed)",
+   "evidence": "the air-base property declaration, sixteen {0,pointer} name descriptors",
+   "status": "names read from the image, body not read"
+  },
+  {
+   "native": "00758340",
+   "ledger_name": "MotherShip reader at vtable+138h (00D01768)",
+   "evidence": "calls 00815870 then 006C6630",
+   "status": "read whole"
+  },
+  {
+   "native": "00895d20",
+   "ledger_name": "IsReadyToSendPlanes",
+   "evidence": "resolves the entity, calls BSP_AirOps_GetBlock, tests vtable+5Ch against 45h",
+   "status": "characterised only, for the next packet"
+  }
+ ],
+ "no_ghidra_function": [],
+ "host_methods": [
+  {
+   "method": "GameMissionLuaHost::run_get_property_0088bf80",
+   "native": "0088bf80",
+   "file": "src/game_hosts_lua.cpp",
+   "note": "stands in for the dispatcher and for the air-operations arm of the reader"
+  }
+ ],
+ "authored_rows": [
+  {
+   "file": "the shipped image, .rdata",
+   "row": "the air-base property names 006C19D0 declares",
+   "values": {
+    "00cf87b4": "readySlots",
+    "00cf87a0": "landingSquadrons",
+    "00cf8788": "waitingPos",
+    "00cf8778": "landingPlanes",
+    "00cf8764": "distance",
+    "00cf8758": "speedmul",
+    "00cf874c": "leftside",
+    "00cf8744": "abort",
+    "00cf8720": "maxInAirPlanes",
+    "00cf86f0": "suppplanetypes",
+    "00cf86e8": "slots",
+    "00cf86e0": "classID",
+    "00cf86d8": "count",
+    "00cf86cc": "equipment",
+    "00cf86b8": "stock",
+    "00cf86ac": "squadLimit",
+    "00cf8880": "planes",
+    "00cf886c": "squadron",
+    "00cf8860": "numSlots",
+    "00ce7324": "state",
+    "00cf8878": "classid",
+    "00d112fc": "luaMW_GetProperty failed:"
+   }
+  },
+  {
+   "file": "this installation's usn_19_coralus.lua and scripts/global/*.lua",
+   "row": "the GetProperty key census",
+   "values": {
+    "slots": 37,
+    "TorpedoStock": 9,
+    "ammoType": 7,
+    "unitcommand": 6,
+    "planes": 3,
+    "NumSlots": 2,
+    "state": 1,
+    "reconlevel": 1,
+    "Stock": 1
+   }
+  }
+ ],
+ "contracts": [
+  "This process builds no air-operations block: nothing calls 006CADD0 BSP_AirOps_LoadFromScene and no host holds an AirOpsSlot array, so slots answers with an empty table and numSlots with 0. The walk is the native's and runs zero times.",
+  "The native picks the reader by class and this host cannot: the Lua host has no access to a unit's creator, so it answers the four keys for any entity table. That is more permissive than the original, and it is the one deviation.",
+  "IsReadyToSendPlanes 00895D20 needs the air-operations block, and LaunchSquadron 0089E3C0 has to create a squadron entity and register it in the script's thisTable. Both are their own packets; 006CADD0 reading the scene's authored NumSlots and slots is what would give all three real data.",
+  "The stock record layout at 006C6949, and the keys the ship base reader 00815870 serves before 006C6630 on a mother ship, were not read."
+ ],
+ "corrections": [
+  "Caught in this packet before commit: equipment was served from the requested count at slot+0Ch, which is the wrong field. The reader loads slot+10h and AirOpsSlot had no member for it, so class_field_134 was added to include/bsp/air_operations.hpp rather than publish a neighbouring field under that name.",
+  "No retraction of a native-behaviour claim in this packet."
+ ],
+ "validation": {
+  "runner": "tools/run_game.ps1",
+  "outcome": "blocked",
+  "build": "clean, both ctest suites pass",
+  "reason": "The Windows session the agents run in, session 1, is disconnected: query session reports it Disc with the console now on session 2. A disconnected session has no display and no audio endpoint, so no window is created, the D3D device returns 0x80004005 and FMOD cannot initialise its output, which makes an intact 2688-byte bank fail to create.",
+  "evidence": "Two consecutive attempts on a clean environment, zero bsp_game processes and no lock, failed identically, and a run of the cc8-dive-bomb worktree's own binary failed identically too, which separates the machine from this tree. The bank sound/gui/error.fsb is unmodified (13 Jul 2024, 2688 bytes) and nothing under the game root changed after 15:00.",
+  "signature": "startup failed: FMOD bank raw-length output unavailable: path=sound/gui/error.fsb bytes=2688 mode=2634 create_result=78 length_result=37 bank_returned=0 | window_created=0 device_created=0 device_hr=0x80004005 frames_presented=0 exit_code=1",
+  "logs": [
+   "local/usn04_getproperty.log",
+   "local/peer_probe.log"
+  ]
+ }
+}

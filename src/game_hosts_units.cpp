@@ -2249,8 +2249,30 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         if (host.observer_runtime != nullptr) {
             if (!host.observer_runtime->has_live_dispatch_owner())
                 throw std::logic_error("unit creation requires the live bound observer owner");
-            if (!slot->observer_prefix_ready)
-                throw std::logic_error("unit observer creator projection is unavailable");
+            if (!slot->observer_prefix_ready) {
+                // The message used to name neither the unit nor the creator,
+                // which cost a whole survey a wrong cause: a zero creator and an
+                // unmapped one are different failures and read identically.
+                // Zero means no vehicle-class descriptor was found at all, which
+                // is what a scene row typed from `StationaryTypes` produces: the
+                // 220 rows of this installation's stationaryclasses.lua are
+                // `StationaryClass`, not `VehicleClass`, and not one of them
+                // carries the `Type` literal that 00964790's chain compares, so
+                // the factory returns a null descriptor and there is nothing to
+                // map. A non-zero creator means the class resolved but is absent
+                // from the 22 rows in src/native_unit_observer_endpoint.cpp.
+                // docs/SCENE_STATIONARY_REGISTRATION.md.
+                char detail[192];
+                std::snprintf(detail, sizeof(detail),
+                    "unit observer creator projection is unavailable: unit=%s creator=%08lx (%s)",
+                    row.name.c_str(),
+                    static_cast<unsigned long>(slot->motion_dispatch.creator),
+                    slot->motion_dispatch.creator == 0
+                        ? "no vehicle-class descriptor; a StationaryClass row carries no Type"
+                        : "resolved class with no observer table row");
+                host.log.notef("%s", detail);
+                throw std::logic_error(detail);
+            }
         }
         host.log.notef("unit motion dispatch: unit=%s creator=%08lx tick_vtable=%08lx "
             "entry=%08lx coverage=%s", row.name.c_str(),
@@ -4293,8 +4315,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plan_heading_2c0_written = false;
                         }
                         if (r.released_roll) {
-                            // 009C464E cmd+2CCh = 1, which the gate rejects, so
-                            // the planner takes the axis back.
+                            // 009C4646 cmd+2C4h = pi and 009C464E cmd+2CCh = 1.
+                            // Mode 1 PASSES the planner's compare at 0099E26E,
+                            // so the planner's roll servo runs, and because
+                            // 0099E25C was skipped it drives toward the pi the
+                            // turndown just wrote: the hand-over rolls the
+                            // aircraft the rest of the way to inverted.
+                            unit_.plan_state.bank_target_2c4 =
+                                bsp::dive_bomb_turndown_constant::kPi;
                             unit_.plan_heading_mode_2cc = 1;
                         }
                         if (r.wrote_pitch) {
@@ -5475,7 +5503,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plane_pitch_angle_c64, unit_.plan_state.pitch_target_2bc);
                         const bsp::PilotBotRollResult roll =
                             bsp::pilot_plan_roll_0099e2ba(rin);
-                        unit_.plan_state.bank_target_2c4 = roll.bank_target;
+                        // The bank target write at 0099E25C is INSIDE the
+                        // region the same jump skips: 0099E25C < 0099E264 <
+                        // 0099E26E, so a task that reaches 0099E26E by
+                        // 0099DE8D keeps its own cmd+2C4h as well as its mode.
                         // THE GATE, 0099DDBE-0099E275. 0099DDBE loads the mode
                         // word plan+2CCh the task wrote; 0099DE8A CMP ECX,2 and
                         // 0099DE8D JNZ send anything but 2 to 0099E26E, PAST the
@@ -5487,6 +5518,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // mode 0, which is exactly the value that passes.
                         // docs/DIVE_BOMB_TASK.md, "The roll-arm gate".
                         const int roll_mode = unit_.plan_heading_mode_2cc;
+                        if (roll_mode == 2) {
+                            unit_.plan_state.bank_target_2c4 = roll.bank_target;  // 0099E25C
+                        }
                         if (roll_mode == 2 || roll_mode == 1) {
                             unit_.plan_slots[bsp::kPilotSlotRoll].desired = roll.desired;
                             unit_.plan_slots[bsp::kPilotSlotRoll].active = 1;  // 0099E3AE

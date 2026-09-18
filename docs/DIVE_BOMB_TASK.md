@@ -938,3 +938,106 @@ So a task's pitch command already survived, and only the roll needed the gate.
 `src/game_hosts_units.cpp` now applies the same condition around
 `pilot_plan_roll_0099e2ba`'s slot write, and the turndown binding sets the mode word to `0` when it
 commands the roll (`009C462F`) and to `1` when it hands the axis back (`009C464E`).
+
+### The gated run, and what it moved
+
+`local/usn04_gate.log`, USN04, 4800 mission frames, with the roll gate applied.
+
+| measure | before the gate | with the gate |
+| --- | --- | --- |
+| bank reached | 0.1364 rad, 7.8 deg | **0.6072 rad, 34.8 deg** |
+| turndown roll writes | 746 of 746 | 446 of 746 |
+| final `approach+BCh` | 5077.7 m, opening | **206.5 m** |
+| latch `approach+D0h` at the end | 0 | **1** |
+| state walk | `attackrun` 1480, `flyabove` 144, `turndown` 746 | the same |
+| releases | 0 | 0 |
+
+The roll command now survives, the bank grows four and a half times, and the aircraft holds its
+target instead of flying past it: `206.5 m` at the end against `5077.7 m` before.
+
+`009C7EA0`'s window is still not met. It needs `pose+C64h` past `-1.3 rad` and the bank reaches
+`0.6072 rad`, so the turndown does not end and nothing reaches `aimdive`.
+
+### The hand-over, the last piece of the same gate
+
+The 300 ticks where the turndown stopped writing the roll are the answer. `009C45BB` hands the axis
+back once `|bank| >= 0.8 rad` (45.8 deg), and `009C4646`/`009C464E` write `cmd->+2C4h = pi` and
+`cmd->+2CCh = 1`. Mode `1` **passes** the planner's compare at `0099E26E`, so the planner's roll
+servo runs, and because the jump also skipped `0099E25C MOVSS [ESI+2C4h]` the servo drives toward
+**the `pi` the turndown just wrote**.
+
+That is the design: the turndown rolls to 45.8 degrees under its own command, then hands the
+planner a bank target of 180 degrees and lets its servo carry the aircraft the rest of the way to
+inverted, where the 150-degree latch at `009C4654` closes.
+
+The host was missing both halves: it wrote the planner's own bank target unconditionally, and the
+turndown binding set the mode without the target. Both are now gated at `0099E25C` and written at
+the hand-over.
+
+**The confirming run is BLOCKED, and not on anything in this repository.** The machine's
+remote-desktop session is disconnected, so it has no audio endpoint, FMOD's output init fails and
+the executable cannot reach a window at all; `docs/GAME_EXECUTABLE.md` carries the signature and the
+evidence. The hand-over change is reasoned from the listing and committed, and it stays **unverified**
+until a session is connected and one USN04 run can be taken.
+
+### The hand-over run is blocked by a startup failure, twice, with a clean environment
+
+```
+EXITCODE=1
+startup failed: FMOD bank raw-length output unavailable: path=sound/gui/error.fsb
+  bytes=2688 mode=2634 create_result=78 length_result=37 bank_returned=0
+summary window_created=0 device_created=0 device_hr=0x80004005 frames_presented=0
+```
+
+Two consecutive runs, `Get-Process bsp_game` empty and no lock file before the second, so under the
+rule of `docs/GAME_EXECUTABLE.md`'s intermittent-crash section this is a **failing step**, not a
+stray. It is a different signature from the 107-line renderer crash: the window is never created and
+the failure is in the FMOD bank load, before anything this packet touches.
+
+The last run that worked from this tree, `local/usn04_gate.log`, was on the pre-merge build. The
+merge that followed brought `main` up several commits. **This packet does not name a culprit**: the
+lesson from the earlier bisect is that a failure in one tree is not evidence about a commit until a
+fresh tree at the suspect commit reproduces it. The measured result above stands on the run that
+completed; the hand-over remains unverified.
+
+## `009C62B0`, the flyabove tick: defined, bounded, and its flags censused
+
+Ghidra had no function here. `tools/ghidra_define_function.py 009c62b0 009c7086` defined one over
+**`009C62B0`-`009C7085` inclusive, 3542 bytes**, with `INT3` padding from `009C7086`. The end is
+two exits sharing one epilogue: `RET 4` at `009C706C` and at `009C7083`, both after
+`ADD ESP,88h`. It is the largest routine in the class, half again the aimdive tick.
+
+`ESI` is the state and `EDI` is `&state->approach`.
+
+### The four flags, with their writers
+
+| flag | writer | rule |
+| --- | --- | --- |
+| `+18h` | `009C659F` | `0` |
+| `+18h` | `009C680E` | `AL`, where `009C67EA`-`009C67F8` set `1` when `approach->+D4h` exceeds the frame value in `ST1` and `009C6808` clears it |
+| `+19h` | `009C66E7` | `0` |
+| `+19h` | `009C67B0` | `1`, reached by `009C67A3` `FCOMIP`/`JA` or by `009C67A9` `COMISS`/`JC` falling through |
+| `+19h` | `009C6826` | `[ESP+43h]` |
+| `+19h` | `009C6A30` | **copied from `+18h`**, gated on `[00CF180C] > cos(...) * [ESP+28h]` at `009C6A27` |
+| `+1Ah` | `009C66E3` | `1` |
+| `+1Ah` | `009C66F2`, `009C6822` | `0` |
+| `+1Bh` | `009C6813` | `DL`, only when `+1Ah` is set. **A fourth flag** the transition rule does not read |
+
+`009C6690` writes `approach->+CCh = 3`, the weapon selector, as already recorded.
+
+So the shape is confirmed: `+18h` is the can-dive decision and it is a **range** test on
+`approach->+D4h`; `+19h` is the roll-in permission and its main writer copies `+18h` once the
+over-target geometry closes; `+1Ah` is the separate break-off request.
+
+**`coverage: partial`.** The frame slots behind the two compares, `ST1` at `009C67F2` and
+`[ESP+30h]` at `009C67A9`, were not traced to their producers, so the host substitution for these
+three flags **stands** and is not yet replaced. Replacing it needs those two traces, which is a
+packet rather than a tail: this routine is 3542 bytes and a CFG fixpoint over it is the same kind of
+work the aim tick took.
+
+### Why the other two substitutions are also not closed here
+
+`approach+A8h` comes from `009C3ED8`'s `Random((approach+14h)->+38h, (approach+14h)->+3Ch)`, and
+`006E3500` is the per-device round count. Both are small reads on their own, but the record at
+`approach+14h` has no producer yet and the device list behind `006E3500` is the gunnery host's, so
+each is a trace rather than a transcription. They are listed in "Follow-up packets" unchanged.

@@ -798,14 +798,59 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return units.unit_alive_and_visible(proxy(candidate));
     }
     float close_target_weight(void* member, void* candidate) override {
-        // 00A0F810, which wraps 00A08460 BSP_Ai_TargetWeight with a health and
-        // world-set test. This process cannot run that model, so the candidate's
-        // own class weight from 009FDF30 stands in: it is the per-class
-        // importance the model is built on, and it preserves the ordering the
-        // score needs. Labelled substitution, not the native weight.
-        (void)member;
-        record("AiCommand::close_target_weight", 0x00a0f810u);
-        return unit_class_weight(unit_index_of(candidate));
+        // 00A0F810, body 00A0F810..00A0F961, read in full with the stack slots
+        // normalised by tools/stack_frame_walk.py --indirect-pops 4. Its four
+        // multipliers run here; only its innermost term, 00A08460's own weight,
+        // is still stood in for by the candidate's class weight from 009FDF30,
+        // because 00A08460 needs the per-barrel reload, accuracy and shot count
+        // that live in the gunnery host and this coordinator does not hold one.
+        // Labelled: the shape and the three class and objective multipliers are
+        // the native's; the base term is not.
+        const std::size_t target = unit_index_of(candidate);
+        bsp::AiCandidateTargetWeightInputs in;
+        in.base_weight = unit_class_weight(target);
+        // 00A0F84C and 00A0F859: this process has no attacker record +1Ch and
+        // no AI command object, so the zeroing arm never runs. Labelled.
+        in.attacker_record_flag_1c = false;
+        in.attacker_is_command_building = false;
+        // 00A0F86A and 00A0F872, the two record +18h factors, and 00A0F89B's
+        // target +14h. The records are the AI's own per-entity blocks, which
+        // this process does not build, so all three keep the native's identity
+        // value and the product is the base weight alone. Labelled.
+        in.attacker_factor = 1.0f;
+        in.target_factor = 1.0f;
+        in.target_scale = 1.0f;
+        // 00A0F87E picks objective set 0 when the local player's party equals
+        // the attacker's +54h and set 4 otherwise, then 00A0F8B5 asks 008DDF90.
+        // The sets are the ones the mission Lua fills; see
+        // docs/MISSION_OBJECTIVES.md for why they hold no unit on these
+        // missions, which makes this false throughout.
+        const std::size_t attacker = proxy(member);
+        const int attacker_side = units.unit_side_0054(attacker);
+        const int local_party = 0;   // [00E188A8]+18CCh, slot 0's +28h
+        const int objective_set = attacker_side == local_party ? 0 : 4;
+        const std::vector<std::size_t> set =
+            game_objective_sets().units_in_slot(objective_set);
+        in.target_is_objective =
+            std::find(set.begin(), set.end(), target) != set.end();
+        if (in.target_is_objective) ++summary.weight_objective_hits;
+        // 00A0F8F4 / 00A0F903 / 00A0F912, the 009FE0B0 trio, and 00A0F92F's
+        // command-building test.
+        in.target_matches_009fe0b0 = bsp::ai_entity_class_matches_009fe0b0(
+            units.unit_is_kind_of(target, 0x1B), units.unit_is_kind_of(target, 0x45),
+            units.unit_is_kind_of(target, 0x46));
+        in.target_is_command_building = units.unit_is_kind_of(target, 0x1C);
+        if (in.target_matches_009fe0b0) {
+            ++summary.weight_fort_targets;
+            if (!in.target_is_command_building) ++summary.weight_non_command_targets;
+        }
+        // 00A0F8CE 00923BE0(target) subtracted from 2.0. Its body is unread and
+        // this process has no producer for it, so the term stays 0 and the
+        // factor is the constant 2.0. Labelled.
+        in.target_term = 0.0f;
+        ++summary.weight_queries;
+        done("AiCommand::close_target_weight", 0x00a0f810u);
+        return bsp::ai_candidate_target_weight_00a0f810(in);
     }
     bool close_in_target_group(void* target_group, void* candidate) override {
         // 00A2C720 walks the group's +563Ch list for the entity.
@@ -1816,6 +1861,11 @@ void GameAiCoordinatorHost::report() {
         "empty and the native's 00A2C4B4 arm is the answer)",
         host.summary.world_set_queries, host.summary.world_set_hits,
         host.summary.objective_set_units);
+    host.log.notef("summary mission ai target weight queries=%llu objective_hits=%llu "
+        "fort_targets=%llu non_command=%llu (00A0F810's four multipliers: 10.0 objective, "
+        "0.1 for the 009FE0B0 trio, 0.01 when that trio is not a command building)",
+        host.summary.weight_queries, host.summary.weight_objective_hits,
+        host.summary.weight_fort_targets, host.summary.weight_non_command_targets);
     for (const GameAiPartyRow& row : host.parties) {
         host.log.notef("  ai party %d record=%d ai_enabled=%d brain=%d thinks=%llu "
             "claims=%llu planner_ticks=%llu attacks=%llu commands=%llu refused=%llu",
