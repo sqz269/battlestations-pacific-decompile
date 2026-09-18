@@ -146,3 +146,27 @@ No run: reading only, no behaviour changed.
    measured.
 2. **When `0099B590` runs**, the second seeder whose body `cc2_pilot_controls` already read.
 3. **The centred-stick arm's gate**, `unit+9C2h` indexed by `EAX`.
+
+
+## Correction from packet `cc8_pilot_throttle_demands`: the 0.6 is a ground cap
+
+Appended, not rewriting the sections above.
+
+This doc's census, its four sites, and its proof that `ESI` is the plan - the `desired` write at
+`0099D399` followed immediately by the slot's own `active` byte at `0099D3A1` - all stand. **Its
+headline does not.**
+
+`0099D8FD CMP dword ptr [EDX + 0x900],0x5` and `0099D904 JNZ 0099DC9E` put **both** the demand at
+`0099DC31` and the ceiling at `0099DC8F` inside `unit+900h == 5`, a ground-roll state. A plane in
+free flight jumps straight past them. So the `0.6` is a **taxi cap**, not an in-flight throttle
+cut, and section 2's "the native does cut a bot's throttle, to `0.6`" is wrong about when.
+
+Section 3's attribution is withdrawn with it. The host's planes hold full throttle because nothing
+writes the slot, but so do the image's flying bots: the only throttle write a plane in state 7 can
+reach is the one-shot at `0099D8CF`, gated on `plan+2D8h == 1`, which sets `0.001f` - below the
+`0.01f` thrust gate at `007DB76C`, so the engine goes off - and clears the field at `0099D8EB`.
+
+**The question therefore moves to what raises `plan+2D8h` to 1.** Every torpedo-chain site read so
+far writes zero into it (`009D0AC5` in the attack-run tick, `009D1F6B` in the aim tick). Until the
+raiser is found, wiring the arm will not move the dive numbers.
+`docs/PILOT_BOT_THROTTLE_DEMANDS.md`.

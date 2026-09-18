@@ -539,4 +539,102 @@ PilotBotRollResult pilot_plan_roll_0099e2ba(const PilotBotRollInputs& in) {
     return out;
 }
 
+// ---------------------------------------------------------------------------
+// 0099D300's four throttle arms, in the order the listing tests them.
+// ---------------------------------------------------------------------------
+PilotBotThrottleResult pilot_plan_throttle_0099d300(const PilotBotThrottleInputs& in) {
+    PilotBotThrottleResult out;
+
+    // 0099D309-0099D34D, the centred-stick gate, then 0099D34F-0099D3B7.
+    if (in.centred_mode_26c && in.centred_byte_2f0 && in.centred_block_270 &&
+        in.centred_byte_270) {
+        out.centred_all_axes = true;          // yaw, pitch, roll, air brake -> 0.0
+        out.wrote_throttle = true;
+        out.throttle_desired = 1.0f;          // 00D7A24C, 0099D399
+        out.wrote_air_brake = true;
+        out.air_brake_desired = 0.0f;         // 0099D3A8
+        out.clears_air_brake_mode = true;     // 0099D3B7 stores EDI, which is 0
+        return out;
+    }
+
+    // 0099D79F-0099D7AF then 0099D8C1-0099D8EB. The jump that reaches this arm
+    // is what leaves 0.001f in XMM0, so the compared value and the stored value
+    // are the same constant.
+    // 0099D8CD is the branch that decides between them, and its taken side jumps
+    // to 0099D924, which is PAST the flight-state test at 0099D8FD. So a real
+    // desired speed reaches the demand arm in any flight state.
+    bool demand_arm = false;
+    if (in.air_brake_mode != 0) {
+        if (in.air_brake_mode == 1 && kPilotThrottleCutValue > in.one_shot_threshold) {
+            out.wrote_throttle = true;
+            out.throttle_desired = kPilotThrottleCutValue;  // 00D7A23C
+            out.wrote_air_brake = true;
+            // 0099D8DD stores XMM3. Its producer was not traced; 0099DC59 sets
+            // XMM3 to 1.0 from 00D7A24C on the ground path, which is the only
+            // load of it this packet read. PARTIAL.
+            out.air_brake_desired = 1.0f;
+            out.clears_air_brake_mode = true;               // 0099D8EB
+            return out;
+        }
+        if (in.air_brake_mode == 1) {
+            demand_arm = true;    // 0099D8CD, into 0099D924
+        } else {
+            return out;           // 0099D8C4 JNZ 0099D8F5, the join
+        }
+    }
+
+    // 0099D8FD: the state test, which the 0099D8CD entry has already jumped past.
+    if (!demand_arm) {
+        if (in.flight_state != 5) {
+            return out;
+        }
+        if (!in.slot_active) {
+            // 0099DC7A-0099DC97, the ground cap. 0099D911 reaches it only
+            // from inside the state branch, so this one really is ground only.
+            if (in.slot_current > kPilotThrottleGroundCap) {   // 00CE3D30 = 0.6
+                out.wrote_throttle = true;
+                out.throttle_desired = kPilotThrottleGroundCap;
+            }
+            return out;
+        }
+    }
+
+    // 0099D977-0099D998 seeds the demand from the slot's own value, and
+    // 0099DBC3 adds the increment onto it.
+    const float seed = in.slot_active ? in.slot_desired : in.slot_current;
+    float increment = 0.0f;
+    if (!in.dead_band_skips) {
+        // 0099D9A3 then 0099DA58: the error is the desired speed less the
+        // measured speed over its scale, corrected at 0099DAC8.
+        const float ratio = in.speed_scale != 0.0f
+            ? in.measured_speed / in.speed_scale : 0.0f;
+        const float error = (in.desired_speed - ratio) - in.error_correction;
+        // 0099DB9E: 00D1F3DC = -6.9444f, 00CE7D7C = -2.0f, 00D0686C = +6.9444f,
+        // 00CE3958 = +2.0f. 25 km/h of error saturates it.
+        increment = interpolate_clamped(kPilotThrottleErrorLow, -2.0f,
+                                        kPilotThrottleErrorHigh, 2.0f, error);
+        // 0099DBAB-0099DBB7: the positive side only, by the double at 00CEFF98.
+        if (increment > 0.0f) {
+            increment *= 0.6f;
+        }
+        // 0099DBBF: and by how far the slot has already been asked to move.
+        increment *= in.pending;
+    }
+    float demand = seed + increment;
+    // 0099DBF4 00415690 BSP_Math_ClampFloatByRef against -1.0 (00D7A260) and
+    // 1.0 (00D7A24C).
+    if (demand < -1.0f) demand = -1.0f;
+    if (demand > 1.0f) demand = 1.0f;
+    // 0099DC2C and 0099DC46, both 00415550 BSP_Math_MaxFloatByRef: the positive
+    // part becomes the throttle with 0.001f as its floor, and the negative part
+    // becomes the air brake.
+    out.wrote_throttle = true;
+    out.throttle_desired = demand > kPilotThrottleCutValue ? demand : kPilotThrottleCutValue;
+    out.wrote_air_brake = true;
+    const float braking = 0.0f - demand;                    // 0099DC01, 00D7A208
+    out.air_brake_desired = braking > 0.0f ? braking : 0.0f;
+    out.clears_air_brake_mode = true;                       // 0099DC6B
+    return out;
+}
+
 }  // namespace bsp
