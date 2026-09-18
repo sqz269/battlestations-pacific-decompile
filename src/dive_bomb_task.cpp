@@ -361,7 +361,7 @@ bool dive_bomb_manual_passthrough_009c88c4(int rounds_pending_424, bool has_unit
 DiveBombCruiseProfileResult dive_bomb_cruise_profile_009c8920(
     const DiveBombCruiseProfileInputs& in) noexcept {
     DiveBombCruiseProfileResult out;
-    out.attack_distance_43c = in.current_attack_distance_43c;
+    out.attack_distance_4b0 = in.current_attack_distance_4b0;
     if (!in.unit_lacks_follow_target) {
         return out;  // step 2: a following aircraft keeps its own profile
     }
@@ -382,10 +382,15 @@ DiveBombCruiseProfileResult dive_bomb_cruise_profile_009c8920(
         out.dirty_3ad = true;
     }
     // Step 7: the attack-distance clamp.
+    // 009C8A1B-009C8A5E: task+4B0h = max(task+4B0h, tuning+4C4h * task+41Ch).
+    // The divebomb clamp target is +4B0h, not the +43Ch docs/BOT_TASKS.md gives
+    // for the depth charge.
     const float wanted = in.attack_distance * in.speed_ratio_41c;
-    if (wanted > out.attack_distance_43c) {
-        out.attack_distance_43c = wanted;
+    if (wanted > out.attack_distance_4b0) {
+        out.attack_distance_4b0 = wanted;
     }
+    // 009C8A7C: the profile ends by running 009C7A80(approach, 0.0f, false).
+    out.reran_approach_update = true;
     return out;
 }
 

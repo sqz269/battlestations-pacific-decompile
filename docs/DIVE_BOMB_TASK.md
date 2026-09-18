@@ -438,3 +438,19 @@ Ghidra was not mutated. The ledger carries 21 names from this packet.
    versus glide versus break-off. No Ghidra function.
 4. **`approach+D4h` and `approach+B8h`.** The two ranges the dive abort and the in-range latch key
    on; neither producer was found in the part of `009C7A80` that was read.
+
+## Addendum: `009C8920` read to its end
+
+Body `009C8920`-`009C8A8B`, `INT3` from `009C8A8C`. Beyond the ten-class shape:
+
+* Step 6 writes the third altitude through a base register: `009C8A06`-`009C8A0E`
+  `MOVSS [EAX+20h], [00CE4C04]` with `EAX` holding `ctl+37Ch`, i.e. `ctl->+39Ch = 9999.0f`.
+* Step 7's clamp target is `task+4B0h`, **not** the `+43Ch` `docs/BOT_TASKS.md` gives for the depth
+  charge: `009C8A1B` calls `0042E740` for the tuning singleton, `009C8A20`-`009C8A26` computes
+  `tuning+4C4h * task+41Ch`, and `009C8A5E` stores `max(that, task+4B0h)` back to `task+4B0h`.
+* `009C8A74` writes `task+4BCh = [00CFDEB0]`.
+* `009C8A7C` runs the approach update a **second** time, `009C7A80(task+3F8h, 0.0f, false)`:
+  `009C8A58 PUSH 0` is the `diving` bool and `009C8A56 FLDZ`/`009C8A5B FSTP [ESP]` the `dt`. This is
+  an independent confirmation of the two-argument, `RET 8` ABI section (1) derives from the arm's
+  frame.
+* `009C8A87` is the tail jump to `0099B740 BSP_BotTask_AbandonIfStale`.

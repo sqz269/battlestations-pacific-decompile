@@ -396,7 +396,7 @@ struct DiveBombCruiseProfileInputs {
     float begin_altitude = dive_bomb_constant::kBeginAltRange;
     float attack_distance = dive_bomb_constant::kAttackDistance;
     float speed_ratio_41c = 1.0f;
-    float current_attack_distance_43c = 0.0f;
+    float current_attack_distance_4b0 = 0.0f;  // task+4B0h, 009C8A30
 };
 struct DiveBombCruiseProfileResult {
     bool wrote_394 = false;
@@ -406,7 +406,10 @@ struct DiveBombCruiseProfileResult {
     bool wrote_39c = false;
     float altitude_39c = 0.0f;
     bool dirty_3ad = false;
-    float attack_distance_43c = 0.0f;
+    float attack_distance_4b0 = 0.0f;
+    // 009C8A74: task+4BCh = [00CFDEB0], and 009C8A7C re-runs the approach update
+    // with dt = 0.0f and diving = false before the tail jump to 0099B740.
+    bool reran_approach_update = false;
 };
 DiveBombCruiseProfileResult dive_bomb_cruise_profile_009c8920(
     const DiveBombCruiseProfileInputs& in) noexcept;
