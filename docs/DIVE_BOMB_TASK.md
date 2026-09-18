@@ -535,3 +535,62 @@ or `aimglide`, which needs `engaged` at `009C83F8` to answer, which needs `appro
 in-range latch at `009C7C31`, which needs `approach+BCh < approach+B8h`. The torpedo aircraft in
 this run sit in `goaway` with their engage pair at zero, so the dive bomb's first measurement should
 be `approach+B8h` and `approach+BCh` per ordered Judy.
+
+## Validation: the wiring, and the two gates the runs expose
+
+`src/game_hosts_units.cpp` runs the kind 8 task on the pilot think, right after the torpedo arm,
+for every ordered aircraft whose class carries general bomb ordnance and no torpedo. The release
+binding is the torpedo's own `release_ordnance_007bbba0`, so a drop goes down the same chain to the
+gun spawn `0072F830`; `rounds_remaining_007c1db0` is the only new one.
+
+| run | commit | aircraft on the task | states | releases | bombs spawned |
+| --- | --- | --- | --- | --- | --- |
+| IJN01 after, `local/ijn01_after.log` | `86ef889c4` | 27 | `flyabove` 1, `turndown` 1499 each | 0 | 0 |
+| USN01 after, `local/usn01_after.log` | `86ef889c4` + the attitude fix | 5 | the same | 0 | 0 |
+
+IJN01's 27 are every general-bomb carrier except the six Jills the torpedo task already took, which
+matches the run's own `general_bomb=27`. USN01's five are `ScoutDauntless`, `ConSBD1..3` and
+`KatSBD`. Every other IJN01 summary is bit-identical to the before-run, including
+`plane motion distance_moved=347370.56 m` and `pilot attack ordered=33`, so the wiring moved nothing
+else.
+
+### Gate 1: the commanded target is coincident, so `approach+BCh` is 0
+
+Every dive bomber reports `approach+BCh = 0.0 m` against `approach+B8h = 1100.0 m`. That is not the
+task's doing: the pilot-attack census, which resolves the same `command_target_plus_one` over all
+three axes, independently reports `range 0.0 -> 0.0 m` for all 33 ordered IJN01 aircraft and for
+each of the five USN01 dive bombers. The approach geometry is degenerate before the task sees it.
+
+With a zero range the machine still runs, and runs the way the rules say it should: the latch
+`approach+D0h` arms at `009C7C31` because `1100 > 0`, `engaged` answers at `009C83F8`, the entry
+chooser takes the `flyabove` arm at `009C8379` because the latch is set, and the roll-in at
+`009C8563` fires on the first tick.
+
+### Gate 2: `009C7EA0` never completes, so the state stays in `turndown`
+
+All 1499 remaining ticks sit in `turndown`. `009C7EA0` returns 0 while
+`pose+C64h >= [00D1F98C] = -1.2999999523162842` and `pose+C64h >= -1.0`, and the measured
+`pose+C64h` is about `0.027 rad` (the run's own `final_pitch_mean`). Nothing ever rolls the
+aircraft past the gate because the producer that would, the turndown tick `009C44F0`
+(vtable `00D20C84` slot `+Ch`, censused here for its command-block writes only), is not bound.
+
+**So the next gate is `009C7EA0` at `009C8613`, value `pose+C64h = 0.027 rad` against
+`-1.2999999523162842` at `00D1F98C`, and the work that opens it is binding `009C44F0`.**
+
+### A reversed pair, found by the run and fixed
+
+The first IJN01 after-run passed `009C7EA0` its two pose angles in axis-name order rather than
+offset order: `plane_bank_angle_c68` where the body reads `pose+C64h`. Fixed at the call site, and
+the reconstruction's parameters renamed to `attitude_c64`/`attitude_c68` so the names carry the
+offsets rather than a claim about which axis each holds. At the attitudes both runs measured, with
+both angles near zero and above `-1.0`, either ordering returns the same answer, so the IJN01
+census above stands; USN01 was run with the fix in and shows the identical pattern.
+
+### The substitutions in the wiring, each labelled at its address
+
+| what | why | where |
+| --- | --- | --- |
+| `approach+A8h = 800` | `009C3ED8` draws it from `(approach+14h)->+38h..+3Ch`, an unread class record. 800 is `BeginAltRange/1 - (BeginAltRange/2 - /1)`, built from the two rows the seed itself reads, and it satisfies the interpolation window's `approach+A8h + 100 < approach+ACh` | `009C3ED8` |
+| `approach+D4h`, `+50h`, `(approach+14h)->+5Ch`, `->+60h` all zero or one | no producer read. The lead stays 0 and the gain 1, so the aim error is the bare along-track miss | `009C5C20`, `009C5C69` |
+| the flyabove tick's three flags | `009C62B0` has no Ghidra function; the host stands in with the planar range against `Pilot/DiveBomb/SafeDist` | `009C62B0` |
+| two rounds per aircraft | `006E3500`'s per-device count is unread; this is the cap the aimglide salvo loop clamps against | `007C1DB0` |

@@ -3,10 +3,11 @@
   "baseline_commit": "0976324b9",
   "worktree": "J:/PROG/battlestations-pacific-decompile-cc8-dive-bomb",
   "documentation": "docs/DIVE_BOMB_TASK.md",
-  "status": "analyzed and reconstructed; host wiring deferred to a separate commit",
+  "status": "analyzed, reconstructed and wired into the unit host; no release yet, two gates named",
   "production_cpp_changed": [
     "src/dive_bomb_task.cpp",
     "include/bsp/dive_bomb_task.hpp",
+    "src/game_hosts_units.cpp",
     "cmake/startup.cmake"
   ],
   "ghidra_mutated": false,
@@ -199,6 +200,12 @@
       "native": "00419010",
       "note": "the lead interpolation, y from 0 to (approach+14h)->+5Ch over the height above the target",
       "host_method": "read_aimdive_inputs"
+    },
+    {
+      "address": "009c8613",
+      "native": "009c7ea0",
+      "note": "the turndown-complete test; the gate both after-runs stop at",
+      "host_method": "read_transition_inputs"
     }
   ],
   "calls_in_undefined_regions": [
@@ -513,12 +520,17 @@
     "build": "scripts/build.ps1, MSVC Win32, /W4 /WX, succeeds before and after the merge of main",
     "tests": "ctest: reconstructed_math and tool_tests both pass; no test added",
     "host_wiring": "deferred: src/bot_task_states.cpp, include/bsp/bot_task_states.hpp and src/game_hosts_units.cpp are held by another worker for this window",
-    "ijn01_before": "local/ijn01_before.log on 9cff2668d: 33 ordered aircraft (8 A7M, 9 JudySpawn dive bombers, 12 JillSpawn, Warhawk1, Dauntless1, 2 B-17); 27 units carry general bomb ordnance; 44 BOMBPLATFORM guns fired 0 shots; torpedo task aircraft=6 releases=0. No dive-bomb instrumentation exists yet, so the task's own state counts are unmeasured."
+    "ijn01_before": "local/ijn01_before.log on 9cff2668d: 33 ordered aircraft (8 A7M, 9 JudySpawn dive bombers, 12 JillSpawn, Warhawk1, Dauntless1, 2 B-17); 27 units carry general bomb ordnance; 44 BOMBPLATFORM guns fired 0 shots; torpedo task aircraft=6 releases=0. No dive-bomb instrumentation exists yet, so the task's own state counts are unmeasured.",
+    "ijn01_after": "local/ijn01_after.log on 86ef889c4: 27 aircraft on the kind 8 task (every general-bomb carrier but the six Jills the torpedo task took), 1500 arm ticks each, states flyabove=1 turndown=1499, releases=0, bombs_spawned=0. Every other summary is identical to the before-run, including plane motion distance_moved=347370.56 m.",
+    "usn01_after": "local/usn01_after.log on 86ef889c4 plus the attitude fix: 5 aircraft (ScoutDauntless, ConSBD1..3, KatSBD), the same state pattern, releases=0.",
+    "gates": "Gate 1: approach+BCh is 0.0 m against approach+B8h = 1100.0 m on every dive bomber, because the commanded target resolves to a coincident position. The pilot-attack census reports the same range 0.0 -> 0.0 m independently over all three axes, so it is upstream of the task. Gate 2: 009C7EA0 at 009C8613 never completes. It returns 0 while pose+C64h >= -1.2999999523162842 (00D1F98C) and pose+C64h >= -1.0, and the measured pose+C64h is about 0.027 rad. The producer that would open it is the turndown tick 009C44F0, which is not bound.",
+    "bug_found_by_the_run": "The first IJN01 after-run passed 009C7EA0's two pose angles in axis-name order rather than offset order. Fixed at the call site and the reconstruction's parameters renamed to attitude_c64 / attitude_c68. At the measured attitudes either ordering returns the same answer, so that census stands; USN01 ran with the fix and shows the identical pattern."
   },
   "files": [
     "docs/DIVE_BOMB_TASK.md",
     "include/bsp/dive_bomb_task.hpp",
     "src/dive_bomb_task.cpp",
+    "src/game_hosts_units.cpp",
     "reports/dive_bomb_task.json",
     "cmake/startup.cmake"
   ]

@@ -1013,8 +1013,11 @@ struct GameUnitsHost::Impl {
         // 009C7850: !HasGeneralBombOrdnance.
         in.aimglide_out_of_bombs = !slot.db_has_bomb_d1;
         // 009C7EA0, reconstructed.
+        // 009C7EA0 reads pose+C64h first and pose+C68h second. The slot's
+        // own comment makes +C64h the pitch and +C68h the bank, so the pair
+        // goes in offset order, not axis-name order.
         in.turndown_complete = bsp::dive_bomb_turndown_complete_009c7ea0(
-            slot.plane_bank_angle_c68, slot.plane_pitch_angle_c64);
+            slot.plane_pitch_angle_c64, slot.plane_bank_angle_c68);
         // 009C7F00 is PARTIAL; its first rule is d = state+20h * 0.9 against
         // the planar range, and with the travel accumulator at 0 that answers
         // as soon as the aircraft has opened at all.
@@ -1063,7 +1066,7 @@ struct GameUnitsHost::Impl {
         ab.extra_range_50 = slot.db_extra_range_50;
         ab.slant_range = slot.db_planar_bc;
         ab.aim_point_distance = slot.db_planar_bc;
-        ab.unit_roll_c64 = slot.plane_pitch_angle_c64;
+        ab.unit_attitude_c64 = slot.plane_pitch_angle_c64;
         if (bsp::dive_bomb_dive_abort_009c5b43(ab)) {
             slot.db_aim_alive_19 = false;
             slot.db_aim_pull_out_18 = false;
