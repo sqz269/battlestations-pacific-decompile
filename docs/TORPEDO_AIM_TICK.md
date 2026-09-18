@@ -228,6 +228,12 @@ None. Every routine read for this packet has a Ghidra function: `009D15F0`, `009
 
 ## Validation
 
+**Which tree these numbers are for.** This worktree's merge-base with `main` is `ea2c0b05e`. It
+does not contain the ship AI goal-vector gate (`7cfe2db04`, merged as `48bd5339d`) that makes the
+ring scan run, nor the moved USN02 standing census (`bda1a32b8`). Both censuses below are for the
+`ea2c0b05e` baseline and must not be compared against a tree that carries those merges, where the
+USN02 gunnery numbers move to `shots=853 hull=119 deaths=3 total_damage=12463.2`.
+
 * `build-tested`: `./scripts/build.ps1`, Win32 `/W4 /WX`, clean.
 * `game-validated` on USN01, 3200 frames, 3000 mission frames at 0.05 s. Before this packet the
   five ordered aircraft spent 445-535 ticks in `aim` and never left it. After, all five write
@@ -243,6 +249,12 @@ None. Every routine read for this packet has a Ghidra function: `009D15F0`, `009
 
   Every aircraft leaves `aim` for `goaway` on the tick the byte goes true, and three of the five
   reach `prepare` once. Releases stay at 0.
+
+* USN02, same invocation: `shots=734 hull=180 deaths=2 total_damage=18525.6`, unchanged against
+  the `ea2c0b05e` baseline. Method limitation: that run was made after the source change, and the
+  reference came from the packet brief rather than from a before-run in this worktree. The after
+  run reproduced all four numbers exactly, so the check holds for this tree, but this packet did
+  not independently measure the before state.
 
 * The next gate, by address and value: **`009D3150`**, the goaway-done predicate. It returns
   `approach+90h > goaway_state+24h` at `009D3195`; the host binding in
@@ -277,3 +289,20 @@ None. Every routine read for this packet has a Ghidra function: `009D15F0`, `009
 3. **`007F0280`** - the obstacle probe, 611 instructions, `RET 18h`, six arguments.
 4. **`approach+8h`** - the aircraft description fields `+268h`, `+26Ch`, `+25Ch`, `+A4h`, `+188h`,
    `+1ACh`, all read by this tick.
+
+## Correction from `docs/TORPEDO_GOAWAY_RELEASE.md` (packet `cc8_torpedo_goaway_release`)
+
+Appended, not rewritten. The two follow-ups this document opened are answered there.
+
+* **Follow-up 1, `goaway_state+24h`.** Its only producer is the goaway state's enter,
+  `009D0D90`, which stores it at `009D0E37` as
+  `UniformFloatRange(1.0, 1.15) * max(Pilot/Torpedo/SafeDist at 0042E740()+438h, 007B5BE0(target))`.
+  The registrar's inline construction at `009D2ECC`-`009D2F09` skips the field and the vtable's
+  other entry slot `009D0C00` is a bare `RET`, so nothing else writes it.
+* **Follow-up 2, the `cmd+2C0h` consumer.** `plan+2C0h` with `plan+2CCh = 2` is the plan pair the
+  pilot planner's yaw base term reads at `0099DEB8`; the aim tick writes exactly that pair at
+  `009D1D16`/`009D1D1E`. The host now carries it and the yaw arm prefers it over the raw target
+  bearing, which is the native's own precedence.
+
+The Uncertainty note above, that the host exercises clause 2 while the native would likely
+exercise clause 1, is measured in that document's Validation section.

@@ -1,0 +1,443 @@
+{
+  "packet": "cc8_torpedo_goaway_release",
+  "owner": "agent/cc8-torpedo-aim-tick",
+  "question": "Establish the producer of goaway_state+24h so 009D3150 is computed rather than constant false, and connect the commanded heading cmd+2C0h the aim tick writes to the pilot planner's yaw arm.",
+  "answer": "goaway+24h has exactly one producer: the goaway state's enter 009D0D90 (vtable 00D212E0 slot +4h), which stores it at 009D0E37 as UniformFloatRange(1.0, 1.15) * max(Pilot/Torpedo/SafeDist at 0042E740()+438h, 007B5BE0(target)). The registrar's inline construction at 009D2ECC-009D2F09 skips the field, the object is not zeroed (operator new at 009D4E51 with no memset anywhere on the path), and the vtable's other entry slot 009D0C00 is a bare RET. An exhaustive disassembly of 009D0000-009D5000 finds one non-ESP store to a +24h slot in the whole torpedo band, at 009D0E37. For the heading, plan+2C0h with plan+2CCh = 2 is the pair the planner's yaw base term reads at 0099DEB8, and the aim tick writes exactly that pair at 009D1D16/009D1D1E; the host was discarding it and recomputing the arm's own bearing.",
+  "coverage": "reconstructed for 009D0D90 and 009D3150; partial for the goaway tick 009D0F10; 007B5BE0 and [00F876B0] are contracts",
+  "doc": "docs/TORPEDO_GOAWAY_RELEASE.md",
+  "tree_base": {
+    "merge_base_with_main": "eed7e744b3780a57ab26cdc459a2eb3546a3541b",
+    "note": "This tree merged main before the packet, so it carries the ship AI ring-scan change. Both before-runs were measured on this merged tree."
+  },
+  "how_the_producer_was_found": [
+    "The goaway state is task+6D8h = approach+2E0h; 009D2DA0 constructs it inline at 009D2ECC-009D2F09 writing +4h, +8h, +Ch, +10h, +14h, +18h, +1Ch, +20h, +28h, +30h, +34h and the vtable, and skipping +24h.",
+    "009D4E30 allocates with PUSH 7DCh / CALL 00BF681B (operator new); neither it nor 009D3050, 0099C6F0 or 009D2DA0 contains a memset or REP STOS, so the field is not zero by construction.",
+    "The goaway vtable 00D212E0 is {009D2D60, 009D0D90, 009D0C00, 009D0F10, 007B3DE0, 007B3DF0, 007B45E0}; 009D0C00 is a single RET with INT3 runs on both sides and the last three are trivial stubs.",
+    "A disp32 byte scan for MOVSS/FSTP/MOV stores to [reg+304h] or [reg+6FCh] returns only unrelated objects and is vacuous anyway, because MSVC addresses +24h off a state pointer with a disp8.",
+    "An exhaustive disassembly of 009D0000-009D5000 grepped for stores to any [reg+24h] returns thirteen matches, twelve of them [esp+24h] and one at 009D0E37 inside 009D0D90.",
+    "Reading 009D0D90 to its end (009D0F04, not the 009D0E3A CALL it was first cut at) shows it also overwrites +1Ch, +20h, +28h, +30h and +34h, so the registrar's 100.0f and 120.0f are placeholders. +24h and +2Ch are the only fields with no constructor value at all."
+  ],
+  "calls": [
+    {
+      "address": "009d0dc1",
+      "native": "0042e740",
+      "function": "009d0d90",
+      "role": "the tuning singleton whose +438h is Pilot/Torpedo/SafeDist",
+      "kind": "no_ghidra_function"
+    },
+    {
+      "address": "009d0df2",
+      "native": "007b5be0",
+      "function": "009d0d90",
+      "role": "the target's extent, max(target+444h, target+448h)",
+      "kind": "no_ghidra_function"
+    },
+    {
+      "address": "009d0e2c",
+      "native": "00bd2f10",
+      "function": "009d0d90",
+      "role": "BSP_Random_UniformFloatRange(1.0, 1.15), RET 8",
+      "kind": "no_ghidra_function"
+    },
+    {
+      "address": "009d0e3a",
+      "native": "009d0c10",
+      "function": "009d0d90",
+      "role": "the goaway geometry helper",
+      "kind": "no_ghidra_function"
+    },
+    {
+      "address": "009d0f2a",
+      "native": "00414db0",
+      "function": "009d0f10",
+      "role": "refresh the world pose when unit+C8h == 0"
+    },
+    {
+      "address": "009d0f46",
+      "native": "009d0c10",
+      "function": "009d0f10",
+      "role": "the same geometry helper, once per goaway tick"
+    },
+    {
+      "address": "009d0c54",
+      "native": "009fd570",
+      "function": "009d0c10",
+      "role": "the geometry helper's own call",
+      "kind": "no_ghidra_function"
+    },
+    {
+      "address": "009d0e71",
+      "native": "00bd2f10",
+      "function": "009d0d90",
+      "kind": "no_ghidra_function",
+      "role": "UniformFloatRange(50.0f, 100.0f) for the break-off altitude +1Ch"
+    },
+    {
+      "address": "009d0ea3",
+      "native": "00bd2f10",
+      "function": "009d0d90",
+      "kind": "no_ghidra_function",
+      "role": "UniformFloatRange((approach+14h)->+10h, ->+14h) for the timer +28h"
+    }
+  ],
+  "host_methods": [
+    {
+      "method": "safe_distance_438",
+      "address": "009d0dc1",
+      "native": "0042e740",
+      "kind": "no_ghidra_function"
+    },
+    {
+      "method": "torpedo_goaway_enter_009d0d90 on set_state to kGoAway",
+      "address": "009d0d90",
+      "native": "009d0d90+vtable04",
+      "note": "the goaway vtable 00D212E0 slot +4h; the host calls it on the transition, not through a vtable"
+    },
+    {
+      "method": "torpedo_goaway_complete_009d3150 into goaway_done_009d3150",
+      "address": "009d3150",
+      "native": "009d3150"
+    },
+    {
+      "method": "plan_heading_2c0 / plan_heading_mode_2cc on the slot",
+      "address": "009d1d16",
+      "native": "009d15f0+2c0",
+      "note": "MOVSS [EAX+2C0h],XMM0, a field store, not a call"
+    },
+    {
+      "method": "plan_yaw_0099d300 reading the plan heading",
+      "address": "0099deb8",
+      "native": "0099d300+2c0",
+      "note": "the planner's yaw base term reads plan+2C0h; a field load, not a call"
+    }
+  ],
+  "named_routines": [
+    {
+      "address": "009d0d90",
+      "name": "BSP_BotStateTorpedoGoAway_Enter",
+      "native": "009d0d90",
+      "evidence": "the only writer of goaway+24h, at 009D0E37"
+    },
+    {
+      "address": "009d0f10",
+      "name": "BSP_BotStateTorpedoGoAway_Tick",
+      "native": "009d0f10",
+      "evidence": "goaway vtable 00D212E0 slot +Ch; reads +24h at 009D0F53 and drops +28h by dt"
+    },
+    {
+      "address": "009d0c10",
+      "name": "BSP_BotStateTorpedoGoAway_UpdateGeometry",
+      "native": "009d0c10",
+      "evidence": "called at 009D0E3A and 009D0F46; writes only state+18h at 009D0D80"
+    },
+    {
+      "address": "009d0c00",
+      "name": "BSP_BotStateTorpedoGoAway_OnEnterNoop",
+      "native": "009d0c00",
+      "evidence": "goaway vtable slot +8h, a single RET between INT3 runs"
+    },
+    {
+      "address": "009d3150",
+      "name": "BSP_BotStateTorpedoGoAway_IsComplete",
+      "native": "009d3150",
+      "evidence": "009D3195 compares approach+90h against the +24h the enter wrote"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "009d0c00",
+      "end_inclusive": "009d0c00",
+      "what": "goaway vtable 00D212E0 slot +8h, a bare RET bracketed by INT3 padding"
+    },
+    {
+      "address": "009d0c10",
+      "end_inclusive": "009d0d87",
+      "what": "the goaway geometry helper"
+    },
+    {
+      "address": "009d0d90",
+      "end_inclusive": "009d0f04",
+      "what": "the goaway enter; two exits, 009D0EF4 and 009D0F04. Read to its end: 009D0E3F-009D0F04 also overwrites +1Ch, +20h, +28h, +30h and +34h through two further UniformFloatRange draws."
+    },
+    {
+      "address": "009d0bf0",
+      "end_inclusive": "009d0bf6",
+      "what": "an adjacent one-line getter returning [00CE4BC4] = 600.0f, in the same padding run"
+    }
+  ],
+  "constants": [
+    {
+      "address": "00d20ce4",
+      "value": 1.15,
+      "kind": "float",
+      "use": "the jitter's upper bound, 009D0E15"
+    },
+    {
+      "address": "00d7a24c",
+      "value": 1.0,
+      "kind": "float",
+      "use": "the break-off side when the counter is even, 009D0DB3"
+    },
+    {
+      "address": "00d7a260",
+      "value": -1.0,
+      "kind": "float",
+      "use": "the break-off side when odd, 009D0DA9"
+    },
+    {
+      "address": "00ce65d0",
+      "value": 0.4,
+      "kind": "double, the widened 0.4f",
+      "use": "the 009D3183 scale"
+    },
+    {
+      "address": "00ce3d08",
+      "value": 100.0,
+      "kind": "float",
+      "use": "goaway+28h at construction, 009D2EDE"
+    },
+    {
+      "address": "00d05804",
+      "value": 120.0,
+      "kind": "float",
+      "use": "goaway+1Ch and +20h at construction"
+    },
+    {
+      "address": "00d7a220",
+      "value": 100.0,
+      "kind": "double",
+      "use": "the goaway tick's 009D0F56 offset"
+    }
+  ],
+  "contracts": [
+    "007B5BE0's target extent is not modelled, so has_extent_target is false and the break-off distance is the tuning value alone.",
+    "[00F876B0] is a global this host does not carry; the break-off side alternates on the slot's own entry count instead. 009D3150 never reads +2Ch, so this changes the side and not the gate.",
+    "BSP_Random_UniformFloatRange(1.0, 1.15) takes the low end, matching the binding's existing random_between, so the distance is the unjittered SafeDist.",
+    "ctl+369h is 0 in this host, so the 009D3150 scaling arm and its ordnance refusal are both skipped."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1, Win32 /W4 /WX, clean",
+    "tests": "ctest, 2/2 passed (reconstructed_math, tool_tests)",
+    "usn01_before_merged_tree": [
+      {
+        "name": "Mav1",
+        "arm_ticks": 1299,
+        "transitions": 5,
+        "states": "moveto=188 attackrun=614 goaway=316 aim=181",
+        "releases": 0,
+        "aim_complete": 1,
+        "first_true_at": 181,
+        "clause": "turn",
+        "f34": 80.55,
+        "f14": 1407.97,
+        "ramp": 250.0,
+        "f18": 2.5165,
+        "f0c": 2.5133
+      },
+      {
+        "name": "Mav2",
+        "arm_ticks": 1299,
+        "transitions": 6,
+        "states": "moveto=191 attackrun=599 goaway=341 aim=167 prepare=1",
+        "releases": 0,
+        "aim_complete": 1,
+        "first_true_at": 167,
+        "clause": "turn",
+        "f34": 78.04,
+        "f14": 1444.05,
+        "ramp": 250.0,
+        "f18": 2.5755,
+        "f0c": 2.5734
+      },
+      {
+        "name": "Mav3",
+        "arm_ticks": 1299,
+        "transitions": 6,
+        "states": "moveto=139 attackrun=624 goaway=364 aim=171 prepare=1",
+        "releases": 0,
+        "aim_complete": 1,
+        "first_true_at": 171,
+        "clause": "turn",
+        "f34": 78.9,
+        "f14": 1436.67,
+        "ramp": 250.0,
+        "f18": 2.5612,
+        "f0c": 2.5611
+      },
+      {
+        "name": "Mav4",
+        "arm_ticks": 1299,
+        "transitions": 3,
+        "states": "moveto=268 attackrun=586 goaway=272 aim=173",
+        "releases": 0,
+        "aim_complete": 1,
+        "first_true_at": 173,
+        "clause": "turn",
+        "f34": 78.86,
+        "f14": 1424.4,
+        "ramp": 250.0,
+        "f18": 2.5461,
+        "f0c": 2.5407
+      },
+      {
+        "name": "Mav5",
+        "arm_ticks": 1299,
+        "transitions": 3,
+        "states": "moveto=234 attackrun=594 goaway=293 aim=178",
+        "releases": 0,
+        "aim_complete": 1,
+        "first_true_at": 178,
+        "clause": "turn",
+        "f34": 79.69,
+        "f14": 1414.94,
+        "ramp": 250.0,
+        "f18": 2.5305,
+        "f0c": 2.5249
+      }
+    ],
+    "usn01_after": [
+      {
+        "name": "Mav1",
+        "arm_ticks": 1299,
+        "transitions": 195,
+        "states": "moveto=188 attackrun=614 goaway=126 aim=371",
+        "releases": 0,
+        "aim_complete": 1,
+        "first_true_at": 276,
+        "clause": "turn",
+        "f34": 77.64,
+        "f14": 1267.52,
+        "ramp": 250.0,
+        "f18": 2.2811,
+        "f0c": 2.2792,
+        "goaway_enters": 96,
+        "break_off_24h": 700.0,
+        "side_2c": -1.0,
+        "goaway_range_peak": 697.4,
+        "goaway_done_last": 0,
+        "safe_dist": 700.0
+      },
+      {
+        "name": "Mav2",
+        "arm_ticks": 1299,
+        "transitions": 186,
+        "states": "moveto=191 attackrun=599 goaway=151 aim=357 prepare=1",
+        "releases": 0,
+        "aim_complete": 1,
+        "first_true_at": 267,
+        "clause": "turn",
+        "f34": 75.53,
+        "f14": 1239.16,
+        "ramp": 250.0,
+        "f18": 2.2801,
+        "f0c": 2.2319,
+        "goaway_enters": 91,
+        "break_off_24h": 700.0,
+        "side_2c": 1.0,
+        "goaway_range_peak": 702.3,
+        "goaway_done_last": 0,
+        "safe_dist": 700.0
+      },
+      {
+        "name": "Mav3",
+        "arm_ticks": 1299,
+        "transitions": 184,
+        "states": "moveto=139 attackrun=624 goaway=170 aim=365 prepare=1",
+        "releases": 0,
+        "aim_complete": 1,
+        "first_true_at": 276,
+        "clause": "turn",
+        "f34": 75.67,
+        "f14": 1252.22,
+        "ramp": 250.0,
+        "f18": 2.339,
+        "f0c": 2.2537,
+        "goaway_enters": 90,
+        "break_off_24h": 700.0,
+        "side_2c": -1.0,
+        "goaway_range_peak": 697.0,
+        "goaway_done_last": 0,
+        "safe_dist": 700.0
+      },
+      {
+        "name": "Mav4",
+        "arm_ticks": 1299,
+        "transitions": 176,
+        "states": "moveto=268 attackrun=586 goaway=87 aim=358",
+        "releases": 0,
+        "aim_complete": 1,
+        "first_true_at": 271,
+        "clause": "turn",
+        "f34": 76.07,
+        "f14": 1263.31,
+        "ramp": 250.0,
+        "f18": 2.2808,
+        "f0c": 2.2722,
+        "goaway_enters": 87,
+        "break_off_24h": 700.0,
+        "side_2c": 1.0,
+        "goaway_range_peak": 766.5,
+        "goaway_done_last": 1,
+        "safe_dist": 700.0
+      },
+      {
+        "name": "Mav5",
+        "arm_ticks": 1299,
+        "transitions": 197,
+        "states": "moveto=234 attackrun=594 goaway=99 aim=372",
+        "releases": 0,
+        "aim_complete": 1,
+        "first_true_at": 275,
+        "clause": "turn",
+        "f34": 76.73,
+        "f14": 1274.31,
+        "ramp": 250.0,
+        "f18": 2.2906,
+        "f0c": 2.2905,
+        "goaway_enters": 98,
+        "break_off_24h": 700.0,
+        "side_2c": -1.0,
+        "goaway_range_peak": 700.4,
+        "goaway_done_last": 0,
+        "safe_dist": 700.0
+      }
+    ],
+    "usn01_torpedo_summary_after": [
+      "summary mission torpedo task: aircraft=5 releases=0 blocked_engaged_009d3210=1020 blocked_arm_009d49a0=0",
+      "summary mission torpedo task: no release. 009D15F0 writes the aim-complete byte state+2Ch at 009D236E (5 of 5 aircraft) and 009D4030 step 11 leaves aim for goaway. 009D3150 is now computed from the 009D0D90 break-off distance goaway+24h=700.0; it went true for 1 aircraft, and the furthest any got inside goaway was 766.5 m. closest approach 285.2 against 8Ch=2200.0, 6490 offers, aim ran 1823 ticks"
+    ],
+    "usn01_ordnance_after": [
+      "summary mission gunnery ordnance units_with torpedo=14 general_bomb=11 drop_kamikaze=0 paratrooper=0 (of 41 units with guns)",
+      "summary mission gunnery torpedo_ranges_derived=39 swims_started=0 snaps=0 bullet_ranges_derived=336 base_tick_timers_live=0 expired=0"
+    ],
+    "usn01_gunnery_damage_before": "summary mission gunnery damage queued_hits=23 dispatched=23 hit_records=23 hull=23 part=0 fires=0 floods=0 attributions=23 deaths=1 kill_credits=1 total_damage=220.0 first_hit=0.60 s",
+    "usn01_gunnery_damage_after": "summary mission gunnery damage queued_hits=23 dispatched=23 hit_records=23 hull=23 part=0 fires=0 floods=0 attributions=23 deaths=1 kill_credits=1 total_damage=220.0 first_hit=0.60 s",
+    "usn01_pilot_attack_before": "summary mission pilot attack: ordered=5 range_first_mean=4827.3 m range_last_mean=799.1 m closed_mean=4028.3 m worst_closed=3840.0 m | heading_error_first_mean=2.188 rad heading_error_last_mean=1.191 rad final_pitch_mean=0.018 rad",
+    "usn01_pilot_attack_after": "summary mission pilot attack: ordered=5 range_first_mean=4827.3 m range_last_mean=920.9 m closed_mean=3906.4 m worst_closed=3864.5 m | heading_error_first_mean=2.188 rad heading_error_last_mean=0.918 rad final_pitch_mean=-0.005 rad",
+    "usn02_before_merged_tree": "summary mission gunnery damage queued_hits=120 dispatched=120 hit_records=120 hull=119 part=0 fires=0 floods=0 attributions=120 deaths=3 kill_credits=3 total_damage=12463.2 first_hit=41.90 s",
+    "usn02_after": "summary mission gunnery damage queued_hits=120 dispatched=120 hit_records=120 hull=119 part=0 fires=0 floods=0 attributions=120 deaths=3 kill_credits=3 total_damage=12463.2 first_hit=41.90 s",
+    "usn02_aim_before": "summary mission gunnery aim angle_sets=1189930 refusals=189803 steps=79793 arc_blocks=14782 arc_unsolved=0 trigger_rises=203 fire_messages=122017 fire_if_ready=122017 can_fire_refusals=121164 shots=853 first_shot=1.40 s",
+    "usn02_aim_after": "summary mission gunnery aim angle_sets=1189930 refusals=189803 steps=79793 arc_blocks=14782 arc_unsolved=0 trigger_rises=203 fire_messages=122017 fire_if_ready=122017 can_fire_refusals=121164 shots=853 first_shot=1.40 s",
+    "what_moved": {
+      "goaway_enters_per_aircraft": "87 to 98",
+      "break_off_distance_m": 700.0,
+      "transitions_before": "3 to 6",
+      "transitions_after": "176 to 197",
+      "goaway_009d3150_true_for": 1,
+      "furthest_range_in_goaway_m": 766.5,
+      "f18_at_aim_complete_before": "2.5305 to 2.5755",
+      "f18_at_aim_complete_after": "2.2801 to 2.3390",
+      "mean_final_heading_error_before_rad": 1.191,
+      "mean_final_heading_error_after_rad": 0.918,
+      "closest_approach_before_m": 5.8,
+      "closest_approach_after_m": 285.2,
+      "clause_that_fires": "still clause 2 for all five; F0C falls with F18, so they cross together"
+    },
+    "next_gate": {
+      "address": "009d3f6e / 009d4084",
+      "field": "ctl+370h, the pilot control mode",
+      "value": "prepare is chosen only while the mode is 0; 009D49A0 arms prepare+98h only in prepare",
+      "why": "009D4132 sends a completed goaway back to aim while task+52Ah holds, never to prepare, so the aim/goaway cycle cannot reach the countdown. This host raises ctl+370h to 1 on 0099B740 and nothing lowers it."
+    }
+  }
+}

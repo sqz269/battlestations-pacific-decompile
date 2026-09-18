@@ -8,7 +8,6 @@
   "function": "009d15f0",
   "function_range": "009d15f0-009d2377",
   "abi": "void __thiscall BotStateTorpedoAim::Tick(BotStateTorpedoAim* ECX, float dt), RET 4 at 009D2377",
-
   "frame_accounting": {
     "method": "CFG fixpoint depth propagation over every fall-through and branch edge, reporting any join whose predecessors disagree",
     "instructions": 870,
@@ -18,7 +17,6 @@
     "mid_body_register_saves": "PUSH EBX/PUSH EBP at 009D1BBC/009D1BBD, POP EBP/POP EBX at 009D22E2/009D22E9; 009D1BBE-009D22E1 runs 8 bytes deeper",
     "previous_error": "the earlier walk carried depth 0x6C at 009D2310 instead of 0x80, so [ESP+0x28] read as F=28h rather than F=14h; the twelve 00419010 argument windows and their RET 0x14 cleanups were not both credited"
   },
-
   "aim_complete_rule": {
     "site": "009d236e",
     "field": "state+2Ch",
@@ -28,83 +26,389 @@
     "clause_1_compare": "009d235a FCOMIP ST0,ST1 with ST0 = the F=34h double, ST1 = the F=48h float; 009d235e JA sets",
     "clause_2_compare": "009d2368 FCOMIP ST0,ST1 with ST0 = F=18h, ST1 = F=0Ch; 009d236c JBE skips",
     "operands": [
-      {"slot": "F=34h", "read": "009d22ff", "reaching_writes": ["009d1ded"], "meaning": "max(unit+100h - altitude_floor, -0.5f) * max(1 - 1.6f*F18, 0.1f), metres"},
-      {"slot": "F=14h", "read": "009d2310", "reaching_writes": ["009d1604", "009d1782"], "meaning": "approach+90h, the 2D range, metres, x 0.9f for unit kinds 10h/16h"},
-      {"slot": "F=0Ch", "read": "009d2318", "reaching_writes": ["009d160f", "009d178a"], "meaning": "009D1500 time to target, seconds, x 0.9f for the same kinds"},
-      {"slot": "F=18h", "read": "009d2364", "reaching_writes": ["009d18f5", "009d1bb0"], "meaning": "the bit-level absolute value of the steering delta, radians"}
+      {
+        "slot": "F=34h",
+        "read": "009d22ff",
+        "reaching_writes": [
+          "009d1ded"
+        ],
+        "meaning": "max(unit+100h - altitude_floor, -0.5f) * max(1 - 1.6f*F18, 0.1f), metres"
+      },
+      {
+        "slot": "F=14h",
+        "read": "009d2310",
+        "reaching_writes": [
+          "009d1604",
+          "009d1782"
+        ],
+        "meaning": "approach+90h, the 2D range, metres, x 0.9f for unit kinds 10h/16h"
+      },
+      {
+        "slot": "F=0Ch",
+        "read": "009d2318",
+        "reaching_writes": [
+          "009d160f",
+          "009d178a"
+        ],
+        "meaning": "009D1500 time to target, seconds, x 0.9f for the same kinds"
+      },
+      {
+        "slot": "F=18h",
+        "read": "009d2364",
+        "reaching_writes": [
+          "009d18f5",
+          "009d1bb0"
+        ],
+        "meaning": "the bit-level absolute value of the steering delta, radians"
+      }
     ]
   },
-
   "calls": [
-    {"address": "009d160a", "native": "009d1500", "function": "009d15f0", "role": "time to target -> slot F=0Ch"},
-    {"address": "009d1691", "native": "00438b10", "function": "009d15f0", "role": "SubtractWrappedAngle(approach+94h, unit heading) -> F=10h"},
-    {"address": "009d16b4", "native": "00414db0", "function": "009d15f0", "role": "refresh the world pose when unit+C8h == 0"},
-    {"address": "009d16d1", "native": "00903860", "function": "009d15f0", "role": "ground height under unit+FCh -> F=24h"},
-    {"address": "009d1739", "native": "00438b10", "function": "009d15f0", "role": "SubtractWrappedAngle(target heading, own heading) -> F=2Ch"},
-    {"address": "009d17d7", "native": "00419010", "function": "009d15f0", "role": "sector gain Interp(1.8, 3.0, 5.0, 0.8, t)"},
-    {"address": "009d182c", "native": "00419010", "function": "009d15f0", "role": "lead gain Interp(1.35, 0, 1.6, 1, t)"},
-    {"address": "009d184b", "native": "00438aa0", "function": "009d15f0", "role": "AddWrappedAngle(bearing error, lead * shaped offset)"},
-    {"address": "009d18c4", "native": "00438aa0", "function": "009d15f0", "role": "AddWrappedAngle(unit heading, clamped turn)"},
-    {"address": "009d19a4", "native": "009d1360", "function": "009d15f0", "role": "UpdateRunTime on the turn-radius escape"},
-    {"address": "009d1a01", "native": "00419010", "function": "009d15f0", "role": "probe cone Interp(1.5, 0.872665, 3.0, 0.349066, t)"},
-    {"address": "009d1a94", "native": "007f0280", "function": "009d15f0", "role": "obstacle probe, six pushed arguments, RET 18h"},
-    {"address": "009d1b4d", "native": "00419010", "function": "009d15f0", "role": "probe shaping Interp(1.5, 1.0, 2.5, 0.25, t)"},
-    {"address": "009d1b7a", "native": "00438aa0", "function": "009d15f0", "role": "AddWrappedAngle(commanded heading, probe correction)"},
-    {"address": "009d1b95", "native": "00438b10", "function": "009d15f0", "role": "SubtractWrappedAngle(commanded heading, own heading) -> F=10h"},
-    {"address": "009d1bcc", "native": "00438aa0", "function": "009d15f0", "role": "AddWrappedAngle(unit heading, final turn) -> commanded heading"},
-    {"address": "009d1c0b", "native": "00419010", "function": "009d15f0", "role": "throttle bank fold Interp(-1.0, 2.2, -0.2, 1.0, unit+C64h)"},
-    {"address": "009d1c42", "native": "00419010", "function": "009d15f0", "role": "throttle time fold Interp(1.5, 0.1, 2.0, 1.0, t)"},
-    {"address": "009d1c79", "native": "00414db0", "function": "009d15f0", "role": "refresh the world pose before the altitude fold"},
-    {"address": "009d1cca", "native": "00419010", "function": "009d15f0", "role": "throttle altitude fold Interp(obj+A4h, 0.1, 3*obj+A4h, 1.6, unit+100h)"},
-    {"address": "009d1d4f", "native": "00414db0", "function": "009d15f0", "role": "refresh the world pose before the release threshold"},
-    {"address": "009d1f2e", "native": "00419010", "function": "009d15f0", "role": "ordnance fade Interp(1.0, 1.0, 1.5, 0.0, t) -> cmd+264h"},
-    {"address": "009d1fed", "native": "00419010", "function": "009d15f0", "role": "aspect fold Interp(0.5, 1.0, 1.0, approach+84h, |cos(F=2Ch)|) -> F=20h"},
-    {"address": "009d2027", "native": "009fa3a0", "function": "009d15f0", "role": "timer accumulate into state+18h, RET 4"},
-    {"address": "009d2077", "native": "00414db0", "function": "009d15f0", "role": "refresh the world pose before the altitude gate"},
-    {"address": "009d20b4", "native": "00419010", "function": "009d15f0", "role": "altitude gate Interp(0.4, 40, 1.0, 25, t)"},
-    {"address": "009d21ac", "native": "00419010", "function": "009d15f0", "role": "near cone Interp(0.3, 80, 0.8, 50, t), degrees"},
-    {"address": "009d21f2", "native": "00419010", "function": "009d15f0", "role": "far cone Interp(0.8, 50, 1.6, 15, t), degrees"},
-    {"address": "009d2253", "native": "00427eb0", "function": "009d15f0", "role": "refreshed world position; its PUSH EAX is 00903860's out pointer"},
-    {"address": "009d2265", "native": "00903860", "function": "009d15f0", "role": "ground height at the refreshed position"},
-    {"address": "009d2345", "native": "00419010", "function": "009d15f0", "role": "the aim-complete ramp Interp(0, 0, 1, speed/2, t)"}
+    {
+      "address": "009d160a",
+      "native": "009d1500",
+      "function": "009d15f0",
+      "role": "time to target -> slot F=0Ch"
+    },
+    {
+      "address": "009d1691",
+      "native": "00438b10",
+      "function": "009d15f0",
+      "role": "SubtractWrappedAngle(approach+94h, unit heading) -> F=10h"
+    },
+    {
+      "address": "009d16b4",
+      "native": "00414db0",
+      "function": "009d15f0",
+      "role": "refresh the world pose when unit+C8h == 0"
+    },
+    {
+      "address": "009d16d1",
+      "native": "00903860",
+      "function": "009d15f0",
+      "role": "ground height under unit+FCh -> F=24h"
+    },
+    {
+      "address": "009d1739",
+      "native": "00438b10",
+      "function": "009d15f0",
+      "role": "SubtractWrappedAngle(target heading, own heading) -> F=2Ch"
+    },
+    {
+      "address": "009d17d7",
+      "native": "00419010",
+      "function": "009d15f0",
+      "role": "sector gain Interp(1.8, 3.0, 5.0, 0.8, t)"
+    },
+    {
+      "address": "009d182c",
+      "native": "00419010",
+      "function": "009d15f0",
+      "role": "lead gain Interp(1.35, 0, 1.6, 1, t)"
+    },
+    {
+      "address": "009d184b",
+      "native": "00438aa0",
+      "function": "009d15f0",
+      "role": "AddWrappedAngle(bearing error, lead * shaped offset)"
+    },
+    {
+      "address": "009d18c4",
+      "native": "00438aa0",
+      "function": "009d15f0",
+      "role": "AddWrappedAngle(unit heading, clamped turn)"
+    },
+    {
+      "address": "009d19a4",
+      "native": "009d1360",
+      "function": "009d15f0",
+      "role": "UpdateRunTime on the turn-radius escape"
+    },
+    {
+      "address": "009d1a01",
+      "native": "00419010",
+      "function": "009d15f0",
+      "role": "probe cone Interp(1.5, 0.872665, 3.0, 0.349066, t)"
+    },
+    {
+      "address": "009d1a94",
+      "native": "007f0280",
+      "function": "009d15f0",
+      "role": "obstacle probe, six pushed arguments, RET 18h"
+    },
+    {
+      "address": "009d1b4d",
+      "native": "00419010",
+      "function": "009d15f0",
+      "role": "probe shaping Interp(1.5, 1.0, 2.5, 0.25, t)"
+    },
+    {
+      "address": "009d1b7a",
+      "native": "00438aa0",
+      "function": "009d15f0",
+      "role": "AddWrappedAngle(commanded heading, probe correction)"
+    },
+    {
+      "address": "009d1b95",
+      "native": "00438b10",
+      "function": "009d15f0",
+      "role": "SubtractWrappedAngle(commanded heading, own heading) -> F=10h"
+    },
+    {
+      "address": "009d1bcc",
+      "native": "00438aa0",
+      "function": "009d15f0",
+      "role": "AddWrappedAngle(unit heading, final turn) -> commanded heading"
+    },
+    {
+      "address": "009d1c0b",
+      "native": "00419010",
+      "function": "009d15f0",
+      "role": "throttle bank fold Interp(-1.0, 2.2, -0.2, 1.0, unit+C64h)"
+    },
+    {
+      "address": "009d1c42",
+      "native": "00419010",
+      "function": "009d15f0",
+      "role": "throttle time fold Interp(1.5, 0.1, 2.0, 1.0, t)"
+    },
+    {
+      "address": "009d1c79",
+      "native": "00414db0",
+      "function": "009d15f0",
+      "role": "refresh the world pose before the altitude fold"
+    },
+    {
+      "address": "009d1cca",
+      "native": "00419010",
+      "function": "009d15f0",
+      "role": "throttle altitude fold Interp(obj+A4h, 0.1, 3*obj+A4h, 1.6, unit+100h)"
+    },
+    {
+      "address": "009d1d4f",
+      "native": "00414db0",
+      "function": "009d15f0",
+      "role": "refresh the world pose before the release threshold"
+    },
+    {
+      "address": "009d1f2e",
+      "native": "00419010",
+      "function": "009d15f0",
+      "role": "ordnance fade Interp(1.0, 1.0, 1.5, 0.0, t) -> cmd+264h"
+    },
+    {
+      "address": "009d1fed",
+      "native": "00419010",
+      "function": "009d15f0",
+      "role": "aspect fold Interp(0.5, 1.0, 1.0, approach+84h, |cos(F=2Ch)|) -> F=20h"
+    },
+    {
+      "address": "009d2027",
+      "native": "009fa3a0",
+      "function": "009d15f0",
+      "role": "timer accumulate into state+18h, RET 4"
+    },
+    {
+      "address": "009d2077",
+      "native": "00414db0",
+      "function": "009d15f0",
+      "role": "refresh the world pose before the altitude gate"
+    },
+    {
+      "address": "009d20b4",
+      "native": "00419010",
+      "function": "009d15f0",
+      "role": "altitude gate Interp(0.4, 40, 1.0, 25, t)"
+    },
+    {
+      "address": "009d21ac",
+      "native": "00419010",
+      "function": "009d15f0",
+      "role": "near cone Interp(0.3, 80, 0.8, 50, t), degrees"
+    },
+    {
+      "address": "009d21f2",
+      "native": "00419010",
+      "function": "009d15f0",
+      "role": "far cone Interp(0.8, 50, 1.6, 15, t), degrees"
+    },
+    {
+      "address": "009d2253",
+      "native": "00427eb0",
+      "function": "009d15f0",
+      "role": "refreshed world position; its PUSH EAX is 00903860's out pointer"
+    },
+    {
+      "address": "009d2265",
+      "native": "00903860",
+      "function": "009d15f0",
+      "role": "ground height at the refreshed position"
+    },
+    {
+      "address": "009d2345",
+      "native": "00419010",
+      "function": "009d15f0",
+      "role": "the aim-complete ramp Interp(0, 0, 1, speed/2, t)"
+    }
   ],
-
   "host_methods": [
-    {"method": "time_to_target_009d1500", "address": "009d160a", "native": "009d1500"},
-    {"method": "unit_heading_vtable50", "address": "009d1679", "native": "009d15f0+vtable50", "note": "indirect CALL EDX, unit vtable slot 50h"},
-    {"method": "target_heading_vtable50", "address": "009d1721", "native": "009d15f0+vtable50", "note": "indirect CALL EAX, target vtable slot 50h"},
-    {"method": "target_is_kind_vtable5c", "address": "009d1714", "native": "009d15f0+vtable5c", "note": "indirect CALL EAX with PUSH 6"},
-    {"method": "unit_is_kind_vtable5c", "address": "009d175f", "native": "009d15f0+vtable5c", "note": "indirect CALL EDX with PUSH 10h; also 009D176E, 009D1E08, 009D1E17"},
-    {"method": "has_target_cc", "address": "009d1701", "native": "009d15f0+cc", "note": "MOV EDI,[EAX+0CCh]; TEST EDI,EDI, not a call"},
-    {"method": "refresh_world_pose_00414db0", "address": "009d16b4", "native": "00414db0"},
-    {"method": "ground_height_00903860", "address": "009d16d1", "native": "00903860"},
-    {"method": "update_run_time_009d1360", "address": "009d19a4", "native": "009d1360"},
-    {"method": "sector_probe_009d1a94", "address": "009d1a94", "native": "007f0280"},
-    {"method": "accumulate_timer_009fa3a0", "address": "009d2027", "native": "009fa3a0"},
-    {"method": "arm_release_timer_009d2287", "address": "009d2287", "native": "009d15f0+2287", "note": "MOV byte [EBP+0Ch],1 on state+18h, not a call"}
+    {
+      "method": "time_to_target_009d1500",
+      "address": "009d160a",
+      "native": "009d1500"
+    },
+    {
+      "method": "unit_heading_vtable50",
+      "address": "009d1679",
+      "native": "009d15f0+vtable50",
+      "note": "indirect CALL EDX, unit vtable slot 50h"
+    },
+    {
+      "method": "target_heading_vtable50",
+      "address": "009d1721",
+      "native": "009d15f0+vtable50",
+      "note": "indirect CALL EAX, target vtable slot 50h"
+    },
+    {
+      "method": "target_is_kind_vtable5c",
+      "address": "009d1714",
+      "native": "009d15f0+vtable5c",
+      "note": "indirect CALL EAX with PUSH 6"
+    },
+    {
+      "method": "unit_is_kind_vtable5c",
+      "address": "009d175f",
+      "native": "009d15f0+vtable5c",
+      "note": "indirect CALL EDX with PUSH 10h; also 009D176E, 009D1E08, 009D1E17"
+    },
+    {
+      "method": "has_target_cc",
+      "address": "009d1701",
+      "native": "009d15f0+cc",
+      "note": "MOV EDI,[EAX+0CCh]; TEST EDI,EDI, not a call"
+    },
+    {
+      "method": "refresh_world_pose_00414db0",
+      "address": "009d16b4",
+      "native": "00414db0"
+    },
+    {
+      "method": "ground_height_00903860",
+      "address": "009d16d1",
+      "native": "00903860"
+    },
+    {
+      "method": "update_run_time_009d1360",
+      "address": "009d19a4",
+      "native": "009d1360"
+    },
+    {
+      "method": "sector_probe_009d1a94",
+      "address": "009d1a94",
+      "native": "007f0280"
+    },
+    {
+      "method": "accumulate_timer_009fa3a0",
+      "address": "009d2027",
+      "native": "009fa3a0"
+    },
+    {
+      "method": "arm_release_timer_009d2287",
+      "address": "009d2287",
+      "native": "009d15f0+2287",
+      "note": "MOV byte [EBP+0Ch],1 on state+18h, not a call"
+    }
   ],
-
   "named_routines": [
-    {"address": "009d3150", "name": "BSP_BotStateTorpedoGoAway_IsComplete", "native": "009d3150", "evidence": "009D3195 FCOMIP compares approach+90h against state+24h; 009D317C returns 0 when approach+132h is clear"},
-    {"address": "009d31b0", "name": "BSP_BotStateTorpedoAim_IsComplete", "native": "009d31b0", "evidence": "009D31B3 CMP byte [EAX+132h]; 009D31BF MOV AL,[ECX+2Ch]"}
+    {
+      "address": "009d3150",
+      "name": "BSP_BotStateTorpedoGoAway_IsComplete",
+      "native": "009d3150",
+      "evidence": "009D3195 FCOMIP compares approach+90h against state+24h; 009D317C returns 0 when approach+132h is clear"
+    },
+    {
+      "address": "009d31b0",
+      "name": "BSP_BotStateTorpedoAim_IsComplete",
+      "native": "009d31b0",
+      "evidence": "009D31B3 CMP byte [EAX+132h]; 009D31BF MOV AL,[ECX+2Ch]"
+    }
   ],
-
   "no_ghidra_function": [],
-
   "validation": {
     "build": "scripts/build.ps1, Win32 /W4 /WX, clean",
     "tests": "ctest --test-dir build/win32 -C Release",
-    "usn01_before": {"aim_ticks_per_aircraft": "445-535", "closest_range_m": "5.8-206", "releases": 0, "aim_complete": 0, "source": "the packet brief; not re-measured in this worktree"},
+    "usn01_before": {
+      "aim_ticks_per_aircraft": "445-535",
+      "closest_range_m": "5.8-206",
+      "releases": 0,
+      "aim_complete": 0,
+      "source": "the packet brief, for the ea2c0b05e baseline; not re-measured in this worktree"
+    },
     "usn01_after": {
       "aircraft": 5,
       "aim_complete": 5,
       "releases": 0,
       "rows": [
-        {"name": "Mav1", "aim_ticks": 181, "first_true_at": 181, "clause": "turn", "f34": 80.55, "f14": 1407.97, "ramp": 250.0, "f18": 2.5165, "f0c": 2.5133, "states": "moveto=188 attackrun=614 goaway=316 aim=181"},
-        {"name": "Mav2", "aim_ticks": 167, "first_true_at": 167, "clause": "turn", "f34": 78.04, "f14": 1444.05, "ramp": 250.0, "f18": 2.5755, "f0c": 2.5734, "states": "moveto=191 attackrun=599 goaway=341 aim=167 prepare=1"},
-        {"name": "Mav3", "aim_ticks": 171, "first_true_at": 171, "clause": "turn", "f34": 78.90, "f14": 1436.67, "ramp": 250.0, "f18": 2.5612, "f0c": 2.5611, "states": "moveto=139 attackrun=624 goaway=364 aim=171 prepare=1"},
-        {"name": "Mav4", "aim_ticks": 173, "first_true_at": 173, "clause": "turn", "f34": 78.86, "f14": 1424.40, "ramp": 250.0, "f18": 2.5461, "f0c": 2.5407, "states": "moveto=268 attackrun=586 goaway=272 aim=173"},
-        {"name": "Mav5", "aim_ticks": 178, "first_true_at": 178, "clause": "turn", "f34": 79.69, "f14": 1414.94, "ramp": 250.0, "f18": 2.5305, "f0c": 2.5249, "states": "moveto=234 attackrun=594 goaway=293 aim=178"}
+        {
+          "name": "Mav1",
+          "aim_ticks": 181,
+          "first_true_at": 181,
+          "clause": "turn",
+          "f34": 80.55,
+          "f14": 1407.97,
+          "ramp": 250.0,
+          "f18": 2.5165,
+          "f0c": 2.5133,
+          "states": "moveto=188 attackrun=614 goaway=316 aim=181"
+        },
+        {
+          "name": "Mav2",
+          "aim_ticks": 167,
+          "first_true_at": 167,
+          "clause": "turn",
+          "f34": 78.04,
+          "f14": 1444.05,
+          "ramp": 250.0,
+          "f18": 2.5755,
+          "f0c": 2.5734,
+          "states": "moveto=191 attackrun=599 goaway=341 aim=167 prepare=1"
+        },
+        {
+          "name": "Mav3",
+          "aim_ticks": 171,
+          "first_true_at": 171,
+          "clause": "turn",
+          "f34": 78.9,
+          "f14": 1436.67,
+          "ramp": 250.0,
+          "f18": 2.5612,
+          "f0c": 2.5611,
+          "states": "moveto=139 attackrun=624 goaway=364 aim=171 prepare=1"
+        },
+        {
+          "name": "Mav4",
+          "aim_ticks": 173,
+          "first_true_at": 173,
+          "clause": "turn",
+          "f34": 78.86,
+          "f14": 1424.4,
+          "ramp": 250.0,
+          "f18": 2.5461,
+          "f0c": 2.5407,
+          "states": "moveto=268 attackrun=586 goaway=272 aim=173"
+        },
+        {
+          "name": "Mav5",
+          "aim_ticks": 178,
+          "first_true_at": 178,
+          "clause": "turn",
+          "f34": 79.69,
+          "f14": 1414.94,
+          "ramp": 250.0,
+          "f18": 2.5305,
+          "f0c": 2.5249,
+          "states": "moveto=234 attackrun=594 goaway=293 aim=178"
+        }
       ],
       "release_requests_007bbba0": 0,
       "ordnance_line": "none; no torpedo swims_started because no release was requested"
@@ -113,9 +417,16 @@
       "address": "009d3150",
       "value": "approach+90h > goaway_state+24h at 009D3195",
       "why": "the host binding for goaway_done_009d3150 in src/game_hosts_units.cpp is a constant false, so 009D4132 never promotes goaway to done or back to aim and 009D49A0 never reaches prepare+98h for 009D2720/007BBBA0"
-    }
+    },
+    "usn02_after": {
+      "shots": 734,
+      "hull": 180,
+      "deaths": 2,
+      "total_damage": 18525.6,
+      "verdict": "unchanged against the ea2c0b05e baseline"
+    },
+    "usn02_method_limitation": "The USN02 run was made after the source change, not before it. The reference 734/180/2/18525.6 came from the packet brief rather than from a before-run in this worktree. It is still a sound regression check for this tree, because the after-run reproduced all four numbers exactly and the tree's merge-base predates the ring-scan census move; but this packet did not independently measure the before state."
   },
-
   "uncertainty": [
     "All five aircraft set the byte through clause 2 with a 2.5 rad steering delta. The commanded heading the tick writes into cmd+2C0h is not consumed by the host's pilot binding, so the delta never shrinks; on the native clause 1 is the more likely trigger.",
     "007F0280 at 009D1A94 is a contract; the host reports no hit, which is also the approach+AAh == 0 arm.",
@@ -123,12 +434,16 @@
     "approach+84h is not in TorpedoApproachState; the host passes 1.0f. It only shapes approach+130h.",
     "Descriptive names are hypotheses, not recovered symbols."
   ],
-
   "files": [
     "include/bsp/torpedo_aim_tick.hpp",
     "src/torpedo_aim_tick.cpp",
     "src/game_hosts_units.cpp",
     "docs/TORPEDO_AIM_TICK.md",
     "cmake/startup.cmake"
-  ]
+  ],
+  "tree_base": {
+    "merge_base_with_main": "ea2c0b05e0256deeec0be31935966a3e25d49420",
+    "commit": "0d7d4bb77bcf73117c240f01db5808667dfaa812",
+    "note": "This tree does not contain the 15 commits main gained during the packet, among them 7cfe2db04 / 48bd5339d (the ship AI goal vector's target-visible gate, which makes the ring scan run) and bda1a32b8 (the moved USN02 standing census). Both USN01 and USN02 numbers below are for the ea2c0b05e baseline and must not be compared against a tree that contains those merges."
+  }
 }

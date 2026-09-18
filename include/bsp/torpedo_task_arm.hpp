@@ -151,6 +151,59 @@ struct TorpedoTransitionInputs {
 TorpedoState torpedo_next_state_009d4030(const TorpedoTransitionInputs& in) noexcept;
 
 // ---------------------------------------------------------------------------
+// The goaway state, task+6D8h (approach+2E0h), vtable 00D212E0.
+// 009D2ECC-009D2F09 constructs it inline in the registrar 009D2DA0 and writes
+// +4h, +8h, +Ch, +10h, +14h, +18h, +1Ch, +20h, +28h, +30h and +34h. It does NOT
+// write +24h, and the vtable's slot +8h (009D0C00) is a bare RET. The producer
+// of +24h is slot +4h, the enter 009D0D90, which stores it at 009D0E37. An
+// exhaustive disassembly of 009D0000-009D5000 finds exactly one non-ESP store
+// to a +24h slot in the whole torpedo band, and that is it.
+// ---------------------------------------------------------------------------
+namespace torpedo_goaway {
+inline constexpr float kDistanceJitterLo = 1.0f;   // FLD1 at 009D0E27
+inline constexpr float kDistanceJitterHi = 1.15f;  // 00D20CE4, 009D0E15
+inline constexpr float kSideLeft = -1.0f;          // 00D7A260, 009D0DA9
+inline constexpr float kSideRight = 1.0f;          // 00D7A24C, 009D0DB3
+inline constexpr float kOrderedScale = 0.4f;       // 00CE65D0, 009D3183
+}  // namespace torpedo_goaway
+
+struct TorpedoGoAwayEnterInputs {
+    // 0042E740()+438h, `Pilot/Torpedo/SafeDist`, default 700.
+    float safe_distance_438 = 0.0f;
+    // 007B5BE0(target) when approach+CCh answers vtable[5Ch](5): the larger of
+    // the target's +444h/+448h extents. 0 when there is no such target.
+    float target_extent = 0.0f;
+    bool has_extent_target = false;         // 009D0DDF, 009D0DEE
+    // BSP_Random_UniformFloatRange(1.0, 1.15) at 009D0E2C.
+    float distance_jitter = 1.0f;
+    // [00F876B0] & 1 at 009D0D98: the alternating break-off side.
+    bool side_bit = false;
+};
+
+struct TorpedoGoAwayState {
+    float break_off_distance_24 = 0.0f;  // 009D0E37
+    float break_off_side_2c = 1.0f;      // 009D0DBC
+};
+
+// 009D0D90-009D0E3A, the goaway enter (vtable 00D212E0 slot +4h).
+TorpedoGoAwayState torpedo_goaway_enter_009d0d90(
+    const TorpedoGoAwayEnterInputs& in) noexcept;
+
+struct TorpedoGoAwayCompleteInputs {
+    float range_90 = 0.0f;               // approach+90h, 009D318F
+    float break_off_distance_24 = 0.0f;  // goaway+24h, 009D3151
+    bool has_ordnance_132 = false;       // approach+132h, 009D3173
+    bool control_flag_369 = false;       // ctl+369h, 009D315C
+    bool global_e17bf2 = false;          // [00E17BF2], 009D316A
+};
+
+// 009D3150-009D31A5. True when the aircraft has opened past its break-off
+// distance. When both the control flag and the global are set the distance is
+// scaled by 0.4 and a missing ordnance byte refuses outright.
+bool torpedo_goaway_complete_009d3150(
+    const TorpedoGoAwayCompleteInputs& in) noexcept;
+
+// ---------------------------------------------------------------------------
 // 009D49A0, task vtable slot +24h: the arming entry. BSP_PilotBot_Tick walks
 // the bot's task vector at 0099AF90-0099AFAF and calls this slot on each task,
 // stopping at the first that returns true and spending one unit->+C58h.
