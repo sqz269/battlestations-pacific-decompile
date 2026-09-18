@@ -1,0 +1,93 @@
+{
+ "packet": "cc8_torpedo_usn04",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/TORPEDO_MISSION_SURVEY.md",
+ "tree_base": "main merged; see the commit on agent/cc8-torpedo-run-in",
+ "result": "Negative. USN04 cannot exercise the torpedo move-to state in this harness: its carrier strike never launches, the only two ordered aircraft are placed dive bombers, and the host built no kind Eh torpedo task. The blocker is upstream of the geometry the survey wanted to test.",
+ "question": "Does USN04's launched strike sit outside the 4840 m engaged threshold, so that the torpedo move-to state and the glide slope, throttle arm and speed setter wired for it finally execute?",
+ "answer": "Unanswerable from this mission. range_first_mean came back 0.0 m over ordered=2, and those two are dive bombers that took the kind 8 task at mission frame 62. The twelve launchedStriker aircraft never exist, because MissionLuaNative::GetProperty (0088bf80) is unimplemented and returns a neutral value; nil reaches pairs in luaGetSlotsAndSquads and the mission think aborts 41 times with one identical message, so IsReadyToSendPlanes, LaunchSquadron and PilotSetTarget on the launched striker are never reached. Neither LaunchSquadron nor IsReadyToSendPlanes appears anywhere in the log.",
+ "coverage": "complete for the run and its cause; the range and altitude at order time for USN04 remain contracts, now unmeasurable without the GetProperty reconstruction.",
+ "calls": [],
+ "named_routines": [
+  {
+   "native": "0088bf80",
+   "ledger_name": "FUN_0088bf80 (unnamed)",
+   "evidence": "carries the literal 'luaMW_GetProperty failed:' in its body; no recorded callers because the Lua registration table holds the pointer. Not renamed: this packet's lease does not cover that address.",
+   "status": "identified, not renamed"
+  },
+  {
+   "native": "0099a170",
+   "ledger_name": "torpedo task builder",
+   "evidence": "host summary: builds no kind Eh task when no ordered aircraft carries kind 2Bh ordnance",
+   "status": "previously reconstructed, unchanged here"
+  },
+  {
+   "native": "009c8c70",
+   "ledger_name": "dive-bomb task",
+   "evidence": "kind 8 task installed for the two ordered aircraft at mission frame 62",
+   "status": "previously reconstructed, unchanged here"
+  }
+ ],
+ "no_ghidra_function": [],
+ "host_methods": [],
+ "authored_rows": [
+  {
+   "file": "scripts/global/commandhelpers.lua (this installation, mtime 2024-10-29, bulk install date, not locally modified)",
+   "row": "luaGetSlotsAndSquads, lines 2495 to 2496",
+   "values": {
+    "2495": "airbaseEnt.slots = GetProperty(airbaseEnt, \"slots\")",
+    "2496": "for idx, slot in pairs(airbaseEnt.slots) do"
+   }
+  },
+  {
+   "file": "scripts/missions/usn/usn_19_coralus.lua (this installation, mtime 2024-08-26)",
+   "row": "the Zuikaku striker launch, lines 1403 to 1414",
+   "values": {
+    "1405,1406": "plane types 158 and 162",
+    "1408": "LaunchSquadron(Mission.Zuikaku, luaPickRnd(planeTypes), 3)",
+    "1411": "PilotSetTarget(launchedStriker, bombertrg), bombertrg a random Mission.USCVs entry"
+   }
+  },
+  {
+   "file": "scripts/missions/usn/usn_ormoc.lua (this installation, mtime 2024-10-29)",
+   "row": "USN22's torpedo aircraft, lines 1287 to 1288",
+   "values": {
+    "1287": "Mission.Avenger = GenerateObject(\"TBM_1\")",
+    "1288": "PilotSetTarget(Mission.Avenger, Mission.FinConvoy[5])"
+   }
+  }
+ ],
+ "contracts": [
+  "A reconstruction of 0088bf80 that returns, for the key 'slots', a Lua array of tables each carrying a squadron field (nil for an empty slot). That is the only shape luaGetSlotsAndSquads requires, and it would let USN04's carrier strike launch.",
+  "The plane type ids 158 and 162 that the striker launch picks from are not resolved to class names here, so whether the launched strike is torpedo-armed is still open even after the launch is fixed."
+ ],
+ "corrections": [
+  "This thread's own survey credited Mission.KatKillers to USN22. It is defined only in usn_1_marshall.lua lines 954 to 959, which is USN01. USN22's torpedo aircraft is the single TBM_1 Avenger. The survey doc is corrected.",
+  "This thread's own survey called USN04 the best candidate on its launch geometry. The geometry was never tested, because the launch does not run.",
+  "No retraction of a native-behaviour claim in this packet."
+ ],
+ "validation": {
+  "runner": "tools/run_game.ps1",
+  "command": "./tools/run_game.ps1 -Log local\\usn04_glide.log -WaitSeconds 1800 -- --frames 3200 --press-start-frame 30 --menu-select USN04 --mission-frames 3000 --mission-frame-seconds 0.05",
+  "preconditions": "Two bsp_game processes from the cc8-ai-squadron worktree and the machine lock held by that owner, so the launcher waited rather than clearing them. A first attempt with the default 900 s wait threw while the squadron held the lock and produced no log; this run used 1800 s.",
+  "outcome": "exit 0, frames_presented=3199, loop_finished=1, no crash, so the one-retry rule was not used",
+  "log": "local/usn04_glide.log",
+  "measured": {
+   "ordered": 2,
+   "range_first_mean_m": 0.0,
+   "range_last_mean_m": 683.3,
+   "engaged_threshold_m": 4840,
+   "torpedo_task_built": false,
+   "moveto_ticks": 0,
+   "glide_lines": 0,
+   "dive_probe_lines": 0,
+   "water_contacts": 0,
+   "drops": 0,
+   "water_entry_breakups": 0,
+   "swims_started": 0,
+   "plane_step": "steps=6000 free_flight=6000 ground_roll=0 surface=0",
+   "think_failures": 41,
+   "getproperty_calls": 41
+  }
+ }
+}
