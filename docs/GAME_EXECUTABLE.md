@@ -8494,3 +8494,15 @@ measuring USN02 against a tree that contains `48bd5339d`, `9ac3fcbb7` or `9df3ec
 matching column, or better its own before-run on its own tree; the four ship-AI packets before it (range curves, firepower inputs, tune block,
 slot scorers) each left the census byte-identical because this flag was false, which is why the
 old column held for so long.
+
+### The USN01 aircraft census after the plane-physics packets (main `fb8c0ff76`)
+
+Two torpedo packets on 2026-09-18 changed every aircraft number on USN01 without touching a gun:
+docs/TORPEDO_RUN_IN_VELOCITY.md (the lateral-drag coefficients the class declared as zero, so a
+rotated plane's velocity never followed its nose) and docs/PLANE_POSE_THROTTLE_ALTITUDE.md (the
+plane's pose was never published to its scene node, thrust and drag were never bound). From
+`fb8c0ff76` USN01 reads `hull=1 deaths=0 total_damage=9.3` with aircraft distance 178 km over the
+run (mean airspeed 59 m/s) and the ordered flight's mean closure +1250 m, against `hull=23 deaths=1
+total_damage=220.0` before, when the aircraft covered 2181 km (727 m/s) while every gun computed its
+ranges against poses frozen at spawn. The old USN01 numbers were an artefact of that frozen pose,
+not a baseline to preserve; the columns above for USN02 are unaffected (no aircraft fly there).
