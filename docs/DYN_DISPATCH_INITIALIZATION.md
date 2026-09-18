@@ -157,3 +157,14 @@ native comparisons and serial scene comparisons through the complete narrow-
 phase task pass with real convex support calls. The table borrows CRT state;
 its runtime and actual owner must remain alive while scenes use them. Remaining
 dispatcher classes, world tasks, application admission and gameplay are open.
+
+## Follow-up from docs/NATIVE_DYN_PRIMITIVE_DISPATCH_R141.md
+
+R141 supplies the complete sphere/sphere, box/sphere, sphere/ray and box/ray
+normal bodies and four independent one-slot source tables through
+`NativeDynPrimitiveDispatchRuntime`. Original/source comparisons pass directly
+and through the production tables; sphere/sphere and box/sphere also pass in
+the complete narrow-phase task. The geometry fixtures use producer-verified
+record fields without invoking primitive shape construction or lifetime.
+Box/box, terrain/convex, convex/ray, remaining world tasks and application
+admission/gameplay are still open.
