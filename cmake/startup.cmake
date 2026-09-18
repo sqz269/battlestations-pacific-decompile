@@ -75,6 +75,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/input_device_state
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/main_menu_objective_runtime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/mission_picture_owner.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_animation_registry.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_award_registry_lifetime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_checked_string_storage.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_damageable_class_binding.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_damageable_class_model.cpp)
@@ -1341,3 +1342,4 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/unit_message_arms.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/unit_neighbour_fields.cpp)
 cmake_language(DEFER CALL include "${CMAKE_SOURCE_DIR}/cmake/native_data_placement.cmake")
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_tree_lifetime.cpp)

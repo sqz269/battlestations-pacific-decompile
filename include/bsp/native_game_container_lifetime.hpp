@@ -9,6 +9,7 @@ struct NativeGameContainerLifetimeCalls {
     virtual void free_00bf6989(void*);
     virtual std::int32_t interlocked_increment(volatile std::int32_t*);
     virtual std::int32_t interlocked_decrement(volatile std::int32_t*);
+    virtual void container_invalid_parameter_00bf6713();
     virtual void virtual_scalar(void* captured,std::uint32_t slot,std::uint32_t flags)=0;
     virtual void virtual_terminal(void* captured)=0;
 };
@@ -55,4 +56,9 @@ void reserve_native_game_reference_slots_004c86a0(void*,std::uint32_t requested,
 // Both vector entries use original ECX owner,one stack DWORD,RET4; other entries
 // use ECX owner/no stack args/RET. Explicit source interfaces,not native FH3/ABI.
 void resize_native_game_reference_slots_004cb220(void*,std::uint32_t requested,NativeGameContainerLifetimeCalls&,NativeGameContainerLifetimeProgress&);
+// Full136B4C7DD0: ECX raw game,RET. Four0Ch lists beginning game7134.
+// First free each node+8 payload, reading next AFTER free and checking current
+// head after callback; then reset current sentinel/count and free nodes with
+// captured next/current-head comparisons. Sentinels survive for later array dtor.
+void clear_native_game_payload_lists_004c7dd0(void*,NativeGameContainerLifetimeCalls&,NativeGameContainerLifetimeProgress&);
 } // namespace bsp

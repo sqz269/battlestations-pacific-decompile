@@ -4,6 +4,7 @@
 #include "bsp/singleton_lifetime.hpp"
 #include <cstdlib>
 #include <cstring>
+#include <stdexcept>
 
 namespace bsp {
 namespace {
@@ -203,4 +204,8 @@ void* erase_native_input_controller_tree_range_006a6a20(void* t,void* o,NativeKe
 void* erase_native_input_default_tree_range_0069fe70(void* t,void* o,NativeKeyboardTreeIterator a,NativeKeyboardTreeIterator b,NativeStringStorage& s) { return erase_range(Kind::defaults,t,o,a,b,s); }
 void* erase_native_input_preset_tree_range_006a1aa0(void* t,void* o,NativeKeyboardTreeIterator a,NativeKeyboardTreeIterator b,NativeStringStorage& s) { return erase_range(Kind::preset,t,o,a,b,s); }
 void* erase_native_input_scale_tree_range_0055b230(void* t,void* o,NativeKeyboardTreeIterator a,NativeKeyboardTreeIterator b,NativeStringStorage& s) { return erase_range(Kind::int_set,t,o,a,b,s); }
+void* clear_native_input_int_only_full_range_004cef40(void* t,void* o,void* fo,void* f,void* lo,void* l,NativeStringStorage& s) {
+    if(!t||fo!=t||lo!=t||f!=link(link(t,4))||l!=link(t,4))throw std::invalid_argument("int-only tree adapter requires its current full range");
+    return erase_range(Kind::int_only,t,o,{fo,f},{lo,l},s);
+}
 } // namespace bsp
