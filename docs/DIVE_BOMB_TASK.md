@@ -454,3 +454,23 @@ Body `009C8920`-`009C8A8B`, `INT3` from `009C8A8C`. Beyond the ten-class shape:
   an independent confirmation of the two-argument, `RET 8` ABI section (1) derives from the arm's
   frame.
 * `009C8A87` is the tail jump to `0099B740 BSP_BotTask_AbandonIfStale`.
+
+## Addendum: the flyabove tick's three flags
+
+`009C62B0`, vtable `00D20D04` slot `+Ch`, **no Ghidra function**, and this packet did not find its
+inclusive end: `coverage: partial`. What it does establish is who writes the three bytes the
+transition rule's step 9 branches on, all `state`-relative with `ESI` = the state:
+
+| address | write |
+| --- | --- |
+| `009C659F` | `+18h = 0` |
+| `009C66E3` | `+1Ah = 1` |
+| `009C66E7` | `+19h = 0` |
+| `009C66F2` | `+1Ah = 0` |
+| `009C6A30` | `+19h = +18h`, gated on `[00CF180C] > cos(...) * [ESP+28h]` at `009C6A27` |
+| `009C6690` | `approach->+CCh = 3`, the weapon selector |
+
+So `+19h` is the roll-in permission and it is a **copy of** `+18h` taken once the aircraft's
+geometry over the target closes; `+1Ah` is the separate break-off request that sends the state to
+`goaway` when `+19h` never arms. The transition rule reads `+19h` first, then `+18h`, then `+1Ah`,
+which is exactly that order.
