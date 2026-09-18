@@ -32,6 +32,7 @@
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/torpedo_release_spawn.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/unit_hull_extents.hpp"
 
@@ -360,6 +361,20 @@ struct GameUnitSlot {
     int torpedo_issue_stage_cleanups{0};
     int torpedo_issue_first_issue_tick{-1};
     int torpedo_release_requests_007bbba0{0};
+    // unit+DECh, the plane's actuator block. Packet cc8_torpedo_release_spawn;
+    // docs/TORPEDO_RELEASE_SPAWN.md. Built at 007EABC0 by
+    // BSP_Plane_ReadPropertyBag and stepped by 007DE3A0. Channel C is the
+    // ordnance bay 007BBBA0 drives.
+    //
+    // SUBSTITUTION, labelled: the native writer of the channel's enabled byte
+    // at +60h and of its rate at +6Ch is unread, so channel C is enabled here
+    // with a nominal 1.0 per second travel. The request forces the value to
+    // 1.0f on the same frame regardless, so the rate only governs how long the
+    // bay takes to close again.
+    bsp::PlaneActuatorBlock actuator_block_dec{};
+    int torpedo_bay_requests_accepted{0};   // 007BBBA0 moved the channel
+    int torpedo_bay_requests_refused{0};    // a guard rejected it
+    int torpedo_drops_spawned{0};           // a round actually left the plane
     // ctl+370h, the pilot control block's attack mode. 0099B740 raises it to
     // kAttack on the flight leader's cruise-profile tick; 009D3F60 row 1 holds
     // a task in prepare while it is kHold.
@@ -719,11 +734,57 @@ struct GameUnitsHost::Impl {
     // on every path of that routine. docs/TORPEDO_ISSUE_TIMING.md,
     // docs/TORPEDO_FIRST_RELEASE.md.
     void release_ordnance_007bbba0(GameUnitSlot& slot) {
-        log.unimplemented("Unit::request_ordnance_release", "007bbba0");
+        // 007BBBA0 itself: the three guards and the writes onto channel C of the
+        // block at unit+DECh. It is a bay-open command, not a spawn; nothing in
+        // the block or its tick 007DE3A0 reads ordnance or makes a projectile.
+        // docs/TORPEDO_RELEASE_SPAWN.md.
+        //
+        // The third guard, the per-slot byte at unit+9C3h[[00F876B8]*8], is the
+        // caller's because it lives on the unit rather than the block. This host
+        // has no such byte, so it is NOT applied and the refusal count below
+        // therefore under-counts what the image would refuse.
+        if (!slot.actuator_block_dec.channel_c.enabled) {
+            slot.actuator_block_dec.channel_c.enabled = true;
+            slot.actuator_block_dec.channel_c.rate = 1.0f;
+        }
+        const bool accepted =
+            bsp::ordnance_release_request_007bbba0(slot.actuator_block_dec);
+        done("Unit::request_ordnance_release_007bbba0", 0x007bbba0u);
+        if (accepted) {
+            ++slot.torpedo_bay_requests_accepted;
+            // SUBSTITUTION, labelled. The native chain from here is
+            // 007BBBA0 -> unit+C20h -> 007CE040's stage at 007CEA82 -> 007C0D90
+            // -> BSP_PilotControl_IssueReleaseOrders 007EEF30 ->
+            // BSP_Unit_SetQueuedReleaseOrders 007BCBE0 -> unit+C58h, which
+            // BSP_PilotBot_Tick spends one of at 0099AFB6 after a bot task's
+            // vtable[24h] answers. That task's release slot, and the bomb
+            // platform's own release in vtable 00CFE308, are UNREAD, so the
+            // spawn is not reproduced from its own site. What IS established is
+            // that a bomb platform is a Gun subclass (00730B80 calls
+            // BSP_Gun_Construct at 00730B88), so the round is handed to the gun
+            // spawn 0072F830 the gunnery host already implements.
+            if (gunnery != nullptr) {
+                const std::size_t index = index_of_slot(slot);
+                if (index < slots.size() && gunnery->release_ordnance_drop(index)) {
+                    ++slot.torpedo_drops_spawned;
+                }
+            }
+        } else {
+            ++slot.torpedo_bay_requests_refused;
+        }
         ++slot.torpedo_releases;
         ++slot.torpedo_release_requests_007bbba0;
         slot.torpedo_issue_requests_c20 =
             bsp::release_request_raise_007bbc00(slot.torpedo_issue_requests_c20);
+    }
+
+    // No slot carries its own index, and the release request is rare, so the
+    // lookup is a scan rather than a new field on every slot.
+    std::size_t index_of_slot(const GameUnitSlot& slot) const {
+        for (std::size_t i = 0; i < slots.size(); ++i) {
+            if (slots[i].get() == &slot) return i;
+        }
+        return slots.size();
     }
 
     void record_slot(const char* method, const char* text) { log.unimplemented(method, text); }
@@ -2244,6 +2305,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     // because an order issued this step is what the gun chain then acts on.
     if (host.ai != nullptr) host.ai->fixed_step(step_seconds);
     if (host.gunnery != nullptr) {
+        // 007DE3A0 BSP_PlaneActuatorBlock_Step, slot 3 of vtable 00D0862C on the
+        // block at unit+DECh. It runs on the plane's fixed step, before the
+        // gunnery pass, and its only effect is to move the three channels and
+        // lower the aggregate flag at +11h once all three come to rest.
+        // docs/TORPEDO_RELEASE_SPAWN.md.
+        for (std::unique_ptr<GameUnitSlot>& unit_slot : host.slots) {
+            if (unit_slot == nullptr) continue;
+            bsp::plane_actuator_block_step_007de3a0(unit_slot->actuator_block_dec,
+                step_seconds, static_cast<unsigned>(host.summary.motion_steps));
+        }
         host.gunnery->fixed_step(step_seconds);
         host.gunnery->log_sample(host.summary.motion_steps, 100);
     }

@@ -430,3 +430,35 @@ Step 7 of `009A66C0` is read above as `(*(unit+72Ch))->vtable[+38h]()`. On the t
 equivalent site loads `ECX` with `unit+72Ch` itself (`LEA ECX,[EAX+72Ch]` at `009D491D`), so the
 object is embedded at `unit+72Ch` rather than pointed to from it. The depth-charge site was not
 re-read in that packet; the two may differ.
+
+## Correction: what "The ordnance release" writes (packet cc8_torpedo_release_spawn)
+
+Appended, not a rewrite. The section above is correct about which bytes `007BBBA0` reads and
+writes. It is wrong about what owns them.
+
+`unit+DECh` is **not** an ordnance device. It is a 0x80-byte block of three animated 0..1 actuator
+channels, allocated and built by `BSP_PlaneActuatorBlock_Construct` `007EABC0` from
+`BSP_Plane_ReadPropertyBag`: `PUSH 0x80` into `operator new` at `007D618E`, the constructor at
+`007D61AB` with the unit as its argument, and the store `MOV [ESI+0xDEC],EAX` at `007D61B4`. Its
+vtable is `00D0862C` over base vtable `00CFD99C`.
+
+The four fields this section calls the request's guards are one channel: `+60h` is the channel's
+enabled byte, `+61h` its commanded end state, `+64h` its value clamped into `[0,1]`, and `+68h` its
+moving byte. `DAT_00D7A24C` is `1.0f` read from the image, so `+64h != DAT_00D7A24C` reads as "the
+bay is not already fully open" rather than as a sentinel test.
+
+`+11h` is the block's **aggregate moving flag**, not a release request. Every channel writer raises
+it and the tick `BSP_PlaneActuatorBlock_Step` `007DE3A0`, slot 3 of `00D0862C`, lowers it at
+`007DE417` once `+4Ch`, `+30h` and `+68h` are all clear. Neither the block nor its tick reads
+ordnance, calls a spawn, or touches a projectile, so nothing consumes `+11h` as a drop request.
+`007BBBA0` is a bay-open command plus the `unit+C20h` raise.
+
+The chain that does carry the release onward, with every hop read:
+`007BBBA0` raises `unit+C20h`; `BSP_PlaneTickElement_FixedStep` `007CE040` spends one at `007CEA82`
+and calls `007C0D90` at `007CEA8D`; `007C0D90` sets `unit+C25h` and calls
+`BSP_PilotControl_IssueReleaseOrders` `007EEF30`; that calls `BSP_Unit_SetQueuedReleaseOrders`
+`007BCBE0` with 999, which assigns `unit+C58h`; `BSP_PilotBot_Tick` spends one at `0099AFB6` after a
+bot task's `vtable[24h]` answers. The task's release slot and the bomb platform's own release in
+vtable `00CFE308` are still unread.
+
+Full evidence, layout and ABIs: `docs/TORPEDO_RELEASE_SPAWN.md`.

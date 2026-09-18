@@ -71,6 +71,12 @@ Each channel is the same six-field record, from `007DE1E0`:
 `DAT_00D7A24C` is `1.0f` (`00 00 80 3F`), `DAT_00D7A260` is `-1.0f` (`00 00 80 BF`) and
 `DAT_00D7A218` is `0.0f`; all three read from the image.
 
+Weak corroboration, worth recording but not evidence: the partition keywords for segment 48, which
+holds both the constructor and the tick, are `travelspeed, gears, baydoor, wings, state, windsound,
+timeout, targst`. Three animated channels in a segment whose strings include `baydoor`, `gears` and
+`wings` is the shape this layout predicts. It does not establish which channel is which, and the
+channel names in this document stay as offsets for that reason.
+
 So `dev+60h`/`+61h`/`+64h`/`+68h`, the four bytes `007BBBA0` guards on and writes, are exactly
 channel C's enabled byte, target byte, value and moving byte. The apparent float compare
 `dev->+64h != DAT_00D7A24C` is "the bay is not already fully open".
@@ -138,26 +144,64 @@ gunnery host already implements. Reading the platform's own release slot is the 
 Coverage for this section: **partial**. `007C0D90`'s six vtable slots are named, not read, and that
 was already its recorded state.
 
+## The rest of the chain
+
+Every hop below was read to its end.
+
+| address | routine | what it does |
+| --- | --- | --- |
+| `007BBBA0` | `BSP_Unit_RequestOrdnanceRelease` | channel C open, `unit+C20h += 1` on every path |
+| `007CEA82` | inside `BSP_PlaneTickElement_FixedStep` `007CE040` | spends one pending release, then calls `007C0D90` at `007CEA8D` |
+| `007C0D90` | `BSP_Plane_TickReleaseOrderIssue` | walks `unit+48h`, sets `unit+C25h = 1`, calls `007EEF30` |
+| `007EEF30` | `BSP_PilotControl_IssueReleaseOrders` | walks the controlled-unit array at `ctl+3D0h` and calls `007BCBE0` with 999 for each |
+| `007BCBE0` | `BSP_Unit_SetQueuedReleaseOrders` | assigns `unit+C58h` when the unit is enabled and `007B9140` holds, else zero |
+| `0099AFB6` | inside `BSP_PilotBot_Tick` `0099ACD0` | `ADD [EAX+0xC58], -1` after a bot task's `vtable[24h]` at `0099AF9B` answers |
+
+The spawn is **not** on this chain and this packet did not reach it. The bot task's `vtable[24h]`
+release slot and the bomb platform's own release slot in vtable `00CFE308` are both unread.
+
+What is established about where the spawn must be: the bomb platform is a **gun**.
+`BSP_MultipleBombPlatform_Construct` `00730B80` calls `BSP_Gun_Construct` at `00730B88` before
+installing vtable `00CFE308`, and `BSP_Plane_ReloadBombPlatforms` `007C1D80` reloads every device
+whose `vtable[5Ch]` answers `25h` through `vtable[200h]`, which that vtable fills with `0085AD80`.
+A plane's torpedo is therefore a gun row in the same sense a ship's tube is, and the projectile it
+makes should come out of `BSP_Gun_Fire` `00730160` into `BSP_Gun_SpawnShotAndEffects` `0072F830`.
+
 ## Host methods
 
-Nothing in this packet could be bound to the release request, and the reason is a lease, not the
-evidence. `release_ordnance_007bbba0` lives in `src/game_hosts_units.cpp`, which was leased to
-`agent/cc8-run-profile` under packet `cc8_torpedo_run_profile` for the whole of this packet's
-window. The request lands in `GameUnitSlot`, and that struct is declared inside that same `.cpp`
-with no header, so no other translation unit can observe that a release was requested. The one-line
-hookup is recorded under "Follow-up packets" for whoever holds the file next.
+| host method | file | native | kind |
+| --- | --- | --- | --- |
+| `plane_actuator_channel_step_007de1e0` | `src/torpedo_release_spawn.cpp` | `007DE1E0` | reconstruction |
+| `plane_actuator_block_step_007de3a0` | `src/torpedo_release_spawn.cpp` | `007DE3A0` | reconstruction |
+| `ordnance_release_request_007bbba0` | `src/torpedo_release_spawn.cpp` | `007BBBA0` | reconstruction |
+| `release_ordnance_007bbba0` | `src/game_hosts_units.cpp` | `007BBBA0` | binding |
+| the block step, per fixed step | `src/game_hosts_units.cpp` | `007DE3A0` | binding |
+| `GameGunneryHost::release_ordnance_drop` | `src/game_hosts_gunnery.cpp` | `0072F830` | **substitution** |
+| the water-entry limit | `src/game_hosts_gunnery.cpp` | `008568E0` | partial reconstruction |
+| torpedo gate census | `src/game_hosts_gunnery.cpp` | none | instrumentation |
 
-What this packet did add, inside its own ownership, is the measurement that says where a round that
-could swim actually stops.
+Three substitutions, each labelled at its address in the source:
 
-| host method | file | what it does |
-| --- | --- | --- |
-| torpedo gate census | `src/game_hosts_gunnery.cpp` | one counter per conjunct of the gun loop's `want_fire`, restricted to guns whose bullet class derived a swim speed |
+1. **The release geometry.** The native mount node and the platform's release slot are unread, so
+   the round leaves from the plane's origin along its forward axis at the plane's own forward
+   speed. A drop inherits the aircraft's velocity, so `projectile_launch_velocity_006E8430` is not
+   used and no muzzle speed is applied. Aiming, barrel timers and the stock decrement are not
+   reproduced.
+2. **The channel's enabled byte and rate.** The native writer of `+60h` and of the channel rate is
+   unread. Channel C is enabled on first request with a nominal 1.0 per second travel. The request
+   forces the value to 1.0f on the same frame regardless, so the rate only governs how long the bay
+   takes to close.
+3. **The third guard.** `007BBBA0`'s per-slot byte at `unit+9C3h[[00F876B8]*8]` lives on the unit,
+   not on the block, and this host has no such byte, so it is not applied. The refusal count
+   therefore under-counts what the image would refuse.
 
-A gun counts as a torpedo gun when `swim_speed > 0`, which is the identical test the water crossing
-uses to decide that a round swims instead of dying at the surface. A gun counted in the funnel is
-exactly a gun whose shot could reach the swim model. These counters are **not** reconstructions and
-no native address produces them.
+The water-entry limit applies only `008568E0`'s first test, the `MaxWaterHitVel` speed limit at
+`classDesc+0DCh`. The second, `shot[+0Ch] < -classDesc[+0ECh]`, needs a depth field this host's
+shot record does not carry and is not applied.
+
+The gate census is not a reconstruction and no native address produces it. A gun counts as a
+torpedo gun when `swim_speed > 0`, the identical test the water crossing uses, so a gun in the
+funnel is exactly a gun whose shot could reach the swim model.
 
 ## Why `swims_started` is zero, including for ships
 
@@ -187,9 +231,10 @@ aimed. `00729BC0`'s slot test, `length3(delta) <= row.max_range`, is the pre-fil
 assignment and is the first thing to read. Note that BOMBPLATFORM does take 234327 aim ticks with
 zero assigns, so the two categories fail differently and should not be treated as one bug.
 
-Both mission runs of the instrumented build were still queued behind the machine-wide game lock
-when this packet's window closed, so the funnel counters themselves are **unmeasured**. The gate
-above is measured, from the baseline; the funnel is the instrument left in place to confirm it.
+That gate is why the ship half of the packet is unchanged by this work: nothing here assigns a
+target to a torpedo gun, so ship tubes still never fire. The air drop added here bypasses the
+assignment entirely, which is faithful to the native only in the sense that a dropped torpedo is
+not an aimed shot. Ship tubes remain a follow-up.
 
 ## Corrections
 
@@ -217,15 +262,86 @@ Inclusive end addresses, each the final RET.
 Both missions, 3200 frames, `--mission-frames 3000` at `0.05` s, through `tools/run_game.ps1` on
 this worktree. Only this tree's own before-run is a reference.
 
-See the run table in `reports/torpedo_release_spawn.json` under `validation`.
+### USN01, before and after
+
+| | before | after |
+| --- | --- | --- |
+| release requests `007BBBA0` | 1, logged unimplemented | 1, executed |
+| bay requests accepted | not modelled | 1 |
+| torpedoes dropped | 0 | **1** |
+| drop refusals | not modelled | 0 |
+| water crossings | 0 | **1** |
+| water-entry breakups | not modelled | **1** |
+| `swims_started` | 0 | 0 |
+| projectiles created | 3838 | 3839 |
+| entity impacts | 26 | 26 |
+| total damage | 229.5 | 229.5 |
+| torpedo hits, torpedo damage | 0, 0 | 0, 0 |
+
+A torpedo now leaves the aircraft and reaches the sea. It does not swim, and the reason is
+measured, not guessed:
+
+```
+gunnery: torpedo drop 1 by ConTBD1 at 700 m, speed 0.0 m/s, bullet 63, swim 30.9 m/s
+water entry broke the round up at 117.2 m/s, MaxWaterHitVel 100.0 m/s (008568E0)
+```
+
+**The next gate is release altitude.** The AI releases at 700 m with the aircraft's forward speed
+reading zero, so the round is a pure free fall: `sqrt(2 * 9.81 * 700)` is 117.2 m/s, which is
+exactly the entry speed logged, and `008568E0`'s `MaxWaterHitVel` at `classDesc+0DCh` is 100.0 m/s
+for this round. The image's rule destroys it. Two separate things have to change before this
+torpedo swims, and they are independent:
+
+1. The release altitude. 700 m is not a torpedo run. Whatever sets the bomber's run-in height is
+   the thing to read; this packet did not touch it.
+2. The aircraft's forward speed. `unit_forward_speed_0092d730` returns 0.0 for `ConTBD1` at the
+   release instant, so the round inherits no velocity from the plane. That is a host gap, not an
+   image fact, and it is upstream of this packet.
+
+Even at zero forward speed, a release below about 510 m would enter under the 100 m/s limit, so
+altitude alone is enough to move this number.
+
+### USN02, after only
+
+No USN02 before-run exists on this tree: the machine-wide game lock was held by other agents
+through the window in which a baseline build was still installed, and by the time the lock came
+free the instrumented build was in place. **No before/after attribution is claimed for USN02.**
+
+| | after |
+| --- | --- |
+| torpedo guns | 71 |
+| torpedo gate: ticks / targeted / accepted / settled / window / sent / shots | 207795 / 54869 / 54869 / 49666 / 45059 / 45059 / 44 |
+| `swims_started` | **44** |
+| water crossings | 372 |
+| torpedoes dropped | 0 |
+| water-entry breakups | 0 |
+| projectiles created | 562 |
+| entity impacts | 168 |
+
+Two things follow, and the second corrects the packet brief.
+
+* `drops=0` is expected: the run log reports that no ordered aircraft in USN02 carries torpedo
+  ordnance, so no release request is ever made and the air-drop path is never entered.
+* **Ship torpedoes already swim.** 44 swims out of 44 torpedo-gun shots, with the water-entry
+  breakup count at zero. The claim that `swims_started` is zero "even for ships" is a USN01 fact,
+  not a general one: USN01 simply has no ship torpedo engagement, which is the same
+  `assigns = 0` gate documented above. Nothing in this packet caused the 44, and the only way this
+  packet's changes could have moved that number is downward, through the new water-entry limit,
+  which fired zero times.
 
 ## Follow-up packets
 
-1. **The unapplied hookup.** In `src/game_hosts_units.cpp`, `release_ordnance_007bbba0` should stop
-   logging unimplemented and instead drive channel C of the unit's actuator block: target 1, value
-   1.0f, moving 1, `+11h` 1, guarded on the channel's enabled byte and the slot byte, which is
-   exactly `007BBBA0`. That is a door command and by itself still spawns nothing.
-2. **The real spawn.** Read the bomb platform's release slot in vtable `00CFE308` and bind the
-   plane's torpedo platform to the gunnery host's shot creation, the way a ship's tube already is.
-   `00730B80` proves the platform is a gun, so the two should share `0072F830`.
-3. **The ship gate.** Act on whichever conjunct the torpedo gate census names.
+1. **The real spawn, to replace substitution 1.** Read the bot task's `vtable[24h]` that
+   `0099AF9B` calls and the bomb platform's release slot in vtable `00CFE308`. Those two give the
+   mount node, the launch velocity and the stock decrement that this packet substituted.
+2. **The channel enabler, to replace substitution 2.** Find the writer of `+60h` and of the channel
+   rate at `+6Ch` on the block at `unit+DECh`. The plane property bag `007D5D20` is the obvious
+   place to look, since it is where the block is built.
+3. **The ship gate.** `assigns = 0` over 15 torpedo guns. Read `00729BC0`'s slot test and whatever
+   fills the TORPEDO category's preference list, then act on it. BOMBPLATFORM fails differently
+   and needs its own look.
+4. **The second water-entry limit.** `008568E0`'s `shot[+0Ch] < -classDesc[+0ECh]` needs a depth
+   field on the host's shot record before it can be applied.
+5. **Channels A and B.** Channel A at `+44h` is driven by `BSP_Plane_GroundRollStep` at `007CBFC8`
+   and channel B at `+28h` from `unit+72Ch` and `unit+900h == 6`. Naming what each one actuates,
+   most likely gear and flaps, would finish the block.
