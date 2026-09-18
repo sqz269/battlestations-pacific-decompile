@@ -486,4 +486,41 @@ float tick_contact_timer_007d81b0(float seconds, float step, bool hold) {
     return hold ? decayed : kPlaneContactTimerExpired;
 }
 
+float max_sustainable_climb_angle_007d98f0(const PlaneClimbAngleInputs& in) {
+    // 00CF8858 float and 00D05A28 double are both 1.39626 = DEG(80).
+    const float kUpper = 1.39626f;
+    // 00D06850, the double 1.745e-4 = DEG(0.01).
+    const float kTolerance = 1.745e-4f;
+    if (!(in.max_spd > 0.0f) || !(in.accel > 0.0f)) {
+        return 0.0f;
+    }
+    // 007D98F0's early out: DEG(80) - 0.0 against the tolerance. It never fires
+    // for these constants, and it is kept so the shape matches.
+    if (kUpper - 0.0f <= kTolerance) {
+        return 0.0f;
+    }
+    // desc+50Ch, derived at 007C4990-007C499C as Accel / MaxSpd^2.
+    const float coefficient = in.accel / (in.max_spd * in.max_spd);
+    const float thrust = in.accel * in.throttle;
+    const float drag = coefficient * in.probe_speed * in.probe_speed;
+    const float weight = in.accel_cheat_mul * 9.81f;
+    float low = 0.0f;
+    float high = kUpper;
+    do {
+        // 007D98F0's midpoint, through the double 0.5 at 00D7A280.
+        const float mid = (high + low) * 0.5f;
+        // The substituted predicate. 007D9360 answers with the speed left after
+        // ten steps of 0.04 s; the angle is accepted when that is at least the
+        // probe speed, which is the sign of dv/dt at the probe speed.
+        const float along_path =
+            thrust - drag - weight * static_cast<float>(std::sin(static_cast<double>(mid)));
+        if (along_path >= 0.0f) {
+            low = mid;
+        } else {
+            high = mid;
+        }
+    } while (high - low > kTolerance);
+    return low;
+}
+
 }  // namespace bsp
