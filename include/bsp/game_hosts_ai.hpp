@@ -75,6 +75,7 @@ struct GameAiSummary {
     unsigned long long members_added{0};
     unsigned long long members_evicted{0};
     unsigned long long splits{0};
+    unsigned long long splits_taken{0};   // 00A2E260 actually moved a subset
     unsigned long long auto_merges{0};
     unsigned long long proximity_merges{0};
     unsigned long long member_passes{0};

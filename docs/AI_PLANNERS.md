@@ -373,3 +373,23 @@ IJN01, USN01 and USN02 alike. `00A13340`, the command factory, is the packet tha
 **The spawn arm is unreachable in this process.** `00A25B90` creates a tagged group for a planner
 that owns nothing, and nothing in this process creates a unit at run time, so the arm is recorded
 and the planner keeps owning nothing: `spawn_arms=78` per mission against `claims=1`.
+
+## Second correction appended by cc8_ai_command_lifetime
+
+The correction above says `00A2CBD0`'s second test "is why one attack order lands per mission
+and never a second" and points at `00A13340`. That is wrong and is withdrawn. The same section
+of this document already transcribes `00A2CBD0` deleting the old command through its vtable slot
+0 with flag 1 before `group+564Ch` takes the new one: a different target lands a different
+order, with no clear needed and no command factory required.
+
+The real caps, in the order they bite, are in `docs/AI_COMMAND_LIFETIME.md`:
+
+1. **"The mode planners' think" above is the hard cap.** `00A26510` and `00A265F0` call
+   `00A1CB80(planner)(firstOwnedGroup, 1.0f, ...)`, so a planner holding several groups orders
+   one of them per think, whatever the target set holds. Measured: two claims, two owned groups,
+   still one order.
+2. **A target set of one element**, which was the coordinator host's own doing and is fixed
+   there by implementing `00A2E260`'s split.
+
+`00A13340` is still worth reading, for `00A2C8D0`'s merge predicate at `vtable[+14h]`, not for
+the order count.
