@@ -347,3 +347,44 @@ Every gate this document describes as interpolated over `F=0Ch` is therefore sch
 range measured in release distances, not on seconds: the cone at `009D21AC` and `009D21F2`,
 the countdown at `009D229D`, the sector gain at `009D17D7` and the lead gain at `009D182C`.
 The numbers in those interpolations are unchanged; only what the x axis means changes.
+
+
+## Correction from packet `cc8_plane_pose_throttle_altitude`: `009D1BB8`-`009D1D39` is not a throttle
+
+Appended, not rewriting the text above.
+
+Section (4)'s row for `009D1BB8`-`009D1D39` calls the product "the throttle", and
+`include/bsp/torpedo_aim_tick.hpp:244` names its output `commanded_throttle_2c8`. The command
+block slot it writes at `009D1D2E` is `plan+2C8h`, and `plan+2C8h` is the per-task **bank-angle
+cap**:
+
+* `docs/PILOT_PLANNER_PITCH_ROLL.md` section (2) transcribes `0099E27B`:
+  `if (plan+2C8h < pi) plan+2C4h = ClampInPlace(plan+2C4h, -plan+2C8h, +plan+2C8h)`, where
+  `plan+2C4h` is the bank target. `src/plane_ai_control.cpp:517-519` already implements it, reading
+  `PilotBotRollInputs::bank_limit_2c8`.
+* The same doc's note 6 names the producer side: `0099B55E` resets `plan+2C8h` to `20.0f`,
+  deliberately above `pi` so the clamp is inert, and task arms opt in. It lists "the seven
+  task-side `plan+2C8h` writers" as open. `009D1D2E` is one of them.
+* The arithmetic agrees. The product's own base factor is `desc+25Ch`, which
+  `src/plane_class_fields.cpp:131` names `TurnRoll` from its writer `007D289B` and that doc's note
+  7 reads as "a maximum bank angle" - 1.047198 rad on this installation's TBD Devastator, 1.22173
+  on the row that doc quotes. The ceiling at `00CE3814` is 1.2, and 1.2 **radians** is 68.8
+  degrees of bank; as a throttle ceiling 1.2 of full would be meaningless.
+
+So the four folds schedule how far the aircraft may bank during the run-in: the `unit+C64h` fold
+opens the cap when the nose is down, and the time and altitude folds close it to a tenth as the
+aircraft gets low and close. The uncertainty this doc's own section carried about `desc+25Ch` -
+whether it is `TurnRoll` or a cruise speed - is settled for `TurnRoll`.
+
+`include/bsp/torpedo_aim_tick.hpp`'s field keeps its name here because renaming it is the aim
+tick owner's call; `src/game_hosts_units.cpp` now publishes it into
+`plan_state.bank_limit_2c8` with the reasoning in a comment.
+
+Two other writes in the same block, also checked against the listing:
+
+* `cmd+2E8h` at `009D1D02` takes `[00D06874]` = **1.4**, not `0.0`.
+* `cmd+2BCh` at `009D1EDD` is the pitch target and `cmd+2D0h` at `009D1EE5` the mode `0099E3D1`
+  gates the pitch law on. Its value is `clamp(-f34 / den, 0.05625, 0.872665)` where `f34` is the
+  height **above** the altitude floor, so the quotient is negative for a high aircraft and the
+  clamp floors it at `0.05625` rad. It is a nose-up floor and a pull-up, never a descent command.
+  Nothing in this tick brings a torpedo bomber down.

@@ -116,6 +116,24 @@ struct GameVehicleClassRow {
     float plane_stall_spd{0.0f};      // desc+184h, 007D2351
     float turn_roll_spd{0.0f};        // desc+1C8h, 007D25DB
     float turn_roll{0.0f};            // desc+25Ch, 007D289B - the bank normaliser
+    // The three aerodynamic keys 007D1F70 also reads, in the spellings
+    // src/plane_class_fields.cpp:279-292 records against their writers.
+    // 007DBD3A pairs XDrag with the body lateral velocity ctl+3Ch and
+    // 007DBD50 pairs YDrag with ctl+40h, so these two ARE the coupling that
+    // turns a plane's velocity onto its nose; 007C6340 seeds the spawn
+    // airspeed from TravelSpeed and 009F9D30 divides MaxSpd by
+    // Pilot/Torpedo/ReferenceSpeed for the run profile's distance scale.
+    float x_drag{0.0f};               // desc+174h XDrag, 007D2189
+    float y_drag{0.0f};               // desc+170h YDrag, 007D2150
+    float max_spd{0.0f};              // desc+188h MaxSpd, 007D238A
+    float travel_speed{0.0f};         // desc+18Ch TravelSpeed, 007D23C3
+    // The four the thrust and drag accelerations are built from. 007C4990 makes
+    // the drag coefficient desc+50Ch out of two of them, Accel / MaxSpd^2, which
+    // is what puts a plane's equilibrium airspeed exactly on MaxSpd.
+    float accel{0.0f};                // desc+164h Accel, 007D20C6
+    float glide_rate{0.0f};           // desc+208h GlideRate, 007D2B10
+    float drag_pitch_ratio{0.0f};     // desc+1D4h DragPitchRatio, 007D2829
+    float air_brake_drag{0.0f};       // desc+1DCh AirBrakeDrag, 007D226D
 };
 
 // Actual selected class+570 bits and the existing producer's provenance.

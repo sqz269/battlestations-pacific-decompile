@@ -1,0 +1,116 @@
+{
+  "packet": "cc8_ai_close_attack_tick",
+  "owner": "agent/cc8-ai-command",
+  "summary": "00A13B60, the CLOSEATTACK and DEFENDPOSITION tick, read for its collect radius, its member gate, its four-factor candidate score and its order site. It refutes three claims of docs/AI_COMMAND_TICK.md: it issues attackmove (00E08F78) to a ship member and settarget (00E08EF8) to any other served member, both through 0077D600 with a kind-1 descriptor that names an OBJECT, and the cautious pass 00A14DD0 issues a third class, clearorders. The score is the target weight times a range factor that falls from 1.0 at CloseAttack_NearDist to 0.0 at CloseAttack_FarDist, times 10 for a member of the command's target group and 1.8 for the member's existing target.",
+  "ghidra_writes": [],
+  "calls": [
+    {
+      "address": "00a13b60",
+      "native": "BSP_AiCommand_CloseAttackTargetPass",
+      "role": "reconstructed as ai_close_attack_tick_00a13b60 and bound in the host's command_tick",
+      "evidence": "__thiscall(command)(float radius, const float* centre, AiGroup* targetGroup, int flag), body 00A13B60-00A14D9F. 00A13B8A tuning +1F4h; 00A13BA1 FMUL the radius; 00A13BBD squares it; 00A13BE6 walks [00E188A8]+19CCh+64h; the member loop from 00A143A0; the score at 00A146C4, 00A146B5, 00A1493D, 00A1494E, 00A1497D and 00A14990-00A1499C; the winner test 00A149A8/00A149AC; the order at 00A14A6E; the fallback from 00A14A78 to 00A14D48."
+    },
+    {
+      "address": "0077d600",
+      "native": "BSP_Entity_IssueCommand",
+      "role": "used by the host through issue_player_command with attackmove or settarget",
+      "evidence": "CALL at 00A14A6E with ECX = ESI the member, PUSH 1 at 00A14A4A, PUSH the descriptor at 00A14A5C and PUSH the class at 00A14A62. This is a SECOND direct order site in the AI command chain, which docs/AI_COMMAND_TICK.md did not have."
+    },
+    {
+      "address": "00e08f78",
+      "native": "attackmove scene command class descriptor",
+      "role": "issued to a ship member",
+      "evidence": "MOV EAX,0xE08F78 at 00A149FC, kept when vtable[+5Ch](6) answers true at 00A149F8. docs/SCENE_COMMAND_TYPES.md line 75 names it attackmove, ordinal 17, category 2.",
+      "kind": "no_ghidra_function"
+    },
+    {
+      "address": "00e08ef8",
+      "native": "settarget scene command class descriptor",
+      "role": "issued to a served member that is not a ship",
+      "evidence": "MOV EAX,0xE08EF8 at 00A14A03, the fall-through arm. docs/SCENE_COMMAND_TYPES.md line 59 names it settarget, ordinal 1, category 1.",
+      "kind": "no_ghidra_function"
+    },
+    {
+      "address": "00e08f08",
+      "native": "clearorders scene command class descriptor",
+      "role": "issued by the cautious approach pass, not by this tick",
+      "evidence": "PUSH 0xE08F08 at 00A14E99 inside 00A14DD0, then CALL 0077D600 at 00A14EA7. docs/SCENE_COMMAND_TYPES.md line 61 names it clearorders, ordinal 3, category 0.",
+      "kind": "no_ghidra_function"
+    },
+    {
+      "address": "00a0f810",
+      "native": "BSP_AiCommand_CandidateTargetWeight",
+      "role": "analyzed; substituted in the host by the candidate's class weight",
+      "evidence": "__fastcall(member, candidate) -> float. CALL at 00A146C4 with ECX = ESI the member and EDX = EDI the candidate. Callees 00A08460 BSP_Ai_TargetWeight, 00923BE0 BSP_UnitInstance_GetHealth, 008DDF90 BSP_SzurkeNyil_ContainsUnit and 00A04560. Its only caller is 00A13B60. Body unread; coverage partial."
+    },
+    {
+      "address": "00a2c720",
+      "native": "BSP_AiGroup_ContainsEntity",
+      "role": "reconstructed as the host's close_in_target_group",
+      "evidence": "__thiscall(group)(entity) -> bool. 00A2C720 MOV EAX,[ECX+5640h], 00A2C728 takes the entity from [ESP+0Ch], 00A2C72D LEA ESI,[ECX+563Ch] is the sentinel. CALL at 00A146B5 with the command's +1Ch target group in ECX and the candidate pushed at 00A146B4."
+    },
+    {
+      "address": "00419010",
+      "native": "BSP_Math_InterpolateClamped",
+      "role": "reconstructed as ai_close_attack_range_factor",
+      "evidence": "RET 14h, five stack arguments. 00419010 FLD [ESP+0Ch] and 00419016 FLD [ESP+4] are the two x-endpoints and 00419026 returns [ESP+8] when they are equal, so the order is (x0, y0, x1, y1, x). At the call site the stack holds NearDist, 1.0f, FarDist, 0.0f and the distance, so the factor is 1.0 inside NearDist falling to 0.0 at FarDist."
+    },
+    {
+      "address": "00a371a0",
+      "native": "BSP_Ai_ActiveModeTuning",
+      "role": "used by the host through close_tuning_field",
+      "evidence": "Read at 00A13B85 for +1F4h, 00A148FF for +1F8h, 00A1491E for +1FCh, 00A1497D for +200h and 00A1494E for +204h. All five were loaded for the first time by packet cc8_ai_command_inputs."
+    },
+    {
+      "address": "0071eb60",
+      "native": "BSP_EntityCommand_ActiveTargetDescriptor",
+      "role": "used by the host through active_command_descriptor_0071eb60",
+      "evidence": "CALL at 00A14472 on the member's vtable[+114h] result, read at 00A14477 and 00A1447C for the descriptor's kind and object, which feed the existing-target multiplier."
+    },
+    {
+      "address": "00a02020",
+      "native": "BSP_AiCommand_IssueMoveToMember",
+      "role": "reused as the host's close_issue_moveto",
+      "evidence": "CALL at 00A14D48, the tail of the no-candidate arm, after the offset point is assembled at 00A14D1B-00A14D41."
+    },
+    {
+      "address": "00a14dd0",
+      "native": "BSP_AiCommand_CautiousApproachPass",
+      "role": "analyzed only; shown NOT to share this body",
+      "evidence": "Its callee set has neither 00A0F810 nor 00A2C720. PUSH 0xE08F08 at 00A14E99 then CALL 0077D600 at 00A14EA7, so it issues clearorders. Read only to that first dispatch; coverage partial."
+    }
+  ],
+  "corrections": [
+    "docs/AI_COMMAND_TICK.md: 'the command descriptor is always 00E08F68', 'no AI command class issues any other scene command' and 'the descriptor carries a point, never an object' are all wrong. 00A13B60 issues 00E08F78 or 00E08EF8 with an object descriptor at 00A14A6E, and 00A14DD0 issues 00E08F08. The earlier packet read 00A02020 and stopped at 00A13B60, which is why the three claims looked right.",
+    "docs/AI_COMMAND_TICK.md's follow-up entry ai_command_engage_pass described 00A13B60 as 'what CLOSEATTACK and DEFENDPOSITION do with the point, the target group and the radius'. The radius is a multiplier on CloseAttack_CollectDist, not a radius in world units, and the point is the centre the candidates are collected around."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 clean, Win32 /W4 /WX",
+    "tests": "ctest -C Release: reconstructed_math and tool_tests both passed",
+    "baseline": "this tree at f603d17b5; that commit's own after-runs reused unchanged",
+    "IJN01": {
+      "before": "scene commands=34, gunnery hits=4 damage=500.0",
+      "after": "members served=0, no orders, scene commands=34, gunnery hits=4 damage=500.0"
+    },
+    "USN01": {
+      "before": "scene commands=17, gunnery hits=23 damage=220.0",
+      "after": "members served=0, no orders, scene commands=17, gunnery hits=23 damage=220.0"
+    },
+    "USN02": {
+      "before": "scene commands=14, gunnery hits=161 damage=19061.0",
+      "after": "members served=616, attackmove=559, settarget=0, fallback moveto=57, candidates scored=4004, scene commands=635, gunnery hits=168 damage=20721.4, deaths unchanged at 3"
+    },
+    "attribution": "USN02's attack group is fourteen ships led by DeRuyter, it promotes to CLOSEATTACK early, and every later command tick serves its members: the 559 attackmove orders plus 57 fallbacks plus the 5 the move-to-attack arm already issued plus the original 14 make the 635. The gunnery rise from 161 hits and 19061.0 damage to 168 and 20721.4 follows, with deaths and kill credits unchanged. IJN01 and USN01 serve nobody because their attack groups are individual aircraft, and the member gate admits only a plane squadron or a ship base; every census on those two is unchanged. settarget is never issued because the only served members here are ships. The pilot-attack table is unchanged on all three, since the new orders go to ships.",
+    "missing_inputs": [
+      "00A08460 BSP_Ai_TargetWeight, reached through 00A0F810, cannot run in this process, so close_target_weight substitutes the candidate's class weight from 009FDF30. The selection ordering survives; the numbers are not native.",
+      "The +538h object's vtable[+2Ch] busy test at 00A1443D has no producer here and answers false, so no served member is ever skipped for being busy."
+    ]
+  },
+  "uncertainties": [
+    "00A14A78-00A14D4C, the no-candidate fallback, assembles its offset point from six stack slots that were not traced to their producers. The host sends the member to the collect centre instead. Coverage: partial by address range.",
+    "00A13BFF-00A14380, the collection walk, was read for its bounds and its filter but not instruction by instruction, so the exact admission test for the candidate list is characterised rather than reconstructed.",
+    "00A0F810's body is unread; only its callee set is established.",
+    "00A14DD0-00A152A7 was read only to its first dispatch, enough to show it does not share this body and issues clearorders.",
+    "The order carries the target's name through the registry rather than the pointer and +174h object id the native descriptor holds. Labelled substitution."
+  ]
+}

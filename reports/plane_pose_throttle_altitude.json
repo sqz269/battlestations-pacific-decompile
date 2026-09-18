@@ -1,0 +1,305 @@
+{
+ "packet": "cc8_plane_pose_throttle_altitude",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/PLANE_POSE_THROTTLE_ALTITUDE.md",
+ "tree_base": "4edec0448",
+ "question": "Where does the native publish a plane's pose per step, what consumes the aim tick's commanded throttle and altitude, and why does neither reach the aircraft here?",
+ "answer": "The pose is published by 007C6500 BSP_PlaneTickElement_AdvancePose, tick-element slot +4h of all nine plane vtables and a DIFFERENT element from the fixed step 007CE040. Its tail calls 007D8230, which copies the committed matrix out of unit+674h, advances its translation by the frame's velocity, and writes it to unit+74h through 007D8293 LEA ECX,[EBX+74h] / 007D831C CALL 004134F0. This host has no +4h element and publish_pose had two call sites, neither on the plane path, so every consumer of unit_pose saw each aircraft frozen at its spawn placement - which is where the '700 m release altitude' came from. The 'commanded throttle' is not a throttle: 009D1D2E writes plan+2C8h, the per-task BANK-ANGLE cap that 0099E27B clamps the bank target into, reset to 20.0f at 0099B55E so the clamp is inert until a task opts in. Its base factor desc+25Ch is TurnRoll, an authored maximum bank angle, and its ceiling 00CE3814 = 1.2 is 1.2 radians. The consumer already existed at src/plane_ai_control.cpp:517 and nothing wrote it. plan+2BCh at 009D1EDD is the pitch target with mode plan+2D0h = 1, and its value clamp(-f34/den, 0.05625, 0.872665) is a nose-up FLOOR and a pull-up, never a descent: nothing in the aim tick brings a torpedo bomber down. The real engine was missing: 007D9050 thrust and 007D9140 drag were never bound, and 007C4990-007C499C derives the drag coefficient desc+50Ch as Accel / MaxSpd^2, which makes the authored MaxSpd the equilibrium airspeed. Binding the pitch command without the engine stalls the aircraft, measured.",
+ "coverage": "complete for 007D8230, for the desc+50Ch derivation 007C4978-007C499C, for 007D9050 and for 007D9140's body; partial for 007C6500 (the 007D9F60 arm is unread) and for the five unmodelled thrust and drag scales.",
+ "calls": [
+  {
+   "address": "007d826b",
+   "native": "004134f0",
+   "function": "007d8230",
+   "what": "BSP_Matrix_Copy4x4X87 into the stack copy of the committed pose unit+674h"
+  },
+  {
+   "address": "007d831c",
+   "native": "004134f0",
+   "function": "007d8230",
+   "what": "the publication: ECX = unit+74h from 007D8293, so this is the write every consumer of the pose reads"
+  },
+  {
+   "address": "007c49be",
+   "native": "00bf7030",
+   "function": "007c4850",
+   "what": "the sqrt in the class-load derivation block that also computes desc+50Ch at 007C499C"
+  },
+  {
+   "address": "007db7a6",
+   "native": "007d9050",
+   "function": "007db680",
+   "what": "the thrust acceleration, gated at 007DB76C on the latched throttle unit+0BBCh > 0.01f"
+  },
+  {
+   "address": "007dbb5e",
+   "native": "007d9140",
+   "function": "007db680",
+   "what": "the drag acceleration, whose result is multiplied by the pitch ramp r2 and added along the world velocity into dyn+10h"
+  },
+  {
+   "address": "007d923d",
+   "native": "00419010",
+   "function": "007d9140",
+   "what": "the speed floor Interp(0, MaxSpd*MinDragSpdMul, MaxDragPitch, MaxSpd*MaxDragSpdMul, pitch)"
+  }
+ ],
+ "named_routines": [
+  {
+   "native": "007c6500",
+   "name": "BSP_PlaneTickElement_AdvancePose",
+   "abi": "void __thiscall(elem, float t), RET 4, Ghidra body 007C6500-007C675D",
+   "coverage": "partial: the 007D9F60 arm (unit+210h != 0) is unread",
+   "what": "the per-step pose PUBLISHER, tick-element slot +4h of all nine plane vtables. Its tail at 007C658C picks 007D9F60 or 007D8230 on unit+210h, then walks the node list calling 0042ED50 and two vtable slots. The ledger record's 'no Ghidra function; the body is unread' is stale on both counts."
+  },
+  {
+   "native": "007d8230",
+   "name": "BSP_Plane_PublishInterpolatedPose",
+   "abi": "void __thiscall(ctl, float t), RET 4, body 007D8230-007D8329",
+   "coverage": "complete",
+   "what": "copies the 64-byte committed matrix from unit+674h (007D8252 LEA ESI,[EAX+674h]), advances its translation row by t * (unit+810h..818h + ctl+18h..20h), and writes it to unit+74h (007D8293 LEA ECX,[EBX+74h], 007D831C CALL 004134F0). Skipped entirely when t equals [00D7A218]."
+  },
+  {
+   "native": "007d9050",
+   "name": "BSP_PlaneFlight_ThrustAccel",
+   "abi": "__fastcall(desc, int turbo, float pitch, float throttle, int boost), RET 0Ch, body 007D9050-007D9137",
+   "coverage": "complete as a rule; five call-site scales unmodelled",
+   "what": "a = desc+164h Accel * throttle, times TurboMultiplier on ctl+4h and desc+604h on ctl+5h, times the fall cheat 1 + (AccelCheatFallMul-1)*sin(Interp(FallPitchRange1, 0, FallPitchRange2, pi/2, -pitch)) when the pitch is negative, clamped to [0, 100]"
+  },
+  {
+   "native": "007d9140",
+   "name": "BSP_PlaneFlight_DragAccel",
+   "abi": "__fastcall(desc, float speed, float throttle, float pitch, float airbrake, float elevator), RET 14h, body 007D9140-007D92A4",
+   "coverage": "complete; argument order past the first is still the call site's",
+   "what": "-sgn(v) * v^2 * (clamp(1-throttle,0,1)^2 * GlideRate + 1 + DragPitchRatio*|elevator|) * desc+50Ch * (AirBrakeDrag*airbrake + 1), where v = max(speed, Interp(0, MaxSpd*MinDragSpdMul, MaxDragPitch, MaxSpd*MaxDragSpdMul, pitch)). Two prior packets recorded the body as unread; it is read here."
+  },
+  {
+   "native": "007c4850",
+   "name": "BSP_PlaneClass_DeriveFlightConstants",
+   "abi": "body 007C4850-007C4D86; the derivation read here is 007C4978-007C499C",
+   "coverage": "partial: only the desc+50Ch derivation",
+   "what": "desc+50Ch = Accel / MaxSpd^2, from 007C4978 FLD desc+188h, 007C4984 FLD desc+164h, 007C4990 FDIVP ST2,ST0 and 007C4992 FDIVP, stored at 007C499C. The only writer of that offset in the plane range by an exhaustive store census. It is what makes the authored MaxSpd the equilibrium airspeed at full throttle."
+  }
+ ],
+ "no_ghidra_function": [],
+ "host_methods": [
+  {
+   "host": "publish_pose at the end of the free-flight arm",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "binding, interpolation dropped",
+   "note": "stands in for tick-element slot +4h, which this host does not run; 007D8230 at t = 0"
+  },
+  {
+   "host": "state.thrust_accel",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "binding, five scales substituted as 1.0"
+  },
+  {
+   "host": "state.drag_accel",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "binding"
+  },
+  {
+   "host": "desc+50Ch as Accel / MaxSpd^2",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "binding"
+  },
+  {
+   "host": "Accel, GlideRate, DragPitchRatio, AirBrakeDrag row keys",
+   "file": "src/game_hosts_lua.cpp",
+   "kind": "binding"
+  },
+  {
+   "host": "latched throttle unit+0BBCh and air brake unit+0BB0h+10h",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "binding"
+  },
+  {
+   "host": "plan_state.bank_limit_2c8 from the aim tick",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "binding"
+  },
+  {
+   "host": "plan_state.pitch_target_2bc from the aim tick",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "binding",
+   "note": "the mode plan+2D0h and its gate 0099E3D1 are NOT modelled; the host's pitch law always runs"
+  },
+  {
+   "host": "unit+C64h and unit+C68h fed the pitch and bank angles",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "correction"
+  }
+ ],
+ "authored_rows": [
+  {
+   "file": "scripts/datatables/autoload/vehicleclasses.lua",
+   "row": "VehicleClass[112] TBD Devastator",
+   "values": {
+    "Accel": 6,
+    "GlideRate": 1,
+    "DragPitchRatio": 0,
+    "AirBrakeDrag": 0.3,
+    "MaxSpd": 69.444443,
+    "StallSpd": 19.444445
+   }
+  },
+  {
+   "file": "scripts/datatables/planeglobals.lua",
+   "row": "Dynamics",
+   "values": {
+    "MaxDragSpdMul": 0.1,
+    "MinDragSpdMul": 0.1,
+    "MaxDragPitch": 1.0,
+    "AccelCheatFallMul": 2.6,
+    "AccelCheatFallPitchRange": [
+     "DEG(10)",
+     "DEG(60)"
+    ]
+   }
+  }
+ ],
+ "contracts": [
+  "007D9F60, the other arm of 007C6500's tail, is unread; unit+210h selects between them.",
+  "The turbo byte ctl+4h, the boost byte ctl+5h with desc+604h, the call-site scales unit+0CC8h and 008E6430(6, unit), and 007D20C6's in-place Accel scaling by tuning+31Ch * tuning+320h are unmodelled and taken as 1.0. None can move the equilibrium airspeed, because thrust and desc+50Ch read the same desc+164h.",
+  "The pitch mode plan+2D0h and its gate at 0099E3D1 are not modelled.",
+  "desc+A4h, the bank cap's altitude knee, is still unread."
+ ],
+ "corrections": [
+  {
+   "target": "docs/TORPEDO_AIM_TICK.md section (4) and include/bsp/torpedo_aim_tick.hpp:244",
+   "was": "009D1BB8-009D1D39 is the throttle; its output is commanded_throttle_2c8",
+   "is": "plan+2C8h is the per-task BANK-ANGLE cap that 0099E27B clamps plan+2C4h into; 0099B55E resets it to 20.0f (above pi, so inert) and task arms opt in; the product's base is desc+25Ch TurnRoll, an authored maximum bank angle, and the ceiling 00CE3814 = 1.2 is radians",
+   "evidence": "0099E27B, 0099B55E, 007D289B, 00CE3814, src/plane_ai_control.cpp:517-519",
+   "status": "appended to docs/TORPEDO_AIM_TICK.md and verified present"
+  },
+  {
+   "target": "docs/TORPEDO_RUN_IN_VELOCITY.md section 3",
+   "was": "the throttle min(1.2, bank_fold * time_fold * alt_fold * obj+25Ch * 1.2)",
+   "is": "the same product, but it is the bank-angle cap; the constants in its table are unchanged and correct",
+   "evidence": "as above",
+   "status": "appended and verified present"
+  },
+  {
+   "target": "docs/PLANE_POSE_COMMIT.md, 'Where the pose does advance (narrowed, not closed)'",
+   "was": "007C6500 is a candidate; its body was not read, and neither was 007D9F60's",
+   "is": "007C6500's body is read and the publication half is established at 007D8293 / 007D831C via 007D8230; 007D9F60 is still unread",
+   "evidence": "007C658C, 007D8252, 007D8293, 007D831C"
+  },
+  {
+   "target": "docs/PLANE_FREE_FLIGHT_PHYSICS.md, 'And the banked-plane divergence, resolved for commanded aircraft only'",
+   "was": "the spiral for uncommanded aircraft is a host scope limit, needing the unread task kinds to close",
+   "is": "it was a physics gap: the missing forward drag 007D9140. With it bound every USN01 aircraft holds cruise and distance_moved falls from 2180805 m to 178295 m, an implied mean airspeed of 727 m/s down to 59.4",
+   "evidence": "007D9140, 007C4990-007C499C, local/usn01_pta_before.log vs local/usn01_pta_after2.log"
+  }
+ ],
+ "validation": {
+  "runner": "tools/run_game.ps1, 3200 frames, --mission-frames 3000 at 0.05 s, from this worktree. The before column is 4edec0448 reproduced by a temporary compile-time switch that was removed before the commit; it reproduces that commit's 23 hits and 220.0 damage exactly. The middle column is the same build without the thrust and drag binding, kept because it proves that binding is a prerequisite.",
+  "runs": [
+   {
+    "mission": "USN01",
+    "phase": "before",
+    "log": "local/usn01_pta_before.log",
+    "distance_moved_m": 2180805.38,
+    "implied_mean_airspeed_mps": 727.0,
+    "pilot_range_last_mean_m": 148869.8,
+    "pilot_closed_mean_m": -142090.3,
+    "pilot_worst_closed_m": -249443.8,
+    "pose_rotations": 11907,
+    "mav4_tick1": {
+     "speed": 63.2,
+     "alt": 806.3,
+     "angle_deg": 0.2
+    },
+    "mav4_tick351": {
+     "speed": 39.27,
+     "alt": 876.6,
+     "angle_deg": 0.5
+    },
+    "torpedo_drops": 0,
+    "water_entry_breakups": 0,
+    "swims_started": 0,
+    "torpedo_hits": 0,
+    "torpedo_damage": 0.0,
+    "mission_hits": 23,
+    "kills": 1,
+    "mission_damage": 220.0
+   },
+   {
+    "mission": "USN01",
+    "phase": "pose and pitch only, no engine",
+    "log": "local/usn01_pta_after.log",
+    "mav4_tick251": {
+     "speed": 41.73,
+     "alt": 881.9,
+     "angle_deg": 0.7
+    },
+    "mav4_tick301": {
+     "speed": 34.46,
+     "alt": 895.5,
+     "angle_deg": 3.8
+    },
+    "mav4_tick351": {
+     "speed": 43.37,
+     "alt": 830.8,
+     "angle_deg": 64.5,
+     "bank_rad": -0.7881
+    },
+    "stall_threshold_mps": 35.0,
+    "note": "1.8 * StallSpd is 35.0; the aircraft crosses it between tick 251 and tick 301, stalls, banks and falls. This is why the engine is in the same packet.",
+    "mission_hits": 13,
+    "kills": 1,
+    "mission_damage": 744.4,
+    "torpedo_drops": 0,
+    "swims_started": 0
+   },
+   {
+    "mission": "USN01",
+    "phase": "after",
+    "log": "local/usn01_pta_after2.log",
+    "distance_moved_m": 178294.61,
+    "implied_mean_airspeed_mps": 59.4,
+    "pilot_range_last_mean_m": 5535.1,
+    "pilot_closed_mean_m": 1250.1,
+    "pilot_worst_closed_m": -3321.8,
+    "pose_rotations": 11107,
+    "mav4_tick1": {
+     "speed": 69.41,
+     "alt": 807.1,
+     "angle_deg": 0.2
+    },
+    "mav4_tick351": {
+     "speed": 65.11,
+     "alt": 978.9,
+     "angle_deg": 1.1
+    },
+    "max_spd_mps": 69.444443,
+    "torpedo_drops": 0,
+    "water_entry_breakups": 0,
+    "swims_started": 0,
+    "torpedo_hits": 0,
+    "torpedo_damage": 0.0,
+    "mission_hits": 1,
+    "kills": 0,
+    "mission_damage": 9.3,
+    "first_hit_s": 25.1
+   },
+   {
+    "mission": "USN02",
+    "phase": "after",
+    "log": "local/usn02_pta_after.log",
+    "mission_hits": 161,
+    "kills": 3,
+    "mission_damage": 19061.0,
+    "first_hit_s": 31.8,
+    "swims_started": 44,
+    "torpedo_drops": 0,
+    "plane_distance_moved_m": 0.0,
+    "pose_rotations": 0
+   }
+  ],
+  "attribution": "USN02 is identical to both of the previous packet's columns, a three-way identity across two packets, and its own summary reads distance_moved 0.00 m with pose_rotations 0, so it carries no flying aircraft and nothing here can reach it. In USN01 the whole-mission distance_moved falls by a factor of twelve to exactly cruise speed and the ordered aircraft go from opening 142 km on their targets to closing 1.25 km. The mission damage falls from 220.0 to 9.3 with the kill lost; none of it in either column is torpedo damage, and the hits it counted were produced by aircraft that were both frozen at their spawn pose for every range a gun computes and physically travelling at hundreds of metres per second in the banked spiral. It is an artefact being removed.",
+  "discarded_run": "One USN02 run died with an access violation (0xC0000005) at fixed step 2168 of 3000, before its summary, and was discarded per the run protocol. The rerun on the same binary completed normally, and a second agent's run was finishing against the same machine-wide lock at the time, so it is recorded as a transient and not attributed to this packet.",
+  "no_swim_next_gate": "No aircraft released. The aim tick's altitude gate 009D20B4 is Interp(0.4, 40.0, 1.0, 25.0, time_to_target), so it lies between 25 and 40 m, and 009D20C4 passes only below it; the aircraft now fly at 807 to 979 m. Section 4 shows the aim tick cannot descend them, because plan+2BCh is a nose-up floor. kTorpedoCruiseProfile points at Pilot/Torpedo/CruisingAlt, authored 500, while TorpReleaseAlt is 5 to 12 m. Whatever loses that 490 m is the next gate."
+ }
+}
