@@ -779,19 +779,37 @@ same file still substitutes the row's `TravelSpeed` and labels `007C47F0` unread
 routine is read, that site can take the real product too. Left alone here because it belongs to the
 packet that wrote it.
 
-### The identity run could not be taken: `main` crashes before the mission
+### An intermittent startup crash, wrongly called a `main` regression
 
-`tools/run_game.ps1` on IJN01 exits `0xC0000005` twice in a row. The log stops at
+Two IJN01 runs at 13:27:01 and 13:27:37 exited `0xC0000005` with a 107-line log ending at
+`Phase 5 online_manager_initialize`. This doc first recorded that as a regression on `main`.
+**It was wrong**, and `docs/GAME_EXECUTABLE.md` carries the full table and the method errors.
 
-```
-host Phase 5 online_manager_initialize [0073dc7c] UNIMPLEMENTED, returning a neutral value
-```
+The short of it: four builds and four 300-frame runs in a throwaway detached tree, at `4668b0e96`,
+`82986e455`, `cccf31e11` and `main`'s tip `78af19721`, all exited `0` with `frames_presented=299`,
+and two further clean runs in this worktree at its own HEAD confirm it. The 107-line signature is
+the discriminator: the `cc8-ai-squadron` worker hit the identical one the same day on a tree
+containing none of the suspects, and a retry cleared it both times. The two crashes here were 36
+seconds apart, so under a rule that a step fails only on two consecutive crashes with a clean
+environment between them, that step never failed.
 
-which is immediately before `native renderer device startup` in a good run, thousands of lines
-before any mission state and before the dive-bomb arm can run at all.
+### The identity run, taken
 
-**It is not this packet's.** With every change of this packet stashed, at merge commit `78af19721`,
-a plain `--frames 300 --press-start-frame 30` run stops at the identical line with the identical
-exit code. The regression is on `main`, somewhere in the native renderer startup path, and the
-identity column stays open until it is fixed. Nothing here can produce it, and nothing here needs
-to change for it.
+`local/ijn01_gate.log`, IJN01, 3000 mission frames at 0.05 s, with the class gate and the turndown
+binding in. It was run to confirm identity, not to look for movement: the result was known in
+advance from the order census, and the point is that the new gate costs nothing.
+
+**Zero dive-bomb lines.** No `divebomb` per-aircraft row and no `summary mission dive-bomb task`,
+because no IJN01 aircraft ever receives the divebomb class. The 27 installs the loose gate produced
+are gone.
+
+Every other summary is unchanged against both earlier IJN01 runs:
+
+| measure | before | after (loose gate) | after (class gate) |
+| --- | --- | --- | --- |
+| `plane motion distance_moved` | 347370.56 m | 347370.56 m | 347370.56 m |
+| `pilot attack ordered` | 33 | 33 | 33 |
+| `pilot attack final_pitch_mean` | 0.027 rad | 0.027 rad | 0.027 rad |
+| `torpedo task` | 6 aircraft, 0 releases | 6, 0 | 6, 0 |
+| `gunnery ordnance general_bomb` | 27 | 27 | 27 |
+| `fixed steps` | 3000 at 0.05 s | 3000 | 3000 |

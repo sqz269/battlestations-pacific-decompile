@@ -42,16 +42,33 @@ $owner = if ($env:BSP_AGENT) { $env:BSP_AGENT } else { Split-Path (Get-Location)
 $lockDir = Split-Path $Lock -Parent
 if (-not (Test-Path $lockDir)) { New-Item -ItemType Directory -Path $lockDir | Out-Null }
 $deadline = (Get-Date).AddSeconds($WaitSeconds)
+# The lock is taken by an atomic CreateNew, never by "test then write": two
+# launchers polling on the same cadence both saw the file absent and no live
+# process, both wrote it, and both ran, which is the collision behind the
+# intermittent startup crash recorded in docs/GAME_EXECUTABLE.md (2026-09-18).
+# A launcher that loses the race sees the IOException and keeps waiting.
 while ($true) {
     $holder = if (Test-Path $Lock) { (Get-Content $Lock -ErrorAction SilentlyContinue) -join ' ' } else { $null }
     $live = Get-Process bsp_game -ErrorAction SilentlyContinue
-    if (-not $holder -and -not $live) { break }
+    if (-not $holder -and -not $live) {
+        try {
+            $stream = [System.IO.File]::Open($Lock, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write, [System.IO.FileShare]::None)
+            $bytes = [System.Text.Encoding]::ASCII.GetBytes("$owner $(Get-Date -Format s) pid=$PID")
+            $stream.Write($bytes, 0, $bytes.Length)
+            $stream.Close()
+            # A process could have been launched by the winner of a race lost a
+            # moment earlier; if one is alive now, hand the lock back and wait.
+            if (-not (Get-Process bsp_game -ErrorAction SilentlyContinue)) { break }
+            Remove-Item $Lock -ErrorAction SilentlyContinue
+        } catch [System.IO.IOException] {
+            # Another launcher created it first; keep waiting.
+        }
+    }
     if ((Get-Date) -gt $deadline) {
         throw "gave up after $WaitSeconds s: lock held by '$holder', live bsp_game pids: $(($live | ForEach-Object Id) -join ',')"
     }
     Start-Sleep -Seconds 10
 }
-Set-Content -Path $Lock -Value "$owner $(Get-Date -Format s) pid=$PID" -Encoding ascii
 try {
     $logDir = Split-Path $Log -Parent
     if ($logDir -and -not (Test-Path $logDir)) { New-Item -ItemType Directory -Path $logDir | Out-Null }
