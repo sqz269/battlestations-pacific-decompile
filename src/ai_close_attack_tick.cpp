@@ -155,6 +155,20 @@ AiCloseAttackTickResult ai_close_attack_tick_00a13b60(AiCloseAttackTickHost& hos
     return result;
 }
 
+float ai_unit_health_00923be0(bool torn_down, float fraction,
+                              bool fraction_available) noexcept {
+    // 00923BE4: the torn-down byte short-circuits to zero before the class
+    // getter is even called.
+    if (torn_down) return 0.0f;
+    // Without the class fraction the honest answer is the full-health end of
+    // the clamp: a live unit this process holds no damage model for.
+    if (!fraction_available) return 1.0f;
+    // 00923C01..00923C0C, the low clamp, and 00923C27..00923C34, the high one.
+    if (!(fraction >= 0.0f)) return 0.0f;   // also catches a NaN fraction
+    if (fraction > 1.0f) return 1.0f;
+    return fraction;
+}
+
 float ai_candidate_target_weight_00a0f810(
     const AiCandidateTargetWeightInputs& in) noexcept {
     // Slot A, 00A0F848: the raw weight, zeroed at 00A0F861/00A0F864 only when

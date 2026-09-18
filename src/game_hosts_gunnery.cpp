@@ -20,6 +20,7 @@
 #include <vector>
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_ai.hpp"
 #include "bsp/gun_gravity_arc.hpp"
 #include "bsp/bullet_engagement_range.hpp"
 #include "bsp/gun_heading_snap.hpp"
@@ -193,6 +194,9 @@ struct GameGunneryHost::Impl {
     std::size_t command_targets_resolved{0};
     void run_gun_aim_and_fire(float dt);
     void run_projectiles(float dt);
+    // Publishes the rows 00A08460 reads into the process-wide table the AI
+    // coordinator holds. docs/AI_TARGET_WEIGHT_TERMS.md term 2.
+    void publish_ai_weapon_facts();
     void apply_hit(std::size_t shooter, std::size_t gun_row, std::size_t victim,
         const float point[3], const float direction[3]);
     void kill_unit(std::size_t victim);
@@ -2660,6 +2664,52 @@ void GameGunneryHost::fixed_step(float step_seconds) {
     }
     host.run_gun_aim_and_fire(step_seconds);
     host.run_projectiles(step_seconds);
+    // The rows are complete for this step here, after every per-unit pass and
+    // the aim, fire and projectile passes have run. 00A08460 BSP_Ai_TargetWeight
+    // reads the target's hit points and the attacker's barrels, and the AI
+    // coordinator holds neither host, so the values are published into the
+    // process-wide table it reads. docs/AI_TARGET_WEIGHT_TERMS.md term 2.
+    host.publish_ai_weapon_facts();
+}
+
+void GameGunneryHost::Impl::publish_ai_weapon_facts() {
+    GameAiWeaponFacts& facts = game_ai_weapon_facts();
+    facts.reset();
+    // target+48h, the hit points 00A08593 reads and 00A09737's epilogue divides
+    // the accumulated damage by. The class maximum is what makes that a ratio.
+    for (const UnitState& state : unit_state) {
+        GameAiWeaponFacts::Unit& row = facts.row_for_write(state.row.unit_index);
+        row.hit_points = state.row.max_health;
+        // target+4Ch, read at 00A085A8. Nothing in this process produces a
+        // capture state, so it stays zero and the model's capture accumulator
+        // contributes nothing.
+        row.capture_state = 0.0f;
+    }
+    // 00A095E3 walks the attacker's subsystems at +94h/+98h and their 48h-stride
+    // barrel entries at +74h/+78h. This process has one gun row per gun and a
+    // barrel count on it, so the barrels are flattened into one list per unit.
+    for (const GameGunRow& gun : guns) {
+        GameAiWeaponFacts::Unit& row = facts.row_for_write(gun.unit_index);
+        GameAiWeaponFacts::Barrel barrel;
+        barrel.reload = gun.reload_time;
+        // 0072AB80 BSP_GunClass_MuzzleCount at 00A09501 is the shots argument,
+        // and BSP_Gun_SetupFromDescriptor stores its answer to gun+448h at
+        // 0072E71A, which is exactly the field carried here as barrel_num. So
+        // this one IS available; the earlier reading that it was not came from
+        // mistaking the muzzle count for a barrel count.
+        barrel.shots = gun.barrel_num > 0 ? gun.barrel_num : 1;
+        // 009FE270 at 00A094E6, the per-barrel accuracy against the target, is
+        // the one input with no producer here. It stays zero and the row is NOT
+        // complete; publishing a 1.0f would invent it rather than supply it.
+        barrel.accuracy = 0.0f;
+        row.barrels.push_back(barrel);
+    }
+    // Nothing is complete yet, for the two reasons above. The flag is set here
+    // rather than in the reader so that the day those two producers land, this
+    // is the only line that changes.
+    for (GameAiWeaponFacts::Unit& row : facts.units) {
+        row.inputs_complete = false;
+    }
 }
 
 const std::vector<std::size_t>* GameGunneryHost::unit_category_guns(

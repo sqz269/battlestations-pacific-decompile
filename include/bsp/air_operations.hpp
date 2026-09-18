@@ -12,6 +12,8 @@
 // fields this packet read, not full native layouts.
 #include <cstddef>
 #include <cstdint>
+#include <string>
+#include <vector>
 
 namespace bsp {
 
@@ -379,5 +381,141 @@ void plane_reload_bomb_platforms_0089f080(AirOperationsHost& host, const std::ui
 void squadron_land_and_kill_008a20e0(AirOperationsHost& host, std::uint32_t squadron,
                                      const std::uint32_t* air_ops_blocks, int block_count,
                                      std::uint32_t* planes, std::int32_t* plane_count);
+
+// ---------------------------------------------------------------------------
+// 006CADD0 mode 1: the deck as the scene authors it
+// ---------------------------------------------------------------------------
+// 006CADD0 is a three-mode serializer over the object at its argument: the mode
+// is argument+4h and the context argument+8h (006CADF9 tests 1, 006CB2C6 tests 2,
+// 006CB894 and 006CC35C test 3). Only mode 1, the scene property-bag load, is
+// reconstructed here; docs/AIROPS_LOAD_FROM_SCENE.md says what is known of the
+// other two.
+//
+// Mode 1 reads, in this order:
+//   006CAE37  `NumSlots`      the slot count, after which the existing array is
+//                             cleared and block+50h zeroed (006CAE7E)
+//   006CB0B3  `MaxInAirPlanes`  straight into block+58h (006CB0C9)
+//   006CB0D5  `PlaneStock %d` 1-based, each a sub-block of `Type`, `Count` and
+//                             `SquadLimit`
+//   006CB1B2  `Slot %d`       1-based, each a sub-block of `Type`, `Count`,
+//                             `Arm` and the optional boolean `FakeAllocated`
+// A sub-block key must answer with property type 6 (006CB0FB, 006CB1E0) and a
+// non-null payload, otherwise the loop stops.
+// The scene class ids of the two classes that own a deck, from the rows in
+// src/scene_entity_factory.cpp. They happen to carry the same numbers as the
+// vtable+5Ch class ids above, and they are a different id space: these select a
+// scene creator, those answer 006BCD20's class test.
+inline constexpr int kAirOpsSceneClassIdMothership = 0x09; // MotherShipGen
+inline constexpr int kAirOpsSceneClassIdAirfield = 0x45;   // AirField
+
+struct AirOpsSceneSlot {
+    std::string type;       // `Type`, resolved through 007B8A80
+    std::int32_t count{0};  // `Count`
+    std::int32_t arm{0};    // `Arm`, stored at slot+10h (006CB277)
+    bool fake_allocated{false}; // `FakeAllocated`, property type 3, byte at +0Ch
+};
+
+struct AirOpsSceneStock {
+    std::string type;            // `Type`
+    std::int32_t count{0};       // `Count`
+    std::int32_t squad_limit{0}; // `SquadLimit`
+};
+
+struct AirOpsSceneDeck {
+    std::int32_t num_slots{0};
+    std::int32_t max_in_air_planes{0};
+    std::vector<AirOpsSceneStock> stock;
+    std::vector<AirOpsSceneSlot> slots;
+};
+
+// The block mode 1 leaves behind. `slots` is block+4Ch with its count at
+// block+50h; `max_in_air_planes` is block+58h.
+struct AirOpsDeck {
+    std::vector<AirOpsSlot> slots;
+    std::vector<AirOpsStockEntry> stock;
+    std::int32_t max_in_air_planes{0};
+
+    // The fields the launch gates read, from 006BF620 and 006CC690. The two
+    // failure flags are named by 006CADD0 mode 3, whose `LEA` descriptors for
+    // block+1Ch and block+1Dh sit immediately before the terminators that carry
+    // `runwayFailure` (00CBE35) and `hangarFailure` (00CBE77). Neither is a
+    // scene key, so both start clear.
+    bool runway_failure{false};  // block+1Ch
+    bool hangar_failure{false};  // block+1Dh
+    // block+38h. 006BF620 requires it zero for readiness and 006CC690 branches on
+    // it: zero starts the launch through 006C7490, non-zero adds the stock back
+    // and queues through 006CA640. Two sites agreeing is why it is named.
+    std::uint32_t launch_in_progress{0};
+    // block+7Ch must be non-null and the byte at its +5Dh must be clear. That
+    // object has no counterpart in this process, so `owner_present` is a
+    // labelled substitution: a deck the scene loaded reports it present.
+    bool owner_present{true};
+    bool owner_blocked{false};
+    // The entity side of the gate, not the block's: 00895E4B tests the class
+    // through vtable+5Ch against 45h and 00895E51 the byte at entity+720h.
+    bool is_airfield{false};
+    bool airfield_blocked{false};
+};
+
+// 00895D20 IsReadyToSendPlanes. The whole rule: an airfield whose entity+720h
+// byte is set is never ready, and everything else is 006BF620 over the block.
+bool air_ops_is_ready_to_send_planes_00895d20(const AirOpsDeck& deck) noexcept;
+
+// 006C7210: the first slot whose state is 1 or 5, or, when none is, the index
+// one past the end, which is where 006CADD0's 2n+2 growth puts a new record.
+int air_ops_pick_launch_slot_006c7210(const AirOpsDeck& deck) noexcept;
+
+struct AirOpsLaunchRequest {
+    std::uint32_t vehicle_class{0};
+    std::int32_t count{0};
+    std::int32_t arm{0};
+    // 0089E3C0 defaults the arm to class+134h and replaces it only when the
+    // binding was given a fourth argument (the 00B663F0 argument-count test
+    // against 4).
+    bool arm_given{false};
+    std::int32_t class_default_arm{0};
+};
+
+struct AirOpsLaunchResult {
+    int slot_index{-1};  // what 0089E3C0 returns, before its +1
+    bool started{false}; // 006C7490 ran
+    bool queued{false};  // the stock went back and 006CA640 ran instead
+};
+
+// 006CC690, which 0089E3C0 delegates to and whose result it pushes plus one.
+AirOpsLaunchResult air_ops_launch_squadron_006cc690(AirOpsDeck& deck,
+                                                    const AirOpsLaunchRequest& request);
+
+// `resolve_type` stands in for 007B8A80, which turns the authored `Type` token
+// into the class id the slot carries at +4h. A resolver that returns 0 leaves
+// the slot's class unset, which is what an unresolvable token does.
+using AirOpsTypeResolver = std::uint32_t (*)(const std::string& type, void* context);
+AirOpsDeck air_ops_load_from_scene_006cadd0(const AirOpsSceneDeck& authored,
+                                            AirOpsTypeResolver resolve_type, void* context);
+
+// ---------------------------------------------------------------------------
+// Where this process keeps the decks it built
+// ---------------------------------------------------------------------------
+// Not a native structure. The executable hangs the block off the entity; this
+// process has no entity object, so the decks live in one process-wide table
+// keyed by the unit name the scene authored, with the mission Lua's entity id
+// bound to that name once the unit list exists (id is the unit index plus one,
+// which is the same convention the objective bindings read back as ID - 1).
+class AirOpsDeckRegistry {
+public:
+    void clear() noexcept;
+    void set(const std::string& unit_name, AirOpsDeck deck);
+    void bind_entity_id(int entity_id, const std::string& unit_name);
+    const AirOpsDeck* find(const std::string& unit_name) const noexcept;
+    const AirOpsDeck* find_by_entity_id(int entity_id) const noexcept;
+    AirOpsDeck* find_mutable_by_entity_id(int entity_id) noexcept;
+    std::size_t size() const noexcept;
+
+private:
+    std::vector<std::pair<std::string, AirOpsDeck>> decks_;
+    std::vector<std::pair<int, std::string>> entity_ids_;
+};
+
+AirOpsDeckRegistry& air_ops_decks() noexcept;
 
 } // namespace bsp

@@ -2,6 +2,7 @@
 // See include/bsp/game_hosts_scene_contents.hpp for the address list and the evidence.
 #include "bsp/game_hosts_scene_contents.hpp"
 
+#include "bsp/air_operations.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_vfs.hpp"
@@ -675,6 +676,74 @@ private:
 
 namespace {
 
+// 006CADD0 mode 1, the reading half: which authored keys the deck comes from.
+// The rule that turns them into the block is
+// bsp::air_ops_load_from_scene_006cadd0. docs/AIROPS_LOAD_FROM_SCENE.md.
+std::int32_t scene_deck_int(const ScenePropertyBlock& block, const char* key) {
+    const SceneProperty* property = block.find(key);
+    if (property == nullptr || property->values.empty()) return 0;
+    std::int32_t value = 0;
+    // 008F2260 answers with the property record and the loader takes its +0Ch
+    // payload without a type test on these scalars, so an unparsable value is
+    // the same zero the absent key gives.
+    if (!scene_scan_int(property->values.back(), value)) return 0;
+    return value;
+}
+
+std::string scene_deck_text(const ScenePropertyBlock& block, const char* key) {
+    const SceneProperty* property = block.find(key);
+    if (property == nullptr || property->values.empty()) return std::string();
+    return property->values.back();
+}
+
+const ScenePropertyBlock* scene_deck_sub_block(const ScenePropertyBlock& block,
+    const std::string& name) {
+    for (const auto& row : block.blocks) {
+        if (row.first == name) return &row.second;
+    }
+    return nullptr;
+}
+
+// 006CB0D5 and 006CB1B2 compose the key with the 1-based index and stop at the
+// first index the bag does not answer (006CB0F9 and 006CB1DA take the exit when
+// the lookup returns null).
+bsp::AirOpsSceneDeck read_scene_deck_006cadd0(const ScenePropertyBlock& bag) {
+    bsp::AirOpsSceneDeck authored;
+    authored.num_slots = scene_deck_int(bag, "NumSlots");
+    authored.max_in_air_planes = scene_deck_int(bag, "MaxInAirPlanes");
+    for (int index = 1;; ++index) {
+        char key[32];
+        std::snprintf(key, sizeof(key), "PlaneStock %d", index);
+        const ScenePropertyBlock* sub = scene_deck_sub_block(bag, key);
+        if (sub == nullptr) break;
+        bsp::AirOpsSceneStock row;
+        row.type = scene_deck_text(*sub, "Type");
+        row.count = scene_deck_int(*sub, "Count");
+        row.squad_limit = scene_deck_int(*sub, "SquadLimit");
+        authored.stock.push_back(row);
+    }
+    for (int index = 1;; ++index) {
+        char key[32];
+        std::snprintf(key, sizeof(key), "Slot %d", index);
+        const ScenePropertyBlock* sub = scene_deck_sub_block(bag, key);
+        if (sub == nullptr) break;
+        bsp::AirOpsSceneSlot row;
+        row.type = scene_deck_text(*sub, "Type");
+        row.count = scene_deck_int(*sub, "Count");
+        row.arm = scene_deck_int(*sub, "Arm");
+        // 006CB236 requires property type 3 and reads the byte at +0Ch, so any
+        // other shape leaves the flag false.
+        const SceneProperty* fake = sub->find("FakeAllocated");
+        if (fake != nullptr && !fake->values.empty()) {
+            const std::string& text = fake->values.back();
+            std::int32_t parsed = 0;
+            row.fake_allocated = scene_scan_int(text, parsed) ? parsed != 0 : text == "true";
+        }
+        authored.slots.push_back(row);
+    }
+    return authored;
+}
+
 class SceneReaderBinding final : public SceneFileReaderHost {
 public:
     SceneReaderBinding(GameSceneContentsHost::Impl& owner, SceneFilePass pass,
@@ -1030,6 +1099,37 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     creation.local_frame = world_frame;
     creation.properties = &bag;
     creation.type_id = type_id;
+
+    // 006CADD0 mode 1. The executable reaches it from the two classes that own a
+    // deck: 006D3C10 BSP_AirField_ReadRunwayProperties for the airfield and
+    // 007593D0 for the mother ship. Those are the same two whose Lua reader sits
+    // at vtable+138h (docs/MISSION_LUA_GETPROPERTY.md), so the deck this builds
+    // is exactly what `GetProperty(carrier, "slots")` reads back.
+    if (klass->class_id == bsp::kAirOpsSceneClassIdMothership
+        || klass->class_id == bsp::kAirOpsSceneClassIdAirfield) {
+        const bsp::AirOpsSceneDeck authored = read_scene_deck_006cadd0(bag);
+        // 007B8A80 is a thunk to 00964790 BSP_VehicleClass_GetOrCreate. Its
+        // argument form was not read, and the scene authors these `Type` tokens
+        // as numeric class ids, so the resolver here is the scan the rest of this
+        // file uses for a scene integer. A token that is not a number resolves to
+        // zero, which is what an unresolvable token does. contract.
+        bsp::AirOpsDeck deck = bsp::air_ops_load_from_scene_006cadd0(authored,
+            [](const std::string& type, void*) -> std::uint32_t {
+                std::int32_t parsed = 0;
+                if (!scene_scan_int(type, parsed) || parsed < 0) return 0u;
+                return static_cast<std::uint32_t>(parsed);
+            },
+            nullptr);
+        // 00895E4B tests the class through vtable+5Ch against 45h. This process
+        // has no vtable to ask, and the scene class id is the same distinction.
+        deck.is_airfield = klass->class_id == bsp::kAirOpsSceneClassIdAirfield;
+        owner.log.notef("air ops deck: unit=%s class=%d NumSlots=%d MaxInAirPlanes=%d "
+            "slots=%zu stock=%zu (006cadd0 mode 1)", stored.name.c_str(), klass->class_id,
+            authored.num_slots, authored.max_in_air_planes, deck.slots.size(),
+            deck.stock.size());
+        bsp::air_ops_decks().set(stored.name, std::move(deck));
+        owner.log.implemented("AirOps::load_from_scene", "006cadd0");
+    }
 
     SceneUnitCreationResult created;
     if (klass->class_id == 0x18) {
