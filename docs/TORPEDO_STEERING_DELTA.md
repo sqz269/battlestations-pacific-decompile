@@ -339,7 +339,18 @@ the aircraft's commanded heading reverses about every 1.7 s.
 
 ## Follow-up packets
 
-1. **The aim/goaway hysteresis. This is the gate now, by address and value.**
+0. **Seed the two run speeds with a speed.** The fix rule 4 establishes, in
+   `src/game_hosts_units.cpp:3105-3106`, once that file is free. Expect it to move the
+   clause-2 break-off from 1268 m to about 890 m and to stop the aim/goaway cycle. Do
+   **not** expect a release from it alone: at the aggregate turn rate this run shows,
+   0.039 rad/s if all 29.086 rad of `heading_change` belongs to the five bombers, closing
+   2.28 rad would take 58 s, while 1268 m to 890 m at 122 m/s is 3.1 s. That aggregate is
+   not conclusive, because a nose re-commanded ninety times nets out to far less than its
+   instantaneous rate, which is exactly why the per-tick census is needed before anyone
+   concludes the flight model turns too slowly.
+
+1. **The aim/goaway hysteresis, once the speed is fixed. Superseded as the primary gate by
+   rule 4, kept because the predicate itself is now read.**
    `BSP_BotStateTorpedoGoAway_IsComplete` (`009D3150`, body `009D3150`-`009D31A5`,
    `__fastcall(state)`, sole caller `009D4030 BSP_BotTaskTorpedo_TransitionRule`) returns
    `state+24h < approach+90h`: goaway ends only once the range exceeds the break-off
