@@ -938,3 +938,38 @@ So a task's pitch command already survived, and only the roll needed the gate.
 `src/game_hosts_units.cpp` now applies the same condition around
 `pilot_plan_roll_0099e2ba`'s slot write, and the turndown binding sets the mode word to `0` when it
 commands the roll (`009C462F`) and to `1` when it hands the axis back (`009C464E`).
+
+### The gated run, and what it moved
+
+`local/usn04_gate.log`, USN04, 4800 mission frames, with the roll gate applied.
+
+| measure | before the gate | with the gate |
+| --- | --- | --- |
+| bank reached | 0.1364 rad, 7.8 deg | **0.6072 rad, 34.8 deg** |
+| turndown roll writes | 746 of 746 | 446 of 746 |
+| final `approach+BCh` | 5077.7 m, opening | **206.5 m** |
+| latch `approach+D0h` at the end | 0 | **1** |
+| state walk | `attackrun` 1480, `flyabove` 144, `turndown` 746 | the same |
+| releases | 0 | 0 |
+
+The roll command now survives, the bank grows four and a half times, and the aircraft holds its
+target instead of flying past it: `206.5 m` at the end against `5077.7 m` before.
+
+`009C7EA0`'s window is still not met. It needs `pose+C64h` past `-1.3 rad` and the bank reaches
+`0.6072 rad`, so the turndown does not end and nothing reaches `aimdive`.
+
+### The hand-over, the last piece of the same gate
+
+The 300 ticks where the turndown stopped writing the roll are the answer. `009C45BB` hands the axis
+back once `|bank| >= 0.8 rad` (45.8 deg), and `009C4646`/`009C464E` write `cmd->+2C4h = pi` and
+`cmd->+2CCh = 1`. Mode `1` **passes** the planner's compare at `0099E26E`, so the planner's roll
+servo runs, and because the jump also skipped `0099E25C MOVSS [ESI+2C4h]` the servo drives toward
+**the `pi` the turndown just wrote**.
+
+That is the design: the turndown rolls to 45.8 degrees under its own command, then hands the
+planner a bank target of 180 degrees and lets its servo carry the aircraft the rest of the way to
+inverted, where the 150-degree latch at `009C4654` closes.
+
+The host was missing both halves: it wrote the planner's own bank target unconditionally, and the
+turndown binding set the mode without the target. Both are now gated at `0099E25C` and written at
+the hand-over. The confirming run is queued.
