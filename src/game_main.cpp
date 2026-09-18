@@ -47,6 +47,7 @@
 #include "bsp/game_native_hardware_layout_tree.hpp"
 #include "bsp/game_native_lua_globals.hpp"
 #include "bsp/game_native_dyn_process.hpp"
+#include "bsp/game_native_physical_pool.hpp"
 #include "bsp/winmain_startup.hpp"
 
 namespace {
@@ -367,6 +368,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     }
 
     bsp::game::GameNativeReadOnlyData* native_data = nullptr;
+    volatile std::uint32_t* native_crt_feature = nullptr;
     try {
         auto reservation = bsp::game::accept_native_data_handoff(
             native_data_spans.data(), native_data_spans.size(),
@@ -374,6 +376,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         const auto& owner = bsp::game::GameNativeCanonicalDataOwner::initialize(original_image,
             native_data_spans.data(), native_data_spans.size(), std::move(reservation));
         native_data = &owner.read_only_data();
+        native_crt_feature = &owner.mutable_crt_data().feature_word();
         log.notef("native-data handoff mapped verified original image %s",
             original_image.string().c_str());
     } catch (const std::exception& failure) {
@@ -444,6 +447,11 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         const int dynamics_atexit = dynamics.initialize_once_00cc8950();
         log.notef("native Dyn dispatch CRT CC8950: atexit=%d owners=8 "
             "solver_tables=mode0/mode1", dynamics_atexit);
+        const int convex_atexit = dynamics.initialize_convex_pool_once_00cc89c0(
+            bsp::game::game_native_physical_pool_process().allocator_list_domain_00e188b4(),
+            *native_crt_feature);
+        log.notef("native Dyn convex pool CRT CC89C0: atexit=%d storage=process_actual38h",
+            convex_atexit);
     } catch (const std::exception& failure) {
         std::fprintf(stderr, "bsp_game: native pool startup failed: %s\n", failure.what());
         log.notef("native pool startup failed: %s", failure.what());

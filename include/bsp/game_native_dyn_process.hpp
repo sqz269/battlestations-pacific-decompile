@@ -1,6 +1,7 @@
 #pragma once
 #include "bsp/native_game_dynamics.hpp"
 #include "bsp/dyn_dispatch_initialization.hpp"
+#include "bsp/allocator_list.hpp"
 #include <memory>
 
 namespace bsp::game {
@@ -15,6 +16,11 @@ public:
     // One attempt; retain native construction and atexit result on registration
     // failure. Native CD91D0 closes the general-convex CS after borrowing users.
     int initialize_once_00cc8950();
+    // CC89C0 follows dispatch startup. Borrow the application's actual shared
+    // E188B4 domain and mutable CRT feature word; later binding must be identical.
+    int initialize_convex_pool_once_00cc89c0(AllocatorListDomain&,
+        const volatile std::uint32_t& actual_0109eea4);
+    const DynBodyCreationContext& body_creation();
     const NativeGameDynamicsContext& dynamics();
     const DynDispatchVtables& dispatch_tables();
 private:

@@ -1371,3 +1371,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_terrain
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_solver_mode0.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_solver_mode1.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_dyn_process.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_convex_pool.cpp)

@@ -8,6 +8,8 @@
 #include "bsp/native_dyn_narrow_phase.hpp"
 #include "bsp/native_dyn_solver_mode0.hpp"
 #include "bsp/native_dyn_solver_mode1.hpp"
+#include "bsp/native_dyn_convex_pool.hpp"
+#include "bsp/native_dyn_convex_support.hpp"
 #include <cstdlib>
 #include <mutex>
 #include <new>
@@ -57,6 +59,20 @@ struct GameNativeDynProcess::Impl {
     enum class StartupState { unattempted,returned,threw };
     StartupState state{StartupState::unattempted};
     int registration_status{};
+    struct ConvexBinding {
+        AllocatorListDomain& list;
+        const volatile std::uint32_t& conversion;
+        DynConvexShapePoolStorage storage{};
+        NativeDynConvexPool pool;
+        NativeDynConvexShapeRuntime shape;
+        DynBodyCreationContext body;
+        ConvexBinding(AllocatorListDomain& l,const volatile std::uint32_t& c,
+            const AvoidZoneDynHullMemory& m):list(l),conversion(c),pool(l,storage,m),
+            shape(storage,c),body{m,&storage,shape.table()} {}
+    };
+    std::unique_ptr<ConvexBinding> convex;
+    StartupState convex_state{StartupState::unattempted};
+    int convex_registration_status{};
 
     Impl(const CameraAxesCrtAccess& c,const AvoidZoneDynHullMemory& m)
         :memory(m),crt(c),profile_context{memory,&profile_0109e9f8},
@@ -112,5 +128,24 @@ const NativeGameDynamicsContext& GameNativeDynProcess::dynamics(){
 }
 const DynDispatchVtables& GameNativeDynProcess::dispatch_tables(){
     auto& i=*impl_;std::lock_guard lock(i.startup_mutex);i.require_initialized();return i.tables;
+}
+int GameNativeDynProcess::initialize_convex_pool_once_00cc89c0(AllocatorListDomain& list,
+    const volatile std::uint32_t& conversion){
+    auto& i=*impl_;std::lock_guard lock(i.startup_mutex);i.require_initialized();
+    if(i.convex&&(&i.convex->list!=&list||&i.convex->conversion!=&conversion))
+        throw std::logic_error("Dyn convex pool services cannot be rebound");
+    if(i.convex_state==Impl::StartupState::returned)return i.convex_registration_status;
+    if(i.convex_state==Impl::StartupState::threw)throw std::logic_error("Dyn convex pool startup previously threw");
+    i.convex_state=Impl::StartupState::threw;
+    i.convex=std::make_unique<Impl::ConvexBinding>(list,conversion,i.memory);
+    bind_static_native_dyn_convex_pool_0109ecf0(i.convex->pool);
+    i.convex_registration_status=initialize_static_native_dyn_convex_pool_00cc89c0();
+    i.convex_state=Impl::StartupState::returned;return i.convex_registration_status;
+}
+const DynBodyCreationContext& GameNativeDynProcess::body_creation(){
+    auto& i=*impl_;std::lock_guard lock(i.startup_mutex);i.require_initialized();
+    if(i.convex_state!=Impl::StartupState::returned)
+        throw std::logic_error("Dyn convex bodies require completed pool startup");
+    return i.convex->body;
 }
 } // namespace bsp::game
