@@ -192,6 +192,43 @@ float dive_bomb_decay_dive_altitude_009c7a94(float dive_altitude_a8,
     return (dive_altitude_a8 < decayed) ? dive_altitude_a8 : decayed;
 }
 
+// 00419010, five stack floats, RET 14h. Equal ordered endpoints return y0;
+// otherwise the interpolation is clamped between the two y values whichever way
+// round they are. Transcribed from docs/UNIT_RUDDER_CURVE.md's reconstruction.
+float dive_bomb_interpolate_clamped_00419010(float x0, float y0, float x1, float y1,
+                                             float x) noexcept {
+    if (x1 == x0) {
+        return y0;
+    }
+    const float v = ((x - x0) / (x1 - x0)) * (y1 - y0) + y0;
+    const float hi = (y1 < y0) ? y0 : y1;
+    const float lo = (y0 < y1) ? y0 : y1;
+    if (v < lo) {
+        return lo;
+    }
+    return (v <= hi) ? v : hi;
+}
+
+// 009C59BA-009C5C9B.
+DiveBombAimError dive_bomb_aim_error_009c5c9b(const DiveBombAimErrorInputs& in) noexcept {
+    DiveBombAimError out;
+    // 009C5BEE-009C5BF7 and 009C5C27-009C5C38: one x window for both calls.
+    const float x0 = in.dive_altitude_a8 +
+                     static_cast<float>(dive_bomb_constant::kMoveToRangeBias);
+    const float x1 = in.begin_altitude_ac + in.extra_range_50;
+    // 009C5C49: the lead, 0 at the floor up to (approach+14h)->+5Ch high up.
+    out.lead = dive_bomb_interpolate_clamped_00419010(x0, 0.0f, x1, in.lead_at_high_5c,
+                                                      in.height_above_target);
+    // 009C5C4E: FSUBR, so the memory operand is the minuend.
+    out.along_track = std::cos(in.bearing_error) * in.planar_distance - out.lead;
+    // 009C5C92: the gain, 1.0 at the floor up to (approach+14h)->+60h high up.
+    out.gain = dive_bomb_interpolate_clamped_00419010(x0, 1.0f, x1, in.gain_at_high_60,
+                                                      in.height_above_target);
+    // 009C5C97.
+    out.error = out.gain * out.along_track;
+    return out;
+}
+
 // 009C608C-009C6154. Three gates in order, then the round, then the pull-out.
 DiveBombAimDiveReleaseResult dive_bomb_aimdive_release_009c60f1(
     const DiveBombAimDiveReleaseInputs& in) noexcept {

@@ -473,6 +473,7 @@ Slot `+24h` of the task vtable is listed as `contract: unread` for every class. 
 is `009C8200` (`00D20E3C`), the arming entry: gated on `task+4C9h`, the unit and
 `(unit+72Ch)->vtable[+38h]`, it raises `task+424h` by one and, in `prepare`, writes
 `task+65Ch` = `prepare+98h` = `[00CE3850]` = `5.0f`. Nothing in the dive-bomb class ever spends
-that countdown: the `done`/`prepare` tick `009C7270` is a tail call to `009C1FD0` and the exit
+that countdown: the `done`/`prepare` tick `009C7270`-`009C727F` calls `009C1FD0` at `009C7278` and
+returns at `009C727D`, and the exit
 `009C7260` is a bare `JMP 009BDE40`, so the torpedo's `009D2720`/`009D2570` drop has no
 counterpart here. Every path of `009C8200` returns `1`, unlike the torpedo's `009D49A0`.

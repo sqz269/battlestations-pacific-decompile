@@ -23,7 +23,7 @@
     "009c88e0": "ECX task; one stacked out-pointer; RET 4; no Ghidra function, body 009C88E0-009C8916 inclusive",
     "009c58d0": "ECX aimdive state; one stacked float dt; RET 4 at 009C5B51 and 009C615F; body 009C58D0-009C6161",
     "009c5180": "ECX aimglide state; one stacked float dt; RET 4; body 009C5180-009C580B",
-    "009c7270": "ECX done/prepare state; one stacked float dt; RET 4; no Ghidra function, body 009C7270-009C727C inclusive",
+    "009c7270": "ECX done/prepare state; one stacked float dt; CALL 009C1FD0 at 009C7278 then RET 4 at 009C727D, not a tail jump; no Ghidra function, body 009C7270-009C727F inclusive",
     "009c7240": "ECX done/prepare state; no stacked argument; tail JMP 009BED80; no Ghidra function, body 009C7240-009C725B inclusive",
     "009c7260": "ECX done/prepare state; bare JMP 009BDE40; no Ghidra function, body 009C7260-009C7264 inclusive",
     "009c7800": "ECX turndown state; one stacked int sign; body 009C7800-009C7849",
@@ -193,6 +193,12 @@
       "native": "009c73a0",
       "note": "the constructor builds the approach, which registers all ten states",
       "host_method": "register_state_name"
+    },
+    {
+      "address": "009c5c49",
+      "native": "00419010",
+      "note": "the lead interpolation, y from 0 to (approach+14h)->+5Ch over the height above the target",
+      "host_method": "read_aimdive_inputs"
     }
   ],
   "calls_in_undefined_regions": [
@@ -376,7 +382,7 @@
       "native": "009c7270",
       "name": "BSP_BotStateDiveBombDone_Tick",
       "no_ghidra_function": true,
-      "end_inclusive": "009c727c"
+      "end_inclusive": "009c727f"
     },
     {
       "address": "009c7240",
@@ -451,7 +457,7 @@
     },
     {
       "start": "009c7270",
-      "end_inclusive": "009c727c",
+      "end_inclusive": "009c727f",
       "name": "BSP_BotStateDiveBombDone_Tick"
     },
     {
@@ -502,11 +508,12 @@
     "00d7a390": "double 0.8999999761581421, the goaway distance scale",
     "00ce3d08": "float 100.0f, the follow-state construct argument"
   },
-  "uncertainty": "The aimdive release gate compares the double 25.0 at 00CE3880 against the absolute value of the signed quantity written at 009C5C9B, the same quantity the pitch command at 009C5CFA is scaled from. That quantity's producer is BSP_Math_InterpolateClamped 00419010 at 009C5C92 with three pushed floats, and its units were not established, so whether the gate is tight or vacuous is open. The aimglide release's four frame slots ([ESP+10h], [ESP+14h], [ESP+18h], [ESP+20h]) were not traced to their producers either; its gates, its constants and its salvo loop are transcribed, the geometry behind them is not. The approach update's tail 009C7C5B-009C7E9E is read for its outputs only. The flyabove, turndown, goaway and attackrun ticks are censused for their command-block writes and their own flag writes, not transcribed.",
+  "uncertainty": "The aimdive release gate's units are SETTLED: 009C59D6 writes the aircraft's height above the target (aircraft.y - targetPoint.y), both BSP_Math_InterpolateClamped calls (009C5C49, 009C5C92) are keyed on it over the window [approach+A8h + 100.0, approach+ACh + approach+50h], and 009C5C97 multiplies the second call's dimensionless gain into cos(bearingError) * planarDistance - lead. So the quantity at 009C5C9B is a signed along-track miss distance in metres and the 25.0 at 00CE3880 is a 25-metre release window, not an angle. What remains open: the two y endpoints (approach->+14h)->+5Ch and +60h have no producer read, and approach+D4h and approach+B8h, the ranges the dive abort and the in-range latch key on, have none either. The aimglide release's four frame slots ([ESP+10h], [ESP+14h], [ESP+18h], [ESP+20h]) were not traced to their producers; its gates, its constants and its salvo loop are transcribed, the geometry behind them is not. The approach update's tail 009C7C5B-009C7E9E is read for its outputs only. The flyabove, turndown, goaway and attackrun ticks are censused for their writes, not transcribed.",
   "validation": {
     "build": "scripts/build.ps1, MSVC Win32, /W4 /WX, succeeds before and after the merge of main",
     "tests": "ctest: reconstructed_math and tool_tests both pass; no test added",
-    "host_wiring": "deferred: src/bot_task_states.cpp, include/bsp/bot_task_states.hpp and src/game_hosts_units.cpp are held by another worker for this window"
+    "host_wiring": "deferred: src/bot_task_states.cpp, include/bsp/bot_task_states.hpp and src/game_hosts_units.cpp are held by another worker for this window",
+    "ijn01_before": "local/ijn01_before.log on 9cff2668d: 33 ordered aircraft (8 A7M, 9 JudySpawn dive bombers, 12 JillSpawn, Warhawk1, Dauntless1, 2 B-17); 27 units carry general bomb ordnance; 44 BOMBPLATFORM guns fired 0 shots; torpedo task aircraft=6 releases=0. No dive-bomb instrumentation exists yet, so the task's own state counts are unmeasured."
   },
   "files": [
     "docs/DIVE_BOMB_TASK.md",

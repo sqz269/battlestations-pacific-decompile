@@ -281,9 +281,49 @@ struct DiveBombAimDiveReleaseInputs {
     float altitude = 0.0f;         // pose+100h, the world Y
     float dive_altitude_a8 = 0.0f;  // approach+A8h
     float rearm_timer_1c = 0.0f;   // state+1Ch, counted down by dt at 009C58E9
-    float aim_error = 0.0f;        // the signed quantity written at 009C5C9B
+    // The signed ALONG-TRACK MISS DISTANCE in metres written at 009C5C9B, from
+    // dive_bomb_aim_error_009c5c9b below. Not an angle: the 25.0 the gate
+    // compares it against is a 25-metre window.
+    float aim_error = 0.0f;
     float rearm_draw = 0.0f;       // BSP_Random_UniformFloatRange(0.5, 1.0)
 };
+
+// ---------------------------------------------------------------------------
+// 009C59BA-009C5C9B, the quantity the aimdive tick both steers on and releases
+// on. Two BSP_Math_InterpolateClamped calls (009C5C49, 009C5C92) keyed on the
+// aircraft's HEIGHT ABOVE THE TARGET, over the same x window:
+//
+//   x0 = approach->+A8h + 100.0 (the double at 00D7A220)
+//   x1 = approach->+ACh + approach->+50h
+//
+// The first runs y from 0 to (approach->+14h)->+5Ch and is a lead distance; the
+// second runs y from 1.0 to (approach->+14h)->+60h and is a dimensionless gain.
+// Everything here is metres, which is what settles the units of the release
+// gate: 009C59D6 writes the height as aircraft.y - targetPoint.y, and 009C5C97
+// multiplies the gain into a distance.
+// ---------------------------------------------------------------------------
+struct DiveBombAimErrorInputs {
+    float height_above_target = 0.0f;  // 009C59D6, aircraft.y - target.y
+    float dive_altitude_a8 = 0.0f;     // approach+A8h
+    float begin_altitude_ac = 0.0f;    // approach+ACh
+    float extra_range_50 = 0.0f;       // approach+50h
+    float lead_at_high_5c = 0.0f;      // (approach->+14h)->+5Ch, 009C5C20
+    float gain_at_high_60 = 0.0f;      // (approach->+14h)->+60h, 009C5C69
+    float bearing_error = 0.0f;        // BSP_Math_SubtractWrappedAngle, 009C5AF1
+    float planar_distance = 0.0f;      // the sqrt at 009C5A40
+};
+struct DiveBombAimError {
+    float lead = 0.0f;        // the first interpolation
+    float gain = 1.0f;        // the second
+    float along_track = 0.0f;  // cos(bearing) * distance - lead
+    float error = 0.0f;       // gain * along_track, metres
+};
+DiveBombAimError dive_bomb_aim_error_009c5c9b(const DiveBombAimErrorInputs& in) noexcept;
+
+// 00419010 BSP_Math_InterpolateClamped(x0, y0, x1, y1, x), RET 14h. Kept here
+// because both calls above are inside a body with no Ghidra function coverage.
+float dive_bomb_interpolate_clamped_00419010(float x0, float y0, float x1, float y1,
+                                             float x) noexcept;
 struct DiveBombAimDiveReleaseResult {
     bool released = false;
     bool consumed_round = false;   // approach+2Ch -= 1
