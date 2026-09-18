@@ -155,4 +155,37 @@ AiCloseAttackTickResult ai_close_attack_tick_00a13b60(AiCloseAttackTickHost& hos
     return result;
 }
 
+float ai_candidate_target_weight_00a0f810(
+    const AiCandidateTargetWeightInputs& in) noexcept {
+    // Slot A, 00A0F848: the raw weight, zeroed at 00A0F861/00A0F864 only when
+    // BOTH the attacker record's +1Ch is set and its vtable[+18h](1Ch) holds.
+    float weight = in.base_weight;
+    if (in.attacker_record_flag_1c && in.attacker_is_command_building) {
+        weight = 0.0f;
+    }
+    // Slot B, 00A0F86A..00A0F889: the two record factors multiplied.
+    const float factors = in.attacker_factor * in.target_factor;
+    // Slot C, 00A0F88D..00A0F89E: that product, the weight and target+14h.
+    const float scaled = factors * weight * in.target_scale;
+    // Slot B is now reused as the objective multiplier: 1.0f at 00A0F891,
+    // 10.0f at 00A0F8C6 when 008DDF90 answered true.
+    const float objective = in.target_is_objective
+        ? kAiCandidateWeightObjectiveMultiplier
+        : kAiCandidateWeightDefaultMultiplier;
+    // Slot D, 00A0F8CE..00A0F8E6.
+    const float term = kAiCandidateWeightTermBase - in.target_term;
+    // Slot A is now reused as the class multiplier: 1.0f at 00A0F8EE, 0.1f at
+    // 00A0F929 for the trio, and 0.01f at 00A0F93D when the trio target is not
+    // also a command building. The 0.01f OVERWRITES the 0.1f, same slot.
+    float class_multiplier = kAiCandidateWeightDefaultMultiplier;
+    if (in.target_matches_009fe0b0) {
+        class_multiplier = kAiCandidateWeightFortMultiplier;
+        if (!in.target_is_command_building) {
+            class_multiplier = kAiCandidateWeightNonCommandWeight;
+        }
+    }
+    // 00A0F943..00A0F956: B * C * D * A.
+    return objective * scaled * term * class_multiplier;
+}
+
 }  // namespace bsp
