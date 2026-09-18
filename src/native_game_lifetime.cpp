@@ -39,7 +39,7 @@ void terminal(void* p,U dec_site,U terminal_site,NativeGameLifetimeCalls& c,
     }
 }
 void normal(NativeGameStorage& game,NativeGameLifetimeContext& x,NativeGameLifetimeOperation& o) {
-    void* g=&game;auto& c=x.calls;word(g,0,0x00ce7cb8);o.unwind_state=0x24;
+    void* g=&game;auto& c=x.calls;word(g,0,x.source_primary_table?reinterpret_cast<U>(x.source_primary_table):0x00ce7cb8);o.unwind_state=0x24;
     x.small_returns_disabled_01090aa4=1;
     o.native_site=0x4dcfcb;destroy_native_game_nested_storage_004d27c0(at(g,0x30),c,o);
     o.native_site=0x4dcfd3;c.call_00c4dde0(pointer(g,0x14),x.physics,o.physics);
