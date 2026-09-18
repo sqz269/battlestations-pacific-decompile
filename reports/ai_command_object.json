@@ -1,0 +1,238 @@
+{
+  "packet": "cc8_ai_command_object",
+  "owner": "agent/cc8-ai-command",
+  "summary": "The AI command object at group+564Ch, built for the first time in this process. The factory 00A13340 has exactly one caller and its ten arms were re-read from the listing, confirming ai_tail_command_recipe row for row. The ten vtable slots are settled by dumping 00D22968-00D22C68: +10h is 00A0FC50 in all sixteen classes and +24h is 00A0FC90, RET 8, in all sixteen, so no class acts on a member notification. 00A2C790 was read in full: the +114h slot is the MEMBER entity's, not the command's, and the pass reports the member's weapon director state to a command that discards it, then ticks the command on a uniform 2-4 s schedule. The host now installs the birth NONCONTROL/IDLE command, replaces it on an attack order, rebinds it on a merge and answers the auto-merge predicate for real.",
+  "ghidra_writes": [],
+  "calls": [
+    {
+      "address": "00a13340",
+      "native": "BSP_AiCommand_CreateFromLua",
+      "role": "analyzed; the recipe already lives in ai_tail_command_recipe and this read confirms it",
+      "evidence": "__thiscall(AiGroup* group)(five stack arguments), RET 0x14, body 00A13340-00A137C9. PUSH 0xD22A88 \"commandType\" at 00A13364; ten name arms against 00E0E308+id*4 through 00425850; operator new sizes 8/8/14h/20h/14h/20h/2Ch/20h/8/8 at 00A133E5, 00A1341F, 00A1347D, 00A13514, 00A13586, 00A13610, 00A13671, 00A136D1, 00A1372F, 00A1375B; unmatched names fall to IDLE at 00A13787."
+    },
+    {
+      "address": "00a37a00",
+      "native": "BSP_LuaBinding_AISetCommand",
+      "role": "analyzed; the factory's only caller",
+      "evidence": "tools/callsite_census.py 00a13340 reports exactly one site, CALL at 00A37AD6. The result is pushed and handed to 00A2BD00 at 00A37ADE with ECX the group."
+    },
+    {
+      "address": "00a2bd00",
+      "native": "BSP_AiGroup_SetCommand",
+      "role": "reconstructed as ai_command_install_deletes_previous and used by order_attack",
+      "evidence": "__thiscall(group)(command), RET 4, body 00A2BD00-00A2BD2E read in full. 00A2BD03 loads [ESI+564Ch]; the non-null arm calls vtable[+0h] with PUSH 1 at 00A2BD11-00A2BD13, then 00A2BD19 stores the new pointer. The null arm at 00A2BD23 only stores."
+    },
+    {
+      "address": "00a2c790",
+      "native": "BSP_AiGroup_MemberPass",
+      "role": "reconstructed as ai_command_member_pass_00a2c790 and run by the host's group_member_pass",
+      "evidence": "__thiscall(group), RET 0, body 00A2C790-00A2C8C6 read in full from the listing. 00A2C796 gates on [EBP+5644h]; 00A2C7F0 MOV ESI,[EDI+8] takes the member and 00A2C7F5 MOV EAX,[EDX+114h] its weapon director; 00A2C811 CALL 0071EB60 and 00A2C826 CALL 0071BE40 read it; 00A2C837 PUSH EDI / PUSH EAX then vtable[+24h]. 00A2C859-00A2C86C compares [EBP+5650h] against [00F876A4]; 00A2C879 vt+0Ch, 00A2C890 vt+10h, 00A2C8B3 CALL 00BD2F10, 00A2C8B8 FADD the stored clock into [EBP+5650h]."
+    },
+    {
+      "address": "00a0fc50",
+      "native": "BSP_AiCommand_MemberPassInterval",
+      "role": "reconstructed as the two constants of ai_command_member_pass_00a2c790",
+      "evidence": "No Ghidra function; raw listing 00A0FC50-00A0FC70 inclusive, RET 8. MOVSS XMM0,[00CE3958] into [ESP+4] and MOVSS XMM0,[00CE3D34] into [ESP+8]. 00CE3958 = 00 00 00 40 = 2.0f and 00CE3D34 = 00 00 80 40 = 4.0f. It is vt+10h in all sixteen vtables of 00D22968-00D22C68.",
+      "kind": "no_ghidra_function"
+    },
+    {
+      "address": "00a0fc90",
+      "native": "BSP_AiCommand_NotifyEntityCommand_NoOp",
+      "role": "reconstructed as ai_command_notification_is_discarded",
+      "evidence": "No Ghidra function; RET 8 at 00A0FC90-00A0FC92 inclusive. Dumping 00D22968-00D22C68 as sixteen ten-dword rows puts 00A0FC90 at +24h in every row without exception, which settles docs/AI_GROUP_THINK.md's open item on the slot.",
+      "kind": "no_ghidra_function"
+    },
+    {
+      "address": "00a11f70",
+      "native": "BSP_AiCommand_NonControl_Tick",
+      "role": "analyzed only; the body it jumps to was not read",
+      "evidence": "No Ghidra function; JMP 0x00A10EC0 at 00A11F70-00A11F74 inclusive, then INT3 padding. It is the NONCONTROL vt+0Ch slot in the 00D22990 row.",
+      "kind": "no_ghidra_function"
+    },
+    {
+      "address": "00a11f80",
+      "native": "BSP_AiCommand_NonControl_CanMergeWith",
+      "role": "reconstructed through ai_command_can_merge_with and answered by the host's can_auto_merge",
+      "evidence": "__thiscall(command)(other), RET 4, body 00A11F80-00A11FE8 read in full. 00A11F85 TEST ESI,ESI; 00A11F8C [ESI+5644h]; 00A11F95 ECX=[EDI+4] and 00A11F9C [ECX+5644h]; 00A2C5A0 at 00A11FA6 with ECX the owner and at 00A11FAF with ECX=ESI, compared at 00A11FB4; then 00A10D50 at 00A11FBC and 00A10C60 at 00A11FC8."
+    },
+    {
+      "address": "00a12450",
+      "native": "BSP_AiCommand_Idle_CanMergeWith",
+      "role": "reconstructed through ai_command_can_merge_with and answered by the host's can_auto_merge",
+      "evidence": "__thiscall(command)(other), RET 4, body 00A12450-00A124CF read in full. The same six tests as 00A11F80 with 00A2C600 inserted: 00A12493 with ECX=[EDI+4], 00A1249C with ECX=ESI, compared at 00A124A1, before 00A10D50 at 00A124A8 and 00A10C60 at 00A124B4."
+    },
+    {
+      "address": "00a12430",
+      "native": "BSP_AiCommand_Idle_Tick",
+      "role": "analyzed only; the three helpers it calls were not read",
+      "evidence": "Body 00A12430-00A12446. CALL 00A10EC0 at 00A12433, CALL 00A10DC0 at 00A1243A, then JMP 00A11070 at 00A12442, all with ECX = ESI = the command."
+    },
+    {
+      "address": "00a2c600",
+      "native": "BSP_AiGroup_AnyMemberMatches009FE0B0",
+      "role": "reconstructed as ai_group_any_member_matches_009fe0b0 and used by the host's IDLE arm",
+      "evidence": "__thiscall(group), RET 0, body 00A2C600-00A2C650 read in full. 00A2C600 loads [ECX+5640h], 00A2C608 LEA ESI,[ECX+563Ch] is the sentinel, 00A2C62B MOV ECX,[EDI+8] takes the member and 00A2C62E CALL 009FE0B0; the first non-zero leaves with MOV AL,1 at 00A2C647."
+    },
+    {
+      "address": "009fe0b0",
+      "native": "BSP_Entity_IsOneOfThreeGroupClasses",
+      "role": "reconstructed as ai_entity_class_matches_009fe0b0",
+      "evidence": "__thiscall(entity), RET 0, body 009FE0B0-009FE0E9. Three calls to vtable[+5Ch] with PUSH 0x1B at 009FE0B8, PUSH 0x45 at 009FE0C5 and PUSH 0x46 at 009FE0D4, each jumping to the MOV EAX,1 tail at 009FE0E2 on a non-zero answer. 00A2D8E0 calls the same routine."
+    },
+    {
+      "address": "00a10d50",
+      "native": "BSP_AiCommand_MergeLeaderStrengthOk",
+      "role": "reused; already reconstructed as ai_tail_merge_leader_strength_ok",
+      "evidence": "Body 00A10D50-00A10DBB, read by packet cc2_ai_planner_tails. Called at 00A11FBC and 00A124A8 with the other group pushed."
+    },
+    {
+      "address": "00a10c60",
+      "native": "BSP_AiCommand_MergeLeaderDistanceOk",
+      "role": "reused; already reconstructed as ai_tail_merge_leader_distance_ok",
+      "evidence": "Body 00A10C60-00A10D4E, read by packet cc2_ai_planner_tails. Called at 00A11FC8 and 00A124B4. AutoMerge_MergeDist squared, tuning +208h, shipped 650."
+    },
+    {
+      "address": "00a2c5a0",
+      "native": "BSP_AiGroup_HasGroupableCombatant",
+      "role": "reused; the host already answers it",
+      "evidence": "Called twice by each merge override, at 00A11FA6/00A11FAF and 00A12476/00A1247F, and the two answers are compared as bytes."
+    },
+    {
+      "address": "00a2c8d0",
+      "native": "BSP_AiGroup_CanAutoMerge",
+      "role": "reconstructed; the delegated half now answers in the host",
+      "evidence": "__thiscall(into)(from), RET 4. docs/AI_GROUP_THINK.md read the body in full; the delegation to from+564Ch vtable[+14h] is what this packet supplies."
+    },
+    {
+      "address": "00a2cbd0",
+      "native": "BSP_AiGroup_OrderAttack",
+      "role": "reconstructed; the host now installs a real command object",
+      "evidence": "Body 00A2CBD0-00A2CCE8, read in full by packet cc2_ai_planners. new(2Ch)+00A109B0 for CAUTIOUSATTACK, new(20h)+00A10890 for MOVETOATTACK, then the old command is deleted and replaced at group+564Ch."
+    },
+    {
+      "address": "00a2db80",
+      "native": "BSP_AiGroup_Merge",
+      "role": "reconstructed; phase A's retarget now runs in the host",
+      "evidence": "Phase A 00A2DBC1-00A2DD0E as docs/AI_GROUP_THINK.md transcribes it: every command with vtable[+8h](6) true and +1Ch equal to the absorbed group keeps its class and is rebound through 00A2BD00."
+    },
+    {
+      "address": "00a10710",
+      "native": "BSP_AiCommand_Attack_Construct",
+      "role": "analyzed only; the layout it writes is carried in the doc",
+      "evidence": "__thiscall(command)(group, target). docs/AI_PLANNERS.md read it: +0h vtable, +4h owner, +8h observer vtable, +1Ch the target group. The factory reaches it through 00A10890 at 00A13651 with PUSH target then PUSH owner at 00A1364D-00A1364E."
+    },
+    {
+      "address": "00a10890",
+      "native": "BSP_AiCommand_MoveToAttack_Construct",
+      "role": "analyzed only",
+      "evidence": "CALL at 00A13651 after new(20h) at 00A13610."
+    },
+    {
+      "address": "00a109b0",
+      "native": "BSP_AiCommand_CautiousAttack_Construct",
+      "role": "analyzed only",
+      "evidence": "CALL at 00A136B2 after new(2Ch) at 00A13671."
+    },
+    {
+      "address": "00a10ae0",
+      "native": "BSP_AiCommand_CloseAttack_Construct",
+      "role": "analyzed only",
+      "evidence": "CALL at 00A13712 after new(20h) at 00A136D1."
+    },
+    {
+      "address": "00a102d0",
+      "native": "BSP_AiCommand_CautiousMove_Construct",
+      "role": "analyzed only",
+      "evidence": "CALL at 00A13560 after new(20h) at 00A13514, with targetPos read by 00888760 at 00A13557."
+    },
+    {
+      "address": "00a10370",
+      "native": "BSP_AiCommand_RegroupingMove_Construct",
+      "role": "analyzed only",
+      "evidence": "CALL at 00A135D2 after new(14h) at 00A13586, with targetPos read by 00888760 at 00A135C9."
+    },
+    {
+      "address": "00888760",
+      "native": "BSP_LuaObject_ReadVector3",
+      "role": "analyzed only; the MOVE family's targetPos producer",
+      "evidence": "CALL at 00A134C0, 00A13557 and 00A135C9. The MOVETO arm stores its three floats to [ESI+8], [ESI+0Ch] and [ESI+10h] at 00A134C7-00A134DC."
+    },
+    {
+      "address": "00a37250",
+      "native": "BSP_AiGroup_FromLuaEntityArgument",
+      "role": "analyzed only; the ATTACK family's target producer",
+      "evidence": "CALL at 00A13648, on the object 00B67800 fetched for the key 00CFD964 \"target\"."
+    },
+    {
+      "address": "0071eb60",
+      "native": "BSP_EntityCommand_ActiveTargetDescriptor",
+      "role": "used by the host through active_command_descriptor_0071eb60",
+      "evidence": "CALL at 00A2C811 with ECX the member's weapon director."
+    },
+    {
+      "address": "0071be40",
+      "native": "BSP_WeaponDirector_CurrentCommand",
+      "role": "used by the host through director_current_command_0071be40",
+      "evidence": "CALL at 00A2C826 with ECX the member's weapon director."
+    },
+    {
+      "address": "00bd2f10",
+      "native": "BSP_Random_UniformFloatRange",
+      "role": "used by the host through random_interval",
+      "evidence": "CALL at 00A2C8B3 with the 00CE3958 slot at [ESP] and the 00CE3D34 slot at [ESP+4], so (lo, hi) = (2.0f, 4.0f)."
+    },
+    {
+      "address": "00a2c6c0",
+      "native": "BSP_AiGroup_HasShip",
+      "role": "reconstructed as the host's group_has_ship, for 00A2C8D0's family gate",
+      "evidence": "__thiscall(group), body from 00A2C6C0. The member walk calls 009FE120 at 00A2C6EE and leaves true at the first hit; 009FE120 BSP_Entity_IsShip is a tail forward of vtable[+5Ch](6), body 009FE120-009FE129, already read by packet cc2_ai_group_think."
+    },
+    {
+      "address": "00a2c660",
+      "native": "BSP_AiGroup_HasAir",
+      "role": "reconstructed as the host's group_has_air, for 00A2C8D0's family gate",
+      "evidence": "__thiscall(group), body from 00A2C660. The member walk calls 009FE0F0 at 00A2C68E and leaves with MOV AL,1 at 00A2C6A7; 009FE0F0 BSP_Entity_IsPlaneOrSquadron asks vtable[+5Ch] with PUSH 0xF at 009FE0F8 then PUSH 0x18 at 009FE105."
+    },
+    {
+      "address": "00a179e0",
+      "native": "BSP_AiPartyBrain_EngagementPass",
+      "role": "analyzed only; answers the ai_planner_owned_group_walk follow-up",
+      "evidence": "docs/AI_PLANNERS.md read the body 00A179E0-00A18195. Its only order-shaped call is 00A17880, which the ledger records as std::vector push_back of a 28-byte element, body 00A17880-00A17925, with 00A179E0 its only caller. The pass records engagements and issues no command, so the native orders only a planner's first owned group per think."
+    }
+  ],
+  "corrections": [
+    "docs/AI_COORDINATOR_TICK.md line 76 and line 187 call vtable[+114h] a slot of the AI command. 00A2C7F3-00A2C7FD loads it from the member entity's own vtable; the command's role is to receive the report at its vt+24h.",
+    "docs/AI_GROUP_THINK.md section 2 left open 'whether any class in the block overrides the slot with a real body'. None does: +24h is 00A0FC90 in all sixteen vtables.",
+    "docs/AI_GROUP_THINK.md's open question on +54h and g_aiGroupsByTeam[2]: 00F8AA64 is 00F8AA48 + 2*12 + 4, the team-2 list head, and the seed phase admits only +54h < 2, so no seeded group can be in it and the proximity merge walks an empty list.",
+    "docs/AI_PLANNERS.md records 00A10D50 and 00A10C60 as 'not read'; packet cc2_ai_planner_tails read both and the ledger carries their contracts.",
+    "docs/AI_COMMAND_LIFETIME.md's ai_planner_owned_group_walk follow-up is answered for 00A179E0: it records engagements into a vector and issues no order."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 clean, Win32 /W4 /WX",
+    "tests": "ctest -C Release: reconstructed_math and tool_tests both passed",
+    "runs": "3000 mission frames at 0.05 s per mission, before on main 97d639fd7 built in this worktree, after on this change",
+    "IJN01": {
+      "before": "groups=4, no command object, auto_merges=0, prox_merges=0, member_passes=330000, attack_orders=1 movetoattack, commands=17? no: 34, gunnery hits=4 records=4 deaths=2 damage=500.0",
+      "after": "groups=4 carrying 1 MOVETOATTACK (with target), 1 IDLE, 2 NONCONTROL; auto_merges=0, prox_merges=0, member_passes=330000, command ticks=204, attack_orders=1 movetoattack, commands=34, gunnery hits=4 records=4 deaths=2 damage=500.0 (unchanged)"
+    },
+    "USN01": {
+      "before": "groups=4, no command object, auto_merges=0, member_passes=153000, attack_orders=1 movetoattack, commands=17, gunnery hits=25 deaths=1 damage=229.5",
+      "after": "groups=4 carrying 1 MOVETOATTACK (with target), 1 IDLE, 2 NONCONTROL; auto_merges=0, member_passes=153000, command ticks=204, attack_orders=1, commands=17, gunnery hits=24 deaths=1 damage=229.5"
+    },
+    "USN02": {
+      "before": "groups=2, no command object, auto_merges=0, member_passes=96000, attack_orders=1 movetoattack, commands=14, gunnery hits=168 deaths=3 damage=19723.2",
+      "after": "groups=2 carrying 1 MOVETOATTACK (with target) and 1 NONCONTROL; auto_merges=0, member_passes=96000, command ticks=103, attack_orders=1, commands=14, gunnery hits=160 deaths=3 damage=18661.8"
+    },
+    "attribution": "can_auto_merge and group_member_pass both go from UNIMPLEMENTED to concrete at the same call counts (23990 and 11996 per mission), so the phases were always reached and only the answers changed. 204 ticks over four groups and 103 over two is 51 per group in 150 s, one every 2.9 s, inside the 2.0-4.0 s band 00A0FC50 supplies: run-time evidence for the interval constants. The gunnery and first_command shifts come from random_interval drawing the command schedule from the same stand-in generator as the party think; no gunnery code changed.",
+    "merges_still_zero": "Every pair containing a MOVETOATTACK group is rejected by class, through the default 00A0FC80. The remaining same-party NONCONTROL/IDLE pairs are rejected by one of the six tests of 00A11F80/00A12450, and which one was not instrumented. Partial."
+  },
+  "uncertainties": [
+    "The per-class vt+0Ch tick was not read. 00A10EC0, 00A10DC0 and 00A11070 are the three helpers NONCONTROL and IDLE share, and the eleven class-specific bodies were not opened, so whether a MOVETO or DEFENDPOSITION ever reaches a unit as a scene command is still unsettled. Coverage: partial.",
+    "The factory allocates eight bytes for DEFENDPOSITION and RETREAT although their family carries a third base at +20h. Read as such at 00A1372F and 00A1375B, not explained.",
+    "CAUTIOUSMOVE is allocated 20h by the factory while docs/AI_PLANNERS.md places its third two-slot base at +20h, which would need 2Ch. One of the two is imprecise; the size is what the listing shows.",
+    "Which entity classes the ids 0x1B, 0x45 and 0x46 of 009FE0B0 name was not resolved.",
+    "member_weapon_director has no director object to return in this process, so a live unit stands in for a non-null pointer. Labelled substitution.",
+    "release_group_reference reverts a command whose target was released to the group's birth class; the native leaves a dangling command+1Ch. Labelled substitution.",
+    "00A10D50 compares AiLeaderWeight through the adjustor thunk 009FFD70, whose contract is unread; this process substitutes the leader's unit index, which orders a pair consistently but is not the native strength. The merge counts below are therefore evidence that the predicate now runs, not that it answers what the native would."
+  ]
+}
