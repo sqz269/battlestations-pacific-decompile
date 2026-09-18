@@ -96,6 +96,11 @@ struct GameAiSummary {
     unsigned long long tick_formation_requests{0};  // 0077C8D0
     unsigned long long tick_followers{0};        // 00A10DC0 walked one
     unsigned long long command_promotions{0};    // MOVETOATTACK became CLOSEATTACK
+    unsigned long long close_members_served{0};      // 00A13B60 served a member
+    unsigned long long close_attack_move_orders{0};  // 00E08F78 attackmove
+    unsigned long long close_set_target_orders{0};   // 00E08EF8 settarget
+    unsigned long long close_fallback_movetos{0};    // the no-candidate arm
+    unsigned long long close_candidates_scored{0};
     unsigned long long party_think_calls{0};
     unsigned long long parties_thought{0};
     unsigned long long planner_ticks{0};

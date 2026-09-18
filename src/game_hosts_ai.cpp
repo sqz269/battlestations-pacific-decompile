@@ -15,6 +15,7 @@
 
 #include "bsp/ai_command_lifetime.hpp"
 #include "bsp/ai_command_object.hpp"
+#include "bsp/ai_close_attack_tick.hpp"
 #include "bsp/ai_command_tick.hpp"
 #include "bsp/ai_group_think.hpp"
 #include "bsp/ai_planners.hpp"
@@ -45,7 +46,8 @@ constexpr int kCampaignGameMode = 0;
 struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                                      public bsp::AiPlannerHost,
                                      public bsp::AiCommandMemberPassHost,
-                                     public bsp::AiCommandTickHost {
+                                     public bsp::AiCommandTickHost,
+                                     public bsp::AiCloseAttackTickHost {
     Impl(GameHostLog& log_in, GameUnitsHost& units_in) : log(log_in), units(units_in) {}
 
     void record(const char* method, std::uint32_t address) {
@@ -498,6 +500,24 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         bsp::AiCommandObject* cmd = static_cast<bsp::AiCommandObject*>(command);
         if (cmd == nullptr) return;
         const bsp::AiCommandTickResult tick = bsp::ai_command_tick_vt000c(*this, *cmd);
+        // 00A15490 and 00A15500 both end in 00A13B60, with the target group's
+        // leader point and 1.5f for CLOSEATTACK and the own group's and 1.0f
+        // for DEFENDPOSITION.
+        if (cmd->type == bsp::AiCommandType::CloseAttack ||
+            cmd->type == bsp::AiCommandType::DefendPosition) {
+            const bool close = cmd->type == bsp::AiCommandType::CloseAttack;
+            float centre[3] = {0.0f, 0.0f, 0.0f};
+            void* centre_group = close ? cmd->target_group : cmd->owner_group;
+            if (centre_group != nullptr) tick_leader_point(centre_group, centre);
+            const bsp::AiCloseAttackTickResult close_tick =
+                bsp::ai_close_attack_tick_00a13b60(*this, *cmd, close ? 1.5f : 1.0f, centre);
+            summary.close_members_served += close_tick.members_served;
+            summary.close_attack_move_orders += close_tick.attack_move_orders;
+            summary.close_set_target_orders += close_tick.set_target_orders;
+            summary.close_fallback_movetos += close_tick.fallback_movetos;
+            summary.close_candidates_scored += close_tick.candidates_scored;
+            done("AiCommand::close_attack_tick", 0x00a13b60u);
+        }
         summary.tick_orders += tick.orders_issued;
         summary.tick_formation_requests += tick.formation_requests;
         summary.tick_followers += tick.followers_walked;
@@ -508,6 +528,107 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         } else {
             done("AiCommand::tick_000c", 0x00a02020u);
         }
+    }
+
+    // ---- bsp::AiCloseAttackTickHost, one method per native call -----------
+    std::size_t close_member_count(void* group) override { return group_member_count(group); }
+    void* close_member_at(void* group, std::size_t index) override {
+        return group_member_at(group, index);
+    }
+    bool close_member_is_ship_base(void* member) override {
+        return tick_member_is_ship_base(member);
+    }
+    bool close_member_is_plane_squadron(void* member) override {
+        return tick_member_is_plane_squadron(member);
+    }
+    bool close_member_squadron_excluded(void* member) override {
+        return tick_squadron_excluded_007eda90(member);
+    }
+    bool close_member_controller_busy(void* member) override {
+        // member+538h through its vtable[+2Ch] at 00A1443D; contract unread.
+        (void)member;
+        record("AiCommand::close_controller_busy", 0x00a1443du);
+        return false;
+    }
+    bool close_member_position(void* member, float out[3]) override {
+        return tick_member_position(member, out);
+    }
+    std::size_t close_candidate_count() override { return units.count(); }
+    void* close_candidate_at(std::size_t index) override { return handle(index); }
+    bool close_candidate_position(void* candidate, float out[3]) override {
+        return tick_member_position(candidate, out);
+    }
+    int close_candidate_team(void* candidate) override {
+        return units.unit_side_0054(unit_index_of(candidate));
+    }
+    bool close_candidate_alive(void* candidate) override {
+        return units.unit_alive_and_visible(unit_index_of(candidate));
+    }
+    float close_target_weight(void* member, void* candidate) override {
+        // 00A0F810, which wraps 00A08460 BSP_Ai_TargetWeight with a health and
+        // world-set test. This process cannot run that model, so the candidate's
+        // own class weight from 009FDF30 stands in: it is the per-class
+        // importance the model is built on, and it preserves the ordering the
+        // score needs. Labelled substitution, not the native weight.
+        (void)member;
+        record("AiCommand::close_target_weight", 0x00a0f810u);
+        return unit_class_weight(unit_index_of(candidate));
+    }
+    bool close_in_target_group(void* target_group, void* candidate) override {
+        // 00A2C720 walks the group's +563Ch list for the entity.
+        Group* g = group_at(target_group);
+        if (g == nullptr) return false;
+        const std::size_t unit = unit_index_of(candidate);
+        return std::find(g->members.begin(), g->members.end(), unit) != g->members.end();
+    }
+    void* close_member_current_target(void* member) override {
+        // The member's vtable[+114h] then 0071EB60, then 00521EA0 to resolve
+        // the descriptor into an instance.
+        const std::size_t unit = unit_index_of(member);
+        bsp::SceneCommandTarget target;
+        int mode = 0;
+        if (!units.active_command_descriptor_0071eb60(unit, target, mode)) return nullptr;
+        const std::uint32_t resolved = units.resolve_command_target_00521ea0(target);
+        if (resolved == 0u) return nullptr;
+        return reinterpret_cast<void*>(static_cast<std::uintptr_t>(resolved));
+    }
+    bool close_issue_order(void* member, std::uint32_t command_class, void* target) override {
+        // 0077D600 with a kind-1 descriptor naming the target. This process
+        // reaches the same routine through the registry path, which resolves
+        // the object by name instead of carrying the pointer; labelled.
+        const std::size_t unit = unit_index_of(member);
+        const std::string token =
+            command_class == bsp::kAiSceneCommandAttackMove ? "attackmove" : "settarget";
+        const std::string target_name = unit_name(unit_index_of(target));
+        const std::string name = unit_name(unit);
+        if (name.empty() || target_name.empty()) {
+            ++summary.commands_refused;
+            return false;
+        }
+        if (!units.issue_player_command(token, target_name, name)) {
+            ++summary.commands_refused;
+            return false;
+        }
+        ++summary.commands_issued;
+        if (current_party >= 0) ++party_row(current_party).commands_issued;
+        if (summary.first_command_seconds < 0.0f) summary.first_command_seconds = clock_seconds;
+        done("AiCommand::close_issue_order", 0x0077d600u);
+        return true;
+    }
+    bool close_issue_moveto(void* member, const float point[3]) override {
+        return tick_issue_moveto(member, point);
+    }
+    float close_tuning_field(std::uint32_t offset) override { return tuning.at(offset); }
+    int close_own_team(void* group) override {
+        Group* g = group_at(group);
+        return g != nullptr ? g->team : 0;
+    }
+
+    // 009FDF30 alone, without 009FFD80's ship and group-class multipliers.
+    float unit_class_weight(std::size_t unit) {
+        const std::uint32_t offset =
+            bsp::ai_entity_class_weight_offset_009fdf30(units.unit_class_id(unit));
+        return offset == 0xFFFFFFFFu ? 1.0f : tuning.at(offset);
     }
 
     // ---- bsp::AiCommandTickHost, one method per native call ----------------
@@ -1193,13 +1314,16 @@ void GameAiCoordinatorHost::report() {
         "groups_created=%llu destroyed=%llu members_added=%llu evicted=%llu splits=%llu "
         "splits_taken=%llu auto_merges=%llu prox_merges=%llu member_passes=%llu "
         "tick_orders=%llu tick_followers=%llu formation_requests=%llu promotions=%llu "
-        "collect_dist=%.1f",
+        "collect_dist=%.1f served=%llu attackmove=%llu settarget=%llu fallback=%llu "
+        "scored=%llu",
         s.game_mode, s.compose_passes, s.seed_candidates, s.groups_created,
         s.groups_destroyed, s.members_added, s.members_evicted, s.splits,
         s.splits_taken, s.auto_merges, s.proximity_merges, s.member_passes,
         s.tick_orders, s.tick_followers, s.tick_formation_requests,
         s.command_promotions,
-        static_cast<double>(host.tuning.at(bsp::kAiTuningCloseAttackCollectDist)));
+        static_cast<double>(host.tuning.at(bsp::kAiTuningCloseAttackCollectDist)),
+        s.close_members_served, s.close_attack_move_orders, s.close_set_target_orders,
+        s.close_fallback_movetos, s.close_candidates_scored);
     host.log.notef("summary mission ai tuning mode=%d (%s) merge_dist=%.1f "
         "near=%.1f far=%.1f sticky=%.2f",
         s.tuning_mode, bsp::ai_tuning_mode_table_name(
