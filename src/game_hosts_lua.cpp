@@ -253,6 +253,16 @@ GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
             row.y_drag = number("YDrag");
             row.max_spd = number("MaxSpd");
             row.travel_speed = number("TravelSpeed");
+            // 007D20C6 scales Accel in place by tuning+31Ch * tuning+320h when
+            // the second is above 1.0 and leaves it raw otherwise
+            // (src/plane_class_fields.cpp:207-219). The raw value is read here:
+            // thrust and the derived drag coefficient desc+50Ch both take
+            // desc+164h, so the scaling cancels out of the equilibrium airspeed
+            // and only changes how quickly a plane reaches it. Labelled partial.
+            row.accel = number("Accel");
+            row.glide_rate = number("GlideRate");
+            row.drag_pitch_ratio = number("DragPitchRatio");
+            row.air_brake_drag = number("AirBrakeDrag");
             // 00960363 uses bare GetNumber, including numeric strings and
             // the native float32 spill. Other row readers keep their scope.
             ::lua_getfield(state_, -1, "Width");
