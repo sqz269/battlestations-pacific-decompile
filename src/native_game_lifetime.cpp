@@ -68,8 +68,8 @@ void normal(NativeGameStorage& game,NativeGameLifetimeContext& x,NativeGameLifet
     o.native_site=0x4dd1ee;c.call_004c4b40(at(g,0x716c));o.unwind_state=0x20;
     const auto string=[&](U offset,U getter,U release) {
         if(void* p=pointer(g,offset+4)) {
-            U size=word(g,offset)+1;o.native_site=getter;void* pool=c.call_00419cc0(p,size,1);
-            o.native_site=release;c.call_00bd1510(pool,p,size,1);
+            U size=word(g,offset)+1;o.native_site=getter;void* pool=c.call_00419cc0(p,size,1,x.profile);
+            o.native_site=release;c.call_00bd1510(pool,p,size,1,x.profile);
         }
     };
     string(0x7164,0x4dd20f,0x4dd216);o.unwind_state=0x1f;
@@ -84,7 +84,7 @@ void normal(NativeGameStorage& game,NativeGameLifetimeContext& x,NativeGameLifet
         if(p){terminal(p,decs[i],terms[i],c,o);word(g,offsets[i],0);}}
     constexpr U list_sites[]={0x4dd346,0x4dd351,0x4dd35c,0x4dd367,0x4dd372,0x4dd37d,0x4dd388,0x4dd393};
     for(U i=0;i<8;++i){o.native_site=list_sites[i];c.call_004bf8e0(at(g,0x19b8-i*0xc));}
-    o.unwind_state=0xe;o.native_site=0x4dd3a3;c.call_007ff9f0(at(g,0x1944));
+    o.unwind_state=0xe;o.native_site=0x4dd3a3;c.call_007ff9f0(at(g,0x1944),x.profile);
     using Tree=void(NativeGameLifetimeCalls::*)(void*,void*,void*,void*,void*,void*);
     U iterator[2]; // native private8h output, intentionally not initialized
     const auto tree=[&](U offset,U state,U site,U free_site,Tree f) {
@@ -96,7 +96,7 @@ void normal(NativeGameStorage& game,NativeGameLifetimeContext& x,NativeGameLifet
     tree(0x1930,0xd,0x4dd3c6,0x4dd3cf,&NativeGameLifetimeCalls::call_004d1a50);
     o.unwind_state=0xc;o.native_site=0x4dd3f5;c.array_destroy_00bf7c6e(at(g,0x1008),0x118,8,0x4cb2f0,x.arrays,o.arrays[1]);
     o.unwind_state=0xb;o.native_site=0x4dd412;c.array_destroy_00bf7c6e(at(g,0x748),0x118,8,0x4cb2f0,x.arrays,o.arrays[2]);
-    o.unwind_state=0xa;o.native_site=0x4dd422;c.call_007fd8a0(at(g,0x650));
+    o.unwind_state=0xa;o.native_site=0x4dd422;c.call_007fd8a0(at(g,0x650),x.profile,o.profile);
     o.native_site=0x4dd42f;c.call_004cf3f0(at(g,0x638));
     o.native_site=0x4dd438;c.free_00bf65ac(pointer(g,0x63c));word(g,0x63c,0);
     tree(0x628,8,0x4dd461,0x4dd46a,&NativeGameLifetimeCalls::call_004d22f0);
@@ -124,6 +124,7 @@ void NativeGameLifetimeOperation::acknowledge_diagnostic_cleanup() noexcept {
     if(phase==Phase::failed){
         for(const auto& array:arrays)if(array.phase==NativeGameArrayLifetimeOperation::Phase::running||array.phase==NativeGameArrayLifetimeOperation::Phase::failed)std::terminate();
         if(embedded.phase==NativeGameEmbeddedLifetimeOperation::Phase::running||embedded.phase==NativeGameEmbeddedLifetimeOperation::Phase::failed)std::terminate();
+        if(profile.phase==NativeGameProfileLifetimeOperation::Phase::running||profile.phase==NativeGameProfileLifetimeOperation::Phase::failed)std::terminate();
         phase=Phase::diagnostic_retired;
     }
 }
@@ -143,6 +144,22 @@ void NativeGameLifetimeCalls::call_0076f000(void* p,NativeGameEmbeddedLifetimeCo
 void NativeGameLifetimeCalls::call_0041cc80(void* p){NativeGameEmbeddedLifetimeCalls::call_0041cc80(p);}
 void NativeGameLifetimeCalls::call_00b669a0(void* p){close_native_lua_state_00b669a0(*static_cast<NativeLuaStateStorage*>(p));}
 void NativeGameLifetimeCalls::call_004dceb0(void* p){destroy_native_input_configuration_004dceb0(p);}
+void* NativeGameLifetimeCalls::call_00419cc0(void*,U,U,NativeGameProfileLifetimeContext* context){
+    if(!context||&context->calls!=this)throw std::invalid_argument("native game string cleanup requires its actual profile context");
+    return profile_pool_00419cc0(context->strings);
+}
+void NativeGameLifetimeCalls::call_00bd1510(void* pool,void* p,U size,U,NativeGameProfileLifetimeContext* context){
+    if(!context||&context->calls!=this)throw std::invalid_argument("native game string cleanup requires its actual profile context");
+    profile_return_00bd1510(static_cast<NativeStringPoolStorage*>(pool),p,size,context->strings);
+}
+void NativeGameLifetimeCalls::call_007ff9f0(void* p,NativeGameProfileLifetimeContext* context){
+    if(!context||&context->calls!=this)throw std::invalid_argument("native race cleanup requires its actual profile context");
+    NativeGameProfileLifetimeProgress progress;destroy_native_game_race_record_007ff9f0(p,*context,progress);
+}
+void NativeGameLifetimeCalls::call_007fd8a0(void* p,NativeGameProfileLifetimeContext* context,NativeGameProfileLifetimeOperation& operation){
+    if(!context||&context->calls!=this)throw std::invalid_argument("native profile cleanup requires its actual context");
+    destroy_native_game_profile_007fd8a0(p,*context,operation);
+}
 void destroy_native_game_nested_storage_004d27c0(void* cell,NativeGameLifetimeCalls& c,NativeGameLifetimeProgress& o) {
     if(void* p=pointer(cell,0)) {
         if(void* q=pointer(p,0x14)){o.native_site=0x4d27d5;c.free_00bf65ac(q);}

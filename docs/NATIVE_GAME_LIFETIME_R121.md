@@ -149,3 +149,13 @@ The existing tracked-lock, Lua-state and input-configuration cleanup bodies now
 supply the corresponding parent defaults. Parent and embedded copied-original
 comparisons pass; virtual peer/payload services, other parent dependencies,
 native exception behavior and ordinary raw-game admission remain open.
+
+## Correction from docs/NATIVE_GAME_PROFILE_LIFETIME_R124.md
+
+R124 binds profile destruction, race-record destruction and direct pool returns
+to the actual profile/string context. The parent retains a profile child and its
+nested mission operation; the context retains the string adapter used by that
+child. Four normal bodies889bytes and the consumed full-range library branch
+have copied-original composition evidence. General partial transient-tree erase,
+remaining parent cleanup services, native exceptions and ordinary admission remain
+open; see the R124 report for the exact fixture domain.

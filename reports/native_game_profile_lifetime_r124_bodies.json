@@ -1,0 +1,73 @@
+{
+ "events": [
+  {
+   "recreate": "007fd8a0",
+   "previous": "Function: FUN_007fd8a0 at 007fd8a0\nSignature: undefined FUN_007fd8a0(void)\nEntry: 007fd8a0\nBody: 007fd8a0 - 007fd905",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "007fd8a0"
+   },
+   "result": {
+    "success": true,
+    "address": "007fd8a0",
+    "deleted_function": "FUN_007fd8a0",
+    "body_size": 96,
+    "message": "Function 'FUN_007fd8a0' deleted at 007fd8a0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "007fd8a0",
+    "end_address": "007fdb17"
+   },
+   "result": {
+    "success": true,
+    "start_address": "007fd8a0",
+    "end_address": "007fdb16",
+    "bytes_disassembled": 631,
+    "message": "Successfully disassembled 631 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "007fd8a0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "007fd8a0",
+    "function_name": "FUN_007fd8a0",
+    "entry_point": "007fd8a0",
+    "body_size": 631,
+    "message": "Function created successfully at 007fd8a0"
+   }
+  },
+  {
+   "defined": "007fd8a0",
+   "end": "007fdb17",
+   "name": null,
+   "after": "Function: FUN_007fd8a0 at 007fd8a0\nSignature: undefined FUN_007fd8a0(void)\nEntry: 007fd8a0\nBody: 007fd8a0 - 007fdb16"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
