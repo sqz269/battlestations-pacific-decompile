@@ -933,6 +933,12 @@ struct GameUnitsHost::Impl {
     static constexpr float kPilotDiveBombAttackDist = 1100.0f;
     static constexpr float kPilotDiveBombBeginAltRange1 = 1000.0f;
     static constexpr float kPilotDiveBombBeginAltRange2 = 1200.0f;
+    // scripts/datatables/robots.lua, the SPNormal row, the fields
+    // include/bsp/robot_config.hpp names from the same Lua keys.
+    static constexpr float kDiveBombReleaseAlt1 = 350.0f;   // row+38h
+    static constexpr float kDiveBombReleaseAlt2 = 450.0f;   // row+3Ch
+    static constexpr float kDiveBombAimPrecDist = 70.0f;    // row+5Ch
+    static constexpr float kDiveBombAimPrecMul = 0.3f;      // row+60h
 
     // 007C1DB0: the device list at unit+48h, summing 006E3500 over every device
     // whose vtable[+5Ch] answers 25h. The gunnery host owns that list; the
@@ -1032,16 +1038,33 @@ struct GameUnitsHost::Impl {
             b.speed_ratio_41c = 1.0f;
             in.should_break_off = bsp::dive_bomb_should_break_off_009c8a90(b);
         }
-        // SUBSTITUTION, labelled: the flyabove tick 009C62B0 has no Ghidra
-        // function and this packet read only its flag writes (009C659F,
-        // 009C66E3/E7/F2, 009C6A30, where +19h is copied from +18h once the
-        // over-target geometry closes). The host stands in for that geometry
-        // with the same two quantities the rest of the class uses: the aircraft
-        // is over the target when the planar range is inside the safe distance,
-        // and it can dive while it still has bombs.
-        in.flyabove_can_dive_790 = slot.db_has_bomb_d1;
-        in.flyabove_ready_791 =
-            slot.db_planar_bc <= bsp::dive_bomb_constant::kSafeDistance;
+        // 009C62B0 is defined and its two decisive flags are recovered, so
+        // the geometry stand-in is gone. docs/DIVE_BOMB_TASK.md.
+        //
+        // +18h at 009C680E: the aircraft may dive once it is higher above its
+        // target than approach+D4h. approach+D4h has no producer read, so the
+        // zero it holds is labelled and this reduces to "above the target".
+        {
+            float target_y = slot.motion.position[1];
+            if (slot.command_target_plus_one != 0) {
+                const std::size_t ti = slot.command_target_plus_one - 1;
+                if (ti < slots.size()) target_y = slots[ti]->motion.position[1];
+            }
+            const float height_above = slot.motion.position[1] - target_y;
+            in.flyabove_can_dive_790 = bsp::dive_bomb_flyabove_can_dive_009c680e(
+                height_above, slot.db_release_range_d4);
+        }
+        // +19h at 009C67B0: the roll-in fires once the target is behind the
+        // wing line, |bearingError| past the 1.6 rad at 00CE3D48.
+        // SUBSTITUTION, labelled and much narrower than before: the second arm
+        // tests max(x, 0) <= 0 and x's producer is one level back, so the host
+        // passes a positive value and the rule is the bearing test alone.
+        in.flyabove_ready_791 = bsp::dive_bomb_flyabove_roll_in_009c67b0(
+            bsp::wrapped_angle_subtract_00438b10(slot.db_bearing_c0,
+                                                 slot.plane_heading_c6c),
+            1.0f);
+        // +1Ah at 009C66E3/009C66F2/009C6822 is still a stand-in: its own
+        // writers are read but the conditions around them are not.
         in.flyabove_leave_792 = !slot.db_has_bomb_d1;
         in.flyabove_turn_side_798 = 0;
         in.aimdive_alive_74d = slot.db_aim_alive_19;
@@ -4124,16 +4147,38 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.db_begin_alt_ac = GameUnitsHost::Impl::kPilotDiveBombBeginAltRange1;
                             unit_.db_alt_span_b0 =
                                 GameUnitsHost::Impl::kPilotDiveBombBeginAltRange2 - GameUnitsHost::Impl::kPilotDiveBombBeginAltRange1;
-                            // SUBSTITUTION, labelled. approach+A8h is
-                            // 009C3ED8's Random((approach+14h)->+38h,
-                            // (approach+14h)->+3Ch) and that record has no
-                            // producer read in this packet. The interpolation
-                            // window at 009C5BEE requires approach+A8h + 100 <
-                            // approach+ACh, so the host uses
-                            // BeginAltRange/1 - (BeginAltRange/2 - /1) = 800,
-                            // built from the two rows the seed itself reads.
+                            // PRODUCER NOW READ, packet cc8_approach_base_ctor.
+                            // 009F9D22 points approach+14h at
+                            // &PilotBotConfig.levels[[[unit+DF4h]+34h]], and
+                            // 009C3F29 draws approach+A8h as
+                            // Uniform(row+38h, row+3Ch), which
+                            // include/bsp/robot_config.hpp names
+                            // dive_bomb_release_alt_1_044 and _2_048.
+                            //
+                            // SUBSTITUTION, labelled, replacing the old 800.
+                            // The PilotBot registry is out of this host's reach,
+                            // exactly as the torpedo profile records above, so
+                            // the values come from the installed
+                            // scripts/datatables/robots.lua SPNormal row, which
+                            // authors DiveBombReleaseAlt = { 350, 450 }. The
+                            // row's own Hungarian comment says the release
+                            // altitude is "valahol a ketto kozott", somewhere
+                            // between the two, which is the uniform draw.
+                            // The difficulty index is unmodelled, so SPNormal is
+                            // picked and named, as the torpedo profile does.
                             unit_.db_dive_alt_a8 =
-                                unit_.db_begin_alt_ac - unit_.db_alt_span_b0;
+                                GameUnitsHost::Impl::kDiveBombReleaseAlt1;   // Uniform low, 009C3F23
+                            // The aimdive interpolation endpoints, the same row:
+                            // dive_bomb_aim_prec_dist_068 and _mul_06c. The
+                            // row's comments name them exactly: "tavolrol
+                            // ennyivel melle celoz", from far away it aims this
+                            // much beside the target, and "celzasi pontossag
+                            // szorzo. minel kisebb, annal jobb", the aiming
+                            // accuracy multiplier, smaller is better. So the
+                            // 25-metre gate at 00CE3880 measures an authored
+                            // miss, and this is where it comes from.
+                            unit_.db_lead_high_5c = GameUnitsHost::Impl::kDiveBombAimPrecDist;
+                            unit_.db_gain_high_60 = GameUnitsHost::Impl::kDiveBombAimPrecMul;
                             // approach+B8h == task+4B0h. 009C3F1C seeds it from
                             // Random * (approach+8h)->+268h, unread here, and
                             // 009C8A5E clamps it every tick to
@@ -4148,10 +4193,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // the lead at 0 and the gain at 1, so the aim error
                             // is the bare along-track miss the release gate
                             // compares against 25 m.
+                            // approach+D4h and +50h still have no producer
+                            // read; zero is labelled, not recovered.
                             unit_.db_release_range_d4 = 0.0f;
                             unit_.db_extra_range_50 = 0.0f;
-                            unit_.db_lead_high_5c = 0.0f;
-                            unit_.db_gain_high_60 = 1.0f;
                             // 007C1DB0 at the aimglide enter 009C4F00 latches
                             // the count the salvo caps against.
                             unit_.dive_bomb_rounds_remaining =
