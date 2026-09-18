@@ -378,6 +378,23 @@ it is non-null and answers `vtable[5Ch](1Ch)`, else 0. `009E6A90` is its only ca
 | docs/SHIP_AI_ATTACKMOVE_SUBSTATES.md Follow-up packets: "Without it `009F3240` has no approach point of its own." | The approach point is normally the attackmove destination copied verbatim; the nested update's own product is the bearing and the throttle. | `009F1F10..009F1F3D` copies `brain+0B2Ch/0B30h/0B34h` into `nested+1228h/122Ch/1230h`. The displaced arm at `009F1E6B` runs only when `[target+740h]` exists and `[[unit+538h]+570h] < targetzone->vtable[2Ch]()` (`009F1E60 CMP EAX,EBX` then `JGE 009F1F10`). |
 | This packet's own first reading of `009E74D0`: "`nested+11F8h` is a ring slot index, so the wrap at `009E756E` and the reset at `009E75AD` are live." | `nested+11F8h` is a bearing in `(-pi, pi]`. Both branches are unreachable. | `009E7C19 IMUL ESI,ESI,0x4C` then `009E7C1C MOVSS XMM1,[ESI + EBP + 0xC]`: `nested + i*4Ch + 0Ch` is `slot+8h`, the bearing `009E5530` writes at `009E56F9`. `009E7C28` stores it into `nested+11F8h`; `009E7EA6` stores an `atan2` heading there on the other arm. |
 
+## Corrections from packet cc8_ship_ai_approach_curves
+
+Appended, not a rewrite of the text above. The two curve objects the `009E71A5` arm samples were
+read whole in `docs/SHIP_AI_APPROACH_CURVES.md`; both entries below confirm this packet's reading
+rather than overturn it.
+
+| was | is | evidence |
+| --- | --- | --- |
+| The `009E71A5` row named `p` and `q` as `00955A40` on `nested+12C0h` and `nested+13B0h` with the objects unread, so which was which rested on the order of the two calls. | Confirmed, and now with a meaning. `nested+12C0h` is the OWN unit's 60-sample expected-damage profile and `nested+13B0h` is the TARGET's, both built by `0095F080` inside `009F1BC0`. Sample `i` is the rating at `50*(i+1)` metres, so the curve spans 50 m to 3000 m, which is exactly the scan's domain. `00952530` is the longest range with a positive sample and `009523C0` the peak sample. | `009E71A5 LEA EBX,[ESI + 0x13b0]` and `009E71B9 LEA EBP,[ESI + 0x12c0]`; `009E7215 MOV ECX,EBP` before `009E721A` and `009E7228 MOV ECX,EBX` before `009E722D`; `009E71AC MOV ECX,EBX` before `00952530` and `009E71BF MOV ECX,EBP` before `009523C0`. The 50 m spacing is the double at `00CE3938` that `00955A45` subtracts and `00955A6B` divides by, and that `0095F140` steps the profile sweep with. The producer table is in `docs/SHIP_AI_BEARING_RATING.md`, "`0095F080`, the 60-sample range profile". |
+| The same row quoted `+ 300.0` and `interp(0, 2, 1, 1, ...)` without the operand widths. | Both readings stand. `00CE3CA8` is a double `300.0` and `00CE3958` is a float `2.0`. | `009E71B3 FADD double ptr [0x00ce3ca8]`, bytes `00 00 00 00 00 c0 72 40`; `009E7261 FLD float ptr [0x00ce3958]`, bytes `00 00 00 40`. |
+| The follow-up list called the curve objects' class unknown, so `include/bsp/ship_ai_approach_update.hpp` left them out of `ShipAiApproachState`. | The class is a bare array of sixty floats, `0F0h` bytes, whose only constructor is the `3Ch`-dword zero fill `00954940`. It is now `bsp::ShipAiApproachRangeCurve` in `include/bsp/ship_ai_approach_curves.hpp`. `ShipAiApproachState` still does not carry the two instances: they live on the host's controller, because the `0095F080` refills that fill them are in the span of `009F1BC0` past `009F1DBF` that `ship_ai_approach_frame_state_tail` still owns. | `00954940` body `00954940-00954951`; `00955A79 CMP EAX,0x3b` with `00955A83 FLD float ptr [ECX + 0xec]`; `009E55C3`/`009E55C9` and `009E55CE`/`009E55D4`, two LEAs `0F0h` apart. |
+
+The scan's projection in `src/ship_ai_approach_update.cpp` was re-checked against the listing
+line by line and **not changed**: the skip test at `009E723C` really does load `p` into `ST0`
+after `FLDZ` (`009E7236`, `009E7238`), so `JBE` skips a non-positive own sample, which is what the
+reconstruction already had.
+
 ## Follow-up packets
 
 - `ship_ai_approach_slot_scorers`: `009E5DA0`, `009E6640`, `009E6870` and `009E6400`, the four

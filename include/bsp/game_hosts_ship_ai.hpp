@@ -182,6 +182,12 @@ struct GameShipAiRow {
     float approach_point_x{0.0f};            // nested+1228h
     float approach_point_z{0.0f};            // nested+1230h
     float approach_goal_range{0.0f};         // nested+11E0h
+    // Packet cc8_ship_ai_approach_curves: nested+11E4h after 009E6E80, the
+    // standoff range the 119-step curve scan chose, first and last, with the
+    // number of 009E6E80 bodies that produced them.
+    unsigned long long standoff_choices{0};  // 009E6E80 bodies
+    float standoff_range_first{0.0f};        // nested+11E4h after the first
+    float standoff_range_last{0.0f};         // nested+11E4h after the last
     unsigned long long controller_updates{0};  // 0071F290 bodies
     bool controller_update_session_gate{false};
     unsigned long long path_picks{0};        // 009EE580 bodies that passed the gate
@@ -309,6 +315,8 @@ struct GameShipAiSummary {
     unsigned long long ring_scans{0};           // 009E76D0
     unsigned long long ring_scan_bearings{0};   // 009E5E90
     unsigned long long firepower_ratings{0};    // 0095EB40
+    unsigned long long standoff_choices{0};     // 009E6E80
+    unsigned long long approach_curve_refreshes{0}; // 0095F080 at 009F2F11 / 009F2FB1
     unsigned long long path_follower_points{0}; // 009E3C00 through the full follower
     unsigned long long path_follower_corners{0};
     unsigned long long path_follower_advances{0};
