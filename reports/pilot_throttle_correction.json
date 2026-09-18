@@ -1,0 +1,54 @@
+{
+ "packet": "cc8_pilot_throttle_correction",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/PILOT_THROTTLE_CUT_RAISER.md, appended section",
+ "tree_base": "aca98650a plus main",
+ "result": "The vtable slot is resolved to its implementation; both correction fields have no displacement writer; one dead-band jump sense corrected.",
+ "question": "What is the throttle correction term's vtable slot and vector, and what are the dead band's four conditions?",
+ "answer": "The slot is the unit's PRIMARY vtable +38h, and a byte scan for the known +3Ch thunk 0074E1E0 finds nine plane vtables - the same nine docs/PLANE_UNIT_TICK.md counts - whose +38h dword is 007B8E60 in all nine. 007B8E60 is two instructions, FLD [ECX+0B1Ch] and RET, so the 'speed' the correction uses is a CACHED FLOAT at unit+B1Ch, not a computed speed; docs/TORPEDO_APPROACH_UPDATE.md already carried the slot as an interface and this names its implementation. 0042B2F0 is a 3D length over the vec3 at unit+AE0h, squaring three components and testing the sum against the double 1e-10 at 00CE3820. Exhaustive store censuses find NO unit-range writer for either field: five sites for B1Ch and three for AE0h, all of them a joystick device, deflateEnd, _tr_init and the like. MSVC emits disp32 for offsets that large so a direct store would appear, but a store through a base already offset into the object would not, so the established claim is 'no literal displacement writer'. If both are in fact zero the correction term vanishes and the error is simply desired - measured/scale. The dead band skips the increment when ALL FOUR of |error| <= 0.83333 (00D09450), ratio >= 1.0 (00D7A24C), desired/|ratio| <= 1.5 (00CE380C) and desired/|ratio| >= 0.5 (00CE3800) hold - 0099DB56 is JBE, so the fourth is at-or-above, which corrects the previous section's 'greater than'.",
+ "coverage": "complete for the vtable resolution and the dead band; the two correction fields' producers are not found and the negative censuses carry the shifted-base caveat.",
+ "calls": [
+  {
+   "address": "0099daa1",
+   "native": "0042b2f0",
+   "function": "0099d300",
+   "what": "the 3D length of the stack copy of unit+AE0h..AE8h"
+  }
+ ],
+ "named_routines": [
+  {
+   "native": "007b8e60",
+   "name": "BSP_Unit_GetCachedSpeed",
+   "abi": "float __thiscall(unit), body 007B8E60-007B8E66, two instructions",
+   "coverage": "complete",
+   "what": "FLD [ECX+0B1Ch]; RET. It is slot +38h of all nine plane unit vtables, found by scanning for the known +3Ch thunk 0074E1E0 and reading the dword four bytes earlier. So every reader of unit->vtable[38h] - this planner's correction term and 009D3D01's ETA among them - is reading the cached float unit+B1Ch."
+  },
+  {
+   "native": "0042b2f0",
+   "name": "BSP_Vector3_LengthFloatThreshold",
+   "abi": "float __thiscall(vec3)",
+   "coverage": "unchanged from its existing record; this packet adds the 0099DAA1 caller and the use",
+   "what": "squares [ECX], [ECX+4] and [ECX+8], sums them and compares against the double 1e-10 at 00CE3820 before the root; the 3D twin of 00414C60"
+  }
+ ],
+ "no_ghidra_function": [],
+ "host_methods": [],
+ "contracts": [
+  "unit+B1Ch's producer. No literal displacement writer exists; a store through a shifted base would not appear in the census.",
+  "unit+AE0h..AE8h's producer, which docs/PILOT_PLANNER_PITCH_ROLL.md note 9 already lists as open. Same caveat.",
+  "Whether the dead band's four conditions hold together in practice."
+ ],
+ "corrections": [
+  {
+   "target": "docs/PILOT_THROTTLE_CUT_RAISER.md's own increment section",
+   "was": "the dead band's fourth condition is 0.5 > desired/|ratio|",
+   "is": "0099DB56 is JBE, so the skip needs 0.5 at or BELOW desired/|ratio|; the band is a sensible [0.5, 1.5] window rather than the near-impossible one the wrong sense implied",
+   "evidence": "0099DB53 COMISS XMM1,XMM0 then 0099DB56 JBE 0099DBCB",
+   "status": "appended to the same doc and verified present"
+  }
+ ],
+ "validation": {
+  "runner": "none",
+  "note": "Reading only. The header's comments are corrected; the function's shape is unchanged because both the correction term and the dead-band flag remain caller-supplied."
+ }
+}

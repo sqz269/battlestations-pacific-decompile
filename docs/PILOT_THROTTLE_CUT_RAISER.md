@@ -214,3 +214,74 @@ as open. The pure function takes the correction term as an input and says so.
 
 `pilot_plan_throttle_0099d300` now takes the measured speed, the scale, the desired speed, the
 pending magnitude, the correction and the dead-band flag, and derives the increment itself.
+
+
+## The two substitutions, resolved as far as the image allows (packet `cc8_pilot_throttle_correction`)
+
+### The vtable slot is a trivial getter, and its field has no displacement writer
+
+`0099DA66 MOV EAX,[EDX+0x38]` with `EDX = [plan+2F0h]` is the **unit's primary vtable**, slot
+`+38h`. A byte scan for the known `+3Ch` thunk `0074E1E0` finds **nine** plane vtables
+(`00D000AC`, `00D00344`, `00D05F5C`, `00D06674`, `00D0695C`, `00D0BABC`, `00D19D64`, `00D1A03C`,
+`00D1A314`), the same nine `docs/PLANE_UNIT_TICK.md` counts, and the dword four bytes before each -
+slot `+38h` - is **`007B8E60` in all nine**.
+
+`007B8E60` is two instructions:
+
+```
+007b8e60  FLD float ptr [ECX + 0xb1c]
+007b8e66  RET
+```
+
+So `unit->vtable[38h]` is **`unit+B1Ch`**, a cached float, not a computed speed.
+`docs/TORPEDO_APPROACH_UPDATE.md` line 266 already carries this slot as `unit_speed_vtable38`, an
+interface; this names its implementation.
+
+**And `unit+B1Ch` has no displacement writer.** An exhaustive `store_census` over `B1Ch` returns
+five sites and not one is in the unit or plane range - they are a joystick device, `deflateEnd` and
+`_tr_init`. The same is true of the vector: a census over `AE0h` returns **three**, none of them a
+unit. `0042B2F0 BSP_Vector3_LengthFloatThreshold`, which reduces it, is a 3D length: `0042B2F6` reads `[ECX+8]`, squares and sums
+the three components and compares against the double `1e-10` at `00CE3820` before the root.
+
+The caveat that has to travel with a negative census: MSVC emits `disp32` for offsets this large, so
+a direct store would appear, but a store through a base register already offset into the object
+would not. What is established is that **no literal `[reg+0B1Ch]` or `[reg+0AE0h]` store exists in
+the image**.
+
+If both fields are in fact never written, the correction term `(unit+B1Ch - |unit+AE0h|) * 20 *
+pending` is identically **zero** and the arm's error is simply `desired - measured/scale`. That is
+falsifiable at run time by printing both fields once the arm is wired, and it is the cheapest way
+to retire the substitution.
+
+### The dead band, and a correction to the section above
+
+`0099DB1F`-`0099DB56`, with the jump senses read rather than assumed:
+
+```
+0099db29  FCOMIP ST0,ST1            ; |error| vs 0.83333 (the double at 00D09450)
+0099db2d  JA 0099db58               ; |error| >  0.83333  -> run the increment
+0099db37  COMISS XMM0,XMM1          ; 1.0 (00D7A24C) vs ratio
+0099db3a  JA 0099db58               ; 1.0 > ratio         -> run the increment
+0099db42  COMISS XMM0,[00ce380c]    ; desired/|ratio| vs 1.5
+0099db49  JA 0099db58               ; > 1.5               -> run the increment
+0099db53  COMISS XMM1,XMM0          ; 0.5 (00CE3800) vs desired/|ratio|
+0099db56  JBE 0099dbcb              ; 0.5 <= it           -> SKIP the increment
+```
+
+So the increment is skipped when **all four** hold:
+
+| condition | constant |
+| --- | --- |
+| `\|error\| <= 0.83333` | `00D09450`, a double |
+| `ratio >= 1.0` | `00D7A24C` |
+| `desired / \|ratio\| <= 1.5` | `00CE380C` |
+| `desired / \|ratio\| >= 0.5` | `00CE3800` |
+
+**Correction to the section above.** It lists the fourth as "`0.5` `> desired/|ratio|`", which is
+the wrong way round: `0099DB56` is `JBE`, so the skip needs `0.5` to be **at or below** the ratio.
+The band is therefore the sensible one - a small error, the aircraft at or above its scaled speed,
+and the desired-to-measured proportion inside `[0.5, 1.5]` - rather than the near-impossible window
+the wrong sense implied.
+
+`desired/|ratio|` is formed at `0099DAEC`-`0099DAFF`: `FLD plan+2B4h` then `FDIV [ESP+0x38]`, where
+`[ESP+0x38]` is `|ratio|` from `0099DAD0`-`0099DAE6`.

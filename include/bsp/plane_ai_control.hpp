@@ -520,14 +520,24 @@ struct PilotBotThrottleInputs {
     float speed_scale = 1.0f;      // plan+2B8h, EBP from 0099D769
     float desired_speed = 0.0f;    // plan+2B4h, which 009C189A writes
     float pending = 0.0f;          // |slot value - plan+274h|, 0099D7E8-0099D81E
-    // SUBSTITUTION, labelled: 0099DA97's unit vtable+38h call minus 0042B2F0
-    // over the vec3 at unit+AE0h, scaled by the double 20.0 at 00CE3D88 and by
-    // `pending`, is subtracted from the error at 0099DAC8. Neither the vtable
-    // slot nor that vec3's producer is read, so the caller supplies the term.
+    // 0099DA97's unit vtable+38h is 007B8E60 in all nine plane vtables, and
+    // 007B8E60 is `FLD [ECX+0B1Ch]; RET` - a cached float, not a computed
+    // speed. 0042B2F0 is the 3D length of the vec3 at unit+AE0h. The term
+    // 0099DAC8 subtracts is (unit+B1Ch - |unit+AE0h|) * 20.0 (00CE3D88) *
+    // `pending`.
+    //
+    // SUBSTITUTION, labelled: exhaustive store censuses over B1Ch and AE0h find
+    // no unit-range writer at all - five and three sites, all elsewhere in the
+    // image. A store through a base already offset into the object would not
+    // appear, so this is "no literal displacement writer", not "never written".
+    // If both are in fact zero the whole term vanishes; the caller supplies it
+    // so a run can decide.
     float error_correction = 0.0f;
-    // 0099DB29-0099DB56, the dead band: when all four of |error| <= 0.8333
-    // (00D09450), ratio >= 1.0, desired/|ratio| <= 1.5 (00CE380C) and
-    // 0.5 (00CE3800) > desired/|ratio| hold, 0099DB56 skips the whole increment.
+    // 0099DB29-0099DB56, the dead band. 0099DB56 is JBE, so the skip needs
+    // 0.5 AT OR BELOW desired/|ratio|, not above it: all four of
+    // |error| <= 0.83333 (the double at 00D09450), ratio >= 1.0 (00D7A24C),
+    // desired/|ratio| <= 1.5 (00CE380C) and desired/|ratio| >= 0.5 (00CE3800).
+    // desired/|ratio| is formed at 0099DAEC-0099DAFF.
     bool dead_band_skips = false;
 };
 
