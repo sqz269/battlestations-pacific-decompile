@@ -188,3 +188,27 @@ Appended to `docs/AI_GROUP_THINK.md` and `docs/AI_PLANNERS.md`, never rewriting 
 | `ai_globals_loader` | `00A335D0`, `00A371A0` | the tuning block's store sites and the Lua key names, so `AutoMerge_MergeDist` and the planner's range fields stop being zero |
 | `ai_world_collections` | `00A2E835` | the five entity collections at `world+19CCh`, so phase 3 seeds more than one group per team |
 | `plane_task_from_order` | `007CE040` | why an `attackmove` order reaches a plane and leaves `closed_mean` negative |
+
+## Correction appended by cc8_ai_command_lifetime
+
+**This doc's follow-up row `ai_command_object` states a wrong cause.** It says one attack order
+lands per mission "because the already-on-target test returns early and nothing clears the
+command". The second clause is wrong: `00A2CBD0` deletes the old command through its vtable slot
+0 with flag 1 and installs the new one whenever the target differs, so a different target lands
+a different order and nothing has to clear anything. `00A13340`, the command factory, was never
+the blocker. `docs/AI_COMMAND_LIFETIME.md` has the two real caps.
+
+**Two host methods in `src/game_hosts_ai.cpp` were wrong and are fixed there.**
+`split_detached_members` was a no-op on the reasoning that nothing in this process detaches a
+member; `00A2E260` does not split on detachment, it splits on `009FE080`, and it is the group
+multiplier. `group_has_groupable_combatant` admitted the plane base `0Fh`, which `009FE080` does
+not admit at all.
+
+Re-measured on IJN01: groups created 2 to 4, splits taken 0 to 2, planner claims 1 to 2,
+commands issued 79 to 34. Plane motion, the pilot attack table and the gunnery outcome are
+identical to the digit, so the 45 orders that went away were inert. The census gains
+`splits_taken`.
+
+The validation tables above are from the run before this correction and are left as they were
+written. USN01 and USN02 were not re-measured; the hook packet re-runs all three on the merged
+tree anyway.
