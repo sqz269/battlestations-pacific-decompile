@@ -8602,3 +8602,16 @@ from this packet has belonged to `cc8-ai-squadron`.
    lands the bisect on whichever commit happened to be under test. A step fails only on two
    consecutive crashes with a verified-clean environment between them, and passes on one full clean
    run.
+
+#### Cause found: the launcher's lock was taken by test-then-write (`d8dfc77be`)
+
+`tools/run_game.ps1` acquired the machine-wide lock by testing for the file and then writing it,
+polling every ten seconds. Two launchers queued behind the same run could both observe the lock
+absent and no live `bsp_game.exe` in the same poll, both write the lock (the later write
+overwrote the earlier holder line) and both start; the loser's child then met the single-instance
+mutex during native renderer device startup, which is the 107-line signature above. Every crash
+recorded in this section happened while at least one other launcher was queued. Since
+`d8dfc77be` the lock is created with `FileMode.CreateNew`, a launcher that loses the race keeps
+waiting on the `IOException`, and a winner that finds a live process after acquiring hands the
+lock back and waits. No further crash of this shape should be attributed to a commit unless it
+reproduces with that launcher and an empty `Get-Process bsp_game` at launch.
