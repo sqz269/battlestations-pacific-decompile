@@ -2690,18 +2690,19 @@ void GameGunneryHost::Impl::publish_ai_weapon_facts() {
     // barrel count on it, so the barrels are flattened into one list per unit.
     for (const GameGunRow& gun : guns) {
         GameAiWeaponFacts::Unit& row = facts.row_for_write(gun.unit_index);
-        const int barrels = gun.barrel_num > 0 ? gun.barrel_num : 1;
-        for (int b = 0; b < barrels; ++b) {
-            GameAiWeaponFacts::Barrel barrel;
-            barrel.reload = gun.reload_time;   // gun+448h's row, the ReloadTime
-            // 009FE270 at 00A094E6 and 0072AB80 BSP_GunClass_MuzzleCount at
-            // 00A09501 have no producer here, so these two stay at zero and the
-            // row is NOT complete. Publishing a 1.0f accuracy and a 1 muzzle
-            // count would invent the model's inputs rather than supply them.
-            barrel.accuracy = 0.0f;
-            barrel.shots = 0;
-            row.barrels.push_back(barrel);
-        }
+        GameAiWeaponFacts::Barrel barrel;
+        barrel.reload = gun.reload_time;
+        // 0072AB80 BSP_GunClass_MuzzleCount at 00A09501 is the shots argument,
+        // and BSP_Gun_SetupFromDescriptor stores its answer to gun+448h at
+        // 0072E71A, which is exactly the field carried here as barrel_num. So
+        // this one IS available; the earlier reading that it was not came from
+        // mistaking the muzzle count for a barrel count.
+        barrel.shots = gun.barrel_num > 0 ? gun.barrel_num : 1;
+        // 009FE270 at 00A094E6, the per-barrel accuracy against the target, is
+        // the one input with no producer here. It stays zero and the row is NOT
+        // complete; publishing a 1.0f would invent it rather than supply it.
+        barrel.accuracy = 0.0f;
+        row.barrels.push_back(barrel);
     }
     // Nothing is complete yet, for the two reasons above. The flag is set here
     // rather than in the reader so that the day those two producers land, this
