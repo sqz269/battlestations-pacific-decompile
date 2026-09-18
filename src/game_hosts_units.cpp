@@ -20,6 +20,7 @@
 #include "bsp/plane_attitude_angles.hpp"
 #include "bsp/plane_ai_control.hpp"
 #include "bsp/unit_rudder.hpp"
+#include "bsp/torpedo_aim_tick.hpp"
 #include "bsp/torpedo_approach_update.hpp"
 #include "bsp/torpedo_release_orders.hpp"
 #include "bsp/torpedo_task_arm.hpp"
@@ -368,6 +369,20 @@ struct GameUnitSlot {
     float torpedo_range_last{0.0f};
     float torpedo_aim_heading_last{0.0f};
     float torpedo_aim_throttle_last{0.0f};
+    // 009D236E, the aim-complete byte state+2Ch, and the clause values on the
+    // tick it first went true. docs/TORPEDO_AIM_TICK.md.
+    bool torpedo_aim_complete_2c{false};
+    int torpedo_aim_complete_tick{-1};
+    int torpedo_aim_complete_clause{0};   // 1 = range, 2 = turn, 3 = both
+    float torpedo_aim_f34_threshold{0.0f};
+    float torpedo_aim_f14_range{0.0f};
+    float torpedo_aim_f18_turn{0.0f};
+    float torpedo_aim_f0c_time{0.0f};
+    float torpedo_aim_ramp{0.0f};
+    float torpedo_aim_floor{0.0f};
+    int torpedo_aim_run_time_updates{0};   // 009D19A4
+    int torpedo_aim_release_arms{0};       // 009D2287
+    float torpedo_aim_timer{0.0f};         // 009D2027, 009FA3A0(state+18h, dt)
     float plane_live_throttle{1.0f};
     float plane_live_air_brake{0.0f};
     float plane_latched_controls[3]{0.0f, 0.0f, 0.0f};
@@ -2819,7 +2834,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             in.entry.aim_flag_529 = slot_.torpedo_aim_flag_529;
                             in.unit_has_no_follow_target = true;
                             in.should_break_off = false;
-                            in.aim_hold_009d31b0 = false;
+                            // 009D31B0: MOV EAX,[ECX+4]; CMP byte [EAX+132h],0;
+                            // JNZ 009D31BF; XOR AL,AL; RET / MOV AL,[ECX+2Ch].
+                            // So the hold is the aim-complete byte the tick
+                            // writes at 009D236E, but only while the approach
+                            // still reports ordnance.
+                            in.aim_hold_009d31b0 =
+                                slot_.torpedo_approach.has_ordnance_132 &&
+                                slot_.torpedo_aim_complete_2c;
                             in.goaway_done_009d3150 = false;
                             return in;
                         }
@@ -2971,7 +2993,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // target plus the turn offset the approach update's
                         // sector scan chose. docs/TORPEDO_APPROACH_UPDATE.md.
                         if (ctx.current == bsp::TorpedoState::kAim) {
-                            run_torpedo_aim_tick_009d15f0();
+                            run_torpedo_aim_tick_009d15f0(dt);
                         }
                         // 0099AF53-0099AFAF, the ordnance-arming loop of
                         // BSP_PilotBot_Tick: it spends one queued release order
@@ -3069,33 +3091,100 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     }
 
                     // 009D15F0, the aim state's tick (state vtable 00D212FC
-                    // slot +Ch). coverage: partial - the heading and the six
-                    // command-block writes are reconstructed, the four
-                    // interpolation chains that shape the throttle are not.
-                    void run_torpedo_aim_tick_009d15f0() {
+                    // slot +Ch), reconstructed whole in src/torpedo_aim_tick.cpp.
+                    // The byte it writes at 009D236E is the gate 009D31B0 reads
+                    // and the transition rule 009D4030 turns into goaway.
+                    struct AimTickBinding final : bsp::TorpedoAimTickHost {
+                        explicit AimTickBinding(GameUnitSlot& s) : s_(s) {}
+                        float time_to_target_009d1500() override {
+                            return bsp::torpedo_time_to_target_009d1500(
+                                s_.torpedo_approach);
+                        }
+                        float unit_heading_vtable50() override {
+                            return heading_;
+                        }
+                        // approach+CCh's target entity is not modelled, so the
+                        // aspect slot F=2Ch keeps the 009D16AA zero, which is
+                        // exactly the no-target arm of the native branch.
+                        float target_heading_vtable50() override { return 0.0f; }
+                        bool target_is_kind_vtable5c(int) override { return false; }
+                        bool unit_is_kind_vtable5c(int) override { return false; }
+                        bool has_target_cc() override { return false; }
+                        void refresh_world_pose_00414db0(bool) override {}
+                        float ground_height_00903860() override { return 0.0f; }
+                        void update_run_time_009d1360() override {
+                            ++s_.torpedo_aim_run_time_updates;
+                        }
+                        bsp::TorpedoAimSectorProbe sector_probe_009d1a94(
+                            float, float, float) override {
+                            return bsp::TorpedoAimSectorProbe{};
+                        }
+                        void accumulate_timer_009fa3a0(float d) override {
+                            s_.torpedo_aim_timer += d;
+                        }
+                        void arm_release_timer_009d2287() override {
+                            ++s_.torpedo_aim_release_arms;
+                        }
+                        GameUnitSlot& s_;
+                        float heading_{0.0f};
+                    };
+
+                    void run_torpedo_aim_tick_009d15f0(float dt) {
                         const bsp::TorpedoApproachState& ap = unit_.torpedo_approach;
-                        bsp::TorpedoAimTickInputs in;
+                        AimTickBinding binding(unit_);
+                        binding.heading_ = owner_.pose_heading_radians(unit_);
+                        bsp::TorpedoAimTickState in;
                         in.range_90 = ap.range_90;
                         in.bearing_94 = ap.bearing_94;
                         in.turn_offset_5c = ap.turn_offset_5c;
-                        in.time_to_target = bsp::torpedo_time_to_target_009d1500(ap);
-                        in.unit_heading = owner_.pose_heading_radians(unit_);
-                        in.unit_altitude = unit_.motion.position[1];
-                        in.ground_height = 0.0f;   // 00903860, contract: unread
                         in.alt_floor_74 = ap.alt_floor_74;
                         in.alt_margin_78 = ap.alt_margin_78;
                         in.over_land_a9 = ap.over_land_a9 != 0;
-                        in.no_clear_sector_aa = ap.no_clear_sector_aa != 0;
+                        in.sector_probe_enabled_aa = ap.no_clear_sector_aa != 0;
                         in.has_ordnance_132 = ap.has_ordnance_132;
-                        in.commanded_speed = bsp::torpedo_commanded_speed_009d3c99(
-                            ap.elapsed_134, ap.speed_late_7c, ap.speed_early_80);
+                        in.elapsed_134 = ap.elapsed_134;
+                        in.speed_late_7c = ap.speed_late_7c;
+                        in.speed_early_80 = ap.speed_early_80;
+                        // approach+84h, the aspect scale 009D1FD0 loads, is not
+                        // in the approach struct yet; it only shapes the
+                        // aim-solution byte 009D2021, never the gate.
+                        in.aspect_scale_84 = 1.0f;
                         in.fall_lead_a0 = ap.fall_lead_a0;
-                        const bsp::TorpedoAimCommand cmd =
-                            bsp::torpedo_aim_tick_009d15f0(in);
+                        in.unit_altitude = unit_.motion.position[1];
+                        in.unit_bank_c64 = unit_.plane_latched_controls[0];
+                        in.unit_bank_rate_c68 = 0.0f;
+                        in.pose_dirty_c8 = false;
+                        // approach+8h, the aircraft description object, is not
+                        // modelled. These five feed the turn-radius escape, the
+                        // throttle and the pitch, never the aim-complete test,
+                        // so the contract carries zeros and says so.
+                        in.turn_radius_268 = 0.0f;
+                        in.turn_radius_26c = 0.0f;
+                        in.cruise_speed_25c = 1.0f;
+                        in.alt_fold_a4 = 1.0f;
+                        in.pitch_scale_188 = 1.0f;
+                        in.pitch_div_1ac = 1.0f;
+                        in.state_flag_24 = false;
+                        const bsp::TorpedoAimTickResult r =
+                            bsp::torpedo_aim_tick_full_009d15f0(binding, in, dt);
                         ++unit_.torpedo_aim_ticks;
-                        unit_.torpedo_aim_heading_last = cmd.commanded_heading_2c0;
-                        unit_.torpedo_aim_throttle_last = cmd.commanded_throttle_2c8;
-                        unit_.torpedo_approach.aim_solution_130 = cmd.aim_solution_130;
+                        unit_.torpedo_aim_heading_last = r.commanded_heading_2c0;
+                        unit_.torpedo_aim_throttle_last = r.commanded_throttle_2c8;
+                        unit_.torpedo_approach.aim_solution_130 = r.aim_solution_130;
+                        if (r.aim_complete_2c && !unit_.torpedo_aim_complete_2c) {
+                            unit_.torpedo_aim_complete_tick = unit_.torpedo_aim_ticks;
+                            unit_.torpedo_aim_complete_clause =
+                                (r.clause_range ? 1 : 0) | (r.clause_turn ? 2 : 0);
+                            unit_.torpedo_aim_f34_threshold = r.release_threshold_f34;
+                            unit_.torpedo_aim_f14_range = r.range_f14;
+                            unit_.torpedo_aim_f18_turn = r.turn_magnitude_f18;
+                            unit_.torpedo_aim_f0c_time = r.time_to_target_f0c;
+                            unit_.torpedo_aim_ramp = r.ramp;
+                            unit_.torpedo_aim_floor = r.altitude_floor_f28;
+                        }
+                        // 009D236E only ever sets the byte; nothing in the tick
+                        // clears it, so the host latches it the same way.
+                        if (r.aim_complete_2c) unit_.torpedo_aim_complete_2c = true;
                     }
 
                     static int torpedo_state_bucket(bsp::TorpedoState s) {
@@ -4709,6 +4798,30 @@ void GameUnitsHost::report() {
                         static_cast<double>(slot->torpedo_issue_threshold_390),
                         static_cast<double>(slot->torpedo_armed_fraction_374),
                         slot->torpedo_issue_gate_open ? 1 : 0);
+                    // 009D22FF-009D236E, the aim-complete test. clause 1 is
+                    // 009D235A (F=34h > F=14h - ramp), clause 2 is 009D2368
+                    // (F=18h > F=0Ch). docs/TORPEDO_AIM_TICK.md.
+                    host.log.notef("  torpedo %-12s aim tick 009D15F0: "
+                        "aim_complete_2Ch=%d first_true_at_aim_tick=%d "
+                        "clause=%s | F34=%.2f F14=%.2f ramp=%.2f F18=%.4f "
+                        "F0C=%.4f floor=%.1f | run_time_009D1360=%d "
+                        "release_arm_009D2287=%d timer_009FA3A0=%.2f",
+                        slot->row.name.c_str(),
+                        slot->torpedo_aim_complete_2c ? 1 : 0,
+                        slot->torpedo_aim_complete_tick,
+                        slot->torpedo_aim_complete_clause == 3 ? "both"
+                            : slot->torpedo_aim_complete_clause == 2 ? "turn"
+                            : slot->torpedo_aim_complete_clause == 1 ? "range"
+                            : "none",
+                        static_cast<double>(slot->torpedo_aim_f34_threshold),
+                        static_cast<double>(slot->torpedo_aim_f14_range),
+                        static_cast<double>(slot->torpedo_aim_ramp),
+                        static_cast<double>(slot->torpedo_aim_f18_turn),
+                        static_cast<double>(slot->torpedo_aim_f0c_time),
+                        static_cast<double>(slot->torpedo_aim_floor),
+                        slot->torpedo_aim_run_time_updates,
+                        slot->torpedo_aim_release_arms,
+                        static_cast<double>(slot->torpedo_aim_timer));
                 } else {
                     host.log.notef("  torpedo %-12s approach 009D3420: "
                         "ticks=%d no_target=%d replans=%d aim_ticks=%d | "
@@ -4795,22 +4908,42 @@ void GameUnitsHost::report() {
                                 if (!s->torpedo_task_installed) continue;
                                 aim_total += s->torpedo_aim_ticks;
                             }
-                            host.log.notef("summary mission torpedo task: no "
-                                "release. The range reached the engage distance "
-                                "(closest %.1f against 8Ch=%.1f), %d offers were "
-                                "made at 0099AF9B and the rule reached aim for "
-                                "%d ticks. The gate is the aim-complete byte "
-                                "state+2Ch: 009D31B0 returns it at 009D31BF, "
-                                "009D4030 step 11 needs it to leave aim for "
-                                "goaway, and 009D15F0 writes it at 009D236E "
-                                "under the two-clause test at 009D235A and "
-                                "009D2368. That condition is the unread part of "
-                                "the aim tick, so the host never raises it and "
-                                "the task cannot reach done or prepare, where "
-                                "009D49A0 arms prepare+98h and 009D2720 releases",
-                                static_cast<double>(worst_range),
-                                static_cast<double>(engage), arm_offers,
-                                aim_total);
+                            int aim_done = 0;
+                            for (const auto& s2 : host.slots) {
+                                if (!s2->torpedo_task_installed) continue;
+                                if (s2->torpedo_aim_complete_2c) ++aim_done;
+                            }
+                            if (aim_done == 0) {
+                                host.log.notef("summary mission torpedo task: no "
+                                    "release. The range reached the engage "
+                                    "distance (closest %.1f against 8Ch=%.1f), "
+                                    "%d offers were made at 0099AF9B and the "
+                                    "rule reached aim for %d ticks, but no "
+                                    "aircraft ever set the aim-complete byte "
+                                    "state+2Ch at 009D236E",
+                                    static_cast<double>(worst_range),
+                                    static_cast<double>(engage), arm_offers,
+                                    aim_total);
+                            } else {
+                                host.log.notef("summary mission torpedo task: no "
+                                    "release. 009D15F0 now writes the "
+                                    "aim-complete byte state+2Ch at 009D236E "
+                                    "(%d of %zu aircraft), 009D31B0 returns it "
+                                    "at 009D31BF and 009D4030 step 11 leaves "
+                                    "aim for goaway. The next gate is the "
+                                    "goaway-done predicate 009D3150: it returns "
+                                    "approach+90h > goaway+24h at 009D3195, and "
+                                    "the host binding still reports a constant "
+                                    "false, so 009D4132 never promotes goaway to "
+                                    "done or back to aim and 009D49A0 never "
+                                    "reaches prepare+98h for 009D2720/007BBBA0. "
+                                    "closest range %.1f against 8Ch=%.1f, %d "
+                                    "offers, aim ran %d ticks",
+                                    aim_done, tasked,
+                                    static_cast<double>(worst_range),
+                                    static_cast<double>(engage), arm_offers,
+                                    aim_total);
+                            }
                         }
                     }
                 }

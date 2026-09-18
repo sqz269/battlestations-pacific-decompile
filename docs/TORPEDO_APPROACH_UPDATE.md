@@ -353,3 +353,15 @@ reconstruction is therefore reconstructed and build-tested but not run-exercised
    vtable's `+54h` slot per tick.
 6. **`009FD0E0`**, the `task+38Ch` sub-object, which calls `007BBBA0` on a path independent of the
    task states.
+
+## Correction to section (4) (packet `cc8_torpedo_aim_tick`)
+
+Appended, not rewritten. Section (4) marks `009D15F0` `coverage: partial` and leaves the four
+`InterpolateClamped` chains untranscribed. All thirteen `00419010` sites in that function are now
+transcribed, the whole body is reconstructed in `src/torpedo_aim_tick.cpp`, and the aim-complete
+byte `state+2Ch` at `009D236E` has a listing-backed rule. See `docs/TORPEDO_AIM_TICK.md`.
+
+Two fixes to that section's command-block table: the `approach+60h` write is at `009D1D39`, not
+`009D1C5B`, and `009D1F36` writes `cmd+264h` only on the `t < 1.5` arm. Section (5)'s reading of
+`009D1500` as a time in seconds is confirmed against the listing and is what the aim-complete
+test's second clause compares.

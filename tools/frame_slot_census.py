@@ -23,6 +23,18 @@ Slot keys are `depth - n` after correction; they are comparable within one run
 and have no meaning across functions.  A slot with several writers is normal,
 because the compiler reuses stack space: use tools/frame_slot_dominance.py to
 find out which of them actually reaches a given read.
+
+KNOWN GAP (packet cc8_torpedo_aim_tick, docs/TORPEDO_AIM_TICK.md).  --pop only
+covers the sites the underlying walker FLAGS.  It does not cover a site the
+walker resolves but mis-pairs: an argument window opened by `SUB ESP,imm` and
+closed by the callee's own `RET imm16` rather than by an `ADD ESP,imm`.  In
+009D15F0 there are twelve such windows, all for 00419010 (RET 14h), and every
+`[ESP+n]` inside one lands on a slot key 20 bytes off.  That is what made the
+previous packet read 009D2310's operand as the commanded altitude floor when it
+is the range.  Until this tool takes the cleanup from each resolved callee's RET
+as well, check any read that sits between a `SUB ESP,imm` and the next CALL, and
+prefer a CFG fixpoint that reports depth conflicts at joins (local/depth.py in
+the cc8-torpedo-aim-tick worktree) when the answer has to be relied on.
 """
 import argparse
 import re
