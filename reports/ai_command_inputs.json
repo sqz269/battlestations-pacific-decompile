@@ -1,0 +1,86 @@
+{
+  "packet": "cc8_ai_command_inputs",
+  "owner": "agent/cc8-ai-command",
+  "summary": "The two inputs docs/AI_COMMAND_TICK.md named as missing. The member ordering key is 009FFD80, not 009FFD70 as the brief and that doc said: 009FFD70 is a two-instruction thunk onto 009FDF30 with entity+C4h, and 00A2D8E0's insert calls 009FFD80. That weight is the per-class tuning weight times 100 for a ship base, 0.01 for the 1Bh/45h/46h trio and 1.0 otherwise, and the insert's FCOMPI/JA orders the list descending, so the first member is the heaviest. The tuning loader went from six keys to thirty-three, adding the twenty per-class weights and the CautionMove/CloseAttack/Formation block, with the shipped values read out of the installed script.",
+  "ghidra_writes": [],
+  "calls": [
+    {
+      "address": "009ffd70",
+      "native": "BSP_Entity_AiClassWeight",
+      "role": "analyzed; renamed, and shown NOT to be the member ordering key",
+      "evidence": "Two instructions at 009FFD70-009FFD76: MOV ECX,[ECX+0C4h] then JMP 009FDF30. Callers 00A10D50, 00A2C4C0 and 00A2E720. 00A2D8E0's callee list names 009FFD80, not this, so the brief's and docs/AI_COMMAND_TICK.md's identification of it as the sort key is wrong."
+    },
+    {
+      "address": "009fdf30",
+      "native": "BSP_Ai_ClassWeightForClassId",
+      "role": "reconstructed as ai_entity_class_weight_offset_009fdf30",
+      "evidence": "__fastcall(int class_id) -> float. 009FDF30 LEA EAX,[ECX-6]; 009FDF33 CMP EAX,0x16; 009FDF3C JMP [EAX*4 + 009FDFF0]. Nineteen arms resolved from the table to record offsets +000h..+048h; ids 14h, 18h, 19h, 1Ah and anything out of range take FLD1 at 009FDFED."
+    },
+    {
+      "address": "009ffd80",
+      "native": "BSP_Entity_AiLeaderWeight",
+      "role": "reconstructed as ai_entity_leader_weight_009ffd80 and the host's unit_leader_weight",
+      "evidence": "__thiscall(entity), body 009FFD80-009FFDFB read in full. 009FFD81 MOVSS the 1.0f at 00D7A24C; 009FFD91 PUSH 6 through vtable[+5Ch] takes the 100.0f at 00CE3D08 (009FFD9F); 009FFDAE PUSH 1Bh, 009FFDBD PUSH 45h and 009FFDCC PUSH 46h take the 0.01f at 00D7A238 (009FFDD6); 009FFDE4 MOV ECX,[ESI+0C4h] then CALL 009FDF30 and 009FFDEF FMUL."
+    },
+    {
+      "address": "00a2d8e0",
+      "native": "BSP_AiGroup_AddEntity",
+      "role": "reconstructed as ai_group_member_sorts_before_00a2d8e0 and the host's member insert",
+      "evidence": "00A2D90D computes the candidate's 009FFD80 weight into [ESP+0Ch]; the walk calls 009FFD80 on [EDI+8] at 00A2D941, FLD [ESP+0Ch] at 00A2D946, FCOMPI ST(1) at 00A2D94A and JA at 00A2D94E. JA requires CF and ZF both clear, so the order is descending and ties keep insertion order."
+    },
+    {
+      "address": "00a371a0",
+      "native": "BSP_Ai_ActiveModeTuning",
+      "role": "used by the host through tick_tuning_field and unit_leader_weight",
+      "evidence": "Every arm of 009FDF30 calls it before its FLD, and 00A12A90 and 00A152E0 read [EAX+1F4h] from it. The record's +000h..+04Ch are the twenty per-class weights and +1F0h..+210h the CautionMove, CloseAttack and Formation block."
+    },
+    {
+      "address": "00a335d0",
+      "native": "BSP_Ai_LoadGlobals",
+      "role": "reconstructed further: ai_tuning_load_00a335d0 now carries 33 keys instead of 6",
+      "evidence": "docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md's key table gives the record offset, the key name and the GetFloatOrDefault image default for each. The twenty class weights are GetNumber keys with no default, which is why an unloaded block left every leader weight at zero."
+    },
+    {
+      "address": "009fe080",
+      "native": "BSP_Entity_IsGroupableCombatant",
+      "role": "reused; it is what rejects the new leaders on IJN01 and USN01",
+      "evidence": "Called at 00A12B93 in the MOVETOATTACK tick. It admits a ship base or a plane squadron (18h), not an individual plane, and both missions now lead with a dive bomber."
+    },
+    {
+      "address": "009fe0b0",
+      "native": "BSP_Entity_IsOneOfThreeGroupClasses",
+      "role": "reused; the same 1Bh/45h/46h trio 009FFD80 asks inline",
+      "evidence": "009FE0B8 PUSH 1Bh, 009FE0C5 PUSH 45h, 009FE0D4 PUSH 46h, matching 009FFDAE, 009FFDBD and 009FFDCC one for one."
+    }
+  ],
+  "corrections": [
+    "docs/AI_COMMAND_TICK.md and this packet's brief both name 009FFD70 as the member ordering key. 00A2D8E0's callee list and the call at 00A2D90D name 009FFD80. 009FFD70 is the class weight alone, consumed by 00A10D50, 00A2C4C0 and 00A2E720.",
+    "docs/AI_TUNING_GLOBALS.md's six-key subset is superseded: the loader now carries 33 keys, and four of the new ones differ from their image defaults in the shipped table.",
+    "docs/AI_COMMAND_TICK.md's measured promotion distances of 4756.1 and 75.7 were taken with the wrong leader and a zero threshold; with the native ordering and the shipped 3000 they are 5894.4 and 1875.2."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 clean, Win32 /W4 /WX",
+    "tests": "ctest -C Release: reconstructed_math and tool_tests both passed",
+    "baseline": "this tree at 41385525a; that commit's own after-runs reused unchanged",
+    "IJN01": {
+      "before": "leader first by unit index, collect_dist=0.0, tick moveto=0, promotions=1, gunnery hits=4 damage=500.0",
+      "after": "leader Dauntless1 weight 8, collect_dist=3000.0, tick moveto=0, promotions=1 at distance 5894.4, gunnery hits=4 damage=500.0"
+    },
+    "USN01": {
+      "before": "leader first by unit index, collect_dist=0.0, tick moveto=0, promotions=1, gunnery hits=25 damage=229.5",
+      "after": "leader ScoutDauntless weight 8, collect_dist=3000.0, tick moveto=0, promotions=1 at distance 1875.2, gunnery hits=23 damage=220.0"
+    },
+    "USN02": {
+      "before": "leader first by unit index, collect_dist=0.0, tick moveto=49, promotions=0, gunnery hits=161 damage=19061.0",
+      "after": "leader DeRuyter weight 1200, collect_dist=3000.0, tick moveto=5, promotions=1 at distance 2995.3, gunnery hits=161 damage=19061.0"
+    },
+    "leaders": "IJN01 Dauntless1 (DiveBomber 8), Enterprise (MotherShip 25 x 100 = 2500), JudySpawn1 (8), No18 (Submarine 4 x 100 = 400); USN01 Nell1 (LevelBomber 2), Katori (Cruiser 12 x 100 = 1200), ScoutDauntless (8), Enterprise (2500); USN02 DeRuyter (1200), Haguro (1200).",
+    "attribution": "Before the change every group led with its lowest unit index and every reported weight was zero, because the class-weight fields were unloaded. USN02's fall from 49 moveto commands to 5 with one promotion is the real 3000 threshold arriving: its group closes to 2995.3, which is inside it. IJN01 and USN01 still issue nothing, now for a native reason: both attack groups lead with a dive bomber and 009FE080 admits only a ship base or a plane squadron. USN01's gunnery moves from 25 hits and 229.5 damage to 23 and 220.0 with the new leaders and one fewer formation request; no gunnery code changed."
+  },
+  "uncertainties": [
+    "The loader still does not carry every key 00A335D0 reads; 33 of the table's rows are loaded and the rest answer the zero an unloaded slot holds. Coverage: partial.",
+    "00A13B60-00A14D9F is still unread, so a promoted CLOSEATTACK reaches nothing. On all three missions the attack group is in that state for most of the run.",
+    "The class ids 14h, 18h, 19h and 1Ah take the FLD1 default rather than a weight, which is read as such and not explained; 18h is the plane squadron class.",
+    "The per-class weight table is read from this installation's script, which docs/AI_TUNING_GLOBALS.md records as untouched bulk dated 2024-07-13. It is this installation's, not called retail."
+  ]
+}
