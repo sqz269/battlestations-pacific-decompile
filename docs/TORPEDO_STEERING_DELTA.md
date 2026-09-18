@@ -298,6 +298,51 @@ aircraft already outside the safe distance has nothing to go away from.
 So the cycle is aim for roughly fourteen ticks, clause 2 fires, one tick of goaway, back to
 the attack run. Fix clause 2 and the cycle stops; the break-off needs no change.
 
+### The break-off quantity, read to the store
+
+`BSP_BotStateTorpedoGoAway_Enter` (`009D0D90`-`009D0F04`) is the only producer of
+`state+24h`, and the formula is exactly the one `docs/TORPEDO_GOAWAY_RELEASE.md` records:
+
+```
+009d0dc1  call 0x42e740                ; the tuning singleton
+009d0dc9  mov  edi, [ecx+0xcc]         ; approach+CCh, the target entity
+009d0dd1  movss xmm0, [eax+0x438]      ; Pilot/Torpedo/SafeDist = 700.0
+009d0ddf  je   0x9d0e15                ; no target -> SafeDist alone
+009d0de3  mov  eax, [edx+0x5c]
+009d0de6  push 5
+009d0dea  call eax                     ; target->IsKindOf(5)
+009d0df2  call 0x7b5be0                ; the target's largest extent
+009d0e03  fcompi st(1) / ja            ; base = max(SafeDist, extent)
+009d0e27  fld1                         ; first argument 1.0
+009d0e15  fld  dword [0xd20ce4]        ; second argument 1.15
+009d0e2c  call 0xbd2f10                ; UniformFloatRange(1.0, 1.15)
+009d0e31  fmul dword ptr [esp+8]       ; * base
+009d0e37  fstp dword ptr [esi+0x24]    ; state+24h
+```
+
+`00BD2F10` cleans its two arguments, which is why no `add esp, 8` follows either this call
+or the one at `009D05CC`. `FUN_007B5BE0`, named here
+`BSP_UnitInstance_GetLargestExtent`, returns the largest of `unit+434h`, `unit+444h` and
+`unit+448h` through the `LEA`/`FCOMPI` pair at `007B5BED`-`007B5C0A`, with plain `RET`s at
+`007B5C12` and `007B5C19`.
+
+The side `state+2Ch` comes from the same enter: `009D0DBC` stores `-1.0` (`00D7A260`) or
+`+1.0` (`00D7A24C`) by the parity of the global at `00F876B0`.
+
+**The host is faithful here, with two substitutions it already labels.** At
+`src/game_hosts_units.cpp:2970-2979` the extent is absent (`has_extent_target = false`,
+because `007B5BE0` needs `approach+CCh`'s entity bounds, which this host does not model)
+and the jitter is pinned to the low end (`kDistanceJitterLo` = 1.0). So the break-off is
+700.0 exactly where the native would draw 700 to 805, or the target's extent if that were
+larger. Taking the low end of every draw is a systematic bias worth naming, but it makes
+the break-off smaller, which makes goaway complete *sooner*, so it cannot be what keeps the
+aircraft cycling.
+
+And `+90h` is the right quantity: it is the 2D range to the target **point** that
+`009D35C0` also takes the bearing to, and the host's `range_90` is built from the same
+`target_xz`. The native compares that point range against a distance derived from the
+target **entity**'s extent, which is the native's own choice and the host mirrors it.
+
 ## Corrections
 
 To append to `docs/TORPEDO_AIM_TICK.md`, not to rewrite: the frame table's `F=10h` entry

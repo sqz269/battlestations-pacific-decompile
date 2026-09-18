@@ -90,6 +90,18 @@
       "name": "BSP_BotStateTorpedoAim_Tick",
       "kind": "no_ghidra_function",
       "role": "pre-existing name; this packet read 009D15F0-009D1701 and 009D2168-009D220F from the raw listing"
+    },
+    {
+      "address": "007b5be0",
+      "native": "007b5be0",
+      "name": "BSP_UnitInstance_GetLargestExtent",
+      "role": "__thiscall(unit), no arguments, ST0 is the result, plain RETs at 007B5C12 and 007B5C19. Returns the largest of unit+434h, unit+444h and unit+448h via the LEA/FCOMPI pair at 007B5BED-007B5C0A. Sole caller 009D0DF2."
+    },
+    {
+      "address": "009d0d90",
+      "native": "009d0d90",
+      "name": "BSP_BotStateTorpedoGoAway_Enter",
+      "role": "pre-existing name, confirmed: body 009D0D90-009D0F04, the only producer of the break-off state+24h and the side state+2Ch."
     }
   ],
   "no_ghidra_function": [
@@ -282,6 +294,9 @@
     "native": "009d3150",
     "name": "BSP_BotStateTorpedoGoAway_IsComplete",
     "finding": "009D318C FLD [ESP] (break-off state+24h), 009D318F FLD [ECX+90h] (range), 009D3195 FCOMPI ST(1), 009D3199 JBE: returns true when range > break-off, with an optional FMUL by the double 0.4 at 00CE65D0 (009D3183) behind the always-engage pair ctl+369h and [00E17BF2]. With the range at 697-766 m and the break-off at 700, goaway completes on or near the tick it is entered: Mav4 spends 87 ticks in goaway across 87 entries, one tick each. That is correct behaviour; an aircraft already outside the safe distance has nothing to go away from. The break-off quantity needs no change.",
-    "cycle": "aim for roughly fourteen arm ticks, clause 2 fires, one tick of goaway, back to the attack run. 87-98 entries per aircraft in 150 s, about one reversal every 1.7 s."
+    "cycle": "aim for roughly fourteen arm ticks, clause 2 fires, one tick of goaway, back to the attack run. 87-98 entries per aircraft in 150 s, about one reversal every 1.7 s.",
+    "producer": "BSP_BotStateTorpedoGoAway_Enter 009D0D90-009D0F04 is the only producer of state+24h. 009D0DC1 takes the tuning singleton and 009D0DD1 reads Pilot/Torpedo/SafeDist at +438h = 700.0. When approach+CCh has a target (009D0DCF) that answers target->vtable[5Ch](5) (009D0DEA), 009D0DF2 calls 007B5BE0 for the target's largest extent and 009D0E03 takes the larger of the two. 009D0E27 pushes 1.0 and 009D0E15 pushes the float 1.15 at 00D20CE4, 009D0E2C calls 00BD2F10 UniformFloatRange, 009D0E31 multiplies the base and 009D0E37 stores state+24h. 00BD2F10 cleans its two arguments, which is why no add esp,8 follows it here or at 009D05CC. The side state+2Ch comes from 009D0DBC, -1.0 (00D7A260) or +1.0 (00D7A24C) by the parity of the global at 00F876B0.",
+    "host_fidelity": "faithful with two substitutions the host already labels at src/game_hosts_units.cpp:2970-2979: has_extent_target = false because 007B5BE0 needs approach+CCh's entity bounds, and the jitter is pinned to kDistanceJitterLo = 1.0. So the break-off is 700.0 where the native would draw 700-805. Taking the low end makes the break-off SMALLER and goaway complete SOONER, so it cannot be what keeps the aircraft cycling.",
+    "is_plus_90h_right": "yes. approach+90h is the 2D range to the target POINT that 009D35C0 also takes the bearing to, and the host builds range_90 from the same target_xz. The native compares that point range against a distance derived from the target ENTITY's extent; that is the native's own choice and the host mirrors it."
   }
 }
