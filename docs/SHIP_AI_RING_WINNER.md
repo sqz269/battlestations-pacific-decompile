@@ -170,3 +170,15 @@ Both are superseded by `docs/SHIP_AI_RUDDER_HOP.md`. The prototype is settled - 
 sites are `RET 0` with no arguments, concrete target `006DFD60` - and there is no hop to
 bind, because the rudder is applied at `00826B54` and `00826C75`'s yaw rate only becomes
 wake-trail metadata through `00810190`. `ship_ai_vtable50_prototype` is closed.
+
+## Second correction appended by packet `cc8_ship_ai_heading_to_rudder` (2026-09-18)
+
+"Half 2, where the AI's order actually goes" concludes, quoting
+`docs/UNIT_AI_ORDER_SLOT_READER.md`, that "on the image's evidence **the AI never writes the
+order ring**". It does, every step, through `0080E190` at `009F4CE8` and `0080E170` at
+`009F4CFB`. The rel32 scan behind the negative looked only for calls reaching `00816A40` or
+`0080DAD0`, and the AI uses neither. `docs/SHIP_AI_HEADING_TO_RUDDER.md` carries the chain
+and the byte evidence.
+
+`docs/SHIP_AI_THROTTLE_TO_RING.md` had already established that chain on 2026-09-12,
+six days before this document repeated the negative.
