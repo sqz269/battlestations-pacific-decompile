@@ -1,0 +1,5872 @@
+{
+  "packet": "orch4-native-grid-r119",
+  "status": "three_complete_cpu_bodies_original_instruction_compared_constructor_and_renderer_pending",
+  "scope": {
+    "implemented_addresses": [
+      "00709c90",
+      "00709cf0",
+      "00709760"
+    ],
+    "implemented_bodies": 3,
+    "native_bytes": 714,
+    "analyzed_not_implemented": [
+      "0070bd70",
+      "0070b330",
+      "0070b220",
+      "0070b280"
+    ],
+    "game_parent_unchanged": true
+  },
+  "contract": "709C90 ECXdestination/stacksource/EAXdestination/RET4;709CF0 and709760 ECXactual84h owner/RET. Source explicit interfaces,not binary ABI. Descriptor x87 copies; interior difference/cross/42B260 normalization and edge copies; six current frees then delayed field clearing.",
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "entry": "0070bd70",
+        "length": 364,
+        "kind": "constructor",
+        "hex": "83ec500f57c0f30f100d4ca2d700f30f101570d4cf00f30f101d60a2d700f30f10258053ce00f30f102d7c39ce00f30f10356cd4cf0033c0568bf1c70684d4cf00f30f114664f30f114668f30f114e6cf30f114e70f30f115644f30f115648f30f115e54f30f116650f30f116e4cf30f117658b910000000894e3c894e4089460489460889460c89461089461489461889461cf30f103d7475f800f30f117e20f30f103d7875f800f30f117e24f30f103d7c75f800f30f117e28f30f107c245889467889467c8d44241c894c241c894c2420508bcef30f117e2cc74674fffffffff30f11442448f30f1144244cf30f114c2450f30f114c2454f30f11542428f30f1154242cf30f115c2438f30f11642434f30f116c2430f30f1174243ce89ef4ffffd9442458d9fed95c2404d9442404d95c240cd9442458d9ffd95c2408d946580f57c0d84c240cf30f114630f30f10442408f30f114634d95c24188bc6d9442418d95e385e83c450c20400",
+        "sha256": "cdea0aa5e22f5d1aed79fe1240528cae1ac88a837ccd0904f3d3dddf93fa346f",
+        "instructions": [
+          {
+            "address": "0070bd70",
+            "hex": "83ec50",
+            "text": "sub esp, 0x50"
+          },
+          {
+            "address": "0070bd73",
+            "hex": "0f57c0",
+            "text": "xorps xmm0, xmm0"
+          },
+          {
+            "address": "0070bd76",
+            "hex": "f30f100d4ca2d700",
+            "text": "movss xmm1, dword ptr [0xd7a24c]"
+          },
+          {
+            "address": "0070bd7e",
+            "hex": "f30f101570d4cf00",
+            "text": "movss xmm2, dword ptr [0xcfd470]"
+          },
+          {
+            "address": "0070bd86",
+            "hex": "f30f101d60a2d700",
+            "text": "movss xmm3, dword ptr [0xd7a260]"
+          },
+          {
+            "address": "0070bd8e",
+            "hex": "f30f10258053ce00",
+            "text": "movss xmm4, dword ptr [0xce5380]"
+          },
+          {
+            "address": "0070bd96",
+            "hex": "f30f102d7c39ce00",
+            "text": "movss xmm5, dword ptr [0xce397c]"
+          },
+          {
+            "address": "0070bd9e",
+            "hex": "f30f10356cd4cf00",
+            "text": "movss xmm6, dword ptr [0xcfd46c]"
+          },
+          {
+            "address": "0070bda6",
+            "hex": "33c0",
+            "text": "xor eax, eax"
+          },
+          {
+            "address": "0070bda8",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "0070bda9",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "0070bdab",
+            "hex": "c70684d4cf00",
+            "text": "mov dword ptr [esi], 0xcfd484"
+          },
+          {
+            "address": "0070bdb1",
+            "hex": "f30f114664",
+            "text": "movss dword ptr [esi + 0x64], xmm0"
+          },
+          {
+            "address": "0070bdb6",
+            "hex": "f30f114668",
+            "text": "movss dword ptr [esi + 0x68], xmm0"
+          },
+          {
+            "address": "0070bdbb",
+            "hex": "f30f114e6c",
+            "text": "movss dword ptr [esi + 0x6c], xmm1"
+          },
+          {
+            "address": "0070bdc0",
+            "hex": "f30f114e70",
+            "text": "movss dword ptr [esi + 0x70], xmm1"
+          },
+          {
+            "address": "0070bdc5",
+            "hex": "f30f115644",
+            "text": "movss dword ptr [esi + 0x44], xmm2"
+          },
+          {
+            "address": "0070bdca",
+            "hex": "f30f115648",
+            "text": "movss dword ptr [esi + 0x48], xmm2"
+          },
+          {
+            "address": "0070bdcf",
+            "hex": "f30f115e54",
+            "text": "movss dword ptr [esi + 0x54], xmm3"
+          },
+          {
+            "address": "0070bdd4",
+            "hex": "f30f116650",
+            "text": "movss dword ptr [esi + 0x50], xmm4"
+          },
+          {
+            "address": "0070bdd9",
+            "hex": "f30f116e4c",
+            "text": "movss dword ptr [esi + 0x4c], xmm5"
+          },
+          {
+            "address": "0070bdde",
+            "hex": "f30f117658",
+            "text": "movss dword ptr [esi + 0x58], xmm6"
+          },
+          {
+            "address": "0070bde3",
+            "hex": "b910000000",
+            "text": "mov ecx, 0x10"
+          },
+          {
+            "address": "0070bde8",
+            "hex": "894e3c",
+            "text": "mov dword ptr [esi + 0x3c], ecx"
+          },
+          {
+            "address": "0070bdeb",
+            "hex": "894e40",
+            "text": "mov dword ptr [esi + 0x40], ecx"
+          },
+          {
+            "address": "0070bdee",
+            "hex": "894604",
+            "text": "mov dword ptr [esi + 4], eax"
+          },
+          {
+            "address": "0070bdf1",
+            "hex": "894608",
+            "text": "mov dword ptr [esi + 8], eax"
+          },
+          {
+            "address": "0070bdf4",
+            "hex": "89460c",
+            "text": "mov dword ptr [esi + 0xc], eax"
+          },
+          {
+            "address": "0070bdf7",
+            "hex": "894610",
+            "text": "mov dword ptr [esi + 0x10], eax"
+          },
+          {
+            "address": "0070bdfa",
+            "hex": "894614",
+            "text": "mov dword ptr [esi + 0x14], eax"
+          },
+          {
+            "address": "0070bdfd",
+            "hex": "894618",
+            "text": "mov dword ptr [esi + 0x18], eax"
+          },
+          {
+            "address": "0070be00",
+            "hex": "89461c",
+            "text": "mov dword ptr [esi + 0x1c], eax"
+          },
+          {
+            "address": "0070be03",
+            "hex": "f30f103d7475f800",
+            "text": "movss xmm7, dword ptr [0xf87574]"
+          },
+          {
+            "address": "0070be0b",
+            "hex": "f30f117e20",
+            "text": "movss dword ptr [esi + 0x20], xmm7"
+          },
+          {
+            "address": "0070be10",
+            "hex": "f30f103d7875f800",
+            "text": "movss xmm7, dword ptr [0xf87578]"
+          },
+          {
+            "address": "0070be18",
+            "hex": "f30f117e24",
+            "text": "movss dword ptr [esi + 0x24], xmm7"
+          },
+          {
+            "address": "0070be1d",
+            "hex": "f30f103d7c75f800",
+            "text": "movss xmm7, dword ptr [0xf8757c]"
+          },
+          {
+            "address": "0070be25",
+            "hex": "f30f117e28",
+            "text": "movss dword ptr [esi + 0x28], xmm7"
+          },
+          {
+            "address": "0070be2a",
+            "hex": "f30f107c2458",
+            "text": "movss xmm7, dword ptr [esp + 0x58]"
+          },
+          {
+            "address": "0070be30",
+            "hex": "894678",
+            "text": "mov dword ptr [esi + 0x78], eax"
+          },
+          {
+            "address": "0070be33",
+            "hex": "89467c",
+            "text": "mov dword ptr [esi + 0x7c], eax"
+          },
+          {
+            "address": "0070be36",
+            "hex": "8d44241c",
+            "text": "lea eax, [esp + 0x1c]"
+          },
+          {
+            "address": "0070be3a",
+            "hex": "894c241c",
+            "text": "mov dword ptr [esp + 0x1c], ecx"
+          },
+          {
+            "address": "0070be3e",
+            "hex": "894c2420",
+            "text": "mov dword ptr [esp + 0x20], ecx"
+          },
+          {
+            "address": "0070be42",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0070be43",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "0070be45",
+            "hex": "f30f117e2c",
+            "text": "movss dword ptr [esi + 0x2c], xmm7"
+          },
+          {
+            "address": "0070be4a",
+            "hex": "c74674ffffffff",
+            "text": "mov dword ptr [esi + 0x74], 0xffffffff"
+          },
+          {
+            "address": "0070be51",
+            "hex": "f30f11442448",
+            "text": "movss dword ptr [esp + 0x48], xmm0"
+          },
+          {
+            "address": "0070be57",
+            "hex": "f30f1144244c",
+            "text": "movss dword ptr [esp + 0x4c], xmm0"
+          },
+          {
+            "address": "0070be5d",
+            "hex": "f30f114c2450",
+            "text": "movss dword ptr [esp + 0x50], xmm1"
+          },
+          {
+            "address": "0070be63",
+            "hex": "f30f114c2454",
+            "text": "movss dword ptr [esp + 0x54], xmm1"
+          },
+          {
+            "address": "0070be69",
+            "hex": "f30f11542428",
+            "text": "movss dword ptr [esp + 0x28], xmm2"
+          },
+          {
+            "address": "0070be6f",
+            "hex": "f30f1154242c",
+            "text": "movss dword ptr [esp + 0x2c], xmm2"
+          },
+          {
+            "address": "0070be75",
+            "hex": "f30f115c2438",
+            "text": "movss dword ptr [esp + 0x38], xmm3"
+          },
+          {
+            "address": "0070be7b",
+            "hex": "f30f11642434",
+            "text": "movss dword ptr [esp + 0x34], xmm4"
+          },
+          {
+            "address": "0070be81",
+            "hex": "f30f116c2430",
+            "text": "movss dword ptr [esp + 0x30], xmm5"
+          },
+          {
+            "address": "0070be87",
+            "hex": "f30f1174243c",
+            "text": "movss dword ptr [esp + 0x3c], xmm6"
+          },
+          {
+            "address": "0070be8d",
+            "hex": "e89ef4ffff",
+            "text": "call 0x70b330"
+          },
+          {
+            "address": "0070be92",
+            "hex": "d9442458",
+            "text": "fld dword ptr [esp + 0x58]"
+          },
+          {
+            "address": "0070be96",
+            "hex": "d9fe",
+            "text": "fsin "
+          },
+          {
+            "address": "0070be98",
+            "hex": "d95c2404",
+            "text": "fstp dword ptr [esp + 4]"
+          },
+          {
+            "address": "0070be9c",
+            "hex": "d9442404",
+            "text": "fld dword ptr [esp + 4]"
+          },
+          {
+            "address": "0070bea0",
+            "hex": "d95c240c",
+            "text": "fstp dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "0070bea4",
+            "hex": "d9442458",
+            "text": "fld dword ptr [esp + 0x58]"
+          },
+          {
+            "address": "0070bea8",
+            "hex": "d9ff",
+            "text": "fcos "
+          },
+          {
+            "address": "0070beaa",
+            "hex": "d95c2408",
+            "text": "fstp dword ptr [esp + 8]"
+          },
+          {
+            "address": "0070beae",
+            "hex": "d94658",
+            "text": "fld dword ptr [esi + 0x58]"
+          },
+          {
+            "address": "0070beb1",
+            "hex": "0f57c0",
+            "text": "xorps xmm0, xmm0"
+          },
+          {
+            "address": "0070beb4",
+            "hex": "d84c240c",
+            "text": "fmul dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "0070beb8",
+            "hex": "f30f114630",
+            "text": "movss dword ptr [esi + 0x30], xmm0"
+          },
+          {
+            "address": "0070bebd",
+            "hex": "f30f10442408",
+            "text": "movss xmm0, dword ptr [esp + 8]"
+          },
+          {
+            "address": "0070bec3",
+            "hex": "f30f114634",
+            "text": "movss dword ptr [esi + 0x34], xmm0"
+          },
+          {
+            "address": "0070bec8",
+            "hex": "d95c2418",
+            "text": "fstp dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "0070becc",
+            "hex": "8bc6",
+            "text": "mov eax, esi"
+          },
+          {
+            "address": "0070bece",
+            "hex": "d9442418",
+            "text": "fld dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "0070bed2",
+            "hex": "d95e38",
+            "text": "fstp dword ptr [esi + 0x38]"
+          },
+          {
+            "address": "0070bed5",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "0070bed6",
+            "hex": "83c450",
+            "text": "add esp, 0x50"
+          },
+          {
+            "address": "0070bed9",
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ]
+      },
+      {
+        "entry": "0070b330",
+        "length": 1691,
+        "kind": "initialize",
+        "hex": "6aff684847c80064a100000000506489250000000083ec20538b5c243455568bf1578d7e3c538bcfe833e9ffff8b43040faf0333c9894604ba0c000000f7e20f90c1f7d90bc851e842a24e008946088b460433c9ba0c000000f7e20f90c1f7d90bc851e826a24e0089460c8b460433c9ba0c000000f7e20f90c1f7d90bc851e80aa24e008946108b460433c9ba0c000000f7e20f90c1f7d90bc851e8eea14e008946148b460433c9ba0c000000f7e20f90c1f7d90bc851e8d2a14e008946188b460433c9ba0c000000f7e20f90c1f7d90bc851e8b6a14e00d9464889461c8b46408d48ff894c2458da7424588b1783c418d95e60d9464483ea0189542440da7424400f57c033ed33d23bc589542410d95e5c0f8eda00000033db8d9b0000000033c9392f7e78f30f2acbf30f114c2420d9442420896c24408b07d9c0d84e608b6e080fafc2d95c241cdb442440d84e5c03c18d0440d95c2418d944241c8d448500836c244001f30f1100d95804d9442418d958088b078b6e100fafc203c18d04408d44850083c101f30f1100f30f114004f30f1140083b0f7c9eddd833eddb442410dc0d283dce00da7640d95c2440d9442440d9fed95c2414d946448b07d9e0dc0da0a3d7000fafc2d84c2414d95c2440d94424408d0c408b460883c20183eb01d95c88083b5640895424100f8c2effffff8bcee8c7e7ffff6a016a0a8d4c2430896c2430896c2434e80228d1ff8b44242c3bc574168b4c242883c1015168e4d4cf0050e827c14e0083c40c8b0d94d3f8008b118b52388d44242850896c243cffd28b4c242c3bcd89442420c7442438ffffffff74178b4424286a0183c0015051e82ae7d0ff8bc8e8735f4c008b46048b4e40894424408b0783e8018d148dfcffffff0fafd08996800000008b6e7885ed8b1d94d3f800741e8d4d0451ff152022ce0085c075098b55008b028bcdffd0c74678000000008b4424208b4c24408b138b525c508d04096800100000508bcbffd28946788b6e7c85ed741e8d450450ff152022ce0085c075098b55008b028bcdffd0c7467c000000008b86800000008b138b52606a656a018d0440508bcbffd26a0089467c8b106a008bc88b420c6a00ffd08b4e4033d283e90185c9895424147e7a8b0f83e90133db85c97e578bff0fb7ca66890883c0028d6901668928668b2f6603e96683c5016689680283c00266894802668b2f83c0026603e983c0026683c501668928668b2f6603e983c0026689288b0f83c30183e90183c00283c2013bd97cab8b4c24148b5e4083c10183eb0183c2013bcb894c24147c868b4e408b54244083e90185c9c7442414000000007e7c8b0f83e90133db85c97e598bff0fb7ca668908668b6e406603e96683c5016689680283c00283c0028d690166892866894802668b2f83c0026603e966896802668b2f83c0026603e983c0026683c5016689288b0f83c30183e90183c00283c2013bd97ca98b4c24148b5e4083c10183eb0183c2013bcb894c24147c848b4e7c8b118b4210ffd08b4e788b118b42106a006a006a00ffd033c9394c24400f8efb010000d9e8f30f10054ca2d700d9ee0f57c9b0ffdce988442412884424118844241088442413884424168844241588442414884424178b5e408bc199f7fbf7d88944241cdb44241cf7da8954241c8b5678d84e608b420c0fafc1d95c2418db44241cd84e5c034210d95c241cd9442418034208d95004f30f1108d944241cd950088b56788b442440d9c98d2c018b420c0fafc5034210034208d95804f30f1108d958088b1f8bc1d9466499d95c2418f7fb83c3ff8954241cdb44241c895c241c8b564089442424da74241c83ea01d95c241cd944241cd8e1d9466cd9442418d9c0deead9c9d8f4decadec1d95c2418d94668d95c241cdb442424895424248b56788b420cda7424240fafc1d95c2424d9442424d8e1d94670d944241cd9c0deead9c9d8f4decadec1d95c241c034228d9442418034208d918d944241cd958048b46788b503485d27c128b580c0fafd90358088b442410890413eb298b500c8b58380fafd1035008f30f11041a8b583cf30f11041a8b5840f30f11041a8b4044f30f1104028b56788b420cf30f105424180fafc5034228034208f30f1110f30f1054241cf30f1150048b46788b503485d27c128b580c0fafdd0358088b442414890413eb298b500c8b58380fafd5035008f30f11041a8b583cf30f11041a8b5840f30f11041a8b4044f30f11040283c1013b4c24400f8c3cfeffffddd8ddd88b76788b168b42148bceffd08b7424208d4e0451ff152022ce0085c075088b168b028bceffd08b4c24305f5e5d5b64890d0000000083c42cc20400",
+        "sha256": "37257396c04a557922a14187eb2aa95568b6ded064e2eee099675aa2b8ef6912",
+        "instructions": [
+          {
+            "address": "0070b330",
+            "hex": "6aff",
+            "text": "push -1"
+          },
+          {
+            "address": "0070b332",
+            "hex": "684847c800",
+            "text": "push 0xc84748"
+          },
+          {
+            "address": "0070b337",
+            "hex": "64a100000000",
+            "text": "mov eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "0070b33d",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0070b33e",
+            "hex": "64892500000000",
+            "text": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "address": "0070b345",
+            "hex": "83ec20",
+            "text": "sub esp, 0x20"
+          },
+          {
+            "address": "0070b348",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "0070b349",
+            "hex": "8b5c2434",
+            "text": "mov ebx, dword ptr [esp + 0x34]"
+          },
+          {
+            "address": "0070b34d",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "0070b34e",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "0070b34f",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "0070b351",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "0070b352",
+            "hex": "8d7e3c",
+            "text": "lea edi, [esi + 0x3c]"
+          },
+          {
+            "address": "0070b355",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "0070b356",
+            "hex": "8bcf",
+            "text": "mov ecx, edi"
+          },
+          {
+            "address": "0070b358",
+            "hex": "e833e9ffff",
+            "text": "call 0x709c90"
+          },
+          {
+            "address": "0070b35d",
+            "hex": "8b4304",
+            "text": "mov eax, dword ptr [ebx + 4]"
+          },
+          {
+            "address": "0070b360",
+            "hex": "0faf03",
+            "text": "imul eax, dword ptr [ebx]"
+          },
+          {
+            "address": "0070b363",
+            "hex": "33c9",
+            "text": "xor ecx, ecx"
+          },
+          {
+            "address": "0070b365",
+            "hex": "894604",
+            "text": "mov dword ptr [esi + 4], eax"
+          },
+          {
+            "address": "0070b368",
+            "hex": "ba0c000000",
+            "text": "mov edx, 0xc"
+          },
+          {
+            "address": "0070b36d",
+            "hex": "f7e2",
+            "text": "mul edx"
+          },
+          {
+            "address": "0070b36f",
+            "hex": "0f90c1",
+            "text": "seto cl"
+          },
+          {
+            "address": "0070b372",
+            "hex": "f7d9",
+            "text": "neg ecx"
+          },
+          {
+            "address": "0070b374",
+            "hex": "0bc8",
+            "text": "or ecx, eax"
+          },
+          {
+            "address": "0070b376",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "0070b377",
+            "hex": "e842a24e00",
+            "text": "call 0xbf55be"
+          },
+          {
+            "address": "0070b37c",
+            "hex": "894608",
+            "text": "mov dword ptr [esi + 8], eax"
+          },
+          {
+            "address": "0070b37f",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "0070b382",
+            "hex": "33c9",
+            "text": "xor ecx, ecx"
+          },
+          {
+            "address": "0070b384",
+            "hex": "ba0c000000",
+            "text": "mov edx, 0xc"
+          },
+          {
+            "address": "0070b389",
+            "hex": "f7e2",
+            "text": "mul edx"
+          },
+          {
+            "address": "0070b38b",
+            "hex": "0f90c1",
+            "text": "seto cl"
+          },
+          {
+            "address": "0070b38e",
+            "hex": "f7d9",
+            "text": "neg ecx"
+          },
+          {
+            "address": "0070b390",
+            "hex": "0bc8",
+            "text": "or ecx, eax"
+          },
+          {
+            "address": "0070b392",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "0070b393",
+            "hex": "e826a24e00",
+            "text": "call 0xbf55be"
+          },
+          {
+            "address": "0070b398",
+            "hex": "89460c",
+            "text": "mov dword ptr [esi + 0xc], eax"
+          },
+          {
+            "address": "0070b39b",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "0070b39e",
+            "hex": "33c9",
+            "text": "xor ecx, ecx"
+          },
+          {
+            "address": "0070b3a0",
+            "hex": "ba0c000000",
+            "text": "mov edx, 0xc"
+          },
+          {
+            "address": "0070b3a5",
+            "hex": "f7e2",
+            "text": "mul edx"
+          },
+          {
+            "address": "0070b3a7",
+            "hex": "0f90c1",
+            "text": "seto cl"
+          },
+          {
+            "address": "0070b3aa",
+            "hex": "f7d9",
+            "text": "neg ecx"
+          },
+          {
+            "address": "0070b3ac",
+            "hex": "0bc8",
+            "text": "or ecx, eax"
+          },
+          {
+            "address": "0070b3ae",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "0070b3af",
+            "hex": "e80aa24e00",
+            "text": "call 0xbf55be"
+          },
+          {
+            "address": "0070b3b4",
+            "hex": "894610",
+            "text": "mov dword ptr [esi + 0x10], eax"
+          },
+          {
+            "address": "0070b3b7",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "0070b3ba",
+            "hex": "33c9",
+            "text": "xor ecx, ecx"
+          },
+          {
+            "address": "0070b3bc",
+            "hex": "ba0c000000",
+            "text": "mov edx, 0xc"
+          },
+          {
+            "address": "0070b3c1",
+            "hex": "f7e2",
+            "text": "mul edx"
+          },
+          {
+            "address": "0070b3c3",
+            "hex": "0f90c1",
+            "text": "seto cl"
+          },
+          {
+            "address": "0070b3c6",
+            "hex": "f7d9",
+            "text": "neg ecx"
+          },
+          {
+            "address": "0070b3c8",
+            "hex": "0bc8",
+            "text": "or ecx, eax"
+          },
+          {
+            "address": "0070b3ca",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "0070b3cb",
+            "hex": "e8eea14e00",
+            "text": "call 0xbf55be"
+          },
+          {
+            "address": "0070b3d0",
+            "hex": "894614",
+            "text": "mov dword ptr [esi + 0x14], eax"
+          },
+          {
+            "address": "0070b3d3",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "0070b3d6",
+            "hex": "33c9",
+            "text": "xor ecx, ecx"
+          },
+          {
+            "address": "0070b3d8",
+            "hex": "ba0c000000",
+            "text": "mov edx, 0xc"
+          },
+          {
+            "address": "0070b3dd",
+            "hex": "f7e2",
+            "text": "mul edx"
+          },
+          {
+            "address": "0070b3df",
+            "hex": "0f90c1",
+            "text": "seto cl"
+          },
+          {
+            "address": "0070b3e2",
+            "hex": "f7d9",
+            "text": "neg ecx"
+          },
+          {
+            "address": "0070b3e4",
+            "hex": "0bc8",
+            "text": "or ecx, eax"
+          },
+          {
+            "address": "0070b3e6",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "0070b3e7",
+            "hex": "e8d2a14e00",
+            "text": "call 0xbf55be"
+          },
+          {
+            "address": "0070b3ec",
+            "hex": "894618",
+            "text": "mov dword ptr [esi + 0x18], eax"
+          },
+          {
+            "address": "0070b3ef",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "0070b3f2",
+            "hex": "33c9",
+            "text": "xor ecx, ecx"
+          },
+          {
+            "address": "0070b3f4",
+            "hex": "ba0c000000",
+            "text": "mov edx, 0xc"
+          },
+          {
+            "address": "0070b3f9",
+            "hex": "f7e2",
+            "text": "mul edx"
+          },
+          {
+            "address": "0070b3fb",
+            "hex": "0f90c1",
+            "text": "seto cl"
+          },
+          {
+            "address": "0070b3fe",
+            "hex": "f7d9",
+            "text": "neg ecx"
+          },
+          {
+            "address": "0070b400",
+            "hex": "0bc8",
+            "text": "or ecx, eax"
+          },
+          {
+            "address": "0070b402",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "0070b403",
+            "hex": "e8b6a14e00",
+            "text": "call 0xbf55be"
+          },
+          {
+            "address": "0070b408",
+            "hex": "d94648",
+            "text": "fld dword ptr [esi + 0x48]"
+          },
+          {
+            "address": "0070b40b",
+            "hex": "89461c",
+            "text": "mov dword ptr [esi + 0x1c], eax"
+          },
+          {
+            "address": "0070b40e",
+            "hex": "8b4640",
+            "text": "mov eax, dword ptr [esi + 0x40]"
+          },
+          {
+            "address": "0070b411",
+            "hex": "8d48ff",
+            "text": "lea ecx, [eax - 1]"
+          },
+          {
+            "address": "0070b414",
+            "hex": "894c2458",
+            "text": "mov dword ptr [esp + 0x58], ecx"
+          },
+          {
+            "address": "0070b418",
+            "hex": "da742458",
+            "text": "fidiv dword ptr [esp + 0x58]"
+          },
+          {
+            "address": "0070b41c",
+            "hex": "8b17",
+            "text": "mov edx, dword ptr [edi]"
+          },
+          {
+            "address": "0070b41e",
+            "hex": "83c418",
+            "text": "add esp, 0x18"
+          },
+          {
+            "address": "0070b421",
+            "hex": "d95e60",
+            "text": "fstp dword ptr [esi + 0x60]"
+          },
+          {
+            "address": "0070b424",
+            "hex": "d94644",
+            "text": "fld dword ptr [esi + 0x44]"
+          },
+          {
+            "address": "0070b427",
+            "hex": "83ea01",
+            "text": "sub edx, 1"
+          },
+          {
+            "address": "0070b42a",
+            "hex": "89542440",
+            "text": "mov dword ptr [esp + 0x40], edx"
+          },
+          {
+            "address": "0070b42e",
+            "hex": "da742440",
+            "text": "fidiv dword ptr [esp + 0x40]"
+          },
+          {
+            "address": "0070b432",
+            "hex": "0f57c0",
+            "text": "xorps xmm0, xmm0"
+          },
+          {
+            "address": "0070b435",
+            "hex": "33ed",
+            "text": "xor ebp, ebp"
+          },
+          {
+            "address": "0070b437",
+            "hex": "33d2",
+            "text": "xor edx, edx"
+          },
+          {
+            "address": "0070b439",
+            "hex": "3bc5",
+            "text": "cmp eax, ebp"
+          },
+          {
+            "address": "0070b43b",
+            "hex": "89542410",
+            "text": "mov dword ptr [esp + 0x10], edx"
+          },
+          {
+            "address": "0070b43f",
+            "hex": "d95e5c",
+            "text": "fstp dword ptr [esi + 0x5c]"
+          },
+          {
+            "address": "0070b442",
+            "hex": "0f8eda000000",
+            "text": "jle 0x70b522"
+          },
+          {
+            "address": "0070b448",
+            "hex": "33db",
+            "text": "xor ebx, ebx"
+          },
+          {
+            "address": "0070b44a",
+            "hex": "8d9b00000000",
+            "text": "lea ebx, [ebx]"
+          },
+          {
+            "address": "0070b450",
+            "hex": "33c9",
+            "text": "xor ecx, ecx"
+          },
+          {
+            "address": "0070b452",
+            "hex": "392f",
+            "text": "cmp dword ptr [edi], ebp"
+          },
+          {
+            "address": "0070b454",
+            "hex": "7e78",
+            "text": "jle 0x70b4ce"
+          },
+          {
+            "address": "0070b456",
+            "hex": "f30f2acb",
+            "text": "cvtsi2ss xmm1, ebx"
+          },
+          {
+            "address": "0070b45a",
+            "hex": "f30f114c2420",
+            "text": "movss dword ptr [esp + 0x20], xmm1"
+          },
+          {
+            "address": "0070b460",
+            "hex": "d9442420",
+            "text": "fld dword ptr [esp + 0x20]"
+          },
+          {
+            "address": "0070b464",
+            "hex": "896c2440",
+            "text": "mov dword ptr [esp + 0x40], ebp"
+          },
+          {
+            "address": "0070b468",
+            "hex": "8b07",
+            "text": "mov eax, dword ptr [edi]"
+          },
+          {
+            "address": "0070b46a",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "0070b46c",
+            "hex": "d84e60",
+            "text": "fmul dword ptr [esi + 0x60]"
+          },
+          {
+            "address": "0070b46f",
+            "hex": "8b6e08",
+            "text": "mov ebp, dword ptr [esi + 8]"
+          },
+          {
+            "address": "0070b472",
+            "hex": "0fafc2",
+            "text": "imul eax, edx"
+          },
+          {
+            "address": "0070b475",
+            "hex": "d95c241c",
+            "text": "fstp dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "0070b479",
+            "hex": "db442440",
+            "text": "fild dword ptr [esp + 0x40]"
+          },
+          {
+            "address": "0070b47d",
+            "hex": "d84e5c",
+            "text": "fmul dword ptr [esi + 0x5c]"
+          },
+          {
+            "address": "0070b480",
+            "hex": "03c1",
+            "text": "add eax, ecx"
+          },
+          {
+            "address": "0070b482",
+            "hex": "8d0440",
+            "text": "lea eax, [eax + eax*2]"
+          },
+          {
+            "address": "0070b485",
+            "hex": "d95c2418",
+            "text": "fstp dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "0070b489",
+            "hex": "d944241c",
+            "text": "fld dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "0070b48d",
+            "hex": "8d448500",
+            "text": "lea eax, [ebp + eax*4]"
+          },
+          {
+            "address": "0070b491",
+            "hex": "836c244001",
+            "text": "sub dword ptr [esp + 0x40], 1"
+          },
+          {
+            "address": "0070b496",
+            "hex": "f30f1100",
+            "text": "movss dword ptr [eax], xmm0"
+          },
+          {
+            "address": "0070b49a",
+            "hex": "d95804",
+            "text": "fstp dword ptr [eax + 4]"
+          },
+          {
+            "address": "0070b49d",
+            "hex": "d9442418",
+            "text": "fld dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "0070b4a1",
+            "hex": "d95808",
+            "text": "fstp dword ptr [eax + 8]"
+          },
+          {
+            "address": "0070b4a4",
+            "hex": "8b07",
+            "text": "mov eax, dword ptr [edi]"
+          },
+          {
+            "address": "0070b4a6",
+            "hex": "8b6e10",
+            "text": "mov ebp, dword ptr [esi + 0x10]"
+          },
+          {
+            "address": "0070b4a9",
+            "hex": "0fafc2",
+            "text": "imul eax, edx"
+          },
+          {
+            "address": "0070b4ac",
+            "hex": "03c1",
+            "text": "add eax, ecx"
+          },
+          {
+            "address": "0070b4ae",
+            "hex": "8d0440",
+            "text": "lea eax, [eax + eax*2]"
+          },
+          {
+            "address": "0070b4b1",
+            "hex": "8d448500",
+            "text": "lea eax, [ebp + eax*4]"
+          },
+          {
+            "address": "0070b4b5",
+            "hex": "83c101",
+            "text": "add ecx, 1"
+          },
+          {
+            "address": "0070b4b8",
+            "hex": "f30f1100",
+            "text": "movss dword ptr [eax], xmm0"
+          },
+          {
+            "address": "0070b4bc",
+            "hex": "f30f114004",
+            "text": "movss dword ptr [eax + 4], xmm0"
+          },
+          {
+            "address": "0070b4c1",
+            "hex": "f30f114008",
+            "text": "movss dword ptr [eax + 8], xmm0"
+          },
+          {
+            "address": "0070b4c6",
+            "hex": "3b0f",
+            "text": "cmp ecx, dword ptr [edi]"
+          },
+          {
+            "address": "0070b4c8",
+            "hex": "7c9e",
+            "text": "jl 0x70b468"
+          },
+          {
+            "address": "0070b4ca",
+            "hex": "ddd8",
+            "text": "fstp st(0)"
+          },
+          {
+            "address": "0070b4cc",
+            "hex": "33ed",
+            "text": "xor ebp, ebp"
+          },
+          {
+            "address": "0070b4ce",
+            "hex": "db442410",
+            "text": "fild dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "0070b4d2",
+            "hex": "dc0d283dce00",
+            "text": "fmul qword ptr [0xce3d28]"
+          },
+          {
+            "address": "0070b4d8",
+            "hex": "da7640",
+            "text": "fidiv dword ptr [esi + 0x40]"
+          },
+          {
+            "address": "0070b4db",
+            "hex": "d95c2440",
+            "text": "fstp dword ptr [esp + 0x40]"
+          },
+          {
+            "address": "0070b4df",
+            "hex": "d9442440",
+            "text": "fld dword ptr [esp + 0x40]"
+          },
+          {
+            "address": "0070b4e3",
+            "hex": "d9fe",
+            "text": "fsin "
+          },
+          {
+            "address": "0070b4e5",
+            "hex": "d95c2414",
+            "text": "fstp dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "0070b4e9",
+            "hex": "d94644",
+            "text": "fld dword ptr [esi + 0x44]"
+          },
+          {
+            "address": "0070b4ec",
+            "hex": "8b07",
+            "text": "mov eax, dword ptr [edi]"
+          },
+          {
+            "address": "0070b4ee",
+            "hex": "d9e0",
+            "text": "fchs "
+          },
+          {
+            "address": "0070b4f0",
+            "hex": "dc0da0a3d700",
+            "text": "fmul qword ptr [0xd7a3a0]"
+          },
+          {
+            "address": "0070b4f6",
+            "hex": "0fafc2",
+            "text": "imul eax, edx"
+          },
+          {
+            "address": "0070b4f9",
+            "hex": "d84c2414",
+            "text": "fmul dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "0070b4fd",
+            "hex": "d95c2440",
+            "text": "fstp dword ptr [esp + 0x40]"
+          },
+          {
+            "address": "0070b501",
+            "hex": "d9442440",
+            "text": "fld dword ptr [esp + 0x40]"
+          },
+          {
+            "address": "0070b505",
+            "hex": "8d0c40",
+            "text": "lea ecx, [eax + eax*2]"
+          },
+          {
+            "address": "0070b508",
+            "hex": "8b4608",
+            "text": "mov eax, dword ptr [esi + 8]"
+          },
+          {
+            "address": "0070b50b",
+            "hex": "83c201",
+            "text": "add edx, 1"
+          },
+          {
+            "address": "0070b50e",
+            "hex": "83eb01",
+            "text": "sub ebx, 1"
+          },
+          {
+            "address": "0070b511",
+            "hex": "d95c8808",
+            "text": "fstp dword ptr [eax + ecx*4 + 8]"
+          },
+          {
+            "address": "0070b515",
+            "hex": "3b5640",
+            "text": "cmp edx, dword ptr [esi + 0x40]"
+          },
+          {
+            "address": "0070b518",
+            "hex": "89542410",
+            "text": "mov dword ptr [esp + 0x10], edx"
+          },
+          {
+            "address": "0070b51c",
+            "hex": "0f8c2effffff",
+            "text": "jl 0x70b450"
+          },
+          {
+            "address": "0070b522",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "0070b524",
+            "hex": "e8c7e7ffff",
+            "text": "call 0x709cf0"
+          },
+          {
+            "address": "0070b529",
+            "hex": "6a01",
+            "text": "push 1"
+          },
+          {
+            "address": "0070b52b",
+            "hex": "6a0a",
+            "text": "push 0xa"
+          },
+          {
+            "address": "0070b52d",
+            "hex": "8d4c2430",
+            "text": "lea ecx, [esp + 0x30]"
+          },
+          {
+            "address": "0070b531",
+            "hex": "896c2430",
+            "text": "mov dword ptr [esp + 0x30], ebp"
+          },
+          {
+            "address": "0070b535",
+            "hex": "896c2434",
+            "text": "mov dword ptr [esp + 0x34], ebp"
+          },
+          {
+            "address": "0070b539",
+            "hex": "e80228d1ff",
+            "text": "call 0x41dd40"
+          },
+          {
+            "address": "0070b53e",
+            "hex": "8b44242c",
+            "text": "mov eax, dword ptr [esp + 0x2c]"
+          },
+          {
+            "address": "0070b542",
+            "hex": "3bc5",
+            "text": "cmp eax, ebp"
+          },
+          {
+            "address": "0070b544",
+            "hex": "7416",
+            "text": "je 0x70b55c"
+          },
+          {
+            "address": "0070b546",
+            "hex": "8b4c2428",
+            "text": "mov ecx, dword ptr [esp + 0x28]"
+          },
+          {
+            "address": "0070b54a",
+            "hex": "83c101",
+            "text": "add ecx, 1"
+          },
+          {
+            "address": "0070b54d",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "0070b54e",
+            "hex": "68e4d4cf00",
+            "text": "push 0xcfd4e4"
+          },
+          {
+            "address": "0070b553",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0070b554",
+            "hex": "e827c14e00",
+            "text": "call 0xbf7680"
+          },
+          {
+            "address": "0070b559",
+            "hex": "83c40c",
+            "text": "add esp, 0xc"
+          },
+          {
+            "address": "0070b55c",
+            "hex": "8b0d94d3f800",
+            "text": "mov ecx, dword ptr [0xf8d394]"
+          },
+          {
+            "address": "0070b562",
+            "hex": "8b11",
+            "text": "mov edx, dword ptr [ecx]"
+          },
+          {
+            "address": "0070b564",
+            "hex": "8b5238",
+            "text": "mov edx, dword ptr [edx + 0x38]"
+          },
+          {
+            "address": "0070b567",
+            "hex": "8d442428",
+            "text": "lea eax, [esp + 0x28]"
+          },
+          {
+            "address": "0070b56b",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0070b56c",
+            "hex": "896c243c",
+            "text": "mov dword ptr [esp + 0x3c], ebp"
+          },
+          {
+            "address": "0070b570",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "0070b572",
+            "hex": "8b4c242c",
+            "text": "mov ecx, dword ptr [esp + 0x2c]"
+          },
+          {
+            "address": "0070b576",
+            "hex": "3bcd",
+            "text": "cmp ecx, ebp"
+          },
+          {
+            "address": "0070b578",
+            "hex": "89442420",
+            "text": "mov dword ptr [esp + 0x20], eax"
+          },
+          {
+            "address": "0070b57c",
+            "hex": "c7442438ffffffff",
+            "text": "mov dword ptr [esp + 0x38], 0xffffffff"
+          },
+          {
+            "address": "0070b584",
+            "hex": "7417",
+            "text": "je 0x70b59d"
+          },
+          {
+            "address": "0070b586",
+            "hex": "8b442428",
+            "text": "mov eax, dword ptr [esp + 0x28]"
+          },
+          {
+            "address": "0070b58a",
+            "hex": "6a01",
+            "text": "push 1"
+          },
+          {
+            "address": "0070b58c",
+            "hex": "83c001",
+            "text": "add eax, 1"
+          },
+          {
+            "address": "0070b58f",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0070b590",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "0070b591",
+            "hex": "e82ae7d0ff",
+            "text": "call 0x419cc0"
+          },
+          {
+            "address": "0070b596",
+            "hex": "8bc8",
+            "text": "mov ecx, eax"
+          },
+          {
+            "address": "0070b598",
+            "hex": "e8735f4c00",
+            "text": "call 0xbd1510"
+          },
+          {
+            "address": "0070b59d",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "0070b5a0",
+            "hex": "8b4e40",
+            "text": "mov ecx, dword ptr [esi + 0x40]"
+          },
+          {
+            "address": "0070b5a3",
+            "hex": "89442440",
+            "text": "mov dword ptr [esp + 0x40], eax"
+          },
+          {
+            "address": "0070b5a7",
+            "hex": "8b07",
+            "text": "mov eax, dword ptr [edi]"
+          },
+          {
+            "address": "0070b5a9",
+            "hex": "83e801",
+            "text": "sub eax, 1"
+          },
+          {
+            "address": "0070b5ac",
+            "hex": "8d148dfcffffff",
+            "text": "lea edx, [ecx*4 - 4]"
+          },
+          {
+            "address": "0070b5b3",
+            "hex": "0fafd0",
+            "text": "imul edx, eax"
+          },
+          {
+            "address": "0070b5b6",
+            "hex": "899680000000",
+            "text": "mov dword ptr [esi + 0x80], edx"
+          },
+          {
+            "address": "0070b5bc",
+            "hex": "8b6e78",
+            "text": "mov ebp, dword ptr [esi + 0x78]"
+          },
+          {
+            "address": "0070b5bf",
+            "hex": "85ed",
+            "text": "test ebp, ebp"
+          },
+          {
+            "address": "0070b5c1",
+            "hex": "8b1d94d3f800",
+            "text": "mov ebx, dword ptr [0xf8d394]"
+          },
+          {
+            "address": "0070b5c7",
+            "hex": "741e",
+            "text": "je 0x70b5e7"
+          },
+          {
+            "address": "0070b5c9",
+            "hex": "8d4d04",
+            "text": "lea ecx, [ebp + 4]"
+          },
+          {
+            "address": "0070b5cc",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "0070b5cd",
+            "hex": "ff152022ce00",
+            "text": "call dword ptr [0xce2220]"
+          },
+          {
+            "address": "0070b5d3",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "0070b5d5",
+            "hex": "7509",
+            "text": "jne 0x70b5e0"
+          },
+          {
+            "address": "0070b5d7",
+            "hex": "8b5500",
+            "text": "mov edx, dword ptr [ebp]"
+          },
+          {
+            "address": "0070b5da",
+            "hex": "8b02",
+            "text": "mov eax, dword ptr [edx]"
+          },
+          {
+            "address": "0070b5dc",
+            "hex": "8bcd",
+            "text": "mov ecx, ebp"
+          },
+          {
+            "address": "0070b5de",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "0070b5e0",
+            "hex": "c7467800000000",
+            "text": "mov dword ptr [esi + 0x78], 0"
+          },
+          {
+            "address": "0070b5e7",
+            "hex": "8b442420",
+            "text": "mov eax, dword ptr [esp + 0x20]"
+          },
+          {
+            "address": "0070b5eb",
+            "hex": "8b4c2440",
+            "text": "mov ecx, dword ptr [esp + 0x40]"
+          },
+          {
+            "address": "0070b5ef",
+            "hex": "8b13",
+            "text": "mov edx, dword ptr [ebx]"
+          },
+          {
+            "address": "0070b5f1",
+            "hex": "8b525c",
+            "text": "mov edx, dword ptr [edx + 0x5c]"
+          },
+          {
+            "address": "0070b5f4",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0070b5f5",
+            "hex": "8d0409",
+            "text": "lea eax, [ecx + ecx]"
+          },
+          {
+            "address": "0070b5f8",
+            "hex": "6800100000",
+            "text": "push 0x1000"
+          },
+          {
+            "address": "0070b5fd",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0070b5fe",
+            "hex": "8bcb",
+            "text": "mov ecx, ebx"
+          },
+          {
+            "address": "0070b600",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "0070b602",
+            "hex": "894678",
+            "text": "mov dword ptr [esi + 0x78], eax"
+          },
+          {
+            "address": "0070b605",
+            "hex": "8b6e7c",
+            "text": "mov ebp, dword ptr [esi + 0x7c]"
+          },
+          {
+            "address": "0070b608",
+            "hex": "85ed",
+            "text": "test ebp, ebp"
+          },
+          {
+            "address": "0070b60a",
+            "hex": "741e",
+            "text": "je 0x70b62a"
+          },
+          {
+            "address": "0070b60c",
+            "hex": "8d4504",
+            "text": "lea eax, [ebp + 4]"
+          },
+          {
+            "address": "0070b60f",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0070b610",
+            "hex": "ff152022ce00",
+            "text": "call dword ptr [0xce2220]"
+          },
+          {
+            "address": "0070b616",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "0070b618",
+            "hex": "7509",
+            "text": "jne 0x70b623"
+          },
+          {
+            "address": "0070b61a",
+            "hex": "8b5500",
+            "text": "mov edx, dword ptr [ebp]"
+          },
+          {
+            "address": "0070b61d",
+            "hex": "8b02",
+            "text": "mov eax, dword ptr [edx]"
+          },
+          {
+            "address": "0070b61f",
+            "hex": "8bcd",
+            "text": "mov ecx, ebp"
+          },
+          {
+            "address": "0070b621",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "0070b623",
+            "hex": "c7467c00000000",
+            "text": "mov dword ptr [esi + 0x7c], 0"
+          },
+          {
+            "address": "0070b62a",
+            "hex": "8b8680000000",
+            "text": "mov eax, dword ptr [esi + 0x80]"
+          },
+          {
+            "address": "0070b630",
+            "hex": "8b13",
+            "text": "mov edx, dword ptr [ebx]"
+          },
+          {
+            "address": "0070b632",
+            "hex": "8b5260",
+            "text": "mov edx, dword ptr [edx + 0x60]"
+          },
+          {
+            "address": "0070b635",
+            "hex": "6a65",
+            "text": "push 0x65"
+          },
+          {
+            "address": "0070b637",
+            "hex": "6a01",
+            "text": "push 1"
+          },
+          {
+            "address": "0070b639",
+            "hex": "8d0440",
+            "text": "lea eax, [eax + eax*2]"
+          },
+          {
+            "address": "0070b63c",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0070b63d",
+            "hex": "8bcb",
+            "text": "mov ecx, ebx"
+          },
+          {
+            "address": "0070b63f",
+            "hex": "ffd2",
+            "text": "call edx"
+          },
+          {
+            "address": "0070b641",
+            "hex": "6a00",
+            "text": "push 0"
+          },
+          {
+            "address": "0070b643",
+            "hex": "89467c",
+            "text": "mov dword ptr [esi + 0x7c], eax"
+          },
+          {
+            "address": "0070b646",
+            "hex": "8b10",
+            "text": "mov edx, dword ptr [eax]"
+          },
+          {
+            "address": "0070b648",
+            "hex": "6a00",
+            "text": "push 0"
+          },
+          {
+            "address": "0070b64a",
+            "hex": "8bc8",
+            "text": "mov ecx, eax"
+          },
+          {
+            "address": "0070b64c",
+            "hex": "8b420c",
+            "text": "mov eax, dword ptr [edx + 0xc]"
+          },
+          {
+            "address": "0070b64f",
+            "hex": "6a00",
+            "text": "push 0"
+          },
+          {
+            "address": "0070b651",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "0070b653",
+            "hex": "8b4e40",
+            "text": "mov ecx, dword ptr [esi + 0x40]"
+          },
+          {
+            "address": "0070b656",
+            "hex": "33d2",
+            "text": "xor edx, edx"
+          },
+          {
+            "address": "0070b658",
+            "hex": "83e901",
+            "text": "sub ecx, 1"
+          },
+          {
+            "address": "0070b65b",
+            "hex": "85c9",
+            "text": "test ecx, ecx"
+          },
+          {
+            "address": "0070b65d",
+            "hex": "89542414",
+            "text": "mov dword ptr [esp + 0x14], edx"
+          },
+          {
+            "address": "0070b661",
+            "hex": "7e7a",
+            "text": "jle 0x70b6dd"
+          },
+          {
+            "address": "0070b663",
+            "hex": "8b0f",
+            "text": "mov ecx, dword ptr [edi]"
+          },
+          {
+            "address": "0070b665",
+            "hex": "83e901",
+            "text": "sub ecx, 1"
+          },
+          {
+            "address": "0070b668",
+            "hex": "33db",
+            "text": "xor ebx, ebx"
+          },
+          {
+            "address": "0070b66a",
+            "hex": "85c9",
+            "text": "test ecx, ecx"
+          },
+          {
+            "address": "0070b66c",
+            "hex": "7e57",
+            "text": "jle 0x70b6c5"
+          },
+          {
+            "address": "0070b66e",
+            "hex": "8bff",
+            "text": "mov edi, edi"
+          },
+          {
+            "address": "0070b670",
+            "hex": "0fb7ca",
+            "text": "movzx ecx, dx"
+          },
+          {
+            "address": "0070b673",
+            "hex": "668908",
+            "text": "mov word ptr [eax], cx"
+          },
+          {
+            "address": "0070b676",
+            "hex": "83c002",
+            "text": "add eax, 2"
+          },
+          {
+            "address": "0070b679",
+            "hex": "8d6901",
+            "text": "lea ebp, [ecx + 1]"
+          },
+          {
+            "address": "0070b67c",
+            "hex": "668928",
+            "text": "mov word ptr [eax], bp"
+          },
+          {
+            "address": "0070b67f",
+            "hex": "668b2f",
+            "text": "mov bp, word ptr [edi]"
+          },
+          {
+            "address": "0070b682",
+            "hex": "6603e9",
+            "text": "add bp, cx"
+          },
+          {
+            "address": "0070b685",
+            "hex": "6683c501",
+            "text": "add bp, 1"
+          },
+          {
+            "address": "0070b689",
+            "hex": "66896802",
+            "text": "mov word ptr [eax + 2], bp"
+          },
+          {
+            "address": "0070b68d",
+            "hex": "83c002",
+            "text": "add eax, 2"
+          },
+          {
+            "address": "0070b690",
+            "hex": "66894802",
+            "text": "mov word ptr [eax + 2], cx"
+          },
+          {
+            "address": "0070b694",
+            "hex": "668b2f",
+            "text": "mov bp, word ptr [edi]"
+          },
+          {
+            "address": "0070b697",
+            "hex": "83c002",
+            "text": "add eax, 2"
+          },
+          {
+            "address": "0070b69a",
+            "hex": "6603e9",
+            "text": "add bp, cx"
+          },
+          {
+            "address": "0070b69d",
+            "hex": "83c002",
+            "text": "add eax, 2"
+          },
+          {
+            "address": "0070b6a0",
+            "hex": "6683c501",
+            "text": "add bp, 1"
+          },
+          {
+            "address": "0070b6a4",
+            "hex": "668928",
+            "text": "mov word ptr [eax], bp"
+          },
+          {
+            "address": "0070b6a7",
+            "hex": "668b2f",
+            "text": "mov bp, word ptr [edi]"
+          },
+          {
+            "address": "0070b6aa",
+            "hex": "6603e9",
+            "text": "add bp, cx"
+          },
+          {
+            "address": "0070b6ad",
+            "hex": "83c002",
+            "text": "add eax, 2"
+          },
+          {
+            "address": "0070b6b0",
+            "hex": "668928",
+            "text": "mov word ptr [eax], bp"
+          },
+          {
+            "address": "0070b6b3",
+            "hex": "8b0f",
+            "text": "mov ecx, dword ptr [edi]"
+          },
+          {
+            "address": "0070b6b5",
+            "hex": "83c301",
+            "text": "add ebx, 1"
+          },
+          {
+            "address": "0070b6b8",
+            "hex": "83e901",
+            "text": "sub ecx, 1"
+          },
+          {
+            "address": "0070b6bb",
+            "hex": "83c002",
+            "text": "add eax, 2"
+          },
+          {
+            "address": "0070b6be",
+            "hex": "83c201",
+            "text": "add edx, 1"
+          },
+          {
+            "address": "0070b6c1",
+            "hex": "3bd9",
+            "text": "cmp ebx, ecx"
+          },
+          {
+            "address": "0070b6c3",
+            "hex": "7cab",
+            "text": "jl 0x70b670"
+          },
+          {
+            "address": "0070b6c5",
+            "hex": "8b4c2414",
+            "text": "mov ecx, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "0070b6c9",
+            "hex": "8b5e40",
+            "text": "mov ebx, dword ptr [esi + 0x40]"
+          },
+          {
+            "address": "0070b6cc",
+            "hex": "83c101",
+            "text": "add ecx, 1"
+          },
+          {
+            "address": "0070b6cf",
+            "hex": "83eb01",
+            "text": "sub ebx, 1"
+          },
+          {
+            "address": "0070b6d2",
+            "hex": "83c201",
+            "text": "add edx, 1"
+          },
+          {
+            "address": "0070b6d5",
+            "hex": "3bcb",
+            "text": "cmp ecx, ebx"
+          },
+          {
+            "address": "0070b6d7",
+            "hex": "894c2414",
+            "text": "mov dword ptr [esp + 0x14], ecx"
+          },
+          {
+            "address": "0070b6db",
+            "hex": "7c86",
+            "text": "jl 0x70b663"
+          },
+          {
+            "address": "0070b6dd",
+            "hex": "8b4e40",
+            "text": "mov ecx, dword ptr [esi + 0x40]"
+          },
+          {
+            "address": "0070b6e0",
+            "hex": "8b542440",
+            "text": "mov edx, dword ptr [esp + 0x40]"
+          },
+          {
+            "address": "0070b6e4",
+            "hex": "83e901",
+            "text": "sub ecx, 1"
+          },
+          {
+            "address": "0070b6e7",
+            "hex": "85c9",
+            "text": "test ecx, ecx"
+          },
+          {
+            "address": "0070b6e9",
+            "hex": "c744241400000000",
+            "text": "mov dword ptr [esp + 0x14], 0"
+          },
+          {
+            "address": "0070b6f1",
+            "hex": "7e7c",
+            "text": "jle 0x70b76f"
+          },
+          {
+            "address": "0070b6f3",
+            "hex": "8b0f",
+            "text": "mov ecx, dword ptr [edi]"
+          },
+          {
+            "address": "0070b6f5",
+            "hex": "83e901",
+            "text": "sub ecx, 1"
+          },
+          {
+            "address": "0070b6f8",
+            "hex": "33db",
+            "text": "xor ebx, ebx"
+          },
+          {
+            "address": "0070b6fa",
+            "hex": "85c9",
+            "text": "test ecx, ecx"
+          },
+          {
+            "address": "0070b6fc",
+            "hex": "7e59",
+            "text": "jle 0x70b757"
+          },
+          {
+            "address": "0070b6fe",
+            "hex": "8bff",
+            "text": "mov edi, edi"
+          },
+          {
+            "address": "0070b700",
+            "hex": "0fb7ca",
+            "text": "movzx ecx, dx"
+          },
+          {
+            "address": "0070b703",
+            "hex": "668908",
+            "text": "mov word ptr [eax], cx"
+          },
+          {
+            "address": "0070b706",
+            "hex": "668b6e40",
+            "text": "mov bp, word ptr [esi + 0x40]"
+          },
+          {
+            "address": "0070b70a",
+            "hex": "6603e9",
+            "text": "add bp, cx"
+          },
+          {
+            "address": "0070b70d",
+            "hex": "6683c501",
+            "text": "add bp, 1"
+          },
+          {
+            "address": "0070b711",
+            "hex": "66896802",
+            "text": "mov word ptr [eax + 2], bp"
+          },
+          {
+            "address": "0070b715",
+            "hex": "83c002",
+            "text": "add eax, 2"
+          },
+          {
+            "address": "0070b718",
+            "hex": "83c002",
+            "text": "add eax, 2"
+          },
+          {
+            "address": "0070b71b",
+            "hex": "8d6901",
+            "text": "lea ebp, [ecx + 1]"
+          },
+          {
+            "address": "0070b71e",
+            "hex": "668928",
+            "text": "mov word ptr [eax], bp"
+          },
+          {
+            "address": "0070b721",
+            "hex": "66894802",
+            "text": "mov word ptr [eax + 2], cx"
+          },
+          {
+            "address": "0070b725",
+            "hex": "668b2f",
+            "text": "mov bp, word ptr [edi]"
+          },
+          {
+            "address": "0070b728",
+            "hex": "83c002",
+            "text": "add eax, 2"
+          },
+          {
+            "address": "0070b72b",
+            "hex": "6603e9",
+            "text": "add bp, cx"
+          },
+          {
+            "address": "0070b72e",
+            "hex": "66896802",
+            "text": "mov word ptr [eax + 2], bp"
+          },
+          {
+            "address": "0070b732",
+            "hex": "668b2f",
+            "text": "mov bp, word ptr [edi]"
+          },
+          {
+            "address": "0070b735",
+            "hex": "83c002",
+            "text": "add eax, 2"
+          },
+          {
+            "address": "0070b738",
+            "hex": "6603e9",
+            "text": "add bp, cx"
+          },
+          {
+            "address": "0070b73b",
+            "hex": "83c002",
+            "text": "add eax, 2"
+          },
+          {
+            "address": "0070b73e",
+            "hex": "6683c501",
+            "text": "add bp, 1"
+          },
+          {
+            "address": "0070b742",
+            "hex": "668928",
+            "text": "mov word ptr [eax], bp"
+          },
+          {
+            "address": "0070b745",
+            "hex": "8b0f",
+            "text": "mov ecx, dword ptr [edi]"
+          },
+          {
+            "address": "0070b747",
+            "hex": "83c301",
+            "text": "add ebx, 1"
+          },
+          {
+            "address": "0070b74a",
+            "hex": "83e901",
+            "text": "sub ecx, 1"
+          },
+          {
+            "address": "0070b74d",
+            "hex": "83c002",
+            "text": "add eax, 2"
+          },
+          {
+            "address": "0070b750",
+            "hex": "83c201",
+            "text": "add edx, 1"
+          },
+          {
+            "address": "0070b753",
+            "hex": "3bd9",
+            "text": "cmp ebx, ecx"
+          },
+          {
+            "address": "0070b755",
+            "hex": "7ca9",
+            "text": "jl 0x70b700"
+          },
+          {
+            "address": "0070b757",
+            "hex": "8b4c2414",
+            "text": "mov ecx, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "0070b75b",
+            "hex": "8b5e40",
+            "text": "mov ebx, dword ptr [esi + 0x40]"
+          },
+          {
+            "address": "0070b75e",
+            "hex": "83c101",
+            "text": "add ecx, 1"
+          },
+          {
+            "address": "0070b761",
+            "hex": "83eb01",
+            "text": "sub ebx, 1"
+          },
+          {
+            "address": "0070b764",
+            "hex": "83c201",
+            "text": "add edx, 1"
+          },
+          {
+            "address": "0070b767",
+            "hex": "3bcb",
+            "text": "cmp ecx, ebx"
+          },
+          {
+            "address": "0070b769",
+            "hex": "894c2414",
+            "text": "mov dword ptr [esp + 0x14], ecx"
+          },
+          {
+            "address": "0070b76d",
+            "hex": "7c84",
+            "text": "jl 0x70b6f3"
+          },
+          {
+            "address": "0070b76f",
+            "hex": "8b4e7c",
+            "text": "mov ecx, dword ptr [esi + 0x7c]"
+          },
+          {
+            "address": "0070b772",
+            "hex": "8b11",
+            "text": "mov edx, dword ptr [ecx]"
+          },
+          {
+            "address": "0070b774",
+            "hex": "8b4210",
+            "text": "mov eax, dword ptr [edx + 0x10]"
+          },
+          {
+            "address": "0070b777",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "0070b779",
+            "hex": "8b4e78",
+            "text": "mov ecx, dword ptr [esi + 0x78]"
+          },
+          {
+            "address": "0070b77c",
+            "hex": "8b11",
+            "text": "mov edx, dword ptr [ecx]"
+          },
+          {
+            "address": "0070b77e",
+            "hex": "8b4210",
+            "text": "mov eax, dword ptr [edx + 0x10]"
+          },
+          {
+            "address": "0070b781",
+            "hex": "6a00",
+            "text": "push 0"
+          },
+          {
+            "address": "0070b783",
+            "hex": "6a00",
+            "text": "push 0"
+          },
+          {
+            "address": "0070b785",
+            "hex": "6a00",
+            "text": "push 0"
+          },
+          {
+            "address": "0070b787",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "0070b789",
+            "hex": "33c9",
+            "text": "xor ecx, ecx"
+          },
+          {
+            "address": "0070b78b",
+            "hex": "394c2440",
+            "text": "cmp dword ptr [esp + 0x40], ecx"
+          },
+          {
+            "address": "0070b78f",
+            "hex": "0f8efb010000",
+            "text": "jle 0x70b990"
+          },
+          {
+            "address": "0070b795",
+            "hex": "d9e8",
+            "text": "fld1 "
+          },
+          {
+            "address": "0070b797",
+            "hex": "f30f10054ca2d700",
+            "text": "movss xmm0, dword ptr [0xd7a24c]"
+          },
+          {
+            "address": "0070b79f",
+            "hex": "d9ee",
+            "text": "fldz "
+          },
+          {
+            "address": "0070b7a1",
+            "hex": "0f57c9",
+            "text": "xorps xmm1, xmm1"
+          },
+          {
+            "address": "0070b7a4",
+            "hex": "b0ff",
+            "text": "mov al, 0xff"
+          },
+          {
+            "address": "0070b7a6",
+            "hex": "dce9",
+            "text": "fsub st(1), st(0)"
+          },
+          {
+            "address": "0070b7a8",
+            "hex": "88442412",
+            "text": "mov byte ptr [esp + 0x12], al"
+          },
+          {
+            "address": "0070b7ac",
+            "hex": "88442411",
+            "text": "mov byte ptr [esp + 0x11], al"
+          },
+          {
+            "address": "0070b7b0",
+            "hex": "88442410",
+            "text": "mov byte ptr [esp + 0x10], al"
+          },
+          {
+            "address": "0070b7b4",
+            "hex": "88442413",
+            "text": "mov byte ptr [esp + 0x13], al"
+          },
+          {
+            "address": "0070b7b8",
+            "hex": "88442416",
+            "text": "mov byte ptr [esp + 0x16], al"
+          },
+          {
+            "address": "0070b7bc",
+            "hex": "88442415",
+            "text": "mov byte ptr [esp + 0x15], al"
+          },
+          {
+            "address": "0070b7c0",
+            "hex": "88442414",
+            "text": "mov byte ptr [esp + 0x14], al"
+          },
+          {
+            "address": "0070b7c4",
+            "hex": "88442417",
+            "text": "mov byte ptr [esp + 0x17], al"
+          },
+          {
+            "address": "0070b7c8",
+            "hex": "8b5e40",
+            "text": "mov ebx, dword ptr [esi + 0x40]"
+          },
+          {
+            "address": "0070b7cb",
+            "hex": "8bc1",
+            "text": "mov eax, ecx"
+          },
+          {
+            "address": "0070b7cd",
+            "hex": "99",
+            "text": "cdq "
+          },
+          {
+            "address": "0070b7ce",
+            "hex": "f7fb",
+            "text": "idiv ebx"
+          },
+          {
+            "address": "0070b7d0",
+            "hex": "f7d8",
+            "text": "neg eax"
+          },
+          {
+            "address": "0070b7d2",
+            "hex": "8944241c",
+            "text": "mov dword ptr [esp + 0x1c], eax"
+          },
+          {
+            "address": "0070b7d6",
+            "hex": "db44241c",
+            "text": "fild dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "0070b7da",
+            "hex": "f7da",
+            "text": "neg edx"
+          },
+          {
+            "address": "0070b7dc",
+            "hex": "8954241c",
+            "text": "mov dword ptr [esp + 0x1c], edx"
+          },
+          {
+            "address": "0070b7e0",
+            "hex": "8b5678",
+            "text": "mov edx, dword ptr [esi + 0x78]"
+          },
+          {
+            "address": "0070b7e3",
+            "hex": "d84e60",
+            "text": "fmul dword ptr [esi + 0x60]"
+          },
+          {
+            "address": "0070b7e6",
+            "hex": "8b420c",
+            "text": "mov eax, dword ptr [edx + 0xc]"
+          },
+          {
+            "address": "0070b7e9",
+            "hex": "0fafc1",
+            "text": "imul eax, ecx"
+          },
+          {
+            "address": "0070b7ec",
+            "hex": "d95c2418",
+            "text": "fstp dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "0070b7f0",
+            "hex": "db44241c",
+            "text": "fild dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "0070b7f4",
+            "hex": "d84e5c",
+            "text": "fmul dword ptr [esi + 0x5c]"
+          },
+          {
+            "address": "0070b7f7",
+            "hex": "034210",
+            "text": "add eax, dword ptr [edx + 0x10]"
+          },
+          {
+            "address": "0070b7fa",
+            "hex": "d95c241c",
+            "text": "fstp dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "0070b7fe",
+            "hex": "d9442418",
+            "text": "fld dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "0070b802",
+            "hex": "034208",
+            "text": "add eax, dword ptr [edx + 8]"
+          },
+          {
+            "address": "0070b805",
+            "hex": "d95004",
+            "text": "fst dword ptr [eax + 4]"
+          },
+          {
+            "address": "0070b808",
+            "hex": "f30f1108",
+            "text": "movss dword ptr [eax], xmm1"
+          },
+          {
+            "address": "0070b80c",
+            "hex": "d944241c",
+            "text": "fld dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "0070b810",
+            "hex": "d95008",
+            "text": "fst dword ptr [eax + 8]"
+          },
+          {
+            "address": "0070b813",
+            "hex": "8b5678",
+            "text": "mov edx, dword ptr [esi + 0x78]"
+          },
+          {
+            "address": "0070b816",
+            "hex": "8b442440",
+            "text": "mov eax, dword ptr [esp + 0x40]"
+          },
+          {
+            "address": "0070b81a",
+            "hex": "d9c9",
+            "text": "fxch st(1)"
+          },
+          {
+            "address": "0070b81c",
+            "hex": "8d2c01",
+            "text": "lea ebp, [ecx + eax]"
+          },
+          {
+            "address": "0070b81f",
+            "hex": "8b420c",
+            "text": "mov eax, dword ptr [edx + 0xc]"
+          },
+          {
+            "address": "0070b822",
+            "hex": "0fafc5",
+            "text": "imul eax, ebp"
+          },
+          {
+            "address": "0070b825",
+            "hex": "034210",
+            "text": "add eax, dword ptr [edx + 0x10]"
+          },
+          {
+            "address": "0070b828",
+            "hex": "034208",
+            "text": "add eax, dword ptr [edx + 8]"
+          },
+          {
+            "address": "0070b82b",
+            "hex": "d95804",
+            "text": "fstp dword ptr [eax + 4]"
+          },
+          {
+            "address": "0070b82e",
+            "hex": "f30f1108",
+            "text": "movss dword ptr [eax], xmm1"
+          },
+          {
+            "address": "0070b832",
+            "hex": "d95808",
+            "text": "fstp dword ptr [eax + 8]"
+          },
+          {
+            "address": "0070b835",
+            "hex": "8b1f",
+            "text": "mov ebx, dword ptr [edi]"
+          },
+          {
+            "address": "0070b837",
+            "hex": "8bc1",
+            "text": "mov eax, ecx"
+          },
+          {
+            "address": "0070b839",
+            "hex": "d94664",
+            "text": "fld dword ptr [esi + 0x64]"
+          },
+          {
+            "address": "0070b83c",
+            "hex": "99",
+            "text": "cdq "
+          },
+          {
+            "address": "0070b83d",
+            "hex": "d95c2418",
+            "text": "fstp dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "0070b841",
+            "hex": "f7fb",
+            "text": "idiv ebx"
+          },
+          {
+            "address": "0070b843",
+            "hex": "83c3ff",
+            "text": "add ebx, -1"
+          },
+          {
+            "address": "0070b846",
+            "hex": "8954241c",
+            "text": "mov dword ptr [esp + 0x1c], edx"
+          },
+          {
+            "address": "0070b84a",
+            "hex": "db44241c",
+            "text": "fild dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "0070b84e",
+            "hex": "895c241c",
+            "text": "mov dword ptr [esp + 0x1c], ebx"
+          },
+          {
+            "address": "0070b852",
+            "hex": "8b5640",
+            "text": "mov edx, dword ptr [esi + 0x40]"
+          },
+          {
+            "address": "0070b855",
+            "hex": "89442424",
+            "text": "mov dword ptr [esp + 0x24], eax"
+          },
+          {
+            "address": "0070b859",
+            "hex": "da74241c",
+            "text": "fidiv dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "0070b85d",
+            "hex": "83ea01",
+            "text": "sub edx, 1"
+          },
+          {
+            "address": "0070b860",
+            "hex": "d95c241c",
+            "text": "fstp dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "0070b864",
+            "hex": "d944241c",
+            "text": "fld dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "0070b868",
+            "hex": "d8e1",
+            "text": "fsub st(1)"
+          },
+          {
+            "address": "0070b86a",
+            "hex": "d9466c",
+            "text": "fld dword ptr [esi + 0x6c]"
+          },
+          {
+            "address": "0070b86d",
+            "hex": "d9442418",
+            "text": "fld dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "0070b871",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "0070b873",
+            "hex": "deea",
+            "text": "fsubp st(2)"
+          },
+          {
+            "address": "0070b875",
+            "hex": "d9c9",
+            "text": "fxch st(1)"
+          },
+          {
+            "address": "0070b877",
+            "hex": "d8f4",
+            "text": "fdiv st(4)"
+          },
+          {
+            "address": "0070b879",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "0070b87b",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "0070b87d",
+            "hex": "d95c2418",
+            "text": "fstp dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "0070b881",
+            "hex": "d94668",
+            "text": "fld dword ptr [esi + 0x68]"
+          },
+          {
+            "address": "0070b884",
+            "hex": "d95c241c",
+            "text": "fstp dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "0070b888",
+            "hex": "db442424",
+            "text": "fild dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "0070b88c",
+            "hex": "89542424",
+            "text": "mov dword ptr [esp + 0x24], edx"
+          },
+          {
+            "address": "0070b890",
+            "hex": "8b5678",
+            "text": "mov edx, dword ptr [esi + 0x78]"
+          },
+          {
+            "address": "0070b893",
+            "hex": "8b420c",
+            "text": "mov eax, dword ptr [edx + 0xc]"
+          },
+          {
+            "address": "0070b896",
+            "hex": "da742424",
+            "text": "fidiv dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "0070b89a",
+            "hex": "0fafc1",
+            "text": "imul eax, ecx"
+          },
+          {
+            "address": "0070b89d",
+            "hex": "d95c2424",
+            "text": "fstp dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "0070b8a1",
+            "hex": "d9442424",
+            "text": "fld dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "0070b8a5",
+            "hex": "d8e1",
+            "text": "fsub st(1)"
+          },
+          {
+            "address": "0070b8a7",
+            "hex": "d94670",
+            "text": "fld dword ptr [esi + 0x70]"
+          },
+          {
+            "address": "0070b8aa",
+            "hex": "d944241c",
+            "text": "fld dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "0070b8ae",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "0070b8b0",
+            "hex": "deea",
+            "text": "fsubp st(2)"
+          },
+          {
+            "address": "0070b8b2",
+            "hex": "d9c9",
+            "text": "fxch st(1)"
+          },
+          {
+            "address": "0070b8b4",
+            "hex": "d8f4",
+            "text": "fdiv st(4)"
+          },
+          {
+            "address": "0070b8b6",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "0070b8b8",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "0070b8ba",
+            "hex": "d95c241c",
+            "text": "fstp dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "0070b8be",
+            "hex": "034228",
+            "text": "add eax, dword ptr [edx + 0x28]"
+          },
+          {
+            "address": "0070b8c1",
+            "hex": "d9442418",
+            "text": "fld dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "0070b8c5",
+            "hex": "034208",
+            "text": "add eax, dword ptr [edx + 8]"
+          },
+          {
+            "address": "0070b8c8",
+            "hex": "d918",
+            "text": "fstp dword ptr [eax]"
+          },
+          {
+            "address": "0070b8ca",
+            "hex": "d944241c",
+            "text": "fld dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "0070b8ce",
+            "hex": "d95804",
+            "text": "fstp dword ptr [eax + 4]"
+          },
+          {
+            "address": "0070b8d1",
+            "hex": "8b4678",
+            "text": "mov eax, dword ptr [esi + 0x78]"
+          },
+          {
+            "address": "0070b8d4",
+            "hex": "8b5034",
+            "text": "mov edx, dword ptr [eax + 0x34]"
+          },
+          {
+            "address": "0070b8d7",
+            "hex": "85d2",
+            "text": "test edx, edx"
+          },
+          {
+            "address": "0070b8d9",
+            "hex": "7c12",
+            "text": "jl 0x70b8ed"
+          },
+          {
+            "address": "0070b8db",
+            "hex": "8b580c",
+            "text": "mov ebx, dword ptr [eax + 0xc]"
+          },
+          {
+            "address": "0070b8de",
+            "hex": "0fafd9",
+            "text": "imul ebx, ecx"
+          },
+          {
+            "address": "0070b8e1",
+            "hex": "035808",
+            "text": "add ebx, dword ptr [eax + 8]"
+          },
+          {
+            "address": "0070b8e4",
+            "hex": "8b442410",
+            "text": "mov eax, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "0070b8e8",
+            "hex": "890413",
+            "text": "mov dword ptr [ebx + edx], eax"
+          },
+          {
+            "address": "0070b8eb",
+            "hex": "eb29",
+            "text": "jmp 0x70b916"
+          },
+          {
+            "address": "0070b8ed",
+            "hex": "8b500c",
+            "text": "mov edx, dword ptr [eax + 0xc]"
+          },
+          {
+            "address": "0070b8f0",
+            "hex": "8b5838",
+            "text": "mov ebx, dword ptr [eax + 0x38]"
+          },
+          {
+            "address": "0070b8f3",
+            "hex": "0fafd1",
+            "text": "imul edx, ecx"
+          },
+          {
+            "address": "0070b8f6",
+            "hex": "035008",
+            "text": "add edx, dword ptr [eax + 8]"
+          },
+          {
+            "address": "0070b8f9",
+            "hex": "f30f11041a",
+            "text": "movss dword ptr [edx + ebx], xmm0"
+          },
+          {
+            "address": "0070b8fe",
+            "hex": "8b583c",
+            "text": "mov ebx, dword ptr [eax + 0x3c]"
+          },
+          {
+            "address": "0070b901",
+            "hex": "f30f11041a",
+            "text": "movss dword ptr [edx + ebx], xmm0"
+          },
+          {
+            "address": "0070b906",
+            "hex": "8b5840",
+            "text": "mov ebx, dword ptr [eax + 0x40]"
+          },
+          {
+            "address": "0070b909",
+            "hex": "f30f11041a",
+            "text": "movss dword ptr [edx + ebx], xmm0"
+          },
+          {
+            "address": "0070b90e",
+            "hex": "8b4044",
+            "text": "mov eax, dword ptr [eax + 0x44]"
+          },
+          {
+            "address": "0070b911",
+            "hex": "f30f110402",
+            "text": "movss dword ptr [edx + eax], xmm0"
+          },
+          {
+            "address": "0070b916",
+            "hex": "8b5678",
+            "text": "mov edx, dword ptr [esi + 0x78]"
+          },
+          {
+            "address": "0070b919",
+            "hex": "8b420c",
+            "text": "mov eax, dword ptr [edx + 0xc]"
+          },
+          {
+            "address": "0070b91c",
+            "hex": "f30f10542418",
+            "text": "movss xmm2, dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "0070b922",
+            "hex": "0fafc5",
+            "text": "imul eax, ebp"
+          },
+          {
+            "address": "0070b925",
+            "hex": "034228",
+            "text": "add eax, dword ptr [edx + 0x28]"
+          },
+          {
+            "address": "0070b928",
+            "hex": "034208",
+            "text": "add eax, dword ptr [edx + 8]"
+          },
+          {
+            "address": "0070b92b",
+            "hex": "f30f1110",
+            "text": "movss dword ptr [eax], xmm2"
+          },
+          {
+            "address": "0070b92f",
+            "hex": "f30f1054241c",
+            "text": "movss xmm2, dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "0070b935",
+            "hex": "f30f115004",
+            "text": "movss dword ptr [eax + 4], xmm2"
+          },
+          {
+            "address": "0070b93a",
+            "hex": "8b4678",
+            "text": "mov eax, dword ptr [esi + 0x78]"
+          },
+          {
+            "address": "0070b93d",
+            "hex": "8b5034",
+            "text": "mov edx, dword ptr [eax + 0x34]"
+          },
+          {
+            "address": "0070b940",
+            "hex": "85d2",
+            "text": "test edx, edx"
+          },
+          {
+            "address": "0070b942",
+            "hex": "7c12",
+            "text": "jl 0x70b956"
+          },
+          {
+            "address": "0070b944",
+            "hex": "8b580c",
+            "text": "mov ebx, dword ptr [eax + 0xc]"
+          },
+          {
+            "address": "0070b947",
+            "hex": "0fafdd",
+            "text": "imul ebx, ebp"
+          },
+          {
+            "address": "0070b94a",
+            "hex": "035808",
+            "text": "add ebx, dword ptr [eax + 8]"
+          },
+          {
+            "address": "0070b94d",
+            "hex": "8b442414",
+            "text": "mov eax, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "0070b951",
+            "hex": "890413",
+            "text": "mov dword ptr [ebx + edx], eax"
+          },
+          {
+            "address": "0070b954",
+            "hex": "eb29",
+            "text": "jmp 0x70b97f"
+          },
+          {
+            "address": "0070b956",
+            "hex": "8b500c",
+            "text": "mov edx, dword ptr [eax + 0xc]"
+          },
+          {
+            "address": "0070b959",
+            "hex": "8b5838",
+            "text": "mov ebx, dword ptr [eax + 0x38]"
+          },
+          {
+            "address": "0070b95c",
+            "hex": "0fafd5",
+            "text": "imul edx, ebp"
+          },
+          {
+            "address": "0070b95f",
+            "hex": "035008",
+            "text": "add edx, dword ptr [eax + 8]"
+          },
+          {
+            "address": "0070b962",
+            "hex": "f30f11041a",
+            "text": "movss dword ptr [edx + ebx], xmm0"
+          },
+          {
+            "address": "0070b967",
+            "hex": "8b583c",
+            "text": "mov ebx, dword ptr [eax + 0x3c]"
+          },
+          {
+            "address": "0070b96a",
+            "hex": "f30f11041a",
+            "text": "movss dword ptr [edx + ebx], xmm0"
+          },
+          {
+            "address": "0070b96f",
+            "hex": "8b5840",
+            "text": "mov ebx, dword ptr [eax + 0x40]"
+          },
+          {
+            "address": "0070b972",
+            "hex": "f30f11041a",
+            "text": "movss dword ptr [edx + ebx], xmm0"
+          },
+          {
+            "address": "0070b977",
+            "hex": "8b4044",
+            "text": "mov eax, dword ptr [eax + 0x44]"
+          },
+          {
+            "address": "0070b97a",
+            "hex": "f30f110402",
+            "text": "movss dword ptr [edx + eax], xmm0"
+          },
+          {
+            "address": "0070b97f",
+            "hex": "83c101",
+            "text": "add ecx, 1"
+          },
+          {
+            "address": "0070b982",
+            "hex": "3b4c2440",
+            "text": "cmp ecx, dword ptr [esp + 0x40]"
+          },
+          {
+            "address": "0070b986",
+            "hex": "0f8c3cfeffff",
+            "text": "jl 0x70b7c8"
+          },
+          {
+            "address": "0070b98c",
+            "hex": "ddd8",
+            "text": "fstp st(0)"
+          },
+          {
+            "address": "0070b98e",
+            "hex": "ddd8",
+            "text": "fstp st(0)"
+          },
+          {
+            "address": "0070b990",
+            "hex": "8b7678",
+            "text": "mov esi, dword ptr [esi + 0x78]"
+          },
+          {
+            "address": "0070b993",
+            "hex": "8b16",
+            "text": "mov edx, dword ptr [esi]"
+          },
+          {
+            "address": "0070b995",
+            "hex": "8b4214",
+            "text": "mov eax, dword ptr [edx + 0x14]"
+          },
+          {
+            "address": "0070b998",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "0070b99a",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "0070b99c",
+            "hex": "8b742420",
+            "text": "mov esi, dword ptr [esp + 0x20]"
+          },
+          {
+            "address": "0070b9a0",
+            "hex": "8d4e04",
+            "text": "lea ecx, [esi + 4]"
+          },
+          {
+            "address": "0070b9a3",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "0070b9a4",
+            "hex": "ff152022ce00",
+            "text": "call dword ptr [0xce2220]"
+          },
+          {
+            "address": "0070b9aa",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "0070b9ac",
+            "hex": "7508",
+            "text": "jne 0x70b9b6"
+          },
+          {
+            "address": "0070b9ae",
+            "hex": "8b16",
+            "text": "mov edx, dword ptr [esi]"
+          },
+          {
+            "address": "0070b9b0",
+            "hex": "8b02",
+            "text": "mov eax, dword ptr [edx]"
+          },
+          {
+            "address": "0070b9b2",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "0070b9b4",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "0070b9b6",
+            "hex": "8b4c2430",
+            "text": "mov ecx, dword ptr [esp + 0x30]"
+          },
+          {
+            "address": "0070b9ba",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "0070b9bb",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "0070b9bc",
+            "hex": "5d",
+            "text": "pop ebp"
+          },
+          {
+            "address": "0070b9bd",
+            "hex": "5b",
+            "text": "pop ebx"
+          },
+          {
+            "address": "0070b9be",
+            "hex": "64890d00000000",
+            "text": "mov dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "0070b9c5",
+            "hex": "83c42c",
+            "text": "add esp, 0x2c"
+          },
+          {
+            "address": "0070b9c8",
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ]
+      },
+      {
+        "entry": "00709c90",
+        "length": 91,
+        "kind": "descriptor",
+        "hex": "8bc18b4c24048b1189108b5104895004d94108d95808d9410cd9580cd94110d95810d94114d95814d94118d95818d9411cd9581cd94120d95820d94124d95824d94128d95828d9412cd9582cd94130d95830d94134d95834c20400",
+        "sha256": "3d3c711c66145bb31b179b759ce61cb2a9c7bad1d38f0c01b5cf9df3b40d8909",
+        "instructions": [
+          {
+            "address": "00709c90",
+            "hex": "8bc1",
+            "text": "mov eax, ecx"
+          },
+          {
+            "address": "00709c92",
+            "hex": "8b4c2404",
+            "text": "mov ecx, dword ptr [esp + 4]"
+          },
+          {
+            "address": "00709c96",
+            "hex": "8b11",
+            "text": "mov edx, dword ptr [ecx]"
+          },
+          {
+            "address": "00709c98",
+            "hex": "8910",
+            "text": "mov dword ptr [eax], edx"
+          },
+          {
+            "address": "00709c9a",
+            "hex": "8b5104",
+            "text": "mov edx, dword ptr [ecx + 4]"
+          },
+          {
+            "address": "00709c9d",
+            "hex": "895004",
+            "text": "mov dword ptr [eax + 4], edx"
+          },
+          {
+            "address": "00709ca0",
+            "hex": "d94108",
+            "text": "fld dword ptr [ecx + 8]"
+          },
+          {
+            "address": "00709ca3",
+            "hex": "d95808",
+            "text": "fstp dword ptr [eax + 8]"
+          },
+          {
+            "address": "00709ca6",
+            "hex": "d9410c",
+            "text": "fld dword ptr [ecx + 0xc]"
+          },
+          {
+            "address": "00709ca9",
+            "hex": "d9580c",
+            "text": "fstp dword ptr [eax + 0xc]"
+          },
+          {
+            "address": "00709cac",
+            "hex": "d94110",
+            "text": "fld dword ptr [ecx + 0x10]"
+          },
+          {
+            "address": "00709caf",
+            "hex": "d95810",
+            "text": "fstp dword ptr [eax + 0x10]"
+          },
+          {
+            "address": "00709cb2",
+            "hex": "d94114",
+            "text": "fld dword ptr [ecx + 0x14]"
+          },
+          {
+            "address": "00709cb5",
+            "hex": "d95814",
+            "text": "fstp dword ptr [eax + 0x14]"
+          },
+          {
+            "address": "00709cb8",
+            "hex": "d94118",
+            "text": "fld dword ptr [ecx + 0x18]"
+          },
+          {
+            "address": "00709cbb",
+            "hex": "d95818",
+            "text": "fstp dword ptr [eax + 0x18]"
+          },
+          {
+            "address": "00709cbe",
+            "hex": "d9411c",
+            "text": "fld dword ptr [ecx + 0x1c]"
+          },
+          {
+            "address": "00709cc1",
+            "hex": "d9581c",
+            "text": "fstp dword ptr [eax + 0x1c]"
+          },
+          {
+            "address": "00709cc4",
+            "hex": "d94120",
+            "text": "fld dword ptr [ecx + 0x20]"
+          },
+          {
+            "address": "00709cc7",
+            "hex": "d95820",
+            "text": "fstp dword ptr [eax + 0x20]"
+          },
+          {
+            "address": "00709cca",
+            "hex": "d94124",
+            "text": "fld dword ptr [ecx + 0x24]"
+          },
+          {
+            "address": "00709ccd",
+            "hex": "d95824",
+            "text": "fstp dword ptr [eax + 0x24]"
+          },
+          {
+            "address": "00709cd0",
+            "hex": "d94128",
+            "text": "fld dword ptr [ecx + 0x28]"
+          },
+          {
+            "address": "00709cd3",
+            "hex": "d95828",
+            "text": "fstp dword ptr [eax + 0x28]"
+          },
+          {
+            "address": "00709cd6",
+            "hex": "d9412c",
+            "text": "fld dword ptr [ecx + 0x2c]"
+          },
+          {
+            "address": "00709cd9",
+            "hex": "d9582c",
+            "text": "fstp dword ptr [eax + 0x2c]"
+          },
+          {
+            "address": "00709cdc",
+            "hex": "d94130",
+            "text": "fld dword ptr [ecx + 0x30]"
+          },
+          {
+            "address": "00709cdf",
+            "hex": "d95830",
+            "text": "fstp dword ptr [eax + 0x30]"
+          },
+          {
+            "address": "00709ce2",
+            "hex": "d94134",
+            "text": "fld dword ptr [ecx + 0x34]"
+          },
+          {
+            "address": "00709ce5",
+            "hex": "d95834",
+            "text": "fstp dword ptr [eax + 0x34]"
+          },
+          {
+            "address": "00709ce8",
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ]
+      },
+      {
+        "entry": "00709cf0",
+        "length": 500,
+        "kind": "normals",
+        "hex": "83ec1c5355568bf18b4640bd010000002bc53bc5570f8e0a0100008b463c83c0ffbf010000003bc70f8ee60000008d4d01894c24108b463c8b5424108b4e080fafd003d78d14528d1c918d55ff0fafd00fafc503d78d14528d149103c78d0440d90203c0d82303c0d95c2420d94204d86304d95c2424d94208d86308d95c2428d94408f4d864080cd95c2414d94408f8d8640810d95c2418d94408fcd86408148b4e1c03c8d95c241cd944241cd9c0d9442424d9c0decad9442418d9c0d9442428d9c0decad9ccdee1d919d9442414d9c0deccd9442420d9c0deced9ccdee5d9ccd95904decadecadee1d959088b463c8b4e1c0fafc503c78d04408d0c81e86d14d2ff8b463c83c70183c0ff3bf80f8c21ffffff8b564083c50183ea013bea0f8cfcfeffff33c9394e407e528d510c908b463c8b7e1c0fafc18d04408d048783c101d9400cd918d94010d95804d94014d958088b463c8b7e1c0fafc2d94438e8d95c38f4d94438ecd95c38f8d94438f0d95c38fc03c783c20c3b4e407cb233c9394e3c7e6733ff8b563c8b461c03d18d1452d904908d1490d91c0783c70cd94204d95c07f8d94208d95c07fc8b5e408b6e3c8b561c8d43fe0fafc503c18d04408d14828d43ff0fafc5d90203c18d1c408b461c8d049883c101d918d94204d95804d94208d958083b4e3c7c9b5f5e5d5b83c41cc3",
+        "sha256": "58a69138dd84d97002ad582dcdd23f4460025f59b4e4d51b18c2f018d125bfd3",
+        "instructions": [
+          {
+            "address": "00709cf0",
+            "hex": "83ec1c",
+            "text": "sub esp, 0x1c"
+          },
+          {
+            "address": "00709cf3",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00709cf4",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "00709cf5",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00709cf6",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "00709cf8",
+            "hex": "8b4640",
+            "text": "mov eax, dword ptr [esi + 0x40]"
+          },
+          {
+            "address": "00709cfb",
+            "hex": "bd01000000",
+            "text": "mov ebp, 1"
+          },
+          {
+            "address": "00709d00",
+            "hex": "2bc5",
+            "text": "sub eax, ebp"
+          },
+          {
+            "address": "00709d02",
+            "hex": "3bc5",
+            "text": "cmp eax, ebp"
+          },
+          {
+            "address": "00709d04",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00709d05",
+            "hex": "0f8e0a010000",
+            "text": "jle 0x709e15"
+          },
+          {
+            "address": "00709d0b",
+            "hex": "8b463c",
+            "text": "mov eax, dword ptr [esi + 0x3c]"
+          },
+          {
+            "address": "00709d0e",
+            "hex": "83c0ff",
+            "text": "add eax, -1"
+          },
+          {
+            "address": "00709d11",
+            "hex": "bf01000000",
+            "text": "mov edi, 1"
+          },
+          {
+            "address": "00709d16",
+            "hex": "3bc7",
+            "text": "cmp eax, edi"
+          },
+          {
+            "address": "00709d18",
+            "hex": "0f8ee6000000",
+            "text": "jle 0x709e04"
+          },
+          {
+            "address": "00709d1e",
+            "hex": "8d4d01",
+            "text": "lea ecx, [ebp + 1]"
+          },
+          {
+            "address": "00709d21",
+            "hex": "894c2410",
+            "text": "mov dword ptr [esp + 0x10], ecx"
+          },
+          {
+            "address": "00709d25",
+            "hex": "8b463c",
+            "text": "mov eax, dword ptr [esi + 0x3c]"
+          },
+          {
+            "address": "00709d28",
+            "hex": "8b542410",
+            "text": "mov edx, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00709d2c",
+            "hex": "8b4e08",
+            "text": "mov ecx, dword ptr [esi + 8]"
+          },
+          {
+            "address": "00709d2f",
+            "hex": "0fafd0",
+            "text": "imul edx, eax"
+          },
+          {
+            "address": "00709d32",
+            "hex": "03d7",
+            "text": "add edx, edi"
+          },
+          {
+            "address": "00709d34",
+            "hex": "8d1452",
+            "text": "lea edx, [edx + edx*2]"
+          },
+          {
+            "address": "00709d37",
+            "hex": "8d1c91",
+            "text": "lea ebx, [ecx + edx*4]"
+          },
+          {
+            "address": "00709d3a",
+            "hex": "8d55ff",
+            "text": "lea edx, [ebp - 1]"
+          },
+          {
+            "address": "00709d3d",
+            "hex": "0fafd0",
+            "text": "imul edx, eax"
+          },
+          {
+            "address": "00709d40",
+            "hex": "0fafc5",
+            "text": "imul eax, ebp"
+          },
+          {
+            "address": "00709d43",
+            "hex": "03d7",
+            "text": "add edx, edi"
+          },
+          {
+            "address": "00709d45",
+            "hex": "8d1452",
+            "text": "lea edx, [edx + edx*2]"
+          },
+          {
+            "address": "00709d48",
+            "hex": "8d1491",
+            "text": "lea edx, [ecx + edx*4]"
+          },
+          {
+            "address": "00709d4b",
+            "hex": "03c7",
+            "text": "add eax, edi"
+          },
+          {
+            "address": "00709d4d",
+            "hex": "8d0440",
+            "text": "lea eax, [eax + eax*2]"
+          },
+          {
+            "address": "00709d50",
+            "hex": "d902",
+            "text": "fld dword ptr [edx]"
+          },
+          {
+            "address": "00709d52",
+            "hex": "03c0",
+            "text": "add eax, eax"
+          },
+          {
+            "address": "00709d54",
+            "hex": "d823",
+            "text": "fsub dword ptr [ebx]"
+          },
+          {
+            "address": "00709d56",
+            "hex": "03c0",
+            "text": "add eax, eax"
+          },
+          {
+            "address": "00709d58",
+            "hex": "d95c2420",
+            "text": "fstp dword ptr [esp + 0x20]"
+          },
+          {
+            "address": "00709d5c",
+            "hex": "d94204",
+            "text": "fld dword ptr [edx + 4]"
+          },
+          {
+            "address": "00709d5f",
+            "hex": "d86304",
+            "text": "fsub dword ptr [ebx + 4]"
+          },
+          {
+            "address": "00709d62",
+            "hex": "d95c2424",
+            "text": "fstp dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00709d66",
+            "hex": "d94208",
+            "text": "fld dword ptr [edx + 8]"
+          },
+          {
+            "address": "00709d69",
+            "hex": "d86308",
+            "text": "fsub dword ptr [ebx + 8]"
+          },
+          {
+            "address": "00709d6c",
+            "hex": "d95c2428",
+            "text": "fstp dword ptr [esp + 0x28]"
+          },
+          {
+            "address": "00709d70",
+            "hex": "d94408f4",
+            "text": "fld dword ptr [eax + ecx - 0xc]"
+          },
+          {
+            "address": "00709d74",
+            "hex": "d864080c",
+            "text": "fsub dword ptr [eax + ecx + 0xc]"
+          },
+          {
+            "address": "00709d78",
+            "hex": "d95c2414",
+            "text": "fstp dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00709d7c",
+            "hex": "d94408f8",
+            "text": "fld dword ptr [eax + ecx - 8]"
+          },
+          {
+            "address": "00709d80",
+            "hex": "d8640810",
+            "text": "fsub dword ptr [eax + ecx + 0x10]"
+          },
+          {
+            "address": "00709d84",
+            "hex": "d95c2418",
+            "text": "fstp dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "00709d88",
+            "hex": "d94408fc",
+            "text": "fld dword ptr [eax + ecx - 4]"
+          },
+          {
+            "address": "00709d8c",
+            "hex": "d8640814",
+            "text": "fsub dword ptr [eax + ecx + 0x14]"
+          },
+          {
+            "address": "00709d90",
+            "hex": "8b4e1c",
+            "text": "mov ecx, dword ptr [esi + 0x1c]"
+          },
+          {
+            "address": "00709d93",
+            "hex": "03c8",
+            "text": "add ecx, eax"
+          },
+          {
+            "address": "00709d95",
+            "hex": "d95c241c",
+            "text": "fstp dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "00709d99",
+            "hex": "d944241c",
+            "text": "fld dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "00709d9d",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00709d9f",
+            "hex": "d9442424",
+            "text": "fld dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00709da3",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00709da5",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00709da7",
+            "hex": "d9442418",
+            "text": "fld dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "00709dab",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00709dad",
+            "hex": "d9442428",
+            "text": "fld dword ptr [esp + 0x28]"
+          },
+          {
+            "address": "00709db1",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00709db3",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00709db5",
+            "hex": "d9cc",
+            "text": "fxch st(4)"
+          },
+          {
+            "address": "00709db7",
+            "hex": "dee1",
+            "text": "fsubrp st(1)"
+          },
+          {
+            "address": "00709db9",
+            "hex": "d919",
+            "text": "fstp dword ptr [ecx]"
+          },
+          {
+            "address": "00709dbb",
+            "hex": "d9442414",
+            "text": "fld dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00709dbf",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00709dc1",
+            "hex": "decc",
+            "text": "fmulp st(4)"
+          },
+          {
+            "address": "00709dc3",
+            "hex": "d9442420",
+            "text": "fld dword ptr [esp + 0x20]"
+          },
+          {
+            "address": "00709dc7",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00709dc9",
+            "hex": "dece",
+            "text": "fmulp st(6)"
+          },
+          {
+            "address": "00709dcb",
+            "hex": "d9cc",
+            "text": "fxch st(4)"
+          },
+          {
+            "address": "00709dcd",
+            "hex": "dee5",
+            "text": "fsubrp st(5)"
+          },
+          {
+            "address": "00709dcf",
+            "hex": "d9cc",
+            "text": "fxch st(4)"
+          },
+          {
+            "address": "00709dd1",
+            "hex": "d95904",
+            "text": "fstp dword ptr [ecx + 4]"
+          },
+          {
+            "address": "00709dd4",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00709dd6",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00709dd8",
+            "hex": "dee1",
+            "text": "fsubrp st(1)"
+          },
+          {
+            "address": "00709dda",
+            "hex": "d95908",
+            "text": "fstp dword ptr [ecx + 8]"
+          },
+          {
+            "address": "00709ddd",
+            "hex": "8b463c",
+            "text": "mov eax, dword ptr [esi + 0x3c]"
+          },
+          {
+            "address": "00709de0",
+            "hex": "8b4e1c",
+            "text": "mov ecx, dword ptr [esi + 0x1c]"
+          },
+          {
+            "address": "00709de3",
+            "hex": "0fafc5",
+            "text": "imul eax, ebp"
+          },
+          {
+            "address": "00709de6",
+            "hex": "03c7",
+            "text": "add eax, edi"
+          },
+          {
+            "address": "00709de8",
+            "hex": "8d0440",
+            "text": "lea eax, [eax + eax*2]"
+          },
+          {
+            "address": "00709deb",
+            "hex": "8d0c81",
+            "text": "lea ecx, [ecx + eax*4]"
+          },
+          {
+            "address": "00709dee",
+            "hex": "e86d14d2ff",
+            "text": "call 0x42b260"
+          },
+          {
+            "address": "00709df3",
+            "hex": "8b463c",
+            "text": "mov eax, dword ptr [esi + 0x3c]"
+          },
+          {
+            "address": "00709df6",
+            "hex": "83c701",
+            "text": "add edi, 1"
+          },
+          {
+            "address": "00709df9",
+            "hex": "83c0ff",
+            "text": "add eax, -1"
+          },
+          {
+            "address": "00709dfc",
+            "hex": "3bf8",
+            "text": "cmp edi, eax"
+          },
+          {
+            "address": "00709dfe",
+            "hex": "0f8c21ffffff",
+            "text": "jl 0x709d25"
+          },
+          {
+            "address": "00709e04",
+            "hex": "8b5640",
+            "text": "mov edx, dword ptr [esi + 0x40]"
+          },
+          {
+            "address": "00709e07",
+            "hex": "83c501",
+            "text": "add ebp, 1"
+          },
+          {
+            "address": "00709e0a",
+            "hex": "83ea01",
+            "text": "sub edx, 1"
+          },
+          {
+            "address": "00709e0d",
+            "hex": "3bea",
+            "text": "cmp ebp, edx"
+          },
+          {
+            "address": "00709e0f",
+            "hex": "0f8cfcfeffff",
+            "text": "jl 0x709d11"
+          },
+          {
+            "address": "00709e15",
+            "hex": "33c9",
+            "text": "xor ecx, ecx"
+          },
+          {
+            "address": "00709e17",
+            "hex": "394e40",
+            "text": "cmp dword ptr [esi + 0x40], ecx"
+          },
+          {
+            "address": "00709e1a",
+            "hex": "7e52",
+            "text": "jle 0x709e6e"
+          },
+          {
+            "address": "00709e1c",
+            "hex": "8d510c",
+            "text": "lea edx, [ecx + 0xc]"
+          },
+          {
+            "address": "00709e1f",
+            "hex": "90",
+            "text": "nop "
+          },
+          {
+            "address": "00709e20",
+            "hex": "8b463c",
+            "text": "mov eax, dword ptr [esi + 0x3c]"
+          },
+          {
+            "address": "00709e23",
+            "hex": "8b7e1c",
+            "text": "mov edi, dword ptr [esi + 0x1c]"
+          },
+          {
+            "address": "00709e26",
+            "hex": "0fafc1",
+            "text": "imul eax, ecx"
+          },
+          {
+            "address": "00709e29",
+            "hex": "8d0440",
+            "text": "lea eax, [eax + eax*2]"
+          },
+          {
+            "address": "00709e2c",
+            "hex": "8d0487",
+            "text": "lea eax, [edi + eax*4]"
+          },
+          {
+            "address": "00709e2f",
+            "hex": "83c101",
+            "text": "add ecx, 1"
+          },
+          {
+            "address": "00709e32",
+            "hex": "d9400c",
+            "text": "fld dword ptr [eax + 0xc]"
+          },
+          {
+            "address": "00709e35",
+            "hex": "d918",
+            "text": "fstp dword ptr [eax]"
+          },
+          {
+            "address": "00709e37",
+            "hex": "d94010",
+            "text": "fld dword ptr [eax + 0x10]"
+          },
+          {
+            "address": "00709e3a",
+            "hex": "d95804",
+            "text": "fstp dword ptr [eax + 4]"
+          },
+          {
+            "address": "00709e3d",
+            "hex": "d94014",
+            "text": "fld dword ptr [eax + 0x14]"
+          },
+          {
+            "address": "00709e40",
+            "hex": "d95808",
+            "text": "fstp dword ptr [eax + 8]"
+          },
+          {
+            "address": "00709e43",
+            "hex": "8b463c",
+            "text": "mov eax, dword ptr [esi + 0x3c]"
+          },
+          {
+            "address": "00709e46",
+            "hex": "8b7e1c",
+            "text": "mov edi, dword ptr [esi + 0x1c]"
+          },
+          {
+            "address": "00709e49",
+            "hex": "0fafc2",
+            "text": "imul eax, edx"
+          },
+          {
+            "address": "00709e4c",
+            "hex": "d94438e8",
+            "text": "fld dword ptr [eax + edi - 0x18]"
+          },
+          {
+            "address": "00709e50",
+            "hex": "d95c38f4",
+            "text": "fstp dword ptr [eax + edi - 0xc]"
+          },
+          {
+            "address": "00709e54",
+            "hex": "d94438ec",
+            "text": "fld dword ptr [eax + edi - 0x14]"
+          },
+          {
+            "address": "00709e58",
+            "hex": "d95c38f8",
+            "text": "fstp dword ptr [eax + edi - 8]"
+          },
+          {
+            "address": "00709e5c",
+            "hex": "d94438f0",
+            "text": "fld dword ptr [eax + edi - 0x10]"
+          },
+          {
+            "address": "00709e60",
+            "hex": "d95c38fc",
+            "text": "fstp dword ptr [eax + edi - 4]"
+          },
+          {
+            "address": "00709e64",
+            "hex": "03c7",
+            "text": "add eax, edi"
+          },
+          {
+            "address": "00709e66",
+            "hex": "83c20c",
+            "text": "add edx, 0xc"
+          },
+          {
+            "address": "00709e69",
+            "hex": "3b4e40",
+            "text": "cmp ecx, dword ptr [esi + 0x40]"
+          },
+          {
+            "address": "00709e6c",
+            "hex": "7cb2",
+            "text": "jl 0x709e20"
+          },
+          {
+            "address": "00709e6e",
+            "hex": "33c9",
+            "text": "xor ecx, ecx"
+          },
+          {
+            "address": "00709e70",
+            "hex": "394e3c",
+            "text": "cmp dword ptr [esi + 0x3c], ecx"
+          },
+          {
+            "address": "00709e73",
+            "hex": "7e67",
+            "text": "jle 0x709edc"
+          },
+          {
+            "address": "00709e75",
+            "hex": "33ff",
+            "text": "xor edi, edi"
+          },
+          {
+            "address": "00709e77",
+            "hex": "8b563c",
+            "text": "mov edx, dword ptr [esi + 0x3c]"
+          },
+          {
+            "address": "00709e7a",
+            "hex": "8b461c",
+            "text": "mov eax, dword ptr [esi + 0x1c]"
+          },
+          {
+            "address": "00709e7d",
+            "hex": "03d1",
+            "text": "add edx, ecx"
+          },
+          {
+            "address": "00709e7f",
+            "hex": "8d1452",
+            "text": "lea edx, [edx + edx*2]"
+          },
+          {
+            "address": "00709e82",
+            "hex": "d90490",
+            "text": "fld dword ptr [eax + edx*4]"
+          },
+          {
+            "address": "00709e85",
+            "hex": "8d1490",
+            "text": "lea edx, [eax + edx*4]"
+          },
+          {
+            "address": "00709e88",
+            "hex": "d91c07",
+            "text": "fstp dword ptr [edi + eax]"
+          },
+          {
+            "address": "00709e8b",
+            "hex": "83c70c",
+            "text": "add edi, 0xc"
+          },
+          {
+            "address": "00709e8e",
+            "hex": "d94204",
+            "text": "fld dword ptr [edx + 4]"
+          },
+          {
+            "address": "00709e91",
+            "hex": "d95c07f8",
+            "text": "fstp dword ptr [edi + eax - 8]"
+          },
+          {
+            "address": "00709e95",
+            "hex": "d94208",
+            "text": "fld dword ptr [edx + 8]"
+          },
+          {
+            "address": "00709e98",
+            "hex": "d95c07fc",
+            "text": "fstp dword ptr [edi + eax - 4]"
+          },
+          {
+            "address": "00709e9c",
+            "hex": "8b5e40",
+            "text": "mov ebx, dword ptr [esi + 0x40]"
+          },
+          {
+            "address": "00709e9f",
+            "hex": "8b6e3c",
+            "text": "mov ebp, dword ptr [esi + 0x3c]"
+          },
+          {
+            "address": "00709ea2",
+            "hex": "8b561c",
+            "text": "mov edx, dword ptr [esi + 0x1c]"
+          },
+          {
+            "address": "00709ea5",
+            "hex": "8d43fe",
+            "text": "lea eax, [ebx - 2]"
+          },
+          {
+            "address": "00709ea8",
+            "hex": "0fafc5",
+            "text": "imul eax, ebp"
+          },
+          {
+            "address": "00709eab",
+            "hex": "03c1",
+            "text": "add eax, ecx"
+          },
+          {
+            "address": "00709ead",
+            "hex": "8d0440",
+            "text": "lea eax, [eax + eax*2]"
+          },
+          {
+            "address": "00709eb0",
+            "hex": "8d1482",
+            "text": "lea edx, [edx + eax*4]"
+          },
+          {
+            "address": "00709eb3",
+            "hex": "8d43ff",
+            "text": "lea eax, [ebx - 1]"
+          },
+          {
+            "address": "00709eb6",
+            "hex": "0fafc5",
+            "text": "imul eax, ebp"
+          },
+          {
+            "address": "00709eb9",
+            "hex": "d902",
+            "text": "fld dword ptr [edx]"
+          },
+          {
+            "address": "00709ebb",
+            "hex": "03c1",
+            "text": "add eax, ecx"
+          },
+          {
+            "address": "00709ebd",
+            "hex": "8d1c40",
+            "text": "lea ebx, [eax + eax*2]"
+          },
+          {
+            "address": "00709ec0",
+            "hex": "8b461c",
+            "text": "mov eax, dword ptr [esi + 0x1c]"
+          },
+          {
+            "address": "00709ec3",
+            "hex": "8d0498",
+            "text": "lea eax, [eax + ebx*4]"
+          },
+          {
+            "address": "00709ec6",
+            "hex": "83c101",
+            "text": "add ecx, 1"
+          },
+          {
+            "address": "00709ec9",
+            "hex": "d918",
+            "text": "fstp dword ptr [eax]"
+          },
+          {
+            "address": "00709ecb",
+            "hex": "d94204",
+            "text": "fld dword ptr [edx + 4]"
+          },
+          {
+            "address": "00709ece",
+            "hex": "d95804",
+            "text": "fstp dword ptr [eax + 4]"
+          },
+          {
+            "address": "00709ed1",
+            "hex": "d94208",
+            "text": "fld dword ptr [edx + 8]"
+          },
+          {
+            "address": "00709ed4",
+            "hex": "d95808",
+            "text": "fstp dword ptr [eax + 8]"
+          },
+          {
+            "address": "00709ed7",
+            "hex": "3b4e3c",
+            "text": "cmp ecx, dword ptr [esi + 0x3c]"
+          },
+          {
+            "address": "00709eda",
+            "hex": "7c9b",
+            "text": "jl 0x709e77"
+          },
+          {
+            "address": "00709edc",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "00709edd",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00709ede",
+            "hex": "5d",
+            "text": "pop ebp"
+          },
+          {
+            "address": "00709edf",
+            "hex": "5b",
+            "text": "pop ebx"
+          },
+          {
+            "address": "00709ee0",
+            "hex": "83c41c",
+            "text": "add esp, 0x1c"
+          },
+          {
+            "address": "00709ee3",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "entry": "00709760",
+        "length": 123,
+        "kind": "cleanup",
+        "hex": "568bf18b46085733ff3bc7740950e816d24e0083c4048b460c3bc7740950e806d24e0083c4048b46103bc7740950e8f6d14e0083c4048b46143bc7740950e8e6d14e0083c4048b46183bc7740950e8d6d14e0083c4048b461c3bc7740950e8c6d14e0083c404897e08897e0c897e10897e14897e18897e1c5f5ec3",
+        "sha256": "4aeaeddb783d2142069048e139f8a01fae85e14bb1a75488d307dd9113017780",
+        "instructions": [
+          {
+            "address": "00709760",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00709761",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "00709763",
+            "hex": "8b4608",
+            "text": "mov eax, dword ptr [esi + 8]"
+          },
+          {
+            "address": "00709766",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00709767",
+            "hex": "33ff",
+            "text": "xor edi, edi"
+          },
+          {
+            "address": "00709769",
+            "hex": "3bc7",
+            "text": "cmp eax, edi"
+          },
+          {
+            "address": "0070976b",
+            "hex": "7409",
+            "text": "je 0x709776"
+          },
+          {
+            "address": "0070976d",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0070976e",
+            "hex": "e816d24e00",
+            "text": "call 0xbf6989"
+          },
+          {
+            "address": "00709773",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "00709776",
+            "hex": "8b460c",
+            "text": "mov eax, dword ptr [esi + 0xc]"
+          },
+          {
+            "address": "00709779",
+            "hex": "3bc7",
+            "text": "cmp eax, edi"
+          },
+          {
+            "address": "0070977b",
+            "hex": "7409",
+            "text": "je 0x709786"
+          },
+          {
+            "address": "0070977d",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0070977e",
+            "hex": "e806d24e00",
+            "text": "call 0xbf6989"
+          },
+          {
+            "address": "00709783",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "00709786",
+            "hex": "8b4610",
+            "text": "mov eax, dword ptr [esi + 0x10]"
+          },
+          {
+            "address": "00709789",
+            "hex": "3bc7",
+            "text": "cmp eax, edi"
+          },
+          {
+            "address": "0070978b",
+            "hex": "7409",
+            "text": "je 0x709796"
+          },
+          {
+            "address": "0070978d",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0070978e",
+            "hex": "e8f6d14e00",
+            "text": "call 0xbf6989"
+          },
+          {
+            "address": "00709793",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "00709796",
+            "hex": "8b4614",
+            "text": "mov eax, dword ptr [esi + 0x14]"
+          },
+          {
+            "address": "00709799",
+            "hex": "3bc7",
+            "text": "cmp eax, edi"
+          },
+          {
+            "address": "0070979b",
+            "hex": "7409",
+            "text": "je 0x7097a6"
+          },
+          {
+            "address": "0070979d",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0070979e",
+            "hex": "e8e6d14e00",
+            "text": "call 0xbf6989"
+          },
+          {
+            "address": "007097a3",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "007097a6",
+            "hex": "8b4618",
+            "text": "mov eax, dword ptr [esi + 0x18]"
+          },
+          {
+            "address": "007097a9",
+            "hex": "3bc7",
+            "text": "cmp eax, edi"
+          },
+          {
+            "address": "007097ab",
+            "hex": "7409",
+            "text": "je 0x7097b6"
+          },
+          {
+            "address": "007097ad",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "007097ae",
+            "hex": "e8d6d14e00",
+            "text": "call 0xbf6989"
+          },
+          {
+            "address": "007097b3",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "007097b6",
+            "hex": "8b461c",
+            "text": "mov eax, dword ptr [esi + 0x1c]"
+          },
+          {
+            "address": "007097b9",
+            "hex": "3bc7",
+            "text": "cmp eax, edi"
+          },
+          {
+            "address": "007097bb",
+            "hex": "7409",
+            "text": "je 0x7097c6"
+          },
+          {
+            "address": "007097bd",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "007097be",
+            "hex": "e8c6d14e00",
+            "text": "call 0xbf6989"
+          },
+          {
+            "address": "007097c3",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "007097c6",
+            "hex": "897e08",
+            "text": "mov dword ptr [esi + 8], edi"
+          },
+          {
+            "address": "007097c9",
+            "hex": "897e0c",
+            "text": "mov dword ptr [esi + 0xc], edi"
+          },
+          {
+            "address": "007097cc",
+            "hex": "897e10",
+            "text": "mov dword ptr [esi + 0x10], edi"
+          },
+          {
+            "address": "007097cf",
+            "hex": "897e14",
+            "text": "mov dword ptr [esi + 0x14], edi"
+          },
+          {
+            "address": "007097d2",
+            "hex": "897e18",
+            "text": "mov dword ptr [esi + 0x18], edi"
+          },
+          {
+            "address": "007097d5",
+            "hex": "897e1c",
+            "text": "mov dword ptr [esi + 0x1c], edi"
+          },
+          {
+            "address": "007097d8",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "007097d9",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "007097da",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "entry": "0070b220",
+        "length": 90,
+        "kind": "destructor",
+        "hex": "53568bf157c70684d4cf00e830e5ffff8b7e7885ff8b1d2022ce0074198d470450ffd385c075088b178b028bcfffd0c74678000000008b7e7c85ff74198d4f0451ffd385c075088b178b028bcfffd0c7467c000000005f5e5bc3",
+        "sha256": "24adeb17273eee9318035df231a44d44836a9471d0631b8af6ea2f889879d47a",
+        "instructions": [
+          {
+            "address": "0070b220",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "0070b221",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "0070b222",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "0070b224",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "0070b225",
+            "hex": "c70684d4cf00",
+            "text": "mov dword ptr [esi], 0xcfd484"
+          },
+          {
+            "address": "0070b22b",
+            "hex": "e830e5ffff",
+            "text": "call 0x709760"
+          },
+          {
+            "address": "0070b230",
+            "hex": "8b7e78",
+            "text": "mov edi, dword ptr [esi + 0x78]"
+          },
+          {
+            "address": "0070b233",
+            "hex": "85ff",
+            "text": "test edi, edi"
+          },
+          {
+            "address": "0070b235",
+            "hex": "8b1d2022ce00",
+            "text": "mov ebx, dword ptr [0xce2220]"
+          },
+          {
+            "address": "0070b23b",
+            "hex": "7419",
+            "text": "je 0x70b256"
+          },
+          {
+            "address": "0070b23d",
+            "hex": "8d4704",
+            "text": "lea eax, [edi + 4]"
+          },
+          {
+            "address": "0070b240",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "0070b241",
+            "hex": "ffd3",
+            "text": "call ebx"
+          },
+          {
+            "address": "0070b243",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "0070b245",
+            "hex": "7508",
+            "text": "jne 0x70b24f"
+          },
+          {
+            "address": "0070b247",
+            "hex": "8b17",
+            "text": "mov edx, dword ptr [edi]"
+          },
+          {
+            "address": "0070b249",
+            "hex": "8b02",
+            "text": "mov eax, dword ptr [edx]"
+          },
+          {
+            "address": "0070b24b",
+            "hex": "8bcf",
+            "text": "mov ecx, edi"
+          },
+          {
+            "address": "0070b24d",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "0070b24f",
+            "hex": "c7467800000000",
+            "text": "mov dword ptr [esi + 0x78], 0"
+          },
+          {
+            "address": "0070b256",
+            "hex": "8b7e7c",
+            "text": "mov edi, dword ptr [esi + 0x7c]"
+          },
+          {
+            "address": "0070b259",
+            "hex": "85ff",
+            "text": "test edi, edi"
+          },
+          {
+            "address": "0070b25b",
+            "hex": "7419",
+            "text": "je 0x70b276"
+          },
+          {
+            "address": "0070b25d",
+            "hex": "8d4f04",
+            "text": "lea ecx, [edi + 4]"
+          },
+          {
+            "address": "0070b260",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "0070b261",
+            "hex": "ffd3",
+            "text": "call ebx"
+          },
+          {
+            "address": "0070b263",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "0070b265",
+            "hex": "7508",
+            "text": "jne 0x70b26f"
+          },
+          {
+            "address": "0070b267",
+            "hex": "8b17",
+            "text": "mov edx, dword ptr [edi]"
+          },
+          {
+            "address": "0070b269",
+            "hex": "8b02",
+            "text": "mov eax, dword ptr [edx]"
+          },
+          {
+            "address": "0070b26b",
+            "hex": "8bcf",
+            "text": "mov ecx, edi"
+          },
+          {
+            "address": "0070b26d",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "0070b26f",
+            "hex": "c7467c00000000",
+            "text": "mov dword ptr [esi + 0x7c], 0"
+          },
+          {
+            "address": "0070b276",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "0070b277",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "0070b278",
+            "hex": "5b",
+            "text": "pop ebx"
+          },
+          {
+            "address": "0070b279",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "entry": "0070b280",
+        "length": 30,
+        "kind": "scalar",
+        "hex": "568bf1e898fffffff644240801740956e817b34e0083c4048bc65ec20400",
+        "sha256": "47773006776af1e5d92db2b9e98fedf3a0c72fd06f94f456f7e7f684038ec5ea",
+        "instructions": [
+          {
+            "address": "0070b280",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "0070b281",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "0070b283",
+            "hex": "e898ffffff",
+            "text": "call 0x70b220"
+          },
+          {
+            "address": "0070b288",
+            "hex": "f644240801",
+            "text": "test byte ptr [esp + 8], 1"
+          },
+          {
+            "address": "0070b28d",
+            "hex": "7409",
+            "text": "je 0x70b298"
+          },
+          {
+            "address": "0070b28f",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "0070b290",
+            "hex": "e817b34e00",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "0070b295",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "0070b298",
+            "hex": "8bc6",
+            "text": "mov eax, esi"
+          },
+          {
+            "address": "0070b29a",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "0070b29b",
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ]
+      },
+      {
+        "entry": "00cfd484",
+        "length": 4,
+        "kind": "data",
+        "hex": "80b27000",
+        "sha256": "b2ecbd750f7b23e49ff5c4d3a863ee8778a3d47602a707d3b6ad58375b7d7909",
+        "instructions": []
+      },
+      {
+        "entry": "00d7a24c",
+        "length": 4,
+        "kind": "data",
+        "hex": "0000803f",
+        "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+        "instructions": []
+      },
+      {
+        "entry": "00cfd470",
+        "length": 4,
+        "kind": "data",
+        "hex": "00003041",
+        "sha256": "aad5869a75fac25feb7a1947636f1b74a3908f9b8f47100aa43638ec958d24f9",
+        "instructions": []
+      },
+      {
+        "entry": "00d7a260",
+        "length": 4,
+        "kind": "data",
+        "hex": "000080bf",
+        "sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b",
+        "instructions": []
+      },
+      {
+        "entry": "00ce5380",
+        "length": 4,
+        "kind": "data",
+        "hex": "00007041",
+        "sha256": "a5d4cd5b9cc4aba67ebe403c68466c378868947703d75704381d0c90e2615d1e",
+        "instructions": []
+      },
+      {
+        "entry": "00ce397c",
+        "length": 4,
+        "kind": "data",
+        "hex": "0000fa43",
+        "sha256": "3dfe7e7e4845c20f97da4304d488786000c9eddecd822be0e032d2fab0878f1d",
+        "instructions": []
+      },
+      {
+        "entry": "00cfd46c",
+        "length": 4,
+        "kind": "data",
+        "hex": "3333b3bf",
+        "sha256": "9a8826c59615a36b6eb019563ed3cea4633dc5962a924ac238ea376d4107320a",
+        "instructions": []
+      },
+      {
+        "entry": "00d7a3a0",
+        "length": 8,
+        "kind": "data",
+        "hex": "000000a09999b93f",
+        "sha256": "3e2a4d232d889625aa1c184b27588b7c6ebdfef18e01332502d986209f65b905",
+        "instructions": []
+      },
+      {
+        "entry": "00ce3d28",
+        "length": 8,
+        "kind": "data",
+        "hex": "00000060fb210940",
+        "sha256": "387688f9240b7a78393541098b24aefe3e8d688fe35170af9c8cabcdc44f4097",
+        "instructions": []
+      },
+      {
+        "entry": "00f87574",
+        "length": 12,
+        "kind": "data",
+        "hex": "000000000000000000000000",
+        "sha256": "15ec7bf0b50732b49f8228e07d24365338f9e3ab994b00af08e5a3bffe55fd8b",
+        "instructions": []
+      }
+    ],
+    "live_verified_bytes": 2945,
+    "call_rows": [
+      {
+        "address": "00709dee",
+        "native": "0042b260",
+        "function": "00709cf0"
+      },
+      {
+        "address": "0070976e",
+        "native": "00bf6989",
+        "function": "00709760"
+      },
+      {
+        "address": "0070977e",
+        "native": "00bf6989",
+        "function": "00709760"
+      },
+      {
+        "address": "0070978e",
+        "native": "00bf6989",
+        "function": "00709760"
+      },
+      {
+        "address": "0070979e",
+        "native": "00bf6989",
+        "function": "00709760"
+      },
+      {
+        "address": "007097ae",
+        "native": "00bf6989",
+        "function": "00709760"
+      },
+      {
+        "address": "007097be",
+        "native": "00bf6989",
+        "function": "00709760"
+      }
+    ],
+    "flow_repairs": {
+      "repairs": [
+        {
+          "function": "00709760",
+          "owner": "agent/orch4-20260915",
+          "when": "2026-09-18T01:23:07Z",
+          "decompile_lines_before": 37,
+          "gaps": [
+            {
+              "site": "0070976e",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00709773",
+              "gap_end_exclusive": "00709776",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            },
+            {
+              "site": "0070977e",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00709783",
+              "gap_end_exclusive": "00709786",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            },
+            {
+              "site": "0070978e",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00709793",
+              "gap_end_exclusive": "00709796",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            },
+            {
+              "site": "0070979e",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "007097a3",
+              "gap_end_exclusive": "007097a6",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            },
+            {
+              "site": "007097ae",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "007097b3",
+              "gap_end_exclusive": "007097b6",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            },
+            {
+              "site": "007097be",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "007097c3",
+              "gap_end_exclusive": "007097c6",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "0070976e",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00709773",
+                "gap_end_exclusive": "00709776",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 0070976e (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            },
+            {
+              "gap": {
+                "site": "0070977e",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00709783",
+                "gap_end_exclusive": "00709786",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 0070977e (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            },
+            {
+              "gap": {
+                "site": "0070978e",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00709793",
+                "gap_end_exclusive": "00709796",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 0070978e (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            },
+            {
+              "gap": {
+                "site": "0070979e",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "007097a3",
+                "gap_end_exclusive": "007097a6",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 0070979e (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            },
+            {
+              "gap": {
+                "site": "007097ae",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "007097b3",
+                "gap_end_exclusive": "007097b6",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 007097ae (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            },
+            {
+              "gap": {
+                "site": "007097be",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "007097c3",
+                "gap_end_exclusive": "007097c6",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 007097be (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            }
+          ],
+          "decompile_lines_after": 31,
+          "gaps_remaining": 0
+        },
+        {
+          "function": "0070b280",
+          "owner": "agent/orch4-20260915",
+          "when": "2026-09-18T01:23:09Z",
+          "decompile_lines_before": 14,
+          "gaps": [
+            {
+              "site": "0070b290",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "0070b295",
+              "gap_end_exclusive": "0070b298",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "0070b290",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "0070b295",
+                "gap_end_exclusive": "0070b298",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 0070b290 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            }
+          ],
+          "decompile_lines_after": 11,
+          "gaps_remaining": 0
+        }
+      ]
+    },
+    "copied_fixture": {
+      "native_bytes": 714,
+      "direct_call_relocations": 7,
+      "normalization_dependency": "Both lanes reuse existing concrete42B260/UCRT;not independently compared here",
+      "cleanup_dependency": "Controlled observed free;additional source CRT six-allocation/free check"
+    }
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "probe": {
+      "library_sha256": "35A72EF87C2BB6217BA203CEDA4BFDBBF556ED691C79A5AD7844A8EB89DFC64A",
+      "linker": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe",
+      "exe_sha256": "B6A1F08AFC7BC8A06A1E9C1D28AF469D31F911A168E1758D3885D0D9D32C735B",
+      "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+      "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+      "exit": 0
+    },
+    "descriptor_cases": 432,
+    "normal_cases": 2160,
+    "cleanup_cases": 1792,
+    "paired_cases": 4384,
+    "comparison_bytes": 71737472,
+    "x87_control_exception_stack_checks": true,
+    "source_actual_crt_cleanup": true,
+    "probe_source_sha256": "2f0ce9f67702eb0eadaab6a6537eaedd80a75dbe619f27e3cdfb5ae51792451d",
+    "native_fixture_header_sha256": "1796a756c520d9d24ad222e3a7ce540a9ac335675a1cb7a8afff772017aa9837",
+    "source_sha256_by_path": {
+      "include/bsp/native_game_grid.hpp": "283a83f49d897062ef418004c1922eaf4df0f868ef06c6109aa7f26b1db92173",
+      "src/native_game_grid.cpp": "088136987d3ccb910dbed1f3155ea7913ad15901d1b35798cd0718e9ad571b44",
+      "cmake/startup.cmake": "57f7a029c8a1684e79e6b74bae093951a3c2dd1494a18e0c157577b5f595bc98"
+    },
+    "source_lf_sha256": {
+      "include/bsp/native_game_grid.hpp": "283a83f49d897062ef418004c1922eaf4df0f868ef06c6109aa7f26b1db92173",
+      "src/native_game_grid.cpp": "088136987d3ccb910dbed1f3155ea7913ad15901d1b35798cd0718e9ad571b44",
+      "cmake/startup.cmake": "10e221c11a37c35749283b6418bb5467eecf6e698ae9a6956652508f6c30de07"
+    },
+    "dependency_sha256": {
+      "include/bsp/camera_decomposition.hpp": "a85da95564ce636ab136729ae442de8e28c2cca2cc63a7414236854fda4437cb",
+      "src/camera_decomposition.cpp": "d7b982c1f309746af20e6e6ffe0373440cd7927895d640d38b88e533a2e7ccc8",
+      "include/bsp/camera_position_modes.hpp": "7f82e014e6a4adb4053213cd871b3c3f54a249867069de55b51356bf5855a124"
+    },
+    "library_sha256": "35a72ef87c2bb6217ba203ceda4bfdbbf556ed691c79a5ad7844a8eb89dfc64a",
+    "game_sha256": "62fd9ca9cfb88d1fb2ce11b1f5c72fb570c34f67fa221008ac803bb93a6339c3",
+    "ordinary_application_runtime_rerun": false,
+    "call_verification": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\reports\\native_game_grid_r119.json: 7 call rows checked, 0 failed\n"
+  },
+  "limits": [
+    "Constructor70BD70,initializer70B330 and GPU/scalar lifetimes70B220/70B280 not implemented",
+    "Shared concrete42B260/UCRT normalization dependency;no new dependency oracle",
+    "Controlled free callback mutation/failure observations are not original CRT heap execution",
+    "No arbitrary private-stack alias,concurrent mutation,hardware-fault,original FH3/SEH or drop-in ABI proof",
+    "No rendered game or live grid/GPU validation;parent bindings unchanged"
+  ],
+  "owned_files": [
+    "include/bsp/native_game_grid.hpp",
+    "src/native_game_grid.cpp",
+    "cmake/startup.cmake",
+    "docs/NATIVE_GAME_GRID_R119.md",
+    "reports/native_game_grid_r119.json",
+    "reports/native_game_grid_r119_flow.json",
+    "config/names/00700000.jsonl",
+    "config/reconstruction/00700000.jsonl"
+  ],
+  "no_ghidra_function": [],
+  "ghidra_annotations": {
+    "prior_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\ghidra-annotations-20260918T013932Z.json",
+    "prior_values": [
+      {
+        "address": "00709760",
+        "before": {
+          "address": "00709760",
+          "function_name": "FUN_00709760"
+        },
+        "after": {
+          "address": "00709760",
+          "name": "BSP_GameGrid_ReleaseCpuArrays",
+          "evidence": "Complete123B. ECXactual84h grid,RET. Currentnonnull pointers+08,+0C,+10,+14,+18,+1C go toactualCRTfreeBF6989 in order;zeroall6 onlyaftereverycallreturns. Latercallback pointermutations observed;failure retains partialeffects,no rollback.1792controlled null-mask/mutation/failure cases plusdefaultsourceCRTfree.6falseCALL_RETURNs repaired/restoredADDESP4,priorflow record preserved. Descriptive hypothesis,not a recovered symbol. R119:3complete normal bodies714B,4384copied-original paired cases,71737472matching bytes;12x87 precision/rounding modes,exception/control/stack checks. Normalization42B260 and UCRT shared across lanes;free boundary observed plus actual source CRT check. StrictWin32/3CTests. No constructor/GPU,parent binding,private-stack alias,concurrency,FH3/SEH,drop-inABI or gameplay proof. docs/NATIVE_GAME_GRID_R119.md;reports/native_game_grid_r119.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00709c90",
+        "before": {
+          "address": "00709c90",
+          "function_name": "FUN_00709c90"
+        },
+        "after": {
+          "address": "00709c90",
+          "name": "BSP_GameGrid_CopyDescriptor",
+          "evidence": "Complete91B. ECXdestination38h,stacksource38h,EAXdestination,RET4. First2DWORDs copied as integers,next12 sequential x87FLD/FSTP32;quiet signalingNaNs,preserve live forward overlap.432descriptor cases. Descriptive hypothesis,not a recovered symbol. R119:3complete normal bodies714B,4384copied-original paired cases,71737472matching bytes;12x87 precision/rounding modes,exception/control/stack checks. Normalization42B260 and UCRT shared across lanes;free boundary observed plus actual source CRT check. StrictWin32/3CTests. No constructor/GPU,parent binding,private-stack alias,concurrency,FH3/SEH,drop-inABI or gameplay proof. docs/NATIVE_GAME_GRID_R119.md;reports/native_game_grid_r119.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00709cf0",
+        "before": {
+          "address": "00709cf0",
+          "function_name": "FUN_00709cf0"
+        },
+        "after": {
+          "address": "00709cf0",
+          "name": "BSP_GameGrid_CalculateNormals",
+          "evidence": "Complete500B. ECXactual84h grid,RET;incidentalEAX not exposed. Dimensions+3C/+40,positions+08,normals+1C. Interior central differences spill32,exact extended x87cross stack then42B260;reload current dimension/pointer after cross. X87copy row edges then top/bottom. Signedloops/low32address products,no guards.2160normal cases includingrectangles,small/nonpositive dimensions,paddedstorage,position/outputalias,NaN/inf/denormal. Descriptive hypothesis,not a recovered symbol. R119:3complete normal bodies714B,4384copied-original paired cases,71737472matching bytes;12x87 precision/rounding modes,exception/control/stack checks. Normalization42B260 and UCRT shared across lanes;free boundary observed plus actual source CRT check. StrictWin32/3CTests. No constructor/GPU,parent binding,private-stack alias,concurrency,FH3/SEH,drop-inABI or gameplay proof. docs/NATIVE_GAME_GRID_R119.md;reports/native_game_grid_r119.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "readback_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\game_grid_r119\\comments-after.json",
+    "readback_sha256": "ca6385b30fca996a035e45e086d0e26898d8b945817319f202d8b9bdd095a72d",
+    "status": "3names/evidence applied under write lock;prior values preserved,project saved/readback checked/exports refreshed;pending70B280 repaired export refreshed without claiming implementation"
+  },
+  "ledger_receipts": [
+    "00709c90 -> BSP_GameGrid_CopyDescriptor\n",
+    "00709c90 function copy_native_game_grid_descriptor_00709c90\n",
+    "00709cf0 -> BSP_GameGrid_CalculateNormals\n",
+    "00709cf0 function calculate_native_game_grid_normals_00709cf0\n",
+    "00709760 -> BSP_GameGrid_ReleaseCpuArrays\n",
+    "00709760 function release_native_game_grid_cpu_arrays_00709760\n"
+  ],
+  "tested_artifact_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r119\\native-game-grid-cpu-tested-r119.zip",
+    "sha256": "60c99604b1623a90e944f2cf48b558c518cad7f2326ae9d76116ddc45d4faa8d",
+    "files": 64,
+    "uncompressed_bytes": 70117173,
+    "utc": "2026-09-18T01:40:55.071299+00:00",
+    "head": "47f2321e15729c572c3a9be4e1b2f8206d7f123e",
+    "manifest": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/camera_decomposition.obj",
+        "size": 3506,
+        "sha256": "ab46221ee7f15c69c89cc590a62ca47f39d53aae58632fa60f31e744e953b178"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_game_grid.obj",
+        "size": 4369,
+        "sha256": "a0dc673d3739fae9a0803f6da3e92ef0ee0ca13079f70258bd9c77919efc34d0"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "size": 65836668,
+        "sha256": "35a72ef87c2bb6217ba203ceda4bfdbbf556ed691c79a5ad7844a8eb89dfc64a"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "size": 2651136,
+        "sha256": "62fd9ca9cfb88d1fb2ce11b1f5c72fb570c34f67fa221008ac803bb93a6339c3"
+      },
+      {
+        "path": "build/win32/Release/bsp_math_tests.exe",
+        "size": 759808,
+        "sha256": "5a243e37f85139750e083535a841e3b720292f7c149192cc70a3333ff8500621"
+      },
+      {
+        "path": "build/win32/Release/bsp_native_math_tests.exe",
+        "size": 18432,
+        "sha256": "1dae692e765efb54e066fe6859abb8046066a2689f1a2d691689959a1c6ec22e"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "size": 161092,
+        "sha256": "57f7a029c8a1684e79e6b74bae093951a3c2dd1494a18e0c157577b5f595bc98"
+      },
+      {
+        "path": "config/names/00700000.jsonl",
+        "size": 42149,
+        "sha256": "932cfc114e46b1804eee3afde68d725f99544f80571a356f60717e71d0a1d90e"
+      },
+      {
+        "path": "config/reconstruction/00700000.jsonl",
+        "size": 32717,
+        "sha256": "e37c4fc172f4dc2098cf50a3456961ab0459cd5d6e79d8a5d0d79ff7a935b8e1"
+      },
+      {
+        "path": "docs/NATIVE_GAME_GRID_R119.md",
+        "size": 6319,
+        "sha256": "9e07241a6bad77363ca2ebe703bbbb2fc475b00642620d5f1cfc308bb79d7444"
+      },
+      {
+        "path": "include/bsp/camera_decomposition.hpp",
+        "size": 1068,
+        "sha256": "a85da95564ce636ab136729ae442de8e28c2cca2cc63a7414236854fda4437cb"
+      },
+      {
+        "path": "include/bsp/camera_position_modes.hpp",
+        "size": 2786,
+        "sha256": "7f82e014e6a4adb4053213cd871b3c3f54a249867069de55b51356bf5855a124"
+      },
+      {
+        "path": "include/bsp/camera_projection.hpp",
+        "size": 2413,
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "path": "include/bsp/native_game_grid.hpp",
+        "size": 2102,
+        "sha256": "283a83f49d897062ef418004c1922eaf4df0f868ef06c6109aa7f26b1db92173"
+      },
+      {
+        "path": "local/annotate_game_grid_r119.py",
+        "size": 4230,
+        "sha256": "cea995d6289e0c489fbc5c0f2b60d414a74058836f977188901f4698bda18193"
+      },
+      {
+        "path": "local/collect_game_grid_r119.py",
+        "size": 2435,
+        "sha256": "bb4cf706545c1920a83144cbf9f39e6f785c50cede3b5d5ab4759e2836d1dbf6"
+      },
+      {
+        "path": "local/commit_game_grid_r119.py",
+        "size": 1913,
+        "sha256": "881440b056fc0b7f5e94fd86d3568a7d91c8392c8076bc4ff448a09f30e9b6ca"
+      },
+      {
+        "path": "local/game_grid_r119/annotations.log",
+        "size": 276,
+        "sha256": "fc90512074a1e5c70e1924cfe5934bd524b5bd8ff152a48ff3824551b8651bb6"
+      },
+      {
+        "path": "local/game_grid_r119/build.log",
+        "size": 2579,
+        "sha256": "5abfe73813fcc89bc1da8b94ea5e5b5a8d680e0404f912e9c7ca0f2e455537d6"
+      },
+      {
+        "path": "local/game_grid_r119/comments-after.json",
+        "size": 3080,
+        "sha256": "ca6385b30fca996a035e45e086d0e26898d8b945817319f202d8b9bdd095a72d"
+      },
+      {
+        "path": "local/game_grid_r119/comments-after.log",
+        "size": 70,
+        "sha256": "9c344f18482d191db55f02ba572050fc054f2f316edf328a5395ddd8702a9dc9"
+      },
+      {
+        "path": "local/game_grid_r119/decompile-00709760.txt",
+        "size": 876,
+        "sha256": "f267907b83414b5674a4ff5704ba8779a11407dc36b99ccb945238b6cacbcae7"
+      },
+      {
+        "path": "local/game_grid_r119/decompile-00709c90.txt",
+        "size": 496,
+        "sha256": "8d75358f4e4092eaa405109a8dc1cf28dce057b9615aec5a7b8de97248cd7800"
+      },
+      {
+        "path": "local/game_grid_r119/decompile-00709cf0.txt",
+        "size": 3742,
+        "sha256": "8f20c95f9f2a6ef0219cca03e4a6bfcdc85ac5ea465f17912bba81b9132f5ed5"
+      },
+      {
+        "path": "local/game_grid_r119/decompile-0070b220.txt",
+        "size": 629,
+        "sha256": "6a303c685a9568149dc3c7d09cef7709ea280f130bbce78e534383189702eda6"
+      },
+      {
+        "path": "local/game_grid_r119/decompile-0070b280.txt",
+        "size": 185,
+        "sha256": "8a300e537f48dda7fb6e86450fcc90ac7b892b375f0660712be4fdb2e4ebb03d"
+      },
+      {
+        "path": "local/game_grid_r119/decompile-0070b330.txt",
+        "size": 9740,
+        "sha256": "11b230afc1885c8c8747ea2a6dd8ed354f7a0569517e97cecacd5b71396f105d"
+      },
+      {
+        "path": "local/game_grid_r119/decompile-0070bd70.txt",
+        "size": 1650,
+        "sha256": "e75ba94148a2fe3c7162a86a353808bca7099a0667bcdaae962f396d7a900527"
+      },
+      {
+        "path": "local/game_grid_r119/dependencies.json",
+        "size": 22758,
+        "sha256": "9e5693d51f219afddfc12f4ef73f8696627778eec4c88ceefbeb1bbfea4b5eb9"
+      },
+      {
+        "path": "local/game_grid_r119/disasm-00709760.txt",
+        "size": 1396,
+        "sha256": "d8111585cbed0da0d5d29872161006f2e35543457bd490e8d8a9f642ce0d9c82"
+      },
+      {
+        "path": "local/game_grid_r119/disasm-00709c90.txt",
+        "size": 1186,
+        "sha256": "4080eade47779e2b8fca1f3c6302f317739c8140ccaff74d788fdf3671fc062b"
+      },
+      {
+        "path": "local/game_grid_r119/disasm-00709cf0.txt",
+        "size": 5696,
+        "sha256": "bf78ad3e9d524a4b65823340b062e790c52e1d3f1dedbf38d2d0998b956365a0"
+      },
+      {
+        "path": "local/game_grid_r119/disasm-0070b220.txt",
+        "size": 1035,
+        "sha256": "23b39aaf0dc4f6396ad53e7e55a74ebb762e0a4ddef3c4b4831ab27e00a56722"
+      },
+      {
+        "path": "local/game_grid_r119/disasm-0070b280.txt",
+        "size": 278,
+        "sha256": "7415e7ed55b6be157b2ab8198a41a75ea8c9d4a5dcf7d9e9ebcfcbdd2d440337"
+      },
+      {
+        "path": "local/game_grid_r119/disasm-0070b330.txt",
+        "size": 17712,
+        "sha256": "61e2f35b27473c14a726bb0f90583af5a33e2d06f679e7050a223d28d3fc6595"
+      },
+      {
+        "path": "local/game_grid_r119/disasm-0070bd70.txt",
+        "size": 3182,
+        "sha256": "808eaad32bb9025dd3c5737b67129410bafdf4713fedf7badf08908aa83017b1"
+      },
+      {
+        "path": "local/game_grid_r119/exports-after.log",
+        "size": 477,
+        "sha256": "4b476dd968adc45e717f704504fc1da7eb489e10c284dbfa3cfd9389f90b2a60"
+      },
+      {
+        "path": "local/game_grid_r119/game_grid_probe.exe",
+        "size": 32768,
+        "sha256": "b6a1f08afc7bc8a06a1e9c1d28af469d31f911a168e1758d3885d0d9d32c735b"
+      },
+      {
+        "path": "local/game_grid_r119/index.log",
+        "size": 16,
+        "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+      },
+      {
+        "path": "local/game_grid_r119/native.json",
+        "size": 128355,
+        "sha256": "54c80946e02f2f8ba8b49e0d3f27efc20d58714b7672d503e55013bcb82fbee9"
+      },
+      {
+        "path": "local/game_grid_r119/original.inc",
+        "size": 3729,
+        "sha256": "1796a756c520d9d24ad222e3a7ce540a9ac335675a1cb7a8afff772017aa9837"
+      },
+      {
+        "path": "local/game_grid_r119/probe-build.log",
+        "size": 11,
+        "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+      },
+      {
+        "path": "local/game_grid_r119/probe-run.log",
+        "size": 324,
+        "sha256": "c328e449c84ca4db1d4a6bb8f541c1c9ee56bc0cbfce8d395c92e5aea828b902"
+      },
+      {
+        "path": "local/game_grid_r119/probe.cpp",
+        "size": 8100,
+        "sha256": "2f0ce9f67702eb0eadaab6a6537eaedd80a75dbe619f27e3cdfb5ae51792451d"
+      },
+      {
+        "path": "local/game_grid_r119/probe.map",
+        "size": 46608,
+        "sha256": "6f1e584e6d91b455721e62b5ce34f387f7512ef9ece5efd6ddc1c716b6a4ff88"
+      },
+      {
+        "path": "local/game_grid_r119/probe.obj",
+        "size": 96644,
+        "sha256": "0df7e7b935904d403aea3e5d788ea0588c48ae70cad206272307be06f4faef76"
+      },
+      {
+        "path": "local/game_grid_r119/proto-00709760.txt",
+        "size": 692,
+        "sha256": "8de0ffef4a640d857188dbae3b76bd2a9749f35a14d6313d939f17d621e99a7c"
+      },
+      {
+        "path": "local/game_grid_r119/proto-00709c90.txt",
+        "size": 682,
+        "sha256": "99e402423a1dd78ec4a374ceb821c23642c037cf038d0485bef21b883ccb3548"
+      },
+      {
+        "path": "local/game_grid_r119/proto-00709cf0.txt",
+        "size": 639,
+        "sha256": "b1b58e4791536902abb1508f841be74558304b423aa27f603923584b89ecd7d9"
+      },
+      {
+        "path": "local/game_grid_r119/proto-0070b220.txt",
+        "size": 654,
+        "sha256": "cae637f09adb2daeacdb656a4a06058725e78e8a93307a3d1f1fc0bf2baa6908"
+      },
+      {
+        "path": "local/game_grid_r119/proto-0070b280.txt",
+        "size": 675,
+        "sha256": "7fcbfd9461d99c1e0bfa2570c4cc5b221998189fbf8dd40fd1f8040fd0fa5f6a"
+      },
+      {
+        "path": "local/game_grid_r119/proto-0070b330.txt",
+        "size": 691,
+        "sha256": "eade95317d90cb7a9b2cbca1b5102104807f310ce7d7fe56f60c9cfad9f8b5b3"
+      },
+      {
+        "path": "local/game_grid_r119/proto-0070bd70.txt",
+        "size": 611,
+        "sha256": "6d1bddad0e13fc17e837bbc69f1ff03890137fb801ca0c6f01eee4e8713b89c1"
+      },
+      {
+        "path": "local/game_grid_r119/result.json",
+        "size": 528,
+        "sha256": "841ba0767e7baefaf816293647cb600aefb6ae02dd5535108e99242c15fb8b03"
+      },
+      {
+        "path": "local/game_grid_r119/snapshot.log",
+        "size": 230,
+        "sha256": "3d093eaec5e047414547bff42276cfbb07896d5c7df411ef9f949e868d08d4f0"
+      },
+      {
+        "path": "local/game_grid_r119/verify-calls.log",
+        "size": 123,
+        "sha256": "1385c72f8dd5ce01f6af5a40435698c95f656d745063c717cfb3f596a352d408"
+      },
+      {
+        "path": "local/ghidra-annotations-20260918T013932Z.json",
+        "size": 3293,
+        "sha256": "5d7d32b03ef3191cb823979c7672a1a977c41148d946b7edfd0e42b2980466a9"
+      },
+      {
+        "path": "local/report_game_grid_r119.py",
+        "size": 3680,
+        "sha256": "b780e5547a38e0a5c6d3a9d7e5edcb8e3b9ce7898ab512d46d502ba1e07f7fd0"
+      },
+      {
+        "path": "local/run_game_grid_r119.ps1",
+        "size": 1405,
+        "sha256": "39e459a9d325007bf70b4b6c865f3572956aba35edc2857310275a95b5ea0e19"
+      },
+      {
+        "path": "local/seal_game_grid_r119.py",
+        "size": 3669,
+        "sha256": "5829b5fdca149cbd96728da17b06e506add718601f6703ffb4db1fc2caf30ee1"
+      },
+      {
+        "path": "reports/native_game_grid_r119.json",
+        "size": 155524,
+        "sha256": "b65c6b3aff3074fcc074036b473b81ee70ac7a112ed7d4c1baa7e531941c27d3"
+      },
+      {
+        "path": "reports/native_game_grid_r119_flow.json",
+        "size": 5736,
+        "sha256": "f06d2d8e8fa9e96754e7dcd91259294c92fbc977ad245e13ba11b86afa5d6e1b"
+      },
+      {
+        "path": "src/camera_decomposition.cpp",
+        "size": 5358,
+        "sha256": "d7b982c1f309746af20e6e6ffe0373440cd7927895d640d38b88e533a2e7ccc8"
+      },
+      {
+        "path": "src/native_game_grid.cpp",
+        "size": 6242,
+        "sha256": "088136987d3ccb910dbed1f3155ea7913ad15901d1b35798cd0718e9ad571b44"
+      }
+    ],
+    "scope": "3complete grid CPU bodies714B;4384copied-original paired cases/71737472matching bytes;shared42B260/UCRT dependency;constructor/renderer/gameplay pending"
+  },
+  "primary_integration": {
+    "source_commit": "a1b8bc9d7970594ee8cffe6ae475d39418be6f1e",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "artifact_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r119\\native-game-grid-cpu-main-r119.zip",
+      "sha256": "23acbf07f95aff9081d65dd45e69d2f1ab2481fa7272d3c1c6e56de4feca91c9",
+      "files": 65,
+      "uncompressed_bytes": 70130995,
+      "utc": "2026-09-18T01:41:53.733316+00:00",
+      "head": "a1b8bc9d7970594ee8cffe6ae475d39418be6f1e",
+      "manifest": [
+        {
+          "path": "build/win32/bsp_core.dir/Release/camera_decomposition.obj",
+          "size": 3506,
+          "sha256": "ab46221ee7f15c69c89cc590a62ca47f39d53aae58632fa60f31e744e953b178"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_game_grid.obj",
+          "size": 4369,
+          "sha256": "a0dc673d3739fae9a0803f6da3e92ef0ee0ca13079f70258bd9c77919efc34d0"
+        },
+        {
+          "path": "build/win32/Release/bsp_core.lib",
+          "size": 65836668,
+          "sha256": "35a72ef87c2bb6217ba203ceda4bfdbbf556ed691c79a5ad7844a8eb89dfc64a"
+        },
+        {
+          "path": "build/win32/Release/bsp_game.exe",
+          "size": 2651136,
+          "sha256": "62fd9ca9cfb88d1fb2ce11b1f5c72fb570c34f67fa221008ac803bb93a6339c3"
+        },
+        {
+          "path": "build/win32/Release/bsp_math_tests.exe",
+          "size": 759808,
+          "sha256": "5a243e37f85139750e083535a841e3b720292f7c149192cc70a3333ff8500621"
+        },
+        {
+          "path": "build/win32/Release/bsp_native_math_tests.exe",
+          "size": 18432,
+          "sha256": "1dae692e765efb54e066fe6859abb8046066a2689f1a2d691689959a1c6ec22e"
+        },
+        {
+          "path": "cmake/startup.cmake",
+          "size": 161092,
+          "sha256": "57f7a029c8a1684e79e6b74bae093951a3c2dd1494a18e0c157577b5f595bc98"
+        },
+        {
+          "path": "config/names/00700000.jsonl",
+          "size": 42149,
+          "sha256": "932cfc114e46b1804eee3afde68d725f99544f80571a356f60717e71d0a1d90e"
+        },
+        {
+          "path": "config/reconstruction/00700000.jsonl",
+          "size": 32717,
+          "sha256": "e37c4fc172f4dc2098cf50a3456961ab0459cd5d6e79d8a5d0d79ff7a935b8e1"
+        },
+        {
+          "path": "docs/NATIVE_GAME_GRID_R119.md",
+          "size": 6319,
+          "sha256": "9e07241a6bad77363ca2ebe703bbbb2fc475b00642620d5f1cfc308bb79d7444"
+        },
+        {
+          "path": "include/bsp/camera_decomposition.hpp",
+          "size": 1068,
+          "sha256": "a85da95564ce636ab136729ae442de8e28c2cca2cc63a7414236854fda4437cb"
+        },
+        {
+          "path": "include/bsp/camera_position_modes.hpp",
+          "size": 2786,
+          "sha256": "7f82e014e6a4adb4053213cd871b3c3f54a249867069de55b51356bf5855a124"
+        },
+        {
+          "path": "include/bsp/camera_projection.hpp",
+          "size": 2413,
+          "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+        },
+        {
+          "path": "include/bsp/native_game_grid.hpp",
+          "size": 2102,
+          "sha256": "283a83f49d897062ef418004c1922eaf4df0f868ef06c6109aa7f26b1db92173"
+        },
+        {
+          "path": "local/annotate_game_grid_r119.py",
+          "size": 4230,
+          "sha256": "cea995d6289e0c489fbc5c0f2b60d414a74058836f977188901f4698bda18193"
+        },
+        {
+          "path": "local/collect_game_grid_r119.py",
+          "size": 2435,
+          "sha256": "bb4cf706545c1920a83144cbf9f39e6f785c50cede3b5d5ab4759e2836d1dbf6"
+        },
+        {
+          "path": "local/commit_game_grid_r119.py",
+          "size": 1913,
+          "sha256": "881440b056fc0b7f5e94fd86d3568a7d91c8392c8076bc4ff448a09f30e9b6ca"
+        },
+        {
+          "path": "local/game_grid_r119/annotations.log",
+          "size": 276,
+          "sha256": "fc90512074a1e5c70e1924cfe5934bd524b5bd8ff152a48ff3824551b8651bb6"
+        },
+        {
+          "path": "local/game_grid_r119/build.log",
+          "size": 2579,
+          "sha256": "5abfe73813fcc89bc1da8b94ea5e5b5a8d680e0404f912e9c7ca0f2e455537d6"
+        },
+        {
+          "path": "local/game_grid_r119/comments-after.json",
+          "size": 3080,
+          "sha256": "ca6385b30fca996a035e45e086d0e26898d8b945817319f202d8b9bdd095a72d"
+        },
+        {
+          "path": "local/game_grid_r119/comments-after.log",
+          "size": 70,
+          "sha256": "9c344f18482d191db55f02ba572050fc054f2f316edf328a5395ddd8702a9dc9"
+        },
+        {
+          "path": "local/game_grid_r119/decompile-00709760.txt",
+          "size": 876,
+          "sha256": "f267907b83414b5674a4ff5704ba8779a11407dc36b99ccb945238b6cacbcae7"
+        },
+        {
+          "path": "local/game_grid_r119/decompile-00709c90.txt",
+          "size": 496,
+          "sha256": "8d75358f4e4092eaa405109a8dc1cf28dce057b9615aec5a7b8de97248cd7800"
+        },
+        {
+          "path": "local/game_grid_r119/decompile-00709cf0.txt",
+          "size": 3742,
+          "sha256": "8f20c95f9f2a6ef0219cca03e4a6bfcdc85ac5ea465f17912bba81b9132f5ed5"
+        },
+        {
+          "path": "local/game_grid_r119/decompile-0070b220.txt",
+          "size": 629,
+          "sha256": "6a303c685a9568149dc3c7d09cef7709ea280f130bbce78e534383189702eda6"
+        },
+        {
+          "path": "local/game_grid_r119/decompile-0070b280.txt",
+          "size": 185,
+          "sha256": "8a300e537f48dda7fb6e86450fcc90ac7b892b375f0660712be4fdb2e4ebb03d"
+        },
+        {
+          "path": "local/game_grid_r119/decompile-0070b330.txt",
+          "size": 9740,
+          "sha256": "11b230afc1885c8c8747ea2a6dd8ed354f7a0569517e97cecacd5b71396f105d"
+        },
+        {
+          "path": "local/game_grid_r119/decompile-0070bd70.txt",
+          "size": 1650,
+          "sha256": "e75ba94148a2fe3c7162a86a353808bca7099a0667bcdaae962f396d7a900527"
+        },
+        {
+          "path": "local/game_grid_r119/dependencies.json",
+          "size": 22758,
+          "sha256": "9e5693d51f219afddfc12f4ef73f8696627778eec4c88ceefbeb1bbfea4b5eb9"
+        },
+        {
+          "path": "local/game_grid_r119/disasm-00709760.txt",
+          "size": 1396,
+          "sha256": "d8111585cbed0da0d5d29872161006f2e35543457bd490e8d8a9f642ce0d9c82"
+        },
+        {
+          "path": "local/game_grid_r119/disasm-00709c90.txt",
+          "size": 1186,
+          "sha256": "4080eade47779e2b8fca1f3c6302f317739c8140ccaff74d788fdf3671fc062b"
+        },
+        {
+          "path": "local/game_grid_r119/disasm-00709cf0.txt",
+          "size": 5696,
+          "sha256": "bf78ad3e9d524a4b65823340b062e790c52e1d3f1dedbf38d2d0998b956365a0"
+        },
+        {
+          "path": "local/game_grid_r119/disasm-0070b220.txt",
+          "size": 1035,
+          "sha256": "23b39aaf0dc4f6396ad53e7e55a74ebb762e0a4ddef3c4b4831ab27e00a56722"
+        },
+        {
+          "path": "local/game_grid_r119/disasm-0070b280.txt",
+          "size": 278,
+          "sha256": "7415e7ed55b6be157b2ab8198a41a75ea8c9d4a5dcf7d9e9ebcfcbdd2d440337"
+        },
+        {
+          "path": "local/game_grid_r119/disasm-0070b330.txt",
+          "size": 17712,
+          "sha256": "61e2f35b27473c14a726bb0f90583af5a33e2d06f679e7050a223d28d3fc6595"
+        },
+        {
+          "path": "local/game_grid_r119/disasm-0070bd70.txt",
+          "size": 3182,
+          "sha256": "808eaad32bb9025dd3c5737b67129410bafdf4713fedf7badf08908aa83017b1"
+        },
+        {
+          "path": "local/game_grid_r119/exports-after.log",
+          "size": 477,
+          "sha256": "4b476dd968adc45e717f704504fc1da7eb489e10c284dbfa3cfd9389f90b2a60"
+        },
+        {
+          "path": "local/game_grid_r119/game_grid_probe.exe",
+          "size": 32768,
+          "sha256": "b6a1f08afc7bc8a06a1e9c1d28af469d31f911a168e1758d3885d0d9d32c735b"
+        },
+        {
+          "path": "local/game_grid_r119/index.log",
+          "size": 16,
+          "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+        },
+        {
+          "path": "local/game_grid_r119/native.json",
+          "size": 128355,
+          "sha256": "54c80946e02f2f8ba8b49e0d3f27efc20d58714b7672d503e55013bcb82fbee9"
+        },
+        {
+          "path": "local/game_grid_r119/original.inc",
+          "size": 3729,
+          "sha256": "1796a756c520d9d24ad222e3a7ce540a9ac335675a1cb7a8afff772017aa9837"
+        },
+        {
+          "path": "local/game_grid_r119/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/game_grid_r119/probe-run.log",
+          "size": 324,
+          "sha256": "c328e449c84ca4db1d4a6bb8f541c1c9ee56bc0cbfce8d395c92e5aea828b902"
+        },
+        {
+          "path": "local/game_grid_r119/probe.cpp",
+          "size": 8100,
+          "sha256": "2f0ce9f67702eb0eadaab6a6537eaedd80a75dbe619f27e3cdfb5ae51792451d"
+        },
+        {
+          "path": "local/game_grid_r119/probe.map",
+          "size": 46608,
+          "sha256": "6f1e584e6d91b455721e62b5ce34f387f7512ef9ece5efd6ddc1c716b6a4ff88"
+        },
+        {
+          "path": "local/game_grid_r119/probe.obj",
+          "size": 96644,
+          "sha256": "0df7e7b935904d403aea3e5d788ea0588c48ae70cad206272307be06f4faef76"
+        },
+        {
+          "path": "local/game_grid_r119/proto-00709760.txt",
+          "size": 692,
+          "sha256": "8de0ffef4a640d857188dbae3b76bd2a9749f35a14d6313d939f17d621e99a7c"
+        },
+        {
+          "path": "local/game_grid_r119/proto-00709c90.txt",
+          "size": 682,
+          "sha256": "99e402423a1dd78ec4a374ceb821c23642c037cf038d0485bef21b883ccb3548"
+        },
+        {
+          "path": "local/game_grid_r119/proto-00709cf0.txt",
+          "size": 639,
+          "sha256": "b1b58e4791536902abb1508f841be74558304b423aa27f603923584b89ecd7d9"
+        },
+        {
+          "path": "local/game_grid_r119/proto-0070b220.txt",
+          "size": 654,
+          "sha256": "cae637f09adb2daeacdb656a4a06058725e78e8a93307a3d1f1fc0bf2baa6908"
+        },
+        {
+          "path": "local/game_grid_r119/proto-0070b280.txt",
+          "size": 675,
+          "sha256": "7fcbfd9461d99c1e0bfa2570c4cc5b221998189fbf8dd40fd1f8040fd0fa5f6a"
+        },
+        {
+          "path": "local/game_grid_r119/proto-0070b330.txt",
+          "size": 691,
+          "sha256": "eade95317d90cb7a9b2cbca1b5102104807f310ce7d7fe56f60c9cfad9f8b5b3"
+        },
+        {
+          "path": "local/game_grid_r119/proto-0070bd70.txt",
+          "size": 611,
+          "sha256": "6d1bddad0e13fc17e837bbc69f1ff03890137fb801ca0c6f01eee4e8713b89c1"
+        },
+        {
+          "path": "local/game_grid_r119/result.json",
+          "size": 528,
+          "sha256": "841ba0767e7baefaf816293647cb600aefb6ae02dd5535108e99242c15fb8b03"
+        },
+        {
+          "path": "local/game_grid_r119/snapshot.log",
+          "size": 230,
+          "sha256": "3d093eaec5e047414547bff42276cfbb07896d5c7df411ef9f949e868d08d4f0"
+        },
+        {
+          "path": "local/game_grid_r119/verify-calls.log",
+          "size": 123,
+          "sha256": "1385c72f8dd5ce01f6af5a40435698c95f656d745063c717cfb3f596a352d408"
+        },
+        {
+          "path": "local/ghidra-annotations-20260918T013932Z.json",
+          "size": 3293,
+          "sha256": "5d7d32b03ef3191cb823979c7672a1a977c41148d946b7edfd0e42b2980466a9"
+        },
+        {
+          "path": "local/r119_integration.log",
+          "size": 1349,
+          "sha256": "aa4432fb6981c630b7dc643acceceb881d2c6ec479d404f8e4434ea52318ce13"
+        },
+        {
+          "path": "local/report_game_grid_r119.py",
+          "size": 3680,
+          "sha256": "b780e5547a38e0a5c6d3a9d7e5edcb8e3b9ce7898ab512d46d502ba1e07f7fd0"
+        },
+        {
+          "path": "local/run_game_grid_r119.ps1",
+          "size": 1405,
+          "sha256": "39e459a9d325007bf70b4b6c865f3572956aba35edc2857310275a95b5ea0e19"
+        },
+        {
+          "path": "local/seal_game_grid_r119.py",
+          "size": 3669,
+          "sha256": "5829b5fdca149cbd96728da17b06e506add718601f6703ffb4db1fc2caf30ee1"
+        },
+        {
+          "path": "reports/native_game_grid_r119.json",
+          "size": 167997,
+          "sha256": "23b4512f0dfb008e5aabd7f9205892270eb3ff57b12d588dfc2c0c50b2a6536e"
+        },
+        {
+          "path": "reports/native_game_grid_r119_flow.json",
+          "size": 5736,
+          "sha256": "f06d2d8e8fa9e96754e7dcd91259294c92fbc977ad245e13ba11b86afa5d6e1b"
+        },
+        {
+          "path": "src/camera_decomposition.cpp",
+          "size": 5358,
+          "sha256": "d7b982c1f309746af20e6e6ffe0373440cd7927895d640d38b88e533a2e7ccc8"
+        },
+        {
+          "path": "src/native_game_grid.cpp",
+          "size": 6242,
+          "sha256": "088136987d3ccb910dbed1f3155ea7913ad15901d1b35798cd0718e9ad571b44"
+        }
+      ],
+      "scope": "3complete grid CPU bodies714B;4384copied-original paired cases/71737472matching bytes;shared42B260/UCRT dependency;constructor/renderer/gameplay pending"
+    },
+    "source_identical_to_tested": true,
+    "main_source_equal_after_lf_normalization": true,
+    "library_identical_to_tested": true,
+    "game_identical_to_tested": true,
+    "ordinary_application_runtime_rerun": false
+  }
+}
