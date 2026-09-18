@@ -2573,5 +2573,118 @@
     "sha256": "929bc116b49d2f165d50fce693c4b9ef319f8c1ca56dbad191165148e7c384cb",
     "files": 127,
     "head": "3e254ac450c220268fb0ce589a4f2c1a3f6754b5"
+  },
+  "primary_integration": {
+    "commit": "f2f0a9031995280ff4d25909fe98f393b0a0af64",
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "coff_checks": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_language_catalog_storage.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "76c54909fc754335c94fa8719bcf063b53765ce14b053a7cf9519e02aae88ada",
+        "combined_sha256": "76c54909fc754335c94fa8719bcf063b53765ce14b053a7cf9519e02aae88ada"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_stream_text_scanner.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "08a334d7eb13797ded457928240c695515c0b95979968acc7007dee5fe34f11f",
+        "combined_sha256": "08a334d7eb13797ded457928240c695515c0b95979968acc7007dee5fe34f11f"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_string.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "96e6a624d4d1a61d9aa93b5badad8ead7e2718e5ab09c923c836e3ff81134abc",
+        "combined_sha256": "96e6a624d4d1a61d9aa93b5badad8ead7e2718e5ab09c923c836e3ff81134abc"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_string_pool_storage.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "dab9746705cf936f5bda61c9b048d34c1a6425b9d33698fa29669fd1e93bb726",
+        "combined_sha256": "dab9746705cf936f5bda61c9b048d34c1a6425b9d33698fa29669fd1e93bb726"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_string_pool_owner.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "43ec239c5962d3760701e0f5ac010272e75dbc5db9624cddfc4cf0d7f33dd55f",
+        "combined_sha256": "43ec239c5962d3760701e0f5ac010272e75dbc5db9624cddfc4cf0d7f33dd55f"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_publication.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "cbab15894a83dbe8d516165a3c70a837251199efdd145375acf4e425f044d8df",
+        "combined_sha256": "cbab15894a83dbe8d516165a3c70a837251199efdd145375acf4e425f044d8df"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_removal_reorder.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "342343aa286c46643453c766178b8770a7ff40e06cd2380f16b105a5266468d2",
+        "combined_sha256": "342343aa286c46643453c766178b8770a7ff40e06cd2380f16b105a5266468d2"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "9613c7142534ec9a2d045cad5dc95e6735dafe6b140b805d78c90c4f02c7ba50",
+        "combined_sha256": "9613c7142534ec9a2d045cad5dc95e6735dafe6b140b805d78c90c4f02c7ba50"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "d6f6dbc057817a5b1c935b03d88108a60ac97eb28262fc24ab96cebbc7547bd6",
+        "combined_sha256": "d6f6dbc057817a5b1c935b03d88108a60ac97eb28262fc24ab96cebbc7547bd6"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_pooled_resource_path.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "07353178654b5518ad1ea5292b13c0d4938c27505bee7e65e246bb99799933b3",
+        "combined_sha256": "07353178654b5518ad1ea5292b13c0d4938c27505bee7e65e246bb99799933b3"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_pooled_string_substring.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "413ba40718616df7db4f7de70f3ff4f92e4724380748fa10c7a268c0d5117740",
+        "combined_sha256": "413ba40718616df7db4f7de70f3ff4f92e4724380748fa10c7a268c0d5117740"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_render_resource_record_construction.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "33a680a72ab44126dd5a06958173cf23b46d3284a31bfa2f2bca41c9702c64a0",
+        "combined_sha256": "33a680a72ab44126dd5a06958173cf23b46d3284a31bfa2f2bca41c9702c64a0"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_render_resource_alias_nodes.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "cee8b3a6f815acd3825360cb55c16e6edb787949c5974212be63881bcf1ab5ba",
+        "combined_sha256": "cee8b3a6f815acd3825360cb55c16e6edb787949c5974212be63881bcf1ab5ba"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_render_resource_record.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "e66acaa9acaa1bee4cab7052f97eff62a4761b325c5999299b691c43f2d3795a",
+        "combined_sha256": "e66acaa9acaa1bee4cab7052f97eff62a4761b325c5999299b691c43f2d3795a"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_vfs_enumeration.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "0acd1c37cd975cd5d038c4b38dfc2bbe45fd754335d21057021b845b4a6ad5ad",
+        "combined_sha256": "0acd1c37cd975cd5d038c4b38dfc2bbe45fd754335d21057021b845b4a6ad5ad"
+      }
+    ],
+    "result": {
+      "library_sha256": "0A42C00692D6287D7F1BD0CB78BCD1533966A05EBC2A38A7319E4861DAAAC815",
+      "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+      "exe_sha256": "50CE45F7C2F4EA7340289FFFE21BEEA2E924CE1B4C65F7194C04F7200C1D3254",
+      "exit": 0
+    },
+    "paired_groups": 15,
+    "matching_bytes": 1897,
+    "log_sha256": "70dcebae9c1a9793aeadbaa73a3f8c32dbc907f67920f36a720bd59576102462",
+    "game_sha256": "1da4be69a4c08899f2c7bcdbe88bca7eb3f87f2767e0865d8790036a5222fdd6",
+    "artifact_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r162\\native-language-catalog-storage-main-r162.zip",
+      "sha256": "9eab2522e7c70553321885283910c7a17a9fc4621cf5794d2b0f33d8ae47cfa4",
+      "files": 141,
+      "head": "f2f0a9031995280ff4d25909fe98f393b0a0af64"
+    }
   }
 }
