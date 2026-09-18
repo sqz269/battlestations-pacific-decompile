@@ -8459,3 +8459,25 @@ sits at 10633 m against 800 m guns.
 director and the bot task installs, but `0099ACD0` is unbound and the plan slots that would steer a
 plane are not produced. What moved is ship gunnery preferring a commanded target it could already
 reach.
+
+## Correction from docs/SHIP_AI_GOAL_VECTOR_VISIBILITY.md: the USN02 standing census moved (2026-09-17)
+
+Every milestone from 2t onward cites the USN02 3000-mission-frame census `shots=734 hull=180
+deaths=2 total_damage=18525.6` as the standing baseline, and every packet integrated on 2026-09-17
+up to main `ea2c0b05e` reproduced it exactly. Main `48bd5339d` (packet
+`cc8_ship_ai_goal_vector_visibility`) makes the ship AI's goal-vector "target visible" flag true
+through the recon union list, so the attack-move ring scan runs for the first time in this
+executable: ship headings change about seven times as often and the gunnery census follows.
+
+| USN02, 3000 mission frames | up to `ea2c0b05e` | from `48bd5339d` |
+| --- | --- | --- |
+| shots | 734 | 853 |
+| hull hits | 180 | 119 |
+| deaths | 2 | 3 |
+| total damage | 18525.6 | 12463.2 |
+
+USN01 is unchanged (`hull=23 deaths=1 total_damage=220.0`). Any packet measuring USN02 against
+a tree that contains `48bd5339d` must use the right-hand column, or better its own before-run on
+its own tree; the four ship-AI packets before it (range curves, firepower inputs, tune block,
+slot scorers) each left the census byte-identical because this flag was false, which is why the
+old column held for so long.

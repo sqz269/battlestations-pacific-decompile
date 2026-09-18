@@ -365,3 +365,17 @@ is why the table carries the boundary evidence rather than a Ghidra body range.
   and 13). The rest are moved, never typed.
 - `nested+11E8h`, the committed slot `009E5E90`'s ring walk starts from, is still written by no
   routine any packet has read; `009E5530` zeroes it at `009E561F`.
+
+## Correction appended by packet `cc8_ship_ai_committed_slot`
+
+The ring scan's winner is never stored anywhere. `009E79CA` seeds it with slot 0, `009E7BFA` keeps
+the incumbent on any comparison that is not strictly greater, and `009E7C1C` reads only the
+winner's bearing; a byte census over `.text` finds no store of the index. `nested+11E8h` is not it:
+that field is the unit's own heading slot, written every frame by `009F28F1`
+(`docs/SHIP_AI_COMMITTED_SLOT.md`).
+
+`ship_ai_approach_select_slot_009e76d0` therefore returns the winner now, purely so a census can
+see it. Measured on USN02: the winner is slot 0 on every scan for all fourteen ships, because
+slot `+30h` is NaN, `009E7BE0` sums it into every slot's total, and a strictly-greater comparison
+never fires on an unordered pair. The NaN comes from `009E6870`, not from the reject arm at
+`009E784B`, whose `tune+4h` is the finite 4.0.

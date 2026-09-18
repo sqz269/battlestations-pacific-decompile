@@ -345,3 +345,16 @@ otherwise      -> null
 
 `path_interface_offset_007ac9d0` returns the offset or `-1`. Classes `48h`, `49h` and `4Ah` were
 **not** looked up in `docs/ENTITY_CLASS_IDS.md`, so only the `47h` arm is named.
+
+## Correction appended by packet `cc8_ship_ai_goal_vector_visibility`
+
+Part 2 says of `00922B10` and `00922C80` that they are "given as pure rules but **no C++ was
+written, compiled, or run**". That is no longer true of `00922C80`. The ship AI's goal vector
+calls it every refresh through `bsp::entity_is_surface_target_00922c80`
+(`src/game_hosts_ship_ai.cpp`, `ShipAiGoal::target_is_surface`, native `00922DC0` at `009F1519`),
+and the run is in `docs/SHIP_AI_GOAL_VECTOR_VISIBILITY.md`.
+
+That packet re-read `00922C80`'s body instruction by instruction from the listing, independently
+of this document, and found Part 2's transcription correct on every arm, both x87 comparisons and
+both constants. Two helpers Part 2 describes as "one-line dynamic casts" now have ledger names:
+`00922B70 BSP_Entity_CastToSubmarine` and `00922B90 BSP_Entity_CastToLandFort`.

@@ -198,6 +198,21 @@ struct GameShipAiRow {
     // often the heading 009E5E90 published actually moved.
     int ring_winner_first{-1};               // nested+11E8h after the first scan
     int ring_winner_last{-1};                // nested+11E8h after the last
+    // Packet cc8_ship_ai_committed_slot. nested+11E8h is the slot the unit's
+    // own heading falls in, rewritten every frame-state pass at 009F28F1; the
+    // ring scan's winner is the register 009E79CA..009E7C19 settles on and is
+    // reported separately.
+    unsigned long long committed_slot_changes{0};  // 009F28F1 wrote a new value
+    int ring_scan_winner_first{-1};          // 009E7C19 after the first scan
+    int ring_scan_winner_last{-1};           // 009E7C19 after the last
+    float ring_total_best{0.0f};             // 009E7BE0's sum for the winner
+    float ring_total_worst{0.0f};            // the same sum for the lowest slot
+    float ring_word_raw_18{0.0f};            // slot 0's +18h, 009E5DA0's output
+    float ring_word_normalized_2c{0.0f};     // +2Ch, 009E81E4
+    float ring_word_penalty_30{0.0f};        // +30h, 009E784B's reject arm
+    float ring_word_bearing_34{0.0f};        // +34h, 009E74D0
+    float ring_word_evade_38{0.0f};          // +38h, 009E74D0
+    float ring_word_avoid_3c{0.0f};          // +3Ch, 009E9190
     unsigned long long heading_changes{0};   // nested+120Ch differed from before
     // Packet cc8_ship_ai_approach_slot_scorers: the three gates 009E7FC0 passes
     // before it scores a slot, as the host last answered them.
@@ -206,6 +221,12 @@ struct GameShipAiRow {
     float gate_lookahead_0494{0.0f};         // 009E80CD
     unsigned long long gate_flag_stops{0};   // returns at 009E80B0
     unsigned long long gate_range_stops{0};  // returns at 009E80DF
+    // Packet cc8_ship_ai_goal_vector_visibility: which arm of the narrowing at
+    // 009F14D2..009F1522 left brain+0B28h set.
+    unsigned long long goal_timer_expiries{0};   // 009F14B6 took the long way
+    unsigned long long goal_visible_true{0};     // brain+0B28h set after the pass
+    unsigned long long goal_visible_recon{0};    // 009F1504 wrote nonzero
+    unsigned long long goal_visible_surface{0};  // 009F1522 reopened the gate
     unsigned long long controller_updates{0};  // 0071F290 bodies
     bool controller_update_session_gate{false};
     unsigned long long path_picks{0};        // 009EE580 bodies that passed the gate

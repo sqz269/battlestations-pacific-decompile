@@ -1,0 +1,263 @@
+{
+ "events": [
+  {
+   "recreate": "00487110",
+   "previous": "Function: FUN_00487110 at 00487110\nSignature: undefined FUN_00487110(void)\nEntry: 00487110\nBody: 00487110 - 0048714b",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00487110"
+   },
+   "result": {
+    "success": true,
+    "address": "00487110",
+    "deleted_function": "FUN_00487110",
+    "body_size": 49,
+    "message": "Function 'FUN_00487110' deleted at 00487110"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00487110",
+    "end_address": "00487158"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00487110",
+    "end_address": "00487157",
+    "bytes_disassembled": 72,
+    "message": "Successfully disassembled 72 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00487110",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00487110",
+    "function_name": "FUN_00487110",
+    "entry_point": "00487110",
+    "body_size": 72,
+    "message": "Function created successfully at 00487110"
+   }
+  },
+  {
+   "defined": "00487110",
+   "end": "00487158",
+   "name": null,
+   "after": "Function: FUN_00487110 at 00487110\nSignature: undefined FUN_00487110(void)\nEntry: 00487110\nBody: 00487110 - 00487157"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "recreate": "006b9380",
+   "previous": "Function: FUN_006b9380 at 006b9380\nSignature: undefined FUN_006b9380(void)\nEntry: 006b9380\nBody: 006b9380 - 006b93c7",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "006b9380"
+   },
+   "result": {
+    "success": true,
+    "address": "006b9380",
+    "deleted_function": "FUN_006b9380",
+    "body_size": 72,
+    "message": "Function 'FUN_006b9380' deleted at 006b9380"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006b9380",
+    "end_address": "006b9415"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006b9380",
+    "end_address": "006b9414",
+    "bytes_disassembled": 149,
+    "message": "Successfully disassembled 149 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006b9380",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "006b9380",
+    "function_name": "FUN_006b9380",
+    "entry_point": "006b9380",
+    "body_size": 149,
+    "message": "Function created successfully at 006b9380"
+   }
+  },
+  {
+   "defined": "006b9380",
+   "end": "006b9415",
+   "name": null,
+   "after": "Function: FUN_006b9380 at 006b9380\nSignature: undefined FUN_006b9380(void)\nEntry: 006b9380\nBody: 006b9380 - 006b9414"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00489ca0",
+    "end_address": "00489ca5"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00489ca0",
+    "end_address": "00489ca4",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00489ca0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00489ca0",
+    "function_name": "thunk_FUN_00487110",
+    "entry_point": "00489ca0",
+    "body_size": 5,
+    "message": "Function created successfully at 00489ca0"
+   }
+  },
+  {
+   "defined": "00489ca0",
+   "end": "00489ca5",
+   "name": null,
+   "after": "Function: thunk_FUN_00487110 at 00489ca0\nSignature: undefined thunk_FUN_00487110(void)\nEntry: 00489ca0\nBody: 00489ca0 - 00489ca4"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "recreate": "004c7dd0",
+   "previous": "Function: BSP_GamePayloadLists_ClearActualStorage at 004c7dd0\nSignature: undefined BSP_GamePayloadLists_ClearActualStorage(void)\nEntry: 004c7dd0\nBody: 004c7dd0 - 004c7e57",
+   "plate": "[BSP reconstruction 004c7dd0]\nComplete136B,ECXrawgame,RET. Four0Chheadersat7134. Foreach:walkCURRENTsentinel,node+8payloadfree4C7E0C;checkcursorvsCURRENThead aftercallback,diagnostic4C7E18 mayreturn;reloadnextAFTERpayloadfree. Thenresetheadlinks/count,capturenextbeforenodefree4C7E3A,compareCURRENThead. Retainsentinelsforlaterarraydestruction.4C7DF6self-compareguardunreachableinnormalsingle-threadedflow.25Bfreegapsrestored. Descriptive hypothesis,not a recovered symbol;retain existing correct library names. R126: six complete normal bodies767B plus201B original full-range library reference;79 copied-original cases,989 observations,4796352 matching normalized bytes. Two actual parent defaults,real raw string pool/manager,existing432050 and sentinel services;registry/record graphs are explicit fixtures matching producers.52 controlled parent cases/141402076bytes;strict Win32/3CTests. One failure retains tree-complete graph/rejects replay;three context/partial-range guards. No general partial erase,Lua/data registry constructor,native FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-in ABI,raw-game admission or gameplay proof. docs/NATIVE_AWARD_REGISTRY_LIFETIME_R126.md;reports/native_award_registry_lifetime_r126.json."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "004c7dd0"
+   },
+   "result": {
+    "success": true,
+    "address": "004c7dd0",
+    "deleted_function": "BSP_GamePayloadLists_ClearActualStorage",
+    "body_size": 111,
+    "message": "Function 'BSP_GamePayloadLists_ClearActualStorage' deleted at 004c7dd0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004c7dd0",
+    "end_address": "004c7e58"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004c7dd0",
+    "end_address": "004c7e57",
+    "bytes_disassembled": 136,
+    "message": "Successfully disassembled 136 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004c7dd0",
+    "disassemble_first": false,
+    "name": "BSP_GamePayloadLists_ClearActualStorage"
+   },
+   "result": {
+    "success": true,
+    "address": "004c7dd0",
+    "function_name": "BSP_GamePayloadLists_ClearActualStorage",
+    "entry_point": "004c7dd0",
+    "body_size": 136,
+    "message": "Function created successfully at 004c7dd0",
+    "warnings": [
+     "Function name 'BSP_GamePayloadLists_ClearActualStorage' \u2014 main part 'GamePayloadLists_ClearActualStorage' is not PascalCase. Expected: GamepayloadlistsClearactualstorage",
+     "Function name 'BSP_GamePayloadLists_ClearActualStorage' \u2014 main part 'GamePayloadLists_ClearActualStorage' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GamePayloadLists_ClearActualStorage' does not start with a recognized verb. First word 'Game' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "004c7dd0",
+    "comment": "[BSP reconstruction 004c7dd0]\nComplete136B,ECXrawgame,RET. Four0Chheadersat7134. Foreach:walkCURRENTsentinel,node+8payloadfree4C7E0C;checkcursorvsCURRENThead aftercallback,diagnostic4C7E18 mayreturn;reloadnextAFTERpayloadfree. Thenresetheadlinks/count,capturenextbeforenodefree4C7E3A,compareCURRENThead. Retainsentinelsforlaterarraydestruction.4C7DF6self-compareguardunreachableinnormalsingle-threadedflow.25Bfreegapsrestored. Descriptive hypothesis,not a recovered symbol;retain existing correct library names. R126: six complete normal bodies767B plus201B original full-range library reference;79 copied-original cases,989 observations,4796352 matching normalized bytes. Two actual parent defaults,real raw string pool/manager,existing432050 and sentinel services;registry/record graphs are explicit fixtures matching producers.52 controlled parent cases/141402076bytes;strict Win32/3CTests. One failure retains tree-complete graph/rejects replay;three context/partial-range guards. No general partial erase,Lua/data registry constructor,native FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-in ABI,raw-game admission or gameplay proof. docs/NATIVE_AWARD_REGISTRY_LIFETIME_R126.md;reports/native_award_registry_lifetime_r126.json."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 004c7dd0",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "004c7dd0",
+   "end": "004c7e58",
+   "name": "BSP_GamePayloadLists_ClearActualStorage",
+   "after": "Function: BSP_GamePayloadLists_ClearActualStorage at 004c7dd0\nSignature: undefined BSP_GamePayloadLists_ClearActualStorage(void)\nEntry: 004c7dd0\nBody: 004c7dd0 - 004c7e57"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

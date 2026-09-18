@@ -13,6 +13,9 @@
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/attack_target_classify.hpp"
+#include "bsp/hit_narrowphase.hpp"
+#include "bsp/ship_ai_goal_vector_visibility.hpp"
 #include "bsp/ship_ai_search_storage.hpp"
 #include "bsp/session_participant_pools.hpp"
 
@@ -1883,8 +1886,18 @@ public:
         // 009F1E36, [target+740h]: the target's own zone object. No producer in
         // this process, so the displacement arm at 009F1E94 is never taken.
         owner_.record("ShipAiApproach::target_zone_object_0740", 0x009f1e36u);
+        const int committed_before = ctl_.approach.committed_slot_11e8;
         bsp::ship_ai_approach_frame_state_009f1bc0(ctl_.approach, has_target, false,
                                                    seconds, point);
+        // Packet cc8_ship_ai_committed_slot: 009F28F1, the one per-frame writer
+        // of nested+11E8h. Counted here because the store is the last act of
+        // the projection.
+        if (row_.approach_frames == 0) {
+            row_.ring_winner_first = ctl_.approach.committed_slot_11e8;
+        } else if (ctl_.approach.committed_slot_11e8 != committed_before) {
+            ++row_.committed_slot_changes;
+        }
+        row_.ring_winner_last = ctl_.approach.committed_slot_11e8;
         // 009F2F11 and 009F2FB1, the two 0095F080 refills of the curve objects
         // the standoff scan then samples. They sit in the span of 009F1BC0 the
         // projection does not cover, and the countdowns they re-arm are the
@@ -1939,9 +1952,34 @@ public:
     }
     void select_slot_009e76d0(float seconds) override {
         SelectBinding select(owner_, ctl_, row_, index_);
-        bsp::ship_ai_approach_select_slot_009e76d0(ctl_.approach, ctl_.approach_ring,
-            ctl_.approach_scores, seconds, select);
+        // Packet cc8_ship_ai_committed_slot: the winner 009E79CA..009E7C19
+        // settles on, which the image keeps only in a register.
+        const int winner = bsp::ship_ai_approach_select_slot_009e76d0(ctl_.approach,
+            ctl_.approach_ring, ctl_.approach_scores, seconds, select);
         owner_.done("ShipAiApproach::select_slot", 0x009e76d0u);
+        if (row_.ring_scan_winner_first < 0) row_.ring_scan_winner_first = winner;
+        row_.ring_scan_winner_last = winner;
+        // 009E7BE0's five-word sum over the whole ring, so the census can say
+        // whether slot 0 wins on merit or on the strict > at 009E7BFA leaving
+        // a tie with the seed.
+        float best = bsp::ship_ai_approach_slot_total_009e76d0(ctl_.approach_scores[0]);
+        float worst = best;
+        for (int i = 1; i < bsp::kShipAiApproachSlotCount; ++i) {
+            const float total =
+                bsp::ship_ai_approach_slot_total_009e76d0(ctl_.approach_scores[i]);
+            if (total > best) best = total;
+            if (total < worst) worst = total;
+        }
+        row_.ring_total_best = best;
+        row_.ring_total_worst = worst;
+        // The five words 009E7BE0 sums, for slot 0, so a NaN total can be
+        // attributed to the word that carries it.
+        row_.ring_word_raw_18 = ctl_.approach_scores[0].raw_18;
+        row_.ring_word_normalized_2c = ctl_.approach_scores[0].normalized_2c;
+        row_.ring_word_penalty_30 = ctl_.approach_scores[0].penalty_30;
+        row_.ring_word_bearing_34 = ctl_.approach_scores[0].bearing_34;
+        row_.ring_word_evade_38 = ctl_.approach_scores[0].evade_38;
+        row_.ring_word_avoid_3c = ctl_.approach_scores[0].avoid_3c;
         ++row_.ring_scans;
         ++owner_.summary.ring_scans;
         // Packet cc8_ship_ai_approach_slot_tune: what the selection settled on,
@@ -1949,12 +1987,13 @@ public:
         const float previous_heading = row_.approach_heading_120c;
         row_.ring_scan_winner = ctl_.approach.committed_slot_11e8;
         row_.approach_heading_120c = ctl_.approach.commanded_heading_120c;
-        if (row_.ring_scans == 1) {
-            row_.ring_winner_first = row_.ring_scan_winner;
-        } else if (row_.approach_heading_120c != previous_heading) {
+        // ring_winner_first / ring_winner_last moved to the frame-state
+        // binding, which is where 009F28F1 writes nested+11E8h. Reading them
+        // here reported the field one scan late and, before the store existed,
+        // reported nothing at all.
+        if (row_.ring_scans != 1 && row_.approach_heading_120c != previous_heading) {
             ++row_.heading_changes;
         }
-        row_.ring_winner_last = row_.ring_scan_winner;
     }
     void limit_throttle_009e6a90() override {
         // 009E6A90's first act is wrap(heading - nested+120Ch), and nested+120Ch
@@ -2616,23 +2655,82 @@ public:
         if (target == 0u) return -1;
         return owner_.units.unit_side_0054(static_cast<std::size_t>(target - 1u));
     }
-    bool recon_knows_target_009dfbe0(int, std::uint32_t) override {
-        // 009F14EC 008053C0 BSP_Recon_EnsureSlot then 009F14FA 009DFBE0. The
-        // recon slot's intrusive list is empty in this process, the same
-        // substitution milestone 2n makes for the party list, and 009DFBE0's
-        // body was not read. The answer is recorded and false, which is the
-        // arm that closes the gate; the surface test below then reopens it.
-        owner_.record("ShipAiGoal::recon_knows_target", 0x009dfbe0u);
-        return false;
+    bool recon_knows_target_009dfbe0(int own_side, std::uint32_t target) override {
+        // 009F14EC 008053C0 BSP_Recon_EnsureSlot(side) then 009F14FA 009DFBE0.
+        // 009DFBE0's body is read now (docs/SHIP_AI_GOAL_VECTOR_VISIBILITY.md):
+        // it walks the head at slot+0E0Ch, triple 4, the union of own / enemy /
+        // neutral / unknown, and returns the record whose +4h is the target.
+        // Membership is docs/RECON_SLOT_LISTS.md rules (a), (b) and the level
+        // drain; this host answers (a) and (b) with the same unit facts the
+        // gunnery host's contact sweep uses and does NOT build a second recon.
+        //
+        // PARTIAL: rule (c), the sensor pass 00806840/008048A0 that sets each
+        // entry's level, does not run in this process, so every rule-(a)+(b)
+        // member is taken as at least a blip and therefore present in the
+        // union. That is the permissive side of the native rule.
+        owner_.done("ShipAiGoal::recon_knows_target", 0x009dfbe0u);
+        if (target == 0u) return false;
+        const std::size_t other = static_cast<std::size_t>(target - 1u);
+        if (other >= owner_.units.count()) return false;
+        bsp::ReconUnionMemberFacts facts;
+        facts.present = true;
+        facts.same_side = owner_.units.unit_side_0054(other) == own_side;
+        facts.scanned_class =
+            bsp::recon_scan_visits_class_00806480(owner_.units.unit_class_id(other));
+        bsp::SceneNodeFlags flags;
+        bool pending_destroy = false;
+        if (owner_.units.unit_scene_node_flags(other, flags) &&
+            owner_.units.unit_pending_destroy_0060(other, pending_destroy)) {
+            facts.gate.live_5c = flags.active;
+            facts.gate.simulate_5d = flags.torn_down;
+            facts.gate.dead_5e = flags.destroyed;
+            facts.gate.gate_60 = pending_destroy;
+        }
+        // The scan walks the world registry's per-class lists, so a unit the
+        // registry no longer holds is in no list whatever its gate bytes say.
+        if (!owner_.units.unit_active(other)) return false;
+        facts.level = bsp::ReconDetectionLevel::identified;  // rule (c) absent
+        const bool known = bsp::recon_union_contains_009dfbe0(facts);
+        if (index_ < owner_.rows.size() && known) ++owner_.rows[index_].goal_visible_recon;
+        return known;
     }
-    bool target_is_surface_00922dc0(std::uint32_t) override {
-        // 009F1519, 00922DC0 BSP_Entity_IsSurfaceTarget on the RAW target. The
-        // routine is a thunk in this image and its body was not read, so the
-        // answer is a record and the neutral one is false: the gate stays as
-        // the recon test left it and nothing in this run is claimed about what
-        // a surface target would do.
-        owner_.record("ShipAiGoal::target_is_surface", 0x00922dc0u);
-        return false;
+    bool target_is_surface_00922dc0(std::uint32_t target) override {
+        // 009F1519, 00922DC0 -> 00922C80 BSP_Entity_IsSurfaceTarget on the RAW
+        // target, with DL = 1 from the thunk (00922DC0 MOV DL,1 / JMP). The
+        // rule is already reconstructed in bsp/attack_target_classify.hpp from
+        // the same listing; this binding fills its facts and does not restate
+        // it. The ship family arm answers every surface ship true without
+        // reaching 008DDF90.
+        owner_.done("ShipAiGoal::target_is_surface", 0x00922dc0u);
+        if (target == 0u) return false;
+        const std::size_t other = static_cast<std::size_t>(target - 1u);
+        if (other >= owner_.units.count()) return false;
+        bsp::EntityTargetFacts tf;
+        tf.present = true;
+        tf.not_engageable = owner_.units.unit_flag_005d(other);
+        tf.is_plane = owner_.units.unit_is_kind_of(other, 0x0f);
+        tf.is_plane_squadron = owner_.units.unit_is_kind_of(other, 0x18);
+        tf.is_ship_family = owner_.units.unit_is_kind_of(other, 0x06);
+        tf.is_submarine = owner_.units.unit_is_kind_of(other, 0x08);
+        tf.is_airfield = owner_.units.unit_is_kind_of(other, 0x45);
+        tf.is_shipyard = owner_.units.unit_is_kind_of(other, 0x46);
+        tf.is_command_building = owner_.units.unit_is_kind_of(other, 0x1c);
+        tf.is_dummy_target = owner_.units.unit_is_kind_of(other, 0x35);
+        tf.is_land_fort = owner_.units.unit_is_kind_of(other, 0x1b);
+        float px = 0.0f, py = 0.0f, pz = 0.0f;
+        owner_.units.unit_position_00fc(other, px, py, pz);
+        tf.world_y = py;
+        const bsp::SurfaceTargetAnswer answer = bsp::entity_is_surface_target_00922c80(tf);
+        bool surface = answer == bsp::SurfaceTargetAnswer::kYes;
+        if (answer == bsp::SurfaceTargetAnswer::kUnreadSetBranch) {
+            // 008DDF90 BSP_SzurkeNyil_ContainsUnit over a set this process does
+            // not build. The tail 00922C80 runs when the set does not hold the
+            // entity is answerable, so take that and record the branch.
+            owner_.record("ShipAiGoal::target_is_surface_set_branch", 0x008ddf90u);
+            surface = bsp::entity_surface_target_tail_00922c80(tf, true);
+        }
+        if (index_ < owner_.rows.size() && surface) ++owner_.rows[index_].goal_visible_surface;
+        return surface;
     }
     bool target_pose_valid_00c8(std::uint32_t target) override {
         owner_.done("ShipAiGoal::target_pose_valid", 0x009dbcceu);
@@ -3551,6 +3649,10 @@ public:
             ++row_.goal_refreshes;
             ++owner_.summary.goal_refreshes;
         }
+        // Packet cc8_ship_ai_goal_vector_visibility: the gate the ring scan
+        // stops at, counted where 009F1420 leaves it.
+        if (result.timer_expired) ++row_.goal_timer_expiries;
+        if (ctl_.goal_vector.target_visible_0b28) ++row_.goal_visible_true;
         row_.brain_goal_x = ctl_.goal_vector.goal_x_0b2c;
         row_.brain_goal_y = ctl_.goal_vector.goal_y_0b30;
         row_.brain_goal_z = ctl_.goal_vector.goal_z_0b34;
@@ -5029,7 +5131,7 @@ void GameShipAiHost::report() {
         if (row.standoff_choices == 0) continue;
         host.log.notef("  standoff %-20s choices=%llu first=%.1f last=%.1f "
             "curve_own_nonzero=%d curve_target_nonzero=%d max_weapon_range=%.1f "
-            "slot_first=%d slot_last=%d heading_changes=%llu",
+            "committed_first=%d committed_last=%d heading_changes=%llu",
             row.unit.c_str(), row.standoff_choices,
             static_cast<double>(row.standoff_range_first),
             static_cast<double>(row.standoff_range_last),
@@ -5042,6 +5144,25 @@ void GameShipAiHost::report() {
             static_cast<double>(row.gate_reference_127c),
             static_cast<double>(row.gate_lookahead_0494),
             row.gate_flag_stops, row.gate_range_stops);
+        host.log.notef("    visible %-16s expiries=%llu flag_true=%llu recon=%llu "
+            "surface=%llu",
+            row.unit.c_str(), row.goal_timer_expiries, row.goal_visible_true,
+            row.goal_visible_recon, row.goal_visible_surface);
+        host.log.notef("    slots %-18s commits=%llu winner_first=%d winner_last=%d "
+            "total_best=%.4f total_worst=%.4f",
+            row.unit.c_str(), row.committed_slot_changes,
+            row.ring_scan_winner_first, row.ring_scan_winner_last,
+            static_cast<double>(row.ring_total_best),
+            static_cast<double>(row.ring_total_worst));
+        host.log.notef("    words %-18s raw_18=%.4f norm_2c=%.4f pen_30=%.4f "
+            "bear_34=%.4f evade_38=%.4f avoid_3c=%.4f",
+            row.unit.c_str(),
+            static_cast<double>(row.ring_word_raw_18),
+            static_cast<double>(row.ring_word_normalized_2c),
+            static_cast<double>(row.ring_word_penalty_30),
+            static_cast<double>(row.ring_word_bearing_34),
+            static_cast<double>(row.ring_word_evade_38),
+            static_cast<double>(row.ring_word_avoid_3c));
     }
     host.log.notef("summary mission ship ai command completion events=%llu callbacks=%llu "
         "end_commands=%llu queue_advances=%llu",

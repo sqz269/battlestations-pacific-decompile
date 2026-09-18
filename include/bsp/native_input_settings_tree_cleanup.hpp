@@ -28,6 +28,12 @@ void* erase_native_input_preset_tree_range_006a1aa0(void*, void*,
 void* erase_native_input_scale_tree_range_0055b230(void*, void*,
     NativeKeyboardTreeIterator, NativeKeyboardTreeIterator, NativeStringStorage&);
 
+// Full-range4CEF40 contract consumed by game lifetime. Reuses the existing
+// actual int-only node14h/nil11 implementation used by device-record cleanup.
+// Rejects other ranges;does not expose a new generic partial-erase interface.
+void* clear_native_input_int_only_full_range_004cef40(void* tree,void* output,
+    void* first_owner,void* first_node,void* last_owner,void* last_node,NativeStringStorage&);
+
 // Valid consistent owned trees and forward ranges are required. Release callbacks
 // must not mutate tree topology or source iterator storage. Source CRT/string and
 // exception services retain their existing boundaries. Original private-stack/FH3
