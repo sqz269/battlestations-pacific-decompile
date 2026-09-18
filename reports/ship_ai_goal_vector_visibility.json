@@ -1,0 +1,215 @@
+{
+  "packet": "cc8_ship_ai_goal_vector_visibility",
+  "owner": "agent/cc8-ship-goal-gate",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read-only: no rename, comment, prototype, function creation or save",
+  "doc": "docs/SHIP_AI_GOAL_VECTOR_VISIBILITY.md",
+  "source": "include/bsp/ship_ai_goal_vector_visibility.hpp, src/ship_ai_goal_vector_visibility.cpp, src/game_hosts_ship_ai.cpp, include/bsp/game_hosts_ship_ai.hpp",
+  "build": "scripts/build.ps1, Win32 Release, /W4 /WX clean; ctest 2/2",
+  "note": "One of the two narrowing tests behind brain+0B28h did not need reconstructing: 00922C80 is already whole in include/bsp/attack_target_classify.hpp from packet cc7, read from the same listing, so this packet re-read it to confirm and then bound it rather than writing a second copy. 009DFBE0 had no reconstruction and is written here. The gate opens on the recon arm alone and the surface arm is never needed on USN02.",
+  "routines": [
+    {
+      "address": "00922dc0",
+      "native": "00922dc0",
+      "name": "BSP_Entity_IsSurfaceTarget",
+      "abi": "thunk, 2 instructions, body 00922DC0-00922DC6",
+      "coverage": "complete",
+      "rule": "MOV DL,1 then JMP 00922C80. The thunk's only act is to pass allow_far = true in DL; 00922C87 saves it to BL and 00922D5D is the only read."
+    },
+    {
+      "address": "00922c80",
+      "native": "00922c80",
+      "name": "BSP_Entity_IsSurfaceTarget",
+      "abi": "__fastcall(Entity* in ECX, bool allow_far in DL) -> bool in AL, RET 0, body 00922C80-00922DB6",
+      "coverage": "complete; already reconstructed on main by packet cc7 in include/bsp/attack_target_classify.hpp, re-read here instruction by instruction and confirmed identical",
+      "rule": "null -> false (00922C89); +5Dh != 0 -> false (00922C8F); IsKindOf(0Fh) -> false (00922C9E, any plane); IsKindOf(18h) -> false (00922CAF, PlaneSquadronGen); IsKindOf(06h) -> a non-submarine ship is true (00922CD7), a submarine is true only while pos.y > -(settings+49Ch * 0.25) (00922CE8..00922D08); then IsKindOf(45h) MAirfield, IsKindOf(46h) MShipyard, IsKindOf(1Ch) MCommandBuilding all true; then 008DDF90 over a unit set; then allow_far gates the tail, where class 35h compares pos.y > 50.0 and MLandFort compares +538h[+178h] == 1Bh."
+    },
+    {
+      "address": "00922b70",
+      "native": "00922b70",
+      "name": "BSP_Entity_CastToSubmarine",
+      "abi": "__fastcall(Entity* in ECX) -> Entity* or null, RET 0, body 00922B70-00922B8B",
+      "coverage": "complete",
+      "rule": "A safe downcast. Null in gives null out (00922B75); otherwise vtable[5Ch](8) at 00922B7C and the entity comes back unchanged when it is an MSubmarine (00922B84), null when it is not (00922B88)."
+    },
+    {
+      "address": "00922b90",
+      "native": "00922b90",
+      "name": "BSP_Entity_CastToLandFort",
+      "abi": "__fastcall(Entity* in ECX) -> Entity* or null, RET 0, body 00922B90-00922BAB",
+      "coverage": "complete",
+      "rule": "The same shape as 00922B70 with class 1Bh MLandFort at 00922B9C."
+    },
+    {
+      "address": "008053c0",
+      "native": "008053c0",
+      "name": "BSP_Recon_EnsureSlot",
+      "abi": "__fastcall(int side in ECX) -> ReconSlot*, RET 0, body 008053C0-00805423, SEH frame 00C904BB",
+      "coverage": "complete for the path the goal vector takes",
+      "rule": "Indexes the pointer table at 00F874BC by the side value (008053D9 MOV EAX,[ESI*4 + 0F874BCh]). A null entry is filled in place: operator new of 12A0h bytes (008053E4, 008053E9), constructed by 008050E0(side) at 00805404, stored back at 0080540D. The same side therefore always gets the same slot."
+    },
+    {
+      "address": "009dfbe0",
+      "native": "009dfbe0",
+      "name": "BSP_Recon_FindTargetInUnionList",
+      "abi": "__fastcall(ReconSlot* slot in ECX)(void* target on the stack) -> record* in EAX, RET 4 at both exits (009DFC01, 009DFC06), body 009DFBE0-009DFC08",
+      "coverage": "complete",
+      "rule": "Reads the list head from slot+0E0Ch, which is triple 4's head: the union of own / enemy / neutral / unknown that 00807933..00807966 builds and that nothing publishes to Lua (docs/RECON_SLOT_LISTS.md). An empty head returns 0 at 009DFBFF. The walk reads the record at node+8h (009DFBF0), compares record+4h against the target (009DFBF3), returns that record at 009DFC04 on a match, advances through node+4h (009DFBF8). The caller takes only its truth."
+    },
+    {
+      "address": "009f1420",
+      "native": "009f1420",
+      "name": "BSP_ShipAi_BrainPrePass",
+      "abi": "__thiscall(brain)(float seconds), RET 4",
+      "coverage": "the visibility narrowing 009F14D2..009F1522 only; already reconstructed on main in src/ship_ai_goal_vector.cpp and not changed by this packet",
+      "rule": "On the refresh countdown's expiry the flag at brain+0B28h opens at 009F14D2, then narrows: a filtered target on another side has to be one the side's recon holds (009F14E9..009F1504), and a surface target reopens the gate (009F150A..009F1522)."
+    }
+  ],
+  "call_sites": [
+    {
+      "routine": "009f1420",
+      "address": "009f14ec",
+      "native": "008053c0",
+      "note": "ECX is the owner unit's side, loaded at 009F14E9 from [brain+0AA8h]+54h; the result is the side's recon slot"
+    },
+    {
+      "routine": "009f1420",
+      "address": "009f14fa",
+      "native": "009dfbe0",
+      "note": "ECX is 008053C0's slot, the one stack argument is the filtered target [brain+0B24h] pushed at 009F14F7; 009F14FF TEST / SETNZ writes brain+0B28h"
+    },
+    {
+      "routine": "009f1420",
+      "address": "009f1519",
+      "native": "00922dc0",
+      "note": "ECX is the RAW target [brain+0B20h] loaded at 009F1513, not the filtered one; a true answer reopens the flag at 009F1522"
+    },
+    {
+      "routine": "00922c80",
+      "address": "00922cce",
+      "native": "00922b70",
+      "note": "the submarine downcast inside the ship-family arm"
+    },
+    {
+      "routine": "00922c80",
+      "address": "00922cda",
+      "native": "00424c40",
+      "note": "BSP_GameSettings_GetSingleton, whose +49Ch is Submarine.SubmarinePeriscopeLevel"
+    },
+    {
+      "routine": "00922c80",
+      "address": "00922ce3",
+      "native": "00427eb0",
+      "note": "BSP_EntityPose_GetWorldPositionRefreshed on the submarine; +4h is the world y"
+    },
+    {
+      "routine": "00922c80",
+      "address": "00922d54",
+      "native": "008ddf90",
+      "note": "BSP_SzurkeNyil_ContainsUnit over the set at [00E188A8+18ECh*4+21A4h]; unreachable for a ship target because the ship-family arm returns first"
+    },
+    {
+      "routine": "00922c80",
+      "address": "00922d72",
+      "native": "00427eb0",
+      "note": "the world position again, for the class-35h arm's 50.0 comparison"
+    },
+    {
+      "routine": "00922c80",
+      "address": "00922d95",
+      "native": "00922b90",
+      "note": "the MLandFort downcast in the tail"
+    },
+    {
+      "routine": "008053c0",
+      "address": "008053e9",
+      "native": "00bf681b",
+      "note": "operator new of 12A0h bytes for a slot that does not exist yet"
+    },
+    {
+      "routine": "008053c0",
+      "address": "00805404",
+      "native": "008050e0",
+      "note": "the slot constructor, taking the side index"
+    }
+  ],
+  "tail_jump_note": "00922DC2 is a JMP to 00922C80, not a CALL: the thunk falls into the body with DL already 1 and that body's RET returns to 009F151E. It is listed under routines rather than call_sites because the call verifier checks for CALL encodings.",
+  "host_steps": [
+    {
+      "routine": "009f1420",
+      "address": "009f14fa",
+      "native": "009dfbe0",
+      "kind": "call",
+      "function": "009f1420",
+      "method": "ShipAiGoal::recon_knows_target",
+      "note": "was a recorded false; now answers from the reconstructed union-triple membership rule over the host's own unit facts. Partial: rule (c), the sensor pass, does not run here, so every rule-(a)+(b) member counts as at least a blip."
+    },
+    {
+      "routine": "009f1420",
+      "address": "009f1519",
+      "native": "00922dc0",
+      "kind": "call",
+      "function": "009f1420",
+      "method": "ShipAiGoal::target_is_surface",
+      "note": "was a recorded false; now fills bsp::EntityTargetFacts and runs entity_is_surface_target_00922c80. Never reached on USN02 because the recon arm already opened the gate."
+    },
+    {
+      "routine": "00922c80",
+      "address": "00922d54",
+      "native": "008ddf90",
+      "kind": "call",
+      "function": "00922c80",
+      "method": "ShipAiGoal::target_is_surface_set_branch",
+      "note": "recorded, not answered: the unit set has no producer in this process. The walk falls through to the tail, which is answerable."
+    },
+    {
+      "routine": "009e7fc0",
+      "address": "009e80b0",
+      "native": null,
+      "kind": "field_read",
+      "function": "009e7fc0",
+      "method": "ShipAiApproach::brain_flag_0b28",
+      "note": "unchanged code; the value it reads is now true, so the ring scan runs for the first time: flag_stops falls from 600 of 600 to 0 of 600 on all fourteen ships"
+    }
+  ],
+  "corrections": [
+    {
+      "where": "docs/SHIP_AI_APPROACH_SLOT_SCORERS.md, Follow-up packets",
+      "was": "ship_ai_goal_vector_visibility: why brain+0B28h is never true. Everything else in this chain is now produced and waiting on it.",
+      "is": "answered. The flag was never true because both narrowing arms were recorded false in the host, not because of anything in 009F1420. Both are answerable and the recon arm alone opens the gate on every scan.",
+      "evidence": "009DFBE0's body read in full; the run's per-ship line visible <ship> expiries=75 flag_true=600 recon=75 surface=0"
+    },
+    {
+      "where": "src/game_hosts_ship_ai.cpp, the two goal-vector bindings",
+      "was": "009DFBE0's body was not read; 00922DC0 is a thunk in this image and its body was not read",
+      "is": "both bodies are read. 00922DC0 is a two-instruction thunk that passes DL = 1 into 00922C80, which packet cc7 had already reconstructed in include/bsp/attack_target_classify.hpp.",
+      "evidence": "00922DC0 MOV DL,1 / JMP 00922C80; 00922C80 body 00922C80-00922DB6 transcribed"
+    },
+    {
+      "where": "docs/ATTACK_CAPABILITY_INPUTS.md, Part 2",
+      "was": "00922B10 and 00922C80 are given as pure rules but no C++ was written, compiled, or run for this packet",
+      "is": "00922C80's rule is now compiled and run: the ship AI's goal vector calls it every refresh through entity_is_surface_target_00922c80. Its transcription is confirmed correct against an independent re-read of the listing.",
+      "evidence": "src/game_hosts_ship_ai.cpp ShipAiGoal::target_is_surface; USN02 run local/usn02_after.log"
+    }
+  ],
+  "no_ghidra_function": [],
+  "validation": {
+    "usn02_before": "main at 5eef10f13, as recorded by packet cc8_ship_ai_approach_slot_scorers: flag_0b28=0 and flag_stops=600 of 600 on all fourteen ships, winner slot 0 everywhere, standoff Haguro 1450 / Jintsu 1550 / destroyers 200, heading_changes 78 / 67 / 94 / 83, firepower=0, shots=734 hull=180 deaths=2 total_damage=18525.6",
+    "usn02_after": "local/usn02_after.log, 3000 mission frames: flag_0b28=1 and flag_stops=0 of 600 on all fourteen ships, flag_true=600 of 600 per ship with expiries=75 recon=75 surface=0, winner slot 0 everywhere and standoff unchanged at 1450 / 1550 / 200, heading_changes 545 / 572 / 535 / 578, firepower=504000 ring_scans=8400 standoff choices=8400, shots=853 hull=119 deaths=3 total_damage=12463.2",
+    "usn01_after": "local/usn01_after.log, 3000 mission frames, clean: hull=23 deaths=1 total_damage=220.0, pilot attack ordered=5 closed_mean=4028.3 m",
+    "attribution": "Every change traces to the one boolean. The flag opens on the recon arm (recon=75 per ship, one per timer expiry) and the surface arm is never consulted (surface=0). 009E7FC0 then stops returning at 009E80B0, so the scorers run for the first time: firepower 0 -> 504000 and 504000 calls each to score_slot_009E5DA0 / 009E6870 / 009E6640. The published heading moves on 545 of 600 scans instead of 78, which changes every ship's course, which changes ranges, which is why the gunnery census moves: more shots fired (734 -> 853) at longer and changing ranges, fewer landing (180 -> 119 hull hits, 18525.6 -> 12463.2 damage) and one more ship destroyed (2 -> 3). The standoff ranges are unchanged because they are curve outputs, not scan outputs.",
+    "winner_slot_caveat": "slot_first / slot_last still read 0 on every ship, and that number carries no information: the census reads ShipAiApproachState::committed_slot_11e8 (nested+11E8h), which src/ship_ai_approach_update.cpp reads at lines 1008 and 1016 and never writes. The per-scan winner is the local best_slot inside ship_ai_approach_select_slot_009e76d0 at line 957 and is not recorded anywhere."
+  },
+  "follow_up_packets": [
+    "ship_ai_ring_winner_census: 009E5E90 writes nested+120Ch but never nested+11E8h, so the committed slot the next scan's turn-cost arm reads (009E5FC3) is always 0 and the census cannot see the winner. Read 009E5E90's tail for the store that this reconstruction is missing.",
+    "recon_sensor_pass_rule_c: 00806840 and 008048A0, the sensor pass that sets each entry's detection level. Until it runs, every rule-(a)+(b) unit counts as detected and no target is ever unknown to a side.",
+    "ship_ai_approach_point_zone: 00864BA0, the no-target arm of the visibility gate, still false."
+  ],
+  "uncertainties": [
+    "Rule (c) is not implemented. The host answers recon membership from rules (a) and (b) alone and assumes the identified level, which is the permissive side of the native rule: a target the native would still have at level 0 is treated as known here.",
+    "008DDF90's unit set has no producer in this process, so 00922C80's walk reports that branch and the binding continues into the answerable tail. No ship or aircraft target reaches it.",
+    "00805F60's class-scan singleton and 008050E0's slot constructor were not read; rule (a)'s class list is taken from docs/RECON_SLOT_LISTS.md rather than re-derived.",
+    "The USN02 before numbers are the scorer packet's measurement on the same commit (5eef10f13), not a run made by this packet."
+  ]
+}

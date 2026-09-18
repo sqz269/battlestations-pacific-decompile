@@ -206,6 +206,12 @@ struct GameShipAiRow {
     float gate_lookahead_0494{0.0f};         // 009E80CD
     unsigned long long gate_flag_stops{0};   // returns at 009E80B0
     unsigned long long gate_range_stops{0};  // returns at 009E80DF
+    // Packet cc8_ship_ai_goal_vector_visibility: which arm of the narrowing at
+    // 009F14D2..009F1522 left brain+0B28h set.
+    unsigned long long goal_timer_expiries{0};   // 009F14B6 took the long way
+    unsigned long long goal_visible_true{0};     // brain+0B28h set after the pass
+    unsigned long long goal_visible_recon{0};    // 009F1504 wrote nonzero
+    unsigned long long goal_visible_surface{0};  // 009F1522 reopened the gate
     unsigned long long controller_updates{0};  // 0071F290 bodies
     bool controller_update_session_gate{false};
     unsigned long long path_picks{0};        // 009EE580 bodies that passed the gate
