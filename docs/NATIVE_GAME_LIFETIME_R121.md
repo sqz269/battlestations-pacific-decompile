@@ -131,3 +131,12 @@ ABI before giving the address methods semantic names. Then compose73D410
 allocation/construction and application teardown with retained exception
 ownership. Reuse the grid lifetime implementation fromR120. Only after that
 closure should the ordinary app admit this raw71A0 game owner.
+
+## Correction from docs/NATIVE_GAME_ARRAY_LIFETIME_R122.md
+
+R122 supplies the four array-call defaults at 4DD230, 4DD3F5, 4DD412 and
+4DD56B. They now invoke concrete vector, list and participant destruction with
+the existing actual string-pool and observer services. The parent takes an
+explicit array context and retains four child operations. Remaining cleanup
+services, native exception behavior and ordinary application admission stay
+open. See the R122 report for copied-original and parent-binding evidence.

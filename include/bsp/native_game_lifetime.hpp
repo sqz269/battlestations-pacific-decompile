@@ -1,11 +1,12 @@
 #pragma once
+#include "bsp/native_game_array_lifetime.hpp"
 #include <cstdint>
 
 namespace bsp {
 struct NativeGameStorage;
 // Address-named dependencies deliberately require real bindings. No successful
 // empty cleanup is supplied. The parent does not establish these callee bodies.
-struct NativeGameLifetimeCalls {
+struct NativeGameLifetimeCalls : NativeGameArrayLifetimeCalls {
     virtual ~NativeGameLifetimeCalls()=default;
     virtual void call_00c4dde0(void*)=0;
     virtual void call_0076a760(void*)=0;
@@ -45,7 +46,8 @@ struct NativeGameLifetimeCalls {
     // CRT reverse array iteration remains a library boundary. Destructor is
     // an original address identifier, not a directly callable host pointer.
     virtual void array_destroy_00bf7c6e(void* base,std::uint32_t stride,
-        std::uint32_t count,std::uint32_t destructor)=0;
+        std::uint32_t count,std::uint32_t destructor,NativeGameArrayLifetimeContext*,
+        NativeGameArrayLifetimeOperation&);
     virtual void virtual_scalar(void* captured,std::uint32_t vtable_offset,
         std::uint32_t flags)=0;
     virtual void virtual_terminal(void* captured)=0;
@@ -69,6 +71,9 @@ struct NativeGameLifetimeContext {
     void* volatile& grid_00e19b08;
     void* volatile& grid_00e19b04;
     NativeGameLifetimeCalls& calls;
+    // Required by the concrete array default. Same call service and actual
+    // string/observer domain as the constructed game; null fails when reached.
+    NativeGameArrayLifetimeContext* arrays;
 };
 struct NativeGameLifetimeProgress {
     std::uint32_t native_site{};
@@ -79,6 +84,7 @@ struct NativeGameLifetimeOperation final : NativeGameLifetimeProgress {
     Phase phase{Phase::fresh};
     NativeGameStorage* owner{};
     NativeGameLifetimeContext* context{};
+    NativeGameArrayLifetimeOperation arrays[4];
     NativeGameLifetimeOperation()=default;
     ~NativeGameLifetimeOperation();
     NativeGameLifetimeOperation(const NativeGameLifetimeOperation&)=delete;
