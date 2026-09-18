@@ -41,17 +41,26 @@ struct AiGroupableCombatantFacts {
     // plane squadron.
     bool is_ship_base{false};
 
-    // 007EDA90's three reads, taken on the squadron only.
+    // 007EDA90's three reads, all taken on the squadron's FLIGHT LEADER, the
+    // plane at +3D0h. Packet cc8_plane_squadron_entity settled that +3D0h is
+    // the five-slot member plane array, not a carrier link: 007F2DA3..007F2DBB
+    // zero exactly five dwords, 007F4B55 stores the created plane at
+    // [ESI+EDI*4+3D0h] with 007F4B60 bumping +3CCh, and 007ED621 indexes it by
+    // a register bounded against +3CCh. See the correction appended to
+    // docs/AI_COMMAND_LIFETIME.md.
     // 007EDA91 [squadron+3D0h]; a null pointer ends the routine false.
-    bool squadron_has_carrier{false};
-    // 007EDAA0 PUSH 17h, IsKindOf on that +3D0h object.
-    bool squadron_carrier_is_kind_17{false};
-    // 007EDAAA the byte at carrier+C24h; a set byte ends the routine false.
-    bool squadron_carrier_flag_0c24{false};
+    bool squadron_has_flight_leader{false};
+    // 007EDAA0 PUSH 17h, IsKindOf on the leader: MPlaneKamikaze, class test
+    // 009534A0, docs/ENTITY_CLASS_IDS.md row 17.
+    bool leader_is_kamikaze_kind_17{false};
+    // 007EDAAA the byte at leader+C24h, the authored `PilotFires`
+    // (docs/ATTACK_GATE_TAILS.md); a set byte ends the routine false.
+    bool leader_pilot_fires_0c24{false};
 };
 
-// 007EDA90, __thiscall(squadron) -> bool. True only when the squadron's +3D0h
-// object exists, is IsKindOf(17h), and its +C24h byte is clear.
+// 007EDA90, __thiscall(squadron) -> bool. True only when the squadron has a
+// flight leader at +3D0h, that leader is a kamikaze plane (17h), and its
+// authored PilotFires byte at +C24h is clear: an uncommitted kamikaze flight.
 bool ai_squadron_excluded_007eda90(const AiGroupableCombatantFacts& facts) noexcept;
 
 // 009FE080 itself. A plane squadron is groupable exactly when
@@ -59,8 +68,8 @@ bool ai_squadron_excluded_007eda90(const AiGroupableCombatantFacts& facts) noexc
 // when it is a ship base.
 //
 // Note what this does NOT admit: the plane base 0Fh. An individual aircraft is
-// not a groupable combatant, only a squadron is, and only a squadron whose
-// carrier link fails the 007EDA90 test.
+// not a groupable combatant, only a squadron is, and every squadron is except
+// an uncommitted kamikaze flight.
 bool ai_entity_is_groupable_combatant_009fe080(
     const AiGroupableCombatantFacts& facts) noexcept;
 

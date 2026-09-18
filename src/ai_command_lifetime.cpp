@@ -7,11 +7,11 @@ namespace bsp {
 
 bool ai_squadron_excluded_007eda90(const AiGroupableCombatantFacts& facts) noexcept {
     // 007EDA91 MOV ESI,[ECX+3D0h]; 007EDA99 JE ends false.
-    if (!facts.squadron_has_carrier) return false;
+    if (!facts.squadron_has_flight_leader) return false;
     // 007EDAA0 PUSH 17h through vtable[+5Ch]; 007EDAA8 JE ends false.
-    if (!facts.squadron_carrier_is_kind_17) return false;
+    if (!facts.leader_is_kamikaze_kind_17) return false;
     // 007EDAAA CMP byte [ESI+C24h],0; 007EDAB1 JNE ends false.
-    if (facts.squadron_carrier_flag_0c24) return false;
+    if (facts.leader_pilot_fires_0c24) return false;
     // 007EDAB3 MOV AL,1.
     return true;
 }

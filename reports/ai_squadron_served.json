@@ -1,0 +1,366 @@
+{
+ "packet": "cc8_ai_squadron_served",
+ "owner": "agent/cc8-ai-squadron",
+ "doc": "docs/AI_SQUADRON_SERVED.md",
+ "sources": [
+  "src/game_hosts_ai.cpp",
+  "include/bsp/game_hosts_ai.hpp"
+ ],
+ "classification": "discovery plus a one-line host correction; why 00A13B60's member gate was asked about a group of land structures, and the labelled substitution for 00A2C450 that put both of a party's groups on one planner",
+ "routines": [
+  {
+   "address": "00a2c450",
+   "name": "BSP_AiGroup_HasMemberInWorldSet",
+   "abi": "__thiscall(group, int setIndex) -> bool, RET 4, body 00a2c450..00a2c4b7",
+   "coverage": "complete"
+  },
+  {
+   "address": "00a181a0",
+   "name": "BSP_AiPartyBrain_Think",
+   "abi": "__thiscall(brain), body 00a181a0..00a182ad",
+   "coverage": "partial; the group walk 00a18230..00a18284 was read in full, the planner-tick tail was not re-read"
+  },
+  {
+   "address": "00a2e260",
+   "name": "BSP_AiGroup_SplitDetachedMembers",
+   "abi": "__thiscall(group), RET 0, body 00a2e260..00a2e4bd",
+   "coverage": "complete for the collect loop 00a2e2b0..00a2e32e, the removal loop 00a2e360..00a2e460 and the new-group arm 00a2e405..00a2e447"
+  },
+  {
+   "address": "00a22750",
+   "name": "BSP_AiPlanner_ClaimGroup",
+   "abi": "__thiscall(planner, group), RET 4, body 00a22750..00a227b0",
+   "coverage": "complete"
+  },
+  {
+   "address": "00a179e0",
+   "name": "BSP_AiPartyBrain_EngagementPass",
+   "abi": "body 00a179e0..00a18195",
+   "coverage": "not read; its callee list was taken to rule it out as the producer"
+  }
+ ],
+ "host_calls": [
+  {
+   "address": "00a18262",
+   "native": "00a2c450",
+   "containing": "00a181a0",
+   "name": "GameAiCoordinatorHost::Impl::group_has_member_in_world_set",
+   "note": "now answers the 00A2C4B4 walk-ended arm, which is what the native computes against an empty set"
+  },
+  {
+   "address": "00a18253",
+   "native": "00a2c5a0",
+   "containing": "00a181a0",
+   "name": "GameAiCoordinatorHost::Impl::group_has_groupable_combatant"
+  },
+  {
+   "address": "00a18273",
+   "native": "00a22750",
+   "containing": "00a181a0",
+   "name": "GameAiCoordinatorHost::Impl::planner_claim_group"
+  },
+  {
+   "address": "00a18243",
+   "native": "00a2e260",
+   "containing": "00a181a0",
+   "name": "GameAiCoordinatorHost::Impl::split_detached_members"
+  },
+  {
+   "address": "00a2c491",
+   "native": "008ddf90",
+   "containing": "00a2c450",
+   "name": "(no host call)",
+   "note": "the set at [00E188A8]+setIndex*4+21A4h is not built here"
+  },
+  {
+   "address": "00a2e2e7",
+   "native": "009fe080",
+   "containing": "00a2e260",
+   "name": "GameAiCoordinatorHost::Impl::split_detached_members",
+   "note": "00A2E2EE JZ keeps only the groupable members in the collection"
+  },
+  {
+   "address": "00a2e42a",
+   "native": "00a2dfa0",
+   "containing": "00a2e260",
+   "name": "GameAiCoordinatorHost::Impl::create_group",
+   "note": "the new group the groupable subset moves into"
+  },
+  {
+   "address": "00a2e447",
+   "native": "00a2d8e0",
+   "containing": "00a2e260",
+   "name": "GameAiCoordinatorHost::Impl::attach",
+   "note": "the sorted insert for the rest of the subset"
+  }
+ ],
+ "indirect_call_sites": [
+  {
+   "address": "00a143ed",
+   "containing": "00a13b60",
+   "target": "[[member]+5Ch]",
+   "role": "PUSH 18h, the squadron arm of the served-member gate"
+  },
+  {
+   "address": "00a14402",
+   "containing": "00a13b60",
+   "target": "[[leader]+5Ch]",
+   "role": "PUSH 17h, 007EDA90's shape inline"
+  },
+  {
+   "address": "00a14427",
+   "containing": "00a13b60",
+   "target": "[[member]+5Ch]",
+   "role": "PUSH 6, the ship-base arm"
+  },
+  {
+   "address": "00a1443d",
+   "containing": "00a13b60",
+   "target": "[[member]+2Ch]",
+   "role": "the controller-busy test; still a neutral value in this process"
+  }
+ ],
+ "no_ghidra_function": [],
+ "raw_listing_call_sites": [],
+ "record_layouts": [],
+ "constants": [
+  {
+   "name": "the world-set table base",
+   "value": "[00E188A8] + setIndex*4 + 21A4h",
+   "evidence": "00A2C480 MOV ECX,[00E188A8]; 00A2C489 MOV ECX,[ECX+EBP*4+21A4h]"
+  },
+  {
+   "name": "the new group's size",
+   "value": "0x5660",
+   "evidence": "00A2E40D PUSH 5660h before 00BF681B"
+  }
+ ],
+ "corrections": [
+  {
+   "doc": "docs/AI_COMMAND_LIFETIME.md",
+   "was": "+3D0h is the squadron's carrier link",
+   "is": "the flight leader of the member plane array; the three field names in include/bsp/ai_command_lifetime.hpp were renamed to say so",
+   "evidence": "appended as '## Correction from docs/PLANE_SQUADRON_ENTITY.md'"
+  },
+  {
+   "doc": "docs/AI_CLOSE_ATTACK_TICK.md",
+   "was": "the carrier link passes 007EDA90's shape inline",
+   "is": "the same correction for the inline copy at 00A143ED..00A14413; and its follow-up row ai_group_plane_squadrons is answered",
+   "evidence": "appended as '## Correction from docs/PLANE_SQUADRON_ENTITY.md'"
+  },
+  {
+   "doc": "docs/TORPEDO_ATTACK_MODE.md",
+   "was": "007F0030 is the pilot control block's dispatcher",
+   "is": "its sole reference 00D08924 is offset +164h of the squadron vtable 00D087C0",
+   "evidence": "appended as '## Correction from docs/PLANE_SQUADRON_ENTITY.md'"
+  }
+ ],
+ "validation": {
+  "command": "./tools/run_game.ps1 -- --frames 3200 --press-start-frame 30 --menu-select <M> --mission-frames 3000 --mission-frame-seconds 0.05",
+  "before_tree": "7c1036d5f (the cc8_plane_squadron_entity commit), logs local/<m>_after.log",
+  "after_logs": "local/<m>_served.log",
+  "missions": [
+   {
+    "mission": "IJN01",
+    "before": {
+     "gun_candidates": "1841",
+     "gun_assigns": "2766",
+     "gun_gun_evaluations": "2776",
+     "groups_created": "3",
+     "members_added": "221",
+     "splits_taken": "1",
+     "tick_orders": "237",
+     "promotions": "1",
+     "served": "0",
+     "attackmove": "0",
+     "settarget": "0",
+     "fallback": "0",
+     "scored": "0",
+     "parties_claims": "2",
+     "parties_attack_orders": "1",
+     "parties_commands": "171",
+     "parties_units_with_task": "30",
+     "sq_built": "33",
+     "sq_members": "33",
+     "sq_group_members": "33",
+     "sq_excluded_007eda90": "0",
+     "sq_squadron_commands": "141",
+     "sq_member_orders": "141",
+     "orders_suppressed": "96",
+     "pilot_ordered": "33",
+     "pilot_closed_mean_m": "0.0"
+    },
+    "after": {
+     "gun_candidates": "1957",
+     "gun_assigns": "3018",
+     "gun_gun_evaluations": "3044",
+     "groups_created": "3",
+     "members_added": "221",
+     "splits_taken": "1",
+     "tick_orders": "41",
+     "promotions": "2",
+     "served": "2450",
+     "attackmove": "2250",
+     "settarget": "57",
+     "fallback": "143",
+     "scored": "465500",
+     "parties_claims": "2",
+     "parties_attack_orders": "2",
+     "parties_commands": "2423",
+     "parties_units_with_task": "79",
+     "sq_built": "33",
+     "sq_members": "33",
+     "sq_group_members": "33",
+     "sq_excluded_007eda90": "0",
+     "sq_squadron_commands": "54",
+     "sq_member_orders": "54",
+     "orders_suppressed": "2396",
+     "pilot_ordered": "33",
+     "pilot_closed_mean_m": "0.0"
+    }
+   },
+   {
+    "mission": "USN01",
+    "before": {
+     "gun_candidates": "1059",
+     "gun_assigns": "1082",
+     "gun_gun_evaluations": "1082",
+     "groups_created": "4",
+     "members_added": "109",
+     "splits_taken": "2",
+     "tick_orders": "486",
+     "promotions": "1",
+     "served": "0",
+     "attackmove": "0",
+     "settarget": "0",
+     "fallback": "0",
+     "scored": "0",
+     "parties_claims": "2",
+     "parties_attack_orders": "1",
+     "parties_commands": "485",
+     "parties_units_with_task": "8",
+     "sq_built": "20",
+     "sq_members": "20",
+     "sq_group_members": "20",
+     "sq_excluded_007eda90": "0",
+     "sq_squadron_commands": "477",
+     "sq_member_orders": "477",
+     "orders_suppressed": "9",
+     "pilot_ordered": "14",
+     "pilot_closed_mean_m": "1435.0"
+    },
+    "after": {
+     "gun_candidates": "1363",
+     "gun_assigns": "1205",
+     "gun_gun_evaluations": "1205",
+     "groups_created": "4",
+     "members_added": "109",
+     "splits_taken": "2",
+     "tick_orders": "507",
+     "promotions": "1",
+     "served": "0",
+     "attackmove": "0",
+     "settarget": "0",
+     "fallback": "0",
+     "scored": "0",
+     "parties_claims": "2",
+     "parties_attack_orders": "2",
+     "parties_commands": "475",
+     "parties_units_with_task": "24",
+     "sq_built": "20",
+     "sq_members": "20",
+     "sq_group_members": "20",
+     "sq_excluded_007eda90": "0",
+     "sq_squadron_commands": "459",
+     "sq_member_orders": "459",
+     "orders_suppressed": "56",
+     "pilot_ordered": "14",
+     "pilot_closed_mean_m": "1186.3"
+    }
+   },
+   {
+    "mission": "USN02",
+    "before": {
+     "gun_candidates": "3135",
+     "gun_assigns": "5146",
+     "gun_gun_evaluations": "5146",
+     "groups_created": "2",
+     "members_added": "50",
+     "splits_taken": "0",
+     "tick_orders": "5",
+     "promotions": "1",
+     "served": "616",
+     "attackmove": "559",
+     "settarget": "0",
+     "fallback": "57",
+     "scored": "4004",
+     "parties_claims": "1",
+     "parties_attack_orders": "1",
+     "parties_commands": "635",
+     "parties_units_with_task": "14",
+     "sq_built": "0",
+     "sq_members": "0",
+     "sq_group_members": "0",
+     "sq_excluded_007eda90": "0",
+     "sq_squadron_commands": "0",
+     "sq_member_orders": "0",
+     "orders_suppressed": "543",
+     "pilot_ordered": "0",
+     "pilot_closed_mean_m": null
+    },
+    "after": {
+     "gun_candidates": "3135",
+     "gun_assigns": "5146",
+     "gun_gun_evaluations": "5146",
+     "groups_created": "2",
+     "members_added": "50",
+     "splits_taken": "0",
+     "tick_orders": "5",
+     "promotions": "1",
+     "served": "616",
+     "attackmove": "559",
+     "settarget": "0",
+     "fallback": "57",
+     "scored": "4004",
+     "parties_claims": "1",
+     "parties_attack_orders": "1",
+     "parties_commands": "635",
+     "parties_units_with_task": "14",
+     "sq_built": "0",
+     "sq_members": "0",
+     "sq_group_members": "0",
+     "sq_excluded_007eda90": "0",
+     "sq_squadron_commands": "0",
+     "sq_member_orders": "0",
+     "orders_suppressed": "543",
+     "pilot_ordered": "0",
+     "pilot_closed_mean_m": null
+    }
+   }
+  ],
+  "unresolved": [
+   {
+    "mission": "USN01",
+    "symptom": "served stays 0 after the fix",
+    "cause": "a NATIVE gate the mission fails, not a substitution. With 00A2C450 answering correctly the combatant group IS claimed by the fourth planner and IS attack-ordered (ai diag order_attack group_leader=Enterprise target_leader=Katori), but 00A12A90 keeps a MOVETOATTACK command closing while the leader is a groupable combatant farther than CloseAttack_CollectDist, and only promotes to CLOSEATTACK below it. 00A13B60 runs only under CLOSEATTACK.",
+    "value": "the group's leader point is 16889.3 m from the target group's at the first tick and 16044.8 m at the last, against collect_dist = 3000.0; it closes about 845 m in 150 s of mission time. groupable=1 and members=16 throughout",
+    "evidence": "the `ai diag movetoattack` lines in local/usn01_served.log",
+    "action": "none taken: the gate is native and the mission simply does not close the distance"
+   },
+   {
+    "mission": "IJN01",
+    "symptom": "the 8-member group led by a land structure still promotes and serves nobody",
+    "cause": "00A12A90's other arm: a leader that is NOT a groupable combatant promotes to CLOSEATTACK at once, and 00A13B60's member gate then refuses every member of that group. That is the native rule; the group is a remainder of the 00A2E835 seed substitution",
+    "value": "ai diag movetoattack leader=Storage, 05 01 dist=9792.3 collect=3000.0 groupable=0 members=8",
+    "action": "none taken"
+   }
+  ]
+ },
+ "remaining": [
+  "00A2E835, the five world collections at world+19CCh",
+  "the producer of the entity sets at world+21A4h, and 008DDF90 BSP_SzurkeNyil_ContainsUnit",
+  "00A1CB80's owned-group walk: whether only the first owned group is ordered natively",
+  "00A179E0 BSP_AiPartyBrain_EngagementPass, body 00A179E0..00A18195, unread",
+  "00A1443D, the controller-busy test through the member's vtable[+2Ch]"
+ ]
+}
