@@ -1,0 +1,199 @@
+{
+  "packet": "cc8_ship_ai_approach_slot_tune",
+  "owner": "agent/cc8-ship-approach-curves",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read-only: no rename, comment, prototype, function creation or save",
+  "doc": "docs/SHIP_AI_APPROACH_SLOT_TUNE.md",
+  "header": "include/bsp/ship_ai_approach_tune.hpp",
+  "source": "src/ship_ai_approach_tune.cpp, src/game_hosts_ship_ai.cpp",
+  "build": "scripts/build.ps1, Win32 Release, /W4 /WX clean; ctest 2/2",
+  "note": "brain+0AB0h is a pointer, not an inline block: 009E6EBD loads the brain from [nested+0h], 009E6EBF loads [brain+0AB0h] into EAX and 009E6EC5 reads [EAX+1Ch]. The only store to it is 009F11AA inside BSP_ShipAi_BrainRecordConstruct, whose source is [unit+73Ch]. That field is filled once per unit by BSP_UnitVehicleBase_Construct from ten .rdata immediates. There is no Lua key and no string: the values are compiled into the constructor, so every unit in every mission gets the same block, and no loader on main produces them.",
+  "routines": [
+    {
+      "address": "009f1160",
+      "native": "009f1160",
+      "name": "BSP_ShipAi_BrainRecordConstruct",
+      "abi": "__thiscall(brain)(owner) returning the brain, RET 4",
+      "coverage": "partial: only the two stores at 009F119E and 009F11AA were read here",
+      "rule": "brain+0AACh = [unit+538h] (009F119E); brain+0AB0h = [unit+73Ch] (009F11AA)"
+    },
+    {
+      "address": "0081ed40",
+      "native": "0081ed40",
+      "name": "BSP_UnitVehicleBase_Construct",
+      "abi": "__thiscall(this, int flag), RET 4",
+      "coverage": "partial: only the tune fill at 0081F200-0081F28C was read here",
+      "rule": "the allocator at 0081F200 returns the block; 0081F214..0081F27D writes ten .rdata immediates into it and a byte 1 at +21h; 0081F28C stores the pointer to unit+73Ch; the failed-allocation arm at 0081F283 leaves it null"
+    }
+  ],
+  "tune_block": [
+    {
+      "offset": "+00h",
+      "value": 10.0,
+      "constant": "00ce38b8",
+      "store": "0081f21c",
+      "reader": "009e81fa",
+      "name": "slot_score_scale",
+      "note": "009E7FC0's slot+2Ch = slot+18h / running_max * tune+0h"
+    },
+    {
+      "offset": "+04h",
+      "value": 4.0,
+      "constant": "00ce3d34",
+      "store": "0081f228",
+      "reader": "009e7489",
+      "name": "slot_weight",
+      "note": "also read at 009E784B as the selection's reject penalty and at 009E5D8C, where the approach constructor forms 1.0 - tune+4h from the 1.0 at 00D7A208"
+    },
+    {
+      "offset": "+08h",
+      "value": 3.0,
+      "constant": "00ce3854",
+      "store": "0081f235",
+      "reader": "009e964e",
+      "name": "avoid_strength",
+      "note": "the avoidance strength"
+    },
+    {
+      "offset": "+0Ch",
+      "value": 1000.0,
+      "constant": "00ce3804",
+      "store": "0081f25c",
+      "reader": "009e9190",
+      "name": "avoid_span",
+      "note": "the avoidance span beside it"
+    },
+    {
+      "offset": "+10h",
+      "value": 1.0,
+      "constant": "00d7a24c",
+      "store": "0081f269",
+      "reader": "009e75f2",
+      "name": "evade_bearing",
+      "note": "the bearing term of the evade score"
+    },
+    {
+      "offset": "+14h",
+      "value": 0.25,
+      "constant": "00ce3868",
+      "store": "0081f242",
+      "reader": "009e74d0",
+      "name": "evade_weight",
+      "note": "the evade weight"
+    },
+    {
+      "offset": "+18h",
+      "value": 1.0471976,
+      "constant": "00d05aac",
+      "store": "0081f24f",
+      "reader": "009e74d0",
+      "name": "evade_span",
+      "note": "a half-angle in radians, pi/3"
+    },
+    {
+      "offset": "+1Ch",
+      "value": -1.0,
+      "constant": "00d7a260",
+      "store": "0081f26e",
+      "reader": "009e6ec5",
+      "name": "range_override",
+      "note": "at or above zero it becomes the standoff range verbatim and every other arm is skipped, including the 119-step curve scan; the installed -1.0f is what keeps that scan alive. The same -1.0f also goes to +24h and +28h."
+    }
+  ],
+  "call_sites": [
+    {
+      "routine": "0081ed40",
+      "address": "0081f200",
+      "native": "00bf681b",
+      "note": "the allocator that returns the tune block"
+    }
+  ],
+  "host_steps": [
+    {
+      "routine": "009e7fc0",
+      "address": "009e81fa",
+      "native": null,
+      "kind": "field_read",
+      "function": "009e7fc0",
+      "method": "ScoreResetBinding::tune_scale_00",
+      "note": "tune+0h"
+    },
+    {
+      "routine": "009e6870",
+      "address": "009e7489",
+      "native": null,
+      "kind": "field_read",
+      "function": "009e6e80",
+      "method": "StandoffBinding::tune_slot_04",
+      "note": "tune+4h"
+    },
+    {
+      "routine": "009e76d0",
+      "address": "009e784b",
+      "native": null,
+      "kind": "field_read",
+      "function": "009e76d0",
+      "method": "SelectBinding::tune_reject_penalty_04",
+      "note": "tune+4h"
+    },
+    {
+      "routine": "009e9190",
+      "address": "009e964e",
+      "native": null,
+      "kind": "field_read",
+      "function": "009e9190",
+      "method": "AvoidBinding::tune_avoid_strength_08",
+      "note": "tune+8h"
+    },
+    {
+      "routine": "009e74d0",
+      "address": "009e75f2",
+      "native": null,
+      "kind": "field_read",
+      "function": "009e74d0",
+      "method": "EvadeBinding::tune_bearing_10",
+      "note": "tune+10h"
+    },
+    {
+      "routine": "009e6e80",
+      "address": "009e6ec5",
+      "native": null,
+      "kind": "field_read",
+      "function": "009e6e80",
+      "method": "StandoffBinding::tune_range_override_1c",
+      "note": "tune+1Ch; the host already returned -1.0f as a guess and it is now sourced"
+    }
+  ],
+  "corrections": [
+    {
+      "where": "docs/SHIP_AI_FIREPOWER_INPUTS.md, Follow-up packets",
+      "was": "ship_ai_approach_slot_tune: the blocking input. With the tune block zero every slot scores alike and 009E76D0 keeps slot 0, so the commanded heading never changes and no gunnery number can move.",
+      "is": "half right. The block is found and bound, and the commanded heading does now move during the run, but the winning slot is still 0 for every ship and the gunnery census is unchanged. The tune block was not the last blocker.",
+      "evidence": "the USN02 census below, with a control build whose tune values were zeroed"
+    },
+    {
+      "where": "docs/SHIP_AI_APPROACH_UPDATE.md, the tune vocabulary",
+      "was": "`tune` is the float block at brain+0AB0h",
+      "is": "brain+0AB0h holds a POINTER to it; the block itself is [unit+73Ch], so it belongs to the unit and outlives any brain record. 009E6EBF MOV EAX,[ECX+0AB0h] then 009E6EC5 MOVSS XMM0,[EAX+1Ch] is the two-step read.",
+      "evidence": "009E6EBD MOV ECX,[ESI]; 009E6EBF MOV EAX,[ECX+0AB0h]; 009E6EC5 MOVSS XMM0,[EAX+1Ch]. 009F11A4 MOV EAX,[EDI+73Ch] then 009F11AA MOV [ESI+0AB0h],EAX."
+    }
+  ],
+  "no_ghidra_function": [],
+  "validation": {
+    "usn02_before": "the firepower packet's after-run: shots=734 hull=180 deaths=2 total_damage=18525.6; slot 0 the winner everywhere; standoff Haguro 1450, Jintsu 1550, the twelve destroyers 200",
+    "usn02_after": "shots=734 hull=180 deaths=2 total_damage=18525.6, unchanged; the aim line identical to the character; slot_first=0 slot_last=0 for every ship; heading_changes 78 (Haguro), 67 (Jintsu), 94 (Yudachi), 83 (Samidare) and so on; standoff ranges unchanged from the firepower run",
+    "control": "a control build with all eight tune values forced to zero produces a byte-identical census: the same heading_changes (78 Haguro, 67 Jintsu, 94 Yudachi, 83 Samidare), the same standoff ranges, the same slot 0 winner and the same shots=734 hull=180 deaths=2 total_damage=18525.6. The tune block changes nothing measurable in this process.",
+    "attribution": "the tune block reaches the scorers and changes nothing a census can see. The standoff range is unchanged because tune+1Ch was already -1.0f in the host, which is the value that keeps the curve scan alive, so the arm at 009E6ECA was never taken before either. The winner is unchanged because the slot scores it ranks are still not produced."
+  },
+  "follow_up_packets": [
+    "ship_ai_approach_slot_scorers: 009E5DA0, 009E6400, 009E6870 and 009E6640, the four per-slot routines that fill slot+18h, slot+2Ch, slot+3Ch and the blocked byte at slot+40h. This is the real blocker: the tune block scales scores that are themselves zero, and 009E76D0 keeps slot 0 because every slot ties.",
+    "ship_ai_approach_tune_overrides: whether anything writes a field through [unit+73Ch] after BSP_UnitVehicleBase_Construct. This packet found the one producer of the pointer and the one producer of its contents; it did not enumerate writers through the pointer, and the block's own extent past +28h is unknown."
+  ],
+  "uncertainties": [
+    "The eight floats have no names. They are immediates compiled into BSP_UnitVehicleBase_Construct with no Lua key, no table and no string near them, so every name in the header is a hypothesis taken from the reader, not from the producer.",
+    "The block's size was not established. The stores reach +28h and one of them is a byte at +21h, which overlaps whatever +20h is, so the struct in the header covers the read offsets only and is explicitly not the whole shape.",
+    "Only the tune fill of BSP_UnitVehicleBase_Construct and the two stores of BSP_ShipAi_BrainRecordConstruct were read. Both routines are large and both are labelled partial.",
+    "Land units take a different path: the scan found stores to unit+73Ch in BSP_LandConvoy_AttachAndBuildRoster, BSP_LandFort_Construct and two unnamed routines, none of which was read."
+  ]
+}

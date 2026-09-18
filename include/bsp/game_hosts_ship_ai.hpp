@@ -194,6 +194,11 @@ struct GameShipAiRow {
     int curve_own_nonzero{0};                // nested+12C0h samples > 0
     int curve_target_nonzero{0};             // nested+13B0h samples > 0
     float unit_max_weapon_range{0.0f};       // unit+494h as the host answers it
+    // Packet cc8_ship_ai_approach_slot_tune: what 009E76D0 settled on, and how
+    // often the heading 009E5E90 published actually moved.
+    int ring_winner_first{-1};               // nested+11E8h after the first scan
+    int ring_winner_last{-1};                // nested+11E8h after the last
+    unsigned long long heading_changes{0};   // nested+120Ch differed from before
     unsigned long long controller_updates{0};  // 0071F290 bodies
     bool controller_update_session_gate{false};
     unsigned long long path_picks{0};        // 009EE580 bodies that passed the gate

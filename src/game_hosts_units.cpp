@@ -3220,11 +3220,22 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         rin.dt_scale = 1.0f;
                         rin.turn_scale_2e8 = unit_.plan_state.turn_scale_2e8;
                         rin.bank_limit_2c8 = unit_.plan_state.bank_limit_2c8;
-                        // 0047B880's predicate is unidentified. false takes the
-                        // Large cap, and since the cap enters as min(maxBank,
-                        // cap) that is the weaker limit - the choice is stated
-                        // rather than reasoned, because nothing establishes it.
-                        rin.small_turn_roll_limit = false;
+                        // 0047B880 is read (docs/PILOT_BANK_COMMAND_INPUTS.md):
+                        // !(vtable[5Ch](10h) || vtable[5Ch](16h)), and 0099D0A0
+                        // tests the SAME disjunction inline at 0099D1C2-0099D1D9
+                        // on the same unit to cap its rate multiplier at 1.0f.
+                        // One bit and its complement, so only this one is set
+                        // and pilot_plan_roll_0099e2ba derives the
+                        // TurnRollLimitSmall/Large choice from it; that is why
+                        // the rin.small_turn_roll_limit assignment that used to
+                        // sit here is gone. Slot 5Ch on a plane is
+                        // BSP_PlaneInstance_IsKindOf (00D05F20+5Ch -> 0074E400),
+                        // the same class test bsp::unit_is_kind_of models, and
+                        // src/unit_kind_query.cpp names the two literals:
+                        // 10h MPlaneBomber, 16h MLargeReconPlane.
+                        rin.scale.caps_rate_at_one =
+                            bsp::unit_is_kind_of(unit_.class_id, 0x10) ||
+                            bsp::unit_is_kind_of(unit_.class_id, 0x16);
                         rin.roll_spd = unit_.plane_class.roll_spd;
                         rin.roll_accel = unit_.plane_class.roll_accel;
                         rin.scale.pitch_angle = unit_.plane_pitch_angle_c64;

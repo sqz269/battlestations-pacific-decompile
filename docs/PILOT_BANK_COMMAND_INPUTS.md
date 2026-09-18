@@ -507,3 +507,86 @@ Take the lock file under `~/.bsp` and wait for any live `bsp_game.exe` before la
    `009D2B1D`, `009A3F66`, `009B96CE`) and the second `plan+2E8h` writer near `009ABE56`, which has
    no instruction at the scanned address in the stored listing.
 4. **The host contract above**, once `src/game_hosts_units.cpp` is free.
+
+## Host contract: measured, and NOT landed
+
+The follow-up asked for the "Contract for the unit host" above to be landed in
+`src/game_hosts_units.cpp`. It was written, built and measured. **It is not committed**, because
+it makes `USN01` far worse and the cause is a defect elsewhere, not in the wiring.
+
+### The two class ids are named
+
+`src/unit_kind_query.cpp` decodes all 88 compiled slot-`5Ch` bodies, and it names the two literals
+`0047B880` asks about:
+
+| class id | name | test body | vtable |
+| --- | --- | --- | --- |
+| `10h` | **`MPlaneBomber`** | `007D77F0` | `00D06638` |
+| `16h` | **`MLargeReconPlane`** | `0074E4E0` | `00D00308` |
+
+That closes follow-up 2 of this doc and confirms the whole reading: `0047B880` is false exactly for
+bombers and large recon planes, which is what `planeglobals.lua` glosses as "egy nagy gep maximum
+ekkora rollal fordulhat" on `TurnRollLimitLarge = DEG(56)`. `TurnRollLimitSmall = DEG(85)` is for
+everything else. The names and the tuning comments agree independently.
+
+### USN01's ordered flight is `MLargeReconPlane`
+
+`unit world registration: unit=Mav1 ... primary=00D00308` is `MLargeReconPlane`'s own vtable, and
+`unit hull input unit=Mav1 type_id=174 kind=22 length=22 width=40` gives kind `22` = `16h` with a
+40 m span. (`ScoutDauntless` is `type_id=108 kind=18`, 11 m by 13 m — a different aircraft.) So
+`Mav1`-`Mav5` really are class `16h`, and the native `0047B880` returns **false** for them while the
+inline test inside `0099D0A0` returns **true**.
+
+### What the change was, and what it measured
+
+```cpp
+rin.scale.caps_rate_at_one =
+    bsp::unit_is_kind_of(unit_.class_id, 0x10) ||
+    bsp::unit_is_kind_of(unit_.class_id, 0x16);
+```
+
+with the dead `rin.small_turn_roll_limit = false` deleted. It builds clean on `/W4 /WX` and both
+tests pass. `USN02` is bit-identical (`candidates=3421`, `shots=734`, `hull=180`, `deaths=2`,
+`total_damage=18525.6`), as expected: no gunnery path reads the pilot roll arm.
+
+`USN01` is not, and it is much worse:
+
+| aircraft | closed, contract applied | closed, before |
+| --- | --- | --- |
+| Mav1 | **-64529.4 m** | -3952.0 m |
+| Mav2 | 710.8 m | 1367.6 m |
+| Mav3 | -793.5 m | 563.2 m |
+| Mav4 | -712.2 m | 927.4 m |
+| Mav5 | **-57734.3 m** | -514.0 m |
+
+`closed_mean` goes from `-321.6 m` to `-24611.7 m` and `heading_error_last_mean` from `0.147` to
+`0.477 rad`. Two aircraft leave the map.
+
+### Why, and why the wiring is still right
+
+Against the pre-packet host the roll cap does not move: it had `small_turn_roll_limit = false`
+(Large), and for class `16h` the correct answer is also Large. The only net change is that the
+heading-diff rate is now capped, which is what the original does for these two types:
+
+```
+0099d1db  if (vt5C(10h) || vt5C(16h))  m = min(m, 1.0f)
+0099d210  T = a / (RollSpd * m) + 1 / RollAccel
+```
+
+`HdgDiffCalcLimit` is `{0.8, 1.5}` here, so `m` runs 0.8 to 1.5 and the cap bites over most of the
+range. A smaller `m` raises `T`, which raises `|C|`, which shrinks the bank command — the original's
+way of making a heavy aircraft turn lazily. The reconstruction's outer loop cannot hold the
+formation at that gain and two aircraft never come back.
+
+So the cap is real, the wiring reproduces it, and applying it exposes a **pre-existing defect
+downstream** rather than creating one. `Mav1` was already diverging by 3952 m before the change;
+the true gain amplifies a loop that was already fragile. Landing a 60 km regression to record a
+correct input is the wrong trade, so the patch above is documented rather than committed.
+
+### Follow-up packet 5
+
+Take the roll arm's consumption of `C` with `caps_rate_at_one` forced true for class `10h`/`16h`
+and find why the bank command collapses. The suspects, in order: the sign convention of `C` at
+`0099E180` (`raw = (h - s)/C`, and `0099D0A0` returns `-sign(w)` times its magnitude), the soft-zone
+interpolation at `0099E17B`, and `dt_scale`, which the host pins to `1.0f` while the original
+computes `max(unit+340h * 0.4, 1.0)`. Only after that should the host contract land.

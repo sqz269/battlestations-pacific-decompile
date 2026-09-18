@@ -1,15 +1,16 @@
 #pragma once
 #include "bsp/native_game_array_lifetime.hpp"
+#include "bsp/native_game_embedded_lifetime.hpp"
 #include <cstdint>
 
 namespace bsp {
 struct NativeGameStorage;
 // Address-named dependencies deliberately require real bindings. No successful
 // empty cleanup is supplied. The parent does not establish these callee bodies.
-struct NativeGameLifetimeCalls : NativeGameArrayLifetimeCalls {
+struct NativeGameLifetimeCalls : NativeGameArrayLifetimeCalls,NativeGameEmbeddedLifetimeCalls {
     virtual ~NativeGameLifetimeCalls()=default;
     virtual void call_00c4dde0(void*)=0;
-    virtual void call_0076a760(void*)=0;
+    virtual void call_0076a760(void*,NativeGameEmbeddedLifetimeContext*);
     virtual void call_008d88f0()=0;
     virtual void call_004bf930(void*)=0;
     virtual void call_004a9ac0()=0;
@@ -21,20 +22,20 @@ struct NativeGameLifetimeCalls : NativeGameArrayLifetimeCalls {
     virtual void* call_004c1400()=0;
     virtual void call_00b806f0(void*)=0;
     virtual void call_004c7dd0(void*)=0;
-    virtual void call_0041cc80(void*)=0;
+    virtual void call_0041cc80(void*);
     virtual void call_004cb220(void*,std::uint32_t)=0;
     virtual void call_004c4b40(void*)=0;
     virtual void* call_00419cc0(void* block,std::uint32_t size,std::uint32_t factor)=0;
     virtual void call_00bd1510(void* pool,void* block,std::uint32_t size,std::uint32_t factor)=0;
-    virtual void call_0076f000(void*)=0;
-    virtual void call_00b669a0(void*)=0;
+    virtual void call_0076f000(void*,NativeGameEmbeddedLifetimeContext*,NativeGameEmbeddedLifetimeOperation&);
+    virtual void call_00b669a0(void*);
     virtual void call_004bf8e0(void*)=0;
     virtual void call_007ff9f0(void*)=0;
     virtual void call_007fd8a0(void*)=0;
     virtual void call_004cf3f0(void*)=0;
     virtual void call_004c2ce0(void*)=0;
     virtual void call_004c4a50(void*)=0;
-    virtual void call_004dceb0(void*)=0;
+    virtual void call_004dceb0(void*);
     // Checked-STL boundaries: ECX tree, five stack arguments, RET14h.
     // output is a private8h iterator. No private-stack alias contract is claimed.
     virtual void call_004d1a50(void* tree,void* output,void* first_owner,
@@ -74,6 +75,7 @@ struct NativeGameLifetimeContext {
     // Required by the concrete array default. Same call service and actual
     // string/observer domain as the constructed game; null fails when reached.
     NativeGameArrayLifetimeContext* arrays;
+    NativeGameEmbeddedLifetimeContext* embedded;
 };
 struct NativeGameLifetimeProgress {
     std::uint32_t native_site{};
@@ -85,6 +87,7 @@ struct NativeGameLifetimeOperation final : NativeGameLifetimeProgress {
     NativeGameStorage* owner{};
     NativeGameLifetimeContext* context{};
     NativeGameArrayLifetimeOperation arrays[4];
+    NativeGameEmbeddedLifetimeOperation embedded;
     NativeGameLifetimeOperation()=default;
     ~NativeGameLifetimeOperation();
     NativeGameLifetimeOperation(const NativeGameLifetimeOperation&)=delete;
