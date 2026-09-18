@@ -2,6 +2,7 @@
 #include "bsp/native_game_construction.hpp"
 #include "bsp/native_lua_objects.hpp"
 #include "bsp/native_input_configuration_owner.hpp"
+#include "bsp/native_input_settings_tree_cleanup.hpp"
 #include <Windows.h>
 #include <cstdlib>
 #include <cstring>
@@ -31,14 +32,14 @@ void normal(NativeGameStorage& game,NativeGameLifetimeContext& x,NativeGameLifet
     o.native_site=0x4dcfd3;c.call_00c4dde0(pointer(g,0x14));
     o.native_site=0x4dcfde;c.call_0076a760(at(g,0x1ef0),x.embedded);
     o.native_site=0x4dcfe3;c.call_008d88f0();
-    o.native_site=0x4dcfee;c.call_004bf930(at(g,0x5f0));
+    o.native_site=0x4dcfee;c.call_004bf930(at(g,0x5f0),o.containers);
     const auto scalar=[&](void* volatile& cell,U slot,U site) {
         void* p=cell;if(p){o.native_site=site;c.virtual_scalar(p,slot,1);cell=nullptr;}
     };
     scalar(x.publication_00e18678,0,0x4dd005);scalar(x.publication_00e1867c,0,0x4dd01d);
     o.native_site=0x4dd026;c.call_004a9ac0();
     if(void* p=x.publication_00e19900) {
-        o.native_site=0x4dd037;c.call_006b9380(p);
+        o.native_site=0x4dd037;c.call_006b9380(p,x.profile,o.awards);
         o.native_site=0x4dd03d;c.free_00bf65ac(p);x.publication_00e19900=nullptr;
     }
     scalar(x.publication_00e18db0,0xc,0x4dd05c);scalar(x.publication_00e19698,0xc,0x4dd075);
@@ -51,7 +52,7 @@ void normal(NativeGameStorage& game,NativeGameLifetimeContext& x,NativeGameLifet
     o.native_site=0x4dd11e;c.free_00bf65ac(pointer(g,0x2200));
     o.native_site=0x4dd126;void* manager=c.call_004c1400();
     o.native_site=0x4dd12d;c.call_00b806f0(manager);
-    o.native_site=0x4dd134;c.call_004c7dd0(g);
+    o.native_site=0x4dd134;c.call_004c7dd0(g,o.containers);
     // Native captures the first grid BEFORE clearing the game publication.
     void* first_grid=x.grid_00e19b0c;x.game_00e188a8=nullptr;
     if(first_grid){o.native_site=0x4dd14f;c.virtual_scalar(first_grid,0,1);x.grid_00e19b0c=nullptr;}
@@ -63,9 +64,9 @@ void normal(NativeGameStorage& game,NativeGameLifetimeContext& x,NativeGameLifet
         o.native_site=0x4dd1b9;c.free_00bf65ac(pointer(g,0x7190));
     }
     word(g,0x7190,0);word(g,0x7194,0);word(g,0x7198,0);o.unwind_state=0x22;
-    o.native_site=0x4dd1d8;c.call_004cb220(at(g,0x7178),0);
+    o.native_site=0x4dd1d8;c.call_004cb220(at(g,0x7178),0,o.containers);
     o.native_site=0x4dd1e0;c.free_00bf6989(pointer(g,0x7178));
-    o.native_site=0x4dd1ee;c.call_004c4b40(at(g,0x716c));o.unwind_state=0x20;
+    o.native_site=0x4dd1ee;c.call_004c4b40(at(g,0x716c),o.containers);o.unwind_state=0x20;
     const auto string=[&](U offset,U getter,U release) {
         if(void* p=pointer(g,offset+4)) {
             U size=word(g,offset)+1;o.native_site=getter;void* pool=c.call_00419cc0(p,size,1,x.profile);
@@ -83,26 +84,26 @@ void normal(NativeGameStorage& game,NativeGameLifetimeContext& x,NativeGameLifet
     for(U i=0;i<5;++i) {void* p=pointer(g,offsets[i]);o.unwind_state=0x1b-static_cast<int>(i);
         if(p){terminal(p,decs[i],terms[i],c,o);word(g,offsets[i],0);}}
     constexpr U list_sites[]={0x4dd346,0x4dd351,0x4dd35c,0x4dd367,0x4dd372,0x4dd37d,0x4dd388,0x4dd393};
-    for(U i=0;i<8;++i){o.native_site=list_sites[i];c.call_004bf8e0(at(g,0x19b8-i*0xc));}
+    for(U i=0;i<8;++i){o.native_site=list_sites[i];c.call_004bf8e0(at(g,0x19b8-i*0xc),o.containers);}
     o.unwind_state=0xe;o.native_site=0x4dd3a3;c.call_007ff9f0(at(g,0x1944),x.profile);
-    using Tree=void(NativeGameLifetimeCalls::*)(void*,void*,void*,void*,void*,void*);
+    using Tree=void(NativeGameLifetimeCalls::*)(void*,void*,void*,void*,void*,void*,NativeGameProfileLifetimeContext*,NativeGameTreeLifetimeProgress&);
     U iterator[2]; // native private8h output, intentionally not initialized
     const auto tree=[&](U offset,U state,U site,U free_site,Tree f) {
         void* header=at(g,offset);void* head=pointer(header,4);void* first=pointer(head,0);
         o.unwind_state=static_cast<int>(state);o.native_site=site;
-        (c.*f)(header,iterator,header,first,header,head);
+        (c.*f)(header,iterator,header,first,header,head,x.profile,o.trees);
         o.native_site=free_site;c.free_00bf65ac(pointer(header,4));word(header,4,0);word(header,8,0);
     };
     tree(0x1930,0xd,0x4dd3c6,0x4dd3cf,&NativeGameLifetimeCalls::call_004d1a50);
     o.unwind_state=0xc;o.native_site=0x4dd3f5;c.array_destroy_00bf7c6e(at(g,0x1008),0x118,8,0x4cb2f0,x.arrays,o.arrays[1]);
     o.unwind_state=0xb;o.native_site=0x4dd412;c.array_destroy_00bf7c6e(at(g,0x748),0x118,8,0x4cb2f0,x.arrays,o.arrays[2]);
     o.unwind_state=0xa;o.native_site=0x4dd422;c.call_007fd8a0(at(g,0x650),x.profile,o.profile);
-    o.native_site=0x4dd42f;c.call_004cf3f0(at(g,0x638));
+    o.native_site=0x4dd42f;c.call_004cf3f0(at(g,0x638),o.containers);
     o.native_site=0x4dd438;c.free_00bf65ac(pointer(g,0x63c));word(g,0x63c,0);
     tree(0x628,8,0x4dd461,0x4dd46a,&NativeGameLifetimeCalls::call_004d22f0);
     o.unwind_state=7;string(0x600,0x4dd495,0x4dd49c);
-    o.native_site=0x4dd4a7;c.call_004c2ce0(at(g,0x5f0));
-    o.native_site=0x4dd4b2;c.call_004c4a50(at(g,0x5d8));
+    o.native_site=0x4dd4a7;c.call_004c2ce0(at(g,0x5f0),o.containers);
+    o.native_site=0x4dd4b2;c.call_004c4a50(at(g,0x5d8),o.containers);
     tree(0x5c8,4,0x4dd4d5,0x4dd4de,&NativeGameLifetimeCalls::call_004d2000);
     tree(0x5bc,3,0x4dd50a,0x4dd513,&NativeGameLifetimeCalls::call_004d41a0);
     tree(0x5b0,2,0x4dd53f,0x4dd548,&NativeGameLifetimeCalls::call_004cef40);
@@ -125,6 +126,7 @@ void NativeGameLifetimeOperation::acknowledge_diagnostic_cleanup() noexcept {
         for(const auto& array:arrays)if(array.phase==NativeGameArrayLifetimeOperation::Phase::running||array.phase==NativeGameArrayLifetimeOperation::Phase::failed)std::terminate();
         if(embedded.phase==NativeGameEmbeddedLifetimeOperation::Phase::running||embedded.phase==NativeGameEmbeddedLifetimeOperation::Phase::failed)std::terminate();
         if(profile.phase==NativeGameProfileLifetimeOperation::Phase::running||profile.phase==NativeGameProfileLifetimeOperation::Phase::failed)std::terminate();
+        if(awards.phase==NativeAwardRegistryLifetimeOperation::Phase::running||awards.phase==NativeAwardRegistryLifetimeOperation::Phase::failed)std::terminate();
         phase=Phase::diagnostic_retired;
     }
 }
@@ -144,6 +146,39 @@ void NativeGameLifetimeCalls::call_0076f000(void* p,NativeGameEmbeddedLifetimeCo
 void NativeGameLifetimeCalls::call_0041cc80(void* p){NativeGameEmbeddedLifetimeCalls::call_0041cc80(p);}
 void NativeGameLifetimeCalls::call_00b669a0(void* p){close_native_lua_state_00b669a0(*static_cast<NativeLuaStateStorage*>(p));}
 void NativeGameLifetimeCalls::call_004dceb0(void* p){destroy_native_input_configuration_004dceb0(p);}
+void* NativeGameLifetimeCalls::allocate_00bf55be(U n){return NativeGameContainerLifetimeCalls::allocate_00bf55be(n);}
+void NativeGameLifetimeCalls::call_004d1a50(void* p,void* out,void* fo,void* first,void* lo,void* last,NativeGameProfileLifetimeContext* c,NativeGameTreeLifetimeProgress& o){
+    if(!c||&c->calls!=this)throw std::invalid_argument("native game tree cleanup requires its actual string context");
+    o.owner=p;o.native_site=0x004d1a50;profile_call_004d1a50(p,out,fo,first,lo,last,*c);
+}
+void NativeGameLifetimeCalls::call_004cef40(void* p,void* out,void* fo,void* first,void* lo,void* last,NativeGameProfileLifetimeContext* c,NativeGameTreeLifetimeProgress& o){
+    if(!c||&c->calls!=this)throw std::invalid_argument("native game tree cleanup requires its actual string context");
+    o.owner=p;o.native_site=0x004cef40;clear_native_input_int_only_full_range_004cef40(p,out,fo,first,lo,last,c->actual_strings);
+}
+void NativeGameLifetimeCalls::call_004d2000(void* p,void* out,void* fo,void* first,void* lo,void* last,NativeGameProfileLifetimeContext* c,NativeGameTreeLifetimeProgress& o){
+    if(!c||&c->calls!=this)throw std::invalid_argument("native game tree cleanup requires its actual string context");
+    clear_native_game_tree_full_range_004d2000(p,out,fo,first,lo,last,*c,o);
+}
+void NativeGameLifetimeCalls::call_004d22f0(void* p,void* out,void* fo,void* first,void* lo,void* last,NativeGameProfileLifetimeContext* c,NativeGameTreeLifetimeProgress& o){
+    if(!c||&c->calls!=this)throw std::invalid_argument("native game tree cleanup requires its actual string context");
+    clear_native_game_tree_full_range_004d22f0(p,out,fo,first,lo,last,*c,o);
+}
+void NativeGameLifetimeCalls::call_004d41a0(void* p,void* out,void* fo,void* first,void* lo,void* last,NativeGameProfileLifetimeContext* c,NativeGameTreeLifetimeProgress& o){
+    if(!c||&c->calls!=this)throw std::invalid_argument("native game tree cleanup requires its actual string context");
+    clear_native_game_tree_full_range_004d41a0(p,out,fo,first,lo,last,*c,o);
+}
+void NativeGameLifetimeCalls::call_004c7dd0(void* p,NativeGameContainerLifetimeProgress& o){clear_native_game_payload_lists_004c7dd0(p,*this,o);}
+void NativeGameLifetimeCalls::call_006b9380(void* p,NativeGameProfileLifetimeContext* c,NativeAwardRegistryLifetimeOperation& o){
+    if(!c||&c->calls!=this)throw std::invalid_argument("award registry destruction requires the game's actual string context");
+    destroy_native_award_registry_006b9380(p,*c,o);
+}
+void NativeGameLifetimeCalls::call_004bf930(void* p,NativeGameContainerLifetimeProgress& o){destroy_native_game_scene_records_004bf930(p,*this,o);}
+void NativeGameLifetimeCalls::call_004bf8e0(void* p,NativeGameContainerLifetimeProgress& o){clear_native_game_unit_links_004bf8e0(p,*this,o);}
+void NativeGameLifetimeCalls::call_004c2ce0(void* p,NativeGameContainerLifetimeProgress& o){clear_native_game_scene_links_004c2ce0(p,*this,o);}
+void NativeGameLifetimeCalls::call_004cf3f0(void* p,NativeGameContainerLifetimeProgress& o){clear_native_game_small_string_nodes_004cf3f0(p,*this,o);}
+void NativeGameLifetimeCalls::call_004c4b40(void* p,NativeGameContainerLifetimeProgress& o){destroy_native_game_pointer_list_004c4b40(p,*this,o);}
+void NativeGameLifetimeCalls::call_004c4a50(void* p,NativeGameContainerLifetimeProgress& o){destroy_native_game_pointer_blocks_004c4a50(p,*this,o);}
+void NativeGameLifetimeCalls::call_004cb220(void* p,U requested,NativeGameContainerLifetimeProgress& o){resize_native_game_reference_slots_004cb220(p,requested,*this,o);}
 void* NativeGameLifetimeCalls::call_00419cc0(void*,U,U,NativeGameProfileLifetimeContext* context){
     if(!context||&context->calls!=this)throw std::invalid_argument("native game string cleanup requires its actual profile context");
     return profile_pool_00419cc0(context->strings);

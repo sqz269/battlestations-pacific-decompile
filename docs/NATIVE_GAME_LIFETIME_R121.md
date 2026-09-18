@@ -159,3 +159,55 @@ child. Four normal bodies889bytes and the consumed full-range library branch
 have copied-original composition evidence. General partial transient-tree erase,
 remaining parent cleanup services, native exceptions and ordinary admission remain
 open; see the R124 report for the exact fixture domain.
+
+## Correction from docs/NATIVE_GAME_CONTAINER_LIFETIME_R125.md
+
+R125 supplies nine complete normal bodies (878 bytes), binding seven previously
+required parent methods at fourteen sites: `4BF930`, `4BF8E0`, `4C2CE0`, `4C4A50`,
+`4CF3F0`, `4C4B40` and `4CB220`. They share the retained `operation.containers`
+progress record. The source preserves current list-head/count/base reloads,
+captured cells across virtual callbacks, reverse pointer-block frees and reference
+retains before old-storage release. Progress owns nothing and performs no rollback.
+
+Eight returning-call gaps (70 bytes) and the truncated `4C4B40` body were repaired;
+its `4C8180` thunk survived. A 71-case comparison of the copied original bodies
+against seven actual parent defaults matches 315 observations and 46,400 normalized
+bytes using real CRT/Win32 atomics and actual raw sentinel producers. Two source
+failure cases retain the expected allocation/cell graph. The separate controlled
+parent comparator still passes 52 cases, 3,537 snapshots, 141,402,076 bytes and four
+failure/replay cases, including shared progress identity. Strict build/three CTests
+pass. Actual payload virtual methods, remaining parent dependencies, native
+exception ABI, application admission and gameplay remain open.
+
+## Correction from docs/NATIVE_AWARD_REGISTRY_LIFETIME_R126.md
+
+R126 reconstructs six complete normal bodies (767 bytes) and consumes only the
+current full-range branch of the 201-byte6B91F0 library entry. Parent4DD037 now
+uses actual award-registry tree/record/list/string cleanup with the existing raw
+string context and retained awards child. Parent4DD134 now performs the four game
+lists' payload pass before node cleanup, retaining their sentinels for the later
+array destructor. Parent diagnostic retirement refuses a running/failed award child.
+
+Seven returning-call gaps139 bytes, two truncated functions and the removed489CA0
+thunk were repaired/restored with evidence. The nested comparison passes79 cases,
+989 observations and4,796,352 normalized bytes using real pool/manager/string-range
+services. The parent still passes52 cases/3,537 snapshots/141,402,076 bytes and four
+failure/replay cases. Strict Win32/three CTests pass. Native exception ABI, actual
+registry construction/session, remaining dependencies and gameplay stay open.
+
+## Correction from docs/NATIVE_GAME_TREE_LIFETIME_R127.md
+
+R127 supplies all five parent tree-range defaults at4DD3C6/4DD461/4DD4D5/
+4DD50A/4DD53F. The three newly reconstructed subtree bodies total188 bytes;
+three current full-range adapters use them. The int-only adapter reuses existing
+settings cleanup; the string-tree adapter delegates the existing complete raw
+VFS range implementation. Every parent tree site passes its actual profile/string
+context and retained operation.trees. Other non-tree dependencies remain open.
+
+Three11-byte returning-free gaps were repaired. The64 paired cases match434
+observations/472,808 bytes using all five actual defaults and real pool/node
+services. Existing ranges are compared at entry/final state,their source internal
+frees are not instrumented. The controlled parent still passes52 cases/3,537
+snapshots/141,402,076 bytes and four failure/replay cases. Strict Win32/three
+CTests pass. Fourteen context/partial-range guards and one partial-tree source
+failure pass. Native exception ABI,application admission and gameplay remain open.

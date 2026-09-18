@@ -347,6 +347,15 @@ struct GameUnitSlot {
     bsp::PilotAttackMode torpedo_attack_mode_370{bsp::PilotAttackMode::kHold};
     int torpedo_attack_mode_raised_tick{-1};
     bool torpedo_is_flight_lead{false};
+    // The sector scan of 009D3420, once it has a sampler.
+    int torpedo_scans_run{0};
+    int torpedo_clear_sectors_last{-1};
+    int torpedo_home_sector_last{-1};
+    float torpedo_turn_offset_last{0.0f};
+    // The issue gate 007EEF40 compares, as the host last evaluated it.
+    float torpedo_issue_threshold_390{0.0f};
+    float torpedo_armed_fraction_374{0.0f};
+    bool torpedo_issue_gate_open{false};
     // The approach object embedded at task+3F8h.
     bsp::TorpedoApproachState torpedo_approach{};
     int torpedo_approach_ticks{0};
@@ -2417,20 +2426,71 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 "PilotControl::pre_issue_hook", "007ee7f0");
                         }
                         bsp::ReleaseOrderIssueInputs read_issue_inputs() override {
-                            // 007EEF40 gates on ctl+390h > ctl+374h. Neither
-                            // field has a writer on the control block in this
-                            // image (the C7 scan at that displacement finds only
-                            // BSP_Gun_CreateAiBots and BSP_UnitGameObject_
-                            // Construct), so the pair is contract: unread and
-                            // the gate is taken as open for an ordered flight.
-                            owner_.log.unimplemented(
-                                "PilotControl::issue_authorisation_374_390",
-                                "007eef40");
+                            // 007EEF40 gates on ctl+390h > ctl+374h.
+                            // docs/TORPEDO_RELEASE_ORDERS.md section (5).
                             bsp::ReleaseOrderIssueInputs in;
-                            in.authorise_value_390 = 1.0f;
-                            in.authorise_threshold_374 = 0.0f;
-                            in.controlled_count_3cc = controlled_unit_count();
-                            in.force_flag_378 = false;
+                            const int count = controlled_unit_count();
+                            in.controlled_count_3cc = count;
+                            in.force_flag_378 = false;   // ctl+378h
+
+                            // ctl+374h: 007EE7F0's armed fraction, through the
+                            // reconstructed rule rather than a constant. The
+                            // per-unit round count is 007C1F60, which sums
+                            // 006E3500 over the aircraft's class 25h devices
+                            // holding ordnance 2Ah. This host has no device
+                            // model, so a torpedo-armed aircraft stands in with
+                            // one round until it releases: a SUBSTITUTION for
+                            // 007C1F60, not a reading of it.
+                            std::vector<bool> enabled;
+                            std::vector<int> rounds;
+                            std::vector<bool> is_caller;
+                            for (int i = 0; i < count; ++i) {
+                                const GameUnitSlot* const u = controlled(i);
+                                enabled.push_back(u != nullptr);
+                                int n = 0;
+                                if (u != nullptr) {
+                                    const bsp::OrdnanceKindSet set{u->ordnance_mask};
+                                    if (bsp::ordnance_has_torpedo_2bh(set)) {
+                                        n = 1 - u->torpedo_releases;
+                                        if (n < 0) n = 0;
+                                    }
+                                }
+                                rounds.push_back(n);
+                                is_caller.push_back(u == &slot_);
+                            }
+                            // std::vector<bool> is a bit proxy, so copy out.
+                            std::vector<unsigned char> enabled_bytes(
+                                enabled.begin(), enabled.end());
+                            std::vector<unsigned char> caller_bytes(
+                                is_caller.begin(), is_caller.end());
+                            static_assert(sizeof(bool) == sizeof(unsigned char),
+                                          "bool and unsigned char must share a size");
+                            bsp::FlightArmedFractionInputs frac;
+                            frac.controlled_count_3cc = count;
+                            frac.unit_enabled_5c =
+                                reinterpret_cast<const bool*>(enabled_bytes.data());
+                            frac.unit_rounds_007c1f60 = rounds.data();
+                            frac.unit_is_caller =
+                                reinterpret_cast<const bool*>(caller_bytes.data());
+                            in.authorise_threshold_374 =
+                                bsp::flight_armed_fraction_007ee7f0(frac);
+
+                            // ctl+390h: 0079CD36 seeds it with
+                            // *(float*)(unit->+538h + A0h) * 0.95. The class
+                            // descriptor field is unread - offset +A0h is shared
+                            // by too many object types for a byte scan to name it
+                            // - so the descriptor value stands in at 1.0 while
+                            // the 0.95 scale is the native's own. SUBSTITUTION,
+                            // with the address.
+                            owner_.log.unimplemented(
+                                "PlaneClass::issue_threshold_a0", "0079cd36");
+                            in.authorise_value_390 = static_cast<float>(
+                                1.0 * bsp::kIssueThresholdScale_00ceffb0);
+
+                            slot_.torpedo_issue_threshold_390 =
+                                in.authorise_value_390;
+                            slot_.torpedo_armed_fraction_374 =
+                                in.authorise_threshold_374;
                             return in;
                         }
                         int controlled_unit_count() override {
@@ -2542,16 +2602,40 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             out_point[2] = t->motion.position[2];
                             return true;
                         }
-                        float terrain_height_0041bc20(float, float) override {
+                        float terrain_height_0041bc20(float x, float z) override {
+                            // 0041BC20 bilinearly samples the AVOID-ZONE LAYER
+                            // at ctl+34Ch (00417FA0 maps world to cell, 0041BAE0
+                            // fetches four clamped cells), not the terrain
+                            // heightfield: the layer comes from
+                            // BSP_AvoidZoneRegistry_SelectLayerBySlope at
+                            // 007F1DCA and 0041BC20 appears in no vtable.
+                            // docs/TORPEDO_RUN_IN_PATH.md. USN01 is open water,
+                            // where the layer has nothing to report, so the sea
+                            // surface stands in for it here.
                             owner_.log.unimplemented(
-                                "Terrain::height_at", "0041bc20");
-                            return 0.0f;
+                                "AvoidZoneLayer::sample_0041bc20", "0041bc20");
+                            OceanFieldBinding sea(owner_);
+                            return bsp::ocean_water_height_0078cf20(x, z, sea);
                         }
-                        bool segment_blocked_00903bc0(const float[3],
-                                                      const float[3]) override {
+                        bool segment_blocked_00903bc0(const float from[3],
+                                                      const float to[3]) override {
+                            // 00903BC0 with ECX = [00E188A8]+19CCh: both
+                            // endpoints must clear the ground that 00903860
+                            // reports (the max over the objects at that
+                            // manager's +34Ch, each answering its +3D0h
+                            // sub-object's vtable +28h), and then no object in
+                            // the same list may intersect the segment through
+                            // vtable +3Ch. The occluder sweep is contract:
+                            // unread; the two ground tests are modelled.
                             owner_.log.unimplemented(
-                                "World::segment_blocked", "00903bc0");
-                            return false;
+                                "World::segment_occluders_00903bc0", "00903bc0");
+                            OceanFieldBinding sea(owner_);
+                            const float ga =
+                                bsp::ocean_water_height_0078cf20(from[0], from[2], sea);
+                            if (from[1] < ga) return true;   // 009D390E
+                            const float gb =
+                                bsp::ocean_water_height_0078cf20(to[0], to[2], sea);
+                            return to[1] < gb;               // 009D3946
                         }
                         bool target_reachable_007df360(const float[3]) override {
                             owner_.log.unimplemented(
@@ -2586,10 +2670,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // docs/TORPEDO_RELEASE_ORDERS.md.
                             ctl.attack_mode_370 =
                                 static_cast<int>(slot_.torpedo_attack_mode_370);
-                            // ctl+34Ch is the terrain sampler; without one the
-                            // sector scan does not run, which is the native's
-                            // own break at 009D374C.
-                            ctl.has_terrain_34c = false;
+                            // ctl+34Ch, the avoid-zone layer 007F1DCA selects.
+                            // It is now backed, so the sector scan runs.
+                            ctl.has_terrain_34c = true;
                             ctl.has_designated_target_3d0 = target() != nullptr;
                             ctl.designated_target_is_self = false;
                             return ctl;
@@ -2681,6 +2764,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 ++slot_.torpedo_approach_no_target_ticks;
                             }
                             if (r.replanned) ++slot_.torpedo_approach_replans;
+                            if (r.scan_ran) {
+                                ++slot_.torpedo_scans_run;
+                                slot_.torpedo_clear_sectors_last =
+                                    slot_.torpedo_approach.sector_clear_count_58;
+                                slot_.torpedo_turn_offset_last =
+                                    slot_.torpedo_approach.turn_offset_5c;
+                                slot_.torpedo_home_sector_last =
+                                    slot_.torpedo_approach.home_sector_64;
+                            }
                             // task+529h/+52Ah and task+484h/+488h are the same
                             // storage as approach+131h/+132h and +8Ch/+90h.
                             slot_.torpedo_aim_flag_529 = r.in_range_latch;
@@ -2936,6 +3028,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         TorpedoReleaseOrderBinding binding(owner_, unit_);
                         const bsp::ReleaseOrderIssueResult r =
                             bsp::torpedo_issue_release_orders_007c0d90(binding);
+                        unit_.torpedo_issue_gate_open = r.gate_passed;
                         if (!r.walk_found_device) return;
                         ++unit_.torpedo_orders_issue_ticks;
                         unit_.torpedo_orders_issued += r.units_raised;
@@ -4589,6 +4682,12 @@ void GameUnitsHost::report() {
                         slot->torpedo_first_engaged_tick,
                         static_cast<double>(slot->torpedo_range_min),
                         static_cast<double>(slot->torpedo_range_last));
+                    host.log.notef("  torpedo %-12s scan 009D37AE: runs=%d "
+                        "clear_sectors=%d of 36 home_sector=%d turn_5c=%.4f rad",
+                        slot->row.name.c_str(), slot->torpedo_scans_run,
+                        slot->torpedo_clear_sectors_last,
+                        slot->torpedo_home_sector_last,
+                        static_cast<double>(slot->torpedo_turn_offset_last));
                     host.log.notef("  torpedo %-12s orders: lead=%d "
                         "issue_ticks=%d raised=%d peak_C58h=%d left=%d "
                         "arm_offers=%d blocked_0099af53=%d attack_mode_370=%d "
@@ -4604,6 +4703,12 @@ void GameUnitsHost::report() {
                         static_cast<int>(slot->torpedo_attack_mode_370),
                         slot->torpedo_attack_mode_raised_tick,
                         static_cast<double>(slot->torpedo_drop_timer));
+                    host.log.notef("  torpedo %-12s issue gate 007EEF40: "
+                        "ctl+390h=%.4f ctl+374h=%.4f open=%d",
+                        slot->row.name.c_str(),
+                        static_cast<double>(slot->torpedo_issue_threshold_390),
+                        static_cast<double>(slot->torpedo_armed_fraction_374),
+                        slot->torpedo_issue_gate_open ? 1 : 0);
                 } else {
                     host.log.notef("  torpedo %-12s approach 009D3420: "
                         "ticks=%d no_target=%d replans=%d aim_ticks=%d | "
@@ -4685,14 +4790,27 @@ void GameUnitsHost::report() {
                                 static_cast<double>(worst_range),
                                 static_cast<double>(engage), arm_offers);
                         } else {
+                            int aim_total = 0;
+                            for (const auto& s : host.slots) {
+                                if (!s->torpedo_task_installed) continue;
+                                aim_total += s->torpedo_aim_ticks;
+                            }
                             host.log.notef("summary mission torpedo task: no "
                                 "release. The range reached the engage distance "
-                                "(closest %.1f against 8Ch=%.1f) and %d offers "
-                                "were made at 0099AF9B, so the gate is past "
-                                "009D3210 and past unit+C58h; inspect the "
-                                "per-aircraft state sequence above",
+                                "(closest %.1f against 8Ch=%.1f), %d offers were "
+                                "made at 0099AF9B and the rule reached aim for "
+                                "%d ticks. The gate is the aim-complete byte "
+                                "state+2Ch: 009D31B0 returns it at 009D31BF, "
+                                "009D4030 step 11 needs it to leave aim for "
+                                "goaway, and 009D15F0 writes it at 009D236E "
+                                "under the two-clause test at 009D235A and "
+                                "009D2368. That condition is the unread part of "
+                                "the aim tick, so the host never raises it and "
+                                "the task cannot reach done or prepare, where "
+                                "009D49A0 arms prepare+98h and 009D2720 releases",
                                 static_cast<double>(worst_range),
-                                static_cast<double>(engage), arm_offers);
+                                static_cast<double>(engage), arm_offers,
+                                aim_total);
                         }
                     }
                 }
