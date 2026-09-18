@@ -36,6 +36,7 @@
 #include "bsp/projectile_kinds.hpp"
 #include "bsp/gameplay_settings_tail.hpp"
 #include "bsp/ship_ai_approach_curves.hpp"
+#include "bsp/ship_ai_approach_tune.hpp"
 #include "bsp/ship_ai_bearing_rating.hpp"
 #include "bsp/ship_ai_ring_scan.hpp"
 #include "bsp/ship_ai_clearance_profile.hpp"
@@ -217,6 +218,12 @@ struct GameShipAiHost::Impl {
     // GameGunneryHost::set_ship_ai. It is the only thing in this process that
     // runs 00956C20, so it owns unit+394h, +430h, +490h and +494h.
     const GameGunneryHost* gunnery{nullptr};
+    // Packet cc8_ship_ai_approach_slot_tune: [unit+73Ch], which
+    // BSP_ShipAi_BrainRecordConstruct copies into brain+0AB0h at 009F11AA.
+    // BSP_UnitVehicleBase_Construct fills it from ten .rdata immediates at
+    // 0081F214..0081F27D, the same ten for every unit it constructs, so one
+    // shared copy is what the image's per-unit blocks all hold.
+    bsp::ShipAiApproachTune tune{bsp::ship_ai_approach_tune_defaults_0081f200()};
     bool avoid_all_ship_collision() const {
         bool value;
         if (!settings_owner || !settings_owner->read_avoid_all_ship_collision(value))
@@ -1399,8 +1406,7 @@ public:
         return bsp::length_2d_00414c60(std::array<float, 2>{delta.x, delta.z});
     }
     float tune_reject_penalty_04() override {
-        owner_.record("ShipAiRingScan::tune_reject_penalty_04", 0x009e784bu);
-        return 0.0f;
+        return owner_.tune.slot_weight; // 009E784B, tune+4h
     }
     void rebuild_unit_world_matrix() override {
         owner_.record("ShipAiRingScan::rebuild_unit_world_matrix", 0x009e7cadu);
@@ -1475,8 +1481,7 @@ public:
         return ctl_.approach_scores[slot].raw_18;
     }
     float tune_scale_00() override {
-        owner_.record("ShipAiApproach::tune_scale_00", 0x009e81fau);
-        return 0.0f;
+        return owner_.tune.slot_score_scale; // 009E81FA, tune+0h
     }
 
 private:
@@ -1496,11 +1501,10 @@ public:
         return 0.0f;
     }
     float tune_bearing_10() override {
-        owner_.record("ShipAiApproach::tune_bearing_10", 0x009e75f2u);
-        return 0.0f;
+        return owner_.tune.evade_bearing; // 009E75F2, tune+10h
     }
-    float tune_evade_14() override { return 0.0f; }
-    float tune_evade_span_18() override { return 0.0f; }
+    float tune_evade_14() override { return owner_.tune.evade_weight; }   // tune+14h
+    float tune_evade_span_18() override { return owner_.tune.evade_span; } // tune+18h
 
 private:
     GameShipAiHost::Impl& owner_;
@@ -1517,8 +1521,10 @@ public:
         owner_.record("ShipAiApproach::scratch_00954940", 0x00954940u);
     }
     float tune_range_override_1c() override {
-        owner_.record("ShipAiApproach::tune_range_override_1c", 0x009e6ec5u);
-        return -1.0f;
+        // 009E6EC5. The installed -1.0f is below the 0.0f at 00D7A218, so the
+        // override arm at 009E6ECA is not taken and the curve scan runs. The
+        // host guessed this value before the block was read; it is now sourced.
+        return owner_.tune.range_override; // tune+1Ch
     }
     bool target_is_kind_vtable_005c(int) override {
         owner_.record("ShipAiApproach::target_kind_005c", 0x009e6efcu);
@@ -1593,8 +1599,7 @@ public:
         owner_.done("ShipAiApproach::score_slot_009e6870", 0x009e6870u);
     }
     float tune_slot_04() override {
-        owner_.record("ShipAiApproach::tune_slot_04", 0x009e7489u);
-        return 0.0f;
+        return owner_.tune.slot_weight; // 009E7489, tune+4h
     }
 
 private:
@@ -1656,10 +1661,9 @@ public:
         return bsp::length_2d_00414c60(std::array<float, 2>{v.x, v.z});
     }
     float tune_avoid_strength_08() override {
-        owner_.record("ShipAiApproach::tune_avoid_strength_08", 0x009e964eu);
-        return 0.0f;
+        return owner_.tune.avoid_strength; // 009E964E, tune+8h
     }
-    float tune_avoid_span_0c() override { return 0.0f; }
+    float tune_avoid_span_0c() override { return owner_.tune.avoid_span; } // tune+0Ch
 
 private:
     GameShipAiHost::Impl& owner_;
@@ -1688,8 +1692,7 @@ public:
         return score;
     }
     float tune_reject_penalty_04() override {
-        owner_.record("ShipAiApproach::select_tune_reject_04", 0x009e784bu);
-        return 0.0f;
+        return owner_.tune.slot_weight; // 009E784B, tune+4h
     }
     void refresh_unit_pose() override {
         owner_.record("ShipAiApproach::select_refresh_pose", 0x009e7cb4u);
@@ -1853,8 +1856,17 @@ public:
         owner_.done("ShipAiApproach::select_slot", 0x009e76d0u);
         ++row_.ring_scans;
         ++owner_.summary.ring_scans;
+        // Packet cc8_ship_ai_approach_slot_tune: what the selection settled on,
+        // and how often the heading it publishes actually changed.
+        const float previous_heading = row_.approach_heading_120c;
         row_.ring_scan_winner = ctl_.approach.committed_slot_11e8;
         row_.approach_heading_120c = ctl_.approach.commanded_heading_120c;
+        if (row_.ring_scans == 1) {
+            row_.ring_winner_first = row_.ring_scan_winner;
+        } else if (row_.approach_heading_120c != previous_heading) {
+            ++row_.heading_changes;
+        }
+        row_.ring_winner_last = row_.ring_scan_winner;
     }
     void limit_throttle_009e6a90() override {
         // 009E6A90's first act is wrap(heading - nested+120Ch), and nested+120Ch
@@ -4928,12 +4940,14 @@ void GameShipAiHost::report() {
     for (const GameShipAiRow& row : host.rows) {
         if (row.standoff_choices == 0) continue;
         host.log.notef("  standoff %-20s choices=%llu first=%.1f last=%.1f "
-            "curve_own_nonzero=%d curve_target_nonzero=%d max_weapon_range=%.1f",
+            "curve_own_nonzero=%d curve_target_nonzero=%d max_weapon_range=%.1f "
+            "slot_first=%d slot_last=%d heading_changes=%llu",
             row.unit.c_str(), row.standoff_choices,
             static_cast<double>(row.standoff_range_first),
             static_cast<double>(row.standoff_range_last),
             row.curve_own_nonzero, row.curve_target_nonzero,
-            static_cast<double>(row.unit_max_weapon_range));
+            static_cast<double>(row.unit_max_weapon_range),
+            row.ring_winner_first, row.ring_winner_last, row.heading_changes);
     }
     host.log.notef("summary mission ship ai command completion events=%llu callbacks=%llu "
         "end_commands=%llu queue_advances=%llu",

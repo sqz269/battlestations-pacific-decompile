@@ -17,7 +17,9 @@
     "007ed430": "ECX ctl; one stacked int mode; RET4; body 007ED430-007ED442",
     "0099b740": "ECX task; no stack arguments; RET0; body 0099B740-0099B77A",
     "0099b710": "no arguments; AL result; RET0; raw body 0099B710-0099B712 with NO Ghidra function",
-    "source": "stack cleanup at each RET plus the push count at every call site listed below"
+    "source": "stack cleanup at each RET plus the push count at every call site listed below",
+    "007ee7f0": "ECX ctl; one stacked unit; the hook 007EEF30 calls at 007EEF3B",
+    "007c1f60": "ECX unit; no stack arguments; int result"
   },
   "calls": [
     {
@@ -91,6 +93,12 @@
       "native": "task->vtable[38h]",
       "note": "the authorisation predicate; the torpedo task inherits the base 0099B710, MOV AL,1 / RET, so it is unconditional for this class",
       "host_method": "pilot_attack_mode_0099b740"
+    },
+    {
+      "address": "007ee83d",
+      "native": "007c1f60",
+      "note": "the per-unit remaining-round sum inside 007EE7F0; it walks unit+48h for class 25h devices holding ordnance 2Ah and sums 006E3500 over them",
+      "host_method": "flight_armed_fraction_007ee7f0"
     }
   ],
   "calls_in_undefined_regions": [],
@@ -131,7 +139,10 @@
     "007eef30": "partial - the issue loop 007EEF30-007EEF92 in full; the tail from 007EEF96 is not transcribed",
     "007c0d90": "partial - the control flow and the call site; the six vtable slots of the device walk are named, not read",
     "009a2810": "partial - the two 007ED3F0 arms only",
-    "unit+5Ch": "partial - the ESI-base byte-store scan finds BSP_SceneNode_Enable and BSP_SceneNode_Disable; other bases were not enumerated"
+    "unit+5Ch": "partial - the ESI-base byte-store scan finds BSP_SceneNode_Enable and BSP_SceneNode_Disable; other bases were not enumerated",
+    "007ee7f0": "full",
+    "007c1f60": "full",
+    "0079cbd0": "partial - the seeding block 0079CD05-0079CD36 only"
   },
   "validation": {
     "build": "scripts/build.ps1 MSVC Win32 /W4 /WX clean",
@@ -144,7 +155,7 @@
     "usn01_next_gate": "the in-range latch approach+131h (task+529h) at 009D3774. It closes only below approach+8Ch = 2200 and the closest approach was 2906, so 009D4030 step 10 never promotes attackrun to aim and 009D49A0, which arms prepare+98h only in prepare (009D49B2), spends its 6490 offers on nothing. The blocker is the flight path, not the release logic",
     "usn02_after": "shots=734 first_shot=1.40 s hull=180 part=0 deaths=2 total_damage=18525.6 projectiles created=734 - identical to the milestone 2t baseline",
     "usn02_torpedo": "no ordered aircraft carries torpedo ordnance (kind 2Bh), so 0099A170 builds no kind Eh task",
-    "wiring_assumption": "ctl+374h and ctl+390h, the pair 007EEF40 compares, have no writer on the pilot control block in this image, so the host logs them unimplemented and takes the issue gate as open for an ordered flight"
+    "wiring_assumption": "the host was wired before ctl+374h and ctl+390h were read and it logs them unimplemented with the gate taken as open; reading them shows that is correct for a five-aircraft flight, since 374h = 0.8 and the threshold is a descriptor field times 0.95. Replacing the stub with flight_armed_fraction_007ee7f0 waits for src/game_hosts_units.cpp, which passed to agent/cc8-bank-inputs as soon as this packet released it"
   },
   "corrections": [
     "docs/TORPEDO_APPROACH_UPDATE.md treats ctl+3D0h as a single designated target; it is an array of the units the control block drives, count ctl+3CCh, walked at 007EEF5C with LEA/ADD 4. 009D3D88 loads its first element, so 009D3420's no-ordnance branch compares the approach's target point against the flight leader",
@@ -152,9 +163,27 @@
   ],
   "open_questions": [
     "why the five USN01 aircraft never close inside approach+8Ch = 2200; the sector plan at approach+5Ch stays zero because ctl+34Ch (the terrain sampler) is null in this host, so the run-in has no planned heading and the moveto steering carries them",
-    "ctl+374h and ctl+390h, the pair whose comparison at 007EEF40 gates the whole issue; the C7 scan at that displacement finds no writer on the pilot control block",
+    "the class descriptor field at unit+538h, +A0h, the one number behind ctl+390h, and the rest of 0079CBD0",
     "the six vtable slots of 007C0D90's device walk, and 007EE7F0",
     "008A4B10 BSP_LuaBinding_PilotStopCloseToShip, the only route to attack mode 2, and whether a USN01 mission script takes it",
     "007D681E, the LEA that takes a pointer to unit+C58h inside BSP_Plane_ReadPropertyBag"
+  ],
+  "writer_census_issue_gate_374h_390h": {
+    "method": "both fields are floats, so the integer scans of the C58h census were the wrong form; the float scans F3 0F 11 ?? <disp32> (MOVSS) and D9 ?? <disp32> (x87) find them",
+    "007ee883": "FSTP [EDI+374h] in 007EE7F0, the empty-flight arm storing zero",
+    "007ee891": "MOVSS [EDI+374h],XMM0 in 007EE7F0, armed/total",
+    "007cd36": "MOVSS [EAX+390h],XMM0 at 0079CD36 in 0079CBD0, one of five fields seeded from *(float*)(unit->+538h + A0h) * 0.95 (FMUL double [00CEFFB0] at 0079CCF5) when ctl+3E8h is zero; +394h and +398h in the same block are the altitudes 009D4A70 later overwrites, which identifies the object as the pilot control block",
+    "reads": "007EEF40 FLD [ESI+374h] and 007EEF46 FLD [ESI+390h], the gate itself",
+    "consequence": "the gate is ctl+390h > ctl+374h. For USN01 five loaded torpedo bombers give 374h = 4/5 = 0.8 because the caller deducts its own next round, so the gate is open for any descriptor value above about 0.842. It also throttles a large formation: at twenty loaded aircraft 374h = 0.95 and the gate closes"
+  },
+  "names_added": [
+    {
+      "address": "007ee7f0",
+      "name": "BSP_PilotControl_RefreshArmedFraction"
+    },
+    {
+      "address": "007c1f60",
+      "name": "BSP_Unit_CountDroppableRounds"
+    }
   ]
 }

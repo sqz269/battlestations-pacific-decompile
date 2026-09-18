@@ -48,32 +48,103 @@
     }
   ],
   "byte_decodes": [
-    {"address": "0099e14c", "bytes": "dc c9", "reading": "FMUL ST(1),ST(0)", "why": "the D8 C9 reading would make the third InterpolateClamped push -0.3*C*C, dimensionally impossible; DC C9 gives x1 = +C"},
-    {"address": "0099e168", "bytes": "de ca", "reading": "FMULP ST(2),ST(0)", "why": "produces y0 = -0.3C from the -C pushed at 0099E162"}
+    {
+      "address": "0099e14c",
+      "bytes": "dc c9",
+      "reading": "FMUL ST(1),ST(0)",
+      "why": "the D8 C9 reading would make the third InterpolateClamped push -0.3*C*C, dimensionally impossible; DC C9 gives x1 = +C"
+    },
+    {
+      "address": "0099e168",
+      "bytes": "de ca",
+      "reading": "FMULP ST(2),ST(0)",
+      "why": "produces y0 = -0.3C from the -C pushed at 0099E162"
+    }
   ],
   "confirmed_not_defective": [
-    {"address": "0099e180", "note": "FSUBR against the DOUBLE copy of h written by 0099E136 FST double [E0+5Ch]; ST0 = h - s. The divide by C is the separate FDIV at 0099E18D. Reconstruction already correct."},
-    {"address": "0099e17b", "note": "soft zone endpoints -C, -0.3C, +C, +0.3C confirmed from the byte decodes above. Reconstruction already correct."},
-    {"address": "0099d479", "note": "dtScale = max(unit+340h * 0.4f, 1.0f), 00CE65D0 = 0.40000000596. unit+340h is the luaMW_SetCheatTurbo multiplier (FUN_008A62A0, stores at 008A6417/008A6436 gated on vtable[5Ch](5), strings 'luakod' and 'luaMW_SetCheatTurbo failed:'), so the expression is exactly 1.0 for any value at or below 2.5 and the host's dt_scale = 1.0f pin is exact in normal play. No change made."}
+    {
+      "address": "0099e180",
+      "note": "FSUBR against the DOUBLE copy of h written by 0099E136 FST double [E0+5Ch]; ST0 = h - s. The divide by C is the separate FDIV at 0099E18D. Reconstruction already correct."
+    },
+    {
+      "address": "0099e17b",
+      "note": "soft zone endpoints -C, -0.3C, +C, +0.3C confirmed from the byte decodes above. Reconstruction already correct."
+    },
+    {
+      "address": "0099d479",
+      "note": "dtScale = max(unit+340h * 0.4f, 1.0f), 00CE65D0 = 0.40000000596. unit+340h is the luaMW_SetCheatTurbo multiplier (FUN_008A62A0, stores at 008A6417/008A6436 gated on vtable[5Ch](5), strings 'luakod' and 'luaMW_SetCheatTurbo failed:'), so the expression is exactly 1.0 for any value at or below 2.5 and the host's dt_scale = 1.0f pin is exact in normal play. No change made."
+    }
   ],
   "source_changes": [
-    "src/plane_ai_control.cpp: pilot_plan_roll_0099e2ba passes turn_roll_pitch_limit_roll_2 as y0 and roll_1 as y1, matching the pushes at 0099E1BF and 0099E1B1. Argument order only; no constant, branch or input changed."
+    "src/plane_ai_control.cpp: pilot_plan_roll_0099e2ba passes turn_roll_pitch_limit_roll_2 as y0 and roll_1 as y1, matching the pushes at 0099E1BF and 0099E1B1. Argument order only; no constant, branch or input changed.",
+    "src/game_hosts_units.cpp: rin.scale.caps_rate_at_one set from bsp::unit_is_kind_of(class_id, 0x10) || (class_id, 0x16); the dead rin.small_turn_roll_limit = false deleted. Landed once the file was free."
   ],
   "checks": {
     "build": "scripts/build.ps1 Win32 Release /W4 /WX passed.",
     "ctest": "reconstructed_math and tool_tests pass; no new test added.",
     "usn01": "four runs through tools/run_game.ps1, see doc Validation. closed_mean -321.6 m (baseline) -> 3682.6 m (this fix alone) -> 4028.3 m (with the host predicate applied for measurement). worst_closed -3952.0 m -> 3300.4 m -> 3840.0 m; every ordered aircraft closes and none leaves the map.",
-    "usn02": "unchanged with both changes: candidates=3421, shots=734, first_shot=1.40 s, hull=180, deaths=2, total_damage=18525.6."
+    "usn02": "unchanged with both changes: candidates=3421, shots=734, first_shot=1.40 s, hull=180, deaths=2, total_damage=18525.6.",
+    "usn01_landed": "With the predicate landed on the merged tree, USN01 reproduces the measured run D aircraft for aircraft: closed_mean 4028.3 m, worst_closed 3840.0 m, range_last_mean 799.1 m.",
+    "usn02_landed": "Unchanged: shots=734, hull=180, deaths=2, total_damage=18525.6."
   },
   "contracts_not_landed": [
-    "src/game_hosts_units.cpp is held by another worker. rin.scale.caps_rate_at_one = unit_is_kind_of(class_id, 0x10) || unit_is_kind_of(class_id, 0x16), replacing the dead rin.small_turn_roll_limit = false. Applied only to produce run D and reverted; the file is untouched in this branch.",
-    "rin.dt_scale = 1.0f needs no change."
+    "rin.dt_scale = 1.0f needs no change; see the doc section 3."
   ],
   "no_ghidra_function": [],
   "limitations": [
-    "Run D required the host predicate, which could not be committed, so the committed tree reproduces run C and not run D. The acceptance bar (predicate applied AND the flight not leaving the map) was met in measurement only.",
     "heading_error_last_mean rises from 0.147 to 1.191 rad across the fix. It is a last-frame sample and the flight now arrives at 800 m and manoeuvres instead of still running in from 5.1 km; two of the five aircraft end at 0.015 and 0.048 rad. Not independently attributed beyond that reading.",
-    "The other four InterpolateClamped call sites in 0099D300 (0099E07E, 0099E17B, 0099E4CC, 0099E5FC) were not audited for the same endpoint reversal. 0099E17B was, and is correct. PARTIAL.",
-    "unit+340h's constructor default was not located; no store form reaches it in BSP_PlaneUnitInstance_Construct, so it is zero-fill or untouched. Either way the max() pins dtScale to 1.0."
-  ]
+    "unit+340h's constructor default was not located; no store form reaches it in BSP_PlaneUnitInstance_Construct, so it is zero-fill or untouched. Either way the max() pins dtScale to 1.0.",
+    "0099D95C's y1 is a value carried in on the x87 stack from before the block; it was not traced to its producer, because the power arm is not reconstructed. A packet that reconstructs that arm must establish it first. PARTIAL."
+  ],
+  "interpolate_clamped_audit": {
+    "note": "00419010 clamps between its two y endpoints in whichever order they arrive, so a reversed pair is silent. Nine call sites in 0099D300, not the five the earlier follow-up named: 0099E4CC is FMUL [ESP+40h] and 0099E5FC is FSTP [ESP+54h], neither is a call.",
+    "audited": [
+      {
+        "site": "0099e022",
+        "args": "x0=tuning+7Ch y0=1.0f x1=tuning+80h y1=0.0f x=|bank|",
+        "verdict": "correct"
+      },
+      {
+        "site": "0099e07e",
+        "args": "x0=tuning+8Ch y0=0.0f x1=tuning+90h y1=1.0f x=|h|",
+        "verdict": "correct"
+      },
+      {
+        "site": "0099e17b",
+        "args": "x0=-C y0=-0.3C x1=+C y1=+0.3C x=h",
+        "verdict": "correct"
+      },
+      {
+        "site": "0099e1cc",
+        "args": "x0=tuning+6Ch y0=tuning+78h x1=tuning+70h y1=tuning+74h x=pitch error",
+        "verdict": "WAS REVERSED, fixed in this packet"
+      },
+      {
+        "site": "0099e390",
+        "args": "x0=-t y0=+1.0f x1=+t y1=-1.0f x=A",
+        "verdict": "correct"
+      },
+      {
+        "site": "0099d95c",
+        "args": "x0=-(tuning+B0h) via XMM4=-0.0f y0=tuning+B4h x1=0.0f y1=x87 carry-in x=[ESP+24h]",
+        "verdict": "listing recorded; the power arm has no reconstruction, nothing to reverse"
+      },
+      {
+        "site": "0099db9e",
+        "args": "x0=00D1F3DC=-6.94444466 y0=00CE7D7C=-2.0f x1=00D0686C=+6.94444466 y1=00CE3958=+2.0f x=[ESP+24h]",
+        "verdict": "listing recorded; the air-brake arm has no reconstruction, nothing to reverse"
+      },
+      {
+        "site": "0099dd35",
+        "args": "x0=007C4810's result y0=5deg (00CEDF5C) x1=class+18Ch TravelSpeed y1=20deg (00CE398C) x=speed",
+        "verdict": "correct; confirms PILOT_PLANNER_PITCH_ROLL section 2a on the 0099DD31 PUSH ECX shift, and is unreconstructed"
+      },
+      {
+        "site": "0099e8c8",
+        "args": "x0=tuning+7Ch y0=0.0f x1=tuning+80h y1=3.0f (00CE3854) x=|bank|",
+        "verdict": "correct; matches plan_yaw_0099e81a"
+      }
+    ],
+    "result": "All nine sites in 0099D300 now carry a verdict. One was reversed (0099E1CC, fixed). Four are correct. Three are in arms with no reconstruction, so their listing order is recorded for whoever reconstructs them. No source change came out of the final four, so no run to attribute."
+  }
 }

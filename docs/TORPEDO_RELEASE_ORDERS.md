@@ -232,11 +232,72 @@ where the native runs it. Four changes in `src/game_hosts_units.cpp`:
 4. The census reports, per aircraft, the lead flag, the issue ticks, the orders raised, the peak
    and remaining `unit+C58h`, the arming offers, the attack mode and the drop countdown.
 
-`ctl+374h` and `ctl+390h`, the pair whose comparison at `007EEF40` gates the whole issue, have no
-writer on the control block in this image, so the host logs them through the unimplemented-host
-mechanism and takes the gate as open for an ordered flight. That is the one assumption in the
-wiring, and it is stated rather than hidden: if those fields turn out to hold the issue closed, the
-budget would never be handed out and the runs below would change.
+`ctl+374h` and `ctl+390h`, the pair whose comparison at `007EEF40` gates the whole issue, are read
+in section (5) below. The host was wired before they were read and it logs them through the
+unimplemented-host mechanism with the gate taken as open; section (5) shows that is the right
+answer for a five-aircraft flight, for a reason rather than by assumption. Replacing the stub with
+`flight_armed_fraction_007ee7f0` is left for the next packet, because
+`src/game_hosts_units.cpp` passed to `agent/cc8-bank-inputs` as soon as this packet released it.
+
+## (5) The issue gate: `ctl+374h` and `ctl+390h`
+
+Both are **floats**, so the integer store scans of section (1) were the wrong form for them. The
+float scans, `F3 0F 11 ?? <disp32>` for `MOVSS` and `D9 ?? <disp32>` for the x87 stores, find the
+producers at once.
+
+### `ctl+374h`, the armed fraction, from `007EE7F0`
+
+`void __thiscall(ctl, unit)`, the hook `007EEF30` calls first at `007EEF3B`, writing `+374h` at
+`007EE891` and `007EE883`:
+
+```
+ctl->+3ECh = 0;
+armed = 0; total = 0;
+for (i = 0; i < ctl->+3CCh; ++i) {
+    u = ((void**)(ctl + 3D0h))[i];
+    if (u && u->+5Ch) {                    /* the scene-node enabled byte */
+        total += 1.0f;
+        n = 007C1F60(u);
+        if (u == unit) --n;                /* the caller is about to spend one */
+        if (n > 0) armed += 1.0f;
+    }
+}
+ctl->+374h = total > 0 ? armed / total : 0;
+```
+
+`007C1F60(unit)` walks the same device list at `unit+48h` that `007C0D90` walks, keeps the devices
+of class `25h` holding ordnance `2Ah`, and **sums `006E3500` over them**: the remaining round count.
+So `ctl+374h` is the fraction of the flight's enabled aircraft that still have a round, with the
+calling aircraft's own next round already deducted.
+
+### `ctl+390h`, the threshold, from `0079CBD0`
+
+The only writer on the control block is `0079CD36`, inside a block at `0079CD05`-`0079CD36` that
+seeds five fields at once when `ctl->+3E8h` is zero:
+
+```
+v = *(float*)(unit->+538h + A0h) * 0.95;   /* 0079CCE5, FMUL double [00CEFFB0] */
+ctl->+384h = 0; ctl->+388h = 0;
+ctl->+38Ch = v; ctl->+398h = v; ctl->+394h = v; ctl->+390h = v;
+```
+
+`+394h` and `+398h` are the cruise and second altitudes that `009D4A70` later overwrites with
+`Pilot/Torpedo/CruisingAlt`, which is how the block is identified. `unit+538h` is the class
+descriptor and `+A0h` a field of it: `contract: unread`. `0079CBD0` has no callers and is reached
+through a vtable.
+
+### What that means for the runs
+
+The gate is `ctl->+390h > ctl->+374h`. For USN01's flight of five loaded torpedo bombers every
+aircraft is enabled and carries a round, and the caller deducts its own, so `+374h = 4/5 = 0.8`.
+The gate is therefore open for any descriptor value above about `0.842`, and closed only if the
+descriptor field is smaller than that. The rule also **throttles a large formation**: at twenty
+loaded aircraft `+374h` is `0.95`, and `0.95 > 0.95` is false, so orders stop going out until some
+of the flight has spent its load.
+
+So the wiring's assumption is supported rather than merely stated, with one residual unknown named:
+the class descriptor field at `unit+538h`, `+A0h`. `coverage: partial` for `0079CBD0`, of which only
+the seeding block is read.
 
 ## Corrections
 
@@ -307,10 +368,9 @@ heading has no planned run-in, and the `moveto` state's own steering is what car
 1. **Why the five USN01 aircraft do not close inside 2200.** This is now the only thing between an
    ordered torpedo flight and a drop. The `moveto` state's steering and the missing sector plan
    (`ctl+34Ch` is null, so `approach+5Ch` stays zero) are the two candidates.
-2. **`ctl+374h` and `ctl+390h`**, the pair whose comparison at `007EEF40` gates the whole issue. The
-   `C7 ?? 90 03 00 00` scan finds writers only in `BSP_Gun_CreateAiBots` and
-   `BSP_UnitGameObject_Construct`, neither of which is the pilot control block, so the producers are
-   elsewhere and this is the next unknown on the release path.
+2. **The class descriptor field at `unit+538h`, `+A0h`**, the one number behind `ctl+390h`, and the
+   rest of `0079CBD0`. Replacing the host's issue-gate stub with `flight_armed_fraction_007ee7f0`
+   belongs with it, once `src/game_hosts_units.cpp` is free again.
 3. **`007C0D90`'s device walk** and the six vtable slots it uses, and `007EE7F0`.
 4. **`008A4B10 BSP_LuaBinding_PilotStopCloseToShip`**, the one route to attack mode `2`, and whether
    a mission script on USN01 takes it.
