@@ -1,0 +1,144 @@
+{
+  "packet": "cc8_torpedo_gun_assignment",
+  "owner": "agent/cc8-torpedo-drop",
+  "doc": "docs/TORPEDO_GUN_ASSIGNMENT.md",
+  "question": "Why is `assigns` zero over every torpedo-carrying gun in USN01, and what must be bound so a torpedo bomber's torpedo gun gets a target on its run-in?",
+  "answer": "Nothing must be bound; there is no defect. The 39 swim-capable guns in USN01 sit in two categories with two different behaviours. Category 0Ah BOMBPLATFORM, 24 of them and the one a torpedo bomber actually carries, has an empty preference row at 00E0A1F0 (all zeros in the image), so the rank test inside 00863990 refuses every candidate for it on every tick: a bomb platform is never a gunnery target holder by design, and its ordnance is released by the bot-task chain instead. Category 7 TORPEDO, the other 15 and all of them ship tubes, is cut out of the recon sweep by the image at 008651F5 (CMP ESI,7 / JE 00865442), so its only candidate source is a director command or fire target; USN01 gives its 5 torpedo-carrying units neither across 15000 pass ticks, so 00863990 is never called for category 7. USN02 is the control: 29 owners, 14 with a command target, 2523 score calls, 1568 accepted, 55960 assigns, 46 shots and 46 swims.",
+  "coverage": "complete for the assignment path; the six bot slots of 00727F10 are read but not exercised",
+  "census_method": "Per-run counters rather than assumption: swim-capable guns counted per category from the gun rows, and one counter per `return false` inside the 00863990 binding, restricted to category 7. The two preference rows were read from the image as bytes.",
+  "calls": [
+    {
+      "address": "00865833",
+      "native": "00727f10",
+      "function": "00864fe0",
+      "role": "the one call to BSP_Gun_SetBotFireTarget, reached only when the category produced a candidate"
+    },
+    {
+      "address": "00865201",
+      "native": "008053c0",
+      "function": "00864fe0",
+      "role": "the recon contact list of step 8.5, which category 7 jumps past at 008651F8"
+    }
+  ],
+  "named_routines": [
+    {
+      "address": "00727f10",
+      "native": "00727f10",
+      "name": "BSP_Gun_SetBotFireTarget",
+      "abi": "void __thiscall(gun, target), RET 8",
+      "coverage": "complete: six bot slots at +390h, +394h, +398h, +39Ch, +3A0h, +3A4h, each behind a null test; +398h and +394h switch to vtable[30h] on target kinds 0Fh and 0Eh; +39Ch also takes vtable[3Ch]"
+    }
+  ],
+  "no_ghidra_function": [],
+  "host_methods": [
+    {
+      "method": "torpedo candidate funnel",
+      "file": "src/game_hosts_gunnery.cpp",
+      "native": null,
+      "kind": "instrumentation"
+    },
+    {
+      "method": "swim-capable guns per category",
+      "file": "src/game_hosts_gunnery.cpp",
+      "native": null,
+      "kind": "instrumentation"
+    },
+    {
+      "method": "TORPEDO-category owners with a command target",
+      "file": "src/game_hosts_gunnery.cpp",
+      "native": null,
+      "kind": "instrumentation"
+    }
+  ],
+  "divergences": [
+    {
+      "what": "set_bot_fire_target_00727f10 in the host writes a single target row",
+      "native": "00727f10",
+      "detail": "the image writes up to six bot slot objects and applies two target-kind tests; a gun whose slot object is null silently takes no target. Not reachable in USN01 because no candidate exists, and not reached in USN02 through this binding's slot modelling either, but it is a real divergence and is recorded rather than fixed here."
+    }
+  ],
+  "contracts": [
+    {
+      "what": "whether USN01's mission script intends its 5 torpedo carriers to engage",
+      "status": "open",
+      "why": "a mission-content question; the gunnery path is complete and correct"
+    }
+  ],
+  "validation": {
+    "runner": "tools/run_game.ps1, 3200 frames, --mission-frames 3000 at 0.05 s, from this worktree",
+    "note": "This packet changed no behaviour. The before and after runs differ only in which counters exist, so the simulation numbers are not presented as a delta.",
+    "runs": [
+      {
+        "mission": "USN01",
+        "log": "local/usn01_after.log",
+        "swim_capable_guns": {
+          "7_TORPEDO": 15,
+          "10_BOMBPLATFORM": 24
+        },
+        "torpedo_category_owners": 5,
+        "owners_with_command_target": 0,
+        "pass_ticks": 15000,
+        "ticks_with_command_target": 0,
+        "ticks_with_fire_target": 0,
+        "score_calls_00863990": 0,
+        "accepted": 0,
+        "rejects": {
+          "unknown": 0,
+          "liveness": 0,
+          "class": 0,
+          "rank": 0,
+          "mask": 0,
+          "range": 0
+        },
+        "torpedo_assigns": 0,
+        "torpedo_shots": 0,
+        "bombplatform_assigns": 0,
+        "bombplatform_aim_ticks": 234327,
+        "units_with_command_target": 14,
+        "torpedo_drops": 1,
+        "water_crossings": 1,
+        "water_entry_breakups": 1,
+        "swims_started": 0
+      },
+      {
+        "mission": "USN02",
+        "log": "local/usn02_after.log",
+        "swim_capable_guns": {
+          "7_TORPEDO": 71,
+          "10_BOMBPLATFORM": 0
+        },
+        "torpedo_category_owners": 29,
+        "owners_with_command_target": 14,
+        "pass_ticks": 87000,
+        "ticks_with_command_target": 42000,
+        "ticks_with_fire_target": 69493,
+        "score_calls_00863990": 2523,
+        "accepted": 1568,
+        "rejects": {
+          "unknown": 0,
+          "liveness": 366,
+          "class": 0,
+          "rank": 0,
+          "mask": 0,
+          "range": 589
+        },
+        "torpedo_gate": {
+          "guns": 71,
+          "ticks": 208146,
+          "targeted": 55960,
+          "accepted": 55960,
+          "settled": 50659,
+          "window": 46024,
+          "sent": 46024,
+          "shots": 46
+        },
+        "swims_started": 46,
+        "caveat": "an earlier USN02 run on this tree reported 44 swims where this one reports 46; single-digit differences are run variation"
+      }
+    ],
+    "next_gate": {
+      "what": "not target assignment",
+      "detail": "for an aerial torpedo the gate is release altitude, measured in the previous packet: 700 m gives a 117.2 m/s entry against a 100.0 m/s MaxWaterHitVel at classDesc+0DCh, and 008568E0 destroys the round. For a ship tube in USN01 the gate is that the mission never orders its 5 torpedo carriers onto anything."
+    }
+  }
+}

@@ -942,8 +942,17 @@ public:
     }
 
     bool score_candidate_00863990(int category, void* target, float& distance) override {
+        // Packet cc8_torpedo_gun_assignment: the per-reason funnel for the
+        // torpedo category only. Every `return false` below gets its own
+        // counter, so the run says which guard refuses and not merely that one
+        // did. The counters are instrumentation; no native address produces them.
+        const bool torpedo_cat = category == bsp::kUnitGunneryTorpedoCategory;
+        if (torpedo_cat) ++owner_.summary.torpedo_cat_score_calls;
         const std::size_t other = unit_of(target);
-        if (other >= owner_.units.count()) return false;
+        if (other >= owner_.units.count()) {
+            if (torpedo_cat) ++owner_.summary.torpedo_cat_reject_unknown;
+            return false;
+        }
         // 008633D0 then 00862820, then the range gate and the plane penalty.
         const bool is_plane = owner_.units.unit_is_kind_of(other,
             bsp::kUnitGunneryKindPlaneBase);
@@ -952,14 +961,22 @@ public:
         bsp::GunneryTargetLiveness liveness;
         liveness.registered = owner_.units.unit_active(other);
         liveness.dead = owner_.unit_state[other].dead;
-        if (!bsp::target_is_engageable_00862820(liveness)) return false;
-        if (owner_.units.unit_class_id(other) < 0) return false;
+        if (!bsp::target_is_engageable_00862820(liveness)) {
+            if (torpedo_cat) ++owner_.summary.torpedo_cat_reject_liveness;
+            return false;
+        }
+        if (owner_.units.unit_class_id(other) < 0) {
+            if (torpedo_cat) ++owner_.summary.torpedo_cat_reject_class;
+            return false;
+        }
         if (bsp::gunnery_rank(owner_.rank_table.data(), category,
                 owner_.units.unit_class_id(other)) == 0) {
+            if (torpedo_cat) ++owner_.summary.torpedo_cat_reject_rank;
             return false;
         }
         if (!bsp::category_mask_admits_target_008633d0(state_.category.mask[slot],
                 is_plane)) {
+            if (torpedo_cat) ++owner_.summary.torpedo_cat_reject_mask;
             return false;
         }
         float mine[3], theirs[3];
@@ -984,6 +1001,23 @@ public:
         }
         if (out.accepted) ++accepted_;
         else ++rejected_;
+        if (torpedo_cat) {
+            // Everything before this point passed, so the only guard left inside
+            // 00863990 is the range test against the category range at
+            // owner+category*4+430h. Recording the two values on the first few
+            // rejections is what turns "the range refused" into a number.
+            if (out.accepted) {
+                ++owner_.summary.torpedo_cat_score_accepted;
+            } else {
+                ++owner_.summary.torpedo_cat_reject_range;
+                if (owner_.summary.torpedo_cat_reject_range <= 3) {
+                    owner_.log.notef("gunnery: torpedo category refused a target at "
+                        "%.0f m against a category range of %.0f m (00863990)",
+                        static_cast<double>(in.distance),
+                        static_cast<double>(in.category_range));
+                }
+            }
+        }
         return out.accepted;
     }
 
@@ -1549,6 +1583,18 @@ void GameGunneryHost::Impl::run_gunnery_pass(std::size_t index, float dt) {
         ? unit_state[state.command_target - 1].row.name : std::string();
     done("Gunnery::director_fire_target_00863640", 0x00863640u);
     done("Gunnery::director_newest_command_target_0071ebf0", 0x0071ebf0u);
+
+    // Packet cc8_torpedo_gun_assignment. The torpedo category is cut out of the
+    // recon sweep by the image itself at 008651F5 (`CMP ESI,7 / JE 00865442`),
+    // so on a unit that carries a torpedo-category gun the only way a candidate
+    // can appear is step 8.7's two director targets. Counting how often either
+    // exists is the first question, before any guard inside 00863990 matters.
+    if (!state.category_guns[
+            static_cast<std::size_t>(bsp::kUnitGunneryTorpedoCategory)].empty()) {
+        ++summary.torpedo_cat_pass_ticks;
+        if (state.command_target != 0) ++summary.torpedo_cat_with_command_target;
+        if (state.fire_target != 0) ++summary.torpedo_cat_with_fire_target;
+    }
 
     GunneryPassBinding binding(*this, index);
     const float before = state.throttle;
@@ -2816,6 +2862,50 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery torpedo_drop drops=%llu refusals=%llu "
             "water_entry_breakups=%llu",
             s.torpedo_drops, s.torpedo_drop_refusals, s.water_entry_breakups);
+    {
+        // Packet cc8_torpedo_gun_assignment. Which category a swim-capable round
+        // is actually mounted in, and whether the units that own a
+        // TORPEDO-category gun ever get the director target that is their only
+        // candidate source. Both questions are answered per run rather than
+        // assumed from the category name.
+        std::array<int, bsp::kUnitGunneryCategoryCount> cat_swim{};
+        std::vector<std::size_t> torpedo_units;
+        for (const GameGunRow& row : host.guns) {
+            if (row.category < 0 || row.category >= bsp::kUnitGunneryCategoryCount) continue;
+            const std::size_t slot = static_cast<std::size_t>(row.category);
+            if (row.swim_speed > 0.0f) ++cat_swim[slot];
+            if (row.category == bsp::kUnitGunneryTorpedoCategory
+                && std::find(torpedo_units.begin(), torpedo_units.end(), row.unit_index)
+                    == torpedo_units.end()) {
+                torpedo_units.push_back(row.unit_index);
+            }
+        }
+        for (int c = 0; c < bsp::kUnitGunneryCategoryCount; ++c) {
+            if (cat_swim[static_cast<std::size_t>(c)] == 0) continue;
+            const char* name = bsp::gunnery_category_function_name(c);
+            host.log.notef("  swim-capable guns in category %2d %-20s %d", c,
+                name != nullptr ? name : "?", cat_swim[static_cast<std::size_t>(c)]);
+        }
+        std::size_t with_command = 0;
+        for (const std::size_t u : torpedo_units) {
+            if (u < host.command_target_by_unit.size()
+                && host.command_target_by_unit[u] != 0) {
+                ++with_command;
+            }
+        }
+        host.log.notef("  TORPEDO-category owners=%zu, of which with a command "
+            "target=%zu (their only candidate source: 008651F5 cuts category 7 "
+            "out of the recon sweep)", torpedo_units.size(), with_command);
+    }
+        host.log.notef("summary mission gunnery torpedo_candidates pass_ticks=%llu "
+            "command_target=%llu fire_target=%llu scored=%llu accepted=%llu "
+            "reject unknown=%llu liveness=%llu class=%llu rank=%llu mask=%llu range=%llu",
+            s.torpedo_cat_pass_ticks, s.torpedo_cat_with_command_target,
+            s.torpedo_cat_with_fire_target, s.torpedo_cat_score_calls,
+            s.torpedo_cat_score_accepted, s.torpedo_cat_reject_unknown,
+            s.torpedo_cat_reject_liveness, s.torpedo_cat_reject_class,
+            s.torpedo_cat_reject_rank, s.torpedo_cat_reject_mask,
+            s.torpedo_cat_reject_range);
     }
     host.log.notef("summary mission gunnery contacts considered=%llu side=%llu "
         "invisible=%llu dead=%llu kind=%llu admit_ship=%llu admit_plane=%llu",

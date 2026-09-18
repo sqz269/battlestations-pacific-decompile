@@ -1,0 +1,164 @@
+{
+  "packet": "cc8_ai_command_tick",
+  "owner": "agent/cc8-ai-command",
+  "summary": "How an AI command reaches its member units, which docs/AI_COMMAND_OBJECT.md left open. The answer is one routine, 00A02020, read in full: it gates on the member's class, builds a position descriptor and calls 0077D600 with the class descriptor 00E08F68, which is `moveto`. No AI command class issues any other scene command, and nothing writes an order slot or a bot task directly. The shared follower pass 00A10DC0 sends ship followers to 0077C8D0 to join the leader's formation and unexcluded plane squadrons to 00A02020 at the leader's point. MOVETOATTACK is a two-state machine: it closes to tuning +1F4h CloseAttack_CollectDist, shipped 5000, then replaces itself with CLOSEATTACK.",
+  "ghidra_writes": [],
+  "calls": [
+    {
+      "address": "00a02020",
+      "native": "BSP_AiCommand_IssueMoveToMember",
+      "role": "reconstructed as ai_order_bridge_00a02020 and bound as the host's tick_issue_moveto",
+      "evidence": "__fastcall(Entity* member, const float* point), body 00A02020-00A02175 read in full. Class gate 00A02026/00A0203A/00A02040; pose refresh 00A02052 through 00414DB0; distance test 00A0206E against the dword at 00D21530, which is 00 00 00 00; ship branch 00A02089 into 00417B10 at 00A020E8 with y zeroed at 00A020F5-00A02103; tail 00A0214B PUSH 0xE08F68, 00A02145 PUSH the descriptor, 00A02136 PUSH 1, ECX the member, CALL 0077D600 at 00A0216A."
+    },
+    {
+      "address": "0077d600",
+      "native": "BSP_Entity_IssueCommand",
+      "role": "used by the host through issue_script_command",
+      "evidence": "CALL at 00A0216A with ECX = ESI the member and the three pushes above. The same two-message hop docs/ENTITY_LUA_ORDER_PATH.md reconstructed; already in src/entity_orders.cpp."
+    },
+    {
+      "address": "00e08f68",
+      "native": "moveto scene command class descriptor",
+      "role": "used as the command object the tick issues",
+      "evidence": "PUSH 0xE08F68 at 00A0214B, the only class descriptor any AI command tick pushes. docs/COMMAND_CLASSES.md line 86 and docs/SCENE_COMMAND_TYPES.md line 73 both name it `moveto`, ordinal 15, category 3.",
+      "kind": "no_ghidra_function"
+    },
+    {
+      "address": "00a10c20",
+      "native": "BSP_AiGroup_LeaderPoint",
+      "role": "reconstructed as ai_group_leader_point_is_origin_00a10c20 and the host's tick_leader_point",
+      "evidence": "__thiscall(group) -> const float*, RET 0. 00A10C20 CMP [ECX+5644h],0; the empty arm returns 00F87574 at 00A10C29, otherwise the first member of the +563Ch list and its +FCh pose. Consumers 00A10E8F, 00A12BC9."
+    },
+    {
+      "address": "00a10dc0",
+      "native": "BSP_AiCommand_FollowerPass",
+      "role": "reconstructed as ai_command_follower_pass_00a10dc0 and run by the host's command_tick",
+      "evidence": "__fastcall(command), body 00A10DC0-00A10EB6 read in full. 00A10DCB CMP [group+5644h],1 / JBE; the walk starts after the head. 00A10E3E vtable[+5Ch](6) -> 0077C8D0 with the first member pushed at 00A10E64; 00A10E77 vtable[+5Ch](18h) and 00A10E83 009FFEB0 -> 00A10C20 at 00A10E8F then 00A02020 at 00A10E98 with EDX the point and ECX the member."
+    },
+    {
+      "address": "0077c8d0",
+      "native": "BSP_Entity_RequestJoinFormation",
+      "role": "recorded by the host's tick_request_join_formation; contract unread",
+      "evidence": "CALL at 00A10E67 with ECX the follower and the group's first member pushed at 00A10E64."
+    },
+    {
+      "address": "00417b10",
+      "native": "BSP_AvoidZoneGroup_OffsetPointSequential",
+      "role": "recorded by the host's tick_avoid_zone_point; contract unread",
+      "evidence": "CALL at 00A020E8 on the ship branch only, its two returned floats landing in x and z at 00A020F5-00A02103 with y set to zero."
+    },
+    {
+      "address": "00a124e0",
+      "native": "BSP_AiCommand_MoveTo_Tick",
+      "role": "reconstructed as the MoveTo arm of ai_command_tick_vt000c",
+      "evidence": "__thiscall(command), RET 0, body 00A124E0-00A1253F read in full. 00A12500 CALL 009FE080 on the first member gates the whole body; 00A12525 LEA EDX,[ESI+8] and 00A12528 CALL 00A02020 with ECX the member; 00A1252F CALL 00A10DC0; 00A12538 JMP 00A11070."
+    },
+    {
+      "address": "00a12a90",
+      "native": "BSP_AiCommand_MoveToAttack_Tick",
+      "role": "reconstructed as ai_moveto_attack_keeps_closing and the MoveToAttack arm",
+      "evidence": "__fastcall(command), body 00A12A90-00A12C53 read in full. 00A371A0 then [EAX+1F4h]; 00A12B93 CALL 009FE080; 00A12BA0-00A12BA8 FLD the field, FCOMPI, JBE; the closing arm 00A12BC3-00A12BD2 runs 00A10C20 on command+1Ch then 00A02020 on the own leader, then 00A10DC0 and 00A11070; the other arm 00A12C1B allocates 20h, installs 00D22C44 with the secondary 00D22C2C and calls 00A2BD00."
+    },
+    {
+      "address": "00a15490",
+      "native": "BSP_AiCommand_CloseAttack_Tick",
+      "role": "analyzed; the helper it calls was not read",
+      "evidence": "__thiscall(command), RET 0, body 00A15490-00A154FB read in full. 00A154A0 substitutes 00F87574 for an empty target; 00A154C7 CALL 00414DB0; pushes at 00A154D9-00A154E0 are 1, the target group, the leader point and FLD [00CE380C] = 1.5f, then CALL 00A13B60; then 00A154EE CALL 00A11B80 and 00A154F7 JMP 00A11AF0."
+    },
+    {
+      "address": "00a15500",
+      "native": "BSP_AiCommand_DefendPosition_Tick",
+      "role": "reconstructed as the DefendPosition arm; the helper it calls was not read",
+      "evidence": "__thiscall(command), RET 0, body 00A15500-00A1556A read in full. 00A15503 CALL 00A10DC0, 00A1550A CALL 00A11690, then 00A1554E FLD1 with pushes 0, 0 and the own leader point into 00A13B60 at 00A1555B, then 00A15564 CALL 00A11B80 with 0."
+    },
+    {
+      "address": "00a152b0",
+      "native": "BSP_AiCommand_CautiousMove_Tick",
+      "role": "reconstructed as the CautiousMove arm; the helper it calls was not read",
+      "evidence": "__thiscall(command), RET 0, body 00A152B0-00A152D1 read in full. 00A152BB LEA ECX,[ESI+14h] then CALL 00A14DD0 with the group and the +8h destination pushed at 00A152B9-00A152BA; 00A152C5 CALL 00A10DC0; 00A152CD JMP 00A11690."
+    },
+    {
+      "address": "00a152e0",
+      "native": "BSP_AiCommand_CautiousAttack_Tick",
+      "role": "analyzed only; read to its first dispatch, coverage partial",
+      "evidence": "No Ghidra function. From 00A152E0: 00A15308 substitutes 00F87574 for an empty target; 00A1533A-00A15342 push the point and the group into 00A14DD0 on the +20h base; 00A15349 CALL 00A10DC0; 00A15350 CALL 00A11690; 00A1535A reads [EAX+1F4h] after 00A371A0.",
+      "kind": "no_ghidra_function"
+    },
+    {
+      "address": "00a12430",
+      "native": "BSP_AiCommand_Idle_Tick",
+      "role": "reconstructed as the Idle arm, which runs the follower pass",
+      "evidence": "Body 00A12430-00A12446. CALL 00A10EC0 at 00A12433, CALL 00A10DC0 at 00A1243A, JMP 00A11070 at 00A12442. Only the middle call was read, and it is the follower pass."
+    },
+    {
+      "address": "009ffeb0",
+      "native": "BSP_AiSquadron_SecondCarrierExclusion",
+      "role": "recorded by the host's tick_squadron_excluded_009ffeb0; carrier arm unread",
+      "evidence": "CALL at 00A10E83. 009FFEB3 CMP byte [00E17BF2],0 returns false outright when the byte is set; the byte is 00 in the image and every xref to it is a READ, so the arm from 009FFEC6 through squadron+3D0h, carrier+C4h and 007EDAD0 is what runs. That arm was not read."
+    },
+    {
+      "address": "009fe080",
+      "native": "BSP_Entity_IsGroupableCombatant",
+      "role": "reused; already reconstructed as ai_entity_is_groupable_combatant_009fe080",
+      "evidence": "CALL at 00A12500 in the MOVETO tick and at 00A12B93 in the MOVETOATTACK tick, both on the group's first member."
+    },
+    {
+      "address": "00a371a0",
+      "native": "BSP_Ai_ActiveModeTuning",
+      "role": "used by the host through tick_tuning_field",
+      "evidence": "CALL at 00A12AA8 and 00A15355; both read [EAX+1F4h], which docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md names CloseAttack_CollectDist, shipped 5000 at 00D1AF84."
+    },
+    {
+      "address": "00a2bd00",
+      "native": "BSP_AiGroup_SetCommand",
+      "role": "reused; the host's tick_replace_command",
+      "evidence": "CALL at 00A12C4A with the freshly built CLOSEATTACK. Read in full by packet cc8_ai_command_object."
+    },
+    {
+      "address": "009ffc10",
+      "native": "BSP_Math_HorizontalLength",
+      "role": "reconstructed as the host's tick_horizontal_distance",
+      "evidence": "CALL at 00A12B73 on the difference of the two leaders' poses, x and z only."
+    },
+    {
+      "address": "00414db0",
+      "native": "BSP_EntityPose_RefreshWorld",
+      "role": "analyzed only",
+      "evidence": "CALL at 00A02052, 00A154C7 and inside 00A12A90's two leader refreshes, each guarded by the member's +C8h byte."
+    }
+  ],
+  "corrections": [
+    "docs/AI_COMMAND_OBJECT.md said the only path from a command to a unit could only be the class's own vt+0Ch tick, which that packet did not read. It is read here for five classes and the path is 00A02020 to 0077D600 with the moveto descriptor 00E08F68.",
+    "docs/AI_COORDINATOR_TICK.md's note that this process substitutes 0077D600 for the AI group's dispatch is now exact: the native substitution point is vt+0Ch, and the native itself reaches 0077D600, so the host and the native use the same call."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 clean, Win32 /W4 /WX",
+    "tests": "ctest -C Release: reconstructed_math and tool_tests both passed",
+    "baseline": "this tree at b1432783a; that commit's own after-runs are reused unchanged",
+    "IJN01": {
+      "before": "scene commands=34, gunnery hits=4 damage=500.0 deaths=2",
+      "after": "tick moveto=0, followers walked=2386, formation requests=2291, promotions=1, scene commands=34, gunnery hits=4 damage=500.0 deaths=2"
+    },
+    "USN01": {
+      "before": "scene commands=17, gunnery hits=25 damage=229.5 deaths=1",
+      "after": "tick moveto=0, followers walked=357, formation requests=325, promotions=1, scene commands=17, gunnery hits=24 damage=229.5 deaths=1"
+    },
+    "USN02": {
+      "before": "scene commands=14, gunnery hits=160 damage=18661.8 deaths=3",
+      "after": "tick moveto=49, followers walked=681, formation requests=681, promotions=0, scene commands=63, gunnery hits=161 damage=19061.0 deaths=3"
+    },
+    "attribution": "USN02's MOVETOATTACK group never promotes, so its closing arm orders the leader every 2 to 4 seconds: the 49 moveto commands are the whole of the rise from 14 to 63, and the gunnery census moves with them. IJN01 and USN01 promote on the first tick with groupable=0 at distances 4756.1 and 75.7, both below the shipped 5000, so nothing is issued and their censuses are unchanged. The pilot-attack table is identical on all three because moveto is not an attack order.",
+    "missing_inputs": [
+      "00A371A0 + 1F4h CloseAttack_CollectDist is 0.0 here; shipped 5000 at 00D1AF84. ai_tuning_load_00a335d0 reads six keys and this is not one of them, and the two files that would add it are not owned by this packet.",
+      "009FFD70's member ordering key is unread, so this process orders the member list by unit index and its first member is not the native's leader. On IJN01 and USN01 that first member is one 009FE080 rejects, which is what stops the closing arm."
+    ]
+  },
+  "uncertainties": [
+    "The largest body in the chain, 00A13B60-00A14D9F, was not read, so what CLOSEATTACK and DEFENDPOSITION do with their point, target and radius is unsettled. Coverage: partial.",
+    "00A14DD0-00A152A7, the CAUTIOUSMOVE and CAUTIOUSATTACK third base, was not read.",
+    "00A11070 was read only to its two named calls, 0070EFD0 BSP_UnitGroup_ApplyFormationShape and 0070D080 BSP_UnitGroup_FindMemberRecord, so the formation pass is characterised but not reconstructed.",
+    "REGROUPINGMOVE, PATROLTO, RETREAT and SELLING were read only far enough to establish that each reaches 00A02020. Coverage: partial by address range.",
+    "The dword at 00D21530 reads 00 00 00 00 and Ghidra reports an overlapping symbol there, so the distance gate is recorded as always passing rather than as a designed threshold.",
+    "0077C8D0 and 00417B10 are recorded, not reconstructed: this process has no formation ring and no avoid-zone group, so a ship follower's request does nothing and a ship is sent at the requested point itself."
+  ]
+}
