@@ -1152,3 +1152,98 @@ python tools/frame_slot_census.py 009c62b0 --pop 009c62cf=4 --pop 009c6342=4 --p
 Without the cleanups the walker refuses after the first indirect call and the depths are not
 comparable; the pops are the four-byte `RET 4` of each virtual call, zero for the two `00BF701A`
 x87 helpers, and twenty-four for `007F0280`, which the attackrun tick calls with six pushes.
+
+## `009F9CE0`: the record is a difficulty-level row, and four unknowns are named
+
+`BSP_BotApproach_ConstructSpeedReference`, body `009F9CE0`-`009F9D77`,
+`__thiscall(approach, unit, float referenceSpeed)`, `RET 8`. It seeds the whole approach head:
+
+| field | source | address |
+| --- | --- | --- |
+| `approach+0h` | vtable `00D21C74` | `009F9CE4` |
+| `approach+4h` | the **unit** | `009F9CEA` |
+| `approach+8h` | `unit->+538h`, the **plane class descriptor** | `009F9CF3` |
+| `approach+Ch` | `unit->+9D4h`, **`ctl`** | `009F9CFC` |
+| `approach+10h` | `unit->+DF4h`, the bot object | `009F9D05` |
+| `approach+14h` | `[00F8A30C] + (unit->+DF4h)->+34h * 248h + 0Ch` | `009F9D22` |
+| `approach+18h`, `+1Ch`, `+20h` | `0` | `009F9D27`-`009F9D2D` |
+| `approach+24h` | `max(classDesc->+188h MaxSpd / referenceSpeed, 1.0)` | `009F9D37`-`009F9D61` |
+| `approach+28h` | `-1.0f` at `00D7A260` | `009F9D6E` |
+
+Every one of those confirms a field this packet had been reading positionally: `+8h` really is the
+class descriptor whose `+184h` is `StallSpd` and `+188h` `MaxSpd`, and `+Ch` really is `ctl`.
+
+**`approach+24h` is `task+41Ch`** (`3F8h + 24h = 41Ch`), the speed ratio
+`docs/BOT_TASKS.md` records the cruise profile multiplying `AttackDist` by. It is
+`max(MaxSpd / Pilot/<class>/ReferenceSpeed, 1.0)`, and for the dive bomber the reference is
+`tuning+4D8h` `Pilot/DiveBomb/ReferenceSpeed` KMH(280), which `009C3EC4` loads and passes in.
+
+### The record, and the four fields
+
+`docs/TORPEDO_RUN_PROFILE.md` already read this exact `LEA`: `approach+14h` is
+`&PilotBotConfig.levels[(unit->+DF4h)->+34h]`, a `PilotBotParameters` row of `248h` bytes, and the
+index is a **difficulty or skill level**, not a class. `include/bsp/robot_config.hpp` carries the
+struct with names taken from the Lua keys, and its member suffixes are `PilotBotConfig`-relative,
+so a row offset `N` is the member whose suffix is `N + 0Ch`.
+
+That names all four fields this packet was substituting for:
+
+| read | row offset | member |
+| --- | --- | --- |
+| `(approach+14h)->+38h`, the dive-floor low bound | `38h` | **`dive_bomb_release_alt_1_044`** |
+| `(approach+14h)->+3Ch`, the dive-floor high bound | `3Ch` | **`dive_bomb_release_alt_2_048`** |
+| `(approach+14h)->+5Ch`, the aimdive lead endpoint | `5Ch` | **`dive_bomb_aim_prec_dist_068`** |
+| `(approach+14h)->+60h`, the aimdive gain endpoint | `60h` | **`dive_bomb_aim_prec_mul_06c`** |
+
+So:
+
+* **`approach+A8h`, the dive release floor, is `Uniform(DiveBombReleaseAlt1, DiveBombReleaseAlt2)`**,
+  drawn once per aircraft from two **authored** altitudes that vary with the difficulty level. The
+  host's substituted `800` can be replaced by the real pair the moment the config rows are loaded.
+* **The aimdive aim error is the AI's authored aiming imprecision.** Its lead interpolates to
+  `DiveBombAimPrecDist` and its gain to `DiveBombAimPrecMul`, both difficulty-scaled. That is why
+  the release gate is a 25-metre window: the whole quantity is a deliberate miss distance, and a
+  harder difficulty tightens it.
+
+This corrects this doc's earlier phrasing. The dive floor is not "a per-aircraft random draw" in the
+sense of being arbitrary: it is a draw between two authored, difficulty-scaled altitudes, and the
+aim error is authored imprecision rather than a geometric residue.
+
+## The hand-over run: no change, and the reason is a gap in the planner reconstruction
+
+`local/usn04_hand.log`, USN04, 4800 mission frames. Preconditions recorded: `query session` shows
+session 1 **Active** at the console, `Get-Process bsp_game` empty, no lock file. `EXITCODE=0`.
+
+The census is **bit-identical** to the run before the hand-over:
+
+| measure | gated run | hand-over run |
+| --- | --- | --- |
+| states | `attackrun` 1480, `flyabove` 144, `turndown` 746 | the same |
+| bank reached | 0.6072 rad | **0.6072 rad** |
+| turndown roll writes | 446 of 746 | **446 of 746** |
+| latch tick | 1481 | 1481 |
+| final `approach+BCh` | 206.5 m | 206.5 m |
+| `009C7EA0` window | not met | **not met** |
+| releases | 0 | 0 |
+
+### Why: `pilot_plan_roll_0099e2ba` reconstructs only the mode-2 arm
+
+The image's roll region has **two** entries, and the reconstruction has one.
+
+* The **mode-2** path, `0099DE93`-`0099E25C`, computes the bank target from the heading error and
+  writes it to `cmd+2C4h` at `0099E25C`. That is what `pilot_plan_roll_0099e2ba` models:
+  `PilotBotRollInputs` has a heading error, a bank, a pitch error and the tuning, and **no bank-target
+  input at all**.
+* The **mode-1** path, jumped to at `0099E26E`, does not compute a target. It **servos** `cmd+2C8h`
+  toward whatever `cmd+2C4h` already holds: `0099E27B FLD [ESI+2C8h]`, the wrap against the `+pi` at
+  `00CE3D28` at `0099E28F`, then `0099E2A5 LEA ECX,[ESI+2C4h]` and `0099E2B5 CALL 00415690`, through
+  to the roll write at `0099E39D`.
+
+So writing `pi` into the host's `bank_target_2c4` on the hand-over changes nothing: the host still
+runs the mode-2 computation, and the field it was told to aim at is one nothing reads. **The
+reasoning behind the hand-over stands and the code that would act on it does not exist yet.**
+
+**The next gate, by address:** reconstruct the servo arm `0099E26E`-`0099E3AE` in
+`src/plane_ai_control.cpp`, with a bank-target input, and call it on the mode-1 path instead of the
+mode-2 computation. Until then the turndown can hand the planner a 180-degree target and the host
+will keep flying its own.

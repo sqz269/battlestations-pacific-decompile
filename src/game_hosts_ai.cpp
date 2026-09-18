@@ -20,6 +20,7 @@
 #include "bsp/ai_group_think.hpp"
 #include "bsp/ai_planners.hpp"
 #include "bsp/ai_tuning_globals.hpp"
+#include "bsp/ai_target_weights.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/plane_squadron_entity.hpp"
@@ -104,7 +105,105 @@ GameObjectiveSets& game_objective_sets() noexcept {
     return sets;
 }
 
+void GameAiWeaponFacts::reset() noexcept { units.clear(); }
+
+const GameAiWeaponFacts::Unit* GameAiWeaponFacts::row(std::size_t unit) const noexcept {
+    if (unit >= units.size()) return nullptr;
+    return units[unit].known ? &units[unit] : nullptr;
+}
+
+GameAiWeaponFacts::Unit& GameAiWeaponFacts::row_for_write(std::size_t unit) {
+    if (units.size() <= unit) units.resize(unit + 1u);
+    units[unit].known = true;
+    return units[unit];
+}
+
+std::size_t GameAiWeaponFacts::known_units() const noexcept {
+    std::size_t n = 0;
+    for (const Unit& u : units) {
+        if (u.known) ++n;
+    }
+    return n;
+}
+
+GameAiWeaponFacts& game_ai_weapon_facts() noexcept {
+    static GameAiWeaponFacts facts;
+    return facts;
+}
+
 namespace {
+
+// bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
+// 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a
+// row. Every method names the native site it stands at. The entity pointers
+// the key carries are this process's unit handles, index + 1.
+// docs/AI_TARGET_WEIGHT_TERMS.md term 2.
+class AiWeightModelBinding final : public bsp::AiTargetWeightModelHost {
+public:
+    AiWeightModelBinding(const GameAiWeaponFacts& facts, const bsp::AiModeTuning& tuning)
+        : facts_(facts), tuning_(tuning) {}
+
+    // 00A03B90 and 00A079B0, the memo map at 00F8A734. A memo only caches, so
+    // skipping it changes no answer; the census counts the queries instead.
+    bool memo_lookup(const bsp::AiTargetWeightKey&, float&) override { return false; }
+    void memo_store(const bsp::AiTargetWeightKey&, float) override {}
+    // 00A31DB0 at 00A08540. The forced rules come from the globals loader's
+    // ForcedTargetWeightValues tail, which this process does not run.
+    bool forced_rule_weight(const bsp::AiTargetWeightKey&, float&) override { return false; }
+    const bsp::AiModeTuning& mode_tuning() override { return tuning_; }
+    // Entity vtable +18h and +1Ch. Neither is the +5Ch class test, and neither
+    // has a producer here, so the model takes its no-bonus arms.
+    bool entity_is_type(const void*, int) override { return false; }
+    int entity_kind(const void*) override { return 0; }
+
+    float target_hit_points(const void* target) override {
+        const GameAiWeaponFacts::Unit* row = facts_.row(index_of(target));
+        return row != nullptr ? row->hit_points : 0.0f;
+    }
+    float target_capture_state(const void* target) override {
+        const GameAiWeaponFacts::Unit* row = facts_.row(index_of(target));
+        return row != nullptr ? row->capture_state : 0.0f;
+    }
+    // 00A095E3's subsystem walk is flattened into one barrel list per unit, so
+    // the attacker has a single subsystem carrying every barrel.
+    int subsystem_count(const void* attacker) override {
+        return facts_.row(index_of(attacker)) != nullptr ? 1 : 0;
+    }
+    int barrel_count(const void* subsystem) override {
+        const GameAiWeaponFacts::Unit* row = facts_.row(index_of(subsystem));
+        return row != nullptr ? static_cast<int>(row->barrels.size()) : 0;
+    }
+    float barrel_reload(const void* subsystem, int barrel) override {
+        const GameAiWeaponFacts::Barrel* b = barrel_at(subsystem, barrel);
+        return b != nullptr ? b->reload : 0.0f;
+    }
+    int barrel_shots(const void* subsystem, int barrel) override {
+        const GameAiWeaponFacts::Barrel* b = barrel_at(subsystem, barrel);
+        return b != nullptr ? b->shots : 0;
+    }
+    float barrel_accuracy(const void* subsystem, int barrel, const void*) override {
+        const GameAiWeaponFacts::Barrel* b = barrel_at(subsystem, barrel);
+        return b != nullptr ? b->accuracy : 0.0f;
+    }
+    // 009FE200 at 00A09578 and 00424C40+3B0h at 00A09624, both unread. The
+    // falloff keeps the undiminished value and the capture scale stays neutral.
+    float distance_falloff(float a, float, float, float) override { return a; }
+    float capture_scale() override { return 1.0f; }
+
+private:
+    static std::size_t index_of(const void* entity) {
+        return reinterpret_cast<std::size_t>(entity) - 1u;
+    }
+    const GameAiWeaponFacts::Barrel* barrel_at(const void* subsystem, int barrel) const {
+        const GameAiWeaponFacts::Unit* row = facts_.row(index_of(subsystem));
+        if (row == nullptr || barrel < 0) return nullptr;
+        if (static_cast<std::size_t>(barrel) >= row->barrels.size()) return nullptr;
+        return &row->barrels[static_cast<std::size_t>(barrel)];
+    }
+
+    const GameAiWeaponFacts& facts_;
+    const bsp::AiModeTuning& tuning_;
+};
 
 // 004BCA50 BSP_Game_GetEffectiveGameMode returns [world+614h], remapped by the
 // 004BCA5F/004BCA68 arms. This process runs a single-player campaign mission,
@@ -309,6 +408,18 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
 
     // 00A335D0's record for this run's mode, read back through 00A371A0.
     bsp::AiTuningBlock tuning{};
+
+    // The AiModeTuning record 00A08460 reads, projected out of the same block
+    // 00A335D0 filled. Only the two fields the model's barrel arithmetic uses
+    // are carried: MaxTargetKillRatio at record +05Ch and DamageCalcTime at
+    // +060h (include/bsp/ai_target_weights.hpp). Everything else keeps its
+    // default, which is what an unfilled record holds natively too.
+    bsp::AiModeTuning mode_tuning_record() const {
+        bsp::AiModeTuning record{};
+        record.max_target_kill_ratio = tuning.at(0x05Cu);
+        record.damage_calc_time = tuning.at(0x060u);
+        return record;
+    }
 
     GameAiSummary summary{};
     std::vector<GameAiPartyRow> parties;
@@ -808,25 +919,66 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // the native's; the base term is not.
         const std::size_t target = unit_index_of(candidate);
         bsp::AiCandidateTargetWeightInputs in;
-        in.base_weight = unit_class_weight(target);
-        // 00A0F84C and 00A0F859: this process has no attacker record +1Ch and
-        // no AI command object, so the zeroing arm never runs. Labelled.
-        in.attacker_record_flag_1c = false;
+        // 00A0F843's base term. The real model 00A08460 runs as soon as the
+        // weapon-facts table carries a row for the attacker AND the target;
+        // until the gunnery host publishes one it has neither, and the
+        // candidate's class weight from 009FDF30 stands in exactly as before.
+        // docs/AI_TARGET_WEIGHT_TERMS.md term 2.
+        const GameAiWeaponFacts& facts = game_ai_weapon_facts();
+        const std::size_t attacker_unit = proxy(member);
+        const GameAiWeaponFacts::Unit* attacker_row = facts.row(attacker_unit);
+        const GameAiWeaponFacts::Unit* target_row = facts.row(target);
+        if (attacker_row != nullptr && target_row != nullptr
+            && attacker_row->inputs_complete && target_row->inputs_complete) {
+            bsp::AiTargetWeightKey key;
+            key.attacker = handle(attacker_unit);
+            key.attacker_class = units.unit_class_id(attacker_unit);
+            key.target = handle(target);
+            key.target_is_neutral = 0;   // target record +1Ch, no producer here
+            const bsp::AiModeTuning record = mode_tuning_record();
+            AiWeightModelBinding model(facts, record);
+            in.base_weight = bsp::ai_target_weight_00a08460(model, key);
+            ++summary.weight_model_runs;
+        } else {
+            // 00A08460 with none of its inputs. 1.0f is the identity of the
+            // product it feeds, and the class weight that used to stand here
+            // has moved to target_scale, which is where the native keeps it.
+            in.base_weight = 1.0f;
+            ++summary.weight_class_stand_ins;
+        }
+        // 00A0F84C tests the attacker record's +1Ch, which 00A04560 fills from
+        // 00A04568 CMP [entity+54h],2 / SETGE: the entity's SIDE being two or
+        // more, a neutral or third party. That this process does reach.
+        in.attacker_record_flag_1c = units.unit_side_0054(attacker_unit) >= 2;
+        // 00A0F859 then asks the attacker's vtable[+18h] with 1Ch. That slot is
+        // NOT the +5Ch class test the other three tests in 00A0F810 use, so the
+        // 1Ch is a type-group code and not the MCommandBuilding class id it
+        // resembles; the same slot is AiTargetWeightModelHost::entity_is_type.
+        // Unread, so this stays false and the arm never fires. The arm can only
+        // REMOVE weight, so leaving it off can admit a candidate the native
+        // would score zero and never reject one it would keep.
         in.attacker_is_command_building = false;
-        // 00A0F86A and 00A0F872, the two record +18h factors, and 00A0F89B's
-        // target +14h. The records are the AI's own per-entity blocks, which
-        // this process does not build, so all three keep the native's identity
-        // value and the product is the base weight alone. Labelled.
+        // 00A0F86A and 00A0F872, the two record +18h factors. 00A00020 fills
+        // +18h from its fifth argument, which 00A04560 computed at 00A045EA
+        // through 00A371A0's [record+50h] and [record+54h] and the
+        // interpolation 00419010, and which 00A00083 optionally re-rolls
+        // through 00BD2F10 when 00A00058's COMISS finds it negative. The two
+        // tuning offsets are unread, so both factors keep the identity 1.0f.
         in.attacker_factor = 1.0f;
         in.target_factor = 1.0f;
-        in.target_scale = 1.0f;
+        // 00A0F89B's target +14h. 00A00020 fills it from its third argument,
+        // which 00A0460F produced as 009FDF30's class weight for the entity's
+        // +C4h class id MULTIPLIED by 00A04240(entity). The class-weight half
+        // is exactly what this host computes, so it moves here from the base
+        // term where it used to stand; 00A04240 is unread and its factor is
+        // the identity. docs/AI_TARGET_WEIGHT_TERMS.md term 3.
+        in.target_scale = unit_class_weight(target);
         // 00A0F87E picks objective set 0 when the local player's party equals
         // the attacker's +54h and set 4 otherwise, then 00A0F8B5 asks 008DDF90.
         // The sets are the ones the mission Lua fills; see
         // docs/MISSION_OBJECTIVES.md for why they hold no unit on these
         // missions, which makes this false throughout.
-        const std::size_t attacker = proxy(member);
-        const int attacker_side = units.unit_side_0054(attacker);
+        const int attacker_side = units.unit_side_0054(attacker_unit);
         const int local_party = 0;   // [00E188A8]+18CCh, slot 0's +28h
         const int objective_set = attacker_side == local_party ? 0 : 4;
         const std::vector<std::size_t> set =
@@ -844,10 +996,24 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             ++summary.weight_fort_targets;
             if (!in.target_is_command_building) ++summary.weight_non_command_targets;
         }
-        // 00A0F8CE 00923BE0(target) subtracted from 2.0. Its body is unread and
-        // this process has no producer for it, so the term stays 0 and the
-        // factor is the constant 2.0. Labelled.
-        in.target_term = 0.0f;
+        // 00A0F8CE 00923BE0(target), subtracted from 2.0. The routine is read
+        // in full now (docs/AI_TARGET_WEIGHT_TERMS.md): the torn-down byte
+        // +5Dh answers 0, otherwise the class fraction is clamped into [0, 1]
+        // and cached at +164h. This process reaches the torn-down byte through
+        // the scene node flags, but not the fraction, which is
+        // `unit+370h / unit+36Ch` and lives with the gunnery host; so a live
+        // candidate takes the full-health value 1.0f and the term is 1.0, not
+        // the 2.0 an earlier reading of this packet left. Labelled: the clamp
+        // and the torn-down arm are the native's, the fraction is not.
+        bsp::SceneNodeFlags target_node;
+        const bool have_node = units.unit_scene_node_flags(target, target_node);
+        in.target_term = bsp::ai_unit_health_00923be0(
+            have_node && target_node.torn_down, 0.0f, false);
+        // The torn-down arm cannot actually be reached from here: 00A13B60's
+        // candidate loop already drops a candidate that fails
+        // close_candidate_alive, so every candidate scored is live. The arm is
+        // modelled because the native has it, and the census counts any hit.
+        if (in.target_term == 0.0f) ++summary.weight_torn_down_targets;
         ++summary.weight_queries;
         done("AiCommand::close_target_weight", 0x00a0f810u);
         return bsp::ai_candidate_target_weight_00a0f810(in);
@@ -1866,6 +2032,15 @@ void GameAiCoordinatorHost::report() {
         "0.1 for the 009FE0B0 trio, 0.01 when that trio is not a command building)",
         host.summary.weight_queries, host.summary.weight_objective_hits,
         host.summary.weight_fort_targets, host.summary.weight_non_command_targets);
+    host.log.notef("summary mission ai target weight health torn_down_targets=%llu "
+        "(00923BE0's +5Dh arm; the fraction unit+370h/unit+36Ch has no producer here, so a live "
+        "candidate takes the full-health 1.0 and slot D is 1.0)",
+        host.summary.weight_torn_down_targets);
+    host.log.notef("summary mission ai target weight base model_runs=%llu class_stand_ins=%llu "
+        "weapon_rows=%zu (00A08460 runs when the weapon-facts table carries a row for both the "
+        "attacker and the target; one publish call from the gunnery host fills it)",
+        host.summary.weight_model_runs, host.summary.weight_class_stand_ins,
+        game_ai_weapon_facts().known_units());
     for (const GameAiPartyRow& row : host.parties) {
         host.log.notef("  ai party %d record=%d ai_enabled=%d brain=%d thinks=%llu "
             "claims=%llu planner_ticks=%llu attacks=%llu commands=%llu refused=%llu",

@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "bsp/ai_command_object.hpp"
+#include "bsp/lua_binding_mission.hpp"
 #include "bsp/ai_tuning_globals.hpp"
 
 // 00A13B60, the CLOSEATTACK and DEFENDPOSITION tick: the routine that gives a
@@ -181,8 +182,41 @@ struct AiCandidateTargetWeightInputs {
     // 00A0F92F PUSH 1Ch: only a NON command building takes the 0.01f arm.
     bool target_is_command_building{false};
     // 00A0F8CE 00923BE0(target), subtracted from the double 2.0 at 00D7A308.
+    // Use ai_unit_health_00923be0 to produce it.
     float target_term{0.0f};
 };
+
+// ---------------------------------------------------------------------------
+// 00923BE0 BSP_UnitInstance_GetHealth, body 00923BE0..00923C4B, read in full
+// ---------------------------------------------------------------------------
+// __thiscall(unit) -> float in ST0, RET 0. What slot D of 00A0F810 subtracts
+// from 2.0, so the term it yields runs over [1.0, 2.0]: a full-health target
+// contributes 1.0 and a destroyed or torn-down one 2.0, which is the model's
+// preference for a damaged target.
+//
+//   00923BE4  CMP byte [unit+5Dh],0 / JZ      the torn-down byte
+//   00923BEA  FLDZ / RET                      a torn-down unit answers 0.0f
+//   00923BF1  EDX = [[unit]+110h] / CALL      the class's health FRACTION
+//   00923C01  FLDZ / FCOMIP ST0,ST1 / JBE     compares 0 against the value
+//   00923C09  the value was negative  -> 0.0f
+//   00923C27  COMISS against 00D7A24C / JBE   the value exceeded 1.0f -> 1.0f
+//   00923C16 / 00923C41  MOVSS [unit+164h]    both arms cache the result
+//
+// The fraction is the class getter: for the destroyer family that is vtable
+// slot +110h = 00876260 BSP_UnitInstance_GetHealthFraction, which is
+// `unit+370h / unit+36Ch`, current over maximum. The clamp is therefore a
+// safety clamp on a ratio, not a rescaling.
+//
+// `fraction_available` says whether a caller could read that ratio. When it is
+// false the result is the full-health value 1.0f, which is what a live,
+// undamaged unit yields, NOT the 0.0f of the torn-down arm.
+float ai_unit_health_00923be0(bool torn_down, float fraction,
+                              bool fraction_available) noexcept;
+
+// unit+164h, where both arms of 00923BE0 cache the clamped result. Seeded by
+// 0087BD09 in BSP_UnitInstance_InitHealthAndParts; the only other writers are
+// 00923BE0's own two stores (tools/store_census.py 0x164).
+// kUnitHealthCacheOffset (0x164, 00923C16) is defined once, in bsp/lua_binding_mission.hpp.
 
 // 00D7A24C, the seed of both reused slots.
 inline constexpr float kAiCandidateWeightDefaultMultiplier = 1.0f;
