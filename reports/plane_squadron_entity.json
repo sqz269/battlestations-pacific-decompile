@@ -1,0 +1,454 @@
+{
+ "packet": "cc8_plane_squadron_entity",
+ "owner": "agent/cc8-ai-squadron",
+ "doc": "docs/PLANE_SQUADRON_ENTITY.md",
+ "sources": [
+  "include/bsp/plane_squadron_entity.hpp",
+  "src/plane_squadron_entity.cpp",
+  "src/game_hosts_ai.cpp",
+  "include/bsp/game_hosts_ai.hpp"
+ ],
+ "classification": "discovery plus reconstruction; what the squadron's +3D0h member array is, what 007EDA90 actually tests, the three vtable slots that carry a squadron-level action to the member planes, and a host squadron layer that makes 009FE080's 18h arm answer",
+ "routines": [
+  {
+   "address": "007eda90",
+   "name": "BSP_PlaneSquadron_LeaderIsUncommittedKamikaze",
+   "abi": "__thiscall(squadron) -> bool, RET 0, body 007eda90..007edaba",
+   "coverage": "complete"
+  },
+  {
+   "address": "009fe080",
+   "name": "BSP_Entity_IsGroupableCombatant",
+   "abi": "__thiscall(entity) -> bool, RET 0, body 009fe080..009fe0aa",
+   "coverage": "complete"
+  },
+  {
+   "address": "007ed610",
+   "name": "BSP_PilotControl_PromoteFlightLeader",
+   "abi": "__thiscall(squadron, int index), RET 4, body 007ed610..007ed64c",
+   "coverage": "complete"
+  },
+  {
+   "address": "009534a0",
+   "name": "BSP_MPlaneKamikaze_IsKindOf",
+   "abi": "__thiscall(plane, int classId) -> bool, RET 4, chain {17h,0Fh,05,04,02,01,0} then +C4h",
+   "coverage": "complete"
+  },
+  {
+   "address": "007f2c60",
+   "name": "BSP_PlaneSquadronTickableEntity_Construct",
+   "abi": "__thiscall(squadron, int party), RET 4, body 007f2c60..007f2e16",
+   "coverage": "cited from docs/PLANE_SQUADRON.md; this packet read only 007f2da3..007f2dbb and 007f2dec"
+  },
+  {
+   "address": "007f4580",
+   "name": "BSP_PlaneSquadron_AttachLuaSelfAndSpawnPlanes",
+   "abi": "__fastcall(ECX = squadron), RET 0, body 007f4580..007f4b94",
+   "coverage": "partial; this packet read only the WingCount rule 007f4735/007f4754/007f4778 and the per-wing tail 007f4b43..007f4b6e"
+  },
+  {
+   "address": "004f0ad0",
+   "name": "BSP_SceneUnit_CreatePlaneSquadronGen",
+   "abi": "body 004f0ad0..004f0bdf",
+   "coverage": "cited from docs/PLANE_SQUADRON.md; not re-read"
+  },
+  {
+   "address": "007f3970",
+   "name": "BSP_Squadron_RemovePlane",
+   "abi": "body per docs/AIR_OPERATIONS.md",
+   "coverage": "partial; this packet modelled only the compaction 007f39e0..007f3a1d"
+  },
+  {
+   "address": "00a2c790",
+   "name": "BSP_AiGroup_MemberReportPass",
+   "abi": "__thiscall(group), body 00a2c790..00a2c8c2",
+   "coverage": "partial; the member chain 00a2c7f0..00a2c83c was read, the tail from 00a2c859 was not"
+  },
+  {
+   "address": "007f3500",
+   "name": "BSP_PlaneSquadron_CloneFrom",
+   "abi": "cited from docs/PLANE_SQUADRON.md",
+   "coverage": "not re-read; no caller located"
+  }
+ ],
+ "host_calls": [
+  {
+   "address": "009fe092",
+   "native": "007eda90",
+   "containing": "009fe080",
+   "name": "plane_squadron_excluded_007eda90",
+   "note": "negated by 009fe097 NEG/SBB/ADD"
+  },
+  {
+   "address": "009fe088",
+   "native": "vtable+5Ch",
+   "containing": "009fe080",
+   "name": "plane_squadron_combatant_facts",
+   "note": "PUSH 18h"
+  },
+  {
+   "address": "007edaa0",
+   "native": "vtable+5Ch",
+   "containing": "007eda90",
+   "name": "plane_squadron_combatant_facts",
+   "note": "PUSH 17h on the flight leader"
+  },
+  {
+   "address": "007ecfa4",
+   "native": "member vtable+128h",
+   "containing": "007ecf80",
+   "name": "plane_squadron_broadcast_to_members_007ecf80",
+   "kind": "no_ghidra_function",
+   "note": "the fan-out's per-member dispatch"
+  },
+  {
+   "address": "00a2c7f5",
+   "native": "member vtable+114h",
+   "containing": "00a2c790",
+   "name": "GameAiCoordinatorHost::Impl::close_member_current_target",
+   "note": "what the AI reads out of a squadron"
+  },
+  {
+   "address": "004f0b18",
+   "native": "007f2c60",
+   "containing": "004f0ad0",
+   "name": "GameAiCoordinatorHost::Impl::build_squadrons",
+   "note": "labelled substitution: one wing, because unit creation is owned elsewhere"
+  },
+  {
+   "address": "007ed645",
+   "native": "007ed260",
+   "containing": "007ed610",
+   "name": "plane_squadron_promote_flight_leader_007ed610",
+   "note": "the tail call after the rotation; contract: unread"
+  }
+ ],
+ "indirect_call_sites": [
+  {
+   "address": "007ecfa4",
+   "containing": "007ecf80",
+   "target": "[[member]+128h]",
+   "role": "the squadron's member fan-out; slot +128h is the skill-level setter"
+  },
+  {
+   "address": "00a2c7f5",
+   "containing": "00a2c790",
+   "target": "[[member]+114h]",
+   "role": "for a squadron this is 007ecfd0, returning squadron+348h"
+  },
+  {
+   "address": "007eda9d",
+   "containing": "007eda90",
+   "target": "[[leader]+5Ch]",
+   "role": "IsKindOf(17h) on the flight leader"
+  },
+  {
+   "address": "009fe085",
+   "containing": "009fe080",
+   "target": "[[entity]+5Ch]",
+   "role": "IsKindOf(18h)"
+  },
+  {
+   "address": "009fe0a2",
+   "containing": "009fe080",
+   "target": "[[entity]+5Ch]",
+   "role": "IsKindOf(6), the ship base tail"
+  }
+ ],
+ "no_ghidra_function": [
+  {
+   "start": "007ecf80",
+   "end_inclusive": "007ecfbf",
+   "role": "vtable 00D087C0 slot +128h, the member fan-out. __thiscall(squadron, arg) RET 4: for (i = 0; i < [sq+3CCh]; ++i) members[i]->vtable[+128h](arg). Decoded from the raw bytes 007ecf80..007ecfbf; the final RET 4 is at 007ecfbd. Ghidra's nearest function start is 007ecf20"
+  },
+  {
+   "start": "007ecfd0",
+   "end_inclusive": "007ecfd6",
+   "role": "vtable 00D087C0 slot +114h: MOV EAX,[ECX+348h] (8b 81 48 03 00 00) then RET (c3). The 0x22C AI command block 00A2C790 reads out of a squadron"
+  }
+ ],
+ "raw_listing_call_sites": [
+  {
+   "address": "007f5009",
+   "role": "MOV [ESI+348h],EAX, from tools/store_census.py 0x348",
+   "note": "outside any Ghidra function; 007f4580's stored body ends at 007f4b94"
+  },
+  {
+   "address": "007f4fdc..007f500f",
+   "role": "an operator new of 0x22C, a __thiscall constructor taking the squadron, then the store",
+   "note": "read as raw bytes only. The instruction boundaries in this region were NOT established from a function start, so the two CALL targets this packet computed (0x22C allocator and constructor) did not survive verify_report_calls.py and are withdrawn. The PUSH 22Ch immediate and the +348h store are the parts that stand"
+  }
+ ],
+ "record_layouts": [
+  {
+   "record": "PlaneSquadronEntity (the AI-facing fields of the 0x414 block)",
+   "size": "0x414 native; this packet models +C4h, +348h, +34Ch, +350h, +364h, +370h, +3C8h, +3CCh, +3D0h..+3E0h, +3E8h, +3ECh",
+   "producer": "007f2c60 plus 007f4580 plus the undefined routine at 007f4fdc",
+   "fields": "see docs/PLANE_SQUADRON.md section 2 for the full table and docs/PLANE_SQUADRON_ENTITY.md section 3 for the AI-facing subset"
+  }
+ ],
+ "constants": [
+  {
+   "name": "kPlaneSquadronClassId",
+   "value": "0x18",
+   "evidence": "007f2dec stores it at +C4h"
+  },
+  {
+   "name": "kPlaneSquadronKamikazeKindId",
+   "value": "0x17",
+   "evidence": "007edaa0 PUSH 17h; docs/ENTITY_CLASS_IDS.md row 17 MPlaneKamikaze, class test 009534a0"
+  },
+  {
+   "name": "kPlaneSquadronMemberKindId",
+   "value": "0x0F",
+   "evidence": "the plane base; 009fe0f0's air test and ENTITY_CLASS_IDS row 0F"
+  },
+  {
+   "name": "kPlaneSquadronMaxWings",
+   "value": "5",
+   "evidence": "007f2da3..007f2dbb zero five dwords; 007f3885 CMP EBX,4 / 007f3888 JA"
+  },
+  {
+   "name": "kPlaneSquadronDefaultWingCount",
+   "value": "3",
+   "evidence": "007f4735's immediate"
+  }
+ ],
+ "corrections": [
+  {
+   "doc": "docs/AI_COMMAND_LIFETIME.md",
+   "was": "[squadron+3D0h] is the squadron's carrier link",
+   "is": "it is members[0], the flight leader; 17h is MPlaneKamikaze and +C24h is the authored PilotFires",
+   "evidence": "007f2da3..007f2dbb, 007f4b55/007f4b60, 007ed618/007ed621"
+  },
+  {
+   "doc": "docs/AI_CLOSE_ATTACK_TICK.md",
+   "was": "the carrier link passes 007EDA90's shape inline (line 56)",
+   "is": "the same correction, for the inline copy at 00a143ed..00a14413",
+   "evidence": "same"
+  },
+  {
+   "doc": "docs/TORPEDO_ATTACK_MODE.md",
+   "was": "007F0030 is the pilot control block's message dispatcher",
+   "is": "its sole reference 00d08924 is offset +164h of the squadron vtable 00d087c0, so the dispatcher belongs to the squadron object",
+   "evidence": "ghidra xrefs 007f0030 returns one DATA reference"
+  },
+  {
+   "doc": "docs/TORPEDO_RUN_IN_PATH.md",
+   "was": "ctl+3D0h is the unit array with count ctl+3CCh",
+   "is": "correct, no change",
+   "evidence": "same three witnesses"
+  }
+ ],
+ "validation": {
+  "command": "./tools/run_game.ps1 -- --frames 3200 --press-start-frame 30 --menu-select <M> --mission-frames 3000 --mission-frame-seconds 0.05",
+  "before_tree": "f5400e43f",
+  "missions": [
+   {
+    "mission": "IJN01",
+    "units": 321,
+    "aircraft_class_0f": 33,
+    "before": {
+     "squadrons": 0,
+     "groups_created": 4,
+     "members_added": 190,
+     "served": 0,
+     "tick_orders": 0,
+     "commands": 34,
+     "units_with_task": 34,
+     "pilot_attack_ordered": 4,
+     "pilot_attack_closed_mean_m": -149899.7,
+     "gunnery_assigns": 200,
+     "gunnery_candidates": 52
+    },
+    "after": {
+     "squadrons": 33,
+     "squadron_members": 33,
+     "squadron_group_members": 33,
+     "excluded_007eda90": 0,
+     "squadron_commands": 141,
+     "member_orders": 141,
+     "groups_created": 3,
+     "members_added": 221,
+     "served": 0,
+     "tick_orders": 237,
+     "commands": 171,
+     "units_with_task": 30,
+     "pilot_attack_ordered": 33,
+     "pilot_attack_closed_mean_m": 0.0,
+     "gunnery_assigns": 2766,
+     "gunnery_candidates": 1841,
+     "orders_suppressed": 96
+    }
+   },
+   {
+    "mission": "USN01",
+    "units": 77,
+    "aircraft_class_0f": 20,
+    "before": {
+     "squadrons": 0,
+     "groups_created": 4,
+     "members_added": 89,
+     "served": 0,
+     "tick_orders": 0,
+     "commands": 17,
+     "units_with_task": 17,
+     "pilot_attack_ordered": 14,
+     "pilot_attack_closed_mean_m": -20361.5,
+     "gunnery_assigns": null
+    },
+    "after": {
+     "squadrons": 20,
+     "squadron_members": 20,
+     "squadron_group_members": 20,
+     "excluded_007eda90": 0,
+     "squadron_commands": 477,
+     "member_orders": 477,
+     "groups_created": 4,
+     "members_added": 109,
+     "served": 0,
+     "tick_orders": 486,
+     "commands": 485,
+     "units_with_task": 8,
+     "pilot_attack_ordered": 14,
+     "pilot_attack_closed_mean_m": 1435.0,
+     "gunnery_assigns": 1082,
+     "orders_suppressed": 9
+    }
+   },
+   {
+    "mission": "USN02",
+    "units": 32,
+    "aircraft_class_0f": 0,
+    "before": {
+     "squadrons": 0,
+     "groups_created": 2,
+     "members_added": 50,
+     "served": 616,
+     "attackmove": 559,
+     "commands": 635,
+     "units_with_task": 14
+    },
+    "after": {
+     "squadrons": 0,
+     "squadron_members": 0,
+     "served": 616,
+     "attackmove": 559,
+     "commands": 635,
+     "units_with_task": 14,
+     "groups_created": 2,
+     "members_added": 50,
+     "orders_suppressed": 543,
+     "note": "identical: USN02 authors no aircraft, so nothing should change"
+    }
+   }
+  ],
+  "unresolved": [
+   {
+    "mission": "IJN01 and USN01",
+    "symptom": "served=0 after as before",
+    "cause": "the close-attack pass 00A13B60 reaches no member. This is a property of both missions BEFORE this packet as well (both report served=0 and scored=0 at f5400e43f), so it is not a squadron fact. USN02 serves 616 with the same code, so the pass itself works. The promoted group on IJN01/USN01 is not the one the squadrons are in, or its member count is zero at the tick. Not established; the gate is 00A143ED..00A14413 and the promotion is 00A2BD00"
+   },
+   {
+    "mission": "IJN01",
+    "symptom": "pilot attack range_first_mean and range_last_mean are both 0.0",
+    "cause": "the pilot-attack tracker is not this packet's; 33 aircraft now receive attack tasks where 4 did before, but their recorded ranges are zero. Whether that is a tracker sampling artefact or a target that resolves to nothing was not established"
+   }
+  ]
+ },
+ "remaining": [
+  "007F0030's remaining live arms over 4Bh..BEh, tables 007F0204 and 007F01E8",
+  "the routine containing 007F4FDC..007F500F and the 0x22C block constructor 0084D80E",
+  "007F4580's per-wing loop in the units host: WingCount planes per scene entity, not one",
+  "007ED260, called by both 007ED610 and 007F3970",
+  "007F3500 BSP_PlaneSquadron_CloneFrom's caller",
+  "plane+C24h PilotFires has no reader in this process, so 007EDA90 can never answer true here"
+ ],
+ "modelled_sites": [
+  {
+   "address": "007f4735",
+   "containing": "007f4580",
+   "name": "plane_squadron_wing_count_007f4754",
+   "note": "the absent-key arm, the immediate 3",
+   "reads": "007f4580"
+  },
+  {
+   "address": "007f4754",
+   "containing": "007f4580",
+   "name": "plane_squadron_wing_count_007f4754",
+   "note": "prop+0Ch clamped up to 1",
+   "reads": "007f4580"
+  },
+  {
+   "address": "007f4778",
+   "containing": "007f4580",
+   "name": "plane_squadron_wing_count_007f4754",
+   "note": "the store to +3C8h",
+   "reads": "007f4580"
+  },
+  {
+   "address": "007f4b43",
+   "containing": "007f4580",
+   "name": "plane_squadron_attach_plane_007f4b43",
+   "note": "plane+9D8h = the spawn-order id",
+   "reads": "007f4580"
+  },
+  {
+   "address": "007f4b55",
+   "containing": "007f4580",
+   "name": "plane_squadron_attach_plane_007f4b43",
+   "note": "the +3D0h[count] store, no bound test",
+   "reads": "007f4580"
+  },
+  {
+   "address": "007f4b60",
+   "containing": "007f4580",
+   "name": "plane_squadron_attach_plane_007f4b43",
+   "note": "+3CCh += 1",
+   "reads": "007f4580"
+  },
+  {
+   "address": "007eda91",
+   "containing": "007eda90",
+   "name": "plane_squadron_flight_leader",
+   "note": "[squadron+3D0h], members[0]",
+   "reads": "007eda90"
+  },
+  {
+   "address": "007ed621",
+   "containing": "007ed610",
+   "name": "plane_squadron_promote_flight_leader_007ed610",
+   "note": "the indexed member load",
+   "reads": "007ed610"
+  },
+  {
+   "address": "007f39ed",
+   "containing": "007f3970",
+   "name": "plane_squadron_remove_plane_007f39ed",
+   "note": "ADD [ESI+3CCh],-1",
+   "reads": "007f3970"
+  },
+  {
+   "address": "007ecfd0",
+   "containing": "007ecfd0",
+   "name": "GameAiCoordinatorHost::Impl::close_member_current_target",
+   "kind": "no_ghidra_function",
+   "note": "vtable +114h, MOV EAX,[ECX+348h]; the flight leader's descriptor stands in",
+   "reads": "007ecfd0"
+  },
+  {
+   "address": "00a02020",
+   "containing": "00a10dc0",
+   "name": "GameAiCoordinatorHost::Impl::issue_order",
+   "note": "the follower moveto, fanned out to the member planes",
+   "reads": "0077d600"
+  },
+  {
+   "address": "00a14a6e",
+   "containing": "00a13b60",
+   "name": "GameAiCoordinatorHost::Impl::issue_order",
+   "note": "the close-attack order, fanned out to the member planes",
+   "reads": "0077d600"
+  }
+ ]
+}
