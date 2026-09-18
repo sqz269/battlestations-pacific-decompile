@@ -207,3 +207,29 @@ the lead's packet reserves for the combined wiring commit, against
 2. **The ground increment chain**, `0099D9A3`-`0099DBAB`.
 3. **`plan+26Ch` and the `unit+9C2h` per-slot byte**, which decide whether the centred-stick arm
    ever fires.
+
+
+## Correction from packet `cc8_pilot_throttle_cut_raiser`: the demand arm is not ground only
+
+Appended, not rewriting the sections above.
+
+Section 1 puts **both** `0099DC31` and `0099DC8F` behind `unit+900h == 5`. That is right for the
+cap and **wrong for the demand**.
+
+```
+0099d8c6  COMISS XMM0,dword ptr [ESI + 0x2b4]  ; 0.001f vs plan+2B4h
+0099d8cd  JBE   0x0099d924                     ; a real desired speed jumps HERE
+```
+
+`0099D924` is past the state test at `0099D8FD`, so when the one-shot is armed and `plan+2B4h` is at
+or above `0.001`, the demand block runs **in any flight state**. Only the cap at `0099DC8F`, which
+`0099D911 JZ 0099DC7A` reaches from inside the state branch, is ground handling.
+
+Section 3's closing claim - that the dive numbers "will **not** move when the arm is wired unless
+the raiser is found too" - is **withdrawn on both halves**. The raiser is
+`009C1850 BSP_BotStateMoveTo_SetDesiredSpeed`, which raises `plan+2D8h` at `009C18A7`
+unconditionally and writes the desired speed into `plan+2B4h` at `009C189A` in the same routine; and
+the arm it leads to runs in flight. So `plan+2B4h` is a **desired speed**, not an abstract
+threshold, and `0099D8C6` is asking whether the bot has been told to stop.
+
+`docs/PILOT_THROTTLE_CUT_RAISER.md`.

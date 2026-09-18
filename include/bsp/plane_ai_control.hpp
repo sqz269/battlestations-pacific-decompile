@@ -471,8 +471,12 @@ PilotBotRollResult pilot_plan_roll_0099e2ba(const PilotBotRollInputs& in);
 //             slot's `current` and, when it exceeds [00CE3D30] = 0.6, commands
 //             0.6.
 //
-// So the 0.6 is a GROUND cap, not an in-flight throttle cut: 0099D904 jumps past
-// both ground arms for any aircraft whose unit+900h is not 5.
+// So the 0.6 CAP is ground only. The DEMAND is not: 0099D8CD's taken side jumps to
+// 0099D924, which is past the state test at 0099D8FD, so a one-shot armed with a
+// desired speed at or above 0.001f reaches the demand arm in any flight state.
+// plan+2B4h is that desired speed - 009C1850 writes it at 009C189A and raises
+// plan+2D8h at 009C18A7 in the same breath - and plan+2B8h, which EBP addresses
+// from 0099D769, is the reference the demand divides the forward speed by.
 // docs/PILOT_BOT_THROTTLE_DEMANDS.md.
 inline constexpr float kPilotThrottleCutValue = 0.001f;    // 00D7A23C
 inline constexpr float kPilotThrottleGroundCap = 0.6f;     // 00CE3D30

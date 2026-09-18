@@ -1,0 +1,74 @@
+{
+ "packet": "cc8_pilot_throttle_cut_raiser",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/PILOT_THROTTLE_CUT_RAISER.md",
+ "tree_base": "9b9f05d45 plus main",
+ "result": "Raiser found. RETRACTS docs/PILOT_BOT_THROTTLE_DEMANDS.md's claim that the demand arm is ground only and that wiring it will not move the dive numbers.",
+ "question": "What raises the throttle one-shot plan+2D8h to 1?",
+ "answer": "009C1850 BSP_BotStateMoveTo_SetDesiredSpeed, unconditionally, at 009C18A7 - and it writes the threshold beside it, 009C189A storing the computed speed into cmd+2B4h. It is the vtable+1Ch slot the move-to tick 009C18C0 calls at step 2 with the planar distance to the target, so the pair (+2B4h, +2D8h) is one command: here is the speed I want, act on it once. An exhaustive census over 2D8h returns 101 writers, 55 immediate stores, 26 of which store 1, spread across the pilot control range 007B4xxx and the whole bot-task range; the four torpedo-chain sites (009D0AC5, 009D105B, 009D1182, 009D1F6B) all store ZERO, which is why no torpedo state ever slowed a plane. The packet also RETRACTS its predecessor: 0099D8CD's taken side jumps to 0099D924, which is past the flight-state test at 0099D8FD, so the demand arm at 0099DC31 runs in ANY flight state once the one-shot is armed with a desired speed at or above 0.001f. Only the 0.6 cap at 0099DC8F is ground only, reached by 0099D911 from inside the state branch. And 0099D769 LEA EBP,[ESI+2B8h] makes plan+2B8h the reference the demand divides 007D99C0's forward speed by at 0099D9A3, so the demand's input is a speed ratio.",
+ "coverage": "complete for the raiser and its condition, for the census classification by stored value, and for the 0099D8CD entry that settles the gate; partial for the 25 other raising sites (classified by name and value, not read) and for the increment chain.",
+ "calls": [
+  {
+   "address": "009c1895",
+   "native": "009becd0",
+   "function": "009c1850",
+   "what": "the desired speed, whose result 009C189A stores into cmd+2B4h immediately before 009C18A7 raises cmd+2D8h"
+  },
+  {
+   "address": "009c186a",
+   "native": "007c47f0",
+   "function": "009c1850",
+   "what": "the value the speed computation is built from"
+  },
+  {
+   "address": "0099d99e",
+   "native": "007d99c0",
+   "function": "0099d300",
+   "what": "the forward speed the demand divides by plan+2B8h at 0099D9A3, EBP being that field from 0099D769"
+  },
+  {
+   "address": "0099d95c",
+   "native": "00419010",
+   "function": "0099d300",
+   "what": "the 0099D924 entry's own interpolation, whose result 0099D96B maxes into plan+2B8h at 0099D970"
+  }
+ ],
+ "named_routines": [
+  {
+   "native": "009c1850",
+   "name": "BSP_BotStateMoveTo_SetDesiredSpeed",
+   "abi": "void __thiscall(this, float distance), RET 4, Ghidra body 009C1850-009C18B8; ESI the state, ESI+4h the approach, approach+18h the command block",
+   "coverage": "complete",
+   "what": "computes a desired speed through 007C47F0 and 009BECD0 and writes it to cmd+2B4h at 009C189A, clears the byte cmd+2B0h at 009C18A0, and raises cmd+2D8h to 1 at 009C18A7 with NO condition. It is the vtable+1Ch slot 009C18C0's step 2 calls with the distance to the target, and it is the producer of the planner's throttle one-shot."
+  },
+  {
+   "native": "0099d300",
+   "name": "BSP_PilotBot_PlanControls",
+   "abi": "as recorded; EBP is plan+2B8h from 0099D769",
+   "coverage": "the gate corrected",
+   "what": "0099D8CD's taken side jumps to 0099D924, past the flight-state test at 0099D8FD, so the demand arm is reachable in flight. Only the 0.6 cap at 0099DC8F is ground only."
+  }
+ ],
+ "no_ghidra_function": [],
+ "host_methods": [],
+ "contracts": [
+  "009BECD0 and 007C47F0, the two routines that compute the desired speed. Unread.",
+  "The demand's increment chain, 0099D9A3-0099DBAB.",
+  "plan+2B0h, the byte 009C18A0 clears and 0099D924 tests.",
+  "The 25 other sites that store 1 were classified by enclosing routine name and stored value only. BSP_PlaneBot_ApproachBaseStep (009B2C58), BSP_PlaneBot_TaxiStep (009CDC7F) and BSP_BotStateDepthChargeAim_Tick (009A4556) fit landing, taxi and attack paths, but that is inference from names.",
+  "Whether the command block at approach+18h and the plan the planner holds are one record. Every offset in this chain agrees; not proved."
+ ],
+ "corrections": [
+  {
+   "target": "docs/PILOT_BOT_THROTTLE_DEMANDS.md sections 1, 2 and 3",
+   "was": "both 0099DC31 and 0099DC8F are behind unit+900h == 5, and wiring the arm will not move the dive numbers unless a raiser is found",
+   "is": "only the cap is; 0099D8CD jumps into the demand block past the state test, so the demand runs in flight. The raiser is 009C1850, unconditional, and it writes the desired speed into plan+2B4h in the same routine, so wiring the arm WILL move the dive numbers",
+   "evidence": "0099D8CD, 0099D924, 0099D8FD, 0099D911, 009C189A, 009C18A7",
+   "status": "appended and verified present"
+  }
+ ],
+ "validation": {
+  "runner": "none",
+  "note": "Reading only. The pure arm in src/plane_ai_control.cpp was corrected to match the gate; it still has no caller."
+ }
+}

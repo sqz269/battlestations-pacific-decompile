@@ -560,6 +560,10 @@ PilotBotThrottleResult pilot_plan_throttle_0099d300(const PilotBotThrottleInputs
     // 0099D79F-0099D7AF then 0099D8C1-0099D8EB. The jump that reaches this arm
     // is what leaves 0.001f in XMM0, so the compared value and the stored value
     // are the same constant.
+    // 0099D8CD is the branch that decides between them, and its taken side jumps
+    // to 0099D924, which is PAST the flight-state test at 0099D8FD. So a real
+    // desired speed reaches the demand arm in any flight state.
+    bool demand_arm = false;
     if (in.air_brake_mode != 0) {
         if (in.air_brake_mode == 1 && kPilotThrottleCutValue > in.one_shot_threshold) {
             out.wrote_throttle = true;
@@ -570,22 +574,29 @@ PilotBotThrottleResult pilot_plan_throttle_0099d300(const PilotBotThrottleInputs
             // load of it this packet read. PARTIAL.
             out.air_brake_desired = 1.0f;
             out.clears_air_brake_mode = true;               // 0099D8EB
+            return out;
         }
-        return out;
+        if (in.air_brake_mode == 1) {
+            demand_arm = true;    // 0099D8CD, into 0099D924
+        } else {
+            return out;           // 0099D8C4 JNZ 0099D8F5, the join
+        }
     }
 
-    // 0099D8FD: every arm below is inside unit+900h == 5.
-    if (in.flight_state != 5) {
-        return out;
-    }
-
-    if (!in.slot_active) {
-        // 0099DC7A-0099DC97, the ground cap.
-        if (in.slot_current > kPilotThrottleGroundCap) {   // 00CE3D30 = 0.6
-            out.wrote_throttle = true;
-            out.throttle_desired = kPilotThrottleGroundCap;
+    // 0099D8FD: the state test, which the 0099D8CD entry has already jumped past.
+    if (!demand_arm) {
+        if (in.flight_state != 5) {
+            return out;
         }
-        return out;
+        if (!in.slot_active) {
+            // 0099DC7A-0099DC97, the ground cap. 0099D911 reaches it only
+            // from inside the state branch, so this one really is ground only.
+            if (in.slot_current > kPilotThrottleGroundCap) {   // 00CE3D30 = 0.6
+                out.wrote_throttle = true;
+                out.throttle_desired = kPilotThrottleGroundCap;
+            }
+            return out;
+        }
     }
 
     // 0099D977-0099D998 seeds the demand from the slot's own value, and
