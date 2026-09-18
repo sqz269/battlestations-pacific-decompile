@@ -179,3 +179,27 @@ never writes it.
 | `ship_ai_order_consumer` | `009D8CE0`, `009D8D2C`, `009E3C00`, `009E3DB0`, `00811D80`, `00815F30` | Read the three consumers of the published triple and settle what a ship does with another ship's published heading and distances. `009D8CE0`'s caller has to be found first; it has none in the call graph |
 | `ship_ai_throttle_to_ring` | `009F43D6`, `009F443B`, `009F4466`, `009F4486`, `009F449D`, `009F46D6`, `009F4711`, `009F4810`, `009E7B53`, `009EA839`, `009F4DA0` | Where `blk+1D0h` and `blk+1D4h` go for a unit the player is not steering. Nothing on the per-frame chain `009F51C6..009F5227` consumes them, and the ring is a player and network path, so either step 16 `009F4DA0` or one of the `009F42xx..009F48xx` readers of `+1D0h`/`+1D4h` closes the loop. This is the packet's biggest open question |
 | `unit_heading_vtable_0050` | `00826CDB`, `0081196C`, `009ED95D`, `009EE8C7` | Slot `50h` of the vtable reached through the object at each site. Three sites call it with no argument and take a float back; `00826CDB` passes a yaw rate. Find the installed function for each class and settle whether the four sites share one vtable. Until then every reconstruction that models it as a heading getter is provisional |
+
+## Correction appended by packet `cc8_ship_ai_rudder_hop` (2026-09-18)
+
+`docs/SHIP_AI_RUDDER_HOP.md` has since read `00826C34..00826D69` instruction by
+instruction. Two claims in the section "What `00825F7C..00826D6B` actually contains on the
+steering path" and in the `unit_heading_vtable_0050` follow-up row do not survive it.
+
+* **The two call sites of vtable slot `50h` do not disagree.** All four sites are
+  `__thiscall float(void)`, `RET 0`, `ST0` result, and the concrete target is `006DFD60`,
+  `FLD dword [ECX+1050h]; RET`, installed at `00CFC420` = unit vtable `00CFC3D0` slot
+  `50h`. The float this document saw at `00826CD5` is the **third argument of
+  `00810190`**, which is `RET 0Ch` at `0081062C` and takes three stack arguments while only
+  two are pushed after the virtual call. With `RET 4` at `00826CDB` the function's own
+  epilogue at `00826D5F..00826D69` no longer balances.
+* **`00826C61..00826CDB` is not a hop from the rudder to the heading.** The ordered rudder
+  reaches the body at `00826B54` through `0092E8C0`, which `docs/SHIP_MOTION.md`
+  reconstructed in 2026-09; `00826C75`'s yaw rate is only `00810190`'s fourth argument,
+  stored in a wake-trail record at `+1Ch`; and `unit+1050h` - the field slot `50h` returns
+  - is **written** at `00826C56` from `atan2(worldRow2.x, worldRow2.z)`, so the hull
+  heading is an output of the motion tick rather than a steering input.
+
+The rest of this document stands, including its central negative: the AI never writes the
+order ring. The gap it identifies is real and still open; it is just not at `00825F7C`.
+`ship_ai_heading_to_rudder` in the other document's follow-up table is the packet for it.
