@@ -367,3 +367,17 @@ assigned in USN01, and in both cases that is the image's own behaviour.
 The gate that actually keeps an aerial torpedo out of the swim is the one this document already
 measures: a 700 m release, a 117.2 m/s entry and a 100.0 m/s `MaxWaterHitVel`.
 Full evidence: `docs/TORPEDO_GUN_ASSIGNMENT.md`.
+
+## Correction: the forward-speed gap is closed (packet cc8_torpedo_release_geometry)
+
+Appended, not a rewrite. The second item under "The next gate is release altitude" reads that
+`unit_forward_speed_0092d730` returning 0.0 for a flying plane is "a host gap, not an image fact".
+That was right, and the gap is now named and fixed. `0092D730` dots the body's linear velocity from
+`00C31F40` with the third row of the axis matrix from `00C32000`, and reads nothing else. The one
+body-velocity field in this host had a single writer, the ship hydro path through `00C37E50`; the
+plane free-flight arm kept its velocity separately and never published it. Publishing it moved the
+release-instant answer from `0.0 m/s` to `-6.8 m/s`.
+
+The first item, release altitude, stands and now has numbers: the authored `TorpReleaseAlt` is
+12 m for `SPNormal` and between 5 and 12 m across the rows, against the 700 m this host commands.
+Full evidence: `docs/TORPEDO_RELEASE_GEOMETRY.md`.
