@@ -926,7 +926,10 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // docs/AI_TARGET_WEIGHT_TERMS.md term 2.
         const GameAiWeaponFacts& facts = game_ai_weapon_facts();
         const std::size_t attacker_unit = proxy(member);
-        if (facts.row(attacker_unit) != nullptr && facts.row(target) != nullptr) {
+        const GameAiWeaponFacts::Unit* attacker_row = facts.row(attacker_unit);
+        const GameAiWeaponFacts::Unit* target_row = facts.row(target);
+        if (attacker_row != nullptr && target_row != nullptr
+            && attacker_row->inputs_complete && target_row->inputs_complete) {
             bsp::AiTargetWeightKey key;
             key.attacker = handle(attacker_unit);
             key.attacker_class = units.unit_class_id(attacker_unit);
