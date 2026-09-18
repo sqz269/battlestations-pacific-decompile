@@ -434,7 +434,57 @@ struct AirOpsDeck {
     std::vector<AirOpsSlot> slots;
     std::vector<AirOpsStockEntry> stock;
     std::int32_t max_in_air_planes{0};
+
+    // The fields the launch gates read, from 006BF620 and 006CC690. The two
+    // failure flags are named by 006CADD0 mode 3, whose `LEA` descriptors for
+    // block+1Ch and block+1Dh sit immediately before the terminators that carry
+    // `runwayFailure` (00CBE35) and `hangarFailure` (00CBE77). Neither is a
+    // scene key, so both start clear.
+    bool runway_failure{false};  // block+1Ch
+    bool hangar_failure{false};  // block+1Dh
+    // block+38h. 006BF620 requires it zero for readiness and 006CC690 branches on
+    // it: zero starts the launch through 006C7490, non-zero adds the stock back
+    // and queues through 006CA640. Two sites agreeing is why it is named.
+    std::uint32_t launch_in_progress{0};
+    // block+7Ch must be non-null and the byte at its +5Dh must be clear. That
+    // object has no counterpart in this process, so `owner_present` is a
+    // labelled substitution: a deck the scene loaded reports it present.
+    bool owner_present{true};
+    bool owner_blocked{false};
+    // The entity side of the gate, not the block's: 00895E4B tests the class
+    // through vtable+5Ch against 45h and 00895E51 the byte at entity+720h.
+    bool is_airfield{false};
+    bool airfield_blocked{false};
 };
+
+// 00895D20 IsReadyToSendPlanes. The whole rule: an airfield whose entity+720h
+// byte is set is never ready, and everything else is 006BF620 over the block.
+bool air_ops_is_ready_to_send_planes_00895d20(const AirOpsDeck& deck) noexcept;
+
+// 006C7210: the first slot whose state is 1 or 5, or, when none is, the index
+// one past the end, which is where 006CADD0's 2n+2 growth puts a new record.
+int air_ops_pick_launch_slot_006c7210(const AirOpsDeck& deck) noexcept;
+
+struct AirOpsLaunchRequest {
+    std::uint32_t vehicle_class{0};
+    std::int32_t count{0};
+    std::int32_t arm{0};
+    // 0089E3C0 defaults the arm to class+134h and replaces it only when the
+    // binding was given a fourth argument (the 00B663F0 argument-count test
+    // against 4).
+    bool arm_given{false};
+    std::int32_t class_default_arm{0};
+};
+
+struct AirOpsLaunchResult {
+    int slot_index{-1};  // what 0089E3C0 returns, before its +1
+    bool started{false}; // 006C7490 ran
+    bool queued{false};  // the stock went back and 006CA640 ran instead
+};
+
+// 006CC690, which 0089E3C0 delegates to and whose result it pushes plus one.
+AirOpsLaunchResult air_ops_launch_squadron_006cc690(AirOpsDeck& deck,
+                                                    const AirOpsLaunchRequest& request);
 
 // `resolve_type` stands in for 007B8A80, which turns the authored `Type` token
 // into the class id the slot carries at +4h. A resolver that returns 0 leaves
@@ -458,6 +508,7 @@ public:
     void bind_entity_id(int entity_id, const std::string& unit_name);
     const AirOpsDeck* find(const std::string& unit_name) const noexcept;
     const AirOpsDeck* find_by_entity_id(int entity_id) const noexcept;
+    AirOpsDeck* find_mutable_by_entity_id(int entity_id) noexcept;
     std::size_t size() const noexcept;
 
 private:
