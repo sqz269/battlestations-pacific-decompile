@@ -4286,6 +4286,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.db_turndown_roll_last = r.roll_290;
                             unit_.plan_slots[bsp::kPilotSlotRoll].desired = r.roll_290;
                             unit_.plan_slots[bsp::kPilotSlotRoll].active = 1;
+                            // 009C462F cmd+2CCh = 0. That is the value the
+                            // planner's gate at 0099E275 lets through, so this
+                            // is what keeps the roll command alive.
+                            unit_.plan_heading_mode_2cc = 0;
+                            unit_.plan_heading_2c0_written = false;
+                        }
+                        if (r.released_roll) {
+                            // 009C464E cmd+2CCh = 1, which the gate rejects, so
+                            // the planner takes the axis back.
+                            unit_.plan_heading_mode_2cc = 1;
                         }
                         if (r.wrote_pitch) {
                             ++unit_.db_turndown_pitch_writes;
@@ -5466,8 +5476,22 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const bsp::PilotBotRollResult roll =
                             bsp::pilot_plan_roll_0099e2ba(rin);
                         unit_.plan_state.bank_target_2c4 = roll.bank_target;
-                        unit_.plan_slots[bsp::kPilotSlotRoll].desired = roll.desired;
-                        unit_.plan_slots[bsp::kPilotSlotRoll].active = 1;  // 0099E3AE
+                        // THE GATE, 0099DDBE-0099E275. 0099DDBE loads the mode
+                        // word plan+2CCh the task wrote; 0099DE8A CMP ECX,2 and
+                        // 0099DE8D JNZ send anything but 2 to 0099E26E, PAST the
+                        // planner's own MOV [ESI+2CCh],1 at 0099E264; 0099E26E
+                        // CMP [ESI+2CCh],1 and 0099E275 JNZ then skip the whole
+                        // roll arm, so the task's plan+290h survives. Mode 2, a
+                        // commanded heading, falls through and the planner
+                        // writes the bank itself. The turndown 009C44F0 writes
+                        // mode 0, which is exactly the value that passes.
+                        // docs/DIVE_BOMB_TASK.md, "The roll-arm gate".
+                        const int roll_mode = unit_.plan_heading_mode_2cc;
+                        if (roll_mode == 2 || roll_mode == 1) {
+                            unit_.plan_slots[bsp::kPilotSlotRoll].desired = roll.desired;
+                            unit_.plan_slots[bsp::kPilotSlotRoll].active = 1;  // 0099E3AE
+                            unit_.plan_heading_mode_2cc = 0;  // 0099E3B5
+                        }
 
                         // 0099E490-0099E739, the pitch arm. Without it a planned
                         // bot follows whatever plan+2BCh was last set to, which
