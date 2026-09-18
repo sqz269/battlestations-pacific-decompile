@@ -220,6 +220,13 @@ struct GameMissionLuaSummary {
     // The three objective bindings. docs/MISSION_OBJECTIVES.md.
     unsigned long long objective_binding_calls{0};
     unsigned long long objective_units_touched{0};
+    // 0088BF80 GetProperty. docs/MISSION_LUA_GETPROPERTY.md. `served` counts the
+    // calls whose key one of the reconstructed readers answered; `unserved` the
+    // keys that reach the arm the native leaves empty.
+    unsigned long long get_property_calls{0};
+    unsigned long long get_property_served{0};
+    unsigned long long get_property_unserved{0};
+    unsigned long long get_property_slots_rows{0};
     std::vector<GameMissionNativeCall> natives; // distinct, in first-call order
     std::string first_error;
     std::string first_error_phase;
@@ -479,6 +486,12 @@ public:
     // The three objective bindings' own line. docs/MISSION_OBJECTIVES.md.
     void note_objective_binding(const char* binding, const std::string& objective,
         unsigned int slot_mask, int units_touched);
+
+    // 0088BF80 GetProperty. The native resolves argument 0 to an entity, reads
+    // argument 1 as the key, and calls the entity's own reader at vtable+138h;
+    // it pushes nothing of its own and returns that reader's result count.
+    // docs/MISSION_LUA_GETPROPERTY.md.
+    int run_get_property_0088bf80(lua_State* state, int argument_count);
     void note_created_script(std::string name);
     void note_binding_subject(std::size_t row, int entity_id);
     // A failed named call is replayed once with errfunc 0 purely to recover the

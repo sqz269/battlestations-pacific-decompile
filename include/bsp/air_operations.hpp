@@ -110,6 +110,11 @@ struct AirOpsSlot {
     std::uint32_t vehicle_class{0};
     std::int32_t assigned_count{0};
     std::int32_t requested_count{0};
+    // slot+10h, the copy of class+134h that 006BC6F0 writes. The Lua reader
+    // 006C6630 publishes it under the key `equipment` (006C6811 names the key,
+    // 006C681F loads slot+10h), which is the only name recovered for it.
+    // docs/MISSION_LUA_GETPROPERTY.md.
+    std::int32_t class_field_134{0};
     std::uint32_t launched_squadron{0};
     AirOpsSlotState state{AirOpsSlotState::kCooldown};
     float timer{0.0F};
