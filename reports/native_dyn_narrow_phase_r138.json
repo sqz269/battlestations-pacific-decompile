@@ -7117,5 +7117,641 @@
       }
     ],
     "scope": "3646newnormalbytes;3706verifiedbytes;205copied-native/sourcepairs126716636bytesafteridentifiedpointernormalization37182serviceevents6593snapshots14640controlleddispatches;complete1slottasktable;geometry/concurrency/application/gameplayopen"
+  },
+  "primary_integration": {
+    "source_commit": "a158bcb2a870cb198ad834f5690235cdf67eeb10",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "artifact_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r138\\native-dyn-narrow-phase-main-r138.zip",
+      "sha256": "1109f254ca5913e743a1f27d757ae9a29aa9c31a84506a4608504dc8a0a6ba51",
+      "files": 112,
+      "uncompressed_bytes": 579349548,
+      "utc": "2026-09-18T10:25:49.481816+00:00",
+      "head": "a158bcb2a870cb198ad834f5690235cdf67eeb10",
+      "manifest": [
+        {
+          "path": "build/win32/bsp_core.dir/Release/dyn_body_creation.obj",
+          "size": 29583,
+          "sha256": "cfe368fa7b12cfc8223ffbcc81741e7cbf354e8d507e7e00cf323cd33a735f95"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/dyn_scene_runtime.obj",
+          "size": 10372,
+          "sha256": "39d2e1b92d7d582afbc800f76728a52322b4678d1f00d7bc47e7c9089e2dcbc4"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_dyn_convex_support.obj",
+          "size": 5294,
+          "sha256": "fa6ebaf582cafacd57005e574fe93a97e1fe3b70ce4435b9f0f8a98ab6711f44"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_dyn_narrow_phase.obj",
+          "size": 11623,
+          "sha256": "50fe951f2558510b5e74b8260d178ef1b36d7cd00aa1a949cb5a86b2dda1c8c8"
+        },
+        {
+          "path": "build/win32/Release/bsp_core.lib",
+          "size": 66376770,
+          "sha256": "a6fe7732d7c54d6ed3d6f38b5074100c2fadd3865ac7a32106b32c369abe74b7"
+        },
+        {
+          "path": "build/win32/Release/bsp_game.exe",
+          "size": 2722816,
+          "sha256": "f0dbb31500a525f5e07131ad1cb6976e6f2cf2336c4f50e869f4dfc0f8969303"
+        },
+        {
+          "path": "build/win32/Release/bsp_lua511.lib",
+          "size": 455244,
+          "sha256": "db83167c8c7d24461ef2bf60363b96264fd2406929d0e72a8909287d79b96a17"
+        },
+        {
+          "path": "build/win32/Release/bsp_math_tests.exe",
+          "size": 763392,
+          "sha256": "da0343792b246729638a9cda1e04ce993ee817d9125d89154050fed9d3117c11"
+        },
+        {
+          "path": "build/win32/Release/bsp_native_math_tests.exe",
+          "size": 18432,
+          "sha256": "d32ce35108e0b9afec04604d6a18f6e41c91c3221cf065f7efed5abb60477e88"
+        },
+        {
+          "path": "build/win32/Release/bsp_zlib121.lib",
+          "size": 71906,
+          "sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5"
+        },
+        {
+          "path": "cmake/startup.cmake",
+          "size": 162808,
+          "sha256": "61300468b399344a3256c9c6ec2638ce667dfd1363d7f7fe3ca2ff5a3c8670ec"
+        },
+        {
+          "path": "config/names/00400000.jsonl",
+          "size": 28119,
+          "sha256": "24d157d18b1b0fe57f79e43da35d06cdc93ca8b38a59f5d2810ed3289d7a3b6b"
+        },
+        {
+          "path": "config/names/00c30000.jsonl",
+          "size": 47457,
+          "sha256": "faa1d553b8c3a7c873a2eda4d174996c741cd3140f72da2874dc9a328a9ce300"
+        },
+        {
+          "path": "config/names/00c40000.jsonl",
+          "size": 43357,
+          "sha256": "927d1b20f48de56de7671cf355927110c5c941ac2d2bd733081e8d57f9f83e18"
+        },
+        {
+          "path": "config/reconstruction/00400000.jsonl",
+          "size": 44115,
+          "sha256": "9f3ae58a1904994f65e03d1954853d65e7b9d66aaccf14f047f5b4c94c6daa82"
+        },
+        {
+          "path": "config/reconstruction/00c30000.jsonl",
+          "size": 69076,
+          "sha256": "13cf38bfd0b6bfb7e5c7be82dd73b2ccbeeeaf9af95ee475204dbdfe66e4a344"
+        },
+        {
+          "path": "config/reconstruction/00c40000.jsonl",
+          "size": 57706,
+          "sha256": "79529c72b53fb4c3cf916fd61ca8d41e56495777120e78a07060a4f8777170b1"
+        },
+        {
+          "path": "docs/DYN_COLLISION_PASS.md",
+          "size": 14316,
+          "sha256": "56ba9cdc45e21e68a602bb5f2b5e01cc5de0767860e919cff9bf3796b60cc350"
+        },
+        {
+          "path": "docs/NATIVE_DYN_NARROW_PHASE_R138.md",
+          "size": 7329,
+          "sha256": "dc99dfa3d3038f9b09dc487ab51ff4551afbe92877f742ab102efb6ba2bf71a4"
+        },
+        {
+          "path": "docs/NATIVE_DYN_SAP_PROCESSING_R137.md",
+          "size": 8909,
+          "sha256": "03a36848c869fe0eef775391823887625e615c3cc51c87bc3e152af78f19ca81"
+        },
+        {
+          "path": "include/bsp/avoid_zone_dyn_hull.hpp",
+          "size": 3575,
+          "sha256": "c4b13f13e5cb94a4e1423c0c96aa725935615f92d2cb65a823c36572bf1f2c3a"
+        },
+        {
+          "path": "include/bsp/dyn_body_creation.hpp",
+          "size": 5100,
+          "sha256": "771890801179db08b6ec963a2145cb05c4346da8f79d402514770aae2210535b"
+        },
+        {
+          "path": "include/bsp/dyn_scene_runtime.hpp",
+          "size": 2802,
+          "sha256": "55bbd6bda1cbdde923b48381c85998db05f4db9ce96e60d9f964c2d2b6be378c"
+        },
+        {
+          "path": "include/bsp/native_dyn_convex_support.hpp",
+          "size": 2636,
+          "sha256": "6a6b3028657c8e8732e9d81b74172be60b78a565082cf102dfb8e48f0093160b"
+        },
+        {
+          "path": "include/bsp/native_dyn_narrow_phase.hpp",
+          "size": 2879,
+          "sha256": "fa3f6390cadbb1e23954f58524215a0cd67fb69a5c9921f2cf95deff72a926db"
+        },
+        {
+          "path": "include/bsp/native_dyn_shape_lifetime.hpp",
+          "size": 680,
+          "sha256": "9d03579c4046d19aa2cdc57e0bdee8c9536e59f138f6196e23ababa5a460e0e9"
+        },
+        {
+          "path": "include/bsp/rigid_body_integration.hpp",
+          "size": 8112,
+          "sha256": "07cb2142f73cb94cd0bd3d903f2482816cc7924be69247ae1ac1707e4df62f11"
+        },
+        {
+          "path": "include/bsp/ship_hull_body.hpp",
+          "size": 9286,
+          "sha256": "a9417d7dc66f6eeda4aee783cd87c3d403b91693a142d8d1c255ebe3ba2c9c0b"
+        },
+        {
+          "path": "include/bsp/ship_hull_shapes.hpp",
+          "size": 17222,
+          "sha256": "58a35e261aa87778c225ff550fea23218f24fc0c7f5982d87b50fc1ef7a9877a"
+        },
+        {
+          "path": "include/bsp/world_ocean.hpp",
+          "size": 8932,
+          "sha256": "00a1c385e2e46fe0a7372c4dec7d0f8039935823bc02e0a29982c93c5360429b"
+        },
+        {
+          "path": "local/annotate_dyn_narrow_phase_r138.py",
+          "size": 4036,
+          "sha256": "64c02a125289818f8cc70eda52a418e1535e50c0b815fd8f2e86832439de3cbd"
+        },
+        {
+          "path": "local/collect_dyn_narrow_phase_r138.py",
+          "size": 807,
+          "sha256": "a7f4d104bd4747b3bade94ca2836cde476c119a9aaa989beea2e6a4f9463823c"
+        },
+        {
+          "path": "local/commit_dyn_narrow_phase_r138.py",
+          "size": 2155,
+          "sha256": "119acb05cc3e8cea6bec58e0828ec9f3e475c6bdaca08161bced329da84b6a1b"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/annotations.log",
+          "size": 452,
+          "sha256": "5889bb28882783a2fbee2cbc3fdd8d301d0b105763b5ac4983b696eb7abbcbfa"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/build.log",
+          "size": 2586,
+          "sha256": "1359a1ab850848b474887ebd518cc7d1a1af1198bbffd5a037363e177db25943"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/combined/constants.inc",
+          "size": 287,
+          "sha256": "1729bcba6074f87e101471a06953727d7ff65a00c91e4d242771399bff062b6f"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/combined/dependencies.json",
+          "size": 24226,
+          "sha256": "6061f51f7ba84967ad659a53798f97b34b586faeb87b7851c9cccfca1f65cfe2"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/combined/dyn_narrow_phase_probe.exe",
+          "size": 45568,
+          "sha256": "acf1049f46ed80ac0f586dc5d8b7d6c8cf3a50b0d06c5dbd5e9900b88e211a6d"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/combined/fixture-image.json",
+          "size": 3348,
+          "sha256": "7fb582959b7da6f2a8872522d2510af1a0cf7de8b46c2b642e40524d58f0c884"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/combined/original-build.inc",
+          "size": 3136,
+          "sha256": "f85626f895deeb2394dc4b9990ce597b3149050771022525de036945d7494b20"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/combined/original-hooks.inc",
+          "size": 533,
+          "sha256": "c395d9be50fae19748ad642e038c83fbf99a9ae42216699dd17a8beeef6fb1e1"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/combined/original.bin",
+          "size": 126716636,
+          "sha256": "79010a0c14dec3257295ecf1b8b0d68bb502d76c1a4a5913b0609a065edeeb08"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/combined/original.inc",
+          "size": 12925,
+          "sha256": "e4eeaddc57f6c9880edeca8dd77deb3277f152ef6f5531b22340d84154ee8a87"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/combined/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/combined/probe-run.log",
+          "size": 11062,
+          "sha256": "08b8602222e5507621a2e44a679c1d8c65557884a6c940ddc87cb10915061577"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/combined/probe.cpp",
+          "size": 14338,
+          "sha256": "40f3fd0d35e2af03e4018530eb99e0e89b580e1d68d7c2c33a3cdace85f59c09"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/combined/probe.map",
+          "size": 61342,
+          "sha256": "7b0b111139c6264173415a01e3a6dc878fc10d7237d8b3b6d846d9338a2f7776"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/combined/probe.obj",
+          "size": 241440,
+          "sha256": "fadad26a736ed3f22b01a92f1caeeefd5fa85a7408a5e6657f2d7df12f4d4e8f"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/combined/result.json",
+          "size": 528,
+          "sha256": "d5fe57a4ad5a220f2a6a71943c8822688a5ff8db00c5fd28d3996530a2949de3"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/combined/source.bin",
+          "size": 126716636,
+          "sha256": "79010a0c14dec3257295ecf1b8b0d68bb502d76c1a4a5913b0609a065edeeb08"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/comments-after.json",
+          "size": 13157,
+          "sha256": "bbab7abc44548b96ad541b65c9e8fced5c471fec3d12b8682b9492ffbe848901"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/comments-after.log",
+          "size": 77,
+          "sha256": "00267aed276a762069a39f7b4b89a5455dc0be30a54d2d52cad4b1b2631fa963"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/constants.inc",
+          "size": 287,
+          "sha256": "1729bcba6074f87e101471a06953727d7ff65a00c91e4d242771399bff062b6f"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/decompile-00401170.txt",
+          "size": 239,
+          "sha256": "cfcae62a9f7fee737a45b3c9a45312f6b72127a9175d5b58e9b6caec453791be"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/decompile-00403cc0.txt",
+          "size": 322,
+          "sha256": "f9f2b967dca068135a9612444cc4d21d455b027669edd48f90412703d8d728ba"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/decompile-00c35260.txt",
+          "size": 1407,
+          "sha256": "60ba93affd43cbcd86d964072a2fcd4fd95a79306f70fd654c65b1905e1d8fd3"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/decompile-00c3f4d0.txt",
+          "size": 2657,
+          "sha256": "e5970bd5113f27506a3fbf76f76fa5a7cb380ef6d413dc25461965ae3a455d3c"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/decompile-00c3f650.txt",
+          "size": 1837,
+          "sha256": "465f0c53d773b9597b822dafae09e387126c22f4aa7a9ade66aadfeda80baaaa"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/decompile-00c3f760.txt",
+          "size": 11887,
+          "sha256": "21ef14487b94ef2667cc2529415b6d884d28ed185314be1c1d58be5c44299aba"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/decompile-00c44090.txt",
+          "size": 5723,
+          "sha256": "602aad219aa83f3d3bd5ef13353acdee7952eb5cff25eaf6177755eea0278af0"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/dependencies.json",
+          "size": 24176,
+          "sha256": "1b47de5729fabff8cd73299bdff7b48a3081d219e6801f7e79e16fcf50bc07a5"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/disasm-00401170.txt",
+          "size": 296,
+          "sha256": "d668dad25d3db111248071a65a66639213895b57d51e3b69fc4c6f637e26c2c1"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/disasm-00403cc0.txt",
+          "size": 233,
+          "sha256": "d5313889bcde6138c9495cd0e3927f778c506cef28a3c69808ea896e9a74e9dc"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/disasm-00c35260.txt",
+          "size": 1319,
+          "sha256": "09cc1909e198a832332673cedbc578636d27809e45a8d1b06a2e26bc9ae7d704"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/disasm-00c3f4d0.txt",
+          "size": 3578,
+          "sha256": "b219d5a7d39968e4e4b4644c4894d56b8ef5444917cbd8f8848d178944561b0d"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/disasm-00c3f650.txt",
+          "size": 2618,
+          "sha256": "5a05ded168a46c1bc5f9b0827b2731d7025afc1dcdf4ce06130c66eac93f313a"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/disasm-00c3f760.txt",
+          "size": 22974,
+          "sha256": "12bcfa0d1cd86088422ddbdd9c38a6c758da5d97b8bb6d46a4a79064011c7846"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/disasm-00c44090.txt",
+          "size": 6868,
+          "sha256": "ac044d3ae7ce075cf4be2f147d5fe0946c5ffc2e46a3217b302f25a20474a783"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/dyn_narrow_phase_probe.exe",
+          "size": 45568,
+          "sha256": "93d16701d90e3f01b9c55b1ac83c361ee8d7f0ceeba7e326758022a0c39d3289"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/exports-after.log",
+          "size": 681,
+          "sha256": "1fd47671b131e99d04808e4e7cd73c97cd82e81cb18b110a9ebc4c006bd728b3"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/fixture-image.json",
+          "size": 3348,
+          "sha256": "7fb582959b7da6f2a8872522d2510af1a0cf7de8b46c2b642e40524d58f0c884"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/flow_verified.log",
+          "size": 1204,
+          "sha256": "4f04e65f6607ad778cdffaeb65eaef87677ea809fcd96e0768d1c36a58bbe4df"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/index.log",
+          "size": 16,
+          "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/native.json",
+          "size": 160716,
+          "sha256": "c84d2c3d959142c58d3b6ef1ccf958eff8f18385992515d1ef3eb8ca51b5b9cd"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/original-build.inc",
+          "size": 3136,
+          "sha256": "f85626f895deeb2394dc4b9990ce597b3149050771022525de036945d7494b20"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/original-hooks.inc",
+          "size": 533,
+          "sha256": "c395d9be50fae19748ad642e038c83fbf99a9ae42216699dd17a8beeef6fb1e1"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/original.bin",
+          "size": 126716636,
+          "sha256": "79010a0c14dec3257295ecf1b8b0d68bb502d76c1a4a5913b0609a065edeeb08"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/original.inc",
+          "size": 12925,
+          "sha256": "e4eeaddc57f6c9880edeca8dd77deb3277f152ef6f5531b22340d84154ee8a87"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/probe-run.log",
+          "size": 11062,
+          "sha256": "08b8602222e5507621a2e44a679c1d8c65557884a6c940ddc87cb10915061577"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/probe.cpp",
+          "size": 14338,
+          "sha256": "40f3fd0d35e2af03e4018530eb99e0e89b580e1d68d7c2c33a3cdace85f59c09"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/probe.map",
+          "size": 61342,
+          "sha256": "3af8cda9f8185ab145fa6045514bba065d90e8c0da28446ad2d135ef54f80387"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/probe.obj",
+          "size": 241432,
+          "sha256": "ff7bd0039a07a7bdd822b1d3310ea6e435c7a63758bb0a56f93d8dd728e6a095"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/proto-00401170.txt",
+          "size": 633,
+          "sha256": "a4f0787e7587aaca31aedba74f85778a7e03cafe5de71f9d0c5bb821d34356d9"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/proto-00403cc0.txt",
+          "size": 807,
+          "sha256": "84038351cfbf36dc1533548a1e8fae426cdf2d7eaa2bf633e194485d35810a0d"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/proto-00c35260.txt",
+          "size": 642,
+          "sha256": "e086513c606817ede69ae721c04dbd7d3e50b6dc3ca8d3d4c53c84a57fc7ca39"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/proto-00c3f4d0.txt",
+          "size": 655,
+          "sha256": "811ad88ed96b717f00d04ff0681d5af141071bdb771af4674215d5f0d3f4ddf7"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/proto-00c3f650.txt",
+          "size": 656,
+          "sha256": "aef63557270a0a28133081bb1ca5ec94dbbdab2e6d0e141834779a316fd3cbc1"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/proto-00c3f760.txt",
+          "size": 707,
+          "sha256": "2515384bd8f355564e991ba1497bd1b68495c7db5a21ae8e91f5364d89a7017d"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/proto-00c44090.txt",
+          "size": 733,
+          "sha256": "8fa41ae7ed37d4db7ea5f432e48102089c8cb7ca081123ee223669443bef8cf7"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/result.json",
+          "size": 528,
+          "sha256": "f609ec8534e7bbc4cfb7a9a43006cc87f48e3a21fa0c4acfc231f260a0978bd2"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/snapshot.log",
+          "size": 230,
+          "sha256": "5586acd5ccc0ba5af025222b8aac9807f60f412190a736cfbf0b46cab2878e12"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/source.bin",
+          "size": 126716636,
+          "sha256": "79010a0c14dec3257295ecf1b8b0d68bb502d76c1a4a5913b0609a065edeeb08"
+        },
+        {
+          "path": "local/dyn_narrow_phase_r138/verify-calls.log",
+          "size": 131,
+          "sha256": "292ca612de160e3271591c9e6c5b96cd658145fe676c93098749b94b9d5e1ea6"
+        },
+        {
+          "path": "local/dyn_narrow_phase_tail_r138.txt",
+          "size": 3040,
+          "sha256": "95f63583db55f6d711be65cb20f3d8fe808acf4e5d51e9f765b83bea5bfaa3a4"
+        },
+        {
+          "path": "local/ghidra-annotations-20260918T102337Z.json",
+          "size": 13772,
+          "sha256": "91998f965ba53f74ca4e7638f52c66ac20836adf8ab0d2ff4d18d986d4e1ba4a"
+        },
+        {
+          "path": "local/prepare_dyn_narrow_phase_closeout_r138.py",
+          "size": 3134,
+          "sha256": "99d0de180f7b4c5dad50dbcd5d04bb41e652ca2e0f3aafc99b0861b0a6f7c9f6"
+        },
+        {
+          "path": "local/prepare_dyn_narrow_phase_combined_r138.py",
+          "size": 602,
+          "sha256": "e7b8c72d4f0f167ad38905111a423699c70571c896fbd26c70c50decb38984f5"
+        },
+        {
+          "path": "local/prepare_dyn_narrow_phase_r138.py",
+          "size": 1722,
+          "sha256": "47911a3177ea421a3ed83653878a3d7c4454d1a1dcb1edfd5af188a3a5a13ec3"
+        },
+        {
+          "path": "local/r138_integration.log",
+          "size": 1234,
+          "sha256": "973822108e4e6f65a2a6c77b33774ba1bc656389b3ebfe7f52608e17b03a497a"
+        },
+        {
+          "path": "local/record_dyn_narrow_phase_fixture_r138.py",
+          "size": 761,
+          "sha256": "b3b3421ba89ab31a1517a17b24d99f94fa94776b623091da8de8b3684932ffe5"
+        },
+        {
+          "path": "local/report_dyn_narrow_phase_r138.py",
+          "size": 5878,
+          "sha256": "77ecbe86b1b9630fb630f01b83c5c42728bc0dbf6e3f6cc1863eb75bc792ba42"
+        },
+        {
+          "path": "local/run_dyn_narrow_phase_combined_r138.ps1",
+          "size": 1682,
+          "sha256": "4f0c3f1f387600de5718a8749cbbfcfd66fdc757cd1d9748904bee2150078ebe"
+        },
+        {
+          "path": "local/run_dyn_narrow_phase_r138.ps1",
+          "size": 1673,
+          "sha256": "5ca9bdddcc523bbb371ec8ad650461b6235a01c20008dc4f3bfedb6951efd6ac"
+        },
+        {
+          "path": "local/seal_dyn_narrow_phase_r138.py",
+          "size": 5397,
+          "sha256": "655b926e7ae645b69f814dc04ed707b783ced01b0bd9a8af0af871796c95f770"
+        },
+        {
+          "path": "local/write_dyn_narrow_phase_r138.py",
+          "size": 5533,
+          "sha256": "4a8f1d953b898839c36c5dd1b47992b2d8dc5a6452938f4d12e08ed86bca3820"
+        },
+        {
+          "path": "reports/native_dyn_narrow_phase_r138.json",
+          "size": 236907,
+          "sha256": "e8aa0c9c2321b405c908e89e61039ac60102e4fd54a3d17314ebf6951844e679"
+        },
+        {
+          "path": "reports/native_dyn_narrow_phase_r138_flow.json",
+          "size": 2971,
+          "sha256": "3ea7879646a69a36147f3d5a73e440d1cd3cb10349ff3ce568279233f673ad1f"
+        },
+        {
+          "path": "src/dyn_body_creation.cpp",
+          "size": 15270,
+          "sha256": "e915e3325ceca411c14df2424129c7e82bebf6bc272921205e62d43744d4c93c"
+        },
+        {
+          "path": "src/dyn_scene_runtime.cpp",
+          "size": 4583,
+          "sha256": "6efa488d22e05beb310164dd2633e102caab5b07c4ba96b6c7030333beeec32a"
+        },
+        {
+          "path": "src/native_dyn_convex_support.cpp",
+          "size": 17894,
+          "sha256": "a2884a94389396afecaef01b8cd914eb22ae04c8e4ed5bc9ce9b37a3d0fdb239"
+        },
+        {
+          "path": "src/native_dyn_narrow_phase.cpp",
+          "size": 60634,
+          "sha256": "f90fcac23fad20f5a51838d2a5c2a4e222d6822b9940d60167d9ee6827f71bcd"
+        }
+      ],
+      "scope": "3646newnormalbytes;3706verifiedbytes;205copied-native/sourcepairs126716636bytesafteridentifiedpointernormalization37182serviceevents6593snapshots14640controlleddispatches;complete1slottasktable;geometry/concurrency/application/gameplayopen"
+    },
+    "source_identical_to_tested": true,
+    "main_source_equal_after_lf_normalization": true,
+    "owned_object_comparison": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_narrow_phase.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789726417,
+        "combined_timestamp": 1789726417,
+        "tested_sha256": "50fe951f2558510b5e74b8260d178ef1b36d7cd00aa1a949cb5a86b2dda1c8c8",
+        "combined_sha256": "50fe951f2558510b5e74b8260d178ef1b36d7cd00aa1a949cb5a86b2dda1c8c8"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/dyn_body_creation.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789501522,
+        "combined_timestamp": 1789501522,
+        "tested_sha256": "cfe368fa7b12cfc8223ffbcc81741e7cbf354e8d507e7e00cf323cd33a735f95",
+        "combined_sha256": "cfe368fa7b12cfc8223ffbcc81741e7cbf354e8d507e7e00cf323cd33a735f95"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/dyn_scene_runtime.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789501522,
+        "combined_timestamp": 1789501522,
+        "tested_sha256": "39d2e1b92d7d582afbc800f76728a52322b4678d1f00d7bc47e7c9089e2dcbc4",
+        "combined_sha256": "39d2e1b92d7d582afbc800f76728a52322b4678d1f00d7bc47e7c9089e2dcbc4"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_convex_support.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789721508,
+        "combined_timestamp": 1789721508,
+        "tested_sha256": "fa6ebaf582cafacd57005e574fe93a97e1fe3b70ce4435b9f0f8a98ab6711f44",
+        "combined_sha256": "fa6ebaf582cafacd57005e574fe93a97e1fe3b70ce4435b9f0f8a98ab6711f44"
+      }
+    ],
+    "combined_probes": [
+      {
+        "label": "narrow_phase",
+        "result": {
+          "library_sha256": "A6FE7732D7C54D6ED3D6F38B5074100C2FADD3865AC7A32106B32C369ABE74B7",
+          "exit": 0,
+          "exe_sha256": "ACF1049F46ED80AC0F586DC5D8B7D6C8CF3A50B0D06C5DBD5E9900B88E211A6D",
+          "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+          "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+          "linker": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe"
+        },
+        "comparison_sha256": "79010a0c14dec3257295ecf1b8b0d68bb502d76c1a4a5913b0609a065edeeb08",
+        "comparison_bytes": 126716636,
+        "log": "scenario0 cw7f matched 577356 bytes; replace maskf\nscenario1 cw7f matched 4827068 bytes; replace mask0\nscenario2 cw7f matched 667004 bytes; replace mask0\nscenario3 cw7f matched 473692 bytes; replace mask0\nscenario4 cw7f matched 473692 bytes; replace mask0\nscenario5 cw7f matched 473692 bytes; replace mask0\nscenario6 cw7f matched 475932 bytes; replace mask0\nscenario7 cw7f matched 677876 bytes; replace mask0\nscenario8 cw7f matched 677876 bytes; replace mask0\nscenario9 cw7f matched 677876 bytes; replace mask0\nscenario10 cw7f matched 677876 bytes; replace mask0\nscenario11 cw7f matched 677876 bytes; replace mask0\nscenario12 cw7f matched 667004 bytes; replace mask0\nscenario13 cw7f matched 677876 bytes; replace mask0\nscenario14 cw7f matched 677876 bytes; replace mask0\nscenario15 cw7f matched 646976 bytes; replace mask0\nscenario16 cw7f matched 473692 bytes; replace mask0\nscenario17 cw7f matched 483292 bytes; replace mask0\nscenario0 cw47f matched 577356 bytes; replace maskf\nscenario2 cw47f matched 667004 bytes; replace mask0\nscenario3 cw47f matched 473692 bytes; replace mask0\nscenario4 cw47f matched 473692 bytes; replace mask0\nscenario5 cw47f matched 473692 bytes; replace mask0\nscenario6 cw47f matched 475932 bytes; replace mask0\nscenario7 cw47f matched 677876 bytes; replace mask0\nscenario8 cw47f matched 677876 bytes; replace mask0\nscenario9 cw47f matched 677876 bytes; replace mask0\nscenario10 cw47f matched 677876 bytes; replace mask0\nscenario11 cw47f matched 677876 bytes; replace mask0\nscenario12 cw47f matched 667004 bytes; replace mask0\nscenario13 cw47f matched 677876 bytes; replace mask0\nscenario14 cw47f matched 677876 bytes; replace mask0\nscenario15 cw47f matched 646976 bytes; replace mask0\nscenario16 cw47f matched 473692 bytes; replace mask0\nscenario17 cw47f matched 483292 bytes; replace mask0\nscenario0 cw87f matched 577356 bytes; replace maskf\nscenario2 cw87f matched 667004 bytes; replace mask0\nscenario3 cw87f matched 473692 bytes; replace mask0\nscenario4 cw87f matched 473692 bytes; replace mask0\nscenario5 cw87f matched 473692 bytes; replace mask0\nscenario6 cw87f matched 475932 bytes; replace mask0\nscenario7 cw87f matched 677876 bytes; replace mask0\nscenario8 cw87f matched 677876 bytes; replace mask0\nscenario9 cw87f matched 677876 bytes; replace mask0\nscenario10 cw87f matched 677876 bytes; replace mask0\nscenario11 cw87f matched 677876 bytes; replace mask0\nscenario12 cw87f matched 667004 bytes; replace mask0\nscenario13 cw87f matched 677876 bytes; replace mask0\nscenario14 cw87f matched 677876 bytes; replace mask0\nscenario15 cw87f matched 646976 bytes; replace mask0\nscenario16 cw87f matched 473692 bytes; replace mask0\nscenario17 cw87f matched 483292 bytes; replace mask0\nscenario0 cwc7f matched 577356 bytes; replace maskf\nscenario2 cwc7f matched 667004 bytes; replace mask0\nscenario3 cwc7f matched 473692 bytes; replace mask0\nscenario4 cwc7f matched 473692 bytes; replace mask0\nscenario5 cwc7f matched 473692 bytes; replace mask0\nscenario6 cwc7f matched 475932 bytes; replace mask0\nscenario7 cwc7f matched 677876 bytes; replace mask0\nscenario8 cwc7f matched 677876 bytes; replace mask0\nscenario9 cwc7f matched 677876 bytes; replace mask0\nscenario10 cwc7f matched 677876 bytes; replace mask0\nscenario11 cwc7f matched 677876 bytes; replace mask0\nscenario12 cwc7f matched 667004 bytes; replace mask0\nscenario13 cwc7f matched 677876 bytes; replace mask0\nscenario14 cwc7f matched 677876 bytes; replace mask0\nscenario15 cwc7f matched 646976 bytes; replace mask0\nscenario16 cwc7f matched 473692 bytes; replace mask0\nscenario17 cwc7f matched 483292 bytes; replace mask0\nscenario0 cw27f matched 577356 bytes; replace maskf\nscenario2 cw27f matched 667004 bytes; replace mask0\nscenario3 cw27f matched 473692 bytes; replace mask0\nscenario4 cw27f matched 473692 bytes; replace mask0\nscenario5 cw27f matched 473692 bytes; replace mask0\nscenario6 cw27f matched 475932 bytes; replace mask0\nscenario7 cw27f matched 677876 bytes; replace mask0\nscenario8 cw27f matched 677876 bytes; replace mask0\nscenario9 cw27f matched 677876 bytes; replace mask0\nscenario10 cw27f matched 677876 bytes; replace mask0\nscenario11 cw27f matched 677876 bytes; replace mask0\nscenario12 cw27f matched 667004 bytes; replace mask0\nscenario13 cw27f matched 677876 bytes; replace mask0\nscenario14 cw27f matched 677876 bytes; replace mask0\nscenario15 cw27f matched 646976 bytes; replace mask0\nscenario16 cw27f matched 473692 bytes; replace mask0\nscenario17 cw27f matched 483292 bytes; replace mask0\nscenario0 cw67f matched 577356 bytes; replace maskf\nscenario2 cw67f matched 667004 bytes; replace mask0\nscenario3 cw67f matched 473692 bytes; replace mask0\nscenario4 cw67f matched 473692 bytes; replace mask0\nscenario5 cw67f matched 473692 bytes; replace mask0\nscenario6 cw67f matched 475932 bytes; replace mask0\nscenario7 cw67f matched 677876 bytes; replace mask0\nscenario8 cw67f matched 677876 bytes; replace mask0\nscenario9 cw67f matched 677876 bytes; replace mask0\nscenario10 cw67f matched 677876 bytes; replace mask0\nscenario11 cw67f matched 677876 bytes; replace mask0\nscenario12 cw67f matched 667004 bytes; replace mask0\nscenario13 cw67f matched 677876 bytes; replace mask0\nscenario14 cw67f matched 677876 bytes; replace mask0\nscenario15 cw67f matched 646976 bytes; replace mask0\nscenario16 cw67f matched 473692 bytes; replace mask0\nscenario17 cw67f matched 483292 bytes; replace mask0\nscenario0 cwa7f matched 577356 bytes; replace maskf\nscenario2 cwa7f matched 667004 bytes; replace mask0\nscenario3 cwa7f matched 473692 bytes; replace mask0\nscenario4 cwa7f matched 473692 bytes; replace mask0\nscenario5 cwa7f matched 473692 bytes; replace mask0\nscenario6 cwa7f matched 475932 bytes; replace mask0\nscenario7 cwa7f matched 677876 bytes; replace mask0\nscenario8 cwa7f matched 677876 bytes; replace mask0\nscenario9 cwa7f matched 677876 bytes; replace mask0\nscenario10 cwa7f matched 677876 bytes; replace mask0\nscenario11 cwa7f matched 677876 bytes; replace mask0\nscenario12 cwa7f matched 667004 bytes; replace mask0\nscenario13 cwa7f matched 677876 bytes; replace mask0\nscenario14 cwa7f matched 677876 bytes; replace mask0\nscenario15 cwa7f matched 646976 bytes; replace mask0\nscenario16 cwa7f matched 473692 bytes; replace mask0\nscenario17 cwa7f matched 483292 bytes; replace mask0\nscenario0 cwe7f matched 577356 bytes; replace maskf\nscenario2 cwe7f matched 667004 bytes; replace mask0\nscenario3 cwe7f matched 473692 bytes; replace mask0\nscenario4 cwe7f matched 473692 bytes; replace mask0\nscenario5 cwe7f matched 473692 bytes; replace mask0\nscenario6 cwe7f matched 475932 bytes; replace mask0\nscenario7 cwe7f matched 677876 bytes; replace mask0\nscenario8 cwe7f matched 677876 bytes; replace mask0\nscenario9 cwe7f matched 677876 bytes; replace mask0\nscenario10 cwe7f matched 677876 bytes; replace mask0\nscenario11 cwe7f matched 677876 bytes; replace mask0\nscenario12 cwe7f matched 667004 bytes; replace mask0\nscenario13 cwe7f matched 677876 bytes; replace mask0\nscenario14 cwe7f matched 677876 bytes; replace mask0\nscenario15 cwe7f matched 646976 bytes; replace mask0\nscenario16 cwe7f matched 473692 bytes; replace mask0\nscenario17 cwe7f matched 483292 bytes; replace mask0\nscenario0 cw37f matched 577356 bytes; replace maskf\nscenario2 cw37f matched 667004 bytes; replace mask0\nscenario3 cw37f matched 473692 bytes; replace mask0\nscenario4 cw37f matched 473692 bytes; replace mask0\nscenario5 cw37f matched 473692 bytes; replace mask0\nscenario6 cw37f matched 475932 bytes; replace mask0\nscenario7 cw37f matched 677876 bytes; replace mask0\nscenario8 cw37f matched 677876 bytes; replace mask0\nscenario9 cw37f matched 677876 bytes; replace mask0\nscenario10 cw37f matched 677876 bytes; replace mask0\nscenario11 cw37f matched 677876 bytes; replace mask0\nscenario12 cw37f matched 667004 bytes; replace mask0\nscenario13 cw37f matched 677876 bytes; replace mask0\nscenario14 cw37f matched 677876 bytes; replace mask0\nscenario15 cw37f matched 646976 bytes; replace mask0\nscenario16 cw37f matched 473692 bytes; replace mask0\nscenario17 cw37f matched 483292 bytes; replace mask0\nscenario0 cw77f matched 577356 bytes; replace maskf\nscenario2 cw77f matched 667004 bytes; replace mask0\nscenario3 cw77f matched 473692 bytes; replace mask0\nscenario4 cw77f matched 473692 bytes; replace mask0\nscenario5 cw77f matched 473692 bytes; replace mask0\nscenario6 cw77f matched 475932 bytes; replace mask0\nscenario7 cw77f matched 677876 bytes; replace mask0\nscenario8 cw77f matched 677876 bytes; replace mask0\nscenario9 cw77f matched 677876 bytes; replace mask0\nscenario10 cw77f matched 677876 bytes; replace mask0\nscenario11 cw77f matched 677876 bytes; replace mask0\nscenario12 cw77f matched 667004 bytes; replace mask0\nscenario13 cw77f matched 677876 bytes; replace mask0\nscenario14 cw77f matched 677876 bytes; replace mask0\nscenario15 cw77f matched 646976 bytes; replace mask0\nscenario16 cw77f matched 473692 bytes; replace mask0\nscenario17 cw77f matched 483292 bytes; replace mask0\nscenario0 cwb7f matched 577356 bytes; replace maskf\nscenario2 cwb7f matched 667004 bytes; replace mask0\nscenario3 cwb7f matched 473692 bytes; replace mask0\nscenario4 cwb7f matched 473692 bytes; replace mask0\nscenario5 cwb7f matched 473692 bytes; replace mask0\nscenario6 cwb7f matched 475932 bytes; replace mask0\nscenario7 cwb7f matched 677876 bytes; replace mask0\nscenario8 cwb7f matched 677876 bytes; replace mask0\nscenario9 cwb7f matched 677876 bytes; replace mask0\nscenario10 cwb7f matched 677876 bytes; replace mask0\nscenario11 cwb7f matched 677876 bytes; replace mask0\nscenario12 cwb7f matched 667004 bytes; replace mask0\nscenario13 cwb7f matched 677876 bytes; replace mask0\nscenario14 cwb7f matched 677876 bytes; replace mask0\nscenario15 cwb7f matched 646976 bytes; replace mask0\nscenario16 cwb7f matched 473692 bytes; replace mask0\nscenario17 cwb7f matched 483292 bytes; replace mask0\nscenario0 cwf7f matched 577356 bytes; replace maskf\nscenario2 cwf7f matched 667004 bytes; replace mask0\nscenario3 cwf7f matched 473692 bytes; replace mask0\nscenario4 cwf7f matched 473692 bytes; replace mask0\nscenario5 cwf7f matched 473692 bytes; replace mask0\nscenario6 cwf7f matched 475932 bytes; replace mask0\nscenario7 cwf7f matched 677876 bytes; replace mask0\nscenario8 cwf7f matched 677876 bytes; replace mask0\nscenario9 cwf7f matched 677876 bytes; replace mask0\nscenario10 cwf7f matched 677876 bytes; replace mask0\nscenario11 cwf7f matched 677876 bytes; replace mask0\nscenario12 cwf7f matched 667004 bytes; replace mask0\nscenario13 cwf7f matched 677876 bytes; replace mask0\nscenario14 cwf7f matched 677876 bytes; replace mask0\nscenario15 cwf7f matched 646976 bytes; replace mask0\nscenario16 cwf7f matched 473692 bytes; replace mask0\nscenario17 cwf7f matched 483292 bytes; replace mask0\n205 pairs; 126716636 matching bytes; 37182 service events; 6593 snapshots; 14640 dispatcher calls; replacement maskf\n",
+        "probe_source_sha256": "40f3fd0d35e2af03e4018530eb99e0e89b580e1d68d7c2c33a3cdace85f59c09"
+      }
+    ],
+    "library_identical_to_tested": false,
+    "game_identical_to_tested": false,
+    "ordinary_application_runtime_rerun": false
   }
 }
