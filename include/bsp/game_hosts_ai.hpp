@@ -85,6 +85,13 @@ struct GameAiSummary {
     unsigned long long auto_merges{0};
     unsigned long long proximity_merges{0};
     unsigned long long member_passes{0};
+    // 00A2C790's per-member chain and the group's own command schedule.
+    unsigned long long member_reports{0};        // command vt+24h, 00A0FC90
+    unsigned long long member_descriptors{0};    // 0071EB60 answered
+    unsigned long long member_scene_commands{0}; // 0071BE40 answered non-zero
+    unsigned long long command_ticks{0};         // command vt+0Ch, on the 2-4 s draw
+    unsigned long long commands_replaced{0};     // 00A2BD00 deleted an outgoing one
+    unsigned long long commands_retargeted{0};   // 00A2DB80 phase A rebound one
     unsigned long long party_think_calls{0};
     unsigned long long parties_thought{0};
     unsigned long long planner_ticks{0};
