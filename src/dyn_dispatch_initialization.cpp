@@ -170,6 +170,8 @@ void bind_dyn_dispatch_static_objects(DynDispatchGlobalsStorage& state,
     state.terrain_convex_mesh.vtable = tables.terrain_convex_mesh_00d7a18c; // 00E17438
     state.sphere_sphere.vtable = tables.sphere_sphere_00d7a1cc; // 00E17440
     state.box_sphere.vtable = tables.box_sphere_00d7a1d4; // 00E17444
+    // Rebinding publishes only the PE table word; it preserves the A0h owner's
+    // mutable scratch and padding. Value initialization supplies its zero image.
     state.convex_ray.vtable = tables.convex_ray_00d7a1f4; // 00E17448
     state.box_ray.vtable = tables.box_ray_00d7a1fc; // 00E174E8
     state.sphere_ray.vtable = tables.sphere_ray_00d7a204; // 00E174EC

@@ -9,8 +9,9 @@ struct alignas(4) DynSceneStorage { unsigned char bytes[0xe8]; };
 struct alignas(4) DynManifoldContainerStorage { unsigned char bytes[0x1f0]; };
 
 // Actual complete dispatcher objects, not vtables or arrays of substitute calls.
-// The seven small native objects contain their one-word vtable pointer; the
-// shared GeneralConvexIntersect object also owns support directions and a lock.
+// Six stateless owners contain only their vtable pointer. ConvexRayIntersection
+// owns A0h of table/scratch storage; GeneralConvexIntersect owns 290h including
+// support directions and a lock. Borrow the full owners, not isolated table words.
 struct DynSceneDispatchObjects {
     void* box_box;              // object 00E17434, vtable 00D7A184
     void* terrain_convex_mesh;  // object 00E17438, vtable 00D7A18C

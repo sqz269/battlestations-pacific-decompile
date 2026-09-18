@@ -177,3 +177,14 @@ owner. Direct/table and narrow-phase scene comparisons pass, including native
 zero-through-eight contact counts. Terrain/convex and convex/ray are the two
 remaining dispatcher classes. Primitive class production/lifetime, remaining
 world tasks and application admission/gameplay are still open.
+
+## Correction from docs/DYN_CONVEX_RAY_OWNER_R143.md
+
+The earlier description of all seven companion owners as one-word objects is
+incorrect for ConvexRayIntersection. C44780 writes simplex/ray scratch through
+owner+98h; the native E17448 owner occupies A0h, ending before E174E8.
+DynDispatchGlobalsStorage now reserves that full record. Binding still changes
+only its vtable word, preserving scratch and padding. A focused original-body
+probe checks guarded standalone and aggregate owners: 64 pairs and 60,288
+identical bytes, with neighboring objects unchanged. The ray method remains an
+original reference in this packet; its source implementation is still pending.
