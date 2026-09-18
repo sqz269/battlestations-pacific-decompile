@@ -371,3 +371,53 @@ found correct.
   checked here.
 * Nothing in this packet was built, compiled or run. It is a listing reading only; no Ghidra
   mutation, no ledger record, no lease.
+
+---
+
+## Corrections from packet `cc8_bank_command_inputs`
+
+Appended, not rewritten. Everything above stands except where named here. Full evidence and ABI
+tables are in `docs/PILOT_BANK_COMMAND_INPUTS.md`.
+
+1. **`00415510` is a minimum, not a blend.** Body `00415513`-`0041554D`:
+   `__fastcall(const float* a ECX, const float* b EDX)`, `RET` with no immediate, x87 return, and
+   the two tails return `*b` (`JBE`) or `*a`. It is `min(*a, *b)`, the ledger's
+   `BSP_Math_MinFloatByRef`. §"The pitch arm" calling `0099E5C4` "the `plan+2ECh` blend" is wrong.
+2. **`00415620` is confirmed, not merely inferred.** The "not read, inferred purely from the call
+   shape" caveat in §"What is not established" can be dropped: the body
+   (`ECX = &v`, `EDX = &lo`, `[ESP+0Ch] = &hi`, `RET 4`, result left in `ST0`, no write through
+   `ECX`) gives exactly `clamp(*v, *lo, *hi)` by value. It is `BSP_Math_ClampFloatByRef`,
+   reconstructed as `bsp::clamp_float_by_ref_00415620` in `src/ship_ai_throttle_ring.cpp`.
+   `00415690` is its in-place sibling and does write through `ECX`.
+3. **`0099BA10` is `BSP_Math_NormalizeAngleToPiByRef`, not a command.** It wraps
+   `fmod(*angle, 2π)` into `(-π, +π]`. At `0099D6F1`/`0099D736` the *planner* stores its result;
+   the commanded angles themselves live in `unit+9A8h` (bank) and `unit+9ACh` (pitch), and each arm
+   is gated on its field being non-zero, not on a mode word.
+4. **`0047B880` is read.** `!(vtable[5Ch](10h) || vtable[5Ch](16h))`, slot `5Ch` being
+   `BSP_PlaneInstance_IsKindOf`. It is the **complement of the rate cap inside `0099D0A0`**
+   (`0099D1C2`-`0099D1D9`), so the two cannot be supplied independently. `TurnRollLimitSmall` /
+   `Large` name the *aircraft*, not the limit: `planeglobals.lua` glosses them "egy kis gep" /
+   "egy nagy gep" at `DEG(85)` and `DEG(56)`, so class ids `10h` and `16h` are the large types.
+5. **`tuning+48h` has no key because the loader derives it.** `007E6FB3`-`007E6FD4` computes
+   singleton `+580h` as `SoftRollCtrl · (1 - SoftRollMul)`. §1c offers that as "a hypothesis about
+   the data"; it is an identity of `BSP_GameTuning_LoadFromPlaneGlobals`, so the soft zone and the
+   outer branch join continuously for any tuning file. In this installation
+   `0.05 · (1 - 0.7) = 0.015`.
+6. **`plan+2E8h` and `plan+2C8h` producers found.** `BSP_PilotBot_SeedPlanSlots` seeds them at
+   `0099B52C` (`1.0f`) and `0099B55E` (`20.0f`). `20.0f > π`, so the guarded clamp at `0099E27B` is
+   inert out of the plan reset; tasks opt in. `009AC42B` is a task arm that sets `plan+2E8h = 1.2f`
+   alongside `plan+2C0h` and `task+2CCh = 2`.
+7. **Class fields named from the Lua reader.** `+18Ch TravelSpeed`, `+1A8h RollSpd`,
+   `+1ACh PitchSpd`, `+1BCh RollAccel`, `+1C8h TurnRollSpd`, `+25Ch **TurnRoll**` (1.22173 rad =
+   70° in this installation). §"What is not established" reads `+25Ch` "as a maximum bank angle";
+   the recovered name agrees. With the two rate names, the roll law's
+   `t = RollSpd² / (RollAccel · WaggleLimit)` is a `v²/a` stopping *angle*, not a time.
+8. **`0099D0A0`'s four tuning keys name it**: `Pilot/General/HdgDiffCalcLimit/1`,`/2`,
+   `HdgDiffCalcMinPitch`, `HdgDiffCalcMinRoll` at singleton `+584h`..`+590h`. Its published
+   expression (commit `a5c3c5ec8`) is confirmed against the listing; the packet adds the null
+   guard, the `|w| < 0.1` shortcut returning `-w`, the in-place clamp of `|w|` into
+   `[HdgDiffCalcMinRoll, 1.5]`, the rate `m` and the roll-out time `T`, and the envelope
+   `-sign(w) · Q · sin(a) · T`.
+9. **Still open after this packet**: the producer of `unit+AE0h..AE8h` (and so whether `unit+C84h`
+   is a flight-path angle or a second attitude), the names of class ids `10h` and `16h`, and the
+   seven task-side `plan+2C8h` writers. The sign-convention question about `007DA710` is untouched.
