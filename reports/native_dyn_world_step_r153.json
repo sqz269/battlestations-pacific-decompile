@@ -1,0 +1,1877 @@
+{
+  "packet": "orch4_dyn_world_step_r153",
+  "scope": {
+    "routines": [
+      {
+        "address": "00c5bb30",
+        "end": "00c5c53e",
+        "bytes": 2575,
+        "name": "Dyn_World_Substep",
+        "symbol": "run_native_dyn_world_substep_00c5bb30",
+        "contract": "Complete2575B,stack world/floatdt,RET8. Velocity,fullcollision,actualgroups,descriptor-mode0/1solver with inclusive ranges/remainder; unknown mode skips solver/report. Optional world24 callback ECX/vslot0/stack88Brecords,count/RET8. Both distinct x87 report schedules retained;transform localA/B,normal,+/-point2C*normal,zero3Ch..50h,54h untouched. Allocate activeManifolds*4 records,overflow-toFFFFFFFF behavior retained. Callbackthenfree THEN actualposition/sleep-groupcleanup. Restored free continuation C5C44E..C5C450,not earlyreturn;callee no-return unchanged. Profilecaches64/6C/78/7C and actualowners. Private appendedcontext RET12,explicitpublicC++ interface."
+      },
+      {
+        "address": "00c5c540",
+        "end": "00c5c706",
+        "bytes": 455,
+        "name": "DYN_PhysicsWorld_Simulate",
+        "symbol": "simulate_native_dyn_world_00c5c540",
+        "contract": "Complete455B,ECXworld,stackfloatdt,RET4. Reset actualengine+0C profiletree sum/count,incrementprofile8;Simulateprofilecache10. Incrementworld2C,flushpending,copy12transformwords fromdynamicbody8 to motion84. Adddttoaccumulator48; while remainder strictly greater than freshly reloadedworld0 and budget34 nonzero,substep and decrementintegerbudget; optionalremainder strictly above doubleD7A398=4.999999873689376e-5,thenunconditionallyzero48. Preserve x87 live-stack/comparisons/rounding and all3timestamps includingunusedmiddle. PrivateEBP-basedcontext retained across8byteESP alignment;RET8."
+      },
+      {
+        "address": "00c4d980",
+        "end": "00c4da6a",
+        "bytes": 235,
+        "name": "Dyn_World_FlushPendingBodyRemovals",
+        "symbol": "flush_native_dyn_pending_bodies_00c4d980",
+        "contract": "Complete235B,ECXworld/RET. Snapshot signed pendingcount43C, reloadqueue438 perentry. Ifbody70nonnull,actualSAPvslot1removebody60,clearflag8/handle. Capture shape208next before vslot1 scalar deletion(flags1),thenzero70. Existing clearbodymanifolds anddestroypooledstorage;choose static4C/dynamic170bodypool fromflag1,unlinkafterstoragecall,pushfreeC,decrement120. Finalpendingcount0,capacity/data retained. Directtablecallbacks requireactualcallableowners. PrivatecontextRET4."
+      },
+      {
+        "address": "00c321b0",
+        "end": "00c321e7",
+        "bytes": 56,
+        "name": "Dyn_Profiler_ResetCounterTree",
+        "symbol": "reset_native_dyn_profile_tree_00c321b0",
+        "contract": "Complete56B,ECXnode/RET. Recurse childpointers at4 over count8;reloaddata/count afterrecursivecall. Clear onlysum38/3C andcount40;retainlast30/34 andothernode fields. Normal recursion,validacyclicactualprofiletree required."
+      }
+    ],
+    "new_native_body_bytes": 3321,
+    "consumed_profile_enter_bytes": 68,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "owned_files": [
+    "include/bsp/native_dyn_world_step.hpp",
+    "src/native_dyn_world_step.cpp",
+    "cmake/startup.cmake",
+    "docs/NATIVE_DYN_WORLD_STEP_R153.md",
+    "reports/native_dyn_world_step_r153.json",
+    "config/names/00c30000.jsonl",
+    "config/reconstruction/00c30000.jsonl",
+    "config/names/00c40000.jsonl",
+    "config/reconstruction/00c40000.jsonl",
+    "config/names/00c50000.jsonl",
+    "config/reconstruction/00c50000.jsonl"
+  ],
+  "direct_calls": [
+    {
+      "address": "00c5bb5a",
+      "function": "00c5bb30",
+      "native": "00c41550",
+      "instruction": "call 0xc41550",
+      "bytes": "e8f159feff"
+    },
+    {
+      "address": "00c5bb66",
+      "function": "00c5bb30",
+      "native": "00c57070",
+      "instruction": "call 0xc57070",
+      "bytes": "e805b5ffff"
+    },
+    {
+      "address": "00c5bb83",
+      "function": "00c5bb30",
+      "native": "00c50390",
+      "instruction": "call 0xc50390",
+      "bytes": "e80848ffff"
+    },
+    {
+      "address": "00c5bbbe",
+      "function": "00c5bb30",
+      "native": "00c4b610",
+      "instruction": "call 0xc4b610",
+      "bytes": "e84dfafeff"
+    },
+    {
+      "address": "00c5bc1e",
+      "function": "00c5bb30",
+      "native": "00c57020",
+      "instruction": "call 0xc57020",
+      "bytes": "e8fdb3ffff"
+    },
+    {
+      "address": "00c5bcca",
+      "function": "00c5bb30",
+      "native": "00c33140",
+      "instruction": "call 0xc33140",
+      "bytes": "e87174fdff"
+    },
+    {
+      "address": "00c5bd4f",
+      "function": "00c5bb30",
+      "native": "00bf55be",
+      "instruction": "call 0xbf55be",
+      "bytes": "e86a98f9ff"
+    },
+    {
+      "address": "00c5c045",
+      "function": "00c5bb30",
+      "native": "00c57020",
+      "instruction": "call 0xc57020",
+      "bytes": "e8d6afffff"
+    },
+    {
+      "address": "00c5c0e8",
+      "function": "00c5bb30",
+      "native": "00c33140",
+      "instruction": "call 0xc33140",
+      "bytes": "e85370fdff"
+    },
+    {
+      "address": "00c5c16d",
+      "function": "00c5bb30",
+      "native": "00bf55be",
+      "instruction": "call 0xbf55be",
+      "bytes": "e84c94f9ff"
+    },
+    {
+      "address": "00c5c449",
+      "function": "00c5bb30",
+      "native": "00bf6989",
+      "instruction": "call 0xbf6989",
+      "bytes": "e83ba5f9ff"
+    },
+    {
+      "address": "00c5c469",
+      "function": "00c5bb30",
+      "native": "00c50390",
+      "instruction": "call 0xc50390",
+      "bytes": "e8223fffff"
+    },
+    {
+      "address": "00c5c491",
+      "function": "00c5bb30",
+      "native": "00c5b1b0",
+      "instruction": "call 0xc5b1b0",
+      "bytes": "e81aedffff"
+    },
+    {
+      "address": "00c5c4ce",
+      "function": "00c5bb30",
+      "native": "00c50390",
+      "instruction": "call 0xc50390",
+      "bytes": "e8bd3effff"
+    },
+    {
+      "address": "00c5c503",
+      "function": "00c5bb30",
+      "native": "00c4b550",
+      "instruction": "call 0xc4b550",
+      "bytes": "e848f0feff"
+    },
+    {
+      "address": "00c5c586",
+      "function": "00c5c540",
+      "native": "00c321b0",
+      "instruction": "call 0xc321b0",
+      "bytes": "e8255cfdff"
+    },
+    {
+      "address": "00c5c5c5",
+      "function": "00c5c540",
+      "native": "00c50390",
+      "instruction": "call 0xc50390",
+      "bytes": "e8c63dffff"
+    },
+    {
+      "address": "00c5c5ff",
+      "function": "00c5c540",
+      "native": "00c4d980",
+      "instruction": "call 0xc4d980",
+      "bytes": "e87c13ffff"
+    },
+    {
+      "address": "00c5c66d",
+      "function": "00c5c540",
+      "native": "00c5bb30",
+      "instruction": "call 0xc5bb30",
+      "bytes": "e8bef4ffff"
+    },
+    {
+      "address": "00c5c6bd",
+      "function": "00c5c540",
+      "native": "00c5bb30",
+      "instruction": "call 0xc5bb30",
+      "bytes": "e86ef4ffff"
+    },
+    {
+      "address": "00c4d9fd",
+      "function": "00c4d980",
+      "native": "00c43aa0",
+      "instruction": "call 0xc43aa0",
+      "bytes": "e89e60ffff"
+    },
+    {
+      "address": "00c4da12",
+      "function": "00c4d980",
+      "native": "00c43c00",
+      "instruction": "call 0xc43c00",
+      "bytes": "e8e961ffff"
+    },
+    {
+      "address": "00c321c5",
+      "function": "00c321b0",
+      "native": "00c321b0",
+      "instruction": "call 0xc321b0",
+      "bytes": "e8e6ffffff"
+    },
+    {
+      "address": "00c5703c",
+      "function": "00c57020",
+      "native": "00c50390",
+      "instruction": "call 0xc50390",
+      "bytes": "e84f93ffff"
+    }
+  ],
+  "validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "live_pe_bytes": 3460,
+    "fixtures": [
+      {
+        "label": "compare",
+        "subdirectory": "compare",
+        "executable": "dyn_world_step_compare_probe.exe",
+        "source_sha256": "6e871cc93d6607984355dd5e969aebb7ec9a809bc5a30afaf1f05c23fbf2788c",
+        "result": {
+          "exit": 0,
+          "exe_sha256": "22550A7D8EF6368AC3BEA5C705F5375C90705B5720C14F454EC9F22E3DDBC0F6",
+          "library_sha256": "36E0BA982A84BEA1492F5DA34F7A2895918820795B19671F40B667ED768FF743"
+        },
+        "log": "PASS 576 copied-native/source pairs, 64257888 compared bytes; 5904 substeps,3120 controlled solver batches,1560 report calls/6456 point records,61920 allocation/free events across both sides;12 x87/MXCSR controls; actual groups and body cleanup; full records/FP state match\n"
+      },
+      {
+        "label": "lifecycle",
+        "subdirectory": "lifecycle",
+        "executable": "dyn_world_step_lifecycle_probe.exe",
+        "source_sha256": "0117fd49a22722667fc6e38f4b525b06a176bc4ac19a6f032a30d25fba38eff4",
+        "result": {
+          "exe_sha256": "D014AADD4DBB3B8E3853DDA2404CF00472E16543531F9D5EC5E0A5BD6195AC04",
+          "exit": 0,
+          "library_sha256": "36E0BA982A84BEA1492F5DA34F7A2895918820795B19671F40B667ED768FF743"
+        },
+        "log": "PASS actual process four simulations/four substeps; both solver modes, real collision and reports (6 points/6 callbacks), previous transforms, native pending static/dynamic removals; 3 solver batches and 11 worker allocations; full native physics teardown;101 fixture handle closes; real pool atexit follows\nPASS real process atexit: pool table freed, canonical registry unlinked, deleted CS observed before owner destruction; zero tracked allocations\n"
+      }
+    ],
+    "world_step_comparison": {
+      "pairs": 576,
+      "compared_bytes": 64257888,
+      "substeps_both_sides": 5904,
+      "solver_batches_both_sides": 3120,
+      "report_calls_both_sides": 1560,
+      "reported_points_both_sides": 6456,
+      "allocation_free_events_both_sides": 61920,
+      "x87_mxcsr_control_combinations": 12,
+      "comparison_sha256": "0d000fd2fc9f68360e52f71a8e65ec4d69d8a80140f63453dc728d6046fe3310"
+    },
+    "object_audit": {
+      "object_sha256": "f6ce4d0fd915341610a0f5416e4ad791c335694d844e45033574f78993b41dea",
+      "routines": [
+        {
+          "kind": "substep",
+          "native_bytes": 2575,
+          "native_instructions": 750,
+          "compiled_instructions": 795,
+          "branches_checked": 33
+        },
+        {
+          "kind": "simulate",
+          "native_bytes": 455,
+          "native_instructions": 148,
+          "compiled_instructions": 161,
+          "branches_checked": 11
+        },
+        {
+          "kind": "flush",
+          "native_bytes": 235,
+          "native_instructions": 68,
+          "compiled_instructions": 70,
+          "branches_checked": 7
+        },
+        {
+          "kind": "reset",
+          "native_bytes": 56,
+          "native_instructions": 24,
+          "compiled_instructions": 24,
+          "branches_checked": 2
+        }
+      ],
+      "shims_checked": [
+        "append_shim",
+        "batch_shim",
+        "substep_shim",
+        "enter_shim",
+        "velocity_shim",
+        "position_shim",
+        "collision_shim",
+        "create_shim",
+        "sleep_shim",
+        "clear_shim",
+        "storage_shim",
+        "timestamp_00c5bb9d",
+        "timestamp_00c5bbcb",
+        "timestamp_00c5bcd7",
+        "bridge_00c5bd4f",
+        "timestamp_00c5c0f5",
+        "bridge_00c5c16d",
+        "bridge_00c5c449",
+        "timestamp_00c5c47f",
+        "timestamp_00c5c496",
+        "timestamp_00c5c4e8",
+        "timestamp_00c5c508",
+        "timestamp_00c5c5df",
+        "timestamp_00c5c5f3",
+        "timestamp_00c5c6ce"
+      ],
+      "default_rdtsc_inherited_from_collision_calls": true
+    },
+    "source_sha256_by_path": {
+      "include/bsp/native_dyn_world_step.hpp": "38d374b7daf95914c7e237e88f999af251e27f51013bd602e51d5266308e0912",
+      "src/native_dyn_world_step.cpp": "e43ba1c5b371e2e5c9de145da44b1ab6f03fa529836dc05f9feb560fc8c4b59c",
+      "cmake/startup.cmake": "2ad9f42fb720c389a56403f5dda9e483612b5c8720cd77554dbd36e147998daa"
+    },
+    "source_lf_sha256": {
+      "include/bsp/native_dyn_world_step.hpp": "38d374b7daf95914c7e237e88f999af251e27f51013bd602e51d5266308e0912",
+      "src/native_dyn_world_step.cpp": "f729543cd630a87b383d2fb21f1ef387f6e92ab9b7c68cf242a172cd91c94935",
+      "cmake/startup.cmake": "61139a0f4aa852550f6b97d50a4cfcdbb336c85ee24ff252e27765ae35250960"
+    },
+    "dependency_sha256": {
+      "include/bsp/allocator_list.hpp": "5344cbd4fe4ea86a4206c24f08e2407eea3055f03947f677c46b3a635d4f1570",
+      "include/bsp/dyn_body_creation.hpp": "771890801179db08b6ec963a2145cb05c4346da8f79d402514770aae2210535b",
+      "include/bsp/dyn_dispatch_initialization.hpp": "df9d5a97ebbf1f7ba5c51f3a022de2dfbb5ba145cb28200c56ccc72f2217ffb1",
+      "include/bsp/dyn_engine_runtime.hpp": "059c3367a5d71532c076a29895b62394e1d88d71fa6cd828c5a540604359d82a",
+      "include/bsp/dyn_profile_scopes.hpp": "b2c47f9188c30b96c8768f76aaaee28d64a1aff80355230bbd0fdc2622588773",
+      "include/bsp/dyn_scene_runtime.hpp": "db87cad3d2b995ee64da4e0a4dfa3651d4b881b545a89d52c4c1501a0b141c7c",
+      "include/bsp/dyn_task_manager.hpp": "3c6736d8c7ee289631f9fdebd02f9c0915688389ec29a782357183ee2f54c147",
+      "include/bsp/dyn_world_factory.hpp": "4e32f788fd38fdf5acbef4a530c43b709c2e62e8017e428a58e0539d257c0b29",
+      "include/bsp/dyn_world_runtime.hpp": "fe53091179272be0d15c1e69a80174d69f9c9e5199a5bc61329be0490ba18a19",
+      "include/bsp/game_native_dyn_process.hpp": "0d17639abaa0e424c11dc5e0230b24566b06305493380ce4318cb1ec04a1ee5f",
+      "include/bsp/game_native_mutable_crt_data.hpp": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1",
+      "include/bsp/game_native_physical_pool.hpp": "9ca8763821cffb6cc6ab1c7a26411855b4466acff191db61d13fd54dce72a36e",
+      "include/bsp/native_dyn_collision_pass.hpp": "ff578a824f0ff6044a0231f2c3f24660bf682c96be9e2ebe78bbffcc28aca2c9",
+      "include/bsp/native_dyn_contact_groups.hpp": "f14ea94e8510c26e446425dbe2dcd2b0fdf205b3798e179dc3219a70339e0b4a",
+      "include/bsp/native_dyn_convex_pool.hpp": "6aaa39b83a437dbcdedd15c58cc9ab1e2491cc146217c484dda99c1f47d002d8",
+      "include/bsp/native_dyn_convex_support.hpp": "6a6b3028657c8e8732e9d81b74172be60b78a565082cf102dfb8e48f0093160b",
+      "include/bsp/native_dyn_general_convex.hpp": "671d4e1e49afe177c17329da705dd7445add240c4afc60eadac38b27c6e86306",
+      "include/bsp/native_dyn_narrow_phase.hpp": "fa3f6390cadbb1e23954f58524215a0cd67fb69a5c9921f2cf95deff72a926db",
+      "include/bsp/native_dyn_sap_lifetime.hpp": "371a1fd7b7f1fb8a089704fb25204453b6ac18862a4412b16a120ca62449ebc1",
+      "include/bsp/native_dyn_sap_pairs.hpp": "e1fa4f280d2ec885f180c1aeb834b5ae268cf54cf0fd48bc846f8b11ee95e475",
+      "include/bsp/native_dyn_sap_processing.hpp": "1886a950958a4859308d9e9b066ccc39df1724e129669ed7ef20bbb626b01c99",
+      "include/bsp/native_dyn_shape_lifetime.hpp": "9d03579c4046d19aa2cdc57e0bdee8c9536e59f138f6196e23ababa5a460e0e9",
+      "include/bsp/native_dyn_solver_mode0.hpp": "8d5239d9619c28962c1fc6cb01309fffc37803c100ab9ca4f1e09d5750b5e8d3",
+      "include/bsp/native_dyn_solver_mode1.hpp": "aeb6dba1a7a5c989f84f550f2600ab5623c4d82682fe1d7061483d5fbac5fade",
+      "include/bsp/native_dyn_world_integration.hpp": "8e9b00bc130b22f0e2f35fe9693ae6c1fbebc88714903193d004c48e4bb6e4c9",
+      "include/bsp/native_game_physics_lifetime.hpp": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e",
+      "include/bsp/native_legacy_sbo_string.hpp": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+      "include/bsp/ship_hull_body.hpp": "a9417d7dc66f6eeda4aee783cd87c3d403b91693a142d8d1c255ebe3ba2c9c0b",
+      "include/bsp/ship_hull_shapes.hpp": "58a35e261aa87778c225ff550fea23218f24fc0c7f5982d87b50fc1ef7a9877a",
+      "include/bsp/system_camera_axes.hpp": "abfa9300a54975dcdb7489f466d941b9341991af3f027ebb764a19cbb08124d5",
+      "src/allocator_list.cpp": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+      "src/dyn_body_creation.cpp": "e915e3325ceca411c14df2424129c7e82bebf6bc272921205e62d43744d4c93c",
+      "src/dyn_dispatch_initialization.cpp": "05da4f7bfe26403fdcd8f82c4e14d4122b414971f8a7933eba42b7068f6e0d85",
+      "src/dyn_engine_runtime.cpp": "7b2608638c893d8135993072ed01ae1e8fbdd0070db8fc31242e227d0ace8360",
+      "src/dyn_profile_scopes.cpp": "302f51bd0274fcbd04947bec1bf789e2fc4a6014cc40bceefc1b601770ceea37",
+      "src/dyn_scene_runtime.cpp": "6efa488d22e05beb310164dd2633e102caab5b07c4ba96b6c7030333beeec32a",
+      "src/dyn_task_manager.cpp": "0160749d351494d2ac34a08a0c4d98322a6a4aa54ab5db8c35e23931591d75d0",
+      "src/dyn_world_factory.cpp": "e9e38479cca106aaf0726f19ab47916a0d7ce69844fdf7d8df2de3ab3b07e9d4",
+      "src/dyn_world_runtime.cpp": "e4ab60cdd8ed206c82c77eaf44f383de90f868826388d11fb5ea5ca6d97c8399",
+      "src/game_main.cpp": "7a551d90d5a65e3ce7a2418f77a8caea0a98cc4554b0c1139f90467f9495a774",
+      "src/game_native_dyn_process.cpp": "0905a24162473ffdb97fe26d0d44c137fd033c7ae6a3490b49f9309efd19cce1",
+      "src/game_native_mutable_crt_data.cpp": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39",
+      "src/game_native_physical_pool.cpp": "2dde8e71367ee7b689f7ae620f62f545f0811dcf40979896cee990e97b323e7c",
+      "src/native_dyn_collision_pass.cpp": "5b2b65400bf1b4272bc8f88122e2ff8e7d3522bba15c8d3837def871ca7937ed",
+      "src/native_dyn_contact_groups.cpp": "90586c1f1328acda67452b55ea26e9a8176f2c7abfb00cae9d16da0eaf67c9d6",
+      "src/native_dyn_convex_pool.cpp": "792bb43268b3b853de7c5b31bdff5f197ef2acc0877b29a13bc4d75f24872d21",
+      "src/native_dyn_convex_support.cpp": "a2884a94389396afecaef01b8cd914eb22ae04c8e4ed5bc9ce9b37a3d0fdb239",
+      "src/native_dyn_general_convex.cpp": "0042c2fe7ab8c30dfd42e499482d0b55112e3d473d006bd69a43eb18b390b8aa",
+      "src/native_dyn_narrow_phase.cpp": "f90fcac23fad20f5a51838d2a5c2a4e222d6822b9940d60167d9ee6827f71bcd",
+      "src/native_dyn_sap_lifetime.cpp": "89c8be58800b2a6e738fc8e626c7169de57fc11ae3b7676563e4bc19d8d7142b",
+      "src/native_dyn_sap_pairs.cpp": "188abb72f9c3e9002b04f8cd32a60c819163dc393957e7e1cf105f033f4d51b3",
+      "src/native_dyn_sap_processing.cpp": "138837a1b076b45f181349185735c88bc030f0982817d2c70c9963eb3774250e",
+      "src/native_dyn_shape_lifetime.cpp": "7889e45f9e9687f25a9e1f07bb2fe77e080bfb8a636819402c3cbb1f7e01649a",
+      "src/native_dyn_solver_mode0.cpp": "406975536d11f9cc50c4005b7e5553f54563f61a579a1309ba76586d1b6ed7f0",
+      "src/native_dyn_solver_mode1.cpp": "e550ec3ad60900860eaa567275d590720c1595186e2f07abc5c4f3b22448c2a9",
+      "src/native_dyn_world_integration.cpp": "14f0ec6d72904519fc63dd94783fe835ef1249befeb1b878a80664d34a7f4d17",
+      "src/native_game_physics_lifetime.cpp": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4",
+      "src/native_legacy_sbo_string.cpp": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+      "src/ship_hull_body.cpp": "28ad789e2934098d0f99e16527bdfd4bdd6fc4be530507b231a8c7612b933972",
+      "src/ship_hull_shapes.cpp": "9df8074293753287b9b6f40fac113ac7f8c39daf8b9ab0e063643738c57eee79",
+      "src/system_camera_axes.cpp": "2682460d77fd18e19909c946ddd58ed60e63234e441c2f5badafc2c2815f0415"
+    },
+    "library_sha256": "36e0ba982a84bea1492f5da34f7a2895918820795b19671f40b667ed768ff743",
+    "game_sha256": "1d24822ef4f82ae9744be4a0c83deaf6c58fb7575a19379942dc8ad367ceee0c",
+    "ordinary_application_runtime": {
+      "status": "not_started_game_slot_occupied",
+      "log": "Exception: J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\tools\\run_game.ps1:50\nLine |\n  50 |          throw \"gave up after $WaitSeconds s: lock held by '$holder',  \u2026\n     |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n     | gave up after 0 s: lock held by 'battlestations-pacific-decompile-cc8-ai-command 2026-09-18T09:09:36 pid=66848', live bsp_game pids: 44532,76488\n\n\n",
+      "log_sha256": "7124c79afe27a1ab4fb942e5443a41d609af1bf8089a1249078c31587ec8c78a"
+    },
+    "call_verification": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\reports\\native_dyn_world_step_r153.json: 24 call rows checked, 0 failed\n"
+  },
+  "source_adaptations": [
+    {
+      "address": "00c5bb3c",
+      "kind": "unwind_handler_placeholder"
+    },
+    {
+      "address": "00c5bb42",
+      "kind": "omit_fs_write"
+    },
+    {
+      "address": "00c5bb5a",
+      "kind": "context",
+      "operand": "esp+132"
+    },
+    {
+      "address": "00c5bb66",
+      "kind": "context",
+      "operand": "esp+132"
+    },
+    {
+      "address": "00c5bb6b",
+      "kind": "publication",
+      "operand": "esp+128",
+      "field": 8,
+      "register": "eax"
+    },
+    {
+      "address": "00c5bb83",
+      "kind": "context",
+      "operand": "esp+136"
+    },
+    {
+      "address": "00c5bb8a",
+      "kind": "publication",
+      "operand": "esp+128",
+      "field": 8,
+      "register": "eax"
+    },
+    {
+      "address": "00c5bb9d",
+      "kind": "context",
+      "operand": "esp+128"
+    },
+    {
+      "address": "00c5bbbe",
+      "kind": "context",
+      "operand": "esp+132"
+    },
+    {
+      "address": "00c5bbcb",
+      "kind": "context",
+      "operand": "esp+128"
+    },
+    {
+      "address": "00c5bbd7",
+      "kind": "publication",
+      "operand": "esp+128",
+      "field": 8,
+      "register": "eax"
+    },
+    {
+      "address": "00c5bc1e",
+      "kind": "context",
+      "operand": "esp+132"
+    },
+    {
+      "address": "00c5bcb0",
+      "kind": "publication",
+      "operand": "esp+128",
+      "field": 12,
+      "register": "edx"
+    },
+    {
+      "address": "00c5bcca",
+      "kind": "context",
+      "operand": "esp+132"
+    },
+    {
+      "address": "00c5bcd7",
+      "kind": "context",
+      "operand": "esp+128"
+    },
+    {
+      "address": "00c5bcf7",
+      "kind": "publication",
+      "operand": "esp+128",
+      "field": 8,
+      "register": "eax"
+    },
+    {
+      "address": "00c5bd4f",
+      "kind": "context",
+      "operand": "esp+132"
+    },
+    {
+      "address": "00c5c045",
+      "kind": "context",
+      "operand": "esp+132"
+    },
+    {
+      "address": "00c5c0cd",
+      "kind": "publication",
+      "operand": "esp+128",
+      "field": 12,
+      "register": "ecx"
+    },
+    {
+      "address": "00c5c0e8",
+      "kind": "context",
+      "operand": "esp+132"
+    },
+    {
+      "address": "00c5c0f5",
+      "kind": "context",
+      "operand": "esp+128"
+    },
+    {
+      "address": "00c5c115",
+      "kind": "publication",
+      "operand": "esp+128",
+      "field": 8,
+      "register": "eax"
+    },
+    {
+      "address": "00c5c16d",
+      "kind": "context",
+      "operand": "esp+132"
+    },
+    {
+      "address": "00c5c449",
+      "kind": "context",
+      "operand": "esp+132"
+    },
+    {
+      "address": "00c5c451",
+      "kind": "publication",
+      "operand": "esp+128",
+      "field": 8,
+      "register": "eax"
+    },
+    {
+      "address": "00c5c469",
+      "kind": "context",
+      "operand": "esp+136"
+    },
+    {
+      "address": "00c5c470",
+      "kind": "publication",
+      "operand": "esp+128",
+      "field": 8,
+      "register": "eax"
+    },
+    {
+      "address": "00c5c47f",
+      "kind": "context",
+      "operand": "esp+128"
+    },
+    {
+      "address": "00c5c491",
+      "kind": "context",
+      "operand": "esp+132"
+    },
+    {
+      "address": "00c5c496",
+      "kind": "context",
+      "operand": "esp+128"
+    },
+    {
+      "address": "00c5c4a4",
+      "kind": "publication",
+      "operand": "esp+128",
+      "field": 8,
+      "register": "eax"
+    },
+    {
+      "address": "00c5c4ce",
+      "kind": "context",
+      "operand": "esp+136"
+    },
+    {
+      "address": "00c5c4d5",
+      "kind": "publication",
+      "operand": "esp+128",
+      "field": 8,
+      "register": "eax"
+    },
+    {
+      "address": "00c5c4e8",
+      "kind": "context",
+      "operand": "esp+128"
+    },
+    {
+      "address": "00c5c503",
+      "kind": "context",
+      "operand": "esp+132"
+    },
+    {
+      "address": "00c5c508",
+      "kind": "context",
+      "operand": "esp+128"
+    },
+    {
+      "address": "00c5c514",
+      "kind": "publication",
+      "operand": "esp+128",
+      "field": 8,
+      "register": "eax"
+    },
+    {
+      "address": "00c5c531",
+      "kind": "omit_fs_write"
+    },
+    {
+      "address": "00c5c53c",
+      "kind": "private_context_cleanup"
+    },
+    {
+      "address": "00c5c548",
+      "kind": "unwind_handler_placeholder"
+    },
+    {
+      "address": "00c5c554",
+      "kind": "omit_fs_write"
+    },
+    {
+      "address": "00c5c55e",
+      "kind": "publication",
+      "operand": "ebp+12",
+      "field": 12,
+      "register": "eax"
+    },
+    {
+      "address": "00c5c5ae",
+      "kind": "publication",
+      "operand": "ebp+12",
+      "field": 8,
+      "register": "eax"
+    },
+    {
+      "address": "00c5c5c5",
+      "kind": "context",
+      "operand": "ebp+12"
+    },
+    {
+      "address": "00c5c5cc",
+      "kind": "publication",
+      "operand": "ebp+12",
+      "field": 8,
+      "register": "eax"
+    },
+    {
+      "address": "00c5c5df",
+      "kind": "context",
+      "operand": "ebp+12"
+    },
+    {
+      "address": "00c5c5f3",
+      "kind": "context",
+      "operand": "ebp+12"
+    },
+    {
+      "address": "00c5c5ff",
+      "kind": "context",
+      "operand": "ebp+12"
+    },
+    {
+      "address": "00c5c66d",
+      "kind": "context",
+      "operand": "ebp+12"
+    },
+    {
+      "address": "00c5c6bd",
+      "kind": "context",
+      "operand": "ebp+12"
+    },
+    {
+      "address": "00c5c6ce",
+      "kind": "context",
+      "operand": "ebp+12"
+    },
+    {
+      "address": "00c5c6dc",
+      "kind": "publication",
+      "operand": "ebp+12",
+      "field": 8,
+      "register": "eax"
+    },
+    {
+      "address": "00c5c6f9",
+      "kind": "omit_fs_write"
+    },
+    {
+      "address": "00c5c704",
+      "kind": "private_context_cleanup"
+    },
+    {
+      "address": "00c4d9fd",
+      "kind": "context",
+      "operand": "esp+28"
+    },
+    {
+      "address": "00c4da12",
+      "kind": "context",
+      "operand": "esp+28"
+    },
+    {
+      "address": "00c4da6a",
+      "kind": "private_context_cleanup"
+    }
+  ],
+  "flow_repairs": {
+    "repairs": [
+      {
+        "function": "00c5bb30",
+        "owner": "agent/orch4-20260915",
+        "when": "2026-09-18T16:00:51Z",
+        "decompile_lines_before": 407,
+        "gaps": [
+          {
+            "site": "00c5c449",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00c5c44e",
+            "gap_end_exclusive": "00c5c451",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "00c5c449",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00c5c44e",
+              "gap_end_exclusive": "00c5c451",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            },
+            "clear": "Success: Cleared flow override at 00c5c449 (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 3 byte(s)"
+          }
+        ],
+        "decompile_lines_after": 408,
+        "gaps_remaining": 0
+      }
+    ]
+  },
+  "limitations": [
+    "Copied-native comparison controls velocity,collision,position,solver batch,SAPremove andshape-delete boundaries;usesactualgroupandbodycleanup. Existingprofile-enter boundary usescopiednativehelper onbothsides withcontrolledclock;productiondefaultandallphysicsstages are exercisedbyseparaterealproducerlifecycle.",
+    "Finite masked FP inputs;arbitrarymalformedrecords,faultpaths,FH3/unwind,concurrentmutation andoriginalregisterABIentrycompatibility unproven.",
+    "Lifecycle suppliescubegeometry/listeners andnativependingqueue,closes101native-unclosedhandles;actualprocesspoolatexitobserved0allocations.",
+    "Sourceapplicationlaunchoccupied;gamefixed-stepbinding/rawgameadmission/rendering/gameplayremainopen."
+  ],
+  "ghidra_annotations": {
+    "prior_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\ghidra-annotations-20260918T161751Z.json",
+    "prior_values": [
+      {
+        "address": "00c321b0",
+        "before": {
+          "address": "00c321b0",
+          "function_name": "Dyn_Profiler_ResetCounterTree",
+          "comment": "[BSP inventory 00c321b0] block_dyn (high): inside Dyn physics/collision (mitengine 'Dynamics' module) range [00c30930,00c5df60): main library body; ends at the .text$x unwind-funclet block; preceded by Lua loadlib.c (00c2f3e0-00c30200) and a small game glue object (00c30210-00c30570)\n\n[BSP reconstruction 00c321b0]\nHypothesis, not a recovered symbol. Packet cc_dyn_step, read-only analysis. __fastcall void(node), body 00C321B0-00C321E?, callers 00C5C540 at 00C5C586 and itself. Recurses over the node's children (array at node+4h, count at node+8h) and zeroes node+38h, node+3Ch and node+40h on every node it reaches. Those three dwords are exactly the accumulated tsc total (+38h/+3Ch) and the call count (+40h) every profiler scope's pop writes, so this is the per-frame reset of the profiler counter tree. 00C5C540 runs it over every child of the root at [[0109E9FC]+0Ch], zeroes the root's own three and bumps the frame counter at [[0109E9FC]+0Ch]+8h. docs/DYN_PHYSICS_SUBSTEP.md"
+        },
+        "after": {
+          "address": "00c321b0",
+          "name": "Dyn_Profiler_ResetCounterTree",
+          "evidence": "Hypothesis, not a recovered symbol. Packet cc_dyn_step, read-only analysis. __fastcall void(node), body 00C321B0-00C321E?, callers 00C5C540 at 00C5C586 and itself. Recurses over the node's children (array at node+4h, count at node+8h) and zeroes node+38h, node+3Ch and node+40h on every node it reaches. Those three dwords are exactly the accumulated tsc total (+38h/+3Ch) and the call count (+40h) every profiler scope's pop writes, so this is the per-frame reset of the profiler counter tree. 00C5C540 runs it over every child of the root at [[0109E9FC]+0Ch], zeroes the root's own three and bumps the frame counter at [[0109E9FC]+0Ch]+8h. docs/DYN_PHYSICS_SUBSTEP.md | Complete56B,ECXnode/RET. Recurse childpointers at4 over count8;reloaddata/count afterrecursivecall. Clear onlysum38/3C andcount40;retainlast30/34 andothernode fields. Normal recursion,validacyclicactualprofiletree required. R153: fourcomplete raw worldstep bodies3321B,3460live/PEbytes/12spans incl68Bexistingprofileenter.990nativeinstructions/53branches/25adapters audited.576native/sourcepairs,64257888bytes,5904substeps/3120controlledsolverbatches/1560reports/6456points/61920allocator events acrossbothsides,12x87/MXCSR settings. Comparison controls physicsstage/SAP/shape boundaries,usesactualgroups/bodycleanup andcopiedprofileenter;separaterealprocess defaults run4simulations/4substeps,bothsolver modes,6contactrecords/6listenercallbacks,3real solverbatches/11workerallocations,previous transforms andpendingstatic/dynamic removal. Fullnativephysicsteardown,pooltrim/atexit0allocations;101fixturehandlecloses. StrictWin32/3CTests. Explicit sourceinterfaces,notnativeABI;finite maskedinputs,FH3/faultunwind/concurrentmutation/gamefixedstepadmission/rendering/gameplay open. Descriptivehypotheses,not recoveredsymbols;retain librarynames. docs/NATIVE_DYN_WORLD_STEP_R153.md;reports/native_dyn_world_step_r153.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c4d980",
+        "before": {
+          "address": "00c4d980",
+          "function_name": "Dyn_World_FlushPendingBodyRemovals",
+          "comment": "[BSP inventory 00c4d980] block_dyn (high): inside Dyn physics/collision (mitengine 'Dynamics' module) range [00c30930,00c5df60): main library body; ends at the .text$x unwind-funclet block; preceded by Lua loadlib.c (00c2f3e0-00c30200) and a small game glue object (00c30210-00c30570)\n\n[BSP reconstruction 00c4d980]\nHypothesis, not a recovered symbol. Packet cc_dyn_step, read-only analysis. __fastcall void(world), body 00C4D980-00C4DA6?, callers 00C5C540 at 00C5C5FF and 004DA780 BSP_Game_TeardownSessionState. Drains the pending array at world+438h (count world+43Ch, zeroed at the end). Per body: when B+70h is non-zero it releases the proxy handle at B+60h through slot 1 of the vtable of [[B+00h]+444h]+0ACh (B+00h is the owning world), clears B+50h bit 3 and zeroes B+60h (00C4D9A9-00C4D9CC); destroys every node of the contact list at B+70h through that node's own vtable slot 1 with the argument 1; calls 00C43AA0 and 00C43C00; unlinks the body (prev B+80h, next B+84h) and pushes it onto the pool at world+4Ch when B+50h bit 0 is set and world+170h otherwise, decrementing that pool's count at +120h. The teardown caller is what fixes it as a removal flush rather than a step pass. docs/DYN_PHYSICS_SUBSTEP.md"
+        },
+        "after": {
+          "address": "00c4d980",
+          "name": "Dyn_World_FlushPendingBodyRemovals",
+          "evidence": "Hypothesis, not a recovered symbol. Packet cc_dyn_step, read-only analysis. __fastcall void(world), body 00C4D980-00C4DA6?, callers 00C5C540 at 00C5C5FF and 004DA780 BSP_Game_TeardownSessionState. Drains the pending array at world+438h (count world+43Ch, zeroed at the end). Per body: when B+70h is non-zero it releases the proxy handle at B+60h through slot 1 of the vtable of [[B+00h]+444h]+0ACh (B+00h is the owning world), clears B+50h bit 3 and zeroes B+60h (00C4D9A9-00C4D9CC); destroys every node of the contact list at B+70h through that node's own vtable slot 1 with the argument 1; calls 00C43AA0 and 00C43C00; unlinks the body (prev B+80h, next B+84h) and pushes it onto the pool at world+4Ch when B+50h bit 0 is set and world+170h otherwise, decrementing that pool's count at +120h. The teardown caller is what fixes it as a removal flush rather than a step pass. docs/DYN_PHYSICS_SUBSTEP.md | Complete235B,ECXworld/RET. Snapshot signed pendingcount43C, reloadqueue438 perentry. Ifbody70nonnull,actualSAPvslot1removebody60,clearflag8/handle. Capture shape208next before vslot1 scalar deletion(flags1),thenzero70. Existing clearbodymanifolds anddestroypooledstorage;choose static4C/dynamic170bodypool fromflag1,unlinkafterstoragecall,pushfreeC,decrement120. Finalpendingcount0,capacity/data retained. Directtablecallbacks requireactualcallableowners. PrivatecontextRET4. R153: fourcomplete raw worldstep bodies3321B,3460live/PEbytes/12spans incl68Bexistingprofileenter.990nativeinstructions/53branches/25adapters audited.576native/sourcepairs,64257888bytes,5904substeps/3120controlledsolverbatches/1560reports/6456points/61920allocator events acrossbothsides,12x87/MXCSR settings. Comparison controls physicsstage/SAP/shape boundaries,usesactualgroups/bodycleanup andcopiedprofileenter;separaterealprocess defaults run4simulations/4substeps,bothsolver modes,6contactrecords/6listenercallbacks,3real solverbatches/11workerallocations,previous transforms andpendingstatic/dynamic removal. Fullnativephysicsteardown,pooltrim/atexit0allocations;101fixturehandlecloses. StrictWin32/3CTests. Explicit sourceinterfaces,notnativeABI;finite maskedinputs,FH3/faultunwind/concurrentmutation/gamefixedstepadmission/rendering/gameplay open. Descriptivehypotheses,not recoveredsymbols;retain librarynames. docs/NATIVE_DYN_WORLD_STEP_R153.md;reports/native_dyn_world_step_r153.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c5bb30",
+        "before": {
+          "address": "00c5bb30",
+          "function_name": "Dyn_World_Substep",
+          "comment": "[BSP inventory 00c5bb30] block_dyn (high): inside Dyn physics/collision (mitengine 'Dynamics' module) range [00c30930,00c5df60): main library body; ends at the .text$x unwind-funclet block; preceded by Lua loadlib.c (00c2f3e0-00c30200) and a small game glue object (00c30210-00c30570)\n\n[BSP reconstruction 00c5bb30]\nHypothesis, not a recovered symbol. Packet cc_ship_inputs. void(world, float dt), body 00C5BB30-00C5C53E, called only from 00C5C540 (DYN_PhysicsWorld_Simulate), at 00C5C66D in its accumulator loop and at 00C5C6BD for the partial remainder substep. Runs 00C41550 at 00C5BB5A, then the profiler-scoped collision and constraint phases ('CreateGroups' label fetched at 00C5BB83, 00C4B610 at 00C5BBBE, the contact callback dispatched indirectly through world+24h at 00C5C43A), then 00C5B1B0 at 00C5C491 under the 'UpdatePosition' scope and 00C4B550 at 00C5C503 under 'SleepGroups'. docs/RIGID_BODY_INTEGRATION.md"
+        },
+        "after": {
+          "address": "00c5bb30",
+          "name": "Dyn_World_Substep",
+          "evidence": "Hypothesis, not a recovered symbol. Packet cc_ship_inputs. void(world, float dt), body 00C5BB30-00C5C53E, called only from 00C5C540 (DYN_PhysicsWorld_Simulate), at 00C5C66D in its accumulator loop and at 00C5C6BD for the partial remainder substep. Runs 00C41550 at 00C5BB5A, then the profiler-scoped collision and constraint phases ('CreateGroups' label fetched at 00C5BB83, 00C4B610 at 00C5BBBE, the contact callback dispatched indirectly through world+24h at 00C5C43A), then 00C5B1B0 at 00C5C491 under the 'UpdatePosition' scope and 00C4B550 at 00C5C503 under 'SleepGroups'. docs/RIGID_BODY_INTEGRATION.md | Complete2575B,stack world/floatdt,RET8. Velocity,fullcollision,actualgroups,descriptor-mode0/1solver with inclusive ranges/remainder; unknown mode skips solver/report. Optional world24 callback ECX/vslot0/stack88Brecords,count/RET8. Both distinct x87 report schedules retained;transform localA/B,normal,+/-point2C*normal,zero3Ch..50h,54h untouched. Allocate activeManifolds*4 records,overflow-toFFFFFFFF behavior retained. Callbackthenfree THEN actualposition/sleep-groupcleanup. Restored free continuation C5C44E..C5C450,not earlyreturn;callee no-return unchanged. Profilecaches64/6C/78/7C and actualowners. Private appendedcontext RET12,explicitpublicC++ interface. R153: fourcomplete raw worldstep bodies3321B,3460live/PEbytes/12spans incl68Bexistingprofileenter.990nativeinstructions/53branches/25adapters audited.576native/sourcepairs,64257888bytes,5904substeps/3120controlledsolverbatches/1560reports/6456points/61920allocator events acrossbothsides,12x87/MXCSR settings. Comparison controls physicsstage/SAP/shape boundaries,usesactualgroups/bodycleanup andcopiedprofileenter;separaterealprocess defaults run4simulations/4substeps,bothsolver modes,6contactrecords/6listenercallbacks,3real solverbatches/11workerallocations,previous transforms andpendingstatic/dynamic removal. Fullnativephysicsteardown,pooltrim/atexit0allocations;101fixturehandlecloses. StrictWin32/3CTests. Explicit sourceinterfaces,notnativeABI;finite maskedinputs,FH3/faultunwind/concurrentmutation/gamefixedstepadmission/rendering/gameplay open. Descriptivehypotheses,not recoveredsymbols;retain librarynames. docs/NATIVE_DYN_WORLD_STEP_R153.md;reports/native_dyn_world_step_r153.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c5c540",
+        "before": {
+          "address": "00c5c540",
+          "function_name": "DYN_PhysicsWorld_Simulate",
+          "comment": "[BSP inventory 00c5c540] block_dyn (high): inside Dyn physics/collision (mitengine 'Dynamics' module) range [00c30930,00c5df60): main library body; ends at the .text$x unwind-funclet block; preceded by Lua loadlib.c (00c2f3e0-00c30200) and a small game glue object (00c30210-00c30570)\n\n[BSP reconstruction 00c5c540]\nHypothesis, not a recovered symbol. Packet cc_fixed_step, read-only analysis. __thiscall void(world, float), RET 4 at 00c5c704, body 00c5c540-00c5c706. Sole caller 00875bb0 at 00875e0c with ECX=[[00e188a8]+18h] and the fixed step 0.05f. The mitengine Dynamics world step: rdtsc profiler scope whose label is the image string \"Simulate\" (00c50390 call at 00c5c58a), each registered body transform copied into its proxy, then its own substep loop world[12h]+=dt while world[0] <= accumulated calling 00c5bb30, bounded by the budget in world[0Dh], with one partial substep when the remainder exceeds 00d7a398, then the accumulator is cleared at 00c5c6c6. Library body inside the block_dyn range [00c30930,00c5df60); previous name DYN_physics_00c5c540. docs/FIXED_STEP_FANOUT.md\n\n[BSP reconstruction 00c5c540] update\nHypothesis, not a recovered symbol. Packet cc_fixed_step, read-only analysis. __thiscall void(world, float), RET 4 at 00c5c704, body 00c5c540-00c5c706. Sole caller 00875bb0 at 00875e0c with ECX=[[00e188a8]+18h] and the fixed step 0.05f. The mitengine Dynamics world step: rdtsc profiler scope whose label is the image string \"Simulate\" (00c50390 call at 00c5c58a), each registered body transform copied into its proxy, then its own substep loop world[12h]+=dt while world[0] <= accumulated calling 00c5bb30, bounded by the budget in world[0Dh], with one partial substep when the remainder exceeds 00d7a398, then the accumulator is cleared at 00c5c6c6. Library body inside the block_dyn range [00c30930,00c5df60); previous name DYN_physics_00c5c540. docs/FIXED_STEP_FANOUT.md | Run-time evidence, packet cc_exe_2j (bsp_game.exe milestone 2j): the substep schedule stays a host record in bsp_game.exe. world+00h, the fixed substep, has no recovered producer, so the executable takes one substep of the whole 0.05 s game step and records 00C5BB30 at 00C5C66D rather than guessing a count. docs/GAME_EXECUTABLE.md milestone 2j."
+        },
+        "after": {
+          "address": "00c5c540",
+          "name": "DYN_PhysicsWorld_Simulate",
+          "evidence": "Hypothesis, not a recovered symbol. Packet cc_fixed_step, read-only analysis. __thiscall void(world, float), RET 4 at 00c5c704, body 00c5c540-00c5c706. Sole caller 00875bb0 at 00875e0c with ECX=[[00e188a8]+18h] and the fixed step 0.05f. The mitengine Dynamics world step: rdtsc profiler scope whose label is the image string \"Simulate\" (00c50390 call at 00c5c58a), each registered body transform copied into its proxy, then its own substep loop world[12h]+=dt while world[0] <= accumulated calling 00c5bb30, bounded by the budget in world[0Dh], with one partial substep when the remainder exceeds 00d7a398, then the accumulator is cleared at 00c5c6c6. Library body inside the block_dyn range [00c30930,00c5df60); previous name DYN_physics_00c5c540. docs/FIXED_STEP_FANOUT.md | Run-time evidence, packet cc_exe_2j (bsp_game.exe milestone 2j): the substep schedule stays a host record in bsp_game.exe. world+00h, the fixed substep, has no recovered producer, so the executable takes one substep of the whole 0.05 s game step and records 00C5BB30 at 00C5C66D rather than guessing a count. docs/GAME_EXECUTABLE.md milestone 2j. | Complete455B,ECXworld,stackfloatdt,RET4. Reset actualengine+0C profiletree sum/count,incrementprofile8;Simulateprofilecache10. Incrementworld2C,flushpending,copy12transformwords fromdynamicbody8 to motion84. Adddttoaccumulator48; while remainder strictly greater than freshly reloadedworld0 and budget34 nonzero,substep and decrementintegerbudget; optionalremainder strictly above doubleD7A398=4.999999873689376e-5,thenunconditionallyzero48. Preserve x87 live-stack/comparisons/rounding and all3timestamps includingunusedmiddle. PrivateEBP-basedcontext retained across8byteESP alignment;RET8. R153: fourcomplete raw worldstep bodies3321B,3460live/PEbytes/12spans incl68Bexistingprofileenter.990nativeinstructions/53branches/25adapters audited.576native/sourcepairs,64257888bytes,5904substeps/3120controlledsolverbatches/1560reports/6456points/61920allocator events acrossbothsides,12x87/MXCSR settings. Comparison controls physicsstage/SAP/shape boundaries,usesactualgroups/bodycleanup andcopiedprofileenter;separaterealprocess defaults run4simulations/4substeps,bothsolver modes,6contactrecords/6listenercallbacks,3real solverbatches/11workerallocations,previous transforms andpendingstatic/dynamic removal. Fullnativephysicsteardown,pooltrim/atexit0allocations;101fixturehandlecloses. StrictWin32/3CTests. Explicit sourceinterfaces,notnativeABI;finite maskedinputs,FH3/faultunwind/concurrentmutation/gamefixedstepadmission/rendering/gameplay open. Descriptivehypotheses,not recoveredsymbols;retain librarynames. docs/NATIVE_DYN_WORLD_STEP_R153.md;reports/native_dyn_world_step_r153.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "readback_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\dyn_world_step_r153\\comments-after.json",
+    "readback_sha256": "bbeac48dc4ee47b8ad0800423aa22e8edd417a58a7db5b2f8e8135131707f964",
+    "status": "Four full world-step bodies and consumed boundary evidence saved under write lock;prior values preserved,readback checked,exports refreshed"
+  },
+  "ledger_receipts": [
+    "00c5bb30 -> Dyn_World_Substep\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00c5bb30\", \"name\": \"Dyn_World_Substep\", \"evidence\": \"Hypothesis, not a recovered symbol. Packet cc_ship_inputs. void(world, float dt), body 00C5BB30-00C5C53E, called only from 00C5C540 (DYN_PhysicsWorld_Simulate), at 00C5C66D in its accumulator loop and at 00C5C6BD for the partial remainder substep. Runs 00C41550 at 00C5BB5A, then the profiler-scoped collision and constraint phases ('CreateGroups' label fetched at 00C5BB83, 00C4B610 at 00C5BBBE, the contact callback dispatched indirectly through world+24h at 00C5C43A), then 00C5B1B0 at 00C5C491 under the 'UpdatePosition' scope and 00C4B550 at 00C5C503 under 'SleepGroups'. docs/RIGID_BODY_INTEGRATION.md\"})\n",
+    "00c5bb30 function run_native_dyn_world_substep_00c5bb30\n",
+    "00c5c540 -> DYN_PhysicsWorld_Simulate\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00c5c540\", \"name\": \"DYN_PhysicsWorld_Simulate\", \"evidence\": \"Hypothesis, not a recovered symbol. Packet cc_fixed_step, read-only analysis. __thiscall void(world, float), RET 4 at 00c5c704, body 00c5c540-00c5c706. Sole caller 00875bb0 at 00875e0c with ECX=[[00e188a8]+18h] and the fixed step 0.05f. The mitengine Dynamics world step: rdtsc profiler scope whose label is the image string \\\"Simulate\\\" (00c50390 call at 00c5c58a), each registered body transform copied into its proxy, then its own substep loop world[12h]+=dt while world[0] <= accumulated calling 00c5bb30, bounded by the budget in world[0Dh], with one partial substep when the remainder exceeds 00d7a398, then the accumulator is cleared at 00c5c6c6. Library body inside the block_dyn range [00c30930,00c5df60); previous name DYN_physics_00c5c540. docs/FIXED_STEP_FANOUT.md | Run-time evidence, packet cc_exe_2j (bsp_game.exe milestone 2j): the substep schedule stays a host record in bsp_game.exe. world+00h, the fixed substep, has no recovered producer, so the executable takes one substep of the whole 0.05 s game step and records 00C5BB30 at 00C5C66D rather than guessing a count. docs/GAME_EXECUTABLE.md milestone 2j.\"})\n",
+    "00c5c540 function simulate_native_dyn_world_00c5c540\n",
+    "00c4d980 -> Dyn_World_FlushPendingBodyRemovals\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00c4d980\", \"name\": \"Dyn_World_FlushPendingBodyRemovals\", \"evidence\": \"Hypothesis, not a recovered symbol. Packet cc_dyn_step, read-only analysis. __fastcall void(world), body 00C4D980-00C4DA6?, callers 00C5C540 at 00C5C5FF and 004DA780 BSP_Game_TeardownSessionState. Drains the pending array at world+438h (count world+43Ch, zeroed at the end). Per body: when B+70h is non-zero it releases the proxy handle at B+60h through slot 1 of the vtable of [[B+00h]+444h]+0ACh (B+00h is the owning world), clears B+50h bit 3 and zeroes B+60h (00C4D9A9-00C4D9CC); destroys every node of the contact list at B+70h through that node's own vtable slot 1 with the argument 1; calls 00C43AA0 and 00C43C00; unlinks the body (prev B+80h, next B+84h) and pushes it onto the pool at world+4Ch when B+50h bit 0 is set and world+170h otherwise, decrementing that pool's count at +120h. The teardown caller is what fixes it as a removal flush rather than a step pass. docs/DYN_PHYSICS_SUBSTEP.md\"})\n",
+    "00c4d980 function flush_native_dyn_pending_bodies_00c4d980\n",
+    "00c321b0 -> Dyn_Profiler_ResetCounterTree\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00c321b0\", \"name\": \"Dyn_Profiler_ResetCounterTree\", \"evidence\": \"Hypothesis, not a recovered symbol. Packet cc_dyn_step, read-only analysis. __fastcall void(node), body 00C321B0-00C321E?, callers 00C5C540 at 00C5C586 and itself. Recurses over the node's children (array at node+4h, count at node+8h) and zeroes node+38h, node+3Ch and node+40h on every node it reaches. Those three dwords are exactly the accumulated tsc total (+38h/+3Ch) and the call count (+40h) every profiler scope's pop writes, so this is the per-frame reset of the profiler counter tree. 00C5C540 runs it over every child of the root at [[0109E9FC]+0Ch], zeroes the root's own three and bumps the frame counter at [[0109E9FC]+0Ch]+8h. docs/DYN_PHYSICS_SUBSTEP.md\"})\n",
+    "00c321b0 function reset_native_dyn_profile_tree_00c321b0\n"
+  ],
+  "tested_artifact_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r153\\native-dyn-world-step-tested-r153.zip",
+    "sha256": "a40fe491d561895bb1b442aa29247b34367dde1c25d75e7cace6d415899ff979",
+    "files": 205,
+    "uncompressed_bytes": 203824998,
+    "utc": "2026-09-18T16:18:59.052224+00:00",
+    "head": "ce3d46c3cd91026a89156903e9220d9b896d2a01",
+    "manifest": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/allocator_list.obj",
+        "size": 109246,
+        "sha256": "72f54a0dec595f302b3e7645c215dbe3cd27cf181bd52d9fc9117a92835d1c7b"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/dyn_body_creation.obj",
+        "size": 29583,
+        "sha256": "cfe368fa7b12cfc8223ffbcc81741e7cbf354e8d507e7e00cf323cd33a735f95"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/dyn_dispatch_initialization.obj",
+        "size": 15065,
+        "sha256": "72a12d61dec60a04dc0736080f6c5c8799d327709f5445cd2e073ce10fea04ec"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/dyn_engine_runtime.obj",
+        "size": 4300,
+        "sha256": "cefb230771270d4633be955b3ac30b12b7ce51e622ef562fde71005ea59f46bf"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/dyn_scene_runtime.obj",
+        "size": 10372,
+        "sha256": "3f8b8ec73cb88a3660db5d5981b786604a57c6323dcbd112b703711fdeaaa2b5"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/dyn_task_manager.obj",
+        "size": 11375,
+        "sha256": "cf5745355152c45b4315cd6a3804c41e330e5d4bb828de8e618d5a1de726cfc4"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/dyn_world_factory.obj",
+        "size": 2014,
+        "sha256": "7e02ec2009cc20c6e6452d446e67e8d7b72ff2231c064e079f2bceeb2d5dfc03"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/dyn_world_runtime.obj",
+        "size": 20848,
+        "sha256": "3f68e9cb2aac806e34a7e369d7449dc5a0f70b58cbcc2fdce0cb18ac045abac7"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/game_native_dyn_process.obj",
+        "size": 63263,
+        "sha256": "cbeb3ba790e35f378b8f9ade3cbf755fb49a4dc8717265d8ca0d3d2d037213fa"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_collision_pass.obj",
+        "size": 14094,
+        "sha256": "60bdd756cbc2de48387899330807d14ad64031dfaea3d6c1edce45b7ab646db5"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_contact_groups.obj",
+        "size": 6343,
+        "sha256": "c0d3203dafdb58ff187ec7015605904cdd7a43ec9ec6d3ab2ec863b195679504"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_convex_pool.obj",
+        "size": 14676,
+        "sha256": "e49e12949ecc394549987b63edbf8c1824023746187126af85be34c305ae410e"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_convex_support.obj",
+        "size": 5294,
+        "sha256": "fa6ebaf582cafacd57005e574fe93a97e1fe3b70ce4435b9f0f8a98ab6711f44"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_general_convex.obj",
+        "size": 13587,
+        "sha256": "4187e4bfb7e99ffa2ddaea20e11d110b9294e2e0d4a2b45163a370564ca60ded"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_narrow_phase.obj",
+        "size": 11623,
+        "sha256": "50fe951f2558510b5e74b8260d178ef1b36d7cd00aa1a949cb5a86b2dda1c8c8"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_sap_lifetime.obj",
+        "size": 6969,
+        "sha256": "f4950f257749769cd3d10dd033442579ae8e06d7e64e5dad9907f6f816de88da"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_sap_pairs.obj",
+        "size": 5482,
+        "sha256": "044595c4eebe6bd54d3e9a37b3dffd2aacdbdd5e3ae7bc302cc1137fd81810f2"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_sap_processing.obj",
+        "size": 16079,
+        "sha256": "09c0f746bea64a78b66b9d39244e45ad6a1c2714d04010d588cd9f2bbe27f52a"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_shape_lifetime.obj",
+        "size": 1485,
+        "sha256": "83a1a384ee831de2a81ee801fdaf1c5117026da3a6b1ed9614b96c9f1484f07e"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_solver_mode0.obj",
+        "size": 16675,
+        "sha256": "69770a7d68e0db5b9475c21bafbd91a85d71369f957955b5be11ca455056f2ad"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_solver_mode1.obj",
+        "size": 18331,
+        "sha256": "f92c9fad5efbc7ffd312ff0205839bd7878c4024b72f4c2322857d9c12cefa56"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_world_integration.obj",
+        "size": 7390,
+        "sha256": "220366ee5e1c698fc1ab2491a018df933b613d2bd9a2ff5bfdd7638cd672b9a9"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_world_step.obj",
+        "size": 18598,
+        "sha256": "f6ce4d0fd915341610a0f5416e4ad791c335694d844e45033574f78993b41dea"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_game_physics_lifetime.obj",
+        "size": 24467,
+        "sha256": "e229e656e0d4b16c614d72bab0c3dd57567dee4b2763ec1f4777c54c8c96d7d0"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_main.obj",
+        "size": 300355,
+        "sha256": "903fc7f7900de48fc38c5857841d0521b4ec36232f84905d5e875fd0ef4cd219"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "size": 66658420,
+        "sha256": "36e0ba982a84bea1492f5da34f7a2895918820795b19671f40b667ed768ff743"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "size": 2867712,
+        "sha256": "1d24822ef4f82ae9744be4a0c83deaf6c58fb7575a19379942dc8ad367ceee0c"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "size": 455244,
+        "sha256": "db83167c8c7d24461ef2bf60363b96264fd2406929d0e72a8909287d79b96a17"
+      },
+      {
+        "path": "build/win32/Release/bsp_math_tests.exe",
+        "size": 763392,
+        "sha256": "df37779f128af31627e06c97be32c4e394a23243008d5722dfae1378f6aab686"
+      },
+      {
+        "path": "build/win32/Release/bsp_native_math_tests.exe",
+        "size": 18432,
+        "sha256": "72325bd9cd4412ad2364191a7d69af363a16e5669cf0957fa2bbac9d81e08426"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "size": 71906,
+        "sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "size": 165943,
+        "sha256": "2ad9f42fb720c389a56403f5dda9e483612b5c8720cd77554dbd36e147998daa"
+      },
+      {
+        "path": "config/names/00c30000.jsonl",
+        "size": 66934,
+        "sha256": "e5d502fe28813518b8fcc1565e78ec8b1c6caececb853b41aa1f33ecbfd60da7"
+      },
+      {
+        "path": "config/names/00c40000.jsonl",
+        "size": 69520,
+        "sha256": "8da4db0af4225c18d6801e8cb5d238a4991aedb166f9facc2ef6823742e250e4"
+      },
+      {
+        "path": "config/names/00c50000.jsonl",
+        "size": 53327,
+        "sha256": "c6c8478597e685c715c2c37884eed0cf988d3b89b41b4b6bb78cdaa9fd57aba2"
+      },
+      {
+        "path": "config/reconstruction/00c30000.jsonl",
+        "size": 97240,
+        "sha256": "661907242501ebc35fc64747b04f7438bbf2341038668df02ceb86493e70d064"
+      },
+      {
+        "path": "config/reconstruction/00c40000.jsonl",
+        "size": 96494,
+        "sha256": "5899102a13a5f08d17c9ff39e053b9bd149c5a92bedb3a7ce855bce5793621b6"
+      },
+      {
+        "path": "config/reconstruction/00c50000.jsonl",
+        "size": 72806,
+        "sha256": "537d56a72d63ccf9d29f3c3b398184e51d0a58010c2314138b0674071e20ed60"
+      },
+      {
+        "path": "docs/NATIVE_DYN_WORLD_STEP_R153.md",
+        "size": 6399,
+        "sha256": "8e63f5fae42ff1ac477f78ea1c98bc92032bc1c3ed71bb28e38bb4598d01c229"
+      },
+      {
+        "path": "include/bsp/allocator_list.hpp",
+        "size": 2192,
+        "sha256": "5344cbd4fe4ea86a4206c24f08e2407eea3055f03947f677c46b3a635d4f1570"
+      },
+      {
+        "path": "include/bsp/avoid_zone_dyn_hull.hpp",
+        "size": 3575,
+        "sha256": "c4b13f13e5cb94a4e1423c0c96aa725935615f92d2cb65a823c36572bf1f2c3a"
+      },
+      {
+        "path": "include/bsp/camera_frame_state.hpp",
+        "size": 8365,
+        "sha256": "3908727ef594797d30acfba72d87366683c61d7768e7cf3038f5a0164f7428df"
+      },
+      {
+        "path": "include/bsp/camera_projection.hpp",
+        "size": 2413,
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "path": "include/bsp/camera_transform.hpp",
+        "size": 7028,
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+      },
+      {
+        "path": "include/bsp/d3d9_buffers.hpp",
+        "size": 3262,
+        "sha256": "e8bc19c4630661b83969b53cac94134748f3c9af2a98002f1f2906ed93dedc83"
+      },
+      {
+        "path": "include/bsp/d3d9_startup.hpp",
+        "size": 1362,
+        "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843"
+      },
+      {
+        "path": "include/bsp/d3d9_states.hpp",
+        "size": 15076,
+        "sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288"
+      },
+      {
+        "path": "include/bsp/d3d9_vertex_layout.hpp",
+        "size": 1257,
+        "sha256": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef"
+      },
+      {
+        "path": "include/bsp/dyn_body_creation.hpp",
+        "size": 5100,
+        "sha256": "771890801179db08b6ec963a2145cb05c4346da8f79d402514770aae2210535b"
+      },
+      {
+        "path": "include/bsp/dyn_dispatch_initialization.hpp",
+        "size": 5957,
+        "sha256": "df9d5a97ebbf1f7ba5c51f3a022de2dfbb5ba145cb28200c56ccc72f2217ffb1"
+      },
+      {
+        "path": "include/bsp/dyn_engine_runtime.hpp",
+        "size": 2552,
+        "sha256": "059c3367a5d71532c076a29895b62394e1d88d71fa6cd828c5a540604359d82a"
+      },
+      {
+        "path": "include/bsp/dyn_profile_scopes.hpp",
+        "size": 1900,
+        "sha256": "b2c47f9188c30b96c8768f76aaaee28d64a1aff80355230bbd0fdc2622588773"
+      },
+      {
+        "path": "include/bsp/dyn_scene_runtime.hpp",
+        "size": 2890,
+        "sha256": "db87cad3d2b995ee64da4e0a4dfa3651d4b881b545a89d52c4c1501a0b141c7c"
+      },
+      {
+        "path": "include/bsp/dyn_task_manager.hpp",
+        "size": 2343,
+        "sha256": "3c6736d8c7ee289631f9fdebd02f9c0915688389ec29a782357183ee2f54c147"
+      },
+      {
+        "path": "include/bsp/dyn_world_factory.hpp",
+        "size": 1225,
+        "sha256": "4e32f788fd38fdf5acbef4a530c43b709c2e62e8017e428a58e0539d257c0b29"
+      },
+      {
+        "path": "include/bsp/dyn_world_runtime.hpp",
+        "size": 1331,
+        "sha256": "fe53091179272be0d15c1e69a80174d69f9c9e5199a5bc61329be0490ba18a19"
+      },
+      {
+        "path": "include/bsp/dyn_world_settings.hpp",
+        "size": 7233,
+        "sha256": "b00dde4b4a80912c7c255d9080d56213028f6723810499f3d54be157c1c34b33"
+      },
+      {
+        "path": "include/bsp/game_native_dyn_process.hpp",
+        "size": 2044,
+        "sha256": "0d17639abaa0e424c11dc5e0230b24566b06305493380ce4318cb1ec04a1ee5f"
+      },
+      {
+        "path": "include/bsp/game_native_mutable_crt_data.hpp",
+        "size": 3200,
+        "sha256": "0a22c29a9b5f876669f7e8c9f9b775822b40a789b225044484175110957429c1"
+      },
+      {
+        "path": "include/bsp/game_native_physical_pool.hpp",
+        "size": 2268,
+        "sha256": "9ca8763821cffb6cc6ab1c7a26411855b4466acff191db61d13fd54dce72a36e"
+      },
+      {
+        "path": "include/bsp/material_sort_metadata.hpp",
+        "size": 3332,
+        "sha256": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212"
+      },
+      {
+        "path": "include/bsp/native_dyn_collision_pass.hpp",
+        "size": 1841,
+        "sha256": "ff578a824f0ff6044a0231f2c3f24660bf682c96be9e2ebe78bbffcc28aca2c9"
+      },
+      {
+        "path": "include/bsp/native_dyn_contact_groups.hpp",
+        "size": 1767,
+        "sha256": "f14ea94e8510c26e446425dbe2dcd2b0fdf205b3798e179dc3219a70339e0b4a"
+      },
+      {
+        "path": "include/bsp/native_dyn_convex_pool.hpp",
+        "size": 2078,
+        "sha256": "6aaa39b83a437dbcdedd15c58cc9ab1e2491cc146217c484dda99c1f47d002d8"
+      },
+      {
+        "path": "include/bsp/native_dyn_convex_support.hpp",
+        "size": 2636,
+        "sha256": "6a6b3028657c8e8732e9d81b74172be60b78a565082cf102dfb8e48f0093160b"
+      },
+      {
+        "path": "include/bsp/native_dyn_general_convex.hpp",
+        "size": 2359,
+        "sha256": "671d4e1e49afe177c17329da705dd7445add240c4afc60eadac38b27c6e86306"
+      },
+      {
+        "path": "include/bsp/native_dyn_narrow_phase.hpp",
+        "size": 2879,
+        "sha256": "fa3f6390cadbb1e23954f58524215a0cd67fb69a5c9921f2cf95deff72a926db"
+      },
+      {
+        "path": "include/bsp/native_dyn_sap_lifetime.hpp",
+        "size": 3135,
+        "sha256": "371a1fd7b7f1fb8a089704fb25204453b6ac18862a4412b16a120ca62449ebc1"
+      },
+      {
+        "path": "include/bsp/native_dyn_sap_pairs.hpp",
+        "size": 2214,
+        "sha256": "e1fa4f280d2ec885f180c1aeb834b5ae268cf54cf0fd48bc846f8b11ee95e475"
+      },
+      {
+        "path": "include/bsp/native_dyn_sap_processing.hpp",
+        "size": 2969,
+        "sha256": "1886a950958a4859308d9e9b066ccc39df1724e129669ed7ef20bbb626b01c99"
+      },
+      {
+        "path": "include/bsp/native_dyn_shape_lifetime.hpp",
+        "size": 680,
+        "sha256": "9d03579c4046d19aa2cdc57e0bdee8c9536e59f138f6196e23ababa5a460e0e9"
+      },
+      {
+        "path": "include/bsp/native_dyn_solver_mode0.hpp",
+        "size": 2185,
+        "sha256": "8d5239d9619c28962c1fc6cb01309fffc37803c100ab9ca4f1e09d5750b5e8d3"
+      },
+      {
+        "path": "include/bsp/native_dyn_solver_mode1.hpp",
+        "size": 1879,
+        "sha256": "aeb6dba1a7a5c989f84f550f2600ab5623c4d82682fe1d7061483d5fbac5fade"
+      },
+      {
+        "path": "include/bsp/native_dyn_world_integration.hpp",
+        "size": 796,
+        "sha256": "8e9b00bc130b22f0e2f35fe9693ae6c1fbebc88714903193d004c48e4bb6e4c9"
+      },
+      {
+        "path": "include/bsp/native_dyn_world_step.hpp",
+        "size": 2032,
+        "sha256": "38d374b7daf95914c7e237e88f999af251e27f51013bd602e51d5266308e0912"
+      },
+      {
+        "path": "include/bsp/native_game_dynamics.hpp",
+        "size": 819,
+        "sha256": "a3e10519df0f4bb2327ee46713069f0aa761630ca1c633f438db09bb41668290"
+      },
+      {
+        "path": "include/bsp/native_game_physics_lifetime.hpp",
+        "size": 6288,
+        "sha256": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e"
+      },
+      {
+        "path": "include/bsp/native_legacy_sbo_string.hpp",
+        "size": 2115,
+        "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422"
+      },
+      {
+        "path": "include/bsp/random.hpp",
+        "size": 791,
+        "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+      },
+      {
+        "path": "include/bsp/random_threads.hpp",
+        "size": 1446,
+        "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+      },
+      {
+        "path": "include/bsp/rigid_body_integration.hpp",
+        "size": 8112,
+        "sha256": "07cb2142f73cb94cd0bd3d903f2482816cc7924be69247ae1ac1707e4df62f11"
+      },
+      {
+        "path": "include/bsp/ship_hull_body.hpp",
+        "size": 9286,
+        "sha256": "a9417d7dc66f6eeda4aee783cd87c3d403b91693a142d8d1c255ebe3ba2c9c0b"
+      },
+      {
+        "path": "include/bsp/ship_hull_shapes.hpp",
+        "size": 17222,
+        "sha256": "58a35e261aa87778c225ff550fea23218f24fc0c7f5982d87b50fc1ef7a9877a"
+      },
+      {
+        "path": "include/bsp/system_camera_axes.hpp",
+        "size": 3402,
+        "sha256": "abfa9300a54975dcdb7489f466d941b9341991af3f027ebb764a19cbb08124d5"
+      },
+      {
+        "path": "include/bsp/system_fog_constants.hpp",
+        "size": 1915,
+        "sha256": "9378d355dad5f5ee78ce8fa41cb6275f9e5b00e9bcbd07592f051c147a0d0663"
+      },
+      {
+        "path": "include/bsp/system_fog_slot.hpp",
+        "size": 1869,
+        "sha256": "778ddcf121dd7b693a2104c43ad8dd1224eb401e06ba4fb48e7aa18617d9b1fb"
+      },
+      {
+        "path": "include/bsp/vertex_declaration.hpp",
+        "size": 1462,
+        "sha256": "0f03c6a960da3547644b3e5bc8b5934a35fe26f42abc2746559a31f0af2452a0"
+      },
+      {
+        "path": "include/bsp/world_ocean.hpp",
+        "size": 8932,
+        "sha256": "00a1c385e2e46fe0a7372c4dec7d0f8039935823bc02e0a29982c93c5360429b"
+      },
+      {
+        "path": "local/annotate_game_tree_lifetime_r127.py",
+        "size": 7061,
+        "sha256": "02ed6b2c78c8a0bd3307b8db9b43a5a89b140c62e3b517b521ca82ed74d7b6cd"
+      },
+      {
+        "path": "local/audit_dyn_convex_simplex_r139.py",
+        "size": 4019,
+        "sha256": "a7d0822eefc9311f6b996cf813edd3de5c2d2ea494affb9820544495724cf268"
+      },
+      {
+        "path": "local/collect_game_grid_r120.py",
+        "size": 2437,
+        "sha256": "241fa70bf100af567e2ead281d715b1df175d6cc773e9c2087e731e37884cebd"
+      },
+      {
+        "path": "local/dyn_collision_pass_r152/audit.py",
+        "size": 7077,
+        "sha256": "e5f811c9b7ecbbef19a40dacf6712564ca97c8a036e121ac76edf3f19b0ae655"
+      },
+      {
+        "path": "local/dyn_collision_pass_r152/combined.py",
+        "size": 522,
+        "sha256": "4d365a7808d6476210378fca23f8bf535534efc59e485a0010edd52a409b9935"
+      },
+      {
+        "path": "local/dyn_collision_pass_r152/commit-msg.txt",
+        "size": 348,
+        "sha256": "acb1ce3c5483c6d67e920d9cc028f246c704a6fedf0bc605e0fc028fe0903fcc"
+      },
+      {
+        "path": "local/dyn_collision_pass_r152/commit.py",
+        "size": 2060,
+        "sha256": "796bf7ad6152fcf4de94a0a48b4690567a6e70851a331cac6777cee7f4d6f008"
+      },
+      {
+        "path": "local/dyn_collision_pass_r152/lifecycle/probe.cpp",
+        "size": 10628,
+        "sha256": "1f6541161eec70b7981bf915811cca223a009b766ae571bbb07fec0d7e46baba"
+      },
+      {
+        "path": "local/dyn_collision_pass_r152/run_lifecycle.ps1",
+        "size": 1825,
+        "sha256": "0b9ed82bd47ed7372a6a34e7b9f2c0dbb3983accd1c7cc7156c7d678c65bf52a"
+      },
+      {
+        "path": "local/dyn_collision_pass_r152/seal.py",
+        "size": 7250,
+        "sha256": "71cef9e1467af951a587030cd2592078dec72126339ac9568d6420f94a6b403f"
+      },
+      {
+        "path": "local/dyn_convex_simplex_r139/instruction-audit.json",
+        "size": 1426,
+        "sha256": "3dc42806280ff356bdc01b9f1d443179724835e81c14c13a3035c9fb7c4746a7"
+      },
+      {
+        "path": "local/dyn_convex_simplex_r139/native.json",
+        "size": 608856,
+        "sha256": "785280702e6656fbf0891402aa7079dd3370fa61299337ddda18751b02c6a64c"
+      },
+      {
+        "path": "local/dyn_world_step_r153/annotate-run.log",
+        "size": 78,
+        "sha256": "0c706294125b89fbe74034fb5b5a97a79d3e5b8c5d62c0009d10aa192196c2a3"
+      },
+      {
+        "path": "local/dyn_world_step_r153/annotate.py",
+        "size": 2099,
+        "sha256": "a81327c92c8c2d48d90f97ce342734c3314ebf7aa628dc5aa24390f958307fa7"
+      },
+      {
+        "path": "local/dyn_world_step_r153/annotations.log",
+        "size": 310,
+        "sha256": "97cbad36c0ad339df67c8e5190e83a24de79c83d321b20af7de4dce7f379f786"
+      },
+      {
+        "path": "local/dyn_world_step_r153/audit.py",
+        "size": 3299,
+        "sha256": "260167254dc0e3572a2eec847a249c91acbe2e0b29c9f85e218b5a35b1cc155f"
+      },
+      {
+        "path": "local/dyn_world_step_r153/build.log",
+        "size": 2584,
+        "sha256": "9b262b7e369b5c96655a3caa062f749075f9ac707e9930731bc046d8e160dafd"
+      },
+      {
+        "path": "local/dyn_world_step_r153/closeout.py",
+        "size": 2877,
+        "sha256": "d816b6201ab442e72ee77105bfc8249f95470f1ec47c4bd76c336328ad7bb09f"
+      },
+      {
+        "path": "local/dyn_world_step_r153/collect.py",
+        "size": 639,
+        "sha256": "8a12ef782fd3e5c358a85b4cb321c855463e63eaa3164bfd514ad73e2dd58bbd"
+      },
+      {
+        "path": "local/dyn_world_step_r153/combined.py",
+        "size": 518,
+        "sha256": "c98f37743def31bd4875e6f3a137108ed76e9e9dcf36ad70478262c0eefc8e3d"
+      },
+      {
+        "path": "local/dyn_world_step_r153/comments-after.json",
+        "size": 15487,
+        "sha256": "bbeac48dc4ee47b8ad0800423aa22e8edd417a58a7db5b2f8e8135131707f964"
+      },
+      {
+        "path": "local/dyn_world_step_r153/comments-after.log",
+        "size": 75,
+        "sha256": "45a0dd841b5e4bf4ccf8cf97eab2f7b8fe7d11943e41e1c3f145618d814b5159"
+      },
+      {
+        "path": "local/dyn_world_step_r153/commit.py",
+        "size": 2118,
+        "sha256": "431362b66aa0d179c197c5662250324ed5b0c7415a45514aaa536734940f6cee"
+      },
+      {
+        "path": "local/dyn_world_step_r153/compare/build.log",
+        "size": 11,
+        "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+      },
+      {
+        "path": "local/dyn_world_step_r153/compare/dependencies.json",
+        "size": 32242,
+        "sha256": "a89fab330750df5f9ff8fd3f483bd270209bee28294dbdce9bdcafb927d1904c"
+      },
+      {
+        "path": "local/dyn_world_step_r153/compare/dyn_world_step_compare_probe.exe",
+        "size": 88064,
+        "sha256": "22550a7d8ef6368ac3bea5c705f5375c90705b5720c14f454ec9f22e3ddbc0f6"
+      },
+      {
+        "path": "local/dyn_world_step_r153/compare/fixture-image.json",
+        "size": 30185,
+        "sha256": "b273738624ca2a2ded4eab3a26cd4ee0076ae784b9ccd7d3fd33752d9de192ea"
+      },
+      {
+        "path": "local/dyn_world_step_r153/compare/original-build.inc",
+        "size": 4386,
+        "sha256": "e4bb9200d536a67d92be97453af6972cb5bd19836085034de3f2d3b8fd9eb496"
+      },
+      {
+        "path": "local/dyn_world_step_r153/compare/original.bin",
+        "size": 64257888,
+        "sha256": "0d000fd2fc9f68360e52f71a8e65ec4d69d8a80140f63453dc728d6046fe3310"
+      },
+      {
+        "path": "local/dyn_world_step_r153/compare/original.inc",
+        "size": 14972,
+        "sha256": "b1a357d7d8801977d426f667f2403d504738230028c816641b4dffbb53cfe4a4"
+      },
+      {
+        "path": "local/dyn_world_step_r153/compare/probe.cpp",
+        "size": 16506,
+        "sha256": "6e871cc93d6607984355dd5e969aebb7ec9a809bc5a30afaf1f05c23fbf2788c"
+      },
+      {
+        "path": "local/dyn_world_step_r153/compare/probe.map",
+        "size": 153725,
+        "sha256": "46820144cd6d24ac3e29e1676fd82b7400678884c3872a8af9e2d6239c951b8b"
+      },
+      {
+        "path": "local/dyn_world_step_r153/compare/probe.obj",
+        "size": 189146,
+        "sha256": "70218023106ba94ec4def6e6291267ddd54b20e182ff4a6465055637b1ab86eb"
+      },
+      {
+        "path": "local/dyn_world_step_r153/compare/result.json",
+        "size": 193,
+        "sha256": "0d1ddb972c166ac930097b2e1d2c98b329e6ce323342a97de8b76726cc8acf28"
+      },
+      {
+        "path": "local/dyn_world_step_r153/compare/run.log",
+        "size": 275,
+        "sha256": "b32374a98e26a602dcfb294014b3b8408f6f5e47379766f0bfd8efe98b510726"
+      },
+      {
+        "path": "local/dyn_world_step_r153/compare/source.bin",
+        "size": 64257888,
+        "sha256": "0d000fd2fc9f68360e52f71a8e65ec4d69d8a80140f63453dc728d6046fe3310"
+      },
+      {
+        "path": "local/dyn_world_step_r153/decompile-00c321b0.txt",
+        "size": 1507,
+        "sha256": "f8ae8914798c531212959a06d9b694f68198dd52029ea2fc7832eb6c7ce518dc"
+      },
+      {
+        "path": "local/dyn_world_step_r153/decompile-00c4d980.txt",
+        "size": 2602,
+        "sha256": "f80c1842d0aab37e280fe416db6b87003197446a18f6e3d78a66aa9e6840c3e2"
+      },
+      {
+        "path": "local/dyn_world_step_r153/decompile-00c57020.txt",
+        "size": 1857,
+        "sha256": "e74ae4ae2cbdd2939d1d7c9846f9fa5265cc803fe7e7acfc84b20aa684f06d70"
+      },
+      {
+        "path": "local/dyn_world_step_r153/decompile-00c5bb30.txt",
+        "size": 15747,
+        "sha256": "8283cbb432e41bf95c4350fe4047dcd56d5dfd248d76ea37e2ceb49267fcad51"
+      },
+      {
+        "path": "local/dyn_world_step_r153/decompile-00c5c540.txt",
+        "size": 5505,
+        "sha256": "ebe2aeb1a70284f3c97e92ac6e97ec4f0259d062972f0bcfea4bae8aea064f5d"
+      },
+      {
+        "path": "local/dyn_world_step_r153/disasm-00c321b0.txt",
+        "size": 728,
+        "sha256": "d5aa57f900f2bd0300d927ce1efb20b05f0b44cec135a107768c3505641d79e4"
+      },
+      {
+        "path": "local/dyn_world_step_r153/disasm-00c4d980.txt",
+        "size": 2177,
+        "sha256": "f47ddfa50d91993310ee3ee885d09ef775a88fb40f0144ce2991a5da7041e295"
+      },
+      {
+        "path": "local/dyn_world_step_r153/disasm-00c57020.txt",
+        "size": 819,
+        "sha256": "ac558e5c2a02c690fa83b8731bad8ed46a8fd8dcf4a6a6d58582c8e97122cf2d"
+      },
+      {
+        "path": "local/dyn_world_step_r153/disasm-00c5bb30.txt",
+        "size": 25465,
+        "sha256": "8034bbfad4750a7483164dc22dfa7f0be1999ea6ac7ad8b0c28aeb68c0adce0a"
+      },
+      {
+        "path": "local/dyn_world_step_r153/disasm-00c5c540.txt",
+        "size": 4808,
+        "sha256": "db2ddac48c63035f8767435443051344998458e9824f77f6edf250187f955583"
+      },
+      {
+        "path": "local/dyn_world_step_r153/export-repaired.log",
+        "size": 125,
+        "sha256": "ca9afaf3b9395cf0c107bbf73ad605dd7cb3f7f81ecff74a338ef191f5aa4e27"
+      },
+      {
+        "path": "local/dyn_world_step_r153/exports-after.log",
+        "size": 477,
+        "sha256": "2fa5e11c9c0cd5e80308c5e11fe348d1bc83fef80db7ac6352c6c6320f5b4093"
+      },
+      {
+        "path": "local/dyn_world_step_r153/exports-before.log",
+        "size": 477,
+        "sha256": "2fa5e11c9c0cd5e80308c5e11fe348d1bc83fef80db7ac6352c6c6320f5b4093"
+      },
+      {
+        "path": "local/dyn_world_step_r153/flow-repairs.json",
+        "size": 1005,
+        "sha256": "0498507916e964421f3622618861a029724a6bcc5dfdbf61b044eed04b3d7b93"
+      },
+      {
+        "path": "local/dyn_world_step_r153/game-launch.log",
+        "size": 417,
+        "sha256": "7124c79afe27a1ab4fb942e5443a41d609af1bf8089a1249078c31587ec8c78a"
+      },
+      {
+        "path": "local/dyn_world_step_r153/index.log",
+        "size": 16,
+        "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+      },
+      {
+        "path": "local/dyn_world_step_r153/lifecycle/build.log",
+        "size": 11,
+        "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+      },
+      {
+        "path": "local/dyn_world_step_r153/lifecycle/dependencies.json",
+        "size": 34870,
+        "sha256": "138c6a9e7871fc09078da5e475f0ab9af3fe788aeea8875199ab97abcab356a8"
+      },
+      {
+        "path": "local/dyn_world_step_r153/lifecycle/dyn_world_step_lifecycle_probe.exe",
+        "size": 181248,
+        "sha256": "d014aadd4dbb3b8e3853dda2404cf00472e16543531f9d5ec5e0a5bd6195ac04"
+      },
+      {
+        "path": "local/dyn_world_step_r153/lifecycle/exit.json",
+        "size": 69,
+        "sha256": "f4b9633f6b255149418ef2614602b4f5d9f54632fd32c2f234d08cd49512937a"
+      },
+      {
+        "path": "local/dyn_world_step_r153/lifecycle/probe.cpp",
+        "size": 10671,
+        "sha256": "0117fd49a22722667fc6e38f4b525b06a176bc4ac19a6f032a30d25fba38eff4"
+      },
+      {
+        "path": "local/dyn_world_step_r153/lifecycle/probe.map",
+        "size": 189856,
+        "sha256": "e1544cf7ace68d0080550d997079f26babdc514ca19fda4bf452196ef7807e77"
+      },
+      {
+        "path": "local/dyn_world_step_r153/lifecycle/probe.obj",
+        "size": 130794,
+        "sha256": "0a7ddfd0b880b56d34a09d94d5fde847228df2df8b8a6dfbd70f4447c6316f63"
+      },
+      {
+        "path": "local/dyn_world_step_r153/lifecycle/result.json",
+        "size": 193,
+        "sha256": "14c7dc21118799d09dec45469dcf0b25315a4dc5267352693bf813c8e2115789"
+      },
+      {
+        "path": "local/dyn_world_step_r153/lifecycle/run.log",
+        "size": 454,
+        "sha256": "361948c5967ddf1e55bc449db97e7efcd5539433668fd96cde5a9ebc572dafde"
+      },
+      {
+        "path": "local/dyn_world_step_r153/native.json",
+        "size": 140609,
+        "sha256": "5624635872ca7b587fbbb710e4e588126bf6d1b5d9f9a45216ae7e31afb361d6"
+      },
+      {
+        "path": "local/dyn_world_step_r153/object-audit.json",
+        "size": 1468,
+        "sha256": "d85fdebf35d136735c489f5128be7bf598cbbe07df8ece3b00af1980de5e443f"
+      },
+      {
+        "path": "local/dyn_world_step_r153/prepare_lifecycle.py",
+        "size": 5017,
+        "sha256": "44c5681923293cdaac5c19926072ce68d2fc516ba4ef2b85cecc200eeda4ccc2"
+      },
+      {
+        "path": "local/dyn_world_step_r153/prepare_reference.py",
+        "size": 1518,
+        "sha256": "4f3f926ab82737267f8347a656c6da816eed282e28fa2c6859a17456ed1db941"
+      },
+      {
+        "path": "local/dyn_world_step_r153/proto-00c321b0.txt",
+        "size": 675,
+        "sha256": "7b575774a5bc3ae0b7d2b23ca081cba3f879e0a99a0f13aad52cf870d3db303b"
+      },
+      {
+        "path": "local/dyn_world_step_r153/proto-00c4d980.txt",
+        "size": 738,
+        "sha256": "8f82b4b1df23568150bf90ac357a90fbff33dfd18ef1cccb6fc04484ad2f86a1"
+      },
+      {
+        "path": "local/dyn_world_step_r153/proto-00c57020.txt",
+        "size": 688,
+        "sha256": "45d45d4579dce9fd1831387de5292521e2bd70bfbb4c873a0f21fa09b1e6f64d"
+      },
+      {
+        "path": "local/dyn_world_step_r153/proto-00c5bb30.txt",
+        "size": 740,
+        "sha256": "b68564b389df2c4271dc5e21669c4058b2dacd22a0dcaf8b84ef01446139b60f"
+      },
+      {
+        "path": "local/dyn_world_step_r153/proto-00c5c540.txt",
+        "size": 740,
+        "sha256": "52bbbc549a2cb405bfdd657dafbd80cd3c35d40b0b7280f2ccdf72b5bce052c5"
+      },
+      {
+        "path": "local/dyn_world_step_r153/record_combined.py",
+        "size": 1519,
+        "sha256": "475819db0b37ac2f30220252d80606cdfbeea7b8a79749258396a2000ee972d4"
+      },
+      {
+        "path": "local/dyn_world_step_r153/report.py",
+        "size": 6387,
+        "sha256": "d568b647d8e251433264e88f44139ff99f29b238c8dd95cbbb0263f4acba0ee5"
+      },
+      {
+        "path": "local/dyn_world_step_r153/run_compare.ps1",
+        "size": 1820,
+        "sha256": "7e7bc58553f76e84f7725afe7ac528410a67b9f2721619da9cd9d5fb573274e7"
+      },
+      {
+        "path": "local/dyn_world_step_r153/run_lifecycle.ps1",
+        "size": 1822,
+        "sha256": "d98747adefe48c2b20598b706e5d17ec7de930a92037a3f1f5edc582fa11cc46"
+      },
+      {
+        "path": "local/dyn_world_step_r153/seal.py",
+        "size": 7325,
+        "sha256": "fc8bcfc9c026fb80b932a3144db2f94d02844b570197d65ebee8cd14f6dc412b"
+      },
+      {
+        "path": "local/dyn_world_step_r153/snapshot.log",
+        "size": 230,
+        "sha256": "da46115953fdf5bd4c16b5d16885fabef6267f58afc10a35995803873cb30055"
+      },
+      {
+        "path": "local/dyn_world_step_r153/source-adaptations.json",
+        "size": 5655,
+        "sha256": "4385bbf51bdcf1a946e10ac56fa4abf345799ef07daca99da9353815eda4f2b9"
+      },
+      {
+        "path": "local/dyn_world_step_r153/toolchain.json",
+        "size": 422,
+        "sha256": "43d32216c13e293fd0e8604f8ce8c65c48166cc779068668a06f8b5314f32831"
+      },
+      {
+        "path": "local/dyn_world_step_r153/verify-calls.log",
+        "size": 129,
+        "sha256": "3781400da59ea7b836aca7e4c123fc244e450a2b42c1c182b71a6fa5b490c8ed"
+      },
+      {
+        "path": "local/dyn_world_step_r153/write_source.py",
+        "size": 11564,
+        "sha256": "84765db07ab67f003e8328a5e29d540118b3b4e2549e5dd6ce1974d834ef82ff"
+      },
+      {
+        "path": "local/ghidra-annotations-20260918T161751Z.json",
+        "size": 15868,
+        "sha256": "ce2bd0e7749d737f6132aec8648968631cf37e4f18304d65353c593e8ebcd7d5"
+      },
+      {
+        "path": "local/prepare_dyn_solver_mode1_r147.py",
+        "size": 4696,
+        "sha256": "64504d9c0f044f9cb3407c7df8e43e97d12cd4c201b4f5dd7d4116d82e1501cd"
+      },
+      {
+        "path": "local/run_dyn_solver_mode0_r146.ps1",
+        "size": 1673,
+        "sha256": "153b74af00f100eeefe50737e6ed7a6baaf3c0e83e921175d84324cd69e22938"
+      },
+      {
+        "path": "local/run_dyn_solver_mode1_r147.ps1",
+        "size": 1673,
+        "sha256": "1ddba6130d48009401dcf5eb157b330cbfeec94cd84cac67db111dacaf6e4f0e"
+      },
+      {
+        "path": "reports/native_dyn_world_step_r153.json",
+        "size": 50015,
+        "sha256": "c8a57bc005a8ade781cd057c47f0ad49e5533b32000ea5f125a3645792262547"
+      },
+      {
+        "path": "src/allocator_list.cpp",
+        "size": 2682,
+        "sha256": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732"
+      },
+      {
+        "path": "src/dyn_body_creation.cpp",
+        "size": 15270,
+        "sha256": "e915e3325ceca411c14df2424129c7e82bebf6bc272921205e62d43744d4c93c"
+      },
+      {
+        "path": "src/dyn_dispatch_initialization.cpp",
+        "size": 9215,
+        "sha256": "05da4f7bfe26403fdcd8f82c4e14d4122b414971f8a7933eba42b7068f6e0d85"
+      },
+      {
+        "path": "src/dyn_engine_runtime.cpp",
+        "size": 3427,
+        "sha256": "7b2608638c893d8135993072ed01ae1e8fbdd0070db8fc31242e227d0ace8360"
+      },
+      {
+        "path": "src/dyn_profile_scopes.cpp",
+        "size": 4110,
+        "sha256": "302f51bd0274fcbd04947bec1bf789e2fc4a6014cc40bceefc1b601770ceea37"
+      },
+      {
+        "path": "src/dyn_scene_runtime.cpp",
+        "size": 4583,
+        "sha256": "6efa488d22e05beb310164dd2633e102caab5b07c4ba96b6c7030333beeec32a"
+      },
+      {
+        "path": "src/dyn_task_manager.cpp",
+        "size": 6748,
+        "sha256": "0160749d351494d2ac34a08a0c4d98322a6a4aa54ab5db8c35e23931591d75d0"
+      },
+      {
+        "path": "src/dyn_world_factory.cpp",
+        "size": 1851,
+        "sha256": "e9e38479cca106aaf0726f19ab47916a0d7ce69844fdf7d8df2de3ab3b07e9d4"
+      },
+      {
+        "path": "src/dyn_world_runtime.cpp",
+        "size": 7042,
+        "sha256": "e4ab60cdd8ed206c82c77eaf44f383de90f868826388d11fb5ea5ca6d97c8399"
+      },
+      {
+        "path": "src/game_main.cpp",
+        "size": 29655,
+        "sha256": "7a551d90d5a65e3ce7a2418f77a8caea0a98cc4554b0c1139f90467f9495a774"
+      },
+      {
+        "path": "src/game_native_dyn_process.cpp",
+        "size": 7474,
+        "sha256": "0905a24162473ffdb97fe26d0d44c137fd033c7ae6a3490b49f9309efd19cce1"
+      },
+      {
+        "path": "src/game_native_mutable_crt_data.cpp",
+        "size": 10114,
+        "sha256": "d9dabf905fd4acf195f72c14e9ae2c7ef457514f4ff6227efffdcbb1f24a0c39"
+      },
+      {
+        "path": "src/game_native_physical_pool.cpp",
+        "size": 1851,
+        "sha256": "2dde8e71367ee7b689f7ae620f62f545f0811dcf40979896cee990e97b323e7c"
+      },
+      {
+        "path": "src/native_dyn_collision_pass.cpp",
+        "size": 57487,
+        "sha256": "5b2b65400bf1b4272bc8f88122e2ff8e7d3522bba15c8d3837def871ca7937ed"
+      },
+      {
+        "path": "src/native_dyn_contact_groups.cpp",
+        "size": 7272,
+        "sha256": "90586c1f1328acda67452b55ea26e9a8176f2c7abfb00cae9d16da0eaf67c9d6"
+      },
+      {
+        "path": "src/native_dyn_convex_pool.cpp",
+        "size": 4336,
+        "sha256": "792bb43268b3b853de7c5b31bdff5f197ef2acc0877b29a13bc4d75f24872d21"
+      },
+      {
+        "path": "src/native_dyn_convex_support.cpp",
+        "size": 17894,
+        "sha256": "a2884a94389396afecaef01b8cd914eb22ae04c8e4ed5bc9ce9b37a3d0fdb239"
+      },
+      {
+        "path": "src/native_dyn_general_convex.cpp",
+        "size": 96695,
+        "sha256": "0042c2fe7ab8c30dfd42e499482d0b55112e3d473d006bd69a43eb18b390b8aa"
+      },
+      {
+        "path": "src/native_dyn_narrow_phase.cpp",
+        "size": 60634,
+        "sha256": "f90fcac23fad20f5a51838d2a5c2a4e222d6822b9940d60167d9ee6827f71bcd"
+      },
+      {
+        "path": "src/native_dyn_sap_lifetime.cpp",
+        "size": 6697,
+        "sha256": "89c8be58800b2a6e738fc8e626c7169de57fc11ae3b7676563e4bc19d8d7142b"
+      },
+      {
+        "path": "src/native_dyn_sap_pairs.cpp",
+        "size": 5475,
+        "sha256": "188abb72f9c3e9002b04f8cd32a60c819163dc393957e7e1cf105f033f4d51b3"
+      },
+      {
+        "path": "src/native_dyn_sap_processing.cpp",
+        "size": 60174,
+        "sha256": "138837a1b076b45f181349185735c88bc030f0982817d2c70c9963eb3774250e"
+      },
+      {
+        "path": "src/native_dyn_shape_lifetime.cpp",
+        "size": 452,
+        "sha256": "7889e45f9e9687f25a9e1f07bb2fe77e080bfb8a636819402c3cbb1f7e01649a"
+      },
+      {
+        "path": "src/native_dyn_solver_mode0.cpp",
+        "size": 118196,
+        "sha256": "406975536d11f9cc50c4005b7e5553f54563f61a579a1309ba76586d1b6ed7f0"
+      },
+      {
+        "path": "src/native_dyn_solver_mode1.cpp",
+        "size": 124426,
+        "sha256": "e550ec3ad60900860eaa567275d590720c1595186e2f07abc5c4f3b22448c2a9"
+      },
+      {
+        "path": "src/native_dyn_world_integration.cpp",
+        "size": 50776,
+        "sha256": "14f0ec6d72904519fc63dd94783fe835ef1249befeb1b878a80664d34a7f4d17"
+      },
+      {
+        "path": "src/native_dyn_world_step.cpp",
+        "size": 60362,
+        "sha256": "e43ba1c5b371e2e5c9de145da44b1ab6f03fa529836dc05f9feb560fc8c4b59c"
+      },
+      {
+        "path": "src/native_game_physics_lifetime.cpp",
+        "size": 13632,
+        "sha256": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4"
+      },
+      {
+        "path": "src/native_legacy_sbo_string.cpp",
+        "size": 7772,
+        "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c"
+      },
+      {
+        "path": "src/ship_hull_body.cpp",
+        "size": 7531,
+        "sha256": "28ad789e2934098d0f99e16527bdfd4bdd6fc4be530507b231a8c7612b933972"
+      },
+      {
+        "path": "src/ship_hull_shapes.cpp",
+        "size": 11041,
+        "sha256": "9df8074293753287b9b6f40fac113ac7f8c39daf8b9ab0e063643738c57eee79"
+      },
+      {
+        "path": "src/system_camera_axes.cpp",
+        "size": 15864,
+        "sha256": "2682460d77fd18e19909c946ddd58ed60e63234e441c2f5badafc2c2815f0415"
+      }
+    ],
+    "scope": "3321B complete raw world simulation/substep/pendingflush/profilerreset;3460live/PEbytes;990instructions/53branches/25adapters audited.576native/sourcepairs,64257888bytes;actual process4simulations/4substeps/bothsolvers/reports/pendingremovals/fullphysics/poolatexit.25COFFobjects.Normal source interfaces;gamefixedstepadmission/rendering/gameplay open."
+  }
+}
