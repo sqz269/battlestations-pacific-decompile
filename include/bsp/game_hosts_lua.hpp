@@ -134,6 +134,11 @@ struct GameVehicleClassRow {
     float glide_rate{0.0f};           // desc+208h GlideRate, 007D2B10
     float drag_pitch_ratio{0.0f};     // desc+1D4h DragPitchRatio, 007D2829
     float air_brake_drag{0.0f};       // desc+1DCh AirBrakeDrag, 007D226D
+    // desc+1F0h DropAngle, the gain AND the cap of 009FB800's dive arm. Its
+    // climb twin desc+1ECh has no key in any shipped row, which is why an AI
+    // plane dives toward a lower commanded altitude but never climbs toward a
+    // higher one through that routine (docs/PLANE_FLIGHT.md, "009FB800").
+    float drop_angle{0.0f};
 };
 
 // Actual selected class+570 bits and the existing producer's provenance.

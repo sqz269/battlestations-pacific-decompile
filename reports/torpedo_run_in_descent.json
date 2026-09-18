@@ -1,0 +1,181 @@
+{
+ "packet": "cc8_torpedo_run_in_descent",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/TORPEDO_RUN_IN_DESCENT.md",
+ "tree_base": "5407abbbb",
+ "question": "Where does the native command the torpedo run-in altitude, and why do this host's aircraft hold 800 m when the release gate wants 25 to 40?",
+ "answer": "Step 4 of the attackrun tick 009D07B0 - altitude approach+78h + approach+74h through 009FBA50 - is the only descent command in the whole torpedo chain. 009FBA50 clamps against Dynamics/Ceiling - 50 and calls 009FB800(clamped, unclamped); 009FB800 writes cmd+2BCh and cmd+2D0h = 2, with a dive arm gated and capped by desc+1F0h DropAngle against a DEG(60) floor and a climb arm that commands nothing because desc+1ECh has no producer in any shipped row. This host ran the state machine's per-state tick (009D48F6) for the aim state ONLY, so the attackrun tick never ran and no aircraft was ever told to descend; the binding command_altitude_and_throttle that attack_run_tick already calls was also an empty override. Both are fixed. USN01 goes from 0 torpedo drops to 5 with the rest of the mission unchanged to the tenth of a damage point. Still no swim: the aircraft overshoot the commanded 12 m to -400 m and release at -230 m, below the surface, because the climb arm commands nothing and this host has no ctl+FCh water arm to catch a plane at the surface.",
+ "coverage": "complete for 009FBA50 and 009FB800 including the argument order at the join; PARTIAL for 009D07B0, of whose five steps only step 4's altitude half is run.",
+ "calls": [
+  {
+   "address": "009fbb13",
+   "native": "009fb800",
+   "function": "009fba50",
+   "what": "the join: 009FBB06 stores the UNCLAMPED altitude as the second argument and 009FBB0C the clamped one as the first, checked against the push order"
+  }
+ ],
+ "named_routines": [
+  {
+   "native": "009fba50",
+   "name": "BSP_PilotBot_CommandCruiseAltitude",
+   "abi": "float __thiscall(this, float base, float rangeLow, float rangeHigh, float scale), RET 10h, body 009FBA50-009FBB1C",
+   "coverage": "complete",
+   "what": "span = max(rangeHigh - rangeLow, 0); ceilingLimit = Dynamics/Ceiling - 50 [00CE3938], min'd with squadron+394h when there is a squadron; base += span * scale * class+518h when span > 0; then 009FB800(min(base, ceilingLimit), base). The attackrun tick passes rangeLow = rangeHigh = 0, so the gain term is unreachable on this path."
+  },
+  {
+   "native": "009fb800",
+   "name": "BSP_PilotBot_CommandPitchFromAltitude",
+   "abi": "void __thiscall(this, float desiredAltitude, float reference), RET 8, body 009FB800-009FBA4F",
+   "coverage": "complete",
+   "what": "err = min(desired, Ceiling - 50) - unit+100h at 009FB849; x = err * ((reference + 1) * 0.5) at 009FB858. Climb (x > 0): min(class+1ECh * clamp(x/ClimbDist, 0, reference), max(class+1ECh * 1.6, DEG(40) [00CE7D20])). Dive: -min(class+1F0h DropAngle * clamp(-x/DropDist, 0, reference), max(DropAngle * 1.6, DEG(60) [00D05AAC])). Writes cmd+2BCh and cmd+2D0h = 2 on every path. class+1ECh has no producer in any shipped row, so the climb arm commands exactly zero - confirmed at run time, an aircraft below its commanded altitude gets 0.0000 and never recovers."
+  }
+ ],
+ "no_ghidra_function": [],
+ "host_methods": [
+  {
+   "host": "the kAttackRun branch of the state tick dispatch",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "binding, PARTIAL",
+   "note": "009D48F6 runs the current state's tick; this host ran aim only. Step 4's altitude half only; steps 1, 2, 3, 5 and step 4's throttle are not run."
+  },
+  {
+   "host": "command_altitude_and_throttle",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "binding",
+   "note": "was an empty override; now drives cruise_altitude_command_009fba50 then pitch_command_009fb800 into plan_state.pitch_target_2bc"
+  },
+  {
+   "host": "DropAngle row key",
+   "file": "src/game_hosts_lua.cpp",
+   "kind": "binding",
+   "note": "desc+1F0h, writer 007D2B93 per src/plane_class_fields.cpp:144"
+  },
+  {
+   "host": "descent census",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "census"
+  }
+ ],
+ "authored_rows": [
+  {
+   "file": "scripts/datatables/autoload/vehicleclasses.lua",
+   "row": "VehicleClass[112] TBD Devastator",
+   "values": {
+    "DropAngle": 0.610865
+   }
+  },
+  {
+   "file": "run-time census, the USN01 Mav class",
+   "row": "Mav",
+   "values": {
+    "DropAngle": 0.4014
+   }
+  },
+  {
+   "file": "scripts/datatables/planeglobals.lua",
+   "row": "Pilot/General",
+   "values": {
+    "ClimbDist": 130,
+    "DropDist": 200
+   }
+  }
+ ],
+ "contracts": [
+  "class+518h (009FBA50's per-class gain) and squadron+394h are unmodelled; neither is reachable on this path because the attackrun tick passes span = 0 and no aircraft here has a squadron.",
+  "cmd+2D0h = 2 is written but not acted on: 0099DCE0's mode-2 arm holds unit+C84h, which this host does not model.",
+  "Steps 1, 2, 3 and 5 of 009D07B0 and step 4's throttle half are not run.",
+  "ctl+FCh's ground arm 007DBEAA-007DC204 and water arm 007DC205-007DC68C do not exist in this host; free_flight_gate_00d06130_38 answers true for every plane forever."
+ ],
+ "corrections": [
+  {
+   "target": "docs/BOT_TASK_STATES.md, 'The torpedo run'",
+   "was": "step 4 recorded without saying what it is for",
+   "is": "step 4's altitude is the ONLY descent command in the torpedo chain, and the 009FB800 argument order at 009FBB03-009FBB13 is (clamped, unclamped)",
+   "evidence": "009FBB06, 009FBB0C, 009FBB13; 009D1EDD and 009D20B4 for the aim state's half",
+   "status": "appended and verified present"
+  },
+  {
+   "target": "docs/PLANE_FLIGHT.md, '009FBA50' and '009FB800'",
+   "was": "both rules recorded; the climb arm's zero gain argued from a .text scan",
+   "is": "both bound and measured; the zero climb gain confirmed at run time, an aircraft below its commanded altitude gets 0.0000 and holds -400.6 m for the rest of the mission",
+   "evidence": "the descent census in local/usn01_desc_after.log",
+   "status": "appended and verified present"
+  }
+ ],
+ "validation": {
+  "runner": "tools/run_game.ps1, 3200 frames, --mission-frames 3000 at 0.05 s, from this worktree at 5407abbbb. The before column is the same source with the kAttackRun branch switched off by a temporary compile-time constant, removed before the commit. These baselines are NOT comparable with the previous packet's: the merge of main brought other workers' changes that moved USN01 from 1 hit and 9.3 damage to 68 and 660.0 before anything here ran.",
+  "runs": [
+   {
+    "mission": "USN01",
+    "phase": "before",
+    "log": "local/usn01_desc_before.log",
+    "torpedo_drops": 0,
+    "torpedo_task_releases": 0,
+    "water_entry_breakups": 0,
+    "swims_started": 0,
+    "torpedo_hits": 0,
+    "torpedo_damage": 0.0,
+    "commanded_run_in_altitude": null,
+    "mission_hits": 68,
+    "kills": 3,
+    "mission_damage": 660.0,
+    "pilot_range_last_mean_m": 3011.3,
+    "pilot_closed_mean_m": 1105.6,
+    "distance_moved_m": 195346.85,
+    "pose_rotations": 26586
+   },
+   {
+    "mission": "USN01",
+    "phase": "after",
+    "log": "local/usn01_desc_after.log",
+    "torpedo_drops": 5,
+    "torpedo_task_releases": 5,
+    "water_entry_breakups": 0,
+    "swims_started": 0,
+    "torpedo_hits": 0,
+    "torpedo_damage": 0.0,
+    "commanded_run_in_altitude_m": 12.0,
+    "altitude_pair": {
+     "alt_floor_74": 0.0,
+     "alt_margin_78": 12.0
+    },
+    "pitch_demand_rad": -1.0472,
+    "release_altitude_m": -230.3,
+    "release_airspeed_mps": 55.68,
+    "release_angle_to_nose_deg": 0.1,
+    "max_water_hit_vel": 100.0,
+    "entry_speed_if_released_at_12m_mps": 57.8,
+    "mav3_descent_trace_alt_m": [
+     800.0,
+     686.6,
+     194.0,
+     -320.2,
+     -400.5,
+     -400.6
+    ],
+    "mission_hits": 68,
+    "kills": 3,
+    "mission_damage": 660.0,
+    "pilot_range_last_mean_m": 2804.2,
+    "pilot_closed_mean_m": 1312.7,
+    "distance_moved_m": 202514.89,
+    "pose_rotations": 26633
+   },
+   {
+    "mission": "USN02",
+    "phase": "after",
+    "log": "local/usn02_desc_after.log",
+    "mission_hits": 168,
+    "kills": 3,
+    "mission_damage": 20721.4,
+    "first_hit_s": 31.8,
+    "swims_started": 44,
+    "plane_distance_moved_m": 0.0,
+    "pose_rotations": 0,
+    "descent_census_lines": 0
+   }
+  ],
+  "attribution": "The descent is the whole change: USN01 goes from 0 torpedo drops to 5 while the mission's hits, kills and damage are identical to the tenth (68 / 3 / 660.0). The ordered aircraft close 207 m more because five of them now fly a real attack run. USN02 executed the new branch ZERO times - its log contains no descent census line and its own summary says no ordered aircraft carries torpedo ordnance - so identity there is established directly rather than by a second run; its difference from the previous packet's 161 hits is the merge of main.",
+  "no_swim_next_gate": "ctl+FCh and the water arm 007DC205-007DC68C, with the ground arm 007DBEAA-007DC204. The aircraft overshoots the commanded 12 m to -400 m and releases at -230 m, below the surface, so the round never crosses the water downward. Two image behaviours this host lacks combine: 009FB800's climb arm commands exactly zero because desc+1ECh has no producer, so nothing lifts an aircraft back to its commanded altitude, and free_flight_gate_00d06130_38 answers true forever so no plane ever leaves free flight for a contact arm. At the commanded 12 m the measured 55.68 m/s release would enter at 57.8 m/s against a 100.0 limit and the torpedo would swim. No ad-hoc altitude clamp was added, because the image does not have one."
+ }
+}

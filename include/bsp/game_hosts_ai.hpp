@@ -112,6 +112,14 @@ struct GameAiSummary {
     unsigned long long commands_issued{0};
     unsigned long long commands_refused{0};
     unsigned long long units_with_task{0};      // distinct units that got one
+    // The plane squadron layer. docs/PLANE_SQUADRON_ENTITY.md.
+    unsigned long long squadrons_built{0};        // 004F0AD0 + 007F4580 mode 1
+    unsigned long long squadron_members{0};       // planes in a +3D0h array
+    unsigned long long squadron_group_members{0}; // squadrons a group holds
+    unsigned long long squadron_excluded{0};      // 007EDA90 answered true
+    unsigned long long squadron_commands{0};      // a command landed on one
+    unsigned long long squadron_member_orders{0}; // 007ECF80 reached a plane
+    unsigned long long orders_suppressed{0};      // a duplicate re-issue
     float first_command_seconds{-1.0f};
 };
 

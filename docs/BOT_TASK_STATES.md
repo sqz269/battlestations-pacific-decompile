@@ -475,3 +475,26 @@ BOMBPLATFORM guns in USN01 take 234327 aim ticks and 0 assignments.
 Aerial ordnance therefore has exactly one producer, and it is the chain this section describes:
 `007BBBA0` -> `unit+C20h` -> `007CEA82` -> `007C0D90` -> `007EEF30` -> `007BCBE0` -> `unit+C58h`,
 spent at `0099AFB6`. Full evidence: `docs/TORPEDO_GUN_ASSIGNMENT.md`.
+
+
+## Correction from packet `cc8_torpedo_run_in_descent`: step 4 is the only descent in the chain
+
+Appended, not rewriting the table above.
+
+"The torpedo run"'s step 4 for `009D07B0` - *altitude `approach->+78h + approach->+74h` through
+`009FBA50`* - is confirmed against the listing and is now bound and measured. Two things this doc
+did not say, and both matter to anyone wiring the torpedo chain:
+
+* **It is the only command in the whole torpedo chain that brings an aircraft down.** The `aim`
+  state's own `plan+2BCh` (`009D1EDD`) is a nose-up floor and a pull-up, never a descent
+  (`docs/PLANE_POSE_THROTTLE_ALTITUDE.md` section 4), and `009D20B4`'s release gate lies between 25
+  and 40 m. So a host that runs the `aim` tick but not the `attackrun` tick has an aircraft that can
+  never reach the altitude its own release gate demands. That was this reconstruction until now.
+* **The argument order into `009FB800`**, checked against the push order at
+  `009FBB03`-`009FBB13`: `009FBB06 FSTP [ESP+4]` takes the x87 value that survives the clamp, which
+  is the **unclamped** altitude, and `009FBB0C FLD [ESP+0x14]` reads the clamped one into `[ESP]`.
+  So the call is `009FB800(clamped, unclamped)`, and the second argument is used twice inside it -
+  as the weight `(reference + 1) * 0.5` and as the upper clamp on `t`.
+
+Measured: with step 4's altitude half bound, USN01 goes from 0 torpedo drops to 5, with the rest of
+the mission unchanged to the tenth of a damage point. `docs/TORPEDO_RUN_IN_DESCENT.md`.

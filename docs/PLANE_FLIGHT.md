@@ -498,3 +498,25 @@ taken from the disk bytes; the next referenced entry point begins at `007C6760`,
 - **Was:** line 79: +FCh is a mode dword, zeroed each step and tested == 1
   **Is:** it is not zeroed each step; each of the three laws writes its own value (0, 1, 2) and it is read six ways, including a four-way dispatch in 007DA380 and a three-way dispatch in the core law
   **Evidence:** writers 007DC841, 007DCD24, 007DCDDC; readers 007DA38D, 007DA8D9, 007DB6D1, 007DBE0E, 007DA211; the disp32 FCh scan over 007D7000-007DE000 returns eleven references and no others
+
+
+## Correction from packet `cc8_torpedo_run_in_descent`: both altitude commands bound and measured
+
+Appended, not rewriting the sections above.
+
+"`009FBA50`, the cruising-altitude command" and "`009FB800`, the pitch command from an altitude
+error" are confirmed against the listing and are now bound in `src/game_hosts_units.cpp`, driven by
+step 4 of the torpedo attackrun tick `009D07B0`.
+
+The argument order at the join is checked against the push order rather than the decompiler:
+`009FBB06 FSTP [ESP+4]` stores the value that survived the ceiling clamp, the **unclamped**
+altitude, and `009FBB0C FLD [ESP+0x14]` reads the clamped one into `[ESP]`. `009FB800(clamped,
+unclamped)`, as this doc's step 6 says.
+
+**The claim that the climb arm commands nothing is confirmed at run time.** With `class+1ECh` zero
+for every shipped row, an aircraft that has descended past its commanded altitude gets a pitch
+demand of exactly `0.0000` and levels off wherever it happens to be. Measured: a `Mav` commanded to
+12 m from 800 m dives at the `DEG(60)` floor, overshoots to -400 m, and holds -400.6 m for the rest
+of the mission. Nothing in this routine can lift it back, and in the image an aircraft at the water
+would have left free flight for the `ctl+FCh` water arm `007DC205`-`007DC68C`, which this host does
+not have. `docs/TORPEDO_RUN_IN_DESCENT.md`.

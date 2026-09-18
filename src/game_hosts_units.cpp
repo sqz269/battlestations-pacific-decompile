@@ -429,6 +429,7 @@ struct GameUnitSlot {
     float torpedo_range_last{0.0f};
     float torpedo_aim_heading_last{0.0f};
     float torpedo_aim_throttle_last{0.0f};
+    int torpedo_attackrun_altitude_commands{0};
     // 009D236E, the aim-complete byte state+2Ch, and the clause values on the
     // tick it first went true. docs/TORPEDO_AIM_TICK.md.
     bool torpedo_aim_complete_2c{false};
@@ -505,6 +506,12 @@ struct GameUnitSlot {
     float plane_glide_rate{0.0f};
     float plane_drag_pitch_ratio{0.0f};
     float plane_air_brake_drag{0.0f};
+    // desc+1F0h DropAngle, 009FB800's dive gain and cap.
+    float plane_drop_angle{0.0f};
+    // The altitude 009FBA50 was last commanded with, and the pitch 009FB800
+    // answered, kept for the census only.
+    float plane_commanded_altitude{-1.0f};
+    float plane_commanded_pitch{0.0f};
     // unit+0BBCh and unit+0BB0h+10h, the latched throttle and air brake. The
     // latch 007B9783 copies the whole live block, not just the three stick
     // axes, and both of these are drag or thrust inputs.
@@ -1843,6 +1850,7 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             slot->plane_glide_rate = lua_row.glide_rate;
             slot->plane_drag_pitch_ratio = lua_row.drag_pitch_ratio;
             slot->plane_air_brake_drag = lua_row.air_brake_drag;
+            slot->plane_drop_angle = lua_row.drop_angle;
             // The spawn airspeed. docs/PLANE_FLIGHT_CORE_LAW.md measures the
             // seed at 141.67 m/s, and the acceptance test in tests/math_tests.cpp
             // pins lift against gravity at exactly that value and at
@@ -3174,8 +3182,59 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             while (v < 0.0f) v += two_pi;
                             return v;
                         }
-                        void command_altitude_and_throttle(void*, float, float, float,
-                                                           float) override {}
+                        void command_altitude_and_throttle(void*, float base,
+                                                           float range_low,
+                                                           float range_high,
+                                                           float) override {
+                            // 009FBA50 then 009FB800, the chain step 4 of the
+                            // attackrun tick 009D07B0 runs. 009FBA50 biases the
+                            // base by span * scale * class+518h only when
+                            // span = max(range_high - range_low, 0) is positive,
+                            // clamps against Dynamics/Ceiling - 50, and hands
+                            // 009FB800 the CLAMPED altitude as its first
+                            // argument and the UNCLAMPED one as its second.
+                            // 009FB800 then writes cmd+2BCh and cmd+2D0h = 2.
+                            // docs/PLANE_FLIGHT.md and
+                            // docs/TORPEDO_RUN_IN_DESCENT.md.
+                            bsp::PlaneCruiseAltitudeInputs cin;
+                            cin.base_altitude = base;
+                            cin.range_low = range_low;
+                            cin.range_high = range_high;
+                            // The squadron altitude limit squadron+394h and the
+                            // per-class gain class+518h are unmodelled; with
+                            // span at zero the gain is unreachable anyway.
+                            cin.has_squadron = false;
+                            if (owner_.lua.plane_globals_loaded()) {
+                                cin.ceiling = owner_.lua.plane_globals().dynamics_ceiling;
+                            }
+                            const bsp::PlaneCruiseAltitudeResult c =
+                                bsp::cruise_altitude_command_009fba50(cin);
+                            bsp::PlanePitchCommandInputs pin;
+                            pin.desired_altitude = c.clamped_altitude;
+                            pin.reference = c.unclamped_altitude;   // 009FBB03
+                            pin.unit_world_y = slot_.motion.position[1];
+                            pin.ceiling = cin.ceiling;
+                            if (owner_.lua.plane_globals_loaded()) {
+                                const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                                pin.climb_dist = g.pilot_general_climb_dist;
+                                pin.drop_dist = g.pilot_general_drop_dist;
+                            }
+                            // class+1ECh has no producer in any shipped row, so
+                            // the climb arm commands nothing and only the dive
+                            // arm can move an aircraft. That is the image's own
+                            // behaviour, not a host gap.
+                            pin.class_climb_angle = 0.0f;
+                            pin.class_drop_angle = slot_.plane_drop_angle;
+                            const float demand = bsp::pitch_command_009fb800(pin);
+                            slot_.plane_commanded_altitude = c.clamped_altitude;
+                            slot_.plane_commanded_pitch = demand;
+                            // cmd+2BCh and cmd+2D0h = 2. The mode is recorded
+                            // but not acted on: 0099DCE0's mode-2 arm holds
+                            // unit+C84h, which this host does not model, so the
+                            // demand reaches the planner as a plain target.
+                            slot_.plan_state.pitch_target_2bc = demand;
+                            record("BotApproach::command_altitude", "009fba50");
+                        }
                         void write_command_word(void*, int, int) override {}
                         void write_command_byte(void*, int, unsigned char) override {}
                         void write_command_float(void*, int, float) override {}
@@ -3600,6 +3659,46 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // sector scan chose. docs/TORPEDO_APPROACH_UPDATE.md.
                         if (ctx.current == bsp::TorpedoState::kAim) {
                             run_torpedo_aim_tick_009d15f0(dt);
+                        } else if (ctx.current == bsp::TorpedoState::kAttackRun) {
+                            // Step 4 of the attackrun tick 009D07B0, the half
+                            // that commands the altitude: "altitude
+                            // approach->+78h + approach->+74h through 009FBA50"
+                            // (docs/BOT_TASK_STATES.md, "The torpedo run").
+                            // This is the ONLY descent command in the whole
+                            // torpedo chain - the aim tick's own plan+2BCh is a
+                            // nose-up floor (docs/PLANE_POSE_THROTTLE_ALTITUDE.md
+                            // section 4) - and this host ran no state tick but
+                            // aim, so no aircraft was ever told to come down.
+                            //
+                            // PARTIAL, labelled: only step 4's altitude. Steps
+                            // 1, 2 and 3 keep a per-state countdown, period and
+                            // lateral offset at state+18h/+1Ch/+20h that this
+                            // host does not carry, and step 4's throttle half
+                            // and step 5's four command bits are not run. The
+                            // heading those steps would write is the same raw
+                            // bearing the yaw arm already uses here.
+                            const bsp::TorpedoApproachState& ap =
+                                unit_.torpedo_approach;
+                            binding.command_altitude_and_throttle(
+                                nullptr, ap.alt_margin_78 + ap.alt_floor_74,
+                                0.0f, 0.0f, 0.0f);
+                            ++unit_.torpedo_attackrun_altitude_commands;
+                            if ((unit_.torpedo_attackrun_altitude_commands % 50) == 1) {
+                                owner_.log.notef("  torpedo %-12s descent census "
+                                    "n=%d base=%.2f (74h=%.2f 78h=%.2f) "
+                                    "commanded=%.2f live_alt=%.1f pitch_demand=%.4f "
+                                    "pitch=%.4f drop_angle=%.4f",
+                                    unit_.row.name.c_str(),
+                                    unit_.torpedo_attackrun_altitude_commands,
+                                    static_cast<double>(ap.alt_margin_78 + ap.alt_floor_74),
+                                    static_cast<double>(ap.alt_floor_74),
+                                    static_cast<double>(ap.alt_margin_78),
+                                    static_cast<double>(unit_.plane_commanded_altitude),
+                                    static_cast<double>(unit_.motion.position[1]),
+                                    static_cast<double>(unit_.plane_commanded_pitch),
+                                    static_cast<double>(unit_.plane_pitch_angle_c64),
+                                    static_cast<double>(unit_.plane_drop_angle));
+                            }
                         }
                         // The flag is deliberately NOT cleared when the task
                         // leaves aim. plan+2C0h is a persistent plan field, and
