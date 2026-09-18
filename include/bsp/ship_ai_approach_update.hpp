@@ -86,7 +86,12 @@ struct ShipAiApproachState {
     // throttle, so the throttle is `2 * (lookahead + 500 - range)` clamped.
     float goal_range_11e0{0.0f};
     float standoff_range_11e4{0.0f};  // nested+11E4h, chosen by 009E6E80
-    int   committed_slot_11e8{0};     // nested+11E8h, read by 009E5E90
+    // nested+11E8h. NOT a latched ring winner: 009F28F1 rewrites it every
+    // frame-state pass with the slot the unit's own heading falls in, and
+    // 009E5E90 reads it at 009E5ED1 only to ask whether the bearing it is
+    // about to publish lies in that same slot. The ring constructor seeds it
+    // with 0 at 009E561F (EBX, zeroed at 009E554D).
+    int   committed_slot_11e8{0};
     float unit_heading_11ec{0.0f};    // nested+11ECh, unit->vtable[50h]() at 009F1C24
     float turn_radius_11f0{0.0f};     // nested+11F0h, 009F1D6D
     float avoid_refresh_11f4{0.0f};   // nested+11F4h, 009E91DC, reseeded in [2,3)
@@ -670,11 +675,15 @@ struct ShipAiApproachSelectHost {
     virtual void commit_bearing_009e5e90(float bearing, float seconds) = 0;
 };
 
-void ship_ai_approach_select_slot_009e76d0(ShipAiApproachState& state,
-                                           const ShipAiAttackMoveRingSlot ring[],
-                                           ShipAiApproachSlotScore slots[],
-                                           float seconds,
-                                           ShipAiApproachSelectHost& host);
+// Returns the winning slot 009E79CA..009E7C19 settles on, which the native
+// keeps only in a register: it reads its bearing at 009E7C1C and stores nothing
+// else. Returned here so a census can see it, since nested+11E8h does not hold
+// it.
+int ship_ai_approach_select_slot_009e76d0(ShipAiApproachState& state,
+                                          const ShipAiAttackMoveRingSlot ring[],
+                                          ShipAiApproachSlotScore slots[],
+                                          float seconds,
+                                          ShipAiApproachSelectHost& host);
 
 // ---------------------------------------------------------------------------
 // 009E5E90, the commanded-heading commit
