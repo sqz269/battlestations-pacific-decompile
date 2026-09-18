@@ -973,3 +973,23 @@ inverted, where the 150-degree latch at `009C4654` closes.
 The host was missing both halves: it wrote the planner's own bank target unconditionally, and the
 turndown binding set the mode without the target. Both are now gated at `0099E25C` and written at
 the hand-over. The confirming run is queued.
+
+### The hand-over run is blocked by a startup failure, twice, with a clean environment
+
+```
+EXITCODE=1
+startup failed: FMOD bank raw-length output unavailable: path=sound/gui/error.fsb
+  bytes=2688 mode=2634 create_result=78 length_result=37 bank_returned=0
+summary window_created=0 device_created=0 device_hr=0x80004005 frames_presented=0
+```
+
+Two consecutive runs, `Get-Process bsp_game` empty and no lock file before the second, so under the
+rule of `docs/GAME_EXECUTABLE.md`'s intermittent-crash section this is a **failing step**, not a
+stray. It is a different signature from the 107-line renderer crash: the window is never created and
+the failure is in the FMOD bank load, before anything this packet touches.
+
+The last run that worked from this tree, `local/usn04_gate.log`, was on the pre-merge build. The
+merge that followed brought `main` up several commits. **This packet does not name a culprit**: the
+lesson from the earlier bisect is that a failure in one tree is not evidence about a commit until a
+fresh tree at the suspect commit reproduces it. The measured result above stands on the run that
+completed; the hand-over remains unverified.
