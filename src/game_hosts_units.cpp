@@ -22,6 +22,7 @@
 #include "bsp/unit_rudder.hpp"
 #include "bsp/torpedo_aim_tick.hpp"
 #include "bsp/torpedo_approach_update.hpp"
+#include "bsp/torpedo_first_release.hpp"
 #include "bsp/torpedo_issue_timing.hpp"
 #include "bsp/torpedo_release_orders.hpp"
 #include "bsp/torpedo_task_arm.hpp"
@@ -425,6 +426,13 @@ struct GameUnitSlot {
     int torpedo_aim_run_time_updates{0};   // 009D19A4
     int torpedo_aim_release_arms{0};       // 009D2287
     float torpedo_aim_timer{0.0f};         // 009D2027, 009FA3A0(state+18h, dt)
+    // The rest of the state+18h release timer. 009D2287 enables it with the
+    // countdown at zero, 009FA3A0 counts it down and calls 007BBBA0 at
+    // 009FA3D0. docs/TORPEDO_FIRST_RELEASE.md.
+    bool torpedo_aim_timer_enabled_0c{false};
+    int torpedo_aim_timer_fires{0};
+    int torpedo_aim_timer_blocked_007bb110{0};
+    int torpedo_aim_timer_first_fire_tick{-1};
     // plan+2C0h / +2CCh. docs/PILOT_TASK_HEADING_ARM.md: the arm writes the
     // bearing and mode 2, and a bot state's tick may overwrite the pair. The
     // torpedo aim tick does at 009D1D16 / 009D1D1E.
@@ -700,6 +708,19 @@ struct GameUnitsHost::Impl {
     }
     // An indirect dispatch has no call-site address of its own; the slot is the
     // evidence, so the report carries `<vtable>+vtableNN` for it.
+    // 007BBBA0 BSP_Unit_RequestOrdnanceRelease. Two call sites in this host
+    // reach it - the torpedo task's manual passthrough and the aim state's
+    // release timer - and both must raise unit+C20h, because 007BBC00 does so
+    // on every path of that routine. docs/TORPEDO_ISSUE_TIMING.md,
+    // docs/TORPEDO_FIRST_RELEASE.md.
+    void release_ordnance_007bbba0(GameUnitSlot& slot) {
+        log.unimplemented("Unit::request_ordnance_release", "007bbba0");
+        ++slot.torpedo_releases;
+        ++slot.torpedo_release_requests_007bbba0;
+        slot.torpedo_issue_requests_c20 =
+            bsp::release_request_raise_007bbc00(slot.torpedo_issue_requests_c20);
+    }
+
     void record_slot(const char* method, const char* text) { log.unimplemented(method, text); }
 
     bool is_controlled(const GameUnitSlot& slot) const {
@@ -2810,16 +2831,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 007BBBA0 at 009D4956/009D26F8/009D2938/009D29CB.
                             // The device at unit+DECh and the projectile spawn
                             // behind it are this packet's contract.
-                            record("Unit::request_ordnance_release", "007bbba0");
-                            ++slot_.torpedo_releases;
                             // 007BBC00 `ADD dword [ECX+0xC20], EBX` with
                             // EBX = 1 from 007BBBAB, past every early exit, so
                             // the counter rises whether or not the device
                             // accepts the drop. docs/TORPEDO_ISSUE_TIMING.md.
-                            ++slot_.torpedo_release_requests_007bbba0;
-                            slot_.torpedo_issue_requests_c20 =
-                                bsp::release_request_raise_007bbc00(
-                                    slot_.torpedo_issue_requests_c20);
+                            owner_.release_ordnance_007bbba0(slot_);
                         }
                         float unit_altitude(const void*) override {
                             return slot_.motion.position[1];
@@ -3378,7 +3394,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // The byte it writes at 009D236E is the gate 009D31B0 reads
                     // and the transition rule 009D4030 turns into goaway.
                     struct AimTickBinding final : bsp::TorpedoAimTickHost {
-                        explicit AimTickBinding(GameUnitSlot& s) : s_(s) {}
+                        AimTickBinding(GameUnitsHost::Impl& o, GameUnitSlot& s)
+                            : owner_(o), s_(s) {}
                         float time_to_target_009d1500() override {
                             return bsp::torpedo_time_to_target_009d1500(
                                 s_.torpedo_approach);
@@ -3403,18 +3420,67 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             return bsp::TorpedoAimSectorProbe{};
                         }
                         void accumulate_timer_009fa3a0(float d) override {
-                            s_.torpedo_aim_timer += d;
+                            // 009FA3A0 SUBTRACTS the step and, on a strictly
+                            // negative countdown, calls 007BBBA0 at 009FA3D0
+                            // behind 007BB110 alone. It does not accumulate:
+                            // the earlier `+= d` had the sign backwards and
+                            // dropped the release entirely, which is why this
+                            // host never reached a drop.
+                            // docs/TORPEDO_FIRST_RELEASE.md.
+                            bsp::ReleaseTimerInputs in;
+                            in.enabled_0c = s_.torpedo_aim_timer_enabled_0c;
+                            in.countdown_10 = s_.torpedo_aim_timer;
+                            in.step_seconds = d;
+                            // 007BB110 reads the device at unit+DECh. This host
+                            // has no device model, so an aircraft that still
+                            // carries a round stands in for it. SUBSTITUTION.
+                            owner_.log.unimplemented("Unit::can_release_007bb110",
+                                                     "007bb110");
+                            const bsp::OrdnanceKindSet set{s_.ordnance_mask};
+                            in.unit_can_release_007bb110 =
+                                bsp::ordnance_has_torpedo_2bh(set) &&
+                                s_.torpedo_releases < 1;
+                            // 009FA3EA draws between timer+4h and timer+8h,
+                            // both unread on this object. contract.
+                            owner_.log.unimplemented("ReleaseTimer::reseed_bounds",
+                                                     "009fa3ea");
+                            in.reseed_draw = 0.0f;
+                            owner_.log.unimplemented("Unit::slot_byte_9c0", "009fa3fb");
+                            in.slot_byte_9c0_clear = false;
+                            const bsp::ReleaseTimerResult r =
+                                bsp::release_timer_tick_009fa3a0(in);
+                            s_.torpedo_aim_timer = r.next_countdown_10;
+                            if (r.blocked_by_predicate) {
+                                ++s_.torpedo_aim_timer_blocked_007bb110;
+                            }
+                            if (!r.request_release_007bbba0) return;
+                            ++s_.torpedo_aim_timer_fires;
+                            if (s_.torpedo_aim_timer_first_fire_tick < 0) {
+                                s_.torpedo_aim_timer_first_fire_tick =
+                                    s_.torpedo_aim_ticks;
+                            }
+                            owner_.release_ordnance_007bbba0(s_);
                         }
                         void arm_release_timer_009d2287() override {
+                            // 009D2279-009D2287: refuses to re-arm, and leaves
+                            // the countdown at zero so the drop lands on the
+                            // next tick.
+                            const bsp::ReleaseTimerArmResult a =
+                                bsp::release_timer_arm_009d2287(
+                                    s_.torpedo_aim_timer_enabled_0c);
+                            if (!a.armed) return;
                             ++s_.torpedo_aim_release_arms;
+                            s_.torpedo_aim_timer = a.countdown_10;
+                            s_.torpedo_aim_timer_enabled_0c = a.enabled_0c;
                         }
+                        GameUnitsHost::Impl& owner_;
                         GameUnitSlot& s_;
                         float heading_{0.0f};
                     };
 
                     void run_torpedo_aim_tick_009d15f0(float dt) {
                         const bsp::TorpedoApproachState& ap = unit_.torpedo_approach;
-                        AimTickBinding binding(unit_);
+                        AimTickBinding binding(owner_, unit_);
                         binding.heading_ = owner_.pose_heading_radians(unit_);
                         bsp::TorpedoAimTickState in;
                         in.range_90 = ap.range_90;
@@ -5128,7 +5194,9 @@ void GameUnitsHost::report() {
                         "aim_complete_2Ch=%d first_true_at_aim_tick=%d "
                         "clause=%s | F34=%.2f F14=%.2f ramp=%.2f F18=%.4f "
                         "F0C=%.4f floor=%.1f | run_time_009D1360=%d "
-                        "release_arm_009D2287=%d timer_009FA3A0=%.2f",
+                        "release_arm_009D2287=%d timer_009FA3A0=%.2f "
+                        "timer_on=%d timer_fires=%d timer_blocked_007BB110=%d "
+                        "first_fire_at_aim_tick=%d",
                         slot->row.name.c_str(),
                         slot->torpedo_aim_complete_2c ? 1 : 0,
                         slot->torpedo_aim_complete_tick,
@@ -5144,7 +5212,11 @@ void GameUnitsHost::report() {
                         static_cast<double>(slot->torpedo_aim_floor),
                         slot->torpedo_aim_run_time_updates,
                         slot->torpedo_aim_release_arms,
-                        static_cast<double>(slot->torpedo_aim_timer));
+                        static_cast<double>(slot->torpedo_aim_timer),
+                        slot->torpedo_aim_timer_enabled_0c ? 1 : 0,
+                        slot->torpedo_aim_timer_fires,
+                        slot->torpedo_aim_timer_blocked_007bb110,
+                        slot->torpedo_aim_timer_first_fire_tick);
                     // ctl+370h. docs/TORPEDO_ATTACK_MODE.md: 009D3F69 and
                     // 009D40CB send an engaged task to prepare only at 0.
                     host.log.notef("  torpedo %-12s attack mode ctl+370h: "
