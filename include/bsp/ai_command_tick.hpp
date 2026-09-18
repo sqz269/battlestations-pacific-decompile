@@ -4,6 +4,7 @@
 
 #include "bsp/ai_command_object.hpp"
 #include "bsp/ai_planners.hpp"
+#include "bsp/ai_tuning_globals.hpp"
 
 // How an AI command reaches its member units: the `vt+0Ch` tick that
 // 00A2C790 runs on the group's 2 to 4 second schedule, and the one routine,
@@ -46,9 +47,9 @@ inline constexpr int kAiSceneCommandFlags = 1;
 inline constexpr std::uint32_t kAiOrderIssueDistanceSquaredAddress = 0x00D21530u;
 inline constexpr float kAiOrderIssueDistanceSquared = 0.0f;
 
-// The tuning fields the ticks read, from docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md.
-inline constexpr std::uint32_t kAiTuningCautionMoveDist = 0x1F0u;         // 8000
-inline constexpr std::uint32_t kAiTuningCloseAttackCollectDist = 0x1F4u;  // 5000
+// The tuning fields the ticks read live in bsp/ai_tuning_globals.hpp, which
+// packet cc8_ai_command_inputs taught the loader to fill:
+// kAiTuningCautionMoveDist (+1F0h) and kAiTuningCloseAttackCollectDist (+1F4h).
 
 // ---------------------------------------------------------------------------
 // 00A02020, the order bridge
@@ -100,6 +101,34 @@ enum class AiFollowerAction { None, JoinLeaderFormation, MoveToLeaderPoint };
 AiFollowerAction ai_command_follower_action_00a10dc0(bool is_ship_base, bool is_plane_squadron,
                                                      bool squadron_excluded_009ffeb0) noexcept;
 bool ai_command_follower_pass_runs_00a10dc0(std::uint32_t population) noexcept;
+
+// ---------------------------------------------------------------------------
+// 009FFD80, the member ordering key that defines the leader
+// ---------------------------------------------------------------------------
+
+// 009FDF30, __fastcall(int class_id) -> float. A jump table at 009FDFF0 over
+// class ids 6 through 1Ch, each arm returning one float of the tuning block;
+// every other id, and 14h, 18h, 19h and 1Ah, take the FLD1 default at 009FDFED.
+// Returns the record offset, or 0xFFFFFFFF when the default applies.
+std::uint32_t ai_entity_class_weight_offset_009fdf30(int class_id) noexcept;
+
+// 009FFD80 BSP_Entity_AiLeaderWeight, __thiscall(entity), body
+// 009FFD80-009FFDFB. The class weight above times a multiplier: 100.0f
+// (00CE3D08) when the entity IsKindOf(6), 0.01f (00D7A238) when it IsKindOf
+// 1Bh, 45h or 46h, and 1.0f (00D7A24C) otherwise.
+inline constexpr float kAiLeaderWeightShipMultiplier = 100.0f;
+inline constexpr float kAiLeaderWeightGroupClassMultiplier = 0.01f;
+inline constexpr float kAiLeaderWeightDefaultMultiplier = 1.0f;
+float ai_entity_leader_weight_009ffd80(float class_weight, bool is_ship_base,
+                                       bool is_one_of_three_group_classes) noexcept;
+
+// 00A2D8E0's insert at 00A2D941-00A2D94E: the new member's weight is compared
+// against each existing member's with FCOMPI and the walk stops on JA, so the
+// list is ordered by DESCENDING weight and an equal weight inserts after. The
+// first member is therefore the highest-weighted one, and that is the leader
+// every tick and every merge test reads. True means the candidate goes before.
+bool ai_group_member_sorts_before_00a2d8e0(float candidate_weight,
+                                           float existing_weight) noexcept;
 
 // ---------------------------------------------------------------------------
 // The class ticks
