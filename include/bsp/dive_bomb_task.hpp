@@ -340,7 +340,7 @@ struct DiveBombDiveAbortInputs {
     float extra_range_50 = 0.0f;     // approach+50h
     float slant_range = 0.0f;        // [ESP+14h], the range the test compares
     float aim_point_distance = 0.0f;  // [ESP+1Ch], the planar distance to +D8h/+E0h
-    float unit_roll_c64 = 0.0f;      // pose+C64h
+    float unit_attitude_c64 = 0.0f;  // pose+C64h, 009C5B1D
 };
 bool dive_bomb_dive_abort_009c5b43(const DiveBombDiveAbortInputs& in) noexcept;
 
@@ -399,7 +399,12 @@ DiveBombArmResult dive_bomb_arm_drop_009c8200(const DiveBombArmInputs& in) noexc
 float dive_bomb_turn_direction_009c7800(int sign, float magnitude_draw) noexcept;
 
 // 009C7EA0, __fastcall(state) -> bool. True ends the turndown for aimdive.
-bool dive_bomb_turndown_complete_009c7ea0(float roll_c64, float pitch_c68) noexcept;
+// The two pose angles in the order the body reads them: +C64h is the one the
+// -1.3 and -1.0 gates compare, +C68h the one folded to its absolute value
+// against 135 degrees. docs/PILOT_CONTROLS.md calls +C64h pitch and +C68h
+// bank, so the parameter names here are the offsets, not a claim about which
+// axis each carries.
+bool dive_bomb_turndown_complete_009c7ea0(float attitude_c64, float attitude_c68) noexcept;
 
 // ---------------------------------------------------------------------------
 // 009C8790's own two argument computations, 009C87EF-009C8822. The moveto range
