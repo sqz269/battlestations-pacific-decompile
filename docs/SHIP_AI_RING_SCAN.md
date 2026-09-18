@@ -315,6 +315,15 @@ pass; one new case pins the sentinel path end to end.
    `009E6E4D` to `009E6E66`, and `009E6E66` stores the copy of the command that `009E6BDA` made
    before either test. The stated outcome, that a NaN command is stored unchanged, is right.
 
+## Corrections from packet cc8_ship_ai_approach_slot_scorers
+
+Appended, not a rewrite.
+
+| was | is | evidence |
+| --- | --- | --- |
+| The `nested+127Ch` block: "this packet established a producer for only three of the seventeen words". | Words 0 to 4 have producers as well. Word 0 is `nested+11E0h` (`009F2A04`), the planar range to the attackmove destination, and words 1 to 4 are the target's length, per-shot damage cap, armour and torpedo armour (`009F2A2C`, `009F2A3C`, `009F2A44`, `009F2A54`), with the no-target constants of `009F2A91..009F2AC1`. | `docs/SHIP_AI_FIREPOWER_INPUTS.md`, the query-block table, from packet `cc8_ship_ai_firepower_inputs`. |
+| The host passed `009E5DA0` an all-zero block. | It now gets the block the image copies. An all-zero one would have starved the rating even once reached: with the four allow bytes clear `0095EBD7` skips every category, and with `damage_cap` zero the output cap is zero. | `009E8197..009E81A2` REP MOVSD; `009E813D..009E8178` overwrites words 5, 6, 7 and the two bytes. |
+
 ## Follow-up packets
 
 - `ship_ai_ring_scan_runtime` - wire `bsp_game.exe` to run the scan instead of recording it.

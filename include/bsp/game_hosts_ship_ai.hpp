@@ -199,6 +199,13 @@ struct GameShipAiRow {
     int ring_winner_first{-1};               // nested+11E8h after the first scan
     int ring_winner_last{-1};                // nested+11E8h after the last
     unsigned long long heading_changes{0};   // nested+120Ch differed from before
+    // Packet cc8_ship_ai_approach_slot_scorers: the three gates 009E7FC0 passes
+    // before it scores a slot, as the host last answered them.
+    bool  gate_flag_0b28{false};             // 009E80B0
+    float gate_reference_127c{0.0f};         // 009E80BD
+    float gate_lookahead_0494{0.0f};         // 009E80CD
+    unsigned long long gate_flag_stops{0};   // returns at 009E80B0
+    unsigned long long gate_range_stops{0};  // returns at 009E80DF
     unsigned long long controller_updates{0};  // 0071F290 bodies
     bool controller_update_session_gate{false};
     unsigned long long path_picks{0};        // 009EE580 bodies that passed the gate
