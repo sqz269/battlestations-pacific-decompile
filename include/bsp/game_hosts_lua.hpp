@@ -227,6 +227,12 @@ struct GameMissionLuaSummary {
     unsigned long long get_property_served{0};
     unsigned long long get_property_unserved{0};
     unsigned long long get_property_slots_rows{0};
+    // 00895D20 and 0089E3C0. docs/AIROPS_LAUNCH_GATES.md.
+    unsigned long long air_ops_ready_calls{0};
+    unsigned long long air_ops_ready_true{0};
+    unsigned long long air_ops_launch_calls{0};
+    unsigned long long air_ops_launch_started{0};
+    unsigned long long air_ops_launch_queued{0};
     std::vector<GameMissionNativeCall> natives; // distinct, in first-call order
     std::string first_error;
     std::string first_error_phase;
@@ -492,6 +498,12 @@ public:
     // it pushes nothing of its own and returns that reader's result count.
     // docs/MISSION_LUA_GETPROPERTY.md.
     int run_get_property_0088bf80(lua_State* state, int argument_count);
+
+    // 00895D20 IsReadyToSendPlanes and 0089E3C0 LaunchSquadron, the two gates
+    // between the carrier deck and the mission script's launch line.
+    // docs/AIROPS_LAUNCH_GATES.md.
+    int run_is_ready_to_send_planes_00895d20(lua_State* state, int argument_count);
+    int run_launch_squadron_0089e3c0(lua_State* state, int argument_count);
     void note_created_script(std::string name);
     void note_binding_subject(std::size_t row, int entity_id);
     // A failed named call is replayed once with errfunc 0 purely to recover the

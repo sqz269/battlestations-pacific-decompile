@@ -167,28 +167,84 @@ planes' class and not through a class of its own.
 | `00A00061` | `+1Ch` | a later stack argument |
 | `00A00058` | — | `COMISS` against another float argument gates a second `00A371A0` interpolation whose result is not yet traced to `+18h` |
 
-**`coverage: partial`, and the gap is named.** The stores above are certain; the mapping from
-`00A046A5`'s seven pushed arguments onto `00A00020`'s seven slots is **not settled**, because
-`00A00031 PUSH ESI` sits between the routine's first three argument reads and its last four, so the
-offsets shift mid-body exactly as they do in `00A0F810`. Resolving it needs the same frame-walk
-treatment applied to `00A00020`, which this packet did not do. Until then the meaning of `+14h`
-(the target scale) and `+18h` (the two factors) is not claimed, and `close_target_weight` keeps all
-three at the identity `1.0f`.
+### The mapping, settled
+
+`tools/frame_slot_census.py` normalises both frames once the virtual calls'
+cleanups are supplied. `00A00020` needed none; `00A04560` needed four, one per
+`RET 4` class test:
+
+```
+python tools/frame_slot_census.py 00a00020
+python tools/frame_slot_census.py 00a04560 --pop 00a04615=4 --pop 00a0462c=4 \
+                                            --pop 00a0465b=4 --pop 00a04672=4
+```
+
+`00A00020`'s seven reads then fall on seven consecutive slots, `K=-4` through `K=-28`, which is
+arguments one to seven in order. Matching them against the caller's seven pushes, taken backwards
+from `00A046A5` because the last pushed is the first argument:
+
+| Argument | Pushed at | Value | Lands at |
+| --- | --- | --- | --- |
+| 1 | `00A046A2` `PUSH ESI` | the class descriptor, `entity+538h` or `entity+35Ch` | `record+0h` |
+| 2 | `00A046A1` `PUSH EDI` | **zero**, from `00A04650 XOR EDI,EDI` | `record+10h` |
+| 3 | `00A0469D` then `00A0469E FSTP` | the float `00A0460F` produced | `record+14h` |
+| 4 | `00A0469C` `PUSH EDX` | the `SETNZ` of `00A04568 CMP [entity+54h],2` | `record+1Ch` |
+| 5 | `00A04691` then `00A04695 FSTP` | the interpolation `00A045EA` stored | the `00A00058` test, then `record+18h` |
+| 6 | `00A0468F` `PUSH 1` | the immediate `1` | `record+0Ch`, as a byte |
+| 7 | `00A0468C` `PUSH ECX` | `&` the pose pair | `record+4h` and `+8h` |
+
+Two slot coincidences confirm it: `00A04597`, which stores the pose X, and `00A04688`, the `LEA`
+that takes argument seven's address, normalise to the same `K=8`; and `00A045EA`, which stores the
+interpolation, and `00A04682`, which reloads it for argument five, both land on `K=20`.
+
+### What each field is
+
+* **`record+0h`** is the **class descriptor**, not the entity: `00A04652 IsKindOf(5)` takes
+  `entity+538h` and `00A0466E IsKindOf(18h)` takes `entity+35Ch`, the plane squadron's own plane
+  class that `007F477E` fills. So a squadron is weighed through its planes' class, and the pointer
+  `00A0F810` hands `00A08460` as the "entity" is a class.
+* **`record+10h` is always zero.** `00A0F83C` reads it as the `attacker_class` key field, so that
+  field arrives at `00A08460` as zero from this path whatever the attacker is.
+* **`record+14h`** is `00A0460F`'s float: `009FDF30`'s class weight for the entity's `+C4h` class
+  id (`00A045EE`, `00A045F4`), multiplied by `00A04240(entity)` at `00A04604`. **This is where the
+  class weight lives natively**, as the target scale `00A0F89B` multiplies by, not as the inner
+  weight.
+* **`record+18h`** is argument five, stored plain at `00A00091`, or re-rolled through
+  `00BD2F10` at `00A00083` when `00A00058`'s `COMISS` finds it negative. Argument five itself is
+  `00A045EA`, the `00419010` interpolation over `00A371A0`'s `[record+50h]` and `[record+54h]`.
+* **`record+1Ch`** is the **side being two or more**. `00A0F839` passes it to `00A08460` as
+  `target_is_neutral`, so "neutral" means a third-party side, and `00A0F84C` tests the attacker's
+  copy of the same bit.
+
+### What the host now does with them
+
+The class weight **moves out of the base term into `target_scale`**, where the native keeps it.
+The base term becomes `1.0f`, the identity of the product it feeds, until `00A08460` runs for real.
+The product is unchanged in value, so no ordering moves; what changes is that the class weight is
+now in the right factor and will not be double-counted the day the model turns on. `00A04240` is
+unread, so its half of `record+14h` stays at the identity.
+
+The two `+18h` factors keep `1.0f`, because the two tuning offsets `[record+50h]` and `[record+54h]`
+that feed the interpolation are unread.
 
 ## Term 4 — the attacker's command-building zeroing
 
 `00A0F84C` tests `[attacker record +1Ch]` and, only when it is non-zero, `00A0F859` asks the
 attacker `vtable[+18h](1Ch)`; both true zero the weight at `00A0F864`.
 
-Two things block it, and both are named above. `record+1Ch` is one of the offsets term 3 could not
-settle, and `vtable[+18h]` is **not** the `+5Ch` class test the other three tests in `00A0F810`
-use, so `1Ch` there is a type-group code rather than the `MCommandBuilding` class id it looks like.
-`AiTargetWeightModelHost` names the same slot `entity_is_type`, which is the second consumer of it,
-so settling one settles both.
+**The first input is settled and is now supplied.** `record+1Ch` is the `SETNZ` of
+`00A04568 CMP [entity+54h],2`, the entity's side being two or more, and this process has that:
+`units.unit_side_0054(attacker) >= 2`.
 
-`close_target_weight` therefore keeps both inputs false and the arm never runs. That is safe in the
-one direction that matters: the arm can only ever **remove** weight, so leaving it off can admit a
-candidate the native would have scored zero, never reject one it would have kept.
+**The second is not.** `vtable[+18h]` is not the `+5Ch` class test the other three tests in
+`00A0F810` use, so the `1Ch` it is asked with is a type-group code rather than the
+`MCommandBuilding` class id it resembles. `AiTargetWeightModelHost::entity_is_type` is the same
+slot's second consumer, so settling one settles both. It stays false, and the arm therefore never
+fires.
+
+That is safe in the one direction that matters: the arm can only ever **remove** weight, so leaving
+it off can admit a candidate the native would have scored zero, never reject one it would have
+kept.
 
 
 

@@ -105,6 +105,11 @@ struct GameAiWeaponFacts {
     };
     struct Unit {
         bool known{false};
+        // True only when every input 00A08460 reads is a published value and
+        // none is a placeholder. The AI coordinator runs the model only then,
+        // so a partially published row can never produce a weight the native
+        // would not. docs/AI_TARGET_WEIGHT_TERMS.md term 2.
+        bool inputs_complete{false};
         float hit_points{0.0f};      // target+48h, read at 00A08593
         float capture_state{0.0f};   // target+4Ch, read at 00A085A8
         std::vector<Barrel> barrels; // flattened over the attacker's subsystems

@@ -1120,6 +1120,9 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
                 return static_cast<std::uint32_t>(parsed);
             },
             nullptr);
+        // 00895E4B tests the class through vtable+5Ch against 45h. This process
+        // has no vtable to ask, and the scene class id is the same distinction.
+        deck.is_airfield = klass->class_id == bsp::kAirOpsSceneClassIdAirfield;
         owner.log.notef("air ops deck: unit=%s class=%d NumSlots=%d MaxInAirPlanes=%d "
             "slots=%zu stock=%zu (006cadd0 mode 1)", stored.name.c_str(), klass->class_id,
             authored.num_slots, authored.max_in_air_planes, deck.slots.size(),
