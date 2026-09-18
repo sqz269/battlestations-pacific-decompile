@@ -300,6 +300,21 @@ struct GameGunnerySummary {
     unsigned long long gun_pending_timers_live{0};
     unsigned long long torpedo_ranges_derived{0};
     unsigned long long torpedo_swims_started{0};   // water crossings that became a swim
+    // Packet cc8_torpedo_release_spawn. Where a torpedo-carrying gun stops on
+    // the way to a shot, one counter per conjunct of the same `want_fire` the
+    // gun loop builds. A gun counts as a torpedo gun when its bullet class
+    // derived a swim speed, which is the identical test the water crossing
+    // uses to decide that a round swims rather than dies at the surface, so a
+    // gun counted here is exactly a gun whose shot could reach the swim model.
+    // These are gate counters, not reconstructions: no native address produces
+    // them. docs/TORPEDO_RELEASE_SPAWN.md.
+    unsigned long long torpedo_gun_ticks{0};
+    unsigned long long torpedo_gun_targeted{0};    // have_target
+    unsigned long long torpedo_gun_accepted{0};    // + 0085ABA0 accepted the angles
+    unsigned long long torpedo_gun_settled{0};     // + within the 0.1 deg fire band
+    unsigned long long torpedo_gun_window{0};      // + 007F60A0 allowed the bearing
+    unsigned long long torpedo_gun_sent{0};        // + 0072D130 sent the 0ADh arm
+    unsigned long long torpedo_gun_shots{0};       // + 00730160 made a projectile
     unsigned long long torpedo_heading_snaps{0};   // 007F6190 snapped the heading onto a window edge
     unsigned long long angle_sets{0};
     unsigned long long angle_refusals{0};
