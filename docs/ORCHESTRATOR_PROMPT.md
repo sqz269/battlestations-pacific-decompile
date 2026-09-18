@@ -56,7 +56,8 @@ file and waits for any live run; a bare launch collides and hangs, see docs/COOR
 "Hypothesis, not a recovered symbol. ..."` (`--append-evidence` to extend, `--replace` only for a wrong
 name); implement the recovered behaviour as documented structs, pure rules with explicit inputs, and
 a sequence routine over an injected host with one method per native call site (see
-include/bsp/app_frame.hpp); register the source with one appended line in cmake/startup.cmake; build
+include/bsp/app_frame.hpp); register the source with one appended line in cmake/startup.cmake (no lease on that file: it is the
+append-only registry the integration unions, and Codex usually holds its lease); build
 with `./scripts/build.ps1` (Win32, warnings as errors), keep the existing tests passing, add at most
 one focused case in tests/math_tests.cpp; commit only owned files plus cmake/startup.cmake, that test
 file if touched, and the ledger shards created or changed, with the message in local/commit-msg.txt
