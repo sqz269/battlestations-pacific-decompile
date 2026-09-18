@@ -198,3 +198,24 @@ attack `ordered=5 closed_mean=4028.3 m`.
   detection level. Until it runs, every rule-(a)+(b) unit counts as detected and no target is ever
   unknown to a side. `docs/SENSOR_TABLE_DATA.md` has the authored data.
 - `ship_ai_approach_point_zone`: `00864BA0`, the no-target arm of the visibility gate, still false.
+
+## Correction appended by cc8_recon_sensor_pass_binding
+
+The partial label on `recon_knows_target_009dfbe0` no longer holds. Rule (c), the sensor pass
+`00806840`/`008048A0`, now runs in this process: `GameGunneryHost` owns the one
+`bsp::ReconSensorPassState` and steps `008073C0` on `008079B0`'s 3-second cadence before the
+gunnery pass. This host takes the published level for (own side, target) through
+`GameShipAiHost::bind_gunnery` instead of assuming `identified`. The text above is left as it
+was written; `docs/RECON_SENSOR_PASS_BINDING.md` carries the evidence.
+
+The fallback is still permissive, deliberately. A side the pass never covered keeps
+`bsp::kReconDetectionUnknownLevel`, which is `identified`, so binding the pass can only make a
+target less visible where a sensor actually judged it, never blind a side by omission.
+
+Measured on USN02, 3000 ticks: each of the twelve ship rows moved from
+`visible ... recon=75 surface=0` to `recon=74 surface=1`. One of each ship's 75 union-list
+reads now fails rule (c) and falls through to the surface test. `flag_true` is unchanged at
+600, and the ring winner, standoff choices (8400) and curve refreshes (2450) are unchanged.
+
+USN01 does not exercise this path at all: its goal-vector arm never runs (`ring_scans=0`,
+`firepower=0`, no `visible` rows), so contract point 5 is measured on USN02 only.

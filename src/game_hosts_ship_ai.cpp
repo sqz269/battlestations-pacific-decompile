@@ -36,6 +36,7 @@
 #include "bsp/ship_ai_approach_update.hpp"
 #include "bsp/ship_ai_attackmove_substates.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/recon_sensor_pass.hpp"
 #include "bsp/projectile_kinds.hpp"
 #include "bsp/gameplay_settings_tail.hpp"
 #include "bsp/ship_ai_approach_curves.hpp"
@@ -2678,10 +2679,14 @@ public:
         // drain; this host answers (a) and (b) with the same unit facts the
         // gunnery host's contact sweep uses and does NOT build a second recon.
         //
-        // PARTIAL: rule (c), the sensor pass 00806840/008048A0 that sets each
-        // entry's level, does not run in this process, so every rule-(a)+(b)
-        // member is taken as at least a blip and therefore present in the
-        // union. That is the permissive side of the native rule.
+        // Rule (c), the sensor pass 00806840/008048A0 that sets each entry's
+        // level, runs in the gunnery host's tick (008073C0 before the gunnery
+        // pass) and publishes its answer per (observing side, target). This
+        // read takes that level. A side the pass never covered keeps
+        // kReconDetectionUnknownLevel, which is `identified`: the permissive
+        // answer the tree used before rule (c) ran, so binding the pass can
+        // only ever make a target less visible where a sensor judged it.
+        // docs/RECON_SENSOR_PASS_BINDING.md.
         owner_.done("ShipAiGoal::recon_knows_target", 0x009dfbe0u);
         if (target == 0u) return false;
         const std::size_t other = static_cast<std::size_t>(target - 1u);
@@ -2703,7 +2708,9 @@ public:
         // The scan walks the world registry's per-class lists, so a unit the
         // registry no longer holds is in no list whatever its gate bytes say.
         if (!owner_.units.unit_active(other)) return false;
-        facts.level = bsp::ReconDetectionLevel::identified;  // rule (c) absent
+        facts.level = owner_.gunnery != nullptr
+            ? owner_.gunnery->recon_sensor_pass_state().level(own_side, other)
+            : bsp::kReconDetectionUnknownLevel;
         const bool known = bsp::recon_union_contains_009dfbe0(facts);
         if (index_ < owner_.rows.size() && known) ++owner_.rows[index_].goal_visible_recon;
         return known;

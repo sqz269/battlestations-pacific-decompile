@@ -47,8 +47,14 @@
 //   * There is no recon slot object, so [recon+DE8h] is stood in for by the
 //     enemy-side members of the world registry's per-class unit lists that
 //     docs/RECON_SLOT_LISTS.md rule (a) scans, filtered by rule (b)'s four gate
-//     bytes. Rule (c), the detection value, is not applied: no sensor pass runs
-//     in this process, so every enemy in class scope is a contact.
+//     bytes. Rule (c), the detection value, IS applied as of packet
+//     cc8_recon_sensor_pass_binding: this host owns the one
+//     bsp::ReconSensorPassState in the process and steps 008073C0 on 008079B0's
+//     3-second cadence before the gunnery pass, so a target the sensor pass
+//     published `none` for is in no contact list. What is still stood in for is
+//     the slot object itself, so the pass walks sides rather than a slot's own
+//     triple and the drain stays folded per target.
+//     docs/RECON_SENSOR_PASS_BINDING.md.
 //
 // Evidence: docs/UNIT_GUNNERY_PASS.md, docs/GUNNERY_TABLES.md,
 // docs/GUN_BOT_TICKS.md, docs/GUN_AIMING.md, docs/GUN_PLATFORM_ARC.md,
@@ -70,6 +76,10 @@
 #include "bsp/gunnery_tables.hpp"
 #include "bsp/projectile_impact.hpp"
 #include "bsp/unit_gunnery_pass.hpp"
+
+namespace bsp {
+class ReconSensorPassState;
+}
 
 namespace bsp::game {
 
@@ -276,6 +286,11 @@ struct GameGunnerySummary {
     unsigned long long contact_reject_visible{0};
     unsigned long long contact_reject_dead{0};
     unsigned long long contact_reject_kind{0};
+    // docs/RECON_SLOT_LISTS.md rule (c): the sensor pass published `none` for
+    // this (side, target), so the target is in no published contact list.
+    // Counted apart from the rule (a) and (b) rejections above so a run can
+    // attribute a contact drop to the detection rule rather than to a gate.
+    unsigned long long contact_reject_recon_level{0};
     unsigned long long contact_admit_ship{0};
     unsigned long long contact_admit_plane{0};
     unsigned long long bullet_ranges_derived{0};   // 006E9890 gave the gun a range
@@ -348,6 +363,15 @@ public:
     const GameBulletClassRow* bullet_class_row(int id) const noexcept;
     const std::vector<GameGunneryUnitRow>& unit_rows() const noexcept;
     const GameGunnerySummary& summary() const noexcept;
+
+    // docs/RECON_SLOT_LISTS.md rule (c). This host owns the one
+    // bsp::ReconSensorPassState in the process because it owns the tick that
+    // steps it (008073C0 runs before the gunnery pass, not inside it). The
+    // ship AI's union-list read reaches it through
+    // GameShipAiHost::bind_gunnery, which GameGunneryHost::set_ship_ai already
+    // calls; it is the same binding the firepower host uses for the category
+    // gun lists. docs/RECON_SENSOR_PASS_BINDING.md.
+    const bsp::ReconSensorPassState& recon_sensor_pass_state() const noexcept;
 
     void log_sample(unsigned long long step_index, unsigned long long interval);
     void report();
