@@ -118,3 +118,14 @@ unproved. Closing the address methods alone does not make the raw game runnable.
 Supply and validate the actual SAP/attachment virtual lifetime methods, then
 audit the remaining raw-game callback and admission requirements. Preserve the
 existing allocator/publication domains through construction, use and teardown.
+
+## Correction from docs/NATIVE_DYN_SAP_LIFETIME_R133.md
+
+R133 supplies the actual SAPBroadPhaseManager2 C4C380 removal and4043D0 scalar
+teardown closure. Physics defaults now invoke these concrete source bodies using
+the original construction allocator. A new20-case comparison executes relocated
+native SAP methods and compares702 observations /11,209,552 normalized bytes.
+SAP child storage is now released inside the compared schedule. R132's original
+sealed fixture and its controlled-SAP limitation remain historical evidence.
+Attachment scalar implementations, other SAP methods, native exception ABI and
+application/gameplay admission remain open; no partial runtime vtable is supplied.

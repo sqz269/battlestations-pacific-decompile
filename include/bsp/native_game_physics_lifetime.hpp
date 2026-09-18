@@ -1,9 +1,10 @@
 #pragma once
 #include "bsp/native_game_dynamics.hpp"
+#include "bsp/native_dyn_sap_lifetime.hpp"
 #include <cstdint>
 
 namespace bsp {
-struct NativeGamePhysicsLifetimeCalls {
+struct NativeGamePhysicsLifetimeCalls : NativeDynSapLifetimeCalls {
     virtual ~NativeGamePhysicsLifetimeCalls()=default;
     virtual void* physics_allocate_00bf55be(std::uint32_t,const AvoidZoneDynHullMemory&);
     virtual void physics_free_00bf65ac(void*,const AvoidZoneDynHullMemory&);
@@ -13,10 +14,12 @@ struct NativeGamePhysicsLifetimeCalls {
     // independently of the engine-context allocation callbacks.
     virtual void physics_free_profile_text_00bf65ac(void*);
     virtual void physics_delete_section(void*);
-    // These dispatch through the actual complete callable tables required by
-    // DynWorldRuntimeContext. Numeric original-image vtables are not callable.
+    // Attachments still use their actual complete callable tables. Numeric
+    // original-image vtables are not callable source tables.
     virtual void physics_virtual_scalar(void*,std::uint32_t byte_slot,std::uint32_t flags);
-    virtual void physics_broadphase_remove(void* manager,void* handle);
+    // Concrete SAPBroadPhaseManager2 produced by the existing scene constructor.
+    virtual void physics_broadphase_remove(void*,void*,const AvoidZoneDynHullMemory&,NativeDynSapLifetimeProgress&);
+    virtual void physics_delete_broadphase_004043d0(void*,std::uint32_t,const AvoidZoneDynHullMemory&,NativeDynSapLifetimeProgress&);
     virtual void physics_destroy_tasks_00c40ff0(void*,const AvoidZoneDynHullMemory&);
 };
 struct NativeGamePhysicsLifetimeContext {
@@ -31,6 +34,7 @@ struct NativeGamePhysicsLifetimeProgress {
     void* world{};
     void* cursor{};
     void* captured{};
+    NativeDynSapLifetimeProgress sap;
 };
 struct NativeGamePhysicsLifetimeOperation final:NativeGamePhysicsLifetimeProgress {
     enum class Phase {fresh,running,complete,failed,diagnostic_retired};
@@ -58,7 +62,7 @@ void clear_native_dyn_world_bodies_00c4daa0(void*,const AvoidZoneDynHullMemory&,
 void destroy_native_dyn_manifold_pool_00406f20(void*,const AvoidZoneDynHullMemory&,NativeGamePhysicsLifetimeCalls&,NativeGamePhysicsLifetimeProgress&);
 void destroy_native_dyn_bucket_storage_00407210(void*,const AvoidZoneDynHullMemory&,NativeGamePhysicsLifetimeCalls&,NativeGamePhysicsLifetimeProgress&);
 // Complete195B/369B. Native stack scene/world,RET4. Borrow their actual
-// construction allocator and callable broad-phase/attachment virtual tables.
+// construction allocator, concrete SAP lifetime and callable attachment tables.
 void destroy_native_dyn_scene_00c32250(void*,const AvoidZoneDynHullMemory&,NativeGamePhysicsLifetimeCalls&,NativeGamePhysicsLifetimeProgress&);
 void destroy_native_dyn_world_00c4dc60(void*,const AvoidZoneDynHullMemory&,NativeGamePhysicsLifetimeCalls&,NativeGamePhysicsLifetimeProgress&);
 // Complete103B profile-node recursive release,ECX node/RET. Frees node itself,
