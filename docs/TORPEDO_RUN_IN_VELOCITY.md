@@ -353,3 +353,26 @@ the measurement of what it moves across the gunnery and recon paths, which is a 
    `command_altitude_and_throttle` a body, then find where the plane control law consumes an
    altitude command (`docs/PLANE_FLIGHT.md`, "`009FBA50`, the cruising-altitude command").
 4. **`desc+A4h`**, the altitude fold's knee, which decides where the native cuts the throttle.
+
+
+## Correction from packet `cc8_plane_pose_throttle_altitude`: section 3's "throttle" is a bank cap
+
+Appended, not rewriting section 3.
+
+Section 3 reads `009D1BB8`-`009D1D39` to its end and every constant in its table is right, but it
+inherits the wrong name for what the product is. `plan+2C8h` is the per-task **bank-angle cap**:
+`0099E27B` clamps the bank target `plan+2C4h` into `+-plan+2C8h`, `0099B55E` resets it to `20.0f`
+so the clamp is inert until a task opts in, and the product's base factor `desc+25Ch` is `TurnRoll`,
+an authored maximum bank angle in radians. The ceiling `00CE3814` = 1.2 is 1.2 radians.
+`docs/PILOT_PLANNER_PITCH_ROLL.md` section (2) and note 6 carry the evidence; the same correction
+is appended to `docs/TORPEDO_AIM_TICK.md`.
+
+Section 4's first two reasons therefore describe a bank cap that was dropped, not a throttle. Its
+third reason stands unchanged, and its second is now closed: `thrust_accel` and `drag_accel` are
+bound in `docs/PLANE_POSE_THROTTLE_ALTITUDE.md`, from `desc+164h Accel` and the derived coefficient
+`desc+50Ch = Accel / MaxSpd^2` that `007C4990`-`007C499C` computes.
+
+Follow-up 1 of this doc (the `unit+C64h` / `unit+C68h` mis-binding) and follow-up 0 (the plane pose
+is never published) are both applied and measured in that packet. Follow-up 2 (thrust and drag) is
+applied. Follow-up 3, the commanded altitude, is answered rather than applied: there is no
+commanded altitude in this chain, only the nose-up floor above.

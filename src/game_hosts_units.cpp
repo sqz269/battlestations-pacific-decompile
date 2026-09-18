@@ -498,6 +498,18 @@ struct GameUnitSlot {
     float plane_max_spd{0.0f};
     // desc+18Ch TravelSpeed, the airspeed 007C6340 seeds a plane with.
     float plane_travel_speed{0.0f};
+    // desc+164h Accel, desc+208h GlideRate, desc+1D4h DragPitchRatio and
+    // desc+1DCh AirBrakeDrag: the four authored fields the thrust 007D9050 and
+    // the drag 007D9140 are built from. docs/PLANE_POSE_THROTTLE_ALTITUDE.md.
+    float plane_accel{0.0f};
+    float plane_glide_rate{0.0f};
+    float plane_drag_pitch_ratio{0.0f};
+    float plane_air_brake_drag{0.0f};
+    // unit+0BBCh and unit+0BB0h+10h, the latched throttle and air brake. The
+    // latch 007B9783 copies the whole live block, not just the three stick
+    // axes, and both of these are drag or thrust inputs.
+    float plane_latched_throttle{1.0f};
+    float plane_latched_air_brake{0.0f};
     // The union of this unit's guns' projectile descriptor answer sets, stored
     // by the gunnery host at load. docs/ORDNANCE_KIND_IDENTITY.md.
     std::uint64_t ordnance_mask{0};
@@ -1827,6 +1839,10 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             slot->plane_y_drag = lua_row.y_drag;
             slot->plane_max_spd = lua_row.max_spd;
             slot->plane_travel_speed = lua_row.travel_speed;
+            slot->plane_accel = lua_row.accel;
+            slot->plane_glide_rate = lua_row.glide_rate;
+            slot->plane_drag_pitch_ratio = lua_row.drag_pitch_ratio;
+            slot->plane_air_brake_drag = lua_row.air_brake_drag;
             // The spawn airspeed. docs/PLANE_FLIGHT_CORE_LAW.md measures the
             // seed at 141.67 m/s, and the acceptance test in tests/math_tests.cpp
             // pins lift against gravity at exactly that value and at
@@ -2563,6 +2579,89 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         state.forward_speed = state.body_velocity[2];
                         state.world_altitude = unit_.motion.position[1];
                         state.lost_drag_timer = unit_.plane_lost_drag_timer_c3c;
+                        state.pitch = unit_.plane_pitch_angle_c64;
+                        // --- 007DB744-007DB80A, thrust; 007D9050 ---
+                        // The gate at 007DB76C is unit+0BBCh > 0.01f. The rule is
+                        // a = desc+164h Accel * throttle, times tuning+330h
+                        // TurboMultiplier when ctl+4h and desc+604h when ctl+5h
+                        // (neither modelled, so neither is applied), times the
+                        // fall cheat when the pitch is negative, clamped to
+                        // [0, 100]. The call site then scales by unit+0CC8h and
+                        // either 008E6430(6, unit) or 1.0f; both are unmodelled
+                        // and taken as 1.0. Labelled partial on those three.
+                        if (unit_.plane_latched_throttle > 0.01f) {
+                            float a = unit_.plane_accel * unit_.plane_latched_throttle;
+                            if (state.pitch < 0.0f) {
+                                float fall_mul = 2.6f;      // tuning+324h
+                                float range1 = 0.174533f;   // tuning+328h DEG(10)
+                                float range2 = 1.047198f;   // tuning+32Ch DEG(60)
+                                if (owner_.lua.plane_globals_loaded()) {
+                                    const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                                    fall_mul = g.dynamics_accel_cheat_fall_mul;
+                                    range1 = g.dynamics_accel_cheat_fall_pitch_range_1;
+                                    range2 = g.dynamics_accel_cheat_fall_pitch_range_2;
+                                }
+                                const float u = bsp::clamped_interpolate_00419010(
+                                    range1, 0.0f, range2, 1.5707964f, -state.pitch);
+                                a *= 1.0f + (fall_mul - 1.0f)
+                                    * static_cast<float>(std::sin(static_cast<double>(u)));
+                            }
+                            if (a < 0.0f) a = 0.0f;
+                            if (a > 100.0f) a = 100.0f;
+                            state.thrust_accel = a;
+                        }
+                        // --- 007DBA32-007DBC76, drag; 007D9140 ---
+                        // 007C4990-007C499C derives the coefficient desc+50Ch as
+                        // Accel / MaxSpd^2 (FDIVP ST2,ST0 then FDIVP over
+                        // desc+188h twice), which is exactly what makes the
+                        // equilibrium airspeed MaxSpd at full throttle.
+                        if (unit_.plane_max_spd > 0.0f) {
+                            float max_drag_spd_mul = 0.1f;   // tuning+310h
+                            float min_drag_spd_mul = 0.1f;   // tuning+314h
+                            float max_drag_pitch = 1.0f;     // tuning+318h
+                            if (owner_.lua.plane_globals_loaded()) {
+                                const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                                max_drag_spd_mul = g.dynamics_max_drag_spd_mul;
+                                min_drag_spd_mul = g.dynamics_min_drag_spd_mul;
+                                max_drag_pitch = g.dynamics_max_drag_pitch;
+                            }
+                            const float coefficient =
+                                unit_.plane_accel
+                                / (unit_.plane_max_spd * unit_.plane_max_spd);
+                            const float world_speed = std::sqrt(
+                                unit_.plane_world_velocity[0] * unit_.plane_world_velocity[0]
+                                + unit_.plane_world_velocity[1] * unit_.plane_world_velocity[1]
+                                + unit_.plane_world_velocity[2] * unit_.plane_world_velocity[2]);
+                            // The speed floor, whose two endpoints are both
+                            // MaxSpd * 0.1 in this installation's PlaneGlobals.
+                            const float floor_speed = bsp::clamped_interpolate_00419010(
+                                0.0f, unit_.plane_max_spd * min_drag_spd_mul,
+                                max_drag_pitch, unit_.plane_max_spd * max_drag_spd_mul,
+                                state.pitch);
+                            float v = world_speed > floor_speed ? world_speed : floor_speed;
+                            float closed = 1.0f - unit_.plane_latched_throttle;
+                            if (closed < 0.0f) closed = 0.0f;
+                            if (closed > 1.0f) closed = 1.0f;
+                            const float elevator = std::fabs(unit_.plane_latched_controls[1]);
+                            const float k = closed * closed * unit_.plane_glide_rate + 1.0f
+                                + unit_.plane_drag_pitch_ratio * elevator;
+                            const float brake =
+                                unit_.plane_air_brake_drag * unit_.plane_latched_air_brake + 1.0f;
+                            // 007D926C-007D929B multiplies in -sgn(v), so the
+                            // value opposes forward motion.
+                            const float sign = v > 0.0f ? 1.0f : (v < 0.0f ? -1.0f : 0.0f);
+                            float d = -sign * v * v * k * coefficient * brake;
+                            // 007DBB0E / 007DBB23, the two pitch ramps the call
+                            // site multiplies in. Both endpoints of the second
+                            // are 1.0 for a healthy aircraft, so r2 is 1.0 until
+                            // the DeadMeat timer runs.
+                            const float r1 = bsp::clamped_interpolate_00419010(
+                                0.0f, 1.0f, tuning.lost_drag_time, 0.0f,
+                                unit_.plane_lost_drag_timer_c3c);
+                            const float r2 = bsp::clamped_interpolate_00419010(
+                                -0.3f, r1, 0.1f, 1.0f, state.pitch);
+                            state.drag_accel = d * r2;
+                        }
                         state.airborne_time = unit_.plane_airborne_908;
                         const bsp::PlaneDynAccumulators acc =
                             bsp::accumulate_free_flight_007db680(state, cls, tuning, step);
@@ -2613,6 +2712,34 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             std::sqrt(wv[0] * wv[0] + wv[1] * wv[1] + wv[2] * wv[2]) * step;
                         control_step_007da710(step, state.forward_speed);
                         advance_pose_0085e4d0(step);
+                        // 007C6500 BSP_PlaneTickElement_AdvancePose, tick-element
+                        // slot +4h of all nine plane vtables, is where the native
+                        // publishes a plane's pose, and it is a DIFFERENT element
+                        // from the fixed step 007CE040 this arm stands in for.
+                        // Its tail at 007C658C picks 007D8230 or 007D9F60 on
+                        // unit+210h; 007D8230 copies the 64-byte committed matrix
+                        // out of unit+674h (007D8252 LEA ESI,[EAX+674h]), advances
+                        // its translation row by step * (unit+810h..818h +
+                        // ctl+18h..20h), and writes it back through
+                        // 007D8293 LEA ECX,[EBX+74h] / 007D831C CALL 004134F0
+                        // BSP_Matrix_Copy4x4X87. unit+74h is the PUBLISHED pose
+                        // every other system reads.
+                        //
+                        // This host has no +4h element - GameFixedStepHost's five
+                        // 68h groups at 00F876C0 are empty, docs/PLANE_UNIT_TICK.md
+                        // - and publish_pose had exactly two call sites, unit
+                        // creation and the ship body path. So every consumer of
+                        // unit_pose saw each aircraft frozen at its spawn
+                        // placement for the whole life of this reconstruction:
+                        // the gunnery host spawned an air-dropped torpedo at
+                        // "700 m" in a log whose own census read -14556 m at the
+                        // same instant. docs/PLANE_POSE_THROTTLE_ALTITUDE.md.
+                        //
+                        // The interpolation the native applies is a fraction of
+                        // one frame's motion; this host has no sub-frame time, so
+                        // the copy is taken at the committed pose, which is
+                        // 007D8230 with its step at zero.
+                        GameUnitsHost::Impl::publish_pose(unit_);
                         // The release-order issue used to run here. It does not
                         // belong to the free-flight arm: 007CEA8D sits at
                         // 007CE9FD, past the latch 007CE96F and past the arm
@@ -3822,8 +3949,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         in.aspect_scale_84 = 1.0f;
                         in.fall_lead_a0 = ap.fall_lead_a0;
                         in.unit_altitude = unit_.motion.position[1];
-                        in.unit_bank_c64 = unit_.plane_latched_controls[0];
-                        in.unit_bank_rate_c68 = 0.0f;
+                        // unit+C64h is the PITCH angle, written at 007C1966
+                        // FSTP [ESI+0C64h], and unit+C68h is the BANK angle,
+                        // written at 007C1A94 (docs/PLANE_ATTITUDE_ANGLES.md
+                        // sections 1 and 3). The contract's field names say bank
+                        // for both and this binding used to feed
+                        // plane_latched_controls[0] - the latched YAW control
+                        // axis, a number in [-1, 1] - where the native reads an
+                        // attitude angle in radians, and a literal zero where it
+                        // reads the bank. Three consumers depend on it: the bank
+                        // cap's pitch fold at 009D1BDB, the pull-up denominator
+                        // at 009D1DE6 and the release gate at 009D2165.
+                        // docs/PLANE_POSE_THROTTLE_ALTITUDE.md.
+                        in.unit_bank_c64 = unit_.plane_pitch_angle_c64;
+                        in.unit_bank_rate_c68 = unit_.plane_bank_angle_c68;
                         in.pose_dirty_c8 = false;
                         // approach+8h, the aircraft description object, is not
                         // modelled. These five feed the turn-radius escape, the
@@ -3891,7 +4030,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             owner_.log.notef("  torpedo %-12s velocity census "
                                 "tick=%d |v|=%.2f angle=%.1f deg body_fwd=%.2f "
                                 "alt=%.1f travel_spd=%.2f x_drag=%.2f "
-                                "max_spd=%.2f",
+                                "max_spd=%.2f pitch=%.4f bank=%.4f "
+                                "bank_cap_2c8=%.4f pitch_target_2bc=%.4f "
+                                "throttle=%.2f accel=%.2f",
                                 unit_.row.name.c_str(), unit_.torpedo_aim_ticks,
                                 static_cast<double>(vn[0]),
                                 static_cast<double>(vn[1]) * 180.0 / kPi,
@@ -3899,7 +4040,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 static_cast<double>(unit_.motion.position[1]),
                                 static_cast<double>(unit_.plane_travel_speed),
                                 static_cast<double>(unit_.plane_x_drag),
-                                static_cast<double>(unit_.plane_max_spd));
+                                static_cast<double>(unit_.plane_max_spd),
+                                static_cast<double>(unit_.plane_pitch_angle_c64),
+                                static_cast<double>(unit_.plane_bank_angle_c68),
+                                static_cast<double>(unit_.plan_state.bank_limit_2c8),
+                                static_cast<double>(unit_.plan_state.pitch_target_2bc),
+                                static_cast<double>(unit_.plane_live_throttle),
+                                static_cast<double>(unit_.plane_accel));
                         }
                         unit_.torpedo_aim_heading_last = r.commanded_heading_2c0;
                         // 009D1D16 / 009D1D1E write plan+2C0h and plan+2CCh.
@@ -3910,6 +4057,31 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plan_heading_mode_2cc = r.heading_mode_2cc;
                         unit_.plan_heading_2c0_written = true;
                         unit_.torpedo_aim_throttle_last = r.commanded_throttle_2c8;
+                        // 009D1D2E writes plan+2C8h, and plan+2C8h is NOT a
+                        // throttle: docs/PILOT_PLANNER_PITCH_ROLL.md section (2)
+                        // shows 0099E27B clamping the bank target plan+2C4h into
+                        // +-plan+2C8h when it is below pi, and its note 6 names
+                        // 0099B55E's 20.0f reset - deliberately above pi so the
+                        // clamp is inert - with task arms opting in. This is one
+                        // of the seven task-side writers that doc left open. The
+                        // arithmetic agrees: the product's own base is desc+25Ch
+                        // TurnRoll, an authored maximum BANK ANGLE in radians
+                        // (1.047198 on this installation's TBD Devastator), and
+                        // the ceiling at 00CE3814 is 1.2 rad, not a throttle's
+                        // 1.2 of full. The field keeps its old name here because
+                        // renaming it belongs to the aim tick's owner.
+                        unit_.plan_state.bank_limit_2c8 = r.commanded_throttle_2c8;
+                        // 009D1EDD writes plan+2BCh, the PITCH target
+                        // (docs/PILOT_PLANNER_PITCH_ROLL.md note 6 and section
+                        // 2a), and 009D1EE5 writes the mode plan+2D0h = 1 that
+                        // 0099E3D1 gates the whole pitch law on. The value is
+                        // clamp(-f34 / den, 0.05625, 0.872665) and f34 is the
+                        // aircraft's height ABOVE the altitude floor, so the
+                        // quotient is negative whenever the aircraft is high and
+                        // the clamp floors it at 0.05625 rad. It is a nose-up
+                        // floor and a pull-up, not a descent command: nothing in
+                        // the aim tick brings a torpedo bomber down.
+                        unit_.plan_state.pitch_target_2bc = r.commanded_altitude_2bc;
                         unit_.torpedo_approach.aim_solution_130 = r.aim_solution_130;
                         if (r.aim_complete_2c && !unit_.torpedo_aim_complete_2c) {
                             unit_.torpedo_aim_complete_tick = unit_.torpedo_aim_ticks;
@@ -4377,6 +4549,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         for (int i = 0; i < 3; ++i) {
                             unit_.plane_latched_controls[i] = unit_.plane_live_controls[i];
                         }
+                        // The same snapshot for the two axes the drag and thrust
+                        // read: unit+0BBCh is the latched throttle (007DB76C
+                        // gates the whole thrust term on it exceeding 0.01f) and
+                        // unit+0BB0h+10h the latched air brake (007D91E0 pairs it
+                        // with AirBrakeDrag).
+                        unit_.plane_latched_throttle = unit_.plane_live_throttle;
+                        unit_.plane_latched_air_brake = unit_.plane_live_air_brake;
 
                         bsp::PlaneControlUnitState state;
                         state.latched_yaw = unit_.plane_latched_controls[0];
