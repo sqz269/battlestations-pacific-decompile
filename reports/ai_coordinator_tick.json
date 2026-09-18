@@ -1,0 +1,152 @@
+{
+  "packet": "cc8_ai_coordinator_tick",
+  "owner": "agent/cc8-recon-binding",
+  "summary": "Bound the AI coordinator's 20 Hz tick. GameAiCoordinatorHost owns the group think and the planners, answers both reconstructed host interfaces from the mission's units, and installs the planner's attack decision on each member as a scene command through the same 0046AAB0 -> 0077D600 path a scripted order takes. The coordinator runs on all three missions and changes the outcome of all three.",
+  "ghidra_writes": "none. Read-only analysis; one existing ledger name gained appended evidence.",
+  "blocked": "The fixed-step hook lives in src/game_hosts_units.cpp, which the torpedo worker holds. It is NOT in this commit. The five-line contract is in docs/AI_COORDINATOR_TICK.md and was applied locally only to take the measurements below.",
+  "calls": [
+    {
+      "address": "00a32d50",
+      "native": "the coordinator's fixed-step advance, slot +8h of vtable 00D23168",
+      "role": "GameAiCoordinatorHost::fixed_step calls bsp::ai_coordinator_fixed_step_00a32d50.",
+      "evidence": "Twenty bytes, no Ghidra function: CMP byte [00E0E34C],0 / JE / CALL 00A2E720 / CALL 00A182C0 / RET 4. The RET 4 pops the 0.05f the wave passes and neither callee receives it, so the AI is time-blind.",
+      "census_row": "AiController::fixed_step"
+    },
+    {
+      "address": "00a32350",
+      "native": "BSP_AiController_Create",
+      "role": "GameAiCoordinatorHost::create_00a32350, run once after create_units.",
+      "evidence": "Callsite census: called at 004E1838 in 004DFB70 BSP_Game_LoadMissionScene and at 00A373AF in 00A37310 BSP_LuaBinding_AICreate. Two callers, both at mission load.",
+      "census_row": "AiController::create"
+    },
+    {
+      "address": "00a31730",
+      "native": "the coordinator constructor",
+      "role": "recorded, not reconstructed. It installs vtable 00D23168 on the tick-element node at coordinator+170h (00A3177F) and registers it into fixed-step group 0 through 00875890 at 00A31766.",
+      "evidence": "docs/AI_GROUP_THINK.md, read for this packet against the callsite census above.",
+      "census_row": "AiController::construct"
+    },
+    {
+      "address": "00a2e720",
+      "native": "the composition pass",
+      "role": "runs every fixed step through bsp::ai_groups_compose_00a2e720; the host answers its six phases.",
+      "evidence": "src/ai_group_think.cpp; docs/AI_GROUP_THINK.md."
+    },
+    {
+      "address": "00a182c0",
+      "native": "the eight-party pass",
+      "role": "runs every fixed step; ai_party_think_due gates each slot on its own 3 to 5 s timer.",
+      "evidence": "src/ai_group_think.cpp. Measured: 3000 calls, 39 party thinks on every mission, which is one slot firing every 3 to 5 s over 150 s."
+    },
+    {
+      "address": "00a181a0",
+      "native": "one party brain's think",
+      "role": "reached through party_brain_think; walks the party's groups, claims unclaimed ones for planner 0 or 3, then ticks planners 0 to 3.",
+      "evidence": "src/ai_group_think.cpp."
+    },
+    {
+      "address": "009ffe50",
+      "native": "BSP_Ai_IsPartyAiEnabled",
+      "role": "the party gate. Read in full for this packet and the decisive constraint on what the coordinator can do.",
+      "evidence": "009FFE59 tests [[00E188A8]+61Ch]; when set, 009FFE62 calls 004BCA50 and 009FFE67 CMP EAX,3 / JA returns true above mode 3, while modes 0 to 3 fall to 009FFE6C..009FFE73 and return true only for party slot 0 and slot 4. The 009FFE84 arm tests [ecx+1FE4h] and answers slot != 0. Measured consequence: on all three missions party 0 gets a brain and parties 1 and 2 get none, although all three carry units."
+    },
+    {
+      "address": "004bca50",
+      "native": "BSP_Game_GetEffectiveGameMode",
+      "role": "game_mode(). Answered as 0, a labelled substitution: the world singleton's +614h has no producer in this process.",
+      "evidence": "004BCA50 reads [ecx+614h] at 004BCA57 and remaps it through the 004BCA5F ([ecx+1FE4h]) and 004BCA68 (value 9) arms."
+    },
+    {
+      "address": "00a2cbd0",
+      "native": "the attack order",
+      "role": "order_attack. The MOVETOATTACK / CAUTIOUSATTACK choice is taken and recorded; the per-member consequence is issued as a scene command.",
+      "evidence": "docs/AI_PLANNERS.md section '00A2CBD0, the attack order', body read in full there: the population test, the already-on-it test, and the 00BD2F40 draw against the aggressive ratio that makes CAUTIOUSATTACK less likely as the ratio rises.",
+      "census_row": "AiPlanners::order_attack"
+    },
+    {
+      "address": "0077d600",
+      "native": "the scene command issue and MT_COMMAND hop",
+      "role": "every member order goes through GameUnitsHost::issue_player_command, which is the 0046AAB0 registry resolve then this routine, the same path a scripted order and a player order take.",
+      "evidence": "src/game_hosts_commands.cpp; docs/ENTITY_LUA_ORDER_PATH.md.",
+      "census_row": "AiPlanners::issue_member_order"
+    },
+    {
+      "address": "00a2c790",
+      "native": "the per-member pass",
+      "role": "PARTIAL. group_member_pass counts the members and records the call. The native member->vtable[+114h] dispatch is unread, so nothing is dispatched through it; issuing a scene command per member is this file's labelled substitution.",
+      "evidence": "docs/AI_GROUP_THINK.md host table, 'head read only'.",
+      "census_row": "AiGroups::group_member_pass"
+    },
+    {
+      "address": "00a2c8d0",
+      "native": "the auto-merge predicate",
+      "role": "PARTIAL. Answers false. It delegates to from+564Ch vtable[+14h], and this process builds no AI command object to ask, so no auto-merge is ever taken and auto_merges is 0 in every run.",
+      "evidence": "docs/AI_GROUP_THINK.md host table, 'delegates to from+564Ch vtable[+14h], which is unread'.",
+      "census_row": "AiGroups::can_auto_merge"
+    },
+    {
+      "address": "00a371a0",
+      "native": "the AI tuning block",
+      "role": "PARTIAL. auto_merge_dist and tuning_field answer 0. The block is filled by 00A335D0, reached from 00A3717C in CG_array_ctor_helper_00a37130 and jumped to at 00A371C7 in BSP_AiGlobals_Reload; no AI globals script runs in this process.",
+      "evidence": "Callsite census of 00A335D0, two sites. Consequence: the proximity merge of phase 5 compares against a zero distance and takes no merge, so prox_merges is 0 in every run.",
+      "census_row": "AiGroups::auto_merge_dist"
+    },
+    {
+      "address": "00a2e835",
+      "native": "phase 3's five world entity collections",
+      "role": "PARTIAL. Collection 0 yields every created unit and collections 1 to 4 are empty, because this process has no world collection block at world+19CCh.",
+      "evidence": "src/ai_group_think.cpp phase 3. Consequence: exactly one group is seeded per team per pass rather than up to five.",
+      "census_row": "AiGroups::seed_collection"
+    },
+    {
+      "address": "00a25b90",
+      "native": "the planner's quick spawn",
+      "role": "PARTIAL. Recorded, not run: this process creates no unit at run time, so a planner that owns nothing keeps owning nothing. Measured at 78 spawn arms per mission.",
+      "evidence": "docs/AI_PLANNERS.md, 'The mode planners' think'.",
+      "census_row": "AiPlanners::quick_spawn_named_group"
+    },
+    {
+      "address": "00a179e0",
+      "native": "the brain's engagement pass",
+      "role": "recorded. contract: unread, body 00A179E0-00A18195.",
+      "census_row": "AiParties::party_brain_plan_tail"
+    }
+  ],
+  "step1_findings": [
+    "The coordinator is created at mission load: 00A32350 BSP_AiController_Create has exactly two callers, 004E1838 inside BSP_Game_LoadMissionScene and 00A373AF inside the Lua binding BSP_LuaBinding_AICreate. Its constructor 00A31730 installs vtable 00D23168 on the node at coordinator+170h and registers it into fixed-step group 0 at 00A31766.",
+    "The 00F8AA60/00F8AA64 list needs no separate filler: it is element 2 of g_aiGroupsByTeam at 00F8AA48 (stride 0Ch), and BSP_AiGroup_Construct appends every group to g_aiGroupsByTeam[group+5638h] at 00A2E086-00A2E0BD. The host reproduces that append inside create_group, so the proximity list fills itself.",
+    "The party gate 009FFE50 is the binding constraint, not a missing input. In game modes 0 to 3 only party slots 0 and 4 are AI-enabled. All three missions carry sides 0, 1 and 2; only side 0 gets a brain. The enemy sides are never planned for, and that is the shipped rule, not a gap in this host.",
+    "The tuning block 00A371A0 is loaded by 00A335D0, reached only from CG_array_ctor_helper_00a37130 and BSP_AiGlobals_Reload. No AI globals script runs in this process, so every tuning field is zero and both merge phases take nothing."
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1, Win32 /W4 /WX: clean.",
+    "tests": "ctest --test-dir build/win32 -C Release: 2/2 pass. No test added.",
+    "note": "Every before run was taken on this tree with the wiring stashed, at merge commit 631b6168b.",
+    "ijn01": {
+      "before": "plane motion yaw_plans=3000 pose_rotations=3625 heading_change=3.862 rad distance=1213845.72 m; pilot attack ordered=2; gunnery shots=34 first_shot=4.40 hull=4 deaths=2 damage=500.0; contacts admit_ship=123783 admit_plane=143974; zero player commands issued",
+      "after": "plane motion yaw_plans=5904 pose_rotations=8504 heading_change=8.881 rad distance=1270266.90 m; pilot attack ordered=4; gunnery shots=35 first_shot=4.40 hull=4 deaths=2 damage=500.0; contacts admit_ship=121887 admit_plane=151934; 79 commands issued",
+      "ai": "game_mode=0 compose=3000 seeds=963000 groups_created=2 members_added=141 evicted=31 splits=6036 auto_merges=0 prox_merges=0 member_passes=330000; parties calls=3000 thought=39 planner_ticks=156 claims=1 spawn_arms=78 attack_orders=1 movetoattack=1 commands=79 refused=0 units_with_task=79 first_command=4.85 s; party 0 ai_enabled=1 brain=1, parties 1 and 2 record=1 ai_enabled=0 brain=0; groups team=0 members=79 claimed command, team=1 members=31 unclaimed",
+      "attribution": "This is the uncommanded-aircraft mission. The headline is the plane motion pass: yaw_plans nearly doubled, 3000 to 5904, pose_rotations 3625 to 8504 and heading_change 3.862 to 8.881 rad. The aircraft no longer fly straight. free_flight is unchanged at 99000 because that counter is 007CE040's flight-model arm selection (free flight against ground roll and surface), not a task test, so it cannot move for an airborne plane. The pilot attack table went from 2 ordered units to 4. Tokens: 75 artillery, which the 26-row registry's first-match walk resolved to attackmove, and 4 dogfight. Gunnery damage is unchanged; one attack order in 150 s is not enough to change the shooting."
+    },
+    "usn01": {
+      "before": "gunnery shots=8711 first_shot=4.35 hits=23 hull=23 deaths=1 damage=220.0 first_hit=4.70; pilot attack ordered=5 range_first_mean=4827.3 closed_mean=3906.4",
+      "after": "gunnery shots=3476 first_shot=4.35 hits=62 hull=62 deaths=2 damage=3518.9 first_hit=4.70; pilot attack ordered=14 range_first_mean=7065.1 closed_mean=-123587.2",
+      "ai": "compose=3000 seeds=231000 groups_created=2 members_added=75 evicted=24 splits=6035 member_passes=153000; parties thought=39 planner_ticks=156 claims=1 spawn_arms=78 attack_orders=1 commands=24 refused=0 units_with_task=24 first_command=4.85 s",
+      "attribution": "The largest outcome change of the three. Ordered units went 5 to 14, hits 23 to 62, deaths 1 to 2 and damage 220.0 to 3518.9, a factor of sixteen, all from 24 member commands issued at 4.85 s. Shots fell 8711 to 3476 while hits rose, so the aircraft are being aimed rather than firing at nothing. closed_mean went negative, which says the newly ordered units are opening range on their targets rather than closing: the order reaches them but the approach is not solved, and that belongs to the plane task machinery, not to the coordinator."
+    },
+    "usn02": {
+      "before": "gunnery shots=872 first_shot=1.40 hits=126 hull=125 deaths=3 damage=13673.7 first_hit=41.85; ship AI standoff choices=8400 curve_refreshes=2450; pilot attack: no unit ordered",
+      "after": "gunnery shots=562 first_shot=1.40 hits=168 hull=168 deaths=3 damage=19723.2 first_hit=31.90; ship AI standoff choices=15953 curve_refreshes=4660; pilot attack: no unit ordered",
+      "ai": "compose=3000 seeds=96000 groups_created=2 members_added=50 evicted=18 splits=6036 member_passes=96000; parties thought=39 planner_ticks=156 claims=1 spawn_arms=78 attack_orders=1 commands=14 refused=0 units_with_task=14 first_command=4.85 s",
+      "attribution": "14 ship commands at 4.85 s. Hits rose 126 to 168 and damage 13673.7 to 19723.2 on a third fewer shots, and the first hit moved 10 seconds earlier, 41.85 s to 31.90 s: the ordered ships close on their target instead of idling. The ship AI standoff census nearly doubled, 8400 to 15953 choices and 2450 to 4660 curve refreshes, which is the ring arm running for ships that now have somewhere to be. Deaths are unchanged at 3."
+    }
+  },
+  "uncertainties": [
+    "One attack order per mission. The party think fires 39 times but claims one group and issues once, because a group already on its target returns early at 00A2CBD0's second test and this process never clears the command. The native clear happens through the AI command's own lifetime, which is unread.",
+    "can_auto_merge answers false and auto_merge_dist answers 0, so neither merge phase ever takes a merge. Both depend on the AI command object and on the tuning block, and neither exists here.",
+    "Groups are filed under a party equal to their team. The native party slot is a separate field; nothing in this process produces one.",
+    "The seed pass yields one group per team because only collection 0 is populated. The native five collections would seed up to five.",
+    "game_mode is 0 by substitution. A different mode would change both the party gate and ai_party_think_mode's GroupWalk answer.",
+    "artillery resolves to attackmove through the registry's first-match walk. That is the recovered 0046AAB0 behaviour as this process implements it, reported as observed and not explained here."
+  ]
+}
