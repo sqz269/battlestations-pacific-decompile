@@ -940,27 +940,45 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             in.base_weight = bsp::ai_target_weight_00a08460(model, key);
             ++summary.weight_model_runs;
         } else {
-            in.base_weight = unit_class_weight(target);
+            // 00A08460 with none of its inputs. 1.0f is the identity of the
+            // product it feeds, and the class weight that used to stand here
+            // has moved to target_scale, which is where the native keeps it.
+            in.base_weight = 1.0f;
             ++summary.weight_class_stand_ins;
         }
-        // 00A0F84C and 00A0F859: this process has no attacker record +1Ch and
-        // no AI command object, so the zeroing arm never runs. Labelled.
-        in.attacker_record_flag_1c = false;
+        // 00A0F84C tests the attacker record's +1Ch, which 00A04560 fills from
+        // 00A04568 CMP [entity+54h],2 / SETGE: the entity's SIDE being two or
+        // more, a neutral or third party. That this process does reach.
+        in.attacker_record_flag_1c = units.unit_side_0054(attacker_unit) >= 2;
+        // 00A0F859 then asks the attacker's vtable[+18h] with 1Ch. That slot is
+        // NOT the +5Ch class test the other three tests in 00A0F810 use, so the
+        // 1Ch is a type-group code and not the MCommandBuilding class id it
+        // resembles; the same slot is AiTargetWeightModelHost::entity_is_type.
+        // Unread, so this stays false and the arm never fires. The arm can only
+        // REMOVE weight, so leaving it off can admit a candidate the native
+        // would score zero and never reject one it would keep.
         in.attacker_is_command_building = false;
-        // 00A0F86A and 00A0F872, the two record +18h factors, and 00A0F89B's
-        // target +14h. The records are the AI's own per-entity blocks, which
-        // this process does not build, so all three keep the native's identity
-        // value and the product is the base weight alone. Labelled.
+        // 00A0F86A and 00A0F872, the two record +18h factors. 00A00020 fills
+        // +18h from its fifth argument, which 00A04560 computed at 00A045EA
+        // through 00A371A0's [record+50h] and [record+54h] and the
+        // interpolation 00419010, and which 00A00083 optionally re-rolls
+        // through 00BD2F10 when 00A00058's COMISS finds it negative. The two
+        // tuning offsets are unread, so both factors keep the identity 1.0f.
         in.attacker_factor = 1.0f;
         in.target_factor = 1.0f;
-        in.target_scale = 1.0f;
+        // 00A0F89B's target +14h. 00A00020 fills it from its third argument,
+        // which 00A0460F produced as 009FDF30's class weight for the entity's
+        // +C4h class id MULTIPLIED by 00A04240(entity). The class-weight half
+        // is exactly what this host computes, so it moves here from the base
+        // term where it used to stand; 00A04240 is unread and its factor is
+        // the identity. docs/AI_TARGET_WEIGHT_TERMS.md term 3.
+        in.target_scale = unit_class_weight(target);
         // 00A0F87E picks objective set 0 when the local player's party equals
         // the attacker's +54h and set 4 otherwise, then 00A0F8B5 asks 008DDF90.
         // The sets are the ones the mission Lua fills; see
         // docs/MISSION_OBJECTIVES.md for why they hold no unit on these
         // missions, which makes this false throughout.
-        const std::size_t attacker = proxy(member);
-        const int attacker_side = units.unit_side_0054(attacker);
+        const int attacker_side = units.unit_side_0054(attacker_unit);
         const int local_party = 0;   // [00E188A8]+18CCh, slot 0's +28h
         const int objective_set = attacker_side == local_party ? 0 : 4;
         const std::vector<std::size_t> set =
