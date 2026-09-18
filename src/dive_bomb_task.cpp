@@ -18,6 +18,15 @@ inline float fold_abs(float x) noexcept {
     return (x > 0.0f) ? x : (dive_bomb_constant::kNegativeZero - x);
 }
 
+// 00438AA0 BSP_Math_AddWrappedAngle: add and wrap into [0, 2pi).
+inline float wrapped_angle_add_00438aa0(float base, float delta) noexcept {
+    const float two_pi = static_cast<float>(dive_bomb_constant::kTwoPi);
+    float v = base + delta;
+    while (v >= two_pi) v -= two_pi;
+    while (v < 0.0f) v += two_pi;
+    return v;
+}
+
 }  // namespace
 
 // 009C7910-009C796B, __thiscall(task, state) -> bool, RET 4. Eight LEA/CMP
@@ -346,6 +355,63 @@ float dive_bomb_turn_direction_009c7800(int sign, float magnitude_draw) noexcept
     const float side = (sign >= 0) ? dive_bomb_constant::kPlusOne
                                    : dive_bomb_constant::kMinusOne;
     return magnitude_draw * side;
+}
+
+// 009C4220-009C447D, the attackrun tick.
+DiveBombAttackRunResult dive_bomb_attackrun_tick_009c4220(
+    const DiveBombAttackRunInputs& in) noexcept {
+    DiveBombAttackRunResult out;
+    out.lateral_offset_20 = in.lateral_offset_20;
+
+    // 009C424A FCOMI(dt, state+1Ch) then 009C424F JC: the countdown arm runs
+    // while dt is below the timer, and the re-roll arm otherwise.
+    if (in.dt < in.reroll_timer_1c) {
+        out.reroll_timer_1c = in.reroll_timer_1c - in.dt;  // 009C4333
+    } else {
+        // 009C4255-009C427B: the period is added to whatever is left, so the
+        // phase carries rather than resetting.
+        out.reroll_timer_1c = (in.reroll_period_18 - in.dt) + in.reroll_timer_1c;
+        out.rerolled = true;
+        // 009C42BD-009C42D9: the new lateral offset, negated and scaled by the
+        // 30 degrees at 00CEC730.
+        out.lateral_offset_20 = -in.sampler_result *
+            static_cast<float>(dive_bomb_attackrun_constant::kLateralOffsetScale);
+    }
+
+    // 009C42DC-009C4305, run on both arms: the heading is the bearing to the
+    // target plus the lateral offset, with mode 2.
+    out.commanded_heading_2c0 = wrapped_angle_add_00438aa0(
+        in.target_bearing_c0, out.lateral_offset_20);
+
+    // 009C4311-009C4342: the distance, clamped at 2000.
+    out.clamped_distance =
+        (static_cast<double>(in.planar_distance_bc) <
+         dive_bomb_attackrun_constant::kDistanceClamp)
+            ? in.planar_distance_bc
+            : static_cast<float>(dive_bomb_attackrun_constant::kDistanceClamp);
+
+    // 009C435B-009C438B: the height margin under the 1400 ceiling, floored at 50.
+    const float margin =
+        static_cast<float>(dive_bomb_attackrun_constant::kMarginCeiling) - in.altitude;
+    out.height_margin =
+        (static_cast<double>(margin) >= dive_bomb_attackrun_constant::kMarginFloor)
+            ? margin
+            : static_cast<float>(dive_bomb_attackrun_constant::kMarginFloor);
+
+    // 009C4397-009C43CD: the throttle, interpolated on the margin over the
+    // clamped distance. Flat 0.4 below a tenth, full at just over a third.
+    out.throttle_ratio = (out.clamped_distance != 0.0f)
+        ? out.height_margin / out.clamped_distance : 0.0f;
+    out.commanded_throttle = dive_bomb_interpolate_clamped_00419010(
+        dive_bomb_attackrun_constant::kThrottleRatioLow,
+        dive_bomb_attackrun_constant::kThrottleAtLow,
+        dive_bomb_attackrun_constant::kThrottleRatioHigh,
+        dive_bomb_attackrun_constant::kThrottleAtHigh,
+        out.throttle_ratio);
+
+    // 009C43ED-009C4401: the altitude base handed to 009FBA50.
+    out.commanded_altitude_base = in.begin_altitude_ac + in.extra_range_50;
+    return out;
 }
 
 // 009C4530-009C4575. 00BF857A is the CRT x87 helper with ST(1) = x and
