@@ -228,3 +228,21 @@ and six context guards pass. The controlled parent retains52 cases/3,537
 snapshots/141,402,076 bytes and four failure/replay cases. Strict Win32/three
 CTests pass. Native FH3/SEH,remaining dependencies,raw-game admission and gameplay
 remain open.
+
+## Correction from docs/NATIVE_GAME_LUA_GLOBALS_LIFETIME_R129.md
+
+R129 binds B6CF90 at4DD0EB to the actual two global vector headers and existing
+profile/string pool. The parent retains a separate child operation and refuses
+retirement while it is running/failed.258B globalcleanup plus77B forwardrecord
+copy preserve the firstvector gate,current recordbounds,captured/reloaded ends,
+sequential overlapping DWORD copies and stale freedpayload slots.11 hidden
+loop-increment/back-edge bytes were repaired after the returning CRTfree call.
+
+46 copied-original pairs match104 observations/274,036 normalized bytes;one
+malformed capturedstringrange case controls4954F0 and proves onlycallerschedule.
+Validcases share actual checkedstring erasure andCRTfree;13/149/150-byte string
+allocations cover the small/large boundary andreturngate0/1. Two partialfailure/
+replay cases andfour contextguards pass.
+The parent stillmatches52 cases/3,537 snapshots/141,402,076 bytes andfour failure
+cases. Strict Win32/three CTests pass. Producer/session integration,native
+exception ABI,remaining world/physics/resource bindings andgameplay remainopen.
