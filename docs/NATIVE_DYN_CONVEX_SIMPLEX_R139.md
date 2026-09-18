@@ -107,3 +107,11 @@ application admission and gameplay validation remain open.
 
 See `reports/native_dyn_convex_simplex_r139.json` for byte/call evidence,
 instruction-audit results, annotation receipts and sealed artifact provenance.
+
+## Follow-up from docs/NATIVE_DYN_GENERAL_CONVEX_R140.md
+
+R140 reconstructs C51EF0, C51C20, C48BE0, C53010 and C535E0, connecting this
+reducer to the complete source general-convex table. Whole-chain and actual
+scene comparisons now use these source parents against the copied native
+chain. This closes the parent-source gap described above; other collision
+dispatchers, application context admission and gameplay remain open.

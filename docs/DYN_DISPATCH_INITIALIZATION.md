@@ -148,3 +148,12 @@ count paths. Exact comparisons pass directly and inside the copied general-
 convex parent chain using the existing convex support methods. C51EF0,
 C53010, C51C20, C48BE0 and C535E0 remain read-only native references in this
 packet; the complete general-convex source dispatcher is still pending.
+
+## Follow-up from docs/NATIVE_DYN_GENERAL_CONVEX_R140.md
+
+R140 closes those five general-convex bodies and supplies the complete one-slot
+`NativeDynGeneralConvexRuntime` table for the existing actual owner. Direct
+native comparisons and serial scene comparisons through the complete narrow-
+phase task pass with real convex support calls. The table borrows CRT state;
+its runtime and actual owner must remain alive while scenes use them. Remaining
+dispatcher classes, world tasks, application admission and gameplay are open.
