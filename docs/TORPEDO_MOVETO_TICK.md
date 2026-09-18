@@ -217,3 +217,17 @@ baseline, where the ordered aircraft start 1488 m from their targets and enter `
    substitution.
 3. **`task+438h`'s producer.**
 4. **The plan throttle slot's writers**, image-wide, which needs the plan record's slot-0 offset.
+
+
+## Correction from its own follow-up 4: the throttle census is done
+
+Appended, not rewriting section 6.
+
+Section 6 leaves "what sets a bot plane's throttle" open and says an image-wide census "would need
+the plan record's byte offset for slot 0's `desired`, which this packet did not establish". The
+offset is `plan+278h` - base `plan+274h`, stride `0Ch`, slot 0 - from
+`docs/PILOT_PLAN_SLOT_PIPELINE.md`'s own table, and the census is run.
+
+The writer is `0099D300 BSP_PilotBot_PlanControls`, in four places: a centred-stick arm that sets
+1.0, a speed-hold arm, a floor and a **ceiling at 0.6**. No task state writes the slot, which is why
+this tick and the attack-run tick and the aim tick all came up empty. `docs/PILOT_BOT_THROTTLE_ARM.md`.
