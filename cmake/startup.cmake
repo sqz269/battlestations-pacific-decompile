@@ -1340,3 +1340,4 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 cmake_language(DEFER CALL include "${CMAKE_SOURCE_DIR}/cmake/native_data_placement.cmake")
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_profile_lifetime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_container_lifetime.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/torpedo_aim_tick.cpp)

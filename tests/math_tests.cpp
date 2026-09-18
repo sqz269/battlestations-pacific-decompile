@@ -113,6 +113,7 @@
 #include "bsp/ship_ai_ring_scan.hpp"
 #include "bsp/unit_rudder.hpp"
 #include "bsp/pose_derived.hpp"
+#include "bsp/torpedo_aim_tick.hpp"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -3508,6 +3509,33 @@ int main() {
               "and samples[3], and at or above 3000 m it saturates on samples[59] ([ECX+0ECh] at "
               "00955A83); 009523C0 answers the peak and 00952530 the last positive sample's range, "
               "or 0.0 when the curve is the zero 00954940 leaves");
+    }
+
+    {
+        // 009D22FF-009D236E, the aim-complete byte state+2Ch. Both clauses are
+        // strict `>` on operands the listing pushes in a fixed order, and a
+        // reversed pair would be silent: the byte would latch on the first tick
+        // or never. These four cases pin each direction.
+        using bsp::torpedo_aim_complete_009d22ff;
+        // The USN01 tick on which Mav2 first set the byte: clause 2 only.
+        const bool turn_only = torpedo_aim_complete_009d22ff(
+            78.04f, 1444.05f, 2.5755f, 2.5734f, 500.0f);
+        // The same tick a frame earlier, the delta just under the time.
+        const bool neither = torpedo_aim_complete_009d22ff(
+            78.04f, 1444.05f, 2.5700f, 2.5734f, 500.0f);
+        // Closed to inside the threshold: clause 1 alone.
+        const bool range_only = torpedo_aim_complete_009d22ff(
+            78.04f, 100.0f, 0.05f, 0.1f, 500.0f);
+        // The ramp saturates at half the commanded speed, so a large time does
+        // not keep growing it and the range clause must still refuse at 2000 m.
+        const bool ramp_clamped = torpedo_aim_complete_009d22ff(
+            78.04f, 2000.0f, 0.05f, 4.0f, 500.0f);
+        check(turn_only && !neither && range_only && !ramp_clamped,
+              "009D236E sets state+2Ch when 009D235A finds the 009D1DED release "
+              "threshold above the range minus the 009D2345 ramp, or when "
+              "009D2368 finds the steering delta above the 009D1500 time to "
+              "target; the ramp is InterpolateClamped(0, 0, 1, speed/2, time) "
+              "so it saturates at half the commanded speed");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
