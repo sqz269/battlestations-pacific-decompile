@@ -21,6 +21,7 @@
 #include "bsp/plane_ai_control.hpp"
 #include "bsp/unit_rudder.hpp"
 #include "bsp/torpedo_approach_update.hpp"
+#include "bsp/torpedo_release_orders.hpp"
 #include "bsp/torpedo_task_arm.hpp"
 
 #include "bsp/game_hosts.hpp"
@@ -334,6 +335,18 @@ struct GameUnitSlot {
     int torpedo_release_orders_c58{0};
     int torpedo_arm_offers{0};
     int torpedo_arm_blocked_no_order_0099af53{0};
+    // unit+C25h, the byte 007C0EE2 raises before it calls the issuer, and the
+    // issue path's own bookkeeping. docs/TORPEDO_RELEASE_ORDERS.md.
+    bool torpedo_release_pending_c25{false};
+    int torpedo_orders_issued{0};
+    int torpedo_orders_issue_ticks{0};
+    int torpedo_peak_release_orders_c58{0};
+    // ctl+370h, the pilot control block's attack mode. 0099B740 raises it to
+    // kAttack on the flight leader's cruise-profile tick; 009D3F60 row 1 holds
+    // a task in prepare while it is kHold.
+    bsp::PilotAttackMode torpedo_attack_mode_370{bsp::PilotAttackMode::kHold};
+    int torpedo_attack_mode_raised_tick{-1};
+    bool torpedo_is_flight_lead{false};
     // The approach object embedded at task+3F8h.
     bsp::TorpedoApproachState torpedo_approach{};
     int torpedo_approach_ticks{0};
@@ -2305,6 +2318,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             std::sqrt(wv[0] * wv[0] + wv[1] * wv[1] + wv[2] * wv[2]) * step;
                         control_step_007da710(step, state.forward_speed);
                         advance_pose_0085e4d0(step);
+                        // 007CEA8D, after the think at 007CE865 and the latch at
+                        // 007CE96F: 007C0D90 hands out the release-order budget
+                        // unit+C58h. docs/TORPEDO_RELEASE_ORDERS.md.
+                        run_release_order_issue_007c0d90();
                         owner_.done("PlaneMotion::free_flight_007cc2f0", 0x007cc2f0u);
                     }
                     // 007D9C80 then 0085E4D0, the two steps that turn a plane.
@@ -2367,6 +2384,116 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // arm reaches is a method on this host; the ones whose
                     // bodies this packet did not read are recorded through the
                     // unimplemented-host mechanism.
+                    // ------------------------------------------------
+                    // 007C0D90 -> 007EEF30 -> 007BCBE0, the release-order
+                    // budget. docs/TORPEDO_RELEASE_ORDERS.md. This host has one
+                    // aircraft per slot rather than a shared pilot control
+                    // block, so the block's unit array at ctl+3D0h is modelled
+                    // as the ordered aircraft of the same flight, in slot order,
+                    // and the first of them is the leader.
+                    // ------------------------------------------------
+                    struct TorpedoReleaseOrderBinding final
+                        : bsp::TorpedoReleaseOrderHost {
+                        TorpedoReleaseOrderBinding(GameUnitsHost::Impl& owner,
+                                                   GameUnitSlot& slot)
+                            : owner_(owner), slot_(slot) {}
+
+                        bool unit_carries_droppable_device_007c0d90() override {
+                            // 007C0DB8-007C0E61: a device of class 25h holding
+                            // ordnance 2Ah whose descriptor answers 2Ch, 2Bh or
+                            // 33h. 2Bh is Torpedo and its descriptor answers 2Ah
+                            // too, so the slot's ordnance mask decides it here.
+                            // The six vtable slots are contract: unread.
+                            owner_.log.unimplemented(
+                                "Plane::droppable_device_walk", "007c0d90");
+                            const bsp::OrdnanceKindSet set{slot_.ordnance_mask};
+                            return bsp::ordnance_has_torpedo_2bh(set);
+                        }
+                        void set_release_pending_c25(bool value) override {
+                            slot_.torpedo_release_pending_c25 = value;  // 007C0EE2
+                        }
+                        void pre_issue_hook_007ee7f0() override {
+                            owner_.log.unimplemented(
+                                "PilotControl::pre_issue_hook", "007ee7f0");
+                        }
+                        bsp::ReleaseOrderIssueInputs read_issue_inputs() override {
+                            // 007EEF40 gates on ctl+390h > ctl+374h. Neither
+                            // field has a writer on the control block in this
+                            // image (the C7 scan at that displacement finds only
+                            // BSP_Gun_CreateAiBots and BSP_UnitGameObject_
+                            // Construct), so the pair is contract: unread and
+                            // the gate is taken as open for an ordered flight.
+                            owner_.log.unimplemented(
+                                "PilotControl::issue_authorisation_374_390",
+                                "007eef40");
+                            bsp::ReleaseOrderIssueInputs in;
+                            in.authorise_value_390 = 1.0f;
+                            in.authorise_threshold_374 = 0.0f;
+                            in.controlled_count_3cc = controlled_unit_count();
+                            in.force_flag_378 = false;
+                            return in;
+                        }
+                        int controlled_unit_count() override {
+                            int n = 0;
+                            for (const auto& s : owner_.slots) {
+                                if (s->torpedo_task_installed) ++n;
+                            }
+                            return n;
+                        }
+                        bool unit_lacks_follow_target_007b8ad0(int index) override {
+                            GameUnitSlot* const u = controlled(index);
+                            // 007B8AD0 tests unit+9D8h. An ordered aircraft has
+                            // a command target, which is what stands in for it.
+                            return u == nullptr || u->command_target_plus_one == 0;
+                        }
+                        bsp::ReleaseOrderSetInputs read_set_inputs(
+                            int index, int requested) override {
+                            bsp::ReleaseOrderSetInputs in;
+                            in.requested_count = requested;
+                            // unit+5Ch, the scene-node enabled byte that
+                            // BSP_SceneNode_Enable owns. Every live slot here is
+                            // registered in the world lists.
+                            GameUnitSlot* const u = controlled(index);
+                            in.scene_node_enabled_5c = u != nullptr;
+                            // 007B9140: kind 17h on the unit, else a device
+                            // holding 2Ah. The torpedo descriptor answers 2Ah.
+                            bool holds_2ah = false;
+                            if (u != nullptr) {
+                                const bsp::OrdnanceKindSet set{u->ordnance_mask};
+                                holds_2ah = bsp::ordnance_has_torpedo_2bh(set);
+                            }
+                            const bool device_table[1] = {holds_2ah};
+                            bsp::CanDropOrdnanceInputs can;
+                            can.unit_is_kind_17h = false;
+                            can.device_count_994 = 1;
+                            can.device_holds_2ah = device_table;
+                            in.can_drop_ordnance =
+                                bsp::unit_can_drop_ordnance_007b9140(can);
+                            return in;
+                        }
+                        void write_release_order_count(int index, int count) override {
+                            GameUnitSlot* const u = controlled(index);
+                            if (u == nullptr) return;
+                            u->torpedo_release_orders_c58 = count;   // 007BCBFD
+                            if (count > u->torpedo_peak_release_orders_c58) {
+                                u->torpedo_peak_release_orders_c58 = count;
+                            }
+                        }
+
+                       private:
+                        GameUnitSlot* controlled(int index) const {
+                            int n = 0;
+                            for (const auto& s : owner_.slots) {
+                                if (!s->torpedo_task_installed) continue;
+                                if (n == index) return s.get();
+                                ++n;
+                            }
+                            return nullptr;
+                        }
+                        GameUnitsHost::Impl& owner_;
+                        GameUnitSlot& slot_;
+                    };
+
                     // ------------------------------------------------
                     // 009D3420, the approach update the arm calls at 009D486F
                     // before the transition rule. docs/TORPEDO_APPROACH_UPDATE.md.
@@ -2454,11 +2581,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 bsp::kPilotTorpedoSpeedCeiling_00ce4c04;
                             ctl.profile_dirty_3ad = 1;
                             ctl.always_engage_369 = 0;
-                            // ctl+370h. 009D3210 shortcuts on 2 and
-                            // 009D3F60 picks prepare on 0; the arm
-                            // binding already carries 0, so both
-                            // halves read the same value.
-                            ctl.attack_mode_370 = 0;
+                            // ctl+370h, now live: 0099B740 raises it to 1 on
+                            // the flight leader's cruise-profile tick.
+                            // docs/TORPEDO_RELEASE_ORDERS.md.
+                            ctl.attack_mode_370 =
+                                static_cast<int>(slot_.torpedo_attack_mode_370);
                             // ctl+34Ch is the terrain sampler; without one the
                             // sector scan does not run, which is the native's
                             // own break at 009D374C.
@@ -2580,7 +2707,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             in.engaged.aim_flag_529 = slot_.torpedo_aim_flag_529;
                             in.engaged.has_engage_target_4c4 =
                                 slot_.command_target_plus_one != 0;
-                            in.engaged.pilot_control_mode_370 = 0;
+                            in.engaged.pilot_control_mode_370 =
+                                static_cast<int>(slot_.torpedo_attack_mode_370);
                             in.engaged.unit_has_no_follow_target = true;
                             in.engaged.engage_range_484 = slot_.torpedo_engage_range_8c;
                             // 009D324F FMUL double [00D05AC8] = 2.2,
@@ -2591,7 +2719,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 bsp::kTorpedoEngageRangeScale_00d05ac8;
                             in.engaged.engage_range_limit_488 =
                                 slot_.torpedo_engage_limit_90;
-                            in.entry.pilot_control_mode_370 = 0;
+                            in.entry.pilot_control_mode_370 =
+                                static_cast<int>(slot_.torpedo_attack_mode_370);
                             in.entry.attack_flag_52a = slot_.torpedo_attack_flag_52a;
                             in.entry.control_flag_369 = false;
                             in.entry.global_e17bf2 = false;
@@ -2711,12 +2840,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // cruising speed.
                             ap.speed_early_80 = bsp::kPilotTorpedoCruisingAltDefault;
                             ap.speed_late_7c = bsp::kPilotTorpedoCruisingAltDefault;
+                            // ctl+3D0h[0], the flight leader: the only task
+                            // whose 0099B740 raises the shared attack mode.
+                            bool lead_taken = false;
+                            for (const auto& s : owner_.slots) {
+                                if (s->torpedo_is_flight_lead) lead_taken = true;
+                            }
+                            unit_.torpedo_is_flight_lead = !lead_taken;
                             owner_.log.notef("torpedo task 009D4E30 kind Eh installed "
                                 "for an ordered aircraft; arm 009D4850 runs on the "
                                 "0.09 s pilot think; 009D4A70 sets the engage "
-                                "distance task+484h=%.1f (Pilot/Torpedo/AttackDist)",
-                                static_cast<double>(ap.engage_range_8c));
+                                "distance task+484h=%.1f (Pilot/Torpedo/AttackDist); "
+                                "flight_lead=%d",
+                                static_cast<double>(ap.engage_range_8c),
+                                unit_.torpedo_is_flight_lead ? 1 : 0);
                         }
+                        // 009D4A70's tail 0099B740, the cruise profile that
+                        // also sets the engage distance.
+                        run_attack_mode_tick_0099b740();
                         TorpedoArmBinding binding(owner_, unit_);
                         bsp::TorpedoTaskContext ctx;
                         ctx.task = &unit_;
@@ -2759,7 +2900,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             arm.engaged.aim_flag_529 = unit_.torpedo_aim_flag_529;
                             arm.engaged.has_engage_target_4c4 =
                                 unit_.command_target_plus_one != 0;
-                            arm.engaged.pilot_control_mode_370 = 0;
+                            arm.engaged.pilot_control_mode_370 =
+                                static_cast<int>(unit_.torpedo_attack_mode_370);
                             arm.engaged.unit_has_no_follow_target = true;
                             arm.engaged.engage_range_484 =
                                 unit_.torpedo_engage_range_8c;
@@ -2784,6 +2926,53 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             ++unit_.torpedo_blocked_by_arm;
                         }
                         (void)r;
+                    }
+
+                    // 007C0D90, the plane fixed step's release-order issue.
+                    // It assigns rather than accumulates, so a slot that is
+                    // already at 999 simply stays there.
+                    void run_release_order_issue_007c0d90() {
+                        if (!unit_.torpedo_task_installed) return;
+                        TorpedoReleaseOrderBinding binding(owner_, unit_);
+                        const bsp::ReleaseOrderIssueResult r =
+                            bsp::torpedo_issue_release_orders_007c0d90(binding);
+                        if (!r.walk_found_device) return;
+                        ++unit_.torpedo_orders_issue_ticks;
+                        unit_.torpedo_orders_issued += r.units_raised;
+                    }
+
+                    // 0099B740, the tail of the torpedo task's +54h cruise
+                    // profile 009D4A70. It is the one producer of attack mode 1
+                    // in the image, and only the flight leader's task runs it to
+                    // completion. docs/TORPEDO_RELEASE_ORDERS.md.
+                    void run_attack_mode_tick_0099b740() {
+                        bsp::PilotAttackModeInputs in;
+                        in.has_control_block_2fc = true;
+                        in.has_unit_2f4 = true;
+                        in.unit_is_flight_lead = unit_.torpedo_is_flight_lead;
+                        // The torpedo task inherits the base vtable +38h,
+                        // 0099B710, which is MOV AL,1 / RET.
+                        in.task_authorises_38h = true;
+                        const bsp::PilotAttackMode next =
+                            bsp::pilot_attack_mode_0099b740(
+                                unit_.torpedo_attack_mode_370, in);
+                        if (next != unit_.torpedo_attack_mode_370) {
+                            unit_.torpedo_attack_mode_370 = next;
+                            if (unit_.torpedo_attack_mode_raised_tick < 0) {
+                                unit_.torpedo_attack_mode_raised_tick =
+                                    unit_.torpedo_arm_ticks;
+                            }
+                        }
+                        // The mode lives on the pilot control block, which the
+                        // whole flight shares, so the leader's value is what
+                        // every aircraft of the flight reads.
+                        if (unit_.torpedo_is_flight_lead) {
+                            for (const auto& s : owner_.slots) {
+                                if (!s->torpedo_task_installed) continue;
+                                s->torpedo_attack_mode_370 =
+                                    unit_.torpedo_attack_mode_370;
+                            }
+                        }
                     }
 
                     // 009D15F0, the aim state's tick (state vtable 00D212FC
@@ -4389,6 +4578,21 @@ void GameUnitsHost::report() {
                         slot->torpedo_first_engaged_tick,
                         static_cast<double>(slot->torpedo_range_min),
                         static_cast<double>(slot->torpedo_range_last));
+                    host.log.notef("  torpedo %-12s orders: lead=%d "
+                        "issue_ticks=%d raised=%d peak_C58h=%d left=%d "
+                        "arm_offers=%d blocked_0099af53=%d attack_mode_370=%d "
+                        "raised_at_tick=%d drop_timer_98=%.1f",
+                        slot->row.name.c_str(),
+                        slot->torpedo_is_flight_lead ? 1 : 0,
+                        slot->torpedo_orders_issue_ticks,
+                        slot->torpedo_orders_issued,
+                        slot->torpedo_peak_release_orders_c58,
+                        slot->torpedo_release_orders_c58,
+                        slot->torpedo_arm_offers,
+                        slot->torpedo_arm_blocked_no_order_0099af53,
+                        static_cast<int>(slot->torpedo_attack_mode_370),
+                        slot->torpedo_attack_mode_raised_tick,
+                        static_cast<double>(slot->torpedo_drop_timer));
                 } else {
                     host.log.notef("  torpedo %-12s approach 009D3420: "
                         "ticks=%d no_target=%d replans=%d aim_ticks=%d | "
@@ -4452,16 +4656,32 @@ void GameUnitsHost::report() {
                                 "the contract this packet leaves open",
                                 orders, arm_blocked,
                                 static_cast<double>(-1.0f));
+                        } else if (worst_range >= 0.0f && worst_range >= engage) {
+                            // 009D3210 admits 2.2 times the engage distance, so
+                            // the rule leaves moveto, but the in-range latch
+                            // itself needs the range INSIDE it.
+                            host.log.notef("summary mission torpedo task: no "
+                                "release. 009D3420, 009D3210, ctl+370h and "
+                                "unit+C58h all pass and the rule reaches "
+                                "attackrun. The gate is the in-range latch "
+                                "approach+131h (task+529h) at 009D3774: it "
+                                "closes only below approach+8Ch, and the closest "
+                                "any aircraft came was %.1f against an engage "
+                                "distance of %.1f. Without the latch 009D4030 "
+                                "step 10 never promotes attackrun to aim, and "
+                                "009D49A0 only arms prepare+98h in prepare, so "
+                                "the %d offers at 0099AF9B spend nothing",
+                                static_cast<double>(worst_range),
+                                static_cast<double>(engage), arm_offers);
                         } else {
                             host.log.notef("summary mission torpedo task: no "
-                                "release. The gate is the range clause of "
-                                "009D3210 at 009D3243: approach+90h never fell "
-                                "under approach+8Ch * 2.2 ([00D05AC8]). Closest "
-                                "approach %.1f, engage distance 8Ch=%.1f, "
-                                "threshold %.1f",
+                                "release. The range reached the engage distance "
+                                "(closest %.1f against 8Ch=%.1f) and %d offers "
+                                "were made at 0099AF9B, so the gate is past "
+                                "009D3210 and past unit+C58h; inspect the "
+                                "per-aircraft state sequence above",
                                 static_cast<double>(worst_range),
-                                static_cast<double>(engage),
-                                static_cast<double>(engage) * 2.2);
+                                static_cast<double>(engage), arm_offers);
                         }
                     }
                 }

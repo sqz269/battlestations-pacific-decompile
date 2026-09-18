@@ -358,7 +358,7 @@ TorpedoApproachUpdateResult torpedo_approach_update_009d3420(
             float designated_xz[2] = {0.0f, 0.0f};
             if (host.target_world_xz(designated_xz)) {
                 // 009D3DDE-009D3E07: 00414C60 on the target point minus the
-                // designated entity, against the engage distance.
+                // flight leader's position, against the engage distance.
                 const float dx = target_point[0] - designated_xz[0];
                 const float dz = target_point[2] - designated_xz[1];
                 const float len = static_cast<float>(

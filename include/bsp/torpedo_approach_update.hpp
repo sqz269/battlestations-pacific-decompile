@@ -161,8 +161,14 @@ struct TorpedoApproachControl {
     unsigned char always_engage_369{0};// +369h, with the global at 00E17BF2
     int attack_mode_370{0};            // +370h
     bool has_terrain_34c{false};       // +34Ch != 0, the terrain sampler
-    bool has_designated_target_3d0{false};   // +3D0h != 0
-    bool designated_target_is_self{false};   // +3D0h == approach+4h
+    // +3D0h is an ARRAY of the units the block drives, count +3CCh, walked at
+    // 007EEF5C with LEA/ADD 4; 009D3D88 loads its FIRST element, the flight
+    // leader. The two names below are kept for src/game_hosts_units.cpp, which
+    // another agent holds; they mean "the block drives at least one unit" and
+    // "this approach's unit IS that leader". See the Corrections section of
+    // docs/TORPEDO_RELEASE_ORDERS.md.
+    bool has_designated_target_3d0{false};   // ctl->+3CCh > 0
+    bool designated_target_is_self{false};   // ctl->+3D0h[0] == approach+4h
 };
 
 // ---------------------------------------------------------------------------
