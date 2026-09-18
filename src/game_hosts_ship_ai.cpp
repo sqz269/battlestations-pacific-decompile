@@ -5303,11 +5303,15 @@ void GameShipAiHost::report() {
         host.summary.state_steps_real, host.summary.goal_sets, host.summary.goal_replans,
         host.summary.units_with_goal, host.summary.substate_steps,
         host.summary.navigate_mode_steps);
+    // driven= was retired by packet cc8_recon_sensor_pass_rule_c. units_driven was
+    // never incremented anywhere in the tree, so driven=0 read as a gate on the AI
+    // to rudder chain that does not exist: docs/SHIP_AI_HEADING_TO_RUDDER.md shows
+    // the chain runs, and live_pair_changes is the field that measures it.
     host.log.notef("summary mission ship ai ring hops=%llu gated_3f5=%llu writes=%llu "
-        "rudder_law=%llu deadbands=%llu live_pair_changes=%llu driven=%zu",
+        "rudder_law=%llu deadbands=%llu live_pair_changes=%llu",
         host.summary.ring_hops, host.summary.ring_gated_3f5, host.summary.ring_writes,
         host.summary.rudder_law_calls, host.summary.rudder_deadbands,
-        host.summary.live_pair_changes, host.summary.units_driven);
+        host.summary.live_pair_changes);
     host.log.notef("summary mission auto target thinks=%llu scans=%llu chose=%zu "
         "fire_target_sets=%llu attackmove_issues=%llu accepts=%zu",
         host.summary.thinks, host.summary.scans, host.summary.units_with_fire_target,
