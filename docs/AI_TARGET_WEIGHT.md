@@ -123,24 +123,37 @@ mission with land structures.
 
 ## 3. Validation
 
-**Not measured. The census this packet owes is blocked by a machine fault, not by the packet.**
+**Not measured. The census this packet owes is blocked by the environment, not by the packet, and
+the cause is known.**
 
-Every run on this host now fails before the window with
+Every run on this host fails before the window. Two failure texts were seen, both from FMOD and
+both before the renderer starts:
 
 ```
-startup failed: FMOD bank raw-length output unavailable: path=sound/gui/error.fsb
-bytes=2688 mode=2634 create_result=78 length_result=37 bank_returned=0
+FMOD EventSystem init ... result 61                              (16:01, 16:02)
+startup failed: FMOD bank raw-length output unavailable:
+  path=sound/gui/error.fsb bytes=2688 mode=2634
+  create_result=78 length_result=37 bank_returned=0              (later attempts)
 ```
 
-and the `device_hr=0x80004005` in the run summary is the renderer never starting, not a Direct3D
-fault. It began mid-session on an unchanged binary, after two 3000-frame runs had completed on the
-same build, and it reproduces on every mission across four clean attempts with no `bsp_game`
-process alive, no lock file, the bank file present and all eight audio endpoints reporting OK. It
-is not the launcher race fixed in `d8dfc77be`: there is no access violation, no mutex and a clean
-exit 1, and it does not clear on retry.
+**The cause is that the agents run in a remote-desktop session that has been disconnected since
+about 15:55, so that session has no audio endpoint.** `Win32_SoundDevice` reporting all eight
+devices `OK` is not a contradiction: those exist at the machine level, while what FMOD needs is the
+endpoint of session 1. The `device_hr=0x80004005` line in the run summary is the renderer never
+starting, downstream of this, and not a Direct3D fault; this packet chased Direct3D first and that
+was wrong.
 
-What **is** established: the build is clean at `/W4 /WX` and the existing tests pass, so the
-reconstruction compiles and nothing regressed in them.
+It is also not the launcher race fixed in `d8dfc77be`: there is no access violation, no mutex, the
+exit is a clean 1, and it does not clear on retry or after clearing stray processes and the lock
+file. This worktree is suspect-free for the earlier crash bisect, which is what the two 11 KB logs
+were used for.
+
+No run can start until the session is reconnected, so **every run in this packet is blocked**, and
+the census below is a plan rather than a measurement. IJN01 runs first when they work again,
+because it is the mission where admission should move.
+
+What **is** established without a run: the build is clean at `/W4 /WX` and both existing ctest
+cases pass, so the reconstruction compiles and nothing regressed in them.
 
 ### The movement to expect, when the machine runs again
 

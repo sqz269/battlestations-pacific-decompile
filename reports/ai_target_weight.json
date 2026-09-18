@@ -151,15 +151,16 @@
  ],
  "validation": {
   "status": "BLOCKED, not measured",
-  "reason": "every run on this host fails before the window with: startup failed: FMOD bank raw-length output unavailable: path=sound/gui/error.fsb bytes=2688 mode=2634 create_result=78 length_result=37 bank_returned=0. The device_hr=0x80004005 in the run summary is the renderer never starting, not a D3D fault",
-  "evidence_it_is_the_host": "it began mid-session on an UNCHANGED binary after two 3000-frame runs completed on merge e7ccd20c0; it reproduces on every mission over four clean attempts with no bsp_game alive, no lock file, the bank file present and all eight Win32_SoundDevice endpoints OK; and it is not the launcher race fixed in d8dfc77be, with no access violation, no mutex, a clean exit 1 and no clearing on retry",
+  "reason": "the agents run in a remote-desktop session disconnected since about 15:55, so that session has no audio endpoint and FMOD cannot initialise. Two texts were seen, both before the renderer starts: FMOD EventSystem init result 61 at 16:01 and 16:02, and later 'startup failed: FMOD bank raw-length output unavailable: path=sound/gui/error.fsb bytes=2688 mode=2634 create_result=78 length_result=37 bank_returned=0'. The device_hr=0x80004005 in the run summary is the renderer never starting, downstream of this, not a D3D fault",
+  "evidence_it_is_the_host": "Win32_SoundDevice reports all eight devices OK because they exist at the MACHINE level; what is missing is the endpoint of session 1. It began mid-session on an UNCHANGED binary after two 3000-frame runs completed on merge e7ccd20c0, reproduces on every mission over four clean attempts with no bsp_game alive, no lock file and the bank file present, and is not the launcher race fixed in d8dfc77be: no access violation, no mutex, a clean exit 1, no clearing on retry. This worktree is suspect-free for that earlier bisect",
   "what_is_established": "the build is clean at /W4 /WX and both existing ctest cases pass",
   "expected_movement": {
    "IJN01": "the mission that should move: 239 land forts and 2450 served members each scoring 321 candidates, so scored keeps 465500 while every land-fort candidate drops to a hundredth of its class weight unless it is a command building; the attackmove/settarget split should leave 2250/150 and the pilot-attack table should change membership",
    "USN02": "the ship control: fourteen party-0 members, no land forts, so the trio never fires and 616 served with 559 attackmove should be unchanged",
    "USN01": "the null check: zero served for the native distance gate, nothing here can move it",
    "objective_hits": "zero on all three, because the eight sets hold no units; a non-zero value would contradict docs/MISSION_OBJECTIVES.md"
-  }
+  },
+  "unblocks_when": "the remote-desktop session is reconnected; IJN01 runs first"
  },
  "remaining": [
   "00A08460's per-barrel reload, accuracy and shot count, and a route from the gunnery host to the AI coordinator that avoids a wiring line in src/game_hosts.cpp",
