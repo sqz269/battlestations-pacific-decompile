@@ -586,6 +586,7 @@ struct GameUnitSlot {
     // answered, kept for the census only.
     float plane_commanded_altitude{-1.0f};
     float plane_commanded_pitch{0.0f};
+    float plane_dive_probe_timer{0.0f};
     // unit+0BBCh and unit+0BB0h+10h, the latched throttle and air brake. The
     // latch 007B9783 copies the whole live block, not just the three stick
     // axes, and both of these are drag or thrust inputs.
@@ -2983,6 +2984,82 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::accumulate_free_flight_007db680(state, cls, tuning, step);
                         const bsp::PlaneBodyAcceleration body =
                             bsp::fold_world_into_body_007d8470(acc, state.world_to_body);
+                        // Packet cc8_plane_dive_instrumented. docs/PLANE_DIVE_RESPONSE.md
+                        // section 3 shows the host's own terms capping any dive at about
+                        // 129 m/s while two runs measured 141.5 to 141.9 at the water.
+                        // This prints the four accumulator triples before the fold, the
+                        // folded body total, and the three gravity candidates the doc
+                        // named by address, once a second for a diving aircraft.
+                        unit_.plane_dive_probe_timer += step;
+                        if (unit_.torpedo_task_installed &&
+                            unit_.plane_pitch_angle_c64 < -0.3f &&
+                            unit_.plane_dive_probe_timer >= 1.0f) {
+                            unit_.plane_dive_probe_timer = 0.0f;
+                            const float* const wv = unit_.plane_world_velocity;
+                            const float spd = std::sqrt(wv[0] * wv[0] + wv[1] * wv[1] +
+                                                        wv[2] * wv[2]);
+                            const float* const fwd = unit_.motion.pose_row2;
+                            // the along-path share of each term, which is what the
+                            // 1D model in local/dive_sim.py compares against
+                            const float nx = spd > 1e-6f ? wv[0] / spd : 0.0f;
+                            const float ny = spd > 1e-6f ? wv[1] / spd : 0.0f;
+                            const float nz = spd > 1e-6f ? wv[2] / spd : 0.0f;
+                            // 007D8470 returns a BODY acceleration; the arm rotates it
+                            // back through the transpose of the pose rows. That rotation
+                            // is gravity candidate 3.
+                            const float* const probe_rows[3] = {unit_.motion.pose_row0,
+                                unit_.motion.pose_row1, unit_.motion.pose_row2};
+                            float wa[3] = {0.0f, 0.0f, 0.0f};
+                            for (int c = 0; c < 3; ++c) {
+                                for (int r = 0; r < 3; ++r) {
+                                    wa[c] += probe_rows[r][c] * body.total[r];
+                                }
+                            }
+                            const float along = wa[0] * nx + wa[1] * ny + wa[2] * nz;
+                            owner_.log.notef(
+                                "  dive probe %-12s alt=%.1f spd=%.2f pitch=%.4f "
+                                "path=%.4f aoa=%.4f | along=%.3f thrust=%.3f drag=%.3f "
+                                "| damp=(%.3f %.3f %.3f) wdrag=(%.3f %.3f %.3f) "
+                                "lift=(%.3f %.3f %.3f) grav=(%.3f %.3f %.3f) "
+                                "| body=(%.3f %.3f %.3f) world=(%.3f %.3f %.3f) "
+                                "| fwd=(%.3f %.3f %.3f) cheat=%.2f",
+                                unit_.row.name.c_str(),
+                                static_cast<double>(unit_.motion.position[1]),
+                                static_cast<double>(spd),
+                                static_cast<double>(unit_.plane_pitch_angle_c64),
+                                static_cast<double>(std::atan2(
+                                    static_cast<double>(wv[1]),
+                                    std::sqrt(static_cast<double>(wv[0]) * wv[0] +
+                                              static_cast<double>(wv[2]) * wv[2]))),
+                                static_cast<double>(std::acos(std::max(-1.0, std::min(1.0,
+                                    static_cast<double>(nx * fwd[0] + ny * fwd[1] +
+                                                        nz * fwd[2]))))),
+                                static_cast<double>(along),
+                                static_cast<double>(state.thrust_accel),
+                                static_cast<double>(state.drag_accel),
+                                static_cast<double>(acc.body_damping[0]),
+                                static_cast<double>(acc.body_damping[1]),
+                                static_cast<double>(acc.body_damping[2]),
+                                static_cast<double>(acc.world_drag[0]),
+                                static_cast<double>(acc.world_drag[1]),
+                                static_cast<double>(acc.world_drag[2]),
+                                static_cast<double>(acc.body_lift[0]),
+                                static_cast<double>(acc.body_lift[1]),
+                                static_cast<double>(acc.body_lift[2]),
+                                static_cast<double>(acc.world_gravity[0]),
+                                static_cast<double>(acc.world_gravity[1]),
+                                static_cast<double>(acc.world_gravity[2]),
+                                static_cast<double>(body.total[0]),
+                                static_cast<double>(body.total[1]),
+                                static_cast<double>(body.total[2]),
+                                static_cast<double>(wa[0]),
+                                static_cast<double>(wa[1]),
+                                static_cast<double>(wa[2]),
+                                static_cast<double>(fwd[0]),
+                                static_cast<double>(fwd[1]),
+                                static_cast<double>(fwd[2]),
+                                static_cast<double>(tuning.accel_cheat_mul));
+                        }
                         // 007D8470 returns a BODY-frame acceleration - its own
                         // name says so, and free_flight_world_up_acceleration in
                         // the same header rotates the result back "through the
