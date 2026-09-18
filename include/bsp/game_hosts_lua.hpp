@@ -139,6 +139,9 @@ struct GameVehicleClassRow {
     // plane dives toward a lower commanded altitude but never climbs toward a
     // higher one through that routine (docs/PLANE_FLIGHT.md, "009FB800").
     float drop_angle{0.0f};
+    // desc+194h SwimHeight, 007D2413. One of the two terms of the free-flight
+    // arm's water line; the other, desc+508h, is derived at 007C4D03.
+    float swim_height{0.0f};
 };
 
 // Actual selected class+570 bits and the existing producer's provenance.

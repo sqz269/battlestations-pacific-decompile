@@ -472,6 +472,38 @@ struct PlaneBodyAcceleration {
 // u == 0 -> 0, else pow(|u|, DragFuncPower) through FYL2X / F2XM1 / FSCALE.
 float aero_response_curve_007d92b0(float speed_ratio, const PlaneFreeFlightTuning& tuning);
 
+// ---------------------------------------------------------------------------
+// 007D98F0, the class loader's climb-angle solver, and the two descriptor
+// fields 007C4850 derives with it.
+//
+// 007C4BC5-007C4C14:
+//   desc+1E4h = 007D98F0(desc, tuning+24Ch LevelFlight * desc+184h StallSpd)
+//   desc+1E8h = 007D98F0(desc, desc+18Ch TravelSpeed)
+//   desc+1ECh = desc+1E4h * 0.6            ; 007C4C0E FMUL double [00CEFF98]
+//
+// 007D98F0 is a bisection on [0, DEG(80)] - the float at 00CF8858 and the
+// double at 00D05A28 are both 1.39626 - taking the midpoint through the double
+// 0.5 at 00D7A280 and stopping when the bracket closes to the double
+// 1.745e-4 = DEG(0.01) at 00D06850. Its predicate is 007D9360(angle, speed,
+// 0.04f [00CE3910], 10), a trial integration of the flight law that answers
+// with the speed the aircraft still has; the angle is accepted when that speed
+// is at least the probe speed, so the search returns the steepest climb the
+// aircraft can hold at that speed.
+//
+// SUBSTITUTION, labelled: 007D9360 is a 1330-byte trial simulation and is NOT
+// reproduced. Ten steps of 0.04 s test the sign of dv/dt at the probe speed,
+// and this host's own law gives that sign in closed form, so the predicate here
+// is `thrust - drag(v) - AccelCheatMul * 9.81 * sin(angle) >= 0`. The bisection
+// around it keeps the native's bounds, midpoint, tolerance and acceptance test.
+struct PlaneClimbAngleInputs {
+    float accel{0.0f};        // desc+164h Accel
+    float max_spd{0.0f};      // desc+188h MaxSpd; desc+50Ch is Accel / MaxSpd^2
+    float probe_speed{0.0f};  // LevelFlight * StallSpd, or TravelSpeed
+    float throttle{1.0f};     // the trial throttle; 007D9360's own is unread
+    float accel_cheat_mul{1.5f};  // tuning+31Ch, the scale on both 9.81 terms
+};
+float max_sustainable_climb_angle_007d98f0(const PlaneClimbAngleInputs& in);
+
 // 007DB8A7..007DB8B9. |vz| is formed as -0.0f - vz (00D7A208), so a zero vz
 // with either sign fails the >= 0.1f test (00D7A3A0, a double) and the angle is
 // exactly zero; otherwise -vy / vz, positive when the plane is sinking.
