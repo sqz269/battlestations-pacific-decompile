@@ -1,0 +1,86 @@
+{
+  "packet": "cc8_ai_command_lifetime",
+  "owner": "agent/cc8-recon-binding",
+  "summary": "Answered why only one attack order lands, and corrected the previous packet's premise. 00A2CBD0 replaces a group's command whenever the target differs, so the missing AI command object was never the blocker. The caps are the mode planner's first-owned-group rule and, in the host, a target set of one group. The second was caused by src/game_hosts_ai.cpp leaving 00A2E260's split a no-op; the split is implemented and measured.",
+  "ghidra_writes": "none. Read-only analysis; one existing ledger name gained appended evidence.",
+  "calls": [
+    {
+      "address": "009fe080",
+      "native": "BSP_Entity_IsGroupableCombatant",
+      "role": "reconstructed as ai_entity_is_groupable_combatant_009fe080 and used by the host's split and combatant test.",
+      "evidence": "Body 009FE080-009FE0AA read in full. 009FE088 PUSH 18h through vtable[+5Ch] tests the plane squadron; that arm CALLs 007EDA90 at 009FE092 and 009FE097 NEG AL / SBB EAX,EAX / ADD EAX,1 returns its logical NOT. The 009FE0A0 tail is PUSH 6, the ship base, alone. The plane base 0Fh is not admitted.",
+      "prior": "The same reading was already in the ledger from packet cc2_ai_group_think. What is new here is 007EDA90's decoded body and the consequence for the coordinator host."
+    },
+    {
+      "address": "007eda90",
+      "native": "the squadron exclusion",
+      "role": "reconstructed as ai_squadron_excluded_007eda90.",
+      "evidence": "007EDA91 MOV ESI,[ECX+3D0h] with 007EDA99 JE ending false; 007EDAA0 PUSH 17h through vtable[+5Ch] with 007EDAA8 JE ending false; 007EDAAA CMP byte [ESI+C24h],0 with 007EDAB1 JNE ending false; 007EDAB3 MOV AL,1."
+    },
+    {
+      "address": "00a2c5a0",
+      "native": "BSP_AiGroup_HasGroupableCombatant",
+      "role": "reconstructed as ai_group_has_groupable_combatant_00a2c5a0; the host's group_has_groupable_combatant now uses it.",
+      "evidence": "00A2C5A0 loads the sentinel at [ecx+5640h] and walks the list at ecx+563Ch; 00A2C5CE CALLs 009FE080 on the node's +8h and 00A2C5D5 JNE leaves with true. The group test and the split subset are one predicate, not two."
+    },
+    {
+      "address": "00a2e260",
+      "native": "the split",
+      "role": "its decision is reconstructed as ai_group_split_runs_00a2e260 and the host now implements the split.",
+      "evidence": "docs/AI_GROUP_THINK.md, body read in full there: the subset is split out only when non-empty and strictly smaller than the population, 00A2E334 JBE and 00A2E342 JNC, both unsigned. The first split member creates the new group at 00A2E42A.",
+      "census_row": "AiGroups::split_detached_members"
+    },
+    {
+      "address": "00a2cbd0",
+      "native": "the attack order",
+      "role": "its two head tests and its arm choice are reconstructed as ai_attack_order_outcome_00a2cbd0 and ai_attack_arm_00a2cbd0.",
+      "evidence": "docs/AI_PLANNERS.md, body 00A2CBD0-00A2CCE8 read in full there: the population test, the IsType(ATTACK) plus command+1Ch test, the 00BD2F40 draw against the aggressive ratio, and the delete of the old command through its vtable slot 0 with flag 1 before group+564Ch takes the new one."
+    },
+    {
+      "address": "00a13340",
+      "native": "the command factory",
+      "role": "NOT read. The packet did not need it: the order count is not capped by the command object.",
+      "evidence": "docs/AI_PLANNERS.md, 'installs nine of these vtables; it was not read'."
+    },
+    {
+      "address": "00a1cb80",
+      "native": "the planner's scoring loop",
+      "role": "not re-read. It is the remaining cap on the order count: the mode planners call it on the planner's FIRST owned group only.",
+      "evidence": "docs/AI_PLANNERS.md, 'The mode planners' think', 00A26510 and 00A265F0 read in full: 00A1CB80(planner)(firstOwnedGroup, 1.0f, [00F8A9E0] == 3)."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "cc8_ai_coordinator_tick's report and doc: 'one attack order lands per mission and never a second, because the already-on-target test returns early and nothing clears the command without an AI command object'",
+      "is": "The second clause is wrong. 00A2CBD0 deletes the old command and installs the new one whenever the target differs, so a different target lands a different order with no clear needed. The caps are (1) the mode planner ordering its first owned group only and (2) a target set of one group in the host.",
+      "how_found": "Re-reading 00A2CBD0's transcribed body in docs/AI_PLANNERS.md against the packet's own claim."
+    },
+    {
+      "was": "src/game_hosts_ai.cpp split_detached_members: a no-op, on the reasoning that nothing in this process detaches a member",
+      "is": "00A2E260 does not split on detachment; it splits on 009FE080 and is the group multiplier. Implemented.",
+      "measured": "IJN01 groups 2 to 4, splits_taken 0 to 2, planner claims 1 to 2."
+    },
+    {
+      "was": "src/game_hosts_ai.cpp group_has_groupable_combatant: ship base OR plane base",
+      "is": "009FE080 admits a ship base, or a plane squadron 18h whose carrier link fails 007EDA90. The plane base 0Fh is never admitted.",
+      "measured": "IJN01 commands issued 79 to 34, of which 30 artillery tokens and 4 dogfight."
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1, Win32 /W4 /WX: clean.",
+    "tests": "ctest --test-dir build/win32 -C Release: 2/2 pass. No test added: the rules are exercised by the host on three missions and a unit test would mirror the implementation.",
+    "ijn01": {
+      "coordinator_packet": "groups_created=2 splits_taken=0 members_added=141 claims=1 commands=79 attack_orders=1; plane yaw_plans=5904 heading_change=8.881 rad distance=1270266.90 m; pilot attack ordered=4; gunnery hull=4 deaths=2 damage=500.0",
+      "with_split": "groups_created=4 splits_taken=2 members_added=190 claims=2 commands=34 attack_orders=1; plane yaw_plans=5904 heading_change=8.881 rad distance=1270266.90 m; pilot attack ordered=4; gunnery hull=4 deaths=2 damage=500.0",
+      "groups_after": "team=0 members=34 claimed commanded; team=0 members=45; team=1 members=29; team=1 members=2",
+      "attribution": "The 45 orders that went away were inert: plane motion, the pilot attack table and the gunnery outcome are identical to the digit. The grouping is now faithful and nothing that was working stopped working. The order count did not move, which isolates the mode planner's first-owned-group rule as the remaining cap: two claims produced two owned groups and still one order.",
+      "note": "The fixed-step hook was applied locally to take this measurement and reverted before the commit. USN01 and USN02 were not re-run for this packet; the change is to grouping, and IJN01 is the mission with the mixed ship and aircraft population that exercises the split."
+    }
+  },
+  "uncertainties": [
+    "007EDA90's three inputs have no producer in this process: nothing builds the squadron's +3D0h carrier link, its IsKindOf(17h) answer or the +C24h byte. The host leaves all three false, so it admits every squadron as groupable. Four of IJN01's units take that path; the other thirty of the commanded group are ship bases and do not depend on it.",
+    "00A13340, the command factory, is still unread. It matters for 00A2C8D0's merge predicate at vtable[+14h], not for the order count.",
+    "Whether a planner that owns several groups orders only the first natively too, or whether 00A179E0's engagement pass orders the rest. 00A179E0's body is unread.",
+    "USN01 and USN02 were not re-measured with the split."
+  ]
+}

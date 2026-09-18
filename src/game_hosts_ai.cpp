@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 
+#include "bsp/ai_command_lifetime.hpp"
 #include "bsp/ai_group_think.hpp"
 #include "bsp/ai_planners.hpp"
 #include "bsp/game_hosts.hpp"
@@ -236,11 +237,39 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
 
     void split_detached_members(void* group) override {
-        // 00A2E260, body read in full. Nothing in this process detaches a
-        // member from its group other than the eviction above, so the split
-        // finds no detached member and the call is recorded with its own count.
+        // 00A2E260, body read in full: build the subset of members for which
+        // 009FE080 holds and move it into a NEW group, but only when the subset
+        // is non-empty and strictly smaller than the population (00A2E334 JBE,
+        // 00A2E342 JNC, both unsigned). This is the group multiplier. Leaving
+        // it a no-op, as packet cc8_ai_coordinator_tick did, is why that
+        // packet measured one group per team and therefore one attack order:
+        // with a single enemy group the planner re-picks the same target every
+        // think and 00A2CBD0's second test skips it.
         ++summary.splits;
-        (void)group;
+        Group* g = group_at(group);
+        if (g == nullptr) return;
+        std::vector<std::size_t> groupable;
+        for (const std::size_t unit : g->members) {
+            if (bsp::ai_entity_is_groupable_combatant_009fe080(combatant_facts(unit))) {
+                groupable.push_back(unit);
+            }
+        }
+        if (!bsp::ai_group_split_runs_00a2e260(groupable.size(), g->members.size())) {
+            done("AiGroups::split_detached_members", 0x00a2e260u);
+            return;
+        }
+        std::vector<std::size_t> kept;
+        for (const std::size_t unit : g->members) {
+            if (std::find(groupable.begin(), groupable.end(), unit) == groupable.end()) {
+                kept.push_back(unit);
+            }
+        }
+        g->members.swap(kept);
+        // 00A2E42A: the first split member creates the new group with 00A2DFA0,
+        // the rest are added with 00A2D8E0.
+        Group* made = static_cast<Group*>(create_group(handle(groupable.front())));
+        for (std::size_t i = 1; i < groupable.size(); ++i) attach(made, groupable[i]);
+        ++summary.splits_taken;
         done("AiGroups::split_detached_members", 0x00a2e260u);
     }
 
@@ -466,12 +495,15 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return g != nullptr ? static_cast<void*>(g->claimed_by) : nullptr;
     }
     bool group_has_groupable_combatant(void* group) override {
-        // 00A2C5A0, body read in full: a member that is a combatant class.
+        // 00A2C5A0 walks the member list at group+563Ch and calls 009FE080 on
+        // each member's +8h (00A2C5CE), so the group answer is the disjunction
+        // of the SAME predicate the split uses. It does not admit the plane
+        // base 0Fh: only a ship base, or a plane squadron 18h whose carrier
+        // link fails 007EDA90.
         Group* g = group_at(group);
         if (g == nullptr) return false;
         for (const std::size_t unit : g->members) {
-            if (units.unit_is_kind_of(unit, bsp::kUnitGunneryKindShipBase) ||
-                units.unit_is_kind_of(unit, bsp::kUnitGunneryKindPlaneBase)) {
+            if (bsp::ai_entity_is_groupable_combatant_009fe080(combatant_facts(unit))) {
                 done("AiParties::group_has_groupable_combatant", 0x00a2c5a0u);
                 return true;
             }
@@ -611,6 +643,16 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         case 5: return bsp::AiPlannerKind::Siege;
         default: return bsp::AiPlannerKind::Competitive;
         }
+    }
+
+    // 009FE080's inputs. The squadron arm's three reads have no producer in
+    // this process: nothing creates a PlaneSquadronGen, so is_plane_squadron is
+    // false for every unit and the ship-base tail is the whole answer.
+    bsp::AiGroupableCombatantFacts combatant_facts(std::size_t unit) {
+        bsp::AiGroupableCombatantFacts facts;
+        facts.is_plane_squadron = units.unit_is_kind_of(unit, 0x18);
+        facts.is_ship_base = units.unit_is_kind_of(unit, bsp::kUnitGunneryKindShipBase);
+        return facts;
     }
 
     bsp::AiGroupCandidateFlags unit_flags(std::size_t unit) {
@@ -775,10 +817,10 @@ void GameAiCoordinatorHost::report() {
     host.summary.units_with_task = static_cast<unsigned long long>(with_task);
     host.log.notef("summary mission ai coordinator game_mode=%d compose=%llu seeds=%llu "
         "groups_created=%llu destroyed=%llu members_added=%llu evicted=%llu splits=%llu "
-        "auto_merges=%llu prox_merges=%llu member_passes=%llu",
+        "splits_taken=%llu auto_merges=%llu prox_merges=%llu member_passes=%llu",
         s.game_mode, s.compose_passes, s.seed_candidates, s.groups_created,
         s.groups_destroyed, s.members_added, s.members_evicted, s.splits,
-        s.auto_merges, s.proximity_merges, s.member_passes);
+        s.splits_taken, s.auto_merges, s.proximity_merges, s.member_passes);
     host.log.notef("summary mission ai parties calls=%llu thought=%llu planner_ticks=%llu "
         "claims=%llu spawn_arms=%llu attack_orders=%llu cautious=%llu movetoattack=%llu "
         "commands=%llu refused=%llu units_with_task=%llu first_command=%.2f s",
