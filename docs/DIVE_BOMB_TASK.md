@@ -887,3 +887,54 @@ Until then the dive-bomb chain is complete up to the roll-in and stops there.
 `007F0280` at `009C42B8` is a contract, so the host's run-in flies straight at the target rather
 than weaving. Its three float arguments are the `80.0` at `00CE5444`, the `60.0` at `00CEB4B0` and
 the `120.0` at `00D05804`, which the listing pushes; the body was not read.
+
+## The roll-arm gate: a task's roll does survive, and its pitch was never at risk
+
+`BSP_PilotBot_PlanControls` is one routine, `0099D300`-`0099EBAB`, so `0099E2BA` is a region inside
+it rather than a function. Read whole from the planner's load of the mode word to the slot write.
+
+### Roll, slot 2, mode `cmd+2CCh`: the gate exists
+
+| address | instruction | effect |
+| --- | --- | --- |
+| `0099DDBE` | `MOV ECX,[ESI+2CCh]` | loads the mode word **the task wrote** |
+| `0099DE8A` | `CMP ECX,2` | |
+| `0099DE8D` | `JNZ 0099E26E` | anything but 2 jumps **past** the planner's own mode write |
+| `0099E264` | `MOV [ESI+2CCh],1` | reached only on the mode-2 path |
+| `0099E26E` | `CMP [ESI+2CCh],1` | on the jumped-to path this still holds the **task's** value |
+| `0099E275` | `JNZ 0099E3BF` | skips the entire roll arm |
+| `0099E39D` | `FSTP [ESI+290h]` | the planner's roll desired, reached only when the compare passes |
+| `0099E3AE` | `MOV byte [ESI+294h],1` | its active byte |
+| `0099E3B5` | `MOV [ESI+2CCh],0` | the mode is consumed |
+
+`ECX` is unambiguous: filtering the whole range `0099DDBE`-`0099DE8D` for the register gives exactly
+three lines, the load, a `TEST` and the `CMP ECX,2`, with no intervening write.
+
+Two more jumps reach `0099E26E` the same way, `0099DE63` and `0099DE6F`, both early exits inside the
+mode-2 region, so the compare at `0099E26E` is live on four paths.
+
+**So the rule is:** `cmd+2CCh == 2`, a commanded heading, lets the planner compute and write the
+bank. `== 1` also lets it through. **Anything else, including the `0` the turndown writes at
+`009C462F`, skips the arm and leaves the task's `cmd+290h` standing.**
+
+The native turndown's roll is therefore **not** overwritten. Mine was, because this host's roll arm
+was unconditional.
+
+### Pitch, slot 3, mode `cmd+2D0h`: there was never an overwrite to gate
+
+The planner does not write the pitch slot in the arm region at all. An exhaustive census of
+`+298h`, `+29Ch` and `+2A0h` across `0099D300`-`0099EBAB` finds writes only at `0099D36F`/`0099D377`
+and `0099D679`/`0099D681`, both in the early reset, and the arm region only **reads** them, at
+`0099E3ED`, `0099E3F8` and `0099E402`. The `0099E3BF` `TEST`/`JNZ` on `cmd+2D0h` selects between two
+demand computations and both converge; it does not skip a write.
+
+`0099E68D` is not a slot write either: it is `MOVSS XMM0,[ESP+44h]`, a stack read inside the pitch
+computation.
+
+So a task's pitch command already survived, and only the roll needed the gate.
+
+### The host
+
+`src/game_hosts_units.cpp` now applies the same condition around
+`pilot_plan_roll_0099e2ba`'s slot write, and the turndown binding sets the mode word to `0` when it
+commands the roll (`009C462F`) and to `1` when it hands the axis back (`009C464E`).
