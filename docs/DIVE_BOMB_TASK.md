@@ -700,8 +700,59 @@ image's own behaviour. Reaching a bomb release needs a mission that issues a `Pi
 bomb-carrying aircraft that does not answer `IsKindOf(10h)`, or the `--order` injection
 `src/game_hosts.cpp` provides.
 
-**Open, not established.** `ConSBD1`'s `artillery` row prints `current=0`, and
-`store_unit_command_target` fills only from current rows, so the non-zero `command_target_plus_one`
-these aircraft carry must come from a row this reading did not find. That is also why the
-pilot-attack range computes exactly `0.0` rather than a real distance: both positions it differences
-are the same. Finding that row is the remaining piece of gate 1.
+**Closed.** The non-zero `command_target_plus_one` comes from the aircraft's authored **`moveto`**
+row, not from an attack order. IJN01's authored-token census reports `moveto` x142 and
+`summary mission commands` reports `resolved=142`, an exact match; the `artillery` x30 rows resolve
+to `attackmove`, carry no target and print `current=0`, so `store_unit_command_target` skips them.
+USN01 is the same shape with `resolved=34`.
+
+So a dive bomber's commanded target is a **movement** target, and it is co-located with the
+aircraft, which is why both the pilot-attack range and `approach+BCh` difference to exactly `0.0`.
+That is the third reason the loose host gate was wrong: `command_target_plus_one != 0` is true for
+any unit with a `moveto`, which is most of the mission.
+
+## The class gate, and the host contract for it
+
+`include/bsp/dive_bomb_task.hpp` now carries `kDiveBombCommandClass` = `00E08F20` and
+`dive_bomb_task_installed_for_class`. The host edit that uses them is three lines:
+
+1. `GameUnitSlot` gains `unsigned int attack_command_class{0};`.
+2. `GameUnitsHost` gains `void store_unit_attack_command_class(std::size_t index, unsigned int c)`,
+   the same shape as `store_unit_command_target`.
+3. `GameScriptOrdersHost::run_pilot_set_target` calls it right beside
+   `bsp::bot_install_command_task_0099a170`, where `chosen` is already in hand
+   (`src/game_hosts_script_orders.cpp` around the `PilotSetTarget task:` line).
+4. `run_dive_bomb_task_arm_009c8790` replaces its `command_target_plus_one != 0` and ordnance tests
+   with `bsp::dive_bomb_task_installed_for_class(unit_.attack_command_class)`.
+
+With that gate **IJN01 and USN01 both install zero dive-bomb tasks**, and that is the correct
+result: neither mission ever hands an aircraft the divebomb class. Saying so plainly is the point.
+The 27 and 5 installs the earlier census reported were the loose gate, not the game.
+
+## The `--order` injection cannot express a `PilotSetTarget`
+
+Read only; `src/game_hosts.cpp`, `src/game_hosts_mission_frame.cpp` and
+`src/game_hosts_script_orders.cpp` are the Codex orchestrator's and were not edited.
+
+`--order <token>:<target> --order-unit <name> --order-frame N` reaches
+`GameUnitsHost::issue_player_command` (`src/game_hosts_units.cpp`), which resolves the token against
+the **scene-command registry** the way `0046AAB0` does and places a command row. `settarget` is a
+registry row (`src/entity_orders.cpp`, class `00E08EF8`), so the switch does place an order.
+
+What it does not do is run the chooser. `007EEC50` and the `0099A170` install live only in
+`GameScriptOrdersHost::run_pilot_set_target` (`src/game_hosts_script_orders.cpp`), reached from the
+Lua binding `PilotSetTarget` `008A4C90` that a mission script calls. That is where the run's
+`PilotSetTarget choose: 007EEC50 -> ...` and `PilotSetTarget task: 0099A170 -> 1` lines come from,
+and nothing on the command line drives it.
+
+**What the injection lacks, exactly:** a route from a command-line switch to
+`GameScriptOrdersHost::run_pilot_set_target`, or to its tail `bsp::attack_command_choose` plus
+`bsp::bot_install_command_task_0099a170`. Either a new switch such as
+`--pilot-set-target <unit>:<target>`, or an `--order` token routed through the script-orders host
+instead of the scene-command registry, would do it. Both are edits to files this packet does not
+own, so this is a request to the Codex side rather than a change here.
+
+Without it, no run of IJN01 or USN01 can exercise the dive-bomb state machine past `turndown`,
+because neither mission's script ever calls `PilotSetTarget` on a bomb-carrying aircraft: IJN01
+makes no `PilotSetTarget` call at all, and USN01's five all name `Mav1`..`Mav5`, which are torpedo
+armed and take the torpedo class.

@@ -534,6 +534,23 @@ struct DiveBombBreakOffInputs {
 bool dive_bomb_should_break_off_009c8a90(const DiveBombBreakOffInputs& in) noexcept;
 
 // ---------------------------------------------------------------------------
+// Which command installs kind 8. docs/ATTACK_COMMANDS.md: 007EEC50 picks the
+// class and 0099A170 turns it into a task, so a task exists only for a unit
+// whose chosen class is the divebomb one. Nothing else installs it, and in
+// particular an `artillery` order, which 0046AAB0 resolves to `attackmove`
+// 00E08F78 outright, never reaches the chooser at all.
+// ---------------------------------------------------------------------------
+inline constexpr unsigned int kDiveBombCommandClass = 0x00E08F20u;
+
+// The gate the host arm needs: the task runs for this unit only when 007EEC50
+// actually chose the divebomb class for it. Carrying bomb ordnance and holding
+// some commanded target is not the same test, and the difference is 27 aircraft
+// in IJN01 that the image never gives a kind 8 task.
+inline bool dive_bomb_task_installed_for_class(unsigned int chosen_class) noexcept {
+    return chosen_class == kDiveBombCommandClass;
+}
+
+// ---------------------------------------------------------------------------
 // The host. One virtual per native call site the arm sequence reaches, on top
 // of the shared BotTaskStateHost of include/bsp/bot_task_states.hpp.
 // ---------------------------------------------------------------------------
