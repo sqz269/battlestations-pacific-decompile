@@ -1,0 +1,115 @@
+{
+ "packet": "cc8_airops_load_from_scene",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/AIROPS_LOAD_FROM_SCENE.md",
+ "tree_base": "48a0435a2",
+ "result": "006CADD0 is a three-mode serializer, not a loader: the mode is session+4h and the context session+8h. Mode 1, the scene property-bag load, is read whole and built for MotherShipGen and AirField rows. GetProperty now serves a real deck. Modes 2 and 3 are characterised only.",
+ "question": "Read 006CADD0 whole: the scene's NumSlots and slots, the block at +4Ch/+50h with the 58h stride, every slot field's authored source; then build it for MotherShip and AirField units when their scene rows load.",
+ "answer": "Mode 1 reads, in order, NumSlots at 006CAE37, after which it clears the existing array at stride 58h and zeroes the live count at 006CAE7E, so a deck with no authored NumSlots is an emptied deck rather than an untouched one; MaxInAirPlanes at 006CB0B3 straight into block+58h at 006CB0C9 with no clamp and no default; PlaneStock %d at 006CB0D5, composed with 00467310 and 1-based, each a sub-block of Type, Count and SquadLimit; and Slot %d at 006CB1B2, composed the same way and 1-based, each a sub-block of Type, Count, Arm and the optional boolean FakeAllocated. A sub-block key must answer with property type 6 and a non-null payload or the loop stops. Every lookup goes through 008F2260, whose record carries its type letter at +4h and its payload at +0Ch. The slot fields: class at +4h and count at +8h are assigned together through 006C0F00 at 006CB260; equipment at +10h is authored as Arm and stored at 006CB277; a FakeAllocated slot is left in state 6 at 006CB28B with timer 0, and when the launch-requested byte at +34h was set the timer becomes 5.0 from 00CE3850 and that byte is cleared. 006C0F00 is not a plain store: it clamps the authored count against BSP_AirOps_StockAvailable for the class and against FUN_006BD460 for the slot, and adds the slot's current count to the available figure when the class already matches.",
+ "coverage": "complete for mode 1 and for the block offsets it writes; modes 2 and 3, the argument form of 007B8A80, and where SquadLimit lands are contracts.",
+ "calls": [
+  {
+   "address": "006cae43",
+   "native": "008f2260",
+   "note": "the NumSlots lookup"
+  },
+  {
+   "address": "006cb0b8",
+   "native": "008f2260",
+   "note": "the MaxInAirPlanes lookup"
+  },
+  {
+   "address": "006cb0db",
+   "native": "00467310",
+   "note": "composes the PlaneStock %d key"
+  },
+  {
+   "address": "006cb1bc",
+   "native": "00467310",
+   "note": "composes the Slot %d key"
+  },
+  {
+   "address": "006cb250",
+   "native": "007b8a80",
+   "note": "resolves the slot's Type"
+  },
+  {
+   "address": "006cb260",
+   "native": "006c0f00",
+   "note": "assigns the slot's class and count"
+  }
+ ],
+ "named_routines": [
+  {
+   "native": "006cadd0",
+   "ledger_name": "BSP_AirOps_LoadFromScene",
+   "evidence": "three modes tested at 006CADF9, 006CB2C6 and 006CB894/006CC35C; mode 1 is the scene load",
+   "status": "mode 1 read whole and implemented; modes 2 and 3 characterised only"
+  },
+  {
+   "native": "006c0f00",
+   "ledger_name": "the slot class and count assignment",
+   "evidence": "slot = index * 58h + block[4Ch]; clamps the count against BSP_AirOps_StockAvailable and FUN_006BD460",
+   "status": "read for its clamp, not reimplemented"
+  },
+  {
+   "native": "007b8a80",
+   "ledger_name": "a thunk to 00964790 BSP_VehicleClass_GetOrCreate",
+   "evidence": "one callee, 00964790",
+   "status": "argument form not read"
+  }
+ ],
+ "no_ghidra_function": [],
+ "host_methods": [
+  {
+   "method": "bsp::air_ops_load_from_scene_006cadd0",
+   "native": "006cadd0",
+   "file": "src/air_operations.cpp",
+   "note": "mode 1 only"
+  },
+  {
+   "method": "bsp::AirOpsDeckRegistry",
+   "native": "none",
+   "file": "src/air_operations.cpp",
+   "note": "not a native structure: this process's stand-in for the block the executable hangs off the entity, keyed by the authored unit name with the mission Lua's entity id bound to it"
+  }
+ ],
+ "authored_rows": [
+  {
+   "file": "the shipped image, .rdata",
+   "row": "the scene keys mode 1 reads",
+   "values": {
+    "00ce56fc": "NumSlots",
+    "00cf88e8": "MaxInAirPlanes",
+    "00ce5718": "PlaneStock %d",
+    "00ce56f4": "Slot %d",
+    "00ce4780": "Type",
+    "00ce5710": "Count",
+    "00cf88dc": "SquadLimit",
+    "00cf88d8": "Arm",
+    "00cf88c8": "FakeAllocated",
+    "00ce3850": "5.0, the cooldown seconds"
+   }
+  }
+ ],
+ "contracts": [
+  "007B8A80's argument form was not read. The scene authors these Type tokens as numeric class ids, so the host scans an integer and an unparsable token resolves to zero.",
+  "SquadLimit is read at 006CB126 and where it lands was not read, so the host carries it unused.",
+  "The 006C0F00 clamp is not modelled: this process has no live stock accounting, so the authored count stands where the native would reduce it.",
+  "Modes 2 and 3 of 006CADD0 are unread; mode 3 carries the _airBase marker and the Lua names.",
+  "What state 6 means is unknown; it is recorded because the scene loader writes it.",
+  "Unchanged from the previous packet: this host cannot pick the Lua reader by class, so a unit with no deck still reaches the four keys and answers with an empty deck."
+ ],
+ "corrections": [
+  "None. include/bsp/air_operations.hpp gained class_field_134 in the previous packet and this packet names its authored source, Arm, which is the first name recovered for it.",
+  "No retraction of a native-behaviour claim in this packet."
+ ],
+ "validation": {
+  "runner": "tools/run_game.ps1",
+  "outcome": "blocked",
+  "build": "clean, both ctest suites pass",
+  "reason": "Session 1, where the agents run, is disconnected, so no window, D3D device or FMOD output can be created.",
+  "command": "./tools/run_game.ps1 -Log local/usn04_airops.log -WaitSeconds 2400 -- --frames 3200 --press-start-frame 30 --menu-select USN04 --mission-frames 3000 --mission-frame-seconds 0.05",
+  "expected": "an `air ops deck` line for each carrier USN04 spawns, carrying the authored NumSlots; `summary mission getproperty 0088bf80` with slots_rows no longer zero if any deck has slots; no `script call Think failed` at commandhelpers.lua:2496; and still no launched strike, which is the next packet"
+ }
+}

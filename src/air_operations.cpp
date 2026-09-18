@@ -249,4 +249,110 @@ void squadron_land_and_kill_008a20e0(AirOperationsHost& host, std::uint32_t squa
     }
 }
 
+// ---------------------------------------------------------------------------
+// 006CADD0 mode 1
+// ---------------------------------------------------------------------------
+AirOpsDeck air_ops_load_from_scene_006cadd0(const AirOpsSceneDeck& authored,
+                                            AirOpsTypeResolver resolve_type, void* context) {
+    AirOpsDeck deck;
+    // 006CAE81 leaves the array empty when NumSlots is absent or not positive,
+    // and 006CAE7E has already zeroed the live count by then, so a deck with no
+    // authored NumSlots is an empty deck rather than an untouched one.
+    const std::int32_t count = authored.num_slots > 0 ? authored.num_slots : 0;
+    deck.slots.resize(static_cast<std::size_t>(count));
+    // 006CB0C9 stores MaxInAirPlanes straight into block+58h, with no clamp and
+    // no default: an absent key reaches the store as the bag's own zero.
+    deck.max_in_air_planes = authored.max_in_air_planes;
+
+    // 006CB0D5: the PlaneStock loop. 006CB126 reads SquadLimit but this packet
+    // did not read where it lands, so it is carried unused. contract.
+    for (const AirOpsSceneStock& row : authored.stock) {
+        AirOpsStockEntry entry;
+        entry.vehicle_class = resolve_type != nullptr ? resolve_type(row.type, context) : 0u;
+        entry.count = row.count;
+        deck.stock.push_back(entry);
+    }
+
+    // 006CB1B2: the Slot loop, 1-based, one authored sub-block per slot.
+    for (std::size_t index = 0; index < authored.slots.size(); ++index) {
+        if (index >= deck.slots.size()) break;  // NumSlots bounds the array
+        const AirOpsSceneSlot& row = authored.slots[index];
+        AirOpsSlot& slot = deck.slots[index];
+        // 006CB24E resolves Type through 007B8A80 and 006CB260 assigns the pair
+        // through 006C0F00, which clamps the authored Count against the stock
+        // that is actually available and against the slot's own capacity. This
+        // process has no live stock accounting, so the authored count stands and
+        // the clamp is a contract.
+        slot.vehicle_class = resolve_type != nullptr ? resolve_type(row.type, context) : 0u;
+        slot.assigned_count = row.count;
+        // 006CB277 stores Arm at slot+10h, the field the Lua reader publishes as
+        // `equipment`.
+        slot.class_field_134 = row.arm;
+        if (row.fake_allocated) {
+            // 006CB28B..006CB2A6: a FakeAllocated slot is left in state 6 with a
+            // zero timer, and when the launch-requested byte at slot+34h was set
+            // the timer becomes 00CE3850 (5.0) and that byte is cleared. State 6
+            // is a value the launch routines never showed; it is recorded here
+            // because the scene loader writes it, not because its meaning is
+            // known. contract.
+            slot.state = static_cast<AirOpsSlotState>(6);
+            slot.timer = 0.0F;
+            if (slot.launch_requested) {
+                slot.timer = kAirOpsSlotCooldownSeconds;
+                slot.launch_requested = false;
+            }
+        }
+    }
+    return deck;
+}
+
+// ---------------------------------------------------------------------------
+// The process-wide deck table
+// ---------------------------------------------------------------------------
+void AirOpsDeckRegistry::clear() noexcept {
+    decks_.clear();
+    entity_ids_.clear();
+}
+
+void AirOpsDeckRegistry::set(const std::string& unit_name, AirOpsDeck deck) {
+    for (auto& row : decks_) {
+        if (row.first == unit_name) {
+            row.second = std::move(deck);
+            return;
+        }
+    }
+    decks_.emplace_back(unit_name, std::move(deck));
+}
+
+void AirOpsDeckRegistry::bind_entity_id(int entity_id, const std::string& unit_name) {
+    for (auto& row : entity_ids_) {
+        if (row.first == entity_id) {
+            row.second = unit_name;
+            return;
+        }
+    }
+    entity_ids_.emplace_back(entity_id, unit_name);
+}
+
+const AirOpsDeck* AirOpsDeckRegistry::find(const std::string& unit_name) const noexcept {
+    for (const auto& row : decks_) {
+        if (row.first == unit_name) return &row.second;
+    }
+    return nullptr;
+}
+
+const AirOpsDeck* AirOpsDeckRegistry::find_by_entity_id(int entity_id) const noexcept {
+    for (const auto& row : entity_ids_) {
+        if (row.first == entity_id) return find(row.second);
+    }
+    return nullptr;
+}
+
+std::size_t AirOpsDeckRegistry::size() const noexcept { return decks_.size(); }
+
+AirOpsDeckRegistry& air_ops_decks() noexcept {
+    static AirOpsDeckRegistry registry;
+    return registry;
+}
+
 } // namespace bsp

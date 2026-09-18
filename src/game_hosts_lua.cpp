@@ -1450,14 +1450,27 @@ int GameMissionLuaHost::run_get_property_0088bf80(lua_State* state, int argument
         return 0;
     }
 
-    // This process builds no air-operations block. Nothing here calls 006CADD0
-    // BSP_AirOps_LoadFromScene, no host holds an AirOpsSlot array, and the
-    // entity handle 00888AA0 stands in for cannot name a class, so the deck is
-    // empty for every entity rather than for the ones that own one. The walk
-    // below is the native's; with no block it runs zero times.
-    const bsp::AirOpsSlot* slots = nullptr;
-    int slot_count = 0;
-    static_cast<void>(slots);
+    // The deck now comes from the scene: 006CADD0 mode 1 builds it when a
+    // MotherShipGen or AirField row loads, and it is keyed by the authored unit
+    // name with the entity id bound in attach_scene_entities_00928a00.
+    // docs/AIROPS_LOAD_FROM_SCENE.md. A unit with no deck, which is every class
+    // that owns none, still reaches the four keys here because this host cannot
+    // pick the reader by class; it answers with an empty deck rather than with
+    // the nothing the native pushes. That deviation is unchanged.
+    const bsp::AirOpsDeck* deck = nullptr;
+    if (::lua_type(state, 1) == LUA_TTABLE) {
+        const int top = ::lua_gettop(state);
+        ::lua_getfield(state, 1, "ID");
+        const int id_type = ::lua_type(state, -1);
+        if (id_type == LUA_TNUMBER || id_type == LUA_TSTRING) {
+            deck = bsp::air_ops_decks().find_by_entity_id(
+                static_cast<int>(::lua_tonumber(state, -1)));
+        }
+        ::lua_settop(state, top);
+    }
+    const bsp::AirOpsSlot* slots = deck != nullptr && !deck->slots.empty()
+        ? deck->slots.data() : nullptr;
+    int slot_count = deck != nullptr ? static_cast<int>(deck->slots.size()) : 0;
 
     if (wants_num_slots) {
         // 006C6929 loads the live slot count at block+50h and 006C693B pushes it
@@ -1481,10 +1494,20 @@ int GameMissionLuaHost::run_get_property_0088bf80(lua_State* state, int argument
         return 1;
     }
     // 006C6949 serves `stock` and `planes` from the same list, one entry per
-    // stock record with `classid` and `count` (006C6A0F and 006C6A93). This
-    // process holds no stock list either, so the list is empty.
+    // stock record with `classid` and `count` (006C6A0F and 006C6A93). The
+    // records come from the scene's `PlaneStock %d` blocks.
     ++summary_.get_property_served;
-    ::lua_createtable(state, 0, 0);
+    const int stock_count = deck != nullptr ? static_cast<int>(deck->stock.size()) : 0;
+    ::lua_createtable(state, stock_count, 0);
+    for (int index = 0; index < stock_count; ++index) {
+        const bsp::AirOpsStockEntry& entry = deck->stock[static_cast<std::size_t>(index)];
+        ::lua_createtable(state, 0, 2);
+        ::lua_pushinteger(state, static_cast<lua_Integer>(entry.vehicle_class));
+        ::lua_setfield(state, -2, "classid");
+        ::lua_pushinteger(state, static_cast<lua_Integer>(entry.count));
+        ::lua_setfield(state, -2, "count");
+        ::lua_rawseti(state, -2, index + 1);
+    }
     log_.implemented("MissionLuaNative::GetProperty", "0088bf80");
     return 1;
 }
@@ -1904,6 +1927,11 @@ std::size_t GameMissionLuaHost::attach_scene_entities_00928a00(
     for (const SceneEntity& entity : entities) {
         char key[16];
         std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat, entity.id);
+        // The decks the scene pass built are keyed by the authored unit name.
+        // This is the one place that holds the name and the id the entity table
+        // will carry as `ID`, so it is where the two are tied together.
+        // docs/AIROPS_LOAD_FROM_SCENE.md.
+        bsp::air_ops_decks().bind_entity_id(entity.id, entity.name);
         // 00928b53 assigns a fresh table, then 00928bxx seeds `ID`, `Dead` and
         // `Ptr`. The native `Ptr` is lightuserdata(entity), the entity object
         // itself; this process has no such object, so the slot carries the
