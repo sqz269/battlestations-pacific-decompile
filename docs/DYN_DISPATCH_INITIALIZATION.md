@@ -188,3 +188,23 @@ only its vtable word, preserving scratch and padding. A focused original-body
 probe checks guarded standalone and aggregate owners: 64 pairs and 60,288
 identical bytes, with neighboring objects unchanged. The ray method remains an
 original reference in this packet; its source implementation is still pending.
+
+## Follow-up from docs/NATIVE_DYN_CONVEX_RAY_R144.md
+
+R144 supplies the complete C44780 ray-intersection body and the one-slot
+NativeDynConvexRayRuntime table for the A0h owner corrected in R143. Explicit
+and table-entry comparisons pass 24,576 original/source pairs across all12
+masked x87 controls, with owner scratch and adjacent objects checked. The
+compiled instruction audit covers the entire body and three consumed math
+leaves. Terrain/convex, world task and ray-query consumers, application
+admission and gameplay remain open.
+
+## Follow-up from docs/NATIVE_DYN_TERRAIN_CONVEX_R145.md
+
+R145 supplies the complete C53630 terrain/convex body and its one-slot table,
+closing the remaining dispatcher method in DynDispatchVtables. Comparisons
+pass 36,864 direct/table pairs and 192 serial narrow-phase scene pairs; both
+terrain/convex shape orders execute through the actual dispatcher cells. The
+terrain constructor C58840 is named and its consumed layout is documented as
+reference evidence only. Shape production/lifetime, world/ray-query tasks,
+application admission and gameplay remain open.

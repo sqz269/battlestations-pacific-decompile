@@ -1,0 +1,300 @@
+{
+  "packet": "cc8_torpedo_release_spawn",
+  "owner": "agent/cc8-torpedo-drop",
+  "tree_base": "95c5e3e9c",
+  "doc": "docs/TORPEDO_RELEASE_SPAWN.md",
+  "question": "Which device class sits at unit+DECh, where does its tick consume dev->+11h and spawn the projectile, and why does no torpedo reach the swim model?",
+  "answer": "unit+DECh is not an ordnance device. It is a 0x80-byte block of three animated 0..1 actuator channels, built by 007EABC0 from BSP_Plane_ReadPropertyBag and stepped by 007DE3A0, which clears +11h only when all three channels have stopped moving. Neither the block nor its tick reads ordnance or spawns anything, so the premise that its tick consumes +11h and spawns the projectile does not hold. 007BBBA0 drives channel C, the ordnance bay, toward 1.0 and bumps unit+C20h. The chain onward is 007CEA82 -> 007C0D90 -> 007EEF30 -> 007BCBE0 -> unit+C58h, spent at 0099AFB6 after a bot task's vtable[24h] answers; that slot and the bomb platform's release slot in vtable 00CFE308 are unread, so the spawn site itself was not reached. A torpedo nevertheless reaches the water in USN01 through a labelled substitution: the bomb platform is a Gun subclass (00730B80 calls BSP_Gun_Construct at 00730B88), so the round is handed to the gun spawn 0072F830 the gunnery host already implements.",
+  "coverage": "partial",
+  "census_method": "Capstone sweep from every indexed function start over .text, collecting every instruction with a memory operand whose displacement matches the target offset, reads included. 37 references to 0xDEC, of which 4 are stores. The intersection of the functions referencing 0x11, 0x61 and 0x68 is five bodies, which is how the actuator drive and the tick were found. A store-only census misses every read and would have missed the tick.",
+  "calls": [
+    {
+      "address": "007d61ab",
+      "native": "007eabc0",
+      "function": "007d5d20",
+      "role": "the one construction of the block at unit+DECh; PUSH 0x80 to operator new at 007D618E, then MOV [ESI+0xDEC],EAX at 007D61B4"
+    },
+    {
+      "address": "007d618e",
+      "native": "00bf681b",
+      "function": "007d5d20",
+      "role": "operator new(0x80), the block's size"
+    },
+    {
+      "address": "007eac16",
+      "native": "00876020",
+      "function": "007eabc0",
+      "role": "the base constructor, under base vtable 00CFD99C, before vtable 00D0862C is installed"
+    },
+    {
+      "address": "007de3b1",
+      "native": "007de1e0",
+      "function": "007de3a0",
+      "kind": "no_ghidra_function",
+      "role": "step channel A at +44h"
+    },
+    {
+      "address": "007de3d8",
+      "native": "007de1e0",
+      "function": "007de3a0",
+      "kind": "no_ghidra_function",
+      "role": "step channel B at +28h"
+    },
+    {
+      "address": "007de400",
+      "native": "007de1e0",
+      "function": "007de3a0",
+      "kind": "no_ghidra_function",
+      "role": "step channel C at +60h, the ordnance bay"
+    },
+    {
+      "address": "007cea8d",
+      "native": "007c0d90",
+      "function": "007ce040",
+      "role": "the one call from the plane fixed step into the release-order issue walk, after the pending counter is spent at 007CEA82"
+    },
+    {
+      "address": "00730b88",
+      "native": "0072e510",
+      "function": "00730b80",
+      "role": "BSP_Gun_Construct: the bomb platform is a gun, which is why its projectile should come out of the gun spawn"
+    }
+  ],
+  "named_routines": [
+    {
+      "address": "007eabc0",
+      "native": "007eabc0",
+      "name": "BSP_PlaneActuatorBlock_Construct",
+      "abi": "undefined4* __thiscall(this, unit)",
+      "coverage": "complete for the layout it writes"
+    },
+    {
+      "address": "007de3a0",
+      "native": "007de3a0",
+      "name": "BSP_PlaneActuatorBlock_Step",
+      "abi": "void __thiscall(this, float dt), RET 4",
+      "kind": "no_ghidra_function",
+      "coverage": "complete, 007DE3A0-007DE41D"
+    },
+    {
+      "address": "007de1e0",
+      "native": "007de1e0",
+      "name": "BSP_PlaneActuatorChannel_Step",
+      "abi": "void __thiscall(channel, float dt)",
+      "coverage": "complete"
+    },
+    {
+      "address": "007c6820",
+      "native": "007c6820",
+      "name": "BSP_Plane_DriveActuatorChannels",
+      "abi": "__thiscall(ECX = plane, float dt)",
+      "kind": "no_ghidra_function",
+      "coverage": "partial: read for the actuator drive at 007C6A78-007C6BD4 only"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "007de3a0",
+      "end": "007de41d",
+      "name": "BSP_PlaneActuatorBlock_Step",
+      "note": "end is the RET 4. FUN_007DE2E0's stored body ends at 007DE398 and INT3 padding runs 007DE399-007DE39F, so both containment checks agree."
+    },
+    {
+      "start": "007c6820",
+      "end": "unread",
+      "name": "BSP_Plane_DriveActuatorChannels",
+      "note": "FUN_007C6760's body ends at 007C6819 with INT3 padding 007C681A-007C681F. The next Ghidra function is BSP_Plane_OutOfActionCountdown at 007C6C30. The final RET was not read, so the end is not claimed."
+    }
+  ],
+  "host_methods": [
+    {
+      "method": "plane_actuator_channel_step_007de1e0",
+      "file": "src/torpedo_release_spawn.cpp",
+      "native": "007de1e0",
+      "kind": "reconstruction"
+    },
+    {
+      "method": "plane_actuator_block_step_007de3a0",
+      "file": "src/torpedo_release_spawn.cpp",
+      "native": "007de3a0",
+      "kind": "reconstruction"
+    },
+    {
+      "method": "ordnance_release_request_007bbba0",
+      "file": "src/torpedo_release_spawn.cpp",
+      "native": "007bbba0",
+      "kind": "reconstruction"
+    },
+    {
+      "method": "release_ordnance_007bbba0",
+      "file": "src/game_hosts_units.cpp",
+      "native": "007bbba0",
+      "kind": "binding"
+    },
+    {
+      "method": "actuator block step, per fixed step",
+      "file": "src/game_hosts_units.cpp",
+      "native": "007de3a0",
+      "kind": "binding"
+    },
+    {
+      "method": "GameGunneryHost::release_ordnance_drop",
+      "file": "src/game_hosts_gunnery.cpp",
+      "native": "0072f830",
+      "kind": "substitution",
+      "note": "the native release site is unread; the release geometry is the plane's origin, forward axis and forward speed, and aiming, barrel timers and the stock decrement are not reproduced"
+    },
+    {
+      "method": "water-entry limit",
+      "file": "src/game_hosts_gunnery.cpp",
+      "native": "008568e0",
+      "kind": "partial reconstruction",
+      "note": "only the MaxWaterHitVel test at classDesc+0DCh; the second limit needs a depth field the host's shot record lacks"
+    },
+    {
+      "method": "torpedo gate census",
+      "file": "src/game_hosts_gunnery.cpp",
+      "native": null,
+      "kind": "instrumentation"
+    }
+  ],
+  "contracts": [
+    {
+      "what": "the bot task's vtable[24h] that 0099AF9B calls",
+      "status": "unread",
+      "why": "out of budget; it is where unit+C58h is spent and is the likeliest home of the real release"
+    },
+    {
+      "what": "the bomb platform's release slot in vtable 00CFE308",
+      "status": "unread",
+      "why": "out of budget; 00730B80 proves the platform is a Gun subclass"
+    },
+    {
+      "what": "the writer of the actuator channel's enabled byte +60h and rate +6Ch",
+      "status": "unread",
+      "why": "substituted with enable-on-first-request at 1.0 per second"
+    },
+    {
+      "what": "007BBBA0's per-slot guard byte unit+9C3h[[00F876B8]*8]",
+      "status": "not applied",
+      "why": "it lives on the unit, not the block, and this host has no such byte; the refusal count under-counts"
+    },
+    {
+      "what": "007C0D90's six vtable slots",
+      "status": "named, not read",
+      "why": "already its recorded state before this packet"
+    }
+  ],
+  "validation": {
+    "runner": "tools/run_game.ps1, 3200 frames, --mission-frames 3000 at 0.05 s, from this worktree",
+    "runs": [
+      {
+        "mission": "USN01",
+        "phase": "before",
+        "build": "95c5e3e9c baseline",
+        "log": "local/usn01_before.log",
+        "release_requests_007bbba0": 1,
+        "bay_requests_accepted": null,
+        "torpedo_drops": 0,
+        "drop_refusals": null,
+        "water_crossings": 0,
+        "water_entry_breakups": null,
+        "swims_started": 0,
+        "projectiles_created": 3838,
+        "entity_impacts": 26,
+        "total_damage": 229.5,
+        "torpedo_hits": 0,
+        "torpedo_damage": 0.0,
+        "torpedo_task": {
+          "aircraft": 9,
+          "releases": 1
+        },
+        "per_category": {
+          "TORPEDO": {
+            "guns": 15,
+            "assigns": 0,
+            "shots": 0
+          },
+          "BOMBPLATFORM": {
+            "guns": 81,
+            "assigns": 0,
+            "shots": 0
+          },
+          "AAMACHINEGUN": {
+            "guns": 154,
+            "assigns": 449,
+            "shots": 3814
+          }
+        }
+      },
+      {
+        "mission": "USN01",
+        "phase": "after",
+        "log": "local/usn01_after.log",
+        "release_requests_007bbba0": 1,
+        "bay_requests_accepted": 1,
+        "torpedo_drops": 1,
+        "drop_refusals": 0,
+        "water_crossings": 1,
+        "water_entry_breakups": 1,
+        "swims_started": 0,
+        "projectiles_created": 3839,
+        "entity_impacts": 26,
+        "total_damage": 229.5,
+        "torpedo_hits": 0,
+        "torpedo_damage": 0.0,
+        "torpedo_gate": {
+          "guns": 39,
+          "ticks": 117000,
+          "targeted": 0,
+          "accepted": 0,
+          "settled": 0,
+          "window": 0,
+          "sent": 0,
+          "shots": 0
+        },
+        "drop_detail": {
+          "unit": "ConTBD1",
+          "release_altitude_m": 700.0,
+          "release_speed_mps": 0.0,
+          "bullet_class": 63,
+          "swim_speed_mps": 30.9,
+          "entry_speed_mps": 117.2,
+          "max_water_hit_vel_mps": 100.0,
+          "verdict": "broke up, 008568E0"
+        }
+      },
+      {
+        "mission": "USN02",
+        "phase": "after only",
+        "log": "local/usn02_after.log",
+        "note": "no USN02 before-run exists on this tree: the machine-wide game lock was held by other agents while a baseline build was installed. No before/after attribution is claimed.",
+        "torpedo_drops": 0,
+        "drop_refusals": 0,
+        "water_entry_breakups": 0,
+        "swims_started": 44,
+        "water_crossings": 372,
+        "projectiles_created": 562,
+        "entity_impacts": 168,
+        "torpedo_gate": {
+          "guns": 71,
+          "ticks": 207795,
+          "targeted": 54869,
+          "accepted": 54869,
+          "settled": 49666,
+          "window": 45059,
+          "sent": 45059,
+          "shots": 44
+        },
+        "attribution": "the 44 swims are not this packet's: no aircraft in USN02 carries torpedo ordnance so the drop path is never entered, and the only change that could touch that number is the new water-entry limit, which fired zero times"
+      }
+    ],
+    "next_gate": {
+      "what": "release altitude, then the aircraft's forward speed",
+      "native": "008568e0",
+      "field": "classDesc+0DCh MaxWaterHitVel",
+      "value": "entry 117.2 m/s against a 100.0 m/s limit; the release is at 700 m with unit_forward_speed_0092d730 reading 0.0, so sqrt(2*9.81*700)=117.2 m/s accounts for the entry speed exactly",
+      "note": "at zero forward speed a release below about 510 m enters under the limit; the second gate, assigns=0 over 15 TORPEDO guns in USN01, still blocks ship tubes in that mission"
+    }
+  }
+}

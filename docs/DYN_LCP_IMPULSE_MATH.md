@@ -1,5 +1,15 @@
 # The LCP solver's per-constraint impulse math
 
+## Correction and complete native path from R146
+
+`docs/NATIVE_DYN_SOLVER_MODE0_R146.md` adds the complete normal native task chain
+and callable D7A088 source table over actual records. The semantic interfaces
+below remain separate. The repaired C4F081 returning-free flow continues through
+ADD ESP,4 at C4F086 into allocation/zeroing/warm start. The write at
+`[ESP+EAC0h]` in 00403769 belongs to the task's EH record outside its EAAC-byte
+context, not a context member at EAB4h. R146 validates normal return only;
+native FH3/SEH and game execution remain open.
+
 Addresses: 00403720, 00C4F040, 00C31C30, 00C4DE40, 00C42BA0, 00C42530, 00C42230, 00C37B50,
 00C35020, 00C41AE9..00C41B4A; read as structure 00403850, 00C5C7A0, 00C5C710, 00C431D0,
 00C42ED0, 00C4F140, 00C437D0, 00C35160, 00C37C40, 00C350C0.
@@ -313,3 +323,14 @@ substep's weight `m * g * dt` as the normal impulse and leaves friction at zero.
 | start | inclusive end | evidence |
 | --- | --- | --- |
 | none | | Every address named or reconstructed in this document lies inside an existing Ghidra function body, checked with `python tools/bsp.py ghidra proto <addr> --brief` for `00403720`, `00C4F040`, `00C31C30`, `00C4DE40`, `00C42BA0`, `00C42530`, `00C42230`, `00C37B50`, `00C35020` and `00C41AD0`. |
+
+## Correction and complete second solver from R147
+
+`docs/NATIVE_DYN_SOLVER_MODE1_R147.md` reconstructs the complete normal
+00403850 task and nine mode-1 callees, including actual profile cache/current
+node updates, child creation and four timestamp boundaries. The separate
+per-manifold row allocation rounds manifold count to four and uses byte
+capacity, unlike mode 0. Returning-free gaps at 004038F1, 00403905, 00C3519E
+and 00C5C83D are repaired. The `dyn_lcp_solver2` implementation follow-up above
+is therefore supplied for normal return; its broader selector-author question,
+native exception behavior, application execution and gameplay remain open.

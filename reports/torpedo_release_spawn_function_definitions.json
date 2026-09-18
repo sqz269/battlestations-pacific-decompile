@@ -1,0 +1,54 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "007de3a0",
+    "end_address": "007de420"
+   },
+   "result": {
+    "success": true,
+    "start_address": "007de3a0",
+    "end_address": "007de41f",
+    "bytes_disassembled": 128,
+    "message": "Successfully disassembled 128 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "007de3a0",
+    "disassemble_first": false,
+    "name": "BSP_PlaneActuatorBlock_Step"
+   },
+   "result": {
+    "success": true,
+    "address": "007de3a0",
+    "function_name": "BSP_PlaneActuatorBlock_Step",
+    "entry_point": "007de3a0",
+    "body_size": 128,
+    "message": "Function created successfully at 007de3a0",
+    "warnings": [
+     "Function name 'BSP_PlaneActuatorBlock_Step' \u2014 main part 'PlaneActuatorBlock_Step' is not PascalCase. Expected: PlaneactuatorblockStep",
+     "Function name 'BSP_PlaneActuatorBlock_Step' \u2014 main part 'PlaneActuatorBlock_Step' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_PlaneActuatorBlock_Step' does not start with a recognized verb. First word 'Plane' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "007de3a0",
+   "end": "007de420",
+   "name": "BSP_PlaneActuatorBlock_Step",
+   "after": "Function: BSP_PlaneActuatorBlock_Step at 007de3a0\nSignature: undefined BSP_PlaneActuatorBlock_Step(void)\nEntry: 007de3a0\nBody: 007de3a0 - 007de41f"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

@@ -33,6 +33,14 @@ public:
     // Constructor order in 00B7B940: base vtable, previous, next, old previous,
     // then shared head. Unlink leaves this element's old link fields intact.
     void prepend_base_element(AllocatorListElement&) noexcept;
+    // 00407C70 inlines the list publication before its concrete table store;
+    // unlike the ordinary base constructor it does not stamp the base table.
+    void prepend_element_links(AllocatorListElement& element) noexcept {
+        element.previous_04 = nullptr;
+        element.next_08 = shared_head_;
+        if (shared_head_) shared_head_->previous_04 = &element;
+        shared_head_ = &element;
+    }
     void unlink_base_element_00403970(AllocatorListElement&) noexcept;
     void trim_all_004b46b0();
     AllocatorListElement* head() const noexcept { return shared_head_; }

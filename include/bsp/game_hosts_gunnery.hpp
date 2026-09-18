@@ -113,6 +113,11 @@ struct GameBulletClassRow {
     // docs/TORPEDO_LAUNCH_ACCURACY.md.
     float water_travel_speed{0.0f};   // "WaterTravelSpeed", classDesc+0E4h
     float swim_speed{0.0f};           // record+470h = WaterTravelSpeed * 0.6
+    // 008568E0's two water-entry limits: the round breaks up if it hits the sea
+    // faster than MaxWaterHitVel, or if it was released above MaxFall. This is
+    // why a torpedo bomber releases low and slow. docs/TORPEDO_TICK.md.
+    float max_water_hit_vel{0.0f};    // "MaxWaterHitVel", classDesc+0DCh
+    float max_fall{0.0f};             // "MaxFall", behind classDesc+0ECh
 };
 
 // One authored `DeviceClass` row, as the gun needs it.
@@ -300,6 +305,25 @@ struct GameGunnerySummary {
     unsigned long long gun_pending_timers_live{0};
     unsigned long long torpedo_ranges_derived{0};
     unsigned long long torpedo_swims_started{0};   // water crossings that became a swim
+    // Packet cc8_torpedo_release_spawn. Where a torpedo-carrying gun stops on
+    // the way to a shot, one counter per conjunct of the same `want_fire` the
+    // gun loop builds. A gun counts as a torpedo gun when its bullet class
+    // derived a swim speed, which is the identical test the water crossing
+    // uses to decide that a round swims rather than dies at the surface, so a
+    // gun counted here is exactly a gun whose shot could reach the swim model.
+    // These are gate counters, not reconstructions: no native address produces
+    // them. docs/TORPEDO_RELEASE_SPAWN.md.
+    unsigned long long torpedo_gun_ticks{0};
+    unsigned long long torpedo_gun_targeted{0};    // have_target
+    unsigned long long torpedo_gun_accepted{0};    // + 0085ABA0 accepted the angles
+    unsigned long long torpedo_gun_settled{0};     // + within the 0.1 deg fire band
+    unsigned long long torpedo_gun_window{0};      // + 007F60A0 allowed the bearing
+    unsigned long long torpedo_gun_sent{0};        // + 0072D130 sent the 0ADh arm
+    unsigned long long torpedo_gun_shots{0};       // + 00730160 made a projectile
+    // The air drop. 007BBBA0 accepted the request and a round left the plane.
+    unsigned long long torpedo_drops{0};
+    unsigned long long torpedo_drop_refusals{0};   // no torpedo-capable gun on the unit
+    unsigned long long water_entry_breakups{0};    // 008568E0's two limits rejected the entry
     unsigned long long torpedo_heading_snaps{0};   // 007F6190 snapped the heading onto a window edge
     unsigned long long angle_sets{0};
     unsigned long long angle_refusals{0};
@@ -361,6 +385,21 @@ public:
         std::size_t unit_index, int category) const noexcept;
     // The authored Bullets row a gun fires, by GameGunRow::bullet_class.
     const GameBulletClassRow* bullet_class_row(int id) const noexcept;
+    // Packet cc8_torpedo_release_spawn. The air drop: put one torpedo-capable
+    // round of this unit into the air with the plane's own pose and speed.
+    //
+    // SUBSTITUTION, labelled. The native release site is unread. What is
+    // established is that a bomb platform is a Gun subclass (00730B80 calls
+    // BSP_Gun_Construct at 00730B88 before installing vtable 00CFE308), so the
+    // round a plane drops is made by the same BSP_Gun_SpawnShotAndEffects
+    // 0072F830 this host already implements for a ship's tube. This method
+    // therefore reuses that spawn and substitutes the release geometry: the
+    // plane's position and its forward axis at its own forward speed, because a
+    // drop inherits the aircraft's velocity rather than a muzzle speed. The
+    // aiming, the barrel timers and the stock decrement are NOT reproduced.
+    //
+    // Returns true when a round was created.
+    bool release_ordnance_drop(std::size_t unit_index);
     const std::vector<GameGunneryUnitRow>& unit_rows() const noexcept;
     const GameGunnerySummary& summary() const noexcept;
 

@@ -331,3 +331,19 @@ That matters because `unit+C6Ch` is exactly the field the pilot planner subtract
 construction, so there is no convention mismatch between the bot state and the planner.
 
 docs/TORPEDO_STEERING_DELTA.md has the vtable census and the ABI.
+
+## Correction, packet cc8_torpedo_run_profile
+
+Appended, not a rewrite of anything above.
+
+`F=0Ch`, the slot `009D160F` stores from `009D1500`, is a **range ratio**, not a time to
+target. `009D1500` divides `approach+90h`, a range in metres, by whichever of `approach+7Ch`
+and `+80h` the 15-second switch selects, and those two are release distances:
+`TorpReleaseDistNear` and `TorpReleaseDistFar` from `&PilotBotConfig.levels[idx]`, scaled by
+`max(1.0, desc.MaxSpd / Pilot/Torpedo/ReferenceSpeed)`. docs/TORPEDO_RUN_PROFILE.md has the
+producer at `009F9CE0`.
+
+Every gate this document describes as interpolated over `F=0Ch` is therefore scheduled on
+range measured in release distances, not on seconds: the cone at `009D21AC` and `009D21F2`,
+the countdown at `009D229D`, the sector gain at `009D17D7` and the lead gain at `009D182C`.
+The numbers in those interpolations are unchanged; only what the x axis means changes.

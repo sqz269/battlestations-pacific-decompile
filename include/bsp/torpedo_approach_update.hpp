@@ -117,9 +117,42 @@ struct TorpedoApproachState {
     float alt_floor_74{0.0f};                                  // +74h
     float alt_margin_78{0.0f};                                 // +78h
 
-    // The two commanded speeds; speed_late_7c applies once elapsed_134 reaches
-    // 15 s, speed_early_80 before that. 009D3445 clamps speed_early_80 to the
-    // pilot control block's ceiling and scales speed_late_7c with it.
+    // CORRECTED by packet cc8_torpedo_run_profile: these are RELEASE DISTANCES
+    // in metres, not speeds. The names are kept because they are load bearing in
+    // src/torpedo_aim_tick.cpp and src/game_hosts_units.cpp, and renaming the
+    // pair reaches past this packet's lease; the rename is a follow-up.
+    //
+    // 009F9CFF-009F9D22 in BSP_BotApproach_ConstructSpeedReference sets
+    // approach+14h to &PilotBotConfig.levels[idx]:
+    //
+    //   009f9d08  mov  edx, [eax+0DF4h]      the bot object on the unit
+    //   009f9d0e  mov  edx, [edx+34h]        its difficulty level index
+    //   009f9d11  imul edx, edx, 248h        sizeof(PilotBotParameters)
+    //   009f9d18  mov  esi, [00F8A30C]       the PilotBotConfig
+    //   009f9d1e  lea  edx, [edx+esi+0Ch]    offsetof(PilotBotConfig, levels)
+    //
+    // Both constants are checked against include/bsp/robot_config.hpp, which
+    // already carries static_assert(sizeof(PilotBotParameters) == 0x248) and
+    // static_assert(offsetof(PilotBotConfig, levels) == 0x0c).
+    //
+    // 009D0484-009D0497 then reads that row, and src/robot_config.cpp names the
+    // three fields from the Lua keys the loader pushes at 00997B7A, 00997BB0 and
+    // 00997BE6:
+    //
+    //   record+0h = TorpReleaseAlt       -> scales approach+78h at 009D046A
+    //   record+4h = TorpReleaseDistNear  -> +7Ch, used once elapsed_134 >= 15 s
+    //   record+8h = TorpReleaseDistFar   -> +80h, used before that
+    //
+    // both multiplied by approach+24h, which 009F9D30-009F9D61 sets to
+    // max(1.0, desc.MaxSpd / Pilot/Torpedo/ReferenceSpeed). desc+188h is MaxSpd
+    // by the Lua key at 007D23A1, and tuning+440h is Pilot/Torpedo/ReferenceSpeed
+    // in src/game_tuning_singleton.cpp, default KMH(300). A faster aircraft gets
+    // a longer release distance, which is what that ratio is for.
+    //
+    // The consequence: 009D1500 divides the range by one of these, so it is a
+    // RANGE RATIO and not a time to target, which is why the aim tick's clause 2
+    // compares it against a steering delta in radians without a unit error.
+    // docs/TORPEDO_RUN_PROFILE.md.
     float speed_late_7c{0.0f};                                 // +7Ch
     float speed_early_80{0.0f};                                // +80h
 
