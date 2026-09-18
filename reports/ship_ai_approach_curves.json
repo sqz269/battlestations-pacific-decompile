@@ -1,0 +1,194 @@
+{
+  "packet": "cc8_ship_ai_approach_curves",
+  "owner": "agent/cc8-ship-approach-curves",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read-only: no rename, comment, prototype, function creation or save",
+  "doc": "docs/SHIP_AI_APPROACH_CURVES.md",
+  "header": "include/bsp/ship_ai_approach_curves.hpp",
+  "source": "src/ship_ai_approach_curves.cpp",
+  "build": "scripts/build.ps1, Win32 Release, /W4 /WX clean",
+  "note": "The two objects at nested+12C0h and nested+13B0h are bare arrays of sixty floats. Sample i is the value at x = 50*(i+1) metres, fixed by the 50.0 double at 00CE3938 that 00955A40 subtracts and divides by and that 0095F080 steps its query range with at 0095F140. The producer is 0095F080 (docs/SHIP_AI_BEARING_RATING.md): 009F2F11 fills nested+12C0h from the OWN unit with prefer_long_range = 1, 009F2FB1 fills nested+13B0h from the TARGET with 0. Both are 60 calls to the expected-damage estimate 0095EB40, so the curves are expected damage over a 20 s window against range.",
+  "routines": [
+    {
+      "address": "00955a40",
+      "native": "00955a40",
+      "name": "BSP_ShipAi_RangeCurveSample",
+      "abi": "__thiscall(float* this, float x), RET 4 at 00955a66, 00955a8a and 00955ac2, result in ST0",
+      "body": "body 00955a40-00955ac4",
+      "coverage": "complete",
+      "rule": "t = (float)(x - 50.0) at 00955a4f; t <= 0 returns samples[0] (00955a63); i = (int)(float)(t/50.0) by CVTTSS2SI at 00955a73; i >= 0x3b returns samples[59] ([ECX+0ECh] at 00955a83); otherwise 00419010(0, samples[i], 1, samples[i+1], (float)(t/50.0 - i)) at 00955abc"
+    },
+    {
+      "address": "009523c0",
+      "native": "009523c0",
+      "name": "BSP_ShipAi_RangeCurvePeak",
+      "abi": "__fastcall(float* this), RET, result in ST0",
+      "body": "body 009523c0-00952525",
+      "coverage": "complete",
+      "rule": "the maximum of samples[0..59], seeded with samples[0], unrolled eight wide over 1..56 with a 57..59 tail"
+    },
+    {
+      "address": "00952530",
+      "native": "00952530",
+      "name": "BSP_ShipAi_RangeCurveEffectiveRange",
+      "abi": "__fastcall(float* this), RET at 009525b4, result in ST0",
+      "body": "body 00952530-009525b4",
+      "coverage": "complete",
+      "rule": "the largest index with samples[index] > 0.0, searched downward from 59 in blocks of six from samples[57] (param_1+0E4h), answered as (float)((index+1) * 50.0) by 009525a4 FILD / 009525a7 FMUL [00ce3938] / 009525ad FSTP, or 0.0 when no sample is positive (the index reaches -1 and the loop ends)"
+    },
+    {
+      "address": "00954940",
+      "native": "00954940",
+      "name": "BSP_ShipAi_RangeCurveClear",
+      "abi": "__fastcall(void* this) returning this",
+      "body": "body 00954940-00954951",
+      "coverage": "complete",
+      "rule": "a 3Ch-dword zero fill; the curve has no other constructor"
+    }
+  ],
+  "call_sites": [
+    {
+      "routine": "009e6e80",
+      "address": "009e6e8f",
+      "native": "00954940",
+      "note": "the clear inside the standoff choice"
+    },
+    {
+      "routine": "009e6e80",
+      "address": "009e71ae",
+      "native": "00952530",
+      "note": "ECX = EBX = nested+13B0h, the TARGET curve (LEA at 009e71a5); 009e71b3 adds the 300.0 double at 00ce3ca8 and 009e71c1 stores the sum into nested+11E4h"
+    },
+    {
+      "routine": "009e6e80",
+      "address": "009e71ef",
+      "native": "009523c0",
+      "note": "ECX = EBP = nested+12C0h, the OWN curve (LEA at 009e71b9, MOV ECX at 009e71bf); the result is stored at 009e71fc and divided into the own sample at 009e7244"
+    },
+    {
+      "routine": "009e6e80",
+      "address": "009e721a",
+      "native": "00955a40",
+      "note": "ECX = EBP = nested+12C0h (MOV at 009e7215), the own curve: p(x)"
+    },
+    {
+      "routine": "009e6e80",
+      "address": "009e722d",
+      "native": "00955a40",
+      "note": "ECX = EBX = nested+13B0h (MOV at 009e7228), the target curve: q(x)"
+    },
+    {
+      "routine": "00955a40",
+      "address": "00955abc",
+      "native": "00419010",
+      "note": "BSP_Math_InterpolateClamped(0, samples[i], 1, samples[i+1], fraction)"
+    },
+    {
+      "routine": "009e5530",
+      "address": "009e55c9",
+      "native": "00954940",
+      "note": "ECX = nested+12C0h (LEA at 009e55c3): the own curve, cleared when the nested object is constructed"
+    },
+    {
+      "routine": "009e5530",
+      "address": "009e55d4",
+      "native": "00954940",
+      "note": "ECX = nested+13B0h (LEA at 009e55ce): the target curve. The two LEAs are 0F0h apart, which is the object size"
+    },
+    {
+      "routine": "009f1bc0",
+      "address": "009f2f11",
+      "native": "0095f080",
+      "note": "the OWN curve's refill, prefer_long_range = 1 (009f2ef0); nested+1220h re-armed with 1.5f at 009f2f16. Evidence: docs/SHIP_AI_BEARING_RATING.md"
+    },
+    {
+      "routine": "009f1bc0",
+      "address": "009f2fb1",
+      "native": "0095f080",
+      "note": "the TARGET curve's refill, prefer_long_range = 0 (009f2f9a); nested+1224h re-armed with 2.0f at 009f2fb6, gated by target->vtable[5Ch](5) at 009f2f3c"
+    }
+  ],
+  "host_steps": [
+    {
+      "routine": "009e6e80",
+      "address": "009e71ae",
+      "native": "00952530",
+      "function": "009e6e80",
+      "method": "curve_base_00952530",
+      "note": "now bsp::ship_ai_approach_curve_effective_range_00952530 on the target curve"
+    },
+    {
+      "routine": "009e6e80",
+      "address": "009e71ef",
+      "native": "009523c0",
+      "function": "009e6e80",
+      "method": "curve_reference_009523c0",
+      "note": "now bsp::ship_ai_approach_curve_peak_009523c0 on the own curve"
+    },
+    {
+      "routine": "009e6e80",
+      "address": "009e721a",
+      "native": "00955a40",
+      "function": "009e6e80",
+      "method": "curve_primary_00955a40",
+      "note": "now bsp::ship_ai_approach_curve_sample_00955a40 on the own curve"
+    },
+    {
+      "routine": "009e6e80",
+      "address": "009e722d",
+      "native": "00955a40",
+      "function": "009e6e80",
+      "method": "curve_secondary_00955a40",
+      "note": "now bsp::ship_ai_approach_curve_sample_00955a40 on the target curve"
+    },
+    {
+      "routine": "009f1bc0",
+      "address": "009f2f11",
+      "native": "0095f080",
+      "function": "009f1bc0",
+      "method": "refresh_approach_curves",
+      "note": "ApproachUpdateBinding, after the frame state; prefer_long_range = 1, timer 1.5f"
+    },
+    {
+      "routine": "009f1bc0",
+      "address": "009f2fb1",
+      "native": "0095f080",
+      "function": "009f1bc0",
+      "method": "refresh_approach_curves",
+      "note": "prefer_long_range = 0, timer 2.0f; the vtable[5Ch](5) gate at 009f2f3c is stood in for by the presence of a target and recorded as unimplemented"
+    }
+  ],
+  "corrections": [
+    {
+      "where": "docs/SHIP_AI_APPROACH_UPDATE.md, the 009E6E80 table row at 009E71A5",
+      "was": "p and q are 00955A40 on nested+12C0h and nested+13B0h (which curve is which was stated but the objects were unread)",
+      "is": "confirmed unchanged: 009E721A samples nested+12C0h (the own unit's profile) and 009E722D samples nested+13B0h (the target's). The scan's reading in src/ship_ai_approach_update.cpp needed no correction; the only thing the curve recovery adds is what the samples mean and where they come from.",
+      "evidence": "009e71a5 LEA EBX,[ESI+13B0h]; 009e71b9 LEA EBP,[ESI+12C0h]; 009e7215 MOV ECX,EBP before 009e721a; 009e7228 MOV ECX,EBX before 009e722d; 009e71ac MOV ECX,EBX before 00952530; 009e71bf MOV ECX,EBP before 009523c0"
+    },
+    {
+      "where": "docs/SHIP_AI_APPROACH_UPDATE.md, the same row's constants",
+      "was": "+ 300.0 and interp(0, 2, 1, 1, ...) were quoted without the operand widths",
+      "is": "00ce3ca8 is a double 300.0 (00 00 00 00 00 c0 72 40) added by FADD double at 009e71b3; 00ce3958 is a float 2.0 loaded by FLD float at 009e7261. Both readings stand.",
+      "evidence": "ghidra bytes 00ce3ca8 and 00ce3958; 009e71b3 FADD double ptr [00ce3ca8]; 009e7261 FLD float ptr [00ce3958]"
+    }
+  ],
+  "no_ghidra_function": [],
+  "validation": {
+    "usn02_before_main": "shots=734 hull=180 deaths=2 total_damage=18525.6; ShipAiApproach::curve_primary_00955a40 [00955a40] UNIMPLEMENTED calls=999600",
+    "usn02_after": "shots=734 hull=180 deaths=2 total_damage=18525.6, byte for byte the same gunnery census; the three curve placeholders are gone from the unimplemented list; summary mission ship ai standoff choices=8400 curve_refreshes=2450, and all fourteen attacking ships chose first=300.0 last=300.0",
+    "why_nothing_moved": "the curve rules run but their input is zero. 0095F080 called 0095EB40 147000 times (2450 refreshes x 60 samples) and every call returned at the range gate 0095EB6E, because the firepower host's unit+494h is a placeholder 0.0f and the sweep's first range is 50.0: ShipAiFirepower::unit_max_weapon_range_0494 [0095eb62] UNIMPLEMENTED calls=147000, and category_device_count is never reached. The target curve is therefore all zeros, so 00952530 answers 0.0 and the seed is 0 + 300 = 300; the own curve is samples[i] = i - 60 after 0095F080's prefer_long_range bias, so every sample is negative, 009E723C skips every step of the scan and 300.0 survives as the choice. The previous placeholder returned 0.0f from 00952530 and produced the same 300.0, which is why the census is identical.",
+    "usn01_after": "recorded in docs/SHIP_AI_APPROACH_CURVES.md"
+  },
+  "follow_up_packets": [
+    "ship_ai_firepower_device_list: the ship AI host's FirepowerBinding answers unit_max_weapon_range (unit+494h) with 0.0f, which makes 0095EB40 return at 0095EB6E for every sample and starves both curves. Until a unit's gunnery categories reach the ship AI host, the standoff scan cannot choose anything but its 300 m seed.",
+    "ship_ai_approach_scan_scale_1284: nested+1284h, the numerator of the scan's middle factor, has no producer in this process either. Even with real curves, a zero there collapses every score to zero and the scan keeps the LAST sample with a positive own value rather than the best one.",
+    "ship_ai_approach_frame_state_tail: 009F1BC0 past 009F1DBF, which owns the two 0095F080 call sites this packet had to bind in the host instead."
+  ],
+  "uncertainties": [
+    "The sixty-element extent is fixed by three independent reads (00954940's 3Ch-dword fill, 00955A40's 0x3B bound and 0ECh tail load, 009523C0's 0x3C tail loop) and by the 0F0h gap between nested+12C0h and nested+13B0h. No routine in the image bounds-checks the samples themselves, so a caller that filled fewer than sixty would read stale floats.",
+    "00955A40 rounds to float three times (00955A4F, 00955A6F, 00955A98) and the projection rounds at exactly those points, but the image keeps the intermediate in an x87 80-bit register. At a sample boundary the two agree; on a value that lands within an ulp of a boundary they may pick adjacent indices.",
+    "The query blocks the two 0095F080 sites pass (nested+127Ch and nested+1238h) are not modelled: only the 20.0f window (009F2EA1) and the 30.0f ready-round horizon (009F2EB1) are set in the host, and the rest is zero. That is labelled in the host and does not change any curve rule, but it means the fill is partial even once a device list exists.",
+    "The target refill's gate, target->vtable[5Ch](5) at 009F2F3C, has no probe in this process; the presence of a target stands in for it and the substitution is recorded as unimplemented."
+  ]
+}

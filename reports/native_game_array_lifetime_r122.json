@@ -1,0 +1,3889 @@
+{
+  "packet": "orch4-native-game-array-lifetime-r122",
+  "status": "seven_complete_normal_element_bodies_actual_string_observer_services_copied_original_compared_parent_defaults_bound",
+  "scope": {
+    "routines": [
+      {
+        "address": "004cafd0",
+        "inclusive_end": "004caff9",
+        "bytes": 42,
+        "coverage": "complete normal body"
+      },
+      {
+        "address": "004c1990",
+        "inclusive_end": "004c19d7",
+        "bytes": 72,
+        "coverage": "complete normal body"
+      },
+      {
+        "address": "004c4600",
+        "inclusive_end": "004c4604",
+        "bytes": 5,
+        "coverage": "complete normal body"
+      },
+      {
+        "address": "004c5860",
+        "inclusive_end": "004c58a7",
+        "bytes": 72,
+        "coverage": "complete normal body"
+      },
+      {
+        "address": "004cb2f0",
+        "inclusive_end": "004cb364",
+        "bytes": 117,
+        "coverage": "complete normal body"
+      },
+      {
+        "address": "007f8180",
+        "inclusive_end": "007f81bf",
+        "bytes": 64,
+        "coverage": "complete normal body"
+      },
+      {
+        "address": "004b7ef0",
+        "inclusive_end": "004b7f47",
+        "bytes": 88,
+        "coverage": "complete normal body"
+      }
+    ],
+    "native_bytes": 460,
+    "parent_default_calls": 4,
+    "application_admission": false
+  },
+  "contract": "ECX actual borrowed owner, RET;4C4600 is a five-byte JMP. Source normal CRT reverse adapter uses three exact destructor/stride pairs; no native CRT/FH3 exception implementation or binary ABI claim.",
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "entry": "004cafd0",
+        "length": 42,
+        "kind": "vector",
+        "hex": "568bf18b460485c0740950e8ccb5720083c404c7460400000000c7460800000000c7460c000000005ec3",
+        "sha256": "ef9ea55df07f110a9621d596e8fdc7931c5e02c4448a88226876b2027eac70dd",
+        "instructions": [
+          {
+            "address": "004cafd0",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "004cafd1",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "004cafd3",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004cafd6",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "004cafd8",
+            "hex": "7409",
+            "text": "je 0x4cafe3"
+          },
+          {
+            "address": "004cafda",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "004cafdb",
+            "hex": "e8ccb57200",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "004cafe0",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "004cafe3",
+            "hex": "c7460400000000",
+            "text": "mov dword ptr [esi + 4], 0"
+          },
+          {
+            "address": "004cafea",
+            "hex": "c7460800000000",
+            "text": "mov dword ptr [esi + 8], 0"
+          },
+          {
+            "address": "004caff1",
+            "hex": "c7460c00000000",
+            "text": "mov dword ptr [esi + 0xc], 0"
+          },
+          {
+            "address": "004caff8",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "004caff9",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "entry": "004c1990",
+        "length": 72,
+        "kind": "list",
+        "hex": "568bf18b4e048b0189098b4e048949043b4604c74608000000007417578d49008b3850e8f44b730083c4043b7e048bc775ee5f8b460450e8e04b730083c404c74604000000005ec3",
+        "sha256": "c9146049b610e41eac36cdcc9c68f5c48ea8bfc1aa59da0d1abce865f7e40afd",
+        "instructions": [
+          {
+            "address": "004c1990",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "004c1991",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "004c1993",
+            "hex": "8b4e04",
+            "text": "mov ecx, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004c1996",
+            "hex": "8b01",
+            "text": "mov eax, dword ptr [ecx]"
+          },
+          {
+            "address": "004c1998",
+            "hex": "8909",
+            "text": "mov dword ptr [ecx], ecx"
+          },
+          {
+            "address": "004c199a",
+            "hex": "8b4e04",
+            "text": "mov ecx, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004c199d",
+            "hex": "894904",
+            "text": "mov dword ptr [ecx + 4], ecx"
+          },
+          {
+            "address": "004c19a0",
+            "hex": "3b4604",
+            "text": "cmp eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004c19a3",
+            "hex": "c7460800000000",
+            "text": "mov dword ptr [esi + 8], 0"
+          },
+          {
+            "address": "004c19aa",
+            "hex": "7417",
+            "text": "je 0x4c19c3"
+          },
+          {
+            "address": "004c19ac",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "004c19ad",
+            "hex": "8d4900",
+            "text": "lea ecx, [ecx]"
+          },
+          {
+            "address": "004c19b0",
+            "hex": "8b38",
+            "text": "mov edi, dword ptr [eax]"
+          },
+          {
+            "address": "004c19b2",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "004c19b3",
+            "hex": "e8f44b7300",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "004c19b8",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "004c19bb",
+            "hex": "3b7e04",
+            "text": "cmp edi, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004c19be",
+            "hex": "8bc7",
+            "text": "mov eax, edi"
+          },
+          {
+            "address": "004c19c0",
+            "hex": "75ee",
+            "text": "jne 0x4c19b0"
+          },
+          {
+            "address": "004c19c2",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "004c19c3",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004c19c6",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "004c19c7",
+            "hex": "e8e04b7300",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "004c19cc",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "004c19cf",
+            "hex": "c7460400000000",
+            "text": "mov dword ptr [esi + 4], 0"
+          },
+          {
+            "address": "004c19d6",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "004c19d7",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "entry": "004c4600",
+        "length": 5,
+        "kind": "thunk",
+        "hex": "e98bd3ffff",
+        "sha256": "266779619aefd109e26d19eda3dc34f3040b387cbaab0ca3b9ba65af94ee416b",
+        "instructions": [
+          {
+            "address": "004c4600",
+            "hex": "e98bd3ffff",
+            "text": "jmp 0x4c1990"
+          }
+        ]
+      },
+      {
+        "entry": "004c5860",
+        "length": 72,
+        "kind": "pairs",
+        "hex": "568bf18b4e048b0189098b4e048949043b4604c74608000000007417578d49008b3850e8240d730083c4043b7e048bc775ee5f8b460450e8100d730083c404c74604000000005ec3",
+        "sha256": "31de772ea590c710dfa5f911d2b7c28820445ca3fc0a1e4249dab905522d79ba",
+        "instructions": [
+          {
+            "address": "004c5860",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "004c5861",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "004c5863",
+            "hex": "8b4e04",
+            "text": "mov ecx, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004c5866",
+            "hex": "8b01",
+            "text": "mov eax, dword ptr [ecx]"
+          },
+          {
+            "address": "004c5868",
+            "hex": "8909",
+            "text": "mov dword ptr [ecx], ecx"
+          },
+          {
+            "address": "004c586a",
+            "hex": "8b4e04",
+            "text": "mov ecx, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004c586d",
+            "hex": "894904",
+            "text": "mov dword ptr [ecx + 4], ecx"
+          },
+          {
+            "address": "004c5870",
+            "hex": "3b4604",
+            "text": "cmp eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004c5873",
+            "hex": "c7460800000000",
+            "text": "mov dword ptr [esi + 8], 0"
+          },
+          {
+            "address": "004c587a",
+            "hex": "7417",
+            "text": "je 0x4c5893"
+          },
+          {
+            "address": "004c587c",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "004c587d",
+            "hex": "8d4900",
+            "text": "lea ecx, [ecx]"
+          },
+          {
+            "address": "004c5880",
+            "hex": "8b38",
+            "text": "mov edi, dword ptr [eax]"
+          },
+          {
+            "address": "004c5882",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "004c5883",
+            "hex": "e8240d7300",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "004c5888",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "004c588b",
+            "hex": "3b7e04",
+            "text": "cmp edi, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004c588e",
+            "hex": "8bc7",
+            "text": "mov eax, edi"
+          },
+          {
+            "address": "004c5890",
+            "hex": "75ee",
+            "text": "jne 0x4c5880"
+          },
+          {
+            "address": "004c5892",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "004c5893",
+            "hex": "8b4604",
+            "text": "mov eax, dword ptr [esi + 4]"
+          },
+          {
+            "address": "004c5896",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "004c5897",
+            "hex": "e8100d7300",
+            "text": "call 0xbf65ac"
+          },
+          {
+            "address": "004c589c",
+            "hex": "83c404",
+            "text": "add esp, 4"
+          },
+          {
+            "address": "004c589f",
+            "hex": "c7460400000000",
+            "text": "mov dword ptr [esi + 4], 0"
+          },
+          {
+            "address": "004c58a6",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "004c58a7",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "entry": "004cb2f0",
+        "length": 117,
+        "kind": "participant",
+        "hex": "6aff689156c60064a100000000506489250000000051568bf189742404c7069477ce00c744241002000000e860ce32006820dd41006a036a088d86ec00000050c644242001e834c972008d8e98000000e81ba5ffff8d4e38c7442410ffffffffe89bcbfeff8b4c24085e64890d0000000083c410c3",
+        "sha256": "b457dbcd8e2778a7831688adec5bae81bf423f6652d0f35bf2a70dc6b680d890",
+        "instructions": [
+          {
+            "address": "004cb2f0",
+            "hex": "6aff",
+            "text": "push -1"
+          },
+          {
+            "address": "004cb2f2",
+            "hex": "689156c600",
+            "text": "push 0xc65691"
+          },
+          {
+            "address": "004cb2f7",
+            "hex": "64a100000000",
+            "text": "mov eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "004cb2fd",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "004cb2fe",
+            "hex": "64892500000000",
+            "text": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "address": "004cb305",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "004cb306",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "004cb307",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "004cb309",
+            "hex": "89742404",
+            "text": "mov dword ptr [esp + 4], esi"
+          },
+          {
+            "address": "004cb30d",
+            "hex": "c7069477ce00",
+            "text": "mov dword ptr [esi], 0xce7794"
+          },
+          {
+            "address": "004cb313",
+            "hex": "c744241002000000",
+            "text": "mov dword ptr [esp + 0x10], 2"
+          },
+          {
+            "address": "004cb31b",
+            "hex": "e860ce3200",
+            "text": "call 0x7f8180"
+          },
+          {
+            "address": "004cb320",
+            "hex": "6820dd4100",
+            "text": "push 0x41dd20"
+          },
+          {
+            "address": "004cb325",
+            "hex": "6a03",
+            "text": "push 3"
+          },
+          {
+            "address": "004cb327",
+            "hex": "6a08",
+            "text": "push 8"
+          },
+          {
+            "address": "004cb329",
+            "hex": "8d86ec000000",
+            "text": "lea eax, [esi + 0xec]"
+          },
+          {
+            "address": "004cb32f",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "004cb330",
+            "hex": "c644242001",
+            "text": "mov byte ptr [esp + 0x20], 1"
+          },
+          {
+            "address": "004cb335",
+            "hex": "e834c97200",
+            "text": "call 0xbf7c6e"
+          },
+          {
+            "address": "004cb33a",
+            "hex": "8d8e98000000",
+            "text": "lea ecx, [esi + 0x98]"
+          },
+          {
+            "address": "004cb340",
+            "hex": "e81ba5ffff",
+            "text": "call 0x4c5860"
+          },
+          {
+            "address": "004cb345",
+            "hex": "8d4e38",
+            "text": "lea ecx, [esi + 0x38]"
+          },
+          {
+            "address": "004cb348",
+            "hex": "c7442410ffffffff",
+            "text": "mov dword ptr [esp + 0x10], 0xffffffff"
+          },
+          {
+            "address": "004cb350",
+            "hex": "e89bcbfeff",
+            "text": "call 0x4b7ef0"
+          },
+          {
+            "address": "004cb355",
+            "hex": "8b4c2408",
+            "text": "mov ecx, dword ptr [esp + 8]"
+          },
+          {
+            "address": "004cb359",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "004cb35a",
+            "hex": "64890d00000000",
+            "text": "mov dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "004cb361",
+            "hex": "83c410",
+            "text": "add esp, 0x10"
+          },
+          {
+            "address": "004cb364",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "entry": "007f8180",
+        "length": 64,
+        "kind": "references",
+        "hex": "53558b2d2022ce0056578db904010000bb030000008b3785f674188d460450ffd585c075088b168b028bceffd0c7070000000083c70483eb0175da5f5e5d5bc3",
+        "sha256": "9e245f3929c33439c5d4289401abe6ca45727dcb14543eb7d4127c40774da81f",
+        "instructions": [
+          {
+            "address": "007f8180",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "007f8181",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "007f8182",
+            "hex": "8b2d2022ce00",
+            "text": "mov ebp, dword ptr [0xce2220]"
+          },
+          {
+            "address": "007f8188",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "007f8189",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "007f818a",
+            "hex": "8db904010000",
+            "text": "lea edi, [ecx + 0x104]"
+          },
+          {
+            "address": "007f8190",
+            "hex": "bb03000000",
+            "text": "mov ebx, 3"
+          },
+          {
+            "address": "007f8195",
+            "hex": "8b37",
+            "text": "mov esi, dword ptr [edi]"
+          },
+          {
+            "address": "007f8197",
+            "hex": "85f6",
+            "text": "test esi, esi"
+          },
+          {
+            "address": "007f8199",
+            "hex": "7418",
+            "text": "je 0x7f81b3"
+          },
+          {
+            "address": "007f819b",
+            "hex": "8d4604",
+            "text": "lea eax, [esi + 4]"
+          },
+          {
+            "address": "007f819e",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "007f819f",
+            "hex": "ffd5",
+            "text": "call ebp"
+          },
+          {
+            "address": "007f81a1",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "007f81a3",
+            "hex": "7508",
+            "text": "jne 0x7f81ad"
+          },
+          {
+            "address": "007f81a5",
+            "hex": "8b16",
+            "text": "mov edx, dword ptr [esi]"
+          },
+          {
+            "address": "007f81a7",
+            "hex": "8b02",
+            "text": "mov eax, dword ptr [edx]"
+          },
+          {
+            "address": "007f81a9",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "007f81ab",
+            "hex": "ffd0",
+            "text": "call eax"
+          },
+          {
+            "address": "007f81ad",
+            "hex": "c70700000000",
+            "text": "mov dword ptr [edi], 0"
+          },
+          {
+            "address": "007f81b3",
+            "hex": "83c704",
+            "text": "add edi, 4"
+          },
+          {
+            "address": "007f81b6",
+            "hex": "83eb01",
+            "text": "sub ebx, 1"
+          },
+          {
+            "address": "007f81b9",
+            "hex": "75da",
+            "text": "jne 0x7f8195"
+          },
+          {
+            "address": "007f81bb",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "007f81bc",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "007f81bd",
+            "hex": "5d",
+            "text": "pop ebp"
+          },
+          {
+            "address": "007f81be",
+            "hex": "5b",
+            "text": "pop ebx"
+          },
+          {
+            "address": "007f81bf",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "entry": "004b7ef0",
+        "length": 88,
+        "kind": "observer",
+        "hex": "6aff68e84cc60064a100000000506489250000000051568bf189742404c706fc74ce008b4e1485c9c74424100000000074078bd6e877d31d008bcec7442410ffffffffe838d91d008b4c24085e64890d0000000083c410c3",
+        "sha256": "41f373a3f9e0338635c9af11443c87e4e55c2ea4c4ccda6972e019cc57771d67",
+        "instructions": [
+          {
+            "address": "004b7ef0",
+            "hex": "6aff",
+            "text": "push -1"
+          },
+          {
+            "address": "004b7ef2",
+            "hex": "68e84cc600",
+            "text": "push 0xc64ce8"
+          },
+          {
+            "address": "004b7ef7",
+            "hex": "64a100000000",
+            "text": "mov eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "004b7efd",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "004b7efe",
+            "hex": "64892500000000",
+            "text": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "address": "004b7f05",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "004b7f06",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "004b7f07",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "004b7f09",
+            "hex": "89742404",
+            "text": "mov dword ptr [esp + 4], esi"
+          },
+          {
+            "address": "004b7f0d",
+            "hex": "c706fc74ce00",
+            "text": "mov dword ptr [esi], 0xce74fc"
+          },
+          {
+            "address": "004b7f13",
+            "hex": "8b4e14",
+            "text": "mov ecx, dword ptr [esi + 0x14]"
+          },
+          {
+            "address": "004b7f16",
+            "hex": "85c9",
+            "text": "test ecx, ecx"
+          },
+          {
+            "address": "004b7f18",
+            "hex": "c744241000000000",
+            "text": "mov dword ptr [esp + 0x10], 0"
+          },
+          {
+            "address": "004b7f20",
+            "hex": "7407",
+            "text": "je 0x4b7f29"
+          },
+          {
+            "address": "004b7f22",
+            "hex": "8bd6",
+            "text": "mov edx, esi"
+          },
+          {
+            "address": "004b7f24",
+            "hex": "e877d31d00",
+            "text": "call 0x6952a0"
+          },
+          {
+            "address": "004b7f29",
+            "hex": "8bce",
+            "text": "mov ecx, esi"
+          },
+          {
+            "address": "004b7f2b",
+            "hex": "c7442410ffffffff",
+            "text": "mov dword ptr [esp + 0x10], 0xffffffff"
+          },
+          {
+            "address": "004b7f33",
+            "hex": "e838d91d00",
+            "text": "call 0x695870"
+          },
+          {
+            "address": "004b7f38",
+            "hex": "8b4c2408",
+            "text": "mov ecx, dword ptr [esp + 8]"
+          },
+          {
+            "address": "004b7f3c",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "004b7f3d",
+            "hex": "64890d00000000",
+            "text": "mov dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "004b7f44",
+            "hex": "83c410",
+            "text": "add esp, 0x10"
+          },
+          {
+            "address": "004b7f47",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      }
+    ],
+    "call_rows": [
+      {
+        "address": "004cafdb",
+        "native": "00bf65ac",
+        "function": "004cafd0"
+      },
+      {
+        "address": "004c19b3",
+        "native": "00bf65ac",
+        "function": "004c1990"
+      },
+      {
+        "address": "004c19c7",
+        "native": "00bf65ac",
+        "function": "004c1990"
+      },
+      {
+        "address": "004c5883",
+        "native": "00bf65ac",
+        "function": "004c5860"
+      },
+      {
+        "address": "004c5897",
+        "native": "00bf65ac",
+        "function": "004c5860"
+      },
+      {
+        "address": "004cb31b",
+        "native": "007f8180",
+        "function": "004cb2f0"
+      },
+      {
+        "address": "004cb335",
+        "native": "00bf7c6e",
+        "function": "004cb2f0"
+      },
+      {
+        "address": "004cb340",
+        "native": "004c5860",
+        "function": "004cb2f0"
+      },
+      {
+        "address": "004cb350",
+        "native": "004b7ef0",
+        "function": "004cb2f0"
+      },
+      {
+        "address": "004b7f24",
+        "native": "006952a0",
+        "function": "004b7ef0"
+      },
+      {
+        "address": "004b7f33",
+        "native": "00695870",
+        "function": "004b7ef0"
+      },
+      {
+        "address": "004dd230",
+        "native": "00bf7c6e",
+        "function": "004dcf90"
+      },
+      {
+        "address": "004dd3f5",
+        "native": "00bf7c6e",
+        "function": "004dcf90"
+      },
+      {
+        "address": "004dd412",
+        "native": "00bf7c6e",
+        "function": "004dcf90"
+      },
+      {
+        "address": "004dd56b",
+        "native": "00bf7c6e",
+        "function": "004dcf90"
+      }
+    ],
+    "indirect_calls": [
+      {
+        "site": "007f819f",
+        "instruction": "call ebp",
+        "function": "007f8180"
+      },
+      {
+        "site": "007f81ab",
+        "instruction": "call eax",
+        "function": "007f8180"
+      }
+    ],
+    "jumps": [
+      {
+        "site": "004c4600",
+        "instruction": "jmp 0x4c1990",
+        "function": "004c4600"
+      }
+    ],
+    "fixture": [
+      {
+        "entry": "004cafd0",
+        "original_bytes": 42,
+        "relocated_bytes": 46,
+        "patches": [
+          [
+            16,
+            "hook",
+            "h_free_004cafdb"
+          ]
+        ]
+      },
+      {
+        "entry": "004c1990",
+        "original_bytes": 72,
+        "relocated_bytes": 80,
+        "patches": [
+          [
+            40,
+            "hook",
+            "h_free_004c19b3"
+          ],
+          [
+            64,
+            "hook",
+            "h_free_004c19c7"
+          ]
+        ]
+      },
+      {
+        "entry": "004c4600",
+        "original_bytes": 5,
+        "relocated_bytes": 5,
+        "patches": [
+          [
+            1,
+            "image",
+            4987280
+          ]
+        ]
+      },
+      {
+        "entry": "004c5860",
+        "original_bytes": 72,
+        "relocated_bytes": 80,
+        "patches": [
+          [
+            40,
+            "hook",
+            "h_free_004c5883"
+          ],
+          [
+            64,
+            "hook",
+            "h_free_004c5897"
+          ]
+        ]
+      },
+      {
+        "entry": "004cb2f0",
+        "original_bytes": 117,
+        "relocated_bytes": 117,
+        "patches": [
+          [
+            44,
+            "image",
+            8356224
+          ],
+          [
+            70,
+            "hook",
+            "h_strings_004cb335"
+          ],
+          [
+            81,
+            "image",
+            5003360
+          ],
+          [
+            97,
+            "image",
+            4947696
+          ]
+        ]
+      },
+      {
+        "entry": "007f8180",
+        "original_bytes": 64,
+        "relocated_bytes": 76,
+        "patches": [
+          [
+            4,
+            "absolute",
+            "decrement_cell"
+          ]
+        ]
+      },
+      {
+        "entry": "004b7ef0",
+        "original_bytes": 88,
+        "relocated_bytes": 92,
+        "patches": [
+          [
+            57,
+            "hook",
+            "h_unregister_004b7f24"
+          ],
+          [
+            72,
+            "hook",
+            "h_callback_004b7f33"
+          ]
+        ]
+      }
+    ],
+    "flow_repairs": [
+      "reports/native_game_array_lifetime_r122_flow_004cafd0.json",
+      "reports/native_game_array_lifetime_r122_flow_004c1990.json",
+      "reports/native_game_array_lifetime_r122_flow_004c5860.json"
+    ],
+    "body_repairs": "reports/native_game_array_lifetime_r122_bodies.json",
+    "final_flow": "004cafd0: 13 listed instructions, 0 gap(s)\n004c1990: 27 listed instructions, 0 gap(s)\n004c5860: 27 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n",
+    "corrections": [
+      {
+        "was": "List bodies ended after final free and lacked loop/back-edge/final-clear instructions",
+        "is": "Both72-byte bodies include actual RET and current-head clear;five gaps49bytes repaired across three bodies",
+        "evidence": [
+          "reports/native_game_array_lifetime_r122_flow_004cafd0.json",
+          "reports/native_game_array_lifetime_r122_flow_004c1990.json",
+          "reports/native_game_array_lifetime_r122_flow_004c5860.json",
+          "reports/native_game_array_lifetime_r122_bodies.json"
+        ]
+      },
+      {
+        "was": "4C4600 thunk removed when its truncated target was recreated",
+        "is": "Same5-byte JMP/target thunk restored and verified before export",
+        "evidence": "reports/native_game_array_lifetime_r122_bodies.json"
+      },
+      {
+        "was": "4CB2F0 heuristic vector-deleting-destructor name",
+        "is": "ordinary118h participant destructor with no stack flags/count",
+        "evidence": "004CB2F0..004CB364 listing"
+      }
+    ]
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "probe": {
+      "exe_sha256": "D3219BE35F514CB9D4D1D7E29F52E97F19BE80BEEA7514EF077D1F23F3590C0A",
+      "library_sha256": "4F01040B7C4D513CEB69AB87A22A94F44F18CC1F640B36A40C000F9427A7D1AA",
+      "exit": 0,
+      "linker": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe",
+      "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+      "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED"
+    },
+    "paired_cases": 60,
+    "boundary_observations": 499,
+    "comparison_bytes": 1306184,
+    "comparison_sha256": "badb706b9256748f75b87de62b57c456f4c12ce1a666d9f7ccb670fd0af74a7f",
+    "source_failure_cases": 1,
+    "parent": {
+      "probe": {
+        "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+        "exe_sha256": "F1F5B4999D0A0541830C7EF09487E208FAA55BE7307FEC029BAB037D97BC7035",
+        "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+        "linker": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe",
+        "exit": 0,
+        "library_sha256": "4F01040B7C4D513CEB69AB87A22A94F44F18CC1F640B36A40C000F9427A7D1AA"
+      },
+      "paired_cases": 52,
+      "boundary_snapshots": 3537,
+      "comparison_bytes": 141402076,
+      "comparison_sha256": "5608527b8639992445713ee13bb078b4ec13cc24561869d31cc8cf5710ccaa0d",
+      "source_failure_cases": 4,
+      "context_and_child_operation_identity_checked": true,
+      "array_calls_controlled": true
+    },
+    "shared_real_services": [
+      "raw string pool/getter/return and shutdown gate",
+      "same actual raw singleton manager",
+      "observer lock and pair registration/unregister/detach/canonical edge deletion"
+    ],
+    "concrete_parent_default_exercised": true,
+    "source_sha256_by_path": {
+      "include/bsp/native_game_array_lifetime.hpp": "296271866c2b7f47893ccc3687cc6148345b376d6bb0d0d35d11495c64a1f7aa",
+      "src/native_game_array_lifetime.cpp": "b0940cc57a6e22d6e3808fa9b71372762c5546cff3c3dfbe15a83255bfcfe19e",
+      "include/bsp/native_game_lifetime.hpp": "ca47283e3b67a23791c25715bcc6727756970dcda81be5526465af79007673fb",
+      "src/native_game_lifetime.cpp": "8f50697abddb52d2e192fc8353665ea67b7fa7906a40982418e43c5078dffb31"
+    },
+    "source_lf_sha256": {
+      "include/bsp/native_game_array_lifetime.hpp": "296271866c2b7f47893ccc3687cc6148345b376d6bb0d0d35d11495c64a1f7aa",
+      "src/native_game_array_lifetime.cpp": "b0940cc57a6e22d6e3808fa9b71372762c5546cff3c3dfbe15a83255bfcfe19e",
+      "include/bsp/native_game_lifetime.hpp": "ca47283e3b67a23791c25715bcc6727756970dcda81be5526465af79007673fb",
+      "src/native_game_lifetime.cpp": "8f50697abddb52d2e192fc8353665ea67b7fa7906a40982418e43c5078dffb31"
+    },
+    "dependency_sha256": {
+      "src/native_game_array_elements.cpp": "be6f4651bba8e17e3a6778e81d44a5e3329907de6d4d403b0eb9092177b6d1d6",
+      "src/native_singleton_destruction.cpp": "cb2697b191c3f0f716c61ddae33588af6eac1cac901827e3f2f53f5669d2aadd",
+      "src/native_singleton_publication.cpp": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a",
+      "src/native_singleton_removal_reorder.cpp": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2",
+      "src/native_singleton_vector_allocation.cpp": "4771197c3f1ead7dd635637c849c60f8f525c4d482dcc4a33c8617922362e09e",
+      "src/native_singleton_vector_insert_count.cpp": "12961e35b1189704bf7f1de55fbdeb6f406688cfadf9256f8729fd72a0a870ac",
+      "src/native_singleton_vector_leaves.cpp": "366628d6ec54de3f643b5fff299d16092a2c085a8e0715d4a9b0a6cdb2ed89ad",
+      "src/native_singleton_vector_registration_wrappers.cpp": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90",
+      "src/native_singleton_vector_reserve_construct.cpp": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29",
+      "src/native_string.cpp": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+      "src/native_string_append.cpp": "fb7c36d388c3cffc44232a65c7e2e64d29689eb82a6d60bb665adf2e73013b54",
+      "src/native_string_byte_append.cpp": "a1baa448afe11188ecd06b442d5cdcef5757c6450afc7e8fbe2517f02fe7e524",
+      "src/native_string_compare.cpp": "35634c0ef48044d79dd58c6aecfc854da34b5f0739e0de367ce5040cdef97718",
+      "src/native_string_pool_owner.cpp": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e",
+      "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "src/native_string_vector.cpp": "4cf86be660ed334e7d7db5072ac6dccce8edfbb02bc3e39dd7437dddd7f995ba",
+      "src/native_string_vector_lookup.cpp": "6a6b6a2cc90cc4ad08cacf483e8894fe6ac728bf3b7340e12e316200e750a27b",
+      "src/observer_dispatch_owner.cpp": "d217bfac73d6e9cc4e96c980710dacc1a19150d4922817428ab9c6cc812696f1",
+      "src/observer_dispatch_schedule.cpp": "f85eaa653bb4447a54c06cd24d823d1a2a0304ee85ce6c9942a25955bc72beec",
+      "src/observer_edges.cpp": "7ec0892b88e66b9604f8cce9abc16246ff325b050205f8922b72a1ad13f28e47",
+      "src/observer_event_producer.cpp": "05c443e6c1faba7513d8db33c61012705ad1337ffe121e7038597cd190277e5b",
+      "src/observer_lifetime.cpp": "b6d0c6d299e055d742dfd75fc5a126762553c513c6353c67bc269aa8d97d2e26",
+      "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "src/sound_lifetime_access.cpp": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29"
+    },
+    "probe_source_sha256": "a5f04f4dcb04ebe56ea9c5ce6983621391b4229b29c4b4aed46a6bc5119672b2",
+    "fixture_sha256": "96a2310f17bc5333eed9ca3ecadd2fb685f32dd6b5ad917ce6dbf9fd07e97003",
+    "library_sha256": "4f01040b7c4d513ceb69ab87a22a94f44f18cc1f640b36a40c000f9427a7d1aa",
+    "game_sha256": "50cddc1cf3f2e9e35961796995af40772d90c1492d67b372b583efe819358662",
+    "ordinary_application_runtime_rerun": false,
+    "call_verification": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\reports\\native_game_array_lifetime_r122.json: 15 call rows checked, 0 failed\n",
+    "combined_revalidation": {
+      "library_sha256": "8fdf0e5519387b2a14f44a3871c5f28e68d707be9929dfc871116353b81445a2",
+      "game_sha256": "16c6547412eb7e17f9a105bb80311f3ced53ada4c430b855de8de7c268ed7061",
+      "combined_build_log": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\r122_combined_build_v2.log",
+      "combined_build_log_sha256": "590e0979ae818e17e31536be6ae1b3128498a434cda2765e76a8bc4a17db84d6",
+      "probes": [
+        {
+          "label": "arrays",
+          "result": {
+            "library_sha256": "8FDF0E5519387B2A14F44A3871C5F28E68D707BE9929DFC871116353B81445A2",
+            "exit": 0,
+            "linker": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe",
+            "exe_sha256": "41659812FF2691CD052B693912952CC90D47DACC12E89AB8BD45FDDB9D75C7DA",
+            "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+            "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe"
+          },
+          "probe_source_sha256": "a5f04f4dcb04ebe56ea9c5ce6983621391b4229b29c4b4aed46a6bc5119672b2",
+          "comparison_sha256": "badb706b9256748f75b87de62b57c456f4c12ce1a666d9f7ccb670fd0af74a7f",
+          "comparison_bytes": 1306184,
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\game_array_lifetime_r122\\combined\\probe-run.log",
+          "log_sha256": "456610b85caf2bbaa5ee0fdec333e226abdf9cae1899903684f4d34e1d6f97b6",
+          "log_result": "PASS 60 paired cases, 499 free/terminal observations, 1306184 matching bytes; actual raw pool, observer edges/lock/manager drained in every lane; retained-suffix failure/replay passed\n"
+        },
+        {
+          "label": "parent",
+          "result": {
+            "exit": 0,
+            "exe_sha256": "46AB16FB5D84FFA7AC85BFD935C10379F32FFFA5BDE228B0E40DC6C823DF8559",
+            "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+            "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+            "library_sha256": "8FDF0E5519387B2A14F44A3871C5F28E68D707BE9929DFC871116353B81445A2",
+            "linker": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe"
+          },
+          "probe_source_sha256": "decc56ec4d8095e2b3aca38fb4ba6bb998ba0ce00168b696077b7c44b77dc499",
+          "comparison_sha256": "5608527b8639992445713ee13bb078b4ec13cc24561869d31cc8cf5710ccaa0d",
+          "comparison_bytes": 141402076,
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\game_array_lifetime_r122\\combined\\parent\\probe-run.log",
+          "log_sha256": "d60916d8461d5f79074d423bd767b88ad1898abc9b81e32d6cd25a004307e4d8",
+          "log_result": "PASS 52 paired cases, 3537 boundary snapshots, 141402076 matching bytes; 4 source failure/replay cases\n"
+        }
+      ],
+      "object_comparison": [
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_game_array_lifetime.obj",
+          "tested_sha256": "96ea3fd9d566d76107e964c0cd81593eaf424eed8d64c376bd0ff5b71d5a5cb6",
+          "combined_sha256": "96ea3fd9d566d76107e964c0cd81593eaf424eed8d64c376bd0ff5b71d5a5cb6",
+          "tested_size": 16439,
+          "combined_size": 16439,
+          "changed_bytes": 0,
+          "first_changed_offsets": [],
+          "tested_coff_timestamp": 1789700687,
+          "combined_coff_timestamp": 1789700687,
+          "identical_except_coff_timestamp": true
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_game_lifetime.obj",
+          "tested_sha256": "334bc2b5ccc703c61759d65427f423b96dc9acce94deffcb88f458abf990ca6c",
+          "combined_sha256": "b11c73d7234703717aefb2a30a65093bf428acdd390a9d6b6ab91dd181284415",
+          "tested_size": 23790,
+          "combined_size": 23790,
+          "changed_bytes": 2,
+          "first_changed_offsets": [
+            4,
+            5
+          ],
+          "tested_coff_timestamp": 1789700687,
+          "combined_coff_timestamp": 1789701937,
+          "identical_except_coff_timestamp": true
+        }
+      ],
+      "conclusion": "Array object byte-identical; parent object differs only at COFF timestamp bytes4/5. All other bytes equal. Both comparators rerun against combined library:60 actual-service cases plus52 controlled parent cases pass. Later main changes rebuilt; probe-linked core library remained byte-identical."
+    }
+  },
+  "limits": [
+    "Shared string/observer implementations and normal CRT iteration are dependencies,not newly differential-tested bodies.",
+    "Virtual reference payloads are real fixture allocations/atomics/terminal frees,not a validated game payload profile.",
+    "Known allocation addresses normalized;uninitialized pool bytes,freed memory and OS lock internals omitted.",
+    "Source failure retains partial graph and rejects replay;not native FH3/SEH cleanup.",
+    "No arbitrary private-stack alias,hardware-fault,concurrency,drop-in ABI,ordinary rawgame admission or gameplay proof."
+  ],
+  "owned_files": [
+    "include/bsp/native_game_array_lifetime.hpp",
+    "src/native_game_array_lifetime.cpp",
+    "include/bsp/native_game_lifetime.hpp",
+    "src/native_game_lifetime.cpp",
+    "cmake/startup.cmake",
+    "docs/NATIVE_GAME_ARRAY_LIFETIME_R122.md",
+    "docs/NATIVE_GAME_LIFETIME_R121.md",
+    "reports/native_game_array_lifetime_r122.json",
+    "reports/native_game_array_lifetime_r122_bodies.json",
+    "reports/native_game_array_lifetime_r122_flow_004cafd0.json",
+    "reports/native_game_array_lifetime_r122_flow_004c1990.json",
+    "reports/native_game_array_lifetime_r122_flow_004c5860.json",
+    "config/names/004b0000.jsonl",
+    "config/reconstruction/004b0000.jsonl",
+    "config/names/004c0000.jsonl",
+    "config/reconstruction/004c0000.jsonl",
+    "config/names/004d0000.jsonl",
+    "config/reconstruction/004d0000.jsonl",
+    "config/names/007f0000.jsonl",
+    "config/reconstruction/007f0000.jsonl"
+  ],
+  "no_ghidra_function": [],
+  "ghidra_annotations": {
+    "prior_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\ghidra-annotations-20260918T032321Z.json",
+    "prior_values": [
+      {
+        "address": "004b7ef0",
+        "before": {
+          "address": "004b7ef0",
+          "function_name": "FUN_004b7ef0"
+        },
+        "after": {
+          "address": "004b7ef0",
+          "name": "BSP_ObserverLink_DestroyBase",
+          "evidence": "Complete88B normal body. ECX actual callback-owner base,RET. StampCE74FC;capture nonnull first endpoint+14;6952A0 ECX=first,EDX=base;then695870 ECX=base. Existing actual observer graph/lock/manager reused. Link+14 not cleared. Original FH3 exception cleanup not reproduced by this normal wrapper. Descriptive hypothesis, not a recovered symbol. R122: seven complete normal bodies460B;60 copied-original array cases,499 free/terminal observations,1306184 matching normalized bytes. Real raw string pool and same raw singleton manager, observer lock/pairs/dispatch/canonical edge deletion;all created domains drained. Virtual reference payloads are fixture allocations, not game-profile proof. Existing string/observer implementations and normal CRT iteration are shared dependencies.52 controlled parent cases/141402076 bytes;strict Win32/3CTests. Source failures retain graph/reject replay. No native CRT/FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-inABI,rawgame admission or gameplay proof. docs/NATIVE_GAME_ARRAY_LIFETIME_R122.md;reports/native_game_array_lifetime_r122.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004c1990",
+        "before": {
+          "address": "004c1990",
+          "function_name": "FUN_004c1990"
+        },
+        "after": {
+          "address": "004c1990",
+          "name": "BSP_GameList_DestroyStorage",
+          "evidence": "Complete72B through4C19D7. ECX actual0Ch list header,RET. Capture first, reset current head links;CMP precedes zero count;capture next BEFORE each node free,compare against CURRENT head after callback. Free current head then clear+4;callback changes to count survive. Node payload untouched.23 gap bytes/body tail restored;4C4600 thunk restored after target recreation. Descriptive hypothesis, not a recovered symbol. R122: seven complete normal bodies460B;60 copied-original array cases,499 free/terminal observations,1306184 matching normalized bytes. Real raw string pool and same raw singleton manager, observer lock/pairs/dispatch/canonical edge deletion;all created domains drained. Virtual reference payloads are fixture allocations, not game-profile proof. Existing string/observer implementations and normal CRT iteration are shared dependencies.52 controlled parent cases/141402076 bytes;strict Win32/3CTests. Source failures retain graph/reject replay. No native CRT/FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-inABI,rawgame admission or gameplay proof. docs/NATIVE_GAME_ARRAY_LIFETIME_R122.md;reports/native_game_array_lifetime_r122.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004c4600",
+        "before": {
+          "address": "004c4600",
+          "function_name": "BSP_GameList_DestroyStorage"
+        },
+        "after": {
+          "address": "004c4600",
+          "name": "thunk_BSP_GameList_DestroyStorage",
+          "evidence": "Complete5B JMP4C1990. Preserve thunk identity and actual list receiver. Restored after target function recreation, live bytes/target verified. Descriptive hypothesis, not a recovered symbol. R122: seven complete normal bodies460B;60 copied-original array cases,499 free/terminal observations,1306184 matching normalized bytes. Real raw string pool and same raw singleton manager, observer lock/pairs/dispatch/canonical edge deletion;all created domains drained. Virtual reference payloads are fixture allocations, not game-profile proof. Existing string/observer implementations and normal CRT iteration are shared dependencies.52 controlled parent cases/141402076 bytes;strict Win32/3CTests. Source failures retain graph/reject replay. No native CRT/FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-inABI,rawgame admission or gameplay proof. docs/NATIVE_GAME_ARRAY_LIFETIME_R122.md;reports/native_game_array_lifetime_r122.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004c5860",
+        "before": {
+          "address": "004c5860",
+          "function_name": "FUN_004c5860"
+        },
+        "after": {
+          "address": "004c5860",
+          "name": "BSP_GameParticipantPairs_DestroyStorage",
+          "evidence": "Complete72B through4C58A7. ECX actual participant+98 list,RET. Same current-head/captured-next raw node cleanup as4C1990, with own native call sites.4D6BA0/4D2920 establish16-byte pair nodes.23 gap bytes/body tail restored;final header+4 clear retained. Descriptive hypothesis, not a recovered symbol. R122: seven complete normal bodies460B;60 copied-original array cases,499 free/terminal observations,1306184 matching normalized bytes. Real raw string pool and same raw singleton manager, observer lock/pairs/dispatch/canonical edge deletion;all created domains drained. Virtual reference payloads are fixture allocations, not game-profile proof. Existing string/observer implementations and normal CRT iteration are shared dependencies.52 controlled parent cases/141402076 bytes;strict Win32/3CTests. Source failures retain graph/reject replay. No native CRT/FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-inABI,rawgame admission or gameplay proof. docs/NATIVE_GAME_ARRAY_LIFETIME_R122.md;reports/native_game_array_lifetime_r122.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004cafd0",
+        "before": {
+          "address": "004cafd0",
+          "function_name": "FUN_004cafd0"
+        },
+        "after": {
+          "address": "004cafd0",
+          "name": "BSP_GameVector_DestroyStorage",
+          "evidence": "Complete42B. ECX actual10h header, RET. Conditional current+4 free then unconditional zero+4/+8/+C;keep+0. Returning-free ADD ESP4 restored. Raw storage adapter, no invented STL object. Descriptive hypothesis, not a recovered symbol. R122: seven complete normal bodies460B;60 copied-original array cases,499 free/terminal observations,1306184 matching normalized bytes. Real raw string pool and same raw singleton manager, observer lock/pairs/dispatch/canonical edge deletion;all created domains drained. Virtual reference payloads are fixture allocations, not game-profile proof. Existing string/observer implementations and normal CRT iteration are shared dependencies.52 controlled parent cases/141402076 bytes;strict Win32/3CTests. Source failures retain graph/reject replay. No native CRT/FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-inABI,rawgame admission or gameplay proof. docs/NATIVE_GAME_ARRAY_LIFETIME_R122.md;reports/native_game_array_lifetime_r122.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004cb2f0",
+        "before": {
+          "address": "004cb2f0",
+          "function_name": "CG_vector_deleting_dtor_004cb2f0"
+        },
+        "after": {
+          "address": "004cb2f0",
+          "name": "BSP_GameParticipant_DestroyActualStorage",
+          "evidence": "Complete117B. ECX actual118h participant,RET;ordinary destructor,not vector-deleting. StampCE7794;release104/108/10C refs;reverse three8h strings atEC through actual41DD20 raw pool;destroy+98 list;destroy+38 observer-link base. Required virtual terminal service;real existing string/observer implementations. Descriptive hypothesis, not a recovered symbol. R122: seven complete normal bodies460B;60 copied-original array cases,499 free/terminal observations,1306184 matching normalized bytes. Real raw string pool and same raw singleton manager, observer lock/pairs/dispatch/canonical edge deletion;all created domains drained. Virtual reference payloads are fixture allocations, not game-profile proof. Existing string/observer implementations and normal CRT iteration are shared dependencies.52 controlled parent cases/141402076 bytes;strict Win32/3CTests. Source failures retain graph/reject replay. No native CRT/FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-inABI,rawgame admission or gameplay proof. docs/NATIVE_GAME_ARRAY_LIFETIME_R122.md;reports/native_game_array_lifetime_r122.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004dcf90",
+        "before": {
+          "address": "004dcf90",
+          "function_name": "BSP_Game_DestroyActualStorage",
+          "comment": "[BSP reconstruction 004dcf90]\nComplete1559B normal parent schedule. ECX actual71A0 game, RET. StampCE7CB8; disable small string returns before cleanup. Preserve publication capture/reload/clear-after-callback order; capture first grid before clearing E188A8. Keep21F4 field after terminal release, clear five19D4..19E4 fields after callbacks. Captured vector range then free CURRENT buffer; strings capture pointer/length+1; checked trees free CURRENT heads. Required address-named callee contracts, no successful empty defaults. Ordinary destructor, not vector-deleting destructor. Descriptive hypothesis, not a recovered symbol. R121: four complete normal bodies, 1729 live/PE bytes; parent callee closure remains open. 52 copied-original cases, 3537 controlled-boundary snapshots, 141402076 matching bytes. Required external callees are controlled observers/mutators, not validated implementations. Four source failure/replay observations. Strict Win32 build and three CTests pass. No native FH3/SEH, private-stack alias, hardware-fault, concurrency, drop-in ABI, application admission or gameplay proof. docs/NATIVE_GAME_LIFETIME_R121.md; reports/native_game_lifetime_r121.json."
+        },
+        "after": {
+          "address": "004dcf90",
+          "name": "BSP_Game_DestroyActualStorage",
+          "evidence": "Complete1559B normal parent schedule. ECX actual71A0 game, RET. StampCE7CB8; disable small string returns before cleanup. Preserve publication capture/reload/clear-after-callback order; capture first grid before clearing E188A8. Keep21F4 field after terminal release, clear five19D4..19E4 fields after callbacks. Captured vector range then free CURRENT buffer; strings capture pointer/length+1; checked trees free CURRENT heads. Required address-named callee contracts, no successful empty defaults. Ordinary destructor, not vector-deleting destructor. Descriptive hypothesis, not a recovered symbol. R121: four complete normal bodies, 1729 live/PE bytes; parent callee closure remains open. 52 copied-original cases, 3537 controlled-boundary snapshots, 141402076 matching bytes. Required external callees are controlled observers/mutators, not validated implementations. Four source failure/replay observations. Strict Win32 build and three CTests pass. No native FH3/SEH, private-stack alias, hardware-fault, concurrency, drop-in ABI, application admission or gameplay proof. docs/NATIVE_GAME_LIFETIME_R121.md; reports/native_game_lifetime_r121.json. | R122: four BF7C6E sites4DD230/4DD3F5/4DD412/4DD56B now use concrete normal defaults for listC/4,participant118/8 twice,vector10/5. Explicit actual string/observer/call context;same service identity required;four retained child operations. Missing context fails when reached. Parent diagnostic acknowledgement refuses failed/running children. Remaining cleanup callees and application admission open. Descriptive hypothesis, not a recovered symbol. R122: seven complete normal bodies460B;60 copied-original array cases,499 free/terminal observations,1306184 matching normalized bytes. Real raw string pool and same raw singleton manager, observer lock/pairs/dispatch/canonical edge deletion;all created domains drained. Virtual reference payloads are fixture allocations, not game-profile proof. Existing string/observer implementations and normal CRT iteration are shared dependencies.52 controlled parent cases/141402076 bytes;strict Win32/3CTests. Source failures retain graph/reject replay. No native CRT/FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-inABI,rawgame admission or gameplay proof. docs/NATIVE_GAME_ARRAY_LIFETIME_R122.md;reports/native_game_array_lifetime_r122.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "007f8180",
+        "before": {
+          "address": "007f8180",
+          "function_name": "FUN_007f8180"
+        },
+        "after": {
+          "address": "007f8180",
+          "name": "BSP_GameParticipant_ReleaseReferences",
+          "evidence": "Complete64B. ECX participant,RET. Ascending104/108/10C cells;capture currentnonnull object,atomic decrement+4,currentvslot0 onzero,clear cell AFTER callback. Reload next field on next iteration. Tests include callback replacement of current and next fields;payload class remains unassigned. Descriptive hypothesis, not a recovered symbol. R122: seven complete normal bodies460B;60 copied-original array cases,499 free/terminal observations,1306184 matching normalized bytes. Real raw string pool and same raw singleton manager, observer lock/pairs/dispatch/canonical edge deletion;all created domains drained. Virtual reference payloads are fixture allocations, not game-profile proof. Existing string/observer implementations and normal CRT iteration are shared dependencies.52 controlled parent cases/141402076 bytes;strict Win32/3CTests. Source failures retain graph/reject replay. No native CRT/FH3/SEH,private-stack alias,hardware-fault,concurrency,drop-inABI,rawgame admission or gameplay proof. docs/NATIVE_GAME_ARRAY_LIFETIME_R122.md;reports/native_game_array_lifetime_r122.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "readback_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\game_array_lifetime_r122\\comments-after.json",
+    "readback_sha256": "9cba3c2e25475939e62fe26379188d80b7237bcd68b7d62b3f93decf421cf12b",
+    "status": "Seven names plus parent evidence applied under write lock;prior values preserved,project saved/readback checked/exports refreshed"
+  },
+  "ledger_receipts": [
+    "004cafd0 -> BSP_GameVector_DestroyStorage\n",
+    "004cafd0 function destroy_native_game_vector_004cafd0\n",
+    "004c1990 -> BSP_GameList_DestroyStorage\n",
+    "004c1990 function destroy_native_game_list_004c1990\n",
+    "004c4600 -> thunk_BSP_GameList_DestroyStorage\n",
+    "004c4600 function destroy_native_game_list_thunk_004c4600\n",
+    "004c5860 -> BSP_GameParticipantPairs_DestroyStorage\n",
+    "004c5860 function destroy_native_game_participant_pairs_004c5860\n",
+    "004cb2f0 -> BSP_GameParticipant_DestroyActualStorage\n",
+    "004cb2f0 function destroy_native_game_participant_004cb2f0\n",
+    "007f8180 -> BSP_GameParticipant_ReleaseReferences\n",
+    "007f8180 function release_native_game_participant_references_007f8180\n",
+    "004b7ef0 -> BSP_ObserverLink_DestroyBase\n",
+    "004b7ef0 function destroy_native_game_participant_observer_004b7ef0\n",
+    "004dcf90 -> BSP_Game_DestroyActualStorage\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"004dcf90\", \"name\": \"BSP_Game_DestroyActualStorage\", \"evidence\": \"Complete1559B normal parent schedule. ECX actual71A0 game, RET. StampCE7CB8; disable small string returns before cleanup. Preserve publication capture/reload/clear-after-callback order; capture first grid before clearing E188A8. Keep21F4 field after terminal release, clear five19D4..19E4 fields after callbacks. Captured vector range then free CURRENT buffer; strings capture pointer/length+1; checked trees free CURRENT heads. Required address-named callee contracts, no successful empty defaults. Ordinary destructor, not vector-deleting destructor. Descriptive hypothesis, not a recovered symbol. R121: four complete normal bodies, 1729 live/PE bytes; parent callee closure remains open. 52 copied-original cases, 3537 controlled-boundary snapshots, 141402076 matching bytes. Required external callees are controlled observers/mutators, not validated implementations. Four source failure/replay observations. Strict Win32 build and three CTests pass. No native FH3/SEH, private-stack alias, hardware-fault, concurrency, drop-in ABI, application admission or gameplay proof. docs/NATIVE_GAME_LIFETIME_R121.md; reports/native_game_lifetime_r121.json.\"})\n",
+    "004dcf90 fragment native_game_array_lifetime_binding_r122\n"
+  ],
+  "tested_artifact_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r122\\native-game-array-lifetime-tested-r122.zip",
+    "sha256": "f1bb3332008dd3df611efb094a450a9bedf5c56d96da88e90d441ed653d93ab3",
+    "files": 227,
+    "uncompressed_bytes": 358962823,
+    "utc": "2026-09-18T03:25:15.177510+00:00",
+    "head": "6924e47d135961429061ef20030240b8e8a392d9",
+    "manifest": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_game_array_lifetime.obj",
+        "size": 16439,
+        "sha256": "96ea3fd9d566d76107e964c0cd81593eaf424eed8d64c376bd0ff5b71d5a5cb6"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_game_lifetime.obj",
+        "size": 23790,
+        "sha256": "334bc2b5ccc703c61759d65427f423b96dc9acce94deffcb88f458abf990ca6c"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "size": 65918618,
+        "sha256": "4f01040b7c4d513ceb69ab87a22a94f44f18cc1f640b36a40c000f9427a7d1aa"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "size": 2657792,
+        "sha256": "50cddc1cf3f2e9e35961796995af40772d90c1492d67b372b583efe819358662"
+      },
+      {
+        "path": "build/win32/Release/bsp_math_tests.exe",
+        "size": 759808,
+        "sha256": "f7f8f45329282d1df1feb6a0c73dc066a4522911d64613244ab178e4ac30eb1f"
+      },
+      {
+        "path": "build/win32/Release/bsp_native_math_tests.exe",
+        "size": 18432,
+        "sha256": "41212c4947fd617faa3aa5e286067a08e871dbeef464dad6ced120d575f86812"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "size": 160012,
+        "sha256": "9e0e91f17f76be08c6228958874d80b378b12b07d6d2530b8f531f6087a27e77"
+      },
+      {
+        "path": "config/names/004b0000.jsonl",
+        "size": 59257,
+        "sha256": "3dd4fa204abd8f7246a30c914148765230ba863332a187ea83405ee6be6d19db"
+      },
+      {
+        "path": "config/names/004c0000.jsonl",
+        "size": 119661,
+        "sha256": "d81c3107eedb0bd061fed699f67a990fb42eca6e4076b0eb3f6f4b3aa9ddf084"
+      },
+      {
+        "path": "config/names/004d0000.jsonl",
+        "size": 126571,
+        "sha256": "c3e2f7d5866966ab5bda7a0a802c6b1f11e8424437eea85dc162bbf9b2db9a30"
+      },
+      {
+        "path": "config/names/007f0000.jsonl",
+        "size": 75859,
+        "sha256": "8f182a14f8139a70a6acd2b9518456c3ee7c02bcc23e5f3bafbd246ca6e6d8ab"
+      },
+      {
+        "path": "config/reconstruction/004b0000.jsonl",
+        "size": 52583,
+        "sha256": "f1f1a8e97e1eabc8d5dcf87840baf01ace349a16d7097ad23af28d7a7eae5352"
+      },
+      {
+        "path": "config/reconstruction/004c0000.jsonl",
+        "size": 120481,
+        "sha256": "e45a3d9927ac14a2dc7ad9a88eead51d1dbbae5a0ffc0b5ddc1e8d5a0090d1dc"
+      },
+      {
+        "path": "config/reconstruction/004d0000.jsonl",
+        "size": 130121,
+        "sha256": "2c0e3c3c3ee81c256f3d6dd8ec6c11b99cc6a2c9cf922b9477c593c7739c89b7"
+      },
+      {
+        "path": "config/reconstruction/007f0000.jsonl",
+        "size": 99018,
+        "sha256": "f01d941fb66f5a9da04502e65c1b3ab8897b12909f88ed1ed2763c4576441330"
+      },
+      {
+        "path": "docs/NATIVE_GAME_ARRAY_LIFETIME_R122.md",
+        "size": 8312,
+        "sha256": "025926bec651aee8b509397b9ad431888654a2f70538731dc0b5902e79a21a1a"
+      },
+      {
+        "path": "docs/NATIVE_GAME_LIFETIME_R121.md",
+        "size": 8521,
+        "sha256": "0fd2dbebab168af8e7fab347dbacfc2b26f28a2ad716b0a40b25dec836402997"
+      },
+      {
+        "path": "include/bsp/allocator_list.hpp",
+        "size": 1781,
+        "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8"
+      },
+      {
+        "path": "include/bsp/audio_online_startup.hpp",
+        "size": 17176,
+        "sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821"
+      },
+      {
+        "path": "include/bsp/avoid_zone_dyn_hull.hpp",
+        "size": 3575,
+        "sha256": "c4b13f13e5cb94a4e1423c0c96aa725935615f92d2cb65a823c36572bf1f2c3a"
+      },
+      {
+        "path": "include/bsp/building_instance.hpp",
+        "size": 2328,
+        "sha256": "ad3c055dee4b5b4ec77784db03552e173644d57b154b3fd0a26dd5dff1ad1c4e"
+      },
+      {
+        "path": "include/bsp/camera_projection.hpp",
+        "size": 2413,
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "path": "include/bsp/camera_transform.hpp",
+        "size": 7028,
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+      },
+      {
+        "path": "include/bsp/d3d9_buffers.hpp",
+        "size": 3262,
+        "sha256": "e8bc19c4630661b83969b53cac94134748f3c9af2a98002f1f2906ed93dedc83"
+      },
+      {
+        "path": "include/bsp/d3d9_startup.hpp",
+        "size": 1362,
+        "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843"
+      },
+      {
+        "path": "include/bsp/d3d9_states.hpp",
+        "size": 15076,
+        "sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288"
+      },
+      {
+        "path": "include/bsp/d3d9_vertex_layout.hpp",
+        "size": 1257,
+        "sha256": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef"
+      },
+      {
+        "path": "include/bsp/dyn_body_creation.hpp",
+        "size": 5100,
+        "sha256": "771890801179db08b6ec963a2145cb05c4346da8f79d402514770aae2210535b"
+      },
+      {
+        "path": "include/bsp/dyn_engine_runtime.hpp",
+        "size": 2552,
+        "sha256": "059c3367a5d71532c076a29895b62394e1d88d71fa6cd828c5a540604359d82a"
+      },
+      {
+        "path": "include/bsp/dyn_scene_runtime.hpp",
+        "size": 2802,
+        "sha256": "55bbd6bda1cbdde923b48381c85998db05f4db9ce96e60d9f964c2d2b6be378c"
+      },
+      {
+        "path": "include/bsp/dyn_world_factory.hpp",
+        "size": 1225,
+        "sha256": "4e32f788fd38fdf5acbef4a530c43b709c2e62e8017e428a58e0539d257c0b29"
+      },
+      {
+        "path": "include/bsp/dyn_world_runtime.hpp",
+        "size": 1331,
+        "sha256": "fe53091179272be0d15c1e69a80174d69f9c9e5199a5bc61329be0490ba18a19"
+      },
+      {
+        "path": "include/bsp/dyn_world_settings.hpp",
+        "size": 7233,
+        "sha256": "b00dde4b4a80912c7c255d9080d56213028f6723810499f3d54be157c1c34b33"
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "size": 2475,
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+      },
+      {
+        "path": "include/bsp/frontend_screen_animation.hpp",
+        "size": 14105,
+        "sha256": "5bf3429e1c6032def440ccebd3d804fd087896401ec16bf94b456b1dc73865e0"
+      },
+      {
+        "path": "include/bsp/game_entry.hpp",
+        "size": 5510,
+        "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+      },
+      {
+        "path": "include/bsp/gameplay_effect_definition.hpp",
+        "size": 5105,
+        "sha256": "5ea6bc9afc8f44e24abc29e79b281f9a354ae5ca3f45cfb27fe7cb52e13ba198"
+      },
+      {
+        "path": "include/bsp/gameplay_effect_manager.hpp",
+        "size": 2366,
+        "sha256": "27b54b5be98ea6784d4b0a73abd295b06f161dd925d9c3946974650bb664eeef"
+      },
+      {
+        "path": "include/bsp/generated_model_lifetime.hpp",
+        "size": 12600,
+        "sha256": "bb6171641666552aea3fcaa9757d13074f229e79d5793a3b044b980f4a3d3ef9"
+      },
+      {
+        "path": "include/bsp/global_config.hpp",
+        "size": 3836,
+        "sha256": "27644005624b594fbbc8b1c771223f9f7f36edfb05aa3d47ac2a3be5c1b9c5cd"
+      },
+      {
+        "path": "include/bsp/gui_layout_loader.hpp",
+        "size": 20811,
+        "sha256": "3ede9dc470a4d5a3285d1578483428b548025b0b2eba9ab6ecc79967b242d8b1"
+      },
+      {
+        "path": "include/bsp/gui_lua_reader.hpp",
+        "size": 23275,
+        "sha256": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433"
+      },
+      {
+        "path": "include/bsp/gui_native_geometry.hpp",
+        "size": 10778,
+        "sha256": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf"
+      },
+      {
+        "path": "include/bsp/gui_text_native_renderer.hpp",
+        "size": 1778,
+        "sha256": "51e0dc41b0bdcd3941bc6b2e4e2e41d12111027e6864bc457eb96bc15dbf38cf"
+      },
+      {
+        "path": "include/bsp/gui_widget.hpp",
+        "size": 13391,
+        "sha256": "846d1f6378e3459fb585917289d2f3342de37ba98dafc7fc952c9c48ea8061f9"
+      },
+      {
+        "path": "include/bsp/instance_geometry.hpp",
+        "size": 3989,
+        "sha256": "02bd2ae826198ca341a2a14fbf0f58ced99ccd20a5833a6eef48a11f932b75d4"
+      },
+      {
+        "path": "include/bsp/instance_grouping.hpp",
+        "size": 4008,
+        "sha256": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308"
+      },
+      {
+        "path": "include/bsp/instance_sort.hpp",
+        "size": 4479,
+        "sha256": "c3a892e5b69db70699daaa5c301f5b00aa17fe4f93f929fdc43dcc16e797b1f3"
+      },
+      {
+        "path": "include/bsp/instance_upload.hpp",
+        "size": 6532,
+        "sha256": "271e956b6dd3801fff1edab447fb03bb929ec562e227ae0357debbe95c1239fb"
+      },
+      {
+        "path": "include/bsp/material_lighting.hpp",
+        "size": 1642,
+        "sha256": "b56091a2688d0a7cf52401396efa68b9f02de215e9bd89e4bf20d93d83600da8"
+      },
+      {
+        "path": "include/bsp/material_sort_metadata.hpp",
+        "size": 3332,
+        "sha256": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212"
+      },
+      {
+        "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+        "size": 2257,
+        "sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1"
+      },
+      {
+        "path": "include/bsp/native_game_array_elements.hpp",
+        "size": 2529,
+        "sha256": "c649a43f9f5d79d7e1f73bed13d28bce4c973672e1b185b4c4305c5dae886609"
+      },
+      {
+        "path": "include/bsp/native_game_array_lifetime.hpp",
+        "size": 3035,
+        "sha256": "296271866c2b7f47893ccc3687cc6148345b376d6bb0d0d35d11495c64a1f7aa"
+      },
+      {
+        "path": "include/bsp/native_game_construction.hpp",
+        "size": 6896,
+        "sha256": "f52c3b24e55c5ab0a96254d13bc18eb051f8731b07733dde7f231ca9659d37a0"
+      },
+      {
+        "path": "include/bsp/native_game_dynamics.hpp",
+        "size": 819,
+        "sha256": "a3e10519df0f4bb2327ee46713069f0aa761630ca1c633f438db09bb41668290"
+      },
+      {
+        "path": "include/bsp/native_game_embedded_state.hpp",
+        "size": 2369,
+        "sha256": "c915da207b5212ae77559082be9bf39de180e0db228294ebec8fdcd1de29e64d"
+      },
+      {
+        "path": "include/bsp/native_game_grid.hpp",
+        "size": 5494,
+        "sha256": "6ad37763b462847bee9f77b0d31bdcd76cc5920f207fa7d2d98225210b629726"
+      },
+      {
+        "path": "include/bsp/native_game_lifetime.hpp",
+        "size": 5808,
+        "sha256": "ca47283e3b67a23791c25715bcc6727756970dcda81be5526465af79007673fb"
+      },
+      {
+        "path": "include/bsp/native_game_resource_parsers.hpp",
+        "size": 4741,
+        "sha256": "0bac11abb6c9291aeccc3fdc38966a87be2cf9ca685a7fc4cfff1b1b3877eddd"
+      },
+      {
+        "path": "include/bsp/native_game_tables.hpp",
+        "size": 1985,
+        "sha256": "35e156043ec28f28b6c47944e26d0d6f05ef1c3acac18849922358be99be63f9"
+      },
+      {
+        "path": "include/bsp/native_global_config_fields.hpp",
+        "size": 1473,
+        "sha256": "c8b78c0382a8d994d37107c969acf691dc6f781e409523691fe821042b435803"
+      },
+      {
+        "path": "include/bsp/native_global_config_load.hpp",
+        "size": 2389,
+        "sha256": "c487698f7d3d5bfe435b506affa43179a1e5f6cf04ba858cd9ae2b639b3a800e"
+      },
+      {
+        "path": "include/bsp/native_logical_buffer_device_restore.hpp",
+        "size": 2649,
+        "sha256": "2e79708e49c1559f706602b9fe761791776f11fee1c5b3efa69d7fbb2bd57c45"
+      },
+      {
+        "path": "include/bsp/native_logical_buffer_mapping.hpp",
+        "size": 2420,
+        "sha256": "d3ee48a208b6636dc70941c6a62967407d657ad18f1ae971f2d900c752fcaef0"
+      },
+      {
+        "path": "include/bsp/native_logical_index_owner.hpp",
+        "size": 6804,
+        "sha256": "c0ae53059fba249f589990b7d41d1986a2134cd86b99cd5d6db7ab2c849b38cb"
+      },
+      {
+        "path": "include/bsp/native_logical_vertex_owner.hpp",
+        "size": 7242,
+        "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+      },
+      {
+        "path": "include/bsp/native_lua_bootstrap.hpp",
+        "size": 1658,
+        "sha256": "b9c5bad802213d87665c1c4f82320184ef8970902dcd9dd7b22b40ce4493a45c"
+      },
+      {
+        "path": "include/bsp/native_lua_file_loading.hpp",
+        "size": 1992,
+        "sha256": "13bcab4bbc7eb973b7ccceb87b198e19326bed0320d2d3dca7b32ae91cba3108"
+      },
+      {
+        "path": "include/bsp/native_lua_objects.hpp",
+        "size": 10058,
+        "sha256": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d"
+      },
+      {
+        "path": "include/bsp/native_lua_vfs_dispatch.hpp",
+        "size": 1569,
+        "sha256": "da795f3a43a6acf1664d6ac00474a170d7196bf4383ca1695960ab685c67bfb2"
+      },
+      {
+        "path": "include/bsp/native_material_factory.hpp",
+        "size": 3753,
+        "sha256": "fa8a45423c10da368d803d5df7fb583a5bc91e9f3c3ac59722607e4a95d90b71"
+      },
+      {
+        "path": "include/bsp/native_material_owner.hpp",
+        "size": 5986,
+        "sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320"
+      },
+      {
+        "path": "include/bsp/native_material_pools.hpp",
+        "size": 10219,
+        "sha256": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715"
+      },
+      {
+        "path": "include/bsp/native_mesh_clone.hpp",
+        "size": 2821,
+        "sha256": "0fbe93a15ed525fd128257ca58ac4c4d8da4b4a533dd345c6c856bce5d839d5e"
+      },
+      {
+        "path": "include/bsp/native_mesh_owner.hpp",
+        "size": 6760,
+        "sha256": "540fa95aafcd3b67697998361f9a6b1689bf90348c9c0cdc09bdeb6b9c6ac42c"
+      },
+      {
+        "path": "include/bsp/native_mesh_pool.hpp",
+        "size": 2929,
+        "sha256": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52"
+      },
+      {
+        "path": "include/bsp/native_mesh_section.hpp",
+        "size": 9555,
+        "sha256": "c99901d53b195ab67c0da51c7b39657f42b7b60ba1f5509eec200b6ff29f3e2e"
+      },
+      {
+        "path": "include/bsp/native_mission_progress_owner.hpp",
+        "size": 1980,
+        "sha256": "bff5ea00ed24a064c8251420a11a068eab39b01d10ba0ec9ce76ff01feccb394"
+      },
+      {
+        "path": "include/bsp/native_model_owner.hpp",
+        "size": 6717,
+        "sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e"
+      },
+      {
+        "path": "include/bsp/native_model_pool.hpp",
+        "size": 3166,
+        "sha256": "30e4945729d723ec450a6eebaf28968c976dcd50f366ba193aa591d751709144"
+      },
+      {
+        "path": "include/bsp/native_node_construction.hpp",
+        "size": 6451,
+        "sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098"
+      },
+      {
+        "path": "include/bsp/native_node_destruction.hpp",
+        "size": 5997,
+        "sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833"
+      },
+      {
+        "path": "include/bsp/native_physical_buffer_lock.hpp",
+        "size": 1561,
+        "sha256": "519c67bd123883490af70464ab81cec74d5de948a39eada540cf5b8529e18340"
+      },
+      {
+        "path": "include/bsp/native_physical_buffer_owner.hpp",
+        "size": 4248,
+        "sha256": "1277b747e0963be41fdee456092ea42b3c191d7aa165eeeec772de3cad354e56"
+      },
+      {
+        "path": "include/bsp/native_player_profile_owner.hpp",
+        "size": 4505,
+        "sha256": "3bb853af8712fdb9d8b1bcca8e27cb48ede6b2219ca20648f0c1a8675ef139a8"
+      },
+      {
+        "path": "include/bsp/native_point_light_links.hpp",
+        "size": 4633,
+        "sha256": "e106191d74ea6960befb5f36e74e89076efb5fec4122a5b3d87482823dc07ba7"
+      },
+      {
+        "path": "include/bsp/native_profile_collections.hpp",
+        "size": 2989,
+        "sha256": "29292e811a8562f988ca17c721fa3a74f2640c9578839ade9355bd0a080a8ae0"
+      },
+      {
+        "path": "include/bsp/native_profile_settings.hpp",
+        "size": 2526,
+        "sha256": "2dd92ab3c7dc33673fa830d1d4382da40c45852c2cd04b868f26f8734c95d5b9"
+      },
+      {
+        "path": "include/bsp/native_render_context.hpp",
+        "size": 6924,
+        "sha256": "1c8d834d50cbf8ee7f660e7803efe6bad43fe70bbe87fd5cdf3375f6e68ef56d"
+      },
+      {
+        "path": "include/bsp/native_render_pointer_arrays.hpp",
+        "size": 4572,
+        "sha256": "d9cf406a178986114205fe9a154a2b74c0f8dd857b6186d7d840d8fe398ae881"
+      },
+      {
+        "path": "include/bsp/native_render_resource_record.hpp",
+        "size": 4475,
+        "sha256": "6e1d8e4817325dab095e27588f9a5aa79cb5e32130b3fe1bc52d9d3f44de4d92"
+      },
+      {
+        "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+        "size": 2877,
+        "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+      },
+      {
+        "path": "include/bsp/native_resource_manager_lifetime.hpp",
+        "size": 4222,
+        "sha256": "59f9f3ef4431664664f7f3732e10defcdc3a222eca3cd554e477aba31179d26a"
+      },
+      {
+        "path": "include/bsp/native_resource_parser_registration.hpp",
+        "size": 4225,
+        "sha256": "ecd38e6bfea430c734ff9fccebf59d2ea2a52f2b1be98ba9f0e85f714e2bbf0f"
+      },
+      {
+        "path": "include/bsp/native_resource_parser_singletons.hpp",
+        "size": 5692,
+        "sha256": "7f55afc5dd483f98b7e531a65743777adefe3b93f9c061cd2e9262e68818c2e3"
+      },
+      {
+        "path": "include/bsp/native_resource_support.hpp",
+        "size": 3479,
+        "sha256": "fb1506aba45e7801bcb638a6d836ce52972cf49e6d8120f7a07f8dc74d36b8f7"
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "size": 14481,
+        "sha256": "300dd3dbc71d616ab3ad533eb47467ff998769e96f6ebff3c1bd4e5009b8a935"
+      },
+      {
+        "path": "include/bsp/native_singleton_vector_leaves.hpp",
+        "size": 3101,
+        "sha256": "18ccc9155d016d979489e00a900628816bd31a013815c299b9b8b565878c7d8b"
+      },
+      {
+        "path": "include/bsp/native_stream_clone.hpp",
+        "size": 3283,
+        "sha256": "a333d180afcf21084068a671d60c34ee8e1b18ea980a6c03b115a32ce2ff3e6a"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "size": 8771,
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+      },
+      {
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "size": 5893,
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "size": 2805,
+        "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+      },
+      {
+        "path": "include/bsp/native_string_vector.hpp",
+        "size": 1820,
+        "sha256": "38a48cf86dc70e46bdb184b1d7738e4221f55ddd045429fa4f47c74cc6b9c2e9"
+      },
+      {
+        "path": "include/bsp/native_vertex_declaration_cache.hpp",
+        "size": 4248,
+        "sha256": "14123aa649c71cae8c4c35bad989533402ae66daeaa25bff86dcfd017b2768d1"
+      },
+      {
+        "path": "include/bsp/observer_edges.hpp",
+        "size": 1700,
+        "sha256": "6eaa6bd367eefdf2f887bbd193bac58b41e8b30ed4908be6b1b9b59d9f7e8c27"
+      },
+      {
+        "path": "include/bsp/observer_lifetime.hpp",
+        "size": 7290,
+        "sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82"
+      },
+      {
+        "path": "include/bsp/panel_sequence_types.hpp",
+        "size": 2031,
+        "sha256": "49ba6e71c04f1c0a2e248e8b14c46164dc489f87204c232d16915d47026d1a43"
+      },
+      {
+        "path": "include/bsp/random.hpp",
+        "size": 791,
+        "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+      },
+      {
+        "path": "include/bsp/random_threads.hpp",
+        "size": 1446,
+        "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+      },
+      {
+        "path": "include/bsp/render_command_queue.hpp",
+        "size": 10656,
+        "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a"
+      },
+      {
+        "path": "include/bsp/render_tail.hpp",
+        "size": 15566,
+        "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+      },
+      {
+        "path": "include/bsp/rigid_body_integration.hpp",
+        "size": 8112,
+        "sha256": "07cb2142f73cb94cd0bd3d903f2482816cc7924be69247ae1ac1707e4df62f11"
+      },
+      {
+        "path": "include/bsp/scene_attachment.hpp",
+        "size": 9700,
+        "sha256": "d2bb5d004129a418961bf13e60c0f8324a077b5647ca8450602421190841d322"
+      },
+      {
+        "path": "include/bsp/ship_hull_body.hpp",
+        "size": 9286,
+        "sha256": "a9417d7dc66f6eeda4aee783cd87c3d403b91693a142d8d1c255ebe3ba2c9c0b"
+      },
+      {
+        "path": "include/bsp/ship_hull_shapes.hpp",
+        "size": 17222,
+        "sha256": "58a35e261aa87778c225ff550fea23218f24fc0c7f5982d87b50fc1ef7a9877a"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "size": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "include/bsp/sound_class_ownership.hpp",
+        "size": 4116,
+        "sha256": "d1a5733899f1f6e51e06e838561682aa2564a9f693124df7749e8cd937a074d6"
+      },
+      {
+        "path": "include/bsp/sound_configuration.hpp",
+        "size": 6716,
+        "sha256": "06f3585b512506defb15fce912350febdefd09353efd832bdfe48c6aa9272874"
+      },
+      {
+        "path": "include/bsp/sound_lifetime_access.hpp",
+        "size": 3039,
+        "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+      },
+      {
+        "path": "include/bsp/sound_listener.hpp",
+        "size": 4732,
+        "sha256": "331718caa3413b8886778fb0232a2178b02ed8aa47db893de8f35ad787f070d6"
+      },
+      {
+        "path": "include/bsp/sound_manager_levels.hpp",
+        "size": 3581,
+        "sha256": "a7014dd57a52bd4f40715da662e4481c7dd365d3ce08a4a91a96de8fcb238d78"
+      },
+      {
+        "path": "include/bsp/sound_sample_cache.hpp",
+        "size": 2596,
+        "sha256": "2fbe6d92bbfa4d04c2ed03124fb5e739bb883568547be174a112f0b9c17213e2"
+      },
+      {
+        "path": "include/bsp/sound_system_owner.hpp",
+        "size": 9465,
+        "sha256": "68206cebc39f894e3653d55a76018ecf07f105cac5fed614515cd24029b5d215"
+      },
+      {
+        "path": "include/bsp/storage_pool.hpp",
+        "size": 5571,
+        "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+      },
+      {
+        "path": "include/bsp/system_lighting_constants.hpp",
+        "size": 8718,
+        "sha256": "9c98d892bac479fdf3d661c98c996333df0821a3daea26a5e36ba40339b722c9"
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "size": 4800,
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+      },
+      {
+        "path": "include/bsp/vertex_declaration.hpp",
+        "size": 1462,
+        "sha256": "0f03c6a960da3547644b3e5bc8b5934a35fe26f42abc2746559a31f0af2452a0"
+      },
+      {
+        "path": "include/bsp/world_ocean.hpp",
+        "size": 8932,
+        "sha256": "00a1c385e2e46fe0a7372c4dec7d0f8039935823bc02e0a29982c93c5360429b"
+      },
+      {
+        "path": "local/annotate_game_array_lifetime_r122.py",
+        "size": 6880,
+        "sha256": "c00cab710e89fdc1c391e60abf40cb069208701a50bfe66ffc68c434221c0ed8"
+      },
+      {
+        "path": "local/collect_game_array_lifetime_r122.py",
+        "size": 415,
+        "sha256": "212b96323578ecf8c0ef93094097b9df889c81e7d3a22c42138800e7db46dfc5"
+      },
+      {
+        "path": "local/commit_game_array_lifetime_r122.py",
+        "size": 2063,
+        "sha256": "2f3dc3fa871825b3a7cbdbc7e5897262e99b811819ff569113f7e09c68c7cabd"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/annotations.log",
+        "size": 523,
+        "sha256": "0900c61ef904f00b7169450a8d5f21a23aebbd157ad950667845a3ddadc4e03c"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/comments-after.json",
+        "size": 12584,
+        "sha256": "9cba3c2e25475939e62fe26379188d80b7237bcd68b7d62b3f93decf421cf12b"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/comments-after.log",
+        "size": 80,
+        "sha256": "85b158e47045f2919ee482301a50c4967c7fd8071a6a227bc76490a34840de7b"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/decompile-004b7ef0.txt",
+        "size": 462,
+        "sha256": "6bdfe47d952d42e99c277618b9564eab7b4f438f1e2b433f7d20b3e8aceece12"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/decompile-004c1990.txt",
+        "size": 562,
+        "sha256": "d39ea26c0d1d5e66123438f7de6e1349de73f38e2869ca522c73ee09e3fca290"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/decompile-004c4600.txt",
+        "size": 73,
+        "sha256": "e3b8b7c986bce28411de20ebd41fd8d97a5328e9d2a04d2792b57a857624d4de"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/decompile-004c5860.txt",
+        "size": 562,
+        "sha256": "3668338ba77973750aea9efaf5846da93b550b27d503459d69d231b4e97a9714"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/decompile-004cafd0.txt",
+        "size": 270,
+        "sha256": "f0c1a06670bc915c29bc83c44b4107d8eed12827b85398c58272d4d94798c789"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/decompile-004cb2f0.txt",
+        "size": 576,
+        "sha256": "7ab5497a2f190c11e40646592fe1933b35fe2a4da94b1763c2ae098b3571c24c"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/decompile-007f8180.txt",
+        "size": 494,
+        "sha256": "45d9a87db8c15fe12ec3ee918d72841231fa407b03abd2125323589c795d3565"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/dependencies.json",
+        "size": 26170,
+        "sha256": "20497f0d0b51343aca999b35737bac354fda7079504598294c0559e413803d2a"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/disasm-004b7ef0.txt",
+        "size": 719,
+        "sha256": "90839d86e07c0116ade7ab29d0ffb44f951f4cd9c9ddf5833b2274d01b9ce76d"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/disasm-004c1990.txt",
+        "size": 815,
+        "sha256": "230379bb6c3345e2e3df5840280334d572d8b960ac1045298a68263cef3fdcf4"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/disasm-004c4600.txt",
+        "size": 27,
+        "sha256": "5e685ad3fd552db08a13adc0aad72dd5b6ca80ae611f0ead5ca8df7076af1dae"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/disasm-004c5860.txt",
+        "size": 815,
+        "sha256": "8e1350e853471a34831fa34058e593cc223da0cd8904475c626be15436404641"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/disasm-004cafd0.txt",
+        "size": 373,
+        "sha256": "d4c7a212fef082954ede0493301ee1999d2600787b985983262accd3b4f3435a"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/disasm-004cb2f0.txt",
+        "size": 863,
+        "sha256": "8788dd4390abf58765b99d8313870fe2346c21364dfb51261c9b79538c74e941"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/disasm-007f8180.txt",
+        "size": 722,
+        "sha256": "9654b0a38fdc470aa035bb2e7c316b0c627dfa6b33ce9774e1eb4703da5444e0"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/exports-after.log",
+        "size": 885,
+        "sha256": "ca0d556da49930acb7dedf494170d7d9172a60187aeed07cfb7f7ab32f99780a"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/fixture-image.json",
+        "size": 1783,
+        "sha256": "96a2310f17bc5333eed9ca3ecadd2fb685f32dd6b5ad917ce6dbf9fd07e97003"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/flow_verified.log",
+        "size": 216,
+        "sha256": "1194db7f600058e97b4567180fcd9c4a43534a984be11a6f9254dbe4af241bf9"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/game_array_lifetime_probe.exe",
+        "size": 412672,
+        "sha256": "d3219be35f514cb9d4d1d7e29f52e97f19be80beea7514ef077d1f23f3590c0a"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/index.log",
+        "size": 16,
+        "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/native.json",
+        "size": 21111,
+        "sha256": "6bc07fdcaf5475f062cc7523e7df9fcd28d1e6ec5ab3627d44c0414887cf80b2"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/original-build.inc",
+        "size": 1509,
+        "sha256": "2f67fb4dfe908e6cce9fe3d81daeabbea9a8858a4a761a0a9b936ada03da1105"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/original-hooks.inc",
+        "size": 879,
+        "sha256": "85e49a560ad7e846c6768e6049cf0db11544e8e6442c5c02213cfd3b91661ce3"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/original.bin",
+        "size": 1306184,
+        "sha256": "badb706b9256748f75b87de62b57c456f4c12ce1a666d9f7ccb670fd0af74a7f"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/original.inc",
+        "size": 1809,
+        "sha256": "97f939d54ab3ab833bc99bcfb6c632882241ebfc201eb801520f4fb013cc9061"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/parent/dependencies.json",
+        "size": 49483,
+        "sha256": "c372e66e741e835bcf699d9eeafd734690e651a7f2a0f74e26323c0ff4ce7d63"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/parent/game_lifetime_probe.exe",
+        "size": 229376,
+        "sha256": "f1f5b4999d0a0541830c7ef09487e208faa55be7307fec029bab037d97bc7035"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/parent/original.bin",
+        "size": 141402076,
+        "sha256": "5608527b8639992445713ee13bb078b4ec13cc24561869d31cc8cf5710ccaa0d"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/parent/probe-build.log",
+        "size": 11,
+        "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/parent/probe-run.log",
+        "size": 104,
+        "sha256": "d60916d8461d5f79074d423bd767b88ad1898abc9b81e32d6cd25a004307e4d8"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/parent/probe.cpp",
+        "size": 52918,
+        "sha256": "decc56ec4d8095e2b3aca38fb4ba6bb998ba0ce00168b696077b7c44b77dc499"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/parent/probe.map",
+        "size": 312547,
+        "sha256": "e9dc22da8330883f3470cd400bb61cf240cda3023013b0ddf93971cf87928a52"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/parent/probe.obj",
+        "size": 193176,
+        "sha256": "523faa58bddee64b0d690cf1b2a65194123fca1e93b84a6dd7184dfaf54d3930"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/parent/result.json",
+        "size": 528,
+        "sha256": "bd59ef14bdcd1d04ef5a1acf98ffc0f70358a38e78f42176b89cbc68d47f18a7"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/parent/source.bin",
+        "size": 141402076,
+        "sha256": "5608527b8639992445713ee13bb078b4ec13cc24561869d31cc8cf5710ccaa0d"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/probe-build.log",
+        "size": 11,
+        "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/probe-run.log",
+        "size": 185,
+        "sha256": "456610b85caf2bbaa5ee0fdec333e226abdf9cae1899903684f4d34e1d6f97b6"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/probe.cpp",
+        "size": 13661,
+        "sha256": "a5f04f4dcb04ebe56ea9c5ce6983621391b4229b29c4b4aed46a6bc5119672b2"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/probe.map",
+        "size": 714409,
+        "sha256": "2e1efd58216259d6d1067e91a4ae9b1ab7c8b325b2c3275aa4aa36e028c50bb9"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/probe.obj",
+        "size": 250912,
+        "sha256": "5ad3f3a492e27aa4db520232a21205e3434306cd59a2cb855fca3c5ad248df99"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/proto-004b7ef0.txt",
+        "size": 651,
+        "sha256": "c4872470ed67607f502880da2b044a06977b83ca633848387608798109a4280a"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/proto-004c1990.txt",
+        "size": 600,
+        "sha256": "4b4d432b12dd2ff53379eea0e16944b5b86dca1c39b3c8fad9f837e383d99ff4"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/proto-004c4600.txt",
+        "size": 712,
+        "sha256": "e042374b68782c95c1d8765ea2a231f8161cda8414849f75fa6b5ceebe7c3c22"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/proto-004c5860.txt",
+        "size": 600,
+        "sha256": "455b7aa50cd4f5fe9f7fadaff29ab3d65f212ddb7883ee3f3505cb6bbd1a0a0b"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/proto-004cafd0.txt",
+        "size": 689,
+        "sha256": "6b46f4d015966c6b6301ba3ef73a4bcb6296bcdb5274c1de7c39348eb22a1d21"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/proto-004cb2f0.txt",
+        "size": 710,
+        "sha256": "da50972b3eada1985a881f6b60602af6726ebfc5c21d1d7489a13f91eb2d25d7"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/proto-007f8180.txt",
+        "size": 618,
+        "sha256": "51a301b860fd0a05ab4ba3afb5eaae72710f3cd9f86c764216849f04f697a6b4"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/result.json",
+        "size": 528,
+        "sha256": "5f050fc8be19fffc14a50ec0d874d0c60674b1cd928dad288885e4b4304901b2"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/snapshot.log",
+        "size": 294,
+        "sha256": "ef8847cd566c79bfca96f2c4fe48735313384225523f27a5ed0359272cb0c2bb"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/source.bin",
+        "size": 1306184,
+        "sha256": "badb706b9256748f75b87de62b57c456f4c12ce1a666d9f7ccb670fd0af74a7f"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/unreached-methods.inc",
+        "size": 3265,
+        "sha256": "0e797dc2e2b884a04c07029d9679d942f61272d1775b9904c9814901fd25da16"
+      },
+      {
+        "path": "local/game_array_lifetime_r122/verify-calls.log",
+        "size": 134,
+        "sha256": "f80f698300183ffad11c804b62348f7c0b2e45dc9bd245cbbeb5d4489beac114"
+      },
+      {
+        "path": "local/ghidra-annotations-20260918T032321Z.json",
+        "size": 13214,
+        "sha256": "ec2f896875988e67d9b7dd2284a5dc5ccff9c8a80b51993b78cfea687376e405"
+      },
+      {
+        "path": "local/prepare_game_array_lifetime_methods_r122.py",
+        "size": 721,
+        "sha256": "70b20fbfa103b0a58c2de5f0fb8c124ed86c43400792f6513691d40ad1517e6b"
+      },
+      {
+        "path": "local/prepare_game_array_lifetime_parent_r122.py",
+        "size": 1306,
+        "sha256": "a1123f7cc47e457b24188c8bafc6200390f130f07ed24d36fd964cf66d79e771"
+      },
+      {
+        "path": "local/prepare_game_array_lifetime_r122.py",
+        "size": 4184,
+        "sha256": "af75dab287fdc875de6f8aa5af5f6be4adbd800778b649987df66c31682828ac"
+      },
+      {
+        "path": "local/r122_build.log",
+        "size": 2639,
+        "sha256": "b1cd53cb3282c509870a99c194b9e5c43e268bf3b5feac8bab4c2f5260ce5748"
+      },
+      {
+        "path": "local/report_game_array_lifetime_r122.py",
+        "size": 5507,
+        "sha256": "2eb8e8d7bf09c10023ba5d4df1606a415f3865ab2aeb2d8daeed71a9c0b6448e"
+      },
+      {
+        "path": "local/run_game_array_lifetime_parent_r122.ps1",
+        "size": 1688,
+        "sha256": "d7860619c15cad116bee7e0c6162fcb993f817643143782705a77e1cb7786ee2"
+      },
+      {
+        "path": "local/run_game_array_lifetime_r122.ps1",
+        "size": 1685,
+        "sha256": "b8e7b9d51b5ee08acddd0421134d9405270aecc215e5e8cf692d10c605b5abeb"
+      },
+      {
+        "path": "local/seal_game_array_lifetime_r122.py",
+        "size": 4487,
+        "sha256": "1054c953047da3ed0410d0cb716e24cc37315ca58c864735c58f9f9164e831fb"
+      },
+      {
+        "path": "reports/native_game_array_lifetime_r122.json",
+        "size": 55058,
+        "sha256": "e569e787400750c537f70be6492eb079135ae70146c8fc6d6394e0423447b3e0"
+      },
+      {
+        "path": "reports/native_game_array_lifetime_r122_bodies.json",
+        "size": 4182,
+        "sha256": "f5f42597c36e2055c898ae1abc2f6b91353974c4bc814263513e5968226b9832"
+      },
+      {
+        "path": "reports/native_game_array_lifetime_r122_flow_004c1990.json",
+        "size": 2797,
+        "sha256": "00b25c32da6ad77200d1b41668220dece695f3cde61d97b7596c16fe1323fd73"
+      },
+      {
+        "path": "reports/native_game_array_lifetime_r122_flow_004c5860.json",
+        "size": 2797,
+        "sha256": "9b0b7411fd1e7587a14ff9d29ca25fc0d1525e85d8450340b3638e2ac55090bd"
+      },
+      {
+        "path": "reports/native_game_array_lifetime_r122_flow_004cafd0.json",
+        "size": 1003,
+        "sha256": "1f06f0337285a82201629c6c67c580859211a839b7545339fe26f5e1ab6941c8"
+      },
+      {
+        "path": "src/native_game_array_elements.cpp",
+        "size": 6577,
+        "sha256": "be6f4651bba8e17e3a6778e81d44a5e3329907de6d4d403b0eb9092177b6d1d6"
+      },
+      {
+        "path": "src/native_game_array_lifetime.cpp",
+        "size": 5559,
+        "sha256": "b0940cc57a6e22d6e3808fa9b71372762c5546cff3c3dfbe15a83255bfcfe19e"
+      },
+      {
+        "path": "src/native_game_lifetime.cpp",
+        "size": 9748,
+        "sha256": "8f50697abddb52d2e192fc8353665ea67b7fa7906a40982418e43c5078dffb31"
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "size": 22646,
+        "sha256": "cb2697b191c3f0f716c61ddae33588af6eac1cac901827e3f2f53f5669d2aadd"
+      },
+      {
+        "path": "src/native_singleton_publication.cpp",
+        "size": 4127,
+        "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+      },
+      {
+        "path": "src/native_singleton_removal_reorder.cpp",
+        "size": 7844,
+        "sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2"
+      },
+      {
+        "path": "src/native_singleton_vector_allocation.cpp",
+        "size": 1966,
+        "sha256": "4771197c3f1ead7dd635637c849c60f8f525c4d482dcc4a33c8617922362e09e"
+      },
+      {
+        "path": "src/native_singleton_vector_insert_count.cpp",
+        "size": 5712,
+        "sha256": "12961e35b1189704bf7f1de55fbdeb6f406688cfadf9256f8729fd72a0a870ac"
+      },
+      {
+        "path": "src/native_singleton_vector_leaves.cpp",
+        "size": 3538,
+        "sha256": "366628d6ec54de3f643b5fff299d16092a2c085a8e0715d4a9b0a6cdb2ed89ad"
+      },
+      {
+        "path": "src/native_singleton_vector_registration_wrappers.cpp",
+        "size": 4283,
+        "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+      },
+      {
+        "path": "src/native_singleton_vector_reserve_construct.cpp",
+        "size": 3731,
+        "sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29"
+      },
+      {
+        "path": "src/native_string.cpp",
+        "size": 9121,
+        "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+      },
+      {
+        "path": "src/native_string_append.cpp",
+        "size": 477,
+        "sha256": "fb7c36d388c3cffc44232a65c7e2e64d29689eb82a6d60bb665adf2e73013b54"
+      },
+      {
+        "path": "src/native_string_byte_append.cpp",
+        "size": 3341,
+        "sha256": "a1baa448afe11188ecd06b442d5cdcef5757c6450afc7e8fbe2517f02fe7e524"
+      },
+      {
+        "path": "src/native_string_compare.cpp",
+        "size": 2213,
+        "sha256": "35634c0ef48044d79dd58c6aecfc854da34b5f0739e0de367ce5040cdef97718"
+      },
+      {
+        "path": "src/native_string_pool_owner.cpp",
+        "size": 8443,
+        "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e"
+      },
+      {
+        "path": "src/native_string_pool_storage.cpp",
+        "size": 5103,
+        "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+      },
+      {
+        "path": "src/native_string_vector.cpp",
+        "size": 3468,
+        "sha256": "4cf86be660ed334e7d7db5072ac6dccce8edfbb02bc3e39dd7437dddd7f995ba"
+      },
+      {
+        "path": "src/native_string_vector_lookup.cpp",
+        "size": 1693,
+        "sha256": "6a6b6a2cc90cc4ad08cacf483e8894fe6ac728bf3b7340e12e316200e750a27b"
+      },
+      {
+        "path": "src/observer_dispatch_owner.cpp",
+        "size": 4287,
+        "sha256": "d217bfac73d6e9cc4e96c980710dacc1a19150d4922817428ab9c6cc812696f1"
+      },
+      {
+        "path": "src/observer_dispatch_schedule.cpp",
+        "size": 6253,
+        "sha256": "f85eaa653bb4447a54c06cd24d823d1a2a0304ee85ce6c9942a25955bc72beec"
+      },
+      {
+        "path": "src/observer_edges.cpp",
+        "size": 3890,
+        "sha256": "7ec0892b88e66b9604f8cce9abc16246ff325b050205f8922b72a1ad13f28e47"
+      },
+      {
+        "path": "src/observer_event_producer.cpp",
+        "size": 3326,
+        "sha256": "05c443e6c1faba7513d8db33c61012705ad1337ffe121e7038597cd190277e5b"
+      },
+      {
+        "path": "src/observer_lifetime.cpp",
+        "size": 14092,
+        "sha256": "b6d0c6d299e055d742dfd75fc5a126762553c513c6353c67bc269aa8d97d2e26"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "size": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "src/sound_lifetime_access.cpp",
+        "size": 2751,
+        "sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29"
+      }
+    ],
+    "scope": "Seven normal bodies460B;60 copied-original actual-service cases1306184bytes;52 controlled parent cases141402076bytes;ordinary application admission and gameplay open"
+  },
+  "superseded_main_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r122\\native-game-array-lifetime-main-r122.zip",
+    "sha256": "7b8bc0117ff212b93b30ca428e1650e85aa35281a6af24ecaa596462e05de4dc",
+    "reason": "First main seal wrote archive then rejected exact-object equality due timestamp-only parent object difference. Retained unchanged; current-library probes passed before v2 receipt."
+  },
+  "primary_integration": {
+    "source_commit": "b7e4c76caf420c3e2bb5968c85bcae084aa0debb",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "artifact_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r122\\native-game-array-lifetime-main-r122-v2.zip",
+      "sha256": "7fa7887a570bc28eccf459fb2dd8a850cf6f09b01081ef68ebecfca19716238f",
+      "files": 257,
+      "uncompressed_bytes": 646747934,
+      "utc": "2026-09-18T03:31:25.558424+00:00",
+      "head": "b7e4c76caf420c3e2bb5968c85bcae084aa0debb",
+      "manifest": [
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_game_array_lifetime.obj",
+          "size": 16439,
+          "sha256": "96ea3fd9d566d76107e964c0cd81593eaf424eed8d64c376bd0ff5b71d5a5cb6"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_game_lifetime.obj",
+          "size": 23790,
+          "sha256": "b11c73d7234703717aefb2a30a65093bf428acdd390a9d6b6ab91dd181284415"
+        },
+        {
+          "path": "build/win32/Release/bsp_core.lib",
+          "size": 65940538,
+          "sha256": "8fdf0e5519387b2a14f44a3871c5f28e68d707be9929dfc871116353b81445a2"
+        },
+        {
+          "path": "build/win32/Release/bsp_game.exe",
+          "size": 2676224,
+          "sha256": "16c6547412eb7e17f9a105bb80311f3ced53ada4c430b855de8de7c268ed7061"
+        },
+        {
+          "path": "build/win32/Release/bsp_math_tests.exe",
+          "size": 760832,
+          "sha256": "fa8432a31bf69ec8d586bc4394844e07886fcfa2b0ef35a02f4cda6a681f8c76"
+        },
+        {
+          "path": "build/win32/Release/bsp_native_math_tests.exe",
+          "size": 18432,
+          "sha256": "29d32681c67e1c925407f93fffa4693d59b15de035f902888b588dad0e895744"
+        },
+        {
+          "path": "cmake/startup.cmake",
+          "size": 160225,
+          "sha256": "77f8fedbd64126dca37adfdbdc69dd0838d6490ab9fc92b74d280595b4986a16"
+        },
+        {
+          "path": "config/names/004b0000.jsonl",
+          "size": 59257,
+          "sha256": "3dd4fa204abd8f7246a30c914148765230ba863332a187ea83405ee6be6d19db"
+        },
+        {
+          "path": "config/names/004c0000.jsonl",
+          "size": 119661,
+          "sha256": "d81c3107eedb0bd061fed699f67a990fb42eca6e4076b0eb3f6f4b3aa9ddf084"
+        },
+        {
+          "path": "config/names/004d0000.jsonl",
+          "size": 126571,
+          "sha256": "c3e2f7d5866966ab5bda7a0a802c6b1f11e8424437eea85dc162bbf9b2db9a30"
+        },
+        {
+          "path": "config/names/007f0000.jsonl",
+          "size": 75859,
+          "sha256": "8f182a14f8139a70a6acd2b9518456c3ee7c02bcc23e5f3bafbd246ca6e6d8ab"
+        },
+        {
+          "path": "config/reconstruction/004b0000.jsonl",
+          "size": 52583,
+          "sha256": "f1f1a8e97e1eabc8d5dcf87840baf01ace349a16d7097ad23af28d7a7eae5352"
+        },
+        {
+          "path": "config/reconstruction/004c0000.jsonl",
+          "size": 120481,
+          "sha256": "e45a3d9927ac14a2dc7ad9a88eead51d1dbbae5a0ffc0b5ddc1e8d5a0090d1dc"
+        },
+        {
+          "path": "config/reconstruction/004d0000.jsonl",
+          "size": 130121,
+          "sha256": "2c0e3c3c3ee81c256f3d6dd8ec6c11b99cc6a2c9cf922b9477c593c7739c89b7"
+        },
+        {
+          "path": "config/reconstruction/007f0000.jsonl",
+          "size": 99018,
+          "sha256": "f01d941fb66f5a9da04502e65c1b3ab8897b12909f88ed1ed2763c4576441330"
+        },
+        {
+          "path": "docs/NATIVE_GAME_ARRAY_LIFETIME_R122.md",
+          "size": 8312,
+          "sha256": "025926bec651aee8b509397b9ad431888654a2f70538731dc0b5902e79a21a1a"
+        },
+        {
+          "path": "docs/NATIVE_GAME_LIFETIME_R121.md",
+          "size": 8521,
+          "sha256": "0fd2dbebab168af8e7fab347dbacfc2b26f28a2ad716b0a40b25dec836402997"
+        },
+        {
+          "path": "include/bsp/allocator_list.hpp",
+          "size": 1781,
+          "sha256": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8"
+        },
+        {
+          "path": "include/bsp/audio_online_startup.hpp",
+          "size": 17176,
+          "sha256": "2856a03245c6a27a3bf2f4c466e5606ec8d8dccf93be10ce30bcdb5141949821"
+        },
+        {
+          "path": "include/bsp/avoid_zone_dyn_hull.hpp",
+          "size": 3575,
+          "sha256": "c4b13f13e5cb94a4e1423c0c96aa725935615f92d2cb65a823c36572bf1f2c3a"
+        },
+        {
+          "path": "include/bsp/building_instance.hpp",
+          "size": 2328,
+          "sha256": "ad3c055dee4b5b4ec77784db03552e173644d57b154b3fd0a26dd5dff1ad1c4e"
+        },
+        {
+          "path": "include/bsp/camera_projection.hpp",
+          "size": 2413,
+          "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+        },
+        {
+          "path": "include/bsp/camera_transform.hpp",
+          "size": 7028,
+          "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+        },
+        {
+          "path": "include/bsp/d3d9_buffers.hpp",
+          "size": 3262,
+          "sha256": "e8bc19c4630661b83969b53cac94134748f3c9af2a98002f1f2906ed93dedc83"
+        },
+        {
+          "path": "include/bsp/d3d9_startup.hpp",
+          "size": 1362,
+          "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843"
+        },
+        {
+          "path": "include/bsp/d3d9_states.hpp",
+          "size": 15076,
+          "sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288"
+        },
+        {
+          "path": "include/bsp/d3d9_vertex_layout.hpp",
+          "size": 1257,
+          "sha256": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef"
+        },
+        {
+          "path": "include/bsp/dyn_body_creation.hpp",
+          "size": 5100,
+          "sha256": "771890801179db08b6ec963a2145cb05c4346da8f79d402514770aae2210535b"
+        },
+        {
+          "path": "include/bsp/dyn_engine_runtime.hpp",
+          "size": 2552,
+          "sha256": "059c3367a5d71532c076a29895b62394e1d88d71fa6cd828c5a540604359d82a"
+        },
+        {
+          "path": "include/bsp/dyn_scene_runtime.hpp",
+          "size": 2802,
+          "sha256": "55bbd6bda1cbdde923b48381c85998db05f4db9ce96e60d9f964c2d2b6be378c"
+        },
+        {
+          "path": "include/bsp/dyn_world_factory.hpp",
+          "size": 1225,
+          "sha256": "4e32f788fd38fdf5acbef4a530c43b709c2e62e8017e428a58e0539d257c0b29"
+        },
+        {
+          "path": "include/bsp/dyn_world_runtime.hpp",
+          "size": 1331,
+          "sha256": "fe53091179272be0d15c1e69a80174d69f9c9e5199a5bc61329be0490ba18a19"
+        },
+        {
+          "path": "include/bsp/dyn_world_settings.hpp",
+          "size": 7233,
+          "sha256": "b00dde4b4a80912c7c255d9080d56213028f6723810499f3d54be157c1c34b33"
+        },
+        {
+          "path": "include/bsp/frame_clock.hpp",
+          "size": 2475,
+          "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+        },
+        {
+          "path": "include/bsp/frontend_screen_animation.hpp",
+          "size": 14105,
+          "sha256": "5bf3429e1c6032def440ccebd3d804fd087896401ec16bf94b456b1dc73865e0"
+        },
+        {
+          "path": "include/bsp/game_entry.hpp",
+          "size": 5510,
+          "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+        },
+        {
+          "path": "include/bsp/gameplay_effect_definition.hpp",
+          "size": 5105,
+          "sha256": "5ea6bc9afc8f44e24abc29e79b281f9a354ae5ca3f45cfb27fe7cb52e13ba198"
+        },
+        {
+          "path": "include/bsp/gameplay_effect_manager.hpp",
+          "size": 2366,
+          "sha256": "27b54b5be98ea6784d4b0a73abd295b06f161dd925d9c3946974650bb664eeef"
+        },
+        {
+          "path": "include/bsp/generated_model_lifetime.hpp",
+          "size": 12600,
+          "sha256": "bb6171641666552aea3fcaa9757d13074f229e79d5793a3b044b980f4a3d3ef9"
+        },
+        {
+          "path": "include/bsp/global_config.hpp",
+          "size": 3836,
+          "sha256": "27644005624b594fbbc8b1c771223f9f7f36edfb05aa3d47ac2a3be5c1b9c5cd"
+        },
+        {
+          "path": "include/bsp/gui_layout_loader.hpp",
+          "size": 20811,
+          "sha256": "3ede9dc470a4d5a3285d1578483428b548025b0b2eba9ab6ecc79967b242d8b1"
+        },
+        {
+          "path": "include/bsp/gui_lua_reader.hpp",
+          "size": 23275,
+          "sha256": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433"
+        },
+        {
+          "path": "include/bsp/gui_native_geometry.hpp",
+          "size": 10778,
+          "sha256": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf"
+        },
+        {
+          "path": "include/bsp/gui_text_native_renderer.hpp",
+          "size": 1778,
+          "sha256": "51e0dc41b0bdcd3941bc6b2e4e2e41d12111027e6864bc457eb96bc15dbf38cf"
+        },
+        {
+          "path": "include/bsp/gui_widget.hpp",
+          "size": 13391,
+          "sha256": "846d1f6378e3459fb585917289d2f3342de37ba98dafc7fc952c9c48ea8061f9"
+        },
+        {
+          "path": "include/bsp/instance_geometry.hpp",
+          "size": 3989,
+          "sha256": "02bd2ae826198ca341a2a14fbf0f58ced99ccd20a5833a6eef48a11f932b75d4"
+        },
+        {
+          "path": "include/bsp/instance_grouping.hpp",
+          "size": 4008,
+          "sha256": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308"
+        },
+        {
+          "path": "include/bsp/instance_sort.hpp",
+          "size": 4479,
+          "sha256": "c3a892e5b69db70699daaa5c301f5b00aa17fe4f93f929fdc43dcc16e797b1f3"
+        },
+        {
+          "path": "include/bsp/instance_upload.hpp",
+          "size": 6532,
+          "sha256": "271e956b6dd3801fff1edab447fb03bb929ec562e227ae0357debbe95c1239fb"
+        },
+        {
+          "path": "include/bsp/material_lighting.hpp",
+          "size": 1642,
+          "sha256": "b56091a2688d0a7cf52401396efa68b9f02de215e9bd89e4bf20d93d83600da8"
+        },
+        {
+          "path": "include/bsp/material_sort_metadata.hpp",
+          "size": 3332,
+          "sha256": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212"
+        },
+        {
+          "path": "include/bsp/native_diagnostic_sink_lifetime.hpp",
+          "size": 2257,
+          "sha256": "bab20d79928ee126fe02650ccea3c6754d1d27c099bfbc964f548ad452f463b1"
+        },
+        {
+          "path": "include/bsp/native_game_array_elements.hpp",
+          "size": 2529,
+          "sha256": "c649a43f9f5d79d7e1f73bed13d28bce4c973672e1b185b4c4305c5dae886609"
+        },
+        {
+          "path": "include/bsp/native_game_array_lifetime.hpp",
+          "size": 3035,
+          "sha256": "296271866c2b7f47893ccc3687cc6148345b376d6bb0d0d35d11495c64a1f7aa"
+        },
+        {
+          "path": "include/bsp/native_game_construction.hpp",
+          "size": 6896,
+          "sha256": "f52c3b24e55c5ab0a96254d13bc18eb051f8731b07733dde7f231ca9659d37a0"
+        },
+        {
+          "path": "include/bsp/native_game_dynamics.hpp",
+          "size": 819,
+          "sha256": "a3e10519df0f4bb2327ee46713069f0aa761630ca1c633f438db09bb41668290"
+        },
+        {
+          "path": "include/bsp/native_game_embedded_state.hpp",
+          "size": 2369,
+          "sha256": "c915da207b5212ae77559082be9bf39de180e0db228294ebec8fdcd1de29e64d"
+        },
+        {
+          "path": "include/bsp/native_game_grid.hpp",
+          "size": 5494,
+          "sha256": "6ad37763b462847bee9f77b0d31bdcd76cc5920f207fa7d2d98225210b629726"
+        },
+        {
+          "path": "include/bsp/native_game_lifetime.hpp",
+          "size": 5808,
+          "sha256": "ca47283e3b67a23791c25715bcc6727756970dcda81be5526465af79007673fb"
+        },
+        {
+          "path": "include/bsp/native_game_resource_parsers.hpp",
+          "size": 4741,
+          "sha256": "0bac11abb6c9291aeccc3fdc38966a87be2cf9ca685a7fc4cfff1b1b3877eddd"
+        },
+        {
+          "path": "include/bsp/native_game_tables.hpp",
+          "size": 1985,
+          "sha256": "35e156043ec28f28b6c47944e26d0d6f05ef1c3acac18849922358be99be63f9"
+        },
+        {
+          "path": "include/bsp/native_global_config_fields.hpp",
+          "size": 1473,
+          "sha256": "c8b78c0382a8d994d37107c969acf691dc6f781e409523691fe821042b435803"
+        },
+        {
+          "path": "include/bsp/native_global_config_load.hpp",
+          "size": 2389,
+          "sha256": "c487698f7d3d5bfe435b506affa43179a1e5f6cf04ba858cd9ae2b639b3a800e"
+        },
+        {
+          "path": "include/bsp/native_logical_buffer_device_restore.hpp",
+          "size": 2649,
+          "sha256": "2e79708e49c1559f706602b9fe761791776f11fee1c5b3efa69d7fbb2bd57c45"
+        },
+        {
+          "path": "include/bsp/native_logical_buffer_mapping.hpp",
+          "size": 2420,
+          "sha256": "d3ee48a208b6636dc70941c6a62967407d657ad18f1ae971f2d900c752fcaef0"
+        },
+        {
+          "path": "include/bsp/native_logical_index_owner.hpp",
+          "size": 6804,
+          "sha256": "c0ae53059fba249f589990b7d41d1986a2134cd86b99cd5d6db7ab2c849b38cb"
+        },
+        {
+          "path": "include/bsp/native_logical_vertex_owner.hpp",
+          "size": 7242,
+          "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+        },
+        {
+          "path": "include/bsp/native_lua_bootstrap.hpp",
+          "size": 1658,
+          "sha256": "b9c5bad802213d87665c1c4f82320184ef8970902dcd9dd7b22b40ce4493a45c"
+        },
+        {
+          "path": "include/bsp/native_lua_file_loading.hpp",
+          "size": 1992,
+          "sha256": "13bcab4bbc7eb973b7ccceb87b198e19326bed0320d2d3dca7b32ae91cba3108"
+        },
+        {
+          "path": "include/bsp/native_lua_objects.hpp",
+          "size": 10058,
+          "sha256": "18ddc6c301d56244468a29ea15a84f74ddfab41594740a08dc740f6bc13d3c0d"
+        },
+        {
+          "path": "include/bsp/native_lua_vfs_dispatch.hpp",
+          "size": 1569,
+          "sha256": "da795f3a43a6acf1664d6ac00474a170d7196bf4383ca1695960ab685c67bfb2"
+        },
+        {
+          "path": "include/bsp/native_material_factory.hpp",
+          "size": 3753,
+          "sha256": "fa8a45423c10da368d803d5df7fb583a5bc91e9f3c3ac59722607e4a95d90b71"
+        },
+        {
+          "path": "include/bsp/native_material_owner.hpp",
+          "size": 5986,
+          "sha256": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320"
+        },
+        {
+          "path": "include/bsp/native_material_pools.hpp",
+          "size": 10219,
+          "sha256": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715"
+        },
+        {
+          "path": "include/bsp/native_mesh_clone.hpp",
+          "size": 2821,
+          "sha256": "0fbe93a15ed525fd128257ca58ac4c4d8da4b4a533dd345c6c856bce5d839d5e"
+        },
+        {
+          "path": "include/bsp/native_mesh_owner.hpp",
+          "size": 6760,
+          "sha256": "540fa95aafcd3b67697998361f9a6b1689bf90348c9c0cdc09bdeb6b9c6ac42c"
+        },
+        {
+          "path": "include/bsp/native_mesh_pool.hpp",
+          "size": 2929,
+          "sha256": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52"
+        },
+        {
+          "path": "include/bsp/native_mesh_section.hpp",
+          "size": 9555,
+          "sha256": "c99901d53b195ab67c0da51c7b39657f42b7b60ba1f5509eec200b6ff29f3e2e"
+        },
+        {
+          "path": "include/bsp/native_mission_progress_owner.hpp",
+          "size": 1980,
+          "sha256": "bff5ea00ed24a064c8251420a11a068eab39b01d10ba0ec9ce76ff01feccb394"
+        },
+        {
+          "path": "include/bsp/native_model_owner.hpp",
+          "size": 6717,
+          "sha256": "7bb75bca29ed440709040ce34b217bb9a760741d971d8b6b2fdeb8b77201f47e"
+        },
+        {
+          "path": "include/bsp/native_model_pool.hpp",
+          "size": 3166,
+          "sha256": "30e4945729d723ec450a6eebaf28968c976dcd50f366ba193aa591d751709144"
+        },
+        {
+          "path": "include/bsp/native_node_construction.hpp",
+          "size": 6451,
+          "sha256": "977424218edef9f6eefdafb9463b1ef5be11a4f61554eecca37a7d823b3c7098"
+        },
+        {
+          "path": "include/bsp/native_node_destruction.hpp",
+          "size": 5997,
+          "sha256": "bd525ac65ff936736cbf5a02bd7b31e12c326ae5ec624c9685315dbcc116c833"
+        },
+        {
+          "path": "include/bsp/native_physical_buffer_lock.hpp",
+          "size": 1561,
+          "sha256": "519c67bd123883490af70464ab81cec74d5de948a39eada540cf5b8529e18340"
+        },
+        {
+          "path": "include/bsp/native_physical_buffer_owner.hpp",
+          "size": 4248,
+          "sha256": "1277b747e0963be41fdee456092ea42b3c191d7aa165eeeec772de3cad354e56"
+        },
+        {
+          "path": "include/bsp/native_player_profile_owner.hpp",
+          "size": 4505,
+          "sha256": "3bb853af8712fdb9d8b1bcca8e27cb48ede6b2219ca20648f0c1a8675ef139a8"
+        },
+        {
+          "path": "include/bsp/native_point_light_links.hpp",
+          "size": 4633,
+          "sha256": "e106191d74ea6960befb5f36e74e89076efb5fec4122a5b3d87482823dc07ba7"
+        },
+        {
+          "path": "include/bsp/native_profile_collections.hpp",
+          "size": 2989,
+          "sha256": "29292e811a8562f988ca17c721fa3a74f2640c9578839ade9355bd0a080a8ae0"
+        },
+        {
+          "path": "include/bsp/native_profile_settings.hpp",
+          "size": 2526,
+          "sha256": "2dd92ab3c7dc33673fa830d1d4382da40c45852c2cd04b868f26f8734c95d5b9"
+        },
+        {
+          "path": "include/bsp/native_render_context.hpp",
+          "size": 6924,
+          "sha256": "1c8d834d50cbf8ee7f660e7803efe6bad43fe70bbe87fd5cdf3375f6e68ef56d"
+        },
+        {
+          "path": "include/bsp/native_render_pointer_arrays.hpp",
+          "size": 4572,
+          "sha256": "d9cf406a178986114205fe9a154a2b74c0f8dd857b6186d7d840d8fe398ae881"
+        },
+        {
+          "path": "include/bsp/native_render_resource_record.hpp",
+          "size": 4475,
+          "sha256": "6e1d8e4817325dab095e27588f9a5aa79cb5e32130b3fe1bc52d9d3f44de4d92"
+        },
+        {
+          "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+          "size": 2877,
+          "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+        },
+        {
+          "path": "include/bsp/native_resource_manager_lifetime.hpp",
+          "size": 4222,
+          "sha256": "59f9f3ef4431664664f7f3732e10defcdc3a222eca3cd554e477aba31179d26a"
+        },
+        {
+          "path": "include/bsp/native_resource_parser_registration.hpp",
+          "size": 4225,
+          "sha256": "ecd38e6bfea430c734ff9fccebf59d2ea2a52f2b1be98ba9f0e85f714e2bbf0f"
+        },
+        {
+          "path": "include/bsp/native_resource_parser_singletons.hpp",
+          "size": 5692,
+          "sha256": "7f55afc5dd483f98b7e531a65743777adefe3b93f9c061cd2e9262e68818c2e3"
+        },
+        {
+          "path": "include/bsp/native_resource_support.hpp",
+          "size": 3479,
+          "sha256": "fb1506aba45e7801bcb638a6d836ce52972cf49e6d8120f7a07f8dc74d36b8f7"
+        },
+        {
+          "path": "include/bsp/native_singleton_destruction.hpp",
+          "size": 14481,
+          "sha256": "300dd3dbc71d616ab3ad533eb47467ff998769e96f6ebff3c1bd4e5009b8a935"
+        },
+        {
+          "path": "include/bsp/native_singleton_vector_leaves.hpp",
+          "size": 3101,
+          "sha256": "18ccc9155d016d979489e00a900628816bd31a013815c299b9b8b565878c7d8b"
+        },
+        {
+          "path": "include/bsp/native_stream_clone.hpp",
+          "size": 3283,
+          "sha256": "a333d180afcf21084068a671d60c34ee8e1b18ea980a6c03b115a32ce2ff3e6a"
+        },
+        {
+          "path": "include/bsp/native_string.hpp",
+          "size": 8771,
+          "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+        },
+        {
+          "path": "include/bsp/native_string_pool_owner.hpp",
+          "size": 5893,
+          "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+        },
+        {
+          "path": "include/bsp/native_string_pool_storage.hpp",
+          "size": 2805,
+          "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+        },
+        {
+          "path": "include/bsp/native_string_vector.hpp",
+          "size": 1820,
+          "sha256": "38a48cf86dc70e46bdb184b1d7738e4221f55ddd045429fa4f47c74cc6b9c2e9"
+        },
+        {
+          "path": "include/bsp/native_vertex_declaration_cache.hpp",
+          "size": 4248,
+          "sha256": "14123aa649c71cae8c4c35bad989533402ae66daeaa25bff86dcfd017b2768d1"
+        },
+        {
+          "path": "include/bsp/observer_edges.hpp",
+          "size": 1700,
+          "sha256": "6eaa6bd367eefdf2f887bbd193bac58b41e8b30ed4908be6b1b9b59d9f7e8c27"
+        },
+        {
+          "path": "include/bsp/observer_lifetime.hpp",
+          "size": 7290,
+          "sha256": "54cbbee3143c23385b9598b07e9a74cb173ea31886cae125f3819ab6fc283f82"
+        },
+        {
+          "path": "include/bsp/panel_sequence_types.hpp",
+          "size": 2031,
+          "sha256": "49ba6e71c04f1c0a2e248e8b14c46164dc489f87204c232d16915d47026d1a43"
+        },
+        {
+          "path": "include/bsp/random.hpp",
+          "size": 791,
+          "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+        },
+        {
+          "path": "include/bsp/random_threads.hpp",
+          "size": 1446,
+          "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+        },
+        {
+          "path": "include/bsp/render_command_queue.hpp",
+          "size": 10656,
+          "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a"
+        },
+        {
+          "path": "include/bsp/render_tail.hpp",
+          "size": 15566,
+          "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+        },
+        {
+          "path": "include/bsp/rigid_body_integration.hpp",
+          "size": 8112,
+          "sha256": "07cb2142f73cb94cd0bd3d903f2482816cc7924be69247ae1ac1707e4df62f11"
+        },
+        {
+          "path": "include/bsp/scene_attachment.hpp",
+          "size": 9700,
+          "sha256": "d2bb5d004129a418961bf13e60c0f8324a077b5647ca8450602421190841d322"
+        },
+        {
+          "path": "include/bsp/ship_hull_body.hpp",
+          "size": 9286,
+          "sha256": "a9417d7dc66f6eeda4aee783cd87c3d403b91693a142d8d1c255ebe3ba2c9c0b"
+        },
+        {
+          "path": "include/bsp/ship_hull_shapes.hpp",
+          "size": 17222,
+          "sha256": "58a35e261aa87778c225ff550fea23218f24fc0c7f5982d87b50fc1ef7a9877a"
+        },
+        {
+          "path": "include/bsp/singleton_lifetime.hpp",
+          "size": 4372,
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        },
+        {
+          "path": "include/bsp/sound_class_ownership.hpp",
+          "size": 4116,
+          "sha256": "d1a5733899f1f6e51e06e838561682aa2564a9f693124df7749e8cd937a074d6"
+        },
+        {
+          "path": "include/bsp/sound_configuration.hpp",
+          "size": 6716,
+          "sha256": "06f3585b512506defb15fce912350febdefd09353efd832bdfe48c6aa9272874"
+        },
+        {
+          "path": "include/bsp/sound_lifetime_access.hpp",
+          "size": 3039,
+          "sha256": "1748ef1d7e31672253cf84613a07ffc0d826484c8608e9cef137e2d4ea288b9b"
+        },
+        {
+          "path": "include/bsp/sound_listener.hpp",
+          "size": 4732,
+          "sha256": "331718caa3413b8886778fb0232a2178b02ed8aa47db893de8f35ad787f070d6"
+        },
+        {
+          "path": "include/bsp/sound_manager_levels.hpp",
+          "size": 3581,
+          "sha256": "a7014dd57a52bd4f40715da662e4481c7dd365d3ce08a4a91a96de8fcb238d78"
+        },
+        {
+          "path": "include/bsp/sound_sample_cache.hpp",
+          "size": 2596,
+          "sha256": "2fbe6d92bbfa4d04c2ed03124fb5e739bb883568547be174a112f0b9c17213e2"
+        },
+        {
+          "path": "include/bsp/sound_system_owner.hpp",
+          "size": 9465,
+          "sha256": "68206cebc39f894e3653d55a76018ecf07f105cac5fed614515cd24029b5d215"
+        },
+        {
+          "path": "include/bsp/storage_pool.hpp",
+          "size": 5571,
+          "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+        },
+        {
+          "path": "include/bsp/system_lighting_constants.hpp",
+          "size": 8718,
+          "sha256": "9c98d892bac479fdf3d661c98c996333df0821a3daea26a5e36ba40339b722c9"
+        },
+        {
+          "path": "include/bsp/system_time_constants.hpp",
+          "size": 4800,
+          "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+        },
+        {
+          "path": "include/bsp/vertex_declaration.hpp",
+          "size": 1462,
+          "sha256": "0f03c6a960da3547644b3e5bc8b5934a35fe26f42abc2746559a31f0af2452a0"
+        },
+        {
+          "path": "include/bsp/world_ocean.hpp",
+          "size": 8932,
+          "sha256": "00a1c385e2e46fe0a7372c4dec7d0f8039935823bc02e0a29982c93c5360429b"
+        },
+        {
+          "path": "local/annotate_game_array_lifetime_r122.py",
+          "size": 6880,
+          "sha256": "c00cab710e89fdc1c391e60abf40cb069208701a50bfe66ffc68c434221c0ed8"
+        },
+        {
+          "path": "local/collect_game_array_lifetime_r122.py",
+          "size": 415,
+          "sha256": "212b96323578ecf8c0ef93094097b9df889c81e7d3a22c42138800e7db46dfc5"
+        },
+        {
+          "path": "local/commit_game_array_lifetime_r122.py",
+          "size": 2063,
+          "sha256": "2f3dc3fa871825b3a7cbdbc7e5897262e99b811819ff569113f7e09c68c7cabd"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/annotations.log",
+          "size": 523,
+          "sha256": "0900c61ef904f00b7169450a8d5f21a23aebbd157ad950667845a3ddadc4e03c"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/dependencies.json",
+          "size": 26220,
+          "sha256": "ea1b514b59a54a8da4433afaca821cd7b2c5a5d801702e58b1ecff8001987d1e"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/game_array_lifetime_probe.exe",
+          "size": 412672,
+          "sha256": "41659812ff2691cd052b693912952cc90d47dacc12e89ab8bd45fddb9d75c7da"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/object_comparison.json",
+          "size": 1062,
+          "sha256": "5315ac4fbf76a8ba47786c77eb8862cf492933e163f87b27317e92a8d77560a0"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/original-build.inc",
+          "size": 1509,
+          "sha256": "2f67fb4dfe908e6cce9fe3d81daeabbea9a8858a4a761a0a9b936ada03da1105"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/original-hooks.inc",
+          "size": 879,
+          "sha256": "85e49a560ad7e846c6768e6049cf0db11544e8e6442c5c02213cfd3b91661ce3"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/original.bin",
+          "size": 1306184,
+          "sha256": "badb706b9256748f75b87de62b57c456f4c12ce1a666d9f7ccb670fd0af74a7f"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/original.inc",
+          "size": 1809,
+          "sha256": "97f939d54ab3ab833bc99bcfb6c632882241ebfc201eb801520f4fb013cc9061"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/parent/dependencies.json",
+          "size": 49493,
+          "sha256": "7c9eadf3b98ca2c11e234f75a94d090ffa48aaf73ab548f8206d6d8a87b24ea1"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/parent/game_lifetime_probe.exe",
+          "size": 229376,
+          "sha256": "46ab16fb5d84ffa7ac85bfd935c10379f32fffa5bde228b0e40dc6c823df8559"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/parent/original.bin",
+          "size": 141402076,
+          "sha256": "5608527b8639992445713ee13bb078b4ec13cc24561869d31cc8cf5710ccaa0d"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/parent/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/parent/probe-run.log",
+          "size": 104,
+          "sha256": "d60916d8461d5f79074d423bd767b88ad1898abc9b81e32d6cd25a004307e4d8"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/parent/probe.cpp",
+          "size": 52918,
+          "sha256": "decc56ec4d8095e2b3aca38fb4ba6bb998ba0ce00168b696077b7c44b77dc499"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/parent/probe.map",
+          "size": 312547,
+          "sha256": "b48f268845ee85c95cd6a63c924231fdca9801905d3d8aa9d81f6045f248fc03"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/parent/probe.obj",
+          "size": 193188,
+          "sha256": "154655762727c1c324a695f913783494d0cf08c799a129db10870db1b4143b3c"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/parent/result.json",
+          "size": 528,
+          "sha256": "7ea26d0578471ff0e55e1a1d95075e340a4c5ab4a62bfc09de371fba1195873d"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/parent/source.bin",
+          "size": 141402076,
+          "sha256": "5608527b8639992445713ee13bb078b4ec13cc24561869d31cc8cf5710ccaa0d"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/probe-run.log",
+          "size": 185,
+          "sha256": "456610b85caf2bbaa5ee0fdec333e226abdf9cae1899903684f4d34e1d6f97b6"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/probe.cpp",
+          "size": 13661,
+          "sha256": "a5f04f4dcb04ebe56ea9c5ce6983621391b4229b29c4b4aed46a6bc5119672b2"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/probe.map",
+          "size": 714409,
+          "sha256": "120de29dd013530da8166be116266689ef3597f434f7114e1fa95fd1abb348da"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/probe.obj",
+          "size": 250920,
+          "sha256": "d5335e9daf85a6dd7b7a827476abc4d3d76faebc82d1c7aa1aa327858c1b6680"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/result.json",
+          "size": 528,
+          "sha256": "8dead6f66aefb34143577e5c35527e09ecc8301e4c257273afbb1228c636c8ce"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/source.bin",
+          "size": 1306184,
+          "sha256": "badb706b9256748f75b87de62b57c456f4c12ce1a666d9f7ccb670fd0af74a7f"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/combined/unreached-methods.inc",
+          "size": 3265,
+          "sha256": "0e797dc2e2b884a04c07029d9679d942f61272d1775b9904c9814901fd25da16"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/comments-after.json",
+          "size": 12584,
+          "sha256": "9cba3c2e25475939e62fe26379188d80b7237bcd68b7d62b3f93decf421cf12b"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/comments-after.log",
+          "size": 80,
+          "sha256": "85b158e47045f2919ee482301a50c4967c7fd8071a6a227bc76490a34840de7b"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/decompile-004b7ef0.txt",
+          "size": 462,
+          "sha256": "6bdfe47d952d42e99c277618b9564eab7b4f438f1e2b433f7d20b3e8aceece12"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/decompile-004c1990.txt",
+          "size": 562,
+          "sha256": "d39ea26c0d1d5e66123438f7de6e1349de73f38e2869ca522c73ee09e3fca290"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/decompile-004c4600.txt",
+          "size": 73,
+          "sha256": "e3b8b7c986bce28411de20ebd41fd8d97a5328e9d2a04d2792b57a857624d4de"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/decompile-004c5860.txt",
+          "size": 562,
+          "sha256": "3668338ba77973750aea9efaf5846da93b550b27d503459d69d231b4e97a9714"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/decompile-004cafd0.txt",
+          "size": 270,
+          "sha256": "f0c1a06670bc915c29bc83c44b4107d8eed12827b85398c58272d4d94798c789"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/decompile-004cb2f0.txt",
+          "size": 576,
+          "sha256": "7ab5497a2f190c11e40646592fe1933b35fe2a4da94b1763c2ae098b3571c24c"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/decompile-007f8180.txt",
+          "size": 494,
+          "sha256": "45d9a87db8c15fe12ec3ee918d72841231fa407b03abd2125323589c795d3565"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/dependencies.json",
+          "size": 26170,
+          "sha256": "20497f0d0b51343aca999b35737bac354fda7079504598294c0559e413803d2a"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/disasm-004b7ef0.txt",
+          "size": 719,
+          "sha256": "90839d86e07c0116ade7ab29d0ffb44f951f4cd9c9ddf5833b2274d01b9ce76d"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/disasm-004c1990.txt",
+          "size": 815,
+          "sha256": "230379bb6c3345e2e3df5840280334d572d8b960ac1045298a68263cef3fdcf4"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/disasm-004c4600.txt",
+          "size": 27,
+          "sha256": "5e685ad3fd552db08a13adc0aad72dd5b6ca80ae611f0ead5ca8df7076af1dae"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/disasm-004c5860.txt",
+          "size": 815,
+          "sha256": "8e1350e853471a34831fa34058e593cc223da0cd8904475c626be15436404641"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/disasm-004cafd0.txt",
+          "size": 373,
+          "sha256": "d4c7a212fef082954ede0493301ee1999d2600787b985983262accd3b4f3435a"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/disasm-004cb2f0.txt",
+          "size": 863,
+          "sha256": "8788dd4390abf58765b99d8313870fe2346c21364dfb51261c9b79538c74e941"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/disasm-007f8180.txt",
+          "size": 722,
+          "sha256": "9654b0a38fdc470aa035bb2e7c316b0c627dfa6b33ce9774e1eb4703da5444e0"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/exports-after.log",
+          "size": 885,
+          "sha256": "ca0d556da49930acb7dedf494170d7d9172a60187aeed07cfb7f7ab32f99780a"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/fixture-image.json",
+          "size": 1783,
+          "sha256": "96a2310f17bc5333eed9ca3ecadd2fb685f32dd6b5ad917ce6dbf9fd07e97003"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/flow_verified.log",
+          "size": 216,
+          "sha256": "1194db7f600058e97b4567180fcd9c4a43534a984be11a6f9254dbe4af241bf9"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/game_array_lifetime_probe.exe",
+          "size": 412672,
+          "sha256": "d3219be35f514cb9d4d1d7e29f52e97f19be80beea7514ef077d1f23f3590c0a"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/index.log",
+          "size": 16,
+          "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/native.json",
+          "size": 21111,
+          "sha256": "6bc07fdcaf5475f062cc7523e7df9fcd28d1e6ec5ab3627d44c0414887cf80b2"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/original-build.inc",
+          "size": 1509,
+          "sha256": "2f67fb4dfe908e6cce9fe3d81daeabbea9a8858a4a761a0a9b936ada03da1105"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/original-hooks.inc",
+          "size": 879,
+          "sha256": "85e49a560ad7e846c6768e6049cf0db11544e8e6442c5c02213cfd3b91661ce3"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/original.bin",
+          "size": 1306184,
+          "sha256": "badb706b9256748f75b87de62b57c456f4c12ce1a666d9f7ccb670fd0af74a7f"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/original.inc",
+          "size": 1809,
+          "sha256": "97f939d54ab3ab833bc99bcfb6c632882241ebfc201eb801520f4fb013cc9061"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/parent/dependencies.json",
+          "size": 49483,
+          "sha256": "c372e66e741e835bcf699d9eeafd734690e651a7f2a0f74e26323c0ff4ce7d63"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/parent/game_lifetime_probe.exe",
+          "size": 229376,
+          "sha256": "f1f5b4999d0a0541830c7ef09487e208faa55be7307fec029bab037d97bc7035"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/parent/original.bin",
+          "size": 141402076,
+          "sha256": "5608527b8639992445713ee13bb078b4ec13cc24561869d31cc8cf5710ccaa0d"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/parent/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/parent/probe-run.log",
+          "size": 104,
+          "sha256": "d60916d8461d5f79074d423bd767b88ad1898abc9b81e32d6cd25a004307e4d8"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/parent/probe.cpp",
+          "size": 52918,
+          "sha256": "decc56ec4d8095e2b3aca38fb4ba6bb998ba0ce00168b696077b7c44b77dc499"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/parent/probe.map",
+          "size": 312547,
+          "sha256": "e9dc22da8330883f3470cd400bb61cf240cda3023013b0ddf93971cf87928a52"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/parent/probe.obj",
+          "size": 193176,
+          "sha256": "523faa58bddee64b0d690cf1b2a65194123fca1e93b84a6dd7184dfaf54d3930"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/parent/result.json",
+          "size": 528,
+          "sha256": "bd59ef14bdcd1d04ef5a1acf98ffc0f70358a38e78f42176b89cbc68d47f18a7"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/parent/source.bin",
+          "size": 141402076,
+          "sha256": "5608527b8639992445713ee13bb078b4ec13cc24561869d31cc8cf5710ccaa0d"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/probe-run.log",
+          "size": 185,
+          "sha256": "456610b85caf2bbaa5ee0fdec333e226abdf9cae1899903684f4d34e1d6f97b6"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/probe.cpp",
+          "size": 13661,
+          "sha256": "a5f04f4dcb04ebe56ea9c5ce6983621391b4229b29c4b4aed46a6bc5119672b2"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/probe.map",
+          "size": 714409,
+          "sha256": "2e1efd58216259d6d1067e91a4ae9b1ab7c8b325b2c3275aa4aa36e028c50bb9"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/probe.obj",
+          "size": 250912,
+          "sha256": "5ad3f3a492e27aa4db520232a21205e3434306cd59a2cb855fca3c5ad248df99"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/proto-004b7ef0.txt",
+          "size": 651,
+          "sha256": "c4872470ed67607f502880da2b044a06977b83ca633848387608798109a4280a"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/proto-004c1990.txt",
+          "size": 600,
+          "sha256": "4b4d432b12dd2ff53379eea0e16944b5b86dca1c39b3c8fad9f837e383d99ff4"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/proto-004c4600.txt",
+          "size": 712,
+          "sha256": "e042374b68782c95c1d8765ea2a231f8161cda8414849f75fa6b5ceebe7c3c22"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/proto-004c5860.txt",
+          "size": 600,
+          "sha256": "455b7aa50cd4f5fe9f7fadaff29ab3d65f212ddb7883ee3f3505cb6bbd1a0a0b"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/proto-004cafd0.txt",
+          "size": 689,
+          "sha256": "6b46f4d015966c6b6301ba3ef73a4bcb6296bcdb5274c1de7c39348eb22a1d21"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/proto-004cb2f0.txt",
+          "size": 710,
+          "sha256": "da50972b3eada1985a881f6b60602af6726ebfc5c21d1d7489a13f91eb2d25d7"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/proto-007f8180.txt",
+          "size": 618,
+          "sha256": "51a301b860fd0a05ab4ba3afb5eaae72710f3cd9f86c764216849f04f697a6b4"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/result.json",
+          "size": 528,
+          "sha256": "5f050fc8be19fffc14a50ec0d874d0c60674b1cd928dad288885e4b4304901b2"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/snapshot.log",
+          "size": 294,
+          "sha256": "ef8847cd566c79bfca96f2c4fe48735313384225523f27a5ed0359272cb0c2bb"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/source.bin",
+          "size": 1306184,
+          "sha256": "badb706b9256748f75b87de62b57c456f4c12ce1a666d9f7ccb670fd0af74a7f"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/unreached-methods.inc",
+          "size": 3265,
+          "sha256": "0e797dc2e2b884a04c07029d9679d942f61272d1775b9904c9814901fd25da16"
+        },
+        {
+          "path": "local/game_array_lifetime_r122/verify-calls.log",
+          "size": 134,
+          "sha256": "f80f698300183ffad11c804b62348f7c0b2e45dc9bd245cbbeb5d4489beac114"
+        },
+        {
+          "path": "local/ghidra-annotations-20260918T032321Z.json",
+          "size": 13214,
+          "sha256": "ec2f896875988e67d9b7dd2284a5dc5ccff9c8a80b51993b78cfea687376e405"
+        },
+        {
+          "path": "local/prepare_game_array_lifetime_combined_r122.py",
+          "size": 1952,
+          "sha256": "8c5e2195e7dfade659b2a06e0e26f2a5ce10770906433719cb8c7213484d2ee0"
+        },
+        {
+          "path": "local/prepare_game_array_lifetime_methods_r122.py",
+          "size": 721,
+          "sha256": "70b20fbfa103b0a58c2de5f0fb8c124ed86c43400792f6513691d40ad1517e6b"
+        },
+        {
+          "path": "local/prepare_game_array_lifetime_parent_r122.py",
+          "size": 1306,
+          "sha256": "a1123f7cc47e457b24188c8bafc6200390f130f07ed24d36fd964cf66d79e771"
+        },
+        {
+          "path": "local/prepare_game_array_lifetime_r122.py",
+          "size": 4184,
+          "sha256": "af75dab287fdc875de6f8aa5af5f6be4adbd800778b649987df66c31682828ac"
+        },
+        {
+          "path": "local/r122_combined_build_v2.log",
+          "size": 2685,
+          "sha256": "590e0979ae818e17e31536be6ae1b3128498a434cda2765e76a8bc4a17db84d6"
+        },
+        {
+          "path": "local/record_game_array_lifetime_combined_r122.py",
+          "size": 3041,
+          "sha256": "cc89ac06c65d5c15bd39ffa01c59f374398ab45b28e760a7b004c6db4442ab22"
+        },
+        {
+          "path": "local/report_game_array_lifetime_r122.py",
+          "size": 5507,
+          "sha256": "2eb8e8d7bf09c10023ba5d4df1606a415f3865ab2aeb2d8daeed71a9c0b6448e"
+        },
+        {
+          "path": "local/run_game_array_lifetime_combined_r122.ps1",
+          "size": 1694,
+          "sha256": "abb8fa0cc0bce0efc9117b93cecb1621a61a8e83dd866b235fcd1653b07cf199"
+        },
+        {
+          "path": "local/run_game_array_lifetime_parent_combined_r122.ps1",
+          "size": 1697,
+          "sha256": "3ff1abe332bdc6c8781bfa05d74747207e8d43cf3d965f5963b760151d3f9fbc"
+        },
+        {
+          "path": "local/run_game_array_lifetime_parent_r122.ps1",
+          "size": 1688,
+          "sha256": "d7860619c15cad116bee7e0c6162fcb993f817643143782705a77e1cb7786ee2"
+        },
+        {
+          "path": "local/run_game_array_lifetime_r122.ps1",
+          "size": 1685,
+          "sha256": "b8e7b9d51b5ee08acddd0421134d9405270aecc215e5e8cf692d10c605b5abeb"
+        },
+        {
+          "path": "local/seal_game_array_lifetime_r122.py",
+          "size": 4487,
+          "sha256": "1054c953047da3ed0410d0cb716e24cc37315ca58c864735c58f9f9164e831fb"
+        },
+        {
+          "path": "local/seal_game_array_lifetime_r122_v2.py",
+          "size": 4631,
+          "sha256": "d6ac075b5fb756e621aa78558a939c825fd43439356fd1b57a3fcc90b0987da5"
+        },
+        {
+          "path": "reports/native_game_array_lifetime_r122.json",
+          "size": 103704,
+          "sha256": "411e9db8eb5da7f2adf391311e153a34dff89ffbb0ba18b5cd1df20580588255"
+        },
+        {
+          "path": "reports/native_game_array_lifetime_r122_bodies.json",
+          "size": 4182,
+          "sha256": "f5f42597c36e2055c898ae1abc2f6b91353974c4bc814263513e5968226b9832"
+        },
+        {
+          "path": "reports/native_game_array_lifetime_r122_flow_004c1990.json",
+          "size": 2797,
+          "sha256": "00b25c32da6ad77200d1b41668220dece695f3cde61d97b7596c16fe1323fd73"
+        },
+        {
+          "path": "reports/native_game_array_lifetime_r122_flow_004c5860.json",
+          "size": 2797,
+          "sha256": "9b0b7411fd1e7587a14ff9d29ca25fc0d1525e85d8450340b3638e2ac55090bd"
+        },
+        {
+          "path": "reports/native_game_array_lifetime_r122_flow_004cafd0.json",
+          "size": 1003,
+          "sha256": "1f06f0337285a82201629c6c67c580859211a839b7545339fe26f5e1ab6941c8"
+        },
+        {
+          "path": "src/native_game_array_elements.cpp",
+          "size": 6577,
+          "sha256": "be6f4651bba8e17e3a6778e81d44a5e3329907de6d4d403b0eb9092177b6d1d6"
+        },
+        {
+          "path": "src/native_game_array_lifetime.cpp",
+          "size": 5559,
+          "sha256": "b0940cc57a6e22d6e3808fa9b71372762c5546cff3c3dfbe15a83255bfcfe19e"
+        },
+        {
+          "path": "src/native_game_lifetime.cpp",
+          "size": 9748,
+          "sha256": "8f50697abddb52d2e192fc8353665ea67b7fa7906a40982418e43c5078dffb31"
+        },
+        {
+          "path": "src/native_singleton_destruction.cpp",
+          "size": 22646,
+          "sha256": "cb2697b191c3f0f716c61ddae33588af6eac1cac901827e3f2f53f5669d2aadd"
+        },
+        {
+          "path": "src/native_singleton_publication.cpp",
+          "size": 4127,
+          "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+        },
+        {
+          "path": "src/native_singleton_removal_reorder.cpp",
+          "size": 7844,
+          "sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2"
+        },
+        {
+          "path": "src/native_singleton_vector_allocation.cpp",
+          "size": 1966,
+          "sha256": "4771197c3f1ead7dd635637c849c60f8f525c4d482dcc4a33c8617922362e09e"
+        },
+        {
+          "path": "src/native_singleton_vector_insert_count.cpp",
+          "size": 5712,
+          "sha256": "12961e35b1189704bf7f1de55fbdeb6f406688cfadf9256f8729fd72a0a870ac"
+        },
+        {
+          "path": "src/native_singleton_vector_leaves.cpp",
+          "size": 3538,
+          "sha256": "366628d6ec54de3f643b5fff299d16092a2c085a8e0715d4a9b0a6cdb2ed89ad"
+        },
+        {
+          "path": "src/native_singleton_vector_registration_wrappers.cpp",
+          "size": 4283,
+          "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+        },
+        {
+          "path": "src/native_singleton_vector_reserve_construct.cpp",
+          "size": 3731,
+          "sha256": "105cce16ac4886cdc5c2359ae1837a3126445842e46268c55d34ae42f9186f29"
+        },
+        {
+          "path": "src/native_string.cpp",
+          "size": 9121,
+          "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+        },
+        {
+          "path": "src/native_string_append.cpp",
+          "size": 477,
+          "sha256": "fb7c36d388c3cffc44232a65c7e2e64d29689eb82a6d60bb665adf2e73013b54"
+        },
+        {
+          "path": "src/native_string_byte_append.cpp",
+          "size": 3341,
+          "sha256": "a1baa448afe11188ecd06b442d5cdcef5757c6450afc7e8fbe2517f02fe7e524"
+        },
+        {
+          "path": "src/native_string_compare.cpp",
+          "size": 2213,
+          "sha256": "35634c0ef48044d79dd58c6aecfc854da34b5f0739e0de367ce5040cdef97718"
+        },
+        {
+          "path": "src/native_string_pool_owner.cpp",
+          "size": 8443,
+          "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e"
+        },
+        {
+          "path": "src/native_string_pool_storage.cpp",
+          "size": 5103,
+          "sha256": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5"
+        },
+        {
+          "path": "src/native_string_vector.cpp",
+          "size": 3468,
+          "sha256": "4cf86be660ed334e7d7db5072ac6dccce8edfbb02bc3e39dd7437dddd7f995ba"
+        },
+        {
+          "path": "src/native_string_vector_lookup.cpp",
+          "size": 1693,
+          "sha256": "6a6b6a2cc90cc4ad08cacf483e8894fe6ac728bf3b7340e12e316200e750a27b"
+        },
+        {
+          "path": "src/observer_dispatch_owner.cpp",
+          "size": 4287,
+          "sha256": "d217bfac73d6e9cc4e96c980710dacc1a19150d4922817428ab9c6cc812696f1"
+        },
+        {
+          "path": "src/observer_dispatch_schedule.cpp",
+          "size": 6253,
+          "sha256": "f85eaa653bb4447a54c06cd24d823d1a2a0304ee85ce6c9942a25955bc72beec"
+        },
+        {
+          "path": "src/observer_edges.cpp",
+          "size": 3890,
+          "sha256": "7ec0892b88e66b9604f8cce9abc16246ff325b050205f8922b72a1ad13f28e47"
+        },
+        {
+          "path": "src/observer_event_producer.cpp",
+          "size": 3326,
+          "sha256": "05c443e6c1faba7513d8db33c61012705ad1337ffe121e7038597cd190277e5b"
+        },
+        {
+          "path": "src/observer_lifetime.cpp",
+          "size": 14092,
+          "sha256": "b6d0c6d299e055d742dfd75fc5a126762553c513c6353c67bc269aa8d97d2e26"
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "size": 13257,
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+        },
+        {
+          "path": "src/sound_lifetime_access.cpp",
+          "size": 2751,
+          "sha256": "00ace40faa75007eb4e7cf857de0473347d8bdba0d99ed15ce8bc750c09efd29"
+        }
+      ],
+      "scope": "Seven normal bodies460B;60 copied-original actual-service cases1306184bytes;52 controlled parent cases141402076bytes;ordinary application admission and gameplay open"
+    },
+    "source_identical_to_tested": true,
+    "main_source_equal_after_lf_normalization": true,
+    "owned_objects_identical_to_tested": {
+      "build/win32/bsp_core.dir/Release/native_game_array_lifetime.obj": true,
+      "build/win32/bsp_core.dir/Release/native_game_lifetime.obj": false
+    },
+    "library_identical_to_tested": false,
+    "game_identical_to_tested": false,
+    "ordinary_application_runtime_rerun": false
+  }
+}

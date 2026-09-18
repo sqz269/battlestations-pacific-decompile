@@ -1,3 +1,4 @@
+#include "bsp/ship_ai_approach_curves.hpp"
 #include "bsp/ai_planner_tails.hpp"
 #include "bsp/ship_ai_path_corridor.hpp"
 #include "bsp/land_and_structures.hpp"
@@ -3471,6 +3472,42 @@ int main() {
               "sinks below it, and a downward perturbation raises the angle of attack until "
               "lift exceeds gravity again - the flight model needs no authored data beyond "
               "StallSpd and the Dynamics/* rows");
+    }
+
+    {
+        // Packet cc8_ship_ai_approach_curves. 00955A40's index rule is what the
+        // 119-step standoff scan at 009E71A5 walks, so an off-by-one there
+        // moves every ship's chosen range by 50 m. samples[i] holds the value
+        // at 50*(i+1) metres, so a ramp of samples[i] = i reads back as
+        // (x/50 - 1) wherever the interpolation is exact.
+        bsp::ShipAiApproachRangeCurve curve{};
+        bsp::ship_ai_approach_curve_clear_00954940(curve);
+        for (int i = 0; i < bsp::kShipAiApproachCurveSamples; ++i) {
+            curve.samples[i] = static_cast<float>(i);
+        }
+        const float below = bsp::ship_ai_approach_curve_sample_00955a40(curve, 25.0f);
+        const float first = bsp::ship_ai_approach_curve_sample_00955a40(curve, 50.0f);
+        const float mid = bsp::ship_ai_approach_curve_sample_00955a40(curve, 175.0f);
+        const float last = bsp::ship_ai_approach_curve_sample_00955a40(curve, 3000.0f);
+        const float above = bsp::ship_ai_approach_curve_sample_00955a40(curve, 5000.0f);
+        const float peak = bsp::ship_ai_approach_curve_peak_009523c0(curve);
+        const float reach = bsp::ship_ai_approach_curve_effective_range_00952530(curve);
+
+        bsp::ShipAiApproachRangeCurve empty{};
+        bsp::ship_ai_approach_curve_clear_00954940(empty);
+        const float empty_reach =
+            bsp::ship_ai_approach_curve_effective_range_00952530(empty);
+
+        check(std::fabs(below) < 1.0e-6f && std::fabs(first) < 1.0e-6f
+                  && std::fabs(mid - 2.5f) < 1.0e-6f && std::fabs(last - 59.0f) < 1.0e-6f
+                  && std::fabs(above - 59.0f) < 1.0e-6f && std::fabs(peak - 59.0f) < 1.0e-6f
+                  && std::fabs(reach - 3000.0f) < 1.0e-3f
+                  && std::fabs(empty_reach) < 1.0e-6f,
+              "00955A40 samples the 60-point range curve at 50*(i+1) metres: at or below 50 m it "
+              "returns samples[0] (00955A63), at 175 m it interpolates halfway between samples[2] "
+              "and samples[3], and at or above 3000 m it saturates on samples[59] ([ECX+0ECh] at "
+              "00955A83); 009523C0 answers the peak and 00952530 the last positive sample's range, "
+              "or 0.0 when the curve is the zero 00954940 leaves");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

@@ -32,6 +32,10 @@
 #include "bsp/director_update_arms.hpp"
 #include "bsp/ship_ai_approach_update.hpp"
 #include "bsp/ship_ai_attackmove_substates.hpp"
+#include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/projectile_kinds.hpp"
+#include "bsp/gameplay_settings_tail.hpp"
+#include "bsp/ship_ai_approach_curves.hpp"
 #include "bsp/ship_ai_bearing_rating.hpp"
 #include "bsp/ship_ai_ring_scan.hpp"
 #include "bsp/ship_ai_clearance_profile.hpp"
@@ -209,6 +213,10 @@ struct GameShipAiHost::Impl {
     GameUnitsHost& units;
     GameAvoidZoneRuntime zones;
     GameMissionLuaHost* settings_owner{}; // borrowed stored-settings projection
+    // Packet cc8_ship_ai_firepower_inputs: the gunnery host, borrowed through
+    // GameGunneryHost::set_ship_ai. It is the only thing in this process that
+    // runs 00956C20, so it owns unit+394h, +430h, +490h and +494h.
+    const GameGunneryHost* gunnery{nullptr};
     bool avoid_all_ship_collision() const {
         bool value;
         if (!settings_owner || !settings_owner->read_avoid_all_ship_collision(value))
@@ -393,6 +401,17 @@ struct GameShipAiHost::Impl {
         bsp::ShipAiAttackMoveRingSlot approach_ring[bsp::kAttackMoveRingSlotCount]{};
         bsp::ShipAiApproachSlotScore approach_scores[bsp::kShipAiApproachSlotCount]{};
         bool approach_ring_built{false};
+        // Packet cc8_ship_ai_approach_curves: the two 60-sample range curves at
+        // nested+12C0h and nested+13B0h, cleared by 00954940 at 009E55C3 and
+        // 009E55CE. The first is the own unit's expected damage against the
+        // target at 50*(i+1) metres, the second the target's against us.
+        // 009F1BC0 refills them at 009F2F11 and 009F2FB1 through 0095F080; the
+        // countdowns that gate the refill are nested+1220h and nested+1224h,
+        // which the projection of 009F1BC0 already counts down at 009F1C07 and
+        // 009F1C13 but, its tail being unread, never re-arms.
+        bsp::ShipAiApproachRangeCurve approach_curve_own{};    // nested+12C0h
+        bsp::ShipAiApproachRangeCurve approach_curve_target{}; // nested+13B0h
+        bool approach_curves_built{false};
     };
     std::vector<Controller> controllers;
     std::vector<GameShipAiRow> rows;
@@ -416,6 +435,30 @@ struct GameShipAiHost::Impl {
                 static_cast<std::uint32_t>(index) + 1u);
         }
         done("ShipAiApproach::build_ring_009e5530", 0x009e5530u);
+    }
+
+    // 009E55C3 and 009E55CE, the two 00954940 clears; then the refill 009F1BC0
+    // performs at 009F2F11 (the own unit, prefer_long_range = 1, re-arming
+    // nested+1220h with 1.5f at 009F2F16) and 009F2FB1 (the target,
+    // prefer_long_range = 0, re-arming nested+1224h with 2.0f at 009F2FB6).
+    // Both sites are in the span of 009F1BC0 that packet
+    // ship_ai_approach_frame_state_tail still owns, so the countdown and the
+    // re-arm live here rather than in src/ship_ai_approach_update.cpp.
+    //
+    // The query blocks at nested+127Ch and nested+1238h have no producer in
+    // this process beyond the two window constants 009F2EA1 and 009F2EB1 write,
+    // so only those are set; everything else is the zero the block is born
+    // with. Whatever 0095EB40 then answers, the curve rules around it are the
+    // image's.
+    // The refill itself needs FirepowerBinding, which is declared far below, so
+    // it lives in ApproachUpdateBinding::refresh_approach_curves. This clear is
+    // all Impl can do on its own.
+    void ensure_approach_curves(Controller& ctl) {
+        if (ctl.approach_curves_built) return;
+        ctl.approach_curves_built = true;
+        bsp::ship_ai_approach_curve_clear_00954940(ctl.approach_curve_own);
+        bsp::ship_ai_approach_curve_clear_00954940(ctl.approach_curve_target);
+        done("ShipAiApproach::curve_clear_00954940", 0x00954940u);
     }
 
     void record(const char* method, std::uint32_t address) {
@@ -1045,50 +1088,244 @@ class FirepowerBinding final : public bsp::ShipAiFirepowerHost {
 public:
     FirepowerBinding(GameShipAiHost::Impl& owner, std::size_t index)
         : owner_(owner), index_(index) {}
+
+    // [unit+494h], 0095EB62. 00956C20 writes it at 00956E59 as the maximum of
+    // 00731020's answer over every category's live guns, seeded to 10.0f at
+    // 00956D51 (docs/GUNNERY_TABLES.md). The gunnery host runs that rebuild.
     float unit_max_weapon_range() override {
-        owner_.record("ShipAiFirepower::unit_max_weapon_range_0494", 0x0095eb62u);
-        return 0.0f;
+        const GameGunneryUnitRow* row = unit_row();
+        if (row == nullptr) {
+            owner_.record("ShipAiFirepower::unit_max_weapon_range_0494", 0x0095eb62u);
+            return 0.0f;
+        }
+        return row->any_weapon_max_range;
     }
-    int category_device_count(int) override {
-        // 0095EBB3, [unit+394h + category*0Ch]. This process builds no gunnery
-        // device list, so every category is empty and the walk never starts.
-        owner_.record("ShipAiFirepower::category_device_count", 0x0095ebb3u);
-        return 0;
+
+    // [unit+394h + category*0Ch], 0095EBB3: the list count.
+    int category_device_count(int category) override {
+        const GameGunneryUnitRow* row = unit_row();
+        if (row == nullptr || category < 0 || category >= bsp::kUnitGunneryCategoryCount) {
+            return 0;
+        }
+        return row->category_guns[static_cast<std::size_t>(category)];
     }
-    float category_max_range(int) override {
-        owner_.record("ShipAiFirepower::category_max_range", 0x0095ebc4u);
-        return 0.0f;
+
+    // [unit+430h + category*4], 0095EBC4: that category's longest weapon range,
+    // floored at 10.0f by 00956D63.
+    float category_max_range(int category) override {
+        const GameGunneryUnitRow* row = unit_row();
+        if (row == nullptr || category < 0 || category >= bsp::kUnitGunneryCategoryCount) {
+            return 0.0f;
+        }
+        return row->category_ranges[static_cast<std::size_t>(category)];
     }
-    bsp::NativeHandle category_list_head(int) override {
-        owner_.record("ShipAiFirepower::category_list_head", 0x0095ec24u);
-        return 0;
+
+    // [unit+398h + category*0Ch], 0095EC24. The handle is the category and the
+    // position in that category's list, both one based, because the host keeps
+    // the list as a vector rather than the 0Ch-byte nodes 00956C20 allocates.
+    bsp::NativeHandle category_list_head(int category) override {
+        const std::vector<std::size_t>* list = category_list(category);
+        if (list == nullptr || list->empty()) return 0;
+        return make_node(category, 0);
     }
-    bsp::NativeHandle list_next(bsp::NativeHandle) override { return 0; }
-    bsp::NativeHandle list_device(bsp::NativeHandle) override { return 0; }
-    bool device_is_turning_gun(bsp::NativeHandle) override { return false; }
-    bool device_is_operational(bsp::NativeHandle) override { return false; }
-    int device_ready_rounds(bsp::NativeHandle, float) override { return 0; }
-    bool device_is_destroyed(bsp::NativeHandle) override { return true; }
-    int device_barrel_count(bsp::NativeHandle) override { return 0; }
-    int device_weapon_function(bsp::NativeHandle) override { return 0; }
-    bsp::NativeHandle device_ammo_record(bsp::NativeHandle) override { return 0; }
-    void ammo_select_flak_alternate(bsp::NativeHandle) override {}
-    bsp::ShipAiFirepowerProjectileClass ammo_projectile_class(bsp::NativeHandle) override {
-        return bsp::ShipAiFirepowerProjectileClass{};
+    bsp::NativeHandle list_next(bsp::NativeHandle node) override {
+        const int category = node_category(node);
+        const std::size_t slot = node_slot(node);
+        const std::vector<std::size_t>* list = category_list(category);
+        if (list == nullptr || slot + 1 >= list->size()) return 0;
+        return make_node(category, slot + 1);
     }
-    float ammo_cycle_period(bsp::NativeHandle) override { return 0.0f; }
-    float weapon_hit_probability(bsp::NativeHandle, float, float) override { return 0.0f; }
+    bsp::NativeHandle list_device(bsp::NativeHandle node) override {
+        const int category = node_category(node);
+        const std::size_t slot = node_slot(node);
+        const std::vector<std::size_t>* list = category_list(category);
+        if (list == nullptr || slot >= list->size()) return 0;
+        ++owner_.summary.firepower_mounts;
+        return static_cast<bsp::NativeHandle>((*list)[slot] + 1u);
+    }
+
+    // 0095EC46, [[device]+5Ch](22h). Every row the gunnery host keeps is a
+    // turning gun mount, so the class test cannot fail here. LABELLED
+    // SUBSTITUTION: the class hierarchy has no producer in this process.
+    bool device_is_turning_gun(bsp::NativeHandle) override {
+        owner_.record("ShipAiFirepower::device_is_turning_gun_005c", 0x0095ec46u);
+        return true;
+    }
+
+    // 0095EC52, 00729F10: [[device+3F0h]+720h], [device+3B8h] and [device+5Dh]
+    // all clear. LABELLED SUBSTITUTION: none of the three has a producer here.
+    bool device_is_operational(bsp::NativeHandle) override {
+        owner_.record("ShipAiFirepower::device_is_operational_00729f10", 0x0095ec52u);
+        return true;
+    }
+
+    // 0095EC84, 00727D70: the [device+448h] reload timers at [device+414h] that
+    // are at or below the horizon. The gunnery host carries the timer list but
+    // nothing pushes to it (GameGunRow::pending_timers), so every barrel counts
+    // as ready. LABELLED SUBSTITUTION.
+    int device_ready_rounds(bsp::NativeHandle device, float) override {
+        owner_.record("ShipAiFirepower::device_ready_rounds_00727d70", 0x0095ec84u);
+        const GameGunRow* gun = gun_row(device);
+        return gun == nullptr ? 0 : gun->barrel_num;
+    }
+
+    bool device_is_destroyed(bsp::NativeHandle) override { return false; }
+
+    // [device+448h], 0095EC98.
+    int device_barrel_count(bsp::NativeHandle device) override {
+        const GameGunRow* gun = gun_row(device);
+        return gun == nullptr ? 0 : gun->barrel_num;
+    }
+
+    // [[device+3F4h]+80h], 0095ECAA: the Function 007327B0 wrote, which is the
+    // same GunneryCategory index 00956C20 filed the gun under.
+    int device_weapon_function(bsp::NativeHandle device) override {
+        const GameGunRow* gun = gun_row(device);
+        return gun == nullptr ? 0 : gun->category;
+    }
+
+    // [[device+354h]+74h], 0095ECB7. The host reaches the ammunition through
+    // the gun row, so the device handle is its own ammunition handle.
+    bsp::NativeHandle device_ammo_record(bsp::NativeHandle device) override {
+        return device;
+    }
+
+    // 0095ECD4, 0095CF80: the flak alternate at ammo+48h. No producer here.
+    void ammo_select_flak_alternate(bsp::NativeHandle) override {
+        owner_.record("ShipAiFirepower::ammo_select_flak_alternate_0095cf80", 0x0095ecd4u);
+    }
+
+    // [ammo+34h] and its fields, 0095ECDB..0095ED4B, from the authored Bullets
+    // row the gun fires. blast_damage_min (+B4h) is the one field the gunnery
+    // host does not carry, so it stays zero and is recorded.
+    bsp::ShipAiFirepowerProjectileClass ammo_projectile_class(
+        bsp::NativeHandle ammo) override {
+        bsp::ShipAiFirepowerProjectileClass out{};
+        out.handle = ammo;
+        const GameBulletClassRow* bullet = bullet_row(ammo);
+        if (bullet == nullptr) return out;
+        // 006EA910's name chain, the image's own Type to sub-type mapping.
+        const bsp::ProjectileClassInfo* info
+            = bsp::projectile_class_for_lua_type(bullet->type);
+        if (info != nullptr) out.sub_type = info->sub_type;
+        out.max_range = bullet->range;
+        out.damage_min = bullet->damage_min;
+        out.damage_max = bullet->damage_max;
+        out.blast_damage_max = bullet->blast_damage_max;
+        out.water_damage = bullet->water_damage;
+        out.fire_damage = bullet->fire_damage;
+        out.fire_chance = bullet->fire_chance;
+        owner_.record("ShipAiFirepower::projectile_blast_damage_min_00b4", 0x0095ed15u);
+        // 0095ECDB then 0095EDC9: the class just built is the one the hit
+        // probability is asked about a few instructions later.
+        last_projectile_ = out;
+        return out;
+    }
+
+    // [ammo+2Ch], 0095EE07: the period b[6] is divided by. The gun row's reload
+    // time is the closest produced value. LABELLED SUBSTITUTION.
+    float ammo_cycle_period(bsp::NativeHandle ammo) override {
+        owner_.record("ShipAiFirepower::ammo_cycle_period_002c", 0x0095ee07u);
+        const GameGunRow* gun = gun_row(ammo);
+        return gun == nullptr ? 0.0f : gun->reload_time;
+    }
+
+    // 0095EDC9, 006EB060 whole: zero at or past the class's +60h; otherwise the
+    // WeaponHitAccuracy profile for the sub-type's Function, sampled at
+    // range/[p+60h]; and 1.0f for a sub-type the chain does not recognise
+    // (the final `return (float10)1` of 006EB060).
+    //
+    // The four profiles live at settings+240h, +298h, +2F0h and +348h. Nothing
+    // in this process loads ShipGlobals["WeaponHitAccuracy"], so the profile
+    // used here is the image's own default (00836EF0): both reference sizes and
+    // all twenty accuracy slots. Because every slot of that default is the same
+    // 0.5f, the answer does not depend on the part of 008386F0 this packet did
+    // not read, which is how the target length picks between the small and
+    // large curves.
+    float weapon_hit_probability(bsp::NativeHandle projectile_class,
+                                 float range,
+                                 float target_length) override {
+        (void)projectile_class;
+        (void)target_length;
+        const bsp::ShipAiFirepowerProjectileClass& p = last_projectile_;
+        if (p.max_range <= range) return 0.0f; // 006EB067, FCOMI then JBE
+        const int sub = p.sub_type;
+        const bool recognised = (sub == 4 || sub == 5 || sub == 6 || sub == 7)
+                                || sub == 0x0A || sub == 0x0B || sub == 0x13
+                                || sub == 1 || sub == 2 || sub == 3 || sub == 0x10;
+        if (!recognised) {
+            // 006EB0C8, the fall-through return of 1.0f.
+            owner_.record("ShipAiFirepower::hit_probability_unclassified", 0x006eb0c8u);
+            return 1.0f;
+        }
+        owner_.record("ShipAiFirepower::hit_accuracy_profile_008386f0", 0x008386f0u);
+        const float fraction = range / p.max_range;
+        int bucket = static_cast<int>(fraction * 10.0f);
+        if (bucket < 0) bucket = 0;
+        if (bucket > bsp::kWeaponHitAccuracyBucketCount - 1) {
+            bucket = bsp::kWeaponHitAccuracyBucketCount - 1;
+        }
+        bsp::WeaponHitAccuracyProfile profile{};
+        bsp::apply_weapon_hit_accuracy_defaults_00836ef0(profile);
+        return profile.small_target_accuracy[bucket];
+    }
+
     bool device_can_bear(bsp::NativeHandle, bsp::NativeHandle, float, float) override {
+        // require_bearing is 0 on the range-profile path (009F2ECB), so
+        // 0095EDFA is never reached from here.
+        owner_.record("ShipAiFirepower::device_can_bear_0085b7d0", 0x0095edfau);
         return false;
     }
+
+    // 0095EEAD and 0095EED8, 00424C40 then [settings+3B0h] and [settings+3ACh].
+    // Nothing in this process loads the gameplay settings object, so these are
+    // the authored defaults docs/GAMEPLAY_SETTINGS.md records. LABELLED.
     bsp::ShipAiFirepowerTickDamage gameplay_tick_damage() override {
         owner_.record("ShipAiFirepower::gameplay_tick_damage_00424c40", 0x0095eeadu);
-        return bsp::ShipAiFirepowerTickDamage{};
+        bsp::ShipAiFirepowerTickDamage out{};
+        out.water_tick_damage = 100.0f; // settings+3B0h WaterTickDamage
+        out.fire_tick_damage = 40.0f;   // settings+3ACh FireTickDamage
+        return out;
     }
 
 private:
+    static bsp::NativeHandle make_node(int category, std::size_t slot) {
+        return static_cast<bsp::NativeHandle>(
+            (static_cast<std::uint32_t>(category + 1) << 16)
+            | static_cast<std::uint32_t>(slot + 1));
+    }
+    static int node_category(bsp::NativeHandle node) {
+        return static_cast<int>((static_cast<std::uint32_t>(node) >> 16) & 0xFFFFu) - 1;
+    }
+    static std::size_t node_slot(bsp::NativeHandle node) {
+        return static_cast<std::size_t>(static_cast<std::uint32_t>(node) & 0xFFFFu) - 1u;
+    }
+    const std::vector<std::size_t>* category_list(int category) const {
+        if (owner_.gunnery == nullptr) return nullptr;
+        return owner_.gunnery->unit_category_guns(index_, category);
+    }
+    const GameGunneryUnitRow* unit_row() const {
+        if (owner_.gunnery == nullptr) return nullptr;
+        const std::vector<GameGunneryUnitRow>& rows = owner_.gunnery->unit_rows();
+        if (index_ >= rows.size()) return nullptr;
+        return &rows[index_];
+    }
+    const GameGunRow* gun_row(bsp::NativeHandle handle) const {
+        if (owner_.gunnery == nullptr || handle == 0) return nullptr;
+        const std::vector<GameGunRow>& rows = owner_.gunnery->guns();
+        const std::size_t i = static_cast<std::size_t>(handle) - 1u;
+        if (i >= rows.size()) return nullptr;
+        return &rows[i];
+    }
+    const GameBulletClassRow* bullet_row(bsp::NativeHandle handle) const {
+        const GameGunRow* gun = gun_row(handle);
+        if (gun == nullptr || owner_.gunnery == nullptr) return nullptr;
+        return owner_.gunnery->bullet_class_row(gun->bullet_class);
+    }
+
     GameShipAiHost::Impl& owner_;
     std::size_t index_;
+    bsp::ShipAiFirepowerProjectileClass last_projectile_{};
 };
 
 // 009E5DA0's own host: the one call it makes, into 0095EB40.
@@ -1314,22 +1551,31 @@ public:
         owner_.record("ShipAiApproach::random_stream1_00bd2f10", 0x00bd2f10u);
         return low;
     }
+    // Packet cc8_ship_ai_approach_curves. 009E71A5 puts nested+13B0h (the
+    // target's curve) in EBX and 009E71B9 puts nested+12C0h (the own curve) in
+    // EBP; 009E71AE calls 00952530 on EBX, 009E71EF calls 009523C0 on EBP,
+    // 009E721A samples EBP and 009E722D samples EBX.
     float curve_base_00952530() override {
-        owner_.record("ShipAiApproach::curve_base_00952530", 0x00952530u);
-        return 0.0f;
+        return bsp::ship_ai_approach_curve_effective_range_00952530(
+            ctl_.approach_curve_target);
     }
     float curve_reference_009523c0() override {
-        owner_.record("ShipAiApproach::curve_reference_009523c0", 0x009523c0u);
-        return 0.0f;
+        return bsp::ship_ai_approach_curve_peak_009523c0(ctl_.approach_curve_own);
     }
-    float curve_primary_00955a40(float) override {
-        owner_.record("ShipAiApproach::curve_primary_00955a40", 0x00955a40u);
-        return 0.0f;
+    float curve_primary_00955a40(float x) override {
+        return bsp::ship_ai_approach_curve_sample_00955a40(ctl_.approach_curve_own, x);
     }
-    float curve_secondary_00955a40(float) override { return 0.0f; }
+    float curve_secondary_00955a40(float x) override {
+        return bsp::ship_ai_approach_curve_sample_00955a40(ctl_.approach_curve_target, x);
+    }
     float nested_scan_scale_1284() override {
-        owner_.record("ShipAiApproach::nested_scan_scale_1284", 0x009e7284u);
-        return 0.0f;
+        // nested+1284h is word 2 of the own unit's firepower query block at
+        // nested+127Ch: the per-shot damage cap. 009F2A44 loads it from
+        // [target+370h] and 009F2AA9 stores the 10000.0f at 00CE3D64 when there
+        // is no target. [target+370h] has no producer in this process, so the
+        // no-target constant stands in on both arms. LABELLED SUBSTITUTION.
+        owner_.record("ShipAiApproach::scan_scale_1284_target_0370", 0x009f2a44u);
+        return 10000.0f;
     }
     float unit_turn_radius_00811a30(float rudder) override {
         return owner_.units.unit_class_turn_circle_radius_0082e960(index_, rudder);
@@ -1548,6 +1794,11 @@ public:
         owner_.record("ShipAiApproach::target_zone_object_0740", 0x009f1e36u);
         bsp::ship_ai_approach_frame_state_009f1bc0(ctl_.approach, has_target, false,
                                                    seconds, point);
+        // 009F2F11 and 009F2FB1, the two 0095F080 refills of the curve objects
+        // the standoff scan then samples. They sit in the span of 009F1BC0 the
+        // projection does not cover, and the countdowns they re-arm are the
+        // ones 009F1C07 and 009F1C13 have just decremented.
+        refresh_approach_curves(has_target);
         owner_.done("ShipAiApproach::frame_state", 0x009f1bc0u);
         owner_.record("ShipAiApproach::frame_state_unread_spans", 0x009f1dbfu);
         ++row_.approach_frames;
@@ -1573,6 +1824,15 @@ public:
         bsp::ship_ai_approach_choose_standoff_009e6e80(ctl_.approach,
             ctl_.goal_vector.raw_target_0b20 != 0u, standoff);
         owner_.done("ShipAiApproach::choose_standoff_range", 0x009e6e80u);
+        // Packet cc8_ship_ai_approach_curves: what the scan actually chose,
+        // nested+11E4h after 009E6E80.
+        const float chosen = ctl_.approach.standoff_range_11e4;
+        if (row_.standoff_choices == 0) {
+            row_.standoff_range_first = chosen;
+        }
+        row_.standoff_range_last = chosen;
+        ++row_.standoff_choices;
+        ++owner_.summary.standoff_choices;
     }
     void refresh_avoidance_009e9190(float seconds) override {
         AvoidBinding avoid(owner_, ctl_, index_);
@@ -1607,6 +1867,81 @@ public:
     }
 
 private:
+    // 009F2F11 and 009F2FB1, the two 0095F080 refills inside 009F1BC0. The own
+    // curve takes prefer_long_range = 1 and re-arms nested+1220h with 1.5f
+    // (009F2F16); the target's takes 0 and re-arms nested+1224h with 2.0f
+    // (009F2FB6). The query blocks at nested+127Ch and nested+1238h have no
+    // producer in this process beyond the two window constants 009F2EA1 and
+    // 009F2EB1 write, so only those two are set and the rest of the block is
+    // the zero it is born with. The curve rules around the answer are the
+    // image's; the answer itself is only as good as FirepowerBinding, whose
+    // device list is empty in this process.
+    void refresh_approach_curves(bool has_target) {
+        owner_.ensure_approach_curves(ctl_);
+
+        bsp::ShipAiFirepowerQuery query{};
+        query.window_seconds = 20.0f;        // 009F2EA1, 00CE3930
+        query.ready_horizon_seconds = 30.0f; // 009F2EB1, 00CE38C8
+        // 009F2A44's arm reads the four target fields off the target entity;
+        // 009F2A91..009F2AC1 is the arm with no target, and these are its
+        // constants. Packet cc8_ship_ai_firepower_inputs uses them on both arms
+        // because [target+370h] and [[target+538h]+4Ch/+0A0h] have no producer
+        // in this process. LABELLED SUBSTITUTION, recorded below.
+        query.damage_cap = 10000.0f;   // 009F2AA9, 00CE3D64
+        query.target_length = 100.0f;  // 009F2AC1, 00CE3D08
+        query.armour = 0.0f;           // 009F2A91
+        query.armour_torpedo = 0.0f;   // 009F2A99
+        // 009F2ED2 sets use_ready_rounds and 009F2ECB clears require_bearing.
+        query.use_ready_rounds = 1;
+        query.require_bearing = 0;
+        // 009F2AE7, 009F2B20, 009F2BC2 and 009F2B6D read these from
+        // [0080E160(unit)+220h..+223h]. No producer in this process; with all
+        // four clear 0095EBD7 skips every category and the rating is always
+        // zero, so every category is allowed here. LABELLED SUBSTITUTION.
+        query.allow_machine_gun = 1;
+        query.allow_artillery = 1;
+        query.allow_torpedo = 1;
+        query.allow_depth_charge = 1;
+        owner_.record("ShipAiApproach::curve_query_target_fields", 0x009f2a44u);
+        owner_.record("ShipAiApproach::curve_query_allow_bytes", 0x009f2ae7u);
+        FirepowerBinding firepower(owner_, index_);
+
+        if (ctl_.approach.timer_1220 <= 0.0f) {
+            bsp::ship_ai_firepower_range_profile_0095f080(query,
+                ctl_.approach_curve_own.samples, true, firepower);
+            ctl_.approach.timer_1220 = 1.5f;
+            owner_.done("ShipAiApproach::curve_refresh_own_0095f080", 0x009f2f11u);
+            ++owner_.summary.approach_curve_refreshes;
+        }
+        if (ctl_.approach.timer_1224 <= 0.0f) {
+            // 009F2F3C, target->vtable[5Ch](5): no such probe in this process,
+            // so the presence of a target stands in for it.
+            owner_.record("ShipAiApproach::curve_target_kind_005c", 0x009f2f3cu);
+            if (has_target) {
+                bsp::ship_ai_firepower_range_profile_0095f080(query,
+                    ctl_.approach_curve_target.samples, false, firepower);
+                owner_.done("ShipAiApproach::curve_refresh_target_0095f080", 0x009f2fb1u);
+                ++owner_.summary.approach_curve_refreshes;
+            }
+            ctl_.approach.timer_1224 = 2.0f;
+        }
+
+        // Packet cc8_ship_ai_firepower_inputs: how much of each curve the
+        // refill actually filled, so a reader can tell an empty profile from a
+        // real one without reading the samples.
+        row_.curve_own_nonzero = count_positive(ctl_.approach_curve_own);
+        row_.curve_target_nonzero = count_positive(ctl_.approach_curve_target);
+        row_.unit_max_weapon_range = firepower.unit_max_weapon_range();
+    }
+
+    static int count_positive(const bsp::ShipAiApproachRangeCurve& curve) {
+        int n = 0;
+        for (int i = 0; i < bsp::kShipAiApproachCurveSamples; ++i) {
+            if (curve.samples[i] > 0.0f) ++n;
+        }
+        return n;
+    }
+
     GameShipAiHost::Impl& owner_;
     GameShipAiHost::Impl::Controller& ctl_;
     GameShipAiRow& row_;
@@ -4398,6 +4733,10 @@ void GameShipAiHost::set_ai_drive(std::size_t unit_index, float throttle, float 
         static_cast<double>(rudder));
 }
 
+void GameShipAiHost::bind_gunnery(const GameGunneryHost* gunnery) noexcept {
+    impl_->gunnery = gunnery;
+}
+
 const std::vector<GameShipAiRow>& GameShipAiHost::rows() const noexcept { return impl_->rows; }
 const GameShipAiSummary& GameShipAiHost::summary() const noexcept { return impl_->summary; }
 
@@ -4581,6 +4920,21 @@ void GameShipAiHost::report() {
         host.summary.ring_scan_bearings, host.summary.firepower_ratings,
         host.summary.path_follower_points, host.summary.path_follower_corners,
         host.summary.path_follower_advances);
+    // Packet cc8_ship_ai_approach_curves: what the 119-step scan at 009E71A5
+    // chose once the two curve objects behind it were real.
+    host.log.notef("summary mission ship ai standoff choices=%llu curve_refreshes=%llu "
+        "(009e6e80 writes nested+11e4h; 0095f080 fills nested+12c0h and nested+13b0h)",
+        host.summary.standoff_choices, host.summary.approach_curve_refreshes);
+    for (const GameShipAiRow& row : host.rows) {
+        if (row.standoff_choices == 0) continue;
+        host.log.notef("  standoff %-20s choices=%llu first=%.1f last=%.1f "
+            "curve_own_nonzero=%d curve_target_nonzero=%d max_weapon_range=%.1f",
+            row.unit.c_str(), row.standoff_choices,
+            static_cast<double>(row.standoff_range_first),
+            static_cast<double>(row.standoff_range_last),
+            row.curve_own_nonzero, row.curve_target_nonzero,
+            static_cast<double>(row.unit_max_weapon_range));
+    }
     host.log.notef("summary mission ship ai command completion events=%llu callbacks=%llu "
         "end_commands=%llu queue_advances=%llu",
         host.summary.command_events, host.summary.command_event_callbacks,

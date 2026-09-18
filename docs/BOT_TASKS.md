@@ -450,3 +450,11 @@ slots; the consumer of the `+50h` three-value return.
 - **Was:** the tasks write "the pilot control block at unit+9D4h", with a desired cruising altitude at +394h, a second altitude at +398h, a third value at +39Ch and a dirty flag at +3ADh
   **Is:** unit+9D4h is the plane's squadron. Those four fields are squadron fields: a formation-level cruising altitude and its limits. The pilot control block is unit+9E4h, five float axes and three bytes.
   **Evidence:** scanning .text for every MOV [reg+9D4h] gives ten stores. 007ED0E6 in 007ED0D0 writes plane+9D4h = squadron together with plane+9D8h = spawnIndex and the sorted insert into squadron+3D0h[]; 007F4B49 does the same in 007F4580; 007F3A07 clears it in BSP_Squadron_RemovePlane; 007CFE6C zeroes it in the plane unit constructor. 009FBA50 at 009FBA90 reads approach+0Ch (= unit+9D4h) and then +394h as a shared altitude ceiling. The existing readers agree: [[unit+9D4h]+3D0h] == unit (docs/HUD_CENTRAL_UPDATES.md), [unit+9D4h]+3CCh (docs/MISSION_RESULT_DECISION.md), 007B97E0 MOV EAX,[ECX+9D4h]; RET (docs/GUNNERY_TABLES.md).
+
+## Correction from docs/TORPEDO_TASK_ARM.md (packet cc8_torpedo_task_arm)
+
+Interface slot `+24h` is listed as `contract: unread`. For the torpedo task it is `009D49A0`, the
+ordnance-arming entry: it raises the done/prepare state's release countdown `state+98h`, and
+`BSP_PilotBot_Tick` `0099ACD0` calls the slot at `0099AF9B` over the bot's whole task vector,
+which is also the consumer of `unit+C58h`. The torpedo per-tick arm (slot `+64h`) is
+`009D4850`-`009D4965` and the transition rule `009D4030`; both are Ghidra functions now.

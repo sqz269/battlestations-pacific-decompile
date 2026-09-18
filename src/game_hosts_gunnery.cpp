@@ -112,6 +112,8 @@ struct GameGunneryHost::Impl {
         // The twelve category records at unit+394h and the ranges at unit+430h.
         std::array<std::vector<std::size_t>, bsp::kUnitGunneryCategoryCount> category_guns{};
         std::array<float, bsp::kUnitGunneryCategoryCount> category_ranges{};
+        float artillery_max_range{0.0f};  // unit+490h, 00956E43
+        float any_weapon_max_range{0.0f}; // unit+494h, 00956E59
         bool dead{false};
         // The kill attribution block at victim+2C4h..+2E8h, as 0077CE60 leaves it.
         bsp::KillAttributionFields attribution{};
@@ -687,8 +689,14 @@ void GameGunneryHost::Impl::build_guns() {
                 state.category_ranges[static_cast<std::size_t>(category)] = range;
             }
             void store_category_blast_sum(int, float) override {}
-            void store_artillery_max_range(float) override {}
-            void store_any_weapon_max_range(float) override {}
+            void store_artillery_max_range(float range) override {
+                // 00956E43, unit+490h. Packet cc8_ship_ai_firepower_inputs.
+                state.artillery_max_range = range;
+            }
+            void store_any_weapon_max_range(float range) override {
+                // 00956E59, unit+494h, the maximum over every category.
+                state.any_weapon_max_range = range;
+            }
 
             Impl& owner;
             UnitState& state;
@@ -707,6 +715,8 @@ void GameGunneryHost::Impl::build_guns() {
                 = static_cast<int>(state.category_guns[slot].size());
             state.row.category_ranges[slot] = state.category_ranges[slot];
         }
+        state.row.artillery_max_range = state.artillery_max_range;
+        state.row.any_weapon_max_range = state.any_weapon_max_range;
     }
 }
 
@@ -2181,7 +2191,13 @@ GameGunneryHost::GameGunneryHost(GameHostLog& log, GameUnitsHost& units,
 
 GameGunneryHost::~GameGunneryHost() = default;
 
-void GameGunneryHost::set_ship_ai(GameShipAiHost* ai) noexcept { impl_->ship_ai = ai; }
+void GameGunneryHost::set_ship_ai(GameShipAiHost* ai) noexcept {
+    impl_->ship_ai = ai;
+    // Packet cc8_ship_ai_firepower_inputs: the reverse edge. 0095EB40 reads the
+    // tables 00956C20 built (unit+394h, +430h, +494h and the category lists),
+    // and this host is the only thing in the process that runs 00956C20.
+    if (ai != nullptr) ai->bind_gunnery(this);
+}
 
 void GameGunneryHost::attach_00864bd0() {
     Impl& host = *impl_;
@@ -2211,6 +2227,17 @@ void GameGunneryHost::fixed_step(float step_seconds) {
     }
     host.run_gun_aim_and_fire(step_seconds);
     host.run_projectiles(step_seconds);
+}
+
+const std::vector<std::size_t>* GameGunneryHost::unit_category_guns(
+    std::size_t unit_index, int category) const noexcept {
+    if (unit_index >= impl_->unit_state.size()) return nullptr;
+    if (category < 0 || category >= bsp::kUnitGunneryCategoryCount) return nullptr;
+    return &impl_->unit_state[unit_index].category_guns[static_cast<std::size_t>(category)];
+}
+
+const GameBulletClassRow* GameGunneryHost::bullet_class_row(int id) const noexcept {
+    return impl_->bullet(id);
 }
 
 const std::vector<GameGunRow>& GameGunneryHost::guns() const noexcept {
