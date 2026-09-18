@@ -779,39 +779,19 @@ same file still substitutes the row's `TravelSpeed` and labels `007C47F0` unread
 routine is read, that site can take the real product too. Left alone here because it belongs to the
 packet that wrote it.
 
-### The identity run: a transient crash, wrongly called a `main` regression
+### An intermittent startup crash, wrongly called a `main` regression
 
-Two consecutive IJN01 runs at 13:26 exited `0xC0000005` with the log stopping at
+Two IJN01 runs at 13:27:01 and 13:27:37 exited `0xC0000005` with a 107-line log ending at
+`Phase 5 online_manager_initialize`. This doc first recorded that as a regression on `main`.
+**It was wrong**, and `docs/GAME_EXECUTABLE.md` carries the full table and the method errors.
 
-```
-host Phase 5 online_manager_initialize [0073dc7c] UNIMPLEMENTED, returning a neutral value
-```
-
-the line immediately before `native renderer device startup` in a good run. With every change of
-this packet stashed, the same worktree at merge `78af19721` failed identically, and this doc
-recorded that as a regression on `main`. **That was wrong**, and the bisect says so plainly.
-
-In a throwaway `git worktree add --detach` tree, four builds and four
-`--frames 300 --press-start-frame 30` runs all finished with `EXITCODE=0` and
-`frames_presented=299`:
-
-| commit | what it is | result |
-| --- | --- | --- |
-| `4668b0e96` | after the scene tokenizer, before the settings commit | clean |
-| `82986e455` | the raw settings vector assignment and language selection | clean |
-| `cccf31e11` | the torpedo worker's throttle arm, speed setter and glide slope | clean |
-| `78af19721` | `main`'s tip, the merge itself | clean |
-
-A fifth run, in this packet's own worktree at its own HEAD with every change in place, is also
-clean. So neither Codex commit is at fault, the torpedo wiring is not, the merge is not, and this
-packet is not.
-
-**What the stash test actually proved** was narrower than the conclusion drawn from it: it ruled out
-this packet's *source changes*, not the tree or the machine state in that two-minute window. The
-most likely cause is the collision `bsp_game` is known for, two processes and a single-instance
-mutex, since another agent's runs were queueing on the machine lock either side of that window. The
-lesson for the next reader is the general one: a crash that reproduces twice in one tree within two
-minutes is not yet evidence about a commit. Only a run in a fresh tree at the suspect commit is.
+The short of it: four builds and four 300-frame runs in a throwaway detached tree, at `4668b0e96`,
+`82986e455`, `cccf31e11` and `main`'s tip `78af19721`, all exited `0` with `frames_presented=299`,
+and two further clean runs in this worktree at its own HEAD confirm it. The 107-line signature is
+the discriminator: the `cc8-ai-squadron` worker hit the identical one the same day on a tree
+containing none of the suspects, and a retry cleared it both times. The two crashes here were 36
+seconds apart, so under a rule that a step fails only on two consecutive crashes with a clean
+environment between them, that step never failed.
 
 ### The identity run, taken
 
