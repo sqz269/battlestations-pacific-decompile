@@ -68,6 +68,12 @@ struct NativeGameConstructionConstants {
     const volatile std::uint32_t& bits_00ce3800;
     const volatile std::uint32_t& bits_00ce6848;
 };
+// Callable source tables for the same two observed subobjects. Null binding
+// retains original image identities for raw reconstruction diagnostics.
+struct NativeGameSourceTables {
+    const void* primary_00ce7cb8;
+    const void* reports_00ce78c0;
+};
 struct NativeGameConstructionContext {
     void* volatile& actual_game_00e188a8;
     void* volatile& actual_00e19b0c;
@@ -90,6 +96,7 @@ struct NativeGameConstructionContext {
     // the two otherwise-uninitialized descriptor words for each of three calls.
     NativeGameGridContext* grids;
     NativeGameGridDescriptorPreimage grid_descriptor_preimages[3];
+    const NativeGameSourceTables* source_tables{};
 };
 struct NativeGameConstructionOperation final {
     enum class Phase { fresh,running,complete,failed,diagnostic_retired };
