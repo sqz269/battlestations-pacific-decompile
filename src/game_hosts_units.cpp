@@ -347,6 +347,25 @@ struct GameUnitSlot {
     // a task in prepare while it is kHold.
     bsp::PilotAttackMode torpedo_attack_mode_370{bsp::PilotAttackMode::kHold};
     int torpedo_attack_mode_raised_tick{-1};
+    // ctl+370h's whole history. docs/TORPEDO_ATTACK_MODE.md: only three sites
+    // in the image write this field on the pilot control block, and neither
+    // route to 0 is one a torpedo task runs.
+    int torpedo_mode_ticks[3]{0, 0, 0};       // ticks spent at hold/attack/forced
+    int torpedo_mode_changes{0};
+    int torpedo_mode_hold_with_engaged{0};    // ticks at 0 while engaged
+    int torpedo_mode_lowered_009a285e{0};     // the closetoship countdown
+    int torpedo_mode_message_007f0068{0};     // the BCh message arm
+    int torpedo_prepare_entries{0};
+    int torpedo_prepare_first_tick{-1};
+    int torpedo_blocked_no_order_first_tick{-1};
+    // The closetoship task's +550h/+43Ch pair and the BCh message, neither of
+    // which this host produces. Held so the bound rules are exercised the
+    // moment a producer appears.
+    bool torpedo_closetoship_task_installed{false};
+    float torpedo_closetoship_timer_550{0.0f};
+    bool torpedo_closetoship_latch_43c{false};
+    bool torpedo_pending_mode_message_bc{false};
+    unsigned char torpedo_mode_message_payload{0};
     bool torpedo_is_flight_lead{false};
     // The sector scan of 009D3420, once it has a sampler.
     int torpedo_scans_run{0};
@@ -3040,6 +3059,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009D4A70's tail 0099B740, the cruise profile that
                         // also sets the engage distance.
                         run_attack_mode_tick_0099b740();
+                        {
+                            const int m = static_cast<int>(
+                                unit_.torpedo_attack_mode_370);
+                            if (m >= 0 && m <= 2) ++unit_.torpedo_mode_ticks[m];
+                            // 009D3F69 and 009D40CB both send an engaged task
+                            // to prepare only while the mode is 0, so a tick at
+                            // 0 with the task engaged is a prepare window.
+                            if (m == 0) ++unit_.torpedo_mode_hold_with_engaged;
+                        }
+                        // The two native routes back to 0, both bound and both
+                        // inert on this mission. 009A285E needs a closetoship
+                        // task, which no ordered aircraft here has; 007F0068
+                        // needs message BCh, which nothing sends.
+                        run_attack_mode_lowering_paths(dt);
                         TorpedoArmBinding binding(owner_, unit_);
                         bsp::TorpedoTaskContext ctx;
                         ctx.task = &unit_;
@@ -3050,12 +3083,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         ctx.state = &unit_;
                         ctx.prepare_state = &unit_;
                         ctx.current = unit_.torpedo_state;
+                        const bsp::TorpedoState before_state = ctx.current;
                         const bsp::TorpedoArmTickResult r =
                             bsp::torpedo_task_arm_009d4850(binding, ctx, dt);
                         unit_.torpedo_state = ctx.current;
                         ++unit_.torpedo_arm_ticks;
                         const int bucket = torpedo_state_bucket(ctx.current);
                         if (bucket >= 0) ++unit_.torpedo_state_ticks[bucket];
+                        if (ctx.current == bsp::TorpedoState::kPrepare &&
+                            before_state != bsp::TorpedoState::kPrepare) {
+                            ++unit_.torpedo_prepare_entries;
+                            if (unit_.torpedo_prepare_first_tick < 0) {
+                                unit_.torpedo_prepare_first_tick =
+                                    unit_.torpedo_arm_ticks;
+                            }
+                        }
                         // 009D48F6, the current state's own tick. The aim state
                         // runs 009D15F0, whose heading is the bearing to the
                         // target plus the turn offset the approach update's
@@ -3079,6 +3121,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // docs/TORPEDO_TASK_ARM.md section (4).
                         if (unit_.torpedo_release_orders_c58 <= 0) {
                             ++unit_.torpedo_arm_blocked_no_order_0099af53;
+                            if (unit_.torpedo_blocked_no_order_first_tick < 0) {
+                                unit_.torpedo_blocked_no_order_first_tick =
+                                    unit_.torpedo_arm_ticks;
+                            }
                             owner_.log.unimplemented(
                                 "PilotBot::queue_release_order", "0099af53");
                         } else {
@@ -3137,6 +3183,47 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // profile 009D4A70. It is the one producer of attack mode 1
                     // in the image, and only the flight leader's task runs it to
                     // completion. docs/TORPEDO_RELEASE_ORDERS.md.
+                    // 009A2810 and 007F0068, the only two writers of 0.
+                    // Both are driven from outside the torpedo task, so both
+                    // are bound here and report whether they ever fired.
+                    void run_attack_mode_lowering_paths(float dt) {
+                        // 009A2B00, the closetoship task's vtable +64h arm, is
+                        // the only caller of 009A2810. An ordered torpedo
+                        // bomber has a kind Eh task and no closetoship task, so
+                        // the countdown never runs. contract: unread producer.
+                        if (unit_.torpedo_closetoship_task_installed) {
+                            bsp::CloseToShipModeCountdown cin;
+                            cin.timer_550 = unit_.torpedo_closetoship_timer_550;
+                            cin.latch_43c = unit_.torpedo_closetoship_latch_43c;
+                            cin.mode_370 =
+                                static_cast<int>(unit_.torpedo_attack_mode_370);
+                            cin.dt = dt;
+                            const bsp::CloseToShipModeResult r =
+                                bsp::closetoship_attack_mode_countdown_009a2810(cin);
+                            unit_.torpedo_closetoship_timer_550 = r.timer_550;
+                            unit_.torpedo_closetoship_latch_43c = r.latch_43c;
+                            if (r.lower_to_hold) {
+                                unit_.torpedo_attack_mode_370 =
+                                    bsp::PilotAttackMode::kHold;
+                                ++unit_.torpedo_mode_lowered_009a285e;
+                                ++unit_.torpedo_mode_changes;
+                            }
+                        }
+                        // 007F0030's message arm for id BCh. Nothing in this
+                        // host raises that message; when a producer is found,
+                        // deliver it here. contract: unread producer.
+                        if (unit_.torpedo_pending_mode_message_bc) {
+                            unit_.torpedo_pending_mode_message_bc = false;
+                            const int m =
+                                bsp::pilot_control_attack_mode_from_message_007f0068(
+                                    unit_.torpedo_mode_message_payload);
+                            unit_.torpedo_attack_mode_370 =
+                                static_cast<bsp::PilotAttackMode>(m);
+                            ++unit_.torpedo_mode_message_007f0068;
+                            ++unit_.torpedo_mode_changes;
+                        }
+                    }
+
                     void run_attack_mode_tick_0099b740() {
                         bsp::PilotAttackModeInputs in;
                         in.has_control_block_2fc = true;
@@ -4916,6 +5003,35 @@ void GameUnitsHost::report() {
                         slot->torpedo_aim_run_time_updates,
                         slot->torpedo_aim_release_arms,
                         static_cast<double>(slot->torpedo_aim_timer));
+                    // ctl+370h. docs/TORPEDO_ATTACK_MODE.md: 009D3F69 and
+                    // 009D40CB send an engaged task to prepare only at 0.
+                    host.log.notef("  torpedo %-12s attack mode ctl+370h: "
+                        "now=%d raised_at_tick=%d changes=%d | ticks "
+                        "hold=%d attack=%d forced=%d | prepare_entries=%d "
+                        "lowered_009A285E=%d message_007F0068=%d",
+                        slot->row.name.c_str(),
+                        static_cast<int>(slot->torpedo_attack_mode_370),
+                        slot->torpedo_attack_mode_raised_tick,
+                        slot->torpedo_mode_changes,
+                        slot->torpedo_mode_ticks[0],
+                        slot->torpedo_mode_ticks[1],
+                        slot->torpedo_mode_ticks[2],
+                        slot->torpedo_prepare_entries,
+                        slot->torpedo_mode_lowered_009a285e,
+                        slot->torpedo_mode_message_007f0068);
+                    // Whether the one tick the mode is still 0 is the same tick
+                    // the release-order queue unit+C58h is empty, which is what
+                    // would decide the drop. 0099AF53 is the empty-queue arm.
+                    host.log.notef("  torpedo %-12s prepare window: "
+                        "first_prepare_at_arm_tick=%d "
+                        "first_blocked_no_order_at_arm_tick=%d coincide=%s",
+                        slot->row.name.c_str(),
+                        slot->torpedo_prepare_first_tick,
+                        slot->torpedo_blocked_no_order_first_tick,
+                        (slot->torpedo_prepare_first_tick >= 0 &&
+                         slot->torpedo_prepare_first_tick ==
+                             slot->torpedo_blocked_no_order_first_tick)
+                            ? "yes" : "no");
                     // 009D0D90 / 009D3150, the goaway break-off.
                     host.log.notef("  torpedo %-12s goaway 009D0D90/009D3150: "
                         "enters=%d break_off_24h=%.1f side_2Ch=%+.0f "
@@ -5045,20 +5161,34 @@ void GameUnitsHost::report() {
                                     }
                                     breakoff = s3->torpedo_goaway_distance_24;
                                 }
+                                int hold_ticks = 0;
+                                int prep = 0;
+                                for (const auto& s4 : host.slots) {
+                                    if (!s4->torpedo_task_installed) continue;
+                                    hold_ticks += s4->torpedo_mode_ticks[0];
+                                    prep += s4->torpedo_prepare_entries;
+                                }
                                 host.log.notef("summary mission torpedo task: no "
                                     "release. 009D15F0 writes the aim-complete "
-                                    "byte state+2Ch at 009D236E (%d of %zu "
-                                    "aircraft) and 009D4030 step 11 leaves aim "
-                                    "for goaway. 009D3150 is now computed from "
-                                    "the 009D0D90 break-off distance "
-                                    "goaway+24h=%.1f; it went true for %d "
-                                    "aircraft, and the furthest any got inside "
-                                    "goaway was %.1f m. closest approach %.1f "
-                                    "against 8Ch=%.1f, %d offers, aim ran %d "
-                                    "ticks",
+                                    "byte (%d of %zu) and 009D3150 is computed "
+                                    "from goaway+24h=%.1f (true for %d, furthest "
+                                    "%.1f m). The gate is ctl+370h, the attack "
+                                    "mode: 009D3F69 and 009D40CB send an engaged "
+                                    "task to prepare only while it is 0, and "
+                                    "009D49A0 arms prepare+98h only in prepare. "
+                                    "0099B774 raised it to 1 and it stayed there "
+                                    "for %d of %d arm ticks; prepare was entered "
+                                    "%d times. Neither route back to 0 is one a "
+                                    "torpedo task runs: 009A285E needs the "
+                                    "closetoship task's countdown after a Lua "
+                                    "PilotStopCloseToShip, and 007F0068 needs "
+                                    "the BCh message on the control block. "
+                                    "closest approach %.1f against 8Ch=%.1f, %d "
+                                    "offers, aim ran %d ticks",
                                     aim_done, tasked,
                                     static_cast<double>(breakoff), goaway_done,
                                     static_cast<double>(peak),
+                                    arm_offers - hold_ticks, arm_offers, prep,
                                     static_cast<double>(worst_range),
                                     static_cast<double>(engage), arm_offers,
                                     aim_total);

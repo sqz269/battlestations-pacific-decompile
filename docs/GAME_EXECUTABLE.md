@@ -8476,8 +8476,14 @@ executable: ship headings change about seven times as often and the gunnery cens
 | deaths | 2 | 3 |
 | total damage | 18525.6 | 12463.2 |
 
-USN01 is unchanged (`hull=23 deaths=1 total_damage=220.0`). Any packet measuring USN02 against
-a tree that contains `48bd5339d` must use the right-hand column, or better its own before-run on
-its own tree; the four ship-AI packets before it (range curves, firepower inputs, tune block,
+From main `9ac3fcbb7` (packet `cc8_ship_ai_ring_winner`, docs/SHIP_AI_RING_WINNER.md) the ring
+winner ranges over the ring instead of sitting at slot 0, because the arc centre now has a
+producer (`009E46F0`), and the census moves again: `shots=872 hull=125 deaths=3
+total_damage=13673.7`, heading changes 347/290/480/389 on the four cruisers and destroyers that
+report them.
+
+USN01 is unchanged throughout (`hull=23 deaths=1 total_damage=220.0`). Any packet measuring USN02
+against a tree that contains `48bd5339d` or `9ac3fcbb7` must use the matching column, or better
+its own before-run on its own tree; the four ship-AI packets before it (range curves, firepower inputs, tune block,
 slot scorers) each left the census byte-identical because this flag was false, which is why the
 old column held for so long.
