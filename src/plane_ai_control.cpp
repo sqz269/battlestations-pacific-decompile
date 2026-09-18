@@ -488,10 +488,24 @@ PilotBotRollResult pilot_plan_roll_0099e2ba(const PilotBotRollInputs& in) {
 
     // 0099E1CC-0099E23E: the bank limit is scheduled on the PITCH error, which
     // is what the tuning key name TurnRollPitchLimit says it should be.
+    // CORRECTED (packet cc8_bank_downstream_defect). The two Roll endpoints were
+    // the wrong way round. The listing pushes the five arguments as
+    //   0099E1C6 [ESP]    = x0 = EBX+6Ch = TurnRollPitchLimitPitch/1
+    //   0099E1BF [ESP+4]  = y0 = EBX+78h = TurnRollPitchLimitRoll/2
+    //   0099E1B8 [ESP+8]  = x1 = EBX+70h = TurnRollPitchLimitPitch/2
+    //   0099E1B1 [ESP+0Ch]= y1 = EBX+74h = TurnRollPitchLimitRoll/1
+    //   0099E1A9 [ESP+10h]= x  = the pitch error
+    // so Roll/2 is the value at zero pitch error and Roll/1 the value beyond
+    // Pitch/2, i.e. the limit FALLS as the pitch error grows. planeglobals.lua
+    // ships {DEG(15), DEG(60)} with the comment "hogy elobb a pitch alljon be,
+    // es csak utana kanyarodjon" - let the pitch settle first, then turn - which
+    // only makes sense falling. Passed ascending, the limit collapsed to 15
+    // degrees whenever the pitch was on target, which is the tightest clamp in
+    // the arm and hid every other bank input behind it.
     float limit = interpolate_clamped(in.turn_roll_pitch_limit_pitch_1,
-                                      in.turn_roll_pitch_limit_roll_1,
+                                      in.turn_roll_pitch_limit_roll_2,
                                       in.turn_roll_pitch_limit_pitch_2,
-                                      in.turn_roll_pitch_limit_roll_2, in.pitch_error);
+                                      in.turn_roll_pitch_limit_roll_1, in.pitch_error);
     if (abs_bank > limit) limit = abs_bank;
     if (limit < -2.0f) limit = -2.0f;
     if (limit > 2.0f) limit = 2.0f;
