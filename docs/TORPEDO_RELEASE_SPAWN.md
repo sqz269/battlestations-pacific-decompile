@@ -345,3 +345,25 @@ Two things follow, and the second corrects the packet brief.
 5. **Channels A and B.** Channel A at `+44h` is driven by `BSP_Plane_GroundRollStep` at `007CBFC8`
    and channel B at `+28h` from `unit+72Ch` and `unit+900h == 6`. Naming what each one actuates,
    most likely gear and flaps, would finish the block.
+
+## Correction: "the next gate is target assignment" (packet cc8_torpedo_gun_assignment)
+
+Appended, not a rewrite. The measurement in "Why `swims_started` is zero, including for ships" is
+correct: `assigns` really is 0 over all 15 TORPEDO-category guns in USN01. The implication drawn
+from it, that target assignment is a gate to be fixed, overstates it. Neither category can be
+assigned in USN01, and in both cases that is the image's own behaviour.
+
+* Category 0Ah `BOMBPLATFORM`, which is the category a torpedo bomber's torpedo is actually
+  mounted in (24 of USN01's 39 swim-capable guns), has an **empty preference row** at `00E0A1F0`,
+  all zeros in the image. The rank test inside `00863990` therefore refuses every candidate for it
+  on every tick. A bomb platform is never a gunnery target holder, which is consistent with its
+  ordnance being released by the bot-task chain rather than aimed.
+* Category 7 `TORPEDO`, the other 15 and all ship tubes, is cut out of the recon sweep at
+  `008651F5` (`CMP ESI,7 / JE 00865442`), so its only candidate source is a director command or
+  fire target. USN01 gives its 5 torpedo-carrying units neither, across 15000 pass ticks, so
+  `00863990` is called 0 times for that category. USN02 gives 14 of its 29 owners a command
+  target, and there the same code assigns 55960 times and fires 46 torpedoes.
+
+The gate that actually keeps an aerial torpedo out of the swim is the one this document already
+measures: a 700 m release, a 117.2 m/s entry and a 100.0 m/s `MaxWaterHitVel`.
+Full evidence: `docs/TORPEDO_GUN_ASSIGNMENT.md`.

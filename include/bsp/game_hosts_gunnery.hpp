@@ -321,6 +321,23 @@ struct GameGunnerySummary {
     unsigned long long torpedo_gun_sent{0};        // + 0072D130 sent the 0ADh arm
     unsigned long long torpedo_gun_shots{0};       // + 00730160 made a projectile
     // The air drop. 007BBBA0 accepted the request and a round left the plane.
+    // Packet cc8_torpedo_gun_assignment. Why a torpedo-category gun is never
+    // given a target. The image excludes category 7 from the recon sweep at
+    // 008651F5 (`CMP ESI,7 / JE 00865442`), so its only candidate sources are
+    // the director's command target and fire target at step 8.7. These count
+    // that path on units that actually carry a torpedo-category gun, then each
+    // rejection reason inside 00863990.
+    unsigned long long torpedo_cat_pass_ticks{0};
+    unsigned long long torpedo_cat_with_command_target{0};
+    unsigned long long torpedo_cat_with_fire_target{0};
+    unsigned long long torpedo_cat_score_calls{0};
+    unsigned long long torpedo_cat_reject_unknown{0};   // target is not a unit row
+    unsigned long long torpedo_cat_reject_liveness{0};  // 00862820
+    unsigned long long torpedo_cat_reject_class{0};     // class id below zero
+    unsigned long long torpedo_cat_reject_rank{0};      // the rank table answered 0
+    unsigned long long torpedo_cat_reject_mask{0};      // 008633D0
+    unsigned long long torpedo_cat_reject_range{0};     // distance vs the category range
+    unsigned long long torpedo_cat_score_accepted{0};
     unsigned long long torpedo_drops{0};
     unsigned long long torpedo_drop_refusals{0};   // no torpedo-capable gun on the unit
     unsigned long long water_entry_breakups{0};    // 008568E0's two limits rejected the entry
