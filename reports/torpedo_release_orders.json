@@ -1,0 +1,153 @@
+{
+  "packet": "cc8_torpedo_release_orders",
+  "baseline_commit": "bc2c785e2",
+  "worktree": "agent/cc8-torpedo-approach",
+  "documentation": "docs/TORPEDO_RELEASE_ORDERS.md",
+  "status": "unit_c58h_and_ctl_370h_writers_read_and_reconstructed_host_wiring_deferred_by_lease",
+  "production_cpp_changed": true,
+  "ghidra_mutated": false,
+  "new_native_body_reconstructed": true,
+  "original_abi": {
+    "007bcbe0": "ECX unit; one stacked int count; RET4; body 007BCBE0-007BCC14",
+    "007eef30": "ECX ctl (unit+9D4h); one stacked unit; body 007EEF30 onward",
+    "007ed3c0": "ECX ctl; no stack arguments; RET0; body 007ED3C0-007ED3DD",
+    "007c0d90": "ECX unit; no stack arguments; RET0 after ADD ESP,0x20 at 007C0F0A",
+    "007b9140": "ECX unit; one stacked int; AL result; RET4; body 007B9140-007B91A0",
+    "007ed3f0": "ECX ctl; one stacked int mode; RET4; body 007ED3F0-007ED3FA",
+    "007ed430": "ECX ctl; one stacked int mode; RET4; body 007ED430-007ED442",
+    "0099b740": "ECX task; no stack arguments; RET0; body 0099B740-0099B77A",
+    "0099b710": "no arguments; AL result; RET0; raw body 0099B710-0099B712 with NO Ghidra function",
+    "source": "stack cleanup at each RET plus the push count at every call site listed below"
+  },
+  "calls": [
+    {
+      "address": "007c0f01",
+      "native": "007eef30",
+      "note": "the issuer, with ECX loaded from unit+9D4h at 007C0EFA and the unit pushed at 007C0F00; the one path from the plane fixed step to the release-order budget",
+      "host_method": "torpedo_issue_release_orders_007c0d90"
+    },
+    {
+      "address": "007eef7f",
+      "native": "007bcbe0",
+      "note": "the raise, PUSH 0x3E7 at 007EEF78: 999 orders into each unit of the control block array at ctl+3D0h",
+      "host_method": "write_release_order_count"
+    },
+    {
+      "address": "007eef6f",
+      "native": "007b8ad0",
+      "note": "BSP_Unit_LacksFollowTarget on each controlled unit; a true result skips that unit unless the force flag ctl+378h is set",
+      "host_method": "unit_lacks_follow_target_007b8ad0"
+    },
+    {
+      "address": "007eef3b",
+      "native": "007ee7f0",
+      "note": "run before the gate with the same arguments; contract: unread",
+      "host_method": "pre_issue_hook_007ee7f0"
+    },
+    {
+      "address": "007ed3d8",
+      "native": "007bcbe0",
+      "note": "the clear, PUSH 0 at 007ED3D6 on ctl->+3D0h[0] when ctl->+3CCh > 0",
+      "host_method": "write_release_order_count"
+    },
+    {
+      "address": "007bcbf4",
+      "native": "007b9140",
+      "note": "the droppable-ordnance guard inside the setter, PUSH 0 at 007BCBF2",
+      "host_method": "read_set_inputs"
+    },
+    {
+      "address": "0099af78",
+      "native": "007b9140",
+      "note": "the same guard inside the pilot bot tick, PUSH 0 at 0099AF76",
+      "host_method": "read_set_inputs"
+    },
+    {
+      "address": "0099b774",
+      "native": "007ed3f0",
+      "note": "PUSH 1 at 0099B772 with ECX = task->+2FCh: the one producer of attack mode 1 in the image, gated on the task's unit being the first element of ctl+3D0h",
+      "host_method": "pilot_attack_mode_0099b740"
+    },
+    {
+      "address": "007c0dbf",
+      "native": "node->vtable[5Ch]",
+      "note": "PUSH 0x25 at 007C0DB8, the weapon-device class id; part of the device walk, contract: unread",
+      "host_method": "unit_carries_droppable_device_007c0d90"
+    },
+    {
+      "address": "007b914a",
+      "native": "unit->vtable[5Ch]",
+      "note": "PUSH 0x17 at 007B9148, MPlaneKamikaze; a kamikaze plane short-circuits 007B9140",
+      "host_method": "unit_can_drop_ordnance_007b9140"
+    },
+    {
+      "address": "007b917d",
+      "native": "device->vtable[210h]",
+      "note": "PUSH 0x2a at 007B917B over the device array at unit+974h, count unit+994h; the Torpedo descriptor answers 2Ah as well as 2Bh",
+      "host_method": "unit_can_drop_ordnance_007b9140"
+    },
+    {
+      "address": "0099b766",
+      "native": "task->vtable[38h]",
+      "note": "the authorisation predicate; the torpedo task inherits the base 0099B710, MOV AL,1 / RET, so it is unconditional for this class",
+      "host_method": "pilot_attack_mode_0099b740"
+    }
+  ],
+  "calls_in_undefined_regions": [],
+  "no_ghidra_function": [
+    {
+      "start": "0099b710",
+      "end": "0099b712",
+      "name": "BSP_BotTask_AttackAuthorised",
+      "note": "MOV AL,1 / RET; INT3 padding from 0099B713; Ghidra's enclosing candidate is 0099B6E0 TRIV_body_0099b6e0"
+    }
+  ],
+  "writer_census_unit_c58h": {
+    "method": "byte scans over .text for every base-register disp32 store form, each with a positive control",
+    "007bcbfd": "MOV [ESI+C58h],EDI - the raise, in 007BCBE0",
+    "007bcc09": "MOV [ESI+C58h],imm32 - the failure arm of the same routine",
+    "007d0038": "MOV [ESI+C58h],EBX - BSP_PlaneUnitInstance_Construct, the constructor zero",
+    "0099afb6": "ADD [EAX+C58h],-1 - the spend in BSP_PilotBot_Tick",
+    "0099afc2": "MOV [EAX+C58h],0 - the tick's own clear",
+    "0099af53": "CMP [EAX+C58h],0 - the guard, a read",
+    "007d681e": "LEA ECX,[ESI+C58h] in BSP_Plane_ReadPropertyBag - a pointer to the field; that routine is contract: unread and a store through the pointer would not show in these scans",
+    "negatives_claimed": "01 ?? 58 0C 00 00 (ADD r32) and 29 ?? 58 0C 00 00 (SUB r32) are empty and the 01 form is known to occur elsewhere in the image, so those negatives hold",
+    "negatives_not_claimed": "FF ?? 58 0C 00 00 (INC/DEC) is empty but no INC dword ptr [reg+disp32] with a displacement ending 00 00 occurs anywhere in .text, so that negative is vacuous"
+  },
+  "writer_census_ctl_370h": {
+    "007ed3f4": "MOV [ECX+370h],EAX in 007ED3F0, the plain setter; callers 0099B740 and 009A2810",
+    "007ed43c": "MOV [ECX+370h],EAX in 007ED430, raise-only (CMP/JGE at 007ED434); caller 008A4B10 BSP_LuaBinding_PilotStopCloseToShip",
+    "note": "the other thirteen 89 and four C7 hits at this displacement sit on ship AI, squadron and controller objects that share the offset; every 83 ?? 70 03 00 00 hit is a CMP, modrm reg field 7",
+    "009a285e": "JMP 007ED3F0, a tail jump rather than a CALL: the closetoship countdown 009A2810 jumps the plain setter after ADD ESP,4 and MOV [ESP+4],0, with ECX = task->+404h. The only route back down to mode 0. Recorded here because tools/verify_report_calls.py checks CALL sites only."
+  },
+  "coverage": {
+    "007bcbe0": "full",
+    "007b9140": "full",
+    "007ed3c0": "full",
+    "007ed3f0": "full",
+    "007ed430": "full",
+    "0099b740": "full",
+    "0099b710": "full",
+    "007eef30": "partial - the issue loop 007EEF30-007EEF92 in full; the tail from 007EEF96 is not transcribed",
+    "007c0d90": "partial - the control flow and the call site; the six vtable slots of the device walk are named, not read",
+    "009a2810": "partial - the two 007ED3F0 arms only",
+    "unit+5Ch": "partial - the ESI-base byte-store scan finds BSP_SceneNode_Enable and BSP_SceneNode_Disable; other bases were not enumerated"
+  },
+  "validation": {
+    "build": "scripts/build.ps1 MSVC Win32 /W4 /WX clean",
+    "tests": "ctest 2/2 passing (reconstructed_math, tool_tests); no test added",
+    "new_source_in_build": false,
+    "new_source_check": "cl /c /W4 /WX /fp:strict /EHsc /std:c++17 -I include src/torpedo_release_orders.cpp is clean; cmake/startup.cmake is leased to agent/orch4-20260915 so the registration is deferred",
+    "runs": "none attributed to this commit; the USN01 and USN02 numbers stand where docs/TORPEDO_APPROACH_UPDATE.md left them"
+  },
+  "corrections": [
+    "docs/TORPEDO_APPROACH_UPDATE.md treats ctl+3D0h as a single designated target; it is an array of the units the control block drives, count ctl+3CCh, walked at 007EEF5C with LEA/ADD 4. 009D3D88 loads its first element, so 009D3420's no-ordnance branch compares the approach's target point against the flight leader",
+    "docs/PILOT_BOT_TICK_GATES.md lists unit+C58h and 007B9140 as unread; both are read here"
+  ],
+  "open_questions": [
+    "ctl+374h and ctl+390h, the pair whose comparison at 007EEF40 gates the whole issue; the C7 scan at that displacement finds no writer on the pilot control block",
+    "the six vtable slots of 007C0D90's device walk, and 007EE7F0",
+    "008A4B10 BSP_LuaBinding_PilotStopCloseToShip, the only route to attack mode 2, and whether a USN01 mission script takes it",
+    "007D681E, the LEA that takes a pointer to unit+C58h inside BSP_Plane_ReadPropertyBag"
+  ]
+}
