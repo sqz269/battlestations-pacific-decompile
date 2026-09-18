@@ -443,4 +443,73 @@ struct PilotBotRollResult {
 
 PilotBotRollResult pilot_plan_roll_0099e2ba(const PilotBotRollInputs& in);
 
+// ---------------------------------------------------------------------------
+// 0099D300's throttle arms. The plan's throttle slot is index 0 of five, so its
+// `current` is plan+274h, its `desired` plan+278h and its `active` byte
+// plan+27Ch (base plan+274h, stride 0Ch). An exhaustive store census over 278h
+// finds four writes in this routine, and they are NOT one arm: each has its own
+// gate, and two of them run only while the aircraft is on the ground.
+//
+//   0099D399  the centred-stick arm. Gate: plan+26Ch == 2 (0099D309), the byte
+//             at [plan+2F0h + 9C2h + 8*[00F876B8]] set (0099D329), plan+270h
+//             non-null (0099D33D) and the same byte on it set (0099D345).
+//             Writes yaw, pitch, roll and air brake to 0.0 with their active
+//             bytes and modes, and the throttle to [00D7A24C] = 1.0.
+//   0099D8CF  the one-shot engine cut. Gate: plan+2D8h != 0 at 0099D7A5 (which
+//             is what puts 0.001f from [00D7A23C] in XMM0 and jumps to the arm),
+//             then plan+2D8h == 1 at 0099D8C1 and 0.001f > plan+2B4h at
+//             0099D8C6. Writes the throttle 0.001f - below the 0.01f thrust gate
+//             at 007DB76C, so the engine is off - and the air brake, then clears
+//             plan+2D8h at 0099D8EB. NOT state gated: this is the only throttle
+//             arm a FLYING plane can reach.
+//   0099DC31  the ground demand. Inside `unit+900h == 5` (0099D8FD) and the
+//             slot already active (0099D90A). One signed demand, seeded from the
+//             slot's own value at 0099D977-0099D998 and accumulated at 0099DBC3,
+//             is clamped to [-1, 1] by 00415690 and split: the throttle takes
+//             max(0.001f, d) through 00415550 and the air brake max(0.0f, -d).
+//   0099DC8F  the ground cap. Same state gate, slot NOT active. Reads the
+//             slot's `current` and, when it exceeds [00CE3D30] = 0.6, commands
+//             0.6.
+//
+// So the 0.6 is a GROUND cap, not an in-flight throttle cut: 0099D904 jumps past
+// both ground arms for any aircraft whose unit+900h is not 5.
+// docs/PILOT_BOT_THROTTLE_DEMANDS.md.
+inline constexpr float kPilotThrottleCutValue = 0.001f;    // 00D7A23C
+inline constexpr float kPilotThrottleGroundCap = 0.6f;     // 00CE3D30
+
+struct PilotBotThrottleInputs {
+    // The slot, read the way 0099D977-0099D998 and 0099DC7A read it.
+    float slot_current = 0.0f;   // plan+274h
+    float slot_desired = 0.0f;   // plan+278h
+    bool slot_active = false;    // plan+27Ch
+
+    int flight_state = 7;        // unit+900h; only 5 reaches the ground arms
+    int air_brake_mode = 0;      // plan+2D8h; 1 arms the one-shot engine cut
+    float one_shot_threshold = 0.0f;  // plan+2B4h, compared against 0.001f
+
+    // The centred-stick gate, as four already-evaluated conditions so the caller
+    // supplies the two per-slot bytes rather than this function chasing them.
+    bool centred_mode_26c = false;     // plan+26Ch == 2
+    bool centred_byte_2f0 = false;     // [plan+2F0h + 9C2h + 8*index]
+    bool centred_block_270 = false;    // plan+270h non-null
+    bool centred_byte_270 = false;     // [plan+270h + 9C2h + 8*index]
+
+    // PARTIAL: the ground demand's increment. 0099D99E-0099DBBF derives it from
+    // 007D99C0's forward speed over [EBP] and roughly 130 instructions this
+    // packet did not transcribe, with the positive branch scaled by the double
+    // 0.6 at 00CEFF98 (0099DBB1). The caller supplies the accumulated increment.
+    float ground_increment = 0.0f;
+};
+
+struct PilotBotThrottleResult {
+    bool wrote_throttle = false;
+    float throttle_desired = 0.0f;   // plan+278h
+    bool wrote_air_brake = false;
+    float air_brake_desired = 0.0f;  // plan+2A8h
+    bool clears_air_brake_mode = false;  // plan+2D8h = 0
+    bool centred_all_axes = false;   // the 0099D399 arm zeroed the other four
+};
+
+PilotBotThrottleResult pilot_plan_throttle_0099d300(const PilotBotThrottleInputs& in);
+
 }  // namespace bsp
