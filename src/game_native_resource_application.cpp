@@ -4,6 +4,7 @@
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/native_resource_extra_parser_singletons.hpp"
+#include "bsp/native_game_resource_parsers.hpp"
 #include "bsp/native_resource_manager_lifetime.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
@@ -30,24 +31,39 @@ struct GameNativeResourceApplication::Impl {
     void* volatile skined_animation_0109043c{};
     void* volatile animation_channels_01090298{};
     void* volatile bone_0109029c{};
+    void* volatile geom_mesh_00e19bd0{};
+    void* volatile convex_object_00e19a90{};
+    void* volatile note_00e19b84{};
+    void* volatile zone_desc_00e19b8c{};
+    void* volatile aux_00e19b88{};
     SingletonLifetimeCallbacks validation{nullptr, nullptr, &current_resource_invalid_parameter};
     NativeDefaultResourceParserNameCalls default_names;
-    NativeResourceExtraParserNameCalls names;
+    NativeResourceExtraParserNameCalls extra_names;
+    NativeGameResourceParserNameCalls names;
     NativeDefaultResourceManagerFactoryCalls factories;
     NativeResourceManagerContext manager;
     NativeResourceExtraParserContexts extra;
+    NativeGameResourceParserContexts game_parsers;
+    NativeGameResourceParsersContext game_context;
     std::uint32_t failed_entry{};
 
     Impl(GameSingletonHost& host, NativeStringRawPoolContext& strings,
         GameNativeReadOnlyData& mapped)
         : default_names(strings),
-          names(strings, default_names),
+          extra_names(strings, default_names),
+          names(strings, extra_names),
           manager{host.manager_publication_01090aa0(), manager_010901c4,
               {group_params_0109033c, mesh_0109047c, skined_mesh_01090480,
                matrix_mesh_01090484, camera_010902a0, skined_animation_0109043c},
               strings, validation, names, factories},
           extra{{host.manager_publication_01090aa0(), animation_channels_01090298},
-                {host.manager_publication_01090aa0(), bone_0109029c}} {
+                {host.manager_publication_01090aa0(), bone_0109029c}},
+          game_parsers{{host.manager_publication_01090aa0(), geom_mesh_00e19bd0},
+              {host.manager_publication_01090aa0(), convex_object_00e19a90},
+              {host.manager_publication_01090aa0(), note_00e19b84},
+              {host.manager_publication_01090aa0(), zone_desc_00e19b8c},
+              {host.manager_publication_01090aa0(), aux_00e19b88}},
+          game_context{manager, game_parsers} {
         if (&strings.actual_manager_publication_01090aa0 != &host.manager_publication_01090aa0())
             throw std::invalid_argument("resource application requires the shared string/lifetime domain");
         // A one-byte request verifies its already-mapped complete 64-KB band.
@@ -55,12 +71,13 @@ struct GameNativeResourceApplication::Impl {
         (void)mapped.data_at(0x00cf0000, 1);
         (void)mapped.data_at(0x00d60000, 1);
         auto& deletion = host.native_deletion_bindings();
-        if (deletion.resource_manager || deletion.resource_extra_parsers)
+        if (deletion.resource_manager || deletion.resource_extra_parsers || deletion.game_resource_parsers)
             throw std::logic_error("resource application deletion bindings are already installed");
         // No native owner has registered yet. All cells and contexts above
         // are stable before either actual getter can publish/register an owner.
         deletion.resource_manager = &manager;
         deletion.resource_extra_parsers = &extra;
+        deletion.game_resource_parsers = &game_parsers;
     }
 
     // Metadata-only destruction. GameStartupHost can delete its singleton
@@ -103,6 +120,10 @@ bool GameNativeResourceApplication::register_parser_00b80a50(void* manager, void
 NativeResourceManagerContext& GameNativeResourceApplication::raw_manager_context() {
     impl_->require_operable();
     return impl_->manager;
+}
+NativeGameResourceParsersContext& GameNativeResourceApplication::raw_game_parsers_context() {
+    impl_->require_operable();
+    return impl_->game_context;
 }
 void* GameNativeResourceApplication::published_manager() const noexcept {
     return impl_->manager_010901c4;

@@ -71,6 +71,9 @@ void NativeGameConstructionCalls::call_0087d7b0(void* owner,NativeGlobalConfigLo
     NativeGlobalConfigLoadOperation& operation){
     load_native_global_config_0087d7b0(*static_cast<GlobalConfigOwner*>(owner),c,operation);
 }
+void NativeGameConstructionCalls::call_00717e80(NativeGameResourceParsersContext& c){
+    register_native_game_resource_parsers_00717e80(c);
+}
 std::uint32_t NativeGameConstructionCalls::call_00be4800(){
     return static_cast<std::uint32_t>(frame_job_processor_count_00be4800());
 }
@@ -169,7 +172,7 @@ NativeGameStorage* construct_native_game_004ddb90(NativeGameStorage& storage,
         word(game,0x618,4);word(game,0x614,4);byte(game,0x61c);
         a.native_site=0x004ddfbd;void* const configuration=calls.call_00432650(c.global_configuration);
         a.native_site=0x004ddfc4;calls.call_0087d7b0(configuration,c.global_configuration_load,a.global_configuration);
-        a.native_site=0x004ddfc9;calls.call_00717e80();
+        a.native_site=0x004ddfc9;calls.call_00717e80(c.resource_parsers);
         a.native_site=0x004ddfd3;a.current_allocation=calls.allocate_00bf681b(0x84);
         a.unwind_state=37;void* value=nullptr;
         if(a.current_allocation){const float argument=positive_zero();a.native_site=0x004ddff0;value=calls.call_0070bd70(a.current_allocation,argument);}

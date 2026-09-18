@@ -7,6 +7,7 @@ namespace bsp {
 struct NativeResourceRegistryDeleteBindings;
 struct NativeResourceManagerContext;
 struct NativeResourceExtraParserContexts;
+struct NativeGameResourceParserContexts;
 struct NativeResourceSupportRawContext;
 struct NativeFrameClockLifetimeContext;
 struct NativeOnlineManagerLifetimeContext;
@@ -181,6 +182,9 @@ struct NativeSingletonDeletionBindings {
     // Mutually exclusive with xlive_owner. Do not require owner==F8ABE8:
     // the recovered destructor reloads/unregisters the current publication.
     NativeOnlineManagerLifetimeContext* native_online{};
+    // CFD7FC/CFD80C/CFD81C/CFD82C/CFD83C are the five game parser
+    // secondaries. Keep their actual publication cells through shared drain.
+    NativeGameResourceParserContexts* game_resource_parsers{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -198,7 +202,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, render_queue) == 136);
 static_assert(offsetof(NativeSingletonDeletionBindings, weak_owner_domain) == 140);
 static_assert(offsetof(NativeSingletonDeletionBindings, render_resources) == 144);
 static_assert(offsetof(NativeSingletonDeletionBindings, native_online) == 148);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 152);
+static_assert(offsetof(NativeSingletonDeletionBindings, game_resource_parsers) == 152);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 156);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

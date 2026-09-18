@@ -6,6 +6,7 @@
 
 namespace bsp {
 struct NativeResourceManagerContext;
+struct NativeGameResourceParsersContext;
 struct NativeStringRawPoolContext;
 }
 
@@ -13,7 +14,7 @@ namespace bsp::game {
 class GameSingletonHost;
 class GameNativeReadOnlyData;
 
-// Actual resource-manager and eight parser publication cells, using the
+// Actual resource-manager and thirteen parser publication cells, using the
 // application's existing raw string pool and singleton lifetime manager.
 // Retain this owner, strings, mapped data and GameSingletonHost through the
 // complete shared drain. Destruction does not independently drain or replay it.
@@ -33,6 +34,7 @@ public:
     // Borrow the actual context for subsequent native resource loading. No
     // semantic registry, extra manager or private string storage is supplied.
     NativeResourceManagerContext& raw_manager_context();
+    NativeGameResourceParsersContext& raw_game_parsers_context();
     void* published_manager() const noexcept;
     std::size_t registered_parsers() const noexcept;
     std::uint32_t failure_entry() const noexcept;

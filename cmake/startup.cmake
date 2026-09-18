@@ -1336,3 +1336,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_tables
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_lua_color.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_global_config_fields.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_global_config_load.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_game_resource_parsers.cpp)

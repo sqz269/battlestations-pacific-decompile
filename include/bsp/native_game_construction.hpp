@@ -7,6 +7,7 @@
 #include "bsp/native_game_dynamics.hpp"
 #include "bsp/native_game_tables.hpp"
 #include "bsp/native_global_config_load.hpp"
+#include "bsp/native_game_resource_parsers.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>
@@ -43,7 +44,7 @@ struct NativeGameConstructionCalls : NativeGameEmbeddedStateCalls,NativeGameArra
     virtual void* call_00432650(GlobalConfigContext&);
     virtual void call_0087d7b0(void* captured_configuration,NativeGlobalConfigLoadContext&,
         NativeGlobalConfigLoadOperation&);
-    virtual void call_00717e80()=0;
+    virtual void call_00717e80(NativeGameResourceParsersContext&);
     virtual void* call_0070bd70(void* allocation,float argument)=0;
     virtual void call_00727bd0(NativeGameTablesContext&);
     virtual void* call_008882d0(void* allocation);
@@ -81,6 +82,7 @@ struct NativeGameConstructionContext {
     NativeGameTablesContext& tables;
     GlobalConfigContext& global_configuration;
     NativeGlobalConfigLoadContext& global_configuration_load;
+    NativeGameResourceParsersContext& resource_parsers;
 };
 struct NativeGameConstructionOperation final {
     enum class Phase { fresh,running,complete,failed,diagnostic_retired };

@@ -106,6 +106,7 @@ public:
     const GameHardwareProbeSummary& hardware_probe() const noexcept;
     void* resource_manager() const noexcept { return resources_->published_manager(); }
     NativeResourceManagerContext& raw_resource_manager_context() { return resources_->raw_manager_context(); }
+    NativeGameResourceParsersContext& raw_game_resource_parsers_context() { return resources_->raw_game_parsers_context(); }
     std::size_t registered_factories() const noexcept { return factories_registered_; }
     std::size_t registered_parsers() const noexcept;
     bool pak_registry_published() const noexcept { return archive_tail_ready_; }

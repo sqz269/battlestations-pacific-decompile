@@ -32,6 +32,7 @@
 #include "bsp/native_resource_registry_scalar_delete.hpp"
 #include "bsp/native_resource_manager_lifetime.hpp"
 #include "bsp/native_resource_extra_parser_singletons.hpp"
+#include "bsp/native_game_resource_parsers.hpp"
 #include "bsp/native_resource_support.hpp"
 #include "bsp/native_frame_clock_lifetime.hpp"
 #include "bsp/native_diagnostic_sink_lifetime.hpp"
@@ -188,6 +189,14 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
             delete_native_resource_support_00b61d60(
                 *static_cast<NativeResourceSupportStorage*>(owner), flags,
                 bindings.resource_support->actual_published_0108fedc);
+            return;
+        }
+        break;
+    case 0x00cfd7fc: case 0x00cfd80c: case 0x00cfd81c:
+    case 0x00cfd82c: case 0x00cfd83c:
+        if (bindings.game_resource_parsers != nullptr) {
+            delete_native_game_resource_registered_owner(profile, owner, flags,
+                *bindings.game_resource_parsers);
             return;
         }
         break;
