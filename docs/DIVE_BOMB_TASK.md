@@ -61,7 +61,9 @@ read `approach+D1h` through `*(char*)(aimdive->+4h + 0D1h)` at `009C8664`.
 
 `prepare` and `done` share **one** vtable `00D20D28`, exactly as the torpedo's do. `009C7240`, the
 shared enter, writes `state+9Ch = 0` and `state+98h = [00D7A260] = -1.0f` before tail-jumping to
-`009BED80`; the registrar seeds the same two fields at `009C7452` and `009C74B8`.
+`009BED80`; the registrar seeds the same two fields at `009C7452` and `009C74B8`. The tick
+`009C7270`-`009C727F` calls `009C1FD0` at `009C7278` and returns at `009C727D`; it is a call and
+return, not a tail jump.
 
 The initial state comes from the task constructor `009C7710`: `BSP_Unit_LacksFollowTarget(unit)`
 picks `moveto +4F0h`, otherwise `follow +52Ch`.
@@ -288,8 +290,9 @@ Gated on `task->+4C9h`, the unit, and `(unit+72Ch)->vtable[+38h]`. On a pass it 
 `task->+65Ch = [00CE3850] = 5.0f` at `009C8248`. `65Ch - 5C4h = 98h`: that is the same
 `prepare+98h` release countdown the torpedo's `009D49A0` raises.
 
-**Nothing in this class spends it.** The dive-bomb `done`/`prepare` tick `009C7270` is three
-instructions - a tail call to the follow base `009C1FD0` - and the exit `009C7260` is a bare
+**Nothing in this class spends it.** The dive-bomb `done`/`prepare` tick `009C7270` is five
+instructions - it pushes `dt`, **calls** the follow base `009C1FD0` at `009C7278` and returns with
+`RET 4` at `009C727D`, so the body runs to `009C727F` inclusive - and the exit `009C7260` is a bare
 `JMP 009BDE40`. The torpedo's `009D2720` release logic and its `009D2570` exit drop have no
 counterparts here. `prepare+98h` is written and never read in the dive-bomb path.
 
@@ -415,7 +418,7 @@ not about those two sites.
 | `009C58A0` | `009C58AD` | `BSP_BotStateDiveBombAimDive_Exit` |
 | `009C7240` | `009C725B` | `BSP_BotStateDiveBombDone_Enter` |
 | `009C7260` | `009C7264` | `BSP_BotStateDiveBombDone_Exit` |
-| `009C7270` | `009C727C` | `BSP_BotStateDiveBombDone_Tick` |
+| `009C7270` | `009C727F` | `BSP_BotStateDiveBombDone_Tick` |
 | `009C62B0` | unread | the flyabove tick, `00D20D04` slot `+Ch`; censused for its writes only |
 
 ## Validation
@@ -474,3 +477,61 @@ So `+19h` is the roll-in permission and it is a **copy of** `+18h` taken once th
 geometry over the target closes; `+1Ah` is the separate break-off request that sends the state to
 `goaway` when `+19h` never arms. The transition rule reads `+19h` first, then `+18h`, then `+1Ah`,
 which is exactly that order.
+
+## Addendum: the aimdive release gate is 25 metres, not an angle
+
+The follow-up this doc listed first is settled. `009C59BA`-`009C5C9B` computes the quantity the
+aimdive tick both steers on and releases on, and every term in it is metres.
+
+| step | address | value |
+| --- | --- | --- |
+| the height above the target | `009C59BA`-`009C59D6` | `aircraft.y` (a **qword** store of `pose+100h` at `009C59C2`) minus `approach->vtable[0]()`'s `.y`; the `FSUBR` at `009C59D2` makes the memory operand the minuend |
+| the x window | `009C5BEE`-`009C5BF7`, `009C5C27`-`009C5C38` | `x0 = approach->+A8h + [00D7A220]` (the double `100.0`), `x1 = approach->+ACh + approach->+50h` |
+| the lead | `009C5C49` | `BSP_Math_InterpolateClamped(x0, 0.0, x1, (approach->+14h)->+5Ch, height)` |
+| the along-track miss | `009C5C4E` | `FSUBR [ESP+28h]`, so `cos(bearingError) * planarDistance - lead`. `[ESP+28h]` was written at `009C5C14` as `cos(bearingError) * planarDistance`; the bearing comes from `BSP_Math_SubtractWrappedAngle` at `009C5AF1` and the distance from the `sqrt` at `009C5A40` |
+| the gain | `009C5C92` | `BSP_Math_InterpolateClamped(x0, 1.0, x1, (approach->+14h)->+60h, height)`, dimensionless |
+| the error | `009C5C97`-`009C5C9B` | `gain * alongTrack`, stored in the slot the release gate and the pitch law both read |
+
+`00419010 BSP_Math_InterpolateClamped` takes **five** stack floats and is `RET 14h`; both call sites
+open their window with `SUB ESP,14h` (`009C5BFD`, `009C5C52`), which is what makes the five-argument
+reading the only one that balances.
+
+So `[00CE3880]` is a **25-metre along-track window**, a real gate, and the pitch command at
+`009C5CAB`/`009C5CD0` scales the same metres by the class descriptor's `+64h` (positive error) or
+`+68h` (negative) and clamps to `+/-1`. The `009C5D08` sign test that picks between those two
+scales reads the same slot, which is the independent confirmation that it is signed and not an
+absolute value.
+
+Still unread: the two y endpoints `(approach->+14h)->+5Ch` and `+60h`, and the producers of
+`approach+D4h` and `approach+B8h`.
+
+## Validation: the IJN01 before-run
+
+`local/ijn01_before.log`, tree `9cff2668d` (`main` at `0c50b0a88`), 3000 mission frames at 0.05 s.
+
+| measure | value |
+| --- | --- |
+| ordered aircraft | 33: 8 `A7M`, 9 `JudySpawn`, 12 `JillSpawn`, `Warhawk1`, `Dauntless1`, 2 `B-17` |
+| units carrying general bomb ordnance (`007B9320`'s predicate) | 27 of 80 units with guns |
+| `BOMBPLATFORM` guns | 44, **0 shots** |
+| torpedo task | aircraft 6, releases 0 |
+
+The nine `JudySpawn` aircraft are the dive-bomber population and `Dauntless1` is a tenth. No
+dive-bomb instrumentation exists in this tree, so the task's own state counts, dive entry altitude,
+release altitude and bomb count are **not measured**: that is what the wiring commit adds.
+
+### The next gate, and why it is not the torpedo's
+
+The same run reports the torpedo's blocker: `unit+C58h` at `0099AF53` in `BSP_PilotBot_Tick` is 0 on
+every one of 9000 ticks, so the arming loop at `0099AF81` never offers a task its `vtable[+24h]`,
+`prepare+98h` stays at `-1.0` and `009D2720` never reaches `007BBBA0`.
+
+**That gate cannot block the dive bomb's own release.** The dive bomb's two live release sites,
+`009C60F1` and `009C5777`, are inside state ticks the arm reaches through `state->vtable[+Ch]` at
+`009C884C`, not through the arming loop. `009C8200` feeds only `task+424h` (the manual passthrough
+at `009C88C4` and the teardown at `009C8026`) and `prepare+98h`, which nothing in this class spends.
+So the dive bomber's predicted gate is upstream of that: the transition rule has to reach `aimdive`
+or `aimglide`, which needs `engaged` at `009C83F8` to answer, which needs `approach+D0h` set by the
+in-range latch at `009C7C31`, which needs `approach+BCh < approach+B8h`. The torpedo aircraft in
+this run sit in `goaway` with their engage pair at zero, so the dive bomb's first measurement should
+be `approach+B8h` and `approach+BCh` per ordered Judy.
