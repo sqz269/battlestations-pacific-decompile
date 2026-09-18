@@ -1,0 +1,74 @@
+{
+ "packet": "cc8_torpedo_aim_alt_and_safe_dist",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/TORPEDO_AIM_ALT_AND_SAFE_DIST.md",
+ "tree_base": "792ec7b1e",
+ "result": "READING ONLY. Both of docs/TORPEDO_MOVETO_TICK.md's labelled substitutions are retired.",
+ "question": "What fills the move-to state's altitude pair and its distance field for the TORPEDO task, and is task+438h's 700 Pilot/Torpedo/SafeDist by derivation or by coincidence?",
+ "answer": "Neither field docs/TORPEDO_MOVETO_TICK.md named is the torpedo task's. Both came from docs/BOT_TASK_STATES.md line 160, which is step 3 of the DEPTH-CHARGE per-tick 009A66C0. The torpedo task's own call to 009BDE80 is at 009D48CF inside 009D4850: 009D48AF adds approach+74h to approach+78h and stores it as both the first and second arguments, so state+30h and state+34h are the RELEASE ALTITUDE, 12 m in this installation; and 009D4884's branch on approach+134h against the double 15.0 at 00CF3F20 picks approach+7Ch (TorpReleaseDistNear 450) at or after 15 seconds and approach+80h (Far 650) before, stored as the third argument, so state+38h is the RELEASE DISTANCE. The constructor 009D2DA0 builds the same two expressions at 009D2E14-009D2E2E, with 009D2E36's FST and 009D2E3A's FSTP putting the altitude into both of 009C2AC0's near and far slots, so a state that is never refreshed gets the same values. The 700 is a COINCIDENCE: an exhaustive store census over offset 438h finds two writers below 00A00000, the tuning loader's Pilot/Torpedo/SafeDist at 007E93C2 and 009BCEB8 MOV dword ptr [ESI+0x438], 0x00D20900 - an immediate data pointer, so the task record's +438h is not even a float.",
+ "coverage": "complete for both fields at both the arm and the constructor, and for the census that settles the coincidence; partial for the state object's identity (task+508h/+544h versus approach+14Ch).",
+ "calls": [
+  {
+   "address": "009d48cf",
+   "native": "009bde80",
+   "function": "009d4850",
+   "what": "the torpedo arm's range refresh: first and second arguments the release altitude approach+78h + approach+74h, third the release distance chosen by the 15-second switch"
+  },
+  {
+   "address": "009d486f",
+   "native": "009d3420",
+   "function": "009d4850",
+   "what": "the approach update that runs immediately before the refresh and fills the fields it reads"
+  },
+  {
+   "address": "009d2e57",
+   "native": "009c2ac0",
+   "function": "009d2da0",
+   "what": "the state construction, with near and far both the release altitude and mode the release distance"
+  }
+ ],
+ "named_routines": [
+  {
+   "native": "009d4850",
+   "name": "BSP_BotTaskTorpedo_TickArm",
+   "abi": "as the existing record; EDI is the approach and ESI the task across 009D4874-009D48CF",
+   "coverage": "partial: the range refresh only",
+   "what": "009D4874-009D48CF refreshes the move-to/follow state's ranges with the release altitude approach+74h + approach+78h in both altitude slots and the release distance approach+7Ch or +80h in the third, on the approach+134h >= 15.0 switch"
+  },
+  {
+   "native": "009d2da0",
+   "name": "BSP_BotTaskTorpedo_ConstructStates",
+   "abi": "ESI is the approach at 009D2E14-009D2E57",
+   "coverage": "partial: the 009C2AC0 call and its arguments",
+   "what": "builds the same two expressions the arm refreshes, and 009D2E28's LEA ECX,[ESI+0x14Ch] embeds the state in the approach record"
+  },
+  {
+   "native": "009bce50",
+   "name": null,
+   "abi": "unread",
+   "coverage": "none beyond one store",
+   "what": "009BCEB8 stores the immediate 0x00D20900 into [ESI+0x438], a data pointer and almost certainly a vtable for an embedded sub-object. It is what proves the task record's +438h is not the SafeDist float.",
+   "kind": "no_name"
+  }
+ ],
+ "no_ghidra_function": [],
+ "host_methods": [],
+ "contracts": [
+  "Which of task+508h/+544h and approach+14Ch name the same object; the arm and the constructor use different base pointers and this packet did not reconcile them. The values written are identical either way.",
+  "009BCE50's identity beyond the immediate it stores.",
+  "The other two 009BDE80 callers, 007B7BA0 and 009CD0D0."
+ ],
+ "corrections": [
+  {
+   "target": "docs/TORPEDO_MOVETO_TICK.md sections 3 and 5 and its follow-ups 2 and 3",
+   "was": "the move-to state's altitude pair is approach+3Ch + approach+34h and its distance is task+438h, both labelled substitutions, with Pilot/Torpedo/SafeDist 700 suggestive",
+   "is": "those are the depth charge's fields, from a line describing 009A66C0. The torpedo task's are the release altitude approach+74h + approach+78h and the release distance approach+7Ch/+80h on the 15-second switch, and the 700 is a coincidence",
+   "evidence": "009D48AF, 009D4884, 009D48CF, 009D2E14-009D2E2E, 009BCEB8, 007E93C2",
+   "status": "appended and verified present"
+  }
+ ],
+ "validation": {
+  "runner": "none",
+  "note": "Reading only; no behaviour changed. For USN01's aircraft at 1488 m against the 650 m far distance the glide would command about 600 m and walk down to 12 m as the range closes."
+ }
+}
