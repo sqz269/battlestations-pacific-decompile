@@ -268,3 +268,7 @@ remainopen.
 ## Correction from NATIVE_GAME_CLASS_CLEANUP_R131.md
 
 R131 supplies the parent 4DD026 class cleanup call through the same actual string and lifetime publication cells as the profile context. The retained operation now owns its class-cleanup child diagnostics. The new class registry scalar profile also participates in canonical singleton drain. Eleven complete normal bodies total 1,135 bytes; full-range and zero-resize adapters are explicitly partial. Native/source and parent comparison results are recorded in docs/NATIVE_GAME_CLASS_CLEANUP_R131.md. Only C4DDE0 remains a pure address call; virtual payload bindings, native exception ABI, application admission and gameplay remain open.
+
+## Correction from NATIVE_GAME_PHYSICS_LIFETIME_R132.md
+
+R132 supplies the final pure address call, C4DDE0 at 4DCFD3, through the actual dynamics construction contexts and a retained physics child operation. Eleven normal teardown bodies total 1,894 bytes and the existing task-manager destructor remains a shared service. Parent/context and copied-original validation are recorded in docs/NATIVE_GAME_PHYSICS_LIFETIME_R132.md. No pure address methods remain, but actual virtual payload methods, original exception ABI, application admission and gameplay are still open.

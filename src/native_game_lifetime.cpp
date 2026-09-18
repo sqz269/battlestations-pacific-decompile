@@ -42,7 +42,7 @@ void normal(NativeGameStorage& game,NativeGameLifetimeContext& x,NativeGameLifet
     void* g=&game;auto& c=x.calls;word(g,0,0x00ce7cb8);o.unwind_state=0x24;
     x.small_returns_disabled_01090aa4=1;
     o.native_site=0x4dcfcb;destroy_native_game_nested_storage_004d27c0(at(g,0x30),c,o);
-    o.native_site=0x4dcfd3;c.call_00c4dde0(pointer(g,0x14));
+    o.native_site=0x4dcfd3;c.call_00c4dde0(pointer(g,0x14),x.physics,o.physics);
     o.native_site=0x4dcfde;c.call_0076a760(at(g,0x1ef0),x.embedded);
     o.native_site=0x4dcfe3;c.call_008d88f0();
     o.native_site=0x4dcfee;c.call_004bf930(at(g,0x5f0),o.containers);
@@ -143,10 +143,20 @@ void NativeGameLifetimeOperation::acknowledge_diagnostic_cleanup() noexcept {
         for(const auto& singleton:singletons)if(singleton.phase==NativeGameSingletonLifetimeOperation::Phase::running||singleton.phase==NativeGameSingletonLifetimeOperation::Phase::failed)std::terminate();
         if(lua_globals.phase==NativeGameLuaGlobalsLifetimeOperation::Phase::running||lua_globals.phase==NativeGameLuaGlobalsLifetimeOperation::Phase::failed)std::terminate();
         if(classes.phase==NativeGameClassCleanupOperation::Phase::running||classes.phase==NativeGameClassCleanupOperation::Phase::failed)std::terminate();
+        if(physics.phase==NativeGamePhysicsLifetimeOperation::Phase::running||physics.phase==NativeGamePhysicsLifetimeOperation::Phase::failed)std::terminate();
         phase=Phase::diagnostic_retired;
     }
 }
 void NativeGameLifetimeCalls::call_008d88f0(){native_game_cleanup_noop_008d88f0();}
+void NativeGameLifetimeCalls::call_00c4dde0(void* header,NativeGamePhysicsLifetimeContext* x,NativeGamePhysicsLifetimeOperation& o){
+    if(!x||&x->calls!=this||!x->dynamics.world.scene)
+        throw std::invalid_argument("native game physics cleanup requires its construction contexts");
+    const auto& engine=x->dynamics.engine;const auto& scene=*x->dynamics.world.scene;
+    if(!engine.engine_slot_0109e9fc||scene.engine_slot!=engine.engine_slot_0109e9fc||
+       !engine.memory.allocate||!engine.memory.release||!scene.memory.allocate||!scene.memory.release)
+        throw std::invalid_argument("native physics cleanup requires matching engine publication and actual allocators");
+    destroy_native_game_physics_00c4dde0(header,*x,o);
+}
 void NativeGameLifetimeCalls::call_004a9ac0(NativeGameClassCleanupContext* c,NativeGameProfileLifetimeContext* p,NativeGameClassCleanupOperation& o){
     if(!c||!p||&c->calls!=this||&p->calls!=this||!c->actual_vectors_00e1875c)
         throw std::invalid_argument("native game class cleanup requires its actual contexts");
