@@ -429,6 +429,14 @@ discriminate. A mission whose bots fly with small pitch error and large heading 
 "egy kis gep maximum ekkora rollal fordulhat" and "egy nagy gep ...", so a small plane may bank
 further, and class ids `10h` and `16h` are the large types.
 
+### Re-run on the merged tree
+
+After merging `main` (which brings the lead's ordinal-5002 stub, `tools/run_game.ps1`, the torpedo
+task arm and the native grid work), `USN01` was run once more through `tools/run_game.ps1` and the
+launcher's lock. The per-aircraft table and the `summary mission pilot attack` line reproduce the
+Before/After tables above **digit for digit**, so neither the merged stub nor the merged work
+disturbs this packet's measurement.
+
 ### USN02 gunnery census
 
 Run **on this tree**, with and without the one-line predicate change, same flags, `USN02`, 3000
