@@ -34,7 +34,8 @@
     "009c7f00": "ECX state; no stacked argument; body 009C7F00-009C7FE8",
     "007c1db0": "ECX unit; no stacked argument; body 007C1DB0-007C1DE4",
     "009c44f0": "ECX turndown state; one stacked float dt the body never reads; RET 4 at 009C46A7, 009C46C6 and 009C4736; body 009C44F0-009C4736",
-    "007c47f0": "ECX record; no stacked argument; ST0 result"
+    "007c47f0": "ECX record; no stacked argument; ST0 result",
+    "009c4220": "ECX attackrun state; one stacked float dt at [ESP+44h]; RET 4 at 009C447B; body 009C4220-009C447D"
   },
   "calls": [
     {
@@ -233,6 +234,36 @@
       "address": "009c4718",
       "native": "00419010",
       "note": "the latched pitch, 0 at 30 deg from inverted up to 1.0 at 3 deg",
+      "host_method": "read_transition_inputs"
+    },
+    {
+      "address": "009c42b8",
+      "native": "007f0280",
+      "note": "the lateral-offset sampler, last argument 1",
+      "host_method": "read_transition_inputs"
+    },
+    {
+      "address": "009c42ed",
+      "native": "00438aa0",
+      "note": "AddWrappedAngle for the run-in heading",
+      "host_method": "read_transition_inputs"
+    },
+    {
+      "address": "009c43cd",
+      "native": "00419010",
+      "note": "the run-in throttle, 0.4 at a tenth to 1.0 at just over a third",
+      "host_method": "read_transition_inputs"
+    },
+    {
+      "address": "009c4401",
+      "native": "009fba50",
+      "note": "the run-in altitude and throttle chain",
+      "host_method": "command_altitude_and_throttle"
+    },
+    {
+      "address": "009c443e",
+      "native": "0042e740",
+      "note": "the tuning singleton, for approach+1Ch->+40h",
       "host_method": "read_transition_inputs"
     }
   ],
@@ -467,6 +498,11 @@
       "address": "007c47f0",
       "native": "007c47f0",
       "name": "BSP_PlaneClass_LevelFlightSpeed"
+    },
+    {
+      "address": "009c4220",
+      "native": "009c4220",
+      "name": "BSP_BotStateDiveBombAttackRun_Tick"
     }
   ],
   "no_ghidra_function": [
@@ -575,7 +611,10 @@
     "class_gate_and_turndown_binding": "Landed. The arm gates on dive_bomb_task_installed_for_class, the class reaches the unit from GameScriptOrdersHost::run_pilot_set_target through the new store_unit_attack_command_class, and the turndown tick 009C44F0 runs whenever the state is turndown. Build green, both ctest suites pass. One labelled substitution: 007C47F0's product uses the tuning default 1.8 and the authored StallSpd default 17.5, because this host builds no plane class descriptor.",
     "ijn01_identity_run": "TAKEN, local/ijn01_gate.log. Zero dive-bomb census lines, because no IJN01 aircraft receives the divebomb class; the 27 installs the loose gate produced are gone. Every other summary is unchanged against both earlier IJN01 runs: plane motion distance_moved=347370.56 m, pilot attack ordered=33 with final_pitch_mean=0.027, torpedo task 6 aircraft 0 releases, gunnery ordnance general_bomb=27, fixed steps 3000 at 0.05 s. Run to confirm identity, not to look for movement.",
     "startup_crash_bisect": "No commit named; the crash is environmental and intermittent. Signature: exit 0xC0000005 with a 107-line log ending at 'Phase 5 online_manager_initialize', against 975 lines for a clean 300-frame run. The cc8-ai-squadron worker hit the identical 107-line signature the same day on a tree containing none of the suspects, and a retry cleared it both times. Runs: 78af19721 in this worktree crashed at 13:27:01 and 13:27:37, 36 seconds apart and therefore not independent; 4668b0e96, 82986e455, cccf31e11 and 78af19721 each ran clean in a fresh detached tree with EXITCODE=0 and 299 frames; two further clean runs in this worktree at its own HEAD, 975 and 34201 lines. Under a corrected fail rule of two consecutive crashes with a verified-clean environment between them, the step never failed. Environment check: Get-Process bsp_game prints Path, which names the owning tree, and %USERPROFILE%/.bsp/bsp_game.lock names the holder; every live process observed from this packet belonged to cc8-ai-squadron. Whether a process from the Codex tree was alive during the 13:27 window cannot be determined retroactively and is not claimed. Two method errors recorded in docs/GAME_EXECUTABLE.md: stashing rules out a packet's source but not its tree or the machine state, and one crash is not a failing bisect step for an intermittent failure.",
-    "usn04_dive_bomb_task": "local/usn04_dive.log, EXITCODE=0, 3199 frames. USN04 is the first run to reach a real kind 8 task: 007EEC50 -> 00e08f20 for unit movieval with weapon_controller=1, lb=0, gb=1, torp=0, and 0099A170 installed it. Census: 1 aircraft, 1470 arm ticks, 1 transition, states[attackrun=1470], 0 releases. The gate is the in-range latch at 009C7C31, measured to the metre: approach+BCh = 1169.5 m against approach+B8h = 1100.0 m, latch clear for all 1470 ticks, bombs present for all 1470. It is 69.5 m short because the attackrun tick 009C4220 that would fly the run-in is not bound, so the aircraft flies its moveto order instead. docs/DIVE_BOMB_MISSION_SURVEY.md."
+    "usn04_dive_bomb_task": "local/usn04_dive.log, EXITCODE=0, 3199 frames. USN04 is the first run to reach a real kind 8 task: 007EEC50 -> 00e08f20 for unit movieval with weapon_controller=1, lb=0, gb=1, torp=0, and 0099A170 installed it. Census: 1 aircraft, 1470 arm ticks, 1 transition, states[attackrun=1470], 0 releases. The gate is the in-range latch at 009C7C31, measured to the metre: approach+BCh = 1169.5 m against approach+B8h = 1100.0 m, latch clear for all 1470 ticks, bombs present for all 1470. It is 69.5 m short because the attackrun tick 009C4220 that would fly the run-in is not bound, so the aircraft flies its moveto order instead. docs/DIVE_BOMB_MISSION_SURVEY.md.",
+    "usn04_attackrun": "local/usn04_long.log, USN04, 4800 mission frames. The machine walks four states for the first time: attackrun 1480 ticks, the latch approach+D0h closing at tick 1481, flyabove 144, turndown 746 with 746 roll writes and 746 pitch writes. The run-in closes from 11044 m, commands heading 3.2247 rad, throttle 1.000 and altitude base 1000.0 m, with 149 re-rolls. No release: the bank reaches only 0.1364 rad against 009C4654's 150-degree latch, because pilot_plan_roll_0099e2ba writes plan_slots[kPilotSlotRoll] at 0099E3AE AFTER the task arm, overwriting the turndown's command in the same think. The next gate is 0099E2BA's entry condition, not another unread tick.",
+    "usn04_roll_gate": "local/usn04_gate.log, USN04, 4800 mission frames, roll gate applied. Bank reached 0.6072 rad (34.8 deg) against 0.1364 rad (7.8 deg) before; turndown roll writes 446 of 746 against 746 of 746; final approach+BCh 206.5 m against 5077.7 m and opening; latch approach+D0h set at the end against clear. Same state walk, attackrun 1480, flyabove 144, turndown 746. No release: 009C7EA0 needs pose+C64h past -1.3 rad and the bank reaches 0.6072.",
+    "usn04_hand_over": "BLOCKED. Two consecutive runs failed at startup with 'FMOD bank raw-length output unavailable: path=sound/gui/error.fsb create_result=78 length_result=37', window_created=0, device_hr=0x80004005. Get-Process bsp_game was empty and there was no lock file before the second, so under the corrected rule this is a failing step rather than a stray. Different signature from the 107-line renderer crash. No culprit is named: a failure in one tree is not evidence about a commit until a fresh tree at the suspect commit reproduces it. The hand-over change is committed but unverified."
   },
   "files": [
     "cmake/startup.cmake",
@@ -588,5 +627,6 @@
   ],
   "gate_1_reading": "approach+BCh's producer is 009C7B4F-009C7B80 inside 009C7A80: the planar distance between approach->vtable[0]()'s point and the pose world position, with an early approach+D0h = 0 and return at 009C7B0A when approach+48h is null. The target position is not a command-block field. Upstream of that: no aircraft in IJN01 or USN01 ever receives the divebomb command class 00E08F20. USN01 has exactly five PilotSetTarget orders, all Mav1..Mav5, all resolved to the torpedo class 00E08F18; IJN01 has none. The dive bombers hold an authored `artillery` order that 0046AAB0 resolves to attackmove 00E08F78 outright, which never reaches 007EEC50's ordnance chooser, so 0099A170 builds no attack task and nothing latches approach+48h. The 27 and 5 installs in the after-runs are the host's, not the image's. Fix location: run_dive_bomb_task_arm_009c8790 in src/game_hosts_units.cpp must gate on the divebomb class having been chosen, the analogue of the PilotSetTarget task: 0099A170 record the torpedo path emits, not on command_target_plus_one != 0. Open: ConSBD1's artillery row prints current=0 and store_unit_command_target fills only from current rows, so the non-zero command_target_plus_one these aircraft carry comes from a row this reading did not find. CLOSED: the non-zero command_target_plus_one comes from the aircraft's authored moveto row, not an attack order. IJN01 reports moveto x142 authored and resolved=142, an exact match, while the artillery x30 rows resolve to attackmove, carry no target and print current=0 so store_unit_command_target skips them. USN01 is the same with resolved=34. The commanded target is a movement target co-located with the aircraft, which is why both the pilot-attack range and approach+BCh difference to exactly 0.",
   "order_injection_reading": "--order <token>:<target> --order-unit <name> --order-frame N reaches GameUnitsHost::issue_player_command, which resolves the token against the scene-command registry the way 0046AAB0 does and places a command row; settarget is a registry row (src/entity_orders.cpp, class 00E08EF8). It does NOT run the chooser: 007EEC50 and the 0099A170 install live only in GameScriptOrdersHost::run_pilot_set_target, reached from the Lua binding PilotSetTarget 008A4C90 that a mission script calls. What the injection lacks is a route from a command-line switch to that function or to its tail, bsp::attack_command_choose plus bsp::bot_install_command_task_0099a170. Both would be edits to src/game_hosts.cpp and src/game_hosts_mission_frame.cpp, which this packet does not own.",
-  "class_gate_contract": "include/bsp/dive_bomb_task.hpp carries kDiveBombCommandClass = 00E08F20 and dive_bomb_task_installed_for_class. The host edit is: GameUnitSlot gains attack_command_class, GameUnitsHost gains store_unit_attack_command_class, GameScriptOrdersHost::run_pilot_set_target calls it where `chosen` is already in hand, and run_dive_bomb_task_arm_009c8790 gates on the predicate instead of command_target_plus_one plus ordnance. With that gate IJN01 and USN01 both install zero dive-bomb tasks, which is the image's own behaviour."
+  "class_gate_contract": "include/bsp/dive_bomb_task.hpp carries kDiveBombCommandClass = 00E08F20 and dive_bomb_task_installed_for_class. The host edit is: GameUnitSlot gains attack_command_class, GameUnitsHost gains store_unit_attack_command_class, GameScriptOrdersHost::run_pilot_set_target calls it where `chosen` is already in hand, and run_dive_bomb_task_arm_009c8790 gates on the predicate instead of command_target_plus_one plus ordnance. With that gate IJN01 and USN01 both install zero dive-bomb tasks, which is the image's own behaviour.",
+  "roll_arm_gate_reading": "BSP_PilotBot_PlanControls is one routine 0099D300-0099EBAB, so 0099E2BA is a region. ROLL, slot 2, mode cmd+2CCh: the gate exists. 0099DDBE loads the task's mode into ECX; 0099DE8A CMP ECX,2 and 0099DE8D JNZ send anything but 2 to 0099E26E, past the planner's own MOV [ESI+2CCh],1 at 0099E264; 0099E26E CMP [ESI+2CCh],1 then tests the task's own value and 0099E275 JNZ skips the whole arm, so the task's cmd+290h at 0099E39D and its active byte at 0099E3AE are never written and 0099E3B5 never clears the mode. Two more jumps reach 0099E26E the same way, 0099DE63 and 0099DE6F. ECX is unambiguous: filtering 0099DDBE-0099DE8D for the register gives only the load, a TEST and the CMP. So mode 2 or 1 lets the planner write the bank, and anything else, including the 0 the turndown writes at 009C462F, leaves the task's roll standing: the native turndown's roll is NOT overwritten. PITCH, slot 3, mode cmd+2D0h: there was never an overwrite to gate. An exhaustive census of +298h, +29Ch and +2A0h across 0099D300-0099EBAB finds writes only at 0099D36F/0099D377 and 0099D679/0099D681, both in the early reset; the arm region only reads them at 0099E3ED, 0099E3F8 and 0099E402, and the 0099E3BF TEST/JNZ selects between two demand computations that converge. 0099E68D is MOVSS XMM0,[ESP+44h], a stack read, not a slot write."
 }

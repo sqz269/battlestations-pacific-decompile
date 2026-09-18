@@ -813,3 +813,183 @@ Every other summary is unchanged against both earlier IJN01 runs:
 | `torpedo task` | 6 aircraft, 0 releases | 6, 0 | 6, 0 |
 | `gunnery ordnance general_bomb` | 27 | 27 | 27 |
 | `fixed steps` | 3000 at 0.05 s | 3000 | 3000 |
+
+## The attack-run tick `009C4220`, and the state walk it unlocked
+
+Vtable `00D20C68` slot `+Ch`, Ghidra body `009C4220`-`009C447D`, `__thiscall(state, float dt)`,
+`RET 4`. `EDI` is the state, `ESI` is `state+4h`, and `[ESI]` is the approach. It is the
+`009D07B0`/`009A3770` shape `docs/BOT_TASK_STATES.md` tabulates, with dive-bomb constants.
+
+| step | rule | address |
+| --- | --- | --- |
+| 1 | `dt < state+1Ch` keeps the countdown, `state+1Ch -= dt`; otherwise re-roll | `009C424A`-`009C4255`, `009C4333` |
+| 2 | the re-roll adds rather than resets: `state+1Ch = (state+18h - dt) + state+1Ch` | `009C427B` |
+| 3 | a new lateral offset from `007F0280(ctl, pose, ...)`, last argument **1** (the torpedo passes 0), negated and scaled by the double `0.5235988` at `00CEC730` | `009C42B8`-`009C42D9` |
+| 4 | `cmd->+2C0h = AddWrappedAngle(approach->+C0h, state->+20h)`, `cmd->+2CCh = 2` | `009C42FF`, `009C4305` |
+| 5 | `d = min(approach->+BCh, 2000.0)` | `009C4311`-`009C4342` |
+| 6 | `m = max(1400.0 - altitude, 50.0)` | `009C435B`-`009C438B` |
+| 7 | throttle `= InterpolateClamped(0.1, 0.4, 0.35, 1.0, m / d)` | `009C4397`-`009C43CD` |
+| 8 | `009FBA50(approach->+ACh + approach->+50h, approach->+B4h, ., throttle)` | `009C43ED`-`009C4401` |
+| 9 | `cmd->+278h = 1.0f`, `+27Ch = 1`, `+2A8h = 0.0f`, `+2ACh = 1`, `+2D8h = 0` | `009C4413`-`009C4434` |
+| 10 | `approach->+1Ch->+40h = tuning+670h`, then `009A1A20(cmd, 0099B630(cmd))` and `009FABE0(approach->+1Ch, .)` | `009C443E`-`009C4471` |
+
+Jump senses from the branch bytes: `009C424F` `0F 82` `JC`, `009C4329` `76` `JBE`, `009C4379` `76`
+`JBE`.
+
+### The run: the machine walks four states
+
+`local/usn04_long.log`, USN04, 4800 mission frames. Environment before the run: two `bsp_game`
+processes and the lock held by `cc8-ai-squadron`, so the launcher queued and ran.
+
+| measure | value |
+| --- | --- |
+| arm ticks | 2370 |
+| transitions | 3 |
+| states | `attackrun` 1480, `flyabove` 144, `turndown` 746 |
+| the latch `approach+D0h` | **closed at tick 1481** |
+| attackrun re-rolls | 149 |
+| commanded heading | 3.2247 rad |
+| commanded throttle | 1.000 |
+| altitude base | 1000.0 m |
+| range, per sample | 11044 11031 11003 10964 10919 10871 10823 10771 10715 10657 10595 10531 10464 10396 10328 10259 |
+| turndown ticks | 746, with **746 roll writes and 746 pitch writes** |
+| bank reached | **0.1364 rad** |
+| roll commanded | -0.8000 |
+| releases | 0 |
+
+So the run-in works. The aircraft closes from 11044 m, the latch arms at tick 1481, the entry
+chooser takes `flyabove`, the roll-in fires, and `turndown` gets 746 live ticks with its roll and
+pitch commands written every one of them. That is the whole chain this packet reconstructed,
+running on live inputs for the first time.
+
+### `009C7EA0`'s window is not met, and the reason is the think order
+
+The turndown latch needs `|bank| > 150 degrees` at `009C4654`, and the bank reaches
+**0.1364 rad, 7.8 degrees**, despite 746 roll commands of `-0.8`.
+
+The roll never develops because **the planner's own roll arm overwrites the slot**. The think order
+is: reset the plan, run the task arm, then `plan_yaw_0099d300`, then `pilot_plan_roll_0099e2ba`,
+which writes `plan_slots[kPilotSlotRoll]` at the site labelled `0099E3AE`. The turndown writes the
+same slot earlier in the same think, so its command is discarded before the slot is evaluated.
+
+**That is the next gate, and it is not another unread tick.** It is a question about the image:
+
+> `0099E2BA`'s roll arm is unconditional in this host. In the image it writes the same slot the
+> turndown writes, so either it is gated on something the turndown clears, most likely the mode word
+> `cmd->+2CCh` which the turndown sets to `0` while the planner's own path uses `2`, or the native
+> turndown's roll is equally overwritten and the bank comes from somewhere else. Reading `0099E2BA`'s
+> entry condition decides it, and nothing downstream can be trusted until it does.
+
+Until then the dive-bomb chain is complete up to the roll-in and stops there.
+
+### One labelled substitution in the binding
+
+`007F0280` at `009C42B8` is a contract, so the host's run-in flies straight at the target rather
+than weaving. Its three float arguments are the `80.0` at `00CE5444`, the `60.0` at `00CEB4B0` and
+the `120.0` at `00D05804`, which the listing pushes; the body was not read.
+
+## The roll-arm gate: a task's roll does survive, and its pitch was never at risk
+
+`BSP_PilotBot_PlanControls` is one routine, `0099D300`-`0099EBAB`, so `0099E2BA` is a region inside
+it rather than a function. Read whole from the planner's load of the mode word to the slot write.
+
+### Roll, slot 2, mode `cmd+2CCh`: the gate exists
+
+| address | instruction | effect |
+| --- | --- | --- |
+| `0099DDBE` | `MOV ECX,[ESI+2CCh]` | loads the mode word **the task wrote** |
+| `0099DE8A` | `CMP ECX,2` | |
+| `0099DE8D` | `JNZ 0099E26E` | anything but 2 jumps **past** the planner's own mode write |
+| `0099E264` | `MOV [ESI+2CCh],1` | reached only on the mode-2 path |
+| `0099E26E` | `CMP [ESI+2CCh],1` | on the jumped-to path this still holds the **task's** value |
+| `0099E275` | `JNZ 0099E3BF` | skips the entire roll arm |
+| `0099E39D` | `FSTP [ESI+290h]` | the planner's roll desired, reached only when the compare passes |
+| `0099E3AE` | `MOV byte [ESI+294h],1` | its active byte |
+| `0099E3B5` | `MOV [ESI+2CCh],0` | the mode is consumed |
+
+`ECX` is unambiguous: filtering the whole range `0099DDBE`-`0099DE8D` for the register gives exactly
+three lines, the load, a `TEST` and the `CMP ECX,2`, with no intervening write.
+
+Two more jumps reach `0099E26E` the same way, `0099DE63` and `0099DE6F`, both early exits inside the
+mode-2 region, so the compare at `0099E26E` is live on four paths.
+
+**So the rule is:** `cmd+2CCh == 2`, a commanded heading, lets the planner compute and write the
+bank. `== 1` also lets it through. **Anything else, including the `0` the turndown writes at
+`009C462F`, skips the arm and leaves the task's `cmd+290h` standing.**
+
+The native turndown's roll is therefore **not** overwritten. Mine was, because this host's roll arm
+was unconditional.
+
+### Pitch, slot 3, mode `cmd+2D0h`: there was never an overwrite to gate
+
+The planner does not write the pitch slot in the arm region at all. An exhaustive census of
+`+298h`, `+29Ch` and `+2A0h` across `0099D300`-`0099EBAB` finds writes only at `0099D36F`/`0099D377`
+and `0099D679`/`0099D681`, both in the early reset, and the arm region only **reads** them, at
+`0099E3ED`, `0099E3F8` and `0099E402`. The `0099E3BF` `TEST`/`JNZ` on `cmd+2D0h` selects between two
+demand computations and both converge; it does not skip a write.
+
+`0099E68D` is not a slot write either: it is `MOVSS XMM0,[ESP+44h]`, a stack read inside the pitch
+computation.
+
+So a task's pitch command already survived, and only the roll needed the gate.
+
+### The host
+
+`src/game_hosts_units.cpp` now applies the same condition around
+`pilot_plan_roll_0099e2ba`'s slot write, and the turndown binding sets the mode word to `0` when it
+commands the roll (`009C462F`) and to `1` when it hands the axis back (`009C464E`).
+
+### The gated run, and what it moved
+
+`local/usn04_gate.log`, USN04, 4800 mission frames, with the roll gate applied.
+
+| measure | before the gate | with the gate |
+| --- | --- | --- |
+| bank reached | 0.1364 rad, 7.8 deg | **0.6072 rad, 34.8 deg** |
+| turndown roll writes | 746 of 746 | 446 of 746 |
+| final `approach+BCh` | 5077.7 m, opening | **206.5 m** |
+| latch `approach+D0h` at the end | 0 | **1** |
+| state walk | `attackrun` 1480, `flyabove` 144, `turndown` 746 | the same |
+| releases | 0 | 0 |
+
+The roll command now survives, the bank grows four and a half times, and the aircraft holds its
+target instead of flying past it: `206.5 m` at the end against `5077.7 m` before.
+
+`009C7EA0`'s window is still not met. It needs `pose+C64h` past `-1.3 rad` and the bank reaches
+`0.6072 rad`, so the turndown does not end and nothing reaches `aimdive`.
+
+### The hand-over, the last piece of the same gate
+
+The 300 ticks where the turndown stopped writing the roll are the answer. `009C45BB` hands the axis
+back once `|bank| >= 0.8 rad` (45.8 deg), and `009C4646`/`009C464E` write `cmd->+2C4h = pi` and
+`cmd->+2CCh = 1`. Mode `1` **passes** the planner's compare at `0099E26E`, so the planner's roll
+servo runs, and because the jump also skipped `0099E25C MOVSS [ESI+2C4h]` the servo drives toward
+**the `pi` the turndown just wrote**.
+
+That is the design: the turndown rolls to 45.8 degrees under its own command, then hands the
+planner a bank target of 180 degrees and lets its servo carry the aircraft the rest of the way to
+inverted, where the 150-degree latch at `009C4654` closes.
+
+The host was missing both halves: it wrote the planner's own bank target unconditionally, and the
+turndown binding set the mode without the target. Both are now gated at `0099E25C` and written at
+the hand-over. The confirming run is queued.
+
+### The hand-over run is blocked by a startup failure, twice, with a clean environment
+
+```
+EXITCODE=1
+startup failed: FMOD bank raw-length output unavailable: path=sound/gui/error.fsb
+  bytes=2688 mode=2634 create_result=78 length_result=37 bank_returned=0
+summary window_created=0 device_created=0 device_hr=0x80004005 frames_presented=0
+```
+
+Two consecutive runs, `Get-Process bsp_game` empty and no lock file before the second, so under the
+rule of `docs/GAME_EXECUTABLE.md`'s intermittent-crash section this is a **failing step**, not a
+stray. It is a different signature from the 107-line renderer crash: the window is never created and
+the failure is in the FMOD bank load, before anything this packet touches.
+
+The last run that worked from this tree, `local/usn04_gate.log`, was on the pre-merge build. The
+merge that followed brought `main` up several commits. **This packet does not name a culprit**: the
+lesson from the earlier bisect is that a failure in one tree is not evidence about a commit until a
+fresh tree at the suspect commit reproduces it. The measured result above stands on the run that
+completed; the hand-over remains unverified.

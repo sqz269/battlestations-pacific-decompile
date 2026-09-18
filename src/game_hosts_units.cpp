@@ -358,6 +358,18 @@ struct GameUnitSlot {
     bool db_flyabove_can_dive_18{false};
     bool db_flyabove_leave_1a{false};
     float db_turn_roll_18{0.0f};     // turndown state+18h, 009C7800's output
+    // The attackrun state's own fields, 009C4220.
+    float db_attackrun_timer_1c{0.0f};
+    float db_attackrun_period_18{1.0f};
+    float db_attackrun_offset_20{0.0f};
+    int db_attackrun_ticks{0};
+    int db_attackrun_rerolls{0};
+    int db_latch_closed_tick{-1};
+    float db_attackrun_heading_last{0.0f};
+    float db_attackrun_throttle_last{0.0f};
+    float db_attackrun_alt_last{0.0f};
+    float db_range_at_second[16]{};
+    int db_range_samples{0};
     bool db_turndown_latch_1c{false};  // turndown state+1Ch, 009C465D
     int db_turndown_ticks{0};
     int db_turndown_roll_writes{0};
@@ -4142,9 +4154,98 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.db_aim_pull_out_18 = !unit_.db_has_bomb_d1;
                             unit_.db_aim_alive_19 = true;
                         }
+                        if (ctx.current == bsp::DiveBombState::kAttackRun) {
+                            run_dive_bomb_attackrun_tick_009c4220(dt);
+                        }
                         if (ctx.current == bsp::DiveBombState::kTurnDown) {
                             run_dive_bomb_turndown_tick_009c44f0();
                         }
+                        // The run-in census: one range sample per second of
+                        // mission time, and the tick the latch closes.
+                        if (unit_.db_in_range_d0 && unit_.db_latch_closed_tick < 0) {
+                            unit_.db_latch_closed_tick = unit_.dive_bomb_arm_ticks;
+                        }
+                        if (unit_.db_range_samples < 16 &&
+                            unit_.dive_bomb_arm_ticks >=
+                                (unit_.db_range_samples + 1) * 10) {
+                            unit_.db_range_at_second[unit_.db_range_samples] =
+                                unit_.db_planar_bc;
+                            ++unit_.db_range_samples;
+                        }
+                    }
+
+                    // 009C4220, the attackrun tick, vtable 00D20C68 slot +Ch.
+                    // The run-in. It commands a heading at the target with mode
+                    // 2, the pair 0099D300's yaw arm reads instead of the raw
+                    // bearing, so binding it is what lets the aircraft close its
+                    // attack range.
+                    void run_dive_bomb_attackrun_tick_009c4220(float dt) {
+                        bsp::DiveBombAttackRunInputs in;
+                        in.dt = dt;
+                        in.reroll_timer_1c = unit_.db_attackrun_timer_1c;
+                        in.reroll_period_18 = unit_.db_attackrun_period_18;
+                        in.lateral_offset_20 = unit_.db_attackrun_offset_20;
+                        in.target_bearing_c0 = unit_.db_bearing_c0;
+                        in.planar_distance_bc = unit_.db_planar_bc;
+                        in.altitude = unit_.motion.position[1];
+                        in.begin_altitude_ac = unit_.db_begin_alt_ac;
+                        in.extra_range_50 = unit_.db_extra_range_50;
+                        in.attack_distance_b4 = unit_.db_attack_dist_b4;
+                        // SUBSTITUTION, labelled: 007F0280 at 009C42B8 is a
+                        // contract, so the run-in flies straight at the target
+                        // rather than weaving. Its three float arguments are the
+                        // 80, 60 and 120 the listing pushes at 009C4258,
+                        // 009C4268 and 009C4287.
+                        in.sampler_result = 0.0f;
+                        in.sampler_ran = false;
+                        const bsp::DiveBombAttackRunResult r =
+                            bsp::dive_bomb_attackrun_tick_009c4220(in);
+                        ++unit_.db_attackrun_ticks;
+                        if (r.rerolled) ++unit_.db_attackrun_rerolls;
+                        unit_.db_attackrun_timer_1c = r.reroll_timer_1c;
+                        unit_.db_attackrun_offset_20 = r.lateral_offset_20;
+                        unit_.db_attackrun_heading_last = r.commanded_heading_2c0;
+                        unit_.db_attackrun_throttle_last = r.commanded_throttle;
+                        unit_.db_attackrun_alt_last = r.commanded_altitude_base;
+                        // 009C42FF and 009C4305: cmd+2C0h with cmd+2CCh = 2.
+                        unit_.plan_heading_2c0 = r.commanded_heading_2c0;
+                        unit_.plan_heading_2c0_written = true;
+                        unit_.plan_heading_mode_2cc = 2;
+                        // 009C4413-009C4434: full throttle, no air brake.
+                        unit_.plan_slots[bsp::kPilotSlotThrottle].desired = 1.0f;
+                        unit_.plan_slots[bsp::kPilotSlotThrottle].active = 1;
+                        unit_.plan_slots[bsp::kPilotSlotAirBrake].desired = 0.0f;
+                        unit_.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
+                        // 009C4401: 009FBA50 with the base, the class range and
+                        // the throttle, the same chain the torpedo attackrun
+                        // uses, so the altitude reaches the pitch command.
+                        bsp::PlaneCruiseAltitudeInputs cin;
+                        cin.base_altitude = r.commanded_altitude_base;
+                        cin.range_low = in.attack_distance_b4;
+                        cin.range_high = in.attack_distance_b4;
+                        cin.has_squadron = false;
+                        if (owner_.lua.plane_globals_loaded()) {
+                            cin.ceiling = owner_.lua.plane_globals().dynamics_ceiling;
+                        }
+                        const bsp::PlaneCruiseAltitudeResult c =
+                            bsp::cruise_altitude_command_009fba50(cin);
+                        bsp::PlanePitchCommandInputs pin;
+                        pin.desired_altitude = c.clamped_altitude;
+                        pin.reference = c.unclamped_altitude;
+                        pin.unit_world_y = unit_.motion.position[1];
+                        pin.ceiling = cin.ceiling;
+                        if (owner_.lua.plane_globals_loaded()) {
+                            const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                            pin.climb_dist = g.pilot_general_climb_dist;
+                            pin.drop_dist = g.pilot_general_drop_dist;
+                        }
+                        pin.class_climb_angle = 0.0f;
+                        pin.class_drop_angle = unit_.plane_drop_angle;
+                        unit_.plane_commanded_altitude = c.clamped_altitude;
+                        unit_.plane_commanded_pitch = bsp::pitch_command_009fb800(pin);
+                        unit_.plan_state.pitch_target_2bc = unit_.plane_commanded_pitch;
+                        unit_.plane_desired_speed_2b4 = r.commanded_throttle;
+                        unit_.plane_air_brake_mode_2d8 = 0;
                     }
 
                     // 009C44F0, the turndown tick, vtable 00D20C84 slot +Ch.
@@ -4185,6 +4286,22 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.db_turndown_roll_last = r.roll_290;
                             unit_.plan_slots[bsp::kPilotSlotRoll].desired = r.roll_290;
                             unit_.plan_slots[bsp::kPilotSlotRoll].active = 1;
+                            // 009C462F cmd+2CCh = 0. That is the value the
+                            // planner's gate at 0099E275 lets through, so this
+                            // is what keeps the roll command alive.
+                            unit_.plan_heading_mode_2cc = 0;
+                            unit_.plan_heading_2c0_written = false;
+                        }
+                        if (r.released_roll) {
+                            // 009C4646 cmd+2C4h = pi and 009C464E cmd+2CCh = 1.
+                            // Mode 1 PASSES the planner's compare at 0099E26E,
+                            // so the planner's roll servo runs, and because
+                            // 0099E25C was skipped it drives toward the pi the
+                            // turndown just wrote: the hand-over rolls the
+                            // aircraft the rest of the way to inverted.
+                            unit_.plan_state.bank_target_2c4 =
+                                bsp::dive_bomb_turndown_constant::kPi;
+                            unit_.plan_heading_mode_2cc = 1;
                         }
                         if (r.wrote_pitch) {
                             ++unit_.db_turndown_pitch_writes;
@@ -5364,9 +5481,29 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plane_pitch_angle_c64, unit_.plan_state.pitch_target_2bc);
                         const bsp::PilotBotRollResult roll =
                             bsp::pilot_plan_roll_0099e2ba(rin);
-                        unit_.plan_state.bank_target_2c4 = roll.bank_target;
-                        unit_.plan_slots[bsp::kPilotSlotRoll].desired = roll.desired;
-                        unit_.plan_slots[bsp::kPilotSlotRoll].active = 1;  // 0099E3AE
+                        // The bank target write at 0099E25C is INSIDE the
+                        // region the same jump skips: 0099E25C < 0099E264 <
+                        // 0099E26E, so a task that reaches 0099E26E by
+                        // 0099DE8D keeps its own cmd+2C4h as well as its mode.
+                        // THE GATE, 0099DDBE-0099E275. 0099DDBE loads the mode
+                        // word plan+2CCh the task wrote; 0099DE8A CMP ECX,2 and
+                        // 0099DE8D JNZ send anything but 2 to 0099E26E, PAST the
+                        // planner's own MOV [ESI+2CCh],1 at 0099E264; 0099E26E
+                        // CMP [ESI+2CCh],1 and 0099E275 JNZ then skip the whole
+                        // roll arm, so the task's plan+290h survives. Mode 2, a
+                        // commanded heading, falls through and the planner
+                        // writes the bank itself. The turndown 009C44F0 writes
+                        // mode 0, which is exactly the value that passes.
+                        // docs/DIVE_BOMB_TASK.md, "The roll-arm gate".
+                        const int roll_mode = unit_.plan_heading_mode_2cc;
+                        if (roll_mode == 2) {
+                            unit_.plan_state.bank_target_2c4 = roll.bank_target;  // 0099E25C
+                        }
+                        if (roll_mode == 2 || roll_mode == 1) {
+                            unit_.plan_slots[bsp::kPilotSlotRoll].desired = roll.desired;
+                            unit_.plan_slots[bsp::kPilotSlotRoll].active = 1;  // 0099E3AE
+                            unit_.plan_heading_mode_2cc = 0;  // 0099E3B5
+                        }
 
                         // 0099E490-0099E739, the pitch arm. Without it a planned
                         // bot follows whatever plan+2BCh was last set to, which
@@ -6742,6 +6879,27 @@ void GameUnitsHost::report() {
                         static_cast<double>(slot->db_turndown_roll_last),
                         static_cast<double>(slot->db_turndown_pitch_last),
                         static_cast<double>(slot->plane_desired_speed_2b4));
+                }
+                if (slot->db_attackrun_ticks > 0) {
+                    char ranges[192];
+                    int rn = 0;
+                    ranges[0] = '\0';
+                    for (int i = 0; i < slot->db_range_samples; ++i) {
+                        rn += std::snprintf(ranges + rn,
+                            (rn < static_cast<int>(sizeof(ranges)))
+                                ? sizeof(ranges) - static_cast<std::size_t>(rn) : 0u,
+                            "%s%.0f", i > 0 ? " " : "",
+                            static_cast<double>(slot->db_range_at_second[i]));
+                        if (rn >= static_cast<int>(sizeof(ranges))) break;
+                    }
+                    host.log.notef("  divebomb %-12s attackrun 009C4220: ticks=%d "
+                        "rerolls=%d latch_closed_tick=%d heading=%.4f rad "
+                        "throttle=%.3f alt_base=%.1f m | range per second: %s",
+                        slot->row.name.c_str(), slot->db_attackrun_ticks,
+                        slot->db_attackrun_rerolls, slot->db_latch_closed_tick,
+                        static_cast<double>(slot->db_attackrun_heading_last),
+                        static_cast<double>(slot->db_attackrun_throttle_last),
+                        static_cast<double>(slot->db_attackrun_alt_last), ranges);
                 }
                 host.log.notef("  divebomb %-12s gate 009C7C31: "
                     "approach+BCh=%.1f m approach+B8h=%.1f m latch_D0h=%d "

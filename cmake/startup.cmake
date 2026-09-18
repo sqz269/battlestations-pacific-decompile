@@ -1392,3 +1392,5 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 cmake_language(DEFER CALL include "${CMAKE_SOURCE_DIR}/cmake/native_data_placement.cmake")
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_game_runtime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_language_catalog_lifetime.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_language_catalog_producer.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_settings_text.cpp)
