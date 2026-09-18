@@ -1,0 +1,204 @@
+{
+ "packet": "cc8_ai_target_weight_terms",
+ "owner": "agent/cc8-ai-squadron",
+ "doc": "docs/AI_TARGET_WEIGHT_TERMS.md",
+ "sources": [
+  "include/bsp/ai_close_attack_tick.hpp",
+  "src/ai_close_attack_tick.cpp",
+  "src/game_hosts_ai.cpp",
+  "include/bsp/game_hosts_ai.hpp"
+ ],
+ "classification": "discovery plus reconstruction; the four terms 00A0F810 stood in for, taken to their instructions. Term 1 settled and bound, term 2 routed and switched, terms 3 and 4 blocked on one unsettled argument mapping that is named",
+ "routines": [
+  {
+   "address": "00923be0",
+   "name": "BSP_UnitInstance_GetHealth",
+   "abi": "__thiscall(unit) -> float in ST0, RET 0, body 00923be0..00923c4b",
+   "coverage": "complete"
+  },
+  {
+   "address": "00876260",
+   "name": "BSP_UnitInstance_GetHealthFraction",
+   "abi": "__thiscall(unit) -> float in ST0, RET 0, body 00876260..00876274",
+   "coverage": "complete"
+  },
+  {
+   "address": "00a04560",
+   "name": "BSP_Ai_EntityRecordBuild",
+   "abi": "__fastcall(ECX = out, EDX = entity) -> record, RET 4, body 00a04560..00a046b5",
+   "coverage": "partial; the body's steps are read but the mapping of its seven pushed arguments onto 00A00020's slots is not settled"
+  },
+  {
+   "address": "00a00020",
+   "name": "BSP_Ai_EntityRecordConstruct",
+   "abi": "__thiscall(record, 7 stack args), body 00a00020..00a0009b",
+   "coverage": "partial; every store is read by offset, the argument order is not, because 00A00031 PUSH ESI shifts the slots between the first three reads and the rest"
+  },
+  {
+   "address": "00a08460",
+   "name": "BSP_Ai_TargetWeight",
+   "abi": "cited from docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md",
+   "coverage": "not re-read; this packet supplies its host and the switch that runs it"
+  }
+ ],
+ "host_calls": [
+  {
+   "address": "00a0f8ce",
+   "native": "00923be0",
+   "containing": "00a0f810",
+   "name": "bsp::ai_unit_health_00923be0",
+   "note": "the torn-down byte is passed from the scene node flags; the fraction is not reachable"
+  },
+  {
+   "address": "00923bf7",
+   "native": "00876260",
+   "containing": "00923be0",
+   "name": "(not modelled)",
+   "kind": "indirect",
+   "note": "the class fraction, vtable slot +110h; unit+370h over unit+36Ch"
+  },
+  {
+   "address": "00a0f843",
+   "native": "00a08460",
+   "containing": "00a0f810",
+   "name": "AiWeightModelBinding via bsp::ai_target_weight_00a08460",
+   "note": "runs when the weapon-facts table carries a row for both the attacker and the target"
+  },
+  {
+   "address": "00a0f821",
+   "native": "00a04560",
+   "containing": "00a0f810",
+   "name": "(not modelled)",
+   "note": "the target record"
+  },
+  {
+   "address": "00a0f830",
+   "native": "00a04560",
+   "containing": "00a0f810",
+   "name": "(not modelled)",
+   "note": "the attacker record"
+  },
+  {
+   "address": "00a046a5",
+   "native": "00a00020",
+   "containing": "00a04560",
+   "name": "(not modelled)",
+   "note": "the record constructor; its argument order is the open gap"
+  },
+  {
+   "address": "00a0457d",
+   "native": "00414db0",
+   "containing": "00a04560",
+   "name": "(not modelled)",
+   "note": "BSP_EntityPose_RefreshWorld, when entity+C8h is clear"
+  },
+  {
+   "address": "00a045b9",
+   "native": "00a371a0",
+   "containing": "00a04560",
+   "name": "(not modelled)",
+   "note": "the tuning record; [record+54h]"
+  },
+  {
+   "address": "00a045d1",
+   "native": "00a371a0",
+   "containing": "00a04560",
+   "name": "(not modelled)",
+   "note": "the tuning record; [record+50h]"
+  },
+  {
+   "address": "00a045e5",
+   "native": "00419010",
+   "containing": "00a04560",
+   "name": "(not modelled)",
+   "note": "the interpolation over those two and 00D21D04"
+  }
+ ],
+ "indirect_call_sites": [
+  {
+   "address": "00923bf7",
+   "containing": "00923be0",
+   "target": "[[unit]+110h]",
+   "role": "the class health fraction; 00876260 for the destroyer family"
+  },
+  {
+   "address": "00a0465b",
+   "containing": "00a04560",
+   "target": "[[entity]+5Ch]",
+   "role": "IsKindOf(5): the class descriptor is entity+538h"
+  },
+  {
+   "address": "00a04672",
+   "containing": "00a04560",
+   "target": "[[entity]+5Ch]",
+   "role": "IsKindOf(18h): the class descriptor is entity+35Ch, the squadron's plane class"
+  },
+  {
+   "address": "00a0f859",
+   "containing": "00a0f810",
+   "target": "[[attacker]+18h]",
+   "role": "PUSH 1Ch, the type-group query; NOT the +5Ch class test, so 1Ch is a type code"
+  }
+ ],
+ "no_ghidra_function": [],
+ "raw_listing_call_sites": [],
+ "record_layouts": [
+  {
+   "record": "the AI per-entity record",
+   "size": "at least 0x20",
+   "producer": "00a04560 then 00a00020",
+   "fields": "+0h the first stack argument (00A00038); +4h and +8h the pose X and Z from the pointer argument (00A00040, 00A0004A); +0Ch a byte (00A0005B); +10h the second stack argument (00A0005E); +14h the third, a float (00A0004D); +1Ch a later one (00A00061). The argument ORDER is not settled"
+  },
+  {
+   "record": "GameAiWeaponFacts",
+   "size": "host-side",
+   "producer": "nothing yet; one publish call from the gunnery host",
+   "fields": "per unit: hit_points for target+48h, capture_state for target+4Ch, and a flattened barrel list of reload, accuracy and shots for the 48h-stride entries at subsystem+74h/+78h that 00A095E3's walk reaches"
+  }
+ ],
+ "constants": [
+  {
+   "name": "the health clamp ceiling",
+   "value": "1.0f",
+   "evidence": "00D7A24C, compared at 00923C2F and applied at 00923C34"
+  },
+  {
+   "name": "the entity spread modulus",
+   "value": "79 (0x4F)",
+   "evidence": "00A0458A magic 0CF6474A9h with SHR EDX,6 and IMUL EDX,4Fh at 00A04594"
+  }
+ ],
+ "corrections": [
+  {
+   "doc": "docs/AI_TARGET_WEIGHT.md",
+   "was": "target_term left at 0.0f, making slot D the constant 2.0",
+   "is": "2.0 is the value a DESTROYED target yields; a live one gives 1.0, so every candidate weight halves. Ordering is unaffected because the factor was uniform and admission only tests for a positive weight",
+   "evidence": "00923BE0's clamp into [0,1] and 00A0F8CE's subtraction from 2.0"
+  },
+  {
+   "doc": "the ledger record for 00923BE0 (packet cc2_unit_timed_subupdates)",
+   "was": "the virtual at vtable +110h floored at zero, with the zero also written back to +164h",
+   "is": "the floor is right and the ceiling is missing: 00923C27 compares against 1.0f and 00923C34 clamps down, and BOTH arms cache, not only the zero one",
+   "evidence": "00923C21..00923C41"
+  }
+ ],
+ "validation": {
+  "status": "BLOCKED, not measured",
+  "reason": "the remote-desktop session the agents run in is disconnected, so session 1 has no audio endpoint and FMOD cannot initialise; every run dies before the window. docs/AI_TARGET_WEIGHT.md section 3 carries the two failure texts",
+  "what_is_established": "the build is clean at /W4 /WX and both existing ctest cases pass",
+  "expected": {
+   "torn_down_targets": "0; a non-zero value means the liveness filter above the weight is not doing what term 1 claims",
+   "model_runs": "0 until the gunnery host publishes weapon rows",
+   "class_stand_ins": "equal to the query count, the complement of model_runs",
+   "weapon_rows": "0",
+   "served_attackmove_settarget": "unchanged from docs/AI_TARGET_WEIGHT.md: term 1 halves every weight uniformly and terms 2 to 4 are inert, so no ordering moves"
+  }
+ },
+ "remaining": [
+  "00A00020's argument order, which blocks the meaning of record +14h, +18h and +1Ch and therefore terms 3 and 4. It needs the same frame-walk treatment 00A0F810 got, because 00A00031 PUSH ESI shifts the slots mid-body",
+  "one publish call from the gunnery host into game_ai_weapon_facts(), which turns term 2 on",
+  "the attacker vtable[+18h] type-group codes, shared with AiTargetWeightModelHost::entity_is_type; settling one settles both",
+  "009FE200 the distance falloff, 00424C40+3B0h the capture scale, and the 00A03B90/00A079B0 memo pair",
+  "the six-mission census, blocked on the machine's audio endpoint"
+ ]
+}

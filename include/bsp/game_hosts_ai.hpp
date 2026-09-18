@@ -87,6 +87,39 @@ struct GameObjectiveSets {
 // The one instance, cleared when a mission scene is built.
 GameObjectiveSets& game_objective_sets() noexcept;
 
+// What 00A08460 BSP_Ai_TargetWeight reads out of an attacker and a target, in
+// the shape bsp::AiTargetWeightModelHost asks for it. The values live on the
+// gunnery host's per-unit row and the AI coordinator is constructed with the
+// log and the units host only, so this is a process-wide table for the same
+// reason game_objective_sets() is: the producer and the reader sit in
+// different hosts and neither owns the other. Filling it is ONE publish call
+// from the gunnery host, which this packet may only read.
+// docs/AI_TARGET_WEIGHT_TERMS.md term 2.
+struct GameAiWeaponFacts {
+    // One barrel of one subsystem: the 48h-stride entries at subsystem+74h
+    // and +78h that 00A095E3's walk reaches.
+    struct Barrel {
+        float reload{0.0f};    // 00A094F0, the reload the time factor divides
+        float accuracy{1.0f};  // 009FE270 at 00A094E6
+        int shots{0};          // 0072AB80 at 00A09501
+    };
+    struct Unit {
+        bool known{false};
+        float hit_points{0.0f};      // target+48h, read at 00A08593
+        float capture_state{0.0f};   // target+4Ch, read at 00A085A8
+        std::vector<Barrel> barrels; // flattened over the attacker's subsystems
+    };
+    std::vector<Unit> units;
+
+    void reset() noexcept;
+    // The row for a unit index, or null when nothing has published one.
+    const Unit* row(std::size_t unit) const noexcept;
+    Unit& row_for_write(std::size_t unit);
+    std::size_t known_units() const noexcept;
+};
+
+GameAiWeaponFacts& game_ai_weapon_facts() noexcept;
+
 class GameHostLog;
 class GameUnitsHost;
 
@@ -168,6 +201,8 @@ struct GameAiSummary {
     unsigned long long weight_fort_targets{0};      // the 009FE0B0 trio
     unsigned long long weight_non_command_targets{0}; // trio, not 1Ch
     unsigned long long weight_torn_down_targets{0};   // 00923BE4's arm
+    unsigned long long weight_model_runs{0};       // 00A08460 ran for real
+    unsigned long long weight_class_stand_ins{0};  // the 009FDF30 fallback
     float first_command_seconds{-1.0f};
 };
 

@@ -91,7 +91,106 @@ this process holds for them live on the gunnery host's per-unit row (`health`, `
 the AI coordinator does not hold and which this packet may only read. Term 2 carries the same
 problem for the inner weight and settles the route for both.
 
-TERM2_PLACEHOLDER
+## Term 2 — the inner weight, `00A08460`
+
+`docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md` and `include/bsp/ai_target_weights.hpp` already reconstruct
+the model as `ai_target_weight_00a08460`, driven by `AiTargetWeightModelHost`'s fourteen methods.
+This packet does not re-read it. What it adds is the route from the AI coordinator to the data it
+needs, and the switch that turns it on.
+
+### The route, and why it is a process-wide table
+
+The model reads the target's hit points and capture state (`target+48h` and `+4Ch`, at `00A08593`
+and `00A085A8`) and walks the attacker's subsystems and their barrels (`+94h`/`+98h` at `00A095E3`,
+the `48h`-stride entries at `+74h`/`+78h`) for a reload, an accuracy and a shot count per barrel.
+In this process those values live on the **gunnery host's** per-unit row, and the AI coordinator is
+constructed with the log and the units host only. `GameUnitRow` carries no weapon or health field,
+so there is no route through the units host either.
+
+`GameAiWeaponFacts` and `game_ai_weapon_facts()` are therefore a process-wide table, for the same
+reason `game_objective_sets()` is one: the producer and the reader sit in different hosts and
+neither owns the other. **This avoids the wiring line in `src/game_hosts.cpp` the lead ruled out.**
+`AiWeightModelBinding` implements all fourteen methods over it.
+
+### The switch
+
+`close_target_weight` runs the real model when the table carries a row for **both** the attacker
+and the target, and otherwise keeps the `009FDF30` class weight exactly as before. The census
+reports both counts and the number of published rows, so the arm taken is never in doubt.
+
+**The table is empty today.** Filling it is one publish call from the gunnery host, which this
+packet may only read, so `model_runs` will be zero and `class_stand_ins` will equal the query count
+until that call lands. The adapter and the switch are written now so that the call is the only
+thing left.
+
+Six of the fourteen methods are labelled stand-ins even once rows exist, each at its site: the memo
+pair `00A03B90`/`00A079B0` (a cache, so skipping it changes no answer), the forced-rule override
+`00A31DB0` (its rules come from the globals loader's `ForcedTargetWeightValues` tail, which this
+process does not run), the two entity type queries at `vtable[+18h]` and `+1Ch`, the distance
+falloff `009FE200` and the capture scale `00424C40+3B0h`. The `AiModeTuning` record is projected
+from the block `00A335D0` filled, carrying `MaxTargetKillRatio` at `+05Ch` and `DamageCalcTime` at
+`+060h`, which are the two fields the barrel arithmetic uses.
+
+## Term 3 — the two record factors and the target scale, `00A04560`
+
+`FUN_00A04560`, `__fastcall(ECX = out, EDX = entity)`, `RET 4`, body `00A04560`-`00A046B5`. It
+builds the per-entity record whose `+10h`, `+14h`, `+18h` and `+1Ch` `00A0F810` reads.
+
+What the body does, in order:
+
+| Site | What |
+| --- | --- |
+| `00A04568` | `CMP [entity+54h],2` / `SETGE BL`: a flag for the entity's side being 2 or more |
+| `00A04570` | when `[entity+C8h]` is clear, `00A0457D` calls `00414DB0 BSP_EntityPose_RefreshWorld` |
+| `00A04582`, `00A0459D` | saves `[entity+FCh]` and `[entity+104h]`, the pose's X and Z |
+| `00A0458A`-`00A045A7` | `EAX = 0CF6474A9h`, `MUL ESI`, `SHR EDX,6`, `IMUL EDX,4Fh`, `EAX = ESI - EDX`: the entity **pointer modulo 79**, converted to float at `00A045B0`. A per-entity spread, cheap and stable for the entity's lifetime |
+| `00A045B9`, `00A045D1` | two `00A371A0` tuning reads, `[record+54h]` and `[record+50h]` |
+| `00A045E5` | `00419010` over those two and the constant at `00D21D04` |
+| `00A04652` | `IsKindOf(5)` -> the class descriptor is `[entity+538h]` |
+| `00A0466E` | else `IsKindOf(18h)` -> it is `[entity+35Ch]`, the plane squadron's plane class |
+| `00A04680` | else null |
+| `00A046A5` | `00A00020(out, ...)` builds the record |
+
+The plane-squadron arm ties back to `docs/PLANE_SQUADRON.md`: `+35Ch` is the field `007F477E`
+fills with `007B8A80`'s class for the squadron's wings, so a squadron is weighed through its
+planes' class and not through a class of its own.
+
+`FUN_00A00020`, body `00A00020`-`00A0009B`, stores by offset:
+
+| Store | Offset | From |
+| --- | --- | --- |
+| `00A00038` | `+0h` | the first stack argument |
+| `00A00040`, `00A0004A` | `+4h`, `+8h` | the two floats of the pointer argument, the pose X and Z |
+| `00A0004D` | `+14h` | the third stack argument, a float |
+| `00A0005B` | `+0Ch` | a byte argument |
+| `00A0005E` | `+10h` | the second stack argument |
+| `00A00061` | `+1Ch` | a later stack argument |
+| `00A00058` | — | `COMISS` against another float argument gates a second `00A371A0` interpolation whose result is not yet traced to `+18h` |
+
+**`coverage: partial`, and the gap is named.** The stores above are certain; the mapping from
+`00A046A5`'s seven pushed arguments onto `00A00020`'s seven slots is **not settled**, because
+`00A00031 PUSH ESI` sits between the routine's first three argument reads and its last four, so the
+offsets shift mid-body exactly as they do in `00A0F810`. Resolving it needs the same frame-walk
+treatment applied to `00A00020`, which this packet did not do. Until then the meaning of `+14h`
+(the target scale) and `+18h` (the two factors) is not claimed, and `close_target_weight` keeps all
+three at the identity `1.0f`.
+
+## Term 4 — the attacker's command-building zeroing
+
+`00A0F84C` tests `[attacker record +1Ch]` and, only when it is non-zero, `00A0F859` asks the
+attacker `vtable[+18h](1Ch)`; both true zero the weight at `00A0F864`.
+
+Two things block it, and both are named above. `record+1Ch` is one of the offsets term 3 could not
+settle, and `vtable[+18h]` is **not** the `+5Ch` class test the other three tests in `00A0F810`
+use, so `1Ch` there is a type-group code rather than the `MCommandBuilding` class id it looks like.
+`AiTargetWeightModelHost` names the same slot `entity_is_type`, which is the second consumer of it,
+so settling one settles both.
+
+`close_target_weight` therefore keeps both inputs false and the arm never runs. That is safe in the
+one direction that matters: the arm can only ever **remove** weight, so leaving it off can admit a
+candidate the native would have scored zero, never reject one it would have kept.
+
+
 
 ## Validation
 
@@ -100,8 +199,19 @@ machine has no audio endpoint for session 1 and FMOD cannot initialise; every ru
 window. `docs/AI_TARGET_WEIGHT.md` section 3 carries the two failure texts and the evidence that it
 is the environment. The build is clean at `/W4 /WX` and both existing ctest cases pass.
 
-When runs work again, IJN01 goes first, and this packet's own census lines are
-`summary mission ai target weight health` for the torn-down count. Term 1 alone should move no
-ordering and no `served`, `attackmove` or `settarget` count; it halves every weight uniformly, and
-a non-zero torn-down count would mean the liveness filter above it is not doing what this section
-claims.
+When runs work again, IJN01 goes first. This packet adds two census lines,
+`summary mission ai target weight health` for the torn-down count and
+`summary mission ai target weight base` for the model-versus-stand-in split and the published row
+count. Expected, on the three missions as they stand:
+
+| Line | Expected | What a different value means |
+| --- | --- | --- |
+| `torn_down_targets` | `0` | the liveness filter above the weight is not doing what term 1 claims |
+| `model_runs` | `0` | something published weapon rows; the base term is then the real model |
+| `class_stand_ins` | equal to `queries` | the complement of the above |
+| `weapon_rows` | `0` | the gunnery publish call landed |
+| `served`, `attackmove`, `settarget` | unchanged from `docs/AI_TARGET_WEIGHT.md` | term 1 halves every weight uniformly and terms 2 to 4 are inert, so no ordering moves |
+
+The behavioural movement `docs/AI_TARGET_WEIGHT.md` predicts for IJN01 is that packet's, not this
+one's: this packet corrects a magnitude and lays the route for the base term without changing which
+candidate wins.
