@@ -1354,3 +1354,5 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 cmake_language(DEFER CALL include "${CMAKE_SOURCE_DIR}/cmake/native_data_placement.cmake")
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_shape_lifetime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_convex_support.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_sap_pairs.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_sap_processing.cpp)
