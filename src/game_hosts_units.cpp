@@ -22,6 +22,7 @@
 #include "bsp/unit_rudder.hpp"
 #include "bsp/torpedo_aim_tick.hpp"
 #include "bsp/torpedo_approach_update.hpp"
+#include "bsp/torpedo_issue_timing.hpp"
 #include "bsp/torpedo_release_orders.hpp"
 #include "bsp/torpedo_task_arm.hpp"
 
@@ -342,6 +343,21 @@ struct GameUnitSlot {
     int torpedo_orders_issued{0};
     int torpedo_orders_issue_ticks{0};
     int torpedo_peak_release_orders_c58{0};
+    // The 007CE9FD stage's own two fields. docs/TORPEDO_ISSUE_TIMING.md.
+    // unit+C28h, the interval countdown; 007D5D20 leaves it at the
+    // constructor's zero, so the first fixed step expires it at once.
+    float torpedo_issue_interval_c28{0.0f};
+    // unit+C20h, the pending release-request count. 007BBC00 raises it by one
+    // at the tail of 007BBBA0 BSP_Unit_RequestOrdnanceRelease; 007CEA82 spends
+    // one per issue. 007D625B seeds it to zero (EBX from 007D619A XOR).
+    int torpedo_issue_requests_c20{0};
+    int torpedo_issue_stage_ticks{0};
+    int torpedo_issue_stage_guard_blocked{0};
+    int torpedo_issue_stage_waiting{0};
+    int torpedo_issue_stage_issues{0};
+    int torpedo_issue_stage_cleanups{0};
+    int torpedo_issue_first_issue_tick{-1};
+    int torpedo_release_requests_007bbba0{0};
     // ctl+370h, the pilot control block's attack mode. 0099B740 raises it to
     // kAttack on the flight leader's cruise-profile tick; 009D3F60 row 1 holds
     // a task in prepare while it is kHold.
@@ -2265,7 +2281,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                 public:
                     PlaneBinding(GameUnitsHost::Impl& owner, GameUnitSlot& unit)
                         : owner_(owner), unit_(unit) {}
-                    bool unit_game_object_tick_00953cc0(float) override {
+                    bool unit_game_object_tick_00953cc0(float step) override {
+                        // 00953CC0 is the first call of 007CE040, so this is
+                        // where the step the whole fixed step runs on is known.
+                        // The 007CE9FD stage needs it and gets no argument of
+                        // its own in the reconstructed sequence.
+                        fixed_step_seconds_ = step;
                         return unit_.generic_suppress_520;
                     }
                     void class_input_poll_0095dc40(float) override {}
@@ -2374,10 +2395,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             std::sqrt(wv[0] * wv[0] + wv[1] * wv[1] + wv[2] * wv[2]) * step;
                         control_step_007da710(step, state.forward_speed);
                         advance_pose_0085e4d0(step);
-                        // 007CEA8D, after the think at 007CE865 and the latch at
-                        // 007CE96F: 007C0D90 hands out the release-order budget
-                        // unit+C58h. docs/TORPEDO_RELEASE_ORDERS.md.
-                        run_release_order_issue_007c0d90();
+                        // The release-order issue used to run here. It does not
+                        // belong to the free-flight arm: 007CEA8D sits at
+                        // 007CE9FD, past the latch 007CE96F and past the arm
+                        // dispatch, and its own mode test at 007CEA33 accepts
+                        // unit+900h of 4, 5, 6 or 7. It now runs from
+                        // latch_control_input_007b9770, which is the sequence
+                        // position of 007CE96F. docs/TORPEDO_ISSUE_TIMING.md.
                         owner_.done("PlaneMotion::free_flight_007cc2f0", 0x007cc2f0u);
                     }
                     // 007D9C80 then 0085E4D0, the two steps that turn a plane.
@@ -2543,9 +2567,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         int controlled_unit_count() override {
                             int n = 0;
                             for (const auto& s : owner_.slots) {
-                                if (s->torpedo_task_installed) ++n;
+                                if (is_flight_member(*s)) ++n;
                             }
                             return n;
+                        }
+                        // ctl+3D0h / ctl+3CCh, the squadron's own unit array.
+                        // 007F2C60 BSP_PlaneSquadronTickableEntity_Construct
+                        // builds the block (ctl+34Ch at 007F2CDB, the attack
+                        // mode ctl+370h at 007F2DC1) from
+                        // 004F0AD0 BSP_SceneUnit_CreatePlaneSquadronGen, which
+                        // runs at launch, not on an order. Membership by
+                        // installed task was therefore wrong: it made the
+                        // flight empty until the order arrived, and an empty
+                        // array skips the whole loop at 007EEF54. This host has
+                        // no squadron object, so carrying torpedo ordnance
+                        // stands in for it. SUBSTITUTION.
+                        static bool is_flight_member(const GameUnitSlot& s) {
+                            const bsp::OrdnanceKindSet set{s.ordnance_mask};
+                            return bsp::ordnance_has_torpedo_2bh(set);
                         }
                         bool unit_lacks_follow_target_007b8ad0(int index) override {
                             GameUnitSlot* const u = controlled(index);
@@ -2591,7 +2630,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         GameUnitSlot* controlled(int index) const {
                             int n = 0;
                             for (const auto& s : owner_.slots) {
-                                if (!s->torpedo_task_installed) continue;
+                                if (!is_flight_member(*s)) continue;
                                 if (n == index) return s.get();
                                 ++n;
                             }
@@ -2773,6 +2812,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // behind it are this packet's contract.
                             record("Unit::request_ordnance_release", "007bbba0");
                             ++slot_.torpedo_releases;
+                            // 007BBC00 `ADD dword [ECX+0xC20], EBX` with
+                            // EBX = 1 from 007BBBAB, past every early exit, so
+                            // the counter rises whether or not the device
+                            // accepts the drop. docs/TORPEDO_ISSUE_TIMING.md.
+                            ++slot_.torpedo_release_requests_007bbba0;
+                            slot_.torpedo_issue_requests_c20 =
+                                bsp::release_request_raise_007bbc00(
+                                    slot_.torpedo_issue_requests_c20);
                         }
                         float unit_altitude(const void*) override {
                             return slot_.motion.position[1];
@@ -3168,8 +3215,80 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // 007C0D90, the plane fixed step's release-order issue.
                     // It assigns rather than accumulates, so a slot that is
                     // already at 999 simply stays there.
+                    // 007CE9FD-007CEB31, the stage that owns 007CEA8D, the one
+                    // call site of 007C0D90 in the image. It is not gated on a
+                    // task: it runs on every fixed step of any plane whose
+                    // control mode unit+900h is 4, 5, 6 or 7, and decides
+                    // through the countdown unit+C28h and the pending
+                    // release-request count unit+C20h whether the issue path
+                    // runs this step. docs/TORPEDO_ISSUE_TIMING.md.
+                    void run_release_issue_stage_007ce9fd(float dt) {
+                        bsp::PlaneReleaseIssueStageInputs in;
+                        // 007CEA02. The host has no app-state singleton, so the
+                        // stage is never suppressed by a pause.
+                        owner_.log.unimplemented("App::state_1fe4", "007cea02");
+                        in.app_state_1fe4 = 0;
+                        // 007CEA0F: the same unit+9E0h the airborne
+                        // accumulator is gated on, which the plane binding
+                        // already reads.
+                        in.blocked_9e0 = unit_.plane_airborne_frozen_9e0;
+                        // 007CEA1C and 007CEA29. contract: unread.
+                        owner_.log.unimplemented("Plane::issue_block_c3a", "007cea1c");
+                        owner_.log.unimplemented("Unit::issue_block_5d", "007cea29");
+                        in.blocked_c3a = false;
+                        in.blocked_5d = false;
+                        in.control_mode_900 = unit_.plane_control_mode_900;
+                        in.interval_timer_c28 = unit_.torpedo_issue_interval_c28;
+                        in.step_seconds = dt;
+                        in.issue_requests_c20 = unit_.torpedo_issue_requests_c20;
+                        in.release_pending_c25 = unit_.torpedo_release_pending_c25;
+                        // 007CEB00: the element's device walk. contract: unread,
+                        // so no device ever holds the cleanup off.
+                        owner_.log.unimplemented("Plane::device_busy_1fc", "007ceb00");
+                        in.any_device_busy_1fc = false;
+                        // 007CEAB3 BSP_Random_UniformFloatRange(1, 0.9, 1.1).
+                        // The host's deterministic draw takes the low end, the
+                        // same convention random_between already uses here.
+                        in.interval_draw = bsp::kIssueIntervalLow_00ce3860;
+                        // 007CEAB8 FMUL [class+1F4h]. SUBSTITUTION: the class
+                        // descriptor field is unread, so the scale is 1.
+                        owner_.log.unimplemented("PlaneClass::issue_interval_1f4",
+                                                 "007ceab8");
+                        in.class_interval_scale_1f4 = 1.0f;
+
+                        const bsp::PlaneReleaseIssueStageResult r =
+                            bsp::plane_release_issue_stage_007ce9fd(in);
+                        unit_.torpedo_issue_interval_c28 = r.next_interval_timer_c28;
+                        unit_.torpedo_issue_requests_c20 = r.next_issue_requests_c20;
+                        if (r.clear_release_pending_c25) {
+                            unit_.torpedo_release_pending_c25 = false;
+                        }
+                        ++unit_.torpedo_issue_stage_ticks;
+                        if (!r.guards_passed) {
+                            ++unit_.torpedo_issue_stage_guard_blocked;
+                            return;
+                        }
+                        switch (r.arm) {
+                            case bsp::PlaneReleaseIssueStageArm::kIssue:
+                                ++unit_.torpedo_issue_stage_issues;
+                                if (unit_.torpedo_issue_first_issue_tick < 0) {
+                                    unit_.torpedo_issue_first_issue_tick =
+                                        unit_.torpedo_arm_offers;
+                                }
+                                break;
+                            case bsp::PlaneReleaseIssueStageArm::kCleanup:
+                            case bsp::PlaneReleaseIssueStageArm::kCleanupBlocked:
+                                ++unit_.torpedo_issue_stage_cleanups;
+                                break;
+                            default:
+                                ++unit_.torpedo_issue_stage_waiting;
+                                break;
+                        }
+                        if (!r.call_issue_007c0d90) return;
+                        run_release_order_issue_007c0d90();
+                    }
+
                     void run_release_order_issue_007c0d90() {
-                        if (!unit_.torpedo_task_installed) return;
                         TorpedoReleaseOrderBinding binding(owner_, unit_);
                         const bsp::ReleaseOrderIssueResult r =
                             bsp::torpedo_issue_release_orders_007c0d90(binding);
@@ -3886,7 +4005,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             ++owner_.summary.plane_pose_collapsed;
                         owner_.done("PlaneMotion::commit_step_pose_0085dc80", 0x0085dc80u);
                     }
-                    void latch_control_input_007b9770() override {}
+                    void latch_control_input_007b9770() override {
+                        // 007CE96F, and the release-order issue stage begins at
+                        // 007CE9FD, 0x8E bytes later, with no branch between
+                        // that could skip it: 007CE99D's JE lands on 007CE9FD
+                        // itself. So the stage runs on every fixed step of
+                        // every arm, which is what this position models.
+                        run_release_issue_stage_007ce9fd(fixed_step_seconds_);
+                    }
                     bool airborne_time_frozen() override {
                         return unit_.plane_airborne_frozen_9e0;
                     }
@@ -3901,6 +4027,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                 private:
                     GameUnitsHost::Impl& owner_;
                     GameUnitSlot& unit_;
+                    // 00953CC0's argument, held for the 007CE9FD stage.
+                    float fixed_step_seconds_{0.0f};
                 } plane_calls(host, slot);
                 const bsp::PlaneMotionArm arm =
                     bsp::run_plane_fixed_step_007ce040(plane_calls, step_seconds);
@@ -4973,6 +5101,20 @@ void GameUnitsHost::report() {
                         static_cast<int>(slot->torpedo_attack_mode_370),
                         slot->torpedo_attack_mode_raised_tick,
                         static_cast<double>(slot->torpedo_drop_timer));
+                    host.log.notef("  torpedo %-12s issue stage 007CE9FD: "
+                        "stage_ticks=%d guard_blocked=%d waiting=%d issues=%d "
+                        "cleanups=%d first_issue_at_arm_tick=%d "
+                        "requests_007BBBA0=%d C20h_left=%d C28h=%.3f",
+                        slot->row.name.c_str(),
+                        slot->torpedo_issue_stage_ticks,
+                        slot->torpedo_issue_stage_guard_blocked,
+                        slot->torpedo_issue_stage_waiting,
+                        slot->torpedo_issue_stage_issues,
+                        slot->torpedo_issue_stage_cleanups,
+                        slot->torpedo_issue_first_issue_tick,
+                        slot->torpedo_release_requests_007bbba0,
+                        slot->torpedo_issue_requests_c20,
+                        static_cast<double>(slot->torpedo_issue_interval_c28));
                     host.log.notef("  torpedo %-12s issue gate 007EEF40: "
                         "ctl+390h=%.4f ctl+374h=%.4f open=%d",
                         slot->row.name.c_str(),

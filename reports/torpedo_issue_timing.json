@@ -1,0 +1,326 @@
+{
+  "packet": "cc8_torpedo_issue_timing",
+  "owner": "agent/cc8-torpedo-timing",
+  "question": "When does the native hand a torpedo bomber its release-order budget unit+C58h, relative to the plane's spawn, the squadron's construction and the task the order installs? The host issued it only after a task existed, so arm tick 1 saw a budget of 0.",
+  "answer": "The brief's premise was wrong, and so was the host's. The issue path is not free-running from mission start: 007CEA8D, the one call site of 007C0D90 in the image, sits in a stage at 007CE9FD-007CEB31 at the tail of the plane fixed step, past five guards, a randomised countdown unit+C28h and a pending-request counter unit+C20h that must be strictly positive. An exhaustive disp32 scan of .text for every instruction touching a +C20h field, reads included, finds twelve sites; the counter's one raiser is 007BBC00 ADD dword [ECX+0xC20], EBX with EBX=1 from 007BBBAB, the last instruction of 007BBBA0 BSP_Unit_RequestOrdnanceRelease before its POP EBX/RET, past all three of that function's early exits. A MOV-only store census misses it. So the flight-wide budget of 999 is issued AFTER an aircraft has requested an ordnance release, not before: unit+C58h is how a leader's drop authorises the rest of the flight, not a precondition for the first drop. The squadron block itself does exist from launch (007F2C60 from 004F0AD0), which is the one part of the brief that held.",
+  "coverage": "reconstructed for the 007CE9FD stage and the 007BBC00 raiser; partial for the squadron construction (the constructor and its three callers are named from the listing, the member-array population is not read); contract: unread for the device walk vtable +1FCh, the app-state field [00E188A8]+1FE4h, unit+C3Ah, unit+5Dh and the class descriptor field +1F4h",
+  "doc": "docs/TORPEDO_ISSUE_TIMING.md",
+  "tree_base": {
+    "merge_base_with_main": "f4a96ed28",
+    "note": "Both baselines are this tree's own before-runs at f4a96ed28, not the standing censuses, because main moved twice today."
+  },
+  "census_method": {
+    "callsite_census_007c0d90": "python tools/callsite_census.py 007c0d90 - one CALL, 007CEA8D in 007CE040. rel32 and absolute dword, image wide.",
+    "callsite_census_007bbba0": "python tools/callsite_census.py 007bbba0 - 34 sites; the torpedo task's own are 009D4956 (BSP_BotTaskTorpedo_TickArm), 009D258A, 009D25B3, 009D26F8, 009D2938, 009D29CB and 009D3EB6.",
+    "store_census_0x910_0xc20_0xc28": "python tools/store_census.py found 22 / 3 / 1 stores. It reported 007D625B for unit+C20h and nothing else on the unit, which alone would have made the stage dead code.",
+    "exhaustive_disp_scan_0xc20": "local/scan_disp.py, capstone over the .text raw bytes, sixteen alignments with resync, every operand whose memory displacement is 0xC20 with a register base, reads included: twelve sites. This is what found 007BBC00. The store census missed it because it is an ADD with a register source.",
+    "register_provenance": "Filtered the whole 007CE040 listing (1092 lines, local/output/disasm-raw-007ce040-length-4402-*.txt) for every write to EDI: seven LEA/MOV sites plus the POP. The last before the stage is 007CE848 LEA EDI,[ESI-310h]; 007CEAFE MOV EDI,EDI is alignment. So EDI is the unit and ESI the element at unit+310h."
+  },
+  "native_order": [
+    {
+      "step": 1,
+      "address": "004f0ad0",
+      "native": "004f0ad0",
+      "role": "BSP_SceneUnit_CreatePlaneSquadronGen, body 004F0AD0-004F0BDF, builds the squadron block; callers 006C5050, 006EC8E0 BSP_MCatapult_Fire and 00844FC0 BSP_Shipyard_CreateLaunchedUnit, all launch-time, none of them an order"
+    },
+    {
+      "step": 2,
+      "address": "007f2c60",
+      "native": "007f2c60",
+      "role": "BSP_PlaneSquadronTickableEntity_Construct, body 007F2C60-007F2E18, writes the avoid-zone layer ctl+34Ch at 007F2CDB and the attack mode ctl+370h at 007F2DC1; the block is therefore live before any task"
+    },
+    {
+      "step": 3,
+      "address": "007d625b",
+      "native": "007d625b",
+      "role": "BSP_Plane_ReadPropertyBag zeroes unit+C20h with EBX from the XOR at 007D619A, and builds the device at unit+DECh at 007D61B4; unit+C28h has no writer outside 007CE040, so both start at zero",
+      "in_function": "007d5d20"
+    },
+    {
+      "step": 4,
+      "address": "007ce865",
+      "native": "007bb920",
+      "role": "the fixed step's pilot-command commit"
+    },
+    {
+      "step": 5,
+      "address": "007ce96f",
+      "native": "007b9770",
+      "role": "the control latch, the instruction before the stage"
+    },
+    {
+      "step": 6,
+      "address": "007ce9fd",
+      "native": "007ce9fd",
+      "role": "the release-order issue stage begins; 007CE99D's JE lands on it, so no branch skips it",
+      "in_function": "007ce040"
+    },
+    {
+      "step": 7,
+      "address": "007cea8d",
+      "native": "007c0d90",
+      "role": "the issue path, reached only with unit+C20h > 0"
+    },
+    {
+      "step": 8,
+      "address": "007bbc00",
+      "native": "007bbc00",
+      "role": "the raiser: every ordnance-release request adds one to unit+C20h, so the budget follows a drop",
+      "in_function": "007bbba0"
+    }
+  ],
+  "calls": [
+    {
+      "address": "007cea8d",
+      "native": "007c0d90",
+      "function": "007ce040",
+      "role": "the one call site of the release-order issue path in the image"
+    },
+    {
+      "address": "007ce865",
+      "native": "007bb920",
+      "function": "007ce040",
+      "role": "BSP_Plane_CommitPilotCommand, before the stage"
+    },
+    {
+      "address": "007ce96f",
+      "native": "007b9770",
+      "function": "007ce040",
+      "role": "BSP_Plane_LatchControlInput, the instruction before the stage"
+    },
+    {
+      "address": "007ceab3",
+      "native": "00bd2f10",
+      "function": "007ce040",
+      "role": "the uniform draw over 00CE3860=0.9 and 00CE6448=1.1 that reseeds unit+C28h"
+    },
+    {
+      "address": "007c0f01",
+      "native": "007eef30",
+      "function": "007c0d90",
+      "role": "BSP_PilotControl_IssueReleaseOrders, ECX from unit+9D4h at 007C0EFA"
+    },
+    {
+      "address": "007eef3b",
+      "native": "007ee7f0",
+      "function": "007eef30",
+      "role": "BSP_PilotControl_RefreshArmedFraction, the hook that writes ctl+374h"
+    },
+    {
+      "address": "007eef7f",
+      "native": "007bcbe0",
+      "function": "007eef30",
+      "role": "BSP_Unit_SetQueuedReleaseOrders with 999"
+    },
+    {
+      "address": "007eef6f",
+      "native": "007b8ad0",
+      "function": "007eef30",
+      "role": "BSP_Unit_LacksFollowTarget, unit+9D8h == 0"
+    },
+    {
+      "address": "007d61ab",
+      "native": "007eabc0",
+      "function": "007d5d20",
+      "role": "builds the device stored at unit+DECh, the one 007BBBA0 reads"
+    },
+    {
+      "address": "009d4956",
+      "native": "007bbba0",
+      "function": "009d4850",
+      "role": "the torpedo task's manual passthrough release, gated on task+424h"
+    },
+    {
+      "address": "009d3eb6",
+      "native": "007bbba0",
+      "function": "009d3e80",
+      "role": "BSP_BotTaskTorpedo_DumpRemainingRounds"
+    },
+    {
+      "address": "009d258a",
+      "native": "007bbba0",
+      "function": "009d2570",
+      "role": "BSP_BotStateTorpedoDone_Exit"
+    },
+    {
+      "address": "009d25b3",
+      "native": "007bbba0",
+      "function": "009d25a0",
+      "role": "BSP_BotStateTorpedoDone_ReleaseGated"
+    }
+  ],
+  "named_routines": [
+    {
+      "address": "007ce040",
+      "native": "007ce040",
+      "name": "BSP_PlaneTickElement_FixedStep",
+      "role": "owns the stage at 007CE9FD-007CEB31; body 007CE040-007CF172"
+    },
+    {
+      "address": "007bbba0",
+      "native": "007bbba0",
+      "name": "BSP_Unit_RequestOrdnanceRelease",
+      "role": "body 007BBBA0-007BBC07, INT3 padding from 007BBC08; raises unit+C20h at 007BBC00"
+    },
+    {
+      "address": "007c0d90",
+      "native": "007c0d90",
+      "name": "BSP_Plane_TickReleaseOrderIssue",
+      "role": "body 007C0D90-007C0F0D"
+    },
+    {
+      "address": "007eef30",
+      "native": "007eef30",
+      "name": "BSP_PilotControl_IssueReleaseOrders",
+      "role": "body 007EEF30-007EEFF6"
+    },
+    {
+      "address": "007ee7f0",
+      "native": "007ee7f0",
+      "name": "BSP_PilotControl_RefreshArmedFraction",
+      "role": "body 007EE7F0-007EE8A0"
+    },
+    {
+      "address": "007bcbe0",
+      "native": "007bcbe0",
+      "name": "BSP_Unit_SetQueuedReleaseOrders",
+      "role": "body 007BCBE0-007BCC16"
+    },
+    {
+      "address": "007f2c60",
+      "native": "007f2c60",
+      "name": "BSP_PlaneSquadronTickableEntity_Construct",
+      "role": "body 007F2C60-007F2E18"
+    },
+    {
+      "address": "004f0ad0",
+      "native": "004f0ad0",
+      "name": "BSP_SceneUnit_CreatePlaneSquadronGen",
+      "role": "body 004F0AD0-004F0BDF"
+    },
+    {
+      "address": "007d5d20",
+      "native": "007d5d20",
+      "name": "BSP_Plane_ReadPropertyBag",
+      "role": "body 007D5D20-007D771E; zeroes unit+C20h at 007D625B"
+    },
+    {
+      "address": "007b8ad0",
+      "native": "007b8ad0",
+      "name": "BSP_Unit_LacksFollowTarget",
+      "role": "three instructions, unit+9D8h == 0"
+    }
+  ],
+  "no_ghidra_function": [],
+  "host_methods": [
+    {
+      "address": "007ce9fd",
+      "native": "007ce9fd",
+      "name": "bsp::plane_release_issue_stage_007ce9fd",
+      "role": "the stage rule, src/torpedo_issue_timing.cpp",
+      "in_function": "007ce040"
+    },
+    {
+      "address": "007cea33",
+      "native": "007cea33",
+      "name": "bsp::issue_stage_mode_allows_007cea33",
+      "role": "the four-value control-mode test",
+      "in_function": "007ce040"
+    },
+    {
+      "address": "007bbc00",
+      "native": "007bbc00",
+      "name": "bsp::release_request_raise_007bbc00",
+      "role": "the counter raise",
+      "in_function": "007bbba0"
+    },
+    {
+      "address": "007ce96f",
+      "native": "007b9770",
+      "name": "PlaneBinding::latch_control_input_007b9770",
+      "role": "the sequence position the stage now runs from, src/game_hosts_units.cpp"
+    }
+  ],
+  "contracts": [
+    {
+      "address": "007cea02",
+      "native": "007cea02",
+      "name": "App::state_1fe4",
+      "role": "[00E188A8]+1FE4h == 2 suppresses the stage; the host has no app-state singleton",
+      "in_function": "007ce040"
+    },
+    {
+      "address": "007cea1c",
+      "native": "007cea1c",
+      "name": "Plane::issue_block_c3a",
+      "role": "unit+C3Ah",
+      "in_function": "007ce040"
+    },
+    {
+      "address": "007cea29",
+      "native": "007cea29",
+      "name": "Unit::issue_block_5d",
+      "role": "unit+5Dh",
+      "in_function": "007ce040"
+    },
+    {
+      "address": "007ceb00",
+      "native": "007ceb00",
+      "name": "Plane::device_busy_1fc",
+      "role": "the element's device array ESI+664h count ESI+684h, vtable +1FCh",
+      "in_function": "007ce040"
+    },
+    {
+      "address": "007ceab8",
+      "native": "007ceab8",
+      "name": "PlaneClass::issue_interval_1f4",
+      "role": "the class descriptor field at unit+538h +1F4h that scales the interval draw",
+      "in_function": "007ce040"
+    },
+    {
+      "address": "007bbba0",
+      "native": "007bbba0",
+      "name": "Unit::request_ordnance_release",
+      "role": "the device at unit+DECh and the projectile spawn behind it"
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 clean, Win32 /W4 /WX",
+    "tests": "ctest --test-dir build/win32 -C Release: 2/2 passed, including one new case in tests/math_tests.cpp covering the issue and cleanup arms, which USN01 never reaches at run time",
+    "usn01_before": {
+      "log": "local/usn01_before.log",
+      "per_aircraft": "Mav1..Mav5 identical: issue_ticks=2597 raised=12981..12985 peak_C58h=999 left=999 arm_offers=1298 blocked_0099af53=1 attack_mode_370=1",
+      "budget_on_arm_tick_1": 0,
+      "prepare_entered_on_arm_tick_1": "Mav2 and Mav3 (first_prepare_at_arm_tick=1, coincide=yes); Mav1, Mav4, Mav5 never",
+      "countdown": "drop_timer_98=-1.0 on all five, prepare+98h never armed",
+      "releases": 0,
+      "issue_gate_007eef40": "ctl+390h=0.9500 ctl+374h=0.8000 open=1",
+      "gunnery": "hull=23 total_damage=220.0 deaths=1"
+    },
+    "usn01_after": {
+      "log": "local/usn01_after.log",
+      "per_aircraft": "Mav1..Mav5 identical: issue_ticks=0 raised=0 peak_C58h=0 left=0 arm_offers=0 blocked_0099af53=1299 attack_mode_370=1",
+      "issue_stage_census": "stage_ticks=3000 guard_blocked=0 waiting=3000 issues=0 cleanups=0 first_issue_at_arm_tick=-1 requests_007BBBA0=0 C20h_left=0 C28h=-150.005 on all five",
+      "budget_on_arm_tick_1": 0,
+      "prepare_entered_on_arm_tick_1": "Mav2 and Mav3, unchanged from before",
+      "countdown": "drop_timer_98=-1.0, unchanged",
+      "releases": 0,
+      "issue_gate_007eef40": "both fields 0, because the stage exits at 007CEA78 before the binding that writes them is built",
+      "gunnery": "hull=23 total_damage=220.0 deaths=1, unchanged",
+      "unchanged": "aim tick 009D15F0 (aim_complete 5 of 5, first at aim tick 275), goaway enters=98, attack-mode history hold=1 attack=1298",
+      "judgement": "the peak budget falling from 999 to 0 is a correction, not a regression: the host was issuing 999 from the second step of every ordered aircraft with no native authority. The native issues nothing until 007BBC00 has raised unit+C20h."
+    },
+    "usn02_before": {
+      "log": "local/usn02_before.log",
+      "gunnery": "queued_hits=126 hull=125 deaths=3 total_damage=13673.7 first_hit=41.85 s",
+      "ordnance": "units_with torpedo=29 of 32 units with guns",
+      "torpedo": "no ordered aircraft carries torpedo ordnance, so 0099A170 builds no kind Eh task",
+      "host_methods": "707 concrete, 489 unimplemented"
+    },
+    "usn02_after": {
+      "log": "local/usn02_after.log",
+      "result": "identical on every line above, including the host-method counts. Nothing to attribute: no unit in USN02 runs the reconstructed plane fixed step, so the stage never executes there."
+    },
+    "next_gate": "unit+C20h at 007CEA78, value 0 for the whole mission, and downstream of it unit+C58h at 0099AF53, value 0 on all 6495 ticks. The only torpedo-task call to 007BBBA0 that could raise unit+C20h first is 009D4956, gated on task+424h, for which a full store census found no raiser in the image."
+  }
+}
