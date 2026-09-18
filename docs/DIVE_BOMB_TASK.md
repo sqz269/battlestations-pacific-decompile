@@ -1041,3 +1041,66 @@ work the aim tick took.
 `006E3500` is the per-device round count. Both are small reads on their own, but the record at
 `approach+14h` has no producer yet and the device list behind `006E3500` is the gunnery host's, so
 each is a trace rather than a transcription. They are listed in "Follow-up packets" unchanged.
+
+### `+18h` recovered: the can-dive flag is a height test
+
+Traced. `[ESP+38h]`, the value `009C67F2` compares `approach->+D4h` against, has exactly one writer
+before that read, `009C6493`, and it is built at `009C647D`-`009C6482`: the virtual call at
+`009C647B` returns the target point, `FLD [EAX+4h]` takes its **y**, and `FSUBR qword [ESP+10h]`
+subtracts it from the aircraft's own height. That is the same quantity the aimdive tick forms at
+`009C59D6`.
+
+`009C67F2 FCOMIP ST0,ST1` with `ST0` the height and `ST1` the range, and `009C67F6 JBE` taking the
+`XOR EAX,EAX` arm, so:
+
+```
+flyabove->+18h = (heightAboveTarget > approach->+D4h)
+```
+
+**The aircraft may dive once it is higher above its target than the release range.** That is the
+rule the host was standing in for with a planar-range test against `SafeDist`, and it is now
+`dive_bomb_flyabove_can_dive_009c680e` in `src/dive_bomb_task.cpp`.
+
+### `+19h` not recovered, and the reason is worth recording
+
+`[ESP+30h]`, the slot `009C67A9` compares against zero to decide whether to set the roll-in
+permission, **has no writer anywhere in this function before that read**. An exhaustive scan of the
+defined body for the slot finds a read at `009C6647`, this compare at `009C67A9`, and writes only at
+`009C6853`, `009C69A5` and `009C6C65`, all **after** it. No `LEA` of the slot is passed to any
+callee either, so it is not an out-parameter this reading found.
+
+So either a callee writes it through a pointer formed in a way this scan missed, or the slot is
+genuinely uninitialised on the path that reaches `009C67A9`. Both are worth knowing and neither is
+worth guessing, so the host's stand-in for `+19h` and `+1Ah` **stands**.
+
+The host binding for `+18h` is not switched over yet either: `src/game_hosts_units.cpp` is leased to
+`cc8-torpedo-run-in`. The pure rule is in place and the one-line swap is the next edit when the file
+frees.
+
+## `approach+A8h`: the rule is recovered, the record is not
+
+`009C3F1C`-`009C3F2E`, inside the approach seed `009C3EA0`:
+
+```
+EAX = approach->+14h                      ; 009C3EFD
+FLD [EAX+3Ch]  -> arg2                    ; 009C3F1C
+FLD [EAX+38h]  -> arg1                    ; 009C3F23
+CALL BSP_Random_UniformFloatRange, ECX=1  ; 009C3F29
+FSTP [ESI+A8h]                            ; 009C3F2E
+```
+
+So **`approach->+A8h = Uniform((approach->+14h)->+38h, (approach->+14h)->+3Ch)`**, a per-aircraft
+random dive floor drawn once at construction between two bounds carried by the record at
+`approach+14h`. The next field is the contrast: `009C3F34`-`009C3F3F` takes `approach->+ACh`
+straight from `tuning+4CCh`, `Pilot/DiveBomb/BeginAltRange/1`.
+
+**The record is not identified.** `approach+14h` is read at `009C3EFD` with no writer in this
+function: the head calls `0042E740` for `tuning+4D8h` `Pilot/DiveBomb/ReferenceSpeed` and hands it
+to the base approach constructor `009F9CE0` at `009C3ED5`, so the field is written there. It is the
+same record the aimdive interpolations read `+5Ch` and `+60h` from, so one trace into `009F9CE0`
+would settle three unknowns at once.
+
+Until then the host keeps its labelled substitution of `800` for `approach+A8h`, and the
+`Follow-up packets` entry becomes specific: **trace `approach+14h` to its producer in `009F9CE0`**.
+
+`006E3500`'s per-device round count was not reached in this packet and stays untouched.
