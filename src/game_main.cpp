@@ -46,6 +46,7 @@
 #include "bsp/game_native_shader_process.hpp"
 #include "bsp/game_native_hardware_layout_tree.hpp"
 #include "bsp/game_native_lua_globals.hpp"
+#include "bsp/game_native_dyn_process.hpp"
 #include "bsp/winmain_startup.hpp"
 
 namespace {
@@ -437,6 +438,12 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         const int weak_atexit = weak_pool.initialize_once_00cd8a60();
         log.notef("native weak-handle pool initialized: atexit=%d storage=process_actual38h",
             weak_atexit);
+        // CC8950 is the Dyn dispatcher initializer at original CRT table CE36B0.
+        // Engine/profile/world allocation remains in the native game constructor.
+        auto& dynamics = bsp::game::game_native_dyn_process(bsp::game::application_camera_axes_crt());
+        const int dynamics_atexit = dynamics.initialize_once_00cc8950();
+        log.notef("native Dyn dispatch CRT CC8950: atexit=%d owners=8 "
+            "solver_tables=mode0/mode1", dynamics_atexit);
     } catch (const std::exception& failure) {
         std::fprintf(stderr, "bsp_game: native pool startup failed: %s\n", failure.what());
         log.notef("native pool startup failed: %s", failure.what());
