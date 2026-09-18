@@ -83,6 +83,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_damageable_
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_debug_feature_owner.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_box_box.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_convex_pool.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_contact_groups.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_convex_ray.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_convex_simplex.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_convex_support.cpp)
