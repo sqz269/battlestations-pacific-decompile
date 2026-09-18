@@ -134,8 +134,88 @@
     }
   ],
   "validation": {
-    "runner": "tools/run_game.ps1, 3200 frames, --mission-frames 3000 at 0.05 s",
-    "note": "Only this worktree's own before-run is a reference.",
-    "runs": []
+    "runner": "tools/run_game.ps1, 3200 frames, --mission-frames 3000 at 0.05 s, from this worktree",
+    "note": "Only this worktree's own before-run is a reference. The USN02 before-run and the USN01 after-run were launched and were still queued behind the machine-wide game lock when the packet window closed, so no after measurement exists and none is claimed.",
+    "runs": [
+      {
+        "mission": "USN01",
+        "phase": "before",
+        "build": "95c5e3e9c baseline",
+        "log": "local/usn01_before.log",
+        "status": "complete",
+        "torpedo_task": {
+          "aircraft": 9,
+          "releases": 1
+        },
+        "release_requests_007bbba0": "1 (logged unimplemented twice; the host site does not reach a device)",
+        "device_request_flags_set": 0,
+        "device_request_flags_consumed": 0,
+        "gunnery": {
+          "projectiles_created": 3838,
+          "water_crossings": 0,
+          "entity_impacts": 26,
+          "expired": 3812,
+          "shots": 3838,
+          "can_fire_refusals": 5100,
+          "first_shot_seconds": 4.35
+        },
+        "torpedoes_spawned": 0,
+        "entry_speed": null,
+        "entry_angle": null,
+        "water_entry_verdict": "not reached, no round crossed the surface",
+        "torpedo_ranges_derived": 39,
+        "swims_started": 0,
+        "ordnance_units_with_torpedo": 14,
+        "damage": {
+          "total": 229.5,
+          "hull": 24,
+          "deaths": 1,
+          "kill_credits": 1,
+          "attributions": 26
+        },
+        "torpedo_hits": 0,
+        "torpedo_damage": 0.0,
+        "per_category": {
+          "TORPEDO": {
+            "guns": 15,
+            "assigns": 0,
+            "shots": 0,
+            "no_window": 0,
+            "arc_blocked": 0
+          },
+          "BOMBPLATFORM": {
+            "guns": 81,
+            "assigns": 0,
+            "shots": 0,
+            "no_window": 234327,
+            "arc_blocked": 0
+          },
+          "AAMACHINEGUN": {
+            "guns": 154,
+            "assigns": 449,
+            "shots": 3814,
+            "no_window": 85436,
+            "arc_blocked": 0
+          }
+        }
+      },
+      {
+        "mission": "USN02",
+        "phase": "before",
+        "status": "not run: queued behind the machine-wide game lock for the whole window"
+      },
+      {
+        "mission": "USN01",
+        "phase": "after",
+        "status": "not run: queued behind the machine-wide game lock for the whole window"
+      }
+    ],
+    "next_gate": {
+      "what": "target assignment",
+      "native": "00727f10",
+      "pre_filter": "00729bc0, length3(delta) <= row.max_range",
+      "value": "assigns = 0 over 15 TORPEDO-category guns in USN01, against 449 for AAMACHINEGUN over 154 guns; have_target is false on every torpedo tick, so every downstream conjunct of want_fire is vacuous",
+      "note": "BOMBPLATFORM takes 234327 aim ticks with 0 assigns, so the two categories fail differently"
+    }
   }
 }

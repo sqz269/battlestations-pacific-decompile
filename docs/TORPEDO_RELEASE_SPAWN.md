@@ -166,8 +166,30 @@ the previous position was above zero, and then a positive `swim_speed` on the ro
 `torpedo_ranges_derived=39` says 39 gun rows did derive a swim speed, so the bullet classes are
 authored and read correctly. The USN01 baseline nevertheless reports `water=0`: **no projectile of
 any kind crossed the sea surface**, so the swim branch is never reached. The gate is upstream of
-the swim model entirely, in whether a torpedo gun ever fires, and the census added here resolves
-which conjunct of `want_fire` collapses.
+the swim model entirely.
+
+The baseline's own per-category table names it without needing a new run. Columns are guns,
+assigns, shots, no_window, arc_blocked:
+
+| function | guns | assigns | shots | no_window | arc_blocked |
+| --- | --- | --- | --- | --- | --- |
+| AAMACHINEGUN | 154 | 449 | 3814 | 85436 | 0 |
+| FLAK | 21 | 64 | 24 | 10312 | 0 |
+| TORPEDO | 15 | 0 | 0 | 0 | 0 |
+| BOMBPLATFORM | 81 | 0 | 0 | 234327 | 0 |
+| DEPTHCHARGE | 10 | 0 | 0 | 30000 | 0 |
+
+**The next gate is target assignment.** `assigns` counts `set_bot_fire_target_00727F10`, and it is
+zero over all 15 torpedo guns in USN01 while AAMACHINEGUN takes 449. With `have_target` false on
+every tick, every conjunct of `want_fire` downstream is vacuous, which is why the torpedo rows of
+the funnel added here are all zero and why `no_window` is zero as well: those guns are never even
+aimed. `00729BC0`'s slot test, `length3(delta) <= row.max_range`, is the pre-filter in front of the
+assignment and is the first thing to read. Note that BOMBPLATFORM does take 234327 aim ticks with
+zero assigns, so the two categories fail differently and should not be treated as one bug.
+
+Both mission runs of the instrumented build were still queued behind the machine-wide game lock
+when this packet's window closed, so the funnel counters themselves are **unmeasured**. The gate
+above is measured, from the baseline; the funnel is the instrument left in place to confirm it.
 
 ## Corrections
 
