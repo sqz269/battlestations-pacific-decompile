@@ -323,6 +323,9 @@ struct GameUnitSlot {
     // The dive-bomb bot task (kind 8) this ordered aircraft runs, when its
     // class carries general bomb ordnance (kind 2Ah, 007ED7E0 -> 007B9320) and
     // the command arm at 007EE9C5 chose class 00E08F20. docs/DIVE_BOMB_TASK.md.
+    // The class 007EEC50 chose, stored by the PilotSetTarget path. 0 means no
+    // attack order, which is what every aircraft in IJN01 and USN01 has.
+    unsigned int attack_command_class{0};
     bool dive_bomb_task_installed{false};
     bsp::DiveBombState dive_bomb_state{bsp::DiveBombState::kNone};
     int dive_bomb_state_ticks[10]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -355,6 +358,14 @@ struct GameUnitSlot {
     bool db_flyabove_can_dive_18{false};
     bool db_flyabove_leave_1a{false};
     float db_turn_roll_18{0.0f};     // turndown state+18h, 009C7800's output
+    bool db_turndown_latch_1c{false};  // turndown state+1Ch, 009C465D
+    int db_turndown_ticks{0};
+    int db_turndown_roll_writes{0};
+    int db_turndown_pitch_writes{0};
+    int db_turndown_latched_tick{-1};
+    float db_turndown_bank_last{0.0f};
+    float db_turndown_roll_last{0.0f};
+    float db_turndown_pitch_last{0.0f};
     // Census.
     float db_dive_entry_alt{-1.0f};
     float db_dive_entry_pitch{0.0f};
@@ -3943,17 +3954,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // whose class carries general bomb ordnance and is not
                     // IsKindOf(10h) (docs/ATTACK_COMMANDS.md, 007EE9C5).
                     void run_dive_bomb_task_arm_009c8790(float dt) {
-                        const bsp::OrdnanceKindSet set{unit_.ordnance_mask};
-                        if (unit_.command_target_plus_one == 0) return;
-                        if (!bsp::ordnance_has_general_bomb_2ah(set)) return;
-                        // 007EE946 tries levelbomb first and it needs
-                        // IsKindOf(10h); 007EE9C5 needs the unit NOT to answer
-                        // it, so exactly one of the two applies. This host has
-                        // no IsKindOf, so a torpedo-armed aircraft is excluded
-                        // instead: 007EEA40 would have taken it first only if
-                        // divebomb had refused, and the ordered Jill aircraft
-                        // already run the torpedo task above.
-                        if (bsp::ordnance_has_torpedo_2bh(set)) return;
+                        // 0099A170 builds a task from the class 007EEC50
+                        // chose, so the only correct test is that the class IS
+                        // the divebomb one. An earlier revision gated on
+                        // "has a commanded target and carries bomb ordnance",
+                        // which installed the task on 27 IJN01 aircraft the
+                        // image gives `attackmove`: their commanded target is
+                        // their authored `moveto` row, not an attack order.
+                        // docs/DIVE_BOMB_TASK.md, "Gate 1".
+                        if (!bsp::dive_bomb_task_installed_for_class(
+                                unit_.attack_command_class)) {
+                            return;
+                        }
                         if (!unit_.dive_bomb_task_installed) {
                             unit_.dive_bomb_task_installed = true;
                             // 009C7710 leaves +310h on the moveto/follow pair
@@ -4038,6 +4050,56 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.db_aim_rearm_1c = 0.0f;
                             unit_.db_aim_pull_out_18 = !unit_.db_has_bomb_d1;
                             unit_.db_aim_alive_19 = true;
+                        }
+                        if (ctx.current == bsp::DiveBombState::kTurnDown) {
+                            run_dive_bomb_turndown_tick_009c44f0();
+                        }
+                    }
+
+                    // 009C44F0, the turndown tick, vtable 00D20C84 slot +Ch.
+                    // The arm reaches it through state->vtable[+Ch] at
+                    // 009C884C. docs/DIVE_BOMB_TASK.md carries the body.
+                    void run_dive_bomb_turndown_tick_009c44f0() {
+                        bsp::DiveBombTurnDownInputs in;
+                        in.bank_c68 = unit_.plane_bank_angle_c68;
+                        in.pitch_c64 = unit_.plane_pitch_angle_c64;
+                        in.rolled_latch_1c = unit_.db_turndown_latch_1c;
+                        in.roll_command_18 = unit_.db_turn_roll_18;
+                        // 007C47F0(approach+8h): tuning+24Ch LevelFlight times
+                        // classDesc+184h StallSpd. The class descriptor is not
+                        // modelled here, so the tuning half comes from the Lua
+                        // globals when they loaded and the stall speed is the
+                        // authored default; labelled at its address.
+                        in.desired_speed =
+                            bsp::dive_bomb_turndown_constant::kLevelFlightMultiplier *
+                            bsp::dive_bomb_turndown_constant::kStallSpeedDefault;
+                        const bsp::DiveBombTurnDownResult r =
+                            bsp::dive_bomb_turndown_tick_009c44f0(in);
+                        ++unit_.db_turndown_ticks;
+                        unit_.db_turndown_bank_last = r.folded_bank;
+                        if (r.latch_1c_set) {
+                            if (!unit_.db_turndown_latch_1c) {
+                                unit_.db_turndown_latched_tick =
+                                    unit_.dive_bomb_arm_ticks;
+                            }
+                            unit_.db_turndown_latch_1c = true;
+                        }
+                        // 009C4512-009C4524, the desired-speed pair and the
+                        // one-shot docs/PILOT_THROTTLE_CUT_RAISER.md names.
+                        unit_.plane_desired_speed_2b4 = r.speed_2b4;
+                        unit_.plane_air_brake_mode_2d8 = 1;
+                        ++unit_.plane_speed_commands;
+                        if (r.wrote_roll) {
+                            ++unit_.db_turndown_roll_writes;
+                            unit_.db_turndown_roll_last = r.roll_290;
+                            unit_.plan_slots[bsp::kPilotSlotRoll].desired = r.roll_290;
+                            unit_.plan_slots[bsp::kPilotSlotRoll].active = 1;
+                        }
+                        if (r.wrote_pitch) {
+                            ++unit_.db_turndown_pitch_writes;
+                            unit_.db_turndown_pitch_last = r.pitch_29c;
+                            unit_.plan_slots[bsp::kPilotSlotPitch].desired = r.pitch_29c;
+                            unit_.plan_slots[bsp::kPilotSlotPitch].active = 1;
                         }
                     }
 
@@ -5747,6 +5809,12 @@ void GameUnitsHost::store_unit_command_target(std::size_t index,
     impl_->slots[index]->command_target_plus_one = target_plus_one;
 }
 
+void GameUnitsHost::store_unit_attack_command_class(std::size_t index,
+                                                    unsigned int cls) noexcept {
+    if (index >= impl_->slots.size()) return;
+    impl_->slots[index]->attack_command_class = cls;
+}
+
 void GameUnitsHost::store_unit_ordnance(std::size_t index, std::uint64_t mask) noexcept {
     if (index >= impl_->slots.size()) return;
     impl_->slots[index]->ordnance_mask = mask;
@@ -6565,6 +6633,19 @@ void GameUnitsHost::report() {
                     slot->dive_bomb_rounds_remaining);
                 // The first gate check the packet asks for: approach+BCh
                 // against approach+B8h in the latch at 009C7C31.
+                if (slot->db_turndown_ticks > 0) {
+                    host.log.notef("  divebomb %-12s turndown 009C44F0: ticks=%d "
+                        "roll_writes=%d pitch_writes=%d latched_at_tick=%d "
+                        "|bank|=%.4f rad roll=%.4f pitch=%.4f speed_2b4=%.1f",
+                        slot->row.name.c_str(), slot->db_turndown_ticks,
+                        slot->db_turndown_roll_writes,
+                        slot->db_turndown_pitch_writes,
+                        slot->db_turndown_latched_tick,
+                        static_cast<double>(slot->db_turndown_bank_last),
+                        static_cast<double>(slot->db_turndown_roll_last),
+                        static_cast<double>(slot->db_turndown_pitch_last),
+                        static_cast<double>(slot->plane_desired_speed_2b4));
+                }
                 host.log.notef("  divebomb %-12s gate 009C7C31: "
                     "approach+BCh=%.1f m approach+B8h=%.1f m latch_D0h=%d "
                     "bomb_D1h=%d | ticks without latch=%d without bombs=%d",
