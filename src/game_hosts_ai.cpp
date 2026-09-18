@@ -26,6 +26,84 @@
 #include "bsp/unit_gunnery_pass.hpp"
 
 namespace bsp::game {
+
+void GameObjectiveSets::reset() noexcept {
+    for (std::size_t i = 0; i < kSlotCount; ++i) slots[i].clear();
+    adds = unit_adds = unit_removes = rejected = 0;
+}
+
+GameObjectiveSets::Objective* GameObjectiveSets::add_objective(int slot,
+    const std::string& name) {
+    if (slot < 0 || static_cast<std::size_t>(slot) >= kSlotCount || name.empty()) {
+        ++rejected;
+        return nullptr;
+    }
+    std::vector<Objective>& list = slots[static_cast<std::size_t>(slot)];
+    // 008DF2B0's lookup is a case-insensitive name compare over the set's list;
+    // 008E1F80 creates only when the walk found nothing.
+    for (Objective& o : list) {
+        if (o.name.size() == name.size() &&
+            _stricmp(o.name.c_str(), name.c_str()) == 0) {
+            return &o;
+        }
+    }
+    Objective made;
+    made.name = name;
+    list.push_back(std::move(made));
+    ++adds;
+    return &list.back();
+}
+
+bool GameObjectiveSets::add_unit(int slot, const std::string& name, std::size_t unit) {
+    Objective* o = add_objective(slot, name);
+    if (o == nullptr) return false;
+    if (std::find(o->units.begin(), o->units.end(), unit) != o->units.end()) return false;
+    o->units.push_back(unit);
+    ++unit_adds;
+    return true;
+}
+
+bool GameObjectiveSets::remove_unit(int slot, const std::string& name, std::size_t unit) {
+    if (slot < 0 || static_cast<std::size_t>(slot) >= kSlotCount) return false;
+    for (Objective& o : slots[static_cast<std::size_t>(slot)]) {
+        if (!name.empty() && !(o.name.size() == name.size() &&
+                               _stricmp(o.name.c_str(), name.c_str()) == 0)) {
+            continue;
+        }
+        auto it = std::find(o.units.begin(), o.units.end(), unit);
+        if (it != o.units.end()) {
+            o.units.erase(it);
+            ++unit_removes;
+            return true;
+        }
+    }
+    return false;
+}
+
+std::vector<std::size_t> GameObjectiveSets::units_in_slot(int slot) const {
+    std::vector<std::size_t> out;
+    if (slot < 0 || static_cast<std::size_t>(slot) >= kSlotCount) return out;
+    for (const Objective& o : slots[static_cast<std::size_t>(slot)]) {
+        for (const std::size_t unit : o.units) {
+            if (std::find(out.begin(), out.end(), unit) == out.end()) out.push_back(unit);
+        }
+    }
+    return out;
+}
+
+std::size_t GameObjectiveSets::total_units() const noexcept {
+    std::size_t n = 0;
+    for (std::size_t i = 0; i < kSlotCount; ++i) {
+        for (const Objective& o : slots[i]) n += o.units.size();
+    }
+    return n;
+}
+
+GameObjectiveSets& game_objective_sets() noexcept {
+    static GameObjectiveSets sets;
+    return sets;
+}
+
 namespace {
 
 // 004BCA50 BSP_Game_GetEffectiveGameMode returns [world+614h], remapped by the
@@ -129,10 +207,6 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         std::vector<std::size_t> member_units;  // unit indices in +3D0h order
     };
     std::vector<Squadron> squadrons;
-    // game+21A4h..+21C0h, the eight per-player-slot objective sets.
-    // Filled by 008CD440 Objectives_Add / 008CDD60 Objectives_AddUnit,
-    // both unimplemented in this process, so all eight stay empty.
-    std::array<std::vector<std::size_t>, 8> objective_sets{};
     // A plane the squadron owns is NOT an AI candidate of its own. The native
     // seeds the scene's PlaneSquadronGen entities; the planes exist only in the
     // member array at +3D0h, and 009FE080 would refuse them anyway (009FE0A5
@@ -1201,12 +1275,12 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         Group* g = group_at(group);
         record("AiParties::group_has_member_in_world_set", 0x00a2c450u);
         if (g == nullptr || set_index < 0 ||
-            static_cast<std::size_t>(set_index) >= objective_sets.size()) {
+            static_cast<std::size_t>(set_index) >= GameObjectiveSets::kSlotCount) {
             return false;
         }
-        const std::vector<std::size_t>& set =
-            objective_sets[static_cast<std::size_t>(set_index)];
-        if (set.empty()) return false;          // 00A2C4B4, every run so far
+        const std::vector<std::size_t> set =
+            game_objective_sets().units_in_slot(set_index);
+        if (set.empty()) return false;          // 00A2C4B4 when the slot is empty
         for (const std::size_t member : g->members) {
             // 00A2C486 takes the node's +8h, the member entity, and 00A2C491
             // asks the set. A squadron answers for its flight leader, because
@@ -1734,13 +1808,8 @@ void GameAiCoordinatorHost::report() {
     host.log.notef("summary mission ai order dedupe suppressed=%llu (duplicate re-issues "
         "of the same token/target/point; 0077D600 replaces, this ring appends)",
         host.summary.orders_suppressed);
-    {
-        unsigned long long units = 0;
-        for (const std::vector<std::size_t>& set : host.objective_sets) {
-            units += static_cast<unsigned long long>(set.size());
-        }
-        host.summary.objective_set_units = units;
-    }
+    host.summary.objective_set_units =
+        static_cast<unsigned long long>(game_objective_sets().total_units());
     host.log.notef("summary mission ai world sets queries=%llu hits=%llu objective_units=%llu "
         "(00A2C450 over game+21A4h..+21C0h, the eight per-player-slot SzurkeNyil objective "
         "sets; their producer 008CD440 Objectives_Add is unimplemented here, so every set is "

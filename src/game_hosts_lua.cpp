@@ -12,6 +12,9 @@
 
 #include "bsp/game_hosts_lua.hpp"
 
+#include "bsp/game_hosts_ai.hpp"
+#include "bsp/objective_units.hpp"
+
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_hosts_vfs.hpp"
@@ -65,6 +68,79 @@ const lua_CFunction kLibraryOpeners[bsp::kMissionLuaStandardLibraryCount] = {
     luaopen_string, luaopen_math, luaopen_debug,
 };
 
+// ---------------------------------------------------------------------------
+// The three objective bindings, docs/MISSION_OBJECTIVES.md
+// ---------------------------------------------------------------------------
+// 008CD440 Objectives_Add, 008CDD60 Objectives_AddUnit and 008CE510
+// Objectives_RemoveUnit are the only producers of the eight per-player-slot
+// objective sets at game+21A4h..+21C0h that 00A2C450 walks. Their argument
+// decoding is read from the listing: 00B677E0 BSP_LuaObject_ArgumentAt is
+// __thiscall(frame, out, index) and the index is the FIRST of its three pushes,
+// so scanning the body for it gives the order directly (local/argscan.py).
+//
+//   008CD440  arg0 optional int (008CD544 IsInteger, 008CD57F/008CD59A GetInteger)
+//             arg1 optional int (008CD5E1 IsInteger, 008CD617/008CD626 GetInteger)
+//             arg2 string       (008CD65A/008CD669 GetString)   <- the objective name
+//             arg3 string       (008CD6D3/008CD6E2 GetString)
+//             arg4 string       (008CD744/008CD758 GetString)
+//             arg5 optional bool(008CD7D6 IsBoolean, 008CD832/008CD846 GetBoolean)
+//             arg6.. the targets, walked without an immediate index
+//   008CDD60  arg0 party, arg1 slot, arg2 name (kObjectiveNameArgument),
+//             arg3.. the targets (kObjectiveFirstTargetArgument)
+//
+// Argument 0 builds a mask of every slot whose player carries that party and
+// argument 1, when present, replaces it with that one slot; the add loop then
+// runs once per set bit (008CDAF0 SHL EAX,CL against the mask at [ESP+1Ch],
+// 008CDB09 MOV ECX,[EDX+EBP] over game+21A4h). A target is an entity table and
+// its `ID` is the identity milestone 2l established, so `unit = ID - 1` is the
+// same resolve 00888AA0 stands in for at 00888AA0's host binding.
+int objective_argument_int(lua_State* state, int index, bool& present) {
+    const int slot = index + 1;
+    present = false;
+    if (slot > lua_gettop(state)) return 0;
+    const int type = lua_type(state, slot);
+    if (type != LUA_TNUMBER && type != LUA_TSTRING) return 0;
+    present = true;
+    return static_cast<int>(lua_tonumber(state, slot));
+}
+
+std::string objective_argument_string(lua_State* state, int index) {
+    const int slot = index + 1;
+    if (slot > lua_gettop(state)) return std::string();
+    if (lua_type(state, slot) != LUA_TSTRING) return std::string();
+    const char* text = lua_tolstring(state, slot, nullptr);
+    return text != nullptr ? std::string(text) : std::string();
+}
+
+// 00888AA0's stand-in: the `ID` field 00928A00 seeds, minus one.
+bool objective_argument_unit(lua_State* state, int index, std::size_t& unit) {
+    const int slot = index + 1;
+    const int top = lua_gettop(state);
+    if (slot > top || lua_type(state, slot) != LUA_TTABLE) return false;
+    lua_getfield(state, slot, "ID");
+    const int type = lua_type(state, -1);
+    const bool number = type == LUA_TNUMBER || type == LUA_TSTRING;
+    const int id = number ? static_cast<int>(lua_tonumber(state, -1)) : 0;
+    lua_settop(state, top);
+    if (!number || id <= 0) return false;
+    unit = static_cast<std::size_t>(id - 1);
+    return true;
+}
+
+// 008CDEF2's loop and 008CDFE0's explicit slot. This process has one player
+// record, slot 0, and no party field on it, so the party arm cannot select a
+// second slot; the explicit arm is exact. Labelled substitution for
+// objective_party_slot_mask's player+28h read.
+unsigned int objective_slot_mask(bool have_party, int party, bool have_slot, int slot) {
+    if (have_slot && slot >= 0 &&
+        static_cast<std::size_t>(slot) < bsp::game::GameObjectiveSets::kSlotCount) {
+        return bsp::objective_explicit_slot_mask(slot);
+    }
+    (void)party;
+    // Without player records only slot 0 is active here (008CDF58's two bytes).
+    return have_party ? 1u : 1u;
+}
+
 GameMissionLuaHost* host_from_upvalue(lua_State* state) {
     return static_cast<GameMissionLuaHost*>(lua_touserdata(state, lua_upvalueindex(1)));
 }
@@ -86,7 +162,9 @@ int binding_trampoline(lua_State* state) {
         bsp::mission_lua_bindings()[static_cast<std::size_t>(row)];
     GameScriptOrdersHost* orders = host->script_orders();
     const bool avoidance_setting = dispatch_row.address == 0x008d0740u;
-    const bool handled = avoidance_setting || (orders != nullptr
+    const bool objective_row = dispatch_row.address == 0x008cd440u
+        || dispatch_row.address == 0x008cdd60u || dispatch_row.address == 0x008ce510u;
+    const bool handled = avoidance_setting || objective_row || (orders != nullptr
         && GameScriptOrdersHost::handles(dispatch_row.name));
     // The replay of a failed named call, which the executable makes only to
     // recover the error message, must not count a second time.
@@ -126,6 +204,37 @@ int binding_trampoline(lua_State* state) {
     // value is different from one that returns none, and the shipped scripts
     // assign from these.
     const bsp::MissionLuaBinding& binding = dispatch_row;
+    if (objective_row && !host->error_replay()) {
+        bsp::game::GameObjectiveSets& sets = bsp::game::game_objective_sets();
+        bool have_party = false;
+        bool have_slot = false;
+        const int party = objective_argument_int(state, 0, have_party);
+        const int slot_argument = objective_argument_int(state, 1, have_slot);
+        const unsigned int mask =
+            objective_slot_mask(have_party, party, have_slot, slot_argument);
+        const bool is_add = dispatch_row.address == 0x008cd440u;
+        const bool is_remove = dispatch_row.address == 0x008ce510u;
+        // 008CD65A for Add and 008CDFFA (kObjectiveNameArgument) for AddUnit
+        // both read argument 2 as the objective name.
+        const std::string name = objective_argument_string(state, 2);
+        // 008CD440's targets begin after its three strings and its boolean;
+        // 008CDD60's at kObjectiveFirstTargetArgument.
+        const int first_target = is_add ? 6 : bsp::kObjectiveFirstTargetArgument;
+        int units_touched = 0;
+        for (int k = 0; k < static_cast<int>(bsp::game::GameObjectiveSets::kSlotCount); ++k) {
+            if ((mask & (1u << k)) == 0u) continue;
+            if (is_add) sets.add_objective(k, name);
+            for (int arg = first_target; arg < argc; ++arg) {
+                std::size_t unit = 0;
+                if (!objective_argument_unit(state, arg, unit)) continue;
+                const bool moved = is_remove ? sets.remove_unit(k, name, unit)
+                                             : sets.add_unit(k, name, unit);
+                if (moved) ++units_touched;
+            }
+        }
+        host->note_objective_binding(dispatch_row.name, name, mask, units_touched);
+        return 0;
+    }
     if (avoidance_setting) {
         // 008D0849 uses bare 00B66250, which is lua_toboolean with no type
         // gate. Native argument zero is this C callback's stack slot one;
@@ -1240,6 +1349,17 @@ void GameMissionLuaHost::note_native_call(std::size_t row, int argument_count,
     char method[96];
     std::snprintf(method, sizeof(method), "MissionLuaNative::%s", binding.name);
     log_.unimplemented(method, address);
+}
+
+void GameMissionLuaHost::note_objective_binding(const char* binding,
+    const std::string& objective, unsigned int slot_mask, int units_touched) {
+    ++summary_.objective_binding_calls;
+    summary_.objective_units_touched += static_cast<unsigned long long>(units_touched);
+    if (summary_.objective_binding_calls <= 24) {
+        log_.notef("  objective binding %-22s name=\"%s\" slots=0x%02x units=%d",
+            binding, objective.c_str(), slot_mask, units_touched);
+    }
+    log_.implemented("MissionLuaNative::Objectives", "008cd440");
 }
 
 int GameMissionLuaHost::read_vehicle_class_integer(int index, const char* key,
