@@ -50,7 +50,7 @@ void normal(NativeGameStorage& game,NativeGameLifetimeContext& x,NativeGameLifet
         void* p=cell;if(p){o.native_site=site;c.virtual_scalar(p,slot,1);cell=nullptr;}
     };
     scalar(x.publication_00e18678,0,0x4dd005);scalar(x.publication_00e1867c,0,0x4dd01d);
-    o.native_site=0x4dd026;c.call_004a9ac0();
+    o.native_site=0x4dd026;c.call_004a9ac0(x.classes,x.profile,o.classes);
     if(void* p=x.publication_00e19900) {
         o.native_site=0x4dd037;c.call_006b9380(p,x.profile,o.awards);
         o.native_site=0x4dd03d;c.free_00bf65ac(p);x.publication_00e19900=nullptr;
@@ -142,10 +142,21 @@ void NativeGameLifetimeOperation::acknowledge_diagnostic_cleanup() noexcept {
         if(awards.phase==NativeAwardRegistryLifetimeOperation::Phase::running||awards.phase==NativeAwardRegistryLifetimeOperation::Phase::failed)std::terminate();
         for(const auto& singleton:singletons)if(singleton.phase==NativeGameSingletonLifetimeOperation::Phase::running||singleton.phase==NativeGameSingletonLifetimeOperation::Phase::failed)std::terminate();
         if(lua_globals.phase==NativeGameLuaGlobalsLifetimeOperation::Phase::running||lua_globals.phase==NativeGameLuaGlobalsLifetimeOperation::Phase::failed)std::terminate();
+        if(classes.phase==NativeGameClassCleanupOperation::Phase::running||classes.phase==NativeGameClassCleanupOperation::Phase::failed)std::terminate();
         phase=Phase::diagnostic_retired;
     }
 }
 void NativeGameLifetimeCalls::call_008d88f0(){native_game_cleanup_noop_008d88f0();}
+void NativeGameLifetimeCalls::call_004a9ac0(NativeGameClassCleanupContext* c,NativeGameProfileLifetimeContext* p,NativeGameClassCleanupOperation& o){
+    if(!c||!p||&c->calls!=this||&p->calls!=this||!c->actual_vectors_00e1875c)
+        throw std::invalid_argument("native game class cleanup requires its actual contexts");
+    auto& a=c->strings;auto& b=p->strings;
+    if(&a.actual_manager_publication_01090aa0!=&b.actual_manager_publication_01090aa0||
+       &a.actual_published_01090aa8!=&b.actual_published_01090aa8||
+       &a.actual_small_returns_disabled_01090aa4!=&b.actual_small_returns_disabled_01090aa4)
+        throw std::invalid_argument("native game class cleanup must share its string and lifetime publications");
+    clear_native_game_class_globals_004a9ac0(*c,o);
+}
 void* NativeGameLifetimeCalls::call_004c1400(NativeResourceManagerContext* r,NativeGameProfileLifetimeContext* p){
     return get_native_resource_manager_004c1400(resource_context(*this,r,p));
 }

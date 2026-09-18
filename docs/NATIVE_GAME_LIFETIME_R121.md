@@ -264,3 +264,7 @@ stillmatches52 cases/3,537 snapshots/141,402,076bytes andfour failure/replay cas
 Strict Win32/three CTests pass. Remainingaddress dependencies are world/physics;
 payload virtualbindings,ordinaryrawgameadmission,nativeexceptionABI andgameplay
 remainopen.
+
+## Correction from NATIVE_GAME_CLASS_CLEANUP_R131.md
+
+R131 supplies the parent 4DD026 class cleanup call through the same actual string and lifetime publication cells as the profile context. The retained operation now owns its class-cleanup child diagnostics. The new class registry scalar profile also participates in canonical singleton drain. Eleven complete normal bodies total 1,135 bytes; full-range and zero-resize adapters are explicitly partial. Native/source and parent comparison results are recorded in docs/NATIVE_GAME_CLASS_CLEANUP_R131.md. Only C4DDE0 remains a pure address call; virtual payload bindings, native exception ABI, application admission and gameplay remain open.

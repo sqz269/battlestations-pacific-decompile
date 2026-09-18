@@ -7,6 +7,7 @@
 #include "bsp/native_game_tree_lifetime.hpp"
 #include "bsp/native_game_singleton_lifetime.hpp"
 #include "bsp/native_game_lua_globals_lifetime.hpp"
+#include "bsp/native_game_class_cleanup.hpp"
 #include <cstdint>
 
 namespace bsp {
@@ -14,13 +15,13 @@ struct NativeGameStorage;
 struct NativeResourceManagerContext;
 // Address-named dependencies deliberately require real bindings. No successful
 // empty cleanup is supplied. The parent does not establish these callee bodies.
-struct NativeGameLifetimeCalls : NativeGameArrayLifetimeCalls,NativeGameEmbeddedLifetimeCalls,NativeGameProfileLifetimeCalls,NativeGameContainerLifetimeCalls,NativeGameSingletonLifetimeCalls,NativeGameLuaGlobalsLifetimeCalls {
+struct NativeGameLifetimeCalls : NativeGameArrayLifetimeCalls,NativeGameEmbeddedLifetimeCalls,NativeGameProfileLifetimeCalls,NativeGameContainerLifetimeCalls,NativeGameSingletonLifetimeCalls,NativeGameLuaGlobalsLifetimeCalls,NativeGameClassCleanupCalls {
     virtual ~NativeGameLifetimeCalls()=default;
     virtual void call_00c4dde0(void*)=0;
     virtual void call_0076a760(void*,NativeGameEmbeddedLifetimeContext*);
     virtual void call_008d88f0();
     virtual void call_004bf930(void*,NativeGameContainerLifetimeProgress&);
-    virtual void call_004a9ac0()=0;
+    virtual void call_004a9ac0(NativeGameClassCleanupContext*,NativeGameProfileLifetimeContext*,NativeGameClassCleanupOperation&);
     virtual void call_006b9380(void*,NativeGameProfileLifetimeContext*,NativeAwardRegistryLifetimeOperation&);
     virtual void call_004c0c30(NativeGameSingletonLifetimeContext*,NativeGameSingletonLifetimeOperation&);
     virtual void call_004c0ce0(NativeGameSingletonLifetimeContext*,NativeGameSingletonLifetimeOperation&);
@@ -91,6 +92,7 @@ struct NativeGameLifetimeContext {
     NativeGameSingletonLifetimeContext* singletons{};
     NativeGameLuaGlobalsLifetimeContext* lua_globals{};
     NativeResourceManagerContext* resources{};
+    NativeGameClassCleanupContext* classes{};
 };
 struct NativeGameLifetimeProgress {
     std::uint32_t native_site{};
@@ -109,6 +111,7 @@ struct NativeGameLifetimeOperation final : NativeGameLifetimeProgress {
     NativeGameTreeLifetimeProgress trees;
     NativeGameSingletonLifetimeOperation singletons[3];
     NativeGameLuaGlobalsLifetimeOperation lua_globals;
+    NativeGameClassCleanupOperation classes;
     NativeGameLifetimeOperation()=default;
     ~NativeGameLifetimeOperation();
     NativeGameLifetimeOperation(const NativeGameLifetimeOperation&)=delete;

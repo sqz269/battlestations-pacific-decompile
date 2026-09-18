@@ -1,4 +1,5 @@
 #include "bsp/native_singleton_destruction.hpp"
+#include "bsp/native_game_class_cleanup.hpp"
 #include "bsp/native_weak_owner.hpp"
 #include "bsp/observer_lifetime.hpp"
 #include "bsp/observer_dispatch_owner.hpp"
@@ -65,6 +66,12 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
     const NativeSingletonDeletionBindings& bindings, std::uint32_t profile,
     std::uint32_t flags) {
     switch (profile) {
+    case 0x00ce6c68:
+        if (bindings.game_classes != nullptr) {
+            delete_native_game_class_registered_owner(owner, flags, *bindings.game_classes);
+            return;
+        }
+        break;
     case 0x00d5e480:
         if (bindings.render_resources != nullptr) {
             delete_native_render_resources_00b151c0(owner,flags,*bindings.render_resources);
