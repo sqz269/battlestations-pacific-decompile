@@ -1,5 +1,7 @@
 #include "bsp/native_game_lifetime.hpp"
 #include "bsp/native_game_construction.hpp"
+#include "bsp/native_lua_objects.hpp"
+#include "bsp/native_input_configuration_owner.hpp"
 #include <Windows.h>
 #include <cstdlib>
 #include <cstring>
@@ -27,7 +29,7 @@ void normal(NativeGameStorage& game,NativeGameLifetimeContext& x,NativeGameLifet
     x.small_returns_disabled_01090aa4=1;
     o.native_site=0x4dcfcb;destroy_native_game_nested_storage_004d27c0(at(g,0x30),c,o);
     o.native_site=0x4dcfd3;c.call_00c4dde0(pointer(g,0x14));
-    o.native_site=0x4dcfde;c.call_0076a760(at(g,0x1ef0));
+    o.native_site=0x4dcfde;c.call_0076a760(at(g,0x1ef0),x.embedded);
     o.native_site=0x4dcfe3;c.call_008d88f0();
     o.native_site=0x4dcfee;c.call_004bf930(at(g,0x5f0));
     const auto scalar=[&](void* volatile& cell,U slot,U site) {
@@ -73,7 +75,7 @@ void normal(NativeGameStorage& game,NativeGameLifetimeContext& x,NativeGameLifet
     string(0x7164,0x4dd20f,0x4dd216);o.unwind_state=0x1f;
     o.native_site=0x4dd230;c.array_destroy_00bf7c6e(at(g,0x7134),0xc,4,0x4c4600,x.arrays,o.arrays[0]);
     o.unwind_state=0x1e;string(0x2198,0x4dd251,0x4dd258);o.unwind_state=0x1d;
-    o.native_site=0x4dd268;c.call_0076f000(at(g,0x1ef0));o.unwind_state=0x1c;
+    o.native_site=0x4dd268;c.call_0076f000(at(g,0x1ef0),x.embedded,o.embedded);o.unwind_state=0x1c;
     o.native_site=0x4dd278;c.call_00b669a0(at(g,0x1a0c));
     constexpr U offsets[]={0x19e4,0x19e0,0x19dc,0x19d8,0x19d4};
     constexpr U decs[]={0x4dd290,0x4dd2b7,0x4dd2de,0x4dd305,0x4dd32c};
@@ -121,6 +123,7 @@ NativeGameLifetimeOperation::~NativeGameLifetimeOperation(){if(phase==Phase::run
 void NativeGameLifetimeOperation::acknowledge_diagnostic_cleanup() noexcept {
     if(phase==Phase::failed){
         for(const auto& array:arrays)if(array.phase==NativeGameArrayLifetimeOperation::Phase::running||array.phase==NativeGameArrayLifetimeOperation::Phase::failed)std::terminate();
+        if(embedded.phase==NativeGameEmbeddedLifetimeOperation::Phase::running||embedded.phase==NativeGameEmbeddedLifetimeOperation::Phase::failed)std::terminate();
         phase=Phase::diagnostic_retired;
     }
 }
@@ -129,6 +132,17 @@ void NativeGameLifetimeCalls::array_destroy_00bf7c6e(void* p,U stride,U count,U 
     if(!context||&context->calls!=this)throw std::invalid_argument("native game array destruction requires its actual lifetime services");
     destroy_native_game_array_00bf7c6e(p,stride,count,destructor,*context,operation);
 }
+void NativeGameLifetimeCalls::call_0076a760(void* p,NativeGameEmbeddedLifetimeContext* context){
+    if(!context||&context->calls!=this)throw std::invalid_argument("native embedded game cleanup requires its actual context");
+    disable_native_game_embedded_owners_0076a760(p,context->flag_00e0af14);
+}
+void NativeGameLifetimeCalls::call_0076f000(void* p,NativeGameEmbeddedLifetimeContext* context,NativeGameEmbeddedLifetimeOperation& operation){
+    if(!context||&context->calls!=this)throw std::invalid_argument("native embedded game cleanup requires its actual context");
+    destroy_native_game_embedded_state_0076f000(p,*context,operation);
+}
+void NativeGameLifetimeCalls::call_0041cc80(void* p){NativeGameEmbeddedLifetimeCalls::call_0041cc80(p);}
+void NativeGameLifetimeCalls::call_00b669a0(void* p){close_native_lua_state_00b669a0(*static_cast<NativeLuaStateStorage*>(p));}
+void NativeGameLifetimeCalls::call_004dceb0(void* p){destroy_native_input_configuration_004dceb0(p);}
 void destroy_native_game_nested_storage_004d27c0(void* cell,NativeGameLifetimeCalls& c,NativeGameLifetimeProgress& o) {
     if(void* p=pointer(cell,0)) {
         if(void* q=pointer(p,0x14)){o.native_site=0x4d27d5;c.free_00bf65ac(q);}

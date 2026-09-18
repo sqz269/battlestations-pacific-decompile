@@ -140,3 +140,12 @@ the existing actual string-pool and observer services. The parent takes an
 explicit array context and retains four child operations. Remaining cleanup
 services, native exception behavior and ordinary application admission stay
 open. See the R122 report for copied-original and parent-binding evidence.
+
+## Correction from docs/NATIVE_GAME_EMBEDDED_LIFETIME_R123.md
+
+R123 binds embedded-state disable/destruction at 4DCFDE/4DD268 to four complete
+normal bodies with an explicit actual context and retained child operation.
+The existing tracked-lock, Lua-state and input-configuration cleanup bodies now
+supply the corresponding parent defaults. Parent and embedded copied-original
+comparisons pass; virtual peer/payload services, other parent dependencies,
+native exception behavior and ordinary raw-game admission remain open.
