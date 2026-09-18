@@ -71,7 +71,7 @@ void normal(NativeGameStorage& game,NativeGameLifetimeContext& x,NativeGameLifet
         }
     };
     string(0x7164,0x4dd20f,0x4dd216);o.unwind_state=0x1f;
-    o.native_site=0x4dd230;c.array_destroy_00bf7c6e(at(g,0x7134),0xc,4,0x4c4600);
+    o.native_site=0x4dd230;c.array_destroy_00bf7c6e(at(g,0x7134),0xc,4,0x4c4600,x.arrays,o.arrays[0]);
     o.unwind_state=0x1e;string(0x2198,0x4dd251,0x4dd258);o.unwind_state=0x1d;
     o.native_site=0x4dd268;c.call_0076f000(at(g,0x1ef0));o.unwind_state=0x1c;
     o.native_site=0x4dd278;c.call_00b669a0(at(g,0x1a0c));
@@ -92,8 +92,8 @@ void normal(NativeGameStorage& game,NativeGameLifetimeContext& x,NativeGameLifet
         o.native_site=free_site;c.free_00bf65ac(pointer(header,4));word(header,4,0);word(header,8,0);
     };
     tree(0x1930,0xd,0x4dd3c6,0x4dd3cf,&NativeGameLifetimeCalls::call_004d1a50);
-    o.unwind_state=0xc;o.native_site=0x4dd3f5;c.array_destroy_00bf7c6e(at(g,0x1008),0x118,8,0x4cb2f0);
-    o.unwind_state=0xb;o.native_site=0x4dd412;c.array_destroy_00bf7c6e(at(g,0x748),0x118,8,0x4cb2f0);
+    o.unwind_state=0xc;o.native_site=0x4dd3f5;c.array_destroy_00bf7c6e(at(g,0x1008),0x118,8,0x4cb2f0,x.arrays,o.arrays[1]);
+    o.unwind_state=0xb;o.native_site=0x4dd412;c.array_destroy_00bf7c6e(at(g,0x748),0x118,8,0x4cb2f0,x.arrays,o.arrays[2]);
     o.unwind_state=0xa;o.native_site=0x4dd422;c.call_007fd8a0(at(g,0x650));
     o.native_site=0x4dd42f;c.call_004cf3f0(at(g,0x638));
     o.native_site=0x4dd438;c.free_00bf65ac(pointer(g,0x63c));word(g,0x63c,0);
@@ -104,7 +104,7 @@ void normal(NativeGameStorage& game,NativeGameLifetimeContext& x,NativeGameLifet
     tree(0x5c8,4,0x4dd4d5,0x4dd4de,&NativeGameLifetimeCalls::call_004d2000);
     tree(0x5bc,3,0x4dd50a,0x4dd513,&NativeGameLifetimeCalls::call_004d41a0);
     tree(0x5b0,2,0x4dd53f,0x4dd548,&NativeGameLifetimeCalls::call_004cef40);
-    o.unwind_state=1;o.native_site=0x4dd56b;c.array_destroy_00bf7c6e(at(g,0x560),0x10,5,0x4cafd0);
+    o.unwind_state=1;o.native_site=0x4dd56b;c.array_destroy_00bf7c6e(at(g,0x560),0x10,5,0x4cafd0,x.arrays,o.arrays[3]);
     o.unwind_state=0;o.native_site=0x4dd577;c.call_004dceb0(at(g,0x3c));
     if(void* p=pointer(g,0x24)){o.native_site=0x4dd585;c.free_00bf65ac(p);}
     word(g,0x24,0);word(g,0x28,0);word(g,0x2c,0);
@@ -118,7 +118,17 @@ std::int32_t NativeGameLifetimeCalls::interlocked_decrement(volatile std::int32_
 void NativeGameLifetimeCalls::free_00bf65ac(void* p){::operator delete(p);}
 void NativeGameLifetimeCalls::free_00bf6989(void* p){std::free(p);}
 NativeGameLifetimeOperation::~NativeGameLifetimeOperation(){if(phase==Phase::running||phase==Phase::failed)std::terminate();}
-void NativeGameLifetimeOperation::acknowledge_diagnostic_cleanup() noexcept {if(phase==Phase::failed)phase=Phase::diagnostic_retired;}
+void NativeGameLifetimeOperation::acknowledge_diagnostic_cleanup() noexcept {
+    if(phase==Phase::failed){
+        for(const auto& array:arrays)if(array.phase==NativeGameArrayLifetimeOperation::Phase::running||array.phase==NativeGameArrayLifetimeOperation::Phase::failed)std::terminate();
+        phase=Phase::diagnostic_retired;
+    }
+}
+void NativeGameLifetimeCalls::array_destroy_00bf7c6e(void* p,U stride,U count,U destructor,
+    NativeGameArrayLifetimeContext* context,NativeGameArrayLifetimeOperation& operation){
+    if(!context||&context->calls!=this)throw std::invalid_argument("native game array destruction requires its actual lifetime services");
+    destroy_native_game_array_00bf7c6e(p,stride,count,destructor,*context,operation);
+}
 void destroy_native_game_nested_storage_004d27c0(void* cell,NativeGameLifetimeCalls& c,NativeGameLifetimeProgress& o) {
     if(void* p=pointer(cell,0)) {
         if(void* q=pointer(p,0x14)){o.native_site=0x4d27d5;c.free_00bf65ac(q);}
