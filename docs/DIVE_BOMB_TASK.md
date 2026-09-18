@@ -1208,3 +1208,42 @@ So:
 This corrects this doc's earlier phrasing. The dive floor is not "a per-aircraft random draw" in the
 sense of being arbitrary: it is a draw between two authored, difficulty-scaled altitudes, and the
 aim error is authored imprecision rather than a geometric residue.
+
+## The hand-over run: no change, and the reason is a gap in the planner reconstruction
+
+`local/usn04_hand.log`, USN04, 4800 mission frames. Preconditions recorded: `query session` shows
+session 1 **Active** at the console, `Get-Process bsp_game` empty, no lock file. `EXITCODE=0`.
+
+The census is **bit-identical** to the run before the hand-over:
+
+| measure | gated run | hand-over run |
+| --- | --- | --- |
+| states | `attackrun` 1480, `flyabove` 144, `turndown` 746 | the same |
+| bank reached | 0.6072 rad | **0.6072 rad** |
+| turndown roll writes | 446 of 746 | **446 of 746** |
+| latch tick | 1481 | 1481 |
+| final `approach+BCh` | 206.5 m | 206.5 m |
+| `009C7EA0` window | not met | **not met** |
+| releases | 0 | 0 |
+
+### Why: `pilot_plan_roll_0099e2ba` reconstructs only the mode-2 arm
+
+The image's roll region has **two** entries, and the reconstruction has one.
+
+* The **mode-2** path, `0099DE93`-`0099E25C`, computes the bank target from the heading error and
+  writes it to `cmd+2C4h` at `0099E25C`. That is what `pilot_plan_roll_0099e2ba` models:
+  `PilotBotRollInputs` has a heading error, a bank, a pitch error and the tuning, and **no bank-target
+  input at all**.
+* The **mode-1** path, jumped to at `0099E26E`, does not compute a target. It **servos** `cmd+2C8h`
+  toward whatever `cmd+2C4h` already holds: `0099E27B FLD [ESI+2C8h]`, the wrap against the `+pi` at
+  `00CE3D28` at `0099E28F`, then `0099E2A5 LEA ECX,[ESI+2C4h]` and `0099E2B5 CALL 00415690`, through
+  to the roll write at `0099E39D`.
+
+So writing `pi` into the host's `bank_target_2c4` on the hand-over changes nothing: the host still
+runs the mode-2 computation, and the field it was told to aim at is one nothing reads. **The
+reasoning behind the hand-over stands and the code that would act on it does not exist yet.**
+
+**The next gate, by address:** reconstruct the servo arm `0099E26E`-`0099E3AE` in
+`src/plane_ai_control.cpp`, with a bank-target input, and call it on the mode-1 path instead of the
+mode-2 computation. Until then the turndown can hand the planner a 180-degree target and the host
+will keep flying its own.
