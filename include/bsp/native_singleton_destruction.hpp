@@ -4,6 +4,7 @@
 #include <cstdint>
 
 namespace bsp {
+struct NativeGameClassCleanupContext;
 struct NativeResourceRegistryDeleteBindings;
 struct NativeResourceManagerContext;
 struct NativeResourceExtraParserContexts;
@@ -185,6 +186,9 @@ struct NativeSingletonDeletionBindings {
     // CFD7FC/CFD80C/CFD81C/CFD82C/CFD83C are the five game parser
     // secondaries. Keep their actual publication cells through shared drain.
     NativeGameResourceParserContexts* game_resource_parsers{};
+    // CE6C68 owns the actual10h class registry. Borrow its original publication
+    // and raw string/manager cells through drain; mapped payloads are borrowed.
+    NativeGameClassCleanupContext* game_classes{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -203,7 +207,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, weak_owner_domain) == 14
 static_assert(offsetof(NativeSingletonDeletionBindings, render_resources) == 144);
 static_assert(offsetof(NativeSingletonDeletionBindings, native_online) == 148);
 static_assert(offsetof(NativeSingletonDeletionBindings, game_resource_parsers) == 152);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 156);
+static_assert(offsetof(NativeSingletonDeletionBindings, game_classes) == 156);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 160);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

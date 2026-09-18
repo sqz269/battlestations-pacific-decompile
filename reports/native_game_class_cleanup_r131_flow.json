@@ -1,0 +1,195 @@
+{
+  "repairs": [
+    {
+      "function": "004a8ac0",
+      "owner": "agent/orch4-20260915",
+      "when": "2026-09-18T06:55:40Z",
+      "decompile_lines_before": 23,
+      "gaps": [
+        {
+          "site": "004a8afc",
+          "mnemonic": "CALL",
+          "operands": "0x00bf65ac",
+          "gap_start": "004a8b01",
+          "gap_end_exclusive": "004a8b0c",
+          "bytes": 11,
+          "after_call": true,
+          "sha256": "e42a50ba1e90951f0dea82c7b8abc1b87ecf966650c76d2a067aafee5b574839"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "004a8afc",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "004a8b01",
+            "gap_end_exclusive": "004a8b0c",
+            "bytes": 11,
+            "after_call": true,
+            "sha256": "e42a50ba1e90951f0dea82c7b8abc1b87ecf966650c76d2a067aafee5b574839"
+          },
+          "clear": "Success: Cleared flow override at 004a8afc (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 11 byte(s)"
+        }
+      ],
+      "decompile_lines_after": 28,
+      "gaps_remaining": 0
+    },
+    {
+      "function": "004a9800",
+      "owner": "agent/orch4-20260915",
+      "when": "2026-09-18T06:55:46Z",
+      "decompile_lines_before": 19,
+      "gaps": [
+        {
+          "site": "004a9843",
+          "mnemonic": "CALL",
+          "operands": "0x00bf65ac",
+          "gap_start": "004a9848",
+          "gap_end_exclusive": "004a986f",
+          "bytes": 39,
+          "after_call": true,
+          "sha256": "d35e852cbb5dddabd129835d591cbf62fa09e9f7256fa34c6bdbc66d671641e4"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "004a9843",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "004a9848",
+            "gap_end_exclusive": "004a986f",
+            "bytes": 39,
+            "after_call": true,
+            "sha256": "d35e852cbb5dddabd129835d591cbf62fa09e9f7256fa34c6bdbc66d671641e4"
+          },
+          "clear": "Success: Cleared flow override at 004a9843 (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 39 byte(s)"
+        },
+        {
+          "explicit_tail_call": "004a9843",
+          "clear": {
+            "status": "success",
+            "message": "Success: Cleared flow override at 004a9843 (was: NONE, now: NONE)"
+          }
+        }
+      ],
+      "explicit_tail_end_exclusive": "004a986f",
+      "explicit_tail_terminator": "ret",
+      "explicit_body_sha256": "568fc73606eeb03c220d9b4f54b7504d918fcfa34117f3e1bc0415149eb6d209",
+      "body_before": "Function: FUN_004a9800 at 004a9800\nSignature: undefined FUN_004a9800(void)\nEntry: 004a9800\nBody: 004a9800 - 004a9847",
+      "decompile_lines_after": 23,
+      "gaps_remaining": 1,
+      "body_after": "Function: FUN_004a9800 at 004a9800\nSignature: undefined FUN_004a9800(void)\nEntry: 004a9800\nBody: 004a9800 - 004a9847",
+      "stored_body_tail_complete": false,
+      "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+    },
+    {
+      "function": "004a9870",
+      "owner": "agent/orch4-20260915",
+      "when": "2026-09-18T06:58:49Z",
+      "decompile_lines_before": 14,
+      "gaps": [
+        {
+          "site": "004a9880",
+          "mnemonic": "CALL",
+          "operands": "0x00bf65ac",
+          "gap_start": "004a9885",
+          "gap_end_exclusive": "004a9888",
+          "bytes": 3,
+          "after_call": true,
+          "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "004a9880",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "004a9885",
+            "gap_end_exclusive": "004a9888",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          },
+          "clear": "Success: Cleared flow override at 004a9880 (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 3 byte(s)"
+        }
+      ],
+      "decompile_lines_after": 11,
+      "gaps_remaining": 0
+    }
+  ],
+  "function_definition": {
+    "events": [
+      {
+        "recreate": "004a9800",
+        "previous": "Function: FUN_004a9800 at 004a9800\nSignature: undefined FUN_004a9800(void)\nEntry: 004a9800\nBody: 004a9800 - 004a9847",
+        "plate": null
+      },
+      {
+        "endpoint": "delete_function",
+        "body": {
+          "address": "004a9800"
+        },
+        "result": {
+          "success": true,
+          "address": "004a9800",
+          "deleted_function": "FUN_004a9800",
+          "body_size": 72,
+          "message": "Function 'FUN_004a9800' deleted at 004a9800"
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "004a9800",
+          "end_address": "004a986f"
+        },
+        "result": {
+          "success": true,
+          "start_address": "004a9800",
+          "end_address": "004a986e",
+          "bytes_disassembled": 111,
+          "message": "Successfully disassembled 111 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "004a9800",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "004a9800",
+          "function_name": "FUN_004a9800",
+          "entry_point": "004a9800",
+          "body_size": 111,
+          "message": "Function created successfully at 004a9800"
+        }
+      },
+      {
+        "defined": "004a9800",
+        "end": "004a986f",
+        "name": null,
+        "after": "Function: FUN_004a9800 at 004a9800\nSignature: undefined FUN_004a9800(void)\nEntry: 004a9800\nBody: 004a9800 - 004a986e"
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "success": true,
+          "program": "battlestationspacific.exe",
+          "message": "Program saved successfully"
+        }
+      }
+    ]
+  },
+  "gap_count": 3,
+  "gap_bytes": 53,
+  "final_flow": "004a9ac0: 97 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n\n004a9890: 51 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n\n004a9790: 31 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n\n004a9800: 39 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n\n004a9870: 11 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n\n004a7140: 3 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n\n004a7800: 17 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n\n004a73a0: 38 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n\n004a8ac0: 34 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n\n00488bf0: 37 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n\n004a7a40: 37 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n\n004a9240: 76 listed instructions, 1 gap(s)\n  after RET 0x14 at 004a92bc: 004a92bf..004a92c0 (1 bytes)  [not after a CALL; left alone]\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n\n004a8f10: 78 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n\n004a8fd0: 78 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n\n00492210: 78 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n"
+}
