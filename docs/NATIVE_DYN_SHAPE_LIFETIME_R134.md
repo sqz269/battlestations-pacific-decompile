@@ -66,3 +66,13 @@ No ordinary application rerun is presented as evidence for this packet.
 
 `reports/native_dyn_shape_lifetime_r134.json` records exact bytes, call sites,
 fixture provenance, Ghidra annotations and tested/integrated artifact archives.
+
+## Correction from docs/NATIVE_DYN_CONVEX_SUPPORT_R135.md
+
+R135 reconstructs C358A0/C386E0/C385B0 and supplies a complete four-method callable
+ConvexMeshShape source table tied to the original pool and mutable CRT state.
+Its support fixture matches4,464 native/source cases including exact FP state;
+the36-case physics fixture also passes with the production table identity.
+The other shape classes, native exception/whole-program ABI and application/gameplay
+admission remain open. R134's earlier table-dependency statement is now closed for
+this concrete class within the documented valid support-query domain.
