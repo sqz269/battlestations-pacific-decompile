@@ -468,3 +468,16 @@ The concrete circle-intersection contracts and the native scratch-buffer
 uncertainty on intersection paths that write no outputs are recorded in
 `docs/SHIP_AI_NAV_CIRCLE_TANGENT.md`; an explicit C++ seed is not evidence
 that the original routine initialized that stack slot.
+
+## Correction appended by packet `cc8_ship_ai_committed_slot`
+
+One more span of `009F1BC0` is read and projected: `009F28B4`..`009F28F1`, which stores
+`nested+11E8h`. It repeats this document's own slot-of-bearing arithmetic from `009E5E90` on
+`nested+11ECh` (FADD pi/60 from `00D1A8A0`, wrap by 2*pi from `00CE3828`, FMUL 60 from `00CE3D68`,
+FDIVRP, `_ftol2` at `00BF7420`) and stores the truncated index.
+
+The consequence for the field's meaning: `nested+11E8h` is **not** a committed ring winner. It is
+the slot the unit's own heading falls in this frame, refreshed before the ring scan runs, and
+`009E5E90` reads it at `009E5ED1` only to ask whether the bearing it is about to publish lies in
+that same slot. A byte census over `.text` for the displacement finds exactly two writers, this one
+and the constructor's zero seed at `009E561F`. See `docs/SHIP_AI_COMMITTED_SLOT.md`.

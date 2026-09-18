@@ -904,11 +904,11 @@ void ship_ai_approach_refresh_avoidance_009e9190(ShipAiApproachState& state,
 // 009E76D0
 // ---------------------------------------------------------------------------
 
-void ship_ai_approach_select_slot_009e76d0(ShipAiApproachState& state,
-                                           const ShipAiAttackMoveRingSlot ring[],
-                                           ShipAiApproachSlotScore slots[],
-                                           float seconds,
-                                           ShipAiApproachSelectHost& host) {
+int ship_ai_approach_select_slot_009e76d0(ShipAiApproachState& state,
+                                          const ShipAiAttackMoveRingSlot ring[],
+                                          ShipAiApproachSlotScore slots[],
+                                          float seconds,
+                                          ShipAiApproachSelectHost& host) {
     // 009E76D0..009E76F4: the wobble phase, advanced and wrapped in place.
     state.wobble_phase_1214 = host.wrap_angle_00605070(static_cast<float>(
         kApproachPhaseRate * seconds + static_cast<double>(state.wobble_phase_1214)));
@@ -994,6 +994,9 @@ void ship_ai_approach_select_slot_009e76d0(ShipAiApproachState& state,
     }
 
     host.commit_bearing_009e5e90(bearing, seconds); // 009E7ECB
+    // 009E79CA..009E7C19's winner. The image keeps it in a register and reads
+    // only its bearing at 009E7C1C; it is returned so a census can see it.
+    return best_slot;
 }
 
 // ---------------------------------------------------------------------------
@@ -1086,6 +1089,28 @@ void ship_ai_approach_frame_state_009f1bc0(ShipAiApproachState& state,
         state.point_1228 = goal; // 009F1F2D..009F1F3D
     }
     (void)displaced; // 009F1F65 feeds the mode latch, which is outside this range
+
+    // 009F28B4..009F28F1, the one writer of nested+11E8h outside the ring
+    // constructor. It is the same slot-of-bearing arithmetic 009E5E90 runs at
+    // 009E5EA4..009E5ECC, applied to nested+11ECh and stored back:
+    //
+    //   009F28B4  FLD [EBP+11ECh]          ; the heading 009F1C26 has just set
+    //   009F28BA  FADD qword [00D1A8A0]    ; + pi/60, half a slot
+    //   009F28C8  FLDZ / FCOMIP            ; negative sums wrap
+    //   009F28D4  FADD ST1,ST0             ; + 2*pi from 00CE3828
+    //   009F28E4  FMUL qword [00CE3D68]    ; * 60
+    //   009F28EA  FDIVRP                   ; / 2*pi
+    //   009F28EC  CALL 00BF7420            ; _ftol2, truncating
+    //   009F28F1  MOV [EBP+11E8h],EAX
+    //
+    // Nothing between 009F1BC0 and the store returns or branches past it, so it
+    // runs on every frame-state pass. nested+11E8h is therefore NOT a committed
+    // ring winner with hysteresis: it is the slot the unit's own heading falls
+    // in this frame, refreshed before the ring scan runs, and 009E5E90 reads it
+    // at 009E5ED1 only to ask whether the bearing it is about to publish lies
+    // in that same slot.
+    state.committed_slot_11e8 =
+        ship_ai_approach_slot_of_bearing_009e5e90(state.unit_heading_11ec);
 }
 
 } // namespace bsp

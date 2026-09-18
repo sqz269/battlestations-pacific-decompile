@@ -1,0 +1,130 @@
+{
+  "packet": "cc8_ship_ai_committed_slot",
+  "owner": "agent/cc8-ship-goal-gate",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read-only: no rename, comment, prototype, function creation or save",
+  "doc": "docs/SHIP_AI_COMMITTED_SLOT.md",
+  "source": "src/ship_ai_approach_update.cpp, include/bsp/ship_ai_approach_update.hpp, src/game_hosts_ship_ai.cpp, include/bsp/game_hosts_ship_ai.hpp",
+  "build": "scripts/build.ps1, Win32 Release, /W4 /WX clean; ctest 2/2",
+  "note": "The premise of the packet was wrong and the byte census says so. nested+11E8h is not a latched ring winner with hysteresis: it is the slot the unit's own heading falls in, recomputed at the tail of every frame-state pass by 009F28F1 and read by 009E5E90 only to compare against the bearing it is about to publish. There is no commit rule, no reject threshold and nothing else the commit writes.",
+  "routines": [
+    {
+      "address": "009f1bc0",
+      "native": "009f1bc0",
+      "name": "BSP_ShipAi_ApproachFrameState",
+      "abi": "__thiscall(nested)(float seconds), RET 4 at 009F3083, body 009F1BC0-009F3083",
+      "coverage": "partial, extended by one span: 009F28B4..009F28F1 added to the spans packet cc_ai_approach_update read",
+      "rule": "The tail store: FLD nested+11ECh, FADD pi/60 from 00D1A8A0, wrap by 2*pi from 00CE3828 when the sum is negative, FMUL 60 from 00CE3D68, FDIVRP by 2*pi, _ftol2 at 00BF7420, MOV [EBP+11E8h],EAX. Identical to the slot-of-bearing arithmetic 009E5E90 runs at 009E5EA4..009E5ECC. Three branches at 009F2834 / 009F283D / 009F2842 jump to 009F28B4, so the block is a join and not a guarded arm; no branch before it targets past it and no RET precedes it."
+    },
+    {
+      "address": "009e5530",
+      "native": "009e5530",
+      "name": "BSP_ShipAi_AttackMoveRingConstruct",
+      "abi": "body 009E5530-009E5769",
+      "coverage": "the seed store only",
+      "rule": "009E561F MOV [EDI+11E8h],EBX, among a run of zeroing stores. EBX is zeroed at 009E554D and untouched until 009E5747, so the field is seeded with 0."
+    },
+    {
+      "address": "009e5e90",
+      "native": "009e5e90",
+      "name": "BSP_ShipAi_ApproachCommitBearing",
+      "abi": "__thiscall(nested)(float bearing, float seconds)",
+      "coverage": "the one read of nested+11E8h; the body was reconstructed by packet cc_ai_approach_update and is unchanged here",
+      "rule": "009E5ED1 MOV ECX,[ESI+11E8h] is the only reader in .text. It asks whether the bearing about to be published falls in the same slot as the unit's current heading: same slot picks the arm by the sign of the turn, a different slot runs the turn-cost walk over the blocked ring."
+    },
+    {
+      "address": "009e76d0",
+      "native": "009e76d0",
+      "name": "BSP_ShipAi_ApproachSelectRingSlot",
+      "abi": "__thiscall(nested)(ring, slots, float seconds)",
+      "coverage": "the winner selection only; the body was reconstructed by packet cc_ai_ring_scan",
+      "rule": "009E79CA seeds best_slot with 0 and 009E7BFA keeps it on any comparison that is not strictly greater, which includes every unordered one. The winner is never stored: 009E7C1C reads its bearing and nothing else."
+    }
+  ],
+  "call_sites": [
+    {
+      "routine": "009f1bc0",
+      "address": "009f28ec",
+      "native": "00bf7420",
+      "note": "_ftol2, truncating the scaled angle to the slot index the next instruction stores"
+    },
+    {
+      "routine": "009f1bc0",
+      "address": "009f2876",
+      "native": "00414db0",
+      "note": "BSP_EntityPose_RefreshWorld in the guarded block that precedes the join at 009F28B4"
+    },
+    {
+      "routine": "009f1bc0",
+      "address": "009f28a9",
+      "native": "007b4e90",
+      "note": "the last call before the join; its result goes to nested+11DCh, not to the slot"
+    },
+    {
+      "routine": "009e5e90",
+      "address": "009e5ecc",
+      "native": "00bf7420",
+      "note": "the same _ftol2 on the bearing 009E5E90 is handed, which is why the two slot computations agree"
+    }
+  ],
+  "host_steps": [
+    {
+      "routine": "009f1bc0",
+      "address": "009f28f1",
+      "native": null,
+      "kind": "field_write",
+      "function": "009f1bc0",
+      "method": "ShipAiApproach::frame_state",
+      "note": "added to the projection: state.committed_slot_11e8 = slot_of_bearing(state.unit_heading_11ec). The census takes the committed slot and counts its changes here."
+    },
+    {
+      "routine": "009e76d0",
+      "address": "009e7c19",
+      "native": null,
+      "kind": "return_value",
+      "function": "009e76d0",
+      "method": "ShipAiApproach::select_slot",
+      "note": "ship_ai_approach_select_slot_009e76d0 now returns best_slot so the census can report the real winner, and the binding also reads the five score words of slot 0"
+    }
+  ],
+  "corrections": [
+    {
+      "where": "docs/SHIP_AI_GOAL_VECTOR_VISIBILITY.md, the winner-slot caveat and the first follow-up",
+      "was": "009E5E90 writes nested+120Ch but never nested+11E8h, so the committed slot is always 0; read 009E5E90's tail for the store this reconstruction is missing",
+      "is": "right about 009E5E90 and wrong about where the store lives. The writer is 009F1BC0 at 009F28F1, and the field is not a committed winner at all: it is the unit's own heading slot, refreshed every frame.",
+      "evidence": "byte census over .text for disp32 E8 11 00 00 under every store form, with the read at 009E5ED1 as the positive control"
+    },
+    {
+      "where": "docs/SHIP_AI_APPROACH_UPDATE.md",
+      "was": "the projection of 009F1BC0 covers 009F1BC0-009F1DBF, 009F1E16-009F1F47 and 009F1F7F-009F2124",
+      "is": "one more span is read and projected, 009F28B4..009F28F1, the store that makes nested+11E8h meaningful",
+      "evidence": "009F28B4..009F28F1 transcribed; the constants 00D1A8A0 = pi/60, 00CE3828 = 2*pi, 00CE3D68 = 60.0 read from the image"
+    },
+    {
+      "where": "docs/SHIP_AI_RING_SCAN.md",
+      "was": "nested+11E8h described as the committed slot the scan settles on",
+      "is": "the scan's winner is never stored; nested+11E8h is the heading slot 009F1BC0 writes. The winner is now returned by the reconstruction so a census can see it.",
+      "evidence": "009E79CA seeds 0, 009E7C1C reads only the winner's bearing, and no store of the index appears anywhere in .text"
+    }
+  ],
+  "no_ghidra_function": [],
+  "validation": {
+    "usn02_before": "this branch at 7cfe2db04521cd7cc4d85f30be5ef16df168f029, local/usn02_after.log: committed slot never written, ring winner not reported, heading_changes 545 / 572 / 535 / 578, standoff 1450 / 1550 / 200, shots=853 hull=119 deaths=3 total_damage=12463.2",
+    "usn02_after": "local/usn02_after_slot.log: committed slot first 30 last 26 to 29 per ship with 2 to 4 changes over 3000 frames, ring winner first 0 last 0 measured, heading_changes 532 / 572 / 524 / 578, standoff 1450 / 1550 / 200, shots=853 hull=119 deaths=3 total_damage=12463.2",
+    "usn01_after": "local/usn01_slot.log, 3000 mission frames, clean: hull=23 deaths=1 total_damage=220.0",
+    "attribution": "The gunnery census does not move, which is the correct outcome. nested+11E8h has exactly one consumer, the arm choice inside 009E5E90, which decides which way the commanded heading turns to reach the same bearing. That moves nested+120Ch, which is the whole of the heading_changes shift on two of the four ships, and stops there because ShipAiOrder::slot_to_order_ring 00825F7C is still unimplemented and the commanded heading never reaches the rudder. Ship positions are identical, so the committed slots, standoffs and every gunnery number are identical.",
+    "next_input": "The ring winner is genuinely slot 0 on every scan because slot+30h is NaN on every ship (measured: raw_18=6700.0 norm_2c=10.0 pen_30=-nan bear_34=0.0733 evade_38=0.25 avoid_3c=0.0). 009E7BE0 sums all five words, so every total is NaN, the strict compare at 009E7BFA never fires on an unordered pair and best_slot keeps the seed. Not the reject arm at 009E784B: tune+4h is the finite 4.0 from 0081F220. The writer is ship_ai_ring_scan_arc_score_009e6870, src/ship_ai_ring_scan.cpp line 152, native 009E6870."
+  },
+  "follow_up_packets": [
+    "ship_ai_ring_arc_score_nan: 009E6870, why slot+30h is NaN. It is now the only thing between the ring scan and a winner that is not slot 0.",
+    "ship_ai_order_ring_slot: 00825F7C, 96000 calls and still unimplemented, so nested+120Ch has no consumer and no ring result reaches the rudder.",
+    "recon_sensor_pass_rule_c: 00806840 and 008048A0, still open from the previous packet."
+  ],
+  "uncertainties": [
+    "The byte census cannot see a block copy over the whole nested object, which would write nested+11E8h without a literal displacement. No such copy was looked for.",
+    "The two MOVSS hits on the same displacement, 00853814 and 00854AA8, are MSubmarine fields of a different object and were not read further than their enclosing function names.",
+    "009F1BC0 between 009F2124 and 009F28B4 is still unread. The store is a join that every path reaches, but what the guarded block above it computes into nested+11DCh was not established.",
+    "The winner returned by ship_ai_approach_select_slot_009e76d0 is the ring winner. When the flag_1209 arm at 009E7C98 takes over, the native publishes the goal-derived heading instead and the winner is discarded; the census still reports it."
+  ]
+}

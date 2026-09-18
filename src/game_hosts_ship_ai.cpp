@@ -1886,8 +1886,18 @@ public:
         // 009F1E36, [target+740h]: the target's own zone object. No producer in
         // this process, so the displacement arm at 009F1E94 is never taken.
         owner_.record("ShipAiApproach::target_zone_object_0740", 0x009f1e36u);
+        const int committed_before = ctl_.approach.committed_slot_11e8;
         bsp::ship_ai_approach_frame_state_009f1bc0(ctl_.approach, has_target, false,
                                                    seconds, point);
+        // Packet cc8_ship_ai_committed_slot: 009F28F1, the one per-frame writer
+        // of nested+11E8h. Counted here because the store is the last act of
+        // the projection.
+        if (row_.approach_frames == 0) {
+            row_.ring_winner_first = ctl_.approach.committed_slot_11e8;
+        } else if (ctl_.approach.committed_slot_11e8 != committed_before) {
+            ++row_.committed_slot_changes;
+        }
+        row_.ring_winner_last = ctl_.approach.committed_slot_11e8;
         // 009F2F11 and 009F2FB1, the two 0095F080 refills of the curve objects
         // the standoff scan then samples. They sit in the span of 009F1BC0 the
         // projection does not cover, and the countdowns they re-arm are the
@@ -1942,9 +1952,34 @@ public:
     }
     void select_slot_009e76d0(float seconds) override {
         SelectBinding select(owner_, ctl_, row_, index_);
-        bsp::ship_ai_approach_select_slot_009e76d0(ctl_.approach, ctl_.approach_ring,
-            ctl_.approach_scores, seconds, select);
+        // Packet cc8_ship_ai_committed_slot: the winner 009E79CA..009E7C19
+        // settles on, which the image keeps only in a register.
+        const int winner = bsp::ship_ai_approach_select_slot_009e76d0(ctl_.approach,
+            ctl_.approach_ring, ctl_.approach_scores, seconds, select);
         owner_.done("ShipAiApproach::select_slot", 0x009e76d0u);
+        if (row_.ring_scan_winner_first < 0) row_.ring_scan_winner_first = winner;
+        row_.ring_scan_winner_last = winner;
+        // 009E7BE0's five-word sum over the whole ring, so the census can say
+        // whether slot 0 wins on merit or on the strict > at 009E7BFA leaving
+        // a tie with the seed.
+        float best = bsp::ship_ai_approach_slot_total_009e76d0(ctl_.approach_scores[0]);
+        float worst = best;
+        for (int i = 1; i < bsp::kShipAiApproachSlotCount; ++i) {
+            const float total =
+                bsp::ship_ai_approach_slot_total_009e76d0(ctl_.approach_scores[i]);
+            if (total > best) best = total;
+            if (total < worst) worst = total;
+        }
+        row_.ring_total_best = best;
+        row_.ring_total_worst = worst;
+        // The five words 009E7BE0 sums, for slot 0, so a NaN total can be
+        // attributed to the word that carries it.
+        row_.ring_word_raw_18 = ctl_.approach_scores[0].raw_18;
+        row_.ring_word_normalized_2c = ctl_.approach_scores[0].normalized_2c;
+        row_.ring_word_penalty_30 = ctl_.approach_scores[0].penalty_30;
+        row_.ring_word_bearing_34 = ctl_.approach_scores[0].bearing_34;
+        row_.ring_word_evade_38 = ctl_.approach_scores[0].evade_38;
+        row_.ring_word_avoid_3c = ctl_.approach_scores[0].avoid_3c;
         ++row_.ring_scans;
         ++owner_.summary.ring_scans;
         // Packet cc8_ship_ai_approach_slot_tune: what the selection settled on,
@@ -1952,12 +1987,13 @@ public:
         const float previous_heading = row_.approach_heading_120c;
         row_.ring_scan_winner = ctl_.approach.committed_slot_11e8;
         row_.approach_heading_120c = ctl_.approach.commanded_heading_120c;
-        if (row_.ring_scans == 1) {
-            row_.ring_winner_first = row_.ring_scan_winner;
-        } else if (row_.approach_heading_120c != previous_heading) {
+        // ring_winner_first / ring_winner_last moved to the frame-state
+        // binding, which is where 009F28F1 writes nested+11E8h. Reading them
+        // here reported the field one scan late and, before the store existed,
+        // reported nothing at all.
+        if (row_.ring_scans != 1 && row_.approach_heading_120c != previous_heading) {
             ++row_.heading_changes;
         }
-        row_.ring_winner_last = row_.ring_scan_winner;
     }
     void limit_throttle_009e6a90() override {
         // 009E6A90's first act is wrap(heading - nested+120Ch), and nested+120Ch
@@ -5095,7 +5131,7 @@ void GameShipAiHost::report() {
         if (row.standoff_choices == 0) continue;
         host.log.notef("  standoff %-20s choices=%llu first=%.1f last=%.1f "
             "curve_own_nonzero=%d curve_target_nonzero=%d max_weapon_range=%.1f "
-            "slot_first=%d slot_last=%d heading_changes=%llu",
+            "committed_first=%d committed_last=%d heading_changes=%llu",
             row.unit.c_str(), row.standoff_choices,
             static_cast<double>(row.standoff_range_first),
             static_cast<double>(row.standoff_range_last),
@@ -5112,6 +5148,21 @@ void GameShipAiHost::report() {
             "surface=%llu",
             row.unit.c_str(), row.goal_timer_expiries, row.goal_visible_true,
             row.goal_visible_recon, row.goal_visible_surface);
+        host.log.notef("    slots %-18s commits=%llu winner_first=%d winner_last=%d "
+            "total_best=%.4f total_worst=%.4f",
+            row.unit.c_str(), row.committed_slot_changes,
+            row.ring_scan_winner_first, row.ring_scan_winner_last,
+            static_cast<double>(row.ring_total_best),
+            static_cast<double>(row.ring_total_worst));
+        host.log.notef("    words %-18s raw_18=%.4f norm_2c=%.4f pen_30=%.4f "
+            "bear_34=%.4f evade_38=%.4f avoid_3c=%.4f",
+            row.unit.c_str(),
+            static_cast<double>(row.ring_word_raw_18),
+            static_cast<double>(row.ring_word_normalized_2c),
+            static_cast<double>(row.ring_word_penalty_30),
+            static_cast<double>(row.ring_word_bearing_34),
+            static_cast<double>(row.ring_word_evade_38),
+            static_cast<double>(row.ring_word_avoid_3c));
     }
     host.log.notef("summary mission ship ai command completion events=%llu callbacks=%llu "
         "end_commands=%llu queue_advances=%llu",
