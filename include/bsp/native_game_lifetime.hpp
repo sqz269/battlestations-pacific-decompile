@@ -4,6 +4,7 @@
 #include "bsp/native_game_profile_lifetime.hpp"
 #include "bsp/native_game_container_lifetime.hpp"
 #include "bsp/native_award_registry_lifetime.hpp"
+#include "bsp/native_game_tree_lifetime.hpp"
 #include <cstdint>
 
 namespace bsp {
@@ -42,11 +43,11 @@ struct NativeGameLifetimeCalls : NativeGameArrayLifetimeCalls,NativeGameEmbedded
     // Checked-STL boundaries: ECX tree, five stack arguments, RET14h.
     // output is a private8h iterator. No private-stack alias contract is claimed.
     virtual void call_004d1a50(void* tree,void* output,void* first_owner,
-        void* first_position,void* last_owner,void* last_position)=0;
-    virtual void call_004d22f0(void*,void*,void*,void*,void*,void*)=0;
-    virtual void call_004d2000(void*,void*,void*,void*,void*,void*)=0;
-    virtual void call_004d41a0(void*,void*,void*,void*,void*,void*)=0;
-    virtual void call_004cef40(void*,void*,void*,void*,void*,void*)=0;
+        void* first_position,void* last_owner,void* last_position,NativeGameProfileLifetimeContext*,NativeGameTreeLifetimeProgress&);
+    virtual void call_004d22f0(void*,void*,void*,void*,void*,void*,NativeGameProfileLifetimeContext*,NativeGameTreeLifetimeProgress&);
+    virtual void call_004d2000(void*,void*,void*,void*,void*,void*,NativeGameProfileLifetimeContext*,NativeGameTreeLifetimeProgress&);
+    virtual void call_004d41a0(void*,void*,void*,void*,void*,void*,NativeGameProfileLifetimeContext*,NativeGameTreeLifetimeProgress&);
+    virtual void call_004cef40(void*,void*,void*,void*,void*,void*,NativeGameProfileLifetimeContext*,NativeGameTreeLifetimeProgress&);
     // CRT reverse array iteration remains a library boundary. Destructor is
     // an original address identifier, not a directly callable host pointer.
     virtual void array_destroy_00bf7c6e(void* base,std::uint32_t stride,
@@ -96,6 +97,7 @@ struct NativeGameLifetimeOperation final : NativeGameLifetimeProgress {
     NativeGameProfileLifetimeOperation profile;
     NativeGameContainerLifetimeProgress containers;
     NativeAwardRegistryLifetimeOperation awards;
+    NativeGameTreeLifetimeProgress trees;
     NativeGameLifetimeOperation()=default;
     ~NativeGameLifetimeOperation();
     NativeGameLifetimeOperation(const NativeGameLifetimeOperation&)=delete;

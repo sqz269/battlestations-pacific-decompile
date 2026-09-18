@@ -2,6 +2,7 @@
 #include "bsp/native_game_construction.hpp"
 #include "bsp/native_lua_objects.hpp"
 #include "bsp/native_input_configuration_owner.hpp"
+#include "bsp/native_input_settings_tree_cleanup.hpp"
 #include <Windows.h>
 #include <cstdlib>
 #include <cstring>
@@ -85,12 +86,12 @@ void normal(NativeGameStorage& game,NativeGameLifetimeContext& x,NativeGameLifet
     constexpr U list_sites[]={0x4dd346,0x4dd351,0x4dd35c,0x4dd367,0x4dd372,0x4dd37d,0x4dd388,0x4dd393};
     for(U i=0;i<8;++i){o.native_site=list_sites[i];c.call_004bf8e0(at(g,0x19b8-i*0xc),o.containers);}
     o.unwind_state=0xe;o.native_site=0x4dd3a3;c.call_007ff9f0(at(g,0x1944),x.profile);
-    using Tree=void(NativeGameLifetimeCalls::*)(void*,void*,void*,void*,void*,void*);
+    using Tree=void(NativeGameLifetimeCalls::*)(void*,void*,void*,void*,void*,void*,NativeGameProfileLifetimeContext*,NativeGameTreeLifetimeProgress&);
     U iterator[2]; // native private8h output, intentionally not initialized
     const auto tree=[&](U offset,U state,U site,U free_site,Tree f) {
         void* header=at(g,offset);void* head=pointer(header,4);void* first=pointer(head,0);
         o.unwind_state=static_cast<int>(state);o.native_site=site;
-        (c.*f)(header,iterator,header,first,header,head);
+        (c.*f)(header,iterator,header,first,header,head,x.profile,o.trees);
         o.native_site=free_site;c.free_00bf65ac(pointer(header,4));word(header,4,0);word(header,8,0);
     };
     tree(0x1930,0xd,0x4dd3c6,0x4dd3cf,&NativeGameLifetimeCalls::call_004d1a50);
@@ -146,6 +147,26 @@ void NativeGameLifetimeCalls::call_0041cc80(void* p){NativeGameEmbeddedLifetimeC
 void NativeGameLifetimeCalls::call_00b669a0(void* p){close_native_lua_state_00b669a0(*static_cast<NativeLuaStateStorage*>(p));}
 void NativeGameLifetimeCalls::call_004dceb0(void* p){destroy_native_input_configuration_004dceb0(p);}
 void* NativeGameLifetimeCalls::allocate_00bf55be(U n){return NativeGameContainerLifetimeCalls::allocate_00bf55be(n);}
+void NativeGameLifetimeCalls::call_004d1a50(void* p,void* out,void* fo,void* first,void* lo,void* last,NativeGameProfileLifetimeContext* c,NativeGameTreeLifetimeProgress& o){
+    if(!c||&c->calls!=this)throw std::invalid_argument("native game tree cleanup requires its actual string context");
+    o.owner=p;o.native_site=0x004d1a50;profile_call_004d1a50(p,out,fo,first,lo,last,*c);
+}
+void NativeGameLifetimeCalls::call_004cef40(void* p,void* out,void* fo,void* first,void* lo,void* last,NativeGameProfileLifetimeContext* c,NativeGameTreeLifetimeProgress& o){
+    if(!c||&c->calls!=this)throw std::invalid_argument("native game tree cleanup requires its actual string context");
+    o.owner=p;o.native_site=0x004cef40;clear_native_input_int_only_full_range_004cef40(p,out,fo,first,lo,last,c->actual_strings);
+}
+void NativeGameLifetimeCalls::call_004d2000(void* p,void* out,void* fo,void* first,void* lo,void* last,NativeGameProfileLifetimeContext* c,NativeGameTreeLifetimeProgress& o){
+    if(!c||&c->calls!=this)throw std::invalid_argument("native game tree cleanup requires its actual string context");
+    clear_native_game_tree_full_range_004d2000(p,out,fo,first,lo,last,*c,o);
+}
+void NativeGameLifetimeCalls::call_004d22f0(void* p,void* out,void* fo,void* first,void* lo,void* last,NativeGameProfileLifetimeContext* c,NativeGameTreeLifetimeProgress& o){
+    if(!c||&c->calls!=this)throw std::invalid_argument("native game tree cleanup requires its actual string context");
+    clear_native_game_tree_full_range_004d22f0(p,out,fo,first,lo,last,*c,o);
+}
+void NativeGameLifetimeCalls::call_004d41a0(void* p,void* out,void* fo,void* first,void* lo,void* last,NativeGameProfileLifetimeContext* c,NativeGameTreeLifetimeProgress& o){
+    if(!c||&c->calls!=this)throw std::invalid_argument("native game tree cleanup requires its actual string context");
+    clear_native_game_tree_full_range_004d41a0(p,out,fo,first,lo,last,*c,o);
+}
 void NativeGameLifetimeCalls::call_004c7dd0(void* p,NativeGameContainerLifetimeProgress& o){clear_native_game_payload_lists_004c7dd0(p,*this,o);}
 void NativeGameLifetimeCalls::call_006b9380(void* p,NativeGameProfileLifetimeContext* c,NativeAwardRegistryLifetimeOperation& o){
     if(!c||&c->calls!=this)throw std::invalid_argument("award registry destruction requires the game's actual string context");

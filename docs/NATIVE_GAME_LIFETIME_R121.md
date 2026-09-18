@@ -194,3 +194,20 @@ thunk were repaired/restored with evidence. The nested comparison passes79 cases
 services. The parent still passes52 cases/3,537 snapshots/141,402,076 bytes and four
 failure/replay cases. Strict Win32/three CTests pass. Native exception ABI, actual
 registry construction/session, remaining dependencies and gameplay stay open.
+
+## Correction from docs/NATIVE_GAME_TREE_LIFETIME_R127.md
+
+R127 supplies all five parent tree-range defaults at4DD3C6/4DD461/4DD4D5/
+4DD50A/4DD53F. The three newly reconstructed subtree bodies total188 bytes;
+three current full-range adapters use them. The int-only adapter reuses existing
+settings cleanup; the string-tree adapter delegates the existing complete raw
+VFS range implementation. Every parent tree site passes its actual profile/string
+context and retained operation.trees. Other non-tree dependencies remain open.
+
+Three11-byte returning-free gaps were repaired. The64 paired cases match434
+observations/472,808 bytes using all five actual defaults and real pool/node
+services. Existing ranges are compared at entry/final state,their source internal
+frees are not instrumented. The controlled parent still passes52 cases/3,537
+snapshots/141,402,076 bytes and four failure/replay cases. Strict Win32/three
+CTests pass. Fourteen context/partial-range guards and one partial-tree source
+failure pass. Native exception ABI,application admission and gameplay remain open.
