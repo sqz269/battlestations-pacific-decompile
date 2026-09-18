@@ -481,3 +481,12 @@ the slot the unit's own heading falls in this frame, refreshed before the ring s
 `009E5E90` reads it at `009E5ED1` only to ask whether the bearing it is about to publish lies in
 that same slot. A byte census over `.text` for the displacement finds exactly two writers, this one
 and the constructor's zero seed at `009E561F`. See `docs/SHIP_AI_COMMITTED_SLOT.md`.
+
+## Second correction appended by packet `cc8_ship_ai_ring_winner`
+
+One more span of `009F1BC0` is read and projected: `009F2795`..`009F27CB`. It loads the unit's
+world x and z into a local pair, pushes the addresses of `nested+11D4h` and `nested+11D5h`, calls
+`009E46F0` with `ECX = brain+8h` and stores its float result to `nested+11DCh`. That field is the
+bearing to the unit's next point and is the centre every ring slot's standoff-arc score is measured
+against; it had no producer here, which is what made `009E6870`'s output NaN for slot 0 and pinned
+the ring winner at the seed. `docs/SHIP_AI_RING_WINNER.md`.

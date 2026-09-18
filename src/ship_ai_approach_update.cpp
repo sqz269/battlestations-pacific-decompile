@@ -98,6 +98,22 @@ float ship_ai_approach_heading_from_delta(float dx, float dz) noexcept {
     return heading;
 }
 
+float ship_ai_approach_arc_centre_009e46f0(bool have_point, float dx, float dz) noexcept {
+    // 009E485B FLDZ: no path point and no command entity returns zero.
+    if (!have_point) return 0.0f;
+    // 009E4833..009E4843: dx*dx accumulated onto dz*dz at x87 precision, one
+    // float store. 009E4841's FXCH leaves dx in ST0 and dz in ST1 for the
+    // atan2 below, which is why the helper takes them in that order.
+    const float lensq = static_cast<float>(static_cast<double>(dx) * dx +
+                                           static_cast<double>(dz) * dz);
+    // 009E4851, FCOMIP of the threshold against the length then JBE: atan2 runs
+    // on the reached side, everything else falls to the same FLDZ.
+    if (!(kApproachArcCentreEpsilonSq <= static_cast<double>(lensq))) return 0.0f;
+    // 009E4865 atan2(dz, dx), 009E4872 FSUBR of 00CE3830 (pi/2), 009E4882 the
+    // wrap by 00CE3828 when the result is negative: exactly the helper below.
+    return ship_ai_approach_heading_from_delta(dx, dz);
+}
+
 float ship_ai_approach_bearing_weight_009e74d0(float unit_heading,
                                                float slot_angle,
                                                float tune_10) noexcept {
@@ -1089,6 +1105,20 @@ void ship_ai_approach_frame_state_009f1bc0(ShipAiApproachState& state,
         state.point_1228 = goal; // 009F1F2D..009F1F3D
     }
     (void)displaced; // 009F1F65 feeds the mode latch, which is outside this range
+
+    // 009F27C6..009F27CB, the arc centre. 009E46F0 is called with the unit's
+    // world x and z and returns the bearing to the next path point; the store
+    // is unconditional on this path, which is why nested+11DCh is a live
+    // bearing in the image and was a permanent 0 here.
+    {
+        float point_x = 0.0f;
+        float point_z = 0.0f;
+        const bool have_point = host.arc_centre_next_point_009e46f0(point_x, point_z);
+        // 009E481C and 009E4826: the point comes first in both subtractions.
+        state.slot_scale_11dc = ship_ai_approach_arc_centre_009e46f0(have_point,
+            static_cast<float>(static_cast<double>(point_x) - unit_pos.x),
+            static_cast<float>(static_cast<double>(point_z) - unit_pos.z));
+    }
 
     // 009F28B4..009F28F1, the one writer of nested+11E8h outside the ring
     // constructor. It is the same slot-of-bearing arithmetic 009E5E90 runs at

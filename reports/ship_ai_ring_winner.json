@@ -1,0 +1,163 @@
+{
+  "packet": "cc8_ship_ai_ring_winner",
+  "owner": "agent/cc8-ship-goal-gate",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read-only: no rename, comment, prototype, function creation or save",
+  "doc": "docs/SHIP_AI_RING_WINNER.md",
+  "source": "src/ship_ai_approach_update.cpp, include/bsp/ship_ai_approach_update.hpp, src/game_hosts_ship_ai.cpp",
+  "build": "scripts/build.ps1, Win32 Release, /W4 /WX clean; ctest 2/2",
+  "note": "Half 1: the arc scorer 009E6870 is faithful and the NaN is a host-input divergence. nested+11DCh, the arc centre, had no writer in this process, so both arc edges collapsed onto bearing 0, ring slot 0 sat exactly on the edge, and with a zero span 009E6935 computed 0/0. The producer is 009E46F0, called every frame at 009F27C6. Half 2: the census entry named ShipAiOrder::slot_to_order_ring is a misnomer; docs/UNIT_AI_ORDER_SLOT_READER.md has read that range and the AI never writes the order ring at all.",
+  "routines": [
+    {
+      "address": "009e46f0",
+      "native": "009e46f0",
+      "name": "BSP_ShipAi_ApproachArcCentre",
+      "abi": "__thiscall float(blk in ECX)(float* unitXZ, uint8_t* out11D4, uint8_t* out11D5), RET 0Ch at 009E47D0 / 009E4862 / 009E4899, body 009E46F0-009E489B",
+      "coverage": "complete for the two arms and the shared tail; the callees 009D5AE0, 009D5B90 and 009E3C00 are cited, not re-read",
+      "rule": "Path arm when [blk+2F4h]+1Ch is non-zero (009E46FC): 009D5AE0 and 009D5B90 fill the two override bytes whose addresses the caller pushes at 009F27A4 / 009F27AB, then 009E3C00 gives the next path point for the unit's own x and z and 009E481C / 009E4826 take point minus unit. Command arm at 009E4707: blk+3FCh is the unit, its vtable[114h]() feeds 0071EB60 for the active command's target descriptor, 009E4759 tests descriptor+1h and takes descriptor+8h or else the global at 00F87574, which is twelve zero bytes. Shared tail: 009E4843 stores the squared planar distance, 009E4851 compares it against 00D7A3A0 and only the reached side runs atan2 at 009E4865, the FSUBR of pi/2 at 009E4872 and the 2*pi wrap at 009E4882; everything else returns the FLDZ at 009E485B."
+    },
+    {
+      "address": "009e6870",
+      "native": "009e6870",
+      "name": "BSP_ShipAi_ApproachArcScore",
+      "abi": "__thiscall(nested)(ring slot, score, centre, side, span, tune+4h)",
+      "coverage": "re-read only far enough to clear it; the body was reconstructed by packet cc_ai_ring_scan and is unchanged",
+      "rule": "009E6931's FCOMIP takes the divide arm at 009E6935 when span >= nearest OR the pair is unordered, and that arm is nearest / span * scaled_span. With nearest and span both zero the image computes 0/0 exactly as the reconstruction does, so the routine is faithful and the NaN came from its centre input."
+    },
+    {
+      "address": "009f1bc0",
+      "native": "009f1bc0",
+      "name": "BSP_ShipAi_ApproachFrameState",
+      "abi": "__thiscall(nested)(float seconds), RET 4",
+      "coverage": "partial, extended by one more span: 009F2795..009F27CB",
+      "rule": "009F2795..009F27C0 loads the unit's world x and z into a local pair and pushes the addresses of nested+11D4h and nested+11D5h; 009F27C6 calls 009E46F0 with ECX = brain+8h and 009F27CB stores its float result to nested+11DCh. The store is unconditional on this path, which is why the field is a live bearing in the image."
+    },
+    {
+      "address": "009e76d0",
+      "native": "009e76d0",
+      "name": "BSP_ShipAi_ApproachSelectRingSlot",
+      "abi": "__thiscall(nested)(ring, slots, float seconds) -> the winning slot",
+      "coverage": "the winner comparison only; the body is unchanged from the previous packet",
+      "rule": "009E79CA seeds the incumbent with slot 0 and 009E7BFA is a strict FCOMIP / JBE, so an unordered comparison keeps the incumbent. One NaN in slot 0's five-word sum at 009E7BE0 therefore pinned the winner at 0 for all sixty slots."
+    }
+  ],
+  "call_sites": [
+    {
+      "routine": "009f1bc0",
+      "address": "009f27c6",
+      "native": "009e46f0",
+      "note": "ECX = brain+8h; the float result is stored to nested+11DCh at 009F27CB"
+    },
+    {
+      "routine": "009e46f0",
+      "address": "009e4754",
+      "native": "0071eb60",
+      "note": "BSP_EntityCommand_ActiveTargetDescriptor on [blk+3FCh]->vtable[114h](), the command arm's source"
+    },
+    {
+      "routine": "009e46f0",
+      "address": "009e473d",
+      "native": "00414db0",
+      "note": "BSP_EntityPose_RefreshWorld on blk+3FCh when its +C8h byte is clear"
+    },
+    {
+      "routine": "009e46f0",
+      "address": "009e47c6",
+      "native": "00414eb0",
+      "note": "BSP_Geometry_HeadingAngle, the command arm's own bearing, the same pi/2 wrap the path arm inlines"
+    },
+    {
+      "routine": "009e46f0",
+      "address": "009e4813",
+      "native": "009e3c00",
+      "note": "BSP_ShipAiPathPlan_NextPathPoint with the unit's x and z as the query"
+    },
+    {
+      "routine": "009e46f0",
+      "address": "009e4865",
+      "native": "00bf701a",
+      "note": "LIBCRT_atan2 with ST0 = dx and ST1 = dz, established by walking the stack from 009E482D"
+    },
+    {
+      "routine": "009e46f0",
+      "address": "009e47d3",
+      "native": "009d5ae0",
+      "note": "the path arm's first override byte, stored to nested+11D4h through the caller's pointer"
+    },
+    {
+      "routine": "009e46f0",
+      "address": "009e47e4",
+      "native": "009d5b90",
+      "note": "the second override byte, nested+11D5h"
+    }
+  ],
+  "host_steps": [
+    {
+      "routine": "009f1bc0",
+      "address": "009f27c6",
+      "native": "009e46f0",
+      "kind": "call",
+      "function": "009f1bc0",
+      "method": "ShipAiApproachPoint::arc_centre_009e46f0",
+      "note": "new, 8400 calls on USN02. Resolves both arms in the host because both sources are host state."
+    },
+    {
+      "routine": "009e46f0",
+      "address": "009e4707",
+      "native": null,
+      "kind": "branch",
+      "function": "009e46f0",
+      "method": "ShipAiApproachPoint::arc_centre_command_arm",
+      "note": "the arm USN02 takes on every scan, because no ship there carries a path plan"
+    },
+    {
+      "routine": "009e46f0",
+      "address": "009e4726",
+      "native": null,
+      "kind": "branch",
+      "function": "009e46f0",
+      "method": "ShipAiApproachPoint::arc_centre_no_command",
+      "note": "recorded when the unit has no active command descriptor; the image's own answer there is the same zero"
+    }
+  ],
+  "corrections": [
+    {
+      "where": "docs/SHIP_AI_COMMITTED_SLOT.md, the next-input section",
+      "was": "slot+30h is NaN and the writer is 009E6870; two candidate producers inside it, both untested divisions",
+      "is": "009E6870 is faithful and its untested division is in the image too. The NaN is a host-input divergence: nested+11DCh had no writer, so the arc centre was 0, both edges collapsed onto bearing 0 and slot 0 sat exactly on the edge.",
+      "evidence": "009E46F0 read whole; the store at 009F27CB; the run's word census going from pen_30=-nan to pen_30=3.51"
+    },
+    {
+      "where": "src/game_hosts_ship_ai.cpp, the ShipAiOrder::slot_to_order_ring record",
+      "was": "docs/UNIT_AUTOPILOT_PAIR.md states the negative result - no reader of those three fields was found",
+      "is": "superseded. docs/UNIT_AI_ORDER_SLOT_READER.md finds twelve readers of slot+40h / +44h / +48h and none on the ring path, and its rel32 scan finds the ring's write cursor filled from three HUD order routines only. The range 00825F7C..00826D6B is the ring-rudder-to-yaw hop, not an AI publisher.",
+      "evidence": "that document's scan table and its 00826C61 / 00826C75 / 00826CDB rows"
+    },
+    {
+      "where": "docs/SHIP_AI_RING_SCAN.md",
+      "was": "the winner is slot 0 because slot+30h is NaN, and the NaN comes from 009E6870",
+      "is": "the NaN came from 009E6870's centre argument, nested+11DCh, which had no producer. With 009E46F0 bound the winner ranges over the ring: 37 to 56 on Haguro, 23 to 0 on Jintsu.",
+      "evidence": "local/usn02_arc2.log, the slots and words census lines"
+    }
+  ],
+  "no_ghidra_function": [],
+  "validation": {
+    "usn02_before": "this branch at bace40c0b7dd9b2d84b413f1bd879578b0d0cbfe, local/usn02_after_slot.log: pen_30 NaN on every ship, slot totals NaN, ring winner 0 / 0 everywhere, heading_changes 532 / 572 / 524 / 578, standoff 1450 / 1550 / 200, shots=853 hull=119 deaths=3 total_damage=12463.2",
+    "usn02_intermediate": "local/usn02_arc.log, the path arm alone: byte-identical to the before run, with ShipAiApproachPoint::arc_centre_command_arm recorded 8400 times, because no ship on USN02 carries a path plan",
+    "usn02_after": "local/usn02_arc2.log: pen_30 3.51 to 3.94, slot totals best 14.17 worst 10.98, ring winner first / last 37 / 56 Haguro, 23 / 0 Jintsu, 52 / 57 Yudachi, 8 / 0 Samidare, heading_changes 347 / 290 / 480 / 389, committed slot 30 / 28 unchanged, standoff 1450 / 1550 / 200 unchanged, shots=872 hull=125 deaths=3 total_damage=13673.7",
+    "usn01_after": "local/usn01_arc.log, 3000 mission frames, clean: hull=23 deaths=1 total_damage=220.0, unchanged from the previous packet",
+    "attribution": "One input moved and everything follows. A live arc centre makes the arc cost finite, so all sixty slot totals are ordered and 009E7BFA can take a new incumbent: the winner stops being the seed and ranges over the ring. The published heading settles instead of flapping, which is why heading changes fall by a third to a half rather than rising. That heading feeds 009E6A90's throttle limiter, so the ships' speeds and tracks differ and the gunnery census follows: 19 more shots, 6 more hull hits, 1210 more damage, the same three deaths. Standoff ranges are curve outputs and do not move; the committed slots are sampled first and last only and match at those two instants."
+  },
+  "follow_up_packets": [
+    "ship_ai_vtable50_prototype: the two call sites of unit vtable slot 50h disagree, 0081196C pushing nothing and 00826CD5 one float. Until that is settled the rudder-to-yaw hop at 00825F7C cannot be bound.",
+    "ship_ai_arc_centre_path_arm: 009D5AE0 and 009D5B90, the two override bytes the path arm writes into nested+11D4h / nested+11D5h. No ship on USN02 takes that arm, so it is untested here.",
+    "recon_sensor_pass_rule_c: 00806840 and 008048A0, still open from two packets back."
+  ],
+  "uncertainties": [
+    "The path arm is implemented but never exercised: every USN02 scan took the command arm. Its two override-byte callees were not read.",
+    "When the path walk returns no point the image subtracts whatever 009E3C00 left in the record; this host refuses instead. That is a deliberate divergence, stated in the doc.",
+    "009E46F0's vtable[114h] call on blk+3FCh was not followed; the host answers the descriptor through its existing active_command_descriptor_0071eb60 path instead.",
+    "Half 2 rests on docs/UNIT_AI_ORDER_SLOT_READER.md's scan rather than a scan made here. 00825F7C itself was not disassembled by this packet."
+  ]
+}

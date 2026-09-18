@@ -379,3 +379,16 @@ see it. Measured on USN02: the winner is slot 0 on every scan for all fourteen s
 slot `+30h` is NaN, `009E7BE0` sums it into every slot's total, and a strictly-greater comparison
 never fires on an unordered pair. The NaN comes from `009E6870`, not from the reject arm at
 `009E784B`, whose `tune+4h` is the finite 4.0.
+
+## Correction appended by packet `cc8_ship_ai_ring_winner`
+
+The previous correction said the winner is slot 0 because slot `+30h` is NaN and blamed `009E6870`.
+`009E6870` is faithful: `009E6931`'s `FCOMIP` takes the divide arm at `009E6935` when the pair is
+unordered as well as when `span >= nearest`, and that arm is `nearest / span * scaled_span`, which
+is `0/0` in the image too when both are zero.
+
+The NaN came from the scorer's **centre** argument. `nested+11DCh` had no producer in this
+process, so both standoff-arc edges collapsed onto bearing 0, ring slot 0 sits exactly on bearing
+0, and its distance to the nearest edge was exactly 0. Its producer is `009E46F0`, called every
+frame at `009F27C6`. With it bound the winner ranges over the ring: 37 to 56 on Haguro, 23 to 0 on
+Jintsu. `docs/SHIP_AI_RING_WINNER.md`.
