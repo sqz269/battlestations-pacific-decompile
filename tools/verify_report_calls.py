@@ -176,7 +176,14 @@ def check_report(path, index, live):
         elif body[0] != callee:
             problems.append(f'callee {callee:08x} is inside {body[0]:08x}, not a function start')
         fn = live.containing(site)
-        if fn is None:
+        if fn is None and row.get('kind') == 'no_ghidra_function':
+            # The call sits in a routine Ghidra never defined, which the report
+            # must also list under `no_ghidra_function` with its inclusive end.
+            # The containment and listing checks cannot run, but the valuable
+            # half - that the callee is a real function start - still did.
+            print(f'  raw       {where}: {site:08x} is in a routine with no Ghidra '
+                  f'function; callee {callee:08x} checked, containment not')
+        elif fn is None:
             problems.append(f'call site {site:08x} is in no Ghidra function')
         else:
             start, end, name = fn

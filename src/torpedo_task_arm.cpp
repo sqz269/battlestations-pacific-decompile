@@ -347,4 +347,46 @@ TorpedoArmTickResult torpedo_task_arm_009d4850(TorpedoTaskHost& host,
     return out;
 }
 
+// ---------------------------------------------------------------------------
+// 009D0D90-009D0E3A, the goaway enter. Evidence: docs/TORPEDO_GOAWAY_RELEASE.md.
+// ---------------------------------------------------------------------------
+TorpedoGoAwayState torpedo_goaway_enter_009d0d90(
+    const TorpedoGoAwayEnterInputs& in) noexcept {
+    TorpedoGoAwayState out;
+    // 009D0D90-009D0DBC: the low bit of [00F876B0] alternates the break-off
+    // side. The AND 80000001h plus the JNS fixup is the signed remainder idiom,
+    // so the test is on the magnitude's low bit.
+    out.break_off_side_2c = in.side_bit ? torpedo_goaway::kSideLeft
+                                        : torpedo_goaway::kSideRight;
+    // 009D0DD1: the base distance is the tuning singleton's +438h.
+    float distance = in.safe_distance_438;
+    // 009D0DDF-009D0E0F: a target that answers vtable[5Ch](5) raises it to its
+    // own extent when that is larger. 009D0E07 JA keeps the base when the base
+    // is strictly greater, so an equal extent replaces it, harmlessly.
+    if (in.has_extent_target && !(distance > in.target_extent)) {
+        distance = in.target_extent;
+    }
+    // 009D0E2C: BSP_Random_UniformFloatRange(1.0, 1.15), then 009D0E31 FMUL.
+    out.break_off_distance_24 = in.distance_jitter * distance;
+    return out;
+}
+
+// ---------------------------------------------------------------------------
+// 009D3150-009D31A5, the goaway-done predicate.
+// ---------------------------------------------------------------------------
+bool torpedo_goaway_complete_009d3150(
+    const TorpedoGoAwayCompleteInputs& in) noexcept {
+    float distance = in.break_off_distance_24;   // 009D3151
+    // 009D315C CMP byte [EAX+369h]; 009D316A CMP byte [00E17BF2]. Either clear
+    // and the scaling block is skipped entirely.
+    if (in.control_flag_369 && in.global_e17bf2) {
+        // 009D3173: no ordnance left and the predicate returns false outright.
+        if (!in.has_ordnance_132) return false;   // 009D317C XOR AL,AL
+        distance = distance * torpedo_goaway::kOrderedScale;  // 009D3183
+    }
+    // 009D318F FLD approach+90h; 009D3195 FCOMIP ST0,ST1 compares the range
+    // against the distance and 009D3199 JBE clears, so the test is strict.
+    return in.range_90 > distance;
+}
+
 }  // namespace bsp
