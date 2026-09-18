@@ -607,3 +607,101 @@ USN02 ones (`queued_hits=168 deaths=3 total_damage=20721.4`, `world units=32`).
 
 An earlier USN02 attempt was refused rather than run: `tools/run_game.ps1` gave up after 900 s with
 the machine-wide lock held by `cc8-ai-squadron`. That attempt produced no log and is discarded.
+
+## `009C44F0`, the turndown tick (packet `cc8_dive_bomb_turndown`)
+
+Vtable `00D20C84` slot `+Ch`, body `009C44F0`-`009C4736`, `__thiscall(state, float dt)`, `RET 4`.
+The `dt` is never read. `ESI` is the state, `[ESI+4]` the approach, `approach->+18h` the command
+block. Every jump sense below was read from the branch byte: `009C45BB` `76` `JBE`, `009C465B` `76`
+`JBE`, `009C4687` `76` `JBE`.
+
+### The speed command, before any branch
+
+| address | write |
+| --- | --- |
+| `009C44FD` | `approach->+CCh = 0`, the weapon selector |
+| `009C4512` | `cmd->+2B4h = 007C47F0(approach->+8h)` = `tuning+24Ch * (approach->+8h)->+184h` |
+| `009C4518` | `cmd->+2B0h = 0` |
+| `009C4524` | `cmd->+2D8h = 1` |
+
+That answers the throttle question directly: the turndown **does not touch** the throttle slot
+`plan+278h`/`+27Ch`. It writes the desired-speed pair, and `docs/PILOT_THROTTLE_CUT_RAISER.md`
+shows `(+2B4h, +2D8h)` is one command, "here is the speed I want, act on it once", with `+2D8h` the
+one-shot `BSP_PilotBot_PlanControls` spends. `009C4512`-`009C4524` is the same three-instruction
+shape that doc records at `009C189A`-`009C18A7`, so the turndown is one of the states that raises
+the one-shot.
+
+### The bank, wrapped and folded
+
+`009C4530`-`009C4575`: `00BF857A` with `ST(1)` = `pose+C68h` and `ST(0)` = the `2pi` at `00CE3828`,
+so `fmod(bank, 2pi)`, then the pair of compares that pulls it into `(-pi, pi]` using the doubles
+`-pi` at `00CE3D18` and `+pi` at `00CE3D28`. `009C457D`-`009C45A5` folds it to `|bank|` with the
+usual `-0.0f` subtract at `00D7A208`. `009C45BD` then forms `pi - |bank|`, the angle still to roll
+through to inverted, floored at zero by `009C45C7`-`009C45DD`.
+
+### The two arms, on `state+1Ch`
+
+**Not latched** (`009C45A9` `CMP byte [ESI+1Ch],0`, `JNZ`):
+
+| test | arm |
+| --- | --- |
+| `\|bank\| < [00CE3D40] = 0.8 rad` (45.8 deg) | roll: `cmd->+290h = InterpolateClamped(30 deg, 1.0, 0.0, 0.0, pi - \|bank\|) * state->+18h`, `cmd->+294h = 1`, `cmd->+2CCh = 0`. At these banks the interpolation clamps at `1.0`, so the command is the full signed magnitude `009C7800` drew |
+| otherwise | `009C4637`: hand the roll axis back, `cmd->+2C4h = [00D7A264] = pi`, `cmd->+2CCh = 1` |
+
+Then on both arms: `009C4654` latches `state+1Ch = 1` once `|bank| > [00D1FED0] = 2.618 rad`
+(150 deg), and `009C4660`-`009C4687` splits on `|pose+C64h|` against `[00CE398C] = 20 deg`. Inside
+the band it writes `cmd->+29Ch = 0`, `cmd->+2A0h = 1`, `cmd->+2D0h = 0`; at or above it writes
+`cmd->+2BCh = 0` with `cmd->+2D0h = 2`.
+
+**Latched** (`009C46C9`-`009C4736`): release the roll the same way, then pull the nose down.
+`cmd->+29Ch = InterpolateClamped(30 deg, 0.0, [00D0CBA0] = 3 deg, 1.0, pi - |bank|)`, with
+`cmd->+2A0h = 1` and `cmd->+2D0h = 0`. The closer to inverted, the more nose-down stick: zero at
+30 degrees from inverted, full at 3 degrees.
+
+### Why it never reaches `009C7EA0`'s window
+
+`009C7EA0` ends the turndown only when `pose+C64h` falls below `-1.3` at `00D1F98C`. The tick's own
+pitch command is the only thing that would take it there, and the pitch arm is gated behind
+`state+1Ch`, which is gated behind `|bank| > 150 degrees`, which is gated behind the roll command
+at `cmd->+290h` actually rolling the aircraft. The host binds none of that yet, which is exactly
+what the after-runs measured.
+
+## Gate 1, read: the dive-bomb task does not exist in either mission
+
+`approach+BCh`'s producer is `009C7B4F`-`009C7B80` inside the approach update `009C7A80`: the planar
+distance between the point `approach->vtable[0]` returns and the pose's world position, with an
+early `approach+D0h = 0` and return at `009C7B0A` when the latched target `approach+48h` is null.
+The target position is **not** a command-block field. The arm never dereferences one: it goes
+through `approach->vtable[0]`, and the object is whatever `approach+48h` holds.
+
+What the runs show is upstream of all of that:
+
+| run | `PilotSetTarget` orders | command classes chosen |
+| --- | --- | --- |
+| USN01 | 5, all to `Mav1`..`Mav5` | `00E08F18` torpedo, every one |
+| IJN01 | 0 | none |
+
+**No aircraft in either mission ever receives the divebomb class `00E08F20`.** The dive bombers'
+authored order is `artillery`, which `0046AAB0` resolves to `attackmove` `00E08F78` outright
+(`docs/ATTACK_COMMANDS.md`). `attackmove` never reaches `007EEC50`'s ordnance chooser, so
+`0099A170` builds no attack task at all, and nothing latches `approach+48h`. The five aircraft that
+do report a real range, `Mav1`..`Mav5` at about 4259 m, are the ones holding a `PilotSetTarget`
+order, and they got the torpedo task, not this one.
+
+So the 27 IJN01 and 5 USN01 installs in the after-runs are the **host's**, not the image's.
+
+### The fix location
+
+`run_dive_bomb_task_arm_009c8790` in `src/game_hosts_units.cpp` gates on
+`command_target_plus_one != 0` plus the ordnance test. It should gate on the divebomb command class
+having actually been chosen, the analogue of the `PilotSetTarget task: 0099A170` record the torpedo
+path already emits. With that gate no aircraft in IJN01 or USN01 runs the task, which is the
+image's own behaviour. Reaching a bomb release needs a mission that issues a `PilotSetTarget` to a
+bomb-carrying aircraft that does not answer `IsKindOf(10h)`, or the `--order` injection
+`src/game_hosts.cpp` provides.
+
+**Open, not established.** `ConSBD1`'s `artillery` row prints `current=0`, and
+`store_unit_command_target` fills only from current rows, so the non-zero `command_target_plus_one`
+these aircraft carry must come from a row this reading did not find. That is also why the
+pilot-attack range computes exactly `0.0` rather than a real distance: both positions it differences
+are the same. Finding that row is the remaining piece of gate 1.
