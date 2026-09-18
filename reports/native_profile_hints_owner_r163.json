@@ -1062,5 +1062,106 @@
     "sha256": "209a3ec2ff41a51510f2605890f3042b07111d10bb7d5cd11629504a59a200ac",
     "files": 101,
     "head": "aafda128e0cfd03bdd0121aae75e8284133c6ded"
+  },
+  "primary_integration": {
+    "commit": "88bd3d158bebcff69b8833024e9b777507848cd6",
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "coff_checks": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_profile_hints_owner.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "2ee78dc9ea18966218d1d0f7c5c11d3b08bdbf7ac7b004caccc9d4f56ecb6205",
+        "combined_sha256": "2ee78dc9ea18966218d1d0f7c5c11d3b08bdbf7ac7b004caccc9d4f56ecb6205"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "f9986ecda9937a48e323ecb259b0dd1fbf7e8f293e205afcbe4973f898f4a811",
+        "combined_sha256": "f9986ecda9937a48e323ecb259b0dd1fbf7e8f293e205afcbe4973f898f4a811"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_publication.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "cbab15894a83dbe8d516165a3c70a837251199efdd145375acf4e425f044d8df",
+        "combined_sha256": "cbab15894a83dbe8d516165a3c70a837251199efdd145375acf4e425f044d8df"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_vector_registration_wrappers.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "9dfe0ca952c3cae832343b3d9b5d45c1dcb1f57e62504ae3a62a63124c0f8d51",
+        "combined_sha256": "9dfe0ca952c3cae832343b3d9b5d45c1dcb1f57e62504ae3a62a63124c0f8d51"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_vector_reserve_construct.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "bd7cc4c217ab6dc26b2a0d55dab769f6e4fcada1d611235f93f280d899209748",
+        "combined_sha256": "bd7cc4c217ab6dc26b2a0d55dab769f6e4fcada1d611235f93f280d899209748"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_vector_leaves.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "78c1c4c5a9e131501e280cd4a13a82d26b7bb05104804c12a8326bb36dc6a41f",
+        "combined_sha256": "78c1c4c5a9e131501e280cd4a13a82d26b7bb05104804c12a8326bb36dc6a41f"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_removal_reorder.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "342343aa286c46643453c766178b8770a7ff40e06cd2380f16b105a5266468d2",
+        "combined_sha256": "342343aa286c46643453c766178b8770a7ff40e06cd2380f16b105a5266468d2"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_diagnostic_sink_lifetime.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "36a2493317c0d249cd7596da4855eb92267a9362ee3f155397b26c64c49f5d00",
+        "combined_sha256": "36a2493317c0d249cd7596da4855eb92267a9362ee3f155397b26c64c49f5d00"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_tracked_critical_section_release.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "8a53a8178a4b3d0cb5f79f6ca037278bd48c961309bd223f03a820d65f027cb7",
+        "combined_sha256": "8a53a8178a4b3d0cb5f79f6ca037278bd48c961309bd223f03a820d65f027cb7"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_string.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "96e6a624d4d1a61d9aa93b5badad8ead7e2718e5ab09c923c836e3ff81134abc",
+        "combined_sha256": "96e6a624d4d1a61d9aa93b5badad8ead7e2718e5ab09c923c836e3ff81134abc"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_string_pool_storage.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "dab9746705cf936f5bda61c9b048d34c1a6425b9d33698fa29669fd1e93bb726",
+        "combined_sha256": "dab9746705cf936f5bda61c9b048d34c1a6425b9d33698fa29669fd1e93bb726"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_string_pool_owner.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "43ec239c5962d3760701e0f5ac010272e75dbc5db9624cddfc4cf0d7f33dd55f",
+        "combined_sha256": "43ec239c5962d3760701e0f5ac010272e75dbc5db9624cddfc4cf0d7f33dd55f"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "d6f6dbc057817a5b1c935b03d88108a60ac97eb28262fc24ab96cebbc7547bd6",
+        "combined_sha256": "d6f6dbc057817a5b1c935b03d88108a60ac97eb28262fc24ab96cebbc7547bd6"
+      }
+    ],
+    "result": {
+      "exe_sha256": "2F0AFB403D341BEC888BCE485173C2D567A597AF47195132BD595A31785DADE9",
+      "library_sha256": "98EE0E0152619120F673F6528A086A2477BB14CF8C3A2C56A00DA31E7C2CB90C",
+      "exit": 0,
+      "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED"
+    },
+    "paired_groups": 7,
+    "matching_bytes": 1307,
+    "log_sha256": "627ca1a923971156f294ae5899e8af90738d8e46da46701c3878d8fe6dabd324",
+    "game_sha256": "a1aea3db1e96c421ae3879b3b26507f14e5fcb0f79907ba8be1cd7155d261f22",
+    "artifact_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r163\\native-profile-hints-owner-main-r163.zip",
+      "sha256": "d48522554524df9c00f5742f04b752ddace114c17a1593de1e9a84a472452b52",
+      "files": 115,
+      "head": "88bd3d158bebcff69b8833024e9b777507848cd6"
+    }
   }
 }
