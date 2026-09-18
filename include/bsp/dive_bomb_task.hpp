@@ -399,6 +399,65 @@ DiveBombArmResult dive_bomb_arm_drop_009c8200(const DiveBombArmInputs& in) noexc
 float dive_bomb_turn_direction_009c7800(int sign, float magnitude_draw) noexcept;
 
 // ---------------------------------------------------------------------------
+// 009C4220, the attackrun tick (vtable 00D20C68 slot +Ch), Ghidra body
+// 009C4220-009C447D, __thiscall(state, float dt), RET 4.
+//
+// This is the run-in, and it is the `009D07B0` / `009A3770` shape
+// docs/BOT_TASK_STATES.md tabulates, with dive-bomb constants. It does not
+// close the range itself: it commands a heading at the target with mode 2, and
+// the plane flies it.
+//
+// Jump senses from the branch bytes: 009C424F `0F 82` JC, 009C4329 `76` JBE,
+// 009C4379 `76` JBE.
+// ---------------------------------------------------------------------------
+namespace dive_bomb_attackrun_constant {
+inline constexpr double kDistanceClamp = 2000.0;      // 00CF0DD8 qword / 00CFFD60 float
+inline constexpr double kMarginCeiling = 1400.0;      // 00D1F8D0 qword
+inline constexpr double kMarginFloor = 50.0;          // 00CE3938 qword / 00CEB4D4 float
+inline constexpr float kThrottleRatioLow = 0.10000000149011612f;   // 00D7A2F0
+inline constexpr float kThrottleAtLow = 0.4000000059604645f;       // 00CE7804
+inline constexpr float kThrottleRatioHigh = 0.3499999940395355f;   // 00CF6560
+inline constexpr float kThrottleAtHigh = 1.0f;                     // the FLD1
+inline constexpr double kLateralOffsetScale = 0.5235987901687622;  // 00CEC730 qword
+inline constexpr float kSamplerA = 80.0f;             // 00CE5444
+inline constexpr float kSamplerB = 60.0f;             // 00CEB4B0
+inline constexpr float kSamplerC = 120.0f;            // 00D05804
+}  // namespace dive_bomb_attackrun_constant
+
+struct DiveBombAttackRunInputs {
+    float dt = 0.0f;
+    float reroll_timer_1c = 0.0f;   // state+1Ch, 009C4227
+    float reroll_period_18 = 0.0f;  // state+18h, 009C4255
+    float lateral_offset_20 = 0.0f;  // state+20h, kept across the countdown
+    float target_bearing_c0 = 0.0f;  // approach+C0h, 009C422D
+    float planar_distance_bc = 0.0f;  // approach+BCh, 009C4311
+    float altitude = 0.0f;           // pose+100h, 009C435B
+    float begin_altitude_ac = 0.0f;  // approach+ACh, 009C43ED
+    float extra_range_50 = 0.0f;     // approach+50h
+    float attack_distance_b4 = 0.0f;  // approach+B4h, 009C43E3
+    // 007F0280(ctl, pose, ...) at 009C42B8, the lateral-offset sampler, with the
+    // last argument 1 (the torpedo passes 0). Its three float arguments are the
+    // 80, 60 and 120 above. The body is a contract; the host supplies its result.
+    float sampler_result = 0.0f;
+    bool sampler_ran = false;
+};
+struct DiveBombAttackRunResult {
+    float reroll_timer_1c = 0.0f;
+    float lateral_offset_20 = 0.0f;
+    bool rerolled = false;
+    float commanded_heading_2c0 = 0.0f;  // cmd+2C0h, with cmd+2CCh = 2
+    float clamped_distance = 0.0f;       // min(approach+BCh, 2000)
+    float height_margin = 0.0f;          // max(1400 - altitude, 50)
+    float throttle_ratio = 0.0f;         // margin / clamped distance
+    float commanded_throttle = 0.0f;     // the fourth argument to 009FBA50
+    float commanded_altitude_base = 0.0f;  // its first
+    bool wrote_full_throttle = true;     // cmd+278h = 1.0f, +27Ch = 1
+    bool wrote_zero_air_brake = true;    // cmd+2A8h = 0.0f, +2ACh = 1
+};
+DiveBombAttackRunResult dive_bomb_attackrun_tick_009c4220(
+    const DiveBombAttackRunInputs& in) noexcept;
+
+// ---------------------------------------------------------------------------
 // 009C44F0, the turndown tick (vtable 00D20C84 slot +Ch), body
 // 009C44F0-009C4736, __thiscall(state, float dt), RET 4. The dt is never read.
 //
