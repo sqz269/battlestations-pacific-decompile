@@ -50,7 +50,9 @@ and constant names before adding any; write multi-line Python to a file under lo
 path (Git Bash heredocs mangle backslashes and quotes); `scripts/build.ps1` throws on failure, so run
 it in its own PowerShell call; reuse existing include/bsp types (`bsp.py find <term>`, `rg -l`) and
 never port library code (Lua 5.1.1, zlib, CRT, STL) or Codex's render, scene and VFS code, describe
-those as contracts; record names with `python tools/bsp.py ledger add-name <addr> <Name> --evidence
+those as contracts; launch bsp_game.exe only through `./tools/run_game.ps1 -Log local/<name>.log -- <args>`
+from the worktree root (it serializes the single-instance executable across agents with a lock
+file and waits for any live run; a bare launch collides and hangs, see docs/COORDINATION.md); record names with `python tools/bsp.py ledger add-name <addr> <Name> --evidence
 "Hypothesis, not a recovered symbol. ..."` (`--append-evidence` to extend, `--replace` only for a wrong
 name); implement the recovered behaviour as documented structs, pure rules with explicit inputs, and
 a sequence routine over an injected host with one method per native call site (see
