@@ -271,3 +271,29 @@ from a partial log.
 3. **`FUN_009C8200`'s callers**, to say which input path drives the manual passthrough.
 4. **The message binding table** that produces kind `0C4h`, and `0BCh` with it.
 5. **The twenty-one unread `007BBBA0` callers.**
+
+## Correction, packet cc8_torpedo_steering_delta
+
+Appended, not a rewrite of anything above.
+
+The "Validation" section reads the steering delta of 2.28-2.34 rad at aim-complete as the
+signature of a convention mismatch: a compass-versus-mathematical angle, a pi or pi/2
+offset, a sign flip, or a delta measured against a heading the planner does not steer. The
+listing refutes all four. `009D1699` stores
+`BSP_Math_SubtractWrappedAngle(approach+94h, unit+C6Ch)`, because vtable slot `50h` on an
+aircraft is `0074E260 FLD [ECX+0C6Ch] / RET`, and `0099DEB8` subtracts the same `unit+C6Ch`.
+Both headings are the compass angle from `+Z` toward `+X`. The delta is correct.
+
+Two things do block the drop, and neither is the delta's convention.
+
+1. The cone at `009D2209` is tighter than "a few tens of degrees". `009D21AC` interpolates
+   80 degrees at 0.3 s to 50 degrees at 0.8 s, and `009D21F2` interpolates 50 degrees to
+   **15 degrees at 1.6 s**. For any part of a run-in more than 1.6 s from the target the
+   gate demands the nose within 0.262 rad.
+2. The aircraft never hold a heading long enough to get there. In the same USN01 run,
+   `goaway` `009D0D90` is entered 87-98 times per aircraft in 150 s, and four of the five
+   never clear the 700.0 m break-off at `+24h` while in it, so the commanded heading
+   reverses about every 1.7 s.
+
+docs/TORPEDO_STEERING_DELTA.md has the evidence and names the aim/goaway hysteresis as the
+next gate.

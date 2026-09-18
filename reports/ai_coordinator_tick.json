@@ -3,7 +3,7 @@
   "owner": "agent/cc8-recon-binding",
   "summary": "Bound the AI coordinator's 20 Hz tick. GameAiCoordinatorHost owns the group think and the planners, answers both reconstructed host interfaces from the mission's units, and installs the planner's attack decision on each member as a scene command through the same 0046AAB0 -> 0077D600 path a scripted order takes. The coordinator runs on all three missions and changes the outcome of all three.",
   "ghidra_writes": "none. Read-only analysis; one existing ledger name gained appended evidence.",
-  "blocked": "The fixed-step hook lives in src/game_hosts_units.cpp, which the torpedo worker holds. It is NOT in this commit. The five-line contract is in docs/AI_COORDINATOR_TICK.md and was applied locally only to take the measurements below.",
+  "blocked": "Discharged by packet cc8_ai_coordinator_hook: the fixed-step hook is committed in src/game_hosts_units.cpp. The validation below is the original measurement; docs/AI_COORDINATOR_TICK.md carries the re-measurement on the merged tree, which supersedes the usn01 row.",
   "calls": [
     {
       "address": "00a32d50",
@@ -148,5 +148,12 @@
     "The seed pass yields one group per team because only collection 0 is populated. The native five collections would seed up to five.",
     "game_mode is 0 by substitution. A different mode would change both the party gate and ai_party_think_mode's GroupWalk answer.",
     "artillery resolves to attackmove through the registry's first-match walk. That is the recovered 0046AAB0 behaviour as this process implements it, reported as observed and not explained here."
-  ]
+  ],
+  "superseded": {
+    "by": "cc8_ai_coordinator_hook, re-measured on the merged tree at 315adad83 plus this branch, with 00A2E260 split implemented by cc8_ai_command_lifetime",
+    "ijn01": "groups_created=4 splits_taken=2 members_added=190 claims=2 commands=34 attack_orders=1; plane yaw_plans 3000 to 5904, heading_change 3.862 to 8.881 rad, distance 1213845.72 to 1270266.90 m; pilot attack ordered 2 to 4; gunnery hull 4 deaths 2 damage 500.0 unchanged",
+    "usn01": "groups_created=4 splits_taken=2 members_added=89 claims=2 commands=17; plane yaw_plans 6495 to 19563, heading_change 29.086 to 44.295 rad, distance 366414.67 to 2062130.49 m; pilot attack ordered 5 to 14; gunnery shots 8711 to 3838, hits 23 to 25, hull 23 to 24, deaths 1 unchanged, damage 220.0 to 229.5",
+    "usn02": "groups_created=2 splits_taken=0 members_added=50 claims=1 commands=14; gunnery hits 126 to 168, hull 125 to 168, damage 13673.7 to 19723.2, shots 872 to 562, first hit 41.85 s to 31.90 s; ship AI standoff choices 8400 to 15953, curve refreshes 2450 to 4660; deaths 3 unchanged",
+    "withdrawn": "The usn01 row in validation above reported damage 220.0 to 3518.9 and deaths 1 to 2. It does not reproduce. With the split in place the commanded set is 17 units rather than 24, and damage moves 220.0 to 229.5 with deaths unchanged. That figure was taken before the split and before the merge, and is withdrawn."
+  }
 }

@@ -8482,8 +8482,15 @@ producer (`009E46F0`), and the census moves again: `shots=872 hull=125 deaths=3
 total_damage=13673.7`, heading changes 347/290/480/389 on the four cruisers and destroyers that
 report them.
 
-USN01 is unchanged throughout (`hull=23 deaths=1 total_damage=220.0`). Any packet measuring USN02
-against a tree that contains `48bd5339d` or `9ac3fcbb7` must use the matching column, or better
-its own before-run on its own tree; the four ship-AI packets before it (range curves, firepower inputs, tune block,
+From main `9df3ec6ba` (packet `cc8_ai_coordinator_tick` and its hook, docs/AI_COORDINATOR_TICK.md)
+the AI coordinator's composition pass and party think run every fixed step, one attack order lands
+per mission and units without a scripted order receive commands, so all three missions move:
+USN02 `shots=562 hull=168 deaths=3 total_damage=19723.2` with the first hit ten seconds earlier
+and ship-AI standoff choices 8400 to 15953; USN01 `hull=25 deaths=1 total_damage=229.5` on 3838
+shots with ordered units 5 to 14; IJN01's aircraft stop flying straight (yaw plans 3000 to 5904).
+
+Before that, USN01 was unchanged throughout (`hull=23 deaths=1 total_damage=220.0`). Any packet
+measuring USN02 against a tree that contains `48bd5339d`, `9ac3fcbb7` or `9df3ec6ba` must use the
+matching column, or better its own before-run on its own tree; the four ship-AI packets before it (range curves, firepower inputs, tune block,
 slot scorers) each left the census byte-identical because this flag was false, which is why the
 old column held for so long.
