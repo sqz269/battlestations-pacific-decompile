@@ -519,7 +519,12 @@ struct PilotBotThrottleInputs {
     float measured_speed = 0.0f;   // 007D99C0's forward speed
     float speed_scale = 1.0f;      // plan+2B8h, EBP from 0099D769
     float desired_speed = 0.0f;    // plan+2B4h, which 009C189A writes
-    float pending = 0.0f;          // |slot value - plan+274h|, 0099D7E8-0099D81E
+    // SUBSTITUTION, labelled: |slot value - plan+274h| from 0099D7E8-0099D81E
+    // was read as the whole story and is not. 0099D87E writes this slot again,
+    // between that block and the increment, taking a running minimum against
+    // XMM4 - [ESP+0x24] at 0099D85E-0099D892. Until that is read the multiplier
+    // is a stand-in. docs/TORPEDO_GLIDE_THROTTLE_WIRING.md.
+    float pending = 0.0f;
     // 0099DA97's unit vtable+38h is 007B8E60 in all nine plane vtables, and
     // 007B8E60 is `FLD [ECX+0B1Ch]; RET` - a cached float, not a computed
     // speed. 0042B2F0 is the 3D length of the vec3 at unit+AE0h. The term

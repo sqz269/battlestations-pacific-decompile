@@ -1,0 +1,88 @@
+{
+ "packet": "cc8_torpedo_glide_throttle_wiring",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/TORPEDO_GLIDE_THROTTLE_WIRING.md",
+ "tree_base": "main 16cbe68a4 merged",
+ "result": "All three bindings land and build; NEITHER behavioural half executes on USN01. Also withdraws the multiplier reading from the previous packet.",
+ "question": "Does wiring the throttle arm, the desired-speed setter and the glide slope move the dive?",
+ "answer": "No, because neither executes. The glide census printed ZERO lines and the plane throttle is 1.00 in every sample. USN01's ordered torpedo bombers are engaged from the first arm tick: 009D4030 returns the approach state only when 009D3210's engaged test is false (009D41C4 and 009D4053), the run's own summary reads blocked_engaged_009d3210=0, and the aircraft start 1490 m from their targets, inside the engage range. So the rule sends them to attackrun on the first tick, the transition at 009D48DE runs before the state tick at 009D48F6, and the move-to tick is never reached. With no move-to tick nothing raises the one-shot - 009C18A7 is the only raiser on this path - so plan+2D8h stays zero, 0099D7A5's test fails and the throttle arm returns without writing. The two failures are one chain. The dive is therefore unchanged: the same DEG(60) cap, the same 141.7 m/s water arrival, no release.",
+ "coverage": "the bindings are complete against their reconstructions; the run establishes only that they did not execute.",
+ "calls": [],
+ "named_routines": [],
+ "no_ghidra_function": [],
+ "host_methods": [
+  {
+   "host": "run_move_to_tick_009c18c0, steps 2 and 5",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "binding, desired speed substituted",
+   "note": "the glide slope itself uses no substitution: base = approach+74h + approach+78h, rangeLow = approach+7Ch or +80h on the 15-second switch, rangeHigh = approach+90h, gain = tan(DropAngle) from 007C4A44"
+  },
+  {
+   "host": "the throttle arm in plan_yaw_0099d300()",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "binding, plan+2B8h and the pending multiplier substituted"
+  }
+ ],
+ "contracts": [
+  "009D3210's engaged test and its range fields task+484h and task+488h, which is why move-to never ticks on USN01.",
+  "[ESP+0x6c]'s real value at 0099DBBF, from the 0099D85E-0099D892 block.",
+  "007C47F0 and 009BECD0, the desired speed itself.",
+  "plan+2B8h's producer."
+ ],
+ "corrections": [
+  {
+   "target": "docs/PILOT_THROTTLE_CUT_RAISER.md's increment section",
+   "was": "[ESP+0x6c] is |slot value - plan+274h| from 0099D7E8-0099D81E, so there is no frame-time factor and the multiplier is zero out of the reset",
+   "is": "withdrawn; 0099D87E writes that slot again between the read and the increment, taking a running minimum against XMM4 - [ESP+0x24] at 0099D85E-0099D892. The claim came from a grep capped at eight lines",
+   "evidence": "the full mention list of [ESP+0x6c] in 0099D300's listing",
+   "status": "appended and verified present; the header's field is relabelled a substitution"
+  }
+ ],
+ "validation": {
+  "runner": "tools/run_game.ps1, 3200 frames, --mission-frames 3000 at 0.05 s, on main 16cbe68a4 merged with this branch.",
+  "runs": [
+   {
+    "mission": "USN01",
+    "phase": "after",
+    "log": "local/usn01_wire_after.log",
+    "glide_census_lines": 0,
+    "plane_throttle_every_sample": 1.0,
+    "descent_census_lines": 15,
+    "commanded_run_in_altitude_m": 12.0,
+    "pitch_demand_rad": -1.0472,
+    "water_contacts": 5,
+    "water_arrival_speed_mps": [
+     141.68,
+     141.91
+    ],
+    "torpedo_drops": 0,
+    "water_entry_breakups": 0,
+    "swims_started": 0,
+    "torpedo_hits": 0,
+    "torpedo_damage": 0.0,
+    "mission_hits": 10,
+    "kills": 0,
+    "mission_damage": 313.4,
+    "first_hit_s": 58.6,
+    "distance_moved_m": 145308.41,
+    "plane_arm_free_flight": 48185,
+    "plane_arm_surface": 11815
+   },
+   {
+    "mission": "USN02",
+    "phase": "after",
+    "log": "local/usn02_wire_after.log",
+    "mission_hits": 168,
+    "kills": 3,
+    "mission_damage": 20721.4,
+    "first_hit_s": 31.8,
+    "swims_started": 44,
+    "glide_census_lines": 0,
+    "plane_steps": 0,
+    "note": "the presenter was cut short - frames_presented 1183, presents_skipped 1345, exit code 1 - but the mission summary is present and complete, so the run is judged by its log as the protocol requires"
+   }
+  ],
+  "attribution": "No before run was taken and none is needed: the censuses prove the added code did not execute, so a binary with the branch removed would produce the same numbers by construction. USN01's 10 hits and 313.4 damage differ from docs/PLANE_ALTITUDE_HOLD_AND_SURFACE.md's numbers because of what landed on main between the two packets, not because of this one. USN02 matches the last three packets' runs exactly and carries no flying aircraft.",
+  "no_swim_next_gate": "009D3210's engaged test. USN01's bombers are inside the engage range at mission start, so they never occupy the move-to state and both new bindings are dead code on this mission. Reading task+484h and task+488h at 009D325B would say whether the host's test is too permissive; if the native keeps these aircraft in move-to for the first part of the run, the glide slope starts working with no further change. The alternative - giving the attack-run branch the glide slope's shape - would be inventing behaviour, because 009D07B0 passes a zero range pair."
+ }
+}
