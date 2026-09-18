@@ -228,6 +228,12 @@ None. Every routine read for this packet has a Ghidra function: `009D15F0`, `009
 
 ## Validation
 
+**Which tree these numbers are for.** This worktree's merge-base with `main` is `ea2c0b05e`. It
+does not contain the ship AI goal-vector gate (`7cfe2db04`, merged as `48bd5339d`) that makes the
+ring scan run, nor the moved USN02 standing census (`bda1a32b8`). Both censuses below are for the
+`ea2c0b05e` baseline and must not be compared against a tree that carries those merges, where the
+USN02 gunnery numbers move to `shots=853 hull=119 deaths=3 total_damage=12463.2`.
+
 * `build-tested`: `./scripts/build.ps1`, Win32 `/W4 /WX`, clean.
 * `game-validated` on USN01, 3200 frames, 3000 mission frames at 0.05 s. Before this packet the
   five ordered aircraft spent 445-535 ticks in `aim` and never left it. After, all five write
@@ -243,6 +249,12 @@ None. Every routine read for this packet has a Ghidra function: `009D15F0`, `009
 
   Every aircraft leaves `aim` for `goaway` on the tick the byte goes true, and three of the five
   reach `prepare` once. Releases stay at 0.
+
+* USN02, same invocation: `shots=734 hull=180 deaths=2 total_damage=18525.6`, unchanged against
+  the `ea2c0b05e` baseline. Method limitation: that run was made after the source change, and the
+  reference came from the packet brief rather than from a before-run in this worktree. The after
+  run reproduced all four numbers exactly, so the check holds for this tree, but this packet did
+  not independently measure the before state.
 
 * The next gate, by address and value: **`009D3150`**, the goaway-done predicate. It returns
   `approach+90h > goaway_state+24h` at `009D3195`; the host binding in
