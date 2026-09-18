@@ -62,7 +62,7 @@ and they are excluded here because they are this installation's additions rather
 | --- | --- | --- | --- | --- |
 | Marshall Islands | **USN01** | `Mission.MavisGang`, 5 | at a fixed line in the script, aircraft already placed | **No.** Measured: `range_first_mean = 1490.8 m`, inside the threshold from the first arm tick |
 | Coral Sea | **USN04** | `launchedStriker`, 12 | **launched from `Mission.Zuikaku` and `Mission.Shokaku` slots and ordered at launch** (`usn_19_coralus.lua:1409`-`1446`) | **Measured: unreachable.** The strike never launches in this harness; see section 6. The only two ordered aircraft are placed dive bombers and no torpedo task is built |
-| Ormoc Bay | **USN22** | `Mission.Avenger` at `Mission.FinConvoy[5]`; `Mission.KatKillers` | at a script line, against a convoy | Possible; the convoy is a separate force, so the order range may be long |
+| Ormoc Bay | **USN22** | `Mission.Avenger`, one `TBM_1`, at `Mission.FinConvoy[5]` | at a script line, against a convoy | **Measured: the mission does not start.** Scene load refuses after four units; see section 7 |
 
 **USN04 was the recommendation, and section 6 records what the run found.** It is the only one of the three whose torpedo aircraft are ordered
 *at the moment of launch* rather than from a placed position, which is exactly the geometry the
@@ -168,6 +168,60 @@ of tables each carrying a `squadron` field (nil for an empty slot), which is the
 `luaGetSlotsAndSquads` requires. That is a narrower request than section Follow-up item 3 and should
 replace it if the Ormoc run also fails.
 
+## 7. Measured: the USN22 run
+
+Same command with `--menu-select USN22`, `local/usn22_glide.log`. The launcher waited on the machine
+lock again and the run started alone. It exited 1, and the log says why:
+
+```
+startup failed: unit observer creator projection is unavailable
+summary window_created=1 device_created=1 back_buffer=640x480 frames_presented=0
+loop_finished=0 exit_code=1
+```
+
+This is not the startup crash under investigation elsewhere. There is no access violation: the host
+raises `std::logic_error` from `src/game_hosts_units.cpp:2241` when
+`publish_unit_leaf_observer_tables_for_creator` finds no row for a unit's creator. The refusal is
+deterministic, so the one-retry rule for crashes does not apply and no retry was spent.
+
+Four units registered before it stopped, the last being `Hangar1`, all of them `LandFort` (`00747000`)
+or `AirField` (`006d3110`). The unit that follows has a creator that is not among the 22 rows in
+`src/native_unit_observer_endpoint.cpp`, and the reason is one layer up: Ormoc Bay is a land battle.
+
+| scene type | distinct rows | instances |
+| --- | --- | --- |
+| `Stationary` | 44 | 189 |
+| `DestroyerGen` | 11 | - |
+| `LandFort` | 6 | - |
+| `PlaneSquadronGen` | 3 | - |
+| `SubmarineGen`, `AirField`, `Path` | 1 each | - |
+
+Every `Stationary` row (`StationaryTypes:Barakk1=50`, `Barakk2Fort=683`, and so on) registers through
+`SceneContents::class_registration_creator` (`004e5b00`), which the host leaves unimplemented and
+which the log records as called 192 times, matching the 189 stationary instances plus three. The
+classes therefore never register, so the first stationary unit has no creator and scene load stops.
+
+USN04 starts because it has no stationary rows at all: its scene types are `DestroyerGen`,
+`MotherShipGen`, `PlaneSquadronGen`, `TBoatGen` and `Path`, and `class_registration_creator` is never
+called in that run.
+
+## 8. Conclusion
+
+Neither fallback reaches the torpedo move-to state, and neither fails on the geometry this survey set
+out to measure. Both fail earlier, on a different unimplemented host method each:
+
+| mission | blocker | native |
+| --- | --- | --- |
+| USN01 | starts inside the 4840 m engaged threshold (`range_first_mean = 1490.8 m`) | none; a real geometry result |
+| USN04 | carrier strike never launches; mission think aborts every tick | `GetProperty`, `0088bf80` |
+| USN22 | scene load refuses; 189 stationary units have no registered class | `class_registration_creator`, `004e5b00` |
+
+So the request to the Codex side stated in Follow-up item 3 stands, and it is now two named natives
+rather than a general capability. Either one alone would open a mission: `0088bf80` returning the
+`slots` table would let USN04's carrier strike launch and be ordered at launch range, and `004e5b00`
+would let Ormoc Bay load with its single `TBM_1` Avenger already targeted at `Mission.FinConvoy[5]`.
+Of the two, `0088bf80` is the smaller piece of work and reaches the geometry this survey wanted.
+
 ## Uncertainty
 
 * The ranges and altitudes of section 3's candidates, as section 5 says.
@@ -197,16 +251,24 @@ None.
 
 ## Validation
 
-One run, USN04, `local/usn04_glide.log`, exit 0, summarised in section 6. Not game-validated beyond
+Two runs. USN04, `local/usn04_glide.log`, exit 0, summarised in section 6. USN22, `local/usn22_glide.log`, exit 1 on a deterministic scene-load refusal, summarised in section 7. Not game-validated beyond
 the harness: the measurement is of this reconstruction's behaviour, not the retail game's.
 
 ## Follow-up
 
-1. **Run USN04 once** when the crash is cleared. If `range_first_mean` exceeds 4840 m, everything
-   this thread has built downstream of `moveto` becomes reachable in one pass.
-2. **USN22 as the fallback**, same command with the other id.
-3. If neither exceeds the threshold, the request to the Codex side is narrow and is stated here so
-   it can be lifted whole: **a way to place or order an aircraft at a chosen range for a test**, for
-   example a harness switch that issues `PilotSetTarget` to a named unit at a chosen frame, or a
-   scene-file reader that reports authored positions. Either would let this reconstruction exercise
-   `moveto` without depending on a mission's authored geometry.
+Items 1 and 2 are done; sections 6 and 7 hold their results. What remains is item 3, and the two
+runs have made it specific.
+
+1. **For the Codex side, either of two natives opens a mission.** `MissionLuaNative::GetProperty`
+   (`0088bf80`) returning, for the key `slots`, a Lua array of tables each carrying a `squadron`
+   field (nil for an empty slot) is the smaller piece and the one that reaches the geometry: it
+   would let USN04's carrier strike launch and be ordered at launch range.
+   `SceneContents::class_registration_creator` (`004e5b00`) for the `Stationary` scene type would let
+   USN22 load, with its `TBM_1` Avenger already targeted.
+2. **The general capability is still worth having** and is unchanged from the original wording: a
+   harness switch that issues `PilotSetTarget` to a named unit at a chosen frame, or a scene-file
+   reader that reports authored positions, would let this reconstruction exercise `moveto` without
+   depending on any mission's authored geometry. That is the only option that does not wait on
+   another harness's work.
+3. **Do not re-run USN04 or USN22 for this question** until one of the above lands. Both failures are
+   deterministic and cost about fifteen minutes of the shared game lock each.
