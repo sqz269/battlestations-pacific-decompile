@@ -509,3 +509,26 @@ site runs.
 - **Was:** 00A2EEE0 is the AIGetGroupInfo fill routine, body not read (listed as a routine of that packet)
   **Is:** confirmed, and confirmed not to be a think: its only caller is 00A378C0 and its call set is Lua-object setters plus string builders, with no call site on any fixed-step path
   **Evidence:** ghidra xrefs 00A2EEE0 returns BSP_LuaBinding_AIGetGroupInfo @ 00A378C0 only. Its calls include 00B675D0, 00B67580, 00B67700, 00B67800, 00B666C0, 00B673A0, 0041E870, 0041DD40, 00BF7680. The fixed-step path is 00A32D50 -> 00A2E720 and 00A182C0.
+
+## Consumer added by cc8_ai_tuning_globals
+
+This document's loader now has a caller in this process. `GameAiCoordinatorHost` loads six of
+the 143 slots at mission start and reads them back through `00A371A0`: the four
+`ai_planner_choose_attack_target` consumes (`+1CCh`, `+1D0h`, `+1D4h`, `+1D8h`) and the two merge
+distances (`+208h`, `+20Ch`). `docs/AI_TUNING_GLOBALS.md` carries the binding and the
+measurement. Nothing above is corrected; the key table and the defaults were right and are what
+made the packet cheap.
+
+Two notes worth having beside the table:
+
+* `00A335D0`'s two callers are `00A3717C` in `CG_array_ctor_helper_00a37130` and the tail jump
+  at `00A371C7` in `BSP_AiGlobals_Reload`. Neither runs in this process, which is why the block
+  was zero and every tuning-gated rule idle.
+* `009FFC80`, which picks the record, is read in `docs/AI_TUNING_GLOBALS.md`: its jump table at
+  `009FFCFC` sends effective game modes 0 to 3 to the difficulty arm and 4 to 7 to the literals 3
+  to 6, so a campaign mission always reads one of the three Island Capture records.
+
+The shipped values for those six keys are in `docs/AI_TUNING_GLOBALS.md` with the script's line
+numbers. Two of them are not the image default, so a consumer that assumed the defaults would be
+wrong: `FreeAttack_ExistingTargetMul` is 2 in every mode against a 1.5 default, and
+`EscortParams` widens `FreeAttack_NearDist` to 9000 and `FreeAttack_FarDist` to 15000.
