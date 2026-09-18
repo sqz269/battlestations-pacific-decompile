@@ -30,6 +30,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_observer_runtime.hpp"
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/game_hosts_ai.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/unit_hull_extents.hpp"
@@ -687,6 +688,10 @@ struct GameUnitsHost::Impl {
     // at unit+6DCh of every created unit, the guns the authored `Platforms`
     // table produces, the projectiles in flight and the hit path behind them.
     std::unique_ptr<GameGunneryHost> gunnery;
+    // docs/AI_COORDINATOR_TICK.md. 00A32350 BSP_AiController_Create is called
+    // from BSP_Game_LoadMissionScene at 004E1838, and its 00A31730 constructor
+    // registers the tick element into fixed-step group 0 at 00A31766.
+    std::unique_ptr<GameAiCoordinatorHost> ai;
 
     void record(const char* method, std::uint32_t address) {
         char text[16];
@@ -1964,6 +1969,8 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
     host.gunnery = std::make_unique<GameGunneryHost>(host.log, *this, host.lua);
     host.gunnery->set_ship_ai(host.ship_ai);
     host.gunnery->attach_00864bd0();
+    host.ai = std::make_unique<GameAiCoordinatorHost>(host.log, *this);
+    host.ai->create_00a32350();
 }
 
 void GameUnitsHost::issue_authored_commands() {
@@ -2232,6 +2239,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     // run on this step. Their position relative to the motion pass is the
     // executable's decision and is recorded as one: the guns read the pose the
     // previous step left, which is what a sub-node of unit+310h does.
+    // 00A32D50, slot +8h of vtable 00D23168: the composition pass every step and
+    // the party think on its own 3 to 5 s clock. It runs before the gunnery pass
+    // because an order issued this step is what the gun chain then acts on.
+    if (host.ai != nullptr) host.ai->fixed_step(step_seconds);
     if (host.gunnery != nullptr) {
         host.gunnery->fixed_step(step_seconds);
         host.gunnery->log_sample(host.summary.motion_steps, 100);
@@ -4891,6 +4902,7 @@ void GameUnitsHost::report() {
     Impl& host = *impl_;
     if (host.slots.empty()) return;
     if (host.gunnery != nullptr) host.gunnery->report();
+    if (host.ai != nullptr) host.ai->report();
     host.log.notef("unit motion: %llu motion step(s) of %llu unit tick(s) over %.2f s of "
         "simulated time, %llu instance update(s) of 008255b0",
         host.summary.motion_steps, host.summary.motion_ticks,
