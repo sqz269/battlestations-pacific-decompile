@@ -13005,5 +13005,911 @@
       }
     ],
     "scope": "3911newnormalprocessingbytes;6063verifiedbytes;34copied-native/sourcepairs280433704bytesaftertableidentitynormalization49706allocatorevents342snapshots;complete8slottable;application/gameplayopen"
+  },
+  "primary_integration": {
+    "source_commit": "061c2932d36f3dc73267505fb7a6ea0795c55c88",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "artifact_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r137\\native-dyn-sap-processing-main-r137.zip",
+      "sha256": "cfeccc3231e086a49e5d06d876fd1c5fa662ec51036134751d63c4ce65a2ce26",
+      "files": 166,
+      "uncompressed_bytes": 1194820226,
+      "utc": "2026-09-18T09:55:41.163350+00:00",
+      "head": "061c2932d36f3dc73267505fb7a6ea0795c55c88",
+      "manifest": [
+        {
+          "path": "build/win32/bsp_core.dir/Release/dyn_body_creation.obj",
+          "size": 29583,
+          "sha256": "cfe368fa7b12cfc8223ffbcc81741e7cbf354e8d507e7e00cf323cd33a735f95"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_dyn_sap_lifetime.obj",
+          "size": 6969,
+          "sha256": "f4950f257749769cd3d10dd033442579ae8e06d7e64e5dad9907f6f816de88da"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_dyn_sap_pairs.obj",
+          "size": 5482,
+          "sha256": "044595c4eebe6bd54d3e9a37b3dffd2aacdbdd5e3ae7bc302cc1137fd81810f2"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_dyn_sap_processing.obj",
+          "size": 16079,
+          "sha256": "09c0f746bea64a78b66b9d39244e45ad6a1c2714d04010d588cd9f2bbe27f52a"
+        },
+        {
+          "path": "build/win32/Release/bsp_core.lib",
+          "size": 66360756,
+          "sha256": "922a7c827e1701586d2a97b1472371235c6dbac658ed839388ed885b7b1f6615"
+        },
+        {
+          "path": "build/win32/Release/bsp_game.exe",
+          "size": 2721792,
+          "sha256": "4131d71f2cd372171943c5f2f715e4b5b0fe74c13317dbc64dd96d1fc8cdd9a3"
+        },
+        {
+          "path": "build/win32/Release/bsp_lua511.lib",
+          "size": 455244,
+          "sha256": "db83167c8c7d24461ef2bf60363b96264fd2406929d0e72a8909287d79b96a17"
+        },
+        {
+          "path": "build/win32/Release/bsp_math_tests.exe",
+          "size": 763392,
+          "sha256": "d37799952287606c028fc894c657de12cf218884f3ebe712a37ca37389c62bb9"
+        },
+        {
+          "path": "build/win32/Release/bsp_native_math_tests.exe",
+          "size": 18432,
+          "sha256": "b28b60387d40a392c4a308949c350fc3b1229bc88ba829e2a232194b62133b9d"
+        },
+        {
+          "path": "build/win32/Release/bsp_zlib121.lib",
+          "size": 71906,
+          "sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5"
+        },
+        {
+          "path": "cmake/startup.cmake",
+          "size": 163722,
+          "sha256": "4c7a6061927e24230cca319e9a667b14d6ecaaa229b0a3bdb642a62d4f693198"
+        },
+        {
+          "path": "config/names/00400000.jsonl",
+          "size": 27105,
+          "sha256": "02f2cad6f739a0a61e298bb52e3d6d6fc736366789cf15ff27b0c2eeaebfa8a3"
+        },
+        {
+          "path": "config/names/00c30000.jsonl",
+          "size": 43445,
+          "sha256": "4638fc8af045a54e341c4ee2817eb142c49e8b126ca6c3337b995b3cda419e01"
+        },
+        {
+          "path": "config/names/00c40000.jsonl",
+          "size": 42277,
+          "sha256": "6fbc2abb3a08ae43965afa6aa1df8ad7fcdbe002f2ba3fb0ee355a30313392fc"
+        },
+        {
+          "path": "config/names/00c50000.jsonl",
+          "size": 30401,
+          "sha256": "b7dd55ea732e06806d4ff0e8a341f81c8de052f05e5c19e976d593e6d0fec605"
+        },
+        {
+          "path": "config/reconstruction/00400000.jsonl",
+          "size": 42630,
+          "sha256": "4af90d9b40d54555307f95c6fdc6e3b5d02b5c6f1484b41a54b43bb56c213c46"
+        },
+        {
+          "path": "config/reconstruction/00c30000.jsonl",
+          "size": 62849,
+          "sha256": "3df68eda02492df57f7b7c4f189519d1937221a358b12aa0b5450f7cb0c2ed7d"
+        },
+        {
+          "path": "config/reconstruction/00c40000.jsonl",
+          "size": 55908,
+          "sha256": "4ad3b8407bec2bc3fe83a8d0dace3b11d551dddb66a880ce00bddd7237c473d4"
+        },
+        {
+          "path": "config/reconstruction/00c50000.jsonl",
+          "size": 38810,
+          "sha256": "69ca0d5d0e4b59bc07eee507fa9493f689e446f91d031856f0142af0153a2488"
+        },
+        {
+          "path": "docs/NATIVE_DYN_SAP_PAIRS_R136.md",
+          "size": 6629,
+          "sha256": "5eef33b773ea848d5081e2152222038b5aa7c6d625afccff87a424fb173952c3"
+        },
+        {
+          "path": "docs/NATIVE_DYN_SAP_PROCESSING_R137.md",
+          "size": 8490,
+          "sha256": "10c850eea31fd51f1b363690b56136b52e14e26883f0d4738eeebe92e37ed949"
+        },
+        {
+          "path": "include/bsp/avoid_zone_dyn_hull.hpp",
+          "size": 3575,
+          "sha256": "c4b13f13e5cb94a4e1423c0c96aa725935615f92d2cb65a823c36572bf1f2c3a"
+        },
+        {
+          "path": "include/bsp/dyn_body_creation.hpp",
+          "size": 5100,
+          "sha256": "771890801179db08b6ec963a2145cb05c4346da8f79d402514770aae2210535b"
+        },
+        {
+          "path": "include/bsp/native_dyn_sap_lifetime.hpp",
+          "size": 3135,
+          "sha256": "371a1fd7b7f1fb8a089704fb25204453b6ac18862a4412b16a120ca62449ebc1"
+        },
+        {
+          "path": "include/bsp/native_dyn_sap_pairs.hpp",
+          "size": 2214,
+          "sha256": "e1fa4f280d2ec885f180c1aeb834b5ae268cf54cf0fd48bc846f8b11ee95e475"
+        },
+        {
+          "path": "include/bsp/native_dyn_sap_processing.hpp",
+          "size": 2969,
+          "sha256": "1886a950958a4859308d9e9b066ccc39df1724e129669ed7ef20bbb626b01c99"
+        },
+        {
+          "path": "include/bsp/rigid_body_integration.hpp",
+          "size": 8112,
+          "sha256": "07cb2142f73cb94cd0bd3d903f2482816cc7924be69247ae1ac1707e4df62f11"
+        },
+        {
+          "path": "include/bsp/ship_hull_body.hpp",
+          "size": 9286,
+          "sha256": "a9417d7dc66f6eeda4aee783cd87c3d403b91693a142d8d1c255ebe3ba2c9c0b"
+        },
+        {
+          "path": "include/bsp/ship_hull_shapes.hpp",
+          "size": 17222,
+          "sha256": "58a35e261aa87778c225ff550fea23218f24fc0c7f5982d87b50fc1ef7a9877a"
+        },
+        {
+          "path": "include/bsp/world_ocean.hpp",
+          "size": 8932,
+          "sha256": "00a1c385e2e46fe0a7372c4dec7d0f8039935823bc02e0a29982c93c5360429b"
+        },
+        {
+          "path": "local/annotate_dyn_sap_processing_r137.py",
+          "size": 6266,
+          "sha256": "8e43630685c1a787382a3ca0d8f78e5d25ee8bc81adb57a85d405aa40c1e5f9d"
+        },
+        {
+          "path": "local/collect_dyn_sap_processing_r137.py",
+          "size": 577,
+          "sha256": "e195186e42ed98220c28fe0939859bddc3ae9a511768145c25b872ca5f17159a"
+        },
+        {
+          "path": "local/commit_dyn_sap_processing_r137.py",
+          "size": 2208,
+          "sha256": "062aacace9b44d9733d61218b5f69c2cdce61173e830bfa4dfbc6cb43429f172"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/annotations.log",
+          "size": 999,
+          "sha256": "e1167cc608cba276bc25b72dd71a3c22be8abe9225fe6b6e550de16475028cd5"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/build.log",
+          "size": 2588,
+          "sha256": "8139a2db2f0e0be33d0b6dee6748b1f1fed30845c24365417adf96785bcd2fbc"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/combined/dependencies.json",
+          "size": 24518,
+          "sha256": "e82b78af0b7aa1252fb18b49dbade9623824630e7dc5b1d85944b4080a8827a6"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/combined/dyn_sap_processing_probe.exe",
+          "size": 56832,
+          "sha256": "32dbb13d1648cce1e53be06f239c28f9b8fdcdb6fab18221ecb82af2e83f38b2"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/combined/fixture-image.json",
+          "size": 11779,
+          "sha256": "4f130ff08a6646e7e6f4129536d21f57ec7d3b3eeebd8e965761d22c908197c8"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/combined/original-build.inc",
+          "size": 11576,
+          "sha256": "8f39445b9b1898dc5f9363fd9404561e983fe26f444831f6a19cdfa2e565ceab"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/combined/original-hooks.inc",
+          "size": 2582,
+          "sha256": "a855705c2a375f3269fb7cdaa4d4e752606d04b86a682b3c4133da280174e847"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/combined/original.bin",
+          "size": 280433704,
+          "sha256": "5d6b903b9332f761a9aa9195ba764f10868a664d4d9343505ef562f56df857c0"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/combined/original.inc",
+          "size": 22049,
+          "sha256": "1df9c8277533ee215a718fc3c48e9cb72e64e892cbf85b69ba55f62241e2d157"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/combined/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/combined/probe-run.log",
+          "size": 3097,
+          "sha256": "54f1bbf29252a56d90e35849c9e9b5bc855d5085439f7afa32e7dccd96643df9"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/combined/probe.cpp",
+          "size": 13276,
+          "sha256": "89c807c2d4a906ec6660c4c59d53ee193b593ead64c9b0af84a5dfde6effd1e1"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/combined/probe.map",
+          "size": 64756,
+          "sha256": "6eed78a8a4cda689e2f93c6646066caa5a67bff0503a8b76c964a3048481fb77"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/combined/probe.obj",
+          "size": 285622,
+          "sha256": "db490fb6984da5b30a45d87b09f662494149bd41abc22edaa0f128f3f66dd422"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/combined/result.json",
+          "size": 528,
+          "sha256": "7572e86abb134281fa88cd65bdbc9f02e81b006f01ed038b58b7d96c7eb54c51"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/combined/source.bin",
+          "size": 280433704,
+          "sha256": "5d6b903b9332f761a9aa9195ba764f10868a664d4d9343505ef562f56df857c0"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/comments-after.json",
+          "size": 26976,
+          "sha256": "f56af0977332f5bf37b8e6311ae289b044b1a60cd80012668df71750231e2a1d"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/comments-after.log",
+          "size": 80,
+          "sha256": "598060596262d5e439bafb273478f2af38ff002d8c015df2fd054ea9cf68f6a7"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-004043d0.txt",
+          "size": 1416,
+          "sha256": "82080e4038770156998ec31932630ee02fed4c43216709de568e0b8ca2cab4b3"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-004043f0.txt",
+          "size": 2525,
+          "sha256": "b19286294ab13e592d83866189fdfcb726bd4d7cc4953cecb5fa6e4a08012c12"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-0040b590.txt",
+          "size": 1374,
+          "sha256": "774dd653b95112b150ef964f4e1aed02d6075e7ebf19c01f3793273d1635a1bf"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-00bf79f0.txt",
+          "size": 2337,
+          "sha256": "dc5b35d40843d2804ff274258ceacd0507c3261f015102b799017444528f6f6a"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-00bf7c6e.txt",
+          "size": 676,
+          "sha256": "53a93211f7bded5b23e670b592e2ef4cb62ce63ef487f3239e97e1a796510b04"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-00bf9410.txt",
+          "size": 567,
+          "sha256": "4266ca45c18792db0c809c183765eb5e3050382b9fef237501559d4ffc04f8c8"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-00c0f700.txt",
+          "size": 394,
+          "sha256": "8419996f83ce927333835c881f69b174175fea399049e881cdef42dd03009d8e"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-00c32af0.txt",
+          "size": 1022,
+          "sha256": "fd29a004d736879c019a8935390bc4796ab3d5c4e71cccde9e362d07366cbbd8"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-00c32b10.txt",
+          "size": 1022,
+          "sha256": "cf9e0fcad113f7bd4888dc9d7fb8d5e88007731cecddd62ad03dd693a9aed18a"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-00c32b30.txt",
+          "size": 922,
+          "sha256": "f86a3685875883dfbee1a16d6c21a27e38e0123a1c925076fa94d25ca3c8c92c"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-00c36c30.txt",
+          "size": 3476,
+          "sha256": "e7c767e8dd7d6ffd5b2157f7702a2745d31d7d968f5b4dac033d7b584b35b47e"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-00c36e20.txt",
+          "size": 1746,
+          "sha256": "4edbf6cd7e1567d4819c0dc929dbdcb4640340b001cfd1cdce10b79e5a576680"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-00c37290.txt",
+          "size": 2272,
+          "sha256": "845203a120661bce4179083dd23a718705410d425d336eaffb29ce55495e6bef"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-00c37300.txt",
+          "size": 2060,
+          "sha256": "ebf8b1cef15f81613278e90ec8b6220ced8594dacae6eed7edcd10bb658c1441"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-00c3ffe0.txt",
+          "size": 3689,
+          "sha256": "1550fd12021191fa412509faa01c99cd99a78f750d10bf409fdd946d6aff415c"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-00c40140.txt",
+          "size": 12453,
+          "sha256": "67268358bcff16669093dacaf231b30fbd28f7407173fd58f3c626392d873d6b"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-00c40d80.txt",
+          "size": 2799,
+          "sha256": "b27c238e0bf1f3454eca2054dc9232a12b63913d14b5ac0085923a873abeabfa"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-00c4bc50.txt",
+          "size": 2566,
+          "sha256": "d4db4ae874b0dae7d0d8704ff48f8aa812ab6458239562a204ebdc115f7c1309"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-00c4bcd0.txt",
+          "size": 2422,
+          "sha256": "2c10601ce41e749149d3ca42485c6770c4c096a5ea05f1f224ef37ad97b483a6"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-00c4bd60.txt",
+          "size": 1228,
+          "sha256": "b275922ce44f9dee65a5bd0f15203f84d55670ba0c56a8435bd578e4c70b84ab"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-00c4be10.txt",
+          "size": 6016,
+          "sha256": "f89bfd4162419beac8744fa965327d1b65651ca44c568421ba18976ccc8c5a2e"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-00c4c270.txt",
+          "size": 433,
+          "sha256": "49dbda475eafda9a9ef8792b1e44cd270c3d607f68315f375aaff5d5a2e46a6e"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-00c4c2a0.txt",
+          "size": 953,
+          "sha256": "d707ef7ea91e3d84c3c5c4671b848ffe8f4d08d045c4f1408a03675c893f643b"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-00c4c320.txt",
+          "size": 606,
+          "sha256": "ce4d0188c8c52a97391cbf3fe666ca2d4198042b63cd0b267c28a65dedbb77be"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/decompile-00c4c380.txt",
+          "size": 5330,
+          "sha256": "ef7d2391d21c5abf302081a125fc67ade2add2d5bd8fb644b47b2a608fda3ba5"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/dependencies.json",
+          "size": 24478,
+          "sha256": "82c01659caebc22c8e6b443e4b951f6ac05e60f9e99c334a919433353eaf0714"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-004043d0.txt",
+          "size": 299,
+          "sha256": "ebe2c715f67b00c3416017cc7d52e62937f1a8ebd0184a85543ddf7a27b2e380"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-004043f0.txt",
+          "size": 2393,
+          "sha256": "fb24c2a18e2f0aa9efc959db725b9ddd5e05b8e03167a97c91791ff6217fc845"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-0040b590.txt",
+          "size": 649,
+          "sha256": "806bcc20a8142941026c738db74d3a38c2f68bcf7169686e788d1f51cbc9fc4f"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-00bf79f0.txt",
+          "size": 1263,
+          "sha256": "548c629fb30fd0d1d9d6f4e95404339751f62a585dc9a4dae9fe87e4dda64687"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-00bf7c6e.txt",
+          "size": 701,
+          "sha256": "f37e90f70e05cba673837dfd9a9227f5073e5fe983f8e46fc5440380d08fcfaf"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-00bf9410.txt",
+          "size": 498,
+          "sha256": "47fff53e2e925c40c1b9e916f1cfa0c939361bdaa5fae44a53fe490223e0a230"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-00c0f700.txt",
+          "size": 219,
+          "sha256": "4909bcb3e62d8f755b8908dc23d7dc501b7392473b62e2ea9361bfa01c5bd3f9"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-00c32af0.txt",
+          "size": 245,
+          "sha256": "72af07c255404746f8db29ff993693e23a28e4ed19f86b0ac1dd789a807ca342"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-00c32b10.txt",
+          "size": 168,
+          "sha256": "c60cbcfbf5e0c48725668183dd89af7dcc7a928f24e5410eca438cdf0d1d8330"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-00c32b30.txt",
+          "size": 59,
+          "sha256": "558853a93243facaf9b2b5ab205f6dd9fab39ed57b9d13392793d9504bd6bf68"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-00c36c30.txt",
+          "size": 4948,
+          "sha256": "3bb419fb0614030015a9d8189828b5e8e6e4b1c755ed49268fc6f07f840c2d6f"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-00c36e20.txt",
+          "size": 2914,
+          "sha256": "8a597c53227d3eca7d4d1ec9e480d999375ed55ec06459195acd8c2da7152798"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-00c37290.txt",
+          "size": 1319,
+          "sha256": "07a41c750bfd943add58efd59da564256694f1f495365ff7e72784aeecc62961"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-00c37300.txt",
+          "size": 1633,
+          "sha256": "9d79be0f8c927a1c8cc5104064e90d0503df1fd90f3443295c424da715464552"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-00c3ffe0.txt",
+          "size": 3111,
+          "sha256": "406c67b020a07dc8e5efcd420b823cda6b7001fc0f4aaf8804bf4235b0bf6714"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-00c40140.txt",
+          "size": 17931,
+          "sha256": "aa63afe041728022e4663f28b75e15066641e672d9016c5d006019f4ed8ec93e"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-00c40d80.txt",
+          "size": 1734,
+          "sha256": "685d86e258b7005653d361503f432916fae0cc35bf478bfe25f65c92feb1b8d1"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-00c4bc50.txt",
+          "size": 1546,
+          "sha256": "44f46a72c2338edfe45c078dabab60df8d5b4e0e1c8e47615bc4bfb8c72580b5"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-00c4bcd0.txt",
+          "size": 1601,
+          "sha256": "e3e9aab89f6208257589323071f2347ff489f8c0d5efa318ccccf1a7d62480c6"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-00c4bd60.txt",
+          "size": 1933,
+          "sha256": "cd607fdb138cfd26c7d57214d62a551a8a2f55ed48c7c325376b6510fd53a2df"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-00c4be10.txt",
+          "size": 12564,
+          "sha256": "1922e1ad0c3f8dc2f0d6667c4e91a0a8b3516e63c694e61504570077bdae1d90"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-00c4c270.txt",
+          "size": 509,
+          "sha256": "e4d8050f810112b2657974668ba2d61539c5c7158f9dd3e6f9bb949800bba3a6"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-00c4c2a0.txt",
+          "size": 1056,
+          "sha256": "7d19ef6e59e7f4b45fd9b42ba905222f1709ae6b3c8b24599aa9fcc636ca86b4"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-00c4c320.txt",
+          "size": 831,
+          "sha256": "3161b7900059c471a7ef7d092b31aabc4a179e6f2a94a2e59dbc963d17c756c2"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/disasm-00c4c380.txt",
+          "size": 5376,
+          "sha256": "e60b2c65b657530f53c8e6163c0a787332e521d17e870f46811cdb59d4ad341d"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/dyn_sap_processing_probe.exe",
+          "size": 56832,
+          "sha256": "96a31f12ea6d5f8a4d55086817698d74ac6f5a6bf55775e8fee3273b99ed2404"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/exports-after.log",
+          "size": 1503,
+          "sha256": "242c7b0dccc173efc744b550189355cbf03447d4b8aa1cc4a47dca60b0b4487c"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/fixture-image.json",
+          "size": 11779,
+          "sha256": "4f130ff08a6646e7e6f4129536d21f57ec7d3b3eeebd8e965761d22c908197c8"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/flow_verified.log",
+          "size": 3837,
+          "sha256": "ed27c719ab7bf9ad31808e2ec862f71d348d5bae7ece65d6e19a717fda56259a"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/index.log",
+          "size": 16,
+          "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/native.json",
+          "size": 277384,
+          "sha256": "c69c047dbb3550e216aea50cf28638a546d0f987e44a59faa2d6cda1df3df5fa"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/original-build.inc",
+          "size": 11576,
+          "sha256": "8f39445b9b1898dc5f9363fd9404561e983fe26f444831f6a19cdfa2e565ceab"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/original-hooks.inc",
+          "size": 2582,
+          "sha256": "a855705c2a375f3269fb7cdaa4d4e752606d04b86a682b3c4133da280174e847"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/original.bin",
+          "size": 280433704,
+          "sha256": "5d6b903b9332f761a9aa9195ba764f10868a664d4d9343505ef562f56df857c0"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/original.inc",
+          "size": 22049,
+          "sha256": "1df9c8277533ee215a718fc3c48e9cb72e64e892cbf85b69ba55f62241e2d157"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/probe-run.log",
+          "size": 3097,
+          "sha256": "54f1bbf29252a56d90e35849c9e9b5bc855d5085439f7afa32e7dccd96643df9"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/probe.cpp",
+          "size": 13276,
+          "sha256": "89c807c2d4a906ec6660c4c59d53ee193b593ead64c9b0af84a5dfde6effd1e1"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/probe.map",
+          "size": 64756,
+          "sha256": "47156e02b4d5495f0f54343953022350d4c93ce4d05bea065c974c0a28b869b8"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/probe.obj",
+          "size": 285610,
+          "sha256": "f8ccafd4fa5f07e7c7f4504359e530bfb7c5b798cd7d042e2d0e66aa6ed120c8"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-004043d0.txt",
+          "size": 750,
+          "sha256": "ed2798a1e6c3b6370597c07f605f1438df0dda6a7eab28f462a4708f798af2d7"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-004043f0.txt",
+          "size": 729,
+          "sha256": "f976df1c37b253ec2489b2fb5c802e91aaf6a47a0554faf69162f9a538a9ce86"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-0040b590.txt",
+          "size": 761,
+          "sha256": "4f054e36f7a9107608b2fe3fe8cffc1ca71fb950364dbf5497c4f523e812917e"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-00bf79f0.txt",
+          "size": 637,
+          "sha256": "f4dea7fe5adc3e748d25a576ba814fbcbaf37d1216187b6ac2a20b3d111a3fd6"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-00bf7c6e.txt",
+          "size": 781,
+          "sha256": "2ab437e759081d8a2533d6a9f1e89a8d4a0f9a7f39efb454b84dd3fceafbb68a"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-00bf9410.txt",
+          "size": 692,
+          "sha256": "308f744c57b3cc8a09e589cacdd1db0c205df22b759d3597be4b58ad929fd2bf"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-00c0f700.txt",
+          "size": 624,
+          "sha256": "292e3c36e90c818a91ac30b775f51feee617c3689703536f50c2bc24cbc40b4b"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-00c32af0.txt",
+          "size": 712,
+          "sha256": "ca9e54fd1313ec98dec949f3a74522f8a51897bc06cce222236d51d8d625c860"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-00c32b10.txt",
+          "size": 911,
+          "sha256": "c12b966df438ad3d8585d12fe8ff2fc14e760278efff9ed12eaea868b8ba8de7"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-00c32b30.txt",
+          "size": 727,
+          "sha256": "e66820260c8e7dbecd23b16f278c7d429709a898ff24f63e54d3943ec22280e3"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-00c36c30.txt",
+          "size": 652,
+          "sha256": "7ac19acca098e0e1bf9d0042953008c925c5a5d5df3275d99ffd8b16bd3ba964"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-00c36e20.txt",
+          "size": 647,
+          "sha256": "a078dfa7bdb1d01655a006562d358cdb30099c1fb87f178a73ed958afe3d1d52"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-00c37290.txt",
+          "size": 678,
+          "sha256": "ef0be89ffcadd8239c23d386498e199f625304ba504d423ca6318810adc23a5d"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-00c37300.txt",
+          "size": 675,
+          "sha256": "df7ec027f0820689c9d3efb7f6d4dcf4304778a8bdc891e6b6663537105ac204"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-00c3ffe0.txt",
+          "size": 753,
+          "sha256": "941aad1535736a76b727a2727b4ac5a345a7c09fa2e455bb1d1f0224e5ed104b"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-00c40140.txt",
+          "size": 695,
+          "sha256": "27c901758c0601d427879fd738bcf6e0bd63641a46dc537389faf3d279d494fd"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-00c40d80.txt",
+          "size": 712,
+          "sha256": "fbdb5014d842359b3157b3060f0764ec9721774e0800bf67094a7a1529d6abe9"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-00c4bc50.txt",
+          "size": 758,
+          "sha256": "24940199ac63cf188fccfdddc6e0c9d596dc098f1f07ac2afd7b7f06946bbdb0"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-00c4bcd0.txt",
+          "size": 771,
+          "sha256": "508c4cc8b24683030094e89c676eb00e7581881b3d42ee04cc7f8bb065cf1957"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-00c4bd60.txt",
+          "size": 714,
+          "sha256": "c62fd9c5b808d986f8fca8a0ffaa3c6d96a4111d7299e8697e842857463e03ee"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-00c4be10.txt",
+          "size": 738,
+          "sha256": "97cc0b475c35c37a7eb5a8e253b9d2a9a2a72659ff7effc1b8f052f3d728efc3"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-00c4c270.txt",
+          "size": 677,
+          "sha256": "7af90dc742d71faddecca766fc49f77ab69c46e5abfbe7596d21f2e0f5915f8e"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-00c4c2a0.txt",
+          "size": 684,
+          "sha256": "8e0ab06a597143a0377d1c54213eb84adcfec9b43199b90a1fa8559fe6d9c650"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-00c4c320.txt",
+          "size": 720,
+          "sha256": "b85145088e0ba940154fe6d9bc74006c46b8c2df9299e6a6628b6af259484a18"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/proto-00c4c380.txt",
+          "size": 758,
+          "sha256": "68deb57c96e2538b09a63debd8929815f4960723c6ec444799a261880be16db3"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/result.json",
+          "size": 528,
+          "sha256": "4ebc002a4b0af0262fced4a07209e4e2e5e6cb497c6c7460ca2e7f27bb058ce6"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/snapshot.log",
+          "size": 230,
+          "sha256": "f01408c642025a3558f185d5dbe7b097ed2b41f14e819fddee1f8f0f7520049e"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/source.bin",
+          "size": 280433704,
+          "sha256": "5d6b903b9332f761a9aa9195ba764f10868a664d4d9343505ef562f56df857c0"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/unreached-methods.inc",
+          "size": 2,
+          "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+        },
+        {
+          "path": "local/dyn_sap_processing_r137/verify-calls.log",
+          "size": 133,
+          "sha256": "85a2c86715a3e12d8ef0a4a78e23bd11999c31f929bd7a39dd0605477356219c"
+        },
+        {
+          "path": "local/dyn_sap_processing_tail_r137.txt",
+          "size": 6094,
+          "sha256": "fc230325530757cf10c8aa31dad84c6b5aa99a487b26e247dfd6322b7f72b4d0"
+        },
+        {
+          "path": "local/ghidra-annotations-20260918T095243Z.json",
+          "size": 28439,
+          "sha256": "559a0862cda26693f458a65ef8ff288ffeb5ae5045c714e819d3edb1b93b3c92"
+        },
+        {
+          "path": "local/make_dyn_sap_processing_fixture_r137.py",
+          "size": 7824,
+          "sha256": "3d229c0020b366253c76860da96f0e3c80821797421e4d4fc312350dfa46e058"
+        },
+        {
+          "path": "local/prepare_dyn_sap_processing_closeout_r137.py",
+          "size": 3052,
+          "sha256": "5f5081d4ed36240810f7286b8c5b79f9daeb04775ab4aafbd5b1983acf87d7d3"
+        },
+        {
+          "path": "local/prepare_dyn_sap_processing_combined_r137.py",
+          "size": 587,
+          "sha256": "581f72f442743efb735af627f08f014935215584c9ee70ebf35d9910b4b2c756"
+        },
+        {
+          "path": "local/prepare_dyn_sap_processing_r137.py",
+          "size": 842,
+          "sha256": "691fc7ec0e7bcfb21a83166d739fda557b91848f0d345e85f0df32dd94763296"
+        },
+        {
+          "path": "local/r137_integration.log",
+          "size": 1107,
+          "sha256": "987d760f1de7b14133e5bb7daedb4021ff0d9196d2e1b0a459f6ae7309dcdac2"
+        },
+        {
+          "path": "local/report_dyn_sap_processing_r137.py",
+          "size": 7721,
+          "sha256": "469cc2b14495a8ffbe676c0670c242e9e38e6ef3aa827dc363786c32651a4d57"
+        },
+        {
+          "path": "local/run_dyn_sap_processing_combined_r137.ps1",
+          "size": 1690,
+          "sha256": "898b5bf4c3bba715b5fe984deb972f85b65661b65623beace75ea48cc5e35f02"
+        },
+        {
+          "path": "local/run_dyn_sap_processing_r137.ps1",
+          "size": 1681,
+          "sha256": "964758aa6d27c08eaf8f0366757d690fdd420a398d3661388beab30597738378"
+        },
+        {
+          "path": "local/seal_dyn_sap_processing_r137.py",
+          "size": 5378,
+          "sha256": "60da41ecc9f4816fc38ee148c4f6b74c8c214a8cb382571088ca0d9fce228d0e"
+        },
+        {
+          "path": "local/write_dyn_sap_processing_r137.py",
+          "size": 6325,
+          "sha256": "10308e8ae92f8319977af5dcb36eb28605c6f6cd796f779590c7a5fe5a8c5364"
+        },
+        {
+          "path": "reports/native_dyn_sap_processing_r137.json",
+          "size": 408980,
+          "sha256": "b3ec19c6cd1ba553dffe4e1c8bfde70d447f2226cf2681455a7bb94a593088b7"
+        },
+        {
+          "path": "reports/native_dyn_sap_processing_r137_flow.json",
+          "size": 4240,
+          "sha256": "7bdfc7e30be4351ca93f43fa4aa0e59ec647e341ba8f197d35b5e28602eb71fc"
+        },
+        {
+          "path": "src/avoid_zone_dyn_hull.cpp",
+          "size": 21629,
+          "sha256": "e4be35881ddd46bcbf3110b05309745df565951e1f41656080aea3c1777edf45"
+        },
+        {
+          "path": "src/dyn_body_creation.cpp",
+          "size": 15270,
+          "sha256": "e915e3325ceca411c14df2424129c7e82bebf6bc272921205e62d43744d4c93c"
+        },
+        {
+          "path": "src/native_dyn_sap_lifetime.cpp",
+          "size": 6697,
+          "sha256": "89c8be58800b2a6e738fc8e626c7169de57fc11ae3b7676563e4bc19d8d7142b"
+        },
+        {
+          "path": "src/native_dyn_sap_pairs.cpp",
+          "size": 5475,
+          "sha256": "188abb72f9c3e9002b04f8cd32a60c819163dc393957e7e1cf105f033f4d51b3"
+        },
+        {
+          "path": "src/native_dyn_sap_processing.cpp",
+          "size": 60174,
+          "sha256": "138837a1b076b45f181349185735c88bc030f0982817d2c70c9963eb3774250e"
+        }
+      ],
+      "scope": "3911newnormalprocessingbytes;6063verifiedbytes;34copied-native/sourcepairs280433704bytesaftertableidentitynormalization49706allocatorevents342snapshots;complete8slottable;application/gameplayopen"
+    },
+    "source_identical_to_tested": true,
+    "main_source_equal_after_lf_normalization": true,
+    "owned_object_comparison": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_sap_processing.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789724340,
+        "combined_timestamp": 1789724340,
+        "tested_sha256": "09c0f746bea64a78b66b9d39244e45ad6a1c2714d04010d588cd9f2bbe27f52a",
+        "combined_sha256": "09c0f746bea64a78b66b9d39244e45ad6a1c2714d04010d588cd9f2bbe27f52a"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_sap_pairs.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789722895,
+        "combined_timestamp": 1789722895,
+        "tested_sha256": "044595c4eebe6bd54d3e9a37b3dffd2aacdbdd5e3ae7bc302cc1137fd81810f2",
+        "combined_sha256": "044595c4eebe6bd54d3e9a37b3dffd2aacdbdd5e3ae7bc302cc1137fd81810f2"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_sap_lifetime.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789719203,
+        "combined_timestamp": 1789719203,
+        "tested_sha256": "f4950f257749769cd3d10dd033442579ae8e06d7e64e5dad9907f6f816de88da",
+        "combined_sha256": "f4950f257749769cd3d10dd033442579ae8e06d7e64e5dad9907f6f816de88da"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/dyn_body_creation.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789501522,
+        "combined_timestamp": 1789501522,
+        "tested_sha256": "cfe368fa7b12cfc8223ffbcc81741e7cbf354e8d507e7e00cf323cd33a735f95",
+        "combined_sha256": "cfe368fa7b12cfc8223ffbcc81741e7cbf354e8d507e7e00cf323cd33a735f95"
+      }
+    ],
+    "combined_probes": [
+      {
+        "label": "sap_processing",
+        "result": {
+          "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+          "exe_sha256": "32DBB13D1648CCE1E53BE06F239C28F9B8FDCDB6FAB18221ECB82AF2E83F38B2",
+          "exit": 0,
+          "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+          "library_sha256": "922A7C827E1701586D2A97B1472371235C6DBAC658ED839388ED885B7B1F6615",
+          "linker": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe"
+        },
+        "comparison_sha256": "5d6b903b9332f761a9aa9195ba764f10868a664d4d9343505ef562f56df857c0",
+        "comparison_bytes": 280433704,
+        "log": "scenario0 CW027f: 2049800 bytes 14 events 9 snapshots 0 observed inversions matched\nscenario1 CW027f: 2052792 bytes 16 events 9 snapshots 0 observed inversions matched\nscenario2 CW027f: 2058976 bytes 20 events 9 snapshots 0 observed inversions matched\nscenario3 CW027f: 2602404 bytes 356 events 9 snapshots 17 observed inversions matched\nscenario4 CW027f: 3147320 bytes 486 events 11 snapshots 19 observed inversions matched\nscenario5 CW027f: 3336448 bytes 626 events 11 snapshots 25 observed inversions matched\nscenario6 CW027f: 3362532 bytes 638 events 11 snapshots 25 observed inversions matched\nscenario7 CW027f: 35830360 bytes 7964 events 11 snapshots 242 observed inversions matched\nscenario8 CW027f: 81983980 bytes 16760 events 11 snapshots 732 observed inversions matched\nscenario9 CW027f: 81533540 bytes 16754 events 11 snapshots 732 observed inversions matched\nscenario2 CW007f: 2058976 bytes 20 events 9 snapshots 0 observed inversions matched\nscenario4 CW007f: 3147320 bytes 486 events 11 snapshots 19 observed inversions matched\nscenario2 CW047f: 2058976 bytes 20 events 9 snapshots 0 observed inversions matched\nscenario4 CW047f: 3147320 bytes 486 events 11 snapshots 19 observed inversions matched\nscenario2 CW087f: 2058976 bytes 20 events 9 snapshots 0 observed inversions matched\nscenario4 CW087f: 3147320 bytes 486 events 11 snapshots 19 observed inversions matched\nscenario2 CW0c7f: 2058976 bytes 20 events 9 snapshots 0 observed inversions matched\nscenario4 CW0c7f: 3147320 bytes 486 events 11 snapshots 19 observed inversions matched\nscenario2 CW027f: 2058976 bytes 20 events 9 snapshots 0 observed inversions matched\nscenario4 CW027f: 3147320 bytes 486 events 11 snapshots 19 observed inversions matched\nscenario2 CW067f: 2058976 bytes 20 events 9 snapshots 0 observed inversions matched\nscenario4 CW067f: 3147320 bytes 486 events 11 snapshots 19 observed inversions matched\nscenario2 CW0a7f: 2058976 bytes 20 events 9 snapshots 0 observed inversions matched\nscenario4 CW0a7f: 3147320 bytes 486 events 11 snapshots 19 observed inversions matched\nscenario2 CW0e7f: 2058976 bytes 20 events 9 snapshots 0 observed inversions matched\nscenario4 CW0e7f: 3147320 bytes 486 events 11 snapshots 19 observed inversions matched\nscenario2 CW037f: 2058976 bytes 20 events 9 snapshots 0 observed inversions matched\nscenario4 CW037f: 3147320 bytes 486 events 11 snapshots 19 observed inversions matched\nscenario2 CW077f: 2058976 bytes 20 events 9 snapshots 0 observed inversions matched\nscenario4 CW077f: 3147320 bytes 486 events 11 snapshots 19 observed inversions matched\nscenario2 CW0b7f: 2058976 bytes 20 events 9 snapshots 0 observed inversions matched\nscenario4 CW0b7f: 3147320 bytes 486 events 11 snapshots 19 observed inversions matched\nscenario2 CW0f7f: 2058976 bytes 20 events 9 snapshots 0 observed inversions matched\nscenario4 CW0f7f: 3147320 bytes 486 events 11 snapshots 19 observed inversions matched\n34 pairs; 280433704 exact bytes; 49706 allocator events; 342 full snapshots; all8 production table slots invoked; all allocations released\n",
+        "probe_source_sha256": "89c807c2d4a906ec6660c4c59d53ee193b593ead64c9b0af84a5dfde6effd1e1"
+      }
+    ],
+    "library_identical_to_tested": true,
+    "game_identical_to_tested": true,
+    "ordinary_application_runtime_rerun": false
   }
 }
