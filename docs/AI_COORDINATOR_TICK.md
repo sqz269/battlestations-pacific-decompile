@@ -212,3 +212,87 @@ identical to the digit, so the 45 orders that went away were inert. The census g
 The validation tables above are from the run before this correction and are left as they were
 written. USN01 and USN02 were not re-measured; the hook packet re-runs all three on the merged
 tree anyway.
+
+## Validation, re-measured by cc8_ai_coordinator_hook
+
+The fixed-step hook is now committed in `src/game_hosts_units.cpp`, so the contract section
+above is discharged. The tables in the earlier validation section were taken before the merge
+and before `cc8_ai_command_lifetime` implemented `00A2E260`'s split; they are left as written
+and superseded by what follows.
+
+Every run below is on the merged tree at `315adad83` plus this branch, which carries the torpedo
+first-release packet in the same file. Both sides of each pair were run on that tree, the before
+side with the hook stashed. All three after runs were taken serially in one pass, each with the
+game process stopped before the next began.
+
+### The coordinator, all three missions
+
+| | IJN01 | USN01 | USN02 |
+| --- | --- | --- | --- |
+| seeds | 963000 | 231000 | 96000 |
+| groups created | 4 | 4 | 2 |
+| splits taken | 2 | 2 | 0 |
+| members added / evicted | 190 / 31 | 89 / 24 | 50 / 18 |
+| planner claims | 2 | 2 | 1 |
+| attack orders | 1 | 1 | 1 |
+| commands issued / refused | 34 / 0 | 17 / 0 | 14 / 0 |
+| first command | 4.85 s | 4.85 s | 4.85 s |
+
+`compose=3000`, `thought=39`, `planner_ticks=156` and `spawn_arms=78` on every mission, and on
+every mission party 0 is the only one with `ai_enabled=1`. USN02 takes no split because its
+population is all ship bases, which is `00A2E260`'s "none of whose members fail" arm.
+
+### IJN01
+
+| | before | after |
+| --- | --- | --- |
+| plane yaw_plans | 3000 | 5904 |
+| plane pose_rotations | 3625 | 8504 |
+| plane heading_change | 3.862 rad | 8.881 rad |
+| plane distance moved | 1213845.72 m | 1270266.90 m |
+| pilot attack ordered | 2 | 4 |
+| gunnery shots | 34 | 34 |
+| gunnery hull / deaths / damage | 4 / 2 / 500.0 | 4 / 2 / 500.0 |
+
+The aircraft stop flying straight: the yaw planner nearly doubles its work and the fleet's total
+heading change more than doubles. Groups are `team=0 members=34` (claimed and commanded),
+`team=0 members=45` (claimed, uncommanded), `team=1 members=29`, `team=1 members=2`. Gunnery is
+unchanged, which is what one attack order in 150 s should do.
+
+### USN01
+
+| | before | after |
+| --- | --- | --- |
+| pilot attack ordered | 5 | 14 |
+| plane yaw_plans | 6495 | 19563 |
+| plane heading_change | 29.086 rad | 44.295 rad |
+| plane distance moved | 366414.67 m | 2062130.49 m |
+| gunnery shots | 8711 | 3838 |
+| gunnery hits / hull / deaths | 23 / 23 / 1 | 25 / 24 / 1 |
+| gunnery damage | 220.0 | 229.5 |
+| first shot / first hit | 4.35 s / 4.70 s | 4.35 s / 4.70 s |
+
+Seventeen commands at 4.85 s triple the aircraft's yaw planning and move them five times as far.
+Shots fall by 56 per cent while hits rise slightly, so the aircraft are being aimed rather than
+firing at nothing.
+
+**This corrects the earlier validation section's USN01 row.** That run reported damage rising
+220.0 to 3518.9 and deaths 1 to 2. It does not reproduce: with the split in place the commanded
+set is 17 units rather than 24, and damage moves 220.0 to 229.5 with deaths unchanged at 1. The
+earlier figure was taken before the split and before the merge, and it is withdrawn.
+
+### USN02
+
+| | before | after |
+| --- | --- | --- |
+| gunnery hits / hull | 126 / 125 | 168 / 168 |
+| gunnery damage | 13673.7 | 19723.2 |
+| gunnery shots | 872 | 562 |
+| first hit | 41.85 s | 31.90 s |
+| ship AI standoff choices | 8400 | 15953 |
+| ship AI curve refreshes | 2450 | 4660 |
+
+Fourteen ship commands. Hits and damage rise on a third fewer shots and the first hit lands ten
+seconds earlier, because the ordered ships close on their target instead of idling. The standoff
+census nearly doubles. Deaths are unchanged at 3. USN02 has no aircraft, so the plane motion
+census is zero on both sides.
