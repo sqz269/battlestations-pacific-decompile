@@ -19,6 +19,35 @@ constexpr AiTuningKey kKeys[kAiTuningKeyCount] = {
     {kAiTuningFreeAttackExistingTargetMul,  "FreeAttack_ExistingTargetMul",  1.5f},   // 00CE380C
     {kAiTuningAutoMergeMergeDist,           "AutoMerge_MergeDist",           650.0f}, // 00D20180
     {kAiTuningAutoMergeLeaveDist,           "AutoMerge_LeaveDist",           1200.0f},// 00CFD714
+    {kAiTuningCautionMoveDist,              "CautionMove_Dist",              8000.0f},// 00D02F60
+    {kAiTuningCloseAttackCollectDist,       "CloseAttack_CollectDist",       5000.0f},// 00D1AF84
+    {kAiTuningCloseAttackNearDist,          "CloseAttack_NearDist",          3000.0f},// 00CFA424
+    {kAiTuningCloseAttackFarDist,           "CloseAttack_FarDist",           8000.0f},// 00D02F60
+    {kAiTuningCloseAttackExistingTargetMul, "CloseAttack_ExistingTargetMul", 1.5f},   // 00CE380C
+    {kAiTuningCloseAttackTargetGroupMemberMul,
+                                            "CloseAttack_TargetGroupMemberMul", 2.0f},// 00CE3958
+    {kAiTuningFormationUnitDist,            "Formation_UnitDist",            300.0f}, // 00CE3AE8
+    // +0h..+4Ch, GetNumber with no image default; an absent key leaves zero.
+    {0x000u, "MotherShip", 0.0f},
+    {0x004u, "BattleShip", 0.0f},
+    {0x008u, "CommandBuilding", 0.0f},
+    {0x00Cu, "Landfort", 0.0f},
+    {0x010u, "Cruiser", 0.0f},
+    {0x014u, "Destroyer", 0.0f},
+    {0x018u, "Submarine", 0.0f},
+    {0x01Cu, "LandingShip", 0.0f},
+    {0x020u, "Cargo", 0.0f},
+    {0x024u, "TBoat", 0.0f},
+    {0x028u, "LevelBomber", 0.0f},
+    {0x02Cu, "KamikazePlane", 0.0f},
+    {0x030u, "TorpedoBomber", 0.0f},
+    {0x034u, "DiveBomber", 0.0f},
+    {0x038u, "Fighter", 0.0f},
+    {0x03Cu, "ReconPlaneSmall", 0.0f},
+    {0x040u, "ReconPlaneLarge", 0.0f},
+    {0x044u, "OtherShip", 0.0f},
+    {0x048u, "OtherPlane", 0.0f},
+    {0x04Cu, "Other", 0.0f},
 };
 
 // scripts/datatables/highlvlaiglobals.lua of the installed game, 1194 lines,
@@ -32,13 +61,33 @@ constexpr AiTuningKey kKeys[kAiTuningKeyCount] = {
 // EscortParams widens FreeAttack_NearDist to 9000 and FreeAttack_FarDist to
 // 15000 against 5000 and 12000.
 constexpr AiTuningAuthoredRow kAuthored[kAiTuningModeCount] = {
-    {AiTuningMode::IslandCaptureRookie,  2.0f, 5000.0f, 12000.0f, 2.0f, 650.0f, 1200.0f},
-    {AiTuningMode::IslandCaptureRegular, 2.0f, 5000.0f, 12000.0f, 2.0f, 650.0f, 1200.0f},
-    {AiTuningMode::IslandCaptureVeteran, 2.0f, 5000.0f, 12000.0f, 2.0f, 650.0f, 1200.0f},
-    {AiTuningMode::Duel,                 2.0f, 5000.0f, 12000.0f, 2.0f, 650.0f, 1200.0f},
-    {AiTuningMode::Escort,               2.0f, 9000.0f, 15000.0f, 2.0f, 650.0f, 1200.0f},
-    {AiTuningMode::Siege,                2.0f, 5000.0f, 12000.0f, 2.0f, 650.0f, 1200.0f},
-    {AiTuningMode::Competitive,          2.0f, 5000.0f, 12000.0f, 2.0f, 650.0f, 1200.0f},
+    // The seven trailing values come from the same sub-tables, at script lines
+    // 112-125, 300-313, 486-499, 670-683, 825-838, 994-1007 and 1149-1162.
+    // Three diverge from the image default: CloseAttack_CollectDist is 3000
+    // against 5000 everywhere but Escort, CloseAttack_ExistingTargetMul is 1.8
+    // against 1.5, CloseAttack_TargetGroupMemberMul is 10 against 2, and
+    // IslandCaptureRookie widens CautionMove_Dist to 40000 against 8000.
+    {AiTuningMode::IslandCaptureRookie,  2.0f, 5000.0f, 12000.0f, 2.0f, 650.0f, 1200.0f,
+     40000.0f, 3000.0f, 3000.0f, 6000.0f, 1.8f, 10.0f, 500.0f,
+     {25.0f, 12.0f, 15.0f, 1.0f, 12.0f, 8.0f, 4.0f, 1.0f, 2.0f, 0.001f, 2.0f, 2.0f, 8.0f, 8.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}},
+    {AiTuningMode::IslandCaptureRegular, 2.0f, 5000.0f, 12000.0f, 2.0f, 650.0f, 1200.0f,
+     8000.0f, 3000.0f, 3000.0f, 6000.0f, 1.8f, 10.0f, 500.0f,
+     {25.0f, 20.0f, 15.0f, 1.0f, 12.0f, 8.0f, 4.0f, 1.0f, 2.0f, 0.001f, 2.0f, 2.0f, 8.0f, 8.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}},
+    {AiTuningMode::IslandCaptureVeteran, 2.0f, 5000.0f, 12000.0f, 2.0f, 650.0f, 1200.0f,
+     8000.0f, 3000.0f, 3000.0f, 6000.0f, 1.8f, 10.0f, 500.0f,
+     {25.0f, 20.0f, 15.0f, 1.0f, 12.0f, 8.0f, 4.0f, 1.0f, 2.0f, 0.001f, 2.0f, 2.0f, 8.0f, 8.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}},
+    {AiTuningMode::Duel,                 2.0f, 5000.0f, 12000.0f, 2.0f, 650.0f, 1200.0f,
+     8000.0f, 3000.0f, 3000.0f, 6000.0f, 1.8f, 10.0f, 300.0f,
+     {25.0f, 20.0f, 15.0f, 1.0f, 12.0f, 8.0f, 4.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 1.5f, 1.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}},
+    {AiTuningMode::Escort,               2.0f, 9000.0f, 15000.0f, 2.0f, 650.0f, 1200.0f,
+     8000.0f, 6000.0f, 6000.0f, 12000.0f, 1.8f, 10.0f, 300.0f,
+     {25.0f, 20.0f, 15.0f, 1.0f, 12.0f, 8.0f, 4.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 8.0f, 8.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}},
+    {AiTuningMode::Siege,                2.0f, 5000.0f, 12000.0f, 2.0f, 650.0f, 1200.0f,
+     8000.0f, 3000.0f, 3000.0f, 6000.0f, 1.8f, 10.0f, 300.0f,
+     {25.0f, 20.0f, 15.0f, 1.0f, 12.0f, 8.0f, 4.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 1.5f, 1.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}},
+    {AiTuningMode::Competitive,          2.0f, 5000.0f, 12000.0f, 2.0f, 650.0f, 1200.0f,
+     8000.0f, 3000.0f, 3000.0f, 6000.0f, 1.8f, 10.0f, 300.0f,
+     {25.0f, 20.0f, 15.0f, 1.0f, 12.0f, 8.0f, 4.0f, 2.0f, 2.0f, 2.0f, 2.0f, 2.0f, 1.5f, 1.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}},
 };
 
 bool mode_in_range(AiTuningMode mode) noexcept {
@@ -127,6 +176,43 @@ bool AiTuningAuthoredReader::read_number(AiTuningMode mode, const char* key, flo
     if (std::strcmp(key, "AutoMerge_MergeDist") == 0) {
         out = row->auto_merge_merge_dist;
         return true;
+    }
+    if (std::strcmp(key, "CautionMove_Dist") == 0) {
+        out = row->caution_move_dist;
+        return true;
+    }
+    if (std::strcmp(key, "CloseAttack_CollectDist") == 0) {
+        out = row->close_attack_collect_dist;
+        return true;
+    }
+    if (std::strcmp(key, "CloseAttack_NearDist") == 0) {
+        out = row->close_attack_near_dist;
+        return true;
+    }
+    if (std::strcmp(key, "CloseAttack_FarDist") == 0) {
+        out = row->close_attack_far_dist;
+        return true;
+    }
+    if (std::strcmp(key, "CloseAttack_ExistingTargetMul") == 0) {
+        out = row->close_attack_existing_target_mul;
+        return true;
+    }
+    if (std::strcmp(key, "CloseAttack_TargetGroupMemberMul") == 0) {
+        out = row->close_attack_target_group_member_mul;
+        return true;
+    }
+    if (std::strcmp(key, "Formation_UnitDist") == 0) {
+        out = row->formation_unit_dist;
+        return true;
+    }
+    {
+        static const char* const kClassKeys[] = {"MotherShip", "BattleShip", "CommandBuilding", "Landfort", "Cruiser", "Destroyer", "Submarine", "LandingShip", "Cargo", "TBoat", "LevelBomber", "KamikazePlane", "TorpedoBomber", "DiveBomber", "Fighter", "ReconPlaneSmall", "ReconPlaneLarge", "OtherShip", "OtherPlane", "Other"};
+        for (std::size_t i = 0; i < 20; ++i) {
+            if (std::strcmp(key, kClassKeys[i]) == 0) {
+                out = row->class_weight[i];
+                return true;
+            }
+        }
     }
     if (std::strcmp(key, "AutoMerge_LeaveDist") == 0) {
         out = row->auto_merge_leave_dist;

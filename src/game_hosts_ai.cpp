@@ -632,8 +632,10 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             groupable = bsp::ai_entity_is_groupable_combatant_009fe080(
                 combatant_facts(g->members.front()));
         }
-        log.notef("  ai command promote group members=%zu groupable=%d dist=%.1f "
-            "collect=%.1f", g->members.size(), groupable ? 1 : 0,
+        log.notef("  ai command promote group members=%zu leader=%s groupable=%d "
+            "dist=%.1f collect=%.1f", g->members.size(),
+            g->members.empty() ? "" : unit_name(g->members.front()).c_str(),
+            groupable ? 1 : 0,
             static_cast<double>(tick_horizontal_distance(own, tgt)),
             static_cast<double>(tuning.at(bsp::kAiTuningCloseAttackCollectDist)));
         g->command.type = type;
@@ -997,12 +999,33 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         if (unit >= units.count()) return;
         if (std::find(g->members.begin(), g->members.end(), unit) != g->members.end()) return;
         g->members.push_back(unit);
-        // 009FFD80's sorted insert: the native list is kept ordered by the
-        // member's own key, and this process orders it by unit index.
-        std::sort(g->members.begin(), g->members.end());
+        // 00A2D8E0's sorted insert, now on the native key: the list is ordered
+        // by DESCENDING 009FFD80 leader weight, so the first member is the one
+        // every tick and every merge test reads as the leader. Ties keep unit
+        // order, which is what the native's stop-on-JA insert also does.
+        std::stable_sort(g->members.begin(), g->members.end(),
+            [this](std::size_t a, std::size_t b) {
+                return bsp::ai_group_member_sorts_before_00a2d8e0(
+                    unit_leader_weight(a), unit_leader_weight(b));
+            });
         if (group_of_unit.size() < units.count()) group_of_unit.resize(units.count(), nullptr);
         group_of_unit[unit] = g;
         ++summary.members_added;
+    }
+
+    // 009FFD80 BSP_Entity_AiLeaderWeight: the class weight 009FDF30 reads out
+    // of the tuning block, times the ship or group-class multiplier.
+    float unit_leader_weight(std::size_t unit) {
+        const std::uint32_t offset =
+            bsp::ai_entity_class_weight_offset_009fdf30(units.unit_class_id(unit));
+        const float class_weight =
+            offset == 0xFFFFFFFFu ? 1.0f : tuning.at(offset);  // 009FDFED is FLD1
+        return bsp::ai_entity_leader_weight_009ffd80(
+            class_weight,
+            units.unit_is_kind_of(unit, bsp::kUnitGunneryKindShipBase),
+            bsp::ai_entity_class_matches_009fe0b0(units.unit_is_kind_of(unit, 0x1B),
+                                                  units.unit_is_kind_of(unit, 0x45),
+                                                  units.unit_is_kind_of(unit, 0x46)));
     }
 
     std::string unit_name(std::size_t unit) const {
@@ -1202,10 +1225,13 @@ void GameAiCoordinatorHost::report() {
     for (const Impl::Group* g : host.registry) {
         if (g == nullptr) continue;
         host.log.notef("  ai group team=%d party=%d members=%zu claimed=%d command=%s "
-            "target=%d", g->team, g->party, g->members.size(),
+            "target=%d leader=%s weight=%.3f", g->team, g->party, g->members.size(),
             g->claimed_by != nullptr ? 1 : 0,
             bsp::ai_command_type_name(g->command.type),
-            g->command.target_group != nullptr ? 1 : 0);
+            g->command.target_group != nullptr ? 1 : 0,
+            g->members.empty() ? "" : host.unit_name(g->members.front()).c_str(),
+            g->members.empty() ? 0.0
+                : static_cast<double>(host.unit_leader_weight(g->members.front())));
     }
 }
 
