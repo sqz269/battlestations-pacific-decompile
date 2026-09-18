@@ -1,0 +1,133 @@
+{
+  "packet": "cc8_torpedo_aim_complete",
+  "baseline_commit": "afb2fb184",
+  "worktree": "agent/cc8-torpedo-approach",
+  "documentation": "docs/TORPEDO_AIM_COMPLETE.md",
+  "status": "negative_result_the_test_is_path_dependent_no_rule_reconstructed_nothing_wired",
+  "production_cpp_changed": false,
+  "ghidra_mutated": false,
+  "new_native_body_reconstructed": false,
+  "original_abi": {
+    "009d15f0": "ECX state; one stacked float dt; RET 4 at 009D2377 after ADD ESP,0x64",
+    "009d31b0": "ECX state; no stack arguments; AL result; body 009D31B0-009D31C2",
+    "00419010": "__cdecl(x0, y0, x1, y1, t), caller-clean 20 bytes, resolved by the walker",
+    "007f0280": "RET 0x18 at 007F0B1F, pops 24",
+    "source": "tools/stack_frame_walk.py corrected by the eight cleanups in the doc"
+  },
+  "calls": [
+    {
+      "address": "009d2345",
+      "native": "00419010",
+      "note": "BSP_Math_InterpolateClamped(0.0, 0.0, 1.0, speed * 0.5, K76): the ramp clause 1 subtracts from K68",
+      "host_method": null
+    },
+    {
+      "address": "009d1fed",
+      "native": "00419010",
+      "note": "the interpolation that produces K76 itself: x0 = [00CE3800] = 0.5f, y0 = 1.0f, x1 = 1.0f, y1 = approach+84h, t = |cos(angle)|, then multiplied by the commanded speed at 009D1FF2",
+      "host_method": null
+    },
+    {
+      "address": "009d1a94",
+      "native": "007f0280",
+      "note": "the unresolved callee the raw walker stops at; RET 0x18 so it pops 24",
+      "host_method": null
+    }
+  ],
+  "calls_in_undefined_regions": [],
+  "no_ghidra_function": [],
+  "frame_walk_correction": {
+    "why": "tools/stack_frame_walk.py stops accounting at eight call sites, so its printed depths drift upward from 009D1679 and conflate distinct slots",
+    "cleanups_applied": {
+      "009d1679": 0,
+      "009d1714": 4,
+      "009d1721": 0,
+      "009d175f": 4,
+      "009d176e": 4,
+      "009d1a94": 24,
+      "009d1e08": 4,
+      "009d1e17": 4
+    },
+    "basis": "every indirect site is a __thiscall virtual, callee-clean, popping exactly what the walker reports as pushed since the last call; 007F0280 is RET 0x18",
+    "cumulative_correction_at_the_test": 44,
+    "script": "local/slots2.py groups every [ESP+n] access by corrected slot"
+  },
+  "test_shape": {
+    "009d2345": "ramp = InterpolateClamped(0.0, 0.0, 1.0, speed * 0.5, K76)",
+    "009d234a": "acc = K68 - ramp",
+    "009d235a": "clause 1: K36 > acc sets the byte",
+    "009d2368": "clause 2: K64 > K76 sets the byte",
+    "009d236e": "state+2Ch = 1",
+    "speed": "the 009D3C99 switch on approach+134h between +7Ch and +80h; [00D7A280] = 0.5"
+  },
+  "dominance": {
+    "method": "local/dom.py builds the basic blocks from the listing, computes dominators, and asks whether each candidate write's block dominates the read's block",
+    "K36_read_009d22ff": {
+      "dominating": [
+        "009d1fa5",
+        "009d1e9e"
+      ],
+      "not_dominating": [
+        "009d214e",
+        "009d212a",
+        "009d20fa",
+        "009d20e6"
+      ]
+    },
+    "K68_read_009d2310": {
+      "dominating": [
+        "009d1673"
+      ],
+      "not_dominating": [
+        "009d16f8"
+      ]
+    },
+    "K76_read_009d2318_and_009d2360": {
+      "dominating": [
+        "009d1ff6",
+        "009d1f99"
+      ],
+      "not_dominating": []
+    },
+    "K64_read_009d2364": {
+      "dominating": [],
+      "not_dominating": [
+        "009d174c",
+        "009d1723"
+      ]
+    },
+    "verdict": "two of the four operands have no dominating write, and 009D210E JBE 009D2167 jumps clean over the block that writes K36 late, so the thresholds are path-dependent slot reuses; four edges reach the tail at 009D2233, 009D228D, 009D22A0 and 009D22CA"
+  },
+  "k76_producer": {
+    "block": "009D1F99-009D1FF6, the one dominating producer",
+    "rule": "K76 = InterpolateClamped([00CE3800] = 0.5f, 1.0f, 1.0f, approach+84h, |cos(angle)|) * commanded_speed",
+    "units": "a DISTANCE, not a time; the same quantity feeds approach+130h at 009D2021 where [00CE4D70] = 200.0 is added"
+  },
+  "disagreement": {
+    "slot": "K68, the minuend of clause 1",
+    "frame_walk": "009D1673 stores the commanded altitude floor, max(over_land ? 30 : 5, approach+78h + approach+74h), computed at 009D165B-009D1665",
+    "ghidra_decompiler": "names the same operand fStack_5c and assigns it the bearing error, BSP_Math_SubtractWrappedAngle(approach+94h, unit vtable +50h)",
+    "unresolved": true,
+    "likely_cause": "the corrected walk is still off inside one of the SUB ESP,0x14 argument windows, where the same [ESP+n] is an argument slot on one side of the call and a local on the other; 009D2085 and 009D217D both write [ESP+0x64] into what is otherwise the local area"
+  },
+  "coverage": {
+    "009d15f0": "the test at 009D22FF-009D236E is located, its four operands are identified as slots and their dominance is settled; one operand (K76) is reconstructed in full; two are path-dependent and one is contested. No rule is produced",
+    "009d31b0": "full, from the previous packet"
+  },
+  "validation": {
+    "build": "scripts/build.ps1 MSVC Win32 /W4 /WX clean",
+    "tests": "ctest 2/2 passing; no test added",
+    "production_source_changed": false,
+    "runs": "none attributed: no source changed, so there is no after to measure. The USN01 and USN02 numbers stand where docs/TORPEDO_RUN_IN_PATH.md left them"
+  },
+  "corrections": [
+    "docs/TORPEDO_APPROACH_UPDATE.md section (4) derives aim_solution_130 from a bearing error against a time to target and calls the tick's interpolant a time; the quantity at K76 is a distance, an interpolation on |cos| of the commanded altitude scaled by the commanded speed, so that rule is not supported",
+    "docs/TORPEDO_RUN_IN_PATH.md section (5) describes clause 2 as a time against the absolute turn offset; the right operand is the distance K76 and the left operand K64 has no dominating write, so its identity is open"
+  ],
+  "open_questions": [
+    "the K68 disagreement between the corrected frame walk and Ghidra; it decides whether the walk can be trusted for the rest of the body",
+    "the identity of K64, which has no dominating write",
+    "approach+84h, the interpolation upper bound, and unit+C64h, the bank the skipped block at 009D2110 compares against"
+  ],
+  "names_added": []
+}
