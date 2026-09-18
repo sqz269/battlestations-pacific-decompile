@@ -36,6 +36,7 @@
 #include "bsp/ship_ai_approach_update.hpp"
 #include "bsp/ship_ai_attackmove_substates.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/recon_sensor_pass.hpp"
 #include "bsp/projectile_kinds.hpp"
 #include "bsp/gameplay_settings_tail.hpp"
 #include "bsp/ship_ai_approach_curves.hpp"
@@ -2678,10 +2679,14 @@ public:
         // drain; this host answers (a) and (b) with the same unit facts the
         // gunnery host's contact sweep uses and does NOT build a second recon.
         //
-        // PARTIAL: rule (c), the sensor pass 00806840/008048A0 that sets each
-        // entry's level, does not run in this process, so every rule-(a)+(b)
-        // member is taken as at least a blip and therefore present in the
-        // union. That is the permissive side of the native rule.
+        // Rule (c), the sensor pass 00806840/008048A0 that sets each entry's
+        // level, runs in the gunnery host's tick (008073C0 before the gunnery
+        // pass) and publishes its answer per (observing side, target). This
+        // read takes that level. A side the pass never covered keeps
+        // kReconDetectionUnknownLevel, which is `identified`: the permissive
+        // answer the tree used before rule (c) ran, so binding the pass can
+        // only ever make a target less visible where a sensor judged it.
+        // docs/RECON_SENSOR_PASS_BINDING.md.
         owner_.done("ShipAiGoal::recon_knows_target", 0x009dfbe0u);
         if (target == 0u) return false;
         const std::size_t other = static_cast<std::size_t>(target - 1u);
@@ -2703,7 +2708,9 @@ public:
         // The scan walks the world registry's per-class lists, so a unit the
         // registry no longer holds is in no list whatever its gate bytes say.
         if (!owner_.units.unit_active(other)) return false;
-        facts.level = bsp::ReconDetectionLevel::identified;  // rule (c) absent
+        facts.level = owner_.gunnery != nullptr
+            ? owner_.gunnery->recon_sensor_pass_state().level(own_side, other)
+            : bsp::kReconDetectionUnknownLevel;
         const bool known = bsp::recon_union_contains_009dfbe0(facts);
         if (index_ < owner_.rows.size() && known) ++owner_.rows[index_].goal_visible_recon;
         return known;
@@ -4991,10 +4998,24 @@ bool GameShipAiHost::promote_order_00825f2c(std::size_t unit_index) {
     // it needs, all of which belong to the ShipMotionHost binding in
     // src/game_hosts_units.cpp.
     //
-    // The rest of the older note still holds: readers of slot+40h / +44h / +48h
-    // do exist, twelve of them, and the rel32 scan for 00816A40 and 0080DAD0
-    // finds the ring's write cursor filled only from three HUD order routines.
-    // On the image's evidence the AI never writes the order ring at all.
+    // A third correction, packet cc8_ship_ai_heading_to_rudder
+    // (docs/SHIP_AI_HEADING_TO_RUDDER.md). The older note said: "the rel32 scan
+    // for 00816A40 and 0080DAD0 finds the ring's write cursor filled only from
+    // three HUD order routines. On the image's evidence the AI never writes the
+    // order ring at all." That is WRONG, and the scan is why: the AI uses
+    // neither entry point. 009F3F80 BSP_ShipAi_DriveOrderRing ends with
+    // 009F4CE8 0080E190(unit, rudder) and 009F4CFB 0080E170(unit, throttle),
+    // five-instruction setters that write slot[ring+144h]+4 and +0 with
+    // ECX = [blk+3FCh], the unit. 00813020 then clamps slot[ring+140h] and
+    // steps unit+984h toward it, and 00813197 sets the read cursor to the write
+    // cursor, so in a single-player session the live pair follows what the AI
+    // wrote one tick earlier. Both setters are already reconstructed in
+    // src/ship_ai_throttle_ring.cpp and bound as ShipAiRing::set_write_slot_*,
+    // which is why this run reports writes=96000 and total_path=41584.83.
+    //
+    // Readers of slot+40h / +44h / +48h do exist, twelve of them, but the
+    // steering does not use them: 009F40BB takes the heading target from
+    // blk+324h, not from slot+44h. The published triple is inter-unit state.
     host.record("ShipAiOrder::slot_to_order_ring", 0x00825f7cu);
     if (!host.logged_position) {
         host.logged_position = true;
@@ -5003,8 +5024,11 @@ bool GameShipAiHost::promote_order_00825f2c(std::size_t unit_index) {
             "00825f2c flips the index and 00811d10 copies the slot across. Readers of "
             "slot+40h / +44h / +48h DO exist - twelve sites in "
             "docs/UNIT_AI_ORDER_SLOT_READER.md, which supersedes "
-            "docs/UNIT_AUTOPILOT_PAIR.md's negative - and none is on the ring path: on the "
-            "image's evidence the AI never writes the order ring. The name of this record "
+            "docs/UNIT_AUTOPILOT_PAIR.md's negative - and none is on the steering path, "
+            "because 009f40bb takes the heading target from blk+324h. The AI DOES write the "
+            "order ring, through 0080e190 at 009f4ce8 and 0080e170 at 009f4cfb, which the "
+            "old rel32 scan for 00816a40 and 0080dad0 could not see "
+            "(docs/SHIP_AI_HEADING_TO_RUDDER.md). The name of this record "
             "is stale for a second reason: 00826c34..00826d69 is the motion TAIL, not an "
             "ai-to-rudder hop. The ordered rudder is applied at 00826b54 by 0092e8c0, "
             "00826c75's yaw rate is only the third argument of the wake sampler 00810190, "
@@ -5286,11 +5310,15 @@ void GameShipAiHost::report() {
         host.summary.state_steps_real, host.summary.goal_sets, host.summary.goal_replans,
         host.summary.units_with_goal, host.summary.substate_steps,
         host.summary.navigate_mode_steps);
+    // driven= was retired by packet cc8_recon_sensor_pass_rule_c. units_driven was
+    // never incremented anywhere in the tree, so driven=0 read as a gate on the AI
+    // to rudder chain that does not exist: docs/SHIP_AI_HEADING_TO_RUDDER.md shows
+    // the chain runs, and live_pair_changes is the field that measures it.
     host.log.notef("summary mission ship ai ring hops=%llu gated_3f5=%llu writes=%llu "
-        "rudder_law=%llu deadbands=%llu live_pair_changes=%llu driven=%zu",
+        "rudder_law=%llu deadbands=%llu live_pair_changes=%llu",
         host.summary.ring_hops, host.summary.ring_gated_3f5, host.summary.ring_writes,
         host.summary.rudder_law_calls, host.summary.rudder_deadbands,
-        host.summary.live_pair_changes, host.summary.units_driven);
+        host.summary.live_pair_changes);
     host.log.notef("summary mission auto target thinks=%llu scans=%llu chose=%zu "
         "fire_target_sets=%llu attackmove_issues=%llu accepts=%zu",
         host.summary.thinks, host.summary.scans, host.summary.units_with_fire_target,

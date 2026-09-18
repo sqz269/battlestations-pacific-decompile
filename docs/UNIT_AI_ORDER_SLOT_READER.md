@@ -203,3 +203,43 @@ steering path" and in the `unit_heading_vtable_0050` follow-up row do not surviv
 The rest of this document stands, including its central negative: the AI never writes the
 order ring. The gap it identifies is real and still open; it is just not at `00825F7C`.
 `ship_ai_heading_to_rudder` in the other document's follow-up table is the packet for it.
+
+## Second correction appended by packet `cc8_ship_ai_heading_to_rudder` (2026-09-18)
+
+This document's central negative does not hold. It says: "Scanning `.text` for every `E8`
+`rel32` reaching `00816A40` or `0080DAD0` finds exactly those four sites and no other, so on
+the evidence in the image the ring is a player-order and network path and **the AI never
+writes the order ring**."
+
+The scan is correct and the conclusion does not follow, because the AI uses neither entry
+point. `009F3F80 BSP_ShipAi_DriveOrderRing` ends with
+
+```
+009F4CDE  PUSH ECX ; MOV ECX,[ESI+3FCh] ; FSTP [ESP] ; 009F4CE8 CALL 0080E190
+009F4CED  FLD [ESP+20h] ; PUSH ECX ; MOV ECX,[ESI+3FCh] ; FSTP [ESP] ; 009F4CFB CALL 0080E170
+```
+
+and both callees are five instructions that write the ring's write slot straight from the
+unit: `MOV EAX,[ECX+97Ch]; MOVSS XMM0,[ESP+4]; SHL EAX,5; MOVSS [EAX+ECX+838h or +83Ch],XMM0;
+RET 4`. `unit+838h` is the ring base and `unit+97Ch` is `ring+144h`, the write cursor.
+`00813020` then clamps `slot[ring+140h]`, steps `ring+148h`/`+14Ch` toward it through two
+`0042AC60` calls whose `ECX` comes from `008130D1`/`00813104`, copies the write slot forward
+with a `REP MOVSD` at `0081317C`, and at `00813197` sets the read cursor to the write cursor.
+In a single-player session the live pair therefore follows what the AI wrote one tick
+earlier; the client branch at `008131B0` walks the read cursor instead, which is the network
+playback regime.
+
+Two more rows in this document change with it:
+
+* `ship_ai_throttle_to_ring`, called here "the packet's biggest open question", was not
+  open when this document was written. `docs/SHIP_AI_THROTTLE_TO_RING.md`, packet
+  `cc_ai_throttle_ring`, answered it on 2026-09-12: `blk+1D0h` and `blk+1D4h` go to
+  `slot[write]+0` and `slot[write]+4` after the deadbands and the slew at
+  `009F4BA7..009F4C12`. `src/ship_ai_throttle_ring.cpp` reconstructs `009F4B99..009F4D04`
+  and both setters, and the host binds them.
+* "`009D8CE0`'s caller is unknown - Ghidra records none" - it records one, `009F3E30`,
+  which itself has no caller in the graph.
+
+The twelve readers of `slot+40h`/`+44h`/`+48h` stand, and so does the conclusion that none
+of them steers: `009F40BB` takes the heading target from `blk+324h`, not from `slot+44h`.
+The published triple is inter-unit state, and this document's own reading of it is right.

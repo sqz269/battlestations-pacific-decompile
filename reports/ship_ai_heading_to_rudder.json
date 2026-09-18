@@ -1,0 +1,298 @@
+{
+ "packet": "cc8_ship_ai_heading_to_rudder",
+ "owner": "agent/cc8-ship-rudder-hop",
+ "project": "C:/Users/sqz269/bsp.gpr",
+ "program": "/battlestationspacific.exe",
+ "ghidra_access": "read-only: no rename, comment, prototype, function creation or save",
+ "doc": "docs/SHIP_AI_HEADING_TO_RUDDER.md",
+ "source": "src/game_hosts_ship_ai.cpp (comment and log note only). No new module: every hop already has a reconstruction",
+ "build": "scripts/build.ps1, Win32 Release, /W4 /WX clean; ctest 2/2; no test added",
+ "note": "The packet's premise is false and was already known to be false. docs/SHIP_AI_THROTTLE_TO_RING.md (packet cc_ai_throttle_ring, 2026-09-12) established that the AI writes the order ring's write slot directly through 0080E170 and 0080E190 at the tail of 009F3F80, and that 00816A40 is not on that path. Three later documents, one written by this worker earlier today, assert the opposite because a rel32 scan for 00816A40 and 0080DAD0 found only HUD callers. This packet reconciles them, adds a complete byte-level writer census of unit+984h with positive controls on every negative, and closes the prior document's uncertainty 5 by reading the cursor discipline at 00813186..008131D3.",
+ "routines": [
+  {
+   "address": "0080e190",
+   "native": "0080e190",
+   "name": "BSP_UnitOrderRing_SetWriteSlotParamB (existing name, evidence appended)",
+   "abi": "__thiscall void(float), RET 4 at 0080E1A8, body 0080E190-0080E1AA, five instructions",
+   "coverage": "complete",
+   "rule": "MOV EAX,[ECX+97Ch]; MOVSS XMM0,[ESP+4]; SHL EAX,5; MOVSS [EAX+ECX+83Ch],XMM0. ECX is the UNIT: unit+838h is the ring base, so unit+97Ch is the write cursor ring+144h and the store lands on slot[write]+4, the ordered rudder",
+   "reconstruction": "existing, bsp::ship_ai_ring_set_write_slot_rudder_0080e190"
+  },
+  {
+   "address": "0080e170",
+   "native": "0080e170",
+   "name": "BSP_UnitOrderRing_SetWriteSlotParamA (existing name, evidence appended)",
+   "abi": "__thiscall void(float), RET 4 at 0080E188, body 0080E170-0080E18A",
+   "coverage": "complete",
+   "rule": "the throttle twin, storing to [EAX+ECX+838h] = slot[write]+0",
+   "reconstruction": "existing, bsp::ship_ai_ring_set_write_slot_throttle_0080e170"
+  },
+  {
+   "address": "00813020",
+   "native": "00813020",
+   "name": "BSP_UnitOrderRing_Tick (existing name; the cursor tail read here)",
+   "abi": "__thiscall void(float dt), RET 4 at 008131AD and 008131D3, body 00813020-008131D5",
+   "coverage": "PARTIAL: the clamp head 00813026..008130C2 and the cursor tail 00813124..008131D3 are read here. The two 0042AC60 calls and the slot bounds were already reconstructed elsewhere",
+   "rule": "ECX = ring = unit+838h. read = ring+140h, write = ring+144h, ten 20h-byte slots at ring+0. The live pair ring+148h/+14Ch is stepped toward slot[read]+0 and slot[read]+4, each clamped between slot[read]+0Ch/+10h and +14h/+18h, at the rates ring+154h*dt and ring+158h*dt (008130F2, 0081311F). Then slot[read]+1Ch goes to ring+150h, a REP MOVSD at 0081317C copies slot[write] into slot[(write+1) mod 10] and sets its +8 flag, and the cursors advance: single player 00813197 ring+140h = ring+144h, client 008131B0 ring+140h += 1 wrapping at 10. The branch is 00813186 CMP [[00E188A8]+1FE4h],2",
+   "reconstruction": "existing, bsp/unit_state_message.hpp"
+  },
+  {
+   "address": "009f3f80",
+   "native": "009f3f80",
+   "name": "BSP_ShipAi_DriveOrderRing, the tail 009F4CDE..009F4D04 only",
+   "abi": "__thiscall void(float dt), RET 4 at 009F4D04, body 009F3F80-009F4D06",
+   "coverage": "complete for 009F4CDE..009F4D04; the middle is docs/SHIP_AI_THROTTLE_TO_RING.md's",
+   "rule": "PUSH ECX; MOV ECX,[ESI+3FCh]; FSTP [ESP]; CALL 0080E190 then the same shape for 0080E170. ESI is the control block and blk+3FCh is the unit, the same field 009F406C uses for the heading getter",
+   "reconstruction": "existing, bsp::ship_ai_order_ring_hop_009f4b99"
+  },
+  {
+   "address": "00811960",
+   "native": "00811960",
+   "name": "BSP_UnitHeadingCommand_SetLimitedTarget (existing name; re-read for what consumes its output)",
+   "abi": "__thiscall void(float desired), RET 4 at 00811A22",
+   "coverage": "complete as read",
+   "rule": "writes the limited heading target to slot+44h at 00811A19. NOT the steering input: 009F40BB takes the drive routine's target from blk+324h. slot+44h is inter-unit published state",
+   "reconstruction": "existing, docs/UNIT_RUDDER_CURVE.md"
+  }
+ ],
+ "call_sites": [
+  {
+   "routine": "009f3f80",
+   "address": "009f4ce8",
+   "native": "0080e190",
+   "note": "ECX = [ESI+3FCh] loaded at 009F4CDF; one float pushed by PUSH ECX / FSTP [ESP] at 009F4CDE / 009F4CE5"
+  },
+  {
+   "routine": "009f3f80",
+   "address": "009f4cfb",
+   "native": "0080e170",
+   "note": "ECX = [ESI+3FCh] loaded at 009F4CF2; the throttle from [ESP+20h]"
+  },
+  {
+   "routine": "00813020",
+   "address": "008130f2",
+   "native": "0042ac60",
+   "note": "ECX = ring+148h from 008130D1 LEA ESI,[EBX+148h]: the ordered throttle"
+  },
+  {
+   "routine": "00813020",
+   "address": "0081311f",
+   "native": "0042ac60",
+   "note": "ECX = ring+14Ch from 00813104 LEA EDI,[EBX+14Ch]: the ordered rudder, i.e. unit+984h"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826121",
+   "native": "00813020",
+   "note": "the ring tick, with the raw delta; cited from docs/SHIP_MOTION.md"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826b54",
+   "native": "0092e8c0",
+   "note": "0092E8C0(controller, unit+984h, dt), the steering. Its only caller, and it is in no vtable"
+  },
+  {
+   "routine": "009f50e0",
+   "address": "009f5106",
+   "native": "009f3dd0",
+   "note": "reached only past 009F50FC CMP byte [unit+61h],0 / JNE 009F524F, which exits the AI controller step"
+  },
+  {
+   "routine": "00937440",
+   "address": "00937572",
+   "native": "none",
+   "kind": "field_read",
+   "note": "MOV EDX,[EDI+1Ch]; FLD [EDX+984h]: the same ordered rudder into the force model"
+  }
+ ],
+ "host_steps": [
+  {
+   "routine": "009f3f80",
+   "address": "009f4ce8",
+   "native": "0080e190",
+   "kind": "call",
+   "function": "009f3f80",
+   "method": "ShipAiRing::set_write_slot_rudder",
+   "note": "ALREADY BOUND before this packet, src/game_hosts_ship_ai.cpp:2473. 96000 calls on USN02"
+  },
+  {
+   "routine": "009f3f80",
+   "address": "009f4cfb",
+   "native": "0080e170",
+   "kind": "call",
+   "function": "009f3f80",
+   "method": "ShipAiRing::set_write_slot_throttle",
+   "note": "ALREADY BOUND before this packet, src/game_hosts_ship_ai.cpp:2480"
+  },
+  {
+   "routine": "00825f20",
+   "address": "00826121",
+   "native": "00813020",
+   "kind": "call",
+   "function": "00825f20",
+   "method": "ShipMotion::order_ring_tick",
+   "note": "ALREADY BOUND. 96000 calls on USN02"
+  }
+ ],
+ "writer_census_unit_984h": {
+  "method": "every store form and every address-taking form, each negative with a positive control",
+  "scans": [
+   {
+    "pattern": "d9 ?? 84 09 00 00",
+    "result": "14 hits, every ModRM 8x, so all FLD",
+    "control": "d9 9e occurs 3407 times"
+   },
+   {
+    "pattern": "f3 0f 11 ?? 84 09 00 00",
+    "result": "none",
+    "control": "f3 0f 11 86 occurs 2232 times"
+   },
+   {
+    "pattern": "c7 ?? 84 09 00 00",
+    "result": "none",
+    "control": "same prefix elsewhere"
+   },
+   {
+    "pattern": "66 0f d6 ?? 84 09 00 00",
+    "result": "none",
+    "control": "same prefix elsewhere"
+   },
+   {
+    "pattern": "89 ?? 84 09 00 00",
+    "result": "one, 004DA331 in BSP_SceneRecord_Construct, a different structure"
+   },
+   {
+    "pattern": "8d ?? 84 09 00 00",
+    "result": "none: nothing takes the address of unit+984h",
+    "control": "8d ?? 4c 01 00 00 and 8d ?? 48 01 00 00 both return dozens"
+   },
+   {
+    "pattern": "40 6a 81 00 / d0 da 80 00 / 00 da 80 00 / b0 d9 80 00",
+    "result": "none in .rdata or .data: no vtable holds 00816A40, 0080DAD0, 0080DA00 or 0080D9B0",
+    "control": "60 fd 6d 00 returns nine .rdata hits including 00CFC420"
+   }
+  ],
+  "writers": [
+   {
+    "address": "00812f66",
+    "routine": "00812d40 BSP_UnitOrderRing_Construct",
+    "form": "MOVSS [EAX+14Ch]",
+    "role": "the initial value"
+   },
+   {
+    "address": "0080da3a",
+    "routine": "0080da00 BSP_UnitOrderRing_SetRudderImmediate",
+    "form": "MOVSS [ECX+14Ch]",
+    "role": "save/restore only: caller 0081F980 from 00758210 and 00853E10"
+   },
+   {
+    "address": "0082674c",
+    "routine": "00825f20",
+    "form": "MOVSS [EBX+14Ch]",
+    "role": "the inlined manual-autopilot setters, gated on unit+61h"
+   },
+   {
+    "address": "0081311f",
+    "routine": "00813020 BSP_UnitOrderRing_Tick",
+    "form": "0042AC60 with ECX = ring+14Ch",
+    "role": "the ring tick stepping toward slot[read]+4. THE ONE THE AI DRIVES"
+   }
+  ]
+ },
+ "corrections": [
+  {
+   "document": "docs/UNIT_AI_ORDER_SLOT_READER.md",
+   "was": "on the evidence in the image the ring is a player-order and network path and the AI never writes the order ring",
+   "is": "the AI writes it every step through 0080E190 at 009F4CE8 and 0080E170 at 009F4CFB; the rel32 scan covered only 00816A40 and 0080DAD0",
+   "evidence": "the two setter bodies; 009F4CDF MOV ECX,[ESI+3FCh]; docs/SHIP_AI_THROTTLE_TO_RING.md 2026-09-12",
+   "how": "appended section, original text untouched"
+  },
+  {
+   "document": "docs/UNIT_AI_ORDER_SLOT_READER.md",
+   "was": "009D8CE0's own caller is unknown - Ghidra records none",
+   "is": "its caller is 009F3E30, which Ghidra does record; 009F3E30 itself has none",
+   "evidence": "python tools/bsp.py callers 009d8ce0",
+   "how": "appended section"
+  },
+  {
+   "document": "docs/SHIP_AI_RING_WINNER.md",
+   "was": "the same negative, repeated",
+   "is": "the same correction",
+   "evidence": "the same",
+   "how": "appended section"
+  },
+  {
+   "document": "docs/SHIP_AI_RUDDER_HOP.md",
+   "was": "this worker's own claim earlier today that the AI's published heading has no established path to unit+984h, and a writer table that omitted the pointer writer",
+   "is": "the path exists and is bound; the writer table needed 00813104 LEA EDI,[EBX+14Ch] with 0081311F CALL 0042AC60, which a displacement census cannot see",
+   "evidence": "00813104, 0081311F, and the REP MOVSD at 0081317C",
+   "how": "appended section"
+  },
+  {
+   "document": "docs/SHIP_AI_THROTTLE_TO_RING.md",
+   "was": "uncertainty 5: whether the write cursor can be stale relative to the read cursor on a networked client was not established",
+   "is": "established: 00813197 sets ring+140h = ring+144h in a single-player session, one tick of latency; the client branch at 008131B0 advances ring+140h by one",
+   "evidence": "00813186 CMP [[00E188A8]+1FE4h],2 and the epilogues at 008131A9 and 008131CF",
+   "how": "stated in the new document; that document's text is not edited"
+  },
+  {
+   "document": "src/game_hosts_ship_ai.cpp",
+   "was": "the comment and log note at the ShipAiOrder::slot_to_order_ring record, asserting the AI never writes the order ring",
+   "is": "corrected in place with the superseded claim quoted; the census key is still not renamed, so seven packets of counts stay comparable",
+   "evidence": "docs/SHIP_AI_HEADING_TO_RUDDER.md",
+   "how": "in-place edit of the comment and the log note only"
+  }
+ ],
+ "no_ghidra_function": [],
+ "validation": {
+  "build": "scripts/build.ps1 Win32 Release /W4 /WX: clean",
+  "tests": "ctest --test-dir build/win32 -C Release: 2/2 pass; no case added",
+  "usn02": "unchanged from the run earlier today on this tree, because this packet changes no run-time path: hull=125 deaths=3 total_damage=13673.7 attributions=126; ship ai ring hops=96000 writes=96000 rudder_law=93000 deadbands=17810 live_pair_changes=35010; world units=32 motion_ticks=96000 simulated=150.00 s moved=33.43 total_path=41584.83",
+  "usn01": "hull=23 deaths=1 total_damage=220.0, unchanged",
+  "attribution": "no change is attributable to this packet and none is claimed. live_pair_changes=35010 and total_path=41584.83 are the positive run-time evidence that the rudder already follows the AI's heading. driven=0 in the same line is a dead counter: nothing in the tree increments units_driven, and it must not be read as a gate"
+ },
+ "follow_up_packets": [
+  {
+   "id": "ship_ai_census_cleanup",
+   "addresses": [
+    "00825f7c"
+   ],
+   "what": "retire the ShipAiOrder::slot_to_order_ring record, corrected three times and never renamed, and either wire or delete units_driven, whose driven=0 reads as a failure and is not one"
+  },
+  {
+   "id": "ship_ai_ring_slot_record",
+   "addresses": [
+    "00813020",
+    "0080e170",
+    "00812d40"
+   ],
+   "what": "the ten 20h-byte slots in full: +8 the consumed flag, +0Ch/+10h and +14h/+18h the clamp bounds, +1Ch the byte copied to ring+150h"
+  },
+  {
+   "id": "ship_ai_published_slot_consumers",
+   "addresses": [
+    "009d8ce0",
+    "009f3e30",
+    "009e3c00",
+    "00811d80"
+   ],
+   "what": "what a ship does with another ship's published heading; 009F3E30 is 009D8CE0's caller and has none of its own"
+  },
+  {
+   "id": "unit_order_ring_network_regime",
+   "addresses": [
+    "008131b0",
+    "00813186"
+   ],
+   "what": "the client branch of the cursor advance and what fills the ten slots on a machine that is not simulating"
+  }
+ ],
+ "uncertainties": [
+  "The writer census is exhaustive over displacement and address-taking forms with controls, but a writer that reaches unit+984h through a pointer computed arithmetically rather than by LEA with that displacement would still escape it. No such site was seen.",
+  "slot+44h's readers are taken from docs/UNIT_AI_ORDER_SLOT_READER.md's IMUL 54h scan, which is itself a displacement census; a reader holding a slot pointer would not appear in it.",
+  "009F3E30's own entry point is unknown, so what consumes BSP_ShipAi_PredictTrackCrossing's answer is not established here.",
+  "00813020's slot-bound fields +0Ch/+10h/+14h/+18h are read as clamp bounds from the compare shape only; no producer of them was read.",
+  "0092E5B0 and the middle of 009F3F80 were not re-read; they are cited from docs/SHIP_AI_THROTTLE_TO_RING.md and docs/SHIP_MOTION.md."
+ ]
+}

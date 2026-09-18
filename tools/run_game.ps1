@@ -59,6 +59,23 @@ try {
     & $Exe @arguments 2>&1 | Select-Object -Last 1
     $code = $LASTEXITCODE
     "EXITCODE=$code"
+    # The parent can return while its native-data child is still tearing down
+    # (a lost D3D device at shutdown has been seen), and a survivor blocks the
+    # next launch through the single-instance mutex. Wait for this run's own
+    # processes, identified by their path under this worktree, then stop any
+    # that remain. Processes from other worktrees are never touched.
+    $exeRoot = (Resolve-Path $Exe).Path
+    $treeRoot = (Get-Location).Path
+    $waited = 0
+    while ($waited -lt 30) {
+        $mine = Get-Process bsp_game -ErrorAction SilentlyContinue | Where-Object { $_.Path -and $_.Path.StartsWith($treeRoot, [System.StringComparison]::OrdinalIgnoreCase) }
+        if (-not $mine) { break }
+        Start-Sleep -Seconds 1; $waited += 1
+    }
+    if ($mine) {
+        $mine | Stop-Process -Force -ErrorAction SilentlyContinue
+        "stopped lingering bsp_game pids after ${waited}s: $(($mine | ForEach-Object Id) -join ',')"
+    }
     if (Test-Path $Log) {
         Select-String -Path $Log -Pattern '^summary mission gunnery damage|^summary mission pilot attack|^summary window_created|^startup failed|^host methods' |
             ForEach-Object { $_.Line.Substring(0, [Math]::Min(200, $_.Line.Length)) }

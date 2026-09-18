@@ -509,3 +509,28 @@ the planner class; they are outside this packet.
 - **Was:** What puts a group into the list at 00F8AA60/00F8AA64 that the proximity merge walks (open question)
   **Is:** 00F8AA60 is element 2 of std::list<AiGroup*> g_aiGroupsByTeam[3] at 00F8AA48 with stride 0Ch, and BSP_AiGroup_Construct appends every group to element group+5638h unconditionally. include/bsp/ai_group_think.hpp already declares the array as kAiGroupPerTeamListBase, so the doc's open question is the stale half.
   **Evidence:** CG_static_init_00CE04B0 calls 00BF7C6E(0xF8AA48, 0xC, 3, 0xA16E00); the constructor's insert is at 00A2E086-00A2E0BD keyed on param_1[0x158e] = param_2+54h
+
+## Correction appended by cc8_ai_coordinator_tick
+
+The two passes now have a caller: `GameAiCoordinatorHost` in `src/game_hosts_ai.cpp` runs
+`00A32D50`'s sequence every fixed step. `docs/AI_COORDINATOR_TICK.md` carries the binding, the
+substitutions and the measurement on IJN01, USN01 and USN02. The text above is left as written.
+
+**The first open question is stale, not open.** "What puts a group into the list at
+`00F8AA60`/`00F8AA64`" was already answered in `docs/AI_PLANNERS.md`: the list is element 2 of
+`g_aiGroupsByTeam` at `00F8AA48`, and `BSP_AiGroup_Construct` appends every group to
+`g_aiGroupsByTeam[group+5638h]` at `00A2E086`-`00A2E0BD`. No separate filler exists.
+
+**Two host-table entries decide how much of the think can run at all, and both were measured.**
+`can_auto_merge` (`00A2C8D0`) delegates to `from+564Ch` `vtable[+14h]`, so without an AI command
+object no auto-merge is ever taken. `auto_merge_dist` (`00A371A0` `+208h`) comes from the block
+`00A335D0` loads, and `00A335D0` has two callers, `00A3717C` in `CG_array_ctor_helper_00a37130`
+and the tail jump at `00A371C7` in `BSP_AiGlobals_Reload`, neither of which runs without an AI
+globals script. Both merge phases therefore take nothing in this process: `auto_merges=0` and
+`prox_merges=0` on all three missions.
+
+**`009FFE50` is read in full now** and is the constraint that decides what the coordinator can
+do. `009FFE59` tests `[[00E188A8]+61Ch]`; when set, `009FFE62` calls `004BCA50` and `009FFE67`
+`CMP EAX,3` / `JA` returns true above game mode 3, while modes 0 to 3 return true only for party
+slot 0 and slot 4. The `009FFE84` arm tests `[ecx+1FE4h]` and answers `slot != 0`. Measured: on
+every mission party 0 gets a brain and parties 1 and 2 get none, although all three carry units.

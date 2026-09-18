@@ -236,3 +236,30 @@ so the listing came from `bsp.py disasm-raw` over the disk bytes, resynchronised
 | `ship_ai_heading_to_rudder` | `009F4D10`, `00811960`, `00937572`, `0092E8C0` | The gap this packet proves is still open: the AI publishes a limited heading target into `cmd+44h` at `00811A19` and nothing established turns it into `unit+984h`. Start from the twelve slot readers in `docs/UNIT_AI_ORDER_SLOT_READER.md`, not from `00825F7C` |
 | `unit_controller_0092e5b0` | `0092E5B0` | The one call in this tail whose body is unread. Gated on `controller+60h`, reads the physics body through `00C31F40` |
 | `unit_occupant_record_284` | `00778890`, `0070DB60`, `0077A650`, `unit+308h` | What `unit+284h` is, what the `settings+430h` timer drives, and what `unit+308h` is compared against |
+
+## Correction appended by packet `cc8_ship_ai_heading_to_rudder` (2026-09-18)
+
+Two statements in this document are wrong and `docs/SHIP_AI_HEADING_TO_RUDDER.md`
+supersedes them.
+
+* "So the AI's published heading still has no established path to `unit+984h`. That gap is
+  real" - **the gap is not real.** `009F3F80 BSP_ShipAi_DriveOrderRing` ends with
+  `009F4CE8 0080E190(unit, rudder)` and `009F4CFB 0080E170(unit, throttle)`, five-instruction
+  setters that write `slot[ring+144h]+4` and `+0` with `ECX = [blk+3FCh]`, the unit.
+  `00813020` clamps `slot[ring+140h]`, steps `unit+984h` toward it through `0042AC60`, and
+  at `00813197` sets the read cursor to the write cursor, so the live pair follows what the
+  AI wrote one tick earlier. All of it is already reconstructed and bound.
+* The writer table in this document's "Where the ordered rudder does steer the ship"
+  section is complete for **displacement** writers but omits the pointer writer, which is
+  the one that matters: `00813104 LEA EDI,[EBX+14Ch]` then `0081311F CALL 0042AC60`. A
+  displacement census cannot see a helper that takes the address in a register, and the
+  same blind spot hides the `REP MOVSD` slot copy at `0081317C`.
+
+The follow-up row `ship_ai_heading_to_rudder` in this document is therefore answered, not
+open. What it called the open gap was a scan artefact.
+
+The slot-`50h` verdict and the motion-tail reconstruction are unaffected: nothing in that
+chain reads `unit+1050h` as a command, and the tail still runs after the physics step.
+
+`docs/SHIP_AI_THROTTLE_TO_RING.md` had established the chain on 2026-09-12. This
+document's error was to trust a later document's negative instead of reconciling the two.

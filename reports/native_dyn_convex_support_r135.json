@@ -1,0 +1,5382 @@
+{
+  "packet": "orch4-native-convex-support-r135",
+  "status": "complete_normal_support_queries_and_complete_callable_convex_source_table_original_compared_game_admission_open",
+  "scope": {
+    "routines": [
+      {
+        "address": "00c358a0",
+        "inclusive_end": "00c359f5",
+        "bytes": 342,
+        "coverage": "complete new normal body"
+      },
+      {
+        "address": "00c386e0",
+        "inclusive_end": "00c387f6",
+        "bytes": 279,
+        "coverage": "complete new normal body"
+      },
+      {
+        "address": "00c385b0",
+        "inclusive_end": "00c386da",
+        "bytes": 299,
+        "coverage": "complete new normal body"
+      },
+      {
+        "address": "00bf7420",
+        "inclusive_end": "00bf743b",
+        "bytes": 28,
+        "coverage": "existing concrete service reference"
+      },
+      {
+        "address": "00bf7456",
+        "inclusive_end": "00bf74ca",
+        "bytes": 117,
+        "coverage": "existing concrete service reference"
+      },
+      {
+        "address": "00c57c40",
+        "inclusive_end": "00c57f46",
+        "bytes": 775,
+        "coverage": "existing concrete service reference"
+      },
+      {
+        "address": "004062c0",
+        "inclusive_end": "004062dc",
+        "bytes": 29,
+        "coverage": "existing concrete service reference"
+      },
+      {
+        "address": "00d7a0ac",
+        "inclusive_end": "00d7a0bb",
+        "bytes": 16,
+        "coverage": "read-only data"
+      },
+      {
+        "address": "00d7a228",
+        "inclusive_end": "00d7a237",
+        "bytes": 16,
+        "coverage": "read-only data"
+      },
+      {
+        "address": "00d7a268",
+        "inclusive_end": "00d7a26f",
+        "bytes": 8,
+        "coverage": "read-only data"
+      }
+    ],
+    "reconstructed_native_bytes": 920,
+    "existing_crt_reference_bytes": 145,
+    "existing_bounds_reference_bytes": 775,
+    "existing_scalar_reference_bytes": 29,
+    "data_reference_bytes": 40,
+    "total_live_pe_verified_bytes": 1909
+  },
+  "contract": "C358A0 chooses signed16 seed from exact CRT conversions of direction times native factors,then climbs ushort adjacency on strict candidate>current+nativeepsilon. C386E0/C385B0 transform direction/query borrowedshape210 mesh/transform result withtranslation. Preserve exactx87 operanddirection,spills/comparisons. Doubleinterface narrowsdirection/output throughbinary32. Complete stable four-slot source table captures originalconvexpool andactualmutableCRTmode address;allWin32callables implemented,notnativeRTTI metadata.",
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "entry": "00c358a0",
+        "length": 342,
+        "kind": "local_support",
+        "hex": "83ec0c535556578bf88b442424d900d95c2414d94004d95c2410d94008d95c2418d9442414d9c0dd0530a2d700dcc9d9c9e84a1bfcffd9442410d9c08d3440decad9c9e8381bfcffd9442418dd0528a2d70003f08d0476d8c98bf0e8201bfcff8b172bc60fbf5c474a8b7f0c8bcbc1e1048d04110fb7480cd940040fb72c4fdecad9c283c101d80833f685ed89542414dec2d84808dec1d95c24100f8e8f0000008b442424dd0568a2d700f30f104004f30f11442424f30f104008d9442424f30f11442418d94424188d040e0fb7044789442418c1e00403d0d94204d8cad902d8cddec1d94208d8cadec1d95c2424d9442424d9442410d8c4d9c9dff1ddd8761e0fb74a0c0fb72c4ff30f104424248b5c241883c101f30f1144241083ceff8b54241483c6013bf57c9fdddaddd8ddd98b442420ddd8c1e3048b0c1303da89088b53045f5e8950048b4b085d8948085b83c40cc20800",
+        "sha256": "0b574fcd4dd99158db9606b8b758532a8d0a00117ad571f7172028dea5c8a0e5",
+        "instructions": [
+          {
+            "address": "00c358a0",
+            "hex": "83ec0c",
+            "text": "sub esp, 0xc"
+          },
+          {
+            "address": "00c358a3",
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00c358a4",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "00c358a5",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00c358a6",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00c358a7",
+            "hex": "8bf8",
+            "text": "mov edi, eax"
+          },
+          {
+            "address": "00c358a9",
+            "hex": "8b442424",
+            "text": "mov eax, dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00c358ad",
+            "hex": "d900",
+            "text": "fld dword ptr [eax]"
+          },
+          {
+            "address": "00c358af",
+            "hex": "d95c2414",
+            "text": "fstp dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00c358b3",
+            "hex": "d94004",
+            "text": "fld dword ptr [eax + 4]"
+          },
+          {
+            "address": "00c358b6",
+            "hex": "d95c2410",
+            "text": "fstp dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00c358ba",
+            "hex": "d94008",
+            "text": "fld dword ptr [eax + 8]"
+          },
+          {
+            "address": "00c358bd",
+            "hex": "d95c2418",
+            "text": "fstp dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "00c358c1",
+            "hex": "d9442414",
+            "text": "fld dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00c358c5",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c358c7",
+            "hex": "dd0530a2d700",
+            "text": "fld qword ptr [0xd7a230]"
+          },
+          {
+            "address": "00c358cd",
+            "hex": "dcc9",
+            "text": "fmul st(1), st(0)"
+          },
+          {
+            "address": "00c358cf",
+            "hex": "d9c9",
+            "text": "fxch st(1)"
+          },
+          {
+            "address": "00c358d1",
+            "hex": "e84a1bfcff",
+            "text": "call 0xbf7420"
+          },
+          {
+            "address": "00c358d6",
+            "hex": "d9442410",
+            "text": "fld dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00c358da",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c358dc",
+            "hex": "8d3440",
+            "text": "lea esi, [eax + eax*2]"
+          },
+          {
+            "address": "00c358df",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00c358e1",
+            "hex": "d9c9",
+            "text": "fxch st(1)"
+          },
+          {
+            "address": "00c358e3",
+            "hex": "e8381bfcff",
+            "text": "call 0xbf7420"
+          },
+          {
+            "address": "00c358e8",
+            "hex": "d9442418",
+            "text": "fld dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "00c358ec",
+            "hex": "dd0528a2d700",
+            "text": "fld qword ptr [0xd7a228]"
+          },
+          {
+            "address": "00c358f2",
+            "hex": "03f0",
+            "text": "add esi, eax"
+          },
+          {
+            "address": "00c358f4",
+            "hex": "8d0476",
+            "text": "lea eax, [esi + esi*2]"
+          },
+          {
+            "address": "00c358f7",
+            "hex": "d8c9",
+            "text": "fmul st(1)"
+          },
+          {
+            "address": "00c358f9",
+            "hex": "8bf0",
+            "text": "mov esi, eax"
+          },
+          {
+            "address": "00c358fb",
+            "hex": "e8201bfcff",
+            "text": "call 0xbf7420"
+          },
+          {
+            "address": "00c35900",
+            "hex": "8b17",
+            "text": "mov edx, dword ptr [edi]"
+          },
+          {
+            "address": "00c35902",
+            "hex": "2bc6",
+            "text": "sub eax, esi"
+          },
+          {
+            "address": "00c35904",
+            "hex": "0fbf5c474a",
+            "text": "movsx ebx, word ptr [edi + eax*2 + 0x4a]"
+          },
+          {
+            "address": "00c35909",
+            "hex": "8b7f0c",
+            "text": "mov edi, dword ptr [edi + 0xc]"
+          },
+          {
+            "address": "00c3590c",
+            "hex": "8bcb",
+            "text": "mov ecx, ebx"
+          },
+          {
+            "address": "00c3590e",
+            "hex": "c1e104",
+            "text": "shl ecx, 4"
+          },
+          {
+            "address": "00c35911",
+            "hex": "8d0411",
+            "text": "lea eax, [ecx + edx]"
+          },
+          {
+            "address": "00c35914",
+            "hex": "0fb7480c",
+            "text": "movzx ecx, word ptr [eax + 0xc]"
+          },
+          {
+            "address": "00c35918",
+            "hex": "d94004",
+            "text": "fld dword ptr [eax + 4]"
+          },
+          {
+            "address": "00c3591b",
+            "hex": "0fb72c4f",
+            "text": "movzx ebp, word ptr [edi + ecx*2]"
+          },
+          {
+            "address": "00c3591f",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00c35921",
+            "hex": "d9c2",
+            "text": "fld st(2)"
+          },
+          {
+            "address": "00c35923",
+            "hex": "83c101",
+            "text": "add ecx, 1"
+          },
+          {
+            "address": "00c35926",
+            "hex": "d808",
+            "text": "fmul dword ptr [eax]"
+          },
+          {
+            "address": "00c35928",
+            "hex": "33f6",
+            "text": "xor esi, esi"
+          },
+          {
+            "address": "00c3592a",
+            "hex": "85ed",
+            "text": "test ebp, ebp"
+          },
+          {
+            "address": "00c3592c",
+            "hex": "89542414",
+            "text": "mov dword ptr [esp + 0x14], edx"
+          },
+          {
+            "address": "00c35930",
+            "hex": "dec2",
+            "text": "faddp st(2)"
+          },
+          {
+            "address": "00c35932",
+            "hex": "d84808",
+            "text": "fmul dword ptr [eax + 8]"
+          },
+          {
+            "address": "00c35935",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c35937",
+            "hex": "d95c2410",
+            "text": "fstp dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00c3593b",
+            "hex": "0f8e8f000000",
+            "text": "jle 0xc359d0"
+          },
+          {
+            "address": "00c35941",
+            "hex": "8b442424",
+            "text": "mov eax, dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00c35945",
+            "hex": "dd0568a2d700",
+            "text": "fld qword ptr [0xd7a268]"
+          },
+          {
+            "address": "00c3594b",
+            "hex": "f30f104004",
+            "text": "movss xmm0, dword ptr [eax + 4]"
+          },
+          {
+            "address": "00c35950",
+            "hex": "f30f11442424",
+            "text": "movss dword ptr [esp + 0x24], xmm0"
+          },
+          {
+            "address": "00c35956",
+            "hex": "f30f104008",
+            "text": "movss xmm0, dword ptr [eax + 8]"
+          },
+          {
+            "address": "00c3595b",
+            "hex": "d9442424",
+            "text": "fld dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00c3595f",
+            "hex": "f30f11442418",
+            "text": "movss dword ptr [esp + 0x18], xmm0"
+          },
+          {
+            "address": "00c35965",
+            "hex": "d9442418",
+            "text": "fld dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "00c35969",
+            "hex": "8d040e",
+            "text": "lea eax, [esi + ecx]"
+          },
+          {
+            "address": "00c3596c",
+            "hex": "0fb70447",
+            "text": "movzx eax, word ptr [edi + eax*2]"
+          },
+          {
+            "address": "00c35970",
+            "hex": "89442418",
+            "text": "mov dword ptr [esp + 0x18], eax"
+          },
+          {
+            "address": "00c35974",
+            "hex": "c1e004",
+            "text": "shl eax, 4"
+          },
+          {
+            "address": "00c35977",
+            "hex": "03d0",
+            "text": "add edx, eax"
+          },
+          {
+            "address": "00c35979",
+            "hex": "d94204",
+            "text": "fld dword ptr [edx + 4]"
+          },
+          {
+            "address": "00c3597c",
+            "hex": "d8ca",
+            "text": "fmul st(2)"
+          },
+          {
+            "address": "00c3597e",
+            "hex": "d902",
+            "text": "fld dword ptr [edx]"
+          },
+          {
+            "address": "00c35980",
+            "hex": "d8cd",
+            "text": "fmul st(5)"
+          },
+          {
+            "address": "00c35982",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c35984",
+            "hex": "d94208",
+            "text": "fld dword ptr [edx + 8]"
+          },
+          {
+            "address": "00c35987",
+            "hex": "d8ca",
+            "text": "fmul st(2)"
+          },
+          {
+            "address": "00c35989",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c3598b",
+            "hex": "d95c2424",
+            "text": "fstp dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00c3598f",
+            "hex": "d9442424",
+            "text": "fld dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00c35993",
+            "hex": "d9442410",
+            "text": "fld dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00c35997",
+            "hex": "d8c4",
+            "text": "fadd st(4)"
+          },
+          {
+            "address": "00c35999",
+            "hex": "d9c9",
+            "text": "fxch st(1)"
+          },
+          {
+            "address": "00c3599b",
+            "hex": "dff1",
+            "text": "fcompi st(1)"
+          },
+          {
+            "address": "00c3599d",
+            "hex": "ddd8",
+            "text": "fstp st(0)"
+          },
+          {
+            "address": "00c3599f",
+            "hex": "761e",
+            "text": "jbe 0xc359bf"
+          },
+          {
+            "address": "00c359a1",
+            "hex": "0fb74a0c",
+            "text": "movzx ecx, word ptr [edx + 0xc]"
+          },
+          {
+            "address": "00c359a5",
+            "hex": "0fb72c4f",
+            "text": "movzx ebp, word ptr [edi + ecx*2]"
+          },
+          {
+            "address": "00c359a9",
+            "hex": "f30f10442424",
+            "text": "movss xmm0, dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00c359af",
+            "hex": "8b5c2418",
+            "text": "mov ebx, dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "00c359b3",
+            "hex": "83c101",
+            "text": "add ecx, 1"
+          },
+          {
+            "address": "00c359b6",
+            "hex": "f30f11442410",
+            "text": "movss dword ptr [esp + 0x10], xmm0"
+          },
+          {
+            "address": "00c359bc",
+            "hex": "83ceff",
+            "text": "or esi, 0xffffffff"
+          },
+          {
+            "address": "00c359bf",
+            "hex": "8b542414",
+            "text": "mov edx, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00c359c3",
+            "hex": "83c601",
+            "text": "add esi, 1"
+          },
+          {
+            "address": "00c359c6",
+            "hex": "3bf5",
+            "text": "cmp esi, ebp"
+          },
+          {
+            "address": "00c359c8",
+            "hex": "7c9f",
+            "text": "jl 0xc35969"
+          },
+          {
+            "address": "00c359ca",
+            "hex": "ddda",
+            "text": "fstp st(2)"
+          },
+          {
+            "address": "00c359cc",
+            "hex": "ddd8",
+            "text": "fstp st(0)"
+          },
+          {
+            "address": "00c359ce",
+            "hex": "ddd9",
+            "text": "fstp st(1)"
+          },
+          {
+            "address": "00c359d0",
+            "hex": "8b442420",
+            "text": "mov eax, dword ptr [esp + 0x20]"
+          },
+          {
+            "address": "00c359d4",
+            "hex": "ddd8",
+            "text": "fstp st(0)"
+          },
+          {
+            "address": "00c359d6",
+            "hex": "c1e304",
+            "text": "shl ebx, 4"
+          },
+          {
+            "address": "00c359d9",
+            "hex": "8b0c13",
+            "text": "mov ecx, dword ptr [ebx + edx]"
+          },
+          {
+            "address": "00c359dc",
+            "hex": "03da",
+            "text": "add ebx, edx"
+          },
+          {
+            "address": "00c359de",
+            "hex": "8908",
+            "text": "mov dword ptr [eax], ecx"
+          },
+          {
+            "address": "00c359e0",
+            "hex": "8b5304",
+            "text": "mov edx, dword ptr [ebx + 4]"
+          },
+          {
+            "address": "00c359e3",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "00c359e4",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00c359e5",
+            "hex": "895004",
+            "text": "mov dword ptr [eax + 4], edx"
+          },
+          {
+            "address": "00c359e8",
+            "hex": "8b4b08",
+            "text": "mov ecx, dword ptr [ebx + 8]"
+          },
+          {
+            "address": "00c359eb",
+            "hex": "5d",
+            "text": "pop ebp"
+          },
+          {
+            "address": "00c359ec",
+            "hex": "894808",
+            "text": "mov dword ptr [eax + 8], ecx"
+          },
+          {
+            "address": "00c359ef",
+            "hex": "5b",
+            "text": "pop ebx"
+          },
+          {
+            "address": "00c359f0",
+            "hex": "83c40c",
+            "text": "add esp, 0xc"
+          },
+          {
+            "address": "00c359f3",
+            "hex": "c20800",
+            "text": "ret 8"
+          }
+        ]
+      },
+      {
+        "entry": "00c386e0",
+        "length": 279,
+        "kind": "support32",
+        "hex": "83ec108b442418d94004568b742420d95c241cd90057d95c24248b7c241cd940088d44240cd95c240850d94424288b8110020000d9c057d80ed94604d9442428d9c0decad9cadec1d94608d9442410d9c0decad9cadec1d95c2414d94610d8cad9460cd8ccdec1d94614d8cadec1d95c2418d9461cdecad94618decbd9c9dec2d84e20dec1d95c241ce832d1ffffd94704d95c2420d907d95c2424d94708d95c241cd9442424d9c0d80ed9442420d9c0d84e0cdec2d944241cd9c0d84e18dec3d94624dec3d9cad95c240cd94610d8c9d94604d8ccdec1d9461cd8cbdec1d84628d95c2410d84e148b4c240cd946088b542410decbdec2d84e20dec1d8462c890f895704d95c24148b4424148947085f5e83c410c20c00",
+        "sha256": "920ea14671b6840f8cf6014432531a4c43a0077ae4bf1be3823fbaa3105581f2",
+        "instructions": [
+          {
+            "address": "00c386e0",
+            "hex": "83ec10",
+            "text": "sub esp, 0x10"
+          },
+          {
+            "address": "00c386e3",
+            "hex": "8b442418",
+            "text": "mov eax, dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "00c386e7",
+            "hex": "d94004",
+            "text": "fld dword ptr [eax + 4]"
+          },
+          {
+            "address": "00c386ea",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00c386eb",
+            "hex": "8b742420",
+            "text": "mov esi, dword ptr [esp + 0x20]"
+          },
+          {
+            "address": "00c386ef",
+            "hex": "d95c241c",
+            "text": "fstp dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "00c386f3",
+            "hex": "d900",
+            "text": "fld dword ptr [eax]"
+          },
+          {
+            "address": "00c386f5",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00c386f6",
+            "hex": "d95c2424",
+            "text": "fstp dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00c386fa",
+            "hex": "8b7c241c",
+            "text": "mov edi, dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "00c386fe",
+            "hex": "d94008",
+            "text": "fld dword ptr [eax + 8]"
+          },
+          {
+            "address": "00c38701",
+            "hex": "8d44240c",
+            "text": "lea eax, [esp + 0xc]"
+          },
+          {
+            "address": "00c38705",
+            "hex": "d95c2408",
+            "text": "fstp dword ptr [esp + 8]"
+          },
+          {
+            "address": "00c38709",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00c3870a",
+            "hex": "d9442428",
+            "text": "fld dword ptr [esp + 0x28]"
+          },
+          {
+            "address": "00c3870e",
+            "hex": "8b8110020000",
+            "text": "mov eax, dword ptr [ecx + 0x210]"
+          },
+          {
+            "address": "00c38714",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c38716",
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00c38717",
+            "hex": "d80e",
+            "text": "fmul dword ptr [esi]"
+          },
+          {
+            "address": "00c38719",
+            "hex": "d94604",
+            "text": "fld dword ptr [esi + 4]"
+          },
+          {
+            "address": "00c3871c",
+            "hex": "d9442428",
+            "text": "fld dword ptr [esp + 0x28]"
+          },
+          {
+            "address": "00c38720",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c38722",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00c38724",
+            "hex": "d9ca",
+            "text": "fxch st(2)"
+          },
+          {
+            "address": "00c38726",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c38728",
+            "hex": "d94608",
+            "text": "fld dword ptr [esi + 8]"
+          },
+          {
+            "address": "00c3872b",
+            "hex": "d9442410",
+            "text": "fld dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00c3872f",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c38731",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00c38733",
+            "hex": "d9ca",
+            "text": "fxch st(2)"
+          },
+          {
+            "address": "00c38735",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c38737",
+            "hex": "d95c2414",
+            "text": "fstp dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00c3873b",
+            "hex": "d94610",
+            "text": "fld dword ptr [esi + 0x10]"
+          },
+          {
+            "address": "00c3873e",
+            "hex": "d8ca",
+            "text": "fmul st(2)"
+          },
+          {
+            "address": "00c38740",
+            "hex": "d9460c",
+            "text": "fld dword ptr [esi + 0xc]"
+          },
+          {
+            "address": "00c38743",
+            "hex": "d8cc",
+            "text": "fmul st(4)"
+          },
+          {
+            "address": "00c38745",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c38747",
+            "hex": "d94614",
+            "text": "fld dword ptr [esi + 0x14]"
+          },
+          {
+            "address": "00c3874a",
+            "hex": "d8ca",
+            "text": "fmul st(2)"
+          },
+          {
+            "address": "00c3874c",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c3874e",
+            "hex": "d95c2418",
+            "text": "fstp dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "00c38752",
+            "hex": "d9461c",
+            "text": "fld dword ptr [esi + 0x1c]"
+          },
+          {
+            "address": "00c38755",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00c38757",
+            "hex": "d94618",
+            "text": "fld dword ptr [esi + 0x18]"
+          },
+          {
+            "address": "00c3875a",
+            "hex": "decb",
+            "text": "fmulp st(3)"
+          },
+          {
+            "address": "00c3875c",
+            "hex": "d9c9",
+            "text": "fxch st(1)"
+          },
+          {
+            "address": "00c3875e",
+            "hex": "dec2",
+            "text": "faddp st(2)"
+          },
+          {
+            "address": "00c38760",
+            "hex": "d84e20",
+            "text": "fmul dword ptr [esi + 0x20]"
+          },
+          {
+            "address": "00c38763",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c38765",
+            "hex": "d95c241c",
+            "text": "fstp dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "00c38769",
+            "hex": "e832d1ffff",
+            "text": "call 0xc358a0"
+          },
+          {
+            "address": "00c3876e",
+            "hex": "d94704",
+            "text": "fld dword ptr [edi + 4]"
+          },
+          {
+            "address": "00c38771",
+            "hex": "d95c2420",
+            "text": "fstp dword ptr [esp + 0x20]"
+          },
+          {
+            "address": "00c38775",
+            "hex": "d907",
+            "text": "fld dword ptr [edi]"
+          },
+          {
+            "address": "00c38777",
+            "hex": "d95c2424",
+            "text": "fstp dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00c3877b",
+            "hex": "d94708",
+            "text": "fld dword ptr [edi + 8]"
+          },
+          {
+            "address": "00c3877e",
+            "hex": "d95c241c",
+            "text": "fstp dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "00c38782",
+            "hex": "d9442424",
+            "text": "fld dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00c38786",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c38788",
+            "hex": "d80e",
+            "text": "fmul dword ptr [esi]"
+          },
+          {
+            "address": "00c3878a",
+            "hex": "d9442420",
+            "text": "fld dword ptr [esp + 0x20]"
+          },
+          {
+            "address": "00c3878e",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c38790",
+            "hex": "d84e0c",
+            "text": "fmul dword ptr [esi + 0xc]"
+          },
+          {
+            "address": "00c38793",
+            "hex": "dec2",
+            "text": "faddp st(2)"
+          },
+          {
+            "address": "00c38795",
+            "hex": "d944241c",
+            "text": "fld dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "00c38799",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c3879b",
+            "hex": "d84e18",
+            "text": "fmul dword ptr [esi + 0x18]"
+          },
+          {
+            "address": "00c3879e",
+            "hex": "dec3",
+            "text": "faddp st(3)"
+          },
+          {
+            "address": "00c387a0",
+            "hex": "d94624",
+            "text": "fld dword ptr [esi + 0x24]"
+          },
+          {
+            "address": "00c387a3",
+            "hex": "dec3",
+            "text": "faddp st(3)"
+          },
+          {
+            "address": "00c387a5",
+            "hex": "d9ca",
+            "text": "fxch st(2)"
+          },
+          {
+            "address": "00c387a7",
+            "hex": "d95c240c",
+            "text": "fstp dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00c387ab",
+            "hex": "d94610",
+            "text": "fld dword ptr [esi + 0x10]"
+          },
+          {
+            "address": "00c387ae",
+            "hex": "d8c9",
+            "text": "fmul st(1)"
+          },
+          {
+            "address": "00c387b0",
+            "hex": "d94604",
+            "text": "fld dword ptr [esi + 4]"
+          },
+          {
+            "address": "00c387b3",
+            "hex": "d8cc",
+            "text": "fmul st(4)"
+          },
+          {
+            "address": "00c387b5",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c387b7",
+            "hex": "d9461c",
+            "text": "fld dword ptr [esi + 0x1c]"
+          },
+          {
+            "address": "00c387ba",
+            "hex": "d8cb",
+            "text": "fmul st(3)"
+          },
+          {
+            "address": "00c387bc",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c387be",
+            "hex": "d84628",
+            "text": "fadd dword ptr [esi + 0x28]"
+          },
+          {
+            "address": "00c387c1",
+            "hex": "d95c2410",
+            "text": "fstp dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00c387c5",
+            "hex": "d84e14",
+            "text": "fmul dword ptr [esi + 0x14]"
+          },
+          {
+            "address": "00c387c8",
+            "hex": "8b4c240c",
+            "text": "mov ecx, dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00c387cc",
+            "hex": "d94608",
+            "text": "fld dword ptr [esi + 8]"
+          },
+          {
+            "address": "00c387cf",
+            "hex": "8b542410",
+            "text": "mov edx, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00c387d3",
+            "hex": "decb",
+            "text": "fmulp st(3)"
+          },
+          {
+            "address": "00c387d5",
+            "hex": "dec2",
+            "text": "faddp st(2)"
+          },
+          {
+            "address": "00c387d7",
+            "hex": "d84e20",
+            "text": "fmul dword ptr [esi + 0x20]"
+          },
+          {
+            "address": "00c387da",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c387dc",
+            "hex": "d8462c",
+            "text": "fadd dword ptr [esi + 0x2c]"
+          },
+          {
+            "address": "00c387df",
+            "hex": "890f",
+            "text": "mov dword ptr [edi], ecx"
+          },
+          {
+            "address": "00c387e1",
+            "hex": "895704",
+            "text": "mov dword ptr [edi + 4], edx"
+          },
+          {
+            "address": "00c387e4",
+            "hex": "d95c2414",
+            "text": "fstp dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00c387e8",
+            "hex": "8b442414",
+            "text": "mov eax, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00c387ec",
+            "hex": "894708",
+            "text": "mov dword ptr [edi + 8], eax"
+          },
+          {
+            "address": "00c387ef",
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "00c387f0",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00c387f1",
+            "hex": "83c410",
+            "text": "add esp, 0x10"
+          },
+          {
+            "address": "00c387f4",
+            "hex": "c20c00",
+            "text": "ret 0xc"
+          }
+        ]
+      },
+      {
+        "entry": "00c385b0",
+        "length": 299,
+        "kind": "support64",
+        "hex": "83ec1c8b442424dd0056d95c24088b74242cdd40088d542414d95c240cdd40108d442408d95c241050d946048b8110020000d95c243052d906d95c2430d94608d95c240cd9442430d9442410d9c0decad9442434d9442414d9c0decad9cbdec1d944240cd9442418d9c0decad9cadec1d95c2410d94610d8cbd9460cd8cbdec1d94614d8cadec1d95c2414d9461cdecbd94618decad9cadec1d94620decadec1d95c2418e847d2ffffd9442428d9442414d9c0decad9442418d9c0d84e0cdec3d94618d944241cd9c0decad9ccdec1d84624d95c2408d94610d8c9d944242cd8cbdec1d9461cd8ccdec1d846288b442424d95c240cd84e14d9442404decadec1d94620decadec1d8462c5ed95c240cd9442404d9442408d944240cd9cadd18dd5808dd581083c41cc20c00",
+        "sha256": "012489b5722dceac218e492ca1589d9eed5130bbf8ad9e793c180606675a26d0",
+        "instructions": [
+          {
+            "address": "00c385b0",
+            "hex": "83ec1c",
+            "text": "sub esp, 0x1c"
+          },
+          {
+            "address": "00c385b3",
+            "hex": "8b442424",
+            "text": "mov eax, dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00c385b7",
+            "hex": "dd00",
+            "text": "fld qword ptr [eax]"
+          },
+          {
+            "address": "00c385b9",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00c385ba",
+            "hex": "d95c2408",
+            "text": "fstp dword ptr [esp + 8]"
+          },
+          {
+            "address": "00c385be",
+            "hex": "8b74242c",
+            "text": "mov esi, dword ptr [esp + 0x2c]"
+          },
+          {
+            "address": "00c385c2",
+            "hex": "dd4008",
+            "text": "fld qword ptr [eax + 8]"
+          },
+          {
+            "address": "00c385c5",
+            "hex": "8d542414",
+            "text": "lea edx, [esp + 0x14]"
+          },
+          {
+            "address": "00c385c9",
+            "hex": "d95c240c",
+            "text": "fstp dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00c385cd",
+            "hex": "dd4010",
+            "text": "fld qword ptr [eax + 0x10]"
+          },
+          {
+            "address": "00c385d0",
+            "hex": "8d442408",
+            "text": "lea eax, [esp + 8]"
+          },
+          {
+            "address": "00c385d4",
+            "hex": "d95c2410",
+            "text": "fstp dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00c385d8",
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00c385d9",
+            "hex": "d94604",
+            "text": "fld dword ptr [esi + 4]"
+          },
+          {
+            "address": "00c385dc",
+            "hex": "8b8110020000",
+            "text": "mov eax, dword ptr [ecx + 0x210]"
+          },
+          {
+            "address": "00c385e2",
+            "hex": "d95c2430",
+            "text": "fstp dword ptr [esp + 0x30]"
+          },
+          {
+            "address": "00c385e6",
+            "hex": "52",
+            "text": "push edx"
+          },
+          {
+            "address": "00c385e7",
+            "hex": "d906",
+            "text": "fld dword ptr [esi]"
+          },
+          {
+            "address": "00c385e9",
+            "hex": "d95c2430",
+            "text": "fstp dword ptr [esp + 0x30]"
+          },
+          {
+            "address": "00c385ed",
+            "hex": "d94608",
+            "text": "fld dword ptr [esi + 8]"
+          },
+          {
+            "address": "00c385f0",
+            "hex": "d95c240c",
+            "text": "fstp dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00c385f4",
+            "hex": "d9442430",
+            "text": "fld dword ptr [esp + 0x30]"
+          },
+          {
+            "address": "00c385f8",
+            "hex": "d9442410",
+            "text": "fld dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00c385fc",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c385fe",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00c38600",
+            "hex": "d9442434",
+            "text": "fld dword ptr [esp + 0x34]"
+          },
+          {
+            "address": "00c38604",
+            "hex": "d9442414",
+            "text": "fld dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00c38608",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c3860a",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00c3860c",
+            "hex": "d9cb",
+            "text": "fxch st(3)"
+          },
+          {
+            "address": "00c3860e",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c38610",
+            "hex": "d944240c",
+            "text": "fld dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00c38614",
+            "hex": "d9442418",
+            "text": "fld dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "00c38618",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c3861a",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00c3861c",
+            "hex": "d9ca",
+            "text": "fxch st(2)"
+          },
+          {
+            "address": "00c3861e",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c38620",
+            "hex": "d95c2410",
+            "text": "fstp dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00c38624",
+            "hex": "d94610",
+            "text": "fld dword ptr [esi + 0x10]"
+          },
+          {
+            "address": "00c38627",
+            "hex": "d8cb",
+            "text": "fmul st(3)"
+          },
+          {
+            "address": "00c38629",
+            "hex": "d9460c",
+            "text": "fld dword ptr [esi + 0xc]"
+          },
+          {
+            "address": "00c3862c",
+            "hex": "d8cb",
+            "text": "fmul st(3)"
+          },
+          {
+            "address": "00c3862e",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c38630",
+            "hex": "d94614",
+            "text": "fld dword ptr [esi + 0x14]"
+          },
+          {
+            "address": "00c38633",
+            "hex": "d8ca",
+            "text": "fmul st(2)"
+          },
+          {
+            "address": "00c38635",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c38637",
+            "hex": "d95c2414",
+            "text": "fstp dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00c3863b",
+            "hex": "d9461c",
+            "text": "fld dword ptr [esi + 0x1c]"
+          },
+          {
+            "address": "00c3863e",
+            "hex": "decb",
+            "text": "fmulp st(3)"
+          },
+          {
+            "address": "00c38640",
+            "hex": "d94618",
+            "text": "fld dword ptr [esi + 0x18]"
+          },
+          {
+            "address": "00c38643",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00c38645",
+            "hex": "d9ca",
+            "text": "fxch st(2)"
+          },
+          {
+            "address": "00c38647",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c38649",
+            "hex": "d94620",
+            "text": "fld dword ptr [esi + 0x20]"
+          },
+          {
+            "address": "00c3864c",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00c3864e",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c38650",
+            "hex": "d95c2418",
+            "text": "fstp dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "00c38654",
+            "hex": "e847d2ffff",
+            "text": "call 0xc358a0"
+          },
+          {
+            "address": "00c38659",
+            "hex": "d9442428",
+            "text": "fld dword ptr [esp + 0x28]"
+          },
+          {
+            "address": "00c3865d",
+            "hex": "d9442414",
+            "text": "fld dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00c38661",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c38663",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00c38665",
+            "hex": "d9442418",
+            "text": "fld dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "00c38669",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c3866b",
+            "hex": "d84e0c",
+            "text": "fmul dword ptr [esi + 0xc]"
+          },
+          {
+            "address": "00c3866e",
+            "hex": "dec3",
+            "text": "faddp st(3)"
+          },
+          {
+            "address": "00c38670",
+            "hex": "d94618",
+            "text": "fld dword ptr [esi + 0x18]"
+          },
+          {
+            "address": "00c38673",
+            "hex": "d944241c",
+            "text": "fld dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "00c38677",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c38679",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00c3867b",
+            "hex": "d9cc",
+            "text": "fxch st(4)"
+          },
+          {
+            "address": "00c3867d",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c3867f",
+            "hex": "d84624",
+            "text": "fadd dword ptr [esi + 0x24]"
+          },
+          {
+            "address": "00c38682",
+            "hex": "d95c2408",
+            "text": "fstp dword ptr [esp + 8]"
+          },
+          {
+            "address": "00c38686",
+            "hex": "d94610",
+            "text": "fld dword ptr [esi + 0x10]"
+          },
+          {
+            "address": "00c38689",
+            "hex": "d8c9",
+            "text": "fmul st(1)"
+          },
+          {
+            "address": "00c3868b",
+            "hex": "d944242c",
+            "text": "fld dword ptr [esp + 0x2c]"
+          },
+          {
+            "address": "00c3868f",
+            "hex": "d8cb",
+            "text": "fmul st(3)"
+          },
+          {
+            "address": "00c38691",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c38693",
+            "hex": "d9461c",
+            "text": "fld dword ptr [esi + 0x1c]"
+          },
+          {
+            "address": "00c38696",
+            "hex": "d8cc",
+            "text": "fmul st(4)"
+          },
+          {
+            "address": "00c38698",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c3869a",
+            "hex": "d84628",
+            "text": "fadd dword ptr [esi + 0x28]"
+          },
+          {
+            "address": "00c3869d",
+            "hex": "8b442424",
+            "text": "mov eax, dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00c386a1",
+            "hex": "d95c240c",
+            "text": "fstp dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00c386a5",
+            "hex": "d84e14",
+            "text": "fmul dword ptr [esi + 0x14]"
+          },
+          {
+            "address": "00c386a8",
+            "hex": "d9442404",
+            "text": "fld dword ptr [esp + 4]"
+          },
+          {
+            "address": "00c386ac",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00c386ae",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c386b0",
+            "hex": "d94620",
+            "text": "fld dword ptr [esi + 0x20]"
+          },
+          {
+            "address": "00c386b3",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00c386b5",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c386b7",
+            "hex": "d8462c",
+            "text": "fadd dword ptr [esi + 0x2c]"
+          },
+          {
+            "address": "00c386ba",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00c386bb",
+            "hex": "d95c240c",
+            "text": "fstp dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00c386bf",
+            "hex": "d9442404",
+            "text": "fld dword ptr [esp + 4]"
+          },
+          {
+            "address": "00c386c3",
+            "hex": "d9442408",
+            "text": "fld dword ptr [esp + 8]"
+          },
+          {
+            "address": "00c386c7",
+            "hex": "d944240c",
+            "text": "fld dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00c386cb",
+            "hex": "d9ca",
+            "text": "fxch st(2)"
+          },
+          {
+            "address": "00c386cd",
+            "hex": "dd18",
+            "text": "fstp qword ptr [eax]"
+          },
+          {
+            "address": "00c386cf",
+            "hex": "dd5808",
+            "text": "fstp qword ptr [eax + 8]"
+          },
+          {
+            "address": "00c386d2",
+            "hex": "dd5810",
+            "text": "fstp qword ptr [eax + 0x10]"
+          },
+          {
+            "address": "00c386d5",
+            "hex": "83c41c",
+            "text": "add esp, 0x1c"
+          },
+          {
+            "address": "00c386d8",
+            "hex": "c20c00",
+            "text": "ret 0xc"
+          }
+        ]
+      },
+      {
+        "entry": "00bf7420",
+        "length": 28,
+        "kind": "crt_dispatch",
+        "hex": "833da4ee090100742d558bec83ec0883e4f8dd1c24f20f2c0424c9c3",
+        "sha256": "ca03c44f225ec07ccb8fd4dbaf388d22ba816472e788e49ecdb1db7b85f11cc6",
+        "instructions": [
+          {
+            "address": "00bf7420",
+            "hex": "833da4ee090100",
+            "text": "cmp dword ptr [0x109eea4], 0"
+          },
+          {
+            "address": "00bf7427",
+            "hex": "742d",
+            "text": "je 0xbf7456"
+          },
+          {
+            "address": "00bf7429",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "00bf742a",
+            "hex": "8bec",
+            "text": "mov ebp, esp"
+          },
+          {
+            "address": "00bf742c",
+            "hex": "83ec08",
+            "text": "sub esp, 8"
+          },
+          {
+            "address": "00bf742f",
+            "hex": "83e4f8",
+            "text": "and esp, 0xfffffff8"
+          },
+          {
+            "address": "00bf7432",
+            "hex": "dd1c24",
+            "text": "fstp qword ptr [esp]"
+          },
+          {
+            "address": "00bf7435",
+            "hex": "f20f2c0424",
+            "text": "cvttsd2si eax, qword ptr [esp]"
+          },
+          {
+            "address": "00bf743a",
+            "hex": "c9",
+            "text": "leave "
+          },
+          {
+            "address": "00bf743b",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "entry": "00bf7456",
+        "length": 117,
+        "kind": "crt_x87",
+        "hex": "558bec83ec2083e4f0d9c0d9542418df7c2410df6c24108b5424188b44241085c0743cdee985d2791ed91c248b0c2481f10000008081c1ffffff7f83d0008b54241483d200eb2cd91c248b0c2481c1ffffff7f83d8008b54241483da00eb148b542414f7c2ffffff7f75b8d95c2418d95c2418c9c3",
+        "sha256": "5333b186c02836974c6f792303aeb2c00d856316b93ccbbe65f51def6ae661b4",
+        "instructions": [
+          {
+            "address": "00bf7456",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "00bf7457",
+            "hex": "8bec",
+            "text": "mov ebp, esp"
+          },
+          {
+            "address": "00bf7459",
+            "hex": "83ec20",
+            "text": "sub esp, 0x20"
+          },
+          {
+            "address": "00bf745c",
+            "hex": "83e4f0",
+            "text": "and esp, 0xfffffff0"
+          },
+          {
+            "address": "00bf745f",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00bf7461",
+            "hex": "d9542418",
+            "text": "fst dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "00bf7465",
+            "hex": "df7c2410",
+            "text": "fistp qword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00bf7469",
+            "hex": "df6c2410",
+            "text": "fild qword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00bf746d",
+            "hex": "8b542418",
+            "text": "mov edx, dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "00bf7471",
+            "hex": "8b442410",
+            "text": "mov eax, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00bf7475",
+            "hex": "85c0",
+            "text": "test eax, eax"
+          },
+          {
+            "address": "00bf7477",
+            "hex": "743c",
+            "text": "je 0xbf74b5"
+          },
+          {
+            "address": "00bf7479",
+            "hex": "dee9",
+            "text": "fsubp st(1)"
+          },
+          {
+            "address": "00bf747b",
+            "hex": "85d2",
+            "text": "test edx, edx"
+          },
+          {
+            "address": "00bf747d",
+            "hex": "791e",
+            "text": "jns 0xbf749d"
+          },
+          {
+            "address": "00bf747f",
+            "hex": "d91c24",
+            "text": "fstp dword ptr [esp]"
+          },
+          {
+            "address": "00bf7482",
+            "hex": "8b0c24",
+            "text": "mov ecx, dword ptr [esp]"
+          },
+          {
+            "address": "00bf7485",
+            "hex": "81f100000080",
+            "text": "xor ecx, 0x80000000"
+          },
+          {
+            "address": "00bf748b",
+            "hex": "81c1ffffff7f",
+            "text": "add ecx, 0x7fffffff"
+          },
+          {
+            "address": "00bf7491",
+            "hex": "83d000",
+            "text": "adc eax, 0"
+          },
+          {
+            "address": "00bf7494",
+            "hex": "8b542414",
+            "text": "mov edx, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00bf7498",
+            "hex": "83d200",
+            "text": "adc edx, 0"
+          },
+          {
+            "address": "00bf749b",
+            "hex": "eb2c",
+            "text": "jmp 0xbf74c9"
+          },
+          {
+            "address": "00bf749d",
+            "hex": "d91c24",
+            "text": "fstp dword ptr [esp]"
+          },
+          {
+            "address": "00bf74a0",
+            "hex": "8b0c24",
+            "text": "mov ecx, dword ptr [esp]"
+          },
+          {
+            "address": "00bf74a3",
+            "hex": "81c1ffffff7f",
+            "text": "add ecx, 0x7fffffff"
+          },
+          {
+            "address": "00bf74a9",
+            "hex": "83d800",
+            "text": "sbb eax, 0"
+          },
+          {
+            "address": "00bf74ac",
+            "hex": "8b542414",
+            "text": "mov edx, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00bf74b0",
+            "hex": "83da00",
+            "text": "sbb edx, 0"
+          },
+          {
+            "address": "00bf74b3",
+            "hex": "eb14",
+            "text": "jmp 0xbf74c9"
+          },
+          {
+            "address": "00bf74b5",
+            "hex": "8b542414",
+            "text": "mov edx, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00bf74b9",
+            "hex": "f7c2ffffff7f",
+            "text": "test edx, 0x7fffffff"
+          },
+          {
+            "address": "00bf74bf",
+            "hex": "75b8",
+            "text": "jne 0xbf7479"
+          },
+          {
+            "address": "00bf74c1",
+            "hex": "d95c2418",
+            "text": "fstp dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "00bf74c5",
+            "hex": "d95c2418",
+            "text": "fstp dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "00bf74c9",
+            "hex": "c9",
+            "text": "leave "
+          },
+          {
+            "address": "00bf74ca",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "entry": "00c57c40",
+        "length": 775,
+        "kind": "existing_bounds_reference",
+        "hex": "558bec83e4f883ec5c568bf18b86100200008b48188b501c83c018894c2424d9442424dd05f8a2d7008b4808dce9895424288b500cd9c9894c242cd95c24248b4810d944242889542430d8e18b5014894c243489542438d95c2428d944242cd8e1d95c242cd9442430d8c1d95c2430d9442434d8c1d95c2434d8442438d95c2438d9442424d9c0d9442430d9c0dec2d9c9d95c240cd9442434d9c0d9442428d9c0dec2d9c9d95c2410d9442438d9c0d944242cd9c0dec2d9c9d95c2414d944240cdd0580a2d700dcc9d9c9d95c2418d9442410d8c9d95c241cd9442414d8c9d95c2420d9cddee6d9cdd95c240cd9cadee1d95c2410dee2d9c9d95c2414d944240cd8c9d95c2424d9442410d8c951d95c242cd84c2418d95c2430d94634d95c240cd944240cd9c0d944241cd9c0decad9442420d9c0d84e40dec3d9442424d9c0d84e4cdec4d94658dec4d9cbd95c241cd94638d95c2408d94644d8c9d9442408d8cbdec1d94650d8ccdec1d8465cd95c2420d9463cd95c240cd84e48d944240cdecadec1d94654decadec1d84660d95c2424d91c24e896937affd95c243c51d9442408d91c24e885937affd95c244051d944240cd91c24e874937affd95c244451d94640d91c24e864937affd95c244851d94644d91c24e854937affd95c244c51d94648d91c24e844937affd95c245051d9464cd91c24e834937affd95c245451d94650d91c24e824937affd95c245851d94654d91c24e814937affd95c245cd9442448d9442428d9c0decad9442424d9c0d84c243cdec3d9442454d944242cd9c0decad9ccdec1d95c2424d944244cd8cad9442440d8cadec1d9442458d8ccdec1d95c2428d9442450decad84c2444dec1d944245cdecadec1d95c242cd9442418d9c0d9442424d9c0deead9c9d95c240c8b44240cd944241c89460cd9c0d9442428d9c0deead9c9d95c24108b4c2410d9442420894e10d9c0d944242cd9c0deead9c9d95c24148b542414d9cc895614dec5d9ccd95c24248b442424894618dec1d95c24288b4c2428894e1cdec1d95c242c8b54242c8956208b7604e87ee0ffff5e8be55dc3",
+        "sha256": "240a9253b8a63ee73ddea289e2b9042015d2cd942b444827119278b8216b113b",
+        "instructions": [
+          {
+            "address": "00c57c40",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "00c57c41",
+            "hex": "8bec",
+            "text": "mov ebp, esp"
+          },
+          {
+            "address": "00c57c43",
+            "hex": "83e4f8",
+            "text": "and esp, 0xfffffff8"
+          },
+          {
+            "address": "00c57c46",
+            "hex": "83ec5c",
+            "text": "sub esp, 0x5c"
+          },
+          {
+            "address": "00c57c49",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00c57c4a",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "00c57c4c",
+            "hex": "8b8610020000",
+            "text": "mov eax, dword ptr [esi + 0x210]"
+          },
+          {
+            "address": "00c57c52",
+            "hex": "8b4818",
+            "text": "mov ecx, dword ptr [eax + 0x18]"
+          },
+          {
+            "address": "00c57c55",
+            "hex": "8b501c",
+            "text": "mov edx, dword ptr [eax + 0x1c]"
+          },
+          {
+            "address": "00c57c58",
+            "hex": "83c018",
+            "text": "add eax, 0x18"
+          },
+          {
+            "address": "00c57c5b",
+            "hex": "894c2424",
+            "text": "mov dword ptr [esp + 0x24], ecx"
+          },
+          {
+            "address": "00c57c5f",
+            "hex": "d9442424",
+            "text": "fld dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00c57c63",
+            "hex": "dd05f8a2d700",
+            "text": "fld qword ptr [0xd7a2f8]"
+          },
+          {
+            "address": "00c57c69",
+            "hex": "8b4808",
+            "text": "mov ecx, dword ptr [eax + 8]"
+          },
+          {
+            "address": "00c57c6c",
+            "hex": "dce9",
+            "text": "fsub st(1), st(0)"
+          },
+          {
+            "address": "00c57c6e",
+            "hex": "89542428",
+            "text": "mov dword ptr [esp + 0x28], edx"
+          },
+          {
+            "address": "00c57c72",
+            "hex": "8b500c",
+            "text": "mov edx, dword ptr [eax + 0xc]"
+          },
+          {
+            "address": "00c57c75",
+            "hex": "d9c9",
+            "text": "fxch st(1)"
+          },
+          {
+            "address": "00c57c77",
+            "hex": "894c242c",
+            "text": "mov dword ptr [esp + 0x2c], ecx"
+          },
+          {
+            "address": "00c57c7b",
+            "hex": "d95c2424",
+            "text": "fstp dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00c57c7f",
+            "hex": "8b4810",
+            "text": "mov ecx, dword ptr [eax + 0x10]"
+          },
+          {
+            "address": "00c57c82",
+            "hex": "d9442428",
+            "text": "fld dword ptr [esp + 0x28]"
+          },
+          {
+            "address": "00c57c86",
+            "hex": "89542430",
+            "text": "mov dword ptr [esp + 0x30], edx"
+          },
+          {
+            "address": "00c57c8a",
+            "hex": "d8e1",
+            "text": "fsub st(1)"
+          },
+          {
+            "address": "00c57c8c",
+            "hex": "8b5014",
+            "text": "mov edx, dword ptr [eax + 0x14]"
+          },
+          {
+            "address": "00c57c8f",
+            "hex": "894c2434",
+            "text": "mov dword ptr [esp + 0x34], ecx"
+          },
+          {
+            "address": "00c57c93",
+            "hex": "89542438",
+            "text": "mov dword ptr [esp + 0x38], edx"
+          },
+          {
+            "address": "00c57c97",
+            "hex": "d95c2428",
+            "text": "fstp dword ptr [esp + 0x28]"
+          },
+          {
+            "address": "00c57c9b",
+            "hex": "d944242c",
+            "text": "fld dword ptr [esp + 0x2c]"
+          },
+          {
+            "address": "00c57c9f",
+            "hex": "d8e1",
+            "text": "fsub st(1)"
+          },
+          {
+            "address": "00c57ca1",
+            "hex": "d95c242c",
+            "text": "fstp dword ptr [esp + 0x2c]"
+          },
+          {
+            "address": "00c57ca5",
+            "hex": "d9442430",
+            "text": "fld dword ptr [esp + 0x30]"
+          },
+          {
+            "address": "00c57ca9",
+            "hex": "d8c1",
+            "text": "fadd st(1)"
+          },
+          {
+            "address": "00c57cab",
+            "hex": "d95c2430",
+            "text": "fstp dword ptr [esp + 0x30]"
+          },
+          {
+            "address": "00c57caf",
+            "hex": "d9442434",
+            "text": "fld dword ptr [esp + 0x34]"
+          },
+          {
+            "address": "00c57cb3",
+            "hex": "d8c1",
+            "text": "fadd st(1)"
+          },
+          {
+            "address": "00c57cb5",
+            "hex": "d95c2434",
+            "text": "fstp dword ptr [esp + 0x34]"
+          },
+          {
+            "address": "00c57cb9",
+            "hex": "d8442438",
+            "text": "fadd dword ptr [esp + 0x38]"
+          },
+          {
+            "address": "00c57cbd",
+            "hex": "d95c2438",
+            "text": "fstp dword ptr [esp + 0x38]"
+          },
+          {
+            "address": "00c57cc1",
+            "hex": "d9442424",
+            "text": "fld dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00c57cc5",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c57cc7",
+            "hex": "d9442430",
+            "text": "fld dword ptr [esp + 0x30]"
+          },
+          {
+            "address": "00c57ccb",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c57ccd",
+            "hex": "dec2",
+            "text": "faddp st(2)"
+          },
+          {
+            "address": "00c57ccf",
+            "hex": "d9c9",
+            "text": "fxch st(1)"
+          },
+          {
+            "address": "00c57cd1",
+            "hex": "d95c240c",
+            "text": "fstp dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00c57cd5",
+            "hex": "d9442434",
+            "text": "fld dword ptr [esp + 0x34]"
+          },
+          {
+            "address": "00c57cd9",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c57cdb",
+            "hex": "d9442428",
+            "text": "fld dword ptr [esp + 0x28]"
+          },
+          {
+            "address": "00c57cdf",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c57ce1",
+            "hex": "dec2",
+            "text": "faddp st(2)"
+          },
+          {
+            "address": "00c57ce3",
+            "hex": "d9c9",
+            "text": "fxch st(1)"
+          },
+          {
+            "address": "00c57ce5",
+            "hex": "d95c2410",
+            "text": "fstp dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00c57ce9",
+            "hex": "d9442438",
+            "text": "fld dword ptr [esp + 0x38]"
+          },
+          {
+            "address": "00c57ced",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c57cef",
+            "hex": "d944242c",
+            "text": "fld dword ptr [esp + 0x2c]"
+          },
+          {
+            "address": "00c57cf3",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c57cf5",
+            "hex": "dec2",
+            "text": "faddp st(2)"
+          },
+          {
+            "address": "00c57cf7",
+            "hex": "d9c9",
+            "text": "fxch st(1)"
+          },
+          {
+            "address": "00c57cf9",
+            "hex": "d95c2414",
+            "text": "fstp dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00c57cfd",
+            "hex": "d944240c",
+            "text": "fld dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00c57d01",
+            "hex": "dd0580a2d700",
+            "text": "fld qword ptr [0xd7a280]"
+          },
+          {
+            "address": "00c57d07",
+            "hex": "dcc9",
+            "text": "fmul st(1), st(0)"
+          },
+          {
+            "address": "00c57d09",
+            "hex": "d9c9",
+            "text": "fxch st(1)"
+          },
+          {
+            "address": "00c57d0b",
+            "hex": "d95c2418",
+            "text": "fstp dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "00c57d0f",
+            "hex": "d9442410",
+            "text": "fld dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00c57d13",
+            "hex": "d8c9",
+            "text": "fmul st(1)"
+          },
+          {
+            "address": "00c57d15",
+            "hex": "d95c241c",
+            "text": "fstp dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "00c57d19",
+            "hex": "d9442414",
+            "text": "fld dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00c57d1d",
+            "hex": "d8c9",
+            "text": "fmul st(1)"
+          },
+          {
+            "address": "00c57d1f",
+            "hex": "d95c2420",
+            "text": "fstp dword ptr [esp + 0x20]"
+          },
+          {
+            "address": "00c57d23",
+            "hex": "d9cd",
+            "text": "fxch st(5)"
+          },
+          {
+            "address": "00c57d25",
+            "hex": "dee6",
+            "text": "fsubrp st(6)"
+          },
+          {
+            "address": "00c57d27",
+            "hex": "d9cd",
+            "text": "fxch st(5)"
+          },
+          {
+            "address": "00c57d29",
+            "hex": "d95c240c",
+            "text": "fstp dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00c57d2d",
+            "hex": "d9ca",
+            "text": "fxch st(2)"
+          },
+          {
+            "address": "00c57d2f",
+            "hex": "dee1",
+            "text": "fsubrp st(1)"
+          },
+          {
+            "address": "00c57d31",
+            "hex": "d95c2410",
+            "text": "fstp dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00c57d35",
+            "hex": "dee2",
+            "text": "fsubrp st(2)"
+          },
+          {
+            "address": "00c57d37",
+            "hex": "d9c9",
+            "text": "fxch st(1)"
+          },
+          {
+            "address": "00c57d39",
+            "hex": "d95c2414",
+            "text": "fstp dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00c57d3d",
+            "hex": "d944240c",
+            "text": "fld dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00c57d41",
+            "hex": "d8c9",
+            "text": "fmul st(1)"
+          },
+          {
+            "address": "00c57d43",
+            "hex": "d95c2424",
+            "text": "fstp dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00c57d47",
+            "hex": "d9442410",
+            "text": "fld dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00c57d4b",
+            "hex": "d8c9",
+            "text": "fmul st(1)"
+          },
+          {
+            "address": "00c57d4d",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00c57d4e",
+            "hex": "d95c242c",
+            "text": "fstp dword ptr [esp + 0x2c]"
+          },
+          {
+            "address": "00c57d52",
+            "hex": "d84c2418",
+            "text": "fmul dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "00c57d56",
+            "hex": "d95c2430",
+            "text": "fstp dword ptr [esp + 0x30]"
+          },
+          {
+            "address": "00c57d5a",
+            "hex": "d94634",
+            "text": "fld dword ptr [esi + 0x34]"
+          },
+          {
+            "address": "00c57d5d",
+            "hex": "d95c240c",
+            "text": "fstp dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00c57d61",
+            "hex": "d944240c",
+            "text": "fld dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00c57d65",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c57d67",
+            "hex": "d944241c",
+            "text": "fld dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "00c57d6b",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c57d6d",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00c57d6f",
+            "hex": "d9442420",
+            "text": "fld dword ptr [esp + 0x20]"
+          },
+          {
+            "address": "00c57d73",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c57d75",
+            "hex": "d84e40",
+            "text": "fmul dword ptr [esi + 0x40]"
+          },
+          {
+            "address": "00c57d78",
+            "hex": "dec3",
+            "text": "faddp st(3)"
+          },
+          {
+            "address": "00c57d7a",
+            "hex": "d9442424",
+            "text": "fld dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00c57d7e",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c57d80",
+            "hex": "d84e4c",
+            "text": "fmul dword ptr [esi + 0x4c]"
+          },
+          {
+            "address": "00c57d83",
+            "hex": "dec4",
+            "text": "faddp st(4)"
+          },
+          {
+            "address": "00c57d85",
+            "hex": "d94658",
+            "text": "fld dword ptr [esi + 0x58]"
+          },
+          {
+            "address": "00c57d88",
+            "hex": "dec4",
+            "text": "faddp st(4)"
+          },
+          {
+            "address": "00c57d8a",
+            "hex": "d9cb",
+            "text": "fxch st(3)"
+          },
+          {
+            "address": "00c57d8c",
+            "hex": "d95c241c",
+            "text": "fstp dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "00c57d90",
+            "hex": "d94638",
+            "text": "fld dword ptr [esi + 0x38]"
+          },
+          {
+            "address": "00c57d93",
+            "hex": "d95c2408",
+            "text": "fstp dword ptr [esp + 8]"
+          },
+          {
+            "address": "00c57d97",
+            "hex": "d94644",
+            "text": "fld dword ptr [esi + 0x44]"
+          },
+          {
+            "address": "00c57d9a",
+            "hex": "d8c9",
+            "text": "fmul st(1)"
+          },
+          {
+            "address": "00c57d9c",
+            "hex": "d9442408",
+            "text": "fld dword ptr [esp + 8]"
+          },
+          {
+            "address": "00c57da0",
+            "hex": "d8cb",
+            "text": "fmul st(3)"
+          },
+          {
+            "address": "00c57da2",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c57da4",
+            "hex": "d94650",
+            "text": "fld dword ptr [esi + 0x50]"
+          },
+          {
+            "address": "00c57da7",
+            "hex": "d8cc",
+            "text": "fmul st(4)"
+          },
+          {
+            "address": "00c57da9",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c57dab",
+            "hex": "d8465c",
+            "text": "fadd dword ptr [esi + 0x5c]"
+          },
+          {
+            "address": "00c57dae",
+            "hex": "d95c2420",
+            "text": "fstp dword ptr [esp + 0x20]"
+          },
+          {
+            "address": "00c57db2",
+            "hex": "d9463c",
+            "text": "fld dword ptr [esi + 0x3c]"
+          },
+          {
+            "address": "00c57db5",
+            "hex": "d95c240c",
+            "text": "fstp dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00c57db9",
+            "hex": "d84e48",
+            "text": "fmul dword ptr [esi + 0x48]"
+          },
+          {
+            "address": "00c57dbc",
+            "hex": "d944240c",
+            "text": "fld dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00c57dc0",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00c57dc2",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c57dc4",
+            "hex": "d94654",
+            "text": "fld dword ptr [esi + 0x54]"
+          },
+          {
+            "address": "00c57dc7",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00c57dc9",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c57dcb",
+            "hex": "d84660",
+            "text": "fadd dword ptr [esi + 0x60]"
+          },
+          {
+            "address": "00c57dce",
+            "hex": "d95c2424",
+            "text": "fstp dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00c57dd2",
+            "hex": "d91c24",
+            "text": "fstp dword ptr [esp]"
+          },
+          {
+            "address": "00c57dd5",
+            "hex": "e896937aff",
+            "text": "call 0x401170"
+          },
+          {
+            "address": "00c57dda",
+            "hex": "d95c243c",
+            "text": "fstp dword ptr [esp + 0x3c]"
+          },
+          {
+            "address": "00c57dde",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00c57ddf",
+            "hex": "d9442408",
+            "text": "fld dword ptr [esp + 8]"
+          },
+          {
+            "address": "00c57de3",
+            "hex": "d91c24",
+            "text": "fstp dword ptr [esp]"
+          },
+          {
+            "address": "00c57de6",
+            "hex": "e885937aff",
+            "text": "call 0x401170"
+          },
+          {
+            "address": "00c57deb",
+            "hex": "d95c2440",
+            "text": "fstp dword ptr [esp + 0x40]"
+          },
+          {
+            "address": "00c57def",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00c57df0",
+            "hex": "d944240c",
+            "text": "fld dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00c57df4",
+            "hex": "d91c24",
+            "text": "fstp dword ptr [esp]"
+          },
+          {
+            "address": "00c57df7",
+            "hex": "e874937aff",
+            "text": "call 0x401170"
+          },
+          {
+            "address": "00c57dfc",
+            "hex": "d95c2444",
+            "text": "fstp dword ptr [esp + 0x44]"
+          },
+          {
+            "address": "00c57e00",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00c57e01",
+            "hex": "d94640",
+            "text": "fld dword ptr [esi + 0x40]"
+          },
+          {
+            "address": "00c57e04",
+            "hex": "d91c24",
+            "text": "fstp dword ptr [esp]"
+          },
+          {
+            "address": "00c57e07",
+            "hex": "e864937aff",
+            "text": "call 0x401170"
+          },
+          {
+            "address": "00c57e0c",
+            "hex": "d95c2448",
+            "text": "fstp dword ptr [esp + 0x48]"
+          },
+          {
+            "address": "00c57e10",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00c57e11",
+            "hex": "d94644",
+            "text": "fld dword ptr [esi + 0x44]"
+          },
+          {
+            "address": "00c57e14",
+            "hex": "d91c24",
+            "text": "fstp dword ptr [esp]"
+          },
+          {
+            "address": "00c57e17",
+            "hex": "e854937aff",
+            "text": "call 0x401170"
+          },
+          {
+            "address": "00c57e1c",
+            "hex": "d95c244c",
+            "text": "fstp dword ptr [esp + 0x4c]"
+          },
+          {
+            "address": "00c57e20",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00c57e21",
+            "hex": "d94648",
+            "text": "fld dword ptr [esi + 0x48]"
+          },
+          {
+            "address": "00c57e24",
+            "hex": "d91c24",
+            "text": "fstp dword ptr [esp]"
+          },
+          {
+            "address": "00c57e27",
+            "hex": "e844937aff",
+            "text": "call 0x401170"
+          },
+          {
+            "address": "00c57e2c",
+            "hex": "d95c2450",
+            "text": "fstp dword ptr [esp + 0x50]"
+          },
+          {
+            "address": "00c57e30",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00c57e31",
+            "hex": "d9464c",
+            "text": "fld dword ptr [esi + 0x4c]"
+          },
+          {
+            "address": "00c57e34",
+            "hex": "d91c24",
+            "text": "fstp dword ptr [esp]"
+          },
+          {
+            "address": "00c57e37",
+            "hex": "e834937aff",
+            "text": "call 0x401170"
+          },
+          {
+            "address": "00c57e3c",
+            "hex": "d95c2454",
+            "text": "fstp dword ptr [esp + 0x54]"
+          },
+          {
+            "address": "00c57e40",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00c57e41",
+            "hex": "d94650",
+            "text": "fld dword ptr [esi + 0x50]"
+          },
+          {
+            "address": "00c57e44",
+            "hex": "d91c24",
+            "text": "fstp dword ptr [esp]"
+          },
+          {
+            "address": "00c57e47",
+            "hex": "e824937aff",
+            "text": "call 0x401170"
+          },
+          {
+            "address": "00c57e4c",
+            "hex": "d95c2458",
+            "text": "fstp dword ptr [esp + 0x58]"
+          },
+          {
+            "address": "00c57e50",
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00c57e51",
+            "hex": "d94654",
+            "text": "fld dword ptr [esi + 0x54]"
+          },
+          {
+            "address": "00c57e54",
+            "hex": "d91c24",
+            "text": "fstp dword ptr [esp]"
+          },
+          {
+            "address": "00c57e57",
+            "hex": "e814937aff",
+            "text": "call 0x401170"
+          },
+          {
+            "address": "00c57e5c",
+            "hex": "d95c245c",
+            "text": "fstp dword ptr [esp + 0x5c]"
+          },
+          {
+            "address": "00c57e60",
+            "hex": "d9442448",
+            "text": "fld dword ptr [esp + 0x48]"
+          },
+          {
+            "address": "00c57e64",
+            "hex": "d9442428",
+            "text": "fld dword ptr [esp + 0x28]"
+          },
+          {
+            "address": "00c57e68",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c57e6a",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00c57e6c",
+            "hex": "d9442424",
+            "text": "fld dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00c57e70",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c57e72",
+            "hex": "d84c243c",
+            "text": "fmul dword ptr [esp + 0x3c]"
+          },
+          {
+            "address": "00c57e76",
+            "hex": "dec3",
+            "text": "faddp st(3)"
+          },
+          {
+            "address": "00c57e78",
+            "hex": "d9442454",
+            "text": "fld dword ptr [esp + 0x54]"
+          },
+          {
+            "address": "00c57e7c",
+            "hex": "d944242c",
+            "text": "fld dword ptr [esp + 0x2c]"
+          },
+          {
+            "address": "00c57e80",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c57e82",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00c57e84",
+            "hex": "d9cc",
+            "text": "fxch st(4)"
+          },
+          {
+            "address": "00c57e86",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c57e88",
+            "hex": "d95c2424",
+            "text": "fstp dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00c57e8c",
+            "hex": "d944244c",
+            "text": "fld dword ptr [esp + 0x4c]"
+          },
+          {
+            "address": "00c57e90",
+            "hex": "d8ca",
+            "text": "fmul st(2)"
+          },
+          {
+            "address": "00c57e92",
+            "hex": "d9442440",
+            "text": "fld dword ptr [esp + 0x40]"
+          },
+          {
+            "address": "00c57e96",
+            "hex": "d8ca",
+            "text": "fmul st(2)"
+          },
+          {
+            "address": "00c57e98",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c57e9a",
+            "hex": "d9442458",
+            "text": "fld dword ptr [esp + 0x58]"
+          },
+          {
+            "address": "00c57e9e",
+            "hex": "d8cc",
+            "text": "fmul st(4)"
+          },
+          {
+            "address": "00c57ea0",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c57ea2",
+            "hex": "d95c2428",
+            "text": "fstp dword ptr [esp + 0x28]"
+          },
+          {
+            "address": "00c57ea6",
+            "hex": "d9442450",
+            "text": "fld dword ptr [esp + 0x50]"
+          },
+          {
+            "address": "00c57eaa",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00c57eac",
+            "hex": "d84c2444",
+            "text": "fmul dword ptr [esp + 0x44]"
+          },
+          {
+            "address": "00c57eb0",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c57eb2",
+            "hex": "d944245c",
+            "text": "fld dword ptr [esp + 0x5c]"
+          },
+          {
+            "address": "00c57eb6",
+            "hex": "deca",
+            "text": "fmulp st(2)"
+          },
+          {
+            "address": "00c57eb8",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c57eba",
+            "hex": "d95c242c",
+            "text": "fstp dword ptr [esp + 0x2c]"
+          },
+          {
+            "address": "00c57ebe",
+            "hex": "d9442418",
+            "text": "fld dword ptr [esp + 0x18]"
+          },
+          {
+            "address": "00c57ec2",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c57ec4",
+            "hex": "d9442424",
+            "text": "fld dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00c57ec8",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c57eca",
+            "hex": "deea",
+            "text": "fsubp st(2)"
+          },
+          {
+            "address": "00c57ecc",
+            "hex": "d9c9",
+            "text": "fxch st(1)"
+          },
+          {
+            "address": "00c57ece",
+            "hex": "d95c240c",
+            "text": "fstp dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00c57ed2",
+            "hex": "8b44240c",
+            "text": "mov eax, dword ptr [esp + 0xc]"
+          },
+          {
+            "address": "00c57ed6",
+            "hex": "d944241c",
+            "text": "fld dword ptr [esp + 0x1c]"
+          },
+          {
+            "address": "00c57eda",
+            "hex": "89460c",
+            "text": "mov dword ptr [esi + 0xc], eax"
+          },
+          {
+            "address": "00c57edd",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c57edf",
+            "hex": "d9442428",
+            "text": "fld dword ptr [esp + 0x28]"
+          },
+          {
+            "address": "00c57ee3",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c57ee5",
+            "hex": "deea",
+            "text": "fsubp st(2)"
+          },
+          {
+            "address": "00c57ee7",
+            "hex": "d9c9",
+            "text": "fxch st(1)"
+          },
+          {
+            "address": "00c57ee9",
+            "hex": "d95c2410",
+            "text": "fstp dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00c57eed",
+            "hex": "8b4c2410",
+            "text": "mov ecx, dword ptr [esp + 0x10]"
+          },
+          {
+            "address": "00c57ef1",
+            "hex": "d9442420",
+            "text": "fld dword ptr [esp + 0x20]"
+          },
+          {
+            "address": "00c57ef5",
+            "hex": "894e10",
+            "text": "mov dword ptr [esi + 0x10], ecx"
+          },
+          {
+            "address": "00c57ef8",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c57efa",
+            "hex": "d944242c",
+            "text": "fld dword ptr [esp + 0x2c]"
+          },
+          {
+            "address": "00c57efe",
+            "hex": "d9c0",
+            "text": "fld st(0)"
+          },
+          {
+            "address": "00c57f00",
+            "hex": "deea",
+            "text": "fsubp st(2)"
+          },
+          {
+            "address": "00c57f02",
+            "hex": "d9c9",
+            "text": "fxch st(1)"
+          },
+          {
+            "address": "00c57f04",
+            "hex": "d95c2414",
+            "text": "fstp dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00c57f08",
+            "hex": "8b542414",
+            "text": "mov edx, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00c57f0c",
+            "hex": "d9cc",
+            "text": "fxch st(4)"
+          },
+          {
+            "address": "00c57f0e",
+            "hex": "895614",
+            "text": "mov dword ptr [esi + 0x14], edx"
+          },
+          {
+            "address": "00c57f11",
+            "hex": "dec5",
+            "text": "faddp st(5)"
+          },
+          {
+            "address": "00c57f13",
+            "hex": "d9cc",
+            "text": "fxch st(4)"
+          },
+          {
+            "address": "00c57f15",
+            "hex": "d95c2424",
+            "text": "fstp dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00c57f19",
+            "hex": "8b442424",
+            "text": "mov eax, dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00c57f1d",
+            "hex": "894618",
+            "text": "mov dword ptr [esi + 0x18], eax"
+          },
+          {
+            "address": "00c57f20",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c57f22",
+            "hex": "d95c2428",
+            "text": "fstp dword ptr [esp + 0x28]"
+          },
+          {
+            "address": "00c57f26",
+            "hex": "8b4c2428",
+            "text": "mov ecx, dword ptr [esp + 0x28]"
+          },
+          {
+            "address": "00c57f2a",
+            "hex": "894e1c",
+            "text": "mov dword ptr [esi + 0x1c], ecx"
+          },
+          {
+            "address": "00c57f2d",
+            "hex": "dec1",
+            "text": "faddp st(1)"
+          },
+          {
+            "address": "00c57f2f",
+            "hex": "d95c242c",
+            "text": "fstp dword ptr [esp + 0x2c]"
+          },
+          {
+            "address": "00c57f33",
+            "hex": "8b54242c",
+            "text": "mov edx, dword ptr [esp + 0x2c]"
+          },
+          {
+            "address": "00c57f37",
+            "hex": "895620",
+            "text": "mov dword ptr [esi + 0x20], edx"
+          },
+          {
+            "address": "00c57f3a",
+            "hex": "8b7604",
+            "text": "mov esi, dword ptr [esi + 4]"
+          },
+          {
+            "address": "00c57f3d",
+            "hex": "e87ee0ffff",
+            "text": "call 0xc55fc0"
+          },
+          {
+            "address": "00c57f42",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00c57f43",
+            "hex": "8be5",
+            "text": "mov esp, ebp"
+          },
+          {
+            "address": "00c57f45",
+            "hex": "5d",
+            "text": "pop ebp"
+          },
+          {
+            "address": "00c57f46",
+            "hex": "c3",
+            "text": "ret "
+          }
+        ]
+      },
+      {
+        "entry": "004062c0",
+        "length": 29,
+        "kind": "existing_scalar_reference",
+        "hex": "f644240401568bf1c7064ca0d7008bc67407e8691d00008bc65ec20400",
+        "sha256": "1614774478941207f88eb301a75831620a0aea4e3df2f819f39cf5594101f48d",
+        "instructions": [
+          {
+            "address": "004062c0",
+            "hex": "f644240401",
+            "text": "test byte ptr [esp + 4], 1"
+          },
+          {
+            "address": "004062c5",
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "004062c6",
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "004062c8",
+            "hex": "c7064ca0d700",
+            "text": "mov dword ptr [esi], 0xd7a04c"
+          },
+          {
+            "address": "004062ce",
+            "hex": "8bc6",
+            "text": "mov eax, esi"
+          },
+          {
+            "address": "004062d0",
+            "hex": "7407",
+            "text": "je 0x4062d9"
+          },
+          {
+            "address": "004062d2",
+            "hex": "e8691d0000",
+            "text": "call 0x408040"
+          },
+          {
+            "address": "004062d7",
+            "hex": "8bc6",
+            "text": "mov eax, esi"
+          },
+          {
+            "address": "004062d9",
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "004062da",
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ]
+      },
+      {
+        "entry": "00d7a0ac",
+        "length": 16,
+        "kind": "data",
+        "hex": "407cc500c0624000e086c300b085c300",
+        "sha256": "0e2f48d4e73fe6bd5e41af944147e72b2d5435d962cb454a5e0c70c35835f005",
+        "instructions": []
+      },
+      {
+        "entry": "00d7a228",
+        "length": 16,
+        "kind": "data",
+        "hex": "000000400ad7ff3f000000400ad7ffbf",
+        "sha256": "7d81971a48d434278146ec1ef10d5f4743940c883541b58d54122595f4a71fd2",
+        "instructions": []
+      },
+      {
+        "entry": "00d7a268",
+        "length": 8,
+        "kind": "data",
+        "hex": "000000e0e2361a3f",
+        "sha256": "564be83b341e452f4492fa81f7d5f215f446119f583c33a94b619cd1ee7287fd",
+        "instructions": []
+      }
+    ],
+    "call_rows": [
+      {
+        "address": "00c358d1",
+        "native": "00bf7420",
+        "function": "00c358a0"
+      },
+      {
+        "address": "00c358e3",
+        "native": "00bf7420",
+        "function": "00c358a0"
+      },
+      {
+        "address": "00c358fb",
+        "native": "00bf7420",
+        "function": "00c358a0"
+      },
+      {
+        "address": "00c38769",
+        "native": "00c358a0",
+        "function": "00c386e0"
+      },
+      {
+        "address": "00c38654",
+        "native": "00c358a0",
+        "function": "00c385b0"
+      },
+      {
+        "address": "00c57dd5",
+        "native": "00401170",
+        "function": "00c57c40"
+      },
+      {
+        "address": "00c57de6",
+        "native": "00401170",
+        "function": "00c57c40"
+      },
+      {
+        "address": "00c57df7",
+        "native": "00401170",
+        "function": "00c57c40"
+      },
+      {
+        "address": "00c57e07",
+        "native": "00401170",
+        "function": "00c57c40"
+      },
+      {
+        "address": "00c57e17",
+        "native": "00401170",
+        "function": "00c57c40"
+      },
+      {
+        "address": "00c57e27",
+        "native": "00401170",
+        "function": "00c57c40"
+      },
+      {
+        "address": "00c57e37",
+        "native": "00401170",
+        "function": "00c57c40"
+      },
+      {
+        "address": "00c57e47",
+        "native": "00401170",
+        "function": "00c57c40"
+      },
+      {
+        "address": "00c57e57",
+        "native": "00401170",
+        "function": "00c57c40"
+      },
+      {
+        "address": "00c57f3d",
+        "native": "00c55fc0",
+        "function": "00c57c40"
+      },
+      {
+        "address": "004062d2",
+        "native": "00408040",
+        "function": "004062c0"
+      }
+    ],
+    "flow_repairs_needed": false,
+    "final_flow": "00c358a0: 113 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n\n00c386e0: 100 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n\n00c385b0: 104 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n\n00bf7420: 10 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n\n00bf7456: 37 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n\n00c57c40: 254 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n\n004062c0: 10 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps\n",
+    "fixture": [
+      {
+        "entry": "00c358a0",
+        "original_bytes": 342,
+        "relocated_bytes": 350,
+        "patches": [
+          [
+            41,
+            "absolute",
+            "seed_negative"
+          ],
+          [
+            50,
+            "image",
+            12547104
+          ],
+          [
+            68,
+            "image",
+            12547104
+          ],
+          [
+            78,
+            "absolute",
+            "seed_positive"
+          ],
+          [
+            92,
+            "image",
+            12547104
+          ],
+          [
+            167,
+            "absolute",
+            "support_epsilon"
+          ]
+        ],
+        "returns": [
+          [
+            54,
+            12802257
+          ],
+          [
+            72,
+            12802275
+          ],
+          [
+            96,
+            12802299
+          ]
+        ]
+      },
+      {
+        "entry": "00c386e0",
+        "original_bytes": 279,
+        "relocated_bytes": 279,
+        "patches": [
+          [
+            138,
+            "image",
+            12802208
+          ]
+        ],
+        "returns": [
+          [
+            142,
+            12814185
+          ]
+        ]
+      },
+      {
+        "entry": "00c385b0",
+        "original_bytes": 299,
+        "relocated_bytes": 299,
+        "patches": [
+          [
+            165,
+            "image",
+            12802208
+          ]
+        ],
+        "returns": [
+          [
+            169,
+            12813908
+          ]
+        ]
+      },
+      {
+        "entry": "00bf7420",
+        "original_bytes": 28,
+        "relocated_bytes": 32,
+        "patches": [
+          [
+            2,
+            "absolute",
+            "conversion_mode"
+          ],
+          [
+            9,
+            "image",
+            12547158
+          ]
+        ],
+        "returns": []
+      },
+      {
+        "entry": "00bf7456",
+        "original_bytes": 117,
+        "relocated_bytes": 135,
+        "patches": [],
+        "returns": []
+      }
+    ],
+    "conclusions": [
+      "C358A0 nativeEAXmesh,two stackpointers,RET8;342B. Seedindex13+tz-3*(3*tx+ty),where tx/ty truncate negativefactor*x/y andtz positivefactor*z. Seedword is signextended;neighborIDs unsigned16. Strict candidatecomparison includes nativeepsilon andbinary32dotspills;restart onimprovement. No null/invalidseed handling added.",
+      "C386E0/C385B0 consumeECXshape andthree stackpointers,RET0C;279B/299B. Inputmatrix is12 floats. Matrix direction andresult calculations retain nativeoperandorder andmemoryload/store order,including tested ordinarypayload aliases.",
+      "Ghidra compactx87 rendering can omitdestination: e.g.C358CD DCC9 isFMUL ST1,ST0. Port usesverifiedlive/PE opcodes andexplicitMASMoperands. Contextadapter addsone localDWORD only tolocalquery andshifts its originalargument slots;worldmethods carrymodepointer inunusedvolatileXMM1 untilhelpercall.",
+      "BF7420/BF7456 are existing shared concrete CRT services;copiedoriginalfixture executes bothoriginalbodies withrelocatedactualmodecell. Conversion address isreloaded at eachofthree sourcecalls. OriginalCRTexception/register details are notreclaimed asnewports.",
+      "NativeDynConvexShapeRuntime hasfour stablefirst-member methodentries andborrows pool/mode. Slots0/1 reuseexisting bounds/scalar;slots2/3 use newqueries. Scalarcapturespool beforestampingbaseprofile. No copiedoriginalmethodaddresses orplaceholdermethods arein theproductiontable."
+    ]
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "probe": {
+      "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+      "linker": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe",
+      "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+      "exit": 0,
+      "library_sha256": "EC5392E4C3A9039A28E7F84136127A3238787BC30910BE820FB2C2E73D1B9D31",
+      "exe_sha256": "971A176786BAF2A58B2DFA3DCBD4D479D9313C763DEB350F8691921697AB9E55"
+    },
+    "paired_cases": 4464,
+    "comparison_bytes": 1196352,
+    "comparison_sha256": "b07963772455dfb30ae2105a0d287576b14347f13a4ebaaad80c15c96b766dfa",
+    "physics": {
+      "probe": {
+        "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+        "library_sha256": "EC5392E4C3A9039A28E7F84136127A3238787BC30910BE820FB2C2E73D1B9D31",
+        "linker": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe",
+        "exe_sha256": "3983E72CAAAEE3C5A0F31680A42998CC29842D11C3A92DB7ADD04F23C5FDA6FF",
+        "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+        "exit": 0
+      },
+      "paired_cases": 36,
+      "state_snapshots": 790,
+      "comparison_bytes": 20777328,
+      "comparison_sha256": "d545ad1a19b90f07194317b06a77a0efda1e4ea0a80a673d5c767e64d8a77836",
+      "production_convex_table_identity_used": true,
+      "source_failure_no_replay_and_context_guards": true,
+      "native_reference_sha256": "2d10788146b37e387cbe33a35ebdc0bb59a03b10246a8c13b3368676b57d2e0b"
+    },
+    "fixture_domain": [
+      "actualexisting8-vertex hullproduction withrealadjacency/seeds;actualconvexpool/shape construction;finite normalized directions,identity/permutation/rotation matrices andtranslations",
+      "both actual CRTmodevalues crossedwithx8724/53/64 precision andfourrounding modes;maskedexceptions;seededC1 andoptionalprecisionstatusflag",
+      "26 core directions plusselected transformedfloat/double directions;outputs separate,aliasdirection,aliasmeshvertex forlocalquery ormatrix forworldquery",
+      "exact output/modifiedgraph bytes andCW/SW/abridgedtag/MXCSR equality;allslots testedthrough__thiscall fromcompleteproductiontable,withpoolreuse",
+      "36 actualphysics/SAP/shape cases reuseR134,substitutingproductiontable identity onsource andnormalizingonlythe two tableidentities;originalphysics executesnativeattachments"
+    ],
+    "fixture_corrections": [
+      "Inputs structure initially compared uninitialized compilerpadding; replacedpaddingwithexplicit initializedDWORDs. Floating-point results/status alreadymatched;final artifacts useexplicitstablelayout."
+    ],
+    "source_sha256_by_path": {
+      "include/bsp/native_dyn_convex_support.hpp": "6a6b3028657c8e8732e9d81b74172be60b78a565082cf102dfb8e48f0093160b",
+      "src/native_dyn_convex_support.cpp": "a2884a94389396afecaef01b8cd914eb22ae04c8e4ed5bc9ce9b37a3d0fdb239"
+    },
+    "source_lf_sha256": {
+      "include/bsp/native_dyn_convex_support.hpp": "6a6b3028657c8e8732e9d81b74172be60b78a565082cf102dfb8e48f0093160b",
+      "src/native_dyn_convex_support.cpp": "6b152077a91851c9006114b9ece00c0921e3930b6bafd234419f304cb2b02047"
+    },
+    "dependency_sha256": {
+      "include/bsp/native_dyn_shape_lifetime.hpp": "9d03579c4046d19aa2cdc57e0bdee8c9536e59f138f6196e23ababa5a460e0e9",
+      "src/native_dyn_shape_lifetime.cpp": "7889e45f9e9687f25a9e1f07bb2fe77e080bfb8a636819402c3cbb1f7e01649a",
+      "include/bsp/native_game_physics_lifetime.hpp": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e",
+      "src/native_game_physics_lifetime.cpp": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4",
+      "include/bsp/dyn_body_creation.hpp": "771890801179db08b6ec963a2145cb05c4346da8f79d402514770aae2210535b",
+      "src/dyn_body_creation.cpp": "e915e3325ceca411c14df2424129c7e82bebf6bc272921205e62d43744d4c93c",
+      "src/avoid_zone_dyn_hull.cpp": "e4be35881ddd46bcbf3110b05309745df565951e1f41656080aea3c1777edf45",
+      "include/bsp/native_render_batch_keys.hpp": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1",
+      "src/native_render_batch_keys.cpp": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1",
+      "src/native_dyn_sap_lifetime.cpp": "89c8be58800b2a6e738fc8e626c7169de57fc11ae3b7676563e4bc19d8d7142b",
+      "src/native_game_lifetime.cpp": "bbbbd038bedc93aa8919863f366523080296da8c6fc70798f11b00ffa4e25daf"
+    },
+    "probe_source_sha256": "4c362894d8f58c6e27c3f8ac773296f82a984ffed7cbc30af918ccd361b62b02",
+    "fixture_sha256": "10cbb26afe445447d5c9f8b4bf6d2d5b4ec0d36135998104d73735339b204145",
+    "library_sha256": "ec5392e4c3a9039a28e7f84136127a3238787bc30910be820fb2c2e73d1b9d31",
+    "game_sha256": "0c0fec7fa517939c7201040ab40b8b3dda7dd29a918b2b6ba4281ad53eb5e34c",
+    "ordinary_application_runtime_rerun": false,
+    "call_verification": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\reports\\native_dyn_convex_support_r135.json: 16 call rows checked, 0 failed\n"
+  },
+  "limits": [
+    "Requiresvalidnonempty mesh/adjacency andvalidsigned seed. Originalproducer leaves centerseed13 unspecified; zero orshort transformed directions thatselectit are notinvented asvalidinputs. Arbitrarynonfinite/malformed/out-of-range inputs,concurrency,private-stack aliases,unmaskedtraps,nativeFH3/SEH anddrop-inwholeprogramABI remainunproved.",
+    "All four source table methods arecallable;bounds/scalar reusepreviousimplementations. Bounds slot smokecompares againstexisting source andchecksactualbody/shape writes;it isnotnewindependent775Bnativebounds proof. The tableowner,pool,geometry andCRTcell mustoutlive uses;no nativeRTTI metadata supplied.",
+    "Existinghull/shape constructors shared bybothsides;notindependently re-proved. Physicsfixture retains sharedtaskservice,controllednormalCRT reverseiterator andR134 cleanup/handlelimits.",
+    "Completeconvexclass table doesnot supplyother shapeclasses,SAP update/dispatch methods,globalallocator teardown,raw-game applicationadmission or gameplay."
+  ],
+  "owned_files": [
+    "include/bsp/native_dyn_convex_support.hpp",
+    "src/native_dyn_convex_support.cpp",
+    "cmake/startup.cmake",
+    "docs/NATIVE_DYN_CONVEX_SUPPORT_R135.md",
+    "docs/NATIVE_DYN_SHAPE_LIFETIME_R134.md",
+    "reports/native_dyn_convex_support_r135.json",
+    "config/names/00400000.jsonl",
+    "config/reconstruction/00400000.jsonl",
+    "config/names/00c30000.jsonl",
+    "config/reconstruction/00c30000.jsonl",
+    "config/names/00c50000.jsonl",
+    "config/reconstruction/00c50000.jsonl"
+  ],
+  "no_ghidra_function": [],
+  "ghidra_annotations": {
+    "prior_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\ghidra-annotations-20260918T090234Z.json",
+    "prior_values": [
+      {
+        "address": "004062c0",
+        "before": {
+          "address": "004062c0",
+          "function_name": "DYN_ConvexMeshShape_ScalarDelete_004062C0",
+          "comment": "[BSP inventory 004062c0] rtti_vslot (high): vtable 00d7a0ac slot 1 of Dyn::ConvexMeshShape (RTTI TypeDescriptor 00e17328)\n\n[BSP reconstruction 004062c0]\nComplete29B,ECXshape+stackflags,RET4/EAXcapturedshape. StampD7A04C baseShape profile;lowbit0 calls existing408040 at4062D2 withEAXshape. Returnslot tooriginalconvexpool;shape210 meshborrowed,linksandotherfieldsstale. D7A0AC slot1. Descriptive hypothesis,not a recovered symbol. R134:29 new scalar bytes plus113B existing pool-release reference;3414 total live/PE bytes.36 copied-native/source pairs match790 observations/20777328 normalized bytes;52 controlledparent cases/141402076 bytes;strict Win32/3 CTests. Native4062C0/408040 executed withactualconstructed218hslots andrealcriticalsection APIs;1/128/129/257 slots,flags0/1/100/101 andearliestfreepagereuse. Constructors/task service shared;normalCRT reverseiterator controlled. No newgeneralshapeorpartialruntimevtable,native FH3/SEH,registerABI,concurrency,malformedprovenance,rawgameadmission orgameplay proof. docs/NATIVE_DYN_SHAPE_LIFETIME_R134.md;reports/native_dyn_shape_lifetime_r134.json."
+        },
+        "after": {
+          "address": "004062c0",
+          "name": "DYN_ConvexMeshShape_ScalarDelete_004062C0",
+          "evidence": "Complete29B,ECXshape+stackflags,RET4/EAXcapturedshape. StampD7A04C baseShape profile;lowbit0 calls existing408040 at4062D2 withEAXshape. Returnslot tooriginalconvexpool;shape210 meshborrowed,linksandotherfieldsstale. D7A0AC slot1. Descriptive hypothesis,not a recovered symbol. R134:29 new scalar bytes plus113B existing pool-release reference;3414 total live/PE bytes.36 copied-native/source pairs match790 observations/20777328 normalized bytes;52 controlledparent cases/141402076 bytes;strict Win32/3 CTests. Native4062C0/408040 executed withactualconstructed218hslots andrealcriticalsection APIs;1/128/129/257 slots,flags0/1/100/101 andearliestfreepagereuse. Constructors/task service shared;normalCRT reverseiterator controlled. No newgeneralshapeorpartialruntimevtable,native FH3/SEH,registerABI,concurrency,malformedprovenance,rawgameadmission orgameplay proof. docs/NATIVE_DYN_SHAPE_LIFETIME_R134.md;reports/native_dyn_shape_lifetime_r134.json. | R135completecallable source table slot1 recovers itsstabletableowner andcapturesoriginalpool BEFORE4062C0 stampsbaseprofileD7A04C. ExistingR134scalar/source408040 handlesflags andpoolrelease. Direct__thiscall slot invocation/returnedshape/earliestslotreuse passed. No originalRTTI metadata supplied. Descriptive hypothesis,not a recovered symbol. R135:920 new normal support bytes;1909 live/PE bytes includingexisting CRT/bounds/scalar references.4464 copied-native/source pairs match1196352 bytes,exact outputs/graph writes/x87CW/SW/tags/MXCSR acrossbothCRT modes and12precision/roundingcontrols,seededstatus andordinarypayloadaliases. Completefour-slot source table testedthrough__thiscall,borrowingactualpool/CRTcell;36 physics pairs790observations/20777328bytes withproductiontableidentity;strictWin32/3CTests. Native private-stack/register/FH3/SEH/RTTI,malformedseed/nonfinite/concurrency,rawgameadmission andgameplay remainopen. docs/NATIVE_DYN_CONVEX_SUPPORT_R135.md;reports/native_dyn_convex_support_r135.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c358a0",
+        "before": {
+          "address": "00c358a0",
+          "function_name": "DYN_physics_00c358a0",
+          "comment": "[BSP inventory 00c358a0] block_dyn (high): inside Dyn physics/collision (mitengine 'Dynamics' module) range [00c30930,00c5df60): main library body; ends at the .text$x unwind-funclet block; preceded by Lua loadlib.c (00c2f3e0-00c30200) and a small game glue object (00c30210-00c30570)"
+        },
+        "after": {
+          "address": "00c358a0",
+          "name": "DYN_ConvexHull_FindSupportVertex_00C358A0",
+          "evidence": "Complete342B,EAXmesh+stackoutput/direction,RET8. OriginalconstantsD7A228/230/268. CRTtrunc tx/ty ofnegativefactor*x/y,tz positivefactor*z;seedindex13+tz-3*(3*tx+ty),signed16seed. UInt16adjacency,count,neighbor IDs. Binary32dot spills;strict candidate>current+epsilon accepts/restarts. Returnselected12Bpoint withforwardDWORDstores. Producercenterseed13 remainsunspecified;validseed required. Preserveexactx87destination operands,notGhidracompacttext alone. Descriptive hypothesis,not a recovered symbol. R135:920 new normal support bytes;1909 live/PE bytes includingexisting CRT/bounds/scalar references.4464 copied-native/source pairs match1196352 bytes,exact outputs/graph writes/x87CW/SW/tags/MXCSR acrossbothCRT modes and12precision/roundingcontrols,seededstatus andordinarypayloadaliases. Completefour-slot source table testedthrough__thiscall,borrowingactualpool/CRTcell;36 physics pairs790observations/20777328bytes withproductiontableidentity;strictWin32/3CTests. Native private-stack/register/FH3/SEH/RTTI,malformedseed/nonfinite/concurrency,rawgameadmission andgameplay remainopen. docs/NATIVE_DYN_CONVEX_SUPPORT_R135.md;reports/native_dyn_convex_support_r135.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c385b0",
+        "before": {
+          "address": "00c385b0",
+          "function_name": "Dyn_ConvexMeshShape_vslot3",
+          "comment": "[BSP inventory 00c385b0] rtti_vslot (high): vtable 00d7a0ac slot 3 of Dyn::ConvexMeshShape (RTTI TypeDescriptor 00e17328)"
+        },
+        "after": {
+          "address": "00c385b0",
+          "name": "DYN_ConvexMeshShape_SupportPointF64Interface_00C385B0",
+          "evidence": "Complete299B,ECXshape+stackdoubleoutput/doubledirection/floatmatrix12,RET0C. Narrowdirection tofloat32,transform/querymesh210 C358A0 atC38654,transformlocalfloatresult,spillfloat32 andwiden tothreefloat64 outputs. No truefloat64supportprecision implied. D7A0AC slot3. Descriptive hypothesis,not a recovered symbol. R135:920 new normal support bytes;1909 live/PE bytes includingexisting CRT/bounds/scalar references.4464 copied-native/source pairs match1196352 bytes,exact outputs/graph writes/x87CW/SW/tags/MXCSR acrossbothCRT modes and12precision/roundingcontrols,seededstatus andordinarypayloadaliases. Completefour-slot source table testedthrough__thiscall,borrowingactualpool/CRTcell;36 physics pairs790observations/20777328bytes withproductiontableidentity;strictWin32/3CTests. Native private-stack/register/FH3/SEH/RTTI,malformedseed/nonfinite/concurrency,rawgameadmission andgameplay remainopen. docs/NATIVE_DYN_CONVEX_SUPPORT_R135.md;reports/native_dyn_convex_support_r135.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c386e0",
+        "before": {
+          "address": "00c386e0",
+          "function_name": "Dyn_ConvexMeshShape_vslot2",
+          "comment": "[BSP inventory 00c386e0] rtti_vslot (high): vtable 00d7a0ac slot 2 of Dyn::ConvexMeshShape (RTTI TypeDescriptor 00e17328)"
+        },
+        "after": {
+          "address": "00c386e0",
+          "name": "DYN_ConvexMeshShape_SupportPointF32_00C386E0",
+          "evidence": "Complete279B,ECXshape+stackoutput/direction/matrix12,RET0C. Transformdirection inoriginalx87order;EAXmesh210 thenC358A0 atC38769;capturelocalsfromoutput andtransformback withtranslation. Preserve float32spills/ordinarypayloadaliasstoreorder. D7A0AC slot2. Descriptive hypothesis,not a recovered symbol. R135:920 new normal support bytes;1909 live/PE bytes includingexisting CRT/bounds/scalar references.4464 copied-native/source pairs match1196352 bytes,exact outputs/graph writes/x87CW/SW/tags/MXCSR acrossbothCRT modes and12precision/roundingcontrols,seededstatus andordinarypayloadaliases. Completefour-slot source table testedthrough__thiscall,borrowingactualpool/CRTcell;36 physics pairs790observations/20777328bytes withproductiontableidentity;strictWin32/3CTests. Native private-stack/register/FH3/SEH/RTTI,malformedseed/nonfinite/concurrency,rawgameadmission andgameplay remainopen. docs/NATIVE_DYN_CONVEX_SUPPORT_R135.md;reports/native_dyn_convex_support_r135.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c57c40",
+        "before": {
+          "address": "00c57c40",
+          "function_name": "Dyn_ConvexMeshShape_vslot0",
+          "comment": "[BSP inventory 00c57c40] rtti_vslot (high): vtable 00d7a0ac slot 0 of Dyn::ConvexMeshShape (RTTI TypeDescriptor 00e17328)\n\n[BSP reconstruction 00c57c40]\nRefresh of the shape's own AABB. __thiscall(shape), RET; body 00C57C40..00C57F46. It is slot 0 of the Dyn::ConvexMeshShape vtable (the first dword at 00D7A0AC is 00C57C40) and is also called directly by the constructor at 00C57FCE. Reads the convex mesh at shape+210h: mesh+18h..+20h is the local minimum and mesh+24h..+2Ch the local maximum (00C57C4C..00C57C93). lo = min - eps, hi = max + eps with eps the double 0.02 at 00D7A2F8 (00C57C63..00C57CBD); centre = (lo+hi)*0.5 and half = (hi-lo)*0.5, both against the double 0.5 at 00D7A280 (00C57CC1..00C57D56, the halves via FSUBRP at 00C57D25/00C57D2F/00C57D35); the centre goes through the shape's 4x3 at shape+34h..+60h in row-vector order (00C57D5A..00C57DCE) and the half extent through the same matrix with nine 00401170 magnitudes (00C57DD2..00C57EBA). Stores shape+0Ch..+14h = centre-half and shape+18h..+20h = centre+half (00C57EBE..00C57F37), then calls 00C55FC0 with the body from shape+04h in ESI. Same conservative box rotation as dyn_body_world_bounds_00c5715c. docs/SHIP_HULL_SHAPES.md. | The name is a hypothesis retained from the block_dyn tag, not a recovered symbol; this packet only confirmed the vtable slot (00D7A0AC slot 0) and added the bounds rule above.\n\n[BSP reconstruction 00c57c40] update\nRefresh of the shape's own AABB. __thiscall(shape), RET; body 00C57C40..00C57F46. It is slot 0 of the Dyn::ConvexMeshShape vtable (the first dword at 00D7A0AC is 00C57C40) and is also called directly by the constructor at 00C57FCE. Reads the convex mesh at shape+210h: mesh+18h..+20h is the local minimum and mesh+24h..+2Ch the local maximum (00C57C4C..00C57C93). lo = min - eps, hi = max + eps with eps the double 0.02 at 00D7A2F8 (00C57C63..00C57CBD); centre = (lo+hi)*0.5 and half = (hi-lo)*0.5, both against the double 0.5 at 00D7A280 (00C57CC1..00C57D56, the halves via FSUBRP at 00C57D25/00C57D2F/00C57D35); the centre goes through the shape's 4x3 at shape+34h..+60h in row-vector order (00C57D5A..00C57DCE) and the half extent through the same matrix with nine 00401170 magnitudes (00C57DD2..00C57EBA). Stores shape+0Ch..+14h = centre-half and shape+18h..+20h = centre+half (00C57EBE..00C57F37), then calls 00C55FC0 with the body from shape+04h in ESI. Same conservative box rotation as dyn_body_world_bounds_00c5715c. docs/SHIP_HULL_SHAPES.md. | The name is a hypothesis retained from the block_dyn tag, not a recovered symbol; this packet only confirmed the vtable slot (00D7A0AC slot 0) and added the bounds rule above. | Hypothesis, not a recovered symbol. ECX shape; RET. complete normal-path native storage semantics; explicit allocation/global/vtable inputs; no native SEH ABI. See docs/DYN_BODY_CREATION.md and reports/dyn_body_creation.json; preserves allocator/list/undefined-byte stores. Native world/scene owner and complete vtables remain explicit borrowed runtime state."
+        },
+        "after": {
+          "address": "00c57c40",
+          "name": "Dyn_ConvexMeshShape_vslot0",
+          "evidence": "Refresh of the shape's own AABB. __thiscall(shape), RET; body 00C57C40..00C57F46. It is slot 0 of the Dyn::ConvexMeshShape vtable (the first dword at 00D7A0AC is 00C57C40) and is also called directly by the constructor at 00C57FCE. Reads the convex mesh at shape+210h: mesh+18h..+20h is the local minimum and mesh+24h..+2Ch the local maximum (00C57C4C..00C57C93). lo = min - eps, hi = max + eps with eps the double 0.02 at 00D7A2F8 (00C57C63..00C57CBD); centre = (lo+hi)*0.5 and half = (hi-lo)*0.5, both against the double 0.5 at 00D7A280 (00C57CC1..00C57D56, the halves via FSUBRP at 00C57D25/00C57D2F/00C57D35); the centre goes through the shape's 4x3 at shape+34h..+60h in row-vector order (00C57D5A..00C57DCE) and the half extent through the same matrix with nine 00401170 magnitudes (00C57DD2..00C57EBA). Stores shape+0Ch..+14h = centre-half and shape+18h..+20h = centre+half (00C57EBE..00C57F37), then calls 00C55FC0 with the body from shape+04h in ESI. Same conservative box rotation as dyn_body_world_bounds_00c5715c. docs/SHIP_HULL_SHAPES.md. | The name is a hypothesis retained from the block_dyn tag, not a recovered symbol; this packet only confirmed the vtable slot (00D7A0AC slot 0) and added the bounds rule above. | Hypothesis, not a recovered symbol. ECX shape; RET. complete normal-path native storage semantics; explicit allocation/global/vtable inputs; no native SEH ABI. See docs/DYN_BODY_CREATION.md and reports/dyn_body_creation.json; preserves allocator/list/undefined-byte stores. Native world/scene owner and complete vtables remain explicit borrowed runtime state. | Existing775Bboundsbody/source retained. R135completecallable source table slot0 invokes existingdyn_convex_shape_refresh_bounds_00c57c40. Ownerstablefirst-member table,pool/CRTborrowed. Slot0 smokechecksactualbody/shape writes againstexisting source;notnewindependent775Bnativeproof. Descriptive hypothesis,not a recovered symbol. R135:920 new normal support bytes;1909 live/PE bytes includingexisting CRT/bounds/scalar references.4464 copied-native/source pairs match1196352 bytes,exact outputs/graph writes/x87CW/SW/tags/MXCSR acrossbothCRT modes and12precision/roundingcontrols,seededstatus andordinarypayloadaliases. Completefour-slot source table testedthrough__thiscall,borrowingactualpool/CRTcell;36 physics pairs790observations/20777328bytes withproductiontableidentity;strictWin32/3CTests. Native private-stack/register/FH3/SEH/RTTI,malformedseed/nonfinite/concurrency,rawgameadmission andgameplay remainopen. docs/NATIVE_DYN_CONVEX_SUPPORT_R135.md;reports/native_dyn_convex_support_r135.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "readback_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\dyn_convex_support_r135\\comments-after.json",
+    "readback_sha256": "e0d2a52a496b740835a5cda135e5a1023b51a570911d7cc85fa4d995d4c02315",
+    "status": "Three support bodies and two complete-table method bindings saved under write lock;prior values preserved,readback checked,exports refreshed"
+  },
+  "ledger_receipts": [
+    "00c358a0 -> DYN_ConvexHull_FindSupportVertex_00C358A0\n",
+    "00c358a0 function support_native_dyn_hull_00c358a0\n",
+    "00c386e0 -> DYN_ConvexMeshShape_SupportPointF32_00C386E0\n",
+    "00c386e0 function support_native_dyn_convex_shape_00c386e0\n",
+    "00c385b0 -> DYN_ConvexMeshShape_SupportPointF64Interface_00C385B0\n",
+    "00c385b0 function support_native_dyn_convex_shape_00c385b0\n",
+    "00c57c40 -> Dyn_ConvexMeshShape_vslot0\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00c57c40\", \"name\": \"Dyn_ConvexMeshShape_vslot0\", \"evidence\": \"Refresh of the shape's own AABB. __thiscall(shape), RET; body 00C57C40..00C57F46. It is slot 0 of the Dyn::ConvexMeshShape vtable (the first dword at 00D7A0AC is 00C57C40) and is also called directly by the constructor at 00C57FCE. Reads the convex mesh at shape+210h: mesh+18h..+20h is the local minimum and mesh+24h..+2Ch the local maximum (00C57C4C..00C57C93). lo = min - eps, hi = max + eps with eps the double 0.02 at 00D7A2F8 (00C57C63..00C57CBD); centre = (lo+hi)*0.5 and half = (hi-lo)*0.5, both against the double 0.5 at 00D7A280 (00C57CC1..00C57D56, the halves via FSUBRP at 00C57D25/00C57D2F/00C57D35); the centre goes through the shape's 4x3 at shape+34h..+60h in row-vector order (00C57D5A..00C57DCE) and the half extent through the same matrix with nine 00401170 magnitudes (00C57DD2..00C57EBA). Stores shape+0Ch..+14h = centre-half and shape+18h..+20h = centre+half (00C57EBE..00C57F37), then calls 00C55FC0 with the body from shape+04h in ESI. Same conservative box rotation as dyn_body_world_bounds_00c5715c. docs/SHIP_HULL_SHAPES.md. | The name is a hypothesis retained from the block_dyn tag, not a recovered symbol; this packet only confirmed the vtable slot (00D7A0AC slot 0) and added the bounds rule above. | Hypothesis, not a recovered symbol. ECX shape; RET. complete normal-path native storage semantics; explicit allocation/global/vtable inputs; no native SEH ABI. See docs/DYN_BODY_CREATION.md and reports/dyn_body_creation.json; preserves allocator/list/undefined-byte stores. Native world/scene owner and complete vtables remain explicit borrowed runtime state.\"})\n",
+    "00c57c40 fragment native_convex_runtime_bounds_binding_r135\n",
+    "004062c0 -> DYN_ConvexMeshShape_ScalarDelete_004062C0\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"004062c0\", \"name\": \"DYN_ConvexMeshShape_ScalarDelete_004062C0\", \"evidence\": \"Complete29B,ECXshape+stackflags,RET4/EAXcapturedshape. StampD7A04C baseShape profile;lowbit0 calls existing408040 at4062D2 withEAXshape. Returnslot tooriginalconvexpool;shape210 meshborrowed,linksandotherfieldsstale. D7A0AC slot1. Descriptive hypothesis,not a recovered symbol. R134:29 new scalar bytes plus113B existing pool-release reference;3414 total live/PE bytes.36 copied-native/source pairs match790 observations/20777328 normalized bytes;52 controlledparent cases/141402076 bytes;strict Win32/3 CTests. Native4062C0/408040 executed withactualconstructed218hslots andrealcriticalsection APIs;1/128/129/257 slots,flags0/1/100/101 andearliestfreepagereuse. Constructors/task service shared;normalCRT reverseiterator controlled. No newgeneralshapeorpartialruntimevtable,native FH3/SEH,registerABI,concurrency,malformedprovenance,rawgameadmission orgameplay proof. docs/NATIVE_DYN_SHAPE_LIFETIME_R134.md;reports/native_dyn_shape_lifetime_r134.json.\"})\n",
+    "004062c0 fragment native_convex_runtime_scalar_binding_r135\n"
+  ],
+  "tested_artifact_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r135\\native-dyn-convex-support-tested-r135.zip",
+    "sha256": "d5f4b463e619bea26691772eb5b2186b5082361d72a988b4c42030556efe2a04",
+    "files": 143,
+    "uncompressed_bytes": 117165131,
+    "utc": "2026-09-18T09:03:45.480173+00:00",
+    "head": "7b7733f9a4c0484d373ae910326d426aace6710b",
+    "manifest": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/dyn_body_creation.obj",
+        "size": 29583,
+        "sha256": "cfe368fa7b12cfc8223ffbcc81741e7cbf354e8d507e7e00cf323cd33a735f95"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_convex_support.obj",
+        "size": 5294,
+        "sha256": "fa6ebaf582cafacd57005e574fe93a97e1fe3b70ce4435b9f0f8a98ab6711f44"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_shape_lifetime.obj",
+        "size": 1485,
+        "sha256": "83a1a384ee831de2a81ee801fdaf1c5117026da3a6b1ed9614b96c9f1484f07e"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_render_batch_keys.obj",
+        "size": 2618,
+        "sha256": "8f83a3ef5545c599fdb51ac91d2dfe34524efaeefa196f9a3192345be9c6e5e2"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "size": 66334148,
+        "sha256": "ec5392e4c3a9039a28e7f84136127a3238787bc30910be820fb2c2e73d1b9d31"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "size": 2696704,
+        "sha256": "0c0fec7fa517939c7201040ab40b8b3dda7dd29a918b2b6ba4281ad53eb5e34c"
+      },
+      {
+        "path": "build/win32/Release/bsp_lua511.lib",
+        "size": 455244,
+        "sha256": "db83167c8c7d24461ef2bf60363b96264fd2406929d0e72a8909287d79b96a17"
+      },
+      {
+        "path": "build/win32/Release/bsp_math_tests.exe",
+        "size": 763392,
+        "sha256": "fb330694a66fbc54407991f8b849c81911225f44342979990d8510f8444a24ad"
+      },
+      {
+        "path": "build/win32/Release/bsp_native_math_tests.exe",
+        "size": 18432,
+        "sha256": "594f169c3fd3a9d6d79bd90e7fe377c7aaf59aefe877c57c73353be9c15032f2"
+      },
+      {
+        "path": "build/win32/Release/bsp_zlib121.lib",
+        "size": 71906,
+        "sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "size": 162185,
+        "sha256": "cb052fac79d2b580af5ab5a336eed9c8afdf074cc6821dae8dcb22912806a3fb"
+      },
+      {
+        "path": "config/names/00400000.jsonl",
+        "size": 26230,
+        "sha256": "5956300f5f5f07d457fb4a0e76ee429a2da8d1ba85e3bc1f86ab019f5458c855"
+      },
+      {
+        "path": "config/names/00c30000.jsonl",
+        "size": 34193,
+        "sha256": "572d264158170a3d408bd07edaf4bd49f4aa49e503342309be8034653dda7de5"
+      },
+      {
+        "path": "config/names/00c50000.jsonl",
+        "size": 29432,
+        "sha256": "903008e00806fb6d9809860fb4d4a98ea2169ff6308cccb8458af468831a7916"
+      },
+      {
+        "path": "config/reconstruction/00400000.jsonl",
+        "size": 41257,
+        "sha256": "e5505de9f8779386ff8f0d39bf8e355baeabda42dbdddf80f9b909dc2c7fb5c8"
+      },
+      {
+        "path": "config/reconstruction/00c30000.jsonl",
+        "size": 49131,
+        "sha256": "94ea94ab051c6c7088ab3096d49fd2eb57e4a4ad3ec329d850400e540e140f1a"
+      },
+      {
+        "path": "config/reconstruction/00c50000.jsonl",
+        "size": 37249,
+        "sha256": "8b57f15739aefdfeb581d2a48d3708d0d323f1e213d39a359a53b3a9cb8700c5"
+      },
+      {
+        "path": "docs/NATIVE_DYN_CONVEX_SUPPORT_R135.md",
+        "size": 5358,
+        "sha256": "7e0d9d45f8e678360714460e44c9a90b1f61075ae077471fc191eb9a4acacd0d"
+      },
+      {
+        "path": "docs/NATIVE_DYN_SHAPE_LIFETIME_R134.md",
+        "size": 4808,
+        "sha256": "54758ce39afe62855cfe36fb68f6fd5aad2c16f026cf6281cd29f0b589ec518a"
+      },
+      {
+        "path": "include/bsp/avoid_zone_dyn_hull.hpp",
+        "size": 3575,
+        "sha256": "c4b13f13e5cb94a4e1423c0c96aa725935615f92d2cb65a823c36572bf1f2c3a"
+      },
+      {
+        "path": "include/bsp/camera_projection.hpp",
+        "size": 2413,
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "path": "include/bsp/camera_transform.hpp",
+        "size": 7028,
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+      },
+      {
+        "path": "include/bsp/dyn_body_creation.hpp",
+        "size": 5100,
+        "sha256": "771890801179db08b6ec963a2145cb05c4346da8f79d402514770aae2210535b"
+      },
+      {
+        "path": "include/bsp/dyn_engine_runtime.hpp",
+        "size": 2552,
+        "sha256": "059c3367a5d71532c076a29895b62394e1d88d71fa6cd828c5a540604359d82a"
+      },
+      {
+        "path": "include/bsp/dyn_scene_runtime.hpp",
+        "size": 2802,
+        "sha256": "55bbd6bda1cbdde923b48381c85998db05f4db9ce96e60d9f964c2d2b6be378c"
+      },
+      {
+        "path": "include/bsp/dyn_task_manager.hpp",
+        "size": 2343,
+        "sha256": "3c6736d8c7ee289631f9fdebd02f9c0915688389ec29a782357183ee2f54c147"
+      },
+      {
+        "path": "include/bsp/dyn_world_factory.hpp",
+        "size": 1225,
+        "sha256": "4e32f788fd38fdf5acbef4a530c43b709c2e62e8017e428a58e0539d257c0b29"
+      },
+      {
+        "path": "include/bsp/dyn_world_runtime.hpp",
+        "size": 1331,
+        "sha256": "fe53091179272be0d15c1e69a80174d69f9c9e5199a5bc61329be0490ba18a19"
+      },
+      {
+        "path": "include/bsp/dyn_world_settings.hpp",
+        "size": 7233,
+        "sha256": "b00dde4b4a80912c7c255d9080d56213028f6723810499f3d54be157c1c34b33"
+      },
+      {
+        "path": "include/bsp/frame_clock.hpp",
+        "size": 2475,
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+      },
+      {
+        "path": "include/bsp/game_entry.hpp",
+        "size": 5510,
+        "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+      },
+      {
+        "path": "include/bsp/native_award_registry_lifetime.hpp",
+        "size": 3153,
+        "sha256": "1558f07a0c50f2e5a28a355b5aa151f0c8466352e59e78efb2d668c04fcab26b"
+      },
+      {
+        "path": "include/bsp/native_dyn_convex_support.hpp",
+        "size": 2636,
+        "sha256": "6a6b3028657c8e8732e9d81b74172be60b78a565082cf102dfb8e48f0093160b"
+      },
+      {
+        "path": "include/bsp/native_dyn_sap_lifetime.hpp",
+        "size": 3135,
+        "sha256": "371a1fd7b7f1fb8a089704fb25204453b6ac18862a4412b16a120ca62449ebc1"
+      },
+      {
+        "path": "include/bsp/native_dyn_shape_lifetime.hpp",
+        "size": 680,
+        "sha256": "9d03579c4046d19aa2cdc57e0bdee8c9536e59f138f6196e23ababa5a460e0e9"
+      },
+      {
+        "path": "include/bsp/native_game_array_lifetime.hpp",
+        "size": 3035,
+        "sha256": "296271866c2b7f47893ccc3687cc6148345b376d6bb0d0d35d11495c64a1f7aa"
+      },
+      {
+        "path": "include/bsp/native_game_class_cleanup.hpp",
+        "size": 6159,
+        "sha256": "9be5dd2f28906897af1707d56a385bb1a597c6479037a7f0be71f5c13fcdfd76"
+      },
+      {
+        "path": "include/bsp/native_game_container_lifetime.hpp",
+        "size": 4531,
+        "sha256": "e733c7a80433639dd18bf0d791f688a9334b158da1ef24557d7cae8ba1cd6e87"
+      },
+      {
+        "path": "include/bsp/native_game_dynamics.hpp",
+        "size": 819,
+        "sha256": "a3e10519df0f4bb2327ee46713069f0aa761630ca1c633f438db09bb41668290"
+      },
+      {
+        "path": "include/bsp/native_game_embedded_lifetime.hpp",
+        "size": 3447,
+        "sha256": "7471f546612018324a42748fb484af08e38f4567684bcba3bc80003a3cf7c42a"
+      },
+      {
+        "path": "include/bsp/native_game_lifetime.hpp",
+        "size": 9110,
+        "sha256": "840df3841c1cd7e87579c8cd62fe24702a54b7cb978d0c817d24f62b7b10a4bb"
+      },
+      {
+        "path": "include/bsp/native_game_lua_globals_lifetime.hpp",
+        "size": 2744,
+        "sha256": "286ba341fe3538746e5d2ac0ae3bc92a5fa19815b5db51a568fb9cfaa5a7fcd4"
+      },
+      {
+        "path": "include/bsp/native_game_physics_lifetime.hpp",
+        "size": 6288,
+        "sha256": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e"
+      },
+      {
+        "path": "include/bsp/native_game_profile_lifetime.hpp",
+        "size": 4493,
+        "sha256": "d7680ba1d4266ce48f125f01594bf7f2506637206e98982792f2d29e75ae503a"
+      },
+      {
+        "path": "include/bsp/native_game_singleton_lifetime.hpp",
+        "size": 2916,
+        "sha256": "76ca3babd50d2102fd0f5d08ba931e327e3570aef60286fd634eaa365cace35c"
+      },
+      {
+        "path": "include/bsp/native_game_tree_lifetime.hpp",
+        "size": 2023,
+        "sha256": "526bb4017c0eb2c4344690bed0d7d5e839718e63a95f10fe03b2551442af2888"
+      },
+      {
+        "path": "include/bsp/native_mission_progress_owner.hpp",
+        "size": 1980,
+        "sha256": "bff5ea00ed24a064c8251420a11a068eab39b01d10ba0ec9ce76ff01feccb394"
+      },
+      {
+        "path": "include/bsp/native_profile_collections.hpp",
+        "size": 2989,
+        "sha256": "29292e811a8562f988ca17c721fa3a74f2640c9578839ade9355bd0a080a8ae0"
+      },
+      {
+        "path": "include/bsp/native_render_batch_keys.hpp",
+        "size": 1858,
+        "sha256": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "size": 8771,
+        "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+      },
+      {
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "size": 5893,
+        "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "size": 2805,
+        "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+      },
+      {
+        "path": "include/bsp/render_tail.hpp",
+        "size": 15566,
+        "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+      },
+      {
+        "path": "include/bsp/rigid_body_integration.hpp",
+        "size": 8112,
+        "sha256": "07cb2142f73cb94cd0bd3d903f2482816cc7924be69247ae1ac1707e4df62f11"
+      },
+      {
+        "path": "include/bsp/ship_hull_body.hpp",
+        "size": 9286,
+        "sha256": "a9417d7dc66f6eeda4aee783cd87c3d403b91693a142d8d1c255ebe3ba2c9c0b"
+      },
+      {
+        "path": "include/bsp/ship_hull_shapes.hpp",
+        "size": 17222,
+        "sha256": "58a35e261aa87778c225ff550fea23218f24fc0c7f5982d87b50fc1ef7a9877a"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "size": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "include/bsp/storage_pool.hpp",
+        "size": 5571,
+        "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+      },
+      {
+        "path": "include/bsp/system_time_constants.hpp",
+        "size": 4800,
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+      },
+      {
+        "path": "include/bsp/world_ocean.hpp",
+        "size": 8932,
+        "sha256": "00a1c385e2e46fe0a7372c4dec7d0f8039935823bc02e0a29982c93c5360429b"
+      },
+      {
+        "path": "local/annotate_dyn_convex_support_r135.py",
+        "size": 4047,
+        "sha256": "39db43f3823c12af06b23603d228ee5e0059e57f5b8fa0c5092fdb230901e5a1"
+      },
+      {
+        "path": "local/collect_dyn_convex_support_r135.py",
+        "size": 532,
+        "sha256": "323c95ebb955ecaea0ffc44b6f81757c3e045b4f683cf749cbe9a8afa18f952d"
+      },
+      {
+        "path": "local/commit_dyn_convex_support_r135.py",
+        "size": 2197,
+        "sha256": "b40196d6b61e532cb2644e18589bc5158af0d3d024dbc330beb6910bbdb3e236"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/annotations.log",
+        "size": 424,
+        "sha256": "5f2afd7488c4ba1d873956227469bd5087543529ac485c1e21953f7c31d26d0b"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/build.log",
+        "size": 2588,
+        "sha256": "fc7222f8c47eef0ee8915c64a9356993b9e3cfb7d9b241d37e036ed69ab942aa"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/comments-after.json",
+        "size": 13443,
+        "sha256": "e0d2a52a496b740835a5cda135e5a1023b51a570911d7cc85fa4d995d4c02315"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/comments-after.log",
+        "size": 79,
+        "sha256": "2aabb833393e0163eb0d637da996befb90fef26dd94823f718a12ea79bf00b9f"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/decompile-004062c0.txt",
+        "size": 1420,
+        "sha256": "0dbb2d1d596ba572cd189286ca2d3ba07b3cb8f4de928eadc17a7a5febacb825"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/decompile-00bf7420.txt",
+        "size": 4667,
+        "sha256": "c327f97661a0ce5985b11d4cdf122f07dde0d8fbc099cd4b72db7569665aa1f1"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/decompile-00bf7456.txt",
+        "size": 4343,
+        "sha256": "2a4ab71bbd9b7511ba5bf8f655fe00a335d07a8d2eb0973e61747e61cef4f414"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/decompile-00c358a0.txt",
+        "size": 2192,
+        "sha256": "e7e9bf830b42f559bd6623e6b7b5d62d793de2e3499bf47be5b8ed62172154cf"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/decompile-00c385b0.txt",
+        "size": 1326,
+        "sha256": "a4a958b02469449fb9b9210bad9536697d450d80fac3981364d6e439f62b5f49"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/decompile-00c386e0.txt",
+        "size": 1293,
+        "sha256": "ad30610914e17908db3c0601a7ce10c0efe18a3ecdb972d5f446ba7e592718e9"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/decompile-00c57c40.txt",
+        "size": 6018,
+        "sha256": "dd058411a8e7cffc378a6cb68026b15c361014581e2f27bb0079ded6dbc0b47c"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/dependencies.json",
+        "size": 23831,
+        "sha256": "c04ed5b8ba06d145fce1d590a72e591509ade24a33ab56264571bc99a242f565"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/disasm-004062c0.txt",
+        "size": 270,
+        "sha256": "c4ca47f818b82a254ec96514bd6ca6119cc300998b2a09599d68c2e979398d73"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/disasm-00bf7420.txt",
+        "size": 279,
+        "sha256": "e63fe473fa7894a85935c88e56c83f0ddc91b6f7ade6ff4ed522e452bc015d36"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/disasm-00bf7456.txt",
+        "size": 1131,
+        "sha256": "b49d5e78620009dfc956f7853df9d4e20b3b38909e6dbc229a28de319c2c1146"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/disasm-00c358a0.txt",
+        "size": 3555,
+        "sha256": "bbca39193f522fe0f4a3c2b9caa23beafa1326adc8822e9af8bfc843b89b0b17"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/disasm-00c385b0.txt",
+        "size": 3191,
+        "sha256": "7308a347334f28c08910840ff4ed4a128b2fa70e6e011dd7eccd01fd7149098b"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/disasm-00c386e0.txt",
+        "size": 3121,
+        "sha256": "fffc3ed53b8ff05bd81fef2c77144c29bd4218963f2acf17da3065f80c2948fe"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/disasm-00c57c40.txt",
+        "size": 8052,
+        "sha256": "1a685ec74ce8faf32c4e48480ba2a8b5d07fc97bea8158a7bb0480bb2cbe3b4a"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/dyn_convex_support_probe.exe",
+        "size": 61952,
+        "sha256": "971a176786baf2a58b2dfa3dcbd4d479d9313c763deb350f8691921697ab9e55"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/exports-after.log",
+        "size": 579,
+        "sha256": "ea3c6c1a6d475e730e01a37e197741e66145ca13e45a4748bcadd70f9d065c6b"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/fixture-image.json",
+        "size": 1680,
+        "sha256": "10cbb26afe445447d5c9f8b4bf6d2d5b4ec0d36135998104d73735339b204145"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/flow_verified.log",
+        "size": 912,
+        "sha256": "d657534ae6f6ee6c72f92491910217d69cf11cd04460d580132b73337191e588"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/index.log",
+        "size": 16,
+        "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/native.json",
+        "size": 85391,
+        "sha256": "fd4d5cb964373710806639d9550667130ba5ad8b5349bd9db031834f7a38a872"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/original-build.inc",
+        "size": 1466,
+        "sha256": "a9dfe41c8c7e4fd3af81c11f265d39df7dda7abbb567aa257dd838ca228d4da2"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/original-hooks.inc",
+        "size": 2,
+        "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/original.bin",
+        "size": 1196352,
+        "sha256": "b07963772455dfb30ae2105a0d287576b14347f13a4ebaaad80c15c96b766dfa"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/original.inc",
+        "size": 3900,
+        "sha256": "7d2617e888e0f3fe2f38b1d5f7f0d852c72a57dbe7cb4ca82973b1b5ad6f51a6"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/physics/dependencies.json",
+        "size": 28427,
+        "sha256": "dd815303af38845739857898a2447e04f12760b7354d1fccd6714c95c6d7224a"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/physics/dyn_convex_runtime_physics_probe.exe",
+        "size": 312320,
+        "sha256": "3983e72caaaee3c5a0f31680a42998cc29842d11c3a92db7add04f23c5fda6ff"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/physics/fixture-image.json",
+        "size": 12845,
+        "sha256": "4a3fa19ad686e089b3f33bbd0c0ac338318501041876f02127a720ca65bfc352"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/physics/native.json",
+        "size": 145176,
+        "sha256": "2d10788146b37e387cbe33a35ebdc0bb59a03b10246a8c13b3368676b57d2e0b"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/physics/original-build.inc",
+        "size": 12566,
+        "sha256": "6ccfc969d7282569f507788101dd535f65b9526ca9c3e6f3230d15b01cecbcec"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/physics/original-hooks.inc",
+        "size": 3588,
+        "sha256": "599587f26b4c808dfde0bfbf454c86c0542243c96c4453abbaca439bc375bad5"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/physics/original.bin",
+        "size": 20777328,
+        "sha256": "d545ad1a19b90f07194317b06a77a0efda1e4ea0a80a673d5c767e64d8a77836"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/physics/original.inc",
+        "size": 11763,
+        "sha256": "305708ff2e5889fe707b1012ffd56f9f49148dad1f11095f164639ceb7735ed9"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/physics/probe-build.log",
+        "size": 11,
+        "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/physics/probe-run.log",
+        "size": 1416,
+        "sha256": "f3db6e485542692df5a4f537adc1e4b67843717302ca86289b907a653bebd355"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/physics/probe.cpp",
+        "size": 25107,
+        "sha256": "83a16c3e2c9b947443a5c9314db560efa8f1fcf1a59b3506baf5b6902e36d1ac"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/physics/probe.map",
+        "size": 449887,
+        "sha256": "c2ce2d09beb7ad909ea2add778416b956fafc06634b79c8d3c07823bd0fe805f"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/physics/probe.obj",
+        "size": 433910,
+        "sha256": "8678229affd5b212a6c0148aadd2193ca955b2e621c0cc1b3b616e1be84ea57b"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/physics/result.json",
+        "size": 528,
+        "sha256": "7df3f7a782c8028a53efc600ac7af93b06242e4eafc682087d23eb3143137cdc"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/physics/source.bin",
+        "size": 20777328,
+        "sha256": "d545ad1a19b90f07194317b06a77a0efda1e4ea0a80a673d5c767e64d8a77836"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/probe-build.log",
+        "size": 11,
+        "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/probe-run.log",
+        "size": 174,
+        "sha256": "2b3d2805f388d5f34e53b24e7cf658cebe0c90ceb08a8240858a7325f5934724"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/probe.cpp",
+        "size": 9612,
+        "sha256": "4c362894d8f58c6e27c3f8ac773296f82a984ffed7cbc30af918ccd361b62b02"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/probe.map",
+        "size": 80099,
+        "sha256": "ec2ab8443fd376e3e38c51cbbb12dfc5eb06274a392547b2940fdb0fadc89a02"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/probe.obj",
+        "size": 201674,
+        "sha256": "be0dada6dc91b58099b22ce9c3616df1c2ba2875dad0ce7b514e2c9a67f5d92a"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/proto-004062c0.txt",
+        "size": 722,
+        "sha256": "6780c45ecb1726e1fcd51315d9259fa220947038c6f454bc15129f5e915882d4"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/proto-00bf7420.txt",
+        "size": 722,
+        "sha256": "ccd9833c4be969b3ed39cc38e3be14cc912953527f8af97e9464e0382b4fa5d0"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/proto-00bf7456.txt",
+        "size": 723,
+        "sha256": "27c275812635de4845aa4aecacb3742aa3ee043b08dbdf6a8ce329c37f6b7bd9"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/proto-00c358a0.txt",
+        "size": 648,
+        "sha256": "1c9bfd31aafd2aa90165be5179681046b416c9b5a5d1a65a1a1ae519705514c3"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/proto-00c385b0.txt",
+        "size": 661,
+        "sha256": "a63e34eeb2fafb0b921054a30c3a3e06c376b49a7bcd9a31a78b29ffdeba60a5"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/proto-00c386e0.txt",
+        "size": 661,
+        "sha256": "ff25a5517e52c2da03314cb3f5015565c1dfb7e2bbc0ac9de1a3abcff149774c"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/proto-00c57c40.txt",
+        "size": 687,
+        "sha256": "eb922a39cb6c4c2aca1caf6928d8379d5ab9878bb0d269245a405d274e8a732b"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/result.json",
+        "size": 528,
+        "sha256": "5d97a46c40cf9c8d3cb2a6198db4694bdcf33e21c15ba6d7a05b15fe874ec80c"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/snapshot.log",
+        "size": 230,
+        "sha256": "0cd465e5bafeae80d5a3503da3d1369c73460c4fea5d9575b99f55ec6254a395"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/source.bin",
+        "size": 1196352,
+        "sha256": "b07963772455dfb30ae2105a0d287576b14347f13a4ebaaad80c15c96b766dfa"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/unreached-methods.inc",
+        "size": 2,
+        "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+      },
+      {
+        "path": "local/dyn_convex_support_r135/verify-calls.log",
+        "size": 133,
+        "sha256": "af5388defc36f9b2ee2b13b87b5e257bbe85107ccfb33fa88fe8d5b0917e86e9"
+      },
+      {
+        "path": "local/ghidra-annotations-20260918T090234Z.json",
+        "size": 13948,
+        "sha256": "9218b5d1384d89cbc48050a3eb6dd019de44d05a9d8b4f5a8f44fba4d6e7948b"
+      },
+      {
+        "path": "local/prepare_convex_runtime_physics_r135.py",
+        "size": 1938,
+        "sha256": "f361d1f49806abeaceb5313dc77cd8d64c1e1b3231cd6a76db83f454107e1965"
+      },
+      {
+        "path": "local/prepare_dyn_convex_support_closeout_r135.py",
+        "size": 3750,
+        "sha256": "097808b1a1c94cc466016f86520070b095af31acc8de84408ae40eacf0fb1121"
+      },
+      {
+        "path": "local/prepare_dyn_convex_support_combined_r135.py",
+        "size": 859,
+        "sha256": "ff62cfbd86eee6bac48133bada12887e062093d8354158eae37bda87439c9588"
+      },
+      {
+        "path": "local/prepare_dyn_convex_support_r135.py",
+        "size": 1513,
+        "sha256": "56afdddd7b65fec85c7b29a5f097587b3f1f62f70b5e0ae33c9bf101fd60e0ba"
+      },
+      {
+        "path": "local/report_dyn_convex_support_r135.py",
+        "size": 7662,
+        "sha256": "98fcc7a2cb316c33ea9ef0969ff407dc58dcfc622315d2cd6f5264a990c69510"
+      },
+      {
+        "path": "local/run_convex_runtime_physics_r135.ps1",
+        "size": 1713,
+        "sha256": "cc3775249884c06c0cb437281bb16c785e6e9510fadcf3a572143195eb490483"
+      },
+      {
+        "path": "local/run_dyn_convex_support_r135.ps1",
+        "size": 1681,
+        "sha256": "23601ace2285be7ad295bc7788286e79f335c0a1b23bfca16e0a9b1b5169e39d"
+      },
+      {
+        "path": "local/seal_dyn_convex_support_r135.py",
+        "size": 5882,
+        "sha256": "dfb7ea9373c946a753d28fc2c64a0ca0d68e4ac295e3df8f8a56eed213bf37c9"
+      },
+      {
+        "path": "local/write_dyn_convex_support_r135.py",
+        "size": 6047,
+        "sha256": "c70e3a6aaadf28c1d1da143085910901e255064c5ec280007948f0e656682f76"
+      },
+      {
+        "path": "reports/native_dyn_convex_support_r135.json",
+        "size": 126304,
+        "sha256": "20569dc19d6c7c69941f8ba58c1cbf160eeb755a1881b842a4c9a573c6400d08"
+      },
+      {
+        "path": "src/avoid_zone_dyn_hull.cpp",
+        "size": 21629,
+        "sha256": "e4be35881ddd46bcbf3110b05309745df565951e1f41656080aea3c1777edf45"
+      },
+      {
+        "path": "src/dyn_body_creation.cpp",
+        "size": 15270,
+        "sha256": "e915e3325ceca411c14df2424129c7e82bebf6bc272921205e62d43744d4c93c"
+      },
+      {
+        "path": "src/native_dyn_convex_support.cpp",
+        "size": 17894,
+        "sha256": "a2884a94389396afecaef01b8cd914eb22ae04c8e4ed5bc9ce9b37a3d0fdb239"
+      },
+      {
+        "path": "src/native_dyn_sap_lifetime.cpp",
+        "size": 6697,
+        "sha256": "89c8be58800b2a6e738fc8e626c7169de57fc11ae3b7676563e4bc19d8d7142b"
+      },
+      {
+        "path": "src/native_dyn_shape_lifetime.cpp",
+        "size": 452,
+        "sha256": "7889e45f9e9687f25a9e1f07bb2fe77e080bfb8a636819402c3cbb1f7e01649a"
+      },
+      {
+        "path": "src/native_game_lifetime.cpp",
+        "size": 21606,
+        "sha256": "bbbbd038bedc93aa8919863f366523080296da8c6fc70798f11b00ffa4e25daf"
+      },
+      {
+        "path": "src/native_game_physics_lifetime.cpp",
+        "size": 13632,
+        "sha256": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4"
+      },
+      {
+        "path": "src/native_render_batch_keys.cpp",
+        "size": 5004,
+        "sha256": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1"
+      }
+    ],
+    "scope": "920 new normal support bytes;4464 exact FP native/source cases1196352bytes;36 production-table physics pairs20777328bytes;ordinary application admission and gameplay open"
+  },
+  "primary_integration": {
+    "source_commit": "631b6168bc4b6ef205a1be473cd7fc25bc153740",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "artifact_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r135\\native-dyn-convex-support-main-r135.zip",
+      "sha256": "31efe090988b49aedf6564814c461f99575f5ccdf848956e943c469c69bfe087",
+      "files": 174,
+      "uncompressed_bytes": 162847483,
+      "utc": "2026-09-18T09:05:20.061409+00:00",
+      "head": "631b6168bc4b6ef205a1be473cd7fc25bc153740",
+      "manifest": [
+        {
+          "path": "build/win32/bsp_core.dir/Release/dyn_body_creation.obj",
+          "size": 29583,
+          "sha256": "cfe368fa7b12cfc8223ffbcc81741e7cbf354e8d507e7e00cf323cd33a735f95"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_dyn_convex_support.obj",
+          "size": 5294,
+          "sha256": "fa6ebaf582cafacd57005e574fe93a97e1fe3b70ce4435b9f0f8a98ab6711f44"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_dyn_shape_lifetime.obj",
+          "size": 1485,
+          "sha256": "83a1a384ee831de2a81ee801fdaf1c5117026da3a6b1ed9614b96c9f1484f07e"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_render_batch_keys.obj",
+          "size": 2618,
+          "sha256": "8f83a3ef5545c599fdb51ac91d2dfe34524efaeefa196f9a3192345be9c6e5e2"
+        },
+        {
+          "path": "build/win32/Release/bsp_core.lib",
+          "size": 66334148,
+          "sha256": "50aabf734b9ca5f42ffd8ab9509356e17d0eac82aa2ec9ee232f9a7c9e37e3d5"
+        },
+        {
+          "path": "build/win32/Release/bsp_game.exe",
+          "size": 2721792,
+          "sha256": "8a846aefb57e8e6a2745cd55c27d5e808264d87d1afa37a6a7adf4870c8afe62"
+        },
+        {
+          "path": "build/win32/Release/bsp_lua511.lib",
+          "size": 455244,
+          "sha256": "db83167c8c7d24461ef2bf60363b96264fd2406929d0e72a8909287d79b96a17"
+        },
+        {
+          "path": "build/win32/Release/bsp_math_tests.exe",
+          "size": 763392,
+          "sha256": "fe5922f22e85b063f7bf74aa0f5c9c7e69ba5953009edef174e2040f72cde81e"
+        },
+        {
+          "path": "build/win32/Release/bsp_native_math_tests.exe",
+          "size": 18432,
+          "sha256": "ced876ffe99c58581193e62ca03d85840036a476ab35fbbdb219616e425e208d"
+        },
+        {
+          "path": "build/win32/Release/bsp_zlib121.lib",
+          "size": 71906,
+          "sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5"
+        },
+        {
+          "path": "cmake/startup.cmake",
+          "size": 162185,
+          "sha256": "cb052fac79d2b580af5ab5a336eed9c8afdf074cc6821dae8dcb22912806a3fb"
+        },
+        {
+          "path": "config/names/00400000.jsonl",
+          "size": 26230,
+          "sha256": "5956300f5f5f07d457fb4a0e76ee429a2da8d1ba85e3bc1f86ab019f5458c855"
+        },
+        {
+          "path": "config/names/00c30000.jsonl",
+          "size": 34193,
+          "sha256": "572d264158170a3d408bd07edaf4bd49f4aa49e503342309be8034653dda7de5"
+        },
+        {
+          "path": "config/names/00c50000.jsonl",
+          "size": 29432,
+          "sha256": "903008e00806fb6d9809860fb4d4a98ea2169ff6308cccb8458af468831a7916"
+        },
+        {
+          "path": "config/reconstruction/00400000.jsonl",
+          "size": 41257,
+          "sha256": "e5505de9f8779386ff8f0d39bf8e355baeabda42dbdddf80f9b909dc2c7fb5c8"
+        },
+        {
+          "path": "config/reconstruction/00c30000.jsonl",
+          "size": 49131,
+          "sha256": "94ea94ab051c6c7088ab3096d49fd2eb57e4a4ad3ec329d850400e540e140f1a"
+        },
+        {
+          "path": "config/reconstruction/00c50000.jsonl",
+          "size": 37249,
+          "sha256": "8b57f15739aefdfeb581d2a48d3708d0d323f1e213d39a359a53b3a9cb8700c5"
+        },
+        {
+          "path": "docs/NATIVE_DYN_CONVEX_SUPPORT_R135.md",
+          "size": 5358,
+          "sha256": "7e0d9d45f8e678360714460e44c9a90b1f61075ae077471fc191eb9a4acacd0d"
+        },
+        {
+          "path": "docs/NATIVE_DYN_SHAPE_LIFETIME_R134.md",
+          "size": 4808,
+          "sha256": "54758ce39afe62855cfe36fb68f6fd5aad2c16f026cf6281cd29f0b589ec518a"
+        },
+        {
+          "path": "include/bsp/avoid_zone_dyn_hull.hpp",
+          "size": 3575,
+          "sha256": "c4b13f13e5cb94a4e1423c0c96aa725935615f92d2cb65a823c36572bf1f2c3a"
+        },
+        {
+          "path": "include/bsp/camera_projection.hpp",
+          "size": 2413,
+          "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+        },
+        {
+          "path": "include/bsp/camera_transform.hpp",
+          "size": 7028,
+          "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+        },
+        {
+          "path": "include/bsp/dyn_body_creation.hpp",
+          "size": 5100,
+          "sha256": "771890801179db08b6ec963a2145cb05c4346da8f79d402514770aae2210535b"
+        },
+        {
+          "path": "include/bsp/dyn_engine_runtime.hpp",
+          "size": 2552,
+          "sha256": "059c3367a5d71532c076a29895b62394e1d88d71fa6cd828c5a540604359d82a"
+        },
+        {
+          "path": "include/bsp/dyn_scene_runtime.hpp",
+          "size": 2802,
+          "sha256": "55bbd6bda1cbdde923b48381c85998db05f4db9ce96e60d9f964c2d2b6be378c"
+        },
+        {
+          "path": "include/bsp/dyn_task_manager.hpp",
+          "size": 2343,
+          "sha256": "3c6736d8c7ee289631f9fdebd02f9c0915688389ec29a782357183ee2f54c147"
+        },
+        {
+          "path": "include/bsp/dyn_world_factory.hpp",
+          "size": 1225,
+          "sha256": "4e32f788fd38fdf5acbef4a530c43b709c2e62e8017e428a58e0539d257c0b29"
+        },
+        {
+          "path": "include/bsp/dyn_world_runtime.hpp",
+          "size": 1331,
+          "sha256": "fe53091179272be0d15c1e69a80174d69f9c9e5199a5bc61329be0490ba18a19"
+        },
+        {
+          "path": "include/bsp/dyn_world_settings.hpp",
+          "size": 7233,
+          "sha256": "b00dde4b4a80912c7c255d9080d56213028f6723810499f3d54be157c1c34b33"
+        },
+        {
+          "path": "include/bsp/frame_clock.hpp",
+          "size": 2475,
+          "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+        },
+        {
+          "path": "include/bsp/game_entry.hpp",
+          "size": 5510,
+          "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+        },
+        {
+          "path": "include/bsp/native_award_registry_lifetime.hpp",
+          "size": 3153,
+          "sha256": "1558f07a0c50f2e5a28a355b5aa151f0c8466352e59e78efb2d668c04fcab26b"
+        },
+        {
+          "path": "include/bsp/native_dyn_convex_support.hpp",
+          "size": 2636,
+          "sha256": "6a6b3028657c8e8732e9d81b74172be60b78a565082cf102dfb8e48f0093160b"
+        },
+        {
+          "path": "include/bsp/native_dyn_sap_lifetime.hpp",
+          "size": 3135,
+          "sha256": "371a1fd7b7f1fb8a089704fb25204453b6ac18862a4412b16a120ca62449ebc1"
+        },
+        {
+          "path": "include/bsp/native_dyn_shape_lifetime.hpp",
+          "size": 680,
+          "sha256": "9d03579c4046d19aa2cdc57e0bdee8c9536e59f138f6196e23ababa5a460e0e9"
+        },
+        {
+          "path": "include/bsp/native_game_array_lifetime.hpp",
+          "size": 3035,
+          "sha256": "296271866c2b7f47893ccc3687cc6148345b376d6bb0d0d35d11495c64a1f7aa"
+        },
+        {
+          "path": "include/bsp/native_game_class_cleanup.hpp",
+          "size": 6159,
+          "sha256": "9be5dd2f28906897af1707d56a385bb1a597c6479037a7f0be71f5c13fcdfd76"
+        },
+        {
+          "path": "include/bsp/native_game_container_lifetime.hpp",
+          "size": 4531,
+          "sha256": "e733c7a80433639dd18bf0d791f688a9334b158da1ef24557d7cae8ba1cd6e87"
+        },
+        {
+          "path": "include/bsp/native_game_dynamics.hpp",
+          "size": 819,
+          "sha256": "a3e10519df0f4bb2327ee46713069f0aa761630ca1c633f438db09bb41668290"
+        },
+        {
+          "path": "include/bsp/native_game_embedded_lifetime.hpp",
+          "size": 3447,
+          "sha256": "7471f546612018324a42748fb484af08e38f4567684bcba3bc80003a3cf7c42a"
+        },
+        {
+          "path": "include/bsp/native_game_lifetime.hpp",
+          "size": 9110,
+          "sha256": "840df3841c1cd7e87579c8cd62fe24702a54b7cb978d0c817d24f62b7b10a4bb"
+        },
+        {
+          "path": "include/bsp/native_game_lua_globals_lifetime.hpp",
+          "size": 2744,
+          "sha256": "286ba341fe3538746e5d2ac0ae3bc92a5fa19815b5db51a568fb9cfaa5a7fcd4"
+        },
+        {
+          "path": "include/bsp/native_game_physics_lifetime.hpp",
+          "size": 6288,
+          "sha256": "829ef5aded5279e62aed7e91b974db4275a90535d6b2ffa41a85bb38410e4d8e"
+        },
+        {
+          "path": "include/bsp/native_game_profile_lifetime.hpp",
+          "size": 4493,
+          "sha256": "d7680ba1d4266ce48f125f01594bf7f2506637206e98982792f2d29e75ae503a"
+        },
+        {
+          "path": "include/bsp/native_game_singleton_lifetime.hpp",
+          "size": 2916,
+          "sha256": "76ca3babd50d2102fd0f5d08ba931e327e3570aef60286fd634eaa365cace35c"
+        },
+        {
+          "path": "include/bsp/native_game_tree_lifetime.hpp",
+          "size": 2023,
+          "sha256": "526bb4017c0eb2c4344690bed0d7d5e839718e63a95f10fe03b2551442af2888"
+        },
+        {
+          "path": "include/bsp/native_mission_progress_owner.hpp",
+          "size": 1980,
+          "sha256": "bff5ea00ed24a064c8251420a11a068eab39b01d10ba0ec9ce76ff01feccb394"
+        },
+        {
+          "path": "include/bsp/native_profile_collections.hpp",
+          "size": 2989,
+          "sha256": "29292e811a8562f988ca17c721fa3a74f2640c9578839ade9355bd0a080a8ae0"
+        },
+        {
+          "path": "include/bsp/native_render_batch_keys.hpp",
+          "size": 1858,
+          "sha256": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1"
+        },
+        {
+          "path": "include/bsp/native_string.hpp",
+          "size": 8771,
+          "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+        },
+        {
+          "path": "include/bsp/native_string_pool_owner.hpp",
+          "size": 5893,
+          "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+        },
+        {
+          "path": "include/bsp/native_string_pool_storage.hpp",
+          "size": 2805,
+          "sha256": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d"
+        },
+        {
+          "path": "include/bsp/render_tail.hpp",
+          "size": 15566,
+          "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+        },
+        {
+          "path": "include/bsp/rigid_body_integration.hpp",
+          "size": 8112,
+          "sha256": "07cb2142f73cb94cd0bd3d903f2482816cc7924be69247ae1ac1707e4df62f11"
+        },
+        {
+          "path": "include/bsp/ship_hull_body.hpp",
+          "size": 9286,
+          "sha256": "a9417d7dc66f6eeda4aee783cd87c3d403b91693a142d8d1c255ebe3ba2c9c0b"
+        },
+        {
+          "path": "include/bsp/ship_hull_shapes.hpp",
+          "size": 17222,
+          "sha256": "58a35e261aa87778c225ff550fea23218f24fc0c7f5982d87b50fc1ef7a9877a"
+        },
+        {
+          "path": "include/bsp/singleton_lifetime.hpp",
+          "size": 4372,
+          "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+        },
+        {
+          "path": "include/bsp/storage_pool.hpp",
+          "size": 5571,
+          "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+        },
+        {
+          "path": "include/bsp/system_time_constants.hpp",
+          "size": 4800,
+          "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+        },
+        {
+          "path": "include/bsp/world_ocean.hpp",
+          "size": 8932,
+          "sha256": "00a1c385e2e46fe0a7372c4dec7d0f8039935823bc02e0a29982c93c5360429b"
+        },
+        {
+          "path": "local/annotate_dyn_convex_support_r135.py",
+          "size": 4047,
+          "sha256": "39db43f3823c12af06b23603d228ee5e0059e57f5b8fa0c5092fdb230901e5a1"
+        },
+        {
+          "path": "local/collect_dyn_convex_support_r135.py",
+          "size": 532,
+          "sha256": "323c95ebb955ecaea0ffc44b6f81757c3e045b4f683cf749cbe9a8afa18f952d"
+        },
+        {
+          "path": "local/commit_dyn_convex_support_r135.py",
+          "size": 2197,
+          "sha256": "b40196d6b61e532cb2644e18589bc5158af0d3d024dbc330beb6910bbdb3e236"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/annotations.log",
+          "size": 424,
+          "sha256": "5f2afd7488c4ba1d873956227469bd5087543529ac485c1e21953f7c31d26d0b"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/build.log",
+          "size": 2588,
+          "sha256": "fc7222f8c47eef0ee8915c64a9356993b9e3cfb7d9b241d37e036ed69ab942aa"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/dependencies.json",
+          "size": 23861,
+          "sha256": "c5c163b3b5471d03ea1b1340509a9f9a81a07bc68f21bbcba3b0076fc40d8c9f"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/dyn_convex_support_probe.exe",
+          "size": 61952,
+          "sha256": "4d170ffea0d79f54680f8fe0b453451b3f3af91a731e07a62628f081e1de6ba6"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/fixture-image.json",
+          "size": 1680,
+          "sha256": "10cbb26afe445447d5c9f8b4bf6d2d5b4ec0d36135998104d73735339b204145"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/original-build.inc",
+          "size": 1466,
+          "sha256": "a9dfe41c8c7e4fd3af81c11f265d39df7dda7abbb567aa257dd838ca228d4da2"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/original-hooks.inc",
+          "size": 2,
+          "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/original.bin",
+          "size": 1196352,
+          "sha256": "b07963772455dfb30ae2105a0d287576b14347f13a4ebaaad80c15c96b766dfa"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/original.inc",
+          "size": 3900,
+          "sha256": "7d2617e888e0f3fe2f38b1d5f7f0d852c72a57dbe7cb4ca82973b1b5ad6f51a6"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/dependencies.json",
+          "size": 28467,
+          "sha256": "ad5f369c9ba6cd21345a41d2a293df690f9736a942efdff7112690a78539216a"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/dyn_convex_runtime_physics_probe.exe",
+          "size": 312320,
+          "sha256": "83852568d27523be4d5c244cd6c39e7cdcf10fc8fb2254c739f07ea8b8e95479"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/fixture-image.json",
+          "size": 12845,
+          "sha256": "4a3fa19ad686e089b3f33bbd0c0ac338318501041876f02127a720ca65bfc352"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/original-build.inc",
+          "size": 12566,
+          "sha256": "6ccfc969d7282569f507788101dd535f65b9526ca9c3e6f3230d15b01cecbcec"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/original-hooks.inc",
+          "size": 3588,
+          "sha256": "599587f26b4c808dfde0bfbf454c86c0542243c96c4453abbaca439bc375bad5"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/original.bin",
+          "size": 20777328,
+          "sha256": "d545ad1a19b90f07194317b06a77a0efda1e4ea0a80a673d5c767e64d8a77836"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/original.inc",
+          "size": 11763,
+          "sha256": "305708ff2e5889fe707b1012ffd56f9f49148dad1f11095f164639ceb7735ed9"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/probe-run.log",
+          "size": 1416,
+          "sha256": "f3db6e485542692df5a4f537adc1e4b67843717302ca86289b907a653bebd355"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/probe.cpp",
+          "size": 25107,
+          "sha256": "83a16c3e2c9b947443a5c9314db560efa8f1fcf1a59b3506baf5b6902e36d1ac"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/probe.map",
+          "size": 449887,
+          "sha256": "2bc192096f18f8e24fc637224c9d8bf6f9e0d69277619541a313ac23fe312440"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/probe.obj",
+          "size": 433922,
+          "sha256": "3f81b2a3e49b1bf8ed009601c7bd967e85740aef1983c67075093220377558c5"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/result.json",
+          "size": 528,
+          "sha256": "b594fdf1ba0345a298fef961a472c3accb744f3262d0d15dc489bc735785c42d"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/physics/source.bin",
+          "size": 20777328,
+          "sha256": "d545ad1a19b90f07194317b06a77a0efda1e4ea0a80a673d5c767e64d8a77836"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/probe-run.log",
+          "size": 174,
+          "sha256": "2b3d2805f388d5f34e53b24e7cf658cebe0c90ceb08a8240858a7325f5934724"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/probe.cpp",
+          "size": 9612,
+          "sha256": "4c362894d8f58c6e27c3f8ac773296f82a984ffed7cbc30af918ccd361b62b02"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/probe.map",
+          "size": 80099,
+          "sha256": "cf5fbe896b799640142002109f89610bef7b67723515cc0469f8bb848719afc9"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/probe.obj",
+          "size": 201686,
+          "sha256": "4eeeb4b83945ffc6094b2b1cce5f143c741c9123dabe7ce6895a2f29f570870e"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/result.json",
+          "size": 528,
+          "sha256": "13b00819b026ee9a6391417ef5dfe604fece00e173c13b3f91b4e63c70029fbe"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/combined/source.bin",
+          "size": 1196352,
+          "sha256": "b07963772455dfb30ae2105a0d287576b14347f13a4ebaaad80c15c96b766dfa"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/comments-after.json",
+          "size": 13443,
+          "sha256": "e0d2a52a496b740835a5cda135e5a1023b51a570911d7cc85fa4d995d4c02315"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/comments-after.log",
+          "size": 79,
+          "sha256": "2aabb833393e0163eb0d637da996befb90fef26dd94823f718a12ea79bf00b9f"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/decompile-004062c0.txt",
+          "size": 1420,
+          "sha256": "0dbb2d1d596ba572cd189286ca2d3ba07b3cb8f4de928eadc17a7a5febacb825"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/decompile-00bf7420.txt",
+          "size": 4667,
+          "sha256": "c327f97661a0ce5985b11d4cdf122f07dde0d8fbc099cd4b72db7569665aa1f1"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/decompile-00bf7456.txt",
+          "size": 4343,
+          "sha256": "2a4ab71bbd9b7511ba5bf8f655fe00a335d07a8d2eb0973e61747e61cef4f414"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/decompile-00c358a0.txt",
+          "size": 2192,
+          "sha256": "e7e9bf830b42f559bd6623e6b7b5d62d793de2e3499bf47be5b8ed62172154cf"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/decompile-00c385b0.txt",
+          "size": 1326,
+          "sha256": "a4a958b02469449fb9b9210bad9536697d450d80fac3981364d6e439f62b5f49"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/decompile-00c386e0.txt",
+          "size": 1293,
+          "sha256": "ad30610914e17908db3c0601a7ce10c0efe18a3ecdb972d5f446ba7e592718e9"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/decompile-00c57c40.txt",
+          "size": 6018,
+          "sha256": "dd058411a8e7cffc378a6cb68026b15c361014581e2f27bb0079ded6dbc0b47c"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/dependencies.json",
+          "size": 23831,
+          "sha256": "c04ed5b8ba06d145fce1d590a72e591509ade24a33ab56264571bc99a242f565"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/disasm-004062c0.txt",
+          "size": 270,
+          "sha256": "c4ca47f818b82a254ec96514bd6ca6119cc300998b2a09599d68c2e979398d73"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/disasm-00bf7420.txt",
+          "size": 279,
+          "sha256": "e63fe473fa7894a85935c88e56c83f0ddc91b6f7ade6ff4ed522e452bc015d36"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/disasm-00bf7456.txt",
+          "size": 1131,
+          "sha256": "b49d5e78620009dfc956f7853df9d4e20b3b38909e6dbc229a28de319c2c1146"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/disasm-00c358a0.txt",
+          "size": 3555,
+          "sha256": "bbca39193f522fe0f4a3c2b9caa23beafa1326adc8822e9af8bfc843b89b0b17"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/disasm-00c385b0.txt",
+          "size": 3191,
+          "sha256": "7308a347334f28c08910840ff4ed4a128b2fa70e6e011dd7eccd01fd7149098b"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/disasm-00c386e0.txt",
+          "size": 3121,
+          "sha256": "fffc3ed53b8ff05bd81fef2c77144c29bd4218963f2acf17da3065f80c2948fe"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/disasm-00c57c40.txt",
+          "size": 8052,
+          "sha256": "1a685ec74ce8faf32c4e48480ba2a8b5d07fc97bea8158a7bb0480bb2cbe3b4a"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/dyn_convex_support_probe.exe",
+          "size": 61952,
+          "sha256": "971a176786baf2a58b2dfa3dcbd4d479d9313c763deb350f8691921697ab9e55"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/exports-after.log",
+          "size": 579,
+          "sha256": "ea3c6c1a6d475e730e01a37e197741e66145ca13e45a4748bcadd70f9d065c6b"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/fixture-image.json",
+          "size": 1680,
+          "sha256": "10cbb26afe445447d5c9f8b4bf6d2d5b4ec0d36135998104d73735339b204145"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/flow_verified.log",
+          "size": 912,
+          "sha256": "d657534ae6f6ee6c72f92491910217d69cf11cd04460d580132b73337191e588"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/index.log",
+          "size": 16,
+          "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/native.json",
+          "size": 85391,
+          "sha256": "fd4d5cb964373710806639d9550667130ba5ad8b5349bd9db031834f7a38a872"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/original-build.inc",
+          "size": 1466,
+          "sha256": "a9dfe41c8c7e4fd3af81c11f265d39df7dda7abbb567aa257dd838ca228d4da2"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/original-hooks.inc",
+          "size": 2,
+          "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/original.bin",
+          "size": 1196352,
+          "sha256": "b07963772455dfb30ae2105a0d287576b14347f13a4ebaaad80c15c96b766dfa"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/original.inc",
+          "size": 3900,
+          "sha256": "7d2617e888e0f3fe2f38b1d5f7f0d852c72a57dbe7cb4ca82973b1b5ad6f51a6"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/dependencies.json",
+          "size": 28427,
+          "sha256": "dd815303af38845739857898a2447e04f12760b7354d1fccd6714c95c6d7224a"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/dyn_convex_runtime_physics_probe.exe",
+          "size": 312320,
+          "sha256": "3983e72caaaee3c5a0f31680a42998cc29842d11c3a92db7add04f23c5fda6ff"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/fixture-image.json",
+          "size": 12845,
+          "sha256": "4a3fa19ad686e089b3f33bbd0c0ac338318501041876f02127a720ca65bfc352"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/native.json",
+          "size": 145176,
+          "sha256": "2d10788146b37e387cbe33a35ebdc0bb59a03b10246a8c13b3368676b57d2e0b"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/original-build.inc",
+          "size": 12566,
+          "sha256": "6ccfc969d7282569f507788101dd535f65b9526ca9c3e6f3230d15b01cecbcec"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/original-hooks.inc",
+          "size": 3588,
+          "sha256": "599587f26b4c808dfde0bfbf454c86c0542243c96c4453abbaca439bc375bad5"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/original.bin",
+          "size": 20777328,
+          "sha256": "d545ad1a19b90f07194317b06a77a0efda1e4ea0a80a673d5c767e64d8a77836"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/original.inc",
+          "size": 11763,
+          "sha256": "305708ff2e5889fe707b1012ffd56f9f49148dad1f11095f164639ceb7735ed9"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/probe-run.log",
+          "size": 1416,
+          "sha256": "f3db6e485542692df5a4f537adc1e4b67843717302ca86289b907a653bebd355"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/probe.cpp",
+          "size": 25107,
+          "sha256": "83a16c3e2c9b947443a5c9314db560efa8f1fcf1a59b3506baf5b6902e36d1ac"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/probe.map",
+          "size": 449887,
+          "sha256": "c2ce2d09beb7ad909ea2add778416b956fafc06634b79c8d3c07823bd0fe805f"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/probe.obj",
+          "size": 433910,
+          "sha256": "8678229affd5b212a6c0148aadd2193ca955b2e621c0cc1b3b616e1be84ea57b"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/result.json",
+          "size": 528,
+          "sha256": "7df3f7a782c8028a53efc600ac7af93b06242e4eafc682087d23eb3143137cdc"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/physics/source.bin",
+          "size": 20777328,
+          "sha256": "d545ad1a19b90f07194317b06a77a0efda1e4ea0a80a673d5c767e64d8a77836"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/probe-run.log",
+          "size": 174,
+          "sha256": "2b3d2805f388d5f34e53b24e7cf658cebe0c90ceb08a8240858a7325f5934724"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/probe.cpp",
+          "size": 9612,
+          "sha256": "4c362894d8f58c6e27c3f8ac773296f82a984ffed7cbc30af918ccd361b62b02"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/probe.map",
+          "size": 80099,
+          "sha256": "ec2ab8443fd376e3e38c51cbbb12dfc5eb06274a392547b2940fdb0fadc89a02"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/probe.obj",
+          "size": 201674,
+          "sha256": "be0dada6dc91b58099b22ce9c3616df1c2ba2875dad0ce7b514e2c9a67f5d92a"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/proto-004062c0.txt",
+          "size": 722,
+          "sha256": "6780c45ecb1726e1fcd51315d9259fa220947038c6f454bc15129f5e915882d4"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/proto-00bf7420.txt",
+          "size": 722,
+          "sha256": "ccd9833c4be969b3ed39cc38e3be14cc912953527f8af97e9464e0382b4fa5d0"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/proto-00bf7456.txt",
+          "size": 723,
+          "sha256": "27c275812635de4845aa4aecacb3742aa3ee043b08dbdf6a8ce329c37f6b7bd9"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/proto-00c358a0.txt",
+          "size": 648,
+          "sha256": "1c9bfd31aafd2aa90165be5179681046b416c9b5a5d1a65a1a1ae519705514c3"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/proto-00c385b0.txt",
+          "size": 661,
+          "sha256": "a63e34eeb2fafb0b921054a30c3a3e06c376b49a7bcd9a31a78b29ffdeba60a5"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/proto-00c386e0.txt",
+          "size": 661,
+          "sha256": "ff25a5517e52c2da03314cb3f5015565c1dfb7e2bbc0ac9de1a3abcff149774c"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/proto-00c57c40.txt",
+          "size": 687,
+          "sha256": "eb922a39cb6c4c2aca1caf6928d8379d5ab9878bb0d269245a405d274e8a732b"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/result.json",
+          "size": 528,
+          "sha256": "5d97a46c40cf9c8d3cb2a6198db4694bdcf33e21c15ba6d7a05b15fe874ec80c"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/snapshot.log",
+          "size": 230,
+          "sha256": "0cd465e5bafeae80d5a3503da3d1369c73460c4fea5d9575b99f55ec6254a395"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/source.bin",
+          "size": 1196352,
+          "sha256": "b07963772455dfb30ae2105a0d287576b14347f13a4ebaaad80c15c96b766dfa"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/unreached-methods.inc",
+          "size": 2,
+          "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+        },
+        {
+          "path": "local/dyn_convex_support_r135/verify-calls.log",
+          "size": 133,
+          "sha256": "af5388defc36f9b2ee2b13b87b5e257bbe85107ccfb33fa88fe8d5b0917e86e9"
+        },
+        {
+          "path": "local/ghidra-annotations-20260918T090234Z.json",
+          "size": 13948,
+          "sha256": "9218b5d1384d89cbc48050a3eb6dd019de44d05a9d8b4f5a8f44fba4d6e7948b"
+        },
+        {
+          "path": "local/prepare_convex_runtime_physics_r135.py",
+          "size": 1938,
+          "sha256": "f361d1f49806abeaceb5313dc77cd8d64c1e1b3231cd6a76db83f454107e1965"
+        },
+        {
+          "path": "local/prepare_dyn_convex_support_closeout_r135.py",
+          "size": 3750,
+          "sha256": "097808b1a1c94cc466016f86520070b095af31acc8de84408ae40eacf0fb1121"
+        },
+        {
+          "path": "local/prepare_dyn_convex_support_combined_r135.py",
+          "size": 859,
+          "sha256": "ff62cfbd86eee6bac48133bada12887e062093d8354158eae37bda87439c9588"
+        },
+        {
+          "path": "local/prepare_dyn_convex_support_r135.py",
+          "size": 1513,
+          "sha256": "56afdddd7b65fec85c7b29a5f097587b3f1f62f70b5e0ae33c9bf101fd60e0ba"
+        },
+        {
+          "path": "local/r135_integration.log",
+          "size": 1106,
+          "sha256": "993497397c4b318ddcae5a845afc70ef98fe031eb15a09fa50e6e5f26597ecee"
+        },
+        {
+          "path": "local/report_dyn_convex_support_r135.py",
+          "size": 7662,
+          "sha256": "98fcc7a2cb316c33ea9ef0969ff407dc58dcfc622315d2cd6f5264a990c69510"
+        },
+        {
+          "path": "local/run_convex_runtime_physics_combined_r135.ps1",
+          "size": 1722,
+          "sha256": "cbc5f57e4df549374d33d0d93109139f32ff70f6d6d61c0966bac8c40166350a"
+        },
+        {
+          "path": "local/run_convex_runtime_physics_r135.ps1",
+          "size": 1713,
+          "sha256": "cc3775249884c06c0cb437281bb16c785e6e9510fadcf3a572143195eb490483"
+        },
+        {
+          "path": "local/run_dyn_convex_support_combined_r135.ps1",
+          "size": 1690,
+          "sha256": "345346daa734948e575fa236481b6d4a1f2a806e2bee9b2c30685b7542d3bea7"
+        },
+        {
+          "path": "local/run_dyn_convex_support_r135.ps1",
+          "size": 1681,
+          "sha256": "23601ace2285be7ad295bc7788286e79f335c0a1b23bfca16e0a9b1b5169e39d"
+        },
+        {
+          "path": "local/seal_dyn_convex_support_r135.py",
+          "size": 5882,
+          "sha256": "dfb7ea9373c946a753d28fc2c64a0ca0d68e4ac295e3df8f8a56eed213bf37c9"
+        },
+        {
+          "path": "local/write_dyn_convex_support_r135.py",
+          "size": 6047,
+          "sha256": "c70e3a6aaadf28c1d1da143085910901e255064c5ec280007948f0e656682f76"
+        },
+        {
+          "path": "reports/native_dyn_convex_support_r135.json",
+          "size": 154299,
+          "sha256": "122d26b6586910ccd6ee240ef3718ec5fae84b8908d80a934dc61fe4f083af13"
+        },
+        {
+          "path": "src/avoid_zone_dyn_hull.cpp",
+          "size": 21629,
+          "sha256": "e4be35881ddd46bcbf3110b05309745df565951e1f41656080aea3c1777edf45"
+        },
+        {
+          "path": "src/dyn_body_creation.cpp",
+          "size": 15270,
+          "sha256": "e915e3325ceca411c14df2424129c7e82bebf6bc272921205e62d43744d4c93c"
+        },
+        {
+          "path": "src/native_dyn_convex_support.cpp",
+          "size": 17894,
+          "sha256": "a2884a94389396afecaef01b8cd914eb22ae04c8e4ed5bc9ce9b37a3d0fdb239"
+        },
+        {
+          "path": "src/native_dyn_sap_lifetime.cpp",
+          "size": 6697,
+          "sha256": "89c8be58800b2a6e738fc8e626c7169de57fc11ae3b7676563e4bc19d8d7142b"
+        },
+        {
+          "path": "src/native_dyn_shape_lifetime.cpp",
+          "size": 452,
+          "sha256": "7889e45f9e9687f25a9e1f07bb2fe77e080bfb8a636819402c3cbb1f7e01649a"
+        },
+        {
+          "path": "src/native_game_lifetime.cpp",
+          "size": 21606,
+          "sha256": "bbbbd038bedc93aa8919863f366523080296da8c6fc70798f11b00ffa4e25daf"
+        },
+        {
+          "path": "src/native_game_physics_lifetime.cpp",
+          "size": 13632,
+          "sha256": "8be35f8b307a3b5143b6271ee94ba693f4a7243397f5b2cc90f0bfebed642ec4"
+        },
+        {
+          "path": "src/native_render_batch_keys.cpp",
+          "size": 5004,
+          "sha256": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1"
+        }
+      ],
+      "scope": "920 new normal support bytes;4464 exact FP native/source cases1196352bytes;36 production-table physics pairs20777328bytes;ordinary application admission and gameplay open"
+    },
+    "source_identical_to_tested": true,
+    "main_source_equal_after_lf_normalization": true,
+    "owned_object_comparison": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_convex_support.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789721508,
+        "combined_timestamp": 1789721508,
+        "tested_sha256": "fa6ebaf582cafacd57005e574fe93a97e1fe3b70ce4435b9f0f8a98ab6711f44",
+        "combined_sha256": "fa6ebaf582cafacd57005e574fe93a97e1fe3b70ce4435b9f0f8a98ab6711f44"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/dyn_body_creation.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789501522,
+        "combined_timestamp": 1789501522,
+        "tested_sha256": "cfe368fa7b12cfc8223ffbcc81741e7cbf354e8d507e7e00cf323cd33a735f95",
+        "combined_sha256": "cfe368fa7b12cfc8223ffbcc81741e7cbf354e8d507e7e00cf323cd33a735f95"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_shape_lifetime.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789720261,
+        "combined_timestamp": 1789720261,
+        "tested_sha256": "83a1a384ee831de2a81ee801fdaf1c5117026da3a6b1ed9614b96c9f1484f07e",
+        "combined_sha256": "83a1a384ee831de2a81ee801fdaf1c5117026da3a6b1ed9614b96c9f1484f07e"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_render_batch_keys.obj",
+        "byte_identical": true,
+        "identical_except_coff_timestamp": true,
+        "tested_timestamp": 1789557834,
+        "combined_timestamp": 1789557834,
+        "tested_sha256": "8f83a3ef5545c599fdb51ac91d2dfe34524efaeefa196f9a3192345be9c6e5e2",
+        "combined_sha256": "8f83a3ef5545c599fdb51ac91d2dfe34524efaeefa196f9a3192345be9c6e5e2"
+      }
+    ],
+    "combined_probes": [
+      {
+        "label": "support",
+        "result": {
+          "exe_sha256": "4D170FFEA0D79F54680F8FE0B453451B3F3AF91A731E07A62628F081E1DE6BA6",
+          "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+          "library_sha256": "50AABF734B9CA5F42FFD8AB9509356E17D0EAC82AA2EC9EE232F9A7C9E37E3D5",
+          "exit": 0,
+          "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+          "linker": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe"
+        },
+        "comparison_sha256": "b07963772455dfb30ae2105a0d287576b14347f13a4ebaaad80c15c96b766dfa",
+        "comparison_bytes": 1196352,
+        "log": "all four production table slots called;mutable CRT mode and original pool reuse passed\npaired_cases=4464 matching_bytes=1196352;exact outputs,graph writes,CW/SW/tags/MXCSR\n",
+        "probe_source_sha256": "4c362894d8f58c6e27c3f8ac773296f82a984ffed7cbc30af918ccd361b62b02"
+      },
+      {
+        "label": "physics",
+        "result": {
+          "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+          "library_sha256": "50AABF734B9CA5F42FFD8AB9509356E17D0EAC82AA2EC9EE232F9A7C9E37E3D5",
+          "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+          "exit": 0,
+          "exe_sha256": "83852568D27523BE4D5C244CD6C39E7CDCF10FC8FB2254C739F07EA8B8E95479",
+          "linker": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe"
+        },
+        "comparison_sha256": "d545ad1a19b90f07194317b06a77a0efda1e4ea0a80a673d5c767e64d8a77836",
+        "comparison_bytes": 20777328,
+        "log": "scenario0 matched 1484 bytes\nscenario1 matched 939784 bytes\nscenario2 matched 1561028 bytes\nscenario3 matched 3051952 bytes\nscenario4 matched 3049488 bytes\nscenario5 matched 1561448 bytes\nscenario6 matched 1944 bytes\nscenario7 matched 3051952 bytes\nscenario8 matched 227676 bytes\nscenario9 matched 227696 bytes\nscenario10 matched 227676 bytes\nscenario11 matched 227696 bytes\nscenario12 matched 227676 bytes\nscenario13 matched 227696 bytes\nscenario14 matched 227676 bytes\nscenario15 matched 227696 bytes\nscenario16 matched 227364 bytes\nscenario17 matched 227384 bytes\nscenario18 matched 227364 bytes\nscenario19 matched 227384 bytes\nscenario20 matched 138048 bytes\nscenario21 matched 207036 bytes\nscenario22 matched 138048 bytes\nscenario23 matched 207036 bytes\nscenario24 matched 138048 bytes\nscenario25 matched 207036 bytes\nscenario26 matched 138048 bytes\nscenario27 matched 207036 bytes\nscenario28 matched 275824 bytes\nscenario29 matched 413692 bytes\nscenario30 matched 275824 bytes\nscenario31 matched 413692 bytes\nscenario32 matched 413600 bytes\nscenario33 matched 620348 bytes\nscenario34 matched 413600 bytes\nscenario35 matched 620348 bytes\nsource attachment failure, no replay and missing-context guard passed\nmissing convex pool/table rejected before graph access;absent/foreign binding retains actual virtual dispatch\npaired_cases=36 snapshots=790 matching_bytes=20777328\n",
+        "probe_source_sha256": "83a16c3e2c9b947443a5c9314db560efa8f1fcf1a59b3506baf5b6902e36d1ac"
+      }
+    ],
+    "library_identical_to_tested": false,
+    "game_identical_to_tested": false,
+    "ordinary_application_runtime_rerun": false
+  }
+}

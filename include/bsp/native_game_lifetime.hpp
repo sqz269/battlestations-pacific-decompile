@@ -8,16 +8,17 @@
 #include "bsp/native_game_singleton_lifetime.hpp"
 #include "bsp/native_game_lua_globals_lifetime.hpp"
 #include "bsp/native_game_class_cleanup.hpp"
+#include "bsp/native_game_physics_lifetime.hpp"
 #include <cstdint>
 
 namespace bsp {
 struct NativeGameStorage;
 struct NativeResourceManagerContext;
-// Address-named dependencies deliberately require real bindings. No successful
-// empty cleanup is supplied. The parent does not establish these callee bodies.
-struct NativeGameLifetimeCalls : NativeGameArrayLifetimeCalls,NativeGameEmbeddedLifetimeCalls,NativeGameProfileLifetimeCalls,NativeGameContainerLifetimeCalls,NativeGameSingletonLifetimeCalls,NativeGameLuaGlobalsLifetimeCalls,NativeGameClassCleanupCalls {
+// Address calls have recovered concrete defaults and require their actual
+// contexts. Payload virtual methods and application admission remain separate.
+struct NativeGameLifetimeCalls : NativeGameArrayLifetimeCalls,NativeGameEmbeddedLifetimeCalls,NativeGameProfileLifetimeCalls,NativeGameContainerLifetimeCalls,NativeGameSingletonLifetimeCalls,NativeGameLuaGlobalsLifetimeCalls,NativeGameClassCleanupCalls,NativeGamePhysicsLifetimeCalls {
     virtual ~NativeGameLifetimeCalls()=default;
-    virtual void call_00c4dde0(void*)=0;
+    virtual void call_00c4dde0(void*,NativeGamePhysicsLifetimeContext*,NativeGamePhysicsLifetimeOperation&);
     virtual void call_0076a760(void*,NativeGameEmbeddedLifetimeContext*);
     virtual void call_008d88f0();
     virtual void call_004bf930(void*,NativeGameContainerLifetimeProgress&);
@@ -93,6 +94,7 @@ struct NativeGameLifetimeContext {
     NativeGameLuaGlobalsLifetimeContext* lua_globals{};
     NativeResourceManagerContext* resources{};
     NativeGameClassCleanupContext* classes{};
+    NativeGamePhysicsLifetimeContext* physics{};
 };
 struct NativeGameLifetimeProgress {
     std::uint32_t native_site{};
@@ -112,6 +114,7 @@ struct NativeGameLifetimeOperation final : NativeGameLifetimeProgress {
     NativeGameSingletonLifetimeOperation singletons[3];
     NativeGameLuaGlobalsLifetimeOperation lua_globals;
     NativeGameClassCleanupOperation classes;
+    NativeGamePhysicsLifetimeOperation physics;
     NativeGameLifetimeOperation()=default;
     ~NativeGameLifetimeOperation();
     NativeGameLifetimeOperation(const NativeGameLifetimeOperation&)=delete;
