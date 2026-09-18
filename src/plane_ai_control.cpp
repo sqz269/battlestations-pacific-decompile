@@ -446,8 +446,16 @@ PilotBotRollResult pilot_plan_roll_0099e2ba(const PilotBotRollInputs& in) {
     const float abs_bank = std::fabs(in.bank);
 
     // 0099DFAA-0099DFF3: how far the plane is allowed to bank for this turn.
-    const float cap = in.small_turn_roll_limit ? in.turn_roll_limit_small
-                                               : in.turn_roll_limit_large;
+    // 0047B880 is now read (packet cc8_bank_command_inputs): it is
+    // `!(this->vtable[5Ch](10h) || this->vtable[5Ch](16h))`, and vtable slot 5Ch
+    // on a plane is BSP_PlaneInstance_IsKindOf (00D05F20 + 5Ch -> 0074E400).
+    // 0099D1C2-0099D1D9 inside 0099D0A0 evaluates that same disjunction on the
+    // same unit, so `caps_rate_at_one` and this predicate are one bit and its
+    // complement. Deriving it here rather than trusting `small_turn_roll_limit`
+    // is what keeps the two from disagreeing; see the header.
+    const bool small_turn_roll_limit = !in.scale.caps_rate_at_one;
+    const float cap = small_turn_roll_limit ? in.turn_roll_limit_small
+                                            : in.turn_roll_limit_large;
     float max_bank = in.turn_scale_2e8 * in.scale.turn_roll;
     if (cap < max_bank) max_bank = cap;
 
