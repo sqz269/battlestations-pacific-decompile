@@ -1356,3 +1356,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_shape_l
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_convex_support.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_sap_pairs.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_sap_processing.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_dyn_narrow_phase.cpp)
