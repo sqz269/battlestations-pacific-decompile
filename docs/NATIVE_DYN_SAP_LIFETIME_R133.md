@@ -83,3 +83,12 @@ or gameplay. No ordinary application runtime rerun was used as proof for this pa
 
 See `reports/native_dyn_sap_lifetime_r133.json` and its flow-repair companion for
 body evidence, exact call sites, fixture provenance, saved annotations and archives.
+
+## Correction from docs/NATIVE_DYN_SHAPE_LIFETIME_R134.md
+
+R134 supplies ConvexMeshShape scalar4062C0 through the original body-creation
+context and existing408040 pool release. Its actual convex attachment fixture
+replaces the controlled scalar for that class and compares36 native/source cases,
+790 observations /20,777,328 normalized bytes. R133's sealed controlled-attachment
+fixture remains historical evidence. Other shape classes and virtual methods,
+native exception ABI, raw-game admission and gameplay remain open.

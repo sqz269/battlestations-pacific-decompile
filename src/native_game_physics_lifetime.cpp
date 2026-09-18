@@ -22,13 +22,13 @@ void pages(void* p,U offset,U site,U vector_site,const AvoidZoneDynHullMemory& m
     U i=0;while(i<word(p,offset+4)){o.cursor=at(ptr(p,offset),i*4);release9d(ptr(o.cursor),site,m,c,o);++i;}
     if(void* data=ptr(p,offset))release69(data,vector_site,m,c,o);
 }
-void active_bodies(void* world,U head_offset,U sentinel_offset,U broadphase_site,U scalar_site,U manifolds_site,const AvoidZoneDynHullMemory& m,NativeGamePhysicsLifetimeCalls& c,NativeGamePhysicsLifetimeProgress& o){
+void active_bodies(void* world,U head_offset,U sentinel_offset,U broadphase_site,U scalar_site,U manifolds_site,const AvoidZoneDynHullMemory& m,NativeGamePhysicsLifetimeCalls& c,NativeGamePhysicsLifetimeProgress& o,const DynBodyCreationContext* shapes){
     void* body=ptr(world,head_offset);void* sentinel=at(world,sentinel_offset);
     while(body!=sentinel){o.cursor=body;
         if(word(body,0x70)){void* manager=ptr(ptr(ptr(body),0x444),0xac);void* handle=ptr(body,0x60);
             o.native_site=broadphase_site;o.captured=manager;c.physics_broadphase_remove(manager,handle,m,o.sap);word(body,0x50)&=~8u;word(body,0x60)=0;}
         void* attachment=ptr(body,0x70);
-        while(attachment){void* next=ptr(attachment,0x208);o.native_site=scalar_site;o.captured=attachment;c.physics_virtual_scalar(attachment,4,1);attachment=next;}
+        while(attachment){void* next=ptr(attachment,0x208);o.native_site=scalar_site;o.captured=attachment;c.physics_attachment_scalar(attachment,1,shapes);attachment=next;}
         word(body,0x70)=0;o.native_site=manifolds_site;clear_native_dyn_body_manifolds_00c43aa0(body,m,c,o);body=ptr(body,0x84);
     }
 }
@@ -48,6 +48,12 @@ void NativeGamePhysicsLifetimeCalls::physics_free_profile_text_00bf65ac(void* p)
 void NativeGamePhysicsLifetimeCalls::physics_delete_section(void* p){DeleteCriticalSection(static_cast<CRITICAL_SECTION*>(p));}
 void NativeGamePhysicsLifetimeCalls::physics_virtual_scalar(void* p,U slot,U flags){
     using Method=void*(__thiscall*)(void*,U);auto method=reinterpret_cast<Method>(word(ptr(p),slot));(void)method(p,flags);
+}
+void NativeGamePhysicsLifetimeCalls::physics_attachment_scalar(void* p,U flags,const DynBodyCreationContext* shapes){
+    if(shapes&&ptr(p)==shapes->convex_shape_vtable){
+        if(!shapes->convex_pool)throw std::invalid_argument("convex attachment cleanup requires its construction pool");
+        delete_native_dyn_convex_shape_004062c0(*static_cast<DynConvexShapeStorage*>(p),flags,*shapes->convex_pool);
+    }else physics_virtual_scalar(p,4,flags);
 }
 void NativeGamePhysicsLifetimeCalls::physics_broadphase_remove(void* p,void* handle,const AvoidZoneDynHullMemory& m,NativeDynSapLifetimeProgress& o){remove_native_dyn_sap_proxy_00c4c380(p,handle,m,*this,o);}
 void NativeGamePhysicsLifetimeCalls::physics_delete_broadphase_004043d0(void* p,U flags,const AvoidZoneDynHullMemory& m,NativeDynSapLifetimeProgress& o){delete_native_dyn_sap_manager_004043d0(p,flags,m,*this,o);}
@@ -84,10 +90,10 @@ void destroy_native_dyn_body_storage_00c43c00(void* body,const AvoidZoneDynHullM
     }
     if(void* data=ptr(body,0x74))release69(data,0xc43c78,m,c,o);
 }
-void clear_native_dyn_world_bodies_00c4daa0(void* world,const AvoidZoneDynHullMemory& m,NativeGamePhysicsLifetimeCalls& c,NativeGamePhysicsLifetimeProgress& o){
+void clear_native_dyn_world_bodies_00c4daa0(void* world,const AvoidZoneDynHullMemory& m,NativeGamePhysicsLifetimeCalls& c,NativeGamePhysicsLifetimeProgress& o,const DynBodyCreationContext* shapes){
     o.world=world;
-    active_bodies(world,0xe0,0xe4,0xc4dad1,0xc4daee,0xc4dafa,m,c,o);
-    active_bodies(world,0x204,0x208,0xc4db3c,0xc4db5d,0xc4db69,m,c,o);
+    active_bodies(world,0xe0,0xe4,0xc4dad1,0xc4daee,0xc4dafa,m,c,o,shapes);
+    active_bodies(world,0x204,0x208,0xc4db3c,0xc4db5d,0xc4db69,m,c,o,shapes);
     recycle_bodies(world,0xe0,0xe4,0x16c,0x58,0x164,0x5c,0xc4dba1,0xc4dbb5,m,c,o);
     recycle_bodies(world,0x204,0x208,0x290,0x17c,0x288,0x180,0xc4dc01,0xc4dc15,m,c,o);
     if(word(world,0x43c))word(world,0x43c)=0;
@@ -108,8 +114,8 @@ void destroy_native_dyn_scene_00c32250(void* scene,const AvoidZoneDynHullMemory&
     if(void* p=ptr(scene,0xc0))release69(p,0xc322e5,m,c,o);
     if(void* p=ptr(scene,0xb4))release69(p,0xc322f8,m,c,o);
 }
-void destroy_native_dyn_world_00c4dc60(void* world,const AvoidZoneDynHullMemory& m,NativeGamePhysicsLifetimeCalls& c,NativeGamePhysicsLifetimeProgress& o){
-    o.world=world;o.native_site=0xc4dc83;clear_native_dyn_world_bodies_00c4daa0(world,m,c,o);
+void destroy_native_dyn_world_00c4dc60(void* world,const AvoidZoneDynHullMemory& m,NativeGamePhysicsLifetimeCalls& c,NativeGamePhysicsLifetimeProgress& o,const DynBodyCreationContext* shapes){
+    o.world=world;o.native_site=0xc4dc83;clear_native_dyn_world_bodies_00c4daa0(world,m,c,o,shapes);
     if(void* scene=ptr(world,0x444)){o.native_site=0xc4dc93;destroy_native_dyn_scene_00c32250(scene,m,c,o);release65(scene,0xc4dc99,m,c,o);word(world,0x444)=0;}
     if(void* p=ptr(world,0x480))release69(p,0xc4dcb6,m,c,o);
     if(void* p=ptr(world,0x474))release69(p,0xc4dcc9,m,c,o);
@@ -134,10 +140,12 @@ NativeGamePhysicsLifetimeOperation::~NativeGamePhysicsLifetimeOperation(){if(pha
 void NativeGamePhysicsLifetimeOperation::acknowledge_diagnostic_cleanup() noexcept{if(phase==Phase::failed)phase=Phase::diagnostic_retired;}
 void destroy_native_game_physics_00c4dde0(void* header,NativeGamePhysicsLifetimeContext& x,NativeGamePhysicsLifetimeOperation& o){
     if(o.phase!=NativeGamePhysicsLifetimeOperation::Phase::fresh)throw std::logic_error("native physics destruction cannot be replayed");
+    if(x.body_creation&&(!x.body_creation->convex_pool||!x.body_creation->convex_shape_vtable))
+        throw std::invalid_argument("native convex cleanup requires the original pool and table identity");
     o.context=&x;o.header=header;o.phase=NativeGamePhysicsLifetimeOperation::Phase::running;
     try{auto& c=x.calls;const auto& world_memory=x.dynamics.world.scene->memory;const auto& engine_memory=x.dynamics.engine.memory;
         U cursor=word(header);while(cursor!=word(header)+word(header,4)*4){o.cursor=pointer(cursor);
-            if(void* world=ptr(pointer(cursor))){o.native_site=0xc4ddf8;destroy_native_dyn_world_00c4dc60(world,world_memory,c,o);release65(world,0xc4ddfe,world_memory,c,o);}cursor+=4;
+            if(void* world=ptr(pointer(cursor))){o.native_site=0xc4ddf8;destroy_native_dyn_world_00c4dc60(world,world_memory,c,o,x.body_creation);release65(world,0xc4ddfe,world_memory,c,o);}cursor+=4;
         }
         if(void* engine=*x.dynamics.engine.engine_slot_0109e9fc){o.native_site=0xc4de22;destroy_native_dyn_engine_00c421b0(engine,engine_memory,c,o);release65(engine,0xc4de28,engine_memory,c,o);*x.dynamics.engine.engine_slot_0109e9fc=nullptr;}
         o.phase=NativeGamePhysicsLifetimeOperation::Phase::complete;
