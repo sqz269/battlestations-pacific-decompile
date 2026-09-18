@@ -16,6 +16,7 @@
 #include "bsp/ai_command_lifetime.hpp"
 #include "bsp/ai_group_think.hpp"
 #include "bsp/ai_planners.hpp"
+#include "bsp/ai_tuning_globals.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/unit_gunnery_pass.hpp"
@@ -107,6 +108,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
 
     // Which group holds a unit, so entity_has_group answers entity+16Ch.
     std::vector<Group*> group_of_unit;
+
+    // 00A335D0's record for this run's mode, read back through 00A371A0.
+    bsp::AiTuningBlock tuning{};
 
     GameAiSummary summary{};
     std::vector<GameAiPartyRow> parties;
@@ -332,10 +336,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
 
     float auto_merge_dist() override {
-        // 00A371A0()+208h, AutoMerge_MergeDist, loaded by 00A335D0 from the AI
-        // globals script. No tuning block is loaded in this process.
-        record("AiGroups::auto_merge_dist", 0x00a371a0u);
-        return 0.0f;
+        // 00A371A0()+208h, AutoMerge_MergeDist, the block 00A335D0 loads.
+        done("AiGroups::auto_merge_dist", 0x00a371a0u);
+        return tuning.at(bsp::kAiTuningAutoMergeMergeDist);
     }
 
     int game_mode() override { return kCampaignGameMode; }
@@ -590,11 +593,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
     float near_radius_squared() override { return bsp::kAiEngagementRadiusSquaredValue; }
     float tuning_field(std::uint32_t offset) override {
-        // 00A371A0 + offset, the block 00A335D0 loads. No tuning script runs in
-        // this process, so every field is the zero the block is constructed to.
-        (void)offset;
-        record("AiPlanners::tuning_field", 0x00a371a0u);
-        return 0.0f;
+        // 00A371A0 + offset. The six fields this packet reconstructed carry the
+        // shipped values; every other slot is the zero an unloaded block holds,
+        // so an unreconstructed field answers what it answered before.
+        done("AiPlanners::tuning_field", 0x00a371a0u);
+        return tuning.at(offset);
     }
     float range_interpolation(float near_value, float far_value, float distance) override {
         const float span = bsp::kAiEngagementRadiusSquaredValue;
@@ -776,6 +779,22 @@ void GameAiCoordinatorHost::create_00a32350() {
         }
     }
     host.summary.game_mode = host.game_mode();
+    // 00A335D0. 009FFC80 picks the record: an effective game mode of 0 takes
+    // the 009FFC9E arm, which clamps 00A15950's difficulty into the three
+    // IslandCapture records. Nothing in this process produces a difficulty, so
+    // it is 0; all three IslandCapture rows carry the same values for the six
+    // fields this packet reconstructed, so the choice does not change a number.
+    {
+        bsp::AiTuningAuthoredReader reader;
+        const bsp::AiTuningMode mode = bsp::ai_tuning_mode_009ffc80(host.game_mode(), 0);
+        bsp::ai_tuning_load_00a335d0(reader, mode, host.tuning);
+        host.summary.tuning_mode = static_cast<int>(mode);
+        host.summary.tuning_merge_dist = host.tuning.at(bsp::kAiTuningAutoMergeMergeDist);
+        host.summary.tuning_near_dist = host.tuning.at(bsp::kAiTuningFreeAttackNearDist);
+        host.summary.tuning_far_dist = host.tuning.at(bsp::kAiTuningFreeAttackFarDist);
+        host.summary.tuning_sticky = host.tuning.at(bsp::kAiTuningFreeAttackExistingTargetMul);
+        host.done("AiController::load_tuning", 0x00a335d0u);
+    }
     for (int party = 0; party < bsp::kAiGroupPartySlotCount; ++party) {
         if (!host.party_record[static_cast<std::size_t>(party)]) continue;
         GameAiPartyRow& row = host.party_row(party);
@@ -821,6 +840,14 @@ void GameAiCoordinatorHost::report() {
         s.game_mode, s.compose_passes, s.seed_candidates, s.groups_created,
         s.groups_destroyed, s.members_added, s.members_evicted, s.splits,
         s.splits_taken, s.auto_merges, s.proximity_merges, s.member_passes);
+    host.log.notef("summary mission ai tuning mode=%d (%s) merge_dist=%.1f "
+        "near=%.1f far=%.1f sticky=%.2f",
+        s.tuning_mode, bsp::ai_tuning_mode_table_name(
+            static_cast<bsp::AiTuningMode>(s.tuning_mode)),
+        static_cast<double>(s.tuning_merge_dist),
+        static_cast<double>(s.tuning_near_dist),
+        static_cast<double>(s.tuning_far_dist),
+        static_cast<double>(s.tuning_sticky));
     host.log.notef("summary mission ai parties calls=%llu thought=%llu planner_ticks=%llu "
         "claims=%llu spawn_arms=%llu attack_orders=%llu cautious=%llu movetoattack=%llu "
         "commands=%llu refused=%llu units_with_task=%llu first_command=%.2f s",
