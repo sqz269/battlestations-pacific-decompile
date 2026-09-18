@@ -114,6 +114,7 @@
 #include "bsp/unit_rudder.hpp"
 #include "bsp/pose_derived.hpp"
 #include "bsp/torpedo_aim_tick.hpp"
+#include "bsp/torpedo_issue_timing.hpp"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -3536,6 +3537,53 @@ int main() {
               "009D2368 finds the steering delta above the 009D1500 time to "
               "target; the ramp is InterpolateClamped(0, 0, 1, speed/2, time) "
               "so it saturates at half the commanded speed");
+    }
+
+    {
+        // 007CE9FD, the plane fixed step's release-order issue stage. USN01
+        // only ever reaches the waiting arm, because unit+C20h stays at zero
+        // all mission, so the issue and cleanup arms have no run-time cover.
+        // The two things that would be silently wrong are the countdown's
+        // position relative to the guards (007CEA51 is past them, so a
+        // suppressed step must not advance it) and the timer park at 007CEAEE,
+        // which the listing puts before the device walk and before the count
+        // test, so a blocked cleanup still retries.
+        using bsp::PlaneReleaseIssueStageArm;
+        bsp::PlaneReleaseIssueStageInputs in;
+        in.control_mode_900 = bsp::kIssueModeFreeFlight_7;
+        in.step_seconds = 0.05f;
+        in.interval_timer_c28 = 0.0f;
+        in.issue_requests_c20 = 1;
+
+        bsp::PlaneReleaseIssueStageInputs suppressed = in;
+        suppressed.blocked_c3a = true;  // 007CEA1C
+        const bsp::PlaneReleaseIssueStageResult sup =
+            bsp::plane_release_issue_stage_007ce9fd(suppressed);
+
+        const bsp::PlaneReleaseIssueStageResult issue =
+            bsp::plane_release_issue_stage_007ce9fd(in);
+
+        bsp::PlaneReleaseIssueStageInputs blocked = in;
+        blocked.issue_requests_c20 = 0;
+        blocked.release_pending_c25 = true;
+        blocked.any_device_busy_1fc = true;
+        blocked.interval_timer_c28 = -1.3f;  // already past 00D05EA4
+        const bsp::PlaneReleaseIssueStageResult clean =
+            bsp::plane_release_issue_stage_007ce9fd(blocked);
+
+        check(sup.arm == PlaneReleaseIssueStageArm::kSuppressed &&
+                  sup.next_interval_timer_c28 == 0.0f &&
+                  sup.next_issue_requests_c20 == 1 &&
+                  issue.arm == PlaneReleaseIssueStageArm::kIssue &&
+                  issue.call_issue_007c0d90 &&
+                  issue.next_issue_requests_c20 == 0 &&
+                  clean.arm == PlaneReleaseIssueStageArm::kCleanupBlocked &&
+                  clean.next_interval_timer_c28 == bsp::kCleanupRetry_00ce69d0 &&
+                  !clean.clear_release_pending_c25,
+              "007CE9FD leaves unit+C28h alone when a guard rejects, spends one "
+              "unit+C20h and calls 007C0D90 on a countdown that has gone "
+              "negative, and parks unit+C28h at 00CE69D0 even when a device "
+              "answers vtable +1FCh true, because 007CEAEE precedes 007CEB00");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
