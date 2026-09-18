@@ -217,6 +217,9 @@ struct GameMissionLuaSummary {
     std::size_t self_table_entities{0};   // thisTable slots 00928a00 would build
     unsigned long long entity_resolves{0};  // 0089903c's resolved arm
     unsigned long long native_calls{0};
+    // The three objective bindings. docs/MISSION_OBJECTIVES.md.
+    unsigned long long objective_binding_calls{0};
+    unsigned long long objective_units_touched{0};
     std::vector<GameMissionNativeCall> natives; // distinct, in first-call order
     std::string first_error;
     std::string first_error_phase;
@@ -472,6 +475,10 @@ public:
     // for a native one, which is what separates a concrete record from the
     // unimplemented policy.
     void note_native_call(std::size_t row, int argument_count, bool handled = false);
+
+    // The three objective bindings' own line. docs/MISSION_OBJECTIVES.md.
+    void note_objective_binding(const char* binding, const std::string& objective,
+        unsigned int slot_mask, int units_touched);
     void note_created_script(std::string name);
     void note_binding_subject(std::size_t row, int entity_id);
     // A failed named call is replayed once with errfunc 0 purely to recover the

@@ -49,6 +49,44 @@
 
 namespace bsp::game {
 
+// game+21A4h..+21C0h: the eight per-player-slot objective sets 00A2C450 walks.
+// The world builds them at 004DF917 and only the mission Lua fills them, through
+// 008CD440 Objectives_Add, 008CDD60 Objectives_AddUnit and 008CE510
+// Objectives_RemoveUnit. Those three live in the Lua host and the reader lives in
+// the AI coordinator, so the table is a process-wide object the way the native's
+// is a field of the world singleton. docs/MISSION_OBJECTIVES.md.
+struct GameObjectiveSets {
+    static constexpr std::size_t kSlotCount = 8;   // 008CE44B CMP EBP,0x21C4
+
+    // One objective as the set holds it: its name and the units of its own
+    // +20h list. The native record carries more (text, kind at +18h, state at
+    // +1Ch); only what 008DDF90's membership walk reads is kept here.
+    struct Objective {
+        std::string name;
+        std::vector<std::size_t> units;
+    };
+    std::vector<Objective> slots[kSlotCount];
+
+    unsigned long long adds{0};          // 008E1F80 reached
+    unsigned long long unit_adds{0};     // 008DF2B0 pushed a unit
+    unsigned long long unit_removes{0};  // 008DFC00 dropped one
+    unsigned long long rejected{0};      // a slot or a target the native drops
+
+    void reset() noexcept;
+    // 008E1F80: create the objective in this slot, or return the existing one.
+    Objective* add_objective(int slot, const std::string& name);
+    // 008DF2B0's push, after the liveness test its caller already made.
+    bool add_unit(int slot, const std::string& name, std::size_t unit);
+    // 008DFC00's removal.
+    bool remove_unit(int slot, const std::string& name, std::size_t unit);
+    // Every unit of every objective of this slot: what 00A2C450 walks.
+    std::vector<std::size_t> units_in_slot(int slot) const;
+    std::size_t total_units() const noexcept;
+};
+
+// The one instance, cleared when a mission scene is built.
+GameObjectiveSets& game_objective_sets() noexcept;
+
 class GameHostLog;
 class GameUnitsHost;
 
