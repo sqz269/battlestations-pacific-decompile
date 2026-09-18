@@ -277,3 +277,24 @@ store census shows each of the three law entry points writing **on entry** as a 
 `unit+900h` through `0074E210`, and the free-flight arm carries its own water line at
 `007CC523`-`007CC562`, handing a contact to `007CB7F0`, whose tail at `007CB92C` calls
 `BSP_Plane_SetFlightState(6)`. `docs/PLANE_ALTITUDE_HOLD_AND_SURFACE.md`.
+
+
+## Correction from packet `cc8_torpedo_throttle_cut`: there is no throttle half to bind
+
+Appended, not rewriting the sections above.
+
+Section 2 labels the binding partial in part because "step 4's throttle half ... [is] not run", and
+follow-up 3 lists it as work. **There is no throttle half.** `009D0A6B` stores the interpolation's
+result as `009FBA50`'s fourth argument, `scale`, and both of the range arguments this tick passes
+are `approach+90h` (`009D07E4`, `009D0A08`), so `span` is zero, `009FBAD2`'s term is skipped and the
+value is discarded at the `RET`.
+
+That also means the binding's `command_altitude_and_throttle(approach, base, 0.0f, 0.0f, 0.0f)` is
+**exactly right**: passing a zero range pair gives the same commanded altitude as the native's own
+arguments do. It was right for a reason it did not know.
+
+Section 4's remaining question, why the aircraft dives at the `DEG(60)` cap the whole way down, is
+answered in `docs/TORPEDO_THROTTLE_CUT.md` section 4: the commanded 12 m is the image's own number
+for a torpedo bomber, because `approach+74h` comes from a field constructed zero at `00939E83` whose
+only gameplay writer is the dive-bomb task's `009C89CE`. What is missing is the `moveto` tick
+`009C18C0`, which would bring the aircraft to `Pilot/Torpedo/CruisingAlt` before the run begins.

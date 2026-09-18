@@ -1,0 +1,63 @@
+{
+ "packet": "cc8_torpedo_moveto_tick follow-up: the throttle census",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/PILOT_BOT_THROTTLE_ARM.md",
+ "tree_base": "792ec7b1e",
+ "result": "READING ONLY. The open question from two packets is answered.",
+ "question": "What sets a bot plane's throttle?",
+ "answer": "The planner 0099D300 BSP_PilotBot_PlanControls, in four places, on the ESI that 0099D305 MOV ESI,ECX makes the plan record. No task state writes the slot, which is why the attack-run, aim and move-to ticks all came up empty. The throttle slot is index 0 of the five, so its `desired` is plan+278h and its `active` byte plan+27Ch (base plan+274h, stride 0Ch). An exhaustive store census over 278h returns 65 sites image-wide, six in the pilot bot's range: the reseed 0099B45E, the second seeder's store 0099B608 in 0099B590 BSP_PilotBot_SeedPlanSlotsHeld, whose rule cc2_pilot_controls already recorded, and the four planner writes. 0099D399 is a centred-stick arm that sets every axis to zero and the throttle to [00D7A24C] = 1.0, raising the slot's active byte at 0099D3A1 - the pair that proves the record is the plan. 0099D8CF is a speed-hold arm gated on a mode of 1 and a demand above plan+2B4h, writing the air brake beside it. 0099DC31 is a floor through 00415550 BSP_Math_MaxFloatByRef. 0099DC8F is a CEILING that pins the throttle to [00CE3D30] = 0.6. So the native does cut a bot's throttle, in the planner rather than in any task state. This host reconstructs only the planner's yaw, roll and pitch arms, so its planes hold the 1.0 they were constructed with for their whole life - which is the 60-degree dive arriving at 141.5 m/s that docs/PLANE_ALTITUDE_HOLD_AND_SURFACE.md measured.",
+ "coverage": "complete for WHERE the throttle is written and what bounds it; the demands themselves are unread.",
+ "calls": [
+  {
+   "address": "0099dc2c",
+   "native": "00415550",
+   "function": "0099d300",
+   "what": "BSP_Math_MaxFloatByRef over two stack slots; 0099DC31 stores the result into the throttle slot's desired"
+  }
+ ],
+ "named_routines": [
+  {
+   "native": "0099d300",
+   "name": "BSP_PilotBot_PlanControls",
+   "abi": "__thiscall(plan), Ghidra body 0099D300-0099EBAB; ESI is the plan from 0099D305 onward",
+   "coverage": "partial: the four throttle writes and their bounds; the demands are unread",
+   "what": "writes the throttle slot's desired at 0099D399 (1.0, the centred-stick arm, with the active byte at 0099D3A1), 0099D8CF (the speed-hold arm, gated on a mode of 1 and a demand above plan+2B4h), 0099DC31 (a floor through 00415550) and 0099DC8F (a ceiling pinning it to 0.6 from 00CE3D30). It is the ONLY producer of a bot plane's throttle; no task state writes the slot."
+  },
+  {
+   "native": "0099b590",
+   "name": "BSP_PilotBot_SeedPlanSlotsHeld",
+   "abi": "__thiscall(bot), RET 0, Ghidra body 0099B590-0099B629",
+   "coverage": "unchanged from cc2_pilot_controls; this packet only places its throttle store",
+   "what": "calls 0099B450 at 0099B591 then rewrites the five desired halves from the live axes, raising all five active bytes; 0099B608 is its throttle store. Its ledger record's 'no Ghidra function' is stale - there is one."
+  }
+ ],
+ "no_ghidra_function": [],
+ "host_methods": [],
+ "contracts": [
+  "The throttle demands: XMM0 at 0099D8C6 and 0099DC8A, and the two operands 00415550 compares, were not traced to their producers.",
+  "The centred-stick arm's gate, the byte at [[ESI+0x270] + EAX + 0x9C2].",
+  "ECX's mode value at 0099D8C1 and plan+2B4h's meaning beyond being a field 0099B450 resets.",
+  "The 59 census sites outside the pilot-bot range were classified by their enclosing routine's name and range, not read.",
+  "When 0099B590 runs instead of 0099B450."
+ ],
+ "corrections": [
+  {
+   "target": "docs/TORPEDO_THROTTLE_CUT.md section 3 and its contracts",
+   "was": "no routine in the torpedo chain writes the throttle slot, and what sets it at all is open",
+   "is": "the first half stands; the question is answered - the planner 0099D300 writes it in four places, with a ceiling of 0.6 at 0099DC8F",
+   "evidence": "0099D305, 0099D399, 0099D3A1, 0099D8CF, 0099DC31, 0099DC8F, 00CE3D30",
+   "status": "appended and verified present"
+  },
+  {
+   "target": "docs/TORPEDO_MOVETO_TICK.md section 6 and follow-up 4",
+   "was": "the census would need the plan record's slot-0 offset, which that packet did not establish",
+   "is": "the offset is plan+278h and the census is run; the writer is the planner",
+   "evidence": "docs/PILOT_PLAN_SLOT_PIPELINE.md's slot table, and the census",
+   "status": "appended and verified present"
+  }
+ ],
+ "validation": {
+  "runner": "none",
+  "note": "Reading only; no behaviour changed."
+ }
+}

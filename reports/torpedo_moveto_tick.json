@@ -1,0 +1,109 @@
+{
+ "packet": "cc8_torpedo_moveto_tick",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/TORPEDO_MOVETO_TICK.md",
+ "tree_base": "75f1b6570",
+ "result": "READING ONLY. The two files a wiring needs are held elsewhere; the wiring contract is the doc's section 5.",
+ "question": "What does the move-to tick 009C18C0 command, and would running it bring a torpedo bomber to its cruise altitude before the attack run?",
+ "answer": "It does not command Pilot/Torpedo/CruisingAlt - that goes to the pilot control block's cruise channel ctl+380h through bot_task_update_cruise_profile and no part of this tick reads it. What 009C18C0 step 5 commands is a GLIDE SLOPE: 009C1B17 calls 009FBA50(max(this+34h + targetY, this+30h), this+38h, distance, t), so span = max(distance - this+38h, 0) is positive for the whole approach and 009FBAD2's term is live, unlike the attack-run site where both range arguments are approach+90h. t is InterpolateClamped(0.05 [00CE7638], 0.35 [00CF6560], 0.4 [00CE7804], 1.6 [00D06BB4], max(1400 - unit+100h, 50) / clamp(distance - 1000, 50, 2000)), and class+518h is tan(desc+1F0h DropAngle), derived at 007C4A3F/007C4A44 through 00412E20 BSP_Math_TangentX87Float. So the commanded altitude is the aim altitude plus horizontalDistance * tan(atan-scaled angle): the aircraft is held high when far and walked down a straight path at 8.5 to 34 degrees for a TBD Devastator. That is the descent the whole torpedo run has been missing, and it is why the attack run's 12 m command is a small correction in the image and a DEG(60) plunge in this host.",
+ "coverage": "complete for 009C18C0's five branches and step 5's arithmetic, and for the class+518h derivation; partial for the three tail calls, the vtable +1Ch speed slot 009C1850, and the producers of approach+3Ch/+34h and task+438h.",
+ "calls": [
+  {
+   "address": "009c196c",
+   "native": "00bf7030",
+   "function": "009c18c0",
+   "what": "the planar separation's square root; the result stays in EBX and becomes 009FBA50's rangeHigh"
+  },
+  {
+   "address": "009c1a30",
+   "native": "00414db0",
+   "function": "009c18c0",
+   "what": "the pose refresh before the height margin reads unit+100h"
+  },
+  {
+   "address": "009c1af3",
+   "native": "00419010",
+   "function": "009c18c0",
+   "what": "t = InterpolateClamped(0.05, 0.35, 0.4, 1.6, margin / denom), the glide slope's steepness"
+  },
+  {
+   "address": "009c1b17",
+   "native": "009fba50",
+   "function": "009c18c0",
+   "what": "the glide slope itself, with a REAL range pair: rangeLow = this+38h, rangeHigh = the live distance"
+  },
+  {
+   "address": "009c1b23",
+   "native": "009f9e40",
+   "function": "009c18c0",
+   "what": "the heading to the target point"
+  },
+  {
+   "address": "007c4a3f",
+   "native": "00412e20",
+   "function": "007c4850",
+   "what": "class+518h = tan(desc+1F0h DropAngle), stored at 007C4A44; the gain 009FBA50's span term multiplies"
+  }
+ ],
+ "named_routines": [
+  {
+   "native": "009c18c0",
+   "name": "BSP_BotStateMoveTo_Tick",
+   "abi": "void __thiscall(this, float dt), Ghidra body 009C18C0-009C1BB3; this+4h the approach, +2Ch the target, +30h/+34h altitudes, +38h a distance",
+   "coverage": "complete for the five branches and step 5's arithmetic; the three tail calls and the +1Ch speed slot are contracts",
+   "what": "step 1 takes the planar separation (009C196C) into EBX; step 2 hands it to this->vtable[+1Ch]; step 3 writes only cmd+2BCh/+2D0h/+2C4h/+2CCh when unit+0C25h is set; step 4 does the same and raises approach+10h->+7Ch when there is no target; step 5 commands the glide slope at 009C1B17, the heading at 009C1B23, Pilot/AutoStrafeAngle/Angle_MoveTo into approach+1Ch->+40h at 009C1B2D, and three unread tail calls."
+  },
+  {
+   "native": "009bde80",
+   "name": "BSP_BotStateMoveTo_SetRanges",
+   "abi": "void __thiscall(state, float a, float b, float c), three stores and nothing else",
+   "coverage": "complete",
+   "what": "writes state+30h, +34h and +38h. Its torpedo call site passes (approach+3Ch + approach+34h, the same, task+438h), so both altitude slots carry the task's aim altitude and +38h carries the distance the glide aims to reach it at."
+  },
+  {
+   "native": "00412e20",
+   "name": "BSP_Math_TangentX87Float",
+   "abi": "float(float), RET 4, body 00412E20-00412E30",
+   "coverage": "complete",
+   "what": "FLD / FSINCOS / FDIVP, i.e. sin/cos. It is what makes class+518h a tangent and 009FBA50's span term a glide path."
+  }
+ ],
+ "no_ghidra_function": [],
+ "host_methods": [],
+ "contracts": [
+  "approach+3Ch and approach+34h, the aim altitude, for the TORPEDO task. The depth charge's twin is a tuning draw between Pilot/DepthCharge/AimAltRange/1 = 20 and /2 = 60; the torpedo's producer is unread.",
+  "task+438h. The tuning singleton's Pilot/Torpedo/SafeDist sits at the same numeric offset and is authored 700, which is the right magnitude, but they are offsets into different objects and the task field's producer is unread.",
+  "The three tail calls 0099B630 (009C1B45), 009A1A20 (009C1B50) and 009FABE0 (009C1B5B), and the vtable +1Ch speed slot 009C1850.",
+  "Which tick runs 009BDE80's refresh, and how often.",
+  "The reader of approach+1Ch -> +40h, Pilot/AutoStrafeAngle/Angle_MoveTo.",
+  "The plan throttle slot's writers image-wide, which needs the plan record's slot-0 offset."
+ ],
+ "corrections": [
+  {
+   "target": "docs/BOT_TASK_STATES.md, 'The shared moveto and follow states'",
+   "was": "009C2AC0's last three parameters named near, far and mode at +30h/+34h/+38h, and a step table that stops at step 4",
+   "is": "+30h and +34h are altitudes and +38h is 009FBA50's rangeLow, a distance; step 5 commands a glide slope, the heading, the strafe angle and three tail calls",
+   "evidence": "009C1B17, 009C1B23, 009C1B2D, 009BDE80, and line 160's own call site",
+   "status": "appended and verified present"
+  },
+  {
+   "target": "docs/TORPEDO_THROTTLE_CUT.md, its first open question",
+   "was": "whether another 009FBA50 caller passes a real range pair was open",
+   "is": "009C18C0 does, at 009C1B17, so the scale term is live there and the same interpolation shape that is dead at the attack-run site drives the approach descent",
+   "evidence": "009C1B17, 009FBAD2",
+   "status": "appended and verified present"
+  },
+  {
+   "target": "docs/PLANE_FLIGHT.md, '009FBA50, the cruising-altitude command'",
+   "was": "classDesc+518h left unidentified in step 4's span * scale * class+518h",
+   "is": "class+518h = tan(desc+1F0h DropAngle), derived at 007C4A3F/007C4A44 through 00412E20, which makes the term horizontalDistance * tan(angle), a glide path",
+   "evidence": "007C4A27, 007C4A3F, 007C4A44, 00412E20's FSINCOS/FDIVP",
+   "status": "appended and verified present"
+  }
+ ],
+ "validation": {
+  "runner": "none",
+  "note": "Reading only; no behaviour changed and the two files a wiring needs are held elsewhere. The doc's section 4 predicts the profile against docs/PLANE_ALTITUDE_HOLD_AND_SURFACE.md's measured baseline, where the ordered aircraft start 1488 m from their targets and enter attackrun at their 800 m spawn altitude.",
+  "no_swim_next_gate": "Wire 009C18C0 step 5 on the state tick where aim and attackrun already run, to the doc's section 5 contract. class+518h is free as tan(DropAngle); this+38h and the aim altitude are labelled substitutions until their producers are read."
+ }
+}
