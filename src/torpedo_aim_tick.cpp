@@ -143,7 +143,21 @@ TorpedoAimTickResult torpedo_aim_tick_full_009d15f0(TorpedoAimTickHost& host,
     }
 
     // --- 009D178E-009D18C9, the sector turn, only when +5Ch != 0. ---
-    float f1c_command = 0.0f;
+    //
+    // F=1Ch is NOT zero on entry. 009D1622 MOVSS [ESP+1Ch], XMM0 seeds it with
+    // approach+94h, the bearing, and 009D168A reads that same slot back as the
+    // first argument of the delta's 00438B10. Only 009D18A6, inside this block,
+    // overwrites it. So on the skip path the slot still holds the bearing, and
+    // the probe fold at 009D1B7A adds its offset to the bearing rather than to
+    // zero.
+    //
+    // This used to initialise to 0.0f. With +5Ch == 0 and the sector probe
+    // armed, the fold at 009D1B7A then produced f10_turn = WrapSub(0, heading)
+    // = -heading, so 009D1BCC commanded heading 0 - due +Z - instead of the
+    // bearing. The per-tick census caught it: aim tick 51 of KatTBD read
+    // cmd_2C0=0.0000 with bearing_94=0.9543 and yaw_C6C=0.5963, exactly
+    // -yaw. docs/TORPEDO_STEERING_DELTA.md.
+    float f1c_command = f1c_bearing;                         // 009D1622
     if (f18 != 0.0f) {                                       // 009D1794 UCOMISS
         const float gain = clamped_interpolate_00419010(
             kSectorGainX0, kSectorGainY0, kSectorGainX1, kSectorGainY1,

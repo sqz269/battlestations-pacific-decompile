@@ -203,6 +203,19 @@
       "log": "local/usn02_before.log, this tree at 315adad83, loop_finished=1 exit_code=0",
       "result": "exercises none of this path. summary mission plane motion: distance_moved=0.00 m pose_rotations=0 heading_change=0.000 rad thinks=0 commits=0 yaw_plans=0. summary mission pilot attack: no unit was ever ordered at a target the yaw arm could plan for.",
       "role": "no-regression reference only; it cannot show a change in the aim tick either way, and no source change was made"
+    },
+    "merged_tree": {
+      "note": "main merged at 41eb6a7b8 (carries the coordinator hook 9df3ec6ba), which raises USN01's ordered set from 5 to 14 aircraft and the torpedo task from 5 to 9. Fresh before-run taken on the merged tree as instructed. The only difference between the two logs is the F=1Ch seed.",
+      "before": "local/usn01_merged_before.log",
+      "after": "local/usn01_merged_after.log",
+      "aim_ticks_commanding_zero": "22 of 57 sampled -> 0 of 49",
+      "aim_ticks_with_cone_open": "0 -> 32 of 49",
+      "goaway_entries_mav1_to_mav5": "96,91,90,87,98 -> 39,35,36,38,38, about a 60 per cent fall",
+      "goaway_entries_other_four": "116,132,134,0 unchanged; those are the aircraft whose sector probe is never armed, which is the expected signature",
+      "katbd_tick51": "before cmd_2C0=0.0000 yaw_C6C=0.5963 bearing_94=0.9543 delta=-0.5963 yaw_desired=-1.0000; after cmd_2C0=0.9588 yaw_C6C=0.6878 bearing_94=0.9588 delta=0.2710 yaw_desired=0.2205",
+      "heading_error_last_mean": "0.803 rad after",
+      "releases_007bbba0": "1 before and 1 after, unchanged; summary mission gunnery ordnance reports swims_started=0, so a release is requested but no torpedo enters the water",
+      "unchanged_and_not_from_this_change": "range_last_mean 130452 m before, 131969 m after, closed_mean negative in both. Some of the fourteen ordered aircraft fly away past 100 km. That pathology arrives with the merged main and is not touched by the F=1Ch seed."
     }
   },
   "vtable_installs": [
@@ -319,5 +332,13 @@
     },
     "why_unread": "neither +14h nor +24h is written anywhere in 009D0380-009D066F, and a scan of the whole torpedo bot band 009D0000-009D5200 finds no writer of the approach's +14h. The five mov [reg+14h] hits there are 009D06B1, 009D06F8, 009D0B91, 009D1249 and 009D2F22; the nearest in shape, 009D06F8 in BSP_BotStateTorpedoAttackRun_Construct, stores EAX after 009D06F0 XOR EAX,EAX and so zero-initialises a DIFFERENT object. The producer is outside the band.",
     "consequence": "until it is read, no value for the two speed slots has any evidence behind it. The host keeps a labelled placeholder rather than a second guess, after the first guess (max_speed) measured as degenerate."
+  },
+  "command_slot_defect": {
+    "kind": "no_ghidra_function",
+    "name": "aim tick frame slot F=1Ch",
+    "finding": "F=1Ch is seeded with approach+94h, the bearing, at 009D1622 MOVSS [ESP+1Ch],XMM0, and 009D168A reads that same slot back as the first argument of the delta's 00438B10. The only other write is 009D18A6, inside the sector-turn block that 009D1794 skips when approach+5Ch is zero. src/torpedo_aim_tick.cpp initialised it to 0.0f, so with +5Ch == 0 and the sector probe armed the fold at 009D1B7A produced f10_turn = WrapSub(WrapAdd(0, f48), heading), which with no probe hit is exactly -heading, and 009D1BCC commanded heading 0 (due +Z) instead of the bearing. Every such tick published a spurious command into plan+2C0h.",
+    "caught_by": "the per-tick census added in this packet. KatTBD aim tick 51 read cmd_2C0=0.0000 with bearing_94=0.9543 and yaw_C6C=0.5963, a delta of exactly -yaw, while ticks 1 and 101 of the same aircraft were consistent. The original five-aircraft run never showed it because its scan reported 36 clear sectors of 36, so the probe was never armed.",
+    "fix": "src/torpedo_aim_tick.cpp, float f1c_command = f1c_bearing, cited to 009D1622.",
+    "store_site": "009d1622"
   }
 }
