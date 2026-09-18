@@ -3,7 +3,7 @@
   "baseline_commit": "bc2c785e2",
   "worktree": "agent/cc8-torpedo-approach",
   "documentation": "docs/TORPEDO_RELEASE_ORDERS.md",
-  "status": "unit_c58h_and_ctl_370h_writers_read_and_reconstructed_host_wiring_deferred_by_lease",
+  "status": "unit_c58h_and_ctl_370h_read_reconstructed_wired_and_run_validated_state_machine_now_reaches_attackrun_release_blocked_by_closing_range",
   "production_cpp_changed": true,
   "ghidra_mutated": false,
   "new_native_body_reconstructed": true,
@@ -136,15 +136,22 @@
   "validation": {
     "build": "scripts/build.ps1 MSVC Win32 /W4 /WX clean",
     "tests": "ctest 2/2 passing (reconstructed_math, tool_tests); no test added",
-    "new_source_in_build": false,
-    "new_source_check": "cl /c /W4 /WX /fp:strict /EHsc /std:c++17 -I include src/torpedo_release_orders.cpp is clean; cmake/startup.cmake is leased to agent/orch4-20260915 so the registration is deferred",
-    "runs": "none attributed to this commit; the USN01 and USN02 numbers stand where docs/TORPEDO_APPROACH_UPDATE.md left them"
+    "new_source_in_build": true,
+    "usn01_before": "aircraft=5 releases=0 transitions=1..3 states[moveto=239..434 prepare=865..1060]; unit+C58h zero on all 6495 arm ticks",
+    "usn01_after": "aircraft=5 releases=0 transitions=1..4 states[moveto=239..434 attackrun=865..1059]",
+    "usn01_orders": "per aircraft issue_ticks=2597 raised=~12981 peak_C58h=999 left=999 arm_offers=1298 blocked_0099af53=1 attack_mode_370=1; the flight leader's raised_at_tick=0",
+    "usn01_approach": "unchanged: ticks=1299 no_target=0 replans=130, engage 8Ch=2200.0, closest range 2906.0 (Mav2)",
+    "usn01_next_gate": "the in-range latch approach+131h (task+529h) at 009D3774. It closes only below approach+8Ch = 2200 and the closest approach was 2906, so 009D4030 step 10 never promotes attackrun to aim and 009D49A0, which arms prepare+98h only in prepare (009D49B2), spends its 6490 offers on nothing. The blocker is the flight path, not the release logic",
+    "usn02_after": "shots=734 first_shot=1.40 s hull=180 part=0 deaths=2 total_damage=18525.6 projectiles created=734 - identical to the milestone 2t baseline",
+    "usn02_torpedo": "no ordered aircraft carries torpedo ordnance (kind 2Bh), so 0099A170 builds no kind Eh task",
+    "wiring_assumption": "ctl+374h and ctl+390h, the pair 007EEF40 compares, have no writer on the pilot control block in this image, so the host logs them unimplemented and takes the issue gate as open for an ordered flight"
   },
   "corrections": [
     "docs/TORPEDO_APPROACH_UPDATE.md treats ctl+3D0h as a single designated target; it is an array of the units the control block drives, count ctl+3CCh, walked at 007EEF5C with LEA/ADD 4. 009D3D88 loads its first element, so 009D3420's no-ordnance branch compares the approach's target point against the flight leader",
     "docs/PILOT_BOT_TICK_GATES.md lists unit+C58h and 007B9140 as unread; both are read here"
   ],
   "open_questions": [
+    "why the five USN01 aircraft never close inside approach+8Ch = 2200; the sector plan at approach+5Ch stays zero because ctl+34Ch (the terrain sampler) is null in this host, so the run-in has no planned heading and the moveto steering carries them",
     "ctl+374h and ctl+390h, the pair whose comparison at 007EEF40 gates the whole issue; the C7 scan at that displacement finds no writer on the pilot control block",
     "the six vtable slots of 007C0D90's device walk, and 007EE7F0",
     "008A4B10 BSP_LuaBinding_PilotStopCloseToShip, the only route to attack mode 2, and whether a USN01 mission script takes it",

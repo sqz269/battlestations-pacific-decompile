@@ -217,28 +217,26 @@ is the only route back down to `0`.
 this packet's **contracts**, logged through the unimplemented-host mechanism when the host wiring
 lands.
 
-## The host change, still a contract
+## The host wiring
 
-`src/game_hosts_units.cpp` is leased to another agent for a pilot-roll fix at the time of writing,
-and `cmake/startup.cmake` to `agent/orch4-20260915`, so this commit carries the reconstruction and
-its documentation only. `src/torpedo_release_orders.cpp` is **not yet registered in the build**; it
-was verified with a standalone `cl /c /W4 /WX /fp:strict /EHsc /std:c++17 -I include` compile,
-which is clean. The wiring, the `cmake/startup.cmake` line and the USN01/USN02 runs land in a
-second commit once both files are free. Until then the runtime claim of this packet stands at what
-`docs/TORPEDO_APPROACH_UPDATE.md` measured: `unit+C58h` is `0` on all 6495 arm ticks.
+`src/torpedo_release_orders.cpp` is registered in `cmake/startup.cmake` and the issue path runs
+where the native runs it. Four changes in `src/game_hosts_units.cpp`:
 
-What the wiring will do, so the contract is explicit:
+1. `run_release_order_issue_007c0d90` at the end of the plane's fixed step, matching `007CEA8D`,
+   which sits after the think at `007CE865` and the latch at `007CE96F`.
+2. `run_attack_mode_tick_0099b740` at the head of the torpedo arm, where `009D4A70`'s tail runs it.
+   Only the first ordered torpedo aircraft carries `torpedo_is_flight_lead`, and it publishes the
+   mode to the whole flight because the native mode lives on the shared control block.
+3. The approach update's `read_control_block` and the transition rule's three readers take that
+   live mode instead of the constant `0` they carried.
+4. The census reports, per aircraft, the lead flag, the issue ticks, the orders raised, the peak
+   and remaining `unit+C58h`, the arming offers, the attack mode and the drop countdown.
 
-1. Give `GameUnitSlot` the count `unit+C58h`, the pending byte `unit+C25h` and the control block's
-   mode `ctl+370h`, array count `ctl+3CCh` and force flag `ctl+378h`.
-2. Run `torpedo_issue_release_orders_007c0d90` on the plane's fixed step, where `007C0D90` runs,
-   with `unit_carries_droppable_device_007c0d90` answering from the slot's ordnance mask
-   (kind `2Bh` implies the descriptor answers `2Ah`).
-3. Run `pilot_attack_mode_0099b740` at the tail of the torpedo cruise profile, with the lead test
-   against the ordered flight's first aircraft.
-4. Feed `read_control_block`'s `attack_mode_370` from that value instead of the constant `0` it
-   carries today, and pass the count into the arming loop this packet's predecessor already wired
-   at `0099AF53`.
+`ctl+374h` and `ctl+390h`, the pair whose comparison at `007EEF40` gates the whole issue, have no
+writer on the control block in this image, so the host logs them through the unimplemented-host
+mechanism and takes the gate as open for an ordered flight. That is the one assumption in the
+wiring, and it is stated rather than hidden: if those fields turn out to hold the issue closed, the
+budget would never be handed out and the runs below would change.
 
 ## Corrections
 
@@ -270,15 +268,45 @@ capability test and `unit+C58h` is the queued release-order budget `007BCBE0` as
 
 ## Validation
 
-`./scripts/build.ps1` (MSVC Win32, `/W4 /WX`) succeeds and `ctest` passes both existing suites
-(`reconstructed_math`, `tool_tests`). No test was added. `src/torpedo_release_orders.cpp` is not in
-the build yet, for the lease reason above; it compiles clean on its own under the same flags. No
-game run is attributed to this commit: the USN01 and USN02 numbers stand where
-`docs/TORPEDO_APPROACH_UPDATE.md` left them.
+`./scripts/build.ps1` (MSVC Win32, `/W4 /WX`) succeeds; `ctest` passes both existing suites
+(`reconstructed_math`, `tool_tests`). No test was added.
+
+| run | result |
+| --- | --- |
+| USN01 before this packet | five aircraft, `transitions=1..3`, `states[moveto=239..434 prepare=865..1060]`, `releases=0`, `unit+C58h` zero on all 6495 arm ticks |
+| USN01 after | five aircraft, `transitions=1..4`, `states[moveto=239..434 attackrun=865..1059]`, `releases=0` |
+| USN01 orders | per aircraft `issue_ticks=2597 raised=~12981 peak_C58h=999 left=999 arm_offers=1298 blocked_0099af53=1 attack_mode_370=1`; the leader's `raised_at_tick=0` |
+| USN01 approach | unchanged: `ticks=1299 no_target=0 replans=130`, `engage 8Ch=2200.0`, closest range `2906.0` (Mav2) |
+| USN02 after | `shots=734 first_shot=1.40 s`, `hull=180 part=0 deaths=2 total_damage=18525.6`, `projectiles created=734` - identical to the milestone 2t baseline |
+| USN02 torpedo census | `no ordered aircraft carries torpedo ordnance (kind 2Bh), so 0099A170 builds no kind Eh task` |
+
+**Both gates this packet set out to find now pass, and the state changes to prove it.** With
+`ctl+370h` live the entry chooser stops sending an engaged task to `prepare` and sends it to
+`attackrun` instead: every aircraft that spent 865 to 1060 ticks in `prepare` before now spends
+them in `attackrun`. With `unit+C58h` live the arming loop at `0099AF81` offers `009D49A0` its slot
+1298 times per aircraft instead of never; only the very first tick is refused at `0099AF53`, before
+the plane's fixed step has run.
+
+**Still no release, and the gate is now the range itself.** `009D49A0` arms `prepare+98h` only when
+the task's state **is** `prepare` (`009D49B2`), and the rule now correctly keeps these aircraft in
+`attackrun`. To reach `aim`, and from there `goaway` and `done` where the drop lives, step 10 of
+`009D4030` needs `task+529h`, the in-range latch, and `009D3774` closes that latch only when the
+range falls **inside** `approach+8Ch`. The engaged predicate `009D3210` admits 2.2 times that
+distance, which is why the rule leaves `moveto` at 4840, but the latch needs 2200 and the closest
+any of the five came in the 150-second window was **2906**. The aircraft are not being blocked by a
+missing rule; they simply do not arrive. `docs/TORPEDO_APPROACH_UPDATE.md`'s own pilot-attack
+census says the same thing from the other side: `closed_mean=-321.6 m`, with two of the five
+opening range rather than closing.
+
+So the remaining work is the flight path, not the release logic: the sector plan at `approach+5Ch`
+is zero on every tick because `ctl+34Ch`, the terrain sampler, is null in this host, so the aim
+heading has no planned run-in, and the `moveto` state's own steering is what carries the aircraft.
 
 ## Follow-up packets
 
-1. **The wiring and its runs**, once `src/game_hosts_units.cpp` and `cmake/startup.cmake` are free.
+1. **Why the five USN01 aircraft do not close inside 2200.** This is now the only thing between an
+   ordered torpedo flight and a drop. The `moveto` state's steering and the missing sector plan
+   (`ctl+34Ch` is null, so `approach+5Ch` stays zero) are the two candidates.
 2. **`ctl+374h` and `ctl+390h`**, the pair whose comparison at `007EEF40` gates the whole issue. The
    `C7 ?? 90 03 00 00` scan finds writers only in `BSP_Gun_CreateAiBots` and
    `BSP_UnitGameObject_Construct`, neither of which is the pilot control block, so the producers are
