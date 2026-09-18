@@ -179,3 +179,35 @@ they are now explained rather than merely measured.
 2. **Whether any state outside the torpedo chain descends an ordered aircraft** before its task
    takes over. If none does, the image plunges them too and the 800 m start is simply what the
    mission authors.
+
+
+## Where the five torpedo drops went
+
+`a14389c12` removed them, and they were never real. Four of my own runs bracket it:
+
+| run | tree | drops | where |
+| --- | --- | --- | --- |
+| `local/usn01_desc_after.log` | `a3a209763` | **5** | released at -229 to -232 m |
+| `local/usn01_alt_before.log` | `a14389c12` with its switch off | **5** | the same |
+| `local/usn01_alt_after.log` | `a14389c12` with its switch on | **0** | 5 water contacts instead |
+| `local/usn01_wire_after.log` | `cccf31e11` | **0** | the same |
+
+The before and after columns of `docs/PLANE_ALTITUDE_HOLD_AND_SURFACE.md` differ by exactly one
+compile-time constant, so the change is isolated: **the water contact at `007CC562`/`007CB92C`,
+which takes an aircraft out of free flight into state 6 at the water line.** Before it, an aircraft
+flew through the sea to -400 m and released on the way; after it, the aircraft stops at the surface
+and never reaches the release.
+
+**The drops were an artefact of that hole.** The gunnery log records them at -229 to -232 m -
+**below the sea** - and `water_entry_breakups` and `swims_started` were both zero even then, because
+a round released underwater never crosses the surface downward and the water-entry test never fires.
+So the five were releases into the seabed, not torpedo drops.
+
+**Zero is the more faithful number on this placement**, with one thing left open. No release below
+the sea can happen in the image, because its aircraft leaves free flight at the water line, so that
+part is settled. Whether the image would release *before* reaching the water is not: the release
+chain's own gate is the queued release-order count at `unit+C58h`, still an unread contract, and on
+this placement the aircraft crosses `009D20B4`'s 25-to-40 metre release band at about 142 m/s -
+inside it for roughly a tenth of a second, less than the 0.09 s pilot think interval. So even a
+complete release chain would rarely catch this approach, which is consistent with the run and is
+not evidence that the chain is wrong.

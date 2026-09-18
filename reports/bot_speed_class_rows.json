@@ -1,0 +1,54 @@
+{
+ "packet": "cc8_bot_speed_class_rows",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/BOT_SPEED_CLASS_ROWS.md",
+ "tree_base": "main 577934c0f merged",
+ "result": "Both setters take the unit's real class row. One substitution retired, one corrected as the WRONG FIELD rather than a stand-in value. No run: section 5 gives two independent reasons.",
+ "question": "Can both bot speed setters compute 007C47F0's product from the unit's own class row, and does any other bot-task site take a class field from a default?",
+ "answer": "Yes to the first, and no to the second. 007C47F0(approach+8h) is tuning+24Ch Dynamics/SpdMultipliers/LevelFlight times classDesc+184h StallSpd; the tuning row comes from the PlaneGlobals mirror and StallSpd is already on the slot, loaded by src/game_hosts_lua.cpp and read by the free-flight arm at 007DB760 and by 007C4850's climb-angle solver. A helper computes the product and both setters call it. The dive-bomb turndown's 1.8 * 17.5 was a stand-in value and is retired. The move-to setter's was NOT a stand-in: 009C1850 calls 007C47F0 at 009C186A, so the desired speed is the LevelFlight and StallSpd product, and the row's TravelSpeed that stood there was a different class field. For USN01's Mav row - StallSpd 19.4, LevelFlight 1.8 - the commanded speed moves from 66.67 to 34.92 m/s. What remains substituted is 009BECD0's shaping of the product against the distance, which is unread. The census over the host's class-row consumers finds every other site already taking the row; kStallSpeedDefault was the only class-field default in the dive-bomb header, and 009C7A94 is not a MaxSpd site but dive_bomb_decay_dive_altitude_009c7a94, a dive-altitude ceiling whose inputs are Pilot/DiveBomb tuning rows.",
+ "coverage": "complete for the two setters and the census; 009BECD0 and 007C47F0's own body are contracts.",
+ "calls": [],
+ "named_routines": [],
+ "no_ghidra_function": [],
+ "host_methods": [
+  {
+   "host": "bot_desired_speed_007c47f0",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "binding",
+   "note": "LevelFlight from the PlaneGlobals mirror times the slot's plane_stall_spd"
+  },
+  {
+   "host": "the dive-bomb turndown's desired speed",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "binding, substitution retired"
+  },
+  {
+   "host": "the move-to setter's desired speed",
+   "file": "src/game_hosts_units.cpp",
+   "kind": "binding, field corrected",
+   "note": "009BECD0's shaping remains substituted"
+  }
+ ],
+ "contracts": [
+  "009BECD0, which shapes the product against the distance; the last substitution in the move-to setter.",
+  "007C47F0's own body, taken from the dive-bomb worker's note rather than read first-hand; it agrees with the turndown's two constants."
+ ],
+ "corrections": [
+  {
+   "target": "docs/TORPEDO_GLIDE_THROTTLE_WIRING.md section 1",
+   "was": "the move-to setter's desired speed is substituted with the row's TravelSpeed because 007C47F0 and 009BECD0 are unread",
+   "is": "007C47F0 is LevelFlight times StallSpd, so TravelSpeed was the wrong FIELD, not a stand-in value; for the Mav row the commanded speed moves from 66.67 to 34.92 m/s",
+   "evidence": "009C186A, 009C1895, and the dive-bomb turndown's own binding of the same call",
+   "status": "appended and verified present"
+  }
+ ],
+ "validation": {
+  "runner": "none",
+  "reasons": [
+   "The safe base 48F293197 predates docs/TORPEDO_GLIDE_THROTTLE_WIRING.md's wiring, so run_move_to_tick_009c18c0 does not exist there; a cherry-pick conflicts and resolving it would mean running a function with no caller.",
+   "The move-to branch never executes on USN01: docs/TORPEDO_ENGAGED_TEST.md showed the ordered bombers start 1490 m out against a 4840 m engaged threshold, so the glide census that prints the desired-speed pair fires zero times on that mission whatever the binding says."
+  ],
+  "note": "The census line was widened to print the stall speed beside the desired speed, so the per-class value is visible the first time a mission puts a torpedo bomber outside the engage range. The dive-bomb turndown's half does run and shows in that worker's census.",
+  "attempt": "A detached checkout of 48F293197 with both commits cherry-picked was attempted and aborted on the conflict; the branch was restored with git cherry-pick --abort and a checkout back, and nothing from the detached state was committed."
+ }
+}
