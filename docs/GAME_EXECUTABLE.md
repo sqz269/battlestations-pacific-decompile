@@ -8653,8 +8653,20 @@ makes them uninformative.
 * Eight audio endpoints enumerate with `Status = OK`, so there is no missing device.
 * The identical commit ran clean from another tree about ninety minutes earlier the same day.
 
-So the machine changed state between the two, with the file and the devices both intact. A process
-holding FMOD, or the session's audio endpoint changing under a remote desktop, are the candidates;
-neither was established. A run that hits this should be retried after checking `Get-Process bsp_game`
-and the lock, and if it persists across a fresh tree at a known-good commit, it is the machine and
-not the tree.
+### The cause: a disconnected remote-desktop session has no audio endpoint
+
+Settled. `query session` shows the interactive session in state **`Disc`** from about 15:55, and a
+disconnected session has no audio endpoint at all. FMOD's output init fails, and the reconstructed
+startup then trips on the first bank it asks for, which is `sound/gui/error.fsb`.
+
+The `cc8-ai-squadron` tree, whose `main` base is `dcc8ec7de` and which therefore contains **neither**
+Codex commit under suspicion, hit the identical signature twice at 16:01 and 16:02, with
+`_FMOD_EventSystem_Init@20 result=61` ahead of the `CreateSound` `78` and `GetLength` `37` on the
+same bank. Two trees with disjoint contents failing the same way at the same minute is the machine.
+
+Nothing a run can pass bypasses it: the native's only no-sound path is the `SoundEnabled` setting,
+whose token has no handler in this reconstruction.
+
+**So: no run can start while the session is disconnected.** A run that hits this signature should
+check `query session` first. Retrying, changing trees or bisecting commits cannot help, and the
+earlier steps of this packet's bisect are recorded above only to show that the base fails too.

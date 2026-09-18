@@ -972,7 +972,13 @@ inverted, where the 150-degree latch at `009C4654` closes.
 
 The host was missing both halves: it wrote the planner's own bank target unconditionally, and the
 turndown binding set the mode without the target. Both are now gated at `0099E25C` and written at
-the hand-over. The confirming run is queued.
+the hand-over.
+
+**The confirming run is BLOCKED, and not on anything in this repository.** The machine's
+remote-desktop session is disconnected, so it has no audio endpoint, FMOD's output init fails and
+the executable cannot reach a window at all; `docs/GAME_EXECUTABLE.md` carries the signature and the
+evidence. The hand-over change is reasoned from the listing and committed, and it stays **unverified**
+until a session is connected and one USN04 run can be taken.
 
 ### The hand-over run is blocked by a startup failure, twice, with a clean environment
 
@@ -993,3 +999,156 @@ merge that followed brought `main` up several commits. **This packet does not na
 lesson from the earlier bisect is that a failure in one tree is not evidence about a commit until a
 fresh tree at the suspect commit reproduces it. The measured result above stands on the run that
 completed; the hand-over remains unverified.
+
+## `009C62B0`, the flyabove tick: defined, bounded, and its flags censused
+
+Ghidra had no function here. `tools/ghidra_define_function.py 009c62b0 009c7086` defined one over
+**`009C62B0`-`009C7085` inclusive, 3542 bytes**, with `INT3` padding from `009C7086`. The end is
+two exits sharing one epilogue: `RET 4` at `009C706C` and at `009C7083`, both after
+`ADD ESP,88h`. It is the largest routine in the class, half again the aimdive tick.
+
+`ESI` is the state and `EDI` is `&state->approach`.
+
+### The four flags, with their writers
+
+| flag | writer | rule |
+| --- | --- | --- |
+| `+18h` | `009C659F` | `0` |
+| `+18h` | `009C680E` | `AL`, where `009C67EA`-`009C67F8` set `1` when `approach->+D4h` exceeds the frame value in `ST1` and `009C6808` clears it |
+| `+19h` | `009C66E7` | `0` |
+| `+19h` | `009C67B0` | `1`, reached by `009C67A3` `FCOMIP`/`JA` or by `009C67A9` `COMISS`/`JC` falling through |
+| `+19h` | `009C6826` | `[ESP+43h]` |
+| `+19h` | `009C6A30` | **copied from `+18h`**, gated on `[00CF180C] > cos(...) * [ESP+28h]` at `009C6A27` |
+| `+1Ah` | `009C66E3` | `1` |
+| `+1Ah` | `009C66F2`, `009C6822` | `0` |
+| `+1Bh` | `009C6813` | `DL`, only when `+1Ah` is set. **A fourth flag** the transition rule does not read |
+
+`009C6690` writes `approach->+CCh = 3`, the weapon selector, as already recorded.
+
+So the shape is confirmed: `+18h` is the can-dive decision and it is a **range** test on
+`approach->+D4h`; `+19h` is the roll-in permission and its main writer copies `+18h` once the
+over-target geometry closes; `+1Ah` is the separate break-off request.
+
+**`coverage: partial`.** The frame slots behind the two compares, `ST1` at `009C67F2` and
+`[ESP+30h]` at `009C67A9`, were not traced to their producers, so the host substitution for these
+three flags **stands** and is not yet replaced. Replacing it needs those two traces, which is a
+packet rather than a tail: this routine is 3542 bytes and a CFG fixpoint over it is the same kind of
+work the aim tick took.
+
+### Why the other two substitutions are also not closed here
+
+`approach+A8h` comes from `009C3ED8`'s `Random((approach+14h)->+38h, (approach+14h)->+3Ch)`, and
+`006E3500` is the per-device round count. Both are small reads on their own, but the record at
+`approach+14h` has no producer yet and the device list behind `006E3500` is the gunnery host's, so
+each is a trace rather than a transcription. They are listed in "Follow-up packets" unchanged.
+
+### `+18h` recovered: the can-dive flag is a height test
+
+Traced. `[ESP+38h]`, the value `009C67F2` compares `approach->+D4h` against, has exactly one writer
+before that read, `009C6493`, and it is built at `009C647D`-`009C6482`: the virtual call at
+`009C647B` returns the target point, `FLD [EAX+4h]` takes its **y**, and `FSUBR qword [ESP+10h]`
+subtracts it from the aircraft's own height. That is the same quantity the aimdive tick forms at
+`009C59D6`.
+
+`009C67F2 FCOMIP ST0,ST1` with `ST0` the height and `ST1` the range, and `009C67F6 JBE` taking the
+`XOR EAX,EAX` arm, so:
+
+```
+flyabove->+18h = (heightAboveTarget > approach->+D4h)
+```
+
+**The aircraft may dive once it is higher above its target than the release range.** That is the
+rule the host was standing in for with a planar-range test against `SafeDist`, and it is now
+`dive_bomb_flyabove_can_dive_009c680e` in `src/dive_bomb_task.cpp`.
+
+### `+19h` not recovered, and the reason is worth recording
+
+`[ESP+30h]`, the slot `009C67A9` compares against zero to decide whether to set the roll-in
+permission, **has no writer anywhere in this function before that read**. An exhaustive scan of the
+defined body for the slot finds a read at `009C6647`, this compare at `009C67A9`, and writes only at
+`009C6853`, `009C69A5` and `009C6C65`, all **after** it. No `LEA` of the slot is passed to any
+callee either, so it is not an out-parameter this reading found.
+
+So either a callee writes it through a pointer formed in a way this scan missed, or the slot is
+genuinely uninitialised on the path that reaches `009C67A9`. Both are worth knowing and neither is
+worth guessing, so the host's stand-in for `+19h` and `+1Ah` **stands**.
+
+The host binding for `+18h` is not switched over yet either: `src/game_hosts_units.cpp` is leased to
+`cc8-torpedo-run-in`. The pure rule is in place and the one-line swap is the next edit when the file
+frees.
+
+## `approach+A8h`: the rule is recovered, the record is not
+
+`009C3F1C`-`009C3F2E`, inside the approach seed `009C3EA0`:
+
+```
+EAX = approach->+14h                      ; 009C3EFD
+FLD [EAX+3Ch]  -> arg2                    ; 009C3F1C
+FLD [EAX+38h]  -> arg1                    ; 009C3F23
+CALL BSP_Random_UniformFloatRange, ECX=1  ; 009C3F29
+FSTP [ESI+A8h]                            ; 009C3F2E
+```
+
+So **`approach->+A8h = Uniform((approach->+14h)->+38h, (approach->+14h)->+3Ch)`**, a per-aircraft
+random dive floor drawn once at construction between two bounds carried by the record at
+`approach+14h`. The next field is the contrast: `009C3F34`-`009C3F3F` takes `approach->+ACh`
+straight from `tuning+4CCh`, `Pilot/DiveBomb/BeginAltRange/1`.
+
+**The record is not identified.** `approach+14h` is read at `009C3EFD` with no writer in this
+function: the head calls `0042E740` for `tuning+4D8h` `Pilot/DiveBomb/ReferenceSpeed` and hands it
+to the base approach constructor `009F9CE0` at `009C3ED5`, so the field is written there. It is the
+same record the aimdive interpolations read `+5Ch` and `+60h` from, so one trace into `009F9CE0`
+would settle three unknowns at once.
+
+Until then the host keeps its labelled substitution of `800` for `approach+A8h`, and the
+`Follow-up packets` entry becomes specific: **trace `approach+14h` to its producer in `009F9CE0`**.
+
+`006E3500`'s per-device round count was not reached in this packet and stays untouched.
+
+## `+19h` recovered: the roll-in fires once the target is behind the wing line
+
+The earlier reading said this slot had no writer. **That was the ESP-depth trap**, and
+`tools/frame_slot_census.py` with the call cleanups supplied finds it at once: frame slot **K=104**
+groups `[ESP+30h]` at `009C67A9` with `[ESP+44h]` at `009C65FD`, the same slot at two depths. A
+naive grep for the literal offset cannot see that, which is exactly what
+`docs/WORKER_VERIFICATION_CHECKLIST.md` means by tracing values rather than offsets.
+
+The chain to the first and decisive condition:
+
+| address | step |
+| --- | --- |
+| `009C673F`-`009C674F` | wrap the angle into `[0, 2pi)` by adding the `2pi` at `00CE3828` when it is negative |
+| `009C6765` | `BSP_Math_SubtractWrappedAngle(other, that)`, giving the bearing error |
+| `009C676A` | store it |
+| `009C6774`-`009C678A` | fold it to its absolute value with the usual `-0.0f` subtract |
+| `009C6796` | store the folded error |
+| `009C67A3` | `FCOMIP` it against the **double `1.600000023841858`** at `00CE3D48` |
+| `009C67A7` | `JA` sets `flyabove+19h = 1` |
+
+So:
+
+```
+flyabove->+19h = 1   when |bearingError| > 1.6 rad  (91.7 degrees)
+                or   when the clamped slot K=104 is not positive
+```
+
+**1.6 radians is 91.7 degrees: the target is behind the wing line.** That is precisely when a dive
+bomber rolls in, and it explains the state's name: `flyabove` flies over the target and waits until
+it has passed before committing.
+
+The second arm is `009C67A9` `COMISS`/`009C67AE` `JC`, and the slot it tests is `max(x, 0)` from
+`009C65E3`-`009C65FD`, so the arm is `x <= 0`. **`x`'s own producer is one level further back and is
+not established**, so `dive_bomb_flyabove_roll_in_009c67b0` takes it as a caller-supplied input and
+the host still substitutes for that half.
+
+### The census run that found it
+
+```
+python tools/frame_slot_census.py 009c62b0 --pop 009c62cf=4 --pop 009c6342=4 --pop 009c63bf=0 \
+  --pop 009c6404=0 --pop 009c647b=4 --pop 009c64ec=4 --pop 009c6705=4 --pop 009c6728=0 \
+  --pop 009c6b3a=24
+```
+
+Without the cleanups the walker refuses after the first indirect call and the depths are not
+comparable; the pops are the four-byte `RET 4` of each virtual call, zero for the two `00BF701A`
+x87 helpers, and twenty-four for `007F0280`, which the attackrun tick calls with six pushes.

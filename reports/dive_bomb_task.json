@@ -12,7 +12,7 @@
     "src/game_hosts_script_orders.cpp",
     "cmake/startup.cmake"
   ],
-  "ghidra_mutated": false,
+  "ghidra_mutated": true,
   "new_native_body_reconstructed": true,
   "original_abi": {
     "009c8790": "ECX task; one stacked float dt; RET 4; no Ghidra function, body 009C8790-009C88D5 inclusive, INT3 from 009C88D6",
@@ -35,7 +35,8 @@
     "007c1db0": "ECX unit; no stacked argument; body 007C1DB0-007C1DE4",
     "009c44f0": "ECX turndown state; one stacked float dt the body never reads; RET 4 at 009C46A7, 009C46C6 and 009C4736; body 009C44F0-009C4736",
     "007c47f0": "ECX record; no stacked argument; ST0 result",
-    "009c4220": "ECX attackrun state; one stacked float dt at [ESP+44h]; RET 4 at 009C447B; body 009C4220-009C447D"
+    "009c4220": "ECX attackrun state; one stacked float dt at [ESP+44h]; RET 4 at 009C447B; body 009C4220-009C447D",
+    "009c62b0": "ECX flyabove state; one stacked float dt; RET 4 at 009C706C and 009C7083, both after ADD ESP,88h; body 009C62B0-009C7085 inclusive, INT3 from 009C7086. Had no Ghidra function; defined by tools/ghidra_define_function.py, 3542 bytes"
   },
   "calls": [
     {
@@ -503,6 +504,12 @@
       "address": "009c4220",
       "native": "009c4220",
       "name": "BSP_BotStateDiveBombAttackRun_Tick"
+    },
+    {
+      "address": "009c62b0",
+      "native": "009c62b0",
+      "name": "BSP_BotStateDiveBombFlyAbove_Tick",
+      "note": "defined in Ghidra by this packet"
     }
   ],
   "no_ghidra_function": [
@@ -540,11 +547,6 @@
       "start": "009c7270",
       "end_inclusive": "009c727f",
       "name": "BSP_BotStateDiveBombDone_Tick"
-    },
-    {
-      "start": "009c62b0",
-      "end_inclusive": "unread",
-      "name": "the flyabove tick, vtable 00D20D04 slot +Ch; censused for its writes only"
     }
   ],
   "vtables": {
@@ -629,5 +631,7 @@
   "gate_1_reading": "approach+BCh's producer is 009C7B4F-009C7B80 inside 009C7A80: the planar distance between approach->vtable[0]()'s point and the pose world position, with an early approach+D0h = 0 and return at 009C7B0A when approach+48h is null. The target position is not a command-block field. Upstream of that: no aircraft in IJN01 or USN01 ever receives the divebomb command class 00E08F20. USN01 has exactly five PilotSetTarget orders, all Mav1..Mav5, all resolved to the torpedo class 00E08F18; IJN01 has none. The dive bombers hold an authored `artillery` order that 0046AAB0 resolves to attackmove 00E08F78 outright, which never reaches 007EEC50's ordnance chooser, so 0099A170 builds no attack task and nothing latches approach+48h. The 27 and 5 installs in the after-runs are the host's, not the image's. Fix location: run_dive_bomb_task_arm_009c8790 in src/game_hosts_units.cpp must gate on the divebomb class having been chosen, the analogue of the PilotSetTarget task: 0099A170 record the torpedo path emits, not on command_target_plus_one != 0. Open: ConSBD1's artillery row prints current=0 and store_unit_command_target fills only from current rows, so the non-zero command_target_plus_one these aircraft carry comes from a row this reading did not find. CLOSED: the non-zero command_target_plus_one comes from the aircraft's authored moveto row, not an attack order. IJN01 reports moveto x142 authored and resolved=142, an exact match, while the artillery x30 rows resolve to attackmove, carry no target and print current=0 so store_unit_command_target skips them. USN01 is the same with resolved=34. The commanded target is a movement target co-located with the aircraft, which is why both the pilot-attack range and approach+BCh difference to exactly 0.",
   "order_injection_reading": "--order <token>:<target> --order-unit <name> --order-frame N reaches GameUnitsHost::issue_player_command, which resolves the token against the scene-command registry the way 0046AAB0 does and places a command row; settarget is a registry row (src/entity_orders.cpp, class 00E08EF8). It does NOT run the chooser: 007EEC50 and the 0099A170 install live only in GameScriptOrdersHost::run_pilot_set_target, reached from the Lua binding PilotSetTarget 008A4C90 that a mission script calls. What the injection lacks is a route from a command-line switch to that function or to its tail, bsp::attack_command_choose plus bsp::bot_install_command_task_0099a170. Both would be edits to src/game_hosts.cpp and src/game_hosts_mission_frame.cpp, which this packet does not own.",
   "class_gate_contract": "include/bsp/dive_bomb_task.hpp carries kDiveBombCommandClass = 00E08F20 and dive_bomb_task_installed_for_class. The host edit is: GameUnitSlot gains attack_command_class, GameUnitsHost gains store_unit_attack_command_class, GameScriptOrdersHost::run_pilot_set_target calls it where `chosen` is already in hand, and run_dive_bomb_task_arm_009c8790 gates on the predicate instead of command_target_plus_one plus ordnance. With that gate IJN01 and USN01 both install zero dive-bomb tasks, which is the image's own behaviour.",
-  "roll_arm_gate_reading": "BSP_PilotBot_PlanControls is one routine 0099D300-0099EBAB, so 0099E2BA is a region. ROLL, slot 2, mode cmd+2CCh: the gate exists. 0099DDBE loads the task's mode into ECX; 0099DE8A CMP ECX,2 and 0099DE8D JNZ send anything but 2 to 0099E26E, past the planner's own MOV [ESI+2CCh],1 at 0099E264; 0099E26E CMP [ESI+2CCh],1 then tests the task's own value and 0099E275 JNZ skips the whole arm, so the task's cmd+290h at 0099E39D and its active byte at 0099E3AE are never written and 0099E3B5 never clears the mode. Two more jumps reach 0099E26E the same way, 0099DE63 and 0099DE6F. ECX is unambiguous: filtering 0099DDBE-0099DE8D for the register gives only the load, a TEST and the CMP. So mode 2 or 1 lets the planner write the bank, and anything else, including the 0 the turndown writes at 009C462F, leaves the task's roll standing: the native turndown's roll is NOT overwritten. PITCH, slot 3, mode cmd+2D0h: there was never an overwrite to gate. An exhaustive census of +298h, +29Ch and +2A0h across 0099D300-0099EBAB finds writes only at 0099D36F/0099D377 and 0099D679/0099D681, both in the early reset; the arm region only reads them at 0099E3ED, 0099E3F8 and 0099E402, and the 0099E3BF TEST/JNZ selects between two demand computations that converge. 0099E68D is MOVSS XMM0,[ESP+44h], a stack read, not a slot write."
+  "roll_arm_gate_reading": "BSP_PilotBot_PlanControls is one routine 0099D300-0099EBAB, so 0099E2BA is a region. ROLL, slot 2, mode cmd+2CCh: the gate exists. 0099DDBE loads the task's mode into ECX; 0099DE8A CMP ECX,2 and 0099DE8D JNZ send anything but 2 to 0099E26E, past the planner's own MOV [ESI+2CCh],1 at 0099E264; 0099E26E CMP [ESI+2CCh],1 then tests the task's own value and 0099E275 JNZ skips the whole arm, so the task's cmd+290h at 0099E39D and its active byte at 0099E3AE are never written and 0099E3B5 never clears the mode. Two more jumps reach 0099E26E the same way, 0099DE63 and 0099DE6F. ECX is unambiguous: filtering 0099DDBE-0099DE8D for the register gives only the load, a TEST and the CMP. So mode 2 or 1 lets the planner write the bank, and anything else, including the 0 the turndown writes at 009C462F, leaves the task's roll standing: the native turndown's roll is NOT overwritten. PITCH, slot 3, mode cmd+2D0h: there was never an overwrite to gate. An exhaustive census of +298h, +29Ch and +2A0h across 0099D300-0099EBAB finds writes only at 0099D36F/0099D377 and 0099D679/0099D681, both in the early reset; the arm region only reads them at 0099E3ED, 0099E3F8 and 0099E402, and the 0099E3BF TEST/JNZ selects between two demand computations that converge. 0099E68D is MOVSS XMM0,[ESP+44h], a stack read, not a slot write.",
+  "ghidra_mutation_note": "One function defined, 009C62B0-009C7085, through tools/ghidra_define_function.py under the write lock, at the lead's instruction; record in reports/dive_bomb_task_function_definitions.json. No renames, comments or prototypes.",
+  "substitutions_status": "flyabove+18h RECOVERED: (heightAboveTarget > approach+D4h), height built at 009C647D-009C6493. flyabove+19h RECOVERED in its decisive arm: |bearingError| > the double 1.600000023841858 at 00CE3D48, 91.7 degrees, so the roll-in fires once the target is behind the wing line; the error comes from the wrap at 009C6749, BSP_Math_SubtractWrappedAngle at 009C6765 and the fold at 009C6796. The earlier 'no writer' reading was the ESP-depth trap: frame slot K=104 groups [ESP+30h] at 009C67A9 with [ESP+44h] at 009C65FD, which tools/frame_slot_census.py finds once the call cleanups are supplied. The second arm tests max(x,0) <= 0 and x's producer is one level further back, not established, so that half is still a caller input. +1Ah untouched. approach+A8h rule recovered, record at approach+14h still unidentified, written by 009F9CE0. 006E3500 not reached."
 }
