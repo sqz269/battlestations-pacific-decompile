@@ -1,0 +1,242 @@
+{
+  "packet": "cc8_bank_command_inputs",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "ghidra_writes": false,
+  "doc": "docs/PILOT_BANK_COMMAND_INPUTS.md",
+  "owner": "agent/cc8-bank-inputs",
+  "named_routines": [
+    {
+      "address": "0047b880",
+      "name": "BSP_Unit_UsesSmallTurnRollLimit",
+      "abi": "__thiscall(unit ECX) -> AL",
+      "cleanup": "RET, no immediate (0 stack arguments)",
+      "body": "0047b880-0047b8bb",
+      "instructions": 29,
+      "behaviour": "!(this->vtable[5Ch](10h) || this->vtable[5Ch](16h))",
+      "state": "analyzed_only"
+    },
+    {
+      "address": "0099ba10",
+      "name": "BSP_Math_NormalizeAngleToPiByRef",
+      "abi": "__fastcall(float* out ECX, const float* angle EDX) -> EAX = out",
+      "cleanup": "RET, no immediate (0 stack arguments)",
+      "body": "0099ba10-0099ba8b",
+      "instructions": 41,
+      "behaviour": "*out = fmod(*angle, 2*pi) wrapped into (-pi, +pi]",
+      "state": "analyzed_only"
+    },
+    {
+      "address": "0099d0a0",
+      "name": "BSP_PilotBot_HeadingDiffCalc",
+      "abi": "__thiscall(plan ECX, float w) -> ST0",
+      "cleanup": "RET 4",
+      "body": "0099d0a0-0099d2f6",
+      "behaviour": "-sign(w) * Q * sin(a) * T, with a = clamp(|w|, HdgDiffCalcMinRoll, 1.5f); early returns 0.5f for a null unit and -w for |w| < 0.1",
+      "state": "verified_existing_reconstruction",
+      "reconstruction": "bsp::pilot_heading_diff_0099d0a0 in src/plane_ai_control.cpp"
+    }
+  ],
+  "calls_read": [
+    {
+      "address": "0047b88a",
+      "native": "0074e400",
+      "kind": "indirect",
+      "note": "CALL EDX through vtable slot 5Ch; 00D05F20+5Ch = 00D05F7C holds 0074E400 BSP_PlaneInstance_IsKindOf for a plane. Not a direct CALL instruction."
+    },
+    {
+      "address": "0099d6f1",
+      "native": "0099ba10",
+      "function": "0099d300",
+      "note": "normalises unit+9A8h before the planner stores plan+2C4h at 0099D700 and sets task+2CCh = 1 at 0099D711"
+    },
+    {
+      "address": "0099d736",
+      "native": "0099ba10",
+      "function": "0099d300",
+      "note": "normalises unit+9ACh before the planner stores plan+2BCh at 0099D745 and sets task+2D0h = 1 at 0099D756"
+    },
+    {
+      "address": "0099dfcc",
+      "native": "0047b880",
+      "function": "0099d300",
+      "note": "cap = 0047B880(unit) ? TurnRollLimitSmall : TurnRollLimitLarge, entering as min(maxBank, cap)"
+    },
+    {
+      "address": "0099e0c1",
+      "native": "0099d0a0",
+      "function": "0099d300",
+      "note": "the bank command's normalising scale C"
+    },
+    {
+      "address": "0099d104",
+      "native": "0042e740",
+      "function": "0099d0a0",
+      "note": "BSP_GameTuning_GetSingleton; EDI = result + 538h is the same tuning base the planner keeps in EBX"
+    },
+    {
+      "address": "0099d181",
+      "native": "00415690",
+      "function": "0099d0a0",
+      "note": "BSP_Math_ClampInPlace: clamps |w| into [HdgDiffCalcMinRoll, 1.5f] on the frame slot entry_ESP-1Ch"
+    },
+    {
+      "address": "0099d1b4",
+      "native": "00419010",
+      "function": "0099d0a0",
+      "note": "BSP_Math_InterpolateClamped(0, HdgDiffCalcLimit/1, class+25Ch TurnRoll, HdgDiffCalcLimit/2, a)"
+    },
+    {
+      "address": "0099d1c6",
+      "native": "0074e400",
+      "kind": "indirect",
+      "function": "0099d0a0",
+      "note": "CALL EAX through vtable slot 5Ch with 10h; the disjunction completed at 0099D1D5 with 16h is the complement of 0047B880"
+    },
+    {
+      "address": "007c1cf8",
+      "native": "00bf701a",
+      "function": "007c18b0",
+      "note": "LIBCRT atan2 producing unit+C84h, stored at 007C1D05"
+    }
+  ],
+  "class_fields": [
+    {
+      "offset": "class+18Ch",
+      "store": "007d23da",
+      "key_pointer": "00d06470",
+      "lua_key": "TravelSpeed",
+      "installed_value": 141.666672
+    },
+    {
+      "offset": "class+1A8h",
+      "store": "007d2547",
+      "key_pointer": "00d06428",
+      "lua_key": "RollSpd",
+      "installed_value": 1.22173
+    },
+    {
+      "offset": "class+1ACh",
+      "store": "007d2580",
+      "key_pointer": "00d0641c",
+      "lua_key": "PitchSpd",
+      "installed_value": 0.523599
+    },
+    {
+      "offset": "class+1BCh",
+      "store": "007d270f",
+      "key_pointer": "00d063c0",
+      "lua_key": "RollAccel",
+      "installed_value": 2.443461
+    },
+    {
+      "offset": "class+1C8h",
+      "store": "007d25f2",
+      "key_pointer": "00d06408",
+      "lua_key": "TurnRollSpd",
+      "installed_value": 0.10472
+    },
+    {
+      "offset": "class+25Ch",
+      "store": "007d28b2",
+      "key_pointer": "00d06358",
+      "lua_key": "TurnRoll",
+      "installed_value": 1.22173
+    }
+  ],
+  "tuning_fields": [
+    {
+      "offset": "tuning+48h",
+      "singleton": "+580h",
+      "store": "007e6fd4",
+      "lua_key": null,
+      "derivation": "SoftRollCtrl * (1 - SoftRollMul), 007E6FB3-007E6FCE",
+      "installed_value": 0.015
+    },
+    {
+      "offset": "tuning+4Ch",
+      "singleton": "+584h",
+      "store": "007e7212",
+      "key_pointer": "00d0753c",
+      "lua_key": "Pilot/General/HdgDiffCalcLimit/1",
+      "installed_value": 0.8
+    },
+    {
+      "offset": "tuning+50h",
+      "singleton": "+588h",
+      "store": "007e7280",
+      "key_pointer": "00d0753c",
+      "lua_key": "Pilot/General/HdgDiffCalcLimit/2",
+      "installed_value": 1.5
+    },
+    {
+      "offset": "tuning+54h",
+      "singleton": "+58Ch",
+      "store": "007e72d5",
+      "key_pointer": "00d07528",
+      "lua_key": "Pilot/General/HdgDiffCalcMinPitch",
+      "installed_value": 0.1
+    },
+    {
+      "offset": "tuning+58h",
+      "singleton": "+590h",
+      "store": "007e7316",
+      "key_pointer": "00d07514",
+      "lua_key": "Pilot/General/HdgDiffCalcMinRoll",
+      "installed_value": "DEG(5)"
+    }
+  ],
+  "constants": {
+    "00ce3800": "0.5f, the null-unit return of 0099D0A0",
+    "00ce380c": "1.5f, the upper clamp on |w|",
+    "00ce3814": "1.2f, the plan+2E8h a task writes at 009AC42B",
+    "00ce3828": "2*pi (double), 0099BA10",
+    "00ce3930": "20.0f, the seeded plan+2C8h",
+    "00ce3d18": "-pi (double), 0099BA10",
+    "00ce3d40": "0.8 (double), the yaw floor in 0099D0A0",
+    "00d7a218": "0.0f",
+    "00d7a24c": "1.0f, the seeded plan+2E8h and the rate cap",
+    "00d7a260": "-1.0f, the direct-command lower clamp",
+    "00d7a3a0": "0.1 (double), the small-angle shortcut threshold"
+  },
+  "no_ghidra_function": [
+    {
+      "address": "0074e400",
+      "inclusive_end": "0074e435",
+      "name": "BSP_PlaneInstance_IsKindOf",
+      "note": "NOT re-read in this packet. Its body range and behaviour are quoted from the existing ledger record written by packet cc_unit_lists. Identified here only as the target of vtable slot 5Ch in 00D05F20."
+    }
+  ],
+  "checks": {
+    "build": "scripts/build.ps1 Win32 Release /W4 /WX passed.",
+    "ctest": "reconstructed_math and tool_tests pass; no new test case added.",
+    "usn01": "3000 mission frames before and after; the per-aircraft table and the pilot attack summary are bit-identical. The only differing lines in the whole log are the log filename and three heap addresses.",
+    "usn02": "Same-tree paired run (predicate reverted vs applied), 3000 mission frames: the whole gunnery census is identical - candidates=3421 rejected=42192 gun_evaluations=4845 assigns=4845 clears=28576, shots=734 first_shot=1.40 s, hull=180 deaths=2 total_damage=18525.6. These differ from the docs/GAME_EXECUTABLE.md baseline (shots=215, hull=161, total_damage=14729.8), which predates intervening commits; the paired run shows none of that difference is this packet's."
+  },
+  "source_changes": [
+    "src/plane_ai_control.cpp: pilot_plan_roll_0099e2ba derives the TurnRollLimitSmall/Large choice from !in.scale.caps_rate_at_one instead of the caller's small_turn_roll_limit, because 0047B880 and the 0099D1C2 test are the same bit.",
+    "include/bsp/plane_ai_control.hpp: PilotBotRollInputs::small_turn_roll_limit documented as ignored, with the 0047B880 evidence."
+  ],
+  "limitations": [
+    "unit+AE0h..AE8h, the vector whose elevation is unit+C84h, has no disp32 writer in .text under the MOVSS, x87, MOV r32 or LEA forms. Its producer writes through a base pointer or a block copy and was not found, so whether unit+C84h is a flight-path angle or a second attitude pitch is OPEN. PARTIAL.",
+    "Class ids 10h and 16h are established as two concrete plane types between the plane base 0Fh and PlaneSquadronGen 18h, and planeglobals.lua glosses the corresponding limits as small versus large aircraft. Neither id has a recovered class-name literal. PARTIAL.",
+    "The seven other plan+2C8h writers (009B183C, 009B61AE, 009B9A80, 009C66CB, 009D2B1D, 009A3F66, 009B96CE) were located by byte scan but not read. PARTIAL.",
+    "0099ABE56 appeared in the plan+2E8h MOVSS scan but the stored listing has no instruction at that address; not resolved.",
+    "The installed vehicleclasses.lua carries local modifications, so every quoted class value is what this installation loads, not a retail value.",
+    "src/game_hosts_units.cpp:2516 still assigns the now-ignored small_turn_roll_limit and never sets caps_rate_at_one. The file belongs to another worker this turn; the change is stated as a contract, not made.",
+    "USN02 needs the single-instance mutex and a peer agent's bsp_game held it through three attempts (create_single_instance_mutex then error_message_box, exit 255). Both reported runs waited for it to clear.",
+    "The ordinal-5002 XLiveRender stub export needed to run at all is the team lead's fix on main (651b58bd1, merged 407e914b4); this packet commits no tools/xlive_stub change. The reported runs used a local copy of the same export, and the lead's baseline against the merged stub reproduces the USN02 after-run exactly."
+  ],
+  "store_sites": [
+    {
+      "store_address": "0099b52c",
+      "enclosing_function": "0099b450",
+      "note": "not a call: MOVSS [ECX+2E8h],XMM0 seeding plan+2E8h = 00D7A24C = 1.0f inside BSP_PilotBot_SeedPlanSlots"
+    },
+    {
+      "store_address": "0099b55e",
+      "enclosing_function": "0099b450",
+      "note": "not a call: MOVSS [ECX+2C8h],XMM0 seeding plan+2C8h = 00CE3930 = 20.0f"
+    }
+  ]
+}

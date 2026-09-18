@@ -399,10 +399,18 @@ struct PilotBotRollInputs {
     float dt_scale = 1.0f;       // 1 / max(unit+340h * 0.4, 1.0)
     float turn_scale_2e8 = 1.0f; // plan+2E8h, 1.0f out of the plan reset
     float bank_limit_2c8 = 20.0f;  // plan+2C8h, 20.0f out of the plan reset
-    // 0047B880(unit) picks TurnRollLimitSmall over Large. The predicate is NOT
-    // identified, so the caller says which cap it wants and this header does not
-    // pretend to know: `false` takes Large, and since the cap enters as
-    // min(maxBank, cap) the larger value is the weaker limit.
+    // IGNORED since packet cc8_bank_command_inputs, and kept only so existing
+    // callers still compile. 0047B880 is read now (0047B880-0047B8BB, RET 0,
+    // __thiscall(unit)): it returns `!(vtable[5Ch](10h) || vtable[5Ch](16h))`,
+    // and slot 5Ch on a plane is BSP_PlaneInstance_IsKindOf (0074E400, installed
+    // in vtable 00D05F20). 0099D0A0 tests the same disjunction on the same unit
+    // at 0099D1C2-0099D1D9 to set `caps_rate_at_one`, so the two are one bit and
+    // its complement and cannot be supplied independently. The law derives
+    // `!scale.caps_rate_at_one` instead. Class ids 10h and 16h sit between the
+    // plane base 0Fh and PlaneSquadronGen 18h (docs/ENTITY_CLASS_IDS.md), so
+    // they are two concrete plane types; every other plane takes the SMALL
+    // limit, and since the cap enters as min(maxBank, cap) Large is the weaker
+    // of the two.
     bool small_turn_roll_limit = false;
     PilotHeadingDiffInputs scale;   // the 0099D0A0 call at 0099E0C1
     // Tuning.

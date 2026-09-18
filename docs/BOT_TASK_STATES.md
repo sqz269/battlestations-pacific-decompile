@@ -408,3 +408,25 @@ the device at `unit+DECh` and the spawn behind `dev->+11h`; `ctl->+370h`'s produ
 - **Was:** the 009FBA50 argument list reads "009FBA50(alt, +38h, ., throttle)" with +38h taken as an approach field
   **Is:** +38h is the state object's own +38h (bot_task_state_off::kMoveToMode), read as a float
   **Evidence:** 009C1B09 FLD float ptr [EDI+38h], with EDI still holding the state's this from 009C18C9; EDI is not rewritten until 009C1B3D, after the call.
+
+## Correction from docs/TORPEDO_TASK_ARM.md (packet cc8_torpedo_task_arm)
+
+The torpedo section above says `009D25A0` "is its sibling with an explicit `bool` argument gating
+the same two lines". The function is `009D25A0`-`009D2719`, 379 bytes, and its non-forced arm is
+the whole range/bearing release gate that `docs/TORPEDO_TASK_ARM.md` section (3) transcribes; only
+the `force` arm is the two lines, and that arm is dead because its one caller passes `force = 0`.
+
+The same section says the torpedo release "fires on leaving `prepare`/`done` rather than from
+`attackrun`" and that the five remaining sites were not read. The exit-slot drop `009D2570` is
+real but is the fallback: the primary release is the done/prepare **tick** `009D2720`
+(`009D2720`-`009D2CF1`, now a Ghidra function), and the exit only fires when a countdown is still
+outstanding. `state+98h` is that countdown, not a flag; `009D49A0` (task vtable slot `+24h`)
+raises it, called over the bot's whole task vector by `BSP_PilotBot_Tick` at
+`0099AF90`-`0099AFAF`, spending one `unit+C58h` per tick. The release metric is time to target in
+seconds, recomputed inline at `009D2A35`-`009D2A52` as planar distance over speed. The torpedo
+`aim` state's tick is `009D15F0`-`009D2377` (now a Ghidra function); it has no release.
+
+Step 7 of `009A66C0` is read above as `(*(unit+72Ch))->vtable[+38h]()`. On the torpedo arm the
+equivalent site loads `ECX` with `unit+72Ch` itself (`LEA ECX,[EAX+72Ch]` at `009D491D`), so the
+object is embedded at `unit+72Ch` rather than pointed to from it. The depth-charge site was not
+re-read in that packet; the two may differ.
