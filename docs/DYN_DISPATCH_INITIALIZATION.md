@@ -139,3 +139,12 @@ PE static words match, and a different live owner is rejected. Collision methods
 are not executed. Reports include exact input generation, code/image/artifact
 hashes and logs. No mission, gameplay, full-task execution or native binary/EH
 compatibility claim follows from these checks.
+
+## Follow-up from docs/NATIVE_DYN_CONVEX_SIMPLEX_R139.md
+
+R139 reconstructs the complete 9,541-byte C3CC30 simplex reducer used by
+C51EF0. It preserves the native x87 schedule, point/witness copies and all four
+count paths. Exact comparisons pass directly and inside the copied general-
+convex parent chain using the existing convex support methods. C51EF0,
+C53010, C51C20, C48BE0 and C535E0 remain read-only native references in this
+packet; the complete general-convex source dispatcher is still pending.
