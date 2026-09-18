@@ -93,8 +93,12 @@ affect the second through descriptor mutation or listener replacement.
   allocations. Actual integration, group creation, both solvers, group cleanup
   and native physics destruction run; 101 native-unclosed handles are closed
   by the fixture. Actual pool trim and process atexit leave zero tracked allocations.
-- The application launch was refused immediately because another harness held
-  the game slot. No new application or gameplay result is claimed.
+- The source-build application launch was refused immediately because another
+  harness held the game slot. After integration the slot became available:
+  the combined executable completed a one-frame launch with exit 0, a window
+  and D3D device, zero presented frames, one skipped present and 45 unimplemented
+  host methods. This checks startup only; raw physics admission and gameplay
+  remain unproved.
 
 These are explicit source interfaces with private context adapters, not certified
 original ABI replacements. FH3 registration/unwind, allocation failure, hardware
