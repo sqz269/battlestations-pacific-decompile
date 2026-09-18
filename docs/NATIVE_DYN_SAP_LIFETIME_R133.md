@@ -92,3 +92,12 @@ replaces the controlled scalar for that class and compares36 native/source cases
 790 observations /20,777,328 normalized bytes. R133's sealed controlled-attachment
 fixture remains historical evidence. Other shape classes and virtual methods,
 native exception ABI, raw-game admission and gameplay remain open.
+
+## Correction from docs/NATIVE_DYN_SAP_PAIRS_R136.md
+
+R136 supplies seven complete normal pair-storage and enumeration bodies (761
+bytes), reusing R133's indexed removal and cleanup over actual constructed SAP
+storage. Six native/source pairs match 38,523,008 exact bytes, 2,240 allocator
+events and 90 full snapshots. The complete SAP table still depends on endpoint
+updates and both incremental and >50 pending batch processing paths. These pair
+fixtures do not establish complete-world behavior or gameplay.
