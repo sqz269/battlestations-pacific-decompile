@@ -323,3 +323,14 @@ substep's weight `m * g * dt` as the normal impulse and leaves friction at zero.
 | start | inclusive end | evidence |
 | --- | --- | --- |
 | none | | Every address named or reconstructed in this document lies inside an existing Ghidra function body, checked with `python tools/bsp.py ghidra proto <addr> --brief` for `00403720`, `00C4F040`, `00C31C30`, `00C4DE40`, `00C42BA0`, `00C42530`, `00C42230`, `00C37B50`, `00C35020` and `00C41AD0`. |
+
+## Correction and complete second solver from R147
+
+`docs/NATIVE_DYN_SOLVER_MODE1_R147.md` reconstructs the complete normal
+00403850 task and nine mode-1 callees, including actual profile cache/current
+node updates, child creation and four timestamp boundaries. The separate
+per-manifold row allocation rounds manifold count to four and uses byte
+capacity, unlike mode 0. Returning-free gaps at 004038F1, 00403905, 00C3519E
+and 00C5C83D are repaired. The `dyn_lcp_solver2` implementation follow-up above
+is therefore supplied for normal return; its broader selector-author question,
+native exception behavior, application execution and gameplay remain open.
