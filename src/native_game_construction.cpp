@@ -74,6 +74,11 @@ void NativeGameConstructionCalls::call_0087d7b0(void* owner,NativeGlobalConfigLo
 void NativeGameConstructionCalls::call_00717e80(NativeGameResourceParsersContext& c){
     register_native_game_resource_parsers_00717e80(c);
 }
+void* NativeGameConstructionCalls::call_0070bd70(void* p,float argument,NativeGameGridContext* c,
+    const NativeGameGridDescriptorPreimage& preimage,NativeGameGridOperation& op){
+    if(!c)throw std::logic_error("Native game requires its actual grid renderer context");
+    return construct_native_game_grid_0070bd70(p,argument,preimage,*c,op);
+}
 std::uint32_t NativeGameConstructionCalls::call_00be4800(){
     return static_cast<std::uint32_t>(frame_job_processor_count_00be4800());
 }
@@ -100,6 +105,7 @@ NativeGameConstructionOperation::~NativeGameConstructionOperation(){
 void NativeGameConstructionOperation::acknowledge_diagnostic_cleanup() noexcept {
     if(phase==Phase::failed){
         if(global_configuration.retains_native_state())std::terminate();
+        for(const auto& grid:grids)if(grid.phase==NativeGameGridOperation::Phase::failed||grid.phase==NativeGameGridOperation::Phase::running)std::terminate();
         profile.acknowledge_diagnostic_cleanup();embedded.acknowledge_diagnostic_cleanup();
         for(auto& array:arrays)array.acknowledge_diagnostic_cleanup();phase=Phase::diagnostic_retired;
     }
@@ -175,15 +181,15 @@ NativeGameStorage* construct_native_game_004ddb90(NativeGameStorage& storage,
         a.native_site=0x004ddfc9;calls.call_00717e80(c.resource_parsers);
         a.native_site=0x004ddfd3;a.current_allocation=calls.allocate_00bf681b(0x84);
         a.unwind_state=37;void* value=nullptr;
-        if(a.current_allocation){const float argument=positive_zero();a.native_site=0x004ddff0;value=calls.call_0070bd70(a.current_allocation,argument);}
+        if(a.current_allocation){const float argument=positive_zero();a.native_site=0x004ddff0;value=calls.call_0070bd70(a.current_allocation,argument,c.grids,c.grid_descriptor_preimages[0],a.grids[0]);}
         a.unwind_state=36;c.actual_00e19b0c=value;
         a.native_site=0x004de008;a.current_allocation=calls.allocate_00bf681b(0x84);
         a.unwind_state=38;value=nullptr;
-        if(a.current_allocation){const float argument=spill(c.constants.argument_00ce7d20);a.native_site=0x004de029;value=calls.call_0070bd70(a.current_allocation,argument);}
+        if(a.current_allocation){const float argument=spill(c.constants.argument_00ce7d20);a.native_site=0x004de029;value=calls.call_0070bd70(a.current_allocation,argument,c.grids,c.grid_descriptor_preimages[1],a.grids[1]);}
         a.unwind_state=36;c.actual_00e19b08=value;
         a.native_site=0x004de041;a.current_allocation=calls.allocate_00bf681b(0x84);
         a.unwind_state=39;value=nullptr;
-        if(a.current_allocation){const float argument=spill(c.constants.argument_00ce7d1c);a.native_site=0x004de062;value=calls.call_0070bd70(a.current_allocation,argument);}
+        if(a.current_allocation){const float argument=spill(c.constants.argument_00ce7d1c);a.native_site=0x004de062;value=calls.call_0070bd70(a.current_allocation,argument,c.grids,c.grid_descriptor_preimages[2],a.grids[2]);}
         a.unwind_state=36;c.actual_00e19b04=value;
         a.native_site=0x004de075;calls.call_00727bd0(c.tables);
         a.native_site=0x004de07c;a.current_allocation=calls.allocate_00bf681b(0x14);

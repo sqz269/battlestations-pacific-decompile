@@ -20,6 +20,7 @@
 #include "bsp/plane_attitude_angles.hpp"
 #include "bsp/plane_ai_control.hpp"
 #include "bsp/unit_rudder.hpp"
+#include "bsp/torpedo_task_arm.hpp"
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_observer_runtime.hpp"
@@ -303,6 +304,30 @@ struct GameUnitSlot {
     float attack_hdg_err_first{-1.0f};
     float attack_hdg_err_last{-1.0f};
     float attack_pitch_last{0.0f};
+    // The torpedo bot task (kind Eh) this ordered aircraft runs, when its
+    // class carries torpedo ordnance (kind 2Bh). docs/TORPEDO_TASK_ARM.md.
+    // The task object itself is src/bot_tasks.cpp's; what lives here is the
+    // per-slot state the arm 009D4850 reads and writes.
+    bool torpedo_task_installed{false};
+    bsp::TorpedoState torpedo_state{bsp::TorpedoState::kNone};
+    int torpedo_state_ticks[8]{0, 0, 0, 0, 0, 0, 0, 0};
+    int torpedo_arm_ticks{0};
+    int torpedo_releases{0};
+    int torpedo_transitions{0};
+    // task+424h, the manual-release budget the arm's passthrough spends.
+    int torpedo_rounds_pending{0};
+    // prepare+98h (task+7D8h), the countdown 009D49A0 raises.
+    float torpedo_drop_timer{-1.0f};
+    // The values 009D3420 would produce. That routine is 009D3420-009D3E3F,
+    // 2592 bytes, unread: contract. Its outputs are the whole state machine's
+    // input, so they stay at their constructed values here and the census
+    // names them as the blocking gate.
+    bool torpedo_aim_flag_529{false};    // approach+131h
+    bool torpedo_attack_flag_52a{false};  // approach+132h
+    float torpedo_engage_range_8c{0.0f};  // task+484h == approach+8Ch
+    float torpedo_engage_limit_90{0.0f};  // task+488h == approach+90h
+    int torpedo_blocked_by_engaged{0};
+    int torpedo_blocked_by_arm{0};
     float plane_live_throttle{1.0f};
     float plane_live_air_brake{0.0f};
     float plane_latched_controls[3]{0.0f, 0.0f, 0.0f};
@@ -2314,6 +2339,230 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     //   so only the think interval is modelled. A plane here
                     //   thinks unconditionally; the native's would also need a
                     //   live task.
+                    // ------------------------------------------------
+                    // 009D4850, the torpedo task's per-tick arm (task vtable
+                    // slot +64h). docs/TORPEDO_TASK_ARM.md carries the rules.
+                    //
+                    // This host has no bot object and no task vector, so the
+                    // slot below stands in for the single torpedo task an
+                    // ordered aircraft would carry. Every native call site the
+                    // arm reaches is a method on this host; the ones whose
+                    // bodies this packet did not read are recorded through the
+                    // unimplemented-host mechanism.
+                    // ------------------------------------------------
+                    struct TorpedoArmBinding final : bsp::TorpedoTaskHost {
+                        TorpedoArmBinding(GameUnitsHost::Impl& owner,
+                                          GameUnitSlot& slot)
+                            : owner_(owner), slot_(slot) {}
+
+                        // --- BotTaskStateHost, the shared half ---
+                        void register_state_name(void*, const char*, void*) override {}
+                        void exit_state(void*) override {}
+                        void enter_state(void*) override {}
+                        void tick_state(void*, float) override {}
+                        void set_desired_speed(void*, float) override {}
+                        void update_approach(void*, float) override {}
+                        void refresh_move_to_ranges(void*, float, float, float) override {
+                            // 009BDE80 at 009D48CF. contract: unread body.
+                            record("BotStateMoveTo::refresh_ranges", "009bde80");
+                        }
+                        bool unit_has_no_follow_target(const void*) override {
+                            // 007B8AD0: unit->+9D8h == 0. This host has no
+                            // follow target, so the answer is always yes.
+                            return true;
+                        }
+                        bool should_break_off(void*) override {
+                            // task->vtable[1Ch] == 009D4C10. contract: unread.
+                            record("BotTaskTorpedo::should_break_off", "009d4c10");
+                            return false;
+                        }
+                        bool manual_release_requested(void*) override {
+                            // (unit+72Ch)->vtable[38h] at 009D4923.
+                            record("Unit::device_requests_release", "009d4923");
+                            return false;
+                        }
+                        void request_ordnance_release(void*) override {
+                            // 007BBBA0 at 009D4956/009D26F8/009D2938/009D29CB.
+                            // The device at unit+DECh and the projectile spawn
+                            // behind it are this packet's contract.
+                            record("Unit::request_ordnance_release", "007bbba0");
+                            ++slot_.torpedo_releases;
+                        }
+                        float unit_altitude(const void*) override {
+                            return slot_.motion.position[1];
+                        }
+                        float random_between(float low, float) override { return low; }
+                        float sample_heading_offset(void*, int) override { return 0.0f; }
+                        float add_wrapped_angle(float base, float delta) override {
+                            // 00438AA0: add and wrap into [0, 2pi).
+                            float v = base + delta;
+                            const float two_pi = 6.2831855f;
+                            while (v >= two_pi) v -= two_pi;
+                            while (v < 0.0f) v += two_pi;
+                            return v;
+                        }
+                        void command_altitude_and_throttle(void*, float, float, float,
+                                                           float) override {}
+                        void write_command_word(void*, int, int) override {}
+                        void write_command_byte(void*, int, unsigned char) override {}
+                        void write_command_float(void*, int, float) override {}
+                        void set_arm_request(void*, bool) override {}
+                        void set_weapon_selector(void*, int) override {}
+                        void consume_round(void*) override {}
+
+                        // --- TorpedoTaskHost, the torpedo half ---
+                        void update_torpedo_approach_009d3420(void*, float) override {
+                            // 009D3420-009D3E3F, 2592 bytes. It produces every
+                            // input of the state machine: approach+131h/+132h
+                            // (task+529h/+52Ah), +8Ch/+90h (task+484h/+488h),
+                            // +74h/+78h, +7Ch/+80h, +134h. contract: unread.
+                            record("BotApproachTorpedo::update", "009d3420");
+                        }
+                        bsp::TorpedoTransitionInputs read_transition_inputs(void*) override {
+                            bsp::TorpedoTransitionInputs in;
+                            in.current = slot_.torpedo_state;
+                            in.engaged.aim_flag_529 = slot_.torpedo_aim_flag_529;
+                            in.engaged.has_engage_target_4c4 =
+                                slot_.command_target_plus_one != 0;
+                            in.engaged.pilot_control_mode_370 = 0;
+                            in.engaged.unit_has_no_follow_target = true;
+                            in.engaged.engage_range_484 = slot_.torpedo_engage_range_8c;
+                            in.engaged.engage_range_scale = 1.0f;
+                            in.engaged.engage_range_limit_488 =
+                                slot_.torpedo_engage_limit_90;
+                            in.entry.pilot_control_mode_370 = 0;
+                            in.entry.attack_flag_52a = slot_.torpedo_attack_flag_52a;
+                            in.entry.control_flag_369 = false;
+                            in.entry.global_e17bf2 = false;
+                            in.entry.aim_flag_529 = slot_.torpedo_aim_flag_529;
+                            in.unit_has_no_follow_target = true;
+                            in.should_break_off = false;
+                            in.aim_hold_009d31b0 = false;
+                            in.goaway_done_009d3150 = false;
+                            return in;
+                        }
+                        void set_state(void*, bsp::TorpedoState next) override {
+                            slot_.torpedo_state = next;
+                            ++slot_.torpedo_transitions;
+                        }
+                        float time_to_target_009d1500(void*) override {
+                            // 009D2A44-009D2A52 recomputes the same metric
+                            // inline: planar distance over the reference speed.
+                            record("BotApproachTorpedo::time_to_target", "009d1500");
+                            return 0.0f;
+                        }
+                        float bearing_error_to_target(void*, void*) override {
+                            return (slot_.attack_hdg_err_last < 0.0f)
+                                ? 0.0f : slot_.attack_hdg_err_last;
+                        }
+                        float unit_bank_c68(const void*) override {
+                            return std::fabs(slot_.plane_bank_angle_c68);
+                        }
+                        void approach_committed_hook_009d1360(void*) override {
+                            record("BotApproachTorpedo::committed_hook", "009d1360");
+                        }
+                        void follow_base_tick_009c1fd0(void*, float) override {
+                            record("BotStateFollow::tick", "009c1fd0");
+                        }
+                        void steer_toward_target_009f9e40(void*) override {
+                            record("BotApproach::steer_to_point", "009f9e40");
+                        }
+                        void clear_approach_1c_field40(void*) override {}
+                        float read_drop_timer(void*) override {
+                            return slot_.torpedo_drop_timer;
+                        }
+                        void write_drop_timer(void*, float value) override {
+                            slot_.torpedo_drop_timer = value;
+                        }
+                        bool pilot_control_has_target(void*) override {
+                            return slot_.command_target_plus_one != 0;
+                        }
+                        int rounds_pending(void*) override {
+                            return slot_.torpedo_rounds_pending;
+                        }
+                        void spend_pending_round(void*) override {
+                            if (slot_.torpedo_rounds_pending > 0) {
+                                --slot_.torpedo_rounds_pending;
+                            }
+                        }
+                        void set_plan_step_scratch(void*, int) override {}
+                        void commit_plan_step_result(void*) override {}
+                        float approach_speed_for_arm(void*) override {
+                            // 009D4886/009D4890 over approach+134h, +7Ch, +80h,
+                            // all of them 009D3420's outputs.
+                            return bsp::torpedo_arm_speed_009d4886(0.0f, 0.0f, 0.0f);
+                        }
+                        float approach_move_to_range_for_arm(void*) override {
+                            return bsp::torpedo_arm_move_to_range_009d48ac(0.0f, 0.0f);
+                        }
+                        void* move_to_state(void* task) override { return task; }
+
+                      private:
+                        void record(const char* method, const char* address) {
+                            owner_.log.unimplemented(method, address);
+                        }
+                        GameUnitsHost::Impl& owner_;
+                        GameUnitSlot& slot_;
+                    };
+
+                    // 0099A170 builds a kind Eh task only for a unit whose
+                    // class carries torpedo ordnance (kind 2Bh, 007ED8D0 ->
+                    // 007B93F0) under a PilotSetTarget-class order.
+                    void run_torpedo_task_arm_009d4850(float dt) {
+                        const bsp::OrdnanceKindSet set{unit_.ordnance_mask};
+                        if (unit_.command_target_plus_one == 0) return;
+                        if (!bsp::ordnance_has_torpedo_2bh(set)) return;
+                        if (!unit_.torpedo_task_installed) {
+                            unit_.torpedo_task_installed = true;
+                            // 009D3050 leaves +310h on the moveto/follow pair
+                            // 009D2DA0 registered; 009D24E0 leaves +98h at -1.
+                            unit_.torpedo_state = bsp::TorpedoState::kMoveTo;
+                            unit_.torpedo_drop_timer = -1.0f;
+                            owner_.log.notef("torpedo task 009D4E30 kind Eh installed "
+                                "for an ordered aircraft; arm 009D4850 runs on the "
+                                "0.09 s pilot think");
+                        }
+                        TorpedoArmBinding binding(owner_, unit_);
+                        bsp::TorpedoTaskContext ctx;
+                        ctx.task = &unit_;
+                        ctx.approach = &unit_;
+                        ctx.unit = &unit_;
+                        ctx.command_block = &unit_;
+                        ctx.pilot_control_block = &unit_;
+                        ctx.state = &unit_;
+                        ctx.prepare_state = &unit_;
+                        ctx.current = unit_.torpedo_state;
+                        const bsp::TorpedoArmTickResult r =
+                            bsp::torpedo_task_arm_009d4850(binding, ctx, dt);
+                        unit_.torpedo_state = ctx.current;
+                        ++unit_.torpedo_arm_ticks;
+                        const int bucket = torpedo_state_bucket(ctx.current);
+                        if (bucket >= 0) ++unit_.torpedo_state_ticks[bucket];
+                        // The two gates that stop the drop in this host, both
+                        // fed by the unread 009D3420.
+                        bsp::TorpedoEngagedInputs eng =
+                            binding.read_transition_inputs(&unit_).engaged;
+                        if (!bsp::torpedo_engaged_009d3210(eng)) {
+                            ++unit_.torpedo_blocked_by_engaged;
+                        } else if (!unit_.torpedo_attack_flag_52a) {
+                            ++unit_.torpedo_blocked_by_arm;
+                        }
+                        (void)r;
+                    }
+
+                    static int torpedo_state_bucket(bsp::TorpedoState s) {
+                        switch (s) {
+                            case bsp::TorpedoState::kMoveTo: return 0;
+                            case bsp::TorpedoState::kFollow: return 1;
+                            case bsp::TorpedoState::kDone: return 2;
+                            case bsp::TorpedoState::kAttackRun: return 3;
+                            case bsp::TorpedoState::kGoAway: return 4;
+                            case bsp::TorpedoState::kAim: return 5;
+                            case bsp::TorpedoState::kPrepare: return 6;
+                            default: return -1;
+                        }
+                    }
+
                     void pilot_think_and_commit(float step) {
                         // Gate 6, 0099AD0F..0099AD29. The accumulator absorbs
                         // the frame delta and the tick fires when it reaches
@@ -2342,6 +2591,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // the unit has a commanded target; every other slot
                             // keeps desired == current from the seed, so the
                             // other four axes stay bit-exact no-ops.
+                            // 009998A0's slow path runs the task arm before
+                            // the planner: 0099B740, task->vtable[64h](dt),
+                            // 009FC7C0, 009FD0E0, 009A17D0, then 0099D300.
+                            // Only the arm is modelled here; the three
+                            // sub-object updates are contracts.
+                            run_torpedo_task_arm_009d4850(elapsed);
+
                             if (plan_yaw_0099d300()) {
                                 ++owner_.summary.pilot_yaw_plans;
                             }
@@ -3813,6 +4069,62 @@ void GameUnitsHost::report() {
         } else {
             host.log.notef("summary mission pilot attack: no unit was ever ordered "
                 "at a target the yaw arm could plan for");
+        }
+
+
+        // The torpedo task census: per ordered aircraft the states its arm
+        // 009D4850 entered with tick counts, and the release requests
+        // 007BBBA0 it issued. docs/TORPEDO_TASK_ARM.md.
+        {
+            static const char* const kTorpedoStateNames[8] = {
+                "moveto", "follow", "done", "attackrun",
+                "goaway", "aim", "prepare", "?"};
+            std::size_t tasked = 0;
+            int releases_total = 0;
+            int blocked_engaged = 0;
+            int blocked_arm = 0;
+            for (const auto& slot : host.slots) {
+                if (!slot->torpedo_task_installed) continue;
+                ++tasked;
+                releases_total += slot->torpedo_releases;
+                blocked_engaged += slot->torpedo_blocked_by_engaged;
+                blocked_arm += slot->torpedo_blocked_by_arm;
+                char states[192];
+                int used = 0;
+                states[0] = '\0';
+                for (int k = 0; k < 7; ++k) {
+                    if (slot->torpedo_state_ticks[k] == 0) continue;
+                    const int n = std::snprintf(states + used,
+                        sizeof(states) - static_cast<std::size_t>(used),
+                        "%s%s=%d", used == 0 ? "" : " ",
+                        kTorpedoStateNames[k], slot->torpedo_state_ticks[k]);
+                    if (n <= 0) break;
+                    used += n;
+                    if (static_cast<std::size_t>(used) >= sizeof(states)) break;
+                }
+                if (used == 0) std::snprintf(states, sizeof(states), "(none)");
+                host.log.notef("  torpedo %-12s arm_ticks=%d transitions=%d "
+                    "states[%s] releases=%d",
+                    slot->row.name.c_str(), slot->torpedo_arm_ticks,
+                    slot->torpedo_transitions, states, slot->torpedo_releases);
+            }
+            if (tasked > 0) {
+                host.log.notef("summary mission torpedo task: aircraft=%zu "
+                    "releases=%d blocked_engaged_009d3210=%d blocked_arm_009d49a0=%d",
+                    tasked, releases_total, blocked_engaged, blocked_arm);
+                if (releases_total == 0) {
+                    host.log.notef("summary mission torpedo task: no release. The "
+                        "blocking gate is 009D3420, the approach update, whose "
+                        "outputs approach+131h/+132h (task+529h/+52Ah) and "
+                        "approach+8Ch/+90h (task+484h/+488h) are all 0 here: "
+                        "009D3210 refuses, so 009D49A0 never raises prepare+98h "
+                        "and 009D2720 never reaches 007BBBA0");
+                }
+            } else {
+                host.log.notef("summary mission torpedo task: no ordered aircraft "
+                    "carries torpedo ordnance (kind 2Bh), so 0099A170 builds no "
+                    "kind Eh task");
+            }
         }
     }
     host.commands.report();

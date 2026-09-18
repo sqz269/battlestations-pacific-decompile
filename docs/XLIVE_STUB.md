@@ -250,3 +250,54 @@ as a namespace-scope `const` object with static storage duration and line 1252
 passes that object, so the stored pointer is valid for the process lifetime.
 Commit `dc6b8b10` introduced the hoisted definition; `git log -L 46,50:src/game_hosts.cpp`
 shows it.
+
+## Correction from the cc8 integration run: ordinal 5002 (2026-09-17)
+
+The table above lists thirty ordinals because that is what `bsp_game.exe`
+resolved on 2026-09-12. The native end-frame binding that landed on 2026-09-16
+(`src/native_renderer_end_frame.cpp`, `NativeXLiveRenderImport`, commit
+`72b7604fc`) resolves a thirty-first at renderer startup and refuses to start
+without it, so from that commit until this one every run with the stand-in
+ended at startup with `startup failed: loaded XLive library lacks ordinal 5002`
+after the window was created and before the device was, `exit_code=1`, no
+mission census. Nothing in the stand-in had changed; the executable's demand
+had.
+
+| Ordinal | Export | IAT | Thunk | Call site | Containing function | Stack | No-op contract |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 5002 | XLiveRender | `00ce25d8` | `00c2f1cc` | `00b2daa2` | `00b2d8e0` `BSP_D3D9Renderer_EndFrameAndPresent` | 0 | returns `S_OK`; no Live guide overlay draws over the finished frame |
+
+Evidence: the thunk at `00c2f1cc` is `jmp dword ptr [00ce25d8]` (disk bytes),
+Ghidra already labels it `XLiveRender`, and the IAT cell is referenced by that
+thunk alone (`scan-bytes 'd8 25 ce 00'` finds one hit). The thunk's single
+caller is the unconditional `CALL 00c2f1cc` at `00b2daa2`, which follows the
+end-of-frame render-state restores (the `00b24460` calls ending at `00b2da9d`)
+and precedes the present path's device call. The installed `xlive.dll` exports
+ordinal 5002 under the name `XLiveRender`, the same name Ghidra's import gives
+it. The stand-in's `XLiveRender` takes no arguments (`_XLiveRender@0`, matching
+the host's `std::uint32_t (__stdcall*)()`), counts the call in its own slot and
+returns `S_OK`. The stand-in now exports thirty-one ordinals; the thirty rows
+above are unchanged.
+
+Ordinal 5331 (`XUserReadProfileSettings`) is also resolved on `main`, by
+`src/native_profile_settings.cpp`, but only inside the constructor
+`NativeProfileSettingsSdkRuntime(const XLiveLibrary&)`, which no other
+translation unit invokes: the player-profile owner that consumes the settings
+context receives one already built. It is therefore not on the run path and is
+not added here; when that constructor is bound, 5331 needs a row and an export
+of its own.
+
+Validation: the cc8 worktree at main `47f2321e1` plus this change builds clean (Win32, warnings as errors) and passes both CTests; the
+standing gunnery baseline `--frames 3200 --press-start-frame 30 --menu-select
+USN02 --mission-frames 3000 --mission-frame-seconds 0.05` with the rebuilt
+stand-in runs to completion (`device_created=1`, `frames_presented=3199`,
+`exit_code=0`) and reproduces milestone 2t's census exactly: `shots=734`,
+`hull=180`, `deaths=2`, `total_damage=18525.6`. The stand-in's ordinal 5002
+count is not in the run log because the log reports host methods, not stub
+slots; the run could not have created its device without the export.
+
+A run is two processes since the native-data bootstrap: the parent resumes a
+suspended copy of the executable as the real run, and the child writes the
+log. The executable is single-instance (WinMain's mutex, `008f8301`), so two
+concurrent runs on one machine leave the second run's child blocked on the
+modal already-running box and its parent waiting; serialize runs.

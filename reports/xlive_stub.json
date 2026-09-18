@@ -2,7 +2,7 @@
   "packet": "cc_xlive_stub",
   "owner": "agent/cc-xlive-stub",
   "doc": "docs/XLIVE_STUB.md",
-  "summary": "Offline stand-in DLL for the 30 xlive.dll ordinals bsp_game.exe resolves, plus the diagnosis of why the installed xlive.dll access-violates when bsp_game.exe loads it. The installed DLL is not a Games for Windows Live runtime: it is a debug-built harness for battlestationspacific.exe that binary-patches the host executable at six hard-coded offsets during DllMain. Under a host that is not that 12 MB executable the patch destinations are unmapped and the first memcpy faults.",
+  "summary": "Offline stand-in DLL for the 31 xlive.dll ordinals bsp_game.exe resolves (30 at first, XLiveRender 5002 added 2026-09-17), plus the diagnosis of why the installed xlive.dll access-violates when bsp_game.exe loads it. The installed DLL is not a Games for Windows Live runtime: it is a debug-built harness for battlestationspacific.exe that binary-patches the host executable at six hard-coded offsets during DllMain. Under a host that is not that 12 MB executable the patch destinations are unmapped and the first memcpy faults.",
   "ghidra_writes": "none. This packet is read-only for Ghidra; no address was named or annotated.",
   "leased_addresses": "none. Every thunk and call site cited already carries a reviewed name.",
   "crash": {
@@ -494,6 +494,20 @@
       "stack_bytes": 28,
       "host_loader": "src/xlive_sdk_adapter.cpp",
       "stub_contract": "returns ERROR_NO_SUCH_USER"
+    },
+    {
+      "ordinal": 5002,
+      "export": "XLiveRender",
+      "address": "00b2daa2",
+      "native": "00c2f1cc",
+      "function": "00b2d8e0",
+      "function_name": "BSP_D3D9Renderer_EndFrameAndPresent",
+      "iat": "00ce25d8",
+      "call_sites_in_executable": 1,
+      "stack_bytes": 0,
+      "host_loader": "src/native_renderer_end_frame.cpp",
+      "stub_contract": "returns S_OK; no Live guide overlay draws over the finished frame",
+      "added": "2026-09-17, after the native end-frame binding (commit 72b7604fc) began resolving it at renderer startup"
     }
   ],
   "not_exported": "battlestationspacific.exe imports 106 xlive.dll ordinals; the stand-in exports the 30 that bsp_game.exe's own loaders resolve with GetProcAddress(MAKEINTRESOURCEA(n)). The other 76 are reached only through the original executable's import table, which bsp_game.exe does not have. Exporting them would mean guessing a stack cleanup for each, and a wrong RET imm16 corrupts the caller's stack silently.",

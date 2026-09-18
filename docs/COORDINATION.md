@@ -142,3 +142,28 @@ existing default trailer path. These changes do not bypass leases or the Ghidra 
 It does not stop an agent that ignores the tools; it makes the honest path the easy path.
 It does not merge branches or resolve semantic conflicts; the integrator does. And it does
 not make Ghidra writes parallel: with one project, writes remain one at a time by design.
+
+## Running the executable: one at a time (cc8 correction, 2026-09-17)
+
+`bsp_game.exe` is single-instance: WinMain's mutex (`StartupHost::create_single_instance_mutex`,
+`008f8301`) makes a second instance show the modal "Battlestations: Pacific already running." box.
+Since the native-data bootstrap (`src/game_native_data_bootstrap.cpp`) every run is also two
+processes: the parent resumes a suspended copy of the executable as the real run, and that child
+writes the `--log` file. So when two agents launch runs from their own worktrees at the same time,
+the second run's child sits on the box, its parent waits, the log stops near 3 KB, and the stuck
+child keeps every later run colliding until both of its processes are killed. On 2026-09-17 three
+runs by three agents were lost this way inside twenty minutes.
+
+Launch the executable through `tools/run_game.ps1` from the worktree root:
+
+    ./tools/run_game.ps1 -Log local\usn02.log -- --frames 3200 --press-start-frame 30 \
+        --menu-select USN02 --mission-frames 3000 --mission-frame-seconds 0.05
+
+It takes the machine-wide lock file `%USERPROFILE%\.bsp\bsp_game.lock` (waiting up to fifteen
+minutes for the holder), also waits for any live `bsp_game.exe`, supplies `--game-root` and the
+stand-in `--xlive-dll` built next to the executable, runs through a pipe so PowerShell waits for
+the WIN32-subsystem process, prints the exit code and the log's census lines, and releases the
+lock. It never kills a process, because the live one may be another agent's run. If a run is
+found hanging (a `bsp_game.exe` window titled "Error"), stop both `bsp_game.exe` processes and
+delete the lock file. Worker briefs must name the wrapper; a bare `&` launch is how the
+collisions happened.
