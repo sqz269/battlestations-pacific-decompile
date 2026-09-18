@@ -160,4 +160,51 @@ ReleaseOrderIssueResult torpedo_issue_release_orders_007c0d90(
     return out;
 }
 
+// ---------------------------------------------------------------------------
+// ctl+370h, the attack mode. Evidence: docs/TORPEDO_ATTACK_MODE.md.
+// ---------------------------------------------------------------------------
+int pilot_control_set_attack_mode_007ed3f0(int mode) noexcept {
+    return mode;                                      // 007ED3F4
+}
+
+int pilot_control_raise_attack_mode_007ed430(int current, int mode) noexcept {
+    // 007ED434 CMP [ECX+370h],EAX; 007ED43A JGE skips the store, so the store
+    // happens only when the current value is strictly below the new one.
+    return (current < mode) ? mode : current;         // 007ED43C
+}
+
+int pilot_control_attack_mode_from_message_007f0068(
+    unsigned char payload) noexcept {
+    // 007F005B MOV CL,[EDI+20h]; NEG CL sets CF when the byte is non-zero;
+    // SBB ECX,ECX; AND ECX,2 -> 2 or 0; 007F0068 stores it.
+    return payload ? pilot_attack_mode::kForced : pilot_attack_mode::kHold;
+}
+
+CloseToShipModeResult closetoship_attack_mode_countdown_009a2810(
+    const CloseToShipModeCountdown& in) noexcept {
+    CloseToShipModeResult out;
+    out.timer_550 = in.timer_550;
+    out.latch_43c = in.latch_43c;
+    // 009A2819 COMISS against 0.0f (00D7A218); 009A2825 JBE takes the expired
+    // arm, so the running arm needs a strictly positive timer.
+    if (in.timer_550 > 0.0f) {
+        // 009A2827/009A282E: the latch stops the countdown dead.
+        if (in.latch_43c) return out;
+        const float t = in.timer_550 - in.dt;         // 009A2833
+        out.timer_550 = t;                            // 009A283F
+        // 009A2845 FLDZ; 009A2847 FCOMIP compares 0.0 with t and 009A284B JC
+        // returns while 0.0 < t, so the drop happens at or below zero.
+        if (t > 0.0f) return out;
+        out.lower_to_hold = true;                     // 009A285E
+        return out;
+    }
+    // 009A2869: the expired arm re-arms only from the forced mode.
+    if (in.mode_370 == pilot_attack_mode::kForced) {
+        out.latch_43c = true;                         // 009A287A
+        out.timer_550 = pilot_attack_mode::kForcedRearmSeconds;  // 009A2881
+        out.rearmed = true;
+    }
+    return out;
+}
+
 }  // namespace bsp

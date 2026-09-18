@@ -1,0 +1,308 @@
+{
+  "packet": "cc8_torpedo_attack_mode_lowering",
+  "owner": "agent/cc8-torpedo-aim-tick",
+  "question": "What lowers ctl+370h, the pilot attack mode, for the torpedo task? 009D3F69 and 009D40CB send an engaged task to prepare only while it is 0, and 009D49A0 arms the release countdown only in prepare.",
+  "answer": "Nothing a torpedo task runs lowers it. A complete store census (every form, disp8 and disp32, positive control on the two known sites) finds three writers on the pilot control block: the plain setter 007ED3F4, the raise-only setter 007ED43C, and the message dispatcher arm 007F0068. A complete rel32 call-site scan of the two setters finds four sites, one of which bsp.py ghidra callers misses. Only two write 0: 009A285E, the closetoship task's countdown, which arms only after the Lua binding 008A4B10 raises the mode to 2; and 007F0068, message BCh with a zero payload. An ordered torpedo bomber has a kind Eh task and no closetoship task, and nothing in the image builds message BCh with an immediate, so neither route fires. The mode goes to 1 on the flight leader's first cruise tick and stays there.",
+  "coverage": "reconstructed for 007ED3F0, 007ED430, the 007F0068 message arm and 009A2810; census for the writer set; contract: unread for the BCh message producer",
+  "doc": "docs/TORPEDO_ATTACK_MODE.md",
+  "tree_base": {
+    "merge_base_with_main": "9ac3fcbb72ab175394e43eb5e7c83e6417db2702",
+    "note": "main moved again before this packet, so the USN02 baseline is this tree's own before-run (hull=125 total_damage=13673.7), not the 853/119/3/12463.2 quoted in the brief."
+  },
+  "census_method": [
+    "Store forms: C7 /0, 89 /r, C6 /0, 88 /r, F3 0F 11 /r, D9 /3, D9 /2, F2 0F 11 /r, at disp8 and disp32, scanned over the whole .text rather than through bsp.py scan-bytes, which truncates its result list long before it reaches the high addresses.",
+    "Positive control: 007ED3F4 and 007ED43C must appear, and both did, so a clean negative on the byte and float forms is evidence rather than a vacuous miss.",
+    "28 sites image wide at a +370h field; 3 on the pilot control block, 25 on unrelated objects that share the offset.",
+    "Call sites: rel32 E8/E9 scan of .text plus an absolute-address search of .text, .rdata and .data for each setter. Four sites, against the two that bsp.py ghidra callers returns."
+  ],
+  "writers": [
+    {
+      "address": "0099b774",
+      "native": "007ed3f0",
+      "function": "0099b740",
+      "mode": 1,
+      "role": "the flight leader's cruise-profile tail"
+    },
+    {
+      "address": "0084db86",
+      "native": "007ed3f0",
+      "kind": "no_ghidra_function",
+      "function": "0084db50",
+      "mode": 1,
+      "role": "a second raiser; the site bsp.py ghidra callers misses"
+    },
+    {
+      "address": "009a285e",
+      "native": "007ed3f0",
+      "function": "009a2810",
+      "kind": "tail_jump",
+      "mode": 0,
+      "role": "the closetoship countdown's expiry, the only setter route to 0"
+    },
+    {
+      "address": "008a4c41",
+      "native": "007ed430",
+      "function": "008a4b10",
+      "mode": 2,
+      "role": "BSP_LuaBinding_PilotStopCloseToShip"
+    }
+  ],
+  "calls": [
+    {
+      "address": "009a2b56",
+      "native": "009a2810",
+      "function": "009a2b00",
+      "kind": "no_ghidra_function",
+      "role": "the closetoship vtable +64h arm, the countdown's only caller"
+    },
+    {
+      "address": "007f007b",
+      "native": "007ed610",
+      "function": "007f0030",
+      "role": "message BEh, the flight-leader rotation"
+    },
+    {
+      "address": "0084db59",
+      "native": "0071c130",
+      "function": "0084db50",
+      "kind": "no_ghidra_function",
+      "role": "the raiser's first call"
+    },
+    {
+      "address": "0084db79",
+      "native": "009f6dd0",
+      "function": "0084db50",
+      "kind": "no_ghidra_function",
+      "role": "the raiser's second call"
+    }
+  ],
+  "message_dispatcher": {
+    "function": "007f0030",
+    "id_at": "msg+10h, read at 007F003B",
+    "range": "4Bh..BEh, biased by 4Bh at 007F003F and bounded at 007F0042",
+    "tables": {
+      "case_index": "007f0204",
+      "jump": "007f01e8"
+    },
+    "arms": {
+      "BCh": "007f005b: ctl+370h = msg->+20h ? 2 : 0 (NEG/SBB/AND 2), stored at 007F0068",
+      "BEh": "007f0077: 007ED610(ctl, msg->+1Ch), the flight-leader rotation",
+      "4Bh": "007f008c",
+      "4Ch": "007f00d6",
+      "7Fh": "007f0115",
+      "80h": "007f0178",
+      "default": "007f01da"
+    },
+    "producer": "contract: unread. Scans for MOV byte [reg+10h],BCh, MOV dword [reg+10h],BCh, PUSH 0BCh and MOV reg,0BCh return no surviving site, so the id reaches the message from a table or enum."
+  },
+  "consumers_checked": [
+    {
+      "address": "009d3f69",
+      "test": "CMP dword [EAX+370h],0; 009D3F71 JNZ",
+      "result": "falls through at 0 and sets task+310h = task+740h (prepare), tail-jumping its enter at 009D3F9D"
+    },
+    {
+      "address": "009d40cb",
+      "test": "CMP dword [EAX+370h],0; 009D40D2 JNZ",
+      "result": "falls through at 0 and calls 009D3E40(task, task+740h)"
+    }
+  ],
+  "named_routines": [
+    {
+      "address": "007ed3f0",
+      "name": "BSP_PilotControl_SetAttackMode",
+      "native": "007ed3f0",
+      "evidence": "unconditional store at 007ED3F4, RET 4 at 007ED3FA"
+    },
+    {
+      "address": "007ed430",
+      "name": "BSP_PilotControl_RaiseAttackMode",
+      "native": "007ed430",
+      "evidence": "007ED434 CMP / 007ED43A JGE skips the store, so it raises only"
+    },
+    {
+      "address": "009a2810",
+      "name": "BSP_BotTaskCloseToShip_AttackModeCountdown",
+      "native": "009a2810",
+      "evidence": "009A283F drops task+550h by dt and 009A285E tail-jumps 007ED3F0(ctl, 0); 009A2881 re-arms 2.0f from the forced mode"
+    },
+    {
+      "address": "007f0030",
+      "name": "BSP_PilotControl_HandleMessage",
+      "native": "007f0030",
+      "evidence": "007F003B reads msg+10h and 007F0054 dispatches through 007F01E8; the BCh arm writes ctl+370h at 007F0068"
+    },
+    {
+      "address": "007ed610",
+      "name": "BSP_PilotControl_PromoteFlightLeader",
+      "native": "007ed610",
+      "evidence": "007ED621-007ED63F rotates element [ESP+4] of the +3D0h array to the front, bounded by +3CCh"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "0084db50",
+      "end_inclusive": "0084db8d",
+      "what": "raises the attack mode to 1 at 0084DB86; INT3 padding from 0084DB46"
+    },
+    {
+      "address": "009a2b00",
+      "end_inclusive": "not read to its end",
+      "what": "the closetoship vtable +64h arm; only its call to 009A2810 at 009A2B56 was needed. coverage: partial"
+    }
+  ],
+  "host_methods": [
+    {
+      "method": "pilot_control_set_attack_mode_007ed3f0",
+      "address": "007ed3f4",
+      "native": "007ed3f0+3f4",
+      "note": "the store itself, not a call"
+    },
+    {
+      "method": "pilot_control_raise_attack_mode_007ed430",
+      "address": "007ed43c",
+      "native": "007ed430+43c",
+      "note": "the store itself, not a call"
+    },
+    {
+      "method": "pilot_control_attack_mode_from_message_007f0068",
+      "address": "007f0068",
+      "native": "007f0030+068",
+      "note": "the BCh arm's store, not a call"
+    },
+    {
+      "method": "closetoship_attack_mode_countdown_009a2810",
+      "address": "009a2b56",
+      "native": "009a2810",
+      "kind": "no_ghidra_function"
+    }
+  ],
+  "contracts": [
+    "The BCh message producer is unread, so the host's message binding is inert: nothing sets torpedo_pending_mode_message_bc.",
+    "No ordered aircraft has a closetoship task, so torpedo_closetoship_task_installed is false and the countdown never runs. This matches the native on this mission rather than working around it.",
+    "task+424h, the manual passthrough budget 009D4956 spends, has no raiser anywhere in the image: a full store census at that offset returns thirty sites, and the three in the torpedo band (009D3EBB, 009D3ED3, 009D495B) all decrement or clear."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1, Win32 /W4 /WX, clean; ctest 2/2",
+    "tree_note": "main was merged again before this packet, so the USN02 baseline is this tree's own before-run, not the figure in the brief.",
+    "usn01_before_states": [
+      "torpedo Mav1         arm_ticks=1299 transitions=195 states[moveto=188 attackrun=614 goaway=126 aim=371] releases=0",
+      "torpedo Mav2         arm_ticks=1299 transitions=186 states[moveto=191 attackrun=599 goaway=151 aim=357 prepare=1] releases=0",
+      "torpedo Mav3         arm_ticks=1299 transitions=184 states[moveto=139 attackrun=624 goaway=170 aim=365 prepare=1] releases=0",
+      "torpedo Mav4         arm_ticks=1299 transitions=176 states[moveto=268 attackrun=586 goaway=87 aim=358] releases=0",
+      "torpedo Mav5         arm_ticks=1299 transitions=197 states[moveto=234 attackrun=594 goaway=99 aim=372] releases=0"
+    ],
+    "usn01_after": [
+      {
+        "name": "Mav1",
+        "mode_now": 1,
+        "raised_at_tick": 0,
+        "changes": 0,
+        "ticks_hold": 0,
+        "ticks_attack": 1299,
+        "ticks_forced": 0,
+        "prepare_entries": 0,
+        "lowered_009a285e": 0,
+        "message_007f0068": 0,
+        "first_prepare_tick": -1,
+        "first_blocked_no_order_tick": 1,
+        "coincide": "no",
+        "states": "moveto=188 attackrun=614 goaway=126 aim=371",
+        "releases": 0,
+        "transitions": 195
+      },
+      {
+        "name": "Mav2",
+        "mode_now": 1,
+        "raised_at_tick": -1,
+        "changes": 0,
+        "ticks_hold": 1,
+        "ticks_attack": 1298,
+        "ticks_forced": 0,
+        "prepare_entries": 1,
+        "lowered_009a285e": 0,
+        "message_007f0068": 0,
+        "first_prepare_tick": 1,
+        "first_blocked_no_order_tick": 1,
+        "coincide": "yes",
+        "states": "moveto=191 attackrun=599 goaway=151 aim=357 prepare=1",
+        "releases": 0,
+        "transitions": 186
+      },
+      {
+        "name": "Mav3",
+        "mode_now": 1,
+        "raised_at_tick": -1,
+        "changes": 0,
+        "ticks_hold": 1,
+        "ticks_attack": 1298,
+        "ticks_forced": 0,
+        "prepare_entries": 1,
+        "lowered_009a285e": 0,
+        "message_007f0068": 0,
+        "first_prepare_tick": 1,
+        "first_blocked_no_order_tick": 1,
+        "coincide": "yes",
+        "states": "moveto=139 attackrun=624 goaway=170 aim=365 prepare=1",
+        "releases": 0,
+        "transitions": 184
+      },
+      {
+        "name": "Mav4",
+        "mode_now": 1,
+        "raised_at_tick": -1,
+        "changes": 0,
+        "ticks_hold": 1,
+        "ticks_attack": 1298,
+        "ticks_forced": 0,
+        "prepare_entries": 0,
+        "lowered_009a285e": 0,
+        "message_007f0068": 0,
+        "first_prepare_tick": -1,
+        "first_blocked_no_order_tick": 1,
+        "coincide": "no",
+        "states": "moveto=268 attackrun=586 goaway=87 aim=358",
+        "releases": 0,
+        "transitions": 176
+      },
+      {
+        "name": "Mav5",
+        "mode_now": 1,
+        "raised_at_tick": -1,
+        "changes": 0,
+        "ticks_hold": 1,
+        "ticks_attack": 1298,
+        "ticks_forced": 0,
+        "prepare_entries": 0,
+        "lowered_009a285e": 0,
+        "message_007f0068": 0,
+        "first_prepare_tick": -1,
+        "first_blocked_no_order_tick": 1,
+        "coincide": "no",
+        "states": "moveto=234 attackrun=594 goaway=99 aim=372",
+        "releases": 0,
+        "transitions": 197
+      }
+    ],
+    "usn01_torpedo_summary_after": [
+      "summary mission torpedo task: aircraft=5 releases=0 blocked_engaged_009d3210=1020 blocked_arm_009d49a0=0",
+      "summary mission torpedo task: no release. 009D15F0 writes the aim-complete byte (5 of 5) and 009D3150 is computed from goaway+24h=700.0 (true for 1, furthest 766.5 m). The gate is ctl+370h, the attack mode: 009D3F69 and 009D40CB send an engaged task to prepare only while it is 0, and 009D49A0 arms prepare+98h only in prepare. 0099B774 raised it to 1 and it stayed there for 6486 of 6490 arm ticks; prepare was entered 2 times. Neither route back to 0 is one a torpedo task runs: 009A285E needs the closetoship task's countdown after a Lua PilotStopCloseToShip, and 007F0068 needs the BCh message on the control block. closest approach 285.2 against 8Ch=2200.0, 6490 offers, aim ran 1823 ticks"
+    ],
+    "usn01_ordnance_after": [
+      "summary mission gunnery ordnance units_with torpedo=14 general_bomb=11 drop_kamikaze=0 paratrooper=0 (of 41 units with guns)",
+      "summary mission gunnery torpedo_ranges_derived=39 swims_started=0 snaps=0 bullet_ranges_derived=336 base_tick_timers_live=0 expired=0"
+    ],
+    "usn01_gunnery_damage_before": "summary mission gunnery damage queued_hits=23 dispatched=23 hit_records=23 hull=23 part=0 fires=0 floods=0 attributions=23 deaths=1 kill_credits=1 total_damage=220.0 first_hit=0.60 s",
+    "usn01_gunnery_damage_after": "summary mission gunnery damage queued_hits=23 dispatched=23 hit_records=23 hull=23 part=0 fires=0 floods=0 attributions=23 deaths=1 kill_credits=1 total_damage=220.0 first_hit=0.60 s",
+    "usn02_before": "summary mission gunnery damage queued_hits=126 dispatched=126 hit_records=126 hull=125 part=0 fires=0 floods=0 attributions=126 deaths=3 kill_credits=3 total_damage=13673.7 first_hit=41.85 s",
+    "usn02_after": "summary mission gunnery damage queued_hits=126 dispatched=126 hit_records=126 hull=125 part=0 fires=0 floods=0 attributions=126 deaths=3 kill_credits=3 total_damage=13673.7 first_hit=41.85 s",
+    "usn02_note": "The second USN01 run added tick recording only, a census change that cannot alter behaviour, so the USN02 after-run from the previous build still applies.",
+    "release_requests_007bbba0": 0,
+    "next_gate": {
+      "address": "0099af53",
+      "field": "unit+C58h, the queued release-order count",
+      "value": "0 on arm tick 1",
+      "why": "ctl+370h is 0 only on arm tick 1, before the leader's raise propagates. Two aircraft enter prepare on exactly that tick, and it is exactly the tick the release-order queue is empty, so 009D49A0 takes its no-order arm and never sets prepare+98h. By tick 2 the mode is 1 and prepare is gone. The coincidence is measured per aircraft, not inferred: first_prepare_at_arm_tick == first_blocked_no_order_at_arm_tick == 1 for Mav2 and Mav3."
+    }
+  }
+}
