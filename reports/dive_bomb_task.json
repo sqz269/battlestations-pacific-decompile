@@ -30,7 +30,9 @@
     "009c7800": "ECX turndown state; one stacked int sign; body 009C7800-009C7849",
     "009c7ea0": "ECX state; no stacked argument; body 009C7EA0-009C7EF2",
     "009c7f00": "ECX state; no stacked argument; body 009C7F00-009C7FE8",
-    "007c1db0": "ECX unit; no stacked argument; body 007C1DB0-007C1DE4"
+    "007c1db0": "ECX unit; no stacked argument; body 007C1DB0-007C1DE4",
+    "009c44f0": "ECX turndown state; one stacked float dt the body never reads; RET 4 at 009C46A7, 009C46C6 and 009C4736; body 009C44F0-009C4736",
+    "007c47f0": "ECX record; no stacked argument; ST0 result"
   },
   "calls": [
     {
@@ -205,6 +207,30 @@
       "address": "009c8613",
       "native": "009c7ea0",
       "note": "the turndown-complete test; the gate both after-runs stop at",
+      "host_method": "read_transition_inputs"
+    },
+    {
+      "address": "009c450d",
+      "native": "007c47f0",
+      "note": "the desired speed the turndown writes to cmd+2B4h",
+      "host_method": "read_transition_inputs"
+    },
+    {
+      "address": "009c453c",
+      "native": "00bf857a",
+      "note": "the CRT x87 fmod, ST(1) = pose+C68h and ST(0) = 2pi",
+      "host_method": "read_transition_inputs"
+    },
+    {
+      "address": "009c460a",
+      "native": "00419010",
+      "note": "the roll ease-off, 1.0 at 30 deg from inverted down to 0",
+      "host_method": "read_transition_inputs"
+    },
+    {
+      "address": "009c4718",
+      "native": "00419010",
+      "note": "the latched pitch, 0 at 30 deg from inverted up to 1.0 at 3 deg",
       "host_method": "read_transition_inputs"
     }
   ],
@@ -429,6 +455,16 @@
       "address": "007c1db0",
       "native": "007c1db0",
       "name": "BSP_Unit_CountRemainingOrdnanceRounds"
+    },
+    {
+      "address": "009c44f0",
+      "native": "009c44f0",
+      "name": "BSP_BotStateDiveBombTurnDown_Tick"
+    },
+    {
+      "address": "007c47f0",
+      "native": "007c47f0",
+      "name": "BSP_PlaneClass_LevelFlightSpeed"
     }
   ],
   "no_ghidra_function": [
@@ -513,7 +549,15 @@
     "00d20e80": "float 2.356194496154785f (135 deg), the turndown pitch gate",
     "00ce3850": "float 5.0f, the arm countdown written to prepare+98h",
     "00d7a390": "double 0.8999999761581421, the goaway distance scale",
-    "00ce3d08": "float 100.0f, the follow-state construct argument"
+    "00ce3d08": "float 100.0f, the follow-state construct argument",
+    "00ce3d18": "double -pi, the signed-angle wrap low edge",
+    "00ce3d28": "double +pi, the wrap high edge",
+    "00ce3d40": "double 0.8 (45.8 deg), the turndown roll hand-over",
+    "00d7a264": "float pi, written to cmd+2C4h when the roll axis is released",
+    "00d1fed0": "float 2.6179941 (150 deg), the turndown latch",
+    "00ce398c": "float 0.34906587 (20 deg), the turndown pitch/altitude split",
+    "00d0cba0": "float 0.052359879 (3 deg), full nose-down stick",
+    "00...24c": "tuning+24Ch Dynamics/SpdMultipliers/LevelFlight, default 1.8, one half of the turndown's desired speed; classDesc+184h StallSpd, default 17.5, is the other"
   },
   "uncertainty": "The aimdive release gate's units are SETTLED: 009C59D6 writes the aircraft's height above the target (aircraft.y - targetPoint.y), both BSP_Math_InterpolateClamped calls (009C5C49, 009C5C92) are keyed on it over the window [approach+A8h + 100.0, approach+ACh + approach+50h], and 009C5C97 multiplies the second call's dimensionless gain into cos(bearingError) * planarDistance - lead. So the quantity at 009C5C9B is a signed along-track miss distance in metres and the 25.0 at 00CE3880 is a 25-metre release window, not an angle. What remains open: the two y endpoints (approach->+14h)->+5Ch and +60h have no producer read, and approach+D4h and approach+B8h, the ranges the dive abort and the in-range latch key on, have none either. The aimglide release's four frame slots ([ESP+10h], [ESP+14h], [ESP+18h], [ESP+20h]) were not traced to their producers; its gates, its constants and its salvo loop are transcribed, the geometry behind them is not. The approach update's tail 009C7C5B-009C7E9E is read for its outputs only. The flyabove, turndown, goaway and attackrun ticks are censused for their writes, not transcribed.",
   "validation": {
@@ -534,5 +578,8 @@
     "src/game_hosts_units.cpp",
     "reports/dive_bomb_task.json",
     "cmake/startup.cmake"
-  ]
+  ],
+  "gate_1_reading": "approach+BCh's producer is 009C7B4F-009C7B80 inside 009C7A80: the planar distance between approach->vtable[0]()'s point and the pose world position, with an early approach+D0h = 0 and return at 009C7B0A when approach+48h is null. The target position is not a command-block field. Upstream of that: no aircraft in IJN01 or USN01 ever receives the divebomb command class 00E08F20. USN01 has exactly five PilotSetTarget orders, all Mav1..Mav5, all resolved to the torpedo class 00E08F18; IJN01 has none. The dive bombers hold an authored `artillery` order that 0046AAB0 resolves to attackmove 00E08F78 outright, which never reaches 007EEC50's ordnance chooser, so 0099A170 builds no attack task and nothing latches approach+48h. The 27 and 5 installs in the after-runs are the host's, not the image's. Fix location: run_dive_bomb_task_arm_009c8790 in src/game_hosts_units.cpp must gate on the divebomb class having been chosen, the analogue of the PilotSetTarget task: 0099A170 record the torpedo path emits, not on command_target_plus_one != 0. Open: ConSBD1's artillery row prints current=0 and store_unit_command_target fills only from current rows, so the non-zero command_target_plus_one these aircraft carry comes from a row this reading did not find. CLOSED: the non-zero command_target_plus_one comes from the aircraft's authored moveto row, not an attack order. IJN01 reports moveto x142 authored and resolved=142, an exact match, while the artillery x30 rows resolve to attackmove, carry no target and print current=0 so store_unit_command_target skips them. USN01 is the same with resolved=34. The commanded target is a movement target co-located with the aircraft, which is why both the pilot-attack range and approach+BCh difference to exactly 0.",
+  "order_injection_reading": "--order <token>:<target> --order-unit <name> --order-frame N reaches GameUnitsHost::issue_player_command, which resolves the token against the scene-command registry the way 0046AAB0 does and places a command row; settarget is a registry row (src/entity_orders.cpp, class 00E08EF8). It does NOT run the chooser: 007EEC50 and the 0099A170 install live only in GameScriptOrdersHost::run_pilot_set_target, reached from the Lua binding PilotSetTarget 008A4C90 that a mission script calls. What the injection lacks is a route from a command-line switch to that function or to its tail, bsp::attack_command_choose plus bsp::bot_install_command_task_0099a170. Both would be edits to src/game_hosts.cpp and src/game_hosts_mission_frame.cpp, which this packet does not own.",
+  "class_gate_contract": "include/bsp/dive_bomb_task.hpp carries kDiveBombCommandClass = 00E08F20 and dive_bomb_task_installed_for_class. The host edit is: GameUnitSlot gains attack_command_class, GameUnitsHost gains store_unit_attack_command_class, GameScriptOrdersHost::run_pilot_set_target calls it where `chosen` is already in hand, and run_dive_bomb_task_arm_009c8790 gates on the predicate instead of command_target_plus_one plus ordnance. With that gate IJN01 and USN01 both install zero dive-bomb tasks, which is the image's own behaviour."
 }

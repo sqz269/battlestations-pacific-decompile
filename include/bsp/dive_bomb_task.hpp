@@ -398,6 +398,72 @@ DiveBombArmResult dive_bomb_arm_drop_009c8200(const DiveBombArmInputs& in) noexc
 // ---------------------------------------------------------------------------
 float dive_bomb_turn_direction_009c7800(int sign, float magnitude_draw) noexcept;
 
+// ---------------------------------------------------------------------------
+// 009C44F0, the turndown tick (vtable 00D20C84 slot +Ch), body
+// 009C44F0-009C4736, __thiscall(state, float dt), RET 4. The dt is never read.
+//
+// The roll-in: it banks the aircraft toward inverted at the rate 009C7800 drew,
+// latches once past 150 degrees, then pulls the nose down. Its one exit to the
+// transition rule is through 009C7EA0, which reads the same two pose angles.
+//
+// Every jump sense below was read from the branch byte, not the mnemonic:
+// 009C45BB `76` JBE, 009C465B `76` JBE, 009C4687 `76` JBE.
+// ---------------------------------------------------------------------------
+namespace dive_bomb_turndown_constant {
+inline constexpr double kWrapLow = -3.1415927410125732;   // 00CE3D18, qword
+inline constexpr double kWrapHigh = 3.1415927410125732;   // 00CE3D28, qword
+inline constexpr double kRollHandOver = 0.800000011920929;  // 00CE3D40, 45.8 deg
+inline constexpr float kPi = 3.1415927410125732f;         // 00D7A264, movss
+inline constexpr float kLatchBank = 2.6179940700531006f;   // 00D1FED0, 150 deg
+inline constexpr float kPitchHoldBand = 0.3490658700466156f;  // 00CE398C, 20 deg
+inline constexpr float kEaseOffAngle = 0.5235987901687622f;   // 00CEC724, 30 deg
+inline constexpr float kFullPitchAngle = 0.05235987901687622f;  // 00D0CBA0, 3 deg
+// 007C47F0 = tuning+24Ch * classDesc+184h. Both halves are named elsewhere:
+// docs/GAME_TUNING_SINGLETON.md row +24Ch is Dynamics/SpdMultipliers/LevelFlight,
+// default 1.8, and docs/PLANE_FLIGHT.md row +184h is the authored StallSpd,
+// default 17.5. docs/PLANE_GROUND_OPS.md step 6 already forms the same product.
+// So the turndown's desired speed is the level-flight speed, about 31.5 m/s on
+// a default class. The record at approach+8h is the plane class descriptor:
+// 009C7A94 reads its +188h MaxSpd through the same pointer.
+inline constexpr float kLevelFlightMultiplier = 1.8f;   // tuning+24Ch
+inline constexpr float kStallSpeedDefault = 17.5f;      // classDesc+184h
+}  // namespace dive_bomb_turndown_constant
+
+struct DiveBombTurnDownInputs {
+    float bank_c68 = 0.0f;       // pose+C68h, 009C4530
+    float pitch_c64 = 0.0f;      // pose+C64h, 009C4666
+    bool rolled_latch_1c = false;  // state+1Ch, 009C45A9
+    float roll_command_18 = 0.0f;  // state+18h, what 009C7800 wrote
+    // 007C47F0(approach+8h) at 009C450D: LevelFlight * StallSpd, the
+    // level-flight speed. approach+8h is the plane class descriptor.
+    float desired_speed = 0.0f;
+};
+struct DiveBombTurnDownResult {
+    // The speed pair every path writes first, 009C4512-009C4524.
+    float speed_2b4 = 0.0f;
+    bool speed_flag_2b0_cleared = true;
+    bool throttle_one_shot_2d8 = true;  // docs/PILOT_THROTTLE_CUT_RAISER.md
+    // The bank, wrapped into (-pi, pi] and folded to its absolute value.
+    float folded_bank = 0.0f;
+    float angle_to_inverted = 0.0f;  // max(pi - |bank|, 0)
+    // The roll axis, slot 2: +290h desired, +294h active, mode +2CCh.
+    bool wrote_roll = false;
+    float roll_290 = 0.0f;
+    // The hand-over arm: +2C4h = pi with mode +2CCh = 1, no roll.
+    bool released_roll = false;
+    // The pitch axis, slot 3: +29Ch desired, +2A0h active, mode +2D0h.
+    bool wrote_pitch = false;
+    float pitch_29c = 0.0f;
+    // The altitude arm: +2BCh = 0 with mode +2D0h = 2.
+    bool wrote_altitude_hold = false;
+    bool latch_1c_set = false;  // 009C465D
+};
+DiveBombTurnDownResult dive_bomb_turndown_tick_009c44f0(
+    const DiveBombTurnDownInputs& in) noexcept;
+
+// 009C4530-009C4575: fmod by 2pi through 00BF857A, then the (-pi, pi] wrap.
+float dive_bomb_wrap_signed_pi_009c4551(float angle) noexcept;
+
 // 009C7EA0, __fastcall(state) -> bool. True ends the turndown for aimdive.
 // The two pose angles in the order the body reads them: +C64h is the one the
 // -1.3 and -1.0 gates compare, +C68h the one folded to its absolute value
@@ -475,6 +541,23 @@ struct DiveBombBreakOffInputs {
     float speed_ratio_41c = 1.0f;
 };
 bool dive_bomb_should_break_off_009c8a90(const DiveBombBreakOffInputs& in) noexcept;
+
+// ---------------------------------------------------------------------------
+// Which command installs kind 8. docs/ATTACK_COMMANDS.md: 007EEC50 picks the
+// class and 0099A170 turns it into a task, so a task exists only for a unit
+// whose chosen class is the divebomb one. Nothing else installs it, and in
+// particular an `artillery` order, which 0046AAB0 resolves to `attackmove`
+// 00E08F78 outright, never reaches the chooser at all.
+// ---------------------------------------------------------------------------
+inline constexpr unsigned int kDiveBombCommandClass = 0x00E08F20u;
+
+// The gate the host arm needs: the task runs for this unit only when 007EEC50
+// actually chose the divebomb class for it. Carrying bomb ordnance and holding
+// some commanded target is not the same test, and the difference is 27 aircraft
+// in IJN01 that the image never gives a kind 8 task.
+inline bool dive_bomb_task_installed_for_class(unsigned int chosen_class) noexcept {
+    return chosen_class == kDiveBombCommandClass;
+}
 
 // ---------------------------------------------------------------------------
 // The host. One virtual per native call site the arm sequence reaches, on top
