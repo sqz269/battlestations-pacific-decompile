@@ -237,6 +237,44 @@ steps, `heading_change=29.086 rad`, `yaw_plans=6495`. The five ordered aircraft 
 1299 yaw plans each. A nose that is commanded to reverse every 1.7 s cannot converge into a
 15-degree cone, whatever the delta's convention.
 
+### Merged tree, before and after rule 6
+
+After merging `main` (the coordinator hook, which raises USN01's ordered set from 5 to 14
+aircraft and the torpedo task from 5 to 9), measured across
+`local/usn01_merged_before.log` and `local/usn01_merged_after.log`. The only change
+between them is the `F=1Ch` seed.
+
+| Measure | Before | After |
+|---|---|---|
+| Sampled aim ticks commanding heading 0 | 22 of 57 | **0 of 49** |
+| Sampled aim ticks with the cone open | 0 | **32 of 49** |
+| Goaway entries, Mav1 to Mav5 | 96, 91, 90, 87, 98 | **39, 35, 36, 38, 38** |
+| Goaway entries, the other four | 116, 132, 134, 0 | 116, 132, 134, 0 |
+| `heading_error_last_mean` | not printed | 0.803 rad |
+| Torpedo releases | 1 | 1 |
+
+The aim/goaway cycle on the five affected aircraft falls by about 60 per cent, and the
+cone opens for the first time on this tree. The four aircraft whose count is unchanged are
+the ones whose sector probe is never armed, which is the expected signature: the defect
+only bit where `approach+5Ch` was zero **and** the probe ran.
+
+One census row makes the mechanism plain. `KatTBD` at aim tick 51, before and after:
+
+```
+before  cmd_2C0=0.0000  yaw_C6C=0.5963  bearing_94=0.9543  delta=-0.5963  yaw_desired=-1.0000
+after   cmd_2C0=0.9588  yaw_C6C=0.6878  bearing_94=0.9588  delta= 0.2710  yaw_desired= 0.2205
+```
+
+The commanded heading is now the bearing, the delta is a quarter of what it was, and the
+yaw demand is proportional instead of saturated against the stop.
+
+**What did not change.** `range_last_mean` is 130452 m before and 131969 m after, and
+`closed_mean` is negative in both. That is a separate pathology on the merged tree, where
+some of the fourteen ordered aircraft fly away to over 100 km; it predates this packet and
+is not touched by the `F=1Ch` seed. And the one release the torpedo task reports still
+produces `swims_started=0`, so a release is requested but no torpedo enters the water.
+Both are follow-ups, not results of this change.
+
 USN02, same tree and same settings, `local/usn02_before.log`, `loop_finished=1`,
 `exit_code=0`. It exercises none of this path: `summary mission plane motion` reads
 `distance_moved=0.00 m pose_rotations=0 thinks=0 commits=0 yaw_plans=0`, and
@@ -291,8 +329,15 @@ slot really does hold 500 and really is the altitude constant.
 Two things I asserted before measuring turned out to be wrong, and the per-tick census is
 what caught them.
 
-**The obvious substitution is degenerate.** `slot.motion.max_speed`, the VehicleClass
-`+500h` field, is **0.0f on an aircraft**. The class row exists, and the run reports all 77
+**The obvious substitution is degenerate, and the census now proves it on every
+aircraft.** With the census extended to print the candidates, `local/usn01_speeds.log` on
+the merged tree reads the same three values on all nine torpedo aircraft and both classes:
+
+| Aircraft | `speed_80` in use | `class_max_speed` | `stall` |
+|---|---|---|---|
+| KatTBD, ConTBD1-3, Mav1-5 | 500.0 | **0.0** | 19.4 |
+
+`slot.motion.max_speed`, the VehicleClass `+500h` field, is **0.0f on every one of them**. The class row exists, and the run reports all 77
 units carrying one, but planes take no speed from it. `009D1500`'s `speed == 0` guard then
 returns `F0C = 0.0000` on every tick, which makes clause 2 fire on the **first** aim tick of
 every run. Measured in `local/usn01_after.log`: goaway entries went from 96 to 208 per
@@ -312,7 +357,36 @@ So the packet leaves the placeholder in place, routed through
 `torpedo_seed_run_speeds_009d0484` and logged as unimplemented, and names the record's
 producer as the blocking follow-up rather than guessing again.
 
-### What the census did settle
+## Rule 6: the command slot `F=1Ch` was reconstructed as zero, and is the bearing
+
+The per-tick census found this one, and it is a defect in this packet's own file rather
+than in the host.
+
+`009D1622 MOVSS [ESP+1Ch], XMM0` seeds the command slot with `approach+94h`, the bearing.
+`009D168A` reads that same slot straight back as the first argument of the delta's
+`00438B10`. The only other write to it is `009D18A6`, **inside** the sector-turn block that
+`009D1794` skips whenever `approach+5Ch` is zero. So on the skip path the slot still holds
+the bearing.
+
+`src/torpedo_aim_tick.cpp` initialised it to `0.0f`. With `+5Ch == 0` and the sector probe
+armed, the fold at `009D1B7A` then computed
+`f10_turn = WrapSub(WrapAdd(0, f48), heading)`, which with no probe hit is exactly
+`-heading`, so `009D1BCC` commanded **heading 0**, due `+Z`, instead of the bearing. Every
+such tick published a spurious "fly due north" into `plan+2C0h`.
+
+The census row that caught it, aim tick 51 of `KatTBD` on the merged tree:
+
+```
+cmd_2C0=0.0000  yaw_C6C=0.5963  bearing_94=0.9543  delta_F10=-0.5963
+```
+
+`cmd_2C0` is zero while the bearing is 0.9543, and the delta is exactly `-yaw`. Ticks 1 and
+101 of the same aircraft are consistent, `cmd_2C0 = wrap(bearing_94)` to four decimals, so
+the defect only bites on the ticks where the probe is armed and the sector turn is not.
+That is why the original five-aircraft run never showed it: its scan reported 36 clear
+sectors of 36, so the probe was never armed.
+
+## What the census did settle
 
 `unit+C6Ch` and the hull heading are **the same number to four decimals on every census
 row**, on all five aircraft and at every sample. That is the empirical confirmation of the
@@ -394,12 +468,21 @@ the aircraft's commanded heading reverses about every 1.7 s.
 
 ## no_ghidra_function
 
-| Address | Inclusive end | What it is |
-|---|---|---|
-| `0074E260` | `0074E266` | `BSP_PlaneUnitInstance_GetHeading`, `FLD [ECX+0C6Ch] / RET`, 7 bytes, slot 50h of the plane vtables |
-| `009D15F0` | `009D2377` | `BSP_BotStateTorpedoAim_Tick`, already recorded by the aim-tick packet |
+**Empty as of the end of this packet.** Both addresses it reported were defined in Ghidra
+by the integrator while it ran, and arrived here with the merge of `main` at `41eb6a7b8`
+(`reports/torpedo_steering_delta_function_definitions.json` records the calls).
 
-`006DFD60`, `007CFD20`, `00438B10` and `009D1500` all have Ghidra functions and names.
+| Address | Reported here | Ghidra body now | Agreement |
+|---|---|---|---|
+| `0074E260` | `0074E260`-`0074E266`, 7 bytes | `0074E260`-`0074E266` as `BSP_PlaneUnitInstance_GetHeading` | exact |
+| `009D15F0` | final `RET` at `009D2377` | `009D15F0`-`009D2379` as `BSP_BotStateTorpedoAim_Tick` | Ghidra's end runs two bytes past the `RET`, presumably over padding |
+
+The consequence for the report is that its call rows are now checked for containment and
+for actually being `CALL`s, rather than skipped as raw-listing rows. All five pass, with
+the one genuinely indirect call at `009D1679` flagged as unverifiable, which it is.
+
+`006DFD60`, `007CFD20`, `00438B10`, `009D1500`, `009D0380`, `009D0D90` and `007B5BE0` all
+have Ghidra functions and names.
 
 ## Uncertainty
 
