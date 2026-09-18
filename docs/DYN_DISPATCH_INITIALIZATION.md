@@ -198,3 +198,13 @@ masked x87 controls, with owner scratch and adjacent objects checked. The
 compiled instruction audit covers the entire body and three consumed math
 leaves. Terrain/convex, world task and ray-query consumers, application
 admission and gameplay remain open.
+
+## Follow-up from docs/NATIVE_DYN_TERRAIN_CONVEX_R145.md
+
+R145 supplies the complete C53630 terrain/convex body and its one-slot table,
+closing the remaining dispatcher method in DynDispatchVtables. Comparisons
+pass 36,864 direct/table pairs and 192 serial narrow-phase scene pairs; both
+terrain/convex shape orders execute through the actual dispatcher cells. The
+terrain constructor C58840 is named and its consumed layout is documented as
+reference evidence only. Shape production/lifetime, world/ray-query tasks,
+application admission and gameplay remain open.
