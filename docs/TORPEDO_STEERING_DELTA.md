@@ -461,12 +461,21 @@ the aircraft's commanded heading reverses about every 1.7 s.
 
 ## no_ghidra_function
 
-| Address | Inclusive end | What it is |
-|---|---|---|
-| `0074E260` | `0074E266` | `BSP_PlaneUnitInstance_GetHeading`, `FLD [ECX+0C6Ch] / RET`, 7 bytes, slot 50h of the plane vtables |
-| `009D15F0` | `009D2377` | `BSP_BotStateTorpedoAim_Tick`, already recorded by the aim-tick packet |
+**Empty as of the end of this packet.** Both addresses it reported were defined in Ghidra
+by the integrator while it ran, and arrived here with the merge of `main` at `41eb6a7b8`
+(`reports/torpedo_steering_delta_function_definitions.json` records the calls).
 
-`006DFD60`, `007CFD20`, `00438B10` and `009D1500` all have Ghidra functions and names.
+| Address | Reported here | Ghidra body now | Agreement |
+|---|---|---|---|
+| `0074E260` | `0074E260`-`0074E266`, 7 bytes | `0074E260`-`0074E266` as `BSP_PlaneUnitInstance_GetHeading` | exact |
+| `009D15F0` | final `RET` at `009D2377` | `009D15F0`-`009D2379` as `BSP_BotStateTorpedoAim_Tick` | Ghidra's end runs two bytes past the `RET`, presumably over padding |
+
+The consequence for the report is that its call rows are now checked for containment and
+for actually being `CALL`s, rather than skipped as raw-listing rows. All five pass, with
+the one genuinely indirect call at `009D1679` flagged as unverifiable, which it is.
+
+`006DFD60`, `007CFD20`, `00438B10`, `009D1500`, `009D0380`, `009D0D90` and `007B5BE0` all
+have Ghidra functions and names.
 
 ## Uncertainty
 
