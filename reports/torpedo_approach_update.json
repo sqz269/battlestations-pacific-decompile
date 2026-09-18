@@ -1,0 +1,216 @@
+{
+  "packet": "cc8_torpedo_approach_update",
+  "baseline_commit": "687ce772b",
+  "worktree": "agent/cc8-torpedo-approach",
+  "documentation": "docs/TORPEDO_APPROACH_UPDATE.md",
+  "status": "approach_update_read_reconstructed_built_and_run_validated_state_machine_now_reaches_prepare_release_blocked_by_unit_c58h",
+  "production_cpp_changed": true,
+  "ghidra_mutated": false,
+  "new_native_body_reconstructed": true,
+  "original_abi": {
+    "009d3420": "ECX approach; one stacked float dt; RET4; body 009D3420-009D3E3F; ADD ESP,0x8c at 009D3E3C",
+    "009d4a70": "ECX task; no stack arguments; RET0; body 009D4A70-009D4B2F",
+    "009d15f0": "ECX state; one stacked float dt; RET4; body 009D15F0-009D2379",
+    "009d1500": "ECX approach; no stack arguments; ST0 result; body 009D1500-009D15C0",
+    "009d1360": "ECX approach; no stack arguments; RET0; body 009D1360-009D14F3",
+    "009d0380": "ECX approach; two stacked arguments; RET8; body 009D0380-009D066F",
+    "009d3210": "ECX task; no stack arguments; AL result; body 009D3210-009D3265",
+    "009fada0": "ECX approach+B4h; one stacked float dt; caller reserves the slot with PUSH ECX at 009D34B1",
+    "007b93f0": "ECX approach+4h; one stacked int 0 at 009D34C3",
+    "007df360": "ECX unit+C50h; two stacked arguments at 009D36EC and 009D36ED",
+    "0041bc20": "ECX terrain (ctl+34Ch); two stacked floats, SUB ESP,8 at 009D3699",
+    "00903bc0": "two stacked pointers at 009D39C5 and 009D39C9",
+    "source": "stack cleanup at each RET plus the push count at every call site listed below"
+  },
+  "calls": [
+    {
+      "address": "009d34bb",
+      "native": "009fada0",
+      "note": "the approach sub-object at approach+B4h that all ten approach classes tick first; contract: unread",
+      "host_method": "tick_approach_subobject_009fada0"
+    },
+    {
+      "address": "009d34c5",
+      "native": "007b93f0",
+      "note": "BSP_WeaponController_HasTorpedoOrdnance; its AL result is approach+132h == task+52Ah, the aim to goaway flag",
+      "host_method": "unit_has_torpedo_ordnance_007b93f0"
+    },
+    {
+      "address": "009d34de",
+      "native": "00414db0",
+      "note": "BSP_EntityPose_RefreshWorld on the owner unit before reading unit+FCh and unit+104h",
+      "host_method": "unit_world_xz"
+    },
+    {
+      "address": "009d363b",
+      "native": "00414db0",
+      "note": "the same refresh on the target entity approach+CCh before the replan",
+      "host_method": "target_world_xz"
+    },
+    {
+      "address": "009d3da4",
+      "native": "00414db0",
+      "note": "the same refresh on ctl+3D0h in the no-ordnance branch",
+      "host_method": "target_world_xz"
+    },
+    {
+      "address": "009d3517",
+      "native": "approach->vtable[0]",
+      "note": "the target point, an out-parameter at [ESP+54h] with ECX = ESI; EAX is a float3",
+      "host_method": "approach_target_point"
+    },
+    {
+      "address": "009d36e4",
+      "native": "approach->vtable[0]",
+      "note": "the same getter feeding 007DF360",
+      "host_method": "approach_target_point"
+    },
+    {
+      "address": "009d3dc8",
+      "native": "approach->vtable[0]",
+      "note": "the same getter in the no-ordnance branch",
+      "host_method": "approach_target_point"
+    },
+    {
+      "address": "009d3552",
+      "native": "00bf7030",
+      "note": "LIBCRT sqrt for the 2D range at approach+90h; library, not a host method",
+      "host_method": null
+    },
+    {
+      "address": "009d3586",
+      "native": "00bf701a",
+      "note": "LIBCRT atan2 for the bearing at approach+94h; library, not a host method",
+      "host_method": null
+    },
+    {
+      "address": "009d36a9",
+      "native": "0041bc20",
+      "note": "the terrain height under the aircraft; over 10.0f raises approach+A9h at 009D36BC",
+      "host_method": "terrain_height_0041bc20"
+    },
+    {
+      "address": "009d386d",
+      "native": "0041bc20",
+      "note": "the terrain height under the target, floored at 20.0 when it is below the double 20.0 at 00CE3D88",
+      "host_method": "terrain_height_0041bc20"
+    },
+    {
+      "address": "009d36ee",
+      "native": "007df360",
+      "note": "overwrites approach+A9h outright when unit+C50h is set; contract: unread",
+      "host_method": "target_reachable_007df360"
+    },
+    {
+      "address": "009d3a42",
+      "native": "0041bc20",
+      "note": "the terrain height at each scan probe past 450 units",
+      "host_method": "terrain_height_0041bc20"
+    },
+    {
+      "address": "009d39d3",
+      "native": "00903bc0",
+      "note": "the short-range blocked test inside 450 units; contract: unread",
+      "host_method": "segment_blocked_00903bc0"
+    },
+    {
+      "address": "009d3bc0",
+      "native": "00bf7420",
+      "note": "the LIBCRT float to int truncation that turns the bearing into a sector index; library",
+      "host_method": null
+    },
+    {
+      "address": "009d3d01",
+      "native": "unit->vtable[38h]",
+      "note": "the aircraft speed the engagement estimate divides by",
+      "host_method": "unit_speed_vtable38"
+    },
+    {
+      "address": "009d3dfc",
+      "native": "00414c60",
+      "note": "BSP_Vector2f_LengthWithCutoff in the no-ordnance branch",
+      "host_method": "target_world_xz"
+    },
+    {
+      "address": "009d160a",
+      "native": "009d1500",
+      "note": "the aim tick reads the time-to-target metric",
+      "host_method": "torpedo_time_to_target_009d1500"
+    },
+    {
+      "address": "009d13bf",
+      "native": "007bcfa0",
+      "note": "the torpedo water run speed; no callees, returns a constant; contract: unread",
+      "host_method": null
+    },
+    {
+      "address": "009d139d",
+      "native": "007bcc80",
+      "note": "the torpedo fall time from the aircraft altitude, a sqrt; contract: unread",
+      "host_method": null
+    },
+    {
+      "address": "009d16d1",
+      "native": "00903860",
+      "note": "the ground height under the aircraft in the aim tick; contract: unread",
+      "host_method": null
+    },
+    {
+      "address": "0099af53",
+      "native": null,
+      "note": "the unit+C58h guard of BSP_PilotBot_Tick's arming loop; the count is 0 on every tick of the USN01 run, which is the gate that stops the release",
+      "host_method": "PilotBot::queue_release_order"
+    }
+  ],
+  "calls_in_undefined_regions": [],
+  "no_ghidra_function": [],
+  "names_added": [
+    {
+      "address": "009d3420",
+      "name": "BSP_BotApproachTorpedo_Update"
+    },
+    {
+      "address": "009d1500",
+      "name": "BSP_BotApproachTorpedo_TimeToTarget"
+    },
+    {
+      "address": "009d1360",
+      "name": "BSP_BotApproachTorpedo_UpdateRunTime"
+    },
+    {
+      "address": "009d0380",
+      "name": "BSP_BotApproachTorpedo_Reset"
+    }
+  ],
+  "coverage": {
+    "009d3420": "full - twenty-six field writes, both early-outs, the sector scan and the engagement estimate",
+    "009d4a70": "the attack-distance clamp and the three cruise-profile stores; task+41Ch unread",
+    "009d1500": "full",
+    "009d1360": "full",
+    "009d0380": "partial - the reset block 009D0579-009D05F0 only",
+    "009d15f0": "partial - the inputs, the eleven command-block writes and the heading producer; the four InterpolateClamped throttle folds are not transcribed"
+  },
+  "validation": {
+    "build": "scripts/build.ps1 MSVC Win32 /W4 /WX clean",
+    "tests": "ctest 2/2 passing (reconstructed_math, tool_tests); no test added",
+    "usn01_before": "aircraft=5 releases=0 arm_ticks=1299 transitions=0 states[moveto=1299] blocked_engaged_009d3210=6495",
+    "usn01_after": "aircraft=5 releases=0 transitions=1..3 states[moveto=239..434 prepare=865..1060] blocked_engaged_009d3210=1671 aim_ticks=0",
+    "usn01_approach": "ticks=1299 no_target=0 replans=130 per aircraft; engage 8Ch=2200.0; range 90h non-zero from tick 1, min 2906.0 to 3979.4",
+    "usn01_next_gate": "unit+C58h at 0099AF53 is 0 on all 6495 ticks, so 009D49A0 is never offered and prepare+98h stays at -1.0f",
+    "usn02_after": "shots=734 first_shot=1.40 s hull=180 part=0 deaths=2 total_damage=18525.6 projectiles created=734 - identical to the milestone 2t baseline",
+    "usn02_torpedo": "no ordered aircraft carries torpedo ordnance (kind 2Bh), so 0099A170 builds no kind Eh task"
+  },
+  "corrections": [
+    "docs/TORPEDO_TASK_ARM.md section (1) step 4: approach+78h + approach+74h is an altitude band, not a move-to range; the aim tick reads it at 009D1631 as a floor on the commanded altitude",
+    "docs/TORPEDO_TASK_ARM.md follow-up 1: 009D3420 does not write approach+98h; 009D1360 does, at 009D14EA",
+    "docs/TORPEDO_TASK_ARM.md Validation: approach+8Ch is not an output of 009D3420 at all; its one producer is 009D4A70 at 009D4AC4",
+    "src/game_hosts_units.cpp filled TorpedoEngagedInputs::engage_range_scale with 1.0f; the constant is the double 2.2 at 00D05AC8, multiplied in at 009D324F",
+    "this report's own first draft placed four call sites by eye; tools/verify_report_calls.py moved them to 009D386D, 009D3A42, 009D39D3, 009D3BC0, 009D139D, 009D13BF and 009D16D1"
+  ],
+  "open_questions": [
+    "who raises unit+C58h, the queued release-order count, now the single gate before a drop",
+    "ctl+370h, the pilot control block attack mode; nothing in this repository writes it and it decides prepare against attackrun/aim",
+    "task+41Ch, the speed ratio the attack-distance clamp multiplies by",
+    "which slot the task scheduler calls per tick; ghidra callers 009d4a70 returns none because it is reached only through the vtable +54h"
+  ]
+}
