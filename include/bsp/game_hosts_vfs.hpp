@@ -45,7 +45,8 @@
 #include "bsp/vfs_locale_runtime.hpp"
 #include "bsp/settings_capabilities.hpp"
 #include "bsp/settings_text.hpp"
-#include "bsp/input_script_startup.hpp"
+#include "bsp/game_native_input_settings_application.hpp"
+#include "bsp/vfs_lua_scripts.hpp"
 #include "bsp/gui_locale_refresh.hpp"
 
 namespace bsp::game {
@@ -159,8 +160,9 @@ class GameNativeLuaServices;
 class GameScriptHost {
 public:
     GameScriptHost(GameHostLog&, VfsMountContext&, const std::vector<std::string>&,
-        GameNativeLuaServices&);
-    InputScriptStartup& input() noexcept { return input_; }
+        GameNativeLuaServices&,GameSingletonHost&,GameNativeReadOnlyData&,
+        const GameNativeVfsRawServices&);
+    GameNativeInputSettingsApplication& input() noexcept { return input_; }
     VfsLuaScriptFiles& files() noexcept { return files_; }
     LuaScriptRuntime& runtime() noexcept { return runtime_; }
     LuaRuntimeGlobals& globals() noexcept { return globals_; }
@@ -169,7 +171,7 @@ private:
     LuaRuntimeGlobals& globals_; // canonical process cells, borrowed through all Lua closes
     VfsLuaScriptFiles files_;
     LuaScriptRuntime runtime_;
-    InputScriptStartup input_;
+    GameNativeInputSettingsApplication input_;
 };
 
 // The locale table owner is created at0073e057. GUI state remains lazy: the

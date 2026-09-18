@@ -233,20 +233,12 @@ const GameVfsProbeResult& GameVfsHost::probe(const std::string& requested) {
 // ---------------------------------------------------------------------------
 
 GameScriptHost::GameScriptHost(GameHostLog& log, VfsMountContext& mounts,
-    const std::vector<std::string>& suffixes, GameNativeLuaServices& lua)
+    const std::vector<std::string>& suffixes, GameNativeLuaServices& lua,
+    GameSingletonHost& singletons,GameNativeReadOnlyData& data,const GameNativeVfsRawServices& vfs)
     : globals_(lua.globals()), files_(mounts, suffixes, &lua.bootstrap()), runtime_(files_),
-      input_(files_, runtime_, globals_) {
-    // The singleton constructor loads immediately; the explicit call at
-    // 0073da9b observes +4 already set and keeps the same persistent state.
-    input_.load_data_tables_006a7be0();
-    log.implemented("Phase 5 input_script_tables", "006ab6b0/006a7be0");
-    log.notef("input scripts devices=%zu input_names=%zu controller_names=%zu "
-        "presets_lua=%p data_tables_started=%d runtime_settings_loaded=%d",
-        input_.settings().devices.size(), input_.settings().input_names.size(),
-        input_.settings().controller_input_names.size(),
-        static_cast<void*>(input_.control_presets_lua()), input_.data_tables_started() ? 1 : 0,
-        input_.settings().runtime_settings_loaded ? 1 : 0);
-}
+      // The native stack has no defined high bytes for two persisted flags.
+      // This explicit source policy is not a recovered native stack value.
+      input_(log,singletons,lua,data,vfs,GameInputSettingsStackPolicy{0,0,0}) {}
 
 void GameLocaleHost::initialize(LocaleTableSource& source, const std::string& language) {
     bool changed = false;
