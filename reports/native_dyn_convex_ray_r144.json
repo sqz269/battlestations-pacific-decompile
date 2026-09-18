@@ -22184,5 +22184,793 @@
       }
     ],
     "scope": "Complete13067B convex/ray body and one-slot table;24576pairs/23150592matchingbytes/all12maskedFPcontrols;4200instruction/112branch/5constant audit;strictWin32/3CTests. Terrain/convex,consumers,application/gameplay open."
+  },
+  "primary_integration": {
+    "source_commit": "12c1d7e98b5198309601c4f7094271fca043d8b2",
+    "combined_strict_build": true,
+    "ctests_passed": 3,
+    "artifact_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r144\\native-dyn-convex-ray-main-r144.zip",
+      "sha256": "16f61970efe4d97e41a183f073c36bab32772a5b905554b08cf12ed9699044e9",
+      "files": 131,
+      "utc": "2026-09-18T12:29:27.525550+00:00",
+      "head": "12c1d7e98b5198309601c4f7094271fca043d8b2",
+      "manifest": [
+        {
+          "path": "build/win32/bsp_core.dir/Release/dyn_body_creation.obj",
+          "size": 29583,
+          "sha256": "cfe368fa7b12cfc8223ffbcc81741e7cbf354e8d507e7e00cf323cd33a735f95"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/dyn_dispatch_initialization.obj",
+          "size": 15065,
+          "sha256": "72a12d61dec60a04dc0736080f6c5c8799d327709f5445cd2e073ce10fea04ec"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/dyn_scene_runtime.obj",
+          "size": 10372,
+          "sha256": "3f8b8ec73cb88a3660db5d5981b786604a57c6323dcbd112b703711fdeaaa2b5"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_dyn_convex_ray.obj",
+          "size": 17795,
+          "sha256": "07c0008e2a80dba645140b34d961fb763bd6f6f806adb746e8bffbe0711b1c49"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_dyn_convex_support.obj",
+          "size": 5294,
+          "sha256": "fa6ebaf582cafacd57005e574fe93a97e1fe3b70ce4435b9f0f8a98ab6711f44"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/ship_hull_shapes.obj",
+          "size": 61686,
+          "sha256": "452438d1fb0549154d4f72cdc5acd51aa0d4f117c9764465c12618e9413cb15d"
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/system_camera_axes.obj",
+          "size": 16446,
+          "sha256": "be236e32e8060c6197ad4085d54355a1de89d2ea52355944ec8aa704cd07c272"
+        },
+        {
+          "path": "build/win32/Release/bsp_core.lib",
+          "size": 66457154,
+          "sha256": "6bb41aba4fa4d70725d74e91ffeb5657e27c30c67677359c8ea0675f6ad94d4d"
+        },
+        {
+          "path": "build/win32/Release/bsp_game.exe",
+          "size": 2748416,
+          "sha256": "49df09d143db362647a1d337da830ca8b51bd89ff4fa175cf606ae60360710d9"
+        },
+        {
+          "path": "build/win32/Release/bsp_lua511.lib",
+          "size": 455244,
+          "sha256": "db83167c8c7d24461ef2bf60363b96264fd2406929d0e72a8909287d79b96a17"
+        },
+        {
+          "path": "build/win32/Release/bsp_math_tests.exe",
+          "size": 763392,
+          "sha256": "77a75add5a61fc6d7e86cea68dfcde7f370b74db3db595b1f6b203f777797018"
+        },
+        {
+          "path": "build/win32/Release/bsp_native_math_tests.exe",
+          "size": 18432,
+          "sha256": "7c95d0ff05449eae3fee50789666f6726b0896bf213790883efcd20f00fcefb2"
+        },
+        {
+          "path": "build/win32/Release/bsp_zlib121.lib",
+          "size": 71906,
+          "sha256": "ed4a21e7a6a61ccaa28a08133dcc8da9fbd3b45d5c47d5066eec00f4f7c972f5"
+        },
+        {
+          "path": "cmake/startup.cmake",
+          "size": 163383,
+          "sha256": "582b5a0f41eab5ab78fccaa8f6ccb19d288115cdb9987411812614be18bd5861"
+        },
+        {
+          "path": "config/names/00c40000.jsonl",
+          "size": 51652,
+          "sha256": "c099d8ff02cc037e659e606d01e8781d08287dca4b1754a793b94ef1b6aabe12"
+        },
+        {
+          "path": "config/reconstruction/00c40000.jsonl",
+          "size": 70485,
+          "sha256": "e73d338561e514c2cc9da62ba2b7622a1985e1feeae68fb6a9594221fb0e8875"
+        },
+        {
+          "path": "docs/DYN_DISPATCH_INITIALIZATION.md",
+          "size": 11420,
+          "sha256": "e83b0be9f3447e67d88a32a12e6311bfca6a0f6be07c0f00c1c123c478a79925"
+        },
+        {
+          "path": "docs/NATIVE_DYN_CONVEX_RAY_R144.md",
+          "size": 6616,
+          "sha256": "d2152a7e12321e3cfcea368669c9b1d720f783829bc8a7ff2a158aa0225c34d4"
+        },
+        {
+          "path": "include/bsp/avoid_zone_dyn_hull.hpp",
+          "size": 3575,
+          "sha256": "c4b13f13e5cb94a4e1423c0c96aa725935615f92d2cb65a823c36572bf1f2c3a"
+        },
+        {
+          "path": "include/bsp/camera_frame_state.hpp",
+          "size": 8365,
+          "sha256": "3908727ef594797d30acfba72d87366683c61d7768e7cf3038f5a0164f7428df"
+        },
+        {
+          "path": "include/bsp/camera_projection.hpp",
+          "size": 2413,
+          "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+        },
+        {
+          "path": "include/bsp/camera_transform.hpp",
+          "size": 7028,
+          "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+        },
+        {
+          "path": "include/bsp/d3d9_buffers.hpp",
+          "size": 3262,
+          "sha256": "e8bc19c4630661b83969b53cac94134748f3c9af2a98002f1f2906ed93dedc83"
+        },
+        {
+          "path": "include/bsp/d3d9_startup.hpp",
+          "size": 1362,
+          "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843"
+        },
+        {
+          "path": "include/bsp/d3d9_states.hpp",
+          "size": 15076,
+          "sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288"
+        },
+        {
+          "path": "include/bsp/d3d9_vertex_layout.hpp",
+          "size": 1257,
+          "sha256": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef"
+        },
+        {
+          "path": "include/bsp/dyn_body_creation.hpp",
+          "size": 5100,
+          "sha256": "771890801179db08b6ec963a2145cb05c4346da8f79d402514770aae2210535b"
+        },
+        {
+          "path": "include/bsp/dyn_dispatch_initialization.hpp",
+          "size": 5957,
+          "sha256": "df9d5a97ebbf1f7ba5c51f3a022de2dfbb5ba145cb28200c56ccc72f2217ffb1"
+        },
+        {
+          "path": "include/bsp/dyn_scene_runtime.hpp",
+          "size": 2890,
+          "sha256": "db87cad3d2b995ee64da4e0a4dfa3651d4b881b545a89d52c4c1501a0b141c7c"
+        },
+        {
+          "path": "include/bsp/material_sort_metadata.hpp",
+          "size": 3332,
+          "sha256": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212"
+        },
+        {
+          "path": "include/bsp/native_dyn_convex_ray.hpp",
+          "size": 1500,
+          "sha256": "9acff9b1bbf7fd0dc2a2a5b666f1e586e1e6f362ff596f187fb34cc1d53d2cb8"
+        },
+        {
+          "path": "include/bsp/native_dyn_convex_support.hpp",
+          "size": 2636,
+          "sha256": "6a6b3028657c8e8732e9d81b74172be60b78a565082cf102dfb8e48f0093160b"
+        },
+        {
+          "path": "include/bsp/native_dyn_shape_lifetime.hpp",
+          "size": 680,
+          "sha256": "9d03579c4046d19aa2cdc57e0bdee8c9536e59f138f6196e23ababa5a460e0e9"
+        },
+        {
+          "path": "include/bsp/random.hpp",
+          "size": 791,
+          "sha256": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c"
+        },
+        {
+          "path": "include/bsp/random_threads.hpp",
+          "size": 1446,
+          "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9"
+        },
+        {
+          "path": "include/bsp/rigid_body_integration.hpp",
+          "size": 8112,
+          "sha256": "07cb2142f73cb94cd0bd3d903f2482816cc7924be69247ae1ac1707e4df62f11"
+        },
+        {
+          "path": "include/bsp/ship_hull_body.hpp",
+          "size": 9286,
+          "sha256": "a9417d7dc66f6eeda4aee783cd87c3d403b91693a142d8d1c255ebe3ba2c9c0b"
+        },
+        {
+          "path": "include/bsp/ship_hull_shapes.hpp",
+          "size": 17222,
+          "sha256": "58a35e261aa87778c225ff550fea23218f24fc0c7f5982d87b50fc1ef7a9877a"
+        },
+        {
+          "path": "include/bsp/system_camera_axes.hpp",
+          "size": 3402,
+          "sha256": "abfa9300a54975dcdb7489f466d941b9341991af3f027ebb764a19cbb08124d5"
+        },
+        {
+          "path": "include/bsp/system_fog_constants.hpp",
+          "size": 1915,
+          "sha256": "9378d355dad5f5ee78ce8fa41cb6275f9e5b00e9bcbd07592f051c147a0d0663"
+        },
+        {
+          "path": "include/bsp/system_fog_slot.hpp",
+          "size": 1869,
+          "sha256": "778ddcf121dd7b693a2104c43ad8dd1224eb401e06ba4fb48e7aa18617d9b1fb"
+        },
+        {
+          "path": "include/bsp/vertex_declaration.hpp",
+          "size": 1462,
+          "sha256": "0f03c6a960da3547644b3e5bc8b5934a35fe26f42abc2746559a31f0af2452a0"
+        },
+        {
+          "path": "include/bsp/world_ocean.hpp",
+          "size": 8932,
+          "sha256": "00a1c385e2e46fe0a7372c4dec7d0f8039935823bc02e0a29982c93c5360429b"
+        },
+        {
+          "path": "local/annotate_dyn_convex_ray_r144.py",
+          "size": 2406,
+          "sha256": "fd4cb31379888947d9b28b618837d73bbd93b40ab615a7436f9898bfbfa24827"
+        },
+        {
+          "path": "local/annotate_game_tree_lifetime_r127.py",
+          "size": 7061,
+          "sha256": "02ed6b2c78c8a0bd3307b8db9b43a5a89b140c62e3b517b521ca82ed74d7b6cd"
+        },
+        {
+          "path": "local/audit_dyn_convex_ray_combined_r144.py",
+          "size": 5817,
+          "sha256": "89b8f0dd96ec1c7a1a31c5739d32cfe1f27ac4bd9c525623e046de1f3872c01f"
+        },
+        {
+          "path": "local/audit_dyn_convex_ray_r144.py",
+          "size": 5746,
+          "sha256": "e1f30315bef4334f94fa526cbf2291e855f446f57abe0d38a7da6799318f6d3a"
+        },
+        {
+          "path": "local/audit_dyn_convex_simplex_r139.py",
+          "size": 4019,
+          "sha256": "a7d0822eefc9311f6b996cf813edd3de5c2d2ea494affb9820544495724cf268"
+        },
+        {
+          "path": "local/collect_dyn_convex_ray_owner_r143.py",
+          "size": 844,
+          "sha256": "2afd02cc3fe030827b11751f10f953a6b03ec5c132aa5b609c01d904c9b467a2"
+        },
+        {
+          "path": "local/collect_dyn_convex_ray_r144.py",
+          "size": 194,
+          "sha256": "2f7cc78e42fcf750a734349bed96033b9819d58f50755d9c742ee73270234bcc"
+        },
+        {
+          "path": "local/collect_game_grid_r120.py",
+          "size": 2437,
+          "sha256": "241fa70bf100af567e2ead281d715b1df175d6cc773e9c2087e731e37884cebd"
+        },
+        {
+          "path": "local/commit-msg-r143.txt",
+          "size": 373,
+          "sha256": "42a48a0d5ced82ce08871787bcac951a974213d5eb714ffd1a5d90600f134d79"
+        },
+        {
+          "path": "local/commit-msg-r144.txt",
+          "size": 797,
+          "sha256": "197f7e7913a3ab637f76018332c3446b5b9ed43ca871dbabfa3d1af724441986"
+        },
+        {
+          "path": "local/commit_dyn_convex_ray_owner_r143.py",
+          "size": 2001,
+          "sha256": "2081b1d4e28212d6dd2740b69ec8c8c4c816d6221a3d00226c19aaa86bfafa4b"
+        },
+        {
+          "path": "local/commit_dyn_convex_ray_r144.py",
+          "size": 2139,
+          "sha256": "fa1797ac684bc3825830fde839ae2addbef7c3bbdacf975acdfa24d69c711dc1"
+        },
+        {
+          "path": "local/dyn_convex_ray_owner_r143/probe.cpp",
+          "size": 9754,
+          "sha256": "2d16514ac2779ec98a391affe477a397c0ff47d0095932e8891b2943f00eebee"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/annotations.log",
+          "size": 195,
+          "sha256": "95fcbc9706d235308eb7fe5f269cedfce574deac278785c95150377102d41368"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/build.log",
+          "size": 2584,
+          "sha256": "8f553f935bf7ada9e92f860ad291c15553a60cab850d855a9021057a732ba87a"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/combined/dependencies.json",
+          "size": 30236,
+          "sha256": "d54e51fbc94f4e1ebfc0e48dd3384a8fffd61673000dc419a431f2938f5cf2fe"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/combined/dyn_convex_ray_probe.exe",
+          "size": 69120,
+          "sha256": "11e41bf35997262060e86cf4992f696e32034185008e1b7d41bdf469330294c1"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/combined/fixture-image.json",
+          "size": 109649,
+          "sha256": "ddb3fe44ab54998054b8ab3ba1f50c65df608fcc4759a171ce74a6e8d4de4d59"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/combined/instruction-audit.json",
+          "size": 1735,
+          "sha256": "12022bc96a932eafb75cf357bdeb9eaebda22a27ea0d6ae9d4fa793f66aa61c6"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/combined/original-build.inc",
+          "size": 4144,
+          "sha256": "c85c3968638ab0b45cfeea45808e47d60c312cba4ef2deb083c9783f65ed13a6"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/combined/original.bin",
+          "size": 23150592,
+          "sha256": "2a202579b9504fcadfef46d9ca9b10af101c1d7acb4ae657bac9ad65d2ce3fd4"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/combined/original.inc",
+          "size": 45794,
+          "sha256": "7ea21915b4b85b9b7c76dd5bdb70d0637c58d7b189acdc917f29b257c054bffc"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/combined/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/combined/probe-run.log",
+          "size": 883,
+          "sha256": "07902cc1297162ec9a5e15cf1968fb583f6ec1500477abaa7d3696be853eb131"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/combined/probe.cpp",
+          "size": 11752,
+          "sha256": "927bdc5fc8351f6c367e559aa34ff528628f132ec11fe5d3d26c8136b1ea3a9e"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/combined/probe.map",
+          "size": 60481,
+          "sha256": "d298ec395b7ce7a5807a83fc06c57e10f285484dea545e669412a6fafc694a34"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/combined/probe.obj",
+          "size": 204826,
+          "sha256": "3a52c53f8b483fecfd68d9c87a5a5e7e67dc4e5cdfb11d8b1347551d755c40fc"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/combined/result.json",
+          "size": 528,
+          "sha256": "9fb2c1543e2d8aee9c5bf5f27b204e0f0b9a40b3203c587b86d027207d1466c7"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/combined/source.bin",
+          "size": 23150592,
+          "sha256": "2a202579b9504fcadfef46d9ca9b10af101c1d7acb4ae657bac9ad65d2ce3fd4"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/comments-after.json",
+          "size": 3817,
+          "sha256": "d16f2beca0d60c6808dc7af7390cce5fc8d1e810ea5831c2bd92265a8714cb0f"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/comments-after.log",
+          "size": 75,
+          "sha256": "a3c37d703ba8df124d32034805d3f80db1eb3421f5b1ed523944a5b025966ab4"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/decompile-00401c20.txt",
+          "size": 479,
+          "sha256": "9c0488a9ea60e0dc38f35402726fb34c3f33c72542a95611edce85785c3a5d8d"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/decompile-00401cb0.txt",
+          "size": 373,
+          "sha256": "fa8c2614c302f6252ceba0a40ba7c498428e0539d3dd56af7dc11215a3cf2077"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/decompile-00401cd0.txt",
+          "size": 304,
+          "sha256": "1036d34e6c98bfa33454d993e36bd7a65913fd7738c580b59284d0068a9f83f8"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/decompile-00c44780.txt",
+          "size": 48299,
+          "sha256": "d1b3a0b8582190bc848e8ab6efd776501fc736812c344466ac43f8d6bc29559a"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/dependencies.json",
+          "size": 30206,
+          "sha256": "dcd6784d97a8c98aa7f1ae8c66b689d56c335eebc295e64e542d5f5d3088ec29"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/disasm-00401c20.txt",
+          "size": 639,
+          "sha256": "ac10b22f7df3eb83614c1b99c83b668d5be4582b7300346266b581ab9ec01013"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/disasm-00401cb0.txt",
+          "size": 358,
+          "sha256": "587bedd9e012a68032dafecdcad204453e9303d3a73341fb6f9eca17db75bbc5"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/disasm-00401cd0.txt",
+          "size": 346,
+          "sha256": "65ca4464e561bd732561a71eaf9c087f99f3dfbf47e5627b6af5ddc24c90d9b1"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/disasm-00c44780.txt",
+          "size": 31580,
+          "sha256": "333544a872828bbdad43766b059b71a218df15523bfb3d0df5d3b5137dfa2707"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/dyn_convex_ray_probe.exe",
+          "size": 69120,
+          "sha256": "c5fcd4db46fd3937d9ad94eb033fd716a54ed8a3d07f020e26decbf0bcdf6f62"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/exports-after.log",
+          "size": 125,
+          "sha256": "32beea613f98c5c56a681aa0f5092c7ca22338eee7da86070c43b15679431b36"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/fixture-image.json",
+          "size": 109649,
+          "sha256": "ddb3fe44ab54998054b8ab3ba1f50c65df608fcc4759a171ce74a6e8d4de4d59"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/flow.log",
+          "size": 130,
+          "sha256": "fdc18d21dff566c08eb07d371b210dfd12c70c842870a1f9eecee9dd3dc7433a"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/index.log",
+          "size": 16,
+          "sha256": "193e6dccd4e88f7a8a44d31dd4e4f64b37e257bc9a75ae34c8e3651da7558e51"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/instruction-audit.json",
+          "size": 1735,
+          "sha256": "12022bc96a932eafb75cf357bdeb9eaebda22a27ea0d6ae9d4fa793f66aa61c6"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/native.json",
+          "size": 561425,
+          "sha256": "a72b27e4715cef065ec9779945f3cbc27dd7cac8e674dcc7c4e8854cd0282b98"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/original-build.inc",
+          "size": 4144,
+          "sha256": "c85c3968638ab0b45cfeea45808e47d60c312cba4ef2deb083c9783f65ed13a6"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/original.bin",
+          "size": 23150592,
+          "sha256": "2a202579b9504fcadfef46d9ca9b10af101c1d7acb4ae657bac9ad65d2ce3fd4"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/original.inc",
+          "size": 45794,
+          "sha256": "7ea21915b4b85b9b7c76dd5bdb70d0637c58d7b189acdc917f29b257c054bffc"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/probe-build.log",
+          "size": 11,
+          "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/probe-run.log",
+          "size": 883,
+          "sha256": "07902cc1297162ec9a5e15cf1968fb583f6ec1500477abaa7d3696be853eb131"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/probe.cpp",
+          "size": 11752,
+          "sha256": "927bdc5fc8351f6c367e559aa34ff528628f132ec11fe5d3d26c8136b1ea3a9e"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/probe.map",
+          "size": 60481,
+          "sha256": "8dc698f6e208506dc4798df8a1d9265dd3655f4e812b1b8587dd7769752f32a9"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/probe.obj",
+          "size": 204814,
+          "sha256": "b56f7571d9557f27054641ba743941c99b004c07957a25df703921cfaed0828b"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/proto-00401c20.txt",
+          "size": 662,
+          "sha256": "f141393f4fdc47a08e4f583212780d827cfa0ae5fbfa3326b7894ef04e8cb049"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/proto-00401cb0.txt",
+          "size": 671,
+          "sha256": "051c92b5d00560d004a2b025888222fc4c20b641bef402919d69e835f74aefe5"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/proto-00401cd0.txt",
+          "size": 712,
+          "sha256": "36bcebd2a10a5762d01677200c14d875e52c04d13724da1a759ed9960b96e941"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/proto-00c44780.txt",
+          "size": 749,
+          "sha256": "841dc00db343da8fa42c3dba788ecfe1d47c409f35cd4bc45d31275c6c0c2403"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/result.json",
+          "size": 528,
+          "sha256": "5b87d442c91d5ebaff17abde13fa0ffa04265b312d13555dc4428cc8b3d85cf0"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/snapshot.log",
+          "size": 230,
+          "sha256": "d8518e0b5ad12291bd74323d7edc6bc6167458244c9acf00ce330c56a79f17fe"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/source.bin",
+          "size": 23150592,
+          "sha256": "2a202579b9504fcadfef46d9ca9b10af101c1d7acb4ae657bac9ad65d2ce3fd4"
+        },
+        {
+          "path": "local/dyn_convex_ray_r144/verify-calls.log",
+          "size": 129,
+          "sha256": "471e07dc13025516f88b8265a5833e948ac265f9c7bc9bbac9b7ed5e5d9ae53c"
+        },
+        {
+          "path": "local/dyn_convex_ray_tail_r144.txt",
+          "size": 1115,
+          "sha256": "743a393e15a6410529ad722ccdc9896e3d47af519ba8cd15d7f056b091e6517e"
+        },
+        {
+          "path": "local/dyn_convex_simplex_r139/instruction-audit.json",
+          "size": 1426,
+          "sha256": "3dc42806280ff356bdc01b9f1d443179724835e81c14c13a3035c9fb7c4746a7"
+        },
+        {
+          "path": "local/dyn_convex_simplex_r139/native.json",
+          "size": 608856,
+          "sha256": "785280702e6656fbf0891402aa7079dd3370fa61299337ddda18751b02c6a64c"
+        },
+        {
+          "path": "local/ghidra-annotations-20260918T122635Z.json",
+          "size": 3918,
+          "sha256": "e7676de356f9331e5dd6eb9724736b94c4af62552860f9ea4b702b4eaca59edc"
+        },
+        {
+          "path": "local/prepare_dyn_convex_ray_closeout_r144.py",
+          "size": 3851,
+          "sha256": "53566037b9b6f28e7300c193819c4bd851eb513451e67cc72b2c3f9a63a3fbe5"
+        },
+        {
+          "path": "local/prepare_dyn_convex_ray_owner_r143.py",
+          "size": 1059,
+          "sha256": "77bb0d3015818add5e6460817cb2db968c7a5347602140fb34caf706a4be6f1e"
+        },
+        {
+          "path": "local/prepare_dyn_convex_ray_r144.py",
+          "size": 4194,
+          "sha256": "2ebcfb0c16f760d2123fa32fedcca25716a45e9af03393cfee7f00f733867900"
+        },
+        {
+          "path": "local/prepare_dyn_convex_simplex_r139.py",
+          "size": 3521,
+          "sha256": "18fa48271d1efaa54d6556a1530dc0c27eb52157e3b0fcda3f0eef1781bc50e8"
+        },
+        {
+          "path": "local/r144_integration.log",
+          "size": 1234,
+          "sha256": "45b87157b695606c594ad646093ecb27bed191b3161a139fa820ad41a4ef7fd2"
+        },
+        {
+          "path": "local/report_dyn_convex_ray_r144.py",
+          "size": 5319,
+          "sha256": "25d0446bbf4b9dad381b825f9b2169471b1eeaf9eb061fb1616424425373b4aa"
+        },
+        {
+          "path": "local/run_dyn_convex_ray_combined_r144.ps1",
+          "size": 1674,
+          "sha256": "29fe20d91838d71965c6a8dc67a1eeb6eaa6cc9f38dada34ceb9dc7320aaa346"
+        },
+        {
+          "path": "local/run_dyn_convex_ray_r144.ps1",
+          "size": 1665,
+          "sha256": "7eb11e846df12093256d1066a2d27e0763b9a6572647d38a49113bb54a7f0cba"
+        },
+        {
+          "path": "local/run_dyn_convex_simplex_r139.ps1",
+          "size": 1681,
+          "sha256": "199e7fe0c9d6181ecb24deae83973cf1db23284b1ce86762aefd37844bfdc52d"
+        },
+        {
+          "path": "local/run_dyn_narrow_phase_r138.ps1",
+          "size": 1673,
+          "sha256": "5ca9bdddcc523bbb371ec8ad650461b6235a01c20008dc4f3bfedb6951efd6ac"
+        },
+        {
+          "path": "local/seal_dyn_convex_ray_owner_r143.py",
+          "size": 5165,
+          "sha256": "84dc01899700a21a3f2ffe8b063a95aa5c27162a1936dbac9f3e7bb8e3d8d310"
+        },
+        {
+          "path": "local/seal_dyn_convex_ray_r144.py",
+          "size": 5605,
+          "sha256": "dfbe94acc79a9e9667b410167ad581e55b8c3c6779e8968bdf48f3ded811558a"
+        },
+        {
+          "path": "local/write_dyn_convex_ray_r144.py",
+          "size": 3884,
+          "sha256": "729ce1eca66a4b24c7e2031acfae3db69dde61304dcaff0ba3aa9f82fe54be5f"
+        },
+        {
+          "path": "reports/native_dyn_convex_ray_r144.json",
+          "size": 691728,
+          "sha256": "9aa349dd0dd2444cabc1e0a0b411c6786a9fad0204e2dd816d29805e30cf09eb"
+        },
+        {
+          "path": "src/dyn_body_creation.cpp",
+          "size": 15270,
+          "sha256": "e915e3325ceca411c14df2424129c7e82bebf6bc272921205e62d43744d4c93c"
+        },
+        {
+          "path": "src/dyn_dispatch_initialization.cpp",
+          "size": 9215,
+          "sha256": "05da4f7bfe26403fdcd8f82c4e14d4122b414971f8a7933eba42b7068f6e0d85"
+        },
+        {
+          "path": "src/dyn_scene_runtime.cpp",
+          "size": 4583,
+          "sha256": "6efa488d22e05beb310164dd2633e102caab5b07c4ba96b6c7030333beeec32a"
+        },
+        {
+          "path": "src/native_dyn_convex_ray.cpp",
+          "size": 183891,
+          "sha256": "be50be314029c6bd7de1451d6e264a53ac91bc2cdb78410effa83690f6302422"
+        },
+        {
+          "path": "src/native_dyn_convex_support.cpp",
+          "size": 17894,
+          "sha256": "a2884a94389396afecaef01b8cd914eb22ae04c8e4ed5bc9ce9b37a3d0fdb239"
+        },
+        {
+          "path": "src/ship_hull_shapes.cpp",
+          "size": 11041,
+          "sha256": "9df8074293753287b9b6f40fac113ac7f8c39daf8b9ab0e063643738c57eee79"
+        },
+        {
+          "path": "src/system_camera_axes.cpp",
+          "size": 15864,
+          "sha256": "2682460d77fd18e19909c946ddd58ed60e63234e441c2f5badafc2c2815f0415"
+        }
+      ],
+      "scope": "Complete13067B convex/ray body and one-slot table;24576pairs/23150592matchingbytes/all12maskedFPcontrols;4200instruction/112branch/5constant audit;strictWin32/3CTests. Terrain/convex,consumers,application/gameplay open."
+    },
+    "source_identical_to_tested": true,
+    "main_source_equal_after_lf_normalization": true,
+    "owned_object_comparison": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_convex_ray.obj",
+        "same_except_coff_timestamp": true,
+        "tested_sha256": "07c0008e2a80dba645140b34d961fb763bd6f6f806adb746e8bffbe0711b1c49",
+        "combined_sha256": "07c0008e2a80dba645140b34d961fb763bd6f6f806adb746e8bffbe0711b1c49"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/dyn_dispatch_initialization.obj",
+        "same_except_coff_timestamp": true,
+        "tested_sha256": "72a12d61dec60a04dc0736080f6c5c8799d327709f5445cd2e073ce10fea04ec",
+        "combined_sha256": "72a12d61dec60a04dc0736080f6c5c8799d327709f5445cd2e073ce10fea04ec"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/dyn_scene_runtime.obj",
+        "same_except_coff_timestamp": true,
+        "tested_sha256": "3f8b8ec73cb88a3660db5d5981b786604a57c6323dcbd112b703711fdeaaa2b5",
+        "combined_sha256": "3f8b8ec73cb88a3660db5d5981b786604a57c6323dcbd112b703711fdeaaa2b5"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_dyn_convex_support.obj",
+        "same_except_coff_timestamp": true,
+        "tested_sha256": "fa6ebaf582cafacd57005e574fe93a97e1fe3b70ce4435b9f0f8a98ab6711f44",
+        "combined_sha256": "fa6ebaf582cafacd57005e574fe93a97e1fe3b70ce4435b9f0f8a98ab6711f44"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/dyn_body_creation.obj",
+        "same_except_coff_timestamp": true,
+        "tested_sha256": "cfe368fa7b12cfc8223ffbcc81741e7cbf354e8d507e7e00cf323cd33a735f95",
+        "combined_sha256": "cfe368fa7b12cfc8223ffbcc81741e7cbf354e8d507e7e00cf323cd33a735f95"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/system_camera_axes.obj",
+        "same_except_coff_timestamp": true,
+        "tested_sha256": "be236e32e8060c6197ad4085d54355a1de89d2ea52355944ec8aa704cd07c272",
+        "combined_sha256": "be236e32e8060c6197ad4085d54355a1de89d2ea52355944ec8aa704cd07c272"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/ship_hull_shapes.obj",
+        "same_except_coff_timestamp": true,
+        "tested_sha256": "452438d1fb0549154d4f72cdc5acd51aa0d4f117c9764465c12618e9413cb15d",
+        "combined_sha256": "452438d1fb0549154d4f72cdc5acd51aa0d4f117c9764465c12618e9413cb15d"
+      }
+    ],
+    "combined_probe": {
+      "instruction_audit": {
+        "object_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\bsp_core.dir\\Release\\native_dyn_convex_ray.obj",
+        "sha256": "07c0008e2a80dba645140b34d961fb763bd6f6f806adb746e8bffbe0711b1c49",
+        "coff_timestamp": 1789734051,
+        "scope": "Complete ray body plus three consumed native math leaves: exact instruction bytes except checked call/branch/constant relocations, extra final CRT context argument and RET14. Five-way switch expansion separately verified, including balanced PUSHFD/POPFD on each target. Five-instruction sqrt adapter and all constant bit patterns checked.",
+        "records": [
+          {
+            "kind": "cross_reference",
+            "original_instructions": 19,
+            "compiled_instructions": 19,
+            "original_bytes": 47,
+            "compiled_bytes": 47,
+            "branches_checked": 0
+          },
+          {
+            "kind": "subtract_reference",
+            "original_instructions": 10,
+            "compiled_instructions": 10,
+            "original_bytes": 25,
+            "compiled_bytes": 25,
+            "branches_checked": 0
+          },
+          {
+            "kind": "scale_reference",
+            "original_instructions": 11,
+            "compiled_instructions": 11,
+            "original_bytes": 29,
+            "compiled_bytes": 29,
+            "branches_checked": 0
+          },
+          {
+            "kind": "ray",
+            "original_instructions": 4160,
+            "compiled_instructions": 4180,
+            "original_bytes": 13067,
+            "compiled_bytes": 13107,
+            "branches_checked": 112
+          }
+        ],
+        "constants_checked": [
+          "00d7a250",
+          "00d7a2a8",
+          "00d7a2b8",
+          "00d7a2e0",
+          "00d7a2e8"
+        ],
+        "crt_adapter_instructions": 5,
+        "switch_targets": [
+          "00c44cc2",
+          "00c44cd9",
+          "00c44d0f",
+          "00c44ec2",
+          "00c4577d"
+        ]
+      },
+      "probe": {
+        "exe_sha256": "11E41BF35997262060E86CF4992F696E32034185008E1B7D41BDF469330294C1",
+        "exit": 0,
+        "compiler": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\cl.exe",
+        "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+        "library_sha256": "6BB41ABA4FA4D70725D74E91FFEB5657E27C30C67677359C8EA0675F6AD94D4D",
+        "linker": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x86\\link.exe"
+      },
+      "pairs": 24576,
+      "comparison_bytes": 23150592,
+      "comparison_sha256": "2a202579b9504fcadfef46d9ca9b10af101c1d7acb4ae657bac9ad65d2ce3fd4",
+      "log": "cw7f explicit interface and production table passed\ncw47f explicit interface and production table passed\ncw87f explicit interface and production table passed\ncwc7f explicit interface and production table passed\ncw27f explicit interface and production table passed\ncw67f explicit interface and production table passed\ncwa7f explicit interface and production table passed\ncwe7f explicit interface and production table passed\ncw37f explicit interface and production table passed\ncw77f explicit interface and production table passed\ncwb7f explicit interface and production table passed\ncwf7f explicit interface and production table passed\n24576 original/source pairs; 23150592 identical bytes; 11440 hits; count mask 1f; return sites 00c47a47 00c47a5e 00c47a75\nOwner 160 bytes; zero PE scratch, binding identities, scratch preservation, padding and both boundaries passed.\n"
+    },
+    "library_identical_to_tested": false,
+    "game_identical_to_tested": false,
+    "ordinary_application_runtime_rerun": false
   }
 }
