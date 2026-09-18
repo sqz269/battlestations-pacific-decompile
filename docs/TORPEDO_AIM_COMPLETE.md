@@ -164,3 +164,25 @@ and USN02 numbers stand where `docs/TORPEDO_RUN_IN_PATH.md` left them.
    calls so the correction in section (1) does not have to be applied by hand.
 3. **`approach+84h`**, the interpolation's upper bound, and `unit+C64h`, the bank the skipped block
    at `009D2110` compares against.
+
+## Superseded by `docs/TORPEDO_AIM_TICK.md` (packet `cc8_torpedo_aim_tick`)
+
+Appended, not rewritten. The negative result above does not hold. Its slot keys are 20 bytes off
+for every read inside the last `SUB ESP,0x14` window, because the twelve `00419010` argument
+windows and their `RET 14h` cleanups were not both credited. With the keys corrected by a CFG
+fixpoint over the function's own graph (870/870 instructions reached, 0 depth conflicts, epilogue
+balanced), all four slots the test reads are defined on every path and the test is one expression.
+
+* Section (3): the dominance table is computed over the wrong keys. Every slot in it has a
+  dominating write; `F=34h` has exactly one write that reaches `009D22FF`, namely `009D1DED`.
+* Section (4): the `|cos|` interpolation is real but writes `F=20h` at `009D1FF6` and feeds the
+  aim-solution byte `approach+130h` at `009D2021`. It never reaches `009D2318`. The conclusion
+  drawn from it, that the second clause's right operand is not a time, is wrong: that operand is
+  `009D1500`'s return, which is a time in seconds.
+* Section (5): the clause-1 minuend is neither candidate. It is `F=14h`, `approach+90h`, written
+  at `009D1604` and optionally scaled by `0.9f` at `009D1782`. The commanded altitude floor is
+  `F=28h` (`009D1673`) and the bearing error is `F=10h` (`009D1699`), which is what Ghidra's
+  `fStack_5c` names.
+
+The rule, and the run-time evidence that all five USN01 torpedo bombers now set `state+2Ch`, are in
+`docs/TORPEDO_AIM_TICK.md`.
