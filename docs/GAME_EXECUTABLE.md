@@ -8506,3 +8506,37 @@ run (mean airspeed 59 m/s) and the ordered flight's mean closure +1250 m, agains
 total_damage=220.0` before, when the aircraft covered 2181 km (727 m/s) while every gun computed its
 ranges against poses frozen at spawn. The old USN01 numbers were an artefact of that frozen pose,
 not a baseline to preserve; the columns above for USN02 are unaffected (no aircraft fly there).
+
+### The USN01 gunnery bisect (2026-09-18): the fall from 45 to 10 hits is `fb8c0ff76`
+
+`docs/AI_SQUADRON_SERVED.md` measured USN01 at 45 hits on its own branch (`2eb86d8c4`, base
+`f5400e43f`) and 10 hits on `main` alone at `8f3370237`, and read the difference as a regression
+merged into `main` in that window. Two bisect points in a detached worktree, same command
+(`--frames 3200 --press-start-frame 30 --menu-select USN01 --mission-frames 3000
+--mission-frame-seconds 0.05`), plus the table's own rows:
+
+| Build | shots | entity impacts | water | hits | damage | first hit | deaths | has `fb8c0ff76` |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `f5400e43f`, squadron base | - | - | - | 23 | 220.0 | 4.70 s | 1 | no |
+| `2eb86d8c4`, squadron branch | 14676 | 45 | 42 | 45 | 563.5 | 4.70 s | 1 | no |
+| `f11fd8c19`, after the native Dyn world step `51d365edb` | 1369 | 68 | 0 | 68 | 660.0 | 26.80 s | 3 | yes |
+| `0c50b0a88`, after the native contact reports `83b6306e9` | 13645 | 0 | 0 | 0 | 0.0 | never | 0 | yes |
+| `8f3370237`, main | 13699 | 10 | 42 | 10 | 313.4 | 58.60 s | 0 | yes |
+
+The column that explains the fall is the last one. `fb8c0ff76` (the plane-physics packets: pose
+publish, engine, bank cap) is the commit the section above records as moving USN01 from
+`hull=23 deaths=1 total_damage=220.0` to `hull=1 deaths=0 total_damage=9.3`, because the mission's
+guns fire at aircraft and until then every aircraft sat at its spawn pose. The squadron branch was
+cut before it, so its 23, 36 and 45 hits were all scored against frozen aircraft, and `main`'s 10
+are scored against aircraft that move (and, at that commit, dive into the sea at twice `MaxSpd`).
+The two are not the same measurement, and no commit in the window took hits away from the
+moving-aircraft profile; the squadron packets and the AI coordinator raised it from 1 to 10.
+
+The two intermediate points are not a regression trail either. Both sit inside the Codex
+`orch4` native world-simulation series (`51d365edb` Dyn world step, `83b6306e9` contact reports,
+`7a9e2f609` fixed-step physics, `a90f21670` grids), whose intermediate commits carry a
+different shell profile each (a tenfold shot drop, then zero impacts of any kind, then the
+`main` profile with water impacts restored); their own records (`reports/native_*_r153..r156`)
+validate host objects and builds, not the mission census. Only the profile at the series' head
+is on `main`. Any future USN01 gunnery comparison must use a before-run that contains
+`fb8c0ff76`, or the moving-aircraft column above, never the 23/36/45 column.

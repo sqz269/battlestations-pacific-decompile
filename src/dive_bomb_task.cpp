@@ -263,7 +263,7 @@ bool dive_bomb_dive_abort_009c5b43(const DiveBombDiveAbortInputs& in) noexcept {
     if (!(in.release_range_d4 + in.extra_range_50 > in.slant_range)) {
         return false;  // 009C5B18
     }
-    if (!(in.unit_roll_c64 > dive_bomb_constant::kAbortRollFloor)) {
+    if (!(in.unit_attitude_c64 > dive_bomb_constant::kAbortRollFloor)) {
         return false;  // 009C5B2C
     }
     const float bound =
@@ -349,14 +349,15 @@ float dive_bomb_turn_direction_009c7800(int sign, float magnitude_draw) noexcept
 }
 
 // 009C7EA0-009C7EF2, __fastcall(state) -> bool.
-bool dive_bomb_turndown_complete_009c7ea0(float roll_c64, float pitch_c68) noexcept {
-    float pitch = pitch_c68;
-    if (pitch <= dive_bomb_constant::kZero) {
-        pitch = dive_bomb_constant::kNegativeZero - pitch;
+bool dive_bomb_turndown_complete_009c7ea0(float attitude_c64,
+                                          float attitude_c68) noexcept {
+    float folded = attitude_c68;
+    if (folded <= dive_bomb_constant::kZero) {
+        folded = dive_bomb_constant::kNegativeZero - folded;
     }
-    if (roll_c64 >= dive_bomb_constant::kTurnDownRollGate &&
-        (roll_c64 >= dive_bomb_constant::kMinusOne ||
-         pitch <= dive_bomb_constant::kTurnDownPitchGate)) {
+    if (attitude_c64 >= dive_bomb_constant::kTurnDownRollGate &&
+        (attitude_c64 >= dive_bomb_constant::kMinusOne ||
+         folded <= dive_bomb_constant::kTurnDownPitchGate)) {
         return false;
     }
     return true;

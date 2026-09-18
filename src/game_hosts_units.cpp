@@ -20,6 +20,7 @@
 #include "bsp/plane_attitude_angles.hpp"
 #include "bsp/plane_ai_control.hpp"
 #include "bsp/unit_rudder.hpp"
+#include "bsp/dive_bomb_task.hpp"
 #include "bsp/torpedo_aim_tick.hpp"
 #include "bsp/torpedo_approach_update.hpp"
 #include "bsp/torpedo_first_release.hpp"
@@ -319,6 +320,50 @@ struct GameUnitSlot {
     float attack_hdg_err_first{-1.0f};
     float attack_hdg_err_last{-1.0f};
     float attack_pitch_last{0.0f};
+    // The dive-bomb bot task (kind 8) this ordered aircraft runs, when its
+    // class carries general bomb ordnance (kind 2Ah, 007ED7E0 -> 007B9320) and
+    // the command arm at 007EE9C5 chose class 00E08F20. docs/DIVE_BOMB_TASK.md.
+    bool dive_bomb_task_installed{false};
+    bsp::DiveBombState dive_bomb_state{bsp::DiveBombState::kNone};
+    int dive_bomb_state_ticks[10]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    int dive_bomb_arm_ticks{0};
+    int dive_bomb_transitions{0};
+    int dive_bomb_releases{0};
+    int dive_bomb_rounds_pending{0};   // task+424h
+    int dive_bomb_rounds_remaining{0};  // 007C1DB0(unit)
+    // The approach fields 009C7A80 and the seed 009C3EA0 produce, mirrored so
+    // the arm, the two release rules and the census read one set.
+    float db_dive_alt_a8{0.0f};      // approach+A8h, the release floor
+    float db_begin_alt_ac{0.0f};     // approach+ACh = ctl+398h, BeginAltRange/1
+    float db_alt_span_b0{0.0f};      // approach+B0h = BeginAltRange/2 - /1
+    float db_attack_dist_b4{0.0f};   // approach+B4h, the moveto speed argument
+    float db_in_range_b8{0.0f};      // approach+B8h == task+4B0h
+    float db_planar_bc{0.0f};        // approach+BCh, the planar range
+    float db_bearing_c0{0.0f};       // approach+C0h
+    float db_extra_range_50{0.0f};   // approach+50h
+    float db_release_range_d4{0.0f};  // approach+D4h
+    float db_lead_high_5c{0.0f};     // (approach+14h)->+5Ch
+    float db_gain_high_60{0.0f};     // (approach+14h)->+60h
+    bool db_in_range_d0{false};      // approach+D0h == task+4C8h
+    bool db_has_bomb_d1{false};      // approach+D1h == task+4C9h
+    // The per-state fields the two aim states and flyabove carry.
+    float db_aim_rearm_1c{0.0f};     // aimdive/aimglide state+1Ch
+    float db_glide_travel_20{0.0f};  // aimglide state+20h
+    bool db_aim_alive_19{false};     // aimdive state+19h
+    bool db_aim_pull_out_18{false};  // aimdive state+18h
+    bool db_flyabove_ready_19{false};
+    bool db_flyabove_can_dive_18{false};
+    bool db_flyabove_leave_1a{false};
+    float db_turn_roll_18{0.0f};     // turndown state+18h, 009C7800's output
+    // Census.
+    float db_dive_entry_alt{-1.0f};
+    float db_dive_entry_pitch{0.0f};
+    float db_release_alt{-1.0f};
+    float db_release_speed{-1.0f};
+    float db_release_range{-1.0f};
+    float db_aim_error_last{0.0f};
+    int db_blocked_no_latch{0};      // ticks with approach+D0h clear
+    int db_blocked_no_bomb{0};       // ticks with approach+D1h clear
     // The torpedo bot task (kind Eh) this ordered aircraft runs, when its
     // class carries torpedo ordnance (kind 2Bh). docs/TORPEDO_TASK_ARM.md.
     // The task object itself is src/bot_tasks.cpp's; what lives here is the
@@ -843,6 +888,218 @@ struct GameUnitsHost::Impl {
         ++slot.torpedo_release_requests_007bbba0;
         slot.torpedo_issue_requests_c20 =
             bsp::release_request_raise_007bbc00(slot.torpedo_issue_requests_c20);
+    }
+
+    // ---- the dive-bomb task's host side. docs/DIVE_BOMB_TASK.md ----
+    // docs/GAME_TUNING_SINGLETON.md rows +4C0h..+4D8h.
+    static constexpr float kPilotDiveBombCruisingAlt = 1300.0f;
+    static constexpr float kPilotDiveBombAttackDist = 1100.0f;
+    static constexpr float kPilotDiveBombBeginAltRange1 = 1000.0f;
+    static constexpr float kPilotDiveBombBeginAltRange2 = 1200.0f;
+
+    // 007C1DB0: the device list at unit+48h, summing 006E3500 over every device
+    // whose vtable[+5Ch] answers 25h. The gunnery host owns that list; the
+    // count here is the aircraft's bomb platforms, one round each, minus what
+    // it has already dropped.
+    int dive_bomb_rounds_remaining(GameUnitSlot& slot) {
+        const int dropped = slot.torpedo_drops_spawned;
+        const int carried = slot.dive_bomb_task_installed
+            ? slot.dive_bomb_rounds_remaining + dropped
+            : kDiveBombCarriedRoundsSubstitute;
+        const int left = carried - dropped;
+        return left > 0 ? left : 0;
+    }
+    // SUBSTITUTION, labelled: 006E3500's per-device round count is unread, so
+    // the host gives a bomb-carrying aircraft one salvo's worth. The aimglide
+    // release at 009C5777 caps its loop against this number, so it decides how
+    // many bombs a single glide drop puts out.
+    static constexpr int kDiveBombCarriedRoundsSubstitute = 2;
+
+    // 009C7A80's outputs, the producer of every state-machine input. The body
+    // is 009C7A80-009C7E9E and its tail 009C7C5B-009C7E9E is read for its
+    // outputs only, so this is a PARTIAL binding of the rules that were read.
+    void update_dive_bomb_approach(GameUnitSlot& slot, float dt) {
+        (void)dt;
+        // 009C7AFE: approach+D1h = BSP_WeaponController_HasGeneralBombOrdnance.
+        const bsp::OrdnanceKindSet set{slot.ordnance_mask};
+        slot.db_has_bomb_d1 = bsp::ordnance_has_general_bomb_2ah(set) &&
+                              dive_bomb_rounds_remaining(slot) > 0;
+        // 009C7A96: approach+ACh = ctl+398h, which the cruise profile 009C8920
+        // holds at Pilot/DiveBomb/BeginAltRange/1.
+        slot.db_begin_alt_ac = kPilotDiveBombBeginAltRange1;
+        // 009C7A9E-009C7AB4, reconstructed. ctl+39Ch is the 9999.0f at
+        // 00CE4C04 the same profile writes, so the min leaves +A8h alone below
+        // about 9523 and this is a ceiling, not a decay, at these altitudes.
+        slot.db_dive_alt_a8 = bsp::dive_bomb_decay_dive_altitude_009c7a94(
+            slot.db_dive_alt_a8, bsp::dive_bomb_constant::kCruisingAltitudeThird);
+        // 009C8A5E, the cruise profile's clamp on task+4B0h == approach+B8h.
+        {
+            const float wanted = kPilotDiveBombAttackDist * 1.0f;
+            if (wanted > slot.db_in_range_b8) slot.db_in_range_b8 = wanted;
+        }
+        if (slot.command_target_plus_one == 0) {
+            slot.db_in_range_d0 = false;   // 009C7B0A
+            return;
+        }
+        const std::size_t ti = slot.command_target_plus_one - 1;
+        if (ti >= slots.size()) { slot.db_in_range_d0 = false; return; }
+        const float* const tp = slots[ti]->motion.position;
+        // 009C7B4F-009C7B80: the planar distance, components 0 and 2 only.
+        const double dx = static_cast<double>(tp[0]) -
+                          static_cast<double>(slot.motion.position[0]);
+        const double dz = static_cast<double>(tp[2]) -
+                          static_cast<double>(slot.motion.position[2]);
+        const double d2 = dx * dx + dz * dz;
+        slot.db_planar_bc = (d2 <= bsp::dive_bomb_constant::kDistanceEpsilonSq)
+            ? 0.0f : static_cast<float>(std::sqrt(d2));
+        // 009C7B8A-009C7BB0: pi/2 - atan2, wrapped into [0, 2pi).
+        {
+            float b = static_cast<float>(bsp::dive_bomb_constant::kHalfPi -
+                                         std::atan2(dz, dx));
+            if (b < 0.0f) {
+                b += static_cast<float>(bsp::dive_bomb_constant::kTwoPi);
+            }
+            slot.db_bearing_c0 = b;
+        }
+        // 009C7BFB-009C7C31, reconstructed.
+        bsp::DiveBombRangeLatchInputs lin;
+        lin.latched = slot.db_in_range_d0;
+        lin.planar_distance = slot.db_planar_bc;
+        lin.in_range_distance = slot.db_in_range_b8;
+        lin.control_flag_369 = false;
+        lin.global_e17bf2 = false;
+        slot.db_in_range_d0 = bsp::dive_bomb_in_range_latch_009c7c31(lin);
+    }
+
+    bsp::DiveBombTransitionInputs dive_bomb_transition_inputs(GameUnitSlot& slot) {
+        bsp::DiveBombTransitionInputs in;
+        in.current = slot.dive_bomb_state;
+        in.engaged.in_range_latch_4c8 = slot.db_in_range_d0;
+        // ctl+370h is the shared attack mode the torpedo packet bound; a dive
+        // bomber with no flight lead sits at 2, which is what 009C83E0 step 4
+        // and the entry chooser's first arm both read.
+        in.engaged.control_mode_370 = 2;
+        in.engaged.has_latched_target_440 = slot.command_target_plus_one != 0;
+        in.entry.control_mode_370 = in.engaged.control_mode_370;
+        in.entry.has_bomb_ordnance_4c9 = slot.db_has_bomb_d1;
+        in.entry.control_flag_369 = false;
+        in.entry.global_e17bf2 = false;
+        in.entry.in_range_latch_4c8 = slot.db_in_range_d0;
+        in.unit_lacks_follow_target = true;
+        {
+            bsp::DiveBombBreakOffInputs b;
+            b.base_0099c230 = true;
+            b.has_latched_target = slot.command_target_plus_one != 0;
+            b.has_bomb_ordnance_4c9 = slot.db_has_bomb_d1;
+            b.distance_to_target = slot.db_planar_bc;
+            b.speed_ratio_41c = 1.0f;
+            in.should_break_off = bsp::dive_bomb_should_break_off_009c8a90(b);
+        }
+        // SUBSTITUTION, labelled: the flyabove tick 009C62B0 has no Ghidra
+        // function and this packet read only its flag writes (009C659F,
+        // 009C66E3/E7/F2, 009C6A30, where +19h is copied from +18h once the
+        // over-target geometry closes). The host stands in for that geometry
+        // with the same two quantities the rest of the class uses: the aircraft
+        // is over the target when the planar range is inside the safe distance,
+        // and it can dive while it still has bombs.
+        in.flyabove_can_dive_790 = slot.db_has_bomb_d1;
+        in.flyabove_ready_791 =
+            slot.db_planar_bc <= bsp::dive_bomb_constant::kSafeDistance;
+        in.flyabove_leave_792 = !slot.db_has_bomb_d1;
+        in.flyabove_turn_side_798 = 0;
+        in.aimdive_alive_74d = slot.db_aim_alive_19;
+        in.aimdive_pull_out_74c = slot.db_aim_pull_out_18;
+        in.aimglide_pull_out_76c = false;
+        // 009C7850: !HasGeneralBombOrdnance.
+        in.aimglide_out_of_bombs = !slot.db_has_bomb_d1;
+        // 009C7EA0, reconstructed.
+        // 009C7EA0 reads pose+C64h first and pose+C68h second. The slot's
+        // own comment makes +C64h the pitch and +C68h the bank, so the pair
+        // goes in offset order, not axis-name order.
+        in.turndown_complete = bsp::dive_bomb_turndown_complete_009c7ea0(
+            slot.plane_pitch_angle_c64, slot.plane_bank_angle_c68);
+        // 009C7F00 is PARTIAL; its first rule is d = state+20h * 0.9 against
+        // the planar range, and with the travel accumulator at 0 that answers
+        // as soon as the aircraft has opened at all.
+        in.goaway_complete = slot.db_planar_bc >
+            slot.db_glide_travel_20 *
+                static_cast<float>(bsp::dive_bomb_constant::kGoAwayDistanceScale);
+        in.unit_bank_c68 = slot.plane_bank_angle_c68;
+        in.bank_high_00ce398c = 0.0f;
+        in.bank_low_00d1fbc0 = 0.0f;
+        in.random_turn_side = 1;
+        return in;
+    }
+
+    bsp::DiveBombAimDiveReleaseInputs dive_bomb_aimdive_inputs(GameUnitSlot& slot,
+                                                               float dt) {
+        // 009C58E9 counts state+1Ch down by dt.
+        if (slot.db_aim_rearm_1c >= 0.0f) slot.db_aim_rearm_1c -= dt;
+        bsp::DiveBombAimDiveReleaseInputs in;
+        in.altitude = slot.motion.position[1];
+        in.dive_altitude_a8 = slot.db_dive_alt_a8;
+        in.rearm_timer_1c = slot.db_aim_rearm_1c;
+        in.rearm_draw = bsp::dive_bomb_constant::kAimDiveRearmLow;
+        // 009C59BA-009C5C9B, reconstructed.
+        bsp::DiveBombAimErrorInputs e;
+        float target_y = slot.motion.position[1];
+        if (slot.command_target_plus_one != 0) {
+            const std::size_t ti = slot.command_target_plus_one - 1;
+            if (ti < slots.size()) target_y = slots[ti]->motion.position[1];
+        }
+        e.height_above_target = slot.motion.position[1] - target_y;
+        e.dive_altitude_a8 = slot.db_dive_alt_a8;
+        e.begin_altitude_ac = slot.db_begin_alt_ac;
+        e.extra_range_50 = slot.db_extra_range_50;
+        e.lead_at_high_5c = slot.db_lead_high_5c;
+        e.gain_at_high_60 = slot.db_gain_high_60;
+        e.bearing_error = bsp::wrapped_angle_subtract_00438b10(
+            slot.db_bearing_c0, slot.plane_heading_c6c);
+        e.planar_distance = slot.db_planar_bc;
+        const bsp::DiveBombAimError err = bsp::dive_bomb_aim_error_009c5c9b(e);
+        slot.db_aim_error_last = err.error;
+        in.aim_error = err.error;
+        // 009C5B01-009C5B48, the dive abort: clearing +19h is what sends the
+        // state to aimglide on the next transition.
+        bsp::DiveBombDiveAbortInputs ab;
+        ab.release_range_d4 = slot.db_release_range_d4;
+        ab.extra_range_50 = slot.db_extra_range_50;
+        ab.slant_range = slot.db_planar_bc;
+        ab.aim_point_distance = slot.db_planar_bc;
+        ab.unit_attitude_c64 = slot.plane_pitch_angle_c64;
+        if (bsp::dive_bomb_dive_abort_009c5b43(ab)) {
+            slot.db_aim_alive_19 = false;
+            slot.db_aim_pull_out_18 = false;
+        }
+        return in;
+    }
+
+    bsp::DiveBombAimGlideReleaseInputs dive_bomb_aimglide_inputs(GameUnitSlot& slot) {
+        bsp::DiveBombAimGlideReleaseInputs in;
+        // PARTIAL, labelled: the four frame slots behind 009C5693-009C5755 were
+        // not traced to their producers. The host supplies the two it can name
+        // from the geometry it has and leaves the other two at zero, which
+        // opens the height gate and closes the lead gate.
+        in.dive_angle = slot.plane_pitch_angle_c64 < 0.0f
+            ? -slot.plane_pitch_angle_c64 : slot.plane_pitch_angle_c64;
+        in.height_above = slot.motion.position[1];
+        in.height_limit = slot.db_begin_alt_ac;
+        in.lateral_a = slot.db_planar_bc;
+        in.lateral_b = slot.db_planar_bc;
+        in.travel_accumulator_20 = slot.db_glide_travel_20;
+        in.rounds_cap = kDiveBombCarriedRoundsSubstitute;
+        in.rearm_draw = bsp::dive_bomb_constant::kAimGlideRearmLow;
+        in.drift_rate_a4 = 0.0f;
+        return in;
+    }
+
+    void note_dive_bomb_release(GameUnitSlot& slot) {
+        ++slot.dive_bomb_releases;
+        if (slot.db_release_alt < 0.0f) {
+            slot.db_release_alt = slot.motion.position[1];
+            slot.db_release_speed = slot.plane_travel_speed;
+            slot.db_release_range = slot.db_planar_bc;
+        }
     }
 
     // No slot carries its own index, and the release request is rare, so the
@@ -3534,6 +3791,264 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         GameUnitSlot& slot_;
                     };
 
+                    // ---- the dive-bomb task, kind 8. docs/DIVE_BOMB_TASK.md ----
+                    struct DiveBombArmBinding final : bsp::DiveBombTaskHost {
+                        DiveBombArmBinding(GameUnitsHost::Impl& owner,
+                                           GameUnitSlot& slot)
+                            : owner_(owner), slot_(slot) {}
+
+                        // --- BotTaskStateHost, the shared half ---
+                        void register_state_name(void*, const char*, void*) override {}
+                        void exit_state(void*) override {}
+                        void enter_state(void*) override {}
+                        void tick_state(void*, float) override {}
+                        void set_desired_speed(void*, float) override {}
+                        void update_approach(void*, float) override {}
+                        void refresh_move_to_ranges(void*, float, float, float) override {
+                            // 009BDE80 at 009C8825. contract: unread body.
+                        }
+                        bool unit_has_no_follow_target(const void*) override {
+                            return true;  // 007B8AD0 at 009C841F
+                        }
+                        bool should_break_off(void* task) override {
+                            // 009C8A90, reconstructed. The class extra is
+                            // this->+4C9h == 0, so the dive bomber only breaks
+                            // off on distance once its bombs are gone.
+                            (void)task;
+                            bsp::DiveBombBreakOffInputs in;
+                            in.base_0099c230 = true;
+                            in.has_latched_target = slot_.command_target_plus_one != 0;
+                            in.has_bomb_ordnance_4c9 = slot_.db_has_bomb_d1;
+                            in.distance_to_target = slot_.db_planar_bc;
+                            in.speed_ratio_41c = 1.0f;
+                            return bsp::dive_bomb_should_break_off_009c8a90(in);
+                        }
+                        bool manual_release_requested(void*) override {
+                            // (unit+72Ch)->vtable[38h] at 009C887C.
+                            return false;
+                        }
+                        void request_ordnance_release(void*) override {
+                            // 007BBBA0 at 009C60F1, 009C5777 and 009C88C4. The
+                            // same binding the torpedo task uses.
+                            owner_.release_ordnance_007bbba0(slot_);
+                        }
+                        float unit_altitude(const void*) override {
+                            return slot_.motion.position[1];
+                        }
+                        float random_between(float low, float) override { return low; }
+                        float sample_heading_offset(void*, int) override { return 0.0f; }
+                        float add_wrapped_angle(float base, float delta) override {
+                            float v = base + delta;
+                            const float two_pi = 6.2831855f;
+                            while (v >= two_pi) v -= two_pi;
+                            while (v < 0.0f) v += two_pi;
+                            return v;
+                        }
+                        void command_altitude_and_throttle(void*, float, float, float,
+                                                           float) override {}
+                        void write_command_word(void*, int, int) override {}
+                        void write_command_byte(void*, int, unsigned char) override {}
+                        void write_command_float(void*, int, float) override {}
+                        void set_arm_request(void*, bool) override {}
+                        void set_weapon_selector(void*, int) override {}
+                        void consume_round(void*) override {}
+
+                        // --- DiveBombTaskHost ---
+                        void update_dive_bomb_approach_009c7a80(void*, float dt,
+                                                                bool) override {
+                            owner_.update_dive_bomb_approach(slot_, dt);
+                        }
+                        bsp::DiveBombTransitionInputs read_transition_inputs(
+                            void*) override {
+                            return owner_.dive_bomb_transition_inputs(slot_);
+                        }
+                        void set_dive_bomb_state(void*, bsp::DiveBombState) override {
+                            ++slot_.dive_bomb_transitions;
+                        }
+                        void write_turn_direction(void*, float roll) override {
+                            slot_.db_turn_roll_18 = roll;  // 009C7800
+                        }
+                        bsp::DiveBombAimDiveReleaseInputs read_aimdive_inputs(
+                            void* state, float dt) override {
+                            (void)state;
+                            return owner_.dive_bomb_aimdive_inputs(slot_, dt);
+                        }
+                        void apply_aimdive_result(
+                            void*, const bsp::DiveBombAimDiveReleaseResult& r) override {
+                            slot_.db_aim_rearm_1c = r.rearm_timer_1c;
+                            slot_.db_aim_pull_out_18 = r.pull_out;
+                            if (r.released) owner_.note_dive_bomb_release(slot_);
+                        }
+                        bsp::DiveBombAimGlideReleaseInputs read_aimglide_inputs(
+                            void*, float) override {
+                            return owner_.dive_bomb_aimglide_inputs(slot_);
+                        }
+                        void apply_aimglide_result(
+                            void*, const bsp::DiveBombAimGlideReleaseResult& r) override {
+                            slot_.db_aim_rearm_1c = r.rearm_timer_1c;
+                            slot_.db_glide_travel_20 = r.travel_accumulator_20;
+                            if (r.released) owner_.note_dive_bomb_release(slot_);
+                        }
+                        int rounds_remaining_007c1db0(void*) override {
+                            // 007C1DB0 walks the device list at unit+48h and
+                            // sums 006E3500 over every device whose
+                            // vtable[+5Ch] answers 25h. The gunnery host owns
+                            // that list, so the count comes from there.
+                            return owner_.dive_bomb_rounds_remaining(slot_);
+                        }
+                        float uniform_between(float low, float) override { return low; }
+                        bool approach_has_bomb_ordnance(void*) override {
+                            return slot_.db_has_bomb_d1;
+                        }
+                        bool approach_in_range_latch(void*) override {
+                            return slot_.db_in_range_d0;
+                        }
+                        void spend_round(void*) override {
+                            if (slot_.dive_bomb_rounds_remaining > 0) {
+                                --slot_.dive_bomb_rounds_remaining;
+                            }
+                        }
+                        int rounds_pending(void*) override {
+                            return slot_.dive_bomb_rounds_pending;
+                        }
+                        void spend_pending_round(void*) override {
+                            if (slot_.dive_bomb_rounds_pending > 0) {
+                                --slot_.dive_bomb_rounds_pending;
+                            }
+                        }
+                        void set_plan_step_scratch(void*, int) override {}
+                        void commit_plan_step_result(void*) override {}
+                        void write_drop_timer(void*, float) override {}
+                        void* move_to_state(void* task) override { return task; }
+                        float arm_move_to_range(void*) override {
+                            return slot_.db_begin_alt_ac;   // task+4A4h
+                        }
+                        float arm_move_to_speed(void*) override {
+                            return slot_.db_attack_dist_b4;  // task+4ACh
+                        }
+
+                        GameUnitsHost::Impl& owner_;
+                        GameUnitSlot& slot_;
+                    };
+
+                    // 0099A170 builds a kind 8 task for an ordered aircraft
+                    // whose class carries general bomb ordnance and is not
+                    // IsKindOf(10h) (docs/ATTACK_COMMANDS.md, 007EE9C5).
+                    void run_dive_bomb_task_arm_009c8790(float dt) {
+                        const bsp::OrdnanceKindSet set{unit_.ordnance_mask};
+                        if (unit_.command_target_plus_one == 0) return;
+                        if (!bsp::ordnance_has_general_bomb_2ah(set)) return;
+                        // 007EE946 tries levelbomb first and it needs
+                        // IsKindOf(10h); 007EE9C5 needs the unit NOT to answer
+                        // it, so exactly one of the two applies. This host has
+                        // no IsKindOf, so a torpedo-armed aircraft is excluded
+                        // instead: 007EEA40 would have taken it first only if
+                        // divebomb had refused, and the ordered Jill aircraft
+                        // already run the torpedo task above.
+                        if (bsp::ordnance_has_torpedo_2bh(set)) return;
+                        if (!unit_.dive_bomb_task_installed) {
+                            unit_.dive_bomb_task_installed = true;
+                            // 009C7710 leaves +310h on the moveto/follow pair
+                            // BSP_Unit_LacksFollowTarget picks; this host has
+                            // no follow target, so moveto.
+                            unit_.dive_bomb_state = bsp::DiveBombState::kMoveTo;
+                            // 009C3EA0, the approach seed. approach+ACh is
+                            // tuning+4CCh Pilot/DiveBomb/BeginAltRange/1 and
+                            // approach+B0h is tuning+4D0h - tuning+4CCh.
+                            unit_.db_begin_alt_ac = GameUnitsHost::Impl::kPilotDiveBombBeginAltRange1;
+                            unit_.db_alt_span_b0 =
+                                GameUnitsHost::Impl::kPilotDiveBombBeginAltRange2 - GameUnitsHost::Impl::kPilotDiveBombBeginAltRange1;
+                            // SUBSTITUTION, labelled. approach+A8h is
+                            // 009C3ED8's Random((approach+14h)->+38h,
+                            // (approach+14h)->+3Ch) and that record has no
+                            // producer read in this packet. The interpolation
+                            // window at 009C5BEE requires approach+A8h + 100 <
+                            // approach+ACh, so the host uses
+                            // BeginAltRange/1 - (BeginAltRange/2 - /1) = 800,
+                            // built from the two rows the seed itself reads.
+                            unit_.db_dive_alt_a8 =
+                                unit_.db_begin_alt_ac - unit_.db_alt_span_b0;
+                            // approach+B8h == task+4B0h. 009C3F1C seeds it from
+                            // Random * (approach+8h)->+268h, unread here, and
+                            // 009C8A5E clamps it every tick to
+                            // max(itself, Pilot/DiveBomb/AttackDist * task+41Ch).
+                            // The clamp alone is a floor, and that is what the
+                            // host applies.
+                            unit_.db_in_range_b8 = GameUnitsHost::Impl::kPilotDiveBombAttackDist;
+                            unit_.db_attack_dist_b4 = GameUnitsHost::Impl::kPilotDiveBombAttackDist;
+                            // SUBSTITUTION, labelled: approach+D4h, +50h and
+                            // the two interpolation endpoints (approach+14h)
+                            // ->+5Ch/+60h have no producer read. Zero leaves
+                            // the lead at 0 and the gain at 1, so the aim error
+                            // is the bare along-track miss the release gate
+                            // compares against 25 m.
+                            unit_.db_release_range_d4 = 0.0f;
+                            unit_.db_extra_range_50 = 0.0f;
+                            unit_.db_lead_high_5c = 0.0f;
+                            unit_.db_gain_high_60 = 1.0f;
+                            // 007C1DB0 at the aimglide enter 009C4F00 latches
+                            // the count the salvo caps against.
+                            unit_.dive_bomb_rounds_remaining =
+                                GameUnitsHost::Impl::kDiveBombCarriedRoundsSubstitute;
+                            owner_.log.notef("dive-bomb task 009C8C70 kind 8 installed "
+                                "for an ordered aircraft; arm 009C8790 runs on the pilot "
+                                "think; approach+ACh=%.1f (BeginAltRange/1) "
+                                "approach+A8h=%.1f (substituted) approach+B8h=%.1f "
+                                "(Pilot/DiveBomb/AttackDist floor from 009C8A5E) "
+                                "rounds=%d",
+                                static_cast<double>(unit_.db_begin_alt_ac),
+                                static_cast<double>(unit_.db_dive_alt_a8),
+                                static_cast<double>(unit_.db_in_range_b8),
+                                unit_.dive_bomb_rounds_remaining);
+                        }
+                        DiveBombArmBinding binding(owner_, unit_);
+                        bsp::DiveBombTaskContext ctx;
+                        ctx.task = &unit_;
+                        ctx.approach = &unit_;
+                        ctx.unit = &unit_;
+                        ctx.command_block = &unit_;
+                        ctx.pilot_control_block = &unit_;
+                        ctx.state = &unit_;
+                        ctx.current = unit_.dive_bomb_state;
+                        const bsp::DiveBombState before = ctx.current;
+                        const bsp::DiveBombArmTickResult r =
+                            bsp::dive_bomb_task_arm_009c8790(binding, ctx, dt);
+                        (void)r;
+                        unit_.dive_bomb_state = ctx.current;
+                        ++unit_.dive_bomb_arm_ticks;
+                        const int b = dive_bomb_state_bucket(ctx.current);
+                        if (b >= 0) ++unit_.dive_bomb_state_ticks[b];
+                        if (!unit_.db_in_range_d0) ++unit_.db_blocked_no_latch;
+                        if (!unit_.db_has_bomb_d1) ++unit_.db_blocked_no_bomb;
+                        if (ctx.current == bsp::DiveBombState::kAimDive &&
+                            before != bsp::DiveBombState::kAimDive) {
+                            unit_.db_dive_entry_alt = unit_.motion.position[1];
+                            unit_.db_dive_entry_pitch = unit_.plane_commanded_pitch;
+                            // 009C5876/009C5885: the enter clears the re-arm
+                            // timer and sets +18h from the bomb flag, and
+                            // 009C588B clears unit+844h.
+                            unit_.db_aim_rearm_1c = 0.0f;
+                            unit_.db_aim_pull_out_18 = !unit_.db_has_bomb_d1;
+                            unit_.db_aim_alive_19 = true;
+                        }
+                    }
+
+                    static int dive_bomb_state_bucket(bsp::DiveBombState s) {
+                        switch (s) {
+                            case bsp::DiveBombState::kMoveTo: return 0;
+                            case bsp::DiveBombState::kFollow: return 1;
+                            case bsp::DiveBombState::kPrepare: return 2;
+                            case bsp::DiveBombState::kDone: return 3;
+                            case bsp::DiveBombState::kGoAway: return 4;
+                            case bsp::DiveBombState::kAimDive: return 5;
+                            case bsp::DiveBombState::kAimGlide: return 6;
+                            case bsp::DiveBombState::kFlyAbove: return 7;
+                            case bsp::DiveBombState::kTurnDown: return 8;
+                            case bsp::DiveBombState::kAttackRun: return 9;
+                            default: return -1;
+                        }
+                    }
+
                     // 0099A170 builds a kind Eh task only for a unit whose
                     // class carries torpedo ordnance (kind 2Bh, 007ED8D0 ->
                     // 007B93F0) under a PilotSetTarget-class order.
@@ -4338,6 +4853,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // Only the arm is modelled here; the three
                             // sub-object updates are contracts.
                             run_torpedo_task_arm_009d4850(elapsed);
+                            run_dive_bomb_task_arm_009c8790(elapsed);
 
                             if (plan_yaw_0099d300()) {
                                 ++owner_.summary.pilot_yaw_plans;
@@ -5852,6 +6368,83 @@ void GameUnitsHost::report() {
 
 
         // The torpedo task census: per ordered aircraft the states its arm
+        // The dive-bomb task, kind 8: every ordered aircraft the arm 009C8790
+        // ran, its state occupancy, the geometry the in-range latch 009C7C31
+        // keys on, and the releases 009C60F1 / 009C5777 issued.
+        // docs/DIVE_BOMB_TASK.md.
+        {
+            static const char* const kDiveBombStateNames[10] = {
+                "moveto", "follow", "prepare", "done", "goaway",
+                "aimdive", "aimglide", "flyabove", "turndown", "attackrun"};
+            std::size_t tasked = 0;
+            int releases_total = 0;
+            int spawned_total = 0;
+            for (const auto& slot : host.slots) {
+                if (!slot->dive_bomb_task_installed) continue;
+                ++tasked;
+                releases_total += slot->dive_bomb_releases;
+                spawned_total += slot->torpedo_drops_spawned;
+                char states[192];
+                int n = 0;
+                states[0] = '\0';
+                for (int i = 0; i < 10; ++i) {
+                    if (slot->dive_bomb_state_ticks[i] == 0) continue;
+                    n += std::snprintf(states + n,
+                        (n < static_cast<int>(sizeof(states)))
+                            ? sizeof(states) - static_cast<std::size_t>(n) : 0u,
+                        "%s%s=%d", n > 0 ? " " : "", kDiveBombStateNames[i],
+                        slot->dive_bomb_state_ticks[i]);
+                    if (n >= static_cast<int>(sizeof(states))) break;
+                }
+                host.log.notef("  divebomb %-12s arm_ticks=%d transitions=%d "
+                    "states[%s] releases=%d bombs_spawned=%d rounds_left=%d",
+                    slot->row.name.c_str(), slot->dive_bomb_arm_ticks,
+                    slot->dive_bomb_transitions, states,
+                    slot->dive_bomb_releases, slot->torpedo_drops_spawned,
+                    slot->dive_bomb_rounds_remaining);
+                // The first gate check the packet asks for: approach+BCh
+                // against approach+B8h in the latch at 009C7C31.
+                host.log.notef("  divebomb %-12s gate 009C7C31: "
+                    "approach+BCh=%.1f m approach+B8h=%.1f m latch_D0h=%d "
+                    "bomb_D1h=%d | ticks without latch=%d without bombs=%d",
+                    slot->row.name.c_str(),
+                    static_cast<double>(slot->db_planar_bc),
+                    static_cast<double>(slot->db_in_range_b8),
+                    slot->db_in_range_d0 ? 1 : 0,
+                    slot->db_has_bomb_d1 ? 1 : 0,
+                    slot->db_blocked_no_latch, slot->db_blocked_no_bomb);
+                if (slot->db_dive_entry_alt >= 0.0f ||
+                    slot->db_release_alt >= 0.0f) {
+                    host.log.notef("  divebomb %-12s dive entry alt=%.1f m "
+                        "pitch=%.3f rad | release alt=%.1f m speed=%.1f m/s "
+                        "range=%.1f m | aim error 009C5C9B=%.2f m "
+                        "(gate 00CE3880 = 25.0 m)",
+                        slot->row.name.c_str(),
+                        static_cast<double>(slot->db_dive_entry_alt),
+                        static_cast<double>(slot->db_dive_entry_pitch),
+                        static_cast<double>(slot->db_release_alt),
+                        static_cast<double>(slot->db_release_speed),
+                        static_cast<double>(slot->db_release_range),
+                        static_cast<double>(slot->db_aim_error_last));
+                }
+            }
+            if (tasked > 0) {
+                host.log.notef("summary mission dive-bomb task: aircraft=%zu "
+                    "releases=%d bombs_spawned=%d",
+                    tasked, releases_total, spawned_total);
+                if (releases_total == 0) {
+                    host.log.notef("summary mission dive-bomb task: no release. "
+                        "The torpedo's blocker, unit+C58h at 0099AF53, does not "
+                        "apply here: 009C60F1 and 009C5777 are inside state "
+                        "ticks the arm reaches through state->vtable[+Ch] at "
+                        "009C884C, not through the arming loop. The gate is the "
+                        "in-range latch approach+D0h at 009C7C31, which needs "
+                        "approach+BCh below approach+B8h; the per-aircraft "
+                        "lines above carry both numbers.");
+                }
+            }
+        }
+
         // 009D4850 entered with tick counts, and the release requests
         // 007BBBA0 it issued. docs/TORPEDO_TASK_ARM.md.
         {
