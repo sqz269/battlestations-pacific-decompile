@@ -117,6 +117,14 @@ that binding the tune block would move the headings; it does not).
 none. `009F1160` and `0081ED40` are both existing Ghidra functions, and the fill at `0081F200` is
 inside the second.
 
+## Corrections from packet cc8_ship_ai_approach_slot_scorers
+
+Appended, not a rewrite.
+
+| was | is | evidence |
+| --- | --- | --- |
+| Follow-up `ship_ai_approach_slot_scorers`: "the real blocker ... until `slot+18h` has a producer, every slot ties and slot 0 wins". | `slot+18h` has had a producer since `cc8_ship_ai_firepower_inputs`; the adapter that would fill it is never called. `009E7FC0` returns at `009E80B0`, its first mode-0 gate, before it scores a single slot. The four scorers were already whole on main and needed no work. | `firepower=0` against `ring_scans=8400` in every run of this chain. The gate census in `docs/SHIP_AI_APPROACH_SLOT_SCORERS.md` reports `flag_0b28=0` with `flag_stops=600` of 600 for all fourteen ships. |
+
 ## Follow-up packets
 
 - `ship_ai_approach_slot_scorers`: **the real blocker.** `009E5DA0`, `009E6400`, `009E6870` and

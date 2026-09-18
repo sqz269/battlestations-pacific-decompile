@@ -460,6 +460,46 @@ struct GameShipAiHost::Impl {
     // The refill itself needs FirepowerBinding, which is declared far below, so
     // it lives in ApproachUpdateBinding::refresh_approach_curves. This clear is
     // all Impl can do on its own.
+    // nested+127Ch as 009E7FC0 hands it to 009E5DA0: the frame-state block with
+    // words 5, 6 and 7 and the two bytes overwritten by the ring path.
+    bsp::ShipAiRingScanClassQuery ring_query(const Controller& ctl) const {
+        bsp::ShipAiFirepowerQuery q{};
+        // Word 0, 009F2A04 from nested+11E0h: the planar range to the
+        // attackmove destination, which this host does produce.
+        q.range = ctl.approach.goal_range_11e0;
+        // Words 1 to 4, 009F2A2C..009F2A54 off the target, with the no-target
+        // constants of 009F2A91..009F2AC1 standing in. Same substitution as the
+        // range-profile path, recorded there.
+        q.target_length = 100.0f;  // 009F2AC1, 00CE3D08
+        q.damage_cap = 10000.0f;   // 009F2AA9, 00CE3D64
+        q.armour = 0.0f;           // 009F2A91
+        q.armour_torpedo = 0.0f;   // 009F2A99
+        // Word 5, 009E8153 from nested+11DCh; 009E5DB4 then subtracts the
+        // slot's own angle from it inside the adapter.
+        q.bearing = ctl.approach.slot_scale_11dc;
+        q.window_seconds = 20.0f;        // 009E814B, 00CE3930
+        q.ready_horizon_seconds = 60.0f; // 009E8161, 00CEB4B0
+        q.require_bearing = 1;   // 009E8171
+        q.use_ready_rounds = 1;  // 009E8178
+        // 009F2AE7 and the three beside it, from [0080E160(unit)+220h..+223h].
+        // No producer in this process; with all four clear nothing is rated.
+        q.allow_machine_gun = 1;
+        q.allow_artillery = 1;
+        q.allow_torpedo = 1;
+        q.allow_depth_charge = 1;
+        bsp::ShipAiRingScanClassQuery out{};
+        static_assert(sizeof(q) == sizeof(out.word), "the block is 17 dwords");
+        std::memcpy(out.word, &q, sizeof(q));
+        return out;
+    }
+
+    const GameGunneryUnitRow* gunnery_unit_row(std::size_t index) const {
+        if (gunnery == nullptr) return nullptr;
+        const std::vector<GameGunneryUnitRow>& gun_rows = gunnery->unit_rows();
+        if (index >= gun_rows.size()) return nullptr;
+        return &gun_rows[index];
+    }
+
     void ensure_approach_curves(Controller& ctl) {
         if (ctl.approach_curves_built) return;
         ctl.approach_curves_built = true;
@@ -1277,11 +1317,23 @@ public:
         return profile.small_target_accuracy[bucket];
     }
 
-    bool device_can_bear(bsp::NativeHandle, bsp::NativeHandle, float, float) override {
-        // require_bearing is 0 on the range-profile path (009F2ECB), so
-        // 0095EDFA is never reached from here.
-        owner_.record("ShipAiFirepower::device_can_bear_0085b7d0", 0x0095edfau);
-        return false;
+    // 0095EDFA, 0085B7D0. The ring path sets require_bearing at 009E8171, so
+    // this one IS reached from there. Two of its three arms are transcribed:
+    // 0085B7E5, Function 8 answers true without any test; 0085B7F1, a range
+    // past the projectile class's +60h falls through to false. The third arm,
+    // Function 7's traverse filter and the gravity-arc solve behind
+    // BSP_Gun_SolveGravityArc for everything else, has no producer in this
+    // process, so a mount in range is allowed to bear. LABELLED SUBSTITUTION.
+    bool device_can_bear(bsp::NativeHandle device, bsp::NativeHandle,
+                         float, float range) override {
+        // 0085B7E0 reads [[device+3F4h]+80h], the weapon Function, NOT the
+        // projectile sub-type; Function 8 returns 1 at 0085B7E5 with no test.
+        const GameGunRow* gun = gun_row(device);
+        if (gun != nullptr && gun->category == 8) return true;
+        const bsp::ShipAiFirepowerProjectileClass& p = last_projectile_;
+        if (range > p.max_range) return false; // 0085B7F1
+        owner_.record("ShipAiFirepower::device_can_bear_arc_0085b7d0", 0x0085b7d0u);
+        return true;
     }
 
     // 0095EEAD and 0095EED8, 00424C40 then [settings+3B0h] and [settings+3ACh].
@@ -1449,17 +1501,46 @@ public:
     }
     std::uint32_t brain_target_0b20() override { return ctl_.goal_vector.raw_target_0b20; }
     bool brain_flag_0b28() override {
-        owner_.record("ShipAiApproach::brain_flag_0b28", 0x009e80b0u);
-        return false;
+        // 009E80B0, brain+0B28h. The same field the attack binding above reads
+        // from the produced goal vector; returning false here contradicted it.
+        const bool flag = ctl_.goal_vector.target_visible_0b28;
+        row_.gate_flag_0b28 = flag;
+        if (!flag) ++row_.gate_flag_stops;
+        return flag;
     }
-    float nested_reference_127c() override { return ctl_.approach.avoid_radius_1290; }
+    float nested_reference_127c() override {
+        // 009E80BD reads nested+127Ch, which is word 0 of the firepower query
+        // block: the planar range to the attackmove destination that 009F2A04
+        // copies from nested+11E0h. The earlier binding answered with
+        // nested+1290h (avoid_radius_1290), which is word 5 of the same block.
+        row_.gate_reference_127c = ctl_.approach.goal_range_11e0;
+        return ctl_.approach.goal_range_11e0;
+    }
     float unit_lookahead_0494() override {
-        owner_.record("ShipAiApproach::unit_lookahead_0494", 0x009e80cdu);
-        return 0.0f;
+        // 009E80CD reads [unit+494h], the same max weapon range 0095EB62 gates
+        // on and 00956C20 writes at 00956E59. The gunnery host produces it.
+        const GameGunneryUnitRow* row = owner_.gunnery_unit_row(index_);
+        if (row == nullptr) {
+            owner_.record("ShipAiApproach::unit_lookahead_0494", 0x009e80cdu);
+            return 0.0f;
+        }
+        row_.gate_lookahead_0494 = row->any_weapon_max_range;
+        if (row_.gate_reference_127c > row_.gate_lookahead_0494) {
+            ++row_.gate_range_stops;
+        }
+        return row->any_weapon_max_range;
     }
     bool zone_allows_target_00864fd0(std::uint32_t) override {
-        owner_.record("ShipAiApproach::zone_allows_target_00864fd0", 0x00864fd0u);
-        return false;
+        // 009E8116. 00864FD0 is a thunk onto BSP_UnitGunneryVisibility_Test
+        // (00864D90), the gunnery pass's own cached line-of-sight test, and the
+        // gunnery host already answers that same routine with true for the same
+        // stated reason: 00864680, the sight test itself, is unread, and over
+        // open water with no terrain in this process the answer is yes.
+        // Returning false here contradicted that sibling binding and was what
+        // made 009E7FC0 return at 009E8135 before it scored a single slot.
+        // LABELLED SUBSTITUTION, the same one src/game_hosts_gunnery.cpp makes.
+        owner_.record("ShipAiApproach::zone_allows_target_00864680", 0x00864680u);
+        return true;
     }
     bsp::ShipAiApproachPoint probe_point_009e6120() override {
         owner_.record("ShipAiApproach::probe_point_009e6120", 0x009e6120u);
@@ -1473,7 +1554,14 @@ public:
         // 009E81A7, the ship-class rating. Packet cc_ai_ring_scan read the
         // adapter whole and packet cc_ai_bearing_rating the 0095EB40 behind it.
         if (slot < 0 || slot >= bsp::kShipAiApproachSlotCount) return 0.0f;
+        // Packet cc8_ship_ai_approach_slot_scorers: 009E8197..009E81A2 copies
+        // the seventeen dwords at nested+127Ch into the adapter's own block,
+        // and 009E813D..009E8178 then overwrites words 5, 6 and 7 and the two
+        // bytes. An all-zero block here was the reason every slot tied: with
+        // the four allow bytes clear, 0095EBD7 skips every category, and with
+        // damage_cap zero the output cap is zero as well.
         bsp::ShipAiRingScanClassQuery query{};
+        query = owner_.ring_query(ctl_);
         RingScanClassScoreBinding score(owner_, row_, index_);
         bsp::ship_ai_ring_scan_class_score_009e5da0(ctl_.approach_ring[slot],
             ctl_.approach_scores[slot], query, score);
@@ -4948,6 +5036,12 @@ void GameShipAiHost::report() {
             row.curve_own_nonzero, row.curve_target_nonzero,
             static_cast<double>(row.unit_max_weapon_range),
             row.ring_winner_first, row.ring_winner_last, row.heading_changes);
+        host.log.notef("    gate %-18s flag_0b28=%d ref_127c=%.1f look_0494=%.1f "
+            "flag_stops=%llu range_stops=%llu",
+            row.unit.c_str(), row.gate_flag_0b28 ? 1 : 0,
+            static_cast<double>(row.gate_reference_127c),
+            static_cast<double>(row.gate_lookahead_0494),
+            row.gate_flag_stops, row.gate_range_stops);
     }
     host.log.notef("summary mission ship ai command completion events=%llu callbacks=%llu "
         "end_commands=%llu queue_advances=%llu",
