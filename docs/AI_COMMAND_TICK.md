@@ -189,3 +189,21 @@ Attribution.
 | `ai_command_cautious_pass` | `00A14DD0`-`00A152A7` | the `CAUTIOUSMOVE` and `CAUTIOUSATTACK` third base, and whether `CautionMove_Dist` (`+1F0h`, 8000) enters there |
 | `ai_group_formation_shape` | `00A11070`-`00A113C1`, `0070EFD0`, `0070D080`, `0077C880` | the formation pass every move tick ends with, and what `0077C8D0` does with a join request |
 | `ai_group_leader_key` | `009FFD70`, `009FDF30` | the member ordering key, so the host's first member is the native's leader |
+
+## Correction from docs/AI_CLOSE_ATTACK_TICK.md and docs/AI_COMMAND_INPUTS.md (2026-09-18)
+
+Three claims above stop at `00A02020` and were wrongly generalised. The close-attack tick
+`00A13B60` calls `0077D600` directly with a kind-1 descriptor that names the target entity, its id
+and its object pointer, choosing the class `attackmove` when the served member is a ship base and
+`settarget` otherwise; the cautious approach pass issues a third class, `clearorders`. So the
+descriptor does carry an object on that path, `moveto` is not the only scene command an AI command
+issues, and `00A02020` is the only bridge for the move family, not for every class. The candidate
+pass, its scoring and the served-member gate are in docs/AI_CLOSE_ATTACK_TICK.md; on USN02 it takes
+scene commands from 14 to 635.
+
+The member ordering key is `009FFD80`, not `009FFD70`: `009FFD70` is a two-instruction thunk onto
+`009FDF30` with `entity+C4h`, consumed by the merge strength test, the total-leader-weight sum and
+the compose pass, while the sorted insert calls `009FFD80`, the per-class tuning weight scaled by
+class (docs/AI_COMMAND_INPUTS.md). The "Two named missing inputs" section and the
+`ai_group_leader_key` follow-up row above are superseded by that packet, which also loaded
+`CloseAttack_CollectDist` (shipped 3000, not the image's 5000) with the rest of its block.
