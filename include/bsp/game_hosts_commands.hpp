@@ -118,6 +118,10 @@ struct GameDirectorStepOutcome {
 
 struct GameCommandsSummary {
     std::size_t units{0};
+    // Packet cc8_ship_drive: how many times the unit table was re-registered
+    // with directors already built, i.e. how many times the old `assign` wiped
+    // every command queue in the mission.
+    std::size_t director_reregistrations{0};
     std::size_t resolved{0};
     std::size_t issued{0};
     std::size_t pushed{0};
@@ -250,6 +254,15 @@ public:
     bool advance_path_cursor_00836bf0(std::size_t unit_index, float unit_x, float unit_z,
         float unit_radius, float turn_radius);
 
+    // Packet cc8_ship_drive. 00835C70 BSP_WeaponDirector_BeginCurrentCommand's
+    // call of 0071F600 at 00835D33, which 0071F62F aims at the queue head
+    // (`MOV EBP,[ESI+54h]`). Run once per fixed step, before the `moveonpath`
+    // arm: the path object is built when the command BEGINS, which is when it
+    // reaches slot 0, and not once per 5Bh message. Answers true while slot 0
+    // holds a begun `moveonpath` with points.
+    bool begin_current_command_00835c70(std::size_t unit_index, float unit_x,
+        float unit_z);
+
     // The rows the report prints.
     std::vector<GamePathCursorRow> path_cursor_rows() const;
 
@@ -358,6 +371,10 @@ public:
     struct Impl;
 
 private:
+    // 0071F600's queue-head arm 0071F6A5-0071F885 itself, over the path source
+    // the 5Bh message named. Only begin_current_command_00835c70 calls it.
+    bool build_path_object_0071f600(std::size_t unit_index, float unit_x, float unit_z);
+
     std::unique_ptr<Impl> impl_;
 };
 

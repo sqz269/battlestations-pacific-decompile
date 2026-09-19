@@ -1356,6 +1356,59 @@ void GameMissionLuaHost::attach_script_orders(GameScriptOrdersHost* orders) noex
             return host != nullptr ? host->air_ops_squadron_plane_count(squadron) : 0;
         },
         orders);
+    mirror_party_race_00928f50();
+}
+
+// 00928F50 BSP_MissionEntity_SetPartyRaceLuaMirror, the root entity vtable's
+// slot 11 (reached through the adjustor thunk 00951F30). It is a SEPARATE event
+// from 00928A00's attach - the attach seeds ID, Dead and Ptr, and this runs when
+// the entity's party is set - so it runs here, one hop after the attach, where
+// the orders host has just made the unit table reachable. 00928FD9 sets `Race`
+// and 00929046 sets `Party`, both through 00B67460, and both read off the entity
+// rather than off the call's arguments (00928FC7 and 00929034 load from ESI);
+// this host knows the party and not the race, so it writes the one it has.
+//
+// It matters because the shipped commandhelpers.lua indexes
+// `recon[targetUnit.Party][allegiance]` at 330, 494 and 518. `recon`'s index
+// keys are the three integers 00803A40 installs (src/recon_values.cpp, the
+// `index != 3` loop), which are this installation's PARTY_ALLIED 0,
+// PARTY_JAPANESE 1 and PARTY_NEUTRAL 2 (scripts/global/luamw_init.lua 73-75),
+// and GameUnitRow::party is in the same space.
+std::size_t GameMissionLuaHost::mirror_party_race_00928f50() {
+    if (state_ == nullptr || script_orders_ == nullptr) return 0;
+    const GameUnitsHost& units = script_orders_->units();
+    lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
+    if (!lua_istable(state_, -1)) {
+        ::lua_settop(state_, ::lua_gettop(state_) - 1);
+        return 0;
+    }
+    std::size_t mirrored = 0;
+    for (std::size_t index = 0; index < units.count(); ++index) {
+        const GameUnitRow* row = units.unit_row(index);
+        if (row == nullptr || row->party < 0 || row->name.empty()) continue;
+        const std::map<std::string, int>::const_iterator found
+            = scene_entity_ids_.find(row->name);
+        if (found == scene_entity_ids_.end()) continue;
+        char key[16];
+        std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat, found->second);
+        lua_getfield(state_, -1, key);
+        if (!lua_istable(state_, -1)) {
+            ::lua_settop(state_, ::lua_gettop(state_) - 1);
+            continue;
+        }
+        lua_pushinteger(state_, row->party);
+        lua_setfield(state_, -2, "Party");
+        ::lua_settop(state_, ::lua_gettop(state_) - 1);
+        ++mirrored;
+    }
+    ::lua_settop(state_, ::lua_gettop(state_) - 1);
+    summary_.party_mirrors = mirrored;
+    log_.implemented("MissionEntity::set_party_race_lua_mirror", "00928f50");
+    log_.notef("thisTable: 00928f50's `Party` mirror written on %zu slot(s). Without it "
+        "commandhelpers.lua:330 `recon[targetUnit.Party][allegiance]` indexes a nil, which is "
+        "what reverted the GetSelectedUnit binding in packet cc8_ship_moveonpath; `Race` is "
+        "not written because this host does not carry one", mirrored);
+    return mirrored;
 }
 
 GameScriptOrdersHost* GameMissionLuaHost::script_orders() const noexcept {
@@ -2839,6 +2892,7 @@ std::size_t GameMissionLuaHost::attach_scene_entities_00928a00(
     }
     std::size_t made = 0;
     std::size_t classes = 0;
+    std::size_t parties = 0;
     for (const SceneEntity& entity : entities) {
         char key[16];
         std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat, entity.id);
@@ -2883,6 +2937,20 @@ std::size_t GameMissionLuaHost::attach_scene_entities_00928a00(
             }
             ::lua_settop(state_, ::lua_gettop(state_) - 1);
         }
+        // Packet cc8_ship_drive: 00928F50's mirror, the one other writer of this
+        // slot the image has. It is a separate event from the attach - the root
+        // entity vtable's slot 11, reached through the adjustor thunk 00951F30 -
+        // and it runs when the party is set, which for a scene unit is before
+        // the mission's first Think. Both fields are integers (00B67460).
+        if (entity.party >= 0) {
+            lua_pushinteger(state_, entity.party);
+            lua_setfield(state_, -2, "Party");
+            ++parties;
+        }
+        if (entity.race >= 0) {
+            lua_pushinteger(state_, entity.race);
+            lua_setfield(state_, -2, "Race");
+        }
         lua_setfield(state_, -2, key);
         // Packet cc_lua_find_entity: the slot is built for every entity that
         // reaches virtual slot 39; only the entities whose world bucket
@@ -2905,6 +2973,10 @@ std::size_t GameMissionLuaHost::attach_scene_entities_00928a00(
         "goes through 00b675d0; what the executable supplies is the slot with its recovered "
         "`ID`, `Dead` and `Ptr` fields, so the entity tail at 0089903c can take its "
         "resolved arm instead of the nil one", made, classes);
+    log_.notef("thisTable: %zu slot(s) carry 00928f50's `Party` mirror. A slot without it "
+        "makes commandhelpers.lua:330 `recon[targetUnit.Party][allegiance]` index a nil, "
+        "which is what reverted the GetSelectedUnit binding in packet cc8_ship_moveonpath; "
+        "the caller supplies the value and a negative one means it does not know it", parties);
     return made;
 }
 
@@ -2953,6 +3025,22 @@ bool GameMissionLuaHost::push_resolved_entity(lua_State* state, const char* bind
         const char* name = lua_tolstring(state, 1, nullptr);
         if (name == nullptr) return false;
         const std::map<std::string, int>::const_iterator found = scene_entity_ids_.find(name);
+        if (found == scene_entity_ids_.end()) return false;
+        entity_id = found->second;
+    } else if (std::strcmp(binding_name, "GetSelectedUnit") == 0) {
+        // Packet cc8_ship_drive. The revert above is lifted: `Party` is on the
+        // slot now, so 008AB070 can answer. 008AB14D reads the global 00E188D8,
+        // 008AB15C is the nil arm when it is null, and 008AB162 MOVZX EAX,word
+        // ptr [EAX+174h] formats the entity's own id into the same thisTable
+        // key. The null test is the units host's controlled_bound.
+        if (script_orders_ == nullptr) return false;
+        const GameUnitsHost& units = script_orders_->units();
+        const GameUnitsSummary& summary = units.summary();
+        if (!summary.controlled_bound) return false;
+        const GameUnitRow* row = units.unit_row(summary.controlled_index);
+        if (row == nullptr || row->name.empty()) return false;
+        const std::map<std::string, int>::const_iterator found
+            = scene_entity_ids_.find(row->name);
         if (found == scene_entity_ids_.end()) return false;
         entity_id = found->second;
     } else {

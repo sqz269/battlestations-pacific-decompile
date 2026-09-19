@@ -118,6 +118,18 @@ struct GameDirector {
     float path_last_z{0.0f};
     bool path_last_valid{false};
     std::vector<int> path_visited;   // the legs reached, in order
+    // Packet cc8_ship_drive. The path the 5Bh message named for the command it
+    // queued, held until the director BEGINS that command. 0071F600 resolves
+    // the path entity from the slot descriptor itself (0071F63A LEA EBX,
+    // [ESI+58h] then 00521EA0), so the source belongs to the slot and not to
+    // the message; this host carries the last one named, which is the same path
+    // on all 49 repeats a USN04 carrier receives.
+    std::vector<std::array<float, 3>> pending_path_points;
+    std::string pending_path_name;
+    bool pending_path_valid{false};
+    // Whether the build has already run for the begin the queue head is in.
+    // Cleared as soon as slot 0 stops holding `moveonpath`.
+    bool path_begun{false};
 };
 
 struct GameCommandsHost::Impl {
@@ -203,12 +215,33 @@ struct GameCommandsHost::Impl {
     // Defined below the two bindings it needs.
     bool route_clear_command(std::size_t unit_index, bool player_controlled);
 
+    // Packet cc8_ship_drive: the one-time note that says what the weighted
+    // 0071D780 answers next to the unweighted walk every index site runs.
+    bool logged_weighted_count{false};
+    bool logged_queue_full{false};
+    void note_weighted_command_count(int weighted, int unweighted) {
+        if (weighted != unweighted && !logged_weighted_count) {
+            logged_weighted_count = true;
+            log.notef("0071d780's `moveonpath` weighting is live: the queue-full test at "
+                "0071e6c8 sees %d where the unweighted walk every index site runs "
+                "(0071e6d6, 0071e56b) sees %d. The test is CMP EAX,0xa, so a push is "
+                "refused only once the weighted total reaches 10",
+                weighted, unweighted);
+        }
+        if (weighted >= bsp::kDirectorCommandSlotCount && !logged_queue_full) {
+            logged_queue_full = true;
+            log.notef("0071e6c8 refused a push: the weighted command count reached %d",
+                weighted);
+        }
+    }
+
     int command_count(const GameDirector& director) const noexcept {
-        // 0071d780, __fastcall(director), body 0071d780-0071d807: the index of
-        // the first empty slot. The `moveonpath` variant, where a slot whose
-        // path object at director+1a4h+i*4 reports a non-empty point vector
-        // contributes that point count instead of 1, needs a path object this
-        // process does not build.
+        // 0071E6D6..0071E6EE and 0071E56B..0071E57E, the unweighted walk from
+        // director+54h with stride 1Ch that stops at the first null command:
+        // the index of the first empty slot. This is what every site that wants
+        // a SLOT INDEX runs. The weighted 0071D780, whose `moveonpath` slots
+        // count as their point count, is the queue-full test alone and lives on
+        // DirectorBinding::command_count.
         int index = 0;
         while (index < bsp::kDirectorCommandSlotCount
             && director.slot_command[index] != 0) {
@@ -568,8 +601,35 @@ public:
         chain_.owner.record("WeaponDirector::set_fire_target", 0x00835860u);
     }
     int command_count() override {
+        // Packet cc8_ship_drive. 0071D780 has exactly one caller in the image:
+        // 0071E6C3, inside 0071E6C0, where its answer meets `CMP EAX,0xa` and
+        // nothing else (an exhaustive rel32 plus absolute-dword scan finds the
+        // one CALL and no vtable slot). It is the queue-FULL test, never a slot
+        // index: 0071E6C0 finds the slot it stores into with its own unweighted
+        // walk at 0071E6D6..0071E6EE, and 0071E550 repeats that walk at
+        // 0071E56B. So the `moveonpath` weighting belongs here and only here,
+        // and Impl::command_count stays unweighted for the three index sites.
         chain_.owner.done("WeaponDirector::command_count", 0x0071d780u);
-        return chain_.owner.command_count(chain_.director);
+        int path_point_counts[bsp::kDirectorCommandSlotCount]{};
+        // 0071D7AF..0071D7F9 reads slot i's path object at director+1A4h+i*4 and
+        // takes (end - begin) / 0Ch off its vtable[8h] answer. This host carries
+        // the slot-0 path object alone, which is the one 0071BFF0(director, 0)
+        // answers with; slots 1..9 have no path object here and contribute the
+        // 1 the native's `MOV EBX,0x1` default gives them. Named hole.
+        if (chain_.director.slot_command[0] == 0x00e08f80u
+            && chain_.director.path_built) {
+            path_point_counts[0] = static_cast<int>(chain_.director.path_points.size());
+        }
+        // 0071D79C reads only the slot's command pointer, so the queue record
+        // this hands over carries the ten commands and nothing else.
+        bsp::CommandQueueState state{};
+        for (int i = 0; i < bsp::kDirectorCommandSlotCount; ++i) {
+            state.slots[i].command = chain_.director.slot_command[i];
+        }
+        const int weighted = bsp::command_queue_count(state, path_point_counts);
+        chain_.owner.note_weighted_command_count(weighted,
+            chain_.owner.command_count(chain_.director));
+        return weighted;
     }
     std::uint32_t slot_command(int slot_index) override {
         if (slot_index < 0 || slot_index >= bsp::kDirectorCommandSlotCount) return 0;
@@ -975,11 +1035,34 @@ GameCommandsHost::~GameCommandsHost() = default;
 void GameCommandsHost::register_units(std::vector<GameCommandUnit> units) {
     Impl& host = *impl_;
     host.units = std::move(units);
-    host.directors.assign(host.units.size(), GameDirector{});
+    // Packet cc8_ship_drive. This is called again for every batch of units the
+    // mission creates - GameScriptOrdersHost calls create_units at its two
+    // spawn producers and create_units ends here - and it used to `assign`,
+    // which destroyed EVERY unit's director and rebuilt it: the ten command
+    // slots at director+54h, the queue mode at +30h, the stage at +48h, the
+    // cruise latch and, since packet cc8_ship_moveonpath, the slot-0 path
+    // object. In the executable a director is per-unit state created with its
+    // unit (00720180 from 008363E0) and destroyed with it; nothing about
+    // creating ANOTHER unit touches it. The units are appended, so the indices
+    // of the existing ones do not move and `resize` keeps their state and
+    // default-constructs only the new rows.
+    const std::size_t kept = host.directors.size();
+    host.directors.resize(host.units.size());
+    if (kept != 0 && kept != host.units.size()) {
+        ++host.summary.director_reregistrations;
+        if (host.summary.director_reregistrations <= 4) {
+            host.log.notef("re-registered the unit table: %zu director(s) kept, %zu new. Before "
+                "packet cc8_ship_drive every one of the %zu was destroyed and rebuilt here, "
+                "which emptied the command queue of every unit already in the mission each "
+                "time one was created", kept, host.units.size() - kept, kept);
+        }
+    }
     // 0081f273 / 0081f278 leave the pair at -1.0f, which is what
     // CruiseSpeedSetting's own defaults are, so a fresh block is the
-    // constructor's state rather than a zeroed one.
-    host.navigator_params.assign(host.units.size(), bsp::CruiseSpeedSetting{});
+    // constructor's state rather than a zeroed one. Same correction: the block
+    // holds the commanded speed 008A38D5 and 00890E6F store, and re-registering
+    // the unit table was clearing it for every unit already in the mission.
+    host.navigator_params.resize(host.units.size(), bsp::CruiseSpeedSetting{});
     host.summary.units = host.units.size();
     host.build_registry();
 }
@@ -1818,12 +1901,56 @@ bool GameCommandsHost::set_path_follow_pair_0071c1b0(std::size_t unit_index,
     return true;
 }
 
+// Packet cc8_ship_drive. 0071F600 is not reached from the 5Bh message. Its only
+// caller is 00835D33, inside 00835C70 BSP_WeaponDirector_BeginCurrentCommand,
+// and 0071F62F takes `MOV EBP,[ESI+54h]`: the command it begins is SLOT 0's, the
+// queue head. The 49 repeats a USN04 carrier's script sends therefore do not
+// each build a path - 0071E6C0 refuses a push that repeats the slot below
+// (0071E70C/0071E721), so they queue nothing new and begin nothing.
+//
+// Before this gate the host rebuilt on every message, which reset the cursor's
+// join index, `advances` and `travelled` every 3.06 s. That is the whole of the
+// previous packet's "0 advances in 900 tries" and its `travelled 48.30`: 48.30 m
+// is one re-issue interval of motion, i.e. the Yorktown steaming at 15.8 m/s.
+bool GameCommandsHost::begin_current_command_00835c70(std::size_t unit_index,
+    float unit_x, float unit_z) {
+    Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return false;
+    GameDirector& director = host.directors[unit_index];
+    if (director.slot_command[0] != 0x00e08f80u) {
+        // 00835C70 begins whatever the head is; a `moveonpath` that is not the
+        // head has not begun, and the next time it does it begins afresh.
+        director.path_begun = false;
+        return false;
+    }
+    if (director.path_begun) return director.path_built && !director.path_points.empty();
+    if (!director.pending_path_valid) return false;
+    director.path_begun = true;
+    return build_path_object_0071f600(unit_index, unit_x, unit_z);
+}
+
 bool GameCommandsHost::begin_path_command_0071f600(std::size_t unit_index,
     const std::string& path_name, const std::vector<std::array<float, 3>>& points,
     float unit_x, float unit_z) {
     Impl& host = *impl_;
     if (unit_index >= host.directors.size()) return false;
     GameDirector& director = host.directors[unit_index];
+    director.pending_path_name = path_name;
+    director.pending_path_points = points;
+    director.pending_path_valid = true;
+    // The command may already be the head - the first one a carrier receives
+    // lands under an authored `cruise`, but a later one can begin at once - so
+    // the begin is offered here as well as from the director step.
+    begin_current_command_00835c70(unit_index, unit_x, unit_z);
+    return !points.empty();
+}
+
+bool GameCommandsHost::build_path_object_0071f600(std::size_t unit_index,
+    float unit_x, float unit_z) {
+    Impl& host = *impl_;
+    GameDirector& director = host.directors[unit_index];
+    const std::string& path_name = director.pending_path_name;
+    const std::vector<std::array<float, 3>>& points = director.pending_path_points;
     // 0071F6C6/0071F6CD answer null for an entity with no path interface and
     // 007B22A0 still builds the source, so the build always happens and a
     // zero-point source is what makes 007ADC30 true on the first state step.

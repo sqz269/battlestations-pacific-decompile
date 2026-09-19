@@ -112,6 +112,27 @@ struct PlaneSquadronHostRecord {
     std::vector<std::string> member_names;
     std::vector<std::size_t> member_units;
     std::vector<std::int32_t> member_spawn_index;
+    // plane+9D0h per member, in the same array order. 007D01C3 zeroes it in the
+    // plane constructor and 007F4B43 never writes it, so it stays 0 for every
+    // member until 007ED260 runs; `formation_indices_assigned` is this host's
+    // record of that call having happened. The image makes it in the spawn tail
+    // at 007F4BFA and again on promote, leave and follow entry; this host cannot
+    // do it there, because at 007F4580 time its members are still plans with no
+    // unit, so it runs the same rule at the member's first step.
+    // docs/PLANE_FORMATION.md.
+    std::vector<std::int32_t> member_formation_index;
+    bool formation_indices_assigned{false};
+    // Reporting only: the tick counter the wing geometry line is paced by, so a
+    // run says what the pairwise distances are without a probe.
+    std::int32_t formation_report_ticks{0};
+    // Per member, whether its station has already been applied once. This host
+    // never enters the bot state whose tick is 009C1FD0, so the station has to
+    // be applied at the member's first step instead; docs/PLANE_FORMATION.md
+    // says why that is a placement and not the image's schedule.
+    std::vector<std::uint8_t> member_station_applied;
+    // squadron+3E4h and +3E8h, seeded by 007F2C60.
+    std::int32_t formation_shape_3e4{1};
+    float morale_3e8{1.0f};
 
     // +3CCh: the live member count, which is what 007EEF54 and 007EE7F0 test.
     std::int32_t live_count() const noexcept;
