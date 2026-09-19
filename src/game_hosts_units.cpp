@@ -55,6 +55,7 @@
 #include "bsp/rigid_body_integration.hpp"
 #include "bsp/ship_ai_throttle_ring.hpp"
 #include "bsp/ship_ai_nav_block_ctor.hpp"
+#include "bsp/ship_ai_wake_trail.hpp"
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/ship_hull_body.hpp"
 #include "bsp/ship_motion.hpp"
@@ -828,6 +829,10 @@ struct GameUnitSlot {
     // The motion half.
     bsp::ShipMotionState motion{};
     bsp::ShipMotionClass motion_class{};
+    // The wake trail at unit+0BD0h, appended by 00825F20's tail (00826CEE) and
+    // read by 0070D290 for every formation follower's station. Packet
+    // cc8_ship_follow, docs/SHIP_UNIT_GROUP_FOLLOW.md sections 5b and 5c.
+    bsp::ShipAiWakeTrail wake{};
     bsp::UnitHullExtents hull_extents{};
     float class_width_00a4{};
     bsp::ShipClassFields fields{};
@@ -7723,6 +7728,26 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
         const bsp::ShipMotionStepResult result
             = bsp::ship_motion_step_00825f20(slot.motion, slot.motion_class, motion,
                 step_seconds);
+        // 00826CEE, the motion TAIL: 00810190(unit+0BD0h, &unit+0FCh, heading,
+        // yaw_rate). It runs after the pose is written, which is why it is here
+        // and not inside the step. The heading is unit+1050h, what vtable slot
+        // 50h returns, written at 00826C56 by an atan2 over world row 2 - the
+        // same expression `heading_degrees_of` above already uses, in radians.
+        // Packet cc8_ship_follow, docs/SHIP_UNIT_GROUP_FOLLOW.md section 5b.
+        //
+        // PROVISIONAL, and named as such: the yaw rate is 00826C75's, and this
+        // packet did not re-read that site. `rate_row1` is the host's row-1
+        // steering rate after the slew limiter, the nearest value it holds. The
+        // trail's GEOMETRY does not depend on it - only 0070D290's `out[4]`,
+        // which 009DF2D0 uses for a follower's speed blend, ever reads it back.
+        {
+            const float wake_heading = static_cast<float>(
+                std::atan2(static_cast<double>(slot.motion.pose_row2[0]),
+                           static_cast<double>(slot.motion.pose_row2[2])));
+            bsp::ship_ai_wake_append_00810190(slot.wake, slot.motion.position,
+                wake_heading, result.steering.rate_row1);
+            host.done("UnitWake::append_sample", 0x00810190u);
+        }
         // 00749B2C, 0085542F and 0075827B pass the unchanged tick receiver and
         // float argument to 00825F20 before any branch. Only that base-call
         // fragment runs here; each native override's following work is open.
@@ -8492,6 +8517,30 @@ void GameUnitsHost::report() {
         "simulated time, %llu instance update(s) of 008255b0",
         host.summary.motion_steps, host.summary.motion_ticks,
         static_cast<double>(host.summary.simulated_seconds), host.summary.instance_updates);
+    // Packet cc8_ship_follow: the wake trail 0070D290 measures a formation
+    // follower's station along. Nothing consumes it yet, so these counters are
+    // the whole observable effect of binding 00810190.
+    {
+        std::size_t with_trail = 0;
+        unsigned long long appends = 0;
+        unsigned long long advances = 0;
+        unsigned long long merges = 0;
+        float longest = 0.0f;
+        for (const std::unique_ptr<GameUnitSlot>& owned : host.slots) {
+            const bsp::ShipAiWakeTrail& trail = owned->wake;
+            if (trail.appends == 0) continue;
+            ++with_trail;
+            appends += trail.appends;
+            advances += trail.advances;
+            merges += trail.merges;
+            const float length = bsp::ship_ai_wake_trail_length(trail);
+            if (length > longest) longest = length;
+        }
+        host.log.notef("summary unit wake ships=%llu appends=%llu advances=%llu merges=%llu "
+            "longest_trail=%.2f m (00810190, 4 m gate, 50 m legs, 40 slots)",
+            static_cast<unsigned long long>(with_trail), appends, advances, merges,
+            static_cast<double>(longest));
+    }
     // Milestone 2k added the ordered pair each unit is running under, which is
     // unit+980h / unit+984h as the ring published them. Milestone 2l adds the
     // authored command and what its latch captured, and the two columns now

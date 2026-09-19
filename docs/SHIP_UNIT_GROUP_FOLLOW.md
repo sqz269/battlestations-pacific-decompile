@@ -27,10 +27,11 @@ AI command tick  (00A124E0 MoveTo, 00A12A90 MoveToAttack, 00A12430 Idle,
          --> session message type 76h, payload = leader id [leader+174h]
          --> 0077C2A0 RouteMessage
    |
-0077FAD0 receiver, record kind 2 --> 00521E30 id->entity
+0077FE80 dispatch, type 76h -> 0077FEC8 --> 00521E30 id->entity
          --> 0077F940 JoinOrMerge --> 0070DB20 create / 0070EF30 join
                                   --> 0070ED30 fills the member's four columns
-         --> 0070D080 member record, then the columns from the payload
+     (0077FAD0, the AUTHORED placement record at entity+0C0h, is the other
+      caller of 0077F940 and the only path that overwrites those columns)
    |
 the follower's OWN director, every idle step:
 0083 6DC9..00836E3D --> 007788B0(unit) ? issue "follow" (00E08F60) at 007788D0(unit)
@@ -102,7 +103,39 @@ M+18h = 0 (word) ; M+1Ah = 0 ; M+1Ch = 0 ; M+20h = [other+174h]     0077C934..00
 carries is the leader's 16-bit id at `[other+174h]`.** The routine pushes no command and touches no
 formation state directly.
 
-### `0077FAD0`, the receiver, `__thiscall(entity)`, body `0077FAD0-0077FE7E`, 245 instructions; the kind-2 arm read whole
+### The receiver, corrected
+
+> **Correction to this document's first draft.** I read `0077FAD0` as the receiver on the strength
+> of `docs/SHIP_AI_FORMATION.md`'s line "its one call site is `0077FB74` in `0077FAD0`, the session
+> message handler". `0077F940` has **two** call sites, and `0077FAD0` is the other one: its callers
+> are `00742C10 BSP_LandConvoy_CacheParentAndPlacementLaw` and `FUN_0087BF80`, and it reads an
+> authored record at `entity+0C0h`, not a wire message. The runtime receiver is `0077FE80`, as the
+> packet brief said. Both readings are kept below, because both paths reach `0070EF30` and they do
+> different things.
+
+#### `0077FE80 BSP_Session_DispatchEntityKindMessage`, the runtime path
+
+`__thiscall(entity /*ECX*/)(msg, bool* out)`, `RET 8`, body `0077FE80-00780041`, 156 instructions.
+`msg->vtable[10h]()` gates it; then `[msg+10h] - 53h` indexes the byte table at `0078005C` and the
+six-entry jump table at `00780044`. Read from the image bytes: index `76h - 53h = 23h` holds `02`,
+and jump entry 2 is `0077FEC8`. **The whole type-76h arm is four instructions of work:**
+
+```
+0077FEC8  CX = [msg+20h]            ; the 16-bit id
+0077FECC  00521E30(id) -> entity
+0077FED8  0077F940(this = the receiving entity, other = that entity)
+0077FEDE  return true
+```
+
+`[msg+20h]` is exactly the field `0077C8D0` writes (`M+20h` at `0077C951`), so sender and receiver
+agree field for field. **The runtime join writes no columns at all**: they stay as `0070ED30` left
+them. Two neighbouring arms are worth naming because they are what a column sync looks like:
+type 77h (`0077FEE4`) resolves the same id and calls `0077BD70`, and type **78h** (`0077FF03`) calls
+`0070EFD0` with `[msg+20h]` and then loops over `[group+4F8h]` members, writing each record's
+`+10h`/`+20h` and `+14h`/`+24h` from float arrays at `[msg+28h]` and `[msg+2Ch]` through
+`0070D070`. That is the message that carries columns, and it is not the one a join sends.
+
+#### `0077FAD0`, the authored-placement path, `__thiscall(entity)`, body `0077FAD0-0077FE7E`, 245 instructions; its kind-2 arm read whole
 
 `EAX = [entity+0C0h]`, `[EAX+4]` is the record kind, `EDI = [EAX+8]` the payload. For kind 2:
 
@@ -126,10 +159,10 @@ if ([EDI+0C6h]) {                       ; the RESHAPE arm
 ```
 
 The record offsets are exactly the ones `0070ED30` writes *(cited, `docs/SHIP_AI_FORMATION.md`)* and
-`0070D290` reads, so **the message can overwrite the join-time columns**. `group+4FCh` is the field
-`0070DB20` sets to 6 for a ship leader *(cited)*; the `== 18h` test selects the three-float form.
-The payload offsets `0CCh` and beyond are **not written by `0077C8D0`**, so which sender fills them
-is unresolved - see section 7.
+`0070D290` reads. `group+4FCh` is the field `0070DB20` sets to 6 for a ship leader *(cited)*; the
+`== 18h` test selects the three-float form. Since `entity+0C0h` is an authored record and not a wire
+message, this is the path by which a **scene** can give a formation its columns outright - which is
+what the convoy caller's name suggests - and it is not on the runtime join's path at all.
 
 `0077F940 BSP_UnitGroup_JoinOrMerge` and `0070EF30` / `0070ED30` / `0070EFD0` / `0070D290` /
 `009DF2D0` are read whole in `docs/SHIP_AI_FORMATION.md` and reconstructed in
@@ -226,7 +259,7 @@ optional decoration; it is the frame the station lives in.
 | --- | --- | --- | --- |
 | `00810190` | `BSP_UnitWake_AppendSample` | 303 | **read whole, this packet** (section 5b) |
 | `00810630` | `BSP_UnitWake_SampleAtDistance` | 198 | **read whole, this packet** (section 5c) |
-| `00811180` | `BSP_Unit_DecomposeAgainstWake` | 523 | unread |
+| `00811180` | `BSP_Unit_DecomposeAgainstWake` | 523 | **its search read** (section 5d); the tail unread |
 | `00811150` | `BSP_Unit_WakePointAtDistance` | 12 | trivial forwarder, `+0BD0h` |
 
 The ring is 40 samples of `18h` bytes at `wake+8h` (`entity+0BD8h`) with the head index at
@@ -253,15 +286,17 @@ sample[h]   = new.xyz ; +10h = 0 ; +0Ch = heading ; +14h = yaw_rate          008
 sample[h-1]+0Ch = wrap_2pi(pi/2 - atan2(new.z-p2.z, new.x-p2.x))             0081043F..0081047B
        ; p2 = sample[h-2]; 00CE3830 = pi/2, 00CE3828 = 2pi, both doubles
 len = |new - sample[h-1]|                           ; 0042B2F0               00810416
-if (len > sample[h-1]+10h) { wake+3CCh = 1 ; sample[h-1]+10h = len }          00810484..00810493
+if (sample[h-1]+10h > len) { wake+3CCh = 1 ; sample[h-1]+10h = len }          00810484..00810493
+       ; the FCOMIP at 00810480 has the STORED length in ST0 and the new one in
+       ; ST1 and the JBE leaves for "stored <= new", so this is the SHRINKING leg
 else if (!wake+3CCh)        { sample[h-1]+10h = len }                        0081049D..008104B1
 else if (|new - p2|_2d < 55.0) {                    ; 00D09438 DOUBLE, merge 008104E2..008104F9
     sample[h-1] = the new sample ; p2+10h = that distance ; 00810160 copies
     sample[h] -> sample[h+1] ; wake+3C8h = h-1       ; the head moves BACK    008104FB..0081056B
 } else { sample[h-1]+10h = len ; wake+3CCh = 0 }                             00810573..0081057E
 
-if (50.0 > sample[h-1]+10h) return                  ; 00CE3938 DOUBLE        00810585..00810593
-if (wake+3CCh) return                                                        00810599
+if (sample[h-1]+10h <= 50.0) return                 ; 00CE3938 DOUBLE        00810585..00810593
+if (wake+3CCh) return                               ; a shrinking leg never advances  00810599
 h = (h >= 27h) ? 0 : h+1 ; wake+3C8h = h            ; ADVANCE, wrap at 40     008105A6..008105BE
 sample[h] = new.xyz ; +10h = 0 ; +0Ch = heading ; +14h = yaw_rate             008105C7..00810620
 ```
@@ -344,6 +379,31 @@ Two consequences for the binding:
   than the whole trail therefore lands on the oldest sample, not off the end. With 50 m legs that
   is about 2 km of usable station depth.
 
+### 5d. `00811180 BSP_Unit_DecomposeAgainstWake`, its search read
+
+`__thiscall(entity /*ECX*/)(const float point[3], ...)`, body `00811180-00811812`, 523
+instructions. This is the one `0070ED30` runs once per join to turn a member's current position
+into column 0. Unlike the other two it takes the **entity** as `this`, so its offsets are `0BD8h`
+for the ring and `0F98h` for the head - `0BD0h` higher than `00810630`'s.
+
+Its first 72 instructions, read this packet, settle the one thing a reconstruction has to get
+right, which is what "nearest" means:
+
+```
+best = 3.4028235e38                                 ; 00D7A248, FLT_MAX at float width  00811187
+i = [entity+0F98h] + 27h ; nearest = -1                                          008111BB..008111D5
+per sample, walking BACK from the head through all 40 slots (IDIV by 28h):
+    d = point - sample.xyz                          ; all three components       00811208..00811222
+    d2 = d.x*d.x + d.y*d.y + d.z*d.z                                             00811226..00811242
+    if (d2 < best) { best = d2 ; nearest = this slot }                           0081124E..00811260
+```
+
+**The search is over sample POINTS, by full 3D squared distance, not over the segments between
+them**, and the loop is unrolled, which is most of why the body is 523 instructions. The tail that
+turns the winning sample into the signed perpendicular distance and the accumulated arc length -
+what `docs/SHIP_AI_FORMATION.md` states as the contract and `0070ED30` stores as `record+10h` and
+`record+20h` - is **not read here**. That tail is the last unread piece of the follow chain.
+
 ## 6. The cut this packet proposes
 
 The chain does not fit one context at this project's reading fidelity: ~1000 instructions of unread
@@ -371,10 +431,11 @@ the trail. Doing the wake first is what keeps the station from being invented.
 * `00F87574/78/7Ch` read 0.0 at load because they are past `.data`'s raw size (loader zero-fill).
   Whether anything writes them at runtime is **unchecked**; a literal-address xref negative would
   not settle it (`docs/` records block-copy writers that xref only a base).
-* The payload fields `0CCh`..`0F8h` that `0077FAD0`'s join arm copies into the member record are not
-  written by `0077C8D0`. Either another sender of type 76h fills them, or they arrive zero and the
-  join-time columns are destroyed. **Unresolved, and it decides whether `0070ED30`'s geometry
-  survives a join.** It must be settled before the station is bound, not after.
+* ~~The payload fields `0CCh`..`0F8h` that `0077FAD0`'s join arm copies into the member record are
+  not written by `0077C8D0`.~~ **Settled, same packet**: `0077FAD0` is not the runtime receiver.
+  `0077FE80`'s type-76h arm resolves the id and calls `0077F940`, nothing more, so a runtime join
+  keeps `0070ED30`'s columns; the message that carries columns is type 78h. See the correction in
+  section 3. The station binding is no longer blocked on this.
 * `00465080` (the command argument pair the follow re-issue builds) and `00905300` (the `[entity+1ACh] <= 7`
   call in `0077C8D0`) are unread.
 * `009FE080 IsGroupableCombatant` and `009FFEB0` are unread; they gate the leader order and the
