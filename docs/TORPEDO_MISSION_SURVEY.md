@@ -268,8 +268,24 @@ What that run measured, and what it did **not**:
   `general_bomb` and by none into `torpedo` (2Bh). So the American strike is a dive-bomber strike,
   which is what those two carriers flew at Coral Sea.
 * `Zuikaku-class01` and `Shokaku-class01`, which section 3 names as `launchedStriker`'s source, **did
-  not launch in the 150 s window**. Its plane types, 158 and 162 by line 233, were never asked for,
-  so the open item stands exactly as written — but it is now one run away rather than unanswerable.
+  not launch in the 150 s window**. Its plane types, 158 and 162 by line 233, were never asked for.
+
+**The Uncertainty item at line 231 is now answered, and without a run.** `bsp_mission_script_probe`
+runs the same `Scripts/datatables/autoload/` folder `00886900` does, so `VehicleClass` is in its
+state exactly as the game leaves it; a new `--vehicle-class <index>` option prints a row:
+
+```
+VehicleClass[101] : Name="globals.unitclass_wildcat" Type="Fighter"
+VehicleClass[158] : Name="globals.unitclass_val"     Type="DiveBomber"
+VehicleClass[162] : Name="globals.unitclass_kate"    Type="TorpedoBomber"
+```
+
+So **yes**: `launchedStriker` picks from the Val and the Kate, and the Kate's authored class `Type`
+is `TorpedoBomber`. Line 232's "now unanswerable from a run" and line 234's "this survey did not
+resolve them" are both superseded. One limit: `Type` is the literal `00964790`'s string chain
+compares, so it is the authored class type and not proof that the class's guns carry ordnance kind
+2Bh; a run that creates a 162 settles that, and with the tick and creation seam on
+`agent/cc8-torpedo-run-in` such a launch now produces a real unit.
 * USN04 has six decks in all: the two American carriers, `Zuiho-class01`, `Zuikaku-class01`,
   `Shokaku-class01` and `dummylex`, each with `NumSlots=4 MaxInAirPlanes=12`.
 

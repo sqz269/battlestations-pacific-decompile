@@ -318,21 +318,50 @@ after as `launchedStriker`, twelve aircraft, "launched from `Mission.Zuikaku` an
 slots and ordered at launch (`usn_19_coralus.lua:1409`-`1446`)". **Zuikaku and Shokaku did not launch
 in this window at all.**
 
-So what was measured is the US carriers' own strike — twelve dive bombers, which is what a Lexington
-and a Yorktown carried at Coral Sea — and the class-101 finding is a fact about *that* launch, not
-about `launchedStriker`. The Japanese torpedo strike is still ahead of the window, behind the same
-`luaDoTimeTable` entry with 34.95 s left, and the survey's own open item at its line 231 —
-"whether USN04's `launchedStriker` groups contain torpedo-armed aircraft specifically" — remains
-open. The longer run below is the measurement that settles it, and it is now the decisive one rather
-than a nice-to-have.
+So what was measured is the American carriers' own launch, and the class-101 finding is a fact about
+*that* launch, not about `launchedStriker`.
 
-One caveat on the class-101 ordnance reading, stated because it is load-bearing. The slot's class
-travels from the scene's numeric `Type` token through `LaunchSquadron`'s argument to
-`read_vehicle_class_row` as an index into the `VehicleClass` global, unchanged. That is the same
-id-as-index convention `attach_scene_entities_00928a00` already uses for an entity's `Class` field,
-and the row was found rather than missing, so the ordnance reading is the process's existing
-convention and not a new assumption — but if that numbering is ever shown to differ from the
-`VehicleClass` index, the reading goes with it.
+### The three classes, read from the installed tables
+
+The classes are now resolved, and without a game run. `bsp_mission_script_probe` runs the same
+autoload folder `00886900` does, so the `VehicleClass` global is in its state exactly as the game
+leaves it; the new `--vehicle-class <index>` option prints a row from it. All three indices that
+matter:
+
+```
+VehicleClass[101] : Name="globals.unitclass_wildcat" Type="Fighter"
+VehicleClass[158] : Name="globals.unitclass_val"     Type="DiveBomber"
+VehicleClass[162] : Name="globals.unitclass_kate"    Type="TorpedoBomber"
+```
+
+**This answers `docs/TORPEDO_MISSION_SURVEY.md`'s standing open item.** That document's line 231 says
+whether `launchedStriker` contains torpedo-armed aircraft "is still open and now unanswerable from a
+run", and its line 233 names the script's two plane types, 158 and 162, as unresolved. They resolve
+to the Val and the **Kate**, and the Kate's class `Type` is `TorpedoBomber`. Coral Sea's Japanese
+strike is a Val-and-Kate strike, which is historically what it was.
+
+**And it retracts a sentence written two paragraphs above, earlier the same day.** That sentence
+called the American launch "twelve dive bombers, which is what a Lexington and a Yorktown carried at
+Coral Sea". Class 101 is the **Wildcat**, `Type="Fighter"`: the American carriers launched a
+twelve-fighter patrol, not a bomber strike. The ordnance census still says those four units carry
+general-bomb and not torpedo ordnance, which is a fact about the gun list this process built for
+them; the class *type* is the authored one above and the two should not have been conflated.
+
+Two limits on the reading, stated because they are load-bearing. `Type` is the literal
+`00964790`'s string chain compares, so `TorpedoBomber` is an authored class type and **not** proof
+that the class's guns carry ordnance kind 2Bh; only a run that creates one settles that. And the
+slot's class travels from the scene's numeric `Type` token through `LaunchSquadron`'s argument to
+`read_vehicle_class_row` as an index into `VehicleClass`, unchanged — the same id-as-index
+convention `attach_scene_entities_00928a00` already uses, and the rows were found rather than
+missing, so it is the process's existing convention rather than a new assumption.
+
+### What this leaves
+
+The launch path is no longer the blocker for the stream's goal. With the tick and the creation seam
+on this branch, a `launchedStriker` launch of class 162 becomes a real Kate unit with a `thisTable`
+slot, and `PilotSetTarget` on it is exactly the call that installs the torpedo task. The only thing
+between here and that is **mission time**: the `luaDoTimeTable` entry that carries the order still
+had 34.95 s to run when the 150 s window closed.
 
 **The squadrons are ordered by the party AI, not by the mission script.** All four appear in the
 pilot-attack tally (`ordered` 2 -> 6), and each one's line is
