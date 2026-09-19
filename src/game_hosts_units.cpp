@@ -1068,6 +1068,21 @@ bool hull_aim_target_samples_hull(const GameUnitSlot& target) {
     }
 }
 
+// THE NAMED SWITCH, and it is OFF. With the offset live, USN04 dive-bomb drops
+// fell from 23 to 8 (local\hullaim_after2_usn04.log against
+// local\hullaim_before_usn04.log, same base ec14870c3, identical parameters).
+// The reading in docs/HULL_AIM_POINT.md predicts the bombs SCATTER along the
+// hull, not that two thirds of them stop being released, so that is a missed
+// prediction and it is not understood yet. Until it is, this host keeps the
+// target's origin, which is the configuration measured to be line-identical to
+// the before on all 43 census lines.
+//
+// Turning this to `true` re-arms the binding; docs/HANDOFF_HULL_AIM_POINT.md
+// section (f) lists the three candidates to check first. Nothing below this
+// line is disabled - the pick still runs and the state still advances, so a
+// successor can print the drawn offset per aircraft without re-arming the feed.
+constexpr bool kHullAimOffsetEnabled = false;
+
 // The world aim point for `shooter` against `target`. Returns false when the
 // target supplies no hull, in which case the caller keeps the origin it had.
 bool hull_aim_world_point(GameUnitSlot& shooter, const GameUnitSlot& target,
@@ -1093,7 +1108,7 @@ bool hull_aim_world_point(GameUnitSlot& shooter, const GameUnitSlot& target,
             bsp::approach_target_ref_draws_from_unit(unit, st.spread_48);
         bsp::approach_target_ref_pick_009fa260(st, hull, draws, samples);
     }
-    if (!samples) return false;
+    if (!samples || !kHullAimOffsetEnabled) return false;
     // 009FAED0-009FAF00.
     bsp::approach_target_ref_store_world_point_009faeea(st, target.world);
     out[0] = st.world_point_1c[0];

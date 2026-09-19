@@ -123,3 +123,64 @@ From `docs/HULL_AIM_POINT.md` section 7, now quantified with the real hulls
 * Ledger records added: `00816650`, `0042D810`, `0042BB20` (new names) and an
   appended correction on `009FADA0` that preserves the `cc8_dive_aim` text.
 * Lease `cc8_hull_aim_point`: 9 addresses, 4 files.
+
+## (f) The corrected run, the missed prediction, and why the switch is OFF
+
+The corrected after-run is `local\hullaim_after2_usn04.log` (base `ec14870c3`,
+identical parameters to the before). It did NOT behave as section (d) predicts:
+
+| | before | inert after | corrected after |
+|---|---|---|---|
+| `bomb_drops` | 23 | 23 | **8** |
+| `bomb_impacts` | 20 | 20 | **7** |
+| torpedo `swims` | 12 | 12 | 12 |
+
+**Dive-bomb releases fell from 23 to 8.** The reading in
+`docs/HULL_AIM_POINT.md` predicts the bombs SCATTER along the hull; it predicts
+nothing about two thirds of them not being released. That is a missed
+prediction, and a missed prediction is a finding: the binding is not yet
+understood well enough to land with the offset live.
+
+So `kHullAimOffsetEnabled` in `src/game_hosts_units.cpp` is **false**, and this
+host keeps the target's origin. That configuration is not a guess: the inert
+first after-run was proved **line-identical to the before on all 43 census
+lines**, so the new file pair, the slot fields, the feed plumbing and the
+`gun_bot_remainder` rename are all measured to be behaviour-neutral. The pick
+and the state still advance behind the switch, so a successor can print the
+drawn offset per aircraft without re-arming the feed.
+
+### The three candidates, in the order worth checking
+
+**(i) Is the host re-drawing?** It should not be — the packet PROVED the offset
+is drawn once (slot `+104h` is `0042BB20`, always true). In
+`hull_aim_world_point` the draw is keyed on `shooter.hull_aim_seed`, set only
+when `hull_aim_target_plus_one` changes, and `approach_target_ref_pick_009fa260`
+clears `dirty_41`, so by inspection it is once per (attacker, target). **Verify
+it empirically anyway**: print the drawn offset for one bomber every tick. If it
+moves, no range or CCIP gate can ever hold and that alone explains 23 -> 8.
+
+**(ii) The axis convention of `world_matrix x offset`.** The offset is in the
+target's BODY frame: `out[0]` across (Width, `+A4h`), `out[1]` up, `out[2]`
+along (Length, `+A0h`) — per the naming fix this packet made. If the host's
+`slot->world` does not put the hull's length along `+Z`, an along/across swap
+puts the aim point up to ~110 m ABEAM of a 180 m hull, i.e. in open water.
+**This is the strongest candidate for a 23 -> 8 collapse** and it is cheap to
+test: with the switch on, log the aim point and the target position and check
+the offset lies along the hull's heading, not across it.
+
+**(iii) The gates legitimately move, and that part may be faithful.** The
+dive-bomb `tp` this packet changed feeds `db_planar_bc` (the in-range latch) and
+`db_aim_point_3d`, and the fly-over's range and the break-off are measured to
+the aim point in the image too. An offset of up to `0.45 x Length` really does
+shift where those gates fire. If (i) and (ii) come back clean, the honest
+reading may be that the gates are correct and something DOWNSTREAM of them —
+`kPilotDiveBombAttackDist`, the 25 m CCIP gate `00CE3880`, or the abort at
+`009C5B43` — is tuned around an origin-aimed point in this host and has not been
+re-derived for an offset one.
+
+### What to report from the corrected log
+
+Which squadrons stopped releasing and the state they end in; whether the 7 bombs
+that DO land fall near their drawn point on the hull; and the within-squadron
+spread of along-hull impact positions before versus after. I did not have the
+context left to read those rows — the log is on disk and clean.
