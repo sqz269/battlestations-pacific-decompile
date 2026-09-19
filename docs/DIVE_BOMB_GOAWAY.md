@@ -231,6 +231,53 @@ timing is not quoted here; the `taken`/`health`/`killed_by` columns are unambigu
 worth flagging: `#1.1`'s `dealt` moves 432 -> 492 although it never enters goaway, because the AA
 assignment is a coupled simulation - a changed target set changes the whole gunnery trajectory.
 
+### 4b. Run 3, `local\goaway_long.log`, 9000 mission frames - the outcome (ii) demonstration
+
+Same binary as run 2, `--frames 9200 --mission-frames 9000`. **This is a demonstration, not a paired
+measurement**: two run parameters changed, so nothing in it may be differenced against the pair.
+
+**The state machine result, which is what outcome (ii) asked for, is unambiguous.** All six aborted
+aircraft climb to the completion threshold and leave:
+
+```
+#3.1      goaway ticks=924  alt last=900.0 max=900.0  deficit=100.0  pitch last=0.0803
+#3.1|.-2  goaway ticks=1860 alt last=899.7 max=899.7  deficit=100.3  pitch last=0.0804
+#3.1|.-3  goaway ticks=1809 alt last=899.8 max=899.8  deficit=100.2  pitch last=0.0803
+#7.1      goaway ticks=902  alt last=899.9 max=899.9  deficit=100.1  pitch last=0.0803
+#7.1|.-2  goaway ticks=938  alt last=900.0 max=900.0  deficit=100.0  pitch last=0.0803
+#7.1|.-3  goaway ticks=895  alt last=899.8 max=899.8  deficit=100.2  pitch last=0.0803
+```
+
+`alt max` is 899.7-900.0 m on every one of them and never higher, which is exactly `ceiling - 100`:
+the state ends on the tick the altitude first exceeds `009C7F00`'s threshold, so no goaway tick ever
+observes a higher altitude. The command at that point is still 0.0803 rad - curve A at a deficit of
+100 m is `(100+50)/350 * 0.1872 = 0.08023` - so the climb is not running out, the state is finishing.
+
+And the second attack run follows, on all six:
+
+| | run 2 (4800 frames) | run 3 (9000 frames) |
+| --- | --- | --- |
+| `transitions` | 6 | 10-15 |
+| `turndown` ticks | 56-57 | 111-167 |
+| `aimdive` ticks | 60-66 | 105-174 |
+| `releases` | 1 | **2** |
+| `rounds_left` | 1 | **0** |
+| ends in | `goaway` | `done` (755-1912 ticks) |
+
+So the chain closes: goaway completes at 900 m, `009C86EE` returns an aircraft with bomb ordnance to
+`flyabove`, it flies a second turndown and aimdive, and it releases its second bomb. **No constant
+was changed to produce this.** The 4800-frame mission was simply about four seconds too short, as
+run 2's 866.8 m predicted.
+
+**What this run may NOT be used for.** Its mission-level numbers diverged from the pair and I did not
+isolate why: `bomb_impacts=0` (against 18), `total_damage=3596.8` (against 10188.4), `deaths=5`
+(against 9), `queued_hits=272` (against 77), and `Lexington-class01` is not sunk (`taken 2497` of
+8000) where the pair sinks it at 123.70 s. `#3.1`'s arm also starts about 2100 frames later in
+mission terms. Two candidate causes, neither checked: changing `--frames` changed the pre-mission
+frame budget, and I did not pass `--instance-tag`/`--affinity-core` while another worker's runs
+overlapped mine. **Quote no damage, impact or death figure from this run.** The state, tick and
+release counts above are properties of the dive-bomb task's own transitions and stand on their own.
+
 ## 5. The delivered cross-track error: the attack run cannot be making it *here*
 
 Packet item 2. `009C4220`'s heading arm, `009C42A6`-`009C4305`, read from
