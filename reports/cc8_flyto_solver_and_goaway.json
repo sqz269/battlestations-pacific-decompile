@@ -70,6 +70,12 @@
       "address": "009c47d0",
       "name": "FUN_009c47d0",
       "coverage": "partial: only the 009FD570 call setup at 009C47D6-009C4810, read as the independent confirmation of the six-argument layout"
+    },
+    {
+      "address": "009d0670",
+      "name": "BSP_BotApproachTorpedo_GetAimPoint",
+      "abi": "Vec3 __thiscall(approach*, Vec3* out), RET 4, 31 bytes 009D0670-009D068E",
+      "coverage": "complete: copies approach+D0h/+D4h/+D8h and does no arithmetic. Slot 0 of BotApproachTorpedo's vtable 00D213C0, found from 009D3050's LEA EDI,[ESI+3F8h] at 009D3080 and MOV [EDI],0D213C0h at 009D30A7"
     }
   ],
   "corrections": [
@@ -79,6 +85,27 @@
       "was": "009FD570(state, approach->vtable[0](&scratch, unit, state+24h, &state+2Ch, approach+90h, 0.8)) - vtable[0] takes a return buffer plus five arguments and 009FD570 takes one, with the side passed by pointer to vtable[0]",
       "is": "approach->vtable[0] is RET 4 and takes only its return buffer; 009FD570 is RET 0x18 and takes all six. The five values are staged before the vtable[0] call and left across it. The side IS an in/out pointer, but it is 009FD570's, written at 009FDC48.",
       "evidence": "the stack balance of 009D0C10 walked backwards from its POP ESI / ADD ESP,0x3C at 009D0D83 with each callee's own RET imm (007F0280 RET 0x18, 00438B10/00438AA0 RET 8, 0074E260 bare RET) puts ESP at S-0x18 before CALL 009FD570; the six pushes before CALL EAX put ESP at S-0x18 too and PUSH EAX sits between them, so vtable[0] popped four bytes. Confirmed independently by 009C47D0's byte-identical call setup at 009C47D6-009C4810."
+    },
+    {
+      "doc": "docs/TORPEDO_AFTER_THE_DROP.md",
+      "section": "4 (this packet's own)",
+      "was": "the before column was local/aimclass_after_usn01.log, taken on d74aa5b4a",
+      "is": "that baseline is 159 lines of plane/ship/AI path away from the after tree (game_hosts_ai.cpp +85, game_hosts_units.cpp +47, plane_squadron_host.hpp, ship_ai_attackmove_substates.hpp, unit_death_sink.hpp). The before column was re-taken at 81ccfd29d, the after tree minus exactly the binding.",
+      "evidence": "local/goaway_before_usn01.log reproduces the old baseline to the digit: deaths=5 kill_credits=5 queued_hits=111 total_damage=2596.8 first_hit=58.65 s, goaway enters=1, range_peak 368.9 to 382.2. The confound was a real risk and inert in fact; the attribution is now earned."
+    },
+    {
+      "doc": "docs/TORPEDO_AFTER_THE_DROP.md",
+      "section": "5 (this packet's own)",
+      "was": "approach->vtable[0]'s body is unread and is the last place a lead could hide",
+      "is": "it is 009D0670, it returns the stored vec3 at approach+D0h..D8h with no arithmetic, so it cannot lead. The open question is now approach+D0h's producer, which no literal-address encoding reaches in the bot band (seven forms, each with a positive control) - a bound on where the writer is, not a proof that there is none.",
+      "evidence": "009D3050's LEA EDI,[ESI+3F8h] then MOV [EDI],0D213C0h gives the vtable; the body is MOV EAX,[ESP+4] and three FLD/FSTP pairs, RET 4"
+    },
+    {
+      "doc": "docs/TORPEDO_AFTER_THE_DROP.md",
+      "section": "5 (this packet's own)",
+      "was": "the escorts make 13.7 m/s, so a 22.7 s run lets the target move about 311 m",
+      "is": "13.7 came from two d32c endpoints spanning the acceleration and a rudder-0.805 turn. The steady-state rate over steps 1600 to 3000 is 15.0 m/s and every drop falls in that phase, so the displacement is about 340 m - and it is a lower bound, because d32c is distance-to-waypoint and the hull is not pointing at the waypoint.",
+      "evidence": "d32c 12046.18 / 11745.50 / 11109.09 / 10496.68 / 10059.83 at ship ai steps 90 / 800 / 1600 / 2400 / 3000; reference_speed 16.72 at throttle 0.92"
     }
   ],
   "host": [],
@@ -92,6 +119,12 @@
       "arms": "Mav1 465 ticks 0/106/0/359, Mav2 546 0/170/17/359, Mav3 551 0/170/23/358, Mav4 507 0/150/0/357, Mav5 517 0/162/0/355 (win_low/win_high/post_high/post_low)",
       "substitution_exposure": "the commanded heading, the only output that depends on the unproved unit+AC8h lead vector, is published on 40 of 2586 goaway ticks; three of the five aircraft never publish it",
       "not_settled": "goaway enters 1 -> 82 and transitions 3 -> 165, because the break-off now opens the range past 700 m and 009D3150 answers true. 009D4030's transition rule for a torpedo-less aircraft is not established to be the image's."
+    },
+    {
+      "run": "local/goaway_before_usn01.log",
+      "tree": "81ccfd29d detached, the after tree minus exactly the binding; both ctest suites passed",
+      "purpose": "a before column one commit from the after column instead of thirty",
+      "result": "deaths=5 kill_credits=5 queued_hits=111 total_damage=2596.8 first_hit=58.65 s, all five Mav killed at 109.15 to 136.95 s, goaway enters=1, transitions 3 to 4, range_peak_in_goaway 382.2 / 368.9 / 370.6 for Mav1 / Mav3 / Mav5. Identical to the d74aa5b4a baseline, so the 159 intervening lines move nothing in this mission."
     },
     {
       "claim": "the image does not lead the torpedo through 009D1360",
@@ -168,6 +201,12 @@
       "address": "009fd5a6",
       "native": "007bbb70",
       "note": "resolved from the vtable rather than the call: all nine .rdata vtables carrying 0074E260 at slot 50h carry 007BBB70 at slot 34h. HYPOTHESIS that unit+AC8h..AD0h is the velocity; no literal-address writer exists in .text"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "009d0670",
+      "why": "009D0380 BSP_BotApproachTorpedo_Reset's Ghidra body is 009D0380-009D066F, one byte short, so byte scans report this address as inside it and ghidra_annotate.py refuses with 'No function at address'. Creating it is a Ghidra mutation and belongs to a packet that holds the write lock."
     }
   ]
 }
