@@ -195,6 +195,28 @@ torpedo Mav5 prepare window: first_prepare_at_arm_tick=1 first_blocked_no_order_
 `blocked_0099af53=121`, no drops, no swims, no shots. That is a precise next address for whoever owns
 the torpedo task: `007EEF40`'s two gate inputs are both zero from the first tick.
 
+### A defect the USN01 log exposed, fixed after the run
+
+`ScoutDauntless` appears in the run exactly once, and not as a unit:
+
+```
+scene marker ScoutDauntless class=PlaneSquadronGen id=126 findable=1 attach=007f4580 pos=(-200.0,700.0,0.0)
+```
+
+The marker rule is `if (!entity.generated || entity.created) continue;` — a marker is an entity the
+instantiate pass **took** but whose creator is a record. A held-back entity was leaving the gate's
+`generated = true` in its record while `created` stayed false, so **every one of them became a scene
+marker with its own `thisTable` slot**. USN01 built 81 markers and USN04 6.
+
+That is wrong twice over. `FindEntity` would answer for a unit that does not exist, and when
+`GenerateObject` later created the real one it would add a **second** slot under a different id for
+the same name — the duplicate the whole hold-back exists to prevent, reintroduced by the back door.
+
+The fix is one line and it is the faithful reading: a hidden entity is skipped at `0046D3C5`
+**before** `0046C550` is called, so it has no gate answer and is on no pending list. `generated` is
+now false for a held-back record. The counts above were measured before this fix and the census
+columns are unaffected by it, because `generated` there is the gate's own tally, not the record's.
+
 ### One caveat on the USN01 run
 
 It exited **1** while running its full frame budget: `frames_presented=5642 presents_skipped=1757`
