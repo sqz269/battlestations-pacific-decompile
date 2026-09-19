@@ -140,6 +140,11 @@ struct GameSceneContentsSummary {
     std::size_t registration_bodies{0};    // descriptor[2] calls on pass 2
     std::size_t party_class_marks{0};      // 0095ba60 writes the pass produced
     std::size_t nested_entities{0};        // entities below the top level
+    // Packet cc8_lua_generate_object: entities the instantiate pass held back
+    // because their bag carries `Hidden`, which 0046D3C5 tests before the gate.
+    // They are registered and not created, and they are the pool `GenerateObject`
+    // instantiates from. docs/LUA_GENERATE_OBJECT_HOST.md.
+    std::size_t held_back_hidden{0};
     // Milestone 2q: created entities whose bag carries `StartSpeed`, the key
     // 00823590 finds and 008235B0..008235F7 seeds the order ring from.
     std::size_t start_speed_entities{0};

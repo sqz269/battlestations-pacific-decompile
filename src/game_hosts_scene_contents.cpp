@@ -1073,6 +1073,39 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         owner.entities.push_back(record);
         return;
     }
+
+    // `Hidden`, and it is what holds an entity back for `GenerateObject`. In the
+    // executable the test sits BEFORE the gate, not inside it, which is why
+    // 0046C550 has nothing to say about a held-back entity and why this host's
+    // `rejected=0` was a faithful answer to the wrong question:
+    //
+    //   0046d39d: CMP byte ptr [EDI + 0x4],0x0   ; the pass flag
+    //   0046d3b3: JZ  0x0046d3cb                 ; clear -> no Hidden test
+    //   0046d3b5: PUSH 0xce5708                  ; "Hidden"
+    //   0046d3bc: CALL 0x008f2260                ; bag.find
+    //   0046d3c1: CMP byte ptr [EAX + 0xc],0x0
+    //   0046d3c5: JNZ 0x0046d5e4                 ; SET -> jumps past the creation
+    //   ...
+    //   0046d426: CALL 0x0046c550                ; never reached for a hidden one
+    //
+    // A hidden entity is therefore REGISTERED AND NOT CREATED: the registration
+    // branch still runs 0046BF70 at 0046D531, which reads the same string three
+    // more times, so the record stays in the scene database's named-object map
+    // and `GenerateObject` instantiates it from there by name. That is what stops
+    // the script's own spawn step making a second carrier.
+    //
+    // The test runs on the instantiate pass only, which `[EDI+4]` selects; this
+    // host reaches the creator from that pass alone, so the pass condition is the
+    // call site rather than a flag here. The record is kept, exactly as the
+    // native keeps it. docs/LUA_GENERATE_OBJECT_HOST.md.
+    if (scene_property_bool(bag.find(bsp::kSceneHiddenPropertyKey))) {
+        record.skipped_because = "Hidden: held back for GenerateObject";
+        ++tally.rejected;
+        ++owner.summary.rejected;
+        ++owner.summary.held_back_hidden;
+        owner.entities.push_back(record);
+        return;
+    }
     ++tally.generated;
     ++owner.summary.generated;
 
@@ -1834,11 +1867,12 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
     impl.summary.ran = true;
 
     impl.log.notef("scene contents: mode=%d (004bca50 with raw=%d forced=%d multiplayer=%d), "
-        "%zu entities registered, %zu instantiated, %zu generated, %zu rejected, %zu created",
+        "%zu entities registered, %zu instantiated, %zu generated, %zu rejected, %zu created, "
+        "%zu held back by Hidden (0046d3c5, the GenerateObject pool)",
         impl.summary.effective_game_mode, raw_game_mode, mode_forced ? 1 : 0,
         multiplayer_session ? 1 : 0, impl.summary.registration_entities,
         impl.summary.instantiate_entities, impl.summary.generated, impl.summary.rejected,
-        impl.summary.created);
+        impl.summary.created, impl.summary.held_back_hidden);
     // The distinct resolved `Type` values, which is what the registration pass
     // marked and what each creator handed 00964790.
     std::map<std::string, std::size_t> types;
