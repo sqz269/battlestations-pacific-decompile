@@ -443,3 +443,57 @@ the wired build no longer ditches — 7 contacts in 10.9's window against 0 here
 **The decisive experiment is one line and one window**: merge `cc8-dive-entry`'s re-arm fix, flip
 this line back, re-run B. If the aimglide then releases, the gate and the approach are both
 faithful and the packet closes.
+
+## 14. The retiree's `+1Ch` question, answered: two different vtables
+
+`cc8_attack_mode`'s handoff asks whether the cheap `IsAttackingState` conjunct at `009C8495`
+matters, i.e. whether "slot `+1Ch`" is ever called from moveto or follow. **It is not, and the
+worry is a slot-number collision across two different vtables.**
+
+* The `+1Ch` that `009C18C0` calls at `009C1999` is on the **state** vtable: `009C1990 MOV
+  EAX,[EDX+1Ch]` with `EDX = [EDI]` and `EDI = ECX` the state, so for `00D20AEC` it is
+  `009C1850 SetDesiredSpeed`.
+* The break-off predicate is on the **task** vtable: `00D20E18 + 1Ch = 00D20E34` = `009C8A90`,
+  called at `009C8490 MOV EDX,[EAX+1Ch] / MOV ECX,ESI / CALL EDX` with `ESI` the task.
+
+They are different objects with different tables, so the moveto and follow ticks cannot reach the
+break-off predicate. A byte census of the canonical encoding `8b ?? 1c 8b ce ff d2` confirms the
+pattern is known to occur (it is this very site) and finds **exactly one** occurrence in the
+dive-bomb range `009C3E00`-`009C8C00`: `009C8490`, inside `009C83E0`, in the attacking half where
+`IsAttackingState` is true by construction. So adding the conjunct changes nothing, as the
+handoff expected, and there is no second path that would make it matter.
+
+## 15. The aimglide is terminal, from the listing, and where `009C86D9` really goes
+
+Read `009C868B`-`009C870E` whole, because `cc8-dive-flyover`'s account of it bears on this
+packet's verdict and `dive_bomb_next_state_009c83e0` is this packet's hunk.
+
+```
+009c868b  lea ecx,[esi+754h] / cmp eax,ecx / jne 009c86d3   ; the AIMGLIDE arm
+009c8695  call 009c7850 / test al,al / je 009c86b2
+009c869e  lea eax,[esi+704h] / push eax / call 009c82d0     ; -> goaway
+009c86b2  cmp byte [esi+76Ch],0 / je 009c84e7               ; <= TERMINAL when 0
+009c86bf  lea ecx,[esi+704h] / push ecx / call 009c82d0     ; -> goaway
+009c86d3  lea ecx,[esi+704h] / 009c86d9 cmp eax,ecx / jne 009c84e7   ; the GOAWAY arm
+009c86e1  call 009c7f00 / test al,al / je 009c84e7          ; goaway complete?
+009c86ee  cmp byte [esi+4C9h],0 / je 009c8705
+009c86f9  push EDI / call 009c82d0        ; EDI = 009C84ED `LEA EDI,[ESI+778h]` = FLYABOVE
+009c8705  push EBX / call 009c82d0        ; EBX = 009C8483 `LEA EBX,[ESI+664h]` = DONE
+```
+
+Three things the host's comments got slightly wrong and one it got right:
+
+1. **Both aimglide exits go to `goaway`**, and neither `009C8694` nor `009C86B4` is an
+   instruction boundary; the tests are `009C8695` and `009C86B2` and the stores `009C869E` and
+   `009C86BF`. Corrected in place.
+2. **With both false, `009C86B9 JE 009C84E7` leaves the state alone.** So the aimglide really is
+   terminal unless `009C7850` fires or `task+76Ch` is set — `cc8-dive-flyover`'s finding,
+   confirmed here from the listing rather than from a run.
+3. **`009C86D9` is the goaway arm's own state test**, not an aimglide edge. The second-attack-run
+   edge is `009C86EE`, and its two destinations are **proved by the registers**, not assumed:
+   `EDI` is flyabove from `009C84ED` and `EBX` is done from `009C8483`.
+4. The host's *structure* — every state and every destination — was already faithful. Only the
+   addresses drifted.
+
+So an aircraft only re-attacks by reaching `goaway` first, and the aimglide can only reach it
+through those two gates. Whether run B' ever takes the `009C86EE` edge is recorded below.

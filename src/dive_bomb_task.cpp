@@ -113,20 +113,32 @@ DiveBombTransitionResult dive_bomb_next_state_009c83e0(
     const bool attacking = dive_bomb_is_attacking_009c7910(in.current);
     const bool engaged = dive_bomb_engaged_009c83f8(in.engaged);
 
-    // The approach fallback both the !attacking and the attacking arm share,
-    // 009C8419-009C845E and 009C8489-009C84E8.
+    // The approach fallback both the !attacking and the attacking arm share.
+    // CORRECTED, packet cc8_dive_approach, from docs/BOMBER_AFTER_TASK.md 10.1,
+    // which read 009C83E0-009C8783 whole: the two `!engaged` edges are
+    // 009C8419-009C845E (the attacking half) and 009C873E-009C8783 (the
+    // non-attacking half). The second range named here, 009C8489-009C84E8, is
+    // inside the ENGAGED continuation and is not an approach edge at all.
     const DiveBombState approach_state =
         in.unit_lacks_follow_target ? DiveBombState::kMoveTo : DiveBombState::kFollow;
 
     if (!attacking) {
         out.next = engaged ? dive_bomb_entry_state_009c8310(in.entry) : approach_state;
     } else if (!engaged) {
-        out.next = approach_state;  // 009C8483, the abort back to the approach
+        // CORRECTED: 009C8419-009C845E. 009C8483 is the ENGAGED continuation
+        // (`LEA EBX,[ESI+664h] / CMP EDI,EBX / JZ ret`), not the abort.
+        out.next = approach_state;  // 009C8419-009C845E
     } else if (in.engaged.control_mode_370 == 0) {
-        out.next = DiveBombState::kPrepare;  // 009C84F5
+        // CORRECTED: the test is 009C8461 and the store 009C8470. 009C84F5 is
+        // inside the engaged continuation.
+        out.next = DiveBombState::kPrepare;  // 009C8470
     } else if (in.current != DiveBombState::kDone) {
-        if (in.should_break_off) {
-            out.next = DiveBombState::kDone;  // 009C8514
+        // 009C8483 `LEA EBX,[ESI+664h] / CMP EDI,EBX / JZ ret`: a task already
+        // in done returns unchanged, which is what parks a spent bomber there.
+        if (in.should_break_off) {           // 009C8495 CALL [[ESI]+1Ch]
+            // CORRECTED: 009C849E. 009C8514 is not an instruction boundary at
+            // all -- 009C8515 is `MOV EAX,[ESI+798h]`, inside the flyabove arm.
+            out.next = DiveBombState::kDone;  // 009C849E, +664h is done
         } else {
             switch (in.current) {
                 case DiveBombState::kPrepare:
@@ -180,18 +192,34 @@ DiveBombTransitionResult dive_bomb_next_state_009c83e0(
                     }
                     break;
                 case DiveBombState::kAimGlide:
-                    if (in.aimglide_out_of_bombs) {
-                        out.next = DiveBombState::kGoAway;  // 009C8694
-                    } else if (in.aimglide_pull_out_76c) {
-                        out.next = DiveBombState::kGoAway;  // 009C86B4
+                    // CORRECTED addresses, packet cc8_dive_approach, read from
+                    // the listing at 009C868B-009C86D0. The arm is entered by
+                    // `LEA ECX,[ESI+754h] / CMP EAX,ECX / JNE 009C86D3`, and
+                    // BOTH exits store +704h goaway. Neither 009C8694 nor
+                    // 009C86B4 is an instruction boundary.
+                    if (in.aimglide_out_of_bombs) {   // 009C8695 CALL 009C7850
+                        out.next = DiveBombState::kGoAway;  // 009C869E
+                    } else if (in.aimglide_pull_out_76c) {  // 009C86B2, byte +76Ch
+                        out.next = DiveBombState::kGoAway;  // 009C86BF
                     }
+                    // With both false, 009C86B9 `JE 009C84E7` leaves the state
+                    // alone: the aimglide is TERMINAL unless one of these two
+                    // fires. Confirms packet cc8_dive_flyover's finding from
+                    // the listing rather than from the run.
                     break;
                 case DiveBombState::kGoAway:
-                    if (in.goaway_complete) {
-                        // 009C86D9: with bombs left, climb back over the target.
+                    // 009C86D3 `LEA ECX,[ESI+704h]` / 009C86D9 `CMP EAX,ECX` is
+                    // the GOAWAY arm's own state test, not an aimglide edge.
+                    if (in.goaway_complete) {   // 009C86E1 CALL 009C7F00
+                        // 009C86EE `CMP byte [ESI+4C9h],0` splits on the
+                        // ordnance byte. The two destinations are PROVED by the
+                        // registers, not assumed: 009C86F9 pushes EDI, loaded
+                        // `LEA EDI,[ESI+778h]` at 009C84ED = flyabove, and
+                        // 009C8705 pushes EBX, loaded `LEA EBX,[ESI+664h]` at
+                        // 009C8483 = done.
                         out.next = in.entry.has_bomb_ordnance_4c9
-                                       ? DiveBombState::kFlyAbove
-                                       : DiveBombState::kDone;
+                                       ? DiveBombState::kFlyAbove   // 009C86F9
+                                       : DiveBombState::kDone;      // 009C8705
                     }
                     break;
                 default:
