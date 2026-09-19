@@ -18,6 +18,7 @@
 // docs/PLANE_SQUADRON.md section 4 carries the listing evidence.
 
 #include <cstddef>
+#include <functional>
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -131,6 +132,22 @@ class PlaneSquadronRegistry {
     // The squadron a member plane belongs to, by the member's name. This is the
     // host's stand-in for reading plane+9D4h.
     PlaneSquadronHostRecord* find_by_member_name(const std::string& member) noexcept;
+    // Fill `member_units` from `member_names` once the units exist. This is the
+    // resolver the comment below refers to and that nothing implemented, which
+    // is why find_by_member_unit answered nothing for a SCENE-ROW squadron:
+    // game_hosts_script_orders.cpp fills member_units for an air-ops launch,
+    // but the scene path in game_hosts_scene_contents.cpp clears the array and
+    // then fills only member_names and member_spawn_index, queueing the wings
+    // into pending_squadron_members for create_units to make later. Measured
+    // before this existed: USN04 answered 7 AI squadrons over 15 planes, its
+    // four launches grouped and its one scene row seeding three of its own.
+    //
+    // `lookup` answers a unit index for a member name, or kPlaneSquadronNoUnit.
+    // Idempotent, and it never overwrites a slot already filled, so calling it
+    // after every unit-creating pass is safe. Returns the number of slots it
+    // filled. docs/AI_TARGET_WEIGHT_TERMS.md.
+    std::size_t resolve_member_units(
+        const std::function<std::size_t(const std::string&)>& lookup);
     // The same by unit index, valid once `resolve_member_units` has run.
     PlaneSquadronHostRecord* find_by_member_unit(std::size_t unit) noexcept;
     const PlaneSquadronHostRecord* find_by_member_unit(std::size_t unit) const noexcept;

@@ -203,6 +203,30 @@ const PlaneSquadronHostRecord* PlaneSquadronRegistry::find(
     return nullptr;
 }
 
+std::size_t PlaneSquadronRegistry::resolve_member_units(
+    const std::function<std::size_t(const std::string&)>& lookup) {
+    if (!lookup) return 0;
+    std::size_t filled = 0;
+    for (PlaneSquadronHostRecord& record : records_) {
+        // +3D0h is as long as the wing the plan named, whichever route made it.
+        if (record.member_units.size() < record.member_names.size()) {
+            record.member_units.resize(record.member_names.size(),
+                                       kPlaneSquadronNoUnit);
+        }
+        for (std::size_t wing = 0; wing < record.member_names.size(); ++wing) {
+            // Never overwrite a slot the air-ops path already filled: that one
+            // knows the unit index directly from create_units' batch position
+            // and is the better answer.
+            if (record.member_units[wing] != kPlaneSquadronNoUnit) continue;
+            const std::size_t unit = lookup(record.member_names[wing]);
+            if (unit == kPlaneSquadronNoUnit) continue;
+            record.member_units[wing] = unit;
+            ++filled;
+        }
+    }
+    return filled;
+}
+
 PlaneSquadronHostRecord* PlaneSquadronRegistry::find_by_member_name(
     const std::string& member) noexcept {
     for (PlaneSquadronHostRecord& record : records_) {
