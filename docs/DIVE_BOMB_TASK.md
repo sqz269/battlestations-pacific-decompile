@@ -3095,3 +3095,41 @@ before/after run was taken for it, and that is recorded rather than glossed.
 The remaining A-WRONG is `kPitchClampLo`, already fixed on `agent/cc8-plane-squadron` and not yet in
 this tree. The remaining B is `kPilotPitchHalfRange`, the confirmed four-significant-figure false
 positive. So every real row the sweep found is now either fixed or fixed elsewhere.
+
+## `007F0280`: three corrections from the probe survey, and my stand-in is a hole
+
+cc8-torpedo-descent's survey (`docs/BOT_PROBE_007F0280.md`, body **not** read and marked so) carries
+three things that correct this doc or the brief:
+
+* **Eighteen callers, not sixteen**, exhaustive over rel32 - and `009FD570` is **not** one of them,
+  although it is reached through the same `009D0C10` geometry.
+* **`RET 0x18` at `007F0B1F` says SIX stack arguments**, against `docs/BOT_TASK_STATES.md` row 356's
+  five. Checklist rule 7: the count is the cleanup, never the pushes anyone listed. The row is the
+  thing to doubt.
+* **The extent triple is per-caller and sometimes computed.** This stream passes 80, 60, 120 with a
+  final **1** (`009C4258`, `009C4268`, `009C4287`); the torpedo goaway passes 60, 50, 90 with a
+  final **0**; the aim tick passes `{72t, min(0.7*72t, 150), 1.5*72t}`. So a pure function that
+  hard-codes the triple would be wrong for fifteen of eighteen sites, and that final argument is a
+  per-caller **mode** - this stream's 1 against the torpedo states' 0 is not noise.
+
+### The part that corrects this stream, and it is not a quibble
+
+Their zero stand-in and this one are **not the same kind of thing**, and their "inert is faithful"
+does not cover mine.
+
+At `009D0CBC` the caller zeroes the three out-slots itself immediately before the call
+(`009D0C96`-`009D0CAA`, XORPS/MOVSS) and the only use is a strict sign test on `-p[0]*p[1]*p[2]`, so
+a no-hit answer cannot fire it: zero there is exactly what the image would compute, and that
+stand-in should stay.
+
+Here at `009C42B8` the result feeds `lateral_offset_20 = -sampler_result * ...`, so zero is **not** a
+no-hit answer - it is a claim that the probe always returns zero, and it is precisely why the run-in
+flies straight at its target instead of weaving. The label on it has been honest about the
+behaviour ("the run-in flies straight rather than weaving") but described it as a contract, which
+undersells it: it is a hole with a known shape, and it is upstream of the whole approach geometry
+this stream has been measuring.
+
+That matters for the inert-span question now under instrumentation. The run-in's commanded heading
+is `bearing + lateral_offset_20` (`009C42DC`-`009C4305`), so with the offset pinned at zero the
+approach path is not the image's, whatever `009FBA50` computes for its altitude. Both are upstream
+of the dive, and only one of them is currently being measured.
