@@ -2118,3 +2118,45 @@ torpedo hit in one place on this path, while the hull damage beside it keeps the
 subtraction. Whether that asymmetry is the image's intent or whether the warhead comes from
 somewhere else entirely is unread. **Nothing above is a reading of the image's torpedo warhead; it
 is a measurement of what this host does.**
+
+### 15.7 Run out to 4500 frames: six hits on two carriers, and both carriers end at full health
+
+`local/swim_probe4500_usn04.log`, the same probe binary, `--frames 4700 --mission-frames 4500`.
+The longer mission lets all four Kate squadrons reach their release, so the sample doubles:
+
+```
+summary mission gunnery torpedo_drop  drops=12 refusals=0 water_entry_breakups=0
+summary mission gunnery torpedo_ranges_derived=34 swims_started=12 snaps=0
+summary mission gunnery torpedo_closest_approach swims=12
+
+torpedo trace 4,5,6 exit=entity_impact hit=Lexington-class01 at=(-12877.4,0.00,-12905.7) life=9.75
+torpedo trace 1,2,3 exit=entity_impact hit=Yorktown-class01  at=( 12464.4,0.00,-12855.9) life=10.70
+torpedo trace 7..12 STILL IN FLIGHT at mission end, swimming, 4.15 s and 5.15 s of run
+```
+
+**Twelve drops, twelve swims, six hits.** Squadron 2's three take the Lexington at 9.75 s and
+squadron 4's three take the Yorktown at 10.70 s - 15.6's three still-closing rounds do arrive, and
+the 34.0 m they were short of in the 3000-frame run closes to a hull hit at 26.3 m centre to
+centre. Squadrons 6 and 8 release much later, and their six rounds are 197.4 m and 228.5 m out and
+still swimming when 4500 frames end; nothing here says whether they would have arrived.
+
+And the damage answer of 15.6 holds at twice the sample:
+
+```
+Lexington-class01  ... shots 95   hits_taken 3  dealt 294  taken 0  health 8000
+Yorktown-class01   ... shots 216  hits_taken 3  dealt 719  taken 0  health 8000
+```
+
+**Six torpedo hits on two carriers, zero damage, both at full health**, for the reason 15.6 reads
+off `hull_damage_00470510`. Every accuracy question the torpedo stream has been asking since
+section 5 is answered in the affirmative here - against a stationary carrier the run-in, the drop,
+the swim and the terminal geometry all work - and the round then does nothing when it arrives.
+
+Three cautions on reading this section, because the probe is doing work in it:
+
+* the probe is **not** the image's rule (15.3) and is not committed; every number above depends on
+  the six-to-twelve rounds not being killed on their squadron mates, which is a defect the probe
+  hides rather than fixes;
+* the targets are stationary (`target_moved=0.0 m`). A moving carrier is a different problem and
+  this says nothing about it;
+* the run is not deterministic, so these counts reproduce the shape, not the digits.
