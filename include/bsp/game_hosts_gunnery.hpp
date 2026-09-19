@@ -210,6 +210,24 @@ struct GameProjectileRow {
     float life{0.0f};
     bool alive{false};
     bool swimming{false};             // past the water crossing, on the swim
+    // Packet cc8_torpedo_closest_approach. Tracked only while swimming: the
+    // smallest horizontal distance this round reached to any unit of another
+    // side, and when. Centre to centre - this host has no oriented hull box for
+    // a ship - so read it against the target's own Length.
+    float min_enemy_distance{-1.0f};
+    float min_enemy_time{-1.0f};
+    std::size_t min_enemy_unit{0};    // one based, 0 = never measured
+};
+
+// One swimming round's closest approach, kept after the round is gone.
+struct GameTorpedoApproachRow {
+    std::string owner_name;
+    std::string nearest_name;
+    float min_distance{-1.0f};
+    float min_time{-1.0f};
+    float life_at_end{0.0f};
+    bool hit{false};
+    bool expired{false};
 };
 
 // Per unit, what the chain did to it and what it did with its guns.

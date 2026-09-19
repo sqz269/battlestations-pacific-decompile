@@ -661,3 +661,89 @@ reason: no image-wide hits, so no positive control.
 The bound is now tight enough to name the next move, and it is not another scan: the producer has to
 be found from the other end, by reading what constructs or re-targets the approach rather than by
 looking for the field.
+
+## 7. The churn section 6.1 flagged: the image retires a spent bomber, and this host re-attacks
+
+Section 4 recorded `goaway` entries going from 1 to 82 and `transitions` from 3 to 165 once the tick
+was bound, and said the transition rule was "not established to be the image's". It is now, and the
+gap is a single host predicate rather than anything in `009D0F10`.
+
+### 7.1 `009D4030`, the two routes to `done`
+
+`009D4030 BSP_BotTaskTorpedo_TransitionRule`, body `009D4030`-`009D4222`, `__fastcall(task)`, called
+once per tick from the arm at `009D48DE`. The state pointer is `task+310h` and the states it
+compares against are `task+710h` aim, `task+618h` done, `task+6D8h` goaway, `task+6B4h` attackrun,
+`task+740h` prepare, `task+544h` moveto and `task+580h` follow.
+
+Two branches reach `done`:
+
+```
+if (current != done) {
+    if (IsAttackState(current) && task->vtable[1Ch]())   -> done        009D4C10
+    ...
+    if (current == goaway && GoAway_IsComplete()) {                     009D3150
+        if (task+52Ah == 0)  -> done                                   task+618h
+        else                 -> aim                                    task+710h
+    }
+}
+```
+
+So **a bomber whose `task+52Ah` is clear retires when its break-off completes**; only one that still
+has the flag goes round again. `task+52Ah` is `approach+132h` - the approach sits at `task+3F8h`, and
+`3F8h + 132h = 52Ah` - which `include/bsp/torpedo_task_arm.hpp` already names `kAttackFlag` and the
+approach update already carries as `has_ordnance_132`.
+
+### 7.2 Why this host goes round again, named to the line
+
+`src/torpedo_approach_update.cpp:346` fills `has_ordnance_132` from
+`host.unit_has_torpedo_ordnance_007b93f0()`, and the binding at
+`src/game_hosts_units.cpp:3753`-`3759` says in its own comment:
+
+> the kind 2Bh test `0099A170` already made when it built the task; **the loadout does not shrink in
+> this host**, so it holds for the whole run.
+
+So `approach+132h` is **true for the whole mission whatever the aircraft drops**. The consequences
+line up exactly with both runs:
+
+| | `local/goaway_before_usn01.log` | `local/goaway_bound_usn01.log` |
+| --- | --- | --- |
+| `range_peak_in_goaway` | 368.9 to 382.2, under the 700 m break-off | 701.0, over it |
+| `009D3150` | never true, so the transition never ran | true, so it ran |
+| `task+52Ah` at that moment | (never reached) | true, because the loadout never shrinks |
+| result | one goaway, ticking forever | 82 goaway entries, 165 transitions |
+
+**The churn is not a defect in `009D0F10` and it is not evidence against the binding.** It is a
+pre-existing host gap that the binding made reachable: before it, the break-off never opened the
+range past 700 m, so `009D4030`'s goaway branch was dead code in this host and nothing could notice
+that the ordnance byte never clears.
+
+`009D3150` itself refuses outright without the byte (`src/torpedo_task_arm.cpp:384`,
+`009D317C XOR AL,AL`), so a host that cleared it on release would see the goaway never complete and
+the aircraft hold the break-off - which is the image's behaviour for a bomber that is out of
+torpedoes and has already been told to go away.
+
+**The fix, for whoever owns the release spawn**: clear the torpedo bit from the slot's ordnance mask
+when the release actually spawns a round, instead of deriving the byte from the static loadout. Not
+done here: `slot_.ordnance_mask`'s producer is the release chain, not this packet, and changing it
+moves the aim state's gates as well as the transition.
+
+### 7.3 `TorpFlikFlakTime` is not a small gap, and here is why
+
+The manoeuvre-window delay `state+28h` draws `UniformFloatRange(row+10h, row+14h)` at `009D0EA3`,
+and those two are `TorpFlikFlakTime` 1 and 2 (`src/robot_config.cpp` lines 109 and 110, config
+offsets `1Ch` and `20h`; `docs/TORPEDO_RUN_PROFILE.md` fixes `row+0h` as `TorpReleaseAlt`, so the
+fifth and sixth floats are the pair). The loader **is** in our files:
+`load_robot_config_00901610` builds one descriptor per name and `src/global_subsystems.cpp:81` calls
+it, with `"PilotBot"` mapping to `[00F8A30C]` - the very array `approach+14h` indexes.
+
+But it does not run in `bsp_game`. `src/game_hosts_mission_frame.cpp:1545` handles the
+`global_subsystems` load step as a **record**, not a concrete call, with the reason in its own
+comment: `004dc6a0` "needs a `GlobalSubsystemContext` this process cannot build". Only the script
+folders inside it run. So `PilotBotConfig` has no instance at runtime, and there is nothing for a
+units-host binding to read.
+
+Closing it therefore means building a `GlobalSubsystemContext`, and the step that would call it
+lives in `src/game_hosts_mission_frame.cpp`, which is Codex-owned. It is a packet of its own with a
+different owner, not something to pick up on the way; recorded here so the next reader does not
+re-derive it. Meanwhile the hole's reach is bounded and stated in section 4: the window opens on the
+first tick above `state+20h` instead of after the authored delay.
