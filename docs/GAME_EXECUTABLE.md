@@ -77,6 +77,59 @@ path). Packet `game_executable_milestone_2a`, owner `agent/cc-game-vfs`. Sources
 `src/game_hosts_vfs.cpp`, `include/bsp/game_hosts_vfs.hpp`, plus the milestone-1 files.
 Report: `reports/game_executable_milestone_2a.json`.
 
+## Mission reference baselines, 2026-09-19 (ships move by formation follow)
+
+Both rows above are stale as of main `192c2a614`. That merge removed the `order_attack` stand-in,
+which had put every AI ship into `attackmove` and steamed it at the enemy, and replaced it with what
+the image does: only a group's leader is ordered (`00A124E0` -> `00A02020`), followers keep station
+by formation follow (script `JoinFormation` -> `00779D50` -> `0077F940` -> `009E1610` -> `0070D290`),
+every unit's wake ring is filled at spawn (`00810020`), and there is one AI coordinator per mission
+instead of one per spawn batch. `docs/SHIP_ESCORT_SCREEN.md` has the reading, the two-way call-table
+diff against the previous main, and the re-recorded USN01 torpedo trace. Between the dive-bomb row
+above and this one, main also gained the fly-over heading chain, the aimglide pull-out latch and the
+dive-bomb moveto glide (`docs/DIVE_BOMB_FLYOVER_FLAGS.md`, `docs/DIVE_BOMB_APPROACH.md`).
+
+Integrator's runs on the binary built from `192c2a614`, through `./tools/run_game.ps1`, with the
+command lines the rows above cite: USN01 `--frames 3200 --press-start-frame 30 --menu-select USN01
+--mission-frames 3000 --mission-frame-seconds 0.05`; USN04 `--frames 4700 --press-start-frame 30
+--menu-select USN04 --mission-frames 4500 --mission-frame-seconds 0.05`. Both shut down cleanly
+(`native renderer final COM release`, once each). The harness is deterministic on these rows (see
+the section above), so they are single runs by design.
+
+| mission | frames | damage | deaths | supersedes | recorded in |
+| --- | --- | --- | --- | --- | --- |
+| USN01 | 3000 mission | **2914.7** | **1** | `3595.4` / `4` | integrate worktree `local\ref_usn01_192c2a614.log` |
+| USN04 | 4500 mission | **11407.8** | **9** | `8170.6` / `7` | integrate worktree `local\ref_usn04_192c2a614.log` |
+
+Full rows. USN01: `queued_hits=38 dispatched=38 hit_records=38 hull=34 attributions=38 deaths=1
+kill_credits=1 total_damage=2914.7 first_hit=62.55 s`, `torpedo_drop drops=5`, `swims=5`,
+`ship follow steppers=2`, `unit formation groups=3 joins=13 creates=3 rejoins=0 clamped=3
+columns_unmeasurable=0`, `director stop=49 cruise=1 follow=2`, `total_path=10852.37`. USN04:
+`queued_hits=114 dispatched=114 hit_records=114 hull=92 attributions=114 deaths=9 kill_credits=9
+total_damage=11407.8 first_hit=13.35 s`, `torpedo_drop drops=12`, `swims=8`, `bomb_drops=18`, dive-bomb
+`releases` summed over the fifteen aircraft 18, `ship follow steppers=16`, `unit formation groups=2
+joins=25 creates=2 clamped=9`, `total_path=48541.11`.
+
+Why USN01 went DOWN, so a later reader does not read it as a regression. On the previous main six
+ships ran the stand-in's `attackmove` (`total_path=17579.17`); now two keep station and four hold
+`cruise` or `stop` (`total_path=10852.37`), so there is far less gunnery contact inside 150 s. The
+torpedo chain is unchanged up to the drop (`drops=5`, `swims=5`), and two of five rounds hit, both on
+Northampton, which does not move; the three aimed at Dunlap and SaltLakeCity miss by 175-210 m
+because those ships now move 129-141 m during the run and the aim point carries no lead. Whether the
+image leads is packet `cc8_torpedo_lead`'s question; until it closes, read those three misses as an
+open reading, not as a regression of the torpedo task.
+
+What the 150 s window cannot show. The escorts join their leader from 8-9 km, so at 3000 mission
+frames their station error is still large (Dunlap 3826.31 m, SaltLakeCity 5151.99 m) and its
+`err_max` column is the error at the FIRST follow step, not a divergence
+(`src/game_hosts_ship_ai.cpp`, the running maximum is seeded at the first step). A 9000-frame run of
+the same ship code (`cc8-ship-screen`'s `local\screen_usn01_long.log`, 449.96 s simulated, clean
+shutdown) reads Dunlap `err_final=124.60` and SaltLakeCity `err_final=803.55` with the same
+`err_max` 8431.22 / 9375.16: they converge onto station.
+
+USN04's 4500 frames still truncate the late dive-bomb squadrons, as the section above says; at 4800
+the dive-bomb work is compared in `docs/DIVE_BOMB_FLYOVER_FLAGS.md` and its successors.
+
 ## Milestone 1
 
 Addresses: 008f81f0 (WinMain), 0073d410 (cSkeletonAppMidway::Init), 00becda0 (Win32 platform
