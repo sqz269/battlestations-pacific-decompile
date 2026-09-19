@@ -309,3 +309,84 @@ count. Expected, on the three missions as they stand:
 The behavioural movement `docs/AI_TARGET_WEIGHT.md` predicts for IJN01 is that packet's, not this
 one's: this packet corrects a magnitude and lays the route for the base term without changing which
 candidate wins.
+
+## Correction: `009FE270` traced to its producer (packet `cc8_ai_target_weight_census`, 2026-09-18)
+
+**The premise that a gun or barrel record stores an accuracy is wrong, and the section above is
+corrected on two points.** There is no accuracy field on any weapon record. `009FE270` is a pure
+lookup into the AI mode tuning record, and the value is authored in Lua.
+
+### Two corrections to the section above
+
+1. "Each live arm reads one float out of the `00A371A0` tuning record gated by **the first
+   argument's** `vtable[+18h]` type queries" is wrong. `009FE273 MOV ESI,[ESP+10h]` takes the
+   **stack argument** after the three pushes, and every vtable call in the routine is on `ESI`:
+   `009FE277`/`009FE27C`/`009FE286` is `stack->vtable[+1Ch]()`, and each arm's `009FE2A4`-style
+   `MOV EAX,[EDX+18h]` with `MOV ECX,ESI` is `stack->vtable[+18h](classId)`. The first argument
+   (`ECX`, kept in `EBP` at `009FE282`) is never dereferenced in the dispatch. The selector from
+   the second argument's `+8h` at `009FE27F` was read correctly.
+2. The arm count is right but the reading "nine handler bodies" understated one: **arm 8 serves two
+   bullet types**, so nine live arms cover ten.
+
+### The producer
+
+`00A094E6` calls it as `009FE270(ECX = EBP, EDX = [ESP+5Ch], stack = EDI)`, where `EDX` is the
+weapon record whose `+8h` is the bullet-type selector and `EDI` is the target. The arm then calls
+`00A371A0`, the per-mode AI tuning record (stride `23Ch`, selected by
+`009FFC80 BSP_Ai_EffectiveGameModeIndex`), and `FLD`s one float out of it. **The only writer of
+those floats is `00A335D0`**, the AI globals loader, which reads
+`Scripts\datatables\HighLvlAIGlobals.lua`'s `BulletTypeAccuracy` section into record offsets
+`110h`-`18Ch`. `src/ai_target_weights.cpp` already carries that field map. So the census of the
+field is not a struct-field census: the field is a tuning-table slot with exactly one producer, and
+`config/names` needs no new writer.
+
+The authored values, from this installation's `scripts/datatables/highlvlaiglobals.lua:72`, whose
+Hungarian comment reads "with a given bullet type, when we shoot a given kind of target, what hit
+multiplier to use in the damage calculation, i.e. on average what chance a round has to hit a
+target". **The per-row comment `Repulore/Kishajora/Nagyhajora/Landfortra` names the index: 1 plane,
+2 small ship, 3 big ship, 4 landfort.** That is what the `vtable[+18h]` queries select, and
+`PUSH 0Fh`, the plane base class, is the first test in every four-entry arm.
+
+| Arm | Selector (`record+8h`) | Bullet type | Record offsets | Plane | SmallShip | BigShip | Landfort |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `009FE2A2` | `2`, `3` | MachineGun | `110h`-`11Ch` | 0.10 | 0.15 | 0 | 0.0 |
+| `009FE313` | `5`, `6`, `7` | Artillery | `120h`-`12Ch` | 0.00 | 0.50 | 0.70 | 0.55 |
+| `009FE384` | `9` | Bomb | `130h`-`13Ch` | 0.00 | 0.50 | 0.70 | 0.20 |
+| `009FE3F5` | `0Ah` | Torpedo | `144h` submarine, else `140h` ship | - | 0.75 ship | - | 0.45 sub |
+| `009FE44A` | `0Bh` | DepthCharge | `148h` scalar | - | - | - | 0.50 |
+| `009FE64A` | `0Dh`, `11h` | Kamikaze | `150h`-`15Ch` | 0.00 | 0.50 | 0.70 | 0.80 |
+| `009FE465` | `0Fh` | Paratroopers | `14Ch` scalar | - | - | - | 0.30 |
+| `009FE480` | `10h` | Flak | `180h`-`18Ch` | 0.50 | 0.20 | 0.00 | 0.00 |
+| `009FE4F1` | `12h` | SmallRocket, then BigRocket | `160h`-`16Ch`, `170h`-`17Ch` | 0.15 / 0.00 | 0.25 / 0.25 | 0.70 / 0.90 | 0.50 / 0.75 |
+| `009FE6BB` | `4`, `8`, `0Ch`, `0Eh` | reject, returns `0` | - | - | - | - | - |
+
+Jump table read from the bytes at `009FE6C4` and the selector byte table at `009FE6EC`
+(`00 00 09 01 01 01 09 02 03 04 09 05 09 06 07 05 08`), not from the decompiler.
+
+`coverage: partial` on one point. Arm `009FE4F1` runs four `vtable[+18h]` queries at `009FE4F7`,
+`009FE524`, `009FE542` and `009FE555` before the SmallRocket block at `009FE564` and reaches the
+BigRocket block at `009FE5D5`; **which test splits small from big is not read**, so the two rocket
+rows above are the offsets, not a decided mapping. Every other arm is complete.
+
+### What this means for publishing it
+
+The accuracy is **not a per-barrel constant**: it is a function of (bullet type, target class), and
+`bsp::AiTargetWeightModelHost::barrel_accuracy(subsystem, barrel, target)` already takes the
+target. The flat `GameAiWeaponFacts::Barrel::accuracy` at `include/bsp/game_hosts_ai.hpp` is the
+wrong shape and `AiWeightModelBinding::barrel_accuracy` at `src/game_hosts_ai.cpp:184` discards its
+target argument. Completing the row needs the **bullet-type selector** published per barrel, not an
+accuracy, and the lookup resolved at query time.
+
+Two further blockers, both named by address rather than guessed at:
+
+* `bsp::AiTuningBlock` carries the full `23Ch` stride but `ai_tuning_keys()` loads only 33 keys and
+  **none of them is a `BulletTypeAccuracy` entry**, so `tuning.at(0x110)` returns the unloaded
+  `0.0f`. `mode_tuning_record()` at `src/game_hosts_ai.cpp:417` copies exactly two fields.
+* `ai_load_globals_00a335d0`, the reconstruction that does cover the whole field map, **has no
+  caller anywhere in `src/`**, so the `AiModeTuning` records it fills are never populated in this
+  process.
+
+Publishing a `1.0f` would invent the value; publishing the table makes it real. Note that many
+authored cells are exactly `0.0` (MachineGun against a big ship or a landfort, Artillery and Bomb
+against a plane), and `00A094F5 FCOMIP / JNC` skips a barrel whose accuracy is not above zero, so a
+correct publication makes the model **skip** those barrels rather than score them.
