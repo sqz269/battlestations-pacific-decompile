@@ -3529,6 +3529,20 @@ because what ends the dive is the abort, not the pitch: see section 6.
 
 ## 6. Two things the release still needs, and neither is the pitch
 
+**Measured after the abort-height fix, and it changed no state count.** `local\usn04_abort1.log`
+returns the same `states[aimdive=52 aimglide=562 flyabove=158 turndown=71 attackrun=1527]` and
+`releases=0 bombs_spawned=0` as `gate1` and `geo3`, with no `plane water contact` line anywhere
+(that census prints `plane water contact: unit=... alt=-0.36 ...` when an aircraft ditches, so its
+absence in a log that ran to clean shutdown is the no-ditch evidence).
+
+**What the successor should check first**, because it is what those three runs say together: the
+counts are identical across three materially different pitch profiles - `geo3` climbed out of the
+dive, `gate1` held it at 30 degrees, `abort1` did the same with a corrected abort geometry - and a
+geometric abort cannot produce the same 52 ticks under all three. So what ends the aimdive in this
+host is very probably **not** `009C5B43` at all. Read the aimdive -> aimglide transition owner
+(`009C8650`) and establish whether it reads `state+19h`, and whether anything else clears it,
+before attributing another tick count to the dive geometry.
+
 **The abort's height input** was a range. Corrected in this packet (`7d5c667ec`) with the
 derivation in that commit; with a range in both operands `009C5B3E` reduced to
 `0.3*range + 150 > range`, an abort at any range under 214 m whatever the altitude, and both runs
