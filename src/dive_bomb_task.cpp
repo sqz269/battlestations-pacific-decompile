@@ -874,6 +874,13 @@ DiveBombFlyAboveBank dive_bomb_flyabove_bank_009c6857(
     return out;
 }
 
+// 009C57C4-009C57FF, arm A. Header carries arm B and why it is not modelled.
+bool dive_bomb_aimglide_pull_out_009c57ff(float bearing_error_abs) noexcept {
+    // 009C57CA COMISS XMM0,[00CE380C] with XMM0 = [ESP+18h] and 009C57D1 `77`
+    // JA: only a strictly wider error latches on this arm.
+    return bearing_error_abs > dive_bomb_constant::kGlidePullOutBearing;
+}
+
 // 009C6A37-009C6A7F.
 float dive_bomb_flyabove_dead_band_009c6a37(float bearing_error,
                                             float half_width_t) noexcept {
