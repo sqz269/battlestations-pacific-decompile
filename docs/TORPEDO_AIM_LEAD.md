@@ -134,6 +134,23 @@ bomb: `009C8A20` (`BSP_BotTaskDiveBomb_UpdateCruiseProfile`), `009C8B40`
 task-relative `C8 04 00 00`. That is strictly more than any earlier census had, and it retires the
 specific escape route section 6.3 named.
 
+### 3.0.1 The base-class hypothesis, tested and refuted
+
+The natural remaining hypothesis is a base-class `SetTarget`/refresh taking `this` = the approach,
+which would use exactly the `+D0h` displacement but live outside the `009D` band. Classifying every
+image-wide `+D0h`/`+D4h`/`+D8h` **store** hit by enclosing function and looking in the two bands
+where such a method would sit:
+
+* **`007B4000`-`007B5000`** (the base band): the only hits are `007B4339` `FSTP [ESI+0D0h]` and
+  `007B4341` `MOV [ESI+0D4h],imm32`, both in `007B41E0` - which is **not** a vec3 triple (there is
+  no `+D8h` store) and which installs vtable `00D0577C` at `007B4237`, a different class.
+* **`009F9C00`-`009F9E40`** (the approach base constructor's neighbourhood): **no hits at all.**
+
+And the three calls `009D3420` makes *before* `009D3517` are `009FADA0` (which writes only small
+offsets on its own `this` - `+1Ch`/`+20h`/`+24h` from `BSP_Vector3f_TransformAffinePoint`),
+`007B93F0 BSP_WeaponController_HasTorpedoOrdnance` (a predicate) and `00414DB0` (a pose refresh that
+writes the entity, not the approach). None of them is the writer.
+
 **What this still does not close, stated plainly.** "No writer names either displacement" is still
 not "no writer". A block copy, or a pointer aliased into a register by some form not enumerated
 above, would be invisible. **I did not find the writer of the approach's `+D0h`, and I am not
@@ -187,10 +204,55 @@ This is confirmation of existing work, not a new finding: the host already binds
 read at `009D1FD0`. I re-derived it from the listing while looking for a lead and record it here
 because it is the piece that makes the no-lead reading make sense.
 
-**Not established**: whether a larger `|cos|` lengthens or shortens the permitted release range. That
-needs `InterpolateClamped`'s argument order and the constants read together, which this packet did
-not do. The five USN01 rounds do not settle it either - the two that hit were against a **stationary**
-ship, where aspect cannot matter.
+### 3.3.1 The direction of the gate, now established
+
+The five arguments of the `009D1FED` call, assembled from the two stack windows
+(`00419010` is `RET 14h`, so the callee clears them):
+
+| stack slot | loaded at | value |
+| --- | --- | --- |
+| `[ESP]` | `009D1FE4` | `00CE3800` = **0.5** (`f:`, the load is `FLD dword`) |
+| `[ESP+4]` | `009D1FE0` | `FLD1` = **1.0** |
+| `[ESP+8]` | `009D1FDC` | `FLD1` = **1.0** |
+| `[ESP+0Ch]` | `009D1FD0` | `approach+84h` |
+| `[ESP+10h]` | `009D1FC8` | `|cos(aspect)|` |
+
+so `InterpolateClamped(x0 = 0.5, y0 = 1.0, x1 = 1.0, y1 = approach+84h, x = |cos|)`, and the result
+multiplies a distance before `009D2002` adds `00CE4D70` = **200.0** and `009D2008` compares against
+the range (`AL = 1`, in range, when `threshold > range`).
+
+**The convention.** `009D1739` computes `SubtractWrappedAngle(target_heading, own_heading)` and
+`009D1746` takes the absolute value, so the slot holds the angle **between the two headings**. Then
+`|cos|` is **1 when the aircraft runs along the target's course** (bow-on or stern-on) and **0 on the
+beam**. So the interpolation reads: on the beam (`|cos| <= 0.5`, i.e. aspect between 60 and 120
+degrees) the factor is `1.0`, the full release distance; running along the target's course
+(`|cos| -> 1`) the factor goes to `approach+84h`.
+
+**And `approach+84h` is authored.** `009D049D`/`009D04A0` seed it in
+`BSP_BotApproachTorpedo_Reset` as `(approach+14h)->+0Ch`, taken verbatim with no scale.
+`009F9D1E` makes `approach+14h` = `00F8A30C + index*248h + 0Ch`, so this is the robots row's
+**`+18h`**, which `include/bsp/robot_config.hpp` names `torp_release_drop_closer_mul_018` (reader
+`009973B0`).
+
+In **this installation**'s `scripts/datatables/robots.lua` (mtime 2025-06-01 16:03:10 - this
+installation is modded, so this is its value, not a claim about retail), the `SPNormal` row line 560:
+
+    ["TorpReleaseDropCloserMul"] = 0.7,   -- F -- a torpedo ledobasi tavolsag arra az esetre
+    vonatkozik, ha oldalba kapjuk a celpontot. ha szembol/hatulrol akarjuk megtorpedozni, akkor a
+    torpedo oldasi tavolsag az ennyiszeresere csokken.
+
+Other rows author 0.5 (line 699) and 0.7 (line 837). The developers' own comment translates as: *the
+torpedo release distance applies to the case where we catch the target on the beam; if we want to
+torpedo it from the front or behind, the release distance is reduced to this multiple.*
+
+**So the answer is: only from CLOSER.** A beam-on attack may release at the full distance; a bow-on
+or stern-on attack must close to 0.7 of it. The authored comment states the same convention I
+derived from `009D1739`-`009D174C`, independently, which is as good a confirmation of the reading as
+this packet has.
+
+**This is the image's only compensation for not leading, and it is the sensible one**: a crossing
+target is where zero lead costs the most, so the beam attack is allowed the long shot, and the
+along-course attack - where a straight runner barely needs a lead at all - is made to close.
 
 ## 4. The host, and why there is nothing to bind
 
@@ -373,7 +435,25 @@ worth stating because the mechanism is the image's whole answer to a moving targ
 every aspect and the permitted release range stops depending on the crossing angle at all. In the
 image it presumably does depend on it.
 
-So the well-posed next question is: **what writes `approach+84h`, and is it 1.0?** Until that is
-answered, this host's torpedo bombers release on a range gate that ignores aspect, which is the one
-place where their behaviour is known to be shaped differently from the image's. I did not chase it:
-it is outside this packet's addresses and I hold no lease on it.
+**That question is now answered (section 3.3.1): `approach+84h` is `TorpReleaseDropCloserMul`, and
+this installation authors it as 0.7, not 1.0.** So the stub is not merely a placeholder of unknown
+value - it is known to be wrong by 30 per cent in the one direction that matters, and the gate is
+inert where the image would bite.
+
+The concrete, testable consequence for whoever takes the follow-up: the factor only departs from 1.0
+when `|cos(aspect)| > 0.5`. Checked against the two runs in this document:
+
+* **USN01's five rounds are unaffected.** Crossings 98.0, 107.0, 103.8, 118.6 and 121.3 degrees give
+  `|cos|` of 0.139, 0.292, 0.238, 0.477 and 0.520 - four below the 0.5 knee and one barely above it.
+  Binding `0.7` would not move the three misses. **The USN01 misses stay faithful either way**, which
+  is why this packet still closes with no code change.
+* **USN04's rounds are affected.** Crossings 163 to 172 degrees give `|cos|` of 0.96 to 0.99, so the
+  image would require those bombers to close to about 0.7 of the release distance, while this host
+  let them release at the full distance. Traces 3, 4, 5, 6, 10, 11 and 12 all sit in that band.
+
+So the follow-up has a ready before/after: bind `aspect_scale_84` to the row value and re-run USN04
+at the section 7 parameters. **Prediction to be recorded before that run**: the seven along-course
+rounds release roughly 30 per cent closer, which should *reduce* the escort-screen interceptions
+(traces 10-12 struck `Fletcher-class02` a third of the way to the ordered Lexington) because the
+bomber flies further in before the round is in the water. I am not making that change here: it is
+outside this packet's addresses, I hold no lease on it, and it needs its own before/after window.
