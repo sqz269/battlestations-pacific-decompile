@@ -132,6 +132,9 @@ struct GameScriptOrdersSummary {
     std::size_t reached_director{0};   // of those, past 00816e30's arm test
     std::size_t formations_requested{0};
     std::size_t formations_refused{0}; // vtable 16Ch answered false
+    // Packet cc8_ship_follow: joins the script path actually made, once
+    // 00779D50 was transcribed and 0077FE80's type-76h arm bound.
+    std::size_t formations_joined{0};
     // Packet cc8_navigator_path.
     std::size_t path_orders{0};            // 008a3600's 5Bh message
     std::size_t commanded_speed_stores{0}; // 008a3901 / 008a3912

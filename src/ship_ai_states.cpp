@@ -298,4 +298,43 @@ bool ship_ai_command_available_008162b0(ShipAiCommandAvailabilityHost& host,
     return host.any_child_accepts_00465020_0080f750();             // 008163E2, 008163ED
 }
 
+// ---------------------------------------------------------------------------
+
+int party_relative_to_00803510(int party_a, int party_b) noexcept {
+    if (party_a == 2) {                              // 00803510, 00803515
+        return (party_b == 2) ? 0 : 2;               // 0080352C..00803533
+    }
+    if (party_a == party_b) {                        // 00803517, 00803519
+        return 0;                                    // 0080351B
+    }
+    return (party_b == 2) ? 2 : 1;                   // 0080351E..00803529
+}
+
+bool entity_may_follow_target_00779d50(const EntityFollowFacts& facts,
+                                       bool token_is_follow) noexcept {
+    if (facts.follower_flag_005d) return false;                    // 00779D53
+    if (!token_is_follow) return false;                            // 00779D68, 00CFB52C
+    if (!facts.target_present) return false;                       // 00779D76
+    if (!facts.target_kind_02) return false;                       // 00779D83
+    // 00779D8D repeats the follower's own byte after the target test; the repeat
+    // is transcribed rather than folded away because it is what the image does.
+    if (facts.follower_flag_005d) return false;                    // 00779D8D
+    if (facts.target_flag_005d) return false;                      // 00779D93
+    if (party_relative_to_00803510(facts.follower_party_0054,
+                                   facts.target_party_0054) != 0) {
+        return false;                                              // 00779D9F
+    }
+    if (facts.same_entity_or_group_00779820) return false;         // 00779DAB
+    if (facts.owner_player_known
+        && facts.follower_owner_0188 != facts.target_owner_0188
+        && facts.target_owner_0188 != 9) {
+        return false;                                              // 00779DB4..00779DC5
+    }
+    if (!facts.follower_kind_06) return false;                     // 00779DCC
+    if (facts.follower_kind_08) return false;                      // 00779DDB
+    if (!facts.target_kind_06) return false;                       // 00779DEA
+    if (facts.target_kind_08) return false;                        // 00779DF9
+    return true;                                                   // 00779E04
+}
+
 }  // namespace bsp
