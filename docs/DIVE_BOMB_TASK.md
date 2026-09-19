@@ -4820,3 +4820,63 @@ that reference, and the census prints the command as -0.419 rad = 24.0 deg, agai
 arithmetic is the **image's commanded** angle. What is **not** determinable from the listing is
 whether the image's own flight model tracks that command as closely as this one does, and therefore
 whether the image's entry lag matches the +395 m measured here.
+
+### Successor brief for `cc8_dive_race` (cold start)
+
+Start in a **fresh worktree from `agent/cc8-dive-race`**, not from `main`: the branch is
+`main f4eb153de` + `agent/cc8-dive-entry` + this packet, and it is **held unmerged by the
+integrator's decision** until something releases. Its commits are `6faaaf733` (the merge, which
+resolved one `docs/DIVE_BOMB_TASK.md` conflict by keeping both appended sections), `dc12a4b81` (the
+two bindings), `77693c324` (the `+ACh` retraction), `837b54c73` (the authored rows).
+
+**The three measurement logs**, all 4800-frame USN04, all with the clean shutdown line, in this
+worktree's `local\`. They are before/after windows on the same tree, one binding apart:
+
+| log | binary | headline |
+| --- | --- | --- |
+| `race_base.log` | the merge, unchanged | reproduces `cc8-dive-entry`'s `entry_rearm.log` to the digit |
+| `race_climb.log` | + the climb angle | `movieval` entry 729 -> 1127 m, exit 849 -> 7 m |
+| `race_dist.log` | + `+B4h`/`+B8h` | fly-over starts at 2079 m, all fifteen enter at ~1395 m, `goaway` 6/15 -> 0/15 |
+
+All three end `aircraft=15 releases=0 bombs_spawned=0`.
+
+**Settled, do not re-derive.** `009FB800` takes two floats (`009FB96B RET 0x8`) and fetches both the
+climb gain `desc+1ECh` and `DropAngle` `desc+1F0h` itself through `[[ESI]+4]+538h`, so no caller
+passes an angle. `approach+B4h` = `uniform(0.6,0.8) * desc+268h` and `+B8h` = `+BCh` =
+`uniform(1.6,1.8) * desc+268h`, `009C3F5D` carrying the descriptor. `approach+ACh` = 1000 to 1015 m
+and the host's pin is faithful. The height arm of `+791h` fires at `B <= 666.7` and the turndown
+needs `B > 675`, so **only the bearing arm can produce a dive.** This host's fly-over descent is
+0.426, against a commanded 24.0 deg it tracks to within a degree.
+
+**Two open reads, in the order I would take them.**
+
+1. **Is the `C := R` clamp at `009C657C` guarded?** The fly-over commands 210 m - the *glide's*
+   release altitude - on the path whose own data table says the *roll-over* begins at 1000 m. Read
+   `009C6491`-`009C657C` for a guard upstream of `009C655F` (a `+790h`, a `+D1h`, or the
+   `approach+0Ch` test at `009C64A6` doing more than choosing between two sources of `C`). The
+   earlier walk records no guard but covered a 949-instruction body, so that negative is not a proof.
+   If there is a guard, binding it is probably the whole packet.
+2. **The fly-over's commanded heading**, `009C6DC8`'s `AddWrappedAngle(base, clamp(delta, -L, +L))`,
+   which `src/game_hosts_units.cpp` replaces with the bearing to the aim point, labelled.
+   `009C6CEC`-`009C6D3B` clears `flyabove+19h` until a heading difference is within the 0.01 at
+   `00D7A238`, and on the other branch writes the roll side `flyabove+20h = +/-1` that `009C8563`
+   consumes on entering the turndown - which reads as "turn onto a heading, then roll in".
+   **Unread:** the other `+19h` writers `009C67A9` and `009C66E7`, the producers of `[ESP+10h]` and
+   `[ESP+74h]` at `009C6CEC`, and all of `009C6D7E`-`009C6DB0` where `base`, `delta` and `L` are built.
+
+Both are hypotheses. Neither has been measured.
+
+**Boundaries.** `src/game_hosts_units.cpp` is split by hunk: the dive-bomb attack-state inputs and
+binding sites, the approach constructor values and the dive-bomb instrumentation are this packet's;
+the transition law, the break-off evaluation and `dive_bomb_transition_inputs`'
+`control_mode_370` belong to `cc8-done-state`, whose work lands on `main`, so expect `movieval`'s
+post-release states to change when `main` is next merged in - **re-run the baseline on your own tree
+rather than comparing against the logs above.** `src/dive_bomb_task.cpp` and
+`include/bsp/dive_bomb_task.hpp` are split the same way. Predecessor trees are readable read-only:
+`...-cc8-dive-glide\local\g.ps1` (a frame-base walk of the aimglide `009C5180`) and
+`...-cc8-dive-bomb\local\t.ps1` (the aimdive `009C58D0`).
+
+**Still owed elsewhere.** The image bursts a bomb on a water or terrain impact - `0084BF00` passes
+`1` for an entity at `0084C314` and `2` at `0084C3CF` (`0084C286 MOV EDI,2`), gated per class by
+`classDesc+74h ExplWaterHit`, with `0084BC60` step 7's radial explosion needing
+`classDesc+6Ch != 0`. This host bursts on entity impacts only; the integrator has queued it.
