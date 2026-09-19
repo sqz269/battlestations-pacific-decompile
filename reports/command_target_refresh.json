@@ -1,0 +1,175 @@
+{
+  "packet": "cc8_command_target_refresh",
+  "baseline_commit": "adf4a213b",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-cc8-dive-bomb",
+  "documentation": "docs/DIVE_BOMB_TASK.md",
+  "status": "refresh_command_targets corrected to 0071EBF0's rule; the two flyabove flags bound; 009C40A0 defined in Ghidra",
+  "production_cpp_changed": [
+    "src/game_hosts_gunnery.cpp",
+    "src/game_hosts_units.cpp",
+    "src/dive_bomb_task.cpp",
+    "include/bsp/dive_bomb_task.hpp"
+  ],
+  "ghidra_mutated": true,
+  "new_native_body_reconstructed": false,
+  "original_abi": {
+    "0071ebf0": "ECX the command owner; no stacked argument; RET 0 at 0071ECC5, 0071ECD7 and 0071ECEB; body 0071EBF0-0071ECEB. Returns a pointer: the accepted slot's target field at this+1Ch*i+58h, or this+18Ch in mode 2, or the lazily built static at 00E19BB4.",
+    "009c40a0": "approach->vtable[0]. ECX approach; one stacked out-pointer; RET 4; body 009C40A0-009C40B7, 22 bytes. Defined in Ghidra by tools/ghidra_define_function.py this packet; it took the reviewed ledger name dive_bomb_approach_aim_point_009c40a0."
+  },
+  "routines": [
+    {
+      "name": "GameGunneryHost::Impl::refresh_command_targets",
+      "range": "0071EBF0-0071ECEB",
+      "coverage": "partial: mode 2 (this+30h == 2 -> this+18Ch) and the static default at 00E19BB4 are read and not modelled; this host has neither. The slot array at +54h is modelled through GameCommandRow::slot_index rather than as an array.",
+      "note": "the accepting categories are 1 and 2 at 0071EC43/0071EC48, the walk is backward from the last occupied slot at 0071EC1F with the step at 0071EC4D/0071EC50"
+    },
+    {
+      "name": "dive_bomb_flyabove_span_009c65fd",
+      "range": "009C658D-009C65FD",
+      "containing_function": "009c62b0",
+      "coverage": "complete",
+      "note": "S = max(B, 100.0) * 0.7 + 200.0 and x = max(B - S, 0), B being 009C6493's height above the aim point. 009C65A9 is the byte 76, JBE."
+    },
+    {
+      "name": "dive_bomb_flyabove_leave_009c66e3",
+      "range": "009C66D5-009C66E7",
+      "containing_function": "009c62b0",
+      "coverage": "complete",
+      "note": "|bearing error| > InterpolateClamped(0, 20 deg at 00CE398C, +B4h * 0.8 - S, pi at 00D7A264, x). 009C66E1 is the byte 76, JBE."
+    }
+  ],
+  "calls": [
+    {
+      "address": "009c663e",
+      "native": "00419010",
+      "containing_function": "009c62b0",
+      "note": "the leave tolerance; its result is compared at 009C66DD and sets +1Ah at 009C66E3",
+      "host_method": "dive_bomb_flyabove_leave_009c66e3"
+    },
+    {
+      "address": "009c647b",
+      "native": "009c40a0",
+      "containing_function": "009c62b0",
+      "note": "the approach's aim-point getter; 009C647D takes its out[1] and 009C6493 stores B = aircraftY - out[1]",
+      "host_method": "dive_bomb_flyabove_span_009c65fd"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "refresh_command_targets resolved a unit's command target as the LAST current command row in the global vector whose target token names a unit",
+      "is": "0071EBF0's rule: walk the unit's own slot array backward from the last occupied entry and take the first whose vtable[+0Ch] answers 1 or 2, stepping over every other category; resolve only that row's token, and leave the unit with no target when it names nothing",
+      "evidence": "0071EC1F LEA ESI,[EAX-1]; 0071EC36-0071EC41 the vtable[+0Ch] call; 0071EC43 CMP EAX,1 and 0071EC48 CMP EAX,2 both JZ to 0071ECC6; 0071EC4D/0071EC50 the backward step; 0071EC57 the static at 00E19BB4. Measured: local/usn04_aim.log ends with approach+BCh at exactly 0.0 m, the d2 <= 1e-10 branch at 00CE3820."
+    },
+    {
+      "was": "flyabove +19h's second arm was substituted with a positive constant (1.0)",
+      "is": "it is max(B - S, 0), so the arm fires at B <= 666.7 m",
+      "evidence": "frame slot K=96's single writer 009C6493 with the cleanups recorded in the doc; 009C67AE is the byte 72, JC"
+    },
+    {
+      "was": "flyabove +1Ah was a stand-in, 'leave when out of bombs'",
+      "is": "|bearing error| against a tolerance opening from 20 degrees at span 0 to pi at approach+B4h * 0.8 - S",
+      "evidence": "009C66D5-009C66E7 with the InterpolateClamped arguments at 009C6603-009C6639"
+    }
+  ],
+  "blast_radius": {
+    "question": "were the torpedo stream's bombers exposed to the same re-resolution",
+    "answer": "not in these runs, and not for a reason the fix changes: USN04 builds no torpedo task at all - 'no ordered aircraft carries torpedo ordnance (kind 2Bh), so 0099A170 builds no kind Eh task'. The rule is per-unit and category-blind, so any unit with a category-1 or -2 row was exposed the moment a later row appeared.",
+    "counts_in_usn04_aim_log": {
+      "category_1_attackmove_rows": 48,
+      "category_2_divebomb_rows": 1,
+      "category_3_rows": {
+        "stop": 158,
+        "moveto": 30,
+        "cruise": 10
+      }
+    }
+  },
+  "runs": [
+    {
+      "log": "local/usn04_target.log",
+      "tree": "0183d8e3f plus the run-in origin rename",
+      "arguments": "--frames 5000 --press-start-frame 30 --menu-select USN04 --mission-frames 4800 --mission-frame-seconds 0.05",
+      "result": "arm_ticks=2109 transitions=7 states[goaway=1 aimdive=318 aimglide=37 flyabove=159 turndown=67 attackrun=1527]. approach+BCh ends at 1866.0 m, not the broken run 0.0; latch closed at tick 1528; turndown latched at 1719 with |bank| 3.1256 rad; the 009C58D0 steering ran for all 318 aimdive ticks.",
+      "owed_numbers": {
+        "closest_miss_vs_25m": "347.40 m at range 443.3 m, altitude 654.0 m (was 359.50 m)",
+        "release_altitude_vs_350_450_floor": "no release; approach+A8h drew 350.0 m and flyabove B = 3.4 m at the end shows the aircraft reached sea level, so the floor was reachable",
+        "releases": "none; releases=0 bombs_spawned=0 rounds_left=2"
+      },
+      "gate": "still the 25.0 m aim window at 00CE3880. At the closest sample the model forces cos(bearing) = -0.99977 - the target dead astern - and the last aimdive tick reads bearing 2.8765 rad with pitch and roll both saturated.",
+      "next": "a trace was added rather than a guess: aim-state entry range and bearing, closest range, and range/error/bank/bearing every 30 ticks, to separate a dive that starts past the aim point from a roll too slow to hold the nose on."
+    },
+    {
+      "log": "local/usn04_trace.log",
+      "arguments": "--frames 5000 --press-start-frame 30 --menu-select USN04 --mission-frames 4800 --mission-frame-seconds 0.05",
+      "result": "same walk as usn04_target.log; the aim trace resolves the two hypotheses.",
+      "trace": "entry range=443.3 m bearing=-3.1411 rad; closest range=443.3 m; 317 ticks; range/error/bank/bearing per 30 ticks: 639/-625/2.98/2.93 945/-879/-3.03/-2.77 1177/-1088/1.75/2.75 1320/-1285/-0.89/3.05 1431/-944/2.10/2.37 1493/-1142/-1.28/2.65 1545/-1245/-0.98/2.77 1616/-1495/-0.75/2.86 1688/-1639/-0.55/2.90 1752/-1697/-0.38/2.89",
+      "finding": "the dive begins with the target 179.9 degrees behind at 443.3 m, and that entry range is the CLOSEST the aircraft ever gets - the range rises monotonically to 1752 m. The roll is not too slow; nothing ever pointed the aircraft at its target. The bank thrashing (+2.98, -3.03, +1.75, -0.89, ...) is the falling roll map limit-cycling on a bearing whose sign flips as the aircraft rolls past inverted.",
+      "gate": "009C62B0, the flyabove tick, is UNBOUND - tick_state is still an empty override and the wrapper dispatches only kAttackRun, kTurnDown and kAimDive. Its command census: 009C69B1/009C69B9 cmd+2C4h with the mode, 009C6DE7/009C6DEF cmd+2C0h the commanded heading with the mode, 009C6F89/009C6F91 cmd+2BCh with the pitch mode, 009C6FF1/009C6FFB cmd+2D8h = 1 and cmd+2B4h. Without it the aircraft holds the run-in heading through 159 flyabove ticks, overflies, and the turndown split-S hands aimdive an aircraft pointed 180 degrees wrong."
+    }
+  ],
+  "open": {
+    "0071EBF0 mode 2": "this+30h == 2 returns this+18Ch; this host has no such mode.",
+    "00E19BB4": "the lazily built static default; read, not modelled.",
+    "009C5D24-009C5D31 interpolant": "the band selection is bound (folded pose+C68h against the 60 degrees at 00D05AAC); the wide arm interpolates a SECOND bearing error drawn against the latched reference at approach+D8h/+E0h, and this host keeps one bearing.",
+    "009c62b0": "the flyabove tick, unbound; one packet of its own, 949 instructions with heading, altitude and speed arms.",
+    "009c56ae": "the aimglide release height gate: height_above + 50.0 > height_limit, which the host feeds raw altitude and approach+ACh = 1000.0, so it demands >950 m while the aircraft is at 654 m. Both inputs are inside the PARTIAL dive_bomb_aimglide_inputs labels - four frame slots behind 009C5693-009C5755 were never traced - so this second release path is closed by a substitution, not a recovered rule."
+  },
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "009c40a0",
+        "end_address": "009c40b6"
+      },
+      "result": {
+        "success": true,
+        "start_address": "009c40a0",
+        "end_address": "009c40b5",
+        "bytes_disassembled": 22,
+        "message": "Successfully disassembled 22 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "009c40a0",
+        "disassemble_first": false,
+        "name": "dive_bomb_approach_aim_point_009c40a0"
+      },
+      "result": {
+        "success": true,
+        "address": "009c40a0",
+        "function_name": "dive_bomb_approach_aim_point_009c40a0",
+        "entry_point": "009c40a0",
+        "body_size": 24,
+        "message": "Function created successfully at 009c40a0",
+        "warnings": [
+          "Function name 'dive_bomb_approach_aim_point_009c40a0' \u2014 main part 'dive_bomb_approach_aim_point_009c40a0' is not PascalCase. Expected: DiveBombApproachAimPoint009c40a0",
+          "Function name 'dive_bomb_approach_aim_point_009c40a0' \u2014 main part 'dive_bomb_approach_aim_point_009c40a0' contains underscores. Use PascalCase after the module prefix."
+        ]
+      }
+    },
+    {
+      "defined": "009c40a0",
+      "end": "009c40b6",
+      "name": "dive_bomb_approach_aim_point_009c40a0",
+      "after": "Function: dive_bomb_approach_aim_point_009c40a0 at 009c40a0\nSignature: undefined dive_bomb_approach_aim_point_009c40a0(void)\nEntry: 009c40a0\nBody: 009c40a0 - 009c40b7"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ]
+}

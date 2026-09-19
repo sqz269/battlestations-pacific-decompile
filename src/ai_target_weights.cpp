@@ -352,7 +352,18 @@ float ai_target_weight_00a08460(AiTargetWeightModelHost& host,
         float capture_accumulator = 0.0f;
         const int subsystems = host.subsystem_count(key.attacker);
         for (int index = 0; index < subsystems; ++index) {
-            const void* subsystem = nullptr; // resolved natively at 00A09379
+            // 00A09379 resolves a real subsystem object and 00A095E3 walks its
+            // +74h/+78h barrel array. A host that flattens the barrels onto one
+            // subsystem per unit - which is what subsystem_count returning 1
+            // means - has to be handed something that resolves back to the
+            // attacker, and a null handle is not it: a host keying on the
+            // pointer answers no barrels, the loop body never runs, `total`
+            // stays 0 and every weight comes out 0. Measured before this line
+            // was fixed: IJN01 answered a zero weight for all 465500
+            // candidates, and the 4900 that still scored were admitted by
+            // 00A146D9's target-group arm rather than by their weight.
+            // docs/AI_TARGET_WEIGHT_TERMS.md.
+            const void* subsystem = key.attacker;
             float best = 0.0f;
             const int barrels = host.barrel_count(subsystem);
             for (int barrel = 0; barrel < barrels; ++barrel) {

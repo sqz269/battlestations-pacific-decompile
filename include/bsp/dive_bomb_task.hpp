@@ -73,7 +73,14 @@ inline constexpr int kPilotControl = 0x0C;    // ctl, unit+9D4h
 inline constexpr int kCommandBlock = 0x18;    // cmd, task+4h
 inline constexpr int kRoundsRemaining = 0x2C;  // every release does -= 1
 inline constexpr int kTarget = 0x48;          // 009C7B0A: no target -> clear the latch
-inline constexpr int kExtraRange = 0x50;      // added to +D4h and +ACh in three tests
+// CORRECTION: this was `kExtraRange`, "added to +D4h and +ACh in three tests".
+// It is component 1 of the aim point approach->vtable[0] (009C40A0) hands out
+// from +4Ch/+50h/+54h, and the aimdive tick subtracts it from the aircraft's Y
+// to get the height above that point, so it is a HEIGHT. Adding it to +ACh is
+// altitude plus altitude. docs/DIVE_BOMB_TASK.md.
+inline constexpr int kAimPointHeight = 0x50;
+inline constexpr int kAimPointEast = 0x4C;    // out[0] of 009C40A0
+inline constexpr int kAimPointNorth = 0x54;   // out[2] of 009C40A0
 inline constexpr int kDriftRate = 0x64;       // 009C7A8C, per-tick timer feed
 inline constexpr int kDiveAltitude = 0xA8;    // the aimdive release floor,
 // Uniform(dive_bomb_release_alt_1_044, dive_bomb_release_alt_2_048) at 009C3F29
@@ -87,9 +94,22 @@ inline constexpr int kWeaponSelect = 0xCC;    // aimdive writes 0, flyabove writ
 inline constexpr int kInRangeLatch = 0xD0;    // task+4C8h
 inline constexpr int kHasBombOrdnance = 0xD1;  // task+4C9h
 inline constexpr int kReleaseRange = 0xD4;    // the aimdive abort test's range
-inline constexpr int kAimPointX = 0xD8;       // the computed lead point
-inline constexpr int kAimPointY = 0xDC;
-inline constexpr int kAimPointZ = 0xE0;
+// SETTLED, and these were misnamed kAimPointX/Y/Z: the aim point 009C40A0
+// hands out is +4Ch/+50h/+54h. These three are the RUN-IN ORIGIN, the
+// aircraft's own world position latched once at task construction, and the
+// aimdive tick subtracts +D8h and +E0h from the aim point to take a bearing
+// along the attack run as it was set up.
+//
+// The chain that names EDI: 009C73C5 and 009C73C8 push EBP then EAX, so EAX is
+// the constructor's FIRST argument, and 009C3ECA `MOV EDI,[ESP+20h]` reads it
+// past the seven prologue pushes. 009C3ED2 then pushes that same EDI as
+// 009F9CE0's first argument, and 009F9CE0 stores its `[ESP+4]` into `[ECX+4]`
+// at 009F9CEA - which is approach+4h, the unit. So EDI is the aircraft, and
+// 009C405D-009C407D copies its +FCh/+100h/+104h here.
+// docs/DIVE_BOMB_TASK.md.
+inline constexpr int kRunInOriginX = 0xD8;
+inline constexpr int kRunInOriginY = 0xDC;
+inline constexpr int kRunInOriginZ = 0xE0;
 }  // namespace dive_bomb_approach_off
 
 // ---------------------------------------------------------------------------
@@ -135,6 +155,12 @@ inline constexpr float kMinusOne = -1.0f;               // 00D7A260, movss
 inline constexpr float kPlusOne = 1.0f;                 // 00D7A24C, movss
 inline constexpr double kDiveAltitudeDecay = 0.05;      // 00D7A270, qword
 inline constexpr float kCruisingAltitudeThird = 9999.0f;  // 00CE4C04, the +39Ch write
+
+// approach+D4h, set once by the constructor 009C3EA0 at 009C3FFB-009C4045.
+// The same 00D7A280 half that kPullOutAltitudeFraction names, in its other role:
+// the mean of the drawn release altitude and the begin altitude.
+inline constexpr double kDiveEntryHeightMean = 0.5;      // 00D7A280, qword
+inline constexpr double kDiveEntryHeightMargin = 250.0;  // 00CF8850, qword
 
 // The aimdive release, 009C60A9-009C60EC.
 inline constexpr double kAimDiveReleaseErrorLimit = 25.0;  // 00CE3880, qword
@@ -307,7 +333,7 @@ struct DiveBombAimErrorInputs {
     float height_above_target = 0.0f;  // 009C59D6, aircraft.y - target.y
     float dive_altitude_a8 = 0.0f;     // approach+A8h
     float begin_altitude_ac = 0.0f;    // approach+ACh
-    float extra_range_50 = 0.0f;       // approach+50h
+    float aim_point_height_50 = 0.0f;       // approach+50h
     // (approach->+14h) is &PilotBotConfig.levels[difficultyIndex], a
     // PilotBotParameters row; include/bsp/robot_config.hpp names its members and
     // a row offset N is the member whose suffix is N + 0Ch. So these two are the
@@ -343,7 +369,7 @@ DiveBombAimDiveReleaseResult dive_bomb_aimdive_release_009c60f1(
 // state to aimglide on the next transition.
 struct DiveBombDiveAbortInputs {
     float release_range_d4 = 0.0f;   // approach+D4h
-    float extra_range_50 = 0.0f;     // approach+50h
+    float aim_point_height_50 = 0.0f;     // approach+50h
     float slant_range = 0.0f;        // [ESP+14h], the range the test compares
     float aim_point_distance = 0.0f;  // [ESP+1Ch], the planar distance to +D8h/+E0h
     float unit_attitude_c64 = 0.0f;  // pose+C64h, 009C5B1D
@@ -469,7 +495,7 @@ struct DiveBombAttackRunInputs {
     float planar_distance_bc = 0.0f;  // approach+BCh, 009C4311
     float altitude = 0.0f;           // pose+100h, 009C435B
     float begin_altitude_ac = 0.0f;  // approach+ACh, 009C43ED
-    float extra_range_50 = 0.0f;     // approach+50h
+    float aim_point_height_50 = 0.0f;     // approach+50h
     float attack_distance_b4 = 0.0f;  // approach+B4h, 009C43E3
     // 007F0280(ctl, pose, ...) at 009C42B8, the lateral-offset sampler, with the
     // last argument 1 (the torpedo passes 0). Its three float arguments are the
@@ -558,6 +584,103 @@ DiveBombTurnDownResult dive_bomb_turndown_tick_009c44f0(
 
 // 009C4530-009C4575: fmod by 2pi through 00BF857A, then the (-pi, pi] wrap.
 float dive_bomb_wrap_signed_pi_009c4551(float angle) noexcept;
+
+// ---------------------------------------------------------------------------
+// 009C6493-009C66F2, the one height the flyabove tick's two decisive flags
+// share. B is the aircraft's height above the aim point: 009C647B calls the
+// approach's vtable[0] (009C40A0), 009C647D takes its out[1] - approach+50h -
+// and 009C6482/009C6493 store `aircraftY - out[1]`. The same frame slot feeds
+// 009C67C7, the first argument of the can-dive test, so all three read one
+// value. docs/DIVE_BOMB_TASK.md, "T closed".
+//
+// Jump senses from the bytes: 009C65A9 `76` JBE, 009C67AE `72` JC,
+// 009C66E1 `76` JBE.
+// ---------------------------------------------------------------------------
+namespace dive_bomb_flyabove_constant {
+// 009C65AB / 009C658D: the floor under B, as a float and as the double the
+// compare loads. dive_bomb_constant::kMoveToRangeBias is the same 00D7A220.
+inline constexpr float kHeightFloor = 100.0f;            // 00CE3D08
+// 009C65C5 and 009C65CB.
+inline constexpr double kHeightScale = 0.7000000029802322;  // 00CEFFA0, qword
+inline constexpr double kHeightBias = 200.0;                // 00CE4D70, qword
+// 009C662F and 009C660B: the leave tolerance runs from 20 degrees to pi.
+inline constexpr float kLeaveToleranceLow = 0.3490658700466156f;  // 00CE398C
+inline constexpr float kLeaveTolerancePi = 3.1415927410125732f;   // 00D7A264
+// 009C661B: the share of approach+B4h the tolerance's far endpoint uses.
+inline constexpr double kLeaveSpanScale = 0.800000011920929;      // 00CE3D40, qword
+}  // namespace dive_bomb_flyabove_constant
+
+struct DiveBombFlyAboveSpan {
+    float floored_height = 0.0f;  // max(B, 100.0), the 009C65A9 select
+    float threshold = 0.0f;       // S = floored * 0.7 + 200.0
+    float span = 0.0f;            // x = max(B - S, 0), 009C65D5-009C65FD
+};
+// 009C658D-009C65FD. `span` is what both flags below consume.
+DiveBombFlyAboveSpan dive_bomb_flyabove_span_009c65fd(
+    float height_above_aim_point) noexcept;
+
+// 009C66D5-009C66E7: leave flyabove when the bearing error beats a tolerance
+// that opens from 20 degrees at span 0 to pi at span `+B4h * 0.8 - S`.
+bool dive_bomb_flyabove_leave_009c66e3(float bearing_error,
+                                       const DiveBombFlyAboveSpan& span,
+                                       float attack_distance_b4) noexcept;
+
+// ---------------------------------------------------------------------------
+// 009C5C9F-009C5DB2, the aimdive tick's steering: the only thing in the whole
+// chain that points the aircraft AT its aim point.
+//
+// 009C58D0's tick had no binding at all - `tick_state` was an empty override -
+// so through 664 live aimdive ticks the host issued no roll and no pitch, the
+// planner levelled the aircraft, and it flew past the target at 444 m. That is
+// the whole of the 340 m the aim census reported. docs/DIVE_BOMB_TASK.md.
+//
+// Both writes carry the mode that survives the planner: 009C5D1C puts EBX
+// (zeroed at 009C58DE) in cmd+2D0h, which is the value the pitch gate at
+// 0099E3BF lets through, and 009C5DB2 puts it in cmd+2CCh, which is neither 2
+// nor 1 so the planner's roll arm is skipped entirely.
+//
+// Jump senses from the branch bytes: 009C5CA9, 009C5CBC, 009C5CE5, 009C5D22
+// and 009C5D31 are all `76` JBE.
+// ---------------------------------------------------------------------------
+namespace dive_bomb_constant {
+// 009C5D85 / 009C5D75: the default roll band, +/- 0.4 rad of bearing error
+// mapped onto the full stick. 00D1F400 is the negative endpoint.
+inline constexpr float kAimDiveRollBand = 0.4000000059604645f;   // 00CE7804
+// 009C5D58 / 009C5D48: the wider band the 009C5D22/009C5D31 pair selects.
+inline constexpr float kAimDiveRollBandWide = 0.5f;              // 00CE3800
+// 009C5D24, the 60 degrees that second test compares against.
+inline constexpr float kAimDiveRollBandAngle = 1.0471975803375244f;  // 00D05AAC
+}  // namespace dive_bomb_constant
+
+struct DiveBombAimDiveSteerInputs {
+    // The aim error 009C5C9B leaves in [ESP+5Ch]; its sign picks both gains.
+    float aim_error = 0.0f;
+    // The roll interpolant. The image draws two bearing errors from two
+    // approach->vtable[0] points and rolls on one of them; see the header note
+    // in the .cpp for which, and why this host passes one.
+    float bearing_error = 0.0f;
+    // pose+C68h, the bank. 009C5919-009C592D folds it into the frame slot the
+    // band test at 009C5D2C reads, so the two arms are picked by attitude.
+    float bank_c68 = 0.0f;
+    // (approach+14h)->+64h and ->+68h, read at 009C5CAB and 009C5CD0. Two more
+    // fields of the same difficulty-row record whose +5Ch and +60h the aim
+    // error already uses.
+    float pitch_gain_positive_64 = 1.0f;
+    float pitch_gain_negative_68 = 1.0f;
+};
+struct DiveBombAimDiveSteerResult {
+    float pitch_29c = 0.0f;   // 009C5CFA, with +2A0h = 1 and +2D0h = 0
+    float roll_290 = 0.0f;    // 009C5DA3, with +294h = 1 and +2CCh = 0
+    bool used_wide_band = false;  // the 009C5D33 arm rather than 009C5D60
+};
+DiveBombAimDiveSteerResult dive_bomb_aimdive_steer_009c5c9f(
+    const DiveBombAimDiveSteerInputs& in) noexcept;
+
+// 009C3FFB-009C4045, the tail of the approach constructor: approach+D4h, the
+// height above the target the aircraft must have before 009C680E lets it dive.
+// max(+A8h + 250.0, (+ACh + +A8h) * 0.5); the JBE at 009C4035 is the byte `76`.
+float dive_bomb_dive_entry_height_009c4045(float dive_altitude_a8,
+                                           float begin_altitude_ac) noexcept;
 
 // 009C7EA0, __fastcall(state) -> bool. True ends the turndown for aimdive.
 // The two pose angles in the order the body reads them: +C64h is the one the

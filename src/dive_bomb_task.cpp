@@ -224,7 +224,7 @@ DiveBombAimError dive_bomb_aim_error_009c5c9b(const DiveBombAimErrorInputs& in) 
     // 009C5BEE-009C5BF7 and 009C5C27-009C5C38: one x window for both calls.
     const float x0 = in.dive_altitude_a8 +
                      static_cast<float>(dive_bomb_constant::kMoveToRangeBias);
-    const float x1 = in.begin_altitude_ac + in.extra_range_50;
+    const float x1 = in.begin_altitude_ac + in.aim_point_height_50;
     // 009C5C49: the lead, 0 at the floor up to (approach+14h)->+5Ch high up.
     out.lead = dive_bomb_interpolate_clamped_00419010(x0, 0.0f, x1, in.lead_at_high_5c,
                                                       in.height_above_target);
@@ -269,7 +269,7 @@ DiveBombAimDiveReleaseResult dive_bomb_aimdive_release_009c60f1(
 
 // 009C5AFD-009C5B48.
 bool dive_bomb_dive_abort_009c5b43(const DiveBombDiveAbortInputs& in) noexcept {
-    if (!(in.release_range_d4 + in.extra_range_50 > in.slant_range)) {
+    if (!(in.release_range_d4 + in.aim_point_height_50 > in.slant_range)) {
         return false;  // 009C5B18
     }
     if (!(in.unit_attitude_c64 > dive_bomb_constant::kAbortRollFloor)) {
@@ -431,7 +431,7 @@ DiveBombAttackRunResult dive_bomb_attackrun_tick_009c4220(
         out.throttle_ratio);
 
     // 009C43ED-009C4401: the altitude base handed to 009FBA50.
-    out.commanded_altitude_base = in.begin_altitude_ac + in.extra_range_50;
+    out.commanded_altitude_base = in.begin_altitude_ac + in.aim_point_height_50;
     return out;
 }
 
@@ -509,6 +509,110 @@ DiveBombTurnDownResult dive_bomb_turndown_tick_009c44f0(
         dive_bomb_turndown_constant::kFullPitchAngle, 1.0f,
         out.angle_to_inverted);
     return out;
+}
+
+// 009C658D-009C65FD, the height span both flyabove flags key on.
+DiveBombFlyAboveSpan dive_bomb_flyabove_span_009c65fd(
+    float height_above_aim_point) noexcept {
+    DiveBombFlyAboveSpan out;
+    // 009C658D FLD [00D7A220], 009C659B FCOMIP, 009C65A9 JBE: the floor takes
+    // the height when 100.0 is the smaller, and the 100.0 at 00CE3D08 otherwise.
+    out.floored_height =
+        (static_cast<double>(dive_bomb_constant::kMoveToRangeBias) <=
+         static_cast<double>(height_above_aim_point))
+            ? height_above_aim_point
+            : dive_bomb_flyabove_constant::kHeightFloor;
+    // 009C65C1-009C65D1.
+    out.threshold = static_cast<float>(
+        static_cast<double>(out.floored_height) *
+            dive_bomb_flyabove_constant::kHeightScale +
+        dive_bomb_flyabove_constant::kHeightBias);
+    // 009C65D5-009C65FD: the difference, floored at zero. Note the minuend is
+    // the RAW height, not the floored one - 009C65D5's FSUBP takes the value the
+    // merge at 009C6532 left on the stack.
+    const float difference = height_above_aim_point - out.threshold;
+    out.span = (difference > 0.0f) ? difference : 0.0f;
+    return out;
+}
+
+// 009C66D5-009C66E7.
+bool dive_bomb_flyabove_leave_009c66e3(float bearing_error,
+                                       const DiveBombFlyAboveSpan& span,
+                                       float attack_distance_b4) noexcept {
+    // 009C6615-009C6621: the far endpoint. FSUBRP leaves (+B4h * 0.8) - S.
+    const float far_endpoint = static_cast<float>(
+        static_cast<double>(attack_distance_b4) *
+            dive_bomb_flyabove_constant::kLeaveSpanScale -
+        static_cast<double>(span.threshold));
+    // 009C663E: InterpolateClamped(0, 20 deg, far, pi, span).
+    const float tolerance = dive_bomb_interpolate_clamped_00419010(
+        0.0f, dive_bomb_flyabove_constant::kLeaveToleranceLow, far_endpoint,
+        dive_bomb_flyabove_constant::kLeaveTolerancePi, span.span);
+    // 009C6453's operand is the folded bearing error; 009C66DD FCOMIP and
+    // 009C66E1 `76` JBE leave only the strictly-greater case setting +1Ah.
+    return fold_abs(bearing_error) > tolerance;
+}
+
+// 009C5C9F-009C5DB2, the aimdive tick's steering.
+//
+// PARTIAL, and the partial part is the roll's interpolant. The image draws TWO
+// bearing errors, from two calls to approach->vtable[0] at 009C594C and
+// 009C5988: one against the latched target the constructor parked at
+// approach+D8h/+DCh/+E0h (009C4065-009C407D), one against the aircraft's own
+// position at unit+FCh/+100h/+104h. The default roll arm interpolates the
+// first; the wider arm 009C5D24-009C5D31 selects the second when the error is
+// positive and a folded angle is inside the 60 degrees at 00D05AAC. This host
+// re-reads the commanded target each tick and keeps ONE bearing, so it passes
+// that one and takes the default band. The wide arm is named, not bound.
+DiveBombAimDiveSteerResult dive_bomb_aimdive_steer_009c5c9f(
+    const DiveBombAimDiveSteerInputs& in) noexcept {
+    DiveBombAimDiveSteerResult out;
+
+    // 009C5C9F FLDZ, 009C5CA5 FCOMI ST0,ST1, 009C5CA9 JBE: the sign of the aim
+    // error picks the gain, and each arm clamps at its own end of the stick.
+    if (in.aim_error > 0.0f) {
+        const float demand = in.aim_error * in.pitch_gain_positive_64;
+        // 009C5CB6 FLD1, 009C5CB8 FCOMIP, 009C5CBC JBE.
+        out.pitch_29c = (demand < 1.0f) ? demand : 1.0f;
+    } else {
+        const float demand = in.aim_error * in.pitch_gain_negative_68;
+        // 009C5CD7 FLD [00D7A260], 009C5CE1 FCOMIP, 009C5CE5 JBE.
+        out.pitch_29c = (demand > -1.0f) ? demand : -1.0f;
+    }
+
+    // 009C5D0E COMISS against the 0.0f at 00D7A218 with 009C5D22 `76` JBE, then
+    // 009C5D2C COMISS the 60 degrees at 00D05AAC against |pose+C68h| with
+    // 009C5D31 `76` JBE. The wide band is taken only while the aircraft is still
+    // inside 60 degrees of bank AND short of its aim point; banked over or past
+    // it, the tighter band applies.
+    out.used_wide_band = in.aim_error > 0.0f &&
+        fold_abs(in.bank_c68) < dive_bomb_constant::kAimDiveRollBandAngle;
+    const float band = out.used_wide_band
+        ? dive_bomb_constant::kAimDiveRollBandWide   // 009C5D48 / 009C5D58
+        : dive_bomb_constant::kAimDiveRollBand;      // 009C5D75 / 009C5D85
+    // 009C5D8E: InterpolateClamped(-band, 1.0, band, -1.0, x). Falling, like
+    // every other roll map in this bot: a positive bearing error gives a
+    // negative stick.
+    out.roll_290 = dive_bomb_interpolate_clamped_00419010(
+        -band, 1.0f, band, -1.0f, in.bearing_error);
+    return out;
+}
+
+// 009C3FFB-009C4045, the tail of the approach constructor 009C3EA0.
+float dive_bomb_dive_entry_height_009c4045(float dive_altitude_a8,
+                                           float begin_altitude_ac) noexcept {
+    // 009C400F FLD ST0 / 009C4011 FADDP ST2,ST0 / 009C4013 FXCH / 009C4015 FMUL:
+    // the sum of the two altitudes, halved.
+    const float mean = static_cast<float>(
+        (static_cast<double>(begin_altitude_ac) +
+         static_cast<double>(dive_altitude_a8)) *
+        dive_bomb_constant::kDiveEntryHeightMean);
+    // 009C401F FADD, on the copy of +A8h the FXCH left behind.
+    const float margin = static_cast<float>(
+        static_cast<double>(dive_altitude_a8) +
+        dive_bomb_constant::kDiveEntryHeightMargin);
+    // 009C4031 FCOMIP then 009C4035 JBE: the larger of the two wins.
+    return (margin > mean) ? margin : mean;
 }
 
 // 009C7EA0-009C7EF2, __fastcall(state) -> bool.

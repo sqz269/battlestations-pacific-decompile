@@ -100,8 +100,19 @@ struct GameAiWeaponFacts {
     // and +78h that 00A095E3's walk reaches.
     struct Barrel {
         float reload{0.0f};    // 00A094F0, the reload the time factor divides
-        float accuracy{1.0f};  // 009FE270 at 00A094E6
         int shots{0};          // 0072AB80 at 00A09501
+        // The bullet class record's +8h, which 00A093D7 reads out of the barrel
+        // entry's +34h and 009FE270 switches on at 00A094E6. The accuracy is
+        // NOT a stored per-barrel value: 009FE270 answers it from the AI mode
+        // tuning record by (this sub-type, the target's class group), so the
+        // row carries the selector and the lookup happens per target.
+        // docs/AI_TARGET_WEIGHT_TERMS.md.
+        int bullet_sub_type{0};
+        // False when this packet cannot map the sub-type to an accuracy at all,
+        // as opposed to mapping it to a legitimate zero. Only the Rocket
+        // sub-type 12h is unresolved. A unit with any such barrel keeps the
+        // stand-in rather than scoring that barrel at zero.
+        bool accuracy_resolved{false};
     };
     struct Unit {
         bool known{false};

@@ -8,6 +8,9 @@
 #include <array>
 #include <cmath>
 #include <cstdio>
+#include <cstdlib>
+#include <functional>
+#include <utility>
 #include <map>
 #include <memory>
 #include <string>
@@ -140,8 +143,12 @@ namespace {
 // docs/AI_TARGET_WEIGHT_TERMS.md term 2.
 class AiWeightModelBinding final : public bsp::AiTargetWeightModelHost {
 public:
-    AiWeightModelBinding(const GameAiWeaponFacts& facts, const bsp::AiModeTuning& tuning)
-        : facts_(facts), tuning_(tuning) {}
+    // The target group is a callback because 009FE270 asks the target itself,
+    // so the answer cannot be baked into the published row.
+    using TargetGroupFn = std::function<bsp::AiAccuracyTargetGroup(std::size_t)>;
+    AiWeightModelBinding(const GameAiWeaponFacts& facts, const bsp::AiModeTuning& tuning,
+                         const bsp::AiTuningBlock& block, TargetGroupFn group)
+        : facts_(facts), tuning_(tuning), block_(block), group_(std::move(group)) {}
 
     // 00A03B90 and 00A079B0, the memo map at 00F8A734. A memo only caches, so
     // skipping it changes no answer; the census counts the queries instead.
@@ -181,13 +188,35 @@ public:
         const GameAiWeaponFacts::Barrel* b = barrel_at(subsystem, barrel);
         return b != nullptr ? b->shots : 0;
     }
-    float barrel_accuracy(const void* subsystem, int barrel, const void*) override {
+    // 009FE270 at 00A094E6. Not a stored value: the published row carries the
+    // bullet class record's +8h selector and the answer is a lookup into the AI
+    // mode tuning record by (that selector, the target's class group).
+    // docs/AI_TARGET_WEIGHT_TERMS.md.
+    float barrel_accuracy(const void* subsystem, int barrel, const void* target) override {
         const GameAiWeaponFacts::Barrel* b = barrel_at(subsystem, barrel);
-        return b != nullptr ? b->accuracy : 0.0f;
+        if (b == nullptr || !b->accuracy_resolved || !group_) return 0.0f;
+        bool resolved = false;
+        const std::uint32_t offset = bsp::ai_bullet_type_accuracy_offset_009fe270(
+            b->bullet_sub_type, group_(index_of(target)), resolved);
+        // A zero offset is the reject arm, which is a real answer of no
+        // accuracy, and 00A094F5 then skips the barrel exactly as the native
+        // does.
+        if (!resolved || offset == 0u) return 0.0f;
+        return block_.at(offset);
     }
-    // 009FE200 at 00A09578 and 00424C40+3B0h at 00A09624, both unread. The
-    // falloff keeps the undiminished value and the capture scale stays neutral.
-    float distance_falloff(float a, float, float, float) override { return a; }
+    // 009FE200 at 00A09578 and 00424C40+3B0h at 00A09624, both unread, so both
+    // stand in neutral.
+    //
+    // This one used to `return a`, on the reading that `a` was the value being
+    // scaled and returning it kept the value undiminished. It is not: the call
+    // site multiplies by the answer and passes `(0, 0, 0, 0)`, four distance
+    // arguments this projection has not recovered. So the stub answered 0 and
+    // annihilated the term, `best` could never leave 0, and the barrel loop
+    // contributed nothing to `total` even once the subsystem handle was fixed.
+    // A falloff is a multiplier, so its neutral value is 1.0f. Labelled: the
+    // real falloff is a function of the four distances and diminishes with
+    // range, so this over-states a distant barrel.
+    float distance_falloff(float, float, float, float) override { return 1.0f; }
     float capture_scale() override { return 1.0f; }
 
 private:
@@ -203,6 +232,8 @@ private:
 
     const GameAiWeaponFacts& facts_;
     const bsp::AiModeTuning& tuning_;
+    const bsp::AiTuningBlock& block_;
+    TargetGroupFn group_;
 };
 
 // 004BCA50 BSP_Game_GetEffectiveGameMode returns [world+614h], remapped by the
@@ -414,6 +445,131 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // are carried: MaxTargetKillRatio at record +05Ch and DamageCalcTime at
     // +060h (include/bsp/ai_target_weights.hpp). Everything else keeps its
     // default, which is what an unfilled record holds natively too.
+    // 009FE270's target axis, read from arm 009FE2A2 and the torpedo arm
+    // 009FE3F5: PUSH 0Fh the plane base, else PUSH 6 the ship base split by
+    // 00827F70, else the fall-through. PUSH 8, the submarine, is asked first
+    // only by the torpedo arm; everywhere else a submarine is ship-base and not
+    // small surface, which is the same slot this returns for it.
+    //
+    // Labelled substitution on the query family, not on the codes: the native
+    // asks the VEHICLE CLASS descriptor's vtable[+18h] and this asks the
+    // instance's vtable[+5Ch]. The two id spaces coincide - VehicleClassKind in
+    // vehicle_class.hpp and the entity class ids in docs/ENTITY_CLASS_IDS.md
+    // both number ShipBase 6, PlaneBase 0Fh, Submarine 8, LandingShip 0Ch and
+    // TorpedoBoat 0Eh - and both are selected from the same VehicleClass.Type,
+    // so the codes below are the native's. The vtables are not the same vtable.
+    // Packet cc8_ai_target_choice_observed. The buffer 00A13B60's per-member
+    // loop fills, and the chosen-class table the mission summary prints.
+    void* choice_member{nullptr};
+    std::vector<std::pair<std::size_t, float>> choice_weights;
+    std::map<int, unsigned long long> chosen_class_counts;
+    std::map<int, unsigned long long> runnerup_class_counts;
+    unsigned long long choice_samples_logged{0};
+
+    static bool ai_weight_model_enabled() {
+        // _dupenv_s rather than getenv, which is a /W4 /WX error under MSVC;
+        // the same form native_frame_job_lifetime.cpp already uses.
+        static const bool enabled = [] {
+            char* text = nullptr;
+            std::size_t bytes = 0;
+            if (_dupenv_s(&text, &bytes, "BSP_AI_WEIGHT_MODEL") != 0) return true;
+            const bool on = text == nullptr || text[0] != '0';
+            std::free(text);
+            return on;
+        }();
+        return enabled;
+    }
+
+    // One row per (bullet sub-type, target group) pair the accuracy lookup is
+    // asked for, with the time factor and the barrel contribution 00A08460
+    // would have built from it. Observation only.
+    struct AccuracyCensusRow {
+        unsigned long long lookups{0};
+        unsigned long long zero_accuracy{0};
+        unsigned long long unresolved{0};
+        float accuracy{0.0f};        // one value per pair, so the last wins
+        double contribution_sum{0.0};
+    };
+    static constexpr int kCensusSubTypes = 0x14;
+    static constexpr int kCensusGroups = 5;
+    AccuracyCensusRow accuracy_census[kCensusSubTypes][kCensusGroups]{};
+
+    // 00A085AD PUSH 0Fh on EBP, the attacker vehicle class, stored to
+    // [ESP+37h]; 00A08619 JE 00A09228 skips 00A0861F..00A09222 when it is
+    // clear. So a PLANE attacker takes the big unprojected branch and everyone
+    // else falls through to the subsystem-and-barrel walk this process does
+    // project. Counting the split says whether IJN01's zero weights are the
+    // barrel path answering honestly or the wrong path being walked at all.
+    unsigned long long census_plane_attacker{0};
+    unsigned long long census_other_attacker{0};
+    std::map<int, unsigned long long> unresolved_by_attacker_class;
+
+    void census_barrel_accuracy(const GameAiWeaponFacts::Unit* attacker_row,
+                                std::size_t attacker_unit, std::size_t target) {
+        if (units.unit_is_kind_of(attacker_unit, 0x0F)) {
+            ++census_plane_attacker;
+        } else {
+            ++census_other_attacker;
+        }
+        if (attacker_row == nullptr || attacker_row->barrels.empty()) return;
+        const bsp::AiAccuracyTargetGroup group = accuracy_target_group(target);
+        const int g = static_cast<int>(group);
+        if (g < 0 || g >= kCensusGroups) return;
+        const float damage_calc_time = tuning.at(bsp::kAiTuningDamageCalcTime);
+        for (const GameAiWeaponFacts::Barrel& barrel : attacker_row->barrels) {
+            const int s = barrel.bullet_sub_type;
+            if (s < 0 || s >= kCensusSubTypes) continue;
+            AccuracyCensusRow& row = accuracy_census[s][g];
+            ++row.lookups;
+            // Packet cc8_ai_target_choice_observed item 3: sub-type 0 is a
+            // barrel whose bullet class never resolved, which is what the
+            // 37600-candidate admission shortfall traced back to. Counting the
+            // ATTACKER's class for those says which units carry them, which the
+            // gunnery-side census cannot be asked for from here because that
+            // file is leased elsewhere.
+            if (s == 0) ++unresolved_by_attacker_class[units.unit_class_id(attacker_unit)];
+            bool resolved = false;
+            const std::uint32_t offset =
+                bsp::ai_bullet_type_accuracy_offset_009fe270(s, group, resolved);
+            if (!resolved) {
+                ++row.unresolved;
+                continue;
+            }
+            const float accuracy = offset == 0u ? 0.0f : tuning.at(offset);
+            row.accuracy = accuracy;
+            if (!(accuracy > 0.0f)) ++row.zero_accuracy;
+            // ai_barrel_time_factor and ai_barrel_damage, the two the model
+            // multiplies the accuracy through at 00A09544 and 00A09548.
+            const float factor =
+                bsp::ai_barrel_time_factor(damage_calc_time, barrel.reload);
+            row.contribution_sum +=
+                static_cast<double>(bsp::ai_barrel_damage(factor, accuracy, barrel.shots));
+        }
+    }
+
+    bsp::AiAccuracyTargetGroup accuracy_target_group(std::size_t unit) {
+        if (units.unit_is_kind_of(unit, 0x0F)) {
+            return bsp::AiAccuracyTargetGroup::Plane;
+        }
+        if (units.unit_is_kind_of(unit, 0x06)) {
+            if (units.unit_is_kind_of(unit, 0x08)) {
+                return bsp::AiAccuracyTargetGroup::Submarine;
+            }
+            // 00827F70, read from its bytes: 00827F78 PUSH 0Eh TorpedoBoat,
+            // then 00827F89 PUSH 0Ch LandingShip with 00827F95 requiring the
+            // byte at class+808h, BigLandingShip, to be zero. The two codes are
+            // exact; the +808h byte is the one thing this host does not hold,
+            // so a BIG landing ship is classed small here where the native
+            // would class it big. Labelled.
+            if (units.unit_is_kind_of(unit, 0x0E) ||
+                units.unit_is_kind_of(unit, 0x0C)) {
+                return bsp::AiAccuracyTargetGroup::SmallShip;
+            }
+            return bsp::AiAccuracyTargetGroup::BigShip;
+        }
+        return bsp::AiAccuracyTargetGroup::Other;
+    }
+
     bsp::AiModeTuning mode_tuning_record() const {
         bsp::AiModeTuning record{};
         record.max_target_kill_ratio = tuning.at(0x05Cu);
@@ -928,7 +1084,17 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         const std::size_t attacker_unit = proxy(member);
         const GameAiWeaponFacts::Unit* attacker_row = facts.row(attacker_unit);
         const GameAiWeaponFacts::Unit* target_row = facts.row(target);
-        if (attacker_row != nullptr && target_row != nullptr
+        // Packet cc8_ai_target_weight_zero. An OBSERVATION pass: it reads what
+        // 009FE270 would answer for every (attacker barrel, this target) pair
+        // and changes nothing, so it runs while inputs_complete is still false
+        // and the stand-in is still what scores. Without this the census would
+        // need the model switched on, which is the regression it is meant to
+        // diagnose.
+        census_barrel_accuracy(attacker_row, attacker_unit, target);
+        // One build, two columns: BSP_AI_WEIGHT_MODEL=0 keeps the class
+        // stand-in so a before run and an after run come from the same binary
+        // and differ in nothing else. Default is on.
+        if (ai_weight_model_enabled() && attacker_row != nullptr && target_row != nullptr
             && attacker_row->inputs_complete && target_row->inputs_complete) {
             bsp::AiTargetWeightKey key;
             key.attacker = handle(attacker_unit);
@@ -936,7 +1102,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             key.target = handle(target);
             key.target_is_neutral = 0;   // target record +1Ch, no producer here
             const bsp::AiModeTuning record = mode_tuning_record();
-            AiWeightModelBinding model(facts, record);
+            AiWeightModelBinding model(facts, record, tuning,
+                [this](std::size_t unit) { return accuracy_target_group(unit); });
             in.base_weight = bsp::ai_target_weight_00a08460(model, key);
             ++summary.weight_model_runs;
         } else {
@@ -1016,7 +1183,18 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         if (in.target_term == 0.0f) ++summary.weight_torn_down_targets;
         ++summary.weight_queries;
         done("AiCommand::close_target_weight", 0x00a0f810u);
-        return bsp::ai_candidate_target_weight_00a0f810(in);
+        const float weight = bsp::ai_candidate_target_weight_00a0f810(in);
+        // Packet cc8_ai_target_choice_observed. 00A13B60 scores every candidate
+        // of one member and then issues one order, so a buffer cleared on a
+        // change of member holds exactly that member's candidates when
+        // close_issue_order runs and can name the chosen target's weight and
+        // the runner-up's. Observation only.
+        if (member != choice_member) {
+            choice_member = member;
+            choice_weights.clear();
+        }
+        choice_weights.emplace_back(target, weight);
+        return weight;
     }
     bool close_in_target_group(void* target_group, void* candidate) override {
         // 00A2C720 walks the group's +563Ch list for the entity.
@@ -1055,8 +1233,84 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         ++summary.commands_issued;
         if (current_party >= 0) ++party_row(current_party).commands_issued;
         if (summary.first_command_seconds < 0.0f) summary.first_command_seconds = clock_seconds;
+        observe_target_choice(member, target);
         done("AiCommand::close_issue_order", 0x0077d600u);
         return true;
+    }
+
+    // Packet cc8_ai_target_choice_observed. What no run before this one
+    // recorded: WHICH target the weight actually picked. The chosen entry is
+    // looked up by target in the member's buffer, and the runner-up is the
+    // highest-weight entry that is not the chosen one. Labelled: 00A149A8
+    // orders candidates by SCORE, which is the weight times the range factor
+    // and the two multipliers, so this runner-up is the runner-up by weight
+    // and can differ from the one the score would have named.
+    void observe_target_choice(void* member, void* target) {
+        if (member != choice_member) return;
+        const std::size_t chosen = unit_index_of(target);
+        float chosen_weight = 0.0f;
+        bool chosen_found = false;
+        std::size_t runner = 0;
+        float runner_weight = -1.0f;
+        for (const std::pair<std::size_t, float>& entry : choice_weights) {
+            if (entry.first == chosen) {
+                chosen_weight = entry.second;
+                chosen_found = true;
+            } else if (entry.second > runner_weight) {
+                runner_weight = entry.second;
+                runner = entry.first;
+            }
+        }
+        if (!chosen_found) return;
+        const int chosen_class = units.unit_class_id(chosen);
+        ++chosen_class_counts[chosen_class];
+        if (runner_weight >= 0.0f) ++runnerup_class_counts[units.unit_class_id(runner)];
+        // A bounded sample of individual choices, so a fort and a ship can be
+        // checked against the listing's arithmetic with their REAL hit points
+        // rather than assumed ones.
+        if (choice_samples_logged < 24) {
+            ++choice_samples_logged;
+            const GameAiWeaponFacts::Unit* row = game_ai_weapon_facts().row(chosen);
+            const GameAiWeaponFacts::Unit* runner_row =
+                runner_weight >= 0.0f ? game_ai_weapon_facts().row(runner) : nullptr;
+            log.notef("  ai target choice chosen_class=%02Xh(%s) weight=%.6f hp=%.1f "
+                "trio=%d command_building=%d | runner_class=%02Xh(%s) weight=%.6f hp=%.1f",
+                chosen_class, ai_class_name(chosen_class),
+                static_cast<double>(chosen_weight),
+                static_cast<double>(row != nullptr ? row->hit_points : 0.0f),
+                units.unit_is_kind_of(chosen, 0x1B) || units.unit_is_kind_of(chosen, 0x45) ||
+                    units.unit_is_kind_of(chosen, 0x46) ? 1 : 0,
+                units.unit_is_kind_of(chosen, 0x1C) ? 1 : 0,
+                runner_weight >= 0.0f ? units.unit_class_id(runner) : 0,
+                runner_weight >= 0.0f ? ai_class_name(units.unit_class_id(runner)) : "none",
+                static_cast<double>(runner_weight),
+                static_cast<double>(runner_row != nullptr ? runner_row->hit_points : 0.0f));
+        }
+    }
+
+    static const char* ai_class_name(int class_id) {
+        switch (class_id) {
+        case 0x07: return "Destroyer";
+        case 0x08: return "Submarine";
+        case 0x09: return "MotherShip";
+        case 0x0A: return "Cruiser";
+        case 0x0B: return "Cargo";
+        case 0x0C: return "LandingShip";
+        case 0x0D: return "BattleShip";
+        case 0x0E: return "TorpedoBoat";
+        case 0x10: return "LevelBomber";
+        case 0x11: return "TorpedoBomber";
+        case 0x12: return "DiveBomber";
+        case 0x13: return "Fighter";
+        case 0x14: return "ReconPlane";
+        case 0x17: return "Kamikaze";
+        case 0x19: return "LandVehicle";
+        case 0x1B: return "LandFort";
+        case 0x1C: return "CommandBuilding";
+        case 0x45: return "AirField";
+        case 0x46: return "Shipyard";
+        default:   return "other";
+        }
     }
     bool close_issue_moveto(void* member, const float point[3]) override {
         return tick_issue_moveto(member, point);
@@ -2036,11 +2290,89 @@ void GameAiCoordinatorHost::report() {
         "(00923BE0's +5Dh arm; the fraction unit+370h/unit+36Ch has no producer here, so a live "
         "candidate takes the full-health 1.0 and slot D is 1.0)",
         host.summary.weight_torn_down_targets);
-    host.log.notef("summary mission ai target weight base model_runs=%llu class_stand_ins=%llu "
-        "weapon_rows=%zu (00A08460 runs when the weapon-facts table carries a row for both the "
-        "attacker and the target; one publish call from the gunnery host fills it)",
-        host.summary.weight_model_runs, host.summary.weight_class_stand_ins,
-        game_ai_weapon_facts().known_units());
+    {
+        // A row is incomplete only when it carries a Rocket barrel, whose
+        // small/big split 009FE4F1 makes through unread target-state
+        // predicates, so the gap between the two counts is the rocket cost.
+        std::size_t complete = 0;
+        for (const GameAiWeaponFacts::Unit& row : game_ai_weapon_facts().units) {
+            if (row.known && row.inputs_complete) ++complete;
+        }
+        host.log.notef("summary mission ai target weight base model_runs=%llu "
+            "class_stand_ins=%llu weapon_rows=%zu complete_rows=%zu (00A08460 runs when the "
+            "weapon-facts table carries a COMPLETE row for both the attacker and the target; "
+            "an incomplete row is one with a Rocket barrel, sub-type 12h)",
+            host.summary.weight_model_runs, host.summary.weight_class_stand_ins,
+            game_ai_weapon_facts().known_units(), complete);
+    }
+    {
+        // Packet cc8_ai_target_weight_zero: one line per (bullet sub-type,
+        // target group) pair actually asked for. `accuracy` is what 009FE270
+        // answers for the pair and `contribution` the sum of
+        // time_factor * accuracy * shots over every lookup, which is what
+        // 00A08460 accumulates. A pair with lookups and a zero contribution is
+        // a barrel that can never move the weight.
+    {
+        // Packet cc8_ai_target_choice_observed: which class the weight actually
+        // picked, over the whole mission. This is the line no earlier run in
+        // this stream carried, and the one that turns the preference from a
+        // calculation into a measurement.
+        host.log.notef("summary mission ai target choice model=%d chosen_classes=%zu "
+            "runnerup_classes=%zu (00A14A6E's order, the target 00A149A8 left in the slot)",
+            GameAiCoordinatorHost::Impl::ai_weight_model_enabled() ? 1 : 0,
+            host.chosen_class_counts.size(), host.runnerup_class_counts.size());
+        for (const std::pair<const int, unsigned long long>& entry : host.chosen_class_counts) {
+            unsigned long long as_runner = 0;
+            const auto found = host.runnerup_class_counts.find(entry.first);
+            if (found != host.runnerup_class_counts.end()) as_runner = found->second;
+            host.log.notef("  ai target choice class=%02Xh(%s) chosen=%llu runnerup=%llu",
+                entry.first,
+                GameAiCoordinatorHost::Impl::ai_class_name(entry.first),
+                entry.second, as_runner);
+        }
+        for (const std::pair<const int, unsigned long long>& entry : host.runnerup_class_counts) {
+            if (host.chosen_class_counts.find(entry.first) != host.chosen_class_counts.end()) {
+                continue;
+            }
+            host.log.notef("  ai target choice class=%02Xh(%s) chosen=0 runnerup=%llu",
+                entry.first,
+                GameAiCoordinatorHost::Impl::ai_class_name(entry.first), entry.second);
+        }
+    }
+        host.log.notef("summary mission ai target weight path plane_attacker=%llu "
+            "other_attacker=%llu (00A085AD PUSH 0Fh on the attacker vehicle class, stored to "
+            "[ESP+37h]; 00A08619 JE 00A09228 sends a NON-plane attacker to the subsystem and "
+            "barrel walk this process projects, and a plane attacker into 00A0861F..00A09222, "
+            "which it does not)",
+            host.census_plane_attacker, host.census_other_attacker);
+        for (const std::pair<const int, unsigned long long>& entry :
+             host.unresolved_by_attacker_class) {
+            host.log.notef("  ai target weight unresolved_bullet_class attacker=%02Xh(%s) "
+                "barrel_lookups=%llu (gun.bullet_class < 0, or a Bullets row whose Type matches "
+                "none of 006EA910's thirteen literals)",
+                entry.first, GameAiCoordinatorHost::Impl::ai_class_name(entry.first),
+                entry.second);
+        }
+        static const char* const kGroupNames[] = {
+            "plane", "submarine", "smallship", "bigship", "other"};
+        static const char* const kSubTypeNames[] = {
+            "?0", "bullet_raw", "machinegun", "machinegun_aa", "artillery_raw",
+            "artillery_light", "artillery_medium", "artillery_heavy", "?8", "bomb",
+            "torpedo", "depthcharge", "dummytarget", "dummykamikaze", "dummysub",
+            "paratrooper", "flak", "kamikaze", "rocket", "watermine"};
+        for (int sub = 0; sub < GameAiCoordinatorHost::Impl::kCensusSubTypes; ++sub) {
+            for (int grp = 0; grp < GameAiCoordinatorHost::Impl::kCensusGroups; ++grp) {
+                const auto& row = host.accuracy_census[sub][grp];
+                if (row.lookups == 0) continue;
+                host.log.notef("summary mission ai target weight accuracy "
+                    "subtype=%02Xh(%s) group=%s lookups=%llu accuracy=%.4f "
+                    "zero=%llu unresolved=%llu contribution=%.3f",
+                    sub, kSubTypeNames[sub], kGroupNames[grp], row.lookups,
+                    static_cast<double>(row.accuracy), row.zero_accuracy,
+                    row.unresolved, row.contribution_sum);
+            }
+        }
+    }
     for (const GameAiPartyRow& row : host.parties) {
         host.log.notef("  ai party %d record=%d ai_enabled=%d brain=%d thinks=%llu "
             "claims=%llu planner_ticks=%llu attacks=%llu commands=%llu refused=%llu",
