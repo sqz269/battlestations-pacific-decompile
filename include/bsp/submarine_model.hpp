@@ -215,7 +215,7 @@ SubmarineAirStepResult submarine_step_air_00855250(const SubmarineAirState& stat
 // Crush depth
 // ---------------------------------------------------------------------------
 
-inline constexpr float kSubCrushTickSeconds = 1.0f; // 008551D8 COMISS against 1.0
+inline constexpr float kSubCrushTickSeconds = 1.0f; // 008551DB FLD1, 008551DF FCOMIP, 008551E3 JBE (x87)
 
 struct SubmarineCrushStepResult {
     float accumulator{0.0f}; // +1284h

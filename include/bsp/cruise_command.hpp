@@ -151,7 +151,9 @@ inline constexpr std::size_t kCruiseDirectorVtableSlotStep = 0x7c;          // 0
 // 00D7A238 is 0.01f; 00D7A270 is the double 0.05; 00D7A24C is 1.0f; 00D7A218 is
 // zero. All four are read straight out of the image.
 inline constexpr float kCruiseHeadingRudderEpsilon = 0.01f;    // 00835AE0
-inline constexpr double kCruiseHeadingThrustEpsilon = 0.05;    // 009E131D
+// 00D7A270 holds 00 00 00 A0 99 99 A9 3F: the float 0.05f widened, not the double 0.05. The
+// two differ by 7.5e-10, and a throttle authored as exactly 0.05f compares equal in the image.
+inline constexpr double kCruiseHeadingThrustEpsilon = 0.05000000074505806;    // 009E131D FLD m64
 inline constexpr float kCruiseHeadingSpeedEpsilon = 1.0f;      // 009E1347
 inline constexpr float kCruiseSpeedSettingInactive = -1.0f;    // 009E11C6, 00D7A260
 
