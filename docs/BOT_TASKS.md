@@ -243,10 +243,42 @@ not read: `contract: unread`.
 
 The reference speeds that feed the ratio at `+41Ch`, from the same table: `Pilot/CloseToShip` KMH(300)
 (`+42Ch`, read at `009A1D60` `009A1DC0`), `Pilot/DepthCharge` KMH(270) (`+4B8h`, `009A3390`
-`009A35D0`), `Pilot/Torpedo` KMH(300) (`+440h`, `009D0380`), `Pilot/LevelBomb` KMH(300) (`+458h`),
+`009A35D0`), `Pilot/Torpedo` KMH(300) (`+440h`, `009D0380`, the call site read in packet
+`cc8_torpedo_retire`: `009D03A1` `CALL 0042E740`, `009D03A6` `FLD [EAX+440h]`, `009D03B1` `FSTP
+[ESP]`, `009D03B7` `CALL 009F9CE0`), `Pilot/LevelBomb` KMH(300) (`+458h`),
 `Pilot/DiveBomb` KMH(280) (`+4D8h`, `009C3EA0`), `Pilot/Dogfight` KMH(300) (`+650h`, `009A6C10`
 `009A6D40`), `Pilot/Strafe` KMH(280) (`+65Ch`, `009CA4A0`), `Pilot/Strike` KMH(280) (`+668h`,
 `007B41E0`), `Pilot/Landing` KMH(140) (`+52Ch`, `009AFE70` `009AFFF0`).
+
+#### Which classes actually leave the `1.0` clamp
+
+Packet `cc8_torpedo_retire`, from this installation's `scripts/datatables/autoload/vehicleclasses.lua`
+(74 rows carry both `MaxSpd` and `StallSpd`, so all 74 are planes; `MaxSpd` is stored in m/s). The
+ratio only leaves the clamp when `MaxSpd` is **strictly** above the row's reference speed -
+`009F9CE0`'s compare is `if (1.0 < r)`, so a class at exactly the reference takes the constant.
+
+| threshold | strictly above | exactly at it | below |
+| --- | --- | --- | --- |
+| KMH(300) = 83.33 m/s (torpedo, levelbomb, dogfight, closetoship) | 22 | 18 | 34 |
+| KMH(280) = 77.78 m/s (divebomb, strafe, strike) | 40 | 0 | 34 |
+
+The 22 above 300 km/h are all fighters and late/experimental types: Funryu 343.1, F-86F-2 Sabre
+307.2, MXY7 Ohka 194.4, J7W2 145.0, P-80 and Kikka 125.0, N1K2 George 102.9, AD-2 Skyraider and
+F2G Super Corsair 100.0, Ki-83 99.3, then twelve at 88.889 (320 km/h) including F4U Corsair, P-51,
+P-38, P-47N-15, Ki-84, A7M, J2M, J7W1, J6K, A8M, P-39 and M6A Seiran.
+
+**Every dedicated bomber is below both thresholds**, so the `1.0` bound in the host is exact and not
+a floor for them: the torpedo carriers top out at 72.222 m/s (260 km/h - TBF/TBM Avenger, B6N Jill,
+B7A Ryusei, SB2C Helldiver, D4Y Judy) and the USN01 H6K Mavis, B5N Kate, SBD Dauntless, D3A Val and
+TBD Devastator are 69.444 (250 km/h). The fastest bomber of any kind is the BTD Destroyer at 76.6,
+still under the divebomb row's 77.78 - by 1.5 per cent.
+
+**The divebomb side is the one with exposure**, and it is worth stating because that binding also
+pins the field at `1.0`. Its threshold is the lower of the two, and every bomb-capable *fighter*
+clears it: AD-2 Skyraider `x1.286`, F4U Corsair and P-47N-15 `x1.143`, F6F Hellcat and the other
+300 km/h types `x1.071`. If a divebomb task is ever installed on one of those, the pinned `1.0`
+understates both things the ratio scales - the attack-distance clamp at `+43Ch` and the break-off
+`SafeDist` - by up to 29 per cent.
 
 ### Slot `+1Ch`, the break-off test
 
