@@ -19,6 +19,15 @@ statement is not a reading of the executable and says so.
 | the drain's call site | `004E534F` | inside `BSP_Game_OnMove`, `docs/GAME_ON_MOVE_MAP.md` step 20 "World tick": `MOV ECX,[00F89B3C]` / `FSTP dword [ESP]` / `CALL 0094C8F0`. |
 | the thunk | `0094C8F0` | eight bytes: `CALL 0094C490` / `RET 4`. The scaled delta is pushed and **never read** - `0094C490` is `__fastcall(ECX = manager)` and its clock is the world time at `DAT_00F876A4`. |
 | the drain | `0094C490` | picks one record per interval, runs the solver, and either completes the record or puts it back. |
+
+This process runs the drain at the tail of `GameWorldHost::run_world_entity_update_00904bf0`, the
+per-frame world walk, on the same scaled delta. That site needs no re-entrancy guard and the run
+says so rather than an inspection: `summary world walk ... walks=3000` against
+`summary mission frames ... simulated=3000`, so it is called exactly once per simulated frame and
+never on a paused one. The mission Lua host publishes itself to it through a process pointer that
+`attach_script_orders` sets and clears, which mirrors `00F89B3C`'s own lifetime (`004DFAC3` writes
+it in `BSP_Game_ConstructWorld`, `004D2D7E` clears it in `BSP_Game_DestroyWorld`); the queue is
+cleared with it, so a request cannot outlive its mission.
 | the solver | `0094A140` | `__thiscall(record)`. Builds a candidate frame, offers it to `00949300`, and on refusal rebuilds it through `BSP_Matrix_BuildRotationY` with another angle and tries again. |
 | the placement gate | `00949300` | `__thiscall(record, frame, block)`. Per member: compose the member frame, ask `00941D30` whether the placement is legal, and `bVar4 &= result`. Only when EVERY member passes does it call the creator, once. |
 | the creator | `009483D0` | `__thiscall(record, frame)`. Creates every member, appends each created entity to the vector at `record+CCh`, and at its tail stores `*(record+C0h) = 1`. |
@@ -216,6 +225,48 @@ candidate frame. `include/bsp/lua_binding_spawn.hpp` keeps the pure contract fro
 | `bsp::SpawnRequestQueue` | 00949530 / 009478B0 / 009439B0 / 00945850 / 00945A20 | complete for the operations the drain and the two id thunks need. |
 | `bsp::next_spawn_request_serial_00949f2b` | 00949F2B | complete |
 
+### Which road the callback takes
+
+There are two existing ways into a named Lua global in this process, and the SpawnNew callback fits
+neither exactly, so it is worth saying which it uses and why.
+
+`GameScriptOrdersHost`'s script-call road (`src/game_hosts_script_orders.cpp:1560`) is the one the
+think and `luaDelay` timers take. It always pushes the entity's own self-table as argument 1 and
+then forwards stack slots, with `debug` as the `lua_pcall` error handler. That first argument is
+wrong here: `luaBombersSpawnedLex(unit1, unit2)` takes the created units and nothing else, with no
+subject in front of them.
+
+So the callback uses the mission Lua host's own road, the same `lua_getfield(LUA_GLOBALSINDEX, name)`
+plus `lua_pcall` that `call_entry_point` uses, with `push_resolved_entity_by_id` supplying one
+entity table per group member and `lua_pushnil` for one that will not resolve. The only difference
+from `call_entry_point` is the argument count. It is not a second road; it is the same primitive at
+a different arity. The `errfunc` is 0 rather than `debug`, which in Lua 5.1 keeps the error object,
+so a raising callback is reported with its message. The native hands `debugtrap` to `lua_pcall`
+instead and `008C8390` returns no results, so Lua 5.1 replaces the error object with nil and the
+caller learns only that the call failed; `docs/MISSION_LUA_HOST.md` line 138 records that the
+`debugtrap` handler is used only by the named-call path. Losing the message is not worth
+reproducing in a diagnostic host, and this is the same choice `call_entry_point` already makes.
+
+### Bound from the listing, versus substituted through the scene-record path
+
+`009483D0` builds a unit **from a class type**; `create_unit_from_scene_record_0046db4b` builds one
+from an authored scene record. They are not the same creator, and this table says which side each
+part of the route came from, because the difference is the packet's largest labelled substitution.
+
+| part | bound from the listing | substituted |
+| --- | --- | --- |
+| the binding's twelve fields, defaults, clamp and serial | yes, `00949750` | - |
+| the queue, the interval, the pick rule, the retry, the fulfil flag | yes, `0094C490` / `009478B0` / `009483D0` | - |
+| the all-or-nothing group rule | yes, `00949300`'s `bVar4 &=` | - |
+| one entity per group member, in order, appended in order | yes, `009483D0`'s loop and the `record+CCh` append | - |
+| the member's `Name` becoming the entity's name | yes, the `_memcpy` into `entity+154h`/`+158h` | - |
+| the member's `Type` choosing the class | no | the record's `type_id`, resolved by the scene-record creator instead of by the class object at member+0h |
+| the plane-vs-surface arm | no | every member takes `PlaneSquadronGen` (class 18h); `009483D0` chooses by `vtable+18h(6)` |
+| `WingCount` reaching `007F4580` | no | carried on a `SceneSpawnPoolEntry`, the same carrier a held-back row uses |
+| the placement, exclusion radii and the retry's sampling | no | first candidate accepted; see "What is NOT tested" |
+| `entity+28Ch = record+7Ch`, the serial on the entity | no | not written; the serial is kept host-side on the request |
+| `BSP_Entity_RequestJoinFormation` for a kind-6 member after the first | no | not reached, because no member takes the surface arm |
+
 The creation goes through the already-public
 `GameScriptOrdersHost::create_unit_from_scene_record_0046db4b`, which per
 `docs/LUA_GENERATE_OBJECT_HOST.md`'s Correction already runs `plane_squadron_plan_members_007f4580`
@@ -258,10 +309,23 @@ DEVIATIONS, each labelled in the source where it is taken:
   `00CE3A0C` and `00D199D0` - the twelve field names, the two empty-string defaults and one more -
   and the sixteenth is `00949752 PUSH 0xca8625`, the MSVC exception handler pushed in the prologue
   two instructions into the function. None of them is a body in this routine's own segment.
-  No callee of `0094A140`, `00949300` or `009483D0` is a Lua helper either. The record does hold callback
-  OWNER objects - `00949750` destroys two through `BSP_CallbackOwner_Destroy 00695870` at `00949F24`
-  and `00949FF4`, and `00948BB0` destroys another - so the dispatch is probably built there. Not
-  established. The implemented call is the section 6 contract.
+  No callee of `0094A140`, `00949300` or `009483D0` is a Lua helper either.
+
+  **`record+10h` is an object with a callback-owner destructor, and it is probably `refPos`, not the
+  callback.** The record destructor hands exactly that field over: `00948C6D LEA ECX,[ESI + 0x10]` /
+  `00948C74 CALL 00695870 BSP_CallbackOwner_Destroy`. Its producer is the constructor at
+  `00948CF3 LEA ECX,[EBP + 0x10]` / `00948CFA CALL 008F8610`, taking one caller argument. `008F8610`
+  belongs to the same family `00949750` uses to resolve `area` and `refPos` - `008F8530` at
+  `00949B7D` on the entity arm of the `refPos` read, with `008F84D0`, `008F8680` and `008F84A0`
+  nearby - so `+10h` reads as the resolved entity-or-position reference, which would own a callback
+  because it subscribes to the entity it names. HYPOTHESIS: none of those bodies was read. It does
+  mean the callback-owner objects in this record are not evidence for a Lua dispatch, and the two
+  `00695870` calls in the binding itself (`00949F24`, `00949FF4`) are epilogue destructors for stack
+  temporaries, with the EH state bytes around them to match. So the question is more open than the
+  callback owners first suggested, not less.
+
+  Nothing recovered so far reaches the interpreter from `record+84h`. The implemented call is the
+  section 6 contract, taken from the script, and it is labelled as such in the source.
 - **The four floats `00949750` stages at `00949F67..00949F8C` are not mapped to record slots by the
   producer.** The attempt is recorded so the next reader does not repeat it: the push accounting
   across `00949F64 SUB ESP,0x10` and the five intervening pushes does not close - it makes
@@ -335,8 +399,41 @@ The helper is shared with `run_generate_object_00944fd0`, so GenerateObject's po
 mis-read the same way. `docs/LUA_GENERATE_OBJECT_HOST.md` records that GenerateObject was not
 called in either of its runs, so no measured column depends on the old behaviour.
 
-Requiring all three keys is the reader's choice and is labelled as such in the source: the native
-leaves an absent component at whatever its caller's slot held.
+### The native requires none of the three, and reports nothing
+
+Asked whether "all three required" was the native's rule, it is not, and the first version of the
+fix in this packet had it wrong too. Filtering the whole 85-instruction listing for the three
+staging slots gives six accesses and no initialisation: the three `FSTP`s above, and the three
+reads at the tail that copy them out **unconditionally**, whatever the walk found.
+
+```
+00888848: MOVSS XMM0,dword ptr [ESP + 0x8]
+0088884e: MOVSS dword ptr [EDI],XMM0
+00888852: MOVSS XMM0,dword ptr [ESP + 0xc]
+00888858: MOVSS dword ptr [EDI + 0x4],XMM0
+0088885d: MOVSS XMM0,dword ptr [ESP + 0x10]
+00888867: MOVSS dword ptr [EDI + 0x8],XMM0
+...
+0088888b: MOV EAX,EDI
+00888899: RET
+```
+
+`EDI` is `ECX`, the out vector (`0088877A MOV EDI,ECX`), and `0088888B MOV EAX,EDI` returns **that
+pointer, not a success flag**. So a table carrying only `x` and `z` leaves the y component at
+whatever that stack slot held, and the caller cannot tell.
+
+The caller does not ask, either. `00949750`'s own site is `00949B9B LEA ECX,[ESP+0x80]` - a bare
+stack local with no pre-fill adjacent to the call - then `00949BA2 CALL 00888760` and
+`00949BA7`/`00949BAB`/`00949BB0` reading all three floats straight back with no test in between.
+The shape question the native does ask is asked *before*, by `008889C0` at `00949B60`: is this an
+entity handle? Everything that is not goes to `00888760` regardless.
+
+So the host reader returns true when the table carried **at least one** of `x`, `y`, `z`, and
+fills an absent component with **zero**. The zero is a DEVIATION, labelled: an uninitialised stack
+value is not reproducible and zero is the only defensible substitute. The `bool` is this process's
+own signal, not a recovered one; it exists so a caller can still ask "position or not?", and it is
+deliberately not `found == 3`, because that would refuse a `{x=..., z=...}` sea-level point the
+image accepts.
 
 ## Validation
 
@@ -352,6 +449,14 @@ category; the one `B` row it reports is `kPilotPitchHalfRange`, which predates t
 | baseline | main `2ec3ed6ef` | `MissionLuaNative::SpawnNew 0094c480 UNIMPLEMENTED calls=8` |
 | run 1 | `c2a776849` (main `d9c6fb08a` merged) | `local/spawn_after_usn04.log` |
 | run 2 | run 1 plus the section 11 fix | `local/spawn_refpos_usn04.log` |
+| run 3 | run 2 plus the relaxed reader ("at least one key") | `local/spawn_final_usn04.log` |
+
+Run 3 confirms the relaxed reader changes nothing measurable, which is the prediction: every
+`refPos` in this mission comes from `GetPosition`, which writes all three keys, so `found == 3` and
+`found > 0` agree on every table the run sees. Its `summary SpawnNew` line, its
+`summary mission world units=57`, its `summary mission commands` line and its 57
+`unit world registration` lines are identical to run 2's, and the two runs' **whole native-call
+tables agree row for row across all 72 rows**. Run 3 is the column that sits on the committed code.
 
 Both runs: `--frames 3200 --press-start-frame 30 --menu-select USN04 --mission-frames 3000
 --mission-frame-seconds 0.05`.
@@ -421,9 +526,77 @@ they went from one to nine. The spawned aircraft reach the strike census by name
 `B5N Kate #8.1`, `B5N Kate #8.1|.-2`, `B5N Kate #8.1|.-3`, role `torpedo`, `script:PilotSetTarget`.
 No callback raised; the run logs no Lua error.
 
-**Not measured.** Whether the spawned bombers then fly an attack and hit the Lexington is a
-different packet's question; this one measures that they exist, are registered, are in the right
-party, carry the script's target, and that the mission's own callback chain resumed.
+Each of the 24 units is registered in the world by name:
+`unit world registration: unit=D3A Val #1.1 creator=00956390 primary=00d19d28 entry=00956300
+lists=6`, with `|.-2` and `|.-3` for its wings, and `unit world registration` lines go 33 in run 1
+to 57 in run 2, of which 24 name a spawned aircraft. Each also gets a `plane spawn:` line with its
+heading, so they enter as flying aircraft rather than as sea-level objects.
+
+### The result that matters most: an objective stops completing itself
+
+The native-call diff between the two runs is not only additions. These counts went DOWN:
+
+| binding | run 1 | run 2 |
+| --- | --- | --- |
+| `HideUnitHP` | 41 | 0 |
+| `Blackout` | 47 | 6 |
+| `Objectives_Completed` | 1 | 0 |
+| `CreateScript` / `SetThink` / `SETLOG` | 10 | 9 |
+| `SetWait` | 9 | 8 |
+| `DeleteScript` | 8 | 7 |
+| `Music_Control_SetLevel` | 1 | 0 |
+
+That is the fix, not a regression, and `usn_19_coralus.lua:569` says why:
+
+```lua
+if Mission.Difficulty == 0 then
+    if Mission.BomberWave == 4 or table.getn(luaRemoveDeadsFromTable(Mission.IJNBombersLex)) == 0 then
+        HideUnitHP()
+        luaObj_Completed("primary",1,true)
+        Blackout(true, "luaMoveToPh2", 3)
+    end
+end
+```
+
+`Mission.IJNBombersLex` is filled by `luaBombersSpawnedLex` from the units `SpawnNew` hands it.
+With the binding unimplemented that table stayed empty, so `table.getn(...) == 0` was TRUE and the
+mission's **primary objective completed itself on a mission whose bombers had never been created**.
+
+Why it then repeated, which is what makes the counts so large, is in the shipped global helper:
+`scripts/global/commandhelpers.lua:5898 luaObj_Completed` sets `obj.Success = true` at line 5923 but
+its `obj.Active = false` is **commented out** at 5922. So `luaObj_IsActive` at 5989 keeps answering
+true for ever, the guard at 5901 (`luaObj_GetSuccess(...) ~= nil`) stops only the native
+`Objectives_Completed` call, and the mission script's own enclosing `if luaObj_IsActive("primary",1)`
+at `usn_19_coralus.lua:567` re-entered on every think pass. That is the shape of the run-1 column
+exactly: `Objectives_Completed` **once**, `HideUnitHP` and `Blackout` **41 and 47 times**, and
+`Music_Control_SetLevel` once from `luaObj_Completed`'s own `setMusic` arm at 5925.
+
+With the spawns landing, the test at 570 is false and none of it fires; run 2's residual six
+`Blackout` calls come from the other sites in the file, such as `Blackout(false, "", 1)` at 1034.
+The one fewer `CreateScript`/`SetThink`/`SETLOG`/`SetWait`/`DeleteScript` is the `luaMoveToPh2`
+script object that is no longer spuriously created.
+
+This installation is modded, so the commented-out `obj.Active = false` is a fact about **this
+installation's** helper and nothing is claimed about a retail one. `scripts/global/` is not uniform:
+`luamw_init.lua`, `messagesender.lua` and `timetable.lua` all carry the bulk mtime 2024-07-13
+08:26:50, while `commandhelpers.lua` is 690958 bytes at **2024-10-29 12:54:22**, three and a half
+months later than its three siblings. It is therefore a file that was replaced after the bulk
+install, and the line numbers above are that file's.
+
+(An earlier draft of this paragraph said 2024-10-29 was "the same bulk date as the rest of
+`scripts/global/`". That was wrong and is retracted; the four mtimes above are the measurement.)
+
+**Not reached in either run, and not tested by this packet:** `luaSpawnLexKillers`, and therefore
+`luaLexKillersSpawned`, its four-member callback, and the `LexHitListener` it registers.
+`MissionLuaNative::AddListener` is `calls=2` in both columns, unchanged. The reason is the script,
+not the route: `luaSpawnLexKillers` is called only from `luaEndZuikakuDeadMovie`
+(`usn_19_coralus.lua:1036`), the tail of the Zuikaku-sinking cinematic, which a 150-second run never
+reaches. The four-argument arity in section 6 therefore remains a contract read off the script and
+is **not** exercised by a run; only the one-argument shape is.
+
+**Also not measured.** Whether the spawned bombers then fly an attack and hit the Lexington; and
+the retry path, because with no placement test every request is satisfied on its first attempt (run
+1 exercised the retry 243 times, but only through the `refPos` failure, not through `00941D30`).
 
 ## no_ghidra_function
 
