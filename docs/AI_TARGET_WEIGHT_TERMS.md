@@ -702,6 +702,20 @@ and `007B80C0`** — the same three target-state predicates that `009FE270`'s ro
 branches on. Reading those three once resolves the rocket split and part of this branch together,
 which makes them the highest-value next read in this area.
 
+**Its shape, which matters for what this packet published.** The region's tail is not a separate
+accuracy model: it calls **`009FE270` itself**, at `00A08E60`, `00A08F42`, `00A0909A` and
+`00A091F1`, with `00A08E9C` fetching the same `00A371A0` tuning record. Each of those four sites
+sits in a repeating group with `009FE200`, the distance falloff, `00A001D0`, a per-slot query, and
+`00415550`, a max — the same accuracy-times-falloff-then-max shape the barrel walk has, iterated
+over a plane's ordnance slots through `00A001D0` and `00A07A60` instead of over subsystem barrels.
+Class queries seen across the region: `0Fh` and `8` on the target at the head, then `25h`, `6`,
+`10h`, `1Ch`, `17h`, `20h` and `14h`.
+
+So **the BulletTypeAccuracy table this packet loaded and the dispatch it implemented serve both
+paths**. Whatever the census says about IJN01, the tuning load and
+`ai_bullet_type_accuracy_offset_009fe270` are not wasted on a plane-attacker projection: that
+projection would call straight into them.
+
 ### The census, and why it is an observation pass
 
 `inputs_complete` stays `false`, so the model still does not run and the stand-in still scores. The
