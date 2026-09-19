@@ -230,3 +230,35 @@ USN04 run and the USN01 before run both exited 0.
 Build clean, both ctest suites pass. The before/after run pair is below; **both columns sit after
 `0daec4b56` and `bb9123bc5`**, so neither is comparable to the three USN04 columns in
 `docs/USN04_STRIKE_CLASS.md` on the command-target or AI-target-weight axes.
+
+## Correction: a held-back `PlaneSquadronGen` row now spawns its whole wing
+
+Packet `cc8_plane_squadron_host`. This is an addition to section 3's binding, not a change to any
+reading in this document.
+
+`create_unit_from_scene_record_0046db4b` is the third of the three seams that reach
+`004F0AD0 BSP_SceneUnit_CreatePlaneSquadronGen`, after the authored scene row and the air-ops launch
+`006C5050`. Since that creator's slot-39 attach `007F4580` is what spawns a squadron's `WingCount`
+planes, a squadron created here has to spawn them too, or a script-spawned squadron would be one
+aircraft where an authored one is three.
+
+* **was**: the binding created one unit per held-back record, whatever its class.
+* **is**: a record of class `18h` also runs `plane_squadron_plan_members_007f4580` and its wing
+  records go into the same `create_units` batch, exactly as the other two seams do. The squadron
+  registers in `bsp::plane_squadron_registry()` with its `+3D0h` array, its `+3CCh` and the `+9D8h`
+  spawn stamps.
+* **the `WingCount` problem, and how it is solved**: `007F4580` reads the key out of the entity's
+  property bag, and the bag does not survive the hold-back - `SceneSpawnPoolEntry` keeps the
+  `GameSceneEntityRecord` and not the block it was read from. So the key is read at hold-back time
+  and carried on the pool entry, which is the same thing this document's section 2 already does for
+  a held-back carrier's air-ops deck and for the same reason. An absent key gets the code default of
+  3 that `007F473A` stores.
+
+**UNVALIDATED BY A RUN, and deliberately recorded as such.** Section "GenerateObject was not called
+in either run" still holds: neither USN01 nor USN04 reaches a call in its frame budget, so no run
+has exercised this arm. What *is* measured is that both missions hold rows back that would take it -
+USN01 holds back 15 of its 20 `PlaneSquadronGen` rows, and `moviefisher` is USN04's one of two. The
+seam is written to the same rule as the two the runs do exercise, and to nothing else.
+
+`docs/PLANE_SQUADRON_HOST.md` carries the design, the other two seams and the fused-leader
+substitution that makes the squadron's own unit wing 0.

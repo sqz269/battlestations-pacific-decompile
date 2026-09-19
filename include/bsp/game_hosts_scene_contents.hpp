@@ -221,6 +221,13 @@ struct SceneSpawnPoolEntry {
     // would refuse a carrier the script had just created.
     bool has_deck{false};
     AirOpsDeck deck;
+    // Same reason as the deck, for a held-back PlaneSquadronGen row: 007F4580's
+    // mode-1 loop reads `WingCount` (00CF8840) out of the property bag, and the
+    // bag does not survive the hold-back. The key is read here so the wing can
+    // be spawned when the script creates the unit; absent means the code default
+    // of 3 at 007F473A. docs/PLANE_SQUADRON_HOST.md.
+    bool wing_count_present{false};
+    int wing_count_raw{0};
 };
 
 class SceneSpawnPool {

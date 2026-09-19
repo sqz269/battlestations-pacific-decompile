@@ -27,6 +27,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/plane_squadron_entity.hpp"
+#include "bsp/plane_squadron_host.hpp"
 #include "bsp/unit_gunnery_pass.hpp"
 
 namespace bsp::game {
@@ -464,6 +465,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     std::vector<std::pair<std::size_t, float>> choice_weights;
     std::map<int, unsigned long long> chosen_class_counts;
     std::map<int, unsigned long long> runnerup_class_counts;
+    std::map<int, int> class_sample_counts;
     unsigned long long choice_samples_logged{0};
 
     static bool ai_weight_model_enabled() {
@@ -1265,10 +1267,12 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         const int chosen_class = units.unit_class_id(chosen);
         ++chosen_class_counts[chosen_class];
         if (runner_weight >= 0.0f) ++runnerup_class_counts[units.unit_class_id(runner)];
-        // A bounded sample of individual choices, so a fort and a ship can be
-        // checked against the listing's arithmetic with their REAL hit points
-        // rather than assumed ones.
-        if (choice_samples_logged < 24) {
+        // A bounded sample PER CHOSEN CLASS rather than the first 24 overall,
+        // which only ever caught submarines and left the fort, the bomber and
+        // the fighter unmeasured. Three of each is enough to check the
+        // arithmetic and short enough not to flood the log.
+        if (class_sample_counts[chosen_class] < 3) {
+            ++class_sample_counts[chosen_class];
             ++choice_samples_logged;
             const GameAiWeaponFacts::Unit* row = game_ai_weapon_facts().row(chosen);
             const GameAiWeaponFacts::Unit* runner_row =
@@ -1285,6 +1289,48 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 runner_weight >= 0.0f ? ai_class_name(units.unit_class_id(runner)) : "none",
                 static_cast<double>(runner_weight),
                 static_cast<double>(runner_row != nullptr ? runner_row->hit_points : 0.0f));
+            // The barrel terms behind that weight, so the sample decomposes
+            // into the listing's own arithmetic rather than being taken on
+            // trust: damage = (DamageCalcTime / reload) * accuracy * shots, and
+            // total = best + min(sum, DamageCalcTime).
+            const std::size_t attacker_unit = proxy(member);
+            const GameAiWeaponFacts::Unit* attacker_row =
+                game_ai_weapon_facts().row(attacker_unit);
+            if (attacker_row != nullptr) {
+                const bsp::AiAccuracyTargetGroup group = accuracy_target_group(chosen);
+                const float damage_calc_time = tuning.at(bsp::kAiTuningDamageCalcTime);
+                double sum = 0.0;
+                double best = 0.0;
+                for (const GameAiWeaponFacts::Barrel& b : attacker_row->barrels) {
+                    bool resolved = false;
+                    const std::uint32_t offset =
+                        bsp::ai_bullet_type_accuracy_offset_009fe270(
+                            b.bullet_sub_type, group, resolved);
+                    const float accuracy =
+                        (!resolved || offset == 0u) ? 0.0f : tuning.at(offset);
+                    const float factor =
+                        bsp::ai_barrel_time_factor(damage_calc_time, b.reload);
+                    const float damage = bsp::ai_barrel_damage(factor, accuracy, b.shots);
+                    if (accuracy > 0.0f) {
+                        sum += damage;
+                        if (damage > best) best = damage;
+                    }
+                    log.notef("      barrel subtype=%02Xh accuracy=%.4f reload=%.3f "
+                        "shots=%d factor=%.4f damage=%.4f",
+                        b.bullet_sub_type, static_cast<double>(accuracy),
+                        static_cast<double>(b.reload), b.shots,
+                        static_cast<double>(factor), static_cast<double>(damage));
+                }
+                const double clamped = sum > damage_calc_time ? damage_calc_time : sum;
+                log.notef("      attacker_class=%02Xh(%s) barrels=%zu best=%.4f "
+                    "sum=%.4f clamped=%.4f total=%.4f model=total/hp=%.6f",
+                    units.unit_class_id(attacker_unit),
+                    ai_class_name(units.unit_class_id(attacker_unit)),
+                    attacker_row->barrels.size(), best, sum, clamped, best + clamped,
+                    row != nullptr && row->hit_points > 0.0f
+                        ? (best + clamped) / static_cast<double>(row->hit_points)
+                        : 0.0);
+            }
         }
     }
 
@@ -2159,24 +2205,50 @@ void GameAiCoordinatorHost::Impl::build_squadrons() {
         // 009FE0F0's air test: the plane base 0Fh. A squadron's own members are
         // planes, and nothing else in the scene produces one.
         if (!units.unit_is_kind_of(unit, bsp::kPlaneSquadronMemberKindId)) continue;
+        // Packet cc8_plane_squadron_host (15563fdf9) spawns a squadron's real
+        // WingCount wingmen, so a plane can now be a MEMBER of a squadron
+        // rather than a squadron in its own right. Seeding one squadron per
+        // member is exactly the double-order the comment on
+        // unit_owned_by_squadron forbids - "keeping both in a group
+        // double-orders the same aircraft" - and it showed as 15 AI squadrons
+        // on a USN04 that has 5. The registry's back pointer is this process's
+        // stand-in for plane+9D4h: a plane whose squadron names another unit as
+        // its flight leader is a wingman and is not a seed.
+        const bsp::PlaneSquadronHostRecord* owner =
+            bsp::plane_squadron_registry().find_by_member_unit(unit);
+        if (owner != nullptr && owner->member_units.empty()) owner = nullptr;
+        if (owner != nullptr && owner->flight_leader() != unit) continue;
         Squadron s;
-        // 007F4778 stores the wing count at +3C8h. No bag is read here, so the
-        // absent-key arm 007F4735 is the one that applies.
-        s.entity.wing_count =
-            bsp::plane_squadron_wing_count_007f4754(false, 0);
-        int spawn_index = 0;
-        if (!bsp::plane_squadron_attach_plane_007f4b43(
-                s.entity, handle(unit), &spawn_index)) {
-            continue;
+        // 007F4778 stores the wing count at +3C8h. Take the authored WingCount
+        // the registry carries when there is one; the absent-key arm 007F4735,
+        // which defaults to 3, is only right for a plane in no squadron.
+        s.entity.wing_count = owner != nullptr
+            ? owner->wing_count
+            : bsp::plane_squadron_wing_count_007f4754(false, 0);
+        // 007F4B43 is still the rule that fills +3D0h and bumps +3CCh. Only the
+        // SOURCE of the members changes: the registry's array in array order
+        // for a real squadron, and this unit alone otherwise.
+        bool attached = false;
+        const std::vector<std::size_t> lone(1, unit);
+        const std::vector<std::size_t>& wing =
+            owner != nullptr ? owner->member_units : lone;
+        for (const std::size_t plane : wing) {
+            int spawn_index = 0;
+            if (!bsp::plane_squadron_attach_plane_007f4b43(
+                    s.entity, handle(plane), &spawn_index)) {
+                continue;
+            }
+            s.member_units.push_back(plane);
+            if (unit_owned_by_squadron.size() <= plane) {
+                unit_owned_by_squadron.resize(plane + 1u, false);
+            }
+            unit_owned_by_squadron[plane] = true;
+            ++summary.squadron_members;
+            attached = true;
         }
-        s.member_units.push_back(unit);
-        if (unit_owned_by_squadron.size() <= unit) {
-            unit_owned_by_squadron.resize(unit + 1u, false);
-        }
-        unit_owned_by_squadron[unit] = true;
+        if (!attached) continue;
         squadrons.push_back(std::move(s));
         ++summary.squadrons_built;
-        ++summary.squadron_members;
     }
     if (!squadrons.empty()) {
         log.notef("ai squadrons: %llu PlaneSquadronGen objects built over %llu member "
