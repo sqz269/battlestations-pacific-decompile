@@ -1642,9 +1642,12 @@ struct GameUnitsHost::Impl {
         for (int i = 0; i < rounds; ++i) {
             if (!gunnery->release_bomb_drop(index, slot.db_run_in_origin)) break;
             ++slot.db_bombs_spawned;
-            if (slot.dive_bomb_rounds_remaining > 0) {
-                --slot.dive_bomb_rounds_remaining;
-            }
+            // NO decrement of dive_bomb_rounds_remaining here. The task's own
+            // `spend_round` already does it, and a second one took the stock
+            // from 2 to 0 on the first bomb: db_has_bomb_d1 went false, the
+            // aimdive ended 15 ticks early and `movieval` dropped from
+            // releases=2 to releases=1. Measured in local\bomb_spawn.log before
+            // this line came out.
         }
     }
 

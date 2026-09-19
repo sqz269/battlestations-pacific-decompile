@@ -3957,3 +3957,57 @@ an unnamed `referenceSpeed`, is **`tuning+4D8h`** from the same `0042E740` singl
 twelve; the row is SPNormal for all twelve by this host's own substitution. The 1024.3 m against
 650.9 m difference in aimdive entry height has to come from where the aircraft is when the flyabove
 hands over, not from an authored altitude - which is where the next packet should start.
+
+## Item 3: the bomb spawns, and the predicted impact point is good to 17.8-24.5 m
+
+Packet `cc8_dive_glide`. `local\bomb_spawn2.log`, 4800-frame USN04.
+
+**The selection predicate was the whole defect.** `GameGunneryHost::release_ordnance_drop` selects
+`swim_speed > 0` rows and clears kind `2Bh`; a dive bomber carries kind `2Ah`, so it found nothing.
+The new `release_bomb_drop` selects on `ordnance_has_general_bomb_2ah` - kind `2Ah` excluding
+`2Ch`/`31h`/`2Bh`/`33h`/`2Dh`, the set `007B9320` tests - and reuses the same `0072F830` spawn
+unchanged. Result: `bomb_drops=6 refusals=0`, one bomb per counted release, `bullet 77`.
+
+**Predicted against actual**, which is what this packet owed. `approach+D8h`/`+E0h` at the release
+tick is the point `009C7D71` computed for a bomb dropped then:
+
+| bomb | flight | vs predicted | vs target at release | died |
+| --- | --- | --- | --- | --- |
+| `movieval|.-3` | 3.45 s | **24.5 m** | 16.5 m | entity sweep, y = 8 |
+| `movieval|.-2` | 2.15 s | **17.8 m** | 26.4 m | sea surface |
+| `movieval|.-3` | 2.15 s | **17.8 m** | 26.4 m | sea surface |
+
+The CCIP solution and the round it predicts agree to **17.8-24.5 m**, inside the 25 m window
+`00CE3880` gates the release on. That is the binding validated by the round rather than by the
+steering it feeds.
+
+**Three of the six died 0.05 s after release**, at 276 m and 184 m, on the entity sweep. The cause is
+visible in the log and is **not** the spawn: the three `movieval` are **co-located in this host** -
+their entire dive-bomb census is identical to the digit, and two bombs with *different owners* record
+the same impact `-12936 -0 -12930` at the same 2.15 s - so a round leaving one aircraft's origin
+starts inside a mate's sweep volume. That is the release-geometry SUBSTITUTION showing its cost: the
+round leaves from the plane's centre because the native mount node and the platform's release slot
+are unread. The co-location is established; that a mount node offset would clear it is NOT, and no
+hull box was measured.
+
+**`bay 007BBBA0: accepted=1 refused=1` per aircraft**, which is the listing's own latch made visible:
+`007BBBB2` leaves when channel C is already at the top, so the first release opens the bay and the
+second is refused. The spawn is therefore driven by the counted rounds, not by the latch - tying it
+to `accepted` would drop the second round of every salvo.
+
+**A regression caught and removed before this run.** The first attempt
+(`local\bomb_spawn.log`) also decremented `dive_bomb_rounds_remaining` on each spawn. The task's own
+`spend_round` already does, so the stock went 2 -> 0 on the first bomb, `db_has_bomb_d1` went false,
+and `movieval` fell from `releases=2 aimdive=53 arm_ticks=2112` to `releases=1 aimdive=38
+arm_ticks=2370` - the task completing early and the aircraft no longer ditching. With the second
+decrement out, every figure is back to the baseline: `arm_ticks=2112`, `releases=2`,
+`states[done=303 aimdive=53 flyabove=158 turndown=71 attackrun=1527]`, `bombs_spawned=2`.
+
+Mission effect: damage `1552.5 -> 2660.3`, deaths `3 -> 6`, hull hits `42 -> 45`. Three of those
+deaths are the co-location artifact above, so the damage figure is **not** a clean measure of what
+bombing is worth in this mission and should not be quoted as one.
+
+**No kind `2Ah` loadout clear**, deliberately. The torpedo side clears `2Bh` because one drop is its
+whole loadout; a bomber's is a salvo out of a per-device stock this host does not model (`006E3500`
+unread). Clearing `2Ah` would make `009C7AFE`'s `HasGeneralBombOrdnance` false after the first bomb
+and take the aimdive's second release with it - the same shape as the regression above.
