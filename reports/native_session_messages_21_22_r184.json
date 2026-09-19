@@ -3170,5 +3170,81 @@
     "sha256": "a108b6e373d87f5c53925b8f076dd8369005aeb6745e2e24f05986a8f8cf9cb5",
     "files": 98,
     "head": "88e8f7af466624b3b1755d76fcb4140eb78ef85c"
+  },
+  "primary_integration": {
+    "commit": "eced144c93b8121156a33ec993dd91108c24d5d8",
+    "main_observed_at_seal": "eced144c93b8121156a33ec993dd91108c24d5d8",
+    "tested_commit_is_ancestor_of_observed_main": true,
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "coff_checks": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_session_message_tags_21_22.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "b34b2ce5de5d8d25b3e68e12b70d6e428711b522ad78bf0de5e1d5dad60b5e73",
+        "combined_sha256": "b34b2ce5de5d8d25b3e68e12b70d6e428711b522ad78bf0de5e1d5dad60b5e73"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_bit_cursor_fields.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "fbe6e2ed46af62f41d031f1b9477e26669cd8b1393b9942d0f47698031367eb3",
+        "combined_sha256": "fbe6e2ed46af62f41d031f1b9477e26669cd8b1393b9942d0f47698031367eb3"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_bit_cursor_numeric.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "4974d1ed2fdf1e94053ea3d518d21807fb4fa15644c2947d24c0d333988e4ab8",
+        "combined_sha256": "4974d1ed2fdf1e94053ea3d518d21807fb4fa15644c2947d24c0d333988e4ab8"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_bit_cursor_read.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "df5170b26b3b2c256046c6039ae0d56383ed282318b13cbd9ba7518a8cabac2c",
+        "combined_sha256": "df5170b26b3b2c256046c6039ae0d56383ed282318b13cbd9ba7518a8cabac2c"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_bit_cursor_write.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "39bde039ca70397b0d04f86d5e679dc4965adf106aa1e02d31ae78a70f67ac9f",
+        "combined_sha256": "39bde039ca70397b0d04f86d5e679dc4965adf106aa1e02d31ae78a70f67ac9f"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_session_message_base.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "2d12cbce25ec1faed503f14dc57f616f969fab33e081adaf32418b91e9a73bc4",
+        "combined_sha256": "2d12cbce25ec1faed503f14dc57f616f969fab33e081adaf32418b91e9a73bc4"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_render_batch_keys.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "8f83a3ef5545c599fdb51ac91d2dfe34524efaeefa196f9a3192345be9c6e5e2",
+        "combined_sha256": "8f83a3ef5545c599fdb51ac91d2dfe34524efaeefa196f9a3192345be9c6e5e2"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "d6f6dbc057817a5b1c935b03d88108a60ac97eb28262fc24ab96cebbc7547bd6",
+        "combined_sha256": "d6f6dbc057817a5b1c935b03d88108a60ac97eb28262fc24ab96cebbc7547bd6"
+      }
+    ],
+    "fixture": {
+      "result": {
+        "exit": 0,
+        "utc": "2026-09-19T06:53:24.3756187Z",
+        "library_sha256": "13867BE11083E26F856C86977222458C8EC6A806FA9B68B6480C9D754AB4844F",
+        "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+        "exe_sha256": "D8D0F490858526971C86670AE8997E8B01E464C2F0E9593568D22DE1240C516D"
+      },
+      "pairs": 12276,
+      "matching_bytes": 66679616,
+      "observations_identical_to_tested": true
+    },
+    "game_sha256": "9a3955ee22d6e9af1db319a904eb5ef3c6bc7a1d5db4f9ed08874238263f1bf4",
+    "artifact_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r184\\native-session-messages-21-22-main-r184.zip",
+      "sha256": "ce5c24fb86f49394a4f99bdab5cda1c73fd831dc60b1681a5ec0b2efa02676e2",
+      "files": 111,
+      "head": "eced144c93b8121156a33ec993dd91108c24d5d8"
+    }
   }
 }
