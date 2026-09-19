@@ -132,23 +132,24 @@ class PlaneSquadronRegistry {
     // The squadron a member plane belongs to, by the member's name. This is the
     // host's stand-in for reading plane+9D4h.
     PlaneSquadronHostRecord* find_by_member_name(const std::string& member) noexcept;
-    // Fill `member_units` from `member_names` once the units exist. This is the
-    // resolver the comment below refers to and that nothing implemented, which
-    // is why find_by_member_unit answered nothing for a SCENE-ROW squadron:
-    // game_hosts_script_orders.cpp fills member_units for an air-ops launch,
-    // but the scene path in game_hosts_scene_contents.cpp clears the array and
-    // then fills only member_names and member_spawn_index, queueing the wings
-    // into pending_squadron_members for create_units to make later. Measured
-    // before this existed: USN04 answered 7 AI squadrons over 15 planes, its
-    // four launches grouped and its one scene row seeding three of its own.
+    // The same by unit index, valid once the member array has been resolved by
+    // GameScriptOrdersHost::resolve_plane_squadron_members
+    // (src/game_hosts_script_orders.cpp). Two corrections to what this comment
+    // used to say, both of which cost a consumer real time:
     //
-    // `lookup` answers a unit index for a member name, or kPlaneSquadronNoUnit.
-    // Idempotent, and it never overwrites a slot already filled, so calling it
-    // after every unit-creating pass is safe. Returns the number of slots it
-    // filled. docs/AI_TARGET_WEIGHT_TERMS.md.
-    std::size_t resolve_member_units(
-        const std::function<std::size_t(const std::string&)>& lookup);
-    // The same by unit index, valid once `resolve_member_units` has run.
+    //  - it named the resolver `resolve_member_units`, which exists NOWHERE in
+    //    the tree, so a consumer grepping for it concludes the write-back was
+    //    never written and starts writing its own;
+    //  - the line on `member_units` below claimed the units host fills it. It
+    //    does not. The air-ops route fills its own slots inline, and every
+    //    other route is filled only when the resolver runs.
+    //
+    // Timing is the part that bites. The resolver's call sites are in the
+    // mission loop, and a consumer running from `create_units`'s tail - the AI
+    // host's build_squadrons does - reads an EMPTY array for a scene-row
+    // squadron. Measured: USN04 built 7 AI squadrons over 15 member planes
+    // where the mission has 5. A consumer that must answer before the
+    // resolution pass should use find_by_member_name, which needs no units.
     PlaneSquadronHostRecord* find_by_member_unit(std::size_t unit) noexcept;
     const PlaneSquadronHostRecord* find_by_member_unit(std::size_t unit) const noexcept;
     // plane+9D8h for a member unit, or -1 when the unit is in no squadron.
