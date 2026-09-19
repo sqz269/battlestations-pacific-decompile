@@ -305,6 +305,9 @@ struct GameGunnerySummary {
     unsigned long long contact_admit_ship{0};
     unsigned long long contact_admit_plane{0};
     unsigned long long bullet_ranges_derived{0};   // 006E9890 gave the gun a range
+    // Guns kept out of the AI weapon-facts row because their bullet class never
+    // resolved, the CATAPULT case. docs/AI_TARGET_WEIGHT_TERMS.md.
+    unsigned long long ai_barrels_unresolved_skipped{0};
     // 0072AD40's sweep. Both stay 0 while no producer fills gun+120h; a
     // non-zero `live` is the first sign that one has appeared.
     unsigned long long gun_pending_timers_expired{0};
