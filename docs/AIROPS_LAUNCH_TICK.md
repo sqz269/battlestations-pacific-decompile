@@ -119,6 +119,20 @@ block+50h down) and for each whose +28h is that squadron unregisters the observe
 and +8h, writes state 1, sets the timer to 5.0 and clears the +34h byte. Its one caller is
 `007F1B70 BSP_Squadron_ReleaseFromAllAirBases`, which calls it twice (`007F1BAD`, `007F1BED`).
 
+`006C56D0` is the arrival at the other end of the same cycle, `__thiscall(block, squadron)`, and
+reading it whole sharpens two things this document depends on. Its slot search has a priority the
+header's `air_ops_slot_is_free_006c56d0` deliberately does not model: it **breaks** on the slot whose
++28h already is that squadron, and only while no such slot has been found does it remember the first
+slot that is state 6 **or** state 1 *and* whose class at +4h equals squadron+35Ch *and* whose count
+at +8h equals squadron+3CCh. So "free" is an exact-match test, not a state test, and the state test
+alone is the part that is reconstructed. Having chosen a slot it writes state 1 with the timer pair,
+calls `006C0F00` to reassign the class and count from squadron+3D0h->+538h and squadron+3C8h, and
+ends at state 3 with the squadron in +28h and the observer pair moved.
+
+**It also corroborates entity+3CCh independently.** The tick, `006BD3F0` and `006BF230` all read
++3CCh as the squadron's live plane count, and here it is compared against a slot's own `+8h` count —
+a fourth reader, and one that only makes sense if the two hold the same quantity.
+
 ## 5. block+38h has a writer after all
 
 `docs/AIROPS_LAUNCH_START.md` listed "what writes block+38h" as an open question: three routines
@@ -161,6 +175,70 @@ BSP_AirOpsSite_SetReadyPlaneObserver` is the obvious next address for it.
 process ever makes `IsReadyToSendPlanes` answer false, so the mission script launches on every check
 it makes.
 
+### What fills that queue, found while a run was queued
+
+`006C6540` drains it; the filler is `006CC760`, and the chain runs from the squadron side.
+
+A store census of block+D8h and +DCh over `.text` is **empty**, and so is an address-of census of
++D8h — 42 `LEA [reg+0D8h]` sites in the image and not one in the air-operations segment. Neither
+negative means anything on its own, because the container is not addressed at +D8h: `006C6567` takes
+`LEA ECX,[ESI + 0C0h]`, so the object starts at **block+C0h** and +D8h and +DCh are its head pointer
+and its count. Four sites in the segment take that address: `006C6540` (the drain), `006CA410`,
+`006CAC00` and `006CC760`.
+
+`006CC760` is the push, `__thiscall(block, entity)`:
+
+```
+006cc760: LEA ESI,[ECX + 0xc0]        ; the container
+          CALL 00694a60               ; register an observer pair on the entity
+          MOV  iVar1,[block + 0xd8]   ; the list header
+          CALL 006bfbd0               ; splice a node carrying the entity
+          MOV  [iVar1 + 4],iVar3      ; link it in
+```
+
+Its one caller is `007F1C00`, `__thiscall(squadron, airbase_entity, flag)`, which sits beside
+`007F1B70 BSP_Squadron_ReleaseFromAllAirBases` — the caller of the landing release. It holds the
+squadron's home air base at squadron+404h behind an observer pair, and when that is set it takes the
+block off the entity through `006BCD20 BSP_AirOps_GetBlock` and, when `*(00E188A8 + 1FE4h)` is not
+zero, calls `006CC760` and `007ED6E0`; otherwise it calls `006CC7B0`, a second path not read here.
+`007F1C00`'s own callers name what puts a squadron on a deck:
+
+| caller | what it is |
+| --- | --- |
+| `007F4580 BSP_PlaneSquadron_AttachLuaSelfAndSpawnPlanes` | the squadron's own attach-and-spawn |
+| `0089E220` | a Lua binding, immediately before `0089E3C0 LaunchSquadron` |
+| `007F1FE0` | not read |
+
+So the loop closes: `006C5050` builds a squadron whose `HomeBase` is the owner, the squadron's
+attach path hands that air base to `007F1C00`, which pushes it onto block+C0h; `006C6540` pulls the
+head into block+38h and enables its scene node — the aircraft appears on the deck — and `006BF620`
+refuses readiness for as long as it is held. **That is the brake**, and it is why the native does
+not launch on every check while this process does.
+
+### The block has two queues, and they mean different things
+
+`006CC7B0` turned out to be the same push onto a different list, block+74h, and `007F1C00` chooses
+between the two on `*(00E188A8 + 1FE4h)`. `006C58A0`, sub-update 1 of `006CDC70` and the only one
+that runs **before** the game-state gate, is what drains that second list: for each node it hands
+the payload to `006C56D0`, the arrival that puts a squadron straight into a slot and ends at state
+3, then unregisters the observer pair and unlinks the node.
+
+So the two queues are two ways onto a deck:
+
+| queue | pushed by | drained by | what happens to the squadron |
+| --- | --- | --- | --- |
+| block+74h, count block+78h | 006CC7B0 | 006C58A0, before the gate | goes **straight into a slot** at state 3, no spotting |
+| block+C0h, head block+D8h, count block+DCh | 006CC760 | 006C6540, behind the gate | is **spotted on deck** one at a time into block+38h with its scene node enabled, and readiness is refused while it is held |
+
+`*(00E188A8 + 1FE4h)` is the same game-state word `006CDC70` gates its sub-updates on against 2, so
+the split reads as "a mission is running, bring the aircraft up on deck" against "assign it to a
+slot without ceremony", which is what a deck built at scene load needs.
+
+For whoever implements the brake: the seam is already in place. `create_air_ops_squadron_006c5050`
+is where a created squadron would push itself onto its home deck, and the 24-squadron ceiling that
+stands in for the brake comes out at the same time. Note which queue that is — a squadron created
+mid-mission takes the spotting one.
+
 ## 6. 006CDC70's nine sub-updates, and which of them this packet reconstructs
 
 `006CDC70 BSP_AirOps_Update`, `__thiscall(block, step)`, is the block's own update, reached from the
@@ -169,13 +247,13 @@ BSP_AirField_TickAdvance` for an airfield. It runs, in order:
 
 | callee | what it is | reconstructed here |
 | --- | --- | --- |
-| 006C58A0 | unread | no |
+| 006C58A0 | drains the **other** queue, block+74h with its count at block+78h: each node's payload goes to 006C56D0, which puts the squadron straight into a slot at state 3. The only sub-update that runs before the game-state gate | no |
 | 006C0DA0 | the slot walk: every slot of block+4Ch by index, calling 006C0510, routing 006BD520's message for each slot that returned true | **yes** |
 | 006C77E0 | a compaction of the 14h-stride list at block+A8h | no |
 | 006C64B0 | the state-2 wait described in section 1 | no |
 | 006C6540 | the ready-plane pull of section 5 | no |
 | 006CD240 | stock regeneration: a 14h-stride array at block+98h, `timer -= step`, and on expiry a reload from 006CC9F0 | no |
-| 006C5B70 | unread, behind the two failure bytes and the owner's +5Dh | no |
+| 006C5B70 | behind the two failure bytes and the owner's +5Dh: while block+38h is set and 007ED740 answers, re-publishes through 006BF150 every slot whose +28h is that same entity. A third reader of block+38h, and it treats it as the spotted plane | no |
 | 006CD810 | the AI's own launch: walks the slots counting states 3 and 4 whose class answers 13h at vtable+1Ch, against block+E8h | no |
 | the virtual at block+3Ch | unread | no |
 
@@ -290,31 +368,78 @@ registration` put it in six world lists, and the gun chain gave it ordnance (+4 
 
 ### Two findings that change the stream's own premise
 
-**The launched class carries general bombs, not torpedoes.** The arithmetic is exact: the four new
-units took "units with guns" from 53 to 57 and "general_bomb" from 1 to 5, while "torpedo" stayed at
-34. USN04's carrier slots launch class 101 with a wing of three, and class 101 in this installation
-is not a torpedo carrier. `0099A170` builds a kind Eh task only for an ordered aircraft carrying
-ordnance kind 2Bh, and the run says so in as many words:
+**The launch that was measured carries general bombs, not torpedoes — but it is not the strike this
+stream is after.** The arithmetic is exact: the four new units took "units with guns" from 53 to 57
+and "general_bomb" from 1 to 5, while "torpedo" stayed at 34. The class is 101 with a wing of three,
+and class 101 in this installation is not a torpedo carrier. `0099A170` builds a kind Eh task only
+for an ordered aircraft carrying ordnance kind 2Bh, and the run says so in as many words:
 
 ```
 summary mission torpedo task: no ordered aircraft carries torpedo ordnance (kind 2Bh),
 so 0099A170 builds no kind Eh task
 ```
 
-So the move-to tick, the glide slope, the desired-speed setter and the release above the sea are
-still unexercised, and **they will not be exercised by USN04's carrier launch** whatever else is
-fixed, unless a launch asks for a torpedo class. The class is not the deck's: `LaunchSquadron`'s
-first argument comes from the mission script, and every one of the four calls passed 101 with a
-count of 3. The next step for the stream is to find which mission, or which scripted launch, asks
-for a class carrying 2Bh — not to press further on this launch path.
+### Correction to the paragraph above, same day, before this document left the branch
 
-One caveat on that reading, stated because it is load-bearing. The slot's class travels from the
-scene's numeric `Type` token through `LaunchSquadron`'s argument to `read_vehicle_class_row` as an
-index into the `VehicleClass` global, unchanged. That is the same id-as-index convention
-`attach_scene_entities_00928a00` already uses for an entity's `Class` field, and the row was found
-rather than missing, so the ordnance reading is the process's existing convention and not a new
-assumption — but if that numbering is ever shown to differ from the `VehicleClass` index, this
-paragraph's conclusion goes with it.
+A first version of this section concluded that "USN04's carrier launch will not exercise the
+torpedo path whatever else is fixed". **That is wrong, and the deck list is what disproves it.**
+USN04 has six decks:
+
+```
+Lexington-class01   Yorktown-class01   Zuiho-class01
+Zuikaku-class01     Shokaku-class01    dummylex
+```
+
+All four launches came from `Lexington-class01` and `Yorktown-class01` — the **American** carriers,
+two squadrons each. `docs/TORPEDO_MISSION_SURVEY.md` section 3 names the strike this stream is
+after as `launchedStriker`, twelve aircraft, "launched from `Mission.Zuikaku` and `Mission.Shokaku`
+slots and ordered at launch (`usn_19_coralus.lua:1409`-`1446`)". **Zuikaku and Shokaku did not launch
+in this window at all.**
+
+So what was measured is the American carriers' own launch, and the class-101 finding is a fact about
+*that* launch, not about `launchedStriker`.
+
+### The three classes, read from the installed tables
+
+The classes are now resolved, and without a game run. `bsp_mission_script_probe` runs the same
+autoload folder `00886900` does, so the `VehicleClass` global is in its state exactly as the game
+leaves it; the new `--vehicle-class <index>` option prints a row from it. All three indices that
+matter:
+
+```
+VehicleClass[101] : Name="globals.unitclass_wildcat" Type="Fighter"
+VehicleClass[158] : Name="globals.unitclass_val"     Type="DiveBomber"
+VehicleClass[162] : Name="globals.unitclass_kate"    Type="TorpedoBomber"
+```
+
+**This answers `docs/TORPEDO_MISSION_SURVEY.md`'s standing open item.** That document's line 231 says
+whether `launchedStriker` contains torpedo-armed aircraft "is still open and now unanswerable from a
+run", and its line 233 names the script's two plane types, 158 and 162, as unresolved. They resolve
+to the Val and the **Kate**, and the Kate's class `Type` is `TorpedoBomber`. Coral Sea's Japanese
+strike is a Val-and-Kate strike, which is historically what it was.
+
+**And it retracts a sentence written two paragraphs above, earlier the same day.** That sentence
+called the American launch "twelve dive bombers, which is what a Lexington and a Yorktown carried at
+Coral Sea". Class 101 is the **Wildcat**, `Type="Fighter"`: the American carriers launched a
+twelve-fighter patrol, not a bomber strike. The ordnance census still says those four units carry
+general-bomb and not torpedo ordnance, which is a fact about the gun list this process built for
+them; the class *type* is the authored one above and the two should not have been conflated.
+
+Two limits on the reading, stated because they are load-bearing. `Type` is the literal
+`00964790`'s string chain compares, so `TorpedoBomber` is an authored class type and **not** proof
+that the class's guns carry ordnance kind 2Bh; only a run that creates one settles that. And the
+slot's class travels from the scene's numeric `Type` token through `LaunchSquadron`'s argument to
+`read_vehicle_class_row` as an index into `VehicleClass`, unchanged — the same id-as-index
+convention `attach_scene_entities_00928a00` already uses, and the rows were found rather than
+missing, so it is the process's existing convention rather than a new assumption.
+
+### What this leaves
+
+The launch path is no longer the blocker for the stream's goal. With the tick and the creation seam
+on this branch, a `launchedStriker` launch of class 162 becomes a real Kate unit with a `thisTable`
+slot, and `PilotSetTarget` on it is exactly the call that installs the torpedo task. The only thing
+between here and that is **mission time**: the `luaDoTimeTable` entry that carries the order still
+had 34.95 s to run when the 150 s window closed.
 
 **The squadrons are ordered by the party AI, not by the mission script.** All four appear in the
 pilot-attack tally (`ordered` 2 -> 6), and each one's line is
@@ -348,15 +473,28 @@ the peer more than the measurement is worth. The command for whoever takes it:
   --press-start-frame 30 --menu-select USN04 --mission-frames 6000 --mission-frame-seconds 0.05
 ```
 
-What it would answer: whether `luaTimetable` entity 100006 fires at ~185 s and whether the order it
-carries is the one that sends the four squadrons. It cannot produce a torpedo task either way, for
-the reason above.
+What it would answer: whether `luaTimetable` entity 100006 fires at ~185 s, whether the order it
+carries is the one that sends the four American squadrons, and — the decisive one — whether
+`Zuikaku-class01` and `Shokaku-class01` then launch `launchedStriker` and with what class. If that
+class carries ordnance 2Bh, everything this stream has built downstream of the launch becomes
+reachable in one run.
 
 ## Uncertainty
 
-* What fills the queue at block+D8h that `006C6540` drains. Until that is reconstructed this
-  process has no brake on the script's launches, and the 24-squadron ceiling stands in for it.
-* `006C58A0`, `006C5B70` and the virtual at block+3Ch were not read.
+* ~~What fills the queue at block+D8h that `006C6540` drains.~~ **Answered in section 5**: `006CC760`,
+  from `007F1C00` on the squadron side. Implementing the push is what removes the 24-squadron
+  ceiling. `006CC7B0` is now read too: it is byte for byte the same push onto a **different** list,
+  block+74h, and `007F1C00` chooses between the two on `*(00E188A8 + 1FE4h)` — the same game-state
+  word `006CDC70` gates its sub-updates on against 2. What distinguishes the two lists is open, and
+  so is `007F1FE0`, one of the three callers.
+* ~~`006BF150`, called at the end of `006C7490`, was not read.~~ **Answered.** It is the
+  slot-changed notification: `00696350(0)`, then `006BD520` builds the message for that block and
+  slot and `0077C7B0` routes it — the same pair the slot walk `006C0DA0` performs inline at
+  `006C0DFB`. Every routine that changes a slot publishes it, which is why it appears at the end of
+  the launch start and on several arms of `006CD350` and `006CCDA0`. This also closes the
+  corresponding item in `docs/AIROPS_LAUNCH_START.md`.
+* Of `006CDC70`'s nine sub-updates only the virtual at block+3Ch is now unread; `006C58A0` and
+  `006C5B70` are in the table above. None of the eight but `006C0DA0` is reconstructed.
 * `006BC8E0`, which `006C64B0` calls when a state-2 slot's second has passed, was not read.
 * slot+4Ch has no writer this thread has read. slot+50h now has one: `006CCDA0` stores its fifth
   argument there on two arms (`*(slot + 0x50) = param_5`), which is the `OwnerPlayer` 006C5050

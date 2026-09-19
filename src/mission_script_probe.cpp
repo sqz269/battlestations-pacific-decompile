@@ -19,7 +19,7 @@
 // Usage: bsp_mission_script_probe [game-root] [mission-name]
 //            [--stub-dofile] [--skip-global-folders] [--skip-lobby-settings]
 //            [--no-self-table] [--recon-tables] [--core-bindings] [--navigator-bindings]
-//            [--stand-in-random] [--sweep] [--quiet]
+//            [--stand-in-random] [--sweep] [--quiet] [--vehicle-class <index>]...
 // Defaults to the installed copy and "usn/usn_2_java".
 
 #include "bsp/lua_binding_core.hpp"
@@ -1508,6 +1508,7 @@ int main(int argc, char** argv)
     g_probe.game_root = kDefaultGameRoot;
     bool sweep = false;
     int positional = 0;
+    std::vector<int> vehicle_class_indices;
     for (int i = 1; i < argc; ++i) {
         const std::string argument = argv[i];
         if (argument == "--stub-dofile") {
@@ -1530,6 +1531,8 @@ int main(int argc, char** argv)
             sweep = true;
         } else if (argument == "--quiet") {
             g_probe.verbose = false;
+        } else if (argument == "--vehicle-class" && i + 1 < argc) {
+            vehicle_class_indices.push_back(std::atoi(argv[++i]));
         } else if (positional == 0) {
             g_probe.game_root = argument;
             positional = 1;
@@ -1639,6 +1642,51 @@ int main(int argc, char** argv)
                   << autoload_count << " from Scripts/datatables/autoload/\n";
     } else {
         std::cout << "global folders : SKIPPED (--skip-global-folders)\n";
+    }
+
+    // --vehicle-class <index>...: packet cc8_airops_launch_tick. The autoload
+    // folder above ran Scripts/datatables/autoload/vehicleclasses.lua, so the
+    // `VehicleClass` global is in the state exactly as 00886900 leaves it for
+    // the game. `LaunchSquadron` takes a class index as its first argument and
+    // docs/TORPEDO_MISSION_SURVEY.md line 233 names two of them, 158 and 162,
+    // without resolving either. This prints a row without a game run, which is
+    // what makes the question answerable while the game lock is held elsewhere.
+    // A read, not a reconstruction: nothing here stands in for a native.
+    for (const int index : vehicle_class_indices) {
+        lua_getfield(L, LUA_GLOBALSINDEX, "VehicleClass");
+        if (lua_type(L, -1) != LUA_TTABLE) {
+            std::cout << "VehicleClass   : the global is not a table; index " << index
+                      << " cannot be read\n";
+            lua_pop(L, 1);
+            continue;
+        }
+        lua_pushinteger(L, index);
+        lua_gettable(L, -2);
+        if (lua_type(L, -1) != LUA_TTABLE) {
+            std::cout << "VehicleClass[" << index << "] : absent\n";
+            lua_pop(L, 2);
+            continue;
+        }
+        const auto field = [&](const char* key) -> std::string {
+            lua_getfield(L, -1, key);
+            const int type = lua_type(L, -1);
+            std::string out;
+            if (type == LUA_TSTRING) {
+                const char* text = lua_tolstring(L, -1, nullptr);
+                out = text != nullptr ? text : "";
+            } else if (type == LUA_TNUMBER) {
+                out = std::to_string(lua_tonumber(L, -1));
+            } else if (type == LUA_TTABLE) {
+                out = "(table)";
+            }
+            lua_pop(L, 1);
+            return out;
+        };
+        std::cout << "VehicleClass[" << index << "] : Name=\"" << field("Name")
+                  << "\" Type=\"" << field("Type") << "\" Class=\"" << field("Class")
+                  << "\" Weapons=" << field("Weapons") << " Guns=" << field("Guns")
+                  << " MaxSpeed=" << field("MaxSpeed") << "\n";
+        lua_pop(L, 2);
     }
 
     // -- 004e01f7, the self table -------------------------------------------
