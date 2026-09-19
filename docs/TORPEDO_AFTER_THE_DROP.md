@@ -1151,3 +1151,87 @@ against a 5 m half-beam. That sharpens section 8.2's point rather than settling 
 centre of a 110 by 10 metre hull is either a clean miss abeam by some forty-six metres, or a pass
 through the bow or stern line, and the crossing angle the section 8.1 census now records is the only
 thing that can say which.
+
+## 11. The census answers it: the misses are a stern chase, not a lead failure
+
+`local/aim_census_usn01.log`, USN01, 3000 mission frames, commit `c91545d0c`.
+
+**Every ordered target resolves, and they are named for the first time.** `0071EBF0`'s rule picks a
+row per unit and resolves its token by name:
+
+```
+command target 0071EBF0: unit=Mav1 token="Dunlap"       -> Dunlap
+command target 0071EBF0: unit=Mav2 token="Northampton"  -> Northampton
+command target 0071EBF0: unit=Mav3 token="Northampton"  -> Northampton
+command target 0071EBF0: unit=Mav4 token="SaltLakeCity" -> SaltLakeCity
+command target 0071EBF0: unit=Mav5 token="SaltLakeCity" -> SaltLakeCity
+```
+
+| torpedo | ordered target | closest to it | at | that target moved | crossing angle |
+| --- | --- | --- | --- | --- | --- |
+| Mav1 | Dunlap | 51.5 m | 26.45 s | **449.9 m** | 0.094 rad = **5.4 deg** |
+| Mav2 | Northampton | 77.6 m | 22.60 s | 345.2 m | 0.189 rad = 10.8 deg |
+| Mav3 | Northampton | 66.6 m | 22.85 s | 349.1 m | 0.159 rad = 9.1 deg |
+| Mav4 | SaltLakeCity | 76.8 m | 21.60 s | 313.4 m | 0.205 rad = 11.7 deg |
+| Mav5 | SaltLakeCity | 67.9 m | 21.85 s | 317.1 m | 0.178 rad = 10.2 deg |
+
+### 11.1 Premise 1 was right all along, and section 8.1's retraction of it was wrong
+
+Section 5 predicted the target moves "about 340 m" during the run. **Measured: 313.4 to 449.9 m.**
+Section 8.1 called that prediction three to six times too large and withdrew it. The displacement
+was never the error.
+
+* **was** (8.1): the miss is 51 to 77 m, so the 340 m displacement model is wrong by a factor of
+  three to six.
+* **is**: the displacement is 313 to 450 m, exactly as predicted. What was wrong is the step from
+  displacement to miss - section 5 took a crossing angle of about 42 degrees from a ship heading and
+  a commanded heading read at *different times*, and the real angle between the round's track and
+  the target's course at closest approach is **5.4 to 11.7 degrees**.
+* so **section 8.1's own retraction is retracted**, and section 5's arithmetic is reinstated with
+  its conversion corrected.
+
+### 11.2 The model closes to within ten metres
+
+Cross-track miss should be `sin(crossing) * travel`:
+
+| torpedo | `sin(crossing) * travel` | measured | residual |
+| --- | --- | --- | --- |
+| Mav1 | 42.2 m | 51.5 m | +9.3 |
+| Mav2 | 64.9 m | 77.6 m | +12.7 |
+| Mav3 | 55.3 m | 66.6 m | +11.3 |
+| Mav4 | 63.8 m | 76.8 m | +13.0 |
+| Mav5 | 56.1 m | 67.9 m | +11.8 |
+
+Five for five, with a **consistent positive residual of 9 to 13 m** — the same sign and the same
+order every time, so it is a systematic offset (the release point sits ahead of the aircraft, and the
+round is filed at the drop rather than at the aim solution), not noise. Nothing is left over to
+attribute to a lead.
+
+### 11.3 Section 8.2's question, answered: abeam, not through the bow line
+
+At 5 to 12 degrees the round runs **nearly along the target's axis**, so the closest approach is a
+lateral separation rather than a pass near the bow or stern. Against half-beams of 5 m (Dunlap) and
+8 m (the cruisers), the five rounds missed by **46 to 69 metres of open water**. The "0.94 of the
+half-Length" figure in section 8.2.1 is real but reads the wrong way round: a scalar distance that
+large only looks marginal because the hull is long, and the geometry says the round was never near
+it.
+
+### 11.4 What this does and does not settle about the lead
+
+**Settled**: the misses need no lead to explain them. A zero-lead aim, a 313-to-450 m target
+displacement and a 5-to-12 degree crossing angle predict the measured closest approach within 13 m
+for all five rounds. Section 8.1's premise 3 argument - "a 51.5 m approach is much closer than a
+zero-lead aim against a 15 m/s crosser can produce" - **is withdrawn**: the target is not a crosser
+at this geometry, it is a stern chase, and a zero-lead aim produces exactly what was measured.
+
+**Not settled, and this is the standing limit**: all of it measures the *host*, whose aim point is
+the substituted present position by construction (section 8.4). The image may still lead; nothing
+here can see it. What the census removes is the *evidence for* a lead that section 8.1 thought it
+had. The producer question (section 6.3.3) is untouched and still needs a native trace.
+
+Two further facts worth keeping. Premise 2 is half true: Mav1, Mav4 and Mav5 came nearest to the
+ship they were aimed at, but **Mav2 and Mav3 came nearest to shore structures** (`Storage, 04 01` at
+26.1 m, `Hangar, Small, 04 01` at 17.3 m) while their ordered target Northampton was 77.6 and 66.6 m
+away - so the nearest-unit census alone would have mis-attributed two of the five. And Mav1's target
+moved 449.9 m, a third more than the others, because Dunlap is the Destroyer and makes
+`reference_speed` 19.24 against the cruisers' 16.72.
