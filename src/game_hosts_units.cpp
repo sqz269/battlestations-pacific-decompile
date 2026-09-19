@@ -417,6 +417,18 @@ struct GameUnitSlot {
     // three flyabove flags key on.
     float db_flyabove_height{0.0f};
     float db_flyabove_span{0.0f};
+    // The aimdive trace. Endpoint values cannot tell a dive that never pointed
+    // at the target from one that pointed and was too slow, so the aim states
+    // sample their own geometry the way the run-in samples its range.
+    float db_aimdive_entry_range{-1.0f};
+    float db_aimdive_entry_bearing{0.0f};
+    float db_aimdive_min_range{-1.0f};
+    float db_aim_trace_range[12]{};
+    float db_aim_trace_error[12]{};
+    float db_aim_trace_bank[12]{};
+    float db_aim_trace_bearing[12]{};
+    int db_aim_trace_samples{0};
+    int db_aim_state_ticks{0};
     // 009C58D0's steering census.
     int db_aimdive_steer_ticks{0};
     float db_aimdive_pitch_last{0.0f};
@@ -1190,6 +1202,27 @@ struct GameUnitsHost::Impl {
                 slot.db_aim_error_abs_min = mag;
                 slot.db_aim_error_min_range = slot.db_planar_bc;
                 slot.db_aim_error_min_alt = slot.motion.position[1];
+            }
+            if (slot.db_aimdive_min_range < 0.0f ||
+                slot.db_planar_bc < slot.db_aimdive_min_range) {
+                slot.db_aimdive_min_range = slot.db_planar_bc;
+            }
+            const float bearing_error = bsp::wrapped_angle_subtract_00438b10(
+                slot.db_bearing_c0, slot.plane_heading_c6c);
+            if (slot.db_aimdive_entry_range < 0.0f) {
+                slot.db_aimdive_entry_range = slot.db_planar_bc;
+                slot.db_aimdive_entry_bearing = bearing_error;
+            }
+            ++slot.db_aim_state_ticks;
+            // One sample every 30 aim ticks, about 2.7 s.
+            if (slot.db_aim_trace_samples < 12 &&
+                slot.db_aim_state_ticks >= (slot.db_aim_trace_samples + 1) * 30) {
+                const int i = slot.db_aim_trace_samples;
+                slot.db_aim_trace_range[i] = slot.db_planar_bc;
+                slot.db_aim_trace_error[i] = err.error;
+                slot.db_aim_trace_bank[i] = slot.plane_bank_angle_c68;
+                slot.db_aim_trace_bearing[i] = bearing_error;
+                ++slot.db_aim_trace_samples;
             }
         }
         in.aim_error = err.error;
@@ -7250,6 +7283,31 @@ void GameUnitsHost::report() {
                         static_cast<double>(slot->db_aimdive_bearing_last),
                         static_cast<double>(slot->db_flyabove_height),
                         static_cast<double>(slot->db_flyabove_span));
+                // The aim trace: what the endpoint numbers cannot say.
+                if (slot->db_aim_state_ticks > 0) {
+                    char trace[320];
+                    int tn = 0;
+                    trace[0] = '\0';
+                    for (int i = 0; i < slot->db_aim_trace_samples; ++i) {
+                        tn += std::snprintf(trace + tn,
+                            (tn < static_cast<int>(sizeof(trace)))
+                                ? sizeof(trace) - static_cast<std::size_t>(tn) : 0u,
+                            "%s%.0f/%.0f/%.2f/%.2f", i > 0 ? " " : "",
+                            static_cast<double>(slot->db_aim_trace_range[i]),
+                            static_cast<double>(slot->db_aim_trace_error[i]),
+                            static_cast<double>(slot->db_aim_trace_bank[i]),
+                            static_cast<double>(slot->db_aim_trace_bearing[i]));
+                        if (tn >= static_cast<int>(sizeof(trace))) break;
+                    }
+                    host.log.notef("  divebomb %-12s aim trace: entry range=%.1f m "
+                        "bearing=%.4f rad | closest range=%.1f m | ticks=%d | "
+                        "range/error/bank/bearing per 30 ticks: %s",
+                        slot->row.name.c_str(),
+                        static_cast<double>(slot->db_aimdive_entry_range),
+                        static_cast<double>(slot->db_aimdive_entry_bearing),
+                        static_cast<double>(slot->db_aimdive_min_range),
+                        slot->db_aim_state_ticks, trace);
+                }
                 }
             }
             if (tasked > 0) {

@@ -84,7 +84,21 @@
       }
     }
   },
-  "runs": [],
+  "runs": [
+    {
+      "log": "local/usn04_target.log",
+      "tree": "0183d8e3f plus the run-in origin rename",
+      "arguments": "--frames 5000 --press-start-frame 30 --menu-select USN04 --mission-frames 4800 --mission-frame-seconds 0.05",
+      "result": "arm_ticks=2109 transitions=7 states[goaway=1 aimdive=318 aimglide=37 flyabove=159 turndown=67 attackrun=1527]. approach+BCh ends at 1866.0 m, not the broken run 0.0; latch closed at tick 1528; turndown latched at 1719 with |bank| 3.1256 rad; the 009C58D0 steering ran for all 318 aimdive ticks.",
+      "owed_numbers": {
+        "closest_miss_vs_25m": "347.40 m at range 443.3 m, altitude 654.0 m (was 359.50 m)",
+        "release_altitude_vs_350_450_floor": "no release; approach+A8h drew 350.0 m and flyabove B = 3.4 m at the end shows the aircraft reached sea level, so the floor was reachable",
+        "releases": "none; releases=0 bombs_spawned=0 rounds_left=2"
+      },
+      "gate": "still the 25.0 m aim window at 00CE3880. At the closest sample the model forces cos(bearing) = -0.99977 - the target dead astern - and the last aimdive tick reads bearing 2.8765 rad with pitch and roll both saturated.",
+      "next": "a trace was added rather than a guess: aim-state entry range and bearing, closest range, and range/error/bank/bearing every 30 ticks, to separate a dive that starts past the aim point from a roll too slow to hold the nose on."
+    }
+  ],
   "open": {
     "0071EBF0 mode 2": "this+30h == 2 returns this+18Ch; this host has no such mode.",
     "00E19BB4": "the lazily built static default; read, not modelled.",

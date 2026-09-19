@@ -2076,3 +2076,57 @@ This also finishes the aimdive steering's last contract in principle: the wide a
 `SubtractWrappedAngle(heading, bearing(aimPoint - runInOrigin))`. This host does not latch a run-in
 origin, so it still passes the live bearing to both arms, labelled at the call site - but the value
 is now named rather than unknown.
+
+## `local\usn04_target.log`: the command-target fix works, and the chain runs end to end
+
+| measure | `usn04_aim` (broken target) | `usn04_target` (fixed) |
+| --- | --- | --- |
+| arm ticks | 2370 | 2109 |
+| transitions | 3 | **7** |
+| attackrun | 240 | 1527 |
+| flyabove | 1 | 159 |
+| turndown | 0 | 67 |
+| aimdive | 0 | **318** |
+| aimglide | 2129 | 37 |
+| goaway | 0 | **1** |
+| latch closed at | tick 241 (bogus) | tick 1528 |
+| `approach+BCh` at the end | **0.0 m** | 1866.0 m |
+| turndown latch | never | tick 1719, `|bank|` 3.1256 rad |
+| `009C58D0` steer ticks | 0 | **318** |
+| closest miss vs the 25.0 m window | 359.50 m | **347.40 m** |
+| release altitude vs the {350, 450} floor | none | none; `approach+A8h` drew 350.0 |
+| releases / bombs / rounds left | 0 / 0 / 2 | 0 / 0 / 2 |
+
+The target no longer collapses: `approach+BCh` ends at a sane 1866.0 m instead of exactly 0.0, the
+run-in takes its full 1527 ticks, and the walk reaches four states it had never reached together -
+`aimdive`, `aimglide` and `goaway` in one sortie, seven transitions. The aimdive steering bound last
+packet ran for all 318 of its ticks.
+
+**No release, and the aim window is still the gate.** The closest the error came was 347.40 m
+against 25.0 m - twelve metres better than before, which is noise, not progress.
+
+### Why the steering did not help, to the metre
+
+The arithmetic that cleared the aim error last packet says the same thing about this run. At the
+closest sample - `|error|` 347.40 m, range 443.3 m, altitude 654.0 m - the model gives `x0 = 450`,
+`x1 = 1000`, `t = 0.3709`, `lead = 25.96`, `gain = 0.7404`, so
+`|cos(bearing) * 443.3 - 25.96| = 469.2`. The positive branch needs `cos = 1.116`, impossible; the
+negative one gives **`cos(bearing) = -0.99977`**. The target was dead astern at the best moment of
+the whole dive, exactly as in the previous run.
+
+The last aimdive tick agrees: `bearing=2.8765 rad`, 164.8 degrees, with both commands saturated
+(`pitch=-1.000`, `roll=-1.000`). So the steering is issuing full deflection the whole time and the
+aircraft is not getting its nose onto the target.
+
+That leaves two possibilities the endpoint numbers cannot separate:
+
+1. the dive **starts** with the target already behind - the run-in closes to 1100 m, then `flyabove`
+   (159 ticks) and `turndown` (67 ticks) burn 226 ticks, about 20 s, and a split-S reverses the
+   heading, so `aimdive` may begin past the aim point; or
+2. the dive starts pointed correctly and the roll is **too slow** to hold the nose on over 318
+   ticks.
+
+These have different fixes, so this packet adds a trace rather than guessing: the aim states now
+record their entry range and bearing, their closest range, and range/error/bank/bearing every 30
+ticks. `flyabove B=3.4 m span=0.0 m` at the end says the aircraft finished at sea level, so the
+`approach+A8h` release floor of 350.0 m was reachable - the altitude gate is not what is blocking.
