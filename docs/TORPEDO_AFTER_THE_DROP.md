@@ -2126,6 +2126,19 @@ subtraction. Whether that asymmetry is the image's intent or whether the warhead
 somewhere else entirely is unread. **Nothing above is a reading of the image's torpedo warhead; it
 is a measurement of what this host does.**
 
+> **Answered, and both guesses above retracted — see docs/TORPEDO_WARHEAD.md.** The warhead is the
+> class row's `Blast` sub-table, not its `DamageMin`/`DamageMax`. `0084BC60` step 7
+> (`0084BE25`..`0084BEE3`) spawns a radial burst carrying a draw between `BlastDamageMin` and
+> `BlastDamageMax` over `BlastRange`, and this host never spawned it at all. For bullet 69 in this
+> installation that is **1200 over 50 m**, against a `DamageMin`/`DamageMax` of **50** — and both
+> carriers' `Armour` is exactly **50**, so the contact damage is exactly `(50 - 50) = 0`. The
+> measured zero is the formula landing on its exact value, not an approximation, and the same
+> arithmetic gives the `44` this section saw on a squadron mate (a B5N Kate's `Armour` is 6).
+> Retracted: the `0FCh` torpedo descriptor has **no** torpedo-only damage field — a torpedo's
+> `vtable[54h]` is `006E2820`, which draws between the same `DamageMin`/`DamageMax` fields every
+> other weapon entity uses — and `0082712E`'s armour-free `hull_damage(0.0f)` is only the roll
+> torque, never a damage figure.
+
 ### 15.7 Run out to 4500 frames: six hits on two carriers, and both carriers end at full health
 
 `local/swim_probe4500_usn04.log`, the same probe binary, `--frames 4700 --mission-frames 4500`.

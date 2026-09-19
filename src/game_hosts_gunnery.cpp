@@ -58,6 +58,10 @@ constexpr float kGravity = 9.8100004196166992187500f;      // 00CF9058
 // 00470470's reset leaves +34h at -1, which is the hull segment a direct
 // segment hit keeps: all three known shapes write -1 (docs/HIT_NARROWPHASE.md).
 constexpr int kDirectHitHullSegment = -1;
+// FLD double ptr [00D7A270] at 0084BE63: the burst centre is backed off from
+// the impact point along the impact direction by this much. The value reads
+// 0.05, one 20 Hz frame of travel. tools/pe_const_read.py d:00d7a270
+constexpr float kBlastCentreBackOff = 0.05f;
 
 float dot3(const float a[3], const float b[3]) noexcept {
     return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
@@ -231,6 +235,11 @@ struct GameGunneryHost::Impl {
     // coordinator holds. docs/AI_TARGET_WEIGHT_TERMS.md term 2.
     void publish_ai_weapon_facts();
     void apply_hit(std::size_t shooter, std::size_t gun_row, std::size_t victim,
+        const float point[3], const float direction[3],
+        const bsp::HitRecord* blast_record = nullptr);
+    // 0084BC60 step 7 (0084BE28..0084BEE3) and the gather behind 0084BAD0: the
+    // radial burst that carries a torpedo's warhead. docs/TORPEDO_WARHEAD.md.
+    void apply_torpedo_blast(std::size_t shooter, std::size_t gun_row,
         const float point[3], const float direction[3]);
     void kill_unit(std::size_t victim);
 
@@ -415,6 +424,7 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "                f[q .. 'fchance'] = num(bc.FireChance, 1000) or 0\n"
         "                f[q .. 'mass'] = num(bc.Mass, 1000) or 0\n"
         "                if type(bc.Blast) == 'table' then\n"
+        "                  f[q .. 'bdmin'] = num(bc.Blast.BlastDamageMin, 1000) or 0\n"
         "                  f[q .. 'bdmax'] = num(bc.Blast.BlastDamageMax, 1000) or 0\n"
         "                  f[q .. 'brange'] = num(bc.Blast.BlastRange, 1000) or 0\n"
         "                end\n"
@@ -630,6 +640,7 @@ void GameGunneryHost::Impl::build_guns() {
                 b.fire_damage = flat_scaled(type_id, make("fdmg"), kMilliScale, 0.0f);
                 b.fire_chance = flat_scaled(type_id, make("fchance"), kMilliScale, 0.0f);
                 b.mass = flat_scaled(type_id, make("mass"), kMilliScale, 0.0f);
+                b.blast_damage_min = flat_scaled(type_id, make("bdmin"), kMilliScale, 0.0f);
                 b.blast_damage_max = flat_scaled(type_id, make("bdmax"), kMilliScale, 0.0f);
                 b.blast_range = flat_scaled(type_id, make("brange"), kMilliScale, 0.0f);
                 bullets.push_back(b);
@@ -2414,6 +2425,22 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
             done("Projectile::on_impact_0084bc60", 0x0084bc60u);
             apply_hit(shot.owner_unit - 1, shot.gun_row, query.hit_unit - 1, point,
                 direction);
+            // 0084BC60 step 7: the impact also spawns the burst that carries a
+            // torpedo's warhead. Without it a torpedo does its DamageMin draw
+            // and nothing else, which a carrier's Armour cancels exactly.
+            //
+            // The image's gate is the class descriptor's +6Ch, so it is NOT
+            // torpedo-only: a bomb or a rocket with a Blast table bursts on the
+            // same step, and this loop carries those shots too. The burst is
+            // restricted to torpedoes here on purpose, because the bomb path is
+            // another packet's and widening it would move that packet's
+            // baseline. docs/TORPEDO_WARHEAD.md section 8.
+            // `swim_speed > 0` is this file's own test for a torpedo gun (the
+            // row's WaterTravelSpeed), the same one the drop path uses.
+            if (shot.gun_row < guns.size() && guns[shot.gun_row].swim_speed > 0.0f) {
+                apply_torpedo_blast(shot.owner_unit - 1, shot.gun_row, point,
+                    direction);
+            }
             shot.alive = false;
             continue;
         }
@@ -2662,12 +2689,9 @@ public:
     void route_hull_impact_effect(int, const float[3]) override {}
     void route_part_impact_effect(int, const float[3]) override {}
 
-    bool apply_base_hit_record() override {
-        // 008777D0, the base hit record: the hull pass and the part pass. The
-        // hull damage reaches the unit's own health through 00879070.
-        const float armour = owner_.unit_state[victim_].armour;
-        const float damage = bsp::hull_damage_00470510(hit_, armour);
-        owner_.done("ShipHit::base_hit_record_008777d0", 0x008777d0u);
+    // One AddDamage, the `0.0 < damage` test at 008778C6 / 00877A2E and the
+    // 00879070 -> 00877B90 write both passes share.
+    bool add_damage(float damage) {
         if (damage <= 0.0f) return false;
         applied_ += damage;
         bsp::UnitHealth health;
@@ -2682,8 +2706,37 @@ public:
             outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
         owner_.done("ShipHit::set_health_00877b90", 0x00877b90u);
         if (write.wrote) owner_.unit_state[victim_].health = write.stored_health;
-        ++owner_.summary.hull_damages;
         return true;
+    }
+
+    bool apply_base_hit_record() override {
+        // 008777D0, the base hit record: the hull pass and the part pass. The
+        // hull damage reaches the unit's own health through 00879070.
+        //
+        // The image gates the hull pass on `hit+34h != -1` (OR EDI,0FFFFFFFFh at
+        // 008777DA, CMP [EBX+34h],EDI and JZ 008778D8 at 008777DD/E2). This host
+        // does NOT reproduce that gate, deliberately: every hull segment index
+        // the reconstruction has read is -1, so the gate as read would zero all
+        // gunnery damage. docs/EXPLOSION_RADIAL_DAMAGE.md marks the producer of
+        // a non-negative +34h as a labelled gap. Because the hull pass here is
+        // ungated, a record that is meant to carry its damage in the part pass
+        // must leave +14h at zero; apply_torpedo_blast does.
+        const float armour = owner_.unit_state[victim_].armour;
+        const float damage = bsp::hull_damage_00470510(hit_, armour);
+        owner_.done("ShipHit::base_hit_record_008777d0", 0x008777d0u);
+        bool applied_any = add_damage(damage);
+        if (applied_any) ++owner_.summary.hull_damages;
+
+        // The part pass, 008778D8..00877A43: one 004705C0 per entry of the
+        // array at +3Ch, each floored at zero inside the formula and added
+        // through the same 00879070 the hull pass uses (AddDamage at 00877A37).
+        // A blast record carries its damage here, in +28h.
+        for (int i = 0; i < hit_.part_hit_count; ++i) {
+            const float part = bsp::part_damage_004705c0(hit_, armour, i);
+            owner_.done("ShipHit::part_damage_004705c0", 0x004705c0u);
+            if (add_damage(part)) applied_any = true;
+        }
+        return applied_any;
     }
 
     void set_hit(const bsp::HitRecord& hit) noexcept { hit_ = hit; }
@@ -2702,7 +2755,8 @@ private:
 }  // namespace
 
 void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
-    std::size_t victim, const float point[3], const float direction[3]) {
+    std::size_t victim, const float point[3], const float direction[3],
+    const bsp::HitRecord* blast_record) {
     if (victim >= unit_state.size() || shooter >= unit_state.size()) return;
     UnitState& target = unit_state[victim];
     if (target.dead) return;
@@ -2733,6 +2787,12 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     hit.part_hit_count = 0;
     done("Projectile::hit_record_set_shot_00470350", 0x00470350u);
     done("Projectile::shot_damage_base_006e7c60", 0x006e7c60u);
+
+    // A blast record replaces the direct-hit one whole: 0084BAD0 builds its own
+    // record per gathered entity (+28h the burst damage, +24h the radius, +2Ch
+    // the ignore-falloff byte) and the direct DamageMin/DamageMax draw plays no
+    // part in it.
+    if (blast_record != nullptr) hit = *blast_record;
 
     bsp::ShipHitRecordView view;
     view.segment_kind = 0x0A;
@@ -2784,6 +2844,101 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     health.current_health = target.health;
     health.max_health = target.max_health;
     if (bsp::unit_is_dead(health)) kill_unit(victim);
+}
+
+// 0084BC60 step 7, read from the listing at 0084BE25..0084BEE3.
+//
+//   MOV EAX,[ESI+8]            ; the projectile's weapon class descriptor
+//   CMP byte ptr [EAX+6Ch],0   ; the "has blast" flag
+//   JZ  0084BEE8               ; no Blast table, no burst
+//   FLD  float ptr [EAX+0B8h]  ; BlastDamageMax
+//   FLD  float ptr [EAX+0B4h]  ; BlastDamageMin
+//   CALL 00BD2F10              ; a uniform draw between them
+//   FSTP float ptr [ESP+84h]   ; -> the &damage the 0084BAD0 contract takes
+//   LEA  EDX,[EAX+70h]         ; -> &radius, BlastRange, one float, not a draw
+//   ... hitPos - direction * [00D7A270]   ; the burst centre, 00D7A270 = 0.05
+//   CALL 0084BAD0
+//
+// So a torpedo's warhead is its Blast sub-table, not its DamageMin/DamageMax.
+// For bullet class 69 (the Kate's "17.7 Type 91 Mod3 airplane torpedo") this
+// installation's arcade table gives BlastDamageMin = BlastDamageMax = 1200 and
+// BlastRange = 50, against a DamageMin/DamageMax of 50 -- and the Lexington's
+// Armour is 50, so the contact damage is exactly (50 - 50) = 0 and the whole
+// warhead is in the burst. docs/TORPEDO_WARHEAD.md.
+//
+// 0084BAD0 gathers one record per collision node inside the sphere (00904470
+// -> 0098C630) and queues each with +28h = damage and +24h = radius. Two
+// stand-ins here, both labelled: the gather is over this host's hull boxes
+// rather than the image's shape tree, and the per-record distance that feeds
+// 004705C0's falloff has no read producer in the image at all -- the array at
+// +3Ch is docs/EXPLOSION_RADIAL_DAMAGE.md's labelled gap. The falloff
+// arithmetic is 004705C0's; the distance handed to it is this host's.
+void GameGunneryHost::Impl::apply_torpedo_blast(std::size_t shooter,
+    std::size_t gun_row, const float point[3], const float direction[3]) {
+    if (gun_row >= guns.size() || shooter >= unit_state.size()) return;
+    const GameGunRow& gun = guns[gun_row];
+    const GameBulletClassRow* weapon = bullet(gun.bullet_class);
+    if (weapon == nullptr || weapon->blast_range <= 0.0f) return;
+
+    const float damage = random_range_00bd2f10(weapon->blast_damage_min,
+        weapon->blast_damage_max);
+    float centre[3];
+    for (int i = 0; i < 3; ++i) {
+        centre[i] = point[i] - direction[i] * kBlastCentreBackOff;
+    }
+
+    for (std::size_t i = 0; i < unit_state.size(); ++i) {
+        if (i == shooter) continue;  // 0084BBF9 skips the burst's own source
+        UnitState& state = unit_state[i];
+        if (state.dead) continue;
+
+        // The distance from the burst centre to the unit's hull box, in the
+        // hull's own frame: the same slab SegmentBinding::shape_trace_segment
+        // sweeps, so a round that struck the hull bursts at distance zero.
+        float right[3], up[3], forward[3], origin[3];
+        unit_pose(i, right, up, forward, origin);
+        const float extents[3] = {state.hull_width * 0.5f, state.hull_height * 0.5f,
+            state.hull_length * 0.5f};
+        if (extents[0] <= 0.0f || extents[2] <= 0.0f) continue;
+        const float rel[3] = {centre[0] - origin[0], centre[1] - origin[1],
+            centre[2] - origin[2]};
+        const float* axes[3] = {right, up, forward};
+        float outside = 0.0f;
+        for (int a = 0; a < 3; ++a) {
+            const float excess = std::fabs(dot3(rel, axes[a])) - extents[a];
+            if (excess > 0.0f) outside += excess * excess;
+        }
+        const float distance = std::sqrt(outside);
+        if (distance > weapon->blast_range) continue;
+
+        bsp::HitPartEntry entry;
+        entry.kind = 0;
+        entry.part_index = 0;
+        entry.distance = distance;
+        bsp::HitRecord blast;
+        blast.hull_damage_base = 0.0f;  // the burst's damage is +28h, see above
+        blast.part_damage_base = damage;
+        blast.falloff_range = weapon->blast_range;
+        blast.ignore_falloff = false;
+        blast.armour_selector = 0.0f;
+        blast.hull_segment = kDirectHitHullSegment;
+        blast.weapon_scale = 1.0f;
+        blast.owner_modifier = 1.0f;
+        blast.part_hits = &entry;
+        blast.part_hit_count = 1;
+
+        const float before = state.health;
+        apply_hit(shooter, gun_row, i, point, direction, &blast);
+        log.notef("  torpedo blast on %s dist=%.1f base=%.1f range=%.1f "
+            "armour=%.1f took=%.1f health=%.1f",
+            unit_name_or_index(i + 1).c_str(), static_cast<double>(distance),
+            static_cast<double>(damage),
+            static_cast<double>(weapon->blast_range),
+            static_cast<double>(state.armour),
+            static_cast<double>(before - unit_state[i].health),
+            static_cast<double>(unit_state[i].health));
+    }
+    done("Projectile::blast_radial_damage_0084bad0", 0x0084bad0u);
 }
 
 void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
