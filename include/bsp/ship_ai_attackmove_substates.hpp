@@ -405,7 +405,14 @@ inline constexpr float kAttackMoveLeadRadiusFloor = 300.0f; // 00CE3AE8
 inline constexpr float kAttackMoveLeadRadiusDirect = 200.0f; // 00CE386C
 inline constexpr float kAttackMoveLeadHeadingErrorGate = 1.5f; // 00CE380C
 inline constexpr float kAttackMoveLeadHeadingRateLimit = 1.0f; // 00D7A24C
-inline constexpr float kAttackMoveLeadScaleNear = 1.0f;   // 00CE3990 pairs 10 deg
+// CORRECTION: the ADDRESS was wrong here, not the value. 00CE3990 holds
+// 0.174533 = DEG(10) as a float, which is this pair's x0 and is already cited
+// correctly on kAttackMoveLeadScaleNearAngle below; 1.0 is the y0 and its own
+// address is not established. The four instructions that load 00CE3990 are in
+// FUN_00424730, BSP_Plane_HandleStateMessageKinds, BSP_TurningGun_StepAim and
+// one undefined body - none of them ship-AI attackmove code - so this header's
+// region never loads it at all. Found by tools/const_width_sweep.py --load-sites.
+inline constexpr float kAttackMoveLeadScaleNear = 1.0f;   // pairs the 10 deg below
 inline constexpr float kAttackMoveLeadScaleFar = 0.5f;    // 00CE3800 pairs 60 deg
 inline constexpr float kAttackMoveLeadScaleNearAngle = 0.17453293f; // 00CE3990
 inline constexpr float kAttackMoveLeadScaleFarAngle = 1.0471976f;   // 00D05AAC
