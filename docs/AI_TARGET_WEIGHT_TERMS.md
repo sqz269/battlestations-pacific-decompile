@@ -471,3 +471,49 @@ writer that splits artillery into three and machine-gun into two from authored d
 constructor constant only a default. That writer is not found yet. Until it is, no selector can be
 published per barrel without inventing it, which is why this packet stops here rather than turning
 the model on with a guessed mapping.
+
+### Resolved: the refiner is `006E9890`, and the anomaly is not one
+
+The prediction in the paragraph above is confirmed and the "anomaly" is closed, so **the Artillery
+reject needs no explaining away: selector `4` is a pre-refinement value that no live projectile
+keeps**. The writer is `006E9890 BSP_ProjectileClass_DeriveEngagementRange`, which the gunnery host
+**already models** for ranges (`summary mission gunnery ... bullet_ranges_derived`). It rewrites
+`[EDI+8]` on exactly the two classes that were unattributed, and leaves every other class on its
+constructor constant (`006E99E5 JNE` jumps past the store to the `006E9A40` tail).
+
+**The generic `Bullet` class, selector `1` (`006E9968 CMP ESI,1`).** It resolves the bullet's name
+(`[EDI+14h]`, defaulting to the literal at `00E199AC`) and runs `00BF9440` against the literal at
+`00CFA420`, whose bytes `41 41 00` are **`"AA"`**. Then `006E99D0 SETNE AL` / `006E99D5 ADD EAX,2`
+/ `006E99D8 MOV [EDI+8],EAX`:
+
+| Bullet name contains `"AA"` | Selector | Row |
+| --- | --- | --- |
+| no | `2` | MachineGun |
+| yes | `3` | MachineGun |
+
+Both land on arm `009FE2A2`, which is why the byte table's first two entries are both `00`, and the
+authored Lua row is commented `geppityu es AA talalati esely` - **"machine gun *and AA* hit
+chance"**. The authored comment and the byte table independently agree with the name test.
+
+**The `Artillery` class, selector `4` (`006E99E2 CMP ESI,4`).** `006E99E7` loads `[EDI+0ACh]` and
+bands it against two thresholds, each test also requiring the same threshold to exceed `[EDI+0B4h]`:
+
+| Band | Selector | Row |
+| --- | --- | --- |
+| `[00CF0B50]` = `75.0f` beats both | `5` | Artillery |
+| else `[00CE3808]` = `150.0f` beats both | `6` | Artillery |
+| else | `7` | Artillery |
+
+Three calibre bands under 75, under 150 and above, which reads as millimetres and matches the three
+selectors arm `009FE313` serves. All three take the same Artillery accuracy row, so the banding
+does not change the accuracy; it is the engagement-range derivation that needs it, and the accuracy
+lookup simply tolerates all three.
+
+**So the selector space is closed.** Every live value `2`-`12h` is now attributed, the two
+in-range rejects are accounted for (`4` and `1` are pre-refinement values, `0Ch` and `0Eh` are the
+two dummies), and `13h` WaterMine falls outside the range check. **Publishing a selector per barrel
+is no longer blocked by an unknown**: the gunnery host already calls the routine that derives it,
+and the remaining work is to carry `[EDI+8]` out of that derivation onto the published row, load the
+`BulletTypeAccuracy` keys into `AiTuningBlock`, and resolve the target class at query time in
+`AiWeightModelBinding::barrel_accuracy`, which already receives the target it currently discards.
+That implementation and its IJN01 run are not in this packet.
