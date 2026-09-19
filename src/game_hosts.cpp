@@ -14,6 +14,7 @@
 #include "bsp/native_renderer_reset_readiness.hpp"
 #include "bsp/game_native_settings_process.hpp"
 #include "bsp/game_native_settings_application.hpp"
+#include "bsp/game_native_online_process.hpp"
 #include "bsp/lua_runtime_globals.hpp"
 #include <stdexcept>
 
@@ -1170,6 +1171,17 @@ GameStartupHost::GameStartupHost(GameHostLog& log, HINSTANCE instance,
         pending.kill_00f899b4.head_04 != nullptr ? "present" : "null",
         pending.destroy_00f899a8.count_08, pending.kill_00f899b4.count_08,
         destroy_registration, kill_registration);
+    // Later represented CRT subset: CD6E16..CD6F03. The owner retains the
+    // verified tables, real locks and immutable IPC worker binding until exit.
+    const auto online_root = options_.game_root.empty() ? std::filesystem::current_path()
+        : std::filesystem::absolute(std::filesystem::path(options_.game_root));
+    auto& online_process = game_native_online_process(
+        online_root / "battlestationspacific.exe", {0, 0});
+    const auto online_registration = online_process.initialize_once();
+    log_.notef("native online CRT process initialized: tables=200980 fixed=568 "
+        "atexit=%d/%d/%d/%d/%d/%d preimages=current_process ipc_stack=explicit_zero worker_binding=permanent",
+        online_registration[0], online_registration[1], online_registration[2],
+        online_registration[3], online_registration[4], online_registration[5]);
     singletons_ = singletons.release();
 }
 

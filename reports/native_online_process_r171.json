@@ -1,0 +1,811 @@
+{
+  "packet": "orch4_native_online_process_r171",
+  "status": "ordinary_crt_binding_build_and_real_pipe_component_verified",
+  "scope": {
+    "addresses": [
+      "00cd6e16",
+      "00cd6e2c",
+      "00cd6e47",
+      "00cd6e62",
+      "00cd6e7d",
+      "00cd6e98",
+      "00cd6f03",
+      "00ce099a",
+      "00ce09a4",
+      "00ce09b5",
+      "00ce09c6",
+      "00ce09d7",
+      "00ce09e8",
+      "00a4c000",
+      "00a5de34"
+    ],
+    "new_native_bodies": 0,
+    "permanent_process_services": true,
+    "ordinary_crt_binding": true,
+    "ordinary_online_manager_bound": false
+  },
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "names": {
+      "00cd6e16": "BSP_XLivePipeGlobals_InitializeAcquisition",
+      "00cd6e2c": "BSP_XLivePipeGlobals_InitializeWideA",
+      "00cd6e47": "BSP_XLivePipeGlobals_InitializeWideB",
+      "00cd6e62": "BSP_XLivePipeGlobals_InitializeSeed",
+      "00cd6e7d": "BSP_XLivePipeGlobals_InitializeFrameValue",
+      "00cd6e98": "BSP_XLivePipeGlobals_InitializeKey",
+      "00cd6f03": "BSP_XLivePipeGlobals_InitializeRaw72",
+      "00ce099a": "BSP_XLivePipeGlobals_CleanupAcquisition",
+      "00ce09a4": "BSP_XLivePipeGlobals_CleanupWideA",
+      "00ce09b5": "BSP_XLivePipeGlobals_CleanupWideB",
+      "00ce09c6": "BSP_XLivePipeGlobals_CleanupSeed",
+      "00ce09d7": "BSP_XLivePipeGlobals_CleanupFrameValue",
+      "00ce09e8": "BSP_XLivePipeGlobals_CleanupKey",
+      "00a4c000": "BSP_XLiveIpc_ThreadEntry",
+      "00a5de34": "BSP_XLivePipe_Open"
+    },
+    "spans": [
+      {
+        "address": "00cd6e16",
+        "length": 22,
+        "kind": "existing_body",
+        "sha256": "65acd984c855e6f175ce2686df35181af63c3949c59fedce3b98441f7ba42da6",
+        "hex": "b974b7f800e8078cd8ff689a09ce00e8cb01f2ff59c3"
+      },
+      {
+        "address": "00cd6e2c",
+        "length": 27,
+        "kind": "existing_body",
+        "sha256": "55b0c51eb8b7566239ae9bd45e6676f6612330545adeee8002a5236f0789da62",
+        "hex": "68c82ae100b9a0b9f800e8fd91d8ff68a409ce00e8b001f2ff59c3"
+      },
+      {
+        "address": "00cd6e47",
+        "length": 27,
+        "kind": "existing_body",
+        "sha256": "37e3093f9934052093158425afe0c049db50287b49665160a3df6fd43ca849ba",
+        "hex": "68102be100b958b8f800e85691d8ff68b509ce00e89501f2ff59c3"
+      },
+      {
+        "address": "00cd6e62",
+        "length": 27,
+        "kind": "existing_body",
+        "sha256": "1cfdb69a765d65b4c1bcd3fd13347adf31d010cf4c940c837caf1b35839ad854",
+        "hex": "68582be100b9ccb8f800e8a491d8ff68c609ce00e87a01f2ff59c3"
+      },
+      {
+        "address": "00cd6e7d",
+        "length": 27,
+        "kind": "existing_body",
+        "sha256": "cf31f8609c539d2ef226192eda50e29500dabbe5b137ad7320653f6e9f831426",
+        "hex": "68802be100b9a0bbf800e86691d8ff68d709ce00e85f01f2ff59c3"
+      },
+      {
+        "address": "00cd6e98",
+        "length": 27,
+        "kind": "existing_body",
+        "sha256": "c8be67605cd8fba7187775fe4301a9552bf838d4a20a1d06158a7cddaf526aff",
+        "hex": "68a82be100b9dcbaf800e82891d8ff68e809ce00e84401f2ff59c3"
+      },
+      {
+        "address": "00cd6f03",
+        "length": 16,
+        "kind": "existing_body",
+        "sha256": "45c37d5996dd1d63890787bac33f889d1053429aecb230a39493500910b4b3b7",
+        "hex": "68b82ce100b9f8b8f800e89991d8ffc3"
+      },
+      {
+        "address": "00ce099a",
+        "length": 10,
+        "kind": "existing_body",
+        "sha256": "c8bd2c8945f9be364dfec63e6b731e31bac2fb2b54e5bc305b57d52e6012eb1e",
+        "hex": "b974b7f800e97aefd7ff"
+      },
+      {
+        "address": "00ce09a4",
+        "length": 17,
+        "kind": "existing_body",
+        "sha256": "f01dbce685df26d674b9a1090783697563bd7c502429e159c716ba973960c2a6",
+        "hex": "8b0da0b9f80085c974068b016a01ff10c3"
+      },
+      {
+        "address": "00ce09b5",
+        "length": 17,
+        "kind": "existing_body",
+        "sha256": "a15f164d349ec6cd36e3c0a4d520f2cef83e9048f47ef7159ecaf3f53a0f14f0",
+        "hex": "8b0d58b8f80085c974068b016a01ff10c3"
+      },
+      {
+        "address": "00ce09c6",
+        "length": 17,
+        "kind": "existing_body",
+        "sha256": "494b4af336ec6209184083a4ad36318553bd6b1858085dc4ea0b51b4d990c50c",
+        "hex": "8b0dccb8f80085c974068b016a01ff10c3"
+      },
+      {
+        "address": "00ce09d7",
+        "length": 17,
+        "kind": "existing_body",
+        "sha256": "22063793c5321c2366334886b2412fbc37c4d55528c340a5bb0a90dea0e2fb28",
+        "hex": "8b0da0bbf80085c974068b016a01ff10c3"
+      },
+      {
+        "address": "00ce09e8",
+        "length": 17,
+        "kind": "existing_body",
+        "sha256": "48f1575b3451da2a15928f4a18aede9f7a98e1f5c1731cd9755f4e0deb51a4da",
+        "hex": "8b0ddcbaf80085c974068b016a01ff10c3"
+      },
+      {
+        "address": "00a4c000",
+        "length": 44,
+        "kind": "existing_body",
+        "sha256": "0132deda0fb90187b5878c3d26f00e9b3b16633ad068272fbd5de1a4a32be066",
+        "hex": "8b4c240456e846feffff8bf081fe04400080741468ffff0080ff152822ce0050ff152422ce008bc65ec20400"
+      },
+      {
+        "address": "00a5de34",
+        "length": 52,
+        "kind": "existing_body",
+        "sha256": "b6e013eb3eb070bb52e9742a3cc31836af6cdf7e5733bf1da701678622f7f8ee",
+        "hex": "558bec568b751085f67507b857000780eb1d8d451050ff750cff7508e8ef09000085c07c078b4d10890eeb038326005e5dc20c00"
+      },
+      {
+        "address": "00ce33e0",
+        "length": 4,
+        "kind": "crt_table",
+        "sha256": "30df82567fcd2064c0c6681655924f2925d377ea591278550304e24cdf2ada6c",
+        "hex": "166ecd00"
+      },
+      {
+        "address": "00ce33e4",
+        "length": 4,
+        "kind": "crt_table",
+        "sha256": "7cec499e57c5ca2906719b1847016190dd21636cc92a3961777ce6c5a0e3b8ca",
+        "hex": "2c6ecd00"
+      },
+      {
+        "address": "00ce33e8",
+        "length": 4,
+        "kind": "crt_table",
+        "sha256": "9b634f73f93a63214da7d1d67022767803c4f6090b170c3ba048176ae30dc9d1",
+        "hex": "476ecd00"
+      },
+      {
+        "address": "00ce33ec",
+        "length": 4,
+        "kind": "crt_table",
+        "sha256": "d576c7306bc2c06b68980d3c6c78517ef7bdf24a150f94f2667608275bb34ee1",
+        "hex": "626ecd00"
+      },
+      {
+        "address": "00ce33f0",
+        "length": 4,
+        "kind": "crt_table",
+        "sha256": "9a0d99e9ed85ad65f0bc9a3831c0ecf8e3f04c4a4e24324c466b06889fb94c89",
+        "hex": "7d6ecd00"
+      },
+      {
+        "address": "00ce33f4",
+        "length": 4,
+        "kind": "crt_table",
+        "sha256": "de0cc760d8e6b86581c018975d6982bd7ed2053c276fa86f506bf1756e1a7d76",
+        "hex": "986ecd00"
+      },
+      {
+        "address": "00ce340c",
+        "length": 4,
+        "kind": "crt_table",
+        "sha256": "b74343916c2e070d1937cf960cef84b466a5eb6193e254cafacef046138535f2",
+        "hex": "036fcd00"
+      },
+      {
+        "address": "00e12ac8",
+        "length": 568,
+        "kind": "fixed_sources",
+        "sha256": "20436ee57ad0c179e4cde3ffd80ea75b53339dea4d500cda75769177176eae21",
+        "hex": "00010300010203020203020000020000030001030201030101010002020002030003020202030303030100010101000103030101010000010003010003030300010001010103010102000203020303020302030203030200010102000200020300010203030003010101030300000000030103010100010003030103030103000300030301010100010301010300010002010203000303000201010000010303020000030303030301030300010001000003030300010301010001000103020003030003000102000301000202030203000101010101030102000202020300000101030102010100010201000302000103030200010200010003020103030202000100020003020302010302010000020100030300010303000100000003020103000303030001020100000202010301000103030103000103030101020001000300030301020101030300030202010300020102010303010201000003000301000302020201030301000303020103000302000302030303000101020300020002030302020003030203030000010201020200030003030203030301030200000300030202030002010302000100000001030203030001010101010302010000010100020003020001030201010201030101010103010001010101030303010101030003000301010303000300030001010303000300010101010103010200010302030003000003030201010301000302010200010302020101000001010300010301000100010003000300030103010001010103000101"
+      },
+      {
+        "address": "00d25d9c",
+        "length": 32,
+        "kind": "table_start",
+        "sha256": "a0da5855f3b04e436700959a21e2a20b59dcd3c12b3e37121dd4d4283f0040fd",
+        "hex": "0201020200000002000003020200010301030103020101030003030302020200"
+      },
+      {
+        "address": "00d56e90",
+        "length": 32,
+        "kind": "table_end",
+        "sha256": "30d88dbc7f514e760ecf36ddff5cf26ff9f3ddbdf82c9a62d9669087305a6a56",
+        "hex": "080008000c0008000c001700170012000c001200080008001200170012000c00"
+      },
+      {
+        "address": "00f8b774",
+        "length": 1072,
+        "kind": "loader_zero",
+        "sha256": "482500ac4ba894ac24dbc1e3e06f5455e570378d55808949294af424208dff4c",
+        "hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      }
+    ],
+    "call_rows": [
+      {
+        "address": "00cd6e1b",
+        "native": "00a5fa27",
+        "function": "00cd6e16",
+        "kind": "call"
+      },
+      {
+        "address": "00cd6e25",
+        "native": "00bf6ff5",
+        "function": "00cd6e16",
+        "kind": "call"
+      },
+      {
+        "address": "00cd6e36",
+        "native": "00a60038",
+        "function": "00cd6e2c",
+        "kind": "call"
+      },
+      {
+        "address": "00cd6e40",
+        "native": "00bf6ff5",
+        "function": "00cd6e2c",
+        "kind": "call"
+      },
+      {
+        "address": "00cd6e51",
+        "native": "00a5ffac",
+        "function": "00cd6e47",
+        "kind": "call"
+      },
+      {
+        "address": "00cd6e5b",
+        "native": "00bf6ff5",
+        "function": "00cd6e47",
+        "kind": "call"
+      },
+      {
+        "address": "00cd6e6c",
+        "native": "00a60015",
+        "function": "00cd6e62",
+        "kind": "call"
+      },
+      {
+        "address": "00cd6e76",
+        "native": "00bf6ff5",
+        "function": "00cd6e62",
+        "kind": "call"
+      },
+      {
+        "address": "00cd6e87",
+        "native": "00a5fff2",
+        "function": "00cd6e7d",
+        "kind": "call"
+      },
+      {
+        "address": "00cd6e91",
+        "native": "00bf6ff5",
+        "function": "00cd6e7d",
+        "kind": "call"
+      },
+      {
+        "address": "00cd6ea2",
+        "native": "00a5ffcf",
+        "function": "00cd6e98",
+        "kind": "call"
+      },
+      {
+        "address": "00cd6eac",
+        "native": "00bf6ff5",
+        "function": "00cd6e98",
+        "kind": "call"
+      },
+      {
+        "address": "00cd6f0d",
+        "native": "00a600ab",
+        "function": "00cd6f03",
+        "kind": "call"
+      },
+      {
+        "address": "00ce099f",
+        "native": "00a5f91e",
+        "function": "00ce099a",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00a4c005",
+        "native": "00a4be50",
+        "function": "00a4c000",
+        "kind": "call"
+      },
+      {
+        "address": "00a5de50",
+        "native": "00a5e844",
+        "function": "00a5de34",
+        "kind": "call"
+      }
+    ],
+    "crt_entries": [
+      {
+        "slot": "00ce33e0",
+        "initializer": "00cd6e16"
+      },
+      {
+        "slot": "00ce33e4",
+        "initializer": "00cd6e2c"
+      },
+      {
+        "slot": "00ce33e8",
+        "initializer": "00cd6e47"
+      },
+      {
+        "slot": "00ce33ec",
+        "initializer": "00cd6e62"
+      },
+      {
+        "slot": "00ce33f0",
+        "initializer": "00cd6e7d"
+      },
+      {
+        "slot": "00ce33f4",
+        "initializer": "00cd6e98"
+      },
+      {
+        "slot": "00ce340c",
+        "initializer": "00cd6f03"
+      }
+    ],
+    "table_bytes": 200980,
+    "table_sha256": "f3456122844489dc39ceee393fc4ecfaddf789449bddf89b434b2cd55fe5c77c"
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "component": {
+      "result": {
+        "library_sha256": "353457CD089F9FBBDCAEB26AA270B01157FB1A5CAE757FD913CAFF00F0D8705D",
+        "utc": "2026-09-19T01:19:02.7407674Z",
+        "exe_sha256": "E3A5687882B50C8EA2CD3F5DB8466A8001255E732E6C35256EB40BD747C0620D",
+        "exit": 0
+      },
+      "real_win32_server_open": true,
+      "send_receive_capacity": [
+        80,
+        80
+      ],
+      "borrowed_stop_handle_preserved": true,
+      "post_crt_receipt": true,
+      "owner_and_worker_runtime_identity": true,
+      "changed_image_policy_runtime_rejected": true,
+      "early_runtime_access_rejected": true,
+      "component_log_sha256": "e8533355d2e9fce9e23dcea5adb00215a4944e0c46d9f42a73664ea220a01eb8",
+      "crt_receipt_sha256": "97026498e9f1323f1956478864c34e2e2fa8e99a5e7a13631dadc0ba5f150c8c",
+      "client_worker_started": false
+    },
+    "application_attempt": {
+      "status": "not_launched_runtime_busy",
+      "wait_seconds": 60,
+      "terminal": true,
+      "holder": "battlestations-pacific-decompile-cc8-ai-squadron 2026-09-18T18:10:43 pid=50020",
+      "live_pids": [
+        80696,
+        88356
+      ],
+      "reason": "gave up after 60 s: lock held by 'battlestations-pacific-decompile-cc8-ai-squadron 2026-09-18T18:10:43 pid=50020', live bsp_game pids: 80696,88356",
+      "evidence": "terminal exec session 22521 exit1; launcher exception tools/run_game.ps1:68",
+      "build": {
+        "exe_sha256": "D25D2D6AD4D6EE0CE663E773EDDB308858A6FADF50CCF482F7A12E34DD695D1C",
+        "exe": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\Release\\bsp_game.exe",
+        "utc": "2026-09-19T01:19:24.9049161Z",
+        "personal_root": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\settings_application_r170\\configured\\personal",
+        "head": "78ed7031a093b30b6c171a77da7c5930c7cceab4",
+        "frames": 3,
+        "library_sha256": "353457CD089F9FBBDCAEB26AA270B01157FB1A5CAE757FD913CAFF00F0D8705D"
+      }
+    },
+    "library_sha256": "353457cd089f9fbbdcaeb26aa270b01157fb1a5cae757fd913caff00f0d8705d",
+    "game_sha256": "d25d2d6ad4d6ee0ce663e773eddb308858a6fadf50ccf482f7a12e34dd695d1c",
+    "source_sha256_by_path": {
+      "include/bsp/game_native_online_process.hpp": "e0fe8821def9d82f84479e555165d875d230997560517876c90193f2c3d03101",
+      "src/game_native_online_process.cpp": "32ccc83e1076e652ea4fdd92fde57e53a12be54b873bd925d9a78dbe3324d985",
+      "src/game_hosts.cpp": "ae9f711ebb9a4959846ac19bb6fb66796ad4bcd0104a2822065ab9c183b9e8e1",
+      "cmake/startup.cmake": "0e1f02f5aec7a3fc29af120f92f6155cad3a4f83c57c0ceb2bb20e65025f569b"
+    },
+    "source_lf_sha256": {
+      "include/bsp/game_native_online_process.hpp": "e0fe8821def9d82f84479e555165d875d230997560517876c90193f2c3d03101",
+      "src/game_native_online_process.cpp": "32ccc83e1076e652ea4fdd92fde57e53a12be54b873bd925d9a78dbe3324d985",
+      "src/game_hosts.cpp": "446d0f52c6c057d87a7112b0da9f343f3323378f7e906517dd19628680b29da7",
+      "cmake/startup.cmake": "fb978b9734a2a2648f5fcb024a19416f73b63f6cdea14760a2d248402f1afd3b"
+    },
+    "object_paths": [
+      "build/win32/bsp_core.dir/Release/game_native_online_process.obj",
+      "build/win32/bsp_game.dir/Release/game_hosts.obj",
+      "build/win32/bsp_core.dir/Release/native_online_ipc.obj",
+      "build/win32/bsp_core.dir/Release/xlive_ipc.obj",
+      "build/win32/bsp_core.dir/Release/xlive_pipe_bootstrap.obj",
+      "build/win32/bsp_core.dir/Release/xlive_pipe_globals.obj",
+      "build/win32/bsp_core.dir/Release/xlive_pipe_services.obj",
+      "build/win32/bsp_core.dir/Release/xlive_pipe_preimage.obj",
+      "build/win32/bsp_core.dir/Release/xlive_pipe_protocol.obj",
+      "build/win32/bsp_core.dir/Release/xlive_pipe_framing.obj",
+      "build/win32/bsp_core.dir/Release/xlive_pipe_transport.obj",
+      "build/win32/bsp_core.dir/Release/xlive_pipe_io.obj"
+    ],
+    "call_verification": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\reports\\native_online_process_r171.json: 16 call rows checked, 0 failed\n"
+  },
+  "contract": "Stable process image/globals/services; seven recovered CRT initializers, six actual atexit callbacks; same acquisition/key/table domains; captured current-process heap/stack preimages; explicit IPC stack policy; immutable worker runtime installed before use.",
+  "limits": [
+    "Original parent IPC peer remains unidentified; ordinary A40DF0 online manager stays unbound",
+    "Component opens existing mode-one server branch; this is not a recovered game call or an online peer",
+    "No client worker, encoded peer exchange, live XLive profile, native FH3/SEH, drop-in ABI, concurrent mutation or gameplay proof",
+    "Interrupted CRT initialization retains graph and uses source _Exit(1) policy",
+    "Native IPC 1000ms timeout/free is unchanged; endpoint closure and worker quiescence remain caller preconditions before CRT cleanup",
+    "Full application attempt did not launch because another orchestrator held runtime"
+  ],
+  "owned_files": [
+    "include/bsp/game_native_online_process.hpp",
+    "src/game_native_online_process.cpp",
+    "src/game_hosts.cpp",
+    "cmake/startup.cmake",
+    "docs/NATIVE_ONLINE_PROCESS_R171.md",
+    "reports/native_online_process_r171.json",
+    "config/names/00a40000.jsonl",
+    "config/reconstruction/00a40000.jsonl",
+    "config/names/00a50000.jsonl",
+    "config/reconstruction/00a50000.jsonl",
+    "config/names/00cd0000.jsonl",
+    "config/reconstruction/00cd0000.jsonl",
+    "config/names/00ce0000.jsonl",
+    "config/reconstruction/00ce0000.jsonl"
+  ],
+  "ghidra_annotations": {
+    "status": "Fifteen existing CRT/IPC process bindings saved under write lock; names preserved, prior values recorded, readback checked, exports refreshed",
+    "prior_values": [
+      {
+        "address": "00a4c000",
+        "before": {
+          "address": "00a4c000",
+          "function_name": "BSP_XLiveIpc_ThreadEntry",
+          "comment": "[BSP reconstruction 00a4c000]\nHypothesis, not a recovered symbol. Previous function name: none; entry missing in Ghidra. DWORD __stdcall(void* owner); RET4. Run worker loop; only E_ABORT avoids TerminateProcess(GetCurrentProcess(),8000FFFF). Original loop result is returned if termination API returns. Real kernel32 IAT operations, no dummy thread. Evidence: docs/XLIVE_IPC.md; reports/xlive_ipc.json. Required linked pipe operations remain unreconstructed with uncertain library provenance. Win32 build/two CTests and one scripted synchronous fixture passed; no endpoints or game/ABI validation.\n\n[BSP reconstruction 00a4c000] update\nHypothesis, not a recovered symbol. Previous function name: none; entry missing in Ghidra. DWORD __stdcall(void* owner); RET4. Run worker loop; only E_ABORT avoids TerminateProcess(GetCurrentProcess(),8000FFFF). Original loop result is returned if termination API returns. Real kernel32 IAT operations, no dummy thread. Evidence: docs/XLIVE_IPC.md; reports/xlive_ipc.json. Required linked pipe operations remain unreconstructed with uncertain library provenance. Win32 build/two CTests and one scripted synchronous fixture passed; no endpoints or game/ABI validation. | Hypothesis, not a recovered symbol. Complete actual2Ch source body run_native_online_ipc_thread_00a4c000; stdcall RET4. Exact caller-owned slot and endpoint, real reconstructed pipe/Win32 services, explicit immutable process worker binding, ignored timeout and raw allocation preimages. docs/NATIVE_ONLINE_IPC.md; reports/native_online_ipc.json. Root repaired stored-body membership for A4BDE0/A4C030 after live/disk verification; all24 direct call rows now pass. Original ABI/SEH, live pipe exchange and gameplay unvalidated.\n\n[BSP reconstruction 00a4c000] update\nHypothesis, not a recovered symbol. Previous function name: none; entry missing in Ghidra. DWORD __stdcall(void* owner); RET4. Run worker loop; only E_ABORT avoids TerminateProcess(GetCurrentProcess(),8000FFFF). Original loop result is returned if termination API returns. Real kernel32 IAT operations, no dummy thread. Evidence: docs/XLIVE_IPC.md; reports/xlive_ipc.json. Required linked pipe operations remain unreconstructed with uncertain library provenance. Win32 build/two CTests and one scripted synchronous fixture passed; no endpoints or game/ABI validation. | R103 consolidated raw online startup. Recovered four previously unintegrated modules from commits 910992029/d6dac38fd/f6c6d2cbb/2b6fd3ef8: actual3F0 base/full constructor/lifetime, full400byte partial SDK outputs, and exact2Ch IPC endpoint plus worker. Supersedes the standalone R102 lifetime; shared raw drain borrows the complete context at existing offset148. Preserve captured/current publication order, postpump14C abandonment, vector/base-only C++ cleanup, current renderer1A28 pointer, full DWORD port result and original IPC failure/timeout behavior. All16 normal bodies have gap-free live/PE listings; 2505 live/PE bytes including seven SDK ordinal stubs; all54 direct calls checked. Current strict Win32/3 CTests pass. Six copied-original/source parent cases match30 binary images and89 ordered observations, nine IPC differential cases and a real worker with fixture pipe E_ABORT pass. SDK/base fixtures and ordinary application smoke pass. Original FH3/SEH, binary ABI, actual SDK/network startup, canonical application composition, initial sampler stack word and gameplay remain open. Evidence: docs/NATIVE_ONLINE_STARTUP_R103.md; reports/native_online_startup_r103.json."
+        },
+        "after": {
+          "address": "00a4c000",
+          "name": "BSP_XLiveIpc_ThreadEntry",
+          "evidence": "Hypothesis, not a recovered symbol. Previous function name: none; entry missing in Ghidra. DWORD __stdcall(void* owner); RET4. Run worker loop; only E_ABORT avoids TerminateProcess(GetCurrentProcess(),8000FFFF). Original loop result is returned if termination API returns. Real kernel32 IAT operations, no dummy thread. Evidence: docs/XLIVE_IPC.md; reports/xlive_ipc.json. Required linked pipe operations remain unreconstructed with uncertain library provenance. Win32 build/two CTests and one scripted synchronous fixture passed; no endpoints or game/ABI validation. | R103 consolidated raw online startup. Recovered four previously unintegrated modules from commits 910992029/d6dac38fd/f6c6d2cbb/2b6fd3ef8: actual3F0 base/full constructor/lifetime, full400byte partial SDK outputs, and exact2Ch IPC endpoint plus worker. Supersedes the standalone R102 lifetime; shared raw drain borrows the complete context at existing offset148. Preserve captured/current publication order, postpump14C abandonment, vector/base-only C++ cleanup, current renderer1A28 pointer, full DWORD port result and original IPC failure/timeout behavior. All16 normal bodies have gap-free live/PE listings; 2505 live/PE bytes including seven SDK ordinal stubs; all54 direct calls checked. Current strict Win32/3 CTests pass. Six copied-original/source parent cases match30 binary images and89 ordered observations, nine IPC differential cases and a real worker with fixture pipe E_ABORT pass. SDK/base fixtures and ordinary application smoke pass. Original FH3/SEH, binary ABI, actual SDK/network startup, canonical application composition, initial sampler stack word and gameplay remain open. Evidence: docs/NATIVE_ONLINE_STARTUP_R103.md; reports/native_online_startup_r103.json. | Existing stdcall thread(parameter), RET4; permanent exact NativeOnlineIpcRuntime now available from process composition. No thread started by initialization or this fixture; native sleep/termination/timeout semantics unchanged. The peer and actual online allocation remain separate dependencies. Descriptive hypothesis, not recovered symbol. R171 ordinary source CRT startup now retains exact original pipe data, actual global/lock owner, real atexit callbacks, current-process preimage adapters and all Win32 pipe services in one permanent process domain. Immutable native IPC worker runtime bound before use. Strict Win32/3 CTests; one actual mode-one server open/capacity80/80/close and post-CRT process receipt. 2096live/PEbytes,16direct CALL/tail rows. Full application attempt was not launched because peer held runtime. No new native bodies, ordinary online manager, client worker, encoded peer exchange, live SDK, FH3/SEH, binary ABI or gameplay proof. Original parent peer remains unidentified. docs/NATIVE_ONLINE_PROCESS_R171.md; reports/native_online_process_r171.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a5de34",
+        "before": {
+          "address": "00a5de34",
+          "function_name": "BSP_XLivePipe_Open",
+          "comment": "[BSP inventory 00a5de34] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)\n\n[BSP reconstruction 00a5de34]\nHypothesis, not a recovered symbol. Previous function name: PIPEIPC_00a5de34 (analyst block_pipe_ipc tag; library provenance uncertain). __stdcall(mode DWORD, stop HANDLE, output**); RET12; EAX=signed HRESULT. Validate output, use local creation output, publish null for negative result. Evidence: docs/XLIVE_PIPE_TRANSPORT.md; reports/xlive_pipe_transport.json. Assembly/raw tails checked; seven complete owner/control functions with required protocol lifecycle dependency. Strict Win32 build/two CTests and one synchronous fixture passed; no endpoints/game/ABI validation."
+        },
+        "after": {
+          "address": "00a5de34",
+          "name": "BSP_XLivePipe_Open",
+          "evidence": "Hypothesis, not a recovered symbol. Previous function name: PIPEIPC_00a5de34 (analyst block_pipe_ipc tag; library provenance uncertain). __stdcall(mode DWORD, stop HANDLE, output**); RET12; EAX=signed HRESULT. Validate output, use local creation output, publish null for negative result. Evidence: docs/XLIVE_PIPE_TRANSPORT.md; reports/xlive_pipe_transport.json. Assembly/raw tails checked; seven complete owner/control functions with required protocol lifecycle dependency. Strict Win32 build/two CTests and one synchronous fixture passed; no endpoints/game/ABI validation. | Existing stdcall(mode,event,output), RET0C, signed HRESULT. Concrete process services reuse real recovered framing/protocol/transport/I/O and captured actual allocation preimages. Focused component exercised nonzero server branch only: open0, capacity80/80, close, borrowed event intact. Native application caller remains mode0 and requires parent peer. Descriptive hypothesis, not recovered symbol. R171 ordinary source CRT startup now retains exact original pipe data, actual global/lock owner, real atexit callbacks, current-process preimage adapters and all Win32 pipe services in one permanent process domain. Immutable native IPC worker runtime bound before use. Strict Win32/3 CTests; one actual mode-one server open/capacity80/80/close and post-CRT process receipt. 2096live/PEbytes,16direct CALL/tail rows. Full application attempt was not launched because peer held runtime. No new native bodies, ordinary online manager, client worker, encoded peer exchange, live SDK, FH3/SEH, binary ABI or gameplay proof. Original parent peer remains unidentified. docs/NATIVE_ONLINE_PROCESS_R171.md; reports/native_online_process_r171.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cd6e16",
+        "before": {
+          "address": "00cd6e16",
+          "function_name": "BSP_XLivePipeGlobals_InitializeAcquisition",
+          "comment": "[BSP reconstruction 00cd6e16]\nHypothesis, not a recovered symbol. Previous name: none; true CRT initializer entry missing. __cdecl(); RET; EAX=actual CRT registration int. Construct global objectF8B774/actual sectionF8B778 viaA5FA27, then registerCE099A viaBF6FF5. No rollback on registration failure. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+        },
+        "after": {
+          "address": "00cd6e16",
+          "name": "BSP_XLivePipeGlobals_InitializeAcquisition",
+          "evidence": "Hypothesis, not a recovered symbol. Previous name: none; true CRT initializer entry missing. __cdecl(); RET; EAX=actual CRT registration int. Construct global objectF8B774/actual sectionF8B778 viaA5FA27, then registerCE099A viaBF6FF5. No rollback on registration failure. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation. | Existing complete no-argument CRT initializer, RET; actual registration status except CD6F03 raw destination return. Bind actual retained process globals and original fixed data; execute once in represented native CRT order after pending-entity subset. Native status ignored by application; repeated source initialize_once does not register again. Descriptive hypothesis, not recovered symbol. R171 ordinary source CRT startup now retains exact original pipe data, actual global/lock owner, real atexit callbacks, current-process preimage adapters and all Win32 pipe services in one permanent process domain. Immutable native IPC worker runtime bound before use. Strict Win32/3 CTests; one actual mode-one server open/capacity80/80/close and post-CRT process receipt. 2096live/PEbytes,16direct CALL/tail rows. Full application attempt was not launched because peer held runtime. No new native bodies, ordinary online manager, client worker, encoded peer exchange, live SDK, FH3/SEH, binary ABI or gameplay proof. Original parent peer remains unidentified. docs/NATIVE_ONLINE_PROCESS_R171.md; reports/native_online_process_r171.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cd6e2c",
+        "before": {
+          "address": "00cd6e2c",
+          "function_name": "BSP_XLivePipeGlobals_InitializeWideA",
+          "comment": "[BSP reconstruction 00cd6e2c]\nHypothesis, not a recovered symbol. Previous name: none; true CRT initializer entry missing. __cdecl(); RET; EAX=actual CRT registration int. ECX F8B9A0, sourceE12AC8/72 bytes, A60038, registerCE09A4. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+        },
+        "after": {
+          "address": "00cd6e2c",
+          "name": "BSP_XLivePipeGlobals_InitializeWideA",
+          "evidence": "Hypothesis, not a recovered symbol. Previous name: none; true CRT initializer entry missing. __cdecl(); RET; EAX=actual CRT registration int. ECX F8B9A0, sourceE12AC8/72 bytes, A60038, registerCE09A4. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation. | Existing complete no-argument CRT initializer, RET; actual registration status except CD6F03 raw destination return. Bind actual retained process globals and original fixed data; execute once in represented native CRT order after pending-entity subset. Native status ignored by application; repeated source initialize_once does not register again. Descriptive hypothesis, not recovered symbol. R171 ordinary source CRT startup now retains exact original pipe data, actual global/lock owner, real atexit callbacks, current-process preimage adapters and all Win32 pipe services in one permanent process domain. Immutable native IPC worker runtime bound before use. Strict Win32/3 CTests; one actual mode-one server open/capacity80/80/close and post-CRT process receipt. 2096live/PEbytes,16direct CALL/tail rows. Full application attempt was not launched because peer held runtime. No new native bodies, ordinary online manager, client worker, encoded peer exchange, live SDK, FH3/SEH, binary ABI or gameplay proof. Original parent peer remains unidentified. docs/NATIVE_ONLINE_PROCESS_R171.md; reports/native_online_process_r171.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cd6e47",
+        "before": {
+          "address": "00cd6e47",
+          "function_name": "BSP_XLivePipeGlobals_InitializeWideB",
+          "comment": "[BSP reconstruction 00cd6e47]\nHypothesis, not a recovered symbol. Previous name: none; true CRT initializer entry missing. __cdecl(); RET; EAX=actual CRT registration int. ECX F8B858, sourceE12B10/72 bytes, A5FFAC, registerCE09B5. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+        },
+        "after": {
+          "address": "00cd6e47",
+          "name": "BSP_XLivePipeGlobals_InitializeWideB",
+          "evidence": "Hypothesis, not a recovered symbol. Previous name: none; true CRT initializer entry missing. __cdecl(); RET; EAX=actual CRT registration int. ECX F8B858, sourceE12B10/72 bytes, A5FFAC, registerCE09B5. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation. | Existing complete no-argument CRT initializer, RET; actual registration status except CD6F03 raw destination return. Bind actual retained process globals and original fixed data; execute once in represented native CRT order after pending-entity subset. Native status ignored by application; repeated source initialize_once does not register again. Descriptive hypothesis, not recovered symbol. R171 ordinary source CRT startup now retains exact original pipe data, actual global/lock owner, real atexit callbacks, current-process preimage adapters and all Win32 pipe services in one permanent process domain. Immutable native IPC worker runtime bound before use. Strict Win32/3 CTests; one actual mode-one server open/capacity80/80/close and post-CRT process receipt. 2096live/PEbytes,16direct CALL/tail rows. Full application attempt was not launched because peer held runtime. No new native bodies, ordinary online manager, client worker, encoded peer exchange, live SDK, FH3/SEH, binary ABI or gameplay proof. Original parent peer remains unidentified. docs/NATIVE_ONLINE_PROCESS_R171.md; reports/native_online_process_r171.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cd6e62",
+        "before": {
+          "address": "00cd6e62",
+          "function_name": "BSP_XLivePipeGlobals_InitializeSeed",
+          "comment": "[BSP reconstruction 00cd6e62]\nHypothesis, not a recovered symbol. Previous name: none; true CRT initializer entry missing. __cdecl(); RET; EAX=actual CRT registration int. ECX F8B8CC, sourceE12B58/40 bytes, A60015, registerCE09C6. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+        },
+        "after": {
+          "address": "00cd6e62",
+          "name": "BSP_XLivePipeGlobals_InitializeSeed",
+          "evidence": "Hypothesis, not a recovered symbol. Previous name: none; true CRT initializer entry missing. __cdecl(); RET; EAX=actual CRT registration int. ECX F8B8CC, sourceE12B58/40 bytes, A60015, registerCE09C6. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation. | Existing complete no-argument CRT initializer, RET; actual registration status except CD6F03 raw destination return. Bind actual retained process globals and original fixed data; execute once in represented native CRT order after pending-entity subset. Native status ignored by application; repeated source initialize_once does not register again. Descriptive hypothesis, not recovered symbol. R171 ordinary source CRT startup now retains exact original pipe data, actual global/lock owner, real atexit callbacks, current-process preimage adapters and all Win32 pipe services in one permanent process domain. Immutable native IPC worker runtime bound before use. Strict Win32/3 CTests; one actual mode-one server open/capacity80/80/close and post-CRT process receipt. 2096live/PEbytes,16direct CALL/tail rows. Full application attempt was not launched because peer held runtime. No new native bodies, ordinary online manager, client worker, encoded peer exchange, live SDK, FH3/SEH, binary ABI or gameplay proof. Original parent peer remains unidentified. docs/NATIVE_ONLINE_PROCESS_R171.md; reports/native_online_process_r171.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cd6e7d",
+        "before": {
+          "address": "00cd6e7d",
+          "function_name": "BSP_XLivePipeGlobals_InitializeFrameValue",
+          "comment": "[BSP reconstruction 00cd6e7d]\nHypothesis, not a recovered symbol. Previous name: none; true CRT initializer entry missing. __cdecl(); RET; EAX=actual CRT registration int. ECX F8BBA0, sourceE12B80/40 bytes, A5FFF2, registerCE09D7. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+        },
+        "after": {
+          "address": "00cd6e7d",
+          "name": "BSP_XLivePipeGlobals_InitializeFrameValue",
+          "evidence": "Hypothesis, not a recovered symbol. Previous name: none; true CRT initializer entry missing. __cdecl(); RET; EAX=actual CRT registration int. ECX F8BBA0, sourceE12B80/40 bytes, A5FFF2, registerCE09D7. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation. | Existing complete no-argument CRT initializer, RET; actual registration status except CD6F03 raw destination return. Bind actual retained process globals and original fixed data; execute once in represented native CRT order after pending-entity subset. Native status ignored by application; repeated source initialize_once does not register again. Descriptive hypothesis, not recovered symbol. R171 ordinary source CRT startup now retains exact original pipe data, actual global/lock owner, real atexit callbacks, current-process preimage adapters and all Win32 pipe services in one permanent process domain. Immutable native IPC worker runtime bound before use. Strict Win32/3 CTests; one actual mode-one server open/capacity80/80/close and post-CRT process receipt. 2096live/PEbytes,16direct CALL/tail rows. Full application attempt was not launched because peer held runtime. No new native bodies, ordinary online manager, client worker, encoded peer exchange, live SDK, FH3/SEH, binary ABI or gameplay proof. Original parent peer remains unidentified. docs/NATIVE_ONLINE_PROCESS_R171.md; reports/native_online_process_r171.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cd6e98",
+        "before": {
+          "address": "00cd6e98",
+          "function_name": "BSP_XLivePipeGlobals_InitializeKey",
+          "comment": "[BSP reconstruction 00cd6e98]\nHypothesis, not a recovered symbol. Previous name: none; true CRT initializer entry missing. __cdecl(); RET; EAX=actual CRT registration int. ECX F8BADC, sourceE12BA8/40 bytes, A5FFCF, registerCE09E8. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+        },
+        "after": {
+          "address": "00cd6e98",
+          "name": "BSP_XLivePipeGlobals_InitializeKey",
+          "evidence": "Hypothesis, not a recovered symbol. Previous name: none; true CRT initializer entry missing. __cdecl(); RET; EAX=actual CRT registration int. ECX F8BADC, sourceE12BA8/40 bytes, A5FFCF, registerCE09E8. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation. | Existing complete no-argument CRT initializer, RET; actual registration status except CD6F03 raw destination return. Bind actual retained process globals and original fixed data; execute once in represented native CRT order after pending-entity subset. Native status ignored by application; repeated source initialize_once does not register again. Descriptive hypothesis, not recovered symbol. R171 ordinary source CRT startup now retains exact original pipe data, actual global/lock owner, real atexit callbacks, current-process preimage adapters and all Win32 pipe services in one permanent process domain. Immutable native IPC worker runtime bound before use. Strict Win32/3 CTests; one actual mode-one server open/capacity80/80/close and post-CRT process receipt. 2096live/PEbytes,16direct CALL/tail rows. Full application attempt was not launched because peer held runtime. No new native bodies, ordinary online manager, client worker, encoded peer exchange, live SDK, FH3/SEH, binary ABI or gameplay proof. Original parent peer remains unidentified. docs/NATIVE_ONLINE_PROCESS_R171.md; reports/native_online_process_r171.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cd6f03",
+        "before": {
+          "address": "00cd6f03",
+          "function_name": "BSP_XLivePipeGlobals_InitializeRaw72",
+          "comment": "[BSP reconstruction 00cd6f03]\nHypothesis, not a recovered symbol. Previous name: none; true CRT initializer entry missing. __cdecl(); RET; EAX=raw destination F8B8F8. ECX F8B8F8, sourceE12CB8/72 bytes, A600AB, no cleanup registration. Raw bytes have no lock/prefix. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+        },
+        "after": {
+          "address": "00cd6f03",
+          "name": "BSP_XLivePipeGlobals_InitializeRaw72",
+          "evidence": "Hypothesis, not a recovered symbol. Previous name: none; true CRT initializer entry missing. __cdecl(); RET; EAX=raw destination F8B8F8. ECX F8B8F8, sourceE12CB8/72 bytes, A600AB, no cleanup registration. Raw bytes have no lock/prefix. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation. | Existing complete no-argument CRT initializer, RET; actual registration status except CD6F03 raw destination return. Bind actual retained process globals and original fixed data; execute once in represented native CRT order after pending-entity subset. Native status ignored by application; repeated source initialize_once does not register again. Descriptive hypothesis, not recovered symbol. R171 ordinary source CRT startup now retains exact original pipe data, actual global/lock owner, real atexit callbacks, current-process preimage adapters and all Win32 pipe services in one permanent process domain. Immutable native IPC worker runtime bound before use. Strict Win32/3 CTests; one actual mode-one server open/capacity80/80/close and post-CRT process receipt. 2096live/PEbytes,16direct CALL/tail rows. Full application attempt was not launched because peer held runtime. No new native bodies, ordinary online manager, client worker, encoded peer exchange, live SDK, FH3/SEH, binary ABI or gameplay proof. Original parent peer remains unidentified. docs/NATIVE_ONLINE_PROCESS_R171.md; reports/native_online_process_r171.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ce099a",
+        "before": {
+          "address": "00ce099a",
+          "function_name": "BSP_XLivePipeGlobals_CleanupAcquisition",
+          "comment": "[BSP inventory 00ce099a] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)\n\n[BSP reconstruction 00ce099a]\nHypothesis, not a recovered symbol. Previous name: CG_static_init_00ce099a. __cdecl(); ECX=global F8B774; terminal JMP A5F91E. Destroy placement global lock/actual section, no storage free. Last instruction is tail jump, not local RET. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+        },
+        "after": {
+          "address": "00ce099a",
+          "name": "BSP_XLivePipeGlobals_CleanupAcquisition",
+          "evidence": "Hypothesis, not a recovered symbol. Previous name: CG_static_init_00ce099a. __cdecl(); ECX=global F8B774; terminal JMP A5F91E. Destroy placement global lock/actual section, no storage free. Last instruction is tail jump, not local RET. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation. | Existing complete no-argument CRT cleanup, RET. Actual atexit callback borrows permanent process globals after application scopes; existing native lock cleanup reused. Service storage stays alive, but clients must retire before lock cleanup. Descriptive hypothesis, not recovered symbol. R171 ordinary source CRT startup now retains exact original pipe data, actual global/lock owner, real atexit callbacks, current-process preimage adapters and all Win32 pipe services in one permanent process domain. Immutable native IPC worker runtime bound before use. Strict Win32/3 CTests; one actual mode-one server open/capacity80/80/close and post-CRT process receipt. 2096live/PEbytes,16direct CALL/tail rows. Full application attempt was not launched because peer held runtime. No new native bodies, ordinary online manager, client worker, encoded peer exchange, live SDK, FH3/SEH, binary ABI or gameplay proof. Original parent peer remains unidentified. docs/NATIVE_ONLINE_PROCESS_R171.md; reports/native_online_process_r171.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ce09a4",
+        "before": {
+          "address": "00ce09a4",
+          "function_name": "BSP_XLivePipeGlobals_CleanupWideA",
+          "comment": "[BSP inventory 00ce09a4] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)\n\n[BSP reconstruction 00ce09a4]\nHypothesis, not a recovered symbol. Previous name: CG_static_init_00ce09a4. __cdecl(); RET. Reload F8B9A0 lock; ifnonnull vslot0(flag1), do not clear pointer/payload. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+        },
+        "after": {
+          "address": "00ce09a4",
+          "name": "BSP_XLivePipeGlobals_CleanupWideA",
+          "evidence": "Hypothesis, not a recovered symbol. Previous name: CG_static_init_00ce09a4. __cdecl(); RET. Reload F8B9A0 lock; ifnonnull vslot0(flag1), do not clear pointer/payload. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation. | Existing complete no-argument CRT cleanup, RET. Actual atexit callback borrows permanent process globals after application scopes; existing native lock cleanup reused. Service storage stays alive, but clients must retire before lock cleanup. Descriptive hypothesis, not recovered symbol. R171 ordinary source CRT startup now retains exact original pipe data, actual global/lock owner, real atexit callbacks, current-process preimage adapters and all Win32 pipe services in one permanent process domain. Immutable native IPC worker runtime bound before use. Strict Win32/3 CTests; one actual mode-one server open/capacity80/80/close and post-CRT process receipt. 2096live/PEbytes,16direct CALL/tail rows. Full application attempt was not launched because peer held runtime. No new native bodies, ordinary online manager, client worker, encoded peer exchange, live SDK, FH3/SEH, binary ABI or gameplay proof. Original parent peer remains unidentified. docs/NATIVE_ONLINE_PROCESS_R171.md; reports/native_online_process_r171.json."
+        },
+        "status": "pending"
+      },
+      {
+        "address": "00ce09b5",
+        "before": {
+          "address": "00ce09b5",
+          "function_name": "BSP_XLivePipeGlobals_CleanupWideB",
+          "comment": "[BSP inventory 00ce09b5] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)\n\n[BSP reconstruction 00ce09b5]\nHypothesis, not a recovered symbol. Previous name: CG_static_init_00ce09b5. __cdecl(); RET. Reload F8B858 lock; ifnonnull vslot0(flag1), do not clear pointer/payload. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+        },
+        "after": {
+          "address": "00ce09b5",
+          "name": "BSP_XLivePipeGlobals_CleanupWideB",
+          "evidence": "Hypothesis, not a recovered symbol. Previous name: CG_static_init_00ce09b5. __cdecl(); RET. Reload F8B858 lock; ifnonnull vslot0(flag1), do not clear pointer/payload. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation. | Existing complete no-argument CRT cleanup, RET. Actual atexit callback borrows permanent process globals after application scopes; existing native lock cleanup reused. Service storage stays alive, but clients must retire before lock cleanup. Descriptive hypothesis, not recovered symbol. R171 ordinary source CRT startup now retains exact original pipe data, actual global/lock owner, real atexit callbacks, current-process preimage adapters and all Win32 pipe services in one permanent process domain. Immutable native IPC worker runtime bound before use. Strict Win32/3 CTests; one actual mode-one server open/capacity80/80/close and post-CRT process receipt. 2096live/PEbytes,16direct CALL/tail rows. Full application attempt was not launched because peer held runtime. No new native bodies, ordinary online manager, client worker, encoded peer exchange, live SDK, FH3/SEH, binary ABI or gameplay proof. Original parent peer remains unidentified. docs/NATIVE_ONLINE_PROCESS_R171.md; reports/native_online_process_r171.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ce09c6",
+        "before": {
+          "address": "00ce09c6",
+          "function_name": "BSP_XLivePipeGlobals_CleanupSeed",
+          "comment": "[BSP inventory 00ce09c6] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)\n\n[BSP reconstruction 00ce09c6]\nHypothesis, not a recovered symbol. Previous name: CG_static_init_00ce09c6. __cdecl(); RET. Reload F8B8CC lock; ifnonnull vslot0(flag1), do not clear pointer/payload. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+        },
+        "after": {
+          "address": "00ce09c6",
+          "name": "BSP_XLivePipeGlobals_CleanupSeed",
+          "evidence": "Hypothesis, not a recovered symbol. Previous name: CG_static_init_00ce09c6. __cdecl(); RET. Reload F8B8CC lock; ifnonnull vslot0(flag1), do not clear pointer/payload. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation. | Existing complete no-argument CRT cleanup, RET. Actual atexit callback borrows permanent process globals after application scopes; existing native lock cleanup reused. Service storage stays alive, but clients must retire before lock cleanup. Descriptive hypothesis, not recovered symbol. R171 ordinary source CRT startup now retains exact original pipe data, actual global/lock owner, real atexit callbacks, current-process preimage adapters and all Win32 pipe services in one permanent process domain. Immutable native IPC worker runtime bound before use. Strict Win32/3 CTests; one actual mode-one server open/capacity80/80/close and post-CRT process receipt. 2096live/PEbytes,16direct CALL/tail rows. Full application attempt was not launched because peer held runtime. No new native bodies, ordinary online manager, client worker, encoded peer exchange, live SDK, FH3/SEH, binary ABI or gameplay proof. Original parent peer remains unidentified. docs/NATIVE_ONLINE_PROCESS_R171.md; reports/native_online_process_r171.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ce09d7",
+        "before": {
+          "address": "00ce09d7",
+          "function_name": "BSP_XLivePipeGlobals_CleanupFrameValue",
+          "comment": "[BSP inventory 00ce09d7] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)\n\n[BSP reconstruction 00ce09d7]\nHypothesis, not a recovered symbol. Previous name: CG_static_init_00ce09d7. __cdecl(); RET. Reload F8BBA0 lock; ifnonnull vslot0(flag1), do not clear pointer/payload. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+        },
+        "after": {
+          "address": "00ce09d7",
+          "name": "BSP_XLivePipeGlobals_CleanupFrameValue",
+          "evidence": "Hypothesis, not a recovered symbol. Previous name: CG_static_init_00ce09d7. __cdecl(); RET. Reload F8BBA0 lock; ifnonnull vslot0(flag1), do not clear pointer/payload. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation. | Existing complete no-argument CRT cleanup, RET. Actual atexit callback borrows permanent process globals after application scopes; existing native lock cleanup reused. Service storage stays alive, but clients must retire before lock cleanup. Descriptive hypothesis, not recovered symbol. R171 ordinary source CRT startup now retains exact original pipe data, actual global/lock owner, real atexit callbacks, current-process preimage adapters and all Win32 pipe services in one permanent process domain. Immutable native IPC worker runtime bound before use. Strict Win32/3 CTests; one actual mode-one server open/capacity80/80/close and post-CRT process receipt. 2096live/PEbytes,16direct CALL/tail rows. Full application attempt was not launched because peer held runtime. No new native bodies, ordinary online manager, client worker, encoded peer exchange, live SDK, FH3/SEH, binary ABI or gameplay proof. Original parent peer remains unidentified. docs/NATIVE_ONLINE_PROCESS_R171.md; reports/native_online_process_r171.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ce09e8",
+        "before": {
+          "address": "00ce09e8",
+          "function_name": "BSP_XLivePipeGlobals_CleanupKey",
+          "comment": "[BSP inventory 00ce09e8] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)\n\n[BSP reconstruction 00ce09e8]\nHypothesis, not a recovered symbol. Previous name: CG_static_init_00ce09e8. __cdecl(); RET. Reload F8BADC lock; ifnonnull vslot0(flag1), do not clear pointer/payload. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation."
+        },
+        "after": {
+          "address": "00ce09e8",
+          "name": "BSP_XLivePipeGlobals_CleanupKey",
+          "evidence": "Hypothesis, not a recovered symbol. Previous name: CG_static_init_00ce09e8. __cdecl(); RET. Reload F8BADC lock; ifnonnull vslot0(flag1), do not clear pointer/payload. Evidence: docs/XLIVE_PIPE_GLOBALS.md; reports/xlive_pipe_globals.json. Assembly/CRT array/PE zero-fill and original fixed-data SHA checked. Strict Win32 build/two CTests and one synchronous fixture passed. Actual application CRT registration binding remains required; no game/ABI validation. | Existing complete no-argument CRT cleanup, RET. Actual atexit callback borrows permanent process globals after application scopes; existing native lock cleanup reused. Service storage stays alive, but clients must retire before lock cleanup. Descriptive hypothesis, not recovered symbol. R171 ordinary source CRT startup now retains exact original pipe data, actual global/lock owner, real atexit callbacks, current-process preimage adapters and all Win32 pipe services in one permanent process domain. Immutable native IPC worker runtime bound before use. Strict Win32/3 CTests; one actual mode-one server open/capacity80/80/close and post-CRT process receipt. 2096live/PEbytes,16direct CALL/tail rows. Full application attempt was not launched because peer held runtime. No new native bodies, ordinary online manager, client worker, encoded peer exchange, live SDK, FH3/SEH, binary ABI or gameplay proof. Original parent peer remains unidentified. docs/NATIVE_ONLINE_PROCESS_R171.md; reports/native_online_process_r171.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "successful_prior_journal": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\ghidra-annotations-20260919T012755Z.json",
+    "readback_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\online_process_r171\\comments-after.json",
+    "readback_sha256": "4f74ea05231b4538743f425f91023cf144062e96596cf5535c8d8513646bdcbe",
+    "recovery": {
+      "initial_error": "WinError5 replacing annotation journal after ten applied rows; pending eleventh prior preserved in tmp",
+      "attempts": [
+        {
+          "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\online_process_r171\\annotations-resume-0.log",
+          "exit": 0
+        }
+      ],
+      "cleanup_contract_clarification": true
+    }
+  },
+  "tested_artifact_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r171\\native-online-process-tested-r171.zip",
+    "sha256": "3284ec55d131c38a2ffd8b6125acc4976c1c062140496aea3b762a0dcd59feb2",
+    "files": 86,
+    "head": "78ed7031a093b30b6c171a77da7c5930c7cceab4"
+  },
+  "primary_integration": {
+    "commit": "280955641cf470dbf9e63ce6777418f21288e722",
+    "main_observed_at_seal": "280955641cf470dbf9e63ce6777418f21288e722",
+    "tested_commit_is_ancestor_of_observed_main": true,
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "coff_checks": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/game_native_online_process.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "375b7315b23da04242716b73c2b21d072f3bf09cb0a9c55156b910105f84b406",
+        "combined_sha256": "375b7315b23da04242716b73c2b21d072f3bf09cb0a9c55156b910105f84b406"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "175f668bd48f3f506c032d9e35a7333529db96485870b6c13dc71e78d415a715",
+        "combined_sha256": "175f668bd48f3f506c032d9e35a7333529db96485870b6c13dc71e78d415a715"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_online_ipc.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "6103869156335175ae6eb687b46358919090b3af64dcd7a8542cfe8c6b3a7981",
+        "combined_sha256": "6103869156335175ae6eb687b46358919090b3af64dcd7a8542cfe8c6b3a7981"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/xlive_ipc.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "515282db2593089866254028829b4bf308a4c036521c1ece6a67bd8d34e3307a",
+        "combined_sha256": "515282db2593089866254028829b4bf308a4c036521c1ece6a67bd8d34e3307a"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/xlive_pipe_bootstrap.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "5f00d78f5473d05fb88e368efb3bc9a77e81ad4a2fca7b6724a2f2709a1e2ef3",
+        "combined_sha256": "5f00d78f5473d05fb88e368efb3bc9a77e81ad4a2fca7b6724a2f2709a1e2ef3"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/xlive_pipe_globals.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "c0af7fe5dc6731666dd0bfca9a33977a62c862e0400c0e426f0bddc8a39c2504",
+        "combined_sha256": "c0af7fe5dc6731666dd0bfca9a33977a62c862e0400c0e426f0bddc8a39c2504"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/xlive_pipe_services.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "5e61c45d1bb6fdd5ed25e1f9753300a224cc6263c9fe7e6523b905385a247216",
+        "combined_sha256": "5e61c45d1bb6fdd5ed25e1f9753300a224cc6263c9fe7e6523b905385a247216"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/xlive_pipe_preimage.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "e60c94d4b22d653f457cfc2335b11b61d8edc9fa5035f682f0e77bb08afa2ed3",
+        "combined_sha256": "e60c94d4b22d653f457cfc2335b11b61d8edc9fa5035f682f0e77bb08afa2ed3"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/xlive_pipe_protocol.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "14082c0399dc640d67ac58b4dcfc2026f4c95adb65d7b9c16a81df1bbcfdb075",
+        "combined_sha256": "14082c0399dc640d67ac58b4dcfc2026f4c95adb65d7b9c16a81df1bbcfdb075"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/xlive_pipe_framing.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "c658e29e7ac9a0097327afef64dab7324310ab1fcf659ac81a10bf8d4c99cdb2",
+        "combined_sha256": "c658e29e7ac9a0097327afef64dab7324310ab1fcf659ac81a10bf8d4c99cdb2"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/xlive_pipe_transport.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "f81abb7157b9abb9a1ca82a63453253275067fcbd5908d9b5804423d1aa38b22",
+        "combined_sha256": "f81abb7157b9abb9a1ca82a63453253275067fcbd5908d9b5804423d1aa38b22"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/xlive_pipe_io.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "ba1eb69e336c7a1de8aeffc0db02c1d04b6763209ca9a2871a6447ac33f20e13",
+        "combined_sha256": "ba1eb69e336c7a1de8aeffc0db02c1d04b6763209ca9a2871a6447ac33f20e13"
+      }
+    ],
+    "component": {
+      "result": {
+        "utc": "2026-09-19T01:31:21.7341792Z",
+        "exe_sha256": "841B90D012175CC3A8FE1CC8390B4FA0B9A84BA2525D2DDBB8B12866BFDF1207",
+        "exit": 0,
+        "library_sha256": "72DFF09436358B8578E1972FEFABEAB6F3DF7256B04C7E13922E2A1D772D5EB3"
+      },
+      "observations_identical_to_tested": true,
+      "real_server_and_post_crt_receipt": true
+    },
+    "application": {
+      "terminal": true,
+      "build": {
+        "exe": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\Release\\bsp_game.exe",
+        "personal_root": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\settings_application_r170\\configured\\personal",
+        "library_sha256": "72DFF09436358B8578E1972FEFABEAB6F3DF7256B04C7E13922E2A1D772D5EB3",
+        "frames": 3,
+        "head": "280955641cf470dbf9e63ce6777418f21288e722",
+        "utc": "2026-09-19T01:31:10.0083689Z",
+        "exe_sha256": "A74E399094435802CA69BEB8005DC9C03221FD97252D8120A0AA889C1E6FF9BB"
+      },
+      "wait_seconds": 60,
+      "reason": "gave up after 60 s: lock held by 'battlestations-pacific-decompile-cc8-torpedo-run-in 2026-09-18T18:31:25 pid=57620', live bsp_game pids: 18944,50384",
+      "status": "not_launched_runtime_busy"
+    },
+    "game_sha256": "a74e399094435802ca69beb8005dc9c03221fd97252d8120a0aa889c1e6ff9bb",
+    "artifact_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r171\\native-online-process-main-r171.zip",
+      "sha256": "a4175ab91cbfa9f8c4148ff97446d3957ecbba10564adfbdb0bb2833c23aea10",
+      "files": 102,
+      "head": "280955641cf470dbf9e63ce6777418f21288e722"
+    }
+  }
+}

@@ -366,7 +366,7 @@ struct GameUnitSlot {
     float db_in_range_b8{0.0f};      // approach+B8h == task+4B0h
     float db_planar_bc{0.0f};        // approach+BCh, the planar range
     float db_bearing_c0{0.0f};       // approach+C0h
-    float db_extra_range_50{0.0f};   // approach+50h
+    float db_aim_point_height_50{0.0f};   // approach+50h
     float db_release_range_d4{0.0f};  // approach+D4h
     float db_lead_high_5c{0.0f};     // (approach+14h)->+5Ch
     float db_gain_high_60{0.0f};     // (approach+14h)->+60h
@@ -401,6 +401,11 @@ struct GameUnitSlot {
     float db_turndown_bank_last{0.0f};
     float db_turndown_roll_last{0.0f};
     float db_turndown_pitch_last{0.0f};
+    // The two pose angles 009C7EA0 reads, sampled over the turndown: the gate
+    // out of it needs pose+C64h under the -1.3 at 00D1F98C, or under -1.0 with
+    // |pose+C68h| past the 135 degrees at 00D20E80.
+    float db_turndown_pose_c64_last{0.0f};
+    float db_turndown_pose_c64_min{0.0f};
     // Census.
     float db_dive_entry_alt{-1.0f};
     float db_dive_entry_pitch{0.0f};
@@ -408,6 +413,16 @@ struct GameUnitSlot {
     float db_release_speed{-1.0f};
     float db_release_range{-1.0f};
     float db_aim_error_last{0.0f};
+    // 009C58D0's steering census.
+    int db_aimdive_steer_ticks{0};
+    float db_aimdive_pitch_last{0.0f};
+    float db_aimdive_roll_last{0.0f};
+    float db_aimdive_bearing_last{0.0f};
+    // The closest the aim error came to the 25.0 m gate at 00CE3880 while an aim
+    // state owned the tick, with the geometry at that sample. -1 means never.
+    float db_aim_error_abs_min{-1.0f};
+    float db_aim_error_min_range{-1.0f};
+    float db_aim_error_min_alt{-1.0f};
     int db_blocked_no_latch{0};      // ticks with approach+D0h clear
     int db_blocked_no_bomb{0};       // ticks with approach+D1h clear
     // The torpedo bot task (kind Eh) this ordered aircraft runs, when its
@@ -955,8 +970,20 @@ struct GameUnitsHost::Impl {
     // include/bsp/robot_config.hpp names from the same Lua keys.
     static constexpr float kDiveBombReleaseAlt1 = 350.0f;   // row+38h
     static constexpr float kDiveBombReleaseAlt2 = 450.0f;   // row+3Ch
-    static constexpr float kDiveBombAimPrecDist = 70.0f;    // row+5Ch
-    static constexpr float kDiveBombAimPrecMul = 0.3f;      // row+60h
+    // These four are (approach+14h)->+5Ch, +60h, +64h and +68h. 009F9D1E sets
+    // approach+14h to `00F8A30C + index * 248h + 0Ch`, so the record is a
+    // 0x248-stride robots row viewed 0xCh in: ->+5Ch is row+68h, ->+60h is
+    // row+6Ch, ->+64h is row+70h and ->+68h is row+74h. include/bsp/
+    // robot_config.hpp names those four dive_bomb_aim_prec_dist_068,
+    // _mul_06c, _pull_plus_070 and _pull_minus_074, and this installation's
+    // scripts/datatables/robots.lua SPNormal row authors them. So the first
+    // two are no longer an assumption and the last two are recovered.
+    static constexpr float kDiveBombAimPrecDist = 70.0f;    // row+68h, ->+5Ch
+    static constexpr float kDiveBombAimPrecMul = 0.3f;      // row+6Ch, ->+60h
+    // "tavolsagtol fuggoen mennyire huzza a pitch-t, ha nem pontos a celzas" -
+    // how much it pulls the pitch when the aim is off - and its push twin.
+    static constexpr float kDiveBombAimPrecPullPlus = 0.018f;   // row+70h, ->+64h
+    static constexpr float kDiveBombAimPrecPullMinus = 0.025f;  // row+74h, ->+68h
 
     // 007C1DB0: the device list at unit+48h, summing 006E3500 over every device
     // whose vtable[+5Ch] answers 25h. The gunnery host owns that list; the
@@ -1128,7 +1155,7 @@ struct GameUnitsHost::Impl {
         e.height_above_target = slot.motion.position[1] - target_y;
         e.dive_altitude_a8 = slot.db_dive_alt_a8;
         e.begin_altitude_ac = slot.db_begin_alt_ac;
-        e.extra_range_50 = slot.db_extra_range_50;
+        e.aim_point_height_50 = slot.db_aim_point_height_50;
         e.lead_at_high_5c = slot.db_lead_high_5c;
         e.gain_at_high_60 = slot.db_gain_high_60;
         e.bearing_error = bsp::wrapped_angle_subtract_00438b10(
@@ -1136,12 +1163,25 @@ struct GameUnitsHost::Impl {
         e.planar_distance = slot.db_planar_bc;
         const bsp::DiveBombAimError err = bsp::dive_bomb_aim_error_009c5c9b(e);
         slot.db_aim_error_last = err.error;
+        // The release gate 00CE3880 tests the magnitude, so the census keeps the
+        // closest approach to it rather than only the last sample: the last one
+        // is taken after the aircraft has overflown and says nothing about the
+        // dive. Sampled only while the aim states own the tick.
+        if (slot.dive_bomb_state == bsp::DiveBombState::kAimDive ||
+            slot.dive_bomb_state == bsp::DiveBombState::kAimGlide) {
+            const float mag = err.error < 0.0f ? -err.error : err.error;
+            if (slot.db_aim_error_abs_min < 0.0f || mag < slot.db_aim_error_abs_min) {
+                slot.db_aim_error_abs_min = mag;
+                slot.db_aim_error_min_range = slot.db_planar_bc;
+                slot.db_aim_error_min_alt = slot.motion.position[1];
+            }
+        }
         in.aim_error = err.error;
         // 009C5B01-009C5B48, the dive abort: clearing +19h is what sends the
         // state to aimglide on the next transition.
         bsp::DiveBombDiveAbortInputs ab;
         ab.release_range_d4 = slot.db_release_range_d4;
-        ab.extra_range_50 = slot.db_extra_range_50;
+        ab.aim_point_height_50 = slot.db_aim_point_height_50;
         ab.slant_range = slot.db_planar_bc;
         ab.aim_point_distance = slot.db_planar_bc;
         ab.unit_attitude_c64 = slot.plane_pitch_angle_c64;
@@ -4205,16 +4245,39 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // host applies.
                             unit_.db_in_range_b8 = GameUnitsHost::Impl::kPilotDiveBombAttackDist;
                             unit_.db_attack_dist_b4 = GameUnitsHost::Impl::kPilotDiveBombAttackDist;
-                            // SUBSTITUTION, labelled: approach+D4h, +50h and
-                            // the two interpolation endpoints (approach+14h)
-                            // ->+5Ch/+60h have no producer read. Zero leaves
-                            // the lead at 0 and the gain at 1, so the aim error
-                            // is the bare along-track miss the release gate
-                            // compares against 25 m.
-                            // approach+D4h and +50h still have no producer
-                            // read; zero is labelled, not recovered.
-                            unit_.db_release_range_d4 = 0.0f;
-                            unit_.db_extra_range_50 = 0.0f;
+                            // approach+D4h RECOVERED. The approach constructor
+                            // 009C3EA0 - the routine that writes the vtable
+                            // 00D20C48 at 009C3EE2 and draws +A8h at 009C3F2E
+                            // and +ACh at 009C3F3F - closes with
+                            // 009C3FFB-009C4045:
+                            //
+                            //   S24 = (+ACh + +A8h) * 0.5      (00D7A280)
+                            //   S20 = +A8h + 250.0             (00CF8850)
+                            //   +D4h = max(S20, S24)           (009C4035 `76` JBE)
+                            //
+                            // ESI is `this` from 009C3EB8 and is never
+                            // reassigned, so both reads are the approach's own
+                            // fields. With the drawn 350.0 and the 1000.0
+                            // begin-altitude that is 675.0 m, and 009C680E's
+                            // can-dive test becomes a real height gate rather
+                            // than "above the target".
+                            unit_.db_release_range_d4 =
+                                bsp::dive_bomb_dive_entry_height_009c4045(
+                                    unit_.db_dive_alt_a8, unit_.db_begin_alt_ac);
+                            // SUBSTITUTION, labelled: approach+50h and the two
+                            // interpolation endpoints (approach+14h)->+5Ch/+60h
+                            // have no producer read. Zero leaves the lead at 0
+                            // and the gain at 1, so the aim error is the bare
+                            // along-track miss the release gate compares
+                            // against 25 m.
+                            //
+                            // +50h was searched for this packet and is NOT the
+                            // store at 009C3E2E that a `+50h` census turns up:
+                            // 009C3DAD `MOV EDI,ECX` makes EDI the approach and
+                            // 009C3E11 `LEA ESI,[EDI+30h]` rebases ESI, so that
+                            // store lands on approach+80h. No writer through
+                            // the approach base exists in the dive-bomb range.
+                            unit_.db_aim_point_height_50 = 0.0f;
                             // 007C1DB0 at the aimglide enter 009C4F00 latches
                             // the count the salvo caps against.
                             unit_.dive_bomb_rounds_remaining =
@@ -4266,6 +4329,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (ctx.current == bsp::DiveBombState::kTurnDown) {
                             run_dive_bomb_turndown_tick_009c44f0();
                         }
+                        if (ctx.current == bsp::DiveBombState::kAimDive) {
+                            run_dive_bomb_aimdive_tick_009c58d0();
+                        }
                         // The run-in census: one range sample per second of
                         // mission time, and the tick the latch closes.
                         if (unit_.db_in_range_d0 && unit_.db_latch_closed_tick < 0) {
@@ -4295,7 +4361,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         in.planar_distance_bc = unit_.db_planar_bc;
                         in.altitude = unit_.motion.position[1];
                         in.begin_altitude_ac = unit_.db_begin_alt_ac;
-                        in.extra_range_50 = unit_.db_extra_range_50;
+                        in.aim_point_height_50 = unit_.db_aim_point_height_50;
                         in.attack_distance_b4 = unit_.db_attack_dist_b4;
                         // SUBSTITUTION, labelled: 007F0280 at 009C42B8 is a
                         // contract, so the run-in flies straight at the target
@@ -4350,6 +4416,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plane_commanded_altitude = c.clamped_altitude;
                         unit_.plane_commanded_pitch = bsp::pitch_command_009fb800(pin);
                         unit_.plan_state.pitch_target_2bc = unit_.plane_commanded_pitch;
+                        // 009FB800's chain writes cmd+2D0h = 2 beside +2BCh, so
+                        // the run-in keeps the planner's pitch arm running. The
+                        // reset at 0099B54E already leaves 2 there; this is the
+                        // write made explicit next to the gate at 0099E3BF.
+                        unit_.plan_state.pitch_mode_2d0 = 2;
                         unit_.plane_desired_speed_2b4 = r.commanded_throttle;
                         unit_.plane_air_brake_mode_2d8 = 0;
                     }
@@ -4357,6 +4428,53 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // 009C44F0, the turndown tick, vtable 00D20C84 slot +Ch.
                     // The arm reaches it through state->vtable[+Ch] at
                     // 009C884C. docs/DIVE_BOMB_TASK.md carries the body.
+                    // 009C58D0's steering, the part of the aimdive tick that
+                    // aims. Until this was bound, `tick_state` was empty and
+                    // 664 live aimdive ticks issued no command at all: the
+                    // planner levelled the aircraft and it passed the target
+                    // at 444 m, which is the whole of the 340 m miss the aim
+                    // census reported. docs/DIVE_BOMB_TASK.md.
+                    void run_dive_bomb_aimdive_tick_009c58d0() {
+                        bsp::DiveBombAimDiveSteerInputs in;
+                        // 009C5C9B's own result, computed for this same tick by
+                        // dive_bomb_aimdive_inputs() a few lines earlier.
+                        in.aim_error = unit_.db_aim_error_last;
+                        // The image rolls on a bearing drawn from
+                        // approach->vtable[0]; this host re-reads the commanded
+                        // target each tick, so that is the bearing it has.
+                        in.bearing_error = bsp::wrapped_angle_subtract_00438b10(
+                            unit_.db_bearing_c0, unit_.plane_heading_c6c);
+                        // (approach+14h)->+64h and ->+68h at 009C5CAB and
+                        // 009C5CD0, RECOVERED: 009F9D1E makes approach+14h a
+                        // 0x248-stride robots row viewed 0xCh in, so these are
+                        // row+70h and row+74h, DiveBombAimPrecPullPlus and
+                        // PullMinus. Same substitution class as the two the aim
+                        // error already uses, and from the same row.
+                        in.pitch_gain_positive_64 =
+                            GameUnitsHost::Impl::kDiveBombAimPrecPullPlus;
+                        in.pitch_gain_negative_68 =
+                            GameUnitsHost::Impl::kDiveBombAimPrecPullMinus;
+                        const bsp::DiveBombAimDiveSteerResult r =
+                            bsp::dive_bomb_aimdive_steer_009c5c9f(in);
+                        ++unit_.db_aimdive_steer_ticks;
+                        unit_.db_aimdive_pitch_last = r.pitch_29c;
+                        unit_.db_aimdive_roll_last = r.roll_290;
+                        unit_.db_aimdive_bearing_last = in.bearing_error;
+                        // 009C5CFA, 009C5D15, 009C5D1C.
+                        unit_.plan_slots[bsp::kPilotSlotPitch].desired = r.pitch_29c;
+                        unit_.plan_slots[bsp::kPilotSlotPitch].active = 1;
+                        unit_.plan_state.pitch_mode_2d0 = 0;
+                        // 009C5DA3, 009C5DAB, 009C5DB2. Mode 0 is neither the
+                        // planner's 2 nor its 1, so its roll arm is skipped and
+                        // this command is what reaches the stick.
+                        unit_.plan_slots[bsp::kPilotSlotRoll].desired = r.roll_290;
+                        unit_.plan_slots[bsp::kPilotSlotRoll].active = 1;
+                        unit_.plan_heading_mode_2cc = 0;
+                        unit_.plan_heading_2c0_written = false;
+                        // 009C6080: cmd+2D8h = 0, the air-brake mode.
+                        unit_.plane_air_brake_mode_2d8 = 0;
+                    }
+
                     void run_dive_bomb_turndown_tick_009c44f0() {
                         bsp::DiveBombTurnDownInputs in;
                         in.bank_c68 = unit_.plane_bank_angle_c68;
@@ -4375,6 +4493,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::dive_bomb_turndown_tick_009c44f0(in);
                         ++unit_.db_turndown_ticks;
                         unit_.db_turndown_bank_last = r.folded_bank;
+                        unit_.db_turndown_pose_c64_last = unit_.plane_pitch_angle_c64;
+                        if (unit_.db_turndown_ticks == 1 ||
+                            unit_.plane_pitch_angle_c64 < unit_.db_turndown_pose_c64_min) {
+                            unit_.db_turndown_pose_c64_min = unit_.plane_pitch_angle_c64;
+                        }
                         if (r.latch_1c_set) {
                             if (!unit_.db_turndown_latch_1c) {
                                 unit_.db_turndown_latched_tick =
@@ -4414,6 +4537,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.db_turndown_pitch_last = r.pitch_29c;
                             unit_.plan_slots[bsp::kPilotSlotPitch].desired = r.pitch_29c;
                             unit_.plan_slots[bsp::kPilotSlotPitch].active = 1;
+                            // 009C469C and 009C472A, `MOV [reg+2D0h],EBP` with
+                            // EBP zeroed at 009C44FB: both pitch arms, before and
+                            // after the latch, leave the pitch mode at 0. That is
+                            // the value the planner's gate at 0099E3BF lets
+                            // through, so this deflection is what reaches the
+                            // elevator instead of the planner's own demand.
+                            unit_.plan_state.pitch_mode_2d0 = 0;
+                        }
+                        if (r.wrote_altitude_hold) {
+                            // 009C46AA: +2BCh = 0 with mode +2D0h = 2, which
+                            // sends the think back through the planner's arm.
+                            unit_.plan_state.pitch_target_2bc = 0.0f;
+                            unit_.plan_state.pitch_mode_2d0 = 2;
                         }
                     }
 
@@ -5615,28 +5751,51 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // plan+2C4h still holds what the TASK wrote and this
                             // arm servos toward it rather than computing one.
                             // The dive-bomb turndown writes pi there at 009C4646.
-                            bsp::PilotBotRollServoInputs sin;
+                            bsp::PilotBotRollDemandInputs sin;
                             sin.bank_target_2c4 = unit_.plan_state.bank_target_2c4;
                             sin.bank = unit_.plane_bank_angle_c68;
-                            // SUBSTITUTION, labelled: [ESP+28h], [ESP+2Ch] and the
-                            // EBX tuning block are contracts, so the scale is 1,
-                            // the band is open and the interpolant is the error.
+                            // SUBSTITUTION, labelled and now one item shorter:
+                            // [ESP+28h] and the EBX tuning block are contracts,
+                            // so the scale is 1, the band is open and the rate
+                            // is zero. The map's interpolant is no longer among
+                            // them - it is the demand the first half returns,
+                            // which is what the frame slot at 0099E36B holds.
                             sin.error_scale = 1.0f;
                             sin.band_40 = 0.0f;
                             sin.gain_44 = 1.0f;
                             sin.rate_48 = 0.0f;
-                            sin.rate_limit = 1.0f;
-                            const bsp::PilotBotRollServoResult sr =
-                                bsp::pilot_roll_servo_0099e26e(sin);
-                            bsp::PilotBotRollServoInputs sin2 = sin;
-                            sin2.interpolant = sr.bank_error;
-                            const bsp::PilotBotRollServoResult sr2 =
-                                bsp::pilot_roll_servo_0099e26e(sin2);
-                            unit_.plan_slots[bsp::kPilotSlotRoll].desired = sr2.desired_290;
+                            const bsp::PilotBotRollDemandResult sr =
+                                bsp::pilot_roll_bank_demand_0099e2ba(sin);
+                            // 0099E344-0099E367's limit is a contract: desc+1A8h,
+                            // desc+1BCh and EBX[0] have no producer read here.
+                            unit_.plan_slots[bsp::kPilotSlotRoll].desired =
+                                bsp::pilot_roll_rate_limited_0099e344(sr.demand, 1.0f);
                             unit_.plan_slots[bsp::kPilotSlotRoll].active = 1;  // 0099E3AE
                             unit_.plan_heading_mode_2cc = 0;  // 0099E3B5
                         }
 
+                        // THE PITCH-MODE GATE, 0099E3BF-0099E3D1. `MOV ECX,
+                        // [ESI+2D0h]` / `TEST ECX,ECX` / `JNE 0099E490`: the
+                        // planner's pitch arm runs only when the pitch mode the
+                        // task left behind is NON-zero. Mode 0 takes the branch
+                        // 0099E3D7-0099E483, which touches nothing but the
+                        // command's +2ECh stamp and then jumps to 0099E756,
+                        // PAST the arm - so the task's own plan+29Ch/+2A0h
+                        // survives the think.
+                        //
+                        // This is the pitch twin of the roll gate on +2CCh above,
+                        // and it is what the dive-bomb turndown needs: 009C469C
+                        // and 009C472A both write +2D0h = 0 (EBP, zeroed at
+                        // 009C44FB) beside the pitch command, so the full nose-
+                        // down deflection it asks for is meant to reach the
+                        // elevator unaltered. Without the gate the arm below
+                        // overwrote it every think and the dive never steepened.
+                        // docs/DIVE_BOMB_TASK.md, "The pitch-arm gate".
+                        //
+                        // 0099E3D7-0099E483 itself is NOT modelled: its only
+                        // writes are cmd+2ECh from 00E0E2F4/00E0E2F0, and this
+                        // host keeps no +2ECh.
+                        if (unit_.plan_state.pitch_mode_2d0 != 0) {
                         // 0099E490-0099E739, the pitch arm. Without it a planned
                         // bot follows whatever plan+2BCh was last set to, which
                         // is downward: a measured run with only the yaw arm
@@ -5677,6 +5836,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plan_slots[bsp::kPilotSlotPitch].desired =
                             bsp::plan_pitch_0099e68d(pitch.demand);
                         unit_.plan_slots[bsp::kPilotSlotPitch].active = 1;  // 0099E741
+                        }   // end of the +2D0h != 0 arm, 0099E490-0099E739
                         // 0099D300's throttle arms. The demand arm is reachable
                         // in flight through 0099D8CD, which jumps past the
                         // flight-state test at 0099D8FD.
@@ -7002,7 +7162,9 @@ void GameUnitsHost::report() {
                 if (slot->db_turndown_ticks > 0) {
                     host.log.notef("  divebomb %-12s turndown 009C44F0: ticks=%d "
                         "roll_writes=%d pitch_writes=%d latched_at_tick=%d "
-                        "|bank|=%.4f rad roll=%.4f pitch=%.4f speed_2b4=%.1f",
+                        "|bank|=%.4f rad roll=%.4f pitch=%.4f speed_2b4=%.1f "
+                        "| 009C7EA0 window: pose_c64_last=%.4f pose_c64_min=%.4f "
+                        "(needs < -1.3, or < -1.0 with |bank| > 2.356)",
                         slot->row.name.c_str(), slot->db_turndown_ticks,
                         slot->db_turndown_roll_writes,
                         slot->db_turndown_pitch_writes,
@@ -7010,7 +7172,9 @@ void GameUnitsHost::report() {
                         static_cast<double>(slot->db_turndown_bank_last),
                         static_cast<double>(slot->db_turndown_roll_last),
                         static_cast<double>(slot->db_turndown_pitch_last),
-                        static_cast<double>(slot->plane_desired_speed_2b4));
+                        static_cast<double>(slot->plane_desired_speed_2b4),
+                        static_cast<double>(slot->db_turndown_pose_c64_last),
+                        static_cast<double>(slot->db_turndown_pose_c64_min));
                 }
                 if (slot->db_attackrun_ticks > 0) {
                     char ranges[192];
@@ -7047,14 +7211,23 @@ void GameUnitsHost::report() {
                     host.log.notef("  divebomb %-12s dive entry alt=%.1f m "
                         "pitch=%.3f rad | release alt=%.1f m speed=%.1f m/s "
                         "range=%.1f m | aim error 009C5C9B=%.2f m "
-                        "(gate 00CE3880 = 25.0 m)",
+                        "(gate 00CE3880 = 25.0 m) closest=%.2f m at range=%.1f m "
+                        "alt=%.1f m | 009C58D0 steer: ticks=%d pitch=%.3f "
+                        "roll=%.3f bearing=%.4f rad",
                         slot->row.name.c_str(),
                         static_cast<double>(slot->db_dive_entry_alt),
                         static_cast<double>(slot->db_dive_entry_pitch),
                         static_cast<double>(slot->db_release_alt),
                         static_cast<double>(slot->db_release_speed),
                         static_cast<double>(slot->db_release_range),
-                        static_cast<double>(slot->db_aim_error_last));
+                        static_cast<double>(slot->db_aim_error_last),
+                        static_cast<double>(slot->db_aim_error_abs_min),
+                        static_cast<double>(slot->db_aim_error_min_range),
+                        static_cast<double>(slot->db_aim_error_min_alt),
+                        slot->db_aimdive_steer_ticks,
+                        static_cast<double>(slot->db_aimdive_pitch_last),
+                        static_cast<double>(slot->db_aimdive_roll_last),
+                        static_cast<double>(slot->db_aimdive_bearing_last));
                 }
             }
             if (tasked > 0) {
@@ -7066,10 +7239,12 @@ void GameUnitsHost::report() {
                         "The torpedo's blocker, unit+C58h at 0099AF53, does not "
                         "apply here: 009C60F1 and 009C5777 are inside state "
                         "ticks the arm reaches through state->vtable[+Ch] at "
-                        "009C884C, not through the arming loop. The gate is the "
-                        "in-range latch approach+D0h at 009C7C31, which needs "
-                        "approach+BCh below approach+B8h; the per-aircraft "
-                        "lines above carry both numbers.");
+                        "009C884C, not through the arming loop. Read the walk "
+                        "off the state ticks above: the in-range latch "
+                        "approach+D0h at 009C7C31 gates entry to flyabove, "
+                        "009C7EA0 gates turndown to aimdive, and the release "
+                        "itself needs the aim error 009C5C9B inside the 25.0 m "
+                        "at 00CE3880. The per-aircraft lines carry all three.");
                 }
             }
         }

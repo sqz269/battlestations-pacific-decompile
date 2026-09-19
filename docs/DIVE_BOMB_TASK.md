@@ -1292,3 +1292,636 @@ aim-precision distance is "from far away it aims this much beside the target, th
 accurate as it closes", and the multiplier is "the aiming accuracy scale, the smaller the better".
 So the whole aim-error chain, and the 25-metre gate at `00CE3880`, is authored imprecision in the
 authors' own words.
+
+## The servo run, `local\usn04_fa.log` (17:19:38, 5000 frames / 4800 mission frames)
+
+The run that carried the servo call on the mode-1 roll path. It moved the chain three states
+further than the run before it, and it named the gate that stops it.
+
+| measure | before (`usn04_dive.log`) | this run (`usn04_fa.log`) |
+| --- | --- | --- |
+| aircraft on the task | 1, `movieval` | 1, `movieval` |
+| arm ticks | 2370 | 2370 |
+| transitions | 2 | 3 |
+| attackrun ticks (`009C4220`) | 1480 | 1480 |
+| flyabove ticks (`009C62B0`) | 144 | 159 |
+| turndown ticks (`009C44F0`) | 746 | 731 |
+| in-range latch `approach+D0h` (`009C7C31`) | never | closed at arm tick 1481 |
+| `|bank|` reached against the 150 deg latch at `009C4654` | 34.8 deg (0.6074 rad) | **179.8 deg (3.1381 rad)** |
+| turndown latch `state+1Ch` | never | **set at arm tick 1673** |
+| turndown roll writes / pitch writes | - | 15 / 731 |
+| release floor drawn (`approach+A8h`) | 350.0 m | 350.0 m |
+| `approach+B8h` (AttackDist floor, `009C8A5E`) | 1100.0 m | 1100.0 m |
+| `approach+BCh` at the end | - | 4437.5 m |
+| rounds | 2 | 2, none spent |
+| `009C7EA0` window (`pose+C64h` under -1.3) | never met | **never met** |
+| releases / bombs spawned | 0 / 0 | 0 / 0 |
+
+The state walk this run, read off the tick counts and the two latch ticks (159 + 731 + 1480 = 2370):
+
+```
+attackrun  arm ticks    1 .. 1480   closes from 11050 m to roughly 3800 m
+                                    latch approach+D0h closes at 1481
+flyabove   arm ticks 1481 .. 1640   159 ticks, +19h fires
+turndown   arm ticks 1641 .. 2370   731 ticks; bank latch at 1673, then stalled
+```
+
+`attackrun` heading 3.2240 rad, throttle 1.000, `alt_base` 1000.0 m, 149 rerolls; the range
+samples fall 11050 -> 10265 over the first 160 arm ticks, about 98 m/s of closure. The gate line
+reports 2021 arm ticks without the latch and 0 without bombs, so the latch held for 349 ticks and
+then re-opened as the aircraft overflew: `approach+BCh` is back out at 4437.5 m at the summary.
+
+### The new gate: the planner's pitch arm, `0099E3BF`-`0099E3D1`
+
+The chain now stops inside `turndown`, at the transition `009C8620` guarded by `009C7EA0`. With
+`|bank|` at 3.1381 rad the folded-bank arm of that test is already satisfied (3.1381 > the 2.356
+at `00D20E80`), so the whole test reduces to `pose+C64h < -1.0`: the nose has to come down past
+57 degrees. It never did, although the turndown wrote its full nose-down deflection on all 731
+ticks (`pitch_writes=731`, `pitch=1.0000`).
+
+It is **an unbound branch in the planner**, not an unread body and not a contract input. The
+listing:
+
+```
+0099e3bf  MOV  ECX,dword ptr [ESI + 0x2d0]
+0099e3c5  FLD  float ptr [ESP + 0x20]
+0099e3c9  TEST ECX,ECX
+0099e3cb  MOVSS dword ptr [ESP + 0x10],XMM2
+0099e3d1  JNE  0x0099e490            ; the pitch arm runs only when +2D0h != 0
+0099e3d7  ...                        ; mode 0: reads cmd+2ECh against 00E0E2F4,
+0099e483  JMP  0x0099e756            ; writes only cmd+2ECh, then jumps PAST the arm
+```
+
+`plan_yaw_0099d300()` ran `pilot_pitch_demand_0099e490` unconditionally and overwrote the pitch
+slot every think, so the turndown's deflection never reached the elevator. The pitch mode was
+already on the plan state - `pilot_plan_slots.hpp` declares `pitch_mode_2d0`, reset to 2 at
+`0099B54E` - but nothing read it and nothing but the reset wrote it.
+
+This is the pitch twin of the roll gate on `+2CCh`. The turndown writes the zero that passes it,
+in both of its pitch arms, with `EBP` zeroed at `009C44FB`:
+
+```
+009c469c  MOV dword ptr [EAX + 0x2d0],EBP    ; before the latch, beside +29Ch/+2A0h
+009c472a  MOV dword ptr [ESI + 0x2d0],EBP    ; after the latch, beside +29Ch/+2A0h
+```
+
+Bound in this packet: the gate at `0099E3BF`, the two turndown writes, and the explicit `= 2` the
+run-in's `009FB800` chain leaves behind. The mode-0 branch `0099E3D7`-`0099E483` is NOT modelled -
+its only writes are `cmd+2ECh` from `00E0E2F4`/`00E0E2F0`, and this host keeps no `+2ECh`.
+
+### The two servo contracts, re-traced
+
+The packet named `[ESP+28h]`, `[ESP+2Ch]` and the `EBX` tuning block as the first suspects if the
+bank stalled. The bank did not stall, and tracing them anyway retired one of the three.
+
+`[ESP+2Ch]` at `0099E36B` is **not** an incoming slot. `0099E34A SUB ESP,0x14` sits between the
+demand's store and that read:
+
+```
+0099e340  FSTP  float ptr [ESP + 0x18]   ; ESP = E0-8   -> frame slot E0+0x10
+0099e34a  SUB   ESP,0x14                 ; ESP = E0-0x1C
+0099e36b  FLD   float ptr [ESP + 0x2c]   ; ESP = E0-0x1C -> frame slot E0+0x10
+```
+
+Same slot. The fifth argument to `BSP_Math_InterpolateClamped` is the demand the arm just computed.
+`[ESP+28h]` at `0099E2D3` is read before the adjustment (E0+0x20) and is still a contract, as is
+the `EBX` block and the limit `0099E344`-`0099E367` builds from `desc+1A8h`, `desc+1BCh`, `EBX[0]`.
+
+## Correction to "`0099E26E`-`0099E39D`, the servo arm": two readings, and the split
+
+The servo arm is now two pure functions, `pilot_roll_bank_demand_0099e2ba` (`0099E2BA`-`0099E33A`)
+and `pilot_roll_rate_limited_0099e344` (`0099E344`-`0099E39D`), so the host calls each once. The
+image computes both in one region; the split is at the `0099E340` store, which is the region's own
+hand-off from the demand to the map.
+
+Splitting it turned up two errors in the single-function shape. They cancelled under the
+substituted tuning, so **the mode-1 roll command this host produces is unchanged** and the
+179.8-degree bank in `usn04_fa.log` stands.
+
+| was | is | evidence |
+| --- | --- | --- |
+| `interpolant` is a contract input, "[ESP+2Ch] at `0099E36B`" | it is the demand `0099E340` stores; the host no longer calls the arm twice to feed it | `0099E34A SUB ESP,0x14` between the two references makes `[ESP+18h]` and `[ESP+2Ch]` the same frame slot |
+| the demand arms act on the folded magnitude | they act on the SIGNED scaled error; the fold feeds only the band compare and the sign test | `0099E2E7 FCOMI ST0,ST1` then `0099E2E9 FSTP ST1` leave the signed error on the stack; `0099E310 FSTP ST0` discards the folded value before `0099E314`/`0099E332`/`0099E337` |
+
+Why they cancel: with the substituted tuning (`band_40` 0, `gain_44` 1, `rate_48` 0) the band
+compare always takes the rate arm, and the rate arm with a zero rate returns the signed error
+unchanged - which is exactly what the host was passing as the interpolant. The two errors only
+diverge once a real `EBX` tuning block is recovered, and then the corrected shape is the one that
+holds: the demand keeps the error's sign, so the falling map still rolls both ways.
+
+One side effect is now reported and not modelled: `0099E328 MOVSS [ESI+2ECh],XMM1` with
+`00E0E2F4`, on the rate arm. `cmd+2ECh` is the same word the mode-0 pitch branch at `0099E3D7`
+reads and writes; this host keeps no `+2ECh`.
+
+## `approach+D4h` recovered: the dive-entry height, set once by the constructor
+
+`009C3EA0` is the approach's constructor - it writes the vtable `00D20C48` at `009C3EE2`, draws
+`+A8h` at `009C3F2E` and `+ACh` at `009C3F3F`, and tail-calls `009C3DA0` at `009C4083`. Its last
+act before that tail call is `+D4h`:
+
+```
+009c3ffb  FLD   float ptr [ESI + 0xa8]         ; the drawn release altitude
+009c4001  FSTP  float ptr [ESP + 0x20]
+009c4005  FLD   float ptr [ESI + 0xac]         ; the begin altitude
+009c400b  FLD   float ptr [ESP + 0x20]
+009c400f  FLD   ST0
+009c4011  FADDP ST2,ST0                        ; ST1 = +ACh + +A8h
+009c4013  FXCH                                 ; ST0 = the sum, ST1 = +A8h
+009c4015  FMUL  double ptr [0x00d7a280]        ; 0.5
+009c401b  FSTP  float ptr [ESP + 0x24]         ; S24 = (+ACh + +A8h) * 0.5
+009c401f  FADD  double ptr [0x00cf8850]        ; 250.0, on the +A8h copy
+009c4025  FSTP  float ptr [ESP + 0x20]         ; S20 = +A8h + 250.0
+009c4031  FCOMIP ST0,ST1
+009c4035  JBE   0x009c403f                     ; byte `76`
+009c4045  MOVSS dword ptr [ESI + 0xd4],XMM0
+```
+
+`+D4h = max(+A8h + 250.0, (+ACh + +A8h) * 0.5)`. `ESI` is `this` from `009C3EB8 MOV ESI,ECX` and
+is never reassigned in the body, so both reads are the approach's own fields; the only `LEA` off it,
+`009C3EDF LEA ECX,[ESI+30h]`, lands in `ECX`.
+
+With this installation's `SPNormal` draw (`+A8h` 350.0) and the begin altitude 1000.0 that is
+**675.0 m**: `max(600.0, 675.0)`. So `009C680E`'s can-dive test is a real height gate - the
+aircraft must be 675 m above its target before `flyabove` will roll it in - and not the "above the
+target" the zero reduced it to. Bound in `game_hosts_units.cpp` through
+`dive_bomb_dive_entry_height_009c4045`.
+
+### `approach+50h` is still open, and the obvious candidate is not it
+
+A `+50h` store census over `.text` turns up eight stores in the `009Cxxxx` range. The one that
+looks like the approach, `009C3E2E MOVSS [ESI+50h],XMM0` in `009C3DA0`, is **not** `approach+50h`:
+
+```
+009c3dad  MOV EDI,ECX          ; EDI is `this`, the approach
+009c3daf  MOV ESI,[EDI + 0x14]
+009c3e11  LEA ESI,[EDI + 0x30] ; ESI is rebased 0x30 past `this`
+009c3e2e  MOVSS [ESI + 0x50],XMM0
+```
+
+That store lands on `approach+80h`, along with `+7Ch` and `+78h` from the same value
+(`[[EDI+14h]+58h]`). No writer through the approach base exists in the dive-bomb range, so `+50h`
+keeps its labelled zero, and the next reader should look for a sub-object base or a block copy
+rather than repeating the offset census.
+
+## The run after the pitch gate, `local\usn04_pitchgate.log` and `local\usn04_d4h.log`
+
+Same arguments as `usn04_fa.log`, so the three runs compare directly.
+
+| measure | `usn04_fa` | `usn04_pitchgate` | `usn04_d4h` |
+| --- | --- | --- | --- |
+| transitions | 3 | 4 | 4 |
+| attackrun ticks | 1480 | 1480 | 1480 |
+| flyabove ticks | 159 | 159 | 159 |
+| turndown ticks | 731 | **67** | 67 |
+| aimdive ticks | 0 | **664** | 664 |
+| `|bank|` last | 3.1381 | 3.1261 | 3.1261 |
+| turndown latch tick | 1673 | 1673 | 1673 |
+| dive entry altitude | - | 638.9 m | 638.9 m |
+| releases / bombs | 0 / 0 | 0 / 0 | 0 / 0 |
+
+Binding the pitch gate is what moved it: the turndown now completes in 67 ticks instead of
+stalling for 731, and the chain reaches `aimdive`, a state it had never entered.
+
+`pose_c64_min=-0.9594` is the last sample taken while `turndown` still owned the tick; the arm
+runs every 0.09 s while the pose refreshes every frame, so the angle crossed the -1.0 the
+`009C7EA0` window needs between that sample and the next arm call.
+
+Binding `approach+D4h` at 675.0 m changed nothing in the walk, which is the expected result: the
+aircraft is above `alt_base` 1000.0 m when `flyabove` makes the can-dive decision and only falls to
+638.9 m by the time `aimdive` takes over. The gate is now real rather than vacuous, and it will
+bite on a mission that orders a lower approach.
+
+### The gate now: the 25 m aim window at `00CE3880`
+
+The release is blocked by the aim error, not by a state gate. The census added for this run keeps
+the closest the error came to the window while an aim state owned the tick:
+
+```
+aim error 009C5C9B=-3706.33 m (gate 00CE3880 = 25.0 m) closest=359.50 m at range=444.2 m alt=631.2 m
+```
+
+359.50 m against a 25.0 m window, at 444 m of planar range. The last sample, -3706.33 m, is taken
+after the overfly and says nothing about the dive. The error's open inputs are `approach+50h`
+(above) and the two interpolation endpoints `(approach+14h)->+5Ch/+60h`, which the host substitutes
+from this installation's `robots.lua` row (`DiveBombAimPrecDist` 70.0, `DiveBombAimPrecMul` 0.3).
+An authored miss of 70 x 0.3 = 21 m at close range is inside the window, so a 359 m error means an
+input or a term of `009C5C9B` is wrong, not that the aircraft aimed badly. That is the next packet.
+
+### `flyabove+19h`, second arm: the reaching writer, and how far back it goes
+
+The second arm at `009C67A9` is `COMISS XMM0,[ESP+30h]` with `XMM0` zeroed at `009C67A0`, and
+`009C67AE JC` skips the flag when the slot is positive - so the arm fires on `slot <= 0`.
+
+A literal-offset grep would not find its producer: the flyabove tick has nine call sites the frame
+walker cannot account for. `tools/frame_slot_census.py 009c62b0` with the cleanups
+
+```
+--pop 009c62cf=4 --pop 009c6342=4 --pop 009c63bf=0 --pop 009c6404=0 --pop 009c647b=4
+--pop 009c64ec=4 --pop 009c6705=4 --pop 009c6728=0 --pop 009c6b3a=12
+```
+
+(4 for each `CALL EDX`/`CALL EAX` virtual with one pushed argument - the walker's "156 bytes" at
+`009C62CF` is the `SUB ESP,0x88` and four register pushes, not a cleanup - and 0 for the `00BF701A`
+x87 helpers) puts the read in **frame slot K=104** with the reaching write at `009C65FD`, which
+carries the literal offset `[ESP+44h]` because `009C65FA SUB ESP,0x14` sits between them.
+
+That write is the `max(x, 0)` the earlier note assumed:
+
+```
+009c65c1  FLD   [ESP+0x10]                 ; x0
+009c65c5  FMUL  double ptr [0x00ceffa0]    ; 0.7
+009c65cb  FADD  double ptr [0x00ce4d70]    ; 200.0
+009c65d1  FSTP  [ESP+0x10]                 ; S = x0 * 0.7 + 200.0
+009c65d5  FLD   [ESP+0x10]                 ; T is already in ST0 from further back
+009c65db  FSUBP ST2,ST0                    ; T - S
+009c65e9  FCOMIP ST0,ST1                   ; against zero
+009c65ed  JBE   0x009c65f4                 ; byte `76`
+009c65fd  MOVSS [ESP+0x44],XMM0            ; max(T - S, 0)
+```
+
+`x0` itself is chosen at `009C65BB` between the constant at `00CE3D08` and `[ESP+38h]`, by the
+compare at `009C659B` against the 100.0 at `00D7A220`. `T` is still on the x87 stack from further
+back. So `+19h` stays a labelled substitution, but the trace is now two levels deeper and the next
+reader starts at `009C659B` with the slot key and the cleanups above rather than repeating them.
+
+## `flyabove+1Ah`: the leave rule, and what it shares with `+19h`
+
+`+1Ah` is written at `009C66E3` (set) and `009C66F2` / `009C6822` (clear). The set is one compare:
+
+```
+009c66d5  FLD    float ptr [ESP + 0x10]    ; a, the bearing tolerance
+009c66d9  FLD    float ptr [ESP + 0x2c]    ; b, the folded bearing error
+009c66dd  FCOMIP ST0,ST1
+009c66e1  JBE    0x009c66f0                ; byte `76`
+009c66e3  MOV    byte ptr [ESI + 0x1a],0x1 ; leave, and
+009c66e7  MOV    byte ptr [ESI + 0x19],0x0 ; clear the roll-in in the same breath
+```
+
+So the aircraft leaves `flyabove` when `b > a`. Both operands were resolved with
+`tools/frame_slot_census.py 009c62b0` and the cleanups recorded above, not by literal offset.
+
+**`b`, slot K=108, written once at `009C6453`**: the `-0.0f` fold (`009C642F JBE`) of the
+`00438B10` wrapped-angle result from the call at `009C641C`. A bearing error.
+
+**`a`, written at `009C6643`**: the return of `BSP_Math_InterpolateClamped` at `009C663E`, whose
+five arguments the window opened by `009C65FA SUB ESP,0x14` fills:
+
+| arg | site | value |
+| --- | --- | --- |
+| x0 | `009C6639` | 0.0 |
+| y0 | `009C662F` | `00CE398C` = 0.34906587 rad, **20 degrees** |
+| x1 | `009C662B` | `W` |
+| y1 | `009C660B` | `00D7A264` = pi, **180 degrees** |
+| x | `009C6603`/`009C6607` | **`max(T - S, 0)`** |
+
+`W = approach+B4h * 0.8 (00CE3D40) - S`, from `009C6615 FLD [EBP+0xB4]`, `009C661B FMUL` and the
+`009C6621 FSUBRP`. `EBP` is the approach: the last write before it is `009C655A MOV EBP,[EDI]`,
+and `009C6562 FMUL [EBP+0xA8]` reads the same `+A8h` the constructor draws.
+
+The tolerance therefore opens from 20 degrees at `x = 0` to 180 degrees at `x = W`. At 180 degrees
+no folded error can exceed it, so **the leave only fires while `x` is small** - the aircraft gives
+up the roll-in when it is close in and the target has swung more than about 20 degrees off.
+
+### The two flags share one quantity
+
+`x` at `009C6603` is the **same frame slot K=104** the `+19h` second arm reads at `009C67A9`, and
+the same write at `009C65FD` reaches both. So `+19h`'s `max(x, 0) <= 0` and `+1Ah`'s interpolation
+are two readings of one value, and closing it closes both flags at once. The `+19h` arm's jump
+sense is confirmed: `009C67AE` is the byte `72`, JC, so a positive slot skips the flag.
+
+### What is left, to the instruction
+
+`S = x0 * 0.7 (00CEFFA0) + 200.0 (00CE4D70)` with `x0` the selection at `009C65BB`, which the slot
+census confirms is the write that reaches `009C65C1`:
+
+```
+009c658d  FLD    double ptr [0x00d7a220]   ; 100.0
+009c659b  FCOMIP ST0,ST1
+009c65a9  JBE    0x009c65b5
+009c65ab  MOVSS  XMM0,dword ptr [0x00ce3d08]  ; 100.0
+009c65b5  MOVSS  XMM0,dword ptr [ESP + 0x38]
+009c65bb  MOVSS  dword ptr [ESP + 0x10],XMM0
+```
+
+Both arms of that select are a 100.0 floor on `[ESP+38h]` against whatever `ST1` holds. Note that
+`009C6568` writes the same slot earlier with `(approach+14h)->+40h * approach+A8h`, and that value
+is **not** `x0`: `009C65BB` overwrites it, and the product only feeds the compare at `009C6578`
+against the 1.1 at `00CE3DF0`.
+
+`T` and the `ST1` at `009C659B` both arrive on the x87 stack from the branchy merge at `009C6532`,
+where two arms pop a value (`009C6528`, `009C652E`) and one does not. That merge is where the next
+reader starts; everything between it and `009C66E3` is now named.
+
+## `006E3500`, the per-device round count: the body, and why the accessor is a separate packet
+
+The body is nine instructions and is now read:
+
+```
+006e3500  PUSH ESI
+006e3501  MOV  ESI,ECX                       ; ECX is the device; no stacked argument
+006e3503  MOV  EAX,dword ptr [ESI]
+006e3505  MOV  EDX,dword ptr [EAX + 0x21c]
+006e350b  PUSH 0x2a                          ; the ordnance kind 2Ah
+006e350d  CALL EDX                           ; callee-clean, no ADD ESP follows
+006e350f  ADD  EAX,dword ptr [ESI + 0x484]
+006e3515  POP  ESI
+006e3516  RET                                ; RET 0, the count in EAX
+```
+
+`006E3500(device) = device->vtable[+21Ch](2Ah) + device->+484h`. `2Ah` is the ordnance kind
+`docs/ORDNANCE_KIND_IDENTITY.md` already tracks - the one `007B9320` requires and `006EA2A0`
+accepts alongside `29h`. So the count is "how many of kind 2Ah this device holds" plus a second
+term at `+484h`, which `007C1DB0` then sums over every class-25h device of the unit.
+
+### Why this packet stops here
+
+Routing it through the gunnery host's process-wide accessor pattern - the one
+`include/bsp/game_hosts_ai.hpp` sets out for `GameAiWeaponFacts`, where the owning host publishes
+a table and the reading host holds no pointer to it - needs a producer that does not exist yet.
+`src/game_hosts_gunnery.cpp` models an ordnance **mask** per unit (`gun.ordnance`, published by
+`store_unit_ordnance` at its load pass) and nothing per device: no magazine count, no `+484h`
+equivalent, and no class-25h device rows to hang them on. The accessor would therefore be the
+second half of a packet whose first half is "give the gunnery host a per-device round count", and
+that half edits `src/game_hosts_gunnery.cpp`, which this stream does not own.
+
+It is also not on the critical path: the run census reads `rounds=2 rounds_left=2`, the salvo cap
+is never reached because no release is issued, and the gate is the 25 m aim window. The substituted
+two rounds stay labelled where they are, and the shape the accessor should take is recorded above
+so the packet that owns the gunnery host can take it whole.
+
+## The 340 m: a missing steering command, and `009C58D0`'s aim
+
+The aim census said the release was blocked by a 359.50 m miss against a 25.0 m window. It is not
+the aim error's arithmetic and it is not a unit error. **Nothing was steering the aircraft.**
+
+`tick_state` was an empty override at both dive-bomb binding sites, so across 664 live aimdive
+ticks the task issued no roll and no pitch. With no task command the pitch mode stayed at the 2 the
+reset leaves at `0099B54E`, the planner's own arm at `0099E490` levelled the aircraft, and it flew
+straight past its target.
+
+### The arithmetic, which clears the aim error
+
+At the closest sample - `|error|` 359.50 m, range 444.2 m, altitude 631.2 m - the reconstructed
+model gives `x0 = 350 + 100 = 450`, `x1 = 1000 + 0 = 1000`, `t = (631.2 - 450) / 550 = 0.3295`,
+`lead = 23.06`, `gain = 0.7694`. Solving `gain * (cos(bearing) * 444.2 - 23.06) = ±359.50`:
+
+| branch | required `cos(bearing)` | verdict |
+| --- | --- | --- |
+| `+359.50` | 1.1038 | impossible |
+| `-359.50` | -0.99998 | the target dead astern |
+
+So at the moment the error came closest to the window, the aircraft had already passed the target
+and the along-track term was running negative. The closest planar range in the whole dive was
+444.2 m: that is the miss distance, not an aiming error.
+
+### `approach->vtable[0]`, the lead's first suspect, is clean
+
+Slot 0 of the vtable `00D20C48` that the constructor writes at `009C3EE2` is `009C40A0`, which
+Ghidra has no function for:
+
+```
+009c40a0  MOV  EAX,dword ptr [ESP + 4]
+009c40a4  FLD  dword ptr [ECX + 0x4c]   / FSTP [EAX]
+009c40a9  FLD  dword ptr [ECX + 0x50]   / FSTP [EAX + 4]
+009c40af  FLD  dword ptr [ECX + 0x54]   / FSTP [EAX + 8]
+009c40b5  RET  4
+```
+
+It returns the approach's own aim point, not a moveto row. The host draws its bearing and planar
+distance from the commanded target the same way `009C7B4F`-`009C7BB0` does, so the inputs agree
+stage for stage.
+
+### Correction: `approach+50h` is not a range
+
+It is **component 1 of that aim point** - its vertical component. The aimdive tick takes `out[0]`
+and `out[2]` as the horizontal pair for its `atan2` and its planar distance, and subtracts `out[1]`
+from the aircraft's Y to get the height above the aim point. That also makes the aim error's
+`x1 = approach+ACh + approach+50h` coherent: altitude plus altitude, not altitude plus range.
+
+`009C8D40` writes all three offsets - `009C8D9B`, `009C8F27`, `009C8F2E`, with `009C8D45 MOV
+ESI,ECX` making `ESI` the approach - and is reached from `009C91A0`, `009C91B0` and `009C9FB0`, not
+from the arm. Whether it is the only writer is not established. The host's 0.0 substitution stays
+numerically right for a sea-level target, so this is a naming correction, not a numeric one: the
+field `db_extra_range_50` and the input `extra_range_50` are misnamed.
+
+### `009C5C9F`-`009C5DB2`, the steering, now bound
+
+```
+009c5c9f  FLDZ                              ; the sign of the aim error
+009c5ca5  FCOMI ST0,ST1
+009c5ca9  JBE   0x009c5cd0                  ; byte `76`
+009c5cab  FMUL  float ptr [EBP + 0x64]      ; positive arm, clamped at +1 (009C5CBC)
+009c5cd0  FMUL  float ptr [EBP + 0x68]      ; negative arm, clamped at -1 (009C5CE5)
+009c5cfa  MOVSS dword ptr [EDI + 0x29c],XMM0
+009c5d15  MOV   byte ptr [EDI + 0x2a0],0x1
+009c5d1c  MOV   dword ptr [EDI + 0x2d0],EBX ; EBX = 0 from 009C58DE
+...
+009c5d8e  CALL  BSP_Math_InterpolateClamped ; (-0.4, 1.0, 0.4, -1.0, bearing error)
+009c5da3  MOVSS dword ptr [EAX + 0x290],XMM0
+009c5dab  MOV   byte ptr [EAX + 0x294],0x1
+009c5db2  MOV   dword ptr [EAX + 0x2cc],EBX
+```
+
+Both writes carry the mode that survives the planner, and that is the whole point of the pair:
+`cmd+2D0h = 0` is the value the pitch gate at `0099E3BF` lets through, and `cmd+2CCh = 0` is
+neither 2 nor 1, so the roll arm at `0099E26E` is skipped and the task's `+290h` reaches the stick.
+The gate bound in the previous packet is what makes this tick effective.
+
+`EBP` is `(approach+14h)`: `009C5CAB` and `009C5CD0` read `+64h` and `+68h` of the **same
+difficulty-row record** whose `+5Ch` and `+60h` the aim error already uses. Neither has a producer
+read, so both are substituted at 1.0 and labelled; at that gain the clamp bites on any error past a
+metre and the pitch is bang-bang on the sign of the aim error rather than proportional to it.
+
+The wide roll arm `009C5D24`-`009C5D31` is named, not bound: it swaps in a second bearing error and
+the 0.5 band at `00CE3800` when the aim error is positive and a folded angle is inside the 60
+degrees at `00D05AAC`. The folded angle's frame slot has no writer at its corrected key in
+`tools/frame_slot_census.py 009c58d0` with the cleanups `--pop 009c594c=4 --pop 009c5988=4 --pop
+009c59cd=4 --pop 009c5a66=0 --pop 009c5ab4=0 --pop 009c5df1=4 --pop 009c5ede=0`.
+
+Jump senses, all from the bytes: `009C5CA9`, `009C5CBC`, `009C5CE5`, `009C5D22` and `009C5D31` are
+each `76`, JBE.
+
+### The two pitch gains recovered, and the record identified for certain
+
+`009F9CE0` is what sets `approach+14h`, and it settles what the record is:
+
+```
+009f9d08  MOV  EDX,dword ptr [EAX + 0xdf4]
+009f9d0e  MOV  EDX,dword ptr [EDX + 0x34]      ; the difficulty index
+009f9d11  IMUL EDX,EDX,0x248                   ; the row stride
+009f9d18  MOV  ESI,dword ptr [0x00f8a30c]      ; the table base
+009f9d1e  LEA  EDX,[EDX + ESI*0x1 + 0xc]
+009f9d22  MOV  dword ptr [ECX + 0x14],EDX      ; approach+14h
+```
+
+`approach+14h` is a 0x248-stride robots row viewed `0xCh` in. So the four fields the dive-bomb
+chain reads off it map to row offsets exactly:
+
+| read | row offset | `include/bsp/robot_config.hpp` | this installation's `SPNormal` |
+| --- | --- | --- | --- |
+| `->+5Ch` | `+68h` | `dive_bomb_aim_prec_dist_068` | `DiveBombAimPrecDist` 70.0 |
+| `->+60h` | `+6Ch` | `dive_bomb_aim_prec_mul_06c` | `DiveBombAimPrecMul` 0.3 |
+| `->+64h` | `+70h` | `dive_bomb_aim_prec_pull_plus_070` | `DiveBombAimPrecPullPlus` **0.018** |
+| `->+68h` | `+74h` | `dive_bomb_aim_prec_pull_minus_074` | `DiveBombAimPrecPullMinus` **0.025** |
+
+The first two were a substitution picked by name; the `0xCh` offset makes them a proof. The last
+two are the aimdive tick's pitch gains, and the row's own Hungarian comments name them for what
+they are: "tavolsagtol fuggoen mennyire huzza a pitch-t, ha nem pontos a celzas", how much it pulls
+the pitch when the aim is not precise, and its push twin.
+
+So the pitch is proportional, not bang-bang: `clamp(error * 0.018, -1, +1)` on the positive side
+and `clamp(error * 0.025, -1, +1)` on the negative. It saturates past about 55 m of error and eases
+off inside that, which is the behaviour a 25 m release window needs.
+
+### A second name to watch: `approach+D8h`/`+DCh`/`+E0h`
+
+`include/bsp/dive_bomb_task.hpp` called these `kAimPointX/Y/Z`, "the computed lead point". They
+are not the aim point - `009C40A0` hands that out from `+4Ch`/`+50h`/`+54h`. The constructor fills
+`+D8h`..`+E0h` at `009C4065`, `009C4071` and `009C407D` from `EDI+FCh/+100h/+104h`, `EDI` being its
+stacked argument from `009C3ECA`, and the aimdive tick subtracts `+D8h` and `+E0h` from the aim
+point before its first `atan2`. That reads as a latched REFERENCE position the aim point is
+measured against, not a lead. Which entity `EDI` is has not been established, so the constants keep
+their names with a PROVISIONAL note rather than being renamed on a guess.
+
+The `+50h` constant is renamed, because that one is settled: `kExtraRange` is now `kAimPointHeight`,
+with `kAimPointEast` (`+4Ch`) and `kAimPointNorth` (`+54h`) beside it, and the field and input
+`db_extra_range_50` / `extra_range_50` are `db_aim_point_height_50` / `aim_point_height_50`.
+
+### No fall time, and no ballistic lead
+
+The packet asked whether the bomb's fall time appears in the miss-distance term. It does not.
+`009C5C9B`'s whole chain is `gain * (cos(bearing) * planar_distance - lead)`, where `lead` is
+`InterpolateClamped(+A8h + 100, 0, +ACh + +50h, ->+5Ch, height)` - an **authored imprecision**
+interpolated over height, `DiveBombAimPrecDist`, whose robots.lua comment says in so many words
+"from far away it aims this much beside the target, then gets more accurate as it closes". There is
+no gravity term, no time of flight and no target velocity anywhere in `009C58D0`-`009C6161`: the
+aircraft's own velocity does not enter the aim error either. The only ballistic-looking work is in
+the aim-point updater `009C8D40`, which is a separate object's job and is not bound here.
+
+## The aim run `local\usn04_aim.log`: inconclusive, and why
+
+Same arguments again. **The steering was not exercised.** The state walk never entered `aimdive`:
+
+| measure | `usn04_d4h` | `usn04_aim` |
+| --- | --- | --- |
+| arm ticks | 2370 | 2370 |
+| transitions | 4 | 3 |
+| attackrun | 1480 | **240** |
+| flyabove | 159 | **1** |
+| turndown | 67 | **0** |
+| aimdive | 664 | **0** |
+| aimglide | 0 | **2129** |
+| latch closed at | tick 1481 | tick 241 |
+| `approach+BCh` at the end | 4631.1 m | **0.0 m** |
+
+So this run says nothing about `009C5C9F`-`009C5DB2`, in either direction. What it does show is a
+failure upstream of it.
+
+### The geometry collapses, and 0.0 m is the tell
+
+`approach+BCh` is not "small", it is **exactly** 0.0. The producer only writes that through its
+epsilon branch, `d2 <= 1e-10` at `00CE3820`: the aircraft's position and its target's are the same
+point. An aircraft passing over a ship gives a small non-zero distance, never that.
+
+The timing says the same thing. The run-in's range samples are identical to the earlier runs for
+their whole span - 11050 m down to 10265 m over the first 160 arm ticks - and then the latch closes
+at tick 241, which needs the planar range under `approach+B8h` = 1100 m. That is at least 9165 m in
+81 arm ticks, 7.3 s, or 1250 m/s, against a commanded speed of 34.5 m/s. Nothing flew that. One of
+the two endpoints was re-resolved.
+
+### The mechanism, and where it lives
+
+`GameGunneryHost::Impl::refresh_command_targets` in `src/game_hosts_gunnery.cpp` resolves one
+target per unit from the command rows:
+
+```cpp
+for (const GameCommandRow& command : command_rows) {
+    if (!command.current || command.target_token.empty()) continue;
+    ...
+    command_target_by_unit[command.unit_index] = found->second;   // last writer wins
+}
+```
+
+A unit with several current rows keeps whichever comes last in the vector, and the census in this
+run shows `movieval` carrying **three** current rows - `stop` (director idle tail), `moveto`
+(ai_command_tick) and `divebomb` (script:PilotSetTarget). The whole map is rebuilt whenever
+`command_rows.size()` changes, so a row appearing mid-mission can take the dive bomber's target
+away from it. A token that resolves back to `movieval` gives exactly the observed 0.0.
+
+This is the same class as this stream's first bug, a target point resolved to the wrong row, and it
+is not in the dive-bomb chain. **The fix location is `refresh_command_targets` in
+`src/game_hosts_gunnery.cpp`**, which this stream does not own, so it is named and not touched.
+
+### What changed between the runs, stated as a window and not as a commit
+
+`usn04_d4h` ran at `6b8907c3f`, before this packet merged `main`; `usn04_aim` ran at `f5b279eb5`,
+after. The merge brought `src/game_hosts_script_orders.cpp` (new, +187), `src/game_hosts_lua.cpp`
+(+117), `src/air_operations.cpp` (+228) and `src/game_hosts_scene_contents.cpp` (+6) - the files
+that add and drive command rows. That is the window. No commit is named here: a repro on a fresh
+detached tree at the suspect commit has not been run, and the run lock is currently arbitrated to
+another worker, so it could not be.
+
+## `T` closed: both flyabove flags are one height test
+
+The operand the last two packets left open - `T`, the x87 value arriving at the merge `009C6532` -
+is resolved, and with it `+19h`'s second arm and `+1Ah` together.
+
+### The merge is stack-balanced, which is why `T` survives it
+
+Three arms reach `009C6532`. After `009C64EE`, `009C64F4` and `009C64F8` the stack is
+`{C, B, A}` from `[ESP+3Ch]`, `[ESP+38h]` and `[ESP+28h]`:
+
+| path | branch | pops | stack at `009C6532` |
+| --- | --- | --- | --- |
+| kind test true | `009C64FC` `75` JNZ to `009C6530` | none | `{C, B, A}` |
+| `+D4h > C` | `009C6510` `77` JA to `009C652E` | `FSTP ST0` | `{C, B, A}` |
+| `+B4h <= A` | `009C651A` `76` JBE to `009C6528` | `FSTP ST0` | `{C, B, A}` |
+| otherwise | `009C6522` `72` JC | `FSTP ST2` at `009C6520` | `{C, B, A}` |
+
+Every arm balances. Then `009C656C`-`009C657A` pushes the product
+`(approach+14h)->+40h * approach+A8h`, multiplies by the 1.1 at `00CE3DF0`, compares and pops
+twice (`009C657C` `76` JBE), leaving `{B, A}`. So the value that `009C65D5`'s `FSUBP` subtracts `S`
+from - the `T` of the earlier note - is **`B`, the float at `[ESP+38h]`**, not `C`.
+
+### `B` is the height above the aim point
+
+Frame slot K=96 has exactly one writer, `009C6493`, and `B` is its only product:
+
+```
+009c646d  FSTP  double ptr [ESP + 0x10]   ; the aircraft's Y, promoted
+009c647b  CALL  EDX                       ; ECX = the approach: vtable[0], 009C40A0
+009c647d  FLD   float ptr [EAX + 0x4]     ; out[1] - approach+50h
+009c6482  FSUBR double ptr [ESP + 0x10]
+009c6493  FSTP  float ptr [ESP + 0x38]    ; B = aircraftY - aimPointY
+```
+
+`out[1]` is the aim point's vertical component, which is the `approach+50h` this packet corrected.
+The same slot is read at `009C67C7`, the first argument of
+`dive_bomb_flyabove_can_dive_009c680e`, so the can-dive test and both flags key on **one** height.
+
+### The two flags, complete
+
+```
+B = height above the aim point                                    009C6493
+S = max(B, 100.0) * 0.7 + 200.0        00D7A220/00CE3D08, 00CEFFA0, 00CE4D70
+x = max(B - S, 0)                                          009C65D5-009C65FD
+```
+
+`009C65A9` is the byte `76`, JBE, so the floor takes `[ESP+38h]` when 100.0 is the smaller: `x0` is
+`max(B, 100.0)`, and the `009C6568` product is a different occupant of that slot, as recorded.
+
+* **`+19h`, second arm** (`009C67A9`, `009C67AE` byte `72` JC): fires on `x <= 0`, i.e. `B <= S`.
+  For `B >= 100` that is `0.3B <= 200`, so **`B <= 666.7 m`**.
+* **`+1Ah`** (`009C66E3`, `009C66E1` byte `76` JBE): fires on
+  `|bearing error| > InterpolateClamped(0, 20 deg, W, pi, x)` with `W = approach+B4h * 0.8 - S`.
+
+The two numbers corroborate each other and the packet before: `approach+D4h`, the can-dive height,
+is `max(+A8h + 250, (+ACh + +A8h) * 0.5)` = **675.0 m** with this installation's row, and the
+roll-in arm flips at **666.7 m**. Both are the same gate expressed twice - the aircraft rolls in
+and may dive at essentially the same height - and both read the same `B`. Nothing here was fitted
+to that agreement; it fell out of two independent traces.
+
+Worked at the run's own geometry, `B = 638.9 m`: `S = 647.2`, `x = 0`, so the tolerance
+`a` is its floor of 20 degrees and `W = 1100 * 0.8 - 647.2 = 232.8 m`. Below 667 m the roll-in arm
+is already satisfied on height alone, which is why `flyabove` has never needed its bearing test in
+any run of this stream.

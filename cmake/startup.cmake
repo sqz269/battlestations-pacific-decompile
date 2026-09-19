@@ -1399,3 +1399,5 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_settings_lo
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_input_settings_application.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_input_settings_process.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_settings_vector_lifetime.cpp src/game_native_settings_process.cpp src/game_native_settings_application.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_online_process.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_network_console_storage.cpp src/native_network_console_owner.cpp)

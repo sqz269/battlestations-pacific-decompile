@@ -100,16 +100,45 @@ struct AirOpsSlotOffsets {
     static constexpr std::size_t kLaunchRequested = 0x34; // byte, set by 00896750
 };
 
-// State values observed at slot+2Ch. Five values are now known to be written;
-// only the three named ones have a meaning established by the routine that
-// reads them, and the enum deliberately does not name the other two.
-//   3  006C74E0, the launch start writes it. Meaning unestablished.
-//   6  006CB28B, the scene loader writes it for a `FakeAllocated` slot. Same.
-// docs/AIROPS_LAUNCH_START.md and docs/AIROPS_LOAD_FROM_SCENE.md.
+// State values at slot+2Ch. An exhaustive store census of the offset (every MOV
+// dword imm/reg, disp8 and disp32, over .text) finds six values written, and the
+// tick 006C0510 now closes the cycle, so the enum names what a writer plus a
+// reader agree on. Writers, by address. Each one below was shown to address the
+// slot array, by the block+4Ch load with the 58h stride or by taking the slot
+// itself in ECX:
+//   1  006C6603 (the landing release 006C65B0, with the 5.0 timer), 006CD3FC and
+//      006CCE3A (leaving state 5 once the launch count is taken), 006CC61C (the
+//      state-2 cancel 006CC5C0), 006C57A7 (the landing reassign 006C56D0),
+//      006BD3A3 (006BD360)
+//   2  006CA66B (006CA640, the queue arm 006CC690 takes at 006CC72C) and
+//      006CA91A (006CA8E0, which then calls the launch start itself)
+//   3  006C74E0 (the launch start 006C7490), 006CD0EC (006CCDA0's state-4 arm),
+//      006C57F5 (006C56D0), 006C776E (006C7680, which takes the slot in ECX; its
+//      one caller 006C8800 was not read)
+//   4  006CCF9D (006CCDA0, order 2 against a state-3 slot: recall) and 006CD4A9
+//      (the same code inlined into 006CD350)
+//   5  006C058F, the tick 006C0510, and nowhere else
+//   6  006CB28B (the scene loader's `FakeAllocated` slot) and 006C8326 (006C80C0)
+// Four further stores to a +2Ch (006BA4E0, 006BC751, 006C4F5C, 006C7C3F) are in
+// the census but were not shown to sit on a slot, so they are not claimed here.
+// docs/AIROPS_LAUNCH_TICK.md, docs/AIROPS_LAUNCH_START.md,
+// docs/AIROPS_LOAD_FROM_SCENE.md.
 enum class AirOpsSlotState : std::int32_t {
-    kCooldown = 1, // 006C65B0 and 006CD40F leave the slot here with kTimer set
+    // 006C7210 picks a slot in state 1 or 5 to launch from and 006BF230 counts
+    // the stock reserved by a slot in state 1 or 5, so both are "this slot holds
+    // planes on the deck". kCooldown keeps its name because 006C65B0 and 006CD40F
+    // arrive here with the 5.0 timer, but the timer is an accumulator, not a
+    // countdown, and nothing gates on it leaving state 1.
+    kCooldown = 1,
     kLaunching = 2, // LaunchAirBaseSlot refuses to re-launch a slot in this state
     kReady = 5,    // the only state 006CD350 dispatches its launch branch from
+    // 006C74E0 writes it and 006C0510 reads it: a slot whose squadron is away.
+    // It leaves only when slot+28h is zero again, which is what makes the tick
+    // and the landing release 006C65B0 the two ends of one cycle.
+    kLaunched = 3,
+    // 006CCF9D writes it after issuing the recall command to the squadron, and
+    // 006C0510 treats it exactly as it treats 3.
+    kRecalled = 4,
 };
 
 struct AirOpsSlot {
@@ -449,13 +478,20 @@ struct AirOpsDeck {
     // scene key, so both start clear.
     bool runway_failure{false};  // block+1Ch
     bool hangar_failure{false};  // block+1Dh
-    // block+38h. PROVISIONAL. Three sites read it and none of them writes it:
-    // 006BF620 requires it zero for readiness, 006CC690 branches on it at
-    // 006CC715 to choose between starting a launch and queueing one, and
-    // 006C5050 refuses at 006C5078 when it is set and its own flag is clear.
-    // All three treat it as "something is already pending", but no writer has
-    // been found, so the name is an interpretation of three readers rather than
-    // a recovered meaning. docs/AIROPS_LAUNCH_START.md.
+    // block+38h. CORRECTED: it does have a writer, 006C6589 in the sub-update
+    // 006C6540. That routine runs only while block+38h is zero and the list at
+    // block+D8h is not empty; it takes the head node's payload at node+8h,
+    // unregisters the old observer pair at block+24h, stores the entity at
+    // block+38h (the pair's own observed slot is [block+24h]+14h), registers the
+    // new pair, and calls 00922F30 on it to enable its scene node (the pushed 0
+    // is that routine's second argument, forwarded to vtable[68h]; 00922F4B sets
+    // node+5Ch to 1 either way, so this makes the entity visible). So
+    // the field is the one entity the deck has pulled out of its queue and is
+    // holding, hidden, and the three readers follow: 006BF620 refuses readiness
+    // while one is held, 006CC690 queues at 006CC715 instead of starting, and
+    // 006C5050 refuses at 006C5078. The name is kept because "a plane is already
+    // being spotted" is what the writer shows; what the queue at block+D8h is
+    // filled by has not been read. docs/AIROPS_LAUNCH_TICK.md.
     std::uint32_t launch_in_progress{0};
     // block+7Ch is the OWNING ENTITY, named from 006C5050, which reads its
     // virtual at +12Ch for `Skill`, its +54h for `Party`, its +58h, its +188h
@@ -465,8 +501,25 @@ struct AirOpsDeck {
     // the scene loaded reports it present.
     bool owner_present{true};
     bool owner_blocked{false};
+    // What 006C5050 reads off the owner to fill the squadron's bag. The scene
+    // knows the party and the name; the rest have no authored source this thread
+    // has found, so they stay at their defaults and are contracts.
+    std::string owner_name;
+    std::int32_t owner_party{0};
+    std::int32_t owner_skill{0};
+    std::int32_t owner_race{0};
+    std::int32_t owner_player{0};
     // The entity side of the gate, not the block's: 00895E4B tests the class
     // through vtable+5Ch against 45h and 00895E51 the byte at entity+720h.
+    // block+74h with its count at block+78h: the queue 006CC7B0 pushes and
+    // 006C58A0 drains, which is the arm a campaign session takes. Each entry is
+    // a squadron with the class and count 006C56D0 matches a free slot on.
+    struct AssignQueueEntry {
+        std::uint32_t squadron{0};
+        std::uint32_t vehicle_class{0};  // the squadron's own +35Ch
+        std::int32_t plane_count{0};     // its +3CCh
+    };
+    std::vector<AssignQueueEntry> assign_queue;
     bool is_airfield{false};
     bool airfield_blocked{false};
 };
@@ -496,6 +549,44 @@ struct AirOpsLaunchResult {
     bool queued{false};  // the stock went back and 006CA640 ran instead
 };
 
+// ---------------------------------------------------------------------------
+// The squadron 006C5050 builds
+// ---------------------------------------------------------------------------
+// 006C5050 allocates nothing itself. It fills a scene property bag and hands it
+// to 004F0AD0 BSP_SceneUnit_CreatePlaneSquadronGen, the same creator a
+// PlaneSquadronGen scene row uses, which is also how the squadron reaches the
+// mission script's entity table: it becomes an ordinary created unit. Every key
+// below is a recovered string. docs/AIROPS_LAUNCH_TICK.md.
+struct AirOpsSquadronRequest {
+    std::uint32_t type{0};          // `Type`, the class's +70h
+    std::int32_t wing_count{0};     // `WingCount`, slot+8h
+    std::int32_t skill{0};          // `Skill`, the owner's virtual at +12Ch
+    std::int32_t race{0};           // the key at 00CE8EE0, the owner's +58h
+    std::int32_t party{0};          // `Party`, the owner's +54h
+    std::int32_t owner_player{0};   // `OwnerPlayer`, or the owner's +188h when 9
+    std::int32_t state{1};          // `State`, 1 normally and 7 on the flag arm
+    std::int32_t equipment{0};      // `Equipment`, slot+10h, only when positive
+    bool has_auto_attack_target{false};
+    std::int32_t auto_attack_target{0}; // `AutoAttackTarget`, the +174h at slot+4Ch
+    std::string home_base;          // `HomeBase`, a reference to the owner itself
+    int slot_number{0};             // 006C7490 passes the slot index plus one
+};
+
+// The seam for the creator. 004F0AD0's counterpart in this process is driven
+// from the scene contents pass, so making a squadron appear mid-mission is a
+// units-host operation and cannot live here. A deck with no factory creates
+// nothing and leaves slot+28h zero, which is what this process did before.
+class AirOpsSquadronFactory {
+public:
+    virtual ~AirOpsSquadronFactory() = default;
+    // Returns the new unit's entity id, or 0 when nothing was created.
+    virtual std::uint32_t create_squadron(const AirOpsSquadronRequest& request) = 0;
+};
+
+// Not a native structure: where this process keeps the factory, if it has one.
+void set_air_ops_squadron_factory(AirOpsSquadronFactory* factory) noexcept;
+AirOpsSquadronFactory* air_ops_squadron_factory() noexcept;
+
 // 006C7490, the launch start 006CC690 calls. It builds the squadron through
 // 006C5050 and puts it in slot+28h, sets the slot to state 3 with a zero timer,
 // carries the launch-requested byte into the 5.0 cooldown, and moves the
@@ -503,9 +594,144 @@ struct AirOpsLaunchResult {
 // docs/AIROPS_LAUNCH_START.md.
 void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index) noexcept;
 
+// 006C65B0 BSP_AirOps_ReleaseSquadronSlot, __thiscall(block, squadron). The far
+// end of the cycle the launch start opens. It walks every slot without an early
+// exit (006C6612 advances by 58h and 006C661B counts block+50h down), and for
+// each whose +28h is that squadron it unregisters the observer pair, zeroes +28h
+// and +8h, writes state 1, sets the timer to 5.0 and clears the +34h byte.
+// Nothing is returned to the stock list. Its own caller is
+// 007F1B70 BSP_Squadron_ReleaseFromAllAirBases, which calls it twice.
+// Returns the number of slots it released. docs/AIROPS_LAUNCH_TICK.md.
+std::size_t air_ops_release_squadron_slot_006c65b0(AirOpsDeck& deck,
+                                                   std::uint32_t squadron) noexcept;
+
+// ---------------------------------------------------------------------------
+// The two queues a squadron reaches its deck through, and which one runs
+// ---------------------------------------------------------------------------
+// 007F1C00 BSP_PlaneSquadron_SetHomeAirBase holds the squadron's home base at
+// squadron+404h (its observer pair is at squadron+3F0h, observed slot
+// [squadron+3F0h]+14h) and then hands it to one of two queues on the block. The
+// branch is read from the bytes, because it inverts the obvious guess:
+//
+//   007f1c4b: CMP dword ptr [ECX + 0x1fe4],0x0
+//   007f1c55: JZ  0x007f1c69          ; ZERO -> 006CC7B0, the block+74h queue
+//   007f1c57: CALL 0x006cc760         ; non-zero -> the block+C0h spotting queue
+//
+// So the **spotting** queue, the one whose drain 006C6540 puts an aircraft in
+// block+38h and so makes 006BF620 refuse readiness, is the NON-campaign arm.
+// A campaign session takes 006CC7B0 into block+74h, which 006C58A0 drains
+// before 006CDC70's game-state gate straight into a slot through 006C56D0.
+//
+// This process asserts a campaign session (`game_non_campaign_flag()` is 0,
+// with two more assertions of the same word in src/game_hosts_mission.cpp), so
+// **the campaign arm is the only one it can take, and in a campaign the deck has
+// no readiness brake at all**: nothing writes block+38h. What paces a campaign
+// launch is the mission script's own gate, `stloPlaneNum < 2` for the American
+// carriers and `< 4` for the Japanese ones, and that gate only works because the
+// tick keeps slot+28h filled. docs/USN04_STRIKE_CLASS.md.
+//
+// Only the campaign arm is reconstructed below. The spotting arm is left out
+// rather than written unreachable.
+void air_ops_push_assign_queue_006cc7b0(AirOpsDeck& deck, std::uint32_t squadron,
+                                        std::uint32_t vehicle_class,
+                                        std::int32_t plane_count);
+
+// 006C56D0's arrival rule, the one 006C58A0 applies to each drained entry.
+// Returns the slot it used, or the slot count when none matched.
+std::size_t air_ops_arrive_squadron_006c56d0(AirOpsDeck& deck, std::uint32_t squadron,
+                                             std::uint32_t vehicle_class,
+                                             std::int32_t plane_count) noexcept;
+
+// 006C58A0, sub-update 1 of 006CDC70 and the only one before the game-state
+// gate. Returns how many entries it placed.
+std::size_t air_ops_drain_assign_queue_006c58a0(AirOpsDeck& deck);
+
+// 006C56D0, the other end: a squadron coming back to the deck. It walks the
+// slots for the one whose +28h is that squadron and otherwise takes a free slot,
+// where free is state 1 OR state 6 and the class and count match the squadron's
+// own +35Ch and +3CCh. It leaves the slot at state 1 with the timer pair, calls
+// 006C0F00 to reassign the class and count, and ends at state 3.
+//
+// That pairing is what gives state 6 a meaning: 006CADD0 mode 1 writes it for a
+// `FakeAllocated` slot and 006C56D0 treats it as free, so it is a parked slot
+// rather than an active one. Reconstructed for its state rule only; the
+// reassignment and the squadron fields it matches on are not modelled.
+// docs/AIROPS_LAUNCH_TICK.md.
+bool air_ops_slot_is_free_006c56d0(const AirOpsSlot& slot) noexcept;
+
 // 006CC690, which 0089E3C0 delegates to and whose result it pushes plus one.
 AirOpsLaunchResult air_ops_launch_squadron_006cc690(AirOpsDeck& deck,
                                                     const AirOpsLaunchRequest& request);
+
+// ---------------------------------------------------------------------------
+// The tick: 006C0510 per slot, 006C0DA0 over the deck, 006CDC70 over the block
+// ---------------------------------------------------------------------------
+// 006BF230 BSP_AirOps_StockAvailable, __thiscall(block, out pair, class). The
+// pair is {available, total}: the total sums the stock list at block+44h for
+// that class, and the available figure then subtracts, for every slot whose
+// class matches AND whose state is 1 or 5 (006BF2A8, 006BF2B1), the squadron's
+// +3CCh when slot+28h is set and slot+8h when it is not. 006BF330 returns the
+// first word alone. The state test is what stops a launched slot reserving
+// stock. docs/AIROPS_LAUNCH_TICK.md.
+struct AirOpsStockAvailable {
+    std::int32_t available{0};
+    std::int32_t total{0};
+};
+AirOpsStockAvailable air_ops_stock_available_006bf230(
+    const AirOpsDeck& deck, std::uint32_t vehicle_class,
+    const std::int32_t* launched_plane_counts) noexcept;
+
+struct AirOpsSlotTickResult {
+    bool dirty{false};        // 006C0510's own return: 006C0DFB then replicates
+    bool became_ready{false}; // the state 3/4 -> 5 refill at 006C058F
+    std::int32_t refilled_count{0};
+};
+
+// 006C0510, __thiscall(slot, float step). The whole of the slot's own clock and
+// the only writer of state 5. In order:
+//   006C051A  slot+30h += step. The timer ACCUMULATES; this routine never
+//             compares it and there is no cooldown here.
+//   006C0525  when slot+34h is set, raise the timer to at least 5.0 (00CE3850,
+//             COMISS/JA at 006C0534 is max) and clear the byte.
+//   006C0549  slot+28h non-zero -> the slot only tracks the squadron's live
+//             plane count at +3CCh into slot+8h and returns.
+//   006C054E  otherwise, state 3 or 4 only: zero slot+8h, then take
+//             min(block+58h - 006BD3F0, 006BF230(class).available, slot+0Ch),
+//             store it and write state 5.
+// The zero at 006C055C happens BEFORE 006BD3F0 runs, so the slot's own count is
+// not in the committed total it is then measured against; that is why this takes
+// the deck rather than a pre-computed input. `launched_plane_counts` is one
+// entry per slot, the squadron's +3CCh, and may be null (read as zero).
+AirOpsSlotTickResult air_ops_slot_tick_006c0510(
+    AirOpsDeck& deck, std::size_t slot_index, float step_seconds,
+    const std::int32_t* launched_plane_counts) noexcept;
+
+// The squadron's live plane count, entity+3CCh. This process has no squadron
+// object, so whoever creates squadrons installs the reader. A null hook reads
+// every squadron as zero planes, which is what an unbound deck did before.
+using AirOpsSquadronPlaneCount = std::int32_t (*)(std::uint32_t squadron, void* context);
+void set_air_ops_squadron_plane_count(AirOpsSquadronPlaneCount reader, void* context) noexcept;
+
+struct AirOpsDeckTickResult {
+    std::size_t slots{0};
+    std::size_t dirty{0};
+    std::size_t became_ready{0};
+    std::size_t tracking{0};   // slots whose +28h holds a squadron
+    std::size_t assigned{0};   // entries 006C58A0 placed through 006C56D0
+};
+
+// 006C0DA0, __thiscall(block, float step): every slot of block+4Ch in index
+// order, and 006C0DFB routes 006BD520's message for each slot the tick returned
+// true for. The message is not modelled; the count is kept.
+AirOpsDeckTickResult air_ops_deck_update_006c0da0(AirOpsDeck& deck, float step_seconds);
+
+// Not a native structure. 006CDC70 BSP_AirOps_Update is the block's own update
+// and runs from the owning unit's motion pass (00758270 for the mother ship,
+// 006D2510 for the airfield); this process keeps the blocks in one table, so the
+// walk over the table lives here. Only 006C0DA0's sub-update is reconstructed:
+// the stock regeneration 006CD240, the ready-plane pull 006C6540, the elevator
+// 006C64B0 and the AI launch 006CD810 are not.
+AirOpsDeckTickResult air_ops_update_decks_006cdc70(float step_seconds);
 
 // `resolve_type` stands in for 007B8A80, which turns the authored `Type` token
 // into the class id the slot carries at +4h. A resolver that returns 0 leaves
@@ -531,6 +757,10 @@ public:
     const AirOpsDeck* find_by_entity_id(int entity_id) const noexcept;
     AirOpsDeck* find_mutable_by_entity_id(int entity_id) noexcept;
     std::size_t size() const noexcept;
+    // For the table-wide update; the executable reaches each block from its own
+    // unit instead.
+    AirOpsDeck* mutable_at(std::size_t index) noexcept;
+    const std::string& name_at(std::size_t index) const noexcept;
 
 private:
     std::vector<std::pair<std::string, AirOpsDeck>> decks_;

@@ -1,0 +1,85 @@
+{
+  "packet": "cc8_dive_bomb_aim_error",
+  "baseline_commit": "073411646",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-cc8-dive-bomb",
+  "documentation": "docs/DIVE_BOMB_TASK.md",
+  "status": "the 340 m is a missing steering command, not a wrong input or a unit error; the aimdive tick's roll and pitch are now bound",
+  "production_cpp_changed": [
+    "src/dive_bomb_task.cpp",
+    "include/bsp/dive_bomb_task.hpp",
+    "src/game_hosts_units.cpp"
+  ],
+  "ghidra_mutated": false,
+  "new_native_body_reconstructed": false,
+  "original_abi": {
+    "009c58d0": "BSP_BotStateDiveBombAimDive_Tick, ECX aimdive state; one stacked float dt; RET 4 at 009C5B51 and 009C615F; body 009C58D0-009C6161. Prologue SUB ESP,0x48 then PUSH EBX/EBP/ESI and PUSH EDI at 009C58EE, so the base depth is 0x58 below entry.",
+    "009c40a0": "approach->vtable[0]. ECX approach; one stacked out-pointer; RET 4; body 009C40A0-009C40B5, INT3 from 009C40B8. Ghidra has NO function here. It copies approach+4Ch/+50h/+54h into the buffer and returns it.",
+    "009c8d40": "ECX approach; RET 0; body 009C8D40-009C8F36. The aim-point updater: 009C8D9B, 009C8F27 and 009C8F2E write +4Ch, +50h and +54h. Reached from 009C91A0, 009C91B0 and 009C9FB0, not from the arm."
+  },
+  "diagnosis": {
+    "question": "which term carries the 340 m",
+    "answer": "a missing steering command",
+    "evidence": "The host's tick_state was an empty override at both binding sites (src/game_hosts_units.cpp), so through 664 live aimdive ticks of local/usn04_pitchgate.log and local/usn04_d4h.log the dive-bomb task issued no roll and no pitch. With no task command the pitch mode stayed at the 2 the reset leaves and the planner's own pitch arm levelled the aircraft, which flew past the target.",
+    "arithmetic": "The aim error model is consistent with the census and is NOT the fault. At the closest sample - |error| 359.50 m, range 444.2 m, altitude 631.2 m - the model gives x0 = 350 + 100 = 450, x1 = 1000 + 0 = 1000, t = (631.2 - 450) / 550 = 0.3295, lead = 23.06, gain = 0.7694. Solving gain * (cos(bearing) * 444.2 - 23.06) = -359.50 gives cos(bearing) = -0.99998, i.e. the target dead astern. The positive branch would need cos(bearing) = 1.104 and is impossible. So the closest the error ever came to the window was with the aircraft already past the target at 444 m of miss distance.",
+    "ruled_out": "Not a wrong input: the lead's first suspect, approach->vtable[0], resolves to 009C40A0, which returns the approach's own aim point, and the host's bearing and planar distance are drawn from the commanded target the same way (009C7B4F-009C7BB0 against the host's block at src/game_hosts_units.cpp). Not a unit error: every term is in metres and radians on both sides."
+  },
+  "routines": [
+    {
+      "name": "dive_bomb_aimdive_steer_009c5c9f",
+      "range": "009C5C9F-009C5DB2",
+      "containing_function": "009c58d0",
+      "coverage": "partial: the wide roll arm 009C5D24-009C5D31 is named, not bound - it selects a second bearing error and the 0.5 band at 00CE3800 when the aim error is positive and a folded angle is inside the 60 degrees at 00D05AAC. The two pitch gains are recovered, not substituted.",
+      "note": "pitch = clamp(aim_error * gain, -1, +1) with the sign of the error picking the gain; roll = InterpolateClamped(-0.4, 1.0, 0.4, -1.0, bearing error). Both writes carry the mode that survives the planner: cmd+2D0h = 0 at 009C5D1C passes the pitch gate at 0099E3BF, and cmd+2CCh = 0 at 009C5DB2 is neither 2 nor 1 so the roll arm is skipped."
+    }
+  ],
+  "calls": [
+    {
+      "address": "009c5c92",
+      "native": "00419010",
+      "containing_function": "009c58d0",
+      "note": "the gain interpolation; 009C5C97 FMUL [ESP+28h] then 009C5C9B FSTP [ESP+5Ch] is the aim error the steering reads",
+      "host_method": "dive_bomb_aim_error_009c5c9b"
+    },
+    {
+      "address": "009c5d8e",
+      "native": "00419010",
+      "containing_function": "009c58d0",
+      "note": "the roll map; 009C5DA3 stores it to cmd+290h with +294h = 1 and +2CCh = 0",
+      "host_method": "dive_bomb_aimdive_steer_009c5c9f"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "approach+50h is an extra range with no producer read, carried as db_extra_range_50 and substituted at 0.0",
+      "is": "it is component 1 - the vertical component - of the approach's aim point, which approach->vtable[0] at 009C40A0 hands out",
+      "evidence": "The vtable 00D20C48 the constructor writes at 009C3EE2 has 009C40A0 in slot 0, and 009C40A0 copies [ECX+4Ch], [ECX+50h] and [ECX+54h] to out[0], out[1] and out[2]. The aimdive tick then takes out[0] and out[2] as the horizontal pair for its atan2 and its planar distance, and subtracts out[1] from the aircraft's Y to get the height above the aim point - so +50h is a height. That also makes the aim error's x1 = approach+ACh + approach+50h coherent, altitude plus altitude. 009C8D40 writes all three offsets (009C8D9B, 009C8F27, 009C8F2E) with ESI = ECX = the approach from 009C8D45, but whether it is the only writer is NOT established. The 0.0 substitution stays numerically right for a sea-level target; the name db_extra_range_50 is what is wrong."
+    },
+    {
+      "was": "(approach+14h)'s +5Ch and +60h were a substitution picked by name from robots.lua, and +64h/+68h were unknown",
+      "is": "the record is identified for certain and all four are recovered: ->+5Ch, ->+60h, ->+64h, ->+68h are row+68h, +6Ch, +70h, +74h - dive_bomb_aim_prec_dist_068, _mul_06c, _pull_plus_070, _pull_minus_074. This installation's SPNormal row authors 70.0, 0.3, 0.018 and 0.025.",
+      "evidence": "009F9D08-009F9D22: MOV EDX,[EDX+34h] (the difficulty index), IMUL EDX,EDX,0x248 (the row stride), MOV ESI,[00F8A30C] (the table base), LEA EDX,[EDX+ESI+0xC], MOV [ECX+14h],EDX. approach+14h is a 0x248-stride robots row viewed 0xCh in, so every ->+N read is row+N+0xC."
+    },
+    {
+      "was": "the last open producer of the aim error was approach+50h",
+      "is": "the aim error's inputs are all accounted for; what was missing was the tick that acts on it",
+      "evidence": "009C58D0's steering at 009C5C9F-009C5DB2 had no host binding at all"
+    }
+  ],
+  "runs": [
+    {
+      "log": "local/usn04_aim.log",
+      "tree": "f5b279eb5, after this packet merged main",
+      "arguments": "--frames 5000 --press-start-frame 30 --menu-select USN04 --mission-frames 4800 --mission-frame-seconds 0.05",
+      "result": "INCONCLUSIVE for the steering: arm_ticks=2370 transitions=3 states[aimglide=2129 flyabove=1 attackrun=240], no aimdive tick at all, so 009C5C9F-009C5DB2 never ran. releases=0 bombs_spawned=0.",
+      "upstream_failure": "approach+BCh ends at exactly 0.0 m, which the producer only writes through its d2 <= 1e-10 epsilon branch at 00CE3820 - the aircraft's position and its target's are the same point. The latch closed at arm tick 241 although the range samples were still at 10265 m at tick 160, which needs at least 9165 m in 7.3 s against a 34.5 m/s commanded speed. The target was re-resolved, not flown to.",
+      "mechanism": "GameGunneryHost::Impl::refresh_command_targets in src/game_hosts_gunnery.cpp keeps the LAST current command row per unit, and this run's census shows movieval carrying three current rows (stop, moveto, divebomb). The map is rebuilt whenever command_rows.size() changes, so a row appearing mid-mission can take the dive bomber's target away.",
+      "fix_location": "src/game_hosts_gunnery.cpp, refresh_command_targets. NOT owned by this stream; named and not touched.",
+      "window": "usn04_d4h ran at 6b8907c3f, before the merge of main; usn04_aim at f5b279eb5, after. The merge brought src/game_hosts_script_orders.cpp (new, +187), src/game_hosts_lua.cpp (+117), src/air_operations.cpp (+228) and src/game_hosts_scene_contents.cpp (+6). No commit is named: no fresh detached-tree repro was run, and the run lock is arbitrated to another worker."
+    }
+  ],
+  "open": {
+    "009C5D24-009C5D31": "the wide roll arm: a second bearing error and the 0.5 band at 00CE3800, selected when the aim error is positive and a folded angle is inside the 60 degrees at 00D05AAC. The folded angle's slot has no writer at its corrected key in tools/frame_slot_census.py 009c58d0.",
+    "009c8d40": "the aim-point updater is read but not bound; this host uses the commanded target's own position as the aim point, so it carries no lead of its own.",
+    "cmd+2D4h": "009C5E63 clears it with EBX. The pilot-command block in this host has no +2D4h, so the clear is reported and not modelled. No speed or altitude command appears in the aimdive tick at all: a store census over +2B4h, +2BCh, +2C0h and +2C4h in 009C58D0-009C6161 finds none."
+  }
+}
