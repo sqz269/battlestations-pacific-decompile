@@ -1,6 +1,7 @@
 #include "bsp/game_tuning_singleton.hpp"
 
 #include <cmath>
+#include <cstring>
 
 namespace bsp {
 
@@ -523,9 +524,27 @@ void game_tuning_load_007e2a20(GameTuningLuaHost& host, GameTuningBlock& block) 
         case GameTuningValueKind::Boolean:
             *reinterpret_cast<bool*>(slot(block, key.offset)) = host.value(value).boolean;
             break;
-        case GameTuningValueKind::NumberTriple:
-            host.number_triple(value, slot(block, key.offset));
+        case GameTuningValueKind::NumberTriple: {
+            // A `number[3]` key occupies three consecutive rows of this table,
+            // one per destination float, and every one of them carries the same
+            // path. `number_triple` fills THREE floats from the handle, so
+            // running it on all three rows walked the whole triple forward
+            // twice and left `{a, a, a}` behind, then spilled `a` and `b` past
+            // the end of the group: `Pilot/Follow/SmallPlaneDisplacement` came
+            // out as (60, 60, 60) instead of the authored (60, 25, 70), and
+            // `BomberDisplacement` as (100, 100, 100) instead of (100, 0, -100)
+            // - measured in local/formation_after2_usn04.log's `disp=` column
+            // before this fix. Only the FIRST row of a group writes now, and
+            // the other two are its own out[1] and out[2].
+            const bool first_of_group =
+                (i == 0) || kGameTuningKeys[i - 1].kind != GameTuningValueKind::NumberTriple
+                || kGameTuningKeys[i - 1].path == nullptr || key.path == nullptr
+                || std::strcmp(kGameTuningKeys[i - 1].path, key.path) != 0;
+            if (first_of_group) {
+                host.number_triple(value, slot(block, key.offset));
+            }
             break;
+        }
         }
         for (int d = depth - 1; d >= 0; --d) {
             host.release(trail[d]);
