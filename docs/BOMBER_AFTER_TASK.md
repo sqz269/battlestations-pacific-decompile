@@ -439,6 +439,67 @@ identity is **provisional**: `00E188A8` is the mission/game singleton, and
 `docs/PILOT_BOT_TICK_GATES.md` reads the `9C2h` byte provisionally as "under human control for the
 local slot", which a `SETZ` against one named unit fits. It was not recovered here.
 
+## 6d. The finished-task consumer is not the Done state at all
+
+Packet `cc8_done_state`, item 3, read before any run because 6c had already shown the Done state
+commands nothing for a leader.
+
+`009998A0`'s slow path, read from the listing (`00999912`-`0099995A`): an accumulator at `+308h`
+against the interval `+304h`, then **`0099993C CALL 0099B740`**, then `+2E4h = 0FFh` and
+`task->vtable[64h](dt)` — the task arm — then `009FC7C0` and the rest, and `0099D300` last at
+`009999AA`. So the abandon test runs **before** the task arm, once per think.
+
+`0099B740`, body `0099B740`-`0099B77A`, read whole:
+
+```
+0099b743  ECX = [bot+2FCh]                ; the squadron
+0099b74b  JZ  ret
+0099b74d  EAX = [bot+2F4h]                ; the unit
+0099b755  JZ  ret
+0099b757  CMP EAX,[ECX+3D0h] / JNZ ret    ; ONLY the flight LEADER
+0099b766  CALL [[bot]+38h]                ; the abandon predicate
+0099b76a  JZ  ret
+0099b76c  ECX = [bot+2FCh] / PUSH 1
+0099b774  CALL 007ED3F0
+```
+
+**`007ED3F0`'s body.** `docs/BOT_TASKS.md`'s "Slot `+38h` and the abandon path" says "that naming
+is a hypothesis; the body was not read" — but the **ledger already had it**, from packet
+`cc8_torpedo_release_orders`, including an exhaustive four-site call census (`0099B774` mode 1,
+`0084DB86` mode 1, `009A285E` mode 0, and `008A4C41` on `007ED430` with mode 2, the Lua binding).
+`docs/BOT_TASKS.md` is the stale party, not the image. Re-read here:
+
+```
+007ed3f0  MOV EAX,[ESP+4] / MOV [ECX+370h],EAX / RET 4     ; squadron+370h := v, unconditional
+007ed430  MOV EAX,[ESP+4] / CMP [ECX+370h],EAX / JGE ret
+007ed43c  MOV [ECX+370h],EAX / RET 4                       ; squadron+370h := max(., v), a RAISE
+```
+
+So the pair is a **set** and a **raise** of one field, `squadron+370h` — the attack mode. An attack
+order raises it to 2 (`007ED430(2)`); the leader's abandon test sets it to **1**.
+
+`+38h` is `0099B710` for every pilot-task vtable (`docs/BOT_TASKS.md` line 185,
+`docs/PILOT_TASK_HEADING_ARM.md` line 71), and `0099B710` is `MOV AL,1 / RET`. **So for a flight
+leader the predicate is always true and `squadron+370h` is driven to 1 on every think.**
+
+That is the channel the Done state is not. `squadron+370h` is exactly the field the dive-bomb
+machine gates on: `009C83F8` returns `in_range_latch_4c8 || (mode == 2 && latched target)`, and
+`009C8483` sends an attacking task back to the **approach** (`moveto`/`follow`) the moment
+`engaged` goes false. With the mode at 1, the in-range latch is the only thing sustaining an
+attack; when it clears, the squadron leaves the attack states and flies the approach. **That, not
+`done`, is what an image bomber does when its attack is spent.**
+
+**Consequence for this host, stated as a defect and not fixed here.**
+`src/game_hosts_units.cpp`'s `dive_bomb_transition_inputs` sets
+`in.engaged.control_mode_370 = 2` as a **constant**, with the comment "a dive bomber with no
+flight lead sits at 2". USN04's dive bombers are not that case: `movieval` is seat 0 of a
+three-aircraft squadron, so it *is* the flight lead and `0099B740`'s gate passes for it. Nothing on
+the dive-bomb path calls the host's `run_attack_mode_tick_0099b740`, which exists and is bound only
+for the torpedo (`unit_.torpedo_attack_mode_370`), and `bsp::pilot_attack_mode_0099b740` is already
+reconstructed. With the mode pinned at 2 the `!engaged` edge at `009C8483` can never fire, so a
+spent dive bomber never returns to the approach. This is an input of the dive-bomb transition and
+belongs to the packet that owns those inputs; it is recorded here, not changed here.
+
 ## 7. Corrections to other documents
 
 **7.1 `approach+0Ch` is a dereference, and the object is the squadron.**
