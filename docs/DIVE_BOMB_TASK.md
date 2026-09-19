@@ -3884,3 +3884,76 @@ well formed and the block is upstream geometry, which the same line measures:
 
 Both the ceiling block and the 748.8 m throw point at the same thing as item 2 of this packet - the
 Vals enter their dive from 1024.3 m against `movieval`'s 650.9 m - and not at the release chain.
+
+## Item 2, first half: `approach+ACh` is a GLOBAL, so it is not what makes the Vals dive high
+
+Packet `cc8_dive_glide`. Read from the constructor `FUN_009C3EA0`, immediately after the
+`approach+A4h`/`+A8h` pair above:
+
+```
+009c3f34  call 0042e740                 ; BSP_GameTuning_GetSingleton
+009c3f39  fld  dword ptr [eax + 0x4cc]
+009c3f3f  fstp dword ptr [esi + 0xac]   ; approach+ACh = tuning+4CCh
+009c3f45  call 0042e740                 ; -> EBP
+009c3f4c  call 0042e740                 ; -> EAX
+009c3f51  fld  dword ptr [ebp + 0x4d0]
+009c3f57  fsub dword ptr [eax + 0x4cc]  ; tuning+4D0h - tuning+4CCh
+009c3f68  fstp dword ptr [esi + 0xb0]   ; approach+B0h = that span
+```
+
+So the BeginAltRange pair is **a base and a span taken from the game tuning singleton**, not from a
+`PilotBotParameters` row and not from the plane class. `0042E740` takes no argument: there is one
+such record in the process.
+
+**That rules out the obvious explanation for the Vals' dive entry.** The run agrees: the install
+line prints `approach+ACh=1000.0 (BeginAltRange/1)` identically for all twelve dive bombers,
+`movieval` and `D3A Val` alike. Whatever makes `D3A Val` enter its aimdive at 1024.3 m while
+`movieval` enters at 650.9 m from an almost identical entry range, it is **not** `approach+ACh`, and
+it is not a per-class or per-row altitude. The next candidates are where the aircraft actually *is*
+when the flyabove hands over - the flyabove/turndown path - and `approach+D4h`, not this field.
+
+Two neighbours fall out of the same read and are recorded here because they were in the listing:
+
+* `approach+B4h = uniform(00CE3D30, 00CE74F8) * (classDesc+268h)` - `009C3F6E`-`009C3F97`.
+* `approach+B8h = approach+BCh = uniform(00D06BB4, 00CF4848) * (classDesc+268h)` - `009C3F9D`-`009C3FF5`,
+  one draw stored twice (`009C3FE8 FST`, `009C3FF5 FSTP`). `+B8h` is the attack distance the run
+  prints as 1100.0, and `classDesc+268h` is the per-class scale on it. NOT verified against the
+  authored rows in this packet; the arithmetic is transcribed, the identification of `+268h` is not.
+
+### Item 2, second half: the row index, read from `009F9CE0`, and one correction
+
+`FUN_009C3EA0`'s first call is `009C3ED5 CALL 009F9CE0` with the approach in ECX, the unit pushed,
+and the float `tuning+4D8h` (`009C3EBF`-`009C3ECF`) pushed under it. `009F9CE0` fills the base:
+
+```
+009f9cea  [approach+04h] = unit
+009f9cf3  [approach+08h] = unit+538h        ; the plane class descriptor
+009f9cfc  [approach+0Ch] = unit+9D4h
+009f9d05  [approach+10h] = unit+DF4h
+009f9d08  mov edx, [eax + 0xdf4]
+009f9d0e  mov edx, [edx + 0x34]             ; THE ROW INDEX
+009f9d11  imul edx, edx, 0x248
+009f9d18  mov esi, dword ptr [0xf8a30c]     ; the TABLE BASE, loaded from that address
+009f9d1e  lea edx, [edx + esi + 0xc]
+009f9d22  [approach+14h] = that
+009f9d37  [approach+24h] = max(classDesc+188h MaxSpd / the pushed float, 1.0)
+```
+
+**Correction to the handoff's form `approach+14h = 00F8A30C + index*248h + 0Ch`.** `009F9D18` is
+`MOV ESI,[0xF8A30C]`, a load: `00F8A30C` holds a **pointer** to the table, it is not the table's
+first byte. The row is `[00F8A30C] + index*248h + 0Ch`.
+
+The index is `[[unit+DF4h]+34h]`, which is what `src/game_hosts_units.cpp` already records at its
+`&PilotBotConfig.levels[...]` comments and already labels unmodelled. This read confirms it from the
+listing rather than adding to it. **The answer to "which row does a spawned AI aircraft draw" is
+therefore: this host cannot know.** It would need `unit+DF4h` - the object the index lives on - and
+nothing in this reconstruction creates or fills it; `approach+10h` is that same pointer, so modelling
+one gives the other.
+
+Also settled in passing: the divisor of `approach+24h`'s speed ratio, which this document carried as
+an unnamed `referenceSpeed`, is **`tuning+4D8h`** from the same `0042E740` singleton (`009C3EBF`).
+
+**So neither half of item 2 explains the Vals.** `approach+ACh` is global and identical for all
+twelve; the row is SPNormal for all twelve by this host's own substitution. The 1024.3 m against
+650.9 m difference in aimdive entry height has to come from where the aircraft is when the flyabove
+hands over, not from an authored altitude - which is where the next packet should start.
