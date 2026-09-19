@@ -84,11 +84,35 @@
       }
     }
   },
-  "runs": [],
+  "runs": [
+    {
+      "log": "local/usn04_target.log",
+      "tree": "0183d8e3f plus the run-in origin rename",
+      "arguments": "--frames 5000 --press-start-frame 30 --menu-select USN04 --mission-frames 4800 --mission-frame-seconds 0.05",
+      "result": "arm_ticks=2109 transitions=7 states[goaway=1 aimdive=318 aimglide=37 flyabove=159 turndown=67 attackrun=1527]. approach+BCh ends at 1866.0 m, not the broken run 0.0; latch closed at tick 1528; turndown latched at 1719 with |bank| 3.1256 rad; the 009C58D0 steering ran for all 318 aimdive ticks.",
+      "owed_numbers": {
+        "closest_miss_vs_25m": "347.40 m at range 443.3 m, altitude 654.0 m (was 359.50 m)",
+        "release_altitude_vs_350_450_floor": "no release; approach+A8h drew 350.0 m and flyabove B = 3.4 m at the end shows the aircraft reached sea level, so the floor was reachable",
+        "releases": "none; releases=0 bombs_spawned=0 rounds_left=2"
+      },
+      "gate": "still the 25.0 m aim window at 00CE3880. At the closest sample the model forces cos(bearing) = -0.99977 - the target dead astern - and the last aimdive tick reads bearing 2.8765 rad with pitch and roll both saturated.",
+      "next": "a trace was added rather than a guess: aim-state entry range and bearing, closest range, and range/error/bank/bearing every 30 ticks, to separate a dive that starts past the aim point from a roll too slow to hold the nose on."
+    },
+    {
+      "log": "local/usn04_trace.log",
+      "arguments": "--frames 5000 --press-start-frame 30 --menu-select USN04 --mission-frames 4800 --mission-frame-seconds 0.05",
+      "result": "same walk as usn04_target.log; the aim trace resolves the two hypotheses.",
+      "trace": "entry range=443.3 m bearing=-3.1411 rad; closest range=443.3 m; 317 ticks; range/error/bank/bearing per 30 ticks: 639/-625/2.98/2.93 945/-879/-3.03/-2.77 1177/-1088/1.75/2.75 1320/-1285/-0.89/3.05 1431/-944/2.10/2.37 1493/-1142/-1.28/2.65 1545/-1245/-0.98/2.77 1616/-1495/-0.75/2.86 1688/-1639/-0.55/2.90 1752/-1697/-0.38/2.89",
+      "finding": "the dive begins with the target 179.9 degrees behind at 443.3 m, and that entry range is the CLOSEST the aircraft ever gets - the range rises monotonically to 1752 m. The roll is not too slow; nothing ever pointed the aircraft at its target. The bank thrashing (+2.98, -3.03, +1.75, -0.89, ...) is the falling roll map limit-cycling on a bearing whose sign flips as the aircraft rolls past inverted.",
+      "gate": "009C62B0, the flyabove tick, is UNBOUND - tick_state is still an empty override and the wrapper dispatches only kAttackRun, kTurnDown and kAimDive. Its command census: 009C69B1/009C69B9 cmd+2C4h with the mode, 009C6DE7/009C6DEF cmd+2C0h the commanded heading with the mode, 009C6F89/009C6F91 cmd+2BCh with the pitch mode, 009C6FF1/009C6FFB cmd+2D8h = 1 and cmd+2B4h. Without it the aircraft holds the run-in heading through 159 flyabove ticks, overflies, and the turndown split-S hands aimdive an aircraft pointed 180 degrees wrong."
+    }
+  ],
   "open": {
     "0071EBF0 mode 2": "this+30h == 2 returns this+18Ch; this host has no such mode.",
     "00E19BB4": "the lazily built static default; read, not modelled.",
-    "009C5D24-009C5D31 interpolant": "the band selection is bound (folded pose+C68h against the 60 degrees at 00D05AAC); the wide arm interpolates a SECOND bearing error drawn against the latched reference at approach+D8h/+E0h, and this host keeps one bearing."
+    "009C5D24-009C5D31 interpolant": "the band selection is bound (folded pose+C68h against the 60 degrees at 00D05AAC); the wide arm interpolates a SECOND bearing error drawn against the latched reference at approach+D8h/+E0h, and this host keeps one bearing.",
+    "009c62b0": "the flyabove tick, unbound; one packet of its own, 949 instructions with heading, altitude and speed arms.",
+    "009c56ae": "the aimglide release height gate: height_above + 50.0 > height_limit, which the host feeds raw altitude and approach+ACh = 1000.0, so it demands >950 m while the aircraft is at 654 m. Both inputs are inside the PARTIAL dive_bomb_aimglide_inputs labels - four frame slots behind 009C5693-009C5755 were never traced - so this second release path is closed by a substitution, not a recovered rule."
   },
   "events": [
     {

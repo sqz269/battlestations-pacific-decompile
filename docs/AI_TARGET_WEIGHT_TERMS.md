@@ -731,3 +731,156 @@ attacker is a plane, which says whether IJN01's close-attack members take the pr
 at all or the unprojected region. `summary mission ai target weight accuracy` gives one row per
 (bullet sub-type, target group) pair with the looked-up accuracy, the zero count and the summed
 contribution, which says whether the zeros are authored or a coverage gap.
+
+### The census, measured: `local/zero_ijn01.log`
+
+**Both of the candidates the last packet named are refuted.** The run is on the old command-target
+rule, i.e. **before** `0daec4b56`, the same side as every other column in this document.
+
+`path`: `plane_attacker=38000 other_attacker=427500`. So **92% of queries take the projected
+non-plane barrel walk**, and the unprojected region `00A0861F..00A09222` is not where IJN01's
+weights come from.
+
+`accuracy`, the rows with a non-zero lookup count:
+
+| sub-type | group | lookups | accuracy | zero | contribution |
+| --- | --- | --- | --- | --- | --- |
+| `00h` unresolved class | other | 37600 | 0.0000 | 37600 | 0.000 |
+| `02h` machinegun | other | 84600 | 0.0000 | 84600 | 0.000 |
+| `03h` machinegun AA | other | 2566200 | 0.0000 | 2566200 | 0.000 |
+| `06h` artillery medium | other | 921200 | **0.5500** | 0 | **12370968.9** |
+| `07h` artillery heavy | other | 423000 | **0.5500** | 0 | **800611.4** |
+| `09h` bomb | other | 65800 | **0.2000** | 0 | **13160.0** |
+| `0Ah` torpedo | other | 338400 | 0.0000 | 338400 | 0.000 |
+| `0Bh` depthcharge | other | 94000 | **0.5000** | 0 | **1410000.0** |
+| `10h` flak | other | 564000 | 0.0000 | 564000 | 0.000 |
+
+(the `submarine` rows mirror these at about a ninetieth of the volume, with `06h`/`07h` at `0.7000`
+and `0Ah` torpedo at `0.4500`, which is the torpedo arm's submarine entry firing correctly.)
+
+**So the zeros are not authored.** IJN01's attackers carry artillery, bombs and depth charges whose
+authored accuracy against the fall-through group is `0.55`, `0.20` and `0.50`, and their summed
+contribution is over 14 million. The "AA-armed force" reading in the previous section is **wrong**
+and is retracted: machine-gun and flak barrels do answer zero there, but they are not the only
+barrels these units carry.
+
+Two things the census does **not** establish, said plainly. Only the `submarine` and `other` groups
+were ever exercised — no candidate in the 3000-unit collect radius classified as plane, small ship
+or big ship — so the `Plane`, `SmallShip` and `BigShip` rows of the dispatch are **untested by this
+run**, and the labelled `00827F70` substitution with them. And `00h`, an unresolved bullet class,
+accounts for 37600 lookups, which is the `gun.bullet_class < 0` guard in the gunnery host rather
+than anything in this dispatch.
+
+### The actual cause: a null subsystem handle
+
+Neither candidate. `src/ai_target_weights.cpp` walked the barrels with
+
+```cpp
+const void* subsystem = nullptr;   // resolved natively at 00A09379
+```
+
+and `AiWeightModelBinding` keys every barrel accessor on that pointer through
+`index_of(entity) = (std::size_t)entity - 1`. For a null handle that is `SIZE_MAX`,
+`GameAiWeaponFacts::row` bounds-checks it away, and **`barrel_count` answers 0**. The inner loop
+therefore never executed once: `best` stayed `0`, `capture_accumulator` stayed `0`, `total` stayed
+`0`, and `ai_target_weight_result` returns `0` for a non-positive total. Every candidate, every
+mission, whatever the accuracy table said.
+
+That also explains the one number that never fitted the authored-zero reading: the 4900 that still
+scored. They were not admitted on their weight at all. `00A146D9`'s second arm admits a candidate
+whose weight is not positive when it is in the target group, which is exactly
+`ai_close_attack_candidate_admitted(0.0f, true)`.
+
+`subsystem_count` returning `1` and the binding's own comment that "the attacker has a single
+subsystem carrying every barrel" are the contract; the fix is to hand the walk the attacker handle,
+which is what resolves back to that flattened subsystem. The native's `00A09379` resolving a real
+subsystem object stays the labelled substitution it already was.
+
+### A second annihilating stub, of the same family
+
+Fixing the handle was not enough, and the second fault is worth stating because it is the same
+mistake twice: **a stand-in whose contract does not match its caller's.**
+
+`AiWeightModelBinding::distance_falloff` answered `return a`, on the reading that `a` was the value
+being scaled and returning it kept the value undiminished. The one call site,
+`src/ai_target_weights.cpp:379`, **multiplies by the answer** and passes `(0, 0, 0, 0)` — four
+distance arguments this projection has not recovered. So the stub answered `0.0f`, `weighted` was
+zero for every barrel, `best` could never leave `0`, and the barrel loop still contributed nothing
+to `total`. A falloff is a multiplier, so its neutral value is `1.0f`. Labelled: the real `009FE200`
+diminishes with range, so `1.0f` over-states a distant barrel rather than annihilating it.
+
+With both fixed the model's shape is finally the listing's:
+`total = best + min(sum_damage, DamageCalcTime)`, clamped by hit points and `MaxTargetKillRatio`,
+where `best` is the largest single barrel contribution.
+
+### The prediction, written before the run reported
+
+Registered in advance so the check is a test and not a fit. From the census, `06h` artillery medium
+against the `other` group contributed `12370968.9` over `921200` lookups, so one such barrel's
+damage averages **13.43**. A unit with several of them saturates the capture term, which clamps at
+`DamageCalcTime` = 60. So
+
+```
+model ~= (13.43 + 60) / hit_points        a fort, artillery at 0.55
+model ~= (17.1  + 60) / hit_points        a submarine, artillery at 0.70
+```
+
+and `00A0F810` then multiplies by the class weight in `target_scale` and by `0.01` for a
+non-command member of the trio. The authored class weights are `Landfort` **1.0** and `Submarine`
+**4.0**, so
+
+```
+fort      ~= (73.4 / hp_fort) * 1.0 * 0.01   ~= 0.0004  at hp 2000
+submarine ~= (77.1 / hp_sub)  * 4.0          ~= 0.2      at hp 1500
+```
+
+**Predicted: the real model prefers the submarines and ships by roughly three orders of magnitude
+over the forts**, which is the `0.01` static-installation arm doing exactly what section 1 says it
+does, amplified by the class weight. Predicted coordinator row: `served` unchanged at 2450,
+`attackmove` and `settarget` back above zero, `fallback` small, and `scored` back near 465500
+because every weight is now positive so admission stops depending on the target-group arm.
+
+If the run instead shows attacks still off, or shows forts preferred, the flip comes back off.
+
+### Measured: `local/zero_ijn01_fixed.log`, and the prediction held
+
+All three columns are on the **old** command-target rule, before `0daec4b56`.
+
+| Run | `served` | `attackmove` | `settarget` | `fallback` | `scored` | `model_runs` | `complete_rows` |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| before, model off | 2450 | 2250 | 141 | 59 | 465500 | 0 | - |
+| model on, both bugs present | 2450 | **0** | **0** | **2450** | **4900** | 465500 | 321 |
+| model on, both fixed | 2450 | **2050** | **141** | **259** | **427900** | 465500 | 321 |
+
+| Prediction | Measured | Verdict |
+| --- | --- | --- |
+| `served` unchanged at 2450 | 2450 | **held** |
+| `attackmove` and `settarget` back above zero | 2050 and 141 | **held** |
+| `fallback` small | 259, against 2450 broken | **held** |
+| `scored` back near 465500 | 427900, short by 37600 | **held with a named residue** |
+
+**The AI attacks again**, and `settarget` returns to exactly its before value of 141. The residue is
+exact rather than approximate: `465500 - 427900 = 37600`, which is precisely the census's `00h`
+lookup count against the `other` group. Sub-type `00h` is an **unresolved bullet class**, the
+`gun.bullet_class < 0` guard in the gunnery host, so those attackers publish a zero-accuracy barrel,
+answer a zero total and fail admission. That is a known, already-named gap and not a new fault. One
+caveat on the identification: the census counts barrel lookups and `scored` counts candidates, so
+the two coincide exactly only if those attackers carry one barrel each. Suggestive, not proof.
+
+Second-order movement, before to after: gunnery `entity_impacts` 104 to **1891** with `hull` steady
+at 104 and `water` 69 to 1852, `total_damage` 1571.8 to 1579.2, `deaths` 4 either way. So the same
+hulls are being hit for the same damage while far more rounds fall in the water, which is what a
+changed target preference at unchanged gunnery accuracy looks like.
+
+**What could not be checked, stated plainly.** The sampled-candidate arithmetic was **not** verified
+against the run. The prediction's `0.0004` for a fort and `0.2` for a submarine used assumed hit
+points of 2000 and 1500, and no line in the run records a per-candidate weight, its hit points or
+the chosen target — the same instrumentation gap this document flagged after the first census. So
+the claim that the model now prefers submarines and ships over forts by about three orders of
+magnitude is a **calculation from the census and the authored class weights, not a measurement**.
+What the run does show is consistent with it and does not test it: `attackmove` fell 2250 to 2050
+and `fallback` rose 59 to 259, so 200 member-ticks that used to find a target no longer do, which is
+what devaluing 188 of every 190 in-range candidates by the `0.01` arm would do.
+
+The flip therefore stays on: every measurable part of the prediction held, and the one unmeasurable
+part is labelled as unmeasured rather than counted as confirmation.
