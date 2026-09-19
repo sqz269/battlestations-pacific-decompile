@@ -6,9 +6,14 @@
 # its child on the modal "already running" box and its parent waiting, with no
 # way to finish unattended, and the stuck child keeps every later run
 # colliding until it is killed. Several agents run the executable from their
-# own worktrees, so this wrapper takes a machine-wide lock file, waits for any
-# live bsp_game.exe, runs the executable through a pipe (a WIN32-subsystem exe
-# returns immediately otherwise) and releases the lock.
+# own worktrees. Since 2026-09-18 the executable takes two harness options,
+# --instance-tag (its own mutex name) and --affinity-core (its own processor in
+# place of the image's processor 0), so runs can overlap: this wrapper takes one
+# of -Slots numbered slot files, passes that slot's tag and processor, runs the
+# executable through a pipe (a WIN32-subsystem exe returns immediately
+# otherwise) and releases the slot. Each run must have its own -Log path: the
+# log is opened for writing at that path and two runs on one path would clobber
+# each other, so the wrapper refuses a path another live slot is using.
 #
 #   ./tools/run_game.ps1 -Log local\usn02.log -- --frames 3200 --press-start-frame 30 `
 #       --menu-select USN02 --mission-frames 3000 --mission-frame-seconds 0.05
@@ -28,6 +33,8 @@ param(
     [string]$Log = 'local\game_run.log',
     [string]$Lock = "$env:USERPROFILE\.bsp\bsp_game.lock",
     [int]$WaitSeconds = 2400,
+    [int]$Slots = 3,
+    [int[]]$Cores = @(2, 4, 6),
     [Parameter(ValueFromRemainingArguments = $true)]
     [string[]]$GameArgs = @()
 )
@@ -41,38 +48,59 @@ $owner = if ($env:BSP_AGENT) { $env:BSP_AGENT } else { Split-Path (Get-Location)
 
 $lockDir = Split-Path $Lock -Parent
 if (-not (Test-Path $lockDir)) { New-Item -ItemType Directory -Path $lockDir | Out-Null }
+if ($Slots -lt 1 -or $Cores.Count -lt $Slots) { throw "-Cores must list at least -Slots processors" }
+$logDirEarly = Split-Path $Log -Parent
+if ($logDirEarly -and -not (Test-Path $logDirEarly)) { New-Item -ItemType Directory -Path $logDirEarly | Out-Null }
+$logFull = if ([System.IO.Path]::IsPathRooted($Log)) { [System.IO.Path]::GetFullPath($Log) } else { [System.IO.Path]::GetFullPath((Join-Path (Get-Location).Path $Log)) }
+
+function Get-TaggedGame([string]$tagName) {
+    # Both processes of a run carry the tag: the bootstrap parent passes its
+    # arguments through to the child it resumes.
+    # The child's arguments are re-quoted by the bootstrap ("--instance-tag" "slot0").
+    $pattern = '--instance-tag"?\s+"?' + [regex]::Escape($tagName) + '("|\s|$)'
+    Get-CimInstance Win32_Process -Filter "Name='bsp_game.exe'" -ErrorAction SilentlyContinue |
+        Where-Object { $_.CommandLine -match $pattern }
+}
+
 $deadline = (Get-Date).AddSeconds($WaitSeconds)
-# The lock is taken by an atomic CreateNew, never by "test then write": two
-# launchers polling on the same cadence both saw the file absent and no live
-# process, both wrote it, and both ran, which is the collision behind the
-# intermittent startup crash recorded in docs/GAME_EXECUTABLE.md (2026-09-18).
-# A launcher that loses the race sees the IOException and keeps waiting.
-while ($true) {
-    $holder = if (Test-Path $Lock) { (Get-Content $Lock -ErrorAction SilentlyContinue) -join ' ' } else { $null }
-    $live = Get-Process bsp_game -ErrorAction SilentlyContinue
-    if (-not $holder -and -not $live) {
-        try {
-            $stream = [System.IO.File]::Open($Lock, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write, [System.IO.FileShare]::None)
-            $bytes = [System.Text.Encoding]::ASCII.GetBytes("$owner $(Get-Date -Format s) pid=$PID")
-            $stream.Write($bytes, 0, $bytes.Length)
-            $stream.Close()
-            # A process could have been launched by the winner of a race lost a
-            # moment earlier; if one is alive now, hand the lock back and wait.
-            if (-not (Get-Process bsp_game -ErrorAction SilentlyContinue)) { break }
-            Remove-Item $Lock -ErrorAction SilentlyContinue
-        } catch [System.IO.IOException] {
-            # Another launcher created it first; keep waiting.
+$slot = -1
+$slotFile = $null
+while ($slot -lt 0) {
+    for ($k = 0; $k -lt $Slots; $k++) {
+        $candidate = Join-Path $lockDir "bsp_game.slot$k.lock"
+        if (Test-Path $candidate) {
+            $text = (Get-Content $candidate -ErrorAction SilentlyContinue) -join ' '
+            if ($text -match 'log=(.+)$' -and $Matches[1].Trim() -ieq $logFull) {
+                throw "log path $logFull is in use by slot $k ($text); give every run its own -Log"
+            }
+            # A slot whose launcher is gone and whose tagged processes are gone is stale.
+            $holderAlive = $false
+            if ($text -match 'pid=(\d+)') { $holderAlive = [bool](Get-Process -Id ([int]$Matches[1]) -ErrorAction SilentlyContinue) }
+            if (-not $holderAlive -and -not (Get-TaggedGame "slot$k")) { Remove-Item $candidate -ErrorAction SilentlyContinue }
+        }
+        if (-not (Test-Path $candidate) -and -not (Get-TaggedGame "slot$k")) {
+            try {
+                # Atomic CreateNew: a launcher that loses the race sees the IOException and tries the next slot.
+                $stream = [System.IO.File]::Open($candidate, [System.IO.FileMode]::CreateNew, [System.IO.FileAccess]::Write, [System.IO.FileShare]::None)
+                $bytes = [System.Text.Encoding]::ASCII.GetBytes("$owner $(Get-Date -Format s) pid=$PID log=$logFull")
+                $stream.Write($bytes, 0, $bytes.Length)
+                $stream.Close()
+                $slot = $k; $slotFile = $candidate
+                break
+            } catch [System.IO.IOException] { }
         }
     }
-    if ((Get-Date) -gt $deadline) {
-        throw "gave up after $WaitSeconds s: lock held by '$holder', live bsp_game pids: $(($live | ForEach-Object Id) -join ',')"
-    }
+    if ($slot -ge 0) { break }
+    if ((Get-Date) -gt $deadline) { throw "gave up after $WaitSeconds s: all $Slots slots busy" }
     Start-Sleep -Seconds 10
 }
+$tag = "slot$slot"
+$core = $Cores[$slot]
+"slot=$slot tag=$tag core=$core log=$logFull"
 try {
     $logDir = Split-Path $Log -Parent
     if ($logDir -and -not (Test-Path $logDir)) { New-Item -ItemType Directory -Path $logDir | Out-Null }
-    $arguments = @('--game-root', $GameRoot, '--xlive-dll', $XLiveDll, '--log', $Log) + $GameArgs
+    $arguments = @('--game-root', $GameRoot, '--xlive-dll', $XLiveDll, '--log', $Log, '--instance-tag', $tag, '--affinity-core', "$core") + $GameArgs
     & $Exe @arguments 2>&1 | Select-Object -Last 1
     $code = $LASTEXITCODE
     "EXITCODE=$code"
@@ -88,13 +116,13 @@ try {
     # Twenty minutes is past any 3200-frame run; only a wedged process is stopped.
     $waited = 0
     while ($waited -lt 1200) {
-        $mine = Get-Process bsp_game -ErrorAction SilentlyContinue | Where-Object { $_.Path -and $_.Path.StartsWith($treeRoot, [System.StringComparison]::OrdinalIgnoreCase) }
+        $mine = Get-TaggedGame $tag
         if (-not $mine) { break }
         Start-Sleep -Seconds 2; $waited += 2
     }
     if ($mine) {
-        $mine | Stop-Process -Force -ErrorAction SilentlyContinue
-        "stopped lingering bsp_game pids after ${waited}s: $(($mine | ForEach-Object Id) -join ',')"
+        $mine | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
+        "stopped lingering bsp_game pids after ${waited}s: $(($mine | ForEach-Object ProcessId) -join ',')"
     }
     if (Test-Path $Log) {
         Select-String -Path $Log -Pattern '^summary mission gunnery damage|^summary mission pilot attack|^summary window_created|^startup failed|^host methods' |
@@ -104,5 +132,5 @@ try {
     }
     exit $code
 } finally {
-    Remove-Item $Lock -ErrorAction SilentlyContinue
+    if ($slotFile) { Remove-Item $slotFile -ErrorAction SilentlyContinue }
 }

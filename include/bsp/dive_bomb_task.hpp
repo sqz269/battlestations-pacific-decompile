@@ -386,8 +386,28 @@ bool dive_bomb_dive_abort_009c5b43(const DiveBombDiveAbortInputs& in) noexcept;
 // ---------------------------------------------------------------------------
 struct DiveBombAimGlideReleaseInputs {
     float dive_angle = 0.0f;        // [ESP+18h], compared against 30 deg
-    float height_above = 0.0f;      // [ESP+1Ch]
-    float height_limit = 0.0f;      // [ESP+20h]
+    // CORRECTION. These two were `height_above` at [ESP+1Ch] and `height_limit`
+    // at [ESP+20h], and the gate was written `height_above + 50 > height_limit`
+    // - the operands the wrong way round, which made it demand ALTITUDE rather
+    // than a ceiling. 009C56A6 loads [ESP+20h] FIRST and 009C56AA loads
+    // [ESP+1Ch] second, so 009C56B4's FCOMIP compares `[ESP+1Ch] + 50` against
+    // `[ESP+20h]`: the ceiling is the +1Ch slot.
+    //
+    // Both producers are now read.
+    //  [ESP+20h], written at 009C5281: the same construction as the flyabove's
+    //  B - 009C5278 calls approach->vtable[0], 009C527A takes its out[1] and
+    //  009C527D FSUBR subtracts it from the aircraft's Y. The height above the
+    //  aim point.
+    //  [ESP+1Ch], written at 009C5493: `(approach+14h)->+40h * approach+A8h`
+    //  (009C548A/009C548D). approach+14h is the 0x248-stride robots row viewed
+    //  0xCh in, so ->+40h is row+4Ch, dive_bomb_new_release_mul_04c. This
+    //  installation's SPNormal row authors DiveBombNewReleaseMul = 0.6, and its
+    //  comment says it outright: "ha nem leboritott manoverrel bombaz, csak
+    //  siman rarepulve, akkor a fenti ReleaseAlt erteket ennyivel megszorozva
+    //  hasznalja" - bombing without the wingover, it uses ReleaseAlt times this.
+    // So the glide release ceiling is 0.6 * 350.0 + 50.0 = 260.0 m.
+    float height_above_aim_point = 0.0f;   // [ESP+20h]
+    float glide_release_ceiling = 0.0f;    // [ESP+1Ch]
     float lateral_a = 0.0f;         // [ESP+14h]
     float lateral_b = 0.0f;         // [ESP+10h]
     float travel_accumulator_20 = 0.0f;  // state+20h
@@ -609,6 +629,52 @@ inline constexpr float kLeaveTolerancePi = 3.1415927410125732f;   // 00D7A264
 // 009C661B: the share of approach+B4h the tolerance's far endpoint uses.
 inline constexpr double kLeaveSpanScale = 0.800000011920929;      // 00CE3D40, qword
 }  // namespace dive_bomb_flyabove_constant
+
+// ---------------------------------------------------------------------------
+// 009C6DCD-009C6DEF, the flyabove tick's heading arm - the command the trace in
+// docs/DIVE_BOMB_TASK.md indicts by its absence. `tick_state` dispatched
+// nothing for kFlyAbove, so the aircraft held the run-in heading through 159
+// ticks, overflew its target, and the turndown's split-S handed aimdive an
+// aircraft pointed 179.9 degrees the wrong way.
+//
+// PARTIAL, and the partial part is the VALUE. The image writes
+// `AddWrappedAngle(base, clamp(delta, -L, +L))` - the call at 009C6DC8 with the
+// base at [ESP+54h] and the clamp built at 009C6D7E-009C6DB0 from [ESP+1Ch],
+// [ESP+34h] and their negation - and neither the base nor the delta was traced.
+// tools/frame_slot_census.py cannot be trusted in this body: it flags nine call
+// sites it cannot account for, and the gap its own docstring names (an argument
+// window opened by `SUB ESP,imm` and closed by the callee's `RET imm16`)
+// already put the 009C69B1-era writes and the 009C6DC1 read four bytes apart.
+// So the host commands the bearing to the aim point, which is the same quantity
+// the run-in's own mode-2 command uses, and the offset is labelled here.
+//
+// The other three command arms are READ and NOT bound, for the same reason -
+// their values need slots this body cannot resolve:
+//   009C69B1/009C69B9  cmd+2C4h = 0.0 with cmd+2CCh = 1, a wings-level bank
+//                      target handed to the planner's servo. It precedes the
+//                      heading arm in the body, so the heading's mode 2 wins
+//                      whenever both run.
+//   009C6F84/009C6F89/009C6F91  cmd+2BCh with the pitch mode in EDX, on the arm
+//                      that does NOT call 009FB800 at 009C6F7D.
+//   009C6FEA/009C6FF1/009C6FFB  cmd+2B0h = 0, cmd+2D8h = 1 and cmd+2B4h, the
+//                      desired speed, built as `something + approach+A4h`
+//                      (009C6FE1).
+// ---------------------------------------------------------------------------
+struct DiveBombFlyAboveCommandInputs {
+    // state+1Ch at 009C6DCD, with 009C6DDA `75` JNZ skipping the write. A
+    // contract: this host keeps no flyabove +1Ch, so it never suppresses.
+    bool suppress_heading_1c = false;
+    // SUBSTITUTION, labelled: the bearing to the aim point in place of
+    // AddWrappedAngle(base, clamp(delta, -L, +L)).
+    float heading_to_aim_point = 0.0f;
+};
+struct DiveBombFlyAboveCommand {
+    bool wrote_heading = false;
+    float heading_2c0 = 0.0f;
+    int heading_mode_2cc = 0;   // 009C6DD5 MOV EDX,2
+};
+DiveBombFlyAboveCommand dive_bomb_flyabove_command_009c6dcd(
+    const DiveBombFlyAboveCommandInputs& in) noexcept;
 
 struct DiveBombFlyAboveSpan {
     float floored_height = 0.0f;  // max(B, 100.0), the 009C65A9 select

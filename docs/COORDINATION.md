@@ -167,3 +167,42 @@ lock. It never kills a process, because the live one may be another agent's run.
 found hanging (a `bsp_game.exe` window titled "Error"), stop both `bsp_game.exe` processes and
 delete the lock file. Worker briefs must name the wrapper; a bare `&` launch is how the
 collisions happened.
+
+## Running the executable: three slots instead of one lock (cc8, 2026-09-18)
+
+This supersedes the single machine lock described above. The user asked for the instance check
+to stop serialising runs, and authorised the two small harness edits in `src/game_hosts.cpp` and
+`include/bsp/game_hosts.hpp` that make it possible (files the Codex orchestrator otherwise owns).
+
+* `--instance-tag <text>` appends the tag to the single-instance mutex name (`00d16a64`) that
+  WinMain's `008f8301` check creates. The reconstructed check is unchanged: without the option the
+  name is the image's and a second instance still takes the "already running" exit.
+* `--affinity-core <n>` moves the main-thread pin of `008f83fc` from the image's processor 0 to
+  processor `n`. The thread is still pinned to exactly one processor; overlapping runs on one
+  processor would only share it.
+
+`tools/run_game.ps1` now takes one of `-Slots` (default 3) numbered slot files under
+`%USERPROFILE%\.bsp` by an atomic create, passes that slot's tag (`slot0`..) and processor
+(`-Cores`, default 2, 4, 6: three distinct physical cores on this 16-core machine, leaving
+processor 0 to the system), and releases the slot when the run's two processes are gone. It finds
+a run's processes by the tag on their command lines (the bootstrap child re-quotes its arguments,
+so the pattern allows quotes), never by worktree path, so one tree may hold several slots. A slot
+whose launcher and tagged processes are both gone is reclaimed automatically; nobody needs to
+delete a lock by hand any more.
+
+Logs do not intermingle. A run writes exactly one log, opened for writing at its `--log` path by
+both of its processes in turn, and the XLive stand-in writes its call journal only to the path in
+`BSP_XLIVE_STUB_LOG` when that variable is set. The launcher records each slot's log path and
+refuses a path another live slot is using, because two runs on one path would clobber each other.
+
+Validated on `agent/cc8` before landing: three USN02 runs of 1000 mission frames started within
+six seconds of each other on slots 0 to 2, and one solo run of the same binary afterwards. All 77
+`summary mission` lines are identical across the four logs, the four logs have the same byte
+length, and after masking heap pointers and thread ids 10 of 14141 lines differ (the log path
+and tag lines). Each parallel run took about two minutes, the same as the solo run.
+
+What still holds: a mission-length run outlasts the 600 s foreground cap and is backgrounded, and
+nothing wakes the worker when it lands, so note the expected end time and check the log then. A
+disconnected remote-desktop session still fails every run at FMOD init. Launchers from trees that
+have not merged this change still use the old single lock and wait for every `bsp_game.exe` to
+exit, so merge `main` before the next run.

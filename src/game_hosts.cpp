@@ -578,6 +578,32 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
             trajectory_csv.resize(length);
         } else if (std::strcmp(argument, "--hardware-probe-commit") == 0) {
             hardware_probe_commit = true;
+        } else if (std::strcmp(argument, "--instance-tag") == 0) {
+            if (index + 1 >= argc) {
+                error = "--instance-tag needs a tag";
+                return false;
+            }
+            instance_tag = argv[++index];
+            bool tag_ok = !instance_tag.empty() && instance_tag.size() <= 32;
+            for (const char c : instance_tag) {
+                const bool alnum = (c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+                if (!alnum && c != '_' && c != '-') tag_ok = false;
+            }
+            if (!tag_ok) {
+                error = "--instance-tag needs 1 to 32 characters from [A-Za-z0-9_-]";
+                return false;
+            }
+        } else if (std::strcmp(argument, "--affinity-core") == 0) {
+            if (index + 1 >= argc) {
+                error = "--affinity-core needs a processor index";
+                return false;
+            }
+            const long core = std::strtol(argv[++index], nullptr, 10);
+            if (core < 0 || core > 31) {
+                error = "--affinity-core needs a processor index from 0 to 31";
+                return false;
+            }
+            affinity_core = static_cast<int>(core);
         } else {
             error = std::string("unknown option ") + argument;
             return false;
@@ -1386,6 +1412,16 @@ void GameStartupHost::random_threads_shutdown() {
 SingleInstanceMutex GameStartupHost::create_single_instance_mutex(const char* name) {
     log_.implemented("StartupHost::create_single_instance_mutex", "008f8301");
     SingleInstanceMutex mutex{};
+    // Harness: --instance-tag gives this run its own mutex name so runs from several
+    // worktrees can overlap. Without the option the name is the image's and a second
+    // instance takes WinMain's "already running" exit exactly as before.
+    std::string tagged_name;
+    if (!options_.instance_tag.empty()) {
+        tagged_name = std::string(name) + "-" + options_.instance_tag;
+        name = tagged_name.c_str();
+        log_.notef("harness: single-instance mutex name suffixed with instance tag \"%s\"",
+            options_.instance_tag.c_str());
+    }
     mutex.handle = CreateMutexA(nullptr, TRUE, name);
     mutex.already_exists = GetLastError() == ERROR_ALREADY_EXISTS;
     return mutex;
@@ -1452,7 +1488,15 @@ void GameStartupHost::error_message_box(const wchar_t* text, const wchar_t* capt
 
 void GameStartupHost::set_thread_affinity_to_first_processor() {
     log_.implemented("StartupHost::set_thread_affinity_to_first_processor", "008f83fc");
-    SetThreadAffinityMask(GetCurrentThread(), 1);
+    // The image passes mask 1. Harness: --affinity-core moves the pin to another processor so
+    // overlapping runs do not all share processor 0; the thread is still pinned to exactly one.
+    DWORD_PTR mask = 1;
+    if (options_.affinity_core >= 0) {
+        mask = static_cast<DWORD_PTR>(1) << options_.affinity_core;
+        log_.notef("harness: main thread pinned to processor %d instead of processor 0",
+            options_.affinity_core);
+    }
+    SetThreadAffinityMask(GetCurrentThread(), mask);
 }
 
 void GameStartupHost::publish_game_resource_factory() {
