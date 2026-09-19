@@ -1235,3 +1235,45 @@ ship they were aimed at, but **Mav2 and Mav3 came nearest to shore structures** 
 away - so the nearest-unit census alone would have mis-attributed two of the five. And Mav1's target
 moved 449.9 m, a third more than the others, because Dunlap is the Destroyer and makes
 `reference_speed` 19.24 against the cruisers' 16.72.
+
+#### 6.3.4 The out-pointer LEA form, closed with its control — and a much better thread
+
+The one encoding that could hide the writer without a store in the owning function is the
+out-pointer: `LEA reg,[base+0D0h]` handed to a getter that fills `[reg]`, `[reg+4]`, `[reg+8]` -
+the shape `009D0670` itself has from the other side. It **was** in the census, run image-wide, and
+here is the accounting it was missing:
+
+* `8D ?? D0 00 00 00`: **29 hits image-wide**, listed in full. Positive control: the sibling form
+  `8D ?? AC 00 00 00` (a `+ACh` member of the same objects) returns **21**, so MSVC does emit this
+  encoding for members at this displacement range.
+* Of the 29, **none is in the `009C`/`009D` torpedo band**. Twenty-six are effects, GUI, HUD,
+  collision, shader and vertex-pool code. The three in bot bands are:
+  * `009A6FB3` in `FUN_009A6D40` - a Lua property descriptor, not an out-pointer (section 6.3.3);
+  * `009B493E` in `FUN_009B4690` - **also** a Lua property descriptor, same shape:
+    `SUB ESP,8 / MOV [EAX],5 / LEA ECX,[EDI+0D0h] / MOV [EAX+4],ECX` then
+    `MOV [EAX],0 / MOV [EAX+4],00D200AC`;
+  * `009B5C50` - Ghidra answers "No instruction at address", so the byte match is inside a region it
+    has not disassembled and the containing-function attribution is the nearest-preceding artefact
+    again.
+
+So the out-pointer form is genuinely absent for `approach+D0h` in the torpedo class, and **the static
+hunt is closed** as section 6.3.3 said, now with the control the claim needed.
+
+**But the second descriptor names the field, and the name is worth more than the negative.**
+`00D200AC` is `"calcHitPos"`. `FUN_009B4690`'s class registers its own `+D0h` as a **calculated hit
+position** - not a target position, a *computed* one. `009B5760`, in the same band, is one of
+`009FD570`'s six callers, and `009B5C80` and `009B6670` read `[ECX+0D0h]` as a float exactly the way
+`009D0670` does.
+
+The same caveat as `"inattackrange"` applies and must not be waved away: this is a **different
+class**, `FUN_009B4690` is not `BotApproachTorpedo`, and a name at the same offset in a sibling is
+not a name in this one. What makes it worth recording anyway is that `"inattackrange"` and
+`"calcHitPos"` sit at the *same offset in two different classes*, which is itself evidence that
+`+D0h` is **not** a shared base-class field and that each class uses it for its own purpose - so the
+torpedo's `+D0h` has to be named from the torpedo's own code, and neither name transfers.
+
+**The thread for the next packet**, and it is the best one this stream has: find who computes
+`calcHitPos` in `FUN_009B4690`'s class. If that producer takes a target position and a time and
+returns a point ahead of it, the image leads, and the same routine is the first place to look for
+the torpedo's `+D0h`. If it copies a position, it does not. Either way it is a body to read rather
+than a byte pattern to scan, which is where section 6.3.3 said this had to go.
