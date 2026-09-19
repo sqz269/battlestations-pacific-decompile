@@ -724,9 +724,11 @@ DiveBombFlyAboveAltitudeCommand dive_bomb_flyabove_altitude_009c6e10(
     return out;
 }
 
-// 009C658D-009C65FD, the height span both flyabove flags key on.
+// 009C658D-009C65FD, the span both flyabove flags key on. The threshold is
+// built from the HEIGHT and the span is the RANGE less that threshold: the two
+// arguments are different quantities and 009C65DB's FSUBP is what says so.
 DiveBombFlyAboveSpan dive_bomb_flyabove_span_009c65fd(
-    float height_above_aim_point) noexcept {
+    float height_above_aim_point, float planar_range) noexcept {
     DiveBombFlyAboveSpan out;
     // 009C658D FLD [00D7A220], 009C659B FCOMIP, 009C65A9 JBE: the floor takes
     // the height when 100.0 is the smaller, and the 100.0 at 00CE3D08 otherwise.
@@ -740,10 +742,28 @@ DiveBombFlyAboveSpan dive_bomb_flyabove_span_009c65fd(
         static_cast<double>(out.floored_height) *
             dive_bomb_flyabove_constant::kHeightScale +
         dive_bomb_flyabove_constant::kHeightBias);
-    // 009C65D5-009C65FD: the difference, floored at zero. Note the minuend is
-    // the RAW height, not the floored one - 009C65D5's FSUBP takes the value the
-    // merge at 009C6532 left on the stack.
-    const float difference = height_above_aim_point - out.threshold;
+    // 009C65D5-009C65FD: the difference, floored at zero. CORRECTION, packet
+    // cc8_dive_heading: the minuend is R, the PLANAR RANGE at 009C63A6, not the
+    // height. The x87 stack, walked forward from 009C64EE with every push and
+    // pop accounted (local/f.ps1, zero join conflicts over the whole body):
+    //   009C64EE FLD [ESP+28h]  ST0=R
+    //   009C64F4 FLD [ESP+38h]  ST0=B ST1=R
+    //   009C64F8 FLD [ESP+3Ch]  ST0=X ST1=B ST2=R   (all four BL paths rejoin
+    //                                                at 009C6532 with this)
+    //   009C6578 FCOMPI ST(1) pop / 009C657A FSTP ST(0)  -> ST0=B ST1=R
+    //   009C659B FCOMPI ST(1) pop / 009C659D FSTP ST(0)  -> ST0=R   B is gone
+    //   009C65D1 FSTP [ESP+10h]  ST0=R   ([ESP+10h] = threshold)
+    //   009C65D5 FLD  [ESP+10h]  ST0=S ST1=R
+    //   009C65D9 FLD  ST(0)      ST0=S ST1=S ST2=R
+    //   009C65DB FSUBP ST(2)     ST2 = R - S
+    // [ESP+28h] is written once, at 009C63A6 (the 00BF7030 sqrt at 009C6399),
+    // and never overwritten in the 949-instruction body.
+    //
+    // The earlier reading took the minuend as the height. That is where the
+    // "flyabove leaves at B <= 666.7 m" in docs/HANDOFF_DIVE_BOMB_ENTRY.md came
+    // from: max(B - (0.7B + 200), 0) is zero at B = 666.7. No such number is in
+    // the image - the arm is a range-to-go test against a glide slope.
+    const float difference = planar_range - out.threshold;
     out.span = (difference > 0.0f) ? difference : 0.0f;
     return out;
 }

@@ -1018,11 +1018,16 @@ DiveBombGoAwayCommand dive_bomb_goaway_climb_009c4b44(
 struct DiveBombFlyAboveSpan {
     float floored_height = 0.0f;  // max(B, 100.0), the 009C65A9 select
     float threshold = 0.0f;       // S = floored * 0.7 + 200.0
-    float span = 0.0f;            // x = max(B - S, 0), 009C65D5-009C65FD
+    // x = max(R - S, 0), 009C65D5-009C65FD. R is the PLANAR RANGE, base
+    // [ESP+28h], written once at 009C63A6; NOT the height. Packet
+    // cc8_dive_heading; the stack walk is in the .cpp.
+    float span = 0.0f;
 };
-// 009C658D-009C65FD. `span` is what both flags below consume.
+// 009C658D-009C65FD. `span` is what both flags below consume. Two different
+// quantities go in: the threshold is built from the height, the span is the
+// range less that threshold.
 DiveBombFlyAboveSpan dive_bomb_flyabove_span_009c65fd(
-    float height_above_aim_point) noexcept;
+    float height_above_aim_point, float planar_range) noexcept;
 
 // 009C66D5-009C66E7: leave flyabove when the bearing error beats a tolerance
 // that opens from 20 degrees at span 0 to pi at span `+B4h * 0.8 - S`.

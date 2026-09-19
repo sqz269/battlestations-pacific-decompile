@@ -422,6 +422,11 @@ struct GameUnitSlot {
     // three flyabove flags key on.
     float db_flyabove_height{0.0f};
     float db_flyabove_span{0.0f};
+    // 009C6385-009C63E6: the range and the bearing to the aim point predicted
+    // three seconds ahead, which is what the fly-above's flags and its heading
+    // arm all read. Packet cc8_dive_heading.
+    float db_flyabove_lead_range{0.0f};
+    float db_flyabove_lead_bearing{0.0f};
     // The aimdive trace. Endpoint values cannot tell a dive that never pointed
     // at the target from one that pointed and was too slow, so the aim states
     // sample their own geometry the way the run-in samples its range.
@@ -1371,15 +1376,85 @@ struct GameUnitsHost::Impl {
         // the same frame slot reaches 009C67C7's can-dive test. This host's aim
         // point is the commanded target's own position, so out[1] is its Y.
         {
-            float target_y = slot.motion.position[1];
+            const float* const own_p = slot.motion.position;
+            float target_p[3] = {own_p[0], own_p[1], own_p[2]};
+            float target_v[3] = {0.0f, 0.0f, 0.0f};
             if (slot.command_target_plus_one != 0) {
                 const std::size_t ti = slot.command_target_plus_one - 1;
-                if (ti < slots.size()) target_y = slots[ti]->motion.position[1];
+                if (ti < slots.size()) {
+                    const GameUnitSlot& tgt = *slots[ti];
+                    target_p[0] = tgt.motion.position[0];
+                    target_p[1] = tgt.motion.position[1];
+                    target_p[2] = tgt.motion.position[2];
+                    // 009FA2E0 reaches vtable[34h] on the object at
+                    // approach+44h, else approach+48h; a plane slot carries its
+                    // world velocity separately from the rigid body.
+                    if (tgt.plane_velocity_seeded) {
+                        target_v[0] = tgt.plane_world_velocity[0];
+                        target_v[2] = tgt.plane_world_velocity[2];
+                    } else {
+                        target_v[0] = tgt.motion.linear_velocity.x;
+                        target_v[2] = tgt.motion.linear_velocity.z;
+                    }
+                }
             }
-            const float height_above = slot.motion.position[1] - target_y;
+            const float height_above = own_p[1] - target_p[1];
             slot.db_flyabove_height = height_above;
+            // 009C62D1-009C63E6, BOUND (packet cc8_dive_heading): the fly-over
+            // does NOT measure its range and its bearing to the aim point. It
+            // measures them to where the aim point will be relative to the
+            // aircraft in THREE SECONDS.
+            //
+            //   009C62CF  vtable[34h] on [[ESI+4]+4]        the own velocity
+            //   009C62E8  009FA2E0 on approach+30h          the target velocity
+            //   009C62ED/009C6305  (dx,dz) = v_own - v_tgt
+            //   009C6320/009C6328  the qword 3.0 at 00D7A2B0
+            //   009C6336/009C633E  3*dx, 3*dz
+            //   009C6342  vtable[0] on the approach          the aim point
+            //   009C6346/009C6351  aim - 3*(dx,dz)
+            //   009C635D/009C636B  less the entity pose +FCh/+104h
+            //   009C6385-009C63A6  R = sqrt(x*x + z*z), the 1e-10 floor at
+            //                      00CE3820 collapsing it to 0
+            //   009C63BF-009C63E6  bearing = wrap(pi/2 - atan2(z,x)), the +2pi
+            //                      at 00CE3828
+            //
+            // Integrating, in 3 s the aircraft moves 3*v_own and the aim point
+            // moves 3*v_tgt, so `aim - pos - 3*(v_own - v_tgt)` is exactly the
+            // predicted separation. vtable[34h] is the velocity getter, the
+            // same slot 009C7D71 multiplies by 007BCC80's fall time to build
+            // the predicted impact point. R and the bearing move together,
+            // which is why both are bound here rather than one of them.
+            const float rel_vx =
+                slot.plane_world_velocity[0] - target_v[0];
+            const float rel_vz =
+                slot.plane_world_velocity[2] - target_v[2];
+            const float lead_x = target_p[0] - 3.0f * rel_vx - own_p[0];
+            const float lead_z = target_p[2] - 3.0f * rel_vz - own_p[2];
+            const double lead_d2 = static_cast<double>(lead_x) * lead_x +
+                                   static_cast<double>(lead_z) * lead_z;
+            const float lead_range =
+                (lead_d2 <= bsp::dive_bomb_constant::kDistanceEpsilonSq)
+                    ? 0.0f : static_cast<float>(std::sqrt(lead_d2));
+            float lead_bearing = static_cast<float>(
+                bsp::dive_bomb_constant::kHalfPi -
+                std::atan2(static_cast<double>(lead_z),
+                           static_cast<double>(lead_x)));
+            if (lead_bearing < 0.0f) {
+                lead_bearing +=
+                    static_cast<float>(bsp::dive_bomb_constant::kTwoPi);
+            }
+            slot.db_flyabove_lead_range = lead_range;
+            slot.db_flyabove_lead_bearing = lead_bearing;
+            const float lead_bearing_error =
+                bsp::wrapped_angle_subtract_00438b10(lead_bearing,
+                                                     slot.plane_heading_c6c);
+            // CORRECTION, packet cc8_dive_heading, edited under the
+            // integrator's hunk arbitration of 2026-09-19: 009C65DB's FSUBP
+            // takes the PLANAR RANGE off the stack, not the height, so the
+            // span is `max(R - S, 0)`, and `R` is the three-second lead range
+            // built above, not `db_planar_bc` and not the height.
             const bsp::DiveBombFlyAboveSpan span =
-                bsp::dive_bomb_flyabove_span_009c65fd(height_above);
+                bsp::dive_bomb_flyabove_span_009c65fd(height_above, lead_range);
             slot.db_flyabove_span = span.span;
             // +18h at 009C680E: dive once higher above the aim point than
             // approach+D4h, which is now the real 675.0 m.
@@ -1388,22 +1463,21 @@ struct GameUnitsHost::Impl {
             slot.db_flyabove_can_dive_18 = in.flyabove_can_dive_790;
             // +19h at 009C67B0, BOUND. The first arm is the 1.6 rad bearing
             // test at 00CE3D48; the second is `span <= 0` (009C67A9 with
-            // 009C67AE the byte 72, JC). With the 0.7/200.0 pair that is
-            // height <= 666.7 m, which is the same gate approach+D4h's 675.0 m
-            // expresses - the substituted 1.0 that stood here is retired.
+            // 009C67AE the byte 72, JC). RETRACTED by packet cc8_dive_heading:
+            // "with the 0.7/200.0 pair that is height <= 666.7 m, the same gate
+            // approach+D4h's 675.0 m expresses" was an artefact of feeding the
+            // span the height. The second arm is `R <= 0.7 * max(B,100) + 200`,
+            // a range-to-go test against a glide slope, and it has nothing to
+            // do with +D4h.
             in.flyabove_ready_791 = bsp::dive_bomb_flyabove_roll_in_009c67b0(
-                bsp::wrapped_angle_subtract_00438b10(slot.db_bearing_c0,
-                                                     slot.plane_heading_c6c),
-                span.span);
+                lead_bearing_error, span.span);
             slot.db_flyabove_ready_19 = in.flyabove_ready_791;
             // +1Ah at 009C66E3, BOUND: leave when the folded bearing error
             // beats a tolerance opening from 20 degrees at span 0 to pi at
             // approach+B4h * 0.8 - S. 009C66E7 clears +19h on the same edge,
             // which the transition rule already models by taking `ready` first.
             in.flyabove_leave_792 = bsp::dive_bomb_flyabove_leave_009c66e3(
-                bsp::wrapped_angle_subtract_00438b10(slot.db_bearing_c0,
-                                                     slot.plane_heading_c6c),
-                span, slot.db_attack_dist_b4);
+                lead_bearing_error, span, slot.db_attack_dist_b4);
         }
         in.flyabove_turn_side_798 = 0;
         in.aimdive_alive_74d = slot.db_aim_alive_19;
@@ -5901,12 +5975,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         bsp::DiveBombFlyAboveCommandInputs in;
                         // A contract: this host keeps no flyabove state+1Ch.
                         in.suppress_heading_1c = false;
-                        // SUBSTITUTION, labelled: the bearing to the aim point
-                        // in place of 009C6DC8's AddWrappedAngle(base, clamped
-                        // delta). Same quantity the run-in's own mode-2 command
-                        // uses, so the aircraft turns toward its target instead
-                        // of holding the run-in heading through the state.
-                        in.heading_to_aim_point = unit_.db_bearing_c0;
+                        // SUBSTITUTION, labelled, and narrowed by packet
+                        // cc8_dive_heading: 009C6DC8 writes
+                        // AddWrappedAngle(C, clamp(delta, -L, +L)) with C the
+                        // aircraft's own heading (009C6406) and delta the turn
+                        // 009C6D6F builds, so the command is
+                        // `heading + clamp(turn, +/-L)` - a slew limiter, with
+                        // L = pi/2 on every path but one. The turn at
+                        // 009C6A37-009C6A7F is a dead-band on the bearing
+                        // error whose half-width T reaches 009C6A43 from three
+                        // producers, two of them untraced (009C6893 and
+                        // 009C6911, inside the bank arm). When T <= 0 the arm
+                        // is skipped and the command IS the bearing, so this
+                        // substitution is exact there and approximate
+                        // otherwise. What is corrected here is the POINT: the
+                        // fly-over's bearing is to the three-second lead point
+                        // of 009C6385-009C63E6, not to the target's present
+                        // position.
+                        in.heading_to_aim_point = unit_.db_flyabove_lead_bearing;
                         const bsp::DiveBombFlyAboveCommand r =
                             bsp::dive_bomb_flyabove_command_009c6dcd(in);
                         ++unit_.db_flyabove_tick_ticks;
