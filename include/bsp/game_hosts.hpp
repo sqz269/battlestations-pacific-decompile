@@ -66,7 +66,8 @@ const CameraAxesCrtAccess& application_camera_axes_crt() noexcept;
 // stays independent of the VFS types.
 class GameVfsHost;
 class GameNativeReadOnlyData;
-class GameSettingsBinding;
+class GameNativeSettingsApplication;
+class GameNativeSettingsProcess;
 class GameScriptHost;
 class GameNativeLuaServices;
 class GameNativeRendererApplication;
@@ -584,9 +585,9 @@ public:
     // Milestone 2a: the phase-2 provider manager, alive for the whole run, and the settings
     // phase 5 loaded. Null and default respectively when initialize did not reach them.
     GameVfsHost* vfs() const noexcept { return vfs_; }
-    const GameSettings& settings() const noexcept { return settings_.options_file; }
-    const GameSettingsBlock& settings_block() const noexcept { return settings_; }
-    GameSettingsBinding* settings_binding() const noexcept { return settings_host_; }
+    const GameSettings& settings() const noexcept { return settings_view_.options_file; }
+    const GameSettingsBlock& settings_block() const noexcept { return settings_view_; }
+    GameNativeSettingsApplication* settings_binding() const noexcept { return settings_host_; }
     GameScriptHost* script_host() const noexcept { return scripts_; }
     GameLocaleHost* locale_host() const noexcept { return locale_; }
     GameFontHost* font_host() const noexcept { return fonts_; }
@@ -647,10 +648,10 @@ private:
     GameFrameHost* frame_host_{};
     GameLoopCallbacks* loop_callbacks_{};
     GameVfsHost* vfs_{};
-    GameSettingsBlock settings_;
-    ProfileHintsOwner profile_hints_;
+    GameSettingsBlock settings_view_;
+    GameNativeSettingsProcess* settings_process_{};
     std::vector<std::string> content_suffixes_;
-    GameSettingsBinding* settings_host_{};
+    GameNativeSettingsApplication* settings_host_{};
     GameScriptHost* scripts_{};
     GameLocaleHost* locale_{};
     GameFontHost* fonts_{};

@@ -239,6 +239,7 @@ GameNativeRendererApplication::GameNativeRendererApplication(GameHostLog& log,Ga
     void* const volatile& clock,const void* platform)
     :impl_(std::make_unique<Impl>(log,host,files,lua,data,clock,platform)) {}
 GameNativeRendererApplication::~GameNativeRendererApplication()=default;
+void* const volatile& GameNativeRendererApplication::publication_00f8d394() noexcept{return impl_->renderer;}
 void GameNativeRendererApplication::create_shader_cache() {
     auto& p=*impl_;check(p.phase==Impl::Phase::ready,"shader cache requires ready application renderer");
     p.phase=Impl::Phase::initializing_resources;

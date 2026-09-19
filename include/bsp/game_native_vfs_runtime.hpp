@@ -25,6 +25,7 @@ struct NativeVfsNameResolutionContext;
 struct NativeVfsDateRouteContext;
 struct NativeVfsOpenRouteContext;
 struct NativeStoredStreamConversionContext;
+struct NativeVfsEnumerationContext;
 }
 namespace bsp::game {
 class GameNativeReadOnlyData;
@@ -48,6 +49,8 @@ struct GameNativeVfsRawServices {
     // this view creates no second pool, backing owner or accounting domain.
     ActualNativeStringPoolStorage& strings;
     NativeRetainedMemoryOwnerContext& retained_memory;
+    NativeVfsEnumerationContext& enumeration;
+    const SingletonLifetimeCallbacks& invalid_parameters;
 };
 
 // Borrow one initialized raw lifetime, physical-provider pool, type-ID set and
