@@ -229,6 +229,13 @@ struct GameProjectileRow {
     // distance cannot separate "abeam and clear" from "inside the bow line";
     // this is what does.
     float crossing_angle{0.0f};
+    // Packet cc8_torpedo_retire item 5: the same geometry at the DROP, so the
+    // run-in can be compared with the closest approach without re-deriving it.
+    // Both are hull POSE headings (the unit's vtable[50h] row 2), the same
+    // quantity `course` above uses - never the ship-ai step heading.
+    float drop_owner_heading{0.0f};
+    float drop_target_heading{0.0f};
+    float drop_crossing_angle{-1.0f};   // -1 = no ordered target at the drop
 };
 
 // One swimming round's closest approach, kept after the round is gone.
@@ -246,6 +253,10 @@ struct GameTorpedoApproachRow {
     float ordered_min_time{-1.0f};
     float target_travel{0.0f};        // how far the ordered target moved, drop to closest
     float crossing_angle{0.0f};       // radians, 0 = the round runs along the target's course
+    // Packet cc8_torpedo_retire item 5, carried from the round.
+    float drop_owner_heading{0.0f};
+    float drop_target_heading{0.0f};
+    float drop_crossing_angle{-1.0f};
 };
 
 // Per unit, what the chain did to it and what it did with its guns.
@@ -385,6 +396,9 @@ struct GameGunnerySummary {
     unsigned long long torpedo_cat_score_accepted{0};
     unsigned long long torpedo_drops{0};
     unsigned long long torpedo_drop_refusals{0};   // no torpedo-capable gun on the unit
+    // Packet cc8_torpedo_breakoff: drops that cleared the owner's torpedo kind
+    // 2Bh bit, so approach+132h goes false on the next approach update.
+    unsigned long long torpedo_loadout_cleared{0};
     unsigned long long water_entry_breakups{0};    // 008568E0's two limits rejected the entry
     unsigned long long torpedo_heading_snaps{0};   // 007F6190 snapped the heading onto a window edge
     unsigned long long angle_sets{0};

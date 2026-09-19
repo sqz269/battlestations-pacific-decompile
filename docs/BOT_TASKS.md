@@ -243,10 +243,42 @@ not read: `contract: unread`.
 
 The reference speeds that feed the ratio at `+41Ch`, from the same table: `Pilot/CloseToShip` KMH(300)
 (`+42Ch`, read at `009A1D60` `009A1DC0`), `Pilot/DepthCharge` KMH(270) (`+4B8h`, `009A3390`
-`009A35D0`), `Pilot/Torpedo` KMH(300) (`+440h`, `009D0380`), `Pilot/LevelBomb` KMH(300) (`+458h`),
+`009A35D0`), `Pilot/Torpedo` KMH(300) (`+440h`, `009D0380`, the call site read in packet
+`cc8_torpedo_retire`: `009D03A1` `CALL 0042E740`, `009D03A6` `FLD [EAX+440h]`, `009D03B1` `FSTP
+[ESP]`, `009D03B7` `CALL 009F9CE0`), `Pilot/LevelBomb` KMH(300) (`+458h`),
 `Pilot/DiveBomb` KMH(280) (`+4D8h`, `009C3EA0`), `Pilot/Dogfight` KMH(300) (`+650h`, `009A6C10`
 `009A6D40`), `Pilot/Strafe` KMH(280) (`+65Ch`, `009CA4A0`), `Pilot/Strike` KMH(280) (`+668h`,
 `007B41E0`), `Pilot/Landing` KMH(140) (`+52Ch`, `009AFE70` `009AFFF0`).
+
+#### Which classes actually leave the `1.0` clamp
+
+Packet `cc8_torpedo_retire`, from this installation's `scripts/datatables/autoload/vehicleclasses.lua`
+(74 rows carry both `MaxSpd` and `StallSpd`, so all 74 are planes; `MaxSpd` is stored in m/s). The
+ratio only leaves the clamp when `MaxSpd` is **strictly** above the row's reference speed -
+`009F9CE0`'s compare is `if (1.0 < r)`, so a class at exactly the reference takes the constant.
+
+| threshold | strictly above | exactly at it | below |
+| --- | --- | --- | --- |
+| KMH(300) = 83.33 m/s (torpedo, levelbomb, dogfight, closetoship) | 22 | 18 | 34 |
+| KMH(280) = 77.78 m/s (divebomb, strafe, strike) | 40 | 0 | 34 |
+
+The 22 above 300 km/h are all fighters and late/experimental types: Funryu 343.1, F-86F-2 Sabre
+307.2, MXY7 Ohka 194.4, J7W2 145.0, P-80 and Kikka 125.0, N1K2 George 102.9, AD-2 Skyraider and
+F2G Super Corsair 100.0, Ki-83 99.3, then twelve at 88.889 (320 km/h) including F4U Corsair, P-51,
+P-38, P-47N-15, Ki-84, A7M, J2M, J7W1, J6K, A8M, P-39 and M6A Seiran.
+
+**Every dedicated bomber is below both thresholds**, so the `1.0` bound in the host is exact and not
+a floor for them: the torpedo carriers top out at 72.222 m/s (260 km/h - TBF/TBM Avenger, B6N Jill,
+B7A Ryusei, SB2C Helldiver, D4Y Judy) and the USN01 H6K Mavis, B5N Kate, SBD Dauntless, D3A Val and
+TBD Devastator are 69.444 (250 km/h). The fastest bomber of any kind is the BTD Destroyer at 76.6,
+still under the divebomb row's 77.78 - by 1.5 per cent.
+
+**The divebomb side is the one with exposure**, and it is worth stating because that binding also
+pins the field at `1.0`. Its threshold is the lower of the two, and every bomb-capable *fighter*
+clears it: AD-2 Skyraider `x1.286`, F4U Corsair and P-47N-15 `x1.143`, F6F Hellcat and the other
+300 km/h types `x1.071`. If a divebomb task is ever installed on one of those, the pinned `1.0`
+understates both things the ratio scales - the attack-distance clamp at `+43Ch` and the break-off
+`SafeDist` - by up to 29 per cent.
 
 ### Slot `+1Ch`, the break-off test
 
@@ -272,6 +304,25 @@ Four overrides read. `009A65F0` (depthcharge), `009C8A90` (divebomb), `009B8D80`
 The latched offsets agree with `docs/ATTACK_COMMANDS.md`'s predicate table, which derived them from
 the `+40h` predicates independently. `t->+5Dh` is the byte that marks a target no longer engageable;
 its producer was not read, so that reading is provisional.
+
+**The fifth override, `009D4C10` (torpedo)**, read whole by packets `cc8_torpedo_breakoff` and
+`cc8_torpedo_retire` (`docs/TORPEDO_AFTER_THE_DROP.md` sections 12, 13 and 14). It has the same six
+steps and the same order, and differs from the four above in two ways worth the row:
+
+| class | latched target | class extra at step 3 | SafeDist | step 4 |
+| --- | --- | --- | --- | --- |
+| `torpedo` `009D4C10` | `+4C4h` (`= approach+CCh`) | `!009D31D0(this->+310h) \|\| this->+52Ah == 0` | `+438h` `Pilot/Torpedo/SafeDist` = 700 | no distance call: `FLD [ESI+488h]`, the **cached** range |
+
+Step 4 is the difference that matters. The other four recompute a distance through
+`BSP_EntityPose_GetWorldPositionRefreshed` and the approach's `vtable[0]`; the torpedo reads the
+range the approach update already left at `task+488h` (`= approach+90h`). The class extra is the
+ordnance byte, so the predicate can only reach its range test once the aircraft is **spent** - which
+is what makes it the retirement rule for a bomber that has dropped, and is direct evidence that the
+image keeps arming this task after the drop.
+
+`this->+41Ch` for this class is `max(1.0, MaxSpd / Pilot/Torpedo/ReferenceSpeed)` with the divisor
+at tuning `+440h`, pushed to `009F9CE0` at `009D03A1`-`009D03B7`. Measured live in USN01:
+`69.44 / 83.33 = 0.833`, so the clamp takes `1.0` and the threshold is exactly 700 m.
 
 ### Slot `+50h`, the three-value step result
 
@@ -477,3 +528,59 @@ that countdown: the `done`/`prepare` tick `009C7270`-`009C727F` calls `009C1FD0`
 returns at `009C727D`, and the exit
 `009C7260` is a bare `JMP 009BDE40`, so the torpedo's `009D2720`/`009D2570` drop has no
 counterpart here. Every path of `009C8200` returns `1`, unlike the torpedo's `009D49A0`.
+
+## Correction: `0099C230` is the player-aircraft exemption, and there are FIVE break-off overrides
+
+Packet `cc8_torpedo_breakoff`, 2026-09-19. This section corrects two things above and withdraws
+neither the shape table nor the offsets, which stand.
+
+**There are five overrides, not four.** The line "Four overrides read ... all four call the base
+`0099C230` first" predates the torpedo's. `009D4C10 BSP_BotTaskTorpedo_ShouldBreakOff` is the fifth,
+slot `1Ch` of the task vtable `00D213C8`; it was not a defined function in the project until this
+packet defined it (`009D4C10`-`009D4C8E`), which is why it never appeared in a caller query. An
+exhaustive rel32-plus-absolute-dword census of `0099C230` (`tools/callsite_census.py`) finds exactly
+five direct call sites and they are exactly these five bodies: `009A65F6`, `009AE1B3`, `009B8D86`,
+`009C8A96`, and `009D4C14`. The torpedo's differs from the shape table above in one respect: its
+step 3 class-extra is itself a conjunction, `!(IsAttackState(current) && task+52Ah)`, so a torpedo
+bomber that still carries its ordnance never breaks off by range.
+
+**`0099C230` is not an opaque base, and `base_break_off` undersells it.** Body
+`0099C230`-`0099C266`, `__thiscall(task) -> bool`:
+
+```
+eax = [00E198C4];          if (eax == 0)            return true;
+                           if ([eax+8Ch] == 0)      return true;
+eax = [eax+8Ch];           if ([eax+4] == 0)        return true;
+eax = [eax+34h];           if (eax == [ecx+2F4h])   return false;
+                           if (eax != [ecx+2FCh])   return true;
+                                                    return false;
+```
+
+`00E198C4` is the **in-mission interface manager** (`docs/FRONTEND_MANAGERS.md:11`,
+`docs/FIXED_STEP_FANOUT.md:187`). So it returns false only for the task whose unit is the one that
+interface is attached to: it is the **player-aircraft exemption**, which stops the AI break-off rule
+retiring the human's own task. Ledger name `BSP_BotTask_BreakOffAllowedForUnit`, provisional.
+
+Two consequences worth carrying into any host binding of steps 1-5:
+
+* In a process with no in-mission interface manager, `[00E198C4]` is null and the routine returns
+  true by its own first branch. Passing `base_gate = true` there is a **proof**, not a stand-in.
+* The same census returns **22 `.rdata` references**, so `0099C230` is itself a virtual occupying 22
+  vtable slots image-wide. All five break-off bodies reach it by a **direct `CALL`** rather than
+  through a slot, so they always get this body; but anything meeting it through a vtable must read
+  that slot rather than assume this one.
+
+**On step 2's `t->+5Dh`.** The polarity is settled from both ends and is the opposite of what the
+field's usual host name suggests: `00937449 CMP byte ptr [EAX+5Dh],0 / JNZ` shows a **set** byte
+suppresses behaviour, and `00925E14` **clears** it at creation. So clear means live and engageable,
+and step 2 returns 1 for a target that is gone. A host cell named `simulate` standing in for this
+byte must be read as "marked", not "simulating".
+
+In `bsp_game` that cell has two writers: `= 0` at unit creation, and `= flags.torn_down` in
+`GameUnitsHost::store_scene_node_flags`, beside `scene_destroyed_005e` and `scene_removed_005f`. So
+a live target reads false and step 2 cannot fire spuriously, and the byte *can* be set when a scene
+node is torn down, which makes it the right field to feed step 2 rather than an inert stand-in.
+**Unverified and deliberately not chased**: who calls `store_scene_node_flags`, and whether a sunk
+ship reaches it with `torn_down` set. The route is reachable in principle; that it fires when a
+target dies is not established, and USN01 does not exercise it, because the deaths there are
+bombers rather than the ordered targets.

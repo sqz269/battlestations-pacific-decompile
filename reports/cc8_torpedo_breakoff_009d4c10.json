@@ -1,0 +1,54 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "009d4c10",
+    "end_address": "009d4c8f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "009d4c10",
+    "end_address": "009d4c8e",
+    "bytes_disassembled": 127,
+    "message": "Successfully disassembled 127 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "009d4c10",
+    "disassemble_first": false,
+    "name": "BSP_BotTaskTorpedo_ShouldBreakOff"
+   },
+   "result": {
+    "success": true,
+    "address": "009d4c10",
+    "function_name": "BSP_BotTaskTorpedo_ShouldBreakOff",
+    "entry_point": "009d4c10",
+    "body_size": 127,
+    "message": "Function created successfully at 009d4c10",
+    "warnings": [
+     "Function name 'BSP_BotTaskTorpedo_ShouldBreakOff' \u2014 main part 'BotTaskTorpedo_ShouldBreakOff' is not PascalCase. Expected: BottasktorpedoShouldbreakoff",
+     "Function name 'BSP_BotTaskTorpedo_ShouldBreakOff' \u2014 main part 'BotTaskTorpedo_ShouldBreakOff' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_BotTaskTorpedo_ShouldBreakOff' does not start with a recognized verb. First word 'Bot' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "009d4c10",
+   "end": "009d4c8f",
+   "name": "BSP_BotTaskTorpedo_ShouldBreakOff",
+   "after": "Function: BSP_BotTaskTorpedo_ShouldBreakOff at 009d4c10\nSignature: undefined BSP_BotTaskTorpedo_ShouldBreakOff(void)\nEntry: 009d4c10\nBody: 009d4c10 - 009d4c8e"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

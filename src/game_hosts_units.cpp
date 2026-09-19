@@ -598,6 +598,38 @@ struct GameUnitSlot {
     int torpedo_first_engaged_tick{-1};
     float torpedo_range_min{-1.0f};
     float torpedo_range_last{0.0f};
+    // cc8_torpedo_retire item 1. Every input of 009D4C10's binding, latched on
+    // the FIRST tick it returns true, so the arm that retires the bomber is read
+    // from a run instead of inferred. Additive: nothing here feeds behaviour.
+    int torpedo_breakoff_first_tick{-1};      // slot arm tick, or -1
+    int torpedo_breakoff_true_ticks{0};
+    int torpedo_breakoff_arm{0};              // 2 = target arm, 5 = range arm
+    int torpedo_breakoff_state{0};
+    int torpedo_breakoff_target_plus_one{0};
+    int torpedo_breakoff_approach_ticks{0};
+    int torpedo_breakoff_no_target_ticks{0};
+    bool torpedo_breakoff_has_target{false};
+    bool torpedo_breakoff_target_marked{false};
+    bool torpedo_breakoff_in_attack_state{false};
+    bool torpedo_breakoff_attack_flag_52a{false};
+    bool torpedo_breakoff_has_ordnance_132{false};
+    float torpedo_breakoff_range_90{0.0f};    // what the binding fed as distance
+    float torpedo_breakoff_limit_90{0.0f};    // task+488h's twin, the image's cell
+    float torpedo_breakoff_prev_range{0.0f};  // range_90 one transition tick back
+    float torpedo_breakoff_safe_dist{0.0f};   // safe_distance_438() on that tick
+    float torpedo_prev_range_90{0.0f};
+    // cc8_torpedo_retire item 5: the crossing angle at ATTACKRUN ENTRY, to be
+    // set against the 5 to 12 degrees the closest-approach census measures at
+    // the end of the swim. The target's number is the hull POSE heading,
+    // atan2(pose_row2.x, pose_row2.z), which is the same quantity the gunnery
+    // census differences the round's track against. It is NOT the ship-ai
+    // step heading: docs/TORPEDO_AFTER_THE_DROP.md section 13 measures that
+    // control-block field 0.7 to 0.9 rad away from the hull's pose.
+    float torpedo_attackrun_yaw_c6c{0.0f};
+    float torpedo_attackrun_own_pose{0.0f};
+    float torpedo_attackrun_target_pose{0.0f};
+    float torpedo_attackrun_crossing{-1.0f};   // -1 = attackrun never entered
+    int torpedo_attackrun_entries{0};
     float torpedo_aim_heading_last{0.0f};
     float torpedo_aim_throttle_last{0.0f};
     int torpedo_attackrun_altitude_commands{0};
@@ -1274,8 +1306,25 @@ struct GameUnitsHost::Impl {
         e.aim_point_height_50 = slot.db_aim_point_height_50;
         e.lead_at_high_5c = slot.db_lead_high_5c;
         e.gain_at_high_60 = slot.db_gain_high_60;
+        // 009C5AF1 is the SAME shape as the roll input at 009C5AA3: the
+        // 009C4F80 heading is arg0 at [ESP] and the bearing to the target is
+        // arg1 at [ESP+4], both at the base frame 0x58 (walked forward over the
+        // whole body with local/x87_walk.py, no depth conflict in this range).
+        // This stood as (bearing - pose+C6Ch) here, which is off by pi for the
+        // whole dive because the turndown ends inverted: cos(pi) = -1 turned
+        // `along_track` into MINUS the range, which is what pinned the pitch
+        // command at -1.0 for all 344 aimdive ticks of local/usn04_geo2.log.
+        // The image's bearing here is drawn from the LATCHED approach+D8h/+E0h
+        // point rather than the aircraft; that remains a labelled SUBSTITUTION,
+        // unchanged by this fix.
+        bsp::DiveBombAimHeadingInputs ahin;
+        ahin.pitch_c64 = slot.plane_pitch_angle_c64;
+        ahin.bank_c68 = slot.plane_bank_angle_c68;
+        ahin.heading_c6c = slot.plane_heading_c6c;
+        ahin.body_up_x = slot.motion.pose_row1[0];
+        ahin.body_up_z = slot.motion.pose_row1[2];
         e.bearing_error = bsp::wrapped_angle_subtract_00438b10(
-            slot.db_bearing_c0, slot.plane_heading_c6c);
+            bsp::dive_bomb_aim_heading_009c4f80(ahin), slot.db_bearing_c0);
         e.planar_distance = slot.db_planar_bc;
         const bsp::DiveBombAimError err = bsp::dive_bomb_aim_error_009c5c9b(e);
         slot.db_aim_error_last = err.error;
@@ -1313,13 +1362,28 @@ struct GameUnitsHost::Impl {
                 ++slot.db_aim_trace_samples;
             }
         }
-        in.aim_error = err.error;
+        // 009C60C1 reloads [ESP+5Ch], the same slot 009C5C9B writes - but the
+        // 009C5BDB gate jumps over 009C5C9B, and the last writer before it is
+        // the second sqrt at 009C5A4D/009C5A58. So a dive shallower than 30
+        // degrees nose-down brings the LATCHED PLANAR DISTANCE to the 25 m
+        // window, not the aim error. Same condition as the steer arm below;
+        // the image evaluates it once because it is one function.
+        in.aim_error =
+            (slot.plane_pitch_angle_c64 >
+             bsp::dive_bomb_constant::kAimDiveSteepGateAngle)
+                ? slot.db_planar_bc
+                : err.error;
         // 009C5B01-009C5B48, the dive abort: clearing +19h is what sends the
         // state to aimglide on the next transition.
         bsp::DiveBombDiveAbortInputs ab;
         ab.release_range_d4 = slot.db_release_range_d4;
         ab.aim_point_height_50 = slot.db_aim_point_height_50;
-        ab.slant_range = slot.db_planar_bc;
+        // CORRECTED: [ESP+14h] is the height above the aim point, the same
+        // quantity `e.height_above_target` above carries, not a second copy of
+        // the planar range. With the range here, 009C5B3E reduced to
+        // `0.3*range + 150 > range` and aborted the dive at any range under
+        // 214 m - which is where usn04_geo3.log lost it, at 204.1 m.
+        ab.height_above_target_14 = e.height_above_target;
         ab.aim_point_distance = slot.db_planar_bc;
         ab.unit_attitude_c64 = slot.plane_pitch_angle_c64;
         if (bsp::dive_bomb_dive_abort_009c5b43(ab)) {
@@ -3786,8 +3850,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         bool unit_has_torpedo_ordnance_007b93f0() override {
                             // 009D34C5. The kind 2Bh test 0099A170 already made
-                            // when it built the task; the loadout does not shrink
-                            // in this host, so it holds for the whole run.
+                            // when it built the task. The loadout DOES shrink now:
+                            // GameGunneryHost::release_ordnance_drop clears the
+                            // kind 2Bh bit from this mask on a drop, so this
+                            // returns false for a spent bomber and approach+132h
+                            // (== task+52Ah) goes false on the next approach
+                            // update, which is what lets 009D4C10's range arm be
+                            // reached. docs/TORPEDO_AFTER_THE_DROP.md section 12.4.
                             const bsp::OrdnanceKindSet set{slot_.ordnance_mask};
                             return bsp::ordnance_has_torpedo_2bh(set);
                         }
@@ -3922,7 +3991,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             return true;
                         }
                         bool should_break_off(void*) override {
-                            // task->vtable[1Ch] == 009D4C10. contract: unread.
+                            // 009D4C10, now READ and bound. This override is the
+                            // one the arm does not use: the transition rule takes
+                            // should_break_off by value and it is computed where
+                            // the target and the tuning are in scope, below.
                             record("BotTaskTorpedo::should_break_off", "009d4c10");
                             return false;
                         }
@@ -4094,7 +4166,158 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             in.entry.global_e17bf2 = false;
                             in.entry.aim_flag_529 = slot_.torpedo_aim_flag_529;
                             in.unit_has_no_follow_target = true;
-                            in.should_break_off = false;
+                            // 009D4C10, slot 1Ch of the TASK vtable 00D213C8,
+                            // read whole from the listing 009D4C10-009D4C8E and
+                            // re-derived jump sense by jump sense from the branch
+                            // bytes. docs/TORPEDO_AFTER_THE_DROP.md sections 12
+                            // and 13.1. Rule:
+                            //   if (!0099C230(task))                 return false;
+                            //   if (target == 0 || target->+5Dh)     return true;
+                            //   if (ctl->+369h && [00E17BF2])        return false;
+                            //   if (IsAttackState(cur) && task+52Ah) return false;
+                            //   return range >= SafeDist * approach+24h;
+                            // bot_task_should_break_off already carries the shape
+                            // all five ordnance classes share, so this passes a
+                            // torpedo class_extra rather than adding a sixth body.
+                            //
+                            // base_gate is a PROOF, not a stand-in. 0099C230
+                            // returns false only for the unit the in-mission
+                            // interface manager [00E198C4] is attached to -- the
+                            // player's aircraft. That manager is null in this
+                            // process, so the image takes its own first branch and
+                            // returns true. Section 13.2.
+                            //
+                            // speed_ratio 1.0 is a FLOOR, not a match, and this is
+                            // a hole rather than a proof: 009F9CE0 writes
+                            // approach+24h as max(1.0, MaxSpd / ReferenceSpeed)
+                            // (docs/BOT_TASKS.md:102) and the divisor is
+                            // substituted here. The ratio is >= 1.0, so 1.0 gives
+                            // the image's MINIMUM threshold of 700 m and retires a
+                            // bomber EARLY, never late. The dive-bomb binding at
+                            // :1144 carries the same stand-in for the same field.
+                            {
+                                const GameUnitSlot* tgt = nullptr;
+                                if (slot_.command_target_plus_one != 0) {
+                                    const std::size_t ti =
+                                        slot_.command_target_plus_one - 1;
+                                    if (ti < owner_.slots.size()) {
+                                        tgt = owner_.slots[ti].get();
+                                    }
+                                }
+                                // unit+5Dh. The polarity is settled from both
+                                // ends: 00937449 CMP byte [EAX+5Dh],0 / JNZ shows
+                                // a SET byte suppresses behaviour, and 00925E14
+                                // CLEARS it at creation, so clear == live and
+                                // engageable. `simulate` is this host's cell for
+                                // that byte and it has TWO writers: the `= 0` at
+                                // creation (:2686) and `= flags.torn_down` in
+                                // store_scene_node_flags (:7318). So a live target
+                                // gives false and this arm cannot retire a bomber
+                                // spuriously, while a torn-down target DOES set it,
+                                // so this is the right field rather than an inert
+                                // hole. UNVERIFIED, and not chased here: who calls
+                                // store_scene_node_flags, and whether a sunk ship
+                                // reaches it with torn_down set. So the route is
+                                // reachable in principle; that it fires when a
+                                // target dies is NOT established. USN01 does not
+                                // exercise it -- the two deaths are bombers, not
+                                // the ordered targets. The field's name is the
+                                // trap: read it as "marked", not "simulating".
+                                const bool target_marked =
+                                    tgt != nullptr && tgt->state != nullptr &&
+                                    tgt->state->simulate != 0;
+                                // ctl+369h is clear in this host
+                                // (read_control_block), so the first refusal arm
+                                // cannot fire and the ordnance arm is the live one.
+                                const bool ctl_369 = false;
+                                const bool global_e17bf2 = false;
+                                const bool class_extra =
+                                    !(ctl_369 && global_e17bf2) &&
+                                    !(bsp::torpedo_in_attack_state_009d31d0(
+                                          slot_.torpedo_state) &&
+                                      slot_.torpedo_attack_flag_52a);
+                                const float safe_dist = safe_distance_438();
+                                in.should_break_off =
+                                    bsp::bot_task_should_break_off(
+                                        /*base_gate=*/true,
+                                        /*has_target=*/tgt != nullptr,
+                                        target_marked, class_extra,
+                                        slot_.torpedo_approach.range_90,
+                                        safe_dist,
+                                        /*speed_ratio=*/1.0f);
+                                // cc8_torpedo_retire item 1. Latch every input
+                                // on the first tick the predicate is true. With
+                                // base_gate true only two arms can return true,
+                                // so the arm is decided by the target pair:
+                                // arm 2 is `!has_target || target_marked`, arm 5
+                                // is `SafeDist * ratio <= range`.
+                                if (in.should_break_off) {
+                                    ++slot_.torpedo_breakoff_true_ticks;
+                                    if (slot_.torpedo_breakoff_first_tick < 0) {
+                                        slot_.torpedo_breakoff_first_tick =
+                                            slot_.torpedo_arm_ticks;
+                                        slot_.torpedo_breakoff_arm =
+                                            (tgt == nullptr || target_marked)
+                                                ? 2 : 5;
+                                        // The enum's values are vtable offsets,
+                                        // so map to the census bucket the state
+                                        // tick table already uses.
+                                        switch (slot_.torpedo_state) {
+                                            case bsp::TorpedoState::kMoveTo:
+                                                slot_.torpedo_breakoff_state = 0;
+                                                break;
+                                            case bsp::TorpedoState::kFollow:
+                                                slot_.torpedo_breakoff_state = 1;
+                                                break;
+                                            case bsp::TorpedoState::kDone:
+                                                slot_.torpedo_breakoff_state = 2;
+                                                break;
+                                            case bsp::TorpedoState::kAttackRun:
+                                                slot_.torpedo_breakoff_state = 3;
+                                                break;
+                                            case bsp::TorpedoState::kGoAway:
+                                                slot_.torpedo_breakoff_state = 4;
+                                                break;
+                                            case bsp::TorpedoState::kAim:
+                                                slot_.torpedo_breakoff_state = 5;
+                                                break;
+                                            case bsp::TorpedoState::kPrepare:
+                                                slot_.torpedo_breakoff_state = 6;
+                                                break;
+                                            default:
+                                                slot_.torpedo_breakoff_state = 7;
+                                                break;
+                                        }
+                                        slot_.torpedo_breakoff_target_plus_one =
+                                            static_cast<int>(
+                                                slot_.command_target_plus_one);
+                                        slot_.torpedo_breakoff_approach_ticks =
+                                            slot_.torpedo_approach_ticks;
+                                        slot_.torpedo_breakoff_no_target_ticks =
+                                            slot_.torpedo_approach_no_target_ticks;
+                                        slot_.torpedo_breakoff_has_target =
+                                            tgt != nullptr;
+                                        slot_.torpedo_breakoff_target_marked =
+                                            target_marked;
+                                        slot_.torpedo_breakoff_in_attack_state =
+                                            bsp::torpedo_in_attack_state_009d31d0(
+                                                slot_.torpedo_state);
+                                        slot_.torpedo_breakoff_attack_flag_52a =
+                                            slot_.torpedo_attack_flag_52a;
+                                        slot_.torpedo_breakoff_has_ordnance_132 =
+                                            slot_.torpedo_approach.has_ordnance_132;
+                                        slot_.torpedo_breakoff_range_90 =
+                                            slot_.torpedo_approach.range_90;
+                                        slot_.torpedo_breakoff_limit_90 =
+                                            slot_.torpedo_engage_limit_90;
+                                        slot_.torpedo_breakoff_prev_range =
+                                            slot_.torpedo_prev_range_90;
+                                        slot_.torpedo_breakoff_safe_dist = safe_dist;
+                                    }
+                                }
+                                slot_.torpedo_prev_range_90 =
+                                    slot_.torpedo_approach.range_90;
+                            }
                             // 009D31B0: MOV EAX,[ECX+4]; CMP byte [EAX+132h],0;
                             // JNZ 009D31BF; XOR AL,AL; RET / MOV AL,[ECX+2Ch].
                             // So the hold is the aim-complete byte the tick
@@ -4128,6 +4351,37 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             return in;
                         }
                         void set_state(void*, bsp::TorpedoState next) override {
+                            // cc8_torpedo_retire item 5. Latch the run-in
+                            // geometry on the FIRST tick of each attackrun, in
+                            // the same convention the closest-approach census
+                            // uses at the other end of the swim.
+                            if (next == bsp::TorpedoState::kAttackRun &&
+                                slot_.torpedo_state !=
+                                    bsp::TorpedoState::kAttackRun) {
+                                ++slot_.torpedo_attackrun_entries;
+                                const GameUnitSlot* tgt = nullptr;
+                                if (slot_.command_target_plus_one != 0) {
+                                    const std::size_t ti =
+                                        slot_.command_target_plus_one - 1;
+                                    if (ti < owner_.slots.size()) {
+                                        tgt = owner_.slots[ti].get();
+                                    }
+                                }
+                                slot_.torpedo_attackrun_yaw_c6c =
+                                    slot_.plane_heading_c6c;
+                                slot_.torpedo_attackrun_own_pose =
+                                    owner_.pose_heading_radians(slot_);
+                                if (tgt != nullptr) {
+                                    slot_.torpedo_attackrun_target_pose =
+                                        owner_.pose_heading_radians(*tgt);
+                                    slot_.torpedo_attackrun_crossing =
+                                        std::fabs(
+                                            bsp::wrapped_angle_subtract_00438b10(
+                                                slot_.torpedo_attackrun_yaw_c6c,
+                                                slot_
+                                                    .torpedo_attackrun_target_pose));
+                                }
+                            }
                             // 009D0D90, the goaway state's vtable slot +4h. The
                             // registrar never writes goaway+24h, so this enter
                             // is its only producer and 009D3150 reads whatever
@@ -4163,10 +4417,48 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     slot_.torpedo_approach.has_ordnance_132;
                                 gt.alt_floor_74 = slot_.torpedo_approach.alt_floor_74;
                                 gt.alt_margin_78 = slot_.torpedo_approach.alt_margin_78;
-                                // [[approach+0Ch]+394h]. The squadron block is
-                                // unmodelled here, as it already is for
-                                // 009FBA9B's ceiling leg.
-                                gt.has_squadron_394 = false;
+                                // CORRECTED by cc8_torpedo_retire, and the
+                                // field's name is the trap: this is NOT a
+                                // squadron object. 009D0E7C-009D0E7F is
+                                //   mov ecx,[eax+0Ch]
+                                //   fld dword ptr [ecx+394h]
+                                // with eax = goaway+4h = the approach, so the
+                                // base is approach+0Ch, and 009F9CE0 sets
+                                // approach+0Ch to unit+9D4h - THE PILOT CONTROL
+                                // BLOCK, the same block read_control_block()
+                                // above already models. The confusion is with
+                                // 009FBA9B's ceiling leg, which reads a
+                                // different object's +394h.
+                                //
+                                // ctl+394h is the desired cruising altitude:
+                                // step 4 of every task's +54h cruise profile
+                                // writes `ctl->+394h = <cruising alt>` behind
+                                // the not-overridden gate (docs/BOT_TASKS.md
+                                // "The constructor shape" step 4 and the class
+                                // table), and for this class that value is
+                                // Pilot/Torpedo/CruisingAlt, tuning+430h.
+                                //
+                                // This matters because 009D0E42 sends a SPENT
+                                // bomber down this leg and no other: with the
+                                // ordnance byte clear it is the only producer of
+                                // the climb altitude. Left false, the goaway ran
+                                // with climb_1Ch=0/known=0, took its post-window
+                                // LOW arm on every tick, commanded no altitude
+                                // at all, and all five bombers flew level at 12
+                                // m into the sea (local/retire_fix_usn01.log,
+                                // before this line changed).
+                                //
+                                // UNCERTAINTY, stated rather than hidden: this
+                                // host models no pilot control block, so it
+                                // cannot observe the write. It assumes the
+                                // cruise profile's write landed - exactly the
+                                // assumption read_control_block() already makes
+                                // for +398h and +39Ch, no weaker and no
+                                // stronger. If the not-overridden gate refused
+                                // the write, the image would read whatever the
+                                // motion controller left there instead.
+                                gt.has_squadron_394 = true;
+                                gt.squadron_alt_limit_394 = cruising_alt_394();
                                 // 00BD2F10 UniformFloatRange(50, 100) at
                                 // 009D0E71; this host takes the low end of
                                 // every draw.
@@ -4204,6 +4496,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     .pilot_torpedo_safe_dist;
                             }
                             return 0.0f;
+                        }
+                        float cruising_alt_394() const {
+                            // ctl+394h, which the +54h cruise profile 009D4A70
+                            // fills from 0042E740()+430h,
+                            // Pilot/Torpedo/CruisingAlt. The constant is the
+                            // 500 of docs/GAME_TUNING_SINGLETON.md and is only
+                            // the fallback; this installation's own value wins.
+                            if (owner_.lua.plane_globals_loaded()) {
+                                return owner_.lua.plane_globals()
+                                    .pilot_torpedo_cruising_alt;
+                            }
+                            return bsp::kPilotTorpedoCruisingAltDefault;
                         }
                         float time_to_target_009d1500(void*) override {
                             // 009D2A44-009D2A52 recomputes the same metric
@@ -4870,6 +5174,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009C5C9B's own result, computed for this same tick by
                         // dive_bomb_aimdive_inputs() a few lines earlier.
                         in.aim_error = unit_.db_aim_error_last;
+                        // 009C5BCC/009C5BD4: the gate that decides whether the
+                        // aim error is computed at all, and what [ESP+5Ch]
+                        // still holds when it is not.
+                        in.pitch_c64 = unit_.plane_pitch_angle_c64;
+                        in.planar_distance_slot_5c = unit_.db_planar_bc;
                         // 009C5935 calls 009C4F80 for the heading and
                         // 009C5AA3 subtracts the bearing FROM it - arg0 at
                         // [ESP] is the 009C4F80 result, arg1 at [ESP+4] is the
@@ -5032,8 +5341,34 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void run_torpedo_task_arm_009d4850(float dt) {
                         const bsp::OrdnanceKindSet set{unit_.ordnance_mask};
                         if (unit_.command_target_plus_one == 0) return;
-                        if (!bsp::ordnance_has_torpedo_2bh(set)) return;
                         if (!unit_.torpedo_task_installed) {
+                            // cc8_torpedo_retire. The kind 2Bh test is an
+                            // INSTALL condition, not a per-tick one, and until
+                            // this line moved inside the install block it was
+                            // both. 0099A170 makes the test once, when the
+                            // attack order is issued, to pick WHICH task class
+                            // to construct (docs/TORPEDO_RELEASE_ORDERS.md); the
+                            // task it builds is not destroyed when the loadout
+                            // empties. 009D4C10 proves that directly: its
+                            // ordnance arm, `if (IsAttackState(cur) &&
+                            // task+52Ah) return false`, only ever lets the range
+                            // test through once task+52Ah is CLEAR, so the image
+                            // arms this task after the drop -- an image that
+                            // stopped arming a spent task could never reach the
+                            // break-off at all.
+                            //
+                            // MEASURED, local/retire_arm_usn01.log: with the
+                            // drop clearing the bit (e3cd4b997) this guard fired
+                            // on the tick after each release and the arm stopped
+                            // dead -- Mav1 arm_ticks=678 = attackrun 424 + aim
+                            // 254, no goaway tick, no state tick after it, and
+                            // the aircraft flew its last commanded descent into
+                            // the water 166 ticks later. That, and not the
+                            // break-off predicate, is the whole of the deaths
+                            // 2 -> 5 regression: the same log shows 009D4C10
+                            // true on exactly ONE tick per aircraft, arm tick 0
+                            // in moveto at 4183 m, and false at the drop.
+                            if (!bsp::ordnance_has_torpedo_2bh(set)) return;
                             unit_.torpedo_task_installed = true;
                             // 009D3050 leaves +310h on the moveto/follow pair
                             // 009D2DA0 registered; 009D24E0 leaves +98h at -1.
@@ -8192,6 +8527,85 @@ void GameUnitsHost::report() {
                             host.lua.plane_globals_loaded()
                                 ? host.lua.plane_globals().pilot_torpedo_safe_dist
                                 : 0.0f));
+                    // cc8_torpedo_retire item 1. 009D4C10's inputs on the FIRST
+                    // tick its binding returned true. arm 2 = the target pair
+                    // (`target == 0 || target->+5Dh`), arm 5 = the range test
+                    // (`SafeDist * ratio <= task+488h`). Nothing else can return
+                    // true once base_gate is proved.
+                    host.log.notef("  torpedo %-12s break-off 009D4C10 first true: "
+                        "arm=%d at_arm_tick=%d true_ticks=%d state=%s "
+                        "has_target=%d target_plus_one=%d target_marked=%d "
+                        "in_attack=%d flag_52a=%d ordnance_132=%d "
+                        "range_90=%.1f prev_range_90=%.1f limit_90_488h=%.1f "
+                        "safe_dist=%.1f threshold=%.1f "
+                        "approach_ticks=%d no_target_ticks=%d",
+                        slot->row.name.c_str(),
+                        slot->torpedo_breakoff_arm,
+                        slot->torpedo_breakoff_first_tick,
+                        slot->torpedo_breakoff_true_ticks,
+                        kTorpedoStateNames[
+                            static_cast<std::size_t>(
+                                slot->torpedo_breakoff_state) & 7u],
+                        slot->torpedo_breakoff_has_target ? 1 : 0,
+                        slot->torpedo_breakoff_target_plus_one,
+                        slot->torpedo_breakoff_target_marked ? 1 : 0,
+                        slot->torpedo_breakoff_in_attack_state ? 1 : 0,
+                        slot->torpedo_breakoff_attack_flag_52a ? 1 : 0,
+                        slot->torpedo_breakoff_has_ordnance_132 ? 1 : 0,
+                        static_cast<double>(slot->torpedo_breakoff_range_90),
+                        static_cast<double>(slot->torpedo_breakoff_prev_range),
+                        static_cast<double>(slot->torpedo_breakoff_limit_90),
+                        static_cast<double>(slot->torpedo_breakoff_safe_dist),
+                        static_cast<double>(slot->torpedo_breakoff_safe_dist),
+                        slot->torpedo_breakoff_approach_ticks,
+                        slot->torpedo_breakoff_no_target_ticks);
+                    // cc8_torpedo_retire item 5. The run-in geometry at
+                    // ATTACKRUN ENTRY, for comparison with the crossing angle
+                    // the closest-approach census reports at the far end of the
+                    // swim. Both target numbers are hull POSE headings, so the
+                    // two are commensurable; the ship-ai step heading is a
+                    // different field and is deliberately absent here.
+                    host.log.notef("  torpedo %-12s run-in at attackrun entry: "
+                        "entries=%d yaw_C6C=%.4f own_pose=%.4f "
+                        "target_pose=%.4f crossing=%.4f rad (%.1f deg)",
+                        slot->row.name.c_str(),
+                        slot->torpedo_attackrun_entries,
+                        static_cast<double>(slot->torpedo_attackrun_yaw_c6c),
+                        static_cast<double>(slot->torpedo_attackrun_own_pose),
+                        static_cast<double>(slot->torpedo_attackrun_target_pose),
+                        static_cast<double>(slot->torpedo_attackrun_crossing),
+                        static_cast<double>(slot->torpedo_attackrun_crossing) *
+                            180.0 / kPi);
+                    // cc8_torpedo_retire item 4, observation only: the speed
+                    // ratio task+41Ch = approach+24h that 009F9CE0 writes as
+                    // max(1.0f, classBlock->+188h / reference_speed). The
+                    // divisor is the TORPEDO row and it is not a stand-in any
+                    // more: 009D03A1-009D03B7 inside BSP_BotApproachTorpedo_Reset
+                    // calls 0042E740 and pushes tuning+440h
+                    // (Pilot/Torpedo/ReferenceSpeed, docs/BOT_TASKS.md:246) as
+                    // 009F9CE0's third argument. The numerator is MaxSpd
+                    // (src/plane_class_fields.cpp, .MaxSpd -> +188h), which this
+                    // host already carries as plane_max_spd.
+                    {
+                        const float ref = host.lua.plane_globals_loaded()
+                            ? host.lua.plane_globals().pilot_torpedo_reference_speed
+                            : 0.0f;
+                        const float ratio = (ref > 0.0f)
+                            ? bsp::bot_task_speed_ratio(slot->plane_max_spd, ref)
+                            : 1.0f;
+                        host.log.notef("  torpedo %-12s speed ratio 009F9CE0: "
+                            "max_spd_188h=%.2f reference_speed_440h=%.2f "
+                            "ratio_41Ch=%.4f break_off_threshold=%.1f "
+                            "(bound=1.0)",
+                            slot->row.name.c_str(),
+                            static_cast<double>(slot->plane_max_spd),
+                            static_cast<double>(ref),
+                            static_cast<double>(ratio),
+                            static_cast<double>(
+                                (host.lua.plane_globals_loaded()
+                                     ? host.lua.plane_globals().pilot_torpedo_safe_dist
+                                     : 0.0f) * ratio));
+                    }
                     // 009D0F10, bound by packet cc8_flyto_solver_and_goaway.
                     // arms: 1 = window/below 20 m (climb to 1000 on +18h),
                     // 2 = window/above 20 m (roll), 3 = post-window/high
