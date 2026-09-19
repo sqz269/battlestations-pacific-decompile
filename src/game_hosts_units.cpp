@@ -1417,6 +1417,36 @@ struct GameUnitsHost::Impl {
         // bombers arrive low and exit aimdive to `goaway` at ~240 m instead of
         // `aimglide` at ~600 m. The gate is faithful; the approach state behind
         // it is not yet. Re-wire this when moveto/follow are real, not before.
+        //
+        // STILL NOT WIRED after packet cc8_dive_approach, and the new
+        // measurement says the blocker has MOVED. `moveto` is now real: the arm
+        // dispatches 009C18C0 for kMoveTo and it commands the glide from
+        // BeginAltRange/1 above the target down to that altitude at
+        // approach+B4h. Runs A2 (unwired) and B (this line reading
+        // db_attack_mode_370), same binary apart from this line:
+        //
+        //   dive entry altitude   651 / 626 / 677 m  ->  1044 / 1040 / 1045 m
+        //   aim error 009C5C9B    -24.9 / -33.1 / -18.0 m -> +12.9 / -3.7 / +17.3 m
+        //   mission water contacts             1    ->  0
+        //   total dive-bomb releases           5    ->  0
+        //
+        // So the approach defect 10.9 diagnosed is FIXED: the bombers now enter
+        // the dive at the authored BeginAltRange/1 instead of 200-400 m below
+        // it, all three aim errors move inside the 25 m gate, and nobody
+        // ditches. What the wiring costs is the five releases, and they are not
+        // lost to this change: A2's releases all came from the AIMDIVE gate
+        // reached from a dive entry 350 m too low, and with the faithful entry
+        // every bomber pulls out into AIMGLIDE instead -- where the release gate
+        // passes ZERO times in both runs (9 and 11 aimglide rows, `passed=0`
+        // and `releases=0` on every one, `rearm` blocking 343 of 344 calls).
+        // The aimglide re-arm timer is frozen in this tree: only the aimdive
+        // input builder counts it down (line ~1544, 009C58E9); the aimglide
+        // builder below reads it and never decrements it. Packet
+        // cc8_dive_entry reports fixing exactly that on agent/cc8-dive-entry,
+        // which is not in this tree.
+        //
+        // Re-wire this once that fix is merged and B is re-run; the experiment
+        // is one line and one window. docs/DIVE_BOMB_APPROACH.md section 13.
         in.engaged.control_mode_370 = 2;
         in.engaged.has_latched_target_440 = slot.command_target_plus_one != 0;
         in.entry.control_mode_370 = in.engaged.control_mode_370;

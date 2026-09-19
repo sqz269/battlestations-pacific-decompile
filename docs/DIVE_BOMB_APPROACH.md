@@ -396,3 +396,50 @@ point, far inside `approach+B8h` = 1100 m. A null about USN04, not about the rul
 
 (Read the `bomb_4c9` column with care — it is the PRE-arm sample, so the rows above print
 `bomb_4c9=1` on the very transition the break-off fired for.)
+
+## 13. Run B: the approach defect is fixed, and the blocker has moved
+
+`local/approach_b_wired.log`, same arguments, one clean shutdown. A2's binary with **one line**
+changed: `in.engaged.control_mode_370` reads `slot.db_attack_mode_370` instead of the constant
+`2`. The mode is `1` for every aircraft of every squadron in every window, so `engaged` collapses
+to the in-range latch, which is the situation 10.9 measured.
+
+| USN04 | A2, unwired | B, wired |
+| --- | --- | --- |
+| mission dive-bomber `plane water contact` | 1 (`movieval`) | **0** |
+| `movieval` states | `done=303 aimdive=53 flyabove=158 turndown=71 attackrun=1527` | `moveto=1769 aimdive=48 aimglide=344 flyabove=138 turndown=71` |
+| `movieval` `aimdive` exit | `-> done`, alt 180.6 | **`-> aimglide`, alt 530.0** |
+| dive entry altitude, the three `movieval` | 650.9 / 626.0 / 676.9 m | **1043.9 / 1039.7 / 1045.3 m** |
+| aim error `009C5C9B` (gate 25.0 m) | -24.93 / -33.09 / -17.99 | **+12.85 / -3.67 / +17.26** |
+| total dive-bomb releases | 5 | 0 |
+
+**The approach defect 10.9 diagnosed is fixed.** Every bomber now enters its dive at the authored
+`Pilot/DiveBomb/BeginAltRange/1` = 1000 m instead of 200-400 m below it, all three aim errors move
+from outside the 25 m gate to inside it, `movieval` pulls out into `aimglide` at 530 m instead of
+being parked in `done` at 180 m, and **nobody ditches** — against 1 contact unwired and the **7**
+that 10.9 measured with the same wiring and no moveto tick. The `moveto` glide is doing exactly
+what section 4 says it does.
+
+**The five releases are not lost to this change.** A2's releases all came from the AIMDIVE gate,
+reached from a dive entry 350 m too low; with the faithful entry every bomber pulls out into
+AIMGLIDE instead. And the aimglide release gate **passes zero times in either run** — 9 aimglide
+rows in A2 and 11 in B, every one `passed=0 releases=0`, with `rearm` blocking 343 of `movieval`'s
+344 calls and the bearing error at 0.0011 rad against a 0.5236 gate. The geometry is fine; the
+timer is frozen.
+
+**Why it is frozen, and whose it is.** `009C58E9` counts `state+1Ch` down by `dt`, and in this
+tree only the **aimdive** input builder does so (`src/game_hosts_units.cpp` line ~1544). The
+aimglide builder reads `slot.db_aim_rearm_1c` and never decrements it, so an aircraft that leaves
+aimdive with a positive timer can never re-arm. Packet `cc8_dive_entry` reports fixing exactly
+this (`agent/cc8-dive-entry`, "the aimglide counts its own re-arm timer down, so gate 1 can
+open"); that branch is not in this tree, whose base is main `6f26aceab`.
+
+**Verdict, against the packet's acceptance rule.** No `movieval` water contact: pass. Mission
+contacts <= 1: pass, at 0. `movieval` releases >= 2: **fail**, at 0. So the read site is left
+**unwired**, with this measurement in the comment beside it. The moveto binding itself is kept:
+run A proved it is an exact null while the constant is pinned, and run B shows it is the reason
+the wired build no longer ditches — 7 contacts in 10.9's window against 0 here.
+
+**The decisive experiment is one line and one window**: merge `cc8-dive-entry`'s re-arm fix, flip
+this line back, re-run B. If the aimglide then releases, the gate and the approach are both
+faithful and the packet closes.
