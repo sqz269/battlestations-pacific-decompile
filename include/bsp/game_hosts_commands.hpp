@@ -75,6 +75,12 @@ struct GameCommandUnit {
     std::string name;
     std::uint16_t object_id{0};
     float position[3]{};
+    // Packet cc8_ship_follow: what 007788B0 and 007788D0 read off unit+284h.
+    // The units host owns the group and pushes the pair here when a join lands,
+    // because 00836920's idle re-issue needs them and the commands host has no
+    // route to the unit group itself.
+    bool formation_follower{false};        // 007788B0
+    std::size_t formation_leader{0};       // 007788D0, valid while `follower`
 };
 
 // What one issued command did, end to end. Every flag is the answer of a
@@ -195,6 +201,10 @@ public:
     // The entities 0046aab0's target lookup 00925a90 would find, and the owners
     // its records name. Called once, after the instantiate pass.
     void register_units(std::vector<GameCommandUnit> units);
+    // Packet cc8_ship_follow: publish what 007788B0 / 007788D0 answer for a unit
+    // once it has joined a formation, so 00836920's idle re-issue can pick the
+    // `follow` command object at 00836E38 instead of the cruise/stop pair.
+    void set_unit_formation(std::size_t index, bool follower, std::size_t leader);
 
     // 0080E160's unit+738h owner, then the three avoidance bytes. False means
     // no registered director; out is unchanged. Construction publishes the

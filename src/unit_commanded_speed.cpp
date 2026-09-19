@@ -123,6 +123,16 @@ bool weapon_director_stop_arm_00836a8b(const WeaponDirectorCommandState& state,
     return false;
 }
 
+bool weapon_director_follow_arm_00836adc(const WeaponDirectorFollowArmInputs& in) noexcept {
+    if (!in.has_group) return true;                         // 00836AE9, JZ 00836B37
+    if (in.leader == 0) return true;                        // 00836AF7, JZ 00836B37
+    if (in.leader == in.unit) return true;                   // 00836B08, JZ 00836B37
+    if (in.leader != in.command_target) return true;         // 00836B23, JNZ 00836B37
+    // 00836B29..00836B31: one filled slot keeps it running (JLE 00836D67);
+    // anything queued behind it ends it.
+    return in.filled_command_slots > 1;
+}
+
 DirectorDefaultCommand weapon_director_idle_reissue_00836dc9(
         const WeaponDirectorCommandState& state,
         bool prepass_flag,

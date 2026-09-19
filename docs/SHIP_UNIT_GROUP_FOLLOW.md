@@ -259,8 +259,20 @@ The same routine's per-command-kind arm, where `EAX` is the running command's de
 
 `follow` therefore ends exactly when the membership that produced it goes away - or when a second
 command is queued behind it, the same `0071BE60 > 1` arm `docs/SHIP_COMMAND_LIFETIME.md` found
-ending the Yorktown's `moveonpath`. Producer and terminator are both in `00836920`, and the host
-models neither.
+ending the Yorktown's `moveonpath`. Producer and terminator are both in `00836920`.
+
+> **Correction, later in this same packet.** "The host models neither" is wrong about the producer.
+> `weapon_director_idle_reissue_00836dc9` in `src/unit_commanded_speed.cpp` has carried the arm
+> since packet `cc8_ship_drive`: `if (host.unit_controller_belongs_to_another_007788b0()) { owner =
+> unit_controller_owner_007788d0(); target = make_command_target_00465080(owner, 0.0f);
+> director_issue_command_0071ecf0(kCommandedSpeedFollowObject, target); }` - the same three calls
+> as `00836E13`, `00836E28`, `00836E32` and the same `00E08F60` push. **The rule was modelled; its
+> two inputs were not.** Both virtuals answered a recorded `false`/`0` in
+> `src/game_hosts_commands.cpp` on the note "no controller object exists in this process", which
+> was true of a controller and false of the unit group: `unit+284h` is the group, as `0077FB22`
+> proves by testing it for zero and calling `0070DB20 UnitGroup_Create`. With the group bound both
+> virtuals are answered from it and the arm fires. What this packet adds to the producer is
+> therefore the two answers, not the rule. The **terminator** at `00836ADC` is still unmodelled.
 
 ## 5. What this host has, and what it lacks
 

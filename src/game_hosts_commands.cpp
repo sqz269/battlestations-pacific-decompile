@@ -1085,6 +1085,17 @@ GameCommandsHost::GameCommandsHost(GameHostLog& log)
 
 GameCommandsHost::~GameCommandsHost() = default;
 
+void GameCommandsHost::set_unit_formation(std::size_t index, bool follower,
+                                          std::size_t leader) {
+    // Packet cc8_ship_follow. The unit group lives on the units host; this is the
+    // pair 007788B0 and 007788D0 read off unit+284h, pushed here so 00836920's
+    // idle re-issue can answer them.
+    Impl& host = *impl_;
+    if (index >= host.units.size()) return;
+    host.units[index].formation_follower = follower;
+    host.units[index].formation_leader = leader;
+}
+
 void GameCommandsHost::register_units(std::vector<GameCommandUnit> units) {
     Impl& host = *impl_;
     host.units = std::move(units);
@@ -1417,15 +1428,19 @@ public:
         chain_.owner.done("WeaponDirector::reset_command_stage", 0x00835bf0u);
     }
     bool unit_controller_belongs_to_another_007788b0() override {
-        // entity+284h, the controller back-pointer. No controller object exists
-        // in this process, which is the same boundary 0071ecf0's own AI-group
-        // block reports, so the answer is recorded rather than read.
-        chain_.owner.record("WeaponDirector::controller_belongs_to_another", 0x007788b0u);
-        return false;
+        // 007788B0 BSP_Unit_IsFormationFollower, read whole by packet
+        // cc8_ship_follow: g = [unit+284h]; g && [g+14h] != unit. unit+284h is
+        // the unit GROUP, not a controller back-pointer - 0077FB22 tests it for
+        // zero and calls 0070DB20 UnitGroup_Create to fill it - and this process
+        // now has one, so the answer is read rather than recorded.
+        chain_.owner.done("WeaponDirector::is_formation_follower", 0x007788b0u);
+        return chain_.unit.formation_follower;
     }
     std::uint32_t unit_controller_owner_007788d0() override {
-        chain_.owner.record("WeaponDirector::controller_owner", 0x007788d0u);
-        return 0;
+        // 007788D0 BSP_Unit_FormationLeader: [[unit+284h]+14h].
+        chain_.owner.done("WeaponDirector::formation_leader", 0x007788d0u);
+        if (!chain_.unit.formation_follower) return 0;
+        return static_cast<std::uint32_t>(chain_.unit.formation_leader + 1u);
     }
     std::uint32_t make_command_target_00465080(std::uint32_t object, float range) override {
         static_cast<void>(range);

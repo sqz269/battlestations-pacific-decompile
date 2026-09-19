@@ -8449,6 +8449,9 @@ bool GameUnitsHost::formation_join_0077f940(std::size_t follower, std::size_t le
     }
     target.members.push_back(record);
     ++host.formation_joins;
+    // 007788B0 / 007788D0 are read by 00836920's idle re-issue, which lives in
+    // the commands host and has no route to the group, so the pair is pushed.
+    host.commands.set_unit_formation(follower, true, leader);
     // 0070DA00's speed ceiling over the new membership is NOT run: nothing reads
     // group+504h yet. Columns 1, 2 and 3 are not produced either - they are the
     // canned LINE / COLUMN / DIAMOND tables, which only a type-78h reshape
