@@ -63,6 +63,15 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     {"GetMeasure", 0x0088d8e0u},
     {"GameTime", 0x008a9320u},
     {"random", 0x0088c160u},
+    // Packet cc8_usn04_strike_class. The body has been in src/lua_binding_core.cpp
+    // since docs/LUA_BINDING_CORE.md; only this row was missing, so the binding
+    // reported UNIMPLEMENTED and pushed nothing. A binding that pushes nothing is
+    // not a neutral value to a Lua script: `Mission.Difficulty = GetDifficulty()`
+    // left the field nil, and usn_19_coralus.lua gates its whole Japanese carrier
+    // strike on `Mission.Difficulty == 0` / `== 1` / `== 2` (`:1382`, `:1454`,
+    // `:1526`), so every one of the six striker launches was unreachable.
+    // docs/USN04_STRIKE_CLASS.md.
+    {"GetDifficulty", 0x008ae030u},
     // Packet cc_mission_blackout: the fade whose completion callback is the only
     // route from the intro movie to `luaIn`. src/mission_blackout.cpp.
     {"Blackout", 0x008d1340u},
@@ -83,9 +92,11 @@ constexpr std::uint32_t kScriptEntityIdBase = 100000u;
 // native has no such bound, which is why the cap is reported rather than silent.
 constexpr std::size_t kScriptEntityCapacity = 512;
 
-// The one call site of SetThink's reconstructed body, 008980E8 / 0088A330. Every
-// other method of bsp::LuaBindingCoreHost belongs to a different binding and is
-// not reached from here; each records itself if it ever is.
+// The adapter for the bodies of docs/LUA_BINDING_CORE.md that this host runs:
+// SetThink's, 008980E8 / 0088A330, and, since packet cc8_usn04_strike_class,
+// GetDifficulty's. Every other method belongs to a binding not dispatched here
+// and records itself if it ever is; the two difficulty readers below do not,
+// because GetDifficulty reaches them on every call and each has a source.
 class SetThinkCoreHost final : public bsp::LuaBindingCoreHost {
 public:
     explicit SetThinkCoreHost(GameScriptOrdersHost& owner) : owner_(owner) {}
@@ -94,7 +105,17 @@ public:
         owner_.entity_set_think_script_name_0088a330(entity, name);
     }
 
+    // game+1FE4h. Not a placeholder: this process already asserts a campaign
+    // session in two other places, `non_campaign_session()` returning false and
+    // `inputs.non_campaign_session = false`, both in src/game_hosts_mission.cpp,
+    // and 006CDC70 gates its sub-updates on the same word. Zero is what those say.
     int game_non_campaign_flag() override { return 0; }
+    // game+6ACh, the effective difficulty. Nothing in this process writes it:
+    // `MissionStart::set_effective_difficulty` is a record at 0058BF58, so the
+    // field holds its constructor zero and that is what 008AE12A would read.
+    // Zero is also the easiest campaign setting, which is the arm usn_19_coralus
+    // gates its Japanese strike on at `:1382`. That is a consequence, not the
+    // reason for the value.
     int game_effective_difficulty() override { return 0; }
     void log_prepare_class(int) override {}
     bool resolve_global_integer(const std::string&, int&) override { return false; }
@@ -1007,6 +1028,13 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         results = bsp::lua_binding_game_time(*this);
     } else if (std::strcmp(binding->name, "random") == 0) {
         results = bsp::lua_binding_random(*this, *this, *this);
+    } else if (std::strcmp(binding->name, "GetDifficulty") == 0) {
+        // 008AE10E reads 00E188A8, 008AE113 compares game+1FE4h against a zeroed
+        // EBP and 008AE121's JZ takes the campaign arm, which pushes game+6ACh;
+        // the other arm pushes the literal 2. Both are in
+        // bsp::lua_binding_get_difficulty already.
+        SetThinkCoreHost core(*this);
+        results = bsp::lua_binding_get_difficulty(*this, core);
     } else if (std::strcmp(binding->name, "Blackout") == 0) {
         // 008D142F..008D1612 reads the frame; the marshalling stays here and the
         // decode, the arm and the immediate step are src/mission_blackout.cpp.
