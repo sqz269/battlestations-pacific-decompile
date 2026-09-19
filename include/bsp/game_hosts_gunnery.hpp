@@ -217,6 +217,18 @@ struct GameProjectileRow {
     float min_enemy_distance{-1.0f};
     float min_enemy_time{-1.0f};
     std::size_t min_enemy_unit{0};    // one based, 0 = never measured
+    // Packet cc8_torpedo_aim_census. The same tracking against the ORDERED
+    // target rather than the nearest unit, which is what decides whether the
+    // ship a round came nearest to is the ship it was aimed at.
+    std::size_t ordered_target{0};       // one based, the owner's command target
+    float target_pos_release[3]{};       // that target's position at the drop
+    float ordered_min_distance{-1.0f};
+    float ordered_min_time{-1.0f};
+    float target_pos_at_min[3]{};
+    // |wrapped(round track - target heading)| at the closest approach. A scalar
+    // distance cannot separate "abeam and clear" from "inside the bow line";
+    // this is what does.
+    float crossing_angle{0.0f};
 };
 
 // One swimming round's closest approach, kept after the round is gone.
@@ -228,6 +240,12 @@ struct GameTorpedoApproachRow {
     float life_at_end{0.0f};
     bool hit{false};
     bool expired{false};
+    // Packet cc8_torpedo_aim_census.
+    std::string ordered_name;         // "-" when the owner had no command target
+    float ordered_min_distance{-1.0f};
+    float ordered_min_time{-1.0f};
+    float target_travel{0.0f};        // how far the ordered target moved, drop to closest
+    float crossing_angle{0.0f};       // radians, 0 = the round runs along the target's course
 };
 
 // Per unit, what the chain did to it and what it did with its guns.

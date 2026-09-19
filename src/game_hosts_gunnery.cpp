@@ -143,6 +143,19 @@ struct GameGunneryHost::Impl {
     // Packet cc8_torpedo_closest_approach: one row per swimming round, kept
     // after the round is erased.
     std::vector<GameTorpedoApproachRow> torpedo_approaches;
+    // Packet cc8_torpedo_aim_census: the ordered-target half of one record.
+    void fill_ordered_fields(GameTorpedoApproachRow& rec,
+                             const GameProjectileRow& row) const {
+        rec.ordered_name = unit_name_or_index(row.ordered_target);
+        rec.ordered_min_distance = row.ordered_min_distance;
+        rec.ordered_min_time = row.ordered_min_time;
+        rec.crossing_angle = row.crossing_angle;
+        if (row.ordered_target != 0 && row.ordered_min_distance >= 0.0f) {
+            const float dx = row.target_pos_at_min[0] - row.target_pos_release[0];
+            const float dz = row.target_pos_at_min[2] - row.target_pos_release[2];
+            rec.target_travel = std::sqrt(dx * dx + dz * dz);
+        }
+    }
     std::string unit_name_or_index(std::size_t one_based) const {
         if (one_based == 0) return std::string("-");
         const std::size_t i = one_based - 1;
@@ -1320,6 +1333,18 @@ void GameGunneryHost::Impl::refresh_command_targets() {
         const std::map<std::string, std::size_t>::const_iterator found =
             by_name.find(accepted[i]->target_token);
         if (found != by_name.end()) command_target_by_unit[i] = found->second;
+        // Packet cc8_torpedo_aim_census. 0071EBF0's rule picks a row per unit
+        // and resolves its token BY NAME; "command_targets units_with=N" said
+        // how many resolved and never which, so the ship a bomber is actually
+        // attacking was unnamed in every run this stream has taken.
+        log.notef("  command target 0071EBF0: unit=%s token=\"%s\" -> %s",
+            (i < unit_state.size() ? unit_state[i].row.name.c_str() : "?"),
+            accepted[i]->target_token.c_str(),
+            found != by_name.end()
+                ? (found->second != 0 && found->second - 1 < unit_state.size()
+                       ? unit_state[found->second - 1].row.name.c_str()
+                       : "(index out of range)")
+                : "(no unit of that name)");
     }
     command_targets_resolved = 0;
     for (std::size_t i = 0; i < command_target_by_unit.size(); ++i) {
@@ -2302,6 +2327,26 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
                     shot.min_enemy_time = shot.life;
                     shot.min_enemy_unit = i + 1;
                 }
+                // Packet cc8_torpedo_aim_census: the same minimum against the
+                // ORDERED target, kept separately because the nearest unit and
+                // the aimed-at unit need not be the same ship.
+                if (shot.ordered_target == i + 1 &&
+                    (shot.ordered_min_distance < 0.0f ||
+                     d < shot.ordered_min_distance)) {
+                    shot.ordered_min_distance = d;
+                    shot.ordered_min_time = shot.life;
+                    shot.target_pos_at_min[0] = ux;
+                    shot.target_pos_at_min[1] = uy;
+                    shot.target_pos_at_min[2] = uz;
+                    // The round's track against the target's course. Both are
+                    // the game's compass convention (0 = +Z, pi/2 = +X), so the
+                    // difference is taken with the same wrap the planner uses.
+                    const float track = std::atan2(shot.flight.velocity.x,
+                                                   shot.flight.velocity.z);
+                    const float course = units.unit_heading_radians(i);
+                    shot.crossing_angle =
+                        std::fabs(bsp::wrapped_angle_subtract_00438b10(track, course));
+                }
             }
         }
 
@@ -2425,6 +2470,7 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         rec.min_distance = row.min_enemy_distance;
         rec.min_time = row.min_enemy_time;
         rec.life_at_end = row.life;
+        fill_ordered_fields(rec, row);
         torpedo_approaches.push_back(rec);
     }
     shots.erase(std::remove_if(shots.begin(), shots.end(),
@@ -2951,6 +2997,22 @@ bool GameGunneryHost::release_ordnance_drop(std::size_t unit_index) {
     shot.flight.local_position = shot.flight.snapshot_current;
     shot.flight.mode = bsp::ProjectileMotionMode::kBallistic;
     shot.flight.class_disables_gravity = false;
+    // Packet cc8_torpedo_aim_census: pin the ordered target and where it was at
+    // the drop, before the round is filed. Nothing downstream can recover this:
+    // the round carries no victim and the target keeps moving.
+    {
+        const std::size_t owner = shot.owner_unit - 1;
+        if (owner < h.command_target_by_unit.size()) {
+            shot.ordered_target = h.command_target_by_unit[owner];
+        }
+        if (shot.ordered_target != 0) {
+            float tx = 0.0f, ty = 0.0f, tz = 0.0f;
+            h.units.unit_position_00fc(shot.ordered_target - 1, tx, ty, tz);
+            shot.target_pos_release[0] = tx;
+            shot.target_pos_release[1] = ty;
+            shot.target_pos_release[2] = tz;
+        }
+    }
     h.shots.push_back(shot);
     ++h.summary.projectiles;
     ++h.summary.torpedo_drops;
@@ -3104,15 +3166,22 @@ void GameGunneryHost::report() {
             rec.min_distance = row.min_enemy_distance;
             rec.min_time = row.min_enemy_time;
             rec.life_at_end = row.life;
+            host.fill_ordered_fields(rec, row);
             rows.push_back(rec);
         }
         host.log.notef("summary mission gunnery torpedo_closest_approach swims=%zu "
             "(centre to centre, horizontal)", rows.size());
         for (const GameTorpedoApproachRow& r : rows) {
             host.log.notef("  torpedo from %-12s nearest %-14s min=%.1f m at t=%.2f s "
-                "of %.2f s run", r.owner_name.c_str(), r.nearest_name.c_str(),
+                "of %.2f s run | ordered %-14s min=%.1f m at t=%.2f s "
+                "target_moved=%.1f m crossing=%.3f rad",
+                r.owner_name.c_str(), r.nearest_name.c_str(),
                 static_cast<double>(r.min_distance), static_cast<double>(r.min_time),
-                static_cast<double>(r.life_at_end));
+                static_cast<double>(r.life_at_end), r.ordered_name.c_str(),
+                static_cast<double>(r.ordered_min_distance),
+                static_cast<double>(r.ordered_min_time),
+                static_cast<double>(r.target_travel),
+                static_cast<double>(r.crossing_angle));
         }
     }
     {
