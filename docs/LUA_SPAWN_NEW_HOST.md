@@ -31,11 +31,26 @@ accounted for.
 
 ## 2. The drain, instruction by instruction
 
-1. `0094C4AE`: an empty queue returns before the clock is read.
-2. `0094C4B8`: returns when `DAT_00E188A8` is null or `game+1FE4h == 2`.
-3. `0094C4E4..0094C500`: `if (DAT_00F876A4 < *(float*)(globalConfig + 2DCh) + *(float*)(manager + 0Ch)) return;`
+1. `0094C4AE CMP dword ptr [EDI + 0x8],EBX` / `JZ 0094C810`: an empty queue returns before the
+   clock is read.
+2. `0094C4BC` and `0094C4C4`: returns when `DAT_00E188A8` is null or `game+1FE4h == 2`.
+3. the rate limit, with the x87 stack written out because the comparison's sense is the whole rule:
+
+   ```
+   0094c4d1: FLD float ptr [0x00f876a4]   ; ST0 = now
+   0094c4d7: FSTP float ptr [ESP + 0x8]
+   0094c4db: CALL 0x00432650              ; EAX = the global config
+   0094c4e0: FLD float ptr [ESP + 0x8]    ; ST0 = now
+   0094c4e4: FLD float ptr [EAX + 0x2dc]  ; ST0 = interval, ST1 = now
+   0094c4ea: FADD float ptr [EDI + 0xc]   ; ST0 = interval + lastAttempt
+   0094c4ed: FCOMIP ST0,ST1
+   0094c4ef: FSTP ST0
+   0094c4f1: JA 0x0094c810                ; return when interval + lastAttempt > now
+   ```
+
    **One request is attempted per interval**, and `manager+0Ch` is the stamp of the last attempt.
-4. `0094C4F7 CMP EAX,2` / `JC 0094C56B`: with fewer than two records the head is taken without
+4. `0094C4FA CMP EAX,0x1` / `0094C4FF JBE 0x0094C56B` (the decompiler renders this as `< 2`): with
+   one record or none the head is taken without
    testing anything about it. With two or more, `0094C508..0094C560` walks the list for the first
    record whose party `record+80h` indexes an ACTIVE party - `game+18CCh + party*4` with `+8h != 0`
    and `+9h == 0` - skipping a negative party at `0094C538`, and falls through to the same head arm
@@ -234,23 +249,48 @@ DEVIATIONS, each labelled in the source where it is taken:
 
 ## 9. Open
 
-- **How the `callback` NativeString at `record+84h` reaches the interpreter.** `00949750` pushes no
-  code-address immediate anywhere in its body (the whole listing was filtered for
-  `PUSH 0x00......` and `,0x00......`), so no trampoline is installed from an immediate; and no
-  callee of `0094A140`, `00949300` or `009483D0` is a Lua helper. The record does hold callback
+- **How the `callback` NativeString at `record+84h` reaches the interpreter.** `00949750` installs
+  no trampoline from an immediate. The check is worth writing out because the first attempt at it
+  was vacuous: Ghidra prints an address immediate without leading zeros (`PUSH 0xd0e1f8`), so a
+  filter for `PUSH 0x00......` matches nothing anywhere and proves nothing. Filtering the whole
+  526-instruction listing (which reaches `0094A13D RET 4`, so the body is covered) for
+  `PUSH 0x[0-9a-f]{5,8}` gives sixteen pushes: fifteen are `.rdata` string literals between
+  `00CE3A0C` and `00D199D0` - the twelve field names, the two empty-string defaults and one more -
+  and the sixteenth is `00949752 PUSH 0xca8625`, the MSVC exception handler pushed in the prologue
+  two instructions into the function. None of them is a body in this routine's own segment.
+  No callee of `0094A140`, `00949300` or `009483D0` is a Lua helper either. The record does hold callback
   OWNER objects - `00949750` destroys two through `BSP_CallbackOwner_Destroy 00695870` at `00949F24`
   and `00949FF4`, and `00948BB0` destroys another - so the dispatch is probably built there. Not
   established. The implemented call is the section 6 contract.
-- **The four floats `00949750` stages at `00949F67..00949F8C` are not mapped to record slots.** The
-  attempt is recorded so the next reader does not repeat it: the push accounting across
-  `00949F64 SUB ESP,0x10` and the five intervening pushes does not close - it makes
+- **The four floats `00949750` stages at `00949F67..00949F8C` are not mapped to record slots by the
+  producer.** The attempt is recorded so the next reader does not repeat it: the push accounting
+  across `00949F64 SUB ESP,0x10` and the five intervening pushes does not close - it makes
   `00949F93 MOV ECX,[ESP+0x68]`, which must be the manager, land on the same steady-frame slot as
   `distRange[2]`. A slot claim that does not close is exactly the trap AGENTS.md names, so nothing
-  is claimed. `tools/stack_frame_walk.py` is the tool for it.
+  is claimed from that side. `tools/stack_frame_walk.py` is the tool for it.
+
+  **The consumer settles which pair is which, though**, and that is enough for this route.
+  `0094A140` reads `record+68h` and `record+6Ch` as floats, forms
+  `(record+6Ch + record+68h) * 0.5` - the multiplier is `0094A30A FLD double ptr [00D7A280]`, whose
+  eight bytes are `00 00 00 00 00 00 e0 3f` = 0.5, a **double** by the load instruction - and
+  `record+6Ch - record+68h`, negates through `00D7A208` (a float `00 00 00 80`, -0.0, loaded with
+  `MOVSS`), and feeds the result to `BSP_Matrix_BuildRotationY`. A midpoint and a half-width turned
+  into a yaw is an angle range, so `+68h`/`+6Ch` are `angleRange`. `record+70h` and `+74h` are
+  compared low-against-high in the same block and `+70h` then divides a lateral offset to produce
+  an angle, which makes it a radius, so `+70h`/`+74h` are `distRange`. **`record+78h` is compared
+  as an `int` against an entity's `+54h`, the party field**, which corrects
+  `lua_binding_spawn.hpp`'s "+74h, +78h two floats": `+78h` is not a float.
+
+  What remains undecoded is only the SAMPLING - how the twelve-iteration retry
+  (`local_350 = 0xc`) walks the angle and the distance between those bounds.
 - **`0094C5B3..0094C772`**, the block the drain runs before the completion walk when
-  `game+1FE4h == 1`, `game+218Ch == 0` and `BSP_Game_GetEffectiveGameMode() <= 3`. It calls
-  `00947BC0`, `00913AB0` and `0090EB80` and tests the class kinds 0Fh and 6; it looks like the
-  reinforcement announcement. Unread.
+  `game+1FE4h == 1`, `game+218Ch == 0` and `BSP_Game_GetEffectiveGameMode() <= 3`. Its bodies were
+  not read, but its callee sets place it: `00947BC0` calls `BSP_SessionMessage_ConstructBase` and
+  the `BSP_BitCursor_Read*` family, so it serialises a session message, and `00913AB0` calls
+  `BSP_MissionScoring_GrantAward` and carries the literals `Counter_RUA_MU`, `GA_SL` and `RUA_MU`,
+  so it bumps a scoring counter. **The block announces and scores the spawn; it does not create
+  anything**, which is why leaving it out costs this route no units. The kind tests it makes on
+  0Fh and 6 choose which counter. `0090EB80` (sole callee `00625900`) is unread.
 - **The other three enqueuers.** `0094B94C` and `0094BF47` in `FUN_0094B600`, and `0094C3C6` in
   `FUN_0094BFF0`, also call `00949530`. They are the non-Lua producers and are presumably where
   `record+C0h != 0` and a non-null `record+C4h` come from. Unread.
@@ -266,11 +306,124 @@ DEVIATIONS, each labelled in the source where it is taken:
   binding does. It queues a spawn request that names its own units, its own position and its own
   callback; nothing in `00949750` or `0094C490` reads a resource budget.
 
+## 11. Correction found by the run: `00888760` reads `x`, `y`, `z`, not 1, 2, 3
+
+`read_vector3_00888760` in `src/game_hosts_lua.cpp` read the position table with `rawgeti` 1..3 and
+required exactly three array entries. `00888760 BSP_LuaObject_ReadVector3` has no index path at
+all: `00888767..008887A9` is the prologue and two Lua temporaries, `008887A9 CALL 00B67080` opens an
+iteration and `0088882F CALL 00B67190` steps it, and between them it compares each key against
+three string literals and stores the number it finds:
+
+```
+008887c2: PUSH 0xceb488   ; "x", bytes 78 00
+008887dd: FSTP float ptr [ESP + 0x8]
+008887e3: PUSH 0xd045f8   ; "y", bytes 79 00
+008887fe: FSTP float ptr [ESP + 0xc]
+00888804: PUSH 0xcfd718   ; "z", bytes 7a 00
+0088881f: FSTP float ptr [ESP + 0x10]
+```
+
+- **was**: a position argument is a table of exactly three numbers at indices 1, 2 and 3.
+- **is**: a position argument is a table with the keys `x`, `y` and `z`; one keyed 1, 2, 3 matches
+  nothing and reads (0, 0, 0).
+- **evidence**: the three literals above, and the producer side this repository already had right -
+  `GetPosition` pushes the same three named keys through `0088BA30`
+  (`GameScriptOrdersHost::push_vector3_table_0088ba30`), and `usn_19_coralus.lua` writes
+  `spawnpos1.x`, `.y` and `.z` on that table before handing it to `SpawnNew` as `area.refPos`.
+
+The helper is shared with `run_generate_object_00944fd0`, so GenerateObject's position argument was
+mis-read the same way. `docs/LUA_GENERATE_OBJECT_HOST.md` records that GenerateObject was not
+called in either of its runs, so no measured column depends on the old behaviour.
+
+Requiring all three keys is the reader's choice and is labelled as such in the source: the native
+leaves an absent component at whatever its caller's slot held.
+
 ## Validation
 
-Build clean, both ctest suites pass. The before/after run pair is section 11 of this document once
-the drain has a per-frame call site; until then the binding queues and the drain is never entered,
-which the summary line reports as `attempts=0 still_queued=N`.
+Build clean, both ctest suites pass. `python tools/verify_report_calls.py
+reports/cc8_spawn_new_route.json` reports 17 call rows checked, 0 failed.
+`python tools/const_width_sweep.py --all --load-sites` checks 727 constants with this packet's four
+floats included (`kSpawnAttemptDelayDefault` 00CE74F8, `kSpawnNewDistRangeDefaultLow` 00D19908,
+`...High` 00D1990C, `kSpawnNewDistRangeLowMinimum` 00CE38B8) and none of them is in any mismatch
+category; the one `B` row it reports is `kPilotPitchHalfRange`, which predates this packet.
+
+| column | commit | what it is |
+| --- | --- | --- |
+| baseline | main `2ec3ed6ef` | `MissionLuaNative::SpawnNew 0094c480 UNIMPLEMENTED calls=8` |
+| run 1 | `c2a776849` (main `d9c6fb08a` merged) | `local/spawn_after_usn04.log` |
+| run 2 | run 1 plus the section 11 fix | `local/spawn_refpos_usn04.log` |
+
+Both runs: `--frames 3200 --press-start-frame 30 --menu-select USN04 --mission-frames 3000
+--mission-frame-seconds 0.05`.
+
+**Run 1.**
+
+```
+summary SpawnNew 0094c480 calls=8 rejected=0 queued=8 attempts=243 fulfilled=0
+  requeued=243 units=0 callbacks=0 callback_missing=0 still_queued=8
+  interval=0.500 clock=150.0
+```
+
+`calls=8` reproduces the baseline exactly, and the row is now `concrete` rather than
+`UNIMPLEMENTED`. The queue and the drain are proved: 243 attempts over a 150.0 s mission clock at a
+0.500 s interval, and 0.500 is the value the host read out of this installation's `globals.lua` and
+logged, not a compiled-in constant. The requeue is proved too - `requeued=243`, `still_queued=8`,
+nothing dropped. Four requests queue at stage init (serials 1-4) and four later (serials 5-8), so
+the pacing is the script's.
+
+Nothing was created, and the log says why on every request line: `refPos ABSENT (0.0 0.0 0.0)`.
+That is section 11.
+
+**Run 2**, the same build with only section 11's fix on top.
+
+```
+summary SpawnNew 0094c480 calls=8 rejected=0 queued=8 attempts=8 fulfilled=8
+  requeued=0 units=8 callbacks=8 callback_missing=0 still_queued=0
+  interval=0.500 clock=150.0
+```
+
+Every request now reads its position, is satisfied on its FIRST attempt, and answers its script:
+
+```
+SpawnNew 0094c480: serial 1 party 1, 1 group member(s), callback "luaBombersSpawnedLex",
+  angleRange given, refPos (-12914.8 1500.0 -4946.7)
+spawn queue 0094c490: serial 1 member 1 "D3A Val" type 158 WingCount 3 party 1
+  -> entity 22 at (-12914.8 1500.0 -4746.7)
+spawn queue 0094c490: serial 1 fulfilled, "luaBombersSpawnedLex"(1 unit table(s)) ran
+```
+
+The +200.0 on z is section 7's fan-out: one member puts `t` at the middle of `angleRange`, which is
+0 for the script's symmetric `{DEG(-10), DEG(10)}`, and the distance is the clamped low end of the
+absent `distRange`, 200.0.
+
+| measure | run 1 | run 2 |
+| --- | --- | --- |
+| `SpawnNew` row | `concrete calls=8` | `concrete calls=8` |
+| fulfilled / requeued | 0 / 243 | 8 / 0 |
+| units created | 0 | 8 group members |
+| callbacks run | 0 | 8, none raising |
+| `summary mission world units` | 33 | 57 |
+| `summary mission world lists registrations` | - | 57 |
+| `summary mission commands` | `units=33 resolved=50 issued=94` | `units=57 resolved=80 issued=365` |
+| `MissionLuaNative::PilotSetTarget` | `calls=1` | `calls=9` |
+| `MissionLuaNative::EntityTurnToEntity` | `calls=1` | `calls=9` |
+
+The world's unit count rises by **24**, not by 8, and that is the right number: each group member is
+a `PlaneSquadronGen` whose `WingCount` is 3, so the creation seam spawns three planes for it. The
+log says so per squadron - `WingCount=3 -> 3 member plane(s) (007F4580 mode 1 on the held-back row)`
+- and the created entity ids step by three (22, 25, 28, 31, ... 55). That line calls itself
+"GenerateObject squadron" because it is emitted inside
+`create_unit_from_scene_record_0046db4b`, which this packet reuses rather than copies.
+
+The `PilotSetTarget` and `EntityTurnToEntity` counts are the point of the packet: those calls are
+made by `luaBombersSpawnedLex` and `luaBombersSpawnedTown` on the units the callback receives, and
+they went from one to nine. The spawned aircraft reach the strike census by name with their wings:
+`B5N Kate #8.1`, `B5N Kate #8.1|.-2`, `B5N Kate #8.1|.-3`, role `torpedo`, `script:PilotSetTarget`.
+No callback raised; the run logs no Lua error.
+
+**Not measured.** Whether the spawned bombers then fly an attack and hit the Lexington is a
+different packet's question; this one measures that they exist, are registered, are in the right
+party, carry the script's target, and that the mission's own callback chain resumed.
 
 ## no_ghidra_function
 

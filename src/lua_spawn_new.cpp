@@ -38,16 +38,18 @@ void SpawnRequestQueue::requeue_009478b0(SpawnNewRequest request) {
 }
 
 bool SpawnRequestQueue::attempt_due(float now, float interval) const noexcept {
-    // 0094C4EA FADD float ptr [EDI + 0xc] then the compare against DAT_00F876A4,
-    // whose fail arm returns. The sense here is the arm that does NOT return.
+    // 0094C4E4 FLD [config+2DCh] / 0094C4EA FADD [EDI+0Ch] leaves
+    // ST0 = interval + lastAttempt over ST1 = now; 0094C4ED FCOMIP ST0,ST1 and
+    // 0094C4F1 JA return when ST0 > ST1. So the drain proceeds on `!(now <
+    // interval + last)`, which is the arm written here.
     return !(now < interval + last_attempt_);
 }
 
 std::size_t SpawnRequestQueue::select_0094c508(
     const std::vector<bool>& party_active) const noexcept {
     if (requests_.empty()) return 0;
-    // 0094C4F7 CMP EAX,2 / JC 0094C56B: fewer than two records takes the head
-    // without testing its party at all.
+    // 0094C4FA CMP EAX,0x1 / 0094C4FF JBE 0094C56B: one record or none takes the
+    // head without testing its party at all.
     if (requests_.size() < 2) return 0;
     for (std::size_t i = 0; i < requests_.size(); ++i) {
         const std::int32_t party = requests_[i].party;

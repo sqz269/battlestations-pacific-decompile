@@ -1527,28 +1527,45 @@ namespace {
 // which is what "keep the authored orientation" means.
 constexpr double kSceneGenerateObjectYawSentinelCeiling = 6.283185307179586;
 
-// 0088B840's predicate and 00888760's reader: a position argument is a table of
-// exactly three numbers, written to [out], [out+4], [out+8].
+// CORRECTED by packet cc8_spawn_new_route. 00888760 BSP_LuaObject_ReadVector3
+// does NOT index the table 1..3. Its whole body is one walk: 008887A9 opens the
+// iteration with 00B67080, 0088882F steps it with 00B67190, and between them it
+// compares each key against three string literals and stores the number it finds
+// into one of three float slots:
+//
+//   008887C2 PUSH 0xceb488 ("x") ... 008887DD FSTP float ptr [ESP + 0x8]
+//   008887E3 PUSH 0xd045f8 ("y") ... 008887FE FSTP float ptr [ESP + 0xc]
+//   00888804 PUSH 0xcfd718 ("z") ... 0088881F FSTP float ptr [ESP + 0x10]
+//
+// There is no index path before the loop either (00888767..008887A9 is the
+// prologue and two Lua temporaries). A table whose entries are at 1, 2 and 3
+// matches no key and reads nothing.
+//
+// This is the shape the scripts actually pass. `GetPosition` builds its table
+// with the same three named keys - 0088BA30, which
+// GameScriptOrdersHost::push_vector3_table_0088ba30 already reproduces - and
+// usn_19_coralus.lua then writes `spawnpos1.x`, `.y` and `.z` on it before
+// handing it to `SpawnNew` as `area.refPos`. The previous reader here answered
+// false for every one of those tables, which is why a 3000-frame USN04 run made
+// eight requests and created nothing.
+//
+// Requiring all three keys is this reader's choice, not a recovered rule: the
+// native leaves an absent component at whatever its caller's slot held. All
+// three is what a position table has, and it keeps the caller's "is this a
+// position table?" question answerable.
 bool read_vector3_00888760(lua_State* state, int index, float out[3]) {
     if (::lua_type(state, index) != LUA_TTABLE) return false;
+    static const char* const kVectorKeys[3] = {"x", "y", "z"};
     int found = 0;
-    for (int i = 1; i <= 3; ++i) {
-        ::lua_rawgeti(state, index, i);
-        if (::lua_type(state, -1) != LUA_TNUMBER) {
-            ::lua_settop(state, ::lua_gettop(state) - 1);
-            return false;
+    for (int i = 0; i < 3; ++i) {
+        ::lua_getfield(state, index, kVectorKeys[i]);
+        if (::lua_type(state, -1) == LUA_TNUMBER) {
+            out[i] = static_cast<float>(::lua_tonumber(state, -1));
+            ++found;
         }
-        out[i - 1] = static_cast<float>(::lua_tonumber(state, -1));
         ::lua_settop(state, ::lua_gettop(state) - 1);
-        ++found;
     }
-    // 0088B974 CMP EDI,3 requires exactly three entries; a fourth makes it not a
-    // position table. The rawgeti walk above cannot see a fourth, so this checks
-    // it directly rather than claiming the native's count.
-    ::lua_rawgeti(state, index, 4);
-    const bool extra = ::lua_type(state, -1) != LUA_TNIL;
-    ::lua_settop(state, ::lua_gettop(state) - 1);
-    return found == 3 && !extra;
+    return found == 3;
 }
 
 // 00467050(frame, 0.0f, value, 0.0f), the yaw-only rotation 0046DD9F applies to
@@ -1716,6 +1733,16 @@ int read_member_int(lua_State* state, int table_index, const char* key) {
     return value;
 }
 
+float read_member_float(lua_State* state, int table_index, const char* key) {
+    ::lua_getfield(state, table_index, key);
+    float value = 0.0f;
+    if (::lua_type(state, -1) == LUA_TNUMBER) {
+        value = static_cast<float>(::lua_tonumber(state, -1));
+    }
+    ::lua_settop(state, ::lua_gettop(state) - 1);
+    return value;
+}
+
 std::string read_member_string(lua_State* state, int table_index, const char* key) {
     ::lua_getfield(state, table_index, key);
     std::string value;
@@ -1832,16 +1859,12 @@ int GameMissionLuaHost::run_spawn_new_00949750(lua_State* state, int argument_co
     if (::lua_type(state, -1) == LUA_TTABLE) {
         const int block = ::lua_gettop(state);
         request.exclude.present = true;
-        request.exclude.own_horizontal
-            = static_cast<float>(read_member_int(state, block, "ownHorizontal"));
-        request.exclude.enemy_horizontal
-            = static_cast<float>(read_member_int(state, block, "enemyHorizontal"));
-        request.exclude.own_vertical
-            = static_cast<float>(read_member_int(state, block, "ownVertical"));
-        request.exclude.enemy_vertical
-            = static_cast<float>(read_member_int(state, block, "enemyVertical"));
+        request.exclude.own_horizontal = read_member_float(state, block, "ownHorizontal");
+        request.exclude.enemy_horizontal = read_member_float(state, block, "enemyHorizontal");
+        request.exclude.own_vertical = read_member_float(state, block, "ownVertical");
+        request.exclude.enemy_vertical = read_member_float(state, block, "enemyVertical");
         request.exclude.formation_horizontal
-            = static_cast<float>(read_member_int(state, block, "formationHorizontal"));
+            = read_member_float(state, block, "formationHorizontal");
     }
     ::lua_settop(state, ::lua_gettop(state) - 1);
 
@@ -1894,8 +1917,8 @@ void GameMissionLuaHost::run_spawn_queue_0094c490(float step_seconds) {
     // the step is used only to advance the clock the interval is measured on.
     spawn_world_clock_ += step_seconds;
     bsp::SpawnRequestQueue& queue = bsp::spawn_request_queue();
-    // 0094C4AE `CMP dword ptr [EDI + 0x8],EBX` with EBX = 0: an empty queue
-    // returns before the clock is even read.
+    // 0094C4AE `CMP dword ptr [EDI + 0x8],EBX` with EBX = 0 and the `JZ` at
+    // 0094C4B1: an empty queue returns before the clock is even read.
     if (queue.empty()) return;
     if (script_orders_ == nullptr) return;
     if (!queue.attempt_due(spawn_world_clock_, spawn_attempt_delay_0087f800())) return;
@@ -1903,8 +1926,8 @@ void GameMissionLuaHost::run_spawn_queue_0094c490(float step_seconds) {
     // DEVIATION, labelled. 0094C508's walk prefers a record whose party is
     // active in the table at `game+18CCh + party*4`. This process has no party
     // table, so every party counts as active and the walk always answers the
-    // head - which is what the native itself does whenever the queue holds
-    // fewer than two records (0094C4F7 CMP EAX,2 / JC 0094C56B).
+    // head - which is what the native itself does whenever the queue holds one
+    // record or none (0094C4FA CMP EAX,0x1 / 0094C4FF JBE 0094C56B).
     const std::vector<bool> party_active(8, true);
     const std::size_t index = queue.select_0094c508(party_active);
     bsp::SpawnNewRequest request = queue.erase_009439b0(index);

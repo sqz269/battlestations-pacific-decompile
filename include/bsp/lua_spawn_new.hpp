@@ -48,15 +48,16 @@ namespace bsp {
 // The drain's clock
 // ---------------------------------------------------------------------------
 
-// 0094C4E4..0094C500: `if (DAT_00F876A4 < *(float*)(globalConfig + 2DCh)
-//                          + *(float*)(manager + 0Ch)) return;`
-// so one request is attempted per interval and manager+0Ch is the stamp of the
-// last attempt (0094C59D MOVSS [EDI+0Ch],XMM0).
+// 0094C4D1..0094C4F1: ST0 = `*(float*)(globalConfig + 2DCh) + *(float*)(manager
+// + 0Ch)` over ST1 = `DAT_00F876A4`, then FCOMIP and `JA` return. So the drain
+// proceeds only when `now >= interval + lastAttempt`: one request is attempted
+// per interval, and manager+0Ch is the stamp of the last attempt
+// (0094C59D MOVSS [EDI+0Ch],XMM0).
 inline constexpr std::size_t kSpawnManagerLastAttemptOffset = 0xC;
 inline constexpr std::size_t kGlobalConfigSpawnAttemptDelayOffset = 0x2DC;
 // The image default, 0087F7E7 `FLD float ptr [00CE74F8]`, bytes cd cc 4c 3f.
 // It is a float32 at that address, loaded by a float FLD, not a double.
-inline constexpr float kSpawnAttemptDelayDefault = 0.8f;
+inline constexpr float kSpawnAttemptDelayDefault = 0.8f; // 00CE74F8
 // `Globals["SpawnAttemptDelay"]` (the literal at 00D0E1F8) overrides it:
 // 0087F7D1 PUSH 0xd0e1f8 ... 0087F800 FSTP dword ptr [ESI + 0x2dc].
 // This installation's scripts/datatables/globals.lua line 201 sets 0.5.
@@ -81,6 +82,24 @@ inline constexpr std::size_t kSpawnRequestFulfilledOffset = 0xC0;   // 009487AD
 inline constexpr std::size_t kSpawnRequestPartyIndexOffset = 0x80;  // 0094C7D9
 inline constexpr std::size_t kSpawnRequestCompletionFnOffset = 0xC4;  // 0094C7D2
 inline constexpr std::size_t kSpawnRequestCompletionCtxOffset = 0xC8; // 0094C7CA
+
+// The two ranges on the record, settled by the consumer rather than by tracing
+// the binding's staged floats (which did not close - see the doc's "Open").
+// 0094A1Cx reads record+68h and record+6Ch as floats and forms
+// `(record+6Ch + record+68h) * 0.5` with `0094A30A FLD double ptr [00D7A280]`,
+// whose eight bytes are `00 00 00 00 00 00 e0 3f` = 0.5 - a double, by the load
+// instruction - and `record+6Ch - record+68h`, then feeds the result to
+// BSP_Matrix_BuildRotationY. A midpoint and a half-width turned into a yaw are
+// an ANGLE range, so +68h is `angleRange[1]` and +6Ch is `angleRange[2]`.
+// record+70h and +74h are compared low-against-high in the same block and +70h
+// then divides a lateral offset to give an angle, which is a DISTANCE, so +70h
+// is the clamped `distRange[1]` and +74h is `distRange[2]`. record+78h is
+// compared as an INT against an entity's +54h, the party field, so it is not a
+// float at all - which corrects lua_binding_spawn.hpp's "+74h, +78h two floats".
+inline constexpr std::size_t kSpawnRequestAngleLowOffset = 0x68;
+inline constexpr std::size_t kSpawnRequestAngleHighOffset = 0x6C;
+inline constexpr std::size_t kSpawnRequestDistLowOffset = 0x70;
+inline constexpr std::size_t kSpawnRequestDistHighOffset = 0x74;
 
 // The created entities. 0094C6BF/0094C74B `LEA EDI,[ESI + 0xCC]` then the
 // checked begin/end pair 00645C40/00645C70, walked with `ADD EDI,4`: a
@@ -210,12 +229,12 @@ public:
     std::size_t size() const noexcept { return requests_.size(); }
     bool empty() const noexcept { return requests_.empty(); }
 
-    // 0094C4E4: `now >= last_attempt + interval`.
+    // 0094C4D1..0094C4F1: `now >= last_attempt + interval`.
     bool attempt_due(float now, float interval) const noexcept;
     void stamp_attempt(float now) noexcept { last_attempt_ = now; }
     float last_attempt() const noexcept { return last_attempt_; }
 
-    // 0094C508..0094C56B. With fewer than two records the drain takes the head
+    // 0094C4FA..0094C56B. With one record or none the drain takes the head
     // without looking at it. With two or more it walks the list for the first
     // record whose party is ACTIVE - `game+18CCh + party*4` with `+8h != 0` and
     // `+9h == 0` - and falls back to the head when the walk runs off the end.
