@@ -306,19 +306,29 @@ DiveBombAimGlideReleaseResult dive_bomb_aimglide_release_009c5777(
     if (!(dive_bomb_constant::kGlideLateralLimit > static_cast<double>(lateral))) {
         return out;
     }
-    // 009C5704-009C5755: the lead the bomb still has to cover, against the
-    // 5.0 margin and then against the 3.0 scale on its negation.
+    // 009C5704-009C5755, BOTH ARMS CORRECTED. 009C572F FADDP and 009C5733 FADD
+    // build `lead + travel + 5.0` in ST1 while ST0 keeps the bare travel.
     const float lead = in.lateral_b - std::cos(in.dive_angle) * in.lateral_a;
-    const double near_edge = static_cast<double>(in.travel_accumulator_20) +
-                             dive_bomb_constant::kGlideLeadMargin;
-    if (!(static_cast<double>(lead) + static_cast<double>(in.travel_accumulator_20) >
-          near_edge)) {
+    const double lead_travel_margin =
+        static_cast<double>(lead) + static_cast<double>(in.travel_accumulator_20) +
+        dive_bomb_constant::kGlideLeadMargin;
+    // 009C5743 FCOMI ST0,ST1 compares the travel with that sum and 009C5745
+    // `76` JBE bails unless the travel is the greater - that is, unless
+    // `lead < -5.0`. This was written `lead > 5.0`: the lead's sign backwards.
+    if (!(static_cast<double>(in.travel_accumulator_20) > lead_travel_margin)) {
         return out;
     }
-    if (!(-(static_cast<double>(lead) +
-            static_cast<double>(in.travel_accumulator_20)) *
-              dive_bomb_constant::kGlideLeadScale >
-          near_edge)) {
+    // 009C5747 FCHS negates the TRAVEL the FCOMI left on the stack, 009C5749
+    // scales it by the 3.0 at 00D7A2B0, and 009C5751/009C5755 `76` JBE bail
+    // unless the sum is the greater. This negated `lead + travel` instead.
+    //
+    // The pair is satisfiable exactly when `-4*travel - 5.0 < lead < -5.0`,
+    // which needs a positive travel accumulator; the two as they stood were
+    // mutually exclusive at the zero this host supplied, so the salvo at
+    // 009C5777 could never fire at any altitude.
+    if (!(lead_travel_margin >
+          -static_cast<double>(in.travel_accumulator_20) *
+              dive_bomb_constant::kGlideLeadScale)) {
         return out;
     }
 
