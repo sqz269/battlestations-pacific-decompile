@@ -490,6 +490,17 @@ struct GameUnitSlot {
     float db_goaway_travel_20{0.0f};
     int db_flyabove_heading_writes{0};
     float db_flyabove_heading_last{0.0f};
+    // Packet cc8_dive_flyover: flyabove+1Ch, the roll-in LATCH of 009C6919, and
+    // the bank arm around it. The latch is per-state - 009C629E clears it on the
+    // fly-over's enter - and once set it both skips the bank evaluation
+    // (009C6865) and suppresses the heading write (009C6DDA).
+    bool db_flyabove_bank_latch_1c{false};
+    float db_flyabove_dead_band_t{0.0f};
+    float db_flyabove_along_track{0.0f};
+    float db_flyabove_cross_track{0.0f};
+    int db_flyabove_bl_ticks{0};        // ticks with BL set at 009C67BF
+    int db_flyabove_latched_ticks{0};   // ticks the latch suppressed the heading
+    int db_flyabove_latch_tick{-1};     // the arm tick the latch first closed on
     // Packet cc8_dive_entry. Where the dive-entry altitude comes from is a
     // question about the altitude at each HAND-OVER, and no existing census
     // carries it: db_dive_entry_alt is the aimdive entry only, and the geo
@@ -5735,6 +5746,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             run_dive_bomb_aimdive_tick_009c58d0();
                         }
                         if (ctx.current == bsp::DiveBombState::kFlyAbove) {
+                            if (before != bsp::DiveBombState::kFlyAbove) {
+                                // 009C6270, the fly-over's enter, edited under
+                                // the integrator's hunk arbitration of
+                                // 2026-09-19. It clears +18h/+19h/+1Bh/+1Ch
+                                // (009C6295/009C6292/009C628F/009C629E) and
+                                // sets +1Ah from `approach+D1h == 0`. Only the
+                                // +1Ch clear needs state here: the other three
+                                // are recomputed every tick by the state feed.
+                                unit_.db_flyabove_bank_latch_1c = false;
+                                unit_.db_flyabove_latch_tick = -1;
+                            }
                             run_dive_bomb_flyabove_tick_009c62b0();
                         }
                         if (ctx.current == bsp::DiveBombState::kAimGlide) {
@@ -6154,30 +6176,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // include/bsp/dive_bomb_task.hpp and left unbound; their
                     // values need frame slots this body cannot resolve.
                     void run_dive_bomb_flyabove_tick_009c62b0() {
-                        bsp::DiveBombFlyAboveCommandInputs in;
-                        // A contract: this host keeps no flyabove state+1Ch.
-                        in.suppress_heading_1c = false;
-                        // SUBSTITUTION, labelled, and narrowed by packet
-                        // cc8_dive_heading: 009C6DC8 writes
-                        // AddWrappedAngle(C, clamp(delta, -L, +L)) with C the
-                        // aircraft's own heading (009C6406) and delta the turn
-                        // 009C6D6F builds, so the command is
-                        // `heading + clamp(turn, +/-L)` - a slew limiter, with
-                        // L = pi/2 on every path but one. The turn at
-                        // 009C6A37-009C6A7F is a dead-band on the bearing
-                        // error whose half-width T reaches 009C6A43 from three
-                        // producers, two of them untraced (009C6893 and
-                        // 009C6911, inside the bank arm). When T <= 0 the arm
-                        // is skipped and the command IS the bearing, so this
-                        // substitution is exact there and approximate
-                        // otherwise. What is corrected here is the POINT: the
-                        // fly-over's bearing is to the three-second lead point
-                        // of 009C6385-009C63E6, not to the target's present
-                        // position.
-                        in.heading_to_aim_point = unit_.db_flyabove_lead_bearing;
-                        const bsp::DiveBombFlyAboveCommand r =
-                            bsp::dive_bomb_flyabove_command_009c6dcd(in);
                         ++unit_.db_flyabove_tick_ticks;
+                        // The heading arm now runs AFTER the altitude arm,
+                        // because the bank predicate BL at 009C650E compares
+                        // approach+D4h against C, the commanded altitude
+                        // 009C64C9 writes and the altitude arm returns as
+                        // `limit_c`. In the image C is computed once at
+                        // 009C64C9, ahead of both arms; here the altitude call
+                        // is what produces it. Both arms are pure and write
+                        // different cmd fields, so the order of the two writes
+                        // (009C6DE7 the heading, 009C6F84 the pitch) is
+                        // unchanged. Packet cc8_dive_flyover, edited under the
+                        // integrator's hunk arbitration of 2026-09-19.
                         // 009C6E10-009C6F91, the altitude arm, BOUND (packet
                         // cc8_dive_entry). It sits on the same straight-line
                         // path as the heading arm above: 009C6DDA and 009C6DF9
@@ -6247,6 +6257,100 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                             unit_.db_fa_pitch_last = unit_.plane_commanded_pitch;
                         }
+                        // --------------------------------------------------
+                        // 009C64EE-009C6DEF, the heading arm. Packet
+                        // cc8_dive_flyover; the SUBSTITUTION packet
+                        // cc8_dive_heading left here (`command = the bearing to
+                        // the lead point`) is withdrawn. What replaces it is
+                        // the image's own chain: the bank predicate BL, the
+                        // roll-in latch flyabove+1Ch, the dead band on the
+                        // bearing error and the slew limiter.
+                        //
+                        // STILL UNBOUND, and both are labelled: the 009C64EC
+                        // vtable[5Ch](0x14) query that can veto BL, taken as
+                        // false here; and the avoidance increment 009C6D59 adds
+                        // to A, which comes out of the unbound 007F0280.
+                        const float bearing_error =
+                            bsp::wrapped_angle_subtract_00438b10(
+                                unit_.db_flyabove_lead_bearing,
+                                unit_.plane_heading_c6c);
+                        // 009C642F-009C6453, the class's abs-fold.
+                        const float bearing_error_abs =
+                            (bearing_error > 0.0f)
+                                ? bearing_error
+                                : (bsp::dive_bomb_constant::kNegativeZero -
+                                   bearing_error);
+                        // C as 009C650E sees it is the UNCLAMPED altitude of
+                        // 009C64C9, not the `limit_c` the altitude arm returns:
+                        // the 210 m release clamp at 009C6580-009C6589 sits
+                        // inside the 009C654A branch and runs AFTER the BL test
+                        // at 009C6532. Reading limit_c here would compare
+                        // approach+D4h (675 m) against 210 m and veto the bank
+                        // arm on every tick of every mission.
+                        const float unclamped_c = unit_.db_begin_alt_ac +
+                                                  unit_.db_aim_point_height_50;
+                        const bool bank_arm_bl =
+                            bsp::dive_bomb_flyabove_bank_arm_009c6530(
+                                /*state_query_14=*/false,
+                                unit_.db_release_range_d4,
+                                unclamped_c,
+                                unit_.db_attack_dist_b4,
+                                unit_.db_flyabove_lead_range,
+                                unit_.db_flyabove_height);
+                        if (bank_arm_bl) ++unit_.db_flyabove_bl_ticks;
+                        bsp::DiveBombFlyAboveBankInputs bin;
+                        bin.latched_1c = unit_.db_flyabove_bank_latch_1c;
+                        bin.bank_arm_bl = bank_arm_bl;
+                        bin.bearing_error_abs = bearing_error_abs;
+                        bin.lead_range_r = unit_.db_flyabove_lead_range;
+                        bin.turn_circle_radius = unit_.plane_turn_circle_radius;
+                        bin.span_dead_band =
+                            bsp::dive_bomb_flyabove_span_dead_band_009c6674(
+                                unit_.db_flyabove_span);
+                        const bsp::DiveBombFlyAboveBank bank =
+                            bsp::dive_bomb_flyabove_bank_009c6857(bin);
+                        if (bank.latched_1c &&
+                            !unit_.db_flyabove_bank_latch_1c) {
+                            unit_.db_flyabove_latch_tick =
+                                unit_.dive_bomb_arm_ticks;
+                        }
+                        unit_.db_flyabove_bank_latch_1c = bank.latched_1c;
+                        unit_.db_flyabove_dead_band_t = bank.dead_band_t;
+                        unit_.db_flyabove_along_track = bank.along_track;
+                        unit_.db_flyabove_cross_track = bank.cross_track;
+                        // 009C688F / 009C68E1 clear +19h. READ and NOT applied:
+                        // in the image +19h persists across ticks and this
+                        // host recomputes it from 009C67B0's rule alone in the
+                        // state feed, before the transition rule and before
+                        // this tick, so a clear written here would be
+                        // overwritten before anything could read it. Modelling
+                        // it means giving +19h its own carried state, which is
+                        // the 009C6A30/009C6826 pair as well, and that is a
+                        // packet rather than a line. `bank.clear_roll_in_19` is
+                        // carried for the census only.
+                        bsp::DiveBombFlyAboveCommandInputs in;
+                        // 009C6DCD / 009C6DDA: the latch suppresses the write.
+                        in.suppress_heading_1c = bank.latched_1c;
+                        // 009C6A37-009C6A9F then 009C6D6F-009C6DC8. A is
+                        // AddWrappedAngle(C, deadband) when 009C6A46's JBE is
+                        // not taken and the raw bearing otherwise; the slew
+                        // then takes SubtractWrappedAngle(A, C) back off, so
+                        // the delta the clamp sees is the dead-band output
+                        // either way. L is pi/2: the 10-degree L of 009C6497
+                        // needs flyabove+1Bh, which is 0 in this installation
+                        // (kOldStyleBombing1b).
+                        in.heading_to_aim_point =
+                            bsp::dive_bomb_flyabove_slew_009c6d6f(
+                                unit_.plane_heading_c6c,
+                                bsp::wrapped_angle_add_00438aa0(
+                                    unit_.plane_heading_c6c,
+                                    bsp::dive_bomb_flyabove_dead_band_009c6a37(
+                                        bearing_error, bank.dead_band_t)),
+                                bsp::dive_bomb_flyabove_constant::
+                                    kHeadingSlewLimit);
+                        const bsp::DiveBombFlyAboveCommand r =
+                            bsp::dive_bomb_flyabove_command_009c6dcd(in);
+                        if (!r.wrote_heading) ++unit_.db_flyabove_latched_ticks;
                         if (r.wrote_heading) {
                             ++unit_.db_flyabove_heading_writes;
                             unit_.db_flyabove_heading_last = r.heading_2c0;
@@ -9604,6 +9708,23 @@ void GameUnitsHost::report() {
                         static_cast<double>(slot->db_aimdive_entry_bearing),
                         static_cast<double>(slot->db_aimdive_min_range),
                         slot->db_aim_state_ticks, trace);
+                    // Packet cc8_dive_flyover: the bank arm's own census. `bl`
+                    // is 009C67BF, `latch` the 009C6919 flyabove+1Ch, `sup` the
+                    // ticks 009C6DDA skipped the heading write, `T` the dead
+                    // band as it last reached 009C6A43, `along`/`cross` the two
+                    // 009C68D4 / 009C6889 distances on the last bank tick.
+                    host.log.notef("  divebomb %-12s flyabove bank: bl=%d "
+                        "latch=%d@%d sup=%d T=%.4f rad along=%.1f m "
+                        "cross=%.1f m turn_circle=%.1f m",
+                        slot->row.name.c_str(),
+                        slot->db_flyabove_bl_ticks,
+                        slot->db_flyabove_bank_latch_1c ? 1 : 0,
+                        slot->db_flyabove_latch_tick,
+                        slot->db_flyabove_latched_ticks,
+                        static_cast<double>(slot->db_flyabove_dead_band_t),
+                        static_cast<double>(slot->db_flyabove_along_track),
+                        static_cast<double>(slot->db_flyabove_cross_track),
+                        static_cast<double>(slot->plane_turn_circle_radius));
                 }
                 }
             }
