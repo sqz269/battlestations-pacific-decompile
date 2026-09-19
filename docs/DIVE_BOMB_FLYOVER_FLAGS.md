@@ -167,33 +167,33 @@ dogfight-excluded-self, `0x17` kamikaze-capable-self, `0x1C` structure. A byte s
 call shape (`8B 42 5C 6A ?? FF D0`) finds 267 sites across the image with small enum literals, which
 is what a generic class test looks like.
 
-So `009C64EC` is **`aircraft->IsKindOf(0x14)`**, and `0x14` is a kind the repository has not named.
-Two consequences:
+So `009C64EC` is **`aircraft->IsKindOf(0x14)`**. That predicate decides the whole behavioural change
+this packet makes: if it were true, `BL` would be 0 on every tick, the bank arm would never run,
+`T` would stay at `009C6674`'s value, and `009C6674` gives 0 for every span at or above 200 m -
+most of the fly-over. With `T <= 0` the dead band at `009C6A46` is skipped and the commanded
+heading *is* the bearing, exactly what this host did before this packet. So it was worth settling
+rather than labelling, and it is **settled**.
 
-* it is a **class** test, so for a given aircraft type it is constant for the whole mission - not a
-  per-tick state. For the D3A Val it is either always true or always false;
-* it is a self-test in the same family as `0x10` and `0x17`, and `009C64FC`'s JNE reads "if this
-  aircraft IS kind 0x14, do not run the bank arm". The bank arm is the dive-bomb fly-over's
-  roll-in machinery, so a dive bomber being the excluded kind would make it dead code for the very
-  aircraft it exists for. That is the argument for taking it `false` - an argument, not evidence.
+**Kind `0x14` is the RECON PLANE.** Two independent scans agree:
 
-It is a **labelled substitution**, taken as `false`.
+* the only store of `14h` to the class-id field `+C4h` anywhere in the image is `0074E145`, inside
+  `BSP_ReconPlaneUnitInstance_Construct` at `0074E0F0`. The same scan shape
+  (`c7 ?? c4 00 00 00 ?? 00 00 00`) finds 90 other sites carrying other ids, so this negative is
+  not a vacuous byte scan - the pattern is known to occur;
+* every function in the image that tests `14h` at all (`83 f8 14 74`) is a recon class:
+  `BSP_MReconPlane_IsKindOf`, `BSP_MLargeReconPlane_IsKindOf`, `BSP_MSmallReconPlane_IsKindOf`,
+  `BSP_ReconPlaneClass_IsKindOf`, `BSP_Recon_PublishRelationCategories`, and the two constructors
+  `BSP_VehicleClass_ConstructSmallReconPlane` and `BSP_VehicleClass_ConstructLargeReconPlane`.
 
-**This single substitution decides the whole behavioural change, and that has to be said plainly.**
-If the query returns true, `BL` is 0 on every tick, the bank arm never runs, `T` is whatever
-`009C6674` left, and `009C6674`'s value is 0 for every span at or above 200 m - which is most of
-the fly-over. With `T <= 0` the dead band at `009C6A46` is skipped and the commanded heading *is*
-the bearing, i.e. exactly what this host did before this packet. So the two readings are:
+The concrete `IsKindOf` body reached from this unit's table, `00953530`, accepts the ancestor
+literals `{0, 1, 2, 4, 5, 0Fh, 12h}` and the instance's own `[ECX+C4h]`; `14h` is in neither for a
+bomber. So `009C64FC` reads **"if this aircraft is a recon plane, do not run the bank arm"** - the
+fly-over skips its roll-in geometry for reconnaissance aircraft, which is why the arm exists behind
+a class test at all - and for a dive bomber the predicate is false and the arm runs.
 
-* query false (taken here): the bank arm runs, `T` is 10-35 degrees, the fly-over holds heading
-  inside the dead band. This is what the run below measures.
-* query true: the fly-over commands the bearing, and the host was already right.
-
-Nothing in this packet distinguishes them. Naming kind `0x14` and deciding whether the D3A Val
-answers it is the single highest-value follow-up to this reading, and it should be settled before
-the behavioural change is taken as final - it is one class-id lookup, not a trace, now that
-`vtable[5Ch]` is known to be `IsKindOf`. The measurement below stands either way: it is what the
-host does with the query taken `false`.
+The host passes `is_recon_plane = false` as a **bound value, not a substitution**, and the run
+below measures the image's own branch. The only input still unbound in this arm is the avoidance
+increment `009C6D59` takes from `007F0280`.
 
 ## 4. What is bound, and the prediction written before the run
 
