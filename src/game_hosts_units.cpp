@@ -1038,10 +1038,34 @@ struct GameUnitSlot {
 std::uint32_t g_hull_aim_pick_counter = 0;
 
 // 00816650 is reached only through the nine unit vtables that carry it; the
-// plane, land-vehicle and land-fort classes carry 0042D810, the origin. The
-// kind ids are 00964790's, in include/bsp/vehicle_class.hpp.
+// plane, land-vehicle and land-fort classes carry 0042D810, the origin.
+//
+// CORRECTED after the first USN04 pair measured nothing. This tested
+// `class_id == kVehicleClassIsShipKind` (6), but that constant is one of
+// 00964790's KIND TESTS (include/bsp/vehicle_class.hpp:176), not the leaf
+// class_id this host stores on the slot. The run's own rows settle it:
+// York-class02 kind=10, Lexington-class01 kind=9, Fletcher-class01 kind=7 -
+// never 6 - so the predicate was false for every ship and the feed was inert.
+//
+// The ship family is the one src/game_hosts_ship_ai.cpp:73 already enumerates
+// as has_ship_navigation_class. That function is in another translation unit's
+// anonymous namespace, so the switch is restated rather than called; keep the
+// two in step. It is the right family on the evidence side too: planes, land
+// vehicles and land forts are exactly the families carrying 0042D810.
 bool hull_aim_target_samples_hull(const GameUnitSlot& target) {
-    return target.class_id == bsp::kVehicleClassIsShipKind;
+    switch (static_cast<bsp::VehicleClassKind>(target.class_id)) {
+    case bsp::VehicleClassKind::Destroyer:
+    case bsp::VehicleClassKind::Submarine:
+    case bsp::VehicleClassKind::MotherShip:
+    case bsp::VehicleClassKind::Cruiser:
+    case bsp::VehicleClassKind::Cargo:
+    case bsp::VehicleClassKind::LandingShip:
+    case bsp::VehicleClassKind::BattleShip:
+    case bsp::VehicleClassKind::TorpedoBoat:
+        return true;
+    default:
+        return false;
+    }
 }
 
 // The world aim point for `shooter` against `target`. Returns false when the
