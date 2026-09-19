@@ -160,6 +160,32 @@ present position (H1), or it is seeded once when the target is assigned and neve
 Neither is a lead, and neither supports adding a lead term. H2 would be a divergence in the opposite
 direction, and it is the one worth testing if this stream is picked up again.
 
+## 3.3 What the image does instead of leading
+
+The crossing angle of section 2 is not discarded. `009D174C` stores
+`abs(SubtractWrappedAngle(own_heading, target_heading))` into the frame slot `F+2Ch`, and
+`009D1F9F` reads it back (`[ESP+34h]` there, because `EBX`/`EBP` are pushed at
+`009D1BBC`/`009D1BBD` and not popped until `009D22E2`/`009D22E9`), takes `FCOS` at `009D1FA3`, and
+takes the bit-level absolute value at `009D1FBF`. That `|cos(aspect)|` is the last argument of the
+`BSP_Math_InterpolateClamped` call at `009D1FED`, whose result scales the range threshold that the
+comparison at `009D2008` tests, writing the aim-solution byte `approach+130h` at `009D2021`.
+
+**So the image answers target motion with a release *gate*, not with an aim offset**: aspect decides
+*when* the aircraft may declare a solution and drop, while *where* it aims stays the target's
+position with no lead. That is a coherent design, and it is the reason a no-lead attack is not
+simply broken.
+
+This is confirmation of existing work, not a new finding: the host already binds this chain, in
+`src/torpedo_aim_tick.cpp:91` `torpedo_aim_solution_009d2021`, with the constants
+`kAspectX0 = 0.5f` (`00CE3800`), `kAspectY0`/`kAspectX1` from the two `FLD1`s, and `approach+84h`
+read at `009D1FD0`. I re-derived it from the listing while looking for a lead and record it here
+because it is the piece that makes the no-lead reading make sense.
+
+**Not established**: whether a larger `|cos|` lengthens or shortens the permitted release range. That
+needs `InterpolateClamped`'s argument order and the constants read together, which this packet did
+not do. The five USN01 rounds do not settle it either - the two that hit were against a **stationary**
+ship, where aspect cannot matter.
+
 ## 4. The host, and why there is nothing to bind
 
 `src/game_hosts_units.cpp:4741` `approach_target_point` is the host's stand-in for
