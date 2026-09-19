@@ -172,6 +172,28 @@ This host already models the first of the three: `weapon_director_step_prepass_0
 `src/unit_commanded_speed.cpp` raises the stage when `state.unit_player_controlled`. The other
 two are not modelled and are named here rather than fixed.
 
+> **Correction, packet `cc8_ship_command`.** The last sentence is wrong: **all three are
+> modelled**, and had been since `f8abcd529` (2026-09-11), which is an ancestor of this doc's own
+> commit. The claim was written without grepping the host.
+>
+> * `00836AAD` is `weapon_director_stop_arm_00836a8b`'s second test,
+>   `if (!raise) raise = state.unit_player_controlled;`. The image raises when
+>   `[unit+184h]` is set (`00836AB4 JNZ 00836ACE`), otherwise when the commanded speed is **not**
+>   below `00D7A218` (`00836AC8 JC 00836D67` keeps the `stop` running). `00D7A218` is the float
+>   0.0 and `navigator_commanded_speed_active` treats 0.0 as active, so the host's
+>   `raise = count>1 || player || active(speed)` is the same predicate.
+> * `00836E45` is `weapon_director_idle_reissue_00836dc9`'s
+>   `const bool cruise = state.unit_player_controlled || navigator_commanded_speed_active(...)`.
+>   The image jumps to the `00E08F70` `cruise` push when `[unit+184h]` is set
+>   (`00836E4C JNZ 00836E7A`) and again when the speed is not below 0.0 (`00836E60 JNC`), and
+>   pushes `00E08F88` `stop` only otherwise. Same predicate, same two pushes.
+>
+> Both branch senses were re-read from the listing to check the host's modelling is correct and
+> not merely present. `docs/SHIP_COMMAND_LIFETIME.md` section 1 has the whole stage spine, and it
+> also corrects what this section's `+184h` framing left out: `00836962`'s **other** arm,
+> `0071BE60() > 1`, ends a running command for any unit, controlled or not, and that arm - not the
+> `+184h` one - is what ended the Yorktown's `moveonpath`.
+
 `unit+184h` is named "the controlled-unit byte" on the strength of the `009F3DF3` note
 `src/game_hosts_ship_ai.cpp` already carries, plus these two uses and
 `009281C0`, which clears it when controller slot 0 takes state 8

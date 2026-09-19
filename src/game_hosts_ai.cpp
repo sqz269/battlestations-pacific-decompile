@@ -2117,11 +2117,41 @@ void GameAiCoordinatorHost::Impl::order_attack(void* group, void* target, float 
     if (current_party >= 0) ++party_row(current_party).attack_orders;
     done("AiPlanners::order_attack", 0x00a2cbd0u);
 
-    // The substitution for 00A2C790's unread member->vtable[+114h]: each member
-    // gets the order as a scene command. The token is the member's own weapon
-    // kind, because the 26-row registry has no single "attack": a plane takes
-    // `dogfight` against a plane group and `attackmove` against a surface one,
-    // and a ship takes `artillery`. docs/ENTITY_LUA_ORDER_PATH.md.
+    // Packet cc8_ship_command. `00A2C790`'s `vtable[+114h]` is now read, and it
+    // is not an order arm. The member pass calls it three times per member
+    // (00A2C7F5, 00A2C805, 00A2C81A) and the answer feeds
+    // `0071EB60 BSP_EntityCommand_ActiveTargetDescriptor` and
+    // `0071BE40` current-command, whose pair goes to the group command's own
+    // `vtable[+24h]` at 00A2C839: the pass READS every member's director and
+    // reports it upward. `00A2CBD0`'s callee list carries neither `00A02020`
+    // nor `0077D600`, so the attack order itself reaches no member either.
+    //
+    // A member is reached only by the command's `vt+0Ch` tick, through
+    // `00A02020`, the one bridge (docs/AI_COMMAND_TICK.md). There the split is
+    // by kind, not by token: `00A10DC0`'s follower pass hands a SHIP follower
+    // `0077C8D0 BSP_Entity_RequestJoinFormation` and pushes no command at all
+    // (00A10E3E, 00A10E61), and only the leader and squadron followers reach
+    // `00A02020`, whose one descriptor is `00E08F68 moveto`.
+    //
+    // So a SHIP member must receive no scene command here, leader or follower:
+    // a follower's only contact is `0077C8D0`, and a ship leader's order is the
+    // `moveto` the class tick already issues through `00A02020`
+    // (`ai_command_tick`'s `tick_orders`).
+    //
+    // Issuing an `artillery` on top is what ended the USN04 Yorktown's
+    // `moveonpath`, and the measured mechanism is blunter than a stage raise: a
+    // scene command REPLACES the whole queue. The trace row is
+    //   349.29s issue scene/attackmove  slots 3 -> 1  moveonpath -> attackmove
+    // - three filled slots become one and the new command is the head, so the
+    // path order is discarded outright rather than terminated. That is the same
+    // replace semantics 0077D600 has in the image, which is exactly why the
+    // image never sends a scene command to a ship follower.
+    // docs/SHIP_COMMAND_LIFETIME.md.
+    //
+    // The plane tokens stay: a squadron follower IS reached by `00A02020`, and
+    // the 26-row registry has no single "attack", so the member's own weapon
+    // kind is still the labelled substitution for the token
+    // (docs/ENTITY_LUA_ORDER_PATH.md) - a stand-in, and named as one.
     const std::string target_name = t->members.empty() ? std::string()
         : unit_name(t->members.front());
     const bool target_is_air = !t->members.empty() &&
@@ -2129,6 +2159,10 @@ void GameAiCoordinatorHost::Impl::order_attack(void* group, void* target, float 
     for (const std::size_t member : g->members) {
         const bool member_is_air = units.unit_is_kind_of(member,
             bsp::kUnitGunneryKindPlaneBase);
+        if (units.unit_is_kind_of(member, bsp::kUnitGunneryKindShipBase)) {
+            ++summary.ship_members_not_ordered;
+            continue;  // 00A10E3E / 00A2CBD0: no scene command reaches a ship
+        }
         const char* token = "artillery";
         if (member_is_air) token = target_is_air ? "dogfight" : "attackmove";
         issue_to_member(member, token, target_name, current_party);
@@ -2364,7 +2398,7 @@ void GameAiCoordinatorHost::report() {
         "splits_taken=%llu auto_merges=%llu prox_merges=%llu member_passes=%llu "
         "tick_orders=%llu tick_followers=%llu formation_requests=%llu promotions=%llu "
         "collect_dist=%.1f served=%llu attackmove=%llu settarget=%llu fallback=%llu "
-        "scored=%llu",
+        "scored=%llu ship_members_not_ordered=%llu",
         s.game_mode, s.compose_passes, s.seed_candidates, s.groups_created,
         s.groups_destroyed, s.members_added, s.members_evicted, s.splits,
         s.splits_taken, s.auto_merges, s.proximity_merges, s.member_passes,
@@ -2372,7 +2406,8 @@ void GameAiCoordinatorHost::report() {
         s.command_promotions,
         static_cast<double>(host.tuning.at(bsp::kAiTuningCloseAttackCollectDist)),
         s.close_members_served, s.close_attack_move_orders, s.close_set_target_orders,
-        s.close_fallback_movetos, s.close_candidates_scored);
+        s.close_fallback_movetos, s.close_candidates_scored,
+        s.ship_members_not_ordered);
     host.log.notef("summary mission ai tuning mode=%d (%s) merge_dist=%.1f "
         "near=%.1f far=%.1f sticky=%.2f",
         s.tuning_mode, bsp::ai_tuning_mode_table_name(
