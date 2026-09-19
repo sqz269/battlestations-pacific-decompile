@@ -69,12 +69,21 @@
       "was": "state+1Ch, the altitude both 009D109C and 009D1194 command, has no producer in this document.",
       "is": "009D0D90 BSP_BotStateTorpedoGoAway_Enter (body 009D0D90-009D0F04) writes it at 009D0E88 as UniformFloatRange(50.0, 100.0) plus approach+78h + approach+74h when approach+132h is set, else ctl+394h. It writes state+2Ch, +24h, +28h, +30h, +34h and +20h too.",
       "evidence": "The plate comment on 009D0D90 carries packet cc8_torpedo_goaway_release's extent correction past 009D0E3A to 009D0F04. I had read only docs/TORPEDO_GOAWAY_RELEASE.md section (2)'s summary line and not that document's own correction section."
+    },
+    {
+      "doc": "this packet's own earlier advice on task+41Ch",
+      "was": "in.speed_ratio_41c = 1.0f needs task+41Ch's producer and is worth a packet of reading.",
+      "is": "it has a known formula: 009F9D37 FLD [EAX+188h] is desc+188h MaxSpd divided by the reference 009C3EC4 loads from [EAX+4D8h], max(., 1.0), stored to approach+24h at 009F9D61. A binding in its own window, not a packet of reading.",
+      "evidence": "agent/cc8-dive-bomb confirmed it from the listing after the lead pointed at an earlier packet of theirs."
     }
   ],
   "goaway_tick": {
     "structure": "high = unitY > state+20h (009D0F3C JBE -> 0); 009D0C10 heading update; countdown state+28h -= dt while approach+90h < state+24h - 100.0; state+30h += dt; re-seed state+34h = jitter(3.0, 6.0), state+28h = jitter(row+10h, row+14h) + state+34h, state+30h = -state+34h/2 when state+28h < 0 and high; then the manoeuvre window state+30h < state+34h selects the arm.",
     "window_arm": "009FB800(state+1Ch, 1.0) and a roll cmd+2C4h = clamp(2 * state+2Ch * state+30h, -1.2, 1.2) with cmd+2CCh = 1 when unitY > 20.0; otherwise 009FB800(1000.0, 1.0) with cmd+2C0h = state+18h and cmd+2CCh = 2.",
     "post_window_arm": "009FB800(state+1Ch, 1.0) always; then cmd+2C0h = state+18h with mode 2 when high, else cmd+2C4h = 0.0 with mode 1.",
-    "unread_dependencies": "ONE remains: 009D0C10 BSP_BotStateTorpedoGoAway_UpdateGeometry, body 009D0C10-009D0D87, called first at 009D0F46, which fills state+18h, the heading both arms write to cmd+2C0h. Nothing else in the band writes it. state+1Ch, +2Ch, +24h, +28h, +30h, +34h and +20h all have producers in the enter 009D0D90."
-  }
+    "unread_dependencies": "009FD570 and the vtable[0] call before it, which together produce the break-off bearing, and 007F0280s output triple at this call site. Both must be read before 009D0F10 can be bound: substituting either commands a heading that is not the image's. 007F0280 is shared with the aim tick sector probe and both attack-run ticks, so its contract is worth reading once for all of them.",
+    "completion_predicate": "009D3150 is a pure range test, approach+90h > state+24h, with an optional * 0.4 arm gated on ctl+369h and the global at 00E17BF2, both off in this host. No altitude condition, unlike the dive bomb 009C7F00 that cost agent/cc8-dive-bomb a run. The aimclass run reads enters=1 break_off_24h=700.0 range_peak_in_goaway=382.2 done_last=0 on every aircraft, so a binding will not be cut off after one tick.",
+    "geometry_009d0c10": "state+18h = AddWrappedAngle(unitHeading, turn), where turn = clamp(SubtractWrappedAngle(bearing, unitHeading), -0.5235988, +0.5235988) (00CEC728 / 00CEC724, +/- DEG(30)), pushed by probe * 0.6981317401 (00D20CC0, a double, DEG(40)) when the terrain probe from 007F0280 disagrees with the turn sign. state+2Ch, the +/-1 side the enter draws, is an argument to the bearing call, which is what makes the break-off turn left or right."
+  },
+  "independent_confirmation": "agent/cc8-dive-bomb's tools/const_width_sweep.py (main 616382183) with its --load-sites mode, run blind over all 697 constants in include/bsp in a tree that still carried 0.05625f, produced exactly one wrong-width finding: kPitchClampLo. It was told nothing about this packet."
 }
