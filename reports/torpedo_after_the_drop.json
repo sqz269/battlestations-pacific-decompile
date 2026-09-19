@@ -1,0 +1,53 @@
+{
+  "packet": "cc8_torpedo_after_the_drop",
+  "owner": "agent/cc8-plane-squadron",
+  "doc": "docs/TORPEDO_AFTER_THE_DROP.md",
+  "summary": "The run's deaths=5 kill_credits=5 are the five Mav torpedo bombers shot down by Dunlap, Northampton and SaltLakeCity after they dropped; no ship sank and not one point of the mission's 2596.8 damage is attributable to a torpedo. All five torpedoes entered the water and swam at 30.9 m/s, and all five missed.",
+  "routines": [
+    {
+      "address": "009d0f10",
+      "name": "BSP_BotStateTorpedoGoAway_Tick",
+      "abi": "void __thiscall(this, float dt)",
+      "coverage": "not started: only its three direct 009FB800 call sites and their literal 1.0 second argument are established, from packet cc8_torpedo_descent_law."
+    }
+  ],
+  "host_steps": [
+    {
+      "host": "BotStateTorpedoGoAway::climb_out",
+      "address": "009d109c",
+      "native": "009fb800",
+      "function": "009d0f10",
+      "note": "Second argument is the literal 1.0 from 009D107A FLD1 / 009D1084 SUB ESP,8 / 009D1087 FSTP [ESP+4], capping the climb at class+1ECh * 1.0 = 0.1854 rad for the Mav. Unbound in this host."
+    },
+    {
+      "host": "BotStateTorpedoGoAway::climb_out",
+      "address": "009d1194",
+      "native": "009fb800",
+      "function": "009d0f10",
+      "note": "Its own literal 1.0 at 009D1158 FLD1."
+    }
+  ],
+  "attribution": {
+    "deaths": "five, all Mav torpedo bombers",
+    "killed_by": "Mav1 Dunlap 133.50 s; Mav2 Northampton 136.95 s; Mav3 Northampton 109.15 s; Mav4 SaltLakeCity 134.25 s; Mav5 SaltLakeCity 109.80 s",
+    "ships_sunk": "none; every other unit row carries sunk_at -1.00",
+    "damage_decomposition": "five Mavs at 450 taken each = 2250.0, plus SaltLakeCity 347.0, equals 2597.0 against the summary's 2596.8. SaltLakeCity's 347 is exactly the side-1 guns' dealt column: CB2 127 + Coastal Gun 03 79 + Coastal Gun 02 53 + Coastal Gun 01 88.",
+    "torpedo_damage": "none. hit_records=111 and entity_impacts=111 are the gun-hit count."
+  },
+  "torpedo_fate": {
+    "drops": 5,
+    "water_entry_breakups": 0,
+    "swims_started": 5,
+    "release_altitude_m": "12.0 to 12.1",
+    "release_speed_ms": "72.9 to 73.7",
+    "swim_speed_ms": 30.9,
+    "release_time_s": "about 78 to 88, bracketed by gunnery step 1600 t=80.00",
+    "release_range_m": "about 700, interpolated from the aim census at tick 151 (1084 m) and the timer's first fire at aim tick 253",
+    "outcome": "none hit. The host's swim is not a stub: the round is levelled onto the surface plane at the swim speed with its launch heading, gravity disabled through the flight state's classDesc+20h flag, and continues through the same entity sweep, so it can hit.",
+    "open": "Whether anything in the chain leads a moving target over the roughly 23 seconds of run is unread. 009D1360 writes approach+A0h (the fall lead) and approach+98h (the run time), and 009D3D12 reads +98h as the bias of the engagement estimate at +F8h; whether either reaches the commanded heading is not established. The commanded heading is approach+94h, the bearing to the plan target at approach+ACh/+B0h, plus the sector offset approach+5Ch."
+  },
+  "validation": {
+    "run": "local/aimclass_after_usn01.log",
+    "note": "read-only analysis of an existing run; no code changed in this part of the packet"
+  }
+}
