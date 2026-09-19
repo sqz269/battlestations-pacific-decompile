@@ -238,3 +238,38 @@ An exhaustive `store_census` over the throttle slot's `desired` at `plan+278h`
 
 **So the native does cut a bot's throttle, and this doc looked for it in the right spirit and the
 wrong place.** `docs/PILOT_BOT_THROTTLE_ARM.md`.
+
+## Correction from packet `cc8_torpedo_descent_law`: the span is not always zero, and the interpolation is the descent scale
+
+The negative result stands: **step 4 commands no throttle**, and `009D0A63`'s
+`InterpolateClamped(0.1, 0.35, 0.4, 0.8, .)` is not a throttle value. What it is, and the claim that
+it reaches nothing, are corrected here.
+
+* **was**: "span is ALWAYS zero from this site: `009D07E4` writes `approach+90h` into the rangeLow
+  local at the head and `009D0A08` writes `approach+90h` into the rangeHigh local just before the
+  call ... So the interpolation runs every tick and reaches nothing", and therefore "a host that
+  passes `rangeLow = rangeHigh = 0` there reproduces the native's commanded altitude exactly".
+* **is**: `009D07E4 MOVSS [ESP+0xc],XMM0` and `009D0A2A MOVSS [ESP+0x20],XMM0` are the **same slot**.
+  `009D0A23 SUB ESP,0x14` sits between them, so `[ESP+0x20]` after the subtract is `[ESP+0xc]`
+  before it, and `009D0A2A` **overwrites** the head's `approach+90h` with the release distance
+  `approach+7Ch` or `+80h` that `009D0A0E` selects on the 15-second switch - three instructions
+  before the call. `009D0A79 FLD [ESP+0x1c]`, after `009D0A68 SUB ESP,0x10`, reads that slot, so
+  `rangeLow` is the **release distance** and `rangeHigh` is `approach+90h`. The span is
+  `max(range - releaseDist, 0)`, it is large for the whole run-in, and `009FBA50`'s bias term
+  `span * scale * class+518h` with `class+518h = tan(DropAngle)` is the **glide slope** that brings
+  the aircraft down to the release altitude at the release distance.
+* **evidence**: the frame is `SUB ESP,0x3C` + `PUSH ESI`/`PUSH EDI`, with `PUSH EBX` at `009D07FE`
+  balanced by `POP EBX` at `009D08C3` and every `SUB ESP` in between belonging to a callee that
+  cleans its own arguments (`00419010 RET 14h`, `00438AA0 RET 8`), so `ESP` at `009D07E4`,
+  `009D0A08` and `009D0A23` is the same value. Decisively, a run with the four real arguments prints
+  `low=650.0` at 4183 m range and `low=450.0` after the 15-second switch, with `span=3533.4` and a
+  commanded altitude of 761.9 m - not the 12.0 m a zero span gives.
+* **consequence**: the recommendation "a host that passes `rangeLow = rangeHigh = 0` there
+  reproduces the native's commanded altitude exactly" is **struck**. That substitution is what made
+  `src/game_hosts_units.cpp` command a flat 12 m from 4 km out, and with the saturated pitch
+  reference it put all five of USN01's torpedo bombers in the sea eleven seconds into the mission.
+  `docs/TORPEDO_DESCENT_LAW.md`.
+
+The fourth argument's name is also corrected: it is neither a throttle nor a discarded return value.
+`009FBB06 FSTP [ESP+4]` hands it to `009FB800` as the clamp on `t`, which is what decides how much
+of the `DEG(60)` dive cap the aircraft may ask for.

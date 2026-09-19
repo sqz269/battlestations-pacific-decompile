@@ -3898,24 +3898,30 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         void command_altitude_and_throttle(void*, float base,
                                                            float range_low,
                                                            float range_high,
-                                                           float) override {
+                                                           float scale) override {
                             // 009FBA50 then 009FB800, the chain step 4 of the
                             // attackrun tick 009D07B0 runs. 009FBA50 biases the
                             // base by span * scale * class+518h only when
                             // span = max(range_high - range_low, 0) is positive,
                             // clamps against Dynamics/Ceiling - 50, and hands
                             // 009FB800 the CLAMPED altitude as its first
-                            // argument and the UNCLAMPED one as its second.
-                            // 009FB800 then writes cmd+2BCh and cmd+2D0h = 2.
-                            // docs/PLANE_FLIGHT.md and
-                            // docs/TORPEDO_RUN_IN_DESCENT.md.
+                            // argument and its OWN FOURTH ARGUMENT as its
+                            // second. 009FB800 then writes cmd+2BCh and
+                            // cmd+2D0h = 2. docs/TORPEDO_DESCENT_LAW.md.
                             bsp::PlaneCruiseAltitudeInputs cin;
                             cin.base_altitude = base;
                             cin.range_low = range_low;
                             cin.range_high = range_high;
-                            // The squadron altitude limit squadron+394h and the
-                            // per-class gain class+518h are unmodelled; with
-                            // span at zero the gain is unreachable anyway.
+                            cin.scale = scale;
+                            // class+518h, derived at 007C4A3F/007C4A44 as
+                            // tan(desc+1F0h DropAngle), so the bias term is
+                            // horizontalDistance * scale * tan(DropAngle) and
+                            // the commanded altitude IS a glide slope.
+                            // docs/BOT_TASK_STATES.md line 564.
+                            cin.class_gain = static_cast<float>(
+                                std::tan(static_cast<double>(slot_.plane_drop_angle)));
+                            // The squadron altitude limit squadron+394h, the
+                            // ctl+394h leg of 009FBA9B, is unmodelled.
                             cin.has_squadron = false;
                             if (owner_.lua.plane_globals_loaded()) {
                                 cin.ceiling = owner_.lua.plane_globals().dynamics_ceiling;
@@ -3924,7 +3930,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 bsp::cruise_altitude_command_009fba50(cin);
                             bsp::PlanePitchCommandInputs pin;
                             pin.desired_altitude = c.clamped_altitude;
-                            pin.reference = c.unclamped_altitude;   // 009FBB03
+                            pin.reference = c.pitch_reference;      // 009FBB06
                             pin.unit_world_y = slot_.motion.position[1];
                             pin.ceiling = cin.ceiling;
                             if (owner_.lua.plane_globals_loaded()) {
@@ -4545,6 +4551,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         cin.base_altitude = r.commanded_altitude_base;
                         cin.range_low = in.attack_distance_b4;
                         cin.range_high = in.attack_distance_b4;
+                        // CORRECTION, packet cc8_torpedo_descent_law, for the
+                        // owner of src/dive_bomb_task.cpp: 009C43CD's
+                        // InterpolateClamped result is NOT a throttle. 009C43D5
+                        // FSTP [ESP+0xc] makes it 009FBA50's arg3, which
+                        // 009FBB06 hands to 009FB800 as the reference - the same
+                        // slot and the same constants (00D7A2F0 = 0.1,
+                        // 00CE7804 = 0.4) as the torpedo attackrun's 009D0A63.
+                        // The full throttle this state commands is the literal
+                        // 1.0 at 009C4413 above. The field keeps its name here
+                        // because renaming it reaches into another lease.
+                        cin.scale = r.commanded_throttle;
+                        cin.class_gain = static_cast<float>(
+                            std::tan(static_cast<double>(unit_.plane_drop_angle)));
                         cin.has_squadron = false;
                         if (owner_.lua.plane_globals_loaded()) {
                             cin.ceiling = owner_.lua.plane_globals().dynamics_ceiling;
@@ -4553,7 +4572,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::cruise_altitude_command_009fba50(cin);
                         bsp::PlanePitchCommandInputs pin;
                         pin.desired_altitude = c.clamped_altitude;
-                        pin.reference = c.unclamped_altitude;
+                        pin.reference = c.pitch_reference;  // 009FBB06, not the altitude
                         pin.unit_world_y = unit_.motion.position[1];
                         pin.ceiling = cin.ceiling;
                         if (owner_.lua.plane_globals_loaded()) {
@@ -5045,17 +5064,38 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // and step 5's four command bits are not run. The
                             // heading those steps would write is the same raw
                             // bearing the yaw arm already uses here.
+                            //
+                            // CORRECTED, packet cc8_torpedo_descent_law: the
+                            // three zeros this used to pass were the whole of
+                            // the plunge. 009D0951-009D0A92 computes all four
+                            // arguments, and 009FBA50's range term is the glide
+                            // slope that brings the aircraft down to the release
+                            // altitude AT the release distance rather than
+                            // straight away. docs/TORPEDO_DESCENT_LAW.md.
                             const bsp::TorpedoApproachState& ap =
                                 unit_.torpedo_approach;
+                            bsp::TorpedoAttackRunAltitudeInputs ain;
+                            ain.alt_floor_74 = ap.alt_floor_74;
+                            ain.alt_margin_78 = ap.alt_margin_78;
+                            ain.speed_late_7c = ap.speed_late_7c;
+                            ain.speed_early_80 = ap.speed_early_80;
+                            ain.range_90 = ap.range_90;
+                            ain.elapsed_134 = ap.elapsed_134;
+                            ain.unit_world_y = unit_.motion.position[1];
+                            ain.drop_angle = unit_.plane_drop_angle;
+                            const bsp::TorpedoAttackRunAltitudeCommand acmd =
+                                bsp::torpedo_attack_run_altitude_009d0951(ain);
                             binding.command_altitude_and_throttle(
-                                nullptr, ap.alt_margin_78 + ap.alt_floor_74,
-                                0.0f, 0.0f, 0.0f);
+                                nullptr, acmd.base, acmd.range_low,
+                                acmd.range_high, acmd.scale);
                             ++unit_.torpedo_attackrun_altitude_commands;
                             if ((unit_.torpedo_attackrun_altitude_commands % 50) == 1) {
                                 owner_.log.notef("  torpedo %-12s descent census "
                                     "n=%d base=%.2f (74h=%.2f 78h=%.2f) "
                                     "commanded=%.2f live_alt=%.1f pitch_demand=%.4f "
-                                    "pitch=%.4f drop_angle=%.4f climb_1ec=%.4f",
+                                    "pitch=%.4f drop_angle=%.4f climb_1ec=%.4f "
+                                    "| range=%.1f low=%.1f span=%.1f margin=%.1f "
+                                    "denom=%.1f scale=%.4f gain=%.4f slope_deg=%.2f",
                                     unit_.row.name.c_str(),
                                     unit_.torpedo_attackrun_altitude_commands,
                                     static_cast<double>(ap.alt_margin_78 + ap.alt_floor_74),
@@ -5066,7 +5106,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     static_cast<double>(unit_.plane_commanded_pitch),
                                     static_cast<double>(unit_.plane_pitch_angle_c64),
                                     static_cast<double>(unit_.plane_drop_angle),
-                                    static_cast<double>(unit_.plane_climb_angle_1ec));
+                                    static_cast<double>(unit_.plane_climb_angle_1ec),
+                                    static_cast<double>(acmd.range_high),
+                                    static_cast<double>(acmd.range_low),
+                                    static_cast<double>(
+                                        acmd.range_high - acmd.range_low > 0.0f
+                                            ? acmd.range_high - acmd.range_low : 0.0f),
+                                    static_cast<double>(acmd.margin),
+                                    static_cast<double>(acmd.denom),
+                                    static_cast<double>(acmd.scale),
+                                    static_cast<double>(acmd.class_gain),
+                                    static_cast<double>(
+                                        std::atan(acmd.scale * acmd.class_gain) * 57.2957795));
                             }
                         }
                         // The flag is deliberately NOT cleared when the task
@@ -5454,7 +5505,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::cruise_altitude_command_009fba50(cin);
                         bsp::PlanePitchCommandInputs pin;
                         pin.desired_altitude = c.clamped_altitude;
-                        pin.reference = c.unclamped_altitude;
+                        pin.reference = c.pitch_reference;  // 009FBB06, not the altitude
                         pin.unit_world_y = unit_.motion.position[1];
                         pin.ceiling = cin.ceiling;
                         if (owner_.lua.plane_globals_loaded()) {

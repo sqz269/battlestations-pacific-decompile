@@ -278,7 +278,14 @@ float heading_command_009f9e40(float target_x, float target_z, float unit_x, flo
 // ---------------------------------------------------------------------------
 struct PlanePitchCommandInputs {
     float desired_altitude{0.0f};
-    float reference{0.0f};       // the second argument; also the clamp on t
+    // The second argument, and the ceiling on t, so it is what decides how much
+    // of the dive cap the aircraft can ask for. Every caller that comes through
+    // 009FBA50 gets that routine's arg3, a DIMENSIONLESS ramp: on the torpedo
+    // attack run 009D0A63 makes it Interp(0.1, 0.35, 0.4, 0.8, .) in [0.35, 0.8],
+    // so DropAngle * t never reaches DEG(60) and the demand is a glide, not a
+    // plunge. Feeding it an ALTITUDE in metres saturates the cap at every error
+    // over about 80 m. docs/TORPEDO_DESCENT_LAW.md.
+    float reference{0.0f};
     float unit_world_y{0.0f};
     float ceiling{1500.0f};      // tuning+210h Dynamics/Ceiling
     float climb_dist{130.0f};    // tuning+544h Pilot/General/ClimbDist
@@ -292,8 +299,21 @@ float pitch_command_009fb800(const PlanePitchCommandInputs& in);
 // ---------------------------------------------------------------------------
 // 009FBA50: the cruising-altitude command. It biases the altitude by a
 // range-dependent term, clamps against the ceiling and the squadron limit, and
-// tail-calls 009FB800. It leaves its fourth argument in ST0 at the RET, so the
-// native ABI returns a float that no call site reads.
+// tail-calls 009FB800.
+//
+// CORRECTED, packet cc8_torpedo_descent_law. The earlier reading - "it leaves
+// its fourth argument in ST0 at the RET, so the native ABI returns a float that
+// no call site reads", and `unclamped_altitude` as 009FB800's second argument -
+// was an x87 stack error and it is the whole of the plunge. 009FBAC5 pushes
+// arg3 and nothing pops it: the FMUL at 009FBAD9 is `FMUL ST0,ST1` (no pop),
+// 009FBAE5 pops the biased altitude and 009FBAF1/009FBAF3 pop the clamp pair,
+// so ST0 at 009FBB06 is arg3. The two argument slots are therefore
+//
+//   009FBB06 FSTP [ESP+4]   <- arg3, the SCALE          = 009FB800's reference
+//   009FBB0C FLD  [ESP+14h] <- the CLAMPED altitude     = 009FB800's altitude
+//
+// and the unclamped altitude is passed nowhere. The decompiler agrees:
+// `FUN_009fb800(param_2,param_5)`.
 // ---------------------------------------------------------------------------
 struct PlaneCruiseAltitudeInputs {
     float base_altitude{0.0f};   // arg0
@@ -307,10 +327,10 @@ struct PlaneCruiseAltitudeInputs {
 };
 
 struct PlaneCruiseAltitudeResult {
-    float clamped_altitude{0.0f};    // 009FB800's first argument
-    float unclamped_altitude{0.0f};  // 009FB800's second argument
+    float clamped_altitude{0.0f};    // 009FB800's first argument, 009FBB0C
+    float unclamped_altitude{0.0f};  // the pre-clamp bias sum; passed nowhere
     float ceiling_limit{0.0f};
-    float returned_in_st0{0.0f};     // the leaked arg3
+    float pitch_reference{0.0f};     // 009FB800's second argument = arg3, 009FBB06
 };
 
 PlaneCruiseAltitudeResult cruise_altitude_command_009fba50(const PlaneCruiseAltitudeInputs& in);

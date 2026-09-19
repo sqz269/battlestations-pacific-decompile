@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+#include "bsp/unit_rudder.hpp"  // clamped_interpolate_00419010
+
 // Reconstruction of the bot task state objects. docs/BOT_TASK_STATES.md carries the
 // evidence and the coverage table; every name is a hypothesis, not a recovered symbol.
 
@@ -272,6 +274,46 @@ void depth_charge_tick(BotTaskStateHost& host, BotTaskStateContext& ctx,
     }
     host.request_ordnance_release(ctx.unit);  // 009A67AB
     host.consume_round(ctx.approach);         // 009A67B0 decrements task->+424h, not approach+2Ch
+}
+
+// 009D0951-009D0A92, the torpedo attack run's half of step 4.
+TorpedoAttackRunAltitudeCommand torpedo_attack_run_altitude_009d0951(
+    const TorpedoAttackRunAltitudeInputs& in) noexcept {
+    namespace k = torpedo_attack_run_constant;
+    TorpedoAttackRunAltitudeCommand out;
+
+    // 009D0957 FSUBR qword [00D1F8D0], then two clamps whose senses are taken
+    // from the branch bytes: 009D096D JBE is taken when 50 <= margin, so the
+    // fall-through is the floor; 009D09B0 JBE is taken when margin <= 400, so
+    // the fall-through is the cap.
+    float margin = k::kMarginCeiling_00d1f8d0 - in.unit_world_y;
+    if (!(k::kMarginFloor_00ceb4d4 <= margin)) {
+        margin = k::kMarginFloor_00ceb4d4;
+    } else if (!(margin <= k::kMarginCap_00cfd710)) {
+        margin = k::kMarginCap_00cfd710;
+    }
+    out.margin = margin;
+
+    // 009D09D6 JBE is taken when 2000 <= range_90, and that arm loads 2000.
+    out.denom = (k::kDenomCap_00cffd60 <= in.range_90) ? k::kDenomCap_00cffd60 : in.range_90;
+
+    // 009D0A34-009D0A63. The divide at 009D0A26 happens before the clamp store,
+    // so a zero range reaches it; the native divides by it all the same and the
+    // helper clamps the result to [0.35, 0.8] whatever comes out.
+    const float ratio = (out.denom != 0.0f) ? margin / out.denom : k::kScaleRatioHigh_00ce7804;
+    out.scale = clamped_interpolate_00419010(
+        k::kScaleRatioLow_00d7a2f0, k::kScaleAtLow_00cf6560,
+        k::kScaleRatioHigh_00ce7804, k::kScaleAtHigh_00ce74f8, ratio);
+
+    // 009D0A0E JBE is taken when 15 <= elapsed, and that arm loads +7Ch.
+    out.range_low = (in.elapsed_134 >= k::kReleaseDistSwitchSeconds_00cf3f20)
+                        ? in.speed_late_7c
+                        : in.speed_early_80;
+    out.range_high = in.range_90;                          // 009D09FC
+    out.base = in.alt_floor_74 + in.alt_margin_78;         // 009D0A81 FADD
+    out.class_gain = static_cast<float>(
+        std::tan(static_cast<double>(in.drop_angle)));     // class+518h, 007C4A44
+    return out;
 }
 
 // 009A3770 and 009D07B0, complete for both.

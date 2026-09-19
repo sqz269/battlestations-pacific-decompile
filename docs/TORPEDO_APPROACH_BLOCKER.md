@@ -386,3 +386,44 @@ prints and does not fly. The climb arm of `009FB800` is the mirror of the dive a
 its bias from the same `009FBA50` span. If that path's call site also passes a zero range pair, the
 climb saturates or collapses for the same reason and the binding cannot work. Worth checking on that
 side before concluding the climb-out itself is wrong.
+
+## Correction from packet `cc8_torpedo_descent_law`: section 8.5's first open item is closed, and the aircraft no longer ditch
+
+The pitch demand's producer is `009FB800`, and the reason it sat at `-1.0472` was not the image.
+
+* **was** (8.5, and the Correction to section 3): "`-1.0472 rad` held constant over more than 700 m
+  of descent ... Find its producer", with `-1.0472` presumed to be what the image commands here.
+* **is**: `-1.0472` is `-DEG(60)`, the dive cap at `00D05AAC`, and this host saturated it by feeding
+  `009FB800` the commanded altitude as its second argument. That argument is `009FBA50`'s **fourth**
+  - a dimensionless ramp in `[0.35, 0.8]` that `009D0A63` computes - and it is the clamp on `t`. With
+  12.0 in it, `DropAngle * t` reached 4.82 rad against a 1.0472 cap at every altitude error over
+  about 80 m, which is the whole 800 m descent. The image commands at most `DropAngle * 0.8` =
+  0.321 rad here.
+* **evidence**: `docs/TORPEDO_DESCENT_LAW.md`; `009FBA50`'s decompiler output ends
+  `FUN_009fb800(param_2,param_5)`.
+
+Section 2's second half is also corrected. The commanded altitude is **not** a flat 12 m in the
+image: `009D0951`-`009D0A92` fills all four of `009FBA50`'s arguments and the range term
+`max(range_90 - releaseDist, 0) * scale * tan(DropAngle)` is a glide slope that reaches 12 m at the
+release distance. The three zeros this host passed for the last three arguments killed it. The
+measurement `base=12.00 (74h=0.00 78h=12.00)` stands; `commanded=12.00` was the host's own doing.
+
+`+74h = 0` is therefore no longer a suspect. It is the **bottom** of a slope, not a target the
+aircraft is told to reach at once, so whether `ctl+398h` clears the `100.0` gate at `009D3489` is
+now a question about the last few metres of a run-in rather than about a 4 km dive. The second and
+third items of 8.5 stay open on those terms.
+
+**Section 1 is superseded by measurement.** After the fix, on the same binary and the same
+placement, `plane water contact` does not appear in the log at all, the approach runs 399 ticks
+instead of 124, and the in-range latch at 2200 m closes for two of the five aircraft. The run table
+is in `docs/TORPEDO_DESCENT_LAW.md`.
+
+### Closing measurement
+
+The full-length run after the fix, `local/descentlaw_full_usn01.log`, same command and same
+placement as `local/tap_before_usn01.log`: `plane water contact` does not appear, the approach runs
+1299 ticks instead of 124, all five aircraft enter the aim state (352 to 378 ticks each, against 0),
+`aim_complete_2Ch` reaches 1 on all five with `clause=range`, and the minimum range closes from
+3928.5 m to **3.8 m**. The blocker this document named is gone. `release_arm_009D2287` is still 0:
+the next gate is `009D1360`'s own gate at `009D19A0` and the fact that `009D15F0` commands no
+altitude, both recorded in `docs/TORPEDO_DESCENT_LAW.md`.
