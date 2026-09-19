@@ -5220,3 +5220,37 @@ minus the threshold, to the metre. At the hand-over every aircraft reads `span=0
 those hand-overs runs from 150 m to 368 m, three of the five formations well inside where the image's
 range test would have fired. **Nothing in this mission ever left the fly-over on the bearing arm, and
 nothing left it on a range.**
+
+### Measured: the after run, and bombs leave aircraft again
+
+`local\heading_after.log`, the same 4800-frame USN04 on `dbda05ead` plus `7b4c74771` and nothing
+else - the doc and tool commits landed after the binary was linked, and `main` was deliberately not
+merged between the two runs.
+
+| squadron | attackrun -> flyabove | flyabove -> | exit |
+| --- | --- | --- | --- |
+| `movieval` x3 | `alt 1394 rng 2079 span 678 f18=1` | **turndown** `@1640 alt 1046 rng 1228 f18=1 f19=1` | `done`, `releases=2 rounds_left=0` |
+| `D3A Val #1.1` x3 | `alt 1395 rng 2078 span 675 f18=1` | **turndown** `@1239 alt 1050 rng 1235 f18=1 f19=1` | `done`, `releases=2 rounds_left=0` |
+| `D3A Val #3.1` x3 | `alt 1400 rng 2077 span 648 f18=1` | **turndown** `@1154 alt 1114 rng 1301 f18=1 f19=1` | `aimglide` 794-869, `releases=1 rounds_left=1` |
+| `D3A Val #5.1` x3 | `alt 1395 rng 2078 span 675 f18=1` | **turndown** `@1239 alt 1050 rng 1235 f18=1 f19=1` | still in `aimdive` at 4800, `releases=1,0,0` |
+| `D3A Val #7.1` x3 | `alt 1403 rng 2077 span 633 f18=1` | **turndown** `@1050 alt 1134 rng 1317 f18=1 f19=1` | `aimglide` 117-176, `releases=0,1,0` |
+
+Every squadron now goes `flyabove -> turndown -> aimdive`; none goes to the glide out of the fly-over.
+Summed over the dive-bomb rows, `releases` goes **0 -> 17** and the mission gunnery row moves
+`queued_hits 57 -> 68`, `hull 33 -> 45`, `deaths 7 -> 8`, `total_damage 8880.5 -> 11427.2`, with
+`first_hit` unchanged at 17.15 s.
+
+**The prediction, and the falsifier.** `7b4c74771` recorded, before the log was read, that the arm
+should fire near an instantaneous range of 1260 m at about 1045 m with `f18=1`. `movieval` fires at
+**1228 m and 1046 m**; the four Val squadrons between 1235 m and 1317 m and between 1050 m and 1134 m.
+The falsifier was "if the fly-over-entry span reads about 903 rather than about 570, the lead term is
+inert because `plane_world_velocity` is unseeded". It reads **633 to 678**, so the three-second lead
+is alive and is worth about 340 m of range at fly-over entry.
+
+**What the two squadrons that dropped both bombs did differently** - an observation, not a reading.
+Dive length is not it: `aimdive` runs 53-59 ticks for every squadron. `movieval` and `#1.1` fired
+**both** salvoes inside that one dive, exhausted their rounds and left `aimdive` to `done`; `#3.1`,
+`#5.1` and `#7.1` fired once or not at all in a dive of the same length and fell to `aimglide`, which
+released nothing in 117-869 ticks. So the second bomb is not lost in the fly-over or the turndown -
+it is lost to the aimglide's own steering, the block `cc8_dive_entry` measured at `bearing` failing
+about 90 per cent of ticks, which this packet did not touch.
