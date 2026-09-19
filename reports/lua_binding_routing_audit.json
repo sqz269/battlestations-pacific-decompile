@@ -1,0 +1,33 @@
+{
+ "packet": "cc8_lua_binding_routing_audit",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/LUA_BINDING_ROUTING_AUDIT.md",
+ "tree_base": "main at 5d89dea5f",
+ "result": "The audit's main output is a reframing, not a list. Ranking unrouted natives by how often they are called points at the wrong work: NavigatorSetTorpedoEvasion is called 365 times across the campaign scripts and its result is never read once, while IsListenerActive is called 54 times and 49 of those are the condition of an if. The ranking that matters is whether the script assigns, compares or indexes the result, because only then does the missing push become a nil that closes a branch. By that ranking the largest remaining hole is GenerateObject, 1639 assignments of 1771 call sites, which blocks the torpedo aircraft of both other candidate missions in docs/TORPEDO_MISSION_SURVEY.md. Five bodies that already existed were routed; none of them can change a script branch, because all five push nothing. GetDifficulty was the last cheap win of its kind.",
+ "question": "Audit every bsp::lua_binding_* body against the routing tables and list bodies with no row; from recent USN04, USN01 and IJN01 logs list the natives called while unimplemented with counts, ranked by calls; for the top of that list say whether the script compares or indexes the result or merely calls it. Route every body that already exists and list the rest as packets with addresses.",
+ "answer": "45 bodies exist across src/lua_binding_{ai,core,mission,navigator,spawn}.cpp against exactly one routing table, kScriptOrderBindings, which had 22 rows; there are no sibling tables, and src/mission_lua_host.cpp's table is the full binding surface rather than a routing table. Four recent runs show 42 natives called while unimplemented, headed by FindEntity 521, NavigatorMoveOnPath 360, GetSelectedUnit 180, SETLOG 71. Scanning the 212 campaign script files for usage splits that list in half: assigned results are GenerateObject 1639, FindEntity 4172, GetSelectedUnit 130, GetDifficulty 76, GetClosestBorderZone 9, GetActDialogIDs 2, while NavigatorSetTorpedoEvasion, NavigatorSetAvoidLandCollision, MovCamNew_AddPosition, NavigatorMoveOnPath, EnableMessages, SetAirBaseSlotCount, SetGuiName, Scoring_RealPlayTimeRunning and SETLOG are never read at all. Five bodies were routed: SETLOG, EnableMessages, LoadMessageMap, Music_Control_SetLevel and Scoring_SetFinalScoringFunctionName, each of which returns 0. PrepareClass was deliberately not routed although its body exists, because its host reader resolve_global_integer is a stub and a green record over a stub is worse than an honest UNIMPLEMENTED.",
+ "coverage": "complete for the body-to-row diff and for the usage scan over the campaign trees; the comparison column of the usage scan is a loose pattern and over-counts, the assignment column is exact. Only three missions' logs were available.",
+ "calls": [],
+ "named_routines": [],
+ "routed": [
+  {"binding": "SETLOG", "address": "0088c620", "pushes": 0},
+  {"binding": "EnableMessages", "address": "008cfe40", "pushes": 0},
+  {"binding": "LoadMessageMap", "address": "008c61c0", "pushes": 0},
+  {"binding": "Music_Control_SetLevel", "address": "008c4d10", "pushes": 0},
+  {"binding": "Scoring_SetFinalScoringFunctionName", "address": "008b8640", "pushes": 0}
+ ],
+ "packets": [
+  {"packet": "lua_binding_generate_object", "binding": "GenerateObject", "address": "00944fd0", "assignments": 1639, "needs": "a LuaBindingSpawnHost; create_air_ops_squadron_006c5050 and attach_created_entity_00928a00 on this branch are most of it", "why": "blocks USN01's Mission.ScoutBomba and USN22's Mission.Avenger, the torpedo aircraft of both other candidate missions"},
+  {"packet": "lua_binding_get_selected_unit", "binding": "GetSelectedUnit", "address": "008ab070", "assignments": 130, "needs": "the player's selected unit", "why": "130 assignments"},
+  {"packet": "lua_binding_listener_family", "binding": "IsListenerActive, AddListener", "address": "008c6bb0, 008c6760", "comparisons": 49, "needs": "the listener registry", "why": "49 branch conditions, the GetDifficulty shape"},
+  {"packet": "lua_binding_prepare_class", "binding": "PrepareClass", "address": "008c8f70", "needs": "resolve_global_integer over the class tables", "why": "body exists, host is a stub"},
+  {"packet": "lua_binding_get_closest_border_zone", "binding": "GetClosestBorderZone", "address": "008aecd0", "assignments": 9, "needs": "the zone table"},
+  {"packet": "lua_binding_get_act_dialog_ids", "binding": "GetActDialogIDs", "address": "008cb730", "assignments": 2, "needs": "the dialog table"}
+ ],
+ "open": [
+  "FindEntity 00898E30 reports UNIMPLEMENTED with 521 calls but is not a pure nil: the entity-returning tail 0089903C is reconstructed and push_resolved_entity answers it for every entity with a thisTable slot. Its record is misleading rather than its behaviour, and why the record says otherwise is worth a look.",
+  "The AI_* family, 14 bodies at 00A37310-00A38430, has no row and no campaign mission in the three logs calls one. Unaudited outside those three.",
+  "Whether any of the 42 pushes a value the audit assumed it does not was checked only for the six bodies that exist."
+ ],
+ "retractions": []
+}
