@@ -81,7 +81,7 @@
       "rules": [
         "entry gate: *wrapper != 0, [director+34h] != 0, session->vtable[13Ch]() != 0 and that object's +5Eh byte clear",
         "5Ah: director->vtable[38h](msg), the permission and enable receiver 00835640 over 0071C1E0",
-        "5Bh: director->vtable[60h](00E08F80, BSP_CommandTarget_FromEntity(00720FA0(0), 0)), then 0071C1B0(msg+24h)",
+        "5Bh: director->vtable[60h](00E08F80, BSP_CommandTarget_FromEntity(00720FA0()), 0.0f), then 0071C1B0(msg+24h) which takes a POINTER and writes TWO dwords - msg+24h to [[director+1A0h + i*4] + 8h] and msg+28h to +0Ch, i the first slot index under 10 whose [director+54h + i*1Ch] dword is zero (0071C1B0-0071C1DD read whole by packet cc8_navigator_path). 00720FA0 takes no argument, resolving the entity from word [msg+20h] itself; the zero is a float, vtable[60h] third stack argument, reserved 00721AB3 and filled by FSTP at 00721AB6",
         "5Ch: in session mode 2, resolve the descriptor or drop; msg[+20h] non-zero -> vtable[60h] = 008358D0 (queue), zero -> 0071E7F0 (override)",
         "5Dh: msg[+20h] == 0 -> ClearOverrideCommand; msg[+24h] < 0 -> ClearAllCommandSlots; else InternalClearPrimaryCommand(msg[+24h])",
         "5Eh: entity = msg->00720FE0(msg[+23h]); 00836240 BSP_WeaponDirector_StoreFireTarget(entity)",
