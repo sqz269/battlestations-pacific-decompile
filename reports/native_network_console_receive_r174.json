@@ -1,0 +1,454 @@
+{
+  "packet": "orch4_native_network_console_receive_r174",
+  "status": "five_complete_normal_bodies_build_and_original_compared",
+  "scope": {
+    "new_native_bodies": 5,
+    "new_body_bytes": 1069,
+    "parent_dependency_fragments": [
+      "00a3c5e0",
+      "00a3caf0"
+    ],
+    "derived_constructor_and_workers_bound": false
+  },
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "names": {
+      "00a3a6b0": "FUN_00a3a6b0",
+      "00a3b420": "FUN_00a3b420",
+      "00a3b5f0": "FUN_00a3b5f0",
+      "00a3baa0": "FUN_00a3baa0",
+      "00a3adf0": "FUN_00a3adf0",
+      "00a3c5e0": "BSP_NetworkConsoleSend_SendWorker",
+      "00a3caf0": "BSP_NetworkConsoleSend_ReceiveWorker"
+    },
+    "spans": [
+      {
+        "address": "00a3a6b0",
+        "length": 88,
+        "kind": "new_body",
+        "sha256": "68c6b45ed864dfe5bc10970fc9a829f34d76099c87cf3186cf44ce60520338bb",
+        "hex": "8b4424040fb650020fb640038b4c240881e2c000000003d203d20bd08bc12500fcffff0bc23d0004000072128d91000200003bc276082d00040000c2080081f900020000720f81c100feffff3bc173050500040000c20800"
+      },
+      {
+        "address": "00a3b420",
+        "length": 450,
+        "kind": "new_body",
+        "sha256": "d45bc8af27186e1174467540c9135870ba684b8a3b3b4a76f373b6559d3c56f1",
+        "hex": "83ec188b44241c0fb6500555568bf133c98a6807578a4806c1e1080bca0fb650020fb6400483e230c1e2048bf98b4e700bd08bc12500fcffff0bd08bea81fd00040000897c240c720a3be9760681ed000400008b46603be80f8259010000750d8b4e6823cf2bf90f854a0100008b0db00a09018b118b5220538d4424185033ffffd2df28df68088b56788b44241033db85d2def9895c2414896e60894668d95c242c0f8403010000d944242cf30f10054848cf00dd05a849d0008b82280800003bc576278bc82bcd83e90183f9180f83b2000000bb01000000d3e38b4c241085d90f849f0000008b5c24148bc883e11fc1e104398431900200008d8c318c0200007541803900753cd9c1d86108d95c242cd944242cdff17606f30f1144242cf30f104c242cc60101f30f11490cd98690040000d844242c83868c04000001d99e9004000085db752a8b02894678893a8bfa8b567885d20f855effffff5bddd98bc7ddd85f8996840000005e5d83c418c204003b9684000000741d8b02893a8bfa89038bd0eb088bda8b12895c241485d27415e923ffffff893a899e840000008bfac70300000000ddd9ddd85b8bc75f5e5d83c418c204005f5e33c05d83c418c20400"
+      },
+      {
+        "address": "00a3b5f0",
+        "length": 232,
+        "kind": "new_body",
+        "sha256": "0b67be1c8623449fa7a192c0deb1e0ccafac062720e5e92a5b70408618551302",
+        "hex": "83ec105355568bf18b0db00a09018b018b4020578d54241052ffd0df28df68088b5c2424538bcedef9d95e20e8fffdffff8b6c242c8bc8c74500000000000fb6430283e00f80b860e3e00000894c242474618b3c8570e3e0008b4cbe2c51538bcee85af0ffff8945003b44be2c765f8b4cbe4485c9740b3b411c741f8b0985c975f58b442428c64437280089388b4424245f5e5d5b83c410c20c008b5424288b4424245f5e5dc702ffffffff5b83c410c20c0083f808741a8b5424285f5e5dc702020000008bc15b83c410c20c008b4c24248b4424285f5e5dc700ffffffff8bc15b83c410c20c00"
+      },
+      {
+        "address": "00a3baa0",
+        "length": 138,
+        "kind": "new_body",
+        "sha256": "ea5b0122553c53a56c2512e8902e6c121492b3227e7101a7bd9fad405b211219",
+        "hex": "56578bf98bb74801000085f6740b56ff151822ce008346180133c08d8f9c010000803900751083c00181c19c04000083f81072edeb408b4c240c69c09c04000003c7c6809c010000008b118990a00100008b51048990a40100008b51088990a80100008b510c8990ac0100000fb7410250e82c1a010085f6740b834618ff56ff151022ce005f5ec20400"
+      },
+      {
+        "address": "00a3adf0",
+        "length": 161,
+        "kind": "new_body",
+        "sha256": "8401f98c01a8c683075ca35bb4fc8a20e9908e437fc7ca5db3ad2723777e4247",
+        "hex": "83ec14568bf1807e180074628b0db00a09018b018b40208d54240852ffd0df28df6808def9d95c2404d9442404d844241cd95c2404d9461cd95c241cd944241cd9442404dff1ddd87612f30f1044241cf30f11461c5e83c414c20400f30f10442404f30f11461c5e83c414c20400c64618018b0db00a09018b118b52208d44240850ffd2df28df6808def9d95c2404d9442404d844241cd95e1c5e83c414c20400"
+      },
+      {
+        "address": "00a3c5e0",
+        "length": 1286,
+        "kind": "parent_body",
+        "sha256": "b361421fc523d1119966b0d57871235dede8239e793a46b69fcaaa7a46bc0519",
+        "hex": "6aff68403fcb0064a100000000506489250000000083ec785355568be957896c241c8bb54c01000085f6740b56ff151822ce0083461801803de0abf800000f859104000085f6c605e1abf80001740b834618ff56ff151022ce008b0db00a09018b018b40208d54245852ffd06a19ff153022ce008bbd4801000085ffc7442448fc37ce00897c244c740b57ff151822ce0083471801c7842490000000000000008db5b8010000c7442428100000008bff807ee4008d5ee4755c8b0db00a09018b118b52208d44246850ffd2df28df68088a4efc84c9def9d95c242c7419d906d944242cdff1ddd8720d8d46e8508bcde88cf5ffffeb1f8b56542b564481faa80000007e1184c9750dd9e8518bcbd91c24e8fbe6ffff81c69c040000836c242801758e85ffbefc37ce0089742448740b834718ff57ff151022ce008bbd4801000085ff897c244489742450897c2454740b57ff151822ce00834718018b85604b000085c0c7842490000000010000007475c74424280000000076618dbd684b00000fb70769c02c08000083bc28145b0000008b9428285b00008db428085b00008d4e2874138b46046a108d5e08536a00525150e8c30d01008b8de84620008b442428890e83c00189b5e846200083c7023b85604b00008944242872a5c785604b0000000000008b0db00a09018b118b52208d44247850c644241500ffd2df28df680833c0c74424280100000089442424def9d95c2420eb098da424000000008bff69c09c0400008d3c2880bf9c010000008d9f9c010000897c242c895c243c0f852e0200008b838c04000085c07510f30f1005f0a2d700f30f11442414eb4083f805731d8b83940400008b0ddcabf8008d0480f30f10448110f30f11442414eb1e85c0d9839004000089442434db4424347d06d8057839ce00def9d95c2414dd054817cf00d9442414dff1ddd8760af30f10054c2ecf00eb06f30f104424148b542428db44242885d2f30f114424187d06d8057839ce00dc0dc00acf0083ec088d44241a8d4c241bdc0570a2d700d95c2438d9442438d8442420d95c2420d9442420d95c2404d9442428d91c2450518bcbe8fbdfffff8bf085f60f84f20000008d7e28578bcbe8a6e1ffff807c2412008b5e2075548b46046a108d6e08556a00535750e8330c01008b15b471f8008b4c241c535755894424408954243ce8eff1ffff8b4c243850e8b5b1d4ff837c2434ff741d8b44242cf30f104424208b6c241cf30f1180c0010000c644241101eb64e8740b01000fb74e0a51e8c40b01008b44242c80b8b4010000007544f30f1080c00100000f2f0518a2d700f30f11442438762dd9442438d95c2434d9442420d8642434dd052866ce00d9c9dff1ddd8760fd9ee518b4c2440d91c24e821e4ffff8b6c241c807c2413007507807c24120074718b95e8462000891689b5e8462000eb61803b00f30f1087c0010000f30f11442440754e80bfb40100000075458b8fb001000085c9743bd9442420d9442440dc0580a2d700d9c9dff1ddd876256a006a006a006a088d87a001000050518bcde85cf7ffff84c0750ac787b001000000000000837c24240f7519807c24110074128344242801c7442424ffffffffc6442411008b44242483c00183f810894424240f8c7afdffff8b44244485c0c7842490000000ffffffffc7442450fc37ce000f845dfbffff834018ff50ff151022ce00e94dfbffff85f6c605e1abf80000740b834618ff56ff151022ce008b8c24880000005f5e5d33c05b64890d0000000081c484000000c3"
+      },
+      {
+        "address": "00a3caf0",
+        "length": 868,
+        "kind": "parent_body",
+        "sha256": "6976e51a426334881cac25a87b77a051f801d840690bf0c54012b93d2e4c439e",
+        "hex": "6aff64a100000000685b3fcb00506489250000000081ec44080000535556578bf98bb74c01000033db3bf3740b56ff151822ce0083461801803de0abf800000f85ee0200003bf3c605e2abf80001740b834618ff56ff151022ce008b0db00a09018b018b40208d54244452ffd06a19ff153022ce008bb7480100003bf389742438c744243cfc37ce0089742440740b56ff151822ce0083461801399f5c010000899c245c080000c6442413000f86560200008d4c2434518b8c9f600100008d542424526a0068000800008d4424645051c744244c10000000e8810901008be885ed0f8ef2010000807c245403c6442413010f85a2000000807c2455000f859700000080bf5c4b0000000f85ca0100008bb7ec03400085f60f84bc0100008b168997ec034000c706000000008b849f600100008946048b4424208946088b4c2424894e0c8b5424288956108b44242c558d4c2458518d562052894614896e18e82daa1b008b8f644b00002bf781eeec462000b87fe0077ef7eec1fa0a8bc2c1e81f03c283c40c6689844f385300008387644b000001e9400100008d542420528bcfe89beeffff83f8ff89442414753d80bf50010000000f84fa000000f64424560f0f85ef0000008d442420508bcfe8deedffff8d4c2420518bcfe862eeffff83f8ff894424140f84ca0000008b54241469d29c0400008d8c3a9c0100008d44241c508d54241c528d44245c50c7442424ffffffffc744242800000000894c243ce8dce8ffff85c0741d8338008bc87408908b0983390075f98b97e846200089118987e8462000837c2418007c698bb7ec03400085f6745f8b068987ec034000c706000000008b849f600100008946048b4c2420894e088b54242489560c8b4424288b54241c8946108b4c242c558d442458894e14508d4e2051896e1889561ce8eda81b008b5424248b4c243c83c40c5256e88bddffff8a442456240f3c0574043c0675168b4c2414558d44245850518b0db471f800e8d7acd4ff8b975c01000083ea013bda750f807c241300740883cbffc64424130083c3013b9f5c0100000f82aefdffff8b74243885f6c784245c080000ffffffffc744243cfc37ce000f84fefcffff834618ff56ff151022ce00e9eefcffff3bf3c605e2abf80000740b834618ff56ff151022ce008b8c24540800005f5e5d33c05b64890d0000000081c450080000c3"
+      },
+      {
+        "address": "00e0e360",
+        "length": 80,
+        "kind": "native_data",
+        "sha256": "59716bc81a4c6dfb28fd77cfe5497a5e5b298e4a387de5f48d14a7617b1c1f23",
+        "hex": "0101010101000101000101000000000001000000010000000100000001000000010000000000000001000000010000000000000001000000010000000000000000000000000000000000000000000000"
+      },
+      {
+        "address": "00d049a8",
+        "length": 8,
+        "kind": "native_data",
+        "sha256": "b29fa4b4f5881373e941a097fbc9f221c7412b8de07e9e58edc56d1a6d7715dc",
+        "hex": "000000c0ccccfc3f"
+      },
+      {
+        "address": "00cf4848",
+        "length": 4,
+        "kind": "native_data",
+        "sha256": "bbe1d6b54f890c9431839072d39fcb11e98717384223934286b95f5c23a7dfa8",
+        "hex": "6666e63f"
+      },
+      {
+        "address": "00a4d542",
+        "length": 6,
+        "kind": "import_thunk",
+        "sha256": "5206f4301d68f27e35baa5eda998d8b0c21e1ff3755d86ce4e316f50e379e496",
+        "hex": "ff259825ce00"
+      }
+    ],
+    "call_rows": [
+      {
+        "address": "00a3b61c",
+        "native": "00a3b420",
+        "function": "00a3b5f0",
+        "kind": "call"
+      },
+      {
+        "address": "00a3b651",
+        "native": "00a3a6b0",
+        "function": "00a3b5f0",
+        "kind": "call"
+      },
+      {
+        "address": "00a3bb11",
+        "native": "00a4d542",
+        "function": "00a3baa0",
+        "kind": "call"
+      },
+      {
+        "address": "00a3c6f0",
+        "native": "00a3adf0",
+        "function": "00a3c5e0",
+        "kind": "call"
+      },
+      {
+        "address": "00a3c9ca",
+        "native": "00a3adf0",
+        "function": "00a3c5e0",
+        "kind": "call"
+      },
+      {
+        "address": "00a3ccbd",
+        "native": "00a3baa0",
+        "function": "00a3caf0",
+        "kind": "call"
+      },
+      {
+        "address": "00a3cd0f",
+        "native": "00a3b5f0",
+        "function": "00a3caf0",
+        "kind": "call"
+      }
+    ],
+    "new_native_bodies": 5,
+    "new_body_bytes": 1069,
+    "fixture_relocations": [
+      {
+        "body": "00a3b420",
+        "offset": 111,
+        "relative": false,
+        "target": "01090ab0"
+      },
+      {
+        "body": "00a3b420",
+        "offset": 176,
+        "relative": false,
+        "target": "00cf4848"
+      },
+      {
+        "body": "00a3b420",
+        "offset": 182,
+        "relative": false,
+        "target": "00d049a8"
+      },
+      {
+        "body": "00a3b5f0",
+        "offset": 10,
+        "relative": false,
+        "target": "01090ab0"
+      },
+      {
+        "body": "00a3b5f0",
+        "offset": 45,
+        "relative": true,
+        "target": "00a3b420"
+      },
+      {
+        "body": "00a3b5f0",
+        "offset": 71,
+        "relative": false,
+        "target": "00e0e360"
+      },
+      {
+        "body": "00a3b5f0",
+        "offset": 85,
+        "relative": false,
+        "target": "00e0e370"
+      },
+      {
+        "body": "00a3b5f0",
+        "offset": 98,
+        "relative": true,
+        "target": "00a3a6b0"
+      },
+      {
+        "body": "00a3baa0",
+        "offset": 17,
+        "relative": false,
+        "target": "00ce2218"
+      },
+      {
+        "body": "00a3baa0",
+        "offset": 114,
+        "relative": true,
+        "target": "00a4d542"
+      },
+      {
+        "body": "00a3baa0",
+        "offset": 129,
+        "relative": false,
+        "target": "00ce2210"
+      },
+      {
+        "body": "00a3adf0",
+        "offset": 14,
+        "relative": false,
+        "target": "01090ab0"
+      },
+      {
+        "body": "00a3adf0",
+        "offset": 116,
+        "relative": false,
+        "target": "01090ab0"
+      }
+    ]
+  },
+  "import_evidence": [
+    {
+      "dll": "xlive.dll",
+      "ordinal": 40,
+      "iat": "00ce2598"
+    }
+  ],
+  "validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "fixture": {
+      "result": {
+        "exe_sha256": "460DACFCA3C39B223DB27C1D63410A42B99DBD2AC3D41DF7B6E771B505168299",
+        "exit": 0,
+        "utc": "2026-09-19T02:47:39.8411546Z",
+        "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+        "library_sha256": "3E4F8A154CDB41F5289A36A635F158A95803C800214021ED45539E3D98C0ACEE"
+      },
+      "pairs": 146,
+      "matching_bytes": 13156508,
+      "observations_sha256": "452415aba8cd0fdc2427d3821848f358074353f5a8f88a8657a91c1742d37711",
+      "original_new_body_bytes_executed": 1069,
+      "sequence_boundary_inputs": 48,
+      "ack_x87_combinations": 32,
+      "deadline_x87_combinations": 96,
+      "receive_classifications": 8,
+      "actual_lock_activations": 3,
+      "masked_fp_status_and_stack_compared": true,
+      "raw_pointers_checked_before_normalization": true,
+      "source_missing_clock_guard": 1
+    },
+    "fixture_harness_correction": {
+      "first_result": {
+        "exe_sha256": "31D0531122F230AF78EFD6EA862C536FD4DDA70286ACCFC88A26F208D8CE2101",
+        "exit": -1073741819,
+        "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+        "utc": "2026-09-19T02:45:54.2320665Z",
+        "library_sha256": "3E4F8A154CDB41F5289A36A635F158A95803C800214021ED45539E3D98C0ACEE"
+      },
+      "cause": "Indexed E0E360/E0E370 memory operands were absent from the initial relocation set",
+      "fix": "Relocate verified global displacements also when the operand has an index/base register",
+      "production_code_changed_to_fix_fixture": false,
+      "corrected_relocations": 13
+    },
+    "library_sha256": "3e4f8a154cdb41f5289a36a635f158a95803c800214021ed45539e3d98c0acee",
+    "game_sha256": "3b71fb86a2974c48f57f7bdaccad437f457b6b4bdd582c4c334ce96afee2b368",
+    "source_sha256_by_path": {
+      "include/bsp/native_network_console_receive.hpp": "4a4ca09f9ba9090256fbf1a2c6f46a50d4be448903bc9248410f20c774785c9a",
+      "src/native_network_console_receive.cpp": "ce0f4574b8276a5e5aa7bb8168a3f795fde726cecda4a508387788cd30a59ccc",
+      "include/bsp/native_network_console_runtime.hpp": "9eba126ddee36962e4f51dcc88f57becf17a3a5733a58c27a2d1bdf5d73cf143",
+      "src/native_network_console_runtime.cpp": "eaa45e4bdab3330f95b16f2fff6f3a8022025d493cc8a8ec6708b20a2c563847",
+      "cmake/startup.cmake": "1b74ee9be076209baf71fbc9303594c6bd51ef80bf4ba6c3ee6f9c0f1559f09f"
+    },
+    "source_lf_sha256": {
+      "include/bsp/native_network_console_receive.hpp": "4a4ca09f9ba9090256fbf1a2c6f46a50d4be448903bc9248410f20c774785c9a",
+      "src/native_network_console_receive.cpp": "ce0f4574b8276a5e5aa7bb8168a3f795fde726cecda4a508387788cd30a59ccc",
+      "include/bsp/native_network_console_runtime.hpp": "9eba126ddee36962e4f51dcc88f57becf17a3a5733a58c27a2d1bdf5d73cf143",
+      "src/native_network_console_runtime.cpp": "eaa45e4bdab3330f95b16f2fff6f3a8022025d493cc8a8ec6708b20a2c563847",
+      "cmake/startup.cmake": "016305595f969726e81c6846e5cf73a3f5b13b46fe0cb40d0e100f9f1702840a"
+    },
+    "object_paths": [
+      "build/win32/bsp_core.dir/Release/native_network_console_receive.obj",
+      "build/win32/bsp_core.dir/Release/native_network_console_runtime.obj",
+      "build/win32/bsp_core.dir/Release/native_frame_clock_publication.obj",
+      "build/win32/bsp_core.dir/Release/native_renderer_control_worker.obj",
+      "build/win32/bsp_core.dir/Release/native_renderer_worker_lifetime.obj",
+      "build/win32/bsp_core.dir/Release/native_tracked_critical_section_release.obj",
+      "build/win32/bsp_core.dir/Release/frame_clock.obj",
+      "build/win32/bsp_core.dir/Release/native_frame_clock_actual.obj",
+      "build/win32/bsp_core.dir/Release/native_network_console_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_network_console_owner.obj"
+    ],
+    "call_verification": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\reports\\native_network_console_receive_r174.json: 7 call rows checked, 0 failed\n"
+  },
+  "contract": "Exact unsigned sequence extension; ACK mask admission/reversed releases with x87 timing/statistics; timestamp-before-ACK-before-classification; borrowed native type tables; captured-lock channel activation with real ordinal40 boundary; earliest pending-close deadline with native float spills/unordered comparisons.",
+  "limits": [
+    "Full derived constructor, worker wrappers and native send/receive worker composition remain unbound",
+    "No ordinary application, network peer/exchange, concurrency or gameplay claim",
+    "Fixture uses existing actual fixed clock, real Win32 sections and recording SDK conversion boundary",
+    "No original allocator/new-handler identity, native exception/hardware fault, unmasked floating-point trap or full binary ABI proof",
+    "Contexts explicitly borrow current publication, original data/constants and distinct stack preimages; production process binding remains open"
+  ],
+  "owned_files": [
+    "include/bsp/native_network_console_receive.hpp",
+    "src/native_network_console_receive.cpp",
+    "include/bsp/native_network_console_runtime.hpp",
+    "src/native_network_console_runtime.cpp",
+    "cmake/startup.cmake",
+    "docs/NATIVE_NETWORK_CONSOLE_RECEIVE_R174.md",
+    "reports/native_network_console_receive_r174.json",
+    "config/names/00a30000.jsonl",
+    "config/reconstruction/00a30000.jsonl"
+  ],
+  "ghidra_annotations": {
+    "status": "Five complete normal bodies and two parent dependency fragments named/commented/saved under write lock; prior values preserved; exports refreshed and readback checked",
+    "prior_values": [
+      {
+        "address": "00a3a6b0",
+        "before": {
+          "address": "00a3a6b0",
+          "function_name": "FUN_00a3a6b0"
+        },
+        "after": {
+          "address": "00a3a6b0",
+          "name": "BSP_NetworkConsoleHeader_ExtendSequence",
+          "evidence": "Complete88B; stack header/reference,RET8/EAX extended DWORD;ECX is not input. Decode header2 bitsC0/header3 against reference high22bits;unsigned half-window200h corrections and all additions/subtractions wrap DWORD. Descriptive hypothesis, not a recovered symbol. R174 supplies five complete normal bodies1069B and two parent dependency fragments. Strict Win32/3CTests;146 original/source comparisons13156508B including48 sequence boundary inputs,32 ACK/96 deadline x87 combinations and masked status/stack checks,8 classifications,3 actual-lock activations,one source missing-clock guard. 3321live/PE bytes and7 direct CALL rows;native80-byte type tables/constants;PE ordinal40 verified. Initial fixture indexed-table relocation error corrected without production-code changes;failed record retained. Actual fixed-clock/Win32 providers and recording SDK conversion boundary. Full worker/constructor composition, original exception/fault/allocator/new-handler and binary ABI, unmasked FP, concurrency, ordinary startup, network peer/exchange and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_RECEIVE_R174.md;reports/native_network_console_receive_r174.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a3adf0",
+        "before": {
+          "address": "00a3adf0",
+          "function_name": "FUN_00a3adf0"
+        },
+        "after": {
+          "address": "00a3adf0",
+          "name": "BSP_NetworkConsoleChannel_RequestDisconnect",
+          "evidence": "Complete161B;ECX actual49Ch,stack floatdelay,RET4. Zero byte18 becomes1 BEFORE CURRENT AB0sample;first storesfloat-rounded ratio plusdelay at1C. Existing request samplesagain, spillscandidate and olddeadline,FCOMIP/JBE choosescandidate for less/equal/unordered,otherwise storesold quietedfloat. Pending disconnect interpretation supported by sendworker expired deadline ->A3BC60 ->A3B150 queue return/reset;not a socket close in this body. Descriptive hypothesis, not a recovered symbol. R174 supplies five complete normal bodies1069B and two parent dependency fragments. Strict Win32/3CTests;146 original/source comparisons13156508B including48 sequence boundary inputs,32 ACK/96 deadline x87 combinations and masked status/stack checks,8 classifications,3 actual-lock activations,one source missing-clock guard. 3321live/PE bytes and7 direct CALL rows;native80-byte type tables/constants;PE ordinal40 verified. Initial fixture indexed-table relocation error corrected without production-code changes;failed record retained. Actual fixed-clock/Win32 providers and recording SDK conversion boundary. Full worker/constructor composition, original exception/fault/allocator/new-handler and binary ABI, unmasked FP, concurrency, ordinary startup, network peer/exchange and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_RECEIVE_R174.md;reports/native_network_console_receive_r174.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a3b420",
+        "before": {
+          "address": "00a3b420",
+          "function_name": "FUN_00a3b420"
+        },
+        "after": {
+          "address": "00a3b420",
+          "name": "BSP_NetworkConsoleChannel_ProcessAcks",
+          "evidence": "Complete450B;ECX actual49Ch channel,stackheader,RET4/EAX reversed82Ch released list. Decode ACK from header2 bits30/header4 against sent70;reject counter below60 or equal counter with mask not subset of68. Only then CURRENT AB0+20sample atA3B4A0. Capture head78 before FDIVP, write60/68 before float time spill. Retain float time/double limit on x87 stack through slot matching, float elapsed spill/ordered cap,count48C wrap and x87 sum490. Exact head/middle/tail unlink and reversed output;no pool insertion here. Descriptive hypothesis, not a recovered symbol. R174 supplies five complete normal bodies1069B and two parent dependency fragments. Strict Win32/3CTests;146 original/source comparisons13156508B including48 sequence boundary inputs,32 ACK/96 deadline x87 combinations and masked status/stack checks,8 classifications,3 actual-lock activations,one source missing-clock guard. 3321live/PE bytes and7 direct CALL rows;native80-byte type tables/constants;PE ordinal40 verified. Initial fixture indexed-table relocation error corrected without production-code changes;failed record retained. Actual fixed-clock/Win32 providers and recording SDK conversion boundary. Full worker/constructor composition, original exception/fault/allocator/new-handler and binary ABI, unmasked FP, concurrency, ordinary startup, network peer/exchange and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_RECEIVE_R174.md;reports/native_network_console_receive_r174.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a3b5f0",
+        "before": {
+          "address": "00a3b5f0",
+          "function_name": "FUN_00a3b5f0"
+        },
+        "after": {
+          "address": "00a3b5f0",
+          "name": "BSP_NetworkConsoleChannel_ClassifyReceived",
+          "evidence": "Complete232B;ECX actual49Ch,stackheader/stream-out/sequence-out,RET0C/EAX released82Ch list. CURRENT AB0sample then float20 store, fullACK callA3B61C, sequence-out zero, indexed tablesE0E360/E0E370. New sequence not already in selected head44 list clears byte28+index and outputs index;old/duplicate/type8 outputsFFFFFFFF;other unsequenced types output2. Distinct explicit caller stack preimages for outer and nested samples. Descriptive hypothesis, not a recovered symbol. R174 supplies five complete normal bodies1069B and two parent dependency fragments. Strict Win32/3CTests;146 original/source comparisons13156508B including48 sequence boundary inputs,32 ACK/96 deadline x87 combinations and masked status/stack checks,8 classifications,3 actual-lock activations,one source missing-clock guard. 3321live/PE bytes and7 direct CALL rows;native80-byte type tables/constants;PE ordinal40 verified. Initial fixture indexed-table relocation error corrected without production-code changes;failed record retained. Actual fixed-clock/Win32 providers and recording SDK conversion boundary. Full worker/constructor composition, original exception/fault/allocator/new-handler and binary ABI, unmasked FP, concurrency, ordinary startup, network peer/exchange and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_RECEIVE_R174.md;reports/native_network_console_receive_r174.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a3baa0",
+        "before": {
+          "address": "00a3baa0",
+          "function_name": "FUN_00a3baa0"
+        },
+        "after": {
+          "address": "00a3baa0",
+          "name": "BSP_NetworkConsoleSend_ActivateFirstFreeChannel",
+          "evidence": "Complete138B;ECX actual4003F0h,stack sockaddr16,RET4. Capture tracked148;scan16x49C at19C,first nonzero byte0 becomes0,copy fourDWORD address words at+4 in order,then callA4D542 atA3BB11 with current address+2 WORD;discard result and leave captured section. Actual CE2598 PEimport isxlive ordinal40 XSocketHTONS. No reset/duplicate check;full table only lock/unlock. Descriptive hypothesis, not a recovered symbol. R174 supplies five complete normal bodies1069B and two parent dependency fragments. Strict Win32/3CTests;146 original/source comparisons13156508B including48 sequence boundary inputs,32 ACK/96 deadline x87 combinations and masked status/stack checks,8 classifications,3 actual-lock activations,one source missing-clock guard. 3321live/PE bytes and7 direct CALL rows;native80-byte type tables/constants;PE ordinal40 verified. Initial fixture indexed-table relocation error corrected without production-code changes;failed record retained. Actual fixed-clock/Win32 providers and recording SDK conversion boundary. Full worker/constructor composition, original exception/fault/allocator/new-handler and binary ABI, unmasked FP, concurrency, ordinary startup, network peer/exchange and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_RECEIVE_R174.md;reports/native_network_console_receive_r174.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a3c5e0",
+        "before": {
+          "address": "00a3c5e0",
+          "function_name": "BSP_NetworkConsoleSend_SendWorker",
+          "comment": "[BSP reconstruction 00a3c5e0]\nPartial1286B parent only: sendworker callsACK writerA3AAB0 atA3C905 and firstIPv4 channellookupA3BB30 atA3C93C. Native full worker, x87/clock schedule, queues/socket/logging and owner constructor composition remain unbound. This fragment supplies two complete callees, not a worker substitute. Descriptive hypothesis, not a recovered symbol. R173 implements six complete normal bodies699B and records three parent dependency fragments. Strict Win32 build/3CTests;14 original/source cases8461224B;3071live/PE bytes and19 direct CALL rows. Native helper fixture uses recording SDK/Sleep/Close and normal CRT array iterator boundaries, real event handles and malloc-backed tracked locks, existing actual singleton APIs. The stop routine polls activity flags and closes handles, never waits for thread-handle completion. Full derived constructor/worker loops, original FH3/SEH, hardware faults, original allocator/new-handler, binary ABI, concurrency, ordinary startup, network exchange and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_LIFETIME_R173.md; reports/native_network_console_lifetime_r173.json."
+        },
+        "after": {
+          "address": "00a3c5e0",
+          "name": "BSP_NetworkConsoleSend_SendWorker",
+          "evidence": "Partial1286B parent only: sendworker callsACK writerA3AAB0 atA3C905 and firstIPv4 channellookupA3BB30 atA3C93C. Native full worker, x87/clock schedule, queues/socket/logging and owner constructor composition remain unbound. This fragment supplies two complete callees, not a worker substitute. Descriptive hypothesis, not a recovered symbol. R173 implements six complete normal bodies699B and records three parent dependency fragments. Strict Win32 build/3CTests;14 original/source cases8461224B;3071live/PE bytes and19 direct CALL rows. Native helper fixture uses recording SDK/Sleep/Close and normal CRT array iterator boundaries, real event handles and malloc-backed tracked locks, existing actual singleton APIs. The stop routine polls activity flags and closes handles, never waits for thread-handle completion. Full derived constructor/worker loops, original FH3/SEH, hardware faults, original allocator/new-handler, binary ABI, concurrency, ordinary startup, network exchange and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_LIFETIME_R173.md; reports/native_network_console_lifetime_r173.json. | Partial parent only: both native calls toA3ADF0 are now backed by complete deadline helper, including queued sequence pressure delay1 and send-error delay0. A3A8F0,A3BC60/A3B150,A3C1A0/A3B210,SDK/logging and completeworker composition still open;no abbreviatedworker substitute. Descriptive hypothesis, not a recovered symbol. R174 supplies five complete normal bodies1069B and two parent dependency fragments. Strict Win32/3CTests;146 original/source comparisons13156508B including48 sequence boundary inputs,32 ACK/96 deadline x87 combinations and masked status/stack checks,8 classifications,3 actual-lock activations,one source missing-clock guard. 3321live/PE bytes and7 direct CALL rows;native80-byte type tables/constants;PE ordinal40 verified. Initial fixture indexed-table relocation error corrected without production-code changes;failed record retained. Actual fixed-clock/Win32 providers and recording SDK conversion boundary. Full worker/constructor composition, original exception/fault/allocator/new-handler and binary ABI, unmasked FP, concurrency, ordinary startup, network peer/exchange and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_RECEIVE_R174.md;reports/native_network_console_receive_r174.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a3caf0",
+        "before": {
+          "address": "00a3caf0",
+          "function_name": "BSP_NetworkConsoleSend_ReceiveWorker",
+          "comment": "[BSP reconstruction 00a3caf0]\nPartial868B parent only: receiveworker callsIPv4 lookupA3BB30 atA3CC90/A3CCC9 and appendA3AB30 atA3CDA0. Remaining sockets/pool/logging/clock/worker composition unbound; no fake receive loop. Descriptive hypothesis, not a recovered symbol. R173 implements six complete normal bodies699B and records three parent dependency fragments. Strict Win32 build/3CTests;14 original/source cases8461224B;3071live/PE bytes and19 direct CALL rows. Native helper fixture uses recording SDK/Sleep/Close and normal CRT array iterator boundaries, real event handles and malloc-backed tracked locks, existing actual singleton APIs. The stop routine polls activity flags and closes handles, never waits for thread-handle completion. Full derived constructor/worker loops, original FH3/SEH, hardware faults, original allocator/new-handler, binary ABI, concurrency, ordinary startup, network exchange and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_LIFETIME_R173.md; reports/native_network_console_lifetime_r173.json."
+        },
+        "after": {
+          "address": "00a3caf0",
+          "name": "BSP_NetworkConsoleSend_ReceiveWorker",
+          "evidence": "Partial868B parent only: receiveworker callsIPv4 lookupA3BB30 atA3CC90/A3CCC9 and appendA3AB30 atA3CDA0. Remaining sockets/pool/logging/clock/worker composition unbound; no fake receive loop. Descriptive hypothesis, not a recovered symbol. R173 implements six complete normal bodies699B and records three parent dependency fragments. Strict Win32 build/3CTests;14 original/source cases8461224B;3071live/PE bytes and19 direct CALL rows. Native helper fixture uses recording SDK/Sleep/Close and normal CRT array iterator boundaries, real event handles and malloc-backed tracked locks, existing actual singleton APIs. The stop routine polls activity flags and closes handles, never waits for thread-handle completion. Full derived constructor/worker loops, original FH3/SEH, hardware faults, original allocator/new-handler, binary ABI, concurrency, ordinary startup, network exchange and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_LIFETIME_R173.md; reports/native_network_console_lifetime_r173.json. | Partial parent only: native first-free activationA3BAA0 atA3CCBD and complete classification/ACK releaseA3B5F0 atA3CD0F now supplied. Released82Ch list returns tosendpool2046E8;admitted820h packets useR173 append. Full socket/logging/clock/worker composition and derivedconstructor remain unbound. Descriptive hypothesis, not a recovered symbol. R174 supplies five complete normal bodies1069B and two parent dependency fragments. Strict Win32/3CTests;146 original/source comparisons13156508B including48 sequence boundary inputs,32 ACK/96 deadline x87 combinations and masked status/stack checks,8 classifications,3 actual-lock activations,one source missing-clock guard. 3321live/PE bytes and7 direct CALL rows;native80-byte type tables/constants;PE ordinal40 verified. Initial fixture indexed-table relocation error corrected without production-code changes;failed record retained. Actual fixed-clock/Win32 providers and recording SDK conversion boundary. Full worker/constructor composition, original exception/fault/allocator/new-handler and binary ABI, unmasked FP, concurrency, ordinary startup, network peer/exchange and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_RECEIVE_R174.md;reports/native_network_console_receive_r174.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "attempts": [
+      {
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\network_console_receive_r174\\annotations-0.log",
+        "exit": 0
+      }
+    ],
+    "readback_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\network_console_receive_r174\\comments-after.json",
+    "readback_sha256": "c9fb5b8a168da47747e0c5a279ee2c3d85011b8db74ac579e4083e84a63a6feb"
+  },
+  "ledger_receipts": [
+    "00a3a6b0 -> BSP_NetworkConsoleHeader_ExtendSequence\n",
+    "00a3a6b0 function decode_native_network_console_sequence_00a3a6b0\n",
+    "00a3b420 -> BSP_NetworkConsoleChannel_ProcessAcks\n",
+    "00a3b420 function process_native_network_console_ack_00a3b420\n",
+    "00a3b5f0 -> BSP_NetworkConsoleChannel_ClassifyReceived\n",
+    "00a3b5f0 function classify_native_network_console_received_00a3b5f0\n",
+    "00a3baa0 -> BSP_NetworkConsoleSend_ActivateFirstFreeChannel\n",
+    "00a3baa0 function activate_native_network_console_channel_00a3baa0\n",
+    "00a3adf0 -> BSP_NetworkConsoleChannel_RequestDisconnect\n",
+    "00a3adf0 function request_native_network_console_disconnect_00a3adf0\n",
+    "00a3c5e0 -> BSP_NetworkConsoleSend_SendWorker\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00a3c5e0\", \"name\": \"BSP_NetworkConsoleSend_SendWorker\", \"evidence\": \"Partial1286B parent only: sendworker callsACK writerA3AAB0 atA3C905 and firstIPv4 channellookupA3BB30 atA3C93C. Native full worker, x87/clock schedule, queues/socket/logging and owner constructor composition remain unbound. This fragment supplies two complete callees, not a worker substitute. Descriptive hypothesis, not a recovered symbol. R173 implements six complete normal bodies699B and records three parent dependency fragments. Strict Win32 build/3CTests;14 original/source cases8461224B;3071live/PE bytes and19 direct CALL rows. Native helper fixture uses recording SDK/Sleep/Close and normal CRT array iterator boundaries, real event handles and malloc-backed tracked locks, existing actual singleton APIs. The stop routine polls activity flags and closes handles, never waits for thread-handle completion. Full derived constructor/worker loops, original FH3/SEH, hardware faults, original allocator/new-handler, binary ABI, concurrency, ordinary startup, network exchange and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_LIFETIME_R173.md; reports/native_network_console_lifetime_r173.json.\"})\n",
+    "00a3c5e0 fragment native_network_console_send_deadline_dependency_r174\n",
+    "00a3caf0 -> BSP_NetworkConsoleSend_ReceiveWorker\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00a3caf0\", \"name\": \"BSP_NetworkConsoleSend_ReceiveWorker\", \"evidence\": \"Partial868B parent only: receiveworker callsIPv4 lookupA3BB30 atA3CC90/A3CCC9 and appendA3AB30 atA3CDA0. Remaining sockets/pool/logging/clock/worker composition unbound; no fake receive loop. Descriptive hypothesis, not a recovered symbol. R173 implements six complete normal bodies699B and records three parent dependency fragments. Strict Win32 build/3CTests;14 original/source cases8461224B;3071live/PE bytes and19 direct CALL rows. Native helper fixture uses recording SDK/Sleep/Close and normal CRT array iterator boundaries, real event handles and malloc-backed tracked locks, existing actual singleton APIs. The stop routine polls activity flags and closes handles, never waits for thread-handle completion. Full derived constructor/worker loops, original FH3/SEH, hardware faults, original allocator/new-handler, binary ABI, concurrency, ordinary startup, network exchange and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_LIFETIME_R173.md; reports/native_network_console_lifetime_r173.json.\"})\n",
+    "00a3caf0 fragment native_network_console_receive_classification_dependencies_r174\n"
+  ],
+  "tested_artifact_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r174\\native-network-console-receive-tested-r174.zip",
+    "sha256": "49c0a2ef394bc71774d1563586e3fd305389c103ac7d08b506dbee0ce183a1bc",
+    "files": 75,
+    "head": "1a749b818dbca2d6f7f545ead247d6cd1608207f"
+  }
+}

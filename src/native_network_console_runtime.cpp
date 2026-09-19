@@ -35,10 +35,13 @@ NativeNetworkConsoleSocketImports resolve_native_network_console_socket_imports(
     if (!module) throw std::invalid_argument("network console requires the loaded xlive module");
     const auto raw = ::GetProcAddress(module, MAKEINTRESOURCEA(38));
     if (!raw) throw std::runtime_error("xlive ordinal38 XSocketNTOHS is unavailable");
-    NativeNetworkConsoleSocketImports::NetworkToHostShort function;
+    const auto host_raw = ::GetProcAddress(module, MAKEINTRESOURCEA(40));
+    if (!host_raw) throw std::runtime_error("xlive ordinal40 XSocketHTONS is unavailable");
+    NativeNetworkConsoleSocketImports::ShortConversion function, host_function;
     static_assert(sizeof function == sizeof raw);
     std::memcpy(&function, &raw, sizeof function);
-    return {function};
+    std::memcpy(&host_function, &host_raw, sizeof host_function);
+    return {function, host_function};
 }
 const NativeNetworkConsoleThreadImports& native_network_console_thread_imports() noexcept {
     static const NativeNetworkConsoleThreadImports imports{&::Sleep, &::CloseHandle};

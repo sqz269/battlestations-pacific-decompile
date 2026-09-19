@@ -4,11 +4,12 @@
 #include "bsp/random_threads.hpp"
 
 namespace bsp {
-// Explicit SDK boundary: ordinal38 in the already loaded xlive module. Resolving
+// Explicit SDK boundaries: ordinals38/40 in the already loaded xlive module. Resolving
 // it does not load a DLL or provide a replacement implementation.
 struct NativeNetworkConsoleSocketImports {
-    using NetworkToHostShort = std::uint16_t (WINAPI*)(std::uint16_t);
-    NetworkToHostShort network_to_host_short;
+    using ShortConversion = std::uint16_t (WINAPI*)(std::uint16_t);
+    ShortConversion network_to_host_short;
+    ShortConversion host_to_network_short;
 };
 NativeNetworkConsoleSocketImports resolve_native_network_console_socket_imports(HMODULE);
 
