@@ -153,3 +153,11 @@ register ABI and nested ownership must be resolved before binding the creator.
 Full factory, packet recorder, network workers, startup composition and gameplay
 remain open. Fixtures do not establish arbitrary alias safety, concurrency,
 allocation failure behavior, original FH3 dispatch or whole executable ABI.
+
+## Correction from docs/NATIVE_SESSION_MESSAGE55_R192.md
+
+R192 reconstructs type 55's game-specific bodies and the complete `008E1530`
+creator dispatch. Original/source comparisons use the actual original STL helper
+bodies as required providers. A production container-provider composition and the
+full stream factory remain open; the earlier type-55 dependency statement should
+be read with this narrower remaining boundary.

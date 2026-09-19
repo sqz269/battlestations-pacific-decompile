@@ -32,6 +32,7 @@
 #include <vector>
 
 #include "bsp/air_operations.hpp"
+#include "bsp/lua_spawn_new.hpp"
 #include "bsp/mission_load_hosts.hpp"
 #include "bsp/mission_lua_host.hpp"
 #include "bsp/ship_ai_obstacle_tables.hpp"
@@ -242,6 +243,16 @@ struct GameMissionLuaSummary {
     unsigned long long generate_object_created{0};
     unsigned long long generate_object_repeat{0};
     unsigned long long generate_object_unknown{0};
+    // 0094C480 / 00949750 / 0094C490. docs/LUA_SPAWN_NEW_HOST.md.
+    unsigned long long spawn_new_calls{0};       // tables the binding accepted
+    unsigned long long spawn_new_rejected{0};    // argument 1 was not a table
+    unsigned long long spawn_new_queued{0};      // records linked at 00949530
+    unsigned long long spawn_new_attempts{0};    // 0094C490 passes that took one
+    unsigned long long spawn_new_fulfilled{0};   // records that reached +C0h = 1
+    unsigned long long spawn_new_requeued{0};    // 009478B0 pushes
+    unsigned long long spawn_new_units{0};       // entities appended at +CCh
+    unsigned long long spawn_new_callbacks{0};   // named globals actually called
+    unsigned long long spawn_new_callback_missing{0};
     std::vector<GameMissionNativeCall> natives; // distinct, in first-call order
     std::string first_error;
     std::string first_error_phase;
@@ -253,7 +264,8 @@ struct GameMissionLuaSummary {
 // resolves to, because the squadron has to reach the mission script's own table
 // and that table is this host's.
 class GameMissionLuaHost final : public bsp::MissionLuaHostServices,
-                                 public bsp::AirOpsSquadronFactory {
+                                 public bsp::AirOpsSquadronFactory,
+                                 public bsp::SpawnQueueDrain {
 public:
     GameMissionLuaHost(GameHostLog& log, GameVfsHost& vfs);
     ~GameMissionLuaHost() override;
@@ -528,6 +540,21 @@ public:
     // entity-returning tail 0089903C does. docs/LUA_GENERATE_OBJECT_HOST.md.
     int run_generate_object_00944fd0(lua_State* state, int argument_count);
 
+    // Packet cc8_spawn_new_route. 0094C480 SpawnNew is a three-instruction thunk
+    // into 00949750 on the manager at *(00F89B3C): it parses ONE Lua table,
+    // queues a DCh-byte request and creates nothing. Returns no results, which
+    // is what the native does and what every one of the fourteen call sites in
+    // this installation's usn_19_coralus.lua expects - not one of them uses the
+    // return value. docs/LUA_SPAWN_NEW_HOST.md.
+    int run_spawn_new_00949750(lua_State* state, int argument_count);
+    // The consumer, 0094C490, reached in GGame::OnMove step 20 through the
+    // `CALL 0094C490; RET 4` thunk at 0094C8F0. One request per
+    // `SpawnAttemptDelay`; a request that cannot be placed goes back on the
+    // queue (009478B0) instead of being dropped. The step is the mission
+    // frame's, because the native's own clock is the world time at DAT_00F876A4.
+    void run_spawn_queue_0094c490(float step_seconds) override;
+    void report_spawn_queue();
+
     // --- bsp::AirOpsSquadronFactory, packet cc8_airops_launch_tick ----------
     // 006C5050's seam. The unit is made by the script-orders host, which owns the
     // units host; what this adds is the `thisTable` slot, without which the
@@ -555,6 +582,12 @@ public:
     // state this process does not own and keeps the recovered nil arm.
     bool push_resolved_entity(lua_State* state, const char* binding_name, int argument_count);
     void note_entity_return();
+    // Packet cc8_spawn_new_route, second pass. An entity-returning row that
+    // answers from push_resolved_entity is decided AFTER `handled`, so without
+    // this it stayed UNIMPLEMENTED in the summary while resolving every call.
+    // GameHostLog's record is sticky on first insert, so note_native_call must
+    // not record a status for these rows and this must record exactly one.
+    void note_entity_status(const bsp::MissionLuaBinding& binding, bool resolved);
     // Milestone 2m. The globals walk 004d3167 performs: 00b67980 opens the
     // table, 00b67080 / 00b67190 iterate it and 00b66200 is
     // `lua_type(value) == LUA_TFUNCTION`. One entry per key, in the order the
@@ -565,6 +598,14 @@ public:
     void set_phase(std::string phase);
 
 private:
+    // Packet cc8_spawn_new_route, the two halves of one drain pass.
+    // 0094A140 -> 00949300 -> 009483D0: build the frame, create every member,
+    // set record+C0h. 0094C777: the completion walk over record+CCh.
+    void fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& request);
+    void complete_spawn_request_0094c777(const bsp::SpawnNewRequest& request);
+    // globalConfig+2DCh, read once from Globals["SpawnAttemptDelay"].
+    float spawn_attempt_delay_0087f800();
+
     struct OpenScript {
         std::string path;
         std::vector<std::uint8_t> bytes;
@@ -601,6 +642,13 @@ private:
     bool avoid_all_ship_collision_loaded_{};
     std::array<float, 5> avoidance_tuning_{};
     bool avoidance_tuning_loaded_{};
+    // Packet cc8_spawn_new_route. DAT_00F876A4, the world clock the drain
+    // compares against manager+0Ch, accumulated from the mission frame's step
+    // because this process has no world clock object of its own.
+    float spawn_world_clock_{0.0f};
+    float spawn_attempt_delay_{0.0f};
+    bool spawn_attempt_delay_read_{false};
+    unsigned spawn_requeue_logged_{0};
     GameMissionLuaSummary summary_;
 };
 

@@ -21,6 +21,7 @@
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/global_script_folders.hpp"
+#include "bsp/lua_spawn_new.hpp"
 #include "bsp/mission_lobby_settings.hpp"
 #include "bsp/mission_lua_bindings.hpp"
 #include "bsp/mission_lua_machine.hpp"
@@ -173,8 +174,12 @@ int binding_trampoline(lua_State* state) {
     // the orders host because it needs both the units host, through that host,
     // and this host's own `thisTable`.
     const bool generate_row = dispatch_row.address == 0x00944fd0u;
+    // Packet cc8_spawn_new_route. Same reason as the row above: the request it
+    // queues is drained into the units host through this host's own frame step,
+    // and its callback needs this host's `thisTable`.
+    const bool spawn_new_row = dispatch_row.address == 0x0094c480u;
     const bool handled = avoidance_setting || objective_row || get_property_row || ready_row
-        || launch_row || generate_row
+        || launch_row || generate_row || spawn_new_row
         || (orders != nullptr && GameScriptOrdersHost::handles(dispatch_row.name));
     // The replay of a failed named call, which the executable makes only to
     // recover the error message, must not count a second time.
@@ -257,6 +262,9 @@ int binding_trampoline(lua_State* state) {
     if (generate_row && !host->error_replay()) {
         return host->run_generate_object_00944fd0(state, argc);
     }
+    if (spawn_new_row && !host->error_replay()) {
+        return host->run_spawn_new_00949750(state, argc);
+    }
     if (avoidance_setting) {
         // 008D0849 uses bare 00B66250, which is lua_toboolean with no type
         // gate. Native argument zero is this C callback's stack slot one;
@@ -271,12 +279,26 @@ int binding_trampoline(lua_State* state) {
         return orders->dispatch(state, binding.name, argc);
     }
     if (bsp::mission_binding_returns_entity(binding.name)) {
+        // Packet cc8_spawn_new_route, second pass. `handled` was decided above,
+        // before this arm ran, so a row that answers HERE was still counted as
+        // unimplemented and the summary said so. On USN04 that made
+        // `MissionLuaNative::FindEntity 00898e30 UNIMPLEMENTED calls=132` sit in
+        // the same report as `entity_resolves=132`, which is every one of those
+        // calls answered with a real entity table. The count was right and the
+        // status was a lie, and the UNIMPLEMENTED census is what a reader picks
+        // the next packet from. The status is now recorded from the outcome.
         // 0089903C is the arm the native takes when the lookup produced
         // nothing. When it produced an entity the same tail pushes that
         // entity's thisTable slot instead, and milestone 2l fills those slots
         // for the created scene instances, so `FindEntity` can answer for real.
-        if (host->push_resolved_entity(state, binding.name, argc)) return 1;
-        if (!host->error_replay()) host->note_entity_return();
+        if (host->push_resolved_entity(state, binding.name, argc)) {
+            if (!host->error_replay()) host->note_entity_status(binding, true);
+            return 1;
+        }
+        if (!host->error_replay()) {
+            host->note_entity_status(binding, false);
+            host->note_entity_return();
+        }
         lua_pushnil(state);
         return 1;
     }
@@ -316,6 +338,8 @@ GameMissionLuaHost::GameMissionLuaHost(GameHostLog& log, GameVfsHost& vfs)
 }
 
 GameMissionLuaHost::~GameMissionLuaHost() {
+    // The world walk holds a bare pointer to this host for the spawn drain.
+    bsp::set_spawn_queue_drain(nullptr);
     if (state_ != nullptr) {
         lua_close(state_);
         state_ = nullptr;
@@ -1311,7 +1335,15 @@ void GameMissionLuaHost::attach_script_orders(GameScriptOrdersHost* orders) noex
     // plane count at entity+3CCh are the two things the air-operations code
     // cannot reach on its own; both are bound here, where the orders host and the
     // mission table are both in hand, and both are cleared on a detach.
+    // Packet cc8_spawn_new_route, and the same rule: the world walk that runs
+    // the spawn drain cannot reach this host, so the host publishes itself for
+    // the duration of the mission and takes itself back on a detach. The queue
+    // is cleared with it, because the manager is constructed per world
+    // (004DFAC3 writes 00F89B3C in BSP_Game_ConstructWorld and 004D2D7E clears
+    // it in BSP_Game_DestroyWorld), so a request cannot outlive its mission.
+    bsp::set_spawn_queue_drain(orders == nullptr ? nullptr : this);
     if (orders == nullptr) {
+        bsp::spawn_request_queue().clear();
         bsp::set_air_ops_squadron_factory(nullptr);
         bsp::set_air_ops_squadron_plane_count(nullptr, nullptr);
         return;
@@ -1374,7 +1406,20 @@ void GameMissionLuaHost::note_native_call(std::size_t row, int argument_count,
             static_cast<unsigned long>(binding.address));
         char method[96];
         std::snprintf(method, sizeof(method), "MissionLuaNative::%s", binding.name);
-        log_.unimplemented(method, address);
+        // Packet cc8_spawn_new_route, second pass. GameHostLog's record is
+        // sticky on FIRST insert - `record()` returns an existing entry with only
+        // its count bumped, and sets `implemented` solely when it creates one -
+        // so whichever of implemented()/unimplemented() runs first decides the
+        // status for ever. For an entity-returning row the answer is not known
+        // yet: `handled` was decided before the arm at the bottom of
+        // binding_trampoline runs, and that arm resolves 132 of USN04's 132
+        // `FindEntity` calls. Recording UNIMPLEMENTED here would lock in a status
+        // the same report contradicts with `entity_resolves=132`, and a later
+        // implemented() could not undo it. So the status is left to the arm,
+        // which records exactly one of the two.
+        if (!bsp::mission_binding_returns_entity(binding.name)) {
+            log_.unimplemented(method, address);
+        }
         log_.notef("  native %-28s argc=%d phase=%s", binding.name, argument_count,
             phase_.empty() ? "(none)" : phase_.c_str());
         return;
@@ -1509,28 +1554,69 @@ namespace {
 // which is what "keep the authored orientation" means.
 constexpr double kSceneGenerateObjectYawSentinelCeiling = 6.283185307179586;
 
-// 0088B840's predicate and 00888760's reader: a position argument is a table of
-// exactly three numbers, written to [out], [out+4], [out+8].
+// CORRECTED by packet cc8_spawn_new_route. 00888760 BSP_LuaObject_ReadVector3
+// does NOT index the table 1..3. Its whole body is one walk: 008887A9 opens the
+// iteration with 00B67080, 0088882F steps it with 00B67190, and between them it
+// compares each key against three string literals and stores the number it finds
+// into one of three float slots:
+//
+//   008887C2 PUSH 0xceb488 ("x") ... 008887DD FSTP float ptr [ESP + 0x8]
+//   008887E3 PUSH 0xd045f8 ("y") ... 008887FE FSTP float ptr [ESP + 0xc]
+//   00888804 PUSH 0xcfd718 ("z") ... 0088881F FSTP float ptr [ESP + 0x10]
+//
+// There is no index path before the loop either (00888767..008887A9 is the
+// prologue and two Lua temporaries). A table whose entries are at 1, 2 and 3
+// matches no key and reads nothing.
+//
+// This is the shape the scripts actually pass. `GetPosition` builds its table
+// with the same three named keys - 0088BA30, which
+// GameScriptOrdersHost::push_vector3_table_0088ba30 already reproduces - and
+// usn_19_coralus.lua then writes `spawnpos1.x`, `.y` and `.z` on it before
+// handing it to `SpawnNew` as `area.refPos`. The previous reader here answered
+// false for every one of those tables, which is why a 3000-frame USN04 run made
+// eight requests and created nothing.
+//
+// The native does NOT require all three, and it reports nothing. Its three
+// staging slots are written only by the three matches above - filtering the
+// whole 85-instruction listing for `[ESP+0x8]`, `[ESP+0xc]` and `[ESP+0x10]`
+// gives exactly those three `FSTP`s and the three reads below, and no
+// initialisation anywhere - and the tail copies all three out unconditionally,
+// whatever the walk found:
+//
+//   00888848 MOVSS XMM0,[ESP+0x8]  / 0088884e MOVSS [EDI],XMM0
+//   00888852 MOVSS XMM0,[ESP+0xc]  / 00888858 MOVSS [EDI+0x4],XMM0
+//   0088885d MOVSS XMM0,[ESP+0x10] / 00888867 MOVSS [EDI+0x8],XMM0
+//
+// then `0088888B MOV EAX,EDI` returns the OUT POINTER, not a success flag. So a
+// table carrying only `x` and `z` leaves the y component at whatever that stack
+// slot held, and the caller cannot tell. `00949750`'s own call site confirms the
+// caller does not ask: `00949B9B LEA ECX,[ESP+0x80]` hands it a bare stack local
+// with no adjacent pre-fill, `00949BA2 CALL 00888760`, and `00949BA7`/`00949BAB`/
+// `00949BB0` read all three floats straight back with no test in between.
+//
+// DEVIATION, labelled. An absent component is left at zero here rather than at
+// an uninitialised stack value, because uninitialised is not reproducible and
+// zero is the only defensible substitute. The `bool` is this process's own
+// signal and means "this table carried at least one of x, y, z", which is what
+// keeps a caller's "position or not?" question answerable; the native asks a
+// different question first (`008889C0`, is this an entity handle) and sends
+// everything else here regardless. Requiring all three, which this reader did
+// briefly, would refuse a `{x=..., z=...}` sea-level point the image accepts.
 bool read_vector3_00888760(lua_State* state, int index, float out[3]) {
     if (::lua_type(state, index) != LUA_TTABLE) return false;
+    static const char* const kVectorKeys[3] = {"x", "y", "z"};
     int found = 0;
-    for (int i = 1; i <= 3; ++i) {
-        ::lua_rawgeti(state, index, i);
-        if (::lua_type(state, -1) != LUA_TNUMBER) {
-            ::lua_settop(state, ::lua_gettop(state) - 1);
-            return false;
+    for (int i = 0; i < 3; ++i) {
+        ::lua_getfield(state, index, kVectorKeys[i]);
+        if (::lua_type(state, -1) == LUA_TNUMBER) {
+            out[i] = static_cast<float>(::lua_tonumber(state, -1));
+            ++found;
+        } else {
+            out[i] = 0.0f;
         }
-        out[i - 1] = static_cast<float>(::lua_tonumber(state, -1));
         ::lua_settop(state, ::lua_gettop(state) - 1);
-        ++found;
     }
-    // 0088B974 CMP EDI,3 requires exactly three entries; a fourth makes it not a
-    // position table. The rawgeti walk above cannot see a fourth, so this checks
-    // it directly rather than claiming the native's count.
-    ::lua_rawgeti(state, index, 4);
-    const bool extra = ::lua_type(state, -1) != LUA_TNIL;
-    ::lua_settop(state, ::lua_gettop(state) - 1);
-    return found == 3 && !extra;
+    return found > 0;
 }
 
 // 00467050(frame, 0.0f, value, 0.0f), the yaw-only rotation 0046DD9F applies to
@@ -1675,6 +1761,426 @@ int GameMissionLuaHost::run_generate_object_00944fd0(lua_State* state, int argum
     log_.implemented("MissionLuaNative::GenerateObject", "00944fd0");
     if (push_resolved_entity_by_id(state, entry->entity_id)) return 1;
     return 0;
+}
+
+// --- Packet cc8_spawn_new_route ------------------------------------------
+// 0094C480 SpawnNew / 00949750 the parse and enqueue / 0094C490 the drain.
+// docs/LUA_SPAWN_NEW_HOST.md carries the evidence for every address here.
+
+namespace {
+
+// One `groupMembers` element. The six keys are the ones the shipped scripts
+// write; the native reads them out of the Lua table into the 10h-byte element
+// at record+4h (the class at +0h, the name at +8h). A key the script omits
+// stays at the zero the record is constructed with, because every read in
+// 00949750 goes through an or-default helper and never raises.
+int read_member_int(lua_State* state, int table_index, const char* key) {
+    ::lua_getfield(state, table_index, key);
+    int value = 0;
+    if (::lua_type(state, -1) == LUA_TNUMBER) {
+        value = static_cast<int>(::lua_tonumber(state, -1));
+    }
+    ::lua_settop(state, ::lua_gettop(state) - 1);
+    return value;
+}
+
+float read_member_float(lua_State* state, int table_index, const char* key) {
+    ::lua_getfield(state, table_index, key);
+    float value = 0.0f;
+    if (::lua_type(state, -1) == LUA_TNUMBER) {
+        value = static_cast<float>(::lua_tonumber(state, -1));
+    }
+    ::lua_settop(state, ::lua_gettop(state) - 1);
+    return value;
+}
+
+std::string read_member_string(lua_State* state, int table_index, const char* key) {
+    ::lua_getfield(state, table_index, key);
+    std::string value;
+    if (::lua_type(state, -1) == LUA_TSTRING) {
+        const char* text = ::lua_tolstring(state, -1, nullptr);
+        if (text != nullptr) value = text;
+    }
+    ::lua_settop(state, ::lua_gettop(state) - 1);
+    return value;
+}
+
+// Both ranges are two numbers at Lua indices 1 and 2 (00949CDA / 00949D19 for
+// `angleRange`, 00949D9E / 00949DD4 for `distRange`), not at 0 and 1.
+bool read_range_pair(lua_State* state, int table_index, const char* key,
+                     float& low, float& high) {
+    ::lua_getfield(state, table_index, key);
+    bool read = false;
+    if (::lua_type(state, -1) == LUA_TTABLE) {
+        const int range = ::lua_gettop(state);
+        ::lua_rawgeti(state, range, 1);
+        ::lua_rawgeti(state, range, 2);
+        if (::lua_type(state, -2) == LUA_TNUMBER && ::lua_type(state, -1) == LUA_TNUMBER) {
+            low = static_cast<float>(::lua_tonumber(state, -2));
+            high = static_cast<float>(::lua_tonumber(state, -1));
+            read = true;
+        }
+        ::lua_settop(state, range);
+    }
+    ::lua_settop(state, ::lua_gettop(state) - 1);
+    return read;
+}
+
+}  // namespace
+
+int GameMissionLuaHost::run_spawn_new_00949750(lua_State* state, int argument_count) {
+    if (state == nullptr) return 0;
+    // argc=1 in every logged call, and 0094C480's `RET` with no immediate plus
+    // 00949750's own `RET 4` say the thunk forwards exactly the one lua_State.
+    // The Lua-visible argument is one table; anything else is the arm that
+    // reads twelve absent fields and queues a record nothing can satisfy, so it
+    // is refused here rather than queued forever.
+    if (argument_count < 1 || ::lua_type(state, 1) != LUA_TTABLE) {
+        ++summary_.spawn_new_rejected;
+        return 0;
+    }
+    ++summary_.spawn_new_calls;
+
+    bsp::SpawnNewRequest request;
+    request.serial = bsp::next_spawn_request_serial_00949f2b();
+    request.party = read_member_int(state, 1, "party");
+    ::lua_getfield(state, 1, "player");
+    request.player = ::lua_toboolean(state, -1) != 0;
+    ::lua_settop(state, ::lua_gettop(state) - 1);
+    request.callback = read_member_string(state, 1, "callback");
+    request.id = read_member_string(state, 1, "id");
+
+    // `groupMembers`, the vector at record+4h/+8h. 00948EE7 computes its size as
+    // `(end - begin) >> 4`, so one 10h-byte element per member.
+    ::lua_getfield(state, 1, "groupMembers");
+    if (::lua_type(state, -1) == LUA_TTABLE) {
+        const int members = ::lua_gettop(state);
+        for (int i = 1;; ++i) {
+            ::lua_rawgeti(state, members, i);
+            if (::lua_type(state, -1) != LUA_TTABLE) {
+                ::lua_settop(state, members);
+                break;
+            }
+            const int member = ::lua_gettop(state);
+            bsp::SpawnNewGroupMember row;
+            row.type_class_id = read_member_int(state, member, "Type");
+            row.name = read_member_string(state, member, "Name");
+            row.crew = read_member_int(state, member, "Crew");
+            row.race = read_member_int(state, member, "Race");
+            row.wing_count = read_member_int(state, member, "WingCount");
+            row.equipment = read_member_int(state, member, "Equipment");
+            request.members.push_back(std::move(row));
+            ::lua_settop(state, members);
+        }
+    }
+    ::lua_settop(state, ::lua_gettop(state) - 1);
+
+    // `area` is a sub-table and `refPos`, `angleRange`, `distRange` and `lookAt`
+    // are read out of it: 00949B1A pushes the `area` key and the four reads that
+    // follow (00949B30, 00949CC1, 00949D50, 00949E2B) are on what it produced,
+    // which is also how every call site in this installation writes them.
+    ::lua_getfield(state, 1, "area");
+    if (::lua_type(state, -1) == LUA_TTABLE) {
+        const int area = ::lua_gettop(state);
+        ::lua_getfield(state, area, "refPos");
+        if (read_vector3_00888760(state, ::lua_gettop(state), request.ref_pos)) {
+            request.has_ref_pos = true;
+        }
+        ::lua_settop(state, area);
+        request.has_angle_range = read_range_pair(state, area, "angleRange",
+            request.angle_low, request.angle_high);
+        // Only `distRange` has an absence arm (00949D95 CALL 00B65FB0 /
+        // 00949D9C JNZ), and only its first element is clamped: 00949E0A loads
+        // 10.0f, 00949E12 COMISS and 00949E21 JA select the larger.
+        float dist_low = bsp::kSpawnNewDistRangeDefaultLow;
+        float dist_high = bsp::kSpawnNewDistRangeDefaultHigh;
+        read_range_pair(state, area, "distRange", dist_low, dist_high);
+        request.dist_low = dist_low < bsp::kSpawnNewDistRangeLowMinimum
+                               ? bsp::kSpawnNewDistRangeLowMinimum : dist_low;
+        request.dist_high = dist_high;
+        ::lua_getfield(state, area, "lookAt");
+        if (read_vector3_00888760(state, ::lua_gettop(state), request.look_at)) {
+            request.has_look_at = true;
+        }
+        ::lua_settop(state, area);
+    }
+    ::lua_settop(state, ::lua_gettop(state) - 1);
+
+    ::lua_getfield(state, 1, "excludeRadiusOverride");
+    if (::lua_type(state, -1) == LUA_TTABLE) {
+        const int block = ::lua_gettop(state);
+        request.exclude.present = true;
+        request.exclude.own_horizontal = read_member_float(state, block, "ownHorizontal");
+        request.exclude.enemy_horizontal = read_member_float(state, block, "enemyHorizontal");
+        request.exclude.own_vertical = read_member_float(state, block, "ownVertical");
+        request.exclude.enemy_vertical = read_member_float(state, block, "enemyVertical");
+        request.exclude.formation_horizontal
+            = read_member_float(state, block, "formationHorizontal");
+    }
+    ::lua_settop(state, ::lua_gettop(state) - 1);
+
+    if (summary_.spawn_new_queued < 16) {
+        log_.notef("  SpawnNew 0094c480: serial %u party %d, %zu group member(s), "
+            "callback \"%s\"%s, angleRange %s, refPos %s(%.1f %.1f %.1f)",
+            request.serial, request.party, request.members.size(),
+            request.callback.c_str(), request.id.empty() ? "" : " id set",
+            request.has_angle_range ? "given" : "absent",
+            request.has_ref_pos ? "" : "ABSENT ",
+            static_cast<double>(request.ref_pos[0]),
+            static_cast<double>(request.ref_pos[1]),
+            static_cast<double>(request.ref_pos[2]));
+    }
+    bsp::spawn_request_queue().enqueue_00949530(std::move(request));
+    ++summary_.spawn_new_queued;
+    log_.implemented("MissionLuaNative::SpawnNew", "0094c480");
+    // 00949750 returns with no value pushed; the binding pushes nothing either.
+    return 0;
+}
+
+float GameMissionLuaHost::spawn_attempt_delay_0087f800() {
+    if (spawn_attempt_delay_read_) return spawn_attempt_delay_;
+    spawn_attempt_delay_read_ = true;
+    // The image default at 00CE74F8, overridden by Globals["SpawnAttemptDelay"]
+    // exactly as 0087F7D1..0087F800 overrides globalConfig+2DCh. The globals
+    // script is already run by read_minimap_globals_0087d7b0, so this reads the
+    // table the run left behind rather than running it a second time.
+    spawn_attempt_delay_ = bsp::kSpawnAttemptDelayDefault;
+    if (state_ != nullptr) {
+        const int top = ::lua_gettop(state_);
+        lua_getfield(state_, LUA_GLOBALSINDEX, kGlobalsGlobal);
+        if (lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, bsp::kSpawnAttemptDelayGlobalsKey);
+            if (lua_type(state_, -1) == LUA_TNUMBER) {
+                spawn_attempt_delay_ = static_cast<float>(::lua_tonumber(state_, -1));
+            }
+        }
+        ::lua_settop(state_, top);
+    }
+    log_.notef("spawn queue: SpawnAttemptDelay = %.3f s (globalConfig+2DCh, "
+        "0087F800; image default 0.8 at 00CE74F8, this installation's "
+        "scripts/datatables/globals.lua sets 0.5)",
+        static_cast<double>(spawn_attempt_delay_));
+    return spawn_attempt_delay_;
+}
+
+void GameMissionLuaHost::run_spawn_queue_0094c490(float step_seconds) {
+    // DAT_00F876A4. 0094C490 never reads the delta 0094C8F0 pushes for it, so
+    // the step is used only to advance the clock the interval is measured on.
+    spawn_world_clock_ += step_seconds;
+    bsp::SpawnRequestQueue& queue = bsp::spawn_request_queue();
+    // 0094C4AE `CMP dword ptr [EDI + 0x8],EBX` with EBX = 0 and the `JZ` at
+    // 0094C4B1: an empty queue returns before the clock is even read.
+    if (queue.empty()) return;
+    if (script_orders_ == nullptr) return;
+    if (!queue.attempt_due(spawn_world_clock_, spawn_attempt_delay_0087f800())) return;
+
+    // DEVIATION, labelled. 0094C508's walk prefers a record whose party is
+    // active in the table at `game+18CCh + party*4`. This process has no party
+    // table, so every party counts as active and the walk always answers the
+    // head - which is what the native itself does whenever the queue holds one
+    // record or none (0094C4FA CMP EAX,0x1 / 0094C4FF JBE 0094C56B).
+    const std::vector<bool> party_active(8, true);
+    const std::size_t index = queue.select_0094c508(party_active);
+    bsp::SpawnNewRequest request = queue.erase_009439b0(index);
+    queue.stamp_attempt(spawn_world_clock_);
+    ++summary_.spawn_new_attempts;
+    ++request.attempts;
+
+    fulfil_spawn_request_009483d0(request);
+
+    if (!request.fulfilled) {
+        // 0094C5AD JZ 0094C802: the record goes back on the list and is tried
+        // again next interval. The native never drops it, so neither does this.
+        ++summary_.spawn_new_requeued;
+        if (spawn_requeue_logged_ < 8) {
+            ++spawn_requeue_logged_;
+            log_.notef("  spawn queue 0094c490: request serial %u made nothing on "
+                "attempt %u, so it goes back on the list (009478B0) and is retried "
+                "next interval", request.serial, request.attempts);
+        }
+        queue.requeue_009478b0(std::move(request));
+        return;
+    }
+    ++summary_.spawn_new_fulfilled;
+    complete_spawn_request_0094c777(request);
+}
+
+void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& request) {
+    // 00949300 creates nothing unless EVERY member's placement passes; 009483D0
+    // then makes them all and sets record+C0h. The all-or-nothing rule is kept;
+    // the placement test itself is not, because this process runs no occupancy
+    // or exclusion test - see docs/LUA_SPAWN_NEW_HOST.md, "What is not tested".
+    if (request.members.empty()) return;
+    if (!request.has_ref_pos) return;
+
+    std::vector<std::uint32_t> made;
+    made.reserve(request.members.size());
+    for (std::size_t i = 0; i < request.members.size(); ++i) {
+        const bsp::SpawnNewGroupMember& member = request.members[i];
+        if (member.type_class_id <= 0) break;
+        const bsp::SpawnNewFrame frame = bsp::spawn_member_frame_0094a140(request, i);
+
+        bsp::game::GameSceneEntityRecord record;
+        // The script's own `Name` twice over in one mission ("Lexkiller 1" at
+        // both line 1059 and line 1115), and the squadron registry is keyed by
+        // name, so the request's serial disambiguates them. The script never
+        // sees this string: it addresses the unit through the entity table the
+        // callback hands it.
+        char suffix[24];
+        std::snprintf(suffix, sizeof(suffix), " #%u.%zu", request.serial, i + 1);
+        record.name = (member.name.empty() ? std::string("SpawnNew") : member.name) + suffix;
+        // DEVIATION, labelled. 009483D0 branches on the class's own
+        // `vtable+18h(6)` kind test: kind 6 takes the class's `vtable+28h(0)`
+        // constructor and everything else takes operator_new(0x414) plus
+        // BSP_PlaneSquadronTickableEntity_Construct. This process cannot ask a
+        // class its kind, so it takes the plane-squadron arm for every member.
+        // All 28 group members in this installation's usn_19_coralus.lua are
+        // aircraft (types 150/158/159/162), so no call site in the mission this
+        // packet measures takes the other arm.
+        record.class_name = "PlaneSquadronGen";
+        record.class_id = 0x18;
+        record.type_id = member.type_class_id;
+        record.party = request.party;
+        record.created = true;
+        record.world[0] = 1.0f;
+        record.world[5] = 1.0f;
+        record.world[10] = 1.0f;
+        record.world[12] = frame.position[0];
+        record.world[13] = frame.position[1];
+        record.world[14] = frame.position[2];
+        apply_scene_yaw_00467050(record.world, frame.yaw);
+
+        // `WingCount` has to reach 007F4580, and the seam reads it off the
+        // spawn-pool entry for the same reason a held-back row does: the
+        // property bag the key lives in does not exist here either.
+        // docs/PLANE_SQUADRON_HOST.md.
+        bsp::game::scene_spawn_pool().add(record);
+        if (bsp::game::SceneSpawnPoolEntry* entry
+                = bsp::game::scene_spawn_pool().find(record.name)) {
+            entry->wing_count_present = member.wing_count > 0;
+            entry->wing_count_raw = member.wing_count;
+        }
+        const std::uint32_t entity
+            = script_orders_->create_unit_from_scene_record_0046db4b(record);
+        if (bsp::game::SceneSpawnPoolEntry* entry
+                = bsp::game::scene_spawn_pool().find(record.name)) {
+            entry->spawned = entity != 0u;
+            entry->entity_id = static_cast<int>(entity);
+        }
+        if (entity == 0u) break;
+        if (!attach_created_entity_00928a00(static_cast<int>(entity), record.name,
+                                            member.type_class_id)) {
+            break;
+        }
+        made.push_back(entity);
+        if (summary_.spawn_new_units + made.size() <= 16) {
+            log_.notef("  spawn queue 0094c490: serial %u member %zu \"%s\" type %d "
+                "WingCount %d party %d -> entity %u at (%.1f %.1f %.1f)",
+                request.serial, i + 1, member.name.c_str(), member.type_class_id,
+                member.wing_count, request.party, entity,
+                static_cast<double>(frame.position[0]),
+                static_cast<double>(frame.position[1]),
+                static_cast<double>(frame.position[2]));
+        }
+    }
+    if (made.size() != request.members.size()) {
+        // 00949300's `bVar4 &= ...` gate: a group that cannot be placed whole is
+        // not placed at all. What is already made cannot be unmade here, so the
+        // partial result is reported rather than hidden.
+        if (!made.empty()) {
+            log_.notef("  spawn queue 0094c490: serial %u made %zu of %zu members before "
+                "stopping; 00949300 admits a group only when every member passes, so "
+                "this partial group is a defect in this process, not the native's rule",
+                request.serial, made.size(), request.members.size());
+        }
+        summary_.spawn_new_units += made.size();
+        request.created = std::move(made);
+        return;
+    }
+    summary_.spawn_new_units += made.size();
+    request.created = std::move(made);
+    request.fulfilled = true;  // 009487AD MOV byte ptr [EBX + 0xc0],0x1
+}
+
+void GameMissionLuaHost::complete_spawn_request_0094c777(
+    const bsp::SpawnNewRequest& request) {
+    // 0094C777 tests the record's completion function pointer and, when it is
+    // set, calls it once per created entity. The Lua side of that dispatch was
+    // NOT recovered: 00949750 pushes no code-address immediate and nothing in
+    // the 0094A140 -> 00949300 -> 009483D0 chain calls a Lua helper, so how the
+    // `callback` NativeString at record+84h reaches the interpreter is open.
+    //
+    // What IS settled, from the shipped script rather than the listing, is the
+    // arity: the named global takes one argument per group member, in order.
+    // `luaLexKillersSpawned(unit1,unit2,unit3,unit4)` at usn_19_coralus.lua:1166
+    // answers a four-member request and uses all four; `luaBombersSpawnedLex`
+    // at :3081 answers a one-member request at difficulty 0 and uses only
+    // `unit1`, taking `unit2` on the branch whose request has two members. That
+    // is a CONTRACT read off the consumer, and it is why this call is made here
+    // instead of being left unimplemented.
+    if (state_ == nullptr) return;
+    if (request.callback.empty()) return;
+    const int top = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, request.callback.c_str());
+    if (!lua_isfunction(state_, -1)) {
+        ++summary_.spawn_new_callback_missing;
+        ::lua_settop(state_, top);
+        log_.notef("  spawn queue 0094c490: serial %u created %zu unit(s) but the script "
+            "defines no global \"%s\", so nothing was called",
+            request.serial, request.created.size(), request.callback.c_str());
+        return;
+    }
+    int pushed = 0;
+    for (std::uint32_t entity : request.created) {
+        if (!push_resolved_entity_by_id(state_, static_cast<int>(entity))) {
+            lua_pushnil(state_);
+        }
+        ++pushed;
+    }
+    if (::lua_pcall(state_, pushed, 0, 0) != 0) {
+        const char* message = lua_tolstring(state_, -1, nullptr);
+        log_.notef("  spawn queue 0094c490: \"%s\" raised: %s",
+            request.callback.c_str(), message != nullptr ? message : "(no message)");
+        note_error(message != nullptr ? message : std::string("(no message)"));
+        ::lua_settop(state_, top);
+        return;
+    }
+    ++summary_.spawn_new_callbacks;
+    ::lua_settop(state_, top);
+    log_.notef("  spawn queue 0094c490: serial %u fulfilled, \"%s\"(%d unit table(s)) ran",
+        request.serial, request.callback.c_str(), pushed);
+}
+
+void GameMissionLuaHost::note_entity_status(const bsp::MissionLuaBinding& binding,
+    bool resolved) {
+    // The status of an entity-returning row, recorded from the OUTCOME because
+    // note_native_call cannot know it yet. GameHostLog's record is sticky on
+    // first insert, so the first call here decides the row for the run, and both
+    // arms print at most one line (it prints only when calls == 1).
+    char address[16];
+    std::snprintf(address, sizeof(address), "%08lx",
+        static_cast<unsigned long>(binding.address));
+    char label[96];
+    std::snprintf(label, sizeof(label), "MissionLuaNative::%s", binding.name);
+    if (resolved) {
+        log_.implemented(label, address);
+    } else {
+        log_.unimplemented(label, address);
+    }
+}
+
+void GameMissionLuaHost::report_spawn_queue() {
+    if (summary_.spawn_new_calls == 0 && summary_.spawn_new_rejected == 0) return;
+    log_.notef("summary SpawnNew 0094c480 calls=%llu rejected=%llu queued=%llu "
+        "attempts=%llu fulfilled=%llu requeued=%llu units=%llu callbacks=%llu "
+        "callback_missing=%llu still_queued=%zu interval=%.3f clock=%.1f",
+        summary_.spawn_new_calls, summary_.spawn_new_rejected,
+        summary_.spawn_new_queued, summary_.spawn_new_attempts,
+        summary_.spawn_new_fulfilled, summary_.spawn_new_requeued,
+        summary_.spawn_new_units, summary_.spawn_new_callbacks,
+        summary_.spawn_new_callback_missing, bsp::spawn_request_queue().size(),
+        static_cast<double>(spawn_attempt_delay_),
+        static_cast<double>(spawn_world_clock_));
 }
 
 std::uint32_t GameMissionLuaHost::create_squadron(const bsp::AirOpsSquadronRequest& request) {
@@ -2548,6 +3054,10 @@ std::size_t GameMissionLuaHost::run_created_scripts() {
 }
 
 void GameMissionLuaHost::report_mission_script_state() {
+    // Packet cc8_spawn_new_route: the mission frame already calls this at the
+    // end of a run, so the spawn-queue summary rides with it rather than asking
+    // for a second call site in a file this packet does not own.
+    report_spawn_queue();
     if (state_ == nullptr) return;
     const int base = ::lua_gettop(state_);
     lua_getfield(state_, LUA_GLOBALSINDEX, "Mission");

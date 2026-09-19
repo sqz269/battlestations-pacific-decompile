@@ -235,6 +235,31 @@ functions, confirmed with `python tools/bsp.py ghidra proto <addr> --brief`:
 | `00949530` | `00949530` - `0094960D` |
 | `00948CC0` | `00948CC0` - `009492FE` |
 
+## Corrections from docs/LUA_SPAWN_NEW_HOST.md
+
+Packet `cc8_spawn_new_route` read the consumer this document left open ("Nothing in this packet
+reads the queue back") and four readings here change. Each is argued with its addresses in that
+document; this is the pointer, not the argument.
+
+1. **`record+C0h` is the fulfilled flag, not "always zero".** `009487AD MOV byte ptr [EBX + 0xc0],0x1`
+   is the last store in the creator `009483D0`, and the drain reads it at `0094C5A7` to choose
+   between completing the request and pushing it back on the queue.
+2. **`record+C4h`/`+C8h` are the completion callback and its context, not the party and the
+   player.** The party is `record+80h`. `0094C777 CMP dword ptr [ESI + 0xc4],0` skips the whole
+   completion walk when `+C4h` is null; `0094C7D2`/`0094C7DF` load and `CALL` it, with
+   `0094C7D9 MOV ECX,dword ptr [ESI + 0x80]` supplying the party.
+3. **The 200.0/2500.0 defaults and the 10.0 clamp belong to `distRange`, not `angleRange`,** and
+   both ranges are read at Lua indices **1 and 2**, not 0 and 1. `angleRange` has no absence test,
+   no default and no clamp.
+4. **The scalar block's meanings.** `+68h`/`+6Ch` are the angle range (the solver forms their
+   midpoint and half-width and feeds it to `BSP_Matrix_BuildRotationY`), `+70h`/`+74h` the distance
+   range, and `+78h` is compared as an `int` against an entity's party field `+54h`, so it is not
+   one of "two floats".
+
+The follow-up packet `spawn_request_consumers` listed below is therefore **done** for the drain
+side: the consumer is `0094C490`, reached from `BSP_Game_OnMove` step 20. What that packet still
+covers is the three non-Lua enqueuers `0094B94C`, `0094BF47` and `0094C3C6`.
+
 ## Correction from docs/SCENE_RECORD_MAP.md
 
 Packet `cc2-scene-record-map` (main 91b309c7) proved that the map at `SceneDatabase+18h` which

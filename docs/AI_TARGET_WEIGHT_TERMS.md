@@ -885,6 +885,66 @@ what devaluing 188 of every 190 in-range candidates by the `0.01` arm would do.
 The flip therefore stays on: every measurable part of the prediction held, and the one unmeasurable
 part is labelled as unmeasured rather than counted as confirmation.
 
+## Current baseline, main `5a9f7fe43` (2026-09-19)
+
+**This table supersedes every earlier column in this document and in
+`docs/AI_SQUADRON_SERVED.md`.** Read it first; the sections below are kept for their evidence and
+their arithmetic, not for their numbers.
+
+Four runs, one binary built from main `5a9f7fe43`, the pair taken with the `BSP_AI_WEIGHT_MODEL`
+toggle so off and on differ in nothing else. `5a9f7fe43` carries, in order of when they landed: the
+`0071EBF0` command-target rule (`0daec4b56`), the `Hidden` hold-back (`67e8ac821` with
+`6b0a12422`), real squadron wings (`15563fdf9`), the plane-squadron member resolver called from
+`create_units` (`c92e5cf16`), the launch-record ordering fix (`5a9f7fe43` itself), the torpedo
+descent, release and goaway chain (`e94f9905d` among them) and the dive-bomb fixes.
+
+| Mission | Toggle | Log | `served` | `attackmove` | `settarget` | `fallback` | `scored` | `model_runs` | `weapon_rows` | `complete_rows` |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| IJN01 | `=0` off | `local/b5a_ijn01_off.log` | 1350 | 1215 | 106 | 29 | 220500 | 0 | 334 | 334 |
+| IJN01 | `=1` on | `local/b5a_ijn01_on.log` | 1350 | 1215 | 106 | 29 | **204876** | 220500 | 334 | 334 |
+| USN02 | `=0` off | `local/b5a_usn02_off.log` | 546 | 496 | 0 | 50 | 3276 | 0 | 32 | 32 |
+| USN02 | `=1` on | `local/b5a_usn02_on.log` | 546 | 496 | 0 | 50 | 3276 | 3276 | 32 | 32 |
+
+Chosen target class, with the runner-up count beside it:
+
+| Mission | Class | off, chosen | off, runner-up | on, chosen | on, runner-up |
+| --- | --- | --- | --- | --- | --- |
+| IJN01 | `13h` Fighter | 1262 | 1321 | **1208** | 1267 |
+| IJN01 | `1Bh` LandFort | 59 | 0 | **113** | 54 |
+| USN02 | `07h` Destroyer | 262 | 0 | **340** | 496 |
+| USN02 | `0Ah` Cruiser | 234 | 496 | **156** | 0 |
+
+Every chosen column totals its `attackmove + settarget` exactly: IJN01 1321 both ways, USN02 496
+both ways. The tables are complete rather than sampled.
+
+### What each mission's new column supersedes
+
+* **IJN01 supersedes the post-hold-back pair in "Why aircraft win, measured" below**
+  (1323 / 1215 / 79 / 29 / 177282 with `weapon_rows` 298). Real wings and the squadron ordering fix
+  moved it: `served` 1323 to 1350, `settarget` 79 to 106, `weapon_rows` 298 to **334**, and
+  `scored` 177282 to 220500. More aircraft exist and more of them are AI members, which is the
+  wings landing. It also supersedes every IJN01 column above that, which predate the hold-back.
+* **USN02 supersedes nothing, and that is the finding.** Every counter is identical to its
+  post-hold-back column - 546 / 496 / 0 / 50 / 3276, Destroyer 262 to 340 and Cruiser 234 to 156 -
+  across real wings, the resolver, the ordering fix and the torpedo chain. The reason is on record:
+  USN02 logs *"this mission created no unit answering `IsKindOf(0Fh)`"*, so no wing can spawn and
+  nothing in the squadron chain can reach it. A control that does not move when four commits land
+  is worth more than one that does.
+
+### What the model does here
+
+Unchanged in shape from the previous section, and now on a mission with its full complement of
+aircraft. On IJN01 the model moves **54 orders** from Fighter to LandFort (1262 to 1208, 59 to 113)
+- the same 54 the pre-wings pair showed (1248 to 1194, 46 to 100), so the effect scales with neither
+the aircraft count nor the fort count. And `scored` falls 220500 to 204876, so 15624 candidates the
+stand-in admitted now answer a weight of zero: as established below, the model does not prefer
+forts, it makes some aircraft **unscoreable** for an attacker whose barrels have no authored
+accuracy against a plane, and the fort is what remains.
+
+On USN02 the model changes **which** ship is picked and nothing else: 78 orders move from Cruiser to
+Destroyer with every order counter, including `scored`, identical. That remains the cleanest
+isolation of the weight's effect in this document.
+
 ## Why aircraft win, measured (packet `cc8_ai_target_choice_classes`, 2026-09-18)
 
 **Everything in this section is AFTER `67e8ac821` and `6b0a12422`, and nothing in it may be
