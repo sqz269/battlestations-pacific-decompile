@@ -4655,3 +4655,94 @@ listing to be a host defect that could not have been a transcription, and the at
 remove six spurious `goaway` exits. Neither restores a release, and the set as a whole leaves the
 mission at `releases=0 bombs_spawned=0` against `main`'s six drops. **The branch remains not
 mergeable on the dive's own measure**, and the reason is now a single named number rather than three.
+
+### RETRACTION, same packet: `approach+ACh` cannot be the lever, because the image never puts it there
+
+Packet `cc8_dive_race` withdraws the closing paragraph of the section above - "Putting the measured
+`+395` entry lag and the measured 0.426 descent into the can-dive height gives ... `+ACh > 1332 m`"
+- as an answer. The arithmetic stands; what it names does not exist. I extrapolated a required value
+for `approach+ACh` without first reading what produces it, which is the producer-before-consumer
+rule this document has now broken three times.
+
+`009C8920` `BSP_BotTaskDiveBomb_UpdateCruiseProfile` is the writer, and it is bounded:
+
+```
+009c8977  CALL 0042E740                  ; the tuning singleton -> EAX
+009c897c  FLD  float ptr [0x00CE5380]    ; 15.0
+009c8988  SUB  ESP,0x8
+009c898b  FSTP float ptr [ESP + 0x4]     ; arg2 = 15.0
+009c8994  FLDZ
+009c8998  FSTP float ptr [ESP]           ; arg1 = 0.0
+009c899b  CALL 00BD2F10                  ; uniform(0.0, 15.0)
+009c8996  MOV  EBP,EAX                   ; the singleton, and the ONLY write to EBP
+009c89a0  FADD float ptr [EBP + 0x4cc]   ;   between 009C8977 and here
+009c89ad  FSTP float ptr [ESP + 0x10]
+009c89ce  MOVSS dword ptr [EDI + 0x398],XMM0
+```
+
+so `ctl+398h = tuning+4CCh + uniform(0, 15)`. `00CE5380` is 15.0 read at the `FLD float ptr` width.
+`tuning+4CCh` is `Pilot/DiveBomb/BeginAltRange/1`, which `docs/GAME_TUNING_SINGLETON.md` row `+4cc`
+gives as **1000** in this installation (producer `007E9FE2`). The field has no other producer that
+could raise it: `00939E83`, in `BSP_UnitController_ConstructVariantB`, **zeroes** it
+(`00939E77 XORPS XMM0,XMM0` then the store, with `+394h` zeroed beside it at `00939E8B`). A scan of
+the whole image for `F3 0F 11 ?? 98 03 00 00` returns **19** `MOVSS` stores to some `+398h`;
+`009C89CE` is the only one inside the dive-bomb task and `00939E83` the only other one on the unit
+controller, the remaining seventeen being mission-tree, HUD, shadow and ship-AI objects. The
+`D9 ?? 98 03 00 00` x87 form returns only ship-AI and shader sites. The pattern demonstrably occurs
+elsewhere, so neither negative is vacuous. **Not checked**, and the one worth checking:
+`0079CD26` in `BSP_FlightLeaderControlBlock_GetOrCreate_Provisional`, which I assumed is a different
+struct on its name alone. (The first reading of this scan said "twelve" from the tail of capped
+output; the count is 19.)
+
+**So `approach+ACh` is 1000 to 1015 m and this host's pinned `kPilotDiveBombBeginAltRange1 = 1000.0f`
+is faithful to within 15 m.** The condition `+ACh > 1332` is not a target for a future packet; it is
+a proof that *no* value of this field reaches the dive, since the authored maximum, 1015, leaves the
+bomber 150 m short by the same arithmetic.
+
+**A naming correction that caused it.** `009C8920` writes *two* altitudes and this document has been
+calling both "the ordered cruise altitude". `009C8964 FLD [EAX+4C0h]` / `009C896E FSTP [ECX+18h]`
+puts `Pilot/DiveBomb/CruisingAlt` = 1300 into `ctl+394h`, while `009C89CE` puts
+`BeginAltRange/1 + uniform(0,15)` into `ctl+398h`. Only `+398h` reaches `approach+ACh`
+(`009C7AA7 FLD [EAX+398h]` / `009C7AAD FSTP [ESI+0ACh]`). The 1300 is a real authored cruise
+altitude that this path never uses.
+
+### What is left, and it is inside the arm that has to win
+
+With the entry altitude, the two attack distances, the climb angle, the 210 m fly-over target and
+the two height gates all now either bound or shown faithful, the only substitution still standing
+between the run-in and the wingover is **the fly-over's commanded heading itself** -
+`009C6DC8`'s `AddWrappedAngle(base, clamp(delta, -L, +L))`, with the clamp built at
+`009C6D7E`-`009C6DB0`, which `src/game_hosts_units.cpp` replaces with the bearing to the aim point
+and labels as a substitution.
+
+This packet adds one listing observation that makes that substitution look decisive rather than
+cosmetic. `009C6CEC`-`009C6D3B` is an arm nobody has written up:
+
+```
+009c6cec  FLD  float ptr [ESP + 0x10]
+009c6cf0  FSUB float ptr [ESP + 0x74]        ; a heading difference
+009c6cfe  FCOMIP ST0,ST1                     ; ... taken to its absolute value
+009c6d14  SUBSS XMM0,dword ptr [ESP + 0x10]  ;     through the -0.0 at 00D7A208
+009c6d1a  COMISS XMM0,dword ptr [0x00D7A238] ; against 0.01 (m32)
+009c6d21  JBE  0x009c6d29
+009c6d23  MOV  byte ptr [ESI + 0x19],0x0     ; NOT converged -> clear the roll-in flag
+009c6d29  COMISS XMM1,XMM2                   ; converged -> choose the side instead
+009c6d2e  OR   EAX,0xffffffff / 009c6d36 MOV EAX,1
+009c6d31  MOV  dword ptr [ESI + 0x20],EAX    ; flyabove+20h, which 009C8563 reads
+```
+
+The threshold is **0.01 rad**, and the flag it clears is the same `+19h` the transition rule reads,
+and the field it sets on the other branch is the roll side `flyabove+20h` that `009C8563` consumes
+when the turndown is entered. Read with the substituted heading, that says the image's fly-over is
+"**turn onto a computed heading, and roll in once you are on it to within 0.01 rad**", not "fly at
+the aim point until the bearing swings past 1.6 rad" - and it is the second reading that this
+host's substitution forces, because a bomber commanded straight at its target is converged on that
+heading throughout and reaches a large bearing error only by flying over the target, which is
+exactly where every aircraft in windows A, B and C ran out of altitude.
+
+**This is a hypothesis, and it is the only one this packet leaves.** Not established: every write to
+`flyabove+19h` (there are at least two more, at `009C67A9` and `009C66E7`); the producers of
+`[ESP+10h]` and `[ESP+74h]` at `009C6CEC`, which I did not trace back to their writes; and the whole
+of `009C6D7E`-`009C6DB0`, where `base`, `delta` and the limit `L` are built. Anyone taking it should
+start there and should not assume, as I did once already in this packet, that a number can be
+extrapolated before its producer is read.
