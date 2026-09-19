@@ -233,6 +233,17 @@ inside a squadron mate's hull box at that spacing.
 
 ## 5. `009BFEE0`, which is NOT reconstructed
 
+> **Corrected 2026-09-19, packets `cc8_follow_law` and `cc8_follow_regimes`.** The paragraph
+> below (and section 6) call `009BFEE0` "the law that flies a member to the station: the
+> throttle and heading". **It commands nothing** — all fifteen of its callees are math or pose
+> primitives, and it is a pure producer of one float3 steer point at `state+44h/48h/4Ch`. The
+> body that issues every command is `009BEE30`, listed here as an unread third step. Its steer
+> point is now read and bound for the lead-pursuit and abeam regimes; see
+> `docs/PLANE_FOLLOW_LAW.md` §5.10-§5.12 and its §7 block map for what remains open
+> (Phase A `009C0251`-`009C0EE0`, and `009BEE30`'s hold arm). The host no longer places a wing
+> member on its station: `src/game_hosts_units.cpp` runs the law behind
+> `kPlaneFollowLawEnabled`, with `kPlaneFormationPlacementEnabled` as its false twin.
+
 `009C1FD0` is the follow tick. It calls `009BFD70` (section 4) and then `009BFEE0`. Its callers are
 `009C7270 BSP_BotStateDiveBombDone_Tick`, `009D2720 BSP_BotStateTorpedoPrepare_Tick`, `009AD1F0` and
 `009B6670`.
