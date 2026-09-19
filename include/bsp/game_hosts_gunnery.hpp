@@ -229,6 +229,13 @@ struct GameProjectileRow {
     // distance cannot separate "abeam and clear" from "inside the bow line";
     // this is what does.
     float crossing_angle{0.0f};
+    // Packet cc8_torpedo_retire item 5: the same geometry at the DROP, so the
+    // run-in can be compared with the closest approach without re-deriving it.
+    // Both are hull POSE headings (the unit's vtable[50h] row 2), the same
+    // quantity `course` above uses - never the ship-ai step heading.
+    float drop_owner_heading{0.0f};
+    float drop_target_heading{0.0f};
+    float drop_crossing_angle{-1.0f};   // -1 = no ordered target at the drop
 };
 
 // One swimming round's closest approach, kept after the round is gone.
@@ -246,6 +253,10 @@ struct GameTorpedoApproachRow {
     float ordered_min_time{-1.0f};
     float target_travel{0.0f};        // how far the ordered target moved, drop to closest
     float crossing_angle{0.0f};       // radians, 0 = the round runs along the target's course
+    // Packet cc8_torpedo_retire item 5, carried from the round.
+    float drop_owner_heading{0.0f};
+    float drop_target_heading{0.0f};
+    float drop_crossing_angle{-1.0f};
 };
 
 // Per unit, what the chain did to it and what it did with its guns.

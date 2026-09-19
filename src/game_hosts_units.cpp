@@ -595,6 +595,18 @@ struct GameUnitSlot {
     float torpedo_breakoff_prev_range{0.0f};  // range_90 one transition tick back
     float torpedo_breakoff_safe_dist{0.0f};   // safe_distance_438() on that tick
     float torpedo_prev_range_90{0.0f};
+    // cc8_torpedo_retire item 5: the crossing angle at ATTACKRUN ENTRY, to be
+    // set against the 5 to 12 degrees the closest-approach census measures at
+    // the end of the swim. The target's number is the hull POSE heading,
+    // atan2(pose_row2.x, pose_row2.z), which is the same quantity the gunnery
+    // census differences the round's track against. It is NOT the ship-ai
+    // step heading: docs/TORPEDO_AFTER_THE_DROP.md section 13 measures that
+    // control-block field 0.7 to 0.9 rad away from the hull's pose.
+    float torpedo_attackrun_yaw_c6c{0.0f};
+    float torpedo_attackrun_own_pose{0.0f};
+    float torpedo_attackrun_target_pose{0.0f};
+    float torpedo_attackrun_crossing{-1.0f};   // -1 = attackrun never entered
+    int torpedo_attackrun_entries{0};
     float torpedo_aim_heading_last{0.0f};
     float torpedo_aim_throttle_last{0.0f};
     int torpedo_attackrun_altitude_commands{0};
@@ -4284,6 +4296,37 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             return in;
                         }
                         void set_state(void*, bsp::TorpedoState next) override {
+                            // cc8_torpedo_retire item 5. Latch the run-in
+                            // geometry on the FIRST tick of each attackrun, in
+                            // the same convention the closest-approach census
+                            // uses at the other end of the swim.
+                            if (next == bsp::TorpedoState::kAttackRun &&
+                                slot_.torpedo_state !=
+                                    bsp::TorpedoState::kAttackRun) {
+                                ++slot_.torpedo_attackrun_entries;
+                                const GameUnitSlot* tgt = nullptr;
+                                if (slot_.command_target_plus_one != 0) {
+                                    const std::size_t ti =
+                                        slot_.command_target_plus_one - 1;
+                                    if (ti < owner_.slots.size()) {
+                                        tgt = owner_.slots[ti].get();
+                                    }
+                                }
+                                slot_.torpedo_attackrun_yaw_c6c =
+                                    slot_.plane_heading_c6c;
+                                slot_.torpedo_attackrun_own_pose =
+                                    owner_.pose_heading_radians(slot_);
+                                if (tgt != nullptr) {
+                                    slot_.torpedo_attackrun_target_pose =
+                                        owner_.pose_heading_radians(*tgt);
+                                    slot_.torpedo_attackrun_crossing =
+                                        std::fabs(
+                                            bsp::wrapped_angle_subtract_00438b10(
+                                                slot_.torpedo_attackrun_yaw_c6c,
+                                                slot_
+                                                    .torpedo_attackrun_target_pose));
+                                }
+                            }
                             // 009D0D90, the goaway state's vtable slot +4h. The
                             // registrar never writes goaway+24h, so this enter
                             // is its only producer and 009D3150 reads whatever
@@ -8373,6 +8416,23 @@ void GameUnitsHost::report() {
                         static_cast<double>(slot->torpedo_breakoff_safe_dist),
                         slot->torpedo_breakoff_approach_ticks,
                         slot->torpedo_breakoff_no_target_ticks);
+                    // cc8_torpedo_retire item 5. The run-in geometry at
+                    // ATTACKRUN ENTRY, for comparison with the crossing angle
+                    // the closest-approach census reports at the far end of the
+                    // swim. Both target numbers are hull POSE headings, so the
+                    // two are commensurable; the ship-ai step heading is a
+                    // different field and is deliberately absent here.
+                    host.log.notef("  torpedo %-12s run-in at attackrun entry: "
+                        "entries=%d yaw_C6C=%.4f own_pose=%.4f "
+                        "target_pose=%.4f crossing=%.4f rad (%.1f deg)",
+                        slot->row.name.c_str(),
+                        slot->torpedo_attackrun_entries,
+                        static_cast<double>(slot->torpedo_attackrun_yaw_c6c),
+                        static_cast<double>(slot->torpedo_attackrun_own_pose),
+                        static_cast<double>(slot->torpedo_attackrun_target_pose),
+                        static_cast<double>(slot->torpedo_attackrun_crossing),
+                        static_cast<double>(slot->torpedo_attackrun_crossing) *
+                            180.0 / kPi);
                     // cc8_torpedo_retire item 4, observation only: the speed
                     // ratio task+41Ch = approach+24h that 009F9CE0 writes as
                     // max(1.0f, classBlock->+188h / reference_speed). The

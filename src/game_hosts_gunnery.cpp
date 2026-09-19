@@ -150,6 +150,9 @@ struct GameGunneryHost::Impl {
         rec.ordered_min_distance = row.ordered_min_distance;
         rec.ordered_min_time = row.ordered_min_time;
         rec.crossing_angle = row.crossing_angle;
+        rec.drop_owner_heading = row.drop_owner_heading;
+        rec.drop_target_heading = row.drop_target_heading;
+        rec.drop_crossing_angle = row.drop_crossing_angle;
         if (row.ordered_target != 0 && row.ordered_min_distance >= 0.0f) {
             const float dx = row.target_pos_at_min[0] - row.target_pos_release[0];
             const float dz = row.target_pos_at_min[2] - row.target_pos_release[2];
@@ -3011,6 +3014,22 @@ bool GameGunneryHost::release_ordnance_drop(std::size_t unit_index) {
             shot.target_pos_release[0] = tx;
             shot.target_pos_release[1] = ty;
             shot.target_pos_release[2] = tz;
+            // Packet cc8_torpedo_retire item 5. The crossing geometry at the
+            // DROP, in the same convention as the closest-approach one above:
+            // unit_heading_radians is the unit's vtable[50h] heading, the hull
+            // POSE row 2, for the aircraft as well as for the ship. For an
+            // aircraft it is the same number the torpedo aim census prints as
+            // yaw_C6C - that census prints yaw_C6C and hull_1050 side by side
+            // and they agree to four decimals - so the aircraft's run-in
+            // heading and the target's course are commensurable here, which
+            // they would NOT be against the ship-ai step heading.
+            shot.drop_owner_heading =
+                h.units.unit_heading_radians(shot.owner_unit - 1);
+            shot.drop_target_heading =
+                h.units.unit_heading_radians(shot.ordered_target - 1);
+            shot.drop_crossing_angle =
+                std::fabs(bsp::wrapped_angle_subtract_00438b10(
+                    shot.drop_owner_heading, shot.drop_target_heading));
         }
     }
     h.shots.push_back(shot);
@@ -3206,14 +3225,20 @@ void GameGunneryHost::report() {
         for (const GameTorpedoApproachRow& r : rows) {
             host.log.notef("  torpedo from %-12s nearest %-14s min=%.1f m at t=%.2f s "
                 "of %.2f s run | ordered %-14s min=%.1f m at t=%.2f s "
-                "target_moved=%.1f m crossing=%.3f rad",
+                "target_moved=%.1f m crossing=%.3f rad "
+                "| at the drop: own_pose=%.4f target_pose=%.4f "
+                "crossing=%.4f rad (%.1f deg)",
                 r.owner_name.c_str(), r.nearest_name.c_str(),
                 static_cast<double>(r.min_distance), static_cast<double>(r.min_time),
                 static_cast<double>(r.life_at_end), r.ordered_name.c_str(),
                 static_cast<double>(r.ordered_min_distance),
                 static_cast<double>(r.ordered_min_time),
                 static_cast<double>(r.target_travel),
-                static_cast<double>(r.crossing_angle));
+                static_cast<double>(r.crossing_angle),
+                static_cast<double>(r.drop_owner_heading),
+                static_cast<double>(r.drop_target_heading),
+                static_cast<double>(r.drop_crossing_angle),
+                static_cast<double>(r.drop_crossing_angle) * 180.0 / 3.14159265358979323846);
         }
     }
     {
