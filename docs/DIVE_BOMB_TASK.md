@@ -4746,3 +4746,77 @@ exactly where every aircraft in windows A, B and C ran out of altitude.
 of `009C6D7E`-`009C6DB0`, where `base`, `delta` and the limit `L` are built. Anyone taking it should
 start there and should not assume, as I did once already in this packet, that a number can be
 extrapolated before its producer is read.
+
+### Check 1: the authored numbers, and what their own comments say the two attacks are
+
+Packet `cc8_dive_race`. The tuning rows the dive-bomb approach reads are authored in
+`scripts/datatables/planeglobals.lua`, mtime **2024-10-29 12:54:18**, one of only two files in
+`scripts/datatables` at that date (29 of the 35 are the 2024-07-13 bulk):
+
+```lua
+["DiveBomb"] = -- divebomb parancs parameterei. a tobbi, skill fuggo parameter a Robots.Lua-ban
+{
+    ["AttackDist"]  = 1100,             -- ilyen tavolsagbol bomlik fel a formacio, es kezdenek onalloan tamadni
+    ["CruisingAlt"] = 1300,             -- utazo magassag (meter)
+    ["BeginAltRange"] = { 1000, 1200 }, -- e ket magassag kozott kezdi meg a leboritast
+    ["SafeDist"] = 100,
+    ["MoveOnCruisingAlt"] = true,
+    ["ReferenceSpeed"] = KMH(280)
+}
+```
+
+So `tuning+4CCh` = **1000** and `tuning+4D0h` = **1200**, and with `009C89CE`'s
+`tuning+4CCh + uniform(0, 15)` the per-squadron `ctl+398h`, hence `approach+ACh`, is **1000 to
+1015 m** for scripted and spawned aircraft alike. `kPilotDiveBombBeginAltRange1 = 1000.0f` is
+therefore not a stand-in to be replaced but a **proof**, and so are `AttackDist` 1100 (`tuning+4C4h`,
+the floor that was mistaken for `+B4h`/`+B8h`) and `ReferenceSpeed` KMH(280) (`tuning+4D8h`).
+
+**The release band is not a mod value.** `scripts/datatables/robots.lua` has mtime 2025-06-01
+16:03:10 with `robots__.lua.bak` at 16:03:09 beside it, so that file *was* rewritten by a tool in
+this installation. Both copies carry `DiveBombReleaseAlt = { 350, 450 }` and
+`DiveBombNewReleaseMul = 0.6` identically, at the same lines 568 and 569. Uncertainty, stated: the
+`.bak` is the state before *that* rewrite, not proven to be retail.
+
+**And their comments name the two attacks, which is the finding.** The authored Hungarian
+distinguishes two dive-bomb modes by name, and this reconstruction's two states are exactly them:
+
+| row | comment | reading |
+| --- | --- | --- |
+| `DiveBombReleaseAlt = {350, 450}` | "regi tipusu, **leboritos** bumbazasnal a bomba oldasi magassag valahol a ketto kozott" | old-type, **roll-over** bombing: release somewhere between the two. This is `approach+A8h`, and it belongs to the **wingover** - `turndown` + `aimdive`. |
+| `DiveBombNewReleaseMul = 0.6` | "ha **nem leboritott** manoverrel bombaz, **csak siman rarepulve**, akkor a fenti ReleaseAlt erteket ennyivel megszorozva hasznalja" | if it bombs **not** with the roll-over manoeuvre, **just plainly flying at it**: use ReleaseAlt times this. This is the `aimglide`'s release altitude, 210 m. |
+| `BeginAltRange = {1000, 1200}` | "e ket magassag kozott **kezdi meg a leboritast**" | between these two altitudes it **begins the roll-over**. |
+
+### So the image does NOT glide by design, and the arithmetic indicts a different term
+
+The reframing this check was asked to test - that with this installation's numbers the image itself
+never takes the wingover and its dive bombers glide-bomb - is **not supported, and the authored data
+says the opposite.** `BeginAltRange`'s own comment is that the roll-over *begins* in the 1000-1200 m
+band, and an aircraft at 1000 m clears the can-dive flag `+790h` (`B > approach+D4h` = 675 m) with
+325 m to spare. The `0.6` is not the normal case; its comment marks it as the multiplier for the
+attack that is explicitly *not* the roll-over.
+
+What the arithmetic actually indicts is the fly-over's **commanded altitude**, not its entry
+altitude. The altitude arm computes `C` from the begin altitude and then, at `009C655F`-`009C657C`,
+replaces it with `R = NewReleaseMul * ReleaseAlt` = 210 m whenever `C > 1.1 * R` - that is, it
+replaces the **roll-over's** begin altitude with the **glide's** release altitude, on the path whose
+own data says the roll-over starts here. A bomber that holds 1000 m across a 2080 m fly-over passes
+its target above 675 m and rolls in; a bomber commanded to 210 m arrives at roughly 114 m and cannot.
+All three of this packet's windows measured the second.
+
+**The next question is therefore whether the `C := R` clamp at `009C657C` is guarded**, and not the
+aimglide's steering. The prediction worth one read: something upstream of `009C655F` selects the
+glide ceiling only for an aircraft already committed to the glide - a `+790h`, a `+D1h`, or the
+`approach+0Ch` test at `009C64A6` doing more than choosing between two sources of `C`.
+**Not established.** The walk recorded in "The altitude arm the host did not have" shows no such
+guard, and it covered a 949-instruction body; a negative from it is not yet a proof. If there is no
+guard, then the contradiction is between the image's code and its own data table, and the
+interesting question becomes which of the two the shipped game actually honours.
+
+**On the descent rate, what is proved and what is not.** The 0.426 used in this packet's arithmetic
+is not merely a host artefact: `009C6E10`'s dive branch commands `009FB800` with `ref = 0.8` at every
+geometry this mission produces, `009FB800` returns `-min(DropAngle * t, limit)` with `t` clamped to
+that reference, and the census prints the command as -0.419 rad = 24.0 deg, against which this host
+*achieves* 23.1 deg - it tracks the commanded pitch to within a degree. So the angle in the
+arithmetic is the **image's commanded** angle. What is **not** determinable from the listing is
+whether the image's own flight model tracks that command as closely as this one does, and therefore
+whether the image's entry lag matches the +395 m measured here.
