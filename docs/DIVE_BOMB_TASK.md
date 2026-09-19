@@ -5174,9 +5174,28 @@ Two branches skip it entirely, and both are worth more than the clamp:
 
 On either skip path `C` keeps the cruise altitude `009C64C9` wrote and the altitude arm commands
 about 1000 m instead of 210 m - which is exactly the "holds the begin altitude across the fly-over
-and rolls in" behaviour the authored comments describe. **`ctl+3A8h` is unread**, and it is the
-single address to take next if the glide-versus-roll-over question is reopened. This packet does not
-bind it.
+and rolls in" behaviour the authored comments describe.
+
+**`ctl+3A8h` is the squadron's old-style-bombing flag, and it is 0 here.** Read by the integrator,
+not by this packet, and recorded with its addresses: `approach+0Ch` is the **squadron**
+(`009F9CF6 MOV EDX,[EAX+9D4h]` / `009F9CFC MOV [ECX+0Ch],EDX`), so the byte is `squadron+3A8h`. Its
+only store in plane, squadron or Lua code is `0089EB39 MOV byte [ESI+3A8h],AL`, fed by
+`0089EB30 CALL 00B66250 BSP_LuaObject_GetBoolean` inside `0089EA00`, whose string reference is
+`"luaMW_SquadronSetOldStyleBombing failed:"` - the Lua native `SquadronSetOldStyleBombing`. The
+constructor default is zero: `007F2C60 BSP_PlaneSquadronTickableEntity_Construct` calls `007F2BD0`
+with `ECX = squadron+37Ch` (`007F2CA2 LEA ECX,[ESI+37Ch]`, `007F2D2B CALL`), and `007F2BE1 XOR BL,BL`
+reaches `007F2C4E MOV byte [ESI+2Ch],BL`, i.e. `37Ch + 2Ch = +3A8h`. **In this installation** a
+case-insensitive grep of the whole `scripts\` tree for "OldStyle" returns nothing, so no mission ever
+calls that native.
+
+So the two attacks in the authored comments are a **scripted switch**, and this installation only
+ever gets the new one: `009C6554`'s skip is never taken, every squadron takes the 210 m clamp, and
+`DiveBombNewReleaseMul` is its release rule. The uncertainty to carry is the shape of the store
+census rather than the reading: it sees `disp32` stores plus the one `disp8` block store found by
+reading the constructor, and `007F3500 BSP_PlaneSquadron_CloneFrom` may copy the block - it would be
+copying a zero. **That leaves `flyabove+1Bh` as the only clamp skip that can occur here**, so who
+writes it at `009C6813` and when is what decides whether any aircraft holds altitude through the
+fly-over.
 
 ### Measured: the before run, and the artefact seen directly
 

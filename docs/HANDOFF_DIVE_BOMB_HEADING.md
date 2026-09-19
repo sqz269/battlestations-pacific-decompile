@@ -23,14 +23,22 @@ the `C := 210 m` clamp at `009C657C` is unguarded.
 
 ## (b) The two addresses to take next, in order
 
-1. **`ctl+3A8h`**, read at `009C64D1` (`MOV AL,[EAX+3A8h]` with `EAX = approach+0Ch`) into base
-   `[ESP+27h]`, zeroed at `009C64DD` when there is no controller. With `BL != 0` it makes
-   `009C6554`'s `0F85` JNE skip `009C655A`-`009C67FE` - the altitude target, the leave test and the
-   roll-in test - so `C` keeps the cruise altitude and the fly-over commands about 1000 m instead of
-   210 m. That is the "holds the begin altitude and rolls over" the authored comments describe, and
-   it is the only thing found in the whole body that can produce it. Its **producer is unread**.
-2. **`flyabove+1Bh`**, written at `009C6813` and tested at `009C6532` with `009C6544`'s `75` JNE,
-   which skips the same block by a different route. Also unread.
+1. **`flyabove+1Bh`**, written at `009C6813` and tested at `009C6532`, where `009C6544`'s `75` JNE
+   skips `009C654A`-`009C67B5` - the altitude target, the leave test and the roll-in test - so `C`
+   keeps the cruise altitude and the fly-over commands about 1000 m instead of the 210 m clamp. It is
+   now the **only** clamp skip that can happen in this installation, which makes it the whole
+   glide-versus-roll-over question. Its producer is unread.
+
+   The other skip is closed. `009C6554`'s `0F85` JNE needs base`[ESP+27h] != 0`, which is
+   `squadron+3A8h` (`009C64D1 MOV AL,[EAX+3A8h]`, `EAX = approach+0Ch`, and `approach+0Ch` is the
+   squadron per `009F9CF6`/`009F9CFC`). That byte is the old-style-bombing flag: written only by
+   `0089EB39` from `00B66250 BSP_LuaObject_GetBoolean` inside `0089EA00`
+   ("luaMW_SquadronSetOldStyleBombing failed:"), zeroed by the constructor
+   (`007F2C60` -> `007F2BD0` with `ECX = squadron+37Ch`, `007F2BE1 XOR BL,BL`, `007F2C4E MOV
+   [ESI+2Ch],BL`), and **in this installation** no script calls the native. Integrator's reading;
+   the residual doubt is `007F3500 BSP_PlaneSquadron_CloneFrom` possibly copying the block, which
+   would copy a zero. The authored two attacks are therefore a scripted switch and this installation
+   only ever gets the new one.
 
 Two further holes, smaller: `flyabove+1Ch`, set at `009C6919` and tested at `009C691F` and at
 `009C6DCD`, where `009C6DDA`'s `75` JNZ **skips the heading write entirely** - the host records
