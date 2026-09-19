@@ -528,6 +528,45 @@ and are not candidates. So at most six aircraft can pull out.
    that the chain sits on a 25-43 m hit/miss boundary, so any release count change moves damage in
    a direction this packet cannot forecast. It will be reported, not predicted.
 
+### Measured: `local\pullout_after.log`, and the blocker moves one state downstream
+
+4800-frame USN04 on `fcd7c145e`, against `flyover_after.log`. The pair differs only by the pull-out
+commit and the wrap fix (`1f30cd6db`, which section 7's commit message shows is inert for every
+consumer).
+
+**Arm A fires, and the prediction's open question is answered.** `bearing err max=` comes back at
+**2.7935 rad** for `#3.1` and **2.5912** for `#7.1`, against the 1.5 rad gate - so the aircraft do
+end up with the target nearly behind them, and arm A is the live arm. `pull_outs=1` on all six.
+
+| quantity | `flyover_after.log` | `pullout_after.log` |
+| --- | --- | --- |
+| `#3.1` transitions / aimglide ticks | 5 / 864, 785, 852 | **6 / 23, 24, 22** |
+| `#7.1` transitions / aimglide ticks | 5 / 172, 112, 162 | **6 / 22, 23, 23** |
+| `#3.1` goaway ticks | 0 | **841, 761, 830** |
+| `#7.1` goaway ticks | 0 | **150, 89, 139** |
+| dive-bomb `releases` | 19 | 19 |
+| `bomb_drops` / `bomb_impacts` | 19 / 18 | 19 / 18 |
+| `total_damage` / `deaths` | 9826.4 / 8 | 9820.7 / 8 |
+
+So predictions 1 and 2 held and **prediction 4 was wrong**: the aimglide is no longer terminal - all
+six aircraft leave it within about 23 ticks instead of sitting for up to 869 - but **not one of them
+reaches a second attack run**, and there are no extra releases. The 5.7-point damage difference is
+the six aircraft flying a goaway instead of an orbit; nothing else moved.
+
+**The new blocker is `009C7F00`, the goaway completion.** `#3.1` sits in `goaway` for 761-841 ticks
+and never completes, so `009C86E8`'s JZ keeps it there and `009C86F9`'s return to flyabove is never
+reached. `dive_bomb_goaway_complete_009c7f00` is already bound and its two gates say why this is
+expected rather than broken: the range has to open past `travel_20 * 0.9`, **and the aircraft has to
+have climbed back to `min(cruise_altitude_398, begin_altitude_ac + aim_point_height_50)`**. These
+aircraft leave the dive at about 300 m and that ceiling is about 1000 m, so a second attack run
+needs 700 m of climb inside the goaway. Whether the goaway's climb arm
+(`dive_bomb_goaway_climb_009c4b44`) actually commands it, and how long it would take, is the next
+thread and it is not this packet's.
+
+What this window does settle: the chain `aimglide -> goaway -> flyabove` is real, the first edge is
+now bound and works, and the reconstruction's terminal state has moved from the aimglide to the
+goaway. That is one gate closer to a second attack run, with the next gate named.
+
 ## 8. Where the dive-entry error is born: not in the fly-over, and not a wingman offset
 
 The integrator asked for a per-squadron bearing table to decide whether the error that makes
