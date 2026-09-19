@@ -63,12 +63,18 @@
       "was": "009D0F10's body given as 009D0F10-009D1153.",
       "is": "009D0F10-009D1210. 009D1153 is the FIRST of three RET 4; 009D1032 JBE jumps past it to a second arm at 009D1156 whose returns are at 009D11ED and 009D120E, and the 009D1194 call site lives in that arm.",
       "evidence": "bsp.py ghidra proto on 009D0F10, 009D109C, 009D10FF and 009D1194 all answer body 009d0f10 - 009d1210."
+    },
+    {
+      "doc": "docs/TORPEDO_AFTER_THE_DROP.md section 3.2, this packet's own",
+      "was": "state+1Ch, the altitude both 009D109C and 009D1194 command, has no producer in this document.",
+      "is": "009D0D90 BSP_BotStateTorpedoGoAway_Enter (body 009D0D90-009D0F04) writes it at 009D0E88 as UniformFloatRange(50.0, 100.0) plus approach+78h + approach+74h when approach+132h is set, else ctl+394h. It writes state+2Ch, +24h, +28h, +30h, +34h and +20h too.",
+      "evidence": "The plate comment on 009D0D90 carries packet cc8_torpedo_goaway_release's extent correction past 009D0E3A to 009D0F04. I had read only docs/TORPEDO_GOAWAY_RELEASE.md section (2)'s summary line and not that document's own correction section."
     }
   ],
   "goaway_tick": {
     "structure": "high = unitY > state+20h (009D0F3C JBE -> 0); 009D0C10 heading update; countdown state+28h -= dt while approach+90h < state+24h - 100.0; state+30h += dt; re-seed state+34h = jitter(3.0, 6.0), state+28h = jitter(row+10h, row+14h) + state+34h, state+30h = -state+34h/2 when state+28h < 0 and high; then the manoeuvre window state+30h < state+34h selects the arm.",
     "window_arm": "009FB800(state+1Ch, 1.0) and a roll cmd+2C4h = clamp(2 * state+2Ch * state+30h, -1.2, 1.2) with cmd+2CCh = 1 when unitY > 20.0; otherwise 009FB800(1000.0, 1.0) with cmd+2C0h = state+18h and cmd+2CCh = 2.",
     "post_window_arm": "009FB800(state+1Ch, 1.0) always; then cmd+2C0h = state+18h with mode 2 when high, else cmd+2C4h = 0.0 with mode 1.",
-    "unread_dependencies": "009D0C10 at 009D0F46 fills state+18h, the heading both arms command, and is unread. state+1Ch, state+2Ch, state+20h and state+24h come from the goaway enter 009D0D90, of which docs/TORPEDO_GOAWAY_RELEASE.md section (2) reads only +24h and +28h; +1Ch has no producer in that document."
+    "unread_dependencies": "ONE remains: 009D0C10 BSP_BotStateTorpedoGoAway_UpdateGeometry, body 009D0C10-009D0D87, called first at 009D0F46, which fills state+18h, the heading both arms write to cmd+2C0h. Nothing else in the band writes it. state+1Ch, +2Ch, +24h, +28h, +30h, +34h and +20h all have producers in the enter 009D0D90."
   }
 }

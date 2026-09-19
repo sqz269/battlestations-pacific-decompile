@@ -219,3 +219,40 @@ Two things a binder must not take on trust:
 * `state+1Ch`, `state+2Ch`, `state+20h` and `state+24h` come from the goaway **enter** `009D0D90`,
   which `docs/TORPEDO_GOAWAY_RELEASE.md` section (2) reads for `+24h` and `+28h` only. `+1Ch` is the
   altitude both `009D109C` and `009D1194` command and it has no producer in this document.
+
+### 3.3 Correction to 3.2, made before anyone acted on it: `state+1Ch` does have a producer
+
+Section 3.2 says "`+1Ch` is the altitude both `009D109C` and `009D1194` command and it has no
+producer in this document". That is **wrong**, and the mistake was mine: I read
+`docs/TORPEDO_GOAWAY_RELEASE.md`'s section (2) summary line, which says `009D0D90` is read "for its
+use of `+24h` and `+28h`", and did not read that document's own correction from packet
+`cc8_torpedo_goaway_release`, which extends the enter past `009D0E3A` to `009D0F04` and reads the
+rest of it.
+
+* **was**: `state+1Ch` has no producer; a binder cannot command the altitude the tick asks for.
+* **is**: `009D0D90 BSP_BotStateTorpedoGoAway_Enter` (body `009D0D90`-`009D0F04`) writes every field
+  the tick reads except `+24h`'s companion `+2Ch`, which it also writes at its head:
+
+| field | producer | value |
+| --- | --- | --- |
+| `state+2Ch` | `009D0D90` head | `+1.0` or `-1.0` (`00D7A24C` / `00D7A260`) on a parity of the global at `00F876B0`, so it is the **side** the break-off turns to |
+| `state+24h` | `009D0E37` | `max(tuning+438h SafeDist, the target's extent from 007B5BE0)` times `UniformFloatRange(1.0, 1.15)` (`00D20CE4`). The only writer in the band |
+| `state+1Ch` | `009D0E88` | `UniformFloatRange(50.0, 100.0)` (`00CEB4D4`, `00CE3D08`) **plus** `approach+78h + approach+74h` when `approach+132h` is set, else `ctl+394h` |
+| `state+28h` | `009D0EAB` | `UniformFloatRange((approach+14h)->+10h, ->+14h)` - the same row pair the tick re-seeds from at `009D1000` |
+| `state+30h`, `state+34h` | `009D0EB1`, `009D0EB6` | 0 |
+| `state+20h` | `009D0EEB` | the altitude `high` is tested against |
+* **evidence**: the plate comment on `009D0D90` in the live project, which carries that packet's
+  extent correction verbatim, and `bsp.py ghidra proto` for the body.
+
+**What this changes for a binder.** `state+1Ch` is the release altitude plus 50 to 100 metres - so
+the climb-away above 20 m asks for a little above where the aircraft dropped, and the climb-away
+below 20 m asks for 1000 m. Only **one** unread dependency remains, and it is the heading:
+
+* `009D0C10 BSP_BotStateTorpedoGoAway_UpdateGeometry`, body `009D0C10`-`009D0D87`, called first at
+  `009D0F46`. It is what fills `state+18h`, which both arms write to `cmd+2C0h`. Nothing else in the
+  band writes it. **That is the one routine that has to be read before `009D0F10` can be bound
+  faithfully**, and it is 375 bytes.
+
+A binder that skipped it would command heading 0 on every goaway, which on this placement points the
+aircraft north rather than away from the ships that are shooting at them - the kind of substitution
+that reads as a behaviour bug forever. `009D0F10`'s own transcription in 3.1 needs no revision.
