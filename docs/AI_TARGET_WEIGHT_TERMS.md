@@ -985,11 +985,27 @@ because a sub-type `0` barrel answered accuracy `0` and `00A094F5` already skipp
 
 ### USN02, after the hold-back
 
-`served` 546, `attackmove` 496, `settarget` 0, `fallback` 50, `scored` 3276, `model_runs` 3276,
-`complete_rows` 32 of 32, chosen `07h` Destroyer 340 and `0Ah` Cruiser 156 summing to 496. The
-control **moved across the hold-back too**, from 616 / 559 / 0 / 57 / 4004, so its long-standing
-identity with every earlier USN02 row ends here and that is the hold-back, not the model. The
-model-off half of this pair was still running when this was written.
+The pair, from the same binary:
+
+| USN02, after the hold-back | `served` | `attackmove` | `settarget` | `fallback` | `scored` | `model_runs` |
+| --- | --- | --- | --- | --- | --- | --- |
+| model off | 546 | 496 | 0 | 50 | 3276 | 0 |
+| model on | 546 | 496 | 0 | 50 | 3276 | 3276 |
+
+| Class | off, chosen | off, runner-up | on, chosen | on, runner-up |
+| --- | --- | --- | --- | --- |
+| `07h` Destroyer | 262 | 0 | **340** | 496 |
+| `0Ah` Cruiser | 234 | 496 | **156** | 0 |
+
+**This is the cleanest demonstration of the model's effect in the whole stream.** Every order
+counter is identical across the pair — same `served`, same `attackmove`, same `fallback`, even the
+same `scored`, so not one candidate's admission changed — and yet the choice moves: 78 orders
+switch from a Cruiser to a Destroyer. The model changes **which** target is picked without changing
+how many are picked or which are admissible, which is what a weight is supposed to do and what no
+earlier column could show in isolation.
+
+The control **moved across the hold-back**, from 616 / 559 / 0 / 57 / 4004, so its long-standing
+identity with every earlier USN02 row ends here; that is the hold-back, not the model.
 
 ## The choice observed (packet `cc8_ai_target_choice_observed`, 2026-09-18)
 
