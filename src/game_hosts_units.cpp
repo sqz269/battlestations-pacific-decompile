@@ -5587,6 +5587,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // pitch floor from ratcheting.
                             bsp::pilot_reset_plan_0099b450(unit_.plan_state,
                                 unit_.plan_slots, live);
+                            // cmd+2CCh is ONE word in the image and two fields
+                            // here: PilotPlanState::heading_mode_2cc, which the
+                            // reset above sets to 1 for 0099B548, and
+                            // plan_heading_mode_2cc, which the roll gate at
+                            // 0099DE8A/0099E275 actually reads and every task
+                            // tick writes. Without this copy the reset never
+                            // reached the gate, so where the image re-arms the
+                            // SERVO arm every think - holding whatever bank
+                            // target cmd+2C4h carries - this host left the field
+                            // wherever the last writer put it, and the planner's
+                            // own mode-2 arm zeroes it at 0099E3B5. A state that
+                            // wrote no roll mode then got neither arm and simply
+                            // stopped banking. docs/DIVE_BOMB_TASK.md.
+                            unit_.plan_heading_mode_2cc =
+                                unit_.plan_state.heading_mode_2cc;
 
                             // 0099D300's yaw arm. It writes `desired` only when
                             // the unit has a commanded target; every other slot

@@ -2363,3 +2363,82 @@ geometry: in both, the aimdive entry range **is** the closest range.
 
 So the next gate is `009C7EA0` and the turndown's pull rate, not the aim error and not the flyabove.
 The dive-bomb chain now reaches the right place and leaves it too slowly.
+
+## The pull-through: what the laws command, and where the divergence is not
+
+### (b) The bearing error is built from the nose, not the velocity
+
+`docs/PLANE_ATTITUDE_ANGLES.md` section 2: `unit+C6Ch` is `atan2` of the pose's **forward axis**
+after the pitch is rotated out of it - `007C195F` crosses `fwd` with world up, `007C1A14` rotates
+the matrix about that axis by the pitch, and `007C1A21` takes `atan2(U.m22, U.m20)`, wrapped at
+`007C1AAD`. So the heading is the **nose's horizontal projection**. The aimdive's bearing error is
+`SubtractWrappedAngle(that heading, bearing to the aim point)`; the velocity never enters it. The
+aim error's `cos(bearing) * range` is therefore an along-**nose** projection, not along-track.
+
+### (c) The attitude integration is not the divergence
+
+`include/bsp/plane_advance_pose.hpp` reconstructs `007C6500` as axis-angle rotations of the pose
+matrix (`RotationAxisAngle`) followed by `orthonormalize_up_first_0085dad0`. A matrix advanced that
+way has no Euler singularity in its state and carries an aircraft through the vertical; the
+singularity lives only in the **derived** angles, and both sides guard it identically - the image
+skips the heading and bank writes when `|fwd x up|` falls under the 1.0842e-10 at `00CE3820` or
+`|cross|` under the 0.001f at `00D7A23C` (`007C19A9`, `007C19D4`), and `refresh_attitude_007c1900`
+does the same. So the host can fly an aircraft through the vertical, and this is **not** where it
+diverges.
+
+### (a) What the laws command for an inverted aircraft with the target astern
+
+The turndown hands over at exactly the attitude `009C7EA0` demands: `pose+C64h` crossing -1.0 rad,
+57.3 degrees nose-down, with `|bank|` past 2.356 - inverted. At that instant the target is astern,
+so `009C5C97`'s aim error is strongly negative, `009C5CA9`'s `76` JBE picks the negative arm, and
+`009C5CD0` scales it by `DiveBombAimPrecPullMinus` = 0.025. With an error of hundreds of metres the
+clamp at `009C5CE5` saturates:
+
+* **pitch = -1.0**, full **forward** stick. `+1` is back stick, which is what the turndown uses to
+  pull the nose down while inverted; `-1` is its opposite, so at 57 degrees nose-down inverted it
+  **raises** the nose and aborts the pull-through.
+* **roll** clamps to `-1` through the falling map, and the bank thrashes as the bearing's sign flips
+  each time the aircraft rolls past inverted.
+
+The trace is exactly that picture: `pose_c64_min` never passes -0.98, the heading never reverses,
+and the range rises monotonically from 660 m to 1842 m.
+
+### The honest answer: the image commands the same push
+
+Nothing here is a transcription error. `009C5C97`, `009C5CA9` and `009C5CD0` are read from the
+listing and the gains are the authored row; the same arithmetic on the image's side gives the same
+`-1.0` for a target astern. So **the image overshoots on this pass too** - the first dive is a miss
+by construction once the wingover has put the target behind.
+
+What the image does about it is the part this host has never reached: `009C86D9` sends `goaway`
+back to `flyabove` **when bombs remain**, so the aircraft climbs back over the target and tries
+again. Our runs stop with `goaway=1` tick, `rounds_left=2` and `transitions=7`: the aircraft was set
+up to go round and the mission window ended. That is a falsifiable prediction - a longer run should
+show a second `flyabove`/`turndown`/`aimdive` circuit - and it is the next thing to test, not
+another law to re-read.
+
+## `cmd+2CCh` made one word: a same-build before and after
+
+The reset now copies `PilotPlanState::heading_mode_2cc` into the field the roll gate reads, so
+`0099B548`'s per-think re-arm reaches `0099DE8A`/`0099E275` as it does in the image. Both runs of
+each pair are the same build, differing only by that copy.
+
+| measure | USN01 before | USN01 after | USN04 before | USN04 after |
+| --- | --- | --- | --- | --- |
+| ordered aircraft | 5 | 5 | 1 | 1 |
+| `range_last_mean` | 3858.8 m | **3806.2 m** | 1934.9 m | 1934.1 m |
+| `closed_mean` | 315.6 m | **368.1 m** | 9175.0 m | 9175.8 m |
+| `worst_closed` | 280.3 m | **330.7 m** | 9175.0 m | 9175.8 m |
+| `heading_error_last_mean` | 0.016 rad | **0.005 rad** | 2.815 rad | 2.805 rad |
+| dive-bomb walk | - | - | 2118 ticks, 7 transitions | 2117 ticks, 7 transitions |
+
+**USN01 moves and USN04 does not, and both are the expected result.** USN01's five torpedo aircraft
+fly states that often write no roll mode, so before the fix they fell to mode 0 after the planner's
+own arm zeroed it at `0099E3B5` and simply stopped banking; with the reset reaching the gate they
+get the servo arm every think and close 368.1 m instead of 315.6 m, worst-case 330.7 m instead of
+280.3 m, and finish three times better aligned - 0.005 rad against 0.016.
+
+USN04 is unchanged to within a tick because every dive-bomb state now writes a mode explicitly -
+attackrun 2, turndown 0 then 1, aimdive 0, flyabove 2 - so the reset's default never applies there.
+That is the control: a planner-wide change that improves the mission whose states leave the mode
+alone and does not disturb the one whose states do not.
