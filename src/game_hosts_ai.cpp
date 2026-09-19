@@ -2201,21 +2201,6 @@ void GameAiCoordinatorHost::Impl::build_squadrons() {
     // for 007F4580's loop, complete for the member array and the class id.
     squadrons.clear();
     unit_owned_by_squadron.assign(units.count(), false);
-    // A name-to-unit map, because a SCENE-ROW squadron's registry record never
-    // gets its member units filled. Only the air-ops path fills them
-    // (game_hosts_script_orders.cpp, `squadron.member_units.push_back(unit)`);
-    // the scene path clears the array and then fills only `member_names` and
-    // `member_spawn_index`, queueing the wings into `pending_squadron_members`,
-    // and the `resolve_member_units` the registry's header says makes
-    // find_by_member_unit valid does not exist anywhere. Measured on USN04 with
-    // the unit lookup alone: 7 squadrons over 15 planes, which is its four
-    // air-ops wings grouped correctly and its one scene wing seeding three
-    // squadrons of its own. Resolving by name closes that.
-    std::map<std::string, std::size_t> unit_by_name;
-    for (std::size_t u = 0; u < units.count(); ++u) {
-        const std::string named = unit_name(u);
-        if (!named.empty()) unit_by_name.emplace(named, u);
-    }
     for (std::size_t unit = 0; unit < units.count(); ++unit) {
         // 009FE0F0's air test: the plane base 0Fh. A squadron's own members are
         // planes, and nothing else in the scene produces one.
@@ -2229,28 +2214,18 @@ void GameAiCoordinatorHost::Impl::build_squadrons() {
         // on a USN04 that has 5. The registry's back pointer is this process's
         // stand-in for plane+9D4h: a plane whose squadron names another unit as
         // its flight leader is a wingman and is not a seed.
-        // find_by_member_unit is the right question, but it cannot answer yet:
-        // this runs from create_units' tail and the registry's +3D0h array is
-        // resolved by GameScriptOrdersHost::resolve_plane_squadron_members,
-        // whose only call sites are in the mission loop. Until that resolver is
-        // also called at the end of create_units, a scene-row squadron's array
-        // is empty here and the name route is the one that answers.
-        bsp::PlaneSquadronRegistry& wings = bsp::plane_squadron_registry();
-        const bsp::PlaneSquadronHostRecord* owner = wings.find_by_member_unit(unit);
-        if (owner == nullptr) owner = wings.find_by_member_name(unit_name(unit));
-        // The wing in +3D0h order when the array is resolved, and by name when
-        // it is not. Slots whose plane never became a unit are skipped, which
-        // is live_count()'s rule.
+        // The find_by_member_name fallback this carried is GONE: create_units
+        // now calls resolve_plane_squadron_members before constructing this
+        // host, so the +3D0h array is filled by the time this runs and one
+        // route answers instead of two that could disagree.
+        const bsp::PlaneSquadronHostRecord* owner =
+            bsp::plane_squadron_registry().find_by_member_unit(unit);
+        // The wing in +3D0h order, skipping slots whose plane never became a
+        // unit, which is live_count()'s rule.
         std::vector<std::size_t> wing_units;
         if (owner != nullptr) {
             for (const std::size_t member : owner->member_units) {
                 if (member != bsp::kPlaneSquadronNoUnit) wing_units.push_back(member);
-            }
-            if (wing_units.empty()) {
-                for (const std::string& member : owner->member_names) {
-                    const auto found = unit_by_name.find(member);
-                    if (found != unit_by_name.end()) wing_units.push_back(found->second);
-                }
             }
         }
         // A record that resolves to nothing is no owner: without this the

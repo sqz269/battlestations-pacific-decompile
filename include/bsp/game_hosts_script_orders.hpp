@@ -77,12 +77,26 @@ class GameHostLog;
 // Adding a scripts-orders pointer to the units host instead would need a
 // wiring line in the Codex-owned src/game_hosts.cpp.
 //
-// Unguarded and idempotent: it reassigns every slot from the names each time,
-// so it is safe to call after any pass that creates units. The member below
-// keeps the "only when the unit count changed" guard for the mission loop,
-// where it runs every frame. Returns the number of slots that resolved.
+// `only_unresolved` decides what happens to a record that already has its
+// array. The body WIPES with assign(NoUnit) before re-resolving, so it can
+// un-fill as well as fill: a caller that runs while a record holds a correct
+// answer from another route would destroy it if a lookup missed. The air-ops
+// launch path fills +3D0h inline from its batch position, so:
+//
+//  - false, the mission loop's long-standing behaviour, re-resolves everything
+//    every time. Safe there because it runs after the launch path has finished
+//    and the names always match: the launch pushes `plan.members[wing].name`
+//    into BOTH the unit record and member_names, from the same expression.
+//  - true, which is what a call from `create_units` passes, touches only a
+//    record whose array is still empty. `create_units` runs in the MIDDLE of
+//    the air-ops launch, before the record at all, so a wipe there could only
+//    ever hit an older squadron; skipping the filled ones removes the question
+//    rather than relying on the name argument holding forever.
+//
+// Returns the number of slots that resolved.
 std::size_t resolve_plane_squadron_members(const GameUnitsHost& units,
-                                           GameHostLog* log);
+                                           GameHostLog* log,
+                                           bool only_unresolved = false);
 
 class GameHostLog;
 class GameUnitsHost;
