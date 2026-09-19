@@ -515,3 +515,149 @@ The log records the drops (`drop 1 by Mav3 at 12 m, speed 73.5 m/s, swim 30.9 m/
 `water_entry_breakups=0`) and the damage ledger (`attributions=59`, all of them gun rounds: side
 1's own `dealt` column sums to 326 against SaltLakeCity's 327 `taken`), so **zero torpedo damage**
 stands, but the closest-approach number itself is still owed.
+
+## 6. Four corrections to sections 4 and 5, each made before anyone acted on it
+
+### 6.1 Section 4's before column was confounded, so it was re-run clean
+
+Section 4 compared `local/goaway_bound_usn01.log` against `local/aimclass_after_usn01.log`. That
+baseline was taken on `d74aa5b4a`, and **159 lines of the plane, ship and AI path landed between
+that tree and the tree the after-run was built from** - `src/game_hosts_ai.cpp` +85,
+`src/game_hosts_units.cpp` +47, plus `include/bsp/plane_squadron_host.hpp`,
+`include/bsp/ship_ai_attackmove_substates.hpp` and `include/bsp/unit_death_sink.hpp`, arriving
+through the `cc8-dive-bomb` and `cc8-plane-squadron` merges. A deaths delta measured across that
+span is not attributable to the goaway binding.
+
+So the before column was re-taken at **`81ccfd29d`**, which is the after-tree minus exactly the
+binding: `include/bsp/torpedo_goaway_tick.hpp` and `src/torpedo_goaway_tick.cpp` are present and
+`src/game_hosts_units.cpp`'s state switch does not call them. Detached build, both ctest suites
+passed, same command, `query session` Active, log `local/goaway_before_usn01.log`.
+
+**It reproduces the old baseline to the digit**: `deaths=5 kill_credits=5`, `queued_hits=111`,
+`total_damage=2596.8`, `first_hit=58.65 s`, `goaway enters=1`, `range_peak_in_goaway` 382.2 / 368.9
+/ 370.6 for Mav1 / Mav3 / Mav5, `transitions` 3 to 4. All five aircraft die, at 109.15 to 136.95 s.
+
+* **was**: the before column is a different tree and the delta is confounded.
+* **is**: the confound was a real risk and is **inert in fact** - the intervening 159 lines move
+  nothing in this mission. Section 4's table stands, and it now stands on a before column taken one
+  commit away from the after column rather than thirty.
+
+The corrected pairing, for anyone quoting it:
+
+| quantity | before `81ccfd29d` (`goaway_before_usn01.log`) | after `eedc1a5d3` (`goaway_bound_usn01.log`) |
+| --- | --- | --- |
+| deaths / kill_credits | 5 / 5 | **2 / 2** |
+| hits taken / damage taken | 111 / 2596.8 | 59 / 1501.9 |
+| aircraft alive at the end | none | Mav2 450/450, Mav3 450/450, Mav4 175/450 |
+| `goaway` enters / transitions | 1 / 3 to 4 | 82 / 165 |
+| `range_peak_in_goaway` | 368.9 to 382.2 | 701.0 |
+
+### 6.2 `approach->vtable[0]` is `009D0670`, it is read, and it does no arithmetic
+
+Section 5 closed with "`approach->vtable[0]()` could itself return a lead point, and its body is
+unread ... so `BotApproachTorpedo`'s vtable has to be found from its constructor". Both are done.
+
+`009D3050 BSP_BotTaskTorpedo_Construct` does `LEA EDI,[ESI+3F8h]` at `009D3080` and
+`MOV dword ptr [EDI], 0D213C0h` at `009D30A7`, so **`BotApproachTorpedo`'s vtable is `00D213C0`**
+and slot 0 is the dword there: **`009D0670`**. (Slot 1 at `00D213C4` is null; `00D213C8` is the
+task's own vtable, from `MOV [ESI],0D213C8h` at `009D30A1`.)
+
+```
+009d0670: MOV EAX,[ESP+4]            ; the return buffer
+009d0674: FLD  [ECX+0D0h]  -> [EAX]
+009d067c: FLD  [ECX+0D4h]  -> [EAX+4]
+009d0685: FLD  [ECX+0D8h]  -> [EAX+8]
+009d068e: RET 4
+```
+
+`Vec3 __thiscall(approach*, Vec3* out)`, 31 bytes, `RET 4`, no constants. It copies the stored vec3
+at `approach+D0h..D8h` and does **nothing else**: no velocity, no time, no sector offset, no
+arithmetic of any kind. It is the same shape as the dive bomb's slot 0 `009C40A0`, which returns
+that approach's own `+4Ch/+50h/+54h`.
+
+* **was**: the last place a lead could hide is `approach->vtable[0]`'s body.
+* **is**: `vtable[0]` cannot lead. The question moves one step, to `approach+D0h`'s producer.
+* it also **confirms the section 2 retraction from the callee's own body**: `RET 4`, one stack
+  argument. The stack-balance walk and `009C47D0`'s call setup both said four bytes; the body agrees.
+
+**Ghidra has no function at `009D0670`.** `009D0380 BSP_BotApproachTorpedo_Reset`'s body is
+`009D0380`-`009D066F`, one byte short of it, so a byte scan reports hits here as "in `009D0380`".
+That is the nearest-preceding-function artefact, not containment: the ledger record is
+`no_ghidra_function`.
+
+### 6.3 `approach+D0h`'s producer is not reachable by a literal-address scan, and that is a bound, not a negative
+
+Seven encodings over `.text`, each with a positive control, `--limit 4000` throughout:
+
+| form | image-wide hits | hits in the `009C`/`009D` bot-task band |
+| --- | --- | --- |
+| `F3 0F 11 ?? D0 00 00 00` MOVSS store | 16 | none |
+| `D9 ?? D0 00 00 00` x87 load/store | 109 | only `009D0674`, the read inside `009D0670` itself |
+| `89 ?? D0 00 00 00` MOV store | 59 | none |
+| `8B ?? D0 00 00 00` MOV load | 145 | none |
+| `C7 ?? D0 00 00 00` MOV immediate | 8 | none |
+| `8D ?? D0 00 00 00` LEA | 29 | none |
+| `0F 10 ?? D0 00 00 00` MOVUPS | 4 | none |
+
+`66 0F D6 ?? D0 00 00 00` (MOVQ store) and `F3 0F 7E ?? D0 00 00 00` (MOVQ load) returned nothing
+**image-wide**, so they have no positive control and are recorded as vacuous rather than as
+evidence. `approach+CCh`, the target pointer that sits immediately before the vec3, is the same:
+read at `009D0BE0`, `009D0DC9`, `009D1701`, `009D362A`, `009D36D7` and `009D3B0E`, written nowhere
+in the band (`89 ?? CC 00 00 00`, 60 image-wide, none in band).
+
+**This does not say nothing writes it.** It says nothing writes it through a literal displacement
+from the approach base inside the bot band, which is the known signature of a field filled through a
+base pointer or by a block copy. A helper handed `&approach+CCh` would address the three floats at
+`+4h`, `+8h`, `+0Ch` - **disp8**, invisible to any `D0 00 00 00` pattern - but `8D ?? CC 00 00 00`
+(430 image-wide) has no hit in the torpedo band either, so that particular route is excluded. The
+producer holds the approach at some other offset, or lives outside the band.
+
+**So section 5's conclusion stands where it was proved and no further.** The image does not lead
+through `009D1360`: `approach+F8h` is write-only and `+A0h` reaches only the release gate and a
+getter. Whether the target point *itself* is a lead point is open, and it is now one well-posed
+question - who writes `approach+D0h..D8h` - rather than a routine to disassemble.
+
+### 6.4 Section 5's escort speed: 13.7 m/s was two endpoints across a turn
+
+Section 5 derived the escorts' speed from Northampton's `d32c` at `ship ai step 90` and `step 3000`
+and got 13.7 m/s. That span includes the ship accelerating from rest and a rudder-0.805 turn at step
+800, during which `d32c` (distance to waypoint) falls more slowly than the hull travels. Sampled
+across the run instead:
+
+| span | steps | seconds | `d32c` closed | rate |
+| --- | --- | --- | --- | --- |
+| 90 to 800 | 710 | 35.5 | 300.68 m | 8.5 m/s (accelerating, then turning) |
+| 800 to 1600 | 800 | 40.0 | 636.41 m | 15.9 m/s |
+| 1600 to 2400 | 800 | 40.0 | 612.41 m | 15.3 m/s |
+| 2400 to 3000 | 600 | 30.0 | 436.85 m | 14.6 m/s |
+
+* **was**: the escorts make 13.7 m/s, so a 22.7 s run lets the target move about 311 m.
+* **is**: the steady-state rate over steps 1600 to 3000 is **15.0 m/s**, and every drop falls inside
+  that phase (about t = 78 to 88 s, steps 1560 to 1760). A 22.7 s run lets the target move
+  **about 340 m**.
+* and it is a **lower bound**, not a measurement: `d32c` is the distance to the waypoint, and
+  `heading = -1.0472` against `target = 4.5952` says the hull is not pointing at it, so the distance
+  closes more slowly than the hull travels. The authored `reference_speed` is 16.72 m/s and the
+  throttle sits at 0.92, which puts the true speed near 15.4 m/s and corroborates the bound.
+
+The conclusion is unchanged and slightly stronger: the displacement over the run is close to twice
+the 180.0 m hull length, so a torpedo aimed at the present position cannot hit except bow-on or
+stern-on.
+
+#### 6.3.1 The census extended to nine forms, and one scan withdrawn as malformed
+
+Three more encodings, each with a positive control, all empty in the `009C`/`009D` band:
+`0F 11 ?? D0 00 00 00` (MOVUPS store, 16 image-wide), `05 CC 00 00 00` (`ADD EAX,0CCh`, 138
+image-wide, one hit at `009C964E` in the dive-bomb band) and `81 ?? CC 00 00 00` (the group-1
+immediate forms including `ADD reg,0CCh`, 86 image-wide). With the seven in 6.3 that is **nine
+valid encodings** and no writer of `approach+D0h..D8h`, and no pointer arithmetic that would reach
+it at disp8, anywhere in the bot-task band.
+
+Withdrawn: a scan written as `81 C? CC 00 00 00` returned zero. `C?` is not the pattern syntax -
+only a whole-byte `??` is - so that scan proved nothing and is replaced by the `81 ?? CC 00 00 00`
+row above. `66 0F 11 ?? D0 00 00 00` and the two MOVQ forms in 6.3 remain vacuous for the other
+reason: no image-wide hits, so no positive control.
+
+The bound is now tight enough to name the next move, and it is not another scan: the producer has to
+be found from the other end, by reading what constructs or re-targets the approach rather than by
+looking for the field.
