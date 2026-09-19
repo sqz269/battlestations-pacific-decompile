@@ -1021,7 +1021,7 @@ two exits sharing one epilogue: `RET 4` at `009C706C` and at `009C7083`, both af
 | `+19h` | `009C6A30` | **copied from `+18h`**, gated on `[00CF180C] > cos(...) * [ESP+28h]` at `009C6A27` |
 | `+1Ah` | `009C66E3` | `1` |
 | `+1Ah` | `009C66F2`, `009C6822` | `0` |
-| `+1Bh` | `009C6813` | `DL`, only when `+1Ah` is set. **A fourth flag** the transition rule does not read |
+| `+1Bh` | `009C6813` | `DL`, only when `+1Ah` is set. **A fourth flag** the transition rule does not read. RESOLVED by packet `cc8_dive_flyover`: `DL` is `base[ESP+27h]` on every path into the store, i.e. `squadron+3A8h`, the old-style-bombing flag - the same byte `009C6554`'s skip tests. See `docs/DIVE_BOMB_FLYOVER_FLAGS.md` section 1 |
 
 `009C6690` writes `approach->+CCh = 3`, the weapon selector, as already recorded.
 
@@ -5032,6 +5032,18 @@ packet does not bind it: two of its three inputs are untraced and the third, the
 runs through the unbound `007F0280`.
 
 ### A sixth flag: `flyabove+1Ch` is written, and this host's contract says it never is
+
+> **SUPERSEDED by packet `cc8_dive_flyover`** (`docs/DIVE_BOMB_FLYOVER_FLAGS.md` section 2). What
+> this section calls "a known hole rather than a contract" is closed: `+1Ch` is the **roll-in
+> latch**, set at `009C6919` when `cos(|E|) * R <= 120.0` (the double at `00D1F3F8`) with the
+> cross-track `1.5 * sin(|E|) * R` inside `classDesc+268h * 1.4`, and cleared by the fly-over's
+> enter at `009C629E`. The `suppress_heading_1c` contract in `include/bsp/dive_bomb_task.hpp` is
+> **withdrawn**: this host now keeps the latch and does suppress. Also withdrawn from the section
+> below it: the statement that two of `T`'s three producers are untraced - `009C6893` is the
+> `XORPS` zero and `009C6911` is
+> `InterpolateClamped(0.0, 100 deg, TurnCircleRadius, 10 deg, R)`, both read there. Measured on
+> USN04, the latch is **inert**: the fly-over hands over at 914-974 m along-track against a 120 m
+> gate.
 
 `009C6919 MOV byte ptr [ESI+1Ch],1`, reached from `009C68D4`'s `76` JBE inside the bank arm, and
 `009C691F`/`009C6923` then branch on it: `+1Ch == 0` goes to the dead-band at `009C6A37`, `+1Ch != 0`

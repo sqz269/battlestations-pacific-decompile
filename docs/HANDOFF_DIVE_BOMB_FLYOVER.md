@@ -38,9 +38,18 @@ and it left the dive at about **300 m**. So the question is entirely about the g
    is a longer run rather than a code change;
 3. if it does not, that is the next binding and it hands six aircraft a second attack run.
 
-`009C86D9`'s edge to flyabove is verified from the listing (EDI is `[ESI+778h]`, established by
+`009C86EE`'s edge to flyabove is verified from the listing (EDI is `[ESI+778h]`, established by
 filtering the whole 289-instruction transition listing), so nothing upstream of the goaway is in
 doubt.
+
+**CORRECTION to what this packet first reported**, from `cc8-dive-approach`'s whole-function read of
+`009C868B`-`009C870E` and re-checked here. The second-attack-run split is **`009C86EE`**, the test
+of `+4C9h`; `009C86D9` is the *goaway arm's own* `CMP EAX,ECX` against `kGoAway`, i.e. the dispatch
+test, not an edge. Both destinations are register-proved: `EDI = [ESI+778h]` flyabove from
+`009C84ED`, and `EBX = [ESI+664h]` done from `009C8484` - which is the only `LEA EBX` in the whole
+function, and `kDone` is `0x664`. The terminal-aimglide finding itself is unaffected and was
+confirmed independently (`009C86B9`'s JE leaves the state alone when `009C7850` is false and
+`+76Ch` is 0).
 
 ## (c) Left deliberately undone, with the reason
 

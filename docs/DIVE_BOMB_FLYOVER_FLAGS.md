@@ -404,7 +404,7 @@ lead gate is reached three times and fails low every time.
 **Would the image re-dive, glide-release or retire with a bomb aboard? It would RE-DIVE, and the
 869-tick sit is a host artefact.** The transition rule gives the aimglide exactly two exits, both
 to `goaway`: `009C8694` on out-of-bombs and `009C86B4` on the state's `+76Ch` pull-out. From
-`goaway`, `009C86D9` sends an aircraft that still has bomb ordnance (`has_bomb_ordnance_4c9`) back
+`goaway`, `009C86EE` sends an aircraft that still has bomb ordnance (`has_bomb_ordnance_4c9`) back
 to **flyabove** - a second attack run. Neither exit can fire in this host:
 
 * `aimglide_out_of_bombs` is false, because the aircraft has a bomb left;
@@ -515,7 +515,7 @@ and are not candidates. So at most six aircraft can pull out.
    turndown plus a dive, which cost about 96 + 56 + 57 ticks after the goaway.
 3. **The second fly-over should start LOW, and that is the interesting part.** These aircraft leave
    the dive at about 300 m (`aimdive>aimglide` at `alt 306-326`), far below the 675 m
-   `approach+D4h`. `009C86D9` sends them to flyabove regardless of altitude, so unless goaway
+   `approach+D4h`. `009C86EE` sends them to flyabove regardless of altitude, so unless goaway
    climbs them back above `approach+ACh` first, the second fly-over runs with `B` under `+D4h`,
    `009C680E`'s can-dive flag clears, and the transition rule hands them to **aimglide again**
    rather than to turndown. My prediction is that this is exactly what happens on the first
