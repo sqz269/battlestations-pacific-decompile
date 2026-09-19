@@ -51,6 +51,48 @@ function, and `kDone` is `0x664`. The terminal-aimglide finding itself is unaffe
 confirmed independently (`009C86B9`'s JE leaves the state alone when `009C7850` is false and
 `+76Ch` is 0).
 
+## (b2) Release accuracy: a first cut, and where it points
+
+Routed here by the integrator off this packet's section 5 finding. Not investigated to a
+conclusion - this is what one pass over the per-bomb rows in `local\pullout_after.log` establishes,
+so the next reader starts from data rather than from the question.
+
+| bomb | its own predicted impact (`009C7D71`) | vs the target at release | fall |
+| --- | --- | --- | --- |
+| `#3.1` | 2.3 m | 41.7 m | 3.15 s |
+| `#3.1.-3` | 5.5 m | 42.3 m | 3.20 s |
+| `#1.1` | 12.2 m | 25.5 m | - |
+| `#1.1` | 4.4 m | **11.3 m** (a hull hit) | - |
+| `#1.1.-2` | 10.0 m | 28.0 m | 3.10 s |
+| `#1.1.-2` | 4.2 m | **6.1 m** (a hull hit) | 2.60 s |
+| `#3.1.-2` | 21.4 m | 57.0 m | 3.25 s |
+| `#1.1.-3` | 12.3 m | 25.5 m | 3.20 s |
+
+**The bomb goes where the solution says it will.** Its impact is within 2.3-21.4 m of
+`009C7D71`'s own predicted point, median about 10 m, and the actual fall is 2.6-3.25 s. So the
+integration and the ballistics are broadly consistent with the predictor, and they are *not* where
+the miss comes from.
+
+**The miss against the target is consistently the larger number**, 6.1-57.0 m, and it is larger
+than the prediction error on every single round. So the loss is in **where the aim point sits
+relative to the target**, i.e. the lead - not in the bomb's flight. That is the half of the
+integrator's question this pass can answer.
+
+**The lead this points at, and the trap in it.** The aimdive census prints
+`impact 009C7D71: tf=<fall time> range=<predicted> (live <actual>)`, and the three squadrons read
+`movieval tf=3.35 s`, `#7.1 tf=7.62 s`, `#3.1 tf=10.64 s` - the accurate squadron's `tf` matches
+the measured 2.6-3.25 s fall and the two inaccurate ones are 2.4x and 3.2x it. A `tf` that long
+would lead the aim point far ahead of where the target actually is when the bomb arrives, which is
+exactly the observed failure. **Do not publish that as the cause without checking it**: those `tf`
+values are LAST-SAMPLED columns, taken after the aircraft has left the dive, so they may not be the
+`tf` in force at release. The check is one census field - sample `007BCC80`'s fall time and the
+predicted point at the release tick specifically - and it is cheap. If the release-tick `tf` is
+also 3x, the defect is in `007BCC80 BSP_Weapon_DropFallTime` or in what the predictor feeds it; if
+it is not, the lead is right and the error is in the aim point's own geometry.
+
+The decomposition the integrator asked for (miss split along-track / cross-track) needs the
+target's heading at impact, which no census currently prints; add it beside the bomb row.
+
 ## (c) Left deliberately undone, with the reason
 
 * **Arm B of the pull-out**, `009C57D3`-`009C57FD`. Three frame slots (`[ESP+24h]`, `[ESP+28h]`,
