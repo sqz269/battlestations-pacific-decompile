@@ -31,12 +31,22 @@
 //     recorded, and the census says how many units the one collection yielded.
 //   * A group's AI command object (00A10890 MOVETOATTACK, 00A109B0
 //     CAUTIOUSATTACK) is not built. 00A2CBD0's choice between them is taken and
-//     recorded, and the consequence is issued to each member as a scene command
-//     through the same 0046AAB0 -> 0077D600 path a scripted order takes, which
-//     is what makes the plane task machinery and the ship order ring treat it
-//     as a native order. The native per-member dispatch 00A2C790's
-//     member->vtable[+114h] is unread, so this is a labelled substitution for
-//     it and not a reconstruction of it.
+//     recorded, and the consequence is issued to each PLANE member as a scene
+//     command through the same 0046AAB0 -> 0077D600 path a scripted order
+//     takes, which is what makes the plane task machinery treat it as a native
+//     order.
+//
+//     Packet cc8_ship_command: 00A2C790's member->vtable[+114h] is no longer
+//     unread, and it is not an order arm. The pass calls it three times per
+//     member and feeds the answer to 0071EB60 and 0071BE40, handing the pair to
+//     the group command's own vtable[+24h] at 00A2C839 - it READS every
+//     member's director and reports upward. 00A2CBD0 reaches no member either
+//     (neither 00A02020 nor 0077D600 is among its seven callees). A member is
+//     reached only by the command's vt+0Ch tick through 00A02020, and there a
+//     SHIP follower gets 0077C8D0 RequestJoinFormation and no command at all
+//     (00A10E3E, 00A10E67). So no scene command is issued to a ship member
+//     here. The plane tokens remain a labelled substitution, because the 26-row
+//     registry has no single "attack". docs/SHIP_COMMAND_LIFETIME.md.
 //
 // Evidence: docs/AI_COORDINATOR_TICK.md, docs/AI_GROUP_THINK.md,
 // docs/AI_PLANNERS.md, docs/ENTITY_LUA_ORDER_PATH.md.
@@ -198,6 +208,10 @@ struct GameAiSummary {
     unsigned long long attack_movetoattack{0};  // the 00A10890 arm
     unsigned long long commands_issued{0};
     unsigned long long commands_refused{0};
+    // 00A10E3E: a ship follower joins the leader's formation (0077C8D0) and
+    // receives no scene command, so order_attack issues to nobody but the
+    // leader and the squadrons. Packet cc8_ship_command.
+    unsigned long long ship_members_not_ordered{0};
     unsigned long long units_with_task{0};      // distinct units that got one
     // The plane squadron layer. docs/PLANE_SQUADRON_ENTITY.md.
     unsigned long long squadrons_built{0};        // 004F0AD0 + 007F4580 mode 1

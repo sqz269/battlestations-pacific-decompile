@@ -249,6 +249,25 @@ bool weapon_director_stop_arm_00836a8b(const WeaponDirectorCommandState& state,
 //     else -> `stop`
 //   every one of the three targets is built with a range of 0.0f; `follow` takes
 //   the controller's owner as its object, `cruise` and `stop` take the unit.
+// ---------------------------------------------------------------------------
+// 00836ADC..00836B40, the `follow` kind arm of 00836920: what ends a running
+// `follow`. Packet cc8_ship_follow read it whole from the listing;
+// docs/SHIP_UNIT_GROUP_FOLLOW.md section 4b. The arm is entered when the running
+// command's descriptor is 00E08F60 (00836ADC) and every exit but the last raises
+// the stage through 0071D810(2) at 00836B37.
+struct WeaponDirectorFollowArmInputs {
+    bool has_group{false};          // 00836AE9, [unit+284h]
+    std::uint32_t leader{0};        // 00836AF2 / 00836B03 / 00836B1A, 007788D0
+    std::uint32_t unit{0};          // 00836B08 compares the leader against it
+    std::uint32_t command_target{0};// 00836B0F, 00521EA0 on director+58h
+    int filled_command_slots{0};    // 00836B29, 0071BE60
+};
+
+// True when the command must end. The five conditions, in the image's order:
+// no group, no leader, the unit has become the leader, the leader is no longer
+// the command's stored target, or something else is queued behind it.
+bool weapon_director_follow_arm_00836adc(const WeaponDirectorFollowArmInputs& in) noexcept;
+
 DirectorDefaultCommand weapon_director_idle_reissue_00836dc9(
         const WeaponDirectorCommandState& state,
         bool prepass_flag,
