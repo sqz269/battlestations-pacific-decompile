@@ -279,12 +279,26 @@ int binding_trampoline(lua_State* state) {
         return orders->dispatch(state, binding.name, argc);
     }
     if (bsp::mission_binding_returns_entity(binding.name)) {
+        // Packet cc8_spawn_new_route, second pass. `handled` was decided above,
+        // before this arm ran, so a row that answers HERE was still counted as
+        // unimplemented and the summary said so. On USN04 that made
+        // `MissionLuaNative::FindEntity 00898e30 UNIMPLEMENTED calls=132` sit in
+        // the same report as `entity_resolves=132`, which is every one of those
+        // calls answered with a real entity table. The count was right and the
+        // status was a lie, and the UNIMPLEMENTED census is what a reader picks
+        // the next packet from. The status is now recorded from the outcome.
         // 0089903C is the arm the native takes when the lookup produced
         // nothing. When it produced an entity the same tail pushes that
         // entity's thisTable slot instead, and milestone 2l fills those slots
         // for the created scene instances, so `FindEntity` can answer for real.
-        if (host->push_resolved_entity(state, binding.name, argc)) return 1;
-        if (!host->error_replay()) host->note_entity_return();
+        if (host->push_resolved_entity(state, binding.name, argc)) {
+            if (!host->error_replay()) host->note_entity_status(binding, true);
+            return 1;
+        }
+        if (!host->error_replay()) {
+            host->note_entity_status(binding, false);
+            host->note_entity_return();
+        }
         lua_pushnil(state);
         return 1;
     }
@@ -1392,7 +1406,20 @@ void GameMissionLuaHost::note_native_call(std::size_t row, int argument_count,
             static_cast<unsigned long>(binding.address));
         char method[96];
         std::snprintf(method, sizeof(method), "MissionLuaNative::%s", binding.name);
-        log_.unimplemented(method, address);
+        // Packet cc8_spawn_new_route, second pass. GameHostLog's record is
+        // sticky on FIRST insert - `record()` returns an existing entry with only
+        // its count bumped, and sets `implemented` solely when it creates one -
+        // so whichever of implemented()/unimplemented() runs first decides the
+        // status for ever. For an entity-returning row the answer is not known
+        // yet: `handled` was decided before the arm at the bottom of
+        // binding_trampoline runs, and that arm resolves 132 of USN04's 132
+        // `FindEntity` calls. Recording UNIMPLEMENTED here would lock in a status
+        // the same report contradicts with `entity_resolves=132`, and a later
+        // implemented() could not undo it. So the status is left to the arm,
+        // which records exactly one of the two.
+        if (!bsp::mission_binding_returns_entity(binding.name)) {
+            log_.unimplemented(method, address);
+        }
         log_.notef("  native %-28s argc=%d phase=%s", binding.name, argument_count,
             phase_.empty() ? "(none)" : phase_.c_str());
         return;
@@ -2122,6 +2149,24 @@ void GameMissionLuaHost::complete_spawn_request_0094c777(
     ::lua_settop(state_, top);
     log_.notef("  spawn queue 0094c490: serial %u fulfilled, \"%s\"(%d unit table(s)) ran",
         request.serial, request.callback.c_str(), pushed);
+}
+
+void GameMissionLuaHost::note_entity_status(const bsp::MissionLuaBinding& binding,
+    bool resolved) {
+    // The status of an entity-returning row, recorded from the OUTCOME because
+    // note_native_call cannot know it yet. GameHostLog's record is sticky on
+    // first insert, so the first call here decides the row for the run, and both
+    // arms print at most one line (it prints only when calls == 1).
+    char address[16];
+    std::snprintf(address, sizeof(address), "%08lx",
+        static_cast<unsigned long>(binding.address));
+    char label[96];
+    std::snprintf(label, sizeof(label), "MissionLuaNative::%s", binding.name);
+    if (resolved) {
+        log_.implemented(label, address);
+    } else {
+        log_.unimplemented(label, address);
+    }
 }
 
 void GameMissionLuaHost::report_spawn_queue() {
