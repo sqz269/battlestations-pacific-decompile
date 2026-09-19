@@ -210,3 +210,125 @@ altitude about 1395 m and `approach+D4h` 675 m.
    total_damage=11427.2`. A faithful dead band is a *less* aggressive steering law than the raw
    bearing this replaces, so if anything moves it should move down. This packet is not a tuning
    exercise: the reading stands on the listing, and a worse number is a result, not a defect.
+
+## 5. Measured: `local\flyover_after.log`
+
+4800-frame USN04 on `65c997deb`, against `cc8-dive-heading`'s `heading_after.log` on the merged
+`d6275ef49`. The two differ only by this packet's commit.
+
+### The four predictions
+
+| prediction | outcome |
+| --- | --- |
+| 1. `+1Bh` changes nothing | held. Every aircraft keeps `cmd=210` at the fly-over hand-overs and `f18`/`f19` are unchanged |
+| 2. `BL` is 1 for most of the fly-over | held, and stronger: `bl=` **equals the tick count on all fifteen aircraft** (96, 84, 78, ...). The bank arm runs on every fly-over tick |
+| 3. the latch fires late or not at all | held exactly: `latch=0@-1 sup=0` everywhere. `along=` bottoms out at 914-974 m against a 120 m gate |
+| 4. the dead band is the change that bites | held, and it is the reason 2 and 3 came out as they did |
+
+### What the census row says, and the number that was guessed wrong
+
+```
+divebomb movieval     flyabove bank: bl=96 latch=0@-1 sup=0 T=0.6108 rad along=936.0 m cross=111.3 m turn_circle=1300.0 m
+divebomb D3A Val #3.1 flyabove bank: bl=84 latch=0@-1 sup=0 T=0.5672 rad along=936.1 m cross=409.4 m turn_circle=1300.0 m
+divebomb D3A Val #7.1 flyabove bank: bl=78 latch=0@-1 sup=0 T=0.5391 rad along=973.7 m cross=329.8 m turn_circle=1300.0 m
+```
+
+The D3A Val's `classDesc+268h` **TurnCircleRadius is 1300 m**, not the few hundred metres the
+prediction assumed. So the dead band never sits at its 10-degree end: `R` runs from 2077 m at the
+hand-over (above the turn circle, `T` clamped to 10 degrees) down to about 930 m at the hand-out,
+where `T = 100 - 90 * 930/1300 = 35.6` degrees. The measured `T=0.6149 rad` is 35.2 degrees, and
+the interpolation predicts 0.6213 rad at the printed `along=932.6 m`; the residual is the sample
+being the last bank tick rather than the last tick of the state.
+
+The same number is why the latch cannot fire here. `along = cos(|E|) * R` is 914-974 m at the
+hand-out, and the gate is 120 m: the fly-over gives the aircraft to the turndown at seven times the
+distance the roll-in latch wants. The `+1Ch` arm is therefore **read, bound and inert on USN04** -
+which is a result, not a gap, and it is what makes `009C6929`'s bank command and `009C6DDA`'s
+suppression unreachable in this mission. `cross=` separates the two groups cleanly: 110-111 m for
+the six aircraft that fly a clean dive, 330-449 m for the nine that do not.
+
+### The behavioural change, and what moved
+
+| quantity | `heading_after.log` | `flyover_after.log` |
+| --- | --- | --- |
+| dive-bomb task `releases` | 17 | **19** |
+| `bomb_drops` / `bomb_impacts` | 17 / 16 | **19 / 18** |
+| `D3A Val #7.1` flight releases | 0, 1, 0 | **1, 1, 1** |
+| `movieval` aim error `009C5C9B` | 8.05 m | **2.89 m** |
+| `movieval` turndown / aimdive entry bearing | 0.0099 / 0.1833 rad | 0.0605 / 0.2688 rad |
+| `#3.1` turndown / aimdive entry bearing | -0.0049 / 0.2491 rad | 0.1865 / 0.5090 rad |
+| fly-over ticks (`movieval`) | 96 | 96 |
+| `queued_hits` / `hull` / `deaths` | 68 / 45 / 8 | 61 / 41 / 8 |
+| `total_damage` | 11427.2 | 9826.4 |
+
+The hand-over bearings are **looser**, by 0.05 to 0.26 rad, exactly as prediction 4 said they would
+be: a 10-to-35-degree dead band stops the fly-over correcting anything inside it, so the aircraft
+holds heading where it used to chase the lead bearing. That is what the image does.
+
+The release count moved the other way. `D3A Val #7.1`'s whole flight now releases, the leader
+included - it had released nothing at all before (`release alt=-1.0 m`), and it now releases at
+345.4 m with an aim error of 6.47 m inside the 25 m gate. `movieval`'s aim error more than halved.
+So the looser fly-over hands the turndown a better dive, not a worse one.
+
+**What cannot be attributed.** `queued_hits` counts every hit in the mission. Bomb impacts went
+**up** by two (16 -> 18), so non-bomb hits went down by nine (52 -> 43) and that is gunnery, which
+this mission does not reproduce run to run. `deaths=8`, `kill_credits=8` and `first_hit=17.15 s` are
+identical across the pair. The honest split: the bomb rows are this packet's, the damage and hit
+totals are one sample and include a gunnery difference this packet cannot separate from its own
+effect with one run each.
+
+## 6. Item 3: why `D3A Val #3.1` drops one bomb and never the second
+
+Read from `heading_after.log` and confirmed in `flyover_after.log`. **The brief's premise is wrong
+for two of the three squadrons** and is corrected here.
+
+| flight | `heading_after.log` | `flyover_after.log` |
+| --- | --- | --- |
+| `movieval` x3 | 2, 2, 2 releases, `done` | unchanged |
+| `D3A Val #1.1` x3 | 2, 2, 2 releases, `done` | unchanged |
+| `D3A Val #3.1` x3 | 1, 1, 1, then 794-869 aimglide ticks | unchanged |
+| `D3A Val #5.1` | 1, 0, 0 - **four transitions, no aimglide at all** | unchanged |
+| `D3A Val #7.1` | 0, 1, 0 | **1, 1, 1** |
+
+`#5.1` and `#7.1` have `arm_ticks` 1349 and 1339 against 2138-2370 for the others: they spawn late
+and the 4800-frame mission ends mid-attack. `#5.1`'s wingmen are still in `aimdive` when the run
+stops. They are a truncation, not a blocked release, and they should not be read as `#3.1`'s case.
+
+**The gate that decides it is the aimdive ABORT, not an aimglide gate.** `009C5B43` fires for
+`#3.1` (tick 1268, `h14=322.5` against `d4=675.0`, range 242.5, pitch -0.823) and for `#7.1`; it
+clears `alive_19`, and `009C8557` hands the state to the aimglide. `movieval` and `#1.1` have
+`abort fires=0`, exit the aimdive by `other`, release both bombs in one dive and go to `done`. The
+first bomb `#3.1` does drop is the aimdive's, at 342.9 m with an aim error of 9.03 m inside the
+25 m gate.
+
+Once in the aimglide, nothing ever passes: 869 calls, `passed=0`,
+`blocked[bearing=817 ceiling=38 lateral=10 lead_lo=3 rearm=1]`. The bearing gate takes 94 per cent
+of the ticks; on the 52 where it passes the ceiling, lateral and lead gates take the rest, and the
+lead gate is reached three times and fails low every time.
+
+**Would the image re-dive, glide-release or retire with a bomb aboard? It would RE-DIVE, and the
+869-tick sit is a host artefact.** The transition rule gives the aimglide exactly two exits, both
+to `goaway`: `009C8694` on out-of-bombs and `009C86B4` on the state's `+76Ch` pull-out. From
+`goaway`, `009C86D9` sends an aircraft that still has bomb ordnance (`has_bomb_ordnance_4c9`) back
+to **flyabove** - a second attack run. Neither exit can fire in this host:
+
+* `aimglide_out_of_bombs` is false, because the aircraft has a bomb left;
+* `aimglide_pull_out_76c` is **hardcoded `false`** in `dive_bomb_transition_inputs`
+  (`src/game_hosts_units.cpp`), and nothing would set it anyway: the host's
+  `run_dive_bomb_aimglide_tick_009c5180` binds the heading arm and nothing else, so the aimglide
+  state's `+18h`/`+76Ch` is never written.
+
+So in this host the aimglide is terminal for any aircraft holding a bomb, and "retires with a bomb
+aboard" describes the reconstruction, not the image. The fix is the aimglide tick's pull-out
+producer, which is not this packet's hunk; it is recorded here and reported to the integrator.
+Nothing about the abort itself is wrong - `dive_bomb_dive_abort_009c5b43` is a faithful binding of
+a real rule, and the aircraft that abort are the ones that reach the dive with a saturated roll and
+a bearing error near 0.89 rad while `movieval` reaches it at -0.16 rad.
+
+### Column checks, before quoting any of the above
+
+`throw=` in the aimglide row is `db_impact_throw_14` and `range=` is `db_planar_bc`, both
+last-sampled rather than sampled at the gate; `lead last`/`min` are only updated when
+`gate_reached >= 4`, so `#3.1`'s -115.91 m is one of its three lead evaluations, not a per-tick
+minimum. The `(window -25.0..-5.0 m)` is printed as `4 * travel_20 + 5` and `5.0`, not read from
+the image at print time.
