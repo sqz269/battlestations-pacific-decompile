@@ -1281,3 +1281,11 @@ z plumbed into the slot beside it. Not done here; see 10.11.
 5. **A retraction of a ledger note.** `009C18C0`'s ledger entry said its vtable slot was "shared
    by moveto and follow". It is not; the follow tick is `009C1FD0`. Section 2 of
    `docs/TORPEDO_MOVETO_TICK.md` repeats the same error.
+
+6. **A second correction to 10.10, which shrinks its own fix.** 10.10's error 2 -- that
+   `approach+BCh` is measured "to a different point", the target entity's `+100h`/`+104h` -- is
+   wrong. `009C7B14 MOV EDI,[ESI+4]` makes `EDI` the **unit**, and `009C7B27`-`009C7B32` calls the
+   approach vtable's slot 0, `009C40A0`, for the **same aim point** `009C8A90` uses. `+BCh` is
+   `|aimPoint.xz - unit.xz|`. The two ranges share both endpoints; they differ only in the
+   vertical term, which `009C7B40` computes as `dy` and then drops. 10.10's error 1 and its
+   reading of the sign stand.

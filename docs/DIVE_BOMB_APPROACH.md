@@ -189,6 +189,29 @@ squared sum, and both break-off feeds (`dive_bomb_transition_inputs` and the arm
 way — planar, and to a different point — so the break-off used to fire later and lower than the
 image's.
 
+**A second CORRECTION to 10.10, and it makes the fix smaller than 10.10 thought.** 10.10's
+error 2 says `009C7B43`-`009C7BAA` builds `approach+BCh` "from the target entity's `+100h`/`+104h`,
+not from the approach's `+4Ch`/`+54h` aim point". Read whole:
+
+```
+009c7b03  cmp dword [esi+48h],0 / je 009c7e91   ; the latched target gates the block
+009c7b14  mov edi,[esi+4]                        ; EDI is the UNIT, not the target
+009c7b17  refresh the unit's pose
+009c7b27  eax=[esi] / edx=[eax] / lea ecx,[esp+18h] / push ecx / ecx=esi / call edx
+                                                 ; approach vtable SLOT 0 = 009C40A0, the aim point
+009c7b34  [esp+24h] = aim[0] - [edi+FCh]         ; dx
+009c7b40  [esp+28h] = aim[1] - [edi+100h]        ; dy, COMPUTED AND THEN UNUSED
+009c7b4d  [esp+2Ch] = aim[2] - [edi+104h]        ; dz
+009c7b5a  dx*dx + dz*dz, sqrt above 00CE3820     ; -> approach+BCh
+```
+
+`EDI` is `approach+4h`, the unit, exactly as it is everywhere else in `009C7A80`; the target
+entity is not in the expression at all, and the far point is the **same aim point**
+`009C8A90` uses, through the **same** `009C40A0` call. So the two ranges share both endpoints
+and differ only in whether the vertical term is summed — and the image computes `dy` here at
+`009C7B40` and then deliberately drops it. 10.10's error 1 (planar versus 3-D) and its reading of
+the sign stand; its error 2 is retracted.
+
 One refinement to 10.10's provenance, which does not change its conclusion. The dive-bomb
 approach's vtable is written **three times**: `009C3EE2` (the base, `00D20C48`), then `009C740B`
 in the approach constructor (`00D20E08`), then `009C7767` in the *task* constructor
@@ -234,3 +257,22 @@ with the leader resolved through the squadron registry's `member_units[0]` (the 
 convention `0099B757` and `009C7C7C` agree on) and the aim point standing in as the commanded
 target's position. With no squadron, `leader_known` stays false and no arm runs — which is what
 the image does when `[eax+3D0h]` has no member.
+
+## 9. Run A: the moveto binding is inert while the constant is pinned
+
+`local/approach_a_unwired.log`, USN04, the arguments of section 6, one clean shutdown
+(`native renderer final COM release`, one line). The moveto and follow ticks are compiled in;
+`dive_bomb_transition_inputs` still reads the pinned constant `2`.
+
+**Prediction A confirmed exactly.** Zero `db moveto` rows in the whole log, no `moveto` bucket in
+any dive-bomber state census, one mission-wide `plane water contact` (`movieval`, `|v|=68.72`),
+`movieval` `releases=2 rounds_left=0`, `done=303`, `approach_returns=0`. The log is 6 835 436
+bytes against the accepted baseline `attackmode_before.log`'s 6 835 437 — the same run.
+
+So the dispatch is correctly gated: with `engaged` pinned true, no dive bomber ever enters the
+approach, and adding the two ticks changes nothing. That is the control this packet needed before
+any of the three behaviour changes could be read.
+
+(The `attack mode` row already reports `lead=1 mode_370=1`: the feed `cc8_attack_mode` built is
+live and correct, and only the single read site is pinned. `approach+BCh=278.5 m` against
+`approach+B8h=1100.0 m` at the end, `ticks without latch=1527`.)
