@@ -740,5 +740,45 @@
     "sha256": "d8e172fe48314d5a5c399cf1854d34a0ce124bf2273add231f6285e81050fc58",
     "files": 68,
     "head": "e0dd0018253a061fb54e0683c22f60f7ca5f42fe"
+  },
+  "primary_integration": {
+    "commit": "1c16992380c74c92b31c8126a40486ecdc527a89",
+    "main_observed_at_seal": "1c16992380c74c92b31c8126a40486ecdc527a89",
+    "tested_commit_is_ancestor_of_observed_main": true,
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "coff_checks": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_bit_cursor_read.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "df5170b26b3b2c256046c6039ae0d56383ed282318b13cbd9ba7518a8cabac2c",
+        "combined_sha256": "df5170b26b3b2c256046c6039ae0d56383ed282318b13cbd9ba7518a8cabac2c"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "d6f6dbc057817a5b1c935b03d88108a60ac97eb28262fc24ab96cebbc7547bd6",
+        "combined_sha256": "d6f6dbc057817a5b1c935b03d88108a60ac97eb28262fc24ab96cebbc7547bd6"
+      }
+    ],
+    "fixture": {
+      "result": {
+        "utc": "2026-09-19T03:56:40.5695287Z",
+        "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+        "library_sha256": "993911739A6F5ED9AB41FB1DF1D7F74CB6DDCA2E739824FA19B53BD7A725FC45",
+        "exit": 0,
+        "exe_sha256": "799B3898D223B2F77B7A9729F6C8E969357157ED722D2C4777B5402626363DFC"
+      },
+      "pairs": 2064,
+      "matching_bytes": 1826760,
+      "observations_identical_to_tested": true
+    },
+    "game_sha256": "a750329f5941e09393a2d58cb1c0d206e8474fe1053f1b351142da02037ce07d",
+    "artifact_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r176\\native-bit-cursor-read-main-r176.zip",
+      "sha256": "541332b7cae8c92c4025b34994c8a8daddd7131c715cfd169c94696e620dd861",
+      "files": 80,
+      "head": "1c16992380c74c92b31c8126a40486ecdc527a89"
+    }
   }
 }
