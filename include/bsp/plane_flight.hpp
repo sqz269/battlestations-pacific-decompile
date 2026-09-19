@@ -290,7 +290,14 @@ struct PlanePitchCommandInputs {
     float ceiling{1500.0f};      // tuning+210h Dynamics/Ceiling
     float climb_dist{130.0f};    // tuning+544h Pilot/General/ClimbDist
     float drop_dist{200.0f};     // tuning+548h Pilot/General/DropDist
-    float class_climb_angle{0.0f};  // class+1ECh, zero for every shipped row
+    // class+1ECh. CORRECTED, packet cc8_dive_entry: this is NOT an authored row
+    // field and it is NOT zero. "ClimbAngle" occurs zero times in this
+    // installation's vehicleclasses.lua; 007C4BC5-007C4C14 COMPUTES the value at
+    // class load (007D98F0 probed at LevelFlight * StallSpd, scaled by the 0.6
+    // at 00CEFF98) and src/game_hosts_units.cpp already models it as
+    // plane_climb_angle_1ec - 0.1854 rad on a B5N Kate. Callers that pass a
+    // literal 0 here are substituting, and the dive-bomb attack run is one.
+    float class_climb_angle{0.0f};
     float class_drop_angle{0.0f};   // class+1F0h DropAngle
 };
 

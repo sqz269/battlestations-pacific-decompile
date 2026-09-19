@@ -4170,8 +4170,106 @@ Three things fall out of that table, and they answer the packet's question.
    does not touch the altitude at all.
 
 A fourth, recorded because it bounds what the run-in can do: both classes are commanded 1450 m (the
-`Dynamics/Ceiling - 50` clamp) through most of the run-in and neither reaches it, because
-`class+1ECh ClimbAngle` is zero on every shipped row and `009FB800`'s climb arm returns
-`min(0 * t, limit)` = 0. `movieval` climbs 29 m in 1527 ticks. **An aircraft under this host's pilot
-can descend but cannot climb**, so its cruise height is its spawn height less whatever the descent
-arms take off.
+`Dynamics/Ceiling - 50` clamp) through most of the run-in and neither reaches it. `movieval` climbs
+29 m in 1527 ticks. The cause is named in the next section, and it is **not** the authored data.
+
+## Correction: the aimglide's re-arm timer is never counted down, so gate 1 refuses every call
+
+Packet `cc8_dive_entry`. This withdraws the gate table in "The aimglide release, walked with frame
+bases" **as a description of `main`**. That table - `blocked[rearm=0 bearing=523 ceiling=107
+lateral=0 lead_hi=0 lead_lo=0]` for `D3A Val #1.1` - was measured in the glide packet's own tree. On
+`52418c86b`, `local\entry_before.log` measures the same aircraft at
+
+```
+calls=630 blocked[rearm=629 bearing=0 ceiling=1 lateral=0 lead_hi=0 lead_lo=0] passed=0
+throw=748.8 m range=201.4 m travel=5.00 bearing err min=0.0008 rad
+```
+
+The geometry is identical to the digit; only the gate that stops the chain has moved. `#3.1` is the
+same shape: `calls=802 blocked[rearm=801 bearing=0 ceiling=1 ...]`.
+
+**The cause is in the host, and the listing settles it.** `009C5180` counts `state+1Ch` down by its
+own `dt` at the very top of every aimglide tick, exactly as `009C58E9` does for the aimdive:
+
+```
+009c5188  MOVSS  XMM0,dword ptr [ESI + 0x1c]
+009c518d  COMISS XMM0,dword ptr [0x00d7a218]   ; 0.0f
+009c519b  JC     0x009c51a8                    ; byte 72: below zero -> do not decrement
+009c519d  FLD    float ptr [ESP + 0x28]
+009c51a1  FSUB   float ptr [ESP + 0x6c]        ; the dt argument
+009c51a5  FSTP   float ptr [ESI + 0x1c]
+```
+
+This host decremented `db_aim_rearm_1c` only in `dive_bomb_aimdive_inputs`, which
+`src/dive_bomb_task.cpp` calls only while the state is `kAimDive`. The aimglide's own enter clears
+the timer to 0.0 (`009C4F0C`/`009C4F10`), and nothing then moves it, so `009C5689`'s `state+1Ch < 0`
+is false forever and the release chain never reaches the bearing gate. `read_aimglide_inputs` was
+already being handed the `dt` and discarding it.
+
+Fixed by passing that `dt` through and applying the same `if (timer >= 0) timer -= dt` the aimdive
+uses. The gate table above should be re-measured after this, not quoted.
+
+## Retraction: `class+1ECh` is not an authored row, and the dive-bomb path is what zeroes it
+
+Packet `cc8_dive_entry`, prompted by the integrator against the torpedo stream's own census. **This
+withdraws the claim "`class+1ECh ClimbAngle` is zero on every shipped row, so an aircraft under this
+host's pilot can descend but cannot climb"**, which this packet's first commit message carries. It
+is wrong twice over, and `include/bsp/plane_flight.hpp`'s comment `// class+1ECh, zero for every
+shipped row` is the source of the error.
+
+1. **`ClimbAngle` is not authored at all.** `"ClimbAngle"` occurs **zero** times in this
+   installation's `scripts/datatables/autoload/vehicleclasses.lua`. The field is **computed** at
+   class load: `007C4BC5`-`007C4C14` probes `007D98F0` at `tuning+24Ch LevelFlight * desc+184h
+   StallSpd` and `007C4C0E` scales the answer by the double 0.6 at `00CEFF98` into `desc+1ECh`.
+   `src/game_hosts_units.cpp` already models exactly that (`plane_climb_angle_1e4` then
+   `_1ec = _1e4 * 0.6`), so the value is live for every plane class, dive bombers included.
+2. **The zero is this host's dive-bomb binding, not the data.** `pin.class_climb_angle` is fed
+   `slot.plane_climb_angle_1ec` on the torpedo and general plane paths and a literal `0.0f` on the
+   dive-bomb attack-run path. That is why the torpedo stream's census prints
+   `climb_1ec=0.1854` for a `B5N Kate` - `local\entry_before.log` prints the same 0.1854 in this
+   packet's own run - while a dive bomber commanded 1450 m holds its altitude.
+
+So the correct statement is: **the dive-bomb run-in cannot climb because its own binding passes a
+zero climb gain to `009FB800`**, and the fix is one field, not a data problem. It is named here and
+**not** changed alongside the altitude arm: restoring it lets the run-in climb toward the 1450 m
+ceiling clamp, which moves the dive-entry altitude the other way and needs its own before/after.
+
+## Candidate 3 settled: `ctl+398h` is per unit, but every unit draws it from one process-wide row
+
+Packet `cc8_dive_entry`, raised by the integrator after the `approach+ACh` retraction (`294f5a9de`).
+The retraction is right that `approach+ACh` is rewritten per tick from `[approach+0Ch]+398h`
+(`009C7AA4`-`009C7AAD`) and is therefore a **per-unit** field, so the question "can a spawned `D3A
+Val`'s controller carry a different `BeginAltRange` from the scripted `movieval`'s" is a real one.
+It is answered **no**, and the answer is in the writer.
+
+An exhaustive store census over the whole image for offset `0x398` - `tools/store_census.py 0x398`,
+which covers disp8 and disp32 and the `MOV`/`MOVSS`/`FST`/`FSTP` forms - returns 40 sites. Exactly
+one of them is on this path: `009C89CE` inside `009C8920 BSP_BotTaskDiveBomb_UpdateCruiseProfile`
+(`00939E83` in `BSP_UnitController_ConstructVariantB` is the block's own constructor default).
+
+```
+009c8977  CALL 0042e740              ; the tuning singleton -> EBP (009C8996 MOV EBP,EAX)
+009c897c  FLD  float ptr [00CE5380]  ; 15.0   -> argument 2 at [ESP+4]
+009c8982  MOV  EDI,[ESI + 0x404]     ; the pilot control block
+009c8994  FLDZ                       ; 0.0    -> argument 1 at [ESP]
+009c899b  CALL 00BD2F10              ; uniform(0.0, 15.0)
+009c89a0  FADD float ptr [EBP+0x4CC] ; + tuning+4CCh, Pilot/DiveBomb/BeginAltRange/1
+009c89ce  MOVSS [EDI + 0x398],XMM0
+009c89d6  MOV  byte ptr [EDI+0x3AD],1
+```
+
+So **`ctl+398h` = `BeginAltRange/1` plus a uniform 0-15 m jitter**, and `0042E740` takes no argument:
+there is one tuning record in the process. The field is per unit, as the retraction says, but its
+*source* is process-wide and its *spread* is 15 m. It cannot produce the 374 m difference in dive
+entry, let alone the 800 m difference at spawn, and it does not differ between a scripted unit and a
+`SpawnNew` one - `009C8920` is the dive-bomb task's own cruise update and runs for both.
+
+This host pins `approach+ACh` at `BeginAltRange/1` = 1000.0, which is the low end of what the draw
+can produce, consistent with the convention for `approach+A8h`. The gap to the image is at most 15 m.
+
+**Candidate 3 is therefore refuted, and the measured answer in the section above stands unchanged:
+the dive-entry altitude is the spawn altitude.** Three candidates have now been tested against the
+listing and the run - an authored per-class altitude (no such field), a `PilotBotParameters` row (the
+row index is unmodelled and the altitude is not in it), and the per-unit ordered cruise altitude
+(one process-wide row plus 15 m) - and what is left is where the aircraft is put and what the task
+does about it, which is nothing.

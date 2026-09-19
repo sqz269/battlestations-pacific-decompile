@@ -889,7 +889,10 @@ DiveBombFlyAboveAltitudeCommand dive_bomb_flyabove_altitude_009c6e10(
 //                      heading arm in the body, so the heading's mode 2 wins
 //                      whenever both run.
 //   009C6F84/009C6F89/009C6F91  cmd+2BCh with the pitch mode in EDX, on the arm
-//                      that does NOT call 009FB800 at 009C6F7D.
+//                      that does NOT call 009FB800 at 009C6F7D. NO LONGER
+//                      UNBOUND: packet cc8_dive_entry read the whole altitude
+//                      arm 009C6E10-009C6F91 and this is its dead-band case,
+//                      dive_bomb_flyabove_altitude_009c6e10's `level_arm`.
 //   009C6FEA/009C6FF1/009C6FFB  cmd+2B0h = 0, cmd+2D8h = 1 and cmd+2B4h, the
 //                      desired speed, built as `something + approach+A4h`
 //                      (009C6FE1).
