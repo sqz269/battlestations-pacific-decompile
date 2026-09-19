@@ -25,6 +25,7 @@
 #include "bsp/torpedo_approach_update.hpp"
 #include "bsp/torpedo_first_release.hpp"
 #include "bsp/torpedo_issue_timing.hpp"
+#include "bsp/plane_squadron_host.hpp"
 #include "bsp/torpedo_release_orders.hpp"
 #include "bsp/torpedo_task_arm.hpp"
 
@@ -1181,9 +1182,21 @@ struct GameUnitsHost::Impl {
         // far. The goaway's own accumulator starts at zero here, so the rule
         // stays the labelled PARTIAL it was - but it is no longer fed a value
         // that belongs to another state.
-        in.goaway_complete = slot.db_planar_bc >
-            slot.db_goaway_travel_20 *
-                static_cast<float>(bsp::dive_bomb_constant::kGoAwayDistanceScale);
+        {
+            bsp::DiveBombGoAwayCompleteInputs g;
+            g.planar_distance_bc = slot.db_planar_bc;
+            g.travel_20 = slot.db_goaway_travel_20;
+            g.altitude = slot.motion.position[1];
+            // ctl+398h is what approach+ACh is refreshed from every tick, so
+            // this host has one value for both.
+            g.cruise_altitude_398 = slot.db_begin_alt_ac;
+            g.begin_altitude_ac = slot.db_begin_alt_ac;
+            g.aim_point_height_50 = slot.db_aim_point_height_50;
+            g.has_bomb_ordnance_d1 = slot.db_has_bomb_d1;
+            g.control_flag_369 = false;
+            g.global_e17bf2 = false;
+            in.goaway_complete = bsp::dive_bomb_goaway_complete_009c7f00(g);
+        }
         in.unit_bank_c68 = slot.plane_bank_angle_c68;
         in.bank_high_00ce398c = 0.0f;
         in.bank_low_00d1fbc0 = 0.0f;
@@ -3533,7 +3546,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::ReleaseOrderIssueInputs in;
                             const int count = controlled_unit_count();
                             in.controlled_count_3cc = count;
-                            in.force_flag_378 = false;   // ctl+378h
+                            // ctl+378h. 007F2D1E MOV byte [ESI+378h],1 seeds it
+                            // SET, so a squadron that has not been through
+                            // 007ED3C0 takes 007EEF6B's jump straight to the
+                            // raise without consulting 007B8AD0. Nothing in this
+                            // host calls 007ED3C0, whose caller is unlocated, so
+                            // the flag stays set here; that divergence is
+                            // labelled in docs/PLANE_SQUADRON_HOST.md section 6.
+                            // A caller in no squadron keeps the old false.
+                            const bsp::PlaneSquadronHostRecord* const sq378 = squadron();
+                            in.force_flag_378 =
+                                sq378 != nullptr && sq378->force_flag_378;
 
                             // ctl+374h: 007EE7F0's armed fraction, through the
                             // reconstructed rule rather than a constant. The
@@ -3596,26 +3619,32 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             return in;
                         }
                         int controlled_unit_count() override {
-                            int n = 0;
-                            for (const auto& s : owner_.slots) {
-                                if (is_flight_member(*s)) ++n;
-                            }
-                            return n;
+                            // ctl+3CCh. 007EE7F0 jumps to 007EE891 and stores
+                            // zero into +374h when this is not positive, so a
+                            // caller in no squadron answering 0 is the native's
+                            // own arm and not a refusal invented here.
+                            const bsp::PlaneSquadronHostRecord* const sq = squadron();
+                            return sq != nullptr ? sq->live_count() : 0;
                         }
                         // ctl+3D0h / ctl+3CCh, the squadron's own unit array.
                         // 007F2C60 BSP_PlaneSquadronTickableEntity_Construct
                         // builds the block (ctl+34Ch at 007F2CDB, the attack
                         // mode ctl+370h at 007F2DC1) from
                         // 004F0AD0 BSP_SceneUnit_CreatePlaneSquadronGen, which
-                        // runs at launch, not on an order. Membership by
-                        // installed task was therefore wrong: it made the
-                        // flight empty until the order arrived, and an empty
-                        // array skips the whole loop at 007EEF54. This host has
-                        // no squadron object, so carrying torpedo ordnance
-                        // stands in for it. SUBSTITUTION.
-                        static bool is_flight_member(const GameUnitSlot& s) {
-                            const bsp::OrdnanceKindSet set{s.ordnance_mask};
-                            return bsp::ordnance_has_torpedo_2bh(set);
+                        // runs at launch, not on an order.
+                        //
+                        // This used to stand in for the array with "carries
+                        // torpedo ordnance", which counted every torpedo
+                        // aircraft in the mission as one flight - five of them
+                        // in USN01, all in different squadrons. Packet
+                        // cc8_plane_squadron_host gave a PlaneSquadronGen row
+                        // its real WingCount members, so the array is read from
+                        // the squadron table now and the substitution is gone.
+                        // 007C0EFA takes the receiver from plane+9D4h, which is
+                        // exactly what find_by_member_unit answers.
+                        const bsp::PlaneSquadronHostRecord* squadron() const {
+                            return bsp::plane_squadron_registry().find_by_member_unit(
+                                owner_.index_of_slot(slot_));
                         }
                         bool unit_lacks_follow_target_007b8ad0(int index) override {
                             GameUnitSlot* const u = controlled(index);
@@ -3658,11 +3687,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
 
                        private:
+                        // ctl+3D0h[index], in array order, skipping a wing whose
+                        // record never became a unit so the index matches the
+                        // count controlled_unit_count answers.
                         GameUnitSlot* controlled(int index) const {
+                            const bsp::PlaneSquadronHostRecord* const sq = squadron();
+                            if (sq == nullptr) return nullptr;
                             int n = 0;
-                            for (const auto& s : owner_.slots) {
-                                if (!is_flight_member(*s)) continue;
-                                if (n == index) return s.get();
+                            for (std::size_t member : sq->member_units) {
+                                if (member == bsp::kPlaneSquadronNoUnit) continue;
+                                if (member >= owner_.slots.size()) continue;
+                                if (n == index) return owner_.slots[member].get();
                                 ++n;
                             }
                             return nullptr;

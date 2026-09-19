@@ -2601,3 +2601,136 @@ Once the aimglide seed was recovered last packet as `max(arg, 5.0)`, that confla
 `planar > 5.0 * 0.9` true at once, which is the **one-tick goaway** in every run so far. The goaway
 now has its own accumulator. The rule stays the labelled PARTIAL it was, but it is no longer fed a
 value belonging to another state.
+
+## `009C7F00` read whole: the half that was missing
+
+The first goaway run changed nothing - 2118 arm ticks, a one-tick goaway, water contact at
+-1.12 m - because the completion rule still answered true on the state's first tick. It was
+modelled from its first condition only. Read whole:
+
+```
+009c7f03  FLD  float ptr [ECX + 0x20]        ; the goaway state's own +20h
+009c7f09  FLD  double ptr [0x00d7a390]       ; 0.9
+009c7f12  FMUL ST1                           ; term = state+20h * 0.9
+009c7f23  FLD  float ptr [EAX + 0xac]        ; approach+ACh
+009c7f29  FADD float ptr [EAX + 0x50]        ; + approach+50h, the aim point's height
+009c7f38  FCOMIP ST0,ST1 / JBE               ; ceiling = min(ctl+398h, that sum)
+009c7f51..009c7f7a                           ; all three flags set -> term *= 0.9 again;
+                                             ; the first two set without the ordnance -> false
+009c7f8d  FCOMIP ST0,ST1 / JBE 0x009c7fd1    ; approach+BCh must exceed the term
+009c7fb2  FSUB double ptr [0x00d7a220]       ; ceiling - 100.0
+009c7fc2  FCOMIP ST0,ST1 / JBE 0x009c7fd1    ; and the aircraft's Y must exceed that
+009c7fc8  MOV  EAX,0x1
+```
+
+So `goaway_complete` is **two** conditions, and the second is the whole point of the state:
+
+| condition | site |
+| --- | --- |
+| `approach+BCh > state+20h * 0.9` (again * 0.9 with the three flags) | `009C7F8D`, byte `76` |
+| **aircraft Y > min(ctl+398h, +ACh + +50h) - 100.0** | `009C7FC2`, byte `76` |
+
+The aircraft must have **both** opened the range and climbed back to within 100 m of its cruise
+altitude. With `approach+ACh` at 1000.0 and the aim point at sea level that is **900 m**, so an
+aircraft coming out of a dive at 650 m stays in goaway and keeps climbing - which is exactly what
+the climb-out arm bound above it exists to do. Modelling only the first condition made the state
+end instantly no matter what the tick commanded.
+
+### A planner reading worth checking, from the torpedo side
+
+cc8-plane-squadron reports USN01's Mavs flying into the water holding a pitch demand of exactly
+`-pi/3` while `climb_1ec` is printed and not flown. The pitch floor they are hitting is
+`plane_ai_control.cpp:343`, `floor_target = pitch_turn_max_pitch - 2.5 * (1 - q)`, whose comment
+says it "can only RAISE the target - which is the whole of what stops a bot flying into the sea".
+
+That cannot be true with the authored value. `PitchTurnMaxPitch` is `DEG(06)` = 0.10472 rad, so at
+`q = 0` the floor is `0.10472 - 2.5` = **-2.395 rad** - below anything an aircraft can fly, hence
+inert. And the row's own comment describes an increment, not an absolute: *"max ennyi fokkal a
+tenyleges target pitch-nel nagyobb target pitch-t akar elerni. emiatt jobban fogja huzni a pitch
+kontrollt, es jobban kanyarodik"* - at most this many degrees **greater** target pitch than the
+actual one, so it pulls harder and turns better.
+
+So `0099E4DC`-`0099E512` is probably a delta on the target rather than an absolute floor. That is
+the planner, shared with the torpedo and squadron streams, so it is named here and not changed.
+
+## The same zero-span defect is in the dive-bomb attackrun
+
+cc8-plane-squadron found that the torpedo attackrun hands `009FBA50` a zero range pair, killing the
+glide bias. The dive-bomb attackrun does the same thing, and the listing shows what the image
+passes instead.
+
+`009C43D2 SUB ESP,0x10` opens the window and the four floats go in at:
+
+```
+009c43f3  FLD [EDI+0xac] / FADD [EDI+0x50]   -> [ESP]      base = approach+ACh + approach+50h
+009c43e3  FLD [EDI+0xb4]                     -> [ESP+4]    approach+B4h
+009c43db  FLD [ESP+0x54]                     -> [ESP+8]    the frame value 009C4317 stored
+009c43cd  CALL 00419010                      -> [ESP+0xC]  an InterpolateClamped result
+009c4401  CALL 0x009fba50
+```
+
+The two range arguments are **`approach+B4h` and a separately computed frame value** - two different
+numbers. This host passes `in.attack_distance_b4` for both:
+
+```cpp
+cin.range_low = in.attack_distance_b4;
+cin.range_high = in.attack_distance_b4;
+```
+
+so `span = max(high - low, 0)` is zero and the bias `span * scale * class+518h` vanishes, leaving
+the bare base. That is precisely the defect on the torpedo side, in a second call site. The base is
+wrong too: the image's is `approach+ACh + approach+50h`, the same sum `009C7F00`'s ceiling uses,
+while this host passes `r.commanded_altitude_base`.
+
+`[ESP+44h]` is the tick's own `dt` slot at entry - the prologue is `SUB ESP,0x38` plus two pushes,
+so entry `[ESP+4]` is `[ESP+44h]` - reused as scratch once `dt` is consumed; the value the call
+reads is the one `009C4317` stores, which is one level further back and not yet traced.
+
+This is a real candidate for why the dive bomber's altitude profile is wrong through the whole
+run-in, and it is upstream of everything the last four packets bound. It needs
+`src/game_hosts_units.cpp`, which is currently released, so it is recorded here and will be taken
+with its own window rather than by quietly re-claiming the file.
+
+## Correction to the `PitchTurnMaxPitch` note above: it is a max, not a delta
+
+I wrote that `0099E4DC`-`0099E512` is "probably a delta on the target, not a floor", inferring it
+from the authored row comment. **That is wrong**, and cc8-plane-squadron refuted it from the
+listing:
+
+```
+0099e4dc  FMUL  double ptr [0x00ce3de0]
+0099e4e2  FSUBP                           ; floor = pitch_turn_max_pitch - 2.5*(1-q), an ABSOLUTE
+0099e4e8  FLD   float ptr [ESI + 0x2bc]   ; the existing target
+0099e4fa  FCOMIP ST0,ST1                  ; floor vs target
+0099e4fe  JBE   0x0099e508                ; floor <= target -> keep the target
+0099e500  MOVSS XMM0,dword ptr [ESP+0x40] ; else take the floor
+0099e512  MOVSS dword ptr [ESI + 0x2bc],XMM0
+```
+
+`FSUBP` builds the floor as an absolute and `FCOMIP`/`JBE` selects the larger of it and `cmd+2BCh`.
+There is **no `FADD` against the target anywhere in the block**, so it is a max and
+`src/plane_ai_control.cpp` has the shape right. Reading the Hungarian row as a delta was my
+inference, not evidence, and an increment would have been a behaviour change in the wrong
+direction. The row fits the max reading too: raising the target in a hard bank *is* what makes it
+pull harder and turn better.
+
+### What does stand: the floor is inert in level flight, and one comment says otherwise
+
+With `PitchTurnMaxPitch` = `DEG(06)` = 0.10472 rad the floor is `0.10472 - 2.5*(1 - q)`, which at
+`q = 0` is **-2.395 rad** - below anything an aircraft can fly - and rises to +0.10472 only as `q`
+approaches 1. As a max that is a coherent design: hold the nose at least six degrees up in a hard
+bank, do not interfere in level flight.
+
+So the defect is one sentence of a comment, not the code. `src/plane_ai_control.cpp:339-342` says
+the floor "is applied unconditionally on every pass of the law, and it can only RAISE the target -
+which is the whole of what stops a bot flying into the sea". The first half is right; the last
+clause is not. It is inert in level flight by construction, so it stops nothing in a straight-line
+descent - which is exactly what USN01's Mavs and this dive bomber both do. That file is not held
+here; the one-sentence fix belongs to whoever next holds it.
+
+### And it does not support the zero-span finding either
+
+Stated plainly so the two are not read as mutual support: `0099E490` consumes a pitch target and
+`009FB800` produces one. The zero range pair is a fault in the **producer**, and a floor that
+worked perfectly would only cap how steeply an aircraft obeyed a command it should never have been
+given. The two findings are independent, and the zero range pair is the one that matters.

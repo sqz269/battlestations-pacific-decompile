@@ -1,0 +1,74 @@
+{
+ "packet": "cc8_torpedo_approach_blocker",
+ "owner": "agent/cc8-plane-squadron",
+ "doc": "docs/TORPEDO_APPROACH_BLOCKER.md",
+ "status": "DIAGNOSIS ONLY, no code changed. The cause is located and measured on two binaries; the fix needs one more producer trace, named below",
+ "sources": [],
+ "classification": "discovery; why no torpedo aircraft in this project has ever reached the aim tick",
+ "finding": "All five of USN01's Mavs fly into the water at about 141 m/s roughly eleven seconds into the run. Every symptom the stream was chasing is downstream of that: the approach stops at 124 ticks because run_torpedo_task_arm_009d4850 returns on command_target_plus_one == 0 once the aircraft is gone; min == last == 3928.5 m because it closed 330.7 m and then died; aim_ticks=0 because the in-range latch wants range < 2200 m; and 009D2287, 007BBBA0 and 007EEF30 are all downstream of an aim stage that never runs. The heading error reached 0.000 rad, so steering was correct.",
+ "proximate_cause": "The commanded run-in altitude is 12 m and the pitch demand is exactly -pi/3 rad, held from 800 m to the sea. The aim tick's floor is approach+78h + approach+74h at 009D1631: +78h is TorpReleaseAlt 12.0 (correct for what it is) and +74h is 0.00.",
+ "root_cause": "OPEN, and the first candidate is withdrawn. 009D3489-009D34AE stores alt_floor_74 = ctl+398h only when ctl+398h < 100.0 (FLD [ECX+398h], FCOMIP against the double at 00D7A220, JBE skips), and the host feeds that field 500.0f, so the store never fires and +74h stays 0. That looked like the defect until 009C89CE was read: on the dive-bomb path +398h is tuning+4CCh plus a jitter, and tuning+4C0h..+4D8h is the dive bomb's cruising-altitude block, so a value above 100 is probably normal and alt_floor_74 = 0 probably is too. A commanded band of 12 m is then a plausible torpedo RELEASE altitude rather than a defect. What is unexplained, and is now the question, is the descent: pitch_demand is exactly -pi/3 rad and is held constant over more than 700 m, which is the shape of a clamp rather than of a computed slope, and the aircraft never flares. See the Correction section of the doc.",
+ "routines": [
+  {
+   "address": "009d3420",
+   "name": "BSP_BotApproachTorpedo_Update",
+   "coverage": "not re-read by this packet; the altitude-floor arm 009D3489..009D34AE was read from src/torpedo_approach_update.cpp's reconstruction and confirmed against the run"
+  },
+  {
+   "address": "009d4a70",
+   "name": "BSP_BotTaskTorpedo_UpdateCruiseProfile",
+   "coverage": "partial; scanned for stores to +390h..+39Fh and for its call list. It READS +398h at 009D4B57 and writes only the engage distance 009D4BA7 MOVSS [ESI+484h]"
+  },
+  {
+   "address": "009c8920",
+   "name": "BSP_BotTaskDiveBomb_UpdateCruiseProfile",
+   "coverage": "partial; read 009C8920..009C8A2C. Its +398h store at 009C89CE takes 00BD2F10(0, [00CE5380]) + tuning+4CCh, with the tuning singleton from 0042E740 held in EBP at 009C8996, under the dirty-byte guard at 009C89BF/009C89DD and setting 009C89D6 [EDI+3ADh] = 1. The rest of the body is contract: unread"
+  },
+  {
+   "address": "009d4850",
+   "name": "BSP_BotTaskTorpedo_TickArm",
+   "coverage": "cited from docs/TORPEDO_TASK_ARM.md; this packet read only step 8's state test"
+  }
+ ],
+ "censuses": [
+  {
+   "what": "stores to +398h",
+   "tool": "python tools/store_census.py 0x398",
+   "result": "40 sites. 009C89CE in BSP_BotTaskDiveBomb_UpdateCruiseProfile is the one to follow. 0079CD26 in FUN_0079CBD0 is on the 0x410 object docs/PLANE_SQUADRON.md already proved is a different class, and must not be adopted. Not covered: a 16-byte MOVAPS/MOVUPS store reaching +398h from a lower offset, which 0079CD08..0079CD36 shows is a shape this field family is written in"
+  }
+ ],
+ "corrections": [
+  {
+   "what": "this packet's own first hypothesis",
+   "was": "the arm stops at 124 ticks because the Mavs' command row stops being current, so command_target_plus_one goes to zero on its own",
+   "is": "RETRACTED. The command target does go to zero and the arm does return on it, but the cause is the water contact, not a stale order. The mechanism was inferred from the host sources before the log was read",
+   "evidence": "the five `plane water contact` lines in both runs"
+  },
+  {
+   "what": "the two thresholds the packet brief conflated",
+   "was": "an engage distance of 2200.0 x 2.2 = 4840 m, so USN01's Mavs begin inside the threshold",
+   "is": "two different tests. 009D3210's engaged predicate is task+484h * 2.2 = 4840 m and is satisfied at 4174.3 m; the aim stage is gated by the in-range latch +131h in 009D3420, which needs range < approach+8Ch and the run prints 8Ch=2200.0 against min=3928.5",
+   "evidence": "009D324F FMUL against 00D05AC8; docs/TORPEDO_APPROACH_UPDATE.md's latch section"
+  },
+  {
+   "what": "009D4923 as the fix",
+   "was": "replace the hard-coded false with the image's test and the drop follows",
+   "is": "worth doing and not a route to the first drop here. docs/TORPEDO_TASK_ARM.md step 8 runs 007BBBA0 only when the state is none of aim, attackrun or prepare, and USN01's Mavs spend all 124 arm ticks in attackrun, so the passthrough is skipped by its own state test whatever 009D4923 answers",
+   "evidence": "docs/TORPEDO_TASK_ARM.md section (1) step 8; the run's states[attackrun=124]"
+  }
+ ],
+ "runs": [
+  {
+   "mission": "USN01",
+   "command": "./tools/run_game.ps1 -Log local\\tap_before_usn01.log -- --frames 3200 --press-start-frame 30 --menu-select USN01 --mission-frames 3000 --mission-frame-seconds 0.05",
+   "session": "console Active",
+   "commit": "b882aa1d4 (this branch with origin/main merged)",
+   "exitcode": 0,
+   "result": "reproduces local/sqn_after_usn01.log on b00c3cd24 exactly: the same five water contacts to the centimetre, base=12.00 (74h=0.00 78h=12.00), pitch_demand=-1.0472, approach ticks=124 aim_ticks=0 min=3928.5, stage_ticks=3000 waiting=3000, ordered=5 closed_mean=368.1. Neither the dive bomb's cmd+2CCh planner change nor this lineage's plane-squadron wing moves any of them",
+   "role": "the same-binary before column for whoever makes the fix"
+  }
+ ],
+ "cause": "LOCATED, section 9 of the doc. The attackrun tick's step 4 calls command_altitude_and_throttle(nullptr, alt_margin_78 + alt_floor_74, 0.0f, 0.0f, 0.0f) - both range arguments zero - so 009FBA50's span = max(range_high - range_low, 0) is zero, its bias term span * scale * class+518h is dead, and the commanded altitude is the bare 12 m. 009FB800's dive arm then returns -min(class_drop_angle * t, limit) with t clamped to reference by an 788 m error, so it saturates at the limit, which is -pi/3 to four decimals. The demand is the arm working correctly on a command it should never have been given. The move-to tick's own glide slope, in the same file, passes a real pair (range_low = the speed field selected by the approach clock, range_high = the distance) and produces a sloping descent; it never runs for these aircraft, and the log confirms it - there is not one `glide census` line, only `descent census` lines.",
+ "remaining_work": "Read 009D07B0 step 4's argument setup from the listing and pass the real range pair. The host's zeros are a placeholder, not a reading. Do not assume the move-to pair is the right answer: 009D48CF fills the move-to ranges from approach+7Ch/+80h, which docs/TORPEDO_APPROACH_UPDATE.md establishes are commanded SPEEDS selected by the approach clock, so whatever 009D07B0 passes has to come from its own listing.",
+ "superseded_next_step": "Start from the descent law, not the altitude field. pitch_demand is -1.0472 rad, which is -pi/3 to four decimals, held constant over more than 700 m of descent while the same census line prints drop_angle=0.4014 and climb_1ec=0.1854, neither of which the aircraft flies, and the aircraft never flares (pitch tracks the demand to -1.0396 at 62 m and the next sample is under the water). Find what writes that demand and why it is a constant rather than the glide slope docs/TORPEDO_MOVETO_TICK.md reconstructs, and what should level the aircraft at the band. docs/TORPEDO_RUN_IN_DESCENT.md is the other document on that path. Whether read_control_block is also passing the wrong key for +398h is unproven either way and is secondary: no producer of +398h on the torpedo path has been located at all, since 009D4A70 only reads it."
+}
