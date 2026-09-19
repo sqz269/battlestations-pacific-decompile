@@ -257,4 +257,58 @@ clean, so `[ESP+0xc]` at `009D09C2` is the slot `009D07E4` wrote and it holds `a
 
 ## Validation
 
-Pending; the run table is appended below.
+Both runs are `--frames 3200 --press-start-frame 30 --menu-select USN01 --mission-frames 3000
+--mission-frame-seconds 0.05`, on the same binary lineage and the same placement, with
+`query session` = `console Active` before each and `exit_code=0 frames_presented=3199
+loop_finished=1`.
+
+| | before, `local/tap_before_usn01.log` | after, `local/descentlaw_full_usn01.log` |
+| --- | --- | --- |
+| `plane water contact` | all five Mavs, `alt` -4.13 / -5.05 / -5.88 / -5.05 / -0.01, `\|v\|` 140.95 to 141.12 | **the string does not appear in the log** |
+| approach ticks, Mav1 | 124 | 1299 |
+| min range 90h, Mav1..Mav5 | 3928.5 / 3653.5 / 3579.1 / 3968.6 / 3901.3 | **3.8 / 1.7 / 2.1 / 2.7 / 1.5** |
+| aim ticks, Mav1..Mav5 | 0 / 0 / 0 / 0 / 0 | **378 / 357 / 358 / 352 / 353** |
+| `aim_complete_2Ch` | the aim state never ran | **1 for all five**, first true at aim tick 267 to 283, `clause=range` |
+| pitch demand at 800 m | -1.0472 (`-DEG(60)`), and unchanged to the water | **-0.0573** |
+| commanded altitude at 4183 m range | 12.00 | **761.91** |
+| `\|v\|` entering aim | n/a, dead at 141 m/s | 81.00 m/s |
+| `release_arm_009D2287`, releases | 0, 0 | 0, 0 - see below |
+
+Mav1's descent census after the fix, the whole attack run:
+
+```
+n=1   commanded=761.91 live_alt=800.0 demand=-0.0573 pitch= 0.0000 | range=4183.4 low=650.0 span=3533.4 margin=400.0 denom=2000.0 scale=0.5000 gain=0.4245 slope_deg=11.98
+n=101 commanded=736.88 live_alt=768.3 demand=-0.0473 pitch=-0.0686 | range=4065.4 low=650.0 span=3415.4
+n=151 commanded=722.89 live_alt=742.2 demand=-0.0291 pitch=-0.0846 | range=3799.5 low=450.0 span=3349.5   <- the 15 s switch
+n=251 commanded=604.89 live_alt=685.2 demand=-0.1210 pitch=-0.1149 | range=3243.5 low=450.0 span=2793.5
+n=351 commanded=479.55 live_alt=580.3 demand=-0.1516 pitch=-0.1496 | range=2653.0 low=450.0 span=2203.0
+n=401 commanded=414.68 live_alt=519.2 demand=-0.1573 pitch=-0.1560 | range=2347.3 low=450.0 span=1897.3
+```
+
+The commanded altitude tracks the range down the slope, the aircraft tracks the command, the demand
+tracks the aircraft to three decimal places, and the 15-second switch from `TorpReleaseDistFar` 650
+to `Near` 450 fires at `009D0A0E` exactly as the listing says. `approach+24h` is 1.0 here - the
+aim census prints `speed_80=650.0` unscaled, because `max_spd` 69.44 m/s is below
+`Pilot/Torpedo/ReferenceSpeed` - so `low` is the authored row value directly. `scale` stays 0.5000
+for the whole run because `margin` is pinned at its 400 cap and `denom` at its 2000 cap; the ramp
+only starts moving inside 2000 m of range or below 1000 m of altitude.
+
+**What is still not a drop, and where the next gate is.** All five aircraft now arrive over the
+target, but `release_arm_009D2287` is still 0 and `releases=0`. Two things stand between here and a
+torpedo, and neither is in this packet:
+
+* `run_time_009D1360 = 0` for all five. `src/torpedo_aim_tick.cpp` calls
+  `update_run_time_009d1360` only inside `009D19A0`'s `turn_room > f14_range`, and the run measures
+  `F34=546.26 F14=767.24` at the first completed solution, so that gate never opens. `009D1360`
+  writes `approach+98h`/`+A0h`, which `009D2287` needs.
+* **The aim state commands no altitude.** `009D15F0`'s callee list contains neither `009FBA50` nor
+  `009FB800` - it calls `009D1500`, `009D1360`, `00427EB0`, `00414DB0`, `00438AA0`, `00438B10`,
+  `00419010`, `009FA3A0`, `00903860` and `007F0280`. So when the `2200 m` latch closes the descent
+  command stops, and the aircraft hold 488.9 to 559.9 m over the target for the rest of the mission
+  while `009D20B4`'s release band wants 25 to 40 m. Something between the latch and the band has to
+  bring them the last 400 m, and it is not the chain this packet fixed. That is
+  `docs/TORPEDO_AIM_TICK.md`'s ground.
+
+The 60-second intermediate run `local/descentlaw_after_usn01.log` is kept as the first evidence that
+the latch closes: at 1200 mission frames Mav2 and Mav3 had 38 and 51 aim ticks with the other three
+still inside 2400 m and descending.

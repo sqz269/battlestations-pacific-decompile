@@ -417,3 +417,13 @@ third items of 8.5 stay open on those terms.
 placement, `plane water contact` does not appear in the log at all, the approach runs 399 ticks
 instead of 124, and the in-range latch at 2200 m closes for two of the five aircraft. The run table
 is in `docs/TORPEDO_DESCENT_LAW.md`.
+
+### Closing measurement
+
+The full-length run after the fix, `local/descentlaw_full_usn01.log`, same command and same
+placement as `local/tap_before_usn01.log`: `plane water contact` does not appear, the approach runs
+1299 ticks instead of 124, all five aircraft enter the aim state (352 to 378 ticks each, against 0),
+`aim_complete_2Ch` reaches 1 on all five with `clause=range`, and the minimum range closes from
+3928.5 m to **3.8 m**. The blocker this document named is gone. `release_arm_009D2287` is still 0:
+the next gate is `009D1360`'s own gate at `009D19A0` and the fact that `009D15F0` commands no
+altitude, both recorded in `docs/TORPEDO_DESCENT_LAW.md`.
