@@ -681,6 +681,33 @@ struct DiveBombFlyAboveCommand {
 DiveBombFlyAboveCommand dive_bomb_flyabove_command_009c6dcd(
     const DiveBombFlyAboveCommandInputs& in) noexcept;
 
+// ---------------------------------------------------------------------------
+// 009C542C-009C5450, the aimglide tick's heading arm - the same shape as the
+// flyabove's, and the state that owns the release site 009C5777. Its command
+// census: 009C5400/009C5408 a bank target with cmd+2CCh = EBX = 1 (the servo),
+// 009C5442/009C5450 a heading with cmd+2CCh = EBP = 2, 009C55D7/009C55DF an
+// altitude with cmd+2D0h = EBP = 2, and 009C567F cmd+2D8h = 0. EBP is the 2 that
+// 009C53DD loads and EBX the 1 that 009C53E2's LEA takes from it.
+//
+// PARTIAL, for the same reason as the flyabove: only the heading is bound, and
+// its value is a labelled substitution. The image reads it from the frame slot
+// [ESP+6Ch] at 009C5435, and this body's slots cannot be paired reliably either.
+// The sibling arm at 009C5414 commands the YAW slot directly (cmd+284h, +288h
+// and +2D4h = 0) and is not bound.
+// ---------------------------------------------------------------------------
+struct DiveBombAimGlideCommandInputs {
+    // SUBSTITUTION, labelled: the bearing to the aim point in place of the
+    // frame slot 009C5435 reads.
+    float heading_to_aim_point = 0.0f;
+};
+struct DiveBombAimGlideCommand {
+    bool wrote_heading = false;
+    float heading_2c0 = 0.0f;
+    int heading_mode_2cc = 2;   // 009C53DD MOV EBP,2, stored at 009C5450
+};
+DiveBombAimGlideCommand dive_bomb_aimglide_command_009c542c(
+    const DiveBombAimGlideCommandInputs& in) noexcept;
+
 struct DiveBombFlyAboveSpan {
     float floored_height = 0.0f;  // max(B, 100.0), the 009C65A9 select
     float threshold = 0.0f;       // S = floored * 0.7 + 200.0

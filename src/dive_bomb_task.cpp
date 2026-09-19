@@ -525,6 +525,16 @@ DiveBombTurnDownResult dive_bomb_turndown_tick_009c44f0(
     return out;
 }
 
+// 009C542C-009C5450, the aimglide tick's heading arm.
+DiveBombAimGlideCommand dive_bomb_aimglide_command_009c542c(
+    const DiveBombAimGlideCommandInputs& in) noexcept {
+    DiveBombAimGlideCommand out;
+    out.wrote_heading = true;
+    out.heading_2c0 = in.heading_to_aim_point;  // 009C5435 / 009C5442
+    out.heading_mode_2cc = 2;                   // 009C53DD / 009C5450
+    return out;
+}
+
 // 009C6DCD-009C6DEF, the flyabove tick's heading arm.
 DiveBombFlyAboveCommand dive_bomb_flyabove_command_009c6dcd(
     const DiveBombFlyAboveCommandInputs& in) noexcept {
