@@ -378,8 +378,20 @@ DiveBombAimDiveReleaseResult dive_bomb_aimdive_release_009c60f1(
 struct DiveBombDiveAbortInputs {
     float release_range_d4 = 0.0f;   // approach+D4h
     float aim_point_height_50 = 0.0f;     // approach+50h
-    float slant_range = 0.0f;        // [ESP+14h], the range the test compares
-    float aim_point_distance = 0.0f;  // [ESP+1Ch], the planar distance to +D8h/+E0h
+    // CORRECTION (packet cc8_dive_aim_error). This was `slant_range`, "the
+    // range the test compares", and the host fed it the planar range. [ESP+14h]
+    // is not a range: 009C59BA-009C59D6 writes it as `unit+100h - target.y`,
+    // and it is the SAME slot the aim error reads as its interpolation x
+    // (DiveBombAimErrorInputs::height_above_target, 009C59D6). Both places the
+    // abort uses it - 009C5B12 against approach+D4h + approach+50h, and
+    // 009C5B30's `* 0.3` - are therefore in metres of ALTITUDE above the aim
+    // point. Feeding a range made 009C5B3E read `0.3*range + 150 > range`,
+    // i.e. an abort at any range under 214 m whatever the altitude.
+    float height_above_target_14 = 0.0f;   // [ESP+14h]
+    // [ESP+1Ch] at 009C5B14, which is the FIRST sqrt (009C5A0B, over the
+    // aircraft-relative dx/dz at [ESP+34h]/[ESP+3Ch]), not the latched one -
+    // that is [ESP+5Ch], written by the second sqrt at 009C5A4D.
+    float aim_point_distance = 0.0f;
     float unit_attitude_c64 = 0.0f;  // pose+C64h, 009C5B1D
 };
 bool dive_bomb_dive_abort_009c5b43(const DiveBombDiveAbortInputs& in) noexcept;
@@ -823,6 +835,13 @@ inline constexpr float kAimDiveRollBand = 0.4000000059604645f;   // 00CE7804
 inline constexpr float kAimDiveRollBandWide = 0.5f;              // 00CE3800
 // 009C5D24, the 60 degrees that second test compares against.
 inline constexpr float kAimDiveRollBandAngle = 1.0471975803375244f;  // 00D05AAC
+// 009C5BD4 `COMISS XMM0,[00CEC728]` on pose+C64h with 009C5BDB `0f 87` JA to
+// 009C5CEF. NEGATIVE thirty degrees, at its own address: 00CEC724 next door is
+// the positive one kGlideDiveAngleLimit already uses. The jump is taken when
+// the pitch is ABOVE it, i.e. when the dive is SHALLOWER than 30 degrees
+// nose-down, and 009C5CEF writes cmd+29Ch = -1.0 without computing the aim
+// error at all.
+inline constexpr float kAimDiveSteepGateAngle = -0.5235987901687622f;  // 00CEC728
 // 009C4FBF, the 40 degrees below which the Euler heading is abandoned for the
 // body-up axis. `MOVSS XMM0,[ESI+C64h]` then `COMISS XMM0,[00CE7D1C]` with
 // 009C4FC6 `76` JBE, so pitch <= this takes the body-axis arm.
@@ -881,6 +900,20 @@ float dive_bomb_aim_heading_009c4f80(
 struct DiveBombAimDiveSteerInputs {
     // The aim error 009C5C9B leaves in [ESP+5Ch]; its sign picks both gains.
     float aim_error = 0.0f;
+    // pose+C64h, read at 009C5BCC for the gate at 009C5BD4. Above
+    // kAimDiveSteepGateAngle the image jumps to 009C5CEF and never runs
+    // 009C5B54-009C5C9B, so `aim_error` is not consulted at all on that arm.
+    float pitch_c64 = 0.0f;
+    // What [ESP+5Ch] STILL HOLDS when that jump is taken, and this is not a
+    // nicety: the slot is the incoming `float dt` parameter home, reused. The
+    // last writer before the gate is 009C5A4D/009C5A58, the second sqrt - the
+    // planar distance from the target point to the LATCHED approach+D8h/+E0h
+    // point. 009C5D08 (the roll band test) and 009C60C1 (the release window)
+    // both read that slot afterwards, and on the gated arm they therefore test
+    // a DISTANCE against the 25 m window, not the aim error. Proved by
+    // enumerating every access to the slot over the whole body: between
+    // 009C5BDB and 009C5D08 the only writers are inside the jumped-over range.
+    float planar_distance_slot_5c = 0.0f;
     // The roll interpolant. The image draws two bearing errors from two
     // approach->vtable[0] points and rolls on one of them; see the header note
     // in the .cpp for which, and why this host passes one.
@@ -898,6 +931,11 @@ struct DiveBombAimDiveSteerResult {
     float pitch_29c = 0.0f;   // 009C5CFA, with +2A0h = 1 and +2D0h = 0
     float roll_290 = 0.0f;    // 009C5DA3, with +294h = 1 and +2CCh = 0
     bool used_wide_band = false;  // the 009C5D33 arm rather than 009C5D60
+    bool steep_gate_fired = false;  // 009C5BDB JA was taken
+    // The value [ESP+5Ch] carries out of this arm, which is what the release
+    // window at 009C60C1 reads: the aim error normally, the latched planar
+    // distance when the gate fired. Pass this to the release, not aim_error.
+    float error_slot_5c = 0.0f;
 };
 DiveBombAimDiveSteerResult dive_bomb_aimdive_steer_009c5c9f(
     const DiveBombAimDiveSteerInputs& in) noexcept;

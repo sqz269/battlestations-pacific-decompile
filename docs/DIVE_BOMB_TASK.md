@@ -3412,3 +3412,187 @@ aimdive ticks in the before run, one tick after the turndown had it at `+1.0`.
 That block, and the wide roll arm's second bearing (the one drawn against the latched
 `approach+D8h/+E0h` at `009C594C`, which this host does not compute separately), are the next thing
 to read.
+
+---
+
+# `009C5BD4`, the -30 degree pitch gate, and what `[ESP+5Ch]` carries past it
+
+Packet `cc8_dive_aim_error`, owner `agent/cc8-dive-bomb`. Everything in sections 1-3 below is read
+from the image on disk; section 4 is the run.
+
+## 1. The x87 question `docs/HANDOFF_DIVE_BOMB_AIM_ERROR.md` posed is answered: there is no divergence
+
+Two independent scripted walks now agree. `local/x87_walk.py` (the retiring packet's) and
+`local/x87trace.py` with `local/t.ps1` (this one's, written without reading the other) both
+propagate x87 depth and ESP over every CFG edge of `009C58D0`-`009C6161` from the entry, and both
+report **no depth conflict at any join in the whole body**, ending at `009C615F RET 4` with an empty
+x87 stack. The hand trace in the handoff had dropped `009C5B99 FSTP ST0`.
+
+Closing the walk needed five callee effects, each taken from the callee's own tail rather than
+assumed:
+
+| callee | x87 | ESP | evidence |
+| --- | --- | --- | --- |
+| `00419010` InterpolateClamped | +1 | +14h | `00419030 c2 14 00` RET 14h, `0041902C FLD [ESP+8]` |
+| `00438AA0` / `00438B10` | +1 | +8 | `00438ADC` / `00438B4C` `c2 08 00` |
+| `009C4F80` aim heading | +1 | 0 | `009C5175 c3`, float left in ST0 |
+| `00BF701A` atan2 | **-1** | 0 | `FLD dz; FLD dx; CALL; FSTP` at `009C5A5E`-`009C5A6B`: two in, one out |
+| `00BF7030` sqrt | 0 | 0 | `009C5A40`'s call path and the `009C5A53` zero path rejoin at equal depth |
+| `[EDX+38h]` at `009C5EDE` | **+1** | 0 | the only assignment that closes the join at `009C5F19` |
+
+The two things the walk settles about the block itself:
+
+* **The `00438AA0(aim heading, pi)` at `009C5BB1` is dead.** It is pushed at depth 0 and popped by
+  `009C5BBA FSTP ST0` on the path that reaches it; it is never stored. Its argument is the base
+  frame's `[ESP+10h]` - `009C5BAA FLD [ESP+18h]` sits at `fb=0x60`, after `009C5BA3 SUB ESP,8`.
+  So the `|default roll error| > pi/2 && range > height*0.1` test at `009C5B7D`-`009C5B9B` has no
+  effect on any state, and neither arm of it needs reconstructing. MSVC cannot elide a call to an
+  externally linked function whose result is dead, which is why it is still in the image.
+* **The `FSIN` at `009C5BC0` is dead too.** It writes `[ESP+28h]`, and `009C5C14` overwrites that
+  slot with `cos(wide roll error) * [ESP+5Ch]` before any read.
+
+## 2. The gate reads the other way round from the handoff's summary
+
+`009C5BCC MOVSS XMM0,[ECX+C64h]`, `009C5BD4 COMISS XMM0,[00CEC728]`, `009C5BDB 0f 87` **JA** to
+`009C5CEF`. `00CEC728` is a float and is **-0.5235987901687622** (`00CEC724` next door is the
+positive one). `pose+C64h` is negative nose-down, so the jump is taken when the pitch is *above*
+-30 degrees: **the SHALLOW arm gets `cmd+29Ch = -1.0`, and the aim error is computed only when the
+aircraft is already steeper than 30 degrees nose-down.**
+
+`docs/HANDOFF_DIVE_BOMB_AIM_ERROR.md` section 3 and the final section of this document both said
+"above 30 degrees nose-down the image writes `cmd+29Ch = -1.0` outright". **That is withdrawn**; the
+branch byte is the same, the sense of the constant is not.
+
+`-1.0` is the push end of the stick: `009C46C9`-`009C4736` drives `cmd+29Ch` to **+1** as the
+turndown's bank approaches inverted, and that arm is the split-S pull-through.
+
+## 3. `[ESP+5Ch]` on the gated arm is the latched planar distance, not the aim error
+
+The slot is the incoming `float dt` parameter home, reused. Enumerating **every** access to it over
+the whole body (16 sites) settles what the two later readers see:
+
+* last writer before the gate: `009C5A4D FSTP [ESP+5Ch]` (or `009C5A58 MOVSS` on the `1e-10` floor
+  arm) - the second `sqrt`, over `[ESP+40h]`/`[ESP+48h]`, which `009C5959`/`009C596F` filled from the
+  **latched** `approach+D8h`/`+E0h` point;
+* every other writer between `009C5BDB` and `009C5D08` is inside the range the jump skips
+  (`009C5C30`, `009C5C55`, `009C5C79` are InterpolateClamped argument spills; `009C5C9B` is the aim
+  error itself);
+* the readers are `009C5D08` (the roll band test) and `009C60C1` (the 25 m release window).
+
+So on the shallow arm the image tests a **distance in metres** against the 25.0 at `00CE3880`, and
+takes the wide roll band whenever that distance is positive. Reconstructed here as
+`DiveBombAimDiveSteerInputs::planar_distance_slot_5c` and `DiveBombAimDiveSteerResult::error_slot_5c`
+rather than hidden, because a host that keeps its aim error in a member and reads it unconditionally
+gets a different release decision on every shallow tick.
+
+Whether the original C++ intended this or left a local uninitialised on that path cannot be settled
+from the image. The data flow can, and is what a faithful host has to reproduce.
+
+## 4. The aim error block was already reconstructed, and this walk re-derives it unchanged
+
+`dive_bomb_aim_error_009c5c9b` (`src/dive_bomb_task.cpp`) predates this packet. Walked independently
+with the `SUB ESP,0x14` displacements resolved mechanically (`local/t.ps1` prints
+`base [ESP+nn]` next to every ESP-relative operand), the block is:
+
+```
+x0 = approach+A8h + 100.0            ; 009C5BEE, 009C5BF7 FADD m64 [00D7A220] = 100.0
+x1 = approach+ACh + approach+50h     ; 009C5C27-009C5C38
+lead = InterpolateClamped(x0, 0.0, x1, row+5Ch, height)          ; 009C5C49
+along = cos(wide roll error) * latched planar distance - lead    ; 009C5C04-009C5C14, 009C5C4E FSUBR
+gain = InterpolateClamped(x0, 1.0, x1, row+60h, height)          ; 009C5C92
+error = gain * along                                             ; 009C5C97, stored 009C5C9B
+```
+
+which is what that function already computes, term for term. The handoff's "unread block" framing is
+withdrawn in the document itself.
+
+## 5. Measured: the gate regulates the dive angle, and the abort is what ends it
+
+`local\usn04_gate1.log` against `local\usn04_geo3.log`, same binary apart from the gate.
+
+```
+geo3 (no gate)                          gate1 (gate bound)
+1788  pitch -0.766  cmd +1.000          1788  pitch -0.766  cmd +1.000
+1794  pitch -0.504  cmd +1.000          1794  pitch -0.504  cmd -1.000   <- gate fires
+1800  pitch -0.242  cmd +1.000          1800  pitch -0.401  cmd -1.000
+1806  pitch  +0.02  cmd +1.000          1806  pitch -0.534  cmd +1.000   <- and releases
+1808  pitch +0.107                      closest range 209.3 (geo3: 204.1)
+```
+
+Measure 1 and measure 2 of the handoff are met: `pitch_cmd` stops being a constant, and
+`pose+C64h` stops walking back up past zero. It is a bang-bang regulator and it holds the dive at
+the gate's own angle, about -0.52 rad. That is the authored dive angle of this class from the other
+end as well: `class+518h` is `tan(DropAngle)` and its measured 0.577 is `tan(30 deg)`.
+
+`releases` is still 0 and the state counts are unchanged (`aimdive=52`, then `aimglide=562`),
+because what ends the dive is the abort, not the pitch: see section 6.
+
+## 6. Two things the release still needs, and neither is the pitch
+
+**The abort's height input** was a range. Corrected in this packet (`7d5c667ec`) with the
+derivation in that commit; with a range in both operands `009C5B3E` reduced to
+`0.3*range + 150 > range`, an abort at any range under 214 m whatever the altitude, and both runs
+lose the dive just inside that (204.1 m and 209.3 m). The run measuring the correction is
+`local\usn04_abort1.log`.
+
+**`[ESP+5Ch]` is not the current range, and this host's substitution for it is a HOLE.** The two
+`approach->vtable[0]` calls differ their result against two different points, and the register that
+picks them changes between them:
+
+* `009C593E MOV EDI,[ESI+4]` makes EDI the approach, so `009C5950 FSUB [EDI+0D8h]` differences the
+  aim point against `approach+D8h`. `009C405D`-`009C407D` in the constructor stores `unit+FCh`,
+  `+100h`, `+104h` there: **the aircraft's own position at dive entry**, latched once.
+* `009C5966 MOV EDI,[EBP+4]` then makes EDI the unit, so `009C598C FSUB [EDI+0FCh]` and
+  `009C5999 FSUB [EDI+104h]` difference the aim point against the aircraft's **current** position.
+  EDI is written five times before `009C5BEB` and this is the only reload between the two
+  differences, which is what settles it.
+
+So `[ESP+1Ch]` (first `sqrt`) is the live aircraft-to-aim-point range, and `[ESP+5Ch]` (second
+`sqrt`, the one the aim error multiplies `cos` into) is the **dive-entry-point-to-aim-point range**,
+a constant for the whole dive. Likewise `[ESP+18h]`, the wide roll error, is measured from the
+latched entry point and `[ESP+24h]`, the default one, from the aircraft.
+
+This host passes `db_planar_bc`, the live range, for both. That is why the measured aim error tracks
+the range exactly (`range/error` = `433/433` in both runs) and never approaches the 25 m window.
+Whether the image's own quantity ever does is **not established here**: with `D_entry` fixed at
+472.6 m and the lead interpolating to 0 at low altitude, `cos(...) * 472.6 - lead` has no obvious
+zero either, so either `approach+D8h` is re-latched by something outside `009C58D0` or the release
+this mission needs is the aimglide's at `009C5777`, not this one. That is the next question, and it
+is a reading question, not a tuning one.
+
+**`approach+A8h` = 350.0 is a proof of the range and a hole in the draw.** The release's first gate
+is `approach+A8h > pose+100h`, so it depends on it directly. `009C3F23` draws it uniformly, and this
+installation's `scripts/datatables/robots.lua` SPNormal row authors
+`DiveBombReleaseAlt = { 350, 450 }`; the host pins the low end and the difficulty index is
+unmodelled. Pinning the low end is the conservative direction - it demands a lower aircraft before
+releasing, so it can suppress a release the image would make, never cause one it would not.
+
+## 7. The open pitch question is resolved, and it was the missing gate
+
+The seam the handoff flagged - "a full push RAISING the nose because the aircraft is inverted" -
+is **not** a frame mismatch. `009C58DE XOR EBX,EBX` is the **only** write to EBX in the whole body
+(filtered over the complete listing; the two `POP EBX` are epilogues), so `009C5D1C MOV [EDI+2D0h],
+EBX` writes **0**: the aimdive clears the pitch-hold mode and `cmd+29Ch` is a raw body-frame
+elevator demand, with `009C5D15` setting `cmd+2A0h = 1`. This host does the same - every aimdive
+row of the trace carries `mode_2d0 0` - so image and host apply it in the same frame.
+
+What produced the symptom was the unbound gate. `009C5C9F`'s positive arm clamps at **+1.0**, and
+the aim error is positive and large for the whole dive, so an upright aircraft got full pull and
+flew out of its dive. The gate is exactly what replaces that: once shallower than 30 degrees
+nose-down it overrides with `-1.0`, a push. `local\usn04_gate1.log` shows the override firing at
+tick 1794 and the dive angle holding instead of climbing out. So the answer to "body frame, or is
+the lead far larger than the substituted 70.0" is **neither**: no constant needed changing, and none
+was changed.
+
+## 8. Attribution of the commits in this stream
+
+`9daf9dad5` (packet `cc8_dive_geometry`) staged `src/game_hosts_units.cpp` whole and so contains,
+besides its own two hunks, the host-side half of this packet's gate binding near line 4897 - which
+references `planar_distance_slot_5c`, a member added in `d0955a4cb`. That commit therefore does not
+build on its own; **`d0955a4cb` is the first commit at which the gate binding is complete and the
+branch builds.** `local\usn04_geo3.log` measures the bearing fix ONLY: its author verified at tick
+1806 that the gate was not in the binary it ran. The history is left as it is.
+
+The x87 walk and the `009C5AF1` argument order were each established twice, by two scripts written
+independently (`local\x87_walk.py` and `local\x87trace.py`), which is why both are stated here
+without hedging.
