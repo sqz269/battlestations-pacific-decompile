@@ -215,9 +215,29 @@ head into block+38h and enables its scene node — the aircraft appears on the d
 refuses readiness for as long as it is held. **That is the brake**, and it is why the native does
 not launch on every check while this process does.
 
-For whoever implements it: the seam is already in place. `create_air_ops_squadron_006c5050` is
-where a created squadron would push itself onto its home deck, and the 24-squadron ceiling that
-stands in for the brake comes out at the same time.
+### The block has two queues, and they mean different things
+
+`006CC7B0` turned out to be the same push onto a different list, block+74h, and `007F1C00` chooses
+between the two on `*(00E188A8 + 1FE4h)`. `006C58A0`, sub-update 1 of `006CDC70` and the only one
+that runs **before** the game-state gate, is what drains that second list: for each node it hands
+the payload to `006C56D0`, the arrival that puts a squadron straight into a slot and ends at state
+3, then unregisters the observer pair and unlinks the node.
+
+So the two queues are two ways onto a deck:
+
+| queue | pushed by | drained by | what happens to the squadron |
+| --- | --- | --- | --- |
+| block+74h, count block+78h | 006CC7B0 | 006C58A0, before the gate | goes **straight into a slot** at state 3, no spotting |
+| block+C0h, head block+D8h, count block+DCh | 006CC760 | 006C6540, behind the gate | is **spotted on deck** one at a time into block+38h with its scene node enabled, and readiness is refused while it is held |
+
+`*(00E188A8 + 1FE4h)` is the same game-state word `006CDC70` gates its sub-updates on against 2, so
+the split reads as "a mission is running, bring the aircraft up on deck" against "assign it to a
+slot without ceremony", which is what a deck built at scene load needs.
+
+For whoever implements the brake: the seam is already in place. `create_air_ops_squadron_006c5050`
+is where a created squadron would push itself onto its home deck, and the 24-squadron ceiling that
+stands in for the brake comes out at the same time. Note which queue that is — a squadron created
+mid-mission takes the spotting one.
 
 ## 6. 006CDC70's nine sub-updates, and which of them this packet reconstructs
 
@@ -227,7 +247,7 @@ BSP_AirField_TickAdvance` for an airfield. It runs, in order:
 
 | callee | what it is | reconstructed here |
 | --- | --- | --- |
-| 006C58A0 | unread | no |
+| 006C58A0 | drains the **other** queue, block+74h with its count at block+78h: each node's payload goes to 006C56D0, which puts the squadron straight into a slot at state 3. The only sub-update that runs before the game-state gate | no |
 | 006C0DA0 | the slot walk: every slot of block+4Ch by index, calling 006C0510, routing 006BD520's message for each slot that returned true | **yes** |
 | 006C77E0 | a compaction of the 14h-stride list at block+A8h | no |
 | 006C64B0 | the state-2 wait described in section 1 | no |
