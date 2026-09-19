@@ -1584,7 +1584,16 @@ struct GameUnitsHost::Impl {
         in.entry.control_flag_369 = false;
         in.entry.global_e17bf2 = false;
         in.entry.in_range_latch_4c8 = slot.db_in_range_d0;
-        in.unit_lacks_follow_target = true;
+        // FED, packet cc8_follow_enter, replacing a hardcoded `true`. The field
+        // name follows the ledger's misreading; 007B8AD0 is the flight-leader
+        // test (see unit_is_flight_leader_007b8ad0). 009C8419-009C845E and
+        // 009C873E-009C8783 are the two `!engaged` edges and both make the same
+        // choice the constructor 009C7777 made: AL != 0 -> +4F0h moveto,
+        // AL == 0 -> +52Ch follow. This is what lets the host enter follow at
+        // all; with the hardcode every aircraft took moveto and the follow tick
+        // never ran.
+        in.unit_lacks_follow_target =
+            unit_is_flight_leader_007b8ad0(slot.process_index);
         {
             bsp::DiveBombBreakOffInputs b;
             b.base_0099c230 = true;
@@ -2158,6 +2167,57 @@ struct GameUnitsHost::Impl {
     // enters BotStateFollow.  See docs/HANDOFF_PLANE_FOLLOW_REGIMES.md.
     static constexpr bool kPlaneFormationPlacementEnabled = true;
     static constexpr bool kPlaneFollowLawEnabled = true;
+    // 007B8AD0, four instructions at 007b8ad0-007b8adb, bytes
+    // `33 c0 39 81 d8 09 00 00 0f 94 c0 c3`:
+    //   XOR EAX,EAX / CMP [ECX+9D8h],EAX / SETE AL / RET
+    // `__fastcall(ECX = unit) -> bool`, i.e. `return unit->+9D8h == 0`.
+    //
+    // CORRECTED, packet cc8_follow_enter. The ledger name
+    // `BSP_Unit_LacksFollowTarget` and docs/BOT_TASK_STATES.md read `+9D8h` as
+    // a follow-target pointer, with `contract: unread` on the writer. It is not
+    // a pointer. Every writer stores an INDEX - a census of both store forms
+    // (`89 ?? d8 09 00 00` -> seven sites, `c7 ?? d8 09 00 00` -> two, and
+    // those two are in FUN_00A414D0/FUN_00A415B0, far outside unit code):
+    //   007CFE72  BSP_PlaneUnitInstance_Construct stamps -1; 007CFD69 is
+    //             `OR EDI,0FFFFFFFFh` and EDI is written nowhere between that
+    //             and the store (whole-listing filter, and EDI is non-volatile
+    //             across the intervening calls)
+    //   007F4B43  the spawn attach stamps squadron+3CCh, the count before the
+    //             append; 007CDF7C and 007ED220 are two further append helpers
+    //             carrying the same +9D4h=squadron / +9D8h=index pair
+    //   007ED292  BSP_PlaneSquadron_AssignFormationIndices rewrites it to the
+    //             live walk index, and 007F4BFA runs that in the spawn tail, so
+    //             it equals the array position from the first assignment on
+    // 007ED610 BSP_PlaneSquadron_PromoteFlightLeader rotates the promoted
+    // member to the FRONT of +3D0h and only then re-indexes, which is what
+    // makes slot 0 mean "leader". So the predicate asks "am I my squadron's
+    // flight leader": the leader takes moveto (009C777E -> +4F0h,
+    // 009D30BE -> +544h) and every wing member takes follow (+52Ch, +580h).
+    //
+    // SUBSTITUTION, labelled: a unit with no squadron record answers TRUE, the
+    // leader answer, which is this host's previous hardcode. The image's own
+    // no-squadron state is the constructor's -1, which is NOT slot 0 and would
+    // take follow - but "this host's registry has no record" is not evidence of
+    // "the image would have left -1 here". The registry holds the planes spawned
+    // through PlaneSquadronGen/007F4580 only, and USN04 registers one squadron
+    // of three; every other aircraft in the mission reaches a task by a route
+    // this host does not model as a squadron, so answering false for them would
+    // put aircraft whose membership is simply unknown into a follow state that
+    // 009BFD70 then declines to produce a station for - commanded nothing, on no
+    // evidence. Keeping the leader answer confines this packet's change to the
+    // aircraft whose slot the host actually knows, which is what makes the
+    // before/after separable.
+    bool unit_is_flight_leader_007b8ad0(std::size_t process_index) const {
+        const bsp::PlaneSquadronHostRecord* const sqn =
+            bsp::plane_squadron_registry().find_by_member_unit(process_index);
+        if (sqn == nullptr) return true;
+        for (const std::size_t member : sqn->member_units) {
+            if (member == bsp::kPlaneSquadronNoUnit) continue;
+            return member == process_index;   // +3D0h[0], the flight leader
+        }
+        return true;   // a record with no live member: the same unknown case
+    }
+
     bool place_wing_member_on_station_007f23a0(
         GameUnitSlot& unit, bool once,
         bsp::PlaneFormationStation* station_out = nullptr,
@@ -4922,9 +4982,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             record("BotStateMoveTo::refresh_ranges", "009bde80");
                         }
                         bool unit_has_no_follow_target(const void*) override {
-                            // 007B8AD0: unit->+9D8h == 0. This host has no
-                            // follow target, so the answer is always yes.
-                            return true;
+                            // 007B8AD0: unit->+9D8h == 0. FED, packet
+                            // cc8_follow_enter: +9D8h is the squadron array
+                            // slot, so this is the flight-leader test.
+                            return owner_.unit_is_flight_leader_007b8ad0(
+                                slot_.process_index);
                         }
                         bool should_break_off(void*) override {
                             // 009D4C10, now READ and bound. This override is the
@@ -5085,7 +5147,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 slot_.command_target_plus_one != 0;
                             in.engaged.pilot_control_mode_370 =
                                 static_cast<int>(slot_.torpedo_attack_mode_370);
-                            in.engaged.unit_has_no_follow_target = true;
+                            // FED, packet cc8_follow_enter: 009D323A inside
+                            // 009D3210, the leader-only gate on the self-engage
+                            // range test (009D3241 JZ -> not engaged).
+                            in.engaged.unit_has_no_follow_target =
+                                owner_.unit_is_flight_leader_007b8ad0(
+                                    slot_.process_index);
                             in.engaged.engage_range_484 = slot_.torpedo_engage_range_8c;
                             // 009D324F FMUL double [00D05AC8] = 2.2,
                             // read this packet. The previous binding
@@ -5101,7 +5168,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             in.entry.control_flag_369 = false;
                             in.entry.global_e17bf2 = false;
                             in.entry.aim_flag_529 = slot_.torpedo_aim_flag_529;
-                            in.unit_has_no_follow_target = true;
+                            // FED, packet cc8_follow_enter: 009D4082 and
+                            // 009D41E4, the two `!engaged` edges of 009D4030,
+                            // each `LEA EDI,[ESI+544h]` / JNZ over
+                            // `LEA EDI,[ESI+580h]` - moveto for the flight
+                            // leader, follow for every wing member.
+                            in.unit_has_no_follow_target =
+                                owner_.unit_is_flight_leader_007b8ad0(
+                                    slot_.process_index);
                             // 009D4C10, slot 1Ch of the TASK vtable 00D213C8,
                             // read whole from the listing 009D4C10-009D4C8E and
                             // re-derived jump sense by jump sense from the branch
@@ -5531,7 +5605,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 009BDE80 at 009C8825. contract: unread body.
                         }
                         bool unit_has_no_follow_target(const void*) override {
-                            return true;  // 007B8AD0 at 009C841F
+                            // 007B8AD0 at 009C841F. FED, packet cc8_follow_enter.
+                            return owner_.unit_is_flight_leader_007b8ad0(
+                                slot_.process_index);
                         }
                         bool should_break_off(void* task) override {
                             // 009C8A90, reconstructed. The class extra is
@@ -5745,9 +5821,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (!unit_.dive_bomb_task_installed) {
                             unit_.dive_bomb_task_installed = true;
                             // 009C7710 leaves +310h on the moveto/follow pair
-                            // BSP_Unit_LacksFollowTarget picks; this host has
-                            // no follow target, so moveto.
-                            unit_.dive_bomb_state = bsp::DiveBombState::kMoveTo;
+                            // 007B8AD0 picks: 009C7777 CALL / 009C777C TEST AL,AL
+                            // / 009C777E LEA ECX,[ESI+4F0h] / 009C7784 JNZ over
+                            // 009C7786 LEA ECX,[ESI+52Ch]. FED, packet
+                            // cc8_follow_enter: the predicate is the flight-leader
+                            // test, so the leader constructs into moveto and every
+                            // wing member constructs into FOLLOW.
+                            unit_.dive_bomb_state =
+                                owner_.unit_is_flight_leader_007b8ad0(
+                                    unit_.process_index)
+                                    ? bsp::DiveBombState::kMoveTo
+                                    : bsp::DiveBombState::kFollow;
                             // 009C3EA0, the approach seed. approach+ACh is
                             // tuning+4CCh Pilot/DiveBomb/BeginAltRange/1 and
                             // approach+B0h is tuning+4D0h - tuning+4CCh.
@@ -6331,9 +6415,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // prepare states do, which is faithful in that they reach
                     // this same body through 009C7278.
                     //
-                    // Unreachable in this host today: 009C777E and 009C8419 both
-                    // choose moveto when 007B8AD0 says the unit lacks a follow
-                    // target, and unit_has_no_follow_target() is hardcoded true.
+                    // REACHABLE since packet cc8_follow_enter. 009C777E and
+                    // 009C8419 choose moveto when 007B8AD0 is true, and that
+                    // predicate is `unit+9D8h == 0`, the squadron array slot -
+                    // the flight-leader test, not a follow target. It is now fed
+                    // from the squadron registry, so every wing member of a
+                    // multi-plane squadron constructs into follow and stays
+                    // there until its squadron's attack mode reaches 2.
                     void run_dive_bomb_follow_tick_009c1fd0() {
                         ++unit_.db_follow_tick_ticks;
                         unit_.plan_mode_26c = 2;   // 009C1FE2
@@ -7262,7 +7350,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.torpedo_task_installed = true;
                             // 009D3050 leaves +310h on the moveto/follow pair
                             // 009D2DA0 registered; 009D24E0 leaves +98h at -1.
-                            unit_.torpedo_state = bsp::TorpedoState::kMoveTo;
+                            // FED, packet cc8_follow_enter. 009D30B7 CALL 007B8AD0
+                            // / 009D30BC TEST AL,AL / 009D30BE LEA ECX,[ESI+544h]
+                            // / 009D30C4 JNZ over 009D30C6 LEA ECX,[ESI+580h] -
+                            // the same flight-leader choice the dive bomber makes.
+                            unit_.torpedo_state =
+                                owner_.unit_is_flight_leader_007b8ad0(
+                                    unit_.process_index)
+                                    ? bsp::TorpedoState::kMoveTo
+                                    : bsp::TorpedoState::kFollow;
                             unit_.torpedo_drop_timer = -1.0f;
                             // 009D4A70, the task's +54h cruise profile, is the
                             // one producer of the engage distance the engaged
@@ -7610,7 +7706,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.command_target_plus_one != 0;
                             arm.engaged.pilot_control_mode_370 =
                                 static_cast<int>(unit_.torpedo_attack_mode_370);
-                            arm.engaged.unit_has_no_follow_target = true;
+                            // FED, packet cc8_follow_enter. 009D3210
+                            // BSP_BotTaskTorpedo_IsEngaged calls 007B8AD0 at
+                            // 009D323A and 009D3241 JZ returns 0 when it is
+                            // false: a wing member CANNOT self-engage. Only the
+                            // flight leader reaches the range test
+                            // 009D3243-009D3259 (`[484h] * 2.2 > [488h]`,
+                            // 00D05AC8 = 2.2). A member becomes engaged only
+                            // when the squadron's mode 009D322B reaches 2.
+                            arm.engaged.unit_has_no_follow_target =
+                                owner_.unit_is_flight_leader_007b8ad0(
+                                    unit_.process_index);
                             arm.engaged.engage_range_484 =
                                 unit_.torpedo_engage_range_8c;
                             arm.engaged.engage_range_scale =

@@ -212,9 +212,24 @@ Command-block offsets written by the states read here (all relative to `task+4h`
 
 ## `unit+9D8h`
 
-`007B8AD0` is three instructions: `return unit->+9D8h == 0`. Ghidra already carries the name
-`BSP_Unit_HasFollowTarget` on it, which is **inverted**: it returns true when the field is null.
-The two consumers agree on the reading that `+9D8h` is the unit's follow target:
+> **WITHDRAWN 2026-09-19, packet `cc8_follow_enter`.** This section's reading — that `+9D8h` is the
+> unit's follow target — is wrong, and it was drawn from the reader alone; the `contract: unread`
+> at the end of the section is where it went wrong. `+9D8h` is the member's **slot in its
+> squadron's `+3D0h` array**, so `007B8AD0` is the **flight-leader test**: true only at slot 0.
+> Every writer stores an index — `007CFE72` stamps -1 in the plane constructor, `007F4B43` /
+> `007CDF7C` / `007ED220` stamp the array position at the three append helpers, and `007ED292`
+> rewrites it to the live walk index — and `007ED610 BSP_PlaneSquadron_PromoteFlightLeader` rotates
+> the promoted member to the FRONT before re-indexing, which is what makes slot 0 mean leader. The
+> consumers below are still correct about the SHAPE (moveto when true, follow when false); they are
+> wrong about what the field is. The decisive consumer witness is `009D3210`
+> `BSP_BotTaskTorpedo_IsEngaged`: `009D323A` calls this predicate and `009D3241 JZ` returns "not
+> engaged", so a wing member cannot self-engage and only the flight leader reaches the range test.
+> The Ghidra name is now `BSP_Unit_IsSquadronFlightLeader`. See `docs/PLANE_FOLLOW_ENTER.md`.
+
+`007B8AD0` is ~~three~~ **four** instructions (`007b8ad0-007b8adb`, `33 c0 39 81 d8 09 00 00 0f 94
+c0 c3`): `XOR EAX,EAX / CMP [ECX+9D8h],EAX / SETE AL / RET`, i.e. `return unit->+9D8h == 0`. Ghidra
+carried the name `BSP_Unit_HasFollowTarget` on it, which is **inverted**: it returns true when the
+field is null. The two consumers agree on the reading that `+9D8h` is the unit's follow target:
 
 * every derived task constructor picks `moveto` when it returns true and `follow` when it returns
   false (`009A52A7`: `TEST AL,AL` / `JNZ` over the `LEA ECX,[ESI+0x544]`);
