@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "009c6180",
+    "end_address": "009c61af"
+   },
+   "result": {
+    "success": true,
+    "start_address": "009c6180",
+    "end_address": "009c61ae",
+    "bytes_disassembled": 47,
+    "message": "Successfully disassembled 47 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "009c6180",
+    "disassemble_first": false,
+    "name": "BSP_BotStateDiveBombFlyAbove_Construct"
+   },
+   "result": {
+    "success": true,
+    "address": "009c6180",
+    "function_name": "BSP_BotStateDiveBombFlyAbove_Construct",
+    "entry_point": "009c6180",
+    "body_size": 47,
+    "message": "Function created successfully at 009c6180",
+    "warnings": [
+     "Function name 'BSP_BotStateDiveBombFlyAbove_Construct' \u2014 main part 'BotStateDiveBombFlyAbove_Construct' is not PascalCase. Expected: BotstatedivebombflyaboveConstruct",
+     "Function name 'BSP_BotStateDiveBombFlyAbove_Construct' \u2014 main part 'BotStateDiveBombFlyAbove_Construct' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_BotStateDiveBombFlyAbove_Construct' does not start with a recognized verb. First word 'Bot' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "009c6180",
+   "end": "009c61af",
+   "name": "BSP_BotStateDiveBombFlyAbove_Construct",
+   "after": "Function: BSP_BotStateDiveBombFlyAbove_Construct at 009c6180\nSignature: undefined BSP_BotStateDiveBombFlyAbove_Construct(void)\nEntry: 009c6180\nBody: 009c6180 - 009c61ae"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

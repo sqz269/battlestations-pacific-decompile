@@ -197,6 +197,10 @@ inline constexpr double kAbortRangeBias = 150.0;                 // 00CE3DD8, qw
 // bearing tolerance and the 009C5715 cosine is the projection of the throw onto
 // the line of sight. The name is kept because the ledger and the doc carry it.
 inline constexpr float kGlideDiveAngleLimit = 0.5235987901687622f;  // 00CEC724, 30 deg
+// 009C57CA COMISS, the aimglide PULL-OUT's bearing arm: nearly three times the
+// release gate above, and it is a latch rather than a per-tick gate. Packet
+// cc8_dive_flyover.
+inline constexpr float kGlidePullOutBearing = 1.5f;                 // 00CE380C, 85.9 deg
 // 009C53DD `MOV EBP,2` / 009C53E2 `LEA EBX,[EBP-1]`, both on the straight-line
 // path into 009C53E5's branch, so both arms carry EBP=2 and EBX=1 to the salvo:
 // 009C5762 caps the loop at two rounds and 009C5782 steps it by one. This is a
@@ -1170,6 +1174,31 @@ struct DiveBombFlyAboveBank {
 };
 DiveBombFlyAboveBank dive_bomb_flyabove_bank_009c6857(
     const DiveBombFlyAboveBankInputs& in) noexcept;
+
+// ---------------------------------------------------------------------------
+// 009C57C4-009C57FF, the aimglide's pull-out latch, state+18h = whole-object
+// +76Ch. Packet cc8_dive_flyover. The tick has exactly one store to that byte
+// (009C57FF `MOV [ESI+18h],BL` with BL = 1, from 009C53E2's LEA off the literal
+// 2 at 009C53DD) and the enter clears it (009C4F0C), so it is a per-state latch
+// like flyabove+1Ch. 009C86B2/009C86BF read it and send the state to goaway,
+// and 009C86F9 then returns an aircraft with bomb ordnance to FLYABOVE - a
+// second attack run.
+//
+// Two arms reach the store:
+//   A  009C57CA/009C57D1  |bearing error| > 1.5 (00CE380C)   -> latch
+//   B  009C57DB  0.6 (00CE3D30) >  [ESP+24h]
+//      009C57E8  unit+C64h < 0 (the XORPS zero of 009C57AF)
+//      009C57F9  [ESP+28h] > [ESP+6Ch]                       -> latch
+//
+// ARM A ONLY is bound here, and deliberately. [ESP+24h], [ESP+28h] and
+// [ESP+6Ch] are frame slots this packet has not walked - the tick reuses its
+// own argument slot [ESP+6Ch] as scratch from 009C5295 on - and modelling arm B
+// from its two readable conditions alone would fire the latch MORE often than
+// the image. Under-approximating is the safe direction: this latch fires
+// strictly less often than the image's. `bearing_error_abs` is the same
+// [ESP+18h] that DiveBombAimGlideReleaseInputs::bearing_error_18 carries.
+// coverage: partial, arm B (009C57D3-009C57FD) unbound.
+bool dive_bomb_aimglide_pull_out_009c57ff(float bearing_error_abs) noexcept;
 
 // 009C6A37-009C6A7F, the symmetric dead band on the signed bearing error E,
 // half-width T. 009C6A46's JBE skips the whole arm when T <= 0, and there the

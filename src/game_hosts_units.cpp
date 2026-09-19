@@ -506,6 +506,14 @@ struct GameUnitSlot {
     // the bank arm around it. The latch is per-state - 009C629E clears it on the
     // fly-over's enter - and once set it both skips the bank evaluation
     // (009C6865) and suppresses the heading write (009C6DDA).
+    // Packet cc8_dive_flyover: the aimglide's pull-out latch, state+18h =
+    // whole-object +76Ch. 009C57FF sets it, 009C4F0C clears it on the enter,
+    // and 009C86B2/009C86BF read it to send the state to goaway - which is the
+    // only way an aircraft that aborted its dive gets a second attack run.
+    bool db_aimglide_pull_out_76c{false};
+    float db_glide_bearing_abs_18{0.0f};  // [ESP+18h], the arm's input
+    float db_glide_bearing_max{0.0f};     // the census arm A needs either way
+    int db_aimglide_pull_outs{0};
     bool db_flyabove_bank_latch_1c{false};
     float db_flyabove_dead_band_t{0.0f};
     float db_flyabove_along_track{0.0f};
@@ -1673,7 +1681,12 @@ struct GameUnitsHost::Impl {
         in.flyabove_turn_side_798 = 0;
         in.aimdive_alive_74d = slot.db_aim_alive_19;
         in.aimdive_pull_out_74c = slot.db_aim_pull_out_18;
-        in.aimglide_pull_out_76c = false;
+        // 009C86B2/009C86BF. Packet cc8_dive_flyover, the ONE line the
+        // integrator granted in this function under the hunk arbitration of
+        // 2026-09-19: the aimglide state's +76Ch is now kept (009C57FF sets it,
+        // 009C4F0C clears it) instead of being hardcoded false, which made the
+        // aimglide terminal for any aircraft still holding a bomb.
+        in.aimglide_pull_out_76c = slot.db_aimglide_pull_out_76c;
         // 009C7850: !HasGeneralBombOrdnance.
         in.aimglide_out_of_bombs = !slot.db_has_bomb_d1;
         // 009C7EA0, reconstructed.
@@ -1888,6 +1901,9 @@ struct GameUnitsHost::Impl {
                 in.bearing_error_18 < slot.db_glide_bearing_min) {
                 slot.db_glide_bearing_min = in.bearing_error_18;
             }
+            // Packet cc8_dive_flyover: the same [ESP+18h] the pull-out arm at
+            // 009C57CA reads, kept so the tick's tail can test it.
+            slot.db_glide_bearing_abs_18 = in.bearing_error_18;
         }
         // Both RECOVERED this packet; see include/bsp/dive_bomb_task.hpp. The
         // height is measured against the aim point, as 009C5281 builds it, and
@@ -6000,6 +6016,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // glide's 009C5689 gate first asks.
                                 unit_.db_aim_rearm_1c = 0.0f;
                                 unit_.db_aim_pull_out_18 = false;
+                                // Packet cc8_dive_flyover. db_aim_pull_out_18
+                                // above is the AIMDIVE's +18h, whole-object
+                                // +74Ch; the aimglide's own +18h is +76Ch and
+                                // the two are different objects, so the glide
+                                // latch gets its own field. 009C4F0C clears it.
+                                unit_.db_aimglide_pull_out_76c = false;
                                 const int rounds =
                                     owner_.dive_bomb_rounds_remaining(unit_);
                                 const float seed =
@@ -6448,6 +6470,22 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // altitude and the direct-yaw sibling arm are read in
                     // include/bsp/dive_bomb_task.hpp and left unbound.
                     void run_dive_bomb_aimglide_tick_009c5180() {
+                        // 009C57C4-009C57FF, the tick's TAIL: the pull-out
+                        // latch. Packet cc8_dive_flyover, arm A only; the
+                        // header says why arm B is not modelled. Sampled from
+                        // the same [ESP+18h] the release gate reads, which the
+                        // approach feed has already written this frame.
+                        {
+                            const float e = unit_.db_glide_bearing_abs_18;
+                            if (e > unit_.db_glide_bearing_max) {
+                                unit_.db_glide_bearing_max = e;
+                            }
+                            if (!unit_.db_aimglide_pull_out_76c &&
+                                bsp::dive_bomb_aimglide_pull_out_009c57ff(e)) {
+                                unit_.db_aimglide_pull_out_76c = true;
+                                ++unit_.db_aimglide_pull_outs;
+                            }
+                        }
                         bsp::DiveBombAimGlideCommandInputs in;
                         // SUBSTITUTION, labelled: the bearing to the aim point
                         // in place of the frame slot 009C5435 reads.
@@ -9798,6 +9836,7 @@ void GameUnitsHost::report() {
                         "lateral=%d lead_hi=%d lead_lo=%d] passed=%d | "
                         "releases=%d rounds=%d | lead last=%.2f m min=%.2f m "
                         "(window -%.1f..-%.1f m) | bearing err min=%.4f rad "
+                        "max=%.4f rad pull_outs=%d "
                         "(gate %.4f) | throw=%.1f m range=%.1f m travel=%.2f",
                         slot->row.name.c_str(), slot->db_glide_calls,
                         slot->db_glide_gate_reached[0], slot->db_glide_gate_reached[1],
@@ -9810,6 +9849,8 @@ void GameUnitsHost::report() {
                         4.0 * static_cast<double>(slot->db_glide_travel_20) + 5.0,
                         5.0,
                         static_cast<double>(slot->db_glide_bearing_min),
+                        static_cast<double>(slot->db_glide_bearing_max),
+                        slot->db_aimglide_pull_outs,
                         static_cast<double>(
                             bsp::dive_bomb_constant::kGlideDiveAngleLimit),
                         static_cast<double>(slot->db_impact_throw_14),
