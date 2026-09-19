@@ -17,6 +17,7 @@
 #include "bsp/attack_target_classify.hpp"
 #include "bsp/ordnance_kinds.hpp"
 #include "bsp/pilot_order_bindings.hpp"
+#include "bsp/plane_squadron_host.hpp"
 #include "bsp/mission_lua_host.hpp"
 
 extern "C" {
@@ -325,19 +326,65 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
     record.world[13] = owner_row->position[1] + kAirOpsSquadronLaunchAltitude;
     record.world[14] = owner_row->position[2];
 
+    // 006C5050 fills `WingCount` from slot+8h and hands the bag to 004F0AD0,
+    // whose slot-39 attach 007F4580 then makes that many planes. This is the
+    // second of the two creation seams and it runs the same reconstructed loop
+    // as the authored scene row, so a launched squadron has the same shape as an
+    // authored one: the squadron record IS wing 0 (the fused flight leader, the
+    // substitution docs/PLANE_SQUADRON_HOST.md labels) and wings 1..n-1 are
+    // created beside it in the same batch.
+    bsp::PlaneSquadronSpawnRequest request;
+    request.squadron_name = record.name;
+    request.type_class_id = static_cast<std::int32_t>(vehicle_class);
+    request.wing_count_present = wing_count > 0;
+    request.wing_count_raw = wing_count;
+    const bsp::PlaneSquadronSpawnPlan plan =
+        bsp::plane_squadron_plan_members_007f4580(request);
+
     const std::size_t before = units_.count();
-    std::vector<GameSceneEntityRecord> one;
-    one.push_back(record);
-    units_.create_units(one);
+    std::vector<GameSceneEntityRecord> batch;
+    batch.push_back(record);
+    for (std::size_t wing = 1; wing < plan.members.size(); ++wing) {
+        GameSceneEntityRecord wing_record = record;
+        wing_record.name = plan.members[wing].name;
+        // 007F4811 builds the plane through the vehicle class's vtable +28h,
+        // which for this `Type` is 007CFD20 BSP_PlaneUnitInstance_Construct: a
+        // plane, not a second PlaneSquadronGen.
+        wing_record.class_name = "PlaneUnitInstance";
+        wing_record.class_id = -1;
+        batch.push_back(std::move(wing_record));
+    }
+    units_.create_units(batch);
     if (units_.count() <= before) {
         log_.notef("air ops squadron: create_units made no instance for class %u, so "
             "slot+28h stays zero", vehicle_class);
         return 0u;
     }
+    {
+        bsp::PlaneSquadronHostRecord& squadron =
+            bsp::plane_squadron_registry().add(record.name);
+        squadron.wing_count = plan.wing_count;       // +3C8h
+        squadron.behaviour = plan.behaviour;         // +364h
+        squadron.type_class_id = static_cast<std::int32_t>(vehicle_class);
+        squadron.party = record.party;
+        squadron.from_air_ops_launch = true;
+        squadron.squadron_unit = before;
+        squadron.member_names.clear();
+        squadron.member_units.clear();
+        squadron.member_spawn_index.clear();
+        for (std::size_t wing = 0; wing < plan.members.size(); ++wing) {
+            const std::size_t unit = before + wing;
+            if (unit >= units_.count()) break;
+            squadron.member_names.push_back(wing == 0 ? record.name
+                                                      : plan.members[wing].name);
+            squadron.member_units.push_back(unit);   // +3D0h[wing]
+            squadron.member_spawn_index.push_back(plan.members[wing].spawn_index);
+        }
+    }
     AirOpsSquadron made;
-    made.unit_index = units_.count() - 1;
+    made.unit_index = before;
     made.entity_id = static_cast<std::uint32_t>(made.unit_index + 1);
-    made.wing_count = wing_count > 0 ? wing_count : 1;
+    made.wing_count = plan.plane_count > 0 ? plan.plane_count : 1;
     made.name = record.name;
     squadrons_.push_back(made);
     created_name = made.name;
@@ -366,6 +413,11 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
 // and not of result. docs/AIROPS_LAUNCH_TICK.md.
 void GameScriptOrdersHost::run_air_ops_update_006cdc70(float step) {
     if (!(step > 0.0f)) return;
+    // The squadron table's +3D0h array holds names until create_units has made
+    // the units; this is the per-frame pass that keeps it current for a mission
+    // that never calls PilotSetTarget. It returns at once unless the unit count
+    // has moved.
+    resolve_plane_squadron_members();
     // A squadron whose unit is gone is what 007F1B70 hands 006C65B0. This process
     // has no destruction path that calls it, so the reader's own zero is the
     // signal and the release runs here, once, for each slot still holding it.
@@ -418,13 +470,25 @@ std::int32_t GameScriptOrdersHost::air_ops_squadron_plane_count(
     std::uint32_t squadron) const noexcept {
     for (const AirOpsSquadron& made : squadrons_) {
         if (made.entity_id != squadron || squadron == 0u) continue;
-        // entity+3CCh is the squadron's live plane count. The stand-in reports the
-        // authored wing while the unit it was made for is still active and zero
-        // once it is not, which is what makes the tick's own arithmetic and
-        // 006C65B0's release agree.
-        const GameUnitRow* row = units_.unit_row(made.unit_index);
-        if (row == nullptr || !row->active) return 0;
-        return made.wing_count;
+        // entity+3CCh is the squadron's live plane count, and since packet
+        // cc8_plane_squadron_host the squadron has real members: the count is the
+        // number of entries in its +3D0h array whose unit is still active, which
+        // is what 007F3970's compaction leaves behind. The authored wing is no
+        // longer reported in its place.
+        const bsp::PlaneSquadronHostRecord* record =
+            bsp::plane_squadron_registry().find(made.name);
+        if (record == nullptr) {
+            const GameUnitRow* row = units_.unit_row(made.unit_index);
+            if (row == nullptr || !row->active) return 0;
+            return made.wing_count;
+        }
+        std::int32_t live = 0;
+        for (std::size_t member : record->member_units) {
+            if (member == bsp::kPlaneSquadronNoUnit) continue;
+            const GameUnitRow* row = units_.unit_row(member);
+            if (row != nullptr && row->active) ++live;
+        }
+        return live;
     }
     return 0;
 }
@@ -645,7 +709,45 @@ private:
     unsigned refusals_{0};
 };
 
+void GameScriptOrdersHost::resolve_plane_squadron_members() {
+    const std::size_t count = units_.count();
+    if (count == squadron_resolved_units_ && count != 0) return;
+    squadron_resolved_units_ = count;
+    std::size_t resolved = 0;
+    std::size_t missing = 0;
+    for (bsp::PlaneSquadronHostRecord& record : bsp::plane_squadron_registry().records()) {
+        record.member_units.assign(record.member_names.size(), bsp::kPlaneSquadronNoUnit);
+        for (std::size_t slot = 0; slot < record.member_names.size(); ++slot) {
+            for (std::size_t unit = 0; unit < count; ++unit) {
+                const GameUnitRow* const unit_row = units_.unit_row(unit);
+                if (unit_row == nullptr || unit_row->name != record.member_names[slot]) {
+                    continue;
+                }
+                record.member_units[slot] = unit;
+                break;
+            }
+            if (record.member_units[slot] == bsp::kPlaneSquadronNoUnit) {
+                ++missing;
+            } else {
+                ++resolved;
+            }
+        }
+        // 007EDA91 reads the leader from slot 0; the squadron entity itself is
+        // the fused wing 0, so the two are the same unit here.
+        if (record.squadron_unit == bsp::kPlaneSquadronNoUnit) {
+            record.squadron_unit = record.flight_leader();
+        }
+    }
+    if (resolved != 0 || missing != 0) {
+        log_.notef("plane squadron members: %zu of %zu wing record(s) resolved to units "
+            "over %zu squadron(s) (007F4B55's +3D0h array, by name)%s",
+            resolved, resolved + missing, bsp::plane_squadron_registry().size(),
+            missing != 0 ? " - a wing with no unit stays out of +3CCh" : "");
+    }
+}
+
 int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
+    resolve_plane_squadron_members();
     void* unit = argument_ptr_field(0);
     if (unit == nullptr) unit = entity_from_argument(0);
     row.unit_index = index_of(unit);
@@ -777,6 +879,59 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
         log_.notef("  PilotSetTarget task: 0099A170 -> %u (unit=%s command=%08lx "
             "target_token=%u refusals=%u)", task, row.unit.c_str(),
             static_cast<unsigned long>(chosen), target_token, bot_host.refusals());
+
+        // 007ECF80, the squadron's own vtable slot +128h: a squadron applies what
+        // it is given to every live member of +3D0h under +3CCh, in array order.
+        // docs/PLANE_SQUADRON_ENTITY.md section 4 established that shape for the
+        // skill-level setter, and the order path is the same shape applied to an
+        // order - a SUBSTITUTION for the unread order arms of the +164h
+        // dispatcher 007F0030, not a reconstruction of them. What makes it
+        // necessary rather than optional is 007EEF30: it walks +3D0h, and a
+        // squadron whose wingmen carry no task has nothing to issue a release
+        // order to.
+        //
+        // The ordered unit is the fused flight leader and already has its task
+        // from the block above, so the fan-out starts at slot 1.
+        bsp::PlaneSquadronHostRecord* squadron =
+            bsp::plane_squadron_registry().find_by_member_unit(row.unit_index);
+        std::size_t fanned = 0;
+        if (squadron != nullptr) {
+            // entity_issue_command writes the outcome onto the binding row, and
+            // the row belongs to the call the script made, which named the
+            // leader. Keep the leader's outcome and let the wingmen's show up in
+            // the summary counters and the fan-out line below.
+            const std::string leader_command = row.command;
+            const std::string leader_target = row.target;
+            const bool leader_issued = row.issued;
+            const bool leader_reached = row.reached_director;
+            const std::string leader_blocked = row.blocked;
+            for (std::size_t slot = 0; slot < squadron->member_units.size(); ++slot) {
+                const std::size_t member = squadron->member_units[slot];
+                if (member == bsp::kPlaneSquadronNoUnit) continue;
+                if (member == row.unit_index) continue;
+                void* const member_handle =
+                    reinterpret_cast<void*>(static_cast<std::uintptr_t>(member + 1u));
+                entity_issue_command(member_handle, chosen, target, 1);
+                ScriptOrderAttackCommandHost member_bots(units_, log_, chosen,
+                                                         target_token);
+                const std::uint32_t member_task = bsp::bot_install_command_task_0099a170(
+                    static_cast<std::uint32_t>(member + 1u), member_bots);
+                if (member_task != 0u) {
+                    units_.store_unit_attack_command_class(member, chosen);
+                    ++pilot_set_target_tasks_;
+                    ++fanned;
+                }
+            }
+            row.command = leader_command;
+            row.target = leader_target;
+            row.issued = leader_issued;
+            row.reached_director = leader_reached;
+            row.blocked = leader_blocked;
+            log_.notef("  PilotSetTarget fan-out 007ECF80: squadron=%s +3CCh=%d "
+                "-> %zu wingman task(s) beside the leader %s",
+                squadron->name.c_str(), squadron->live_count(), fanned,
+                row.unit.c_str());
+        }
     }
     log_.notef("  PilotSetTarget: unit=%s target_object_id=%u target_valid=%d "
         "pos=(%.1f %.1f %.1f) attack_type=%d prefer_ordnance=%d allow_guns=%d "

@@ -213,6 +213,15 @@ public:
     std::uint32_t create_unit_from_scene_record_0046db4b(
         const GameSceneEntityRecord& record);
 
+    // 007F4B55's array, filled in. The scene pass queues one entity record per
+    // wing and create_units turns them into units afterwards, so the squadron
+    // table's +3D0h holds names until something resolves them to unit indices.
+    // This does that, by name, and is idempotent: it re-runs only when the unit
+    // count has moved, which is what the air-ops launch seam does when it
+    // appends. Called from the order path rather than from create_units, because
+    // the mission frame owns that call site.
+    void resolve_plane_squadron_members();
+
     // The squadron's live plane count, entity+3CCh, for the tick 006C0510 and for
     // 006BD3F0. A squadron whose unit is gone reports zero.
     std::int32_t air_ops_squadron_plane_count(std::uint32_t squadron) const noexcept;
@@ -360,6 +369,8 @@ private:
         std::string name;
     };
     std::vector<AirOpsSquadron> squadrons_;
+    // The unit count the squadron table was last resolved against.
+    std::size_t squadron_resolved_units_{0};
     bool squadron_limit_logged_{false};
     unsigned long long air_ops_ticks_{0};
     unsigned long long air_ops_refills_{0};

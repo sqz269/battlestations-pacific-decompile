@@ -454,3 +454,177 @@ reconstruction, and this packet makes it real rather than substituted.
   parent or the child returned it.
 * **`DummyTargetVehicle`** is carried on this stream's list by the integrator; this packet did not
   investigate it and has nothing to add, so its provenance should be taken from whoever raised it.
+
+## Independent re-reading of `007F4580` mode 1 (packet `cc8_plane_squadron_host`)
+
+The handoff above was written from this document rather than from the listing, so the host packet
+re-read the sites it depends on. Every line below is from
+`python tools/bsp.py ghidra disasm 007f4580`, not from the decompiler. Section 4's table survives
+unchanged except for the one citation corrected below; what follows is the evidence for it.
+
+**The kind switch.** `007F45AC MOV EAX,[ESI+C0h]` / `007F45B2 MOV ECX,[EAX+4]`, then three
+`SUB ECX,1`: `007F45B8 JZ 007F471A` (kind 1), `007F45C1 JZ 007F46D1` (kind 2), `007F45CA JNZ
+007F4B7F` (anything but kind 3 leaves through the epilogue). So kind 3 is the fall-through at
+`007F45D0`, and a descriptor kind of 4 or above spawns nothing and touches no field.
+
+**The wing count.** `007F471A MOV EAX,[EAX+8]` is the bag. The four keys are literal pointers whose
+bytes are read here rather than taken from a name: `00CE4780` is `54 79 70 65 00` = `Type`,
+`00CF8840` is `WingCount`, `00CF100C` is the two bytes `7C 00` = a single `|`, `00CF8038` is
+`7C 2E 2D 00` = `|.-`.
+
+| Site | Instruction | Meaning |
+| --- | --- | --- |
+| `007F4732` | `MOV EDI,[EAX+0Ch]` | the class id out of the `Type` property |
+| `007F473A` | `MOV dword [ESP+1Ch],3` | **the default 3**, written before the lookup |
+| `007F4742` | `CALL 008F2260` | the `WingCount` lookup |
+| `007F4749` | `JZ 007F4772` | key absent: the 3 stands |
+| `007F4761` | `CMP EAX,1` | the authored value |
+| `007F4764` | `MOV dword [ESP+18h],1` | the floor, written before the test |
+| `007F476C` | `JL 007F4772` | below 1: the floor stands |
+| `007F476E` | `MOV [ESP+18h],EAX` | otherwise the authored value |
+| `007F4772` | `MOV EBX,[ESP+18h]` | the resolved count |
+| `007F4778` | `MOV [ESI+3C8h],EBX` | `+3C8h` |
+
+`[ESP+1Ch]` at `007F473A` and `[ESP+18h]` at `007F4772` are the same slot: the `PUSH 0CF8840h` at
+`007F4735` left ESP four lower for the duration of the store. `max(1, authored)` is confirmed, and
+so is the default of 3 against the descriptor own `" 1"`.
+
+**The loop bound is the stack slot, not EBX.** `007F47E6 TEST EBX,EBX` / `007F47F4 JLE 007F4B7F`
+skips the whole loop for a count at or below zero (unreachable after the floor above);
+`007F47EC MOV dword [ESP+14h],0` is the index. Inside the body `007F4815 MOV EBX,EAX` makes EBX the
+new plane, so the count is carried only by `[ESP+18h]`, which is what the back edge
+`007F4B6A CMP EAX,[ESP+18h]` / `007F4B79 JL 007F4800` compares against — signed, from the branch
+bytes. This is why `007F490B CMP [ESP+18h],EDI` (EDI = 1) is the naming test rather than a test on
+a register.
+
+**The per-wing allocation.** `007F4804` reloads the factory from `[ESP+1Ch]`, `007F4808 MOV EDX,[EAX]`
+takes its vtable, `007F480C MOV EAX,[EDX+28h]`, `007F480F PUSH 0`, `007F4811 CALL EAX`. The
+placement arms are `007F48AE..007F48BA` (a parent resolved: the 4x4 identity built on the stack from
+`00D7A24C` at `007F4820`) and `007F48BE..007F48D2` (no parent: `PUSH 0`, `[ESI+30h]`,
+`LEA ECX,[ESI+74h]`). `007F48D4 PUSH 0Ch` / `007F48D6 CALL 00BF681B`, then
+`007F48F4..007F48FD 00922DE0([ESI+C0h])` and `007F491A MOV [EBX+C0h],EAX`.
+
+**The naming.** `007F4906 MOV EDI,1` / `007F490B CMP [ESP+18h],EDI` / `007F4920 JNZ 007F49EF`. The
+one-wing arm is `007F4926 PUSH 00CF100C`. The multi-wing arm is `007F49EF PUSH 00CF8038`,
+`007F49FD MOV EDX,[ESP+14h]` / `007F4A01 ADD EDX,1` (the index plus one) through
+`007F4A13 CALL 00742A70`, and two concatenations at `007F4A32` (the squadron name at `[ESI+154h]`
+plus the separator) and `007F4A47` (plus the number). So a member of a one-wing squadron is
+`<squadron>|` and of a multi-wing squadron `<squadron>|.-<i+1>`; both are confirmed from the
+listing and from the literal bytes.
+
+**The tail, verbatim.**
+
+```
+007f4b3d  MOV EAX,[ESI+3cch]
+007f4b43  MOV [EBX+9d8h],EAX          ; plane+9D8h = the pre-append count
+007f4b49  MOV [EBX+9d4h],ESI          ; plane+9D4h = the squadron
+007f4b4f  MOV EAX,[ESI+3cch]
+007f4b55  MOV [ESI+EAX*4+3d0h],EBX    ; members[count] = plane, no bound test
+007f4b5c  MOV EAX,[ESP+14h]
+007f4b60  ADD dword [ESI+3cch],1
+007f4b67  ADD EAX,1
+007f4b6a  CMP EAX,[ESP+18h]
+007f4b6e  MOV byte [ESI+3ech],1       ; a BYTE store
+007f4b75  MOV [ESP+14h],EAX
+007f4b79  JL 007f4800
+```
+
+`+3ECh` is a byte, which `PlaneSquadronEntity::dirty` in `include/bsp/plane_squadron_entity.hpp`
+already models as a `bool`. `007F4B43` reads `+3CCh` **before** the append, so the stamped spawn
+index is the array slot the plane occupies at spawn time, and section 5 point stands: the
+compaction in `007F3970` never rewrites it.
+
+## Correction: the `WingCount` default is written at `007F473A`, not `007F4735`
+
+Section 4 table and `include/bsp/plane_squadron.hpp` cite `007F4735` for the default of 3.
+
+* **was**: `007F4735`/`007F4754` `WingCount` (`00CF8840`): default `3`.
+* **is**: `007F4735` is `PUSH 0CF8840h`, the key literal. The default is the immediate store
+  `007F473A MOV dword [ESP+1Ch],3`, and `007F4742` is the lookup whose null return at
+  `007F4749 JZ 007F4772` is what leaves it standing.
+* **evidence**: the listing rows in the table above.
+
+The rule itself is unchanged, `squadron_resolve_wing_count_007f4747` is correct as written, so this
+is a citation fix and not a behaviour change.
+
+## `squadron+390h`: a sibling producer at `0079CD36`, and why it is not this class
+
+The handoff records `+390h` as unlocated with "none of the 39 stores is a float store on this
+class". One of the 39 is worth naming, because it is a float store to `+390h` on an object that a
+squadron is resolved *into*, and a later reader would otherwise find it and adopt it.
+
+`FUN_0079CBD0` builds a controller object and caches it at `[this+8h]`:
+
+```
+0079cbeb  CMP dword [EDI+8],0 / JNZ      ; already built
+0079cbf9  MOV ESI,[EAX+1ch]              ; the entity
+0079cc09  PUSH 18h / CALL vtable[5ch]    ; IsKindOf(PlaneSquadronGen)
+0079cc13  MOV ESI,[ESI+3d0h]             ; a squadron becomes its FLIGHT LEADER
+0079cc19  PUSH 8  / CALL vtable[5ch]
+0079cc2d  PUSH 410h / CALL 00bf55be      ; a 0x410 object, not the 0x414 squadron
+0079cc64  MOV [EDI+8],EAX
+0079ccdf  MOV EDX,[ESI+538h] / FLD [EDX+0a0h] / FMUL qword [00ceffb0] / FSTP [ESP+0ch]
+0079cceb  MOV EAX,[EDI+8]
+0079ccee  CMP dword [EAX+3e8h],0 / JNZ   ; seed once
+0079cd08  MOVSS [EAX+384h],XMM0          ; zero
+0079cd10  MOVSS [EAX+388h],XMM0          ; zero
+0079cd18  MOVSS XMM0,[ESP+0ch]
+0079cd1e  MOVSS [EAX+38ch],XMM0
+0079cd26  MOVSS [EAX+398h],XMM0
+0079cd2e  MOVSS [EAX+394h],XMM0
+0079cd36  MOVSS [EAX+390h],XMM0
+```
+
+The object written is the `0x410` allocation at `0079CC2D`, reached per **plane** (a squadron
+argument has already been replaced by `members[0]` at `0079CC13`), and it is stored at `[EDI+8h]`,
+where EDI is `FUN_0079CBD0` own `this`. It is therefore not reachable as `plane+9D4h`: the
+exhaustive census of stores to `+9D4h` finds ten writers and all ten are in the plane/squadron band
+(`007CDF6C`, `007CFE6C`, `007D68D5`, `007D694B`, `007ECE68`, `007ECE80`, `007ED0E6`, `007ED21A`,
+`007F3A07`, `007F4B49`), none of them this chain. `007C0EFA MOV ECX,[EBP+9D4h]` is read from the
+listing here, so `007EEF30` receiver is the squadron and nothing else.
+
+**`squadron+390h` stays unlocated, and the negative is bounded rather than claimed.** The census
+covers twelve store forms in both disp8 and disp32 encodings; it does not cover a 16-byte
+`MOVAPS`/`MOVUPS` store reaching `+390h` from `+384h` or `+388h`, which is exactly the shape
+`0079CD08..0079CD36` writes one lane at a time on the sibling, nor a block copy such as
+`007F3500 BSP_PlaneSquadron_CloneFrom` (which could only propagate a value, never originate one).
+The squadron own tick `007F3BA0` does not write it either: its only calls are `007F3C02 007EE7F0`,
+`007F3C5B 007EE790`, `007F3CA0 007B8AD0`, `007F3CD9 00926D90`, `007F3CE7 007F3970` and
+`007F3D1C 0077A650`, and no store in its body touches `+374h`, `+378h`, `+390h` or `+3CCh`.
+
+Since `004F0AD0` allocates the block zeroed and the constructor never writes `+390h` (below), a
+squadron that nothing else seeds carries `+390h = 0.0f`, and `007EEF4C` test `0.0 > +374h` is false
+for every non-negative armed fraction. In the image something must seed it before a release order
+can ever be issued; this packet has not found what.
+
+## The constructor `007F2C60`, re-read for the fields the gate uses
+
+`007F2C7D MOV ESI,ECX` is the whole function `this`, and `007F2CAD MOV [ESI],0D087C0h` stamps the
+squadron vtable, so every store below is on the squadron.
+
+| Site | Store | Note |
+| --- | --- | --- |
+| `007F2D1E` | `MOV byte [ESI+378h],1` | the force flag `007EEF62` tests is seeded **set** |
+| `007F2D25` | `MOV byte [ESI+379h],BL` | |
+| `007F2D9D` | `MOV [ESI+3CCh],EBX` | the member count starts at 0 |
+| `007F2DA3` | `MOV [ESI+3D0h],EBX` | slot 0 of the array |
+| `007F2DC1` | `MOV [ESI+370h],EDI` | the attack mode |
+| `007F2E00` | `MOVSS [ESI+3E8h],XMM0` | the morale |
+
+**Neither `+374h` nor `+390h` is written by the constructor.** `+374h` gets its value from
+`007EE7F0` on the first refresh; `+390h` gets none, which is the paragraph above.
+`PlaneSquadronConstructedState::flag_378h{1}` in `include/bsp/plane_squadron.hpp` already carried
+the `+378h` seed; what is new is that the host own release-order binding contradicts it, which
+`docs/PLANE_SQUADRON_HOST.md` records.
+
+## Two more routes by which a plane joins a squadron
+
+The `+9D4h` census above names two writers outside `007F4580` that are squadron attachments in their
+own right, and a host that models only the spawn tail will not see the planes they carry:
+
+* `007ED0E6` in `007ED0D0 BSP_PlaneSquadron_InsertPlaneSorted`, a sorted insert into the same array.
+* `007D68D5` and `007D694B` in `007D5D20 BSP_Plane_ReadPropertyBag`, an authored **plane** entity
+  taking a squadron from its own property bag, and clearing it again.
+
+Both are `contract: unread` here. They are listed so the spawn tail is not mistaken for the only
+producer of membership.

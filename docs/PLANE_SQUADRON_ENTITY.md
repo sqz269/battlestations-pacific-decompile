@@ -346,3 +346,30 @@ the same offsets, a collision). It is unread rather than absent.
 The full brief, including the census multiplier that makes 1566 authored squadrons about 4,800
 aircraft and the list of places the one-plane stand-in lives in the host, is the handoff section at
 the end of `docs/PLANE_SQUADRON.md`.
+
+## The host packet re-read the spawn tail, and what it changes here
+
+Packet `cc8_plane_squadron_host` re-read `007F4580` mode 1 and `007F2C60` from the listing rather
+than from this document. The readings this document depends on all hold: the five-slot array at
+`+3D0h`, the count at `+3CCh`, the back pointer `007F4B49`, the spawn index `007F4B43` stamped from
+the pre-append count, and the `max(1, authored)` wing count defaulting to 3. The evidence is the
+new section in `docs/PLANE_SQUADRON.md`; three things there bear on this document.
+
+1. **`+3ECh` is a byte store** (`007F4B6E MOV byte [ESI+3ECh],1`), which is what
+   `PlaneSquadronEntity::dirty` already models.
+2. **`+378h` is seeded set** by `007F2D1E MOV byte [ESI+378h],1`. Section 4 leaves the `+378h` arm
+   of `007EEF78` unexplained; the constructor answers it. A squadron that has not yet been through
+   `007ED3C0` issues a release order to **every** member without consulting
+   `007B8AD0`, because `007EEF62 CMP byte [ESI+378h],0 / 007EEF6B JNZ` jumps straight to the raise.
+3. **Membership has two more producers than this document lists.** `007ED0D0
+   BSP_PlaneSquadron_InsertPlaneSorted` writes `plane+9D4h` at `007ED0E6`, and
+   `007D5D20 BSP_Plane_ReadPropertyBag` writes it at `007D68D5` and clears it at `007D694B`. The
+   fan-out reading in section 4 is unaffected - it walks `+3D0h` whatever filled it - but a host
+   that reconstructs only `007F4580` is reconstructing one of three producers. Both are
+   `contract: unread`.
+
+`+390h` stays unlocated. The one float store to the offset that a reader will find, `0079CD36`, is
+on the `0x410` object `FUN_0079CBD0` allocates at `0079CC2D`, not on the `0x414` squadron: that
+routine replaces a squadron argument with `members[0]` at `0079CC13` before it builds anything, and
+the exhaustive `+9D4h` store census (ten writers, all in the plane/squadron band) shows its object
+never becomes a `plane+9D4h`. So the sibling is named rather than adopted.
