@@ -388,3 +388,35 @@ Two other writes in the same block, also checked against the listing:
   height **above** the altitude floor, so the quotient is negative for a high aircraft and the
   clamp floors it at `0.05625` rad. It is a nose-up floor and a pull-up, never a descent command.
   Nothing in this tick brings a torpedo bomber down.
+
+## Correction, packet `cc8_torpedo_release_timer`: the commanded pitch is a DIVE, and its lower clamp is `-DEG(80)`
+
+Section (4)'s row for `009D1DD6`-`009D1EE5` reads
+`clamp(-F34 / max(range - 1200, obj+188h * denom), 0.05625, 0.872665)`.
+
+* **was**: a lower bound of `0.05625`, which with a negative quotient makes `cmd+2BCh` a positive
+  3.2-degree nose-up on every tick an aircraft is above its altitude floor - the reading that
+  `docs/PLANE_POSE_THROTTLE_ALTITUDE.md` section 4 and `docs/TORPEDO_RUN_IN_DESCENT.md` section 5
+  both took, and that `src/game_hosts_units.cpp` summarised as "nothing in the aim tick brings a
+  torpedo bomber down".
+* **is**: `clamp(-F34 / pitchDen, -1.3962634, +0.8726646)`. `00D21318` holds the float
+  `0xBFB2B8C3` = `-1.3962634` = `-DEG(80)`; `0.05625` is the **double** at the same eight bytes, and
+  neither of the two instructions that read it is eight-byte - `009D1EA6 FLD float ptr [00D21318]`
+  and `009D1EB0 MOVSS XMM0,dword ptr [00D21318]`. The routine is the aim state's **descent**: `F34`
+  is the height above the release floor, `009D1E98 FCHS` negates it, and the command eases to zero
+  as the aircraft reaches the floor.
+* **evidence**: the listing in `docs/TORPEDO_RELEASE_TIMER.md` section 1, and the contrast with the
+  high bound one instruction later, which the compiler did emit at both widths (`00D057E0` double
+  for `FLD double ptr`, `00D05B40` float for `MOVSS`).
+
+**The constant convention this document's header follows is what catches it.** Every constant in
+`include/bsp/torpedo_aim_tick.hpp` that needed a width check carries two addresses or a named site.
+`kPitchClampLo` carried a bare address and no site; it was the only one that did, and the only one
+that was wrong. Every other constant in the file has now been re-read from the image at both widths
+and checked against its load, and they are all correct.
+
+This also settles section (4)'s neighbour: the altitude flag at `009D20C4` wants the aircraft under
+25 to 40 metres, and the pitch write at `009D1EDD` is the only thing in the whole torpedo chain that
+takes it there once the in-range latch has closed. Follow-up 1 of the "Follow-up packets" list -
+the cone flag and `F18` - is no longer the whole remaining distance to a drop; the altitude flag was
+in front of it.

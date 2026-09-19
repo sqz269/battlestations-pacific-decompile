@@ -333,3 +333,37 @@ torpedo, and neither is in this packet:
 The 60-second intermediate run `local/descentlaw_after_usn01.log` is kept as the first evidence that
 the latch closes: at 1200 mission frames Mav2 and Mav3 had 38 and 51 aim ticks with the other three
 still inside 2400 m and descending.
+
+## Correction from packet `cc8_torpedo_release_timer`: "the aim state commands no altitude" was right and its conclusion was wrong
+
+The Validation section's second open item reads: "**The aim state commands no altitude.**
+`009D15F0`'s callee list contains neither `009FBA50` nor `009FB800` ... So when the `2200 m` latch
+closes the descent command stops, and the aircraft hold 488.9 to 559.9 m over the target ...
+Something between the latch and the band has to bring them the last 400 m, and it is not the chain
+this packet fixed."
+
+* **was**: the absence of `009FBA50`/`009FB800` from `009D15F0`'s callees means nothing in the aim
+  state brings the aircraft down.
+* **is**: the callee observation stands and the inference does not. The aim tick does not command an
+  **altitude**; it writes the **pitch** directly, `009D1EDD MOVSS [EAX+2BCh],XMM0` with
+  `009D1EE5 MOV [EAX+2D0h],1`, bypassing the altitude chain entirely. That write is the second
+  descent, and the reason the aircraft climbed instead of diving was one clamp constant read at the
+  wrong width in `include/bsp/torpedo_aim_tick.hpp`: `00D21318`'s float is `-1.3962634` = `-DEG(80)`
+  and the header carried the double at those bytes, `0.05625`, which turned every descent command
+  into a 3.2-degree climb.
+* **evidence**: `docs/TORPEDO_RELEASE_TIMER.md` section 1.
+
+So the chain is two descents, one per state: the attack run's glide slope down to the in-range latch
+at 2200 m, and the aim tick's pitch command from there to the 25-to-40 metre release band. This
+packet fixed the first; `cc8_torpedo_release_timer` fixed the second. The first open item, the
+`009D19A0` gate keeping `run_time_009D1360` at 0, is **not** a blocker on the drop after all: it
+feeds `approach+A0h`, and the flag it reaches at `009D2052` is `range + 80 > +A0h`, which a zero
+satisfies.
+
+### Withdrawn with it: the `009D19A0` gate claim
+
+The same Correction's closing sentence says the `009D19A0` gate "never opens". That was read off a
+run in which `src/game_hosts_units.cpp` passes `in.turn_radius_268 = in.turn_radius_26c = 0.0f`, so
+the host's `turn_room` is `speed + 200` whatever the aircraft is doing. Nothing has been established
+about when the image opens that gate. The rest of the sentence stands: `approach+A0h` at zero still
+satisfies `009D2052`'s `range + 80 > +A0h`, so the hook is not a blocker on the drop either way.

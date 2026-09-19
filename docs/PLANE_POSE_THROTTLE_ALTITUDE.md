@@ -331,3 +331,16 @@ follow-up 1.
    off as the native does.
 4. **The five unmodelled thrust scales**, most usefully `unit+0CC8h` and `007D20C6`'s `Accel`
    scaling, which set how quickly a plane reaches `MaxSpd` rather than what `MaxSpd` is.
+
+## Correction from packet `cc8_torpedo_release_timer`: section 4's "nose-up floor" is a dive command
+
+Section 4 reads the torpedo aim tick's `009D1EDD` write to `plan+2BCh` as a nose-up floor and a
+pull-up, on the strength of a clamp whose lower bound was taken as `0.05625`.
+
+* **was**: `plan+2BCh = clamp(-F34 / den, 0.05625, 0.872665)`, always positive, a pull-up.
+* **is**: `clamp(-F34 / den, -1.3962634, +0.8726646)`, i.e. `[-DEG(80), +DEG(50)]`. `00D21318` holds
+  the float `0xBFB2B8C3` = `-1.3962634`; `0.05625` is the **double** at those same eight bytes, and
+  `009D1EA6 FLD float ptr [00D21318]` and `009D1EB0 MOVSS XMM0,dword ptr [00D21318]` are both
+  four-byte loads. Since `009D1E98 FCHS` negates a quantity that is positive whenever the aircraft
+  is above its release floor, the command is a **dive** that eases to zero at the floor.
+* **evidence**: `docs/TORPEDO_RELEASE_TIMER.md` section 1.
