@@ -224,3 +224,19 @@ it arrives at the 2200 m latch at 489 m, while the attack run's own glide slope 
 (`12 + (2200 - 450) * 0.5 * 0.4245`). The aircraft is 106 m above its own slope because it starts
 the run at 800 m and lags; whether the image starts it lower is a placement question this packet did
 not open.
+
+## Known downstream, not this packet's to fix: the post-drop broadcast has no members to issue to
+
+`agent/cc8-ai-squadron` reports that the squadron registry's `member_units` is filled for air-ops
+launches and never for scene-row squadrons: the scene pass clears it and fills only names and spawn
+indices, and the `resolve_member_units` its header promises does not exist. USN01's Mavs are scene
+rows, so `find_by_member_unit` answers no record for them and the release-order binding merged at
+`b2be05c68` - `controlled_unit_count` = `ctl+3CCh`, `controlled(index)` walking `ctl+3D0h` - sees
+zero members.
+
+It does **not** block arming the timer at `009D2287`, the countdown at `009FA3A0` or the first
+release request through `007BBBA0`. It blocks `007EEF30`'s post-drop broadcast, which is what an
+aircraft that has just dropped tells its flight-mates. The write-back is being made in
+`src/game_hosts_scene_contents.cpp` and the squadron host by that agent; those files are not touched
+here. If a run of this packet's reaches a drop before that lands, the broadcast is recorded as
+blocked by this and nothing is inferred from its absence.

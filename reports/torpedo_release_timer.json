@@ -54,6 +54,18 @@
       "evidence": "009D1E98 FCHS negates F34, which is the height above the floor; the clamp band is [-DEG(80), +DEG(50)]. The edit itself is queued: that file is leased to agent/cc8-dive-bomb."
     },
     {
+      "doc": "src/game_hosts_units.cpp, in.pitch_scale_188",
+      "was": "the literal 1.0f.",
+      "is": "desc+188h MaxSpd, 69.44 m/s on this installation's TBD, carried as unit_.plane_max_spd.",
+      "evidence": "009D1E64 FLD [EAX+188h] with EAX = [approach+8h] the class descriptor, 009D1E6A FMUL denom, 009D1E7E pitchDen = max(range - 1200, that product). Inside 1200 m of range the first term is negative so the product is the denominator: about 208 upward with MaxSpd against 3.0 upward with 1.0, and with 1.0 the command saturates at -DEG(80) for any height above the release floor over about four metres."
+    },
+    {
+      "doc": "src/game_hosts_units.cpp, in.pitch_div_1ac",
+      "was": "the literal 1.0f.",
+      "is": "desc+1ACh PitchSpd, DEG(30) here, carried as a new unit_.plane_pitch_spd copied from the same Lua row.",
+      "evidence": "009D1E39 FDIV [EDX+1ACh], the divisor of denom = 3 + (-unit+C64h / PitchSpd) * sel; 009D1DFD JBE is taken when -unit+C64h <= 0, so the damper runs only while the nose is already down. docs/PLANE_FLIGHT.md names +1ACh PitchSpd at 007DA8EB."
+    },
+    {
       "doc": "docs/TORPEDO_AIM_TICK.md section (4)",
       "was": "the 009D1DD6-009D1EE5 row reads clamp(..., 0.05625, 0.872665), and follow-up 1 calls the cone flag 'the whole remaining distance to a drop'.",
       "is": "clamp(..., -1.3962634, 0.8726646); and the altitude flag at 009D20C4 was in front of the cone flag.",
