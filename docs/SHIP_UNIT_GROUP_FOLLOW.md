@@ -577,7 +577,87 @@ motion totals match it to the last centimetre anyway - `units=62`, `motion_ticks
 `swims_started=5`, and the whole AI coordinator line including `formation_requests=306`. The null
 above is what actually settles the question.
 
-## 8. Uncertainties, and what is not read
+## 8. The gate that stops every join in this host, and the leader that does move
+
+Packet 2's first finding, and it changes the order of the work.
+
+### The host answers the availability question `false`, so nothing ever joins
+
+`local/wake_usn01_fixed.log` line 19049: `AiCommand::request_join_formation 0077c8d0
+UNIMPLEMENTED calls=306`. The host's own note (line 2204, from `src/game_hosts_script_orders.cpp`)
+says why: `0077C8D0` asks the follower's `vtable[16Ch]`, which for `MDestroyer` is `008162B0`, that
+body was never read, and "the host answers the neutral false and `0077C902` ends the routine with
+no effect". So the 306 requests this host counts are 306 requests that stop at the first question.
+**That gate, not the wake and not the group, is what has to fall first.**
+
+### `008162B0 BSP_Entity_CommandAvailableAgainstTarget`, read whole this packet
+
+`__thiscall(entity /*EDI*/)(const char* token /*EBX*/, void* target /*ESI*/)`, `RET 8`, body
+`008162B0-00816408`, 130 instructions.
+
+```
+if (00779D50(token, target))                   return true    ; 008162BF - the whole follow answer
+if (!entity->vtable[168h](token))              return false   ; 008162D2
+if (target == 0) return !00467170(token)->vtable[8]()         ; 008162EB..008162FD
+if (!(target->vt5Ch(5) || vt5Ch(18h) || vt5Ch(1Ah))) return false
+if ([target+5Dh])                              return false   ; 00816335
+if (token == "attackmove")                     return true    ; 00816346, 00CECCA8
+...                                                           ; seven more arms, for other tokens
+```
+
+**The `follow` answer is decided entirely by the first call**, and the rest of the body is reached
+only when that one says no. `00CECCA8` is the literal `"attackmove"`, not `"follow"`, which is how
+the split is visible.
+
+### `00779D50`, the follow predicate itself, read whole this packet
+
+`__thiscall(follower /*ESI*/)(const char* token, void* target /*EDI*/)`, `RET 8`, body
+`00779D50-00779E10`, 78 instructions. Its second instruction pair compares the token against
+`00CFB52C` - the same `"follow"` literal `0077C8D0` pushes - and answers false for anything else,
+so this routine exists for exactly one token.
+
+```
+if ([follower+5Dh])                        return false      ; 00779D53
+if (strcmp(token, "follow") != 0)          return false      ; 00779D68, 00CFB52C
+if (!target)                               return false      ; 00779D76
+if (!target->vt5Ch(2))                     return false      ; 00779D83
+if ([follower+5Dh] || [target+5Dh])        return false      ; 00779D8D, 00779D93
+if (00803510([follower+54h], [target+54h])) return false     ; 00779D9F, __fastcall pair
+if (00779820(follower, target))            return false      ; 00779DAB
+if ([follower+188h] != [target+188h]
+    && [target+188h] != 9)                 return false      ; 00779DB4..00779DC5
+if (!follower->vt5Ch(6) ||  follower->vt5Ch(8)) return false ; 00779DCC, 00779DDB
+if (!target->vt5Ch(6)   ||  target->vt5Ch(8))   return false ; 00779DEA, 00779DF9
+return true                                                  ; 00779E04
+```
+
+So the image's rule is: **a live ship may follow a live ship of its own side** - both `vt5Ch(6)`
+and neither `vt5Ch(8)`, the target additionally `vt5Ch(2)`, equal `+188h` or the target's `+188h`
+equal to 9. Four kind tests, a party test and two small callees (`00803510`, `00779820`, both
+unread) is the whole thing. That is implementable without inventing anything, which is what the old
+note could not say.
+
+### And the leader does move, which is what makes binding followers worth doing
+
+Asked before binding, and answered from the run rather than assumed. USN01 has two owned AI groups
+(`ai diag planner`, `ai diag movetoattack`):
+
+| group leader | members | groupable | moved |
+| --- | --- | --- | --- |
+| `Enterprise` | 7 | 1 | **2449.95 m** |
+| `Storage, 05 01` | 8 | 0 | 0.00 m |
+
+Only four USN01 ships move at all - `Enterprise` 2449.95 m and the destroyers `Ralph` 1049.90,
+`McCall` 1050.19, `Blue` 1049.90, all under `Cruise` with a heading latch - and their sum is the
+mission's whole `total_path=5600.63`. The first group's leader is therefore a carrier steaming at
+about 16 m/s with six followers behind it, three of them (`Northampton`, `Dunlap`, `SaltLakeCity`)
+sitting in `stop`. **A formation bound here keeps station on a leader that is genuinely under way.**
+
+The second group is led by a building, and the image refuses to order it for the same reason this
+host does: `00A124E0` gates the leader order on `009FE080 IsGroupableCombatant`, which answers
+false, so the tick returns having issued nothing. The host already matches the image there.
+
+## 9. Uncertainties, and what is not read
 
 * `00810630` and `00811180` whole, and `00810160`. `00810190` is now read whole (section 5b); what
   writes its residual accumulator `wake+3D0h` is not, and nothing here may assume it stays zero.
