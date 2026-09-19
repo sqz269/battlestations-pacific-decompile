@@ -295,10 +295,15 @@ headings.
   seatbelt, since `resolve_plane_squadron_members` fills the array before any order path runs. The
   case to look at if it ever fires is a squadron whose planes have all died.
 * `squadron+390h` has no located producer. `docs/PLANE_SQUADRON.md` bounds the negative.
-* **`src/game_hosts_units.cpp`, `TorpedoReleaseOrderBinding`: the release-order gate still reads the
-  stand-in.** The squadron table now holds the real array, so the binding's three substitutions can
-  go. The change is bounded and is written out here so it can be applied as one edit when the lease
-  frees:
+* ~~**`src/game_hosts_units.cpp`, `TorpedoReleaseOrderBinding`: the release-order gate still reads
+  the stand-in.**~~ **DONE.** The file freed and the edit below was applied as one window, claimed
+  and released at once. `is_flight_member` no longer exists in the file: `controlled_unit_count`
+  answers `ctl+3CCh` from the squadron table and `controlled(index)` walks `ctl+3D0h` in array
+  order, and `in.force_flag_378` takes the record's seeded `true`. Both ctest suites pass.
+  **No run can exercise it**, in either validated mission: `read_issue_inputs` is only reached from
+  `torpedo_issue_release_orders_007c0d90`, which the issue stage calls only when `unit+C20h > 0`,
+  and the runs read `requests_007BBBA0=0 C20h_left=0`. The edit is therefore build-tested and
+  correct against the listing, and unmeasured by construction. What it was:
   * `is_flight_member` (torpedo ordnance) and `controlled(int)` / `controlled_unit_count()` (a walk
     over every slot) become a walk over `plane_squadron_registry().find_by_member_unit(index_of_slot(slot_))`'s
     `member_units`, which is `ctl+3D0h` under `ctl+3CCh`. A caller in no squadron answers a count of
