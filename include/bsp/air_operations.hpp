@@ -483,7 +483,9 @@ struct AirOpsDeck {
     // block+D8h is not empty; it takes the head node's payload at node+8h,
     // unregisters the old observer pair at block+24h, stores the entity at
     // block+38h (the pair's own observed slot is [block+24h]+14h), registers the
-    // new pair, and calls 00922F30 on it with 0 to disable its scene node. So
+    // new pair, and calls 00922F30 on it to enable its scene node (the pushed 0
+    // is that routine's second argument, forwarded to vtable[68h]; 00922F4B sets
+    // node+5Ch to 1 either way, so this makes the entity visible). So
     // the field is the one entity the deck has pulled out of its queue and is
     // holding, hidden, and the three readers follow: 006BF620 refuses readiness
     // while one is held, 006CC690 queues at 006CC715 instead of starting, and

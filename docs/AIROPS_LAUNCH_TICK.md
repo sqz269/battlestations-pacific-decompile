@@ -139,10 +139,15 @@ read it and none was found to write it. **Correction: `006C6540` writes it, at `
 006c6589: MOV dword ptr [ESI + 0x14],EDI     ; block+38h = the entity
 006c6592: CALL 0x00694a60                    ; register the new pair
 006c6597: PUSH 0x0
-006c659b: CALL 0x00922f30                    ; and disable its scene node
+006c659b: CALL 0x00922f30                    ; and enable its scene node
 ```
 
-So block+38h is the one entity the deck has pulled out of a queue and is holding, hidden, with an
+The last call is `BSP_SceneNode_Enable`, and the pushed 0 is that routine's second argument, which
+it forwards to `vtable[68h]`; `00922F4B` sets node+5Ch to 1 regardless. A first draft of this
+document read the 0 as "disable" and said the deck holds the entity hidden. It does not: the entity
+is made visible. `docs/AIROPS_LAUNCH_START.md`'s reading of the same call at `006C7528` was right.
+
+So block+38h is the one entity the deck has pulled out of a queue and is holding, with an
 observer pair at block+24h whose observed slot is `[block+24h]+14h` — the same shape the slot uses,
 where the pair is at slot+14h and the observed slot at `slot+14h+14h` = slot+28h (`006C7502
 ADD ESI,0x14`, `006C7516 MOV dword ptr [ESI + 0x14],EBX`). The three readers follow directly:
@@ -229,6 +234,100 @@ leased to another worker (`cc8-dive-bomb:cc8_dive_bomb_servo_run`) for the lengt
 the claim was refused, so the walk runs from this host's per-frame pass instead, on the same fixed
 step. Nothing in the tick reads anything the motion pass writes, so the difference is one of
 position within the frame, not of result. It should be moved when that file is free.
+
+## Measured: the USN04 run of 2026-09-18
+
+`local/usn04_tick.log`, exit 0, 3199 frames presented, 3000 mission frames at 0.05 s = 150 s of
+mission time. Compared against `local/usn04_gates.log`, the previous packet's run of the same
+mission, which is the row marked "before".
+
+| measurement | before | after |
+| --- | --- | --- |
+| decks built | 6 | 6 |
+| slots per deck at the end | grew without bound, ~40 on each of two carriers | **4, the authored count, on all six** |
+| `air_ops` slot ticks | none, there was no tick | 72000 = 3000 frames x 24 slots |
+| slots that went 3/4 -> 5 | n/a | 0 |
+| 006C65B0 releases | n/a | 0 |
+| `IsReadyToSendPlanes` calls / true | 82 / 82 | **4 / 4** |
+| `LaunchSquadron` calls / started | 82 / 82 | **4 / 4** |
+| squadrons created | 0 | **4** |
+| `GetProperty` calls / served | 164 / 164 | 86 / 86 |
+| units with guns | 53 | 57 |
+| units with torpedo ordnance (2Bh) | 34 | **34** |
+| units with general-bomb ordnance | 1 | **5** |
+| plane free-flight steps | 6000 | 15716 |
+| ordered aircraft | 2 | **6** |
+| `range_first_mean` | 0.0 m | 0.0 m |
+| torpedo drops / breakups / swims | 0 / 0 / 0 | 0 / 0 / 0 |
+| kind Eh torpedo task | none | none |
+| `script call Think failed` | 0 | 0 |
+
+### The tick holds the deck at its authored size
+
+That was the defect `docs/AIROPS_LAUNCH_START.md` found and could not fix. `slot_ticks=72000` is
+exactly 3000 x 6 x 4, so every deck stayed at four slots for the whole run. `refills_3_4_to_5=0` and
+`releases=0` are the correct readings and not a dead tick: all four squadrons were still alive at
+the end (`active=1` on every one), so no slot's +28h ever went to zero and none was due to refill.
+
+### The strike is launched, and it is twelve planes
+
+```
+air ops squadron: Lexington-class01_sqn01 class=101 wing=3 ... -> unit 53 id 54 at (-12914.8 150.0 -12946.7)
+air ops squadron: Yorktown-class01_sqn02  class=101 wing=3 ... -> unit 54 id 55 at ( 12841.1 149.7 -12961.8)
+air ops squadron: Lexington-class01_sqn03 class=101 wing=3 ... -> unit 55 id 56
+air ops squadron: Yorktown-class01_sqn04  class=101 wing=3 ... -> unit 56 id 57
+```
+
+Four squadrons of three, two from each of the two carriers: the twelve-plane strike the stream is
+after. **The launch count fell from 82 to 4 because the seam works**, not because a gate closed. The
+script launched while `slot.squadron` was nil and stopped when it was not, which is the whole point
+of the key; the 82 launches of the previous run were the script retrying against a key that never
+filled.
+
+Every created unit reached every pass this process has: `plane spawn` seeded it at 75 m/s on its own
+forward axis, `unit motion dispatch` gave it creator 007DDAE0 / entry 007CE040, `unit world
+registration` put it in six world lists, and the gun chain gave it ordnance (+4 units with guns).
+
+### Two findings that change the stream's own premise
+
+**The launched class carries general bombs, not torpedoes.** The arithmetic is exact: the four new
+units took "units with guns" from 53 to 57 and "general_bomb" from 1 to 5, while "torpedo" stayed at
+34. USN04's carrier slots launch class 101 with a wing of three, and class 101 in this installation
+is not a torpedo carrier. `0099A170` builds a kind Eh task only for an ordered aircraft carrying
+ordnance kind 2Bh, and the run says so in as many words:
+
+```
+summary mission torpedo task: no ordered aircraft carries torpedo ordnance (kind 2Bh),
+so 0099A170 builds no kind Eh task
+```
+
+So the move-to tick, the glide slope, the desired-speed setter and the release above the sea are
+still unexercised, and **they will not be exercised by USN04's carrier launch** whatever else is
+fixed, unless a slot is launched with a torpedo class. `LaunchSquadron`'s class argument comes from
+the mission script, so the next step for the stream is to find which mission, or which slot, carries
+2Bh — not to press further on this launch path.
+
+**The squadrons are ordered by the party AI, not by the mission script.** All four appear in the
+pilot-attack tally (`ordered` 2 -> 6), and each one's line is
+
+```
+ordered Lexington-class01_sqn01 range 0.0 -> 0.0 m closed 0.0 m heading error 1.571 -> 0.013 rad
+player command issued to "Lexington-class01_sqn01": token="artillery" resolved="attackmove"
+Lexington-class01_sqn01 moveto ai_command_tick ...
+```
+
+`PilotSetTarget` was called once in the whole run, on `movieval`, in `luaStageInit`. The range is
+0.0 because the AI's attackmove carries no target position, which is why the four hold station at
+their spawn points. The mission's own order has not arrived: the timetable entity that would issue
+it still had 34.95 s of its delay to run when the window closed.
+
+```
+script entity 100006 created_for=luaDoTimeTable think=luaTimetable armed=1 delay=34.95 thinks=0 dead=0
+```
+
+That line is **identical in the before log**, so it is not a regression from this packet; the 150 s
+window is simply shorter than the mission's own schedule. A longer run is the cheap next
+measurement.
 
 ## Uncertainty
 
