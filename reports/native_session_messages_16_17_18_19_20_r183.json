@@ -2471,5 +2471,81 @@
     "sha256": "15a81999856a35332bd9d049e635b7f3cb86fdefdb0d7c5121204327267dbb3a",
     "files": 109,
     "head": "e52bc6b89852a806b5afbce3efe29fb99e11ec15"
+  },
+  "primary_integration": {
+    "commit": "38a5906ca50ba4fac6cd39ca77f59978338aef1d",
+    "main_observed_at_seal": "38a5906ca50ba4fac6cd39ca77f59978338aef1d",
+    "tested_commit_is_ancestor_of_observed_main": true,
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "coff_checks": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_session_message_tags_16_17_18_19_20.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "45a4fc031b63955e4f79b451d48c8bc069497230b1c1dbb093d1c6f0dd2dfabe",
+        "combined_sha256": "45a4fc031b63955e4f79b451d48c8bc069497230b1c1dbb093d1c6f0dd2dfabe"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_smoothed_remainder_triplet.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "d11d70a68606bf9e73f1c5219301baafa2f368da88e5eabe8ef11b5a8c3a5e48",
+        "combined_sha256": "d11d70a68606bf9e73f1c5219301baafa2f368da88e5eabe8ef11b5a8c3a5e48"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_bit_cursor_numeric.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "4974d1ed2fdf1e94053ea3d518d21807fb4fa15644c2947d24c0d333988e4ab8",
+        "combined_sha256": "4974d1ed2fdf1e94053ea3d518d21807fb4fa15644c2947d24c0d333988e4ab8"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_bit_cursor_read.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "df5170b26b3b2c256046c6039ae0d56383ed282318b13cbd9ba7518a8cabac2c",
+        "combined_sha256": "df5170b26b3b2c256046c6039ae0d56383ed282318b13cbd9ba7518a8cabac2c"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_bit_cursor_write.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "39bde039ca70397b0d04f86d5e679dc4965adf106aa1e02d31ae78a70f67ac9f",
+        "combined_sha256": "39bde039ca70397b0d04f86d5e679dc4965adf106aa1e02d31ae78a70f67ac9f"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_session_message_base.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "2d12cbce25ec1faed503f14dc57f616f969fab33e081adaf32418b91e9a73bc4",
+        "combined_sha256": "2d12cbce25ec1faed503f14dc57f616f969fab33e081adaf32418b91e9a73bc4"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_render_batch_keys.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "8f83a3ef5545c599fdb51ac91d2dfe34524efaeefa196f9a3192345be9c6e5e2",
+        "combined_sha256": "8f83a3ef5545c599fdb51ac91d2dfe34524efaeefa196f9a3192345be9c6e5e2"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "d6f6dbc057817a5b1c935b03d88108a60ac97eb28262fc24ab96cebbc7547bd6",
+        "combined_sha256": "d6f6dbc057817a5b1c935b03d88108a60ac97eb28262fc24ab96cebbc7547bd6"
+      }
+    ],
+    "fixture": {
+      "result": {
+        "exe_sha256": "05E3562E524EB225C826C144375BEEE36D052C855237FC7F4B4C1EB4CDA91871",
+        "exit": 0,
+        "library_sha256": "E024192EDFD4C4A188A32AB228B06F38B61936A12CE9C56724484E1AFE826026",
+        "utc": "2026-09-19T06:29:05.8474180Z",
+        "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED"
+      },
+      "pairs": 117526,
+      "matching_bytes": 9782792,
+      "observations_identical_to_tested": true
+    },
+    "game_sha256": "205c0397372d6ef7d28373b8159452b5b1773238c50fa48647f607049c3ed6b4",
+    "artifact_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r183\\native-session-messages-16-17-18-19-20-main-r183.zip",
+      "sha256": "9855003ebea52557b2ffcd47f1634cd3207c6e234bbd445e48d5f8a6d362e27c",
+      "files": 122,
+      "head": "38a5906ca50ba4fac6cd39ca77f59978338aef1d"
+    }
   }
 }
