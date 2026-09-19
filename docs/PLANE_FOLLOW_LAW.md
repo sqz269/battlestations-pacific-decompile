@@ -190,10 +190,17 @@ endpoint is 1.745, so the `y1` end is unreachable: even a perfectly aligned memb
 `cruise`. This is recorded, not corrected — the arithmetic bound in `src/plane_follow_law.cpp`
 is the image's.
 
-## 5.5 The steer point is a carrot 250 m ahead, not the station
+## 5.5 The steer point is a carrot 250 m ABEAM, on one guarded regime
 
-The last of the six `state+44h` store sites, `009C1662`-`009C16CF`, is the fall-through one and
-it settles what the steer point *is*:
+> **Withdrawn 2026-09-19, packet `cc8_follow_steer`.** This section previously read *"the steer
+> point is a carrot 250 m **ahead**, not the station"* and called `009C1662`-`009C16CF` the
+> **fall-through** site. Both claims are withdrawn. The *form* of the point survives unchanged —
+> own position plus `FollowedPointDist` times a unit direction — but that direction is
+> **perpendicular** to the aircraft's nose (§5.6), and the block is reached only through one
+> guarded branch, never by fall-through (§5.7). Nothing in §5.1-§5.4 is affected: those read
+> `009BEE30`, which consumes the point and does not care how it was made.
+
+The sixth of the `state+44h` store sites, `009C1662`-`009C16CF`, settles what the steer point *is*:
 
 ```
 009C167B  FLD  [[ESI+6Ch]]        ; block+00h = FollowedPointDist = 250
@@ -205,10 +212,9 @@ it settles what the steer point *is*:
 009C16C0..009C16CF                ; +60h/+64h/+68h are a straight COPY of the point
 ```
 
-So `steerPoint = ownPosition + FollowedPointDist * direction` — a carrot held 250 m ahead of
-the aircraft along a computed unit direction (`00419260 Vector2f_ReciprocalLength` normalises
-it at `009C15F1`), with its Y built as an offset above the **station's** Y. The name
-`FollowedPointDist` means exactly what it says.
+So `steerPoint = ownPosition + FollowedPointDist * direction`, with its Y built as an offset
+above the **station's** Y. The name `FollowedPointDist` means what it says about the *distance*.
+The *direction* is read in §5.6 and it is not the nose.
 
 Two consequences that matter, and that a station-point substitution would have got wrong:
 
@@ -218,11 +224,120 @@ Two consequences that matter, and that a station-point substitution would have g
   proportionally between `stationY` and the carrot's Y.
 * Substituting the station point for the steer point — the obvious cheap binding — is not a
   weaker version of this law, it is a different one: it would make `t` collapse to 1 and put the
-  aircraft's commanded heading on the station rather than on a point ahead of its own nose.
+  aircraft's commanded heading on the station rather than on this point.
 
-What remains unread in the fly-to arm is therefore narrower than "where does the member head":
-it is **the unit direction at `[ESP+4Ch]`/`[ESP+50h]` and the altitude offset at
-`[ESP+5Ch]`/`[ESP+28h]`**, plus the five earlier store sites that can pre-empt this one.
+### 5.5.1 Slot names, and why the raw `[ESP+NNh]` in the old text was unsafe
+
+`009BFEE0` opens `PUSH EBP / MOV EBP,ESP / AND ESP,0xFFFFFFF8 / SUB ESP,78h` and then pushes
+four registers, so every local is addressed off a **moving** ESP. A raw `[ESP+4Ch]` is therefore
+not a slot name. All slot identities below are the canonical frame offsets produced by
+`tools/x87trace.py` (its `base [ESP+NNh]` annotation), which are comparable across the whole
+body:
+
+| raw, at `fb=8Ch` | canonical | role |
+|---|---|---|
+| `[ESP+4Ch]` | `base+18h` | steer direction X |
+| `[ESP+50h]` | `base+1Ch` | steer direction Z |
+| `[ESP+5Ch]` | `base+28h` | carrot altitude offset, factor A |
+| `[ESP+28h]` | `base-0Ch` | carrot altitude offset, factor B |
+
+In this body the frame happens to sit at `fb=8Ch` almost everywhere, so the raw displacements
+are stable; but `base-0Ch` really does appear as `[ESP+2Ch]` at `009C0786` and `009C0D25`, where
+`fb=90h`. The walk is only trustworthy once every callee's stack effect is supplied — see §5.8.
+
+## 5.6 The steer direction is the PERPENDICULAR of the nose
+
+`009C15C0`-`009C1661` is the only producer of the two direction slots that `009C1662` consumes.
+
+```
+009C15D6  base+18h = pose[+ECh]            ; forward.X, raw
+009C15EA  base+1Ch = pose[+F4h]            ; forward.Z, raw
+009C15F1  CALL 00419260                    ; invLen = 1 / |(forward.X, forward.Z)|
+009C1616  base+44h = ux = forward.X * invLen
+009C161E  base+48h = uz = forward.Z * invLen
+009C1622  base+18h = uz   and  base+1Ch = ux      ; the components are SWAPPED
+009C1646  JE, on TEST byte [00E0E2F9],BL at 009C15F6:
+            bit clear -> base+1Ch = -ux    =>  direction ( uz, -ux)
+            bit set   -> base+18h = -uz    =>  direction (-uz,  ux)
+```
+
+Three things make this reading tight rather than a guess:
+
+* **The swap is explicit.** `009C1622`-`009C1642` is MSVC's add-then-recover idiom: it stores
+  `ux+uz` into `base+18h`, recovers `ux` by `FSUBRP ST(2)` into `base+1Ch`, then recovers `uz`
+  by `FSUB` back into `base+18h`. Net: `base+18h = uz`, `base+1Ch = ux`.
+* **The negation is exact.** `[00D7A208] = -0.0f`, so `SUBSS xmm0, v` with `xmm0 = -0.0` is
+  MSVC's float negate, not an offset subtraction. `0042BE90` negates through the same constant.
+* **Which component is X is not in doubt.** `009C1680` multiplies `base+18h` into steer X and
+  adds `pose[+FCh]`; `009C16A5` multiplies `base+1Ch` into steer Z and adds `pose[+104h]`. Row 3
+  of the pose matrix at `+FCh/+100h/+104h` is the translation (used as own world position right
+  there), so row 2 at `+ECh/+F0h/+F4h` is X/Y/Z of the forward basis — and §5.3's dot product at
+  `009BFC3B`, read independently in another body, already treats `pose+ECh/+F4h` as
+  `ownForward`.
+
+`(uz, -ux)` and `(-uz, ux)` are precisely the two horizontal perpendiculars of the unit forward
+vector. So on this path the member is steered at a point **250 m abeam** — to its left or its
+right, the side chosen by a global bit — not 250 m ahead. Heading at a point fixed abeam of your
+own nose is a turn command that renews itself every tick, which is why the old "ahead" reading
+made the law look like a straight-line chase when it is not.
+
+**Open, and named as such:** the four globals `00E0E2F8`-`00E0E2FB` are tested against `BL`,
+which this body sets to 1, 2, 3 or 4 (`009C0213`-`009C024F`) and also reloads from
+`[00E0E2F9]` itself (`009C0ECD`/`009C0EDF`) and from the saved byte `base-21h`. Whether they are
+a static mask table, per-frame scratch or tuning is **not** established here; their writers have
+not been censused. Until they are, the *side* of the abeam point is unexplained, and the guard
+at `009C1247` (§5.7) is unnamed.
+
+## 5.7 `009C1662` is one guarded regime, not the fall-through
+
+The old text assumed the block was reached when nothing else fired. It is not:
+
+* the **only** entry to `009C1662` is `JMP 0x9C1662` at `009C1654`, inside the `009C15C0` block;
+* `009C15C0` itself is entered **only** by `JE 0x9C15C0` at `009C1247`, under
+  `TEST byte [00E0E2F8],BL`;
+* the third store site (`009C1222`) ends `JMP 0x9C16C0`, i.e. into the `+60h/+64h/+68h` copy;
+* the fifth store site (`009C1552`) ends `JMP 0x9C16D2`, into the tail;
+* the hold arm reaches the tail from `009C0021`.
+
+So the six `state+44h` sites are six *regimes*, each with its own exit, and the abeam one is the
+regime selected by `009C1247`. What remains unread in the fly-to arm is the guard and direction
+of the four store sites at `009C10F7`, `009C11D5`, `009C1222` and `009C1328`, and the altitude
+offset factors `base+28h` / `base-0Ch`.
+
+## 5.8 The frame walk, and the callee table without which it lies
+
+Reading any ESP-relative slot in this body depends on knowing ESP at every instruction, and
+`tools/x87trace.py` **starts with an empty call table**: with no `--call` / `--icall` it assumes
+every call is `esp+0`, which silently mis-tracks the frame. Run that way it reported 15 join
+conflicts here, several with genuinely different ESP on the two sides — all of them artefacts.
+With every callee's effect supplied the walk is globally ESP-consistent over
+`009BFEE0`-`009C1846`: the five remaining conflicts all read `esp -140` on **both** sides, and
+only the x87 depth still disagrees.
+
+The table is committed as `tools/callee_effects_009bfee0.json`, with the ready-made argv. Four
+entries were wrong under the obvious reading and cost real time:
+
+| callee | effect | what the obvious reading gets wrong |
+|---|---|---|
+| `0042CF10` `AsinClamped` | **RET 4** | `calleefx` swept past the body end into the next function and offered `ret 0`. Ghidra's body ends `0042CF9E`; the bytes there are `c2 04 00`. **Seven** call sites, so this alone shifted the frame. |
+| `00419010` `InterpolateClamped` | **RET 14h** | same overrun offered `ret 10h`; `004190CE` is `c2 14 00`. Confirms §5.3.1 independently. |
+| `00BF701A` | `LIBCRT_atan2` | it is *not* `sqrt`; the `sqrt` span at `00BF7030` swallowed this separate entry. An atan2 in the direction code is a semantic clue, not just a stack effect. |
+| `0042E740` | `GetSingleton`, RET 0 | overrun offered `ret 4`. |
+
+Two rules this body pays for:
+
+* **A tail `POP ECX` is MSVC freeing a 4-byte local allocation, not cleaning an argument.**
+  `0042BE90`, `00414C60`, `0042B2F0` and `00419510` all end that way and all clean nothing. The
+  caller-side effect of a call is exactly the callee's own `RET` imm.
+* **`calleefx.py` sweeps linearly to the next INT3 padding**, so where padding is absent it
+  reports the *next* function's `ret` too. Any callee it reports with two RET imms must have its
+  body end taken from Ghidra and the imm read as bytes there.
+
+The five indirect calls resolve from their dispatch and their call sites: `009C00C8` and
+`009C01B6` are vtable slot `+50h` with no stack args and a float return (an `FSTP` consumes the
+result immediately); `009C025E` is slot `+34h` with one pushed out-pointer, returning that
+pointer in EAX; `009C02CF` / `009C02DE` are slot `+5Ch` taking `push 10h` / `push 16h` and
+returning a bool in AL.
 
 ## 6. What is bound, and what is not
 
@@ -232,12 +347,13 @@ clean (`./scripts/build.ps1`, exit 0). Reuses `dive_bomb_interpolate_clamped_004
 than adding a second copy of `00419010`.
 
 **Not yet bound, and the honest blocker for switching the host off placement:** the steer
-direction. Section 5.5 settles the point's *form* — own position plus 250 m along a unit
-direction — so what is missing is that direction and the carrot's altitude offset, computed
-somewhere in `009C0026`-`009C1661` (~1500 instructions, five further `state+44h` store sites
-that can pre-empt the fall-through one). The commanding law above consumes the point; it cannot
-manufacture it, and section 5.5 shows the cheap station-point substitution would be a
-*different* law rather than a weaker one, so it is not taken.
+direction in the regimes that are not §5.6's. One of the six is now read — the abeam regime
+(§5.6, §5.7) — and reading it made the blocker *sharper*, not smaller: the direction on that
+path is perpendicular to the aircraft's nose, so a station-point substitution is further from
+the law than the old "carrot ahead" reading suggested, and the cheap binding stays refused.
+Still open: the guard and direction of the store sites at `009C10F7`, `009C11D5`, `009C1222`
+and `009C1328`; the carrot's altitude offset (`base+28h` × `base-0Ch`); and the writers of the
+`00E0E2F8`-`00E0E2FB` globals that pick the abeam side.
 
 Therefore `kPlaneFormationPlacementEnabled` in `src/game_hosts_units.cpp` **stays true** and the
 placement hole in `docs/PLANE_FORMATION.md` section 6 stands, narrowed: it is no longer "2900
@@ -251,8 +367,9 @@ is unread; the ~1000-instruction commander that consumes it is read and bound".
 | `009C1FD0` tick | whole | **read** (section 2) |
 | `009BFD70` station point | whole | read previously; writes `+85h`, `+14h` |
 | `009BFEE0` hold arm | `009BFEE0`-`009C0025` | **read** — writes the steer point, no commands |
-| `009BFEE0` fly-to arm, fall-through | `009C1662`-`009C16CF` | **read** (section 5.5) |
-| `009BFEE0` fly-to arm, the rest | `009C0026`-`009C1661` | **OPEN** — the blocker; the steer DIRECTION and five earlier `+44h` sites |
+| `009BFEE0` fly-to arm, abeam regime | `009C1662`-`009C16CF` | **read** (§5.5); reached ONLY from `009C1654`, not by fall-through |
+| `009BFEE0` fly-to arm, abeam direction | `009C15C0`-`009C1661` | **read** (§5.6) — perpendicular of the nose; entered only from `JE` at `009C1247` |
+| `009BFEE0` fly-to arm, the rest | `009C0026`-`009C15BF` | **OPEN** — the blocker; four `+44h` sites (`009C10F7`, `009C11D5`, `009C1222`, `009C1328`), the fifth at `009C1552`, and their guards |
 | `009BFEE0` tail | `009C16D2`-`009C1846` | read previously (BOMBER_AFTER_TASK 10.8) |
 | `009BEE30` fly-to arm | `009BF9EA`-`009BFD38` | **read and bound** (section 5) |
 | `009BEE30` hold arm | `009BEE56`-`009BF9E5` | **OPEN** — the larger arm; writes cmd `+278h`-`+29Ch` |
