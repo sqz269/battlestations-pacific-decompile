@@ -183,3 +183,25 @@ The build is clean and both ctest suites pass.
 The specific thing the corrected code changes: before it, a second `IsReadyToSendPlanes` on the
 same carrier would have answered false whatever the deck said. After it, readiness depends only on
 the fields the native reads.
+
+## Correction, packet cc8_airops_launch_tick (2026-09-18)
+
+Three of this document's open items are now answered, and one of its readings is amended.
+
+* **"What writes block+38h. Three routines read it and none writes it"** is answered.
+  `006C6540` writes it at `006C6589`, out of the queue at block+D8h, moving the observer pair at
+  block+24h onto the entity and enabling its scene node. So the field is the plane the deck has
+  pulled out of its queue and is holding, and the provisional name survives with a writer behind it.
+  `docs/AIROPS_LAUNCH_TICK.md` section 5.
+* **"What state 3 means, and what state 6 means"** is answered. State 3 is "the squadron is away":
+  `006C0510` is the only thing that leaves it, and only once slot+28h is zero. State 6 is a parked
+  slot, which `006C56D0` treats as free alongside state 1.
+* **Section 5 of the launch-gates document's open question about the growing slot array** is
+  answered and fixed. `006C0510` is the tick, and with it every deck holds its authored slot count.
+* **Amendment, not a retraction.** Section 4 said creating the squadron "needs the units host, and
+  that is unavoidable". That is right, and it is what the tick packet did; the sentence is left
+  standing. What is amended is the surrounding expectation that the slot would then "return to state
+  1 when its cooldown completes". There is no cooldown: the slot returns to state **5**, and only
+  when its squadron is released by `006C65B0`.
+* **This document's reading of `00922F30` at `006C7528` was right** and is confirmed against the
+  routine's body: it enables the scene node, and the pushed 0 is the routine's own second argument.
