@@ -347,6 +347,35 @@ a later `create_units` in the longer mission reset them. Every release figure in
 the dive-bomb **task** row, which lives on the units host and survives. No torpedo release number
 from any 9000-frame run in this packet is usable.
 
+### E2: launched, not read. Where it is and how to judge it
+
+This packet closed on context before E2 finished. **The run was launched and its digest is written
+automatically**, so the next reader inherits a measurement, not a to-do:
+
+* `local/E2_fed_noplace_9000.log` - the run, on a binary built from base `0920f88e8` plus exactly
+  two changes: `in.engaged.control_mode_370` fed from `slot.db_attack_mode_370`, and the dive-bomb
+  follow tick calling `place_wing_member_on_station_007f23a0` with `/*apply_position=*/false`.
+* `local/E2_digest.txt` - the reduced form, written by `local/e2_pipeline.ps1` when the run exits.
+* `local/E1_digest.txt` - the same reduction of the pinned baseline, to compare against.
+
+**Both changes are reverted in the tree**, because E2 was unread when the packet closed; the
+`apply_position` parameter stays, defaulted to `true`, so it is inert. Re-applying them is two
+edits, and both sites carry a comment naming E2.
+
+Judge E2 against section 8's pre-registered predictions, and in this order:
+
+1. **Is it the NULL?** If the `.-2` members show `states[follow=<everything>]` with little or no
+   `flyabove`, the law simply let them lag, their latch never set, and the run says nothing about
+   section 7. That is not a pass. Go read the HOLD arm (item 0 below).
+2. **Water contact.** Compare only against E1's **sixteen**, never against run D's four at 4800.
+   The interesting number is dive-bomb wing members that drown *in the fly-over* (a descent from
+   ~1340 m), not in `done` (a descent from ~280 m) - E1 shows `done` drowns everything given time,
+   and that is a different defect.
+3. **Dive-bomb releases against E1's 30**, from the `summary mission dive-bomb task` row only. The
+   `torpedo_drop` figure in any 9000-frame log is a since-last-`create_units` count and is unusable.
+4. **The limit cycle.** `D3A Val #3.1|.-2` and `#7.1|.-2` should come back with `transitions` in the
+   normal 4-7 range instead of 6 and 32.
+
 ## 10. What the next reader should do, in order
 
 0. **Read the HOLD arm `009BEE56`-`009BF9E5`.** It was item 3 on the last handoff and it is item 0
