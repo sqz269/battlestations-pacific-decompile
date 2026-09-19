@@ -3633,6 +3633,15 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
     // artefact as the director destruction cc8_ship_drive fixed in
     // register_units. New units need no registration here: the coordinator reads
     // the units host live and its next compose pass picks them up.
+    // Packet cc8_ship_screen measured the pair this guard is for, on one build
+    // differing only by the guard, USN04, same parameters: without it
+    // `summary mission ai follow` reads requests=238 available=0 refused=238
+    // joins=0 (local/coord_off_usn04.log) because the coordinator is rebuilt on
+    // every spawn batch and the counters are the last batch's alone; with it,
+    // requests=731 available=1 refused=730 joins=1 (local/screen_usn04.log), and
+    // `total_path` goes 26985.10 -> 29455.68. The units host's own
+    // `joins=25 clamped=9` is identical either way, which is what made the
+    // artefact look harmless.
     if (host.ai == nullptr) {
         host.ai = std::make_unique<GameAiCoordinatorHost>(host.log, *this);
         host.ai->create_00a32350();

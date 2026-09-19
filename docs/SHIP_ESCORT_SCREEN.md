@@ -210,6 +210,157 @@ merge of `main@3b6277359` (the dive-bomb work) moves something unrelated.
 
 A miss on any row is a finding about `main`'s merge, not about this packet.
 
+## 6. The landing window
+
+All runs on `agent/cc8-ship-screen` with `main@3b6277359` merged, parameters
+`--frames 3200 --press-start-frame 30 --menu-select <mission> --mission-frames 3000
+--mission-frame-seconds 0.05`, each ending in `native renderer final COM release: device=0 api=0`.
+
+### 6.1 USN01, `local/screen_usn01.log`
+
+The prediction table in section 5 came back **bit-identical on every row**: `Dunlap` 600 /
+3826.31 / 8431.22, `SaltLakeCity` 600 / 5151.99 / 9375.16, `total_path` 10852.37,
+`groups=3 joins=13 creates=3 rejoins=0 clamped=3 columns_unmeasurable=0`, `steppers=2`, and all
+thirteen `formation column:` lines the same to the last digit. Nothing on the follow path moved
+when `main` came in, and nothing in this packet moved it either.
+
+Membership, per formation, with the moving group reported separately:
+
+| group | leader | leader moves? | members | join offset (across, along) | err_final | err_max |
+| --- | --- | --- | --- | --- | --- | --- |
+| 0 | `Convoy1` | no (`stop`) | Convoy2..6 | (200, 450) (-300, 650) (350, 750) (0, 950) (-300, 850) | n/a, no follow step | n/a |
+| 1 | `Northampton` | no (`stop`) | - (emptied by the merge) | - | - | - |
+| 2 | **`Enterprise`** | **yes** | Ralph (68.92, 0) McCall (-561.47, 0) Blue (561.47, 0) Northampton (3216.82, 0) SaltLakeCity (3152.01, 0) Dunlap (3152.01, 0) | as listed | Dunlap 3826.31, SaltLakeCity 5151.99 | 8431.22 / 9375.16 |
+
+Only `Dunlap` and `SaltLakeCity` run the follow step (`steppers=2`); the rest of group 2 is held by
+other states. `err_max` is the **first** step's error (section 4), so both escorts close about
+4.6 km and 4.2 km of an initial 8.4 km and 9.4 km gap in 150 s.
+
+### 6.2 The join accounting, and why `calls=13` is not `calls=10`
+
+There is **no counting hole**. Three counters count three populations:
+
+* `summary mission script bindings ... formations=10/13` - thirteen script `JoinFormation` calls,
+  thirteen `Formation::command_is_available` asks (`0077C8FE`), **ten pass**. The three refusals
+  are refused by `same_entity_or_group_00779820`, the arm that stops a follower already in the
+  leader's group; the log carries the per-unit evidence as
+  `ai diag follow <ship> -> Enterprise available=0 (ship 1/1, kind2=1, party 0/0, alive 1/1)`,
+  every other fact passing.
+* `Formation::route_join_message calls=10` - the ten that passed.
+* `summary unit formation joins=13` - real joins from **three** sources: the 10 routed, **1 from
+  the AI path** (`summary mission ai follow ... joins=1`), and **2 brought by `0077F940`'s merge
+  arm** (`src/game_hosts_units.cpp:9283`), which never passes through `route_join_message`.
+  10 + 1 + 2 = 13.
+
+`rejoins=0` is consistent: the script's post-merge orders are stopped one level earlier, at
+`0077C8F8`, so they never reach `0077F96E`.
+
+### 6.3 USN01's five-torpedo trace, re-recorded as the new reference
+
+Format follows `docs/TORPEDO_AFTER_THE_DROP.md` section 11. **This supersedes that section's
+census as the reference for a build whose escorts move.**
+
+Ordered targets (`0071EBF0`) are unchanged: Mav1 -> `Dunlap`, Mav2 and Mav3 -> `Northampton`,
+Mav4 and Mav5 -> `SaltLakeCity`. Five drops, five swims, no refusals and no water-entry breakups
+(`torpedo_drop drops=5 refusals=0 water_entry_breakups=0`, `swims_started=5`).
+
+| round | shooter | ordered target | exit | closest approach | at | run | target moved | crossing at drop |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 4 | Mav3 | Northampton | **`entity_impact`, hit `Northampton`** at (6308.0, 0.00, -3196.2) | 8.5 m | 11.40 s | 11.40 s | **0.0 m** | 2.0695 rad = **118.6 deg** |
+| 5 | Mav2 | Northampton | **`entity_impact`, hit `Northampton`** at (6308.0, 0.00, -3195.6) | 9.1 m | 11.50 s | 11.50 s | **0.0 m** | 2.1178 rad = **121.3 deg** |
+| 1 | Mav1 | Dunlap | `expired`, range 1852.0, travelled 1853.5 | 210.3 m | 7.40 s | 60.05 s | 141.3 m | 1.7098 rad = 98.0 deg |
+| 2 | Mav4 | SaltLakeCity | `expired`, range 1852.0, travelled 1853.5 | 175.2 m | 7.80 s | 60.05 s | 129.5 m | 1.8678 rad = 107.0 deg |
+| 3 | Mav5 | SaltLakeCity | `expired`, range 1852.0, travelled 1853.5 | 182.6 m | 8.00 s | 60.05 s | 132.9 m | 1.8123 rad = 103.8 deg |
+
+Both hits land on `Northampton`, each for 1108.9 / 1109.0 damage against base 1200.0, range 50.0
+and armour 90.0, taking it from 6500 to 5391.1 to 4282.1.
+
+**The result is explained entirely by which ships this branch set in motion.** `Northampton` has
+no authored `StartSpeed` and its group was emptied by the merge, so it never moves
+(`target_moved=0.0 m`) and both rounds aimed at it hit at 8.5 and 9.1 m. `Dunlap` and
+`SaltLakeCity` are the two ships that now run the follow step, they move 129 to 141 m during the
+torpedo's run, and all three rounds aimed at them miss by 175 to 210 m and expire at 1852 m of
+range. The aim carries no lead, so a moving target is missed by roughly its own displacement.
+
+Per-aircraft state ticks (`arm_ticks=1299` for all five):
+
+| aircraft | transitions | prepare | attackrun | aim | goaway | done | releases |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Mav1 | 4 | - | 263 | 181 | 399 | 456 | 1 |
+| Mav2 | 5 | 1 | 305 | 194 | 251 | 548 | 1 |
+| Mav3 | 5 | 1 | 291 | 195 | 251 | 561 | 1 |
+| Mav4 | 5 | 1 | 286 | 179 | 723 | 110 | 1 |
+| Mav5 | 5 | 1 | 278 | 180 | 719 | 121 | 1 |
+
+Against the reference the brief quotes for `main` (Mav1 attackrun 424 / aim 254 / goaway 308 /
+done 313) every column has moved, and Mav1 alone is `transitions=4` with no `prepare` tick. Both
+differences are attributable to `main`'s own dive-bomb and torpedo work merged in at
+`3b6277359` as much as to this branch, and are **not** separated here - a clean attribution needs
+a `main` build of the same commit, which is the residual named below.
+
+Against `J:\PROG\battlestations-pacific-decompile-cc8-ship-command\local\lead_usn01_control.log`,
+the stationary-escort control (5/5 hits, crossings 115-121 deg): this branch keeps **2 of 5**, and
+the two it keeps are the two whose crossing angles (118.6, 121.3 deg) sit inside the control's own
+115-121 deg band - i.e. the geometry that produced a hit is unchanged, and only the rounds whose
+targets now move are lost. That is the intended consequence of the packet, not a regression in the
+torpedo path.
+
+### 6.4 USN04, `local/screen_usn04.log`
+
+| row | predecessor's `coord_on_usn04.log` | this run | delta |
+| --- | --- | --- | --- |
+| `summary ship follow steppers` | 16 | 16 | 0 |
+| `summary mission ai follow` | requests=748 available=1 refused=747 joins=1 | requests=731 available=1 refused=730 joins=1 | -17 requests |
+| `summary unit formation` | groups=2 joins=25 creates=2 rejoins=0 clamped=9 columns_unmeasurable=0 | identical | 0 |
+| `total_path` | 29455.50 | 29455.68 | +0.18 |
+
+The two moved rows are both frame-timing sensitive and both are explained by `main`'s dive-bomb
+work changing when aircraft reach their requesting states; the formation counters, which are what
+this chain owns, are identical.
+
+### 6.5 The coordinator pair, completed
+
+The predecessor left this half-done: `coord_on_usn04.log` existed and the without-fix half did
+not, so the fix was observed but never measured. Both halves now exist **on one build differing
+only by the `if (host.ai == nullptr)` guard in `create_units`**, with the guard removed for the
+OFF run and restored afterwards, same mission and same parameters.
+
+| row | OFF, `local/coord_off_usn04.log` | ON, `local/screen_usn04.log` | delta |
+| --- | --- | --- | --- |
+| `summary mission ai follow` | requests=**238** available=**0** refused=238 joins=**0** | requests=**731** available=**1** refused=730 joins=**1** | +493 / +1 / +1 |
+| `summary ship follow steppers` | 16 | 16 | 0 |
+| `summary unit formation` | groups=2 joins=25 creates=2 rejoins=0 clamped=9 columns_unmeasurable=0 | identical | **0** |
+| `total_path` | 26985.10 | 29455.68 | **+2470.58** |
+
+This reproduces the artefact the guard was added for, exactly as it was described. Without the
+guard the coordinator is rebuilt on every spawn batch, so its counters are the **last batch's
+alone** - 238 requests where the mission really makes 731, and no join at all because the batch
+that could have made one had its coordinator thrown away. The units host survives the rebuild, so
+its `joins=25 clamped=9` is **identical in both halves**, and that is precisely what made the
+artefact look harmless to the earlier packets: the counter that moved was not the one being read.
+
+The one behavioural consequence is the join: with a coordinator that lives for the mission, the AI
+path finds its one available follow and makes it, and `total_path` rises 2470.58 m as the joined
+ship steams to its station. Every other row is unmoved.
+
+### 6.6 USN01 state census
+
+Taking each unit's last logged `ship ai step` state over the 918 census lines of
+`local/screen_usn01.log` (21 units are logged; the mission has 62 entities, most of which are not
+ships and never appear):
+
+| state | units |
+| --- | --- |
+| `cruise` | 9 |
+| `not_ship` | 7 |
+| `follow` | **2** (`Dunlap`, `SaltLakeCity`) |
+| `stop` | 2 |
+| `movetopos` | 1 |
+
+The two in `follow` are exactly the two `steppers` the follow summary reports. Note that this is
+a *last-state-per-unit* census; the "ships in `stop` = 49" figure the previous packet's prediction
+table used counts a different population and the two are not comparable.
+
 ## Still open
 
 * **The absolute sign of `record+10h`.** `00811180`'s sign comes from `sign(ST1 - ST0)` at
@@ -220,3 +371,15 @@ A miss on any row is a finding about `main`'s merge, not about this packet.
   `1` routes the placement through a session message; what the states *are* is not read here.
 * **`this+0BCCh = 1.25f`.** Written on every placement, immediately below the wake object at
   `+0BD0h`. Its reader is not identified.
+* **The two-way call-table diff against a `main` build was not made.** This worker cannot create a
+  worktree, so there is no `main@3b6277359` build of USN01 or USN04 to diff against, and the
+  comparisons in sections 6.3 and 6.4 are against the *previous packet's* logs
+  (`coord_on_usn04.log`, `follow_merge_usn01.log`) and against
+  `cc8-ship-command/local/lead_usn01_control.log`, none of which is a `main` build. Every moved row
+  in those tables is therefore attributed jointly to this branch and to `main`'s dive-bomb work,
+  and the two are **not** separated. This is the packet's one unmet deliverable; the integrator has
+  the tree to make it.
+* **`008193A0` is bound but not wired.** The host's placement path does not apply the formation
+  override, the placement refusal or the occupant-owner group snap. Nothing in USN01 or USN04
+  dispatches slot `+118h` at a unit that is already a formation follower, so wiring it would have
+  moved no measured row; it is left for a packet that has a mission which exercises it.
