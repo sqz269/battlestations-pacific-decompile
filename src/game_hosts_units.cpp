@@ -2131,9 +2131,27 @@ struct GameUnitsHost::Impl {
     //     return the leader's speed and stationY, so this is the fly-to law's
     //     limit standing in for the hold law, not an invented hold law.
     //
-    // The two flags are a pair: exactly one of them should be true, so that a
-    // before/after is the same binary apart from which one flies the member.
-    static constexpr bool kPlaneFormationPlacementEnabled = false;
+    // MEASURED 2026-09-19, and the result is a NULL that must not be read as a
+    // success.  With placement false and the law true, USN04 gave mean wing
+    // pairwise separation 2.5 m against the placement's 213.3 m - which looks
+    // like a formation holding tightly and is nothing of the kind.  The law
+    // never ran: `follow law` appears ZERO times in local/after_follow_law.log,
+    // and the last `plane formation geometry` line is still the spawn clump
+    // (pairwise 0.00 / 3.46 / 3.46).  The reason is three comments below at the
+    // `once` gate: this host NEVER ENTERS the follow state - every plane of
+    // every USN04 squadron reports `states[attackrun=...]` with
+    // `prepare_entries=0` - so 009C1FD0's tick, where the law is wired, does
+    // not execute, while the placement that DID run was the member's first
+    // step.  Turning placement off therefore removed the only thing that put a
+    // member on its station and replaced it with nothing.
+    //
+    // So the two flags are NOT a pair to alternate yet.  Placement stays true
+    // because it is the only station-keeping this host actually reaches; the
+    // law stays true because it is correct where it is wired and costs nothing
+    // until 009C1FD0 becomes reachable.  The blocker for a real before/after is
+    // no longer the reading of 009BFEE0 - it is that nothing in this host
+    // enters BotStateFollow.  See docs/HANDOFF_PLANE_FOLLOW_REGIMES.md.
+    static constexpr bool kPlaneFormationPlacementEnabled = true;
     static constexpr bool kPlaneFollowLawEnabled = true;
     bool place_wing_member_on_station_007f23a0(
         GameUnitSlot& unit, bool once,
