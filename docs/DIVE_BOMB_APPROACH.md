@@ -276,3 +276,74 @@ any of the three behaviour changes could be read.
 (The `attack mode` row already reports `lead=1 mode_370=1`: the feed `cc8_attack_mode` built is
 live and correct, and only the single read site is pinned. `approach+BCh=278.5 m` against
 `approach+B8h=1100.0 m` at the end, `ticks without latch=1527`.)
+
+## 10. Run A2 prediction, and an honest note about when it was written
+
+Section 6's plan had the wiring measured before sections 7 and 8 were written. They were written
+during run A's wait instead, so the order of windows changed: **A2** is sections 7 and 8 compiled
+in with the read site still pinned, which isolates them against A, and **B** is A2 plus the one
+read-site line, which keeps "the same binary apart from that line" intact for the wiring verdict.
+Same number of windows.
+
+**This prediction was written after run A2 was launched and before its log was read**, which is
+weaker than section 6's and is stated as such.
+
+From run A's own numbers: the break-off threshold is `thr=100.0` (`SafeDist` × `speed_ratio_41c`
+= 100 × 1.0) and `movieval` is already at `d = 278.5 m` planar when it goes spent, so
+`100.0 <= d` is **already true** with the planar feed. The 3-D range can only make it true
+earlier, never later. So section 7 should move *when* a spent bomber reaches `done`, not whether
+— exactly what 10.10 predicted — and `movieval`'s `done` count should go **up** from 303, with
+its water contact still present. I do not expect the mission's release or contact totals to
+change.
+
+Section 8's arm needs a spent, non-leader bomber whose leader is more than `approach+B8h` =
+1100 m from its aim point. In run A every aircraft converges on the same target and the leader
+ends 278 m from it, so I expect the arm to be **inert** in this window: `movieval` is the lead
+and exempt, `movieval|.-3` is spent but its leader is close. A null result here is a null
+result about USN04, not about the rule.
+
+## ABI
+
+| address | signature | notes |
+| --- | --- | --- |
+| `009C8790` | `void __thiscall(ECX = task)(float dt)`, `RET 4` | read whole, 90 instructions |
+| `009C18C0` | `void __thiscall(ECX = state)(float dt)`, `RET 4` | read whole for the dive bomb's inputs |
+| `009C1FD0` | `void __thiscall(ECX = state)(float dt)`, `RET 4` | not read past its two formation calls |
+| `009C2AC0` | `State* __thiscall(ECX = this)(Approach*, void* target, float near, float far, float speedRange)` | the last argument is a DISTANCE, not a mode; `009BDE80`'s ledger entry already said so |
+| `009C2980` | `State* __thiscall(ECX = this)(Approach*, float)` | body read only to its vtable stores |
+| `009BDE80` | `void __thiscall(ECX = state)(float, float, float)` | three stores, nothing else |
+| `009C1850` | `void __thiscall(ECX = state)(float speed)`, `RET 4` | vtable `00D20AEC+1Ch` |
+| `009C7710` | `Task* __thiscall(ECX = this)(Unit*, void* target)`, `RET 8` | kind 8, size `7E0h` |
+| `009C73A0` | `Approach* __thiscall(ECX = this)(Unit*, void* target)` | builds the states inside the approach |
+| `009C40A0` | `float* __thiscall(ECX = approach)(float out[3])`, `RET 4` | copies `+4Ch`/`+50h`/`+54h`; no Ghidra function |
+
+## Uncertainty
+
+* The three tail calls of `009C18C0` (`0099B630`, `009A1A20`, `009FABE0`) and the strafe-angle
+  write are read as call sites only; nothing behind them is bound.
+* `009BECD0`'s shaping of the desired speed against the distance is unread, so the speed this
+  host commands in `moveto` is the unshaped `007C47F0` product. Inherited, not introduced.
+* `009F9E40`'s body is unread. The heading written is this host's own `db_bearing_c0`. It is the
+  right *quantity* — a bearing at the target point — by the call's argument, but not the right
+  *code*.
+* `unit+0C25h` has no host field, so `009C18C0`'s step-3 early return is not modelled.
+* `009C1FD0` past `009BFD70` is unread, about 2900 instructions. `kFollow` is unreachable in this
+  host, so nothing measured here bears on it.
+* The aim point `approach+4Ch`/`+50h`/`+54h` still has no producer read, in this packet or in
+  `docs/DIVE_BOMB_TASK.md`. Everything here that needs the aim point uses the host's standing
+  substitution, the commanded target's position, and says so at the use site.
+* `approach+B4h` and `approach+B8h` are main's `1100.0` in every window here. `cc8-dive-heading`
+  holds a change that makes them draws around 780 and 2080; these numbers do not carry across it.
+
+## Coverage
+
+| item | status |
+| --- | --- |
+| `009C8790` the arm's dispatch shape | read whole, host corrected |
+| `009C18C0` steps 1, 2, 5 | reconstructed, build-tested, measured |
+| `009C18C0` steps 3, 4 | read, deliberately not bound |
+| `009C1FD0` | identified; its law not read, host substitution stated |
+| `009BDE80` dive-bomb call site | read whole, bound |
+| `009C7710` / `009C73A0` construction | read for the state classes and the vtables |
+| `009C8A90`'s range endpoints | both read; the feed corrected |
+| `009C7C31`-`009C7CFE` spent-member arm | read whole, bound |
