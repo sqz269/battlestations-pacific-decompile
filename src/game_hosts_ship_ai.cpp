@@ -172,9 +172,16 @@ const StateDescriptor* state_for_ai_offset(std::uint32_t ai_offset) noexcept {
     static const StateDescriptor kStates[] = {
         {"cruise",          0x00e08f70u, 0x009e1170u, kCruiseIntervalGetter, true},
         {"stop",            0x00e08f88u, 0x009e14c0u, kSharedIntervalGetter, false},
-        // Packet cc8_ship_follow bound 009E1610 against 009DF2D0, 0070D290 and
-        // the wake, so `follow` is concrete now.
-        {"follow",          0x00e08f60u, 0x009e1610u, kSharedIntervalGetter, true},
+        // MUST STAY false, and the field is misnamed. `step_concrete` does not
+        // mean "this state's step has a reconstruction" - `stop`, `movetopos`,
+        // `moveonpath` and `attackmove` all have one and all carry false. It
+        // gates the block at the head of state_step_vtable0c that runs the
+        // CRUISE step 009E1170 and returns, so it means "this state is cruise".
+        // Packet cc8_ship_follow set it true on the strength of the name and
+        // sent every follower into the cruise step, which returned before the
+        // `follow` arm below could run: the state was selected, 009E1610 never
+        // executed, and no ShipAiFollow record appeared in the run.
+        {"follow",          0x00e08f60u, 0x009e1610u, kSharedIntervalGetter, false},
         {"land",            0x00e08fa0u, 0x009e1950u, kSharedIntervalGetter, false},
         {"movetopos",       0x00e08f68u, 0x009e5770u, kSharedIntervalGetter, false},
         {"moveonpath",      0x00e08f80u, 0x009e59c0u, kSharedIntervalGetter, false},

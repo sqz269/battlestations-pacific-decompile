@@ -28,7 +28,39 @@ total_path=5600.63      (unchanged)
 So the mission script authors **three** formations, the director issues `follow`, and the ship AI
 **selects the `follow` state** for `Dunlap` and `SaltLakeCity`. Escorts still do not move.
 
-## The one open defect, and how to find it in ten minutes
+## UPDATE: escorts move, and the next defect is the empty ring
+
+The guard was not the defect. **`step_concrete` is misnamed**: it does not mean "this state's
+step has a reconstruction" (`stop`, `movetopos`, `moveonpath` and `attackmove` all have one and all
+carry `false`). It gates the block at the head of `state_step_vtable0c` that runs the **cruise** step
+`009E1170` and returns. Setting it `true` for `follow` sent every follower into the cruise step,
+which returned before the `follow` arm could run. Reverted, with the field's real meaning written
+next to it.
+
+With that reverted, `local/follow_moves_usn01.log`:
+
+```
+summary ship follow steppers=2 (009E1610 -> 009DF2D0 -> 0070D290 -> 009DE050)
+  follower        steps   err_final    err_max
+  Dunlap            600     3826.31    8431.22
+  SaltLakeCity      600     5151.99    9375.16
+total_path=10852.37        (was 5600.63)
+```
+
+**The escorts move.** The station error is the next defect and its cause is known: both followers
+are in formation 1, whose leader is `Northampton`, and `Northampton` has no authored `StartSpeed`,
+so it never moves, so it never appends a wake sample, so its ring is still all zeros - and
+`0070D290`'s follower branch reads that ring and answers a station at the **world origin**. The two
+escorts are steaming to (0, 0), which is what the growing error and the doubled `total_path` are.
+
+**That is exactly the integrator's step 4** and it is now the blocking item: read what the wake ring
+holds before any append (is `entity+0BD8h` seeded at construction with the entity's pose, or left
+zero?) and bind that. If the image really leaves it zero then the image has the same behaviour and
+the answer is that a follower of a never-moving leader must not take the follower branch at all -
+in which case find the test that keeps it out. Do not paper over it by seeding the ring without
+reading the constructor.
+
+## The guard that was suspected, and was not the defect
 
 **No `ShipAiFollow::*` record appears anywhere in that run**, so `009E1610` never executed even
 though its state was selected. The arm is in `src/game_hosts_ship_ai.cpp`,
