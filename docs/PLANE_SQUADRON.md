@@ -95,7 +95,7 @@ Coverage: **complete** for the constructor.
 | `+3C8h` | `0` | `WingCount` | `007F4778` |
 | `+3CCh` | `0` | live plane count | `007F4B60` (+1), `007F39ED` (-1) |
 | `+3D0h..+3E0h` | `0` | **five** plane pointers | `007F4B55`, `007F3970` |
-| `+3E4h` | `1` | unread | — |
+| `+3E4h` | `1` | `psFormation`, the formation SHAPE (property-bag pair at `007F50CF`/`007F50FB`, string `00D08AA0`) | read by `007F2556`-`007F256F` in `007F23A0`: `MOV EAX,[ESI+3E4h]` / `ADD EAX,-1` / `CMP EAX,4` / `JA 007F2853` / `JMP [EAX*4+007F2900]`, a five-entry jump table; see `docs/PLANE_FORMATION.md` section 2 (corrected 2026-09-19; this row used to say "unread") |
 | `+3E8h` | `1.0f` | morale, approaches 1 in the tick | the tick |
 | `+3ECh` | (memset) | dirty byte | `007F4B6E`, `007F3A1D`, `007ED67C` |
 | `+3F0h` | `00CF938C` | embedded subobject, destroyed by `006E0860` | `007F2D93` |
@@ -316,7 +316,7 @@ One row per native call site this packet models. `this`/args are read from the l
 
 ## 8. Open questions
 
-- `+354h = 13h` and `+3E4h = 1`: written once by the constructor, no reader found in range.
+- `+354h = 13h`: written once by the constructor, no reader found in range. (`+3E4h = 1` used to be listed here too; its reader is `007F2556` in the station producer `007F23A0`, outside the range this document searched. See `docs/PLANE_FORMATION.md` section 2.)
 - `+9D8h` (the plane's spawn index) has no located reader; the compaction leaves it stale.
 - `007F3500`'s caller: it is not in the call graph and is not one of the `00D087C0` slots this
   packet identified.
