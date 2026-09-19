@@ -224,7 +224,7 @@ DiveBombAimError dive_bomb_aim_error_009c5c9b(const DiveBombAimErrorInputs& in) 
     // 009C5BEE-009C5BF7 and 009C5C27-009C5C38: one x window for both calls.
     const float x0 = in.dive_altitude_a8 +
                      static_cast<float>(dive_bomb_constant::kMoveToRangeBias);
-    const float x1 = in.begin_altitude_ac + in.extra_range_50;
+    const float x1 = in.begin_altitude_ac + in.aim_point_height_50;
     // 009C5C49: the lead, 0 at the floor up to (approach+14h)->+5Ch high up.
     out.lead = dive_bomb_interpolate_clamped_00419010(x0, 0.0f, x1, in.lead_at_high_5c,
                                                       in.height_above_target);
@@ -269,7 +269,7 @@ DiveBombAimDiveReleaseResult dive_bomb_aimdive_release_009c60f1(
 
 // 009C5AFD-009C5B48.
 bool dive_bomb_dive_abort_009c5b43(const DiveBombDiveAbortInputs& in) noexcept {
-    if (!(in.release_range_d4 + in.extra_range_50 > in.slant_range)) {
+    if (!(in.release_range_d4 + in.aim_point_height_50 > in.slant_range)) {
         return false;  // 009C5B18
     }
     if (!(in.unit_attitude_c64 > dive_bomb_constant::kAbortRollFloor)) {
@@ -431,7 +431,7 @@ DiveBombAttackRunResult dive_bomb_attackrun_tick_009c4220(
         out.throttle_ratio);
 
     // 009C43ED-009C4401: the altitude base handed to 009FBA50.
-    out.commanded_altitude_base = in.begin_altitude_ac + in.extra_range_50;
+    out.commanded_altitude_base = in.begin_altitude_ac + in.aim_point_height_50;
     return out;
 }
 

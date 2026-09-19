@@ -1772,3 +1772,91 @@ the pitch when the aim is not precise, and its push twin.
 So the pitch is proportional, not bang-bang: `clamp(error * 0.018, -1, +1)` on the positive side
 and `clamp(error * 0.025, -1, +1)` on the negative. It saturates past about 55 m of error and eases
 off inside that, which is the behaviour a 25 m release window needs.
+
+### A second name to watch: `approach+D8h`/`+DCh`/`+E0h`
+
+`include/bsp/dive_bomb_task.hpp` called these `kAimPointX/Y/Z`, "the computed lead point". They
+are not the aim point - `009C40A0` hands that out from `+4Ch`/`+50h`/`+54h`. The constructor fills
+`+D8h`..`+E0h` at `009C4065`, `009C4071` and `009C407D` from `EDI+FCh/+100h/+104h`, `EDI` being its
+stacked argument from `009C3ECA`, and the aimdive tick subtracts `+D8h` and `+E0h` from the aim
+point before its first `atan2`. That reads as a latched REFERENCE position the aim point is
+measured against, not a lead. Which entity `EDI` is has not been established, so the constants keep
+their names with a PROVISIONAL note rather than being renamed on a guess.
+
+The `+50h` constant is renamed, because that one is settled: `kExtraRange` is now `kAimPointHeight`,
+with `kAimPointEast` (`+4Ch`) and `kAimPointNorth` (`+54h`) beside it, and the field and input
+`db_extra_range_50` / `extra_range_50` are `db_aim_point_height_50` / `aim_point_height_50`.
+
+### No fall time, and no ballistic lead
+
+The packet asked whether the bomb's fall time appears in the miss-distance term. It does not.
+`009C5C9B`'s whole chain is `gain * (cos(bearing) * planar_distance - lead)`, where `lead` is
+`InterpolateClamped(+A8h + 100, 0, +ACh + +50h, ->+5Ch, height)` - an **authored imprecision**
+interpolated over height, `DiveBombAimPrecDist`, whose robots.lua comment says in so many words
+"from far away it aims this much beside the target, then gets more accurate as it closes". There is
+no gravity term, no time of flight and no target velocity anywhere in `009C58D0`-`009C6161`: the
+aircraft's own velocity does not enter the aim error either. The only ballistic-looking work is in
+the aim-point updater `009C8D40`, which is a separate object's job and is not bound here.
+
+## The aim run `local\usn04_aim.log`: inconclusive, and why
+
+Same arguments again. **The steering was not exercised.** The state walk never entered `aimdive`:
+
+| measure | `usn04_d4h` | `usn04_aim` |
+| --- | --- | --- |
+| arm ticks | 2370 | 2370 |
+| transitions | 4 | 3 |
+| attackrun | 1480 | **240** |
+| flyabove | 159 | **1** |
+| turndown | 67 | **0** |
+| aimdive | 664 | **0** |
+| aimglide | 0 | **2129** |
+| latch closed at | tick 1481 | tick 241 |
+| `approach+BCh` at the end | 4631.1 m | **0.0 m** |
+
+So this run says nothing about `009C5C9F`-`009C5DB2`, in either direction. What it does show is a
+failure upstream of it.
+
+### The geometry collapses, and 0.0 m is the tell
+
+`approach+BCh` is not "small", it is **exactly** 0.0. The producer only writes that through its
+epsilon branch, `d2 <= 1e-10` at `00CE3820`: the aircraft's position and its target's are the same
+point. An aircraft passing over a ship gives a small non-zero distance, never that.
+
+The timing says the same thing. The run-in's range samples are identical to the earlier runs for
+their whole span - 11050 m down to 10265 m over the first 160 arm ticks - and then the latch closes
+at tick 241, which needs the planar range under `approach+B8h` = 1100 m. That is at least 9165 m in
+81 arm ticks, 7.3 s, or 1250 m/s, against a commanded speed of 34.5 m/s. Nothing flew that. One of
+the two endpoints was re-resolved.
+
+### The mechanism, and where it lives
+
+`GameGunneryHost::Impl::refresh_command_targets` in `src/game_hosts_gunnery.cpp` resolves one
+target per unit from the command rows:
+
+```cpp
+for (const GameCommandRow& command : command_rows) {
+    if (!command.current || command.target_token.empty()) continue;
+    ...
+    command_target_by_unit[command.unit_index] = found->second;   // last writer wins
+}
+```
+
+A unit with several current rows keeps whichever comes last in the vector, and the census in this
+run shows `movieval` carrying **three** current rows - `stop` (director idle tail), `moveto`
+(ai_command_tick) and `divebomb` (script:PilotSetTarget). The whole map is rebuilt whenever
+`command_rows.size()` changes, so a row appearing mid-mission can take the dive bomber's target
+away from it. A token that resolves back to `movieval` gives exactly the observed 0.0.
+
+This is the same class as this stream's first bug, a target point resolved to the wrong row, and it
+is not in the dive-bomb chain. **The fix location is `refresh_command_targets` in
+`src/game_hosts_gunnery.cpp`**, which this stream does not own, so it is named and not touched.
+
+### What changed between the runs, stated as a window and not as a commit
+
+`usn04_d4h` ran at `6b8907c3f`, before this packet merged `main`; `usn04_aim` ran at `f5b279eb5`,
+after. The merge brought `src/game_hosts_script_orders.cpp` (new, +187), `src/game_hosts_lua.cpp`
+(+117), `src/air_operations.cpp` (+228) and `src/game_hosts_scene_contents.cpp` (+6) - the files
+that add and drive command rows. That is the window. No commit is named here: a repro on a fresh
+detached tree at the suspect commit has not been run, and the run lock is currently arbitrated to
+another worker, so it could not be.

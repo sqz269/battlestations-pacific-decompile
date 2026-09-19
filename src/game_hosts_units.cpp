@@ -366,7 +366,7 @@ struct GameUnitSlot {
     float db_in_range_b8{0.0f};      // approach+B8h == task+4B0h
     float db_planar_bc{0.0f};        // approach+BCh, the planar range
     float db_bearing_c0{0.0f};       // approach+C0h
-    float db_extra_range_50{0.0f};   // approach+50h
+    float db_aim_point_height_50{0.0f};   // approach+50h
     float db_release_range_d4{0.0f};  // approach+D4h
     float db_lead_high_5c{0.0f};     // (approach+14h)->+5Ch
     float db_gain_high_60{0.0f};     // (approach+14h)->+60h
@@ -1155,7 +1155,7 @@ struct GameUnitsHost::Impl {
         e.height_above_target = slot.motion.position[1] - target_y;
         e.dive_altitude_a8 = slot.db_dive_alt_a8;
         e.begin_altitude_ac = slot.db_begin_alt_ac;
-        e.extra_range_50 = slot.db_extra_range_50;
+        e.aim_point_height_50 = slot.db_aim_point_height_50;
         e.lead_at_high_5c = slot.db_lead_high_5c;
         e.gain_at_high_60 = slot.db_gain_high_60;
         e.bearing_error = bsp::wrapped_angle_subtract_00438b10(
@@ -1181,7 +1181,7 @@ struct GameUnitsHost::Impl {
         // state to aimglide on the next transition.
         bsp::DiveBombDiveAbortInputs ab;
         ab.release_range_d4 = slot.db_release_range_d4;
-        ab.extra_range_50 = slot.db_extra_range_50;
+        ab.aim_point_height_50 = slot.db_aim_point_height_50;
         ab.slant_range = slot.db_planar_bc;
         ab.aim_point_distance = slot.db_planar_bc;
         ab.unit_attitude_c64 = slot.plane_pitch_angle_c64;
@@ -4277,7 +4277,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 009C3E11 `LEA ESI,[EDI+30h]` rebases ESI, so that
                             // store lands on approach+80h. No writer through
                             // the approach base exists in the dive-bomb range.
-                            unit_.db_extra_range_50 = 0.0f;
+                            unit_.db_aim_point_height_50 = 0.0f;
                             // 007C1DB0 at the aimglide enter 009C4F00 latches
                             // the count the salvo caps against.
                             unit_.dive_bomb_rounds_remaining =
@@ -4361,7 +4361,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         in.planar_distance_bc = unit_.db_planar_bc;
                         in.altitude = unit_.motion.position[1];
                         in.begin_altitude_ac = unit_.db_begin_alt_ac;
-                        in.extra_range_50 = unit_.db_extra_range_50;
+                        in.aim_point_height_50 = unit_.db_aim_point_height_50;
                         in.attack_distance_b4 = unit_.db_attack_dist_b4;
                         // SUBSTITUTION, labelled: 007F0280 at 009C42B8 is a
                         // contract, so the run-in flies straight at the target
