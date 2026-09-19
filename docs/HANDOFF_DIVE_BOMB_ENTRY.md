@@ -45,14 +45,26 @@ commanded no altitude at all.
 **The race.** `009C84FB` reads `+791h` to decide *when* the flyabove ends and `009C8508` reads
 `+790h` to decide *into what*:
 
-* `+791h` = `|bearing error| > 1.6 rad` **OR** `B <= 666.7 m` (`009C67A7` `77` JA, `009C67AE` `72` JC)
+* `+791h` = `|bearing error| > 1.6 rad` **OR** `span <= 0` (`009C67A7` `77` JA, `009C67AE` `72` JC)
 * `+790h` = `B > approach+D4h` = **675.0 m** (`009C67F6` `76` JBE, stored `009C680E`)
 
-The two heights are 8 m apart and point opposite ways, so **whichever arm of `+791h` fires first
-decides the attack**: the bearing arm means the wingover dive, the height arm means the glide. With
-the altitude arm bound, the height arm wins for every aircraft in this mission, and `movieval` enters
-the flyabove only **54 m** above the threshold - at 24 degrees it crosses in about two seconds with
-849 m still to run.
+> **CORRECTION, packet `cc8_dive_heading`.** This section originally read the second `+791h` arm as
+> `B <= 666.7 m` and the paragraph below built on it. **Withdrawn.** `009C65FD`'s span is
+> `max(R - S, 0)` with `R` the planar **range**, not the height: `009C659D`'s `FSTP ST(0)` discards
+> `B` before `009C65DB`'s `FSUBP ST(2)`, which takes `R` off the stack from `009C64EE`. 666.7 is
+> where `max(B - (0.7B + 200), 0)` reaches zero, so it is an artefact of the host's swapped minuend,
+> and its 8 m agreement with `approach+D4h` is a coincidence, not corroboration. The image's arm is
+> **`R <= 0.7 * max(B, 100) + 200`**, a range-to-go test against a glide slope, and it has no relation
+> to `+D4h`. The "two heights 8 m apart" framing below is therefore wrong, and so is the conclusion
+> that the height arm must win: in `local\heading_before.log` all fifteen bombers hand over with
+> `span=0` at `b` between 662 and 666 and a range between 150 m and 368 m, which is the artefact
+> measured directly. See `docs/DIVE_BOMB_TASK.md`, "Packet `cc8_dive_heading`". The range is also
+> taken to a three-second lead point, `aim - 3.0 * (v_own - v_target) - pos`, not to the target.
+
+Whichever arm of `+791h` fires first decides the attack: the bearing arm means the wingover dive, the
+height arm means the glide. With the altitude arm bound and the **host's** span, the height arm won
+for every aircraft in this mission, and `movieval` entered the flyabove only 54 m above the crossing
+the artefact produced - at 24 degrees it crossed in about two seconds with 849 m still to run.
 
 ## (b) The branch is deliberately NOT on main
 

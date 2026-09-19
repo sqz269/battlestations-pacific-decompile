@@ -1863,6 +1863,16 @@ another worker, so it could not be.
 
 ## `T` closed: both flyabove flags are one height test
 
+> **WITHDRAWN in part, packet `cc8_dive_heading`.** `T`, the x87 value arriving at the merge
+> `009C6532` and consumed by `009C65DB`'s `FSUBP ST(2)`, is **not** the height `B`. It is `R`, the
+> planar range, pushed at `009C64EE` and still on the stack after `009C659D`'s `FSTP ST(0)` has
+> discarded `B`. The span is `max(R - S, 0)`, the two flags are therefore **not** "one height test",
+> and the `B <= 666.7 m` below - including the "same gate expressed twice" at 666.7 against
+> `approach+D4h`'s 675.0 - is an artefact of the swapped minuend rather than a number in the image.
+> The threshold `S = 0.7 * max(B, 100) + 200` is unaffected and still comes from the height. The
+> forward stack walk with every push and pop accounted is in "Packet `cc8_dive_heading`" below; so is
+> the measurement of the artefact in `local\heading_before.log`.
+
 The operand the last two packets left open - `T`, the x87 value arriving at the merge `009C6532` -
 is resolved, and with it `+19h`'s second arm and `+1Ah` together.
 
@@ -1989,6 +1999,14 @@ growing re-resolves too; both halves are O(commands), not the O(commands x units
 costs.
 
 ## The two flyabove flags, bound
+
+> **CORRECTED, packet `cc8_dive_heading`.** The binding below is right about `S` and about the shape
+> of both flags, and wrong about one operand: `dive_bomb_flyabove_span_009c65fd`'s minuend is the
+> planar **range** `R`, not the height `B`, so `x = max(R - S, 0)` and the "`B <= 666.7 m`" this
+> section derives does not exist in the image. `009C65DB`'s `FSUBP ST(2)` reaches past `B`, which
+> `009C659D` has already popped, to the `R` pushed at `009C64EE`. The range is also measured to a
+> three-second lead point, `aim - 3.0 * (v_own - v_target) - pos`, not to the target. Both are bound
+> in "Packet `cc8_dive_heading`" below, which also measures the artefact this section produced.
 
 With `T` closed, `+19h`'s second arm and `+1Ah` are no longer stand-ins.
 `dive_bomb_flyabove_span_009c65fd` computes the pair once - `S = max(B, 100) * 0.7 + 200` and
@@ -4880,3 +4898,302 @@ rather than comparing against the logs above.** `src/dive_bomb_task.cpp` and
 `1` for an entity at `0084C314` and `2` at `0084C3CF` (`0084C286 MOV EDI,2`), gated per class by
 `classDesc+74h ExplWaterHit`, with `0084BC60` step 7's radial explosion needing
 `classDesc+6Ch != 0`. This host bursts on entity impacts only; the integrator has queued it.
+
+## Packet `cc8_dive_heading`: the fly-over walked whole, and the span is a range, not a height
+
+`009C62B0`-`009C7083`, all 949 instructions, walked from the listing with x87 depth and ESP tracked
+over every edge (`local/f.ps1` driving `local/x87trace.py`, re-seeded from `cc8-dive-glide`'s aimglide
+walk). Frame base **0x98**: `SUB ESP,88h` at `009C62B0` plus `PUSH EBX/EBP/ESI` and the `PUSH EDI` at
+`009C62C6`. Every callee effect is read from that callee's own tail rather than assumed:
+
+| callee | `RET` | x87 | read at |
+| --- | --- | --- | --- |
+| `009FB800` `BSP_PilotBot_CommandPitchFromAltitude` | **8** | void | `009FB94B`, `009FB96B`, `009FBA4D` |
+| `007F0280` `BSP_Bot_NearFieldUnitAvoidanceProbe` | 18h | void | `007F0B1F` |
+| `009FA2E0` | 4 | none | `009FA346` |
+| `009FABE0` | 8 | none | `009FACAE` |
+| `007C4810`, `0099B630` | 0 | float in ST0 | `007C4829` `FLD [ESP]`; `0099B639`/`0099B646` `FLD` |
+| `00419010`, `00438AA0`, `00438B10` | 14h, 8, 8 | float in ST0 | as the aimglide walk |
+
+`009FB800`'s `RET` is worth naming: a linear scan finds a `RET 10h` at `009FBB1A`, but `009FBB13`
+`CALL 009FB800` sits three instructions above it, so that epilogue belongs to a **wrapper**, not to
+`009FB800`. Reading the first `RET` a scan reaches would have put eight bytes of phantom cleanup into
+every frame after `009C6F7D`.
+
+Five of the six indirect calls push one out-pointer and clean four bytes. `009C6404` pushes **nothing**
+and returns a float in ST0; with it modelled as `0:4` the walk reported forty-odd negative-depth
+faults. With the table above the walk reports **zero join conflicts, zero unknown call targets, zero
+notes, and both `RET`s at depth 0** over the whole body.
+
+`ESI` is written exactly once, `009C62B9 MOV ESI,ECX`, and restored by the two epilogues, so every
+`[ESI+n]` in the body is a fly-above field. This also settles the frame worry left in
+"`009C62B0`'s command side": `009C6336` writes base `[ESP+50h]` at `fb=0x9c` and `009C6DC1` reads base
+`[ESP+4Ch]` at `fb=0xa0`. Two different slots four bytes apart, exactly as that section suspected but
+could not resolve.
+
+### `009C65FD`'s span is `max(R - S, 0)`, and `R` is the planar range
+
+This is the correction the packet exists for. `docs/HANDOFF_DIVE_BOMB_ENTRY.md` (a), "The two flyabove
+flags, bound" and `src/dive_bomb_task.cpp` all had the span as `max(B - S, 0)` with `B` the height
+above the aim point. The x87 stack says otherwise, walked forward from `009C64EE` with every push and
+pop accounted:
+
+```
+009c64ee FLD [ESP+28h]      ST0=R
+009c64f4 FLD [ESP+38h]      ST0=B ST1=R
+009c64f8 FLD [ESP+3Ch]      ST0=X ST1=B ST2=R    ; all four BL paths rejoin at 009C6532 with this
+009c6578 FCOMPI ST(1) pop / 009c657a FSTP ST(0)  -> ST0=B ST1=R
+009c659b FCOMPI ST(1) pop / 009c659d FSTP ST(0)  -> ST0=R      ; B is discarded HERE
+009c65d1 FSTP [ESP+10h]     ST0=R                ; [ESP+10h] = S
+009c65d5 FLD  [ESP+10h]     ST0=S ST1=R
+009c65d9 FLD  ST(0)         ST0=S ST1=S ST2=R
+009c65db FSUBP ST(2)        ST2 = R - S
+```
+
+`[ESP+28h]` is the planar distance, written **once** at `009C63A6` from the `00BF7030` square root at
+`009C6399`, and never overwritten anywhere in the 949 instructions (census: two writes, `009C63A6` and
+the zero at `009C63B1`, and nine reads). `[ESP+38h]`, the height `B`, is consumed by `009C659B`'s
+compare and dropped by `009C659D` before the subtraction ever happens. The threshold still comes from
+the height - `S = 0.7 * max(B, 100) + 200`, `00D7A220`/`00CE3D08`/`00CEFFA0`/`00CE4D70` - so the
+function takes **two different quantities**, which is what made the single-argument reconstruction
+look plausible.
+
+**Where "666.7 m" came from.** With the height as the minuend, `max(B - (0.7B + 200), 0)` is zero at
+exactly `B = 666.7`, and that number was then read back as a height gate and compared with
+`approach+D4h` = 675.0 m, eight metres away, which looked like corroboration. It is not a number in
+the image. The image's second `+19h` arm is **`R <= 0.7 * max(B, 100) + 200`**: a range-to-go test
+against a glide slope, with no relation to `+D4h`.
+
+That is why the height arm won the race for every aircraft in `cc8_dive_race`'s three windows. In
+window C `movieval` enters the fly-over at `alt=1394 rng=2079` and hands over at `alt=665 rng=368`;
+with the range test and the measured 0.426 descent the arm fires where `R = 0.7*alt(R) + 200`, which
+is `R = 792 m` at `alt = 846 m` - **171 m above `+D4h`, so `+18h` is 1 and the hand-over is the
+turndown, not the glide.**
+
+One trap for the next reader: base`[ESP+30h]` holds the span only until `009C6853`, where the bank arm
+overwrites it with `classDesc+268h * 1.4` (`TurnCircleRadius` times the qword 1.4 at `00D045F0`). Every
+read of `[ESP+30h]` from `009C6881` onwards is a turn radius, not a span. The `+19h` test at
+`009C67A9` is before that write and does read the span.
+
+### The commanded heading: `C + clamp(turn, +/-L)`, and the turn is a dead-banded bearing error
+
+```
+C   base[ESP+4Ch]  the aircraft's heading, written ONCE at 009C6406 from the 009C6404 vtable[50h] float
+A   base[ESP+44h]  the desired heading
+    009C63FE  A = base[ESP+3Ch] = wrap(pi/2 - atan2(z,x)), the bearing; +2pi at 009C63E0 (00CE3828)
+    009C6A9F  A = AddWrappedAngle(C, base[ESP+1Ch])   when 009C6A46 `76` JBE is NOT taken
+    009C6D59  A = AddWrappedAngle(A, base[ESP+20h])   the avoidance increment
+L   base[ESP+34h]  0.1745329 (10 deg, 00CE3990) at 009C6497, then 1.5707964 (pi/2, 00CE3C64) at
+                   009C65A3 and again at 009C682C. Which one is live at 009C6D78 is a path
+                   question: 009C6544's `75` JNE, taken when flyabove+1Bh != 0, skips 009C65A3,
+                   and 009C682C runs only on the BL != 0 arm - so L is 10 degrees exactly when
+                   `+1Bh != 0 && BL == 0`, and pi/2 otherwise. The 10-degree rate limit is the
+                   corner, not the common case.
+delta = SubtractWrappedAngle(A, C)                    009C6D6F -> base[ESP+1Ch]
+009C6D78-009C6DB0  clamp(delta, -L, +L); 009C6D7E FCHS builds -L; 009C6D8E and 009C6DA0 both `76` JBE
+009C6DC8  AddWrappedAngle(C, clamped) -> base[ESP+44h] -> cmd+2C0h at 009C6DE7, mode 2 at 009C6DEF
+```
+
+The turn at `009C6A37`-`009C6A7F` is a **symmetric dead-band on the signed bearing error**, of
+half-width `T` = base`[ESP+20h]`. `base[ESP+1Ch]` is the bearing error
+`E = SubtractWrappedAngle(bearing, heading)` written at `009C641C` and not rewritten between there and
+`009C6A37`; and `XMM0` is **0.0** on every path that reaches `009C6A43` - the four writes that can
+precede it, `009C67BC`, `009C67FF`, `009C690E` and `009C699C`, are all `XORPS XMM0,XMM0`, and nothing
+non-zero is written to `XMM0` between `009C699C` and `009C6A43`. So
+
+```
+009c6a43  T <= 0            -> skip the whole arm; A stays the raw bearing of 009C63FE
+009c6a48  E > 0             -> A = C + max(E - T, 0)
+          E <= 0            -> A = C + min(E + T, 0)
+```
+
+`T` has **three producers and only one of them is read**, which is the honest state of this arm:
+
+* `009C6674`, `T = InterpolateClamped(0.0, 0.5235988, 200.0, 0.0, span)` - 30 degrees at span 0
+  falling linearly to 0 at span >= 200 m. This is what reaches `009C6A43` on the paths that leave the
+  body early, i.e. the `BL == 0` jump at `009C67C1` and the two `009C6A35` jumps.
+* `009C64A0`, `T = 0.0`, on the `flyabove+1Bh != 0` path where `009C6544`'s `75` JNE skips `009C6674`
+  altogether. On that path the dead-band is inert and `A` is the bearing.
+* `009C6893` and `009C6911`, inside the bank arm, which is the **common** path in this mission because
+  `BL` is 1 while `R > approach+B4h`. `009C6911`'s value is
+  `InterpolateClamped(?, 00CEDD00, classDesc+268h TurnCircleRadius, 0.1745329, ?)`; its first and
+  fifth arguments come off the x87 stack from `009C68DD` and are **NOT traced**. `009C6893`'s
+  producer is likewise unread.
+
+So the statement that can be made from the listing is the shape, not the value: the fly-over commands
+`C + clamp(deadband(E, T), +/-L)`, and this host's `A = bearing` is exactly right whenever `T <= 0` and
+approximate otherwise. What it is **not** is an independent heading with a convergence test, which is
+what `cc8_dive_race`'s closing hypothesis proposed. The heading is therefore not the lever, and the
+packet does not bind it: two of its three inputs are untraced and the third, the avoidance increment,
+runs through the unbound `007F0280`.
+
+### A sixth flag: `flyabove+1Ch` is written, and this host's contract says it never is
+
+`009C6919 MOV byte ptr [ESI+1Ch],1`, reached from `009C68D4`'s `76` JBE inside the bank arm, and
+`009C691F`/`009C6923` then branch on it: `+1Ch == 0` goes to the dead-band at `009C6A37`, `+1Ch != 0`
+carries on into `009C6929`. The same byte is what `009C6DCD` tests and `009C6DDA`'s `75` JNZ uses to
+**skip the heading write entirely**. `include/bsp/dive_bomb_task.hpp` records
+`suppress_heading_1c` as "a contract: this host keeps no flyabove `+1Ch`, so it never suppresses" -
+that is now a known hole rather than a contract, and it is the first thing to read after this packet.
+
+### `009C6CEC`'s 0.01 is inside the avoidance arm, and the earlier hypothesis is withdrawn
+
+`cc8_dive_race`'s closing section proposed that `009C6CEC`-`009C6D3B` means "turn onto a computed
+heading, and roll in once you are on it to within 0.01 rad". It does not, and the producers say so.
+
+`009C6B3A` calls `007F0280` `BSP_Bot_NearFieldUnitAvoidanceProbe` with six pushes matching its
+`RET 18h`: `arg1 = [EAX+4]`, `arg2 = &base[ESP+5Ch]`, `arg3 = &base[ESP+68h]`, `arg4 = &base[ESP+74h]`,
+`arg5 = &base[ESP+80h]`, `arg6 = 1`, `ECX = [EAX+0Ch]`. `arg2`'s three floats are the probe extents and
+**`flyabove+18h` picks the set**: `(60, 70, 90)` when `+18h != 0` and `(80, 70, 140)` when it is zero
+(`009C6AA7`-`009C6B12`; the run-in site at `009C4260` uses `(80, 60, 120)`).
+
+`009C6B45`-`009C6B75` takes `|out3[0]|` by masking the sign bit and compares it with the **double 0.05**
+at `00D7A270`; on `<=` the code jumps to `009C6D40` with `base[ESP+20h] = 0.0`, i.e. no avoidance turn.
+Otherwise `009C6B86` stores `-out3[0]` into `base[ESP+10h]`, and the slot census shows the next write to
+that slot is `009C6CD8`, the ternary itself. So at `009C6CEC`:
+
+* `base[ESP+10h] = (out3[0] > 0) ? out3[0] : -out3[0]` = `|out3[0]|`. The `009C6CE0`/`009C6CE6` pair is a
+  genuine load-store no-op; the ternary is `fabs` emitted a second time.
+* `base[ESP+74h] = out4[0]`, another output of the same probe.
+
+The test is `| |out3[0]| - out4[0] | <= 0.01` (`00D7A238`, float, `009C6D1A` `COMISS`, `009C6D21` `76`
+JBE), and the arm is gated at `009C6CAE`-`009C6CC8` on `+19h != 0 && +18h != 0 && +20h == 0`. It is a
+once-only latch that clears `+19h` while an avoidance turn is still converging and, when it has,
+latches the roll side `+20h = (out3[0] < 0) ? +1 : -1` (`009C6D2C` `72` JB). Nothing in it is a heading
+and nothing in it names the aim point.
+
+### The `+1Ah` tolerance does reproduce; the check was reading the wrong call
+
+The hand-over brief flagged `InterpolateClamped(0, 20 deg, W, pi, x)` as not reproducing "from the
+constants at the `009C666F` call, which read `(0.0, 0.5236, 200.0, 0.0)`". There are **two** `00419010`
+calls in that block and the tolerance is the one at **`009C663E`**: `[ESP+0] = 0.0` (`009C6639` FLDZ),
+`[ESP+4] = 00CE398C = 0.3490659` (20 degrees), `[ESP+8] = approach+B4h * 0.8 - S` (`009C6615` FLD
+`[EBP+B4h]`, `009C661B` FMUL qword `00CE3D40` = 0.8, `009C6621` FSUBRP), `[ESP+Ch] = 00D7A264 = pi`,
+`[ESP+10h] = span`. `009C666F` is the dead-band's `T` above, whose result goes to `base[ESP+20h]`.
+The write-up stands unchanged; nothing is retracted there.
+
+### Every write to the fly-above flags, with its condition
+
+`EDI = ESI+4` and `[EDI]` is the approach; `EBP = [[EDI]+4]` is the entity. `B` = base`[ESP+38h]`,
+`R` = base`[ESP+28h]`, `E` = base`[ESP+2Ch]` = `|SubtractWrappedAngle(bearing, heading)|` folded at
+`009C6425`-`009C6453`, `X` = base`[ESP+3Ch]` re-defined at `009C64C9` as `(approach+0Ch)->+398h` when
+`approach+0Ch != 0` and `approach+ACh + approach+50h` otherwise.
+
+| site | write | condition |
+| --- | --- | --- |
+| `009C659F` | `+18h = 0` | unconditional on the main path |
+| `009C680E` | `+18h = (B > approach+D4h)` | `BL != 0`; `009C67BF` `74` JE skips to `009C6A37` |
+| `009C66E3` | `+1Ah = 1` | `E > T1`, `T1 = InterpolateClamped(0, 20 deg, B4h*0.8 - S, pi, span)` |
+| `009C66E7` | `+19h = 0` | the same edge |
+| `009C66F2` | `+1Ah = 0` | `E <= T1` |
+| `009C6822` | `+1Ah = 0` | the `+18h` recompute path |
+| `009C67B0` | `+19h = 1` | `E > 1.6` (`009C67A7` `77` JA, qword `00CE3D48`) **or** `span <= 0` (`009C67A9` `COMISS` 0.0 against `[ESP+30h]`, `009C67AE` `72` JB skips) |
+| `009C6826` | `+19h = base[ESP+43h]` | the **entry value**, saved at `009C6540`; on the `BL != 0` path this discards `009C67B0`'s set |
+| `009C6A30` | `+19h = +18h` | `009C6A2B` `76` JBE not taken |
+| `009C688F`, `009C68E1` | `+19h = 0` | inside the bank arm, `009C688D` and `009C68D4` both `76` JBE not taken |
+| `009C6D23` | `+19h = 0` | the avoidance arm above |
+| `009C6D31` / `009C6D3B` | `+20h = -1` / `+1` | converged, on the sign of `out3[0]` |
+
+`BL`, at `009C64F2`-`009C6530`, is
+`(al == 0) && (approach+D4h <= X) && ((approach+B4h <= R) || (B >= approach+D4h))`, with `al` from the
+`vtable[5Ch](0x14)` query at `009C64EC`. A **fifth flag** turns up: `009C6532` `CMP [ESI+1Bh],0` with
+`009C6544` `75` JNE jumps the whole leave and roll-in evaluation, and `+1Bh` is written at `009C6813`.
+Nobody has written `+1Bh` up and this packet does not either.
+
+### What is still a hole
+
+`R` and the bearing are measured to a **lead point**, not to the target:
+`(dx,dz) = vtable[34h]([[ESI+4]+4]) - 009FA2E0([ESI+4]+30h)` and then
+`(x,z) = vtable[0]([ESI+4]) - 3.0*(dx,dz) - entity_pos`, the 3.0 being the qword at `00D7A2B0`
+(`009C6320`, `009C6328`). `009FA2E0` is itself a forwarder to the **same** `vtable[34h]`, on
+`[(approach+30h)+14h]` (`009FA2F7` `MOV EDX,[EAX+34h]`), so the two terms are one quantity taken on two
+objects. `vtable[0]` on the approach is the aim point, the getter `009C5278` also uses. `vtable[34h]`
+is **not identified**, so the `3.0 *` term is unread and this host measures both `R` and the bearing to
+the command target's position instead. That substitution is unchanged by this packet and it moves `R`
+and the bearing together.
+
+### `R` and the bearing are taken to a three-second lead point, and `009FA2E0` is read not assumed
+
+`009C62D1`-`009C63E6` does not measure to the aim point. It measures to where the aim point will be
+relative to the aircraft in three seconds:
+
+```
+009c62cf  vtable[34h] on [[ESI+4]+4]       v_own       (out.x -> [ESP+10h], out.z -> [ESP+18h])
+009c62e8  009FA2E0 on approach+30h         v_target    (overwrites [ESP+50h]..[ESP+58h])
+009c62ed  009c6305                         (dx,dz) = v_own - v_target
+009c6320  009c6328                         the qword 3.0 at 00D7A2B0
+009c6336  009c633e                         [ESP+50h] = 3*dx, [ESP+58h] = 3*dz
+009c6342  vtable[0] on the approach        the aim point
+009c6346  009c6351                         aim - 3*(dx,dz)
+009c635d  009c636b                         less the entity pose +FCh / +104h
+009c6385  009c63a6                         R = sqrt(x*x + z*z), 1e-10 floor at 00CE3820
+009c63bf  009c63e6                         bearing = wrap(pi/2 - atan2(z,x)), +2pi at 00CE3828
+```
+
+In three seconds the aircraft moves `3*v_own` and the aim point, which tracks the target, moves
+`3*v_target`, so `aim - pos - 3*(v_own - v_target)` is exactly the predicted separation.
+`vtable[34h]` is the velocity getter - the same slot `009C7D71` multiplies by `007BCC80`'s fall time
+to build the predicted impact point.
+
+`009FA2E0` is read rather than taken on the name. It is a three-way forwarder to the **same**
+`vtable[34h]`: on `[approach+44h]` when that is non-null (`009FA2EE`-`009FA2FB`), otherwise on
+`[approach+48h]` (`009FA303`-`009FA313`), otherwise it fills the out vector from the three globals at
+`00F87574`/`78`/`7C` (`009FA31B`-`009FA345`). Its `this` is `approach+30h`, so the two displacements
+are `approach+44h` and `approach+48h`, the approach's own target handles.
+
+Bound together with the span, because they are one vector and they move together: the range, the
+`+19h` arm, the `+1Ah` arm and the heading command all read these same two frame slots.
+
+### The `C := 210 m` clamp at `009C657C` is NOT guarded, but two paths skip it, and one of them is named
+
+The clamp is `009C657C`'s `76` JBE falling through to `009C6580`-`009C6589`: when
+`X > 1.1 * (row+40h * approach+A8h)` = `1.1 * 210` = 231, base`[ESP+3Ch]` is replaced by 210. base
+`[ESP+3Ch]` is the commanded altitude `C` - written at `009C64C9` from `(approach+0Ch)->+398h`, or
+`approach+ACh + approach+50h` when there is no controller, and read at `009C6E1C`, `009C6E28` and
+`009C6E5D` inside the altitude arm.
+
+Filtering the whole listing for every branch that can reach or skip `009C6589`, there is **no mode
+byte, no `+790h`, no `+D1h`, no ordnance test and no per-class flag** between `009C6491` and
+`009C657C`. `009C64A6`'s `74` JE does only what the previous packet said - choose between two sources
+of `C`. So the clamp is unconditional on the main path, and the image does put the glide's release
+altitude on an aircraft whose data table says the roll-over begins at 1000 m.
+
+Two branches skip it entirely, and both are worth more than the clamp:
+
+* `009C6544`'s `75` JNE on `flyabove+1Bh` jumps to `009C67B6`, past `009C654A`-`009C67B5` - the whole
+  altitude target, the leave test and the roll-in test. `+1Bh` is written at `009C6813`.
+* `009C6554`'s `0F85` JNE, taken when base`[ESP+27h] != 0` **and** `BL != 0`, jumps to `009C67FF` and
+  then back to `009C67D1`, again past the clamp and past the `+1Ah`/`+19h` tests. base`[ESP+27h]` is
+  **`ctl+3A8h`**, a byte on the unit controller read at `009C64D1` (`MOV AL,[EAX+3A8h]` with
+  `EAX = approach+0Ch`) and zeroed at `009C64DD` when there is no controller. `009C67D1` reloads it
+  and its `75` JNE sends the same aircraft straight into the `+18h` recompute.
+
+On either skip path `C` keeps the cruise altitude `009C64C9` wrote and the altitude arm commands
+about 1000 m instead of 210 m - which is exactly the "holds the begin altitude across the fly-over
+and rolls in" behaviour the authored comments describe. **`ctl+3A8h` is unread**, and it is the
+single address to take next if the glide-versus-roll-over question is reopened. This packet does not
+bind it.
+
+### Measured: the before run, and the artefact seen directly
+
+`local\heading_before.log`, 4800-frame USN04 on `dbda05ead` (the census commit, no rule change). It
+reproduces `cc8-dive-race`'s `race_dist.log` **to the digit** on every aircraft that appears in both,
+so the merged tree is a valid baseline. All fifteen dive bombers behave identically:
+
+| aircraft | attackrun -> flyabove | flyabove -> ... |
+| --- | --- | --- |
+| `movieval` x3 | `alt 1393-1394 rng 2073-2079 span 218 f18=1` | **aimglide** `alt 664-665 rng 361-368 span 0 b 664-665 f18=0 f19=1` |
+| `D3A Val #1.1` x3 | `alt 1395 rng 2078-2080 span 218-219 f18=1` | **aimglide** `alt 665 rng 364-366 span 0 f18=0 f19=1` |
+| `D3A Val #3.1` x3 | `alt 1398-1400 rng 2077-2078 span 220 f18=1` | **aimglide** `alt 662-663 rng 207-272 span 0 f18=0 f19=1` |
+| `D3A Val #5.1` x3 | `alt 1395 rng 2078-2080 span 218-219 f18=1` | **aimglide** `alt 665 rng 364-366 span 0 f18=0 f19=1` |
+| `D3A Val #7.1` x3 | `alt 1400-1403 rng 2073-2077 span 220-221 f18=1` | **aimglide** `alt 664-666 rng 150-233 span 0 f18=0 f19=1` |
+
+`summary mission dive-bomb task: aircraft=15 releases=0 bombs_spawned=0`.
+
+The `span` column is the artefact measured rather than argued. At the fly-over entry `b=1394` gives
+`S = 0.7*1394 + 200 = 1175.8` and the logged `span = 218`, which is `1394 - 1175.8` - the height
+minus the threshold, to the metre. At the hand-over every aircraft reads `span=0` with `b` between
+662 and 666, i.e. the crossing at 666.7, and `f18=0` because `b < approach+D4h = 675`. The range at
+those hand-overs runs from 150 m to 368 m, three of the five formations well inside where the image's
+range test would have fired. **Nothing in this mission ever left the fly-over on the bearing arm, and
+nothing left it on a range.**
