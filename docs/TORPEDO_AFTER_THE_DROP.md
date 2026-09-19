@@ -1052,3 +1052,78 @@ registers no such property for its own `+D0h`. Recorded because a reader who fin
 `"inattackrange"` next to a `+D0h` elsewhere should not carry it across.
 
 The static hunt is closed. What remains is a native trace or the elimination argument in 8.4.
+
+## 10. Why the decrement broke the goaway — and it was not the entry chooser
+
+Section 9.2 blamed `009D3F60`, the entry chooser. **That attribution is wrong.** Read properly:
+
+### 10.1 (a) `009D3F60` has exactly one call site, and it cannot run after a drop
+
+`python tools/callsite_census.py 009d3f60` over the whole image: **one** caller, `009D41D3`, inside
+`009D4030` itself. A scan for the absolute dword `60 3F 9D 00` returns **0**, so no vtable carries
+it either. It is not a per-think entry point.
+
+`009D41D3` is reached two ways, and the host's two calls (`src/torpedo_task_arm.cpp:75` and `:94`)
+are those same two paths, not an extra one — the host is faithful here:
+
+* `009D41C4`, when the current state is **not** one of the five attack states (moveto/follow); and
+* the `goto LAB_009d41d1` taken when the current state is **prepare** (`task+740h`).
+
+After a drop the state is `aim`, so **the chooser never runs**. Mav1's decrement run confirms it
+from the other side: `states[attackrun=424 aim=254]`, no prepare ticks at all.
+
+### 10.2 (b) `task+52Ah` is not a copy of `approach+132h` — it is the same byte
+
+The approach is at `task+3F8h`, proved by `009D3050`'s `LEA EDI,[ESI+3F8h]` at `009D3080` followed
+by `MOV [EDI],0D213C0h` at `009D30A7` storing the approach's own vtable. So
+`approach+132h` is `task+(3F8h + 132h)` = **`task+52Ah`**, one byte with two names.
+`009D34CD MOV [ESI+132h],AL` writes it with `ESI` = the approach; `009D4030` reads it as
+`param_1+52Ah` with `param_1` = the task. There is **no copy, therefore no latch and no staleness**,
+and the question of "where is it refreshed" has the answer "in `009D3420`, once per tick, because
+the arm runs the approach update at `009D486F` every tick".
+
+### 10.3 (c) What actually retired the task: the aim hold, released at the wrong moment
+
+`009D4030` evaluates its tests in this order, and the order is the whole answer:
+
+```
+if (current != done) {
+    if (IsAttackState(current) && task->vtable[1Ch]())  -> done     <-- FIRST
+    ...
+    if (current == aim) {
+        if (task+52Ah && !AimHold())  return;      // stay in aim
+        -> goaway
+    }
+```
+
+`vtable[1Ch]` is `009D4C10`, which section 7.4 read: true when the target is gone **or the range has
+opened past `SafeDist * approach+24h`**. It does not consult the ordnance byte.
+
+So with the byte **set**, the aim state *holds*, and the task stays in aim until `009D31B0` lets it
+go — by which time it hands off to the goaway. With the byte **clear**, the hold is released
+immediately, and because the break-off test is evaluated **first** in the same call, a task whose
+range is already past `SafeDist * ratio` — which after a drop at about 700 m against a SafeDist of
+700 it is — goes to `done` **before** the aim branch is ever reached.
+
+* **was** (9.2): `009D3F60` sent the task straight to `kDone`.
+* **is**: the chooser never ran. Clearing the byte released the aim hold at a moment when
+  `009D4C10` was already true, so `009D4030`'s first test retired the task before aim could hand off
+  to the goaway.
+
+### 10.4 What this says about the lead question
+
+The proposed sequence — aim, release, goaway (no chooser), `009D4030` sees the byte clear, done — is
+**not** what the image would do on this placement, and the chooser is not the reason. The byte is
+read by the aim branch as a *hold*, and releasing it at a range already past the break-off threshold
+retires the task on the earlier test. For the sequence to work, the byte would have to clear
+**after** the goaway is entered, not at the release.
+
+That is testable and cheap: the release and the aim-to-goaway transition are separate ticks, so a
+host that cleared the byte one state later — on entering the goaway rather than on the drop — would
+distinguish "the image clears it late" from "the image does not clear it at all". Not done here, and
+not worth a run before the section 8.1 census answers what the bombers were aiming at; recorded so
+the option is on the table rather than rediscovered.
+
+Section 9's conclusion is unchanged: the decrement as written is wrong and stays reverted. What
+changes is the reason, and the reason matters because it says the byte is an **aim hold**, not a
+retire signal.
