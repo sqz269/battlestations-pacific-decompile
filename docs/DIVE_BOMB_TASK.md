@@ -2829,3 +2829,28 @@ cc8-torpedo-descent's listing evidence: `009C43CD`'s result is `009FBA50`'s arg3
 
 **Baseline: everything from here is measured after `67e8ac821`** and cannot share a table with the
 runs above. `local\usn04_span.log` is the first on the new side.
+
+## Constant-width audit, prompted by the torpedo aim tick's `kPitchClampLo`
+
+cc8-torpedo-descent found `00D21318` carried in a header as 0.05625 - the **double** at those eight
+bytes - while both loads are four-byte, and the float is `0xBFB2B8C3` = -1.3962634 = -DEG(80). A
+sign flip and a factor of twenty-five, from a constant that carried a bare address and no width.
+
+`include/bsp/dive_bomb_task.hpp` was audited for the same pattern: constants whose comment gives an
+address but no width word and no load site. Thirty-eight matched, of which **two are declared
+`double`** - the only ones where a width error could flip a value rather than merely be untidy:
+
+| constant | address | load | verdict |
+| --- | --- | --- | --- |
+| `kFlyAboveRollInBearing` = 1.600000023841858 | `00CE3D48` | `009C6790 FLD double ptr` | correct |
+| `kRollHandOver` = 0.800000011920929 | `00CE3D40` | `009C45B3 FLD double ptr` | correct |
+
+Both verified against the listing, and both now carry the width and the site. `00CE3D48` is the
+example they cite - its float is -1.084202e-19 - so had this one been declared `float` the flyabove
+roll-in would have compared a bearing against a denormal and fired on every tick.
+
+The remaining thirty-six are declared `float` and are consistent with `MOVSS`/`FLD float ptr` loads
+at the sites this stream has read, but they were **not** individually re-verified in this pass and
+should not be read as audited. The rule worth carrying forward is the one their packet demonstrates:
+a constant's comment gives the address **and** the width **and** a load site, because the address
+alone does not determine the value.
