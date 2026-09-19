@@ -180,15 +180,30 @@ DiveBombTransitionResult dive_bomb_next_state_009c83e0(
 // 009C7BFB-009C7C31. The hysteresis on approach+D0h.
 bool dive_bomb_in_range_latch_009c7c31(const DiveBombRangeLatchInputs& in) noexcept {
     float threshold;
+    bool latch;
     if (!in.latched) {
         threshold = in.in_range_distance;
+        latch = !(threshold <= in.planar_distance);
     } else if (!in.control_flag_369 || !in.global_e17bf2) {
         threshold = in.in_range_distance +
                     static_cast<float>(dive_bomb_constant::kMoveToRangeBias);
+        latch = !(threshold <= in.planar_distance);
     } else {
-        return true;  // 009C8C2F falls straight to the `1`
+        // 009C8C2F falls straight to the `1`, and 009C7C57's JNZ then skips the
+        // spent-member arm on the same two conditions, so this returns here.
+        return true;
     }
-    return !(threshold <= in.planar_distance);
+    // 009C7C3E: a bomber that still has bombs is done.
+    if (in.has_bomb_ordnance_d1) return latch;
+    // 009C7C44-009C7C57: the same guard as the hold arm above, in the same
+    // order - skip only when BOTH the control flag and the global are set.
+    if (in.control_flag_369 && in.global_e17bf2) return latch;
+    // 009C7C63 and the null squadron: no leader to measure against.
+    if (in.is_flight_leader || !in.leader_known) return latch;
+    // 009C7CCB `FLD [ESI+B8h]` / `FCOMPI` / `JBE 009C7CFC`: AL is 0 when the
+    // in-range distance is at or below the leader-to-aim-point range, and
+    // 009C7CFE ANDs it into the latch.
+    return latch && !(in.in_range_distance <= in.leader_to_aim_point);
 }
 
 // 009C7A94-009C7AB4. `FLD [ctl+39Ch]`, `FLD [approach+A8h]`,

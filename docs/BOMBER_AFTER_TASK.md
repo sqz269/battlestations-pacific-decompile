@@ -1246,3 +1246,38 @@ there is no goaway edge there to restore (section 10.1).
 **Fixing it needs a new input, not a new expression.** The host has `db_aim_point_height_50`
 (`approach+50h`) but carries no `+4Ch`/`+54h`, so a faithful 3-D range needs the aim point's x and
 z plumbed into the slot beside it. Not done here; see 10.11.
+
+### 10.11 The approach states, the break-off fix and two corrections (packet `cc8_dive_approach`)
+
+`docs/DIVE_BOMB_APPROACH.md` carries this packet whole. What it changes here:
+
+1. **10.9's open question is answered.** The arm `009C8790` has no per-state chain at all: its
+   tail `009C883D`-`009C884C` is one virtual call, `state->vtable[+0Ch](dt)` on `task+310h`.
+   `moveto task+4F0h` is a `009C2AC0` object with vtable `00D20AEC`, whose `+0Ch` is `009C18C0`,
+   and `follow task+52Ch` is a `009C2980` object with vtable `00D20AB8`, whose `+0Ch` is
+   `009C1FD0`. This host ran neither. `009C18C0` for a dive bomber is a glide from
+   `BeginAltRange/1` above the target down to that altitude at `approach+B4h`, at LevelFlight
+   speed, steering at the target — the same command shape the attack run issues at `009C43ED`.
+   It is now bound for `kMoveTo`; `kFollow` is unreachable here and its station-keeping law
+   (`009BFEE0`, `009BEE30`) stays unread.
+
+2. **A correction to 10.4.** The spent-member arm `009C7C5D`-`009C7CFE` does not measure the
+   member's distance to its leader. `009C7C9B CALL [[ESI]]` is the approach's vtable slot 0,
+   `009C40A0`, the aim-point getter, and `009C7CAE`/`009C7CBA` subtract `aimPoint - leader`. The
+   rule is that a spent wing member's latch is cleared when the **leader** is further than
+   `approach+B8h` from that member's **aim point**. The unit's own position is not in the
+   expression. Everything else in 10.4 holds.
+
+3. **A refinement to 10.10, not a retraction.** The dive-bomb approach's vtable is written three
+   times — `009C3EE2` = `00D20C48` (the base), `009C740B` = `00D20E08` (the approach ctor),
+   `009C7767` = `00D20E10` (the *task* ctor) — so the live table at `009C8AFD` is `00D20E10`.
+   All three hold `009C40A0` at slot 0, so 10.10's conclusion that the far point is the aim point
+   stands unchanged.
+
+4. **10.10's fix is done.** The 3-D range needed no new producer: this host's aim point already
+   is the commanded target's position, so only the vertical term was missing. Both break-off
+   feeds now read `db_aim_point_3d`.
+
+5. **A retraction of a ledger note.** `009C18C0`'s ledger entry said its vtable slot was "shared
+   by moveto and follow". It is not; the follow tick is `009C1FD0`. Section 2 of
+   `docs/TORPEDO_MOVETO_TICK.md` repeats the same error.

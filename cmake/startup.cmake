@@ -48,6 +48,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/avoid_zone_boundar
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/avoid_zone_offset.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/avoid_zone_segment_math.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/bot_task_states.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/move_to_glide.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/dyn_profile_scopes.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/dyn_world_factory.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_input_settings_runtime.cpp)
