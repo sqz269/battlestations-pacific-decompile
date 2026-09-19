@@ -258,6 +258,50 @@ enum class FormationJoinOutcome {
 };
 
 // ---------------------------------------------------------------------------
+// 008A3600's 5Bh message
+// ---------------------------------------------------------------------------
+//
+// Packet cc8_navigator_path, read from the listing at 008A3879-008A38D0. The
+// body builds the message over the SceneCommandTarget's own stack storage, once
+// that record has been consumed into the path entity pointer, so the two never
+// coexist. Offsets are from the message base.
+//
+// +0h vtable 00D02E84, +4h 1, +18h word 0, +1Ah byte 0, +1Ch byte 0: the same
+// base JoinFormation's 76h message writes (docs/LUA_BINDING_NAVIGATOR.md), so
+// only the three fields below are this type's own.
+struct NavigatorPathOrder {
+    // +20h, stored at 008A38B0 from the uint16 at pathEntity+174h.
+    std::uint16_t path_object_id{0};
+    // +24h, stored at 008A38B5. Lua argument 2, default 1 (EDI at 008A3730).
+    // The script's PATH_FM_CIRCLE is one of this field's values; which integer
+    // it is was NOT read, because the constant lives in the shipped Lua and not
+    // in the binding.
+    int follow_mode{0};
+    // +28h, stored at 008A38B9. Lua argument 3, default 5 (LEA EBP,[EBX+3] at
+    // 008A3734 with EBX = 2). What the value selects was not read: the only
+    // consumer found is 0071C1B0, which stores it beside the follow mode.
+    int path_parameter{0};
+};
+
+// 008A3600's defaults, each at the width of the instruction that loads it.
+// MOV EDI,0x1 at 008A361F, kept in EDI and stored to the follow-mode slot at
+// 008A3730; LEA EBP,[EBX+0x3] at 008A3734 with EBX = 2 from 008A36E8.
+inline constexpr int kNavigatorPathFollowModeDefault = 1;
+inline constexpr int kNavigatorPathParameterDefault = 5;
+// PUSH 0x5b at 008A3879 and PUSH 0x5a at 0083595B / 00835A5B: the session
+// message type bytes 0075B430 stamps.
+inline constexpr int kNavigatorPathOrderMessageType = 0x5B;
+inline constexpr int kNavigatorAvoidanceMessageType = 0x5A;
+// The two selectors the 5Ah message carries at +20h: MOV dword [ESP+0x24],0x7
+// at 0083598A and MOV dword [ESP+0x24],0x9 at 00835A8A.
+inline constexpr int kNavigatorAvoidanceSelectorTorpedo = 7;
+inline constexpr int kNavigatorAvoidanceSelectorLandCollision = 9;
+// PUSH 0x0 / PUSH 0x0 at 008A38BD and 008A38BF. JoinFormation's 0077C964 and
+// the two 5Ah sends pass 7; the path order passes 0, which is a difference this
+// packet records and does not explain.
+inline constexpr int kNavigatorPathOrderRouteFlags = 0;
+
+// ---------------------------------------------------------------------------
 // The host: one pure-virtual method per native call site
 // ---------------------------------------------------------------------------
 //
@@ -322,6 +366,47 @@ public:
     virtual void session_route_role_message(void* owner, int role, int value) = 0;
     // 004C3840 at 008ABA60, this = [00E188A8].
     virtual void game_assign_party_player_slots(int value) = 0;
+
+    // --- 008A3600 -------------------------------------------------------------
+    // Packet cc8_navigator_path. 008A3600 is the sibling cc_lua_navigator left
+    // out, and it is NOT the 0077D600 shape the other four have: it never calls
+    // 0077D600. It routes a 5Bh session message and the receiving unit's weapon
+    // director turns that into the command. The four reads below are the ones
+    // its body makes that no existing method covers.
+    //
+    // 00B663F0 at 008A373D, 008A3781 and 008A37C0. The native's own argument
+    // count, which gates arguments 2, 3 and 4 with CMP EAX,3 / 4 / 5 and one
+    // shared JL to 008A37FD.
+    virtual int argument_count() = 0;
+    // 00B66270 at 008A37E4, the x87 number read, stored with FSTP at 008A37E9.
+    virtual float argument_number(int index) = 0;
+    // *(*(entity+538h)+500h), loaded at 008A3724 into the same stack slot the
+    // optional argument 4 overwrites. The class MaxSpeed is the speed default.
+    virtual float entity_class_max_speed(void* entity) = 0;
+    // 0075B430(5Bh) at 008A387F + 0077C2A0 at 008A38D0, this = the acting unit.
+    // Route flags are 0 here, where JoinFormation's 0077C964 passes 7.
+    virtual void session_route_path_order_message(void* entity,
+                                                  const NavigatorPathOrder& order) = 0;
+    // The pair at *(entity+73Ch)+24h and +28h, stored at 008A3901 and 008A3912.
+    // Already reconstructed by packet cc_commanded_speed; declared here because
+    // 008A3600 makes the store itself, after the message and before its return.
+    virtual void entity_store_commanded_speed(void* entity, float speed) = 0;
+
+    // --- 008A3B10 and 008A3CD0 -----------------------------------------------
+    // Both companions take *(entity+738h), the weapon director, and send a 5Ah
+    // message through an already-named sender. Neither writes a local flag.
+    // Read at 008A3C60 and 008A3DF6.
+    virtual void* entity_weapon_director(void* entity) = 0;
+    // 00835A40 at 008A3C67 (selector 9) and 00835940 at 008A3E0E (selector 7).
+    // Both build 0075B430(5Ah) with vtable 00CFD9C4, the selector at msg+20h and
+    // the boolean at msg+24h, and route through 0077C2A0 with flags 7 and this =
+    // *(director+34h).
+    virtual void session_route_avoidance_message(void* director, int selector,
+                                                 bool enabled) = 0;
+    // 0092BD00 at 008A3C79 over 0080E490 BSP_UnitInstance_GetPartsObject at
+    // 008A3C72. 008A3B10 takes this arm on the DISABLE side only (TEST BL,BL /
+    // JNZ at 008A3C6C); 008A3CD0 has no counterpart.
+    virtual void unit_parts_land_avoidance_disabled(void* entity) = 0;
 };
 
 // ---------------------------------------------------------------------------
@@ -355,6 +440,20 @@ int lua_binding_repair_enable(LuaBindingNavigatorHost& host, RepairEnableArm& ar
 
 // 008AB850 SetRoleAvailable. `arm_out` reports which of the three arms ran.
 int lua_binding_set_role_available(LuaBindingNavigatorHost& host, SetRoleAvailableArm& arm_out);
+
+// 008A3600 NavigatorMoveOnPath. `order_out` reports the message the native
+// built, so a caller can see the follow mode and the resolved path id without
+// re-reading them. Returns 0 like the rest: 008A3917's ResultCount runs with
+// nothing pushed above the arguments.
+int lua_binding_navigator_move_on_path(LuaCommandTargetSource& targets,
+                                       LuaBindingNavigatorHost& host,
+                                       NavigatorPathOrder& order_out);
+
+// 008A3B10 NavigatorSetAvoidLandCollision and 008A3CD0 NavigatorSetTorpedoEvasion.
+// One body each; they differ in the 5Ah selector and in the disable-side arm
+// that only 008A3B10 has.
+int lua_binding_navigator_set_avoid_land_collision(LuaBindingNavigatorHost& host);
+int lua_binding_navigator_set_torpedo_evasion(LuaBindingNavigatorHost& host);
 
 }  // namespace bsp
 

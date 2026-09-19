@@ -196,12 +196,34 @@ return non-null and that object's `+5Eh` byte must be clear. Then a seven-way `I
 | Kind | Arm | Action |
 | --- | --- | --- |
 | `5Ah` | `00721A93` | `director->vtable[38h](msg)` = `00835640` over `0071C1E0`, the permission and enable receiver |
-| `5Bh` | `00721AB6` | `director->vtable[60h](00E08F80, BSP_CommandTarget_FromEntity(00720FA0(0), 0))`, then `0071C1B0(msg+24h)` |
+| `5Bh` | `00721AB6` | `director->vtable[60h](00E08F80, BSP_CommandTarget_FromEntity(00720FA0()), 0.0f)`, then `0071C1B0(msg+24h)` — see the correction below |
 | `5Ch` | `00721AEE`-`00721B87` | in session mode 2, resolve the descriptor or drop the message; then `msg[+20h]` non-zero -> `vtable[60h]` (`008358D0`, queue), zero -> `0071E7F0` (override) |
 | `5Dh` | `00721B8A`-`00721BD0` | `msg[+20h] == 0` -> `ClearOverrideCommand`; else `msg[+24h] < 0` -> `ClearAllCommandSlots`; else `InternalClearPrimaryCommand(msg[+24h])` |
 | `5Eh` | `00721BD3`-`00721BFC` | `entity = msg->00720FE0(msg[+23h])`; `00836240 BSP_WeaponDirector_StoreFireTarget(entity)` |
 | `60h` | `00721BFF`-`00721C1F` | `0071C0B0(msg[+20h])` |
 | `5Fh` | `00721C22`-`00721C50` | `msg[+2Ch]` non-zero -> `007207C0(msg+20h)`; else `0071F5D0()` |
+
+### Correction to the `5Bh` row, from packet `cc8_navigator_path`
+
+The row above used to read `then 0071C1B0(msg+24h)`, which reads as one value being passed.
+`0071C1B0` takes a **pointer** and writes **two** dwords. Body `0071C1B0-0071C1DD`, `RET 4`,
+`__thiscall(director)(const void* pair)`, read whole:
+
+1. `0071C1B2`-`0071C1C3` walk `[director+54h + i*1Ch]` for the first `i < 10` whose dword is zero.
+2. `0071C1C5` takes that slot's path object from `[director+1A0h + i*4]`.
+3. `0071C1D2` stores `msg+24h` (the follow mode) at `object+8h` and `0071C1D8` stores `msg+28h`
+   (`NavigatorMoveOnPath`'s argument-3 integer) at `object+0Ch`.
+
+So `msg+28h` has a consumer, and the two land as a pair. `docs/LUA_BINDING_MOVE_ON_PATH.md` has the
+send side, `008A3600`, which writes both fields.
+
+Two things the same packet read and this row did not say: the `00720FA0` call takes no argument —
+it resolves the entity from `word [msg+20h]` itself (`00720FA0-00720FD6`, read whole) — and the
+zero is a **float** `0.0f`, the third stack argument of `vtable[60h]`, reserved by `PUSH ECX` at
+`00721AB3` and filled by `FSTP float ptr [ESP]` at `00721AB6`.
+
+**Open:** `0071C1B0` selects the first *empty* slot, but `vtable[60h]` has just queued a command.
+Whether that queue has already filled the slot, making this the next one, was not read.
 
 ### This closes the `+238h` question
 
