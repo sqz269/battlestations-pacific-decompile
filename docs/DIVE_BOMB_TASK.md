@@ -3566,3 +3566,33 @@ installation's `scripts/datatables/robots.lua` SPNormal row authors
 `DiveBombReleaseAlt = { 350, 450 }`; the host pins the low end and the difficulty index is
 unmodelled. Pinning the low end is the conservative direction - it demands a lower aircraft before
 releasing, so it can suppress a release the image would make, never cause one it would not.
+
+## 7. The open pitch question is resolved, and it was the missing gate
+
+The seam the handoff flagged - "a full push RAISING the nose because the aircraft is inverted" -
+is **not** a frame mismatch. `009C58DE XOR EBX,EBX` is the **only** write to EBX in the whole body
+(filtered over the complete listing; the two `POP EBX` are epilogues), so `009C5D1C MOV [EDI+2D0h],
+EBX` writes **0**: the aimdive clears the pitch-hold mode and `cmd+29Ch` is a raw body-frame
+elevator demand, with `009C5D15` setting `cmd+2A0h = 1`. This host does the same - every aimdive
+row of the trace carries `mode_2d0 0` - so image and host apply it in the same frame.
+
+What produced the symptom was the unbound gate. `009C5C9F`'s positive arm clamps at **+1.0**, and
+the aim error is positive and large for the whole dive, so an upright aircraft got full pull and
+flew out of its dive. The gate is exactly what replaces that: once shallower than 30 degrees
+nose-down it overrides with `-1.0`, a push. `local\usn04_gate1.log` shows the override firing at
+tick 1794 and the dive angle holding instead of climbing out. So the answer to "body frame, or is
+the lead far larger than the substituted 70.0" is **neither**: no constant needed changing, and none
+was changed.
+
+## 8. Attribution of the commits in this stream
+
+`9daf9dad5` (packet `cc8_dive_geometry`) staged `src/game_hosts_units.cpp` whole and so contains,
+besides its own two hunks, the host-side half of this packet's gate binding near line 4897 - which
+references `planar_distance_slot_5c`, a member added in `d0955a4cb`. That commit therefore does not
+build on its own; **`d0955a4cb` is the first commit at which the gate binding is complete and the
+branch builds.** `local\usn04_geo3.log` measures the bearing fix ONLY: its author verified at tick
+1806 that the gate was not in the binary it ran. The history is left as it is.
+
+The x87 walk and the `009C5AF1` argument order were each established twice, by two scripts written
+independently (`local\x87_walk.py` and `local\x87trace.py`), which is why both are stated here
+without hedging.
