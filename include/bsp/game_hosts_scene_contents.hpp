@@ -145,6 +145,7 @@ struct GameSceneContentsSummary {
     // They are registered and not created, and they are the pool `GenerateObject`
     // instantiates from. docs/LUA_GENERATE_OBJECT_HOST.md.
     std::size_t held_back_hidden{0};
+    std::size_t spawned_by_script{0};      // held-back entities GenerateObject built
     // Milestone 2q: created entities whose bag carries `StartSpeed`, the key
     // 00823590 finds and 008235B0..008235F7 seeds the order ring from.
     std::size_t start_speed_entities{0};
@@ -193,5 +194,38 @@ public:
 private:
     std::unique_ptr<Impl> impl_;
 };
+
+// ---------------------------------------------------------------------------
+// The GenerateObject pool
+// ---------------------------------------------------------------------------
+// Not a native structure. The executable keeps the authored objects in the scene
+// database's named-object map at `sceneDb+18h`, which `0046D930` looks a name up
+// in; this process has no scene database, so the instantiate pass publishes the
+// entities it held back at `0046D3C5` into one process-wide table instead. That
+// is the same shape `bsp::air_ops_decks()` already uses for the decks.
+//
+// An entry stays after it is spawned, with `spawned` set and the entity id the
+// script's table knows it by, because `0046D930` is reached once per script call
+// and a mission that asks twice must not get two carriers.
+// docs/LUA_GENERATE_OBJECT_HOST.md.
+struct SceneSpawnPoolEntry {
+    GameSceneEntityRecord record;
+    bool spawned{false};
+    int entity_id{0};
+};
+
+class SceneSpawnPool {
+public:
+    void clear() noexcept;
+    void add(const GameSceneEntityRecord& record);
+    SceneSpawnPoolEntry* find(const std::string& name) noexcept;
+    std::size_t size() const noexcept;
+    std::size_t spawned_count() const noexcept;
+
+private:
+    std::vector<SceneSpawnPoolEntry> entries_;
+};
+
+SceneSpawnPool& scene_spawn_pool() noexcept;
 
 }  // namespace bsp::game

@@ -60,6 +60,7 @@ namespace bsp::game {
 
 class GameHostLog;
 class GameUnitsHost;
+struct GameSceneEntityRecord;
 
 // One call of one binding, as the report prints it.
 struct GameScriptOrderRow {
@@ -203,6 +204,14 @@ public:
     std::uint32_t create_air_ops_squadron_006c5050(std::uint32_t vehicle_class,
         std::int32_t wing_count, std::int32_t equipment, const std::string& home_base,
         std::string& created_name, std::int32_t& wing_count_out);
+
+    // Packet cc8_lua_generate_object. 0046DB4B runs the descriptor's own
+    // instantiate-pass creator on an authored record; this host owns the units
+    // host, so the creation lands here as it does for the squadron. The record is
+    // the one the scene pass held back, with its world frame already overridden
+    // by any position or yaw the script passed. Returns the entity id, or 0.
+    std::uint32_t create_unit_from_scene_record_0046db4b(
+        const GameSceneEntityRecord& record);
 
     // The squadron's live plane count, entity+3CCh, for the tick 006C0510 and for
     // 006BD3F0. A squadron whose unit is gone reports zero.

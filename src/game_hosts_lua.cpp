@@ -17,6 +17,7 @@
 #include "bsp/objective_units.hpp"
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/global_script_folders.hpp"
@@ -168,8 +169,13 @@ int binding_trampoline(lua_State* state) {
     const bool get_property_row = dispatch_row.address == 0x0088bf80u;
     const bool ready_row = dispatch_row.address == 0x00895d20u;
     const bool launch_row = dispatch_row.address == 0x0089e3c0u;
+    // Packet cc8_lua_generate_object. It is handled here rather than routed to
+    // the orders host because it needs both the units host, through that host,
+    // and this host's own `thisTable`.
+    const bool generate_row = dispatch_row.address == 0x00944fd0u;
     const bool handled = avoidance_setting || objective_row || get_property_row || ready_row
-        || launch_row || (orders != nullptr && GameScriptOrdersHost::handles(dispatch_row.name));
+        || launch_row || generate_row
+        || (orders != nullptr && GameScriptOrdersHost::handles(dispatch_row.name));
     // The replay of a failed named call, which the executable makes only to
     // recover the error message, must not count a second time.
     if (!host->error_replay()) {
@@ -247,6 +253,9 @@ int binding_trampoline(lua_State* state) {
     }
     if (launch_row && !host->error_replay()) {
         return host->run_launch_squadron_0089e3c0(state, argc);
+    }
+    if (generate_row && !host->error_replay()) {
+        return host->run_generate_object_00944fd0(state, argc);
     }
     if (avoidance_setting) {
         // 008D0849 uses bare 00B66250, which is lua_toboolean with no type
@@ -1490,6 +1499,170 @@ int GameMissionLuaHost::run_launch_squadron_0089e3c0(lua_State* state, int argum
     ::lua_pushinteger(state, static_cast<lua_Integer>(result.slot_index) + 1);
     log_.implemented("MissionLuaNative::LaunchSquadron", "0089e3c0");
     return 1;
+}
+
+namespace {
+
+// 00CE3828 holds the double 2*pi, and 0046DD4C compares the yaw against it: the
+// rotation is applied only when the argument is SMALLER. 00CE38B8's default
+// 10.0f is therefore not a special case but a value chosen to fail that test,
+// which is what "keep the authored orientation" means.
+constexpr double kSceneGenerateObjectYawSentinelCeiling = 6.283185307179586;
+
+// 0088B840's predicate and 00888760's reader: a position argument is a table of
+// exactly three numbers, written to [out], [out+4], [out+8].
+bool read_vector3_00888760(lua_State* state, int index, float out[3]) {
+    if (::lua_type(state, index) != LUA_TTABLE) return false;
+    int found = 0;
+    for (int i = 1; i <= 3; ++i) {
+        ::lua_rawgeti(state, index, i);
+        if (::lua_type(state, -1) != LUA_TNUMBER) {
+            ::lua_settop(state, ::lua_gettop(state) - 1);
+            return false;
+        }
+        out[i - 1] = static_cast<float>(::lua_tonumber(state, -1));
+        ::lua_settop(state, ::lua_gettop(state) - 1);
+        ++found;
+    }
+    // 0088B974 CMP EDI,3 requires exactly three entries; a fourth makes it not a
+    // position table. The rawgeti walk above cannot see a fourth, so this checks
+    // it directly rather than claiming the native's count.
+    ::lua_rawgeti(state, index, 4);
+    const bool extra = ::lua_type(state, -1) != LUA_TNIL;
+    ::lua_settop(state, ::lua_gettop(state) - 1);
+    return found == 3 && !extra;
+}
+
+// 00467050(frame, 0.0f, value, 0.0f), the yaw-only rotation 0046DD9F applies to
+// the local frame. Only the two axes a yaw touches are rewritten; the
+// translation row the caller may just have written is left alone.
+void apply_scene_yaw_00467050(float world[16], float yaw) {
+    const float c = std::cos(yaw);
+    const float s = std::sin(yaw);
+    world[0] = c;  world[1] = 0.0f; world[2] = -s;
+    world[4] = 0.0f; world[5] = 1.0f; world[6] = 0.0f;
+    world[8] = s;  world[9] = 0.0f; world[10] = c;
+}
+
+// The `thisTable` slot for an entity id, which is what the entity-returning tail
+// 0089903C pushes. Leaves it on the stack on success.
+bool push_resolved_entity_by_id(lua_State* state, int entity_id) {
+    if (state == nullptr || entity_id <= 0) return false;
+    lua_getfield(state, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
+    if (!lua_istable(state, -1)) {
+        ::lua_settop(state, ::lua_gettop(state) - 1);
+        return false;
+    }
+    char key[16];
+    std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat, entity_id);
+    lua_getfield(state, -1, key);
+    if (!lua_istable(state, -1)) {
+        ::lua_settop(state, ::lua_gettop(state) - 2);
+        return false;
+    }
+    ::lua_remove(state, -2);
+    return true;
+}
+
+}  // namespace
+
+int GameMissionLuaHost::run_generate_object_00944fd0(lua_State* state, int argument_count) {
+    ++summary_.generate_object_calls;
+    if (state == nullptr) return 0;
+    // 009450A0/00B662B0: argument 0 is the authored object's name and is the key
+    // 0046D96F looks up. Anything else returns nothing, as 0046D9AF does for a
+    // name the map does not hold.
+    if (argument_count < 1 || ::lua_type(state, 1) != LUA_TSTRING) return 0;
+    const char* raw_name = ::lua_tolstring(state, 1, nullptr);
+    const std::string name = raw_name != nullptr ? raw_name : std::string();
+    if (name.empty()) return 0;
+
+    bsp::game::SceneSpawnPoolEntry* entry = bsp::game::scene_spawn_pool().find(name);
+    if (entry == nullptr) {
+        ++summary_.generate_object_unknown;
+        if (summary_.generate_object_unknown <= 8) {
+            log_.notef("  GenerateObject 00944fd0: \"%s\" is in no held-back record, so "
+                "nothing is created, which is 0046D9AF's answer for a name the "
+                "named-object map does not hold", name.c_str());
+        }
+        return 0;
+    }
+    // 0046D930 has no already-created arm: it instantiates on every call. This
+    // process keeps the entry so a second call cannot make a second carrier, and
+    // answers it with the same entity, which is a DEVIATION and is here because
+    // a duplicated capital ship is worse than a repeated handle.
+    if (entry->spawned) {
+        ++summary_.generate_object_repeat;
+        if (push_resolved_entity_by_id(state, entry->entity_id)) return 1;
+        return 0;
+    }
+
+    // The shape decision of 0094518A..00945229. Argument 1 is a second name when
+    // it is a string; when it is a three-number table it is the world position,
+    // and otherwise the position is argument 2. The yaw follows it.
+    bsp::game::GameSceneEntityRecord record = entry->record;
+    int position_index = -1;
+    if (argument_count > 1 && ::lua_type(state, 2) == LUA_TTABLE) {
+        position_index = 2;
+    } else if (argument_count > 2 && ::lua_type(state, 3) == LUA_TTABLE) {
+        position_index = 3;
+    }
+    bool placed = false;
+    float position[3] = {0.0f, 0.0f, 0.0f};
+    if (position_index > 0 && read_vector3_00888760(state, position_index, position)) {
+        // 0046DD48 copies the three floats into the local frame's +30h/+34h/+38h
+        // translation slots, leaving the authored rotation alone.
+        record.world[12] = position[0];
+        record.world[13] = position[1];
+        record.world[14] = position[2];
+        placed = true;
+    }
+    // 0046DD4C..0046DD9F: the yaw applies only when it is SMALLER than the double
+    // 2*pi at 00CE3828, and the default 10.0f at 00CE38B8 is the sentinel that
+    // means "keep the authored orientation". 10.0 > 2*pi, so the sentinel fails
+    // the same test rather than needing a special case.
+    const int yaw_index = position_index > 0 ? position_index + 1 : 0;
+    bool yawed = false;
+    if (yaw_index > 0 && argument_count >= yaw_index
+        && ::lua_type(state, yaw_index) == LUA_TNUMBER) {
+        const double yaw = ::lua_tonumber(state, yaw_index);
+        if (yaw < kSceneGenerateObjectYawSentinelCeiling) {
+            apply_scene_yaw_00467050(record.world, static_cast<float>(yaw));
+            yawed = true;
+        }
+    }
+
+    if (script_orders_ == nullptr) return 0;
+    const std::uint32_t entity_id
+        = script_orders_->create_unit_from_scene_record_0046db4b(record);
+    if (entity_id == 0u) {
+        log_.notef("  GenerateObject 00944fd0: \"%s\" (%s) reached no creator, so nothing "
+            "was made", name.c_str(), record.class_name.c_str());
+        return 0;
+    }
+    // 0046DBE8 finishes with 00925F20 BSP_SEntity_InitAll, whose part this host
+    // can do is the `thisTable` slot every entity that reaches virtual slot 39
+    // carries; without it the script's own variable resolves to nothing.
+    if (!attach_created_entity_00928a00(static_cast<int>(entity_id), name,
+                                        record.type_id)) {
+        log_.notef("  GenerateObject 00944fd0: \"%s\" was created as unit %u but took no "
+            "`thisTable` slot, so the script's variable would be an id no binding "
+            "resolves", name.c_str(), entity_id);
+        return 0;
+    }
+    entry->spawned = true;
+    entry->entity_id = static_cast<int>(entity_id);
+    ++summary_.generate_object_created;
+    if (summary_.generate_object_created <= 16) {
+        log_.notef("  GenerateObject 00944fd0: \"%s\" (%s type=%d party=%d) -> id %u at "
+            "(%.1f %.1f %.1f)%s%s", name.c_str(), record.class_name.c_str(),
+            record.type_id, record.party, entity_id,
+            record.world[12], record.world[13], record.world[14],
+            placed ? " placed" : " authored frame", yawed ? " yawed" : "");
+    }
+    log_.implemented("MissionLuaNative::GenerateObject", "00944fd0");
+    if (push_resolved_entity_by_id(state, entry->entity_id)) return 1;
+    return 0;
 }
 
 std::uint32_t GameMissionLuaHost::create_squadron(const bsp::AirOpsSquadronRequest& request) {

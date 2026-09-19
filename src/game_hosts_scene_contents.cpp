@@ -1103,6 +1103,9 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         ++tally.rejected;
         ++owner.summary.rejected;
         ++owner.summary.held_back_hidden;
+        // The stand-in for the scene database's named-object map at sceneDb+18h,
+        // which is the only thing 0046D930 looks a name up in.
+        scene_spawn_pool().add(record);
         owner.entities.push_back(record);
         return;
     }
@@ -1825,6 +1828,43 @@ GameSceneContentsHost::GameSceneContentsHost(GameHostLog& log, GameVfsHost& vfs)
     : impl_(std::make_unique<Impl>(log, vfs)) {}
 
 GameSceneContentsHost::~GameSceneContentsHost() = default;
+
+// ---------------------------------------------------------------------------
+// The GenerateObject pool, the stand-in for the named-object map at sceneDb+18h
+// ---------------------------------------------------------------------------
+void SceneSpawnPool::clear() noexcept { entries_.clear(); }
+
+void SceneSpawnPool::add(const GameSceneEntityRecord& record) {
+    // 0046D96F looks a name up in a map, so a repeated name is one entry.
+    for (SceneSpawnPoolEntry& entry : entries_) {
+        if (entry.record.name == record.name) return;
+    }
+    SceneSpawnPoolEntry entry;
+    entry.record = record;
+    entries_.push_back(entry);
+}
+
+SceneSpawnPoolEntry* SceneSpawnPool::find(const std::string& name) noexcept {
+    for (SceneSpawnPoolEntry& entry : entries_) {
+        if (entry.record.name == name) return &entry;
+    }
+    return nullptr;
+}
+
+std::size_t SceneSpawnPool::size() const noexcept { return entries_.size(); }
+
+std::size_t SceneSpawnPool::spawned_count() const noexcept {
+    std::size_t total = 0;
+    for (const SceneSpawnPoolEntry& entry : entries_) {
+        if (entry.spawned) ++total;
+    }
+    return total;
+}
+
+SceneSpawnPool& scene_spawn_pool() noexcept {
+    static SceneSpawnPool pool;
+    return pool;
+}
 
 const GameSceneContentsSummary& GameSceneContentsHost::summary() const noexcept {
     return impl_->summary;

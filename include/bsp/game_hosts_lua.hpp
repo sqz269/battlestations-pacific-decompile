@@ -237,6 +237,11 @@ struct GameMissionLuaSummary {
     // 006C5050 through the factory seam. docs/AIROPS_LAUNCH_TICK.md.
     unsigned long long air_ops_squadrons_created{0};
     unsigned long long air_ops_squadron_key_pushes{0};
+    // 00944FD0. docs/LUA_GENERATE_OBJECT_HOST.md.
+    unsigned long long generate_object_calls{0};
+    unsigned long long generate_object_created{0};
+    unsigned long long generate_object_repeat{0};
+    unsigned long long generate_object_unknown{0};
     std::vector<GameMissionNativeCall> natives; // distinct, in first-call order
     std::string first_error;
     std::string first_error_phase;
@@ -518,6 +523,10 @@ public:
 
     int run_is_ready_to_send_planes_00895d20(lua_State* state, int argument_count);
     int run_launch_squadron_0089e3c0(lua_State* state, int argument_count);
+    // 00944FD0 GenerateObject. Instantiates one of the entities the scene pass
+    // held back at 0046D3C5, by name, and pushes its `thisTable` slot the way the
+    // entity-returning tail 0089903C does. docs/LUA_GENERATE_OBJECT_HOST.md.
+    int run_generate_object_00944fd0(lua_State* state, int argument_count);
 
     // --- bsp::AirOpsSquadronFactory, packet cc8_airops_launch_tick ----------
     // 006C5050's seam. The unit is made by the script-orders host, which owns the
