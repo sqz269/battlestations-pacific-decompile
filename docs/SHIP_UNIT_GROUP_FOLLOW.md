@@ -448,8 +448,27 @@ Its last 68 instructions were read too, which pins the ABI and the two answers:
 `RET 0Ch` makes it `__thiscall(entity)(const float point[3], float* out_across, float* out_along)`,
 and the two stores confirm `docs/SHIP_AI_FORMATION.md`'s contract from the other end: a signed
 perpendicular distance and an arc length, which `0070ED30` stores as `record+10h` and `record+20h`.
-**The middle - the arc accumulation, and which segment the perpendicular is measured against - is
-still unread.** That is the last unread piece of the follow chain.
+And the middle is now read in outline, which is what a reconstruction needs:
+
+* **The search is fully unrolled**, one ~29-instruction block per sample: `EAX = ECX - k`,
+  `CDQ`, `IDIV EBP` with `EBP = 40`, then the three-component difference, the squared length, a
+  compare against the running best and `LEA EDI,[EBX - k]` on a win. `ECX` starts at
+  `head + 27h` and `EBX` at 2, so `EDI` ends up holding **how many slots back from the head the
+  nearest sample lies**.
+* **The arc length is a sum of the stored legs, not a recomputed distance.** Two accumulators, at
+  `[ESP+48h]` and `[ESP+44h]`, are filled by two loops - `0081167F-008116E5`, unrolled four deep
+  with its back-edge at `008116E5`, and `00811700-00811721` - and each term is
+  `FADD float ptr [ESI + ((i mod 40) + 7Fh)*18h]`, which is `entity + 0BD8h + 18h*(i mod 40) + 10h`:
+  the sample's own `+10h` arc length. The `CMP EAX,EDI / JG` at `008116F1` picks which of the two
+  runs, against a second index held at `[ESP+28h]`.
+* `[ESP+48h]` is what the tail returns as `*out_along`: after the four `POP`s at `008116F3`,
+  `0081172A`, `0081172D` and `00811730` the stack has moved 16 bytes, so the tail's
+  `MOVSS XMM0,[ESP+38h]` at `008117FD` reads that same accumulator.
+
+**What is still unread** is the sign convention and the exact interpolation between the nearest
+sample and its neighbour that the cross product at `00811768` is taken over. A reconstruction can
+be written against the contract without it, but the sign of `record+10h` cannot be claimed until it
+is, and column 0's across offset is that sign.
 
 ## 6. The cut this packet proposes
 
