@@ -927,3 +927,36 @@ target is **unnamed**, and the separate question of what the gunnery path resolv
 (`0071EBF0`'s rule, categories 1 and 2 only) and resolves `row.target_token` **by unit name**
 through `by_name`, but the token string is never logged. `summary mission gunnery command_targets
 units_with=5` says five units got one; which unit it names is not in the log either.
+
+### 8.4 One of section 8.1's three fields cannot answer what it was meant to
+
+Section 8.1 proposed recording, beside the target's identity and position, "the stored aim point
+`approach+D0h..D8h` at release", on the reasoning that if the stored point sits ahead of the target
+along its course then the producer question is answered from outside, without finding the writer.
+
+**That field is vacuous in this host.** `TorpedoApproachHost::approach_target_point`
+(`src/game_hosts_units.cpp:3759`-`3769`) substitutes the ordered target's **current world position**
+for `approach->vtable[0]`, and `src/torpedo_approach_update.cpp:443` stores that same value into
+`plan_target_x_ac`/`plan_target_z_b0`. So the host's stored aim point **is** the target's position by
+construction: logging it and comparing it to the target can only ever return "identical", whatever
+the image does. A run spent on it would produce a confirmation of the host's own substitution and
+read afterwards as evidence about the image.
+
+* **was**: instrumenting the stored aim point answers the producer question from outside.
+* **is**: it cannot, in this host. The producer question needs either the image's writer (the static
+  hunt, bounded at eleven encodings in 6.3) or a native trace; nothing the host stores can stand in,
+  because the host is where the substitution lives.
+
+**What the same run can still settle, and it is worth one run:**
+
+| field | premise it decides |
+| --- | --- |
+| the ordered target's identity, and the `target_token` the gunnery rule resolved | 8.1's premise 2 - whether the ship a torpedo came nearest to is the ship it was aimed at |
+| that target's world position at release and at closest approach | 8.1's premise 1 - the target's real speed over the run window, instead of the waypoint-closing rate `d32c` gives |
+| the bearing of the closest-approach point relative to the target's heading | whether 51.5 m is a near miss abeam or a pass inside the bow or stern line (section 8.2), which a scalar distance cannot separate |
+| the object-id to entity mapping for the ids the orders carry | what object 44, 45 and 46 are (section 8.3), which three colliding id spaces make unanswerable from the current log |
+
+Premise 3 - that something upstream leads - is then reached by elimination rather than directly: if
+the target is the one aimed at and its speed over the window really is of order 15 m/s, a 51.5 m
+closest approach is not what a zero-lead aim produces, and the lead has to be upstream. That is
+weaker than a direct measurement and it is the strongest this host can give.
