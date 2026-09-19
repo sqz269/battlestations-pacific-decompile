@@ -17,6 +17,19 @@ arm, and the per-state tick chain in `src/game_hosts_units.cpp` has branches for
 the goaway last commanded: its break-off heading and a 500 m climb, for the rest of the mission.
 That is almost certainly not what the image does, and nobody has read what it does instead.
 
+> **CORRECTED 2026-09-19 by packet `cc8_after_task` (`docs/BOMBER_AFTER_TASK.md`).** The paragraph
+> above is stale in its diagnosis, though not in its symptom. `src/torpedo_task_arm.cpp:291-294`
+> **has** had a `kDone`/`kPrepare` branch since `8b204e966` (2026-09-17): it calls
+> `follow_base_tick_009c1fd0` and then `torpedo_done_prepare_tick_009d2720`, which is the image's
+> own order (`009D2731 CALL 009C1FD0` is the first instruction after `009D2720`'s prologue). What is
+> empty is not the branch but the arm the Done state always takes: the enter leaves `+98h = -1.0f`,
+> so `009D2753 JBE` always falls to `009D29E0`, and `src/torpedo_task_arm.cpp:226-229` reduces that
+> whole 787-byte body (`009D29E0-009D2CF3`) to `outcome = kIdle`. Question 1 of this handoff is also
+> answered: the `done` state object at `task+618h` and the `prepare` object at `task+740h` are **one
+> class** — `009D2DA0` installs the same vtable `00D21320` at both, and the state registry names
+> those two offsets `"torpedo/done"` and `"torpedo/prepare"` — so the tick is `009D2720` and the
+> enter is `009D2530`, and the ledger names carrying only `Prepare` are half-names.
+
 `009D4030` itself is not the answer: `009D4097` returns `kNone` for a task already in `kDone`, ahead
 of the break-off test, so the state machine deliberately parks. Whatever happens next is **outside**
 the task's own transition rule.
