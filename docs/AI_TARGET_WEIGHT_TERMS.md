@@ -390,3 +390,40 @@ Publishing a `1.0f` would invent the value; publishing the table makes it real. 
 authored cells are exactly `0.0` (MachineGun against a big ship or a landfort, Artillery and Bomb
 against a plane), and `00A094F5 FCOMIP / JNC` skips a barrel whose accuracy is not above zero, so a
 correct publication makes the model **skip** those barrels rather than score them.
+
+### Where the selector comes from, and the one hop still open
+
+Traced inside `00A08460`'s barrel loop, which settles what `EDX` is:
+
+```
+00a093d0  mov esi,[ebx+74h]      ; the barrel array, +74h/+78h base and count
+00a093d3  add esi,[esp+18h]      ; the 48h-stride barrel entry
+00a093d7  mov eax,[esi+34h]      ; barrel+34h, the bullet class record
+00a093da  mov [esp+5Ch],eax      ; becomes EDX at 00A094E6
+00a093de  mov eax,[eax+8]        ; the selector
+00a093e1  cmp eax,0Ah            ; 0Ah is the Torpedo arm, which confirms the space
+00a093e4  jne 00a093ed
+```
+
+So the chain is **barrel `+34h` -> bullet class record -> `+8h` selector -> arm -> tuning offset**,
+and the `CMP EAX,0Ah` against the Torpedo selector is independent confirmation of the arm mapping
+above, taken from a different site than the jump table.
+
+The bullet class record is what `006EA910 BSP_BulletClass_GetOrCreate` builds
+(`docs/ORDNANCE_KIND_IDENTITY.md`): it reads the authored `Bullets` row's `Type` string, matches it
+case-insensitively against thirteen literals, and runs that kind's constructor. **`+8h` is
+therefore a per-class constant written by each kind's constructor, not authored data**, which is
+why no `BulletType` number appears anywhere in `bulletclasses.lua`.
+
+**The open hop, stated as unfinished rather than guessed:** the thirteen constructors were not
+read, so **which constant each one stores to `+8h` is not established**. The counts are suggestive
+and are not evidence — thirteen `Type` strings against thirteen live selectors, and four rejected
+in-range selectors (`4`, `8`, `0Ch`, `0Eh`) against the four `Dummy*`/`WaterMine` types that have no
+accuracy row — but the grouping `2,3 -> MachineGun` and `5,6,7 -> Artillery` means at least one
+accuracy row serves several classes, so the correspondence is not one-to-one and cannot be assumed.
+Reading the constructor bodies named in `ORDNANCE_KIND_IDENTITY.md`'s census table is the next
+concrete step, and it is what the gunnery host needs before it can publish a selector per barrel.
+
+Until that lands, `GameGunRow::ordnance` is **not** a substitute: it is the `vtable[8]` entity-class
+answer set (`29h`-`34h`), a different id space from this selector, and using it here would be a
+guess.
