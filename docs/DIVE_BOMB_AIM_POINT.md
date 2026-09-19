@@ -227,28 +227,51 @@ wrong. The fix is a format argument and is itself unmeasured.
 
 ## 6. Item 4: the long run's summary is not windowed, it is a different simulation
 
-The integrator asked whether a bounded record buffer, a windowed counter or a reset on some event
-caps the end-of-run summary, because `goaway_long.log` reports `bomb_impacts=0` and
-`total_damage=3596.8` against the 4800-frame run's 18 and 10188.4. **Nothing caps it**, and the
-logs say the run diverged rather than the summary mis-reporting:
+**WITHDRAWN, and replaced.** This section first said the long run's simulation had diverged. It had
+not. The integrator compared all 4800 `world frame` lines, every `torpedo trace` line to
+t = 133.45 s, every `dive probe` line and all 200 `plane` lines of `goaway_after.log` against the
+same prefix of `goaway_long.log` and found them **identical**. What follows withdraws four
+diagnoses of the same symptom: the retiree's two candidates (the `--frames` pre-mission budget; a
+missing instance tag - both runs in fact carry the launcher's tag `slot0`), the integrator's
+"end-of-run summary artefact", and **my own "the run diverged"**.
+
+**The cause is that the gunnery host is thrown away and rebuilt on every spawn batch.**
+`GameUnitsHost::create_units` ends with `host.gunnery = std::make_unique<GameGunneryHost>(...)`
+(`src/game_hosts_units.cpp` around line 3704), unconditionally, and `create_units` runs once per
+batch the mission script spawns. Each batch discards the summary (`bomb_drops`, `bomb_impacts`, the
+hit records, `first_hit`) **and every in-flight round, swimming torpedo and queued hit**. In the
+9000-frame run a batch arrives after frame 4800 (`aircraft=24` against 15), so its end-of-run
+summary covers only the time since that batch: `bomb_drops=0`, and `first_hit=15.10 s` measured on
+the new host's clock - which is why it is *earlier* than the short run's 17.15 s rather than later.
+This is the third instance of one bug class in that function; the AI-coordinator fix on the very
+next lines carries the `if (host.ai == nullptr)` guard that is the model for it. The fix is packet
+`cc8-gunnery-host`, not this one.
+
+The consequence for every reader: **quote no damage, impact or death figure from `goaway_long.log`** -
+that instruction stands, for this reason now. It is also not only a reporting defect: every USN04
+total in this repository is a since-the-last-batch count.
+
+The sub-findings below are unaffected, and they are what ruled the summary code itself out:
 
 * `bomb_impacts` is an unbounded `std::vector`, appended at `src/game_hosts_gunnery.cpp` in the
   projectile sweep, never cleared, printed as `rows.size()`.
 * `GameGunnerySummary summary{}` is a member initialised once and never reset. `++h.summary.bomb_drops`
   has no window; the `<= 6` test beside it is a log-spam limiter on the per-drop note, not the counter.
 * `goaway_long.log` reports **`bomb_drops=0`**, and that counter is incremented at the DROP, long
-  before any impact record exists. Zero drops, not zero records.
-* `first_hit` is **earlier** in the long run, 15.10 s against 17.15 s - impossible for a run that is
-  a prefix-superset of the short one.
+  before any impact record exists - so it is not a record buffer filling up.
 * the two censuses disagree inside the long log itself: `summary mission dive-bomb task: aircraft=24
-  releases=30` against `bomb_drops=0`.
-* the launch parameters differ by more than `--mission-frames`: `frames=9200 mission_frames=9000`
-  against `frames=5000 mission_frames=4800`. The pre-mission budget is the same 200 frames either
-  way, so the predecessor's first candidate is closed, but the runs are not comparable.
-* what **is** identical is the torpedo arm - `moveto=522/536/522`, `attackrun=262`, `releases=12` in
-  both - which is the determinism the `gunnery:` event lines showed. It does not extend to the bombs.
+  releases=30` against `bomb_drops=0`. That disagreement is now explained: the dive-bomb task census
+  lives on the **units** host and survives a batch, the gunnery summary does not.
+* the pre-mission budget is the same 200 frames in both runs (`frames=9200 mission_frames=9000`
+  against `frames=5000 mission_frames=4800`), which closes the `--frames` candidate.
 
-No fix is warranted; a change here would be tuning a non-bug. The consequence for the chain is that
-the second-attack-run demonstration in `docs/HANDOFF_DIVE_BOMB_GOAWAY.md` section (a) (`releases`
-1 -> 2, `rounds_left` 1 -> 0) rests on a log whose gunnery side says no bomb was ever dropped, and
-should be re-run with `--instance-tag`/`--affinity-core` before it is quoted again.
+**The second-attack-run demonstration in `docs/HANDOFF_DIVE_BOMB_GOAWAY.md` section (a) STANDS.**
+`releases` 1 -> 2 and `rounds_left` 1 -> 0 are dive-bomb **task** counters on the units host, which
+a batch does not reset. Only the gunnery rows of that log are since-the-last-batch. My earlier
+recommendation to re-run before quoting it is withdrawn.
+
+**This packet's own run is clear of the defect.** In `local\aim_before.log` all eight `SpawnNew`
+batches are logged at lines 19567-19570 and the first bomb drop at line 27436, so every release and
+impact row falls after the last batch and the measured table in section 5 is not thinned by a
+boundary. The 23 drops against 20 impacts is the three rounds still in flight at mission end, which
+the summary reports on its own line, not a loss.

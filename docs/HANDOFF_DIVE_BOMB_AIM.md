@@ -30,10 +30,18 @@ written to be read in order. This file is only what that document does not say.
   `[ESP+24h]` is `|aimPoint - aircraft| / |aimPoint - impactPoint|`. One of that arm's two remaining
   slots is therefore closed. **EBP is reassigned at `009C51ED` and `009C524C`**, so any later
   `[EBP+N]` in that body is a different object - that is the trap the slot map must carry.
-* **Item 4 is answered as a refutation.** Nothing caps, windows or resets the end-of-run summary;
-  `goaway_long.log` is a different simulation (`bomb_drops=0`, an EARLIER `first_hit` at 15.10 s
-  against 17.15 s, and `dive-bomb task: aircraft=24 releases=30` inside the same log). No fix.
-  Section 6 of the evidence doc has the full case.
+* **Item 4's cause is the gunnery host being rebuilt per spawn batch**, not a windowed summary and
+  not a diverged run. `GameUnitsHost::create_units` ends with
+  `host.gunnery = std::make_unique<GameGunneryHost>(...)` (`src/game_hosts_units.cpp` ~3704)
+  unconditionally, so each batch discards the summary and every in-flight round. Four diagnoses are
+  withdrawn in `docs/DIVE_BOMB_GOAWAY.md` 4b and `docs/HANDOFF_DIVE_BOMB_GOAWAY.md` (a), including
+  **my own "the run diverged"**. The fix belongs to packet `cc8-gunnery-host`; I did not start it.
+  `docs/HANDOFF_DIVE_BOMB_GOAWAY.md` (a)'s SECOND ATTACK RUN stands - those are dive-bomb task
+  counters on the units host, which a batch does not reset.
+* **This packet's own run is clear of that defect**: all eight `SpawnNew` batches are at
+  `local\aim_before.log` lines 19567-19570 and the first bomb drop at line 27436, so no census row
+  was lost to a boundary. The 23 drops against 20 impacts is three rounds still in flight at
+  mission end, reported on their own line.
 
 ## (b) The one thing to do next, and why it is the whole prize
 
@@ -42,6 +50,25 @@ aim. It is the only unread term left in the image's dive-bomb aim geometry, and 
 of the gap this packet's measurement leaves: the prediction error is 2.3-21.4 m, the miss against
 the target is 6.1-57.0 m, and on a 180-270 m hull a body-frame offset is the right order to cover
 the difference that ship movement does not.
+
+### The packet, scoped
+
+**`cc8_hull_aim_point`.** Questions, in order: which classes implement slot `+100h` and slot `+104h`
+(start from the ship entity vtables the dive-bomb targets use, and expect the fighter/ship split to
+matter); what the four floats at `sub+64h`..`+70h` are, given `009FB200` seeds them `-1.0, 1.0, 1.0,
+1.0` (`00D7A260`, `00D7A24C` x3) - a selector plus a per-axis extent is the obvious reading and is
+**untested**; what geometry `+100h` samples (a hull box, a named node, a damage section); and what
+`+104h` tests, since it is what refuses an offset and forces a re-pick. Deliverable is whether the
+chosen point is far enough from the origin to matter at the 10-60 m scale the census measures.
+
+**The torpedo side gets it for free, and this is worth telling that stream.** `009FB200`'s caller
+list includes `BSP_BotApproachTorpedo_Reset` (`009D0380`), so the torpedo approach embeds the SAME
+target-reference sub-object, and a worker has already observed `009FADA0` running before `009D3517`
+"writing only `+1Ch`/`+20h`/`+24h` on its own `this`". That is almost certainly the torpedo's
+long-unfound `approach+D0h` writer, sitting at `approach+B4h` (`B4h + 1Ch = D0h`). **I did not
+verify it** - it needs one `LEA ECX,[reg+B4h]` in the torpedo reset or update, the exact counterpart
+of `009C3EDF LEA ECX,[ESI+30h]` on the dive-bomb side. One call settles it; I ran out of context
+before I could and am naming it rather than claiming it.
 
 Scope it as its own packet, because it needs what this host does not have:
 
