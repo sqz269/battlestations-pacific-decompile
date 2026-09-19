@@ -657,6 +657,43 @@ The second group is led by a building, and the image refuses to order it for the
 host does: `00A124E0` gates the leader order on `009FE080 IsGroupableCombatant`, which answers
 false, so the tick returns having issued nothing. The host already matches the image there.
 
+### The gate bound, and measured
+
+`00779D50` and `00803510 BSP_Party_RelativeTo` (18 instructions, read whole: `a == 2 ? (b == 2 ? 0
+: 2) : a == b ? 0 : (b == 2 ? 2 : 1)`, and `00779D50` demands 0) and `00779820` (12 instructions,
+read whole: the same entity, or already sharing a unit group) are transcribed into
+`include/bsp/ship_ai_states.hpp` beside the `008162B0` reconstruction that was already there - the
+`call_00779d50` virtual it declared "contract unread" is now this function - and bound in
+`GameAiCoordinatorHost::Impl::tick_request_join_formation`.
+
+`local/follow_gate_usn01.log`, USN01 3000 frames:
+
+```
+summary mission ai follow requests=306 available=306 refused=0
+AiCommand::request_join_formation   0077c8d0   concrete   calls=306
+```
+
+The call-table row was `UNIMPLEMENTED calls=306` before and is `concrete calls=306` now. The six
+distinct pairs the run reports are the whole of it:
+
+```
+Northampton -> Enterprise      Ralph  -> Enterprise
+SaltLakeCity -> Enterprise     McCall -> Enterprise
+Dunlap -> Enterprise           Blue   -> Enterprise
+```
+
+- exactly the `Enterprise` group's six followers, each `ship 1/1, kind2=1, party 0/0, alive 1/1`.
+
+**The negative control, stated precisely.** The building-led group does not appear because it makes
+**no requests at all**, not because its requests are refused: `00A10DC0` hands `0077C8D0` only to
+members that answer the ship-base test 6, and a building does not. So `refused=0` is the right
+number and the control is the absence of those rows, which is a weaker control than a refusal and
+is named as such. A refusal arm will be exercised the moment the group object exists, because
+`00779820` then starts refusing the re-request a joined follower makes on later ticks.
+
+`total_path=5600.63`, `units=62`, `motion_ticks=42000` are unchanged from the packet-1 build:
+nothing consumes the answer yet, so this step is still a motion null.
+
 ## 9. Uncertainties, and what is not read
 
 * `00810630` and `00811180` whole, and `00810160`. `00810190` is now read whole (section 5b); what
