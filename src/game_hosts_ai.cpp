@@ -202,9 +202,19 @@ public:
         if (!resolved || offset == 0u) return 0.0f;
         return block_.at(offset);
     }
-    // 009FE200 at 00A09578 and 00424C40+3B0h at 00A09624, both unread. The
-    // falloff keeps the undiminished value and the capture scale stays neutral.
-    float distance_falloff(float a, float, float, float) override { return a; }
+    // 009FE200 at 00A09578 and 00424C40+3B0h at 00A09624, both unread, so both
+    // stand in neutral.
+    //
+    // This one used to `return a`, on the reading that `a` was the value being
+    // scaled and returning it kept the value undiminished. It is not: the call
+    // site multiplies by the answer and passes `(0, 0, 0, 0)`, four distance
+    // arguments this projection has not recovered. So the stub answered 0 and
+    // annihilated the term, `best` could never leave 0, and the barrel loop
+    // contributed nothing to `total` even once the subsystem handle was fixed.
+    // A falloff is a multiplier, so its neutral value is 1.0f. Labelled: the
+    // real falloff is a function of the four distances and diminishes with
+    // range, so this over-states a distant barrel.
+    float distance_falloff(float, float, float, float) override { return 1.0f; }
     float capture_scale() override { return 1.0f; }
 
 private:
