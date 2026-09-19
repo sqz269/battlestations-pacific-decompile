@@ -1016,14 +1016,46 @@ DiveBombAimGlideCommand dive_bomb_aimglide_command_009c542c(
 // wings-level target so the aircraft rolls upright out of the inverted dive.
 // The mode-1 pair is exactly what the gates bound in the last two packets pass.
 //
-// The pitch target is the larger of two clamped interpolations over the
-// aircraft's own altitude (`[EDI+100h]`), 009C4B61 and 009C4BB3, taken by the
-// `77` JA at 009C4BC8. The second one's endpoints are recovered; the first's
-// `y1` and interpolant are not, so it is supplied as the same curve, labelled.
+// The pitch target is the larger of two clamped interpolations, 009C4B61 and
+// 009C4BB3, taken by the `77` JA at 009C4BC8. CORRECTION, packet
+// cc8_dive_goaway: this block used to say the first call's `y1` and interpolant
+// were untraced and supplied the second curve in its place, so that the max was
+// the second curve alone. Both halves were wrong, and the substitution deleted
+// exactly the arm that climbs. Walked whole in docs/DIVE_BOMB_GOAWAY.md:
+//
+//   curve A  009C4B32-009C4B61  Interp(-50.0 [00CECA0C], 0.0, 300.0 [00CE3AE8],
+//                               [EAX+1ECh] climb angle, ceiling - [EBP+100h])
+//   curve B  009C4B8C-009C4BB3  Interp(60.0 [00CEB4B0], [ECX+1ECh] climb angle,
+//                               300.0 [00CE3AE8], 0.0, [EDI+100h] altitude)
+//
+// `ceiling` is min(ctl+398h, approach+ACh + approach+50h), built at
+// 009C4ACF-009C4B05 - the same ceiling 009C7F00 completes against - and
+// 009C4B26 `FSUB float ptr [EBP+100h]` makes curve A's interpolant the altitude
+// DEFICIT. So A is the climb-back-to-cruise arm (full climb angle once 300 m or
+// more below the ceiling, zero once 50 m above it) and B is the ground-avoidance
+// arm (full climb angle below 60 m, zero at and above 300 m). Modelling B alone
+// commands level flight above 300 m, which is why goaway never completed.
+//
+// The nose-down flag, 009C4A43-009C4A68: a byte set from
+// `COMISS xmm0, [EAX+C64h]` against 00CF885C = -5 deg, 1 only while the pitch is
+// steeper nose-down than that. 009C4BD8/009C4BEF `JZ 009C4CBA` splits on it, and
+// the wings-level pair at 009C4BFE/009C4C06 is on the taken side ONLY. The
+// flag-0 side is NOT command-free: it runs on to 009C4D9D and splits at 009C4DAD
+// into a bank arm (009C4DAF-009C4DF6, cmd+2C4h from 2 * state+28h * state+18h
+// clamped by 00D05EA4/00CE3814, cmd+2CCh = 1) or a heading arm (009C4E05-009C4E1D,
+// 009C47D0 fills state+1Ch, cmd+2C0h = state+1Ch, cmd+2CCh = 2) - the goaway's
+// evasive turn. Those need the +24h/+28h/+2Ch timers, which are NOT bound, so
+// `wrote_bank_heading` is computed and left unconsumed by the host rather than
+// gating the wings-level pair off and leaving no lateral command at all.
 // ---------------------------------------------------------------------------
 namespace dive_bomb_goaway_constant {
 inline constexpr float kClimbFullAltitude = 60.0f;    // 00CEB4B0, 009C4BAA
 inline constexpr float kClimbEaseAltitude = 300.0f;   // 00CE3AE8, 009C4B48/009C4B96
+// Curve A's lower endpoint, 00CECA0C at 009C4B58: the deficit at which the climb
+// command reaches zero, i.e. 50 m ABOVE the ceiling.
+inline constexpr float kClimbDeficitLow = -50.0f;     // 00CECA0C, 009C4B58
+// 00CF885C at 009C4A43, the nose-down gate on unit+C64h. -5 degrees.
+inline constexpr float kNoseDownGate = -0.0872664675116539f;  // 00CF885C
 }  // namespace dive_bomb_goaway_constant
 
 // 009C7F00-009C7FD6, __thiscall(goaway state) -> bool. The completion rule, now
@@ -1056,12 +1088,29 @@ bool dive_bomb_goaway_complete_009c7f00(
     const DiveBombGoAwayCompleteInputs& in) noexcept;
 
 struct DiveBombGoAwayInputs {
-    float altitude = 0.0f;         // [EDI+100h], the unit's world Y
-    float climb_angle_1ec = 0.0f;  // (approach+8h)->+1ECh, 009C4BA0
+    float altitude = 0.0f;         // [EDI+100h] / [EBP+100h], the unit's world Y
+    float climb_angle_1ec = 0.0f;  // (approach+8h)->+1ECh, 009C4BA0 and 009C4B3E
+    // The three operands of the ceiling built at 009C4ACF-009C4B05, the same
+    // three 009C7F00 uses. Curve A's interpolant is ceiling - altitude.
+    float cruise_altitude_398 = 0.0f;  // ctl+398h, 009C4AD2
+    float begin_altitude_ac = 0.0f;    // approach+ACh, 009C4ADC
+    float aim_point_height_50 = 0.0f;  // approach+50h, 009C4AE2
+    // unit+C64h, the live pitch. 009C4A55 compares it against -5 deg.
+    float unit_pitch_c64 = 0.0f;
 };
 struct DiveBombGoAwayCommand {
     float pitch_target_2bc = 0.0f;  // 009C4BE0
     int pitch_mode_2d0 = 1;         // 009C4BE8, EBX
+    // 009C4BEF's JZ: true only on the nose-down side, where the wings-level pair
+    // at 009C4BFE/009C4C06 is written. Carried as evidence and deliberately NOT
+    // consumed by the host - the flag-0 path writes its own bank or heading at
+    // 009C4DAF/009C4E05 from timers this packet does not bind, so suppressing
+    // the pair alone would leave the state with no lateral command.
+    bool wrote_bank_heading = false;
+    // The two curves, kept for the census: publishing the max alone cannot show
+    // which arm produced it.
+    float curve_a_deficit = 0.0f;   // 009C4B61
+    float curve_b_altitude = 0.0f;  // 009C4BB3
     float bank_target_2c4 = 0.0f;   // 009C4BFE, the XORPS zero
     int heading_mode_2cc = 1;       // 009C4C06, EBX
     int air_brake_mode_2d8 = 0;     // 009C4CA7 / 009C4CE7
