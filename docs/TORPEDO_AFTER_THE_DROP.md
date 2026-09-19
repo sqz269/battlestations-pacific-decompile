@@ -256,3 +256,64 @@ below 20 m asks for 1000 m. Only **one** unread dependency remains, and it is th
 A binder that skipped it would command heading 0 on every goaway, which on this placement points the
 aircraft north rather than away from the ships that are shooting at them - the kind of substitution
 that reads as a behaviour bug forever. `009D0F10`'s own transcription in 3.1 needs no revision.
+
+### 3.4 `009D0C10` read for its output, and the completion predicate cleared
+
+Two checks stood between section 3.1's transcription and a binding. One is done and one is
+half-done; both are recorded here so the binding packet does not repeat them.
+
+**The completion predicate is clear, and the trap it could have been does not bite.**
+`agent/cc8-dive-bomb` lost an 8800-frame run to a goaway whose completion rule was modelled from its
+first condition only: the state got one tick, the binding was correct and looked broken. The torpedo
+equivalent is `009D3150`, and `docs/TORPEDO_GOAWAY_RELEASE.md` section (3) reads it whole already -
+`approach+90h > state+24h`, with an optional `* 0.4` arm that needs both `ctl+369h` and the global
+at `00E17BF2` and that this host's `read_control_block` reports off. No altitude condition, unlike
+the dive bomb's `009C7F00`. The run agrees: `enters=1 break_off_24h=700.0 range_peak_in_goaway=382.2
+done_last=0` on every aircraft, so the state is entered once, never completes, and would tick for
+the rest of the mission if anything ticked it. A binding here will not be cut off after one tick.
+
+**`009D0C10 BSP_BotStateTorpedoGoAway_UpdateGeometry` produces `state+18h`, and its shape is:**
+
+```
+bearing   = 009FD570(vtable[0](&scratch, approach+4h, state+24h, state+2Ch, approach+90h, 0.8))
+hdgErr    = SubtractWrappedAngle(bearing, unitHeading)          unitHeading via vtable[50h]
+turn      = clamp(hdgErr, -0.5235988, +0.5235988)               00CEC728 / 00CEC724, -/+ DEG(30)
+probe     = -p[0] * p[1] * p[2]        from 007F0280's triple, seeded 00CEB4B0, 00CEB4D4, 00D1A918
+if (turn > 0 && probe < 0) || (turn < 0 && probe > 0)
+          turn += probe * 0.6981317401                          00D20CC0, a double, DEG(40)
+state+18h = AddWrappedAngle(unitHeading, turn)                  009D0C10's only store
+```
+
+So the break-off heading is the aircraft's **current** heading plus a turn of at most 30 degrees
+toward the break-off bearing, pushed further by up to 40 degrees when the terrain probe disagrees
+with the turn's sign. `state+2Ch`, the +/-1 side the enter draws, is an argument to the bearing
+call, which is what makes the break-off turn left or right.
+
+**What is still unread, and it is why this packet stops here rather than binding:**
+
+* `009FD570` and the `vtable[0]` call before it, which together produce the bearing. Without them
+  the turn is `clamp(-unitHeading, ...)` rather than a break-off.
+* `007F0280`'s output triple at this call site. The same routine is called from the aim tick's
+  sector probe and from both attack-run ticks, so its contract is shared and worth reading once for
+  all of them rather than three times.
+
+A binding that substituted either would command a heading that is not the image's, and the run would
+report a climb-away that flies somewhere the native never goes. Given that this stream has spent the
+night correcting exactly that class of error in its own and others' work - `pitch_scale_188 = 1.0f`,
+`rangeLow = rangeHigh = 0`, `kPitchClampLo` - binding on two unread inputs is the wrong trade. The
+listing above is the durable part; the code is one focused packet with `009FD570` and `007F0280`
+read first.
+
+**A blind confirmation of `kPitchClampLo`, recorded because it is independent of this stream.**
+`agent/cc8-dive-bomb` built `tools/const_width_sweep.py` (on main as `616382183`) and added a
+`--load-sites` mode that finds every instruction with an absolute `[disp32]` naming a declared
+constant and reports the operand width. Run blind over all 697 constants in `include/bsp`, in a tree
+that still carried `0.05625f`, it produced exactly **one** wrong-width finding: `kPitchClampLo`. It
+was told nothing about this packet.
+
+**A correction accepted, on `task+41Ch`.** This document's predecessor advised that
+`in.speed_ratio_41c = 1.0f` "needs `task+41Ch`'s producer" and was worth a packet of reading. That
+was wrong: `009F9D37 FLD [EAX+188h]` is `desc+188h MaxSpd` - the same field this stream bound as
+`plane_max_spd` - divided by the reference `009C3EC4` loads from `[EAX+4D8h]`, taken `max(., 1.0)`
+and stored to `approach+24h` at `009F9D61`. It is a stand-in with a known formula, so it is a
+binding in its own window rather than a packet of reading.
