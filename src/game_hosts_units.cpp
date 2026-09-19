@@ -8677,12 +8677,90 @@ bool GameUnitsHost::formation_join_0077f940(std::size_t follower, std::size_t le
     if (follower >= host.slots.size() || leader >= host.slots.size()) return false;
     if (follower == leader) return false;                 // 00779824, the identity arm
 
-    // 0077F940 creates a group around `other` when it has none (0070DB20), and
-    // otherwise redirects to `other`'s leader. Only that arm is implemented here;
-    // the merge of two existing groups, the detach of the ordered unit's own
-    // followers and the FormationMaxCount cap at settings+420h (24, cited from
-    // docs/SHIP_AI_FORMATION.md rather than re-read) are NOT, because a runtime
-    // join in this process only ever brings one ungrouped ship to a leader.
+    // Packet cc8_ship_station: 0077F940's merge arm, read whole from the listing
+    // (126 instructions, body 0077F940-0077FAC8, RET 4). USN01 reaches it - the
+    // script orders Northampton, which already leads SaltLakeCity and Dunlap, to
+    // join Enterprise - so the arm the previous packet left out is the one that
+    // decides what those three ships do.
+    //
+    //   0077F96E  nothing happens at all when the ordered ship's group is the
+    //             target's group: `iVar3 == 0 || iVar3 != iVar4`.
+    //   0077F97x  `brought` is 1, or the ordered ship's own member count
+    //             (group+4F8h) when it LEADS that group - it brings its whole
+    //             formation with it.
+    //   0077F9B4  the cap: (float)(target_count + brought) <= settings+420h,
+    //             where target_count is 1 when the target has no group. On a
+    //             refusal nothing at all happens - no create, no detach, no add.
+    //   0077F9D9  0070DB20 creates a group around the target when it has none;
+    //             0077F9E6 otherwise redirects the target to its group's leader.
+    //   0077FA10  the list: MemberAt(i) over the ordered ship's group, the
+    //             ordered ship itself at index 0 and every other member after it.
+    //   0077FA40  each of those followers leaves through 0077BD70 with the
+    //             ordered ship as the argument, and 0077FA51 the ordered ship
+    //             itself leaves with a null one.
+    //   0077FA81  0070EF30 adds each brought unit to the target group in that
+    //             order, ECX = the group, so each one's column is measured
+    //             against the NEW leader's wake at its own position.
+    //
+    // NOT modelled, and named: 0077BD70's own body (0070D0C0 SetLeader, 0070D8D0,
+    // 0070E4C0 DetachMember) is unread, so a detach here empties the record and
+    // clears entity+284h without promoting a new leader for the group left
+    // behind; and the vtable[114h] / vtable[58h] follow-up at 0077FA8D is
+    // unread, as the previous packet already recorded. The create/redirect is
+    // also left where it already stood, after the detach rather than before it,
+    // which can only differ when the two groups are the same - and that case
+    // returns above.
+    const std::int32_t ordered_group_before = host.slots[follower]->formation_group;
+    const std::int32_t target_group_before = host.slots[leader]->formation_group;
+    if (ordered_group_before >= 0 && ordered_group_before == target_group_before) {
+        ++host.formation_rejoins;
+        return false;                                      // 0077F96E
+    }
+
+    // 0077FA10's list, built BEFORE any detach. Only a unit that leads its group
+    // brings anything; a follower ordered away brings only itself.
+    std::vector<std::size_t> brought;
+    brought.push_back(follower);
+    if (ordered_group_before >= 0
+        && host.formation_groups[static_cast<std::size_t>(ordered_group_before)].leader
+               == follower) {
+        for (const bsp::ShipAiUnitGroupMember& member :
+             host.formation_groups[static_cast<std::size_t>(ordered_group_before)].members) {
+            const std::size_t unit = static_cast<std::size_t>(member.entity) - 1u;
+            if (unit != follower && unit < host.slots.size()) brought.push_back(unit);
+        }
+    }
+
+    // 0077F9B4. FormationMaxCount is settings+420h; 24 is cited from
+    // docs/SHIP_AI_FORMATION.md rather than re-read here.
+    constexpr float kFormationMaxCount = 24.0f;
+    const std::size_t target_count = (target_group_before >= 0)
+        ? host.formation_groups[static_cast<std::size_t>(target_group_before)].members.size()
+        : static_cast<std::size_t>(1);
+    if (static_cast<float>(target_count + brought.size()) > kFormationMaxCount) {
+        host.log.notef("formation join refused: ordered=%s target=%s brought=%zu "
+            "target_count=%zu cap=%.0f (0077F9B4)",
+            host.slots[follower]->row.name.c_str(), host.slots[leader]->row.name.c_str(),
+            brought.size(), target_count, static_cast<double>(kFormationMaxCount));
+        return false;
+    }
+
+    // 0077FA40 / 0077FA51: every brought unit leaves its old group first.
+    for (const std::size_t unit : brought) {
+        const std::int32_t old_group = host.slots[unit]->formation_group;
+        if (old_group < 0) continue;
+        std::vector<bsp::ShipAiUnitGroupMember>& members =
+            host.formation_groups[static_cast<std::size_t>(old_group)].members;
+        const std::uint32_t old_handle = static_cast<std::uint32_t>(unit + 1u);
+        std::vector<bsp::ShipAiUnitGroupMember> kept;
+        kept.reserve(members.size());
+        for (const bsp::ShipAiUnitGroupMember& member : members) {
+            if (member.entity != old_handle) kept.push_back(member);
+        }
+        members.swap(kept);
+        host.slots[unit]->formation_group = -1;
+    }
+
     std::int32_t group = host.slots[leader]->formation_group;
     if (group < 0) {
         // 0070DB20: the leader becomes member 0 with an all-zero relative
@@ -8796,6 +8874,16 @@ bool GameUnitsHost::formation_join_0077f940(std::size_t follower, std::size_t le
     // group+504h yet. Columns 1, 2 and 3 are not produced either - they are the
     // canned LINE / COLUMN / DIAMOND tables, which only a type-78h reshape
     // selects and which this packet's across convention cannot be trusted for.
+
+    // 0077FA81's loop over the rest of the list. Each one has already been
+    // detached above, so it leads nothing and brings only itself: the recursion
+    // is one level deep and terminates. The leader taken is the target group's
+    // own leader, which is 0077F9E6's redirect.
+    const std::size_t target_leader =
+        host.formation_groups[static_cast<std::size_t>(group)].leader;
+    for (std::size_t i = 1; i < brought.size(); ++i) {
+        formation_join_0077f940(brought[i], target_leader);
+    }
     return true;
 }
 

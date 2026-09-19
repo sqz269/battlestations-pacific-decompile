@@ -687,6 +687,97 @@ along-track part and hands back `along=0.00, across=3152.01`. The station rebuil
 `Enterprise` instead of 4000 m astern of it, and the two escorts chase that. `err_max` 8431 / 9375
 and the doubled `total_path` are that chase.
 
+### 5f. `0077F940`'s merge, read whole (packet `cc8_ship_station`)
+
+126 instructions, body `0077F940-0077FAC8`, `RET 4`, `__thiscall(entity ordered)(entity target)`.
+The previous packet implemented only the create-or-redirect arm and said a runtime join "only ever
+brings one ungrouped ship to a leader". USN01 disproves that: the script orders `Northampton`, which
+already leads `SaltLakeCity` and `Dunlap`, to join `Enterprise`.
+
+```
+0077F96E  nothing at all happens when the ordered ship's group IS the target's group
+0077F97x  brought = 1, or group+4F8h when the ordered ship LEADS its group
+0077F9B4  refuse unless (float)(target_count + brought) <= settings+420h   ; FormationMaxCount
+          target_count = 1 when the target has no group
+0077F9D9  0070DB20 creates a group around the target when it has none
+0077F9E6  otherwise the target is redirected to its group's leader, [group+14h]
+0077FA10  list[0] = ordered; list[1..] = MemberAt(i) over the ordered ship's group, self skipped
+          ECX = ordered+284h, the index pushed                                  0070D060
+0077FA40  each follower leaves:      ECX = list[i], argument = the ordered ship  0077BD70
+0077FA51  then the ordered ship:     ECX = list[0], argument = 0                 0077BD70
+0077FA81  each brought unit is added: ECX = the TARGET GROUP, argument = list[i] 0070EF30
+0077FA8D  ordered->vtable[114h](); if non-null, that->vtable[58h](target)        not read
+```
+
+The receivers matter and the decompiler drops them, so they are taken from the listing: `0070EF30`
+runs with the **group** as `this`, which is why each brought unit's column is measured against the
+**new** leader's wake at its own position, and `0077BD70` runs with the **leaving unit** as `this`.
+
+Bound in `src/game_hosts_units.cpp`. Not modelled, and named: `0077BD70`'s own body (`0070D0C0
+BSP_UnitGroup_SetLeader`, `0070D8D0`, `0070E4C0 BSP_UnitGroup_DetachMember`) is unread, so a detach
+here empties the record and clears `entity+284h` without promoting a new leader for the group left
+behind; the `vtable[114h]` / `vtable[58h]` follow-up is unread; and the create/redirect stays after
+the detach rather than before it, which can differ only when the two groups are the same, and that
+case returns at `0077F96E`.
+
+#### The prediction, written before the run
+
+| quantity | before (`follow_diag_usn01.log`) | predicted |
+| --- | --- | --- |
+| `joins` | 13 | 13 - eleven calls, one of which adds three |
+| `rejoins` | 0 | 2 - `SaltLakeCity` and `Dunlap` are already in group 2 when their own order arrives |
+| `creates` | 3 | 3 |
+| `formation 1 leader=Northampton` | count=3 | **count=0** - all three have left |
+| `formation 2 leader=Enterprise` | count=7 | count=7 |
+| `Dunlap` / `SaltLakeCity` err_final | 3826.31 / 5151.99 | **unchanged** |
+| `total_path` | 10852.37 | **unchanged** |
+
+The last two rows are the point of writing this down: the merge is predicted to be a **topology-only**
+change. The three ships end up in the same group with the same leader and the same positions, so
+`0070ED30` measures the same columns and `0070D290` answers the same stations. What it fixes is the
+group table, which until now recorded a three-ship group under `Northampton` that nobody was in, and
+what it adds is the `FormationMaxCount` refusal. If the ships do move differently, one of those two
+claims is wrong and the run says which.
+
+#### Measured, `local/follow_merge_usn01.log`, same parameters, clean shutdown
+
+| quantity | before | predicted | measured |
+| --- | --- | --- | --- |
+| `formation 1 leader=Northampton` | count=3 | count=0 | **count=0** |
+| `formation 2 leader=Enterprise` | count=7 | count=7 | count=7 |
+| `joins` / `creates` / `clamped` | 13 / 3 / 3 | 13 / 3 / 3 | 13 / 3 / 3 |
+| `rejoins` | 0 | 2 | **0** |
+| `columns_unmeasurable` | 0 | 0 | 0 |
+| `Dunlap` steps / err_final / err_max | 600 / 3826.31 / 8431.22 | unchanged | **600 / 3826.31 / 8431.22** |
+| `SaltLakeCity` | 600 / 5151.99 / 9375.16 | unchanged | **600 / 5151.99 / 9375.16** |
+| `total_path` | 10852.37 | unchanged | **10852.37** |
+
+**The merge is bound and it is topology-only, as predicted.** `Northampton` now takes its two
+followers with it: the group it led is emptied in one order, the thirteen adds are the same thirteen
+`(follower, leader)` pairs with the same columns - the last three all carry
+`leader_pos=(5999.7 7999.8)`, one tick, one order - and no ship moves differently.
+
+**One prediction missed and it is left open, not explained away:** `rejoins` was predicted to become
+2, because after the merge the script's own later orders for `SaltLakeCity` and `Dunlap` should find
+them already in group 2 and stop at `0077F96E`. It stayed 0, so those two orders do not reach
+`formation_join_0077f940` at all. `MissionLuaNative::JoinFormation` is still `calls=13` and
+`Formation::route_join_message` still `calls=10` in both runs, so whatever stops them stops them in
+both and is not the merge. Where they stop is unread; the three unrouted calls of the thirteen are
+the three that create a group, which accounts for `13 = 10 routed + 3 created` in the **before** run
+but not for thirteen adds from eleven arrivals in this one. This is a counting hole in the join
+path, not a behavioural one - every add is accounted for by a log line - and it is the first thing
+the next session should settle.
+
+**What the merge does NOT fix, and what the remaining error is.** The two escorts are still 10700 m
+from `Enterprise` when they join it, still clamped to `FollowerMaxDist` 4000 m, and that clamped
+point still lies off the end of a 1950 m trail, so section 5d's lossy round trip still discards the
+along-track part and returns `along=0.00, across=3152.01`. Their station is 3152 m abeam of
+`Enterprise` rather than 4000 m astern of it, and `err_max` 8431 / 9375 is the chase. Whether the
+image diverges here is **not** established: its `00811180` picks the nearest sample the same way, so
+on this evidence it would lose the same along-track component. Settling that needs the sign at
+`00811726` and a reading of what the image does for a point beyond the trail, neither of which this
+packet did.
+
 ## 6. The cut this packet proposes
 
 The chain does not fit one context at this project's reading fidelity: ~1000 instructions of unread
