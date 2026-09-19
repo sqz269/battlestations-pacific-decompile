@@ -1496,10 +1496,20 @@ disabled for the player's own aircraft**, and for whichever second unit `task+2F
 
 Two things follow.
 
-* It is shared, not torpedo-specific. `0099C230` has four other callers and all four are the sibling
-  break-off bodies: `009A65F0` depth charge, `009AE1B0` drop-kamikaze, `009B8D80` level bomb,
-  `009C8A90` dive bomb. That is independent confirmation that `009D4C10` is the torpedo's
-  `ShouldBreakOff`, arrived at without the vtable.
+* It is shared, not torpedo-specific, and this is from an **exhaustive** rel32-plus-absolute-dword
+  census (`tools/callsite_census.py`), not from `bsp.py ghidra callers`, which under-reports. The
+  census finds **exactly five** direct call sites and they are the five ordnance break-off bodies:
+  `009A65F6` in `009A65F0` depth charge, `009AE1B3` in `009AE1B0` drop-kamikaze, `009B8D86` in
+  `009B8D80` level bomb, `009C8A96` in `009C8A90` dive bomb, and `009D4C14` -- which the census
+  attributes to `009D4A70` for the same reason section 13.3 gives, that `009D4C10` is not a defined
+  function. That is independent confirmation that `009D4C10` is the torpedo's `ShouldBreakOff`,
+  arrived at without the vtable.
+* The census also returns **22 `.rdata` references** that the caller query never showed, so
+  `0099C230` is itself a virtual occupying 22 vtable slots across the image. It does not weaken the
+  reading: all five break-off bodies reach it by a **direct** `CALL`, not through a slot, so they
+  always get this implementation whatever a derived class puts in its own slot. It does mean the
+  routine is a shared base predicate rather than a private helper of these five, and any future
+  packet that meets it through a vtable must check that slot rather than assume this body.
 * **`base_gate = true` in this host is a proof, not a stand-in.** `bsp_game` publishes no in-mission
   interface manager for an AI-flown Mav, and with `[00E198C4]` null the image takes its own first
   branch and returns true. The host is not substituting for an unread contract here; it is computing
@@ -1595,10 +1605,18 @@ not transfer by offset -- turns out to understate it: the *vtables* do not corre
 encodings.** Section 11 closed the out-pointer `LEA` form with its control (29 image-wide, none in
 the torpedo band, positive control `+ACh` = 21). This packet ran the two store forms it had not:
 
-| form | encoding | image-wide | in the `009C`/`009D` torpedo band |
+| form | encoding | image-wide | in the `009D` torpedo band |
 | --- | --- | --- | --- |
 | x87 store/load at `+D0h` | `D9 ?? D0 00 00 00` | 109 | one only: `009D0674`, the `FLD` **inside** `009D0670`. No `FSTP`. |
-| integer store at `+D0h` | `89 ?? D0 00 00 00` | 59 | one only: `009DBE62`, `MOV [ESI+D0h],ESI` in an array-ctor helper, not an approach |
+| integer store at `+D0h` | `89 ?? D0 00 00 00` | 59 | none in `009D0000`-`009D5000`; the nearest, `009DBE62` `MOV [ESI+D0h],ESI`, is an array-ctor helper past the band and stores a pointer, not a float |
+
+**A band correction while this is being recorded.** Section 11 and section 6.3 both wrote "the
+`009C`/`009D` torpedo band". `009C` is **not** torpedo: `009C8A90` is
+`BSP_BotTaskDiveBomb_ShouldBreakOff` and `009CCED0` is reached from
+`BSP_BotTaskStrafe_UpdateCruiseProfile`. The torpedo band is `009D`, and the existing
+`docs/TORPEDO_APPROACH_UPDATE.md` bound is the right one: `009D0000`-`009D5000`. The earlier census
+conclusions are unaffected -- a hit in `009C` was never a torpedo hit either way -- but the label was
+wrong and anything counting on it should use `009D`.
 
 Both have healthy image-wide counts, so neither negative is vacuous. The x87 form matters
 specifically: **Capstone reports `FSTP [mem]` as a read**, so a census built on operand-access flags
@@ -1614,3 +1632,277 @@ Taken with section 6.2 (`009D0670` does no arithmetic) and section 5, the readin
 that the torpedo's `+D0h` is a **dead field** and the image does not lead. That is consistent with
 section 11's measurement, which closed the misses as a stern chase with no lead term needed. It is
 **not proved**: "no writer names the displacement" is not "no writer".
+
+### 13.5 The run-in direction: the image does not fly to a beam position, and the stern chase is faithful
+
+The question this packet was set is whether some torpedo state puts the bomber onto an attack line
+before `attackrun`, using `009FD570`'s standoff ring with a `side` and an offset ramping 0 to pi --
+which is how one flies from astern of a ship to its beam. If the image did that and this host did
+not, section 11's 5.4-to-11.7-degree crossing angles would be a host gap and binding it would fix
+the misses.
+
+**It does not, and the answer was already in two documents that had not been put side by side.**
+
+* `009FD570` has six callers and `docs/TORPEDO_FLY_TO_SOLVER.md` section 5 tabulates all six. Exactly
+  one is in the torpedo band: `009D0C10 BSP_BotStateTorpedoGoAway_UpdateGeometry`, the **climb-away**.
+  No torpedo state calls it before `attackrun`, so the standoff ring is the break-off's geometry in
+  this class, never the run-in's.
+* The torpedo class does choose a run-in direction, but by terrain. `009D3420` scans thirty-six
+  sectors around the target, `sector_clear[i]` meaning a run-in along sector `i` is free of terrain;
+  `009D3BC8` takes the sector the unit occupies as seen from the target, and `009D3BCE`-`009D3C56`
+  walks to the nearest clear sector each way and takes the cheaper turn. The aim tick then flies
+  "the bearing to the target plus the sector turn offset the approach update chose".
+* `docs/TORPEDO_RUN_IN_PATH.md` section (4) already read the branch that settles it,
+  `009D3C5A`-`009D3C88`: `if (ctl->+58h == 0x24 || ctl->+58h == 0)` -- **all thirty-six clear takes
+  the same branch as none clear**, and both write `approach+5Ch = 0`. The gap search that produces a
+  non-zero turn offset runs only on a mixture.
+
+`local/breakoff_before_usn01.log` confirms the antecedent for every aircraft:
+`clear_sectors=36 of 36`, `turn_5c=0.0000 rad`, on 15 to 18 scan runs each.
+
+**So the target's heading and its velocity do not enter the run-in direction at all.** The only
+target-relative quantity in the plan is the *bearing*, and on open water the plan resolves to a zero
+turn offset by the routine's own rule. A torpedo bomber in USN01 therefore runs in along whatever
+bearing it already holds toward the target's present position -- which is a stern chase when it was
+vectored in from astern, exactly what section 11 measured.
+
+**This retires the hypothesis rather than the miss.** There is nothing to bind for the run-in: the
+stern chase is the image's behaviour under these conditions, not a gap in this host. Section 11's
+geometry still explains the five misses, but the cause cannot be a missing beam approach, and the
+remaining candidate is the lead -- which section 13.4 finds no displacement-naming writer for.
+
+**One thing left unverified and flagged rather than waved past.** All five aircraft report
+`home_sector=0`. That is consistent with their all lying in the same sector relative to the target,
+and it is *moot* for USN01 because the all-clear branch above discards the home sector before it can
+matter. But it was not independently checked against the bearings, so it is not evidence that
+`009D3BC8`'s binding is right -- only that nothing in this mission depends on it.
+
+## 14. The fix was three parts, not two, and `009D4C10` was never one of them
+
+Packet `cc8_torpedo_retire`. Three USN01 runs, each 3200 frames / 3000 mission frames at 0.05 s,
+same launcher arguments, one change under test per run.
+
+### 14.1 What section 12.4 said, and what it got wrong
+
+Section 12.4 says the spent-bomber fix is two parts - `should_break_off` bound to `009D4C10`, plus
+the ordnance byte clearing on a drop - and that "both parts together are the spent-bomber fix".
+**Both parts were in, and the outcome was deaths 5 and damage 2572.9 against a baseline of 2 and
+1501.9.** The retiree's commit `9f0ec5c21` already recorded that as a falsification. This section
+says what the fix actually is.
+
+It is three parts, and the first two are not the two of section 12.4:
+
+1. the ordnance byte clearing on a drop (section 12.4's part 2, and it was right);
+2. the host's task arm no longer re-testing an install condition on every tick;
+3. the goaway enter tail's second leg, which is the only producer of a spent bomber's climb
+   altitude, bound instead of reported absent.
+
+`should_break_off` bound to `009D4C10` - section 12.4's part 1 - is **correct and is not part of
+the fix**. It changes nothing in this mission, for the reason measured below. It is kept because it
+is faithful, not because it repairs anything.
+
+### 14.2 `009D4C10` is innocent, and this is a measurement, not an argument
+
+`local/retire_arm_usn01.log` is a build identical to `9f0ec5c21` apart from additive logging that
+latches every input of the binding on the first tick it returns true, and counts the true ticks. It
+reproduces that commit's run exactly - same log line numbers, deaths 5, damage 2572.9 - so the
+comparison is same-binary in everything that matters:
+
+```
+Mav1 arm=5 at_arm_tick=0 true_ticks=1 state=moveto has_target=1 target_plus_one=45
+     target_marked=0 in_attack=0 flag_52a=1 ordnance_132=1 range_90=4183.4 safe_dist=700.0
+```
+
+`true_ticks=1`. The predicate was true on **exactly one tick per aircraft**: arm tick 0, in
+`moveto`, at 4.2 km, where the range arm is legitimately true and where `009D40A6` cannot consume it
+because its guard needs an attack state. At the drop it was **false** - correctly, the range there
+is about 455 m against a 700 m threshold - and it stayed false for all 678 arm ticks.
+
+Two things recorded elsewhere are withdrawn by that line:
+
+* **The leading suspect of `9f0ec5c21` is refuted.** It proposed that the `target == 0 ||
+  target->+5Dh` arm returned true unconditionally because the binding feeds `has_target` from the
+  command target rather than from `approach+CCh`. The capture shows `has_target=1`,
+  `target_marked=0` and `command_target_plus_one` 44/45/46 on every aircraft. The feed is not the
+  fault, it was not changed, and the `approach+CCh` store census the packet held in reserve was not
+  needed.
+* **No task reached `done` in that run.** The `done_last` column of the goaway census is `009D3150`
+  evaluated on the last tick, not the `kDone` state. Reading it as "the task retired" is what made
+  the failed run look like a retirement problem. It was not one.
+
+One thing is confirmed rather than withdrawn: `bot_task_should_break_off` applies the target pair
+**before** `class_extra`, which is the order of the listing (`009D4C22`/`009D4C2C` target,
+`009D4C32`/`009D4C4A` class extra, `009D4C65` range). The generic body needed no change for the
+torpedo, and the other four classes were not touched. The census also shows this host's two cells
+for `task+488h` - `torpedo_engage_limit_90` and `torpedo_approach.range_90` - printing the same
+number on the same tick, which is what section 10.2's "same storage" reading requires of them.
+
+### 14.3 The cause: an install condition tested every tick
+
+`run_torpedo_task_arm_009d4850` opened with
+
+```cpp
+if (!bsp::ordnance_has_torpedo_2bh(set)) return;
+```
+
+**ahead of** its install block, so the kind `2Bh` test ran on every tick rather than once. As long as
+the loadout never shrank - which is the state section 7.2 describes and section 9 reverted to - the
+guard was invisible. The moment a drop cleared the bit it fired on the next tick and the whole task
+stopped being armed: no state machine, no aim tick, no goaway tick, no state ticks at all. Mav1's
+`arm_ticks=678` is exactly `attackrun 424 + aim 254`, and the aircraft held its last commanded
+descent into the sea 166 ticks later, at 69.4 m/s and `alt=-0.04`.
+
+That is the whole of the deaths 2 -> 5 and damage 1501.9 -> 2572.9 regression, and it is a host
+binding artefact with no counterpart in the image.
+
+The image cannot behave that way, and `009D4C10` is what proves it: its ordnance arm
+`if (IsAttackState(cur) && task+52Ah) return false` only lets the range test through once
+`task+52Ah` is **clear**, so the image arms this task after the drop. An image that stopped arming a
+spent task could never reach its own break-off. `0099A170` makes the kind `2Bh` test once, when the
+order is issued, to choose which task class to construct. The test now sits inside
+`if (!torpedo_task_installed)`.
+
+The dive-bomb arm does not have this bug: it gates on `dive_bomb_task_installed_for_class`, a
+property of the chosen command class, which is stable. A follow-up worth taking is to gate the
+torpedo the same way, on `kAttackCmdTorpedo` `00E08F18`, which would also close the symmetric hole -
+a unit that carries torpedoes but whose order chose another class.
+
+### 14.4 The second hole, and the field name that hid it for a run
+
+With the task armed again the goaway was entered once per aircraft and still commanded no climb:
+`climb_1Ch=0.0 known=0`, 165 ticks all on the post-window **low** arm, `alt_cmd=0.0`,
+`alt_range=[0.1,12.0]`, five water contacts, deaths still 5. `009D0E42` sends a spent bomber down
+the second leg of the enter tail, and that leg was bound as absent, on the ground that it read a
+squadron object this host does not model.
+
+It reads no squadron object. From the listing:
+
+```
+009d0e3f  mov  eax,[esi+4]              esi+4 = the approach
+009d0e42  cmp  byte ptr [eax+132h],0    the ordnance byte
+009d0e4a  je   009d0e7c                 clear -> the second leg
+009d0e4c  fld  dword ptr [eax+78h]      set -> band + UniformFloatRange(50,100)
+009d0e52  fadd dword ptr [eax+74h]
+009d0e7c  mov  ecx,[eax+0Ch]            approach+0Ch
+009d0e7f  fld  dword ptr [ecx+394h]     the climb altitude
+009d0e88  fstp dword ptr [esi+1Ch]
+```
+
+`009F9CE0` sets `approach+0Ch` to `unit+9D4h`, so the base is **the pilot control block** - the same
+block `read_control_block()` in `src/game_hosts_units.cpp` already models, and whose `+398h` and
+`+39Ch` that function already supplies. The confusion was with `009FBA9B`'s ceiling leg, which reads
+a different object's `+394h`.
+
+`ctl+394h` is the desired cruising altitude: step 4 of every task's `+54h` cruise profile writes
+`ctl->+394h = <cruising alt>` behind the not-overridden gate (`docs/BOT_TASKS.md`, the constructor
+shape and the class table), and for this class that value is `Pilot/Torpedo/CruisingAlt`, tuning
+`+430h`. Bound from the live value, with `kPilotTorpedoCruisingAltDefault` only as a fallback. The
+run reports `climb_1Ch=500.0 known=1 alt_cmd=500.0` and the aircraft climb from 12 m to 285 m.
+
+**The reconstruction already knew this, and only the binding did not.** The ledger record for
+`009D0D90` has carried "`else ctl+394h`" since packet `cc8_torpedo_goaway_release` read the tail's
+extent. What went wrong is downstream of the reading: `include/bsp/torpedo_goaway_tick.hpp` named
+the input `squadron_alt_limit_394`, and `src/game_hosts_units.cpp` then fed it `false` on the
+strength of that name. The lesson is the field name, not a gap in the listing - so the ledger entry
+now carries the `009D0E7C` bytes and what the base register is, where a name cannot mislead.
+
+**Uncertainty, stated rather than waved past.** This host models no pilot control block, so it
+cannot observe the write and assumes the cruise profile's write landed. That is exactly the
+assumption `read_control_block()` already makes for `+398h` and `+39Ch` - no weaker and no stronger.
+If the not-overridden gate refused the write, the image would read whatever the motion controller
+left there. The input's name `squadron_alt_limit_394` in `include/bsp/torpedo_goaway_tick.hpp` is
+now known to be wrong; renaming it reaches two files this packet does not hold, so it carries a
+comment naming the error instead.
+
+### 14.5 The measure
+
+| | before | tip as handed over | gate fix only | all three parts |
+| --- | --- | --- | --- | --- |
+| log | `breakoff_before_usn01` | `breakoff_after_usn01`, reproduced as `retire_arm_usn01` | `retire_fix_usn01` | `retire_climb_usn01` |
+| goaway enters, 5 aircraft | 82/80/86/68/69 = 385 | 0 | 1 each | 1 each |
+| goaway ticks, Mav1 | 465 | 0 | 165 | 308 |
+| tasks reaching `done` | none | none | none | **all five, after the climb-away** |
+| `arm_ticks`, Mav1 | 1299 | 678 | 843 | 1299 |
+| water contacts | none | 5 | 5 | **none** |
+| deaths | 2 | 5 | 5 | **1** |
+| damage | 1501.9 | 2572.9 | 2572.9 | **1285.0** |
+| `torpedo_loadout_cleared` | absent | 5 | 5 | 5 |
+| releases | 5 | 5 | 5 | 5 |
+
+Mav1's shape in the passing run is `attackrun 424 -> aim 254 -> goaway 308 -> done 313`, one goaway
+entry, `range_peak_in_goaway=701.3` against `break_off_24h=700.0`. Only Mav5 is lost, sunk at
+86.65 s by SaltLakeCity; Mav2 survives on 4 health, Mav3 and Mav4 are untouched. The before run lost
+Mav1 and Mav5.
+
+**What a retired bomber then does in this host.** It reaches `kDone` when the goaway completes -
+`009D4132`'s `attack_flag_52a ? kAim : kDone`, and with the byte clear that is `kDone` - and from
+then on the arm still runs (313 to 385 ticks of it) but this host runs **no state tick for
+`kDone`**, so nothing further is commanded and the aircraft holds the goaway's last heading and its
+500 m climb for the rest of the mission. `009D4C10` is true throughout that tail (`true_ticks` rises
+from 1 to 197-221), which is consistent but inert: `009D4097` returns `kNone` for a task already in
+`kDone`, ahead of the break-off test. What the image's own `done` state ticks, and whether the bot
+replaces the task afterwards, was not read - it is a separate state object at `task+618h` and not a
+cheap read.
+
+### 14.6 The speed ratio: `1.0` is exact here, and section 12.4 named the wrong tuning row
+
+Section 12.4 gives the ratio's formula as `max(desc+188h MaxSpd / the reference at +4D8h, 1.0)`.
+`+4D8h` is `Pilot/DiveBomb/ReferenceSpeed`. The torpedo's divisor is `+440h`, and the call site is
+explicit:
+
+```
+009d03a1  call 0x42e740                 the game tuning singleton
+009d03a6  fld  dword ptr [eax+440h]     Pilot/Torpedo/ReferenceSpeed, KMH(300)
+009d03b1  fstp dword ptr [esp]          -> 009F9CE0's third argument
+009d03b4  push eax                      the unit
+009d03b7  call 0x9f9ce0
+```
+
+inside `BSP_BotApproachTorpedo_Reset`, which is where the torpedo's approach controller is built.
+Measured live in all three runs:
+
+```
+max_spd_188h=69.44  reference_speed_440h=83.33  ratio_41Ch=1.0000  break_off_threshold=700.0
+```
+
+`69.44 / 83.33 = 0.833`, and `009F9CE0`'s `if (1.0 < r)` keeps the constant, so the `1.0` the
+binding carries is **the image's own value for this aircraft**, not a floor beneath it, and the
+break-off threshold is exactly 700.0 m. Nothing to bind and nothing to re-measure. The dive-bomb
+side's `in.speed_ratio_41c = 1.0f` is the same quantity through a different row and is not settled
+by this; its divisor is `+4D8h` and its numerator is its own class's `MaxSpd`.
+
+### 14.7 The run-in crossing angle, measured at both ends of the swim
+
+Section 11 measures a 5 to 12 degree crossing angle at the closest approach and reads the misses as
+a stern chase. The angle the aircraft *starts* the run-in with had never been measured, so it was
+not known whether that geometry is inherited or produced. Both ends are now censused in one
+convention - hull **pose** headings at both, `atan2(pose_row2.x, pose_row2.z)`, the same quantity the
+closest-approach crossing already differences the round's track against, and never the ship-ai step
+heading section 13 warns about.
+
+| aircraft | crossing at attackrun entry | at the drop | at closest approach |
+| --- | --- | --- | --- |
+| Mav1 | 0.8397 rad (48.1 deg) | 0.0945 (5.4) | 0.094 |
+| Mav2 | 0.6150 (35.2) | 0.1888 (10.8) | 0.189 |
+| Mav3 | 0.6150 (35.2) | 0.1592 (9.1) | 0.159 |
+| Mav4 | 0.6150 (35.2) | 0.2050 (11.7) | 0.205 |
+| Mav5 | 0.6150 (35.2) | 0.1776 (10.2) | 0.178 |
+
+1. **The crossing angle collapses during the run-in**, from 35-48 degrees at attackrun entry to
+   5-12 at the drop. The stern chase is **not** the geometry the run-in starts from; the run-in
+   steering produces it. The pursuit curl is real and it lives in the attackrun.
+2. **The drop angle is the closest-approach angle**, to three decimals on all five. That is two
+   facts at once: the round holds its launch heading through a 21-26 s swim, and the ship's course
+   barely moves over that window. The round leaves along the aircraft's nose, so the aim error at
+   the drop *is* the miss.
+3. **Both ends move, and the ship more than the aircraft.** The target's pose heading goes from
+   -0.6155/-0.8397 at entry to -1.6474/-1.7297 at the drop, about a radian of turn, while the
+   aircraft goes from its spawn heading of 0.0000 to -1.82/-1.88. The aircraft tracked a turning
+   ship around and finished behind it.
+
+**Caveat on row 1.** `entries=1` and the aircraft's heading at entry is still its spawn heading, so
+the attackrun is entered before the aircraft has turned at all. The 35-to-48 degree figure is the
+initial offset between a spawn heading and a target course, not a geometry the task chose. What the
+table settles is that the convergence happens inside the attackrun; **whether the steering chases
+the ship's current course or a lead point is the next question, and this census does not answer
+it.**
