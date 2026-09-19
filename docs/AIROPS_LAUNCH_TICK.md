@@ -448,9 +448,17 @@ reachable in one run.
 ## Uncertainty
 
 * ~~What fills the queue at block+D8h that `006C6540` drains.~~ **Answered in section 5**: `006CC760`,
-  from `007F1C00` on the squadron side. Still open is `006CC7B0`, the arm `007F1C00` takes when
-  `*(00E188A8 + 1FE4h)` is zero, and `007F1FE0`, one of the three callers. Implementing the push is
-  what removes the 24-squadron ceiling.
+  from `007F1C00` on the squadron side. Implementing the push is what removes the 24-squadron
+  ceiling. `006CC7B0` is now read too: it is byte for byte the same push onto a **different** list,
+  block+74h, and `007F1C00` chooses between the two on `*(00E188A8 + 1FE4h)` — the same game-state
+  word `006CDC70` gates its sub-updates on against 2. What distinguishes the two lists is open, and
+  so is `007F1FE0`, one of the three callers.
+* ~~`006BF150`, called at the end of `006C7490`, was not read.~~ **Answered.** It is the
+  slot-changed notification: `00696350(0)`, then `006BD520` builds the message for that block and
+  slot and `0077C7B0` routes it — the same pair the slot walk `006C0DA0` performs inline at
+  `006C0DFB`. Every routine that changes a slot publishes it, which is why it appears at the end of
+  the launch start and on several arms of `006CD350` and `006CCDA0`. This also closes the
+  corresponding item in `docs/AIROPS_LAUNCH_START.md`.
 * `006C58A0`, `006C5B70` and the virtual at block+3Ch were not read.
 * `006BC8E0`, which `006C64B0` calls when a state-2 slot's second has passed, was not read.
 * slot+4Ch has no writer this thread has read. slot+50h now has one: `006CCDA0` stores its fifth
