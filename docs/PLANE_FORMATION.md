@@ -259,8 +259,18 @@ from the existing `follow_base_tick_009c1fd0` seam that `src/torpedo_task_arm.cp
 | `009BFEE0`, the station-keeping law | **not reconstructed** | **hole**, stated |
 | the moment `007ED260` runs | the image runs it in the spawn tail at `007F4BFA` and again on every promote, leave and follow entry; this host runs it once per squadron at the member's first step, because at `007F4580` time the members are still plans with no unit and no pose | scheduling difference, stated |
 | flying the member to its station | the member is **placed** on its station instead | **hole**: the geometry is the image's, the path to it is not |
-| the moment the station is APPLIED | the image spreads the wing inside the follow state's tick (`009C1FD0`); no plane in this process ever enters that state - every USN04 aircraft reports `states[attackrun=...]` and `prepare_entries=0` - so the station is applied once at the member's first plane step | **hole**, stated |
+| the moment the station is APPLIED | the image spreads the wing inside the follow state's tick (`009C1FD0`); this host applies it once at the member's first plane step, and from packet `cc8_done_state` also on every tick a DIVE BOMBER spends in `kDone`/`kPrepare` | **hole**, stated |
 | the bomber arm's yaw-only frame | this host passes the leader's whole published pose in both arms | difference, inactive on USN04 because its leaders are TorpedoBombers (`11h`), which take the small-plane arm |
+
+**CORRECTION, packet `cc8_done_state` (2026-09-19).** The row above used to say "no plane in this
+process ever enters that state - every USN04 aircraft reports `states[attackrun=...]` and
+`prepare_entries=0`". That is no longer true and was already stale when written for the dive bomb:
+a 4800-frame USN04 run on main `6d9f7064d` reports `divebomb movieval ... states[done=303 ...]` and
+`divebomb movieval|.-3 ... states[done=492 ...]`. `kDone` IS a follow state
+(`docs/BOMBER_AFTER_TASK.md` section 1), and `cc8_done_state` now dispatches its tick, so a dive
+bomber's wing members reach the placement every tick they spend there. The placement still has no
+counterpart to the image's altitude clamp `009C16D2`-`009C1846`, which is the limit of the
+stand-in; `docs/BOMBER_AFTER_TASK.md` section 6e states it.
 
 The placement is the honest name for what replaces `009BFEE0`. A wing member in the follow state is
 put at its station every tick; when the state leaves (a torpedo run-in, for instance) the placement

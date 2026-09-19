@@ -482,6 +482,13 @@ order raises it to 2 (`007ED430(2)`); the leader's abandon test sets it to **1**
 `docs/PILOT_TASK_HEADING_ARM.md` line 71), and `0099B710` is `MOV AL,1 / RET`. **So for a flight
 leader the predicate is always true and `squadron+370h` is driven to 1 on every think.**
 
+**The dive-bomb task reaches it twice per think, not once.** `tools/callsite_census.py 0099b740`
+gives ten sites: `009998A0`'s `CALL` and **nine tail `JMP`s, one per class's `+54h` cruise-profile
+override** — including `009C8A87` in `009C8920 BSP_BotTaskDiveBomb_UpdateCruiseProfile`. So the
+dive-bomb path is not an exception to the abandon test; it runs it from its own cruise profile as
+well. `src/dive_bomb_task.cpp`'s `dive_bomb_cruise_profile_009c8920` stops at `009C8A7C` and does
+not model that tail, which `src/bot_tasks.cpp` line 204 already flags as "modelled separately".
+
 That is the channel the Done state is not. `squadron+370h` is exactly the field the dive-bomb
 machine gates on: `009C83F8` returns `in_range_latch_4c8 || (mode == 2 && latched target)`, and
 `009C8483` sends an attacking task back to the **approach** (`moveto`/`follow`) the moment
@@ -499,6 +506,130 @@ for the torpedo (`unit_.torpedo_attack_mode_370`), and `bsp::pilot_attack_mode_0
 reconstructed. With the mode pinned at 2 the `!engaged` edge at `009C8483` can never fire, so a
 spent dive bomber never returns to the approach. This is an input of the dive-bomb transition and
 belongs to the packet that owns those inputs; it is recorded here, not changed here.
+
+## 6e. The dive-bomb Done state, bound — what is a proof and what is a stand-in
+
+Packet `cc8_done_state`, item 2. `src/game_hosts_units.cpp`'s
+`run_dive_bomb_task_arm_009c8790` had no `kDone` dispatch; it now has one, shared with `kPrepare`
+because `00D20D28` is installed twice in `009C73A0`.
+
+**Two corrections to section 4 first.** `009C7270` is **16 bytes, body `009C7270`-`009C727F`**, not
+13, and it is `__thiscall(state, float dt)` which *forwards* `dt`:
+
+```
+009c7270  FLD   float ptr [ESP+4]      ; dt          (4)
+009c7274  PUSH  ECX                    ;             (1)
+009c7275  FSTP  float ptr [ESP]        ;             (3)
+009c7278  CALL  009C1FD0               ;             (5)
+009c727d  RET   4                      ;             (3)
+```
+
+| what | in this host | kind |
+| --- | --- | --- |
+| the enter's `009BEDDA` shape 1 | `squadron->formation_shape_3e4 = 1` | proof |
+| `009BEDE4`'s `007ED260` | run once per squadron in the placement seam, not per enter | scheduling difference, stated |
+| the enter's `state+98h = -1.0f`, `state+9Ch = 0` | not carried; only `009D2720` reads them and the dive-bomb tick never does | justified omission |
+| `009BED80`'s `state+6Ch` tuning cache, `+84h`, `+85h`, `+88h`, `+8Ch`, `+90h`, `+94h`, the leader observer at `+2Ch` | not modelled — this host has no follow-state object | **hole**, stated |
+| the tick's `009C1FE2` `+26Ch = 2` | written to a field nothing reads | **inert by proof**, see 6c |
+| the tick for a flight LEADER | nothing else, which is faithful: `009C1FF1 JZ 009C234E` | proof |
+| the tick for a wing MEMBER | the member is **placed** on its station | **hole**: `009BFEE0` + `009BEE30`, ~2900 unread instructions |
+
+**The stand-in's known defect, named before the run.** The placement teleports the member to the
+raw station. For this squadron seat 1's station is `local = (-60.0, -25.0, 70.0)` in the leader's frame — so
+with the leader level it sits **25 m below him**, and with the leader banked it sits wherever that
+frame puts it. The image never commands that unclamped: `009BFEE0`'s common tail
+`009C16D2`-`009C1846` (section 6) clamps the commanded Y into a band built around the leader's
+altitude `leader+100h` before anything flies to it. The placement has no counterpart to that clamp,
+so binding it into `kDone` pins a member under a leader wherever the leader is, including in the
+sea. Any change in the member's water contact is therefore an artefact of the stand-in, not
+evidence about the image's law; the aircraft to read is the **leader**, whom `009BFD70`'s refusal
+keeps the placement away from entirely.
+
+## 6f. The before/after, USN04, same binary apart from the kDone dispatch
+
+`--frames 5000 --press-start-frame 30 --menu-select USN04 --mission-frames 4800
+--mission-frame-seconds 0.05`, both halves built in this worktree at main `6d9f7064d`.
+
+**The BEFORE is reproducible across commits**, which is what makes section 6b usable as a
+reference: this packet's own baseline at `6d9f7064d` matches the `cc8_after_task` baseline at
+`f14732dc4` **to the digit** — `movieval` `arm_ticks=2112 done=303 releases=2`, `movieval|.-2`
+`2370 aimglide=548 releases=1`, `movieval|.-3` `2299 done=492 releases=2`, the two water contacts
+at the same log lines with `|v|=68.72` and `68.45`, and `native renderer final COM release` in
+both.
+
+**The result: two water contacts become one, and the one that remains is the LEADER.**
+
+| aircraft | seat | `arm_ticks` | `done` | releases | water contact |
+| --- | --- | --- | --- | --- | --- |
+| `movieval` | 0, the flight leader | 2112 -> **2112** | 303 -> **303** | 2 -> 2 | yes -> **yes**, `alt=-0.00 \|v\|=68.72`, **mission frame 4284 in both** |
+| `movieval\|.-2` | 1 | 2370 -> 2370 | none -> none | 1 -> 1 | no -> no |
+| `movieval\|.-3` | 2 | 2299 -> **2370** | 492 -> **563** | 2 -> 2 | **yes -> NO** |
+
+The new census line the binding prints:
+
+```
+divebomb movieval     done 009C7240/009C7270: entries=1 ticks=303 placed=0   plan_mode_26c=2 alt 180.6 -> 0.1  hdg=0.8381
+divebomb movieval|.-3 done 009C7240/009C7270: entries=1 ticks=563 placed=563 plan_mode_26c=2 alt 205.4 -> 16.9 hdg=-2.6341
+```
+
+**The leader is bit-identical, and that is the point.** `placed=0` — `009BFD70`'s refusal keeps the
+placement away from seat 0, so the leader ran the bound Done state and *only* the bound Done state:
+the enter's shape 1 and the tick's `+26Ch = 2`. Every number it produces is unchanged, down to the
+mission frame it hits the water on. Section 6c predicted this statically; the run measures it.
+**A faithfully bound Done state does nothing for a flight leader**, because in the image it does
+nothing for a flight leader.
+
+**The member's rescue is the stand-in, not the image's law**, and the geometry says so. The
+squadron's pairwise distances (`0-2` is the leader to seat 2):
+
+| tick | `0-2` before | `0-2` after |
+| --- | --- | --- |
+| 3600 | 20.53 | 20.53 |
+| 4000 | 1201.35 | **96.52** |
+| 4400 | 218.98 | **93.89** |
+
+`0-1` is untouched (466.27, 1418.10 in both) because seat 1 never enters `done`. So from the tick
+`|.-3` enters `done` it is held about 94 m from the leader — the station magnitude — and it is
+still held there at tick 4400, **more than a hundred frames after the leader is floating in the
+sea**. It ends at 16.9 m only because the dead leader's frame happens to rotate the station's
+`-25.0` local Y upward. Had that frame been level it would have been placed 25 m under the water.
+This is exactly the missing altitude clamp of section 6e, observed. **`movieval|.-3` not ditching
+is not evidence about the image**; it is the stand-in pinning an aircraft to a corpse.
+
+Nothing else moved. The three `aim error 009C5C9B` lines are identical in both runs
+(`-24.93`/closest `8.06`, `-33.09`/`7.05`, `-17.99`/`9.61`), `releases` and `bombs_spawned` are
+unchanged for all three aircraft, and both runs end on `native renderer final COM release`. The
+only new log lines are the three first-occurrence host records at 35501-35503, which is exactly why
+the leader's water-contact line moved from 40981 to 40984 while its mission frame did not move at
+all.
+
+## 6g. What packet `cc8_done_state` leaves for the next reader
+
+In the order they are worth doing, with the reason each is next.
+
+1. **Feed the squadron attack mode to the dive bomb.** Section 6d: `dive_bomb_transition_inputs`
+   pins `control_mode_370` to the constant `2`, so `009C8483`'s return-to-approach edge can never
+   fire. The rule `bsp::pilot_attack_mode_0099b740` and the host wrapper
+   `run_attack_mode_tick_0099b740` both already exist for the torpedo; the dive bomb needs the same
+   two calls and a per-squadron field. This is the one change with a real chance of keeping a spent
+   bomber out of the sea, and it is an input of the dive-bomb transition, so it belongs to whoever
+   owns those inputs.
+2. **The altitude clamp `009C16D2`-`009C1846`.** Section 6e: the placement stand-in has no
+   counterpart to it, which is the one place the stand-in can put an aircraft where the image never
+   would. The tail is already read whole in section 6; what is missing are `state+88h`'s seed,
+   `block+4h`, the `qword` at `00D1F3F8` and the tuning singleton's `+210h`.
+3. **`007F23A0` shape 2 at `007F25BD`** (~240 bytes, x87, two `00415550` calls and a reciprocal).
+   Until it is read, `007F23A0` answers `produced = false` for shape 2, so the TORPEDO done enter
+   cannot be bound the way the dive bomb's now is: `009D254E` overrides the shape to 2 and the
+   station would be lost.
+4. **`009D29E0`-`009D2CF3`**, the 787-byte disarmed arm the torpedo done tick always takes
+   (section 4), still reduced to `kIdle` in `src/torpedo_task_arm.cpp`.
+5. `009BFEE0` arm B (~1500 instructions) and `009BEE30` (997, of which only the head and the
+   `009BF0B8` block are read here). Nothing smaller is a faithful station-keeping law; section 6
+   says why.
+
+Not worth doing: binding `+26Ch = 2` to anything. Section 6c proves the only reader cannot act on
+it for the aircraft that writes it.
 
 ## 7. Corrections to other documents
 
@@ -581,14 +712,18 @@ What is missing is not the branch but the body of `009D29E0` (section 4).
 | --- | --- | --- |
 | `009D2530` enter | complete, `009D2530-009D256E` | proof |
 | `009C7240` enter | complete, `009C7240-009C725B` | proof |
-| `009C7270` tick | complete, `009C7270-009C727C` | proof |
+| `009C7270` tick | complete, `009C7270-009C727F` (**16 bytes, corrected in 6e**; section 4's 13 and this table's `-009C727C` were both short) | proof |
 | `009BED80` base enter | complete, `009BED80-009BEE24` | proof |
 | `00D21320` / `00D20D28` slot maps | complete | proof |
 | `009D2DA0` | partial: the two Follow-derived constructs and the whole registry table | proof for those |
 | `009BFD70` `state+85h` decision | complete, `009BFE19-009BFEB0` | proof |
 | `009BFEE0` arm A | complete, `009BFEFC-009C0021` | proof |
 | `009BFEE0` arm B | **not read**, `009C0026-009C16D1` | **hole**, stated |
-| `009BEE30` | **not read**, `009BEE30-009BFD67`, 3895 bytes | **hole**, stated |
+| `009BEE30` | partial (6c): head `009BEE30-009BEF11` and the formate-lock block `009BF031-009BF0D9` read; the rest of `009BEE30-009BFD67`, ~900 of 997 instructions, **not read** | **hole**, stated |
+| `0099D300` gate A | complete, `0099D309-0099D3C2` (6c) | proof |
+| `0099D300` normal path | partial: `0099D3C5-0099D46E` and `0099EA84-0099EBA9` only | **hole**, stated |
+| `0099B740` | complete, `0099B740-0099B77A` (6d) | proof |
+| `007ED3F0` / `007ED430` | complete, `007ED3F0-007ED3FA` / `007ED430-007ED442` (6d) | proof |
 | `009BFEE0` common tail | complete, `009C16D2-009C1846` | proof |
 | `009D2720` disarmed arm | **not read past its head**, `009D29E0-009D2CF3` | **hole**, stated |
 | `007F23A0` shape 2 | **not read**, `007F25BD` | **hole**, stated |
@@ -607,3 +742,16 @@ What is missing is not the branch but the body of `009D29E0` (section 4).
   `007F23A0`'s use of the same block. The row-to-axis mapping is not re-derived here.
 * Shape 2's geometry is unread, so nothing is claimed about what formation a spent torpedo flight
   actually takes — only that it is a different shape from the one the dive bombers take.
+* `unit[9C2h + idx*8]`, and therefore `unit+520h`, is read here only as a byte that
+  `FUN_007CDC70` publishes per step and that gate A, `009BEE30` and `0099C270` all require.
+  `docs/PILOT_BOT_TICK_GATES.md`'s provisional reading — "under human control for the local slot" —
+  fits `0099EB73`'s `SETZ` against one named unit, but **the byte's meaning is not recovered**, and
+  nothing in section 6c depends on it: the leader's case is settled by `009BEE30` being
+  unreachable, not by what the byte means.
+* `0099B740`'s abandon predicate is the task vtable's `+38h`, and for the **dive-bomb class this is
+  verified directly here**, not taken from `docs/BOT_TASKS.md` line 185: `scan-bytes '20 89 9c 00'`
+  finds `009C8920` (the dive bomb's `+54h` cruise profile) at exactly one site, `00D20E6C`, so the
+  vtable base is `00D20E18`, and the dword at `00D20E18 + 38h = 00D20E50` is `10 b7 99 00` =
+  **`0099B710`**, which is `MOV AL,1 / RET`. The claim that *every* pilot-task vtable shares it is
+  still taken from that doc row and `docs/PILOT_TASK_HEADING_ARM.md` line 71; nothing in 6d depends
+  on the other nine classes.

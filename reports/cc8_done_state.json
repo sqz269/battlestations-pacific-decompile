@@ -1,0 +1,153 @@
+{
+  "packet": "cc8_done_state",
+  "owner": "agent/cc8-done-state",
+  "doc": "docs/BOMBER_AFTER_TASK.md",
+  "summary": "The dive-bomb done/prepare state bound, plan mode 2 read whole and shown unreachable for a flight leader, and the finished-task consumer identified as the squadron attack mode.",
+  "routines": [
+    {
+      "address": "0099d300",
+      "name": "BSP_PilotBot_PlanControls",
+      "coverage": "partial: gate A 0099D309-0099D3C2 read whole; the normal path 0099D3C5-0099EBAB read only at 0099D3C5-0099D46E and 0099EA84-0099EBA9"
+    },
+    {
+      "address": "009c7240",
+      "name": "dive_bomb_done_prepare_enter_009c7240",
+      "coverage": "complete: body 009C7240-009C725B read whole; the tail target 009BED80 is bound only for squadron+3E4h"
+    },
+    {
+      "address": "009c7270",
+      "name": "dive_bomb_done_prepare_tick_009c7270",
+      "coverage": "complete: body 009C7270-009C727F read whole (16 bytes); its callee 009C1FD0 is partial"
+    },
+    {
+      "address": "009c1fd0",
+      "name": "BSP_BotStateFollow_Tick",
+      "coverage": "partial: head 009C1FD0-009C1FF7 and tail 009C232F-009C2353 read; 009BFEE0 (1795 instructions) and 009BEE30 (997) not reconstructed"
+    },
+    {
+      "address": "0099b740",
+      "name": "BSP_BotTask_AbandonIfStale",
+      "coverage": "complete: body 0099B740-0099B77A read whole"
+    },
+    {
+      "address": "007ed3f0",
+      "name": "BSP_PilotControl_SetAttackMode",
+      "coverage": "complete: body 007ED3F0-007ED3FA read whole"
+    },
+    {
+      "address": "007ed430",
+      "name": "attack_mode_raise_007ed430",
+      "coverage": "complete: body 007ED430-007ED442 read whole"
+    }
+  ],
+  "path_steps": [
+    {
+      "address": "00999907",
+      "native": "0099d300",
+      "function": "009998a0",
+      "note": "the planner on 009998A0's short path"
+    },
+    {
+      "address": "009999aa",
+      "native": "0099d300",
+      "function": "009998a0",
+      "note": "the planner on the slow path; with 00999907 these are the only two call sites of 0099D300 image-wide (tools/callsite_census.py)"
+    },
+    {
+      "address": "0099993c",
+      "native": "0099b740",
+      "function": "009998a0",
+      "note": "the abandon test, before the task arm"
+    },
+    {
+      "address": "0099b774",
+      "native": "007ed3f0",
+      "function": "0099b740",
+      "note": "PUSH 1; the squadron attack mode is SET to 1 for a flight leader"
+    },
+    {
+      "address": "009c8a87",
+      "native": "0099b740",
+      "function": "009c8920",
+      "kind": "tail_jump",
+      "note": "the dive-bomb task's own +54h cruise profile also runs the abandon test; tools/callsite_census.py gives ten sites for 0099B740, one CALL in 009998A0 and nine such tails"
+    },
+    {
+      "address": "009c7278",
+      "native": "009c1fd0",
+      "function": "009c7270",
+      "note": "the dive-bomb done/prepare tick's only call"
+    },
+    {
+      "address": "009c7257",
+      "native": "009bed80",
+      "function": "009c7240",
+      "kind": "tail_jump",
+      "note": "the done/prepare enter tail-jumps into the Follow base enter"
+    },
+    {
+      "address": "009c1fea",
+      "native": "009bfd70",
+      "function": "009c1fd0",
+      "note": "the station point; its false return ends the tick for a flight leader"
+    },
+    {
+      "address": "009c2068",
+      "native": "009bfee0",
+      "function": "009c1fd0",
+      "note": "the station-keeping law, not reconstructed"
+    },
+    {
+      "address": "009c2077",
+      "native": "009bee30",
+      "function": "009c1fd0",
+      "note": "the only call site of 009BEE30 image-wide (tools/callsite_census.py); it lies between the gate 009C1FF1 JZ 009C234E and its target, so a flight leader never reaches it"
+    },
+    {
+      "address": "009bede4",
+      "native": "007ed260",
+      "function": "009bed80",
+      "note": "the formation-index assignment the Follow base enter re-runs"
+    },
+    {
+      "address": "009d2731",
+      "native": "009c1fd0",
+      "function": "009d2720",
+      "note": "the torpedo done/prepare tick's call of the same follow tick"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "docs/BOMBER_AFTER_TASK.md 6a: the mode-2 body past 009D36F is not read",
+      "is": "it was already read in docs/PILOT_BOT_TICK_GATES.md section (3) as entry gate A, and is now read whole here: a neutral plan that returns",
+      "evidence": "0099D309-0099D3C2, 39 instructions, RET 4 at 0099D3C2"
+    },
+    {
+      "was": "docs/BOMBER_AFTER_TASK.md 4: 009C7270 is 13 bytes",
+      "is": "16 bytes, body 009C7270-009C727F",
+      "evidence": "FLD [ESP+4] (4) / PUSH ECX (1) / FSTP [ESP] (3) / CALL rel32 (5) / RET 4 (3)"
+    },
+    {
+      "was": "docs/BOT_TASKS.md, slot +38h: 007ED3F0's body was not read",
+      "is": "the ledger already carried the body and a four-site call census from packet cc8_torpedo_release_orders; the doc is the stale party",
+      "evidence": "config/names/007e0000.jsonl record for 007ed3f0"
+    }
+  ],
+  "data_claims": [
+    {
+      "address": "00d20e6c",
+      "claim": "the only image site holding the dword 009C8920 (the dive-bomb +54h cruise profile), so the dive-bomb task vtable base is 00D20E18",
+      "evidence": "python tools/bsp.py scan-bytes '20 89 9c 00' returns exactly one site"
+    },
+    {
+      "address": "00d20e50",
+      "claim": "the dive-bomb task vtable's +38h slot is 0099B710 (MOV AL,1 / RET), so 0099B740's abandon predicate is always true for this class",
+      "evidence": "ghidra bytes 00d20e50 --length 8 gives '10 b7 99 00 a0 79 9c 00'; 00D20E18 + 0x38 = 00D20E50"
+    }
+  ],
+  "holes": [
+    "009BFEE0 (1795 instructions) and 009BEE30 (997) are not reconstructed; the host PLACES a wing member on its station instead of flying it there, and the placement has no counterpart to the altitude clamp at 009C16D2-009C1846.",
+    "009BED80's state+6Ch tuning cache, state+84h/85h/88h/8Ch/90h/94h and the leader observer are not modelled.",
+    "The mode-2 body's gate conditions are never fed in this host, so gate A is unreachable here as well as for a leader in the image."
+  ]
+}
