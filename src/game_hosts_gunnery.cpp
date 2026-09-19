@@ -140,6 +140,17 @@ struct GameGunneryHost::Impl {
     std::vector<GameDeviceClassRow> devices;
     std::vector<GameBulletClassRow> bullets;
     std::vector<GameProjectileRow> shots;
+    // Packet cc8_torpedo_closest_approach: one row per swimming round, kept
+    // after the round is erased.
+    std::vector<GameTorpedoApproachRow> torpedo_approaches;
+    std::string unit_name_or_index(std::size_t one_based) const {
+        if (one_based == 0) return std::string("-");
+        const std::size_t i = one_based - 1;
+        if (i < unit_state.size() && !unit_state[i].row.name.empty()) {
+            return unit_state[i].row.name;
+        }
+        return std::string("unit#") + std::to_string(one_based);
+    }
     GameGunnerySummary summary{};
 
     // 00E19BF8, built by 00727BD0 from the authored lists at 00E092C8.
@@ -2270,6 +2281,30 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         ++summary.projectile_steps;
         done("Projectile::flight_step_006e7670", 0x006e7670u);
 
+        // Packet cc8_torpedo_closest_approach. A swimming round carries no
+        // target - GameProjectileRow has an owner and no victim, and the swim
+        // keeps its launch heading - so the closest approach is measured
+        // against every unit of another side rather than against an assumed
+        // target. Horizontal only: the round is levelled onto the surface
+        // plane at 009D0CE0's swim and a ship's y is its waterline.
+        if (shot.swimming) {
+            const std::size_t unit_count = units.count();
+            for (std::size_t i = 0; i < unit_count; ++i) {
+                if (i + 1 == shot.owner_unit) continue;
+                if (units.unit_side_0054(i) == shot.owner_side) continue;
+                float ux = 0.0f, uy = 0.0f, uz = 0.0f;
+                units.unit_position_00fc(i, ux, uy, uz);
+                const float dx = shot.position[0] - ux;
+                const float dz = shot.position[2] - uz;
+                const float d = std::sqrt(dx * dx + dz * dz);
+                if (shot.min_enemy_distance < 0.0f || d < shot.min_enemy_distance) {
+                    shot.min_enemy_distance = d;
+                    shot.min_enemy_time = shot.life;
+                    shot.min_enemy_unit = i + 1;
+                }
+            }
+        }
+
         const bsp::TickPoint3 a{from[0], from[1], from[2]};
         const bsp::TickPoint3 b{shot.position[0], shot.position[1], shot.position[2]};
         if (!bsp::projectile_segment_is_sweepable(a, b)) continue;
@@ -2379,6 +2414,18 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
             ++summary.expired;
             shot.alive = false;
         }
+    }
+    // Packet cc8_torpedo_closest_approach: keep a dying swimming round's closest
+    // approach before the row is erased, because nothing else outlives it.
+    for (const GameProjectileRow& row : shots) {
+        if (row.alive || !row.swimming) continue;
+        GameTorpedoApproachRow rec;
+        rec.owner_name = unit_name_or_index(row.owner_unit);
+        rec.nearest_name = unit_name_or_index(row.min_enemy_unit);
+        rec.min_distance = row.min_enemy_distance;
+        rec.min_time = row.min_enemy_time;
+        rec.life_at_end = row.life;
+        torpedo_approaches.push_back(rec);
     }
     shots.erase(std::remove_if(shots.begin(), shots.end(),
         [](const GameProjectileRow& row) { return !row.alive; }), shots.end());
@@ -3033,6 +3080,32 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery torpedo_drop drops=%llu refusals=%llu "
             "water_entry_breakups=%llu",
             s.torpedo_drops, s.torpedo_drop_refusals, s.water_entry_breakups);
+    // Packet cc8_torpedo_closest_approach: the measurement the torpedo stream
+    // has owed since docs/TORPEDO_AFTER_THE_DROP.md section 2. Distances are
+    // CENTRE TO CENTRE and horizontal - this host has no oriented hull box - so
+    // read each against the target's own Length (Northampton's class row is
+    // 180.0 m), not as a miss distance from the plating.
+    {
+        std::vector<GameTorpedoApproachRow> rows = host.torpedo_approaches;
+        for (const GameProjectileRow& row : host.shots) {
+            if (!row.swimming) continue;
+            GameTorpedoApproachRow rec;
+            rec.owner_name = host.unit_name_or_index(row.owner_unit);
+            rec.nearest_name = host.unit_name_or_index(row.min_enemy_unit);
+            rec.min_distance = row.min_enemy_distance;
+            rec.min_time = row.min_enemy_time;
+            rec.life_at_end = row.life;
+            rows.push_back(rec);
+        }
+        host.log.notef("summary mission gunnery torpedo_closest_approach swims=%zu "
+            "(centre to centre, horizontal)", rows.size());
+        for (const GameTorpedoApproachRow& r : rows) {
+            host.log.notef("  torpedo from %-12s nearest %-14s min=%.1f m at t=%.2f s "
+                "of %.2f s run", r.owner_name.c_str(), r.nearest_name.c_str(),
+                static_cast<double>(r.min_distance), static_cast<double>(r.min_time),
+                static_cast<double>(r.life_at_end));
+        }
+    }
     {
         // Packet cc8_torpedo_gun_assignment. Which category a swim-capable round
         // is actually mounted in, and whether the units that own a
