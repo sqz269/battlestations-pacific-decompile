@@ -627,4 +627,8 @@ own right, and a host that models only the spawn tail will not see the planes th
   taking a squadron from its own property bag, and clearing it again.
 
 Both are `contract: unread` here. They are listed so the spawn tail is not mistaken for the only
-producer of membership.
+producer of membership. Two bounds on how much they matter. `007ED0D0` has exactly **one** callsite,
+`007CDF82` in `FUN_007CDF20` - the same function whose `007CDF6C` is another of the ten `+9D4h`
+writers, so the sorted insert is that one routine's. And the second route needs an authored `Plane`
+scene entity: USN01 registers ten scene classes and `Plane` is not among them, its twenty aircraft
+rows all being `PlaneSquadronGen`, so nothing in that mission reaches `007D5D20`'s squadron field.

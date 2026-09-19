@@ -458,11 +458,64 @@ std::uint32_t GameScriptOrdersHost::create_unit_from_scene_record_0046db4b(
     copy.created = true;
     copy.skipped_because.clear();
     const std::size_t before = units_.count();
-    std::vector<GameSceneEntityRecord> one;
-    one.push_back(copy);
-    units_.create_units(one);
+    std::vector<GameSceneEntityRecord> batch;
+    batch.push_back(copy);
+
+    // The third creation seam. A held-back PlaneSquadronGen row reaches 004F0AD0
+    // here rather than at scene load, and its slot-39 attach 007F4580 spawns the
+    // same wing; the property bag did not survive the hold-back, so `WingCount`
+    // was carried on the pool entry when the row was held.
+    //
+    // UNVALIDATED BY A RUN: neither USN01 nor USN04 reaches a GenerateObject call
+    // in its frame budget, so this seam is reconstructed to the same rule as the
+    // other two and measured by neither. docs/PLANE_SQUADRON_HOST.md.
+    bsp::PlaneSquadronSpawnPlan plan;
+    const bool is_squadron = copy.class_id == 0x18;
+    if (is_squadron) {
+        bsp::PlaneSquadronSpawnRequest request;
+        request.squadron_name = copy.name;
+        request.type_class_id = copy.type_id;
+        if (const SceneSpawnPoolEntry* held =
+                scene_spawn_pool().find(copy.name)) {
+            request.wing_count_present = held->wing_count_present;
+            request.wing_count_raw = held->wing_count_raw;
+        }
+        plan = bsp::plane_squadron_plan_members_007f4580(request);
+        for (std::size_t wing = 1; wing < plan.members.size(); ++wing) {
+            GameSceneEntityRecord wing_record = copy;
+            wing_record.name = plan.members[wing].name;
+            wing_record.class_name = "PlaneUnitInstance";
+            wing_record.class_id = -1;
+            batch.push_back(std::move(wing_record));
+        }
+    }
+
+    units_.create_units(batch);
     if (units_.count() <= before) return 0u;
-    const std::size_t index = units_.count() - 1;
+    const std::size_t index = before;
+    if (is_squadron && !plan.members.empty()) {
+        bsp::PlaneSquadronHostRecord& squadron =
+            bsp::plane_squadron_registry().add(copy.name);
+        squadron.wing_count = plan.wing_count;
+        squadron.behaviour = plan.behaviour;
+        squadron.type_class_id = copy.type_id;
+        squadron.party = copy.party;
+        squadron.squadron_unit = index;
+        squadron.member_names.clear();
+        squadron.member_units.clear();
+        squadron.member_spawn_index.clear();
+        for (std::size_t wing = 0; wing < plan.members.size(); ++wing) {
+            const std::size_t unit = index + wing;
+            if (unit >= units_.count()) break;
+            squadron.member_names.push_back(wing == 0 ? copy.name
+                                                      : plan.members[wing].name);
+            squadron.member_units.push_back(unit);
+            squadron.member_spawn_index.push_back(plan.members[wing].spawn_index);
+        }
+        log_.notef("GenerateObject squadron %s: WingCount=%d -> %d member plane(s) "
+            "(007F4580 mode 1 on the held-back row)", copy.name.c_str(),
+            plan.wing_count, plan.plane_count);
+    }
     return static_cast<std::uint32_t>(index + 1);
 }
 

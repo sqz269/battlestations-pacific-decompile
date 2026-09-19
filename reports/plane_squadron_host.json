@@ -10,8 +10,10 @@
   "include/bsp/plane_squadron_host.hpp",
   "src/plane_squadron_host.cpp",
   "src/game_hosts_scene_contents.cpp",
+  "include/bsp/game_hosts_scene_contents.hpp",
   "include/bsp/game_hosts_script_orders.hpp",
-  "src/game_hosts_script_orders.cpp"
+  "src/game_hosts_script_orders.cpp",
+  "cmake/startup.cmake"
  ],
  "classification": "reconstruction binding plus discovery; the host that gives a PlaneSquadronGen row and an air-ops launch their real WingCount member planes, the order fan-out over them, and four corrections to the packet brief",
  "routines": [
@@ -161,7 +163,7 @@
    "what": "what stops the first torpedo run-in",
    "was": "the empty member array",
    "is": "the approach and one unread gate: aim_ticks=0 with min == last on all five Mavs, so no aim stage ran and the release timer 009FA3A0 was never armed at 009D2287; the other route into the raise, request_ordnance_release at 009D4956, is gated on 009D4923 which this host hard-codes to false and labels contract. Nothing dropped, unit+C20h stayed 0 and the release-order broadcast was never entered. A squadron with real members is necessary for 007EEF30 to have anyone to issue to and is not sufficient to open the gate. 007BBC00 is not a function: a rel32 callsite census finds zero calls to it and 34 to 007BBBA0, whose body contains it as the store past every early exit",
-   "evidence": "local/sqn_before_usn01.log approach rows; src/game_hosts_units.cpp:924 is the only raiser of C20h; python tools/callsite_census.py 0x007bbc00 and 0x007bbba0"
+   "evidence": "local/sqn_before_usn01.log approach rows; GameUnitsHost::Impl::release_ordnance_007bbba0 in src/game_hosts_units.cpp is the only raiser of C20h; python tools/callsite_census.py 0x007bbc00 0x007bbba0 0x007c0d90 0x007eef30"
   },
   {
    "what": "the census multiplier for USN01",
@@ -262,7 +264,8 @@
     "fan_out_007ecf80": "squadron=movieval +3CCh=3 -> 2 wingman task(s)",
     "pilot_attack_means": "unchanged: the three wings fly one trajectory because 007F4813 has no per-wing offset and this host has no formation model",
     "exitcode": 0
-   }
+   },
+   "after_reconfirmed": "local/sqn_after2_usn04.log, taken on the tree this packet ends with after air_ops_squadron_plane_count changed to report the real +3CCh: every figure reproduces exactly (21 after the load, 33 at the end, +3CCh=3 -> 2 wingman task(s), ordered=3, EXITCODE=0)"
   },
   {
    "gate": "007EEF40 did not open in either mission, before or after, and this packet did not expect it to. No drop, water entry, breakup or swim was produced, so there is nothing to report under those headings"
@@ -274,6 +277,6 @@
   "src/game_hosts_units.cpp: +378h must pass the constructed 1, and is_flight_member must read bsp::plane_squadron_registry() rather than the torpedo ordnance mask",
   "007ED0D0 BSP_PlaneSquadron_InsertPlaneSorted and 007D5D20 BSP_Plane_ReadPropertyBag are two further producers of plane+9D4h, both contract: unread",
   "00521E30 is never called, so the authored-parent placement arm 007F48AE..007F48BA is never taken",
-  "GenerateObject 00944FD0 does not extend a held-back PlaneSquadronGen row to its wing; neither mission reaches a GenerateObject call in its frame budget"
+  "GenerateObject 00944FD0 is the third creation seam and is IMPLEMENTED BUT UNVALIDATED BY A RUN: a held-back PlaneSquadronGen row reaches 004F0AD0 through create_unit_from_scene_record_0046db4b and spawns its wing from the same plan, with WingCount read at hold-back time and carried on the spawn-pool entry because the bag does not survive the hold-back. Neither USN01 nor USN04 reaches a GenerateObject call in its frame budget"
  ]
 }

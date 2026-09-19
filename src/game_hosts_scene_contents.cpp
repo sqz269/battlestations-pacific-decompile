@@ -1244,6 +1244,23 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         // The stand-in for the scene database's named-object map at sceneDb+18h,
         // which is the only thing 0046D930 looks a name up in.
         scene_spawn_pool().add(record);
+        // Same shape for a held-back PlaneSquadronGen row: 007F4580's mode-1 loop
+        // reads `WingCount` out of this bag and the bag does not survive the
+        // hold-back, so the key is carried on the pool entry and the wing is
+        // spawned when the script creates the unit. UNVALIDATED BY A RUN: neither
+        // USN01 nor USN04 reaches a GenerateObject call in its frame budget.
+        if (klass != nullptr && klass->class_id == 0x18) {
+            if (SceneSpawnPoolEntry* held = scene_spawn_pool().find(record.name)) {
+                if (const SceneProperty* prop = bag.find(kSceneUnitWingCountKey)) {
+                    std::int32_t authored = 0;
+                    if (!prop->values.empty()
+                        && scene_scan_int(prop->values.back(), authored)) {
+                        held->wing_count_present = true;
+                        held->wing_count_raw = authored;
+                    }
+                }
+            }
+        }
         // A held-back carrier or airfield skips the 006CADD0 mode 1 build below,
         // because that sits on the created path. Its deck is authored in this same
         // bag, so it is built here and handed over when the script spawns the
