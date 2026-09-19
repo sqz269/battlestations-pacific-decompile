@@ -1,5 +1,32 @@
 # Handoff: the dive-bomb probe `007F0280`, and what is around it
 
+> **Correction, packet `cc8_dive_geometry` (`agent/cc8-dive-bomb`).** Three things below are now
+> withdrawn, each against a listing read or a per-tick run trace:
+>
+> 1. **"the bomber ditches for want of a weave"** (the closing line, and the framing of section 3).
+>    Withdrawn. `007F0280` is a near-field unit-vs-unit avoidance box of the half-extents its caller
+>    passes - 80/60/120 m here - and `007F0936` skips its entire output block when nothing is inside
+>    it, leaving both out-triples at the zeros written at `007F02B5`-`007F02DE`. Over open sea the
+>    image's `lateral_offset_20` is exactly 0 as well, so `in.sampler_result = 0.0f` is a **proof**
+>    for almost every tick of the run-in and a hole only in close formation.
+>    `docs/BOT_PROBE_007F0280.md` section 0 has the read.
+> 2. **Section 2's six-slot table.** The displacements are right; the argument indices are not.
+>    `007F02A4 PUSH EDI` moves the frame from `0x118` to `0x11C` before every read but the first, so
+>    what the table calls arg1/arg2/arg3 are arg1, arg2 and arg3 read at the deeper frame - and what
+>    it calls arg4, the `CMP` byte at `007F038D`, is **arg5**, the per-caller mode. `RET 0x18` = six
+>    stands. Corrected table in `docs/BOT_PROBE_007F0280.md` section 0.1.
+> 3. **Section 1's reading of the failure.** The turndown is a split-S and the host flies it: a
+>    per-tick trace over `009C44F0` shows bank going 0 -> 3.1252 rad and the pitch command going to
+>    +1.0 before the state ends. The 470 m is the roll phase flying level, and the heading does not
+>    reverse mid-split-S, so "the target 178.9 degrees BEHIND" at aimdive entry is the expected
+>    geometry, not the defect. The defect is one tick later, in the aimdive: `009C5935` calls
+>    `009C4F80` for the heading and `009C5AA3` subtracts the bearing FROM it, and `009C4F80` is not
+>    `pose+C6Ch` - it adds pi while the aircraft is inverted, which the turndown guarantees it is.
+>    `docs/DIVE_BOMB_TASK.md`.
+>
+> Nothing else in this document is contradicted, and section 5's six retractions all stand.
+
+
 Addresses: `007F0280` (body unread), `009C42B8` (the hole), `009C4220`, `task+41Ch`.
 
 Written for a cold reader. Nothing here needs the session that produced it.

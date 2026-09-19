@@ -641,6 +641,44 @@ bool dive_bomb_flyabove_leave_009c66e3(float bearing_error,
     return fold_abs(bearing_error) > tolerance;
 }
 
+// 009C4F80-009C5177, the heading the two aim states steer on. Header carries
+// the argument; this is the transcription.
+float dive_bomb_aim_heading_009c4f80(
+    const DiveBombAimHeadingInputs& in) noexcept {
+    // 009C4F90-009C4FB1, the same abs-fold the rest of the class uses.
+    const float folded_bank = fold_abs(in.bank_c68);
+
+    // 009C4FBF COMISS then 009C4FC6 `76` JBE: pitch at or below -40 degrees
+    // takes the body-axis arm at 009C5010.
+    if (in.pitch_c64 > dive_bomb_constant::kAimHeadingSteepPitch) {
+        // 009C4FD5 FLD qword [00CE3830], 009C4FDB FLD |bank|, 009C4FDF FCOMIP
+        // ST0,ST1 with ST0 = |bank| and ST1 = pi/2, 009C4FE3 `76` JBE: only a
+        // bank strictly past pi/2 falls through to the add.
+        if (static_cast<double>(folded_bank) >
+            dive_bomb_constant::kAimHeadingInvertedBank) {
+            // 009C4FE9 pushes the pi at 00D7A264 as the SECOND argument and
+            // 009C4FF6 the heading as the first: add(heading, pi).
+            return wrapped_angle_add_00438aa0(
+                in.heading_c6c, dive_bomb_constant::kAimHeadingHalfTurn);
+        }
+        // 009C516C, the arm that returns the raw heading untouched.
+        return in.heading_c6c;
+    }
+
+    // 009C5053-009C505B: atan2 of the transformed vector's z over its x, i.e.
+    // of the body +Y row. 009C5068 FSUBR makes it pi/2 - atan2, and
+    // 009C5072-009C507C add 2pi to a negative - the same bearing form
+    // 009C7B8A builds for the target.
+    float bearing = static_cast<float>(
+        dive_bomb_constant::kHalfPi -
+        std::atan2(static_cast<double>(in.body_up_z),
+                   static_cast<double>(in.body_up_x)));
+    if (bearing < 0.0f) {
+        bearing += static_cast<float>(dive_bomb_constant::kTwoPi);
+    }
+    return bearing;
+}
+
 // 009C5C9F-009C5DB2, the aimdive tick's steering.
 //
 // PARTIAL, and the partial part is the roll's interpolant. The image draws TWO
@@ -710,9 +748,9 @@ bool dive_bomb_turndown_complete_009c7ea0(float attitude_c64,
     if (folded <= dive_bomb_constant::kZero) {
         folded = dive_bomb_constant::kNegativeZero - folded;
     }
-    if (attitude_c64 >= dive_bomb_constant::kTurnDownRollGate &&
+    if (attitude_c64 >= dive_bomb_constant::kTurnDownPitchComplete &&
         (attitude_c64 >= dive_bomb_constant::kMinusOne ||
-         folded <= dive_bomb_constant::kTurnDownPitchGate)) {
+         folded <= dive_bomb_constant::kTurnDownInvertedBank)) {
         return false;
     }
     return true;
