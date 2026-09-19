@@ -1356,3 +1356,74 @@ Both parts together are the spent-bomber fix, and its before/after is already de
 entries 82 to one per aircraft, task reaching `done`, deaths no worse than 2. Not attempted here —
 it is a binding plus a revert-of-a-revert plus a mission-length run, and this packet is at its
 context limit. The reading it needs is complete and is in this section.
+
+## 13. Two "headings" for one ship, and it is where section 5's 42 degrees came from
+
+Item 2 asks for each Mav's bearing relative to its target's course at attackrun entry. Taking it
+from the log the obvious way gives a number that **contradicts section 11**, and chasing that
+contradiction found the original error.
+
+### 13.1 The contradiction
+
+`ship ai step` reports Dunlap's `heading= -1.1519` through step 1200 and `-1.0472` from step 1600.
+Mav1's `yaw_C6C` over its run-in is `-1.8795` at aim tick 1 (range 2199) easing to `-1.8254` at tick
+251 (range 459). Differencing those two columns gives **40 to 45 degrees** throughout, and it barely
+moves. Section 11 measured the crossing at closest approach as **5.4 degrees**. Both cannot be the
+angle between the same two directions.
+
+### 13.2 The census is the commensurable one, checked in the source
+
+`GameGunneryHost` computes the round's track as `atan2(velocity.x, velocity.z)` and the target's
+course as `units.unit_heading_radians(i)`, which is
+`GameUnitsHost::Impl::pose_heading_radians` = **`atan2(pose_row2[0], pose_row2[2])`**
+(`src/game_hosts_units.cpp:1427`-`1430`) — `atan2(fx, fz)`, the same convention, on the hull's own
+pose row. So the two are the same kind of angle and section 11's number is sound.
+
+`ship ai step`'s `heading` is a **different field**: the ship-AI control block's own heading, which
+on this placement sits some 0.7 to 0.9 rad away from the hull's pose heading. Differencing an
+aircraft's `yaw_C6C` against it is comparing two quantities that are not the same angle — the id
+spaces trap of section 8.3 in another dress, this time in radians.
+
+**So the 40-to-45-degree figure is withdrawn before it is used**, and section 11 stands unchanged.
+
+### 13.3 This is where section 5's 42 degrees came from
+
+Section 5 derived its crossing angle by comparing `heading = -1.0472` from `ship ai step` against
+`cmd_2C0` from the aim census, and got about 42 degrees — which is exactly the difference the two
+*incommensurable* fields produce. That single comparison is the root of the whole chain: it made the
+340 m displacement look like a 220 m cross-track miss, which made the measured 51 to 77 m look three
+to six times too small, which produced section 8.1's retraction of a prediction that was right. One
+wrong pairing of fields, three documents of consequences.
+
+### 13.4 An independent check that the travel measurements are sound
+
+The census's `target_moved` divided by its own time, against each class's authored
+`reference_speed`:
+
+| torpedo | target | travel / time | speed | `reference_speed` | fraction |
+| --- | --- | --- | --- | --- | --- |
+| Mav1 | Dunlap | 449.9 / 26.45 | 17.01 m/s | 19.24 | 0.88 |
+| Mav2 | Northampton | 345.2 / 22.60 | 15.27 m/s | 16.72 | 0.91 |
+| Mav3 | Northampton | 349.1 / 22.85 | 15.28 m/s | 16.72 | 0.91 |
+| Mav4 | SaltLakeCity | 313.4 / 21.60 | 14.51 m/s | 16.72 | 0.87 |
+| Mav5 | SaltLakeCity | 317.1 / 21.85 | 14.51 m/s | 16.72 | 0.87 |
+
+Five ships at 87 to 91 per cent of their authored reference speed, and the two SaltLakeCity rounds
+agreeing to two decimal places. That is a consistency check on the census rather than a new fact, and
+it also retires section 6.4's `d32c`-derived "15.0 m/s, as a lower bound": the real figures are
+14.5 to 17.0 m/s, so the bound held.
+
+### 13.5 What item 2 still needs, and it is one field
+
+The bearing at **attackrun entry** cannot be taken from this log at all: nothing prints the target's
+pose heading, and the only per-tick heading in the log for a ship is the ship-AI field that must not
+be used. The census already computes `pose_heading_radians` for the target at closest approach; the
+same value at the drop, plus the aircraft's own `yaw_C6C` at the drop, is what item 2 needs, and it
+is two more fields in the structure section 8.1 already extended.
+
+Whether the run-in is a stern chase **by the image's design or by pure pursuit** is therefore still
+open. The pure-pursuit reading is the cheaper hypothesis and it predicts something this log can
+almost test: aiming continuously at a target's present position turns any approach into a tail chase
+as range closes, with no state ever choosing it. Section 11's angles at closest approach — 5.4 to
+11.7 degrees, all small, all the same sign of smallness across three different ships and two classes
+— are what that looks like. Not proved here.
