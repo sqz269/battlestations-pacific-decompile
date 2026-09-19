@@ -10,6 +10,7 @@
 #include "bsp/scene_traffic_groups.hpp"
 #include "bsp/mission_scene_contents.hpp"
 #include "bsp/mission_scene_load.hpp"
+#include "bsp/plane_squadron_host.hpp"
 #include "bsp/pose_refresh.hpp"
 #include "bsp/resource_lookup.hpp"
 #include "bsp/scene_contents_hosts.hpp"
@@ -275,6 +276,12 @@ struct GameSceneContentsHost::Impl {
     std::vector<std::int32_t> stock_queue;
     GameSceneContentsSummary summary;
     std::vector<GameSceneEntityRecord> entities;
+    // 007F4580's per-wing loop makes its planes while the squadron is being
+    // attached, which in this process is in the middle of the instantiate pass,
+    // and `entities` is being appended to and held by reference there. The
+    // member records are therefore staged here and flushed into `entities` once
+    // the pass is over; create_units reads the whole list afterwards either way.
+    std::vector<GameSceneEntityRecord> pending_squadron_members;
     ScenePropertyBlock root_properties;
     PropertyLibrary library;
     VehicleClassRegistry vehicle_registry;
@@ -864,6 +871,127 @@ private:
     std::int32_t mission_id_{0};
 };
 
+// 007F4580 mode 1's per-wing loop, in the one place this process can run it: the
+// squadron's scene row has just been created, its property bag is in hand, and
+// the units it needs do not exist yet because create_units runs over the whole
+// record list later. So the loop produces RECORDS, one per wing, and they are
+// staged for the flush at the end of the pass.
+//
+// LABELLED SUBSTITUTION, and the one this lineage already made: the native's
+// squadron is a separate 0x414 container that owns WingCount planes, while this
+// process fuses the container with its own flight leader. `stored` - the unit
+// the scene row made, carrying the authored name the script orders by - is
+// wing 0, `members[0]`, and this queues wings 1..WingCount-1 beside it. The
+// consequence is visible in one place: the native names wing 0
+// `<squadron>|.-1` and this leaves it the authored name. 007F3820 cuts a member
+// name at the first `|` (_strcspn at 007F38AF) and re-prefixes it, which for a
+// name with no separator yields the squadron name unchanged, so the fused
+// leader carries the name that routine would give it.
+//
+// What is NOT a substitution: the count, the naming of the other wings, the
+// array order, the spawn index and the back pointer all come from
+// `plane_squadron_plan_members_007f4580`, which drives the reconstructed rule.
+static void queue_plane_squadron_wing_007f4580(GameSceneContentsHost::Impl& owner,
+    const ScenePropertyBlock& bag, const GameSceneEntityRecord& stored) {
+    // 007F471D / 007F4735 / 007F4794 / 007F47C2: the four keys 008F2260 is asked
+    // for, in the order the listing asks for them. `Type` is already resolved on
+    // the record, because the enum library resolved it during the registration
+    // pass; the other three are read here.
+    bsp::PlaneSquadronSpawnRequest request;
+    request.squadron_name = stored.name;
+    request.type_class_id = stored.type_id;
+    if (const SceneProperty* prop = bag.find(kSceneUnitWingCountKey)) {
+        std::int32_t authored = 0;
+        if (!prop->values.empty() && scene_scan_int(prop->values.back(), authored)) {
+            request.wing_count_present = true;
+            request.wing_count_raw = authored;
+        }
+    }
+    // 007F47A6 CMP [EAX+4h],EBP and 007F47D0 CMP [EAX+4h],0: both keys are used
+    // only when the property's type tag is 0, which is the authored `I` letter
+    // (0082359C reads the same tag the same way).
+    if (const SceneProperty* prop = bag.find(kSceneUnitPlaneParentIdKey)) {
+        std::int32_t parent = 0;
+        if (prop->type_letter == "I" && !prop->values.empty()
+            && scene_scan_int(prop->values.back(), parent)) {
+            request.parent_present = true;
+            request.parent_id = parent;
+        }
+    }
+    if (const SceneProperty* prop = bag.find(kSceneUnitBehaviourKey)) {
+        std::int32_t behaviour = 0;
+        if (prop->type_letter == "I" && !prop->values.empty()
+            && scene_scan_int(prop->values.back(), behaviour)) {
+            request.behaviour_present = true;
+            request.behaviour = behaviour;
+        }
+    }
+    // 007F47AE -> 00521E30 resolves `PlaneParentID` to a live entity. This
+    // process has no entity handle table at scene-load time, so the parent stays
+    // unresolved and every wing takes the no-parent arm 007F48BE, which places
+    // the plane under the squadron's own world node with the squadron's local
+    // matrix. That is the arm a squadron with no `PlaneParentID` takes anyway;
+    // for one that authors it, the placement is a SUBSTITUTION and the key is
+    // reported. contract: unread for 00521E30.
+    request.parent_entity = 0u;
+
+    const bsp::PlaneSquadronSpawnPlan plan =
+        bsp::plane_squadron_plan_members_007f4580(request);
+    if (plan.members.empty()) return;
+
+    bsp::PlaneSquadronHostRecord& record = bsp::plane_squadron_registry().add(stored.name);
+    record.wing_count = plan.wing_count;          // +3C8h
+    record.behaviour = plan.behaviour;            // +364h
+    record.type_class_id = stored.type_id;
+    record.party = stored.party;
+    record.from_air_ops_launch = false;
+    record.member_names.clear();
+    record.member_spawn_index.clear();
+    record.member_units.clear();
+
+    std::size_t queued = 0;
+    for (std::size_t wing = 0; wing < plan.members.size(); ++wing) {
+        const bsp::PlaneSquadronMemberPlan& member = plan.members[wing];
+        if (wing == 0) {
+            // The fused leader: the record the scene row already made.
+            record.member_names.push_back(stored.name);
+            record.member_spawn_index.push_back(member.spawn_index);
+            continue;
+        }
+        GameSceneEntityRecord wing_record;
+        wing_record.name = member.name;
+        // 007F4811 builds the plane through the vehicle class's own vtable +28h,
+        // which for this `Type` is 007CFD20 BSP_PlaneUnitInstance_Construct. The
+        // member is a plane, not a second PlaneSquadronGen, so it carries no
+        // scene class id and does not enter the scene class census.
+        wing_record.class_name = "PlaneUnitInstance";
+        wing_record.class_id = -1;
+        wing_record.type_symbol = stored.type_symbol;
+        wing_record.type_table = stored.type_table;
+        wing_record.type_id = stored.type_id;
+        wing_record.party_symbol = stored.party_symbol;
+        wing_record.party = stored.party;
+        wing_record.generated = true;
+        wing_record.created = true;
+        // 007F48D2's no-parent arm places the plane with the squadron's own
+        // matrix. 007F4813 has no per-wing offset: the formation spacing belongs
+        // to the pilot bot, not to the spawn.
+        std::copy_n(stored.world, 16, wing_record.world);
+        std::copy_n(stored.local, 16, wing_record.local);
+        owner.pending_squadron_members.push_back(std::move(wing_record));
+        record.member_names.push_back(member.name);
+        record.member_spawn_index.push_back(member.spawn_index);
+        ++queued;
+    }
+    owner.log.notef("plane squadron %s: WingCount=%d (%s) -> %d member plane(s), %zu "
+        "queued beside the fused leader%s (007F4580 mode 1, tail 007F4B43..007F4B6E)",
+        stored.name.c_str(), plan.wing_count,
+        request.wing_count_present ? "authored" : "code default 3",
+        plan.plane_count, queued,
+        plan.refused_overflow ? ", array full at five (007F4B55 has no bound test)" : "");
+    owner.log.implemented("PlaneSquadron::spawn_planes", "007f4580");
+}
+
 void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     const float world_frame[16], SceneFilePass pass) {
     GameSceneContentsHost::Impl& owner = owner_;
@@ -1230,6 +1358,9 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         stored.created = true;
         ++tally.created;
         ++owner.summary.created;
+        if (klass->class_id == 0x18) {
+            queue_plane_squadron_wing_007f4580(owner, bag, stored);
+        }
         // 0046d5b0: operator new(0Ch) then 00922e20 wraps the bag and the holder
         // is stored at entity+C0h. The 0Ch record with vtable 00d03d94 is not
         // built here, but milestone 2q keeps what 00822C20's slot-0A0h arm
@@ -1939,6 +2070,10 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
     // without it a process that loaded a second mission would answer
     // `GenerateObject` out of the first one's records.
     scene_spawn_pool().clear();
+    // Same reason as the pool above: the squadron table belongs to the scene
+    // being loaded, and a second mission must not inherit the first one's wings.
+    bsp::plane_squadron_registry().clear();
+    impl.pending_squadron_members.clear();
     impl.load_property_library();
 
     const int mode = effective_game_mode_004bca50(raw_game_mode, mode_forced,
@@ -1978,6 +2113,22 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
             static_cast<unsigned>(row.class_id), row.seen, row.generated, row.rejected,
             row.created, row.registration_bodies,
             row.creator_state.empty() ? "" : row.creator_state.c_str());
+    }
+    // The wings 007F4580 spawned, flushed after the census loops so the scene
+    // tallies stay a count of scene rows: a member plane is not a scene entity,
+    // it is what a scene entity's slot-39 attach made.
+    if (!impl.pending_squadron_members.empty()) {
+        const std::size_t before = impl.entities.size();
+        impl.entities.insert(impl.entities.end(),
+            std::make_move_iterator(impl.pending_squadron_members.begin()),
+            std::make_move_iterator(impl.pending_squadron_members.end()));
+        impl.log.notef("plane squadrons: %zu squadron(s) over %d member plane(s); %zu "
+            "wing record(s) appended to the %zu scene record(s) for create_units "
+            "(007F4580 mode 1 per created PlaneSquadronGen row)",
+            bsp::plane_squadron_registry().size(),
+            bsp::plane_squadron_registry().total_planned_members(),
+            impl.entities.size() - before, before);
+        impl.pending_squadron_members.clear();
     }
 }
 

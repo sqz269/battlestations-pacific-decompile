@@ -234,6 +234,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/pilot_plan_slots.c
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/plane_attitude_angles.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/plane_control_rate.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/plane_squadron_entity.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/plane_squadron_host.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/platform_services.cpp src/xlive_manager_runtime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/scene_property_bag_merge.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/ship_ai_nav_circle_tangent.cpp)
