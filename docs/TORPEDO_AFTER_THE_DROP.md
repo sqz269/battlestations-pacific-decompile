@@ -869,3 +869,25 @@ unreachable and the whole diagnosis self-contradictory. It is not: `009D3168` an
 the whole block unless **both** `ctl+369h` and `[00E17BF2]` are set, and the host's reconstruction
 nests the refusal inside exactly that condition. With `ctl+369h` off, as this host reports it,
 `009D3150` is the plain range test and the ordnance byte does not gate it. Section 7.1 stands.
+
+### 8.2 The same numbers against each class's own Length
+
+| torpedo | nearest | class | beam (`width`) | Length | closest approach | as a fraction of half-Length |
+| --- | --- | --- | --- | --- | --- | --- |
+| Mav1 | Dunlap | Destroyer (`type_id` 309) | 10 | not in this run's log | 51.5 m | - |
+| Mav4 | SaltLakeCity | HeavyCruiser (`type_id` 297) | 16 | 180.0 m | 76.8 m | 0.85 |
+| Mav5 | SaltLakeCity | HeavyCruiser | 16 | 180.0 m | 67.9 m | 0.75 |
+| Mav2 | Storage, 04 01 | shore structure | - | - | 26.1 m | - |
+| Mav3 | Hangar, Small, 04 01 | shore structure | - | - | 17.3 m | - |
+
+`Length 180.0` is Northampton's class row, quoted by the hydrodynamics line at load; SaltLakeCity
+shares `key=HeavyCruiser` and the same `reference_speed`, so it is the same row. The Destroyer
+Length is **not** in this run's log and is left blank rather than guessed.
+
+**What the fraction does and does not say.** A centre-to-centre distance of 0.75 to 0.85 of the
+half-Length means the round passed within the hull's *along-track* envelope: had it been crossing
+near the bow or stern line it would have been a hit, and had it been abeam it cleared the 8 m
+half-beam by some sixty metres. A single scalar distance cannot tell those apart, which is the whole
+force of the centre-to-centre caveat. Separating them needs the bearing of the closest-approach
+point relative to the target's heading, which is one more field in the same census and is part of
+section 8.1's next check.
