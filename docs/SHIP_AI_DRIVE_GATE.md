@@ -140,6 +140,38 @@ A player-controlled ship under `moveonpath` still steers itself. What the player
 the `cruise` state's computed pair and, through `00835D0C`, the begin of a `cruise` or `stop`
 command.
 
+### The whole census of `+184h` tests, which is what settles it
+
+`docs/HANDOFF_SHIP_DRIVE_GATE.md` asks for the byte rather than the two distances: **does a
+ship-AI DRIVE site test it?** Scanning the image for every `CMP`/`MOV` against `[reg+184h]`
+(`38 99`, `80 b8`, `80 b9`, `80 ba`, `80 be`, `80 bf`, `8a 80`, `8a 81`, `8a 86`, `8a 87`, each
+followed by `84 01 00 00`; `009E11C2` itself is in the result, which is the control that the
+pattern occurs):
+
+| site | function |
+| --- | --- |
+| `009E11C2` | `009E1170 BSP_ShipAi_CruiseStateStep` |
+| `00835D0C` | `00835C70 BSP_WeaponDirector_BeginCurrentCommand` |
+| `00836978`, `00836AAD`, `00836E45` | `00836920 BSP_WeaponDirector_Step` |
+| `009F3DF3` | `009F3DD0 BSP_ShipAi_SyncStateToCurrentCommand` |
+| `009F5E06` | `009F5DA0 BSP_WeaponDirector_AutoTargetTick` |
+| `0099ADD0` | `0099ACD0 BSP_PilotBot_Tick` (the plane side) |
+
+**`009F3F80 BSP_ShipAi_DriveOrderRing` is not in it, and neither is any state step.** So the
+answer is: the gate is real and it is in the COMMAND layer, not the drive. The three sites in
+the director step are the sharpest of them:
+
+- `00836962..00836985`: with the primary stage running, `[unit+184h]` set falls into
+  `PUSH 2 / 0071D810(2)` - the player's unit has its running primary command raised to the
+  terminal stage every step. `0099C230` never appears on this path; this is the ship-side
+  equivalent.
+- `00836AAD` and `00836E45`: the set byte jumps over the `[unit+73Ch]+28h` commanded-speed test,
+  in the stage arm and again in the idle tail's `00E08F60` branch.
+
+This host already models the first of the three: `weapon_director_step_prepass_00836941` in
+`src/unit_commanded_speed.cpp` raises the stage when `state.unit_player_controlled`. The other
+two are not modelled and are named here rather than fixed.
+
 `unit+184h` is named "the controlled-unit byte" on the strength of the `009F3DF3` note
 `src/game_hosts_ship_ai.cpp` already carries, plus these two uses and
 `009281C0`, which clears it when controller slot 0 takes state 8
@@ -267,7 +299,10 @@ indices `00803A40` installs, so an empty recon map returns an empty list instead
    is the 38 s since the second one, not the mission.
 2. **One leg per director step.** `007ADD70`'s loop can take several; unchanged from
    `docs/SHIP_AI_PATH_CURSOR.md`.
-3. **The begin's place in the frame.** `00835C70` is reached only through the director vtable
+3. **Two of the director step's three player-controlled arms are not modelled**, `00836AAD` and
+   `00836E45`, both of which skip the `[unit+73Ch]+28h` commanded-speed test for the player's
+   unit. `00836978`'s is already in `weapon_director_step_prepass_00836941`.
+4. **The begin's place in the frame.** `00835C70` is reached only through the director vtable
    slots `00D09FD0` / `00D09FD4`, so where in a frame it runs is not established; this host begins
    at the director step and again at the message, which is the same choice milestone 2m made for
    the `cruise` begin.
