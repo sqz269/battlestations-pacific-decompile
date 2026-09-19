@@ -127,8 +127,18 @@ the project memory).
 009BFAAC  t = d_station / d_steer
 009BFAC5  t = min(t, 1.0)                                       ; [00D7A24C] = 1.0f
 009BFAE1  cmdAlt = stationY + (steerY - stationY) * t           ; stationY is state+34h
-009BFC0C  009F9ED0(cmdAlt - ownY, max(d_station, FollowedPointDist))
+009BFC03  SUB ESP,8                                            ; the two-float frame
+009BFC06  FSTP [ESP+4]                                         ; arg2 = the distance
+009BFC0C  FLD [ESP+40h]                                        ; starts arg1
+009BFC10  FSUB [EBX+100h]                                      ; cmdAlt - own world Y
+009BFC1E  FSTP [ESP]                                           ; arg1
+009BFC21  CALL 009F9ED0                                        ; RET 8, two stack floats
 ```
+
+**CORRECTED, packet `cc8_follow_enter`, withdrawing this section's "`009BFC0C CALL 009F9ED0`".**
+`009BFC0C` is the `FLD` that begins argument 1, not the call; the `CALL` is at **`009BFC21`**. The
+relay's citation was the right one and §5.9's "Unverified here" note, which recorded the discrepancy
+as unresolved, is now resolved in the relay's favour. The reading of what is computed is unchanged.
 
 `009F9ED0` is `RET 8`: two stack floats, an altitude error and a distance. The floor at
 `009BFBD0` is `block+00h`.
@@ -443,9 +453,10 @@ a leader sitting low in `done` is faithful-by-omission and is not a defect to fi
   of it and `leaderY + 120.0`, taken at `009C17A5`-`009C17B9`. Quoting `[EAX+210h]` alone
   overstates the ceiling whenever the leader is low.
 
-Unverified here: §5.2 cites the altitude command as `009BFC0C CALL 009F9ED0` and the relay cites
-`009BFC21`. That call is in `009BEE30`, outside this section's reading; the discrepancy is noted,
-not resolved.
+~~Unverified here: §5.2 cites the altitude command as `009BFC0C CALL 009F9ED0` and the relay cites
+`009BFC21`.~~ **RESOLVED, packet `cc8_follow_enter`: the `CALL` is at `009BFC21`** and `009BFC0C` is
+the `FLD [ESP+40h]` that begins argument 1. §5.2 is corrected and now carries the whole
+`009BFC03`-`009BFC21` sequence.
 
 ## 5.10 The reference direction: the leader's heading, LAGGED by distance
 
