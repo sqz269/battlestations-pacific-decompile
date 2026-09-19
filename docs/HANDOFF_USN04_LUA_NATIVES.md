@@ -254,3 +254,54 @@ Lease `cc8_spawn_new_route` covers `include/bsp/lua_spawn_new.hpp`, `src/lua_spa
 `include/bsp/lua_binding_spawn.hpp`, `docs/LUA_SPAWN_NEW_HOST.md`, `docs/LUA_BINDING_SPAWN.md`,
 `cmake/startup.cmake` and `reports/cc8_spawn_new_route.json` until 18:52Z. A navigator packet needs
 `src/lua_binding_navigator.cpp` and its header, which are not on it.
+
+## `GetSelectedUnit` `008AB070` is blocked on the entity table, not on the native
+
+Added by packet `cc8_ship_moveonpath`. **Do not take this row as "ready to write".** The native
+is read and the binding is one line; binding it breaks USN04 outright.
+
+`008AB070` itself, from the listing: `008AB14D MOV EAX,[0x00E188D8]` reads the global,
+`008AB152`/`008AB15C` take the nil arm at `008AB202` when it is null, `008AB162
+MOVZX EAX,word ptr [EAX+174h]` formats the entity's uint16 and the tail indexes the same
+`thisTable` registry `FindEntity` uses. The global's writer is `004C0893
+MOV dword ptr [0x00E188D8],ECX` inside `004C0890 BSP_Game_SetControlledUnit`, which this process
+runs as `GameUnitsHost::set_controlled_unit_004c0890`, so the selected unit is the controlled
+one - `controlled=Lexington-class01` in every USN04 run.
+
+**What happens when you bind it** (`local/mop_after2_usn04.log` in the packet's worktree is that
+run): USN04's `Think` fails on **every frame from frame 61**.
+
+```
+script call Think failed: commandhelpers.lua:330: attempt to index field '?' (a nil value)
+  commandhelpers.lua:330   in luaGetShipsAround
+  commandhelpers.lua:13294 in luaCheckMusic
+  usn_19_coralus.lua:490
+```
+
+`luaCheckMusic` returns early while `GetSelectedUnit` answers nil. With a unit it reaches
+`luaGetShipsAround`, whose line 330 is `pairs(recon[targetUnit.Party][allegiance])` with
+`targetUnit = thisTable[target.ID]`. The mission then diverges wholesale: the AI group, planner,
+air-operations and auto-target families stop running, the 98 `NavigatorMoveOnPath` calls never
+happen, and the world ends at **45** units instead of 57.
+
+**The cause is the entity table this host builds.** The per-entity slot `00928A00` fills here
+(`GameMissionLuaHost::attach_scene_entities_00928a00`, `src/game_hosts_lua.cpp` around the
+`lua_setfield` block at 2237-2248) carries exactly four keys:
+
+| key | written at | source |
+| --- | --- | --- |
+| `ID` | `lua_setfield(..., "ID")` | the unit index plus one, standing for entity+174h |
+| `Dead` | `lua_setfield(..., "Dead")` | the unit's alive state |
+| `Ptr` | `lua_setfield(..., "Ptr")` | the entity handle |
+| `Class` | `lua_setfield(..., "Class")` | the installed `VehicleClass` row, when there is one |
+
+The shipped scripts read more than that off the same table. `Party` is the one that raises here
+(`recon[nil]` is nil, so the `[allegiance]` index throws), and `commandhelpers.lua`'s helpers
+read `Name` beside it - `luaGetShipsAround`'s own disabled log line is
+`"luaGetShipsAround "..target.Name..`, and `UnitHoldFire(GetSelectedUnit())`'s neighbours format
+`GetSelectedUnit().Name`. So the missing half is **`Party` (and `Name`) on the slot**, plus
+whatever fills the `recon` table per party - not a native body.
+
+Until that exists, `GetSelectedUnit` must answer nil, and `src/game_hosts_lua.cpp` carries the
+reason at the head of `push_resolved_entity`. A packet that wants this row should do the entity
+table first and measure `Think` failures at zero before it touches `008AB070`.
