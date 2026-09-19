@@ -429,6 +429,20 @@ struct GameUnitSlot {
     // 009C62B0's and 009C5180's heading arms.
     int db_flyabove_tick_ticks{0};
     int db_aimglide_tick_ticks{0};
+    // 009C7240 and 009C7270, the dive-bomb done/prepare state, packet
+    // cc8_done_state. `plan_mode_26c` is the value 009C1FE2 stamps into the
+    // pilot command block at the head of every follow tick. Nothing in this
+    // host reads it, and docs/BOMBER_AFTER_TASK.md section 6c says why nothing
+    // in the IMAGE acts on it for a flight leader either: the only reader,
+    // 0099D300's gate A, needs three further conditions that a leader's follow
+    // tick never produces. It is carried to be measured, not to be acted on.
+    int db_done_entries{0};
+    int db_done_tick_ticks{0};
+    int db_done_placed_ticks{0};
+    float db_done_entry_alt{0.0f};
+    float db_done_last_alt{0.0f};
+    float db_done_last_hdg{0.0f};
+    int plan_mode_26c{0};
     // 009FBA50's terms, sampled through the run-in.
     float db_cruise_span[8]{};
     float db_cruise_gain[8]{};
@@ -5372,6 +5386,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (ctx.current == bsp::DiveBombState::kGoAway) {
                             run_dive_bomb_goaway_tick_009c4a40();
                         }
+                        // 009C7240 / 009C7270. kDone and kPrepare share one
+                        // vtable, 00D20D28, installed twice in 009C73A0, so they
+                        // share the enter and the tick. Dispatched here, beside
+                        // the other states, because bsp::dive_bomb_task_arm's
+                        // `tick_state` hook is an empty override in this host.
+                        if (ctx.current == bsp::DiveBombState::kDone ||
+                            ctx.current == bsp::DiveBombState::kPrepare) {
+                            if (before != ctx.current) {
+                                run_dive_bomb_done_prepare_enter_009c7240();
+                            }
+                            run_dive_bomb_done_prepare_tick_009c7270();
+                        }
                         // Packet cc8_dive_geometry: sample every turndown and
                         // aimdive tick, after the state tick has written its
                         // commands, until the buffer fills. Read-only.
@@ -5649,6 +5675,87 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plan_heading_mode_2cc = r.heading_mode_2cc;
                         unit_.plan_heading_2c0_written = false;
                         unit_.plane_air_brake_mode_2d8 = r.air_brake_mode_2d8;
+                    }
+
+                    // 009C7240 and 009C7270, the dive-bomb done/prepare state.
+                    // 00D20D28 is installed TWICE in 009C73A0 (009C747E and
+                    // 009C74B8), so "done" and "prepare" are ONE class with one
+                    // enter, one exit and one tick - the mirror of the torpedo's
+                    // 00D21320. docs/BOMBER_AFTER_TASK.md section 1.
+                    //
+                    // The enter, body 009C7240-009C725B, __thiscall(state):
+                    //   009c7240  MOVSS XMM0,[00D7A260]     ; -1.0f
+                    //   009c7248  MOV   byte ptr [ECX+9Ch],0
+                    //   009c724f  MOVSS [ECX+98h],XMM0
+                    //   009c7257  JMP   009BED80            ; the Follow base enter
+                    // The dive bomber does NOT override the formation shape: the
+                    // base enter leaves squadron+3E4h = 1 at 009BEDDA, the only
+                    // shape src/plane_formation.cpp reconstructs. The torpedo's
+                    // own enter overrides it to 2 at 009D254E and re-assigns,
+                    // which is why the torpedo's done state cannot be bound this
+                    // way until 007F25BD (shape 2) is read.
+                    void run_dive_bomb_done_prepare_enter_009c7240() {
+                        ++unit_.db_done_entries;
+                        unit_.db_done_entry_alt = unit_.motion.position[1];
+                        // 009BEDDA then 009BEDE4. The shape is squadron state
+                        // here; 007ED260 itself runs once per squadron inside
+                        // the placement seam, which is the scheduling difference
+                        // docs/PLANE_FORMATION.md section 6 already states.
+                        if (bsp::PlaneSquadronHostRecord* const squadron =
+                                bsp::plane_squadron_registry().find_by_member_unit(
+                                    unit_.process_index)) {
+                            squadron->formation_shape_3e4 = 1;
+                        }
+                        // HOLE, stated. 009BED80 also caches the Pilot/Follow
+                        // tuning block (tuning+380h) into state+6Ch, seeds
+                        // state+88h from *(*(state+6Ch)+8), writes state+84h,
+                        // +85h, +8Ch, +90h and +94h, and registers the leader
+                        // observer (006952A0/00694A60) into state+2Ch. This host
+                        // models no follow-state object, so none of that is
+                        // carried. 009C7240's own state+98h and +9Ch are the drop
+                        // countdown and its flag, which only the TORPEDO tick
+                        // 009D2720 reads; 009C7270 never looks at them.
+                        owner_.record("BotStateDiveBombDone::enter", 0x009c7240u);
+                    }
+
+                    // The tick, read whole:
+                    //   009c7270  FLD   float ptr [ESP+4]     ; dt
+                    //   009c7274  PUSH  ECX
+                    //   009c7275  FSTP  float ptr [ESP]
+                    //   009c7278  CALL  009C1FD0
+                    //   009c727d  RET   4
+                    // so it is __thiscall(state, float dt) and forwards dt, and
+                    // its body is 009C7270-009C727F, SIXTEEN bytes - not the 13
+                    // docs/BOMBER_AFTER_TASK.md section 4 records. `dt` is not a
+                    // parameter here because the only part of 009C1FD0 this host
+                    // binds, the station placement, does not consume it; the
+                    // consumers of dt are 009BFEE0 and 009BEE30, both unread.
+                    // 009C1FD0's head writes
+                    // [[state+4]+18h]+26Ch = 2 BEFORE the 009BFD70 gate, so that
+                    // store runs for every aircraft in the state, leader
+                    // included; a flight LEADER then takes 009BFD70's false
+                    // return and 009C1FF1 JZ 009C234E ends the tick at the
+                    // epilogue (POP EBP / POP EBX / ADD ESP,68h / RET 4, read),
+                    // having commanded that one byte and nothing else.
+                    void run_dive_bomb_done_prepare_tick_009c7270() {
+                        ++unit_.db_done_tick_ticks;
+                        // 009C1FE2. Carried, not acted on - see the field's note.
+                        unit_.plan_mode_26c = 2;
+                        unit_.db_done_last_alt = unit_.motion.position[1];
+                        unit_.db_done_last_hdg = unit_.plane_heading_c6c;
+                        // 009C1FEA-009C2077 for a wing MEMBER: 009BFD70 (the
+                        // station, bound), then 009BFEE0 and 009BEE30, ~2900
+                        // instructions that are not reconstructed. This host
+                        // PLACES the member on its station instead; the geometry
+                        // is the image's, the path to it is not.
+                        // docs/PLANE_FORMATION.md section 6.
+                        if (owner_.place_wing_member_on_station_007f23a0(unit_, false)) {
+                            ++unit_.db_done_placed_ticks;
+                            owner_.log.implemented("BotStateDiveBombDone::station_point",
+                                                   "007f23a0");
+                        }
+                        owner_.record("BotStateDiveBombDone::station_keeping",
+                                      0x009bfee0u);
                     }
 
                     // 009C5180's heading arm, the glide's counterpart to the
@@ -8787,6 +8894,22 @@ void GameUnitsHost::report() {
                     slot->db_bay_requests_accepted,
                     slot->db_bay_requests_refused,
                     slot->torpedo_drops_spawned);
+                // 009C7240 / 009C7270, packet cc8_done_state. `placed` counts
+                // the ticks on which the placement stand-in moved the aircraft,
+                // which is zero for a flight LEADER by 009BFD70's own refusal -
+                // so the leader's row is the one that shows what the image's
+                // done state commands on its own, and it is one inert byte.
+                if (slot->db_done_entries > 0) {
+                    host.log.notef("  divebomb %-12s done 009C7240/009C7270: "
+                        "entries=%d ticks=%d placed=%d plan_mode_26c=%d "
+                        "alt %.1f -> %.1f hdg=%.4f",
+                        slot->row.name.c_str(), slot->db_done_entries,
+                        slot->db_done_tick_ticks, slot->db_done_placed_ticks,
+                        slot->plan_mode_26c,
+                        static_cast<double>(slot->db_done_entry_alt),
+                        static_cast<double>(slot->db_done_last_alt),
+                        static_cast<double>(slot->db_done_last_hdg));
+                }
                 // The first gate check the packet asks for: approach+BCh
                 // against approach+B8h in the latch at 009C7C31.
                 if (slot->db_turndown_ticks > 0) {
