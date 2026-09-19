@@ -694,5 +694,118 @@
     "sha256": "3284ec55d131c38a2ffd8b6125acc4976c1c062140496aea3b762a0dcd59feb2",
     "files": 86,
     "head": "78ed7031a093b30b6c171a77da7c5930c7cceab4"
+  },
+  "primary_integration": {
+    "commit": "280955641cf470dbf9e63ce6777418f21288e722",
+    "main_observed_at_seal": "280955641cf470dbf9e63ce6777418f21288e722",
+    "tested_commit_is_ancestor_of_observed_main": true,
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "coff_checks": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/game_native_online_process.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "375b7315b23da04242716b73c2b21d072f3bf09cb0a9c55156b910105f84b406",
+        "combined_sha256": "375b7315b23da04242716b73c2b21d072f3bf09cb0a9c55156b910105f84b406"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "175f668bd48f3f506c032d9e35a7333529db96485870b6c13dc71e78d415a715",
+        "combined_sha256": "175f668bd48f3f506c032d9e35a7333529db96485870b6c13dc71e78d415a715"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_online_ipc.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "6103869156335175ae6eb687b46358919090b3af64dcd7a8542cfe8c6b3a7981",
+        "combined_sha256": "6103869156335175ae6eb687b46358919090b3af64dcd7a8542cfe8c6b3a7981"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/xlive_ipc.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "515282db2593089866254028829b4bf308a4c036521c1ece6a67bd8d34e3307a",
+        "combined_sha256": "515282db2593089866254028829b4bf308a4c036521c1ece6a67bd8d34e3307a"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/xlive_pipe_bootstrap.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "5f00d78f5473d05fb88e368efb3bc9a77e81ad4a2fca7b6724a2f2709a1e2ef3",
+        "combined_sha256": "5f00d78f5473d05fb88e368efb3bc9a77e81ad4a2fca7b6724a2f2709a1e2ef3"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/xlive_pipe_globals.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "c0af7fe5dc6731666dd0bfca9a33977a62c862e0400c0e426f0bddc8a39c2504",
+        "combined_sha256": "c0af7fe5dc6731666dd0bfca9a33977a62c862e0400c0e426f0bddc8a39c2504"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/xlive_pipe_services.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "5e61c45d1bb6fdd5ed25e1f9753300a224cc6263c9fe7e6523b905385a247216",
+        "combined_sha256": "5e61c45d1bb6fdd5ed25e1f9753300a224cc6263c9fe7e6523b905385a247216"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/xlive_pipe_preimage.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "e60c94d4b22d653f457cfc2335b11b61d8edc9fa5035f682f0e77bb08afa2ed3",
+        "combined_sha256": "e60c94d4b22d653f457cfc2335b11b61d8edc9fa5035f682f0e77bb08afa2ed3"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/xlive_pipe_protocol.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "14082c0399dc640d67ac58b4dcfc2026f4c95adb65d7b9c16a81df1bbcfdb075",
+        "combined_sha256": "14082c0399dc640d67ac58b4dcfc2026f4c95adb65d7b9c16a81df1bbcfdb075"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/xlive_pipe_framing.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "c658e29e7ac9a0097327afef64dab7324310ab1fcf659ac81a10bf8d4c99cdb2",
+        "combined_sha256": "c658e29e7ac9a0097327afef64dab7324310ab1fcf659ac81a10bf8d4c99cdb2"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/xlive_pipe_transport.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "f81abb7157b9abb9a1ca82a63453253275067fcbd5908d9b5804423d1aa38b22",
+        "combined_sha256": "f81abb7157b9abb9a1ca82a63453253275067fcbd5908d9b5804423d1aa38b22"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/xlive_pipe_io.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "ba1eb69e336c7a1de8aeffc0db02c1d04b6763209ca9a2871a6447ac33f20e13",
+        "combined_sha256": "ba1eb69e336c7a1de8aeffc0db02c1d04b6763209ca9a2871a6447ac33f20e13"
+      }
+    ],
+    "component": {
+      "result": {
+        "utc": "2026-09-19T01:31:21.7341792Z",
+        "exe_sha256": "841B90D012175CC3A8FE1CC8390B4FA0B9A84BA2525D2DDBB8B12866BFDF1207",
+        "exit": 0,
+        "library_sha256": "72DFF09436358B8578E1972FEFABEAB6F3DF7256B04C7E13922E2A1D772D5EB3"
+      },
+      "observations_identical_to_tested": true,
+      "real_server_and_post_crt_receipt": true
+    },
+    "application": {
+      "terminal": true,
+      "build": {
+        "exe": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\Release\\bsp_game.exe",
+        "personal_root": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\settings_application_r170\\configured\\personal",
+        "library_sha256": "72DFF09436358B8578E1972FEFABEAB6F3DF7256B04C7E13922E2A1D772D5EB3",
+        "frames": 3,
+        "head": "280955641cf470dbf9e63ce6777418f21288e722",
+        "utc": "2026-09-19T01:31:10.0083689Z",
+        "exe_sha256": "A74E399094435802CA69BEB8005DC9C03221FD97252D8120A0AA889C1E6FF9BB"
+      },
+      "wait_seconds": 60,
+      "reason": "gave up after 60 s: lock held by 'battlestations-pacific-decompile-cc8-torpedo-run-in 2026-09-18T18:31:25 pid=57620', live bsp_game pids: 18944,50384",
+      "status": "not_launched_runtime_busy"
+    },
+    "game_sha256": "a74e399094435802ca69beb8005dc9c03221fd97252d8120a0aa889c1e6ff9bb",
+    "artifact_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r171\\native-online-process-main-r171.zip",
+      "sha256": "a4175ab91cbfa9f8c4148ff97446d3957ecbba10564adfbdb0bb2833c23aea10",
+      "files": 102,
+      "head": "280955641cf470dbf9e63ce6777418f21288e722"
+    }
   }
 }
