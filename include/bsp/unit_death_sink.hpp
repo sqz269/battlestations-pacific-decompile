@@ -67,7 +67,14 @@ inline constexpr float kWreckLinearDamping = 0.5f;    // 00CE3800
 
 // 008250F0..008251CD constants.
 inline constexpr int kWreckAnchorCount = 5;              // MOV EBX,5 at 008250E9
-inline constexpr double kWreckAnchorLateralDivisor = 2.0;  // 00CE3DE0
+// CORRECTED 2.0 -> 2.5. The qword at 00CE3DE0 is `00 00 00 00 00 00 04 40` =
+// 2.5, and unlike the lead-scale case the ADDRESS is right: this header's own
+// documented region loads it, at 008250F3 and 0082515B, both FLD double ptr,
+// both feeding the FDIV pairs at 00825116/00825131 and 00825161/00825179. So
+// the value was simply wrong. Found by tools/const_width_sweep.py --load-sites.
+// NOTE: this one DOES change behaviour - it widens the wreck anchor's lateral
+// divisor by a quarter - and no before/after run was taken for it.
+inline constexpr double kWreckAnchorLateralDivisor = 2.5;  // 00CE3DE0, qword
 inline constexpr double kWreckAnchorVerticalDivisor = 3.0; // 00D7A2B0
 
 // 00827ACA/00827AD0: the selector compares against the double 100.0, not zero.

@@ -3065,3 +3065,33 @@ the assumption would move the sink geometry on an inference of exactly the kind 
 `kPilotPitchHalfRange` is recorded in the tool's own doc as a **confirmed false positive**: declared
 0.5236 against an m32 0.523599, a four-significant-figure declaration. The 101 A-harmless rows are
 left alone.
+
+### Class B rows 2 and 3 settled, and a retraction on row 3's diagnosis
+
+**Row 2, `kHudMinimapXDivisor`** - corrected to the image's form. The two axes are not symmetrical:
+`00CEDAE8` holds the qword 1/1024 and every site **multiplies** by it (`005411E0` FMUL,
+`00541230` FMUL, `005C1C68` FMUL), while `00CE42B0` holds the qword 768 and its sites **divide**
+(`005411CA` FDIV, `0054121A` FDIV) - adjacent instructions in one function. The constant is now
+`kHudMinimapXScale = 0.0009765625` and both consumers multiply, at `src/hud_minimap.cpp:100` and
+`src/hud_updates.cpp:419`. As the lead noted, this is fidelity of form and not a behaviour bug:
+dividing by 1024 and multiplying by 1/1024 agree to the last bit, both being exact powers of two.
+
+**Row 3, `kWreckAnchorLateralDivisor`** - corrected 2.0 to 2.5, and **my earlier diagnosis of it was
+wrong**. I wrote that its four sites were "none of them obviously death-sink code" and that it might
+be row 1 again. One of them, `008250F3`, is squarely inside this header's own documented region
+`008250F0..008251CD` - I read the list and did not check it against the region printed six lines
+above the constant. The region loads the address twice, `008250F3` and `0082515B`, both
+`FLD double ptr`, feeding the FDIV pairs at `00825116`/`00825131` and `00825161`/`00825179`. The
+qword there is `00 00 00 00 00 00 04 40` = 2.5. So the address is right and the value was simply
+wrong - the opposite of row 1.
+
+This one **does** change behaviour: it widens the wreck anchor's lateral divisor by a quarter. No
+before/after run was taken for it, and that is recorded rather than glossed.
+
+### The repo after all three
+
+`checked 696, mismatched 119: A-WRONG 1, B 1, A-unreferenced 1, B-unreferenced 15, A-harmless 101`
+
+The remaining A-WRONG is `kPitchClampLo`, already fixed on `agent/cc8-plane-squadron` and not yet in
+this tree. The remaining B is `kPilotPitchHalfRange`, the confirmed four-significant-figure false
+positive. So every real row the sweep found is now either fixed or fixed elsewhere.
