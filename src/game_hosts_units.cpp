@@ -1306,8 +1306,25 @@ struct GameUnitsHost::Impl {
         e.aim_point_height_50 = slot.db_aim_point_height_50;
         e.lead_at_high_5c = slot.db_lead_high_5c;
         e.gain_at_high_60 = slot.db_gain_high_60;
+        // 009C5AF1 is the SAME shape as the roll input at 009C5AA3: the
+        // 009C4F80 heading is arg0 at [ESP] and the bearing to the target is
+        // arg1 at [ESP+4], both at the base frame 0x58 (walked forward over the
+        // whole body with local/x87_walk.py, no depth conflict in this range).
+        // This stood as (bearing - pose+C6Ch) here, which is off by pi for the
+        // whole dive because the turndown ends inverted: cos(pi) = -1 turned
+        // `along_track` into MINUS the range, which is what pinned the pitch
+        // command at -1.0 for all 344 aimdive ticks of local/usn04_geo2.log.
+        // The image's bearing here is drawn from the LATCHED approach+D8h/+E0h
+        // point rather than the aircraft; that remains a labelled SUBSTITUTION,
+        // unchanged by this fix.
+        bsp::DiveBombAimHeadingInputs ahin;
+        ahin.pitch_c64 = slot.plane_pitch_angle_c64;
+        ahin.bank_c68 = slot.plane_bank_angle_c68;
+        ahin.heading_c6c = slot.plane_heading_c6c;
+        ahin.body_up_x = slot.motion.pose_row1[0];
+        ahin.body_up_z = slot.motion.pose_row1[2];
         e.bearing_error = bsp::wrapped_angle_subtract_00438b10(
-            slot.db_bearing_c0, slot.plane_heading_c6c);
+            bsp::dive_bomb_aim_heading_009c4f80(ahin), slot.db_bearing_c0);
         e.planar_distance = slot.db_planar_bc;
         const bsp::DiveBombAimError err = bsp::dive_bomb_aim_error_009c5c9b(e);
         slot.db_aim_error_last = err.error;
@@ -1345,13 +1362,28 @@ struct GameUnitsHost::Impl {
                 ++slot.db_aim_trace_samples;
             }
         }
-        in.aim_error = err.error;
+        // 009C60C1 reloads [ESP+5Ch], the same slot 009C5C9B writes - but the
+        // 009C5BDB gate jumps over 009C5C9B, and the last writer before it is
+        // the second sqrt at 009C5A4D/009C5A58. So a dive shallower than 30
+        // degrees nose-down brings the LATCHED PLANAR DISTANCE to the 25 m
+        // window, not the aim error. Same condition as the steer arm below;
+        // the image evaluates it once because it is one function.
+        in.aim_error =
+            (slot.plane_pitch_angle_c64 >
+             bsp::dive_bomb_constant::kAimDiveSteepGateAngle)
+                ? slot.db_planar_bc
+                : err.error;
         // 009C5B01-009C5B48, the dive abort: clearing +19h is what sends the
         // state to aimglide on the next transition.
         bsp::DiveBombDiveAbortInputs ab;
         ab.release_range_d4 = slot.db_release_range_d4;
         ab.aim_point_height_50 = slot.db_aim_point_height_50;
-        ab.slant_range = slot.db_planar_bc;
+        // CORRECTED: [ESP+14h] is the height above the aim point, the same
+        // quantity `e.height_above_target` above carries, not a second copy of
+        // the planar range. With the range here, 009C5B3E reduced to
+        // `0.3*range + 150 > range` and aborted the dive at any range under
+        // 214 m - which is where usn04_geo3.log lost it, at 204.1 m.
+        ab.height_above_target_14 = e.height_above_target;
         ab.aim_point_distance = slot.db_planar_bc;
         ab.unit_attitude_c64 = slot.plane_pitch_angle_c64;
         if (bsp::dive_bomb_dive_abort_009c5b43(ab)) {
@@ -5142,6 +5174,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009C5C9B's own result, computed for this same tick by
                         // dive_bomb_aimdive_inputs() a few lines earlier.
                         in.aim_error = unit_.db_aim_error_last;
+                        // 009C5BCC/009C5BD4: the gate that decides whether the
+                        // aim error is computed at all, and what [ESP+5Ch]
+                        // still holds when it is not.
+                        in.pitch_c64 = unit_.plane_pitch_angle_c64;
+                        in.planar_distance_slot_5c = unit_.db_planar_bc;
                         // 009C5935 calls 009C4F80 for the heading and
                         // 009C5AA3 subtracts the bearing FROM it - arg0 at
                         // [ESP] is the 009C4F80 result, arg1 at [ESP+4] is the

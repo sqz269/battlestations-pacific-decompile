@@ -269,14 +269,19 @@ DiveBombAimDiveReleaseResult dive_bomb_aimdive_release_009c60f1(
 
 // 009C5AFD-009C5B48.
 bool dive_bomb_dive_abort_009c5b43(const DiveBombDiveAbortInputs& in) noexcept {
-    if (!(in.release_range_d4 + in.aim_point_height_50 > in.slant_range)) {
+    // 009C5AFD FLD [ESP+14h] is the height above the aim point, not a range;
+    // 009C5B0E/009C5B12 compare approach+D4h + approach+50h against it.
+    if (!(in.release_range_d4 + in.aim_point_height_50 > in.height_above_target_14)) {
         return false;  // 009C5B18
     }
     if (!(in.unit_attitude_c64 > dive_bomb_constant::kAbortRollFloor)) {
         return false;  // 009C5B2C
     }
+    // 009C5B2E FLD ST1 copies that same height, so the slope multiplies the
+    // height and 009C5B3C compares the sum against ST1, the [ESP+1Ch] range.
     const float bound =
-        in.slant_range * static_cast<float>(dive_bomb_constant::kAbortRangeSlope) +
+        in.height_above_target_14 *
+            static_cast<float>(dive_bomb_constant::kAbortRangeSlope) +
         static_cast<float>(dive_bomb_constant::kAbortRangeBias);
     return bound > in.aim_point_distance;  // 009C5B3E
 }
@@ -694,16 +699,29 @@ DiveBombAimDiveSteerResult dive_bomb_aimdive_steer_009c5c9f(
     const DiveBombAimDiveSteerInputs& in) noexcept {
     DiveBombAimDiveSteerResult out;
 
-    // 009C5C9F FLDZ, 009C5CA5 FCOMI ST0,ST1, 009C5CA9 JBE: the sign of the aim
-    // error picks the gain, and each arm clamps at its own end of the stick.
-    if (in.aim_error > 0.0f) {
-        const float demand = in.aim_error * in.pitch_gain_positive_64;
-        // 009C5CB6 FLD1, 009C5CB8 FCOMIP, 009C5CBC JBE.
-        out.pitch_29c = (demand < 1.0f) ? demand : 1.0f;
+    // 009C5BD4 COMISS pose+C64h against 00CEC728 with 009C5BDB `0f 87` JA
+    // straight to 009C5CEF. Shallower than 30 degrees nose-down (and that
+    // includes every nose-up attitude) is a full -1.0 with no aim error
+    // computed, so [ESP+5Ch] keeps the planar distance the second sqrt left
+    // there and it is that, not the error, that the later reads see.
+    out.steep_gate_fired = in.pitch_c64 > dive_bomb_constant::kAimDiveSteepGateAngle;
+    if (out.steep_gate_fired) {
+        out.pitch_29c = -1.0f;                        // 009C5CEF, 00D7A260
+        out.error_slot_5c = in.planar_distance_slot_5c;
     } else {
-        const float demand = in.aim_error * in.pitch_gain_negative_68;
-        // 009C5CD7 FLD [00D7A260], 009C5CE1 FCOMIP, 009C5CE5 JBE.
-        out.pitch_29c = (demand > -1.0f) ? demand : -1.0f;
+        out.error_slot_5c = in.aim_error;             // 009C5C9B
+        // 009C5C9F FLDZ, 009C5CA5 FCOMI ST0,ST1, 009C5CA9 JBE: the sign of the
+        // aim error picks the gain, and each arm clamps at its own end of the
+        // stick.
+        if (in.aim_error > 0.0f) {
+            const float demand = in.aim_error * in.pitch_gain_positive_64;
+            // 009C5CB6 FLD1, 009C5CB8 FCOMIP, 009C5CBC JBE.
+            out.pitch_29c = (demand < 1.0f) ? demand : 1.0f;
+        } else {
+            const float demand = in.aim_error * in.pitch_gain_negative_68;
+            // 009C5CD7 FLD [00D7A260], 009C5CE1 FCOMIP, 009C5CE5 JBE.
+            out.pitch_29c = (demand > -1.0f) ? demand : -1.0f;
+        }
     }
 
     // 009C5D0E COMISS against the 0.0f at 00D7A218 with 009C5D22 `76` JBE, then
@@ -711,7 +729,8 @@ DiveBombAimDiveSteerResult dive_bomb_aimdive_steer_009c5c9f(
     // 009C5D31 `76` JBE. The wide band is taken only while the aircraft is still
     // inside 60 degrees of bank AND short of its aim point; banked over or past
     // it, the tighter band applies.
-    out.used_wide_band = in.aim_error > 0.0f &&
+    // 009C5D08 reloads [ESP+5Ch], so the gated arm tests the planar distance.
+    out.used_wide_band = out.error_slot_5c > 0.0f &&
         fold_abs(in.bank_c68) < dive_bomb_constant::kAimDiveRollBandAngle;
     const float band = out.used_wide_band
         ? dive_bomb_constant::kAimDiveRollBandWide   // 009C5D48 / 009C5D58

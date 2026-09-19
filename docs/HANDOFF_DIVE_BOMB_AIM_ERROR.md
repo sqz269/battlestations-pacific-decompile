@@ -1,5 +1,34 @@
 # Handoff: `009C5B01`-`009C5C9B`, the dive-bomb aim error
 
+> **CORRECTION, same packet, same day, before anything was integrated. Two of this document's
+> central claims were wrong and are withdrawn here.**
+>
+> 1. **"`009C5B01`-`009C5C9B` is unread" and "`db_aim_error_last` is a stand-in" are both WRONG.**
+>    The block was already read and bound: `dive_bomb_aim_error_009c5c9b`, declared at
+>    `include/bsp/dive_bomb_task.hpp:340`-`361` with the interpolant endpoints spelled out in the
+>    comment above it, and called from `dive_bomb_aimdive_inputs`. I wrote sections 1 and 4 below
+>    without grepping the header for the concept first, which is the one rule in this repository
+>    that has already cost it two duplicate reconstructions. Sections 2 and 3 (the frame, the slot
+>    map, the gate) stand and were worth the read; section 4's "block to read" framing does not.
+>
+> 2. **The x87 divergence at `009C5BBC` was my arithmetic, not the image's.** A scripted forward CFG
+>    walk (`local/x87_walk.py`, ESP and x87 depth propagated over every edge from the entry) reports
+>    **no depth conflict anywhere in this range**: all three predecessors reach `009C5BBC` with an
+>    empty x87 stack. My hand trace had dropped `009C5B99 FSTP ST0`, which sits between the `FCOMIP`
+>    at `009C5B97` and the `JBE` at `009C5B9B`. Do not go looking for the problem this document told
+>    you to look for; there is none.
+>
+> That walk does settle two things worth keeping. The `00438AA0(aim heading, pi)` at `009C5BB1` is
+> genuinely **dead** - pushed at depth 0, popped by `009C5BBA FSTP ST0`, never stored - and so is the
+> `FSIN` at `009C5BC0`, whose result goes to `[ESP+28h]` and is overwritten by `009C5C14` before any
+> read. Both look like the remains of an inlined helper whose other outputs are unused.
+>
+> **What was actually wrong, and is now fixed:** the aim error's own `bearing_error` input carried
+> exactly the defect `8407edc1c` fixed in the roll input - `(bearing - pose+C6Ch)` where `009C5AF1`
+> wants `(009C4F80 heading - bearing)`. With the target behind, `cos(bearing_error)` is `-1`, so
+> `along_track = cos * range - lead` became MINUS the range and the error went hugely negative,
+> which is what pinned `cmd+29Ch` at `-1.0`. One line, in `dive_bomb_aimdive_inputs`.
+
 Addresses: `009C58D0` (the aimdive tick), `009C5B54`-`009C5C9B` (the aim error, unread),
 `009C5BD4`/`009C5CEF` (the -30 degree pitch gate, read but unbound).
 
@@ -163,3 +192,57 @@ The `007F0280` accumulator arithmetic (`007F06AF`-`007F0916`) is the other thing
 **not** on the dive-bomb critical path: `docs/BOT_PROBE_007F0280.md` section 0.4 proves the zero the
 host passes is exact whenever no unit is within 80/60/120 m of the bomber. It matters for formation
 flying, not for the ditch.
+
+---
+
+## 7. What the aim-error bearing fix measured, and the one question it leaves
+
+`local\usn04_geo3.log` against `local\usn04_geo2.log`, same binary apart from the one line.
+
+**The split-S now completes and the dive is flown.** The turndown is unchanged (it is not touched),
+and then:
+
+```
+state      tick  pitch_c64 bank_c68 heading_c6c    alt    range  bearing  roll_in  pitch_cmd
+aimdive    1761    -1.1976  -3.1326  -2.7073     617.1    485.3   3.1228   +0.0091     +1.000
+aimdive    1766    -1.4157  -3.1068  -2.6882     568.0    499.7   3.1044   +0.0019     +1.000
+aimdive    1771    -1.5075  -0.0624  +0.3588     513.2    503.7   0.0580   +0.0045     +1.000
+aimdive    1786    -0.8531  +0.0007  +0.4189     345.9    440.9  -0.0022   +0.0014     +1.000
+aimdive    1806    +0.0195  +0.0042  +0.4159     236.9    226.8  -0.0003   +0.0003     +1.000
+```
+
+At tick 1771 the bank snaps from `-3.13` to `-0.06` and the heading flips from `-2.71` to `+0.36`:
+**the aircraft passes through the vertical, comes out upright and pointing at the target**, and the
+range closes `503.7 -> 226.8` where before it grew `468 -> 1842`. The pitch command is `+1.000`, a
+pull, where before it was `-1.000`. **No aircraft touches the water anywhere in the run** (before:
+three at -0.36 m and 44.92 m/s).
+
+**Still `releases=0`**, and the state occupancy says where it goes instead: `aimdive` 344 -> **52**
+ticks and `aimglide` 0 -> **562**. The dive abort at `009C5B43` fires around tick 1808 and clears
+`state+19h`, which `009C8650` turns into aimglide. Its three conditions are all reconstructed in
+`dive_bomb_dive_abort`, and at tick 1806 the third is within a couple of ticks of true:
+`height*0.3 + 150 = 221.1` against a range of `226.8`, closing fast. So the aircraft aborts because
+it has become shallow and close, not because anything failed.
+
+**Why it became shallow is the open question, and it is the seam the lead flagged.** The pitch
+command sits at `+1.000` for the whole dive: `aim_error = (cos(err)*range - lead) * gain` with
+`err ~ 0` is about `+450` m, and `009C5C9F`'s positive arm saturates at `min(450 * 0.018, 1.0)`.
+While the aircraft was inverted that full pull drove the nose down and was right; the moment the
+split-S completed at tick 1771 the same `+1.000` became nose-UP and pulled it out of the dive. So
+either
+
+* `cmd+29Ch` is a body-frame demand and this host's planner applies it in the world frame (the same
+  class of error as `009C4F80`, one layer down), or
+* the aim error is meant to go negative once the aircraft is upright and past the lead point, which
+  would mean `lead` is much larger than the `70.0` `row+68h` this host substitutes for
+  `(approach+14h)+5Ch`, or `along_track` is not what this reading makes it.
+
+**Read the planner's pitch arm at `0099E3BF`-`0099E512` and settle which frame `cmd+29Ch` is in
+before changing anything else.** That is one bounded read and it decides between the two. Do not
+retune the constants first; both branches above are still live and a constant that makes the trace
+look better would hide whichever one is true.
+
+The release window itself is not the blocker and is fully reconstructed: `below_floor`
+(`dive_altitude_a8 > altitude`), `rearmed`, and `|aim_error| < 25.0` (`00CE3880`), with `pull_out`
+at `dive_altitude_a8 * kPullOutAltitudeFraction > altitude` ending the state below that. The
+aircraft in this run never gets the aim error near 25 m because it stops diving first.
