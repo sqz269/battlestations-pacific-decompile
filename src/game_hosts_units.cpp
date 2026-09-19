@@ -423,6 +423,12 @@ struct GameUnitSlot {
     // 009C62B0's and 009C5180's heading arms.
     int db_flyabove_tick_ticks{0};
     int db_aimglide_tick_ticks{0};
+    int db_goaway_tick_ticks{0};
+    float db_goaway_pitch_last{0.0f};
+    // The goaway state's OWN +20h. 009C7F00's completion rule reads the goaway
+    // state, not the aimglide's, and conflating them made goaway finish on its
+    // first tick.
+    float db_goaway_travel_20{0.0f};
     int db_flyabove_heading_writes{0};
     float db_flyabove_heading_last{0.0f};
     // The geometry when the turndown starts, which is what decides where the
@@ -1167,8 +1173,16 @@ struct GameUnitsHost::Impl {
         // 009C7F00 is PARTIAL; its first rule is d = state+20h * 0.9 against
         // the planar range, and with the travel accumulator at 0 that answers
         // as soon as the aircraft has opened at all.
+        // CORRECTION: this read db_glide_travel_20, the AIMGLIDE state's +20h.
+        // 009C7F00 is the goaway state's own completion rule and reads the
+        // goaway state's +20h; the two are different objects. Once the aimglide
+        // seed was recovered as max(arg, 5.0) the conflation made goaway finish
+        // on its very first tick, which is the 1-tick goaway in every run so
+        // far. The goaway's own accumulator starts at zero here, so the rule
+        // stays the labelled PARTIAL it was - but it is no longer fed a value
+        // that belongs to another state.
         in.goaway_complete = slot.db_planar_bc >
-            slot.db_glide_travel_20 *
+            slot.db_goaway_travel_20 *
                 static_cast<float>(bsp::dive_bomb_constant::kGoAwayDistanceScale);
         in.unit_bank_c68 = slot.plane_bank_angle_c68;
         in.bank_high_00ce398c = 0.0f;
@@ -4412,6 +4426,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (ctx.current == bsp::DiveBombState::kAimGlide) {
                             run_dive_bomb_aimglide_tick_009c5180();
                         }
+                        if (ctx.current == bsp::DiveBombState::kGoAway) {
+                            run_dive_bomb_goaway_tick_009c4a40();
+                        }
                         if (ctx.current == bsp::DiveBombState::kAimGlide &&
                             before != bsp::DiveBombState::kAimGlide) {
                             // 009C4F40-009C4F71, the aimglide enter's seed of
@@ -4526,6 +4543,35 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // 009C44F0, the turndown tick, vtable 00D20C84 slot +Ch.
                     // The arm reaches it through state->vtable[+Ch] at
                     // 009C884C. docs/DIVE_BOMB_TASK.md carries the body.
+                    // 009C4A40's climb-out, the state that gets the aircraft out
+                    // of its dive. Until this was dispatched the walk ended
+                    // `aimdive` -> `goaway` one tick -> water contact at
+                    // -1.12 m: the pull-out edge fired, the state changed and
+                    // nothing happened. docs/DIVE_BOMB_TASK.md.
+                    void run_dive_bomb_goaway_tick_009c4a40() {
+                        bsp::DiveBombGoAwayInputs in;
+                        in.altitude = unit_.motion.position[1];   // [EDI+100h]
+                        // (approach+8h)->+1ECh, which this host already carries
+                        // from the Lua row as 0.6 of the sustainable climb
+                        // angle 007D98F0 returns - the real field, not a stand-in.
+                        in.climb_angle_1ec = unit_.plane_climb_angle_1ec;
+                        const bsp::DiveBombGoAwayCommand r =
+                            bsp::dive_bomb_goaway_climb_009c4b44(in);
+                        ++unit_.db_goaway_tick_ticks;
+                        unit_.db_goaway_pitch_last = r.pitch_target_2bc;
+                        // 009C4BE0/009C4BE8: the planner's own pitch arm flies
+                        // this, because mode 1 passes the gate at 0099E3BF.
+                        unit_.plan_state.pitch_target_2bc = r.pitch_target_2bc;
+                        unit_.plan_state.pitch_mode_2d0 = r.pitch_mode_2d0;
+                        // 009C4BFE/009C4C06: wings level through the servo, the
+                        // mode-1 arm at 0099E26E, which rolls the aircraft
+                        // upright out of the inverted dive.
+                        unit_.plan_state.bank_target_2c4 = r.bank_target_2c4;
+                        unit_.plan_heading_mode_2cc = r.heading_mode_2cc;
+                        unit_.plan_heading_2c0_written = false;
+                        unit_.plane_air_brake_mode_2d8 = r.air_brake_mode_2d8;
+                    }
+
                     // 009C5180's heading arm, the glide's counterpart to the
                     // flyabove's. PARTIAL for the same reason; the bank, the
                     // altitude and the direct-yaw sibling arm are read in
