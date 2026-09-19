@@ -247,3 +247,13 @@ No global, type or subsystem was invented to make the module compile, and no pse
 - `bsp.py lookup 00737f30` lists `After MitApp::Deinit` under strings; the routine references the
   literal only as a bare ECX pointer to a stubbed trace, which is worth knowing before treating that
   string list as call arguments.
+
+## Correction from docs/NATIVE_NETWORK_CONSOLE_LIFETIME_R173.md
+
+The descriptions above calling A3B6E0 a "stop-and-join" are too strong. Its full
+152-byte body sets the quit byte, polls two activity flags with Sleep(10), and
+closes the handles. It never waits for either thread handle to signal and never
+clears the handle fields. A newly created worker may not yet have set its active
+flag. R173 reconstructs and compares the complete normal path, including captured
+imports, per-poll lock reload and late second-handle reload. Derived destruction
+A3D1A0 does not call the stop routine; callers must establish worker quiescence.
