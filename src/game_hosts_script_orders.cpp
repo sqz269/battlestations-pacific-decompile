@@ -354,31 +354,57 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
         wing_record.class_id = -1;
         batch.push_back(std::move(wing_record));
     }
+    // The registry record is built BEFORE create_units, not after it.
+    // create_units constructs a fresh GameAiCoordinatorHost and runs
+    // build_squadrons at its own tail, so a record added afterwards is
+    // invisible to that census and this launch's planes each seed an AI
+    // squadron of their own until the NEXT launch's create_units runs the
+    // census again. Measured on USN04, which has one scene row and four
+    // launches: the census stepped 1 over 3, 4 over 6, 5 over 9, 6 over 12,
+    // 7 over 15 - each launch grouping the PREVIOUS one and the most recent
+    // one never grouped, which is 5 squadrons' worth of records reported as 7.
+    //
+    // Nothing here needs the units to exist yet: `before` is already captured
+    // and the batch order IS the wing order, so +3D0h[wing] = before + wing is
+    // known in advance. The count guard the old placement used moves below,
+    // where create_units has said how many it actually made.
+    bsp::PlaneSquadronHostRecord& squadron =
+        bsp::plane_squadron_registry().add(record.name);
+    squadron.wing_count = plan.wing_count;       // +3C8h
+    squadron.behaviour = plan.behaviour;         // +364h
+    squadron.type_class_id = static_cast<std::int32_t>(vehicle_class);
+    squadron.party = record.party;
+    squadron.from_air_ops_launch = true;
+    squadron.squadron_unit = before;
+    squadron.member_names.clear();
+    squadron.member_units.clear();
+    squadron.member_spawn_index.clear();
+    for (std::size_t wing = 0; wing < plan.members.size() && wing < batch.size(); ++wing) {
+        squadron.member_names.push_back(wing == 0 ? record.name
+                                                  : plan.members[wing].name);
+        squadron.member_units.push_back(before + wing);   // +3D0h[wing]
+        squadron.member_spawn_index.push_back(plan.members[wing].spawn_index);
+    }
+
     units_.create_units(batch);
     if (units_.count() <= before) {
+        // The record was registered on the expectation that create_units would
+        // make the slots. It made none, so empty it rather than leave a
+        // squadron naming units that do not exist.
+        squadron.member_names.clear();
+        squadron.member_units.clear();
+        squadron.member_spawn_index.clear();
+        squadron.squadron_unit = bsp::kPlaneSquadronNoUnit;
         log_.notef("air ops squadron: create_units made no instance for class %u, so "
             "slot+28h stays zero", vehicle_class);
         return 0u;
     }
-    {
-        bsp::PlaneSquadronHostRecord& squadron =
-            bsp::plane_squadron_registry().add(record.name);
-        squadron.wing_count = plan.wing_count;       // +3C8h
-        squadron.behaviour = plan.behaviour;         // +364h
-        squadron.type_class_id = static_cast<std::int32_t>(vehicle_class);
-        squadron.party = record.party;
-        squadron.from_air_ops_launch = true;
-        squadron.squadron_unit = before;
-        squadron.member_names.clear();
-        squadron.member_units.clear();
-        squadron.member_spawn_index.clear();
-        for (std::size_t wing = 0; wing < plan.members.size(); ++wing) {
-            const std::size_t unit = before + wing;
-            if (unit >= units_.count()) break;
-            squadron.member_names.push_back(wing == 0 ? record.name
-                                                      : plan.members[wing].name);
-            squadron.member_units.push_back(unit);   // +3D0h[wing]
-            squadron.member_spawn_index.push_back(plan.members[wing].spawn_index);
+    // A partial batch is the case the old `unit >= units_.count()` guard
+    // covered: drop any slot whose plane was not actually made, so live_count()
+    // and the flight leader stay honest.
+    for (std::size_t wing = 0; wing < squadron.member_units.size(); ++wing) {
+        if (squadron.member_units[wing] >= units_.count()) {
+            squadron.member_units[wing] = bsp::kPlaneSquadronNoUnit;
         }
     }
     AirOpsSquadron made;
