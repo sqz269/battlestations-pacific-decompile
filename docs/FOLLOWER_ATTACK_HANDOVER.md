@@ -362,6 +362,21 @@ automatically**, so the next reader inherits a measurement, not a to-do:
 `apply_position` parameter stays, defaulted to `true`, so it is inert. Re-applying them is two
 edits, and both sites carry a comment naming E2.
 
+**E2 does not test the velocity seed.** The integrator asked, before E2 was read, whether a wing
+member that starts in `follow` and never flies `moveto` is seeded sensibly at all - because if it is
+not, turning the teleport off measures the seed rather than the law. It is. The seed is in the
+**unit-creation** path, not in any task state, so it runs for every plane regardless of which state
+its task constructs into: `plane_world_velocity` is set to the class `TravelSpeed` (desc+`18Ch`,
+141.666672 m/s for four rows in this installation) along the aircraft's **own forward axis**
+`motion.pose_row2`, not a world axis. So every member of every squadron begins with the same
+sensible forward airspeed along its spawn heading in E1 and E2 alike.
+
+That sharpens the contrast rather than weakening it. With placement **on**, the seed is sensible and
+then the velocity drifts free of the displayed motion for the 1100-1550 ticks the teleport is
+running. With placement **off**, the same seed applies and the velocity is the thing that actually
+moves the aircraft, so it cannot diverge from its own track. The two runs share the seed and differ
+only in whether the velocity has to mean anything.
+
 Judge E2 against section 8's pre-registered predictions, and in this order:
 
 1. **Is it the NULL?** If the `.-2` members show `states[follow=<everything>]` with little or no
