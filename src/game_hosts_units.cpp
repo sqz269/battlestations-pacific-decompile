@@ -3763,8 +3763,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         bool unit_has_torpedo_ordnance_007b93f0() override {
                             // 009D34C5. The kind 2Bh test 0099A170 already made
-                            // when it built the task; the loadout does not shrink
-                            // in this host, so it holds for the whole run.
+                            // when it built the task. The loadout DOES shrink now:
+                            // GameGunneryHost::release_ordnance_drop clears the
+                            // kind 2Bh bit from this mask on a drop, so this
+                            // returns false for a spent bomber and approach+132h
+                            // (== task+52Ah) goes false on the next approach
+                            // update, which is what lets 009D4C10's range arm be
+                            // reached. docs/TORPEDO_AFTER_THE_DROP.md section 12.4.
                             const bsp::OrdnanceKindSet set{slot_.ordnance_mask};
                             return bsp::ordnance_has_torpedo_2bh(set);
                         }
@@ -3899,7 +3904,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             return true;
                         }
                         bool should_break_off(void*) override {
-                            // task->vtable[1Ch] == 009D4C10. contract: unread.
+                            // 009D4C10, now READ and bound. This override is the
+                            // one the arm does not use: the transition rule takes
+                            // should_break_off by value and it is computed where
+                            // the target and the tuning are in scope, below.
                             record("BotTaskTorpedo::should_break_off", "009d4c10");
                             return false;
                         }
@@ -4071,7 +4079,85 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             in.entry.global_e17bf2 = false;
                             in.entry.aim_flag_529 = slot_.torpedo_aim_flag_529;
                             in.unit_has_no_follow_target = true;
-                            in.should_break_off = false;
+                            // 009D4C10, slot 1Ch of the TASK vtable 00D213C8,
+                            // read whole from the listing 009D4C10-009D4C8E and
+                            // re-derived jump sense by jump sense from the branch
+                            // bytes. docs/TORPEDO_AFTER_THE_DROP.md sections 12
+                            // and 13.1. Rule:
+                            //   if (!0099C230(task))                 return false;
+                            //   if (target == 0 || target->+5Dh)     return true;
+                            //   if (ctl->+369h && [00E17BF2])        return false;
+                            //   if (IsAttackState(cur) && task+52Ah) return false;
+                            //   return range >= SafeDist * approach+24h;
+                            // bot_task_should_break_off already carries the shape
+                            // all five ordnance classes share, so this passes a
+                            // torpedo class_extra rather than adding a sixth body.
+                            //
+                            // base_gate is a PROOF, not a stand-in. 0099C230
+                            // returns false only for the unit the in-mission
+                            // interface manager [00E198C4] is attached to -- the
+                            // player's aircraft. That manager is null in this
+                            // process, so the image takes its own first branch and
+                            // returns true. Section 13.2.
+                            //
+                            // speed_ratio 1.0 is a FLOOR, not a match, and this is
+                            // a hole rather than a proof: 009F9CE0 writes
+                            // approach+24h as max(1.0, MaxSpd / ReferenceSpeed)
+                            // (docs/BOT_TASKS.md:102) and the divisor is
+                            // substituted here. The ratio is >= 1.0, so 1.0 gives
+                            // the image's MINIMUM threshold of 700 m and retires a
+                            // bomber EARLY, never late. The dive-bomb binding at
+                            // :1144 carries the same stand-in for the same field.
+                            {
+                                const GameUnitSlot* tgt = nullptr;
+                                if (slot_.command_target_plus_one != 0) {
+                                    const std::size_t ti =
+                                        slot_.command_target_plus_one - 1;
+                                    if (ti < owner_.slots.size()) {
+                                        tgt = owner_.slots[ti].get();
+                                    }
+                                }
+                                // unit+5Dh. The polarity is settled from both
+                                // ends: 00937449 CMP byte [EAX+5Dh],0 / JNZ shows
+                                // a SET byte suppresses behaviour, and 00925E14
+                                // CLEARS it at creation, so clear == live and
+                                // engageable. `simulate` is this host's cell for
+                                // that byte and it has TWO writers: the `= 0` at
+                                // creation (:2686) and `= flags.torn_down` in
+                                // store_scene_node_flags (:7318). So a live target
+                                // gives false and this arm cannot retire a bomber
+                                // spuriously, while a torn-down target DOES set it,
+                                // so this is the right field rather than an inert
+                                // hole. UNVERIFIED, and not chased here: who calls
+                                // store_scene_node_flags, and whether a sunk ship
+                                // reaches it with torn_down set. So the route is
+                                // reachable in principle; that it fires when a
+                                // target dies is NOT established. USN01 does not
+                                // exercise it -- the two deaths are bombers, not
+                                // the ordered targets. The field's name is the
+                                // trap: read it as "marked", not "simulating".
+                                const bool target_marked =
+                                    tgt != nullptr && tgt->state != nullptr &&
+                                    tgt->state->simulate != 0;
+                                // ctl+369h is clear in this host
+                                // (read_control_block), so the first refusal arm
+                                // cannot fire and the ordnance arm is the live one.
+                                const bool ctl_369 = false;
+                                const bool global_e17bf2 = false;
+                                const bool class_extra =
+                                    !(ctl_369 && global_e17bf2) &&
+                                    !(bsp::torpedo_in_attack_state_009d31d0(
+                                          slot_.torpedo_state) &&
+                                      slot_.torpedo_attack_flag_52a);
+                                in.should_break_off =
+                                    bsp::bot_task_should_break_off(
+                                        /*base_gate=*/true,
+                                        /*has_target=*/tgt != nullptr,
+                                        target_marked, class_extra,
+                                        slot_.torpedo_approach.range_90,
+                                        safe_distance_438(),
+                                        /*speed_ratio=*/1.0f);
+                            }
                             // 009D31B0: MOV EAX,[ECX+4]; CMP byte [EAX+132h],0;
                             // JNZ 009D31BF; XOR AL,AL; RET / MOV AL,[ECX+2Ch].
                             // So the hold is the aim-complete byte the tick

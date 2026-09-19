@@ -477,3 +477,59 @@ that countdown: the `done`/`prepare` tick `009C7270`-`009C727F` calls `009C1FD0`
 returns at `009C727D`, and the exit
 `009C7260` is a bare `JMP 009BDE40`, so the torpedo's `009D2720`/`009D2570` drop has no
 counterpart here. Every path of `009C8200` returns `1`, unlike the torpedo's `009D49A0`.
+
+## Correction: `0099C230` is the player-aircraft exemption, and there are FIVE break-off overrides
+
+Packet `cc8_torpedo_breakoff`, 2026-09-19. This section corrects two things above and withdraws
+neither the shape table nor the offsets, which stand.
+
+**There are five overrides, not four.** The line "Four overrides read ... all four call the base
+`0099C230` first" predates the torpedo's. `009D4C10 BSP_BotTaskTorpedo_ShouldBreakOff` is the fifth,
+slot `1Ch` of the task vtable `00D213C8`; it was not a defined function in the project until this
+packet defined it (`009D4C10`-`009D4C8E`), which is why it never appeared in a caller query. An
+exhaustive rel32-plus-absolute-dword census of `0099C230` (`tools/callsite_census.py`) finds exactly
+five direct call sites and they are exactly these five bodies: `009A65F6`, `009AE1B3`, `009B8D86`,
+`009C8A96`, and `009D4C14`. The torpedo's differs from the shape table above in one respect: its
+step 3 class-extra is itself a conjunction, `!(IsAttackState(current) && task+52Ah)`, so a torpedo
+bomber that still carries its ordnance never breaks off by range.
+
+**`0099C230` is not an opaque base, and `base_break_off` undersells it.** Body
+`0099C230`-`0099C266`, `__thiscall(task) -> bool`:
+
+```
+eax = [00E198C4];          if (eax == 0)            return true;
+                           if ([eax+8Ch] == 0)      return true;
+eax = [eax+8Ch];           if ([eax+4] == 0)        return true;
+eax = [eax+34h];           if (eax == [ecx+2F4h])   return false;
+                           if (eax != [ecx+2FCh])   return true;
+                                                    return false;
+```
+
+`00E198C4` is the **in-mission interface manager** (`docs/FRONTEND_MANAGERS.md:11`,
+`docs/FIXED_STEP_FANOUT.md:187`). So it returns false only for the task whose unit is the one that
+interface is attached to: it is the **player-aircraft exemption**, which stops the AI break-off rule
+retiring the human's own task. Ledger name `BSP_BotTask_BreakOffAllowedForUnit`, provisional.
+
+Two consequences worth carrying into any host binding of steps 1-5:
+
+* In a process with no in-mission interface manager, `[00E198C4]` is null and the routine returns
+  true by its own first branch. Passing `base_gate = true` there is a **proof**, not a stand-in.
+* The same census returns **22 `.rdata` references**, so `0099C230` is itself a virtual occupying 22
+  vtable slots image-wide. All five break-off bodies reach it by a **direct `CALL`** rather than
+  through a slot, so they always get this body; but anything meeting it through a vtable must read
+  that slot rather than assume this one.
+
+**On step 2's `t->+5Dh`.** The polarity is settled from both ends and is the opposite of what the
+field's usual host name suggests: `00937449 CMP byte ptr [EAX+5Dh],0 / JNZ` shows a **set** byte
+suppresses behaviour, and `00925E14` **clears** it at creation. So clear means live and engageable,
+and step 2 returns 1 for a target that is gone. A host cell named `simulate` standing in for this
+byte must be read as "marked", not "simulating".
+
+In `bsp_game` that cell has two writers: `= 0` at unit creation, and `= flags.torn_down` in
+`GameUnitsHost::store_scene_node_flags`, beside `scene_destroyed_005e` and `scene_removed_005f`. So
+a live target reads false and step 2 cannot fire spuriously, and the byte *can* be set when a scene
+node is torn down, which makes it the right field to feed step 2 rather than an inert stand-in.
+**Unverified and deliberately not chased**: who calls `store_scene_node_flags`, and whether a sunk
+ship reaches it with `torn_down` set. The route is reachable in principle; that it fires when a
+target dies is not established, and USN01 does not exercise it, because the deaths there are
+bombers rather than the ordered targets.
