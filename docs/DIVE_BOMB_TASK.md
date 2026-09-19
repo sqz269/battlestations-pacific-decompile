@@ -2783,3 +2783,49 @@ cin.range_high    = in.planar_distance_bc;                          // 009C43DB
 
 Both are now read from the image rather than inferred. It needs `src/game_hosts_units.cpp`, which
 this stream has released, so it waits for a declared window.
+
+## `usn04_goaway2.log`: the completion rule works, and the ditch survives it
+
+| measure | `usn04_goaway` | `usn04_goaway2` |
+| --- | --- | --- |
+| arm ticks | 2118 | 2117 |
+| transitions | 7 | **5** |
+| goaway ticks | **1** | **43** |
+| aimglide ticks | 42 | 0 |
+| flyabove / turndown / aimdive | 159 / 71 / 318 | 158 / 71 / 318 |
+| water contact | -1.12 m, 43.72 m/s | -0.36 m, 44.92 m/s |
+| releases | 0 | 0 |
+
+Reading `009C7F00` whole did what it should: **goaway now runs 43 ticks instead of 1**, the climb-out
+arm bound beside it gets to act, and the state no longer ends on its first tick. The completion rule
+was the fault and it is fixed.
+
+The aircraft still ditches. 43 ticks is 3.9 s, and nothing recovers a dive-bomber that entered its
+dive at 650 m with the target astern and spent 318 ticks descending. That is not a goaway fault;
+it is the profile the aircraft arrived with.
+
+## Three defects at one call site, `009C4401`
+
+With the whole call now read, the host's binding was wrong in three separate ways, and they
+compound:
+
+| was | is | evidence |
+| --- | --- | --- |
+| `range_low = range_high = attack_distance_b4`, so `span` was identically 0 | `range_low` = `approach+B4h`, `range_high` = `approach+BCh`, the live planar range | `009C43E3` and `009C43DB`, the latter fed by `009C4311`/`009C4317` |
+| `base_altitude = r.commanded_altitude_base` | `approach+ACh + approach+50h` | `009C43F3` |
+| `plane_desired_speed_2b4 = commanded_throttle` | **nothing** - a census over `009C4220`-`009C447D` finds no `cmd+2B4h` write at all | the absence itself |
+
+The first is the one that matters. `span = max(high - low, 0)` is the distance **still to close** -
+about 9900 m at 11 km out, zero at the attack distance - so the bias `span * scale * class+518h`
+is the glide slope. Forced to zero, the aircraft is commanded to the bare base from 11 km out and
+descends immediately instead of gliding down as it closes. Every state this stream has bound was
+compensating for a command that should never have been given.
+
+The third is a consequence of the second's misnaming: `commanded_throttle` was never a throttle, so
+wiring it to a desired speed invented a command the state does not issue. Renamed to
+`descent_scale` here, with `kThrottleRatioLow`/`AtLow`/`RatioHigh`/`AtHigh` renamed to match, on
+cc8-torpedo-descent's listing evidence: `009C43CD`'s result is `009FBA50`'s arg3 and then
+`009FB800`'s arg2, the clamp on `t` in both of its arms.
+
+**Baseline: everything from here is measured after `67e8ac821`** and cannot share a table with the
+runs above. `local\usn04_span.log` is the first on the new side.

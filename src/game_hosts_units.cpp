@@ -4533,7 +4533,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.db_attackrun_timer_1c = r.reroll_timer_1c;
                         unit_.db_attackrun_offset_20 = r.lateral_offset_20;
                         unit_.db_attackrun_heading_last = r.commanded_heading_2c0;
-                        unit_.db_attackrun_throttle_last = r.commanded_throttle;
+                        unit_.db_attackrun_throttle_last = r.descent_scale;
                         unit_.db_attackrun_alt_last = r.commanded_altitude_base;
                         // 009C42FF and 009C4305: cmd+2C0h with cmd+2CCh = 2.
                         unit_.plan_heading_2c0 = r.commanded_heading_2c0;
@@ -4544,13 +4544,33 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plan_slots[bsp::kPilotSlotThrottle].active = 1;
                         unit_.plan_slots[bsp::kPilotSlotAirBrake].desired = 0.0f;
                         unit_.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
-                        // 009C4401: 009FBA50 with the base, the class range and
-                        // the throttle, the same chain the torpedo attackrun
-                        // uses, so the altitude reaches the pitch command.
+                        // 009C4401's four arguments, all now read from the image
+                        // rather than inferred. 009C43D2 SUB ESP,0x10 opens the
+                        // window and they go in at:
+                        //   [ESP]    009C43F3  approach+ACh + approach+50h
+                        //   [ESP+4]  009C43E3  approach+B4h, the attack distance
+                        //   [ESP+8]  009C43DB  approach+BCh, the LIVE planar range
+                        //   [ESP+Ch] 009C43CD  the InterpolateClamped result
+                        //
+                        // CORRECTED. Both ranges used to be attack_distance_b4,
+                        // so `span = max(high - low, 0)` was identically zero,
+                        // the bias `span * scale * class+518h` vanished and the
+                        // aircraft was commanded to the bare base from 11 km
+                        // out - it descended at once instead of gliding down as
+                        // it closed. The second range is 009C4311's read of
+                        // approach+BCh, parked at 009C4317 in the tick's own dt
+                        // slot ([ESP+44h], reused as scratch once dt is spent).
+                        // So span is the distance STILL TO CLOSE: about 9900 m
+                        // at 11 km, zero at the attack distance. That is the
+                        // glide slope. The base is composed too, and it is the
+                        // same +ACh + +50h sum 009C7F00's ceiling uses.
+                        // Found alongside cc8-plane-squadron's zero-range-pair
+                        // diagnosis on the torpedo side. docs/DIVE_BOMB_TASK.md.
                         bsp::PlaneCruiseAltitudeInputs cin;
-                        cin.base_altitude = r.commanded_altitude_base;
+                        cin.base_altitude =
+                            unit_.db_begin_alt_ac + unit_.db_aim_point_height_50;
                         cin.range_low = in.attack_distance_b4;
-                        cin.range_high = in.attack_distance_b4;
+                        cin.range_high = in.planar_distance_bc;
                         // CORRECTION, packet cc8_torpedo_descent_law, for the
                         // owner of src/dive_bomb_task.cpp: 009C43CD's
                         // InterpolateClamped result is NOT a throttle. 009C43D5
@@ -4561,7 +4581,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // The full throttle this state commands is the literal
                         // 1.0 at 009C4413 above. The field keeps its name here
                         // because renaming it reaches into another lease.
-                        cin.scale = r.commanded_throttle;
+                        cin.scale = r.descent_scale;
                         cin.class_gain = static_cast<float>(
                             std::tan(static_cast<double>(unit_.plane_drop_angle)));
                         cin.has_squadron = false;
@@ -4590,8 +4610,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // reset at 0099B54E already leaves 2 there; this is the
                         // write made explicit next to the gate at 0099E3BF.
                         unit_.plan_state.pitch_mode_2d0 = 2;
-                        unit_.plane_desired_speed_2b4 = r.commanded_throttle;
-                        unit_.plane_air_brake_mode_2d8 = 0;
+                        // REMOVED: `plane_desired_speed_2b4 = descent_scale`.
+                        // A command census over 009C4220-009C447D finds no write
+                        // to cmd+2B4h at all, so the run-in issues no desired
+                        // speed; the host was inventing one out of 009C43CD's
+                        // result, which cc8_torpedo_descent_law has just shown is
+                        // the descent scale and never was a throttle. The only
+                        // throttle this state commands is the literal 1.0 at
+                        // 009C4413, already modelled above.
+                        unit_.plane_air_brake_mode_2d8 = 0;   // 009C4434
                     }
 
                     // 009C44F0, the turndown tick, vtable 00D20C84 slot +Ch.
