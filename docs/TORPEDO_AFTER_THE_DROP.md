@@ -2064,3 +2064,57 @@ Four things that measurement establishes, and one it does not:
 The distances are centre to centre and horizontal. The Lexington's authored hull is 250 m by 30 m
 (`unit hull input unit=Lexington-class01 ... length=250 width=30`), so 55.4 m from the centre is
 inside the hull's own footprint along its length, which is another reason not to call it a miss.
+
+### 15.6 Under the probe three of the six DO hit the Lexington - and the hit does nothing
+
+Read from the same probe log, `local/swim_probe_usn04.log`, which 15.5 only read the census of.
+The per-round trace carries the rest:
+
+```
+torpedo trace 1..3 swim_started life=1.60 pos=(12279.3,0.00,-12645.1)
+torpedo trace 4..6 swim_started life=1.60 pos=(-12710.2,0.00,-12717.9)
+torpedo trace 4 exit=entity_impact hit=Lexington-class01 at=(-12877.4,0.00,-12905.7) life=9.75
+torpedo trace 5 exit=entity_impact hit=Lexington-class01 at=(-12877.4,0.00,-12905.7) life=9.75
+torpedo trace 6 exit=entity_impact hit=Lexington-class01 at=(-12877.4,0.00,-12905.7) life=9.75
+torpedo trace 1..3 STILL IN FLIGHT at mission end life=10.45 pos=(12459.6,0.00,-12850.5)
+                                                  vel=(20.4,0.00,-23.2) swimming=1
+```
+
+* **Squadron 2's three rounds hit the Lexington** at 9.75 s of swim. Their census row's
+  `min=55.4 m` is not a miss distance at all: it is the centre-to-centre distance at the moment
+  the round met the hull, 55.4 m forward or aft of a 250 m ship's centre point.
+* **Squadron 4's three were still closing on the Yorktown** when the 3000-frame mission ended,
+  34.0 m from its centre, still on the swim at exactly 30.9 m/s (`|(20.4, 0, -23.2)| = 30.9`).
+* The swim starts at `life=1.60` against the 1.55 s free fall 15.2 predicts. Before that the round
+  spends its first **0.75 s inside a squadron mate's hull box** - it is launched with the
+  formation's own velocity, so nothing but gravity separates them - which is the same co-location
+  15.1 measures, seen from the other side.
+
+**And the three hits did nothing.** The carrier's census row reads
+
+```
+Lexington-class01  side 0  guns 22  ...  shots 72  hits_taken 3  dealt 146  taken 0  health 8000
+```
+
+Three hits taken, **zero damage**, full health. The arithmetic is `hull_damage_00470510`:
+`(owner_modifier * hull_damage_base - armour) * weapon_scale`, with `008777D0`'s `> 0` test above
+it. `hull_damage_base` is a uniform draw between the **bullet class row's** `DamageMin`/`DamageMax`
+(`006E7C60` through `00BD2F10`, `src/game_hosts_gunnery.cpp`), and for bullet 69 that draw is about
+**44**: in the unprobed run of 15.1 each Kate's `damage_dealt` is exactly `44` where its torpedo
+struck an unarmoured squadron mate. A carrier's `Armour` is not below that, so every torpedo hit on
+a ship resolves to zero.
+
+**That is a second defect, and it is not this packet's.** It is separable from the swim start, it
+is visible only once the rounds survive the drop, and naming it costs nothing to act on later:
+either the torpedo's warhead is not the bullet row's `DamageMin`/`DamageMax` at all - the torpedo
+class descriptor is `0FCh` bytes against the bullet class's `0D4h`, so it has fields the bullet row
+does not - or the ship-hit path owes a torpedo an armour rule of its own.
+
+One pointer for whoever takes it, and it is a pointer rather than an answer. The hit record already
+carries `shot_is_torpedo` (`shot->vtable[5Ch](2Bh)`), and `src/ship_hit_record.cpp:230` reads it -
+but only to build the roll torque, where `0082712E` takes `host.hull_damage(0.0f)`, **the same
+formula with no armour at all**. So the image itself computes an armour-free damage figure for a
+torpedo hit in one place on this path, while the hull damage beside it keeps the armour
+subtraction. Whether that asymmetry is the image's intent or whether the warhead comes from
+somewhere else entirely is unread. **Nothing above is a reading of the image's torpedo warhead; it
+is a measurement of what this host does.**
